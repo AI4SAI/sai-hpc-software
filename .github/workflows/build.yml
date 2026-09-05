@@ -51,6 +51,12 @@ jobs:
           ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py receive abacus $runid $SHA"
           ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py submit abacus $runid ~/sai-hpc-software/containers/base/minimal-v1 CPU-MISC 0 60 '[\"sh\",\"-c\",\"cmake -S /workspace/source -B /tmp/abacus-build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/software/abacus/dev/cpu-misc -DBUILD_TESTING=OFF -DUSE_CUDA=OFF && cmake --build /tmp/abacus-build --parallel 8 && cmake --install /tmp/abacus-build\"]' rush-cpu"
           ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py monitor $runid"
+          scp $so "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/runs/$runid/artifacts/abacus-$runid.sif" "$RUNNER_TEMP/abacus-$runid.sif"
+      - name: Publish container artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: abacus-container-${{ github.run_id }}
+          path: ${{ runner.temp }}/abacus-${{ github.run_id }}-${{ github.run_attempt }}.sif
   validate:
     runs-on: ubuntu-latest
     steps:
