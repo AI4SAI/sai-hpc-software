@@ -5,11 +5,11 @@ on:
       source_repository:
         description: External source repository (owner/name)
         required: true
-        default: cp2k/cp2k
+        default: deepmodeling/abacus-develop
       source_ref:
         description: Branch, tag, release tag, or commit
         required: true
-        default: master
+        default: develop
   push:
     paths: ['plans/**', 'software/**', 'profiles/**', 'controller/**']
 jobs:
@@ -47,9 +47,9 @@ jobs:
           scp $so control/controller/software_controller.py "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/controller/software_controller.py"
           scp $so control/controller/create_rootfs.sh "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/controller/create_rootfs.sh"
           ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "bash ~/sai-hpc-software/controller/create_rootfs.sh ~/sai-hpc-software/containers/base/minimal-v1"
-          ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py init cp2k $runid"
-          ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py receive cp2k $runid $SHA"
-          ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py submit cp2k $runid ~/sai-hpc-software/containers/base/minimal-v1 CPU-MISC 0 10 '[\"sh\",\"-c\",\"echo sai-hpc-software-container-smoke\"]' rush-cpu"
+          ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py init abacus $runid"
+          ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py receive abacus $runid $SHA"
+          ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py submit abacus $runid ~/sai-hpc-software/containers/base/minimal-v1 CPU-MISC 0 60 '[\"sh\",\"-c\",\"cmake -S /workspace/source -B /tmp/abacus-build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/software/abacus/dev/cpu-misc -DBUILD_TESTING=OFF -DUSE_CUDA=OFF && cmake --build /tmp/abacus-build --parallel 8 && cmake --install /tmp/abacus-build\"]' rush-cpu"
           ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py monitor $runid"
   validate:
     runs-on: ubuntu-latest
