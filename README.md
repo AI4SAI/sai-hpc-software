@@ -17,4 +17,4 @@ python3 -m unittest discover -s tests
 
 The administrator may move an artifact's installation tree to `/opt`; deployment is intentionally outside this repository.
 
-Source transfer uses a home-directory cache under `~/sai-hpc-software/cache/sources`. Archives are split into 8 MiB SHA-256 addressed chunks; a later build uploads only missing chunks and reconstructs the archive remotely. The cache is never placed in `/tmp`.
+Source transfer uses an ABACUS-style Git bundle cache under `~/sai-hpc-software/cache/repositories`. A fixed controller creates an exact-commit bundle, splits it into eight parts, verifies SHA-256, and updates the bare cache. The cache is never writable from the build container; the checked-out source tree is bound read-only. All cache and task paths remain below `~/sai-hpc-software`, never the SAI host `/tmp`.
