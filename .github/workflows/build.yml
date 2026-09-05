@@ -28,7 +28,8 @@ jobs:
       source_sha: ${{ needs.resolve-source.outputs.sha }}
       cluster_profile: sai-cuda12-openmpi5
       remote_root: ~/sai-hpc-software
-      ssh_known_hosts: ${{ vars.SAI_SSH_KNOWN_HOSTS }}
+      ssh_known_hosts: >-
+        [c0.sai.ai-4s.com]:12022 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBBurYQExmMdgat4VU1Twmu2pqxsBjLP6eff9oc6/8N3KUCtoe8HU9eONghETLECdA7A+O9DpefDRba0AcSXTfQc=
       secret_environment: hpc
       tests_json: >-
         {"version":1,"cluster_profile":"sai-cuda12-openmpi5","source":{"repository":"${{ inputs.source_repository }}","sha":"${{ needs.resolve-source.outputs.sha }}"},"tests":[{"name":"cp2k-16v100","nodes":1,"gpus_per_node":1,"ranks_per_node":1,"timeout_minutes":300,"working_directory":".","command":["bash","-lc","mkdir -p /workspace/build /workspace/results/install && cmake -S /workspace/source -B /workspace/build -DCP2K_USE_CUDA=ON -DCMAKE_INSTALL_PREFIX=/workspace/results/install && cmake --build /workspace/build -j2 && cmake --install /workspace/build"]}]}
