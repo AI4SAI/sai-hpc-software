@@ -13,6 +13,16 @@ jobs:
   build:
     needs: validate
     if: ${{ github.event_name == 'workflow_dispatch' }}
-    runs-on: ubuntu-latest
-    steps:
-      - run: echo 'Remote Slurm execution is wired to sai-hpc-ci reusable workflow in the next release.'
+    uses: AI4SAI/sai-hpc-ci/.github/workflows/hpc-test.yml@f22c1b9e070e4c39e9033b1953636d5f7c8d2fea
+    with:
+      source_repository: cp2k/cp2k
+      source_sha: 9298c1a3ccc1b46c8ea8dcc3e4974752d91c83cc
+      cluster_profile: sai-cuda12-openmpi5
+      remote_root: ~/sai-hpc-software
+      ssh_known_hosts: ${{ vars.SAI_SSH_KNOWN_HOSTS }}
+      secret_environment: hpc
+      tests_json: >-
+        {"version":1,"cluster_profile":"sai-cuda12-openmpi5","source":{"repository":"cp2k/cp2k","sha":"9298c1a3ccc1b46c8ea8dcc3e4974752d91c83cc"},"tests":[{"name":"cp2k-16v100","nodes":1,"gpus_per_node":1,"ranks_per_node":1,"timeout_minutes":300,"working_directory":".","command":["bash","-lc","mkdir -p /workspace/build /workspace/results/install && cmake -S /workspace/source -B /workspace/build -DCP2K_USE_CUDA=ON -DCMAKE_INSTALL_PREFIX=/workspace/results/install && cmake --build /workspace/build -j2 && cmake --install /workspace/build"]}]}
+    secrets:
+      REMOTE_USER: ${{ secrets.REMOTE_USER }}
+      REMOTE_SSH_PRIVATE_KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
