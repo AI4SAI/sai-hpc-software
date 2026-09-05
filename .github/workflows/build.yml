@@ -34,9 +34,16 @@ jobs:
         run: |
           set -euo pipefail; mkdir -m 700 "$RUNNER_TEMP/ssh"; printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"; chmod 600 "$RUNNER_TEMP/ssh/key"
           printf '%s\n' '[c0.sai.ai-4s.com]:12022 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBBurYQExmMdgat4VU1Twmu2pqxsBjLP6eff9oc6/8N3KUCtoe8HU9eONghETLECdA7A+O9DpefDRba0AcSXTfQc=' > "$RUNNER_TEMP/ssh/known_hosts"
-          git -C source fetch --unshallow 2>/dev/null || true
-          echo "SHA=$(git -C source rev-parse HEAD)" >> "$GITHUB_ENV"
-          git -C source bundle create "$RUNNER_TEMP/source.bundle" --all
+          # Build a shallow, self-contained Git bundle from the selected tree.
+          # This avoids shipping the external project's entire history while
+          # retaining the bundle/cache receiver contract on SAI.
+          mkdir "$RUNNER_TEMP/packed"; git -C source archive --format=tar HEAD | tar -x -C "$RUNNER_TEMP/packed"
+          git -C "$RUNNER_TEMP/packed" init -q
+          git -C "$RUNNER_TEMP/packed" config user.email ci@sai-hpc-software
+          git -C "$RUNNER_TEMP/packed" config user.name sai-hpc-software-ci
+          git -C "$RUNNER_TEMP/packed" add -A; git -C "$RUNNER_TEMP/packed" commit -qm "source snapshot $GITHUB_SHA"
+          echo "SHA=$(git -C "$RUNNER_TEMP/packed" rev-parse HEAD)" >> "$GITHUB_ENV"
+          git -C "$RUNNER_TEMP/packed" bundle create "$RUNNER_TEMP/source.bundle" --all
       - name: Upload, submit and monitor
         env:
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
