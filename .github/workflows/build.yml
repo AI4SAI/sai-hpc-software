@@ -1,6 +1,15 @@
 name: Build HPC software
 on:
   workflow_dispatch:
+    inputs:
+      source_repository:
+        description: External source repository (owner/name)
+        required: true
+        default: cp2k/cp2k
+      source_ref:
+        description: Branch, tag, release tag, or commit
+        required: true
+        default: master
   push:
     paths: ['plans/**', 'software/**', 'profiles/**', 'controller/**']
 jobs:
@@ -11,18 +20,34 @@ jobs:
       - run: python3 controller/validate_plan.py plans/cp2k.example.json --output /tmp/plan.json
       - run: python3 -m unittest discover -s tests
   build:
-    needs: validate
+    needs: [validate, resolve-source]
     if: ${{ github.event_name == 'workflow_dispatch' }}
     uses: AI4SAI/sai-hpc-ci/.github/workflows/hpc-test.yml@f22c1b9e070e4c39e9033b1953636d5f7c8d2fea
     with:
-      source_repository: cp2k/cp2k
-      source_sha: 9298c1a3ccc1b46c8ea8dcc3e4974752d91c83cc
+      source_repository: ${{ inputs.source_repository }}
+      source_sha: ${{ needs.resolve-source.outputs.sha }}
       cluster_profile: sai-cuda12-openmpi5
       remote_root: ~/sai-hpc-software
       ssh_known_hosts: ${{ vars.SAI_SSH_KNOWN_HOSTS }}
       secret_environment: hpc
       tests_json: >-
-        {"version":1,"cluster_profile":"sai-cuda12-openmpi5","source":{"repository":"cp2k/cp2k","sha":"9298c1a3ccc1b46c8ea8dcc3e4974752d91c83cc"},"tests":[{"name":"cp2k-16v100","nodes":1,"gpus_per_node":1,"ranks_per_node":1,"timeout_minutes":300,"working_directory":".","command":["bash","-lc","mkdir -p /workspace/build /workspace/results/install && cmake -S /workspace/source -B /workspace/build -DCP2K_USE_CUDA=ON -DCMAKE_INSTALL_PREFIX=/workspace/results/install && cmake --build /workspace/build -j2 && cmake --install /workspace/build"]}]}
+        {"version":1,"cluster_profile":"sai-cuda12-openmpi5","source":{"repository":"${{ inputs.source_repository }}","sha":"${{ needs.resolve-source.outputs.sha }}"},"tests":[{"name":"cp2k-16v100","nodes":1,"gpus_per_node":1,"ranks_per_node":1,"timeout_minutes":300,"working_directory":".","command":["bash","-lc","mkdir -p /workspace/build /workspace/results/install && cmake -S /workspace/source -B /workspace/build -DCP2K_USE_CUDA=ON -DCMAKE_INSTALL_PREFIX=/workspace/results/install && cmake --build /workspace/build -j2 && cmake --install /workspace/build"]}]}
     secrets:
       REMOTE_USER: ${{ secrets.REMOTE_USER }}
       REMOTE_SSH_PRIVATE_KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
+  resolve-source:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    outputs:
+      sha: ${{ steps.resolve.outputs.sha }}
+    steps:
+      - id: resolve
+        env:
+          REPOSITORY: ${{ inputs.source_repository }}
+          REF: ${{ inputs.source_ref }}
+        run: |
+          set -euo pipefail
+          [[ "$REPOSITORY" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]]
+          sha=$(git ls-remote "https://github.com/$REPOSITORY.git" "refs/heads/$REF" "refs/tags/$REF" "refs/tags/$REF^{}" | awk 'NF {print $1; exit}')
+          [[ "$sha" =~ ^[0-9a-f]{40}$ ]] || { echo "Cannot resolve ref: $REF" >&2; exit 2; }
+          echo "sha=$sha" >> "$GITHUB_OUTPUT"
