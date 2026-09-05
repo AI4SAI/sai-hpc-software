@@ -1,0 +1,18 @@
+name: Build HPC software
+on:
+  workflow_dispatch:
+  push:
+    paths: ['plans/**', 'software/**', 'profiles/**', 'controller/**']
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 controller/validate_plan.py plans/cp2k.example.json --output /tmp/plan.json
+      - run: python3 -m unittest discover -s tests
+  build:
+    needs: validate
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo 'Remote Slurm execution is wired to sai-hpc-ci reusable workflow in the next release.'

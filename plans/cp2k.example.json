@@ -1,0 +1,10 @@
+{
+  "version": 1,
+  "software": "cp2k",
+  "source": {"repository": "cp2k/cp2k", "sha": "0000000000000000000000000000000000000000"},
+  "targets": [
+    {"name": "cpu-misc", "partition": "CPU-MISC", "nodes": 1, "cpus_per_node": 8, "gpus_per_node": 0, "profile": "cp2k-cpu", "container": "/opt/sai-ci/rootfs/minimal-v1.sif", "command": ["./tools/toolchain/install_cp2k_toolchain.sh", "--with-openmpi=install", "--with-gcc=system", "--with-cmake=system"], "install_prefix": "cp2k/2026.1/cpu-misc"},
+    {"name": "16v100", "partition": "16V100", "nodes": 1, "cpus_per_node": 16, "gpus_per_node": 4, "profile": "cp2k-v100", "container": "/opt/sai-ci/rootfs/minimal-v1.sif", "command": ["cmake", "-S", ".", "-B", "/workspace/build", "-DCP2K_USE_CUDA=ON"], "install_prefix": "cp2k/2026.1/16v100"},
+    {"name": "8a100m40", "partition": "8A100M40", "nodes": 1, "cpus_per_node": 32, "gpus_per_node": 4, "profile": "cp2k-a100", "container": "/opt/sai-ci/rootfs/minimal-v1.sif", "command": ["cmake", "-S", ".", "-B", "/workspace/build", "-DCP2K_USE_CUDA=ON", "-DCP2K_USE_GPU=ON"], "install_prefix": "cp2k/2026.1/8a100m40"}
+  ]
+}

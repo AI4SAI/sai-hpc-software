@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "cluster": "mr-sai",
+  "ssh_host": "SAI-stardust",
+  "partitions": {
+    "4V100": {"max_nodes": 1, "max_gpus_per_node": 4, "max_cpus_per_node": 32},
+    "8V100V0": {"max_nodes": 1, "max_gpus_per_node": 8, "max_cpus_per_node": 48},
+    "16V100": {"max_nodes": 2, "max_gpus_per_node": 16, "max_cpus_per_node": 128},
+    "8A100M40": {"max_nodes": 1, "max_gpus_per_node": 8, "max_cpus_per_node": 128},
+    "8A100M80": {"max_nodes": 1, "max_gpus_per_node": 8, "max_cpus_per_node": 128},
+    "DSPRHBM": {"max_nodes": 2, "max_gpus_per_node": 0, "max_cpus_per_node": 104},
+    "CPU-MISC": {"max_nodes": 2, "max_gpus_per_node": 0, "max_cpus_per_node": 88}
+  }
+}
