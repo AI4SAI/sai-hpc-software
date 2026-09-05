@@ -13,6 +13,35 @@ on:
   push:
     paths: ['plans/**', 'software/**', 'profiles/**', 'controller/**']
 jobs:
+  independent-smoke:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    needs: resolve-source
+    runs-on: ubuntu-latest
+    environment: hpc
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          repository: ${{ inputs.source_repository }}
+          ref: ${{ needs.resolve-source.outputs.sha }}
+          fetch-depth: 1
+          path: source
+      - name: Prepare SSH and bundle
+        env:
+          KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail; mkdir -m 700 "$RUNNER_TEMP/ssh"; printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"; chmod 600 "$RUNNER_TEMP/ssh/key"
+          printf '%s\n' '[c0.sai.ai-4s.com]:12022 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBBurYQExmMdgat4VU1Twmu2pqxsBjLP6eff9oc6/8N3KUCtoe8HU9eONghETLECdA7A+O9DpefDRba0AcSXTfQc=' > "$RUNNER_TEMP/ssh/known_hosts"
+          git -C source bundle create "$RUNNER_TEMP/source.bundle" --all
+      - name: Upload, submit and monitor
+        env:
+          USER: ${{ secrets.REMOTE_USER }}
+          SHA: ${{ needs.resolve-source.outputs.sha }}
+        run: |
+          set -euo pipefail; o="-i $RUNNER_TEMP/ssh/key -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$RUNNER_TEMP/ssh/known_hosts -p 12022"; runid="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          ssh $o "$USER@c0.sai.ai-4s.com" "mkdir -p ~/sai-hpc-software/runs/$runid/input ~/sai-hpc-software/controller"
+          scp $o "$RUNNER_TEMP/source.bundle" "$USER@c0.sai.ai-4s.com:~/sai-hpc-software/runs/$runid/input/source.bundle"
+          scp $o controller/software_controller.py "$USER@c0.sai.ai-4s.com:~/sai-hpc-software/controller/software_controller.py"
+          ssh $o "$USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py receive cp2k $runid $SHA"
   validate:
     runs-on: ubuntu-latest
     steps:
