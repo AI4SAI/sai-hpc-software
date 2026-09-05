@@ -46,6 +46,8 @@ jobs:
           scp $so "$RUNNER_TEMP/source.bundle" "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/runs/$runid/input/source.bundle"
           scp $so control/controller/software_controller.py "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/controller/software_controller.py"
           ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py receive cp2k $runid $SHA"
+          ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py submit cp2k $runid /opt/sai-ci/rootfs/minimal-v1.sif CPU-MISC 0 10 '[\"sh\",\"-c\",\"echo sai-hpc-software-container-smoke\"]'"
+          ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py monitor $runid"
   validate:
     runs-on: ubuntu-latest
     steps:
