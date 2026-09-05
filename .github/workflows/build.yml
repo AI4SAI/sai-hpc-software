@@ -21,6 +21,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
+          path: control
+      - uses: actions/checkout@v4
+        with:
           repository: ${{ inputs.source_repository }}
           ref: ${{ needs.resolve-source.outputs.sha }}
           fetch-depth: 1
@@ -40,7 +43,7 @@ jobs:
           set -euo pipefail; o="-i $RUNNER_TEMP/ssh/key -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$RUNNER_TEMP/ssh/known_hosts -p 12022"; so="-i $RUNNER_TEMP/ssh/key -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$RUNNER_TEMP/ssh/known_hosts -P 12022"; runid="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "mkdir -p ~/sai-hpc-software/runs/$runid/input ~/sai-hpc-software/controller"
           scp $so "$RUNNER_TEMP/source.bundle" "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/runs/$runid/input/source.bundle"
-          scp $so controller/software_controller.py "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/controller/software_controller.py"
+          scp $so control/controller/software_controller.py "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/controller/software_controller.py"
           ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py receive cp2k $runid $SHA"
   validate:
     runs-on: ubuntu-latest
