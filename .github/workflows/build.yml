@@ -47,6 +47,7 @@ jobs:
           scp $so control/controller/software_controller.py "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/controller/software_controller.py"
           scp $so control/controller/create_rootfs.sh "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/controller/create_rootfs.sh"
           ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "bash ~/sai-hpc-software/controller/create_rootfs.sh ~/sai-hpc-software/images/minimal-v1"
+          ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py init cp2k $runid"
           ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py receive cp2k $runid $SHA"
           ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py submit cp2k $runid ~/sai-hpc-software/images/minimal-v1 CPU-MISC 0 10 '[\"sh\",\"-c\",\"echo sai-hpc-software-container-smoke\"]' rush-cpu"
           ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py monitor $runid"
