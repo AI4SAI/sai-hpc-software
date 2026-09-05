@@ -44,13 +44,15 @@ jobs:
           git -C "$RUNNER_TEMP/packed" add -A; git -C "$RUNNER_TEMP/packed" commit -qm "source snapshot $GITHUB_SHA"
           echo "SHA=$(git -C "$RUNNER_TEMP/packed" rev-parse HEAD)" >> "$GITHUB_ENV"
           git -C "$RUNNER_TEMP/packed" bundle create "$RUNNER_TEMP/source.bundle" --all
+          gzip -9 "$RUNNER_TEMP/source.bundle"
       - name: Upload, submit and monitor
         env:
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
         run: |
           set -euo pipefail; o="-i $RUNNER_TEMP/ssh/key -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$RUNNER_TEMP/ssh/known_hosts -p 12022"; so="-i $RUNNER_TEMP/ssh/key -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$RUNNER_TEMP/ssh/known_hosts -P 12022"; runid="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "mkdir -p ~/sai-hpc-software/runs/$runid/input ~/sai-hpc-software/controller ~/sai-hpc-software/containers/base"
-          scp $so "$RUNNER_TEMP/source.bundle" "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/runs/$runid/input/source.bundle"
+          scp $so "$RUNNER_TEMP/source.bundle.gz" "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/runs/$runid/input/source.bundle.gz"
+          ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "gunzip -f ~/sai-hpc-software/runs/$runid/input/source.bundle.gz"
           scp $so control/controller/software_controller.py "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/controller/software_controller.py"
           scp $so control/controller/create_rootfs.sh "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/controller/create_rootfs.sh"
           ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "bash ~/sai-hpc-software/controller/create_rootfs.sh ~/sai-hpc-software/containers/base/minimal-v1"
