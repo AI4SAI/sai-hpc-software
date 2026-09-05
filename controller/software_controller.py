@@ -17,7 +17,11 @@ def receive(args):
 def submit(args):
     safe(args.run_id); r=ROOT/'runs'/args.run_id; script=r/'job.sbatch'; command=json.loads(args.command)
     quoted=' '.join(subprocess.list2cmdline([x]) for x in command)
-    script.write_text(f'''#!/bin/bash\n#SBATCH --job-name={args.software}-{args.run_id}\n#SBATCH --partition={args.partition}\n#SBATCH --nodes=1\n#SBATCH --ntasks=1\n#SBATCH --gpus-per-node={args.gpus}\n#SBATCH --time={args.timeout}\n#SBATCH --output={r}/results/slurm-%j.log\nset -euo pipefail\nsource /etc/profile.d/lmod.sh\nmodule load apptainer/1.4.4\napptainer exec --cleanenv --containall --no-home --bind {r}/source:/workspace/source:ro --bind {r}/build:/workspace/build:rw --bind {r}/install:/workspace/install:rw --bind {r}/results:/workspace/results:rw --bind {r}/tmp:/tmp:rw --bind /opt:/opt:ro --bind /usr:/usr:ro --bind /lib:/lib:ro --bind /lib64:/lib64:ro {args.image} /bin/sh -lc 'cd /workspace/source && exec {quoted}'\n'''); script.chmod(0o700); job=run('sbatch','--parsable',str(script),capture_output=True).stdout.strip(); (r/'job.id').write_text(job); print(job)
+    gpu=f'#SBATCH --gpus-per-node={args.gpus}\n' if args.gpus else ''
+    script.write_text(f'''#!/bin/bash\n#SBATCH --job-name={args.software}-{args.run_id}\n#SBATCH --partition={args.partition}\n#SBATCH --nodes=1\n#SBATCH --ntasks=1\n{gpu}#SBATCH --time={args.timeout}\n#SBATCH --output={r}/results/slurm-%j.log\nset -euo pipefail\nsource /etc/profile.d/lmod.sh\nmodule load apptainer/1.4.4\napptainer exec --cleanenv --containall --no-home --bind {r}/source:/workspace/source:ro --bind {r}/build:/workspace/build:rw --bind {r}/install:/workspace/install:rw --bind {r}/results:/workspace/results:rw --bind {r}/tmp:/tmp:rw --bind /opt:/opt:ro --bind /usr:/usr:ro --bind /lib:/lib:ro --bind /lib64:/lib64:ro {args.image} /bin/sh -lc 'cd /workspace/source && exec {quoted}'\n'''); script.chmod(0o700)
+    result=subprocess.run(['sbatch','--parsable',str(script)],capture_output=True,text=True)
+    if result.returncode: print(result.stderr,file=sys.stderr); raise SystemExit(result.returncode)
+    job=result.stdout.strip(); (r/'job.id').write_text(job); print(job)
 def monitor(args):
     job=(ROOT/'runs'/args.run_id/'job.id').read_text().strip()
     while subprocess.run(['squeue','-h','-j',job],capture_output=True,text=True).stdout.strip(): time.sleep(15)
