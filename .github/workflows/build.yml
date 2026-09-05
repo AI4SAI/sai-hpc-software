@@ -34,11 +34,12 @@ jobs:
         run: |
           set -euo pipefail; mkdir -m 700 "$RUNNER_TEMP/ssh"; printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"; chmod 600 "$RUNNER_TEMP/ssh/key"
           printf '%s\n' '[c0.sai.ai-4s.com]:12022 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBBurYQExmMdgat4VU1Twmu2pqxsBjLP6eff9oc6/8N3KUCtoe8HU9eONghETLECdA7A+O9DpefDRba0AcSXTfQc=' > "$RUNNER_TEMP/ssh/known_hosts"
+          git -C source fetch --unshallow 2>/dev/null || true
+          echo "SHA=$(git -C source rev-parse HEAD)" >> "$GITHUB_ENV"
           git -C source bundle create "$RUNNER_TEMP/source.bundle" --all
       - name: Upload, submit and monitor
         env:
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          SHA: ${{ needs.resolve-source.outputs.sha }}
         run: |
           set -euo pipefail; o="-i $RUNNER_TEMP/ssh/key -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$RUNNER_TEMP/ssh/known_hosts -p 12022"; so="-i $RUNNER_TEMP/ssh/key -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$RUNNER_TEMP/ssh/known_hosts -P 12022"; runid="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "mkdir -p ~/sai-hpc-software/runs/$runid/input ~/sai-hpc-software/controller"
