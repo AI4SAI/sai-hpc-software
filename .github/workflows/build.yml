@@ -28,6 +28,7 @@ jobs:
       source_sha: ${{ needs.resolve-source.outputs.sha }}
       cluster_profile: sai-cuda12-openmpi5
       remote_root: ~/sai-hpc-software
+      ssh_port: '12022'
       ssh_known_hosts: >-
         [c0.sai.ai-4s.com]:12022 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBBurYQExmMdgat4VU1Twmu2pqxsBjLP6eff9oc6/8N3KUCtoe8HU9eONghETLECdA7A+O9DpefDRba0AcSXTfQc=
       secret_environment: hpc
