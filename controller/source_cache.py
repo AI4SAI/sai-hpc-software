@@ -5,8 +5,8 @@ def run(*a): return subprocess.run(a,check=True,text=True,capture_output=True).s
 def pack(repo, commit, output):
     repo, output=pathlib.Path(repo),pathlib.Path(output); output.mkdir(parents=True,exist_ok=True)
     commit=run('git','-C',str(repo),'rev-parse',commit); bundle=output/'source.bundle'
-    parent=run('git','-C',str(repo),'rev-parse',commit+'^')
-    subprocess.run(['git','-C',str(repo),'bundle','create',str(bundle),commit+'^..'+commit],check=True)
+    revs=run('git','-C',str(repo),'rev-list',commit)
+    subprocess.run(['git','-C',str(repo),'bundle','create',str(bundle),'--stdin'],input=revs+'\n',text=True,check=True)
     data=bundle.read_bytes(); step=(len(data)+PARTS-1)//PARTS
     for i in range(PARTS): (output/f'source.bundle.part.{i:02d}').write_bytes(data[i*step:(i+1)*step])
     (output/'manifest.json').write_text(json.dumps({'version':1,'commit':commit,'sha256':hashlib.sha256(data).hexdigest(),'size':len(data),'parts':PARTS})+'\n')
