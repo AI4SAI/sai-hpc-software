@@ -1,4 +1,7 @@
 import argparse
+from contextlib import redirect_stdout
+import io
+import json
 import importlib.util
 from pathlib import Path
 import subprocess
@@ -56,6 +59,35 @@ class PolicyTests(unittest.TestCase):
         self.assertNotIn("#SBATCH --cpus-per-task", gpu_script)
         self.assertNotIn("#SBATCH --mem", gpu_script)
         self.assertIn("#SBATCH --gpus-per-node=1", gpu_script)
+        args.resume_run = "old-run"
+        with patch.object(controller, "ROOT", Path("/home/test/sai-hpc-software")):
+            repack = controller.render_job(args)
+        self.assertNotIn("overlay create", repack)
+        self.assertNotIn("container_entry.sh build", repack)
+        self.assertIn("container_entry.sh metadata", repack)
+
+    def test_catalog_rejects_changed_artifact(self):
+        parent = ROOT / ".test-work"
+        parent.mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=parent) as directory:
+            root = Path(directory)
+            folder = root / "containers/software/abacus/v1/cpu-misc"
+            folder.mkdir(parents=True)
+            image = folder / "run.sif"
+            image.write_bytes(b"test image data")
+            data = {"verified": True, "source_sha": "a" * 40, "target": "cpu-misc",
+                    "artifact": str(image), "sha256": cache.checksum(image)}
+            image.with_suffix(".json").write_text(json.dumps(data))
+            args = argparse.Namespace(software="abacus", version="v1", target="cpu-misc", sha="a" * 40)
+            first = io.StringIO()
+            with patch.object(controller, "ROOT", root), redirect_stdout(first):
+                controller.lookup(args)
+            self.assertEqual(json.loads(first.getvalue())["artifact"], str(image))
+            image.write_bytes(b"changed")
+            second = io.StringIO()
+            with patch.object(controller, "ROOT", root), redirect_stdout(second):
+                controller.lookup(args)
+            self.assertEqual(json.loads(second.getvalue()), {})
 
 class CacheTests(unittest.TestCase):
     def setUp(self):
