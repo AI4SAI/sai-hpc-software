@@ -9,6 +9,7 @@ import shlex
 import subprocess
 import time
 from remote_controller import TARGETS, safe_name, safe_sha, container_command
+from source_cache import checksum
 
 ROOT = Path(os.environ.get("SAI_SOFTWARE_ROOT", Path.home() / "sai-hpc-software")).resolve()
 CONTROL = Path(__file__).resolve().parent
@@ -64,14 +65,23 @@ def render_job(args):
         f"#SBATCH --partition={target['partition']}",
         f"#SBATCH --qos={target['qos']}",
         "#SBATCH --nodes=1", "#SBATCH --ntasks=1",
-        f"#SBATCH --cpus-per-task={args.jobs}",
-        "#SBATCH --mem=28G" if not target["gpus"] else "#SBATCH --mem=14G",
         f"#SBATCH --time={args.minutes}",
         f"#SBATCH --output={r}/results/slurm-%j.log",
         "#SBATCH --export=NIL",
     ]
     if target["gpus"]:
         lines += [f"#SBATCH --gpus-per-node={target['gpus']}"]
+    else:
+        # SAI GPU partitions assign CPU/memory from GPU count and prohibit
+        # overriding these resources. CPU-MISC accepts explicit CPU/memory.
+        lines += [f"#SBATCH --cpus-per-task={args.jobs}", "#SBATCH --mem=28G"]
+    resume = getattr(args, "resume_run", None)
+    prepare = [shlex.join(["apptainer", "overlay", "create", "--fakeroot", "--sparse",
+                          "--size", str(args.overlay_mb), str(overlay)]),
+               shlex.join(container("build"))]
+    if resume:
+        old_overlay = task_dir(resume) / "work.ext3"
+        prepare = [f"mv -- {q(str(old_overlay))} {q(str(overlay))}", shlex.join(container("metadata"))]
     lines += [
         "set -eo pipefail",
         "export PATH=/usr/bin:/bin",
@@ -83,8 +93,7 @@ def render_job(args):
         "unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH",
         f"test -s {q(str(image))}",
         f"test ! -e {q(str(overlay))}",
-        shlex.join(["apptainer", "overlay", "create", "--fakeroot", "--sparse", "--size", str(args.overlay_mb), str(overlay)]),
-        shlex.join(container("build")),
+        *prepare,
         shlex.join(container("export")),
         shlex.join(emit) + " > " + q(str(squash)),
         shlex.join(["apptainer", "sif", "new", str(sif)]),
@@ -109,6 +118,17 @@ def submit(args):
         raise ValueError("run already submitted; choose a fresh run id")
     repo = ROOT / "cache/repositories" / args.software
     call(["git", "--git-dir", repo, "cat-file", "-e", safe_sha(args.sha) + "^{commit}"])
+    if args.resume_run:
+        old = task_dir(args.resume_run)
+        previous = json.loads((old / "request.json").read_text())
+        for key in ("software", "sha", "version", "target"):
+            if previous[key] != getattr(args, key):
+                raise ValueError(f"resume mismatch: {key}")
+        old_job = (old / "job.id").read_text().strip()
+        if not old_job.isdigit() or call(["squeue", "-h", "-j", old_job], capture_output=True).stdout.strip():
+            raise ValueError("cannot resume an active or invalid job")
+        if not (old / "work.ext3").is_file() or (old / "work.ext3").is_symlink():
+            raise ValueError("missing file-backed build state")
     script = r / "job.sbatch"
     script.write_text(render_job(args))
     script.chmod(0o700)
@@ -118,7 +138,7 @@ def submit(args):
     if not job.isdigit():
         raise ValueError("invalid sbatch response")
     (r / "job.id").write_text(job + "\n")
-    (r / "request.json").write_text(json.dumps(vars(args), sort_keys=True) + "\n")
+    (r / "request.json").write_text(json.dumps(dict(vars(args), controller=str(CONTROL)), sort_keys=True) + "\n")
     print(job, flush=True)
 
 def monitor(args):
@@ -145,6 +165,17 @@ def monitor(args):
                 success = values[1] == "COMPLETED" and values[2] == "0:0" and (r / "artifact.path").exists()
                 (r / "results/status.json").write_text(json.dumps({"job": job, "state": values[1],
                                                                   "exit_code": values[2], "verified": success}) + "\n")
+                if success:
+                    request = json.loads((r / "request.json").read_text())
+                    artifact = Path((r / "artifact.path").read_text().strip())
+                    expected = ROOT / "containers/software" / request["software"] / request["version"] / request["target"] / (args.run_id + ".sif")
+                    if artifact != expected or artifact.resolve() != expected:
+                        raise ValueError("unexpected published artifact path")
+                    manifest = {"software": request["software"], "source_sha": request["sha"],
+                                "version": request["version"], "target": request["target"],
+                                "artifact": str(artifact), "sha256": checksum(artifact),
+                                "controller": request.get("controller", "legacy-unrecorded"), "verified": True}
+                    artifact.with_suffix(".json").write_text(json.dumps(manifest, sort_keys=True) + "\n")
                 log = r / "results" / f"slurm-{job}.log"
                 if log.is_file():
                     print("\n".join(log.read_text(errors="replace").splitlines()[-100:]), flush=True)
@@ -155,6 +186,22 @@ def monitor(args):
         time.sleep(args.interval)
     # Do not cancel a job merely because a monitor timed out.
     raise TimeoutError(f"monitor deadline reached; job {job} was not cancelled")
+
+def lookup(args):
+    directory = ROOT / "containers/software" / safe_name(args.software) / safe_name(args.version) / safe_name(args.target)
+    requested = safe_sha(args.sha)
+    for sidecar in sorted(directory.glob("*.json"), reverse=True):
+        if sidecar.is_symlink():
+            continue
+        data = json.loads(sidecar.read_text())
+        artifact = sidecar.with_suffix(".sif")
+        if (data.get("verified") is True and data.get("source_sha") == requested and
+                data.get("target") == args.target and data.get("artifact") == str(artifact) and
+                artifact.is_file() and not artifact.is_symlink() and
+                checksum(artifact) == data.get("sha256")):
+            print(json.dumps(data))
+            return
+    print("{}")
 
 def main():
     p = argparse.ArgumentParser()
@@ -168,11 +215,15 @@ def main():
     a.add_argument("--jobs", type=int, default=8)
     a.add_argument("--minutes", type=int, default=120)
     a.add_argument("--overlay-mb", type=int, default=8192)
+    a.add_argument("--resume-run", help="repack a terminated run's existing overlay; never rebuild source")
     a = sub.add_parser("monitor")
     a.add_argument("run_id"); a.add_argument("--timeout", type=int, default=14400)
     a.add_argument("--interval", type=int, default=15)
+    a = sub.add_parser("lookup")
+    for field in ("software", "version", "target", "sha"):
+        a.add_argument(field)
     args = p.parse_args()
-    result = {"init": init, "submit": submit, "monitor": monitor}[args.op](args)
+    result = {"init": init, "submit": submit, "monitor": monitor, "lookup": lookup}[args.op](args)
     return result if isinstance(result, int) else 0
 
 if __name__ == "__main__":

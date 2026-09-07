@@ -6,6 +6,17 @@ op=$1; software=$2; sha=$3; version=$4; target=$5
 [[ "$target" == cpu-misc || "$target" == v100 || "$target" == a100 ]]
 export PATH=/usr/bin:/bin TMPDIR=/workspace/tmp
 export INSTALL_PREFIX="/opt/software/$software/$version/$target"
+metadata() {
+    mkdir -p "$INSTALL_PREFIX/share/sai"
+    printf '%s\n' "$sha" > "$INSTALL_PREFIX/share/sai/source-sha"
+    module -t list > "$INSTALL_PREFIX/share/sai/modules.txt" 2>&1
+    cp /workspace/build/CMakeCache.txt "$INSTALL_PREFIX/share/sai/"
+    # %q serializes values as literals; no module initialization is necessary
+    # when inspecting/running the final, read-only SIF.
+    for key in PATH LD_LIBRARY_PATH LIBRARY_PATH OPAL_PREFIX PMIX_INSTALL_PREFIX MPI_HOME OMPI_HOME; do
+        if [[ -v "$key" ]]; then printf 'export %s=%q\n' "$key" "${!key}"; fi
+    done > "$INSTALL_PREFIX/share/sai/runtime-env.sh"
+}
 case "$op" in
   build)
     mkdir -p /workspace/tmp
@@ -22,19 +33,24 @@ case "$op" in
     source /control/environment.sh
     module -t list 2>&1
     bash /control/abacus_build.sh "$target"
-    mkdir -p "$INSTALL_PREFIX/share/sai"
-    printf '%s\n' "$sha" > "$INSTALL_PREFIX/share/sai/source-sha"
-    module -t list > "$INSTALL_PREFIX/share/sai/modules.txt" 2>&1
-    cp /workspace/build/CMakeCache.txt "$INSTALL_PREFIX/share/sai/"
+    metadata
+    ;;
+  metadata)
+    source /control/environment.sh
+    test -x "$INSTALL_PREFIX/bin/abacus"
+    metadata
     ;;
   export)
     # Staging and squashfs creation stay within the ext3 image.
+    # These two fixed paths are INSIDE the container, including on a repack.
+    rm -rf -- /workspace/export
+    rm -f -- /workspace/final.squashfs
     bash /control/create_rootfs.sh /workspace/export
     cp -a /opt/software /workspace/export/opt/software
     mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"
     ;;
   verify)
-    source /control/environment.sh
+    source "$INSTALL_PREFIX/share/sai/runtime-env.sh"
     test "$(cat "$INSTALL_PREFIX/share/sai/source-sha")" = "$sha"
     "$INSTALL_PREFIX/bin/abacus" --info
     dependencies=$(ldd "$INSTALL_PREFIX/bin/abacus")

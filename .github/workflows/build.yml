@@ -1,5 +1,7 @@
 name: Build HPC software
 on:
+  schedule:
+    - cron: '23 2 * * *'
   workflow_dispatch:
     inputs:
       source_ref:
@@ -10,6 +12,9 @@ on:
         description: Comma-separated targets (cpu-misc,v100,a100)
         required: true
         default: cpu-misc
+      resume_run:
+        description: Optional terminated run id to repack without recompiling (one target only)
+        required: false
   push:
     paths: ['plans/**', 'software/**', 'profiles/**', 'controller/**', 'tests/**', '.github/workflows/**']
   pull_request:
@@ -26,12 +31,10 @@ jobs:
       - run: python3 -m unittest discover -s tests -v
       - run: bash -n controller/container_entry.sh controller/abacus_build.sh controller/environment.sh controller/create_rootfs.sh
   resolve-source:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
     runs-on: ubuntu-latest
     outputs:
-      sha: ${{ steps.resolve.outputs.sha }}
-      version: ${{ steps.resolve.outputs.version }}
-      targets: ${{ steps.resolve.outputs.targets }}
+      builds: ${{ steps.resolve.outputs.builds }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -41,31 +44,46 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           SOURCE_REF: ${{ inputs.source_ref }}
           TARGETS: ${{ inputs.targets }}
+          RESUME_RUN: ${{ inputs.resume_run }}
         run: |
           python3 - <<'PY'
           import json, os, sys
           sys.path.insert(0, 'controller')
           from resolve_source import resolve
           from remote_controller import TARGETS
-          requested = list(dict.fromkeys(os.environ['TARGETS'].split(',')))
+          config = json.load(open('profiles/tracking.json'))
+          scheduled = os.environ['GITHUB_EVENT_NAME'] == 'schedule'
+          requested = config['targets'] if scheduled else list(dict.fromkeys(os.environ['TARGETS'].split(',')))
           if not requested or any(t not in TARGETS for t in requested):
               raise ValueError('invalid target list')
-          result = resolve('deepmodeling/abacus-develop', os.environ['SOURCE_REF'])
+          if os.environ.get('RESUME_RUN') and len(requested) != 1:
+              raise ValueError('resume requires exactly one target')
+          refs = config['tracks'] if scheduled else [os.environ['SOURCE_REF']]
+          builds = []
+          for ref in refs:
+              try:
+                  result = resolve(config['repository'], ref)
+              except ValueError:
+                  if scheduled and ref in ('latest-release', 'latest-prerelease'):
+                      print(f'No published {ref}, skipping')
+                      continue
+                  raise
+              builds.extend(dict(result, target=t) for t in requested)
           with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
-              out.write(f"sha={result['sha']}\nversion={result['version']}\n")
-              out.write('targets=' + json.dumps(requested) + '\n')
-          print(result)
+              out.write('builds=' + json.dumps(builds) + '\n')
+          print(builds)
           PY
   build:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
     needs: [validate, resolve-source]
     runs-on: ubuntu-latest
     timeout-minutes: 240
     environment: hpc
     strategy:
       fail-fast: false
+      max-parallel: 3
       matrix:
-        target: ${{ fromJSON(needs.resolve-source.outputs.targets) }}
+        build: ${{ fromJSON(needs.resolve-source.outputs.builds) }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -81,15 +99,16 @@ jobs:
       - name: Cache, submit, monitor and verify single SIF
         env:
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          SOURCE_SHA: ${{ needs.resolve-source.outputs.sha }}
-          SOFTWARE_VERSION: ${{ needs.resolve-source.outputs.version }}
-          TARGET: ${{ matrix.target }}
+          SOURCE_SHA: ${{ matrix.build.sha }}
+          SOFTWARE_VERSION: ${{ matrix.build.version }}
+          TARGET: ${{ matrix.build.target }}
+          RESUME_RUN: ${{ inputs.resume_run }}
         run: python3 -u controller/ci.py
       - name: Publish build logs and SAI artifact location
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: results-${{ matrix.target }}-${{ github.run_id }}
+          name: results-${{ matrix.build.version }}-${{ matrix.build.target }}-${{ github.run_id }}
           path: ${{ runner.temp }}/results/
           if-no-files-found: warn
       - name: Remove temporary SSH key

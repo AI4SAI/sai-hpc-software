@@ -25,7 +25,7 @@ def main():
     control_sha = safe_sha(os.environ["GITHUB_SHA"])
     version = safe_name(os.environ["SOFTWARE_VERSION"])
     user = safe_name(os.environ["REMOTE_USER"])
-    run_id = safe_name(os.environ["GITHUB_RUN_ID"] + "-" + os.environ["GITHUB_RUN_ATTEMPT"] + "-" + target)
+    run_id = safe_name(os.environ["GITHUB_RUN_ID"] + "-" + os.environ["GITHUB_RUN_ATTEMPT"] + "-" + target + "-" + version)
     temporary = Path(os.environ["RUNNER_TEMP"])
     key = temporary / "ssh/key"
     known_hosts = Path(__file__).resolve().parents[1] / ".ci/slurm/known_hosts"
@@ -58,6 +58,18 @@ def main():
     for name in ("software_controller.py", "remote_controller.py", "source_cache.py",
                  "container_entry.sh", "create_rootfs.sh", "environment.sh", "abacus_build.sh"):
         upload(parent / name, f"{control}/{name}")
+    results = temporary / "results"
+    results.mkdir(exist_ok=True)
+    # Scheduled trackers reuse only verified, checksum-matching artifacts.
+    # Manual dispatch deliberately rebuilds, to allow acceptance and recipe changes.
+    if os.environ.get("GITHUB_EVENT_NAME") == "schedule":
+        prior = json.loads(python("software_controller.py", "lookup", software, version, target,
+                                  upstream, capture_output=True).stdout)
+        if prior:
+            (results / "artifact.path").write_text(prior["artifact"] + "\n")
+            (results / "cache-hit.json").write_text(json.dumps(prior) + "\n")
+            print(f"ARTIFACT_HIT {prior['artifact']}", flush=True)
+            return
     inventory = json.loads(python("source_cache.py", "inventory", cache, capture_output=True).stdout)
     if upstream in inventory["cache_shas"]:
         print(f"CACHE_HIT {upstream}: zero source upload", flush=True)
@@ -84,9 +96,9 @@ def main():
         python("source_cache.py", "receive", cache, f"{task}/input")
     # Fail before scheduling if the manually provisioned minimal base is missing.
     ssh(["test", "-s", f"{root}/containers/base/minimal-v1.sif"])
-    python("software_controller.py", "submit", software, run_id, upstream, version, target)
-    results = temporary / "results"
-    results.mkdir(exist_ok=True)
+    resume = os.environ.get("RESUME_RUN", "")
+    extras = ["--resume-run", safe_name(resume)] if resume else []
+    python("software_controller.py", "submit", software, run_id, upstream, version, target, *extras)
     try:
         python("software_controller.py", "monitor", run_id)
         run(["scp", "-q", *options, "-P", "12022", f"{remote}:{task}/artifact.path", results / "artifact.path"])

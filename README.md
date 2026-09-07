@@ -50,6 +50,12 @@ Dispatch `Build HPC software` with a branch/tag, a full commit, `latest-release`
 or `latest-prerelease`. Release and branch selectors resolve live to the actual upstream
 commit. No synthetic/orphan commits are substituted.
 
+The daily tracker runs at 02:23 UTC using `profiles/tracking.json`. It checks the
+branch, stable release and prerelease channels. Scheduled runs skip an unchanged
+version only when the published SIF's verification metadata and checksum match;
+manual dispatch rebuilds deliberately. A100 remains selectable manually, but is
+not in the daily matrix while both SAI A100 nodes are unavailable.
+
 Cache hits upload **zero source bytes**. Cache misses bundle only changes against an available
 ancestor (or a full seed if no ancestor exists). The bundle is gzip-compressed, split into
 exactly eight byte chunks, and transferred concurrently. Each part and the full compressed
@@ -104,6 +110,13 @@ The SIF records the upstream SHA, module list and CMake cache below the installa
 `share/sai/` directory. Loading its recorded modules is required to run software
 that dynamically links to the cluster environment. Administrative deployment into the host
 `/opt` is out of scope.
+
+For a read-only runtime, source `share/sai/runtime-env.sh` inside the container
+instead of initializing Lmod there; it records the original absolute dependency
+paths without needing writable temporary files. Packaging/verification failures
+can be retried using the workflow's `resume_run` input: this moves the old run's
+single ext3 image into the new run and repacks the existing installation. The
+source SHA, version and target must match, and active jobs cannot be resumed.
 
 ## Local checks
 
