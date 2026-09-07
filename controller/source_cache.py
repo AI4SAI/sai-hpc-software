@@ -142,6 +142,14 @@ def receive(repo, directory):
         if not complete(repo, commit):
             raise ValueError("received commit has incomplete ancestry")
         (repo.parent / (repo.name + ".latest")).write_text(commit + "\n")
+        # Once the verified objects are in the bare cache, per-run transfer
+        # files are disposable. Keeping them would duplicate source storage.
+        for path in directory.glob("source.part.*"):
+            path.unlink()
+        for name in ("manifest.json", "source.bundle", "assembled.gz", "assembled.bundle"):
+            path = directory / name
+            if path.exists() or path.is_symlink():
+                path.unlink()
         return commit
 
 def inventory(repo):
