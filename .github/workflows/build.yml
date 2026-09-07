@@ -39,14 +39,16 @@ jobs:
           echo "SHA=$(git -C source rev-parse HEAD)" >> "$GITHUB_ENV"
           git -C source bundle create "$RUNNER_TEMP/source.bundle" --all
           gzip -9 "$RUNNER_TEMP/source.bundle"
+          split -n l/8 -d -a 2 "$RUNNER_TEMP/source.bundle.gz" "$RUNNER_TEMP/source.part."
       - name: Upload, submit and monitor
         env:
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
         run: |
           set -euo pipefail; o="-i $RUNNER_TEMP/ssh/key -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$RUNNER_TEMP/ssh/known_hosts -p 12022"; so="-i $RUNNER_TEMP/ssh/key -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$RUNNER_TEMP/ssh/known_hosts -P 12022"; runid="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
           ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "mkdir -p ~/sai-hpc-software/runs/$runid/input ~/sai-hpc-software/controller ~/sai-hpc-software/containers/base"
-          scp $so "$RUNNER_TEMP/source.bundle.gz" "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/runs/$runid/input/source.bundle.gz"
-          ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "gunzip -f ~/sai-hpc-software/runs/$runid/input/source.bundle.gz"
+          ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "mkdir -p ~/sai-hpc-software/runs/$runid/input/parts"
+          for part in "$RUNNER_TEMP"/source.part.*; do scp $so "$part" "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/runs/$runid/input/parts/$(basename "$part")" & done; wait
+          ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "cat ~/sai-hpc-software/runs/$runid/input/parts/source.part.* > ~/sai-hpc-software/runs/$runid/input/source.bundle.gz && gunzip -f ~/sai-hpc-software/runs/$runid/input/source.bundle.gz && rm -rf ~/sai-hpc-software/runs/$runid/input/parts"
           scp $so control/controller/software_controller.py "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/controller/software_controller.py"
           scp $so control/controller/create_rootfs.sh "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/controller/create_rootfs.sh"
           ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "bash ~/sai-hpc-software/controller/create_rootfs.sh ~/sai-hpc-software/containers/base/minimal-v1"
