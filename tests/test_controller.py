@@ -31,6 +31,11 @@ class PolicyTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 policy.safe_name(value)
 
+    def test_gpu_qos_matches_one_gpu_requests(self):
+        self.assertEqual(policy.TARGETS["v100"]["qos"], "flood-1o2gpu")
+        self.assertEqual(policy.TARGETS["a100"]["qos"], "rush-1o2gpu")
+        self.assertEqual(policy.TARGETS["v100"]["gpus"], 1)
+
     def test_job_is_single_file_build(self):
         args = argparse.Namespace(software="abacus", run_id="test-1", sha="a" * 40,
                                   version="develop-aaaa", target="cpu-misc",

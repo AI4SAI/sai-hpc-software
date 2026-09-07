@@ -4,8 +4,8 @@ from pathlib import Path
 
 TARGETS = {
     "cpu-misc": {"partition": "CPU-MISC", "qos": "rush-cpu", "gpus": 0, "arch": ""},
-    "v100": {"partition": "16V100", "qos": "rush-gpu", "gpus": 1, "arch": "70"},
-    "a100": {"partition": "8A100M40", "qos": "rush-gpu", "gpus": 1, "arch": "80"},
+    "v100": {"partition": "16V100", "qos": "flood-1o2gpu", "gpus": 1, "arch": "70"},
+    "a100": {"partition": "8A100M40", "qos": "rush-1o2gpu", "gpus": 1, "arch": "80"},
 }
 DEPENDENCIES = ("/usr", "/lib", "/lib64", "/opt/devtools", "/opt/modules")
 

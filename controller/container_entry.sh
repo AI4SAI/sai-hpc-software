@@ -14,7 +14,9 @@ case "$op" in
     test ! -w /control
     test ! -w /opt/devtools
     git init /workspace/source
-    git -C /workspace/source -c core.hooksPath=/dev/null fetch --no-tags /input/repository "$sha"
+    # Git's local fetch transports its shallow boundary correctly (unlike a
+    # shallow .bundle); the immutable host cache still retains full ancestry.
+    git -C /workspace/source -c core.hooksPath=/dev/null fetch --depth=1 --no-tags /input/repository "$sha"
     git -C /workspace/source -c core.hooksPath=/dev/null checkout --detach "$sha"
     test "$(git -C /workspace/source rev-parse HEAD)" = "$sha"
     source /control/environment.sh
@@ -35,7 +37,9 @@ case "$op" in
     source /control/environment.sh
     test "$(cat "$INSTALL_PREFIX/share/sai/source-sha")" = "$sha"
     "$INSTALL_PREFIX/bin/abacus" --info
-    if ldd "$INSTALL_PREFIX/bin/abacus" | tee /dev/stderr | grep -q 'not found'; then exit 1; fi
+    dependencies=$(ldd "$INSTALL_PREFIX/bin/abacus")
+    printf '%s\n' "$dependencies"
+    if [[ "$dependencies" == *"not found"* ]]; then exit 1; fi
     if touch "$INSTALL_PREFIX/.write-test" 2>/dev/null; then echo 'artifact must be read-only' >&2; exit 1; fi
     ;;
   *) exit 2;;

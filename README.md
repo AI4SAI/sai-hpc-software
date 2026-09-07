@@ -33,7 +33,7 @@ All project files live below `/home/stardust/sai-hpc-software`:
 containers/base/minimal-v1.sif
 containers/software/abacus/<version>/<target>/<run-id>.sif
 cache/repositories/abacus/        # bare Git objects, never checked out on host
-controller/<controller-sha>/     # trusted code snapshot for the run
+controller/<controller-sha>/<run-id>/ # trusted code snapshot, never overwritten by another run
 runs/<run-id>/input/             # verified compressed bundle parts when needed
 runs/<run-id>/results/           # Slurm log, state, artifact checksum
 runs/<run-id>/runtime/           # Apptainer runtime work, not source/build/install

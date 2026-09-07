@@ -47,7 +47,8 @@ def render_job(args):
     squash = r / "final.squashfs"
     sif = r / "result.sif"
     artifact = ROOT / "containers/software" / args.software / args.version / args.target / (args.run_id + ".sif")
-    argv = ["/bin/bash", "/control/container_entry.sh", "build", args.software, sha, args.version, args.target]
+    # Host-provided, read-only interpreter; not a binary writable by a prior build.
+    argv = ["/usr/bin/bash", "/control/container_entry.sh", "build", args.software, sha, args.version, args.target]
     def container(phase, final=False):
         cmd = argv.copy()
         cmd[2] = phase

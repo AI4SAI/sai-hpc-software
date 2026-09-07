@@ -34,7 +34,9 @@ def main():
                "-o", "ServerAliveInterval=20", "-o", "ServerAliveCountMax=6"]
     remote = f"{user}@c0.sai.ai-4s.com"
     root = f"/home/{user}/sai-hpc-software"
-    control = f"{root}/controller/{control_sha}"
+    # One deployment per run: concurrent matrix uploads cannot truncate code
+    # already being read by another running container.
+    control = f"{root}/controller/{control_sha}/{run_id}"
     task = f"{root}/runs/{run_id}"
     cache = f"{root}/cache/repositories/{software}"
     def ssh(argv, **kw):

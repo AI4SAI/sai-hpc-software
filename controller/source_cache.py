@@ -133,6 +133,8 @@ def receive(repo, directory):
             subprocess.run(["git", "init", "--bare", str(repo)], check=True, capture_output=True)
         if git(repo, "rev-parse", "--is-bare-repository") != "true":
             raise ValueError("cache must be bare")
+        git(repo, "config", "gc.auto", "0")
+        git(repo, "config", "fetch.fsckObjects", "true")
         m, bundle = assemble(directory)
         commit = m["commit"]
         git(repo, "bundle", "verify", str(bundle))

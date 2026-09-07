@@ -4,13 +4,13 @@ set -euo pipefail
 root=$1
 [[ "$root" == /workspace/export ]] || { echo 'packaging must stay in /workspace' >&2; exit 2; }
 [[ ! -e "$root" ]] || { echo 'export tree already exists' >&2; exit 2; }
-mkdir -p "$root"/{bin,etc/profile.d,dev,proc,sys,tmp,var/tmp,home,root,lib64,usr,lib,opt/devtools,opt/modules,workspace,input,control}
-cp -L /bin/bash "$root/bin/bash"
+mkdir -p "$root"/{bin,etc/profile.d,etc/lmod,dev,proc,sys,tmp,var/tmp,home,root,lib64,usr,lib,opt/devtools,opt/modules,workspace,input,control}
+cp -L /usr/bin/bash "$root/bin/bash"
 ln -s bash "$root/bin/sh"
 while read -r library; do
     mkdir -p "$root$(dirname "$library")"
     cp -L "$library" "$root$library"
-done < <(ldd /bin/bash | sed -n 's/.*=> \([^ ]*\).*/\1/p')
+done < <(ldd /usr/bin/bash | sed -n 's/.*=> \([^ ]*\).*/\1/p')
 cp -L /lib64/ld-linux-x86-64.so.2 "$root/lib64/ld-linux-x86-64.so.2"
 cp -L /etc/hosts /etc/resolv.conf "$root/etc/"
 touch "$root/etc/profile.d/lmod.sh"
