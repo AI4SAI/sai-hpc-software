@@ -1,15 +1,53 @@
-#!/usr/bin/env python3
-"""Pure, host-side path and container policy used by the SAI controller."""
-from pathlib import Path, PurePosixPath
+"""Trusted, allowlisted container policy; no writable host work/install trees."""
+import re
+from pathlib import Path
 
-ROOT_NAME = "sai-hpc-software"
-def layout(home: str, run_id: str) -> dict[str, Path]:
-    root=Path(home)/ROOT_NAME; run=root/"runs"/run_id
-    if not run_id or Path(run_id).name != run_id or ".." in Path(run_id).parts: raise ValueError("invalid run id")
-    return {"root":root,"cache":root/"cache","controller":root/"controller","source":run/"source","build":run/"build","install":run/"install","results":run/"results","tmp":run/"tmp"}
-def container_command(paths: dict[str,Path], image: str, command: list[str]) -> list[str]:
-    if not Path(image).is_absolute() or not command or any("\x00" in x for x in command): raise ValueError("invalid image or command")
-    binds=[(paths["source"],"/workspace/source","ro"),(paths["build"],"/workspace/build","rw"),(paths["install"],"/workspace/install","rw"),(paths["results"],"/workspace/results","rw"),(paths["tmp"],"/tmp","rw"),(Path("/opt"),"/opt","ro"),(Path("/usr"),"/usr","ro"),(Path("/lib"),"/lib","ro"),(Path("/lib64"),"/lib64","ro")]
-    out=["apptainer","exec","--cleanenv","--containall","--no-home"]
-    out += [item for src,dst,mode in binds for item in ("--bind",f"{src}:{dst}:{mode}")]
-    return out+[image,"/bin/sh","-c","cd /workspace/source && exec \"$@\"","sh",*command]
+TARGETS = {
+    "cpu-misc": {"partition": "CPU-MISC", "qos": "rush-cpu", "gpus": 0, "arch": ""},
+    "v100": {"partition": "16V100", "qos": "rush-gpu", "gpus": 1, "arch": "70"},
+    "a100": {"partition": "8A100M40", "qos": "rush-gpu", "gpus": 1, "arch": "80"},
+}
+DEPENDENCIES = ("/usr", "/lib", "/lib64", "/opt/devtools", "/opt/modules")
+
+def safe_name(value):
+    if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,127}", value):
+        raise ValueError("invalid identifier")
+    return value
+
+def safe_sha(value):
+    if not re.fullmatch(r"[0-9a-f]{40}", value):
+        raise ValueError("expected a full Git SHA")
+    return value
+
+def layout(home, run_id):
+    root = Path(home).resolve() / "sai-hpc-software"
+    task = root / "runs" / safe_name(run_id)
+    return {"root": root, "run": task, "cache": root / "cache",
+            "controller": root / "controller", "input": task / "input",
+            "results": task / "results", "runtime": task / "runtime",
+            "overlay": task / "work.ext3"}
+
+def container_command(image, command, *, overlay=None, control=None, repository=None,
+                      jobs=8, gpu=False):
+    if not Path(image).is_absolute() or not command:
+        raise ValueError("absolute image path and argv required")
+    args = ["apptainer", "exec", "--fakeroot", "--cleanenv", "--containall",
+            "--no-home", "--no-mount", "bind-paths,home,cwd,tmp,hostfs", "--pwd", "/",
+            "--net", "--network", "none"]
+    if gpu:
+        args += ["--nv"]
+    for path in DEPENDENCIES:
+        args += ["--bind", f"{path}:{path}:ro"]
+    args += ["--bind", "/etc/profile.d/lmod.sh:/etc/profile.d/lmod.sh:ro"]
+    if Path("/etc/lmod").is_dir():
+        args += ["--bind", "/etc/lmod:/etc/lmod:ro"]
+    for source, dest in ((control, "/control"), (repository, "/input/repository")):
+        if source is not None:
+            source = Path(source).resolve()
+            if any(c in str(source) for c in ":,\n"):
+                raise ValueError("unsafe bind source")
+            args += ["--bind", f"{source}:{dest}:ro"]
+    if overlay:
+        args += ["--overlay", str(overlay)]
+    args += ["--env", f"BUILD_JOBS={int(jobs)}", "--env", "TMPDIR=/workspace/tmp"]
+    return args + [str(image)] + list(command)

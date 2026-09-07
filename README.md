@@ -1,34 +1,116 @@
 # sai-hpc-software
 
-Containerized, reproducible builds for HPC software on the SAI Slurm cluster.
+Independent GitHub Actions → SSH → Slurm → Apptainer builds on SAI.
+The implemented recipe is ABACUS; the controller/cache/container policy is reusable for additional recipes.
 
-Each target in a build plan is compiled independently in Apptainer after GitHub Actions connects to `SAI-stardust`. Source, build, install, and result paths are separated; project commands never run on the host.
+## Container contract
 
-## Secrets
+Host source/build/install trees are **not** mounted writable. A build uses the pre-provisioned
+~1.9 MB base SIF plus one sparse ext3 image. Git checkout, CMake, compiler temporary files,
+installation and final filesystem assembly all happen inside that image.
 
-Configure `REMOTE_USER`, `REMOTE_SSH_PRIVATE_KEY`, and `SAI_SSH_KNOWN_HOSTS` as repository Actions secrets/variables. Use a dedicated CI key whose public key is installed on the cluster.
+The successful artifact is one read-only SquashFS-backed SIF. It contains
+`/opt/software/abacus/<version>/<target>` at exactly that path. The installed
+administrator dependencies are reused read-only at their original paths:
+`/opt/devtools`, `/opt/modules`, `/usr`, `/lib`, `/lib64`.
+The entire `/opt` is never bound over the installation.
 
-## Local validation
+The trusted entrypoint and bare repository are mounted read-only. Host home, working directory,
+site-wide bind paths and host temporary directories are disabled; the build also has a private
+PID namespace and a network namespace with no external network. This is filesystem/process
+containment using the shared host kernel, **not a VM or a guarantee against kernel exploits**.
 
-```sh
-python3 controller/validate_plan.py plans/cp2k.example.json --output /tmp/validated.json
-python3 -m unittest discover -s tests
-```
+Successful builds remove their ext3 work image after verifying the final SIF. Failed builds
+retain just that single image for diagnosis, not an expanded sandbox.
+The small base SIF is provisioned separately; the workflow fails clearly if it is absent and
+does not silently create an on-host sandbox.
 
-The administrator may move an artifact's installation tree to `/opt`; deployment is intentionally outside this repository.
+## Storage on SAI
 
-## SAI home-directory layout
-
-The remote root is `~/sai-hpc-software`. Containers are kept separately from runs and caches:
+All project files live below `/home/stardust/sai-hpc-software`:
 
 ```text
-containers/base/minimal-v1/       # shared minimal rootfs
-containers/software/<name>/<version>/<target>/  # optional software images
-cache/repositories/<name>/        # bare Git source cache
-runs/<run-id>/{source,results,tmp} # ephemeral per-run data
-artifacts/                        # exported installation archives
+containers/base/minimal-v1.sif
+containers/software/abacus/<version>/<target>/<run-id>.sif
+cache/repositories/abacus/        # bare Git objects, never checked out on host
+controller/<controller-sha>/     # trusted code snapshot for the run
+runs/<run-id>/input/             # verified compressed bundle parts when needed
+runs/<run-id>/results/           # Slurm log, state, artifact checksum
+runs/<run-id>/runtime/           # Apptainer runtime work, not source/build/install
+runs/<run-id>/work.ext3          # one temporary file, retained on failure
+runs/<run-id>/artifact.path      # published SIF location after verification
 ```
 
-The legacy `images/minimal-v1` path is a compatibility symlink to `containers/base/minimal-v1`. Build containers never receive a writable bind of the cache or controller.
+Old sandbox-based runs are legacy leftovers; this controller does not delete those automatically.
+Do not infer success from earlier smoke images or a GitHub validation-only run.
 
-Source transfer uses an ABACUS-style Git bundle cache under `~/sai-hpc-software/cache/repositories`. A fixed controller creates an exact-commit bundle, splits it into eight parts, verifies SHA-256, and updates the bare cache. The cache is never writable from the build container; the checked-out source tree is bound read-only. All cache and task paths remain below `~/sai-hpc-software`, never the SAI host `/tmp`.
+## Source tracking and cache
+
+Dispatch `Build HPC software` with a branch/tag, a full commit, `latest-release`
+or `latest-prerelease`. Release and branch selectors resolve live to the actual upstream
+commit. No synthetic/orphan commits are substituted.
+
+Cache hits upload **zero source bytes**. Cache misses bundle only changes against an available
+ancestor (or a full seed if no ancestor exists). The bundle is gzip-compressed, split into
+exactly eight byte chunks, and transferred concurrently. Each part and the full compressed
+and decompressed streams have checked sizes and SHA-256 hashes. The host receiver verifies
+Git prerequisites before importing into the bare cache under a lock; it never runs source code.
+All child transfer failures are checked.
+
+An administrator can seed the cache from an existing full-history local Git checkout:
+
+```bash
+python3 controller/source_cache.py pack /path/to/local/repository upstream-sha ./seed
+# Upload manifest.json and source.part.00 through source.part.07 to an input directory.
+# On SAI, run the trusted controller already provisioned outside any build container:
+python3 controller/source_cache.py receive \
+  /home/stardust/sai-hpc-software/cache/repositories/abacus \
+  /home/stardust/sai-hpc-software/runs/manual-seed/input
+```
+
+Use `--base <cached-ancestor-sha>` when making an incremental seed.
+No source checkout or build/install directory is created by the receiver.
+
+## GitHub configuration
+
+The public host key is versioned in `.ci/slurm/known_hosts`.
+`REMOTE_SSH_PRIVATE_KEY` and `REMOTE_USER` are Actions secrets
+(current deployment: the repository's `hpc` Environment).
+No private key is committed. Only manually dispatched trusted workflow runs access the SSH key;
+push and PR runs only validate. Keep the `hpc` Environment limited to trusted branches.
+
+Targets: `cpu-misc` (CPU-MISC), `v100` (16V100), `a100` (8A100M40).
+Pass a comma-separated subset to dispatch. CPU is the default acceptance target.
+Every build runs independently with its own overlay, logs and SIF path. GitHub retains logs
+and the SAI artifact location, while the container itself stays on SAI.
+
+## Manual inspection
+
+Use the published path from `runs/<run-id>/artifact.path`, not a legacy image:
+
+```bash
+ssh SAI-stardust
+source /etc/profile.d/lmod.sh
+module load apptainer/1.4.4
+apptainer exec --cleanenv --containall --no-home \
+  --no-mount bind-paths,home,cwd,tmp,hostfs --pwd / \
+  --bind /usr:/usr:ro --bind /lib:/lib:ro --bind /lib64:/lib64:ro \
+  --bind /opt/devtools:/opt/devtools:ro \
+  /home/stardust/sai-hpc-software/containers/software/abacus/VERSION/TARGET/RUN.sif \
+  /usr/bin/find /opt/software -maxdepth 5 -type f
+```
+
+The SIF records the upstream SHA, module list and CMake cache below the installation's
+`share/sai/` directory. Loading its recorded modules is required to run software
+that dynamically links to the cluster environment. Administrative deployment into the host
+`/opt` is out of scope.
+
+## Local checks
+
+```bash
+python3 -m unittest discover -s tests -v
+bash -n controller/container_entry.sh controller/abacus_build.sh controller/environment.sh
+```
+
+Tests cover real full/incremental Git cache reception, missing prerequisites, transport
+corruption, path injection, generated Slurm syntax and the read-only bind policy.

@@ -2,92 +2,96 @@ name: Build HPC software
 on:
   workflow_dispatch:
     inputs:
-      source_repository:
-        description: External source repository (owner/name)
-        required: true
-        default: deepmodeling/abacus-develop
       source_ref:
-        description: Branch, tag, release tag, or commit
+        description: Branch/tag/SHA, latest-release or latest-prerelease
         required: true
         default: develop
+      targets:
+        description: Comma-separated targets (cpu-misc,v100,a100)
+        required: true
+        default: cpu-misc
   push:
-    paths: ['plans/**', 'software/**', 'profiles/**', 'controller/**']
+    paths: ['plans/**', 'software/**', 'profiles/**', 'controller/**', 'tests/**', '.github/workflows/**']
+  pull_request:
+    paths: ['plans/**', 'software/**', 'profiles/**', 'controller/**', 'tests/**', '.github/workflows/**']
+permissions:
+  contents: read
 jobs:
-  independent-smoke:
-    if: ${{ github.event_name == 'workflow_dispatch' }}
-    needs: resolve-source
-    runs-on: ubuntu-latest
-    environment: hpc
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          path: control
-      - uses: actions/checkout@v4
-        with:
-          repository: ${{ inputs.source_repository }}
-          ref: ${{ needs.resolve-source.outputs.sha }}
-          fetch-depth: 1
-          path: source
-      - name: Prepare SSH and bundle
-        env:
-          KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
-        run: |
-          set -euo pipefail; mkdir -m 700 "$RUNNER_TEMP/ssh"; printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"; chmod 600 "$RUNNER_TEMP/ssh/key"
-          printf '%s\n' '[c0.sai.ai-4s.com]:12022 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBBurYQExmMdgat4VU1Twmu2pqxsBjLP6eff9oc6/8N3KUCtoe8HU9eONghETLECdA7A+O9DpefDRba0AcSXTfQc=' > "$RUNNER_TEMP/ssh/known_hosts"
-          # Create a self-contained snapshot commit (the checkout is shallow,
-          # so bundling its original parent would produce an incomplete pack).
-          mkdir "$RUNNER_TEMP/packed"
-          git -C source archive --format=tar HEAD | tar -x -C "$RUNNER_TEMP/packed"
-          git -C "$RUNNER_TEMP/packed" init -q
-          git -C "$RUNNER_TEMP/packed" config user.email ci@sai-hpc-software
-          git -C "$RUNNER_TEMP/packed" config user.name sai-hpc-software-ci
-          git -C "$RUNNER_TEMP/packed" add -A
-          git -C "$RUNNER_TEMP/packed" commit -qm "source snapshot"
-          echo "SHA=$(git -C "$RUNNER_TEMP/packed" rev-parse HEAD)" >> "$GITHUB_ENV"
-          git -C "$RUNNER_TEMP/packed" bundle create "$RUNNER_TEMP/source.bundle" --all
-          gzip -9 "$RUNNER_TEMP/source.bundle"
-          split -n l/8 -d -a 2 "$RUNNER_TEMP/source.bundle.gz" "$RUNNER_TEMP/source.part."
-      - name: Upload, submit and monitor
-        env:
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-        run: |
-          set -euo pipefail; o="-i $RUNNER_TEMP/ssh/key -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$RUNNER_TEMP/ssh/known_hosts -p 12022"; so="-i $RUNNER_TEMP/ssh/key -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$RUNNER_TEMP/ssh/known_hosts -P 12022"; runid="${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
-          ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "mkdir -p ~/sai-hpc-software/runs/$runid/input ~/sai-hpc-software/controller ~/sai-hpc-software/containers/base"
-          ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "mkdir -p ~/sai-hpc-software/runs/$runid/input/parts"
-          for part in "$RUNNER_TEMP"/source.part.*; do scp $so "$part" "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/runs/$runid/input/parts/$(basename "$part")" & done; wait
-          ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "cat ~/sai-hpc-software/runs/$runid/input/parts/source.part.* > ~/sai-hpc-software/runs/$runid/input/source.bundle.gz && gunzip -f ~/sai-hpc-software/runs/$runid/input/source.bundle.gz && rm -rf ~/sai-hpc-software/runs/$runid/input/parts"
-          scp $so control/controller/software_controller.py "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/controller/software_controller.py"
-          scp $so control/controller/create_rootfs.sh "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/controller/create_rootfs.sh"
-          ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "bash ~/sai-hpc-software/controller/create_rootfs.sh ~/sai-hpc-software/containers/base/minimal-v1"
-          ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py init abacus $runid"
-          ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py receive abacus $runid $SHA"
-          ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py submit abacus $runid ~/sai-hpc-software/containers/base/minimal-v1 CPU-MISC 0 60 '[\"sh\",\"-c\",\"cmake -S /workspace/source -B /tmp/abacus-build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/opt/software/abacus/dev/cpu-misc -DBUILD_TESTING=OFF -DUSE_CUDA=OFF && cmake --build /tmp/abacus-build --parallel 8 && cmake --install /tmp/abacus-build\"]' rush-cpu"
-          ssh $o "$REMOTE_USER@c0.sai.ai-4s.com" "python3 ~/sai-hpc-software/controller/software_controller.py monitor $runid"
-          scp $so "$REMOTE_USER@c0.sai.ai-4s.com:~/sai-hpc-software/runs/$runid/artifacts/abacus-$runid.sif" "$RUNNER_TEMP/abacus-$runid.sif"
-      - name: Publish container artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: abacus-container-${{ github.run_id }}
-          path: ${{ runner.temp }}/abacus-${{ github.run_id }}-${{ github.run_attempt }}.sif
   validate:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - run: python3 controller/validate_plan.py plans/cp2k.example.json --output /tmp/plan.json
-      - run: python3 -m unittest discover -s tests
+        with:
+          persist-credentials: false
+      - run: python3 -m unittest discover -s tests -v
+      - run: bash -n controller/container_entry.sh controller/abacus_build.sh controller/environment.sh controller/create_rootfs.sh
   resolve-source:
-    if: ${{ github.event_name == 'workflow_dispatch' }}
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     outputs:
       sha: ${{ steps.resolve.outputs.sha }}
+      version: ${{ steps.resolve.outputs.version }}
+      targets: ${{ steps.resolve.outputs.targets }}
     steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - id: resolve
         env:
-          REPOSITORY: ${{ inputs.source_repository }}
-          REF: ${{ inputs.source_ref }}
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_REF: ${{ inputs.source_ref }}
+          TARGETS: ${{ inputs.targets }}
+        run: |
+          python3 - <<'PY'
+          import json, os, sys
+          sys.path.insert(0, 'controller')
+          from resolve_source import resolve
+          from remote_controller import TARGETS
+          requested = list(dict.fromkeys(os.environ['TARGETS'].split(',')))
+          if not requested or any(t not in TARGETS for t in requested):
+              raise ValueError('invalid target list')
+          result = resolve('deepmodeling/abacus-develop', os.environ['SOURCE_REF'])
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write(f"sha={result['sha']}\nversion={result['version']}\n")
+              out.write('targets=' + json.dumps(requested) + '\n')
+          print(result)
+          PY
+  build:
+    if: github.event_name == 'workflow_dispatch'
+    needs: [validate, resolve-source]
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    environment: hpc
+    strategy:
+      fail-fast: false
+      matrix:
+        target: ${{ fromJSON(needs.resolve-source.outputs.targets) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Prepare repository-secret SSH key
+        env:
+          KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
         run: |
           set -euo pipefail
-          [[ "$REPOSITORY" =~ ^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$ ]]
-          sha=$(git ls-remote "https://github.com/$REPOSITORY.git" "refs/heads/$REF" "refs/tags/$REF" "refs/tags/$REF^{}" | awk 'NF {print $1; exit}')
-          [[ "$sha" =~ ^[0-9a-f]{40}$ ]] || { echo "Cannot resolve ref: $REF" >&2; exit 2; }
-          echo "sha=$sha" >> "$GITHUB_OUTPUT"
+          mkdir -m 700 "$RUNNER_TEMP/ssh"
+          printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
+          chmod 600 "$RUNNER_TEMP/ssh/key"
+      - name: Cache, submit, monitor and verify single SIF
+        env:
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          SOURCE_SHA: ${{ needs.resolve-source.outputs.sha }}
+          SOFTWARE_VERSION: ${{ needs.resolve-source.outputs.version }}
+          TARGET: ${{ matrix.target }}
+        run: python3 -u controller/ci.py
+      - name: Publish build logs and SAI artifact location
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: results-${{ matrix.target }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/results/
+          if-no-files-found: warn
+      - name: Remove temporary SSH key
+        if: always()
+        run: rm -f -- "$RUNNER_TEMP/ssh/key"
