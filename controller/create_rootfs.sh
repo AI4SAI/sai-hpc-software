@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 root=${1:?rootfs destination required}
-if [[ -f "$root/.sai-hpc-ci-rootfs-v3" ]]; then exit 0; fi
+if [[ -f "$root/.sai-hpc-ci-rootfs-v4" ]]; then exit 0; fi
 rm -rf "$root"
 mkdir -p "$root"/{bin,etc,dev,proc,sys,tmp,var/tmp,home,root,lib64,usr/bin,opt/devtools,input,output/results}
 cp -L /bin/bash "$root/bin/bash"; ln -s bash "$root/bin/sh"
@@ -12,3 +12,5 @@ printf 'root:x:0:0:root:/root:/bin/sh\n' > "$root/etc/passwd"
 printf 'root:x:0:\n' > "$root/etc/group"
 chmod 1777 "$root/tmp" "$root/var/tmp"; chmod -R a+rX "$root"
 touch "$root/.sai-hpc-ci-rootfs-v3"
+touch "$root/input/source.bundle"
+mv "$root/.sai-hpc-ci-rootfs-v3" "$root/.sai-hpc-ci-rootfs-v4"
