@@ -31,6 +31,40 @@ def init(args):
         (r / part).mkdir(parents=True, exist_ok=True)
     return r
 
+
+def publish_runtime_entry(request, artifact, manifest):
+    """Atomically expose a verified image and its trusted host launcher."""
+    launcher = Path(request["controller"]) / "abacus"
+    if not launcher.is_file() or launcher.is_symlink():
+        raise ValueError("trusted runtime launcher is missing")
+    target_dir = artifact.parent
+    current_tmp = target_dir / f".current-{os.getpid()}.sif"
+    current = target_dir / "current.sif"
+    current_tmp.symlink_to(artifact.name)
+    os.replace(current_tmp, current)
+
+    module_dir = ROOT / "modulefiles/apps/abacus"
+    module_dir.mkdir(parents=True, exist_ok=True)
+    module_path = module_dir / safe_name(request["version"])
+    module_tmp = module_dir / f".{request['version']}-{os.getpid()}.tmp"
+    module_tmp.write_text("\n".join([
+        "#%Module1.0",
+        f"module-whatis \"ABACUS {request['version']} from verified SAI SIF artifacts\"",
+        "conflict abacus",
+        "module use /opt/modules/modulefiles/devtools",
+        "module load apptainer/1.4.4",
+        "module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto",
+        f"setenv SAI_SOFTWARE_ROOT {ROOT}",
+        f"setenv SAI_ABACUS_VERSION {request['version']}",
+        f"prepend-path PATH {launcher.parent}",
+        "",
+    ]))
+    module_tmp.chmod(0o444)
+    os.replace(module_tmp, module_path)
+    manifest["runtime_launcher"] = str(launcher)
+    manifest["runtime_launcher_sha256"] = checksum(launcher)
+    manifest["modulefile"] = str(module_path)
+
 def render_job(args):
     r = task_dir(args.run_id)
     target = TARGETS[args.target]
@@ -175,6 +209,7 @@ def monitor(args):
                                 "version": request["version"], "target": request["target"],
                                 "artifact": str(artifact), "sha256": checksum(artifact),
                                 "controller": request.get("controller", "legacy-unrecorded"), "verified": True}
+                    publish_runtime_entry(request, artifact, manifest)
                     artifact.with_suffix(".json").write_text(json.dumps(manifest, sort_keys=True) + "\n")
                 log = r / "results" / f"slurm-{job}.log"
                 if log.is_file():

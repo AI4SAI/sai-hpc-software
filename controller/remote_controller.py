@@ -3,9 +3,22 @@ import re
 from pathlib import Path
 
 TARGETS = {
-    "cpu-misc": {"partition": "CPU-MISC", "qos": "rush-cpu", "gpus": 0, "arch": ""},
-    "v100": {"partition": "16V100", "qos": "flood-1o2gpu", "gpus": 1, "arch": "70"},
-    "a100": {"partition": "8A100M40", "qos": "rush-1o2gpu", "gpus": 1, "arch": "80"},
+    "cpu-misc": {
+        "partition": "CPU-MISC", "qos": "rush-cpu", "gpus": 0,
+        "cuda_arch": "", "cpu_arch": "x86-64-v3",
+    },
+    "4v100-avx512": {
+        "partition": "4V100", "qos": "flood-1o2gpu", "gpus": 1,
+        "cuda_arch": "70", "cpu_arch": "znver4",
+    },
+    "16v100-avx2": {
+        "partition": "16V100", "qos": "flood-1o2gpu", "gpus": 1,
+        "cuda_arch": "70", "cpu_arch": "znver3",
+    },
+    "a100": {
+        "partition": "8A100M40", "qos": "rush-1o2gpu", "gpus": 1,
+        "cuda_arch": "80", "cpu_arch": "x86-64-v3",
+    },
 }
 DEPENDENCIES = ("/usr", "/lib", "/lib64", "/opt/devtools", "/opt/modules")
 

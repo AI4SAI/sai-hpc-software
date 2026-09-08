@@ -20,6 +20,11 @@ site-wide bind paths and host temporary directories are disabled; the build also
 PID namespace and a network namespace with no external network. This is filesystem/process
 containment using the shared host kernel, **not a VM or a guarantee against kernel exploits**.
 
+`4V100` and `16V100` are separate build targets. A real compute-node probe established
+`znver4` plus AVX-512 dependencies on `4V100`, and `znver3` plus AVX2 dependencies on
+`16V100`; both use V100 `sm_70`. Builds use those explicit CPU architectures and fail if
+the target node or auto-selected MPI/BLAS dependency does not match the profile.
+
 Successful builds remove their ext3 work image after verifying the final SIF. Failed builds
 retain just that single image for diagnosis, not an expanded sandbox.
 The small base SIF is provisioned separately; the workflow fails clearly if it is absent and
@@ -39,6 +44,8 @@ runs/<run-id>/results/           # Slurm log, state, artifact checksum
 runs/<run-id>/runtime/           # Apptainer runtime work, not source/build/install
 runs/<run-id>/work.ext3          # one temporary file, retained on failure
 runs/<run-id>/artifact.path      # published SIF location after verification
+modulefiles/apps/abacus/<version> # generated user module for a verified version
+runtime-tests/<run-id>/          # bounded multi-node acceptance inputs, logs and rank evidence
 ```
 
 Old sandbox-based runs are legacy leftovers; this controller does not delete those automatically.
@@ -85,10 +92,41 @@ The public host key is versioned in `.ci/slurm/known_hosts`.
 No private key is committed. Only manually dispatched trusted workflow runs access the SSH key;
 push and PR runs only validate. Keep the `hpc` Environment limited to trusted branches.
 
-Targets: `cpu-misc` (CPU-MISC), `v100` (16V100), `a100` (8A100M40).
+Targets: `cpu-misc` (CPU-MISC), `4v100-avx512` (4V100),
+`16v100-avx2` (16V100), `a100` (8A100M40).
 Pass a comma-separated subset to dispatch. CPU is the default acceptance target.
 Every build runs independently with its own overlay, logs and SIF path. GitHub retains logs
 and the SAI artifact location, while the container itself stays on SAI.
+
+## Host MPI runtime
+
+The generated module is loaded **inside the Slurm allocation**, so the site `*-auto`
+dependency modules inspect the actual compute-node CPU. The trusted `abacus` command then
+selects the SIF from `SLURM_JOB_PARTITION`. The host Open MPI launches one wrapper per rank;
+each wrapper enters the same read-only SIF and runs its ABACUS binary:
+
+```bash
+source /etc/profile.d/lmod.sh
+module use /home/stardust/sai-hpc-software/modulefiles/apps
+module load abacus/<version>
+source /opt/sai_config/mps_mapping.d/${SLURM_JOB_PARTITION}.bash
+export MAP_OPT SLURM_EXPORT_ENV=ALL
+export OMPI_MCA_plm_slurm_args=--external-launcher
+export PRTE_MCA_plm_slurm_args=--external-launcher
+mpirun -np "$SLURM_NTASKS" --map-by "$MAP_OPT" abacus
+```
+
+Runtime does not use the build container's network isolation or fakeroot. `--nv` exposes
+the Slurm-assigned NVIDIA devices and matching host driver libraries; MPI/network setup
+remains host managed. The launcher binds only the calculation directory writable, keeps
+the SIF and `/opt/devtools` read-only, and puts Apptainer runtime files below
+`/home/stardust/sai-hpc-software/runtime/jobs`. It rejects an unknown partition rather than
+falling back to an incompatible image.
+
+Every new precise V100 build is followed by a two-node, one-rank-per-GPU scientific smoke.
+This deliberately avoids the site's multi-rank-per-GPU MPS path, which currently uses
+host `/tmp`. The acceptance records rank/hostname/image selection, requires two distinct
+nodes, exercises CUDA and MPI in a short PW SCF case, and requires SCF convergence.
 
 ## Manual inspection
 

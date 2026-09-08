@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Evaluated inside the container. Dependency absolute paths match the host.
 set -eo pipefail
+target=${1:?target required}
 set +u
 export PATH=/usr/bin:/bin
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH:-} LD_PRELOAD=${LD_PRELOAD:-}
@@ -13,4 +14,17 @@ module load cmake/3.31.6 openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto
 module load fftw/3.3.10 libxc/7.0.0-auto saiblas/2603-gnu-auto elpa/2026.02.001-2603-gnu
 module load cuda/12.9.1
 export CMAKE_LIBRARY_PATH=${LIBRARY_PATH:-} CMAKE_INCLUDE_PATH=${CPATH:-}
+case "$target" in
+  4v100-avx512)
+    grep -qw avx512_vnni /proc/cpuinfo
+    [[ "${MPI_HOME:-}" == *-avx512 && "${OPENBLAS_ROOT:-}" == *-avx512 ]]
+    ;;
+  16v100-avx2)
+    grep -qw avx2 /proc/cpuinfo
+    ! grep -qw avx512f /proc/cpuinfo
+    [[ "${MPI_HOME:-}" == *-avx2 && "${OPENBLAS_ROOT:-}" == *-avx2 ]]
+    ;;
+  cpu-misc|a100) ;;
+  *) echo "unknown build target: $target" >&2; return 2 ;;
+esac
 set -u

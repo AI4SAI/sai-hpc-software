@@ -3,13 +3,17 @@ set -euo pipefail
 op=$1; software=$2; sha=$3; version=$4; target=$5
 [[ "$software" == abacus && "$sha" =~ ^[0-9a-f]{40}$ ]]
 [[ "$version" =~ ^[A-Za-z0-9][A-Za-z0-9_.-]*$ ]]
-[[ "$target" == cpu-misc || "$target" == v100 || "$target" == a100 ]]
+[[ "$target" == cpu-misc || "$target" == 4v100-avx512 || "$target" == 16v100-avx2 || "$target" == a100 ]]
 export PATH=/usr/bin:/bin TMPDIR=/workspace/tmp
 export INSTALL_PREFIX="/opt/software/$software/$version/$target"
 metadata() {
     mkdir -p "$INSTALL_PREFIX/share/sai"
     printf '%s\n' "$sha" > "$INSTALL_PREFIX/share/sai/source-sha"
+    printf '%s\n' "$target" > "$INSTALL_PREFIX/share/sai/target"
     module -t list > "$INSTALL_PREFIX/share/sai/modules.txt" 2>&1
+    lscpu > "$INSTALL_PREFIX/share/sai/hardware.txt"
+    env | sort | grep -E '^(CUDA|ELPA|MPI|OMPI|OPAL|OPENBLAS|PMIX|ScaLAPACK)_' \
+      > "$INSTALL_PREFIX/share/sai/resolved-environment.txt" || true
     cp /workspace/build/CMakeCache.txt "$INSTALL_PREFIX/share/sai/"
     # %q serializes values as literals; no module initialization is necessary
     # when inspecting/running the final, read-only SIF.
@@ -30,13 +34,13 @@ case "$op" in
     git -C /workspace/source -c core.hooksPath=/dev/null fetch --depth=1 --no-tags /input/repository "$sha"
     git -C /workspace/source -c core.hooksPath=/dev/null checkout --detach "$sha"
     test "$(git -C /workspace/source rev-parse HEAD)" = "$sha"
-    source /control/environment.sh
+    source /control/environment.sh "$target"
     module -t list 2>&1
     bash /control/abacus_build.sh "$target"
     metadata
     ;;
   metadata)
-    source /control/environment.sh
+    source /control/environment.sh "$target"
     test -x "$INSTALL_PREFIX/bin/abacus"
     metadata
     ;;

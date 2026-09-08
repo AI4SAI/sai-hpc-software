@@ -56,8 +56,11 @@ def main():
     ssh(["mkdir", "-p", control, f"{task}/input", f"{task}/results"])
     parent = Path(__file__).resolve().parent
     for name in ("software_controller.py", "remote_controller.py", "source_cache.py",
-                 "container_entry.sh", "create_rootfs.sh", "environment.sh", "abacus_build.sh"):
+                 "runtime_controller.py", "container_entry.sh", "create_rootfs.sh",
+                 "environment.sh", "abacus_build.sh"):
         upload(parent / name, f"{control}/{name}")
+    upload(parent / "abacus_runtime.sh", f"{control}/abacus")
+    ssh(["chmod", "0555", f"{control}/abacus"])
     results = temporary / "results"
     results.mkdir(exist_ok=True)
     # Scheduled trackers reuse only verified, checksum-matching artifacts.
@@ -101,12 +104,23 @@ def main():
     python("software_controller.py", "submit", software, run_id, upstream, version, target, *extras)
     try:
         python("software_controller.py", "monitor", run_id)
+        if target in ("4v100-avx512", "16v100-avx2"):
+            runtime_run = safe_name(run_id + "-multinode")
+            python("runtime_controller.py", "submit", runtime_run, version, target)
+            python("runtime_controller.py", "monitor", runtime_run)
         run(["scp", "-q", *options, "-P", "12022", f"{remote}:{task}/artifact.path", results / "artifact.path"])
         print((results / "artifact.path").read_text(), flush=True)
     finally:
         # Only logs/metadata travel back; the single SIF stays in the SAI catalog.
         subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
                         f"{remote}:{task}/results/.", str(results)], check=False)
+        if target in ("4v100-avx512", "16v100-avx2"):
+            runtime_results = results / "runtime"
+            runtime_results.mkdir(exist_ok=True)
+            runtime_run = safe_name(run_id + "-multinode")
+            subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
+                            f"{remote}:{root}/runtime-tests/{runtime_run}/results/.",
+                            str(runtime_results)], check=False)
 
 if __name__ == "__main__":
     main()

@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "controller"))
 import remote_controller as policy
 import software_controller as controller
+import runtime_controller as runtime
 import source_cache as cache
 
 class PolicyTests(unittest.TestCase):
@@ -34,10 +35,14 @@ class PolicyTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 policy.safe_name(value)
 
-    def test_gpu_qos_matches_one_gpu_requests(self):
-        self.assertEqual(policy.TARGETS["v100"]["qos"], "flood-1o2gpu")
+    def test_precise_v100_profiles(self):
+        self.assertEqual(policy.TARGETS["4v100-avx512"]["partition"], "4V100")
+        self.assertEqual(policy.TARGETS["4v100-avx512"]["cpu_arch"], "znver4")
+        self.assertEqual(policy.TARGETS["16v100-avx2"]["partition"], "16V100")
+        self.assertEqual(policy.TARGETS["16v100-avx2"]["cpu_arch"], "znver3")
+        self.assertEqual(policy.TARGETS["16v100-avx2"]["qos"], "flood-1o2gpu")
         self.assertEqual(policy.TARGETS["a100"]["qos"], "rush-1o2gpu")
-        self.assertEqual(policy.TARGETS["v100"]["gpus"], 1)
+        self.assertNotIn("v100", policy.TARGETS)
 
     def test_job_is_single_file_build(self):
         args = argparse.Namespace(software="abacus", run_id="test-1", sha="a" * 40,
@@ -53,7 +58,7 @@ class PolicyTests(unittest.TestCase):
         self.assertIn("--cpus-per-task=8", script)
         self.assertIn("container_entry.sh verify", script)
         subprocess.run(["bash", "-n"], input=script, text=True, check=True)
-        args.target = "v100"
+        args.target = "16v100-avx2"
         with patch.object(controller, "ROOT", Path("/home/test/sai-hpc-software")):
             gpu_script = controller.render_job(args)
         self.assertNotIn("#SBATCH --cpus-per-task", gpu_script)
@@ -65,6 +70,55 @@ class PolicyTests(unittest.TestCase):
         self.assertNotIn("overlay create", repack)
         self.assertNotIn("container_entry.sh build", repack)
         self.assertIn("container_entry.sh metadata", repack)
+
+    def test_multinode_runtime_uses_host_mpi_and_runtime_network(self):
+        args = argparse.Namespace(run_id="runtime-test", version="develop-aaaa",
+                                  target="16v100-avx2", nodes=2,
+                                  gpus_per_node=1, minutes=30)
+        with patch.object(runtime, "ROOT", Path("/home/test/sai-hpc-software")):
+            script = runtime.render_job(args)
+        self.assertIn("#SBATCH --partition=16V100", script)
+        self.assertIn("#SBATCH --nodes=2", script)
+        self.assertIn("#SBATCH --ntasks=2", script)
+        self.assertIn("mpirun -np 2", script)
+        self.assertIn("--map-by \"$MAP_OPT\" abacus", script)
+        self.assertIn("MULTINODE_CONTAINER_MPI_VERIFIED", script)
+        self.assertNotIn("--network none", script)
+        self.assertNotIn("--containall", script)
+        self.assertNotRegex(script, r"--bind /opt:/opt")
+        self.assertNotRegex(script, r"(?:^|[= :])/tmp(?:/|$)")
+        subprocess.run(["bash", "-n"], input=script, text=True, check=True)
+
+        launcher = (ROOT / "controller/abacus_runtime.sh").read_text()
+        self.assertIn("apptainer exec", launcher)
+        self.assertIn("--nv", launcher)
+        self.assertNotIn("--network none", launcher)
+        self.assertNotIn("--containall", launcher)
+        self.assertNotRegex(launcher, r"--bind [\"']?/opt:/opt")
+        self.assertIn("4V100) target=4v100-avx512", launcher)
+        self.assertIn("16V100) target=16v100-avx2", launcher)
+
+    def test_publish_creates_current_image_and_module(self):
+        parent = ROOT / ".test-work"
+        parent.mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=parent) as directory:
+            root = Path(directory)
+            control = root / "controller/reviewed/run"
+            control.mkdir(parents=True)
+            launcher = control / "abacus"
+            launcher.write_text("#!/bin/bash\n")
+            target = root / "containers/software/abacus/v1/4v100-avx512"
+            target.mkdir(parents=True)
+            artifact = target / "run.sif"
+            artifact.write_bytes(b"sif")
+            request = {"controller": str(control), "version": "v1"}
+            manifest = {}
+            with patch.object(controller, "ROOT", root):
+                controller.publish_runtime_entry(request, artifact, manifest)
+            self.assertEqual((target / "current.sif").resolve(), artifact)
+            module = root / "modulefiles/apps/abacus/v1"
+            self.assertIn(str(control), module.read_text())
+            self.assertEqual(manifest["runtime_launcher_sha256"], cache.checksum(launcher))
 
     def test_catalog_rejects_changed_artifact(self):
         parent = ROOT / ".test-work"
