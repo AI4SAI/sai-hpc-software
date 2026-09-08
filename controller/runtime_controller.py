@@ -58,6 +58,7 @@ def render_job(args):
     task = run_dir(args.run_id)
     current = ROOT / "containers/software/abacus" / args.version / args.target / "current.sif"
     artifact = Path(getattr(args, "artifact", current)).resolve()
+    launcher = Path(getattr(args, "launcher", CONTROL / "abacus")).resolve()
     module_root = ROOT / "modulefiles/apps"
     prefix = f"/opt/software/abacus/{args.version}/{args.target}"
     if args.target not in RUNTIME_TARGETS:
@@ -101,7 +102,9 @@ def render_job(args):
         "export OMPI_MCA_plm_slurm_args=--external-launcher",
         "export PRTE_MCA_plm_slurm_args=--external-launcher",
         f"image={q(str(artifact))}",
+        f"launcher={q(str(launcher))}",
         'test -r "$image"',
+        'test -x "$launcher"',
         f"mkdir -p {q(str(results / 'ranks'))} {q(str(case))} {q(str(runtime))}",
         "apptainer exec --cleanenv --no-home "
         "--no-mount bind-paths,home,cwd,tmp,hostfs --pwd /work "
@@ -113,7 +116,7 @@ def render_job(args):
         'export SAI_ABACUS_IMAGE="$image"',
         "nvidia-smi -L",
         "command -v mpirun apptainer abacus",
-        f"mpirun -np {ranks} --map-by \"$MAP_OPT\" --report-bindings abacus > {q(str(results / 'abacus.log'))} 2>&1",
+        f"mpirun -np {ranks} --map-by \"$MAP_OPT\" --report-bindings \"$launcher\" > {q(str(results / 'abacus.log'))} 2>&1",
         f"test \"$(find {q(str(results / 'ranks'))} -maxdepth 1 -name 'rank-*.tsv' -type f | wc -l)\" -eq {ranks}",
         f"test \"$(cut -f1 {q(str(results / 'ranks'))}/rank-*.tsv | sort -u | wc -l)\" -eq {args.nodes}",
         f"test \"$(cut -f3 {q(str(results / 'ranks'))}/rank-*.tsv | sort -u)\" = {q(args.target)}",
@@ -139,7 +142,11 @@ def submit(args):
     for name in ("results", "apptainer-runtime", "apptainer-cache"):
         (task / name).mkdir(parents=True, exist_ok=True)
     artifact = build_artifact(args.build_run_id, args.version, args.target)
+    launcher = CONTROL / "abacus"
+    if not launcher.is_file() or launcher.is_symlink() or not os.access(launcher, os.X_OK):
+        raise ValueError("trusted runtime launcher is missing")
     args.artifact = str(artifact)
+    args.launcher = str(launcher)
     script = task / "job.sbatch"
     script.write_text(render_job(args))
     script.chmod(0o700)
@@ -149,7 +156,8 @@ def submit(args):
     if not job.isdigit():
         raise ValueError("invalid sbatch response")
     (task / "job.id").write_text(job + "\n")
-    request = dict(vars(args), artifact=str(artifact), artifact_sha256=checksum(artifact))
+    request = dict(vars(args), artifact=str(artifact), artifact_sha256=checksum(artifact),
+                   launcher=str(launcher), launcher_sha256=checksum(launcher))
     (task / "request.json").write_text(json.dumps(request, sort_keys=True) + "\n")
     print(job, flush=True)
 
@@ -182,6 +190,10 @@ def monitor(args):
                         if (not artifact.is_file() or artifact.is_symlink() or
                                 checksum(artifact) != request["artifact_sha256"]):
                             raise ValueError("runtime-tested artifact changed")
+                        launcher = Path(request["launcher"])
+                        if (not launcher.is_file() or launcher.is_symlink() or
+                                checksum(launcher) != request["launcher_sha256"]):
+                            raise ValueError("runtime launcher changed")
                         sidecar = artifact.with_suffix(".json")
                         manifest = json.loads(sidecar.read_text())
                         verification = {
@@ -190,6 +202,8 @@ def monitor(args):
                             "nodes": request["nodes"],
                             "gpus_per_node": request["gpus_per_node"],
                             "ranks": request["nodes"] * request["gpus_per_node"],
+                            "launcher": str(launcher),
+                            "launcher_sha256": request["launcher_sha256"],
                             "verified": True,
                         }
                         manifest["multinode_runtime"] = verification
