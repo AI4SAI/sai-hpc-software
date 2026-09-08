@@ -114,6 +114,10 @@ class PolicyTests(unittest.TestCase):
         self.assertIn("4V100) target=4v100-avx512", launcher)
         self.assertIn("16V100) target=16v100-avx2", launcher)
 
+    def test_runtime_monitor_tolerates_completed_job_missing_from_squeue(self):
+        self.assertIn("check=False", (ROOT / "controller/runtime_controller.py").read_text())
+        self.assertIn("sacct", (ROOT / "controller/runtime_controller.py").read_text())
+
     def test_runtime_pins_the_requesting_build_artifact(self):
         parent = ROOT / ".test-work"
         parent.mkdir(exist_ok=True)

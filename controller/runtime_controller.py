@@ -173,7 +173,12 @@ def monitor(args):
     deadline = time.monotonic() + args.timeout
     previous = None
     while time.monotonic() < deadline:
-        queued = call(["squeue", "-h", "-j", job, "-o", "%T|%R"], capture_output=True).stdout.strip()
+        queue_result = subprocess.run(
+            ["squeue", "-h", "-j", job, "-o", "%T|%R"],
+            check=False, text=True, capture_output=True)
+        # Slurm returns exit 1 for a completed job that has already left
+        # squeue; sacct below is the authoritative terminal-state source.
+        queued = queue_result.stdout.strip()
         if queued:
             if queued != previous:
                 print(f"{job}: {queued}", flush=True)
