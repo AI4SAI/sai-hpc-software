@@ -15,7 +15,15 @@ case "$SLURM_JOB_PARTITION" in
 esac
 
 catalog="$SAI_SOFTWARE_ROOT/containers/software/abacus/$SAI_ABACUS_VERSION/$target"
-image="$catalog/current.sif"
+if [[ -n "${SAI_ABACUS_IMAGE:-}" ]]; then
+  image=$(realpath -e -- "$SAI_ABACUS_IMAGE")
+  [[ "$image" == "$catalog"/*.sif && -f "$image" && ! -L "$SAI_ABACUS_IMAGE" ]] || {
+    echo "pinned ABACUS image is outside the selected catalog" >&2
+    exit 2
+  }
+else
+  image="$catalog/current.sif"
+fi
 prefix="/opt/software/abacus/$SAI_ABACUS_VERSION/$target"
 [[ -r "$image" && ! -L "$catalog" ]] || {
   echo "no verified ABACUS image for $SAI_ABACUS_VERSION on $target" >&2

@@ -51,7 +51,7 @@ def publish_runtime_entry(request, artifact, manifest):
         "#%Module1.0",
         f"module-whatis \"ABACUS {request['version']} from verified SAI SIF artifacts\"",
         "conflict abacus",
-        "module use /opt/modules/modulefiles/devtools",
+        "prepend-path MODULEPATH /opt/modules/modulefiles/devtools",
         "module load apptainer/1.4.4",
         "module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto",
         f"setenv SAI_SOFTWARE_ROOT {ROOT}",

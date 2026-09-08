@@ -28,16 +28,41 @@ def run_dir(run_id):
     return path
 
 
+def build_artifact(build_run_id, version, target):
+    """Resolve the exact artifact produced by one completed build run."""
+    build_run_id = safe_name(build_run_id)
+    safe_name(version)
+    build_task = ROOT / "runs" / build_run_id
+    artifact_file = build_task / "artifact.path"
+    if not artifact_file.is_file() or artifact_file.is_symlink():
+        raise ValueError("build run has no trusted artifact reference")
+    artifact = Path(artifact_file.read_text().strip())
+    expected = ROOT / "containers/software/abacus" / version / target / f"{build_run_id}.sif"
+    if (artifact != expected or artifact.resolve() != expected or
+            not artifact.is_file() or artifact.is_symlink()):
+        raise ValueError("build artifact does not match the requested run")
+    sidecar = artifact.with_suffix(".json")
+    if not sidecar.is_file() or sidecar.is_symlink():
+        raise ValueError("build artifact has no trusted manifest")
+    manifest = json.loads(sidecar.read_text())
+    if (manifest.get("verified") is not True or manifest.get("artifact") != str(artifact) or
+            manifest.get("version") != version or manifest.get("target") != target or
+            manifest.get("sha256") != checksum(artifact)):
+        raise ValueError("build artifact manifest is invalid")
+    return artifact
+
+
 def render_job(args):
     safe_name(args.version)
     target = TARGETS[args.target]
     task = run_dir(args.run_id)
     current = ROOT / "containers/software/abacus" / args.version / args.target / "current.sif"
+    artifact = Path(getattr(args, "artifact", current)).resolve()
     module_root = ROOT / "modulefiles/apps"
     prefix = f"/opt/software/abacus/{args.version}/{args.target}"
     if args.target not in RUNTIME_TARGETS:
         raise ValueError("multi-node runtime acceptance is registered only for precise V100 targets")
-    if not 2 <= args.nodes <= 4 or not 1 <= args.gpus_per_node <= 2:
+    if not 2 <= args.nodes <= 4 or args.gpus_per_node != 1:
         raise ValueError("runtime resources outside acceptance bounds")
     q = shlex.quote
     ranks = args.nodes * args.gpus_per_node
@@ -73,7 +98,7 @@ def render_job(args):
         "export MAP_OPT SLURM_EXPORT_ENV=ALL",
         "export OMPI_MCA_plm_slurm_args=--external-launcher",
         "export PRTE_MCA_plm_slurm_args=--external-launcher",
-        f"image=$(readlink -f -- {q(str(current))})",
+        f"image={q(str(artifact))}",
         'test -r "$image"',
         f"mkdir -p {q(str(results / 'ranks'))} {q(str(case))} {q(str(runtime))}",
         "apptainer exec --cleanenv --no-home "
@@ -83,12 +108,14 @@ def render_job(args):
         f"{q(prefix + '/share/sai/smoke-case/.')} /work/",
         f"cd {q(str(case))}",
         f"export SAI_ABACUS_TRACE_DIR={q(str(results / 'ranks'))}",
+        'export SAI_ABACUS_IMAGE="$image"',
         "nvidia-smi -L",
         "command -v mpirun apptainer abacus",
         f"mpirun -np {ranks} --map-by \"$MAP_OPT\" --report-bindings abacus > {q(str(results / 'abacus.log'))} 2>&1",
         f"test \"$(find {q(str(results / 'ranks'))} -maxdepth 1 -name 'rank-*.tsv' -type f | wc -l)\" -eq {ranks}",
         f"test \"$(cut -f1 {q(str(results / 'ranks'))}/rank-*.tsv | sort -u | wc -l)\" -eq {args.nodes}",
         f"test \"$(cut -f3 {q(str(results / 'ranks'))}/rank-*.tsv | sort -u)\" = {q(args.target)}",
+        f"test \"$(cut -f4 {q(str(results / 'ranks'))}/rank-*.tsv | sort -u)\" = \"$image\"",
         f"awk -F '\\t' 'NF != 6 || $5 == \"\" || $6 == \"\" {{ exit 1 }}' {q(str(results / 'ranks'))}/rank-*.tsv",
         f"grep -q '#SCF IS CONVERGED#' {q(str(case / 'OUT.autotest/running_scf.log'))}",
         f"grep -Eq 'GPU.*\\(x{ranks}\\)' {q(str(case / 'OUT.autotest/running_scf.log'))}",
@@ -108,9 +135,8 @@ def submit(args):
         raise ValueError("runtime test already exists; choose a fresh run id")
     for name in ("results", "apptainer-runtime", "apptainer-cache"):
         (task / name).mkdir(parents=True, exist_ok=True)
-    current = ROOT / "containers/software/abacus" / args.version / args.target / "current.sif"
-    if not current.is_symlink() or not current.resolve().is_file():
-        raise ValueError("missing published current.sif")
+    artifact = build_artifact(args.build_run_id, args.version, args.target)
+    args.artifact = str(artifact)
     script = task / "job.sbatch"
     script.write_text(render_job(args))
     script.chmod(0o700)
@@ -120,7 +146,7 @@ def submit(args):
     if not job.isdigit():
         raise ValueError("invalid sbatch response")
     (task / "job.id").write_text(job + "\n")
-    request = dict(vars(args), artifact=str(current.resolve()), artifact_sha256=checksum(current.resolve()))
+    request = dict(vars(args), artifact=str(artifact), artifact_sha256=checksum(artifact))
     (task / "request.json").write_text(json.dumps(request, sort_keys=True) + "\n")
     print(job, flush=True)
 
@@ -145,28 +171,33 @@ def monitor(args):
             if values and values[1] not in ("RUNNING", "PENDING", "COMPLETING"):
                 success = values[1] == "COMPLETED" and values[2] == "0:0"
                 status = {"job": job, "state": values[1], "exit_code": values[2],
-                          "verified": success}
-                (task / "results/status.json").write_text(json.dumps(status) + "\n")
+                          "verified": False}
                 if success:
-                    request = json.loads((task / "request.json").read_text())
-                    artifact = Path(request["artifact"])
-                    if (not artifact.is_file() or artifact.is_symlink() or
-                            checksum(artifact) != request["artifact_sha256"]):
-                        raise ValueError("runtime-tested artifact changed")
-                    sidecar = artifact.with_suffix(".json")
-                    manifest = json.loads(sidecar.read_text())
-                    verification = {
-                        "run_id": args.run_id, "job": job,
-                        "partition": TARGETS[request["target"]]["partition"],
-                        "nodes": request["nodes"],
-                        "gpus_per_node": request["gpus_per_node"],
-                        "ranks": request["nodes"] * request["gpus_per_node"],
-                        "verified": True,
-                    }
-                    manifest["multinode_runtime"] = verification
-                    sidecar_tmp = sidecar.with_name(f".{sidecar.name}-{os.getpid()}.tmp")
-                    sidecar_tmp.write_text(json.dumps(manifest, sort_keys=True) + "\n")
-                    os.replace(sidecar_tmp, sidecar)
+                    try:
+                        request = json.loads((task / "request.json").read_text())
+                        artifact = Path(request["artifact"])
+                        if (not artifact.is_file() or artifact.is_symlink() or
+                                checksum(artifact) != request["artifact_sha256"]):
+                            raise ValueError("runtime-tested artifact changed")
+                        sidecar = artifact.with_suffix(".json")
+                        manifest = json.loads(sidecar.read_text())
+                        verification = {
+                            "run_id": args.run_id, "job": job,
+                            "partition": TARGETS[request["target"]]["partition"],
+                            "nodes": request["nodes"],
+                            "gpus_per_node": request["gpus_per_node"],
+                            "ranks": request["nodes"] * request["gpus_per_node"],
+                            "verified": True,
+                        }
+                        manifest["multinode_runtime"] = verification
+                        sidecar_tmp = sidecar.with_name(f".{sidecar.name}-{os.getpid()}.tmp")
+                        sidecar_tmp.write_text(json.dumps(manifest, sort_keys=True) + "\n")
+                        os.replace(sidecar_tmp, sidecar)
+                        status["verified"] = True
+                    except Exception:
+                        (task / "results/status.json").write_text(json.dumps(status) + "\n")
+                        raise
+                (task / "results/status.json").write_text(json.dumps(status) + "\n")
                 print("|".join(values), flush=True)
                 log = task / "results" / f"slurm-{job}.log"
                 if log.is_file():
@@ -183,6 +214,7 @@ def main():
     for field in ("run_id", "version"):
         command.add_argument(field)
     command.add_argument("target", choices=sorted(RUNTIME_TARGETS))
+    command.add_argument("--build-run-id", required=True)
     command.add_argument("--nodes", type=int, default=2)
     command.add_argument("--gpus-per-node", type=int, default=1)
     command.add_argument("--minutes", type=int, default=30)

@@ -83,6 +83,7 @@ class PolicyTests(unittest.TestCase):
         self.assertIn("mpirun -np 2", script)
         self.assertIn("--map-by \"$MAP_OPT\" --report-bindings abacus", script)
         self.assertIn("MULTINODE_CONTAINER_MPI_VERIFIED", script)
+        self.assertIn('export SAI_ABACUS_IMAGE="$image"', script)
         self.assertNotIn("--network none", script)
         self.assertNotIn("--containall", script)
         self.assertNotRegex(script, r"--bind /opt:/opt")
@@ -92,11 +93,40 @@ class PolicyTests(unittest.TestCase):
         launcher = (ROOT / "controller/abacus_runtime.sh").read_text()
         self.assertIn("apptainer exec", launcher)
         self.assertIn("--nv", launcher)
+        self.assertIn('-f "$image"', launcher)
         self.assertNotIn("--network none", launcher)
         self.assertNotIn("--containall", launcher)
         self.assertNotRegex(launcher, r"--bind [\"']?/opt:/opt")
         self.assertIn("4V100) target=4v100-avx512", launcher)
         self.assertIn("16V100) target=16v100-avx2", launcher)
+
+    def test_runtime_pins_the_requesting_build_artifact(self):
+        parent = ROOT / ".test-work"
+        parent.mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=parent) as directory:
+            root = Path(directory)
+            build_run = "build-run"
+            artifact = root / "containers/software/abacus/v1/16v100-avx2/build-run.sif"
+            artifact.parent.mkdir(parents=True)
+            artifact.write_bytes(b"sif")
+            sidecar = artifact.with_suffix(".json")
+            sidecar.write_text(json.dumps({
+                "verified": True,
+                "artifact": str(artifact),
+                "version": "v1",
+                "target": "16v100-avx2",
+                "sha256": cache.checksum(artifact),
+            }))
+            build_task = root / "runs" / build_run
+            build_task.mkdir(parents=True)
+            (build_task / "artifact.path").write_text(str(artifact) + "\n")
+            with patch.object(runtime, "ROOT", root):
+                self.assertEqual(
+                    runtime.build_artifact(build_run, "v1", "16v100-avx2"), artifact)
+                (build_task / "artifact.path").write_text(
+                    str(artifact.parent / "another-run.sif") + "\n")
+                with self.assertRaises(ValueError):
+                    runtime.build_artifact(build_run, "v1", "16v100-avx2")
 
     def test_publish_creates_current_image_and_module(self):
         parent = ROOT / ".test-work"

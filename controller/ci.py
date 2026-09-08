@@ -106,7 +106,8 @@ def main():
         python("software_controller.py", "monitor", run_id)
         if target in ("4v100-avx512", "16v100-avx2"):
             runtime_run = safe_name(run_id + "-multinode")
-            python("runtime_controller.py", "submit", runtime_run, version, target)
+            python("runtime_controller.py", "submit", runtime_run, version, target,
+                   "--build-run-id", run_id)
             python("runtime_controller.py", "monitor", runtime_run)
         run(["scp", "-q", *options, "-P", "12022", f"{remote}:{task}/artifact.path", results / "artifact.path"])
         print((results / "artifact.path").read_text(), flush=True)
