@@ -51,13 +51,17 @@ rank=${OMPI_COMM_WORLD_RANK:-${PMIX_RANK:-0}}
   echo "unsafe runtime identity" >&2
   exit 2
 }
-rank_runtime="$SAI_SOFTWARE_ROOT/runtime/jobs/$job/$node-$rank"
+job_runtime="$SAI_SOFTWARE_ROOT/runtime/jobs/$job"
+rank_runtime="$job_runtime/$node-$rank"
 mkdir -p "$rank_runtime"
 export APPTAINER_TMPDIR="$rank_runtime" APPTAINER_CACHEDIR="$rank_runtime/cache"
 mkdir -p "$APPTAINER_CACHEDIR"
 cleanup() {
   for _ in 1 2 3 4 5; do
-    rm -rf -- "$rank_runtime" 2>/dev/null && return 0
+    if rm -rf -- "$rank_runtime" 2>/dev/null; then
+      rmdir -- "$job_runtime" 2>/dev/null || true
+      return 0
+    fi
     sleep 1
   done
   return 0

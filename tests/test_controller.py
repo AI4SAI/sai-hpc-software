@@ -107,6 +107,7 @@ class PolicyTests(unittest.TestCase):
         self.assertIn('-f "$image"', launcher)
         self.assertIn('--bind "$host_tmp:$host_tmp:rw"', launcher)
         self.assertIn('TMPDIR=$host_tmp', launcher)
+        self.assertIn('rmdir -- "$job_runtime"', launcher)
         self.assertNotIn("--network none", launcher)
         self.assertNotIn("--containall", launcher)
         self.assertNotRegex(launcher, r"--bind [\"']?/opt:/opt")
