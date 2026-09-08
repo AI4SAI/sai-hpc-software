@@ -84,11 +84,17 @@ class PolicyTests(unittest.TestCase):
         self.assertIn("--map-by \"$MAP_OPT\" --report-bindings abacus", script)
         self.assertIn("MULTINODE_CONTAINER_MPI_VERIFIED", script)
         self.assertIn('export SAI_ABACUS_IMAGE="$image"', script)
+        self.assertIn("$6 !~ /-avx2$/", script)
         self.assertNotIn("--network none", script)
         self.assertNotIn("--containall", script)
         self.assertNotRegex(script, r"--bind /opt:/opt")
         self.assertNotRegex(script, r"(?:^|[= :])/tmp(?:/|$)")
         subprocess.run(["bash", "-n"], input=script, text=True, check=True)
+
+        args.nodes = 3
+        with patch.object(runtime, "ROOT", Path("/home/test/sai-hpc-software")):
+            with self.assertRaises(ValueError):
+                runtime.render_job(args)
 
         launcher = (ROOT / "controller/abacus_runtime.sh").read_text()
         self.assertIn("apptainer exec", launcher)

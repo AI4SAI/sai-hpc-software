@@ -62,7 +62,7 @@ def render_job(args):
     prefix = f"/opt/software/abacus/{args.version}/{args.target}"
     if args.target not in RUNTIME_TARGETS:
         raise ValueError("multi-node runtime acceptance is registered only for precise V100 targets")
-    if not 2 <= args.nodes <= 4 or args.gpus_per_node != 1:
+    if args.nodes != 2 or args.gpus_per_node != 1:
         raise ValueError("runtime resources outside acceptance bounds")
     q = shlex.quote
     ranks = args.nodes * args.gpus_per_node
@@ -70,6 +70,7 @@ def render_job(args):
     case = task / "case"
     runtime = task / "apptainer-runtime"
     mapping = MAPPING_ROOT / (target["partition"] + ".bash")
+    mpi_isa = "avx512" if args.target == "4v100-avx512" else "avx2"
     lines = [
         "#!/usr/bin/env bash",
         f"#SBATCH --job-name=runtime-abacus-{args.run_id}",
@@ -117,6 +118,7 @@ def render_job(args):
         f"test \"$(cut -f3 {q(str(results / 'ranks'))}/rank-*.tsv | sort -u)\" = {q(args.target)}",
         f"test \"$(cut -f4 {q(str(results / 'ranks'))}/rank-*.tsv | sort -u)\" = \"$image\"",
         f"awk -F '\\t' 'NF != 6 || $5 == \"\" || $6 == \"\" {{ exit 1 }}' {q(str(results / 'ranks'))}/rank-*.tsv",
+        f"awk -F '\\t' '$6 !~ /-{mpi_isa}$/ {{ exit 1 }}' {q(str(results / 'ranks'))}/rank-*.tsv",
         f"grep -q '#SCF IS CONVERGED#' {q(str(case / 'OUT.autotest/running_scf.log'))}",
         f"grep -Eq 'GPU.*\\(x{ranks}\\)' {q(str(case / 'OUT.autotest/running_scf.log'))}",
         f"actual=$(awk '/!FINAL_ETOT_IS/{{value=$2}} END{{print value}}' {q(str(case / 'OUT.autotest/running_scf.log'))})",
