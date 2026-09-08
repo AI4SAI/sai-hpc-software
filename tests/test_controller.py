@@ -81,6 +81,9 @@ class PolicyTests(unittest.TestCase):
         self.assertIn("#SBATCH --nodes=2", script)
         self.assertIn("#SBATCH --ntasks=2", script)
         self.assertIn("export USER=${SLURM_JOB_USER:?}\nexport LOGNAME=$USER", script)
+        self.assertIn('export LD_LIBRARY_PATH="" LD_PRELOAD=""', script)
+        self.assertLess(script.index("command -v apptainer >/dev/null"),
+                        script.index("apptainer exec --cleanenv"))
         self.assertIn("mpirun -np 2", script)
         self.assertIn('--map-by "$MAP_OPT" --report-bindings "$launcher"', script)
         self.assertIn("MULTINODE_CONTAINER_MPI_VERIFIED", script)
