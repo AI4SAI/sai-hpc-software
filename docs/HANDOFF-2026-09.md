@@ -27,7 +27,7 @@
 - 本地：/mnt/g/work/agent/sai-hpc-software
 - 远端：https://github.com/AI4SAI/sai-hpc-software
 - 默认分支：main
-- 当前 HEAD：518185c，已推送 origin/main
+- 当前 HEAD：d56c133，已推送 origin/main
 - 最新完整绿色 Actions：34189103202
 - Actions URL：https://github.com/AI4SAI/sai-hpc-software/actions/runs/34189103202
 - 本轮上游：ABACUS develop，SHA 149723287702677dc159c5e96fb98cbc3482f445
@@ -47,6 +47,7 @@
 | 3065a55 | 同绝对路径 bind 宿主 PMIx session，解决 PMIx shmem2 |
 | 85b6a6e | 退出时删除 per-job runtime 空父目录 |
 | 518185c | 完整验收记录，monitor 对消失的 squeue job 使用 sacct |
+| d56c133 | 保存本交接文档 |
 
 ## 3. Actions、SSH 和 secrets
 
@@ -286,4 +287,3 @@ git diff --check
 2. 用 gh run view 34189103202 和 SAI 上两个 sidecar 重现本轮绿色证据。
 3. 新增软件时复制“受信 recipe + container entry + module + runtime smoke + tests”的结构，不要复制旧的未经 PMIx bind 验证的容器脚本。
 4. 任何 runtime 失败先保留 Slurm log、rank traces 和 sidecar，再定位原因；不要直接删除整个 runs/runtime-tests 目录。
-
