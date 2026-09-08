@@ -32,6 +32,18 @@ prefix="/opt/software/abacus/$SAI_ABACUS_VERSION/$target"
 
 workdir=$(pwd -P)
 case "$workdir" in *:*|*,*|*$'\n'*) echo "working directory cannot contain ':', ',' or newline" >&2; exit 2;; esac
+host_tmp=$(realpath -m -- "${TMPDIR:?set a host MPI TMPDIR below SAI_SOFTWARE_ROOT/runtime}")
+runtime_test_root=$(realpath -m -- "$SAI_SOFTWARE_ROOT/runtime-tests")
+runtime_job_root=$(realpath -m -- "$SAI_SOFTWARE_ROOT/runtime/jobs")
+case "$host_tmp" in
+  "$runtime_test_root"/*|"$runtime_job_root"/*) ;;
+  *) echo "host MPI TMPDIR must stay below the SAI runtime roots" >&2; exit 2 ;;
+esac
+case "$host_tmp" in *:*|*,*|*$'\n'*) echo "host MPI TMPDIR contains unsafe bind characters" >&2; exit 2;; esac
+[[ -d "$host_tmp" && ! -L "$host_tmp" ]] || {
+  echo "host MPI TMPDIR must be an existing regular directory" >&2
+  exit 2
+}
 job=${SLURM_JOB_ID:-manual}
 node=${SLURM_NODEID:-0}
 rank=${OMPI_COMM_WORLD_RANK:-${PMIX_RANK:-0}}
@@ -43,7 +55,13 @@ rank_runtime="$SAI_SOFTWARE_ROOT/runtime/jobs/$job/$node-$rank"
 mkdir -p "$rank_runtime"
 export APPTAINER_TMPDIR="$rank_runtime" APPTAINER_CACHEDIR="$rank_runtime/cache"
 mkdir -p "$APPTAINER_CACHEDIR"
-cleanup() { rm -rf -- "$rank_runtime"; }
+cleanup() {
+  for _ in 1 2 3 4 5; do
+    rm -rf -- "$rank_runtime" 2>/dev/null && return 0
+    sleep 1
+  done
+  return 0
+}
 trap cleanup EXIT
 
 if [[ -n "${SAI_ABACUS_TRACE_DIR:-}" ]]; then
@@ -63,7 +81,8 @@ args=(apptainer exec --cleanenv --no-home
 if [[ "$gpu" == true ]]; then args+=(--nv); fi
 for path in /usr /lib /lib64 /opt/devtools; do args+=(--bind "$path:$path:ro"); done
 args+=(--bind "$workdir:/work:rw" --bind "$rank_runtime:/runtime:rw"
-      --env TMPDIR=/runtime --env "OMP_NUM_THREADS=${OMP_NUM_THREADS:-1}")
+      --bind "$host_tmp:$host_tmp:rw" --env "TMPDIR=$host_tmp"
+      --env "OMP_NUM_THREADS=${OMP_NUM_THREADS:-1}")
 
 if [[ -n "${NCCL_TOPO_FILE:-}" ]]; then
   [[ -f "$NCCL_TOPO_FILE" && ! -L "$NCCL_TOPO_FILE" ]] || {

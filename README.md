@@ -113,6 +113,8 @@ source /opt/sai_config/mps_mapping.d/${SLURM_JOB_PARTITION}.bash
 export MAP_OPT SLURM_EXPORT_ENV=ALL
 export OMPI_MCA_plm_slurm_args=--external-launcher
 export PRTE_MCA_plm_slurm_args=--external-launcher
+export TMPDIR="$SAI_SOFTWARE_ROOT/runtime/jobs/$SLURM_JOB_ID/mpi"
+mkdir -p "$TMPDIR"
 mpirun -np "$SLURM_NTASKS" --map-by "$MAP_OPT" abacus
 ```
 
@@ -121,7 +123,9 @@ the Slurm-assigned NVIDIA devices and matching host driver libraries; MPI/networ
 remains host managed. The launcher binds only the calculation directory writable, keeps
 the SIF and `/opt/devtools` read-only, and puts Apptainer runtime files below
 `/home/stardust/sai-hpc-software/runtime/jobs`. It rejects an unknown partition rather than
-falling back to an incompatible image.
+falling back to an incompatible image. The host MPI session directory must also stay below
+the project runtime roots and is bound at the same absolute path so PMIx shared-memory
+metadata remains visible to ranks inside the container.
 
 Every new precise V100 build is followed by a two-node, one-rank-per-GPU scientific smoke.
 This deliberately avoids the site's multi-rank-per-GPU MPS path, which currently uses

@@ -70,6 +70,7 @@ def render_job(args):
     results = task / "results"
     case = task / "case"
     runtime = task / "apptainer-runtime"
+    mpi_runtime = task / "mpi-runtime"
     mapping = MAPPING_ROOT / (target["partition"] + ".bash")
     mpi_isa = "avx512" if args.target == "4v100-avx512" else "avx2"
     lines = [
@@ -90,7 +91,7 @@ def render_job(args):
         "export LOGNAME=$USER",
         "export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         'export LD_LIBRARY_PATH="" LD_PRELOAD=""',
-        f"export TMPDIR={q(str(runtime))} APPTAINER_TMPDIR={q(str(runtime))}",
+        f"export TMPDIR={q(str(mpi_runtime))} APPTAINER_TMPDIR={q(str(runtime))}",
         f"export APPTAINER_CACHEDIR={q(str(task / 'apptainer-cache'))}",
         "unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH",
         "source /etc/profile.d/lmod.sh",
@@ -107,7 +108,7 @@ def render_job(args):
         f"launcher={q(str(launcher))}",
         'test -r "$image"',
         'test -x "$launcher"',
-        f"mkdir -p {q(str(results / 'ranks'))} {q(str(case))} {q(str(runtime))}",
+        f"mkdir -p {q(str(results / 'ranks'))} {q(str(case))} {q(str(runtime))} {q(str(mpi_runtime))}",
         "apptainer exec --cleanenv --no-home "
         "--no-mount bind-paths,home,cwd,tmp,hostfs --pwd /work "
         "--bind /usr:/usr:ro --bind /lib:/lib:ro --bind /lib64:/lib64:ro "
@@ -141,7 +142,7 @@ def submit(args):
     task = run_dir(args.run_id)
     if task.exists():
         raise ValueError("runtime test already exists; choose a fresh run id")
-    for name in ("results", "apptainer-runtime", "apptainer-cache"):
+    for name in ("results", "apptainer-runtime", "apptainer-cache", "mpi-runtime"):
         (task / name).mkdir(parents=True, exist_ok=True)
     artifact = build_artifact(args.build_run_id, args.version, args.target)
     launcher = CONTROL / "abacus"

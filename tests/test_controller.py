@@ -82,6 +82,7 @@ class PolicyTests(unittest.TestCase):
         self.assertIn("#SBATCH --ntasks=2", script)
         self.assertIn("export USER=${SLURM_JOB_USER:?}\nexport LOGNAME=$USER", script)
         self.assertIn('export LD_LIBRARY_PATH="" LD_PRELOAD=""', script)
+        self.assertIn("/mpi-runtime", script)
         self.assertLess(script.index("command -v apptainer >/dev/null"),
                         script.index("apptainer exec --cleanenv"))
         self.assertIn("mpirun -np 2", script)
@@ -104,6 +105,8 @@ class PolicyTests(unittest.TestCase):
         self.assertIn("apptainer exec", launcher)
         self.assertIn("--nv", launcher)
         self.assertIn('-f "$image"', launcher)
+        self.assertIn('--bind "$host_tmp:$host_tmp:rw"', launcher)
+        self.assertIn('TMPDIR=$host_tmp', launcher)
         self.assertNotIn("--network none", launcher)
         self.assertNotIn("--containall", launcher)
         self.assertNotRegex(launcher, r"--bind [\"']?/opt:/opt")
