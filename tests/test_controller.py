@@ -81,7 +81,7 @@ class PolicyTests(unittest.TestCase):
         self.assertIn("#SBATCH --nodes=2", script)
         self.assertIn("#SBATCH --ntasks=2", script)
         self.assertIn("mpirun -np 2", script)
-        self.assertIn("--map-by \"$MAP_OPT\" abacus", script)
+        self.assertIn("--map-by \"$MAP_OPT\" --report-bindings abacus", script)
         self.assertIn("MULTINODE_CONTAINER_MPI_VERIFIED", script)
         self.assertNotIn("--network none", script)
         self.assertNotIn("--containall", script)

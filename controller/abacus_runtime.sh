@@ -45,7 +45,8 @@ if [[ -n "${SAI_ABACUS_TRACE_DIR:-}" ]]; then
     echo "trace directory must be an existing runtime-test directory" >&2
     exit 2
   }
-  printf '%s\t%s\t%s\t%s\n' "$(hostname)" "$rank" "$target" "$(readlink -f -- "$image")" \
+  printf '%s\t%s\t%s\t%s\t%s\t%s\n' "$(hostname)" "$rank" "$target" \
+    "$(readlink -f -- "$image")" "${CUDA_VISIBLE_DEVICES:-}" "${OPAL_PREFIX:-}" \
     > "$trace/rank-$rank.tsv"
 fi
 
@@ -69,7 +70,7 @@ fi
 # the host launcher. Pass only those families through cleanenv.
 while IFS= read -r name; do
   case "$name" in
-    OMPI_*|OPAL_*|PMIX_*|PMI_*|PRTE_*|UCX_*|NCCL_*|CUDA_VISIBLE_DEVICES)
+    SLURM_*|OMPI_*|OPAL_*|PMIX_*|PMI_*|PRTE_*|UCX_*|NCCL_*|CUDA_*|NVIDIA_VISIBLE_DEVICES|FI_*|OMP_*)
       [[ "$name" != NCCL_TOPO_FILE ]] || continue
       [[ "$name" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]] || exit 2
       args+=(--env "$name=${!name}")
