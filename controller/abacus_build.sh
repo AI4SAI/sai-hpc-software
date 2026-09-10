@@ -5,17 +5,23 @@ opts=(-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX"
       -DBUILD_TESTING=OFF -DGIT_SUBMODULE=OFF -DENABLE_LIBXC=ON
       -DENABLE_MPI=ON -DENABLE_OPENMP=ON -DENABLE_ELPA=ON
       -DENABLE_NATIVE_OPTIMIZATION=OFF)
+# ISA-level values (x86-64-v3/v4) are only valid for -march; -mtune needs a
+# micro-architecture name, so it is set separately per target.
+cpu_tune=generic
 case "$target" in
   dsprhbm)
     cpu_arch=x86-64-v4
+    cpu_tune=sapphirerapids
     opts+=(-DUSE_CUDA=OFF)
     ;;
   4v100-avx512)
     cpu_arch=znver4
+    cpu_tune=znver4
     opts+=(-DUSE_CUDA=ON -DUSE_CUDA_MPI=ON -DCMAKE_CUDA_ARCHITECTURES=70)
     ;;
   16v100-avx2)
     cpu_arch=znver3
+    cpu_tune=znver3
     opts+=(-DUSE_CUDA=ON -DUSE_CUDA_MPI=ON -DCMAKE_CUDA_ARCHITECTURES=70)
     ;;
   a100)
@@ -28,8 +34,8 @@ if [[ "$target" != dsprhbm ]]; then
   opts+=(-DENABLE_CUSOLVERMP=ON -DENABLE_CUBLASMP=ON
          -DENABLE_NCCL_PARALLEL_DEVICE=ON)
 fi
-opts+=("-DCMAKE_C_FLAGS=-march=$cpu_arch -mtune=$cpu_arch"
-      "-DCMAKE_CXX_FLAGS=-march=$cpu_arch -mtune=$cpu_arch")
+opts+=("-DCMAKE_C_FLAGS=-march=$cpu_arch -mtune=$cpu_tune"
+      "-DCMAKE_CXX_FLAGS=-march=$cpu_arch -mtune=$cpu_tune")
 # ABACUS commit 1497232 omits the declarations used by its cuSOLVERMp CUDA
 # translation unit; newer upstream sources include these headers. Keep the
 # source SHA unchanged while applying the minimal compatibility fix in-recipe.
