@@ -49,14 +49,13 @@ cmake --install /workspace/build
 test -x "$INSTALL_PREFIX/bin/abacus"
 "$INSTALL_PREFIX/bin/abacus" --info
 
-# Keep a small scientific GPU case inside the single SIF for end-to-end MPI
+# Keep a small scientific case inside the single SIF for end-to-end MPI
 # acceptance. The runtime controller copies only these input data to its run
-# directory; it never expands the upstream source tree on the host.
-if [[ "$target" == *v100* || "$target" == a100 ]]; then
-  fixture="$INSTALL_PREFIX/share/sai/smoke-case"
-  mkdir -p "$fixture/PP_ORB"
-  cp -L /workspace/source/tests/11_PW_GPU/scf_cg/{INPUT,KPT,STRU} "$fixture/"
-  sed -i 's#../../PP_ORB#./PP_ORB#g' "$fixture/INPUT"
-  printf '\nkpar 2\nbndpar 1\n' >> "$fixture/INPUT"
-  cp -L /workspace/source/tests/PP_ORB/{As_dojo.upf,Ga_dojo.upf} "$fixture/PP_ORB/"
-fi
+# directory; it never expands the upstream source tree on the host. GPU
+# targets run it as-is; CPU targets sed the device line to cpu before use.
+fixture="$INSTALL_PREFIX/share/sai/smoke-case"
+mkdir -p "$fixture/PP_ORB"
+cp -L /workspace/source/tests/11_PW_GPU/scf_cg/{INPUT,KPT,STRU} "$fixture/"
+sed -i 's#../../PP_ORB#./PP_ORB#g' "$fixture/INPUT"
+printf '\nkpar 2\nbndpar 1\n' >> "$fixture/INPUT"
+cp -L /workspace/source/tests/PP_ORB/{As_dojo.upf,Ga_dojo.upf} "$fixture/PP_ORB/"

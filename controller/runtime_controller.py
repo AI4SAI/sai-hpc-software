@@ -61,18 +61,48 @@ def render_job(args):
     launcher = Path(getattr(args, "launcher", CONTROL / "abacus")).resolve()
     module_root = ROOT / "modulefiles/apps"
     prefix = f"/opt/software/abacus/{args.version}/{args.target}"
-    if args.target not in RUNTIME_TARGETS:
-        raise ValueError("multi-node runtime acceptance is registered only for precise V100 targets")
-    if args.nodes != 2 or args.gpus_per_node != 1:
-        raise ValueError("runtime resources outside acceptance bounds")
+    cpu_only = target["gpus"] == 0
+    ranks_per_node = getattr(args, "ranks_per_node", 8)
+    cpus_per_task = getattr(args, "cpus_per_task", 2)
+    if cpu_only:
+        if args.nodes != 2 or args.gpus_per_node != 0:
+            raise ValueError("runtime resources outside acceptance bounds")
+        if (ranks_per_node < 1 or cpus_per_task < 1 or
+                ranks_per_node * cpus_per_task > 16):
+            raise ValueError("runtime resources outside the QOS CPU budget")
+        ranks = args.nodes * ranks_per_node
+    else:
+        if args.target not in RUNTIME_TARGETS:
+            raise ValueError("multi-node runtime acceptance is registered only for precise V100 targets")
+        if args.nodes != 2 or args.gpus_per_node != 1:
+            raise ValueError("runtime resources outside acceptance bounds")
+        ranks = args.nodes * args.gpus_per_node
     q = shlex.quote
-    ranks = args.nodes * args.gpus_per_node
     results = task / "results"
     case = task / "case"
     runtime = task / "apptainer-runtime"
     mpi_runtime = task / "mpi-runtime"
     mapping = MAPPING_ROOT / (target["partition"] + ".bash")
-    mpi_isa = "avx512" if args.target == "4v100-avx512" else "avx2"
+    mpi_isa = "avx2" if args.target == "16v100-avx2" else "avx512"
+    resource_lines = (
+        [f"#SBATCH --ntasks-per-node={ranks_per_node}",
+         f"#SBATCH --cpus-per-task={cpus_per_task}"]
+        if cpu_only else
+        [f"#SBATCH --ntasks-per-node={args.gpus_per_node}",
+         f"#SBATCH --gpus-per-node={args.gpus_per_node}"])
+    mapping_lines = (
+        [f"export MAP_OPT={q('ppr:%d:node:pe=%d' % (ranks_per_node, cpus_per_task))}",
+         f"export OMP_NUM_THREADS={q(str(cpus_per_task))}"]
+        if cpu_only else
+        [f"source {q(str(mapping))}"])
+    device_lines = (
+        [f"sed -i {q('s/^device[[:space:]]*gpu/device            cpu/')} "
+         f"{q(str(case / 'INPUT'))}"]
+        if cpu_only else [])
+    hardware_lines = (["nvidia-smi -L"] if not cpu_only else [])
+    gpu_check_lines = (
+        [f"grep -Eq 'GPU.*\\(x{ranks}\\)' {q(str(case / 'OUT.autotest/running_scf.log'))}"]
+        if not cpu_only else [])
     lines = [
         "#!/usr/bin/env bash",
         f"#SBATCH --job-name=runtime-abacus-{args.run_id}",
@@ -80,8 +110,7 @@ def render_job(args):
         f"#SBATCH --qos={target['qos']}",
         f"#SBATCH --nodes={args.nodes}",
         f"#SBATCH --ntasks={ranks}",
-        f"#SBATCH --ntasks-per-node={args.gpus_per_node}",
-        f"#SBATCH --gpus-per-node={args.gpus_per_node}",
+        *resource_lines,
         f"#SBATCH --time={args.minutes}",
         f"#SBATCH --output={results}/slurm-%j.log",
         "#SBATCH --export=NIL",
@@ -100,8 +129,8 @@ def render_job(args):
         f"module load {q('abacus/' + args.version)}",
         "command -v apptainer >/dev/null",
         f"cd {q(str(task))}",
-        f"source {q(str(mapping))}",
-        "export MAP_OPT SLURM_EXPORT_ENV=ALL",
+        *mapping_lines,
+        "export SLURM_EXPORT_ENV=ALL",
         "export OMPI_MCA_plm_slurm_args=--external-launcher",
         "export PRTE_MCA_plm_slurm_args=--external-launcher",
         f"image={q(str(artifact))}",
@@ -114,10 +143,11 @@ def render_job(args):
         "--bind /usr:/usr:ro --bind /lib:/lib:ro --bind /lib64:/lib64:ro "
         f"--bind {q(str(case))}:/work:rw \"$image\" /usr/bin/cp -a "
         f"{q(prefix + '/share/sai/smoke-case/.')} /work/",
+        *device_lines,
         f"cd {q(str(case))}",
         f"export SAI_ABACUS_TRACE_DIR={q(str(results / 'ranks'))}",
         'export SAI_ABACUS_IMAGE="$image"',
-        "nvidia-smi -L",
+        *hardware_lines,
         "command -v mpirun apptainer abacus",
         f"mpirun -np {ranks} --map-by \"$MAP_OPT\" --report-bindings \"$launcher\" > {q(str(results / 'abacus.log'))} 2>&1",
         f"test \"$(find {q(str(results / 'ranks'))} -maxdepth 1 -name 'rank-*.tsv' -type f | wc -l)\" -eq {ranks}",
@@ -127,7 +157,7 @@ def render_job(args):
         f"awk -F '\\t' 'NF != 6 || $5 == \"\" || $6 == \"\" {{ exit 1 }}' {q(str(results / 'ranks'))}/rank-*.tsv",
         f"awk -F '\\t' '$6 !~ /-{mpi_isa}$/ {{ exit 1 }}' {q(str(results / 'ranks'))}/rank-*.tsv",
         f"grep -q '#SCF IS CONVERGED#' {q(str(case / 'OUT.autotest/running_scf.log'))}",
-        f"grep -Eq 'GPU.*\\(x{ranks}\\)' {q(str(case / 'OUT.autotest/running_scf.log'))}",
+        *gpu_check_lines,
         f"actual=$(awk '/!FINAL_ETOT_IS/{{value=$2}} END{{print value}}' {q(str(case / 'OUT.autotest/running_scf.log'))})",
         "awk -v actual=\"$actual\" -v expected=-4869.7470519303351466 "
         "'BEGIN { delta=actual-expected; if (delta<0) delta=-delta; exit !(delta<=1.0) }'",
@@ -242,6 +272,8 @@ def main():
     command.add_argument("--build-run-id", required=True)
     command.add_argument("--nodes", type=int, default=2)
     command.add_argument("--gpus-per-node", type=int, default=1)
+    command.add_argument("--ranks-per-node", type=int, default=8)
+    command.add_argument("--cpus-per-task", type=int, default=2)
     command.add_argument("--minutes", type=int, default=30)
     command = commands.add_parser("monitor")
     command.add_argument("run_id")

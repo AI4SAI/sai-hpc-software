@@ -118,6 +118,33 @@ class PolicyTests(unittest.TestCase):
         self.assertIn("4V100) target=4v100-avx512", launcher)
         self.assertIn("16V100) target=16v100-avx2", launcher)
 
+    def test_multinode_runtime_accepts_cpu_partition(self):
+        args = argparse.Namespace(run_id="runtime-test", version="develop-aaaa",
+                                  target="dsprhbm", nodes=2, gpus_per_node=0,
+                                  ranks_per_node=8, cpus_per_task=2, minutes=30)
+        with patch.object(runtime, "ROOT", Path("/home/test/sai-hpc-software")):
+            script = runtime.render_job(args)
+        self.assertIn("#SBATCH --partition=DSPRHBM", script)
+        self.assertIn("#SBATCH --nodes=2", script)
+        self.assertIn("#SBATCH --ntasks=16", script)
+        self.assertIn("#SBATCH --ntasks-per-node=8", script)
+        self.assertIn("#SBATCH --cpus-per-task=2", script)
+        self.assertNotIn("#SBATCH --gpus-per-node", script)
+        self.assertNotIn("nvidia-smi", script)
+        self.assertIn('ppr:8:node:pe=2', script)
+        self.assertIn("sed -i", script)
+        self.assertIn("mpirun -np 16", script)
+        self.assertIn("$6 !~ /-avx512$/", script)
+        self.assertIn("MULTINODE_CONTAINER_MPI_VERIFIED", script)
+        self.assertNotRegex(script, r"--bind /opt:/opt")
+        self.assertNotRegex(script, r"(?:^|[= :])/tmp(?:/|$)")
+        subprocess.run(["bash", "-n"], input=script, text=True, check=True)
+
+        args.cpus_per_task = 16
+        with patch.object(runtime, "ROOT", Path("/home/test/sai-hpc-software")):
+            with self.assertRaises(ValueError):
+                runtime.render_job(args)
+
     def test_runtime_monitor_tolerates_completed_job_missing_from_squeue(self):
         self.assertIn("check=False", (ROOT / "controller/runtime_controller.py").read_text())
         self.assertIn("sacct", (ROOT / "controller/runtime_controller.py").read_text())
