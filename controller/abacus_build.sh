@@ -6,8 +6,8 @@ opts=(-DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$INSTALL_PREFIX"
       -DENABLE_MPI=ON -DENABLE_OPENMP=ON -DENABLE_ELPA=ON
       -DENABLE_NATIVE_OPTIMIZATION=OFF)
 case "$target" in
-  cpu-misc)
-    cpu_arch=x86-64-v3
+  dsprhbm)
+    cpu_arch=x86-64-v4
     opts+=(-DUSE_CUDA=OFF)
     ;;
   4v100-avx512)
@@ -24,8 +24,19 @@ case "$target" in
     ;;
   *) exit 2;;
 esac
+if [[ "$target" != dsprhbm ]]; then
+  opts+=(-DENABLE_CUSOLVERMP=ON -DENABLE_CUBLASMP=ON
+         -DENABLE_NCCL_PARALLEL_DEVICE=ON)
+fi
 opts+=("-DCMAKE_C_FLAGS=-march=$cpu_arch -mtune=$cpu_arch"
       "-DCMAKE_CXX_FLAGS=-march=$cpu_arch -mtune=$cpu_arch")
+# ABACUS commit 1497232 omits the declarations used by its cuSOLVERMp CUDA
+# translation unit; newer upstream sources include these headers. Keep the
+# source SHA unchanged while applying the minimal compatibility fix in-recipe.
+if [[ "$target" != dsprhbm ]]; then
+  sed -i '/#include "source_base\/module_device\/device_check.h"/a #include "source_base/global_variable.h"\n#include "source_base/global_function.h"' \
+    /workspace/source/source/source_hsolver/kernels/cuda/diag_cusolvermp.cu
+fi
 cmake -S /workspace/source -B /workspace/build "${opts[@]}"
 cmake --build /workspace/build --parallel "$BUILD_JOBS"
 cmake --install /workspace/build

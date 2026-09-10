@@ -27,7 +27,7 @@
 - 本地：/mnt/g/work/agent/sai-hpc-software
 - 远端：https://github.com/AI4SAI/sai-hpc-software
 - 默认分支：main
-- 当前 HEAD：d56c133，已推送 origin/main
+- 功能基线：518185c；交接文档提交为 d56c133、c994406；当前 main 还包含这些文档提交
 - 最新完整绿色 Actions：34189103202
 - Actions URL：https://github.com/AI4SAI/sai-hpc-software/actions/runs/34189103202
 - 本轮上游：ABACUS develop，SHA 149723287702677dc159c5e96fb98cbc3482f445
@@ -48,6 +48,7 @@
 | 85b6a6e | 退出时删除 per-job runtime 空父目录 |
 | 518185c | 完整验收记录，monitor 对消失的 squeue job 使用 sacct |
 | d56c133 | 保存本交接文档 |
+| c994406 | 修正交接文档 revision 元数据 |
 
 ## 3. Actions、SSH 和 secrets
 
@@ -123,7 +124,7 @@ SIF 内的 share/sai/ 保存 source SHA、target、hardware、resolved environme
 
 | target | Slurm partition | CPU/ISA | MPI/BLAS auto | CUDA |
 | --- | --- | --- | --- | --- |
-| cpu-misc | CPU-MISC | 通用 CPU | auto | 无 |
+| dsprhbm | DSPRHBM | Xeon Platinum 9470，Sapphire Rapids HBM，x86-64-v4，AVX-512 | auto | 无（module gcc/13.3.0） |
 | 4v100-avx512 | 4V100 | Ryzen 9 9950X3D，znver4，AVX-512/VNNI | ...-avx512 | V100 sm70 |
 | 16v100-avx2 | 16V100 | Threadripper PRO 5995WX，znver3，无 AVX-512 | ...-avx2 | V100 sm70 |
 | a100 | 8A100M40 | 预留 | auto | sm80 |

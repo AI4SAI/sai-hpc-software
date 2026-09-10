@@ -34,7 +34,30 @@ def init(args):
 
 def publish_runtime_entry(request, artifact, manifest):
     """Atomically expose a verified image and its trusted host launcher."""
-    launcher = Path(request["controller"]) / "abacus"
+    # Older ABACUS unit fixtures predate the explicit software field.
+    software = request.get("software", "abacus")
+    if software == "abacus":
+        launcher_name = "abacus"
+        module_name = "abacus"
+        description = "ABACUS"
+        module_lines = [
+            "module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto",
+            f"setenv SAI_ABACUS_VERSION {request['version']}",
+        ]
+    elif software == "cp2k":
+        launcher_name = "cp2k"
+        module_name = "cp2k"
+        description = "CP2K"
+        module_lines = [
+            "module load fftw/3.3.10 saiblas/2603-gnu-auto",
+            "module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto",
+            f"setenv SAI_CP2K_VERSION {request['version']}",
+        ]
+        if request.get("target") != "dsprhbm":
+            module_lines.insert(1, "module load cuda/12.9.1 nvmplibs/26.7-tmp")
+    else:
+        raise ValueError("no trusted runtime publisher for this software")
+    launcher = Path(request["controller"]) / launcher_name
     if not launcher.is_file() or launcher.is_symlink():
         raise ValueError("trusted runtime launcher is missing")
     target_dir = artifact.parent
@@ -43,19 +66,18 @@ def publish_runtime_entry(request, artifact, manifest):
     current_tmp.symlink_to(artifact.name)
     os.replace(current_tmp, current)
 
-    module_dir = ROOT / "modulefiles/apps/abacus"
+    module_dir = ROOT / f"modulefiles/apps/{module_name}"
     module_dir.mkdir(parents=True, exist_ok=True)
     module_path = module_dir / safe_name(request["version"])
     module_tmp = module_dir / f".{request['version']}-{os.getpid()}.tmp"
     module_tmp.write_text("\n".join([
         "#%Module1.0",
-        f"module-whatis \"ABACUS {request['version']} from verified SAI SIF artifacts\"",
-        "conflict abacus",
+        f"module-whatis \"{description} {request['version']} from verified SAI SIF artifacts\"",
+        f"conflict {module_name}",
         "prepend-path MODULEPATH /opt/modules/modulefiles/devtools",
         "module load apptainer/1.4.4",
-        "module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto",
+        *module_lines,
         f"setenv SAI_SOFTWARE_ROOT {ROOT}",
-        f"setenv SAI_ABACUS_VERSION {request['version']}",
         f"prepend-path PATH {launcher.parent}",
         "",
     ]))
@@ -70,7 +92,7 @@ def render_job(args):
     target = TARGETS[args.target]
     sha = safe_sha(args.sha)
     safe_name(args.version)
-    if args.software != "abacus":
+    if args.software not in ("abacus", "cp2k"):
         raise ValueError("no trusted recipe registered for this software")
     if not 1 <= args.jobs <= 16 or not 1 <= args.minutes <= 180:
         raise ValueError("resource request outside controller bounds")
@@ -83,13 +105,16 @@ def render_job(args):
     sif = r / "result.sif"
     artifact = ROOT / "containers/software" / args.software / args.version / args.target / (args.run_id + ".sif")
     # Host-provided, read-only interpreter; not a binary writable by a prior build.
-    argv = ["/usr/bin/bash", "/control/container_entry.sh", "build", args.software, sha, args.version, args.target]
+    entrypoint = "container_entry.sh" if args.software == "abacus" else "cp2k_container_entry.sh"
+    argv = ["/usr/bin/bash", f"/control/{entrypoint}", "build", args.software, sha, args.version, args.target]
+    extra_binds = ((Path("/opt/apps"), "/opt/apps"),
+                   (ROOT / "cache/cp2k-dependencies", "/input/dependencies")) if args.software == "cp2k" else ()
     def container(phase, final=False):
         cmd = argv.copy()
         cmd[2] = phase
         return container_command(sif if final else image, cmd, overlay=None if final else overlay,
                                  control=CONTROL, repository=None if final else repo,
-                                 jobs=args.jobs, gpu=bool(target["gpus"]))
+                                 jobs=args.jobs, gpu=bool(target["gpus"]), extra_binds=extra_binds)
     emit = container_command(image, ["/usr/bin/cat", "/workspace/final.squashfs"],
                              overlay=str(overlay) + ":ro", jobs=args.jobs)
     q = shlex.quote
@@ -107,7 +132,7 @@ def render_job(args):
         lines += [f"#SBATCH --gpus-per-node={target['gpus']}"]
     else:
         # SAI GPU partitions assign CPU/memory from GPU count and prohibit
-        # overriding these resources. CPU-MISC accepts explicit CPU/memory.
+        # overriding these resources. DSPRHBM accepts explicit CPU/memory.
         lines += [f"#SBATCH --cpus-per-task={args.jobs}", "#SBATCH --mem=28G"]
     resume = getattr(args, "resume_run", None)
     prepare = [shlex.join(["apptainer", "overlay", "create", "--fakeroot", "--sparse",

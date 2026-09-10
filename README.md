@@ -92,9 +92,9 @@ The public host key is versioned in `.ci/slurm/known_hosts`.
 No private key is committed. Only manually dispatched trusted workflow runs access the SSH key;
 push and PR runs only validate. Keep the `hpc` Environment limited to trusted branches.
 
-Targets: `cpu-misc` (CPU-MISC), `4v100-avx512` (4V100),
+Targets: `dsprhbm` (DSPRHBM), `4v100-avx512` (4V100),
 `16v100-avx2` (16V100), `a100` (8A100M40).
-Pass a comma-separated subset to dispatch. CPU is the default acceptance target.
+Pass a comma-separated subset to dispatch. CPU (DSPRHBM) is the default acceptance target.
 Every build runs independently with its own overlay, logs and SIF path. GitHub retains logs
 and the SAI artifact location, while the container itself stays on SAI.
 

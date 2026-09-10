@@ -16,7 +16,7 @@ def run(argv, **kwargs):
 
 def main():
     software = os.environ.get("SOFTWARE", "abacus")
-    if software != "abacus":
+    if software not in ("abacus", "cp2k"):
         raise ValueError("unknown software recipe")
     target = os.environ["TARGET"]
     if target not in TARGETS:
@@ -55,12 +55,17 @@ def main():
                 time.sleep(3)
     ssh(["mkdir", "-p", control, f"{task}/input", f"{task}/results"])
     parent = Path(__file__).resolve().parent
-    for name in ("software_controller.py", "remote_controller.py", "source_cache.py",
-                 "runtime_controller.py", "container_entry.sh", "create_rootfs.sh",
-                 "environment.sh", "abacus_build.sh"):
+    common = ["software_controller.py", "remote_controller.py", "source_cache.py",
+              "runtime_controller.py", "create_rootfs.sh"]
+    recipe = (["container_entry.sh", "environment.sh", "abacus_build.sh"]
+              if software == "abacus" else
+              ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh"])
+    for name in common + recipe:
         upload(parent / name, f"{control}/{name}")
-    upload(parent / "abacus_runtime.sh", f"{control}/abacus")
-    ssh(["chmod", "0555", f"{control}/abacus"])
+    launcher_name = "abacus" if software == "abacus" else "cp2k"
+    upload(parent / ("abacus_runtime.sh" if software == "abacus" else "cp2k_runtime.sh"),
+           f"{control}/{launcher_name}")
+    ssh(["chmod", "0555", f"{control}/{launcher_name}"])
     results = temporary / "results"
     results.mkdir(exist_ok=True)
     # Scheduled trackers reuse only verified, checksum-matching artifacts.
@@ -78,7 +83,9 @@ def main():
         print(f"CACHE_HIT {upstream}: zero source upload", flush=True)
     else:
         repo = temporary / "source.git"
-        run(["git", "clone", "--bare", "https://github.com/deepmodeling/abacus-develop.git", repo])
+        repository = ("https://github.com/deepmodeling/abacus-develop.git"
+                      if software == "abacus" else "https://github.com/cp2k/cp2k.git")
+        run(["git", "clone", "--bare", repository, repo])
         run(["git", "-C", repo, "fetch", "--no-tags", "origin", upstream])
         base = None
         for candidate in inventory["cache_shas"]:
@@ -104,7 +111,7 @@ def main():
     python("software_controller.py", "submit", software, run_id, upstream, version, target, *extras)
     try:
         python("software_controller.py", "monitor", run_id)
-        if target in ("4v100-avx512", "16v100-avx2"):
+        if software == "abacus" and target in ("4v100-avx512", "16v100-avx2"):
             runtime_run = safe_name(run_id + "-multinode")
             python("runtime_controller.py", "submit", runtime_run, version, target,
                    "--build-run-id", run_id)
@@ -115,7 +122,7 @@ def main():
         # Only logs/metadata travel back; the single SIF stays in the SAI catalog.
         subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
                         f"{remote}:{task}/results/.", str(results)], check=False)
-        if target in ("4v100-avx512", "16v100-avx2"):
+        if software == "abacus" and target in ("4v100-avx512", "16v100-avx2"):
             runtime_results = results / "runtime"
             runtime_results.mkdir(exist_ok=True)
             runtime_run = safe_name(run_id + "-multinode")

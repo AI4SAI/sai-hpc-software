@@ -1,26 +1,27 @@
-name: Build HPC software
+name: Build CP2K
+
 on:
-  schedule:
-    - cron: '23 2 * * *'
   workflow_dispatch:
     inputs:
       source_ref:
-        description: Branch/tag/SHA, latest-release or latest-prerelease
+        description: CP2K branch/tag/SHA (master by default)
         required: true
-        default: develop
+        default: master
       targets:
         description: Comma-separated targets (dsprhbm,4v100-avx512,16v100-avx2,a100)
         required: true
-        default: dsprhbm
+        default: 4v100-avx512
       resume_run:
-        description: Optional terminated run id to repack without recompiling (one target only)
+        description: Optional terminated CP2K run id to repack without recompiling
         required: false
   push:
-    paths: ['plans/**', 'software/**', 'profiles/**', 'controller/**', 'tests/**', '.github/workflows/**']
+    paths: ['controller/cp2k_*', 'controller/software_controller.py', 'controller/remote_controller.py', '.github/workflows/cp2k.yml']
   pull_request:
-    paths: ['plans/**', 'software/**', 'profiles/**', 'controller/**', 'tests/**', '.github/workflows/**']
+    paths: ['controller/cp2k_*', 'controller/software_controller.py', 'controller/remote_controller.py', '.github/workflows/cp2k.yml']
+
 permissions:
   contents: read
+
 jobs:
   validate:
     runs-on: ubuntu-latest
@@ -29,9 +30,11 @@ jobs:
         with:
           persist-credentials: false
       - run: python3 -m unittest discover -s tests -v
-      - run: bash -n controller/container_entry.sh controller/abacus_build.sh controller/environment.sh controller/create_rootfs.sh controller/abacus_runtime.sh
+      - run: bash -n controller/cp2k_*.sh controller/cp2k_*.sbatch controller/create_rootfs.sh
+
   resolve-source:
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    if: github.event_name == 'workflow_dispatch'
+    needs: validate
     runs-on: ubuntu-latest
     outputs:
       builds: ${{ steps.resolve.outputs.builds }}
@@ -41,7 +44,6 @@ jobs:
           persist-credentials: false
       - id: resolve
         env:
-          GH_TOKEN: ${{ github.token }}
           SOURCE_REF: ${{ inputs.source_ref }}
           TARGETS: ${{ inputs.targets }}
           RESUME_RUN: ${{ inputs.resume_run }}
@@ -51,37 +53,27 @@ jobs:
           sys.path.insert(0, 'controller')
           from resolve_source import resolve
           from remote_controller import TARGETS
-          config = json.load(open('profiles/tracking.json'))
-          scheduled = os.environ['GITHUB_EVENT_NAME'] == 'schedule'
-          requested = config['targets'] if scheduled else list(dict.fromkeys(os.environ['TARGETS'].split(',')))
+          requested = list(dict.fromkeys(os.environ['TARGETS'].split(',')))
           if not requested or any(t not in TARGETS for t in requested):
               raise ValueError('invalid target list')
           if os.environ.get('RESUME_RUN') and len(requested) != 1:
               raise ValueError('resume requires exactly one target')
-          refs = config['tracks'] if scheduled else [os.environ['SOURCE_REF']]
-          builds = []
-          for ref in refs:
-              try:
-                  result = resolve(config['repository'], ref)
-              except ValueError:
-                  if scheduled and ref in ('latest-release', 'latest-prerelease'):
-                      print(f'No published {ref}, skipping')
-                      continue
-                  raise
-              builds.extend(dict(result, target=t) for t in requested)
+          result = resolve('cp2k/cp2k', os.environ['SOURCE_REF'])
+          builds = [dict(result, target=t) for t in requested]
           with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
               out.write('builds=' + json.dumps(builds) + '\n')
           print(builds)
           PY
+
   build:
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    if: github.event_name == 'workflow_dispatch'
     needs: [validate, resolve-source]
     runs-on: ubuntu-latest
     timeout-minutes: 360
     environment: hpc
     strategy:
       fail-fast: false
-      max-parallel: 3
+      max-parallel: 2
       matrix:
         build: ${{ fromJSON(needs.resolve-source.outputs.builds) }}
     steps:
@@ -96,8 +88,9 @@ jobs:
           mkdir -m 700 "$RUNNER_TEMP/ssh"
           printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
           chmod 600 "$RUNNER_TEMP/ssh/key"
-      - name: Cache, submit, monitor and verify single SIF
+      - name: Cache, submit, monitor and verify CP2K SIF
         env:
+          SOFTWARE: cp2k
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
           SOURCE_SHA: ${{ matrix.build.sha }}
           SOFTWARE_VERSION: ${{ matrix.build.version }}
@@ -108,7 +101,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: results-${{ matrix.build.version }}-${{ matrix.build.target }}-${{ github.run_id }}
+          name: cp2k-results-${{ matrix.build.version }}-${{ matrix.build.target }}-${{ github.run_id }}
           path: ${{ runner.temp }}/results/
           if-no-files-found: warn
       - name: Remove temporary SSH key

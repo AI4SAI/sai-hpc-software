@@ -42,11 +42,15 @@ class PolicyTests(unittest.TestCase):
         self.assertEqual(policy.TARGETS["16v100-avx2"]["cpu_arch"], "znver3")
         self.assertEqual(policy.TARGETS["16v100-avx2"]["qos"], "flood-1o2gpu")
         self.assertEqual(policy.TARGETS["a100"]["qos"], "rush-1o2gpu")
+        self.assertEqual(policy.TARGETS["dsprhbm"]["partition"], "DSPRHBM")
+        self.assertEqual(policy.TARGETS["dsprhbm"]["qos"], "rush-cpu")
+        self.assertEqual(policy.TARGETS["dsprhbm"]["cpu_arch"], "x86-64-v4")
         self.assertNotIn("v100", policy.TARGETS)
+        self.assertNotIn("cpu-misc", policy.TARGETS)
 
     def test_job_is_single_file_build(self):
         args = argparse.Namespace(software="abacus", run_id="test-1", sha="a" * 40,
-                                  version="develop-aaaa", target="cpu-misc",
+                                  version="develop-aaaa", target="dsprhbm",
                                   jobs=8, minutes=60, overlay_mb=8192)
         with patch.object(controller, "ROOT", Path("/home/test/sai-hpc-software")):
             script = controller.render_job(args)
@@ -173,14 +177,14 @@ class PolicyTests(unittest.TestCase):
         parent.mkdir(exist_ok=True)
         with tempfile.TemporaryDirectory(dir=parent) as directory:
             root = Path(directory)
-            folder = root / "containers/software/abacus/v1/cpu-misc"
+            folder = root / "containers/software/abacus/v1/dsprhbm"
             folder.mkdir(parents=True)
             image = folder / "run.sif"
             image.write_bytes(b"test image data")
-            data = {"verified": True, "source_sha": "a" * 40, "target": "cpu-misc",
+            data = {"verified": True, "source_sha": "a" * 40, "target": "dsprhbm",
                     "artifact": str(image), "sha256": cache.checksum(image)}
             image.with_suffix(".json").write_text(json.dumps(data))
-            args = argparse.Namespace(software="abacus", version="v1", target="cpu-misc", sha="a" * 40)
+            args = argparse.Namespace(software="abacus", version="v1", target="dsprhbm", sha="a" * 40)
             first = io.StringIO()
             with patch.object(controller, "ROOT", root), redirect_stdout(first):
                 controller.lookup(args)

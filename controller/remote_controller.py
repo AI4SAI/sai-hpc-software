@@ -3,9 +3,9 @@ import re
 from pathlib import Path
 
 TARGETS = {
-    "cpu-misc": {
-        "partition": "CPU-MISC", "qos": "rush-cpu", "gpus": 0,
-        "cuda_arch": "", "cpu_arch": "x86-64-v3",
+    "dsprhbm": {
+        "partition": "DSPRHBM", "qos": "rush-cpu", "gpus": 0,
+        "cuda_arch": "", "cpu_arch": "x86-64-v4",
     },
     "4v100-avx512": {
         "partition": "4V100", "qos": "flood-1o2gpu", "gpus": 1,
@@ -41,7 +41,7 @@ def layout(home, run_id):
             "overlay": task / "work.ext3"}
 
 def container_command(image, command, *, overlay=None, control=None, repository=None,
-                      jobs=8, gpu=False):
+                      jobs=8, gpu=False, extra_binds=()):
     if not Path(image).is_absolute() or not command:
         raise ValueError("absolute image path and argv required")
     args = ["apptainer", "exec", "--fakeroot", "--cleanenv", "--containall",
@@ -51,6 +51,16 @@ def container_command(image, command, *, overlay=None, control=None, repository=
         args += ["--nv"]
     for path in DEPENDENCIES:
         args += ["--bind", f"{path}:{path}:ro"]
+    for path in extra_binds:
+        if isinstance(path, (tuple, list)):
+            source, destination = path
+        else:
+            source, destination = path, path
+        source = Path(source).resolve()
+        destination = str(destination)
+        if any(c in str(source) for c in ":,\n") or any(c in destination for c in ":,\n"):
+            raise ValueError("unsafe bind source")
+        args += ["--bind", f"{source}:{destination}:ro"]
     args += ["--bind", "/etc/profile.d/lmod.sh:/etc/profile.d/lmod.sh:ro"]
     if Path("/etc/lmod").is_dir():
         args += ["--bind", "/etc/lmod:/etc/lmod:ro"]
