@@ -102,7 +102,7 @@ def submit(args):
 
 
 def verify_evidence(task, request):
-    from gpumd_science import compare, xyz
+    from gpumd_science import compare, xyz, recheck_results, required_results
     artifact = regular(Path(request["artifact"]))
     for path, key in ((artifact, "artifact_sha256"), (task / "job.sbatch", "job_script_sha256"),
                       (CONTROL / "gpumd", "launcher_sha256"), (CONTROL / "gpumd_acceptance.py", "controller_sha256"),
@@ -122,10 +122,15 @@ def verify_evidence(task, request):
         raise ValueError("missing GPUMD numerical/feature evidence")
     if not science["files"]:
         raise ValueError("missing raw GPUMD scientific evidence")
+    if not required_results() <= science["files"].keys():
+        raise ValueError("missing mandatory raw GPUMD paths in evidence manifest")
     for name, expected in science["files"].items():
         path = task / "results/science" / name
         if Path(name).is_absolute() or ".." in Path(name).parts or checksum(regular(path)) != expected:
             raise ValueError("GPUMD raw numerical output changed")
+    recomputed_checks, recomputed_benchmark = recheck_results(task / "results/science", science)
+    if recomputed_checks != science["checks"] or recomputed_benchmark != science["benchmark"]:
+        raise ValueError("GPUMD summary differs from raw scientific outputs or benchmark logs")
     for mode in ("candidate", "baseline"):
         for kind in ("static", "prediction"):
             benchmark = science["benchmark"][f"{kind}-{mode}"]

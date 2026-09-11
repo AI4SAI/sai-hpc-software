@@ -109,5 +109,89 @@ class GpumdCiTests(unittest.TestCase):
         self.assertNotIn(("software_controller.py", "publish"), commands)
 
 
+class GpumdRawEvidenceTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name).resolve()
+        self.report = {"host": "node", "job": "123", "gpu_visible": "0", "conditions": {}}
+        for relative in science.required_results():
+            path = self.root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("fixture\n")
+        base_xyz = '2\nenergy=1\nCu 0 0 0 0 0 0\nCu 1 0 0 0 0 0\n'
+        for path in self.root.rglob("*"):
+            if not path.is_file():
+                continue
+            if path.name in ("dump.xyz", "gold.xyz", "model.xyz"):
+                path.write_text(base_xyz)
+            elif path.name in ("run.in", "nep.in"):
+                path.write_text("run 10000\n")
+            elif path.name.endswith(".out"):
+                path.write_text("0 0 0\n")
+            elif path.name == "execution.json":
+                path.write_text(json.dumps(dict(self.report, environment={}, wall_seconds=12)))
+            elif path.name == "run.log":
+                path.write_text("Time used for this run = 10 second.\nSpeed of this run = 2000000 atom*step/second.\n")
+        for mode in ("candidate", "baseline"):
+            for name in ("energy_train.out", "force_train.out", "virial_train.out"):
+                for suffix in ("", "-repeat0", "-repeat1", "-repeat2"):
+                    for prefix in ("", "gold-"):
+                        (self.root / f"prediction-{mode}{suffix}/{prefix}{name}").write_text("0 0 0\n")
+        for path in self.root.glob("throughput*/model.xyz"):
+            path.write_text("2000\nfixture model\n")
+        for mode in ("on", "off"):
+            (self.root / f"training-{mode}-candidate/loss.out").write_text("1 0.01\n2 0.02\n")
+        (self.root / "training-on-candidate/run.log").write_text("Compile specialized NEP training kernels (sm_70).\n")
+        (self.root / "gnep-train-candidate/loss.out").write_text("1 0.01\n2 0.02\n")
+        (self.root / "gnep-prediction-candidate/energy_train.out").write_text("0.025 0\n" * 4)
+        (self.root / "gnep-prediction-candidate/force_train.out").write_text("0 0 0 0 0 0\n" * 160)
+        (self.root / "gnep-static-candidate/dump.xyz").write_text("40\nenergy=1\n" + "Cu 0 0 0 0 0 0\n" * 40)
+        (self.root / "plumed-candidate/colvar").write_text("0 1 1\n")
+        (self.root / "plumed-candidate/dump.xyz").write_text('2\nenergy=1\nCu 0 0 0 2 0 0\nCu 1 0 0 -2 0 0\n')
+        (self.root / "deepmd-input/reference.json").write_text(json.dumps({"energy": 1, "forces": [[0, 0, 0], [0, 0, 0]]}))
+
+    def test_raw_fixture_recomputes_every_scientific_gate(self):
+        checks, benchmark = science.recheck_results(self.root, self.report)
+        self.assertEqual(checks["plumed-force-feedback"], 0)
+        self.assertEqual(benchmark["md-throughput-candidate"]["median_atom_steps_per_second"], 2000000)
+
+    def test_fake_summary_cannot_replace_missing_raw_gold_or_outputs(self):
+        self.report["checks"] = {"static-candidate": True, "deepmd-candidate": True}
+        for relative in ("static-candidate/gold.xyz", "deepmd-baseline/dump.xyz", "gnep-train-candidate/loss.out"):
+            path = self.root / relative
+            original = path.read_bytes()
+            path.unlink()
+            with self.assertRaisesRegex(ValueError, "mandatory GPUMD result"):
+                science.recheck_results(self.root, self.report)
+            path.write_bytes(original)
+
+    def test_changed_raw_scientific_output_fails_even_with_green_summary(self):
+        self.report["checks"] = {"verified": True}
+        path = self.root / "static-candidate/dump.xyz"
+        path.write_text(path.read_text().replace("energy=1", "energy=2"))
+        with self.assertRaisesRegex(ValueError, "static energy"):
+            science.recheck_results(self.root, self.report)
+
+    def test_benchmark_nan_timing_and_changed_inputs_fail(self):
+        path = self.root / "throughput-candidate-repeat0/execution.json"
+        original = path.read_text()
+        data = json.loads(original)
+        data["wall_seconds"] = float("nan")
+        path.write_text(json.dumps(data))
+        with self.assertRaisesRegex(ValueError, "nonfinite MD"):
+            science.recheck_results(self.root, self.report)
+        path.write_text(original)
+        (self.root / "throughput-candidate-repeat0/run.in").write_text("run 11000\n")
+        with self.assertRaisesRegex(ValueError, "input differs"):
+            science.recheck_results(self.root, self.report)
+
+    def test_jit_silent_fallback_cannot_be_reported_as_accepted(self):
+        path = self.root / "training-on-candidate/run.log"
+        path.write_text(path.read_text() + "Warning: NEP training specialization disabled\n")
+        with self.assertRaisesRegex(ValueError, "silently fell back"):
+            science.recheck_results(self.root, self.report)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -155,6 +155,147 @@ def xyz(path):
     return energy, forces
 
 
+def required_results():
+    """Fixed evidence set. A reporter cannot omit a failed scientific path."""
+    files = set()
+    for mode in ("candidate", "baseline"):
+        for suffix in ("", "-repeat0", "-repeat1", "-repeat2"):
+            for name in ("dump.xyz", "gold.xyz", "run.log", "execution.json", "run.in", "model.xyz", "nep.txt"):
+                files.add(f"static-{mode}{suffix}/{name}")
+            for name in ("run.log", "execution.json", "nep.in", "train.xyz", "nep.txt"):
+                files.add(f"prediction-{mode}{suffix}/{name}")
+            for name in ("energy_train.out", "force_train.out", "virial_train.out"):
+                files.update((f"prediction-{mode}{suffix}/{name}", f"prediction-{mode}{suffix}/gold-{name}"))
+        for label in (f"throughput-warmup-{mode}", *(f"throughput-{mode}-repeat{i}" for i in range(3))):
+            for name in ("model.xyz", "run.in", "nep.txt", "thermo.out", "run.log", "execution.json"):
+                files.add(f"{label}/{name}")
+        for name in ("dump.xyz", "run.log", "execution.json", "model.xyz", "reference.json", "frozen_model.pth"):
+            files.add(f"deepmd-{mode}/{name}")
+    for mode in ("on", "off"):
+        for name in ("loss.out", "nep.txt", "run.log", "execution.json"):
+            files.add(f"training-{mode}-candidate/{name}")
+    for label, names in {
+            "gnep-train-candidate": ("loss.out", "nep.txt", "run.log"),
+            "gnep-prediction-candidate": ("energy_train.out", "force_train.out", "nep.txt", "run.log"),
+            "gnep-static-candidate": ("dump.xyz", "nep.txt", "model.xyz", "run.log"),
+            "plumed-candidate": ("colvar", "dump.xyz", "model.xyz", "nep.txt", "run.log"),
+            "throughput-input": ("run.in", "model.xyz", "nep.txt"),
+            "throughput-pilot-baseline": ("run.log", "execution.json", "thermo.out"),
+            "deepmd-input": ("reference.json", "frozen_model.pth", "model.xyz", "model-generation.log"),
+    }.items():
+        files.update(f"{label}/{name}" for name in names)
+    return files
+
+
+def recheck_results(task, report):
+    """Recompute every acceptance comparison from its mandatory raw outputs.
+
+    This is called by both the producer and the independent host publication
+    verifier. `checks` booleans and benchmark summaries are never the oracle.
+    """
+    for relative in required_results():
+        path = task / relative
+        if not path.is_file() or path.is_symlink() or path.resolve() != path:
+            raise ValueError(f"missing/untrusted mandatory GPUMD result: {relative}")
+    checks = {}
+    benchmark = {}
+    for mode in ("candidate", "baseline"):
+        for suffix in ("", "-repeat0", "-repeat1", "-repeat2"):
+            static = task / f"static-{mode}{suffix}"
+            energy, force = xyz(static / "dump.xyz")
+            gold_e, gold_f = xyz(static / "gold.xyz")
+            numerical = {"energy_error_ev": compare([[energy]], [[gold_e]], 1e-3, "static energy"),
+                         "force_max_error_ev_per_a": compare(force, gold_f, 1e-4, "static force")}
+            if not suffix:
+                checks[f"static-{mode}"] = numerical
+            prediction = task / f"prediction-{mode}{suffix}"
+            for name in ("energy_train.out", "force_train.out", "virial_train.out"):
+                error = compare(numbers(prediction / name), numbers(prediction / f"gold-{name}"), 2e-4, name)
+                if not suffix:
+                    checks[f"prediction-{mode}-{name}"] = error
+        for kind in ("static", "prediction"):
+            records = [json.loads((task / f"{kind}-{mode}-repeat{i}/execution.json").read_text()) for i in range(3)]
+            times = [record["wall_seconds"] for record in records]
+            if any(not math.isfinite(value) or value <= 0 for value in times):
+                raise ValueError("invalid measured wall time")
+            benchmark[f"{kind}-{mode}"] = {"seconds": times, "median_seconds": statistics.median(times),
+                                            "min_seconds": min(times), "warmup": 1}
+        samples = []
+        for label in (f"throughput-warmup-{mode}", *(f"throughput-{mode}-repeat{i}" for i in range(3))):
+            case = task / label
+            for name in ("run.in", "model.xyz", "nep.txt"):
+                if sha(case / name) != sha(task / "throughput-input" / name):
+                    raise ValueError("MD benchmark input differs between repetitions/baselines")
+            record = json.loads((case / "execution.json").read_text())
+            if (record["host"] != report["host"] or record["job"] != report["job"] or
+                    record["gpu_visible"] != report["gpu_visible"] or
+                    record["environment"] != report["conditions"]):
+                raise ValueError("MD benchmark conditions differ")
+            log = (case / "run.log").read_text()
+            duration = float(re.findall(r"Time used for this run = (\S+) second", log)[-1])
+            speed = float(re.findall(r"Speed of this run = (\S+) atom\*step/second", log)[-1])
+            elapsed = record["wall_seconds"]
+            if any(not math.isfinite(value) or value <= 0 for value in (duration, speed, elapsed)):
+                raise ValueError("nonfinite MD engine timing")
+            n_atoms = int((case / "model.xyz").read_text().splitlines()[0])
+            n_steps = int(re.findall(r"^run (\d+)$", (case / "run.in").read_text(), re.M)[-1])
+            if n_atoms != 2000 or n_steps < 10000 or abs(speed * duration / (n_atoms * n_steps) - 1) > 2e-4:
+                raise ValueError("MD engine timing inconsistent with work done")
+            numbers(case / "thermo.out")
+            if "warmup" not in label:
+                samples.append({"wall_seconds": elapsed, "engine_seconds": duration, "atom_steps_per_second": speed,
+                                "steps_per_second": speed / n_atoms})
+        benchmark[f"md-throughput-{mode}"] = {"n_atoms": n_atoms, "n_steps": n_steps, "warmup": 1,
+            "samples": samples, "input_sha256": sha(task / "throughput-input/run.in"),
+            "model_sha256": sha(task / "throughput-input/model.xyz"),
+            "median_atom_steps_per_second": statistics.median(row["atom_steps_per_second"] for row in samples),
+            "median_wall_seconds": statistics.median(row["wall_seconds"] for row in samples)}
+        reference = json.loads((task / "deepmd-input/reference.json").read_text())
+        case = task / f"deepmd-{mode}"
+        if sha(case / "frozen_model.pth") != sha(task / "deepmd-input/frozen_model.pth"):
+            raise ValueError("DeepMD model changed between evaluators")
+        energy, force = xyz(case / "dump.xyz")
+        checks[f"deepmd-{mode}"] = {
+            "energy_error_ev": compare([[energy]], [[reference["energy"]]], 1e-4, "DeepMD energy"),
+            "force_error": compare(force, reference["forces"], 1e-4, "DeepMD forces")}
+    train_on, train_off = task / "training-on-candidate", task / "training-off-candidate"
+    log = (train_on / "run.log").read_text()
+    if "Compile specialized NEP training kernels" not in log or "specialization disabled" in log:
+        raise ValueError("NEP JIT missing or silently fell back")
+    for case in (train_on, train_off):
+        if len(numbers(case / "loss.out")) != 2:
+            raise ValueError("NEP training did not complete two generations")
+    checks["nep-jit-vs-generic-loss"] = compare(numbers(train_on / "loss.out"), numbers(train_off / "loss.out"), 2e-3, "JIT loss")
+    gradient = task / "gnep-prediction-candidate"
+    predicted_e = numbers(gradient / "energy_train.out")
+    predicted_f = numbers(gradient / "force_train.out")
+    if len(numbers(task / "gnep-train-candidate/loss.out")) != 2 or len(predicted_e) != 4 or len(predicted_f) != 160:
+        raise ValueError("GNEP training/prediction dimensions changed")
+    if sha(gradient / "nep.txt") != sha(task / "gnep-static-candidate/nep.txt"):
+        raise ValueError("GNEP and GPUMD used different models")
+    energy, force = xyz(task / "gnep-static-candidate/dump.xyz")
+    checks["gnep-training-and-prediction"] = {
+        "energy_error_ev": compare([[energy]], [[predicted_e[0][0] * 40]], 1e-3, "GNEP energy"),
+        "force_error": compare(force, [row[:3] for row in predicted_f[:40]], 2e-4, "GNEP forces")}
+    plumed = task / "plumed-candidate"
+    for name in ("model.xyz", "nep.txt"):
+        if sha(plumed / name) != sha(task / "static-candidate" / name):
+            raise ValueError("PLUMED base model changed")
+    positions = [[float(x) for x in line.split()[1:4]] for line in (plumed / "model.xyz").read_text().splitlines()[2:4]]
+    displacement = [a - b for a, b in zip(*positions)]
+    distance = math.sqrt(sum(value * value for value in displacement))
+    colvar = numbers(plumed / "colvar")
+    compare([[row[1], row[2]] for row in colvar], [[distance, distance ** 2]] * len(colvar), 2e-5, "PLUMED bias")
+    _, unbiased = xyz(task / "static-candidate/dump.xyz")
+    _, biased = xyz(plumed / "dump.xyz")
+    for axis in range(3):
+        unbiased[0][axis] -= 2 * displacement[axis]
+        unbiased[1][axis] += 2 * displacement[axis]
+    checks["plumed-force-feedback"] = compare(biased, unbiased, 2e-4, "PLUMED force feedback")
+    checks["installed-jit-resources-from-unrelated-cwd"] = True
+    return checks, benchmark
+
+
 def run(prefix, task):
     if not os.environ.get("CUDA_VISIBLE_DEVICES") or not os.environ.get("SLURM_JOB_ID"):
         raise ValueError("scientific/benchmark execution requires the Slurm GPU allocation")
@@ -169,6 +310,8 @@ def run(prefix, task):
     gpu_metadata = task.parent / "gpu-host.txt"
     report["gpu"] = gpu_metadata.read_text()
     report["gpu_metadata_sha256"] = sha(gpu_metadata)
+    report["conditions"] = {name: os.environ.get(name, "") for name in
+                            ("OMP_NUM_THREADS", "DP_INTRA_OP_PARALLELISM_THREADS", "DP_INTER_OP_PARALLELISM_THREADS")}
 
     def execute(kind, name, case, mode="candidate", suffix=""):
         dest = task / f"{kind}-{mode}{suffix}"
@@ -180,7 +323,11 @@ def run(prefix, task):
         with (dest / "run.log").open("w") as log:
             subprocess.run([executable], cwd=dest, env=environment, check=True, timeout=600,
                            stdout=log, stderr=subprocess.STDOUT)
-        return dest, time.monotonic() - start
+        elapsed = time.monotonic() - start
+        (dest / "execution.json").write_text(json.dumps({"wall_seconds": elapsed, "host": report["host"],
+            "job": report["job"], "gpu_visible": report["gpu_visible"], "environment": report["conditions"],
+            "executable_sha256": sha(executable)}, sort_keys=True))
+        return dest, elapsed
 
     # Golden values track the resolved upstream, never an old hardcoded SHA.
     reference_e, reference_f = xyz(inputs / "static/gold.xyz")
@@ -305,6 +452,9 @@ def run(prefix, task):
             "energy_error_ev": compare([[energy]], [[reference["energy"]]], 1e-4, "DeepMD energy"),
             "force_error": compare(force, reference["forces"], 1e-4, "DeepMD force")}
     report["checks"]["installed-jit-resources-from-unrelated-cwd"] = True
+    checks, benchmark = recheck_results(task, report)
+    if checks != report["checks"] or benchmark != report["benchmark"]:
+        raise ValueError("independent raw-output recheck disagrees with the producer")
     report["files"] = {str(path.relative_to(task)): sha(path) for path in sorted(task.rglob("*"))
                        if path.is_file() and path.name != "science.json"}
     (task / "science.json").write_text(json.dumps(report, sort_keys=True) + "\n")
