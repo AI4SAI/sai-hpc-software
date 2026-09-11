@@ -127,6 +127,23 @@ class InventoryTests(unittest.TestCase):
         changed["entries"].pop()
         with self.assertRaisesRegex(ValueError, "companion"):
             delivery.validate_manifest(changed)
+
+        # A prerelease component may use its partner's stable release, without
+        # relabelling that partner as prerelease. Their full source-pair lock
+        # must still match, and a wrong pair remains forbidden above.
+        mixed = copy.deepcopy(base)
+        old = mixed["entries"][1]["identity"]
+        newer = make_identity("lammps", "prerelease", "v1-rc1", pair["lammps"], "v1-rc1",
+                              "b" * 64, "4v100-avx512", stack_sources=pair)
+        mixed["entries"][1]["identity"] = newer
+        for row in mixed["files"]:
+            if row["path"].startswith(old["install_prefix"].lstrip("/")):
+                row["path"] = row["path"].replace(old["install_prefix"].lstrip("/"),
+                                                   newer["install_prefix"].lstrip("/"), 1)
+        mixed["entries"][1]["runtime"]["prepend"]["LD_LIBRARY_PATH"] = [
+            mixed["entries"][0]["identity"]["install_prefix"] + "/lib"]
+        delivery.validate_manifest(mixed)
+        self.assertEqual([item["identity"]["track"] for item in mixed["entries"]], ["release", "prerelease"])
         changed = copy.deepcopy(base)
         mismatched = dict(pair, lammps="d" * 40)
         changed["entries"][1]["identity"] = make_identity("lammps", "release", "v1", "d" * 40,
