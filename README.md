@@ -1,7 +1,8 @@
 # sai-hpc-software
 
 Independent GitHub Actions → SSH → Slurm → Apptainer builds on SAI.
-The implemented recipe is ABACUS; the controller/cache/container policy is reusable for additional recipes.
+ABACUS has automated build and scientific acceptance. CP2K has a separate manually dispatched
+recipe; its historical hand-built SIF is not a validated catalog release (see the acceptance record).
 
 ## Container contract
 
@@ -20,10 +21,20 @@ site-wide bind paths and host temporary directories are disabled; the build also
 PID namespace and a network namespace with no external network. This is filesystem/process
 containment using the shared host kernel, **not a VM or a guarantee against kernel exploits**.
 
-`4V100` and `16V100` are separate build targets. A real compute-node probe established
-`znver4` plus AVX-512 dependencies on `4V100`, and `znver3` plus AVX2 dependencies on
-`16V100`; both use V100 `sm_70`. Builds use those explicit CPU architectures and fail if
-the target node or auto-selected MPI/BLAS dependency does not match the profile.
+Every partition is a separate native build target. Configuration and compilation run on
+the selected compute node with `-march=native -mtune=native`, not on the login host.
+Actual GCC native flags, hardware and module selection are recorded.
+
+| Partition | Target | Native CPU profile | Site MPI/BLAS ISA | GPU |
+| --- | --- | --- | --- | --- |
+| DSPRHBM | `dsprhbm` | Sapphire Rapids | AVX-512 | none |
+| 4V100 | `4v100-avx512` | Zen 4 | AVX-512 | sm70 |
+| 16V100 | `16v100-avx2` | Zen 3 | AVX2 | sm70 |
+| 8V100V0 | `8v100v0-avx512` | Skylake AVX-512 (Gold 6146) | AVX2 | sm70 |
+
+The last row is intentional: Gold 6146 has AVX-512 but lacks VNNI. The site's auto
+modules select compatible AVX2 dependencies; an AVX-512 CPU flag is not permission to
+load the newer Zen 4 dependency build. Every target verifies its actual selection.
 
 Successful builds remove their ext3 work image after verifying the final SIF. Failed builds
 retain just that single image for diagnosis, not an expanded sandbox.
@@ -43,7 +54,7 @@ runs/<run-id>/input/             # verified compressed bundle parts when needed
 runs/<run-id>/results/           # Slurm log, state, artifact checksum
 runs/<run-id>/runtime/           # Apptainer runtime work, not source/build/install
 runs/<run-id>/work.ext3          # one temporary file, retained on failure
-runs/<run-id>/artifact.path      # published SIF location after verification
+runs/<run-id>/artifact.path      # candidate SIF location after build verification
 modulefiles/apps/abacus/<version> # generated user module for a verified version
 runtime-tests/<run-id>/          # bounded multi-node acceptance inputs, logs and rank evidence
 ```
@@ -59,9 +70,18 @@ commit. No synthetic/orphan commits are substituted.
 
 The daily tracker runs at 02:23 UTC using `profiles/tracking.json`. It checks the
 branch, stable release and prerelease channels. Scheduled runs skip an unchanged
-version only when the published SIF's verification metadata and checksum match;
-manual dispatch rebuilds deliberately. A100 remains selectable manually, but is
-not in the daily matrix while both SAI A100 nodes are unavailable.
+version only when the source SHA, deployed recipe fingerprint, SIF checksum, successful build
+status, and current scientific acceptance contract all match. Legacy `verified: true` alone is
+insufficient. A cache hit rechecks saved raw scientific evidence; it does not launch another job.
+Manual dispatch rebuilds deliberately. A100 is not registered for ABACUS publication acceptance
+and is rejected before scheduling until that acceptance is implemented.
+
+Build verification creates a **candidate**, with `build_verified: true` but
+`verified: false, published: false`. It does not update `current.sif` or the module.
+Only `software_controller.py publish RUN_ID`, after all required acceptance has passed,
+exposes the image. A failed acceptance leaves the previous published image unchanged.
+The gate binds the build, image, launcher, verifier, job, raw rank traces and scientific
+outputs by checksums; an exit code of zero without those results does not pass.
 
 Cache hits upload **zero source bytes**. Cache misses bundle only changes against an available
 ancestor (or a full seed if no ancestor exists). The bundle is gzip-compressed, split into
@@ -89,11 +109,12 @@ No source checkout or build/install directory is created by the receiver.
 The public host key is versioned in `.ci/slurm/known_hosts`.
 `REMOTE_SSH_PRIVATE_KEY` and `REMOTE_USER` are Actions secrets
 (current deployment: the repository's `hpc` Environment).
-No private key is committed. Only manually dispatched trusted workflow runs access the SSH key;
+No private key is committed. Only scheduled and manually dispatched trusted runs access the SSH key;
 push and PR runs only validate. Keep the `hpc` Environment limited to trusted branches.
 
 Targets: `dsprhbm` (DSPRHBM), `4v100-avx512` (4V100),
-`16v100-avx2` (16V100), `a100` (8A100M40).
+`16v100-avx2` (16V100), `8v100v0-avx512` (8V100V0). The A100 recipe remains in the code, but ABACUS publication is disabled
+until an A100 runtime acceptance is registered.
 Pass a comma-separated subset to dispatch. CPU (DSPRHBM) is the default acceptance target.
 Every build runs independently with its own overlay, logs and SIF path. GitHub retains logs
 and the SAI artifact location, while the container itself stays on SAI.
@@ -103,7 +124,14 @@ and the SAI artifact location, while the container itself stays on SAI.
 The generated module is loaded **inside the Slurm allocation**, so the site `*-auto`
 dependency modules inspect the actual compute-node CPU. The trusted `abacus` command then
 selects the SIF from `SLURM_JOB_PARTITION`. The host Open MPI launches one wrapper per rank;
-each wrapper enters the same read-only SIF and runs its ABACUS binary:
+each wrapper enters the same read-only SIF and runs its ABACUS binary. GPU job example:
+
+The version module selects a partition-local, immutable module fragment that pins
+both the accepted SIF and its tested launcher. Publishing another partition does
+not replace this pair or its dependencies. A loaded module retains that pair until
+unloaded/reloaded; loading outside a Slurm allocation is rejected. `module show`
+remains available without an allocation. Legacy artifacts need publication with
+this contract before their partition has a `current.module` entry.
 
 ```bash
 source /etc/profile.d/lmod.sh
@@ -127,10 +155,23 @@ falling back to an incompatible image. The host MPI session directory must also 
 the project runtime roots and is bound at the same absolute path so PMIx shared-memory
 metadata remains visible to ranks inside the container.
 
+Every new DSPRHBM build is followed by a two-node CPU PW SCF (8 ranks/node, 2 threads/rank).
 Every new precise V100 build is followed by a two-node, one-rank-per-GPU scientific smoke.
 This deliberately avoids the site's multi-rank-per-GPU MPS path, which currently uses
 host `/tmp`. The acceptance records rank/hostname/image selection, requires two distinct
-nodes, exercises CUDA and MPI in a short PW SCF case, and requires SCF convergence.
+nodes, exercises CUDA and MPI in a short PW SCF case, and requires SCF convergence and
+an energy error of at most `1e-5 eV`.
+
+GPU publication also requires two real ABACUS feature cases, packaged inside each new SIF:
+
+- Si2 LCAO with `ks_solver cusolvermp`: actual `cusolverMpSygvd`/`Hegvd` logging, convergence
+  and reference energy. Buffer-size queries and `--info` do not count as execution.
+- GaAs PW BPCG with `kpar 1, bndpar 2`: actual NCCL collective logging with `nranks=2`,
+  two distinct nodes, convergence and reference energy. NCCL initialization alone does not count.
+  This decomposition exercises AllGather; AllReduce/Broadcast also count when actually logged.
+
+These are submitted by `gpu_feature_controller.py`; both runtime controllers use pinned
+candidates directly and therefore do not need a module to be published before testing.
 
 ## Manual inspection
 
@@ -158,13 +199,13 @@ instead of initializing Lmod there; it records the original absolute dependency
 paths without needing writable temporary files. Packaging/verification failures
 can be retried using the workflow's `resume_run` input: this moves the old run's
 single ext3 image into the new run and repacks the existing installation. The
-source SHA, version and target must match, and active jobs cannot be resumed.
+source SHA, version, target and recipe fingerprint must match, and active jobs cannot be resumed.
 
 ## Local checks
 
 ```bash
 python3 -m unittest discover -s tests -v
-bash -n controller/container_entry.sh controller/abacus_build.sh controller/environment.sh
+for script in controller/*.sh controller/*.sbatch; do bash -n "$script"; done
 ```
 
 Tests cover real full/incremental Git cache reception, missing prerequisites, transport

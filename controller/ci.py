@@ -55,9 +55,10 @@ def main():
                 time.sleep(3)
     ssh(["mkdir", "-p", control, f"{task}/input", f"{task}/results"])
     parent = Path(__file__).resolve().parent
-    common = ["software_controller.py", "remote_controller.py", "source_cache.py",
+    common = ["software_controller.py", "remote_controller.py", "source_cache.py", "module_publication.py",
               "runtime_controller.py", "create_rootfs.sh"]
-    recipe = (["container_entry.sh", "environment.sh", "abacus_build.sh"]
+    recipe = (["container_entry.sh", "environment.sh", "abacus_build.sh",
+               "gpu_feature_controller.py", "gpu_feature_runtime.sh"]
               if software == "abacus" else
               ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh"])
     for name in common + recipe:
@@ -111,24 +112,37 @@ def main():
     python("software_controller.py", "submit", software, run_id, upstream, version, target, *extras)
     try:
         python("software_controller.py", "monitor", run_id)
-        if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2"):
+        if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             runtime_run = safe_name(run_id + "-multinode")
             python("runtime_controller.py", "submit", runtime_run, version, target,
                    "--build-run-id", run_id)
             python("runtime_controller.py", "monitor", runtime_run)
+        if software == "abacus" and target in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
+            feature_run = safe_name(run_id + "-gpu-features")
+            python("gpu_feature_controller.py", "submit", feature_run, version, target,
+                   "--build-run-id", run_id)
+            python("gpu_feature_controller.py", "monitor", feature_run)
+        python("software_controller.py", "publish", run_id)
         run(["scp", "-q", *options, "-P", "12022", f"{remote}:{task}/artifact.path", results / "artifact.path"])
         print((results / "artifact.path").read_text(), flush=True)
     finally:
         # Only logs/metadata travel back; the single SIF stays in the SAI catalog.
         subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
                         f"{remote}:{task}/results/.", str(results)], check=False)
-        if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2"):
+        if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             runtime_results = results / "runtime"
             runtime_results.mkdir(exist_ok=True)
             runtime_run = safe_name(run_id + "-multinode")
             subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
                             f"{remote}:{root}/runtime-tests/{runtime_run}/results/.",
                             str(runtime_results)], check=False)
+        if software == "abacus" and target in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
+            feature_results = results / "gpu-features"
+            feature_results.mkdir(exist_ok=True)
+            feature_run = safe_name(run_id + "-gpu-features")
+            subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
+                            f"{remote}:{root}/runtime-tests/{feature_run}/results/.",
+                            str(feature_results)], check=False)
 
 if __name__ == "__main__":
     main()

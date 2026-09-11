@@ -10,6 +10,7 @@ case "$SLURM_JOB_PARTITION" in
   DSPRHBM) target=dsprhbm; gpu=false ;;
   4V100) target=4v100-avx512; gpu=true ;;
   16V100) target=16v100-avx2; gpu=true ;;
+  8V100V0) target=8v100v0-avx512; gpu=true ;;
   8A100M40) target=a100; gpu=true ;;
   *) echo "unsupported ABACUS partition: $SLURM_JOB_PARTITION" >&2; exit 2 ;;
 esac
@@ -101,7 +102,7 @@ fi
 # the host launcher. Pass only those families through cleanenv.
 while IFS= read -r name; do
   case "$name" in
-    SLURM_*|OMPI_*|OPAL_*|PMIX_*|PMI_*|PRTE_*|UCX_*|NCCL_*|CUDA_*|NVIDIA_VISIBLE_DEVICES|FI_*|OMP_*)
+    SLURM_*|OMPI_*|OPAL_*|PMIX_*|PMI_*|PRTE_*|UCX_*|NCCL_*|CUSOLVERMP_*|CUDA_*|NVIDIA_VISIBLE_DEVICES|FI_*|OMP_*)
       [[ "$name" != NCCL_TOPO_FILE ]] || continue
       [[ "$name" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]] || exit 2
       args+=(--env "$name=${!name}")

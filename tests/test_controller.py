@@ -47,6 +47,11 @@ class PolicyTests(unittest.TestCase):
         self.assertEqual(policy.TARGETS["dsprhbm"]["cpu_arch"], "x86-64-v4")
         self.assertNotIn("v100", policy.TARGETS)
         self.assertNotIn("cpu-misc", policy.TARGETS)
+        skylake = policy.TARGETS["8v100v0-avx512"]
+        self.assertEqual(skylake["partition"], "8V100V0")
+        self.assertEqual(skylake["cpu_arch"], "skylake-avx512")
+        self.assertEqual(skylake["dependency_isa"], "avx2")
+        self.assertEqual(skylake["build_jobs"], 6)
 
     def test_job_is_single_file_build(self):
         args = argparse.Namespace(software="abacus", run_id="test-1", sha="a" * 40,
@@ -190,16 +195,22 @@ class PolicyTests(unittest.TestCase):
             target.mkdir(parents=True)
             artifact = target / "run.sif"
             artifact.write_bytes(b"sif")
-            request = {"controller": str(control), "version": "v1"}
-            manifest = {}
-            with patch.object(controller, "ROOT", root):
+            request = {"controller": str(control), "version": "v1", "target": "4v100-avx512"}
+            manifest = {"recipe_sha256": "b" * 64}
+            # Publication mechanics are separate from the fail-closed gate,
+            # exercised with complete evidence in test_publication.py.
+            with patch.object(controller, "ROOT", root), patch.object(controller, "CONTROL", control), \
+                    patch.object(controller, "validate_candidate"), \
+                    patch.object(controller, "recipe_fingerprint", return_value="b" * 64), \
+                    patch.object(controller, "required_acceptance", return_value=()):
                 controller.publish_runtime_entry(request, artifact, manifest)
             self.assertEqual((target / "current.sif").resolve(), artifact)
             module = root / "modulefiles/apps/abacus/v1"
-            self.assertIn(str(control), module.read_text())
+            self.assertIn('current.module', module.read_text())
+            self.assertIn(str(control), Path(manifest['module_fragment']).read_text())
             self.assertEqual(manifest["runtime_launcher_sha256"], cache.checksum(launcher))
 
-    def test_catalog_rejects_changed_artifact(self):
+    def test_catalog_rejects_artifact_without_build_provenance(self):
         parent = ROOT / ".test-work"
         parent.mkdir(exist_ok=True)
         with tempfile.TemporaryDirectory(dir=parent) as directory:
@@ -208,17 +219,23 @@ class PolicyTests(unittest.TestCase):
             folder.mkdir(parents=True)
             image = folder / "run.sif"
             image.write_bytes(b"test image data")
-            data = {"verified": True, "source_sha": "a" * 40, "target": "dsprhbm",
+            data = {"verified": True, "published": True, "build_verified": True,
+                    "contract_schema": controller.CONTRACT_SCHEMA, "recipe_sha256": "b" * 64,
+                    "software": "abacus", "version": "v1", "source_sha": "a" * 40, "target": "dsprhbm",
                     "artifact": str(image), "sha256": cache.checksum(image)}
             image.with_suffix(".json").write_text(json.dumps(data))
             args = argparse.Namespace(software="abacus", version="v1", target="dsprhbm", sha="a" * 40)
             first = io.StringIO()
-            with patch.object(controller, "ROOT", root), redirect_stdout(first):
+            with patch.object(controller, "ROOT", root), redirect_stdout(first), \
+                    patch.object(controller, "recipe_fingerprint", return_value="b" * 64), \
+                    patch.object(controller, "validate_acceptance"):
                 controller.lookup(args)
-            self.assertEqual(json.loads(first.getvalue())["artifact"], str(image))
+            self.assertEqual(json.loads(first.getvalue()), {})
             image.write_bytes(b"changed")
             second = io.StringIO()
-            with patch.object(controller, "ROOT", root), redirect_stdout(second):
+            with patch.object(controller, "ROOT", root), redirect_stdout(second), \
+                    patch.object(controller, "recipe_fingerprint", return_value="b" * 64), \
+                    patch.object(controller, "validate_acceptance"):
                 controller.lookup(args)
             self.assertEqual(json.loads(second.getvalue()), {})
 

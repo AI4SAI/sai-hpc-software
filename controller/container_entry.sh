@@ -3,7 +3,7 @@ set -euo pipefail
 op=$1; software=$2; sha=$3; version=$4; target=$5
 [[ "$software" == abacus && "$sha" =~ ^[0-9a-f]{40}$ ]]
 [[ "$version" =~ ^[A-Za-z0-9][A-Za-z0-9_.-]*$ ]]
-[[ "$target" == dsprhbm || "$target" == 4v100-avx512 || "$target" == 16v100-avx2 || "$target" == a100 ]]
+[[ "$target" == dsprhbm || "$target" == 4v100-avx512 || "$target" == 16v100-avx2 || "$target" == 8v100v0-avx512 || "$target" == a100 ]]
 export PATH=/usr/bin:/bin TMPDIR=/workspace/tmp
 export INSTALL_PREFIX="/opt/software/$software/$version/$target"
 metadata() {
@@ -56,10 +56,20 @@ case "$op" in
   verify)
     source "$INSTALL_PREFIX/share/sai/runtime-env.sh"
     test "$(cat "$INSTALL_PREFIX/share/sai/source-sha")" = "$sha"
-    "$INSTALL_PREFIX/bin/abacus" --info
+    info=$("$INSTALL_PREFIX/bin/abacus" --info)
+    printf '%s\n' "$info"
     dependencies=$(ldd "$INSTALL_PREFIX/bin/abacus")
     printf '%s\n' "$dependencies"
     if [[ "$dependencies" == *"not found"* ]]; then exit 1; fi
+    if [[ "$target" != dsprhbm ]]; then
+        for feature in CUSOLVERMP CUBLASMP NCCL_PARALLEL_DEVICE; do
+            grep -qx "ENABLE_${feature}:BOOL=ON" "$INSTALL_PREFIX/share/sai/CMakeCache.txt"
+        done
+        grep -Eq 'CUSOLVERMP Support:[[:space:]]+yes' <<< "$info"
+        grep -Eq 'libcusolverMp.so.*=> /opt/devtools/nvidia/mp_libs/lib/' <<< "$dependencies"
+        grep -Eq 'libcublasmp.so.*=> /opt/devtools/nvidia/mp_libs/lib/' <<< "$dependencies"
+        grep -Eq 'libnccl.so.*=> /opt/devtools/nvidia/nccl_' <<< "$dependencies"
+    fi
     if touch "$INSTALL_PREFIX/.write-test" 2>/dev/null; then echo 'artifact must be read-only' >&2; exit 1; fi
     ;;
   *) exit 2;;

@@ -9,7 +9,7 @@ on:
         required: true
         default: develop
       targets:
-        description: Comma-separated targets (dsprhbm,4v100-avx512,16v100-avx2,a100)
+        description: Comma-separated accepted targets (dsprhbm,4v100-avx512,16v100-avx2,8v100v0-avx512)
         required: true
         default: dsprhbm
       resume_run:
@@ -29,7 +29,10 @@ jobs:
         with:
           persist-credentials: false
       - run: python3 -m unittest discover -s tests -v
-      - run: bash -n controller/container_entry.sh controller/abacus_build.sh controller/environment.sh controller/create_rootfs.sh controller/abacus_runtime.sh
+      - run: |
+          for script in controller/*.sh controller/*.sbatch; do
+            bash -n "$script"
+          done
   resolve-source:
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
     runs-on: ubuntu-latest
