@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
+# The host task remains private (umask 077). Files packaged as root inside a
+# read-only SIF must nevertheless be readable by the non-fakeroot MPI user.
+umask 022
 op=$1; software=$2; sha=$3; version=$4; target=$5
 [[ "$software" == abacus && "$sha" =~ ^[0-9a-f]{40}$ ]]
 [[ "$version" =~ ^[A-Za-z0-9][A-Za-z0-9_.-]*$ ]]
@@ -59,6 +62,9 @@ case "$op" in
     rm -f -- /workspace/final.squashfs
     bash /control/create_rootfs.sh /workspace/export
     cp -a /opt/software /workspace/export/opt/software
+    # Normalize only the packaged software, not the host or rootfs /tmp modes.
+    # cp -a preserves archive modes, including legacy owner-only directories.
+    chmod -R a+rX,u+w,go-w /workspace/export/opt/software
     mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"
     ;;
   verify)

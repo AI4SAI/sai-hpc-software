@@ -25,6 +25,30 @@ SYSTEM_MODULE = "abacus/v3.9.0.26-sm70-auto"
 SYSTEM_MODULES = (SYSTEM_MODULE, "abacus/develop-git-079fd0c-260724-sm70-auto")
 MPI_MODULE = "openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto"
 
+# This identical host-MPI wrapper precedes both launch paths. The binding is
+# inherited across exec/container entry; it is launch-time evidence, not an
+# OpenMP per-thread profiler. Keep it inline in the checksum-pinned sbatch.
+RANK_AFFINITY_PROBE = """import json, os, socket, sys
+from pathlib import Path
+rank = int(os.environ['OMPI_COMM_WORLD_RANK'])
+cpus = sorted(os.sched_getaffinity(0))
+topology = []
+for cpu in cpus:
+    root = Path('/sys/devices/system/cpu') / ('cpu' + str(cpu)) / 'topology'
+    topology.append([cpu, int((root / 'physical_package_id').read_text()),
+                     int((root / 'core_id').read_text())])
+evidence = dict(schema=1, rank=rank, hostname=socket.gethostname(),
+                local_rank=int(os.environ['OMPI_COMM_WORLD_LOCAL_RANK']),
+                cpus=cpus, topology=topology,
+                environment={key: os.environ[key] for key in
+                             ('OMP_NUM_THREADS', 'OMP_PROC_BIND', 'OMP_PLACES', 'MAP_OPT')})
+path = Path(os.environ['SAI_ABACUS_TRACE_DIR']) / ('affinity-' + str(rank) + '.json')
+with path.open('x') as stream:
+    json.dump(evidence, stream, sort_keys=True)
+    stream.write('\\n')
+os.execvp(sys.argv[1], sys.argv[1:])
+"""
+
 
 def task_dir(run):
     path = ROOT / "runtime-tests" / safe_name("benchmark-" + safe_name(run))
@@ -127,6 +151,7 @@ def render_job(r, task):
              f'if [[ "$arm" == system ]]; then module load {q(r["system_module"])}; fi',
              f"module load apptainer/1.4.4 {MPI_MODULE}", mapping,
              f"export OMP_NUM_THREADS={r['threads']}",
+             "export OMP_PROC_BIND=true OMP_PLACES=cores",
              f'[[ "${{OPAL_PREFIX:?}}" == *-{r["dependency_isa"]} ]]',
              'module -t list > modules.log 2>&1',
              'if [[ "$arm" == system ]]; then', '  executable=$(command -v abacus)',
@@ -137,12 +162,13 @@ def render_job(r, task):
              f'  command=(bash -c {q(trace)} bash "$executable")', "else",
              f"  executable={q(r['launcher'])}", '  command=("$executable")',
              '  "$executable" --info > info.log 2>&1', "fi",
+             f'command=(python3 -c {q(RANK_AFFINITY_PROBE)} "${{command[@]}}")',
              'sha256sum "$SAI_ABACUS_IMAGE" > artifact.sha256',
              f"sha256sum {q(r['launcher'])} > launcher.sha256",
              f'read -r actual _ < artifact.sha256; [[ "$actual" == {r["artifact_sha256"]} ]]',
              f'read -r actual _ < launcher.sha256; [[ "$actual" == {r["launcher_sha256"]} ]]',
              f'/usr/bin/time -f %e -o wall-seconds.txt mpirun -np {r["ranks"]} '
-             '--map-by "$MAP_OPT" --report-bindings "${command[@]}" > stdout.log 2>&1',
+             '--map-by "$MAP_OPT" --bind-to core --report-bindings "${command[@]}" > stdout.log 2>&1',
              'printf "%s\\n" "$SLURM_JOB_ID" > completed.job', ")"]
     lines += [f"run_one {s['arm']} {s['id']}" for s in r["runs"]]
     lines += ['echo ABACUS_BENCHMARK_RUNS_COMPLETED']
@@ -293,6 +319,54 @@ def parse_scf(stdout, scf, wall):
             "rounded_iteration_seconds": round(sum(times), 8), "iterations": len(times)}
 
 
+def check_affinity(traces, rank_hosts, request):
+    """Reject SMT-core overlap, unbound ranks and mismatched launch resources."""
+    occupied, logical_cpus, local_ranks, result = {}, {}, {}, []
+    for rank, trace in enumerate(traces):
+        if not isinstance(trace, dict) or not isinstance(trace.get("environment"), dict):
+            raise ValueError("rank affinity evidence must be an object with an environment")
+        host = rank_hosts[rank]
+        local = trace.get("local_rank")
+        cpus, topology = trace.get("cpus"), trace.get("topology")
+        env = trace.get("environment", {})
+        map_opt = env.get("MAP_OPT")
+        mapping = re.fullmatch(r"ppr:(\d+):node:pe=(\d+)", map_opt) if isinstance(map_opt, str) else None
+        if (type(trace.get("schema")) is not int or trace["schema"] != 1 or
+                type(trace.get("rank")) is not int or trace["rank"] != rank or
+                trace.get("hostname") != host or type(local) is not int or
+                not 0 <= local < request["ranks_per_node"] or
+                not mapping or int(mapping[1]) != request["ranks_per_node"] or
+                env.get("OMP_NUM_THREADS") != str(request["threads"]) or
+                env.get("OMP_PROC_BIND") != "true" or env.get("OMP_PLACES") != "cores"):
+            raise ValueError("rank affinity identity, mapping or OpenMP environment mismatch")
+        pe = int(mapping[2])
+        if pe < request["threads"] or (request["target"] == "dsprhbm" and pe != request["threads"]):
+            raise ValueError("rank affinity mapping has an invalid physical core count")
+        if (not isinstance(cpus, list) or not cpus or
+                any(type(cpu) is not int or cpu < 0 for cpu in cpus) or
+                cpus != sorted(set(cpus)) or not isinstance(topology, list) or
+                any(not isinstance(row, list) or len(row) != 3 or
+                    any(type(item) is not int or item < 0 for item in row) for row in topology) or
+                [row[0] for row in topology] != cpus):
+            raise ValueError("rank affinity lacks a complete logical/physical CPU topology")
+        cores = {(row[1], row[2]) for row in topology}
+        if len(cores) != pe:
+            raise ValueError("rank affinity is unbound or lacks the requested physical cores")
+        if (cores & occupied.setdefault(host, set()) or
+                set(cpus) & logical_cpus.setdefault(host, set()) or
+                local in local_ranks.setdefault(host, set())):
+            raise ValueError("rank affinity overlaps physical cores or repeats a local rank")
+        occupied[host].update(cores)
+        logical_cpus[host].update(cpus)
+        local_ranks[host].add(local)
+        result.append(dict(hostname=host, local_rank=local, cpus=cpus,
+                           topology=topology, environment=env))
+    if (len(local_ranks) != 2 or
+            any(ranks != set(range(request["ranks_per_node"])) for ranks in local_ranks.values())):
+        raise ValueError("rank affinity is incomplete across the two nodes")
+    return sorted(result, key=lambda item: (item["hostname"], item["local_rank"]))
+
+
 def verify_evidence(task, request):
     """Pure read-only recomputation for publication/cache validation."""
     task = Path(task)
@@ -300,6 +374,7 @@ def verify_evidence(task, request):
     if request != r:
         raise ValueError("request differs from its pinned metadata")
     files, records, binaries = {}, [], set()
+    reference_affinity = None
 
     def read(relative):
         path = regular(task / relative)
@@ -352,9 +427,11 @@ def verify_evidence(task, request):
             loader = read(base / "ldd.log")
             if not info.strip() or not loader.strip() or re.search(r"\bnot found\b", loader):
                 raise ValueError("system version/loader evidence is missing")
-        hosts = Counter()
+        hosts, rank_hosts, affinities = Counter(), [], []
         rank_dir = task / base / "ranks"
-        if {p.name for p in rank_dir.iterdir()} != {f"rank-{i}.tsv" for i in range(r["ranks"])}:
+        expected_traces = ({f"rank-{i}.tsv" for i in range(r["ranks"])} |
+                           {f"affinity-{i}.json" for i in range(r["ranks"])})
+        if {p.name for p in rank_dir.iterdir()} != expected_traces:
             raise ValueError("incomplete rank traces")
         for rank in range(r["ranks"]):
             row = read(base / f"ranks/rank-{rank}.tsv").rstrip("\n").split("\t")
@@ -363,11 +440,23 @@ def verify_evidence(task, request):
                     (TARGETS[r["target"]]["gpus"] and not row[4])):
                 raise ValueError("rank trace does not match target/image/MPI")
             hosts[row[0]] += 1
+            rank_hosts.append(row[0])
+            affinities.append(json.loads(read(base / f"ranks/affinity-{rank}.json")))
         if len(hosts) != 2 or set(hosts.values()) != {r["ranks_per_node"]}:
             raise ValueError("ranks did not execute on both nodes")
-        result = parse_scf(read(base / "stdout.log"), read(base / r["scf_log"]),
+        affinity = check_affinity(affinities, rank_hosts, r)
+        if reference_affinity is None:
+            reference_affinity = affinity
+        elif affinity != reference_affinity:
+            raise ValueError("CPU affinity or OpenMP resources changed between benchmark arms/runs")
+        stdout = read(base / "stdout.log")
+        reported_threads = re.findall(r"^\s*OpenMP thread number:\s*(\d+)\s*$", stdout, re.M)
+        if not reported_threads or set(reported_threads) != {str(r["threads"])}:
+            raise ValueError("ABACUS reported OpenMP thread count differs from the request")
+        result = parse_scf(stdout, read(base / r["scf_log"]),
                            read(base / "wall-seconds.txt"))
-        records.append(dict(spec, **result, nodes=dict(hosts), versions=versions))
+        records.append(dict(spec, **result, nodes=dict(hosts), versions=versions,
+                            affinity=affinity, reported_threads=int(reported_threads[0])))
     if len(binaries) != 1 or len({tuple(sorted(x["nodes"])) for x in records}) != 1:
         raise ValueError("system binary or allocation nodes changed")
     delta = max(x["energy_ev"] for x in records) - min(x["energy_ev"] for x in records)
@@ -386,7 +475,9 @@ def verify_evidence(task, request):
                     artifact_sha256=r["artifact_sha256"], launcher_sha256=r["launcher_sha256"],
                     controller_sha256=r["controller_sha256"], job_script_sha256=r["job_script_sha256"],
                     energy_spread_ev=delta, statistics=stats, runs=records, files=files,
-                    timing_note="Iteration times sum the rounded SCF TIME/s column; wall measures mpirun only.")
+                    timing_note="Iteration times sum the rounded SCF TIME/s column; wall measures mpirun only.",
+                    affinity_note="Physical/logical CPU sets and OpenMP environment match for every host/local rank; "
+                                  "binding is recorded before exec, not sampled per OpenMP worker thread.")
 
 
 def analyze(task):

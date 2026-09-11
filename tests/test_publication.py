@@ -132,7 +132,14 @@ class PublicationTests(unittest.TestCase):
                 image = native if spec["arm"] == "system" else str(self.image)
                 (work / f"ranks/rank-{rank}.tsv").write_text(
                     f"node-{rank // 8}\t{rank}\tdsprhbm\t{image}\t\t/opt/openmpi-avx512\n")
-            (work / "stdout.log").write_text("ITER ETOT/eV EDIFF/eV DRHO TIME/s\nCG1 -1 0 0 0.1\n")
+                local = rank % 8
+                cpus = [local * 2, local * 2 + 1]
+                benchmark.dump(work / f"ranks/affinity-{rank}.json",
+                    dict(schema=1, rank=rank, hostname=f"node-{rank // 8}", local_rank=local,
+                         cpus=cpus, topology=[[cpu, 0, cpu] for cpu in cpus],
+                         environment=dict(OMP_NUM_THREADS="2", OMP_PROC_BIND="true",
+                                          OMP_PLACES="cores", MAP_OPT="ppr:8:node:pe=2")))
+            (work / "stdout.log").write_text("OpenMP thread number: 2\nITER ETOT/eV EDIFF/eV DRHO TIME/s\nCG1 -1 0 0 0.1\n")
             (work / "wall-seconds.txt").write_text("1.0\n")
             (work / "OUT.autotest/running_scf.log").write_text("#SCF IS CONVERGED#\n!FINAL_ETOT_IS -1 eV\n")
         evidence = task / "results/evidence.json"

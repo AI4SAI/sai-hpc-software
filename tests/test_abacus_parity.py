@@ -156,6 +156,31 @@ class ParityTests(unittest.TestCase):
                        "rapidjson/lib/cmake/RapidJSON/RapidJSONConfig.cmake"):
             self.assertIn(f'test -s "$deps/{config}"', recipe)
 
+    def test_export_permissions_do_not_depend_on_fakeroot_access(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary) / "prefix"
+            directory.mkdir(mode=0o700)
+            with self.assertRaisesRegex(ValueError, "ordinary users"):
+                features.check_public_mode(directory)
+            directory.chmod(0o755)
+            features.check_public_mode(directory)
+            library = directory / "libnep.so"
+            library.write_bytes(b"elf fixture")
+            for mode in (0o600, 0o700, 0o666):
+                library.chmod(mode)
+                with self.assertRaisesRegex(ValueError, "ordinary users"):
+                    features.check_public_mode(library)
+            library.chmod(0o644)
+            features.check_public_mode(library)
+            with self.assertRaises(ValueError):
+                features.check_public_mode(library, executable=True)
+            library.chmod(0o755)
+            features.check_public_mode(library, executable=True)
+        entry = (ROOT / "controller/container_entry.sh").read_text()
+        self.assertIn("umask 022", entry)
+        self.assertIn("chmod -R a+rX,u+w,go-w /workspace/export/opt/software", entry)
+        self.assertNotIn("chmod -R a+rX,u+w,go-w /workspace/export\n", entry)
+
 
 if __name__ == "__main__":
     unittest.main()

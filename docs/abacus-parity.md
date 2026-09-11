@@ -44,6 +44,9 @@ RapidJSON's proper CMake CONFIG targets, supplies LibRI/LibComm/libnpy headers,
 and includes the site-pinned CPU LibTorch 2.1.2 distribution with C++11 ABI=1.
 These dependency versions are content-pinned inputs; successful compilation
 against each tracked ABACUS source is still required, not assumed.
+Cereal's GNUInstallDirs layout is explicitly pinned to `lib`, matching
+`cereal_DIR`; successful installation of the actual CONFIG/targets files is
+checked before configuring ABACUS. Site distribution defaults may use `lib64`.
 
 The system NEP DSO has no SONAME and contains another ABACUS installation's
 RUNPATH. It is therefore **not copied as the new runtime library**: its locked
@@ -74,6 +77,11 @@ ELF's NEEDED/RPATH/RUNPATH tags. Build-only `/workspace`, `/control`, `/input`, 
 controller-snapshot loader paths are rejected. CMake caches and compiler source
 paths remain legitimate provenance and are not mistaken for runtime dependencies.
 The archive directory is not bound during final ABACUS verification.
+The host task retains private permissions, while container-created package files
+use umask 022. Only the packaged software subtree has its permissions normalized;
+rootfs temporary-directory modes remain unchanged. The verifier checks ordinary
+users' read/execute permission bits explicitly, since a fakeroot `access()` check
+would not detect root-only installed directories and files.
 
 The external runtime dependency roots remain `/opt/devtools`, `/usr`, `/lib`, and
 `/lib64`; this is not a promise of an independently portable distribution on an
@@ -97,6 +105,18 @@ and subsequent cache hits revalidate all three raw benchmark proofs; merely
 having a feature-enabled binary is insufficient. Timings are measured/reported,
 not forced to pass an invented speedup threshold; correctness failures and missing
 measurements fail the gate.
+
+Each MPI rank runs the same inline affinity probe before entering either launch
+path. Evidence records logical CPU IDs, their socket/core topology, local rank,
+mapping and OpenMP environment. `--bind-to core`, `OMP_PROC_BIND=true` and
+`OMP_PLACES=cores` are common to both arms. Verification requires the actual
+physical-core count to equal the mapping's PE, rejects overlapping physical
+cores (including different SMT threads of one core), and compares every
+`(hostname, local_rank)` CPU set across warmups and measured runs. The GPU mapping
+may provide more physical cores than the one requested OpenMP thread; that is
+recorded and allowed. ABACUS's printed OpenMP thread count must match the request.
+This is inherited launch-time binding evidence, not sampled per-worker-thread
+affinity or a claim of an already completed on-cluster affinity benchmark.
 
 Each new SIF includes self-contained `share/sai/benchmark-cases/pw`, `hse`, and
 `deepks` inputs. HSE includes the matching pseudopotentials/orbitals; DeePKS also

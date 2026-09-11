@@ -5,6 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 import re
+import stat
 import subprocess
 
 
@@ -79,9 +80,22 @@ def check_dynamic(dynamic, binary, prefix):
     return result
 
 
+def check_public_mode(path, *, executable=False, ancestor=False):
+    """SIF entries are root-owned; fakeroot's access() would hide mode errors."""
+    metadata = path.stat()
+    required = 0o5 if stat.S_ISDIR(metadata.st_mode) or executable else 0o4
+    mode = stat.S_IMODE(metadata.st_mode)
+    if mode & required != required or (not ancestor and mode & 0o022):
+        raise ValueError(f"installation is not safely readable/executable by ordinary users: {path} mode={mode:o}")
+
+
 def verify(prefix, target, lock):
     prefix = Path(prefix).resolve()
     binary = prefix / "bin/abacus"
+    for parent in prefix.parents:
+        check_public_mode(parent, ancestor=True)
+    check_public_mode(prefix)
+    check_public_mode(binary, executable=True)
     info = subprocess.run([binary, "--info"], check=True, text=True, capture_output=True).stdout
     dependencies = subprocess.run(["ldd", binary], check=True, text=True, capture_output=True).stdout
     cache = (prefix / "share/sai/CMakeCache.txt").read_text()
@@ -93,6 +107,7 @@ def verify(prefix, target, lock):
     for path in sorted(prefix.rglob("*")):
         if path.is_symlink() and not path.resolve().is_relative_to(prefix):
             raise ValueError(f"installation symlink leaves the exported prefix: {path}")
+        check_public_mode(path)
         if not path.is_file():
             continue
         with path.open("rb") as stream:

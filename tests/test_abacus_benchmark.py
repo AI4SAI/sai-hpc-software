@@ -5,6 +5,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import socket
 import subprocess
 import sys
 import tempfile
@@ -49,6 +50,16 @@ class BenchmarkTests(unittest.TestCase):
         values.update(changes)
         return argparse.Namespace(**values)
 
+    def affinity(self, request, rank, pe=None):
+        if pe is None:
+            pe = request["threads"] if request["target"] == "dsprhbm" else 4
+        local = rank % request["ranks_per_node"]
+        cpus = list(range(local * pe, (local + 1) * pe))
+        return dict(schema=1, rank=rank, hostname=f"node{rank // request['ranks_per_node']}",
+                    local_rank=local, cpus=cpus, topology=[[cpu, 0, cpu] for cpu in cpus],
+                    environment=dict(OMP_NUM_THREADS=str(request["threads"]), OMP_PROC_BIND="true",
+                                     OMP_PLACES="cores", MAP_OPT=f"ppr:{request['ranks_per_node']}:node:pe={pe}"))
+
     def results(self, task):
         request = json.loads((task / "request.json").read_text())
         if not (task / "results/input.json").exists():
@@ -76,8 +87,10 @@ class BenchmarkTests(unittest.TestCase):
                 (work / "ranks" / f"rank-{rank}.tsv").write_text(
                     f"node{rank // request['ranks_per_node']}\t{rank}\t{request['target']}\t"
                     f"{executable}\t{gpu}\t/opt/openmpi-{request['dependency_isa']}\n")
+                benchmark.dump(work / "ranks" / f"affinity-{rank}.json", self.affinity(request, rank))
             timing = (4 if spec["arm"] == "system" else 2) if spec["measured"] else 100
             (work / "stdout.log").write_text(
+                f" OpenMP thread number: {request['threads']}\n"
                 " ITER ETOT/eV EDIFF/eV DRHO TIME/s\n"
                 f" CG1 -4.87155886e+03 0.0 1.5575e+00 {timing / 2}\n"
                 f" CG2 -4.87155886e+03 0.0 1.5575e+00 {timing / 2}\n")
@@ -109,6 +122,10 @@ class BenchmarkTests(unittest.TestCase):
                 self.assertIn(benchmark.SYSTEM_MODULE, script)
                 self.assertIn(benchmark.MPI_MODULE, script)
                 self.assertIn("/usr/bin/time -f %e", script)
+                self.assertIn('--map-by "$MAP_OPT" --bind-to core --report-bindings', script)
+                self.assertIn("export OMP_PROC_BIND=true OMP_PLACES=cores", script)
+                self.assertIn("affinity-", script)
+                self.assertIn("os.sched_getaffinity(0)", script)
                 self.assertIn('cp -a input/. "$work/"', script)
                 self.assertIn(str(task / "mpi-runtime"), script)
                 self.assertIn("#SBATCH --export=NIL", script)
@@ -136,6 +153,9 @@ class BenchmarkTests(unittest.TestCase):
         self.assertEqual(evidence["request_sha256"], checksum(task / "request.json"))
         self.assertEqual((task / "results/evidence.sha256").read_text().strip(), checksum(task / "results/evidence.json"))
         self.assertIn("runs/m000-system/OUT.autotest/running_scf.log", evidence["files"])
+        self.assertIn("runs/m000-system/ranks/affinity-0.json", evidence["files"])
+        self.assertEqual(evidence["runs"][0]["reported_threads"], 1)
+        self.assertEqual(evidence["runs"][0]["affinity"][0]["cpus"], [0, 1, 2, 3])
         (task / "runs/w000-system/wall-seconds.txt").write_text("nan")
         with self.assertRaises(ValueError):
             benchmark.analyze(task)
@@ -165,6 +185,177 @@ class BenchmarkTests(unittest.TestCase):
                     path.write_text(value)
                 with self.assertRaises((ValueError, OSError)):
                     benchmark.analyze(task)
+
+    def test_analysis_rejects_missing_or_invalid_affinity_identity_and_openmp(self):
+        cases = {
+            "missing": None,
+            "schema": lambda trace: trace.update(schema=2),
+            "boolean_schema": lambda trace: trace.update(schema=True),
+            "rank": lambda trace: trace.update(rank=1),
+            "boolean_rank": lambda trace: trace.update(rank=False),
+            "hostname": lambda trace: trace.update(hostname="another-node"),
+            "local_rank": lambda trace: trace.update(local_rank=1),
+            "negative_local_rank": lambda trace: trace.update(local_rank=-1),
+            "boolean_local_rank": lambda trace: trace.update(local_rank=False),
+            "threads": lambda trace: trace["environment"].update(OMP_NUM_THREADS="2"),
+            "missing_threads": lambda trace: trace["environment"].pop("OMP_NUM_THREADS"),
+            "unbound_omp": lambda trace: trace["environment"].update(OMP_PROC_BIND="false"),
+            "omp_places": lambda trace: trace["environment"].update(OMP_PLACES="threads"),
+            "missing_mapping": lambda trace: trace["environment"].pop("MAP_OPT"),
+            "non_string_mapping": lambda trace: trace["environment"].update(MAP_OPT=4),
+            "wrong_ranks_per_node": lambda trace: trace["environment"].update(MAP_OPT="ppr:2:node:pe=4"),
+            "non_object_environment": lambda trace: trace.update(environment=[]),
+        }
+        for name, mutate in cases.items():
+            with self.subTest(name=name):
+                task = benchmark.prepare(self.args(run_id="affinity-" + name))
+                self.results(task)
+                path = task / "runs/m000-candidate/ranks/affinity-0.json"
+                if mutate is None:
+                    path.unlink()
+                else:
+                    trace = json.loads(path.read_text())
+                    mutate(trace)
+                    benchmark.dump(path, trace)
+                with self.assertRaisesRegex(ValueError, "rank traces|affinity"):
+                    benchmark.analyze(task)
+
+    def test_analysis_rejects_non_object_affinity_json(self):
+        task = benchmark.prepare(self.args())
+        self.results(task)
+        path = task / "runs/m000-candidate/ranks/affinity-0.json"
+        for malformed in ([], None, 1, "not an object"):
+            with self.subTest(malformed=malformed):
+                benchmark.dump(path, malformed)
+                with self.assertRaisesRegex(ValueError, "affinity evidence must be an object"):
+                    benchmark.analyze(task)
+
+    def test_analysis_rejects_missing_or_wrong_self_reported_threads(self):
+        for name, replacement in (("missing", ""), ("wrong", "OpenMP thread number: 2"),
+                                  ("mixed", "OpenMP thread number: 1\nOpenMP thread number: 2"),
+                                  ("prefixed", "expected OpenMP thread number: 1"),
+                                  ("suffixed", "OpenMP thread number: 1 is requested")):
+            with self.subTest(name=name):
+                task = benchmark.prepare(self.args(run_id="reported-" + name))
+                self.results(task)
+                path = task / "runs/m000-candidate/stdout.log"
+                path.write_text(path.read_text().replace("OpenMP thread number: 1", replacement))
+                with self.assertRaisesRegex(ValueError, "reported OpenMP thread count"):
+                    benchmark.analyze(task)
+
+    def test_analysis_rejects_wrong_physical_core_counts_and_incomplete_topology(self):
+        cases = {
+            "too_few": lambda trace: (trace["cpus"].pop(), trace["topology"].pop()),
+            "unbound": lambda trace: (trace["cpus"].append(4), trace["topology"].append([4, 0, 4])),
+            "smt_not_physical_cores": lambda trace: trace["topology"][3].__setitem__(2, 2),
+            "missing_topology": lambda trace: trace["topology"].pop(),
+            "wrong_topology_cpu": lambda trace: trace["topology"][3].__setitem__(0, 8),
+            "duplicate_cpu": lambda trace: trace["cpus"].append(3),
+            "mapping_zero_cores": lambda trace: trace["environment"].update(MAP_OPT="ppr:1:node:pe=0"),
+        }
+        for name, mutate in cases.items():
+            with self.subTest(name=name):
+                task = benchmark.prepare(self.args(run_id="cores-" + name))
+                self.results(task)
+                path = task / "runs/m000-candidate/ranks/affinity-0.json"
+                trace = json.loads(path.read_text())
+                mutate(trace)
+                benchmark.dump(path, trace)
+                with self.assertRaisesRegex(ValueError, "affinity"):
+                    benchmark.analyze(task)
+
+    def test_analysis_rejects_smt_sibling_overlap_and_repeated_local_rank(self):
+        for name in ("smt_overlap", "logical_overlap", "local_rank", "cpu_pe_exceeds_threads"):
+            with self.subTest(name=name):
+                task = benchmark.prepare(self.args("dsprhbm", run_id=name))
+                self.results(task)
+                path = task / "runs/m000-candidate/ranks/affinity-1.json"
+                trace = json.loads(path.read_text())
+                if name == "smt_overlap":
+                    # Logical CPUs 2/3 are distinct from rank 0's 0/1, but
+                    # they are SMT siblings on the same two physical cores.
+                    trace["topology"] = [[2, 0, 0], [3, 0, 1]]
+                elif name == "logical_overlap":
+                    # Reusing logical CPUs cannot pass by claiming different
+                    # physical-core IDs in the second rank's JSON.
+                    trace["cpus"] = [0, 1]
+                    trace["topology"] = [[0, 0, 2], [1, 0, 3]]
+                elif name == "local_rank":
+                    trace["local_rank"] = 0
+                else:
+                    trace["environment"]["MAP_OPT"] = "ppr:8:node:pe=4"
+                benchmark.dump(path, trace)
+                with self.assertRaisesRegex(ValueError, "affinity"):
+                    benchmark.analyze(task)
+
+    def test_analysis_rejects_core_swaps_between_arms_or_only_in_warmup(self):
+        for name in ("candidate_arm", "warmup_only", "one_measured_run"):
+            with self.subTest(name=name):
+                task = benchmark.prepare(self.args("dsprhbm", run_id=name))
+                request = self.results(task)
+                for spec in request["runs"]:
+                    change = (spec["arm"] == "candidate" if name == "candidate_arm" else
+                              not spec["measured"] if name == "warmup_only" else
+                              spec["id"] == "m001-candidate")
+                    if not change:
+                        continue
+                    ranks = task / "runs" / spec["id"] / "ranks"
+                    first = json.loads((ranks / "affinity-0.json").read_text())
+                    second = json.loads((ranks / "affinity-1.json").read_text())
+                    # The node still uses the same cores without overlap;
+                    # only the host/local-rank ownership has changed.
+                    for key in ("cpus", "topology"):
+                        first[key], second[key] = second[key], first[key]
+                    benchmark.dump(ranks / "affinity-0.json", first)
+                    benchmark.dump(ranks / "affinity-1.json", second)
+                with self.assertRaisesRegex(ValueError, "changed between benchmark arms/runs"):
+                    benchmark.analyze(task)
+
+    def test_gpu_four_physical_cores_with_one_openmp_thread_and_smt_is_valid(self):
+        task = benchmark.prepare(self.args())
+        request = self.results(task)
+        for spec in request["runs"]:
+            for rank in range(request["ranks"]):
+                path = task / "runs" / spec["id"] / "ranks" / f"affinity-{rank}.json"
+                trace = json.loads(path.read_text())
+                self.assertEqual(trace["environment"]["OMP_NUM_THREADS"], "1")
+                self.assertEqual(trace["environment"]["MAP_OPT"], "ppr:1:node:pe=4")
+                trace["cpus"] = list(range(8))
+                trace["topology"] = [[cpu, 0, cpu % 4] for cpu in trace["cpus"]]
+                benchmark.dump(path, trace)
+        evidence = benchmark.analyze(task)
+        self.assertEqual(evidence["runs"][0]["reported_threads"], 1)
+        self.assertEqual(len(evidence["runs"][0]["affinity"][0]["cpus"]), 8)
+
+    @unittest.skipUnless(hasattr(os, "sched_getaffinity") and Path("/sys/devices/system/cpu").is_dir(),
+                         "Linux CPU affinity and sysfs are required")
+    def test_inline_affinity_probe_reads_real_sysfs_and_execs_program(self):
+        traces = self.root / "live-rank-traces"
+        traces.mkdir()
+        env = dict(os.environ, OMPI_COMM_WORLD_RANK="0", OMPI_COMM_WORLD_LOCAL_RANK="0",
+                   SAI_ABACUS_TRACE_DIR=str(traces), OMP_NUM_THREADS="1", OMP_PROC_BIND="true",
+                   OMP_PLACES="cores", MAP_OPT="ppr:1:node:pe=4")
+        completed = subprocess.run([sys.executable, "-c", benchmark.RANK_AFFINITY_PROBE, "/bin/true"],
+                                   env=env, check=True, capture_output=True, text=True)
+        self.assertEqual(completed.stdout, "")
+        trace = json.loads((traces / "affinity-0.json").read_text())
+        self.assertEqual((trace["schema"], trace["rank"], trace["local_rank"]), (1, 0, 0))
+        self.assertEqual(trace["hostname"], socket.gethostname())
+        self.assertEqual(trace["cpus"], sorted(os.sched_getaffinity(0)))
+        expected_topology = []
+        for cpu in trace["cpus"]:
+            topology = Path("/sys/devices/system/cpu") / f"cpu{cpu}" / "topology"
+            expected_topology.append([cpu, int((topology / "physical_package_id").read_text()),
+                                      int((topology / "core_id").read_text())])
+        self.assertEqual(trace["topology"], expected_topology)
+        self.assertEqual(trace["environment"], {key: env[key] for key in
+                         ("OMP_NUM_THREADS", "OMP_PROC_BIND", "OMP_PLACES", "MAP_OPT")})
+        # A nonzero executable exit status must propagate through the wrapper.
+        env["OMPI_COMM_WORLD_RANK"] = "1"
+        failed = subprocess.run([sys.executable, "-c", benchmark.RANK_AFFINITY_PROBE, "/bin/false"],
+                                env=env, check=False, capture_output=True, text=True)
+        self.assertEqual(failed.returncode, 1)
+        self.assertEqual(json.loads((traces / "affinity-1.json").read_text())["rank"], 1)
 
     def test_prepare_rejects_alias_symlink_and_insufficient_repeats(self):
         for overrides in ({"system_module": "abacus/auto"}, {"warmup": 0}, {"repeats": 2},
