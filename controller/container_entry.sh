@@ -15,11 +15,19 @@ metadata() {
     env | sort | grep -E '^(CUDA|ELPA|MPI|OMPI|OPAL|OPENBLAS|PMIX|ScaLAPACK)_' \
       > "$INSTALL_PREFIX/share/sai/resolved-environment.txt" || true
     cp /workspace/build/CMakeCache.txt "$INSTALL_PREFIX/share/sai/"
+    cp /control/abacus_features.py /control/abacus_dependency_lock.json "$INSTALL_PREFIX/share/sai/"
     # %q serializes values as literals; no module initialization is necessary
     # when inspecting/running the final, read-only SIF.
-    for key in PATH LD_LIBRARY_PATH LIBRARY_PATH OPAL_PREFIX PMIX_INSTALL_PREFIX MPI_HOME OMPI_HOME; do
-        if [[ -v "$key" ]]; then printf 'export %s=%q\n' "$key" "${!key}"; fi
-    done > "$INSTALL_PREFIX/share/sai/runtime-env.sh"
+    {
+        printf '%s\n' '# Source this file for either the SIF or an exported /opt installation.' \
+          'sai_abacus_prefix=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd -P)'
+        for key in PATH LD_LIBRARY_PATH LIBRARY_PATH OPAL_PREFIX PMIX_INSTALL_PREFIX MPI_HOME OMPI_HOME; do
+            if [[ -v "$key" ]]; then printf 'export %s=%q\n' "$key" "${!key}"; fi
+        done
+        printf '%s\n' 'export PATH="$sai_abacus_prefix/bin:$PATH"' \
+          'export LD_LIBRARY_PATH="$sai_abacus_prefix/dependencies/libtorch/lib:$sai_abacus_prefix/dependencies/nep/lib:${LD_LIBRARY_PATH:-}"' \
+          'unset sai_abacus_prefix'
+    } > "$INSTALL_PREFIX/share/sai/runtime-env.sh"
 }
 case "$op" in
   build)
@@ -70,6 +78,9 @@ case "$op" in
         grep -Eq 'libcublasmp.so.*=> /opt/devtools/nvidia/mp_libs/lib/' <<< "$dependencies"
         grep -Eq 'libnccl.so.*=> /opt/devtools/nvidia/nccl_' <<< "$dependencies"
     fi
+    # Required compile-time features and actual dynamic loader paths are both
+    # checked. Scientific parity and speed remain separate benchmark evidence.
+    python3 "$INSTALL_PREFIX/share/sai/abacus_features.py" "$INSTALL_PREFIX" "$target"
     if touch "$INSTALL_PREFIX/.write-test" 2>/dev/null; then echo 'artifact must be read-only' >&2; exit 1; fi
     ;;
   *) exit 2;;

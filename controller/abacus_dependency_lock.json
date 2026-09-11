@@ -1,0 +1,21 @@
+{
+  "schema": 1,
+  "observed_on": "2026-09-11",
+  "site_archive_root": "/opt/apps/abacus/abacus-develop-3.9.0.26_nvhpc263gnu/toolchain/build",
+  "baseline_modules": ["abacus/v3.9.0.26-sm70-auto", "abacus/develop-git-079fd0c-260724-sm70-auto"],
+  "baseline_note": "Union of the full-feature 3.9.0.26 default and 3.11.0-beta6 GPU develop. LTSv3.10.1 lacks --info. Presence is not a claim of scientific validation of every optional feature.",
+  "required_info": ["OpenMP Support", "LCAO Algorithm", "ELPA Support", "LibXC Support", "FFTW Support", "Cereal Serialization", "LibRI Support", "LibComm Support", "LibTorch Support", "Libnpy Support", "NEP Support", "RapidJSON Support"],
+  "required_options": ["ENABLE_MPI", "ENABLE_OPENMP", "ENABLE_LCAO", "ENABLE_ELPA", "ENABLE_LIBXC", "ENABLE_LIBRI", "ENABLE_MLALGO", "ENABLE_RAPIDJSON"],
+  "required_gpu_info": ["CUDA-aware MPI", "NVIDIA CUDA Support", "CUSOLVERMP Support"],
+  "required_gpu_options": ["USE_CUDA", "USE_CUDA_MPI", "ENABLE_CUSOLVERMP", "ENABLE_CUBLASMP", "ENABLE_NCCL_PARALLEL_DEVICE"],
+  "not_in_observed_baseline": ["DeePMD-kit", "TensorFlow", "PEXSI", "cnpy", "DFT-D4", "ROCm"],
+  "archives": [
+    {"name": "LibRI", "version": "2.1.1", "file": "LibRI-master.tar.gz", "root": "LibRI-master", "sha256": "67a021f7def0a89ec1505806ad4d8bfe80675a8961d8327e91e73c72d6351f1e"},
+    {"name": "LibComm", "version": "site-master-content-pinned", "file": "LibComm-master.tar.gz", "root": "LibComm-master", "sha256": "c292079dc4928ccce1f9a1b797bc4363087ee68c64f99e8ddcce2fb99405bbee"},
+    {"name": "libnpy", "version": "1.0.1", "file": "libnpy-1.0.1.tar.gz", "root": "libnpy-1.0.1", "sha256": "43452a4db1e8c1df606c64376ea1e32789124051d7640e7e4e8518ab4f0fba44"},
+    {"name": "NEP_CPU", "version": "site-main-content-pinned", "file": "nep-main.tar.gz", "root": "NEP_CPU-main", "sha256": "68cea08bf8356fd0584180a18ecb34c3346670a3ab797f93796d77c8cfcfaba1"},
+    {"name": "RapidJSON", "version": "1.1.0", "file": "rapidjson-master.tar.gz", "root": "rapidjson-master", "sha256": "cbd95bd377711319c1b7e0236ca96031552496417a92f366a0c8d6d8419e02df"},
+    {"name": "cereal", "version": "1.3.2", "file": "cereal-master.tar.gz", "root": "cereal-master", "sha256": "fdcadff45da32c5c49edd2e075f760893c528c621f137b4557b5f81c14c3892b"},
+    {"name": "LibTorch", "version": "2.1.2-cpu-cxx11-abi", "file": "libtorch-2.1.2.zip", "root": "libtorch", "sha256": "904b764df6106a8a35bef64c4b55b8c1590ad9d071eb276e680cf42abafe79e9"}
+  ]
+}

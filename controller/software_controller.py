@@ -20,7 +20,9 @@ def contract_files(software):
     common = ["software_controller.py", "remote_controller.py", "source_cache.py", "create_rootfs.sh", "environment.sh"]
     if software == "abacus":
         return common + ["container_entry.sh", "abacus_build.sh", "runtime_controller.py",
-                         "gpu_feature_controller.py", "gpu_feature_runtime.sh", "abacus"]
+                         "gpu_feature_controller.py", "gpu_feature_runtime.sh", "abacus",
+                         "abacus_dependencies.py", "abacus_dependencies.sh",
+                         "abacus_dependency_lock.json", "abacus_features.py"]
     if software == "cp2k":
         return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k"]
     raise ValueError("unknown software contract")
@@ -254,14 +256,19 @@ def render_job(args):
     # Host-provided, read-only interpreter; not a binary writable by a prior build.
     entrypoint = "container_entry.sh" if args.software == "abacus" else "cp2k_container_entry.sh"
     argv = ["/usr/bin/bash", f"/control/{entrypoint}", "build", args.software, sha, args.version, args.target]
-    extra_binds = ((Path("/opt/apps"), "/opt/apps"),
-                   (ROOT / "cache/cp2k-dependencies", "/input/dependencies")) if args.software == "cp2k" else ()
+    if args.software == "abacus":
+        from abacus_dependencies import dependency_bind
+        extra_binds = (dependency_bind(),)
+    else:
+        extra_binds = ((Path("/opt/apps"), "/opt/apps"),
+                       (ROOT / "cache/cp2k-dependencies", "/input/dependencies"))
     def container(phase, final=False):
         cmd = argv.copy()
         cmd[2] = phase
         return container_command(sif if final else image, cmd, overlay=None if final else overlay,
                                  control=CONTROL, repository=None if final else repo,
-                                 jobs=args.jobs, gpu=bool(target["gpus"]), extra_binds=extra_binds)
+                                 jobs=args.jobs, gpu=bool(target["gpus"]),
+                                 extra_binds=() if final and args.software == "abacus" else extra_binds)
     emit = container_command(image, ["/usr/bin/cat", "/workspace/final.squashfs"],
                              overlay=str(overlay) + ":ro", jobs=args.jobs)
     q = shlex.quote

@@ -58,7 +58,9 @@ def main():
     common = ["software_controller.py", "remote_controller.py", "source_cache.py",
               "runtime_controller.py", "create_rootfs.sh"]
     recipe = (["container_entry.sh", "environment.sh", "abacus_build.sh",
-               "gpu_feature_controller.py", "gpu_feature_runtime.sh"]
+               "gpu_feature_controller.py", "gpu_feature_runtime.sh",
+               "abacus_dependencies.py", "abacus_dependencies.sh",
+               "abacus_dependency_lock.json", "abacus_features.py"]
               if software == "abacus" else
               ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh"])
     for name in common + recipe:

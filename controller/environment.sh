@@ -12,6 +12,10 @@ module purge
 module use /opt/modules/modulefiles/devtools
 module load cmake/3.31.6 openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto
 module load fftw/3.3.10 libxc/7.0.0-auto saiblas/2603-gnu-auto elpa/2026.02.001-2603-gnu
+[[ "${ELPA_ROOT:-}" == /opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia ]] || {
+    echo "required system ELPA 2026.02.001 module did not resolve" >&2
+    return 2
+}
 module load cuda/12.9.1
 if [[ "$target" != dsprhbm ]]; then
     module load nvmplibs/26.7-tmp

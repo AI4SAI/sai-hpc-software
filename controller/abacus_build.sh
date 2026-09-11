@@ -34,6 +34,8 @@ if [[ "$target" != dsprhbm ]]; then
   opts+=(-DENABLE_CUSOLVERMP=ON -DENABLE_CUBLASMP=ON
          -DENABLE_NCCL_PARALLEL_DEVICE=ON)
 fi
+source /control/abacus_dependencies.sh
+opts+=("${abacus_dependency_options[@]}")
 opts+=("-DCMAKE_C_FLAGS=-march=$cpu_arch -mtune=$cpu_tune"
       "-DCMAKE_CXX_FLAGS=-march=$cpu_arch -mtune=$cpu_tune")
 # ABACUS commit 1497232 omits the declarations used by its cuSOLVERMp CUDA
