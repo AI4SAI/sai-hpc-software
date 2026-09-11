@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Trusted host controller. External code only runs behind the container policy."""
 import argparse
+import fcntl
 import hashlib
 import json
 import os
@@ -10,6 +11,7 @@ import subprocess
 import time
 from remote_controller import TARGETS, safe_name, safe_sha, container_command
 from source_cache import checksum
+from module_publication import publish_module, validate_module
 
 ROOT = Path(os.environ.get("SAI_SOFTWARE_ROOT", Path.home() / "sai-hpc-software")).resolve()
 CONTROL = Path(__file__).resolve().parent
@@ -17,7 +19,7 @@ CONTROL = Path(__file__).resolve().parent
 CONTRACT_SCHEMA = 2
 
 def contract_files(software):
-    common = ["software_controller.py", "remote_controller.py", "source_cache.py", "create_rootfs.sh", "environment.sh"]
+    common = ["software_controller.py", "remote_controller.py", "source_cache.py", "module_publication.py", "create_rootfs.sh", "environment.sh"]
     if software == "abacus":
         return common + ["container_entry.sh", "abacus_build.sh", "runtime_controller.py",
                          "gpu_feature_controller.py", "gpu_feature_runtime.sh", "abacus"]
@@ -135,6 +137,8 @@ def validate_candidate(manifest, artifact, *, published=False):
     if published and (manifest.get("verified") is not True or manifest.get("published") is not True):
         raise ValueError("artifact has not passed the publication gate")
     validate_acceptance(manifest)
+    if published:
+        validate_module(manifest, artifact)
 
 def call(argv, **kw):
     return subprocess.run([str(x) for x in argv], check=True, text=True, **kw)
@@ -155,6 +159,17 @@ def init(args):
 
 
 def publish_runtime_entry(request, artifact, manifest):
+    """Serialize a target's current image/module pointer updates."""
+    if artifact.parent.resolve() != artifact.parent:
+        raise ValueError('untrusted publication target directory')
+    lock_path = artifact.parent / '.publication.lock'
+    descriptor = os.open(lock_path, os.O_CREAT | os.O_RDWR | os.O_NOFOLLOW, 0o600)
+    with os.fdopen(descriptor, 'w') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        _publish_runtime_entry(request, artifact, manifest)
+
+
+def _publish_runtime_entry(request, artifact, manifest):
     """Atomically expose a verified image and its trusted host launcher."""
     validate_candidate(manifest, artifact)
     # Older ABACUS unit fixtures predate the explicit software field.
@@ -181,7 +196,8 @@ def publish_runtime_entry(request, artifact, manifest):
     else:
         raise ValueError("no trusted runtime publisher for this software")
     launcher = Path(request["controller"]) / launcher_name
-    if not launcher.is_file() or launcher.is_symlink():
+    if (not launcher.is_file() or launcher.is_symlink() or launcher.resolve() != launcher or
+            not launcher.is_relative_to(ROOT / 'controller')):
         raise ValueError("trusted runtime launcher is missing")
     expected_launcher = CONTROL / launcher_name
     if not expected_launcher.exists():
@@ -192,32 +208,15 @@ def publish_runtime_entry(request, artifact, manifest):
     for proof_name in required_acceptance(software, request["target"]):
         if manifest[proof_name].get("launcher_sha256") != checksum(launcher):
             raise ValueError("publication launcher was not runtime-tested")
+    manifest.update(publish_module(ROOT, request, artifact, launcher, module_lines, description))
     target_dir = artifact.parent
     current_tmp = target_dir / f".current-{os.getpid()}.sif"
     current = target_dir / "current.sif"
     current_tmp.symlink_to(artifact.name)
     os.replace(current_tmp, current)
 
-    module_dir = ROOT / f"modulefiles/apps/{module_name}"
-    module_dir.mkdir(parents=True, exist_ok=True)
-    module_path = module_dir / safe_name(request["version"])
-    module_tmp = module_dir / f".{request['version']}-{os.getpid()}.tmp"
-    module_tmp.write_text("\n".join([
-        "#%Module1.0",
-        f"module-whatis \"{description} {request['version']} from verified SAI SIF artifacts\"",
-        f"conflict {module_name}",
-        "prepend-path MODULEPATH /opt/modules/modulefiles/devtools",
-        "module load apptainer/1.4.4",
-        *module_lines,
-        f"setenv SAI_SOFTWARE_ROOT {ROOT}",
-        f"prepend-path PATH {launcher.parent}",
-        "",
-    ]))
-    module_tmp.chmod(0o444)
-    os.replace(module_tmp, module_path)
     manifest["runtime_launcher"] = str(launcher)
     manifest["runtime_launcher_sha256"] = checksum(launcher)
-    manifest["modulefile"] = str(module_path)
 
 def publish(args):
     r = task_dir(args.run_id)

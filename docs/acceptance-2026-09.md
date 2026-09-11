@@ -81,7 +81,29 @@ V100-SXM2-32GB / sm70；有 AVX-512、无 VNNI。GCC 原生选项为 skylake-avx
 站点 auto 模块选择 `openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2` 和
 `saiblas/2603-gnu-avx2`，并复用系统 ELPA 2026.02.001。
 [`34599259331`](https://github.com/AI4SAI/sai-hpc-software/actions/runs/34599259331)
-已提交该目标的原生构建（Slurm `1270988`）；截至本条记录尚在运行，不能宣称验收通过。
+已全部成功：原生构建 `1270988`，双节点 PW `1272960`，GPU 专项 `1272980`，
+三个作业均 `COMPLETED 0:0`。运行节点为 `8v100v0n01,8v100v0n02`。
+PW 能量 `-4869.7470519499747752 eV`，Si2 cuSOLVERMp 能量
+`-196.6221723701321 eV`，GaAs BPCG/NCCL 能量 `-4869.747051979224 eV`。
+原始日志记录实际 `cusolverMpSygvd` 和跨节点 `AllGather ... [nranks=2]`。
+SIF SHA-256 为 `d7637612daee98484f47748e0642969f89895f2f802e9b35763089fcbbf028b0`。
+这证明第四分区的原生构建和基础科学/GPU 门槛，仍不等于独立全功能分支的性能验收。
+
+### module 分区隔离
+
+发现同版本 module 由最后完成的分区覆盖其 launcher PATH，CP2K 还可能覆盖 CPU/GPU
+依赖选择。修复为共用 selector + 每分区 immutable `<run>.module`，后者同时固定已经
+验收的 SIF 和 launcher；缓存重新校验 selector、fragment 和 launcher。
+同 target 发布串行加锁，避免两个 current 指针的并发交错；已加载 module 保留自己的
+run token，更新其他分区或同分区的新版本不改变其镜像/launcher，卸载仍使用原 token。
+
+真实 Lmod 探针 `1273310` 在 DSPRHBM `d9470n01` 完成 `0:0`，验证跨分区发布不改变
+CPU 选择、更新后卸载旧 pair、重新加载新 pair 和无执行的 `module show`。
+日志为 `runs/module-publication-probe-20260911-v2/results/slurm-1273310.log`。
+探针只使用 `experimental/module-publication-20260911-v2` 中明确标记的 module 测试元数据，
+没有将它们冒充科学 SIF，也没有更改生产 module。首次探针 `1273208` 在 reload 时因站点
+Lmod shell wrapper 不兼容 `set -u` 而失败；第二次在 module 调用期间关闭 nounset 后通过。
+这项新发布逻辑未被前述 `d25c080` 的旧构建运行使用，需要后续新契约发布落地。
 
 ## CP2K 实际进展复核（2026-09-11）
 
