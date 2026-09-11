@@ -10,6 +10,14 @@ case "$target" in
   dsprhbm) accel=NONE; gpu_arch=; cpu_flags=-march=x86-64-v4; dbcsr="$site/dbcsr-2.9.0/lib/cmake/dbcsr" ;;
   4v100-avx512) accel=CUDA; gpu_arch=70; cpu_flags=-march=znver4; dbcsr="$site/dbcsr-2.9.0-cuda/lib/cmake/dbcsr" ;;
   16v100-avx2) accel=CUDA; gpu_arch=70; cpu_flags=-march=znver3; dbcsr="$site/dbcsr-2.9.0-cuda/lib/cmake/dbcsr" ;;
+  8v100v0-avx512)
+    accel=CUDA; gpu_arch=70; cpu_flags='-march=native -mtune=native'
+    dbcsr="$site/dbcsr-2.9.0-cuda/lib/cmake/dbcsr"
+    native=$(gcc -march=native -mtune=native -Q --help=target)
+    printf '%s\n' "$native" | grep -E 'march=|mtune=|mavx'
+    grep -Eq 'march=[[:space:]]+skylake-avx512' <<< "$native"
+    grep -q 'Gold 6146' /proc/cpuinfo
+    ;;
   a100) accel=CUDA; gpu_arch=80; cpu_flags=-march=x86-64-v3; dbcsr="$site/dbcsr-2.9.0-cuda/lib/cmake/dbcsr" ;;
   *) echo "unknown CP2K target: $target" >&2; exit 2 ;;
 esac
@@ -19,6 +27,10 @@ module use /opt/modules/modulefiles/devtools
 module load cmake/3.31.6 openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto \
   fftw/3.3.10 libxc/7.0.0-auto saiblas/2603-gnu-auto elpa/2026.02.001-2603-gnu
 if [[ "$accel" == CUDA ]]; then module load cuda/12.9.1 nvmplibs/26.7-tmp; fi
+if [[ "$target" == 8v100v0-avx512 ]]; then
+  [[ "${OPAL_PREFIX:?}" == *-avx2 ]]
+  [[ "${OPENBLAS_ROOT:?}" == *-avx2 ]]
+fi
 
 new_deps=/input/dependencies/tblite-dependencies.tar.gz
 [[ -s "$new_deps" ]] || { echo "verified tblite/DFT-D4 dependency bundle is required" >&2; exit 1; }

@@ -1,0 +1,42 @@
+{
+  "schema": 1,
+  "tracks": ["development", "prerelease", "release"],
+  "partitions": {
+    "dsprhbm": "DSPRHBM",
+    "4v100-avx512": "4V100",
+    "16v100-avx2": "16V100",
+    "8v100v0-avx512": "8V100V0"
+  },
+  "software": {
+    "abacus": {
+      "repository": "deepmodeling/abacus-develop",
+      "development_ref": "develop",
+      "tracks": ["development", "prerelease", "release"],
+      "targets": ["dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"]
+    },
+    "cp2k": {
+      "repository": "cp2k/cp2k",
+      "development_ref": "master",
+      "tracks": ["development", "prerelease", "release"],
+      "targets": ["dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"]
+    },
+    "gpumd": {
+      "repository": "brucefan1983/GPUMD",
+      "development_ref": "master",
+      "tracks": ["development", "prerelease", "release"],
+      "targets": ["4v100-avx512", "16v100-avx2", "8v100v0-avx512"]
+    },
+    "deepmd-kit": {
+      "repository": "deepmodeling/deepmd-kit",
+      "development_ref": "master",
+      "tracks": ["development", "prerelease", "release"],
+      "targets": ["4v100-avx512", "16v100-avx2", "8v100v0-avx512"]
+    },
+    "lammps": {
+      "repository": "lammps/lammps",
+      "development_ref": "develop",
+      "tracks": ["development", "prerelease", "release"],
+      "targets": ["4v100-avx512", "16v100-avx2", "8v100v0-avx512"]
+    }
+  }
+}

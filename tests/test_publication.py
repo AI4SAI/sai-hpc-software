@@ -15,6 +15,8 @@ sys.path.insert(0, str(ROOT / "controller"))
 import software_controller as controller
 import runtime_controller as runtime
 from source_cache import checksum
+from release_contract import make_identity
+from delivery_layout import artifact_path
 
 
 class PublicationTests(unittest.TestCase):
@@ -32,7 +34,10 @@ class PublicationTests(unittest.TestCase):
         self.addCleanup(patch.stopall)
         patch.object(controller, "ROOT", self.root).start()
         patch.object(controller, "CONTROL", self.control).start()
-        self.image = self.root / "containers/software/abacus/v1/dsprhbm/build.sif"
+        patch.object(runtime, "ROOT", self.root).start()
+        self.identity = make_identity("abacus", "development", "develop", "a" * 40, "v1",
+                                      controller.recipe_fingerprint("abacus"), "dsprhbm")
+        self.image = artifact_path(self.root, self.identity, "build")
         self.image.parent.mkdir(parents=True)
         self.image.write_bytes(b"candidate image")
         self.task = self.root / "runs/build"
@@ -42,11 +47,14 @@ class PublicationTests(unittest.TestCase):
         (self.task / "results/status.json").write_text(json.dumps(
             {"job": "100", "state": "COMPLETED", "exit_code": "0:0", "verified": True}))
         self.request = {"software": "abacus", "version": "v1", "target": "dsprhbm",
+                        "identity": self.identity, "track": "development", "source_ref": "develop",
+                        "contract_schema": controller.CONTRACT_SCHEMA,
                         "sha": "a" * 40, "controller": str(self.control),
                         "recipe_sha256": controller.recipe_fingerprint("abacus")}
         (self.task / "request.json").write_text(json.dumps(self.request))
         (self.task / "artifact.path").write_text(str(self.image) + "\n")
         self.manifest = {"software": "abacus", "version": "v1", "target": "dsprhbm",
+                         "identity": self.identity,
                          "source_sha": "a" * 40, "artifact": str(self.image),
                          "sha256": checksum(self.image), "build_verified": True,
                          "verified": False, "published": False,
@@ -61,6 +69,7 @@ class PublicationTests(unittest.TestCase):
         task = self.root / "runtime-tests/acceptance"
         (task / "results").mkdir(parents=True)
         request = {"artifact": str(self.image), "artifact_sha256": checksum(self.image),
+                   "identity": self.identity, "version": "v1", "build_run_id": "build",
                    "target": "dsprhbm", "nodes": 2, "ranks_per_node": 8, "ranks": 16,
                    "cpus_per_task": 2,
                    "gpus_per_node": 0, "launcher": str(self.control / "abacus"),
@@ -92,7 +101,8 @@ class PublicationTests(unittest.TestCase):
     def lookup(self):
         output = io.StringIO()
         with redirect_stdout(output):
-            controller.lookup(argparse.Namespace(software="abacus", version="v1", target="dsprhbm", sha="a" * 40))
+            controller.lookup(argparse.Namespace(software="abacus", version="v1", target="dsprhbm", sha="a" * 40,
+                                                 track="development", source_ref="develop"))
         return json.loads(output.getvalue())
 
     def publish(self):
@@ -151,6 +161,7 @@ class PublicationTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 self.publish()
         self.manifest["target"] = "dsprhbm"
+        self.save()
         self.acceptance()
         (self.task / "results/status.json").write_text(json.dumps(
             {"job": "100", "state": "FAILED", "exit_code": "1:0", "verified": False}))

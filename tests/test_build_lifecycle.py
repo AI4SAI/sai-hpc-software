@@ -15,6 +15,8 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "controller"))
 import ci
+from delivery_layout import artifact_path
+from release_contract import make_identity
 import software_controller as controller
 
 
@@ -42,14 +44,18 @@ class BuildMonitorLifecycleTests(unittest.TestCase):
         for name in controller.contract_files(software):
             (self.control / name).write_text("# trusted contract fixture: " + name + "\n")
         (self.control / software).chmod(0o555)
-        self.image = self.root / f"containers/software/{software}/v1/dsprhbm/build.sif"
+        identity = make_identity(software, "development", "develop" if software == "abacus" else "master",
+                                 "a" * 40, "v1", controller.recipe_fingerprint(software), "dsprhbm")
+        self.request = {"software": software, "version": "v1", "target": "dsprhbm",
+                        "sha": "a" * 40, "controller": str(self.control),
+                        "identity": identity, "track": identity["track"],
+                        "source_ref": identity["source_ref"],
+                        "contract_schema": controller.CONTRACT_SCHEMA,
+                        "recipe_sha256": controller.recipe_fingerprint(software)}
+        self.image = artifact_path(self.root, identity, "build")
         self.image.parent.mkdir(parents=True, exist_ok=True)
         self.image.write_bytes(b"candidate SIF")
         (self.task / "artifact.path").write_text(str(self.image) + "\n")
-        self.request = {"software": software, "version": "v1", "target": "dsprhbm",
-                        "sha": "a" * 40, "controller": str(self.control),
-                        "contract_schema": controller.CONTRACT_SCHEMA,
-                        "recipe_sha256": controller.recipe_fingerprint(software)}
         self.save_request()
 
     def save_request(self):
@@ -68,7 +74,9 @@ class BuildMonitorLifecycleTests(unittest.TestCase):
         output = io.StringIO()
         with redirect_stdout(output):
             controller.lookup(argparse.Namespace(software=self.software, version="v1",
-                                                  target="dsprhbm", sha="a" * 40))
+                                                  target="dsprhbm", sha="a" * 40,
+                                                  track=self.request["track"],
+                                                  source_ref=self.request["source_ref"]))
         return json.loads(output.getvalue())
 
     def publish(self):
@@ -139,14 +147,23 @@ class CiLifecycleTests(unittest.TestCase):
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
 
-    def execute(self, *, software="abacus", target="4v100-avx512", fail_monitor=None):
+    def execute(self, *, software="abacus", target="4v100-avx512", fail_monitor=None,
+                event="workflow_dispatch", version="v1", track="development",
+                prior=None, alter_identity=None, published_path=None, resume=""):
         commands = []
+        self.remote_commands = []
+        self.uploads = []
         upstream = "a" * 40
+        source_ref = "develop" if software == "abacus" else "master"
+        identity = make_identity(software, track, source_ref, upstream, version, "c" * 64, target)
+        run_id = f"123-1-{track}-{target}-" + upstream[:12]
+        expected_artifact = artifact_path(Path("/home/testuser/sai-hpc-software"), identity, run_id)
         environment = {"SOFTWARE": software, "TARGET": target, "SOURCE_SHA": upstream,
-                       "GITHUB_SHA": "b" * 40, "SOFTWARE_VERSION": "v1",
+                       "GITHUB_SHA": "b" * 40, "SOFTWARE_VERSION": version,
+                       "SOURCE_REF": source_ref, "RELEASE_TRACK": track,
                        "REMOTE_USER": "testuser", "GITHUB_RUN_ID": "123",
                        "GITHUB_RUN_ATTEMPT": "1", "RUNNER_TEMP": str(self.root),
-                       "GITHUB_EVENT_NAME": "workflow_dispatch"}
+                       "GITHUB_EVENT_NAME": event, "RESUME_RUN": resume}
 
         def fake_run(argv, **kwargs):
             argv = [str(value) for value in argv]
@@ -156,12 +173,19 @@ class CiLifecycleTests(unittest.TestCase):
                 if remote[0] == "python3":
                     script, operation = Path(remote[1]).name, remote[2]
                     commands.append((script, operation))
+                    self.remote_commands.append((script, remote[2:]))
                     if operation == "monitor" and script == fail_monitor:
                         raise subprocess.CalledProcessError(1, argv)
                     if (script, operation) == ("source_cache.py", "inventory"):
                         stdout = json.dumps({"cache_shas": [upstream]})
+                    elif (script, operation) == ("software_controller.py", "identity"):
+                        stdout = json.dumps(identity if alter_identity is None else alter_identity(identity))
+                    elif (script, operation) == ("software_controller.py", "lookup"):
+                        stdout = json.dumps(prior or {})
             elif argv[0] == "scp" and argv[-2].endswith("/artifact.path"):
-                Path(argv[-1]).write_text("/trusted/candidate.sif\n")
+                Path(argv[-1]).write_text(str(published_path or expected_artifact) + "\n")
+            elif argv[0] == "scp":
+                self.uploads.append(Path(argv[-2]).name)
             return subprocess.CompletedProcess(argv, 0, stdout=stdout, stderr="")
 
         with patch.dict(os.environ, environment, clear=True), \
@@ -177,6 +201,7 @@ class CiLifecycleTests(unittest.TestCase):
 
     def test_gpu_publish_occurs_after_both_acceptance_monitors(self):
         self.assertEqual(self.execute(), [
+            ("software_controller.py", "identity"),
             ("software_controller.py", "submit"), ("software_controller.py", "monitor"),
             ("runtime_controller.py", "submit"), ("runtime_controller.py", "monitor"),
             ("gpu_feature_controller.py", "submit"), ("gpu_feature_controller.py", "monitor"),
@@ -193,6 +218,7 @@ class CiLifecycleTests(unittest.TestCase):
 
     def test_cpu_runs_automatic_multinode_acceptance_before_publication(self):
         self.assertEqual(self.execute(target="dsprhbm"), [
+            ("software_controller.py", "identity"),
             ("software_controller.py", "submit"), ("software_controller.py", "monitor"),
             ("runtime_controller.py", "submit"), ("runtime_controller.py", "monitor"),
             ("software_controller.py", "publish"),
@@ -200,9 +226,69 @@ class CiLifecycleTests(unittest.TestCase):
 
     def test_cp2k_uses_its_build_contract_without_abacus_acceptance(self):
         self.assertEqual(self.execute(software="cp2k", target="dsprhbm"), [
+            ("software_controller.py", "identity"),
             ("software_controller.py", "submit"), ("software_controller.py", "monitor"),
             ("software_controller.py", "publish"),
         ])
+
+    def test_ci_uploads_identity_dependencies_before_requesting_remote_identity(self):
+        self.execute()
+        self.assertTrue({"release_contract.py", "resolve_source.py", "delivery_layout.py"} <= set(self.uploads))
+        self.assertEqual(self.remote_commands[0], ("software_controller.py", [
+            "identity", "abacus", "a" * 40, "v1", "4v100-avx512",
+            "--track", "development", "--source-ref", "develop"]))
+        self.assertEqual(json.loads((self.root / "results/identity.json").read_text())["recipe_sha256"], "c" * 64)
+
+    def test_long_version_is_preserved_but_not_part_of_run_id(self):
+        version = "v" * 1000
+        self.execute(version=version, track="prerelease", resume="previous-run")
+        submit = next(argv for script, argv in self.remote_commands
+                      if (script, argv[0]) == ("software_controller.py", "submit"))
+        self.assertEqual(submit[2], "123-1-prerelease-4v100-avx512-" + "a" * 12)
+        self.assertLess(len(submit[2]), 100)
+        self.assertEqual(submit[4], version)
+        self.assertEqual(submit[-6:], ["--track", "prerelease", "--source-ref", "develop",
+                                      "--resume-run", "previous-run"])
+        runtime = next(argv for script, argv in self.remote_commands
+                       if (script, argv[0]) == ("runtime_controller.py", "submit"))
+        self.assertEqual(runtime[2:], [version, "4v100-avx512", "--build-run-id", submit[2]])
+        gpu = next(argv for script, argv in self.remote_commands
+                   if (script, argv[0]) == ("gpu_feature_controller.py", "submit"))
+        self.assertEqual(gpu[2:], runtime[2:])
+
+    def test_schedule_identity_and_lookup_use_same_resolved_provenance(self):
+        prior = {"artifact": "/trusted/prior.sif"}
+        self.assertEqual(self.execute(event="schedule", track="release", prior=prior), [
+            ("software_controller.py", "identity"), ("software_controller.py", "lookup")])
+        self.assertEqual(self.remote_commands[-1], ("software_controller.py", [
+            "lookup", "abacus", "v1", "4v100-avx512", "a" * 40,
+            "--track", "release", "--source-ref", "develop"]))
+        self.assertEqual((self.root / "results/artifact.path").read_text(), prior["artifact"] + "\n")
+
+    def test_schedule_cache_miss_preserves_identity_flags_for_submission(self):
+        self.execute(event="schedule", track="release")
+        submit = next(argv for script, argv in self.remote_commands
+                      if (script, argv[0]) == ("software_controller.py", "submit"))
+        self.assertEqual(submit[-4:], ["--track", "release", "--source-ref", "develop"])
+
+    def test_remote_identity_mismatch_or_forged_path_stops_before_submission(self):
+        for field, value in (("software", "cp2k"), ("track", "release"), ("source_ref", "v2"),
+                             ("source_sha", "d" * 40), ("source_version", "v2"), ("target", "dsprhbm")):
+            def alter(identity):
+                arguments = {key: identity[key] for key in (
+                    "software", "track", "source_ref", "source_sha", "source_version", "recipe_sha256", "target")}
+                arguments[field] = value
+                return make_identity(**arguments)
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, "identity differs"):
+                self.execute(alter_identity=alter)
+            self.assertFalse(any(argv[0] == "submit" for _, argv in self.remote_commands))
+        with self.assertRaises(ValueError):
+            self.execute(alter_identity=lambda identity: dict(identity, install_prefix="/forged"))
+        self.assertFalse(any(argv[0] == "submit" for _, argv in self.remote_commands))
+
+    def test_published_artifact_must_match_canonical_layout(self):
+        with self.assertRaisesRegex(ValueError, "artifact differs"):
+            self.execute(published_path="/trusted/wrong-layout.sif")
 
 
 if __name__ == "__main__":

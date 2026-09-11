@@ -14,6 +14,8 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "controller"))
 import runtime_controller as runtime
+from delivery_layout import CONTRACT_SCHEMA, artifact_path
+from release_contract import make_identity
 from source_cache import checksum
 
 
@@ -26,7 +28,8 @@ class RuntimeCliTests(unittest.TestCase):
         self.root = Path(self.temporary.name)
         self.control = self.root / "controller/reviewed/test"
         self.control.mkdir(parents=True)
-        for name in ("runtime_controller.py", "remote_controller.py", "source_cache.py"):
+        for name in ("runtime_controller.py", "remote_controller.py", "source_cache.py",
+                     "release_contract.py", "resolve_source.py", "delivery_layout.py"):
             shutil.copy2(ROOT / "controller" / name, self.control / name)
         shutil.copy2(ROOT / "controller/abacus_runtime.sh", self.control / "abacus")
         (self.control / "abacus").chmod(0o555)
@@ -37,6 +40,9 @@ class RuntimeCliTests(unittest.TestCase):
         self.command("sacct", "printf '12345|COMPLETED|0:0|\\n'")
         self.env = dict(os.environ, SAI_SOFTWARE_ROOT=str(self.root),
                         PATH=str(self.bin) + os.pathsep + os.environ["PATH"])
+        patcher = patch.object(runtime, "ROOT", self.root)
+        patcher.start()
+        self.addCleanup(patcher.stop)
 
     def command(self, name, body):
         path = self.bin / name
@@ -44,17 +50,26 @@ class RuntimeCliTests(unittest.TestCase):
         path.chmod(0o755)
 
     def candidate(self, target, *, legacy=False, build_verified=True):
-        artifact = self.root / f"containers/software/abacus/v1/{target}/build.sif"
-        artifact.parent.mkdir(parents=True)
+        self.identity = make_identity("abacus", "development", "develop", "a" * 40,
+                                      "v1", "b" * 64, target)
+        artifact = (self.root / f"containers/software/abacus/v1/{target}/build.sif" if legacy else
+                    artifact_path(self.root, self.identity, "build"))
+        artifact.parent.mkdir(parents=True, exist_ok=True)
         artifact.write_bytes(b"test candidate SIF")
-        manifest = {"artifact": str(artifact), "sha256": checksum(artifact),
+        manifest = {"software": "abacus", "artifact": str(artifact), "sha256": checksum(artifact),
                     "version": "v1", "target": target, "verified": legacy}
+        request = {"software": "abacus", "version": "v1", "target": target, "sha": "a" * 40,
+                   "controller": str(self.control), "recipe_sha256": "b" * 64}
         if not legacy:
-            manifest["build_verified"] = build_verified
+            manifest.update(build_verified=build_verified, contract_schema=CONTRACT_SCHEMA,
+                            source_sha="a" * 40, recipe_sha256="b" * 64, identity=self.identity)
+            request.update(identity=self.identity, contract_schema=CONTRACT_SCHEMA,
+                           track=self.identity["track"], source_ref=self.identity["source_ref"])
         artifact.with_suffix(".json").write_text(json.dumps(manifest))
         task = self.root / "runs/build"
-        task.mkdir(parents=True)
+        task.mkdir(parents=True, exist_ok=True)
         (task / "artifact.path").write_text(str(artifact) + "\n")
+        (task / "request.json").write_text(json.dumps(request))
         return artifact
 
     def cli(self, *args, check=True):
@@ -70,6 +85,7 @@ class RuntimeCliTests(unittest.TestCase):
     def scientific_results(self):
         """Simulate job output, separately from the fake scheduler's exit status."""
         request = json.loads((self.task() / "request.json").read_text())
+        self.assertEqual(request["identity"], self.identity)
         results = self.task() / "results"
         (results / "ranks").mkdir(exist_ok=True)
         mpi_isa = runtime.TARGETS[request["target"]]["dependency_isa"]
@@ -110,12 +126,14 @@ class RuntimeCliTests(unittest.TestCase):
         self.assertIn('NF != 6 || $6 == ""', script)
         self.assertNotIn('$5 == ""', script)
         self.assertIn(str(artifact), script)
+        self.assertIn(self.identity["install_prefix"], script)
         self.assertIn(str(self.control / "abacus"), script)
         self.assertEqual(request["job_script_sha256"], checksum(self.task() / "job.sbatch"))
         self.scientific_results()
         self.cli("monitor", "runtime", "--timeout", "1", "--interval", "0")
         manifest = json.loads(artifact.with_suffix(".json").read_text())
         proof = manifest["multinode_runtime"]
+        self.assertEqual(proof["identity"], self.identity)
         self.assertEqual(proof["ranks"], 16)
         self.assertEqual(proof["gpus_per_node"], 0)
         self.assertEqual(proof["artifact_sha256"], checksum(artifact))
@@ -160,15 +178,49 @@ class RuntimeCliTests(unittest.TestCase):
         self.scientific_results()
         self.cli("monitor", "runtime", "--timeout", "1", "--interval", "0")
 
-    def test_legacy_manual_candidate_allowed_but_explicit_failed_build_rejected(self):
-        artifact = self.candidate("dsprhbm", legacy=True)
-        with patch.object(runtime, "ROOT", self.root):
-            self.assertEqual(runtime.build_artifact("build", "v1", "dsprhbm"), artifact)
-            manifest = json.loads(artifact.with_suffix(".json").read_text())
-            manifest["build_verified"] = False
-            artifact.with_suffix(".json").write_text(json.dumps(manifest))
-            with self.assertRaisesRegex(ValueError, "manifest is invalid"):
+    def test_legacy_or_explicit_failed_build_cannot_receive_new_acceptance(self):
+        for options in ({"legacy": True}, {"build_verified": False}):
+            with self.subTest(options=options):
+                self.candidate("dsprhbm", **options)
+                with self.assertRaises(ValueError):
+                    runtime.build_artifact("build", "v1", "dsprhbm")
+
+    def test_build_request_must_have_the_exact_new_identity(self):
+        self.candidate("dsprhbm")
+        path = self.root / "runs/build/request.json"
+        original = json.loads(path.read_text())
+        for kind in ("missing", "track", "schema", "sha"):
+            altered = json.loads(json.dumps(original))
+            if kind == "missing":
+                altered.pop("identity")
+            elif kind == "track":
+                altered["identity"] = make_identity("abacus", "release", "develop", "a" * 40,
+                                                     "v1", "b" * 64, "dsprhbm")
+                altered["track"] = "release"
+            elif kind == "schema":
+                altered["contract_schema"] = CONTRACT_SCHEMA - 1
+            else:
+                altered["sha"] = "c" * 40
+            path.write_text(json.dumps(altered))
+            with self.subTest(kind=kind), self.assertRaises(ValueError):
                 runtime.build_artifact("build", "v1", "dsprhbm")
+
+    def test_evidence_cannot_relabel_a_pinned_artifact_as_another_channel(self):
+        artifact = self.candidate("dsprhbm")
+        self.submit("dsprhbm")
+        self.scientific_results()
+        request = json.loads((self.task() / "request.json").read_text())
+        request["identity"] = make_identity("abacus", "release", "develop", "a" * 40,
+                                             "v1", "b" * 64, "dsprhbm")
+        with self.assertRaises(ValueError):
+            runtime.verify_evidence(self.task(), request)
+        request["identity"] = self.identity
+        sidecar = artifact.with_suffix(".json")
+        original = json.loads(sidecar.read_text())
+        for field, value in (("contract_schema", CONTRACT_SCHEMA - 1), ("build_verified", False)):
+            sidecar.write_text(json.dumps(dict(original, **{field: value})))
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                runtime.verify_evidence(self.task(), request)
 
     def test_failed_monitor_clears_only_its_own_prior_proof(self):
         artifact = self.candidate("dsprhbm")
@@ -252,8 +304,10 @@ class RuntimeCliTests(unittest.TestCase):
                     runtime.verify_evidence(self.task(), request)
 
     def test_cpu_trace_validation_allows_empty_cuda_but_requires_mpi_isa(self):
+        artifact = self.candidate("dsprhbm")
         args = argparse.Namespace(run_id="cpu", version="v1", target="dsprhbm",
-                                  nodes=2, gpus_per_node=None, minutes=30)
+                                  nodes=2, gpus_per_node=None, minutes=30,
+                                  artifact=str(artifact), identity=self.identity)
         with patch.object(runtime, "ROOT", self.root):
             script = runtime.render_job(args)
         check = next(shlex.split(line)[3] for line in script.splitlines()
@@ -265,8 +319,10 @@ class RuntimeCliTests(unittest.TestCase):
             self.assertEqual(result.returncode, status)
 
     def test_energy_gate_rejects_missing_nonfinite_and_wrong_energy(self):
+        artifact = self.candidate("dsprhbm")
         args = argparse.Namespace(run_id="cpu", version="v1", target="dsprhbm",
-                                  nodes=2, gpus_per_node=None, minutes=30)
+                                  nodes=2, gpus_per_node=None, minutes=30,
+                                  artifact=str(artifact), identity=self.identity)
         with patch.object(runtime, "ROOT", self.root):
             script = runtime.render_job(args)
         command = next(line for line in script.splitlines() if line.startswith("awk -v actual="))
