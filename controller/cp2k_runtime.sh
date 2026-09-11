@@ -2,26 +2,23 @@
 # Host-MPI launcher for a verified CP2K SIF.
 set -euo pipefail
 : "${SAI_SOFTWARE_ROOT:?load the generated CP2K module first}"
-: "${SAI_CP2K_VERSION:?load the generated CP2K module first}"
+: "${SAI_CP2K_IMAGE:?load a pinned identity-aware CP2K module first}"
 : "${SLURM_JOB_PARTITION:?CP2K auto selection requires a Slurm allocation}"
 
 case "$SLURM_JOB_PARTITION" in
   DSPRHBM) target=dsprhbm; gpu=false ;;
   4V100) target=4v100-avx512; gpu=true ;;
   16V100) target=16v100-avx2; gpu=true ;;
+  8V100V0) target=8v100v0-avx512; gpu=true ;;
   8A100M40) target=a100; gpu=true ;;
   *) echo "unsupported CP2K partition: $SLURM_JOB_PARTITION" >&2; exit 2 ;;
 esac
 
-catalog="$SAI_SOFTWARE_ROOT/containers/software/cp2k/$SAI_CP2K_VERSION/$target"
-if [[ -n "${SAI_CP2K_IMAGE:-}" ]]; then
-  image=$(realpath -e -- "$SAI_CP2K_IMAGE")
-  [[ "$image" == "$catalog"/*.sif && -f "$image" && ! -L "$SAI_CP2K_IMAGE" ]] || exit 2
-else
-  image="$catalog/current.sif"
-fi
-prefix="/opt/software/cp2k/$SAI_CP2K_VERSION/$target"
-[[ -r "$image" && ! -L "$catalog" ]] || { echo "no verified CP2K image" >&2; exit 2; }
+[[ ! -L "$SAI_CP2K_IMAGE" ]] || exit 2
+image=$(realpath -e -- "$SAI_CP2K_IMAGE")
+[[ "$image" == "$SAI_CP2K_IMAGE" ]] || exit 2
+launcher_control=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
+prefix=$(python3 "$launcher_control/delivery_layout.py" runtime "$SAI_SOFTWARE_ROOT" "$image" cp2k "$target")
 
 workdir=$(pwd -P)
 host_tmp=$(realpath -m -- "${TMPDIR:?set a host MPI TMPDIR below SAI_SOFTWARE_ROOT/runtime}")

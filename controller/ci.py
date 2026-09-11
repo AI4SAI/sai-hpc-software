@@ -9,6 +9,8 @@ import subprocess
 import sys
 import time
 from remote_controller import safe_name, safe_sha, TARGETS
+from delivery_layout import artifact_path
+from release_contract import SOFTWARE, TRACKS, validate_identity
 from source_cache import pack
 
 def run(argv, **kwargs):
@@ -22,14 +24,20 @@ def main():
     if software not in ("abacus", "cp2k", "gpumd"):
         raise ValueError("unknown software recipe")
     target = os.environ["TARGET"]
-    if target not in TARGETS:
+    if target not in SOFTWARE[software]['targets']:
         raise ValueError("unknown target")
     upstream = safe_sha(os.environ["SOURCE_SHA"])
     control_sha = safe_sha(os.environ["GITHUB_SHA"])
-    version = safe_name(os.environ["SOFTWARE_VERSION"])
+    version = os.environ["SOFTWARE_VERSION"]
+    track = os.environ["RELEASE_TRACK"]
+    if track not in TRACKS:
+        raise ValueError("unknown release track")
+    source_ref = os.environ["SOURCE_REF"]
+    provenance_flags = ["--track", track, "--source-ref", source_ref]
     user = safe_name(os.environ["REMOTE_USER"])
     run_prefix = "gpumd-" if software == "gpumd" else ""
-    run_id = safe_name(run_prefix + os.environ["GITHUB_RUN_ID"] + "-" + os.environ["GITHUB_RUN_ATTEMPT"] + "-" + target + "-" + version)
+    run_id = safe_name(run_prefix + "-".join((os.environ["GITHUB_RUN_ID"], os.environ["GITHUB_RUN_ATTEMPT"],
+                                 track, target, upstream[:12])))
     temporary = Path(os.environ["RUNNER_TEMP"])
     key = temporary / "ssh/key"
     known_hosts = Path(__file__).resolve().parents[1] / ".ci/slurm/known_hosts"
@@ -60,7 +68,8 @@ def main():
     ssh(["mkdir", "-p", control, f"{task}/input", f"{task}/results"])
     parent = Path(__file__).resolve().parent
     common = ["software_controller.py", "remote_controller.py", "source_cache.py", "module_publication.py",
-              "runtime_controller.py", "create_rootfs.sh"]
+              "runtime_controller.py", "create_rootfs.sh", "release_contract.py", "resolve_source.py",
+              "delivery_layout.py"]
     recipe = (["container_entry.sh", "environment.sh", "abacus_build.sh",
                "gpu_feature_controller.py", "gpu_feature_runtime.sh"]
               if software == "abacus" else
@@ -75,11 +84,21 @@ def main():
         ssh(["chmod", "0555", f"{control}/{executable}"])
     results = temporary / "results"
     results.mkdir(exist_ok=True)
+    # The uploaded, immutable remote recipe owns the fingerprint. Never invent
+    # an identity from the runner's checkout or from a mutable channel label.
+    identity = validate_identity(json.loads(python("software_controller.py", "identity", software,
+        upstream, version, target, *provenance_flags, capture_output=True).stdout))
+    expected_fields = {"software": software, "track": track, "source_ref": source_ref,
+                       "source_sha": upstream, "source_version": version, "target": target}
+    if any(identity[name] != value for name, value in expected_fields.items()):
+        raise ValueError("remote identity differs from the resolved source")
+    expected_artifact = artifact_path(Path(root), identity, run_id)
+    (results / "identity.json").write_text(json.dumps(identity, sort_keys=True) + "\n")
     # Scheduled trackers reuse only verified, checksum-matching artifacts.
     # Manual dispatch deliberately rebuilds, to allow acceptance and recipe changes.
     if os.environ.get("GITHUB_EVENT_NAME") == "schedule":
         prior = json.loads(python("software_controller.py", "lookup", software, version, target,
-                                  upstream, capture_output=True).stdout)
+                                  upstream, *provenance_flags, capture_output=True).stdout)
         if prior:
             (results / "artifact.path").write_text(prior["artifact"] + "\n")
             (results / "cache-hit.json").write_text(json.dumps(prior) + "\n")
@@ -119,7 +138,8 @@ def main():
     extras = ["--resume-run", safe_name(resume)] if resume else []
     if software == "gpumd":
         extras += ["--jobs", str(TARGETS[target].get("build_jobs", 8))]
-    python("software_controller.py", "submit", software, run_id, upstream, version, target, *extras)
+    python("software_controller.py", "submit", software, run_id, upstream, version, target,
+           *provenance_flags, *extras)
     try:
         python("software_controller.py", "monitor", run_id)
         if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2"):
@@ -139,6 +159,8 @@ def main():
             python("gpumd_acceptance.py", "monitor", scientific_run)
         python("software_controller.py", "publish", run_id)
         run(["scp", "-q", *options, "-P", "12022", f"{remote}:{task}/artifact.path", results / "artifact.path"])
+        if (results / "artifact.path").read_text().strip() != str(expected_artifact):
+            raise ValueError("published artifact differs from the delivery identity layout")
         print((results / "artifact.path").read_text(), flush=True)
     finally:
         # Only logs/metadata travel back; the single SIF stays in the SAI catalog.

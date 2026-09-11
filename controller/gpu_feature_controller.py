@@ -13,6 +13,8 @@ import time
 from remote_controller import TARGETS, safe_name
 from runtime_controller import build_artifact
 from source_cache import checksum
+from release_contract import validate_identity
+from delivery_layout import artifact_path, load_artifact, validate_record, validate_runtime_identity
 
 ROOT = Path(os.environ.get("SAI_SOFTWARE_ROOT", Path.home() / "sai-hpc-software")).resolve()
 CONTROL = Path(__file__).resolve().parent
@@ -43,12 +45,14 @@ def resources(args):
 
 def render_job(args):
     resources(args)
-    safe_name(args.version)
+    identity = validate_identity(args.identity)
+    if identity["source_version"] != args.version or identity["target"] != args.target or identity["software"] != "abacus":
+        raise ValueError("GPU feature arguments differ from identity")
     target = TARGETS[args.target]
     task = run_dir(args.run_id)
     q = shlex.quote
     runtime = CONTROL / "gpu_feature_runtime.sh"
-    prefix = f"/opt/software/abacus/{args.version}/{args.target}"
+    prefix = identity["install_prefix"]
     lines = [
         "#!/usr/bin/env bash",
         f"#SBATCH --job-name=gpu-features-abacus-{safe_name(args.run_id)}",
@@ -99,6 +103,7 @@ def submit(args):
     for name in ("results", "apptainer-runtime", "apptainer-cache", "mpi-runtime"):
         (task / name).mkdir(parents=True)
     args.artifact, args.launcher = str(artifact), str(launcher)
+    args.identity = load_artifact(ROOT, artifact, software="abacus", target=args.target)["identity"]
     request = dict(vars(args), **{k: v for k, v in allocation.items() if k not in vars(args)})
     request.update(artifact_sha256=checksum(artifact), launcher_sha256=checksum(launcher),
                    controller_sha256=checksum(Path(__file__).resolve()),
@@ -121,10 +126,10 @@ def trusted_request(task):
     request = json.loads((task / "request.json").read_text())
     resources(argparse.Namespace(**request))
     artifact = Path(request["artifact"])
-    expected = (ROOT / "containers/software/abacus" / safe_name(request["version"]) /
-                request["target"] / f"{safe_name(request['build_run_id'])}.sif")
+    expected = artifact_path(ROOT, request["identity"], request["build_run_id"])
     if artifact != expected or artifact.resolve() != expected:
         raise ValueError("GPU feature artifact reference changed")
+    validate_runtime_identity(ROOT, request)
     launcher = Path(request["launcher"])
     if launcher != CONTROL / "abacus":
         raise ValueError("GPU feature launcher is not the trusted launcher")
@@ -139,6 +144,7 @@ def trusted_request(task):
 
 def verify_evidence(task, request):
     """Re-read scientific output, topology, and runtime library calls; fail closed."""
+    identity = validate_runtime_identity(ROOT, request)
     files = {}
 
     def read_evidence(path):
@@ -197,7 +203,7 @@ def verify_evidence(task, request):
         if feature == "nccl":
             nccl_collectives.update(COLLECTIVE.search(line).group(1) for line in evidence)
         matched[feature] = evidence[:4]
-    return {"verified": True, "job": job, "artifact_sha256": request["artifact_sha256"],
+    return {"verified": True, "identity": identity, "job": job, "artifact_sha256": request["artifact_sha256"],
             "nodes": 2, "ranks": 2, "nccl_collective": True,
             "nccl_collectives": sorted(nccl_collectives),
             "cusolvermp_eigensolve": True, "final_energy_ev": energies,
@@ -216,12 +222,13 @@ def update_proof(task, run_id, proof=None):
     # checks remain strict, even if execution or a later checksum check failed.
     request = json.loads((task / "request.json").read_text())
     artifact = Path(request["artifact"])
-    expected = (ROOT / "containers/software/abacus" / safe_name(request["version"]) /
-                safe_name(request["target"]) / f"{safe_name(request['build_run_id'])}.sif")
+    expected = artifact_path(ROOT, request["identity"], request["build_run_id"])
     sidecar = artifact.with_suffix(".json")
     if artifact != expected or artifact.resolve() != expected or sidecar.is_symlink():
         raise ValueError("GPU feature manifest reference changed")
     manifest = json.loads(sidecar.read_text())
+    if validate_record(manifest) != validate_identity(request["identity"]):
+        raise ValueError("GPU proof cannot modify another delivery identity")
     if proof is not None:
         if manifest.get("sha256") != request["artifact_sha256"]:
             raise ValueError("GPU feature manifest checksum changed")
