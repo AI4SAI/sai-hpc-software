@@ -14,6 +14,9 @@ from source_cache import pack
 def run(argv, **kwargs):
     return subprocess.run([str(x) for x in argv], check=True, text=True, **kwargs)
 
+def runtime_launchers(software):
+    return ("gpumd", "nep", "gnep") if software == "gpumd" else (software,)
+
 def main():
     software = os.environ.get("SOFTWARE", "abacus")
     if software not in ("abacus", "cp2k", "gpumd"):
@@ -67,14 +70,9 @@ def main():
                   "gpumd_science.py", "gpumd_deepmd_probe.py", "gpumd_acceptance.py"]
     for name in common + recipe:
         upload(parent / name, f"{control}/{name}")
-    launcher_name = software
-    upload(parent / f"{software}_runtime.sh",
-           f"{control}/{launcher_name}")
-    ssh(["chmod", "0555", f"{control}/{launcher_name}"])
-    if software == "gpumd":
-        for executable in ("gpumd", "nep", "gnep"):
-            upload(parent / "gpumd_runtime.sh", f"{control}/{executable}")
-            ssh(["chmod", "0555", f"{control}/{executable}"])
+    for executable in runtime_launchers(software):
+        upload(parent / f"{software}_runtime.sh", f"{control}/{executable}")
+        ssh(["chmod", "0555", f"{control}/{executable}"])
     results = temporary / "results"
     results.mkdir(exist_ok=True)
     # Scheduled trackers reuse only verified, checksum-matching artifacts.

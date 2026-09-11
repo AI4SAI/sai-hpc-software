@@ -121,7 +121,61 @@ def inspect(prefix):
     for relative in ("main_nep/nep_specialized.cu", "utilities/nep_utilities.cuh"):
         if not (prefix / "share/gpumd/src" / relative).is_file():
             raise ValueError("missing installed NEP runtime specialization source")
+    copied = prefix / "share/sai/portability"
+    energy, force = xyz(copied / "dump.xyz")
+    gold_e, gold_f = xyz(copied / "gold.xyz")
+    compare([[energy]], [[gold_e]], 1e-3, "installed copied-prefix energy")
+    compare(force, gold_f, 1e-4, "installed copied-prefix force")
+    jit = (copied / "nep.log").read_text()
+    if len(numbers(copied / "loss.out")) != 2 or "Compile specialized NEP training kernels" not in jit or "specialization disabled" in jit:
+        raise ValueError("installed copied-prefix JIT evidence is incomplete")
     return report
+
+
+def portable_check(prefix, destination):
+    """Copy the complete prefix INSIDE the build overlay and run from elsewhere.
+
+    This deliberately does not copy to a writable host installation directory.
+    Both the shell environment and NEP's runtime compiler must find resources
+    through the copied prefix, not the original build tree.
+    """
+    if destination != Path("/workspace/gpumd-portability"):
+        raise ValueError("portable installation probe is restricted to its overlay path")
+    copied = destination / "copied-opt/gpumd"
+    shutil.copytree(prefix, copied)
+    case = destination / "unrelated-cwd/static"
+    shutil.copytree(copied / "share/sai/cases/static", case)
+    training = destination / "unrelated-cwd/training"
+    shutil.copytree(copied / "share/sai/cases/training", training)
+    with (training / "nep.in").open("a") as stream:
+        stream.write("nep_compile on\n")
+    for working, executable in ((case, "gpumd"), (training, "nep")):
+        with (working / "run.log").open("w") as log:
+            subprocess.run(["/usr/bin/bash", "--noprofile", "--norc", "-c",
+                'source "$1/share/sai/runtime-env.sh"; '
+                'test "$GPUMD_SRC" = "$1/share/gpumd/src"; '
+                'test "$(command -v "$2")" = "$1/bin/$2"; exec "$2"',
+                "bash", str(copied), executable], cwd=working, check=True, timeout=180,
+                stdout=log, stderr=subprocess.STDOUT)
+    energy, force = xyz(case / "dump.xyz")
+    gold_e, gold_f = xyz(case / "gold.xyz")
+    loss = numbers(training / "loss.out")
+    jit = (training / "run.log").read_text()
+    if len(loss) != 2 or "Compile specialized NEP training kernels" not in jit or "specialization disabled" in jit:
+        raise ValueError("copied-prefix NEP JIT failed or used fallback")
+    proof = {"verified": True, "copied_inside_overlay": True, "unrelated_working_directory": True,
+             "relative_jit_sources": True,
+             "energy_error_ev": compare([[energy]], [[gold_e]], 1e-3, "copied-prefix energy"),
+             "force_error": compare(force, gold_f, 1e-4, "copied-prefix forces"),
+             "nep_generations": len(loss)}
+    evidence = prefix / "share/sai/portability"
+    evidence.mkdir()
+    for name, source in (("gpumd.log", case / "run.log"), ("nep.log", training / "run.log"),
+                         ("dump.xyz", case / "dump.xyz"), ("gold.xyz", case / "gold.xyz"),
+                         ("loss.out", training / "loss.out")):
+        shutil.copyfile(source, evidence / name)
+    (evidence / "proof.json").write_text(json.dumps(proof, sort_keys=True) + "\n")
+    print(json.dumps(proof, sort_keys=True))
 
 
 def numbers(path):
@@ -463,7 +517,7 @@ def run(prefix, task):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("operation", choices=("prepare", "inspect", "run"))
+    parser.add_argument("operation", choices=("prepare", "inspect", "run", "portable"))
     parser.add_argument("prefix", type=Path)
     parser.add_argument("destination", type=Path, nargs="?")
     arguments = parser.parse_args()
@@ -471,5 +525,7 @@ if __name__ == "__main__":
         prepare(arguments.prefix, arguments.destination)
     elif arguments.operation == "inspect":
         print(json.dumps(inspect(arguments.prefix), sort_keys=True))
+    elif arguments.operation == "portable":
+        portable_check(arguments.prefix, arguments.destination)
     else:
         run(arguments.prefix, arguments.destination)

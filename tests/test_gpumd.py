@@ -13,6 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "controller"))
 import gpumd_acceptance as acceptance
 import gpumd_science as science
+import ci
 import software_controller as build
 from remote_controller import TARGETS
 import test_build_lifecycle as lifecycle
@@ -93,11 +94,23 @@ class GpumdContractTests(unittest.TestCase):
         self.assertNotIn("module load elpa", environment)
         self.assertIn("-DUSE_DEEPMD -DUSE_PLUMED", recipe)
         self.assertIn("share/gpumd/src", recipe)
+        entry = (ROOT / "controller/gpumd_container_entry.sh").read_text()
+        self.assertIn('gpumd_science.py portable "$INSTALL_PREFIX" /workspace/gpumd-portability', entry)
+
+    def test_portability_copy_cannot_escape_the_build_overlay(self):
+        with self.assertRaisesRegex(ValueError, "restricted to its overlay path"):
+            science.portable_check(Path("/opt/software/gpumd/v1/target"), Path("/tmp/copy"))
 
 
 class GpumdCiTests(unittest.TestCase):
     setUp = lifecycle.CiLifecycleTests.setUp
     execute = lifecycle.CiLifecycleTests.execute
+
+    def test_each_launcher_upload_occurs_once_before_becoming_readonly(self):
+        self.assertEqual(ci.runtime_launchers("gpumd"), ("gpumd", "nep", "gnep"))
+        for software in ("gpumd", "abacus", "cp2k"):
+            names = ci.runtime_launchers(software)
+            self.assertEqual(len(names), len(set(names)))
     def test_gpumd_requires_science_and_benchmark_before_publication(self):
         self.assertEqual(self.execute(software="gpumd"), [
             ("software_controller.py", "submit"), ("software_controller.py", "monitor"),

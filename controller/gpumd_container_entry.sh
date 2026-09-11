@@ -32,6 +32,7 @@ build)
     'export GPUMD_SRC="$gpumd_installed_prefix/share/gpumd/src" PATH="$gpumd_installed_prefix/bin:$PATH"' \
     'export CUDACXX="$CUDA_HOME/bin/nvcc"' \
     >> "$INSTALL_PREFIX/share/sai/runtime-env.sh"
+  python3 /control/gpumd_science.py portable "$INSTALL_PREFIX" /workspace/gpumd-portability
   ;;
 export)
   test ! -e /workspace/export
