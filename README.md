@@ -116,6 +116,13 @@ dependency modules inspect the actual compute-node CPU. The trusted `abacus` com
 selects the SIF from `SLURM_JOB_PARTITION`. The host Open MPI launches one wrapper per rank;
 each wrapper enters the same read-only SIF and runs its ABACUS binary. GPU job example:
 
+The version module selects a partition-local, immutable module fragment that pins
+both the accepted SIF and its tested launcher. Publishing another partition does
+not replace this pair or its dependencies. A loaded module retains that pair until
+unloaded/reloaded; loading outside a Slurm allocation is rejected. `module show`
+remains available without an allocation. Legacy artifacts need publication with
+this contract before their partition has a `current.module` entry.
+
 ```bash
 source /etc/profile.d/lmod.sh
 module use /home/stardust/sai-hpc-software/modulefiles/apps

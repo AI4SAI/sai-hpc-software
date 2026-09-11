@@ -201,7 +201,8 @@ class PolicyTests(unittest.TestCase):
                 controller.publish_runtime_entry(request, artifact, manifest)
             self.assertEqual((target / "current.sif").resolve(), artifact)
             module = root / "modulefiles/apps/abacus/v1"
-            self.assertIn(str(control), module.read_text())
+            self.assertIn('current.module', module.read_text())
+            self.assertIn(str(control), Path(manifest['module_fragment']).read_text())
             self.assertEqual(manifest["runtime_launcher_sha256"], cache.checksum(launcher))
 
     def test_catalog_rejects_artifact_without_build_provenance(self):
