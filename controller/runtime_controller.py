@@ -17,7 +17,7 @@ from source_cache import checksum
 ROOT = Path(os.environ.get("SAI_SOFTWARE_ROOT", Path.home() / "sai-hpc-software")).resolve()
 CONTROL = Path(__file__).resolve().parent
 MAPPING_ROOT = Path("/opt/sai_config/mps_mapping.d")
-RUNTIME_TARGETS = {"dsprhbm", "4v100-avx512", "16v100-avx2"}
+RUNTIME_TARGETS = {"dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"}
 
 
 def call(argv, **kwargs):
@@ -98,7 +98,7 @@ def render_job(args):
     runtime = task / "apptainer-runtime"
     mpi_runtime = task / "mpi-runtime"
     mapping = MAPPING_ROOT / (target["partition"] + ".bash")
-    mpi_isa = "avx2" if args.target == "16v100-avx2" else "avx512"
+    mpi_isa = target["dependency_isa"]
     resource_lines = (
         [f"#SBATCH --ntasks-per-node={ranks_per_node}",
          f"#SBATCH --cpus-per-task={cpus_per_task}"]
@@ -248,7 +248,7 @@ def verify_evidence(task, request):
     expected_files = {f"rank-{rank}.tsv" for rank in range(ranks)}
     if {path.name for path in trace_dir.glob("rank-*.tsv")} != expected_files:
         raise ValueError("runtime rank files do not match the requested ranks")
-    mpi_isa = "avx2" if request["target"] == "16v100-avx2" else "avx512"
+    mpi_isa = TARGETS[request["target"]]["dependency_isa"]
     hosts = Counter()
     for rank in range(ranks):
         lines = read(f"results/ranks/rank-{rank}.tsv").splitlines()
