@@ -72,7 +72,7 @@ class RuntimeCliTests(unittest.TestCase):
         request = json.loads((self.task() / "request.json").read_text())
         results = self.task() / "results"
         (results / "ranks").mkdir(exist_ok=True)
-        mpi_isa = "avx2" if request["target"] == "16v100-avx2" else "avx512"
+        mpi_isa = runtime.TARGETS[request["target"]]["dependency_isa"]
         for rank in range(request["ranks"]):
             host = f"node-{rank // request['ranks_per_node']}"
             gpu = "0" if request["gpus_per_node"] else ""
@@ -150,6 +150,15 @@ class RuntimeCliTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("runtime resources outside acceptance bounds", result.stderr)
         self.assertFalse(self.task().exists())
+
+    def test_skylake_gpu_target_uses_avx2_site_mpi_not_zen4_avx512(self):
+        self.candidate("8v100v0-avx512")
+        self.submit("8v100v0-avx512")
+        script = (self.task() / "job.sbatch").read_text()
+        self.assertIn("#SBATCH --partition=8V100V0", script)
+        self.assertIn("$6 !~ /-avx2$/", script)
+        self.scientific_results()
+        self.cli("monitor", "runtime", "--timeout", "1", "--interval", "0")
 
     def test_legacy_manual_candidate_allowed_but_explicit_failed_build_rejected(self):
         artifact = self.candidate("dsprhbm", legacy=True)

@@ -16,7 +16,7 @@ from source_cache import checksum
 
 ROOT = Path(os.environ.get("SAI_SOFTWARE_ROOT", Path.home() / "sai-hpc-software")).resolve()
 CONTROL = Path(__file__).resolve().parent
-GPU_TARGETS = {"4v100-avx512", "16v100-avx2"}
+GPU_TARGETS = {"4v100-avx512", "16v100-avx2", "8v100v0-avx512"}
 ENERGIES = {"cusolvermp": -196.6221723701324322, "nccl": -4869.7470518349809936}
 # Buffer-size queries and --info/build flags are deliberately not execution
 # evidence. Real library logging must show the generalized eigensolve itself.
@@ -169,7 +169,7 @@ def verify_evidence(task, request):
         if len(rank_files) != 2 or any(path.is_symlink() for path in rank_files):
             raise ValueError(f"{feature}: expected exactly two rank traces")
         rows = [read_evidence(path).rstrip("\n").split("\t") for path in rank_files]
-        mpi_isa = "avx2" if request["target"] == "16v100-avx2" else "avx512"
+        mpi_isa = TARGETS[request["target"]]["dependency_isa"]
         if (any(len(row) != 6 or not row[0] or row[2] != request["target"] or
                 row[3] != request["artifact"] or not row[4] or
                 not row[5].endswith("-" + mpi_isa) for row in rows) or

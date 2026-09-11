@@ -21,10 +21,20 @@ site-wide bind paths and host temporary directories are disabled; the build also
 PID namespace and a network namespace with no external network. This is filesystem/process
 containment using the shared host kernel, **not a VM or a guarantee against kernel exploits**.
 
-`4V100` and `16V100` are separate build targets. A real compute-node probe established
-`znver4` plus AVX-512 dependencies on `4V100`, and `znver3` plus AVX2 dependencies on
-`16V100`; both use V100 `sm_70`. Builds use those explicit CPU architectures and fail if
-the target node or auto-selected MPI/BLAS dependency does not match the profile.
+Every partition is a separate native build target. Configuration and compilation run on
+the selected compute node with `-march=native -mtune=native`, not on the login host.
+Actual GCC native flags, hardware and module selection are recorded.
+
+| Partition | Target | Native CPU profile | Site MPI/BLAS ISA | GPU |
+| --- | --- | --- | --- | --- |
+| DSPRHBM | `dsprhbm` | Sapphire Rapids | AVX-512 | none |
+| 4V100 | `4v100-avx512` | Zen 4 | AVX-512 | sm70 |
+| 16V100 | `16v100-avx2` | Zen 3 | AVX2 | sm70 |
+| 8V100V0 | `8v100v0-avx512` | Skylake AVX-512 (Gold 6146) | AVX2 | sm70 |
+
+The last row is intentional: Gold 6146 has AVX-512 but lacks VNNI. The site's auto
+modules select compatible AVX2 dependencies; an AVX-512 CPU flag is not permission to
+load the newer Zen 4 dependency build. Every target verifies its actual selection.
 
 Successful builds remove their ext3 work image after verifying the final SIF. Failed builds
 retain just that single image for diagnosis, not an expanded sandbox.
@@ -103,7 +113,7 @@ No private key is committed. Only scheduled and manually dispatched trusted runs
 push and PR runs only validate. Keep the `hpc` Environment limited to trusted branches.
 
 Targets: `dsprhbm` (DSPRHBM), `4v100-avx512` (4V100),
-`16v100-avx2` (16V100). The A100 recipe remains in the code, but ABACUS publication is disabled
+`16v100-avx2` (16V100), `8v100v0-avx512` (8V100V0). The A100 recipe remains in the code, but ABACUS publication is disabled
 until an A100 runtime acceptance is registered.
 Pass a comma-separated subset to dispatch. CPU (DSPRHBM) is the default acceptance target.
 Every build runs independently with its own overlay, logs and SIF path. GitHub retains logs
