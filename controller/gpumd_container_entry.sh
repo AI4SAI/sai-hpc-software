@@ -23,7 +23,8 @@ build)
   nvcc --version > "$INSTALL_PREFIX/share/sai/compiler.txt"
   gcc -march=native -Q --help=target > "$INSTALL_PREFIX/share/sai/native-cpu-flags.txt"
   lscpu > "$INSTALL_PREFIX/share/sai/hardware.txt"
-  for key in PATH LD_LIBRARY_PATH CUDA_HOME CUDA_PATH DEEPMD_ROOT DEEPMD_PYTHON PLUMED_KERNEL; do
+  for key in PATH LD_LIBRARY_PATH CUDA_HOME CUDA_PATH DEEPMD_ROOT DEEPMD_PYTHON PLUMED_KERNEL \
+             DP_CUDA_INFER OMP_NUM_THREADS DP_INTRA_OP_PARALLELISM_THREADS DP_INTER_OP_PARALLELISM_THREADS; do
     if [[ -v "$key" ]]; then printf 'export %s=%q\n' "$key" "${!key}"; fi
   done > "$INSTALL_PREFIX/share/sai/runtime-env.sh"
   # bash resolves this path relative to the installed script, including after
