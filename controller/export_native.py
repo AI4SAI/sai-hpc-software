@@ -45,8 +45,7 @@ def beneath(path, roots):
 def compatible_prefixes(identity, identities):
     return [peer["install_prefix"] for peer in identities
             if peer["partition"] == identity["partition"] and
-            (not identity["stack_digest"] or (peer["stack_digest"] == identity["stack_digest"] and
-                                              peer["track"] == identity["track"]))]
+            (not identity["stack_digest"] or peer["stack_digest"] == identity["stack_digest"])]
 
 
 def resolve_inventory_path(path, indexed, prefixes, external_roots):
@@ -101,7 +100,7 @@ def validate_manifest(manifest):
             companion = "lammps" if identity["software"] == "deepmd-kit" else "deepmd-kit"
             matches = [peer for peer in identities
                        if peer["software"] == companion and peer["partition"] == identity["partition"] and
-                       peer["track"] == identity["track"] and peer["stack_digest"] == identity["stack_digest"] and
+                       peer["stack_digest"] == identity["stack_digest"] and
                        peer["source_sha"] == identity["stack_sources"][companion]]
             if len(matches) != 1:
                 raise ValueError("paired delivery is missing its exactly locked companion")
