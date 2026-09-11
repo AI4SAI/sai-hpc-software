@@ -111,8 +111,8 @@ class BenchmarkTests(unittest.TestCase):
                 self.assertIn("/usr/bin/time -f %e", script)
                 self.assertIn('cp -a input/. "$work/"', script)
                 self.assertIn(str(task / "mpi-runtime"), script)
-                self.assertIn("#SBATCH --export=HOME", script)
-                self.assertNotIn("export HOME=", script)
+                self.assertIn("#SBATCH --export=NIL", script)
+                self.assertIn(f"export HOME={Path.home()}", script)
                 self.assertEqual(len(request["runs"]), 8)
                 self.assertEqual([s["arm"] for s in request["runs"]],
                                  ["system", "candidate", "candidate", "system"] * 2)
