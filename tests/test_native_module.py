@@ -150,6 +150,24 @@ class NativeValidationTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     render_native_fragment(invalid)
 
+    def test_md_and_gpumd_runtime_paths_and_site_cuda_inference_mode(self):
+        entry = example("gpumd")
+        prefix = entry["identity"]["install_prefix"]
+        entry["external_roots"].append("/opt/devtools/nvidia/cuda-12.9.1")
+        entry["runtime"]["set"].update({"GPUMD_SRC": prefix + "/share/gpumd/src",
+            "CUDACXX": "/opt/devtools/nvidia/cuda-12.9.1/bin/nvcc", "DP_CUDA_INFER": "2"})
+        render_native_fragment(entry)
+        lammps = example("lammps")
+        lammps["runtime"]["set"]["LAMMPS_POTENTIALS"] = lammps["identity"]["install_prefix"] + "/share/lammps/potentials"
+        render_native_fragment(lammps)
+        for name, value in (("GPUMD_SRC", "/workspace/source"), ("CUDACXX", "/control/nvcc"),
+                            ("CUDACXX", "nvcc --run arbitrary.cu"), ("DP_CUDA_INFER", "3"),
+                            ("DP_CUDA_INFER", "2;error injected"), ("LAMMPS_POTENTIALS", "/home/user/files")):
+            invalid = copy.deepcopy(entry)
+            invalid["runtime"]["set"][name] = value
+            with self.subTest(name=name, value=value), self.assertRaises(ValueError):
+                render_native_fragment(invalid)
+
     def test_commands_are_packaged_executables_not_shell(self):
         for commands in ({}, {"run": "/bin/run"}, {"run": "bin/../run"},
                          {"run": "bin/./run"}, {"run": "bin/tool/run;error injected"},
