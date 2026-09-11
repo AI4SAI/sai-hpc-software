@@ -319,6 +319,9 @@ def render_job(args):
         f"export TMPDIR={q(str(r / 'runtime'))} APPTAINER_TMPDIR={q(str(r / 'runtime'))}",
         f"export APPTAINER_CACHEDIR={q(str(r / 'apptainer-cache'))}",
         "unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH",
+        *([f"source /opt/sai_config/mps_mapping.d/{target['partition']}.bash",
+           'export APPTAINERENV_CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:?}"']
+          if args.software == "gpumd" else []),
         f"test -s {q(str(image))}",
         f"test ! -e {q(str(overlay))}",
         *prepare,

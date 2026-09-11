@@ -60,6 +60,8 @@ class GpumdContractTests(unittest.TestCase):
             self.assertIn("/control/gpumd_container_entry.sh build gpumd", script)
             self.assertIn("/opt/apps:/opt/apps:ro", script)
             self.assertIn("--overlay", script)
+            self.assertIn("APPTAINERENV_CUDA_VISIBLE_DEVICES", script)
+            self.assertIn(f"/opt/sai_config/mps_mapping.d/{TARGETS[target]['partition']}.bash", script)
             self.assertNotIn("#SBATCH --mem", script)
             self.assertNotIn("#SBATCH --cpus-per-task", script)
             self.assertNotIn("TMPDIR=/tmp", script)
