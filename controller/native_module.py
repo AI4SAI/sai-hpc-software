@@ -114,7 +114,8 @@ def validate_native_entry(entry, *, allowed_prefixes=()):
     other_prefixes = [_install_prefix(value) for value in _sequence(allowed_prefixes, "allowed_prefixes")]
     other_prefixes = [path for path in other_prefixes if path.name == identity["partition"]]
     external = _sequence(entry["external_roots"], "external_roots")
-    roots = [prefix, *other_prefixes, *(_external_root(value) for value in external),
+    external_paths = [_external_root(value) for value in external]
+    roots = [prefix, *other_prefixes, *external_paths,
              PurePosixPath("/usr"), PurePosixPath("/lib"), PurePosixPath("/lib64")]
 
     def runtime_path(value):
@@ -151,6 +152,12 @@ def validate_native_entry(entry, *, allowed_prefixes=()):
     clean_prepend = {}
     for name, values in prepend.items():
         clean_prepend[name] = [runtime_path(value) for value in _sequence(values, f"runtime.prepend.{name}")]
+        if name == "MODULEPATH" and any(
+                not any(PurePosixPath(value).is_relative_to(root) for root in external_paths)
+                for value in clean_prepend[name]):
+            # A delivered module directory could shadow a recorded site module
+            # with arbitrary payload Tcl despite a safe dependency name/version.
+            raise ValueError("MODULEPATH must use explicitly recorded external site roots, never delivered code")
     settings = runtime["set"]
     if not isinstance(settings, dict):
         raise ValueError("runtime.set must be an object")
