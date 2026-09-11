@@ -19,6 +19,9 @@ export PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1 PIP_NO_INDEX=1 PIP_DISABLE_P
 export CC=gcc CXX=g++ FC=gfortran
 export PLUMED_KERNEL="$MD_SYSTEM_PLUMED/lib/libplumedKernel.so"
 export PKG_CONFIG_PATH="$MD_SYSTEM_PLUMED/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
+# Minimal SIF omits host ld.so cache and /etc/alternatives. Bind real OS
+# BLAS/LAPACK paths already present below the read-only /lib mount.
+export LD_LIBRARY_PATH="/lib/x86_64-linux-gnu/lapack:/lib/x86_64-linux-gnu/blas:${LD_LIBRARY_PATH:-}"
 export CMAKE_PREFIX_PATH="$MD_SYSTEM_PLUMED:$MD_SYSTEM_DEEPMD:${CMAKE_PREFIX_PATH:-}"
 [[ -x "$MD_SYSTEM_DEEPMD/bin/python" && -f "$PLUMED_KERNEL" ]]
 case "$1" in

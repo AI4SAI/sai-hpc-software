@@ -63,7 +63,7 @@ class MDControllerTests(unittest.TestCase):
         self.assertIn('-DDOWNLOAD_PLUMED=OFF', recipe)
         self.assertIn("['lammps']['packages']", recipe)
         self.assertIn('verify_parity', recipe)
-        self.assertIn('audit_runtime_metadata', (ROOT / 'controller/md_relocate_audit.py').read_text())
+        self.assertIn('check_dynamic', (ROOT / 'controller/md_relocate_audit.py').read_text())
 
 
 if __name__ == '__main__':

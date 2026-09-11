@@ -104,15 +104,29 @@ and removal of system dependencies are not claimed. No host copy is performed.
 3. Actual DeePMD TF, PyTorch and JAX model inference plus LAMMPS DeepMD forces,
    energy and virial; PLUMED distance/bias action executed, not just listed.
    Host Open MPI must launch the SIF ranks for single- and multi-rank tests.
-4. Same-node/resource/input benchmark against installed software: warm-up and
-   at least three measured repeats, finite positive timings, reference-matched
-   energy/forces/virial, median and speedup recorded. No unexplained silent
-   performance threshold or comparison across different hardware.
+4. Same-node/resource/input benchmark against installed software: the six-atom
+   scientific smoke is **not** the performance workload. `md_performance.py`
+   defines a separate 2,058-atom synthetic fixed-geometry force-evaluation case,
+   baseline calibration to a five-second engine interval and frozen common step
+   count/input. Both implementations require warm-up and three measured repeats
+   of at least three seconds each, raw LAMMPS engine throughput plus separate
+   whole-process walltime, and independently verified large-system numerics.
+   Record real backend execution device; TF baseline is CPU-only and cannot be
+   relabelled as a fair GPU comparison. Candidate too fast for the minimum
+   interval requires common recalibration, not a different candidate workload.
+   The pure timing contract is implemented; its allocated live runner and
+   device-trace/numerical proof still need integration and testing.
 5. Runtime path audit and a read-only final-SIF execution, without the build
    overlay or source/control trees as runtime dependencies.
 6. Wire image checksum + both upstream SHAs + recipe/dependency hashes + verified
    Slurm/scientific outputs into artifact-cache and publication gates. Only then
    enable scheduled build/publication and consider a PR.
+
+`md_relocate_audit.py` now uses explicit runtime root allowlists, validates final
+symlink destinations (including broken/escaping chains), rejects paths embedded
+in `DT_NEEDED`, checks RUNPATH/operational metadata, and handles static ELF
+without trying `ldd` on it. Passing this static/runtime-reference audit is still
+not proof that an actual same-prefix physical copy has been executed.
 
 The current branch contains actual build, inventory, evidence-validation and
 test code, but these live gates have **not** all run. In particular a static CI
