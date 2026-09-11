@@ -22,7 +22,8 @@ def contract_files(software):
         return common + ["container_entry.sh", "abacus_build.sh", "runtime_controller.py",
                          "gpu_feature_controller.py", "gpu_feature_runtime.sh", "abacus"]
     if software == "cp2k":
-        return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k"]
+        return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k_feature_contract.py",
+                         "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_benchmark.py", "cp2k"]
     raise ValueError("unknown software contract")
 
 def recipe_fingerprint(software, control=None):
@@ -39,6 +40,10 @@ def recipe_fingerprint(software, control=None):
     return digest.hexdigest()
 
 def required_acceptance(software, target):
+    if software == "cp2k":
+        if target not in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
+            raise ValueError("CP2K native publication target is not registered")
+        return ("cp2k_benchmark",)
     if software != "abacus":
         return ()
     if target == "dsprhbm":
@@ -57,7 +62,8 @@ def validate_acceptance(manifest):
     """Only proofs tied to this image and the current trusted verifier count."""
     for name in required_acceptance(manifest["software"], manifest["target"]):
         proof = manifest.get(name, {})
-        verifier = "runtime_controller.py" if name == "multinode_runtime" else "gpu_feature_controller.py"
+        verifier = {"multinode_runtime": "runtime_controller.py", "gpu_features": "gpu_feature_controller.py",
+                    "cp2k_benchmark": "cp2k_benchmark.py"}[name]
         if (proof.get("verified") is not True or
                 proof.get("artifact_sha256") != manifest["sha256"] or
                 proof.get("controller_sha256") != checksum(CONTROL / verifier)):
@@ -88,7 +94,7 @@ def validate_acceptance(manifest):
                               else request["nodes"] * request["gpus_per_node"])
             if proof.get("nodes") != 2 or proof.get("ranks") != expected_ranks or expected_ranks < 2:
                 raise ValueError("invalid multinode topology")
-        else:
+        elif name == "gpu_features":
             if not all(proof.get(feature) is True for feature in ("nccl_collective", "cusolvermp_eigensolve")):
                 raise ValueError("GPU feature execution was not verified")
             if proof.get("runtime_sha256") != checksum(CONTROL / "gpu_feature_runtime.sh"):
@@ -100,6 +106,8 @@ def validate_acceptance(manifest):
             raise ValueError(f"missing or changed {name} scientific evidence")
         if name == "multinode_runtime":
             from runtime_controller import verify_evidence
+        elif name == "cp2k_benchmark":
+            from cp2k_benchmark import verify_evidence
         else:
             from gpu_feature_controller import verify_evidence
         evidence = verify_evidence(task, request)
@@ -255,13 +263,18 @@ def render_job(args):
     entrypoint = "container_entry.sh" if args.software == "abacus" else "cp2k_container_entry.sh"
     argv = ["/usr/bin/bash", f"/control/{entrypoint}", "build", args.software, sha, args.version, args.target]
     extra_binds = ((Path("/opt/apps"), "/opt/apps"),
-                   (ROOT / "cache/cp2k-dependencies", "/input/dependencies")) if args.software == "cp2k" else ()
+                   (ROOT / "cache/cp2k-dependencies", "/input/dependencies"),
+                   (ROOT / "cache/cp2k-probe", "/input/probe")) if args.software == "cp2k" else ()
     def container(phase, final=False):
         cmd = argv.copy()
         cmd[2] = phase
+        if args.software == "cp2k":
+            cmd = ["/usr/bin/env", f"SAI_BUILD_PARTITION={target['partition']}", *cmd]
+        # Final artifacts must not rely on source/dependency staging trees.
+        binds = ((Path("/opt/apps"), "/opt/apps"),) if final and args.software == "cp2k" else extra_binds
         return container_command(sif if final else image, cmd, overlay=None if final else overlay,
                                  control=CONTROL, repository=None if final else repo,
-                                 jobs=args.jobs, gpu=bool(target["gpus"]), extra_binds=extra_binds)
+                                 jobs=args.jobs, gpu=bool(target["gpus"]), extra_binds=binds)
     emit = container_command(image, ["/usr/bin/cat", "/workspace/final.squashfs"],
                              overlay=str(overlay) + ":ro", jobs=args.jobs)
     q = shlex.quote

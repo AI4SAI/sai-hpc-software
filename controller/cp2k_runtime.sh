@@ -9,7 +9,7 @@ case "$SLURM_JOB_PARTITION" in
   DSPRHBM) target=dsprhbm; gpu=false ;;
   4V100) target=4v100-avx512; gpu=true ;;
   16V100) target=16v100-avx2; gpu=true ;;
-  8A100M40) target=a100; gpu=true ;;
+  8V100V0) target=8v100v0-avx512; gpu=true ;;
   *) echo "unsupported CP2K partition: $SLURM_JOB_PARTITION" >&2; exit 2 ;;
 esac
 
@@ -36,6 +36,13 @@ mkdir -p "$rank_runtime/cache"
 export APPTAINER_TMPDIR="$rank_runtime" APPTAINER_CACHEDIR="$rank_runtime/cache"
 cleanup() { rm -rf -- "$rank_runtime" 2>/dev/null || true; rmdir -- "$job_runtime" 2>/dev/null || true; }
 trap cleanup EXIT
+
+if [[ -n "${SAI_CP2K_TRACE_DIR:-}" ]]; then
+  trace=$(realpath -m -- "$SAI_CP2K_TRACE_DIR")
+  [[ "$trace" == "$SAI_SOFTWARE_ROOT/runtime-tests/"* && -d "$trace" && ! -L "$trace" ]] || exit 2
+  printf '%s\t%s\t%s\t%s\t%s\t%s\n' "$(hostname)" "$rank" "$target" "$image" \
+    "${CUDA_VISIBLE_DEVICES:-}" "${MPI_HOME:?host MPI module required}" > "$trace/rank-$rank.tsv"
+fi
 
 args=(apptainer exec --cleanenv --no-home --no-mount bind-paths,home,cwd,tmp,hostfs --pwd /work)
 [[ "$gpu" == true ]] && args+=(--nv)

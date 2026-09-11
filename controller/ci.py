@@ -60,7 +60,8 @@ def main():
     recipe = (["container_entry.sh", "environment.sh", "abacus_build.sh",
                "gpu_feature_controller.py", "gpu_feature_runtime.sh"]
               if software == "abacus" else
-              ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh"])
+              ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh", "cp2k_feature_contract.py",
+               "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_benchmark.py"])
     for name in common + recipe:
         upload(parent / name, f"{control}/{name}")
     launcher_name = "abacus" if software == "abacus" else "cp2k"
@@ -122,6 +123,11 @@ def main():
             python("gpu_feature_controller.py", "submit", feature_run, version, target,
                    "--build-run-id", run_id)
             python("gpu_feature_controller.py", "monitor", feature_run)
+        if software == "cp2k":
+            benchmark_run = safe_name(run_id + "-benchmark")
+            python("cp2k_benchmark.py", "submit", benchmark_run, version, target,
+                   "--build-run-id", run_id)
+            python("cp2k_benchmark.py", "monitor", benchmark_run)
         python("software_controller.py", "publish", run_id)
         run(["scp", "-q", *options, "-P", "12022", f"{remote}:{task}/artifact.path", results / "artifact.path"])
         print((results / "artifact.path").read_text(), flush=True)
@@ -129,6 +135,12 @@ def main():
         # Only logs/metadata travel back; the single SIF stays in the SAI catalog.
         subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
                         f"{remote}:{task}/results/.", str(results)], check=False)
+        if software == "cp2k":
+            benchmark_results = results / "benchmark"
+            benchmark_results.mkdir(exist_ok=True)
+            subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
+                            f"{remote}:{root}/runtime-tests/{run_id}-benchmark/results/.",
+                            str(benchmark_results)], check=False)
         if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2"):
             runtime_results = results / "runtime"
             runtime_results.mkdir(exist_ok=True)
