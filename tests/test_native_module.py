@@ -122,6 +122,18 @@ class NativeValidationTests(unittest.TestCase):
                 with self.assertRaises(ValueError):
                     render_native_fragment(entry)
 
+    def test_delivery_cannot_shadow_site_dependency_modules(self):
+        entry = example("lammps")
+        peer_prefix = example("deepmd-kit")["identity"]["install_prefix"]
+        for path in (entry["identity"]["install_prefix"] + "/modules",
+                     peer_prefix + "/modules", "/usr/share/modulefiles"):
+            with self.subTest(path=path):
+                entry["runtime"]["prepend"]["MODULEPATH"] = [path]
+                with self.assertRaises(ValueError):
+                    render_native_fragment(entry, allowed_prefixes=[peer_prefix])
+        entry["runtime"]["prepend"]["MODULEPATH"] = ["/opt/modules/modulefiles/devtools"]
+        render_native_fragment(entry)
+
     def test_bounded_scalar_settings_and_paths(self):
         entry = example("cp2k")
         entry["runtime"]["set"].update({"CP2K_DATA_DIR": entry["identity"]["install_prefix"] + "/share/cp2k/data",
