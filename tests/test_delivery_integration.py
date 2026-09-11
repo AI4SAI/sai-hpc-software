@@ -124,6 +124,13 @@ class DeliveryIntegrationTests(unittest.TestCase):
         self.assertIn('[[ "${OPAL_PREFIX:?}" == *-avx2 ]]', recipe)
         self.assertIn('[[ "${OPENBLAS_ROOT:?}" == *-avx2 ]]', recipe)
 
+    def test_ci_installs_real_native_validation_tools_before_tests(self):
+        for workflow in ("build.yml", "cp2k.yml"):
+            script = (REPO / ".github/workflows" / workflow).read_text()
+            self.assertIn("sudo apt-get install -y squashfs-tools tcl", script)
+            self.assertLess(script.index("command -v mksquashfs unsquashfs tclsh"),
+                            script.index("python3 -m unittest discover"))
+
     def test_resume_never_relabels_a_legacy_or_other_channel_overlay(self):
         old = self.root / "runs/old"
         old.mkdir(parents=True)
