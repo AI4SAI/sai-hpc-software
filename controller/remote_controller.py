@@ -6,14 +6,24 @@ TARGETS = {
     "dsprhbm": {
         "partition": "DSPRHBM", "qos": "rush-cpu", "gpus": 0,
         "cuda_arch": "", "cpu_arch": "x86-64-v4",
+        "dependency_isa": "avx512",
     },
     "4v100-avx512": {
         "partition": "4V100", "qos": "flood-1o2gpu", "gpus": 1,
         "cuda_arch": "70", "cpu_arch": "znver4",
+        "dependency_isa": "avx512",
     },
     "16v100-avx2": {
         "partition": "16V100", "qos": "flood-1o2gpu", "gpus": 1,
         "cuda_arch": "70", "cpu_arch": "znver3",
+        "dependency_isa": "avx2",
+    },
+    "8v100v0-avx512": {
+        "partition": "8V100V0", "qos": "flood-1o2gpu", "gpus": 1,
+        "cuda_arch": "70", "cpu_arch": "skylake-avx512",
+        # Gold 6146 has AVX-512 but no VNNI. Site AVX-512 dependency builds
+        # require newer CPUs; the auto modules correctly select AVX2 here.
+        "dependency_isa": "avx2", "build_jobs": 6,
     },
     "a100": {
         "partition": "8A100M40", "qos": "rush-1o2gpu", "gpus": 1,
