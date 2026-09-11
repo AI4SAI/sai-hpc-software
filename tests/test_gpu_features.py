@@ -7,10 +7,14 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "controller"))
 import gpu_feature_controller as gpu
+import runtime_controller as runtime
+from delivery_layout import CONTRACT_SCHEMA, artifact_path
+from release_contract import make_identity
 from source_cache import checksum
 
 
@@ -24,7 +28,8 @@ class GpuFeatureTests(unittest.TestCase):
         self.control = self.root / "controller/reviewed/gpu"
         self.control.mkdir(parents=True)
         for name in ("gpu_feature_controller.py", "gpu_feature_runtime.sh",
-                     "runtime_controller.py", "remote_controller.py", "source_cache.py"):
+                     "runtime_controller.py", "remote_controller.py", "source_cache.py",
+                     "release_contract.py", "resolve_source.py", "delivery_layout.py"):
             shutil.copy2(ROOT / "controller" / name, self.control / name)
         shutil.copy2(ROOT / "controller/abacus_runtime.sh", self.control / "abacus")
         (self.control / "abacus").chmod(0o555)
@@ -35,17 +40,30 @@ class GpuFeatureTests(unittest.TestCase):
         self.command("sacct", "printf '12345|COMPLETED|0:0|\\n'")
         self.env = dict(os.environ, SAI_SOFTWARE_ROOT=str(self.root),
                         PATH=str(self.bin) + os.pathsep + os.environ["PATH"])
-        self.artifact = self.root / "containers/software/abacus/v1/16v100-avx2/build.sif"
+        for module in (gpu, runtime):
+            patcher = patch.object(module, "ROOT", self.root)
+            patcher.start()
+            self.addCleanup(patcher.stop)
+        self.identity = make_identity("abacus", "development", "develop", "a" * 40,
+                                      "v1", "b" * 64, "16v100-avx2")
+        self.artifact = artifact_path(self.root, self.identity, "build")
         self.artifact.parent.mkdir(parents=True)
         self.artifact.write_bytes(b"candidate with distributed GPU features")
         self.artifact.with_suffix(".json").write_text(json.dumps({
-            "artifact": str(self.artifact), "sha256": checksum(self.artifact),
+            "software": "abacus", "artifact": str(self.artifact), "sha256": checksum(self.artifact),
             "version": "v1", "target": "16v100-avx2", "build_verified": True,
-            "verified": False,
+            "verified": False, "identity": self.identity, "contract_schema": CONTRACT_SCHEMA,
+            "source_sha": "a" * 40, "recipe_sha256": "b" * 64,
         }))
         task = self.root / "runs/build"
         task.mkdir(parents=True)
         (task / "artifact.path").write_text(str(self.artifact))
+        (task / "request.json").write_text(json.dumps({
+            "software": "abacus", "version": "v1", "target": "16v100-avx2",
+            "sha": "a" * 40, "recipe_sha256": "b" * 64, "identity": self.identity,
+            "contract_schema": CONTRACT_SCHEMA, "controller": str(self.control),
+            "track": self.identity["track"], "source_ref": self.identity["source_ref"],
+        }))
 
     def command(self, name, body):
         path = self.bin / name
@@ -59,8 +77,9 @@ class GpuFeatureTests(unittest.TestCase):
     def task(self):
         return self.root / "runtime-tests/gpu"
 
-    def submit(self, *extra):
-        return self.cli("submit", "gpu", "v1", "16v100-avx2", "--build-run-id", "build", *extra)
+    def submit(self, *extra, check=True):
+        return self.cli("submit", "gpu", "v1", "16v100-avx2", "--build-run-id", "build", *extra,
+                        check=check)
 
     def request(self):
         return json.loads((self.task() / "request.json").read_text())
@@ -90,6 +109,7 @@ class GpuFeatureTests(unittest.TestCase):
         self.assertEqual(self.submit().stdout.strip(), "12345")
         request = self.request()
         self.assertEqual(request["artifact"], str(self.artifact))
+        self.assertEqual(request["identity"], self.identity)
         self.assertEqual(request["ranks"], 2)
         self.assertEqual(request["job_script_sha256"], checksum(self.task() / "job.sbatch"))
         script = (self.task() / "job.sbatch").read_text()
@@ -99,6 +119,7 @@ class GpuFeatureTests(unittest.TestCase):
         self.assertNotIn("#SBATCH --cpus-per-task", script)
         self.assertNotIn("#SBATCH --mem", script)
         self.assertIn(str(self.artifact), script)
+        self.assertIn(self.identity["install_prefix"], script)
         self.assertIn(str(self.control / "abacus"), script)
         self.assertNotIn("current.sif", script)
         self.assertNotIn("module load abacus/", script)
@@ -108,6 +129,7 @@ class GpuFeatureTests(unittest.TestCase):
         self.monitor()
         manifest = self.manifest()
         proof = manifest["gpu_features"]
+        self.assertEqual(proof["identity"], self.identity)
         self.assertTrue(proof["nccl_collective"])
         self.assertEqual(proof["nccl_collectives"], ["AllGather"])
         self.assertTrue(proof["cusolvermp_eigensolve"])
@@ -120,6 +142,38 @@ class GpuFeatureTests(unittest.TestCase):
                          checksum(self.task() / "results/nccl/abacus.log"))
         self.assertFalse(manifest["verified"])
         self.assertFalse((self.artifact.parent / "current.sif").exists())
+
+    def test_legacy_sidecar_and_mismatched_build_request_cannot_receive_gpu_acceptance(self):
+        sidecar = self.artifact.with_suffix(".json")
+        original = self.manifest()
+        for kind in ("identity", "schema", "verified"):
+            manifest = dict(original)
+            if kind == "identity":
+                manifest.pop("identity")
+            elif kind == "schema":
+                manifest["contract_schema"] = CONTRACT_SCHEMA - 1
+            else:
+                manifest["build_verified"] = False
+            sidecar.write_text(json.dumps(manifest))
+            result = self.submit(check=False)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertFalse(self.task().exists())
+        sidecar.write_text(json.dumps(original))
+        path = self.root / "runs/build/request.json"
+        request = json.loads(path.read_text())
+        request["sha"] = "c" * 40
+        path.write_text(json.dumps(request))
+        self.assertNotEqual(self.submit(check=False).returncode, 0)
+        self.assertFalse(self.task().exists())
+
+    def test_raw_gpu_evidence_cannot_relabel_the_delivery_channel(self):
+        self.submit()
+        self.evidence()
+        request = self.request()
+        request["identity"] = make_identity("abacus", "release", "develop", "a" * 40,
+                                             "v1", "b" * 64, "16v100-avx2")
+        with self.assertRaises(ValueError):
+            gpu.verify_evidence(self.task(), request)
 
     def test_completed_slurm_without_actual_evidence_is_rejected(self):
         self.submit()

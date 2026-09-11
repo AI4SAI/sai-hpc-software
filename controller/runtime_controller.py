@@ -13,6 +13,8 @@ import time
 
 from remote_controller import TARGETS, safe_name
 from source_cache import checksum
+from release_contract import validate_identity
+from delivery_layout import CONTRACT_SCHEMA, artifact_path, load_artifact, validate_record, validate_runtime_identity
 
 ROOT = Path(os.environ.get("SAI_SOFTWARE_ROOT", Path.home() / "sai-hpc-software")).resolve()
 CONTROL = Path(__file__).resolve().parent
@@ -34,29 +36,29 @@ def run_dir(run_id):
 def build_artifact(build_run_id, version, target):
     """Resolve the exact artifact produced by one completed build run."""
     build_run_id = safe_name(build_run_id)
-    safe_name(version)
     build_task = ROOT / "runs" / build_run_id
+    if build_task.resolve() != build_task:
+        raise ValueError("untrusted build run path")
+    request_path = build_task / "request.json"
+    if request_path.is_symlink():
+        raise ValueError("untrusted build request")
+    request = json.loads(request_path.read_text())
+    if request.get("contract_schema") != CONTRACT_SCHEMA:
+        raise ValueError("legacy build requests cannot receive new delivery acceptance")
+    identity = validate_record(request)
+    if identity["software"] != "abacus" or identity["target"] != target or identity["source_version"] != version:
+        raise ValueError("requested runtime differs from the build identity")
     artifact_file = build_task / "artifact.path"
     if not artifact_file.is_file() or artifact_file.is_symlink():
         raise ValueError("build run has no trusted artifact reference")
     artifact = Path(artifact_file.read_text().strip())
-    expected = ROOT / "containers/software/abacus" / version / target / f"{build_run_id}.sif"
+    expected = artifact_path(ROOT, identity, build_run_id)
     if (artifact != expected or artifact.resolve() != expected or
             not artifact.is_file() or artifact.is_symlink()):
         raise ValueError("build artifact does not match the requested run")
-    sidecar = artifact.with_suffix(".json")
-    if not sidecar.is_file() or sidecar.is_symlink():
-        raise ValueError("build artifact has no trusted manifest")
-    manifest = json.loads(sidecar.read_text())
-    # New builds are deliberately not published until runtime acceptance passes.
-    # Legacy verified artifacts may still be tested manually, but this function
-    # neither publishes them nor grants them the new acceptance contract.
-    build_verified = (manifest.get("build_verified") is True or
-                      ("build_verified" not in manifest and manifest.get("verified") is True))
-    if (not build_verified or manifest.get("artifact") != str(artifact) or
-            manifest.get("version") != version or manifest.get("target") != target or
-            manifest.get("sha256") != checksum(artifact)):
-        raise ValueError("build artifact manifest is invalid")
+    manifest = load_artifact(ROOT, artifact, software="abacus", target=target)
+    if manifest["identity"] != identity:
+        raise ValueError("build artifact identity differs from its request")
     return artifact
 
 
@@ -80,13 +82,16 @@ def runtime_resources(args):
 
 
 def render_job(args):
-    safe_name(args.version)
+    identity = validate_identity(args.identity)
+    if identity["source_version"] != args.version or identity["target"] != args.target or identity["software"] != "abacus":
+        raise ValueError("runtime arguments differ from identity")
     target = TARGETS[args.target]
     task = run_dir(args.run_id)
-    current = ROOT / "containers/software/abacus" / args.version / args.target / "current.sif"
-    artifact = Path(getattr(args, "artifact", current)).resolve()
+    artifact = Path(args.artifact)
+    if artifact != artifact_path(ROOT, identity, artifact.stem):
+        raise ValueError("runtime artifact is outside the identity catalog")
     launcher = Path(getattr(args, "launcher", CONTROL / "abacus")).resolve()
-    prefix = f"/opt/software/abacus/{args.version}/{args.target}"
+    prefix = identity["install_prefix"]
     cpu_only = target["gpus"] == 0
     resources = runtime_resources(args)
     ranks_per_node = resources["ranks_per_node"]
@@ -202,6 +207,7 @@ def submit(args):
     if not launcher.is_file() or launcher.is_symlink() or not os.access(launcher, os.X_OK):
         raise ValueError("trusted runtime launcher is missing")
     args.artifact = str(artifact)
+    args.identity = load_artifact(ROOT, artifact, software="abacus", target=args.target)["identity"]
     args.launcher = str(launcher)
     script = task / "job.sbatch"
     script.write_text(render_job(args))
@@ -224,6 +230,7 @@ def submit(args):
 def verify_evidence(task, request):
     """Recheck raw scientific results; a zero Slurm exit is not acceptance."""
     task = Path(task)
+    identity = validate_runtime_identity(ROOT, request)
     files = {}
 
     def read(relative):
@@ -282,7 +289,7 @@ def verify_evidence(task, request):
     if (not math.isfinite(energy) or abs(energy - (-4869.7470519303351466)) > 1e-5 or
             not math.isfinite(recorded_energy) or energy != recorded_energy):
         raise ValueError("runtime final energy failed the scientific tolerance")
-    return {"schema": 1, "job": job, "ranks": ranks, "nodes": dict(sorted(hosts.items())),
+    return {"schema": 1, "identity": identity, "job": job, "ranks": ranks, "nodes": dict(sorted(hosts.items())),
             "final_energy_ev": energy, "artifact_sha256": request["artifact_sha256"],
             "controller_sha256": request["controller_sha256"],
             "job_script_sha256": request["job_script_sha256"], "files": files}
@@ -295,14 +302,15 @@ def clear_run_proof(task, run_id):
         return
     request = json.loads(request_path.read_text())
     artifact = Path(request["artifact"])
-    expected = (ROOT / "containers/software/abacus" / safe_name(request["version"]) /
-                safe_name(request["target"]) / f"{safe_name(request['build_run_id'])}.sif")
+    expected = artifact_path(ROOT, request["identity"], request["build_run_id"])
     if artifact != expected or artifact.resolve() != expected:
         raise ValueError("runtime artifact reference changed")
     sidecar = artifact.with_suffix(".json")
     if not sidecar.is_file() or sidecar.is_symlink():
         raise ValueError("runtime artifact manifest is missing")
     manifest = json.loads(sidecar.read_text())
+    if validate_record(manifest) != validate_identity(request["identity"]):
+        raise ValueError("runtime proof cannot modify another delivery identity")
     if manifest.get("multinode_runtime", {}).get("run_id") == run_id:
         manifest.pop("multinode_runtime")
         temporary = sidecar.with_name(f".{sidecar.name}-{os.getpid()}.tmp")
@@ -361,7 +369,7 @@ def monitor(args):
                         sidecar = artifact.with_suffix(".json")
                         manifest = json.loads(sidecar.read_text())
                         verification = {
-                            "run_id": args.run_id, "job": job,
+                            "run_id": args.run_id, "job": job, "identity": request["identity"],
                             "partition": TARGETS[request["target"]]["partition"],
                             "nodes": request["nodes"],
                             **runtime_resources(argparse.Namespace(**request)),

@@ -12,14 +12,15 @@ import time
 from remote_controller import TARGETS, safe_name, safe_sha, container_command
 from source_cache import checksum
 from module_publication import publish_module, validate_module
+from release_contract import make_identity, TRACKS
+from delivery_layout import CONTRACT_SCHEMA, artifact_path, catalog_dir, validate_record
 
 ROOT = Path(os.environ.get("SAI_SOFTWARE_ROOT", Path.home() / "sai-hpc-software")).resolve()
 CONTROL = Path(__file__).resolve().parent
 
-CONTRACT_SCHEMA = 2
-
 def contract_files(software):
-    common = ["software_controller.py", "remote_controller.py", "source_cache.py", "module_publication.py", "create_rootfs.sh", "environment.sh"]
+    common = ["software_controller.py", "remote_controller.py", "source_cache.py", "module_publication.py", "create_rootfs.sh", "environment.sh",
+              "release_contract.py", "resolve_source.py", "delivery_layout.py"]
     if software == "abacus":
         return common + ["container_entry.sh", "abacus_build.sh", "runtime_controller.py",
                          "gpu_feature_controller.py", "gpu_feature_runtime.sh", "abacus"]
@@ -39,6 +40,13 @@ def recipe_fingerprint(software, control=None):
             raise ValueError(f"missing trusted contract file: {name}")
         digest.update(f"{name}\0{checksum(path)}\n".encode())
     return digest.hexdigest()
+
+def request_identity(args):
+    return make_identity(args.software, args.track, args.source_ref, args.sha,
+                         args.version, recipe_fingerprint(args.software), args.target)
+
+def identity(args):
+    print(json.dumps(request_identity(args), sort_keys=True))
 
 def required_acceptance(software, target):
     if software != "abacus":
@@ -62,6 +70,7 @@ def validate_acceptance(manifest):
         verifier = "runtime_controller.py" if name == "multinode_runtime" else "gpu_feature_controller.py"
         if (proof.get("verified") is not True or
                 proof.get("artifact_sha256") != manifest["sha256"] or
+                proof.get("identity") != manifest["identity"] or
                 proof.get("controller_sha256") != checksum(CONTROL / verifier)):
             raise ValueError(f"missing or stale {name} verification")
         task = ROOT / "runtime-tests" / safe_name(proof.get("run_id", ""))
@@ -79,6 +88,7 @@ def validate_acceptance(manifest):
                 request.get("artifact") != manifest["artifact"] or
                 request.get("artifact_sha256") != manifest["sha256"] or
                 request.get("target") != manifest["target"] or
+                request.get("identity") != manifest["identity"] or
                 request.get("controller_sha256") != proof.get("controller_sha256") or
                 request.get("launcher") != str(launcher) or
                 request.get("launcher_sha256") != proof.get("launcher_sha256") or
@@ -115,7 +125,9 @@ def validate_acceptance(manifest):
             raise ValueError("acceptance script proof mismatch")
 
 def validate_candidate(manifest, artifact, *, published=False):
+    delivery = validate_record(manifest)
     if (manifest.get("contract_schema") != CONTRACT_SCHEMA or
+            artifact != artifact_path(ROOT, delivery, artifact.stem) or
             manifest.get("build_verified") is not True or
             manifest.get("artifact") != str(artifact) or
             not artifact.is_file() or artifact.is_symlink() or artifact.resolve() != artifact or
@@ -124,6 +136,8 @@ def validate_candidate(manifest, artifact, *, published=False):
         raise ValueError("invalid or stale build contract")
     build = task_dir(artifact.stem)
     request = json.loads((build / "request.json").read_text())
+    if request.get("contract_schema") != CONTRACT_SCHEMA or validate_record(request) != delivery:
+        raise ValueError("build request and artifact identity differ")
     status = json.loads((build / "results/status.json").read_text())
     job = (build / "job.id").read_text().strip()
     if (not job.isdigit() or status.get("job") != job or
@@ -138,7 +152,7 @@ def validate_candidate(manifest, artifact, *, published=False):
         raise ValueError("artifact has not passed the publication gate")
     validate_acceptance(manifest)
     if published:
-        validate_module(manifest, artifact)
+        validate_module(manifest, artifact, root=ROOT)
 
 def call(argv, **kw):
     return subprocess.run([str(x) for x in argv], check=True, text=True, **kw)
@@ -180,7 +194,6 @@ def _publish_runtime_entry(request, artifact, manifest):
         description = "ABACUS"
         module_lines = [
             "module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto",
-            f"setenv SAI_ABACUS_VERSION {request['version']}",
         ]
     elif software == "cp2k":
         launcher_name = "cp2k"
@@ -189,7 +202,6 @@ def _publish_runtime_entry(request, artifact, manifest):
         module_lines = [
             "module load fftw/3.3.10 saiblas/2603-gnu-auto",
             "module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto",
-            f"setenv SAI_CP2K_VERSION {request['version']}",
         ]
         if request.get("target") != "dsprhbm":
             module_lines.insert(1, "module load cuda/12.9.1 nvmplibs/26.7-tmp")
@@ -221,7 +233,7 @@ def _publish_runtime_entry(request, artifact, manifest):
 def publish(args):
     r = task_dir(args.run_id)
     request = json.loads((r / "request.json").read_text())
-    artifact = ROOT / "containers/software" / safe_name(request["software"]) / safe_name(request["version"]) / safe_name(request["target"]) / (safe_name(args.run_id) + ".sif")
+    artifact = artifact_path(ROOT, validate_record(request), args.run_id)
     if (r / "artifact.path").read_text().strip() != str(artifact):
         raise ValueError("unexpected candidate path")
     manifest = json.loads(artifact.with_suffix(".json").read_text())
@@ -237,7 +249,9 @@ def render_job(args):
     r = task_dir(args.run_id)
     target = TARGETS[args.target]
     sha = safe_sha(args.sha)
-    safe_name(args.version)
+    delivery = request_identity(args)
+    if getattr(args, "identity", delivery) != delivery:
+        raise ValueError("requested identity differs from deployed recipe")
     if args.software not in ("abacus", "cp2k"):
         raise ValueError("no trusted recipe registered for this software")
     if not 1 <= args.jobs <= 16 or not 1 <= args.minutes <= 180:
@@ -249,10 +263,11 @@ def render_job(args):
     overlay = r / "work.ext3"
     squash = r / "final.squashfs"
     sif = r / "result.sif"
-    artifact = ROOT / "containers/software" / args.software / args.version / args.target / (args.run_id + ".sif")
+    artifact = artifact_path(ROOT, delivery, args.run_id)
     # Host-provided, read-only interpreter; not a binary writable by a prior build.
     entrypoint = "container_entry.sh" if args.software == "abacus" else "cp2k_container_entry.sh"
-    argv = ["/usr/bin/bash", f"/control/{entrypoint}", "build", args.software, sha, args.version, args.target]
+    argv = ["/usr/bin/bash", f"/control/{entrypoint}", "build", args.software, sha, args.version, args.target,
+            json.dumps(delivery, sort_keys=True, separators=(",", ":"))]
     extra_binds = ((Path("/opt/apps"), "/opt/apps"),
                    (ROOT / "cache/cp2k-dependencies", "/input/dependencies")) if args.software == "cp2k" else ()
     def container(phase, final=False):
@@ -328,9 +343,12 @@ def submit(args):
     repo = ROOT / "cache/repositories" / args.software
     call(["git", "--git-dir", repo, "cat-file", "-e", safe_sha(args.sha) + "^{commit}"])
     fingerprint = recipe_fingerprint(args.software)
+    args.identity = request_identity(args)
     if args.resume_run:
         old = task_dir(args.resume_run)
         previous = json.loads((old / "request.json").read_text())
+        if previous.get("contract_schema") != CONTRACT_SCHEMA or validate_record(previous) != args.identity:
+            raise ValueError("cannot resume or relabel a different delivery identity")
         for key in ("software", "sha", "version", "target"):
             if previous[key] != getattr(args, key):
                 raise ValueError(f"resume mismatch: {key}")
@@ -382,8 +400,11 @@ def monitor(args):
                 (r / "results/status.json").write_text(json.dumps(status) + "\n")
                 if success:
                     request = json.loads((r / "request.json").read_text())
+                    if request.get("contract_schema") != CONTRACT_SCHEMA:
+                        raise ValueError("legacy build cannot be relabelled as an identity delivery")
                     artifact = Path((r / "artifact.path").read_text().strip())
-                    expected = ROOT / "containers/software" / request["software"] / request["version"] / request["target"] / (args.run_id + ".sif")
+                    delivery = validate_record(request)
+                    expected = artifact_path(ROOT, delivery, args.run_id)
                     if artifact != expected or artifact.resolve() != expected:
                         raise ValueError("unexpected published artifact path")
                     if request.get("recipe_sha256") != recipe_fingerprint(request["software"]):
@@ -392,13 +413,13 @@ def monitor(args):
                                 "version": request["version"], "target": request["target"],
                                 "artifact": str(artifact), "sha256": checksum(artifact),
                                 "controller": request["controller"], "contract_schema": CONTRACT_SCHEMA,
-                                "recipe_sha256": request["recipe_sha256"],
+                                "recipe_sha256": request["recipe_sha256"], "identity": delivery,
                                 "build_verified": True, "verified": False, "published": False}
                     # A repeated monitor must not erase completed acceptance.
                     sidecar = artifact.with_suffix(".json")
                     if sidecar.is_file() and not sidecar.is_symlink():
                         prior = json.loads(sidecar.read_text())
-                        if all(prior.get(k) == manifest[k] for k in ("sha256", "recipe_sha256", "source_sha")):
+                        if all(prior.get(k) == manifest[k] for k in ("sha256", "recipe_sha256", "source_sha", "identity")):
                             manifest = prior
                     atomic_manifest(artifact, manifest)
                     status["verified"] = True
@@ -415,7 +436,8 @@ def monitor(args):
     raise TimeoutError(f"monitor deadline reached; job {job} was not cancelled")
 
 def lookup(args):
-    directory = ROOT / "containers/software" / safe_name(args.software) / safe_name(args.version) / safe_name(args.target)
+    delivery = request_identity(args)
+    directory = catalog_dir(ROOT, delivery)
     requested = safe_sha(args.sha)
     for sidecar in sorted(directory.glob("*.json"), reverse=True):
         if sidecar.is_symlink():
@@ -423,7 +445,7 @@ def lookup(args):
         try:
             data = json.loads(sidecar.read_text())
             artifact = sidecar.with_suffix(".sif")
-            if (data.get("software") != args.software or data.get("version") != args.version or
+            if (data.get("identity") != delivery or data.get("software") != args.software or data.get("version") != args.version or
                     data.get("source_sha") != requested or data.get("target") != args.target):
                 continue
             validate_candidate(data, artifact, published=True)
@@ -446,16 +468,25 @@ def main():
     a.add_argument("--minutes", type=int, default=120)
     a.add_argument("--overlay-mb", type=int, default=8192)
     a.add_argument("--resume-run", help="repack a terminated run's existing overlay; never rebuild source")
+    a.add_argument("--track", choices=TRACKS, required=True)
+    a.add_argument("--source-ref", required=True)
     a = sub.add_parser("monitor")
     a.add_argument("run_id"); a.add_argument("--timeout", type=int, default=14400)
     a.add_argument("--interval", type=int, default=15)
     a = sub.add_parser("lookup")
     for field in ("software", "version", "target", "sha"):
         a.add_argument(field)
+    a.add_argument("--track", choices=TRACKS, required=True)
+    a.add_argument("--source-ref", required=True)
+    a = sub.add_parser("identity")
+    for field in ("software", "sha", "version", "target"):
+        a.add_argument(field)
+    a.add_argument("--track", choices=TRACKS, required=True)
+    a.add_argument("--source-ref", required=True)
     a = sub.add_parser("publish")
     a.add_argument("run_id")
     args = p.parse_args()
-    result = {"init": init, "submit": submit, "monitor": monitor, "lookup": lookup, "publish": publish}[args.op](args)
+    result = {"init": init, "submit": submit, "monitor": monitor, "lookup": lookup, "publish": publish, "identity": identity}[args.op](args)
     return result if isinstance(result, int) else 0
 
 if __name__ == "__main__":
