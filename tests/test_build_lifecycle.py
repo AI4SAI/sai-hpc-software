@@ -182,6 +182,7 @@ class CiLifecycleTests(unittest.TestCase):
             ("gpu_feature_controller.py", "submit"), ("gpu_feature_controller.py", "monitor"),
             ("software_controller.py", "publish"),
         ])
+        self.assertEqual(self.execute(target="8v100v0-avx512"), self.execute())
 
     def test_failed_build_or_either_acceptance_monitor_prevents_publication(self):
         for script in ("software_controller.py", "runtime_controller.py", "gpu_feature_controller.py"):
