@@ -10,7 +10,12 @@ case "$op" in
 build)
   mkdir -p /workspace/tmp
   git init /workspace/source
-  git -C /workspace/source -c core.hooksPath=/dev/null fetch --depth=1 --no-tags /input/repository "$sha"
+  # Borrow only immutable Git objects from the read-only source cache. Mark the
+  # exact requested commit shallow inside this overlay: the cache may contain
+  # its full tree without its parents, and no unrelated refs/HEAD are trusted.
+  printf '%s\n' /input/repository/objects > /workspace/source/.git/objects/info/alternates
+  git -C /workspace/source cat-file -e "$sha^{commit}"
+  printf '%s\n' "$sha" > /workspace/source/.git/shallow
   git -C /workspace/source -c core.hooksPath=/dev/null checkout --detach "$sha"
   test "$(git -C /workspace/source rev-parse HEAD)" = "$sha"
   source /control/environment.sh "$target"

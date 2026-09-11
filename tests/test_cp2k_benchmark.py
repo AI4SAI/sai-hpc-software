@@ -134,8 +134,9 @@ class EvidenceTests(unittest.TestCase):
         self.request["feature_changes_sha256"] = checksum(self.task / "results/upstream-feature-changes.json")
         for kind in ("candidate", "baseline"):
             folder = f"results/{kind}-version"
-            flags = "omp tblite libdftd4 elpa libxs libxsmm" if kind == "candidate" else "omp elpa xsmm"
-            self.write(folder + "/version.log", f" CP2K version 2026.2\n cp2kflags: {flags}\n Source code revision aaaaaaa\n")
+            flags = "omp tblite libdftd4 elpa libxs libxsmm offload_cuda dbcsr_acc" if kind == "candidate" else "omp elpa xsmm offload_cuda dbcsr_acc"
+            version = "2026.2" if kind == "candidate" else "2026.1"
+            self.write(folder + "/version.log", f" CP2K version {version}\n cp2kflags: {flags}\n Source code revision aaaaaaa\n")
             self.runner(folder, kind)
             self.write(folder + "/mpi-version.txt", "Open MPI 5.0.10\n")
             self.write(folder + "/modules.txt", benchmark.GPU_BASELINE if kind == "baseline" else "openmpi\n")
@@ -200,6 +201,36 @@ class EvidenceTests(unittest.TestCase):
             self.write(f"cpu/resources/rank-{rank}.tsv", f"{host}\t{rank}\t{rank % 8}\t2\t0-1\t\t123\n")
         with self.assertRaisesRegex(ValueError, "overlap"):
             benchmark.verify_rank_evidence(self.task, "cpu", request, ["node1", "node2"], {}, binary="image")
+
+    def test_gpu_reference_from_other_controller_snapshot_is_reverified(self):
+        evidence = benchmark.verify_evidence(self.task, self.request)
+        self.write("request.json", json.dumps(self.request))
+        self.write("results/evidence.json", json.dumps(evidence))
+        good = {"job": "123", "verified": True, "state": "COMPLETED", "exit_code": "0:0"}
+        self.write("results/status.json", json.dumps(good))
+        other_control = self.root / "controller/cpu-snapshot"
+        other_control.mkdir()
+        (other_control / "cp2k").write_bytes(self.launcher.read_bytes())
+        with patch.object(benchmark, "CONTROL", other_control):
+            checked, _ = benchmark.accepted_reference("probe")
+            self.assertEqual(checked, evidence)
+            for bad in (dict(good, job="999"), dict(good, state="FAILED"), dict(good, exit_code="1:0"), {"verified": True}):
+                self.write("results/status.json", json.dumps(bad))
+                with self.subTest(status=bad), self.assertRaises(ValueError):
+                    benchmark.accepted_reference("probe")
+            path = self.task / "results/status.json"
+            path.unlink()
+            path.symlink_to(self.task / "request.json")
+            with self.assertRaisesRegex(ValueError, "untrusted"):
+                benchmark.accepted_reference("probe")
+
+    def test_gpu_baseline_must_be_the_pinned_gpu_build(self):
+        folder = "results/baseline-version/version.log"
+        text = (self.task / folder).read_text()
+        for bad in (text.replace("2026.1", "2025.1"), text.replace("offload_cuda", "")):
+            self.write(folder, bad)
+            with self.assertRaises(ValueError):
+                benchmark.verify_evidence(self.task, self.request)
 
 
 if __name__ == "__main__":

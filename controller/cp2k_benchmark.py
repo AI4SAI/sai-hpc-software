@@ -550,6 +550,23 @@ def verify_rank_evidence(task, folder, request, hosts, files, *, binary):
     return {"nodes": dict(placements), "mpi_home": next(iter(mpi_roots)), "bindings": bindings}
 
 
+def accepted_reference(run_id, expected_sha256=None):
+    task = run_dir(run_id)
+    files = {}
+    request = json.loads(checked_read(task, "request.json", files))
+    status = json.loads(checked_read(task, "results/status.json", files))
+    stored = json.loads(checked_read(task, "results/evidence.json", files))
+    if (not request.get("gpus_per_node") or status.get("verified") is not True or
+            status.get("job") != request.get("job") or status.get("state") != "COMPLETED" or
+            status.get("exit_code") != "0:0" or
+            (expected_sha256 is not None and files["results/evidence.json"] != expected_sha256)):
+        raise ValueError("GPU scientific reference status or identity is not accepted")
+    evidence = verify_evidence(task, request, allow_reference=False)
+    if evidence != stored:
+        raise ValueError("GPU scientific reference raw evidence changed")
+    return evidence, files["results/evidence.json"]
+
+
 def verify_evidence(task, request, *, allow_reference=True):
     """Reparse raw logs/forces/resources, including every warm-up; never trust a marker alone."""
     task = Path(task)
@@ -630,6 +647,11 @@ def verify_evidence(task, request, *, allow_reference=True):
         raise ValueError("candidate and baseline have different actual CPU/GPU bindings")
     if not request["gpus_per_node"] and any(flag in versions["baseline"]["flags"] for flag in ("offload_cuda", "dbcsr_acc", "cusolvermp")):
         raise ValueError("a CUDA baseline cannot stand in for the CPU baseline")
+    expected_version = "2026.1" if request["gpus_per_node"] else "2025.1"
+    if versions["baseline"]["version"] != expected_version:
+        raise ValueError("site baseline version does not match the pinned module")
+    if request["gpus_per_node"] and not {"offload_cuda", "dbcsr_acc"}.issubset(versions["baseline"]["flags"]):
+        raise ValueError("GPU baseline lacks CUDA/DBCSR offload support")
     changes = json.loads(read("results/upstream-feature-changes.json"))
     if (files["results/upstream-feature-changes.json"] != request["feature_changes_sha256"] or
             changes.get("source_sha") != request["source_sha"] or
@@ -651,18 +673,10 @@ def verify_evidence(task, request, *, allow_reference=True):
     if set(CASES) - baseline_cases(request["target"]):
         if not allow_reference or not request.get("reference_run_id"):
             raise ValueError("CPU cases without a site baseline require verified GPU reference evidence")
-        reference_task = run_dir(request["reference_run_id"])
-        reference_request = json.loads((reference_task / "request.json").read_text())
-        if not reference_request.get("gpus_per_node"):
-            raise ValueError("cross-target scientific reference must be a GPU baseline run")
-        reference_evidence = verify_evidence(reference_task, reference_request, allow_reference=False)
-        stored = reference_task / "results/evidence.json"
-        reference_status = json.loads((reference_task / "results/status.json").read_text())
-        if (reference_status.get("verified") is not True or reference_evidence != json.loads(stored.read_text()) or
-                checksum(stored) != request.get("reference_evidence_sha256")):
-            raise ValueError("cross-target scientific reference changed or was not accepted")
+        reference_evidence, reference_hash = accepted_reference(
+            request["reference_run_id"], request.get("reference_evidence_sha256"))
         references = reference_evidence["samples"]
-        reference_proof = {"run_id": request["reference_run_id"], "evidence_sha256": checksum(stored),
+        reference_proof = {"run_id": request["reference_run_id"], "evidence_sha256": reference_hash,
                            "use": "scientific reference only; not a CPU performance baseline"}
     samples = {}
     placement = {}
@@ -721,6 +735,8 @@ def verify_evidence(task, request, *, allow_reference=True):
 def submit(args):
     safe_name(args.run_id)
     safe_name(args.version)
+    if not 5 <= args.minutes <= 120:
+        raise ValueError("benchmark wall time outside accepted bounds")
     allocation = resources(args.target)
     artifact, manifest = build_artifact(args.build_run_id, args.version, args.target)
     launcher = CONTROL / "cp2k"
@@ -731,16 +747,7 @@ def submit(args):
     if not allocation["gpus_per_node"]:
         if not reference:
             raise ValueError("CPU TBLITE/DFTD4 require --reference-run-id from an accepted GPU comparison")
-        reference_task = run_dir(reference)
-        reference_request = json.loads((reference_task / "request.json").read_text())
-        if not reference_request.get("gpus_per_node"):
-            raise ValueError("reference run must compare against the GPU site baseline")
-        evidence = verify_evidence(reference_task, reference_request, allow_reference=False)
-        evidence_path = reference_task / "results/evidence.json"
-        if (json.loads((reference_task / "results/status.json").read_text()).get("verified") is not True or
-                evidence != json.loads(evidence_path.read_text())):
-            raise ValueError("GPU scientific reference has not been accepted")
-        reference_sha256 = checksum(evidence_path)
+        _, reference_sha256 = accepted_reference(reference)
     elif reference:
         raise ValueError("GPU benchmarks must use their own allocation's site baseline")
     task = run_dir(args.run_id)
@@ -756,7 +763,7 @@ def submit(args):
                APPTAINER_TMPDIR=str(task / "apptainer-runtime"),
                APPTAINER_CACHEDIR=str(task / "apptainer-cache"))
     result = call(["/usr/bin/bash", "--noprofile", "--norc", "-c",
-                   'source /etc/profile.d/lmod.sh; module load apptainer/1.4.4; exec "$@"',
+                   'set -e; source /etc/profile.d/lmod.sh; module load apptainer/1.4.4; exec "$@"',
                    "bash", "apptainer", "exec", "--cleanenv", "--containall", "--no-home",
                    "--no-mount", "bind-paths,home,cwd,tmp,hostfs", "--pwd", "/",
                    "--bind", "/usr:/usr:ro", "--bind", "/lib:/lib:ro", "--bind", "/lib64:/lib64:ro",
