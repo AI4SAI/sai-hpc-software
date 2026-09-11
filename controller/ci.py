@@ -55,7 +55,7 @@ def main():
                 time.sleep(3)
     ssh(["mkdir", "-p", control, f"{task}/input", f"{task}/results"])
     parent = Path(__file__).resolve().parent
-    common = ["software_controller.py", "remote_controller.py", "source_cache.py",
+    common = ["software_controller.py", "remote_controller.py", "source_cache.py", "module_publication.py",
               "runtime_controller.py", "create_rootfs.sh"]
     recipe = (["container_entry.sh", "environment.sh", "abacus_build.sh",
                "gpu_feature_controller.py", "gpu_feature_runtime.sh",

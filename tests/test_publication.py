@@ -164,7 +164,7 @@ class PublicationTests(unittest.TestCase):
         self.assertEqual(self.lookup(), {})
         self.publish()
         self.assertEqual((self.image.parent / "current.sif").resolve(), self.image)
-        self.assertIn("module load openmpi/", (self.root / "modulefiles/apps/abacus/v1").read_text())
+        self.assertIn("module load openmpi/", self.image.with_suffix('.module').read_text())
         self.assertEqual(self.lookup()["artifact"], str(self.image))
 
     def test_changed_recipe_or_launcher_invalidates_same_source_cache(self):
