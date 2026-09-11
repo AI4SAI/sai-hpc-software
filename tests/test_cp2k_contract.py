@@ -1,7 +1,9 @@
 import argparse
 from pathlib import Path
 import sys
+import tempfile
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "controller"))
 import cp2k_feature_contract as contract
@@ -70,6 +72,29 @@ class CP2KContractTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             software.required_acceptance("cp2k", "a100")
 
+    def test_recursive_loader_contract_rejects_old_prefix_and_external_symlink(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            prefix = Path(temporary) / "opt/software/cp2k/test/16v100-avx2"
+            binary = prefix / "dependencies/libxs/lib/libxs.so"
+            binary.parent.mkdir(parents=True)
+            binary.write_bytes(b"\x7fELFfixture")
+            for tag, value in (("NEEDED", "/opt/software/cp2k-dependencies/tblite/lib/libtblite.so"),
+                               ("NEEDED", "../lib/libdependency.so"),
+                               ("RUNPATH", "/opt/software/cp2k-dependencies/tblite/lib"),
+                               ("RUNPATH", "/home/stardust/controller/lib"),
+                               ("RUNPATH", "/opt/apps/unrelated/lib"),
+                               ("RUNPATH", "$ORIGIN/../../../../../../outside"),
+                               ("RUNPATH", "$ORIGIN:")):
+                with self.subTest(tag=tag, value=value), self.assertRaises(ValueError):
+                    contract.check_dynamic(f"({tag}) Library path: [{value}]", binary, prefix, "16v100-avx2")
+            tags = "(RUNPATH) Library runpath: [$ORIGIN:/opt/devtools/saiblas/2603-gnu-avx2/lib]"
+            with patch.object(contract, "run", return_value=tags):
+                self.assertEqual(set(contract.verify_tree(prefix, "16v100-avx2")),
+                                 {"dependencies/libxs/lib/libxs.so"})
+                (prefix / "escape").symlink_to("/usr/lib")
+                with self.assertRaisesRegex(ValueError, "symlink"):
+                    contract.verify_tree(prefix, "16v100-avx2")
+
     def test_final_sif_verifier_has_no_source_cache_bind(self):
         args = argparse.Namespace(run_id="cp2k-test", software="cp2k", sha="a" * 40,
                                   version="test", target="dsprhbm", jobs=8, minutes=120,
@@ -82,6 +107,8 @@ class CP2KContractTests(unittest.TestCase):
         self.assertNotIn("/input/probe", final)
         self.assertNotIn("/input/repository", final)
         self.assertIn("SAI_BUILD_PARTITION=DSPRHBM", final)
+        self.assertIn("/runtime:/runtime:rw", final)
+        self.assertIn("TMPDIR=/runtime", final)
 
 
 if __name__ == "__main__":

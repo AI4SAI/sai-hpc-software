@@ -4,7 +4,7 @@ op=$1; software=$2; sha=$3; version=$4; target=$5
 [[ "$software" == cp2k && "$sha" =~ ^[0-9a-f]{40}$ ]]
 [[ "$version" =~ ^[A-Za-z0-9][A-Za-z0-9_.-]*$ ]]
 [[ "$target" == dsprhbm || "$target" == 4v100-avx512 || "$target" == 16v100-avx2 || "$target" == 8v100v0-avx512 ]]
-export PATH=/usr/bin:/bin TMPDIR=/workspace/tmp INSTALL_PREFIX="/opt/software/$software/$version/$target"
+export PATH=/usr/bin:/bin TMPDIR="${TMPDIR:-/workspace/tmp}" INSTALL_PREFIX="/opt/software/$software/$version/$target"
 export CP2K_SOURCE_SHA="$sha"
 case "$op" in
 build)

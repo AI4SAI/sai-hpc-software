@@ -8,11 +8,14 @@ on:
         required: true
         default: master
       targets:
-        description: Comma-separated targets (dsprhbm,4v100-avx512,16v100-avx2,a100)
+        description: Native targets (dsprhbm,4v100-avx512,16v100-avx2,8v100v0-avx512)
         required: true
         default: 4v100-avx512
       resume_run:
         description: Optional terminated CP2K run id to repack without recompiling
+        required: false
+      reference_run:
+        description: Verified GPU CP2K benchmark run for CPU-only added-feature references
         required: false
   push:
     paths: ['controller/cp2k_*', 'controller/software_controller.py', 'controller/remote_controller.py', '.github/workflows/cp2k.yml']
@@ -56,9 +59,12 @@ jobs:
           sys.path.insert(0, 'controller')
           from resolve_source import resolve
           from remote_controller import TARGETS
+          from software_controller import required_acceptance
           requested = list(dict.fromkeys(os.environ['TARGETS'].split(',')))
           if not requested or any(t not in TARGETS for t in requested):
               raise ValueError('invalid target list')
+          for target in requested:
+              required_acceptance('cp2k', target)
           if os.environ.get('RESUME_RUN') and len(requested) != 1:
               raise ValueError('resume requires exactly one target')
           result = resolve('cp2k/cp2k', os.environ['SOURCE_REF'])
@@ -76,7 +82,7 @@ jobs:
     environment: hpc
     strategy:
       fail-fast: false
-      max-parallel: 2
+      max-parallel: 1
       matrix:
         build: ${{ fromJSON(needs.resolve-source.outputs.builds) }}
     steps:
@@ -99,6 +105,7 @@ jobs:
           SOFTWARE_VERSION: ${{ matrix.build.version }}
           TARGET: ${{ matrix.build.target }}
           RESUME_RUN: ${{ inputs.resume_run }}
+          CP2K_REFERENCE_RUN: ${{ inputs.reference_run }}
         run: python3 -u controller/ci.py
       - name: Publish build logs and SAI artifact location
         if: always()

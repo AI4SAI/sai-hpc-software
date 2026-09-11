@@ -22,7 +22,7 @@ def contract_files(software):
         return common + ["container_entry.sh", "abacus_build.sh", "runtime_controller.py",
                          "gpu_feature_controller.py", "gpu_feature_runtime.sh", "abacus"]
     if software == "cp2k":
-        return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k_feature_contract.py",
+        return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_feature_contract.py",
                          "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_benchmark.py", "cp2k"]
     raise ValueError("unknown software contract")
 
@@ -274,7 +274,8 @@ def render_job(args):
         binds = ((Path("/opt/apps"), "/opt/apps"),) if final and args.software == "cp2k" else extra_binds
         return container_command(sif if final else image, cmd, overlay=None if final else overlay,
                                  control=CONTROL, repository=None if final else repo,
-                                 jobs=args.jobs, gpu=bool(target["gpus"]), extra_binds=binds)
+                                 jobs=args.jobs, gpu=bool(target["gpus"]), extra_binds=binds,
+                                 runtime=r / "runtime" if final and args.software == "cp2k" else None)
     emit = container_command(image, ["/usr/bin/cat", "/workspace/final.squashfs"],
                              overlay=str(overlay) + ":ro", jobs=args.jobs)
     q = shlex.quote

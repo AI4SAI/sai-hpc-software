@@ -31,8 +31,11 @@ new_deps=/input/dependencies/tblite-dependencies.tar.gz
 [[ -s "$new_deps" ]] || { echo "verified tblite/DFT-D4 dependency bundle is required" >&2; exit 1; }
 printf '%s  %s\n' a2f54e22b9397841cb414696abbcd001d94b3599eb6aeabe222d0dd4e8e69a52 "$new_deps" | sha256sum --check --status
 tblite_root="$prefix/dependencies/tblite"
-mkdir -p "$tblite_root"
-tar --no-same-owner --strip-components=1 -xzf "$new_deps" -C "$tblite_root"
+# The successful 4V100 bundle establishes compatible source versions, not
+# permission to reuse its own compiled libraries across ISA targets. Rebuild
+# its seven locked sources natively inside each target's overlay.
+export CP2K_NATIVE_FLAGS="-O3 $cpu_flags"
+bash /control/cp2k_dependencies.sh /input/probe /workspace/tblite-build "$tblite_root"
 
 prefixes=(
   "$ELPA_ROOT" "$OPENBLAS_ROOT" "$LIBXC_ROOT" "$FFTW_ROOT" "$tblite_root"
@@ -146,6 +149,7 @@ lscpu > "$prefix/share/sai/build-lscpu.txt"
 gcc -Q -march=native --help=target > "$prefix/share/sai/native-compiler-target.txt"
 sha256sum "$new_deps" "$libxs_archive" > "$prefix/share/sai/dependency-archives.sha256"
 sha256sum "$dbcsr_archive" "$fypp_archive" >> "$prefix/share/sai/dependency-archives.sha256"
+cp /workspace/tblite-build/source-archives.sha256 "$prefix/share/sai/tblite-source-archives.sha256"
 python3 /control/cp2k_feature_contract.py source-changes "$prefix" "$target" "$source_sha"
 chmod 0555 "$prefix/bin/cp2k.psmp"
 export LD_LIBRARY_PATH="$runtime_ld"

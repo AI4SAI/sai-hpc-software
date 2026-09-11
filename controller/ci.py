@@ -60,7 +60,7 @@ def main():
     recipe = (["container_entry.sh", "environment.sh", "abacus_build.sh",
                "gpu_feature_controller.py", "gpu_feature_runtime.sh"]
               if software == "abacus" else
-              ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh", "cp2k_feature_contract.py",
+              ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_feature_contract.py",
                "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_benchmark.py"])
     for name in common + recipe:
         upload(parent / name, f"{control}/{name}")
@@ -125,8 +125,10 @@ def main():
             python("gpu_feature_controller.py", "monitor", feature_run)
         if software == "cp2k":
             benchmark_run = safe_name(run_id + "-benchmark")
+            reference = os.environ.get("CP2K_REFERENCE_RUN", "")
+            reference_args = ["--reference-run-id", safe_name(reference)] if reference and target == "dsprhbm" else []
             python("cp2k_benchmark.py", "submit", benchmark_run, version, target,
-                   "--build-run-id", run_id)
+                   "--build-run-id", run_id, *reference_args)
             python("cp2k_benchmark.py", "monitor", benchmark_run)
         python("software_controller.py", "publish", run_id)
         run(["scp", "-q", *options, "-P", "12022", f"{remote}:{task}/artifact.path", results / "artifact.path"])
@@ -141,6 +143,12 @@ def main():
             subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
                             f"{remote}:{root}/runtime-tests/{run_id}-benchmark/results/.",
                             str(benchmark_results)], check=False)
+            # Preserve raw scientific inputs/logs/forces as well as summaries;
+            # never transfer SIFs or build/install trees back to the runner.
+            benchmark_task = f"{root}/runtime-tests/{run_id}-benchmark"
+            for name in ("cases", "fixtures", "request.json", "job.sbatch", "job.id", "rank-exec.sh"):
+                subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
+                                f"{remote}:{benchmark_task}/{name}", str(benchmark_results)], check=False)
         if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             runtime_results = results / "runtime"
             runtime_results.mkdir(exist_ok=True)

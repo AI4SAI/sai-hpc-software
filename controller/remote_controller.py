@@ -51,7 +51,7 @@ def layout(home, run_id):
             "overlay": task / "work.ext3"}
 
 def container_command(image, command, *, overlay=None, control=None, repository=None,
-                      jobs=8, gpu=False, extra_binds=()):
+                      jobs=8, gpu=False, extra_binds=(), runtime=None):
     if not Path(image).is_absolute() or not command:
         raise ValueError("absolute image path and argv required")
     args = ["apptainer", "exec", "--fakeroot", "--cleanenv", "--containall",
@@ -82,5 +82,13 @@ def container_command(image, command, *, overlay=None, control=None, repository=
             args += ["--bind", f"{source}:{dest}:ro"]
     if overlay:
         args += ["--overlay", str(overlay)]
-    args += ["--env", f"BUILD_JOBS={int(jobs)}", "--env", "TMPDIR=/workspace/tmp"]
+    if runtime is not None:
+        runtime = Path(runtime)
+        if (not runtime.is_absolute() or runtime.resolve() != runtime or
+                runtime.name != "runtime" or runtime.parent.parent.name != "runs" or
+                any(c in str(runtime) for c in ":,\n")):
+            raise ValueError("runtime bind must be an exact trusted per-run directory")
+        args += ["--bind", f"{runtime}:/runtime:rw"]
+    args += ["--env", f"BUILD_JOBS={int(jobs)}", "--env",
+             "TMPDIR=/runtime" if runtime is not None else "TMPDIR=/workspace/tmp"]
     return args + [str(image)] + list(command)

@@ -116,8 +116,14 @@ class BuildMonitorLifecycleTests(unittest.TestCase):
                 self.assertFalse((self.root / "modulefiles").exists())
 
     def test_failed_build_status_invalidates_a_previously_valid_published_sidecar(self):
-        # CP2K shares the lifecycle gate and has no ABACUS-specific acceptance;
-        # make the sidecar genuinely publishable before testing its revocation.
+        # Isolate build-provenance revocation from scientific fixtures. CP2K
+        # benchmark validation is covered separately and is mandatory in CI.
+        acceptance = patch.object(controller, "validate_acceptance")
+        acceptance.start()
+        self.addCleanup(acceptance.stop)
+        required = patch.object(controller, "required_acceptance", return_value=())
+        required.start()
+        self.addCleanup(required.stop)
         self.configure("cp2k")
         self.assertEqual(self.monitor(), 0)
         self.publish()
@@ -201,8 +207,14 @@ class CiLifecycleTests(unittest.TestCase):
     def test_cp2k_uses_its_build_contract_without_abacus_acceptance(self):
         self.assertEqual(self.execute(software="cp2k", target="dsprhbm"), [
             ("software_controller.py", "submit"), ("software_controller.py", "monitor"),
+            ("cp2k_benchmark.py", "submit"), ("cp2k_benchmark.py", "monitor"),
             ("software_controller.py", "publish"),
         ])
+
+    def test_failed_cp2k_benchmark_prevents_publication(self):
+        commands = self.execute(software="cp2k", fail_monitor="cp2k_benchmark.py")
+        self.assertEqual(commands[-1], ("cp2k_benchmark.py", "monitor"))
+        self.assertNotIn(("software_controller.py", "publish"), commands)
 
 
 if __name__ == "__main__":

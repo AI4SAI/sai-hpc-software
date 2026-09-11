@@ -5,6 +5,7 @@ cache=${1:?source cache directory required}
 work=${2:?dependency build directory required}
 prefix=${3:?dependency install prefix required}
 jobs=${BUILD_JOBS:-8}
+native_flags=${CP2K_NATIVE_FLAGS:--O3 -march=native}
 mkdir -p "$work" "$prefix"
 export CMAKE_PREFIX_PATH="$prefix${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}"
 export PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$prefix/lib64/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
@@ -13,11 +14,14 @@ build_dependency() {
   local name=$1 version=$2 checksum=$3
   local archive="$cache/$name-$version.tar.gz"
   printf '%s  %s\n' "$checksum" "$archive" | sha256sum --check --status
+  printf '%s  %s\n' "$checksum" "$archive" >> "$work/source-archives.sha256"
   mkdir -p "$work/$name-source"
   tar --no-same-owner --strip-components=1 -xzf "$archive" -C "$work/$name-source"
   cmake -S "$work/$name-source" -B "$work/$name-build" \
     -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$prefix" \
     -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
+    -DCMAKE_C_FLAGS="$native_flags" -DCMAKE_CXX_FLAGS="$native_flags" -DCMAKE_Fortran_FLAGS="$native_flags" \
+    -DCMAKE_INSTALL_RPATH='$ORIGIN/../lib' -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=FALSE \
     -DBUILD_SHARED_LIBS=OFF -DBUILD_TESTING=OFF -DWITH_TESTS=OFF \
     -DTBLITE_WITH_TESTS=OFF -D"$name-dependency-method=cmake" \
     -DFETCHCONTENT_FULLY_DISCONNECTED=ON
