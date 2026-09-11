@@ -38,17 +38,21 @@ class BenchmarkTests(unittest.TestCase):
         artifact = self.root / f"containers/software/abacus/v1/{target}/candidate.sif"
         artifact.parent.mkdir(parents=True, exist_ok=True)
         artifact.write_bytes(b"pinned candidate")
+        benchmark.dump(artifact.with_suffix(".json"), dict(artifact=str(artifact), sha256=checksum(artifact),
+                       version="v1", target=target, build_verified=True))
         if benchmark.TARGETS[target]["gpus"] == 0:
             (self.case / "INPUT").write_text("INPUT_PARAMETERS\ncalculation scf\ndevice cpu\n")
         values = dict(action="prepare", run_id="comparison", version="v1", target=target,
                       artifact=str(artifact), launcher=str(self.launcher), system_module=benchmark.SYSTEM_MODULE,
-                      case=str(self.case), warmup=1, repeats=3, minutes=30,
+                      case=str(self.case), packaged_case=None, warmup=1, repeats=3, minutes=30,
                       scf_log="OUT.autotest/running_scf.log")
         values.update(changes)
         return argparse.Namespace(**values)
 
     def results(self, task):
         request = json.loads((task / "request.json").read_text())
+        if not (task / "results/input.json").exists():
+            self.materialize(task)
         (task / "job.id").write_text("123\n")
         (task / "execution.id").write_text("123\n")
         for spec in request["runs"]:
@@ -61,10 +65,10 @@ class BenchmarkTests(unittest.TestCase):
                 (work / f"{name}.sha256").write_text(f"{request[name + '_sha256']}  {request[name]}\n")
             (work / "modules.log").write_text(benchmark.MPI_MODULE + "\n" + benchmark.SYSTEM_MODULE + "\n")
             native = "/opt/software/abacus/system/bin/abacus"
+            (work / "info.log").write_text("ABACUS v3.9.0.26\n")
             if spec["arm"] == "system":
                 (work / "executable.path").write_text(native + "\n")
                 (work / "executable.sha256").write_text("a" * 64 + "  " + native + "\n")
-                (work / "info.log").write_text("ABACUS v3.9.0.26\n")
                 (work / "ldd.log").write_text("libmpi => /opt/openmpi/lib/libmpi.so\n")
             for rank in range(request["ranks"]):
                 executable = native if spec["arm"] == "system" else request["artifact"]
@@ -82,6 +86,17 @@ class BenchmarkTests(unittest.TestCase):
                 "#SCF IS CONVERGED#\n!FINAL_ETOT_IS -4871.55886 eV\n")
         return request
 
+    def materialize(self, task):
+        def fake_copy(argv, **kwargs):
+            self.assertEqual(argv[0], "apptainer")
+            self.assertIn("/share/sai/benchmark-cases/", argv[-2])
+            for bind in ("/usr:/usr:ro", "/lib:/lib:ro", "/lib64:/lib64:ro"):
+                self.assertIn(bind, argv)
+            shutil.copytree(self.case, task / "input", dirs_exist_ok=True)
+            return subprocess.CompletedProcess(argv, 0)
+        with patch.object(benchmark.subprocess, "run", side_effect=fake_copy):
+            benchmark.materialize(task)
+
     def test_prepare_does_not_submit_and_pins_real_cpu_and_gpu_resources(self):
         for target in ("8v100v0-avx512", "dsprhbm"):
             with self.subTest(target=target):
@@ -96,6 +111,8 @@ class BenchmarkTests(unittest.TestCase):
                 self.assertIn("/usr/bin/time -f %e", script)
                 self.assertIn('cp -a input/. "$work/"', script)
                 self.assertIn(str(task / "mpi-runtime"), script)
+                self.assertIn("#SBATCH --export=HOME", script)
+                self.assertNotIn("export HOME=", script)
                 self.assertEqual(len(request["runs"]), 8)
                 self.assertEqual([s["arm"] for s in request["runs"]],
                                  ["system", "candidate", "candidate", "system"] * 2)
@@ -117,12 +134,12 @@ class BenchmarkTests(unittest.TestCase):
         self.assertEqual(stats["rounded_iteration_seconds"]["candidate_system_ratio"], 0.5)
         self.assertEqual(stats["wall_seconds"]["candidate_system_ratio"], 0.6)
         self.assertEqual(evidence["request_sha256"], checksum(task / "request.json"))
-        self.assertEqual((task / "evidence.sha256").read_text().strip(), checksum(task / "evidence.json"))
+        self.assertEqual((task / "results/evidence.sha256").read_text().strip(), checksum(task / "results/evidence.json"))
         self.assertIn("runs/m000-system/OUT.autotest/running_scf.log", evidence["files"])
         (task / "runs/w000-system/wall-seconds.txt").write_text("nan")
         with self.assertRaises(ValueError):
             benchmark.analyze(task)
-        self.assertFalse((task / "evidence.json").exists())
+        self.assertFalse((task / "results/evidence.json").exists())
 
     def test_analysis_rejects_incomplete_nonfinite_and_mismatched_evidence(self):
         cases = {
@@ -134,6 +151,7 @@ class BenchmarkTests(unittest.TestCase):
             "wrong_hash": ("artifact.sha256", "0" * 64),
             "changed_input": ("INPUT", "modified case"),
             "wrong_modules": ("modules.log", "abacus/auto\n"),
+            "no_version": ("info.log", "ABACUS unknown build\n"),
             "wrong_image": ("ranks/rank-0.tsv", "node0\t0\t8v100v0-avx512\t/wrong.sif\t0\t/mpi-avx2\n"),
         }
         for name, (relative, value) in cases.items():
@@ -232,6 +250,80 @@ class BenchmarkTests(unittest.TestCase):
         (self.case / "logs/scf.log").write_text("#SCF IS CONVERGED#\n!FINAL_ETOT_IS -1 eV\n")
         with self.assertRaisesRegex(ValueError, "fresh relative output"):
             benchmark.prepare(args)
+
+    def test_packaged_cases_are_deferred_and_preserve_request_and_transform_hashes(self):
+        for target, case, device in (("dsprhbm", "pw", "cpu"), ("8v100v0-avx512", "pw", "gpu"),
+                                     ("8v100v0-avx512", "hse", "cpu"), ("8v100v0-avx512", "deepks", "cpu")):
+            with self.subTest(target=target, case=case):
+                args = self.args(target, run_id=target + case, case=None, packaged_case=case)
+                (self.case / "INPUT").write_text("INPUT_PARAMETERS\ncalculation scf\nsuffix autotest\n" +
+                                                ("device gpu\n" if case == "pw" else ""))
+                with patch.object(benchmark.subprocess, "run", wraps=subprocess.run) as run:
+                    task = benchmark.prepare(args)
+                self.assertEqual([call.args[0][0] for call in run.call_args_list], ["bash"])
+                self.assertFalse((task / "input").exists())
+                before = checksum(task / "request.json")
+                request = self.results(task)
+                self.assertEqual(before, checksum(task / "request.json"))
+                self.assertEqual(request["case_device"], device)
+                self.assertIsNone(request["case_files"])
+                metadata = json.loads((task / "results/input.json").read_text())
+                self.assertEqual(metadata["case_device"], device)
+                self.assertEqual(metadata["case_files"]["INPUT"], checksum(task / "input/INPUT"))
+                self.assertEqual(benchmark.analyze(task)["benchmark_case"], case)
+                if target == "dsprhbm":
+                    self.assertNotEqual(metadata["source_files"]["INPUT"], metadata["case_files"]["INPUT"])
+                if case != "pw":
+                    self.assertTrue(request["allow_cpu_case_on_gpu"])
+
+    def test_verify_evidence_is_read_only_and_independent_of_import_location(self):
+        task = benchmark.prepare(self.args())
+        request = self.results(task)
+        evidence = benchmark.analyze(task)
+        before = {str(p): checksum(p) for p in task.rglob("*") if p.is_file()}
+        with patch.object(benchmark, "CONTROL", self.root / "another-controller.py"):
+            self.assertEqual(benchmark.verify_evidence(task, request), evidence)
+        self.assertEqual(before, {str(p): checksum(p) for p in task.rglob("*") if p.is_file()})
+
+    def test_monitor_attaches_proof_then_revokes_it_on_failed_raw_evidence(self):
+        args = self.args(case=None, packaged_case="pw")
+        task = benchmark.prepare(args)
+        request = self.results(task)
+        monitor = argparse.Namespace(run_id=args.run_id, timeout=1, interval=0)
+
+        def scheduler(argv, **kwargs):
+            return subprocess.CompletedProcess(argv, 0 if argv[0] == "sacct" else 1,
+                                               "123|COMPLETED|0:0|\n" if argv[0] == "sacct" else "", "")
+        with patch.object(benchmark.subprocess, "run", side_effect=scheduler):
+            self.assertEqual(benchmark.monitor(monitor), 0)
+        sidecar = Path(request["artifact"]).with_suffix(".json")
+        manifest = json.loads(sidecar.read_text())
+        proof = manifest["benchmark_pw"]
+        self.assertEqual(proof["run_id"], "benchmark-" + args.run_id)
+        self.assertEqual(proof["evidence_sha256"], checksum(task / "results/evidence.json"))
+        self.assertTrue(json.loads((task / "results/status.json").read_text())["verified"])
+        manifest["benchmark_hse"] = {"run_id": "another-case", "verified": True}
+        benchmark.dump(sidecar, manifest)
+        (task / "runs/m000-system/wall-seconds.txt").write_text("NaN")
+        with patch.object(benchmark.subprocess, "run", side_effect=scheduler), self.assertRaises(ValueError):
+            benchmark.monitor(monitor)
+        manifest = json.loads(sidecar.read_text())
+        self.assertNotIn("benchmark_pw", manifest)
+        self.assertIn("benchmark_hse", manifest)
+        self.assertFalse(json.loads((task / "results/status.json").read_text())["verified"])
+
+    def test_monitor_rejects_failed_scheduler_and_missing_case_metadata(self):
+        task = benchmark.prepare(self.args(case=None, packaged_case="pw"))
+        self.results(task)
+        args = argparse.Namespace(run_id="comparison", timeout=1, interval=0)
+        failure = [subprocess.CompletedProcess([], 1, "", ""),
+                   subprocess.CompletedProcess([], 0, "123|FAILED|1:0|\n", "")]
+        with patch.object(benchmark.subprocess, "run", side_effect=failure):
+            self.assertEqual(benchmark.monitor(args), 1)
+        self.assertFalse(json.loads((task / "results/status.json").read_text())["verified"])
+        (task / "results/input.json").unlink()
+        with self.assertRaises((ValueError, OSError)):
+            benchmark.analyze(task)
 
 
 if __name__ == "__main__":

@@ -180,12 +180,13 @@ class CiLifecycleTests(unittest.TestCase):
             ("software_controller.py", "submit"), ("software_controller.py", "monitor"),
             ("runtime_controller.py", "submit"), ("runtime_controller.py", "monitor"),
             ("gpu_feature_controller.py", "submit"), ("gpu_feature_controller.py", "monitor"),
+            *[("abacus_benchmark.py", op) for _ in range(3) for op in ("prepare", "submit", "monitor")],
             ("software_controller.py", "publish"),
         ])
         self.assertEqual(self.execute(target="8v100v0-avx512"), self.execute())
 
     def test_failed_build_or_either_acceptance_monitor_prevents_publication(self):
-        for script in ("software_controller.py", "runtime_controller.py", "gpu_feature_controller.py"):
+        for script in ("software_controller.py", "runtime_controller.py", "gpu_feature_controller.py", "abacus_benchmark.py"):
             with self.subTest(script=script):
                 commands = self.execute(fail_monitor=script)
                 self.assertEqual(commands[-1], (script, "monitor"))
@@ -195,6 +196,7 @@ class CiLifecycleTests(unittest.TestCase):
         self.assertEqual(self.execute(target="dsprhbm"), [
             ("software_controller.py", "submit"), ("software_controller.py", "monitor"),
             ("runtime_controller.py", "submit"), ("runtime_controller.py", "monitor"),
+            *[("abacus_benchmark.py", op) for _ in range(3) for op in ("prepare", "submit", "monitor")],
             ("software_controller.py", "publish"),
         ])
 

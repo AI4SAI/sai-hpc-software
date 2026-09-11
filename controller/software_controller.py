@@ -22,7 +22,7 @@ def contract_files(software):
         return common + ["container_entry.sh", "abacus_build.sh", "runtime_controller.py",
                          "gpu_feature_controller.py", "gpu_feature_runtime.sh", "abacus",
                          "abacus_dependencies.py", "abacus_dependencies.sh",
-                         "abacus_dependency_lock.json", "abacus_features.py"]
+                         "abacus_dependency_lock.json", "abacus_features.py", "abacus_benchmark.py"]
     if software == "cp2k":
         return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k"]
     raise ValueError("unknown software contract")
@@ -44,9 +44,9 @@ def required_acceptance(software, target):
     if software != "abacus":
         return ()
     if target == "dsprhbm":
-        return ("multinode_runtime",)
+        return ("multinode_runtime", "benchmark_pw", "benchmark_hse", "benchmark_deepks")
     if target in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
-        return ("multinode_runtime", "gpu_features")
+        return ("multinode_runtime", "gpu_features", "benchmark_pw", "benchmark_hse", "benchmark_deepks")
     raise ValueError("ABACUS publication acceptance is not registered for this target")
 
 def atomic_manifest(artifact, manifest):
@@ -59,7 +59,9 @@ def validate_acceptance(manifest):
     """Only proofs tied to this image and the current trusted verifier count."""
     for name in required_acceptance(manifest["software"], manifest["target"]):
         proof = manifest.get(name, {})
-        verifier = "runtime_controller.py" if name == "multinode_runtime" else "gpu_feature_controller.py"
+        benchmark = name.startswith("benchmark_")
+        verifier = ("abacus_benchmark.py" if benchmark else
+                    "runtime_controller.py" if name == "multinode_runtime" else "gpu_feature_controller.py")
         if (proof.get("verified") is not True or
                 proof.get("artifact_sha256") != manifest["sha256"] or
                 proof.get("controller_sha256") != checksum(CONTROL / verifier)):
@@ -90,11 +92,16 @@ def validate_acceptance(manifest):
                               else request["nodes"] * request["gpus_per_node"])
             if proof.get("nodes") != 2 or proof.get("ranks") != expected_ranks or expected_ranks < 2:
                 raise ValueError("invalid multinode topology")
-        else:
+        elif name == "gpu_features":
             if not all(proof.get(feature) is True for feature in ("nccl_collective", "cusolvermp_eigensolve")):
                 raise ValueError("GPU feature execution was not verified")
             if proof.get("runtime_sha256") != checksum(CONTROL / "gpu_feature_runtime.sh"):
                 raise ValueError("GPU feature runtime changed")
+        else:
+            if (request.get("packaged_case") != name.removeprefix("benchmark_") or
+                    request.get("system_module") != "abacus/v3.9.0.26-sm70-auto" or
+                    request.get("warmup", 0) < 1 or request.get("repeats", 0) < 3):
+                raise ValueError("benchmark did not cover the required case and baseline")
         evidence_path = task / "results/evidence.json"
         if (not evidence_path.is_file() or evidence_path.is_symlink() or
                 evidence_path.resolve() != evidence_path or
@@ -102,8 +109,10 @@ def validate_acceptance(manifest):
             raise ValueError(f"missing or changed {name} scientific evidence")
         if name == "multinode_runtime":
             from runtime_controller import verify_evidence
-        else:
+        elif name == "gpu_features":
             from gpu_feature_controller import verify_evidence
+        else:
+            from abacus_benchmark import verify_evidence
         evidence = verify_evidence(task, request)
         if evidence != json.loads(evidence_path.read_text()):
             raise ValueError(f"{name} scientific results changed after verification")

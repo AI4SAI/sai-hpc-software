@@ -3,6 +3,7 @@ import argparse
 from contextlib import redirect_stdout
 import io
 import json
+import hashlib
 from pathlib import Path
 import shutil
 import sys
@@ -14,6 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "controller"))
 import software_controller as controller
 import runtime_controller as runtime
+import abacus_benchmark as benchmark
 from source_cache import checksum
 
 
@@ -86,7 +88,58 @@ class PublicationTests(unittest.TestCase):
         evidence.write_text(json.dumps(runtime.verify_evidence(task, request), sort_keys=True) + "\n")
         self.manifest["multinode_runtime"] = dict(request, verified=True, run_id="acceptance", job="123",
             evidence_sha256=checksum(evidence))
+        for case in ("pw", "hse", "deepks"):
+            self.benchmark_acceptance(case)
         self.save()
+        return task
+
+    def benchmark_acceptance(self, case):
+        args = argparse.Namespace(action="prepare", run_id="paired-" + case, version="v1",
+            target="dsprhbm", artifact=str(self.image), launcher=str(self.control / "abacus"),
+            system_module=benchmark.SYSTEM_MODULE, case=None, packaged_case=case,
+            warmup=1, repeats=3, minutes=30, scf_log="OUT.autotest/running_scf.log",
+            allow_cpu_case_on_gpu=True)
+        with patch.object(benchmark, "ROOT", self.root), patch.object(benchmark, "CONTROL", self.control / "abacus_benchmark.py"):
+            task = benchmark.prepare(args)
+        request = json.loads((task / "request.json").read_text())
+        (task / "input").mkdir()
+        source = "INPUT_PARAMETERS\ncalculation scf\ndevice cpu\nsuffix autotest\n"
+        (task / "input/INPUT").write_text(benchmark.transformed_input(source, request))
+        (task / "input/STRU").write_text("ATOMIC_SPECIES\nSi 28 Si.upf\n")
+        files = benchmark.case_files(task / "input")
+        source_files = dict(files, INPUT=hashlib.sha256(source.encode()).hexdigest())
+        benchmark.dump(task / "results/input.json", dict(request_sha256=checksum(task / "request.json"),
+            artifact_sha256=checksum(self.image), packaged_case=case, source_input=source,
+            source_files=source_files, case_files=files, case_device="cpu"))
+        (task / "job.id").write_text("456\n")
+        (task / "execution.id").write_text("456\n")
+        for spec in request["runs"]:
+            work = task / "runs" / spec["id"]
+            shutil.copytree(task / "input", work)
+            (work / "ranks").mkdir()
+            (work / "OUT.autotest").mkdir()
+            (work / "completed.job").write_text("456\n")
+            for name in ("artifact", "launcher"):
+                (work / f"{name}.sha256").write_text(request[name + "_sha256"] + "\n")
+            (work / "modules.log").write_text(benchmark.MPI_MODULE + "\n" + benchmark.SYSTEM_MODULE + "\n")
+            (work / "info.log").write_text("ABACUS v3.9.0.26\n")
+            native = "/opt/apps/abacus/system/bin/abacus"
+            if spec["arm"] == "system":
+                (work / "executable.path").write_text(native + "\n")
+                (work / "executable.sha256").write_text("a" * 64 + "\n")
+                (work / "ldd.log").write_text("libmpi.so => /opt/devtools/mpi/lib/libmpi.so\n")
+            for rank in range(16):
+                image = native if spec["arm"] == "system" else str(self.image)
+                (work / f"ranks/rank-{rank}.tsv").write_text(
+                    f"node-{rank // 8}\t{rank}\tdsprhbm\t{image}\t\t/opt/openmpi-avx512\n")
+            (work / "stdout.log").write_text("ITER ETOT/eV EDIFF/eV DRHO TIME/s\nCG1 -1 0 0 0.1\n")
+            (work / "wall-seconds.txt").write_text("1.0\n")
+            (work / "OUT.autotest/running_scf.log").write_text("#SCF IS CONVERGED#\n!FINAL_ETOT_IS -1 eV\n")
+        evidence = task / "results/evidence.json"
+        benchmark.dump(evidence, benchmark.verify_evidence(task, request))
+        benchmark.dump(task / "results/status.json", dict(verified=True, state="COMPLETED", exit_code="0:0", job="456"))
+        self.manifest["benchmark_" + case] = dict(request, run_id=task.name, verified=True, job="456",
+                                                  evidence_sha256=checksum(evidence))
         return task
 
     def lookup(self):
@@ -194,9 +247,25 @@ class PublicationTests(unittest.TestCase):
 
     def test_gpu_requires_both_scientific_and_feature_acceptance(self):
         self.assertEqual(controller.required_acceptance("abacus", "4v100-avx512"),
-                         ("multinode_runtime", "gpu_features"))
+                         ("multinode_runtime", "gpu_features", "benchmark_pw", "benchmark_hse", "benchmark_deepks"))
         self.assertEqual(controller.required_acceptance("abacus", "16v100-avx2"),
-                         ("multinode_runtime", "gpu_features"))
+                         ("multinode_runtime", "gpu_features", "benchmark_pw", "benchmark_hse", "benchmark_deepks"))
+
+    def test_missing_benchmark_and_changed_timing_block_publication_and_cache(self):
+        self.acceptance()
+        proof = self.manifest.pop("benchmark_hse")
+        self.save()
+        with self.assertRaisesRegex(ValueError, "benchmark_hse"):
+            self.publish()
+        self.manifest["benchmark_hse"] = proof
+        self.save()
+        self.publish()
+        self.assertTrue(self.lookup())
+        task = self.root / "runtime-tests" / proof["run_id"]
+        (task / "runs/m000-candidate/wall-seconds.txt").write_text("nan\n")
+        self.assertEqual(self.lookup(), {})
+        with self.assertRaises(ValueError):
+            self.publish()
 
 
 if __name__ == "__main__":

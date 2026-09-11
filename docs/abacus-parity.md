@@ -8,7 +8,10 @@ read-only on `SAI-stardust` on 2026-09-11. No system installation was modified.
 
 The default `abacus/v3.9.0.26-sm70-auto` has more optional CPU functionality than
 `abacus/develop-git-079fd0c-260724-sm70-auto` (3.11.0-beta6). The required feature
-set is their union, not whichever binary is easiest to match.
+set is their union, not whichever binary is easiest to match. This is the first
+parity stage, not the end of the user's "enable other feasible capabilities"
+request. Additional methods remain subject to dependency/ABI and reference-case
+evaluation; `not_in_observed_baseline` is an observation, never a permanent waiver.
 
 | Capability | Default 3.9.0.26 | Develop beta6 | New recipe requirement |
 | --- | --- | --- | --- |
@@ -24,6 +27,8 @@ TensorFlow, PEXSI or cnpy. Those are **not claimed enabled** by this parity reci
 DeePMD modules exist on SAI, but compatibility and additional scientific tests
 would need separate validation. Presence checks do not prove hybrid-functional,
 ML model or NEP numerical behavior; those methods need suitable reference cases.
+DFT-D4 is a candidate for later reuse of the native dependencies being prepared
+for CP2K, provided ABACUS's required API/version is confirmed.
 
 ## Dependencies and containment
 
@@ -85,6 +90,13 @@ the same allocation, nodes, ranks, threads and GPUs. Warmups precede repeated,
 alternating system/candidate runs; each run starts in a new input-only directory.
 The result must include SCF convergence, finite matching energies and all requested
 runs before timing statistics are accepted.
+The full-feature CI now runs PW, HSE and DeePKS paired benchmarks after ordinary
+multi-node and GPU-feature acceptance. Each case requires one warmup pair and at
+least three measured pairs against the full-feature system default. Publication
+and subsequent cache hits revalidate all three raw benchmark proofs; merely
+having a feature-enabled binary is insufficient. Timings are measured/reported,
+not forced to pass an invented speedup threshold; correctness failures and missing
+measurements fail the gate.
 
 Each new SIF includes self-contained `share/sai/benchmark-cases/pw`, `hse`, and
 `deepks` inputs. HSE includes the matching pseudopotentials/orbitals; DeePKS also
@@ -99,3 +111,24 @@ Printed iteration timing has limited precision and is not a GPU kernel profiler.
 An `--info` invocation, a single tiny-case run, or timings from different partitions
 do not establish a performance improvement. PW smoke and cuSOLVERMp/NCCL feature
 cases also do not establish full hybrid-functional or ML performance parity.
+
+## Initial system-case probe (not a performance comparison)
+
+Slurm `1271264` ran the three small cases once with the system default on
+`4V100`, two nodes × one GPU/rank, one thread/rank, after two retained environment
+diagnostic attempts (`1271192`, `1271222`). All three SCFs converged and their real
+stdout was successfully parsed by the benchmark analyzer:
+
+| Case | Energy / eV | Printed iteration seconds | Process wall seconds |
+| --- | --- | --- | --- |
+| PW | -4869.7470519499775 | 1.05 (10 iterations) | 2.30 |
+| HSE | -428.99428271100163 | 0.54 (49 iterations across loops) | 1.89 |
+| DeePKS | -71.32204093440238 | 1.07 (24 iterations) | 2.14 |
+
+Raw inputs/logs remain in
+`runtime-tests/baseline-parity-536dfc2-nss-4v100` on SAI. This proves the baseline
+case/format compatibility, **not** a candidate speedup or repeatability result.
+The working environment uses `--export=NIL` and restores the actual account's
+HOME (not a scratch-home reassignment); Open MPI fails to initialize if HOME is
+missing. A selective `--export=HOME` attempt was cancelled by UID 0 before logging;
+its cause is not established and it is not used by the benchmark driver.

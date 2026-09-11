@@ -60,7 +60,7 @@ def main():
     recipe = (["container_entry.sh", "environment.sh", "abacus_build.sh",
                "gpu_feature_controller.py", "gpu_feature_runtime.sh",
                "abacus_dependencies.py", "abacus_dependencies.sh",
-               "abacus_dependency_lock.json", "abacus_features.py"]
+               "abacus_dependency_lock.json", "abacus_features.py", "abacus_benchmark.py"]
               if software == "abacus" else
               ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh"])
     for name in common + recipe:
@@ -124,6 +124,16 @@ def main():
             python("gpu_feature_controller.py", "submit", feature_run, version, target,
                    "--build-run-id", run_id)
             python("gpu_feature_controller.py", "monitor", feature_run)
+        if software == "abacus":
+            artifact = f"{root}/containers/software/abacus/{version}/{target}/{run_id}.sif"
+            for case in ("pw", "hse", "deepks"):
+                benchmark_run = safe_name(run_id + "-" + case)
+                python("abacus_benchmark.py", "prepare", benchmark_run, version, target,
+                       "--artifact", artifact, "--launcher", f"{control}/abacus",
+                       "--system-module", "abacus/v3.9.0.26-sm70-auto", "--packaged-case", case,
+                       "--allow-cpu-case-on-gpu")
+                python("abacus_benchmark.py", "submit", benchmark_run)
+                python("abacus_benchmark.py", "monitor", benchmark_run)
         python("software_controller.py", "publish", run_id)
         run(["scp", "-q", *options, "-P", "12022", f"{remote}:{task}/artifact.path", results / "artifact.path"])
         print((results / "artifact.path").read_text(), flush=True)
@@ -145,6 +155,14 @@ def main():
             subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
                             f"{remote}:{root}/runtime-tests/{feature_run}/results/.",
                             str(feature_results)], check=False)
+        if software == "abacus":
+            for case in ("pw", "hse", "deepks"):
+                benchmark_results = results / f"benchmark-{case}"
+                benchmark_results.mkdir(exist_ok=True)
+                benchmark_run = safe_name("benchmark-" + run_id + "-" + case)
+                subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
+                                f"{remote}:{root}/runtime-tests/{benchmark_run}/results/.",
+                                str(benchmark_results)], check=False)
 
 if __name__ == "__main__":
     main()
