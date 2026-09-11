@@ -1,0 +1,112 @@
+name: Experimental DeePMD and LAMMPS tracking
+
+on:
+  schedule:
+    - cron: '47 1,7,13,19 * * *'
+  workflow_dispatch:
+    inputs:
+      deepmd_ref:
+        description: DeePMD moving branch/tag/latest-release
+        default: master
+        required: true
+      lammps_ref:
+        description: LAMMPS moving branch/tag/latest-release
+        default: develop
+        required: true
+      targets:
+        description: Native GPU partitions; independent build for every target
+        default: 4v100-avx512,16v100-avx2,8v100v0-avx512
+        required: true
+      build_candidates:
+        description: Spend Slurm allocation on unpublished experimental builds
+        type: boolean
+        default: false
+  push:
+    paths: ['controller/md_*', 'tests/test_md_*', 'docs/DEEPMD-LAMMPS.md', 'docs/evidence/deepmd-*', '.github/workflows/deepmd-lammps.yml']
+  pull_request:
+    paths: ['controller/md_*', 'tests/test_md_*', 'docs/DEEPMD-LAMMPS.md', 'docs/evidence/deepmd-*', '.github/workflows/deepmd-lammps.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: python3 -m unittest discover -s tests -v
+      - run: |
+          for script in controller/md_*.sh; do bash -n "$script"; done
+
+  resolve:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    needs: validate
+    runs-on: ubuntu-latest
+    outputs:
+      builds: ${{ steps.pair.outputs.builds }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - id: pair
+        env:
+          GH_TOKEN: ${{ github.token }}
+          DP_REF: ${{ inputs.deepmd_ref || 'master' }}
+          LMP_REF: ${{ inputs.lammps_ref || 'develop' }}
+          TARGETS: ${{ inputs.targets || '4v100-avx512,16v100-avx2,8v100v0-avx512' }}
+        run: |
+          python3 - <<'PY'
+          import json, os, sys
+          sys.path.insert(0, 'controller')
+          from md_tracking import pair, TARGETS
+          targets = list(dict.fromkeys(os.environ['TARGETS'].split(',')))
+          if not targets or any(t not in TARGETS for t in targets):
+              raise ValueError('unknown native MD target')
+          # Resolve once, so upstream motion cannot split the matrix mid-run.
+          source = pair(os.environ['DP_REF'], os.environ['LMP_REF'], targets[0])
+          builds = [dict(source, target=t) for t in targets]
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as stream:
+              stream.write('builds=' + json.dumps(builds) + '\n')
+          print(json.dumps(builds, indent=2))
+          PY
+
+  candidate-build:
+    # Experimental branch: schedule resolves moving refs but cannot spend GPU
+    # resources or imply publication until live scientific acceptance is wired.
+    if: github.event_name == 'workflow_dispatch' && inputs.build_candidates
+    needs: [validate, resolve]
+    runs-on: ubuntu-latest
+    environment: hpc
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        build: ${{ fromJSON(needs.resolve.outputs.builds) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Prepare repository-secret SSH key
+        env:
+          KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -m 700 "$RUNNER_TEMP/ssh"
+          printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
+          chmod 600 "$RUNNER_TEMP/ssh/key"
+      - name: Build isolated unpublished candidate
+        env:
+          MD_PAIR: ${{ toJSON(matrix.build) }}
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+        run: python3 -u controller/md_ci.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: md-candidate-${{ matrix.build.target }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/results/
+          if-no-files-found: warn
+      - name: Remove temporary SSH key
+        if: always()
+        run: rm -f -- "$RUNNER_TEMP/ssh/key"
