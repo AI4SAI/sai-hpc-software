@@ -117,6 +117,12 @@ baseline feature is implicitly waived, and no legacy QUIP companion is planned.
 - Compare candidate and baseline on the same fixed input, node/GPU allocation,
   MPI ranks, thread count, and scientific settings; validate results before
   reporting timings. Record input identity, versions, energies and wall times.
+  TBLITE is the only approved input-syntax exception: CP2K 2026.1 selects the
+  backend with `&TBLITE T`, while the pinned development source requires
+  `GFN_TYPE TBLITE`. Both exact input hashes and a reversible two-line syntax
+  contract are checked; GFN2, geometry, SCF settings and tolerances stay fixed.
+  This correctness comparison is not described as same-byte and reports no
+  cross-version TBLITE speed ratio.
 - Use one warmup and at least three alternating repeats in fresh directories;
   validate energies and forces before reporting a speed ratio. CPU baseline
   2025.1 does not support TBLITE/DFT-D4: those candidate-only paths require
@@ -127,6 +133,8 @@ baseline feature is implicitly waived, and no legacy QUIP companion is planned.
   both CP2K TOTAL MAXIMUM and elapsed wall time. It is a workload-specific
   comparison, not a claim about every production calculation. A separate ELPA
   input must record actual `cp_fm_diag_elpa` execution in its timing section.
+  Both ELPA inputs set `GLOBAL/TIMINGS/THRESHOLD 0` and `TIMINGS_LEVEL 1` so
+  the default two-percent output filter cannot conceal short solver calls.
 - Artifact validation recursively inspects all packaged ELF objects and
   symlinks, rejects path-valued DT_NEEDED, old installation/build/home RPATHs,
   and escaping symlinks. Only the current prefix and explicit system runtime

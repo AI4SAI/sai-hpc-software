@@ -174,6 +174,15 @@ TBLITE_INPUT = """&GLOBAL
   &END SUBSYS
 &END FORCE_EVAL
 """
+
+# CP2K 2026.1 requires an integer GFN_TYPE and selects the TBLITE backend
+# through the section's boolean. CP2K 2026.2 requires GFN_TYPE TBLITE instead.
+# These are the only approved syntax differences; all scientific parameters
+# remain byte-identical after normalizing those two backend-selection lines.
+TBLITE_BASELINE_INPUT = TBLITE_INPUT.replace("        GFN_TYPE TBLITE\n", "").replace(
+    "        &TBLITE\n", "        &TBLITE T\n")
+
+
 def water64_input():
     """Versioned synthetic 64-water workload, not an upstream reference energy."""
     coordinates = []
@@ -188,7 +197,10 @@ def water64_input():
 
 
 def water_elpa_input():
-    text = water_input().replace("  RUN_TYPE ENERGY_FORCE", "  RUN_TYPE ENERGY_FORCE\n  PREFERRED_DIAG_LIBRARY ELPA")
+    # The default 2% timing threshold hides the eigensolver on this small case.
+    # Identical diagnostic controls on both versions expose actual ELPA calls
+    # without changing the physical or SCF settings.
+    text = water_input().replace("  RUN_TYPE ENERGY_FORCE", "  RUN_TYPE ENERGY_FORCE\n  PREFERRED_DIAG_LIBRARY ELPA\n  &TIMINGS\n    THRESHOLD 0\n    TIMINGS_LEVEL 1\n  &END TIMINGS")
     start = text.index("      &OT ON\n")
     end = text.index("      &END OT\n", start) + len("      &END OT\n")
     return text[:start] + "      &DIAGONALIZATION\n        ALGORITHM STANDARD\n      &END DIAGONALIZATION\n" + text[end:]
@@ -207,8 +219,22 @@ def digest(text):
     return hashlib.sha256(text.encode()).hexdigest()
 
 
-def fixture_hashes(case):
-    return {"input.inp": digest(CASES[case]["input"]),
+def case_input(case, kind="candidate"):
+    return TBLITE_BASELINE_INPUT if case == "ch2o-tblite" and kind == "baseline" else CASES[case]["input"]
+
+
+def syntax_contract():
+    normalized = TBLITE_BASELINE_INPUT.replace("        &TBLITE T\n", "        GFN_TYPE TBLITE\n        &TBLITE\n")
+    if normalized != TBLITE_INPUT:
+        raise ValueError("TBLITE baseline fixture differs beyond approved version syntax")
+    return {"case": "ch2o-tblite", "same_bytes": False,
+            "candidate_backend_selector": "GFN_TYPE TBLITE", "baseline_backend_selector": "TBLITE T section",
+            "unchanged": ["GFN2 method", "charge/spin defaults", "SCF thresholds", "geometry", "forces"],
+            "performance_comparison": False}
+
+
+def fixture_hashes(case, kind="candidate"):
+    return {"input.inp": digest(case_input(case, kind)),
             **(DATA_HASHES if case.startswith("water") else {})}
 
 
@@ -280,7 +306,8 @@ def parse_science(log, forces, elapsed, case):
         raise ValueError("timings must be positive")
     if case == "water64-gpw" and total < 2:
         raise ValueError("GPW performance workload too short to measure compute time")
-    if case == "water-elpa" and not re.search(r"^\s*cp_fm_diag_elpa(?:_base)?\s+", log, re.M):
+    elpa_calls = re.findall(r"^\s*cp_fm_diag_elpa(?:_base)?\s+(\d+)\s+", log, re.M)
+    if case == "water-elpa" and not any(int(count) > 0 for count in elpa_calls):
         raise ValueError("ELPA eigensolver path was not executed")
     dispersion = None
     if case == "water-dftd4":
@@ -346,6 +373,7 @@ def schedule(target):
 
 
 def stage_fixtures(task):
+    syntax_contract()
     data = {}
     for name, expected in DATA_HASHES.items():
         content = subprocess.check_output([
@@ -355,11 +383,12 @@ def stage_fixtures(task):
             raise ValueError(f"pinned benchmark data checksum mismatch: {name}")
         data[name] = content
     for case, spec in CASES.items():
-        folder = task / "fixtures" / case
-        folder.mkdir(parents=True)
-        (folder / "input.inp").write_text(spec["input"])
-        for name in fixture_hashes(case).keys() - {"input.inp"}:
-            (folder / name).write_bytes(data[name])
+        for kind in ("candidate", "baseline"):
+            folder = task / "fixtures" / case / kind
+            folder.mkdir(parents=True)
+            (folder / "input.inp").write_text(case_input(case, kind))
+            for name in fixture_hashes(case, kind).keys() - {"input.inp"}:
+                (folder / name).write_bytes(data[name])
 
 
 def build_artifact(build_run_id, version, target):
@@ -419,6 +448,7 @@ def render_job(args):
         *resource_lines, f"#SBATCH --time={int(args.minutes)}",
         f"#SBATCH --output={task}/results/slurm-%j.log", "#SBATCH --export=NIL",
         "set -euo pipefail",
+        f"export HOME={q(str(Path.home()))}",
         "export USER=${SLURM_JOB_USER:?} LOGNAME=${SLURM_JOB_USER:?}",
         "export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
         'export LD_LIBRARY_PATH="" LD_PRELOAD=""',
@@ -441,7 +471,7 @@ def render_job(args):
         "  module load apptainer/1.4.4",
         '  if [[ "$1" == baseline ]]; then',
         f"    module load {q(baseline)}",
-        '    export SAI_BENCH_BINARY=$(command -v cp2k.psmp)',
+        '    export SAI_BENCH_BINARY=$(readlink -f -- "$(command -v cp2k.psmp)")',
         "  else",
         "    module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto",
         f"    export SAI_BENCH_BINARY={q(str(args.launcher))}",
@@ -470,7 +500,7 @@ def render_job(args):
         '  load_runner "$kind"',
         '  mkdir -p "cases/$case"',
         '  mkdir "$work"',  # Never reuse a prior SCF directory, even on retry.
-        '  cp -- "fixtures/$case/"* "$work/"',
+        '  cp -- "fixtures/$case/$kind/"* "$work/"',
         '  mkdir "$work/ranks" "$work/resources"',
         f'  export SAI_CP2K_TRACE_DIR={q(str(task))}/$work/ranks',
         f'  export SAI_BENCH_RESOURCES={q(str(task))}/$work/resources',
@@ -682,7 +712,7 @@ def verify_evidence(task, request, *, allow_reference=True):
     placement = {}
     for case, repetition, kind in plan:
         folder = f"cases/{case}/{repetition}-{kind}"
-        for name, expected in fixture_hashes(case).items():
+        for name, expected in fixture_hashes(case, kind).items():
             read(f"{folder}/{name}")
             if files[f"{folder}/{name}"] != expected:
                 raise ValueError("benchmark input/data differs from the pinned fixture")
@@ -713,18 +743,21 @@ def verify_evidence(task, request, *, allow_reference=True):
             baseline = (samples if case in baseline_cases(request["target"]) else references)[f"{case}/{repetition}-baseline"]
             comparisons[f"{case}/{repetition}"] = compare_science(candidate, baseline)
         summary = {"warmups": 1, "measured_repetitions": 3,
-                   "baseline_available": case in baseline_cases(request["target"])}
+                   "baseline_available": case in baseline_cases(request["target"]),
+                   "performance_comparison": case != "ch2o-tblite"}
         for clock in ("elapsed_seconds", "cp2k_seconds"):
             candidate = [samples[f"{case}/{r}-candidate"][clock] for r in range(1, 4)]
             summary["candidate_" + clock] = {"samples": candidate, "median": statistics.median(candidate)}
             if summary["baseline_available"]:
                 baseline = [samples[f"{case}/{r}-baseline"][clock] for r in range(1, 4)]
                 summary["baseline_" + clock] = {"samples": baseline, "median": statistics.median(baseline)}
-                summary["baseline_over_candidate_" + clock] = statistics.median(baseline) / statistics.median(candidate)
+                if summary["performance_comparison"]:
+                    summary["baseline_over_candidate_" + clock] = statistics.median(baseline) / statistics.median(candidate)
         summaries[case] = summary
     return {"schema": 1, "job": job, "artifact_sha256": request["artifact_sha256"],
             "fixture_revision": FIXTURE_REVISION,
-            "input_hashes": {case: fixture_hashes(case) for case in CASES},
+            "input_hashes": {case: {kind: fixture_hashes(case, kind) for kind in ("candidate", "baseline")} for case in CASES},
+            "version_syntax_contract": syntax_contract(),
             "energy_tolerance_ha": ENERGY_TOLERANCE_HA, "force_tolerance_ha_bohr": FORCE_TOLERANCE_HA_BOHR,
             "versions": versions, "feature_parity": parity, "mpi": mpi, "nodes": hosts,
             "reference": reference_proof, "samples": samples, "comparisons": comparisons,

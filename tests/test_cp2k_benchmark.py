@@ -51,8 +51,11 @@ class BenchmarkTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "too short"):
             benchmark.parse_science(log.replace("3.0 3.2", "0.1 0.2"), forces, elapsed, "water64-gpw")
         log, forces, elapsed = science("water-elpa")
+        self.assertIn("THRESHOLD 0\n    TIMINGS_LEVEL 1", benchmark.CASES["water-elpa"]["input"])
         with self.assertRaisesRegex(ValueError, "ELPA"):
             benchmark.parse_science(log.replace("cp_fm_diag_elpa", "unused"), forces, elapsed, "water-elpa")
+        with self.assertRaisesRegex(ValueError, "ELPA"):
+            benchmark.parse_science(log.replace("cp_fm_diag_elpa 1", "cp_fm_diag_elpa 0"), forces, elapsed, "water-elpa")
 
     def test_only_explicit_feature_equivalence_and_quip_exception(self):
         candidate = {"flags": ["omp", "libxs", "libxsmm", "elpa"]}
@@ -72,6 +75,15 @@ class BenchmarkTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             benchmark.parse_version(" CP2K version 2026.2\n cp2kflags: omp\n Source code revision abc1234\n"
                                     " CP2K version 2026.2\n cp2kflags: omp\n Source code revision def5678\n")
+
+    def test_only_tblite_backend_syntax_may_differ_between_versions(self):
+        self.assertFalse(benchmark.syntax_contract()["same_bytes"])
+        for case in benchmark.CASES:
+            left, right = benchmark.fixture_hashes(case), benchmark.fixture_hashes(case, "baseline")
+            self.assertEqual(left == right, case != "ch2o-tblite")
+        with patch.object(benchmark, "TBLITE_BASELINE_INPUT", benchmark.TBLITE_BASELINE_INPUT.replace("GFN2", "GFN1")):
+            with self.assertRaises(ValueError):
+                benchmark.syntax_contract()
 
     def test_all_targets_use_same_allocation_warmup_and_three_repeats(self):
         for target in benchmark.BENCHMARK_TARGETS:
@@ -144,8 +156,8 @@ class EvidenceTests(unittest.TestCase):
             folder = f"cases/{case}/{repetition}-{kind}"
             self.runner(folder, kind)
             self.write(folder + "/map.txt", "ppr:1:node:pe=1\n")
-            self.write(folder + "/input.inp", benchmark.CASES[case]["input"])
-            for name in benchmark.fixture_hashes(case).keys() - {"input.inp"}:
+            self.write(folder + "/input.inp", benchmark.case_input(case, kind))
+            for name in benchmark.fixture_hashes(case, kind).keys() - {"input.inp"}:
                 self.write(folder + "/" + name, name)
             for name, content in zip(("cp2k.log", "forces.xyz", "elapsed.txt"), science(case)):
                 self.write(folder + "/" + name, content)
