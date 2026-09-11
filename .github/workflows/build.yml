@@ -4,10 +4,10 @@ on:
     - cron: '23 2 * * *'
   workflow_dispatch:
     inputs:
-      source_ref:
-        description: Branch/tag/SHA, latest-release or latest-prerelease
+      tracks:
+        description: Comma-separated release tracks (development,prerelease,release)
         required: true
-        default: develop
+        default: development
       targets:
         description: Comma-separated accepted targets (dsprhbm,4v100-avx512,16v100-avx2,8v100v0-avx512)
         required: true
@@ -45,32 +45,29 @@ jobs:
       - id: resolve
         env:
           GH_TOKEN: ${{ github.token }}
-          SOURCE_REF: ${{ inputs.source_ref }}
+          RELEASE_TRACKS: ${{ inputs.tracks }}
           TARGETS: ${{ inputs.targets }}
           RESUME_RUN: ${{ inputs.resume_run }}
         run: |
           python3 - <<'PY'
           import json, os, sys
           sys.path.insert(0, 'controller')
-          from resolve_source import resolve
-          from remote_controller import TARGETS
-          config = json.load(open('profiles/tracking.json'))
+          from release_contract import SOFTWARE, TRACKS, resolve_tracks
           scheduled = os.environ['GITHUB_EVENT_NAME'] == 'schedule'
-          requested = config['targets'] if scheduled else list(dict.fromkeys(os.environ['TARGETS'].split(',')))
-          if not requested or any(t not in TARGETS for t in requested):
+          allowed = SOFTWARE['abacus']['targets']
+          requested = list(allowed) if scheduled else list(dict.fromkeys(t.strip() for t in os.environ['TARGETS'].split(',')))
+          if not requested or any(t not in allowed for t in requested):
               raise ValueError('invalid target list')
-          if os.environ.get('RESUME_RUN') and len(requested) != 1:
-              raise ValueError('resume requires exactly one target')
-          refs = config['tracks'] if scheduled else [os.environ['SOURCE_REF']]
+          tracks = TRACKS if scheduled else [t.strip() for t in os.environ['RELEASE_TRACKS'].split(',')]
+          if os.environ.get('RESUME_RUN') and (len(requested) != 1 or len(tracks) != 1):
+              raise ValueError('resume requires exactly one target and one track')
           builds = []
-          for ref in refs:
-              try:
-                  result = resolve(config['repository'], ref)
-              except ValueError:
-                  if scheduled and ref in ('latest-release', 'latest-prerelease'):
-                      print(f'No published {ref}, skipping')
-                      continue
-                  raise
+          for result in resolve_tracks('abacus', tracks):
+              if result['status'] == 'skipped':
+                  if not scheduled:
+                      raise ValueError(result['reason'])
+                  print(json.dumps(result))
+                  continue
               builds.extend(dict(result, target=t) for t in requested)
           with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
               out.write('builds=' + json.dumps(builds) + '\n')
@@ -102,8 +99,10 @@ jobs:
       - name: Cache, submit, monitor and verify single SIF
         env:
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          SOURCE_SHA: ${{ matrix.build.sha }}
-          SOFTWARE_VERSION: ${{ matrix.build.version }}
+          SOURCE_REF: ${{ matrix.build.source_ref }}
+          RELEASE_TRACK: ${{ matrix.build.track }}
+          SOURCE_SHA: ${{ matrix.build.source_sha }}
+          SOFTWARE_VERSION: ${{ matrix.build.source_version }}
           TARGET: ${{ matrix.build.target }}
           RESUME_RUN: ${{ inputs.resume_run }}
         run: python3 -u controller/ci.py
@@ -111,7 +110,7 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: results-${{ matrix.build.version }}-${{ matrix.build.target }}-${{ github.run_id }}
+          name: results-${{ matrix.build.track }}-${{ matrix.build.target }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/results/
           if-no-files-found: warn
       - name: Remove temporary SSH key

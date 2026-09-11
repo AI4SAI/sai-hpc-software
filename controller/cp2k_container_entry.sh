@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
-op=$1; software=$2; sha=$3; version=$4; target=$5
+umask 022
+op=$1; software=$2; sha=$3; version=$4; target=$5; delivery=${6:?canonical identity required}
 [[ "$software" == cp2k && "$sha" =~ ^[0-9a-f]{40}$ ]]
-[[ "$version" =~ ^[A-Za-z0-9][A-Za-z0-9_.-]*$ ]]
-[[ "$target" == dsprhbm || "$target" == 4v100-avx512 || "$target" == 16v100-avx2 || "$target" == 8v100v0-avx512 ]]
-export PATH=/usr/bin:/bin TMPDIR="${TMPDIR:-/workspace/tmp}" INSTALL_PREFIX="/opt/software/$software/$version/$target"
+export PATH=/usr/bin:/bin TMPDIR="${TMPDIR:-/workspace/tmp}"
+INSTALL_PREFIX=$(python3 /control/delivery_layout.py prefix "$delivery" "$software" "$sha" "$version" "$target")
+export INSTALL_PREFIX
 export CP2K_SOURCE_SHA="$sha"
 case "$op" in
 build)
@@ -19,7 +20,9 @@ build)
   git -C /workspace/source -c core.hooksPath=/dev/null checkout --detach "$sha"
   test "$(git -C /workspace/source rev-parse HEAD)" = "$sha"
   source /control/environment.sh "$target"
-  bash /control/cp2k_build.sh "$target" ;;
+  bash /control/cp2k_build.sh "$target"
+  printf '%s\n' "$delivery" > "$INSTALL_PREFIX/share/sai/release-identity.json"
+  ;;
 metadata)
   test -x "$INSTALL_PREFIX/bin/cp2k.psmp"
   # Repacking must preserve the original, compute-node-resolved environment.
@@ -29,6 +32,8 @@ metadata)
   test -s "$INSTALL_PREFIX/share/sai/runtime-env.sh"
   test -s "$INSTALL_PREFIX/share/sai/modules.txt"
   test -s "$INSTALL_PREFIX/share/sai/CMakeCache.txt"
+  python3 /control/delivery_layout.py prefix "$delivery" "$software" "$sha" "$version" "$target" \
+    --installed "$INSTALL_PREFIX/share/sai/release-identity.json"
   ;;
 export)
   rm -rf -- /workspace/export /workspace/final.squashfs
@@ -38,9 +43,12 @@ export)
   if [[ -d /opt/software/cp2k-dependencies ]]; then
     cp -a /opt/software/cp2k-dependencies /workspace/export/opt/software/
   fi
+  chmod -R a+rX,u+w,go-w /workspace/export/opt/software
   mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"
   ;;
 verify)
+  python3 /control/delivery_layout.py prefix "$delivery" "$software" "$sha" "$version" "$target" \
+    --installed "$INSTALL_PREFIX/share/sai/release-identity.json"
   source "$INSTALL_PREFIX/share/sai/runtime-env.sh"
   # software_controller invokes this on result.sif without the build overlay.
   # The verifier and data are installed assets, not /workspace or /control code.

@@ -26,6 +26,10 @@ esac
 suffix=; [[ "$accel" == CUDA ]] && suffix=-cuda
 dbcsr="$prefix/dependencies/dbcsr/lib64/cmake/dbcsr"
 [[ "${ELPA_ROOT:?}" == /opt/devtools/elpa/elpa-2026.02.001-2603-gnu/* ]]
+if [[ "$target" == 8v100v0-avx512 ]]; then
+  [[ "${OPAL_PREFIX:?}" == *-avx2 ]]
+  [[ "${OPENBLAS_ROOT:?}" == *-avx2 ]]
+fi
 
 new_deps=/input/dependencies/tblite-dependencies.tar.gz
 [[ -s "$new_deps" ]] || { echo "verified tblite/DFT-D4 dependency bundle is required" >&2; exit 1; }
