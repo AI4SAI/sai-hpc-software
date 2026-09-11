@@ -26,6 +26,20 @@ if [[ "$implementation" == baseline ]]; then
     dp|python) executable="/opt/apps/conda_env/deepmd-kit-3.2.0/bin/$program" ;;
   esac
 fi
+program_argv=("$executable")
+if [[ -n "${SAI_MD_PROFILE_LMP:-}" ]]; then
+  [[ "$program" == lmp && -n "${SAI_MD_TEST_CONTROL:-}" ]]
+  profiler=$(realpath -e "$SAI_MD_PROFILE_LMP")
+  [[ "$profiler" == /opt/devtools/* && -x "$profiler" ]]
+  # Profile inside the SIF so cleanenv does not discard Nsight's CUDA tracing
+  # injection between the profiler and the actual LAMMPS child process.
+  program_argv=("$profiler" profile --trace=cuda --sample=none --cpuctxsw=none \
+    --force-overwrite=false --output /work/cuda-trace "$executable")
+fi
+if [[ -n "${SAI_MD_PERFORMANCE_CPU:-}" ]]; then
+  [[ "$program" == lmp && -n "${SAI_MD_TEST_CONTROL:-}" && "$SAI_MD_PERFORMANCE_CPU" =~ ^[0-9]+$ ]]
+  program_argv=(/usr/bin/python3 /control/md_performance_exec.py "${program_argv[@]}")
+fi
 root=$(realpath -e "$SAI_SOFTWARE_ROOT/experimental/deepmd-lammps")
 image=$(realpath -e "$SAI_MD_IMAGE")
 [[ "$image" == "$root/containers/software/deepmd-lammps/$SAI_MD_VERSION/$target/"*.sif && ! -L "$SAI_MD_IMAGE" ]]
@@ -51,6 +65,7 @@ args=(apptainer exec --nv --cleanenv --no-home --no-mount bind-paths,home,cwd,tm
 for path in /usr /lib /lib64 /opt/devtools /opt/apps; do args+=(--bind "$path:$path:ro"); done
 args+=(--bind "$work:/work:rw" --bind "$runtime:$runtime:rw" --env "TMPDIR=$runtime")
 args+=(--env "SAI_MD_ALLOCATED_JOB=$SLURM_JOB_ID" --env "SAI_MD_ALLOCATED_NODE=$(hostname)")
+if [[ -n "${SAI_MD_PERFORMANCE_CPU:-}" ]]; then args+=(--env "SAI_MD_PERFORMANCE_CPU=$SAI_MD_PERFORMANCE_CPU"); fi
 if [[ -n "${SAI_MD_TEST_CONTROL:-}" ]]; then
   control=$(realpath -e "$SAI_MD_TEST_CONTROL")
   [[ "$control" == "$root/controller/"* && -d "$control" && ! -L "$SAI_MD_TEST_CONTROL" ]]
@@ -63,16 +78,16 @@ if [[ "$implementation" == baseline ]]; then
 fi
 while IFS= read -r name; do
   case "$name" in
-    SLURM_*|OMPI_*|OPAL_*|PMIX_*|PMI_*|PRTE_*|UCX_*|NCCL_*|CUDA_*|FI_*|OMP_*|DP_*)
+    SLURM_*|OMPI_*|OPAL_*|PMIX_*|PMI_*|PRTE_*|UCX_*|NCCL_*|CUDA_*|FI_*|OMP_*|DP_*|OPENBLAS_NUM_THREADS|MKL_NUM_THREADS|TF_NUM_INTRAOP_THREADS|TF_NUM_INTEROP_THREADS)
       args+=(--env "$name=${!name}") ;;
   esac
 done < <(compgen -e)
 if [[ "$implementation" == baseline ]]; then
   exec "${args[@]}" "$image" /usr/bin/bash --noprofile --norc -c \
     'driver=${LD_LIBRARY_PATH:-}; source /control/md_environment.sh "$1"; shift; site=$MD_SYSTEM_DEEPMD/lib/python3.13/site-packages; export LD_LIBRARY_PATH="$driver:$site/tensorflow:$site/torch/lib:$MD_SYSTEM_DEEPMD/lib:${LD_LIBRARY_PATH:-}"; unset PYTHONPATH; exec "$@"' \
-    bash "$target" "$executable" "$@"
+    bash "$target" "${program_argv[@]}" "$@"
 else
   exec "${args[@]}" "$image" /usr/bin/bash --noprofile --norc -c \
     'driver=${LD_LIBRARY_PATH:-}; source "$1"; shift; export LD_LIBRARY_PATH="$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"; exec "$@"' bash \
-    "/opt/software/lammps/$SAI_MD_VERSION/$target/share/sai/runtime-env.sh" "$executable" "$@"
+    "/opt/software/lammps/$SAI_MD_VERSION/$target/share/sai/runtime-env.sh" "${program_argv[@]}" "$@"
 fi

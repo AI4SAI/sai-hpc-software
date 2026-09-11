@@ -43,6 +43,7 @@ class PerformanceTests(unittest.TestCase):
     def test_fairness_device_science_interval_and_identity_gates(self):
         frozen = self.frozen()
         for change in [dict(node='other'), dict(resources={'ranks': 1}), dict(input_sha256='b' * 64),
+                       dict(profiled=True),
                        dict(scientific_verified=False), dict(wall_seconds=0.1),
                        dict(stdout=output(frozen['steps'], 0.5)),
                        dict(execution_device={'kind': 'gpu', 'backend': 'tf', 'device_verified': True, 'evidence': 'trace'})]:

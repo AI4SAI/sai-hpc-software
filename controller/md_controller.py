@@ -110,9 +110,11 @@ def submit_probe(args):
         (r / part).mkdir(parents=True, exist_ok=True)
     target = TARGETS[args.target]
     baseline = args.op == 'baseline'
-    entry = ['/usr/bin/bash', '/control/md_baseline.sh' if baseline else '/control/md_native_probe.sh', args.target]
+    probe_script = {'baseline': 'md_baseline.sh', 'probe': 'md_native_probe.sh',
+                    'import-probe': 'md_import_probe.sh', 'conversion-probe': 'md_import_probe.sh'}[args.op]
+    entry = ['/usr/bin/bash', '/control/' + probe_script, args.target]
     binds = [('/opt/apps', '/opt/apps')]
-    if baseline:
+    if baseline or args.op == 'conversion-probe':
         entry.append(safe_sha(args.sha))
         repository = ROOT / 'cache/repositories/deepmd-kit'
         run(['git', '--git-dir', repository, 'cat-file', '-e', args.sha + '^{commit}'])
@@ -219,5 +221,12 @@ if __name__ == '__main__':
     probe_parser.add_argument('run_id'); probe_parser.add_argument('target', choices=MD_TARGETS)
     baseline_parser = sub.add_parser('baseline')
     baseline_parser.add_argument('run_id'); baseline_parser.add_argument('target', choices=MD_TARGETS); baseline_parser.add_argument('sha')
+    import_parser = sub.add_parser('import-probe')
+    import_parser.add_argument('run_id'); import_parser.add_argument('target', choices=MD_TARGETS)
+    conversion_parser = sub.add_parser('conversion-probe')
+    conversion_parser.add_argument('run_id'); conversion_parser.add_argument('target', choices=MD_TARGETS)
+    conversion_parser.add_argument('sha')
     args = parser.parse_args()
-    raise SystemExit({'submit': submit, 'monitor': monitor, 'probe': submit_probe, 'baseline': submit_probe}[args.op](args))
+    raise SystemExit({'submit': submit, 'monitor': monitor, 'probe': submit_probe,
+                      'baseline': submit_probe, 'import-probe': submit_probe,
+                      'conversion-probe': submit_probe}[args.op](args))

@@ -91,6 +91,8 @@ def verify_performance(records, frozen):
         name = record.get('implementation')
         if name not in groups or type(record.get('warmup')) is not bool:
             raise ValueError('invalid performance implementation/warmup')
+        if record.get('profiled', False) is not False:
+            raise ValueError('profiled intervals cannot be used for the speed comparison')
         for field in ('node', 'resources', 'input_sha256'):
             if record.get(field) != frozen[field]:
                 raise ValueError('performance hardware, allocation or input differs')

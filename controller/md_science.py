@@ -200,8 +200,12 @@ def prepare(source_root, out_dir, backends=("tf", "pt", "jax")):
     fixture = parse_reference(oracle.read_text())
     out = Path(out_dir).resolve()
     out.mkdir(parents=True, exist_ok=False)
+    # Serialization is a CPU transformation, not GPU inference. Do not let
+    # separately initialized TF/PT runtimes contend for a device while moving
+    # model weights between formats; subsequent inference uses its real device.
+    conversion_env = dict(os.environ, CUDA_VISIBLE_DEVICES='', PYTHONFAULTHANDLER='1')
     subprocess.run([sys.executable, "-m", "deepmd", "convert-from", "pbtxt", "-i", str(graph.resolve()),
-                    "-o", str(out / BACKENDS["tf"])], check=True, cwd=out)
+                    "-o", str(out / BACKENDS["tf"])], check=True, cwd=out, env=conversion_env)
     fixture.update({"schema": 1, "source_reference_sha256": file_digest(oracle),
                     "source_graph_sha256": file_digest(graph), "models": {}, "tolerances": TOLERANCES,
                     "required_backends": list(BACKENDS), "prepared_backends": list(backends)})
@@ -211,7 +215,7 @@ def prepare(source_root, out_dir, backends=("tf", "pt", "jax")):
         model = out / BACKENDS[backend]
         if backend != "tf":
             subprocess.run([sys.executable, "-m", "deepmd", "convert-backend", str(out / BACKENDS["tf"]),
-                            str(model)], check=True, cwd=out)
+                            str(model)], check=True, cwd=out, env=conversion_env)
         if not model.exists():
             raise ValueError(f"conversion did not produce {backend} model")
         input_path = out / f"in.{backend}"

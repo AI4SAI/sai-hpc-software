@@ -130,8 +130,8 @@ and removal of system dependencies are not claimed. No host copy is performed.
    Record real backend execution device; TF/JAX baselines are CPU-only and cannot be
    relabelled as a fair GPU comparison. Candidate too fast for the minimum
    interval requires common recalibration, not a different candidate workload.
-   The pure timing contract is implemented; its allocated live runner and
-   device-trace/numerical proof still need integration and testing.
+   The timing contract and allocated runner have unit/protocol tests; their
+   device-trace/numerical proof still need live testing and acceptance integration.
 5. Runtime path audit and a read-only final-SIF execution, without the build
    overlay or source/control trees as runtime dependencies.
 6. Wire image checksum + both upstream SHAs + recipe/dependency hashes + verified
@@ -147,3 +147,51 @@ not proof that an actual same-prefix physical copy has been executed.
 The current branch contains actual build, inventory, evidence-validation and
 test code, but these live gates have **not** all run. In particular a static CI
 green or `MD_CANDIDATE_BUILT_NOT_PUBLISHED` cannot be reported as usable software.
+
+## Latest bounded diagnostics (2026-09-11)
+
+LAMMPS source bootstrap is now complete in the independent MD bare cache at
+`experimental/deepmd-lammps/cache/repositories/lammps`, exact commit
+`ac6d475f60ec86678d9b633ff99914bdea5b9c94`. The existing local eight-part bundle
+was **not** uploaded again: seven remote parts already matched SHA256; only
+part 02 was resumed (111,489,034 transfer bytes). A separate `source-bootstrap-r2`
+hard-linked receive staging preserved all original r1 parts. Receiver checksum,
+Git bundle verification, full `git fsck` and cache inventory succeeded. The
+unborn bare-cache `HEAD` notice is expected: the exact commit lives at
+`refs/cache/<SHA>`. No host source checkout or new candidate build was performed.
+
+The actual three-backend baseline is still blocked, now with narrower evidence:
+
+| Allocated probe | Actual result |
+| --- | --- |
+| `1273701`, baseline r3 | CPU-only conversion with faulthandler still segfaulted in the native Triton extension import. |
+| `1274280`, import-order r1 | `triton`, `torch→triton`, and `deepmd.pt.model.descriptor` imported successfully. Both orders with TensorFlow loaded before Triton (`TF→Torch→Triton`, `Torch→TF→Triton`) terminated with SIGSEGV. |
+| `1274406`, import-order r2 | `Triton→TF→Torch` and `Torch→Triton→TF` succeeded. Preloading Triton avoided the conversion segfault, but the exact original graph then failed conversion with `GraphWithoutTensorError`: missing `train_attr/training_script:0`. |
+
+These results establish an import-order conflict in the installed combination;
+they do not identify its native-symbol root cause or prove backend inference.
+The probes changed neither installed packages nor model weights/metadata. The
+Triton-preload experiment is **not** enabled as an automatic production workaround.
+The old `deeppot.pbtxt` fixture cannot currently establish three-backend acceptance.
+The next fixture must have a real serialization contract and independent numeric
+oracle, or use explicitly separate pinned backend fixtures with independent
+oracles and identical baseline/candidate inputs **within** each backend. Do not
+invent the missing training metadata or claim unlike models are equivalent.
+Precise commands, hashes and non-acceptance status are recorded in
+[`evidence/deepmd-lammps-import-diagnostics-20260911.json`](evidence/deepmd-lammps-import-diagnostics-20260911.json).
+
+`md_performance_run.py` now implements the allocated execution layer: all 2,058
+forces and virial components are checked, timing runs are pinned to one actual
+CPU/core and one thread, and final-container binding is recorded and compared.
+PyTorch requires a separate same-input Nsight kernel trace for each implementation;
+profiled runs are excluded from the speed comparison. Trace checksums and the
+launcher checksum are rechecked. This runner has unit/protocol coverage but has
+**not** completed a live candidate benchmark or been wired into publication.
+
+The newer common partitioned delivery contract is being integrated separately.
+The old paths shown above are an honest description of this branch's current
+recipe, not the final deliverable. Integration must replace source tracking,
+request identities, build prefixes, runtime paths and acceptance assertions as
+one change; old-layout images cannot be relabelled. The shared identities will
+use `/opt/software/<software>/<track>/<build-id>/<literal-partition>` and lock
+both exact source SHAs for the paired stack.
