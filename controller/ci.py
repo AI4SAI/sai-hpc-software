@@ -114,12 +114,12 @@ def main():
     python("software_controller.py", "submit", software, run_id, upstream, version, target, *extras)
     try:
         python("software_controller.py", "monitor", run_id)
-        if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2"):
+        if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             runtime_run = safe_name(run_id + "-multinode")
             python("runtime_controller.py", "submit", runtime_run, version, target,
                    "--build-run-id", run_id)
             python("runtime_controller.py", "monitor", runtime_run)
-        if software == "abacus" and target in ("4v100-avx512", "16v100-avx2"):
+        if software == "abacus" and target in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             feature_run = safe_name(run_id + "-gpu-features")
             python("gpu_feature_controller.py", "submit", feature_run, version, target,
                    "--build-run-id", run_id)
@@ -131,14 +131,14 @@ def main():
         # Only logs/metadata travel back; the single SIF stays in the SAI catalog.
         subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
                         f"{remote}:{task}/results/.", str(results)], check=False)
-        if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2"):
+        if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             runtime_results = results / "runtime"
             runtime_results.mkdir(exist_ok=True)
             runtime_run = safe_name(run_id + "-multinode")
             subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
                             f"{remote}:{root}/runtime-tests/{runtime_run}/results/.",
                             str(runtime_results)], check=False)
-        if software == "abacus" and target in ("4v100-avx512", "16v100-avx2"):
+        if software == "abacus" and target in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             feature_results = results / "gpu-features"
             feature_results.mkdir(exist_ok=True)
             feature_run = safe_name(run_id + "-gpu-features")

@@ -47,6 +47,11 @@ class PolicyTests(unittest.TestCase):
         self.assertEqual(policy.TARGETS["dsprhbm"]["cpu_arch"], "x86-64-v4")
         self.assertNotIn("v100", policy.TARGETS)
         self.assertNotIn("cpu-misc", policy.TARGETS)
+        skylake = policy.TARGETS["8v100v0-avx512"]
+        self.assertEqual(skylake["partition"], "8V100V0")
+        self.assertEqual(skylake["cpu_arch"], "skylake-avx512")
+        self.assertEqual(skylake["dependency_isa"], "avx2")
+        self.assertEqual(skylake["build_jobs"], 6)
 
     def test_job_is_single_file_build(self):
         args = argparse.Namespace(software="abacus", run_id="test-1", sha="a" * 40,
