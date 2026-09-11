@@ -35,7 +35,18 @@ def check_flags(text, target):
 
 
 def check_cache(text, prefix, target):
-    cache = dict(re.findall(r"^([^#/:][^:=]*):[^=]+=(.*)$", text, re.MULTILINE))
+    # Parse one physical line at a time. Negated character classes containing
+    # newlines otherwise swallow blank lines and // comments into option names.
+    cache = {}
+    for line in text.splitlines():
+        if not line or line.startswith(("#", "//")):
+            continue
+        entry = re.fullmatch(r"([^:=]+):([^=]+)=(.*)", line)
+        if entry:
+            key, _, value = entry.groups()
+            if key in cache:
+                raise ValueError("duplicate CMake cache option: " + key)
+            cache[key] = value
     for option in REQUIRED_OPTIONS:
         if cache.get("CP2K_USE_" + option) not in ("ON", "TRUE", "1"):
             raise ValueError("required CP2K option is disabled: " + option)

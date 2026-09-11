@@ -53,6 +53,23 @@ class CP2KContractTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 contract.check_cache(bad, "/opt/software/cp2k/test/4v100-avx512", "4v100-avx512")
 
+    def test_real_cmake_comments_blank_lines_and_duplicate_options(self):
+        text = "# This is the CMakeCache file.\n" + "\n".join(
+            "\n//Documentation for this option.\n" + line for line in self.cache().splitlines())
+        parsed = contract.check_cache(text, "/opt/software/cp2k/test/4v100-avx512", "4v100-avx512")
+        self.assertEqual(parsed["CP2K_USE_MPI"], "ON")
+        self.assertEqual(parsed["CP2K_USE_ELPA"], "ON")
+        self.assertEqual(contract.check_cache(text.replace("\n", "\r\n"),
+                         "/opt/software/cp2k/test/4v100-avx512", "4v100-avx512"), parsed)
+        with self.assertRaisesRegex(ValueError, "disabled: MPI"):
+            contract.check_cache(text.replace("CP2K_USE_MPI:STRING=ON", "CP2K_USE_MPI:STRING=OFF"),
+                                 "/opt/software/cp2k/test/4v100-avx512", "4v100-avx512")
+        for duplicate in ("CP2K_USE_MPI:BOOL=ON", "CP2K_USE_MPI:BOOL=OFF"):
+            for duplicate_text in (text + "\n" + duplicate, duplicate + "\n" + text):
+                with self.subTest(duplicate=duplicate), self.assertRaisesRegex(ValueError, "duplicate"):
+                    contract.check_cache(duplicate_text,
+                                         "/opt/software/cp2k/test/4v100-avx512", "4v100-avx512")
+
     def test_ldd_and_rpath_must_resolve_outside_build_tree(self):
         links = "\n".join((
             "libelpa_openmp.so => /opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia/lib/libelpa_openmp.so",
