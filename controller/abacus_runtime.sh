@@ -101,7 +101,7 @@ fi
 # the host launcher. Pass only those families through cleanenv.
 while IFS= read -r name; do
   case "$name" in
-    SLURM_*|OMPI_*|OPAL_*|PMIX_*|PMI_*|PRTE_*|UCX_*|NCCL_*|CUDA_*|NVIDIA_VISIBLE_DEVICES|FI_*|OMP_*)
+    SLURM_*|OMPI_*|OPAL_*|PMIX_*|PMI_*|PRTE_*|UCX_*|NCCL_*|CUSOLVERMP_*|CUDA_*|NVIDIA_VISIBLE_DEVICES|FI_*|OMP_*)
       [[ "$name" != NCCL_TOPO_FILE ]] || continue
       [[ "$name" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]] || exit 2
       args+=(--env "$name=${!name}")

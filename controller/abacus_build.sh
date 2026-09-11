@@ -59,3 +59,24 @@ cp -L /workspace/source/tests/11_PW_GPU/scf_cg/{INPUT,KPT,STRU} "$fixture/"
 sed -i 's#../../PP_ORB#./PP_ORB#g' "$fixture/INPUT"
 printf '\nkpar 2\nbndpar 1\n' >> "$fixture/INPUT"
 cp -L /workspace/source/tests/PP_ORB/{As_dojo.upf,Ga_dojo.upf} "$fixture/PP_ORB/"
+
+# Exercise distinct distributed GPU code paths, not only the PW smoke case.
+# All sources and PP/orbital files are copied inside the build overlay; only
+# these small input fixtures are installed into the final SIF.
+if [[ "$target" != dsprhbm ]]; then
+  fixtures="$INSTALL_PREFIX/share/sai/gpu-cases"
+  mkdir -p "$fixtures/cusolvermp/PP_ORB" "$fixtures/nccl/PP_ORB"
+  cp -L /workspace/source/tests/12_NAO_Gamma_GPU/009_NO_Si2_DZP_GPU/{INPUT,KPT,STRU} \
+    "$fixtures/cusolvermp/"
+  cp -L /workspace/source/tests/PP_ORB/{Si_ONCV_PBE-1.0.upf,Si_gga_8au_100Ry_2s2p1d.orb} \
+    "$fixtures/cusolvermp/PP_ORB/"
+  cp -L /workspace/source/tests/11_PW_GPU/scf_bpcg/{INPUT,KPT,STRU} "$fixtures/nccl/"
+  cp -L /workspace/source/tests/PP_ORB/{As_dojo.upf,Ga_dojo.upf} "$fixtures/nccl/PP_ORB/"
+  for gpu_case in cusolvermp nccl; do
+    sed -i 's#../../PP_ORB#./PP_ORB#g' "$fixtures/$gpu_case/INPUT" "$fixtures/$gpu_case/STRU"
+    sed -i -E '/^[[:space:]]*(ks_solver|device|kpar|bndpar)[[:space:]]/d' \
+      "$fixtures/$gpu_case/INPUT"
+  done
+  printf '\nks_solver cusolvermp\ndevice gpu\nkpar 1\nbndpar 1\n' >> "$fixtures/cusolvermp/INPUT"
+  printf '\nks_solver bpcg\ndevice gpu\nkpar 1\nbndpar 2\n' >> "$fixtures/nccl/INPUT"
+fi

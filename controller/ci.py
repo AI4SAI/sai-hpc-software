@@ -57,7 +57,8 @@ def main():
     parent = Path(__file__).resolve().parent
     common = ["software_controller.py", "remote_controller.py", "source_cache.py",
               "runtime_controller.py", "create_rootfs.sh"]
-    recipe = (["container_entry.sh", "environment.sh", "abacus_build.sh"]
+    recipe = (["container_entry.sh", "environment.sh", "abacus_build.sh",
+               "gpu_feature_controller.py", "gpu_feature_runtime.sh"]
               if software == "abacus" else
               ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh"])
     for name in common + recipe:
@@ -116,6 +117,12 @@ def main():
             python("runtime_controller.py", "submit", runtime_run, version, target,
                    "--build-run-id", run_id)
             python("runtime_controller.py", "monitor", runtime_run)
+        if software == "abacus" and target in ("4v100-avx512", "16v100-avx2"):
+            feature_run = safe_name(run_id + "-gpu-features")
+            python("gpu_feature_controller.py", "submit", feature_run, version, target,
+                   "--build-run-id", run_id)
+            python("gpu_feature_controller.py", "monitor", feature_run)
+        python("software_controller.py", "publish", run_id)
         run(["scp", "-q", *options, "-P", "12022", f"{remote}:{task}/artifact.path", results / "artifact.path"])
         print((results / "artifact.path").read_text(), flush=True)
     finally:
@@ -129,6 +136,13 @@ def main():
             subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
                             f"{remote}:{root}/runtime-tests/{runtime_run}/results/.",
                             str(runtime_results)], check=False)
+        if software == "abacus" and target in ("4v100-avx512", "16v100-avx2"):
+            feature_results = results / "gpu-features"
+            feature_results.mkdir(exist_ok=True)
+            feature_run = safe_name(run_id + "-gpu-features")
+            subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
+                            f"{remote}:{root}/runtime-tests/{feature_run}/results/.",
+                            str(feature_results)], check=False)
 
 if __name__ == "__main__":
     main()
