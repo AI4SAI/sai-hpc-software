@@ -77,6 +77,18 @@ export PATH="$LAMMPS_PREFIX/bin:$DEEPMD_PREFIX/bin:$PATH"
 export LD_LIBRARY_PATH="$LAMMPS_PREFIX/lib:$DEEPMD_PREFIX/lib:$DEEPMD_PREFIX/lib/python3.13/site-packages/deepmd/lib:$LD_LIBRARY_PATH"
 export LAMMPS_POTENTIALS="$LAMMPS_PREFIX/share/lammps/potentials"
 export PYTHONPATH="$DEEPMD_PREFIX/lib/python3.13/site-packages:${PYTHONPATH:-}"
+# Build-time module composition includes the OLD site's LAMMPS in search paths.
+# The new stack must neither execute nor dlopen that older implementation.
+for name in PATH LD_LIBRARY_PATH PYTHONPATH; do
+  IFS=: read -ra components <<< "${!name}"
+  cleaned=()
+  for component in "${components[@]}"; do
+    [[ -n "$component" && "$component" != "$MD_SYSTEM_LAMMPS" && "$component" != "$MD_SYSTEM_LAMMPS/"* ]] || continue
+    cleaned+=("$component")
+  done
+  printf -v "$name" '%s' "$(IFS=:; printf '%s' "${cleaned[*]}")"
+  export "$name"
+done
 for name in PATH LD_LIBRARY_PATH PYTHONPATH PLUMED_KERNEL LAMMPS_POTENTIALS; do
   printf 'export %s=%q\n' "$name" "${!name}"
 done > "$LAMMPS_PREFIX/share/sai/runtime-env.sh"

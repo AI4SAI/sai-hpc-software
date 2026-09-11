@@ -109,12 +109,19 @@ def submit_probe(args):
     for part in ('results', 'runtime', 'apptainer-cache'):
         (r / part).mkdir(parents=True, exist_ok=True)
     target = TARGETS[args.target]
-    command = container_command(PROJECT / 'containers/base/minimal-v1.sif',
-        ['/usr/bin/bash', '/control/md_native_probe.sh', args.target], overlay=r / 'probe.ext3',
-        control=CONTROL, jobs=1, gpu=True, extra_binds=[('/opt/apps', '/opt/apps')])
+    baseline = args.op == 'baseline'
+    entry = ['/usr/bin/bash', '/control/md_baseline.sh' if baseline else '/control/md_native_probe.sh', args.target]
+    binds = [('/opt/apps', '/opt/apps')]
+    if baseline:
+        entry.append(safe_sha(args.sha))
+        repository = ROOT / 'cache/repositories/deepmd-kit'
+        run(['git', '--git-dir', repository, 'cat-file', '-e', args.sha + '^{commit}'])
+        binds.append((repository, '/input/deepmd-kit'))
+    command = container_command(PROJECT / 'containers/base/minimal-v1.sif', entry, overlay=r / 'probe.ext3',
+        control=CONTROL, jobs=1, gpu=True, extra_binds=binds)
     lines = ['#!/usr/bin/env bash', f'#SBATCH --job-name={args.run_id}',
              f'#SBATCH --partition={target["partition"]}', f'#SBATCH --qos={target["qos"]}',
-             '#SBATCH --nodes=1', '#SBATCH --ntasks=1', '#SBATCH --gpus-per-node=1', '#SBATCH --time=5',
+             '#SBATCH --nodes=1', '#SBATCH --ntasks=1', '#SBATCH --gpus-per-node=1', '#SBATCH --time=' + ('10' if baseline else '5'),
              f'#SBATCH --output={r}/results/slurm-%j.log', '#SBATCH --export=NIL',
              'set -eo pipefail', 'export PATH=/usr/bin:/bin LD_LIBRARY_PATH="" LD_PRELOAD=""',
              'source /etc/profile.d/lmod.sh', 'module load apptainer/1.4.4', 'set -u',
@@ -124,7 +131,7 @@ def submit_probe(args):
              'export APPTAINERENV_SAI_MD_ALLOCATED_NODE="$(hostname)"',
              'unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH',
              join(['test', '!', '-e', r / 'probe.ext3']),
-             join(['apptainer', 'overlay', 'create', '--fakeroot', '--sparse', '--size', '1024', r / 'probe.ext3']),
+             join(['apptainer', 'overlay', 'create', '--fakeroot', '--sparse', '--size', '8192' if baseline else '1024', r / 'probe.ext3']),
              join(command)]
     script = r / 'job.sbatch'
     script.write_text('\n'.join(lines) + '\n')
@@ -210,5 +217,7 @@ if __name__ == '__main__':
     monitor_parser.add_argument('--interval', type=int, default=30)
     probe_parser = sub.add_parser('probe')
     probe_parser.add_argument('run_id'); probe_parser.add_argument('target', choices=MD_TARGETS)
+    baseline_parser = sub.add_parser('baseline')
+    baseline_parser.add_argument('run_id'); baseline_parser.add_argument('target', choices=MD_TARGETS); baseline_parser.add_argument('sha')
     args = parser.parse_args()
-    raise SystemExit({'submit': submit, 'monitor': monitor, 'probe': submit_probe}[args.op](args))
+    raise SystemExit({'submit': submit, 'monitor': monitor, 'probe': submit_probe, 'baseline': submit_probe}[args.op](args))

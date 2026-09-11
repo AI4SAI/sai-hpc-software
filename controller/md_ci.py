@@ -79,9 +79,17 @@ def main():
     try:
         python('md_controller.py', 'submit', run_id, remote_task + '/input/pair.json')
         python('md_controller.py', 'monitor', run_id)
+        science_run = safe_name(run_id + '-science')
+        python('md_acceptance_controller.py', 'submit', science_run, run_id)
+        python('md_acceptance_controller.py', 'monitor', science_run)
         run(['scp', '-q', *options, '-P', '12022', remote + ':' + remote_task + '/artifact.path', results / 'artifact.path'])
     finally:
         subprocess.run(['scp', '-q', *options, '-P', '12022', '-r', remote + ':' + remote_task + '/results/.', str(results)], check=False)
+        science_results = results / 'science'
+        science_results.mkdir(exist_ok=True)
+        subprocess.run(['scp', '-q', *options, '-P', '12022', '-r',
+                        remote + ':' + root + '/runtime-tests/' + run_id + '-science/results/.',
+                        str(science_results)], check=False)
     print('EXPERIMENTAL CANDIDATE ONLY: no current.sif/module publication or acceptance-cache hit', flush=True)
 
 

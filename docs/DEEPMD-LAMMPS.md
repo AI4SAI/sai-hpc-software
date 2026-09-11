@@ -27,6 +27,11 @@ Remote experimental state stays under
 `/home/stardust/sai-hpc-software/experimental/deepmd-lammps/`; the shared minimal
 base SIF and system dependencies are read-only inputs. The controller intentionally
 has no production publisher and no "unaccepted artifact = cache green" path.
+Candidate builds now automatically submit a separate scientific acceptance
+allocation. Its trusted host controller rechecks raw LAMMPS output/PLUMED data,
+all host-MPI rank traces, exact image/executable/ISA, fixed tolerances and the
+oracle read from the requested upstream commit; six-backend/engine summaries
+alone cannot establish success. This wiring still needs a live candidate.
 Artifact-cache reuse and automatic publication must be connected to the full
 scientific/performance proof before enabling scheduled builds.
 

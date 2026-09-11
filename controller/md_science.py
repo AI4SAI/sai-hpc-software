@@ -298,6 +298,7 @@ def _record(fixture, backend, engine, implementation, resources, warmup, seconds
         tolerance = fixture["tolerances"][name]
         _compare_numeric(observed[name], fixture["reference"][name], **tolerance, path=name)
     return {"implementation": implementation, "backend": backend, "engine": engine,
+            "slurm_job": os.environ.get("SAI_MD_ALLOCATED_JOB", os.environ.get("SLURM_JOB_ID", "")),
             "node": os.uname().nodename, "resources": resources,
             "input_sha256": fixture["models"][backend]["input_sha256"],
             "warmup": warmup, "seconds": seconds, "observables": observed,
