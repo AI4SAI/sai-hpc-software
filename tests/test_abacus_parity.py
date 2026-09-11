@@ -146,6 +146,16 @@ class ParityTests(unittest.TestCase):
         self.assertIn("BASH_SOURCE[0]", entry)
         self.assertIn('python3 "$INSTALL_PREFIX/share/sai/abacus_features.py"', entry)
 
+    def test_config_package_install_layout_matches_consumed_paths(self):
+        recipe = (ROOT / "controller/abacus_dependencies.sh").read_text()
+        for package in ("cereal", "rapidjson"):
+            configure = recipe.split(f"-B /workspace/dependency-build/{package} \\\n", 1)[1].split("cmake --install", 1)[0]
+            self.assertIn("-DCMAKE_INSTALL_LIBDIR=lib", configure)
+        for config in ("cereal/lib/cmake/cereal/cerealConfig.cmake",
+                       "cereal/lib/cmake/cereal/cerealTargets.cmake",
+                       "rapidjson/lib/cmake/RapidJSON/RapidJSONConfig.cmake"):
+            self.assertIn(f'test -s "$deps/{config}"', recipe)
+
 
 if __name__ == "__main__":
     unittest.main()

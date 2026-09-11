@@ -10,20 +10,25 @@ deps="$INSTALL_PREFIX/dependencies"
 mkdir -p "$deps" "$INSTALL_PREFIX/share/sai"
 cp /workspace/dependencies/dependency-lock.json "$INSTALL_PREFIX/share/sai/"
 
-# CMake 3.11 ABACUS requires exported cereal/RapidJSON CONFIG targets, not
+# ABACUS 3.11 requires exported cereal/RapidJSON CONFIG targets, not
 # the header hints accepted by the old preinstalled ABACUS recipe.
+# GNUInstallDirs can choose lib64 on the site image. Pin the layout consumed
+# below instead of relying on the distribution's default library directory.
 cmake -S /workspace/dependencies/cereal-master -B /workspace/dependency-build/cereal \
-  -DCMAKE_INSTALL_PREFIX="$deps/cereal" -DJUST_INSTALL_CEREAL=ON \
+  -DCMAKE_INSTALL_PREFIX="$deps/cereal" -DCMAKE_INSTALL_LIBDIR=lib -DJUST_INSTALL_CEREAL=ON \
   -DBUILD_TESTS=OFF -DBUILD_SANDBOX=OFF -DBUILD_DOC=OFF
 cmake --install /workspace/dependency-build/cereal
+test -s "$deps/cereal/lib/cmake/cereal/cerealConfig.cmake"
+test -s "$deps/cereal/lib/cmake/cereal/cerealTargets.cmake"
 cmake -S /workspace/dependencies/rapidjson-master -B /workspace/dependency-build/rapidjson \
-  -DCMAKE_INSTALL_PREFIX="$deps/rapidjson" -DRAPIDJSON_BUILD_DOC=OFF \
+  -DCMAKE_INSTALL_PREFIX="$deps/rapidjson" -DCMAKE_INSTALL_LIBDIR=lib -DRAPIDJSON_BUILD_DOC=OFF \
   -DRAPIDJSON_BUILD_EXAMPLES=OFF -DRAPIDJSON_BUILD_TESTS=OFF
 cmake --install /workspace/dependency-build/rapidjson
 # This archive installs its build-tree config last; keep the install-tree
 # variant so exported development metadata does not name /workspace.
 cp /workspace/dependency-build/rapidjson/CMakeFiles/RapidJSONConfig.cmake \
   "$deps/rapidjson/lib/cmake/RapidJSON/RapidJSONConfig.cmake"
+test -s "$deps/rapidjson/lib/cmake/RapidJSON/RapidJSONConfig.cmake"
 for item in LibRI-master LibComm-master libnpy-1.0.1; do
   mkdir -p "$deps/$item"
   cp -a "/workspace/dependencies/$item/include" "$deps/$item/"
