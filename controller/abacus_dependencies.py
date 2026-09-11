@@ -35,11 +35,34 @@ def validate_members(names, root):
             raise ValueError("dependency archive has an unsafe or unexpected path")
 
 
+def extract_archive(archive, destination, root):
+    if archive.suffix == ".zip":
+        with zipfile.ZipFile(archive) as stream:
+            entries = stream.infolist()
+            validate_members((entry.filename for entry in entries), root)
+            if any(stat.S_ISLNK(entry.external_attr >> 16) for entry in entries):
+                raise ValueError("dependency zip links are not allowed")
+            stream.extractall(destination)
+            # zipfile deliberately does not restore Unix executable modes.
+            # Torch's packaged helpers must remain usable in the exported tree.
+            for entry in entries:
+                permissions = (entry.external_attr >> 16) & 0o777
+                if permissions:
+                    (destination / entry.filename).chmod(permissions)
+    else:
+        with tarfile.open(archive, "r:gz") as stream:
+            entries = stream.getmembers()
+            validate_members((entry.name for entry in entries), root)
+            if any(not (entry.isfile() or entry.isdir()) for entry in entries):
+                raise ValueError("dependency tar links and special files are not allowed")
+            stream.extractall(destination, members=entries)
+
+
 def unpack(source, destination, lock):
     source, destination = Path(source), Path(destination)
     if not destination.is_absolute() or not destination.is_relative_to("/workspace"):
         raise ValueError("dependency extraction must stay inside /workspace in the build overlay")
-    if destination.exists() or destination.is_symlink():
+    if destination.exists() or destination.is_symlink() or destination.resolve() != destination:
         raise ValueError("dependency destination already exists")
     # Validate every archive before creating the expanded dependency tree.
     for item in lock["archives"]:
@@ -49,20 +72,7 @@ def unpack(source, destination, lock):
     destination.mkdir(parents=True)
     for item in lock["archives"]:
         archive = source / item["file"]
-        if archive.suffix == ".zip":
-            with zipfile.ZipFile(archive) as stream:
-                entries = stream.infolist()
-                validate_members((entry.filename for entry in entries), item["root"])
-                if any(stat.S_ISLNK(entry.external_attr >> 16) for entry in entries):
-                    raise ValueError("dependency zip links are not allowed")
-                stream.extractall(destination)
-        else:
-            with tarfile.open(archive, "r:gz") as stream:
-                entries = stream.getmembers()
-                validate_members((entry.name for entry in entries), item["root"])
-                if any(not (entry.isfile() or entry.isdir()) for entry in entries):
-                    raise ValueError("dependency tar links and special files are not allowed")
-                stream.extractall(destination, members=entries)
+        extract_archive(archive, destination, item["root"])
     (destination / "dependency-lock.json").write_text(json.dumps(lock, sort_keys=True) + "\n")
 
 

@@ -1,12 +1,15 @@
 """Presence is mandatory; it does not substitute for scientific benchmarks."""
 import argparse
 import json
+import os
 from pathlib import Path
+import stat
 import subprocess
 import sys
 import tempfile
 import unittest
 from unittest.mock import patch
+import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "controller"))
@@ -84,6 +87,8 @@ class ParityTests(unittest.TestCase):
                     features.check_dynamic(f"(RPATH) Library rpath: [{bad}]", binary, self.prefix)
         with self.assertRaises(ValueError):
             features.check_dynamic("(NEEDED) Shared library: [/workspace/libnep.so]", binary, self.prefix)
+        with self.assertRaises(ValueError):
+            features.check_dynamic("[Requesting program interpreter: /control/ld.so]", binary, self.prefix)
 
     def test_dependency_archive_members_and_destination_fail_closed(self):
         deps.validate_members(["package/include/header.h", "package/"], "package")
@@ -94,6 +99,24 @@ class ParityTests(unittest.TestCase):
         for destination in (Path("/opt/software/expanded"), Path("relative")):
             with self.assertRaisesRegex(ValueError, "build overlay"):
                 deps.unpack(Path("/input/abacus-dependencies"), destination, self.lock)
+
+    def test_zip_executable_modes_survive_and_zip_links_are_rejected(self):
+        parent = ROOT / ".test-work"
+        parent.mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(dir=parent) as directory:
+            folder = Path(directory)
+            archive = folder / "torch.zip"
+            entry = zipfile.ZipInfo("libtorch/bin/torch_shm_manager")
+            entry.external_attr = (stat.S_IFREG | 0o755) << 16
+            with zipfile.ZipFile(archive, "w") as stream:
+                stream.writestr(entry, b"test helper")
+            deps.extract_archive(archive, folder / "extracted", "libtorch")
+            self.assertTrue(os.access(folder / "extracted/libtorch/bin/torch_shm_manager", os.X_OK))
+            entry.external_attr = (stat.S_IFLNK | 0o777) << 16
+            with zipfile.ZipFile(archive, "w") as stream:
+                stream.writestr(entry, b"/etc/passwd")
+            with self.assertRaisesRegex(ValueError, "zip links"):
+                deps.extract_archive(archive, folder / "bad", "libtorch")
 
     def test_dependency_lock_is_content_pinned_and_build_mount_is_precise_readonly(self):
         self.assertEqual(len(self.lock["archives"]), 7)

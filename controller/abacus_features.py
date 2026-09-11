@@ -3,7 +3,6 @@
 import argparse
 import hashlib
 import json
-import os
 from pathlib import Path
 import re
 import subprocess
@@ -71,6 +70,12 @@ def check_dynamic(dynamic, binary, prefix):
                            ("/opt/devtools", "/usr", "/lib", "/lib64"))))
             if not entry or "$" in expanded or not allowed:
                 raise ValueError(f"build-only or untrusted ELF {tag} in {binary}: {entry}")
+    for interpreter in re.findall(r"Requesting program interpreter:\s*([^\]]+)\]", dynamic):
+        path = Path(interpreter)
+        if not path.is_absolute() or not any(path.resolve().is_relative_to(base) for base in
+                                             ("/usr/lib", "/usr/lib64", "/lib", "/lib64")):
+            raise ValueError(f"build-only or untrusted ELF interpreter in {binary}: {interpreter}")
+        result.append({"tag": "INTERP", "value": interpreter})
     return result
 
 
@@ -94,6 +99,7 @@ def verify(prefix, target, lock):
             if stream.read(4) != b"\x7fELF":
                 continue
         dynamic = subprocess.run(["readelf", "-d", path], check=True, text=True, capture_output=True).stdout
+        dynamic += subprocess.run(["readelf", "-l", path], check=True, text=True, capture_output=True).stdout
         elf[str(path.relative_to(prefix))] = {"sha256": checksum(path),
                                               "dynamic": check_dynamic(dynamic, path, prefix)}
     return {"schema": 1, "target": target, "prefix": str(prefix), "features": features,
