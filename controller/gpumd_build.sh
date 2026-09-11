@@ -8,7 +8,7 @@ grep -Rq 'USE_DEEPMD' force
 grep -Rq 'USE_PLUMED' measure
 flags="-std=c++14 -O3 -arch=sm_$GPUMD_CUDA_ARCH -DUSE_DEEPMD -DUSE_PLUMED -Xcompiler=-march=$GPUMD_CPU_ARCH,-mtune=$GPUMD_CPU_ARCH"
 includes="-I./ -I$DEEPMD_ROOT/include/deepmd -I$GPUMD_PLUMED_PREFIX/include"
-links="-L$DEEPMD_ROOT/lib -L$GPUMD_PLUMED_PREFIX/lib -Xlinker=-rpath -Xlinker=$DEEPMD_ROOT/lib -Xlinker=-rpath -Xlinker=$GPUMD_PLUMED_PREFIX/lib"
+links="-L$DEEPMD_ROOT/lib -L$GPUMD_PLUMED_PREFIX/lib -Xlinker=-rpath -Xlinker=$DEEPMD_ROOT/lib -Xlinker=-rpath -Xlinker=$GPUMD_PLUMED_PREFIX/lib -Xlinker=-rpath-link -Xlinker=$GPUMD_SYSTEM_BLAS_PATH"
 libraries='-lcublas -lcusolver -lcufft -ldeepmd_cc -ldeepmd_c -lplumed -lplumedKernel'
 executables=(gpumd nep)
 if grep -q '^gnep:' makefile; then executables+=(gnep); fi
