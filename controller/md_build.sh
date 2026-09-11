@@ -93,4 +93,6 @@ PY
 mkdir -p "$LAMMPS_PREFIX/share/sai/upstream-tests"
 cp -a /workspace/deepmd-kit/source/lmp/tests "$LAMMPS_PREFIX/share/sai/upstream-tests/lmp"
 cp -a /workspace/deepmd-kit/source/tests/infer "$LAMMPS_PREFIX/share/sai/upstream-tests/infer"
+"$DEEPMD_PREFIX/bin/python" /control/md_science.py prepare /workspace/deepmd-kit \
+  "$LAMMPS_PREFIX/share/sai/smoke"
 echo MD_NATIVE_BUILD_FEATURE_PARITY_PASSED

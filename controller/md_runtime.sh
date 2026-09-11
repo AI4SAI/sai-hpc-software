@@ -32,6 +32,7 @@ mkdir -p "$APPTAINER_CACHEDIR"
 args=(apptainer exec --nv --cleanenv --no-home --no-mount bind-paths,home,cwd,tmp,hostfs --pwd /work)
 for path in /usr /lib /lib64 /opt/devtools /opt/apps; do args+=(--bind "$path:$path:ro"); done
 args+=(--bind "$work:/work:rw" --bind "$runtime:$runtime:rw" --env "TMPDIR=$runtime")
+args+=(--env "SAI_MD_ALLOCATED_JOB=$SLURM_JOB_ID" --env "SAI_MD_ALLOCATED_NODE=$(hostname)")
 while IFS= read -r name; do
   case "$name" in
     SLURM_*|OMPI_*|OPAL_*|PMIX_*|PMI_*|PRTE_*|UCX_*|NCCL_*|CUDA_*|FI_*|OMP_*|DP_*)
