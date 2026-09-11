@@ -10,7 +10,9 @@ live gates below have passed. No production `current.sif` or module is changed.
 `deepmd-lammps.yml` resolves DeePMD `master` and LAMMPS `develop` together every
 six hours, or explicit branch/tag/release refs on manual dispatch. GitHub cron
 is periodic polling with possible scheduling delay, not zero-latency upstream
-notification. Schedules only resolve while this branch is experimental; manual
+notification. GitHub only runs cron from the default branch: this unmerged
+feature branch has no autonomous scheduled executions yet. The schedule is
+prepared for later review/merge and only resolves refs in its current form; manual
 `build_candidates=true` explicitly enables the Slurm build stage. Static CI
 success does not mean a candidate compiled or scientific acceptance passed.
 
@@ -59,8 +61,10 @@ an inconvenient package. A missing external dependency is a genuine unfinished
 build requirement, not permission to lower the feature baseline.
 
 The site backend stack is Python 3.13.15, PyTorch 2.13.0+cu126,
-`tensorflow_cpu` 2.21.0, JAX/JAXLIB 0.11.1. Module wording does not imply a GPU
-TensorFlow build. C++11 ABI is 1; the recipe verifies TensorFlow/PyTorch ABI and
+`tensorflow_cpu` 2.21.0, JAX/JAXLIB 0.11.1. Both TensorFlow and JAX were confirmed
+**CPU-only** in allocated-node probe `1271205`; only PyTorch exposed CUDA in that
+dependency environment. Module wording does not imply GPU TF/JAX. C++11 ABI is 1;
+the recipe verifies TensorFlow/PyTorch ABI and
 requires PyTorch SM70 support on the allocated GPU. It rebuilds the new DeePMD
 Python package and C/C++ interfaces against these system frameworks, then builds
 LAMMPS with the official built-in integration from **the same DeePMD source SHA**.
@@ -77,6 +81,13 @@ explicitly supplies the current TensorFlow library directory and rejects any
 remaining unresolved dependency. Actual TF/PT/JAX inference still has to prove
 that this dependency composition works. Header/library presence alone is not
 backend acceptance.
+
+The follow-up contained GPU probe
+[`1271205`](evidence/deepmd-lammps-native-probe-1271205.json) completed `0:0` on
+`4v100n15`: real `lmp -h`, all backend `ldd`, ABI checks and a PyTorch SM70 GPU
+sum kernel passed after correcting cleanenv/Lmod, real BLAS/LAPACK paths and
+TensorFlow library lookup. It did **not** execute a DeepMD model, PLUMED case,
+new build or benchmark. Its log also records an Apptainer fuse2fs cleanup warning.
 
 ## Installation paths and copyability
 
@@ -111,7 +122,7 @@ and removal of system dependencies are not claimed. No host copy is performed.
    count/input. Both implementations require warm-up and three measured repeats
    of at least three seconds each, raw LAMMPS engine throughput plus separate
    whole-process walltime, and independently verified large-system numerics.
-   Record real backend execution device; TF baseline is CPU-only and cannot be
+   Record real backend execution device; TF/JAX baselines are CPU-only and cannot be
    relabelled as a fair GPU comparison. Candidate too fast for the minimum
    interval requires common recalibration, not a different candidate workload.
    The pure timing contract is implemented; its allocated live runner and

@@ -98,10 +98,10 @@ def verify_performance(records, frozen):
         if (device.get('kind') not in ('cpu', 'gpu') or device.get('backend') != frozen['backend']
                 or device.get('device_verified') is not True or not device.get('evidence')):
             raise ValueError('actual backend execution device has not been proven')
-        # The installed TF package is tensorflow_cpu, so GPU TF comparison is
-        # not an equivalent-capability baseline for this dependency profile.
-        if frozen['backend'] == 'tf' and device['kind'] != 'cpu':
-            raise ValueError('site TensorFlow baseline is CPU-only')
+        # Allocated probe 1271205 confirmed BOTH TF and JAX CPU-only. A GPU
+        # replacement is a different capability, not a same-device speed test.
+        if frozen['backend'] in ('tf', 'jax') and device['kind'] != 'cpu':
+            raise ValueError('site TensorFlow/JAX baseline is CPU-only')
         current = (device['backend'], device['kind'], device.get('model'))
         if device_identity is None:
             device_identity = current
