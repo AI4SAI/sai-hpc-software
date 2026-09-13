@@ -1,7 +1,12 @@
 """Canonical identity-aware artifact paths shared by build and runtime gates."""
 import argparse
+import fcntl
+import hashlib
 import json
+import os
 from pathlib import Path
+import socket
+import stat
 
 from release_contract import validate_identity
 from remote_controller import safe_name
@@ -43,23 +48,94 @@ def validate_record(record):
     return identity
 
 
-def load_artifact(root, artifact, *, software=None, target=None):
-    """Reject legacy or relabelled images; this is not scientific acceptance."""
+def _artifact_record(root, artifact, *, software=None, target=None):
     artifact = Path(artifact)
     sidecar = artifact.with_suffix(".json")
     if (not artifact.is_file() or artifact.resolve() != artifact or artifact.is_symlink() or
             not sidecar.is_file() or sidecar.resolve() != sidecar or sidecar.is_symlink()):
         raise ValueError("delivery requires regular pinned artifact and sidecar")
-    record = json.loads(sidecar.read_text())
+    sidecar_bytes = sidecar.read_bytes()
+    record = json.loads(sidecar_bytes)
     identity = validate_record(record)
     if (artifact != artifact_path(root, identity, artifact.stem) or
             record.get("artifact") != str(artifact) or record.get("build_verified") is not True or
             record.get("contract_schema") != CONTRACT_SCHEMA or
-            record.get("sha256") != checksum(artifact) or
             (software is not None and identity["software"] != software) or
             (target is not None and identity["target"] != target)):
         raise ValueError("artifact does not match its immutable delivery identity")
+    return record, hashlib.sha256(sidecar_bytes).hexdigest()
+
+
+def load_artifact(root, artifact, *, software=None, target=None):
+    """Always hash the full image; this is not scientific acceptance."""
+    record, _ = _artifact_record(root, artifact, software=software, target=target)
+    if record.get("sha256") != checksum(artifact):
+        raise ValueError("artifact does not match its immutable delivery identity")
     return record
+
+
+def _artifact_stats(artifact):
+    result = []
+    for path in (artifact, artifact.with_suffix(".json")):
+        info = path.stat()
+        if not stat.S_ISREG(info.st_mode) or path.resolve() != path or path.is_symlink():
+            raise ValueError("delivery requires regular pinned artifact and sidecar")
+        result.append([info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns, info.st_ctime_ns])
+    return result
+
+
+def load_runtime_artifact(root, artifact, *, software=None, target=None):
+    """Reuse a full checksum only within this Slurm job on this host.
+
+    Every rank still checks canonical metadata and both files' current stats.
+    The record is also the lock: keep its inode stable and do not unlink it
+    from rank cleanup. Interrupted writes are cache misses on the next call.
+    """
+    job = os.environ.get("SLURM_JOB_ID")
+    if not job:
+        return load_artifact(root, artifact, software=software, target=target)
+    job = safe_name(job)
+    artifact = Path(artifact)
+    # Validate the delivery root and identity before creating cache files.
+    _artifact_record(root, artifact, software=software, target=target)
+    hostname = socket.gethostname()
+    key = hashlib.sha256((hostname + "\0" + str(artifact)).encode()).hexdigest()
+    directory = Path(root) / "runtime/jobs" / job
+    cache_path = directory / ("artifact-check-" + key + ".json")
+    if cache_path.resolve() != cache_path or cache_path.is_symlink():
+        raise ValueError("runtime artifact cache must not contain symlinks")
+    directory.mkdir(parents=True, exist_ok=True, mode=0o700)
+    descriptor = os.open(cache_path, os.O_RDWR | os.O_CREAT | os.O_NOFOLLOW | os.O_NONBLOCK, 0o600)
+    info = os.fstat(descriptor)
+    if (not stat.S_ISREG(info.st_mode) or info.st_uid != os.geteuid() or
+            info.st_nlink != 1 or info.st_mode & 0o022):
+        os.close(descriptor)
+        raise ValueError("runtime artifact cache must be an owned, private regular file")
+    with os.fdopen(descriptor, "r+", encoding="utf-8") as cache:
+        fcntl.flock(cache, fcntl.LOCK_EX)
+        # Take the snapshot after acquiring the lock, not before waiting for it.
+        before = _artifact_stats(artifact)
+        record, sidecar_sha256 = _artifact_record(root, artifact, software=software, target=target)
+        verified = dict(schema=1, job=job, hostname=hostname, artifact=str(artifact),
+                        job_start=os.environ.get("SLURM_JOB_START_TIME", ""),
+                        restart_count=os.environ.get("SLURM_RESTART_COUNT", ""),
+                        sha256=record.get("sha256"), artifact_stat=before[0],
+                        sidecar_stat=before[1], sidecar_sha256=sidecar_sha256)
+        try:
+            cached = json.load(cache)
+        except (ValueError, UnicodeError):
+            cached = None
+        if cached != verified and checksum(artifact) != record.get("sha256"):
+            raise ValueError("artifact does not match its immutable delivery identity")
+        if before != _artifact_stats(artifact):
+            raise ValueError("artifact or sidecar changed during runtime validation")
+        if cached != verified:
+            cache.seek(0)
+            cache.truncate()
+            json.dump(verified, cache, sort_keys=True)
+            cache.write("\n")
+            cache.flush()
+        return record
 
 
 def validate_runtime_identity(root, request):
@@ -86,7 +162,7 @@ def main():
     prefix.add_argument("--installed", type=Path)
     args = parser.parse_args()
     if args.command == "runtime":
-        record = load_artifact(args.root, args.artifact, software=args.software, target=args.target)
+        record = load_runtime_artifact(args.root, args.artifact, software=args.software, target=args.target)
         print(record["identity"]["install_prefix"])
     else:
         identity = validate_identity(json.loads(args.identity))
