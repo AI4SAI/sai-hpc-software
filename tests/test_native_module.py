@@ -215,6 +215,23 @@ class NativePackageTests(unittest.TestCase):
             self.assertEqual((path.stat().st_ino, path.read_bytes()), previous[name])
             self.assertEqual(path.stat().st_mode & 0o777, 0o444)
 
+    def test_private_umask_does_not_make_new_module_directories_inaccessible(self):
+        # An existing administrator-owned policy is preserved, while only the
+        # newly created descendants get the portable 0755 module directory mode.
+        share = self.prefix / "share"
+        share.mkdir(mode=0o750)
+        previous_umask = os.umask(0o077)
+        try:
+            paths = package_native_modules(self.entry, self.root)
+        finally:
+            os.umask(previous_umask)
+        self.assertEqual(share.stat().st_mode & 0o777, 0o750)
+        for path in self.prefix.rglob("*"):
+            if path.is_dir() and path != share:
+                self.assertEqual(path.stat().st_mode & 0o777, 0o755, str(path))
+        for path in paths.values():
+            self.assertEqual(path.stat().st_mode & 0o777, 0o444)
+
     def test_conflict_is_rejected_before_either_module_is_created(self):
         selector = self.prefix / "modulefiles/abacus/development" / self.entry["identity"]["build_id"]
         selector.parent.mkdir(parents=True)
