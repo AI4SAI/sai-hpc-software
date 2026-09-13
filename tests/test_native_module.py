@@ -10,7 +10,7 @@ import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "controller"))
 from native_module import (render_native_fragment, render_native_selector, tcl,
-                           validate_native_entry)
+                           validate_native_entry, package_native_modules)
 from release_contract import make_identity, allowed_partitions
 
 
@@ -182,6 +182,112 @@ class NativeValidationTests(unittest.TestCase):
         self.assertIn("/bin/nested", render_native_fragment(entry))
 
 
+class NativePackageTests(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.root = Path(self.directory.name)
+        self.entry = example()
+        self.prefix = self.root / self.entry["identity"]["install_prefix"].lstrip("/")
+        self.prefix.mkdir(parents=True)
+
+    def test_complete_folder_contains_both_modules_with_true_opt_paths(self):
+        paths = package_native_modules(self.entry, self.root)
+        self.assertEqual(paths["fragment"], self.prefix / "share/sai/native-module.tcl")
+        self.assertEqual(paths["selector"], self.prefix / "modulefiles/abacus/development" /
+                         self.entry["identity"]["build_id"])
+        for path in paths.values():
+            self.assertTrue(path.is_relative_to(self.prefix))
+            self.assertEqual(path.stat().st_mode & 0o777, 0o444)
+            self.assertNotIn(str(self.root), path.read_text())
+            self.assertIn(self.entry["identity"]["install_prefix"].rsplit("/", 1)[0], path.read_text())
+        self.assertEqual({path for path in self.root.rglob("*") if path.is_file()}, set(paths.values()))
+        self.assertFalse((self.root / "modulefiles").exists())
+        self.assertFalse((self.root / "opt/sai-delivery").exists())
+
+    def test_identical_modules_are_idempotent_and_permissions_normalized(self):
+        paths = package_native_modules(self.entry, self.root)
+        previous = {name: (path.stat().st_ino, path.read_bytes()) for name, path in paths.items()}
+        for path in paths.values():
+            path.chmod(0o644)
+        self.assertEqual(package_native_modules(self.entry, self.root), paths)
+        for name, path in paths.items():
+            self.assertEqual((path.stat().st_ino, path.read_bytes()), previous[name])
+            self.assertEqual(path.stat().st_mode & 0o777, 0o444)
+
+    def test_conflict_is_rejected_before_either_module_is_created(self):
+        selector = self.prefix / "modulefiles/abacus/development" / self.entry["identity"]["build_id"]
+        selector.parent.mkdir(parents=True)
+        selector.write_text("# existing user contents\n")
+        with self.assertRaises(ValueError):
+            package_native_modules(self.entry, self.root)
+        self.assertEqual(selector.read_text(), "# existing user contents\n")
+        self.assertFalse((self.prefix / "share/sai/native-module.tcl").exists())
+
+    def test_missing_prefix_is_not_created_and_invalid_root_rejected(self):
+        missing_root = self.root / "missing-root"
+        with self.assertRaises(ValueError):
+            package_native_modules(self.entry, missing_root)
+        self.assertFalse(missing_root.exists())
+        for root in (Path("relative-root"), self.root / ".."):
+            with self.assertRaises(ValueError):
+                package_native_modules(self.entry, root)
+
+    def test_prefix_and_module_ancestors_cannot_be_symlinks(self):
+        outside = self.root / "outside"
+        outside.mkdir()
+        share = self.prefix / "share"
+        share.symlink_to(outside, target_is_directory=True)
+        with self.assertRaises(ValueError):
+            package_native_modules(self.entry, self.root)
+        self.assertEqual(list(outside.iterdir()), [])
+        share.unlink()
+        original_prefix = self.prefix
+        original_prefix.rename(outside / "payload")
+        original_prefix.symlink_to(outside / "payload", target_is_directory=True)
+        with self.assertRaises(ValueError):
+            package_native_modules(self.entry, self.root)
+        self.assertEqual(list((outside / "payload").iterdir()), [])
+        root_alias = self.root / "root-alias"
+        root_alias.symlink_to(self.root, target_is_directory=True)
+        with self.assertRaises(ValueError):
+            package_native_modules(self.entry, root_alias)
+
+    def test_file_symlink_hardlink_directory_and_fifo_are_rejected(self):
+        fragment = self.prefix / "share/sai/native-module.tcl"
+        fragment.parent.mkdir(parents=True)
+        outside = self.root / "outside-file"
+        expected = render_native_fragment(self.entry)
+        outside.write_text(expected)
+        fragment.symlink_to(outside)
+        with self.assertRaises(ValueError):
+            package_native_modules(self.entry, self.root)
+        self.assertEqual(outside.read_text(), expected)
+        fragment.unlink()
+        os.link(outside, fragment)
+        with self.assertRaises(ValueError):
+            package_native_modules(self.entry, self.root)
+        fragment.unlink()
+        fragment.mkdir()
+        with self.assertRaises(ValueError):
+            package_native_modules(self.entry, self.root)
+        fragment.rmdir()
+        os.mkfifo(fragment)
+        with self.assertRaises(ValueError):
+            package_native_modules(self.entry, self.root)
+
+    def test_invalid_identity_or_peer_partition_writes_no_module(self):
+        invalid = copy.deepcopy(self.entry)
+        invalid["identity"]["install_prefix"] = "/opt/software/elsewhere"
+        with self.assertRaises(ValueError):
+            package_native_modules(invalid, self.root)
+        other = example("deepmd-kit", "16v100-avx2")["identity"]["install_prefix"]
+        self.entry["runtime"]["prepend"]["PYTHONPATH"] = [other + "/lib/python"]
+        with self.assertRaises(ValueError):
+            package_native_modules(self.entry, self.root, allowed_prefixes=[other])
+        self.assertEqual(list(self.prefix.iterdir()), [])
+
+
 @unittest.skipUnless(shutil.which("tclsh"), "real Tcl interpreter required")
 class NativeTclTests(unittest.TestCase):
     def setUp(self):
@@ -199,13 +305,8 @@ class NativeTclTests(unittest.TestCase):
             command.parent.mkdir(parents=True, exist_ok=True)
             command.write_text("# scientific executable fixture\n")
             command.chmod(0o755)
-        fragment = prefix / "share/sai/native-module.tcl"
-        fragment.write_text(render_native_fragment(entry))
-        identity = entry["identity"]
-        selector = self.root / "modulefiles" / identity["software"] / identity["track"] / identity["build_id"]
-        selector.parent.mkdir(parents=True, exist_ok=True)
-        selector.write_text(render_native_selector(identity))
-        return selector, fragment, prefix
+        paths = package_native_modules(entry, self.rootfs)
+        return paths["selector"], paths["fragment"], prefix
 
     def evaluate(self, selector, *, partition="4V100", job="1234", mode="load", saved=None,
                  depends_on=True, after=""):
@@ -270,7 +371,10 @@ class NativeTclTests(unittest.TestCase):
             with self.subTest(partition=partition, job=job):
                 self.assertNotEqual(self.evaluate(selector, partition=partition, job=job).returncode, 0)
         # No filesystem or dependency load is needed even after removing payload.
+        selector_copy = self.root / "display-selector"
+        selector_copy.write_bytes(selector.read_bytes())
         shutil.rmtree(self.rootfs)
+        selector = selector_copy
         for mode in ("display", "help", "whatis", "test"):
             result = self.evaluate(selector, partition=None, job=None, mode=mode)
             self.assertEqual(result.returncode, 0, result.stderr)
