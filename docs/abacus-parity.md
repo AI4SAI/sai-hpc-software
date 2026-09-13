@@ -170,3 +170,15 @@ The working environment uses `--export=NIL` and restores the actual account's
 HOME (not a scratch-home reassignment); Open MPI fails to initialize if HOME is
 missing. A selective `--export=HOME` attempt was cancelled by UID 0 before logging;
 its cause is not established and it is not used by the benchmark driver.
+
+## Latest native-layout canary (2026-09-13)
+
+[Actions 34739709778](https://github.com/AI4SAI/sai-hpc-software/actions/runs/34739709778)
+passed 224 controller tests, then Slurm job `1295392` failed compilation on
+`4v100n01` after 26m20s (exit `2:0`). Controller `88abc6a` built upstream
+`42f8ad905d567e965ae53fc554498bdc7e9ccbcc`; BSE's `molecular_lri.h` could not
+include `RI/physics/LR.h`. Check the locked LibRI archive/API and include layout
+against this upstream before retrying; do not disable BSE to bypass the error.
+The SAI task `runs/34739709778-1-development-4v100-avx512-2026-09-13-42f8ad905d56`
+retains its overlay and failure log, and Actions retains the results artifact.
+No new SIF, native-module runtime, scientific or speed acceptance is claimed.
