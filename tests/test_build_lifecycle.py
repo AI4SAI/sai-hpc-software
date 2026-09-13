@@ -157,6 +157,8 @@ class CiLifecycleTests(unittest.TestCase):
         source_ref = "develop" if software == "abacus" else "master"
         identity = make_identity(software, track, source_ref, upstream, version, "c" * 64, target)
         run_id = f"123-1-{track}-{target}-" + upstream[:12]
+        if software == "gpumd":
+            run_id = "gpumd-" + run_id
         expected_artifact = artifact_path(Path("/home/testuser/sai-hpc-software"), identity, run_id)
         environment = {"SOFTWARE": software, "TARGET": target, "SOURCE_SHA": upstream,
                        "GITHUB_SHA": "b" * 40, "SOFTWARE_VERSION": version,

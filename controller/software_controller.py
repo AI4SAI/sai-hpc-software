@@ -29,7 +29,8 @@ def contract_files(software):
     if software == "gpumd":
         return [name for name in common if name != "environment.sh"] + [
             "gpumd_environment.sh", "gpumd_container_entry.sh", "gpumd_build.sh",
-            "gpumd_science.py", "gpumd_deepmd_probe.py", "gpumd_acceptance.py", "gpumd", "nep", "gnep"]
+            "gpumd_science.py", "gpumd_deepmd_probe.py", "gpumd_acceptance.py",
+            "export_native.py", "native_module.py", "gpumd", "nep", "gnep"]
     raise ValueError("unknown software contract")
 
 def recipe_fingerprint(software, control=None):
@@ -219,12 +220,8 @@ def _publish_runtime_entry(request, artifact, manifest):
             module_lines.insert(1, "module load cuda/12.9.1 nvmplibs/26.7-tmp")
     elif software == "gpumd":
         launcher_name = module_name = "gpumd"
-        description = "GPUMD + NEP + GNEP, DeePMD and PLUMED"
-        module_lines = [
-            "prepend-path MODULEPATH /opt/modules/modulefiles/apps",
-            "module load cuda/12.9.1 deepmd-kit/3.2.0",
-            f"setenv SAI_GPUMD_VERSION {request['version']}",
-        ]
+        description = "GPUMD"
+        module_lines = []
     else:
         raise ValueError("no trusted runtime publisher for this software")
     launcher = Path(request["controller"]) / launcher_name

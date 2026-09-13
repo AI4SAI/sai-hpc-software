@@ -1,10 +1,11 @@
 #!/usr/bin/env bash
 set -euo pipefail
-op=$1; software=$2; sha=$3; version=$4; target=$5
+umask 022
+op=$1; software=$2; sha=$3; version=$4; target=$5; delivery=${6:?canonical identity required}
 [[ "$software" == gpumd && "$sha" =~ ^[0-9a-f]{40}$ ]]
-[[ "$version" =~ ^[A-Za-z0-9][A-Za-z0-9_.-]*$ ]]
 export PATH=/usr/bin:/bin TMPDIR=/workspace/tmp
-export INSTALL_PREFIX="/opt/software/gpumd/$version/$target"
+INSTALL_PREFIX=$(python3 /control/delivery_layout.py prefix "$delivery" "$software" "$sha" "$version" "$target")
+export INSTALL_PREFIX
 case "$op" in
 build)
   mkdir -p /workspace/tmp
@@ -34,6 +35,9 @@ build)
     'export CUDACXX="$CUDA_HOME/bin/nvcc"' \
     >> "$INSTALL_PREFIX/share/sai/runtime-env.sh"
   python3 /control/gpumd_science.py portable "$INSTALL_PREFIX" /workspace/gpumd-portability
+  # Generate shared native modules and the per-prefix inventory last, after
+  # the installation and its portability evidence are complete.
+  python3 /control/gpumd_science.py inspect "$INSTALL_PREFIX" --identity "$delivery"
   ;;
 export)
   test ! -e /workspace/export
@@ -42,6 +46,8 @@ export)
   mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"
   ;;
 verify)
+  python3 /control/delivery_layout.py prefix "$delivery" "$software" "$sha" "$version" "$target" \
+    --installed "$INSTALL_PREFIX/share/sai/release-identity.json"
   source "$INSTALL_PREFIX/share/sai/runtime-env.sh"
   test "$(cat "$INSTALL_PREFIX/share/sai/source-sha")" = "$sha"
   test -s "$GPUMD_SRC/main_nep/nep_specialized.cu"

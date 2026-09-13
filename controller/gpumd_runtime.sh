@@ -2,18 +2,17 @@
 # One copied host launcher for each installed executable. No host install tree.
 set -euo pipefail
 : "${SAI_SOFTWARE_ROOT:?load the GPUMD module first}"
-: "${SAI_GPUMD_VERSION:?load the GPUMD module first}"
+: "${SAI_GPUMD_IMAGE:?load a pinned identity-aware GPUMD module first}"
 name=${SAI_GPUMD_EXECUTABLE:-$(basename -- "$0")}
 case "$name" in gpumd|nep|gnep) ;; *) echo 'unknown GPUMD executable' >&2; exit 2;; esac
 case "${SLURM_JOB_PARTITION:?GPUMD requires a Slurm GPU allocation}" in
   4V100) target=4v100-avx512;; 16V100) target=16v100-avx2;; 8V100V0) target=8v100v0-avx512;; *) exit 2;;
 esac
-[[ "$SAI_GPUMD_VERSION" =~ ^[A-Za-z0-9][A-Za-z0-9_.-]*$ ]]
-catalog="$SAI_SOFTWARE_ROOT/containers/software/gpumd/$SAI_GPUMD_VERSION/$target"
-image=${SAI_GPUMD_IMAGE:-$catalog/current.sif}
-resolved=$(realpath -e -- "$image")
-[[ "$resolved" == "$catalog"/*.sif && -f "$resolved" ]] || exit 2
-prefix="/opt/software/gpumd/$SAI_GPUMD_VERSION/$target"
+[[ ! -L "$SAI_GPUMD_IMAGE" ]] || exit 2
+resolved=$(realpath -e -- "$SAI_GPUMD_IMAGE")
+[[ "$resolved" == "$SAI_GPUMD_IMAGE" && -f "$resolved" ]] || exit 2
+launcher_control=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
+prefix=$(python3 "$launcher_control/delivery_layout.py" runtime "$SAI_SOFTWARE_ROOT" "$resolved" gpumd "$target")
 work=$(pwd -P)
 case "$work" in *:*|*,*|*$'\n'*) exit 2;; esac
 runtime=$(realpath -e -- "${TMPDIR:?set TMPDIR below a SAI runtime root}")

@@ -10,10 +10,11 @@ import time
 
 from remote_controller import TARGETS, safe_name, container_command
 from source_cache import checksum
+from delivery_layout import artifact_path, load_artifact, validate_record
+from release_contract import GPU_TARGETS, validate_identity
 
 ROOT = Path(os.environ.get("SAI_SOFTWARE_ROOT", Path.home() / "sai-hpc-software")).resolve()
 CONTROL = Path(__file__).resolve().parent
-GPU_TARGETS = ("4v100-avx512", "16v100-avx2", "8v100v0-avx512")
 
 
 def regular(path):
@@ -30,8 +31,13 @@ def run_dir(run_id):
 
 
 def render_job(request, task):
+    identity = validate_identity(request["identity"])
+    if (identity["software"] != "gpumd" or identity["target"] != request["target"] or
+            identity["source_version"] != request["version"] or
+            artifact_path(ROOT, identity, request["build_run_id"]) != Path(request["artifact"])):
+        raise ValueError("GPUMD scientific request differs from its canonical identity")
     target = TARGETS[request["target"]]
-    prefix = f"/opt/software/gpumd/{request['version']}/{request['target']}"
+    prefix = identity["install_prefix"]
     q = shlex.quote
     # A contained RW work directory for outputs/JIT only. Installation is RO.
     argv = container_command(request["artifact"], ["/usr/bin/bash", "--noprofile", "--norc", "-c",
@@ -61,7 +67,7 @@ def render_job(request, task):
         f"mkdir {q(str(task / 'results/launcher'))}",
         f"cp {q(str(task / 'results/science/static-candidate/model.xyz'))} {q(str(task / 'results/science/static-candidate/nep.txt'))} "
         f"{q(str(task / 'results/science/static-candidate/run.in'))} {q(str(task / 'results/launcher'))}/",
-        f"export SAI_SOFTWARE_ROOT={q(str(ROOT))} SAI_GPUMD_VERSION={q(request['version'])}",
+        f"export SAI_SOFTWARE_ROOT={q(str(ROOT))}",
         f"export SAI_GPUMD_IMAGE={q(request['artifact'])}",
         f"cd {q(str(task / 'results/launcher'))}", f"{q(request['launcher'])} > run.log 2>&1",
         "echo GPUMD_SCIENCE_AND_LAUNCHER_COMPLETED"]
@@ -75,16 +81,15 @@ def submit(args):
     if task.exists():
         raise ValueError("GPUMD acceptance run already exists")
     build = ROOT / "runs" / safe_name(args.build_run_id)
-    artifact = ROOT / "containers/software/gpumd" / safe_name(args.version) / args.target / f"{args.build_run_id}.sif"
-    regular(artifact)
-    if (build / "artifact.path").read_text().strip() != str(artifact):
+    artifact = Path(regular(build / "artifact.path").read_text().strip())
+    manifest = load_artifact(ROOT, artifact, software="gpumd", target=args.target)
+    identity = manifest["identity"]
+    if (artifact != artifact_path(ROOT, identity, args.build_run_id) or
+            identity["source_version"] != args.version):
         raise ValueError("build candidate path mismatch")
-    manifest = json.loads(regular(artifact.with_suffix(".json")).read_text())
-    if not manifest.get("build_verified") or checksum(artifact) != manifest["sha256"]:
-        raise ValueError("unverified build candidate")
     for name in ("results", "runtime", "cache"):
         (task / name).mkdir(parents=True)
-    request = dict(vars(args), artifact=str(artifact), artifact_sha256=checksum(artifact),
+    request = dict(vars(args), identity=identity, artifact=str(artifact), artifact_sha256=manifest["sha256"],
                    launcher=str(CONTROL / "gpumd"), launcher_sha256=checksum(regular(CONTROL / "gpumd")),
                    controller_sha256=checksum(CONTROL / "gpumd_acceptance.py"),
                    science_sha256=checksum(CONTROL / "gpumd_science.py"),
@@ -104,7 +109,13 @@ def submit(args):
 def verify_evidence(task, request):
     from gpumd_science import compare, xyz, recheck_results, required_results
     artifact = regular(Path(request["artifact"]))
-    for path, key in ((artifact, "artifact_sha256"), (task / "job.sbatch", "job_script_sha256"),
+    manifest = load_artifact(ROOT, artifact, software="gpumd", target=request["target"])
+    identity = validate_identity(request["identity"])
+    if (manifest["identity"] != identity or manifest["sha256"] != request["artifact_sha256"] or
+            artifact != artifact_path(ROOT, identity, request["build_run_id"]) or
+            identity["source_version"] != request["version"]):
+        raise ValueError("GPUMD evidence differs from its pinned artifact identity")
+    for path, key in ((task / "job.sbatch", "job_script_sha256"),
                       (CONTROL / "gpumd", "launcher_sha256"), (CONTROL / "gpumd_acceptance.py", "controller_sha256"),
                       (CONTROL / "gpumd_science.py", "science_sha256"),
                       (CONTROL / "gpumd_deepmd_probe.py", "deepmd_probe_sha256")):
@@ -113,6 +124,8 @@ def verify_evidence(task, request):
     job = regular(task / "job.id").read_text().strip()
     science_file = regular(task / "results/science/science.json")
     science = json.loads(science_file.read_text())
+    if science.get("identity") != identity:
+        raise ValueError("GPUMD scientific results have a different delivery identity")
     if checksum(regular(task / "results/gpu-host.txt")) != science["gpu_metadata_sha256"]:
         raise ValueError("GPU allocation metadata changed")
     required = {"static-candidate", "static-baseline", "nep-jit-vs-generic-loss", "gnep-training-and-prediction",
@@ -148,7 +161,8 @@ def verify_evidence(task, request):
     gold_e, gold_f = xyz(regular(task / "results/science/static-candidate/gold.xyz"))
     compare([[energy]], [[gold_e]], 1e-3, "host launcher energy")
     compare(forces, gold_f, 1e-4, "host launcher forces")
-    return {"verified": True, "job": job, "artifact_sha256": request["artifact_sha256"],
+    return {"verified": True, "job": job, "identity": identity,
+            "artifact_sha256": request["artifact_sha256"],
             "science_sha256": checksum(science_file),
             "launcher_result_sha256": checksum(task / "results/launcher/dump.xyz"),
             "checks": science["checks"], "benchmark": science["benchmark"]}
@@ -162,10 +176,12 @@ def validate_manifest(manifest, root=None, control=None):
     proof = manifest.get("gpumd_science", {})
     if proof.get("verified") is not True:
         raise ValueError("missing GPUMD scientific/parity/benchmark proof")
+    identity = validate_record(manifest)
     task = run_dir(proof["run_id"])
     request = json.loads(regular(task / "request.json").read_text())
     status = json.loads(regular(task / "results/status.json").read_text())
-    if (request["artifact"] != manifest["artifact"] or request["artifact_sha256"] != manifest["sha256"] or
+    if (request.get("identity") != identity or proof.get("identity") != identity or
+            request["artifact"] != manifest["artifact"] or request["artifact_sha256"] != manifest["sha256"] or
             request["target"] != manifest["target"] or request["launcher"] != str(CONTROL / "gpumd") or
             status != {"job": proof["job"], "state": "COMPLETED", "exit_code": "0:0", "verified": True}):
         raise ValueError("GPUMD proof does not match the accepted job/image")
@@ -201,7 +217,8 @@ def monitor(args):
                 artifact = Path(request["artifact"])
                 sidecar = artifact.with_suffix(".json")
                 manifest = json.loads(regular(sidecar).read_text())
-                if manifest["sha256"] != request["artifact_sha256"]:
+                if (manifest["sha256"] != request["artifact_sha256"] or
+                        validate_record(manifest) != request["identity"]):
                     raise ValueError("candidate changed during acceptance")
                 manifest["gpumd_science"] = dict(evidence, run_id=args.run_id,
                                                 launcher_sha256=request["launcher_sha256"])

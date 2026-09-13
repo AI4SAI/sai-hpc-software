@@ -1,7 +1,9 @@
 # GPUMD native GPU tracking (experimental branch)
 
 The independent `feat/gpumd-daily-tracking` branch adds a daily poll of upstream
-`master` and `latest-release`. Every poll resolves a full current Git SHA; it is
+`development`, `prerelease`, and `release` through the shared source resolver.
+Development uses `master`; release channels resolve their live upstream tags.
+Every poll resolves a full current Git SHA; it is
 not a webhook or a zero-delay mirror. GitHub schedules become active only after
 the workflow reaches the repository default branch. On the experimental branch,
 push/PR run static tests; an explicit dispatch is needed for a cluster build.
@@ -73,11 +75,29 @@ GPU, not the login node.
 
 ## Installation and copying
 
-Canonical prefix: `/opt/software/gpumd/<version>/<target>`. The SIF contains
+Canonical prefix: `/opt/software/gpumd/<track>/<build_id>/<partition>`, using
+the shared release contract. Development labels include the pinned commit's UTC
+date; the shared build ID adds source and recipe hashes. The SIF contains
 only the installation; external dependencies remain read-only at their recorded
 site paths. It also contains matching CUDA source/headers under
 `share/gpumd/src`: modern NEP training JIT genuinely needs these, so copying only
-the two executables is not a complete installation.
+the executables is not a complete installation.
+
+The existing final inspection writes `share/sai/native-entry.json` and observed
+site-library provenance, then calls the shared `export_native.write_manifests`.
+That writer packages native Tcl modules and one schema 2
+`share/sai/manifest.json` inside the complete prefix. The final read-only SIF
+inspection recomputes the full inventory, including portability evidence and
+JIT sources. The native module selects the real Slurm partition, executes its
+own installed commands directly, and records the exact external site modules,
+DeepMD and PLUMED roots; it does not load the DeepMD application module's
+unrelated LAMMPS executable paths.
+
+The separate SIF launcher validates a pinned artifact through shared
+`delivery_layout`; its full checksum is reused only within the same Slurm job
+and host, with file and sidecar invalidation. Scientific reports and publication
+proofs carry the same release identity. Packaging a complete candidate does not
+set scientific acceptance or publish a module.
 
 If the complete prefix is later copied to physical storage, source
 `<prefix>/share/sai/runtime-env.sh` before running it. The script derives its own

@@ -76,7 +76,8 @@ def main():
               ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh"])
     if software == "gpumd":
         recipe = ["gpumd_container_entry.sh", "gpumd_environment.sh", "gpumd_build.sh",
-                  "gpumd_science.py", "gpumd_deepmd_probe.py", "gpumd_acceptance.py"]
+                  "gpumd_science.py", "gpumd_deepmd_probe.py", "gpumd_acceptance.py",
+                  "export_native.py", "native_module.py"]
     for name in common + recipe:
         upload(parent / name, f"{control}/{name}")
     for executable in runtime_launchers(software):

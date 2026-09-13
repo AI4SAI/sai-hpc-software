@@ -1,20 +1,174 @@
 #!/usr/bin/env python3
 """Trusted GPUMD numerical/parity/portability and same-allocation microbenchmark.
 
-No upstream Python/shell test driver is executed on the host. All calls here
-run inside a read-only candidate SIF; only the acceptance work directory is RW.
+No upstream Python/shell test driver is executed on the host. Preparation and
+packaging stay in the build overlay; acceptance runs in a read-only candidate
+SIF with only its work directory writable.
 """
 import argparse
 import hashlib
 import json
 import math
 import os
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 import re
 import shutil
+import stat
 import statistics
 import subprocess
 import time
+
+from export_native import (canonical, inventory, read_installed_manifests, write_manifests)
+from native_module import validate_native_entry
+from release_contract import validate_identity
+
+COMMANDS = ("gpumd", "nep", "gnep")
+CUDA = "/opt/devtools/nvidia/cuda-12.9.1"
+GCC = "/opt/devtools/gcc/13.3.0"
+DEEPMD = "/opt/apps/conda_env/deepmd-kit-3.2.0"
+PLUMED = "/opt/apps/plumed/plumed-2.10.1"
+NVHPC = "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3"
+NCCL = "/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2"
+MODULE_ROOT = "/opt/modules/modulefiles/devtools"
+BLAS = "/usr/lib/x86_64-linux-gnu/blas"
+LAPACK = "/usr/lib/x86_64-linux-gnu/lapack"
+MODULES = ("cuda/12.9.1", "nvhpc/26.3-gnu-cuda12-tuned",
+           "openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto", "gcc/13.3.0")
+SITE_LIBRARIES = {
+    "libdeepmd_cc.so": DEEPMD + "/lib/libdeepmd_cc.so",
+    "libdeepmd_c.so": DEEPMD + "/lib/libdeepmd_c.so",
+    "libplumed.so": PLUMED + "/lib/libplumed.so",
+    "libplumedKernel.so": PLUMED + "/lib/libplumedKernel.so",
+}
+THREADS = {"OMP_NUM_THREADS": "2", "DP_INTRA_OP_PARALLELISM_THREADS": "1",
+           "DP_INTER_OP_PARALLELISM_THREADS": "1"}
+
+
+def _unique(values):
+    return list(dict.fromkeys(values))
+
+
+def _path(value):
+    if (not isinstance(value, str) or not value.startswith("/") or
+            str(PurePosixPath(value)) != value or ".." in value.split("/") or
+            value.startswith("//") or ":" in value or "\\" in value or
+            any(ord(c) < 32 or ord(c) == 127 for c in value)):
+        raise ValueError("dependency path must be an absolute canonical literal")
+    return value
+
+
+def _beneath(path, root):
+    return path == root or path.startswith(root + "/")
+
+
+def parse_ldd(report):
+    """Parse a successful dynamic ELF ldd report, rejecting partial/missing data."""
+    if not isinstance(report, str) or not report.strip():
+        raise ValueError("empty ldd report")
+    paths = []
+    for line in report.splitlines():
+        line = line.strip()
+        if not line:
+            continue
+        if re.fullmatch(r"linux-vdso\.so\.\d+ \(0x[0-9a-fA-F]+\)", line):
+            continue
+        match = re.fullmatch(r"(?:[^\s/]+ => )?(/[^\s]+) \(0x[0-9a-fA-F]+\)", line)
+        if not match:
+            raise ValueError("unresolved or malformed ldd report: " + line)
+        paths.append(_path(match[1]))
+    if not paths:
+        raise ValueError("ldd did not resolve any libraries")
+    return _unique(paths)
+
+
+def _site_roots(identity):
+    mpi = "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-" + identity["dependency_isa"]
+    return [CUDA, GCC, DEEPMD, PLUMED, mpi, NVHPC, NCCL, MODULE_ROOT, BLAS, LAPACK]
+
+
+def build_native_entry(identity, prefix, environment, ldd_reports, executables=COMMANDS):
+    """Pure constructor from a canonical identity and observed build evidence.
+
+    ``ldd_reports`` maps all three installed commands and each SITE_LIBRARIES
+    basename to its complete ldd stdout. PLUMED's MPI/HPCX dependencies are real
+    transitive requirements, even though GPUMD itself is not an MPI program.
+    The versioned site MPI module is auto-ISA; its *resolved* root is separately
+    checked against the identity's dependency_isa and recorded in this entry.
+    """
+    identity = validate_identity(identity)
+    if identity["software"] != "gpumd" or str(prefix) != identity["install_prefix"]:
+        raise ValueError("GPUMD prefix must match its canonical release identity")
+    prefix = _path(str(prefix))
+    if (not isinstance(environment, dict) or
+            any(not isinstance(k, str) or not isinstance(v, str) for k, v in environment.items())):
+        raise ValueError("environment must map strings to strings")
+    if tuple(executables) != COMMANDS:
+        raise ValueError("delivery requires exactly the installed gpumd, nep and gnep commands")
+    if not isinstance(ldd_reports, dict) or set(ldd_reports) != set(COMMANDS) | set(SITE_LIBRARIES):
+        raise ValueError("complete command and site-library ldd evidence is required")
+    roots = _site_roots(identity)
+    mpi = roots[4]
+    expected = {"CUDA_HOME": CUDA, "CUDA_PATH": CUDA, "DEEPMD_ROOT": DEEPMD,
+                "PLUMED_KERNEL": SITE_LIBRARIES["libplumedKernel.so"],
+                "DP_CUDA_INFER": "2", **THREADS}
+    for key, value in expected.items():
+        if environment.get(key) != value:
+            raise ValueError(f"verified site environment differs at {key}")
+    for key, value in {"OPAL_PREFIX": mpi, "MPI_HOME": mpi, "NVHPC_ROOT": NVHPC,
+                       "NCCL_ROOT": NCCL, "CUDACXX": CUDA + "/bin/nvcc",
+                       "GPUMD_SRC": prefix + "/share/gpumd/src"}.items():
+        if key in environment and environment[key] != value:
+            raise ValueError(f"resolved site environment differs at {key}")
+    loaded = environment.get("LOADEDMODULES", "").split(":")
+    if (len(set(loaded)) != len(loaded) or not set(MODULES) <= set(loaded) or
+            set(loaded) - set(MODULES) - {"deepmd-kit/3.2.0"}):
+        raise ValueError("unrecorded or missing exact infrastructure module")
+
+    # PATH is deliberately not copied. Reject accidentally sourced build
+    # paths anyway, then expose only commands from infrastructure modules and
+    # this install. DeepMD's extra site-LAMMPS bin directory is not a dependency.
+    for value in environment.get("PATH", "").split(":"):
+        _path(value)
+        if any(_beneath(value, root) for root in ("/workspace", "/control", "/input", "/home", "/tmp")):
+            raise ValueError("build or snapshot path leaked into runtime PATH")
+
+    def approved(value):
+        _path(value)
+        if not any(_beneath(value, root) for root in [prefix, *roots, "/usr", "/lib", "/lib64"]):
+            raise ValueError("unrecorded native library path: " + value)
+        return value
+
+    library_paths = _unique(approved(value) for value in environment.get("LD_LIBRARY_PATH", "").split(":"))
+    for required in (DEEPMD + "/lib", PLUMED + "/lib", BLAS, LAPACK, mpi + "/lib"):
+        if required not in library_paths:
+            raise ValueError("required site library directory is absent: " + required)
+    resolved = {name: [approved(path) for path in parse_ldd(report)]
+                for name, report in ldd_reports.items()}
+    # Complete ldd can resolve via an ELF RPATH, not LD_LIBRARY_PATH. Preserve
+    # its real parent too, so downstream runtime dlopen can find the same ABI.
+    library_paths = _unique([*library_paths,
+                             *(str(PurePosixPath(path).parent)
+                               for paths in resolved.values() for path in paths)])
+    if not any(_beneath(path, mpi) for paths in resolved.values() for path in paths):
+        raise ValueError("PLUMED MPI resolution is missing from ldd evidence")
+    settings = {**expected, "GPUMD_ROOT": prefix,
+                "GPUMD_SRC": prefix + "/share/gpumd/src", "CUDACXX": CUDA + "/bin/nvcc",
+                "PLUMED_ROOT": PLUMED}
+    entry = {"identity": identity, "commands": {name: "bin/" + name for name in COMMANDS},
+             "external_roots": roots,
+             "runtime": {"modules": list(MODULES),
+                         "prepend": {"MODULEPATH": [MODULE_ROOT], "LD_LIBRARY_PATH": library_paths},
+                         "set": settings}}
+    # Do not weaken the public whitelist for unsupported GPUMD variables.
+    return validate_native_entry(entry)
+
+
+def _regular(path, *, executable=False):
+    info = path.lstat()
+    if not stat.S_ISREG(info.st_mode) or (executable and info.st_mode & 0o111 != 0o111):
+        raise ValueError("installed command/metadata is not a regular readable executable: " + str(path))
+    return path
+
 
 BASELINE = Path("/opt/apps/gpumd/GPUMD-5.8")
 TRAIN_CONFIG = """type 2 Te Pb
@@ -93,7 +247,7 @@ def prepare(source, destination):
     (throughput / "run.in").write_text("potential nep.txt\nvelocity 300\nensemble nve\ntime_step 0.5\ndump_thermo 100\nrun 1000\n")
 
 
-def inspect(prefix):
+def inspect(prefix, identity=None, environment=None):
     """ldd is supplemented with ELF NEEDED and real JIT-resource checks."""
     expected = {path.name for path in (BASELINE / "bin").iterdir() if path.is_file() and os.access(path, os.X_OK)}
     installed = set((prefix / "share/sai/executables.txt").read_text().split())
@@ -129,6 +283,55 @@ def inspect(prefix):
     jit = (copied / "nep.log").read_text()
     if len(numbers(copied / "loss.out")) != 2 or "Compile specialized NEP training kernels" not in jit or "specialization disabled" in jit:
         raise ValueError("installed copied-prefix JIT evidence is incomplete")
+    if identity is not None:
+        # The existing inspection is the last build step. Package declarative
+        # runtime data with the shared writer; its native modules are inventoried
+        # inside this same prefix, with no GPUMD-specific format or naming.
+        identity = validate_identity(identity)
+        if (identity["software"] != "gpumd" or str(prefix) != identity["install_prefix"] or
+                prefix.resolve(strict=True) != prefix or prefix.is_symlink()):
+            raise ValueError("GPUMD prefix must match its canonical release identity")
+        environment = dict(os.environ if environment is None else environment)
+        for compiler, expected in (("nvcc", CUDA + "/bin/nvcc"), ("gcc", GCC + "/bin/gcc")):
+            if shutil.which(compiler, path=environment.get("PATH")) != expected:
+                raise ValueError("JIT compiler differs from verified site dependency: " + compiler)
+        ldd_reports = {name: result["ldd"] for name, result in report.items()}
+        for name, path in SITE_LIBRARIES.items():
+            if not Path(path).is_file():
+                raise ValueError("missing site dependency: " + path)
+            ldd_reports[name] = subprocess.check_output(
+                ["/usr/bin/ldd", path], text=True, env=dict(environment, LC_ALL="C"),
+                stderr=subprocess.STDOUT)
+        for name in COMMANDS:
+            _regular(prefix / "bin" / name, executable=True)
+        for relative in ("main_nep/nep_specialized.cu", "utilities/nep_utilities.cuh"):
+            _regular(prefix / "share/gpumd/src" / relative)
+        entry = build_native_entry(identity, prefix, environment, ldd_reports,
+                                   _regular(prefix / "share/sai/executables.txt").read_text().split())
+        for path in [*entry["external_roots"], *entry["runtime"]["prepend"]["LD_LIBRARY_PATH"]]:
+            if not Path(path).is_dir():
+                raise ValueError("recorded native dependency does not exist: " + path)
+        evidence = {"schema": 1, "modules": entry["runtime"]["modules"],
+                    "external_roots": entry["external_roots"],
+                    "resolved_libraries": {name: parse_ldd(value) for name, value in ldd_reports.items()},
+                    "ldd": ldd_reports, "scientific_acceptance": False}
+        for name, value in (("release-identity.json", identity), ("native-entry.json", entry),
+                            ("native-dependencies.json", evidence)):
+            path = prefix / "share/sai" / name
+            if path.exists() or path.is_symlink():
+                if json.loads(_regular(path).read_text()) != value:
+                    raise ValueError("refusing to replace different installed metadata: " + str(path))
+            else:
+                with path.open("x") as output:
+                    output.write(canonical(value))
+                path.chmod(0o444)
+        write_manifests([entry])
+    else:
+        entry = validate_native_entry(json.loads(_regular(prefix / "share/sai/native-entry.json").read_text()))
+        if entry["identity"]["install_prefix"] != str(prefix):
+            raise ValueError("installed native entry differs from its prefix")
+        if read_installed_manifests([entry]) != inventory([entry]):
+            raise ValueError("installed native manifest differs from the complete installation")
     return report
 
 
@@ -355,7 +558,10 @@ def run(prefix, task):
         raise ValueError("scientific/benchmark execution requires the Slurm GPU allocation")
     task.mkdir(parents=True, exist_ok=True)
     inputs = prefix / "share/sai/cases"
-    report = {"inspection": inspect(prefix), "checks": {}, "benchmark": {},
+    identity = validate_identity(json.loads((prefix / "share/sai/release-identity.json").read_text()))
+    if identity["install_prefix"] != str(prefix):
+        raise ValueError("scientific run differs from installed identity")
+    report = {"identity": identity, "inspection": inspect(prefix), "checks": {}, "benchmark": {},
               "host": subprocess.check_output(["hostname"], text=True).strip(),
               "job": os.environ["SLURM_JOB_ID"], "gpu_visible": os.environ["CUDA_VISIBLE_DEVICES"],
               "benchmark_description": "single GPU same SIF/dependencies/inputs: replicated 2000-atom NEP MD, engine atom-step/s and total wall time, one warmup plus three repeats; separate startup microbenchmarks are not throughput"}
@@ -520,11 +726,14 @@ if __name__ == "__main__":
     parser.add_argument("operation", choices=("prepare", "inspect", "run", "portable"))
     parser.add_argument("prefix", type=Path)
     parser.add_argument("destination", type=Path, nargs="?")
+    parser.add_argument("--identity", type=json.loads, help="canonical build identity; package after inspection")
     arguments = parser.parse_args()
+    if arguments.identity is not None and arguments.operation != "inspect":
+        parser.error("--identity is only supported for final build inspection")
     if arguments.operation == "prepare":
         prepare(arguments.prefix, arguments.destination)
     elif arguments.operation == "inspect":
-        print(json.dumps(inspect(arguments.prefix), sort_keys=True))
+        print(json.dumps(inspect(arguments.prefix, arguments.identity), sort_keys=True))
     elif arguments.operation == "portable":
         portable_check(arguments.prefix, arguments.destination)
     else:
