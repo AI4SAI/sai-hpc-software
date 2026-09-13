@@ -130,7 +130,7 @@ def validate_native_entry(entry, *, allowed_prefixes=()):
     if not isinstance(commands, dict) or not commands:
         raise ValueError("commands must map at least one command to its relative executable")
     clean_commands = {}
-    for name, value in commands.items():
+    for name, value in sorted(commands.items()):
         if (not isinstance(name, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.+-]*", name) or
                 not isinstance(value, str) or not re.fullmatch(r"bin/(?:[A-Za-z0-9_.+-]+/)*[A-Za-z0-9_.+-]+", value) or
                 any(part in (".", "..") for part in value.split("/"))):
@@ -152,7 +152,7 @@ def validate_native_entry(entry, *, allowed_prefixes=()):
     if not isinstance(prepend, dict) or any(name not in _PREPEND for name in prepend):
         raise ValueError("unapproved runtime prepend variable")
     clean_prepend = {}
-    for name, values in prepend.items():
+    for name, values in sorted(prepend.items()):
         clean_prepend[name] = [runtime_path(value) for value in _sequence(values, f"runtime.prepend.{name}")]
         if name == "MODULEPATH" and any(
                 not any(PurePosixPath(value).is_relative_to(root) for root in external_paths)
@@ -164,7 +164,7 @@ def validate_native_entry(entry, *, allowed_prefixes=()):
     if not isinstance(settings, dict):
         raise ValueError("runtime.set must be an object")
     clean_settings = {}
-    for name, value in settings.items():
+    for name, value in sorted(settings.items()):
         if not isinstance(value, str) or len(value) > 4096:
             raise ValueError("runtime setting must be a bounded string")
         if name in _PATH_SETTINGS:
