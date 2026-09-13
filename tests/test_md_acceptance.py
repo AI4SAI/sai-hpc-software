@@ -2,6 +2,7 @@
 import copy
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -26,16 +27,18 @@ class AcceptanceRenderTests(unittest.TestCase):
                     delivery = delivery_request(target)
                     request = {'target': target, 'nodes': nodes, 'ranks': 2 * nodes,
                                'delivery': delivery, 'sources': delivery['plan']['sources'],
-                               'run_id': 'science-unit', 'version': delivery['plan']['version'],
-                               'artifact': '/experimental/pinned-candidate.sif'}
-                    script = acceptance.render(request, Path('/experimental/science-unit'))
+                               'run_id': 'science-unit', 'build_run': 'pinned-candidate',
+                               'version': delivery['plan']['version'],
+                               'artifact': str(acceptance.artifact_path(Path('/experimental'), delivery, 'pinned-candidate'))}
+                    with patch.object(acceptance, 'ROOT', Path('/experimental')):
+                        script = acceptance.render(request, Path('/experimental/science-unit'))
                     subprocess.run(['bash', '-n'], input=script, text=True, check=True)
                     self.assertIn('#SBATCH --partition=' + acceptance.TARGETS[target]['partition'], script)
                     self.assertIn(f'#SBATCH --nodes={nodes}', script)
                     self.assertIn('#SBATCH --ntasks-per-node=2', script)
                     self.assertIn('#SBATCH --gpus-per-node=1', script)
                     self.assertIn('SAI_MD_ACCEPTANCE_RANKS=' + str(nodes * 2), script)
-                    self.assertIn('SAI_MD_IMAGE=/experimental/pinned-candidate.sif', script)
+                    self.assertIn('SAI_MD_IMAGE=' + request['artifact'], script)
                     self.assertIn('SAI_MD_DELIVERY=', script)
                     self.assertIn('SAI_MD_LAMMPS_PREFIX=' + delivery['identities']['lammps']['install_prefix'], script)
                     self.assertNotIn('#SBATCH --cpus-per-task', script)
@@ -49,6 +52,23 @@ class AcceptanceRenderTests(unittest.TestCase):
         for change in ({'nodes': 0}, {'nodes': 3}, {'ranks': 1}, {'nodes': 2, 'ranks': 2}):
             with self.subTest(change=change), self.assertRaises(ValueError):
                 acceptance.render(dict(request, **change), Path('/experimental/test'))
+
+    def test_acceptance_and_runtime_reject_an_image_outside_the_shared_artifact_path(self):
+        delivery = delivery_request()
+        with tempfile.TemporaryDirectory() as temporary:
+            foreign_image = Path(temporary) / 'foreign.sif'
+            request = dict(target=delivery['plan']['target'], nodes=1, ranks=2, delivery=delivery,
+                           sources=delivery['plan']['sources'], version=delivery['plan']['version'],
+                           artifact=str(foreign_image), build_run='foreign')
+            with patch.object(acceptance, 'ROOT', Path(temporary)), self.assertRaises(ValueError):
+                acceptance.render(request, Path(temporary))
+            environment = dict(os.environ, SAI_SOFTWARE_ROOT=temporary,
+                               SAI_MD_DELIVERY=json.dumps(delivery), SAI_MD_IMAGE=str(foreign_image),
+                               SLURM_JOB_PARTITION='4V100')
+            checked = subprocess.run(['bash', str(ROOT / 'controller/md_runtime.sh'), 'lmp', '-h'],
+                                     env=environment, capture_output=True, text=True)
+            self.assertNotEqual(checked.returncode, 0)
+            self.assertIn('MD image differs from its canonical paired delivery path', checked.stderr)
 
     def test_host_mpi_enters_pinned_image_and_only_task_inputs_are_copied(self):
         runner = (ROOT / 'controller/md_acceptance.sh').read_text()
@@ -90,17 +110,18 @@ class AcceptanceVerificationTests(unittest.TestCase):
                             models={backend: {'input_sha256': hashlib.sha256(backend.encode()).hexdigest()}
                                     for backend in BACKENDS})
         delivery = delivery_request(recipe=self.recipe_sha)
-        self.request = {'run_id': self.run_id, 'version': delivery['plan']['version'], 'target': '4v100-avx512',
+        self.request = {'run_id': self.run_id, 'build_run': 'candidate',
+                        'version': delivery['plan']['version'], 'target': '4v100-avx512',
                         'delivery': delivery, 'nodes': 1, 'ranks': 2, 'sources': delivery['plan']['sources'],
                         'acceptance_recipe_sha256': self.recipe_sha}
-        artifact = (self.root / 'containers/software/deepmd-lammps' / delivery['plan']['selection_sha256'] /
-                    delivery['recipe_sha256'] / delivery['identities']['lammps']['partition'] / 'candidate.sif')
+        artifact = acceptance.artifact_path(self.root, delivery, 'candidate')
         artifact.parent.mkdir(parents=True)
         artifact.write_bytes(b'synthetic candidate artifact')
         self.request.update(artifact=str(artifact), artifact_sha256=checksum(artifact))
         (self.directory / 'job.id').write_text('123\n')
         script = self.directory / 'job.sbatch'
-        script.write_text(acceptance.render(self.request, self.directory))
+        with patch.object(acceptance, 'ROOT', self.root):
+            script.write_text(acceptance.render(self.request, self.directory))
         self.request['job_script_sha256'] = checksum(script)
         self.save_request()
         self.write_records()

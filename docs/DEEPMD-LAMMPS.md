@@ -120,6 +120,10 @@ transport; submit, container verification, sidecar, and scientific runtime check
 the same full source SHAs, recipe digest, actual channels, and real partition.
 Legacy schema-1 pairs are rejected by submission. Branch build labels include
 the pinned commit's UTC date before the SHA, using the shared source resolver.
+Candidate filenames use `md-<run>-<attempt>-<UTC-build-date>-<selection-SHA>.sif`,
+matching the main workflow's date-before-SHA convention. Build, acceptance and
+runtime obtain the paired SIF location from the same existing controller module;
+images outside that canonical source/recipe/partition path are rejected.
 
 The recipe passes observed dependencies and installed `dp`/`lmp` commands
 directly to `export_native.write_manifests`, after scientific fixture preparation.

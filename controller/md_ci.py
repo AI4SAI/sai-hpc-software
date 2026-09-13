@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Runner-side source transport and isolated experimental candidate execution."""
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
@@ -24,7 +25,9 @@ def main():
     validate_pair(request)
     user = safe_name(os.environ['REMOTE_USER'])
     sha = safe_sha(os.environ['GITHUB_SHA'])
-    run_id = safe_name('md-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'] + '-' + plan['selection_sha256'][:16])
+    run_id = safe_name('-'.join(('md', os.environ['GITHUB_RUN_ID'], os.environ['GITHUB_RUN_ATTEMPT'],
+                                 datetime.now(timezone.utc).date().isoformat(), plan['selection_sha256'][:16])))
+    safe_name(run_id + '-science')
     temporary = Path(os.environ['RUNNER_TEMP'])
     project = f'/home/{user}/sai-hpc-software'
     root = project + '/experimental/deepmd-lammps'
@@ -43,7 +46,7 @@ def main():
     def python(name, *args, **kwargs):
         return ssh(['python3', snapshot + '/' + name, *args], **kwargs)
     ssh(['mkdir', '-p', snapshot, remote_task + '/input', remote_task + '/results'])
-    files = [*control.glob('md_*.py'), *control.glob('md_*.sh')]
+    files = [path for path in control.glob('md_*.*') if path.suffix in ('.py', '.sh', '.json')]
     files += [control / name for name in ('remote_controller.py', 'source_cache.py', 'resolve_source.py',
                                           'create_rootfs.sh', 'release_contract.py', 'native_module.py', 'export_native.py')]
     for path in files:

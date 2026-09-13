@@ -2,10 +2,13 @@ import copy
 import json
 import os
 from argparse import Namespace
+from datetime import datetime, timezone
 from pathlib import Path
 import subprocess
+import shutil
 import sys
 import tempfile
+import textwrap
 import unittest
 from unittest.mock import patch
 
@@ -92,9 +95,7 @@ class MDControllerTests(unittest.TestCase):
                 directory = md.task(args.run_id)
                 record = json.loads((directory / 'request.json').read_text())
                 self.assertEqual(record['delivery'], request)
-                artifact = (Path(temporary) / 'containers/software/deepmd-lammps' /
-                            request['plan']['selection_sha256'] / request['recipe_sha256'] /
-                            request['identities']['lammps']['partition'] / (args.run_id + '.sif'))
+                artifact = md.artifact_path(Path(temporary), request, args.run_id)
                 artifact.parent.mkdir(parents=True)
                 artifact.write_bytes(b'synthetic SIF protocol fixture; never executed')
                 (directory / 'artifact.path').write_text(str(artifact) + '\n')
@@ -130,8 +131,10 @@ class MDControllerTests(unittest.TestCase):
                                RUNNER_TEMP=temporary)
             result = subprocess.CompletedProcess([], 0, json.dumps({'cache_shas': ['a' * 40, 'b' * 40]}))
             with patch.dict(os.environ, environment), patch.object(md_ci, 'run', return_value=result) as run, \
-                    patch.object(md_ci.subprocess, 'run', return_value=result):
+                    patch.object(md_ci.subprocess, 'run', return_value=result), patch.object(md_ci, 'datetime') as clock:
+                clock.now.return_value = datetime(2026, 9, 14, 0, 1, tzinfo=timezone.utc)
                 md_ci.main()
+                clock.now.assert_called_once_with(timezone.utc)
             uploaded = json.loads((Path(temporary) / 'pair.json').read_text())
             self.assertEqual(md.validate_pair(uploaded), uploaded)
             self.assertEqual(uploaded['recipe_sha256'], tracking.fingerprint(ROOT / 'controller'))
@@ -140,6 +143,77 @@ class MDControllerTests(unittest.TestCase):
             for name in ('release_contract.py', 'native_module.py', 'export_native.py', 'resolve_source.py'):
                 self.assertIn(str(ROOT / 'controller' / name), uploads)
             self.assertEqual(uploaded, json.loads((Path(temporary) / 'results/delivery.json').read_text()))
+            expected_run = 'md-123-1-2026-09-14-' + uploaded['plan']['selection_sha256'][:16]
+            self.assertTrue(any(expected_run in argv[-1] for argv in commands if argv[0] == 'ssh'))
+            self.assertTrue(any(expected_run + '-science' in argv[-1] for argv in commands if argv[0] == 'ssh'))
+            snapshot = Path(temporary) / 'snapshot'
+            snapshot.mkdir()
+            for source in uploads:
+                if Path(source).parent == ROOT / 'controller':
+                    shutil.copy2(source, snapshot)
+            # Import only the exact uploaded payload in a new isolated process.
+            # Exercise lazy native imports as well as the command-line entries.
+            code = textwrap.dedent('''\
+                import importlib, json, pathlib, runpy, sys
+                snapshot = pathlib.Path(sys.argv[1])
+                request = json.loads(sys.argv[2])
+                sys.path.insert(0, str(snapshot))
+                for path in snapshot.glob('*.py'):
+                    imported = importlib.import_module(path.stem)
+                    assert pathlib.Path(imported.__file__).parent == snapshot
+                from md_tracking import fingerprint
+                from md_controller import validate_pair
+                from export_native import write_manifests, read_installed_manifests
+                validate_pair(request)
+                assert fingerprint(snapshot) == request['recipe_sha256']
+                for path in snapshot.iterdir():
+                    if path.is_file():
+                        original = path.read_bytes()
+                        path.write_bytes(original + b'\\n# changed uploaded fixture\\n')
+                        assert fingerprint(snapshot) != request['recipe_sha256'], path.name
+                        path.write_bytes(original)
+                native_root = snapshot.parent / 'native'
+                entries = []
+                for software, command in (('deepmd-kit', 'dp'), ('lammps', 'lmp')):
+                    identity = request['identities'][software]
+                    executable = native_root / identity['install_prefix'].lstrip('/') / 'bin' / command
+                    executable.parent.mkdir(parents=True)
+                    executable.write_text('#!/bin/sh\\nexit 0\\n')
+                    executable.chmod(0o755)
+                    entries.append(dict(identity=identity, commands={command: 'bin/' + command},
+                                        external_roots=[], runtime=dict(modules=[], prepend={}, set={})))
+                manifest = write_manifests(entries, native_root)
+                assert read_installed_manifests(entries, native_root) == manifest
+                for name in ('md_controller.py', 'md_acceptance_controller.py', 'md_tracking.py',
+                             'md_science.py', 'source_cache.py', 'export_native.py'):
+                    sys.argv = [str(snapshot / name), '--help']
+                    try:
+                        runpy.run_path(sys.argv[0], run_name='__main__')
+                    except SystemExit as error:
+                        assert error.code == 0, (name, error.code)
+                print('ISOLATED_MD_PAYLOAD_PASSED')
+                ''')
+            checked = subprocess.run([sys.executable, '-I', '-c', code, str(snapshot), json.dumps(uploaded)],
+                                     cwd=snapshot, capture_output=True, text=True, check=True)
+            self.assertIn('ISOLATED_MD_PAYLOAD_PASSED', checked.stdout)
+
+    def test_one_artifact_path_rejects_changed_identity_and_symlink_catalog(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            delivery = self.pair()
+            expected = root / 'containers/software/deepmd-lammps' / delivery['plan']['selection_sha256']
+            expected /= delivery['recipe_sha256'] + '/4V100/run.sif'
+            self.assertEqual(md.artifact_path(root, delivery, 'run'), expected)
+            with self.assertRaises(ValueError):
+                md.artifact_path(root, delivery, '../other')
+            changed = copy.deepcopy(delivery)
+            changed['identities']['lammps']['source_sha'] = 'f' * 40
+            with self.assertRaises(ValueError):
+                md.artifact_path(root, changed, 'run')
+            (root / 'redirected').mkdir()
+            (root / 'containers').symlink_to(root / 'redirected', target_is_directory=True)
+            with self.assertRaises(ValueError):
+                md.artifact_path(root, delivery, 'run')
 
     def test_recipe_uses_shared_writer_for_both_native_prefixes(self):
         recipe = (ROOT / 'controller/md_build.sh').read_text()

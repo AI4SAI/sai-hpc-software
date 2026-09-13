@@ -46,6 +46,18 @@ def validate_pair(request):
     return request
 
 
+def artifact_path(root, request, run_id):
+    """One paired SIF path for build, candidate sidecar and runtime gates."""
+    validate_pair(request)
+    root = Path(root)
+    artifact = (root / 'containers/software/deepmd-lammps' / request['plan']['selection_sha256'] /
+                request['recipe_sha256'] / request['identities']['lammps']['partition'] /
+                (safe_name(run_id) + '.sif'))
+    if not root.is_absolute() or root.resolve() != root or artifact.resolve() != artifact:
+        raise ValueError('MD artifact path must be absolute and contain no symlinks')
+    return artifact
+
+
 def render(request, run_id, jobs=6, minutes=180, overlay_mb=32768):
     validate_pair(request)
     plan = request['plan']
@@ -58,8 +70,7 @@ def render(request, run_id, jobs=6, minutes=180, overlay_mb=32768):
     image = PROJECT / 'containers/base/minimal-v1.sif'
     overlay = r / 'work.ext3'
     result = r / 'candidate.sif'
-    artifact = (ROOT / 'containers/software/deepmd-lammps' / plan['selection_sha256'] /
-                request['recipe_sha256'] / target['partition'] / (run_id + '.sif'))
+    artifact = artifact_path(ROOT, request, run_id)
     args = ['/usr/bin/bash', '/control/md_container_entry.sh', 'build',
             json.dumps(request, sort_keys=True, separators=(',', ':'))]
     def container(phase, final=False):
@@ -195,9 +206,7 @@ def monitor(args):
                 request = validate_pair(record['delivery'])
                 plan = request['plan']
                 artifact = Path((r / 'artifact.path').read_text().strip())
-                expected = (ROOT / 'containers/software/deepmd-lammps' / plan['selection_sha256'] /
-                            request['recipe_sha256'] / request['identities']['lammps']['partition'] /
-                            (args.run_id + '.sif'))
+                expected = artifact_path(ROOT, request, args.run_id)
                 if (artifact != expected or artifact.resolve() != artifact or artifact.is_symlink()
                         or request['recipe_sha256'] != fingerprint(CONTROL)
                         or record['job_script_sha256'] != checksum(r / 'job.sbatch')

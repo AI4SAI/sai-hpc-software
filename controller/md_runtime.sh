@@ -14,18 +14,22 @@ esac
 control=$(cd -- "$(dirname -- "$0")" && pwd -P)
 settings=$(PYTHONPATH="$control" /usr/bin/python3 - <<'PY'
 import json, os
-from md_controller import validate_pair
+from pathlib import Path
+from md_controller import ROOT, validate_pair, artifact_path
 delivery = validate_pair(json.loads(os.environ['SAI_MD_DELIVERY']))
 identities = delivery['identities']
 if identities['lammps']['partition'] != os.environ['SLURM_JOB_PARTITION']:
     raise ValueError('MD delivery differs from allocated partition')
 print(identities['deepmd-kit']['install_prefix'])
 print(identities['lammps']['install_prefix'])
-print(delivery['plan']['selection_sha256'] + '/' + delivery['recipe_sha256'])
+image = Path(os.environ['SAI_MD_IMAGE'])
+if image != artifact_path(ROOT, delivery, image.stem):
+    raise ValueError('MD image differs from its canonical paired delivery path')
+print(image)
 PY
 )
 mapfile -t settings <<< "$settings"
-deepmd_prefix=${settings[0]}; lammps_prefix=${settings[1]}; artifact_identity=${settings[2]}
+deepmd_prefix=${settings[0]}; lammps_prefix=${settings[1]}; expected_image=${settings[2]}
 program=$1; shift
 implementation=${SAI_MD_IMPLEMENTATION:-candidate}
 [[ "$implementation" == baseline || "$implementation" == candidate ]]
@@ -56,7 +60,7 @@ if [[ -n "${SAI_MD_PERFORMANCE_CPU:-}" ]]; then
 fi
 root=$(realpath -e "$SAI_SOFTWARE_ROOT/experimental/deepmd-lammps")
 image=$(realpath -e "$SAI_MD_IMAGE")
-[[ "$image" == "$root/containers/software/deepmd-lammps/$artifact_identity/$SLURM_JOB_PARTITION/"*.sif && ! -L "$SAI_MD_IMAGE" ]]
+[[ "$image" == "$expected_image" && ! -L "$SAI_MD_IMAGE" ]]
 work=$(pwd -P)
 runtime=$(realpath -e "${TMPDIR:?host MPI TMPDIR must be below experimental runtime-tests}")
 [[ "$runtime" == "$root/runtime-tests/"* && -d "$runtime" ]]

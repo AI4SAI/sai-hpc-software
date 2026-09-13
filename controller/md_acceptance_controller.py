@@ -8,7 +8,7 @@ from pathlib import Path
 import shlex
 import subprocess
 import time
-from md_controller import PROJECT, ROOT, CONTROL, task as build_task, join, validate_pair
+from md_controller import PROJECT, ROOT, CONTROL, task as build_task, join, validate_pair, artifact_path
 from md_science import verify_science, parse_reference, parse_lammps_output, verify_plumed_output, _load_fixture, TOLERANCES
 from md_tracking import TARGETS as MD_TARGETS, fingerprint
 from remote_controller import TARGETS, safe_name
@@ -29,7 +29,8 @@ def render(request, directory):
         raise ValueError('acceptance requires two host-MPI ranks per node')
     delivery = validate_pair(request['delivery'])
     if (request['target'] != delivery['plan']['target'] or request['sources'] != delivery['plan']['sources']
-            or request['version'] != delivery['plan']['version']):
+            or request['version'] != delivery['plan']['version']
+            or Path(request['artifact']) != artifact_path(ROOT, delivery, request['build_run'])):
         raise ValueError('acceptance source selection differs from locked delivery')
     lines = ['#!/usr/bin/env bash', '#SBATCH --export=NIL', '#SBATCH --job-name=md-science-' + request['run_id'],
              '#SBATCH --partition=' + target['partition'], '#SBATCH --qos=' + target['qos'],
@@ -56,6 +57,7 @@ def submit(args):
     if (status.get('build_verified') is not True or status.get('state') != 'COMPLETED'
             or status.get('exit_code') != '0:0' or artifact.is_symlink()
             or artifact.resolve() != artifact or checksum(artifact) != status.get('artifact_sha256')
+            or artifact != artifact_path(ROOT, delivery, args.build_run) or source_record['run_id'] != args.build_run
             or status.get('delivery') != delivery or delivery['recipe_sha256'] != fingerprint(CONTROL)
             or source_record['job_script_sha256'] != checksum(build / 'job.sbatch')):
         raise ValueError('not a verified immutable candidate')
@@ -90,6 +92,7 @@ def verify(run_id):
             or delivery['recipe_sha256'] != request['acceptance_recipe_sha256']
             or request['target'] != delivery['plan']['target'] or request['sources'] != delivery['plan']['sources']
             or request['version'] != delivery['plan']['version']
+            or Path(request['artifact']) != artifact_path(ROOT, delivery, request['build_run'])
             or request['job_script_sha256'] != checksum(r / 'job.sbatch')
             or checksum(request['artifact']) != request['artifact_sha256']):
         raise ValueError('acceptance image/script/verifier changed')
