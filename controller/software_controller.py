@@ -50,7 +50,7 @@ def identity(args):
 
 def required_acceptance(software, target):
     if software != "abacus":
-        return ()
+        raise ValueError(f"{software.upper()} publication is disabled: scientific acceptance is not registered")
     if target == "dsprhbm":
         return ("multinode_runtime",)
     if target in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
@@ -333,8 +333,10 @@ def render_job(args):
     return "\n".join(lines) + "\n"
 
 def submit(args):
-    # Do not spend an allocation on a target that cannot pass publication.
-    required_acceptance(args.software, args.target)
+    # CP2K may be built manually as a candidate while its scientific gate is
+    # implemented separately. It must still fail direct publish/cache checks.
+    if args.software != "cp2k":
+        required_acceptance(args.software, args.target)
     if args.jobs is None:
         args.jobs = TARGETS[args.target].get("build_jobs", 8)
     r = init(args)
