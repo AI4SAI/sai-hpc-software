@@ -2,7 +2,8 @@
 
 Independent GitHub Actions → SSH → Slurm → Apptainer builds on SAI.
 ABACUS has automated build and scientific acceptance. CP2K has a separate manually dispatched
-recipe; its historical hand-built SIF is not a validated catalog release (see the acceptance record).
+candidate recipe; automatic builds and publication remain disabled until its scientific
+acceptance is integrated. Its historical hand-built SIF is not a validated catalog release.
 
 ## Container contract
 
@@ -11,7 +12,7 @@ Host source/build/install trees are **not** mounted writable. A build uses the p
 installation and final filesystem assembly all happen inside that image.
 
 The successful artifact is one read-only SquashFS-backed SIF. It contains
-`/opt/software/abacus/<version>/<target>` at exactly that path. The installed
+`/opt/software/<software>/<track>/<build_id>/<PARTITION>` at exactly that path. The installed
 administrator dependencies are reused read-only at their original paths:
 `/opt/devtools`, `/opt/modules`, `/usr`, `/lib`, `/lib64`.
 The entire `/opt` is never bound over the installation.
@@ -47,7 +48,7 @@ All project files live below `/home/stardust/sai-hpc-software`:
 
 ```text
 containers/base/minimal-v1.sif
-containers/software/abacus/<version>/<target>/<run-id>.sif
+containers/software/<software>/<track>/<build_id>/<PARTITION>/<run-id>.sif
 cache/repositories/abacus/        # bare Git objects, never checked out on host
 controller/<controller-sha>/<run-id>/ # trusted code snapshot, never overwritten by another run
 runs/<run-id>/input/             # verified compressed bundle parts when needed
@@ -55,7 +56,7 @@ runs/<run-id>/results/           # Slurm log, state, artifact checksum
 runs/<run-id>/runtime/           # Apptainer runtime work, not source/build/install
 runs/<run-id>/work.ext3          # one temporary file, retained on failure
 runs/<run-id>/artifact.path      # candidate SIF location after build verification
-modulefiles/apps/abacus/<version> # generated user module for a verified version
+modulefiles/apps/abacus/<track>/<build_id> # partition selector for accepted SIFs
 runtime-tests/<run-id>/          # bounded multi-node acceptance inputs, logs and rank evidence
 ```
 
@@ -64,12 +65,16 @@ Do not infer success from earlier smoke images or a GitHub validation-only run.
 
 ## Source tracking and cache
 
-Dispatch `Build HPC software` with a branch/tag, a full commit, `latest-release`
-or `latest-prerelease`. Release and branch selectors resolve live to the actual upstream
-commit. No synthetic/orphan commits are substituted.
+Dispatch `Build HPC software` with a comma-separated subset of `development,prerelease,release`
+and registered targets. Each channel resolves live to its actual upstream commit.
+No synthetic/orphan commits are substituted. Development install and module names use
+`<branch>-<commit-UTC-date>-g<source-sha12>-r<recipe-sha12>`, for example
+`develop-2026-09-13-g0123456789ab-rabcdef012345`. A retry on another day retains the same
+build identity. SIF filenames also include the submission UTC date before the source SHA;
+the Actions run ID and attempt distinguish retries.
 
-The daily tracker runs at 02:23 UTC using `profiles/tracking.json`. It checks the
-branch, stable release and prerelease channels. Scheduled runs skip an unchanged
+The ABACUS daily tracker runs at 02:23 UTC. `profiles/software-tracking.json` documents
+the shared software/channel/partition contract. Scheduled runs skip an unchanged
 version only when the source SHA, deployed recipe fingerprint, SIF checksum, successful build
 status, and current scientific acceptance contract all match. Legacy `verified: true` alone is
 insufficient. A cache hit rechecks saved raw scientific evidence; it does not launch another job.
@@ -80,6 +85,8 @@ Build verification creates a **candidate**, with `build_verified: true` but
 `verified: false, published: false`. It does not update `current.sif` or the module.
 Only `software_controller.py publish RUN_ID`, after all required acceptance has passed,
 exposes the image. A failed acceptance leaves the previous published image unchanged.
+CP2K currently stops at the candidate stage; direct publication and accepted-cache lookup
+cannot treat its missing scientific acceptance as success.
 The gate binds the build, image, launcher, verifier, job, raw rank traces and scientific
 outputs by checksums; an exit code of zero without those results does not pass.
 
@@ -126,10 +133,17 @@ dependency modules inspect the actual compute-node CPU. The trusted `abacus` com
 selects the SIF from `SLURM_JOB_PARTITION`. The host Open MPI launches one wrapper per rank;
 each wrapper enters the same read-only SIF and runs its ABACUS binary. GPU job example:
 
+The version module selects a partition-local, immutable module fragment that pins
+both the accepted SIF and its tested launcher. Publishing another partition does
+not replace this pair or its dependencies. A loaded module retains that pair until
+unloaded/reloaded; loading outside a Slurm allocation is rejected. `module show`
+remains available without an allocation. Legacy artifacts need publication with
+this contract before their partition has a `current.module` entry.
+
 ```bash
 source /etc/profile.d/lmod.sh
 module use /home/stardust/sai-hpc-software/modulefiles/apps
-module load abacus/<version>
+module load abacus/<track>/<build_id>
 source /opt/sai_config/mps_mapping.d/${SLURM_JOB_PARTITION}.bash
 export MAP_OPT SLURM_EXPORT_ENV=ALL
 export OMPI_MCA_plm_slurm_args=--external-launcher
@@ -178,9 +192,18 @@ apptainer exec --cleanenv --containall --no-home \
   --no-mount bind-paths,home,cwd,tmp,hostfs --pwd / \
   --bind /usr:/usr:ro --bind /lib:/lib:ro --bind /lib64:/lib64:ro \
   --bind /opt/devtools:/opt/devtools:ro \
-  /home/stardust/sai-hpc-software/containers/software/abacus/VERSION/TARGET/RUN.sif \
-  /usr/bin/find /opt/software -maxdepth 5 -type f
+  /home/stardust/sai-hpc-software/containers/software/abacus/TRACK/BUILD_ID/PARTITION/RUN.sif \
+  /usr/bin/find /opt/software -maxdepth 7 -type f
 ```
+
+## Native delivery
+
+The shared exporter packages each install as one complete folder, including
+`share/sai/manifest.json` and `modulefiles/`. It does not create `/opt/sai-delivery`.
+An arbitrary export destination is staging, not a claim that compiled-in paths are relocatable.
+See [native delivery](docs/native-delivery.md) for usage and tested limits: shared tooling has
+passed real SIF/Tcl checks, while per-software native inventories and full-feature science/speed
+acceptance remain on independent experimental branches.
 
 The SIF records the upstream SHA, module list and CMake cache below the installation's
 `share/sai/` directory. Loading its recorded modules is required to run software

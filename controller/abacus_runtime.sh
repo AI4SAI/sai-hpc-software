@@ -3,7 +3,7 @@
 set -euo pipefail
 
 : "${SAI_SOFTWARE_ROOT:?load the generated ABACUS module first}"
-: "${SAI_ABACUS_VERSION:?load the generated ABACUS module first}"
+: "${SAI_ABACUS_IMAGE:?load a pinned identity-aware ABACUS module first}"
 : "${SLURM_JOB_PARTITION:?ABACUS auto selection requires a Slurm allocation}"
 
 case "$SLURM_JOB_PARTITION" in
@@ -15,21 +15,11 @@ case "$SLURM_JOB_PARTITION" in
   *) echo "unsupported ABACUS partition: $SLURM_JOB_PARTITION" >&2; exit 2 ;;
 esac
 
-catalog="$SAI_SOFTWARE_ROOT/containers/software/abacus/$SAI_ABACUS_VERSION/$target"
-if [[ -n "${SAI_ABACUS_IMAGE:-}" ]]; then
-  image=$(realpath -e -- "$SAI_ABACUS_IMAGE")
-  [[ "$image" == "$catalog"/*.sif && -f "$image" && ! -L "$SAI_ABACUS_IMAGE" ]] || {
-    echo "pinned ABACUS image is outside the selected catalog" >&2
-    exit 2
-  }
-else
-  image="$catalog/current.sif"
-fi
-prefix="/opt/software/abacus/$SAI_ABACUS_VERSION/$target"
-[[ -r "$image" && ! -L "$catalog" ]] || {
-  echo "no verified ABACUS image for $SAI_ABACUS_VERSION on $target" >&2
-  exit 2
-}
+[[ ! -L "$SAI_ABACUS_IMAGE" ]] || exit 2
+image=$(realpath -e -- "$SAI_ABACUS_IMAGE")
+[[ "$image" == "$SAI_ABACUS_IMAGE" ]] || exit 2
+launcher_control=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
+prefix=$(python3 "$launcher_control/delivery_layout.py" runtime "$SAI_SOFTWARE_ROOT" "$image" abacus "$target")
 
 workdir=$(pwd -P)
 case "$workdir" in *:*|*,*|*$'\n'*) echo "working directory cannot contain ':', ',' or newline" >&2; exit 2;; esac

@@ -11,8 +11,10 @@ modulefiles 或校验清单。系统预装依赖仍只读复用，不随安装�
 ## 渠道、分区和命名
 
 五种软件统一使用 `development`、`prerelease`、`release` 三个渠道。
-每日检查各渠道最新上游 SHA；GitHub Actions 的定时器仅在默认分支运行，
-实验分支需要手动触发。未发布 prerelease 的上游可明确记为 skipped；网络、
+目标是每日检查各渠道最新上游 SHA；目前默认分支仅开启已接科学验收的 ABACUS
+自动构建/发布。CP2K 暂限手动候选构建，直接 publish 也拒绝无科学验收的候选；
+其余软件仍在独立实验分支。GitHub Actions 的定时器仅在默认分支运行。
+未发布 prerelease 的上游可明确记为 skipped；网络、
 API、标签解析失败必须报错，不能伪装成“没有版本”。release 使用标签指向的
 commit，annotated tag 必须解引用，不能误取同名分支。
 
@@ -33,6 +35,13 @@ build_id = <version_label>-g<source_sha12>-r<recipe_sha12>[-s<stack_digest12>]
 
 例如 `.../abacus/release/v3.11.0-g0123456789ab-rabcdef012345/4V100`。
 这里的短 SHA 仅为示意，不代表已通过验收的 3.11.0 安装。
+开发版使用上游提交的 **UTC 日期**，日期在 SHA 前，例如
+`.../abacus/development/develop-2026-09-13-g0123456789ab-rabcdef012345/4V100`。
+日期从已锁定 SHA 的 commit 元数据读取，不用当天日期替代；同一源码跨天重跑
+不会改变安装身份或制造每日缓存失效。稳定版和预发布版保留标签名称，SHA 由
+共享身份逻辑统一追加一次，不在版本标签中重复。
+实际 SIF 文件名采用 `<run>-<attempt>-<track>-<target>-<提交任务UTC日期>-<source_sha12>.sif`；
+此处日期描述构建任务，安装目录日期描述源码提交，Actions run/attempt 区分重试。
 完整 source SHA、recipe SHA、原始 ref/version、分区、CPU、CUDA 与依赖 ISA
 均保存在 `release_contract.make_identity()` 生成的身份对象中。
 DeepMD/LAMMPS 成对交付额外锁定两份源码；同分区的 companion 必须匹配
@@ -158,10 +167,32 @@ module 中 `/opt` 替换为暂存路径后就宣称可重定位。正式物理�
 重建/导出/完成科学与速度验收。尤其旧 CP2K 依赖布局及 MD 三后端模型验证
 仍需对应软件分支完成，不能复用旧 SIF 的验收标签。
 
-已知启动性能待办：目前容器 launcher 每个 MPI rank 都会完整 SHA256 校验
-镜像。N ranks 对 S 字节镜像造成 N×S 的逻辑读取和哈希工作，实际存储流量
-取决于缓存。这可能影响含启动时间的 benchmark；正式速度验收前需实现可信
-job/node 级校验复用，或者测试实际原生部署，不能删掉校验后直接宣称提速。
+容器 launcher 的完整镜像校验现在按 Slurm job ID 和实际 hostname 复用。
+首个 rank 持锁校验完整 SHA256，后续 rank 仍检查身份、侧车和文件状态；
+可观察的 inode、大小、mtime、ctime 或侧车变化会使缓存失效。该优化依赖
+镜像只读不变的约定，不等价于每 rank 重新检出元数据未变的存储损坏。无 Slurm job ID
+时仍全量校验，构建、发布、科学证据复核也始终保留完整校验。锁与小型校验记录
+位于项目已有 `runtime/jobs/<job>/` 下，不在安装包里；单个 rank 退出时不删除
+共享记录。此机制减少每 rank 重复读取整份镜像，不是针对同 UID 写入者的安全隔离。
+同节点共享文件系统锁已按下述专项现场验证；多节点启动耗时及科学程序速度
+仍未测量，不能从并发测试推断吞吐提升，旧镜像验收不能重贴到新 launcher 上。
+
+现场 Lustre 的 mtime/ctime 有效精度为秒；毫秒级测试变更可能被截断。同一时间
+粒度内、其余观测字段也不变的内容变化不在 stat 缓存的检测保证内。
+
+2026-09-13 合并前增量：命名与 CP2K 候选门禁全仓 161 项通过；加入 runtime
+校验复用后主 agent 独立跑全仓 178 项通过。`native_delivery_module` 实施门禁，
+`self_contained_export` 独立复核相关专项；`runtime_hash_fix` 实施校验复用，
+`runtime_hash_review` 独立复跑 17 项专项和 33 项既有交付/runtime/module 回归。
+主 agent 另在 SAI 的 Lustre 隔离目录，用冻结 `532d186` 控制器/测试快照运行
+17 项专项，全部通过（1.788 秒），包括 8 进程并发仅完整哈希一次。
+快照文件 SHA256 已与本地核对；目录及日志为
+`/home/stardust/sai-hpc-software/experimental/runtime-cache-probe-20260913-r2.e09V7k/tests.log`。
+首次 `5541ed4` 探针在 `experimental/runtime-cache-probe-20260913.Iwo4nD/tests.log`
+保留：15 项通过、2 项因毫秒级变更被秒级时间戳抹平而失败。后续仅修正测试
+以制造并断言实际时间戳变化，生产逻辑未改，未覆盖或重标首次记录。
+所有合成数据使用隔离目录内 TMPDIR，未使用宿主 `/tmp`，未提交 Slurm、
+未运行科学软件、未修改物理 `/opt`。这不是实际软件速度验收。
 
 2026-09-13 新布局验证：共享测试 155 项通过，其中导出专项 22 项、原生 module
 25 项包含真实 SquashFS/Tcl 测试。两位子 agent 分别实现导出与 module 打包，
