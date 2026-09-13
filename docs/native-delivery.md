@@ -167,10 +167,32 @@ module 中 `/opt` 替换为暂存路径后就宣称可重定位。正式物理�
 重建/导出/完成科学与速度验收。尤其旧 CP2K 依赖布局及 MD 三后端模型验证
 仍需对应软件分支完成，不能复用旧 SIF 的验收标签。
 
-已知启动性能待办：目前容器 launcher 每个 MPI rank 都会完整 SHA256 校验
-镜像。N ranks 对 S 字节镜像造成 N×S 的逻辑读取和哈希工作，实际存储流量
-取决于缓存。这可能影响含启动时间的 benchmark；正式速度验收前需实现可信
-job/node 级校验复用，或者测试实际原生部署，不能删掉校验后直接宣称提速。
+容器 launcher 的完整镜像校验现在按 Slurm job ID 和实际 hostname 复用。
+首个 rank 持锁校验完整 SHA256，后续 rank 仍检查身份、侧车和文件状态；
+可观察的 inode、大小、mtime、ctime 或侧车变化会使缓存失效。该优化依赖
+镜像只读不变的约定，不等价于每 rank 重新检出元数据未变的存储损坏。无 Slurm job ID
+时仍全量校验，构建、发布、科学证据复核也始终保留完整校验。锁与小型校验记录
+位于项目已有 `runtime/jobs/<job>/` 下，不在安装包里；单个 rank 退出时不删除
+共享记录。此机制减少每 rank 重复读取整份镜像，不是针对同 UID 写入者的安全隔离。
+同节点共享文件系统锁已按下述专项现场验证；多节点启动耗时及科学程序速度
+仍未测量，不能从并发测试推断吞吐提升，旧镜像验收不能重贴到新 launcher 上。
+
+现场 Lustre 的 mtime/ctime 有效精度为秒；毫秒级测试变更可能被截断。同一时间
+粒度内、其余观测字段也不变的内容变化不在 stat 缓存的检测保证内。
+
+2026-09-13 合并前增量：命名与 CP2K 候选门禁全仓 161 项通过；加入 runtime
+校验复用后主 agent 独立跑全仓 178 项通过。`native_delivery_module` 实施门禁，
+`self_contained_export` 独立复核相关专项；`runtime_hash_fix` 实施校验复用，
+`runtime_hash_review` 独立复跑 17 项专项和 33 项既有交付/runtime/module 回归。
+主 agent 另在 SAI 的 Lustre 隔离目录，用冻结 `532d186` 控制器/测试快照运行
+17 项专项，全部通过（1.788 秒），包括 8 进程并发仅完整哈希一次。
+快照文件 SHA256 已与本地核对；目录及日志为
+`/home/stardust/sai-hpc-software/experimental/runtime-cache-probe-20260913-r2.e09V7k/tests.log`。
+首次 `5541ed4` 探针在 `experimental/runtime-cache-probe-20260913.Iwo4nD/tests.log`
+保留：15 项通过、2 项因毫秒级变更被秒级时间戳抹平而失败。后续仅修正测试
+以制造并断言实际时间戳变化，生产逻辑未改，未覆盖或重标首次记录。
+所有合成数据使用隔离目录内 TMPDIR，未使用宿主 `/tmp`，未提交 Slurm、
+未运行科学软件、未修改物理 `/opt`。这不是实际软件速度验收。
 
 2026-09-13 新布局验证：共享测试 155 项通过，其中导出专项 22 项、原生 module
 25 项包含真实 SquashFS/Tcl 测试。两位子 agent 分别实现导出与 module 打包，
