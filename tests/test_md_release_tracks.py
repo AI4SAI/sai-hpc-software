@@ -1,9 +1,13 @@
 import copy
+import json
+import os
 from pathlib import Path
 import subprocess
 import sys
+import tempfile
+import textwrap
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "controller"))
 from md_tracking import identify_track_pair, resolve_track_pairs
@@ -33,6 +37,26 @@ class MdReleaseTrackTests(unittest.TestCase):
             identities = identify_track_pair(pair, "e" * 64)
             self.assertEqual(identities["deepmd-kit"]["stack_digest"], identities["lammps"]["stack_digest"])
             self.assertIn(identities["lammps"]["partition"], ("4V100", "16V100", "8V100V0"))
+
+    def test_workflow_can_trigger_each_software_channel_independently(self):
+        root = Path(__file__).resolve().parents[1]
+        workflow = (root / '.github/workflows/deepmd-lammps.yml').read_text()
+        code = textwrap.dedent(workflow.split("python3 - <<'PY'\n", 1)[1].split('\n          PY', 1)[0])
+        for software in ('deepmd-kit', 'lammps'):
+            for track in ('development', 'prerelease', 'release'):
+                plans = resolve_track_pairs([track], ['4v100-avx512'], self.resolver())
+                with self.subTest(software=software, track=track), tempfile.TemporaryDirectory() as temporary:
+                    output = Path(temporary) / 'output'
+                    environment = dict(SOFTWARE=software, TRACKS=track, TARGETS='4v100-avx512', GITHUB_OUTPUT=str(output))
+                    with patch.dict(os.environ, environment), patch('md_tracking.resolve_track_pairs', return_value=plans) as resolve, \
+                            patch('builtins.print'):
+                        exec(compile(code, str(root / '.github/workflows/deepmd-lammps.yml'), 'exec'), {})
+                    resolve.assert_called_once_with([track], ['4v100-avx512'])
+                    builds = json.loads(output.read_text().removeprefix('builds='))
+                    self.assertEqual(len(builds), 1)
+                    self.assertEqual(builds[0]['triggers'], [{'software': software, 'track': track,
+                                                            'companion_selection': 'same_track'}])
+                    identify_track_pair(builds[0], 'e' * 64)
 
     def test_lammps_rc_still_builds_when_deepmd_has_no_prerelease(self):
         result = resolve_track_pairs(resolver=self.resolver(no_dp_rc=True), targets=["4v100-avx512"])

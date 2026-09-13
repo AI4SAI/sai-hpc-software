@@ -8,7 +8,7 @@ from pathlib import Path
 import shlex
 import subprocess
 import time
-from md_controller import PROJECT, ROOT, CONTROL, task as build_task, join
+from md_controller import PROJECT, ROOT, CONTROL, task as build_task, join, validate_pair
 from md_science import verify_science, parse_reference, parse_lammps_output, verify_plumed_output, _load_fixture, TOLERANCES
 from md_tracking import TARGETS as MD_TARGETS, fingerprint
 from remote_controller import TARGETS, safe_name
@@ -27,6 +27,10 @@ def render(request, directory):
     nodes = request['nodes']
     if nodes not in (1, 2) or request['ranks'] != nodes * 2:
         raise ValueError('acceptance requires two host-MPI ranks per node')
+    delivery = validate_pair(request['delivery'])
+    if (request['target'] != delivery['plan']['target'] or request['sources'] != delivery['plan']['sources']
+            or request['version'] != delivery['plan']['version']):
+        raise ValueError('acceptance source selection differs from locked delivery')
     lines = ['#!/usr/bin/env bash', '#SBATCH --export=NIL', '#SBATCH --job-name=md-science-' + request['run_id'],
              '#SBATCH --partition=' + target['partition'], '#SBATCH --qos=' + target['qos'],
              f'#SBATCH --nodes={nodes}', '#SBATCH --ntasks-per-node=2', '#SBATCH --gpus-per-node=1',
@@ -34,7 +38,8 @@ def render(request, directory):
              'set -eo pipefail', 'export PATH=/usr/bin:/bin LD_LIBRARY_PATH="" LD_PRELOAD=""',
              'export USER=stardust LOGNAME=stardust',
              'export SAI_SOFTWARE_ROOT=' + shlex.quote(str(PROJECT)),
-             'export SAI_MD_VERSION=' + shlex.quote(request['version']),
+             'export SAI_MD_DELIVERY=' + shlex.quote(json.dumps(delivery, sort_keys=True)),
+             'export SAI_MD_LAMMPS_PREFIX=' + shlex.quote(delivery['identities']['lammps']['install_prefix']),
              'export SAI_MD_IMAGE=' + shlex.quote(request['artifact']),
              'export SAI_MD_ACCEPTANCE_RANKS=' + str(request['ranks']),
              join(['bash', CONTROL / 'md_acceptance.sh', request['run_id']])]
@@ -43,12 +48,16 @@ def render(request, directory):
 
 def submit(args):
     build = build_task(args.build_run)
-    source_request = json.loads((build / 'request.json').read_text())
+    source_record = json.loads((build / 'request.json').read_text())
+    delivery = validate_pair(source_record['delivery'])
+    source_request = delivery['plan']
     status = json.loads((build / 'results/status.json').read_text())
     artifact = Path(status['artifact'])
     if (status.get('build_verified') is not True or status.get('state') != 'COMPLETED'
             or status.get('exit_code') != '0:0' or artifact.is_symlink()
-            or artifact.resolve() != artifact or checksum(artifact) != status.get('artifact_sha256')):
+            or artifact.resolve() != artifact or checksum(artifact) != status.get('artifact_sha256')
+            or status.get('delivery') != delivery or delivery['recipe_sha256'] != fingerprint(CONTROL)
+            or source_record['job_script_sha256'] != checksum(build / 'job.sbatch')):
         raise ValueError('not a verified immutable candidate')
     if source_request['target'] not in MD_TARGETS:
         raise ValueError('unregistered acceptance target')
@@ -57,7 +66,7 @@ def submit(args):
         raise ValueError('acceptance was already submitted')
     for part in ('case', 'results', 'runtime'):
         (r / part).mkdir(parents=True, exist_ok=True)
-    request = dict(run_id=args.run_id, build_run=args.build_run, version=source_request['version'],
+    request = dict(run_id=args.run_id, build_run=args.build_run, delivery=delivery, version=source_request['version'],
                    target=source_request['target'], sources=source_request['sources'],
                    artifact=str(artifact), artifact_sha256=checksum(artifact), nodes=args.nodes, ranks=args.nodes * 2,
                    acceptance_recipe_sha256=fingerprint(CONTROL))
@@ -76,7 +85,11 @@ def submit(args):
 def verify(run_id):
     r = task(run_id)
     request = json.loads((r / 'request.json').read_text())
+    delivery = validate_pair(request['delivery'])
     if (request['acceptance_recipe_sha256'] != fingerprint(CONTROL)
+            or delivery['recipe_sha256'] != request['acceptance_recipe_sha256']
+            or request['target'] != delivery['plan']['target'] or request['sources'] != delivery['plan']['sources']
+            or request['version'] != delivery['plan']['version']
             or request['job_script_sha256'] != checksum(r / 'job.sbatch')
             or checksum(request['artifact']) != request['artifact_sha256']):
         raise ValueError('acceptance image/script/verifier changed')
@@ -135,7 +148,7 @@ def verify(run_id):
                             fields = trace.read_text().strip().split('\t')
                             expected_executable = ('/opt/apps/lammps/lammps-4Jul2026-deepmd3.2.0-plumed2.10.1-nvhpc263-ompi5010-sm70/bin/lmp'
                                                    if side == 'baseline' else
-                                                   f'/opt/software/lammps/{request["version"]}/{request["target"]}/bin/lmp')
+                                                   delivery['identities']['lammps']['install_prefix'] + '/bin/lmp')
                             if (len(fields) != 8 or fields[1:3] != [str(rank), str(request['ranks'])]
                                     or fields[3:6] != [request['artifact'], side, request['target']]
                                     or fields[6] != expected_executable
@@ -149,7 +162,7 @@ def verify(run_id):
                 files[str(path.relative_to(r))] = checksum(path)
     summary = verify_science(records)
     return dict(summary, artifact=request['artifact'], artifact_sha256=request['artifact_sha256'],
-                job=job, files=files,
+                job=job, files=files, delivery=delivery,
                 recipe_sha256=request['acceptance_recipe_sha256'], performance_verified=False, published=False)
 
 

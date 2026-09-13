@@ -2,7 +2,7 @@
 # Each host Open MPI rank enters this SIF. No source or compilation runs on host.
 set -euo pipefail
 : "${SAI_SOFTWARE_ROOT:?}"
-: "${SAI_MD_VERSION:?}"
+: "${SAI_MD_DELIVERY:?locked schema-2 delivery required}"
 : "${SAI_MD_IMAGE:?explicit candidate or accepted immutable image required}"
 : "${SLURM_JOB_PARTITION:?a compute allocation is required}"
 case "$SLURM_JOB_PARTITION" in
@@ -11,13 +11,27 @@ case "$SLURM_JOB_PARTITION" in
   8V100V0) target=8v100v0-avx512 ;;
   *) echo 'unvalidated MD target' >&2; exit 2 ;;
 esac
-[[ "$SAI_MD_VERSION" =~ ^[A-Za-z0-9][A-Za-z0-9_.-]*$ ]]
+control=$(cd -- "$(dirname -- "$0")" && pwd -P)
+settings=$(PYTHONPATH="$control" /usr/bin/python3 - <<'PY'
+import json, os
+from md_controller import validate_pair
+delivery = validate_pair(json.loads(os.environ['SAI_MD_DELIVERY']))
+identities = delivery['identities']
+if identities['lammps']['partition'] != os.environ['SLURM_JOB_PARTITION']:
+    raise ValueError('MD delivery differs from allocated partition')
+print(identities['deepmd-kit']['install_prefix'])
+print(identities['lammps']['install_prefix'])
+print(delivery['plan']['selection_sha256'] + '/' + delivery['recipe_sha256'])
+PY
+)
+mapfile -t settings <<< "$settings"
+deepmd_prefix=${settings[0]}; lammps_prefix=${settings[1]}; artifact_identity=${settings[2]}
 program=$1; shift
 implementation=${SAI_MD_IMPLEMENTATION:-candidate}
 [[ "$implementation" == baseline || "$implementation" == candidate ]]
 case "$program" in
-  lmp) executable="/opt/software/lammps/$SAI_MD_VERSION/$target/bin/lmp" ;;
-  dp|python) executable="/opt/software/deepmd-kit/$SAI_MD_VERSION/$target/bin/$program" ;;
+  lmp) executable="$lammps_prefix/bin/lmp" ;;
+  dp|python) executable="$deepmd_prefix/bin/$program" ;;
   *) echo 'only lmp, dp and the installed DeepMD Python are exposed' >&2; exit 2 ;;
 esac
 if [[ "$implementation" == baseline ]]; then
@@ -42,7 +56,7 @@ if [[ -n "${SAI_MD_PERFORMANCE_CPU:-}" ]]; then
 fi
 root=$(realpath -e "$SAI_SOFTWARE_ROOT/experimental/deepmd-lammps")
 image=$(realpath -e "$SAI_MD_IMAGE")
-[[ "$image" == "$root/containers/software/deepmd-lammps/$SAI_MD_VERSION/$target/"*.sif && ! -L "$SAI_MD_IMAGE" ]]
+[[ "$image" == "$root/containers/software/deepmd-lammps/$artifact_identity/$SLURM_JOB_PARTITION/"*.sif && ! -L "$SAI_MD_IMAGE" ]]
 work=$(pwd -P)
 runtime=$(realpath -e "${TMPDIR:?host MPI TMPDIR must be below experimental runtime-tests}")
 [[ "$runtime" == "$root/runtime-tests/"* && -d "$runtime" ]]
@@ -89,5 +103,5 @@ if [[ "$implementation" == baseline ]]; then
 else
   exec "${args[@]}" "$image" /usr/bin/bash --noprofile --norc -c \
     'driver=${LD_LIBRARY_PATH:-}; source "$1"; shift; export LD_LIBRARY_PATH="$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"; exec "$@"' bash \
-    "/opt/software/lammps/$SAI_MD_VERSION/$target/share/sai/runtime-env.sh" "${program_argv[@]}" "$@"
+    "$lammps_prefix/share/sai/runtime-env.sh" "${program_argv[@]}" "$@"
 fi

@@ -15,6 +15,7 @@ import md_acceptance_controller as acceptance
 from md_science import BACKENDS, TOLERANCES, _record, parse_lammps_output, parse_reference
 from source_cache import checksum
 from test_md_science import oracle_text, dump_text
+from test_md_controller import delivery_request
 
 
 class AcceptanceRenderTests(unittest.TestCase):
@@ -22,8 +23,10 @@ class AcceptanceRenderTests(unittest.TestCase):
         for target in acceptance.MD_TARGETS:
             for nodes in (1, 2):
                 with self.subTest(target=target, nodes=nodes):
+                    delivery = delivery_request(target)
                     request = {'target': target, 'nodes': nodes, 'ranks': 2 * nodes,
-                               'run_id': 'science-unit', 'version': 'dp-a-lmp-b',
+                               'delivery': delivery, 'sources': delivery['plan']['sources'],
+                               'run_id': 'science-unit', 'version': delivery['plan']['version'],
                                'artifact': '/experimental/pinned-candidate.sif'}
                     script = acceptance.render(request, Path('/experimental/science-unit'))
                     subprocess.run(['bash', '-n'], input=script, text=True, check=True)
@@ -33,7 +36,8 @@ class AcceptanceRenderTests(unittest.TestCase):
                     self.assertIn('#SBATCH --gpus-per-node=1', script)
                     self.assertIn('SAI_MD_ACCEPTANCE_RANKS=' + str(nodes * 2), script)
                     self.assertIn('SAI_MD_IMAGE=/experimental/pinned-candidate.sif', script)
-                    self.assertIn('SAI_MD_VERSION=dp-a-lmp-b', script)
+                    self.assertIn('SAI_MD_DELIVERY=', script)
+                    self.assertIn('SAI_MD_LAMMPS_PREFIX=' + delivery['identities']['lammps']['install_prefix'], script)
                     self.assertNotIn('#SBATCH --cpus-per-task', script)
                     self.assertNotIn('#SBATCH --mem', script)
                     self.assertNotIn('current.sif', script)
@@ -85,10 +89,12 @@ class AcceptanceVerificationTests(unittest.TestCase):
                             source_graph_sha256=hashlib.sha256(self.graph.encode()).hexdigest(),
                             models={backend: {'input_sha256': hashlib.sha256(backend.encode()).hexdigest()}
                                     for backend in BACKENDS})
-        self.request = {'run_id': self.run_id, 'version': 'dp-a-lmp-b', 'target': '4v100-avx512',
-                        'nodes': 1, 'ranks': 2, 'sources': {'deepmd-kit': {'sha': self.source_sha}},
+        delivery = delivery_request(recipe=self.recipe_sha)
+        self.request = {'run_id': self.run_id, 'version': delivery['plan']['version'], 'target': '4v100-avx512',
+                        'delivery': delivery, 'nodes': 1, 'ranks': 2, 'sources': delivery['plan']['sources'],
                         'acceptance_recipe_sha256': self.recipe_sha}
-        artifact = self.root / 'containers/software/deepmd-lammps/dp-a-lmp-b/4v100-avx512/candidate.sif'
+        artifact = (self.root / 'containers/software/deepmd-lammps' / delivery['plan']['selection_sha256'] /
+                    delivery['recipe_sha256'] / delivery['identities']['lammps']['partition'] / 'candidate.sif')
         artifact.parent.mkdir(parents=True)
         artifact.write_bytes(b'synthetic candidate artifact')
         self.request.update(artifact=str(artifact), artifact_sha256=checksum(artifact))
@@ -144,7 +150,7 @@ class AcceptanceVerificationTests(unittest.TestCase):
                             for rank in range(self.request['ranks']):
                                 executable = ('/opt/apps/lammps/lammps-4Jul2026-deepmd3.2.0-plumed2.10.1-nvhpc263-ompi5010-sm70/bin/lmp'
                                               if side == 'baseline' else
-                                              f'/opt/software/lammps/{self.request["version"]}/{self.request["target"]}/bin/lmp')
+                                              self.request['delivery']['identities']['lammps']['install_prefix'] + '/bin/lmp')
                                 mpi = '/opt/devtools/openmpi/native-' + acceptance.TARGETS[self.request['target']]['dependency_isa']
                                 fields = [f'node{rank // 2}', str(rank), str(self.request['ranks']), self.request['artifact'],
                                           side, self.request['target'], executable, mpi]

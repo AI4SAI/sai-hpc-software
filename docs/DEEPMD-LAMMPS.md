@@ -99,8 +99,8 @@ new build or benchmark. Its log also records an Apptainer fuse2fs cleanup warnin
 One paired SIF holds two canonical prefixes:
 
 ```
-/opt/software/deepmd-kit/<paired-version>/<native-target>
-/opt/software/lammps/<paired-version>/<native-target>
+/opt/software/deepmd-kit/<actual-track>/<build_id>/<PARTITION>
+/opt/software/lammps/<actual-track>/<build_id>/<PARTITION>
 ```
 
 Installation occurs directly at those final paths, not under a host build or
@@ -110,6 +110,24 @@ leakage. `$ORIGIN` is used for own shared libraries. System frameworks, MPI and
 PLUMED keep their recorded read-only `/opt` paths. This supports copying the
 prefixes **to the same paths** on physical storage; arbitrary prefix relocation
 and removal of system dependencies are not claimed. No host copy is performed.
+
+The workflow resolves `development`, `prerelease`, and `release` independently
+for each software. A manual `software` filter selects either primary; identical
+pairs share a build. A missing companion prerelease uses its latest stable
+release only after an explicit no-prerelease result. Network/ref failures abort.
+The runner locks schema-2 plans to both shared release identities before source
+transport; submit, container verification, sidecar, and scientific runtime check
+the same full source SHAs, recipe digest, actual channels, and real partition.
+Legacy schema-1 pairs are rejected by submission. Branch build labels include
+the pinned commit's UTC date before the SHA, using the shared source resolver.
+
+The recipe passes observed dependencies and installed `dp`/`lmp` commands
+directly to `export_native.write_manifests`, after scientific fixture preparation.
+Each prefix contains its own inventory and native Tcl module. Embedded inventories
+are rechecked against both identities in the final SIF. These are candidate
+delivery metadata, not successful native deployment or scientific evidence.
+The PB-to-PT conversion blocker below still prevents completing this recipe;
+no model metadata is invented, and no candidate is automatically published.
 
 ## Required live gates before publication
 

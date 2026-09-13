@@ -11,20 +11,6 @@ REPOSITORIES = {"deepmd-kit": "deepmodeling/deepmd-kit", "lammps": "lammps/lammp
 TARGETS = ("4v100-avx512", "16v100-avx2", "8v100v0-avx512")
 
 
-def pair(deepmd_ref, lammps_ref, target, resolver=resolve):
-    if target not in TARGETS:
-        raise ValueError("MD target has no feature/ABI acceptance policy")
-    sources = {name: resolver(repository, ref) for name, repository, ref in (
-        ("deepmd-kit", REPOSITORIES["deepmd-kit"], deepmd_ref),
-        ("lammps", REPOSITORIES["lammps"], lammps_ref))}
-    for name, source in sources.items():
-        safe_sha(source["sha"])
-        safe_name(source["version"])
-        source["repository"] = REPOSITORIES[name]
-    label = "dp-" + sources["deepmd-kit"]["sha"][:12] + "-lmp-" + sources["lammps"]["sha"][:12]
-    return {"schema": 1, "version": label, "target": target, "sources": sources}
-
-
 def resolve_track_pairs(tracks=("development", "prerelease", "release"), targets=TARGETS,
                         resolver=resolve):
     """Resolve each component's channels independently, then lock companions.
@@ -32,8 +18,7 @@ def resolve_track_pairs(tracks=("development", "prerelease", "release"), targets
     A resolved primary always gets a pair if its partner has the same channel
     or, only on precise channel absence, a stable release. Both components keep
     their actual track. API/ref errors propagate; they never select a fallback.
-    This schema-2 planning API is intentionally distinct from legacy ``pair``;
-    callers must migrate the complete build/runtime chain before submitting it.
+    Execution accepts only this schema-2 planning contract and locked identities.
     """
     from release_contract import TRACKS, resolve_tracks
     if (not isinstance(tracks, (list, tuple)) or not tracks or len(set(tracks)) != len(tracks) or
@@ -127,8 +112,9 @@ def fingerprint(control=None):
     if control.is_file():
         control = control.parent
     names = [*sorted(p.name for p in control.glob("md_*.*") if p.suffix in (".py", ".sh", ".json")),
-             "remote_controller.py", "source_cache.py", "create_rootfs.sh", "resolve_source.py"]
-    digest = hashlib.sha256(b"sai-deepmd-lammps-contract-v1\n")
+             "remote_controller.py", "source_cache.py", "create_rootfs.sh", "resolve_source.py",
+             "release_contract.py", "native_module.py", "export_native.py"]
+    digest = hashlib.sha256(b"sai-deepmd-lammps-contract-v2\n")
     for name in names:
         path = control / name
         if not path.is_file() or path.is_symlink():
@@ -139,8 +125,7 @@ def fingerprint(control=None):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--deepmd-ref", default="master")
-    parser.add_argument("--lammps-ref", default="develop")
-    parser.add_argument("--target", choices=TARGETS, default=TARGETS[0])
+    parser.add_argument("--tracks", default="development,prerelease,release")
+    parser.add_argument("--targets", default=",".join(TARGETS))
     args = parser.parse_args()
-    print(json.dumps(pair(args.deepmd_ref, args.lammps_ref, args.target), sort_keys=True))
+    print(json.dumps(resolve_track_pairs(args.tracks.split(','), args.targets.split(',')), sort_keys=True))

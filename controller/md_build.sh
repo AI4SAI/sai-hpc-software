@@ -107,4 +107,37 @@ cp -a /workspace/deepmd-kit/source/lmp/tests "$LAMMPS_PREFIX/share/sai/upstream-
 cp -a /workspace/deepmd-kit/source/tests/infer "$LAMMPS_PREFIX/share/sai/upstream-tests/infer"
 "$DEEPMD_PREFIX/bin/python" /control/md_science.py prepare /workspace/deepmd-kit \
   "$LAMMPS_PREFIX/share/sai/smoke"
+# Package the observed runtime directly with the shared native delivery writer.
+# This stays after all fixture preparation: conversion failure cannot produce a
+# native manifest or imply scientific/native runtime acceptance.
+chmod -R a+rX,go-w "$DEEPMD_PREFIX" "$LAMMPS_PREFIX"
+"$DEEPMD_PREFIX/bin/python" - <<'PY'
+import json, os, pathlib, sys
+sys.path.insert(0, '/control')
+from md_controller import validate_pair
+from export_native import write_manifests
+from release_contract import SOFTWARE
+delivery = validate_pair(json.loads(os.environ['SAI_MD_DELIVERY']))
+identities = delivery['identities']
+prefixes = [item['install_prefix'] for item in identities.values()]
+runtime = {'modules': [name for name in os.environ['LOADEDMODULES'].split(':')
+                       if name.split('/')[0] not in {*SOFTWARE, 'apptainer', 'cmake'}],
+           'prepend': {name: list(dict.fromkeys(str(pathlib.Path(value).resolve(strict=True))
+                                               for value in os.environ.get(name, '').split(':') if value))
+                       for name in ('PATH', 'LD_LIBRARY_PATH', 'PYTHONPATH', 'MODULEPATH')},
+           'set': {name: os.environ[name] for name in ('PLUMED_KERNEL', 'LAMMPS_POTENTIALS')}}
+external = {'/usr', '/lib', '/lib64', os.environ['MD_SYSTEM_DEEPMD'], os.environ['MD_SYSTEM_PLUMED']}
+for values in runtime['prepend'].values():
+    for value in values:
+        if not any(pathlib.PurePosixPath(value).is_relative_to(prefix) for prefix in prefixes):
+            # Exact observed directories; the shared validator rejects home,
+            # workspace, old software and non-site paths instead of hiding them.
+            if value == os.environ['MD_SYSTEM_LAMMPS'] or value.startswith(os.environ['MD_SYSTEM_LAMMPS'] + '/'):
+                raise ValueError('native runtime contains the old LAMMPS installation')
+            external.add(value)
+entries = [{'identity': identities[software], 'commands': {command: 'bin/' + command},
+            'runtime': runtime, 'external_roots': sorted(external)}
+           for software, command in (('deepmd-kit', 'dp'), ('lammps', 'lmp'))]
+write_manifests(entries)
+PY
 echo MD_NATIVE_BUILD_FEATURE_PARITY_PASSED

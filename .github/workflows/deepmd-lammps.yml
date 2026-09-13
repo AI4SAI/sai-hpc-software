@@ -5,13 +5,13 @@ on:
     - cron: '47 1,7,13,19 * * *'
   workflow_dispatch:
     inputs:
-      deepmd_ref:
-        description: DeePMD moving branch/tag/latest-release
-        default: master
+      software:
+        description: Independently triggered primary software (all, deepmd-kit, lammps)
+        default: all
         required: true
-      lammps_ref:
-        description: LAMMPS moving branch/tag/latest-release
-        default: develop
+      tracks:
+        description: Independent upstream channels, comma separated
+        default: development,prerelease,release
         required: true
       targets:
         description: Native GPU partitions; independent build for every target
@@ -53,29 +53,33 @@ jobs:
       - id: pair
         env:
           GH_TOKEN: ${{ github.token }}
-          DP_REF: ${{ inputs.deepmd_ref || 'master' }}
-          LMP_REF: ${{ inputs.lammps_ref || 'develop' }}
+          SOFTWARE: ${{ inputs.software || 'all' }}
+          TRACKS: ${{ inputs.tracks || 'development,prerelease,release' }}
           TARGETS: ${{ inputs.targets || '4v100-avx512,16v100-avx2,8v100v0-avx512' }}
         run: |
           python3 - <<'PY'
           import json, os, sys
           sys.path.insert(0, 'controller')
-          from md_tracking import pair, TARGETS
-          targets = list(dict.fromkeys(os.environ['TARGETS'].split(',')))
-          if not targets or any(t not in TARGETS for t in targets):
-              raise ValueError('unknown native MD target')
-          # Resolve once, so upstream motion cannot split the matrix mid-run.
-          source = pair(os.environ['DP_REF'], os.environ['LMP_REF'], targets[0])
-          builds = [dict(source, target=t) for t in targets]
+          from md_tracking import resolve_track_pairs, REPOSITORIES
+          software = os.environ['SOFTWARE']
+          if software != 'all' and software not in REPOSITORIES:
+              raise ValueError('unknown MD primary software')
+          result = resolve_track_pairs(os.environ['TRACKS'].split(','), os.environ['TARGETS'].split(','))
+          builds = []
+          for pair in result['pairs']:
+              pair['triggers'] = [trigger for trigger in pair['triggers']
+                                  if software == 'all' or trigger['software'] == software]
+              if pair['triggers']:
+                  builds.append(pair)
           with open(os.environ['GITHUB_OUTPUT'], 'a') as stream:
               stream.write('builds=' + json.dumps(builds) + '\n')
-          print(json.dumps(builds, indent=2))
+          print(json.dumps(dict(pairs=builds, skipped=result['skipped']), indent=2))
           PY
 
   candidate-build:
     # Experimental branch: schedule resolves moving refs but cannot spend GPU
     # resources or imply publication until live scientific acceptance is wired.
-    if: github.event_name == 'workflow_dispatch' && inputs.build_candidates
+    if: github.event_name == 'workflow_dispatch' && inputs.build_candidates && needs.resolve.outputs.builds != '[]'
     needs: [validate, resolve]
     runs-on: ubuntu-latest
     environment: hpc
@@ -104,7 +108,7 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: md-candidate-${{ matrix.build.target }}-${{ github.run_id }}
+          name: md-candidate-${{ matrix.build.selection_sha256 }}-${{ github.run_id }}
           path: ${{ runner.temp }}/results/
           if-no-files-found: warn
       - name: Remove temporary SSH key

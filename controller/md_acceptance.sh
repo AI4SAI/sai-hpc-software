@@ -18,7 +18,8 @@ case "$SLURM_JOB_PARTITION" in
   8V100V0) target=8v100v0-avx512 ;;
   *) exit 2 ;;
 esac
-prefix="/opt/software/lammps/$SAI_MD_VERSION/$target"
+prefix=${SAI_MD_LAMMPS_PREFIX:?locked LAMMPS identity required}
+[[ "$prefix" == /opt/software/lammps/*/*/"$SLURM_JOB_PARTITION" ]]
 # Copy only packaged scientific task inputs; never extract an install/source
 # tree to host. This is the same user-input bind model as normal workloads.
 apptainer exec --cleanenv --no-home --no-mount bind-paths,home,cwd,tmp,hostfs \

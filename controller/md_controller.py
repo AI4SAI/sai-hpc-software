@@ -12,7 +12,7 @@ from pathlib import Path
 import shlex
 import subprocess
 import time
-from md_tracking import fingerprint, TARGETS as MD_TARGETS
+from md_tracking import fingerprint, identify_track_pair, TARGETS as MD_TARGETS
 from remote_controller import TARGETS, container_command, safe_name, safe_sha
 from source_cache import checksum
 
@@ -37,19 +37,19 @@ def task(run_id):
 
 
 def validate_pair(request):
-    if request.get('schema') != 1 or request.get('target') not in MD_TARGETS:
-        raise ValueError('unsupported MD source contract')
-    safe_name(request['version'])
-    if set(request['sources']) != {'deepmd-kit', 'lammps'}:
-        raise ValueError('both independently resolved upstream revisions are required')
-    for source in request['sources'].values():
-        safe_sha(source['sha'])
+    if (not isinstance(request, dict) or set(request) != {'schema', 'plan', 'recipe_sha256', 'identities'}
+            or type(request['schema']) is not int or request['schema'] != 2):
+        raise ValueError('expected schema-2 MD delivery; legacy pairs must be resolved again')
+    identities = identify_track_pair(request['plan'], request['recipe_sha256'])
+    if json.dumps(request['identities'], sort_keys=True) != json.dumps(identities, sort_keys=True):
+        raise ValueError('MD identities differ from the locked sources, recipe or partition')
     return request
 
 
 def render(request, run_id, jobs=6, minutes=180, overlay_mb=32768):
     validate_pair(request)
-    target = TARGETS[request['target']]
+    plan = request['plan']
+    target = TARGETS[plan['target']]
     if not 1 <= jobs <= min(6, target.get('build_jobs', 6)) or not 1 <= minutes <= 180:
         raise ValueError('MD build resources outside experimental bounds')
     if not 8192 <= overlay_mb <= 65536:
@@ -58,13 +58,14 @@ def render(request, run_id, jobs=6, minutes=180, overlay_mb=32768):
     image = PROJECT / 'containers/base/minimal-v1.sif'
     overlay = r / 'work.ext3'
     result = r / 'candidate.sif'
-    artifact = ROOT / 'containers/software/deepmd-lammps' / request['version'] / request['target'] / (run_id + '.sif')
-    args = ['/usr/bin/bash', '/control/md_container_entry.sh', 'build', request['version'], request['target'],
-            request['sources']['deepmd-kit']['sha'], request['sources']['lammps']['sha']]
+    artifact = (ROOT / 'containers/software/deepmd-lammps' / plan['selection_sha256'] /
+                request['recipe_sha256'] / target['partition'] / (run_id + '.sif'))
+    args = ['/usr/bin/bash', '/control/md_container_entry.sh', 'build',
+            json.dumps(request, sort_keys=True, separators=(',', ':'))]
     def container(phase, final=False):
         command = args.copy()
         command[2] = phase
-        sources = [(ROOT / 'cache/repositories' / name, '/input/' + name) for name in request['sources']]
+        sources = [(ROOT / 'cache/repositories' / name, '/input/' + name) for name in plan['sources']]
         return container_command(result if final else image, command, overlay=None if final else overlay,
                                  control=CONTROL, jobs=jobs, gpu=True,
                                  extra_binds=[('/opt/apps', '/opt/apps'), *(sources if not final else [])])
@@ -149,19 +150,21 @@ def submit_probe(args):
 
 def submit(args):
     request = validate_pair(json.loads(Path(args.request).read_text()))
+    if request['recipe_sha256'] != fingerprint(CONTROL):
+        raise ValueError('uploaded MD recipe differs from runner-locked identities')
     r = task(args.run_id)
     if (r / 'job.id').exists():
         raise ValueError('run already submitted; do not restart a live handle')
     for part in ('input', 'results', 'runtime', 'apptainer-cache'):
         (r / part).mkdir(parents=True, exist_ok=True)
-    for name, source in request['sources'].items():
+    for name, source in request['plan']['sources'].items():
         run(['git', '--git-dir', ROOT / 'cache/repositories' / name, 'cat-file', '-e', source['sha'] + '^{commit}'])
-    request.update(run_id=args.run_id, recipe_sha256=fingerprint(CONTROL), controller=str(CONTROL))
+    record = dict(delivery=request, run_id=args.run_id, controller=str(CONTROL))
     script = r / 'job.sbatch'
     script.write_text(render(request, args.run_id, args.jobs, args.minutes, args.overlay_mb))
     run(['bash', '-n', script])
-    request['job_script_sha256'] = checksum(script)
-    (r / 'request.json').write_text(json.dumps(request, sort_keys=True) + '\n')
+    record['job_script_sha256'] = checksum(script)
+    (r / 'request.json').write_text(json.dumps(record, sort_keys=True) + '\n')
     job = run(['sbatch', '--parsable', script], capture_output=True).stdout.strip().split(';')[0]
     if not job.isdigit():
         raise ValueError('invalid Slurm job handle')
@@ -188,16 +191,23 @@ def monitor(args):
                 (r / 'results/status.json').write_text(json.dumps(status) + '\n')
                 if row[1:3] != ['COMPLETED', '0:0']:
                     return 1
-                request = json.loads((r / 'request.json').read_text())
+                record = json.loads((r / 'request.json').read_text())
+                request = validate_pair(record['delivery'])
+                plan = request['plan']
                 artifact = Path((r / 'artifact.path').read_text().strip())
-                expected = ROOT / 'containers/software/deepmd-lammps' / request['version'] / request['target'] / (args.run_id + '.sif')
+                expected = (ROOT / 'containers/software/deepmd-lammps' / plan['selection_sha256'] /
+                            request['recipe_sha256'] / request['identities']['lammps']['partition'] /
+                            (args.run_id + '.sif'))
                 if (artifact != expected or artifact.resolve() != artifact or artifact.is_symlink()
                         or request['recipe_sha256'] != fingerprint(CONTROL)
-                        or request['job_script_sha256'] != checksum(r / 'job.sbatch')):
+                        or record['job_script_sha256'] != checksum(r / 'job.sbatch')
+                        or record['run_id'] != args.run_id or record['controller'] != str(CONTROL)):
                     raise ValueError('candidate provenance changed')
                 status['build_verified'] = True
                 status.update(artifact=str(artifact), artifact_sha256=checksum(artifact),
-                              recipe_sha256=request['recipe_sha256'], sources=request['sources'])
+                              recipe_sha256=request['recipe_sha256'], sources=plan['sources'],
+                              delivery=request, scientific_verified=False, performance_verified=False,
+                              native_manifests_packaged=True, native_runtime_verified=False)
                 (r / 'results/status.json').write_text(json.dumps(status, sort_keys=True) + '\n')
                 artifact.with_suffix('.json').write_text(json.dumps(status, sort_keys=True) + '\n')
                 print('CANDIDATE_ONLY: scientific/performance acceptance still required', flush=True)

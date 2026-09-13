@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 import shlex
 import subprocess
-from md_tracking import REPOSITORIES, fingerprint
+from md_tracking import REPOSITORIES, fingerprint, identify_track_pair
 from remote_controller import safe_name, safe_sha
 from source_cache import pack
 
@@ -16,14 +16,16 @@ def run(argv, **kwargs):
 
 
 def main():
-    request = json.loads(os.environ['MD_PAIR'])
+    plan = json.loads(os.environ['MD_PAIR'])
+    control = Path(__file__).resolve().parent
+    recipe = fingerprint(control)
+    request = dict(schema=2, plan=plan, recipe_sha256=recipe, identities=identify_track_pair(plan, recipe))
     from md_controller import validate_pair
     validate_pair(request)
     user = safe_name(os.environ['REMOTE_USER'])
     sha = safe_sha(os.environ['GITHUB_SHA'])
-    run_id = safe_name('md-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'] + '-' + request['target'])
+    run_id = safe_name('md-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'] + '-' + plan['selection_sha256'][:16])
     temporary = Path(os.environ['RUNNER_TEMP'])
-    control = Path(__file__).resolve().parent
     project = f'/home/{user}/sai-hpc-software'
     root = project + '/experimental/deepmd-lammps'
     snapshot = root + f'/controller/{sha}/{run_id}'
@@ -42,10 +44,11 @@ def main():
         return ssh(['python3', snapshot + '/' + name, *args], **kwargs)
     ssh(['mkdir', '-p', snapshot, remote_task + '/input', remote_task + '/results'])
     files = [*control.glob('md_*.py'), *control.glob('md_*.sh')]
-    files += [control / name for name in ('remote_controller.py', 'source_cache.py', 'resolve_source.py', 'create_rootfs.sh')]
+    files += [control / name for name in ('remote_controller.py', 'source_cache.py', 'resolve_source.py',
+                                          'create_rootfs.sh', 'release_contract.py', 'native_module.py', 'export_native.py')]
     for path in files:
         upload(path, snapshot + '/' + path.name)
-    for name, source in request['sources'].items():
+    for name, source in plan['sources'].items():
         cache = root + '/cache/repositories/' + name
         inventory = json.loads(python('source_cache.py', 'inventory', cache, capture_output=True).stdout)
         if source['sha'] in inventory['cache_shas']:
@@ -75,14 +78,14 @@ def main():
     pair_file.write_text(json.dumps(request, sort_keys=True) + '\n')
     upload(pair_file, remote_task + '/input/pair.json')
     ssh(['test', '-s', project + '/containers/base/minimal-v1.sif'])
-    (results / 'request.json').write_text(json.dumps(dict(request, recipe_sha256=fingerprint(control))) + '\n')
+    (results / 'delivery.json').write_text(json.dumps(request, sort_keys=True) + '\n')
     try:
         python('md_controller.py', 'submit', run_id, remote_task + '/input/pair.json')
         python('md_controller.py', 'monitor', run_id)
+        run(['scp', '-q', *options, '-P', '12022', remote + ':' + remote_task + '/artifact.path', results / 'artifact.path'])
         science_run = safe_name(run_id + '-science')
         python('md_acceptance_controller.py', 'submit', science_run, run_id)
         python('md_acceptance_controller.py', 'monitor', science_run)
-        run(['scp', '-q', *options, '-P', '12022', remote + ':' + remote_task + '/artifact.path', results / 'artifact.path'])
     finally:
         subprocess.run(['scp', '-q', *options, '-P', '12022', '-r', remote + ':' + remote_task + '/results/.', str(results)], check=False)
         science_results = results / 'science'

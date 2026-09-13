@@ -24,7 +24,7 @@ class ResolveTests(TestCase):
             result = resolve("a/b", "latest-prerelease")
         self.assertEqual(result["ref"], "v2-rc")
         self.assertEqual(result["sha"], "c" * 40)
-        self.assertEqual(result["version"], "v2-rc-" + "c" * 12)
+        self.assertEqual(result["version"], "v2-rc")
 
     def test_release_tag_beats_same_named_branch_and_annotated_tag_object(self):
         releases = [{"draft": False, "prerelease": False, "published_at": "2026-09-08",
@@ -35,11 +35,11 @@ class ResolveTests(TestCase):
         with patch("resolve_source.subprocess.check_output", side_effect=[json.dumps(releases), refs]):
             result = resolve("a/b", "latest-release")
         self.assertEqual(result, {"ref": "v3.10.0", "sha": "c" * 40,
-                                  "version": "v3.10.0-" + "c" * 12})
-        with patch("resolve_source.subprocess.check_output", return_value=refs):
+                                  "version": "v3.10.0"})
+        with patch("resolve_source.subprocess.check_output", side_effect=[refs, "2026-09-08T01:02:03Z"]):
             explicit = resolve("a/b", "v3.10.0")
         self.assertEqual(explicit["sha"], "a" * 40)
-        self.assertEqual(explicit["version"], "v3.10.0-" + "a" * 12)
+        self.assertEqual(explicit["version"], "v3.10.0-2026-09-08")
 
     def test_paginated_release_selection_finds_stable_after_100_prereleases(self):
         first = [{"draft": False, "prerelease": True, "published_at": "2026-09-08",
@@ -72,12 +72,30 @@ class ResolveTests(TestCase):
                 with self.assertRaisesRegex(ValueError, "cannot resolve"):
                     resolve("a/b", "latest-release")
 
-    def test_ordinary_branch_and_exact_sha_keep_the_existing_result_shape(self):
-        with patch("resolve_source.subprocess.check_output", return_value="f" * 40 + "\trefs/heads/develop\n"):
+    def test_branch_and_exact_sha_use_pinned_commit_date_without_duplicating_sha(self):
+        refs = "f" * 40 + "\trefs/heads/develop\n"
+        with patch("resolve_source.subprocess.check_output", side_effect=[refs, "2026-09-13T01:02:03Z"]) as run:
             self.assertEqual(resolve("a/b", "develop"),
-                             {"ref": "develop", "sha": "f" * 40, "version": "develop-" + "f" * 12})
-        with patch("resolve_source.subprocess.check_output", return_value=""):
-            self.assertEqual(resolve("a/b", "a" * 40)["sha"], "a" * 40)
+                             {"ref": "develop", "sha": "f" * 40,
+                              "version": "develop-2026-09-13"})
+        self.assertEqual(run.call_args.args[0],
+                         ["gh", "api", "repos/a/b/git/commits/" + "f" * 40, "--jq", ".committer.date"])
+        with patch("resolve_source.subprocess.check_output", side_effect=["", "2026-09-13T01:02:03Z"]):
+            self.assertEqual(resolve("a/b", "a" * 40),
+                             {"ref": "a" * 40, "sha": "a" * 40,
+                              "version": "commit-2026-09-13"})
+
+    def test_branch_dates_are_utc_and_errors_do_not_fall_back_to_today(self):
+        refs = "a" * 40 + "\trefs/heads/master\n"
+        with patch("resolve_source.subprocess.check_output", side_effect=[refs, "2026-09-13T01:02:03+08:00"]):
+            self.assertEqual(resolve("a/b", "master")["version"], "master-2026-09-12")
+        with patch("resolve_source.subprocess.check_output", side_effect=[refs, "null"]):
+            with self.assertRaises(ValueError):
+                resolve("a/b", "master")
+        failure = subprocess.CalledProcessError(1, ["gh", "api"])
+        with patch("resolve_source.subprocess.check_output", side_effect=[refs, failure]):
+            with self.assertRaises(subprocess.CalledProcessError):
+                resolve("a/b", "master")
 
     def test_only_empty_channels_report_absence_and_api_errors_propagate(self):
         for channel in ("latest-release", "latest-prerelease"):
