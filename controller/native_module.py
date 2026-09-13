@@ -12,8 +12,10 @@ in a paired delivery can authorize same-partition canonical prefixes via
 allowed_prefixes. Supplying other partitions never authorizes their libraries.
 Filesystem checks belong to extraction and module load, not code generation.
 """
-from pathlib import PurePosixPath
+import os
+from pathlib import Path, PurePosixPath
 import re
+import stat
 
 from release_contract import (MAX_BUILD_ID, SOFTWARE, TRACKS, allowed_partitions,
                               validate_identity)
@@ -281,3 +283,100 @@ def render_native_selector(identity):
              *('    ' + line for line in _regular_tree('$sai_native_fragment')),
              '    source $sai_native_fragment', '}', '']
     return "\n".join(lines)
+
+
+def package_native_modules(entry, root=Path("/"), *, allowed_prefixes=()):
+    """Add self-contained native modules beneath an already-installed prefix.
+
+    ``root`` may be a build rootfs or an extraction staging root; it never
+    changes the modules' expected absolute /opt paths. Both returned Paths
+    (``fragment`` and ``selector``) are inside the one installation directory.
+    Existing equal regular files are idempotent; conflicting contents, hard
+    links and symlink ancestors are rejected, without replacing existing data.
+    No directory outside the existing installation prefix is created.
+    """
+    entry = validate_native_entry(entry, allowed_prefixes=allowed_prefixes)
+    identity = entry["identity"]
+    root = Path(root)
+    if not root.is_absolute() or ".." in root.parts:
+        raise ValueError("native package root must be absolute without traversal")
+    prefix = root / identity["install_prefix"].lstrip("/")
+    relative = {
+        "fragment": Path("share/sai/native-module.tcl"),
+        "selector": Path("modulefiles") / identity["software"] / identity["track"] / identity["build_id"],
+    }
+    contents = {
+        "fragment": render_native_fragment(entry, allowed_prefixes=allowed_prefixes).encode("utf-8"),
+        "selector": render_native_selector(identity).encode("utf-8"),
+    }
+    directory_flags = os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW
+
+    def directory(start_fd, parts, *, create=False):
+        descriptor = os.dup(start_fd)
+        try:
+            for part in parts:
+                if create:
+                    try:
+                        os.mkdir(part, mode=0o755, dir_fd=descriptor)
+                    except FileExistsError:
+                        pass
+                next_descriptor = os.open(part, directory_flags, dir_fd=descriptor)
+                os.close(descriptor)
+                descriptor = next_descriptor
+            return descriptor
+        except BaseException:
+            os.close(descriptor)
+            raise
+
+    def existing(parent_fd, name, content, *, normalize_mode=False):
+        try:
+            descriptor = os.open(name, os.O_RDONLY | os.O_NOFOLLOW | os.O_NONBLOCK,
+                                 dir_fd=parent_fd)
+        except FileNotFoundError:
+            return False
+        try:
+            info = os.fstat(descriptor)
+            if (not stat.S_ISREG(info.st_mode) or info.st_nlink != 1 or
+                    info.st_size != len(content)):
+                raise ValueError("native packaged module already exists with different or unsafe contents")
+            with os.fdopen(os.dup(descriptor), "rb") as stream:
+                if stream.read(len(content) + 1) != content:
+                    raise ValueError("native packaged module already exists with different or unsafe contents")
+            if normalize_mode:
+                os.fchmod(descriptor, 0o444)
+        finally:
+            os.close(descriptor)
+        return True
+
+    descriptors = []
+    try:
+        filesystem_fd = os.open("/", directory_flags)
+        descriptors.append(filesystem_fd)
+        prefix_fd = directory(filesystem_fd, prefix.parts[1:])
+        descriptors.append(prefix_fd)
+        parents = {}
+        # Preflight both destinations before creating either module file.
+        for name, path in relative.items():
+            parent_fd = directory(prefix_fd, path.parent.parts, create=True)
+            descriptors.append(parent_fd)
+            parents[name] = parent_fd
+            existing(parent_fd, path.name, contents[name])
+        for name, path in relative.items():
+            parent_fd, content = parents[name], contents[name]
+            try:
+                descriptor = os.open(path.name, os.O_WRONLY | os.O_CREAT | os.O_EXCL | os.O_NOFOLLOW,
+                                     mode=0o444, dir_fd=parent_fd)
+            except FileExistsError:
+                if not existing(parent_fd, path.name, content, normalize_mode=True):
+                    raise ValueError("native packaged module changed during packaging")
+            else:
+                with os.fdopen(descriptor, "wb") as output:
+                    output.write(content)
+                    output.flush()
+                    os.fchmod(output.fileno(), 0o444)
+    except OSError as error:
+        raise ValueError("native package prefix and module parents must be regular directories without symlinks") from error
+    finally:
+        for descriptor in reversed(descriptors):
+            os.close(descriptor)
+    return {name: prefix / path for name, path in relative.items()}
