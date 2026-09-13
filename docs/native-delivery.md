@@ -93,6 +93,7 @@ python3 /control/export_native.py inventory --entry /workspace/native-entry.json
 拒绝组/其他用户可写、setuid、设备文件、FIFO、越界链接和不完整配对。
 命令入口允许软链接，例如 `bin/abacus -> abacus_max_gpu`；清单和导出保留链接
 原文，最终目标必须是兼容交付前缀内随包提供的可执行普通文件，不能只指向预装程序。
+非配对软件若链接到另一安装前缀，导出时须用多个 `--prefix` 同时选择这些前缀。
 建议容器安装阶段 `umask 022`，宿主任务目录仍可保持私有权限。
 
 ## 提取到任意暂存位置
