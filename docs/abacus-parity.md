@@ -33,9 +33,23 @@ for CP2K, provided ABACUS's required API/version is confirmed.
 ## Dependencies and containment
 
 `controller/abacus_dependency_lock.json` records exact archive SHA-256 values and
-the observed module baseline. The builder binds only the site's existing
+the observed module baseline. The builder reuses the site's existing
 `/opt/apps/abacus/abacus-develop-3.9.0.26_nvhpc263gnu/toolchain/build` archive directory,
-read-only at `/input/abacus-dependencies`. Every archive is checked before extraction.
+read-only at `/input/abacus-dependencies`, for six dependencies. LibRI uses the
+`b0eff7a` archive and SHA-256 specified by ABACUS commit `42f8ad905d56` itself.
+The old site archive and this archive both report version 2.1.1, but only the
+latter contains the required BSE `RI/physics/LR.h` interface.
+
+Before Slurm submission, the Actions runner downloads and verifies only locked
+updates with `abacus_dependencies.cache_archives()` and the existing upload path.
+The remote controller reuses that function to verify and atomically import the
+uploaded archives into the project's `cache/abacus-dependencies`, without network
+access. SAI's login node could not reach codeload during the 2026-09-13 probe.
+That compressed cache is bound read-only at `/input/abacus-updates`; existing
+site archives are neither copied nor changed. Concurrent submissions share a
+lock, and a corrupt cached file is rejected rather than silently overwritten.
+Every archive is checked again before extraction; required LibRI headers must
+be nonempty regular members before any dependency configuration or compilation.
 There is no dependency download during the network-isolated build, and no source,
 dependency build, or installation tree is expanded on the host.
 

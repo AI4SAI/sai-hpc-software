@@ -281,8 +281,8 @@ def render_job(args):
     argv = ["/usr/bin/bash", f"/control/{entrypoint}", "build", args.software, sha, args.version, args.target,
             json.dumps(delivery, sort_keys=True, separators=(",", ":"))]
     if args.software == "abacus":
-        from abacus_dependencies import dependency_bind
-        extra_binds = (dependency_bind(),)
+        from abacus_dependencies import dependency_binds
+        extra_binds = dependency_binds(ROOT)
     else:
         extra_binds = ((Path("/opt/apps"), "/opt/apps"),
                        (ROOT / "cache/cp2k-dependencies", "/input/dependencies"))
@@ -377,6 +377,9 @@ def submit(args):
             raise ValueError("cannot resume an active or invalid job")
         if not (old / "work.ext3").is_file() or (old / "work.ext3").is_symlink():
             raise ValueError("missing file-backed build state")
+    if args.software == "abacus":
+        from abacus_dependencies import ARCHIVE_CACHE, cache_archives
+        cache_archives(ROOT / ARCHIVE_CACHE, source=r / "input/abacus-updates")
     script = r / "job.sbatch"
     script.write_text(render_job(args))
     script.chmod(0o700)

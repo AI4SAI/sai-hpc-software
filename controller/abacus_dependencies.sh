@@ -29,13 +29,13 @@ cmake --install /workspace/dependency-build/rapidjson
 cp /workspace/dependency-build/rapidjson/CMakeFiles/RapidJSONConfig.cmake \
   "$deps/rapidjson/lib/cmake/RapidJSON/RapidJSONConfig.cmake"
 test -s "$deps/rapidjson/lib/cmake/RapidJSON/RapidJSONConfig.cmake"
-for item in LibRI-master LibComm-master libnpy-1.0.1; do
+for item in LibRI-b0eff7a LibComm-master libnpy-1.0.1; do
   mkdir -p "$deps/$item"
   cp -a "/workspace/dependencies/$item/include" "$deps/$item/"
 done
 cp -a /workspace/dependencies/libtorch "$deps/libtorch"
 grep -q '_GLIBCXX_USE_CXX11_ABI=1' "$deps/libtorch/share/cmake/Torch/TorchConfig.cmake"
-for package in cereal-master rapidjson-master LibRI-master LibComm-master libnpy-1.0.1 NEP_CPU-main libtorch; do
+for package in cereal-master rapidjson-master LibRI-b0eff7a LibComm-master libnpy-1.0.1 NEP_CPU-main libtorch; do
   mkdir -p "$INSTALL_PREFIX/share/licenses/$package"
   for license in /workspace/dependencies/"$package"/{LICENSE*,COPYING*,NOTICE*}; do
     if [[ -f "$license" ]]; then cp "$license" "$INSTALL_PREFIX/share/licenses/$package/"; fi
@@ -58,7 +58,7 @@ g++ -O3 -DNDEBUG -fPIC -std=c++11 -march=native -mtune=native \
 abacus_dependency_options=(
   -DENABLE_LCAO=ON -DENABLE_LIBRI=ON -DENABLE_MLALGO=ON -DENABLE_RAPIDJSON=ON
   "-DELPA_DIR=${ELPA_ROOT:?system ELPA module required}"
-  "-DLIBRI_DIR=$deps/LibRI-master" "-DLIBCOMM_DIR=$deps/LibComm-master"
+  "-DLIBRI_DIR=$deps/LibRI-b0eff7a" "-DLIBCOMM_DIR=$deps/LibComm-master"
   "-Dcereal_DIR=$deps/cereal/lib/cmake/cereal"
   "-DRapidJSON_DIR=$deps/rapidjson/lib/cmake/RapidJSON"
   "-DTorch_DIR=$deps/libtorch/share/cmake/Torch"

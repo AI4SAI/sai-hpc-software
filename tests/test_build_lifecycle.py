@@ -16,6 +16,7 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "controller"))
 import ci
+import abacus_dependencies as dependencies
 from delivery_layout import artifact_path
 from release_contract import make_identity
 import software_controller as controller
@@ -189,6 +190,7 @@ class CiLifecycleTests(unittest.TestCase):
         commands = []
         self.remote_commands = []
         self.uploads = []
+        self.transport = []
         upstream = "a" * 40
         source_ref = "develop" if software == "abacus" else "master"
         identity = make_identity(software, track, source_ref, upstream, version, "c" * 64, target)
@@ -203,6 +205,7 @@ class CiLifecycleTests(unittest.TestCase):
 
         def fake_run(argv, **kwargs):
             argv = [str(value) for value in argv]
+            self.transport.append(argv)
             stdout = ""
             if argv[0] == "ssh":
                 remote = shlex.split(argv[-1])
@@ -225,6 +228,7 @@ class CiLifecycleTests(unittest.TestCase):
             return subprocess.CompletedProcess(argv, 0, stdout=stdout, stderr="")
 
         with patch.dict(os.environ, environment, clear=True), \
+                patch.object(dependencies, "cache_archives") as archives, \
                 patch.object(ci, "datetime") as clock, \
                 patch.object(ci, "run", side_effect=fake_run), \
                 patch.object(ci.subprocess, "run", return_value=subprocess.CompletedProcess([], 0)), \
@@ -236,7 +240,26 @@ class CiLifecycleTests(unittest.TestCase):
             else:
                 ci.main()
             clock.now.assert_called_once_with(timezone.utc)
+            self.archive_calls = archives.call_args_list
         return [command for command in commands if command[0] != "source_cache.py"]
+
+    def test_locked_updates_use_runner_download_and_existing_upload_before_submission(self):
+        self.execute()
+        self.assertEqual([call.args for call in self.archive_calls], [(self.root / "abacus-updates",)])
+        updated = [item["file"] for item in dependencies.load_lock()["archives"] if "url" in item]
+        submitted = next(index for index, argv in enumerate(self.transport)
+                         if argv[0] == "ssh" and "software_controller.py submit" in argv[-1])
+        for name in updated:
+            uploads = [index for index, argv in enumerate(self.transport)
+                       if argv[0] == "scp" and argv[-2] == str(self.root / "abacus-updates" / name)]
+            self.assertEqual(len(uploads), 1)
+            self.assertLess(uploads[0], submitted)
+            self.assertTrue(self.transport[uploads[0]][-1].endswith("/input/abacus-updates/" + name))
+        self.execute(software="cp2k")
+        self.assertEqual(self.archive_calls, [])
+        self.assertTrue(set(updated).isdisjoint(self.uploads))
+        self.execute(event="schedule", prior={"artifact": "/trusted/prior.sif"})
+        self.assertEqual(self.archive_calls, [])
 
     def test_gpu_publish_occurs_after_both_acceptance_monitors(self):
         self.assertEqual(self.execute(), [

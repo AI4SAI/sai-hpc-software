@@ -1,5 +1,8 @@
 """Presence is mandatory; it does not substitute for scientific benchmarks."""
 import argparse
+from concurrent.futures import ThreadPoolExecutor
+import hashlib
+import io
 import json
 import os
 from pathlib import Path
@@ -7,7 +10,9 @@ import stat
 import subprocess
 import shutil
 import sys
+import tarfile
 import tempfile
+import threading
 import unittest
 from unittest.mock import patch
 import zipfile
@@ -111,6 +116,7 @@ class ParityTests(unittest.TestCase):
             features.check_dynamic("[Requesting program interpreter: /control/ld.so]", binary, self.prefix)
 
     def test_dependency_archive_members_and_destination_fail_closed(self):
+        self.assertIs(deps.checksum, checksum)
         deps.validate_members(["package/include/header.h", "package/"], "package")
         for value in ("../header.h", "/workspace/header.h", "package/../../header.h", "other/header.h"):
             with self.subTest(path=value):
@@ -119,6 +125,133 @@ class ParityTests(unittest.TestCase):
         for destination in (Path("/opt/software/expanded"), Path("relative")):
             with self.assertRaisesRegex(ValueError, "build overlay"):
                 deps.unpack(Path("/input/abacus-dependencies"), destination, self.lock)
+
+    def test_required_headers_are_nonempty_regular_archive_members(self):
+        header = "package/include/RI/physics/LR.h"
+        for suffix in (".tar.gz", ".zip"):
+            for kind in ("present", "missing", "empty", "directory"):
+                with self.subTest(suffix=suffix, kind=kind), tempfile.TemporaryDirectory() as temporary:
+                    archive = Path(temporary) / ("package" + suffix)
+                    destination = Path(temporary) / "extracted"
+                    name = "package/unrelated.h" if kind == "missing" else header
+                    data = b"header contents" if kind != "empty" else b""
+                    if suffix == ".zip":
+                        entry = zipfile.ZipInfo(name + ("/" if kind == "directory" else ""))
+                        entry.external_attr = ((stat.S_IFDIR if kind == "directory" else stat.S_IFREG) | 0o644) << 16
+                        with zipfile.ZipFile(archive, "w") as stream:
+                            stream.writestr(entry, data)
+                    else:
+                        entry = tarfile.TarInfo(name)
+                        entry.size = len(data)
+                        if kind == "directory":
+                            entry.type, entry.size = tarfile.DIRTYPE, 0
+                        with tarfile.open(archive, "w:gz") as stream:
+                            stream.addfile(entry, io.BytesIO(data))
+                    if kind == "present":
+                        deps.extract_archive(archive, destination, "package", ["include/RI/physics/LR.h"])
+                        self.assertEqual((destination / header).read_bytes(), data)
+                    else:
+                        with self.assertRaisesRegex(ValueError, "nonempty regular dependency file"):
+                            deps.extract_archive(archive, destination, "package", ["include/RI/physics/LR.h"])
+                        self.assertFalse(destination.exists())
+
+    def test_download_cache_is_pinned_shared_and_never_expands_archives(self):
+        payload = b"opaque archive bytes; never extract on the host"
+        item = dict(file="LibRI.tar.gz", url="https://example.invalid/LibRI.tar.gz",
+                    sha256=hashlib.sha256(payload).hexdigest())
+        lock = {"archives": [item, dict(file="site-only.tar.gz", sha256="a" * 64)]}
+        with tempfile.TemporaryDirectory() as temporary:
+            cache = Path(temporary) / "cache"
+            start = threading.Barrier(4)
+            def populate(_):
+                start.wait(timeout=5)
+                deps.cache_archives(cache, lock)
+            with patch.object(deps, "urlopen", side_effect=lambda *a, **kw: io.BytesIO(payload)) as download, \
+                    ThreadPoolExecutor(max_workers=4) as pool:
+                list(pool.map(populate, range(4)))
+                deps.cache_archives(cache, lock)
+            download.assert_called_once_with(item["url"], timeout=120)
+            self.assertEqual((cache / item["file"]).read_bytes(), payload)
+            self.assertEqual({path.name for path in cache.iterdir()}, {item["file"], ".archives.lock"})
+            self.assertEqual(stat.S_IMODE((cache / item["file"]).stat().st_mode), 0o444)
+
+    def test_download_cache_rejects_bad_contents_and_preserves_existing_files(self):
+        item = dict(file="LibRI.tar.gz", url="https://example.invalid/LibRI.tar.gz",
+                    sha256=hashlib.sha256(b"expected").hexdigest())
+        lock = {"archives": [item]}
+        for kind in ("bad-download", "existing-mismatch", "symlink"):
+            with self.subTest(kind=kind), tempfile.TemporaryDirectory() as temporary:
+                cache = Path(temporary)
+                archive = cache / item["file"]
+                if kind == "existing-mismatch":
+                    archive.write_bytes(b"preserve existing")
+                elif kind == "symlink":
+                    (cache / "target").write_bytes(b"expected")
+                    archive.symlink_to(cache / "target")
+                with patch.object(deps, "urlopen", return_value=io.BytesIO(b"wrong")) as download:
+                    with self.assertRaisesRegex(ValueError, "checksum mismatch|changed cached dependency"):
+                        deps.cache_archives(cache, lock)
+                if kind == "bad-download":
+                    self.assertFalse(archive.exists())
+                    self.assertEqual({path.name for path in cache.iterdir()}, {".archives.lock"})
+                else:
+                    download.assert_not_called()
+                    self.assertEqual(archive.is_symlink(), kind == "symlink")
+                    self.assertEqual(archive.read_bytes(), b"expected" if kind == "symlink" else b"preserve existing")
+
+    def test_unpack_selects_update_cache_only_for_url_archives(self):
+        items = [dict(file="site.tar.gz", root="site", sha256="a" * 64),
+                 dict(file="updated.tar.gz", root="updated", sha256="a" * 64,
+                      url="https://example.invalid/update", required_files=["include/RI/physics/LR.h"])]
+        source, destination = Path("/input/abacus-dependencies"), Path("/workspace/dependencies")
+        with patch.object(Path, "exists", return_value=False), \
+                patch.object(Path, "is_file", return_value=True), \
+                patch.object(Path, "mkdir"), patch.object(Path, "write_text"), \
+                patch.object(deps, "checksum", return_value="a" * 64) as digest, \
+                patch.object(deps, "extract_archive") as extract:
+            deps.unpack(source, destination, {"archives": items})
+        self.assertEqual([call.args[0] for call in digest.call_args_list],
+                         [source / "site.tar.gz", Path(deps.CACHE_MOUNT) / "updated.tar.gz"])
+        self.assertEqual([call.args for call in extract.call_args_list],
+                         [(source / "site.tar.gz", destination, "site", ()),
+                          (Path(deps.CACHE_MOUNT) / "updated.tar.gz", destination, "updated",
+                           ["include/RI/physics/LR.h"])])
+
+    def test_uploaded_cache_source_is_offline_and_hits_do_not_require_reupload(self):
+        payload = b"uploaded archive"
+        item = dict(file="LibRI.tar.gz", url="https://example.invalid/LibRI.tar.gz",
+                    sha256=hashlib.sha256(payload).hexdigest())
+        with tempfile.TemporaryDirectory() as temporary, patch.object(deps, "urlopen") as download:
+            root = Path(temporary)
+            source, cache = root / "input", root / "cache"
+            source.mkdir()
+            (source / item["file"]).write_bytes(payload)
+            deps.cache_archives(cache, {"archives": [item]}, source=source)
+            (source / item["file"]).unlink()
+            deps.cache_archives(cache, {"archives": [item]}, source=source)
+            self.assertEqual((cache / item["file"]).read_bytes(), payload)
+            self.assertEqual({path.name for path in cache.iterdir()}, {item["file"], ".archives.lock"})
+        download.assert_not_called()
+
+    def test_bad_uploaded_source_never_falls_back_to_network_or_leaves_partial_cache(self):
+        item = dict(file="LibRI.tar.gz", url="https://example.invalid/LibRI.tar.gz",
+                    sha256=hashlib.sha256(b"expected").hexdigest())
+        for kind in ("missing", "mismatch", "symlink"):
+            with self.subTest(kind=kind), tempfile.TemporaryDirectory() as temporary, \
+                    patch.object(deps, "urlopen") as download:
+                root = Path(temporary)
+                source, cache = root / "input", root / "cache"
+                source.mkdir()
+                uploaded = source / item["file"]
+                if kind == "mismatch":
+                    uploaded.write_bytes(b"wrong")
+                elif kind == "symlink":
+                    (root / "target").write_bytes(b"expected")
+                    uploaded.symlink_to(root / "target")
+                with self.assertRaisesRegex(ValueError, "uploaded dependency|checksum mismatch"):
+                    deps.cache_archives(cache, {"archives": [item]}, source=source)
+                download.assert_not_called()
+                self.assertEqual({path.name for path in cache.iterdir()}, {".archives.lock"})
 
     def test_zip_executable_modes_survive_and_zip_links_are_rejected(self):
         parent = ROOT / ".test-work"
@@ -149,12 +282,26 @@ class ParityTests(unittest.TestCase):
             script = controller.render_job(args)
         mount = self.lock["site_archive_root"] + ":/input/abacus-dependencies:ro"
         self.assertIn(mount, script)
+        if any("url" in item for item in self.lock["archives"]):
+            self.assertIn(f"/home/test/sai-hpc-software/{deps.ARCHIVE_CACHE}:{deps.CACHE_MOUNT}:ro", script)
         self.assertNotIn("--bind /opt/apps:/opt/apps", script)
         verify = next(line for line in script.splitlines() if "container_entry.sh verify" in line)
         self.assertNotIn("/input/abacus-dependencies", verify)
+        self.assertNotIn(deps.CACHE_MOUNT, verify)
         subprocess.run(["bash", "-n"], input=script, text=True, check=True)
         for name in ("abacus_dependencies.py", "abacus_dependencies.sh", "abacus_dependency_lock.json", "abacus_features.py"):
             self.assertIn(name, controller.contract_files("abacus"))
+
+    def test_site_only_dependencies_do_not_create_or_bind_an_update_cache(self):
+        lock = dict(self.lock, archives=[item for item in self.lock["archives"] if "url" not in item])
+        with tempfile.TemporaryDirectory() as temporary, patch.object(deps, "load_lock", return_value=lock), \
+                patch.object(deps, "urlopen") as download:
+            cache = Path(temporary) / "unused"
+            deps.cache_archives(cache)
+            self.assertFalse(cache.exists())
+            self.assertEqual(deps.dependency_binds(Path("/home/test/sai-hpc-software")),
+                             ((Path(lock["site_archive_root"]), "/input/abacus-dependencies"),))
+        download.assert_not_called()
 
     def test_nep_is_recompiled_with_soname_and_runtime_env_is_prefix_relative(self):
         recipe = (ROOT / "controller/abacus_dependencies.sh").read_text()

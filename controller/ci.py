@@ -136,6 +136,14 @@ def main():
     ssh(["test", "-s", f"{root}/containers/base/minimal-v1.sif"])
     resume = os.environ.get("RESUME_RUN", "")
     extras = ["--resume-run", safe_name(resume)] if resume else []
+    if software == "abacus":
+        from abacus_dependencies import cache_archives, load_lock
+        updates = temporary / "abacus-updates"
+        cache_archives(updates)
+        ssh(["mkdir", "-p", f"{task}/input/abacus-updates"])
+        for item in load_lock()["archives"]:
+            if "url" in item:
+                upload(updates / item["file"], f"{task}/input/abacus-updates/{item['file']}")
     python("software_controller.py", "submit", software, run_id, upstream, version, target,
            *provenance_flags, *extras)
     try:

@@ -10,7 +10,7 @@
   "required_gpu_options": ["USE_CUDA", "USE_CUDA_MPI", "ENABLE_CUSOLVERMP", "ENABLE_CUBLASMP", "ENABLE_NCCL_PARALLEL_DEVICE"],
   "not_in_observed_baseline": ["DeePMD-kit", "TensorFlow", "PEXSI", "cnpy", "DFT-D4", "ROCm"],
   "archives": [
-    {"name": "LibRI", "version": "2.1.1", "file": "LibRI-master.tar.gz", "root": "LibRI-master", "sha256": "67a021f7def0a89ec1505806ad4d8bfe80675a8961d8327e91e73c72d6351f1e"},
+    {"name": "LibRI", "version": "2.1.1-b0eff7a", "file": "LibRI-b0eff7a.tar.gz", "root": "LibRI-b0eff7a", "sha256": "bee9df54e0d827942524640897c3a57c0c738d2db6b2d73a09ab6c054bef94ea", "url": "https://codeload.github.com/abacusmodeling/LibRI/tar.gz/b0eff7a", "required_files": ["include/RI/version.h", "include/RI/physics/LR.h", "include/RI/ri/Cell_Nearest.h"], "provenance": "ABACUS 42f8ad905d567e965ae53fc554498bdc7e9ccbcc toolchain/scripts/package_versions.sh and cmake/modules/FindLibRI.cmake; older site 2.1.1 archive lacks the BSE LR API despite identical version macros"},
     {"name": "LibComm", "version": "site-master-content-pinned", "file": "LibComm-master.tar.gz", "root": "LibComm-master", "sha256": "c292079dc4928ccce1f9a1b797bc4363087ee68c64f99e8ddcce2fb99405bbee"},
     {"name": "libnpy", "version": "1.0.1", "file": "libnpy-1.0.1.tar.gz", "root": "libnpy-1.0.1", "sha256": "43452a4db1e8c1df606c64376ea1e32789124051d7640e7e4e8518ab4f0fba44"},
     {"name": "NEP_CPU", "version": "site-main-content-pinned", "file": "nep-main.tar.gz", "root": "NEP_CPU-main", "sha256": "68cea08bf8356fd0584180a18ecb34c3346670a3ab797f93796d77c8cfcfaba1"},

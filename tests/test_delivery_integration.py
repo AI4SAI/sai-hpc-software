@@ -1,5 +1,7 @@
 """Identity continuity is mandatory from the first compile prefix to runtime."""
 import argparse
+from contextlib import redirect_stdout
+import io
 import json
 from pathlib import Path
 import subprocess
@@ -11,6 +13,7 @@ from unittest.mock import patch
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "controller"))
 import delivery_layout as layout
+import abacus_dependencies as dependencies
 import software_controller as controller
 from release_contract import make_identity
 from source_cache import checksum
@@ -150,6 +153,39 @@ class DeliveryIntegrationTests(unittest.TestCase):
                     controller.submit(args)
             self.assertEqual([str(item.args[0][0]) for item in call.call_args_list], ["git"])
             self.assertFalse((self.root / "runs/new/job.sbatch").exists())
+
+    def test_dependency_cache_is_verified_before_sbatch_and_failure_cannot_submit(self):
+        args = argparse.Namespace(software="abacus", run_id="new", sha="a" * 40, version="v1",
+                                  target="4v100-avx512", track="development", source_ref="develop",
+                                  jobs=8, minutes=30, overlay_mb=8192, resume_run=None)
+        for failed in (True, False):
+            with self.subTest(failed=failed):
+                operations = []
+
+                def cache(path, *, source):
+                    self.assertEqual(path, self.root / dependencies.ARCHIVE_CACHE)
+                    self.assertEqual(source, self.root / "runs/new/input/abacus-updates")
+                    operations.append("dependencies")
+                    if failed:
+                        raise ValueError("pinned archive mismatch")
+
+                def call(argv, **kwargs):
+                    operations.append(str(argv[0]))
+                    return subprocess.CompletedProcess(argv, 0, stdout="12345\n")
+
+                with patch.object(controller, "ROOT", self.root), \
+                        patch.object(controller, "recipe_fingerprint", return_value="b" * 64), \
+                        patch.object(controller, "render_job", return_value="#!/bin/bash\ntrue\n"), \
+                        patch.object(controller, "call", side_effect=call), \
+                        patch.object(dependencies, "cache_archives", side_effect=cache), \
+                        redirect_stdout(io.StringIO()):
+                    if failed:
+                        with self.assertRaisesRegex(ValueError, "pinned archive mismatch"):
+                            controller.submit(args)
+                    else:
+                        controller.submit(args)
+                self.assertEqual(operations, ["git", "dependencies"] + ([] if failed else ["bash", "sbatch"]))
+                self.assertEqual((self.root / "runs/new/job.id").exists(), not failed)
 
 
 if __name__ == "__main__":
