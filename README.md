@@ -2,7 +2,8 @@
 
 Independent GitHub Actions → SSH → Slurm → Apptainer builds on SAI.
 ABACUS has automated build and scientific acceptance. CP2K has a separate manually dispatched
-recipe; its historical hand-built SIF is not a validated catalog release (see the acceptance record).
+candidate recipe; automatic builds and publication remain disabled until its scientific
+acceptance is integrated. Its historical hand-built SIF is not a validated catalog release.
 
 ## Container contract
 
@@ -11,7 +12,7 @@ Host source/build/install trees are **not** mounted writable. A build uses the p
 installation and final filesystem assembly all happen inside that image.
 
 The successful artifact is one read-only SquashFS-backed SIF. It contains
-`/opt/software/abacus/<version>/<target>` at exactly that path. The installed
+`/opt/software/<software>/<track>/<build_id>/<PARTITION>` at exactly that path. The installed
 administrator dependencies are reused read-only at their original paths:
 `/opt/devtools`, `/opt/modules`, `/usr`, `/lib`, `/lib64`.
 The entire `/opt` is never bound over the installation.
@@ -21,10 +22,20 @@ site-wide bind paths and host temporary directories are disabled; the build also
 PID namespace and a network namespace with no external network. This is filesystem/process
 containment using the shared host kernel, **not a VM or a guarantee against kernel exploits**.
 
-`4V100` and `16V100` are separate build targets. A real compute-node probe established
-`znver4` plus AVX-512 dependencies on `4V100`, and `znver3` plus AVX2 dependencies on
-`16V100`; both use V100 `sm_70`. Builds use those explicit CPU architectures and fail if
-the target node or auto-selected MPI/BLAS dependency does not match the profile.
+Every partition is a separate native build target. Configuration and compilation run on
+the selected compute node with `-march=native -mtune=native`, not on the login host.
+Actual GCC native flags, hardware and module selection are recorded.
+
+| Partition | Target | Native CPU profile | Site MPI/BLAS ISA | GPU |
+| --- | --- | --- | --- | --- |
+| DSPRHBM | `dsprhbm` | Sapphire Rapids | AVX-512 | none |
+| 4V100 | `4v100-avx512` | Zen 4 | AVX-512 | sm70 |
+| 16V100 | `16v100-avx2` | Zen 3 | AVX2 | sm70 |
+| 8V100V0 | `8v100v0-avx512` | Skylake AVX-512 (Gold 6146) | AVX2 | sm70 |
+
+The last row is intentional: Gold 6146 has AVX-512 but lacks VNNI. The site's auto
+modules select compatible AVX2 dependencies; an AVX-512 CPU flag is not permission to
+load the newer Zen 4 dependency build. Every target verifies its actual selection.
 
 Successful builds remove their ext3 work image after verifying the final SIF. Failed builds
 retain just that single image for diagnosis, not an expanded sandbox.
@@ -37,7 +48,7 @@ All project files live below `/home/stardust/sai-hpc-software`:
 
 ```text
 containers/base/minimal-v1.sif
-containers/software/abacus/<version>/<target>/<run-id>.sif
+containers/software/<software>/<track>/<build_id>/<PARTITION>/<run-id>.sif
 cache/repositories/abacus/        # bare Git objects, never checked out on host
 controller/<controller-sha>/<run-id>/ # trusted code snapshot, never overwritten by another run
 runs/<run-id>/input/             # verified compressed bundle parts when needed
@@ -45,7 +56,7 @@ runs/<run-id>/results/           # Slurm log, state, artifact checksum
 runs/<run-id>/runtime/           # Apptainer runtime work, not source/build/install
 runs/<run-id>/work.ext3          # one temporary file, retained on failure
 runs/<run-id>/artifact.path      # candidate SIF location after build verification
-modulefiles/apps/abacus/<version> # generated user module for a verified version
+modulefiles/apps/abacus/<track>/<build_id> # partition selector for accepted SIFs
 runtime-tests/<run-id>/          # bounded multi-node acceptance inputs, logs and rank evidence
 ```
 
@@ -54,12 +65,16 @@ Do not infer success from earlier smoke images or a GitHub validation-only run.
 
 ## Source tracking and cache
 
-Dispatch `Build HPC software` with a branch/tag, a full commit, `latest-release`
-or `latest-prerelease`. Release and branch selectors resolve live to the actual upstream
-commit. No synthetic/orphan commits are substituted.
+Dispatch `Build HPC software` with a comma-separated subset of `development,prerelease,release`
+and registered targets. Each channel resolves live to its actual upstream commit.
+No synthetic/orphan commits are substituted. Development install and module names use
+`<branch>-<commit-UTC-date>-g<source-sha12>-r<recipe-sha12>`, for example
+`develop-2026-09-13-g0123456789ab-rabcdef012345`. A retry on another day retains the same
+build identity. SIF filenames also include the submission UTC date before the source SHA;
+the Actions run ID and attempt distinguish retries.
 
-The daily tracker runs at 02:23 UTC using `profiles/tracking.json`. It checks the
-branch, stable release and prerelease channels. Scheduled runs skip an unchanged
+The ABACUS daily tracker runs at 02:23 UTC. `profiles/software-tracking.json` documents
+the shared software/channel/partition contract. Scheduled runs skip an unchanged
 version only when the source SHA, deployed recipe fingerprint, SIF checksum, successful build
 status, and current scientific acceptance contract all match. Legacy `verified: true` alone is
 insufficient. A cache hit rechecks saved raw scientific evidence; it does not launch another job.
@@ -70,6 +85,8 @@ Build verification creates a **candidate**, with `build_verified: true` but
 `verified: false, published: false`. It does not update `current.sif` or the module.
 Only `software_controller.py publish RUN_ID`, after all required acceptance has passed,
 exposes the image. A failed acceptance leaves the previous published image unchanged.
+CP2K currently stops at the candidate stage; direct publication and accepted-cache lookup
+cannot treat its missing scientific acceptance as success.
 The gate binds the build, image, launcher, verifier, job, raw rank traces and scientific
 outputs by checksums; an exit code of zero without those results does not pass.
 
@@ -103,7 +120,7 @@ No private key is committed. Only scheduled and manually dispatched trusted runs
 push and PR runs only validate. Keep the `hpc` Environment limited to trusted branches.
 
 Targets: `dsprhbm` (DSPRHBM), `4v100-avx512` (4V100),
-`16v100-avx2` (16V100). The A100 recipe remains in the code, but ABACUS publication is disabled
+`16v100-avx2` (16V100), `8v100v0-avx512` (8V100V0). The A100 recipe remains in the code, but ABACUS publication is disabled
 until an A100 runtime acceptance is registered.
 Pass a comma-separated subset to dispatch. CPU (DSPRHBM) is the default acceptance target.
 Every build runs independently with its own overlay, logs and SIF path. GitHub retains logs
@@ -126,7 +143,7 @@ this contract before their partition has a `current.module` entry.
 ```bash
 source /etc/profile.d/lmod.sh
 module use /home/stardust/sai-hpc-software/modulefiles/apps
-module load abacus/<version>
+module load abacus/<track>/<build_id>
 source /opt/sai_config/mps_mapping.d/${SLURM_JOB_PARTITION}.bash
 export MAP_OPT SLURM_EXPORT_ENV=ALL
 export OMPI_MCA_plm_slurm_args=--external-launcher
@@ -175,9 +192,18 @@ apptainer exec --cleanenv --containall --no-home \
   --no-mount bind-paths,home,cwd,tmp,hostfs --pwd / \
   --bind /usr:/usr:ro --bind /lib:/lib:ro --bind /lib64:/lib64:ro \
   --bind /opt/devtools:/opt/devtools:ro \
-  /home/stardust/sai-hpc-software/containers/software/abacus/VERSION/TARGET/RUN.sif \
-  /usr/bin/find /opt/software -maxdepth 5 -type f
+  /home/stardust/sai-hpc-software/containers/software/abacus/TRACK/BUILD_ID/PARTITION/RUN.sif \
+  /usr/bin/find /opt/software -maxdepth 7 -type f
 ```
+
+## Native delivery
+
+The shared exporter packages each install as one complete folder, including
+`share/sai/manifest.json` and `modulefiles/`. It does not create `/opt/sai-delivery`.
+An arbitrary export destination is staging, not a claim that compiled-in paths are relocatable.
+See [native delivery](docs/native-delivery.md) for usage and tested limits: shared tooling has
+passed real SIF/Tcl checks, while per-software native inventories and full-feature science/speed
+acceptance remain on independent experimental branches.
 
 The SIF records the upstream SHA, module list and CMake cache below the installation's
 `share/sai/` directory. Loading its recorded modules is required to run software
