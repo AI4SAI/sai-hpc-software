@@ -141,8 +141,8 @@ class RuntimeArtifactCacheTests(unittest.TestCase):
     def test_changed_image_is_rejected_even_when_size_and_mtime_are_restored(self):
         self.runtime()
         before = self.artifact.stat()
-        # Filesystems may update ctime at a coarser resolution than stat's ns unit.
-        time.sleep(0.01)
+        # The deployment's Lustre timestamps have second precision despite stat's ns unit.
+        time.sleep(1.1)
         self.artifact.write_bytes(b"X" * before.st_size)
         os.utime(self.artifact, ns=(before.st_atime_ns, before.st_mtime_ns))
         after = self.artifact.stat()
@@ -162,7 +162,8 @@ class RuntimeArtifactCacheTests(unittest.TestCase):
             os.utime(replacement, ns=(before.st_atime_ns, before.st_mtime_ns))
             replacement.replace(self.artifact)
             self.runtime()
-            os.utime(self.artifact, ns=(before.st_atime_ns, before.st_mtime_ns + 1000000))
+            os.utime(self.artifact, ns=(before.st_atime_ns, before.st_mtime_ns + 2000000000))
+            self.assertNotEqual(self.artifact.stat().st_mtime_ns, before.st_mtime_ns)
             self.runtime()
             self.assertEqual(hashes.call_count, 3)
 
