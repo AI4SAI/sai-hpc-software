@@ -35,6 +35,11 @@ case "$target" in
   dsprhbm)
     grep -qw avx512f /proc/cpuinfo
     ;;
+  8v100v0-avx512)
+    grep -qw avx512f /proc/cpuinfo
+    ! grep -qw avx512_vnni /proc/cpuinfo
+    [[ "${MPI_HOME:-}" == *-avx2 && "${OPENBLAS_ROOT:-}" == *-avx2 ]]
+    ;;
   a100) ;;
   *) echo "unknown build target: $target" >&2; return 2 ;;
 esac

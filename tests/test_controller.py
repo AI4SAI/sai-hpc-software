@@ -16,6 +16,14 @@ import remote_controller as policy
 import software_controller as controller
 import runtime_controller as runtime
 import source_cache as cache
+from release_contract import make_identity
+from delivery_layout import artifact_path, catalog_dir
+
+def runtime_identity(args, root):
+    args.identity = make_identity("abacus", "development", "develop", "a" * 40,
+                                  args.version, "b" * 64, args.target)
+    args.artifact = str(artifact_path(root, args.identity, "build"))
+    return args
 
 class PolicyTests(unittest.TestCase):
     def test_no_writable_host_binds_or_whole_opt(self):
@@ -47,11 +55,17 @@ class PolicyTests(unittest.TestCase):
         self.assertEqual(policy.TARGETS["dsprhbm"]["cpu_arch"], "x86-64-v4")
         self.assertNotIn("v100", policy.TARGETS)
         self.assertNotIn("cpu-misc", policy.TARGETS)
+        skylake = policy.TARGETS["8v100v0-avx512"]
+        self.assertEqual(skylake["partition"], "8V100V0")
+        self.assertEqual(skylake["cpu_arch"], "skylake-avx512")
+        self.assertEqual(skylake["dependency_isa"], "avx2")
+        self.assertEqual(skylake["build_jobs"], 6)
 
     def test_job_is_single_file_build(self):
         args = argparse.Namespace(software="abacus", run_id="test-1", sha="a" * 40,
                                   version="develop-aaaa", target="dsprhbm",
-                                  jobs=8, minutes=60, overlay_mb=8192)
+                                  jobs=8, minutes=60, overlay_mb=8192,
+                                  track="development", source_ref="develop")
         with patch.object(controller, "ROOT", Path("/home/test/sai-hpc-software")):
             script = controller.render_job(args)
         self.assertNotIn("--sandbox", script)
@@ -79,6 +93,7 @@ class PolicyTests(unittest.TestCase):
         args = argparse.Namespace(run_id="runtime-test", version="develop-aaaa",
                                   target="16v100-avx2", nodes=2,
                                   gpus_per_node=1, minutes=30)
+        runtime_identity(args, Path("/home/test/sai-hpc-software"))
         with patch.object(runtime, "ROOT", Path("/home/test/sai-hpc-software")):
             script = runtime.render_job(args)
         self.assertIn("#SBATCH --partition=16V100", script)
@@ -108,7 +123,7 @@ class PolicyTests(unittest.TestCase):
         launcher = (ROOT / "controller/abacus_runtime.sh").read_text()
         self.assertIn("apptainer exec", launcher)
         self.assertIn("--nv", launcher)
-        self.assertIn('-f "$image"', launcher)
+        self.assertIn('delivery_layout.py" runtime', launcher)
         self.assertIn('--bind "$host_tmp:$host_tmp:rw"', launcher)
         self.assertIn('TMPDIR=$host_tmp', launcher)
         self.assertIn('rmdir -- "$job_runtime"', launcher)
@@ -122,6 +137,7 @@ class PolicyTests(unittest.TestCase):
         args = argparse.Namespace(run_id="runtime-test", version="develop-aaaa",
                                   target="dsprhbm", nodes=2, gpus_per_node=0,
                                   ranks_per_node=8, cpus_per_task=2, minutes=30)
+        runtime_identity(args, Path("/home/test/sai-hpc-software"))
         with patch.object(runtime, "ROOT", Path("/home/test/sai-hpc-software")):
             script = runtime.render_job(args)
         self.assertIn("#SBATCH --partition=DSPRHBM", script)
@@ -155,11 +171,15 @@ class PolicyTests(unittest.TestCase):
         with tempfile.TemporaryDirectory(dir=parent) as directory:
             root = Path(directory)
             build_run = "build-run"
-            artifact = root / "containers/software/abacus/v1/16v100-avx2/build-run.sif"
+            identity = make_identity("abacus", "development", "develop", "a" * 40, "v1", "b" * 64, "16v100-avx2")
+            artifact = artifact_path(root, identity, build_run)
             artifact.parent.mkdir(parents=True)
             artifact.write_bytes(b"sif")
             sidecar = artifact.with_suffix(".json")
             sidecar.write_text(json.dumps({
+                "identity": identity, "software": "abacus", "source_sha": "a" * 40,
+                "recipe_sha256": "b" * 64, "contract_schema": controller.CONTRACT_SCHEMA,
+                "build_verified": True,
                 "verified": True,
                 "artifact": str(artifact),
                 "version": "v1",
@@ -168,6 +188,7 @@ class PolicyTests(unittest.TestCase):
             }))
             build_task = root / "runs" / build_run
             build_task.mkdir(parents=True)
+            (build_task / "request.json").write_text(sidecar.read_text())
             (build_task / "artifact.path").write_text(str(artifact) + "\n")
             with patch.object(runtime, "ROOT", root):
                 self.assertEqual(
@@ -186,20 +207,28 @@ class PolicyTests(unittest.TestCase):
             control.mkdir(parents=True)
             launcher = control / "abacus"
             launcher.write_text("#!/bin/bash\n")
-            target = root / "containers/software/abacus/v1/4v100-avx512"
+            identity = make_identity("abacus", "development", "develop", "a" * 40, "v1", "b" * 64, "4v100-avx512")
+            target = catalog_dir(root, identity)
             target.mkdir(parents=True)
             artifact = target / "run.sif"
             artifact.write_bytes(b"sif")
-            request = {"controller": str(control), "version": "v1"}
-            manifest = {}
-            with patch.object(controller, "ROOT", root):
+            request = {"controller": str(control), "version": "v1", "target": "4v100-avx512",
+                       "software": "abacus", "sha": "a" * 40, "recipe_sha256": "b" * 64, "identity": identity}
+            manifest = dict(request)
+            # Publication mechanics are separate from the fail-closed gate,
+            # exercised with complete evidence in test_publication.py.
+            with patch.object(controller, "ROOT", root), patch.object(controller, "CONTROL", control), \
+                    patch.object(controller, "validate_candidate"), \
+                    patch.object(controller, "recipe_fingerprint", return_value="b" * 64), \
+                    patch.object(controller, "required_acceptance", return_value=()):
                 controller.publish_runtime_entry(request, artifact, manifest)
             self.assertEqual((target / "current.sif").resolve(), artifact)
-            module = root / "modulefiles/apps/abacus/v1"
-            self.assertIn(str(control), module.read_text())
+            module = root / "modulefiles/apps/abacus/development" / identity["build_id"]
+            self.assertIn('current.module', module.read_text())
+            self.assertIn(str(control), Path(manifest['module_fragment']).read_text())
             self.assertEqual(manifest["runtime_launcher_sha256"], cache.checksum(launcher))
 
-    def test_catalog_rejects_changed_artifact(self):
+    def test_catalog_rejects_artifact_without_build_provenance(self):
         parent = ROOT / ".test-work"
         parent.mkdir(exist_ok=True)
         with tempfile.TemporaryDirectory(dir=parent) as directory:
@@ -208,17 +237,24 @@ class PolicyTests(unittest.TestCase):
             folder.mkdir(parents=True)
             image = folder / "run.sif"
             image.write_bytes(b"test image data")
-            data = {"verified": True, "source_sha": "a" * 40, "target": "dsprhbm",
+            data = {"verified": True, "published": True, "build_verified": True,
+                    "contract_schema": controller.CONTRACT_SCHEMA, "recipe_sha256": "b" * 64,
+                    "software": "abacus", "version": "v1", "source_sha": "a" * 40, "target": "dsprhbm",
                     "artifact": str(image), "sha256": cache.checksum(image)}
             image.with_suffix(".json").write_text(json.dumps(data))
-            args = argparse.Namespace(software="abacus", version="v1", target="dsprhbm", sha="a" * 40)
+            args = argparse.Namespace(software="abacus", version="v1", target="dsprhbm", sha="a" * 40,
+                                      track="development", source_ref="develop")
             first = io.StringIO()
-            with patch.object(controller, "ROOT", root), redirect_stdout(first):
+            with patch.object(controller, "ROOT", root), redirect_stdout(first), \
+                    patch.object(controller, "recipe_fingerprint", return_value="b" * 64), \
+                    patch.object(controller, "validate_acceptance"):
                 controller.lookup(args)
-            self.assertEqual(json.loads(first.getvalue())["artifact"], str(image))
+            self.assertEqual(json.loads(first.getvalue()), {})
             image.write_bytes(b"changed")
             second = io.StringIO()
-            with patch.object(controller, "ROOT", root), redirect_stdout(second):
+            with patch.object(controller, "ROOT", root), redirect_stdout(second), \
+                    patch.object(controller, "recipe_fingerprint", return_value="b" * 64), \
+                    patch.object(controller, "validate_acceptance"):
                 controller.lookup(args)
             self.assertEqual(json.loads(second.getvalue()), {})
 

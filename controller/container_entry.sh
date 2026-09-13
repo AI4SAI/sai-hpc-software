@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
 set -euo pipefail
-op=$1; software=$2; sha=$3; version=$4; target=$5
+umask 022
+op=$1; software=$2; sha=$3; version=$4; target=$5; delivery=${6:?canonical identity required}
 [[ "$software" == abacus && "$sha" =~ ^[0-9a-f]{40}$ ]]
-[[ "$version" =~ ^[A-Za-z0-9][A-Za-z0-9_.-]*$ ]]
-[[ "$target" == dsprhbm || "$target" == 4v100-avx512 || "$target" == 16v100-avx2 || "$target" == a100 ]]
+[[ "$target" == dsprhbm || "$target" == 4v100-avx512 || "$target" == 16v100-avx2 || "$target" == 8v100v0-avx512 || "$target" == a100 ]]
 export PATH=/usr/bin:/bin TMPDIR=/workspace/tmp
-export INSTALL_PREFIX="/opt/software/$software/$version/$target"
+INSTALL_PREFIX=$(python3 /control/delivery_layout.py prefix "$delivery" "$software" "$sha" "$version" "$target")
+export INSTALL_PREFIX
 metadata() {
     mkdir -p "$INSTALL_PREFIX/share/sai"
     printf '%s\n' "$sha" > "$INSTALL_PREFIX/share/sai/source-sha"
     printf '%s\n' "$target" > "$INSTALL_PREFIX/share/sai/target"
+    printf '%s\n' "$delivery" > "$INSTALL_PREFIX/share/sai/release-identity.json"
     module -t list > "$INSTALL_PREFIX/share/sai/modules.txt" 2>&1
     lscpu > "$INSTALL_PREFIX/share/sai/hardware.txt"
     env | sort | grep -E '^(CUDA|ELPA|MPI|OMPI|OPAL|OPENBLAS|PMIX|ScaLAPACK)_' \
@@ -51,15 +53,28 @@ case "$op" in
     rm -f -- /workspace/final.squashfs
     bash /control/create_rootfs.sh /workspace/export
     cp -a /opt/software /workspace/export/opt/software
+    chmod -R a+rX,u+w,go-w /workspace/export/opt/software
     mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"
     ;;
   verify)
+    python3 /control/delivery_layout.py prefix "$delivery" "$software" "$sha" "$version" "$target" \
+      --installed "$INSTALL_PREFIX/share/sai/release-identity.json"
     source "$INSTALL_PREFIX/share/sai/runtime-env.sh"
     test "$(cat "$INSTALL_PREFIX/share/sai/source-sha")" = "$sha"
-    "$INSTALL_PREFIX/bin/abacus" --info
+    info=$("$INSTALL_PREFIX/bin/abacus" --info)
+    printf '%s\n' "$info"
     dependencies=$(ldd "$INSTALL_PREFIX/bin/abacus")
     printf '%s\n' "$dependencies"
     if [[ "$dependencies" == *"not found"* ]]; then exit 1; fi
+    if [[ "$target" != dsprhbm ]]; then
+        for feature in CUSOLVERMP CUBLASMP NCCL_PARALLEL_DEVICE; do
+            grep -qx "ENABLE_${feature}:BOOL=ON" "$INSTALL_PREFIX/share/sai/CMakeCache.txt"
+        done
+        grep -Eq 'CUSOLVERMP Support:[[:space:]]+yes' <<< "$info"
+        grep -Eq 'libcusolverMp.so.*=> /opt/devtools/nvidia/mp_libs/lib/' <<< "$dependencies"
+        grep -Eq 'libcublasmp.so.*=> /opt/devtools/nvidia/mp_libs/lib/' <<< "$dependencies"
+        grep -Eq 'libnccl.so.*=> /opt/devtools/nvidia/nccl_' <<< "$dependencies"
+    fi
     if touch "$INSTALL_PREFIX/.write-test" 2>/dev/null; then echo 'artifact must be read-only' >&2; exit 1; fi
     ;;
   *) exit 2;;
