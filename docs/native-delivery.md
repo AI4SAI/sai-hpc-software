@@ -4,6 +4,10 @@
 清单与校验和只证明文件完整性，不能替代科学结果、功能和同资源速度验收。
 旧布局 SIF 不会自动获得新身份，也不能通过改目录名冒充新布局构建。
 
+交付单位是一份**完整安装文件夹**。程序、数据、安装清单、依赖说明和 module
+都在这个文件夹内部，不要求另建 `/opt/sai-delivery`，也不要求复制外置的
+modulefiles 或校验清单。系统预装依赖仍只读复用，不随安装树重复复制。
+
 ## 渠道、分区和命名
 
 五种软件统一使用 `development`、`prerelease`、`release` 三个渠道。
@@ -32,7 +36,7 @@ build_id = <version_label>-g<source_sha12>-r<recipe_sha12>[-s<stack_digest12>]
 完整 source SHA、recipe SHA、原始 ref/version、分区、CPU、CUDA 与依赖 ISA
 均保存在 `release_contract.make_identity()` 生成的身份对象中。
 DeepMD/LAMMPS 成对交付额外锁定两份源码；同分区的 companion 必须匹配
-完整 stack digest，不能把不同配对的组件拼在一起。
+完整 stack digest 与同次构建配方 SHA，不能把不同配对或不同配方的组件拼在一起。
 每个组件有新源码都可触发配对构建：优先使用伙伴的同渠道版本，仅当伙伴明确
 没有该渠道时使用其最新稳定版。两个身份各自保留真实渠道，不把稳定版重新
 标成预发布；若连稳定伙伴也不存在，则明确报告原因。相同的双身份组合去重。
@@ -68,10 +72,12 @@ load/unload 的分区选择行为，不得为加载模块而改写 `SLURM_*` 或
 
 ```bash
 python3 /control/export_native.py inventory --entry /workspace/native-entry.json
-# 成对安装可重复 --entry；输出 /opt/sai-delivery/manifest.json。
+# 成对安装可重复 --entry；在各自安装目录内生成 share/sai/manifest.json。
 ```
 
-该命令只扫描声明的安装前缀，不执行 runtime shell。
+该命令只在声明的安装前缀中生成原生 module 和清单，不执行 runtime shell。
+模块先生成，再计入清单的文件哈希；清单排除自身，避免“文件记录自己哈希”
+的循环，其完整性由 SIF 校验和及导出记录绑定。
 新增依赖若不在系统中，应安装到交付前缀内的明确子目录，或按同一契约另行
 打包；不能偷偷依赖 `/workspace`、`/control`、宿主用户目录或旧的共用临时前缀。
 普通文件必须全员可读，可执行文件全员可执行，目录全员可读、可遍历；
@@ -86,6 +92,7 @@ python3 /control/export_native.py inventory --entry /workspace/native-entry.json
 ```bash
 python3 controller/export_native.py export /shared/artifacts/build.sif \
   --image-sha256 <验收产物记录的完整SHA256> \
+  --prefix /opt/software/abacus/release/<build_id>/4V100 \
   --destination /shared/staging/abacus-release-build
 ```
 
@@ -95,26 +102,36 @@ python3 controller/export_native.py export /shared/artifacts/build.sif \
 
 ```text
 abacus-release-build/
-  rootfs/opt/software/abacus/release/<build_id>/4V100/...
+  bin/
+  lib/                         # 视实际安装内容而定
+  share/                       # 软件数据也在安装树内
+    sai/
+      manifest.json
+      native-module.tcl
+      export.json
+      README-export.txt
   modulefiles/abacus/release/<build_id>
-  inventory.json
-  export.json
-  README.txt
 ```
 
-`export.json` 列出每个真实 `/opt` 安装前缀、镜像/清单校验和及生成 module
-的校验和。只提取清单中的安装树；实际 SquashFS 文件类型、权限、大小与清单
+指定一个独立软件安装时，`--destination` 本身就是完整安装文件夹，没有
+`rootfs` 外壳。批量导出时，在目标下按 `<software>/<track>/<build_id>/<PARTITION>`
+排列多个完整文件夹，每份都有自己的清单和 module。若选择 DeePMD/LAMMPS
+配对的一方，会一并选择清单锁定的伙伴，不能只取一方后宣称配套依赖齐全。
+
+`share/sai/export.json` 列出该文件夹对应的真实 `/opt` 安装前缀、镜像/清单
+校验和及配套安装需求。只提取清单中的安装树；实际 SquashFS 文件类型、权限、大小与清单
 逐项对照，普通文件内容再按 SHA256 校验。链接必须逐路径组件解析，不能靠
-字符串规范化绕出边界；每个链接还会按字面路径单独核验。
+字符串规范化绕出边界；每个链接还会按字面路径单独核验。镜像中附带的 module
+还必须与受校验环境说明生成的内容完全一致，不接受任意 Tcl 脚本冒充。
 
 ## 物理部署与 module 使用
 
-把 `rootfs` 下所需分区的树复制到记录的绝对位置，或者让共享存储挂载在该
-规范路径；保留内部符号链接和 POSIX 权限。此脚本不做自动特权安装。
-`modulefiles` 可放在任意共享位置：
+把整个 `abacus-release-build` 文件夹复制到清单记录的安装路径，保留内部符号
+链接和 POSIX 权限；不必单独寻找或复制清单与 module。此脚本不做自动特权安装。
+部署完成后，直接使用安装目录自带的 `modulefiles`：
 
 ```bash
-module use /shared/software/modulefiles
+module use /opt/software/abacus/release/<build_id>/4V100/modulefiles
 # 在实际 Slurm allocation 中：
 module load abacus/release/<build_id>
 ```
@@ -125,6 +142,8 @@ selector 按 `SLURM_JOB_PARTITION` 找对应 `/opt/.../<PARTITION>/share/sai/nat
 卸载使用已加载时保存的分区，不重新按当前分区选库。模块直接把原生 `bin`
 加入 PATH，不调用 Apptainer 包装器；站点依赖优先用 `depends-on` 保留引用计数。
 未安装分区、错误身份或符号链接父路径会明确报错。
+每份安装附带相同版本的分区 selector，仍按实际 allocation 选择已部署的
+分区前缀，不会因为 MODULEPATH 来自某个分区就强制运行该分区二进制。
 
 “导出到任意位置”只指暂存位置，不承诺任意运行位置。编译时的 RPATH、Python
 解释器路径、CMake/pkg-config 数据和数据文件位置可能包含绝对前缀；不要将
@@ -144,13 +163,27 @@ module 中 `/opt` 替换为暂存路径后就宣称可重定位。正式物理�
 取决于缓存。这可能影响含启动时间的 benchmark；正式速度验收前需实现可信
 job/node 级校验复用，或者测试实际原生部署，不能删掉校验后直接宣称提速。
 
-2026-09-11 在 `SAI-stardust` 现场用 Apptainer 1.4.4 / Squashfs-tools 4.6.1
-验证了四分区小型 SIF 的完整导出，结果 PASS。探针位于
+2026-09-13 新布局验证：共享测试 155 项通过，其中导出专项 22 项、原生 module
+25 项包含真实 SquashFS/Tcl 测试。两位子 agent 分别实现导出与 module 打包，
+module agent 还独立审查和复跑导出测试；主 agent 独立复跑并在 SAI 现场验证
+小型 SIF 的“四分区批量导出”和“只选 4V100 导出一个完整文件夹”，均 PASS。
+新探针位于 `/home/stardust/sai-hpc-software/experimental/native-folder-export-20260913-r1`，
+对应代码 `ac5f20d`，镜像 SHA256：
+`aaed6b90366b2232517be0d78c9a6839461369dff21a89f2b8009fe8d4f81f88`。
+`export-4V100` 直接包含 `bin`、`modulefiles` 和 `share/sai/manifest.json`，
+没有 `rootfs` 外壳；清单和 module 从镜像原样提取并校验。
+探针明确为 `NOT-SOFTWARE-EXPORT-PROBE`，未执行软件、未修改系统 `/opt`，
+现场还确认宿主机 `/opt/sai-delivery` 不存在。该验证不能替代正式软件的重编、
+科学与速度验收。
+
+历史工具探针：2026-09-11 在 `SAI-stardust` 用 Apptainer 1.4.4 / Squashfs-tools 4.6.1
+验证过旧版四分区小型 SIF 导出，结果 PASS。它使用旧版外置清单布局，**不能
+作为本次单文件夹布局的验收证据**。历史探针位于
 `/home/stardust/sai-hpc-software/experimental/native-export-20260911-r1`，
 样品明确标识 `NOT-SOFTWARE-EXPORT-PROBE`，没有执行容器、没有修改系统 `/opt`，
 不属于软件科学产物。SIF SHA256：
 `d2f85f51a9533d2823aa6f12097449eb16a457da3d2f77d42e6372bbf72af9ed`。
-四份原生 fragment 和一份共用 selector 的校验和保存在现场 `export/export.json`。
+旧探针校验和保存在现场 `export/export.json`；该实验目录保留，不重标为新格式。
 另已现场用真实 Lmod 验证：登录节点 `module show` 正常，`module load` 因没有
 Slurm allocation 按预期退出 1，未设置 `SAI_ABACUS_PREFIX`，也未加载 payload。
 `controller/probe_native_export.py` 提供可重复生成与验证流程；本地 fixture 需要
