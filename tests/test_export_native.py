@@ -305,6 +305,25 @@ class RealSquashfsTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "reserved"):
             delivery.inventory([item], self.source)
 
+    def test_multiple_environment_keys_survive_manifest_roundtrip_and_real_export(self):
+        item = entry()
+        prefix = item["identity"]["install_prefix"]
+        item["runtime"] = {
+            "modules": ["zeta/1.0", "alpha/1.0"],
+            "prepend": {"PATH": [prefix + "/bin"],
+                        "LD_LIBRARY_PATH": [prefix + "/lib/z", prefix + "/lib/a"]},
+            "set": {"OMP_NUM_THREADS": "2", "ABACUS_ROOT": prefix},
+        }
+        with patch(__name__ + ".entry", return_value=item):
+            image, manifest = self.build_image()
+        self.assertEqual(delivery.read_installed_manifests([item], self.source), manifest)
+        self.export(image)
+        fragment = (self.root / "export" / delivery.FRAGMENT_PATH).read_text()
+        self.assertEqual(fragment, (self.source / prefix.lstrip("/") / delivery.FRAGMENT_PATH).read_text())
+        self.assertLess(fragment.index('depends-on "zeta/1.0"'), fragment.index('depends-on "alpha/1.0"'))
+        self.assertLess(fragment.index('prepend-path LD_LIBRARY_PATH "' + prefix + '/lib/a"'),
+                        fragment.index('prepend-path LD_LIBRARY_PATH "' + prefix + '/lib/z"'))
+
     def test_self_manifest_must_be_regular_readonly_and_not_list_itself(self):
         _, manifest = self.build_image()
         prefix = manifest["entries"][0]["identity"]["install_prefix"].lstrip("/")
