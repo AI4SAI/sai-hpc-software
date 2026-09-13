@@ -1,5 +1,6 @@
 """Validate native delivery modules with a real Tcl interpreter and mocked Lmod."""
 import copy
+import json
 import os
 from pathlib import Path
 import shutil
@@ -28,6 +29,14 @@ def example(software="abacus", target="4v100-avx512", track="development"):
 
 
 class NativeValidationTests(unittest.TestCase):
+    def test_native_module_is_stable_after_canonical_manifest_serialization(self):
+        entry = example("gpumd")
+        entry["commands"].update(nep="bin/nep", gnep="bin/gnep")
+        entry["runtime"]["set"].update(GPUMD_SRC=entry["identity"]["install_prefix"] + "/share/gpumd/src",
+                                      DP_CUDA_INFER="2")
+        serialized = json.loads(json.dumps(entry, sort_keys=True))
+        self.assertEqual(render_native_fragment(entry), render_native_fragment(serialized))
+
     def test_identity_is_fully_recomputed(self):
         for key, value in (("install_prefix", "/opt/software/untrusted"),
                            ("source_sha", "c" * 40), ("cpu_arch", "native"),
