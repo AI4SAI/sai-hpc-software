@@ -59,10 +59,10 @@ def required_acceptance(software, target):
             raise ValueError("GPUMD publication requires a natively built V100 target")
         return ("gpumd_science",)
     if software != "abacus":
-        return ()
+        raise ValueError(f"{software.upper()} publication is disabled: scientific acceptance is not registered")
     if target == "dsprhbm":
         return ("multinode_runtime",)
-    if target in ("4v100-avx512", "16v100-avx2"):
+    if target in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
         return ("multinode_runtime", "gpu_features")
     raise ValueError("ABACUS publication acceptance is not registered for this target")
 
@@ -355,8 +355,12 @@ def render_job(args):
     return "\n".join(lines) + "\n"
 
 def submit(args):
-    # Do not spend an allocation on a target that cannot pass publication.
-    required_acceptance(args.software, args.target)
+    # CP2K may be built manually as a candidate while its scientific gate is
+    # implemented separately. It must still fail direct publish/cache checks.
+    if args.software != "cp2k":
+        required_acceptance(args.software, args.target)
+    if args.jobs is None:
+        args.jobs = TARGETS[args.target].get("build_jobs", 8)
     r = init(args)
     if (r / "job.id").exists():
         raise ValueError("run already submitted; choose a fresh run id")
@@ -484,7 +488,7 @@ def main():
     for field in ("software", "run_id", "sha", "version"):
         a.add_argument(field)
     a.add_argument("target", choices=TARGETS)
-    a.add_argument("--jobs", type=int, default=8)
+    a.add_argument("--jobs", type=int, default=None)
     a.add_argument("--minutes", type=int, default=120)
     a.add_argument("--overlay-mb", type=int, default=8192)
     a.add_argument("--resume-run", help="repack a terminated run's existing overlay; never rebuild source")

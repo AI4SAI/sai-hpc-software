@@ -24,6 +24,11 @@ case "$target" in
     cpu_tune=znver3
     opts+=(-DUSE_CUDA=ON -DUSE_CUDA_MPI=ON -DCMAKE_CUDA_ARCHITECTURES=70)
     ;;
+  8v100v0-avx512)
+    cpu_arch=skylake-avx512
+    cpu_tune=skylake-avx512
+    opts+=(-DUSE_CUDA=ON -DUSE_CUDA_MPI=ON -DCMAKE_CUDA_ARCHITECTURES=70)
+    ;;
   a100)
     cpu_arch=x86-64-v3
     opts+=(-DUSE_CUDA=ON -DUSE_CUDA_MPI=ON -DCMAKE_CUDA_ARCHITECTURES=80)
@@ -34,8 +39,13 @@ if [[ "$target" != dsprhbm ]]; then
   opts+=(-DENABLE_CUSOLVERMP=ON -DENABLE_CUBLASMP=ON
          -DENABLE_NCCL_PARALLEL_DEVICE=ON)
 fi
-opts+=("-DCMAKE_C_FLAGS=-march=$cpu_arch -mtune=$cpu_tune"
-      "-DCMAKE_CXX_FLAGS=-march=$cpu_arch -mtune=$cpu_tune")
+# Configuration and compilation execute on the target partition, never on the
+# login host. Record GCC's native selection in the build log and use it for
+# each independently built image; cpu_arch remains the expected profile label.
+printf 'NATIVE_BUILD_PROFILE %s expected=%s\n' "$target" "$cpu_arch"
+gcc -march=native -mtune=native -Q --help=target | grep -E 'march=|mtune=|mavx'
+opts+=("-DCMAKE_C_FLAGS=-march=native -mtune=native"
+      "-DCMAKE_CXX_FLAGS=-march=native -mtune=native")
 # ABACUS commit 1497232 omits the declarations used by its cuSOLVERMp CUDA
 # translation unit; newer upstream sources include these headers. Keep the
 # source SHA unchanged while applying the minimal compatibility fix in-recipe.

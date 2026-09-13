@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """GitHub-side orchestration; remote commands always come from this repository."""
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
@@ -8,7 +9,7 @@ import shlex
 import subprocess
 import sys
 import time
-from remote_controller import safe_name, safe_sha, TARGETS
+from remote_controller import safe_name, safe_sha
 from delivery_layout import artifact_path
 from release_contract import SOFTWARE, TRACKS, validate_identity
 from source_cache import pack
@@ -23,6 +24,8 @@ def main():
     software = os.environ.get("SOFTWARE", "abacus")
     if software not in ("abacus", "cp2k", "gpumd"):
         raise ValueError("unknown software recipe")
+    if software == "cp2k" and os.environ.get("GITHUB_EVENT_NAME") != "workflow_dispatch":
+        raise ValueError("CP2K is manual candidate-only until scientific acceptance is registered")
     target = os.environ["TARGET"]
     if target not in SOFTWARE[software]['targets']:
         raise ValueError("unknown target")
@@ -37,7 +40,12 @@ def main():
     user = safe_name(os.environ["REMOTE_USER"])
     run_prefix = "gpumd-" if software == "gpumd" else ""
     run_id = safe_name(run_prefix + "-".join((os.environ["GITHUB_RUN_ID"], os.environ["GITHUB_RUN_ATTEMPT"],
-                                 track, target, upstream[:12])))
+                                 track, target, datetime.now(timezone.utc).date().isoformat(), upstream[:12])))
+    if software == "abacus":
+        # Validate the longest acceptance suffix before any upload/submission.
+        safe_name(run_id + "-gpu-features")
+    elif software == "gpumd":
+        safe_name(run_id + "-science")
     temporary = Path(os.environ["RUNNER_TEMP"])
     key = temporary / "ssh/key"
     known_hosts = Path(__file__).resolve().parents[1] / ".ci/slurm/known_hosts"
@@ -137,18 +145,16 @@ def main():
     ssh(["test", "-s", f"{root}/containers/base/minimal-v1.sif"])
     resume = os.environ.get("RESUME_RUN", "")
     extras = ["--resume-run", safe_name(resume)] if resume else []
-    if software == "gpumd":
-        extras += ["--jobs", str(TARGETS[target].get("build_jobs", 8))]
     python("software_controller.py", "submit", software, run_id, upstream, version, target,
            *provenance_flags, *extras)
     try:
         python("software_controller.py", "monitor", run_id)
-        if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2"):
+        if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             runtime_run = safe_name(run_id + "-multinode")
             python("runtime_controller.py", "submit", runtime_run, version, target,
                    "--build-run-id", run_id)
             python("runtime_controller.py", "monitor", runtime_run)
-        if software == "abacus" and target in ("4v100-avx512", "16v100-avx2"):
+        if software == "abacus" and target in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             feature_run = safe_name(run_id + "-gpu-features")
             python("gpu_feature_controller.py", "submit", feature_run, version, target,
                    "--build-run-id", run_id)
@@ -158,11 +164,20 @@ def main():
             python("gpumd_acceptance.py", "submit", scientific_run, version, target,
                    "--build-run-id", run_id)
             python("gpumd_acceptance.py", "monitor", scientific_run)
-        python("software_controller.py", "publish", run_id)
+        if software in ("abacus", "gpumd"):
+            python("software_controller.py", "publish", run_id)
         run(["scp", "-q", *options, "-P", "12022", f"{remote}:{task}/artifact.path", results / "artifact.path"])
         if (results / "artifact.path").read_text().strip() != str(expected_artifact):
-            raise ValueError("published artifact differs from the delivery identity layout")
-        print((results / "artifact.path").read_text(), flush=True)
+            raise ValueError("artifact differs from the delivery identity layout")
+        if software == "cp2k":
+            (results / "candidate-only.json").write_text(json.dumps({
+                "artifact": str(expected_artifact), "identity": identity,
+                "published": False, "verified": False,
+                "reason": "CP2K scientific acceptance is not registered; manual build candidate only",
+            }, sort_keys=True) + "\n")
+            print(f"CANDIDATE_ARTIFACT_NOT_PUBLISHED {expected_artifact}", flush=True)
+        else:
+            print((results / "artifact.path").read_text(), flush=True)
     finally:
         # Only logs/metadata travel back; the single SIF stays in the SAI catalog.
         subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
@@ -174,14 +189,14 @@ def main():
             subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
                             f"{remote}:{root}/runtime-tests/{scientific_run}/results/.",
                             str(scientific_results)], check=False)
-        if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2"):
+        if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             runtime_results = results / "runtime"
             runtime_results.mkdir(exist_ok=True)
             runtime_run = safe_name(run_id + "-multinode")
             subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
                             f"{remote}:{root}/runtime-tests/{runtime_run}/results/.",
                             str(runtime_results)], check=False)
-        if software == "abacus" and target in ("4v100-avx512", "16v100-avx2"):
+        if software == "abacus" and target in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             feature_results = results / "gpu-features"
             feature_results.mkdir(exist_ok=True)
             feature_run = safe_name(run_id + "-gpu-features")

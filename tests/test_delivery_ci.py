@@ -44,8 +44,8 @@ class WorkflowSourceTests(unittest.TestCase):
             self.resolver_calls = resolver.call_args_list
             return json.loads(output.read_text().removeprefix("builds="))
 
-    def test_both_schedules_resolve_all_three_tracks_and_four_registered_partitions(self):
-        for software in ("abacus", "cp2k"):
+    def test_abacus_schedule_resolves_all_three_tracks_and_four_registered_partitions(self):
+        for software in ("abacus",):
             with self.subTest(software=software):
                 rows = self.execute(software, event="schedule", tracks="ignored", targets="a100")
                 self.assertEqual(len(rows), 12)
@@ -78,18 +78,28 @@ class WorkflowSourceTests(unittest.TestCase):
 
     def test_only_schedule_can_skip_precisely_absent_release_channel(self):
         for software in ("abacus", "cp2k"):
-            rows = self.execute(software, event="schedule", missing=("latest-prerelease",))
-            self.assertEqual({row["track"] for row in rows}, {"development", "release"})
+            if software == "abacus":
+                rows = self.execute(software, event="schedule", missing=("latest-prerelease",))
+                self.assertEqual({row["track"] for row in rows}, {"development", "release"})
             with self.assertRaisesRegex(ValueError, "no latest-prerelease available"):
                 self.execute(software, tracks="prerelease", missing=("latest-prerelease",))
             with self.assertRaisesRegex(ValueError, "network unavailable"):
-                self.execute(software, event="schedule", failure=ValueError("network unavailable"))
+                self.execute(software, failure=ValueError("network unavailable"))
+
+    def test_cp2k_workflow_only_manual_candidates_and_schedule_is_absent(self):
+        text = (ROOT / ".github/workflows/cp2k.yml").read_text()
+        self.assertNotIn("schedule:", text)
+        self.assertNotIn("event_name == 'schedule'", text)
+        self.assertEqual(text.count("if: github.event_name == 'workflow_dispatch'"), 2)
+        for event in ("schedule", "push", "pull_request"):
+            with self.subTest(event=event), self.assertRaisesRegex(ValueError, "manual candidates"):
+                self.execute("cp2k", event=event)
 
     def test_workflows_remove_free_ref_and_forward_every_resolved_field(self):
         for name in ("build.yml", "cp2k.yml"):
             text = (ROOT / ".github/workflows" / name).read_text()
             self.assertNotIn("inputs.source_ref", text)
-            self.assertIn("schedule:", text)
+            self.assertEqual("schedule:" in text, name == "build.yml")
             self.assertIn("GH_TOKEN: ${{ github.token }}", text)
             for environment, field in (("SOURCE_REF", "source_ref"), ("RELEASE_TRACK", "track"),
                                        ("SOURCE_SHA", "source_sha"), ("SOFTWARE_VERSION", "source_version")):

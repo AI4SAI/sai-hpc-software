@@ -19,7 +19,8 @@ using GCC 13.3 `-march=native -mtune=native` and CUDA 12.9.1 `sm_70`:
 
 The workflow reuses the normal source cache, per-run trusted controller snapshot,
 Slurm build, isolated file-backed overlay, read-only SIF and recipe-hashed cache.
-GPUMD run IDs are prefixed `gpumd-`, and artifacts/modules are under the GPUMD
+GPUMD run IDs are prefixed `gpumd-` and include the UTC submission date through
+the shared CI naming. Artifacts/modules are under the GPUMD
 catalog, never ABACUS/CP2K. Source checkout, build and installation stay inside
 the overlay. No host `/tmp` or host installation tree is used.
 

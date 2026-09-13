@@ -150,6 +150,43 @@ class GpumdCiTests(unittest.TestCase):
         self.assertTrue(required <= set(build.contract_files("gpumd")))
         self.assertEqual(self.uploads.count("export_native.py"), 1)
 
+    def test_gpumd_run_and_scientific_proof_share_the_dated_utc_run_id(self):
+        self.execute(software="gpumd", target="8v100v0-avx512", track="prerelease")
+        submitted = next(args for script, args in self.remote_commands
+                         if script == "software_controller.py" and args[0] == "submit")
+        run_id = "gpumd-123-1-prerelease-8v100v0-avx512-2026-09-13-" + "a" * 12
+        self.assertEqual(submitted[2], run_id)
+        scientific = next(args for script, args in self.remote_commands
+                          if script == "gpumd_acceptance.py" and args[0] == "submit")
+        self.assertEqual(scientific[1], run_id + "-science")
+        self.assertEqual(scientific[-2:], ["--build-run-id", run_id])
+        self.assertLessEqual(len(scientific[1]), 128)
+
+    def test_isolated_uploaded_snapshot_imports_and_resolves_its_own_identity(self):
+        self.execute(software="gpumd")
+        snapshot = self.root / "uploaded-control"
+        snapshot.mkdir()
+        for name, source in self.uploaded_files.items():
+            shutil.copyfile(source, snapshot / name)
+        self.assertTrue(set(build.contract_files("gpumd")) <= self.uploaded_files.keys())
+        command = [sys.executable, "-E", "-s"]
+        for script in ("software_controller.py", "gpumd_acceptance.py", "gpumd_science.py",
+                       "delivery_layout.py", "export_native.py"):
+            subprocess.run([*command, snapshot / script, "--help"], cwd=self.root,
+                           capture_output=True, text=True, check=True)
+        result = subprocess.run([*command, snapshot / "software_controller.py", "identity", "gpumd",
+            "a" * 40, "master-2026-09-13", "4v100-avx512", "--track", "development",
+            "--source-ref", "master"], cwd=self.root, capture_output=True, text=True, check=True)
+        identity = json.loads(result.stdout)
+        self.assertEqual(identity["recipe_sha256"], build.recipe_fingerprint("gpumd", snapshot))
+        self.assertEqual(identity["partition"], "4V100")
+        # Removing one dependency must fail rather than importing the checkout.
+        (snapshot / "source_cache.py").unlink()
+        missing = subprocess.run([*command, snapshot / "gpumd_science.py", "--help"],
+                                 cwd=self.root, capture_output=True, text=True)
+        self.assertNotEqual(missing.returncode, 0)
+        self.assertIn("source_cache", missing.stderr)
+
 
 class GpumdDeliveryTests(unittest.TestCase):
     def setUp(self):
