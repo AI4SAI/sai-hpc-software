@@ -167,7 +167,7 @@ def make_entry(identity, environment, loaded_modules, ldd):
             raise ValueError(f"unrecorded native runtime dependency: {path}")
     entry = dict(identity=identity, commands={"abacus": "bin/abacus"}, external_roots=external,
                  runtime=dict(modules=modules,
-                              prepend={"MODULEPATH": [str(MODULE_ROOT)], "PATH": [prefix + "/bin"],
+                              prepend={"MODULEPATH": [str(MODULE_ROOT)],
                                        "LD_LIBRARY_PATH": [prefix + "/dependencies/libtorch/lib", prefix + "/dependencies/nep/lib"]},
                               set={"ABACUS_ROOT": prefix}))
     return validate_native_entry(entry)
@@ -181,7 +181,15 @@ def generate(prefix):
         raise ValueError("native metadata must be generated at its canonical build prefix")
     # Modules are trusted site inputs, not inferred from a preinstalled ABACUS.
     loaded = (metadata / "modules.txt").read_text().splitlines()
-    ldd = subprocess.check_output(["ldd", str(prefix / "bin/abacus")], text=True)
+    # Probe native resolution through the read-only host /usr mounts, without
+    # Apptainer's injected driver path or fakeroot preload. Keep the actual
+    # build environment intact and let unresolved/non-native paths fail closed.
+    probe_env = os.environ.copy()
+    probe_env["LD_LIBRARY_PATH"] = ":".join(
+        path for path in probe_env.get("LD_LIBRARY_PATH", "").split(":")
+        if path.rstrip("/") != "/.singularity.d/libs")
+    probe_env["LD_PRELOAD"] = ""
+    ldd = subprocess.check_output(["ldd", str(prefix / "bin/abacus")], text=True, env=probe_env)
     entry = make_entry(identity, os.environ, loaded, ldd)
     module_files = entry["runtime"]["modules"] + ["nvhpc/26.3-gnu-cuda12-tuned"]
     module_hashes = {name: checksum(MODULE_ROOT / name) for name in module_files}

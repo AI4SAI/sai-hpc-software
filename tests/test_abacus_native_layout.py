@@ -36,6 +36,9 @@ class NativeLayoutTests(unittest.TestCase):
                     features.make_entry(identity, dict(environment, MPI_HOME="/opt/devtools/openmpi/wrong-isa"), modules, ldd)
                 with self.assertRaisesRegex(ValueError, "unrecorded native runtime dependency"):
                     features.make_entry(identity, environment, modules, "libmpi.so => /workspace/build/libmpi.so")
+                with self.assertRaisesRegex(ValueError, "unrecorded native runtime dependency"):
+                    features.make_entry(identity, environment, modules,
+                                        ldd + "\nlibcuda.so.1 => /.singularity.d/libs/libcuda.so.1")
                 with self.assertRaisesRegex(ValueError, "unresolved runtime libraries"):
                     features.make_entry(identity, environment, modules, ldd + "\nlibmissing.so => not found")
 
@@ -60,6 +63,38 @@ class NativeLayoutTests(unittest.TestCase):
                             ("native-dependencies.json", {"identity": self.identity,
                              "dependency_lock_sha256": checksum(self.metadata / "dependency-lock.json")})):
             (self.metadata / name).write_text(json.dumps(value))
+
+    def test_generate_filters_only_the_native_probe_environment(self):
+        modules = features.MODULES + ["nvhpc/26.3-gnu-cuda12-tuned", "nvmplibs/26.7-tmp"]
+        metadata = self.prefix / "share/sai"
+        text = {metadata / "release-identity.json": json.dumps(self.identity),
+                metadata / "modules.txt": "\n".join(modules)}
+        ldd = "libcuda.so.1 => /usr/lib64/libcuda.so.1 (0x1234)"
+        first, second = "/opt/devtools/first/lib", "/opt/devtools/second/lib"
+        for original, expected in (
+                (f"/.singularity.d/libs:{first}:{second}", f"{first}:{second}"),
+                (f"{first}:/.singularity.d/libs/:{second}:/.singularity.d/libs", f"{first}:{second}"),
+                (f"{second}:{first}:{second}", f"{second}:{first}:{second}")):
+            with self.subTest(ld_library_path=original):
+                environment = dict(features.expected_roots(self.identity),
+                                   LD_LIBRARY_PATH=original, LD_PRELOAD="/usr/lib64/libfakeroot.so",
+                                   PATH="/usr/bin:/bin", PRESERVED="unchanged")
+                probe = dict(environment, LD_LIBRARY_PATH=expected, LD_PRELOAD="")
+                with patch.dict(features.os.environ, environment, clear=True), \
+                        patch.object(Path, "read_text", autospec=True, side_effect=lambda path: text[path]), \
+                        patch.object(Path, "write_text", autospec=True) as write, \
+                        patch.object(features, "checksum", return_value="c" * 64), \
+                        patch.object(features.subprocess, "check_output", return_value=ldd) as process:
+                    entry = features.generate(self.prefix)
+                    process.assert_called_once_with(["ldd", str(self.prefix / "bin/abacus")],
+                                                    text=True, env=probe)
+                    self.assertEqual(dict(features.os.environ), environment)
+                self.assertNotIn("PATH", entry["runtime"]["prepend"])
+                self.assertNotIn("LD_PRELOAD", json.dumps(entry))
+                self.assertNotIn(".singularity.d", json.dumps(entry))
+                written = {call.args[0]: json.loads(call.args[1]) for call in write.call_args_list}
+                self.assertEqual(written[metadata / "native-entry.json"], entry)
+                self.assertEqual(written[metadata / "native-dependencies.json"]["ldd"], ldd)
 
     def test_manifest_modules_and_evidence_all_stay_inside_prefix(self):
         entry = features.installed_entry(self.prefix, self.root)
