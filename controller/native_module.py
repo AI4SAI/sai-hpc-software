@@ -315,12 +315,19 @@ def package_native_modules(entry, root=Path("/"), *, allowed_prefixes=()):
         descriptor = os.dup(start_fd)
         try:
             for part in parts:
+                created = False
                 if create:
                     try:
                         os.mkdir(part, mode=0o755, dir_fd=descriptor)
+                        created = True
                     except FileExistsError:
                         pass
                 next_descriptor = os.open(part, directory_flags, dir_fd=descriptor)
+                if created:
+                    # Installation modules must remain traversable even when
+                    # the build process uses a private default umask (0077).
+                    # Never alter permissions on a pre-existing directory.
+                    os.fchmod(next_descriptor, 0o755)
                 os.close(descriptor)
                 descriptor = next_descriptor
             return descriptor
