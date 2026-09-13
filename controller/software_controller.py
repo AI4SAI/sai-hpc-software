@@ -25,7 +25,8 @@ def contract_files(software):
         return common + ["container_entry.sh", "abacus_build.sh", "runtime_controller.py",
                          "gpu_feature_controller.py", "gpu_feature_runtime.sh", "abacus",
                          "abacus_dependencies.py", "abacus_dependencies.sh",
-                         "abacus_dependency_lock.json", "abacus_features.py", "abacus_benchmark.py"]
+                         "abacus_dependency_lock.json", "abacus_features.py", "abacus_benchmark.py",
+                         "native_module.py", "export_native.py"]
     if software == "cp2k":
         return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k"]
     raise ValueError("unknown software contract")
@@ -52,7 +53,7 @@ def identity(args):
 
 def required_acceptance(software, target):
     if software != "abacus":
-        return ()
+        raise ValueError(f"{software.upper()} publication is disabled: scientific acceptance is not registered")
     if target == "dsprhbm":
         return ("multinode_runtime", "benchmark_pw", "benchmark_hse", "benchmark_deepks")
     if target in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
@@ -349,8 +350,9 @@ def render_job(args):
     return "\n".join(lines) + "\n"
 
 def submit(args):
-    # Do not spend an allocation on a target that cannot pass publication.
-    required_acceptance(args.software, args.target)
+    # CP2K may build a candidate but cannot bypass the publication gate.
+    if args.software != "cp2k":
+        required_acceptance(args.software, args.target)
     if args.jobs is None:
         args.jobs = TARGETS[args.target].get("build_jobs", 8)
     r = init(args)

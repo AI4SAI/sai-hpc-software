@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """GitHub-side orchestration; remote commands always come from this repository."""
 from concurrent.futures import ThreadPoolExecutor
+from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
@@ -20,6 +21,8 @@ def main():
     software = os.environ.get("SOFTWARE", "abacus")
     if software not in ("abacus", "cp2k"):
         raise ValueError("unknown software recipe")
+    if software == "cp2k" and os.environ.get("GITHUB_EVENT_NAME") != "workflow_dispatch":
+        raise ValueError("CP2K is manual candidate-only until scientific acceptance is registered")
     target = os.environ["TARGET"]
     if target not in SOFTWARE[software]['targets']:
         raise ValueError("unknown target")
@@ -33,7 +36,9 @@ def main():
     provenance_flags = ["--track", track, "--source-ref", source_ref]
     user = safe_name(os.environ["REMOTE_USER"])
     run_id = safe_name("-".join((os.environ["GITHUB_RUN_ID"], os.environ["GITHUB_RUN_ATTEMPT"],
-                                 track, target, upstream[:12])))
+                                 track, target, datetime.now(timezone.utc).date().isoformat(), upstream[:12])))
+    if software == "abacus":
+        safe_name("benchmark-" + run_id + "-deepks")
     temporary = Path(os.environ["RUNNER_TEMP"])
     key = temporary / "ssh/key"
     known_hosts = Path(__file__).resolve().parents[1] / ".ci/slurm/known_hosts"
@@ -69,7 +74,8 @@ def main():
     recipe = (["container_entry.sh", "environment.sh", "abacus_build.sh",
                "gpu_feature_controller.py", "gpu_feature_runtime.sh",
                "abacus_dependencies.py", "abacus_dependencies.sh",
-               "abacus_dependency_lock.json", "abacus_features.py", "abacus_benchmark.py"]
+               "abacus_dependency_lock.json", "abacus_features.py", "abacus_benchmark.py",
+               "native_module.py", "export_native.py"]
               if software == "abacus" else
               ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh"])
     for name in common + recipe:
@@ -145,7 +151,7 @@ def main():
                    "--build-run-id", run_id)
             python("gpu_feature_controller.py", "monitor", feature_run)
         if software == "abacus":
-            artifact = f"{root}/containers/software/abacus/{version}/{target}/{run_id}.sif"
+            artifact = str(expected_artifact)
             for case in ("pw", "hse", "deepks"):
                 benchmark_run = safe_name(run_id + "-" + case)
                 python("abacus_benchmark.py", "prepare", benchmark_run, version, target,
@@ -154,11 +160,19 @@ def main():
                        "--allow-cpu-case-on-gpu")
                 python("abacus_benchmark.py", "submit", benchmark_run)
                 python("abacus_benchmark.py", "monitor", benchmark_run)
-        python("software_controller.py", "publish", run_id)
+            python("software_controller.py", "publish", run_id)
         run(["scp", "-q", *options, "-P", "12022", f"{remote}:{task}/artifact.path", results / "artifact.path"])
         if (results / "artifact.path").read_text().strip() != str(expected_artifact):
-            raise ValueError("published artifact differs from the delivery identity layout")
-        print((results / "artifact.path").read_text(), flush=True)
+            raise ValueError("artifact differs from the delivery identity layout")
+        if software == "cp2k":
+            (results / "candidate-only.json").write_text(json.dumps({
+                "artifact": str(expected_artifact), "identity": identity,
+                "published": False, "verified": False,
+                "reason": "CP2K scientific acceptance is not registered; manual build candidate only",
+            }, sort_keys=True) + "\n")
+            print(f"CANDIDATE_ARTIFACT_NOT_PUBLISHED {expected_artifact}", flush=True)
+        else:
+            print((results / "artifact.path").read_text(), flush=True)
     finally:
         # Only logs/metadata travel back; the single SIF stays in the SAI catalog.
         subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",

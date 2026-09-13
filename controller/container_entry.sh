@@ -20,6 +20,7 @@ metadata() {
       > "$INSTALL_PREFIX/share/sai/resolved-environment.txt" || true
     cp /workspace/build/CMakeCache.txt "$INSTALL_PREFIX/share/sai/"
     cp /control/abacus_features.py /control/abacus_dependency_lock.json "$INSTALL_PREFIX/share/sai/"
+    cp /control/release_contract.py /control/resolve_source.py /control/remote_controller.py /control/source_cache.py "$INSTALL_PREFIX/share/sai/"
     # %q serializes values as literals; no module initialization is necessary
     # when inspecting/running the final, read-only SIF.
     {
@@ -32,6 +33,7 @@ metadata() {
           'export LD_LIBRARY_PATH="$sai_abacus_prefix/dependencies/libtorch/lib:$sai_abacus_prefix/dependencies/nep/lib:${LD_LIBRARY_PATH:-}"' \
           'unset sai_abacus_prefix'
     } > "$INSTALL_PREFIX/share/sai/runtime-env.sh"
+    python3 /control/abacus_features.py "$INSTALL_PREFIX" "$target" --native-phase metadata
 }
 case "$op" in
   build)
@@ -66,6 +68,7 @@ case "$op" in
     # Normalize only the packaged software, not the host or rootfs /tmp modes.
     # cp -a preserves archive modes, including legacy owner-only directories.
     chmod -R a+rX,u+w,go-w /workspace/export/opt/software
+    python3 /control/abacus_features.py "$INSTALL_PREFIX" "$target" --native-phase inventory
     mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"
     ;;
   verify)
@@ -90,6 +93,7 @@ case "$op" in
     # Required compile-time features and actual dynamic loader paths are both
     # checked. Scientific parity and speed remain separate benchmark evidence.
     python3 "$INSTALL_PREFIX/share/sai/abacus_features.py" "$INSTALL_PREFIX" "$target"
+    python3 /control/abacus_features.py "$INSTALL_PREFIX" "$target" --native-phase verify
     if touch "$INSTALL_PREFIX/.write-test" 2>/dev/null; then echo 'artifact must be read-only' >&2; exit 1; fi
     ;;
   *) exit 2;;

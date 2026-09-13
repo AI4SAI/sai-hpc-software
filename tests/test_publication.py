@@ -37,6 +37,7 @@ class PublicationTests(unittest.TestCase):
         patch.object(controller, "ROOT", self.root).start()
         patch.object(controller, "CONTROL", self.control).start()
         patch.object(runtime, "ROOT", self.root).start()
+        patch.object(benchmark, "ROOT", self.root).start()
         self.identity = make_identity("abacus", "development", "develop", "a" * 40, "v1",
                                       controller.recipe_fingerprint("abacus"), "dsprhbm")
         self.image = artifact_path(self.root, self.identity, "build")

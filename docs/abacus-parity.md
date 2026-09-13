@@ -65,8 +65,10 @@ target's `dependency_isa`, not from the target name's suffix.
 
 ## Feature and exported-tree gates
 
-The installed tree is `/opt/software/abacus/<version>/<target>`. Optional runtime
-libraries reside under that same prefix's `dependencies/` directory. ABACUS uses
+The installed tree is `/opt/software/abacus/<track>/<build_id>/<PARTITION>`.
+The shared release identity includes the upstream commit date before its SHA
+for development builds; CPU ISA and dependency ISA remain separate fields.
+Optional runtime libraries reside under that same prefix's `dependencies/` directory. ABACUS uses
 `$ORIGIN`-relative paths for them; `share/sai/runtime-env.sh` derives its own prefix
 from its location and can be sourced for either a SIF or the corresponding
 administrator-exported installation at the same physical `/opt` path.
@@ -83,12 +85,24 @@ rootfs temporary-directory modes remain unchanged. The verifier checks ordinary
 users' read/execute permission bits explicitly, since a fakeroot `access()` check
 would not detect root-only installed directories and files.
 
-The external runtime dependency roots remain `/opt/devtools`, `/usr`, `/lib`, and
-`/lib64`; this is not a promise of an independently portable distribution on an
-unrelated Linux system. After an administrator copies the tree to its matching
-`/opt` path, source `share/sai/runtime-env.sh`, then rerun
-`python3 share/sai/abacus_features.py PREFIX TARGET` and the scientific benchmark.
-This branch does not perform that physical installation or claim it was tested.
+The existing `abacus_features.py` also constructs native dependency metadata;
+it delegates module generation and the final inventory to the shared
+`write_manifests()` implementation. `share/sai/manifest.json`, native module
+fragments and the partition-selecting `modulefiles/` all stay inside this one
+installation folder. There is no `/opt/sai-delivery` tree or ABACUS-specific
+exporter. `controller/export_native.py` extracts the folder to a chosen staging
+directory and records its expected physical `/opt` prefix.
+
+The native module loads exact site modules (including system ELPA and, on GPU
+partitions, `nvmplibs/26.7-tmp`); its dependency evidence records module hashes,
+resolved ISA roots and actual `ldd` paths. External system libraries remain
+required, so this is not a promise of portability to an unrelated Linux system.
+After an administrator deploys the folder at its expected prefix, use its
+`modulefiles/` directory and load `abacus/<track>/<build_id>` inside a Slurm
+allocation. Then rerun `python3 share/sai/abacus_features.py PREFIX TARGET`
+and the scientific benchmark. The SIF still uses the recorded runtime shell
+environment; native module load/unload, physical deployment and native speed
+remain separate, pending acceptance checks.
 
 ## Benchmark interpretation
 
@@ -98,6 +112,10 @@ the same allocation, nodes, ranks, threads and GPUs. Warmups precede repeated,
 alternating system/candidate runs; each run starts in a new input-only directory.
 The result must include SCF convergence, finite matching energies and all requested
 runs before timing statistics are accepted.
+Requests and proofs carry the same canonical release identity as the candidate;
+artifact validation and catalog paths reuse `delivery_layout`, and packaged
+inputs are read from that identity's partitioned prefix. Old-layout requests
+cannot be relabelled as accepted new-layout candidates.
 The full-feature CI now runs PW, HSE and DeePKS paired benchmarks after ordinary
 multi-node and GPU-feature acceptance. Each case requires one warmup pair and at
 least three measured pairs against the full-feature system default. Publication

@@ -18,6 +18,8 @@ import time
 
 from remote_controller import TARGETS, safe_name
 from source_cache import checksum
+from delivery_layout import artifact_path, load_artifact
+from release_contract import validate_identity
 
 ROOT = Path(os.environ.get("SAI_SOFTWARE_ROOT", Path.home() / "sai-hpc-software")).resolve()
 CONTROL = Path(__file__).resolve()
@@ -107,6 +109,9 @@ def sequence(warmup, repeats):
 
 
 def render_job(r, task):
+    identity = validate_identity(r["identity"])
+    if r["target"] != identity["target"] or r["version"] != identity["source_version"]:
+        raise ValueError("benchmark target/version differs from its delivery identity")
     q = lambda value: shlex.quote(str(value))
     target = TARGETS[r["target"]]
     cpu = target["gpus"] == 0
@@ -200,13 +205,13 @@ def inspect_case(case, r):
 
 def prepare(args):
     task = task_dir(args.run_id)
-    safe_name(args.version)
     if task.exists() or args.minutes < 1 or args.system_module not in SYSTEM_MODULES:
         raise ValueError("choose a fresh run, positive wall limit, and the exact system module")
     artifact, launcher = regular(args.artifact), regular(args.launcher)
-    catalog = ROOT / "containers/software/abacus" / args.version / args.target
-    if artifact.parent != catalog or artifact.suffix != ".sif" or artifact.name == "current.sif":
-        raise ValueError("artifact must be a pinned SIF in the version/target catalog")
+    candidate = load_artifact(ROOT, artifact, software="abacus", target=args.target)
+    identity = candidate["identity"]
+    if args.version != identity["source_version"] or artifact.name == "current.sif":
+        raise ValueError("benchmark requires the pinned candidate's source version")
     if not launcher.is_relative_to(ROOT / "controller") or not os.access(launcher, os.X_OK):
         raise ValueError("launcher must be an executable trusted controller file")
     packaged = getattr(args, "packaged_case", None)
@@ -220,15 +225,15 @@ def prepare(args):
     if scf.is_absolute() or ".." in scf.parts:
         raise ValueError("SCF log must be a relative output")
     target = TARGETS[args.target]
-    r = dict(vars(args), artifact=str(artifact), launcher=str(launcher),
+    r = dict(vars(args), artifact=str(artifact), launcher=str(launcher), identity=identity,
              packaged_case=packaged, benchmark_case=packaged or "custom", nodes=2,
-             artifact_sha256=checksum(artifact), launcher_sha256=checksum(launcher),
+             artifact_sha256=candidate["sha256"], launcher_sha256=checksum(launcher),
              controller_sha256=checksum(CONTROL), case_files=files, case_device=device,
              allow_cpu_case_on_gpu=allow_cpu,
              ranks_per_node=8 if cpu else 1, ranks=16 if cpu else 2, threads=2 if cpu else 1,
              dependency_isa=target.get("dependency_isa", "avx512" if args.target in
                                        {"dsprhbm", "4v100-avx512"} else "avx2"),
-             runs=sequence(args.warmup, args.repeats), schema=1)
+             runs=sequence(args.warmup, args.repeats), schema=2)
     task.mkdir(parents=True)
     (task / "results").mkdir()
     if not packaged:
@@ -248,7 +253,12 @@ def verify(task, *, check_controller=True):
     r = json.loads(regular(task / "request.json").read_text())
     if checksum(task / "request.json") != regular(task / "request.sha256").read_text().strip():
         raise ValueError("request checksum mismatch")
-    pins = [(Path(r["artifact"]), "artifact_sha256"), (Path(r["launcher"]), "launcher_sha256"),
+    candidate = load_artifact(ROOT, r["artifact"], software="abacus", target=r["target"])
+    if (r.get("schema") != 2 or r.get("identity") != candidate["identity"] or
+            r["version"] != candidate["identity"]["source_version"] or
+            r["artifact_sha256"] != candidate["sha256"]):
+        raise ValueError("benchmark request differs from its pinned delivery identity")
+    pins = [(Path(r["launcher"]), "launcher_sha256"),
             (task / "job.sbatch", "job_script_sha256")]
     if check_controller:
         pins.append((CONTROL, "controller_sha256"))
@@ -277,7 +287,7 @@ def materialize(task):
     if r["packaged_case"]:
         case = task / "input"
         case.mkdir()
-        prefix = f"/opt/software/abacus/{r['version']}/{r['target']}/share/sai/benchmark-cases/{r['packaged_case']}"
+        prefix = r["identity"]["install_prefix"] + "/share/sai/benchmark-cases/" + r["packaged_case"]
         subprocess.run(["apptainer", "exec", "--cleanenv", "--no-home", "--no-mount",
                         "bind-paths,home,cwd,tmp,hostfs", "--pwd", "/case",
                         "--bind", "/usr:/usr:ro", "--bind", "/lib:/lib:ro", "--bind", "/lib64:/lib64:ro", "--bind",
@@ -469,7 +479,7 @@ def verify_evidence(task, request):
             values = [x[metric] for x in records if x["measured"] and x["arm"] == arm]
             stats[metric][arm] = dict(median=statistics.median(values), min=min(values), max=max(values))
         stats[metric]["candidate_system_ratio"] = stats[metric]["candidate"]["median"] / stats[metric]["system"]["median"]
-    return dict(schema=1, job=job, request_sha256=checksum(task / "request.json"),
+    return dict(schema=2, identity=r["identity"], job=job, request_sha256=checksum(task / "request.json"),
                     system_module=r["system_module"], case_device=r["case_device"],
                     benchmark_case=r["benchmark_case"], case_files=metadata["case_files"],
                     artifact_sha256=r["artifact_sha256"], launcher_sha256=r["launcher_sha256"],
@@ -493,8 +503,8 @@ def analyze(task):
 
 def record_proof(task, r, proof=None):
     artifact = Path(r["artifact"])
-    catalog = ROOT / "containers/software/abacus" / safe_name(r["version"]) / safe_name(r["target"])
-    if artifact.parent != catalog or artifact.resolve() != artifact:
+    identity = validate_identity(r["identity"])
+    if artifact != artifact_path(ROOT, identity, artifact.stem) or artifact.resolve() != artifact:
         raise ValueError("untrusted benchmark artifact")
     sidecar = regular(artifact.with_suffix(".json"))
     lock = sidecar.with_suffix(".benchmark.lock")
@@ -510,7 +520,8 @@ def record_proof(task, r, proof=None):
             manifest.pop(key)
         else:
             if (manifest.get("artifact") != str(artifact) or manifest.get("sha256") != r["artifact_sha256"] or
-                    manifest.get("version") != r["version"] or manifest.get("target") != r["target"]):
+                    manifest.get("version") != r["version"] or manifest.get("target") != r["target"] or
+                    manifest.get("identity") != identity or proof.get("identity") != identity):
                 raise ValueError("benchmark artifact manifest mismatch")
             manifest[key] = proof
         temporary = sidecar.with_name(f".{sidecar.name}-{os.getpid()}.tmp")
@@ -541,7 +552,7 @@ def monitor(args):
                 if row[1:3] != ["COMPLETED", "0:0"]:
                     return 1
                 evidence = analyze(task)
-                proof = {name: r[name] for name in ("artifact_sha256", "controller_sha256", "launcher",
+                proof = {name: r[name] for name in ("identity", "artifact_sha256", "controller_sha256", "launcher",
                          "launcher_sha256", "job_script_sha256", "system_module", "benchmark_case", "case_device")}
                 proof.update(verified=True, run_id=task.name, job=job, nodes=2, ranks=r["ranks"],
                              evidence_sha256=checksum(task / "results/evidence.json"))

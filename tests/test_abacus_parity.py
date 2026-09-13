@@ -5,6 +5,7 @@ import os
 from pathlib import Path
 import stat
 import subprocess
+import shutil
 import sys
 import tempfile
 import unittest
@@ -16,6 +17,7 @@ sys.path.insert(0, str(ROOT / "controller"))
 import abacus_dependencies as deps
 import abacus_features as features
 import software_controller as controller
+from source_cache import checksum
 
 
 class ParityTests(unittest.TestCase):
@@ -50,6 +52,24 @@ class ParityTests(unittest.TestCase):
             with self.subTest(label=label):
                 with self.assertRaisesRegex(ValueError, "feature parity failed"):
                     self.check(info=self.info.replace(f"{label}: yes", f"{label}: no"))
+
+    def test_installed_feature_checker_reuses_shared_hash_without_exporter_dependency(self):
+        self.assertIs(features.checksum, checksum)
+        # Exercise the copied installation, without repo/controller on sys.path.
+        with tempfile.TemporaryDirectory() as temporary:
+            installed = Path(temporary)
+            files = ("abacus_features.py", "release_contract.py", "resolve_source.py",
+                     "remote_controller.py", "source_cache.py")
+            for name in files:
+                shutil.copy2(ROOT / "controller" / name, installed / name)
+            # Isolated mode excludes the checkout; add only installed metadata.
+            result = subprocess.run([sys.executable, "-I", "-c",
+                "import runpy,sys; sys.path.insert(0,sys.argv[1]); sys.argv=[sys.argv[1]+'/abacus_features.py','--help']; runpy.run_path(sys.argv[0],run_name='__main__')",
+                str(installed)], check=True, capture_output=True, text=True)
+            self.assertIn("--native-phase", result.stdout)
+            self.assertFalse((installed / "export_native.py").exists())
+        entry = (ROOT / "controller/container_entry.sh").read_text()
+        self.assertIn('/control/source_cache.py "$INSTALL_PREFIX/share/sai/"', entry)
 
     def test_options_and_minimum_versions_cannot_silently_regress(self):
         for option in self.lock["required_options"] + self.lock["required_gpu_options"]:
@@ -124,7 +144,7 @@ class ParityTests(unittest.TestCase):
             self.assertRegex(archive["sha256"], r"^[0-9a-f]{64}$")
         args = argparse.Namespace(software="abacus", run_id="test", sha="a" * 40,
                                   version="v1", target="dsprhbm", jobs=8, minutes=60,
-                                  overlay_mb=8192)
+                                  overlay_mb=8192, track="development", source_ref="develop")
         with patch.object(controller, "ROOT", Path("/home/test/sai-hpc-software")):
             script = controller.render_job(args)
         mount = self.lock["site_archive_root"] + ":/input/abacus-dependencies:ro"

@@ -16,6 +16,8 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "controller"))
 import abacus_benchmark as benchmark
 from source_cache import checksum
+from delivery_layout import CONTRACT_SCHEMA, artifact_path
+from release_contract import make_identity
 
 
 class BenchmarkTests(unittest.TestCase):
@@ -36,11 +38,14 @@ class BenchmarkTests(unittest.TestCase):
         (self.case / "Si.upf").write_text("materialized pseudopotential fixture\n")
 
     def args(self, target="8v100v0-avx512", **changes):
-        artifact = self.root / f"containers/software/abacus/v1/{target}/candidate.sif"
+        identity = make_identity("abacus", "development", "develop", "a" * 40, "v1", "b" * 64, target)
+        artifact = artifact_path(self.root, identity, "candidate")
         artifact.parent.mkdir(parents=True, exist_ok=True)
         artifact.write_bytes(b"pinned candidate")
         benchmark.dump(artifact.with_suffix(".json"), dict(artifact=str(artifact), sha256=checksum(artifact),
-                       version="v1", target=target, build_verified=True))
+                       version="v1", target=target, build_verified=True, software="abacus",
+                       identity=identity, source_sha=identity["source_sha"], recipe_sha256=identity["recipe_sha256"],
+                       contract_schema=CONTRACT_SCHEMA))
         if benchmark.TARGETS[target]["gpus"] == 0:
             (self.case / "INPUT").write_text("INPUT_PARAMETERS\ncalculation scf\ndevice cpu\n")
         values = dict(action="prepare", run_id="comparison", version="v1", target=target,
@@ -59,6 +64,43 @@ class BenchmarkTests(unittest.TestCase):
                     local_rank=local, cpus=cpus, topology=[[cpu, 0, cpu] for cpu in cpus],
                     environment=dict(OMP_NUM_THREADS=str(request["threads"]), OMP_PROC_BIND="true",
                                      OMP_PLACES="cores", MAP_OPT=f"ppr:{request['ranks_per_node']}:node:pe={pe}"))
+
+    def test_all_partitions_use_the_shared_identity_and_compiled_prefix(self):
+        for target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
+            args = self.args(target, run_id=target, packaged_case="pw", case=None)
+            (self.case / "INPUT").write_text("INPUT_PARAMETERS\ncalculation scf\ndevice gpu\nsuffix autotest\n")
+            task = benchmark.prepare(args)
+            request = benchmark.verify(task)
+            identity = request["identity"]
+            self.assertEqual(Path(request["artifact"]), artifact_path(self.root, identity, "candidate"))
+            self.assertEqual(identity["partition"], benchmark.TARGETS[target]["partition"])
+            calls = []
+            def copy(argv, **kwargs):
+                calls.append(argv)
+                shutil.copytree(self.case, task / "input", dirs_exist_ok=True)
+            with patch.object(benchmark.subprocess, "run", side_effect=copy):
+                benchmark.materialize(task)
+            self.assertEqual(calls[0][-2], identity["install_prefix"] + "/share/sai/benchmark-cases/pw/.")
+
+    def test_request_cannot_relabel_a_candidate_identity_even_with_new_request_checksum(self):
+        task = benchmark.prepare(self.args())
+        request = benchmark.verify(task)
+        for field, value in (("schema", 1), ("version", "different"), ("identity", None)):
+            altered = dict(request, **{field: value})
+            benchmark.dump(task / "request.json", altered)
+            (task / "request.sha256").write_text(checksum(task / "request.json") + "\n")
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                benchmark.verify(task)
+
+    def test_legacy_sidecar_and_forged_identity_are_not_upgraded_by_prepare(self):
+        args = self.args()
+        sidecar = Path(args.artifact).with_suffix(".json")
+        original = json.loads(sidecar.read_text())
+        for field, value in (("identity", None), ("source_sha", "f" * 40), ("contract_schema", 2)):
+            benchmark.dump(sidecar, dict(original, **{field: value}))
+            with self.subTest(field=field), self.assertRaises(ValueError):
+                benchmark.prepare(args)
+        self.assertFalse(benchmark.task_dir(args.run_id).exists())
 
     def results(self, task):
         request = json.loads((task / "request.json").read_text())
@@ -408,7 +450,7 @@ class BenchmarkTests(unittest.TestCase):
             path = Path(getattr(args, name))
             original = path.read_bytes()
             path.write_bytes(b"changed after prepare")
-            with self.assertRaisesRegex(ValueError, "checksum mismatch"):
+            with self.assertRaisesRegex(ValueError, "checksum mismatch|immutable delivery identity"):
                 benchmark.verify(task)
             path.write_bytes(original)
 
