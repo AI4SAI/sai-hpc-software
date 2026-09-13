@@ -11,8 +11,10 @@ modulefiles 或校验清单。系统预装依赖仍只读复用，不随安装�
 ## 渠道、分区和命名
 
 五种软件统一使用 `development`、`prerelease`、`release` 三个渠道。
-每日检查各渠道最新上游 SHA；GitHub Actions 的定时器仅在默认分支运行，
-实验分支需要手动触发。未发布 prerelease 的上游可明确记为 skipped；网络、
+目标是每日检查各渠道最新上游 SHA；目前默认分支仅开启已接科学验收的 ABACUS
+自动构建/发布。CP2K 暂限手动候选构建，直接 publish 也拒绝无科学验收的候选；
+其余软件仍在独立实验分支。GitHub Actions 的定时器仅在默认分支运行。
+未发布 prerelease 的上游可明确记为 skipped；网络、
 API、标签解析失败必须报错，不能伪装成“没有版本”。release 使用标签指向的
 commit，annotated tag 必须解引用，不能误取同名分支。
 
@@ -33,6 +35,13 @@ build_id = <version_label>-g<source_sha12>-r<recipe_sha12>[-s<stack_digest12>]
 
 例如 `.../abacus/release/v3.11.0-g0123456789ab-rabcdef012345/4V100`。
 这里的短 SHA 仅为示意，不代表已通过验收的 3.11.0 安装。
+开发版使用上游提交的 **UTC 日期**，日期在 SHA 前，例如
+`.../abacus/development/develop-2026-09-13-g0123456789ab-rabcdef012345/4V100`。
+日期从已锁定 SHA 的 commit 元数据读取，不用当天日期替代；同一源码跨天重跑
+不会改变安装身份或制造每日缓存失效。稳定版和预发布版保留标签名称，SHA 由
+共享身份逻辑统一追加一次，不在版本标签中重复。
+实际 SIF 文件名采用 `<run>-<attempt>-<track>-<target>-<提交任务UTC日期>-<source_sha12>.sif`；
+此处日期描述构建任务，安装目录日期描述源码提交，Actions run/attempt 区分重试。
 完整 source SHA、recipe SHA、原始 ref/version、分区、CPU、CUDA 与依赖 ISA
 均保存在 `release_contract.make_identity()` 生成的身份对象中。
 DeepMD/LAMMPS 成对交付额外锁定两份源码；同分区的 companion 必须匹配

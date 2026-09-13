@@ -141,6 +141,25 @@ class ResolveTrackTests(unittest.TestCase):
     def result(sha, ref="v1", version="v1"):
         return {"sha": sha * 40, "ref": ref, "version": version}
 
+    def test_live_branch_date_precedes_sha_in_all_software_build_names(self):
+        for software, settings in contract.SOFTWARE.items():
+            ref = settings["development_ref"]
+            refs = "a" * 40 + "\trefs/heads/" + ref + "\n"
+            identities = []
+            for _ in range(2):
+                with patch.object(resolve_source.subprocess, "check_output",
+                                  side_effect=[refs, "2026-09-13T01:02:03Z"]):
+                    row, = contract.resolve_tracks(software, ["development"], resolve_source.resolve)
+                identity = contract.make_identity(software, row["track"], row["source_ref"],
+                    row["source_sha"], row["source_version"], "b" * 64, "4v100-avx512")
+                expected = ref + "-2026-09-13-g" + "a" * 12 + "-r" + "b" * 12
+                self.assertEqual(identity["build_id"], expected)
+                self.assertEqual(identity["install_prefix"],
+                                 f"/opt/software/{software}/development/{expected}/4V100")
+                self.assertEqual(contract.validate_identity(identity), identity)
+                identities.append(identity)
+            self.assertEqual(identities[0], identities[1])
+
     def test_resolves_live_channels_and_preserves_track_when_shas_match(self):
         resolver = Mock(side_effect=[self.result("a", "develop"), self.result("b", "v2-rc1"),
                                      self.result("c", "v1"), self.result("d", "develop")])
