@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Resolve a live branch/tag or the newest release channel, preserving upstream SHA."""
 import argparse
+from datetime import datetime, timezone
 import json
 import re
 import subprocess
@@ -61,12 +62,21 @@ def resolve(repository, ref):
         raise ValueError(f"cannot resolve {ref}")
     if not re.fullmatch("[0-9a-f]{40}", commit):
         raise ValueError("resolved source is not a full Git commit SHA")
-    # Keep the existing result shape while making channel versions meaningful:
-    # latest-release -> v3.10.0-<sha>, rather than latest-release-<sha>.
+    # Branch snapshots use the pinned commit's UTC date, not today's date, so
+    # an unchanged source keeps its identity and cache key across daily runs.
     label = re.sub("[^A-Za-z0-9_.-]", "-", ref).strip("._-")[:80]
     if not label:
         raise ValueError("resolved source has no usable version label")
-    return {"sha": commit, "version": f"{label}-{commit[:12]}", "ref": ref}
+    if not release_channel and (f"refs/heads/{ref}" in mapping or tag_commit is None):
+        committed = subprocess.check_output(
+            ["gh", "api", f"repos/{repository}/git/commits/{commit}", "--jq", ".committer.date"],
+            text=True).strip()
+        date = datetime.fromisoformat(committed.replace("Z", "+00:00")).astimezone(timezone.utc).date()
+        if ref == commit:
+            label = "commit"
+        label += "-" + date.isoformat()
+    # release_contract adds the SHA once, after this human-readable label.
+    return {"sha": commit, "version": label, "ref": ref}
 
 if __name__ == "__main__":
     p = argparse.ArgumentParser()
