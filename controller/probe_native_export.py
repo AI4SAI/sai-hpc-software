@@ -11,8 +11,8 @@ import os
 from pathlib import Path
 import subprocess
 
-from export_native import (MANIFEST_PATH, canonical, checksum, export_image,
-                           inventory)
+from export_native import (MANIFEST_PATH, FRAGMENT_PATH, canonical, checksum, export_image,
+                           write_manifests)
 from release_contract import make_identity
 
 
@@ -35,9 +35,7 @@ def prepare(directory):
         (prefix / "fixture-link").symlink_to("bin/abacus")
         entries.append({"identity": identity, "commands": {"abacus": "bin/abacus"},
                         "external_roots": [], "runtime": {"modules": [], "prepend": {}, "set": {}}})
-    metadata = root / MANIFEST_PATH
-    metadata.parent.mkdir(parents=True)
-    metadata.write_text(canonical(inventory(entries, root)))
+    write_manifests(entries, root)
     (root / "DO-NOT-EXPORT").write_text("outside declared software prefixes\n")
     squashfs = directory / "fixture.squashfs"
     subprocess.run(["mksquashfs", str(root), str(squashfs), "-noappend", "-no-progress",
@@ -46,23 +44,33 @@ def prepare(directory):
                      "scientific_artifact": False}), end="")
 
 
-def verify(image, destination):
-    receipt = export_image(image, checksum(image), destination)
+def verify(image, destination, prefixes=None):
+    receipt = export_image(image, checksum(image), destination, prefixes=prefixes)
     destination = Path(destination)
-    if (destination / "rootfs/DO-NOT-EXPORT").exists():
-        raise ValueError("unselected image file was exported")
-    if len(receipt["expected_install_prefixes"]) != 4 or len(receipt["generated_files"]) != 5:
-        raise ValueError("four partitions must share exactly one selector")
-    for prefix in receipt["expected_install_prefixes"]:
-        directory = destination / "rootfs" / prefix.lstrip("/")
+    if (destination / "rootfs").exists() or (destination / "DO-NOT-EXPORT").exists():
+        raise ValueError("rootfs shell or unselected image file was exported")
+    if len(receipt["expected_install_prefixes"]) != (len(set(prefixes)) if prefixes else 4):
+        raise ValueError("wrong number of selected fixture installations")
+    for installation in receipt["installations"]:
+        prefix = installation["expected_install_prefix"]
+        directory = destination / installation["path"]
         if (directory / "fixture-link").readlink() != Path("bin/abacus"):
             raise ValueError("fixture symlink changed")
         if "NOT ABACUS" not in (directory / "bin/abacus").read_text():
             raise ValueError("fixture bytes changed")
-    for record in receipt["generated_files"]:
-        module = destination / record["path"]
-        if str(destination) in module.read_text() or checksum(module) != record["sha256"]:
-            raise ValueError("module paths or receipt checksums differ")
+        manifest = directory / MANIFEST_PATH
+        if checksum(manifest) != installation["manifest_sha256"]:
+            raise ValueError("manifest receipt checksum differs")
+        local = json.loads(manifest.read_text())
+        identity = local["entry"]["identity"]
+        if identity["install_prefix"] != prefix or identity["source_version"] != "NOT-SOFTWARE-EXPORT-PROBE":
+            raise ValueError("probe identity changed or was mistaken for real software")
+        for relative in (FRAGMENT_PATH,
+                         f'modulefiles/abacus/development/{identity["build_id"]}'):
+            module = directory / relative
+            row = next(row for row in local["files"] if row["path"] == prefix.lstrip("/") + "/" + relative)
+            if str(destination) in module.read_text() or checksum(module) != row["sha256"]:
+                raise ValueError("embedded module paths or inventory checksums differ")
     result = {"status": "PASS", "scientific_artifact": False, "container_executed": False,
               "system_opt_modified": False, "export_receipt": receipt}
     print(json.dumps(result, sort_keys=True))
@@ -76,8 +84,9 @@ if __name__ == "__main__":
     check = commands.add_parser("verify")
     check.add_argument("image", type=Path)
     check.add_argument("destination", type=Path)
+    check.add_argument("--prefix", action="append", help="optional canonical fixture prefix for a single-folder check")
     args = parser.parse_args()
     if args.action == "prepare-local":
         prepare(args.directory)
     else:
-        verify(args.image, args.destination)
+        verify(args.image, args.destination, prefixes=args.prefix)
