@@ -183,9 +183,11 @@ def validate_manifest(manifest):
             if directory in indexed and indexed[directory]["kind"] != "directory":
                 raise ValueError("generated module requires regular share/sai directories")
         for command in entry["commands"].values():
-            executable = indexed.get(prefix + "/" + command, {})
+            resolved = resolve_inventory_path("/" + prefix + "/" + command, indexed,
+                                              local_prefixes, entry["external_roots"])
+            executable = indexed.get(resolved.lstrip("/"), {})
             if executable.get("kind") != "file" or executable["mode"] & 0o111 != 0o111:
-                raise ValueError("declared command must be a delivered executable regular file")
+                raise ValueError("declared command must resolve to a delivered executable regular file")
     return {"schema": 1, "entries": entries,
             "files": [indexed[path] for path in sorted(indexed)]}
 
