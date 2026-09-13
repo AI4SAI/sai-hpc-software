@@ -88,7 +88,7 @@ class RuntimeCliTests(unittest.TestCase):
         self.assertEqual(request["identity"], self.identity)
         results = self.task() / "results"
         (results / "ranks").mkdir(exist_ok=True)
-        mpi_isa = "avx2" if request["target"] == "16v100-avx2" else "avx512"
+        mpi_isa = runtime.TARGETS[request["target"]]["dependency_isa"]
         for rank in range(request["ranks"]):
             host = f"node-{rank // request['ranks_per_node']}"
             gpu = "0" if request["gpus_per_node"] else ""
