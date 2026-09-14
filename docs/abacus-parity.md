@@ -185,7 +185,7 @@ HOME (not a scratch-home reassignment); Open MPI fails to initialize if HOME is
 missing. A selective `--export=HOME` attempt was cancelled by UID 0 before logging;
 its cause is not established and it is not used by the benchmark driver.
 
-## Latest native-layout canary (2026-09-13)
+## Native-layout canaries (2026-09-13–14)
 
 [Actions 34739709778](https://github.com/AI4SAI/sai-hpc-software/actions/runs/34739709778)
 passed 224 controller tests, then Slurm job `1295392` failed compilation on
@@ -196,3 +196,20 @@ against this upstream before retrying; do not disable BSE to bypass the error.
 The SAI task `runs/34739709778-1-development-4v100-avx512-2026-09-13-42f8ad905d56`
 retains its overlay and failure log, and Actions retains the results artifact.
 No new SIF, native-module runtime, scientific or speed acceptance is claimed.
+
+After the pinned LibRI archive update, controller `ad52014` retried the same
+upstream in [Actions 34742883026](https://github.com/AI4SAI/sai-hpc-software/actions/runs/34742883026).
+Slurm `1296370` on `4v100n18` compiled and installed `abacus_max_gpu`, with BSE,
+LibRI and cuSOLVERMp enabled, then failed inventory generation: the shared
+validator wrongly required `bin/abacus` itself to be a regular file. Read-only
+inspection of the retained overlay confirmed `bin/abacus -> abacus_max_gpu`.
+No final SIF or scientific/performance acceptance was produced.
+
+[PR #4](https://github.com/AI4SAI/sai-hpc-software/pull/4) fixes this shared check
+without flattening links or copying binaries; it is merged into main and included
+in this branch at `44784cc`. Real SquashFS round-trip tests preserve the command
+link, target hash/mode and packaged module; all 236 branch tests passed in CI.
+On September 14, [Actions 34844632469](https://github.com/AI4SAI/sai-hpc-software/actions/runs/34844632469)
+was submitted for `4V100` only, locking upstream
+`5da5f2f771b6e5ae88dca06ff59838fc895d3116` (`develop-2026-09-14`). This is a fresh
+build, not a relabelling of either failed overlay; its acceptance remains pending.
