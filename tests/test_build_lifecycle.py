@@ -258,8 +258,10 @@ class CiLifecycleTests(unittest.TestCase):
         self.execute(software="cp2k")
         self.assertEqual(self.archive_calls, [])
         self.assertTrue(set(updated).isdisjoint(self.uploads))
-        self.execute(event="schedule", prior={"artifact": "/trusted/prior.sif"})
+        self.execute(event="schedule", track="release", prior=[{"previous_run": "failed"}])
         self.assertEqual(self.archive_calls, [])
+        self.execute(event="schedule", prior=[{"previous_run": "development"}])
+        self.assertEqual([call.args for call in self.archive_calls], [(self.root / "abacus-updates",)])
 
     def test_gpu_publish_occurs_after_both_acceptance_monitors(self):
         self.assertEqual(self.execute(), [
