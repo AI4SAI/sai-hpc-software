@@ -19,6 +19,10 @@ on:
       reference_run:
         description: Verified GPU CP2K benchmark run for CPU-only added-feature references
         required: false
+      retry_releases:
+        description: Explicitly retry selected release/prerelease versions already attempted
+        type: boolean
+        default: false
   push:
     paths: ['controller/**', 'tests/**', 'profiles/**', '.github/workflows/cp2k.yml']
   pull_request:
@@ -121,6 +125,7 @@ jobs:
           TARGET: ${{ matrix.build.target }}
           RESUME_RUN: ${{ inputs.resume_run }}
           CP2K_REFERENCE_RUN: ${{ inputs.reference_run }}
+          RETRY_RELEASES: ${{ inputs.retry_releases }}
         run: python3 -u controller/ci.py
       - name: Publish build logs and SAI artifact location
         if: always()

@@ -16,6 +16,16 @@ modulefiles 或校验清单。系统预装依赖仍只读复用，不随安装�
 API、标签解析失败必须报错，不能伪装成“没有版本”。release 使用标签指向的
 commit，annotated tag 必须解引用，不能误取同名分支。
 
+定时与普通手动触发采用同一构建策略：`development` 每次重新编译，即使源码
+SHA 未变；`prerelease`、`release` 只编译尚未尝试的最新上游版本，按软件、
+渠道、标签/完整 SHA 和目标分区去重，不因配方变化重新编译。失败和取消也算
+已尝试，无更新时跳过；需要重试时手动选择对应渠道/分区并设 `retry_releases=true`。
+显式 `resume_run` 也属于重试，但仍受原有同配方续打包限制。定时任务不启用重试。
+尝试在传输源码前登记于已有任务的 `input/build-attempt.json`，共用短时锁避免
+并发重复提交，且兼容已有 `runs/*/request.json`。跳过只说明已尝试，不能代表
+产物存在、科学验收通过或发布成功；源码缓存可继续复用，但 development 不复用
+编译结果。DeePMD/LAMMPS 仅对实际 primary 触发去重，伴随组件仍随新配对编译。
+
 | 软件 | 开发分支 | 原生构建分区 |
 | --- | --- | --- |
 | ABACUS | develop | DSPRHBM、4V100、16V100、8V100V0 |
