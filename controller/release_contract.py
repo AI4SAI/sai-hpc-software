@@ -4,11 +4,14 @@ This module resolves upstream references read-only. It does not build, publish,
 or grant scientific acceptance. Paired DeepMD/LAMMPS deliveries must pass both
 exact commits through ``stack_sources``; standalone deliveries may omit it.
 """
+import fcntl
 import hashlib
 import json
+import os
+from pathlib import Path
 import re
 
-from remote_controller import TARGETS
+from remote_controller import TARGETS, safe_name
 from resolve_source import resolve as _resolve_source
 
 
@@ -36,6 +39,82 @@ SOFTWARE = {
 STACK_SOFTWARE = frozenset(("deepmd-kit", "lammps"))
 MAX_VERSION_LABEL = 64
 MAX_BUILD_ID = 106
+
+
+def claim_build(root, identities, run_id, *, retry=False):
+    """Reserve requested primary sources before transport/build, not acceptance.
+
+    Development always builds. Releases are attempted once per ref/SHA/target,
+    even after failure; retry is explicit. Preserve receipts in existing task
+    directories and also recognize pre-policy build requests. MD companions do
+    not count as independent triggers. One short lock prevents duplicate claims.
+    """
+    root = Path(root)
+    run_id = safe_name(run_id)
+    identities = [validate_identity(identity) for identity in identities]
+    if not identities:
+        raise ValueError("at least one primary source is required")
+    if type(retry) is not bool:
+        raise ValueError("retry must be an explicit boolean")
+    directory = root / "runs" / run_id / "input"
+    cache = root / "cache"
+    if root.resolve() != root or directory.resolve() != directory or cache.resolve() != cache:
+        raise ValueError("build tracking paths must not contain symlinks")
+    directory.mkdir(parents=True, exist_ok=True)
+    cache.mkdir(parents=True, exist_ok=True)
+    receipt = directory / "build-attempt.json"
+    lock_path = cache / "build-attempts.lock"
+    if lock_path.is_symlink():
+        raise ValueError("symlinked build history lock")
+    with lock_path.open("a+") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        if receipt.exists() or receipt.is_symlink():
+            raise ValueError("run already claimed; retry with a new run id")
+        prior = {}
+        fields = ("software", "track", "source_ref", "source_sha", "target")
+        if any(identity["track"] != "development" for identity in identities) and not retry:
+            for task in sorted((root / "runs").iterdir()):
+                recorded = task / "input/build-attempt.json"
+                legacy = not recorded.exists() and not recorded.is_symlink()
+                if legacy:
+                    recorded = task / "request.json"
+                if recorded.is_symlink() or recorded.resolve() != recorded:
+                    raise ValueError("symlinked build history")
+                if not recorded.exists():
+                    continue
+                data = json.loads(recorded.read_text())
+                if not legacy:
+                    if (data.get("schema") != 1 or data.get("run_id") != task.name or
+                            not isinstance(data.get("identities"), list) or
+                            data.get("build") is not bool(data["identities"])):
+                        raise ValueError("invalid build attempt receipt")
+                    sources = data["identities"]
+                elif "identity" in data:
+                    sources = [data["identity"]]
+                elif "delivery" in data:
+                    delivery = data["delivery"]
+                    sources = [delivery["identities"][trigger["software"]]
+                               for trigger in delivery["plan"]["triggers"]]
+                else:
+                    continue  # Pre-identity requests cannot identify a release.
+                for source in sources:
+                    source = validate_identity(source)
+                    prior[tuple(source[key] for key in fields)] = task.name
+        selected, skipped = [], []
+        for identity in identities:
+            previous = prior.get(tuple(identity[key] for key in fields))
+            if identity["track"] == "development" or retry or previous is None:
+                selected.append(identity)
+            else:
+                skipped.append({"identity": identity, "previous_run": previous})
+        result = {"schema": 1, "run_id": run_id, "retry": retry, "build": bool(selected),
+                  "identities": selected, "skipped": skipped,
+                  "meaning": "build attempt only; no artifact or acceptance claim"}
+        temporary = receipt.with_suffix(".tmp")
+        with temporary.open("x") as output:
+            output.write(json.dumps(result, sort_keys=True) + "\n")
+        os.replace(temporary, receipt)
+        return result
 
 
 def _canonical(value):
@@ -211,3 +290,14 @@ def resolve_tracks(software, tracks=TRACKS, resolver=_resolve_source):
         rows.append(dict(row, status="resolved", source_ref=ref, source_sha=sha,
                          source_version=version))
     return rows
+
+
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="Claim source builds using the shared channel policy")
+    parser.add_argument("root", type=Path)
+    parser.add_argument("run_id")
+    parser.add_argument("identities", help="JSON list of requested primary identities")
+    parser.add_argument("--retry", action="store_true", help="explicitly retry the selected release versions")
+    args = parser.parse_args()
+    print(json.dumps(claim_build(args.root, json.loads(args.identities), args.run_id, retry=args.retry)))
