@@ -82,6 +82,33 @@ class InventoryTests(unittest.TestCase):
             with self.subTest(index=index, mode=mode), self.assertRaises(ValueError):
                 delivery.validate_manifest(manifest)
 
+    def test_command_symlinks_resolve_to_delivered_executables_without_rewriting(self):
+        for target in ("abacus_max_gpu", "../bin/abacus_max_gpu", "absolute-link"):
+            manifest, _ = minimal_manifest()
+            executable = manifest["files"][2]
+            command = executable["path"]
+            executable["path"] = command + "_max_gpu"
+            manifest["files"] += [
+                {"path": command, "kind": "symlink", "mode": 0o755, "target": target},
+                {"path": str(Path(command).with_name("absolute-link")), "kind": "symlink",
+                 "mode": 0o755, "target": "/" + executable["path"]}]
+            original = copy.deepcopy(manifest)
+            with self.subTest(target=target):
+                actual = delivery.validate_manifest(manifest)
+                self.assertEqual(actual["files"], sorted(original["files"], key=lambda row: row["path"]))
+                self.assertEqual(manifest, original)
+
+    def test_command_symlinks_require_a_delivered_executable_target(self):
+        for target in ("abacus_max_gpu", ".", "missing", "abacus", "/opt/devtools/example/abacus"):
+            manifest, _ = minimal_manifest()
+            executable = manifest["files"][2]
+            command = executable["path"]
+            executable.update(path=command + "_max_gpu", mode=0o644)
+            manifest["files"].append({"path": command, "kind": "symlink", "mode": 0o755,
+                                      "target": target})
+            with self.subTest(target=target), self.assertRaises(ValueError):
+                delivery.validate_manifest(manifest)
+
     def test_no_link_ancestors_or_reserved_metadata_paths(self):
         manifest, _ = minimal_manifest()
         prefix = manifest["files"][0]["path"]
@@ -116,8 +143,8 @@ class InventoryTests(unittest.TestCase):
         second, _ = minimal_manifest("16v100-avx2")
         first["entries"] += second["entries"]
         first["files"] += second["files"]
-        first["files"].append({"path": first["files"][0]["path"] + "/cross", "kind": "symlink",
-                               "mode": 0o755, "target": "/" + second["files"][2]["path"]})
+        first["files"][2] = {"path": first["files"][2]["path"], "kind": "symlink",
+                              "mode": 0o755, "target": "/" + second["files"][2]["path"]}
         with self.assertRaisesRegex(ValueError, "partition"):
             delivery.validate_manifest(first)
 
@@ -188,7 +215,7 @@ class RealSquashfsTests(unittest.TestCase):
         self.source = self.root / "image-root"
         self.source.mkdir()
 
-    def build_image(self, targets=("4v100-avx512",), corrupt=False, boundary=False):
+    def build_image(self, targets=("4v100-avx512",), corrupt=False, boundary=False, command_link=False):
         entries = []
         for target in targets:
             manifest, data = minimal_manifest(target)
@@ -196,9 +223,11 @@ class RealSquashfsTests(unittest.TestCase):
             entries.append(item)
             base = self.source / item["identity"]["install_prefix"].lstrip("/")
             (base / "bin").mkdir(parents=True)
-            executable = base / "bin/abacus"
+            executable = base / ("bin/abacus_max_gpu" if command_link else "bin/abacus")
             executable.write_bytes(data)
             executable.chmod(0o755)
+            if command_link:
+                (base / "bin/abacus").symlink_to("abacus_max_gpu")
             (base / "link").symlink_to("bin/abacus")
             extra = base / "data [literal] -> name"
             extra.write_bytes(b"second-file\x00bytes\n")
@@ -286,6 +315,27 @@ class RealSquashfsTests(unittest.TestCase):
         for wrong in (prefix + "/", prefix.replace("/opt/", "/tmp/"), "/opt/software/../../etc", ""):
             with self.subTest(wrong=wrong), self.assertRaisesRegex(ValueError, "canonical"):
                 self.export(image, self.root / "bad", prefixes=[wrong])
+
+    def test_command_symlink_survives_manifest_roundtrip_and_real_export(self):
+        image, manifest = self.build_image(command_link=True)
+        item = manifest["entries"][0]
+        prefix = item["identity"]["install_prefix"]
+        self.assertEqual(delivery.read_installed_manifests([item], self.source), manifest)
+        receipt = self.export(image, prefixes=[prefix])
+        output = self.root / "export"
+        command = output / "bin/abacus"
+        self.assertTrue(command.is_symlink())
+        self.assertEqual(os.readlink(command), "abacus_max_gpu")
+        executable = output / "bin/abacus_max_gpu"
+        self.assertFalse(executable.is_symlink())
+        row = next(row for row in manifest["files"] if row["path"].endswith("/bin/abacus_max_gpu"))
+        self.assertEqual(delivery.checksum(executable), row["sha256"])
+        self.assertEqual(executable.stat().st_mode & 0o777, 0o755)
+        self.assertEqual(subprocess.run([str(command)], check=True).returncode, 0)
+        self.assertEqual(receipt["expected_install_prefixes"], [prefix])
+        for relative in (delivery.MANIFEST_PATH, delivery.FRAGMENT_PATH):
+            self.assertEqual((output / relative).read_bytes(),
+                             (self.source / prefix.lstrip("/") / relative).read_bytes())
 
     def test_write_manifest_has_no_self_hash_and_is_idempotent(self):
         _, manifest = self.build_image()
