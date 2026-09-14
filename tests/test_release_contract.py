@@ -105,6 +105,23 @@ class BuildAttemptTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "symlinked"):
             contract.claim_build(self.root, [identity], "symlink")
 
+    def test_malformed_receipts_and_existing_temporary_links_fail_without_overwrite(self):
+        identity = self.identity()
+        original = contract.claim_build(self.root, [identity], "first")
+        receipt = self.root / "runs/first/input/build-attempt.json"
+        for change in ({"schema": 99}, {"run_id": "wrong"}, {"identities": []}):
+            receipt.write_text(json.dumps(dict(original, **change)))
+            with self.subTest(change=change), self.assertRaisesRegex(ValueError, "invalid build attempt"):
+                contract.claim_build(self.root, [identity], "bad")
+        destination = self.root / "keep"
+        destination.write_text("user contents")
+        directory = self.root / "runs/temp/input"
+        directory.mkdir(parents=True)
+        (directory / "build-attempt.tmp").symlink_to(destination)
+        with self.assertRaises(FileExistsError):
+            contract.claim_build(self.root, [identity], "temp", retry=True)
+        self.assertEqual(destination.read_text(), "user contents")
+
 
 class IdentityTests(unittest.TestCase):
     def identity(self, **changes):

@@ -84,6 +84,10 @@ def claim_build(root, identities, run_id, *, retry=False):
                     continue
                 data = json.loads(recorded.read_text())
                 if not legacy:
+                    if (data.get("schema") != 1 or data.get("run_id") != task.name or
+                            not isinstance(data.get("identities"), list) or
+                            data.get("build") is not bool(data["identities"])):
+                        raise ValueError("invalid build attempt receipt")
                     sources = data["identities"]
                 elif "identity" in data:
                     sources = [data["identity"]]
@@ -107,7 +111,8 @@ def claim_build(root, identities, run_id, *, retry=False):
                   "identities": selected, "skipped": skipped,
                   "meaning": "build attempt only; no artifact or acceptance claim"}
         temporary = receipt.with_suffix(".tmp")
-        temporary.write_text(json.dumps(result, sort_keys=True) + "\n")
+        with temporary.open("x") as output:
+            output.write(json.dumps(result, sort_keys=True) + "\n")
         os.replace(temporary, receipt)
         return result
 
