@@ -96,15 +96,16 @@ def main():
         raise ValueError("remote identity differs from the resolved source")
     expected_artifact = artifact_path(Path(root), identity, run_id)
     (results / "identity.json").write_text(json.dumps(identity, sort_keys=True) + "\n")
-    # Scheduled trackers reuse only verified, checksum-matching artifacts.
-    # Manual dispatch deliberately rebuilds, to allow acceptance and recipe changes.
-    if os.environ.get("GITHUB_EVENT_NAME") == "schedule":
-        prior = json.loads(python("software_controller.py", "lookup", software, version, target,
-                                  upstream, *provenance_flags, capture_output=True).stdout)
-        if prior:
-            (results / "artifact.path").write_text(prior["artifact"] + "\n")
-            (results / "cache-hit.json").write_text(json.dumps(prior) + "\n")
-            print(f"ARTIFACT_HIT {prior['artifact']}", flush=True)
+    # Development always rebuilds. Other channels are attempted once per
+    # upstream version, even after failure, unless retry is explicitly selected.
+    if track != "development":
+        retry = (["--retry"] if os.environ.get("GITHUB_EVENT_NAME") == "workflow_dispatch" and
+                 (os.environ.get("RETRY_RELEASES") == "true" or os.environ.get("RESUME_RUN")) else [])
+        claim = json.loads(python("release_contract.py", root, run_id, json.dumps([identity]),
+                                  *retry, capture_output=True).stdout)
+        (results / "build-attempt.json").write_text(json.dumps(claim, sort_keys=True) + "\n")
+        if not claim["build"]:
+            print("UNCHANGED_RELEASE_SKIPPED " + json.dumps(claim["skipped"]), flush=True)
             return
     inventory = json.loads(python("source_cache.py", "inventory", cache, capture_output=True).stdout)
     if upstream in inventory["cache_shas"]:
