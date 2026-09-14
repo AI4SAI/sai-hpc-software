@@ -185,7 +185,7 @@ class CiLifecycleTests(unittest.TestCase):
 
     def execute(self, *, software="abacus", target="4v100-avx512", fail_monitor=None,
                 event="workflow_dispatch", version="v1", track="development",
-                prior=None, alter_identity=None, published_path=None, resume=""):
+                prior=None, alter_identity=None, published_path=None, resume="", retry="false"):
         commands = []
         self.remote_commands = []
         self.uploads = []
@@ -202,7 +202,7 @@ class CiLifecycleTests(unittest.TestCase):
                        "SOURCE_REF": source_ref, "RELEASE_TRACK": track,
                        "REMOTE_USER": "testuser", "GITHUB_RUN_ID": "123",
                        "GITHUB_RUN_ATTEMPT": "1", "RUNNER_TEMP": str(self.root),
-                       "GITHUB_EVENT_NAME": event, "RESUME_RUN": resume}
+                       "GITHUB_EVENT_NAME": event, "RESUME_RUN": resume, "RETRY_RELEASES": retry}
 
         def fake_run(argv, **kwargs):
             argv = [str(value) for value in argv]
@@ -219,8 +219,8 @@ class CiLifecycleTests(unittest.TestCase):
                         stdout = json.dumps({"cache_shas": [upstream]})
                     elif (script, operation) == ("software_controller.py", "identity"):
                         stdout = json.dumps(identity if alter_identity is None else alter_identity(identity))
-                    elif (script, operation) == ("software_controller.py", "lookup"):
-                        stdout = json.dumps(prior or {})
+                    elif script == "release_contract.py":
+                        stdout = json.dumps({"build": not bool(prior), "skipped": prior or []})
             elif argv[0] == "scp" and argv[-2].endswith("/artifact.path"):
                 Path(argv[-1]).write_text(str(published_path or expected_artifact) + "\n")
             elif argv[0] == "scp":
@@ -314,14 +314,37 @@ class CiLifecycleTests(unittest.TestCase):
         self.assertLessEqual(len(runtime[1]), 128)
         self.assertLessEqual(len(gpu[1]), 128)
 
-    def test_schedule_identity_and_lookup_use_same_resolved_provenance(self):
-        prior = {"artifact": "/trusted/prior.sif"}
-        self.assertEqual(self.execute(event="schedule", track="release", prior=prior), [
-            ("software_controller.py", "identity"), ("software_controller.py", "lookup")])
-        self.assertEqual(self.remote_commands[-1], ("software_controller.py", [
-            "lookup", "abacus", "v1", "4v100-avx512", "a" * 40,
-            "--track", "release", "--source-ref", "develop"]))
-        self.assertEqual((self.root / "results/artifact.path").read_text(), prior["artifact"] + "\n")
+    def test_unchanged_releases_skip_for_both_events_without_claiming_an_artifact(self):
+        for event in ("schedule", "workflow_dispatch"):
+            for track in ("release", "prerelease"):
+                with self.subTest(event=event, track=track):
+                    calls = self.execute(event=event, track=track, prior=[{"previous_run": "failed-build"}])
+                    self.assertEqual([script for script, _ in calls],
+                                     ["software_controller.py", "release_contract.py"])
+                    script, argv = self.remote_commands[-1]
+                    claimed = json.loads(argv[2])[0]
+                    self.assertEqual(claimed["track"], track)
+                    self.assertEqual(claimed["source_sha"], "a" * 40)
+                    self.assertNotIn("--retry", argv)
+                    self.assertFalse((self.root / "results/artifact.path").exists())
+                    self.assertFalse(json.loads((self.root / "results/build-attempt.json").read_text())["build"])
+
+    def test_development_always_builds_for_both_events_even_with_prior_attempt(self):
+        for event in ("schedule", "workflow_dispatch"):
+            with self.subTest(event=event):
+                calls = self.execute(event=event, prior=[{"previous_run": "prior"}])
+                self.assertIn(("software_controller.py", "submit"), calls)
+                self.assertFalse(any(script == "release_contract.py" or op == "lookup" for script, op in calls))
+
+    def test_release_retry_is_only_explicit_manual_or_resume(self):
+        for event, retry, resume, expected in (("schedule", "true", "", False),
+                                              ("workflow_dispatch", "false", "", False),
+                                              ("workflow_dispatch", "true", "", True),
+                                              ("workflow_dispatch", "false", "failed", True)):
+            with self.subTest(event=event, retry=retry, resume=resume):
+                self.execute(event=event, track="release", retry=retry, resume=resume)
+                argv = next(argv for script, argv in self.remote_commands if script == "release_contract.py")
+                self.assertEqual("--retry" in argv, expected)
 
     def test_schedule_cache_miss_preserves_identity_flags_for_submission(self):
         self.execute(event="schedule", track="release")
