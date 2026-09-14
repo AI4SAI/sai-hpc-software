@@ -8,6 +8,13 @@ not a webhook or a zero-delay mirror. GitHub schedules become active only after
 the workflow reaches the repository default branch. On the experimental branch,
 push/PR run static tests; an explicit dispatch is needed for a cluster build.
 
+Development builds run every time, both on schedule and manual dispatch.
+Release and prerelease builds run once per upstream ref/SHA and GPU target;
+failed attempts also count, and recipe changes do not automatically retry them.
+Manual dispatch can explicitly enable `retry_releases` (default `false`).
+An attempt record only controls compilation and never certifies an artifact or
+scientific acceptance.
+
 No CPU-only GPUMD build is planned. Each target compiles on its own partition,
 using GCC 13.3 `-march=native -mtune=native` and CUDA 12.9.1 `sm_70`:
 

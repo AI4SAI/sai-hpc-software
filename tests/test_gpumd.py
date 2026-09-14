@@ -343,6 +343,13 @@ class GpumdDeliveryTests(unittest.TestCase):
 
 
 class GpumdWorkflowTests(unittest.TestCase):
+    def test_release_retries_are_explicit_and_disabled_by_default(self):
+        workflow = (ROOT / ".github/workflows/gpumd.yml").read_text()
+        retry = workflow.split("      retry_releases:\n", 1)[1].split("\n  push:", 1)[0]
+        self.assertIn("        type: boolean\n", retry)
+        self.assertIn("        default: false", retry.splitlines())
+        self.assertIn("          RETRY_RELEASES: ${{ inputs.retry_releases }}", workflow)
+
     def resolve(self, event="schedule", missing=(), tracks="development", override=""):
         workflow = (ROOT / ".github/workflows/gpumd.yml").read_text()
         snippet = textwrap.dedent(workflow.split("python3 - <<'PY'\n", 1)[1].split("\n          PY", 1)[0])
