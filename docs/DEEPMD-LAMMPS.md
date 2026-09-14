@@ -16,6 +16,19 @@ prepared for later review/merge and only resolves refs in its current form; manu
 `build_candidates=true` explicitly enables the Slurm build stage. Static CI
 success does not mean a candidate compiled or scientific acceptance passed.
 
+Within an enabled build invocation, development primaries always compile, even
+when their SHA is unchanged. Release and prerelease primaries attempt only the
+latest resolved ref/SHA per target, once across all previous attempts, including
+failures. A manual dispatch with `retry_releases=true` explicitly retries the
+selected versions; an unchanged failed version is never retried automatically.
+The shared `release_contract.claim_build` records the decision before source
+transport in `runs/<run>/input/build-attempt.json`. It considers only requested
+primary triggers, not their companions; recipe or companion changes do not count
+as a new primary release. Any selected primary builds the locked pair once.
+An all-skipped pair emits only a build-attempt receipt, with no artifact or new
+acceptance claim. This policy does not enable the currently disabled scheduled
+candidate-build stage or publication.
+
 Each immutable pair records **both full upstream SHAs** and hashes the actual
 deployed trusted recipe, launcher and verifiers. Existing eight-part,
 checksum-verified Git bundle transport supplies isolated bare caches; only the

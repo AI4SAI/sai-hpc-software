@@ -21,6 +21,10 @@ on:
         description: Spend Slurm allocation on unpublished experimental builds
         type: boolean
         default: false
+      retry_releases:
+        description: Explicitly retry the selected release/prerelease versions, including failed attempts
+        type: boolean
+        default: false
   push:
     paths: ['controller/md_*', 'tests/test_md_*', 'docs/DEEPMD-LAMMPS.md', 'docs/evidence/deepmd-*', '.github/workflows/deepmd-lammps.yml']
   pull_request:
@@ -109,6 +113,7 @@ jobs:
         env:
           MD_PAIR: ${{ toJSON(matrix.build) }}
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          RETRY_RELEASES: ${{ github.event_name == 'workflow_dispatch' && inputs.retry_releases || false }}
         run: python3 -u controller/md_ci.py
       - uses: actions/upload-artifact@v4
         if: always()

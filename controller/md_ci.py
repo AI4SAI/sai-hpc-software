@@ -23,6 +23,7 @@ def main():
     request = dict(schema=2, plan=plan, recipe_sha256=recipe, identities=identify_track_pair(plan, recipe))
     from md_controller import validate_pair
     validate_pair(request)
+    retry = os.environ.get('GITHUB_EVENT_NAME') == 'workflow_dispatch' and os.environ.get('RETRY_RELEASES') == 'true'
     user = safe_name(os.environ['REMOTE_USER'])
     sha = safe_sha(os.environ['GITHUB_SHA'])
     run_id = safe_name('-'.join(('md', os.environ['GITHUB_RUN_ID'], os.environ['GITHUB_RUN_ATTEMPT'],
@@ -51,6 +52,21 @@ def main():
                                           'create_rootfs.sh', 'release_contract.py', 'native_module.py', 'export_native.py')]
     for path in files:
         upload(path, snapshot + '/' + path.name)
+    primaries = [request['identities'][trigger['software']] for trigger in plan['triggers']]
+    decision = json.loads(python('release_contract.py', root, run_id, json.dumps(primaries, sort_keys=True),
+                                 *(['--retry'] if retry else []), capture_output=True).stdout)
+    (results / 'build-attempt.json').write_text(json.dumps(decision, sort_keys=True) + '\n')
+    selected = decision['identities']
+    if not decision['build']:
+        print('MD_BUILD_SKIPPED: latest primary versions already attempted; explicit retry required; no acceptance claimed', flush=True)
+        return
+    plan = dict(plan, triggers=[trigger for trigger in plan['triggers']
+                               if request['identities'][trigger['software']] in selected])
+    request = validate_pair(dict(request, plan=plan))
+    pair_file = temporary / 'pair.json'
+    pair_file.write_text(json.dumps(request, sort_keys=True) + '\n')
+    upload(pair_file, remote_task + '/input/pair.json')
+    (results / 'delivery.json').write_text(json.dumps(request, sort_keys=True) + '\n')
     for name, source in plan['sources'].items():
         cache = root + '/cache/repositories/' + name
         inventory = json.loads(python('source_cache.py', 'inventory', cache, capture_output=True).stdout)
@@ -77,11 +93,7 @@ def main():
             list(executor.map(lambda index: upload(parts / f'source.part.{index:02d}', destination + f'/source.part.{index:02d}'), range(8)))
         python('source_cache.py', 'receive', cache, destination)
         print(f'SOURCE_TRANSFER {name} {manifest["compressed_size"]} bytes', flush=True)
-    pair_file = temporary / 'pair.json'
-    pair_file.write_text(json.dumps(request, sort_keys=True) + '\n')
-    upload(pair_file, remote_task + '/input/pair.json')
     ssh(['test', '-s', project + '/containers/base/minimal-v1.sif'])
-    (results / 'delivery.json').write_text(json.dumps(request, sort_keys=True) + '\n')
     try:
         python('md_controller.py', 'submit', run_id, remote_task + '/input/pair.json')
         python('md_controller.py', 'monitor', run_id)

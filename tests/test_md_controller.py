@@ -1,4 +1,6 @@
 import copy
+from contextlib import contextmanager, redirect_stdout
+import io
 import json
 import os
 from argparse import Namespace
@@ -6,6 +8,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 import subprocess
 import shutil
+import shlex
 import sys
 import tempfile
 import textwrap
@@ -18,15 +21,59 @@ import md_controller as md
 import md_tracking as tracking
 import md_ci
 import export_native
+from release_contract import claim_build
 
 
-def delivery_request(target='4v100-avx512', recipe='e' * 64):
-    def resolver(repo, ref):
+def delivery_request(target='4v100-avx512', recipe='e' * 64, track='development', resolver=None):
+    def default_resolver(repo, ref):
         sha = ('a' if 'deepmd' in repo else 'b') * 40
+        ref = {'latest-release': 'v1', 'latest-prerelease': 'v2-rc1'}.get(ref, ref)
         return {'sha': sha, 'ref': ref, 'version': ref + '-2026-09-13'}
-    plan = tracking.resolve_track_pairs(['development'], [target], resolver)['pairs'][0]
+    plan = tracking.resolve_track_pairs([track], [target], resolver or default_resolver)['pairs'][0]
     return dict(schema=2, plan=plan, recipe_sha256=recipe,
                 identities=tracking.identify_track_pair(plan, recipe))
+
+
+@contextmanager
+def ci_fixture(plan, runner, history, *, run_id='123', attempt='1', retry='',
+               event='workflow_dispatch', failure=None, recipe=None):
+    """Exercise the real attempt policy while replacing only remote transport."""
+    runner = Path(runner)
+    runner.mkdir(exist_ok=True)
+    environment = dict(MD_PAIR=json.dumps(plan), REMOTE_USER='unit', GITHUB_SHA='c' * 40,
+                       GITHUB_RUN_ID=run_id, GITHUB_RUN_ATTEMPT=attempt, RUNNER_TEMP=str(runner),
+                       GITHUB_EVENT_NAME=event, RETRY_RELEASES=retry)
+    result = subprocess.CompletedProcess([], 0, '')
+    def remote_run(argv, **kwargs):
+        if argv[0] == 'ssh':
+            command = shlex.split(argv[-1])
+            if command[0] == 'python3':
+                name = Path(command[1]).name
+                if name == 'release_contract.py':
+                    decision = claim_build(history, json.loads(command[4]), command[3],
+                                           retry=command[5:] == ['--retry'])
+                    return subprocess.CompletedProcess(argv, 0, json.dumps(decision))
+                if name == failure:
+                    raise subprocess.CalledProcessError(1, command)
+                if name == 'source_cache.py':
+                    return subprocess.CompletedProcess(argv, 0, json.dumps({
+                        'cache_shas': [source['sha'] for source in plan['sources'].values()]}))
+        return result
+    output = io.StringIO()
+    with patch.dict(os.environ, environment, clear=True), \
+            patch.object(md_ci, 'run', side_effect=remote_run) as run, \
+            patch.object(md_ci.subprocess, 'run', return_value=result), \
+            patch.object(md_ci, 'fingerprint', return_value=recipe or tracking.fingerprint(ROOT / 'controller')), \
+            patch.object(md_ci, 'datetime') as clock, redirect_stdout(output):
+        clock.now.return_value = datetime(2026, 9, 14, 0, 1, tzinfo=timezone.utc)
+        yield Namespace(run=run, clock=clock, output=output, runner=runner)
+
+
+def remote_python_calls(fixture, name, action=None):
+    commands = [shlex.split(call.args[0][-1]) for call in fixture.run.call_args_list
+                if call.args[0][0] == 'ssh']
+    return [command for command in commands if command[0] == 'python3'
+            and Path(command[1]).name == name and (action is None or command[2] == action)]
 
 
 class MDControllerTests(unittest.TestCase):
@@ -126,19 +173,13 @@ class MDControllerTests(unittest.TestCase):
 
     def test_runner_uploads_shared_helpers_and_locks_before_transport(self):
         with tempfile.TemporaryDirectory() as temporary:
-            environment = dict(MD_PAIR=json.dumps(self.pair()['plan']), REMOTE_USER='unit',
-                               GITHUB_SHA='c' * 40, GITHUB_RUN_ID='123', GITHUB_RUN_ATTEMPT='1',
-                               RUNNER_TEMP=temporary)
-            result = subprocess.CompletedProcess([], 0, json.dumps({'cache_shas': ['a' * 40, 'b' * 40]}))
-            with patch.dict(os.environ, environment), patch.object(md_ci, 'run', return_value=result) as run, \
-                    patch.object(md_ci.subprocess, 'run', return_value=result), patch.object(md_ci, 'datetime') as clock:
-                clock.now.return_value = datetime(2026, 9, 14, 0, 1, tzinfo=timezone.utc)
+            with ci_fixture(self.pair()['plan'], temporary, Path(temporary) / 'history') as fixture:
                 md_ci.main()
-                clock.now.assert_called_once_with(timezone.utc)
+                fixture.clock.now.assert_called_once_with(timezone.utc)
             uploaded = json.loads((Path(temporary) / 'pair.json').read_text())
             self.assertEqual(md.validate_pair(uploaded), uploaded)
             self.assertEqual(uploaded['recipe_sha256'], tracking.fingerprint(ROOT / 'controller'))
-            commands = [list(map(str, call.args[0])) for call in run.call_args_list]
+            commands = [list(map(str, call.args[0])) for call in fixture.run.call_args_list]
             uploads = [argv[-2] for argv in commands if argv[0] == 'scp']
             for name in ('release_contract.py', 'native_module.py', 'export_native.py', 'resolve_source.py'):
                 self.assertIn(str(ROOT / 'controller' / name), uploads)
@@ -146,6 +187,11 @@ class MDControllerTests(unittest.TestCase):
             expected_run = 'md-123-1-2026-09-14-' + uploaded['plan']['selection_sha256'][:16]
             self.assertTrue(any(expected_run in argv[-1] for argv in commands if argv[0] == 'ssh'))
             self.assertTrue(any(expected_run + '-science' in argv[-1] for argv in commands if argv[0] == 'ssh'))
+            claim = remote_python_calls(fixture, 'release_contract.py')[0]
+            inventory = remote_python_calls(fixture, 'source_cache.py', 'inventory')[0]
+            remote = [shlex.split(argv[-1]) for argv in commands if argv[0] == 'ssh']
+            self.assertLess(remote.index(claim), remote.index(inventory))
+            self.assertEqual(json.loads(claim[4]), list(uploaded['identities'].values()))
             snapshot = Path(temporary) / 'snapshot'
             snapshot.mkdir()
             for source in uploads:
@@ -185,7 +231,7 @@ class MDControllerTests(unittest.TestCase):
                 manifest = write_manifests(entries, native_root)
                 assert read_installed_manifests(entries, native_root) == manifest
                 for name in ('md_controller.py', 'md_acceptance_controller.py', 'md_tracking.py',
-                             'md_science.py', 'source_cache.py', 'export_native.py'):
+                             'md_science.py', 'source_cache.py', 'export_native.py', 'release_contract.py'):
                     sys.argv = [str(snapshot / name), '--help']
                     try:
                         runpy.run_path(sys.argv[0], run_name='__main__')
@@ -196,6 +242,119 @@ class MDControllerTests(unittest.TestCase):
             checked = subprocess.run([sys.executable, '-I', '-c', code, str(snapshot), json.dumps(uploaded)],
                                      cwd=snapshot, capture_output=True, text=True, check=True)
             self.assertIn('ISOLATED_MD_PAYLOAD_PASSED', checked.stdout)
+
+    def assert_ci_skipped(self, fixture):
+        receipt = json.loads((fixture.runner / 'results/build-attempt.json').read_text())
+        self.assertFalse(receipt['build'])
+        self.assertEqual(receipt['identities'], [])
+        self.assertIn('MD_BUILD_SKIPPED:', fixture.output.getvalue())
+        self.assertIn('no acceptance claimed', fixture.output.getvalue())
+        self.assertEqual([path.name for path in (fixture.runner / 'results').iterdir()], ['build-attempt.json'])
+        self.assertFalse((fixture.runner / 'pair.json').exists())
+        for name in ('source_cache.py', 'md_controller.py', 'md_acceptance_controller.py'):
+            self.assertEqual(remote_python_calls(fixture, name), [])
+        commands = [list(map(str, call.args[0])) for call in fixture.run.call_args_list]
+        self.assertFalse(any(command[0] == 'git' for command in commands))
+        self.assertFalse(any('/input/' in command[-1] for command in commands if command[0] == 'scp'))
+
+    def test_development_rebuilds_same_pair_on_each_workflow_attempt(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for attempt in ('1', '2'):
+                with ci_fixture(self.pair()['plan'], root / attempt, root / 'history', attempt=attempt) as fixture:
+                    md_ci.main()
+                self.assertEqual(len(remote_python_calls(fixture, 'md_controller.py', 'submit')), 1)
+                self.assertEqual(len(remote_python_calls(fixture, 'source_cache.py', 'inventory')), 2)
+                receipt = json.loads((fixture.runner / 'results/build-attempt.json').read_text())
+                self.assertTrue(receipt['build'])
+                self.assertEqual(len(receipt['identities']), 2)
+
+    def test_release_attempt_failure_is_skipped_until_explicit_manual_retry(self):
+        for track in ('release', 'prerelease'):
+            for failure in ('source_cache.py', 'md_controller.py'):
+                with self.subTest(track=track, failure=failure), tempfile.TemporaryDirectory() as temporary:
+                    root = Path(temporary)
+                    plan = delivery_request(track=track)['plan']
+                    with ci_fixture(plan, root / 'failed', root / 'history', failure=failure) as failed:
+                        with self.assertRaises(subprocess.CalledProcessError):
+                            md_ci.main()
+                    receipt = json.loads((failed.runner / 'results/build-attempt.json').read_text())
+                    self.assertTrue(receipt['build'])
+                    self.assertNotIn('verified', json.dumps(receipt))
+                    self.assertFalse((failed.runner / 'results/artifact.path').exists())
+                    with ci_fixture(plan, root / 'skipped', root / 'history', run_id='124') as skipped:
+                        md_ci.main()
+                    self.assert_ci_skipped(skipped)
+                    with ci_fixture(plan, root / 'retry', root / 'history', run_id='125', retry='true') as retried:
+                        md_ci.main()
+                    self.assertEqual(len(remote_python_calls(retried, 'md_controller.py', 'submit')), 1)
+                    self.assertEqual(remote_python_calls(retried, 'release_contract.py')[0][5:], ['--retry'])
+
+    def test_only_manual_true_input_enables_retry(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            request = delivery_request(track='release')
+            claim_build(root / 'history', list(request['identities'].values()), 'previous')
+            cases = [('schedule', ''), ('schedule', 'true'), ('push', 'true'),
+                     ('workflow_dispatch', ''), ('workflow_dispatch', 'false'), ('workflow_dispatch', 'TRUE')]
+            for index, (event, retry) in enumerate(cases):
+                with self.subTest(event=event, retry=retry), ci_fixture(
+                        request['plan'], root / str(index), root / 'history',
+                        run_id=str(index), event=event, retry=retry) as fixture:
+                    md_ci.main()
+                self.assert_ci_skipped(fixture)
+                self.assertEqual(remote_python_calls(fixture, 'release_contract.py')[0][5:], [])
+
+    def test_partial_claim_filters_only_triggers_and_builds_locked_pair_once(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            request = delivery_request(track='release')
+            claim_build(root / 'history', [request['identities']['deepmd-kit']], 'previous')
+            with ci_fixture(request['plan'], root / 'runner', root / 'history') as fixture:
+                md_ci.main()
+            uploaded = json.loads((fixture.runner / 'pair.json').read_text())
+            self.assertEqual(uploaded['plan']['triggers'], [request['plan']['triggers'][1]])
+            for field in ('sources', 'selection_sha256', 'target', 'version'):
+                self.assertEqual(uploaded['plan'][field], request['plan'][field])
+            self.assertEqual(uploaded['identities'], tracking.identify_track_pair(
+                request['plan'], tracking.fingerprint(ROOT / 'controller')))
+            self.assertEqual(len(remote_python_calls(fixture, 'md_controller.py', 'submit')), 1)
+            self.assertEqual(len(remote_python_calls(fixture, 'source_cache.py', 'inventory')), 2)
+            self.assertEqual(md.validate_pair(uploaded), uploaded)
+
+    def test_fallback_companion_does_not_claim_its_independent_release(self):
+        def resolver(repo, ref):
+            if 'deepmd' in repo and ref == 'latest-prerelease':
+                raise ValueError('no latest-prerelease available')
+            return dict(sha=('a' if 'deepmd' in repo else 'b') * 40,
+                        ref='v2-rc1' if ref == 'latest-prerelease' else 'v1', version='fixture')
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            pair = delivery_request(track='prerelease', resolver=resolver)['plan']
+            with ci_fixture(pair, root / 'prerelease', root / 'history') as fixture:
+                md_ci.main()
+            primaries = json.loads(remote_python_calls(fixture, 'release_contract.py')[0][4])
+            self.assertEqual([identity['software'] for identity in primaries], ['lammps'])
+            release = delivery_request(track='release', resolver=resolver)['plan']
+            release['triggers'] = [trigger for trigger in release['triggers'] if trigger['software'] == 'deepmd-kit']
+            with ci_fixture(release, root / 'release', root / 'history', run_id='124') as stable:
+                md_ci.main()
+            self.assertEqual(len(remote_python_calls(stable, 'md_controller.py', 'submit')), 1)
+            receipt = json.loads((stable.runner / 'results/build-attempt.json').read_text())
+            self.assertEqual([identity['software'] for identity in receipt['identities']], ['deepmd-kit'])
+
+    def test_changed_companion_and_recipe_do_not_retry_primary_release(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            request = delivery_request(track='release')
+            claim_build(root / 'history', [request['identities']['deepmd-kit']], 'previous')
+            def resolver(repo, ref):
+                return dict(sha=('a' if 'deepmd' in repo else 'f') * 40, ref='v1', version='fixture')
+            changed = delivery_request(track='release', resolver=resolver)['plan']
+            changed['triggers'] = [trigger for trigger in changed['triggers'] if trigger['software'] == 'deepmd-kit']
+            with ci_fixture(changed, root / 'runner', root / 'history', recipe='f' * 64) as fixture:
+                md_ci.main()
+            self.assert_ci_skipped(fixture)
 
     def test_one_artifact_path_rejects_changed_identity_and_symlink_catalog(self):
         with tempfile.TemporaryDirectory() as temporary:
