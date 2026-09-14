@@ -1,9 +1,11 @@
 """Source channels and immutable prefixes are independent of build execution."""
 import copy
+from concurrent.futures import ThreadPoolExecutor
 import json
 from pathlib import Path
 import subprocess
 import sys
+import tempfile
 import unittest
 from unittest.mock import Mock, patch
 
@@ -11,6 +13,97 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "controller"))
 import release_contract as contract
 import resolve_source
+
+
+class BuildAttemptTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory(prefix="sai-build-policy-")
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+
+    def identity(self, software="abacus", track="release", **changes):
+        values = dict(software=software, track=track, source_ref="v1", source_sha="a" * 40,
+                      source_version="v1", recipe_sha256="b" * 64, target="4v100-avx512")
+        values.update(changes)
+        return contract.make_identity(**values)
+
+    def test_all_software_development_always_builds_and_releases_only_once(self):
+        for software in contract.SOFTWARE:
+            for track in contract.TRACKS:
+                with self.subTest(software=software, track=track):
+                    identity = self.identity(software, track)
+                    run = software + "-" + track
+                    self.assertTrue(contract.claim_build(self.root, [identity], run)["build"])
+                    result = contract.claim_build(self.root, [identity], run + "-again")
+                    self.assertEqual(result["build"], track == "development")
+                    if track != "development":
+                        self.assertEqual(result["skipped"][0]["previous_run"], run)
+                    self.assertNotIn("artifact", result)
+                    self.assertNotIn("verified", result)
+
+    def test_recipe_change_and_failed_attempt_do_not_rebuild_but_explicit_retry_does(self):
+        identity = self.identity()
+        contract.claim_build(self.root, [identity], "failed")
+        receipt = self.root / "runs/failed/input/build-attempt.json"
+        original = receipt.read_bytes()
+        # There is deliberately no artifact, Slurm success or acceptance proof.
+        changed = self.identity(recipe_sha256="c" * 64)
+        self.assertFalse(contract.claim_build(self.root, [changed], "new-recipe")["build"])
+        self.assertTrue(contract.claim_build(self.root, [changed], "explicit-retry", retry=True)["build"])
+        self.assertEqual(receipt.read_bytes(), original)
+        with self.assertRaisesRegex(ValueError, "already claimed"):
+            contract.claim_build(self.root, [changed], "explicit-retry", retry=True)
+        with self.assertRaisesRegex(ValueError, "boolean"):
+            contract.claim_build(self.root, [changed], "bad-retry", retry="false")
+
+    def test_new_sha_tag_channel_software_or_partition_is_independent(self):
+        contract.claim_build(self.root, [self.identity()], "initial")
+        for index, change in enumerate(({"source_sha": "d" * 40}, {"source_ref": "v2"},
+                                        {"track": "prerelease"}, {"software": "cp2k"},
+                                        {"target": "16v100-avx2"})):
+            with self.subTest(change=change):
+                self.assertTrue(contract.claim_build(self.root, [self.identity(**change)], "new-" + str(index))["build"])
+
+    def test_existing_requests_count_even_when_failed_without_new_receipts(self):
+        identity = self.identity()
+        task = self.root / "runs/old-failed"
+        task.mkdir(parents=True)
+        (task / "request.json").write_text(json.dumps({"identity": identity}))
+        result = contract.claim_build(self.root, [identity], "first-new-policy")
+        self.assertFalse(result["build"])
+        self.assertEqual(result["skipped"][0]["previous_run"], "old-failed")
+
+    def test_md_records_only_primary_not_companion_and_deduplicates_pair(self):
+        primary, companion = self.identity("deepmd-kit", "prerelease"), self.identity("lammps")
+        task = self.root / "runs/old-md"
+        task.mkdir(parents=True)
+        (task / "request.json").write_text(json.dumps({"delivery": {
+            "identities": {"deepmd-kit": primary, "lammps": companion},
+            "plan": {"triggers": [{"software": "deepmd-kit"}]}}}))
+        result = contract.claim_build(self.root, [primary, companion], "pair")
+        self.assertTrue(result["build"])
+        self.assertEqual(result["identities"], [companion])
+        self.assertEqual(result["skipped"][0]["identity"], primary)
+        self.assertFalse(contract.claim_build(self.root, [primary, companion], "pair-again")["build"])
+
+    def test_concurrent_release_claims_authorize_exactly_one_attempt(self):
+        identity = self.identity()
+        with ThreadPoolExecutor(max_workers=6) as pool:
+            results = list(pool.map(lambda index: contract.claim_build(self.root, [identity], "parallel-" + str(index)),
+                                    range(6)))
+        self.assertEqual(sum(result["build"] for result in results), 1)
+
+    def test_corrupt_or_symlinked_history_is_not_treated_as_a_new_version(self):
+        identity = self.identity()
+        contract.claim_build(self.root, [identity], "first")
+        receipt = self.root / "runs/first/input/build-attempt.json"
+        receipt.write_text("not JSON")
+        with self.assertRaises(ValueError):
+            contract.claim_build(self.root, [identity], "corrupt")
+        receipt.unlink()
+        receipt.symlink_to(self.root / "absent")
+        with self.assertRaisesRegex(ValueError, "symlinked"):
+            contract.claim_build(self.root, [identity], "symlink")
 
 
 class IdentityTests(unittest.TestCase):
