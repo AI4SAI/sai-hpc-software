@@ -19,7 +19,12 @@ PY
 mapfile -t settings <<< "$settings"
 target=${settings[0]}; dp_sha=${settings[1]}; lmp_sha=${settings[3]}
 export DEEPMD_PREFIX=${settings[2]} LAMMPS_PREFIX=${settings[4]}
-export PATH=/usr/bin:/bin TMPDIR=/workspace/tmp
+# Keep the standard system administration directories available inside the
+# build container.  CMake's FindTensorflow.cmake invokes `ldconfig`; on the
+# minimal SIF it lives in /usr/sbin and was previously invisible on 16V100.
+# This is an executable lookup path only; it does not alter library search
+# policy (LD_LIBRARY_PATH remains explicitly controlled below/by modules).
+export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin TMPDIR=/workspace/tmp
 case "$phase" in
   build)
     mkdir -p /workspace/tmp

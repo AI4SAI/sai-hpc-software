@@ -439,6 +439,12 @@ class MDControllerTests(unittest.TestCase):
         self.assertIn('verify_parity', recipe)
         self.assertIn('check_dynamic', (ROOT / 'controller/md_relocate_audit.py').read_text())
 
+    def test_md_container_build_path_exposes_ldconfig_on_minimal_sif(self):
+        entry = (ROOT / 'controller/md_container_entry.sh').read_text()
+        self.assertIn('export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin TMPDIR=/workspace/tmp', entry)
+        self.assertIn('FindTensorflow.cmake', entry)
+        self.assertNotIn('export PATH=/usr/bin:/bin TMPDIR=/workspace/tmp', entry)
+
 
 if __name__ == '__main__':
     unittest.main()
