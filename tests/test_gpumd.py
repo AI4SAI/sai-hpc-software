@@ -121,6 +121,59 @@ class GpumdContractTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "restricted to its overlay path"):
             science.portable_check(Path("/opt/software/gpumd/v1/target"), Path("/tmp/copy"))
 
+    def test_jit_source_archive_is_complete_pinned_and_excludes_build_outputs(self):
+        recipe = (ROOT / "controller/gpumd_build.sh").read_text()
+        archive = recipe.split("# NEP JIT requires source at runtime.", 1)[1].split(
+            "\ncp /workspace/source/LICENCE", 1)[0]
+        # Execute the real packaging block with only the fixed workspace path
+        # relocated; this fixture does not compile GPUMD or certify any science.
+        archive = "# NEP JIT requires source at runtime." + archive
+        archive = archive.replace("/workspace/source", '"$GPUMD_TEST_SOURCE"')
+        with tempfile.TemporaryDirectory() as temporary:
+            source = Path(temporary) / "source"
+            prefix = Path(temporary) / "prefix"
+            files = {"makefile": "# unchanged upstream Makefile\n",
+                     "main_nep/nep_specialized.cu": "// JIT kernel\n",
+                     "utilities/nep_utilities.cuh": "// JIT utilities\n",
+                     "nested/extra header.cuh": "// retain every source/header\n"}
+            for name, value in files.items():
+                path = source / "src" / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(value)
+            subprocess.run(["git", "init", "-q", source], check=True)
+            subprocess.run(["git", "-C", source, "add", "src"], check=True)
+            subprocess.run(["git", "-C", source, "-c", "user.name=GPUMD test", "-c",
+                            "user.email=gpumd-test@example.invalid", "commit", "-qm", "source"], check=True)
+            expected_tree = subprocess.check_output(["git", "-C", source, "rev-parse", "HEAD:src"], text=True).strip()
+            for name in ("gpumd", "nep", "gnep", "main_nep/nep.o", "main_nep/nep.obj"):
+                (source / "src" / name).write_text("untracked build output\n")
+            destination = prefix / "share/gpumd/src"
+            destination.mkdir(parents=True)
+            (prefix / "share/sai").mkdir(parents=True)
+            environment = dict(os.environ, INSTALL_PREFIX=str(prefix), GPUMD_TEST_SOURCE=str(source))
+
+            def run(script=archive):
+                return subprocess.run(["bash", "-euo", "pipefail", "-c", script], env=environment,
+                                      text=True, capture_output=True)
+
+            root_mtime = (source / "src").stat().st_mtime_ns
+            result = run()
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual((source / "src").stat().st_mtime_ns, root_mtime)
+            self.assertEqual({str(path.relative_to(destination)): path.read_text()
+                              for path in destination.rglob("*") if path.is_file()}, files)
+            self.assertEqual((prefix / "share/sai/jit-source-tree").read_text().strip(), expected_tree)
+            # Neither an archive producer failure nor extraction failure may
+            # disappear behind a successful command on the other pipeline end.
+            self.assertEqual(run('git() { if [[ "${3:-}" == archive ]]; then '
+                                 'command git "$@"; return 42; '
+                                 'fi; command git "$@"; };\n' + archive).returncode, 42)
+            environment["INSTALL_PREFIX"] = str(Path(temporary) / "missing-prefix")
+            self.assertNotEqual(run().returncode, 0)
+            environment["INSTALL_PREFIX"] = str(prefix)
+            (source / "src/makefile").write_text("# unexpected configured Makefile\n")
+            self.assertNotEqual(run().returncode, 0)
+
 
 class GpumdCiTests(unittest.TestCase):
     setUp = lifecycle.CiLifecycleTests.setUp
@@ -343,6 +396,11 @@ class GpumdDeliveryTests(unittest.TestCase):
 
 
 class GpumdWorkflowTests(unittest.TestCase):
+    def test_manual_default_uses_first_wave_gpu_partition(self):
+        workflow = (ROOT / ".github/workflows/gpumd.yml").read_text()
+        targets = workflow.split("      targets:\n", 1)[1].split("      retry_releases:\n", 1)[0]
+        self.assertIn("        default: 16v100-avx2", targets.splitlines())
+
     def test_shared_daily_dispatch_is_the_only_scheduled_entry(self):
         workflow = (ROOT / ".github/workflows/gpumd.yml").read_text()
         triggers = workflow.split("\npermissions:", 1)[0]

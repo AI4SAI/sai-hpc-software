@@ -23,7 +23,15 @@ done
 printf '%s\n' "${executables[@]}" > "$INSTALL_PREFIX/share/sai/executables.txt"
 # NEP JIT requires source at runtime. Keep the full small source/header tree,
 # not build objects or a hardcoded reference to /workspace/source.
-tar --exclude='*.o' --exclude='*.obj' --exclude=gpumd --exclude=nep --exclude=gnep \
-  -cf - . | tar -xf - -C "$INSTALL_PREFIX/share/gpumd/src"
+# Build options are Make command-line overrides, not source edits. Refuse to
+# discard any tracked change, then archive the already verified commit's src
+# tree instead of traversing the mutable overlay directory (tar's '.' changed
+# during the real build). Both archive and extraction failures remain fatal.
+git -C /workspace/source diff --quiet HEAD -- src
+source_tree=$(git -C /workspace/source rev-parse HEAD:src)
+git -C /workspace/source archive --format=tar "$source_tree" | \
+  tar --exclude='*.o' --exclude='*.obj' --exclude=gpumd --exclude=nep --exclude=gnep \
+      -xf - -C "$INSTALL_PREFIX/share/gpumd/src"
+printf '%s\n' "$source_tree" > "$INSTALL_PREFIX/share/sai/jit-source-tree"
 cp /workspace/source/LICENCE "$INSTALL_PREFIX/share/gpumd/"
 python3 /control/gpumd_science.py prepare /workspace/source "$INSTALL_PREFIX/share/sai/cases"
