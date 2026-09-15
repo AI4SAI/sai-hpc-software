@@ -13,7 +13,7 @@ on:
         required: true
       targets:
         description: Native GPU partitions; independent build for every target
-        default: 4v100-avx512,16v100-avx2,8v100v0-avx512
+        default: 16v100-avx2
         required: true
       build_candidates:
         description: Spend Slurm allocation on unpublished experimental builds

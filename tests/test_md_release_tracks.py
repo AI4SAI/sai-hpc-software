@@ -21,6 +21,7 @@ class MdReleaseTrackTests(unittest.TestCase):
         triggers = workflow.get('on', workflow.get(True))
         self.assertNotIn('schedule', triggers)
         inputs = triggers['workflow_dispatch']['inputs']
+        self.assertEqual(inputs['targets']['default'], '16v100-avx2')
         self.assertIs(inputs['build_candidates']['default'], False)
         self.assertIs(inputs['retry_releases']['default'], False)
         self.assertEqual(workflow['jobs']['resolve']['if'], "github.event_name == 'workflow_dispatch'")
