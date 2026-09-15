@@ -240,12 +240,14 @@ def monitor(args):
             rows = run(['sacct', '-X', '-n', '-P', '-j', job, '-o', 'JobIDRaw,State,ExitCode'], capture_output=True).stdout.splitlines()
             row = next((x.split('|') for x in rows if x.split('|')[0] == job), None)
             if row and row[1] not in ('RUNNING', 'PENDING', 'COMPLETING'):
+                record = json.loads((r / 'request.json').read_text()) if (r / 'request.json').exists() else {}
                 status = {'job': job, 'state': row[1], 'exit_code': row[2], 'build_verified': False,
-                          'scientific_verified': False, 'published': False}
+                          'scientific_verified': False, 'published': False,
+                          'stage_jobs': record.get('stage_jobs', {}),
+                          'stage_job_script_sha256': record.get('stage_job_script_sha256', {})}
                 (r / 'results/status.json').write_text(json.dumps(status) + '\n')
                 if row[1:3] != ['COMPLETED', '0:0']:
                     return 1
-                record = json.loads((r / 'request.json').read_text())
                 request = validate_pair(record['delivery'])
                 plan = request['plan']
                 artifact = Path((r / 'artifact.path').read_text().strip())

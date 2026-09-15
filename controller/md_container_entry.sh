@@ -48,6 +48,8 @@ case "$phase" in
     elif [[ "$phase" == build-lammps ]]; then
       for name in deepmd-kit lammps; do
         [[ -d "/workspace/$name/.git" ]]
+        if [[ "$name" == deepmd-kit ]]; then sha=$dp_sha; else sha=$lmp_sha; fi
+        [[ "$(git -C "/workspace/$name" rev-parse HEAD)" == "$sha" ]]
       done
       bash /control/md_build.sh "$target" lammps
     else
