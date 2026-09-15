@@ -1,0 +1,107 @@
+name: Daily multi-software builds
+
+on:
+  schedule:
+    - cron: '23 2 * * *'
+  workflow_dispatch:
+    inputs:
+      software:
+        description: Software to build (all includes the paired MD stack once)
+        type: choice
+        options: [all, abacus, cp2k, deepmd-kit, lammps, gpumd]
+        default: all
+      tracks:
+        description: Channels; development always builds, unchanged releases skip
+        default: development,prerelease,release
+      targets:
+        description: all, or comma-separated target IDs; GPU-only programs omit dsprhbm
+        default: all
+      retry_releases:
+        description: Explicitly retry the selected release/prerelease versions
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      requests: ${{ steps.plan.outputs.requests }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - id: plan
+        env:
+          SOFTWARE: ${{ inputs.software || 'all' }}
+          TRACKS: ${{ inputs.tracks || 'development,prerelease,release' }}
+          TARGETS: ${{ inputs.targets || 'all' }}
+          RETRY_RELEASES: ${{ inputs.retry_releases }}
+        run: |
+          python3 - <<'PY'
+          import json, os, sys
+          sys.path.insert(0, 'controller')
+          from release_contract import SOFTWARE, TRACKS, PARTITIONS
+          requested = os.environ['SOFTWARE']
+          tracks = [value.strip() for value in os.environ['TRACKS'].split(',')]
+          targets = list(PARTITIONS) if os.environ['TARGETS'] == 'all' else [value.strip() for value in os.environ['TARGETS'].split(',')]
+          if requested != 'all' and requested not in SOFTWARE:
+              raise ValueError('unknown software')
+          if not tracks or len(set(tracks)) != len(tracks) or any(value not in TRACKS for value in tracks):
+              raise ValueError('invalid tracks')
+          if not targets or len(set(targets)) != len(targets) or any(value not in PARTITIONS for value in targets):
+              raise ValueError('invalid targets')
+          # Only reviewed repository branches; recipes stay isolated until accepted.
+          workflows = [
+              ('abacus', 'build.yml', 'feat/abacus-parity-benchmarks'),
+              ('cp2k', 'cp2k.yml', 'feat/cp2k-parity-benchmarks'),
+              ('deepmd-kit', 'deepmd-lammps.yml', 'feat/deepmd-lammps-tracking'),
+              ('gpumd', 'gpumd.yml', 'feat/gpumd-daily-tracking'),
+          ]
+          retry = os.environ['GITHUB_EVENT_NAME'] == 'workflow_dispatch' and os.environ.get('RETRY_RELEASES') == 'true'
+          requests = []
+          for software, workflow, branch in workflows:
+              if requested not in ('all', software) and not (software == 'deepmd-kit' and requested == 'lammps'):
+                  continue
+              selected = [target for target in targets if target in SOFTWARE[software]['targets']]
+              if not selected:
+                  continue
+              inputs = dict(tracks=','.join(tracks), targets=','.join(selected), retry_releases=str(retry).lower())
+              if software == 'deepmd-kit':
+                  inputs.update(software=requested if requested != 'all' else 'all', build_candidates='true')
+              requests.append(dict(software=software, workflow=workflow, ref=branch, inputs=inputs))
+          if not requests:
+              raise ValueError('no selected software supports the requested targets')
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('requests=' + json.dumps(requests) + '\n')
+          print(json.dumps(requests, indent=2))
+          PY
+
+  dispatch:
+    needs: plan
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    strategy:
+      fail-fast: false
+      matrix:
+        request: ${{ fromJSON(needs.plan.outputs.requests) }}
+    steps:
+      - name: Dispatch isolated software workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: AI4SAI/sai-hpc-software
+          REQUEST: ${{ toJSON(matrix.request) }}
+        run: |
+          python3 - <<'PY'
+          import json, os, subprocess
+          request = json.loads(os.environ['REQUEST'])
+          endpoint = 'repos/AI4SAI/sai-hpc-software/actions/workflows/' + request['workflow'] + '/dispatches'
+          subprocess.run(['gh', 'api', '--method', 'POST', endpoint, '--input', '-'],
+                         input=json.dumps(dict(ref=request['ref'], inputs=request['inputs'])), text=True, check=True)
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as output:
+              output.write('Dispatched `' + request['workflow'] + '` at `' + request['ref'] + '`.\n\n')
+              output.write('Dispatch accepted only; child workflow records build, science and performance results.\n')
+          PY
