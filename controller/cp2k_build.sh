@@ -51,8 +51,11 @@ hdf5_archive="$site/../build/hdf5-1.14.6.tar.gz"
 hdf5_root="$prefix/dependencies/hdf5"
 rm -rf /workspace/hdf5-source /workspace/hdf5-build
 mkdir -p /workspace/hdf5-source
-tar --no-same-owner --strip-components=1 -xzf "$hdf5_archive" -C /workspace/hdf5-source
+# This site archive records paths as ./hdf5-1.14.6/..., so remove both the
+# leading ./ component and the source-directory component.
+tar --no-same-owner --strip-components=2 -xzf "$hdf5_archive" -C /workspace/hdf5-source
 pushd /workspace/hdf5-source >/dev/null
+[[ -x ./configure ]]
 CC=mpicc CXX=mpicxx FC=mpifort ./configure \
   --prefix="$hdf5_root" --enable-parallel --enable-fortran \
   --disable-shared --enable-static --disable-hl \
