@@ -132,6 +132,14 @@ class DeliveryIntegrationTests(unittest.TestCase):
         self.assertIn('grep -q \'^                     Parallel HDF5: yes$\'', recipe)
         self.assertIn('-DHDF5_ROOT="$hdf5_root" -DHDF5_PREFER_PARALLEL=ON', recipe)
 
+    def test_cp2k_hdf5_configure_repairs_missing_alternatives_awk_locally(self):
+        recipe = (REPO / "controller/cp2k_build.sh").read_text()
+        self.assertIn("/usr/bin/mawk", recipe)
+        self.assertIn("hdf5_tools=/workspace/hdf5-tools", recipe)
+        self.assertIn('export PATH="$hdf5_tools:$PATH"', recipe)
+        self.assertIn("hash -r", recipe)
+        self.assertIn("awk 'BEGIN { exit 0 }'", recipe)
+
     def test_ci_installs_real_native_validation_tools_before_tests(self):
         for workflow in ("build.yml", "cp2k.yml"):
             script = (REPO / ".github/workflows" / workflow).read_text()

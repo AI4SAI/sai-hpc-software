@@ -56,6 +56,19 @@ mkdir -p /workspace/hdf5-source
 tar --no-same-owner --strip-components=2 -xzf "$hdf5_archive" -C /workspace/hdf5-source
 pushd /workspace/hdf5-source >/dev/null
 [[ -x ./configure ]]
+# The clean container binds /usr without /etc/alternatives.  On these nodes
+# /usr/bin/awk may therefore be a dangling alternatives symlink even though
+# mawk is installed.  HDF5's configure uses awk to materialize its Fortran
+# KIND declarations; keep this repair local to the configure invocation.
+if ! command -v awk >/dev/null 2>&1 || ! awk 'BEGIN { exit 0 }' >/dev/null 2>&1; then
+  hdf5_tools=/workspace/hdf5-tools
+  [[ -x /usr/bin/mawk ]] || { echo "HDF5 configure requires awk or mawk" >&2; exit 1; }
+  mkdir -p "$hdf5_tools"
+  ln -sfn -- /usr/bin/mawk "$hdf5_tools/awk"
+  export PATH="$hdf5_tools:$PATH"
+  hash -r
+fi
+awk 'BEGIN { exit 0 }' >/dev/null
 CC=mpicc CXX=mpicxx FC=mpifort ./configure \
   --prefix="$hdf5_root" --enable-parallel --enable-fortran \
   --disable-shared --enable-static --disable-hl \
