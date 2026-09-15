@@ -182,6 +182,16 @@ The current branch contains actual build, inventory, evidence-validation and
 test code, but these live gates have **not** all run. In particular a static CI
 green or `MD_CANDIDATE_BUILT_NOT_PUBLISHED` cannot be reported as usable software.
 
+### Offline native dependencies (2026-09-15)
+
+Compute nodes do not provide DNS or outbound HTTP. The LAMMPS CMake recipe
+therefore disables its Voro++ and Eigen3 `ExternalProject` downloads and uses
+the read-only site copies bound at `/opt/apps`: Voro++ 0.4.6 from the
+DeepMD 3.1.2 environment and Eigen 3.4.0 from the VeloxChem GPU environment.
+The build still enables the same `VORONOI` and `MACHDYN` packages as the site
+baseline; only dependency transport is changed. The site LAMMPS potential set
+is copied into the overlay before configuration for the same offline reason.
+
 ## Historical bounded diagnostics (2026-09-11)
 
 LAMMPS source bootstrap is now complete in the independent MD bare cache at
