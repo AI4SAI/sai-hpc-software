@@ -6,6 +6,7 @@ LAMMPS/PLUMED cases separately, on allocated compute nodes.
 """
 import argparse
 import ctypes
+from contextlib import contextmanager
 import hashlib
 import importlib.metadata
 import json
@@ -34,6 +35,30 @@ def libraries(path):
     return output
 
 
+@contextmanager
+def suppress_native_output():
+    """Silence C/C++ banners while probing through ctypes.
+
+    LAMMPS can write directly to process fd 1/2 even with ``-screen none``.
+    Without this guard those bytes corrupt the JSON stream written by the
+    caller. Python's ``redirect_stdout`` is insufficient for native writes.
+    """
+    libc = ctypes.CDLL(None)
+    libc.fflush(None)
+    saved = (os.dup(1), os.dup(2))
+    try:
+        with open(os.devnull, "w") as sink:
+            os.dup2(sink.fileno(), 1)
+            os.dup2(sink.fileno(), 2)
+        yield
+    finally:
+        libc.fflush(None)
+        os.dup2(saved[0], 1)
+        os.dup2(saved[1], 2)
+        os.close(saved[0])
+        os.close(saved[1])
+
+
 def lammps_inventory(prefix):
     paths = sorted((Path(prefix) / "lib").glob("liblammps.so*"))
     if not paths:
@@ -50,7 +75,8 @@ def lammps_inventory(prefix):
     lib.lammps_open_no_mpi.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_char_p), ctypes.POINTER(ctypes.c_void_p)]
     lib.lammps_open_no_mpi.restype = ctypes.c_void_p
     args = (ctypes.c_char_p * 5)(b"lmp", b"-screen", b"none", b"-log", b"none")
-    handle = lib.lammps_open_no_mpi(len(args), args, None)
+    with suppress_native_output():
+        handle = lib.lammps_open_no_mpi(len(args), args, None)
     if not handle:
         raise ValueError("cannot enumerate installed LAMMPS styles")
     lib.lammps_style_count.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
