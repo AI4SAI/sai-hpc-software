@@ -72,7 +72,7 @@ awk 'BEGIN { exit 0 }' >/dev/null
 CC=mpicc CXX=mpicxx FC=mpifort ./configure \
   --prefix="$hdf5_root" --enable-parallel --enable-fortran \
   --disable-shared --enable-static --disable-hl \
-  CFLAGS="-O3 $cpu_flags" CXXFLAGS="-O3 $cpu_flags" FCFLAGS="-O3 $cpu_flags" \
+  CFLAGS="-O3 -fPIC $cpu_flags" CXXFLAGS="-O3 -fPIC $cpu_flags" FCFLAGS="-O3 -fPIC $cpu_flags" \
   --cache-file=/workspace/hdf5-config.cache 2>&1 | tee /workspace/hdf5-configure.log
 make -j"$jobs"
 make install
