@@ -134,6 +134,7 @@ class DeliveryIntegrationTests(unittest.TestCase):
         self.assertIn('CFLAGS="-O3 -fPIC $cpu_flags"', recipe)
         self.assertIn('CXXFLAGS="-O3 -fPIC $cpu_flags"', recipe)
         self.assertIn('FCFLAGS="-O3 -fPIC $cpu_flags"', recipe)
+        self.assertIn('/usr/lib/x86_64-linux-gnu/blas:/usr/lib/x86_64-linux-gnu/lapack', recipe)
 
     def test_cp2k_hdf5_configure_repairs_missing_alternatives_awk_locally(self):
         recipe = (REPO / "controller/cp2k_build.sh").read_text()
