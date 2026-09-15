@@ -343,6 +343,17 @@ class GpumdDeliveryTests(unittest.TestCase):
 
 
 class GpumdWorkflowTests(unittest.TestCase):
+    def test_shared_daily_dispatch_is_the_only_scheduled_entry(self):
+        workflow = (ROOT / ".github/workflows/gpumd.yml").read_text()
+        triggers = workflow.split("\npermissions:", 1)[0]
+        self.assertNotIn("  schedule:", triggers)
+        self.assertNotIn("cron:", triggers)
+        self.assertIn("  workflow_dispatch:", triggers)
+        build_job = workflow.split("\n  build:\n", 1)[1]
+        condition = build_job.splitlines()[0]
+        self.assertIn("needs.resolve-source.outputs.builds != '[]'", condition)
+        self.assertIn("(github.event_name == 'workflow_dispatch' || github.event_name == 'schedule')", condition)
+
     def test_release_retries_are_explicit_and_disabled_by_default(self):
         workflow = (ROOT / ".github/workflows/gpumd.yml").read_text()
         retry = workflow.split("      retry_releases:\n", 1)[1].split("\n  push:", 1)[0]
@@ -350,10 +361,12 @@ class GpumdWorkflowTests(unittest.TestCase):
         self.assertIn("        default: false", retry.splitlines())
         self.assertIn("          RETRY_RELEASES: ${{ inputs.retry_releases }}", workflow)
 
-    def resolve(self, event="schedule", missing=(), tracks="development", override=""):
+    def resolve(self, event="schedule", missing=(), tracks="development", override="", error=None):
         workflow = (ROOT / ".github/workflows/gpumd.yml").read_text()
         snippet = textwrap.dedent(workflow.split("python3 - <<'PY'\n", 1)[1].split("\n          PY", 1)[0])
         def resolver(repository, ref):
+            if error:
+                raise ValueError(error)
             if ref in missing:
                 raise ValueError("no " + ref + " available")
             return dict(sha="a" * 40, version="master-2026-09-13" if ref == "master" else ref, ref=ref)
@@ -361,9 +374,11 @@ class GpumdWorkflowTests(unittest.TestCase):
             output = Path(temporary) / "output"
             environment = dict(GITHUB_EVENT_NAME=event, GITHUB_OUTPUT=str(output), TRACKS=tracks,
                                TARGETS="4v100-avx512", SOURCE_REF=override)
+            log = io.StringIO()
             with patch.dict(os.environ, environment, clear=True), \
-                    patch("resolve_source.resolve", side_effect=resolver), redirect_stdout(io.StringIO()):
+                    patch("resolve_source.resolve", side_effect=resolver), redirect_stdout(log):
                 exec(compile(snippet, "gpumd.yml", "exec"), {})
+            self.resolve_log = log.getvalue()
             return json.loads(output.read_text().removeprefix("builds="))
 
     def test_schedule_resolves_three_channels_and_native_partitions(self):
@@ -373,11 +388,25 @@ class GpumdWorkflowTests(unittest.TestCase):
         self.assertEqual({row["target"] for row in rows}, set(acceptance.GPU_TARGETS))
         self.assertEqual(len(self.resolve(missing=("latest-prerelease",))), 6)
 
-    def test_explicit_absent_track_and_ambiguous_override_fail(self):
-        with self.assertRaises(ValueError):
-            self.resolve("workflow_dispatch", missing=("latest-prerelease",), tracks="prerelease")
+    def test_manual_all_tracks_skips_explicitly_absent_releases(self):
+        rows = self.resolve("workflow_dispatch", missing=("latest-prerelease", "latest-release"),
+                            tracks="development,prerelease,release")
+        self.assertEqual([row["track"] for row in rows], ["development"])
+        self.assertIn("skipped prerelease: no latest-prerelease available", self.resolve_log)
+        self.assertIn("skipped release: no latest-release available", self.resolve_log)
+
+    def test_all_absent_tracks_emit_empty_matrix(self):
+        rows = self.resolve("workflow_dispatch", missing=("latest-prerelease", "latest-release"),
+                            tracks="prerelease,release")
+        self.assertEqual(rows, [])
+
+    def test_ambiguous_override_and_unexpected_resolver_errors_fail(self):
         with self.assertRaises(ValueError):
             self.resolve("workflow_dispatch", tracks="development,release", override="master")
+        with self.assertRaisesRegex(ValueError, "upstream request failed"):
+            self.resolve("workflow_dispatch", tracks="release", error="upstream request failed")
+        with self.assertRaisesRegex(ValueError, "no master available"):
+            self.resolve("workflow_dispatch", tracks="development", missing=("master",))
 
 
 class GpumdRawEvidenceTests(unittest.TestCase):

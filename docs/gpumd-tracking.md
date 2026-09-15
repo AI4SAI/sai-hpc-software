@@ -1,12 +1,14 @@
 # GPUMD native GPU tracking (experimental branch)
 
-The independent `feat/gpumd-daily-tracking` branch adds a daily poll of upstream
+The independent `feat/gpumd-daily-tracking` branch builds upstream
 `development`, `prerelease`, and `release` through the shared source resolver.
 Development uses `master`; release channels resolve their live upstream tags.
 Every poll resolves a full current Git SHA; it is
-not a webhook or a zero-delay mirror. GitHub schedules become active only after
-the workflow reaches the repository default branch. On the experimental branch,
-push/PR run static tests; an explicit dispatch is needed for a cluster build.
+not a webhook or a zero-delay mirror. Daily polling is dispatched by the shared
+`daily.yml` on the default branch; `gpumd.yml` has no independent cron trigger.
+On the experimental branch, push/PR run static tests; workflow dispatch starts
+a cluster build. Explicitly absent release/prerelease channels are reported as
+skipped for every dispatch; an entirely empty result skips the build job.
 
 Development builds run every time, both on schedule and manual dispatch.
 Release and prerelease builds run once per upstream ref/SHA and GPU target;

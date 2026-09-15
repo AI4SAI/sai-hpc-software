@@ -1,8 +1,6 @@
 name: Track and build GPUMD
 
 on:
-  schedule:
-    - cron: '41 19 * * *'
   workflow_dispatch:
     inputs:
       source_ref:
@@ -81,15 +79,16 @@ jobs:
           for row in rows:
               if row['status'] == 'resolved':
                   builds.extend(dict(row, target=target) for target in requested)
-              elif not scheduled:
-                  raise ValueError(row['reason'])
+              else:
+                  print(f"skipped {row['track']}: {row['reason']}")
+                  continue
           with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
               output.write('builds=' + json.dumps(builds) + '\n')
           print(json.dumps(rows, indent=2))
           PY
 
   build:
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    if: (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && needs.resolve-source.outputs.builds != '[]'
     needs: [validate, resolve-source]
     runs-on: ubuntu-latest
     timeout-minutes: 360
