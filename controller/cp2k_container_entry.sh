@@ -22,6 +22,8 @@ build)
   source /control/environment.sh "$target"
   bash /control/cp2k_build.sh "$target"
   printf '%s\n' "$delivery" > "$INSTALL_PREFIX/share/sai/release-identity.json"
+  source "$INSTALL_PREFIX/share/sai/runtime-env.sh"
+  python3 /control/cp2k_feature_contract.py native-entry "$INSTALL_PREFIX" "$target" "$sha"
   ;;
 metadata)
   test -x "$INSTALL_PREFIX/bin/cp2k.psmp"
@@ -38,17 +40,16 @@ metadata)
 export)
   rm -rf -- /workspace/export /workspace/final.squashfs
   bash /control/create_rootfs.sh /workspace/export
-  mkdir -p /workspace/export/opt/software
-  cp -a /opt/software/cp2k /workspace/export/opt/software/
-  if [[ -d /opt/software/cp2k-dependencies ]]; then
-    cp -a /opt/software/cp2k-dependencies /workspace/export/opt/software/
-  fi
+  mkdir -p "/workspace/export$(dirname -- "$INSTALL_PREFIX")"
+  cp -a "$INSTALL_PREFIX" "/workspace/export$INSTALL_PREFIX"
   chmod -R a+rX,u+w,go-w /workspace/export/opt/software
+  python3 /control/cp2k_feature_contract.py native-package "$INSTALL_PREFIX" "$target" "$sha" --root /workspace/export
   mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"
   ;;
 verify)
   python3 /control/delivery_layout.py prefix "$delivery" "$software" "$sha" "$version" "$target" \
     --installed "$INSTALL_PREFIX/share/sai/release-identity.json"
+  python3 /control/cp2k_feature_contract.py native-verify "$INSTALL_PREFIX" "$target" "$sha"
   source "$INSTALL_PREFIX/share/sai/runtime-env.sh"
   # software_controller invokes this on result.sif without the build overlay.
   # The verifier and data are installed assets, not /workspace or /control code.

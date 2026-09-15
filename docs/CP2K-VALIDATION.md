@@ -25,10 +25,12 @@ No accepted CP2K catalog/module existed at the time of inspection.
 ## Native artifact contract
 
 Each of DSPRHBM, 4V100, 16V100 and 8V100V0 must build independently on that
-partition with `-march=native`; CPU dependency selection is taken from modules
+partition with `-march=native -mtune=native`; CPU dependency selection is taken from modules
 resolved on its compute node. In particular, 8V100V0 is Skylake AVX-512 without
 VNNI and uses the site's AVX2 MPI/BLAS builds. The artifact prefix is always
-`/opt/software/cp2k/<version>/<target>` and survives export unchanged. Source,
+`/opt/software/cp2k/<track>/<build_id>/<PARTITION>` and survives export unchanged.
+The canonical identity binds its upstream ref/SHA, recipe digest and target;
+the partition directory uses `DSPRHBM`, `4V100`, `16V100` or `8V100V0`. Source,
 compilation and installations remain inside the file-backed overlay/SIF.
 
 The final-SIF verifier checks saved provenance, native CMake flags, all required
@@ -38,6 +40,18 @@ Runtime environment and data cannot depend on `/workspace`, `/input` or the
 controller snapshot. The module launcher uses installed `CP2K_DATA_DIR`; the
 same absolute `/opt` layout can later be used on physical storage with the same
 read-only system dependencies. No host installation tree is copied into a SIF.
+
+The build records the observed runtime in `share/sai/native-entry.json`, then
+packages the shared inventory, native Tcl fragment and `modulefiles/cp2k/...`
+selector inside that same installation folder. TBLITE, LIBXS and DBCSR stay
+below its `dependencies/`; the export stage copies only the selected prefix.
+The final SIF check compares every installed file with the packaged inventory.
+The native module loads the recorded site dependency modules, sets
+`CP2K_DATA_DIR` to the packaged data and exposes `bin/cp2k.psmp` directly. It
+records the observed `/opt/modules/modulefiles/devtools` search root so that
+loading does not depend on a caller's default `MODULEPATH`. It contains no
+Apptainer launcher. Physical export and native scientific/speed
+acceptance still require a separate allocated run.
 
 Candidate builds are not published or cache-reused before a verified scientific
 benchmark tied to their exact SIF, launcher, input bytes and verifier succeeds.
@@ -135,8 +149,43 @@ baseline feature is implicitly waived, and no legacy QUIP companion is planned.
   input must record actual `cp_fm_diag_elpa` execution in its timing section.
   Both ELPA inputs set `GLOBAL/TIMINGS/THRESHOLD 0` and `TIMINGS_LEVEL 1` so
   the default two-percent output filter cannot conceal short solver calls.
+  Two-node GPU comparisons keep one rank/GPU per node, with four physical
+  cores per rank on 4V100/16V100 and three on 8V100V0, matching site mappings.
+  DSPRHBM keeps eight ranks/node and two OpenMP threads/rank. Recorded Linux
+  CPU topology distinguishes physical cores from SMT siblings and rejects
+  overlapping core assignments even when logical CPU sets are disjoint.
+  CP2K core time excludes the preceding SIF integrity checks; elapsed time
+  includes per-rank hashing and container startup. These SIF measurements do
+  not establish a native-export speed claim.
 - Artifact validation recursively inspects all packaged ELF objects and
   symlinks, rejects path-valued DT_NEEDED, old installation/build/home RPATHs,
   and escaping symlinks. Only the current prefix and explicit system runtime
   roots are allowed. This validates the loader contract, not a physical copy
   deployment that has not been performed.
+
+## Fresh canary handoff (2026-09-15)
+
+The last full-feature canary, `manual-cp2k-4v100-20260911-a1` / Slurm `1272985`,
+used source `6d276e9c480f2b55f5a0b9166e22d20d9a3f8da0` and controller `4c69ae5`.
+Its log reaches CMake generation, then the old cache parser reports
+`required CP2K option is disabled: MPI`. The committed parser fix reads one
+physical cache line at a time and has regression coverage for blank/comment
+lines and duplicate options. This fixes that parser defect; no subsequent
+full-feature build or scientific comparison has passed yet. Baseline job
+`1273757` only reports `CP2K_BASELINE_INPUTS_CHECKED_NOT_CANDIDATE_ACCEPTANCE`.
+Both observations were rechecked from SAI logs on 2026-09-15.
+
+Start a fresh manual canary with `tracks=development`,
+`targets=4v100-avx512`, empty `resume_run` and `reference_run`, and
+`retry_releases=false`. The old canary uses delivery schema 2 and cannot be
+resumed into the current canonical schema. The dedicated CP2K workflow has no
+cron; the shared daily dispatcher owns scheduling. Missing upstream release
+or prerelease channels are skipped, including in manual mixed-track requests,
+and an entirely empty resolution creates no build matrix.
+
+DSPRHBM added-feature acceptance still requires an explicit accepted GPU
+`reference_run`. A later automatic lookup can select a completed, verified
+GPU benchmark with the same fixture/verifier contract and revalidate it through
+`accepted_reference`, pinning its run ID and evidence SHA before CPU submission.
+The stored success marker alone is insufficient. Until that lookup is wired,
+a CPU candidate without a supplied reference cannot be published.

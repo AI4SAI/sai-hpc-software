@@ -13,7 +13,7 @@ case "$target" in
   *) echo "unknown CP2K target: $target" >&2; exit 2 ;;
 esac
 [[ "${SAI_BUILD_PARTITION:?native build partition must be recorded}" == "$expected_partition" ]]
-cpu_flags=-march=native
+cpu_flags='-march=native -mtune=native'
 
 # environment.sh already resolved ISA-aware dependencies on this compute node.
 # Do not purge it: that would also discard DSPRHBM's explicit GCC module.
@@ -27,6 +27,7 @@ suffix=; [[ "$accel" == CUDA ]] && suffix=-cuda
 dbcsr="$prefix/dependencies/dbcsr/lib64/cmake/dbcsr"
 [[ "${ELPA_ROOT:?}" == /opt/devtools/elpa/elpa-2026.02.001-2603-gnu/* ]]
 if [[ "$target" == 8v100v0-avx512 ]]; then
+  # Gold 6146 supports native AVX-512 but lacks VNNI; site dependencies use AVX2.
   [[ "${OPAL_PREFIX:?}" == *-avx2 ]]
   [[ "${OPENBLAS_ROOT:?}" == *-avx2 ]]
 fi
@@ -150,7 +151,7 @@ printf 'export PATH=%q\nexport LD_LIBRARY_PATH=%q\nexport CP2K_DATA_DIR=%q\n' \
 printf '%s\n' "$SAI_BUILD_PARTITION" > "$prefix/share/sai/build-partition"
 hostname > "$prefix/share/sai/build-hostname"
 lscpu > "$prefix/share/sai/build-lscpu.txt"
-gcc -Q -march=native --help=target > "$prefix/share/sai/native-compiler-target.txt"
+gcc -Q -march=native -mtune=native --help=target > "$prefix/share/sai/native-compiler-target.txt"
 sha256sum "$new_deps" "$libxs_archive" > "$prefix/share/sai/dependency-archives.sha256"
 sha256sum "$dbcsr_archive" "$fypp_archive" >> "$prefix/share/sai/dependency-archives.sha256"
 cp /workspace/tblite-build/source-archives.sha256 "$prefix/share/sai/tblite-source-archives.sha256"

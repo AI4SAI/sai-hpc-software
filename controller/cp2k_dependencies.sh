@@ -5,7 +5,7 @@ cache=${1:?source cache directory required}
 work=${2:?dependency build directory required}
 prefix=${3:?dependency install prefix required}
 jobs=${BUILD_JOBS:-8}
-native_flags=${CP2K_NATIVE_FLAGS:--O3 -march=native}
+native_flags=${CP2K_NATIVE_FLAGS:--O3 -march=native -mtune=native}
 mkdir -p "$work" "$prefix"
 export CMAKE_PREFIX_PATH="$prefix${CMAKE_PREFIX_PATH:+:$CMAKE_PREFIX_PATH}"
 export PKG_CONFIG_PATH="$prefix/lib/pkgconfig:$prefix/lib64/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"

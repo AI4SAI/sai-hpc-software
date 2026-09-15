@@ -1,4 +1,6 @@
 import argparse
+import json
+import os
 from pathlib import Path
 import sys
 import tempfile
@@ -8,6 +10,8 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "controller"))
 import cp2k_feature_contract as contract
 import software_controller as software
+from export_native import MANIFEST_PATH, read_installed_manifests
+from release_contract import make_identity
 
 
 class CP2KContractTests(unittest.TestCase):
@@ -24,7 +28,7 @@ class CP2KContractTests(unittest.TestCase):
                        CP2K_ELPA_ROOT="/opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia",
                        CP2K_USE_CUSOLVER_MP="ON")
         for lang in ("C", "CXX", "Fortran"):
-            entries[f"CMAKE_{lang}_FLAGS"] = "-O3 -march=native"
+            entries[f"CMAKE_{lang}_FLAGS"] = "-O3 -march=native -mtune=native"
         return "\n".join(f"{key}:STRING={value}" for key, value in entries.items())
 
     def test_all_baseline_features_required(self):
@@ -49,6 +53,7 @@ class CP2KContractTests(unittest.TestCase):
         contract.check_cache(text, "/opt/software/cp2k/test/4v100-avx512", "4v100-avx512")
         for bad in (text.replace("CP2K_USE_ELPA:STRING=ON", "CP2K_USE_ELPA:STRING=OFF"),
                     text.replace("elpa-2026.02.001", "elpa-2024.05.001"),
+                    text.replace("-mtune=native", "-mtune=generic"),
                     text.replace("/opt/software/cp2k/test/", "/opt/software/test/")):
             with self.assertRaises(ValueError):
                 contract.check_cache(bad, "/opt/software/cp2k/test/4v100-avx512", "4v100-avx512")
@@ -115,7 +120,7 @@ class CP2KContractTests(unittest.TestCase):
     def test_final_sif_verifier_has_no_source_cache_bind(self):
         args = argparse.Namespace(run_id="cp2k-test", software="cp2k", sha="a" * 40,
                                   version="test", target="dsprhbm", jobs=8, minutes=120,
-                                  overlay_mb=16384)
+                                  overlay_mb=16384, track="development", source_ref="master")
         script = software.render_job(args)
         final = next(line for line in script.splitlines() if "cp2k_container_entry.sh verify" in line)
         self.assertIn("result.sif", final)
@@ -126,6 +131,79 @@ class CP2KContractTests(unittest.TestCase):
         self.assertIn("SAI_BUILD_PARTITION=DSPRHBM", final)
         self.assertIn("/runtime:/runtime:rw", final)
         self.assertIn("TMPDIR=/runtime", final)
+
+
+class CP2KNativeDeliveryTests(unittest.TestCase):
+    def identity(self, target="4v100-avx512"):
+        return make_identity("cp2k", "development", "master", "a" * 40, "2026.2",
+                             "b" * 64, target)
+
+    def environment(self, identity):
+        prefix = identity["install_prefix"]
+        return {"PATH": prefix + "/bin:/usr/bin:/bin",
+                "LD_LIBRARY_PATH": prefix + "/lib64:" + prefix + "/dependencies/tblite/lib:"
+                                   "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia/lib:"
+                                   "/opt/devtools/openmpi/5.0.10/lib:/.singularity.d/libs",
+                "LOADEDMODULES": "cmake/3.31.6:openmpi/5.0.10:elpa/2026.02.001-2603-gnu:apptainer/1.4.4",
+                "MODULEPATH": "/opt/modules/modulefiles/apps:/opt/modules/modulefiles/devtools",
+                "CP2K_DATA_DIR": prefix + "/share/cp2k/data"}
+
+    def test_observed_runtime_keeps_exact_prefix_and_dependency_modules(self):
+        for target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
+            identity = self.identity(target)
+            entry = contract.native_entry(identity, self.environment(identity))
+            self.assertEqual(entry["identity"], identity)
+            self.assertEqual(entry["commands"], {"cp2k.psmp": "bin/cp2k.psmp"})
+            self.assertEqual(entry["runtime"]["modules"], ["openmpi/5.0.10", "elpa/2026.02.001-2603-gnu"])
+            self.assertEqual(entry["runtime"]["prepend"]["MODULEPATH"], ["/opt/modules/modulefiles/devtools"])
+            self.assertIn("/opt/modules/modulefiles/devtools", entry["external_roots"])
+            self.assertEqual(entry["runtime"]["set"]["CP2K_DATA_DIR"], identity["install_prefix"] + "/share/cp2k/data")
+            self.assertNotIn("/.singularity.d", json.dumps(entry))
+            self.assertNotIn("/opt/devtools", entry["external_roots"])
+
+    def test_runtime_rejects_old_prefix_build_paths_and_unrecorded_modules(self):
+        identity = self.identity()
+        environment = self.environment(identity)
+        for name, value in (("CP2K_DATA_DIR", "/opt/apps/cp2k/data"),
+                            ("LOADEDMODULES", ""), ("LOADEDMODULES", "cp2k/2026.1"),
+                            ("MODULEPATH", "/workspace/modules"),
+                            ("PATH", "/workspace/bin:/usr/bin"),
+                            ("LD_LIBRARY_PATH", "/workspace/lib"),
+                            ("LD_LIBRARY_PATH", "/opt/software/cp2k/old/lib"),
+                            ("LD_LIBRARY_PATH", "/opt/apps/unrelated/lib")):
+            with self.subTest(name=name, value=value), self.assertRaises(ValueError):
+                contract.native_entry(identity, dict(environment, **{name: value}))
+
+    def test_packaged_single_folder_is_verified_and_detects_modified_data(self):
+        identity = self.identity()
+        prefix = Path(identity["install_prefix"])
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            installed = root / prefix.relative_to("/")
+            metadata = installed / "share/sai"
+            metadata.mkdir(parents=True)
+            (metadata / "release-identity.json").write_text(json.dumps(identity))
+            binary = installed / "bin/cp2k.psmp"
+            binary.parent.mkdir()
+            binary.write_text("#!/bin/sh\nexit 0\n")
+            binary.chmod(0o755)
+            data = installed / "share/cp2k/data/BASIS_MOLOPT"
+            data.parent.mkdir(parents=True)
+            data.write_text("synthetic scientific data fixture\n")
+            with patch.dict(os.environ, self.environment(identity), clear=True):
+                contract.native_delivery(prefix, identity["target"], identity["source_sha"], "native-entry", root)
+            contract.native_delivery(prefix, identity["target"], identity["source_sha"], "native-package", root)
+            contract.native_delivery(prefix, identity["target"], identity["source_sha"], "native-verify", root)
+            entry = json.loads((metadata / "native-entry.json").read_text())
+            manifest = read_installed_manifests([entry], root)
+            self.assertEqual(manifest["entries"], [entry])
+            self.assertTrue((installed / MANIFEST_PATH).is_file())
+            selector = installed / "modulefiles/cp2k/development" / identity["build_id"]
+            self.assertTrue(selector.is_file())
+            self.assertFalse((root / "sai-delivery.json").exists())
+            data.write_text("changed scientific data\n")
+            with self.assertRaisesRegex(ValueError, "inventory"):
+                contract.native_delivery(prefix, identity["target"], identity["source_sha"], "native-verify", root)
 
 
 if __name__ == "__main__":

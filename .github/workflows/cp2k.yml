@@ -1,8 +1,6 @@
 name: Build CP2K
 
 on:
-  schedule:
-    - cron: '53 2 * * *'
   workflow_dispatch:
     inputs:
       tracks:
@@ -50,7 +48,7 @@ jobs:
           done
 
   resolve-source:
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    if: github.event_name == 'workflow_dispatch'
     needs: validate
     runs-on: ubuntu-latest
     outputs:
@@ -69,20 +67,17 @@ jobs:
           python3 - <<'PY'
           import json, os, sys
           sys.path.insert(0, 'controller')
-          from release_contract import SOFTWARE, TRACKS, resolve_tracks
-          scheduled = os.environ['GITHUB_EVENT_NAME'] == 'schedule'
+          from release_contract import SOFTWARE, resolve_tracks
           allowed = SOFTWARE['cp2k']['targets']
-          requested = list(allowed) if scheduled else list(dict.fromkeys(t.strip() for t in os.environ['TARGETS'].split(',')))
+          requested = list(dict.fromkeys(t.strip() for t in os.environ['TARGETS'].split(',')))
           if not requested or any(t not in allowed for t in requested):
               raise ValueError('invalid target list')
-          tracks = TRACKS if scheduled else [t.strip() for t in os.environ['RELEASE_TRACKS'].split(',')]
+          tracks = [t.strip() for t in os.environ['RELEASE_TRACKS'].split(',')]
           if os.environ.get('RESUME_RUN') and (len(requested) != 1 or len(tracks) != 1):
               raise ValueError('resume requires exactly one target and one track')
           builds = []
           for result in resolve_tracks('cp2k', tracks):
               if result['status'] == 'skipped':
-                  if not scheduled:
-                      raise ValueError(result['reason'])
                   print(json.dumps(result))
                   continue
               builds.extend(dict(result, target=t) for t in requested)
@@ -92,7 +87,7 @@ jobs:
           PY
 
   build:
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    if: github.event_name == 'workflow_dispatch' && needs.resolve-source.outputs.builds != '[]'
     needs: [validate, resolve-source]
     runs-on: ubuntu-latest
     timeout-minutes: 360

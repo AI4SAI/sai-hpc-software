@@ -3,7 +3,10 @@
 
 The small cases check correctness; a fixed periodic 64-water GPW workload
 measures compute time separately. Warm-up is excluded from timing summaries. A speed ratio is never
-computed before all energies, forces, features and rank placements pass.
+computed before all energies, forces, features and rank placements pass. The
+current SIF launcher performs per-rank integrity checks: elapsed time is not
+native execution time. A native performance claim requires separately accepted
+job/node-level integrity validation or an exact-prefix native export benchmark.
 """
 import argparse
 from collections import Counter
@@ -19,6 +22,7 @@ import subprocess
 import time
 
 from remote_controller import TARGETS, safe_name
+from delivery_layout import artifact_path, load_artifact, validate_record
 from source_cache import checksum
 
 ROOT = Path(os.environ.get("SAI_SOFTWARE_ROOT", Path.home() / "sai-hpc-software")).resolve()
@@ -351,9 +355,20 @@ def resources(target):
     if target not in BENCHMARK_TARGETS:
         raise ValueError("unregistered CP2K benchmark target")
     cpu = TARGETS[target]["gpus"] == 0
+    cores = 2 if cpu else 3 if target == "8v100v0-avx512" else 4
+    ranks = 16 if cpu else 2
     return {"nodes": 2, "gpus_per_node": 0 if cpu else 1,
-            "ranks_per_node": 8 if cpu else 1, "cpus_per_task": 2 if cpu else 1,
-            "ranks": 16 if cpu else 2}
+            "ranks_per_node": 8 if cpu else 1, "omp_threads": 2 if cpu else 1,
+            "cores_per_rank": cores, "ranks": ranks,
+            # Slurm CPU units, never an OpenMP thread count. The unchanged
+            # CPU --cpus-per-task=2 can reserve SMT siblings with CR_Core;
+            # the proof records actual NumCPUs and validates physical cores.
+            "allocated_cpus": ranks * cores * (1 if cpu else 2)}
+
+
+def mpi_mapping(target):
+    allocation = resources(target)
+    return f"ppr:{allocation['ranks_per_node']}:node:pe={allocation['cores_per_rank']}"
 
 
 def baseline_cases(target):
@@ -392,21 +407,33 @@ def stage_fixtures(task):
 
 
 def build_artifact(build_run_id, version, target):
-    expected = ROOT / "containers/software/cp2k" / safe_name(version) / safe_name(target) / f"{safe_name(build_run_id)}.sif"
-    reference = ROOT / "runs" / build_run_id / "artifact.path"
+    reference = ROOT / "runs" / safe_name(build_run_id) / "artifact.path"
     if (not reference.is_file() or reference.is_symlink() or
-            reference.read_text().strip() != str(expected) or
-            not expected.is_file() or expected.is_symlink() or expected.resolve() != expected):
+            reference.resolve() != reference):
         raise ValueError("CP2K build artifact is missing or untrusted")
-    sidecar = expected.with_suffix(".json")
-    if not sidecar.is_file() or sidecar.is_symlink():
-        raise ValueError("CP2K artifact manifest is missing")
-    manifest = json.loads(sidecar.read_text())
-    if (manifest.get("build_verified") is not True or manifest.get("artifact") != str(expected) or
-            manifest.get("version") != version or manifest.get("target") != target or
-            manifest.get("sha256") != checksum(expected) or not manifest.get("recipe_sha256")):
-        raise ValueError("CP2K artifact manifest is invalid")
-    return expected, manifest
+    artifact = Path(reference.read_text().strip())
+    manifest = load_artifact(ROOT, artifact, software="cp2k", target=target)
+    identity = manifest["identity"]
+    if (identity["source_version"] != version or
+            artifact != artifact_path(ROOT, identity, build_run_id)):
+        raise ValueError("CP2K build differs from its pinned delivery identity")
+    return artifact, manifest
+
+
+def request_identity(request):
+    identity = validate_record(request)
+    if (identity["software"] != "cp2k" or request.get("install_prefix") != identity["install_prefix"] or
+            Path(request["artifact"]) != artifact_path(ROOT, identity, request["build_run_id"])):
+        raise ValueError("CP2K benchmark request differs from its delivery identity")
+    return identity
+
+
+def request_artifact(request):
+    identity = request_identity(request)
+    artifact, manifest = build_artifact(request["build_run_id"], identity["source_version"], identity["target"])
+    if manifest["identity"] != identity or manifest["sha256"] != request["artifact_sha256"]:
+        raise ValueError("benchmark artifact/source/recipe identity changed")
+    return artifact, manifest
 
 
 RANK_WRAPPER = r'''#!/usr/bin/env bash
@@ -419,6 +446,19 @@ affinity=$(awk '/^Cpus_allowed_list:/ { print $2 }' /proc/self/status)
 printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\n' "$host" "$rank" "$local_rank" \
   "${OMP_NUM_THREADS:?}" "$affinity" "${CUDA_VISIBLE_DEVICES:-}" "${SLURM_JOB_ID:?}" \
   > "$SAI_BENCH_RESOURCES/rank-$rank.tsv"
+topology="$SAI_BENCH_RESOURCES/topology-$rank.tsv"
+: > "$topology"
+IFS=',' read -r -a spans <<< "$affinity"
+for span in "${spans[@]}"; do
+  first=${span%-*}; last=${span#*-}
+  for ((cpu=first; cpu<=last; cpu++)); do
+    base="/sys/devices/system/cpu/cpu$cpu/topology"
+    read -r socket < "$base/physical_package_id"
+    read -r core < "$base/core_id"
+    read -r siblings < "$base/thread_siblings_list"
+    printf '%s\t%s\t%s\t%s\n' "$cpu" "$socket" "$core" "$siblings" >> "$topology"
+  done
+done
 if [[ "$SAI_BENCH_KIND" == baseline ]]; then
   printf '%s\t%s\t%s\t%s\t%s\t%s\n' "$host" "$rank" "$SAI_BENCH_TARGET" \
     "system:$SAI_BENCH_BINARY" "${CUDA_VISIBLE_DEVICES:-}" "${MPI_HOME:?}" \
@@ -430,6 +470,7 @@ exec "$SAI_BENCH_BINARY" "$@"
 
 def render_job(args):
     q = shlex.quote
+    identity = request_identity(vars(args))
     target = TARGETS[args.target]
     allocation = resources(args.target)
     cpu = allocation["gpus_per_node"] == 0
@@ -439,7 +480,6 @@ def render_job(args):
                       ["#SBATCH --ntasks-per-node=1", "#SBATCH --gpus-per-node=1"])
     mapping = (["export MAP_OPT=ppr:8:node:pe=2", "export OMP_NUM_THREADS=2"] if cpu else
                [f"source /opt/sai_config/mps_mapping.d/{target['partition']}.bash", "export OMP_NUM_THREADS=1"])
-    prefix = f"/opt/software/cp2k/{args.version}/{args.target}"
     lines = [
         "#!/usr/bin/env bash",
         f"#SBATCH --job-name=cp2k-benchmark-{safe_name(args.run_id)}",
@@ -454,7 +494,8 @@ def render_job(args):
         'export LD_LIBRARY_PATH="" LD_PRELOAD=""',
         "unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH",
         f"export SAI_SOFTWARE_ROOT={q(str(ROOT))}",
-        f"export SAI_CP2K_VERSION={q(args.version)} SAI_CP2K_IMAGE={q(str(args.artifact))}",
+        f"# Canonical delivery prefix: {identity['install_prefix']}",
+        f"export SAI_CP2K_VERSION={q(identity['source_version'])} SAI_CP2K_IMAGE={q(str(args.artifact))}",
         f"export TMPDIR={q(str(ROOT / 'runtime/cp2k-benchmarks' / args.run_id / 'mpi'))}",
         f"export APPTAINER_TMPDIR={q(str(task / 'apptainer-runtime'))}",
         f"export APPTAINER_CACHEDIR={q(str(task / 'apptainer-cache'))}",
@@ -477,6 +518,8 @@ def render_job(args):
         f"    export SAI_BENCH_BINARY={q(str(args.launcher))}",
         "  fi",
         *["  " + line for line in mapping],
+        f'  [[ "${{MAP_OPT,,}}" == {q(mpi_mapping(args.target))} ]] || {{ echo "unexpected site MPI mapping" >&2; return 2; }}',
+        "  export OMP_PLACES=cores OMP_PROC_BIND=close",
         '  export SAI_BENCH_KIND="$1"',
         f"  export SAI_BENCH_TARGET={q(args.target)}",
         "}",
@@ -527,15 +570,60 @@ def checked_read(task, relative, files):
     return path.read_text()
 
 
+def cpu_list(value):
+    if not re.fullmatch(r"\d+(?:-\d+)?(?:,\d+(?:-\d+)?)*", value):
+        raise ValueError("invalid CPU affinity/topology list")
+    cpus = set()
+    for span in value.split(","):
+        limits = [int(item) for item in span.split("-")]
+        if limits[0] > limits[-1] or limits[-1] > 65535:
+            raise ValueError("invalid CPU affinity/topology range")
+        values = set(range(limits[0], limits[-1] + 1))
+        if cpus & values:
+            raise ValueError("duplicate CPU affinity/topology entries")
+        cpus.update(values)
+    return cpus
+
+
+def rank_topology(text, cpus, allocation):
+    topology = {}
+    cores = {}
+    for row in text.splitlines():
+        fields = row.split("\t")
+        if len(fields) != 4 or any(not value.isdigit() for value in fields[:3]):
+            raise ValueError("malformed rank CPU topology")
+        cpu, socket, core = map(int, fields[:3])
+        siblings = cpu_list(fields[3])
+        key = (socket, core)
+        if (cpu in topology or cpu not in cpus or cpu not in siblings or
+                len(siblings) not in (1, 2) or
+                (key in cores and cores[key] != siblings) or
+                any(other != key and siblings & values for other, values in cores.items())):
+            raise ValueError("inconsistent rank CPU topology")
+        topology[cpu] = {"socket": socket, "core": core, "siblings": sorted(siblings)}
+        cores[key] = siblings
+    if set(topology) != cpus or len(cores) != allocation["cores_per_rank"]:
+        raise ValueError("rank does not bind the required physical CPU cores")
+    if allocation["gpus_per_node"] and (
+            len(cpus) != 2 * allocation["cores_per_rank"] or
+            any(len(siblings) != 2 or not siblings.issubset(cpus) for siblings in cores.values())):
+        raise ValueError("GPU rank does not match the site logical CPU/SMT allocation")
+    return topology, set(cores)
+
+
 def verify_rank_evidence(task, folder, request, hosts, files, *, binary):
     allocation = resources(request["target"])
     expected_names = {f"rank-{rank}.tsv" for rank in range(allocation["ranks"])}
     for name in ("ranks", "resources"):
         if {path.name for path in (task / folder / name).glob("rank-*.tsv")} != expected_names:
             raise ValueError("benchmark rank/resource trace set does not match allocation")
+    if {path.name for path in (task / folder / "resources").glob("topology-*.tsv")} != {
+            f"topology-{rank}.tsv" for rank in range(allocation["ranks"])}:
+        raise ValueError("benchmark CPU topology trace set does not match allocation")
     placements = Counter()
     bindings = {}
     host_cpus = {}
+    host_cores = {}
     local_ranks = {}
     mpi_roots = set()
     isa = TARGETS[request["target"]]["dependency_isa"]
@@ -549,7 +637,7 @@ def verify_rank_evidence(task, folder, request, hosts, files, *, binary):
             raise ValueError("rank does not match pinned image/target/MPI ISA/allocation")
         detail = checked_read(task, f"{folder}/resources/rank-{rank}.tsv", files).rstrip("\n").split("\t")
         if (len(detail) != 7 or detail[0] != host or detail[1] != str(rank) or
-                not detail[2].isdigit() or detail[3] != str(allocation["cpus_per_task"]) or
+                not detail[2].isdigit() or detail[3] != str(allocation["omp_threads"]) or
                 not re.fullmatch(r"\d+(?:-\d+)?(?:,\d+(?:-\d+)?)*", detail[4]) or
                 detail[5] != gpu or detail[6] != request["job"]):
             raise ValueError("rank resource evidence is inconsistent")
@@ -557,19 +645,20 @@ def verify_rank_evidence(task, folder, request, hosts, files, *, binary):
             raise ValueError("GPU benchmark requires one visible GPU per rank")
         if not allocation["gpus_per_node"] and gpu:
             raise ValueError("CPU benchmark unexpectedly exposes a GPU")
-        cpus = set()
-        for span in detail[4].split(","):
-            limits = [int(value) for value in span.split("-")]
-            if limits[0] > limits[-1]:
-                raise ValueError("invalid affinity range")
-            cpus.update(range(limits[0], limits[-1] + 1))
-        if len(cpus) < allocation["cpus_per_task"]:
+        cpus = cpu_list(detail[4])
+        if len(cpus) < allocation["omp_threads"]:
             raise ValueError("rank has insufficient bound CPUs for OpenMP threads")
         if host_cpus.setdefault(host, set()) & cpus:
             raise ValueError("benchmark MPI ranks overlap CPU affinity on the same node")
         host_cpus[host].update(cpus)
+        topology, cores = rank_topology(
+            checked_read(task, f"{folder}/resources/topology-{rank}.tsv", files), cpus, allocation)
+        if host_cores.setdefault(host, set()) & cores:
+            raise ValueError("benchmark MPI ranks overlap physical CPU cores on the same node")
+        host_cores[host].update(cores)
         bindings[str(rank)] = {"host": host, "local_rank": int(detail[2]),
-                               "cpus": sorted(cpus), "cuda_visible_devices": gpu}
+                               "cpus": sorted(cpus), "topology": {str(cpu): row for cpu, row in topology.items()},
+                               "cuda_visible_devices": gpu}
         local_ranks.setdefault(host, []).append(int(detail[2]))
         mpi_roots.add(mpi)
         placements[host] += 1
@@ -602,10 +691,8 @@ def verify_evidence(task, request, *, allow_reference=True):
     task = Path(task)
     files = {}
     read = lambda name: checked_read(task, name, files)
-    artifact, manifest = build_artifact(request["build_run_id"], request["version"], request["target"])
-    if (str(artifact) != request["artifact"] or manifest["sha256"] != request["artifact_sha256"] or
-            manifest["recipe_sha256"] != request["recipe_sha256"] or manifest["source_sha"] != request["source_sha"]):
-        raise ValueError("benchmark artifact/source/recipe identity changed")
+    identity = request_identity(request)
+    artifact, manifest = request_artifact(request)
     # Each CI target has an immutable controller snapshot. A CPU run can
     # reverify a GPU reference from another snapshot when the trusted launcher
     # bytes and verifier contract match, not merely the directory name.
@@ -641,7 +728,14 @@ def verify_evidence(task, request, *, allow_reference=True):
     if (allocation.get("JobId") != job or allocation.get("Partition") != TARGETS[request["target"]]["partition"] or
             allocation.get("NumNodes") != "2" or allocation.get("NumTasks") != str(request["ranks"])):
         raise ValueError("Slurm allocation does not match requested resources")
-    if not request["gpus_per_node"] and (allocation.get("CPUs/Task") != "2" or int(allocation.get("NumCPUs", "0")) < 32):
+    allocated_cpus = int(allocation.get("NumCPUs", "0"))
+    # CPU keeps the original scheduler request. CR_Core can reserve both SMT
+    # siblings; exact physical-core evidence below distinguishes them from two
+    # actual OpenMP cores. GPU quantities are the inspected site allocations.
+    allowed_cpus = ({request["allocated_cpus"], 2 * request["allocated_cpus"]}
+                    if not request["gpus_per_node"] else {request["allocated_cpus"]})
+    if (allocated_cpus not in allowed_cpus or
+            (not request["gpus_per_node"] and allocation.get("CPUs/Task") != "2")):
         raise ValueError("Slurm CPU resources changed")
     if request["gpus_per_node"] and not re.search(r"(?:^|,)gres/gpu=2(?:,|$)", allocation.get("AllocTRES", "")):
         raise ValueError("Slurm allocation did not allocate exactly two GPUs")
@@ -707,6 +801,7 @@ def verify_evidence(task, request, *, allow_reference=True):
             request["reference_run_id"], request.get("reference_evidence_sha256"))
         references = reference_evidence["samples"]
         reference_proof = {"run_id": request["reference_run_id"], "evidence_sha256": reference_hash,
+                           "identity": reference_evidence["identity"],
                            "use": "scientific reference only; not a CPU performance baseline"}
     samples = {}
     placement = {}
@@ -721,7 +816,7 @@ def verify_evidence(task, request, *, allow_reference=True):
         if read(f"{folder}/mpirun.txt").strip() != mpi[kind]["path"]:
             raise ValueError("MPI launcher changed between repetitions")
         mapping = read(f"{folder}/map.txt").strip()
-        if not mapping or (not request["gpus_per_node"] and mapping != "ppr:8:node:pe=2"):
+        if mapping.lower() != mpi_mapping(request["target"]):
             raise ValueError("invalid MPI resource mapping")
         if case == next(iter(CASES)) and repetition == 0:
             placement[kind] = mapping
@@ -754,7 +849,9 @@ def verify_evidence(task, request, *, allow_reference=True):
                 if summary["performance_comparison"]:
                     summary["baseline_over_candidate_" + clock] = statistics.median(baseline) / statistics.median(candidate)
         summaries[case] = summary
-    return {"schema": 1, "job": job, "artifact_sha256": request["artifact_sha256"],
+    return {"schema": 2, "job": job, "artifact_sha256": request["artifact_sha256"],
+            "identity": identity, "install_prefix": identity["install_prefix"],
+            "requested_resources": resources(request["target"]), "allocated_cpus": allocated_cpus,
             "fixture_revision": FIXTURE_REVISION,
             "input_hashes": {case: {kind: fixture_hashes(case, kind) for kind in ("candidate", "baseline")} for case in CASES},
             "version_syntax_contract": syntax_contract(),
@@ -762,16 +859,21 @@ def verify_evidence(task, request, *, allow_reference=True):
             "versions": versions, "feature_parity": parity, "mpi": mpi, "nodes": hosts,
             "reference": reference_proof, "samples": samples, "comparisons": comparisons,
             "timings": summaries, "files": files,
+            "timing_accounting": {
+                "elapsed_seconds": "end-to-end MPI launch; candidate includes per-rank SIF integrity checks and container startup",
+                "cp2k_seconds": "CP2K TOTAL TIME MAXIMUM after executable startup; excludes preceding launcher/integrity checks",
+                "native_performance_claim": False,
+                "native_acceptance_prerequisite": "accepted job/node-level integrity validation or a separately verified exact-prefix native export benchmark"},
             "performance_scope": "water64-gpw: fixed 64-water periodic GPW compute workload; other cases are correctness/latency probes; no universal production speed claim"}
 
 
 def submit(args):
     safe_name(args.run_id)
-    safe_name(args.version)
     if not 5 <= args.minutes <= 120:
         raise ValueError("benchmark wall time outside accepted bounds")
     allocation = resources(args.target)
     artifact, manifest = build_artifact(args.build_run_id, args.version, args.target)
+    identity = manifest["identity"]
     launcher = CONTROL / "cp2k"
     if not launcher.is_file() or launcher.is_symlink() or not os.access(launcher, os.X_OK):
         raise ValueError("trusted CP2K launcher is missing")
@@ -791,7 +893,7 @@ def submit(args):
     stage_fixtures(task)
     # Copy generated metadata from the exact sealed candidate, without running
     # a GPU executable or importing an installation tree onto the host.
-    prefix = f"/opt/software/cp2k/{args.version}/{args.target}"
+    prefix = identity["install_prefix"]
     env = dict(os.environ, TMPDIR=str(task / "apptainer-runtime"),
                APPTAINER_TMPDIR=str(task / "apptainer-runtime"),
                APPTAINER_CACHEDIR=str(task / "apptainer-cache"))
@@ -806,7 +908,8 @@ def submit(args):
     json.loads(result.stdout)
     changes.write_text(result.stdout)
     request = dict(vars(args), **allocation, artifact=str(artifact), artifact_sha256=manifest["sha256"],
-                   source_sha=manifest["source_sha"], recipe_sha256=manifest["recipe_sha256"],
+                   software="cp2k", identity=identity, install_prefix=prefix,
+                   source_sha=identity["source_sha"], recipe_sha256=identity["recipe_sha256"],
                    launcher=str(launcher), launcher_sha256=checksum(launcher),
                    controller_sha256=checksum(Path(__file__).resolve()),
                    baseline_module=CPU_BASELINE if not allocation["gpus_per_node"] else GPU_BASELINE,
@@ -837,7 +940,7 @@ def write_manifest(path, manifest):
 
 
 def clear_run_proof(request):
-    artifact, manifest = build_artifact(request["build_run_id"], request["version"], request["target"])
+    artifact, manifest = request_artifact(request)
     if manifest.get(PROOF, {}).get("run_id") == request["run_id"]:
         manifest.pop(PROOF)
         write_manifest(artifact.with_suffix(".json"), manifest)
@@ -874,10 +977,12 @@ def monitor(args):
                     if evidence_path.is_symlink() or evidence_path.resolve() != evidence_path:
                         raise ValueError("benchmark evidence output path is untrusted")
                     evidence_path.write_text(json.dumps(evidence, sort_keys=True) + "\n")
-                    artifact, manifest = build_artifact(request["build_run_id"], request["version"], request["target"])
+                    artifact, manifest = request_artifact(request)
                     manifest[PROOF] = {
                         "run_id": args.run_id, "job": job, "verified": True,
-                        "partition": TARGETS[request["target"]]["partition"], **resources(request["target"]),
+                        "identity": request["identity"], "install_prefix": request["identity"]["install_prefix"],
+                        "partition": request["identity"]["partition"], **resources(request["target"]),
+                        "actual_allocated_cpus": evidence["allocated_cpus"],
                         **{name: request[name] for name in ("artifact_sha256", "recipe_sha256", "source_sha",
                                                            "controller_sha256", "launcher", "launcher_sha256",
                                                            "job_script_sha256")},

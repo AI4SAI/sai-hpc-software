@@ -53,7 +53,7 @@ def check_cache(text, prefix, target):
     if cache.get("CMAKE_INSTALL_PREFIX") != str(prefix):
         raise ValueError("CP2K installation prefix changed")
     for language in ("C", "CXX", "Fortran"):
-        if "-march=native" not in cache.get(f"CMAKE_{language}_FLAGS", "").split():
+        if not {"-march=native", "-mtune=native"}.issubset(cache.get(f"CMAKE_{language}_FLAGS", "").split()):
             raise ValueError("CP2K must be compiled natively on each target")
     if cache.get("CP2K_USE_ACCEL") != ("NONE" if target == "dsprhbm" else "CUDA"):
         raise ValueError("wrong CP2K accelerator backend")
@@ -162,6 +162,80 @@ def check_runtime_environment(prefix, target):
                 raise ValueError(f"untrusted installed {name}: {entry}")
 
 
+def native_entry(identity, environment):
+    """Describe the observed runtime without retaining build tools or a SIF launcher."""
+    from native_module import validate_native_entry
+    from release_contract import validate_identity
+    identity = validate_identity(identity)
+    if identity["software"] != "cp2k":
+        raise ValueError("CP2K native entry requires its own delivery identity")
+    prefix = identity["install_prefix"]
+    if environment.get("CP2K_DATA_DIR") != prefix + "/share/cp2k/data":
+        raise ValueError("native CP2K data must remain inside its delivery prefix")
+    paths, libraries = [], []
+    for name, values in (("PATH", paths), ("LD_LIBRARY_PATH", libraries)):
+        for value in environment.get(name, "").split(":"):
+            # The rootfs uses /bin -> /usr/bin. The container driver mount is
+            # supplied by --nv; native execution resolves its host drivers.
+            if value == "/bin":
+                value = "/usr/bin"
+            if name == "LD_LIBRARY_PATH" and value == "/.singularity.d/libs":
+                continue
+            if not value or not Path(value).is_absolute() or TRANSIENT.search(value):
+                raise ValueError("invalid native CP2K runtime path")
+            if not any(inside(value, root) for root in (prefix, *runtime_roots(identity["target"]))):
+                raise ValueError("native CP2K runtime depends on an unapproved installation")
+            if value not in values:
+                values.append(value)
+    if paths != [prefix + "/bin", "/usr/bin"]:
+        raise ValueError("native CP2K PATH must contain only its installed commands and system tools")
+    modules = list(dict.fromkeys(value for value in environment.get("LOADEDMODULES", "").split(":")
+                                if value and value.split("/", 1)[0] not in ("cmake", "apptainer")))
+    if not modules:
+        raise ValueError("native CP2K dependencies require the recorded runtime modules")
+    module_root = "/opt/modules/modulefiles/devtools"
+    if module_root not in environment.get("MODULEPATH", "").split(":"):
+        raise ValueError("native CP2K dependencies require the observed site module search root")
+    external = [module_root]
+    for value in libraries:
+        if value == prefix or value.startswith(prefix + "/") or value.startswith(("/usr/", "/lib/", "/lib64/")):
+            continue
+        if value not in external:
+            external.append(value)
+    return validate_native_entry(dict(identity=identity, commands={"cp2k.psmp": "bin/cp2k.psmp"},
+        external_roots=external, runtime=dict(modules=modules,
+            prepend={"MODULEPATH": [module_root], "LD_LIBRARY_PATH": libraries},
+            set={"CP2K_ROOT": prefix, "CP2K_DATA_DIR": environment["CP2K_DATA_DIR"]})))
+
+
+def native_delivery(prefix, target, sha, operation, root=Path("/")):
+    """Write or verify the same prefix-local manifest used by native export."""
+    from export_native import inventory, read_installed_manifests, write_manifests
+    from native_module import validate_native_entry
+    from release_contract import validate_identity
+    prefix, root = Path(prefix), Path(root).resolve(strict=True)
+    metadata = root / prefix.relative_to("/") / "share/sai"
+    identity = validate_identity(json.loads((metadata / "release-identity.json").read_text()))
+    if (identity["software"] != "cp2k" or identity["install_prefix"] != str(prefix) or
+            identity["target"] != target or identity["source_sha"] != sha):
+        raise ValueError("native CP2K delivery differs from the build identity")
+    path = metadata / "native-entry.json"
+    if operation == "native-entry":
+        entry = native_entry(identity, os.environ)
+        with path.open("x") as stream:
+            stream.write(json.dumps(entry, sort_keys=True) + "\n")
+    else:
+        if path.is_symlink() or path.resolve() != path:
+            raise ValueError("untrusted native CP2K runtime entry")
+        entry = validate_native_entry(json.loads(path.read_text()))
+        if entry["identity"] != identity:
+            raise ValueError("native CP2K runtime entry has a different identity")
+        if operation == "native-package":
+            write_manifests([entry], root)
+        if read_installed_manifests([entry], root) != inventory([entry], root):
+            raise ValueError("native CP2K files differ from the packaged inventory")
+
+
 def run(argv):
     return subprocess.run(argv, check=True, text=True, capture_output=True).stdout
 
@@ -212,15 +286,18 @@ def verify(prefix, target, sha):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("op", choices=("cache", "verify", "source-changes"))
+    parser.add_argument("op", choices=("cache", "verify", "source-changes", "native-entry", "native-package", "native-verify"))
     parser.add_argument("prefix", type=Path)
     parser.add_argument("target")
     parser.add_argument("sha")
+    parser.add_argument("--root", type=Path, default=Path("/"))
     args = parser.parse_args()
     if args.op == "cache":
         check_cache(Path("/workspace/build/CMakeCache.txt").read_text(), args.prefix, args.target)
     elif args.op == "source-changes":
         source_changes(args.prefix, args.sha)
+    elif args.op.startswith("native-"):
+        native_delivery(args.prefix, args.target, args.sha, args.op, args.root)
     else:
         verify(args.prefix, args.target, args.sha)
 

@@ -100,7 +100,8 @@ class DeliveryIntegrationTests(unittest.TestCase):
             self.assertIn('share/sai/release-identity.json', script)
             self.assertIn('umask 022', script)
         cp2k = (REPO / "controller/cp2k_container_entry.sh").read_text()
-        self.assertLess(cp2k.index("mkdir -p /workspace/export/opt/software"), cp2k.index("cp -a /opt/software/cp2k"))
+        self.assertLess(cp2k.index('mkdir -p "/workspace/export$(dirname -- "$INSTALL_PREFIX")"'),
+                        cp2k.index('cp -a "$INSTALL_PREFIX" "/workspace/export$INSTALL_PREFIX"'))
 
     def test_launcher_uses_validated_manifest_prefix_and_rejects_wrong_partition(self):
         identity = self.identity()
