@@ -178,7 +178,11 @@ printf '%s\n' "$target" > "$prefix/share/sai/target"
 module -t list > "$prefix/share/sai/modules.txt" 2>&1 || true
 cp /workspace/build/CMakeCache.txt "$prefix/share/sai/CMakeCache.txt"
 cp /control/cp2k_feature_contract.py "$prefix/share/sai/cp2k_feature_contract.py"
-runtime_ld="$prefix/lib64:$prefix/lib:$prefix/dependencies/libxs/lib:$tblite_root/lib:/usr/lib/x86_64-linux-gnu/blas:/usr/lib/x86_64-linux-gnu/lapack:${LD_LIBRARY_PATH:-}"
+runtime_ld="$prefix/lib64:$prefix/lib:$prefix/dependencies/libxs/lib:$tblite_root/lib:/usr/lib/x86_64-linux-gnu/blas:/usr/lib/x86_64-linux-gnu/lapack"
+IFS=: read -ra inherited_ld <<< "${LD_LIBRARY_PATH:-}"
+for entry in "${inherited_ld[@]}"; do
+  [[ -n "$entry" ]] && runtime_ld+=":$entry"
+done
 for dependency in "${prefixes[@]}"; do
   runtime_ld+=":$dependency/lib:$dependency/lib64"
 done
