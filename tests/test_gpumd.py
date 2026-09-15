@@ -7,6 +7,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import stat
 import subprocess
 import sys
 import tempfile
@@ -115,11 +116,27 @@ class GpumdContractTests(unittest.TestCase):
         self.assertIn("-Xlinker=-rpath-link -Xlinker=$GPUMD_SYSTEM_BLAS_PATH", recipe)
         self.assertIn("share/gpumd/src", recipe)
         entry = (ROOT / "controller/gpumd_container_entry.sh").read_text()
+        self.assertIn('chmod -R a+rX,go-w "$INSTALL_PREFIX"', entry)
+        self.assertLess(entry.index('chmod -R a+rX,go-w "$INSTALL_PREFIX"'),
+                        entry.index('gpumd_science.py portable'))
         self.assertIn('gpumd_science.py portable "$INSTALL_PREFIX" /workspace/gpumd-portability', entry)
 
     def test_portability_copy_cannot_escape_the_build_overlay(self):
         with self.assertRaisesRegex(ValueError, "restricted to its overlay path"):
             science.portable_check(Path("/opt/software/gpumd/v1/target"), Path("/tmp/copy"))
+
+    def test_install_prefix_permissions_remove_group_other_writes(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            prefix = Path(temporary) / "install"
+            prefix.mkdir(mode=0o777)
+            artifact = prefix / "share/sai/runtime-env.sh"
+            artifact.parent.mkdir(parents=True, mode=0o777)
+            artifact.write_text("export GPUMD_SRC=/opt/software/gpumd/src\n")
+            artifact.chmod(0o666)
+            subprocess.run(["chmod", "-R", "a+rX,go-w", str(prefix)], check=True)
+            self.assertEqual(stat.S_IMODE(prefix.stat().st_mode), 0o755)
+            self.assertEqual(stat.S_IMODE(artifact.parent.stat().st_mode), 0o755)
+            self.assertEqual(stat.S_IMODE(artifact.stat().st_mode), 0o644)
 
     def test_jit_source_archive_is_complete_pinned_and_excludes_build_outputs(self):
         recipe = (ROOT / "controller/gpumd_build.sh").read_text()

@@ -34,6 +34,11 @@ build)
     'export GPUMD_SRC="$gpumd_installed_prefix/share/gpumd/src" PATH="$gpumd_installed_prefix/bin:$PATH"' \
     'export CUDACXX="$CUDA_HOME/bin/nvcc"' \
     >> "$INSTALL_PREFIX/share/sai/runtime-env.sh"
+  # Installation metadata and the native inventory must never inherit a
+  # group/other-writable mode from the overlay. Keep owner writes for the
+  # remaining build evidence, while making every installed path readable and
+  # traversable before portability and final inspection.
+  chmod -R a+rX,go-w "$INSTALL_PREFIX"
   python3 /control/gpumd_science.py portable "$INSTALL_PREFIX" /workspace/gpumd-portability
   # Generate shared native modules and the per-prefix inventory last, after
   # the installation and its portability evidence are complete.
