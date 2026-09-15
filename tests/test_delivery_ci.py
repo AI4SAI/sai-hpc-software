@@ -91,6 +91,8 @@ class WorkflowSourceTests(unittest.TestCase):
             text = (ROOT / ".github/workflows" / name).read_text()
             self.assertNotIn("inputs.source_ref", text)
             self.assertNotIn("schedule:", text)
+            if name == "cp2k.yml":
+                self.assertIn("default: 16v100-avx2", text.split("      targets:\n", 1)[1].split("      resume_run:\n", 1)[0])
             self.assertIn("needs.resolve-source.outputs.builds != '[]'", text)
             self.assertIn("GH_TOKEN: ${{ github.token }}", text)
             for environment, field in (("SOURCE_REF", "source_ref"), ("RELEASE_TRACK", "track"),

@@ -10,7 +10,7 @@ on:
       targets:
         description: Native targets (dsprhbm,4v100-avx512,16v100-avx2,8v100v0-avx512)
         required: true
-        default: 4v100-avx512
+        default: 16v100-avx2
       resume_run:
         description: Optional terminated CP2K run id to repack without recompiling
         required: false
