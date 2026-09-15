@@ -140,6 +140,11 @@ class DeliveryIntegrationTests(unittest.TestCase):
         self.assertIn("hash -r", recipe)
         self.assertIn("awk 'BEGIN { exit 0 }'", recipe)
 
+    def test_build_submit_allows_long_cp2k_compile_with_safe_default(self):
+        recipe = (REPO / "controller/software_controller.py").read_text()
+        self.assertIn("not 1 <= args.minutes <= 360", recipe)
+        self.assertIn('a.add_argument("--minutes", type=int, default=240)', recipe)
+
     def test_ci_installs_real_native_validation_tools_before_tests(self):
         for workflow in ("build.yml", "cp2k.yml"):
             script = (REPO / ".github/workflows" / workflow).read_text()
