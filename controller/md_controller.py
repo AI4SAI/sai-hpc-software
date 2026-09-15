@@ -62,7 +62,7 @@ def render(request, run_id, jobs=6, minutes=180, overlay_mb=32768):
     validate_pair(request)
     plan = request['plan']
     target = TARGETS[plan['target']]
-    if not 1 <= jobs <= min(6, target.get('build_jobs', 6)) or not 1 <= minutes <= 300:
+    if not 1 <= jobs <= min(6, target.get('build_jobs', 6)) or not 1 <= minutes <= 180:
         raise ValueError('MD build resources outside experimental bounds')
     if not 8192 <= overlay_mb <= 65536:
         raise ValueError('overlay capacity outside policy')
@@ -231,7 +231,7 @@ if __name__ == '__main__':
     submit_parser = sub.add_parser('submit')
     submit_parser.add_argument('run_id'); submit_parser.add_argument('request')
     submit_parser.add_argument('--jobs', type=int, default=6)
-    submit_parser.add_argument('--minutes', type=int, default=300)
+    submit_parser.add_argument('--minutes', type=int, default=180)
     submit_parser.add_argument('--overlay-mb', type=int, default=32768)
     monitor_parser = sub.add_parser('monitor')
     monitor_parser.add_argument('run_id'); monitor_parser.add_argument('--timeout', type=int, default=21600)
