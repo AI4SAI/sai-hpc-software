@@ -285,6 +285,16 @@ class BenchmarkTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, "reported OpenMP thread count"):
                     benchmark.analyze(task)
 
+    def test_analysis_accepts_abacus_embedded_thread_report(self):
+        task = benchmark.prepare(self.args(run_id="reported-embedded"))
+        self.results(task)
+        path = task / "runs/m000-candidate/stdout.log"
+        path.write_text(path.read_text().replace(
+            "OpenMP thread number: 1",
+            "Info: Local MPI proc number: 8,OpenMP thread number: 1,Total thread number: 8"))
+        evidence = benchmark.analyze(task)
+        self.assertEqual(evidence["runs"][0]["reported_threads"], 1)
+
     def test_analysis_rejects_wrong_physical_core_counts_and_incomplete_topology(self):
         cases = {
             "too_few": lambda trace: (trace["cpus"].pop(), trace["topology"].pop()),

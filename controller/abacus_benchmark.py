@@ -460,7 +460,8 @@ def verify_evidence(task, request):
         elif affinity != reference_affinity:
             raise ValueError("CPU affinity or OpenMP resources changed between benchmark arms/runs")
         stdout = read(base / "stdout.log")
-        reported_threads = re.findall(r"^\s*OpenMP thread number:\s*(\d+)\s*$", stdout, re.M)
+        reported_threads = re.findall(
+            r"(?m)(?:^\s*|,\s*)OpenMP thread number:\s*(\d+)(?=,|\s*$)", stdout)
         if not reported_threads or set(reported_threads) != {str(r["threads"])}:
             raise ValueError("ABACUS reported OpenMP thread count differs from the request")
         result = parse_scf(stdout, read(base / r["scf_log"]),
