@@ -58,7 +58,8 @@ def artifact_path(root, request, run_id):
     return artifact
 
 
-def render(request, run_id, jobs=6, minutes=180, overlay_mb=32768):
+def render(request, run_id, jobs=6, minutes=180, overlay_mb=32768,
+           stage='all', dependency=None):
     validate_pair(request)
     plan = request['plan']
     target = TARGETS[plan['target']]
@@ -66,12 +67,17 @@ def render(request, run_id, jobs=6, minutes=180, overlay_mb=32768):
         raise ValueError('MD build resources outside experimental bounds')
     if not 8192 <= overlay_mb <= 65536:
         raise ValueError('overlay capacity outside policy')
+    if stage not in ('all', 'deepmd', 'lammps'):
+        raise ValueError('unknown MD build stage')
+    if dependency is not None and (stage != 'lammps' or not str(dependency).isdigit()):
+        raise ValueError('invalid staged build dependency')
     r = task(run_id)
     image = PROJECT / 'containers/base/minimal-v1.sif'
     overlay = r / 'work.ext3'
     result = r / 'candidate.sif'
     artifact = artifact_path(ROOT, request, run_id)
-    args = ['/usr/bin/bash', '/control/md_container_entry.sh', 'build',
+    entry_phase = {'all': 'build', 'deepmd': 'build-deepmd', 'lammps': 'build-lammps'}[stage]
+    args = ['/usr/bin/bash', '/control/md_container_entry.sh', entry_phase,
             json.dumps(request, sort_keys=True, separators=(',', ':'))]
     def container(phase, final=False):
         command = args.copy()
@@ -94,19 +100,29 @@ def render(request, run_id, jobs=6, minutes=180, overlay_mb=32768):
              f'export APPTAINER_CACHEDIR={shlex.quote(str(r / "apptainer-cache"))}',
              'export APPTAINERENV_SAI_MD_ALLOCATED_JOB="$SLURM_JOB_ID"',
              'export APPTAINERENV_SAI_MD_ALLOCATED_NODE="$(hostname)"',
-             'unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH',
-             join(['test', '-s', image]), join(['test', '!', '-e', overlay]),
-             join(['apptainer', 'overlay', 'create', '--fakeroot', '--sparse', '--size', str(overlay_mb), overlay]),
-             join(container('build')), join(container('export')),
-             join(emit) + ' > ' + shlex.quote(str(r / 'final.squashfs')),
-             join(['apptainer', 'sif', 'new', result]),
-             join(['apptainer', 'sif', 'add', '--datatype', '4', '--partfs', '1', '--parttype', '2',
-                         '--partarch', '2', '--groupid', '1', result, r / 'final.squashfs']),
-             join(container('verify', final=True)),
-             join(['mkdir', '-p', artifact.parent]), join(['test', '!', '-e', artifact]),
-             join(['chmod', '0444', result]), join(['mv', result, artifact]),
-             f"printf '%s\\n' {shlex.quote(str(artifact))} > {shlex.quote(str(r / 'artifact.path'))}",
-             'echo MD_CANDIDATE_BUILT_NOT_PUBLISHED']
+             'unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH']
+    if dependency is not None:
+        lines.insert(2, f'#SBATCH --dependency=afterok:{dependency}')
+    lines += [join(['test', '-s', image])]
+    if stage in ('all', 'deepmd'):
+        lines += [join(['test', '!', '-e', overlay]),
+                  join(['apptainer', 'overlay', 'create', '--fakeroot', '--sparse', '--size', str(overlay_mb), overlay])]
+    else:
+        lines += [join(['test', '-e', overlay])]
+    lines.append(join(container(entry_phase)))
+    if stage == 'deepmd':
+        lines.append('echo MD_DEEPMD_STAGE_BUILT')
+    else:
+        lines += [join(container('export')),
+                  join(emit) + ' > ' + shlex.quote(str(r / 'final.squashfs')),
+                  join(['apptainer', 'sif', 'new', result]),
+                  join(['apptainer', 'sif', 'add', '--datatype', '4', '--partfs', '1', '--parttype', '2',
+                            '--partarch', '2', '--groupid', '1', result, r / 'final.squashfs']),
+                  join(container('verify', final=True)),
+                  join(['mkdir', '-p', artifact.parent]), join(['test', '!', '-e', artifact]),
+                  join(['chmod', '0444', result]), join(['mv', result, artifact]),
+                  f"printf '%s\\n' {shlex.quote(str(artifact))} > {shlex.quote(str(r / 'artifact.path'))}",
+                  'echo MD_CANDIDATE_BUILT_NOT_PUBLISHED']
     # Keep failed overlays for diagnosis. No source/install tree is ever on host.
     return '\n'.join(lines) + '\n'
 
@@ -176,16 +192,38 @@ def submit(args):
     for name, source in request['plan']['sources'].items():
         run(['git', '--git-dir', ROOT / 'cache/repositories' / name, 'cat-file', '-e', source['sha'] + '^{commit}'])
     record = dict(delivery=request, run_id=args.run_id, controller=str(CONTROL))
+    # DeepMD's CUDA wheel and C++ interface can consume most of the 180-minute
+    # GPU allocation.  Split the expensive build from LAMMPS/export while
+    # retaining one file-backed overlay and an explicit afterok edge.
+    deepmd_script = r / 'job-deepmd.sbatch'
+    deepmd_script.write_text(render(request, args.run_id, args.jobs, args.minutes,
+                                    args.overlay_mb, stage='deepmd'))
+    run(['bash', '-n', deepmd_script])
+    deepmd_job = run(['sbatch', '--parsable', deepmd_script], capture_output=True).stdout.strip().split(';')[0]
+    if not deepmd_job.isdigit():
+        raise ValueError('invalid DeepMD Slurm job handle')
     script = r / 'job.sbatch'
-    script.write_text(render(request, args.run_id, args.jobs, args.minutes, args.overlay_mb))
+    script.write_text(render(request, args.run_id, args.jobs, args.minutes,
+                             args.overlay_mb, stage='lammps', dependency=deepmd_job))
     run(['bash', '-n', script])
+    try:
+        lammps_job = run(['sbatch', '--parsable', script], capture_output=True).stdout.strip().split(';')[0]
+    except subprocess.CalledProcessError as exc:
+        record['stage_job_script_sha256'] = {'deepmd': checksum(deepmd_script),
+                                             'lammps': checksum(script)}
+        record['stage_jobs'] = {'deepmd': deepmd_job}
+        (r / 'request.json').write_text(json.dumps(record, sort_keys=True) + '\n')
+        raise RuntimeError('LAMMPS stage submission failed after DeepMD job ' + deepmd_job) from exc
+    if not lammps_job.isdigit():
+        raise ValueError('invalid LAMMPS Slurm job handle')
     record['job_script_sha256'] = checksum(script)
+    record['stage_job_script_sha256'] = {'deepmd': checksum(deepmd_script),
+                                         'lammps': checksum(script)}
+    record['stage_jobs'] = {'deepmd': deepmd_job, 'lammps': lammps_job}
     (r / 'request.json').write_text(json.dumps(record, sort_keys=True) + '\n')
-    job = run(['sbatch', '--parsable', script], capture_output=True).stdout.strip().split(';')[0]
-    if not job.isdigit():
-        raise ValueError('invalid Slurm job handle')
-    (r / 'job.id').write_text(job + '\n')
-    print(job, flush=True)
+    # Keep job.id as the final stage for existing monitor/acceptance tooling.
+    (r / 'job.id').write_text(lammps_job + '\n')
+    print(lammps_job, flush=True)
 
 
 def monitor(args):
@@ -215,6 +253,8 @@ def monitor(args):
                 if (artifact != expected or artifact.resolve() != artifact or artifact.is_symlink()
                         or request['recipe_sha256'] != fingerprint(CONTROL)
                         or record['job_script_sha256'] != checksum(r / 'job.sbatch')
+                        or record.get('stage_job_script_sha256', {}).get('deepmd') != checksum(r / 'job-deepmd.sbatch')
+                        or record.get('stage_job_script_sha256', {}).get('lammps') != checksum(r / 'job.sbatch')
                         or record['run_id'] != args.run_id or record['controller'] != str(CONTROL)):
                     raise ValueError('candidate provenance changed')
                 status['build_verified'] = True

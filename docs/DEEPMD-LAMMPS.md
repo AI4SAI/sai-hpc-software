@@ -59,7 +59,11 @@ Every partition runs its own configure/build with `-march=native -mtune=native`,
 records `lscpu` and compiler-expanded flags, and never re-labels another target's
 binary. The Skylake target does not have AVX512-VNNI and the site's automatic
 MPI/BLAS modules correctly select AVX2 dependencies. It gets six build threads
-per allocated GPU; GPU jobs do not override Slurm CPU/memory allocation.
+per allocated GPU; GPU jobs do not override Slurm CPU/memory allocation. Candidate
+builds use two dependent 180-minute Slurm stages: the first populates the
+DeepMD prefix in the file-backed overlay, and the second reuses that overlay
+for LAMMPS, export, and verification. The GitHub runner allows 480 minutes for
+queueing and artifact transfer; this does not extend either cluster-stage limit.
 LAMMPS has no standalone DSPRHBM product in this experiment; DeePMD retains its
 CPU inference backends inside each GPU-target stack.
 

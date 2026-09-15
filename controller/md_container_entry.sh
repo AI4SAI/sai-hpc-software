@@ -26,16 +26,33 @@ export DEEPMD_PREFIX=${settings[2]} LAMMPS_PREFIX=${settings[4]}
 # policy (LD_LIBRARY_PATH remains explicitly controlled below/by modules).
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin TMPDIR=/workspace/tmp
 case "$phase" in
-  build)
+  build|build-deepmd|build-lammps)
     mkdir -p /workspace/tmp
-    for name in deepmd-kit lammps; do
+    # The first stage owns source checkout and the shared baseline.  A later
+    # Slurm stage reuses the same file-backed overlay after an afterok edge;
+    # never re-initialize the repositories or overwrite a completed prefix.
+    if [[ "$phase" != build-lammps ]]; then
+      names=(deepmd-kit lammps)
+    else
+      names=()
+    fi
+    for name in "${names[@]}"; do
       if [[ "$name" == deepmd-kit ]]; then sha=$dp_sha; else sha=$lmp_sha; fi
       git init "/workspace/$name"
       git -C "/workspace/$name" -c core.hooksPath=/dev/null fetch --depth=1 --no-tags "/input/$name" "$sha"
       git -C "/workspace/$name" -c core.hooksPath=/dev/null checkout --detach "$sha"
       [[ "$(git -C "/workspace/$name" rev-parse HEAD)" == "$sha" ]]
     done
-    bash /control/md_build.sh "$target"
+    if [[ "$phase" == build-deepmd ]]; then
+      bash /control/md_build.sh "$target" deepmd
+    elif [[ "$phase" == build-lammps ]]; then
+      for name in deepmd-kit lammps; do
+        [[ -d "/workspace/$name/.git" ]]
+      done
+      bash /control/md_build.sh "$target" lammps
+    else
+      bash /control/md_build.sh "$target" all
+    fi
     ;;
   export)
     bash /control/create_rootfs.sh /workspace/export

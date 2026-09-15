@@ -2,6 +2,8 @@
 # Executed only inside the file-backed overlay on the native target partition.
 set -euo pipefail
 target=$1
+phase=${2:-all}
+[[ "$phase" == all || "$phase" == deepmd || "$phase" == lammps ]]
 source /control/md_environment.sh "$target"
 [[ "$DEEPMD_PREFIX" == /opt/software/deepmd-kit/* && "$LAMMPS_PREFIX" == /opt/software/lammps/* ]]
 mkdir -p "$DEEPMD_PREFIX/share/sai" "$LAMMPS_PREFIX/share/sai"
@@ -9,6 +11,7 @@ site=$MD_SYSTEM_DEEPMD/lib/python3.13/site-packages
 # The site's old DeepMD backend RUNPATH contains a stale .new prefix. Resolve
 # backend dependencies from the current immutable system environment explicitly.
 export LD_LIBRARY_PATH="$site/tensorflow:$site/torch/lib:$MD_SYSTEM_DEEPMD/lib:${LD_LIBRARY_PATH:-}"
+if [[ "$phase" != lammps ]]; then
 "$MD_SYSTEM_DEEPMD/bin/python" /control/md_probe.py --deepmd "$MD_SYSTEM_DEEPMD" \
   --lammps "$MD_SYSTEM_LAMMPS" > /workspace/baseline.json
 cp /workspace/baseline.json "$LAMMPS_PREFIX/share/sai/baseline.json"
@@ -45,6 +48,11 @@ cmake -S /workspace/deepmd-kit/source -B /workspace/deepmd-cpp \
   -DPython_EXECUTABLE="$DEEPMD_PREFIX/bin/python" -DBUILD_CPP_IF=ON -DBUILD_PY_IF=OFF
 cmake --build /workspace/deepmd-cpp -j "$BUILD_JOBS"
 cmake --install /workspace/deepmd-cpp
+if [[ "$phase" == deepmd ]]; then
+  echo MD_DEEPMD_STAGE_COMPLETE
+  exit 0
+fi
+fi
 # Official built-in integration, from the SAME source revision as the new C API.
 printf '\ninclude(/workspace/deepmd-kit/source/lmp/builtin.cmake)\n' >> /workspace/lammps/cmake/CMakeLists.txt
 # Compute nodes are offline.  Add the site's verified potential set without

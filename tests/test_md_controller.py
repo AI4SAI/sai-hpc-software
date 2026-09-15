@@ -115,6 +115,48 @@ class MDControllerTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 md.render(pair, 'test', **extras)
 
+    def test_staged_render_has_dependency_and_reuses_overlay(self):
+        pair = self.pair()
+        deepmd = md.render(pair, 'staged', stage='deepmd')
+        self.assertIn('build-deepmd', deepmd)
+        self.assertIn('apptainer overlay create', deepmd)
+        self.assertIn("test '!' -e", deepmd)
+        self.assertNotIn('--dependency=', deepmd)
+        subprocess.run(['bash', '-n'], input=deepmd, text=True, check=True)
+        lammps = md.render(pair, 'staged', stage='lammps', dependency='321')
+        self.assertIn('#SBATCH --dependency=afterok:321', lammps)
+        self.assertIn('build-lammps', lammps)
+        self.assertIn('test -e', lammps)
+        self.assertNotIn('apptainer overlay create', lammps)
+        subprocess.run(['bash', '-n'], input=lammps, text=True, check=True)
+
+    def test_submit_records_both_staged_jobs_and_hashes(self):
+        with tempfile.TemporaryDirectory() as temporary, patch.object(md, 'ROOT', Path(temporary)):
+            request = self.pair()
+            request_file = Path(temporary) / 'delivery.json'
+            request_file.write_text(json.dumps(request))
+            args = Namespace(run_id='staged-candidate', request=str(request_file), jobs=6,
+                             minutes=180, overlay_mb=32768)
+            handles = iter(('111', '222'))
+            def run(argv, **kwargs):
+                if argv[0] == 'bash':
+                    return subprocess.run(argv, check=True, text=True)
+                if argv[0] == 'sbatch':
+                    return subprocess.CompletedProcess(argv, 0, next(handles) + '\n')
+                return subprocess.CompletedProcess(argv, 0, '')
+            with patch.object(md, 'fingerprint', return_value=request['recipe_sha256']), \
+                    patch.object(md, 'run', side_effect=run):
+                md.submit(args)
+            directory = md.task(args.run_id)
+            record = json.loads((directory / 'request.json').read_text())
+            self.assertEqual(record['stage_jobs'], {'deepmd': '111', 'lammps': '222'})
+            self.assertEqual(record['job_script_sha256'], record['stage_job_script_sha256']['lammps'])
+            self.assertEqual(record['stage_job_script_sha256']['deepmd'],
+                             md.checksum(directory / 'job-deepmd.sbatch'))
+            self.assertEqual(record['stage_job_script_sha256']['lammps'],
+                             md.checksum(directory / 'job.sbatch'))
+            self.assertIn('#SBATCH --dependency=afterok:111', (directory / 'job.sbatch').read_text())
+
     def test_build_uses_readable_offline_site_dependencies(self):
         build = (ROOT / 'controller/md_build.sh').read_text()
         environment = (ROOT / 'controller/md_environment.sh').read_text()

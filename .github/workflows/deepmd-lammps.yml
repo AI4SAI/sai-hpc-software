@@ -90,7 +90,10 @@ jobs:
     needs: [validate, resolve]
     runs-on: ubuntu-latest
     environment: hpc
-    timeout-minutes: 360
+    # Candidate builds use two dependent 180-minute Slurm stages (DeepMD,
+    # then LAMMPS/export/verify); leave runner time for queueing and artifact
+    # transfer without changing either cluster-side stage limit.
+    timeout-minutes: 480
     strategy:
       fail-fast: false
       max-parallel: 1
