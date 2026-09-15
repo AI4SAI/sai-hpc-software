@@ -26,7 +26,8 @@ def contract_files(software):
                          "gpu_feature_controller.py", "gpu_feature_runtime.sh", "abacus"]
     if software == "cp2k":
         return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_feature_contract.py",
-                         "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_benchmark.py", "cp2k"]
+                         "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_benchmark.py",
+                         "native_module.py", "export_native.py", "cp2k"]
     raise ValueError("unknown software contract")
 
 def recipe_fingerprint(software, control=None):

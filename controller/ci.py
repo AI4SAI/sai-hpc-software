@@ -70,7 +70,8 @@ def main():
                "gpu_feature_controller.py", "gpu_feature_runtime.sh"]
               if software == "abacus" else
               ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_feature_contract.py",
-               "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_benchmark.py"])
+               "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_benchmark.py",
+               "native_module.py", "export_native.py"])
     for name in common + recipe:
         upload(parent / name, f"{control}/{name}")
     launcher_name = "abacus" if software == "abacus" else "cp2k"

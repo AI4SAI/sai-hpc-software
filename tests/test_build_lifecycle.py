@@ -251,6 +251,12 @@ class CiLifecycleTests(unittest.TestCase):
             "--track", "development", "--source-ref", "develop"]))
         self.assertEqual(json.loads((self.root / "results/identity.json").read_text())["recipe_sha256"], "c" * 64)
 
+    def test_cp2k_native_delivery_helpers_are_uploaded_and_fingerprinted(self):
+        self.execute(software="cp2k")
+        for name in ("native_module.py", "export_native.py"):
+            self.assertIn(name, self.uploads)
+            self.assertIn(name, controller.contract_files("cp2k"))
+
     def test_long_version_is_preserved_but_not_part_of_run_id(self):
         version = "v" * 1000
         self.execute(version=version, track="prerelease", resume="previous-run")
