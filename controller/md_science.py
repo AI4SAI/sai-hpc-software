@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """Real frozen-water inference/PLUMED acceptance; never run on login hosts.
 
-prepare(source_root, out_dir) reads upstream fixtures as DATA via an AST allowlist,
-converts the small TensorFlow graph, and optionally converts that *same model*
-to PT/JAX. No upstream Python module is executed. Generated references include
+prepare(source_root, out_dir) reads the committed serialized model and its YAML
+test case as DATA, then converts that same model independently to TF/PT/JAX.
+No upstream Python module is executed. Committed numeric references include
 all 18 force and 9 total-virial components. Conversion and inference require an
 verified, running Slurm allocation on this node. Network-isolated Apptainer
 containers require allocation attestations passed by the trusted host renderer;
@@ -35,6 +35,8 @@ from md_evidence import _compare_numeric, verify_benchmark
 
 
 BACKENDS = {"tf": "model.pb", "pt": "model.pth", "jax": "model.savedmodel"}
+SOURCE_MODEL = "source/tests/infer/deeppot_sea.yaml"
+SOURCE_REFERENCE = "source/tests/infer/deeppot-testcase.yaml"
 STRESS_ORDER = (0, 4, 8, 3, 6, 7, 1, 2, 5)
 NKTV2P = 1.6021765e6  # LAMMPS metal units; upstream source/lmp/tests/constants.py
 TOLERANCES = {name: {"atol": 1e-7, "rtol": 1e-5}
@@ -143,6 +145,55 @@ def parse_reference(source_text):
             "box": [13, 0, 0, 0, 13, 0, 0, 0, 13], "distance_angstrom": distance}
 
 
+def parse_serialized_reference(source_text):
+    """Read the first committed PBC case, never run upstream or candidate code.
+
+    Unlike the older LAMMPS stress oracle, these atomic virials already have the
+    physical sign. Reject topology/model changes rather than selecting another
+    case or silently reusing old numbers with a different serialized model.
+    """
+    import yaml
+
+    class UniqueLoader(yaml.SafeLoader):
+        def construct_mapping(self, node, deep=False):
+            mapping = {}
+            for key_node, value_node in node.value:
+                key = self.construct_object(key_node, deep=deep)
+                if key in mapping:
+                    raise ValueError("duplicate upstream test-case key")
+                mapping[key] = self.construct_object(value_node, deep=deep)
+            return mapping
+
+    case = yaml.load(source_text, Loader=UniqueLoader)
+    expected = dict(key="se_e2_a", filename=Path(SOURCE_MODEL).name, ntypes=2,
+                    rcut=6.0, type_map=["O", "H"], dim_fparam=0, dim_aparam=0)
+    if not isinstance(case, dict) or any(case.get(key) != value for key, value in expected.items()):
+        raise ValueError("upstream serialized water model changed")
+    results = case.get("results")
+    if not isinstance(results, list) or not results or not isinstance(results[0], dict):
+        raise ValueError("upstream serialized water reference is incomplete")
+    values = results[0]
+    for name, size in (("coord", 18), ("atype", 6), ("box", 9),
+                       ("atomic_energy", 6), ("force", 18), ("atomic_virial", 54)):
+        value = values.get(name)
+        if not isinstance(value, list) or len(value) != size or any(isinstance(v, list) for v in value):
+            raise ValueError(f"invalid serialized reference shape: {name}")
+        _flat(value)
+    if (values["box"] != [13, 0, 0, 0, 13, 0, 0, 0, 13]
+            or values["atype"] != [0, 1, 1, 0, 1, 1]
+            or any(type(value) is not int for value in values["atype"])
+            or any(name in values for name in ("fparam", "aparam", "spin"))):
+        raise ValueError("upstream serialized water topology changed")
+    coordinates = [values["coord"][i:i + 3] for i in range(0, 18, 3)]
+    forces = [values["force"][i:i + 3] for i in range(0, 18, 3)]
+    delta = [coordinates[1][i] - coordinates[0][i] for i in range(3)]
+    distance = math.sqrt(math.fsum((d - 13 * round(d / 13)) ** 2 for d in delta))
+    return {"reference": {"energy": math.fsum(values["atomic_energy"]), "forces": forces,
+                           "virial": [math.fsum(values["atomic_virial"][j::9]) for j in range(9)]},
+            "coordinates": coordinates, "atom_types": values["atype"], "box": values["box"],
+            "distance_angstrom": distance}
+
+
 def render_data(fixture):
     rows = ["SAI frozen-water regression", "", "6 atoms", "2 atom types", "",
             "0 13 xlo xhi", "0 13 ylo yhi", "0 13 zlo zhi", "", "Atoms # atomic", ""]
@@ -195,27 +246,35 @@ def prepare(source_root, out_dir, backends=("tf", "pt", "jax")):
     if not backends or len(set(backends)) != len(backends) or any(b not in BACKENDS for b in backends):
         raise ValueError("invalid backend selection")
     source = Path(source_root)
-    oracle = source / "source/lmp/tests/test_lammps.py"
-    graph = source / "source/tests/infer/deeppot.pbtxt"
-    fixture = parse_reference(oracle.read_text())
+    oracle = source / SOURCE_REFERENCE
+    model_source = source / SOURCE_MODEL
+    fixture = parse_serialized_reference(oracle.read_text())
+    source_hash = file_digest(model_source)
     out = Path(out_dir).resolve()
     out.mkdir(parents=True, exist_ok=False)
     # Serialization is a CPU transformation, not GPU inference. Do not let
     # separately initialized TF/PT runtimes contend for a device while moving
     # model weights between formats; subsequent inference uses its real device.
     conversion_env = dict(os.environ, CUDA_VISIBLE_DEVICES='', PYTHONFAULTHANDLER='1')
-    subprocess.run([sys.executable, "-m", "deepmd", "convert-from", "pbtxt", "-i", str(graph.resolve()),
-                    "-o", str(out / BACKENDS["tf"])], check=True, cwd=out, env=conversion_env)
-    fixture.update({"schema": 1, "source_reference_sha256": file_digest(oracle),
-                    "source_graph_sha256": file_digest(graph), "models": {}, "tolerances": TOLERANCES,
+    fixture.update({"schema": 2, "source_reference_sha256": file_digest(oracle),
+                    "source_model_sha256": source_hash, "source_model_path": SOURCE_MODEL,
+                    "source_reference_path": SOURCE_REFERENCE, "source_case_index": 0,
+                    "models": {}, "tolerances": TOLERANCES,
                     "required_backends": list(BACKENDS), "prepared_backends": list(backends)})
     (out / "data.lmp").write_text(render_data(fixture))
     (out / "plumed.dat").write_text(PLUMED_INPUT)
     for backend in backends:
         model = out / BACKENDS[backend]
-        if backend != "tf":
-            subprocess.run([sys.executable, "-m", "deepmd", "convert-backend", str(out / BACKENDS["tf"]),
-                            str(model)], check=True, cwd=out, env=conversion_env)
+        # Use the narrow public conversion API in a fresh process per backend.
+        # The CLI imports unrelated entrypoints (and TF); YAML->PT must not first
+        # load TF and then Triton, the failing site import order. No preload or
+        # invented training metadata is needed for this serialized source.
+        code = ("import sys; from deepmd.entrypoints.convert_backend import convert_backend; "
+                "convert_backend(INPUT=sys.argv[1], OUTPUT=sys.argv[2])")
+        subprocess.run([sys.executable, "-X", "faulthandler", "-c", code,
+                        str(model_source.resolve()), str(model)], check=True, cwd=out, env=conversion_env)
+        if file_digest(model_source) != source_hash:
+            raise ValueError("committed serialized model changed during conversion")
         if not model.exists():
             raise ValueError(f"conversion did not produce {backend} model")
         input_path = out / f"in.{backend}"

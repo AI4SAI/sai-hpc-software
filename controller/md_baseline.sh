@@ -52,7 +52,7 @@ logged() {
   "$@" 2>&1 | tee "$out/logs/$phase.log"
 }
 # Never fetch or execute the checkout's Python/hooks. Upstream files are only
-# data for md_science's AST allowlist and graph converter. All trees stay inside
+# data for md_science's safe YAML reader and model converter. All trees stay inside
 # the overlay; the bare cache itself is read-only and no host /tmp is used.
 export GIT_CONFIG_NOSYSTEM=1 GIT_CONFIG_GLOBAL=/dev/null
 export GIT_TERMINAL_PROMPT=0 GIT_ALLOW_PROTOCOL=file
@@ -86,7 +86,7 @@ Path('devices.json').write_text(json.dumps(devices, sort_keys=True) + '\n')
 print(json.dumps(devices, sort_keys=True))
 DEVICES_PY
 
-# The SAME upstream TF graph is converted for all three backends. A conversion
+# The SAME committed serialized YAML is converted for all three backends. A conversion
 # failure must stop with its original log, not substitute an unrelated model.
 logged prepare "$python" /control/md_science.py prepare /workspace/source "$out/case" \
   --backends tf pt jax

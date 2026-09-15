@@ -13,9 +13,10 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'controller'))
 import md_acceptance_controller as acceptance
-from md_science import BACKENDS, TOLERANCES, _record, parse_lammps_output, parse_reference
+from md_science import (BACKENDS, TOLERANCES, SOURCE_MODEL, SOURCE_REFERENCE,
+                        _record, parse_lammps_output, parse_serialized_reference)
 from source_cache import checksum
-from test_md_science import oracle_text, dump_text
+from test_md_science import serialized_oracle_text, dump_text
 from test_md_controller import delivery_request
 
 
@@ -99,14 +100,15 @@ class AcceptanceVerificationTests(unittest.TestCase):
         self.directory = self.root / 'runtime-tests' / self.run_id
         (self.directory / 'results').mkdir(parents=True)
         (self.directory / 'case').mkdir()
-        self.oracle = oracle_text()
+        self.oracle = serialized_oracle_text()
         self.graph = 'synthetic graph data for hash validation; never executed\n'
         self.source_sha = 'a' * 40
         self.recipe_sha = 'b' * 64
-        self.fixture = parse_reference(self.oracle)
-        self.fixture.update(tolerances=copy.deepcopy(TOLERANCES),
+        self.fixture = parse_serialized_reference(self.oracle)
+        self.fixture.update(schema=2, source_model_path=SOURCE_MODEL, source_reference_path=SOURCE_REFERENCE,
+                            source_case_index=0, tolerances=copy.deepcopy(TOLERANCES),
                             source_reference_sha256=hashlib.sha256(self.oracle.encode()).hexdigest(),
-                            source_graph_sha256=hashlib.sha256(self.graph.encode()).hexdigest(),
+                            source_model_sha256=hashlib.sha256(self.graph.encode()).hexdigest(),
                             models={backend: {'input_sha256': hashlib.sha256(backend.encode()).hexdigest()}
                                     for backend in BACKENDS})
         delivery = delivery_request(recipe=self.recipe_sha)
@@ -141,9 +143,9 @@ class AcceptanceVerificationTests(unittest.TestCase):
 
     def git_show(self, argv, **kwargs):
         self.assertEqual(argv[:4], ['git', '--git-dir', str(self.root / 'cache/repositories/deepmd-kit'), 'show'])
-        if argv[4] == self.source_sha + ':source/lmp/tests/test_lammps.py':
+        if argv[4] == self.source_sha + ':' + SOURCE_REFERENCE:
             return self.oracle
-        if argv[4] == self.source_sha + ':source/tests/infer/deeppot.pbtxt':
+        if argv[4] == self.source_sha + ':' + SOURCE_MODEL:
             return self.graph
         raise AssertionError('unexpected source lookup: ' + repr(argv))
 
@@ -235,7 +237,9 @@ class AcceptanceVerificationTests(unittest.TestCase):
 
     def test_source_oracle_graph_hash_topology_and_tolerances_rejected(self):
         original = copy.deepcopy(self.fixture)
-        changes = {'source_reference_sha256': 'f' * 64, 'source_graph_sha256': 'f' * 64,
+        changes = {'source_reference_sha256': 'f' * 64, 'source_model_sha256': 'f' * 64,
+                   'schema': 1, 'source_model_path': 'other.yaml', 'source_reference_path': 'other.yaml',
+                   'source_case_index': 1,
                    'atom_types': [1] * 6, 'box': [1] * 9, 'coordinates': [[0] * 3] * 6,
                    'reference': {'energy': 0, 'forces': [], 'virial': []},
                    'tolerances': {key: {'atol': 1, 'rtol': 1} for key in TOLERANCES}}

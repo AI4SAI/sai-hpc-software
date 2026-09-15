@@ -9,7 +9,8 @@ import shlex
 import subprocess
 import time
 from md_controller import PROJECT, ROOT, CONTROL, task as build_task, join, validate_pair, artifact_path
-from md_science import verify_science, parse_reference, parse_lammps_output, verify_plumed_output, _load_fixture, TOLERANCES
+from md_science import (verify_science, parse_serialized_reference, parse_lammps_output,
+                        verify_plumed_output, _load_fixture, TOLERANCES, SOURCE_MODEL, SOURCE_REFERENCE)
 from md_tracking import TARGETS as MD_TARGETS, fingerprint
 from remote_controller import TARGETS, safe_name
 from source_cache import checksum
@@ -103,15 +104,17 @@ def verify(run_id):
         raise ValueError('invalid acceptance job handle')
     source_sha = request['sources']['deepmd-kit']['sha']
     oracle = subprocess.check_output(['git', '--git-dir', str(ROOT / 'cache/repositories/deepmd-kit'),
-                                     'show', source_sha + ':source/lmp/tests/test_lammps.py'], text=True)
-    graph = subprocess.check_output(['git', '--git-dir', str(ROOT / 'cache/repositories/deepmd-kit'),
-                                    'show', source_sha + ':source/tests/infer/deeppot.pbtxt'], text=True)
-    reference = parse_reference(oracle)
+                                     'show', source_sha + ':' + SOURCE_REFERENCE], text=True)
+    model = subprocess.check_output(['git', '--git-dir', str(ROOT / 'cache/repositories/deepmd-kit'),
+                                    'show', source_sha + ':' + SOURCE_MODEL], text=True)
+    reference = parse_serialized_reference(oracle)
     fixtures = {backend: _load_fixture(r / 'case', backend) for backend in ('tf', 'pt', 'jax')}
     if any(any(f.get(key) != reference[key] for key in ('reference', 'coordinates', 'atom_types', 'box'))
            or f.get('tolerances') != TOLERANCES
            or f.get('source_reference_sha256') != hashlib.sha256(oracle.encode()).hexdigest()
-           or f.get('source_graph_sha256') != hashlib.sha256(graph.encode()).hexdigest()
+           or f.get('schema') != 2 or f.get('source_model_path') != SOURCE_MODEL
+           or f.get('source_reference_path') != SOURCE_REFERENCE or f.get('source_case_index') != 0
+           or f.get('source_model_sha256') != hashlib.sha256(model.encode()).hexdigest()
            for f in fixtures.values()):
         raise ValueError('packaged scientific oracle differs from requested upstream commit')
     for side in ('baseline', 'candidate'):

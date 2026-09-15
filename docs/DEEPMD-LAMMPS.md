@@ -2,18 +2,17 @@
 
 Work lives on `feat/deepmd-lammps-tracking`, not the production ABACUS branch.
 This is an **unpublished experimental pipeline**, not a tested replacement for
-the installed software. Do not merge or enable unattended GPU builds until all
+the installed software. Daily builds remain unpublished candidates until all
 live gates below have passed. No production `current.sif` or module is changed.
 
 ## Tracking and containment
 
-`deepmd-lammps.yml` resolves DeePMD `master` and LAMMPS `develop` together every
-six hours, or explicit branch/tag/release refs on manual dispatch. GitHub cron
-is periodic polling with possible scheduling delay, not zero-latency upstream
-notification. GitHub only runs cron from the default branch: this unmerged
-feature branch has no autonomous scheduled executions yet. The schedule is
-prepared for later review/merge and only resolves refs in its current form; manual
-`build_candidates=true` explicitly enables the Slurm build stage. Static CI
+The default-branch daily scheduler dispatches `deepmd-lammps.yml` on this feature
+branch with `software=all`, all three channels and GPU targets,
+`build_candidates=true`, and `retry_releases=false`. The MD workflow has no cron
+of its own, preventing duplicate polling. Manual dispatch uses the same explicit
+build input and independently resolves each component's latest requested channel.
+GitHub scheduling can be delayed; it is not an upstream push notification. Static CI
 success does not mean a candidate compiled or scientific acceptance passed.
 
 Within an enabled build invocation, development primaries always compile, even
@@ -26,8 +25,8 @@ transport in `runs/<run>/input/build-attempt.json`. It considers only requested
 primary triggers, not their companions; recipe or companion changes do not count
 as a new primary release. Any selected primary builds the locked pair once.
 An all-skipped pair emits only a build-attempt receipt, with no artifact or new
-acceptance claim. This policy does not enable the currently disabled scheduled
-candidate-build stage or publication.
+acceptance claim. A scheduler dispatch is a build trigger, never publication or
+scientific acceptance.
 
 Each immutable pair records **both full upstream SHAs** and hashes the actual
 deployed trusted recipe, launcher and verifiers. Existing eight-part,
@@ -45,8 +44,8 @@ allocation. Its trusted host controller rechecks raw LAMMPS output/PLUMED data,
 all host-MPI rank traces, exact image/executable/ISA, fixed tolerances and the
 oracle read from the requested upstream commit; six-backend/engine summaries
 alone cannot establish success. This wiring still needs a live candidate.
-Artifact-cache reuse and automatic publication must be connected to the full
-scientific/performance proof before enabling scheduled builds.
+Artifact-cache reuse and automatic publication still require the full
+scientific/performance proof; scheduled builds do not bypass these gates.
 
 ## Native target matrix
 
@@ -183,7 +182,7 @@ The current branch contains actual build, inventory, evidence-validation and
 test code, but these live gates have **not** all run. In particular a static CI
 green or `MD_CANDIDATE_BUILT_NOT_PUBLISHED` cannot be reported as usable software.
 
-## Latest bounded diagnostics (2026-09-11)
+## Historical bounded diagnostics (2026-09-11)
 
 LAMMPS source bootstrap is now complete in the independent MD bare cache at
 `experimental/deepmd-lammps/cache/repositories/lammps`, exact commit
@@ -195,7 +194,7 @@ Git bundle verification, full `git fsck` and cache inventory succeeded. The
 unborn bare-cache `HEAD` notice is expected: the exact commit lives at
 `refs/cache/<SHA>`. No host source checkout or new candidate build was performed.
 
-The actual three-backend baseline is still blocked, now with narrower evidence:
+The old three-backend baseline attempt stopped with the following evidence:
 
 | Allocated probe | Actual result |
 | --- | --- |
@@ -207,13 +206,41 @@ These results establish an import-order conflict in the installed combination;
 they do not identify its native-symbol root cause or prove backend inference.
 The probes changed neither installed packages nor model weights/metadata. The
 Triton-preload experiment is **not** enabled as an automatic production workaround.
-The old `deeppot.pbtxt` fixture cannot currently establish three-backend acceptance.
-The next fixture must have a real serialization contract and independent numeric
-oracle, or use explicitly separate pinned backend fixtures with independent
-oracles and identical baseline/candidate inputs **within** each backend. Do not
-invent the missing training metadata or claim unlike models are equivalent.
+The old `deeppot.pbtxt` fixture cannot establish three-backend acceptance; its
+missing training metadata is not reconstructed or invented.
 Precise commands, hashes and non-acceptance status are recorded in
 [`evidence/deepmd-lammps-import-diagnostics-20260911.json`](evidence/deepmd-lammps-import-diagnostics-20260911.json).
+
+### Serializable fixture preparation (2026-09-15; live validation pending)
+
+Preparation now uses the upstream-committed
+`source/tests/infer/deeppot_sea.yaml` and the first periodic six-atom case in
+`source/tests/infer/deeppot-testcase.yaml`, from the exact requested DeepMD SHA.
+The serialized model contains its original weights and real `model_def_script`;
+the separate test case contains pre-committed energy, all 18 force components,
+and all 54 atomic virial components. These are not generated by the candidate.
+The YAML virials have the physical sign, unlike the old LAMMPS stress oracle.
+The models and numbers are different from the old fixture and are not relabelled
+as equivalent. Both baseline and candidate evaluate the same new model inputs.
+
+At reviewed upstream commit `28b7d068801716765ab8119257f814596e49a10c`, the model
+SHA256 is `a1056a028be81b02757a164c917a6f0ff0d5e642da3d7c861f8d278aa82cf016`
+and the reference-file SHA256 is
+`d383b5d80040a94683c2da416d7a58f7519ef2c39f83a77c9492bf2b5a41cf99`.
+Upstream `infer/case.py` converts this serialized model with `convert_backend`;
+`infer/convert-models.sh` explicitly includes its JAX SavedModel export.
+
+Each TF/PT/JAX model is converted directly from that same YAML in a fresh CPU
+process using the narrow `deepmd.entrypoints.convert_backend.convert_backend`
+API. This removes the old PB-to-PT metadata dependency and avoids the CLI's
+unrelated eager imports. No Triton preload or installed-package patch is used.
+Safe YAML loading rejects duplicate keys and unexpected model/topology changes.
+PyYAML is required on the verifier host and in the existing DeepMD environment.
+The acceptance controller re-reads both committed files and checks their hashes,
+paths, case index, all numerical references and existing raw execution evidence.
+Conversion failure still stops preparation without a completed fixture manifest.
+These code and protocol checks are not proof of successful live conversion,
+candidate compilation, inference, feature parity or performance.
 
 `md_performance_run.py` now implements the allocated execution layer: all 2,058
 forces and virial components are checked, timing runs are pinned to one actual

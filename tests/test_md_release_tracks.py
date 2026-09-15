@@ -14,6 +14,19 @@ from md_tracking import identify_track_pair, resolve_track_pairs
 
 
 class MdReleaseTrackTests(unittest.TestCase):
+    def test_only_default_scheduler_dispatches_md_builds(self):
+        import yaml
+        workflow = yaml.safe_load((Path(__file__).resolve().parents[1] /
+                                   '.github/workflows/deepmd-lammps.yml').read_text())
+        triggers = workflow.get('on', workflow.get(True))
+        self.assertNotIn('schedule', triggers)
+        inputs = triggers['workflow_dispatch']['inputs']
+        self.assertIs(inputs['build_candidates']['default'], False)
+        self.assertIs(inputs['retry_releases']['default'], False)
+        self.assertEqual(workflow['jobs']['resolve']['if'], "github.event_name == 'workflow_dispatch'")
+        self.assertIn("github.event_name == 'workflow_dispatch' && inputs.build_candidates",
+                      workflow['jobs']['candidate-build']['if'])
+
     @staticmethod
     def resolver(*, no_dp_rc=False, no_dp_release=False, same_sha=False):
         def resolve(repository, ref):

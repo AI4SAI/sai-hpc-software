@@ -1,8 +1,6 @@
 name: Experimental DeePMD and LAMMPS tracking
 
 on:
-  schedule:
-    - cron: '47 1,7,13,19 * * *'
   workflow_dispatch:
     inputs:
       software:
@@ -43,14 +41,14 @@ jobs:
       - name: Install native delivery test tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y squashfs-tools tcl
+          sudo apt-get install -y squashfs-tools tcl python3-yaml
           command -v mksquashfs unsquashfs tclsh
       - run: python3 -m unittest discover -s tests -v
       - run: |
           for script in controller/md_*.sh; do bash -n "$script"; done
 
   resolve:
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    if: github.event_name == 'workflow_dispatch'
     needs: validate
     runs-on: ubuntu-latest
     outputs:
@@ -86,8 +84,8 @@ jobs:
           PY
 
   candidate-build:
-    # Experimental branch: schedule resolves moving refs but cannot spend GPU
-    # resources or imply publication until live scientific acceptance is wired.
+    # The default-branch daily scheduler explicitly dispatches this workflow.
+    # Building candidates never enables publication or implies acceptance.
     if: github.event_name == 'workflow_dispatch' && inputs.build_candidates && needs.resolve.outputs.builds != '[]'
     needs: [validate, resolve]
     runs-on: ubuntu-latest
