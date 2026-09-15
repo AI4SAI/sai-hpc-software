@@ -77,13 +77,13 @@ export PATH="$LAMMPS_PREFIX/bin:$DEEPMD_PREFIX/bin:$PATH"
 export LD_LIBRARY_PATH="$LAMMPS_PREFIX/lib:$DEEPMD_PREFIX/lib:$DEEPMD_PREFIX/lib/python3.13/site-packages/deepmd/lib:$LD_LIBRARY_PATH"
 export LAMMPS_POTENTIALS="$LAMMPS_PREFIX/share/lammps/potentials"
 export PYTHONPATH="$DEEPMD_PREFIX/lib/python3.13/site-packages:${PYTHONPATH:-}"
-# Build-time module composition includes the OLD site's LAMMPS in search paths.
+# Build-time modules include both old PLUMED and non-PLUMED site LAMMPS paths.
 # The new stack must neither execute nor dlopen that older implementation.
 for name in PATH LD_LIBRARY_PATH PYTHONPATH; do
   IFS=: read -ra components <<< "${!name}"
   cleaned=()
   for component in "${components[@]}"; do
-    [[ -n "$component" && "$component" != "$MD_SYSTEM_LAMMPS" && "$component" != "$MD_SYSTEM_LAMMPS/"* ]] || continue
+    [[ -n "$component" && "$component" != /opt/apps/lammps && "$component" != /opt/apps/lammps/* ]] || continue
     cleaned+=("$component")
   done
   printf -v "$name" '%s' "$(IFS=:; printf '%s' "${cleaned[*]}")"
@@ -132,7 +132,7 @@ for values in runtime['prepend'].values():
         if not any(pathlib.PurePosixPath(value).is_relative_to(prefix) for prefix in prefixes):
             # Exact observed directories; the shared validator rejects home,
             # workspace, old software and non-site paths instead of hiding them.
-            if value == os.environ['MD_SYSTEM_LAMMPS'] or value.startswith(os.environ['MD_SYSTEM_LAMMPS'] + '/'):
+            if value == '/opt/apps/lammps' or value.startswith('/opt/apps/lammps/'):
                 raise ValueError('native runtime contains the old LAMMPS installation')
             external.add(value)
 entries = [{'identity': identities[software], 'commands': {command: 'bin/' + command},

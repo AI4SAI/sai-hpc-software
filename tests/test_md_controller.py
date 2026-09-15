@@ -381,7 +381,8 @@ class MDControllerTests(unittest.TestCase):
         code = recipe.split(marker, 1)[1].split("<<'PY'\n", 1)[1].split('\nPY', 1)[0]
         request = self.pair()
         environment = dict(SAI_MD_DELIVERY=json.dumps(request), PATH='/usr/bin:/bin',
-                           LD_LIBRARY_PATH='/usr/lib', LOADEDMODULES='cuda/12.9.1:lammps/site:cmake/3.31.6',
+                           LD_LIBRARY_PATH='/usr/lib',
+                           LOADEDMODULES='cuda/12.9.1:openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto:deepmd-kit/3.2.0:lammps/site:cmake/3.31.6',
                            MD_SYSTEM_DEEPMD='/opt/apps/conda_env/deepmd-kit-3.2.0',
                            MD_SYSTEM_LAMMPS='/opt/apps/lammps/old', MD_SYSTEM_PLUMED='/opt/apps/plumed/plumed-2.10.1',
                            PLUMED_KERNEL='/opt/apps/plumed/plumed-2.10.1/lib/libplumedKernel.so',
@@ -400,9 +401,29 @@ class MDControllerTests(unittest.TestCase):
                 exec(compile(code, str(ROOT / 'controller/md_build.sh'), 'exec'), {})
             entries = packaged.call_args.args[0]
             self.assertEqual({item['identity']['software'] for item in entries}, {'deepmd-kit', 'lammps'})
-            self.assertEqual(entries[0]['runtime']['modules'], ['cuda/12.9.1'])
+            self.assertEqual(entries[0]['runtime']['modules'],
+                             ['cuda/12.9.1', 'openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto'])
             self.assertEqual(entries[0]['runtime']['prepend']['PATH'], ['/usr/bin'])
             self.assertEqual(export_native.read_installed_manifests(entries, root), export_native.inventory(entries, root))
+
+    def test_runtime_removes_all_site_lammps_variants_but_keeps_new_pair(self):
+        from md_relocate_audit import check_metadata, SITE_ROOTS
+        recipe = (ROOT / 'controller/md_build.sh').read_text()
+        cleanup = recipe.split('for name in PATH LD_LIBRARY_PATH PYTHONPATH; do\n', 1)[1].split('\ndone\n', 1)[0]
+        script = 'set -euo pipefail\nfor name in PATH LD_LIBRARY_PATH PYTHONPATH; do\n' + cleanup + '\ndone\n'
+        script += 'printf "%s\\n" "$PATH" "$LD_LIBRARY_PATH" "$PYTHONPATH"\n'
+        prefixes = [identity['install_prefix'] for identity in self.pair()['identities'].values()]
+        old = ['/opt/apps/lammps/lammps-4Jul2026-deepmd3.2.0-nvhpc263-ompi5010-sm70',
+               '/opt/apps/lammps/lammps-4Jul2026-deepmd3.2.0-plumed2.10.1-nvhpc263-ompi5010-sm70']
+        site = '/opt/apps/conda_env/deepmd-kit-3.2.0'
+        expected = [prefix + '/bin' for prefix in prefixes] + [site + '/bin', '/usr/bin']
+        value = ':'.join([expected[0], old[0] + '/bin', '', '/opt/apps/lammps',
+                          old[1] + '/bin', *expected[1:]])
+        environment = dict(PATH=value, LD_LIBRARY_PATH=value, PYTHONPATH=value)
+        result = subprocess.run(['/bin/bash', '-c', script], env=environment, capture_output=True, text=True, check=True)
+        for name, line in zip(environment, result.stdout.splitlines()):
+            self.assertEqual(line.split(':'), expected)
+            check_metadata('export ' + name + '=' + line, [*prefixes, *SITE_ROOTS])
 
     def test_fingerprint_tracks_actual_code_not_only_upstream_sha(self):
         first = tracking.fingerprint(ROOT / 'controller')
