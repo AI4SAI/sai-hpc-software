@@ -14,7 +14,7 @@ on:
         description: Channels; development always builds, unchanged releases skip
         default: development,prerelease,release
       targets:
-        description: all, or comma-separated target IDs; GPU-only programs omit dsprhbm
+        description: Validation targets only (dsprhbm,16v100-avx2); all selects both
         default: all
       retry_releases:
         description: Explicitly retry the selected release/prerelease versions
@@ -43,16 +43,18 @@ jobs:
           python3 - <<'PY'
           import json, os, sys
           sys.path.insert(0, 'controller')
-          from release_contract import SOFTWARE, TRACKS, PARTITIONS
+          from release_contract import SOFTWARE, TRACKS
+          # Expand only after native/scientific/performance validation here.
+          active_targets = ('dsprhbm', '16v100-avx2')
           requested = os.environ['SOFTWARE']
           tracks = [value.strip() for value in os.environ['TRACKS'].split(',')]
-          targets = list(PARTITIONS) if os.environ['TARGETS'] == 'all' else [value.strip() for value in os.environ['TARGETS'].split(',')]
+          targets = list(active_targets) if os.environ['TARGETS'] == 'all' else [value.strip() for value in os.environ['TARGETS'].split(',')]
           if requested != 'all' and requested not in SOFTWARE:
               raise ValueError('unknown software')
           if not tracks or len(set(tracks)) != len(tracks) or any(value not in TRACKS for value in tracks):
               raise ValueError('invalid tracks')
-          if not targets or len(set(targets)) != len(targets) or any(value not in PARTITIONS for value in targets):
-              raise ValueError('invalid targets')
+          if not targets or len(set(targets)) != len(targets) or any(value not in active_targets for value in targets):
+              raise ValueError('targets must stay within current DSPRHBM/16V100 validation scope')
           # Only reviewed repository branches; recipes stay isolated until accepted.
           workflows = [
               ('abacus', 'build.yml', 'feat/abacus-parity-benchmarks'),
