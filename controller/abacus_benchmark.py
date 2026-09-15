@@ -89,7 +89,7 @@ def case_files(case):
         raise ValueError("materialized small case exceeds 64 MiB")
     for name in ("INPUT", "STRU"):
         for line in (case / name).read_text().splitlines():
-            for token in line.split("#", 1)[0].split():
+            for token in re.split(r"#|//", line, maxsplit=1)[0].split():
                 if token.startswith("/") or ".." in Path(token).parts:
                     raise ValueError("case references must remain inside the materialized directory")
     return files

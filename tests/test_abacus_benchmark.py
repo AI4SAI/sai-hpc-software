@@ -408,6 +408,18 @@ class BenchmarkTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "materialized"):
             benchmark.prepare(self.args())
 
+    def test_case_paths_ignore_abacus_comments_but_reject_external_references(self):
+        structure = self.case / "STRU"
+        structure.write_text("ATOMIC_SPECIES\nSi 28 Si.upf # /comment/only\n"
+                             "LATTICE_CONSTANT\n1 // add lattice constant, 10.58 ang\n"
+                             "ATOMIC_POSITIONS\nDirect //Cartesian or Direct coordinate.\n")
+        self.assertEqual(benchmark.case_files(self.case)["STRU"], checksum(structure))
+        for reference in ("/outside/Si.upf", "../Si.upf"):
+            with self.subTest(reference=reference):
+                structure.write_text(f"ATOMIC_SPECIES\nSi 28 {reference} // real path precedes comment\n")
+                with self.assertRaisesRegex(ValueError, "case references"):
+                    benchmark.case_files(self.case)
+
     def test_parse_real_stdout_last_column_and_reject_nan_iteration(self):
         stdout = "ITER ETOT/eV EDIFF/eV DRHO TIME/s\nCG1 -4.87155886e+03 0.0 1.5575e+00 0.34\n"
         scf = "#SCF IS CONVERGED#\n!FINAL_ETOT_IS -4871.55886 eV\n"
