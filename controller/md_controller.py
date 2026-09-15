@@ -150,7 +150,12 @@ def submit_probe(args):
     script = r / 'job.sbatch'
     script.write_text('\n'.join(lines) + '\n')
     run(['bash', '-n', script])
-    job = run(['sbatch', '--parsable', script], capture_output=True).stdout.strip().split(';')[0]
+    try:
+        submitted = run(['sbatch', '--parsable', script], capture_output=True)
+    except subprocess.CalledProcessError as exc:
+        detail = (exc.stderr or exc.stdout or '').strip()
+        raise RuntimeError('MD Slurm submission failed' + (': ' + detail if detail else '')) from exc
+    job = submitted.stdout.strip().split(';')[0]
     if not job.isdigit():
         raise ValueError('invalid probe job handle')
     (r / 'job.id').write_text(job + '\n')
