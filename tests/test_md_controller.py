@@ -115,6 +115,14 @@ class MDControllerTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 md.render(pair, 'test', **extras)
 
+    def test_build_uses_readable_offline_site_dependencies(self):
+        build = (ROOT / 'controller/md_build.sh').read_text()
+        environment = (ROOT / 'controller/md_environment.sh').read_text()
+        self.assertIn('-DDOWNLOAD_VORO=OFF', build)
+        self.assertIn('-DDOWNLOAD_EIGEN3=OFF', build)
+        self.assertIn('MD_SYSTEM_VORO=', environment)
+        self.assertIn('MD_SYSTEM_EIGEN=', environment)
+
     def test_both_identities_bind_sources_recipe_track_and_partition(self):
         original = self.pair()
         for component in ('deepmd-kit', 'lammps'):
