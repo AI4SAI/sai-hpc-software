@@ -75,27 +75,27 @@ def lammps_inventory(prefix):
     lib.lammps_open_no_mpi.argtypes = [ctypes.c_int, ctypes.POINTER(ctypes.c_char_p), ctypes.POINTER(ctypes.c_void_p)]
     lib.lammps_open_no_mpi.restype = ctypes.c_void_p
     args = (ctypes.c_char_p * 5)(b"lmp", b"-screen", b"none", b"-log", b"none")
-    with suppress_native_output():
-        handle = lib.lammps_open_no_mpi(len(args), args, None)
-    if not handle:
-        raise ValueError("cannot enumerate installed LAMMPS styles")
     lib.lammps_style_count.argtypes = [ctypes.c_void_p, ctypes.c_char_p]
     lib.lammps_style_name.argtypes = [ctypes.c_void_p, ctypes.c_char_p, ctypes.c_int, ctypes.c_char_p, ctypes.c_int]
     lib.lammps_version.argtypes = [ctypes.c_void_p]
     lib.lammps_close.argtypes = [ctypes.c_void_p]
-    styles = {}
-    try:
-        for kind in ("pair", "bond", "angle", "dihedral", "improper", "kspace", "fix", "compute",
-                     "region", "dump", "atom", "integrate", "minimize", "command"):
-            values = []
-            for index in range(lib.lammps_style_count(handle, kind.encode())):
-                buf = ctypes.create_string_buffer(256)
-                lib.lammps_style_name(handle, kind.encode(), index, buf, len(buf))
-                values.append(buf.value.decode())
-            styles[kind] = sorted(values)
-        version = str(lib.lammps_version(handle))
-    finally:
-        lib.lammps_close(handle)
+    with suppress_native_output():
+        handle = lib.lammps_open_no_mpi(len(args), args, None)
+        if not handle:
+            raise ValueError("cannot enumerate installed LAMMPS styles")
+        styles = {}
+        try:
+            for kind in ("pair", "bond", "angle", "dihedral", "improper", "kspace", "fix", "compute",
+                         "region", "dump", "atom", "integrate", "minimize", "command"):
+                values = []
+                for index in range(lib.lammps_style_count(handle, kind.encode())):
+                    buf = ctypes.create_string_buffer(256)
+                    lib.lammps_style_name(handle, kind.encode(), index, buf, len(buf))
+                    values.append(buf.value.decode())
+                styles[kind] = sorted(values)
+            version = str(lib.lammps_version(handle))
+        finally:
+            lib.lammps_close(handle)
     return {"version": version, "packages": sorted(packages), "styles": styles,
             "library": str(library), "library_sha256": sha(library), "ldd": libraries(library)}
 
