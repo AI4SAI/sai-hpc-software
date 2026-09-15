@@ -435,6 +435,8 @@ class MDControllerTests(unittest.TestCase):
         self.assertIn('-march=native -mtune=native', recipe)
         self.assertIn('-DENABLE_TENSORFLOW=ON -DENABLE_PYTORCH=ON -DENABLE_JAX=ON', recipe)
         self.assertIn('-DDOWNLOAD_PLUMED=OFF', recipe)
+        self.assertIn('cp -a --no-clobber "$MD_SYSTEM_LAMMPS/share/lammps/potentials/."', recipe)
+        self.assertIn('-DDOWNLOAD_POTENTIALS=ON', recipe)
         self.assertIn("['lammps']['packages']", recipe)
         self.assertIn('verify_parity', recipe)
         self.assertIn('check_dynamic', (ROOT / 'controller/md_relocate_audit.py').read_text())

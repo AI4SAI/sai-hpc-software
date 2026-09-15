@@ -47,6 +47,9 @@ cmake --build /workspace/deepmd-cpp -j "$BUILD_JOBS"
 cmake --install /workspace/deepmd-cpp
 # Official built-in integration, from the SAME source revision as the new C API.
 printf '\ninclude(/workspace/deepmd-kit/source/lmp/builtin.cmake)\n' >> /workspace/lammps/cmake/CMakeLists.txt
+# Compute nodes are offline.  Add the site's verified potential set without
+# replacing newer files shipped by the selected LAMMPS source revision.
+cp -a --no-clobber "$MD_SYSTEM_LAMMPS/share/lammps/potentials/." /workspace/lammps/potentials/
 mapfile -t packages < <("$MD_SYSTEM_DEEPMD/bin/python" - <<'PY'
 import json, re
 for package in json.load(open('/workspace/baseline.json'))['lammps']['packages']:
@@ -64,6 +67,7 @@ cmake -S /workspace/lammps/cmake -B /workspace/lammps-build \
   -DPKG_KOKKOS=ON -DKokkos_ENABLE_CUDA=ON -DKokkos_ENABLE_OPENMP=ON \
   -DKokkos_ARCH_VOLTA70=ON -DCMAKE_CXX_COMPILER=/workspace/lammps/lib/kokkos/bin/nvcc_wrapper \
   -DPKG_GPU=ON -DGPU_API=cuda -DGPU_ARCH=sm_70 \
+  -DDOWNLOAD_POTENTIALS=ON \
   -DPKG_PLUMED=ON -DPLUMED_MODE=runtime -DDOWNLOAD_PLUMED=OFF \
   -DPLUMED_INCLUDE_DIR="$MD_SYSTEM_PLUMED/include" \
   -DPKG_PYTHON=ON -DPython_EXECUTABLE="$DEEPMD_PREFIX/bin/python" "${packages[@]}"
