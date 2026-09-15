@@ -24,9 +24,9 @@ on:
         type: boolean
         default: false
   push:
-    paths: ['controller/md_*', 'tests/test_md_*', 'docs/DEEPMD-LAMMPS.md', 'docs/evidence/deepmd-*', '.github/workflows/deepmd-lammps.yml']
+    paths: ['controller/md_*', 'controller/remote_controller.py', 'controller/source_cache.py', 'controller/create_rootfs.sh', 'controller/resolve_source.py', 'controller/release_contract.py', 'controller/native_module.py', 'controller/export_native.py', 'tests/test_md_*', 'tests/test_controller.py', 'docs/DEEPMD-LAMMPS.md', 'docs/evidence/deepmd-*', '.github/workflows/deepmd-lammps.yml']
   pull_request:
-    paths: ['controller/md_*', 'tests/test_md_*', 'docs/DEEPMD-LAMMPS.md', 'docs/evidence/deepmd-*', '.github/workflows/deepmd-lammps.yml']
+    paths: ['controller/md_*', 'controller/remote_controller.py', 'controller/source_cache.py', 'controller/create_rootfs.sh', 'controller/resolve_source.py', 'controller/release_contract.py', 'controller/native_module.py', 'controller/export_native.py', 'tests/test_md_*', 'tests/test_controller.py', 'docs/DEEPMD-LAMMPS.md', 'docs/evidence/deepmd-*', '.github/workflows/deepmd-lammps.yml']
 
 permissions:
   contents: read
