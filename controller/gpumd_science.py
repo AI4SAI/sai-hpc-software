@@ -452,7 +452,7 @@ def raw_file_inventory(task):
     acceptable evidence paths because the independent verifier intentionally
     rejects them, so the producer must omit them from the manifest as well.
     """
-    task = Path(task)
+    task = Path(task).resolve()
     return {str(path.relative_to(task)): sha(path) for path in sorted(task.rglob("*"))
             if path.is_file() and not path.is_symlink() and path.resolve() == path and
             path.name != "science.json"}
