@@ -444,6 +444,20 @@ def required_results():
     return files
 
 
+def raw_file_inventory(task):
+    """Return hashes for trusted regular raw-output files only.
+
+    DeepMD's probe may leave convenience symlinks (for example
+    ``model.ckpt.pt`` pointing at a versioned checkpoint).  Symlinks are not
+    acceptable evidence paths because the independent verifier intentionally
+    rejects them, so the producer must omit them from the manifest as well.
+    """
+    task = Path(task)
+    return {str(path.relative_to(task)): sha(path) for path in sorted(task.rglob("*"))
+            if path.is_file() and not path.is_symlink() and path.resolve() == path and
+            path.name != "science.json"}
+
+
 def recheck_results(task, report):
     """Recompute every acceptance comparison from its mandatory raw outputs.
 
@@ -743,8 +757,7 @@ def run(prefix, task):
     checks, benchmark = recheck_results(task, report)
     if checks != report["checks"] or benchmark != report["benchmark"]:
         raise ValueError("independent raw-output recheck disagrees with the producer")
-    report["files"] = {str(path.relative_to(task)): sha(path) for path in sorted(task.rglob("*"))
-                       if path.is_file() and path.name != "science.json"}
+    report["files"] = raw_file_inventory(task)
     (task / "science.json").write_text(json.dumps(report, sort_keys=True) + "\n")
     print(json.dumps({"GPUMD_SCIENTIFIC_ACCEPTANCE": True, "checks": report["checks"], "benchmark": report["benchmark"]}, sort_keys=True))
 

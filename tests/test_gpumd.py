@@ -531,6 +531,15 @@ class GpumdRawEvidenceTests(unittest.TestCase):
         self.assertEqual(checks["plumed-force-feedback"], 0)
         self.assertEqual(benchmark["md-throughput-candidate"]["median_atom_steps_per_second"], 2000000)
 
+    def test_science_inventory_excludes_generated_symlinks(self):
+        target = self.root / "deepmd-input/model.ckpt-1.pt"
+        target.write_text("checkpoint\n")
+        link = self.root / "deepmd-input/model.ckpt.pt"
+        link.symlink_to(target.name)
+        inventory = science.raw_file_inventory(self.root)
+        self.assertIn("deepmd-input/model.ckpt-1.pt", inventory)
+        self.assertNotIn("deepmd-input/model.ckpt.pt", inventory)
+
     def test_fake_summary_cannot_replace_missing_raw_gold_or_outputs(self):
         self.report["checks"] = {"static-candidate": True, "deepmd-candidate": True}
         for relative in ("static-candidate/gold.xyz", "deepmd-baseline/dump.xyz", "gnep-static-candidate/nep.txt"):
