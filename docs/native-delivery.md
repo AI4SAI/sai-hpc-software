@@ -11,9 +11,23 @@ modulefiles 或校验清单。系统预装依赖仍只读复用，不随安装�
 ## 渠道、分区和命名
 
 五种软件统一使用 `development`、`prerelease`、`release` 三个渠道。
-目标是每日检查各渠道最新上游 SHA；目前默认分支仅开启已接科学验收的 ABACUS
-自动构建/发布。CP2K 暂限手动候选构建，直接 publish 也拒绝无科学验收的候选；
-其余软件仍在独立实验分支。GitHub Actions 的定时器仅在默认分支运行。
+默认分支的 `daily.yml` 是唯一每日入口，计划每天北京时间 10:23 检查各渠道
+最新上游 SHA（GitHub 定时调度可能延迟），也可手动选择软件、渠道和分区。
+它通过本仓库的 workflow dispatch 调用以下独立构建分支；DeePMD/LAMMPS
+成对调度一次，避免两个入口重复提交相同组合：
+
+| 构建入口 | 本仓库配方分支 |
+| --- | --- |
+| `build.yml`（ABACUS） | `feat/abacus-parity-benchmarks` |
+| `cp2k.yml` | `feat/cp2k-parity-benchmarks` |
+| `deepmd-lammps.yml` | `feat/deepmd-lammps-tracking` |
+| `gpumd.yml` | `feat/gpumd-daily-tracking` |
+
+软件实验配方保持写集独立，过测后再择机合并。GitHub 定时器仅在默认分支
+运行，各软件入口不再配置独立 cron；合并软件分支后需同步更新上表和调度 ref。
+总入口成功只表示 GitHub 接受了提交；实际源码 SHA、原生编译、功能/科学和
+同资源性能结果须查看对应子工作流，不会因调度成功绕过发布验收。
+首次上线前须推送并验证上述分支支持的输入；CPU 分区只调度 ABACUS/CP2K。
 未发布 prerelease 的上游可明确记为 skipped；网络、
 API、标签解析失败必须报错，不能伪装成“没有版本”。release 使用标签指向的
 commit，annotated tag 必须解引用，不能误取同名分支。

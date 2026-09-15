@@ -1,7 +1,5 @@
 name: Build HPC software
 on:
-  schedule:
-    - cron: '23 2 * * *'
   workflow_dispatch:
     inputs:
       tracks:
@@ -73,8 +71,6 @@ jobs:
           builds = []
           for result in resolve_tracks('abacus', tracks):
               if result['status'] == 'skipped':
-                  if not scheduled:
-                      raise ValueError(result['reason'])
                   print(json.dumps(result))
                   continue
               builds.extend(dict(result, target=t) for t in requested)
@@ -83,7 +79,7 @@ jobs:
           print(builds)
           PY
   build:
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    if: (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && needs.resolve-source.outputs.builds != '[]'
     needs: [validate, resolve-source]
     runs-on: ubuntu-latest
     timeout-minutes: 360

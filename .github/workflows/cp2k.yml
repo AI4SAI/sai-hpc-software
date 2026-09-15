@@ -77,7 +77,8 @@ jobs:
           builds = []
           for result in resolve_tracks('cp2k', tracks):
               if result['status'] == 'skipped':
-                  raise ValueError(result['reason'])
+                  print(json.dumps(result))
+                  continue
               builds.extend(dict(result, target=t) for t in requested)
           with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
               out.write('builds=' + json.dumps(builds) + '\n')
@@ -85,7 +86,7 @@ jobs:
           PY
 
   build:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' && needs.resolve-source.outputs.builds != '[]'
     needs: [validate, resolve-source]
     runs-on: ubuntu-latest
     timeout-minutes: 360
