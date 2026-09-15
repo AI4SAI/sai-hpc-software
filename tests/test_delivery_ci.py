@@ -131,7 +131,8 @@ class DailyWorkflowTests(unittest.TestCase):
         for row in rows:
             self.assertEqual(row['inputs']['tracks'], ','.join(contract.TRACKS))
             self.assertEqual(row['inputs']['retry_releases'], 'false')
-            self.assertEqual(row['inputs']['targets'].split(','), list(contract.SOFTWARE[row['software']]['targets']))
+            expected = ['dsprhbm', '16v100-avx2'] if row['software'] in ('abacus', 'cp2k') else ['16v100-avx2']
+            self.assertEqual(row['inputs']['targets'].split(','), expected)
         self.assertEqual(rows[2]['inputs']['software'], 'all')
         self.assertEqual(rows[2]['inputs']['build_candidates'], 'true')
         self.assertNotIn('build_candidates', rows[3]['inputs'])
@@ -139,11 +140,11 @@ class DailyWorkflowTests(unittest.TestCase):
     def test_manual_single_software_and_retry_are_forwarded(self):
         for software in contract.SOFTWARE:
             with self.subTest(software=software):
-                rows = self.execute(SOFTWARE=software, TARGETS='4v100-avx512', TRACKS='release',
+                rows = self.execute(SOFTWARE=software, TARGETS='16v100-avx2', TRACKS='release',
                                     GITHUB_EVENT_NAME='workflow_dispatch', RETRY_RELEASES='true')
                 self.assertEqual(len(rows), 1)
                 self.assertEqual(rows[0]['inputs']['tracks'], 'release')
-                self.assertEqual(rows[0]['inputs']['targets'], '4v100-avx512')
+                self.assertEqual(rows[0]['inputs']['targets'], '16v100-avx2')
                 self.assertEqual(rows[0]['inputs']['retry_releases'], 'true')
                 if software in ('deepmd-kit', 'lammps'):
                     self.assertEqual(rows[0]['inputs']['software'], software)
@@ -153,9 +154,18 @@ class DailyWorkflowTests(unittest.TestCase):
         self.assertEqual([row['software'] for row in self.execute(TARGETS='dsprhbm')], ['abacus', 'cp2k'])
         for env in ({'SOFTWARE': 'other'}, {'SOFTWARE': 'lammps', 'TARGETS': 'dsprhbm'},
                     {'TARGETS': '4V100'}, {'TARGETS': 'a100'}, {'TARGETS': 'dsprhbm,dsprhbm'},
+                    {'TARGETS': '4v100-avx512'}, {'TARGETS': '8v100v0-avx512'},
+                    {'TARGETS': 'dsprhbm,4v100-avx512'},
                     {'TRACKS': 'release,release'}, {'TRACKS': ''}, {'TRACKS': 'main'}):
             with self.subTest(env=env), self.assertRaises(ValueError):
                 self.execute(**env)
+
+    def test_schedule_and_manual_all_are_limited_to_validation_partitions(self):
+        for event in ('schedule', 'workflow_dispatch'):
+            with self.subTest(event=event):
+                rows = self.execute(GITHUB_EVENT_NAME=event)
+                self.assertEqual({target for row in rows for target in row['inputs']['targets'].split(',')},
+                                 {'dsprhbm', '16v100-avx2'})
 
     def test_dispatch_uses_only_this_repo_and_reports_submission_not_completion(self):
         request = self.execute(SOFTWARE='gpumd')[0]
