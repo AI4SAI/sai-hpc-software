@@ -15,6 +15,10 @@ module load lammps/4jul2026-deepmd320-plumed2101-nvhpc263-ompi5010-sm70
 export MD_SYSTEM_DEEPMD=/opt/apps/conda_env/deepmd-kit-3.2.0
 export MD_SYSTEM_LAMMPS=/opt/apps/lammps/lammps-4Jul2026-deepmd3.2.0-plumed2.10.1-nvhpc263-ompi5010-sm70
 export MD_SYSTEM_PLUMED=/opt/apps/plumed/plumed-2.10.1
+# These site-provided headers are readable on compute nodes and avoid the
+# offline CMake ExternalProject downloads used by the MACHDYN/VORONOI packages.
+export MD_SYSTEM_VORO=/opt/apps/conda_env/deepmd-kit-3.1.2
+export MD_SYSTEM_EIGEN=/opt/apps/conda_env/VeloxChem/gpu
 export PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1 PIP_NO_INDEX=1 PIP_DISABLE_PIP_VERSION_CHECK=1
 export CC=gcc CXX=g++ FC=gfortran
 export PLUMED_KERNEL="$MD_SYSTEM_PLUMED/lib/libplumedKernel.so"
@@ -24,6 +28,8 @@ export PKG_CONFIG_PATH="$MD_SYSTEM_PLUMED/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
 export LD_LIBRARY_PATH="/lib/x86_64-linux-gnu/lapack:/lib/x86_64-linux-gnu/blas:${LD_LIBRARY_PATH:-}"
 export CMAKE_PREFIX_PATH="$MD_SYSTEM_PLUMED:$MD_SYSTEM_DEEPMD:${CMAKE_PREFIX_PATH:-}"
 [[ -x "$MD_SYSTEM_DEEPMD/bin/python" && -f "$PLUMED_KERNEL" ]]
+[[ -f "$MD_SYSTEM_VORO/include/voro++/voro++.hh" && -f "$MD_SYSTEM_VORO/lib/libvoro++.a" ]]
+[[ -f "$MD_SYSTEM_EIGEN/share/eigen3/cmake/Eigen3Config.cmake" ]]
 case "$1" in
   4v100-avx512)
     export MD_CPU_ARCH=znver4 MD_CUDA_ARCH=70

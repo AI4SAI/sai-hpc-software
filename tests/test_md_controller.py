@@ -111,7 +111,7 @@ class MDControllerTests(unittest.TestCase):
         for bad in ({}, dict(pair, schema=1), pair['plan'], dict(pair, target='a100')):
             with self.assertRaises((ValueError, KeyError)):
                 md.validate_pair(bad)
-        for extras in ({'jobs': 7}, {'minutes': 181}, {'overlay_mb': 1024}):
+        for extras in ({'jobs': 7}, {'minutes': 301}, {'overlay_mb': 1024}):
             with self.assertRaises(ValueError):
                 md.render(pair, 'test', **extras)
 

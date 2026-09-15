@@ -68,6 +68,9 @@ cmake -S /workspace/lammps/cmake -B /workspace/lammps-build \
   -DKokkos_ARCH_VOLTA70=ON -DCMAKE_CXX_COMPILER=/workspace/lammps/lib/kokkos/bin/nvcc_wrapper \
   -DPKG_GPU=ON -DGPU_API=cuda -DGPU_ARCH=sm_70 \
   -DDOWNLOAD_POTENTIALS=ON \
+  -DDOWNLOAD_VORO=OFF -DVORO_INCLUDE_DIR="$MD_SYSTEM_VORO/include/voro++" \
+  -DVORO_LIBRARY="$MD_SYSTEM_VORO/lib/libvoro++.a" \
+  -DDOWNLOAD_EIGEN3=OFF -DEigen3_DIR="$MD_SYSTEM_EIGEN/share/eigen3/cmake" \
   -DPKG_PLUMED=ON -DPLUMED_MODE=runtime -DDOWNLOAD_PLUMED=OFF \
   -DPLUMED_INCLUDE_DIR="$MD_SYSTEM_PLUMED/include" \
   -DPKG_PYTHON=ON -DPython_EXECUTABLE="$DEEPMD_PREFIX/bin/python" "${packages[@]}"
