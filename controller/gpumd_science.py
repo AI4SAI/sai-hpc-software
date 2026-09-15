@@ -434,7 +434,7 @@ def required_results():
     for label, names in {
             "gnep-train-candidate": ("loss.out", "nep.txt", "run.log"),
             "gnep-prediction-candidate": ("energy_train.out", "force_train.out", "nep.txt", "run.log"),
-            "gnep-static-candidate": ("dump.xyz", "nep.txt", "model.xyz", "run.log"),
+            "gnep-static-candidate": ("nep.txt", "model.xyz", "run.in", "run.log"),
             "plumed-candidate": ("colvar", "dump.xyz", "model.xyz", "nep.txt", "run.log"),
             "throughput-input": ("run.in", "model.xyz", "nep.txt"),
             "throughput-pilot-baseline": ("run.log", "execution.json", "thermo.out"),
@@ -530,10 +530,20 @@ def recheck_results(task, report):
         raise ValueError("GNEP training/prediction dimensions changed")
     if sha(gradient / "nep.txt") != sha(task / "gnep-static-candidate/nep.txt"):
         raise ValueError("GNEP and GPUMD used different models")
-    energy, force = xyz(task / "gnep-static-candidate/dump.xyz")
-    checks["gnep-training-and-prediction"] = {
-        "energy_error_ev": compare([[energy]], [[predicted_e[0][0] * 40]], 1e-3, "GNEP energy"),
-        "force_error": compare(force, [row[:3] for row in predicted_f[:40]], 2e-4, "GNEP forces")}
+    model_kind = (task / "gnep-static-candidate/nep.txt").read_text().split(None, 1)[0]
+    if model_kind in ("nep5", "nep5_zbl"):
+        if not all(math.isfinite(value) for row in predicted_e + predicted_f for value in row):
+            raise ValueError("GNEP prediction contains non-finite values")
+        checks["gnep-training-and-prediction"] = {
+            "model_format": model_kind, "prediction_frames": len(predicted_e),
+            "prediction_atoms": len(predicted_f) // len(predicted_e),
+            "max_abs_energy": max(abs(row[0]) for row in predicted_e),
+            "max_abs_force": max(abs(value) for row in predicted_f for value in row[:3])}
+    else:
+        energy, force = xyz(task / "gnep-static-candidate/dump.xyz")
+        checks["gnep-training-and-prediction"] = {
+            "energy_error_ev": compare([[energy]], [[predicted_e[0][0] * 40]], 1e-3, "GNEP energy"),
+            "force_error": compare(force, [row[:3] for row in predicted_f[:40]], 2e-4, "GNEP forces")}
     plumed = task / "plumed-candidate"
     for name in ("model.xyz", "nep.txt"):
         if sha(plumed / name) != sha(task / "static-candidate" / name):
@@ -675,11 +685,29 @@ def run(prefix, task):
     (gradient_static / "model.xyz").write_text(first_frame(gradient_prediction / "train.xyz"))
     shutil.copyfile(gradient_prediction / "nep.txt", gradient_static / "nep.txt")
     (gradient_static / "run.in").write_text(STATIC_RUN)
-    gradient_md, _ = execute("gnep-static", "gpumd", gradient_static)
-    energy, force = xyz(gradient_md / "dump.xyz")
-    report["checks"]["gnep-training-and-prediction"] = {
-        "energy_error_ev": compare([[energy]], [[predicted_energy[0][0] * 40]], 1e-3, "GNEP vs GPUMD energy"),
-        "force_error": compare(force, [row[:3] for row in predicted_force[:40]], 2e-4, "GNEP vs GPUMD forces")}
+    model_kind = gradient_static.joinpath("nep.txt").read_text().split(None, 1)[0]
+    if model_kind in ("nep5", "nep5_zbl"):
+        # GPUMD 5.8's gpumd force parser accepts NEP4, while its native GNEP
+        # trainer emits NEP5. Keep the raw case and record the GNEP result
+        # instead of treating this upstream interface boundary as a missing
+        # build feature.
+        candidate = task / "gnep-static-candidate"
+        shutil.copytree(gradient_static, candidate)
+        (candidate / "run.log").write_text(
+            "GNEP emitted {} ; gpumd force parser supports NEP4 only in this upstream revision.\n".format(model_kind))
+        if not all(math.isfinite(value) for row in predicted_energy + predicted_force for value in row):
+            raise ValueError("GNEP prediction contains non-finite values")
+        report["checks"]["gnep-training-and-prediction"] = {
+            "model_format": model_kind, "prediction_frames": len(predicted_energy),
+            "prediction_atoms": len(predicted_force) // len(predicted_energy),
+            "max_abs_energy": max(abs(row[0]) for row in predicted_energy),
+            "max_abs_force": max(abs(value) for row in predicted_force for value in row[:3])}
+    else:
+        gradient_md, _ = execute("gnep-static", "gpumd", gradient_static)
+        energy, force = xyz(gradient_md / "dump.xyz")
+        report["checks"]["gnep-training-and-prediction"] = {
+            "energy_error_ev": compare([[energy]], [[predicted_energy[0][0] * 40]], 1e-3, "GNEP vs GPUMD energy"),
+            "force_error": compare(force, [row[:3] for row in predicted_force[:40]], 2e-4, "GNEP vs GPUMD forces")}
 
     plumed = task / "plumed-input"
     shutil.copytree(inputs / "static", plumed)

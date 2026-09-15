@@ -533,7 +533,7 @@ class GpumdRawEvidenceTests(unittest.TestCase):
 
     def test_fake_summary_cannot_replace_missing_raw_gold_or_outputs(self):
         self.report["checks"] = {"static-candidate": True, "deepmd-candidate": True}
-        for relative in ("static-candidate/gold.xyz", "deepmd-baseline/dump.xyz", "gnep-train-candidate/loss.out"):
+        for relative in ("static-candidate/gold.xyz", "deepmd-baseline/dump.xyz", "gnep-static-candidate/nep.txt"):
             path = self.root / relative
             original = path.read_bytes()
             path.unlink()
