@@ -42,12 +42,33 @@ tblite_root="$prefix/dependencies/tblite"
 export CP2K_NATIVE_FLAGS="-O3 $cpu_flags"
 bash /control/cp2k_dependencies.sh /input/probe /workspace/tblite-build "$tblite_root"
 
+# The preinstalled CP2K toolchain carries a serial HDF5, which does not
+# provide h5pset_fapl_mpio_f even though CP2K's HDF5 interface is enabled.
+# Rebuild this pinned source with the active, ISA-matched OpenMPI wrapper and
+# keep the result under the target prefix so the final artifact is self-contained.
+hdf5_archive="$site/../build/hdf5-1.14.6.tar.gz"
+[[ -s "$hdf5_archive" ]] || { echo "pinned parallel HDF5 source is required: $hdf5_archive" >&2; exit 1; }
+hdf5_root="$prefix/dependencies/hdf5"
+rm -rf /workspace/hdf5-source /workspace/hdf5-build
+mkdir -p /workspace/hdf5-source
+tar --no-same-owner --strip-components=1 -xzf "$hdf5_archive" -C /workspace/hdf5-source
+pushd /workspace/hdf5-source >/dev/null
+CC=mpicc CXX=mpicxx FC=mpifort ./configure \
+  --prefix="$hdf5_root" --enable-parallel --enable-fortran \
+  --disable-shared --enable-static --disable-hl \
+  CFLAGS="-O3 $cpu_flags" CXXFLAGS="-O3 $cpu_flags" FCFLAGS="-O3 $cpu_flags" \
+  --cache-file=/workspace/hdf5-config.cache 2>&1 | tee /workspace/hdf5-configure.log
+make -j"$jobs"
+make install
+popd >/dev/null
+grep -q '^                     Parallel HDF5: yes$' "$hdf5_root/lib/libhdf5.settings"
+
 prefixes=(
   "$ELPA_ROOT" "$OPENBLAS_ROOT" "$LIBXC_ROOT" "$FFTW_ROOT" "$tblite_root"
   "$site/COSMA-2.7.0$suffix" "$site/SpLA-1.6.1$suffix"
   "$site/libint-v2.6.0-cp2k-lmax-5"
   "$site/libxsmm-e0c4a2389afba36c453233ad7de07bd92c715bec" "$site/spglib-2.5.0"
-  "$site/libvori-220621" "$site/hdf5-1.14.6" "$site/plumed-2.9.3"
+  "$site/libvori-220621" "$hdf5_root" "$site/plumed-2.9.3"
 )
 for dependency in "${prefixes[@]}"; do
   [[ -d "$dependency" ]] || { echo "required dependency missing: $dependency" >&2; exit 1; }
@@ -116,6 +137,7 @@ cmake_args=(
   -DCP2K_USE_LIBINT2=ON -DCP2K_USE_ELPA=ON -DCP2K_USE_COSMA=ON
   -DCP2K_USE_LIBXS=ON -DCP2K_USE_LIBXSMM=ON -DCP2K_USE_PLUMED=ON
   -DCP2K_USE_SPGLIB=ON -DCP2K_USE_VORI=ON -DCP2K_USE_HDF5=ON
+  -DHDF5_ROOT="$hdf5_root" -DHDF5_PREFER_PARALLEL=ON
   -DCP2K_USE_DFTD4=ON -DCP2K_USE_TBLITE=ON
   -DCMAKE_Fortran_FLAGS="-O3 $cpu_flags" -DCMAKE_C_FLAGS="-O3 $cpu_flags"
   -DCMAKE_CXX_FLAGS="-O3 $cpu_flags"

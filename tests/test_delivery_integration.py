@@ -125,6 +125,13 @@ class DeliveryIntegrationTests(unittest.TestCase):
         self.assertIn('[[ "${OPAL_PREFIX:?}" == *-avx2 ]]', recipe)
         self.assertIn('[[ "${OPENBLAS_ROOT:?}" == *-avx2 ]]', recipe)
 
+    def test_cp2k_build_rebuilds_parallel_hdf5_inside_delivery_prefix(self):
+        recipe = (REPO / "controller/cp2k_build.sh").read_text()
+        self.assertIn('hdf5_archive="$site/../build/hdf5-1.14.6.tar.gz"', recipe)
+        self.assertIn('--enable-parallel --enable-fortran', recipe)
+        self.assertIn('grep -q \'^                     Parallel HDF5: yes$\'', recipe)
+        self.assertIn('-DHDF5_ROOT="$hdf5_root" -DHDF5_PREFER_PARALLEL=ON', recipe)
+
     def test_ci_installs_real_native_validation_tools_before_tests(self):
         for workflow in ("build.yml", "cp2k.yml"):
             script = (REPO / ".github/workflows" / workflow).read_text()
