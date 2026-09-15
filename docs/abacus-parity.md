@@ -212,4 +212,15 @@ link, target hash/mode and packaged module; all 236 branch tests passed in CI.
 On September 14, [Actions 34844632469](https://github.com/AI4SAI/sai-hpc-software/actions/runs/34844632469)
 was submitted for `4V100` only, locking upstream
 `5da5f2f771b6e5ae88dca06ff59838fc895d3116` (`develop-2026-09-14`). This is a fresh
-build, not a relabelling of either failed overlay; its acceptance remains pending.
+build, not a relabelling of either failed overlay. Slurm `1322022` completed the
+build and final-SIF inventory verification; two-node MPI and GPU-feature checks
+also passed (`1322703`, `verified=true` for the latter). Scientific/performance
+acceptance is still incomplete: PW benchmark `1322719` failed before execution
+with `case references must remain inside the materialized directory`.
+
+On September 15 the parent agent reread the retained PW input and log: valid
+`//` comments in `STRU` were interpreted as absolute paths. Commit `6550d23`
+teaches the existing path check to ignore ABACUS comments, without changing the
+hashed input or allowing actual absolute/parent-directory references. All 25
+benchmark tests and the commit's GitHub CI passed. A new allocated benchmark is
+still required; neither this parser fix nor the older build proves a speedup.
