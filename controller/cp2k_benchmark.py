@@ -508,6 +508,10 @@ def render_job(args):
         'scontrol show hostnames "$SLURM_JOB_NODELIST" > results/nodes.txt',
         "load_runner() {",
         "  module purge",
+        # Lmod may unset LD_LIBRARY_PATH while purging modules.  Rebind it
+        # before subsequent module operations because this job runs with
+        # `set -u` and some site Lmod hooks expand it unconditionally.
+        '  export LD_LIBRARY_PATH="${LD_LIBRARY_PATH:-}"',
         "  module use /opt/modules/modulefiles/devtools /opt/modules/modulefiles/apps",
         "  module load apptainer/1.4.4",
         '  if [[ "$1" == baseline ]]; then',

@@ -114,6 +114,7 @@ class BenchmarkTests(unittest.TestCase):
                 self.assertNotIn("/tmp/", script)
                 self.assertIn("mkdir \"$work\"", script)
                 self.assertIn(args.identity["install_prefix"], script)
+                self.assertIn('module purge\n  export LD_LIBRARY_PATH="${LD_LIBRARY_PATH:-}"', script)
                 self.assertNotIn("/opt/software/cp2k/v1/", script)
                 self.assertIn(benchmark.mpi_mapping(target), script)
                 expected_cores = 2 if target == "dsprhbm" else 3 if target.startswith("8v100") else 4
