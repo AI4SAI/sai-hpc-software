@@ -266,7 +266,7 @@ def render_job(args):
         raise ValueError("requested identity differs from deployed recipe")
     if args.software not in ("abacus", "cp2k"):
         raise ValueError("no trusted recipe registered for this software")
-    if not 1 <= args.jobs <= 16 or not 1 <= args.minutes <= 180:
+    if not 1 <= args.jobs <= 16 or not 1 <= args.minutes <= 360:
         raise ValueError("resource request outside controller bounds")
     if not 256 <= args.overlay_mb <= 32768:
         raise ValueError("overlay size outside policy bounds")
@@ -486,7 +486,7 @@ def main():
         a.add_argument(field)
     a.add_argument("target", choices=TARGETS)
     a.add_argument("--jobs", type=int, default=None)
-    a.add_argument("--minutes", type=int, default=120)
+    a.add_argument("--minutes", type=int, default=240)
     a.add_argument("--overlay-mb", type=int, default=8192)
     a.add_argument("--resume-run", help="repack a terminated run's existing overlay; never rebuild source")
     a.add_argument("--track", choices=TRACKS, required=True)
