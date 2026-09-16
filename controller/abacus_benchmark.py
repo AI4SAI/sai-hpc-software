@@ -115,7 +115,10 @@ def render_job(r, task):
     q = lambda value: shlex.quote(str(value))
     target = TARGETS[r["target"]]
     cpu = target["gpus"] == 0
-    resource = (["#SBATCH --cpus-per-task=2"] if cpu else ["#SBATCH --gpus-per-node=1"])
+    # HSE/DeePKS LCAO pairs allocate sizeable per-rank workspaces on DSPRHBM;
+    # reserve enough node memory for the system and candidate arms alike.
+    resource = (["#SBATCH --cpus-per-task=2", "#SBATCH --mem=100G"] if cpu else
+                ["#SBATCH --gpus-per-node=1"])
     mapping = (f"export MAP_OPT=ppr:8:node:pe=2" if cpu else
                f"source /opt/sai_config/mps_mapping.d/{target['partition']}.bash")
     trace = ('printf "%s\\t%s\\t%s\\t%s\\t%s\\t%s\\n" "$(hostname)" '
