@@ -173,6 +173,12 @@ python3 /control/cp2k_feature_contract.py cache "$prefix" "$target" "$source_sha
 cmake --build /workspace/build --parallel "$jobs"
 cmake --install /workspace/build
 
+# PLUMED and LIBXSMM are supplied by the site CP2K toolchain rather than
+# standalone modules. Vendor the shared objects needed at runtime into this
+# delivery so it never depends on another CP2K installation path.
+cp -a "$site/plumed-2.9.3/lib/libplumed.so"* "$prefix/lib64/"
+cp -a "$site/libxsmm-e0c4a2389afba36c453233ad7de07bd92c715bec/lib/libxsmm.so"* "$prefix/lib64/"
+
 printf '%s\n' "$source_sha" > "$prefix/share/sai/source-sha"
 printf '%s\n' "$target" > "$prefix/share/sai/target"
 module -t list > "$prefix/share/sai/modules.txt" 2>&1 || true
@@ -181,7 +187,7 @@ cp /control/cp2k_feature_contract.py "$prefix/share/sai/cp2k_feature_contract.py
 runtime_ld="$prefix/lib64:$prefix/lib:$prefix/dependencies/libxs/lib:$tblite_root/lib:/usr/lib/x86_64-linux-gnu/blas:/usr/lib/x86_64-linux-gnu/lapack"
 IFS=: read -ra inherited_ld <<< "${LD_LIBRARY_PATH:-}"
 for entry in "${inherited_ld[@]}"; do
-  [[ -n "$entry" ]] && runtime_ld+=":$entry"
+  [[ -n "$entry" && "$entry" != "$site"/* ]] && runtime_ld+=":$entry"
 done
 for dependency in "${prefixes[@]}"; do
   runtime_ld+=":$dependency/lib:$dependency/lib64"

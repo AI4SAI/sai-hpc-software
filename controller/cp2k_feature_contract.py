@@ -96,10 +96,10 @@ def inside(path, root):
 
 
 def runtime_roots(target):
-    isa = "avx2" if target in ("16v100-avx2", "8v100v0-avx512") else "avx512"
-    # Only the CP2K site dependency tree is approved, never all of /opt/apps.
+    # Runtime dependencies must come from the delivery or standalone site
+    # modules; another CP2K installation is never an approved root.
     return ("/opt/devtools", "/usr", "/bin", "/lib", "/lib64",
-            f"/opt/apps/cp2k/cp2k-2026.1-{isa}/tools/toolchain/install")
+            )
 
 
 def check_dynamic(text, binary, prefix, target):

@@ -15,6 +15,10 @@ from release_contract import make_identity
 
 
 class CP2KContractTests(unittest.TestCase):
+    def test_runtime_roots_exclude_other_cp2k_installation(self):
+        roots = contract.runtime_roots("16v100-avx2")
+        self.assertFalse(any(root.startswith("/opt/apps/cp2k/") for root in roots))
+
     def flags(self, gpu=True):
         flags = contract.BASE_FLAGS | {"libxs", "libxsmm"}
         if gpu:
