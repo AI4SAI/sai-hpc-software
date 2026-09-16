@@ -190,6 +190,7 @@ for entry in "${inherited_ld[@]}"; do
   [[ -n "$entry" && "$entry" != "$site"/* ]] && runtime_ld+=":$entry"
 done
 for dependency in "${prefixes[@]}"; do
+  [[ "$dependency" == "$site"/* ]] && continue
   runtime_ld+=":$dependency/lib:$dependency/lib64"
 done
 # Only runtime executables and absolute dependency paths are persisted. Build
