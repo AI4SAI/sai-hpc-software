@@ -190,6 +190,14 @@ def submit(args):
     r = task(args.run_id)
     if (r / 'job.id').exists():
         raise ValueError('run already submitted; do not restart a live handle')
+    # Slurm can accept an ineligible QoS and leave the job pending forever.
+    # Check the partition policy before submitting either dependent stage.
+    partition = TARGETS[request['plan']['target']]['partition']
+    policy = run(['scontrol', 'show', 'partition', partition, '-o'], capture_output=True).stdout
+    allowed = next((field.split('=', 1)[1] for field in policy.split()
+                    if field.startswith('AllowQos=')), '')
+    if allowed != 'ALL' and 'rush-1o2gpu' not in allowed.split(','):
+        raise ValueError(f'{partition} does not allow rush-1o2gpu; choose an approved resource policy before retrying')
     for part in ('input', 'results', 'runtime', 'apptainer-cache'):
         (r / part).mkdir(parents=True, exist_ok=True)
     for name, source in request['plan']['sources'].items():

@@ -68,6 +68,14 @@ The reusable `md-pair.yml` workflow observes DeepMD, LAMMPS and scientific
 acceptance in separate jobs, each within the hosted-runner six-hour limit.
 Later jobs verify the locked remote delivery and never resubmit the build.
 No old overlay is reused under a changed recipe identity.
+The first canary of this change, Actions `35238501905`, passed 317 static
+tests but could not start: partition `16V100` excludes `rush-1o2gpu`.
+The allowed `rush-gpu` QoS instead requires at least four GPUs (`MinTRES`),
+not the requested one. Jobs `1372815` and `1372816` and their workflow were
+cancelled before execution. Submission now checks `AllowQos` before creating
+either job. Long-job validation is blocked pending approval of a four-GPU
+allocation or implementation of incremental compilation within flood limits;
+no build or scientific acceptance is claimed by this canary.
 LAMMPS has no standalone DSPRHBM product in this experiment; DeePMD retains its
 CPU inference backends inside each GPU-target stack.
 

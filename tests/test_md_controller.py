@@ -147,6 +147,8 @@ class MDControllerTests(unittest.TestCase):
             def run(argv, **kwargs):
                 if argv[0] == 'bash':
                     return subprocess.run(argv, check=True, text=True)
+                if argv[0] == 'scontrol':
+                    return subprocess.CompletedProcess(argv, 0, 'AllowQos=ALL')
                 if argv[0] == 'sbatch':
                     return subprocess.CompletedProcess(argv, 0, next(handles) + '\n')
                 return subprocess.CompletedProcess(argv, 0, '')
@@ -252,6 +254,8 @@ class MDControllerTests(unittest.TestCase):
             def run(argv, **kwargs):
                 if argv[0] == 'bash':
                     return subprocess.run(argv, check=True, text=True)
+                if argv[0] == 'scontrol':
+                    return subprocess.CompletedProcess(argv, 0, 'AllowQos=ALL')
                 return subprocess.CompletedProcess(argv, 0, '123\n' if argv[0] == 'sbatch' else '')
             with patch.object(md, 'fingerprint', return_value=request['recipe_sha256']), patch.object(md, 'run', side_effect=run):
                 md.submit(args)
@@ -286,6 +290,21 @@ class MDControllerTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, 'recipe differs'):
                     md.submit(Namespace(request=str(request_file)))
                 run.assert_not_called()
+
+    def test_ineligible_partition_qos_is_rejected_before_either_submission(self):
+        with tempfile.TemporaryDirectory() as temporary, patch.object(md, 'ROOT', Path(temporary)):
+            request = self.pair('16v100-avx2')
+            path = Path(temporary) / 'request.json'
+            path.write_text(json.dumps(request))
+            args = Namespace(request=str(path), run_id='invalid-qos')
+            for policy in ('AllowQos=flood-1o2gpu,rush-gpu', ''):
+                with patch.object(md, 'fingerprint', return_value=request['recipe_sha256']), \
+                        patch.object(md, 'run', return_value=subprocess.CompletedProcess([], 0, policy)) as run:
+                    with self.assertRaisesRegex(ValueError, 'does not allow rush-1o2gpu'):
+                        md.submit(args)
+                    self.assertEqual(run.call_args.args[0], ['scontrol', 'show', 'partition', '16V100', '-o'])
+                    self.assertEqual(run.call_count, 1)
+                    self.assertFalse(md.task(args.run_id).exists())
 
     def test_runner_uploads_shared_helpers_and_locks_before_transport(self):
         with tempfile.TemporaryDirectory() as temporary:
