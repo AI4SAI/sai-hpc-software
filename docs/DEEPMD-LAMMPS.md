@@ -60,14 +60,35 @@ records `lscpu` and compiler-expanded flags, and never re-labels another target'
 binary. The Skylake target does not have AVX512-VNNI and the site's automatic
 MPI/BLAS modules correctly select AVX2 dependencies. It gets six build threads
 per allocated GPU; GPU jobs do not override Slurm CPU/memory allocation. Candidate
-builds use two dependent 180-minute Slurm stages: the first populates the
-DeepMD prefix in the file-backed overlay, and the second reuses that overlay
-for LAMMPS, export, and verification. The GitHub runner allows 480 minutes for
-queueing and artifact transfer; this does not extend either cluster-stage limit.
+builds use two dependent `rush-1o2gpu` Slurm stages: 180 minutes for DeepMD
+and 330 minutes for LAMMPS/export/verification, sharing the file-backed overlay.
+The user approved this QoS on 2026-09-17 after three LAMMPS timeouts under
+the old 180-minute limit; the latest (`1366231`) reached only 43%.
+The reusable `md-pair.yml` workflow observes DeepMD, LAMMPS and scientific
+acceptance in separate jobs, each within the hosted-runner six-hour limit.
+Later jobs verify the locked remote delivery and never resubmit the build.
+No old overlay is reused under a changed recipe identity.
 LAMMPS has no standalone DSPRHBM product in this experiment; DeePMD retains its
 CPU inference backends inside each GPU-target stack.
 
 ## System dependencies and required feature parity
+
+### Reference compilation settings (2026-09-17)
+
+Adapted the cuFFT Kokkos backend and CUDA MPS build support from
+[`SAI-autocompile-kit/plugins/lammps.sh`](https://github.com/AI4SAI/SAI-autocompile-kit/blob/5fa2632771c654ac81d40be31fb8e4f921dbdf97/plugins/lammps.sh).
+The current LAMMPS CMake implementation was checked at `c8bd2ae5927e`:
+`FFT_KOKKOS=CUFFT` links `CUDA::cufft`; `CUDA_MPS_SUPPORT=ON` adds the GPU
+package definition and requires `CUDPP_OPT=OFF`. This compiles MPS support;
+it does not start a host MPS daemon or claim measured speedup.
+
+Also set `CUDA_BUILD_MULTIARCH=OFF`: under CUDA 12 the upstream default
+otherwise replaces `GPU_ARCH=sm_70` with `-arch=all`, compiling irrelevant
+architectures. All validated targets here use V100; Kokkos retains VOLTA70.
+Keep all baseline packages/styles and native CPU compilation, not the
+reference plugin's smaller package list, fixed Zen3 flag or older MPI modules.
+DeepMD's built-in CMake inclusion is idempotent. Scientific, cuFFT runtime
+and performance validation still require a successful live candidate.
 
 The read-only inventory is recorded in
 [`evidence/deepmd-lammps-site-2026-09-11.json`](evidence/deepmd-lammps-site-2026-09-11.json).

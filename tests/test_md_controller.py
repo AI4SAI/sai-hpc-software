@@ -47,6 +47,8 @@ def ci_fixture(plan, runner, history, *, run_id='123', attempt='1', retry='',
     def remote_run(argv, **kwargs):
         if argv[0] == 'ssh':
             command = shlex.split(argv[-1])
+            if command[0] == 'cat':
+                return subprocess.CompletedProcess(argv, 0, (runner / 'pair.json').read_text())
             if command[0] == 'python3':
                 name = Path(command[1]).name
                 if name == 'release_contract.py':
@@ -111,19 +113,23 @@ class MDControllerTests(unittest.TestCase):
         for bad in ({}, dict(pair, schema=1), pair['plan'], dict(pair, target='a100')):
             with self.assertRaises((ValueError, KeyError)):
                 md.validate_pair(bad)
-        for extras in ({'jobs': 7}, {'minutes': 181}, {'overlay_mb': 1024}):
+        for extras in ({'jobs': 7}, {'minutes': 331}, {'overlay_mb': 1024}):
             with self.assertRaises(ValueError):
                 md.render(pair, 'test', **extras)
 
     def test_staged_render_has_dependency_and_reuses_overlay(self):
         pair = self.pair()
         deepmd = md.render(pair, 'staged', stage='deepmd')
+        self.assertIn('#SBATCH --time=180', deepmd)
+        self.assertIn('#SBATCH --qos=rush-1o2gpu', deepmd)
         self.assertIn('build-deepmd', deepmd)
         self.assertIn('apptainer overlay create', deepmd)
         self.assertIn("test '!' -e", deepmd)
         self.assertNotIn('--dependency=', deepmd)
         subprocess.run(['bash', '-n'], input=deepmd, text=True, check=True)
         lammps = md.render(pair, 'staged', stage='lammps', dependency='321')
+        self.assertIn('#SBATCH --time=330', lammps)
+        self.assertIn('#SBATCH --qos=rush-1o2gpu', lammps)
         self.assertIn('#SBATCH --dependency=afterok:321', lammps)
         self.assertIn('build-lammps', lammps)
         self.assertIn('test -e', lammps)
@@ -164,6 +170,66 @@ class MDControllerTests(unittest.TestCase):
         self.assertIn('-DDOWNLOAD_EIGEN3=OFF', build)
         self.assertIn('MD_SYSTEM_VORO=', environment)
         self.assertIn('MD_SYSTEM_EIGEN=', environment)
+
+    def test_cuda_build_is_volta_only_with_cufft_and_mps(self):
+        build = (ROOT / 'controller/md_build.sh').read_text()
+        for option in ('FFT_KOKKOS=CUFFT', 'CUDA_MPS_SUPPORT=ON', 'CUDPP_OPT=OFF',
+                       'CUDA_BUILD_MULTIARCH=OFF', 'GPU_ARCH=sm_70', 'Kokkos_ARCH_VOLTA70=ON'):
+            self.assertIn('-D' + option, build)
+        self.assertNotIn('Kokkos_ARCH_ZEN3', build)
+        self.assertIn('-march=native -mtune=native', build)
+
+    def test_deepmd_integration_is_idempotent(self):
+        build = (ROOT / 'controller/md_build.sh').read_text()
+        block = build.split("deepmd_include=", 1)[1].split('# Compute nodes', 1)[0]
+        with tempfile.TemporaryDirectory() as temporary:
+            cmake = Path(temporary) / 'CMakeLists.txt'
+            cmake.write_text('project(fixture)\n')
+            block = 'deepmd_include=' + block.replace('/workspace/lammps/cmake/CMakeLists.txt', str(cmake))
+            for _ in range(2):
+                subprocess.run(['bash', '-euc', block], check=True)
+            self.assertEqual(cmake.read_text().count('include(/workspace/deepmd-kit/source/lmp/builtin.cmake)'), 1)
+
+    def test_generated_cuda_settings_must_be_used_not_just_requested(self):
+        build = (ROOT / 'controller/md_build.sh').read_text()
+        block = build.split('for setting in ', 1)[1].split('cmake --build /workspace/lammps-build', 1)[0]
+        cache = ('FFT_KOKKOS:STRING=CUFFT\nCUDA_MPS_SUPPORT:BOOL=ON\n'
+                 'CUDA_BUILD_MULTIARCH:BOOL=OFF\nCUDPP_OPT:BOOL=OFF\nGPU_ARCH:STRING=sm_70\n')
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for name, flag in (('lammps', '-DFFT_KOKKOS_CUFFT'), ('gpu', '-DCUDA_MPS_SUPPORT')):
+                path = root / 'CMakeFiles' / (name + '.dir') / 'flags.make'
+                path.parent.mkdir(parents=True)
+                path.write_text('CXX_DEFINES = ' + flag + '\n')
+            command = ['bash', '-euc', 'for setting in ' + block.replace('/workspace/lammps-build', str(root))]
+            for candidate, expected in ((cache, 0), (cache.replace('CUFFT', 'KISS'), 1),
+                                        (cache.replace(':BOOL', ':UNINITIALIZED'), 1),
+                                        (cache.replace('MULTIARCH:BOOL=OFF', 'MULTIARCH:BOOL=ON'), 1)):
+                (root / 'CMakeCache.txt').write_text(candidate)
+                self.assertEqual(subprocess.run(command).returncode, expected)
+            (root / 'CMakeCache.txt').write_text(cache)
+            (root / 'CMakeFiles/lammps.dir/flags.make').write_text('CXX_DEFINES = -DFFT_KOKKOS_KISS\n')
+            self.assertNotEqual(subprocess.run(command).returncode, 0)
+
+    def test_deepmd_monitor_never_claims_paired_candidate_complete(self):
+        with tempfile.TemporaryDirectory() as temporary, patch.object(md, 'ROOT', Path(temporary)):
+            directory = md.task('staged')
+            (directory / 'results').mkdir(parents=True)
+            (directory / 'job-deepmd.sbatch').write_text('# fixture\n')
+            request = self.pair()
+            record = dict(delivery=request, run_id='staged', controller=str(md.CONTROL),
+                          stage_jobs={'deepmd': '111', 'lammps': '222'},
+                          stage_job_script_sha256={'deepmd': md.checksum(directory / 'job-deepmd.sbatch')})
+            (directory / 'request.json').write_text(json.dumps(record))
+            for state, exit_code, expected in [('COMPLETED', '0:0', 0), ('TIMEOUT', '0:0', 1), ('FAILED', '1:0', 1)]:
+                replies = [subprocess.CompletedProcess([], 0, ''),
+                           subprocess.CompletedProcess([], 0, f'111|{state}|{exit_code}|\n')]
+                with patch.object(md, 'run', side_effect=replies), \
+                        patch.object(md, 'fingerprint', return_value=request['recipe_sha256']):
+                    self.assertEqual(md.monitor(Namespace(run_id='staged', stage='deepmd', timeout=1, interval=0)), expected)
+                status = json.loads((directory / 'results/deepmd-status.json').read_text())
+                self.assertFalse(status['build_verified'])
+                self.assertFalse((directory / 'results/status.json').exists())
 
     def test_both_identities_bind_sources_recipe_track_and_partition(self):
         original = self.pair()
@@ -292,6 +358,55 @@ class MDControllerTests(unittest.TestCase):
             checked = subprocess.run([sys.executable, '-I', '-c', code, str(snapshot), json.dumps(uploaded)],
                                      cwd=snapshot, capture_output=True, text=True, check=True)
             self.assertIn('ISOLATED_MD_PAYLOAD_PASSED', checked.stdout)
+
+    def test_ci_stages_handoff_without_claim_upload_or_resubmit(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            with ci_fixture(self.pair()['plan'], root, root / 'history') as fixture:
+                output = root / 'outputs'
+                with patch.dict(os.environ, MD_PHASE='deepmd', GITHUB_OUTPUT=str(output)):
+                    md_ci.main()
+                run_id = output.read_text().strip().removeprefix('run_id=')
+                self.assertEqual(len(remote_python_calls(fixture, 'md_controller.py', 'submit')), 1)
+                self.assertEqual(remote_python_calls(fixture, 'md_controller.py', 'monitor')[0][3:],
+                                 [run_id, '--stage', 'deepmd', '--timeout', '14400'])
+                self.assertEqual(remote_python_calls(fixture, 'md_acceptance_controller.py'), [])
+                for phase in ('lammps', 'acceptance'):
+                    fixture.run.reset_mock()
+                    with patch.dict(os.environ, MD_PHASE=phase, MD_RUN_ID=run_id, GITHUB_RUN_ATTEMPT='2'):
+                        md_ci.main()
+                    self.assertEqual(remote_python_calls(fixture, 'release_contract.py'), [])
+                    self.assertEqual(remote_python_calls(fixture, 'source_cache.py'), [])
+                    self.assertEqual(remote_python_calls(fixture, 'md_controller.py', 'submit'), [])
+                    self.assertFalse(any(call.args[0][0] == 'scp' and not str(call.args[0][-2]).startswith('unit@')
+                                         for call in fixture.run.call_args_list))
+                self.assertEqual(len(remote_python_calls(fixture, 'md_acceptance_controller.py', 'submit')), 1)
+
+    def test_ci_handoff_rejects_different_workflow_pair_or_recipe(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            with ci_fixture(self.pair()['plan'], root, root / 'history') as fixture:
+                run_id = 'md-123-1-2026-09-14-' + self.pair()['plan']['selection_sha256'][:16]
+                for bad in (run_id.replace('-123-', '-999-'), run_id[:-16] + 'f' * 16):
+                    with patch.dict(os.environ, MD_PHASE='lammps', MD_RUN_ID=bad), self.assertRaisesRegex(ValueError, 'handoff'):
+                        md_ci.main()
+                fixture.run.assert_not_called()
+                (root / 'pair.json').write_text(json.dumps(self.pair()))
+                with patch.dict(os.environ, MD_PHASE='lammps', MD_RUN_ID=run_id), self.assertRaisesRegex(ValueError, 'handoff'):
+                    md_ci.main()
+                self.assertEqual(remote_python_calls(fixture, 'md_controller.py'), [])
+
+    def test_workflow_uses_separate_bounded_stage_jobs(self):
+        import yaml
+        workflow = yaml.safe_load((ROOT / '.github/workflows/md-pair.yml').read_text())
+        jobs = workflow['jobs']
+        self.assertEqual(set(jobs), {'deepmd', 'lammps', 'acceptance'})
+        self.assertEqual(jobs['lammps']['needs'], 'deepmd')
+        self.assertEqual(jobs['acceptance']['needs'], ['deepmd', 'lammps'])
+        for phase, job in jobs.items():
+            self.assertLessEqual(job['timeout-minutes'], 360)
+            self.assertEqual(job['env']['MD_PHASE'], phase)
+            self.assertEqual(job['steps'], jobs['deepmd']['steps'])
 
     def assert_ci_skipped(self, fixture):
         receipt = json.loads((fixture.runner / 'results/build-attempt.json').read_text())

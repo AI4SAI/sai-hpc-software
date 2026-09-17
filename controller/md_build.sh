@@ -54,7 +54,10 @@ if [[ "$phase" == deepmd ]]; then
 fi
 fi
 # Official built-in integration, from the SAME source revision as the new C API.
-printf '\ninclude(/workspace/deepmd-kit/source/lmp/builtin.cmake)\n' >> /workspace/lammps/cmake/CMakeLists.txt
+deepmd_include='include(/workspace/deepmd-kit/source/lmp/builtin.cmake)'
+if ! grep -Fxq "$deepmd_include" /workspace/lammps/cmake/CMakeLists.txt; then
+  printf '\n%s\n' "$deepmd_include" >> /workspace/lammps/cmake/CMakeLists.txt
+fi
 # Compute nodes are offline.  Add the site's verified potential set without
 # replacing newer files shipped by the selected LAMMPS source revision.
 cp -a --no-clobber "$MD_SYSTEM_LAMMPS/share/lammps/potentials/." /workspace/lammps/potentials/
@@ -74,7 +77,9 @@ cmake -S /workspace/lammps/cmake -B /workspace/lammps-build \
   -DBUILD_SHARED_LIBS=ON -DBUILD_MPI=ON -DBUILD_OMP=ON \
   -DPKG_KOKKOS=ON -DKokkos_ENABLE_CUDA=ON -DKokkos_ENABLE_OPENMP=ON \
   -DKokkos_ARCH_VOLTA70=ON -DCMAKE_CXX_COMPILER=/workspace/lammps/lib/kokkos/bin/nvcc_wrapper \
-  -DPKG_GPU=ON -DGPU_API=cuda -DGPU_ARCH=sm_70 \
+  -DFFT_KOKKOS=CUFFT \
+  -DPKG_GPU=ON -DGPU_API=cuda -DGPU_ARCH=sm_70 -DCUDA_BUILD_MULTIARCH=OFF \
+  -DCUDA_MPS_SUPPORT=ON -DCUDPP_OPT=OFF \
   -DDOWNLOAD_POTENTIALS=ON \
   -DDOWNLOAD_VORO=OFF -DVORO_INCLUDE_DIR="$MD_SYSTEM_VORO/include/voro++" \
   -DVORO_LIBRARY="$MD_SYSTEM_VORO/lib/libvoro++.a" \
@@ -82,6 +87,14 @@ cmake -S /workspace/lammps/cmake -B /workspace/lammps-build \
   -DPKG_PLUMED=ON -DPLUMED_MODE=runtime -DDOWNLOAD_PLUMED=OFF \
   -DPLUMED_INCLUDE_DIR="$MD_SYSTEM_PLUMED/include" \
   -DPKG_PYTHON=ON -DPython_EXECUTABLE="$DEEPMD_PREFIX/bin/python" "${packages[@]}"
+# Require recognized, typed options and generated definitions, not unused -D
+# cache entries. These settings were adapted from SAI-autocompile-kit.
+for setting in FFT_KOKKOS:STRING=CUFFT CUDA_MPS_SUPPORT:BOOL=ON \
+               CUDA_BUILD_MULTIARCH:BOOL=OFF CUDPP_OPT:BOOL=OFF GPU_ARCH:STRING=sm_70; do
+  grep -Fxq "$setting" /workspace/lammps-build/CMakeCache.txt
+done
+grep -q -- '-DFFT_KOKKOS_CUFFT' /workspace/lammps-build/CMakeFiles/lammps.dir/flags.make
+grep -q -- '-DCUDA_MPS_SUPPORT' /workspace/lammps-build/CMakeFiles/gpu.dir/flags.make
 cmake --build /workspace/lammps-build -j "$BUILD_JOBS"
 cmake --install /workspace/lammps-build
 cp /workspace/deepmd-cpp/CMakeCache.txt "$DEEPMD_PREFIX/share/sai/"

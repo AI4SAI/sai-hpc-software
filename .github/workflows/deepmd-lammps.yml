@@ -24,9 +24,9 @@ on:
         type: boolean
         default: false
   push:
-    paths: ['controller/md_*', 'controller/remote_controller.py', 'controller/source_cache.py', 'controller/create_rootfs.sh', 'controller/resolve_source.py', 'controller/release_contract.py', 'controller/native_module.py', 'controller/export_native.py', 'tests/test_md_*', 'tests/test_controller.py', 'docs/DEEPMD-LAMMPS.md', 'docs/evidence/deepmd-*', '.github/workflows/deepmd-lammps.yml']
+    paths: ['controller/md_*', 'controller/remote_controller.py', 'controller/source_cache.py', 'controller/create_rootfs.sh', 'controller/resolve_source.py', 'controller/release_contract.py', 'controller/native_module.py', 'controller/export_native.py', 'tests/test_md_*', 'tests/test_controller.py', 'docs/DEEPMD-LAMMPS.md', 'docs/evidence/deepmd-*', '.github/workflows/deepmd-lammps.yml', '.github/workflows/md-pair.yml']
   pull_request:
-    paths: ['controller/md_*', 'controller/remote_controller.py', 'controller/source_cache.py', 'controller/create_rootfs.sh', 'controller/resolve_source.py', 'controller/release_contract.py', 'controller/native_module.py', 'controller/export_native.py', 'tests/test_md_*', 'tests/test_controller.py', 'docs/DEEPMD-LAMMPS.md', 'docs/evidence/deepmd-*', '.github/workflows/deepmd-lammps.yml']
+    paths: ['controller/md_*', 'controller/remote_controller.py', 'controller/source_cache.py', 'controller/create_rootfs.sh', 'controller/resolve_source.py', 'controller/release_contract.py', 'controller/native_module.py', 'controller/export_native.py', 'tests/test_md_*', 'tests/test_controller.py', 'docs/DEEPMD-LAMMPS.md', 'docs/evidence/deepmd-*', '.github/workflows/deepmd-lammps.yml', '.github/workflows/md-pair.yml']
 
 permissions:
   contents: read
@@ -88,40 +88,13 @@ jobs:
     # Building candidates never enables publication or implies acceptance.
     if: github.event_name == 'workflow_dispatch' && inputs.build_candidates && needs.resolve.outputs.builds != '[]'
     needs: [validate, resolve]
-    runs-on: ubuntu-latest
-    environment: hpc
-    # Candidate builds use two dependent 180-minute Slurm stages (DeepMD,
-    # then LAMMPS/export/verify); leave runner time for queueing and artifact
-    # transfer without changing either cluster-side stage limit.
-    timeout-minutes: 480
     strategy:
       fail-fast: false
       max-parallel: 1
       matrix:
         build: ${{ fromJSON(needs.resolve.outputs.builds) }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - name: Prepare repository-secret SSH key
-        env:
-          KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
-        run: |
-          mkdir -m 700 "$RUNNER_TEMP/ssh"
-          printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
-          chmod 600 "$RUNNER_TEMP/ssh/key"
-      - name: Build isolated unpublished candidate
-        env:
-          MD_PAIR: ${{ toJSON(matrix.build) }}
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          RETRY_RELEASES: ${{ github.event_name == 'workflow_dispatch' && inputs.retry_releases || false }}
-        run: python3 -u controller/md_ci.py
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: md-candidate-${{ matrix.build.selection_sha256 }}-${{ github.run_id }}
-          path: ${{ runner.temp }}/results/
-          if-no-files-found: warn
-      - name: Remove temporary SSH key
-        if: always()
-        run: rm -f -- "$RUNNER_TEMP/ssh/key"
+    uses: ./.github/workflows/md-pair.yml
+    with:
+      pair: ${{ toJSON(matrix.build) }}
+      retry_releases: ${{ inputs.retry_releases || false }}
+    secrets: inherit

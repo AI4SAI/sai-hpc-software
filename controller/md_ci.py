@@ -5,6 +5,7 @@ from datetime import datetime, timezone
 import json
 import os
 from pathlib import Path
+import re
 import shlex
 import subprocess
 from md_tracking import REPOSITORIES, fingerprint, identify_track_pair
@@ -17,6 +18,9 @@ def run(argv, **kwargs):
 
 
 def main():
+    phase = os.environ.get('MD_PHASE', 'all')
+    if phase not in ('all', 'deepmd', 'lammps', 'acceptance'):
+        raise ValueError('unknown MD CI phase')
     plan = json.loads(os.environ['MD_PAIR'])
     control = Path(__file__).resolve().parent
     recipe = fingerprint(control)
@@ -28,6 +32,12 @@ def main():
     sha = safe_sha(os.environ['GITHUB_SHA'])
     run_id = safe_name('-'.join(('md', os.environ['GITHUB_RUN_ID'], os.environ['GITHUB_RUN_ATTEMPT'],
                                  datetime.now(timezone.utc).date().isoformat(), plan['selection_sha256'][:16])))
+    if phase in ('lammps', 'acceptance'):
+        run_id = safe_name(os.environ['MD_RUN_ID'])
+        pattern = (r'md-' + re.escape(os.environ['GITHUB_RUN_ID']) + r'-[0-9]+-\d{4}-\d{2}-\d{2}-'
+                   + re.escape(plan['selection_sha256'][:16]))
+        if not re.fullmatch(pattern, run_id):
+            raise ValueError('MD handoff does not belong to this workflow and source pair')
     safe_name(run_id + '-science')
     temporary = Path(os.environ['RUNNER_TEMP'])
     project = f'/home/{user}/sai-hpc-software'
@@ -46,6 +56,33 @@ def main():
         return run(['scp', '-q', *options, '-P', '12022', source, remote + ':' + destination], timeout=1800)
     def python(name, *args, **kwargs):
         return ssh(['python3', snapshot + '/' + name, *args], **kwargs)
+    def collect(science=False):
+        source = (root + '/runtime-tests/' + run_id + '-science' if science else remote_task)
+        destination = results / 'science' if science else results
+        destination.mkdir(exist_ok=True)
+        subprocess.run(['scp', '-q', *options, '-P', '12022', '-r',
+                        remote + ':' + source + '/results/.', str(destination)], check=False)
+    def accept():
+        science_run = safe_name(run_id + '-science')
+        python('md_acceptance_controller.py', 'submit', science_run, run_id)
+        python('md_acceptance_controller.py', 'monitor', science_run)
+    if phase in ('lammps', 'acceptance'):
+        # No upload, claim or resubmission here. Continue the immutable snapshot
+        # created by the first job, even when a later Actions job is retried.
+        observed = json.loads(ssh(['cat', remote_task + '/input/pair.json'], capture_output=True).stdout)
+        validate_pair(observed)
+        if observed['recipe_sha256'] != recipe or observed['identities'] != request['identities']:
+            raise ValueError('MD handoff differs from the current recipe or source identities')
+        try:
+            if phase == 'lammps':
+                python('md_controller.py', 'monitor', run_id, '--timeout', '20700')
+                run(['scp', '-q', *options, '-P', '12022', remote + ':' + remote_task + '/artifact.path', results / 'artifact.path'])
+            else:
+                accept()
+        finally:
+            collect(science=phase == 'acceptance')
+        print('EXPERIMENTAL CANDIDATE ONLY: no publication or performance acceptance claimed', flush=True)
+        return
     ssh(['mkdir', '-p', snapshot, remote_task + '/input', remote_task + '/results'])
     files = [path for path in control.glob('md_*.*') if path.suffix in ('.py', '.sh', '.json')]
     files += [control / name for name in ('remote_controller.py', 'source_cache.py', 'resolve_source.py',
@@ -60,6 +97,9 @@ def main():
     if not decision['build']:
         print('MD_BUILD_SKIPPED: latest primary versions already attempted; explicit retry required; no acceptance claimed', flush=True)
         return
+    if phase == 'deepmd':
+        with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+            output.write('run_id=' + run_id + '\n')
     plan = dict(plan, triggers=[trigger for trigger in plan['triggers']
                                if request['identities'][trigger['software']] in selected])
     request = validate_pair(dict(request, plan=plan))
@@ -96,18 +136,16 @@ def main():
     ssh(['test', '-s', project + '/containers/base/minimal-v1.sif'])
     try:
         python('md_controller.py', 'submit', run_id, remote_task + '/input/pair.json')
+        if phase == 'deepmd':
+            python('md_controller.py', 'monitor', run_id, '--stage', 'deepmd', '--timeout', '14400')
+            return
         python('md_controller.py', 'monitor', run_id)
         run(['scp', '-q', *options, '-P', '12022', remote + ':' + remote_task + '/artifact.path', results / 'artifact.path'])
-        science_run = safe_name(run_id + '-science')
-        python('md_acceptance_controller.py', 'submit', science_run, run_id)
-        python('md_acceptance_controller.py', 'monitor', science_run)
+        accept()
     finally:
-        subprocess.run(['scp', '-q', *options, '-P', '12022', '-r', remote + ':' + remote_task + '/results/.', str(results)], check=False)
-        science_results = results / 'science'
-        science_results.mkdir(exist_ok=True)
-        subprocess.run(['scp', '-q', *options, '-P', '12022', '-r',
-                        remote + ':' + root + '/runtime-tests/' + run_id + '-science/results/.',
-                        str(science_results)], check=False)
+        collect()
+        if phase == 'all':
+            collect(science=True)
     print('EXPERIMENTAL CANDIDATE ONLY: no current.sif/module publication or acceptance-cache hit', flush=True)
 
 

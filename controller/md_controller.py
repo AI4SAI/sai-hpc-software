@@ -58,12 +58,14 @@ def artifact_path(root, request, run_id):
     return artifact
 
 
-def render(request, run_id, jobs=6, minutes=180, overlay_mb=32768,
+def render(request, run_id, jobs=6, minutes=None, overlay_mb=32768,
            stage='all', dependency=None):
     validate_pair(request)
     plan = request['plan']
     target = TARGETS[plan['target']]
-    if not 1 <= jobs <= min(6, target.get('build_jobs', 6)) or not 1 <= minutes <= 180:
+    if minutes is None:
+        minutes = 180 if stage == 'deepmd' else 330
+    if not 1 <= jobs <= min(6, target.get('build_jobs', 6)) or not 1 <= minutes <= 330:
         raise ValueError('MD build resources outside experimental bounds')
     if not 8192 <= overlay_mb <= 65536:
         raise ValueError('overlay capacity outside policy')
@@ -89,7 +91,7 @@ def render(request, run_id, jobs=6, minutes=180, overlay_mb=32768,
     emit = container_command(image, ['/usr/bin/cat', '/workspace/final.squashfs'],
                              overlay=str(overlay) + ':ro', jobs=jobs)
     lines = ['#!/usr/bin/env bash', f'#SBATCH --job-name=md-{run_id}',
-             f'#SBATCH --partition={target["partition"]}', f'#SBATCH --qos={target["qos"]}',
+             f'#SBATCH --partition={target["partition"]}', '#SBATCH --qos=rush-1o2gpu',
              '#SBATCH --nodes=1', '#SBATCH --ntasks=1', '#SBATCH --gpus-per-node=1',
              f'#SBATCH --time={minutes}', f'#SBATCH --output={r}/results/slurm-%j.log',
              '#SBATCH --export=NIL', 'set -eo pipefail', 'export PATH=/usr/bin:/bin',
@@ -103,6 +105,7 @@ def render(request, run_id, jobs=6, minutes=180, overlay_mb=32768,
              'unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH']
     if dependency is not None:
         lines.insert(2, f'#SBATCH --dependency=afterok:{dependency}')
+        lines.insert(3, '#SBATCH --kill-on-invalid-dep=yes')
     lines += [join(['test', '-s', image])]
     if stage in ('all', 'deepmd'):
         lines += [join(['test', '!', '-e', overlay]),
@@ -192,9 +195,8 @@ def submit(args):
     for name, source in request['plan']['sources'].items():
         run(['git', '--git-dir', ROOT / 'cache/repositories' / name, 'cat-file', '-e', source['sha'] + '^{commit}'])
     record = dict(delivery=request, run_id=args.run_id, controller=str(CONTROL))
-    # DeepMD's CUDA wheel and C++ interface can consume most of the 180-minute
-    # GPU allocation.  Split the expensive build from LAMMPS/export while
-    # retaining one file-backed overlay and an explicit afterok edge.
+    # Separate allocations share one overlay and an explicit afterok edge.
+    # LAMMPS needs a longer rush allocation; flood is capped at four hours.
     deepmd_script = r / 'job-deepmd.sbatch'
     deepmd_script.write_text(render(request, args.run_id, args.jobs, args.minutes,
                                     args.overlay_mb, stage='deepmd'))
@@ -228,7 +230,10 @@ def submit(args):
 
 def monitor(args):
     r = task(args.run_id)
-    job = (r / 'job.id').read_text().strip()
+    stage = getattr(args, 'stage', 'lammps')
+    record = json.loads((r / 'request.json').read_text())
+    job = (record['stage_jobs']['deepmd'] if stage == 'deepmd'
+           else (r / 'job.id').read_text().strip())
     if not job.isdigit():
         raise ValueError('invalid Slurm job handle')
     deadline = time.monotonic() + args.timeout
@@ -245,6 +250,16 @@ def monitor(args):
                           'scientific_verified': False, 'published': False,
                           'stage_jobs': record.get('stage_jobs', {}),
                           'stage_job_script_sha256': record.get('stage_job_script_sha256', {})}
+                if stage == 'deepmd':
+                    (r / 'results/deepmd-status.json').write_text(json.dumps(status) + '\n')
+                    if row[1:3] != ['COMPLETED', '0:0']:
+                        return 1
+                    if (record['delivery']['recipe_sha256'] != fingerprint(CONTROL)
+                            or record['stage_job_script_sha256']['deepmd'] != checksum(r / 'job-deepmd.sbatch')
+                            or record['controller'] != str(CONTROL) or record['run_id'] != args.run_id):
+                        raise ValueError('DeepMD stage provenance changed')
+                    print('DEEPMD_STAGE_COMPLETE: paired candidate still requires LAMMPS', flush=True)
+                    return 0
                 (r / 'results/status.json').write_text(json.dumps(status) + '\n')
                 if row[1:3] != ['COMPLETED', '0:0']:
                     return 1
@@ -278,10 +293,12 @@ if __name__ == '__main__':
     submit_parser = sub.add_parser('submit')
     submit_parser.add_argument('run_id'); submit_parser.add_argument('request')
     submit_parser.add_argument('--jobs', type=int, default=6)
-    submit_parser.add_argument('--minutes', type=int, default=180)
+    submit_parser.add_argument('--minutes', type=int, default=None,
+                               help='override both stages; default DeepMD 180, LAMMPS 330')
     submit_parser.add_argument('--overlay-mb', type=int, default=32768)
     monitor_parser = sub.add_parser('monitor')
     monitor_parser.add_argument('run_id'); monitor_parser.add_argument('--timeout', type=int, default=21600)
+    monitor_parser.add_argument('--stage', choices=('deepmd', 'lammps'), default='lammps')
     monitor_parser.add_argument('--interval', type=int, default=30)
     probe_parser = sub.add_parser('probe')
     probe_parser.add_argument('run_id'); probe_parser.add_argument('target', choices=MD_TARGETS)
