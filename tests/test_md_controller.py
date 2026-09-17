@@ -94,7 +94,8 @@ class MDControllerTests(unittest.TestCase):
             script = md.render(self.pair(target), 'md-test-' + target)
             subprocess.run(['bash', '-n'], input=script, text=True, check=True)
             self.assertIn('#SBATCH --partition=' + md.TARGETS[target]['partition'], script)
-            self.assertIn('--gpus-per-node=1', script)
+            self.assertIn('--gpus-per-node=4', script)
+            self.assertIn('BUILD_JOBS=24', script)
             self.assertNotIn('#SBATCH --cpus-per-task', script)
             self.assertNotIn('#SBATCH --mem', script)
             self.assertIn('--network none', script)
@@ -113,7 +114,8 @@ class MDControllerTests(unittest.TestCase):
         for bad in ({}, dict(pair, schema=1), pair['plan'], dict(pair, target='a100')):
             with self.assertRaises((ValueError, KeyError)):
                 md.validate_pair(bad)
-        for extras in ({'jobs': 7}, {'minutes': 331}, {'overlay_mb': 1024}):
+        for extras in ({'jobs': 25}, {'minutes': 331}, {'overlay_mb': 1024},
+                       {'stage': 'deepmd', 'jobs': 7}, {'stage': 'deepmd', 'minutes': 241}):
             with self.assertRaises(ValueError):
                 md.render(pair, 'test', **extras)
 
@@ -121,7 +123,9 @@ class MDControllerTests(unittest.TestCase):
         pair = self.pair()
         deepmd = md.render(pair, 'staged', stage='deepmd')
         self.assertIn('#SBATCH --time=180', deepmd)
-        self.assertIn('#SBATCH --qos=rush-1o2gpu', deepmd)
+        self.assertIn('#SBATCH --qos=flood-1o2gpu', deepmd)
+        self.assertIn('#SBATCH --gpus-per-node=1', deepmd)
+        self.assertIn('BUILD_JOBS=6', deepmd)
         self.assertIn('build-deepmd', deepmd)
         self.assertIn('apptainer overlay create', deepmd)
         self.assertIn("test '!' -e", deepmd)
@@ -129,32 +133,51 @@ class MDControllerTests(unittest.TestCase):
         subprocess.run(['bash', '-n'], input=deepmd, text=True, check=True)
         lammps = md.render(pair, 'staged', stage='lammps', dependency='321')
         self.assertIn('#SBATCH --time=330', lammps)
-        self.assertIn('#SBATCH --qos=rush-1o2gpu', lammps)
+        self.assertIn('#SBATCH --qos=rush-gpu', lammps)
+        self.assertIn('#SBATCH --gpus-per-node=4', lammps)
+        self.assertIn('BUILD_JOBS=24', lammps)
         self.assertIn('#SBATCH --dependency=afterok:321', lammps)
         self.assertIn('build-lammps', lammps)
         self.assertIn('test -e', lammps)
         self.assertNotIn('apptainer overlay create', lammps)
         subprocess.run(['bash', '-n'], input=lammps, text=True, check=True)
 
+    def test_compile_parallelism_never_exceeds_actual_cpu_allocation(self):
+        for stage, jobs in (('deepmd', 6), ('lammps', 24)):
+            script = md.render(self.pair('16v100-avx2'), 'cpu-bound', stage=stage)
+            guard = next(line for line in script.splitlines() if line.startswith('[[ ${SLURM_CPUS_ON_NODE'))
+            for cpus, expected in ((jobs - 1, 1), (jobs, 0), (jobs + 8, 0)):
+                result = subprocess.run(['bash', '-uc', guard], env=dict(os.environ, SLURM_CPUS_ON_NODE=str(cpus)))
+                self.assertEqual(result.returncode, expected)
+            self.assertLess(script.index(guard), script.index('apptainer exec'))
+
     def test_submit_records_both_staged_jobs_and_hashes(self):
         with tempfile.TemporaryDirectory() as temporary, patch.object(md, 'ROOT', Path(temporary)):
             request = self.pair()
             request_file = Path(temporary) / 'delivery.json'
             request_file.write_text(json.dumps(request))
-            args = Namespace(run_id='staged-candidate', request=str(request_file), jobs=6,
-                             minutes=180, overlay_mb=32768)
+            args = Namespace(run_id='staged-candidate', request=str(request_file), jobs=None,
+                             minutes=None, overlay_mb=32768)
             handles = iter(('111', '222'))
             def run(argv, **kwargs):
                 if argv[0] == 'bash':
                     return subprocess.run(argv, check=True, text=True)
                 if argv[0] == 'scontrol':
-                    return subprocess.CompletedProcess(argv, 0, 'AllowQos=ALL')
+                    return subprocess.CompletedProcess(argv, 0, 'AllowQos=flood-1o2gpu,rush-gpu')
+                if argv[:2] == ['sbatch', '--test-only']:
+                    return subprocess.CompletedProcess(argv, 0, '')
                 if argv[0] == 'sbatch':
                     return subprocess.CompletedProcess(argv, 0, next(handles) + '\n')
                 return subprocess.CompletedProcess(argv, 0, '')
             with patch.object(md, 'fingerprint', return_value=request['recipe_sha256']), \
-                    patch.object(md, 'run', side_effect=run):
+                    patch.object(md, 'run', side_effect=run) as invoked:
                 md.submit(args)
+            commands = [call.args[0] for call in invoked.call_args_list]
+            preflights = [i for i, command in enumerate(commands) if command[:2] == ['sbatch', '--test-only']]
+            submits = [i for i, command in enumerate(commands) if command[:2] == ['sbatch', '--parsable']]
+            self.assertEqual(len(preflights), 2)
+            self.assertEqual(len(submits), 2)
+            self.assertLess(max(preflights), min(submits))
             directory = md.task(args.run_id)
             record = json.loads((directory / 'request.json').read_text())
             self.assertEqual(record['stage_jobs'], {'deepmd': '111', 'lammps': '222'})
@@ -164,6 +187,25 @@ class MDControllerTests(unittest.TestCase):
             self.assertEqual(record['stage_job_script_sha256']['lammps'],
                              md.checksum(directory / 'job.sbatch'))
             self.assertIn('#SBATCH --dependency=afterok:111', (directory / 'job.sbatch').read_text())
+            self.assertIn('BUILD_JOBS=24', (directory / 'job.sbatch').read_text())
+            self.assertIn('BUILD_JOBS=6', (directory / 'job-deepmd.sbatch').read_text())
+
+    def test_rejected_second_stage_preflight_never_allocates_first_stage(self):
+        with tempfile.TemporaryDirectory() as temporary, patch.object(md, 'ROOT', Path(temporary)):
+            request = self.pair('16v100-avx2')
+            path = Path(temporary) / 'request.json'
+            path.write_text(json.dumps(request))
+            args = Namespace(request=str(path), run_id='denied-resources', jobs=None, minutes=None, overlay_mb=32768)
+            def run(argv, **kwargs):
+                if argv[:2] == ['sbatch', '--test-only'] and Path(argv[2]).name == 'job.sbatch':
+                    raise subprocess.CalledProcessError(1, argv, stderr='GPU minimum denied')
+                return subprocess.CompletedProcess(argv, 0, 'AllowQos=ALL' if argv[0] == 'scontrol' else '')
+            with patch.object(md, 'fingerprint', return_value=request['recipe_sha256']), \
+                    patch.object(md, 'run', side_effect=run) as invoked:
+                with self.assertRaisesRegex(RuntimeError, 'lammps Slurm resource preflight failed: GPU minimum denied'):
+                    md.submit(args)
+            self.assertFalse(any(call.args[0][:2] == ['sbatch', '--parsable'] for call in invoked.call_args_list))
+            self.assertFalse((md.task(args.run_id) / 'job.id').exists())
 
     def test_build_uses_readable_offline_site_dependencies(self):
         build = (ROOT / 'controller/md_build.sh').read_text()
@@ -297,10 +339,10 @@ class MDControllerTests(unittest.TestCase):
             path = Path(temporary) / 'request.json'
             path.write_text(json.dumps(request))
             args = Namespace(request=str(path), run_id='invalid-qos')
-            for policy in ('AllowQos=flood-1o2gpu,rush-gpu', ''):
+            for policy in ('AllowQos=flood-1o2gpu', 'AllowQos=rush-gpu', 'AllowQos=rush-1o2gpu', ''):
                 with patch.object(md, 'fingerprint', return_value=request['recipe_sha256']), \
                         patch.object(md, 'run', return_value=subprocess.CompletedProcess([], 0, policy)) as run:
-                    with self.assertRaisesRegex(ValueError, 'does not allow rush-1o2gpu'):
+                    with self.assertRaisesRegex(ValueError, 'does not allow both MD stage QoS'):
                         md.submit(args)
                     self.assertEqual(run.call_args.args[0], ['scontrol', 'show', 'partition', '16V100', '-o'])
                     self.assertEqual(run.call_count, 1)

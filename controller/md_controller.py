@@ -19,6 +19,10 @@ from source_cache import checksum
 PROJECT = Path(os.environ.get('SAI_SOFTWARE_ROOT', Path.home() / 'sai-hpc-software')).resolve()
 ROOT = PROJECT / 'experimental/deepmd-lammps'
 CONTROL = Path(__file__).resolve().parent
+BUILD_STAGES = {
+    'deepmd': dict(qos='flood-1o2gpu', gpus=1, minutes=180, max_minutes=240),
+    'lammps': dict(qos='rush-gpu', gpus=4, minutes=330, max_minutes=330),
+}
 
 
 def join(argv):
@@ -58,19 +62,23 @@ def artifact_path(root, request, run_id):
     return artifact
 
 
-def render(request, run_id, jobs=6, minutes=None, overlay_mb=32768,
+def render(request, run_id, jobs=None, minutes=None, overlay_mb=32768,
            stage='all', dependency=None):
     validate_pair(request)
     plan = request['plan']
     target = TARGETS[plan['target']]
+    if stage not in ('all', 'deepmd', 'lammps'):
+        raise ValueError('unknown MD build stage')
+    resources = BUILD_STAGES['lammps' if stage == 'all' else stage]
+    max_jobs = min(6, target.get('build_jobs', 6)) * resources['gpus']
+    if jobs is None:
+        jobs = max_jobs
     if minutes is None:
-        minutes = 180 if stage == 'deepmd' else 330
-    if not 1 <= jobs <= min(6, target.get('build_jobs', 6)) or not 1 <= minutes <= 330:
+        minutes = resources['minutes']
+    if not 1 <= jobs <= max_jobs or not 1 <= minutes <= resources['max_minutes']:
         raise ValueError('MD build resources outside experimental bounds')
     if not 8192 <= overlay_mb <= 65536:
         raise ValueError('overlay capacity outside policy')
-    if stage not in ('all', 'deepmd', 'lammps'):
-        raise ValueError('unknown MD build stage')
     if dependency is not None and (stage != 'lammps' or not str(dependency).isdigit()):
         raise ValueError('invalid staged build dependency')
     r = task(run_id)
@@ -91,8 +99,8 @@ def render(request, run_id, jobs=6, minutes=None, overlay_mb=32768,
     emit = container_command(image, ['/usr/bin/cat', '/workspace/final.squashfs'],
                              overlay=str(overlay) + ':ro', jobs=jobs)
     lines = ['#!/usr/bin/env bash', f'#SBATCH --job-name=md-{run_id}',
-             f'#SBATCH --partition={target["partition"]}', '#SBATCH --qos=rush-1o2gpu',
-             '#SBATCH --nodes=1', '#SBATCH --ntasks=1', '#SBATCH --gpus-per-node=1',
+             f'#SBATCH --partition={target["partition"]}', f'#SBATCH --qos={resources["qos"]}',
+             '#SBATCH --nodes=1', '#SBATCH --ntasks=1', f'#SBATCH --gpus-per-node={resources["gpus"]}',
              f'#SBATCH --time={minutes}', f'#SBATCH --output={r}/results/slurm-%j.log',
              '#SBATCH --export=NIL', 'set -eo pipefail', 'export PATH=/usr/bin:/bin',
              'export LD_LIBRARY_PATH="" LD_PRELOAD=""', 'source /etc/profile.d/lmod.sh',
@@ -106,7 +114,9 @@ def render(request, run_id, jobs=6, minutes=None, overlay_mb=32768,
     if dependency is not None:
         lines.insert(2, f'#SBATCH --dependency=afterok:{dependency}')
         lines.insert(3, '#SBATCH --kill-on-invalid-dep=yes')
-    lines += [join(['test', '-s', image])]
+    lines += [f'[[ ${{SLURM_CPUS_ON_NODE:?missing CPU allocation}} -ge {jobs} ]]',
+              f'echo MD_BUILD_RESOURCES stage={stage} gpus={resources["gpus"]} jobs={jobs} allocated_cpus="$SLURM_CPUS_ON_NODE"',
+              join(['test', '-s', image])]
     if stage in ('all', 'deepmd'):
         lines += [join(['test', '!', '-e', overlay]),
                   join(['apptainer', 'overlay', 'create', '--fakeroot', '--sparse', '--size', str(overlay_mb), overlay])]
@@ -196,8 +206,9 @@ def submit(args):
     policy = run(['scontrol', 'show', 'partition', partition, '-o'], capture_output=True).stdout
     allowed = next((field.split('=', 1)[1] for field in policy.split()
                     if field.startswith('AllowQos=')), '')
-    if allowed != 'ALL' and 'rush-1o2gpu' not in allowed.split(','):
-        raise ValueError(f'{partition} does not allow rush-1o2gpu; choose an approved resource policy before retrying')
+    required = {resources['qos'] for resources in BUILD_STAGES.values()}
+    if allowed != 'ALL' and not required <= set(allowed.split(',')):
+        raise ValueError(f'{partition} does not allow both MD stage QoS values: {sorted(required)}')
     for part in ('input', 'results', 'runtime', 'apptainer-cache'):
         (r / part).mkdir(parents=True, exist_ok=True)
     for name, source in request['plan']['sources'].items():
@@ -206,13 +217,21 @@ def submit(args):
     # Separate allocations share one overlay and an explicit afterok edge.
     # LAMMPS needs a longer rush allocation; flood is capped at four hours.
     deepmd_script = r / 'job-deepmd.sbatch'
-    deepmd_script.write_text(render(request, args.run_id, args.jobs, args.minutes,
-                                    args.overlay_mb, stage='deepmd'))
-    run(['bash', '-n', deepmd_script])
+    script = r / 'job.sbatch'
+    for stage, path in (('deepmd', deepmd_script), ('lammps', script)):
+        path.write_text(render(request, args.run_id, args.jobs, args.minutes,
+                               args.overlay_mb, stage=stage))
+        run(['bash', '-n', path])
+        # Validate GPU minima, account/QoS permissions and walltime without
+        # allocating either stage. No dependency job exists during this check.
+        try:
+            run(['sbatch', '--test-only', path], capture_output=True)
+        except subprocess.CalledProcessError as exc:
+            detail = (exc.stderr or exc.stdout or '').strip()
+            raise RuntimeError(f'{stage} Slurm resource preflight failed: {detail}') from exc
     deepmd_job = run(['sbatch', '--parsable', deepmd_script], capture_output=True).stdout.strip().split(';')[0]
     if not deepmd_job.isdigit():
         raise ValueError('invalid DeepMD Slurm job handle')
-    script = r / 'job.sbatch'
     script.write_text(render(request, args.run_id, args.jobs, args.minutes,
                              args.overlay_mb, stage='lammps', dependency=deepmd_job))
     run(['bash', '-n', script])
@@ -300,7 +319,8 @@ if __name__ == '__main__':
     sub = parser.add_subparsers(dest='op', required=True)
     submit_parser = sub.add_parser('submit')
     submit_parser.add_argument('run_id'); submit_parser.add_argument('request')
-    submit_parser.add_argument('--jobs', type=int, default=6)
+    submit_parser.add_argument('--jobs', type=int, default=None,
+                               help='override both stages; default six build processes per allocated GPU')
     submit_parser.add_argument('--minutes', type=int, default=None,
                                help='override both stages; default DeepMD 180, LAMMPS 330')
     submit_parser.add_argument('--overlay-mb', type=int, default=32768)

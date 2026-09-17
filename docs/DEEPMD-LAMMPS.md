@@ -60,10 +60,19 @@ records `lscpu` and compiler-expanded flags, and never re-labels another target'
 binary. The Skylake target does not have AVX512-VNNI and the site's automatic
 MPI/BLAS modules correctly select AVX2 dependencies. It gets six build threads
 per allocated GPU; GPU jobs do not override Slurm CPU/memory allocation. Candidate
-builds use two dependent `rush-1o2gpu` Slurm stages: 180 minutes for DeepMD
-and 330 minutes for LAMMPS/export/verification, sharing the file-backed overlay.
-The user approved this QoS on 2026-09-17 after three LAMMPS timeouts under
-the old 180-minute limit; the latest (`1366231`) reached only 43%.
+builds share one file-backed overlay across two dependent Slurm stages:
+
+| Stage | QoS | GPUs | Build processes | Time limit |
+| --- | --- | --- | --- | --- |
+| DeepMD | `flood-1o2gpu` | 1 | 6 | 180 minutes |
+| LAMMPS/export/verification | `rush-gpu` | 4 | 24 | 330 minutes |
+
+The user approved the four-GPU `rush-gpu` allocation on 2026-09-17 after
+three LAMMPS timeouts under the old 180-minute limit; the latest (`1366231`)
+reached only 43%. The extra GPUs provide the QoS minimum and more associated
+CPU/memory for compilation; this is not a four-GPU scientific speedup claim.
+Both stage scripts pass `sbatch --test-only` before either job is submitted,
+and each allocation checks that its actual CPU count covers its build processes.
 The reusable `md-pair.yml` workflow observes DeepMD, LAMMPS and scientific
 acceptance in separate jobs, each within the hosted-runner six-hour limit.
 Later jobs verify the locked remote delivery and never resubmit the build.
@@ -72,10 +81,10 @@ The first canary of this change, Actions `35238501905`, passed 317 static
 tests but could not start: partition `16V100` excludes `rush-1o2gpu`.
 The allowed `rush-gpu` QoS instead requires at least four GPUs (`MinTRES`),
 not the requested one. Jobs `1372815` and `1372816` and their workflow were
-cancelled before execution. Submission now checks `AllowQos` before creating
-either job. Long-job validation is blocked pending approval of a four-GPU
-allocation or implementation of incremental compilation within flood limits;
-no build or scientific acceptance is claimed by this canary.
+cancelled before execution. Submission now checks both stages' `AllowQos`
+eligibility before creating either job. The approved four-GPU policy above
+replaces the ineligible request; no build or scientific acceptance is claimed
+by the cancelled canary.
 LAMMPS has no standalone DSPRHBM product in this experiment; DeePMD retains its
 CPU inference backends inside each GPU-target stack.
 
