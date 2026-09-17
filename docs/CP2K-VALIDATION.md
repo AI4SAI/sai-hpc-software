@@ -3,6 +3,42 @@
 This is an implementation checklist, not a release acceptance result. The
 `feat/cp2k-parity-benchmarks` branch is not yet a four-target accepted release.
 
+## Current blockers and Spack cache (2026-09-17)
+
+The latest daily run `35196109864` did not produce an accepted candidate:
+
+- DSPRHBM job `1366216` reached the final link, then failed on `-lcudart`.
+  The selected standalone ELPA 2026 module is its `nvidia` build even on the
+  CPU partition; its pkg-config dependency list includes CUDA. CPU CP2K
+  configuration alone does not eliminate this transitive dependency.
+- 16V100 job `1368587` installed CP2K, then failed the loader check on
+  `libplumedKernel.so`. Copying only `libplumed.so*` does not include the
+  separately named kernel library. Neither result passed scientific acceptance.
+
+The user approved starting a new Spack cache rather than locating an existing
+one. These empty directories have been created on SAI:
+
+```
+/home/stardust/sai-hpc-software/cache/spack/sources
+/home/stardust/sai-hpc-software/cache/spack/buildcache/16V100
+/home/stardust/sai-hpc-software/cache/spack/buildcache/DSPRHBM
+```
+
+This is cache initialization only: the current recipe does **not** invoke
+Spack yet, and no binary-cache hit is claimed. Existing Git/source-archive
+caches and the hand-built TBLITE bundle are not Spack buildcaches. Integration
+must lock the concrete dependency DAG, reuse standalone MPI/BLAS/ELPA where
+compatible, mirror sources before offline compute builds, and keep native
+binary caches separate by partition and dependency ABI. Build/install trees
+must stay inside the overlay; only source/binary archives belong in this cache.
+Missing libraries must be built independently, not borrowed from an older CP2K.
+
+The user-authorized reference
+[`SAI-autocompile-kit`](https://github.com/AI4SAI/SAI-autocompile-kit/tree/5fa2632771c654ac81d40be31fb8e4f921dbdf97)
+contains no CP2K plugin or Spack implementation. Its LAMMPS compilation
+settings were adapted on the separate MD branch; they do not establish a
+CP2K dependency solution.
+
 ## Verified existing work (2026-09-11)
 
 CP2K was compiled on SAI outside Actions. Job `1216695` completed installation
@@ -39,7 +75,9 @@ resolution, installed scientific data, and the absence of transient RPATHs.
 Runtime environment and data cannot depend on `/workspace`, `/input` or the
 controller snapshot. The module launcher uses installed `CP2K_DATA_DIR`; the
 same absolute `/opt` layout can later be used on physical storage with the same
-read-only system dependencies. No host installation tree is copied into a SIF.
+read-only system dependencies. The current recipe still vendors PLUMED and
+LIBXSMM shared objects from the old CP2K toolchain; this is incomplete (see
+the loader failure above) and does not satisfy build-time independence.
 
 The build records the observed runtime in `share/sai/native-entry.json`, then
 packages the shared inventory, native Tcl fragment and `modulefiles/cp2k/...`
@@ -96,7 +134,9 @@ Do not silently disable unavailable features to pass a build.
 CP2K 2026.2 requires both LIBXS 1.0.0 and LIBXSMM for the old XSMM capability;
 the recipe builds LIBXS, DBCSR and the seven-library TBLITE dependency chain
 natively inside each target overlay and adapts the
-site's pkg-config-only Libint2/LIBXSMM to CMake without copying their libraries.
+site's pkg-config-only Libint2/LIBXSMM to CMake. The later runtime-vendoring
+change copies LIBXSMM shared objects; the build still depends on the old
+CP2K toolchain and must be replaced by independent dependencies.
 ELPA discovery is pinned to the loaded 2026.02.001 module, never to the old
 2024 toolchain copy. The successful TBLITE archive establishes working locked
 source versions, but its own precompiled AVX-512-linked executables are not
