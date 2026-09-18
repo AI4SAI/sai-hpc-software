@@ -3,6 +3,8 @@
 set -euo pipefail
 partition=${1:?partition required}
 expected_lock=${2:?verified lock SHA256 required}
+repair_mode=${3:-none}
+[[ "$repair_mode" == none || "$repair_mode" == mpi-runtime ]]
 case "$partition" in
   16V100) target=16v100-avx2 ;;
   DSPRHBM) target=dsprhbm ;;
@@ -21,6 +23,13 @@ python3 /control/cp2k_spack_native.py prepare "$partition"
 spack_run() { /usr/bin/python3 /workspace/spack/bin/spack "$@"; }
 native_target=$(spack_run arch -t)
 native_os=$(spack_run arch -o)
+if [[ "$repair_mode" == mpi-runtime ]]; then
+  python3 /control/cp2k_spack_mpi_repair.py "$partition" "$native_target" "$native_os"
+  spack_run -e /workspace/env concretize --force
+  expected_lock=$(sha256sum /workspace/env/spack.lock)
+  expected_lock=${expected_lock%% *}
+  printf '%s\n' "$expected_lock" > /results/repaired-lock.sha256
+fi
 # Revalidate the native architecture, features and externals on the new node.
 spack_run -e /workspace/env python /control/cp2k_spack_native.py fetch "$partition" "$native_target" "$native_os"
 cp /workspace/env/spack.yaml /workspace/env/spack.lock /results/

@@ -186,6 +186,37 @@ It explicitly records `cp2k_built: false`, `scientific_verified: false` and
 `published: false`; native CP2K integration/ELPA linkage/runtime packaging and
 scientific/performance acceptance still remain.
 
+The initial install jobs failed deterministically in COSTA's CMake MPI C++
+try-link (`1381871`: 8:13, `1381876`: 8:48, both exit `3:0`). The underlying
+`CMakeConfigureLog.yaml` in each terminal overlay shows `libhcoll.so.1 not
+found` and unresolved `hcoll_*` symbols, not a missing MPI header or a source
+compilation error. The logs were recovered read-only as
+`results/costa-CMakeConfigureLog.yaml`. Site `libmpi.so` has a stale
+`/opt/mellanox/hcoll/lib` RUNPATH; the loaded module compensates with the
+standalone HPCX 2.25.1 HCOLL/SHARP library paths, which Spack's clean build
+environment had removed.
+
+Install repair 1 adds only the external OpenMPI runtime environment to the
+Spack environment (the exact HPCX HCOLL/SHARP directories and site prefix
+variables). `cp2k_spack_mpi_repair.py` rejects any other configuration change,
+preserves the old lock and configuration, then explicitly reconcretizes and
+repeats native graph/mirror validation before installing. It does not set
+`--dirty`, disable MPI/COSTA, reuse a failed install prefix, or alter upstream
+sources. Jobs `1382045` (16V100) and `1382054` (DSPRHBM) use snapshot
+`diagnostics/cp2k-spack-install-20260918-v2`, with original probe lineage and
+`diagnosed_repairs_used: 1` recorded. Their results are under
+`runs/cp2k-spack-install-20260918-b-<PARTITION>/results`. No incidental retry
+was used; at most one more diagnosed install repair remains if needed.
+Both repaired native locks and mirror-only fetches passed. Comparing their
+package names, versions, variants/compiler flags, external identities and CPU
+architectures against the original locks found only the intended OpenMPI
+environment change (33 total GPU nodes / 31 CPU nodes unchanged). Repaired
+lock SHA-256 values are `a11e6d7039a12864d4d9d39d79b100de6c79876fad093ae37d9cb31cf978731f`
+(16V100) and `3e7abe04768f5b8ef641fda299582baf3a7df88c1384f8078a729714de1c9e0e`
+(DSPRHBM). The install jobs are still being monitored for the original MPI
+failure and later compilation failures; resolver success is not install success.
+The MPI repair passes 31 Spack tests and the complete 231-test suite.
+
 Validation for this added seed/install implementation: 28 Spack-focused
 tests and the complete 228-test controller suite passed, along with shell
 syntax and Python import/compile checks. This includes refusal of live or

@@ -20,6 +20,8 @@ ROOT_SPECS = (
     'hdf5@1.14.6 +mpi +fortran ~hl ~cxx ~shared',
     'plumed@2.10.1 +mpi +shared +gsl optional_modules=all',
 )
+HPCX_ROOT = '/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1'
+MPI_RUNTIME_PATH = HPCX_ROOT + '/hcoll/lib:' + HPCX_ROOT + '/sharp/lib'
 
 
 def external(spec, prefix, **attributes):
@@ -55,7 +57,12 @@ def environment(partition, install_prefix, native_target, native_os, jobs=8):
                                    [('c', 'gcc'), ('cxx', 'g++'), ('fortran', 'gfortran')]},
                         flags={name: '-O3 -march=native -mtune=native' for name in
                                ('cflags', 'cxxflags', 'fflags')}),
-        'openmpi': external('openmpi@5.0.10 +cuda +fortran fabrics=ucx', mpi),
+        # Site libmpi needs HCOLL, whose baked-in /opt/mellanox RUNPATH is not
+        # the standalone HPCX installation. Preserve the module's exact paths
+        # in Spack's clean build environment, and bind them into the lock.
+        'openmpi': external('openmpi@5.0.10 +cuda +fortran fabrics=ucx', mpi,
+                            environment={'set': {'OPAL_PREFIX': mpi, 'PMIX_INSTALL_PREFIX': mpi},
+                                         'prepend_path': {'LD_LIBRARY_PATH': MPI_RUNTIME_PATH}}),
         'openblas': external('openblas@0.3.32 threads=openmp', blas),
         'netlib-scalapack': external('netlib-scalapack@2.2.3', blas),
         'cuda': external('cuda@12.9.1', '/opt/devtools/nvidia/cuda-12.9.1'),

@@ -4,7 +4,7 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'controller'))
-from cp2k_spack_environment import environment
+from cp2k_spack_environment import environment, HPCX_ROOT
 
 
 class SpackEnvironmentTests(unittest.TestCase):
@@ -27,6 +27,16 @@ class SpackEnvironmentTests(unittest.TestCase):
         self.assertNotIn('elpa', env['packages'])
         self.assertNotIn('cp2k', env['packages'])
         self.assertNotIn('tiled-mm', env['packages'])
+
+    def test_external_mpi_keeps_its_standalone_hcoll_runtime_in_clean_builds(self):
+        for partition, isa in [('16V100', 'avx2'), ('DSPRHBM', 'avx512')]:
+            external = self.env(partition)['packages']['openmpi']['externals'][0]
+            variables = external['extra_attributes']['environment']
+            self.assertEqual(variables['set']['OPAL_PREFIX'], external['prefix'])
+            self.assertEqual(variables['set']['PMIX_INSTALL_PREFIX'], external['prefix'])
+            self.assertEqual(variables['prepend_path']['LD_LIBRARY_PATH'],
+                             HPCX_ROOT + '/hcoll/lib:' + HPCX_ROOT + '/sharp/lib')
+            self.assertTrue(external['prefix'].endswith('-' + isa))
 
     def test_install_stage_and_repos_are_overlay_paths(self):
         env = self.env()

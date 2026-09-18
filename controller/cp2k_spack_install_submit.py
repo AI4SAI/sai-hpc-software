@@ -10,11 +10,32 @@ from cp2k_spack_seed import checksum
 from remote_controller import container_command, safe_name
 
 
-def submit(probe_id, run_id):
+def submit(probe_id, run_id, repair_of=None, diagnosis=None):
     root = Path('/home/stardust/sai-hpc-software')
     probe = root / 'runs' / safe_name(probe_id)
     run = root / 'runs' / safe_name(run_id)
     parent = json.loads((probe / 'request.json').read_text())
+    repairs = 0
+    failed_run = None
+    repair_mode = 'none'
+    if repair_of:
+        if not diagnosis:
+            raise ValueError('install repair requires a diagnosis')
+        failed_run = root / 'runs' / safe_name(repair_of)
+        previous = json.loads((failed_run / 'request.json').read_text())
+        if previous.get('probe_run') != probe_id or previous.get('purpose') != 'native-dependency-install-pilot-not-cp2k-build':
+            raise ValueError('install repair lineage mismatch')
+        repairs = previous['retry_policy']['diagnosed_repairs_used'] + 1
+        if repairs > 2:
+            raise ValueError('two diagnosed install repairs exhausted')
+        failed_job = str(previous['job_id'])
+        rows = subprocess.check_output(['sacct', '-X', '-j', failed_job, '-nP', '-o', 'JobIDRaw,State'], text=True).splitlines()
+        states = [r.split('|')[1].split()[0] for r in rows if r.split('|')[0] == failed_job]
+        if len(states) != 1 or states[0] not in {'FAILED', 'TIMEOUT', 'CANCELLED', 'NODE_FAIL', 'OUT_OF_MEMORY'}:
+            raise ValueError('install repair parent is not a terminal failure')
+        if (failed_run / 'repair-child.json').exists():
+            raise ValueError('install repair already submitted')
+        repair_mode = 'mpi-runtime'
     partition = parent['partition']
     if partition not in ('16V100', 'DSPRHBM'):
         raise ValueError('unsupported native pilot partition')
@@ -29,6 +50,10 @@ def submit(probe_id, run_id):
         raise ValueError('no successful independent native fetch evidence')
     control = Path(__file__).resolve().parent
     for name in ('cp2k_spack.py', 'cp2k_spack_environment.py', 'cp2k_spack_native.py', 'environment.sh'):
+        if repair_of and name == 'cp2k_spack_environment.py':
+            # The in-container repair guard only permits adding the external
+            # MPI environment. All source versions/features must remain equal.
+            continue
         if checksum(control / name) != parent.get('scripts', {}).get(name):
             raise ValueError('dependency recipe changed after native probe: ' + name)
     # The probe receipt is tied to its scripts and copied result lock; the
@@ -38,7 +63,7 @@ def submit(probe_id, run_id):
     overlay = probe / 'work.ext3'
     if overlay.resolve() != overlay or not overlay.is_file():
         raise ValueError('invalid successful probe overlay')
-    if (probe / 'install-child.json').exists() or run.exists():
+    if (not repair_of and (probe / 'install-child.json').exists()) or run.exists():
         raise ValueError('dependency pilot already submitted')
     source_hash = checksum(overlay)
     lock_hash = checksum(probe / 'results/spack.lock')
@@ -47,7 +72,7 @@ def submit(probe_id, run_id):
         (run / name).mkdir()
     command = container_command(
         root / 'containers/base/minimal-v1.sif',
-        ['/bin/bash', '/control/cp2k_spack_install.sh', partition, lock_hash],
+        ['/bin/bash', '/control/cp2k_spack_install.sh', partition, lock_hash, repair_mode],
         overlay=run / 'work.ext3', control=control, jobs=8, gpu=partition == '16V100',
         extra_binds=[(root / 'cache/spack', '/input/spack'),
                      ('/var/lib/dpkg', '/var/lib/dpkg'), ('/etc/os-release', '/etc/os-release'),
@@ -79,11 +104,14 @@ def submit(probe_id, run_id):
                'script_sha256': checksum(script),
                'scripts': {p.name: checksum(p) for p in control.iterdir() if p.is_file()},
                'retry_policy': {'incidental_retry_limit': 1, 'diagnosed_repair_limit': 2,
-                                'incidental_retries_used': 0, 'diagnosed_repairs_used': 0},
+                                'incidental_retries_used': 0, 'diagnosed_repairs_used': repairs},
                'status': 'prepared'}
+    if repair_of:
+        request.update(repair_of=repair_of, diagnosis=diagnosis, repair_mode=repair_mode)
     request_path = run / 'request.json'
     request_path.write_text(json.dumps(request, indent=2) + '\n')
-    with (probe / 'install-child.json').open('x') as stream:
+    lineage = failed_run / 'repair-child.json' if failed_run else probe / 'install-child.json'
+    with lineage.open('x') as stream:
         json.dump({'run_id': run_id, 'new_stage': 'dependency-install'}, stream)
     job = subprocess.check_output(['sbatch', '--hold', '--parsable', str(script)], text=True).strip().split(';')[0]
     if not job.isdigit():
@@ -101,5 +129,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('probe_run')
     parser.add_argument('run_id')
+    parser.add_argument('--repair-of')
+    parser.add_argument('--diagnosis')
     args = parser.parse_args()
-    submit(args.probe_run, args.run_id)
+    submit(args.probe_run, args.run_id, args.repair_of, args.diagnosis)

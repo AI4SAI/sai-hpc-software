@@ -1,4 +1,5 @@
 import contextlib
+from copy import deepcopy
 import io
 import json
 from pathlib import Path
@@ -9,6 +10,8 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'controller'))
 import cp2k_spack_install_submit as install
+from cp2k_spack_environment import environment
+from cp2k_spack_mpi_repair import check_repair
 
 
 class SpackInstallTests(unittest.TestCase):
@@ -89,13 +92,49 @@ class SpackInstallTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'already submitted'):
                 install.submit('native-probe', 'another-pilot')
 
-    def test_installer_cannot_reconcretize_or_use_binary_cache(self):
+    def test_installer_only_relocks_in_explicit_guarded_repair_and_never_uses_binary_cache(self):
         script = (self.control / 'cp2k_spack_install.sh').read_text()
         self.assertIn('--only-concrete --no-cache --fail-fast', script)
         self.assertEqual(script.count('sha256sum --check --status'), 2)
-        self.assertNotIn('spack_run -e /workspace/env concretize', script)
+        self.assertIn('if [[ "$repair_mode" == mpi-runtime ]]', script)
+        self.assertLess(script.index('cp2k_spack_mpi_repair.py'), script.index('concretize --force'))
         self.assertNotIn('--dirty', script)
         self.assertNotIn('--overwrite', script)
+
+    def test_repair_guard_permits_only_external_mpi_environment(self):
+        new = environment('16V100', '/opt/software/cp2k/development/spack-native-probe/16V100',
+                          'zen3', 'ubuntu24.04')
+        old = deepcopy(new)
+        old['spack']['packages']['openmpi']['externals'][0].pop('extra_attributes')
+        check_repair(old, new)
+        for mutate in (
+            lambda v: v['spack']['specs'].pop(),
+            lambda v: v['spack']['config'].update(build_jobs=2),
+            lambda v: v['spack']['packages']['openmpi']['externals'][0].update(prefix='/opt/other'),
+        ):
+            bad = deepcopy(new)
+            mutate(bad)
+            with self.assertRaisesRegex(ValueError, 'more than'):
+                check_repair(old, bad)
+
+    def test_install_repair_preserves_lineage_and_budget(self):
+        first = self.submit()
+        with patch.object(install.subprocess, 'check_output', side_effect=[
+                '456|FAILED|\n', '123|COMPLETED|0:0|\n', '789\n']), \
+                patch.object(install.subprocess, 'run'), contextlib.redirect_stdout(io.StringIO()):
+            install.submit('native-probe', 'repair-1', 'install-pilot', 'MPI link lacks HCOLL')
+        request = json.loads((self.root / 'runs/repair-1/request.json').read_text())
+        self.assertEqual(request['retry_policy']['diagnosed_repairs_used'], 1)
+        self.assertEqual(request['repair_mode'], 'mpi-runtime')
+        self.assertEqual(request['repair_of'], 'install-pilot')
+        self.assertTrue((first / 'repair-child.json').exists())
+        with patch.object(install.subprocess, 'check_output', return_value='456|FAILED|\n'):
+            with self.assertRaisesRegex(ValueError, 'already submitted'):
+                install.submit('native-probe', 'duplicate-repair', 'install-pilot', 'MPI link lacks HCOLL')
+        request['retry_policy']['diagnosed_repairs_used'] = 2
+        (self.root / 'runs/repair-1/request.json').write_text(json.dumps(request))
+        with self.assertRaisesRegex(ValueError, 'exhausted'):
+            install.submit('native-probe', 'third-repair', 'repair-1', 'another failure')
 
 
 if __name__ == '__main__':
