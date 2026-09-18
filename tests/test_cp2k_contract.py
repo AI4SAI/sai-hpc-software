@@ -33,7 +33,26 @@ class CP2KContractTests(unittest.TestCase):
                        CP2K_USE_CUSOLVER_MP="ON")
         for lang in ("C", "CXX", "Fortran"):
             entries[f"CMAKE_{lang}_FLAGS"] = "-O3 -march=native -mtune=native"
+        for library in ("cusolver", "cudart", "cublasLt", "cublas"):
+            entries["pkgcfg_lib_CP2K_ELPA_" + library] = (
+                "/opt/devtools/nvidia/cuda-12.9.1/lib64/lib" + library + ".so")
         return "\n".join(f"{key}:STRING={value}" for key, value in entries.items())
+
+    def test_cpu_elpa_still_requires_resolved_cuda_link_libraries(self):
+        text = self.cache("dsprhbm")
+        prefix = "/opt/software/cp2k/test/dsprhbm"
+        for library in ("cusolver", "cudart", "cublasLt", "cublas"):
+            full = "/opt/devtools/nvidia/cuda-12.9.1/lib64/lib" + library + ".so"
+            for replacement in (library, "-l" + library, "", full + "-NOTFOUND",
+                                full.replace("12.9.1", "12.8.0")):
+                with self.subTest(library=library, replacement=replacement):
+                    with self.assertRaisesRegex(ValueError, "ELPA CUDA library"):
+                        contract.check_cache(text.replace(full, replacement), prefix, "dsprhbm")
+        parsed = contract.check_cache(text.replace("/lib64/lib", "/targets/x86_64-linux/lib/lib"),
+                                      prefix, "dsprhbm")
+        self.assertEqual(parsed["CP2K_USE_ACCEL"], "NONE")
+        script = (Path(contract.__file__).parent / "cp2k_build.sh").read_text()
+        self.assertIn('-DCMAKE_LIBRARY_PATH="$cuda_libraries"', script)
 
     def test_all_baseline_features_required(self):
         contract.check_flags(self.flags(), "4v100-avx512")

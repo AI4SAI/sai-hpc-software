@@ -15,6 +15,25 @@ The latest daily run `35196109864` did not produce an accepted candidate:
   `libplumedKernel.so`. Copying only `libplumed.so*` does not include the
   separately named kernel library. Neither result passed scientific acceptance.
 
+The ELPA link repair now explicitly passes CUDA 12.9.1's `lib64` directory
+to CMake on both CPU and GPU targets. Inspection of the actual site module
+confirmed that it sets `LD_LIBRARY_PATH`, but not `LIBRARY_PATH`, while the
+ELPA `.pc` file lists `-lcusolver -lcudart -lcublasLt -lcublas` without their
+`-L` directory. The configuration gate now requires these four pkg-config
+libraries to resolve to full paths in the pinned CUDA toolkit, before the
+long CP2K compilation. DSPRHBM retains `CP2K_USE_ACCEL=NONE`.
+
+Contained DSPRHBM probe `1382379` completed `0:0` in 1m09s using upstream
+`FindElpa.cmake` at `26ffdda5eaee8dc2f3d8268cb2fd92854b42740a`.
+The original configuration reproduced a bare unresolved `cudart`; the repaired
+configuration resolved all four libraries to CUDA 12.9.1. A real C executable
+linked with `--no-as-needed`, passed `ldd` with no unresolved libraries, and
+exited successfully. Results are in
+`runs/cp2k-elpa-link-20260918-a-DSPRHBM/results`; checksums are recorded in
+`docs/evidence/cp2k-elpa-link-1382379.json`. This verifies the isolated link
+repair, not CP2K compilation or scientific acceptance. The independent
+dependency pilots continue using their unchanged frozen snapshots.
+
 The user approved starting a new Spack cache rather than locating an existing
 one. These directories have been created on SAI:
 

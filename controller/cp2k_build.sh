@@ -26,6 +26,17 @@ esac
 suffix=; [[ "$accel" == CUDA ]] && suffix=-cuda
 dbcsr="$prefix/dependencies/dbcsr/lib64/cmake/dbcsr"
 [[ "${ELPA_ROOT:?}" == /opt/devtools/elpa/elpa-2026.02.001-2603-gnu/* ]]
+# The standalone ELPA module selects its NVIDIA build on CPU nodes too.
+# Its .pc file lists CUDA libraries without a CUDA -L, and the CUDA module
+# sets LD_LIBRARY_PATH but not LIBRARY_PATH. Give FindPkgConfig an explicit
+# search directory so it resolves full paths instead of retaining -lcudart.
+# This does not enable CP2K GPU offload on DSPRHBM.
+cuda_libraries=/opt/devtools/nvidia/cuda-12.9.1/lib64
+for library in cusolver cudart cublasLt cublas; do
+  [[ -f "$cuda_libraries/lib$library.so" ]] || {
+    echo "standalone ELPA requires $cuda_libraries/lib$library.so" >&2; exit 1;
+  }
+done
 if [[ "$target" == 8v100v0-avx512 ]]; then
   # Gold 6146 supports native AVX-512 but lacks VNNI; site dependencies use AVX2.
   [[ "${OPAL_PREFIX:?}" == *-avx2 ]]
@@ -142,6 +153,7 @@ mkdir -p /workspace/build "$prefix/bin" "$prefix/share/sai"
 cmake_args=(
   -S /workspace/source -B /workspace/build -DCMAKE_BUILD_TYPE=Release
   -DCMAKE_INSTALL_PREFIX="$prefix" -DCMAKE_INSTALL_LIBDIR=lib64
+  -DCMAKE_LIBRARY_PATH="$cuda_libraries"
   -DCMAKE_PREFIX_PATH="$cmake_prefix" -DDBCSR_DIR="$dbcsr"
   -DLibint2_DIR="$prefix/share/sai/cmake" -Dlibxsmm_DIR="$prefix/share/sai/cmake"
   -DCP2K_ELPA_ROOT="$ELPA_ROOT" -DCP2K_ENABLE_ELPA_OPENMP_SUPPORT=ON

@@ -60,6 +60,13 @@ def check_cache(text, prefix, target):
     elpa = cache.get("CP2K_ELPA_ROOT", "")
     if not elpa.startswith("/opt/devtools/elpa/elpa-2026.02.001-2603-gnu/"):
         raise ValueError("ELPA must use the pinned 2026 system module")
+    if elpa.endswith("/nvidia"):
+        for library in ("cusolver", "cudart", "cublasLt", "cublas"):
+            resolved = Path(cache.get("pkgcfg_lib_CP2K_ELPA_" + library, ""))
+            cuda = Path("/opt/devtools/nvidia/cuda-12.9.1")
+            if (resolved.parent not in (cuda / "lib64", cuda / "targets/x86_64-linux/lib")
+                    or resolved.name != "lib" + library + ".so"):
+                raise ValueError("ELPA CUDA library was not resolved from the pinned toolkit: " + library)
     if target != "dsprhbm" and cache.get("CP2K_USE_CUSOLVER_MP") != "ON":
         raise ValueError("cuSOLVERMp was not enabled")
     return cache
