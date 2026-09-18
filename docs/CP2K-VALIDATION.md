@@ -16,7 +16,7 @@ The latest daily run `35196109864` did not produce an accepted candidate:
   separately named kernel library. Neither result passed scientific acceptance.
 
 The user approved starting a new Spack cache rather than locating an existing
-one. These empty directories have been created on SAI:
+one. These directories have been created on SAI:
 
 ```
 /home/stardust/sai-hpc-software/cache/spack/sources
@@ -24,7 +24,8 @@ one. These empty directories have been created on SAI:
 /home/stardust/sai-hpc-software/cache/spack/buildcache/DSPRHBM
 ```
 
-This is cache initialization only: the current recipe does **not** invoke
+The source cache is now populated (see the September 18 probe below); the
+binary caches remain empty. The current production recipe does **not** invoke
 Spack yet, and no binary-cache hit is claimed. Existing Git/source-archive
 caches and the hand-built TBLITE bundle are not Spack buildcaches. Integration
 must lock the concrete dependency DAG, reuse standalone MPI/BLAS/ELPA where
@@ -40,8 +41,8 @@ separate binary cache and records GCC 13.3 and the site dependency ISA (not a
 native CPU detection result). The store is under the canonical CP2K prefix
 inside the overlay; staging and unpacked Spack/package trees are in
 `/workspace`, never the host cache. This is not `spack.yaml`, a concrete DAG,
-or an integrated build. The actual resolver, source mirroring, offline install
-and buildcache validation still need implementation. CP2K's cuSOLVERMp
+or an integrated build. Native dependency resolution is being probed separately;
+offline installation and buildcache validation remain incomplete. CP2K's cuSOLVERMp
 settings and the site's CUDA-linked ELPA must also be preserved and tested.
 
 The user-authorized reference
@@ -49,6 +50,72 @@ The user-authorized reference
 contains no CP2K plugin or Spack implementation. Its LAMMPS compilation
 settings were adapted on the separate MD branch; they do not establish a
 CP2K dependency solution.
+
+## Native Spack preparation (2026-09-18)
+
+`cp2k_spack_environment.py` generates actual JSON-compatible `spack.yaml`,
+separate from the preparation manifest. Seven roots replace the borrowed
+toolchain: Libint 2.6.0 (CP2K lmax 5, Fortran), LIBXSMM 2.0.0, libvori
+220621, parallel Fortran HDF5 1.14.6, PLUMED 2.10.1, COSMA 2.7.0 and
+SpLA 1.6.1. GPU COSMA/SpLA retain CUDA; tiled-mm is constrained to sm_70.
+This intentionally does not use Spack's CP2K recipe, which has a different
+feature contract. Existing standalone ELPA and CP2K's cuSOLVERMp integration
+are not removed or relabelled as CUDA-free.
+
+The generator uses explicit standalone GCC/MPI/BLAS/CUDA and verified system
+tools, with no `/opt/apps` paths. Native CPU/OS identifiers must be observed
+on the compute node. Source staging and installation remain in the overlay;
+public source mirrors, bootstrap downloads and unvalidated binary reuse are
+disabled. Only the prepared local source mirror is enabled.
+
+Local solver rehearsal resolved all seven GPU roots and mirrored 13 source
+archives. The pinned compiler-wrapper source was also mirrored for native
+compiler runtime injection. The host source cache now contains these 14
+archives, the two pinned Spack/repository archives, and checksum-pinned
+Python 3.12 clingo/cffi/pycparser solver wheels. This proves source preparation,
+not native compilation, ABI compatibility, scientific correctness or speed.
+
+`cp2k_spack_probe_submit.py`, `cp2k_spack_probe.sh` and
+`cp2k_spack_native.py` implement a short offline native resolver/fetch probe.
+Only metadata is exported to the host, and every attempt uses a fresh overlay
+and an immutable controller snapshot. Submission records a held job before
+release and refuses duplicate run IDs. Repairs require a terminal failed
+parent, a diagnosis, and at most two diagnosed attempts per chain.
+
+- Initial jobs `1380832` (16V100) / `1380833` (DSPRHBM) failed because the
+  container bound `/usr` but not the node's dpkg database. Repair 1 adds
+  read-only node metadata and alternatives bindings.
+- Repair-1 jobs `1380859` / `1380860` recorded native profiles but rejected
+  Ubuntu's `1:1.3.dfsg-3.1ubuntu2.1` as a zlib version mismatch. This was a
+  validator error, not an upstream zlib mismatch. Repair 2 normalizes only
+  Debian epochs, revisions and dfsg repack suffixes (covered by a regression
+  test), and verifies compiler-detected glibc against the actual node runtime.
+- Repair-2 jobs `1380946` / `1380947` were submitted from snapshot
+  `/home/stardust/sai-hpc-software/diagnostics/cp2k-spack-native-20260918-v3`.
+  Results are under `runs/cp2k-spack-native-20260918-c-<PARTITION>/results`.
+  Job `1380946` was unintentionally cancelled at 14:25:07 CST by a diagnostic
+  `srun` command that specified `--cpus-per-task=1`: SAI prohibits explicit
+  CPU/memory requests on GPU partitions, including diagnostic job steps.
+  This was an operator error, not a dependency solver/compiler failure.
+  No replacement GPU probe has been submitted. Job `1380947` is still being
+  monitored; its outcome must be checked before dependency installation.
+
+Monitor through `squeue`, `sacct`, `sstat` and saved logs. Do not introduce
+diagnostic GPU job steps with CPU/memory overrides; site enforcement can
+cancel the parent allocation, not merely reject the step.
+
+No direct incidental retry was used for these deterministic probe failures.
+The two diagnosed repair attempts are now allocated; do not reset the retry
+counter or submit a third repair under a fresh name. The production
+`cp2k_build.sh` still uses old CP2K toolchain dependencies and is not yet fixed.
+Future packaging must select the runtime dependency closure rather than
+blindly export the entire Spack store: build-only Python environments can
+contain external symlinks that violate the final artifact's self-contained
+tree contract. Preserve PLUMED's kernel library as well as its frontend.
+
+Local validation: 20 Spack-focused tests, 50 CP2K tests, and the complete
+220-test controller suite passed; the probe shell passes `bash -n`. These
+tests do not substitute for the unfinished native solver/fetch probes.
 
 ## Verified existing work (2026-09-11)
 
