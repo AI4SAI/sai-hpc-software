@@ -1,4 +1,5 @@
 import contextlib
+import hashlib
 import io
 import json
 from pathlib import Path
@@ -10,6 +11,7 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'controller'))
 import cp2k_spack_native as native
 import cp2k_spack_probe_submit as probe
+import cp2k_spack_seed as seed
 
 
 class SpackProbeTests(unittest.TestCase):
@@ -117,6 +119,50 @@ class SpackProbeTests(unittest.TestCase):
         script = (Path(__file__).resolve().parents[1] / 'controller/cp2k_spack_probe.sh').read_text()
         self.assertIn('PYTHONNOUSERSITE=1', script)
         self.assertNotIn('spack_run install', script)
+
+    def test_one_authorized_extra_attempt_keeps_history(self):
+        self.parent(2)
+        with patch.object(probe.subprocess, 'check_output', side_effect=['123|TIMEOUT|\n', '1234\n']), \
+                patch.object(probe.subprocess, 'run'), contextlib.redirect_stdout(io.StringIO()):
+            probe.submit('16V100', 'extra', 'parent', 'slow archive extraction',
+                         extra_approval='user continued after request for one extra round', minutes=45)
+        receipt = json.loads((self.root / 'runs/extra/request.json').read_text())
+        self.assertEqual(receipt['retry_policy']['diagnosed_repairs_used'], 3)
+        self.assertEqual(receipt['repair_of'], 'parent')
+        self.assertIn('extra_attempt_authorization', receipt)
+        with self.assertRaisesRegex(ValueError, 'exhausted'):
+            probe.submit('16V100', 'fourth', 'extra', 'another cause', extra_approval='same approval')
+        with self.assertRaisesRegex(ValueError, 'lineage'):
+            probe.submit('16V100', 'reset', extra_approval='same approval')
+
+    def test_seed_copy_checked_and_no_host_expanded_sources(self):
+        path = self.root / 'cache/spack/bootstrap/source.ext3'
+        path.parent.mkdir(parents=True)
+        path.write_bytes(b'fixture-overlay')
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        result = self.submit(seed_overlay=path, seed_sha256=digest, minutes=45)
+        script = (result / 'job.sbatch').read_text()
+        self.assertIn('cp --sparse=always --reflink=auto', script)
+        self.assertIn(digest, script)
+        self.assertIn('sha256sum --check --status', script)
+        self.assertNotIn('apptainer overlay create', script)
+        self.assertIn('--time=45', script)
+        receipt = json.loads((result / 'request.json').read_text())
+        self.assertEqual(receipt['bootstrap_overlay']['sha256'], digest)
+        with self.assertRaisesRegex(ValueError, 'checksum mismatch'):
+            probe.submit('16V100', 'bad', seed_overlay=path, seed_sha256='0' * 64)
+        for minutes in (0, 61):
+            with self.assertRaisesRegex(ValueError, 'time'):
+                probe.submit('16V100', 'bad', minutes=minutes)
+
+    def test_seed_manifest_contains_only_pinned_bootstrap_sources(self):
+        data = seed.manifest()
+        self.assertFalse(data['compiled_dependencies'])
+        self.assertEqual(data['solver_wheels'], native.WHEELS)
+        self.assertEqual(data['spack_sha256'], seed.SPACK_SHA256)
+        self.assertEqual(data['packages_sha256'], seed.PACKAGES_SHA256)
+        with self.assertRaises(FileNotFoundError):
+            seed.validate_sources(self.root / 'missing', self.root / 'wheels')
 
 
 if __name__ == '__main__':
