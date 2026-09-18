@@ -97,8 +97,17 @@ parent, a diagnosis, and at most two diagnosed attempts per chain.
   `srun` command that specified `--cpus-per-task=1`: SAI prohibits explicit
   CPU/memory requests on GPU partitions, including diagnostic job steps.
   This was an operator error, not a dependency solver/compiler failure.
-  No replacement GPU probe has been submitted. Job `1380947` is still being
-  monitored; its outcome must be checked before dependency installation.
+  No replacement GPU probe has been submitted. Job `1380947` timed out at
+  14:34:47 CST after 15:16, before the offline solver import/configuration
+  marker. Its overlay was still growing during preparation; at 12:20 it had
+  allocated about 127 MiB. The two unpacked upstream trees total about
+  202 MiB and 23,206 tar entries. A request to extend this active job to
+  30 minutes was denied by Slurm permissions; its original limit remained.
+  After Slurm reported terminal TIMEOUT, read-only `debugfs` inspection showed
+  the package extraction stopped at `py_mako`, and `/workspace/solver` was
+  still empty. Thus this was unpacking overhead, not a solver timeout.
+  Neither repair-2 job produced a concrete native lockfile or a successful
+  mirror-only fetch receipt. No native dependency installation was started.
 
 Monitor through `squeue`, `sacct`, `sstat` and saved logs. Do not introduce
 diagnostic GPU job steps with CPU/memory overrides; site enforcement can
@@ -116,6 +125,11 @@ tree contract. Preserve PLUMED's kernel library as well as its frontend.
 Local validation: 20 Spack-focused tests, 50 CP2K tests, and the complete
 220-test controller suite passed; the probe shell passes `bash -n`. These
 tests do not substitute for the unfinished native solver/fetch probes.
+Commit `4f14543` passed GitHub validation runs `35315304415` and `35315304368`;
+these are not HPC build successes. Further native probe submissions require
+the user's approval to go beyond the two diagnosed repair attempts. A next
+probe should budget for the observed unpacking cost (or prepare a read-only
+source image) and retain the ban on GPU CPU/memory overrides.
 
 ## Verified existing work (2026-09-11)
 
