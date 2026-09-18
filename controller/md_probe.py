@@ -60,7 +60,12 @@ def suppress_native_output():
 
 
 def lammps_inventory(prefix):
-    paths = sorted((Path(prefix) / "lib").glob("liblammps.so*"))
+    # The trusted recipe installs shared objects under lib64 on SAI's x86_64
+    # toolchain, while older site stacks use lib. Probe both ABI-standard
+    # locations; do not fall back to another LAMMPS installation.
+    root = Path(prefix)
+    paths = sorted({path for directory in (root / "lib", root / "lib64")
+                    for path in directory.glob("liblammps.so*")})
     if not paths:
         raise ValueError("shared liblammps required for complete feature enumeration")
     library = paths[0].resolve()
