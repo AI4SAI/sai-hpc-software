@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
-"""Generate the pinned, offline Spack configuration used by CP2K.
+"""Describe pins and paths for the future CP2K Spack dependency build.
 
 This module deliberately only describes the dependency resolver.  It does not
 silently turn the existing CP2K toolchain into Spack externals: every external
-path is explicit and the install/cache roots are partition-specific.  The
-generated files can therefore be copied into a container overlay or inspected
-before a native build is started.
+path is explicit. This is a preparation manifest, NOT spack.yaml or a concrete
+dependency lockfile. No existing build workflow consumes it yet. Install and
+staging paths are container paths; the host cache holds archives only.
 """
 
 from __future__ import annotations
@@ -14,6 +14,7 @@ import argparse
 import hashlib
 import json
 from pathlib import Path
+import re
 
 SPACK_COMMIT = "3e19345b6e12f5ff1b874f4059622fc6a1fd804a"
 PACKAGES_COMMIT = "535022224b610cb07dcbf63cef5bd68c6a2aae24"
@@ -31,49 +32,65 @@ TARGETS = {
 def cache_roots(cache: Path, partition: str) -> dict[str, Path]:
     if partition not in TARGETS:
         raise ValueError(f"unsupported CP2K Spack partition: {partition}")
-    root = cache.resolve()
+    root = Path(cache)
+    if not root.is_absolute() or root.resolve() != root:
+        raise ValueError("cache path must be absolute and contain no symlinks or traversal")
     return {
         "root": root,
         "sources": root / "sources",
         "buildcache": root / "buildcache" / partition,
-        "store": root / "store" / partition,
-        "config": root / "config" / partition,
     }
 
 
 def validate_cache(cache: Path, partition: str, *, require_archives: bool = False) -> dict[str, str]:
     roots = cache_roots(cache, partition)
-    for key in ("sources", "buildcache", "store", "config"):
+    for key in ("sources", "buildcache"):
         path = roots[key]
-        if path.is_symlink() or (path.exists() and not path.is_dir()):
+        if path.resolve() != path or (path.exists() and not path.is_dir()):
             raise ValueError(f"Spack cache path is not a directory: {path}")
     if require_archives:
         for name, digest in (("spack.tar.gz", SPACK_SHA256), ("packages.tar.gz", PACKAGES_SHA256)):
             archive = roots["sources"] / name
-            if not archive.is_file():
+            if archive.is_symlink() or not archive.is_file():
                 raise ValueError(f"missing pinned Spack archive: {archive}")
-            if hashlib.sha256(archive.read_bytes()).hexdigest() != digest:
+            checksum = hashlib.sha256()
+            with archive.open("rb") as stream:
+                for block in iter(lambda: stream.read(1024 * 1024), b""):
+                    checksum.update(block)
+            if checksum.hexdigest() != digest:
                 raise ValueError(f"checksum mismatch: {archive}")
     return {key: str(value) for key, value in roots.items()}
 
 
-def config(partition: str, cache: Path, *, spack_root: Path, package_repo: Path) -> dict:
+def config(partition: str, cache: Path, *, install_prefix: Path) -> dict:
     roots = cache_roots(cache, partition)
     target = TARGETS[partition]
     compiler = target["compiler"]
+    prefix = str(install_prefix)
+    if not re.fullmatch(r"/opt/software/cp2k/(development|prerelease|release)/[A-Za-z0-9][A-Za-z0-9_.-]*/" + partition, prefix):
+        raise ValueError("Spack store must be inside this partition's canonical CP2K prefix")
     return {
+        "schema": 1,
+        "status": "preparation-only-not-concretized",
         "spack_commit": SPACK_COMMIT,
         "packages_commit": PACKAGES_COMMIT,
         "partition": partition,
-        "repos": {"sai-pinned": str(package_repo.resolve())},
-        "config": {"install_tree": {"root": str(roots["store"]), "projections": {
+        "archives": {
+            "spack": {"url": "https://api.github.com/repos/spack/spack/tarball/" + SPACK_COMMIT,
+                      "sha256": SPACK_SHA256},
+            "packages": {"url": "https://api.github.com/repos/spack/spack-packages/tarball/" + PACKAGES_COMMIT,
+                         "sha256": PACKAGES_SHA256}},
+        "host_cache": {key: str(value) for key, value in roots.items()},
+        "container": {
+        "repos": {"builtin": "/workspace/spack-packages/repos/spack_repo/builtin"},
+        "config": {"install_tree": {"root": prefix + "/dependencies/spack", "projections": {
             "all": "{architecture.platform}-{architecture.target}/{name}-{version}-{hash}"
-        }}, "source_cache": str(roots["sources"]), "build_stage": [str(roots["root"] / "stage")]},
-        "mirror": {"source": f"file://{roots['sources']}", "binary": f"file://{roots['buildcache']}"},
+        }}, "source_cache": "/workspace/spack-source-cache", "build_stage": ["/workspace/spack-stage"]},
+        "bootstrap": {"enable": False},
+        "spack_root": "/workspace/spack"},
         "compiler": {"spec": "gcc@13.3.0 languages='c,c++,fortran'", "prefix": compiler,
                      "cc": str(Path(compiler) / "bin/gcc"), "cxx": str(Path(compiler) / "bin/g++"),
                      "fortran": str(Path(compiler) / "bin/gfortran")},
-        "spack_root": str(spack_root.resolve()),
         "cuda": target["cuda"],
         "isa": target["isa"],
     }
@@ -81,22 +98,21 @@ def config(partition: str, cache: Path, *, spack_root: Path, package_repo: Path)
 
 def write_config(output: Path, value: dict) -> None:
     output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(json.dumps(value, indent=2, sort_keys=True) + "\n")
+    with output.open("x") as stream:
+        stream.write(json.dumps(value, indent=2, sort_keys=True) + "\n")
 
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("partition", choices=sorted(TARGETS))
     parser.add_argument("cache", type=Path)
-    parser.add_argument("--spack-root", type=Path, required=True)
-    parser.add_argument("--package-repo", type=Path, required=True)
+    parser.add_argument("--install-prefix", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--require-archives", action="store_true")
     args = parser.parse_args()
     validate_cache(args.cache, args.partition, require_archives=args.require_archives)
     write_config(args.output, config(args.partition, args.cache,
-                                     spack_root=args.spack_root,
-                                     package_repo=args.package_repo))
+                                     install_prefix=args.install_prefix))
     return 0
 
 
