@@ -232,9 +232,34 @@ architectures against the original locks found only the intended OpenMPI
 environment change (33 total GPU nodes / 31 CPU nodes unchanged). Repaired
 lock SHA-256 values are `a11e6d7039a12864d4d9d39d79b100de6c79876fad093ae37d9cb31cf978731f`
 (16V100) and `3e7abe04768f5b8ef641fda299582baf3a7df88c1384f8078a729714de1c9e0e`
-(DSPRHBM). The install jobs are still being monitored for the original MPI
-failure and later compilation failures; resolver success is not install success.
+(DSPRHBM). Both jobs installed COSTA, COSMA, SpLA, libvori and LIBXSMM,
+passing the original MPI fault, but failed in Libint (`1382045`: 28m08s,
+`1382054`: 29m00s, exit `3:0`).
 The MPI repair passes 31 Spack tests and the complete 231-test suite.
+
+Install repair 2 addresses the exact subsequent failure: Libint 2.6.0's
+Makefile hardcodes `/bin/rm`, while the minimal SIF contains only bash/sh
+under `/bin` and the read-only node tools are bound under `/usr/bin`. Both
+logs show `make[3]: /bin/rm: No such file or directory` / Error 127. The
+terminal filesystems are clean with about 2.8 GiB free; this was not ENOSPC,
+OOM, or a compiler incompatibility. Spack's recorded build environment still
+has `-O3 -march=native -mtune=native` in `SPACK_CFLAGS`, `SPACK_CXXFLAGS` and
+`SPACK_FFLAGS` (the visible Libint command invokes the compiler wrapper).
+
+Jobs `1383003` (16V100) and `1383002` (DSPRHBM) use immutable snapshot
+`diagnostics/cp2k-spack-install-20260918-v3`. They clone the respective
+**terminal** MPI-repaired native checkpoint, verify its SHA and exact repaired
+lock, bind `/usr/bin:/bin:ro`, and resume the concrete installation with no
+reconcretization or source/feature changes. Completed independent dependencies
+remain reusable only on the same native partition. Failed images are untouched.
+Only the new unmounted verified clones are expanded from 4 to 16 GiB to
+provide headroom for generated Libint code and PLUMED objects; this is not
+presented as the failure cause. Results are under
+`runs/cp2k-spack-install-20260918-c-<PARTITION>/results`.
+Each receipt records `diagnosed_repairs_used: 2` and
+`incidental_retries_used: 0`; no further diagnosed installation retry is
+authorized in this chain. The repair passes 33 Spack-focused tests and all
+234 controller tests. These jobs are still running, not accepted dependencies.
 
 Validation for this added seed/install implementation: 28 Spack-focused
 tests and the complete 228-test controller suite passed, along with shell

@@ -136,6 +136,46 @@ class SpackInstallTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'exhausted'):
             install.submit('native-probe', 'third-repair', 'repair-1', 'another failure')
 
+    def test_bin_tools_repair_clones_only_terminal_mpi_checkpoint_without_relocking(self):
+        self.submit()
+        with patch.object(install.subprocess, 'check_output', side_effect=[
+                '456|FAILED|\n', '123|COMPLETED|0:0|\n', '789\n']), \
+                patch.object(install.subprocess, 'run'), contextlib.redirect_stdout(io.StringIO()):
+            install.submit('native-probe', 'repair-1', 'install-pilot', 'missing HCOLL')
+        failed = self.root / 'runs/repair-1'
+        (failed / 'work.ext3').write_bytes(b'MPI-repaired-native-checkpoint')
+        lock = failed / 'results/spack.lock'
+        lock.write_text('MPI-repaired-concrete-lock')
+        (failed / 'results/repaired-lock.sha256').write_text(install.checksum(lock) + '\n')
+        with patch.object(install.subprocess, 'check_output', side_effect=[
+                '789|FAILED|\n', '123|COMPLETED|0:0|\n', '999\n']), \
+                patch.object(install.subprocess, 'run'), contextlib.redirect_stdout(io.StringIO()):
+            install.submit('native-probe', 'repair-2', 'repair-1', 'Libint hardcodes /bin/rm', 'bin-tools')
+        repaired = self.root / 'runs/repair-2'
+        request = json.loads((repaired / 'request.json').read_text())
+        self.assertEqual(request['retry_policy']['diagnosed_repairs_used'], 2)
+        self.assertEqual(request['source_run'], 'repair-1')
+        self.assertEqual(request['lock_sha256'], install.checksum(lock))
+        self.assertEqual(request['source_overlay_sha256'], install.checksum(failed / 'work.ext3'))
+        script = (repaired / 'job.sbatch').read_text()
+        self.assertIn('/usr/bin:/bin:ro', script)
+        self.assertIn(str(failed / 'work.ext3'), script)
+        self.assertIn('bin-tools', script)
+        self.assertIn('/usr/sbin/resize2fs', script)
+        self.assertLess(script.index('sha256sum --check'), script.index('/usr/sbin/resize2fs'))
+        self.assertLess(script.index('/usr/sbin/resize2fs'), script.index('apptainer exec'))
+        self.assertEqual(request['cloned_overlay_capacity_bytes'], 16 * 1024**3)
+        self.assertNotIn('--cpus-per-task', script)
+        self.assertNotIn('--mem=', script)
+
+    def test_bin_tools_repair_rejects_wrong_parent_or_unbound_repair_mode(self):
+        with self.assertRaisesRegex(ValueError, 'failed parent'):
+            install.submit('native-probe', 'unbound', repair_mode='bin-tools')
+        self.submit()
+        with patch.object(install.subprocess, 'check_output', return_value='456|FAILED|\n'):
+            with self.assertRaisesRegex(ValueError, 'MPI-repaired checkpoint'):
+                install.submit('native-probe', 'wrong-parent', 'install-pilot', 'missing /bin/rm', 'bin-tools')
+
 
 if __name__ == '__main__':
     unittest.main()

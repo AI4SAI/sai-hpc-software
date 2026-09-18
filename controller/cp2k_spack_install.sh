@@ -4,7 +4,14 @@ set -euo pipefail
 partition=${1:?partition required}
 expected_lock=${2:?verified lock SHA256 required}
 repair_mode=${3:-none}
-[[ "$repair_mode" == none || "$repair_mode" == mpi-runtime ]]
+[[ "$repair_mode" == none || "$repair_mode" == mpi-runtime || "$repair_mode" == bin-tools ]]
+if [[ "$repair_mode" == bin-tools ]]; then
+  for tool in rm cp mv mkdir ln; do
+    [[ -x "/bin/$tool" ]]
+    cmp -s "/bin/$tool" "/usr/bin/$tool"
+  done
+  echo 'READONLY_BIN_TOOLS_READY: native checkpoint, versions and features unchanged'
+fi
 case "$partition" in
   16V100) target=16v100-avx2 ;;
   DSPRHBM) target=dsprhbm ;;

@@ -10,14 +10,19 @@ from cp2k_spack_seed import checksum
 from remote_controller import container_command, safe_name
 
 
-def submit(probe_id, run_id, repair_of=None, diagnosis=None):
+def submit(probe_id, run_id, repair_of=None, diagnosis=None, repair_mode=None):
     root = Path('/home/stardust/sai-hpc-software')
     probe = root / 'runs' / safe_name(probe_id)
     run = root / 'runs' / safe_name(run_id)
     parent = json.loads((probe / 'request.json').read_text())
     repairs = 0
     failed_run = None
-    repair_mode = 'none'
+    if repair_mode is not None and not repair_of:
+        raise ValueError('repair mode requires a failed parent')
+    repair_mode = repair_mode or ('mpi-runtime' if repair_of else 'none')
+    if repair_mode not in {'none', 'mpi-runtime', 'bin-tools'}:
+        raise ValueError('unknown install repair mode')
+    previous = None
     if repair_of:
         if not diagnosis:
             raise ValueError('install repair requires a diagnosis')
@@ -35,7 +40,8 @@ def submit(probe_id, run_id, repair_of=None, diagnosis=None):
             raise ValueError('install repair parent is not a terminal failure')
         if (failed_run / 'repair-child.json').exists():
             raise ValueError('install repair already submitted')
-        repair_mode = 'mpi-runtime'
+        if repair_mode == 'bin-tools' and previous.get('repair_mode') != 'mpi-runtime':
+            raise ValueError('bin-tools repair requires the MPI-repaired checkpoint')
     partition = parent['partition']
     if partition not in ('16V100', 'DSPRHBM'):
         raise ValueError('unsupported native pilot partition')
@@ -49,34 +55,45 @@ def submit(probe_id, run_id, repair_of=None, diagnosis=None):
             success.get('installed') is not False or not success.get('fetched')):
         raise ValueError('no successful independent native fetch evidence')
     control = Path(__file__).resolve().parent
+    recipe_parent = previous if repair_mode == 'bin-tools' else parent
     for name in ('cp2k_spack.py', 'cp2k_spack_environment.py', 'cp2k_spack_native.py', 'environment.sh'):
-        if repair_of and name == 'cp2k_spack_environment.py':
+        if repair_mode == 'mpi-runtime' and name == 'cp2k_spack_environment.py':
             # The in-container repair guard only permits adding the external
             # MPI environment. All source versions/features must remain equal.
             continue
-        if checksum(control / name) != parent.get('scripts', {}).get(name):
+        if checksum(control / name) != recipe_parent.get('scripts', {}).get(name):
             raise ValueError('dependency recipe changed after native probe: ' + name)
     # The probe receipt is tied to its scripts and copied result lock; the
     # install stage additionally checks the exact cloned overlay and its lock.
     if parent.get('purpose') != 'native-concretization-and-mirror-fetch-only':
         raise ValueError('wrong parent operation')
-    overlay = probe / 'work.ext3'
+    source_run = failed_run if repair_mode == 'bin-tools' else probe
+    overlay = source_run / 'work.ext3'
     if overlay.resolve() != overlay or not overlay.is_file():
         raise ValueError('invalid successful probe overlay')
     if (not repair_of and (probe / 'install-child.json').exists()) or run.exists():
         raise ValueError('dependency pilot already submitted')
     source_hash = checksum(overlay)
-    lock_hash = checksum(probe / 'results/spack.lock')
+    lock_hash = checksum(source_run / 'results/spack.lock')
+    if repair_mode == 'bin-tools':
+        if lock_hash != (source_run / 'results/repaired-lock.sha256').read_text().strip():
+            raise ValueError('MPI-repaired checkpoint lock changed')
     run.mkdir()
     for name in ('runtime', 'results', 'apptainer-cache'):
         (run / name).mkdir()
+    extra_binds = [(root / 'cache/spack', '/input/spack'),
+                   ('/var/lib/dpkg', '/var/lib/dpkg'), ('/etc/os-release', '/etc/os-release'),
+                   ('/etc/alternatives', '/etc/alternatives')]
+    if repair_mode == 'bin-tools':
+        # The minimal base has only bash/sh under /bin. Libint's makefiles
+        # hard-code /bin/rm. Bind the existing node tools read-only; do not
+        # patch the pinned source or replace the live/failed base image.
+        extra_binds.append(('/usr/bin', '/bin'))
     command = container_command(
         root / 'containers/base/minimal-v1.sif',
         ['/bin/bash', '/control/cp2k_spack_install.sh', partition, lock_hash, repair_mode],
         overlay=run / 'work.ext3', control=control, jobs=8, gpu=partition == '16V100',
-        extra_binds=[(root / 'cache/spack', '/input/spack'),
-                     ('/var/lib/dpkg', '/var/lib/dpkg'), ('/etc/os-release', '/etc/os-release'),
-                     ('/etc/alternatives', '/etc/alternatives')])
+        extra_binds=extra_binds)
     command[2:2] = ['--bind', str(run / 'results') + ':/results:rw']
     lines = ['#!/bin/bash', '#SBATCH --job-name=cp2k-spack-deps',
              '#SBATCH --partition=' + partition,
@@ -93,13 +110,20 @@ def submit(probe_id, run_id, repair_of=None, diagnosis=None):
               'export APPTAINER_CACHEDIR=' + shlex.quote(str(run / 'apptainer-cache')),
               'test ! -e ' + shlex.quote(str(run / 'work.ext3')),
               shlex.join(['cp', '--sparse=always', '--reflink=auto', '--', str(overlay), str(run / 'work.ext3')]),
-              shlex.join(['printf', '%s  %s\n', source_hash, str(run / 'work.ext3')]) + ' | sha256sum --check --status',
-              shlex.join(command)]
+              shlex.join(['printf', '%s  %s\n', source_hash, str(run / 'work.ext3')]) + ' | sha256sum --check --status']
+    if repair_mode == 'bin-tools':
+        # The 4-GiB image was sized for source/solver preparation, not all
+        # generated Libint code plus PLUMED objects. Grow only the verified,
+        # unmounted NEW clone; this is headroom, not the diagnosed failure.
+        lines += [shlex.join(['/usr/sbin/e2fsck', '-pf', str(run / 'work.ext3')]) + ' || test "$?" -eq 1',
+                  shlex.join(['/usr/sbin/resize2fs', str(run / 'work.ext3'), '16G'])]
+    lines.append(shlex.join(command))
     script = run / 'job.sbatch'
     script.write_text('\n'.join(lines) + '\n')
     subprocess.run(['bash', '-n', str(script)], check=True)
     request = {'purpose': 'native-dependency-install-pilot-not-cp2k-build',
                'probe_run': probe_id, 'probe_job': old_job, 'run_id': run_id, 'partition': partition,
+               'source_run': source_run.name,
                'source_overlay_sha256': source_hash, 'lock_sha256': lock_hash,
                'script_sha256': checksum(script),
                'scripts': {p.name: checksum(p) for p in control.iterdir() if p.is_file()},
@@ -108,6 +132,8 @@ def submit(probe_id, run_id, repair_of=None, diagnosis=None):
                'status': 'prepared'}
     if repair_of:
         request.update(repair_of=repair_of, diagnosis=diagnosis, repair_mode=repair_mode)
+    if repair_mode == 'bin-tools':
+        request['cloned_overlay_capacity_bytes'] = 16 * 1024**3
     request_path = run / 'request.json'
     request_path.write_text(json.dumps(request, indent=2) + '\n')
     lineage = failed_run / 'repair-child.json' if failed_run else probe / 'install-child.json'
@@ -131,5 +157,6 @@ if __name__ == '__main__':
     parser.add_argument('run_id')
     parser.add_argument('--repair-of')
     parser.add_argument('--diagnosis')
+    parser.add_argument('--repair-mode', choices=('mpi-runtime', 'bin-tools'))
     args = parser.parse_args()
-    submit(args.probe_run, args.run_id, args.repair_of, args.diagnosis)
+    submit(args.probe_run, args.run_id, args.repair_of, args.diagnosis, args.repair_mode)
