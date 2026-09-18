@@ -77,6 +77,7 @@ cmake -S /workspace/lammps/cmake -B /workspace/lammps-build \
   -DBUILD_SHARED_LIBS=ON -DBUILD_MPI=ON -DBUILD_OMP=ON \
   -DPKG_KOKKOS=ON -DKokkos_ENABLE_CUDA=ON -DKokkos_ENABLE_OPENMP=ON \
   -DKokkos_ARCH_VOLTA70=ON -DCMAKE_CXX_COMPILER=/workspace/lammps/lib/kokkos/bin/nvcc_wrapper \
+  '-DCMAKE_CXX_LINKER_LAUNCHER=/usr/bin/python3;/control/md_link_launcher.py' \
   -DFFT_KOKKOS=CUFFT \
   -DPKG_GPU=ON -DGPU_API=cuda -DGPU_ARCH=sm_70 -DCUDA_BUILD_MULTIARCH=OFF \
   -DCUDA_MPS_SUPPORT=ON -DCUDPP_OPT=OFF \
