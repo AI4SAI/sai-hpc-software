@@ -40,11 +40,16 @@ fi
 # Revalidate the native architecture, features and externals on the new node.
 spack_run -e /workspace/env python /control/cp2k_spack_native.py fetch "$partition" "$native_target" "$native_os"
 cp /workspace/env/spack.yaml /workspace/env/spack.lock /results/
+install_recovery_args=()
 if [[ "$repair_mode" == libint-export ]]; then
   spack_run -e /workspace/env python /control/cp2k_spack_libint_repair.py
+  # --keep-stage preserves output after success; it does NOT preserve the
+  # input stage. Default install restaging would delete this audited patch.
+  install_recovery_args+=(--dont-restage)
+  echo CP2K_SPACK_PRESERVE_REPAIRED_STAGE
 fi
 date -u '+CP2K_SPACK_INSTALL_START %FT%TZ'
-spack_run -e /workspace/env install --only-concrete --no-cache --fail-fast --show-log-on-error --keep-stage -j "${BUILD_JOBS:-8}"
+spack_run -e /workspace/env install --only-concrete --no-cache --fail-fast --show-log-on-error --keep-stage "${install_recovery_args[@]}" -j "${BUILD_JOBS:-8}"
 printf '%s  %s\n' "$expected_lock" /workspace/env/spack.lock | sha256sum --check --status
 spack_run -e /workspace/env python /control/cp2k_spack_install_evidence.py "$partition"
 date -u '+CP2K_SPACK_INSTALL_COMPLETE %FT%TZ'

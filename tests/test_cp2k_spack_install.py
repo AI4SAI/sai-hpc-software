@@ -117,6 +117,20 @@ class SpackInstallTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'more than'):
                 check_repair(old, bad)
 
+    def test_libint_source_repair_is_not_deleted_by_install_restage(self):
+        script = (self.control / 'cp2k_spack_install.sh').read_text()
+        start = script.index('install_recovery_args=()')
+        end = script.index("date -u '+CP2K_SPACK_INSTALL_START", start)
+        guarded = script[start:end]
+        self.assertIn('if [[ "$repair_mode" == libint-export ]]', guarded)
+        self.assertLess(guarded.index('cp2k_spack_libint_repair.py'),
+                        guarded.index('install_recovery_args+=(--dont-restage)'))
+        install_line = next(line for line in script.splitlines()
+                            if line.startswith('spack_run -e /workspace/env install '))
+        self.assertIn('"${install_recovery_args[@]}"', install_line)
+        self.assertIn('--keep-stage', install_line)
+        self.assertNotIn('--skip-patch', script)
+
     def test_install_repair_preserves_lineage_and_budget(self):
         first = self.submit()
         with patch.object(install.subprocess, 'check_output', side_effect=[

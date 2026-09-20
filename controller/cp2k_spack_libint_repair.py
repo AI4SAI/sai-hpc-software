@@ -21,6 +21,13 @@ def repair_export(text):
     return ''.join(lines)
 
 
+def validate_patch_checkpoint(stage):
+    # Spack's do_patch() may restage even with --dont-restage when a previous
+    # patch failed. Only the diagnosed, successfully patched stage is reusable.
+    if not (stage / '.spack_patched').is_file() or (stage / '.spack_patch_failed').exists():
+        raise ValueError('expected successfully patched Libint checkpoint')
+
+
 def main():
     import spack.environment as ev
     env = ev.active_environment()
@@ -35,6 +42,7 @@ def main():
     stage = Path(spec.package.stage.source_path).resolve(strict=True)
     if not stage.is_relative_to('/workspace/spack-stage'):
         raise ValueError('source escaped the file-backed stage')
+    validate_patch_checkpoint(stage)
     path = stage / 'export/Makefile'
     before = path.read_text()
     after = repair_export(before)

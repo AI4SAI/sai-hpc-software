@@ -2,9 +2,10 @@ import sys
 from pathlib import Path
 import unittest
 import subprocess
+import tempfile
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'controller'))
-from cp2k_spack_libint_repair import ORIGINAL, REPAIRED, repair_export
+from cp2k_spack_libint_repair import ORIGINAL, REPAIRED, repair_export, validate_patch_checkpoint
 
 
 class LibintExportRepairTests(unittest.TestCase):
@@ -42,6 +43,17 @@ class LibintExportRepairTests(unittest.TestCase):
         for required in ('GENERATE_REQUIRED', 'CONFIGURE_REQUIRED', 'PREPROCESS_REQUIRED'):
             self.assertIn(required, result.stdout)
         self.assertNotIn('-czf', result.stdout)
+
+    def test_checkpoint_cannot_trigger_spacks_failed_patch_restage(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            stage = Path(tmp)
+            with self.assertRaises(ValueError):
+                validate_patch_checkpoint(stage)
+            (stage / '.spack_patched').touch()
+            validate_patch_checkpoint(stage)
+            (stage / '.spack_patch_failed').touch()
+            with self.assertRaises(ValueError):
+                validate_patch_checkpoint(stage)
 
 
 if __name__ == '__main__':
