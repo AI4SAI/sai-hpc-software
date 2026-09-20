@@ -3,6 +3,41 @@
 This is an implementation checklist, not a release acceptance result. The
 `feat/cp2k-parity-benchmarks` branch is not yet a four-target accepted release.
 
+## Recovery update (2026-09-20)
+
+After connectivity returned, jobs `1383003` and `1383002` were confirmed FAILED
+(exit 3:0, 2:00:41 and 2:40:05). They passed the prior MPI and `/bin/rm`
+problems and installed Cython, HDF5 and PLUMED. Both stopped at Libint's
+`make export`: GNU tar reported `generated: file changed as we read it`.
+The filesystem/concurrency cause of that warning is not yet established.
+
+The user then authorized at most six **additional** attempts per software,
+minimizing retries. The remote ledger is
+`diagnostics/recovery-20260920/attempts/cp2k`; each newly submitted native
+partition job counts separately. Historical two-repair receipts are retained.
+
+Read-only inspection of the pinned Spack recipe and failed source trees shows
+that Spack builds directly in `generated/`, never consumes `generated.tgz`,
+and only removes the upstream directory-deletion suffix despite its comment
+about skipping tarball creation. `cp2k_spack_libint_repair.py` removes only the
+`tgz` prerequisite from one exact export rule. Code generation, preprocessing,
+configuration, Fortran/shared features and installation remain required.
+This is a recorded **local source patch**, with before/after hashes, not a
+claim of pristine upstream or a binary-cache hit. Tar errors are not ignored.
+
+Attempt 1, job `1415685`, runs on DSPRHBM using a fresh clone of the terminal
+checkpoint, checked before first mount. Snapshot:
+`diagnostics/cp2k-libint-recovery-20260920-01`; run:
+`runs/cp2k-libint-recovery-20260920-DSPRHBM`. The existing exact lock and
+native ABI/features are retained. It has 8 CPUs, 28 GiB and a 12-hour limit
+(rush-cpu allows 48 hours). The GPU counterpart is not yet resubmitted.
+
+Local validation: 236 tests passed before the additional parallel-export
+test, and all three Libint patch tests passed afterward. The `make -n -j8`
+test proves the modified target schedules generation/preprocessing/configure
+but not tar. Shell syntax and Python compile checks passed. This remains a
+dependency-install pilot, not CP2K native/scientific/performance acceptance.
+
 ## Current blockers and Spack cache (2026-09-17)
 
 The latest daily run `35196109864` did not produce an accepted candidate:

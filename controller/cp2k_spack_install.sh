@@ -4,8 +4,8 @@ set -euo pipefail
 partition=${1:?partition required}
 expected_lock=${2:?verified lock SHA256 required}
 repair_mode=${3:-none}
-[[ "$repair_mode" == none || "$repair_mode" == mpi-runtime || "$repair_mode" == bin-tools ]]
-if [[ "$repair_mode" == bin-tools ]]; then
+[[ "$repair_mode" == none || "$repair_mode" == mpi-runtime || "$repair_mode" == bin-tools || "$repair_mode" == libint-export ]]
+if [[ "$repair_mode" == bin-tools || "$repair_mode" == libint-export ]]; then
   for tool in rm cp mv mkdir ln; do
     [[ -x "/bin/$tool" ]]
     cmp -s "/bin/$tool" "/usr/bin/$tool"
@@ -40,6 +40,9 @@ fi
 # Revalidate the native architecture, features and externals on the new node.
 spack_run -e /workspace/env python /control/cp2k_spack_native.py fetch "$partition" "$native_target" "$native_os"
 cp /workspace/env/spack.yaml /workspace/env/spack.lock /results/
+if [[ "$repair_mode" == libint-export ]]; then
+  spack_run -e /workspace/env python /control/cp2k_spack_libint_repair.py
+fi
 date -u '+CP2K_SPACK_INSTALL_START %FT%TZ'
 spack_run -e /workspace/env install --only-concrete --no-cache --fail-fast --show-log-on-error --keep-stage -j "${BUILD_JOBS:-8}"
 printf '%s  %s\n' "$expected_lock" /workspace/env/spack.lock | sha256sum --check --status
