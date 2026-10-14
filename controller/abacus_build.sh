@@ -56,10 +56,20 @@ if [[ "$target" != dsprhbm ]]; then
     /workspace/source/source/source_hsolver/kernels/cuda/diag_cusolvermp.cu
 fi
 cmake -S /workspace/source -B /workspace/build "${opts[@]}"
+if [[ "$full_profile" == 1 ]]; then
+  abacus_check_site_mpi /workspace/build/CMakeCache.txt
+  abacus_check_site_gpu /workspace/build/CMakeCache.txt
+fi
 cmake --build /workspace/build --parallel "$BUILD_JOBS"
 cmake --install /workspace/build
 test -x "$INSTALL_PREFIX/bin/abacus"
-"$INSTALL_PREFIX/bin/abacus" --info
+# The executable is checked before container_entry.sh writes runtime-env.sh.
+# Keep this probe on the final prefix: ABACUS installs libcnpy and other
+# in-prefix DSOs under lib/, while the build shell deliberately starts with a
+# clean LD_LIBRARY_PATH.  Without this temporary path the build is complete,
+# but the post-install probe falsely reports a missing library.
+abacus_probe_ld="$INSTALL_PREFIX/lib:$INSTALL_PREFIX/lib64:$INSTALL_PREFIX/dependencies/full/lib:$INSTALL_PREFIX/dependencies/nep/lib:$INSTALL_PREFIX/dependencies/libtorch/lib:${LD_LIBRARY_PATH:-}"
+LD_LIBRARY_PATH="$abacus_probe_ld" "$INSTALL_PREFIX/bin/abacus" --info
 
 # Keep a small scientific case inside the single SIF for end-to-end MPI
 # acceptance. The runtime controller copies only these input data to its run

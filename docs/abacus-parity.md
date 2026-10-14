@@ -27,8 +27,129 @@ TensorFlow, PEXSI or cnpy. Those are **not claimed enabled** by this parity reci
 DeePMD modules exist on SAI, but compatibility and additional scientific tests
 would need separate validation. Presence checks do not prove hybrid-functional,
 ML model or NEP numerical behavior; those methods need suitable reference cases.
-DFT-D4 is a candidate for later reuse of the native dependencies being prepared
-for CP2K, provided ABACUS's required API/version is confirmed.
+An opt-in, experimental full profile is now available in
+`controller/abacus_full_profile.json` (disabled by default). Its first beta9
+16V100 attempt is separate from the established parity recipe. See below;
+neither the profile nor a successful compilation certifies all scientific methods.
+
+## JSON API and experimental full profile
+
+The builder inspects the upstream declared CMake option: beta9 uses
+`ENABLE_RAPIDJSON`, while modern develop uses `ENABLE_JSON` with pinned
+nlohmann-json 3.12.0. It never passes both flags: upstream rejects the deprecated
+cache key even if set to OFF. Verification requires the selected option ON and
+the corresponding `--info` feature present.
+
+For a **new frozen controller only**, enabling the full profile adds DFT-D4 4.2.0,
+PEXSI 2.0.0 (SuperLU_DIST 7.2.0, bundled ParMETIS 4.0.3/METIS/GKlib), cnpy,
+single-precision FFTW and two-center FFT. All downloaded archives are locked by
+SHA-256, extracted and compiled inside the overlay at the final `/opt/apps`
+prefix. DFT-D4's official release includes its offline subproject sources.
+
+The 2026-09-21 full-profile recovery fixes the pinned DFT-D4 package exports:
+quoted variable names in `mctc-lib`, `multicharge` and DFT-D4 OpenMP/JSON
+conditions are literals under CMP0054 NEW, so their dependency lookups were
+skipped. The overlay applies an exact, fail-closed template repair without
+disabling OpenMP. `multicharge`'s custom LAPACK finder also needs to report
+`custom-lapack_FOUND` based on the actual `LAPACK::LAPACK` target. DFT-D4
+dependency methods are explicitly pinned to installed local CMake packages.
+`test-drive` is installed from the same archive before the other subprojects;
+jonquil uses `ENABLE_TESTING`, not `BUILD_TESTING`, to disable its tests.
+
+Local preflight with CMake 3.31.6/GNU Fortran 13.3 reproduced the unpatched
+`mstore` OpenMP-target failure. The repaired chain built and passed all six
+DFT-D4 tests; a separate C/Fortran CMake consumer restored OpenMP from the
+installed packages, linked and ran the DFT-D4 C API (version 40200). This is
+dependency validation, **not** proof that the full ABACUS GPU/ML candidate
+has built or passed scientific acceptance. Recovery jobs 1424390 (cancelled
+after an attached diagnostic step violated site GPU/CPU resource rules) and
+1424486 (failed at unpatched mstore configuration) both consume attempts,
+bringing the ABACUS total to five of the six authorized recovery submissions.
+The missing shared receipts for those two direct submissions were reconciled
+against their request files and Slurm accounting without changing the old
+requests. The sixth submission was job `1431569`, run
+`abacus-beta9-full-20260921-06-16v100`, using frozen controller
+`abacus-beta9-full-20260921-r6/controller` and recipe
+`36830fb8ee6a1cb7fdb1f83263dd87d5be38e02774d47c2627eeb0a65f70280f`.
+It uses four compiler workers and a 32 GiB sparse overlay within the unchanged
+one-GPU/four-hour allocation. It failed after 51m21s at the main ABACUS MPI
+configuration, after PEXSI and the repaired DFT-D4 chain installed successfully.
+Read-only inspection of its inactive overlay showed Conda `MPI_*_LIBRARY`,
+headers and wrappers in `CMakeCache.txt`, mixed with the site's Open MPI link
+paths; `CMakeConfigureLog.yaml` reported unresolved `opal_common_ofi_*` symbols.
+The cause was the ML prefix preceding site dependencies in `CMAKE_PREFIX_PATH`,
+whose discovery priority is higher than PATH and FindMPI's MPI_HOME hints.
+`abacus_site_mpi.sh` now puts site dependencies first, pins C/C++/Fortran MPI
+wrappers, headers, libraries and mpiexec to the module-resolved MPI_HOME, and
+checks the cache and real FindMPI probe results before compilation. It does not
+force a successful probe. A local CMake 3.31.6 discovery regression reproduces
+the old precedence problem and verifies the corrected site selection while
+keeping ML-specific packages discoverable; this is not cluster MPI acceptance.
+
+The user explicitly granted **six more ABACUS attempts**, for a total of 12.
+The additive authorization is
+`diagnostics/recovery-20260920/authorizations/abacus-20260921-extra6.json`;
+the original grant and six old receipts remain unchanged. Other software limits
+are unchanged. Every new build, probe or acceptance job consumes the same budget.
+`recovery_budget.py status AUTHORITY` reports the shared count. Future diagnosed
+beta9 retries use `submit_abacus_recovery.py NEW_RUN --previous-run FAILED_RUN
+--reason REASON` from a new frozen controller. It checks the predecessor and
+local inputs, runs scheduler syntax/resource preflight, reserves a ledger slot,
+submits held, records the job ID, then releases it. An ambiguous submission blocks
+further claims until reconciled; never blindly repeat a submission. No automatic
+publication is authorized. Inspect only scheduler accounting and existing logs
+for active builds; do not attach extra Slurm diagnostic steps.
+
+Attempt 7 was submitted as job `1436709`, run
+`abacus-beta9-full-20260921-07-16v100`, from frozen
+`abacus-beta9-full-20260921-r7/controller`. Recipe SHA-256 is
+`52b6f941c42643a0822f526f4482a426ec1a3a108c669e2389787a13cd39f7a2`;
+the final install prefix is
+`/opt/apps/abacus/abacus-release-v3.11.0-beta9-g149723287702-r52b6f941c426/16V100`.
+The held-job receipt was saved before release; Slurm then reported RUNNING on
+`16v100n74`. Five authorized attempts remain. The frozen `preflight/` contains
+the prior CMake logs, diagnosis, and 73 passing local regression tests. Submission
+and a running job do not establish build or scientific acceptance.
+
+Attempt 7 subsequently failed after 1h09m49s at the final executable link.
+It passed `SITE_MPI_CONFIG_VERIFIED` and compiled all ABACUS objects. Its
+NCCL cache/library instead came from DeepMD's Conda NCCL 2.28.9; that DSO
+lacks `ncclPutSignal`, `ncclWaitSignal` and `ncclCommQueryProperties` required
+by site cuBLASMp. Read-only `nm` inspection confirmed the module-selected
+NCCL-SAI 2.29.3 exports all three. CUDA compiler/toolkit discovery was also
+contaminated by the broad Conda prefix. A new `abacus_site_gpu.sh` explicitly
+selects module NCCL headers/library and CUDA compiler/root, prioritizes their
+prefixes, checks the real NCCL symbols before dependency builds and verifies
+the main cache before compilation. No feature or link error is waived.
+
+Attempt 8 is job `1438340`, run `abacus-beta9-full-20260921-08-16v100`, frozen
+`abacus-beta9-full-20260921-r8/controller`, recipe
+`3b1bdfaad56ebd3a47b186d221cd04f910a2282775656f28e90f174104a5f34a`.
+It started on `16v100n79` with the unchanged 1-GPU/4-worker/4-hour profile;
+four authorized submissions remain. The final prefix is
+`/opt/apps/abacus/abacus-release-v3.11.0-beta9-g149723287702-r3b1bdfaad56e/16V100`.
+Its `preflight/` retains the old CMake cache/link command, diagnosis and 110
+passing focused regressions, including local real CMake discovery and small
+ELF missing-symbol/link fixtures. These are not real NCCL GPU or scientific
+acceptance. The preceding r7 controller also passed all 283 local tests.
+
+The full profile reuses the exact read-only site root
+`/opt/apps/conda_env/deepmd-kit-3.1.2` for DeePMD, its matching LibTorch 2.8.0,
+and TensorFlow 2.19.1; it does not mix these with bundled LibTorch 2.1.2.
+The legacy DeepMD module activates Conda and prepends its own MPI, so this
+profile does not load that module. Site auto modules still select the partition
+MPI; the runtime explicitly keeps that MPI first and checks its actual loader
+path. The native manifest declares the exact external ML root, not all `/opt/apps`.
+
+"Full" means the compatible scientific backends on x86/NVIDIA. Mutually exclusive
+ROCm/DCU/DSP/SW/KML backends, debug/testing instrumentation and the alternative
+libm optimization are not enabled. No PLUMED interface exists in these ABACUS
+sources. The existing `/opt/apps/plumed/plumed-2.10.1` is an independent site
+installation, not an ABACUS dependency.
+
+Keep this profile experimental until its build, real model execution, MPI/GPU,
+scientific and native-copy checks pass. Never modify a submitted controller or
+replace an installed beta9 version with an unvalidated candidate.
 
 ## Dependencies and containment
 
@@ -79,7 +200,7 @@ target's `dependency_isa`, not from the target name's suffix.
 
 ## Feature and exported-tree gates
 
-The installed tree is `/opt/software/abacus/<track>/<build_id>/<PARTITION>`.
+The installed tree is `/opt/apps/abacus/abacus-<track>-<build_id>/<PARTITION>`.
 The shared release identity includes the upstream commit date before its SHA
 for development builds; CPU ISA and dependency ISA remain separate fields.
 Optional runtime libraries reside under that same prefix's `dependencies/` directory. ABACUS uses

@@ -80,6 +80,7 @@ def main():
     recipe = (["container_entry.sh", "environment.sh", "abacus_build.sh",
                "gpu_feature_controller.py", "gpu_feature_runtime.sh",
                "abacus_dependencies.py", "abacus_dependencies.sh",
+               "abacus_full_profile.json", "abacus_full_dependencies.sh", "abacus_site_mpi.sh", "abacus_site_gpu.sh",
                "abacus_dependency_lock.json", "abacus_features.py", "abacus_benchmark.py",
                "native_module.py", "export_native.py"]
               if software == "abacus" else

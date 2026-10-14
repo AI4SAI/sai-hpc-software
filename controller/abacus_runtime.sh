@@ -75,6 +75,12 @@ args=(apptainer exec --cleanenv --no-home
       --no-mount bind-paths,home,cwd,tmp,hostfs --pwd /work)
 if [[ "$gpu" == true ]]; then args+=(--nv); fi
 for path in /usr /lib /lib64 /opt/devtools; do args+=(--bind "$path:$path:ro"); done
+ml_runtime_roots=$(python3 "$launcher_control/abacus_dependencies.py" runtime-roots)
+while IFS= read -r path; do
+  [[ -n "$path" ]] || continue
+  [[ "$path" == /opt/apps/conda_env/deepmd-kit-3.1.2 && -d "$path" ]] || exit 2
+  args+=(--bind "$path:$path:ro")
+done <<< "$ml_runtime_roots"
 args+=(--bind "$workdir:/work:rw" --bind "$rank_runtime:/runtime:rw"
       --bind "$host_tmp:$host_tmp:rw" --env "TMPDIR=$host_tmp"
       --env "OMP_NUM_THREADS=${OMP_NUM_THREADS:-1}")

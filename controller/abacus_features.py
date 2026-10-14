@@ -11,14 +11,31 @@ from release_contract import validate_identity
 from source_cache import checksum
 
 
+def ml_roots(lock):
+    profile = lock.get('full_features')
+    if not profile:
+        return []
+    root = profile['ml_root']
+    if root != '/opt/apps/conda_env/deepmd-kit-3.1.2':
+        raise ValueError('unreviewed external ML dependency')
+    return [root]
+
+
 def check_features(info, cache, dependencies, target, prefix, lock):
     """The observed union baseline is mandatory; missing optional libs are errors."""
     gpu = target != "dsprhbm"
     labels = lock["required_info"] + (lock["required_gpu_info"] if gpu else [])
     options = lock["required_options"] + (lock["required_gpu_options"] if gpu else [])
+    config = dict(re.findall(r"^([^#/:=]+):[^=]+=([^\n]*)$", cache, re.MULTILINE))
+    json_backends = lock.get('json_backends', {})
+    if json_backends:
+        selected = [option for option in json_backends if option in config]
+        if len(selected) != 1:
+            raise ValueError('ABACUS feature parity failed: exactly one JSON backend required')
+        options = options + selected
+        labels = labels + [json_backends[selected[0]]]
     missing = [label for label in labels
                if not re.search(rf"^{re.escape(label)}:\s+yes\b", info, re.MULTILINE)]
-    config = dict(re.findall(r"^([^#/:=]+):[^=]+=([^\n]*)$", cache, re.MULTILINE))
     missing += [name for name in options if config.get(name, "").upper() not in ("ON", "1", "TRUE", "YES")]
     if not gpu and config.get("USE_CUDA", "").upper() not in ("OFF", "0", "FALSE", "NO"):
         missing.append("CPU target must disable USE_CUDA")
@@ -29,6 +46,13 @@ def check_features(info, cache, dependencies, target, prefix, lock):
         "libtorch_cpu.so": str(prefix / "dependencies/libtorch/lib") + "/",
         "libnep.so": str(prefix / "dependencies/nep/lib") + "/",
     }
+    external_ml = ml_roots(lock)
+    if external_ml:
+        expected_libraries.update({name: external_ml[0] + '/lib/' for name in
+                                  ('libtorch_cpu.so', 'libdeepmd_c.so', 'libtensorflow_cc.so')})
+        # The Conda environment also carries MPI; it must never shadow SAI MPI.
+        isa = 'avx512' if target in ('dsprhbm', '4v100-avx512') else 'avx2'
+        expected_libraries['libmpi.so'] = f'/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-{isa}/lib/'
     if gpu:
         expected_libraries.update({"libcusolverMp.so": "/opt/devtools/nvidia/mp_libs/lib/",
                                    "libcublasmp.so": "/opt/devtools/nvidia/mp_libs/lib/",
@@ -48,7 +72,7 @@ def check_features(info, cache, dependencies, target, prefix, lock):
             "scope": "compile/link presence; not a scientific validation of every optional method"}
 
 
-def check_dynamic(dynamic, binary, prefix):
+def check_dynamic(dynamic, binary, prefix, external_roots=()):
     """Inspect actual loader tags, not harmless source paths in debug metadata."""
     result = []
     for tag, value in re.findall(r"\((NEEDED|RPATH|RUNPATH)\).*?\[(.*?)\]", dynamic):
@@ -62,7 +86,7 @@ def check_dynamic(dynamic, binary, prefix):
             path = Path(expanded)
             allowed = (path.is_absolute() and (path.resolve().is_relative_to(prefix) or
                        any(path.resolve().is_relative_to(base) for base in
-                           ("/opt/devtools", "/usr", "/lib", "/lib64"))))
+                           ("/opt/devtools", "/usr", "/lib", "/lib64", *external_roots))))
             if not entry or "$" in expanded or not allowed:
                 raise ValueError(f"build-only or untrusted ELF {tag} in {binary}: {entry}")
     for interpreter in re.findall(r"Requesting program interpreter:\s*([^\]]+)\]", dynamic):
@@ -113,11 +137,11 @@ def verify(prefix, target, lock):
         dynamic = subprocess.run(["readelf", "-d", path], check=True, text=True, capture_output=True).stdout
         dynamic += subprocess.run(["readelf", "-l", path], check=True, text=True, capture_output=True).stdout
         elf[str(path.relative_to(prefix))] = {"sha256": checksum(path),
-                                              "dynamic": check_dynamic(dynamic, path, prefix)}
+                                              "dynamic": check_dynamic(dynamic, path, prefix, ml_roots(lock))}
     return {"schema": 1, "identity": identity, "target": target, "prefix": str(prefix), "features": features,
             "binary_sha256": checksum(binary), "runtime_env_sha256": checksum(prefix / "share/sai/runtime-env.sh"),
             "elf": elf, "info": info, "ldd": dependencies,
-            "external_runtime_roots": ["/opt/devtools", "/usr", "/lib", "/lib64"],
+            "external_runtime_roots": ["/opt/devtools", "/usr", "/lib", "/lib64", *ml_roots(lock)],
             "host_tree_status": "loader paths checked; physical /opt deployment and scientific benchmark still required"}
 
 
@@ -141,7 +165,7 @@ def expected_roots(identity):
             "NVHPC_ROOT": SDK, "NCCL_ROOT": NCCL}
 
 
-def make_entry(identity, environment, loaded_modules, ldd):
+def make_entry(identity, environment, loaded_modules, ldd, lock=None):
     from native_module import validate_native_entry
     identity = validate_identity(identity)
     if identity["software"] != "abacus":
@@ -157,6 +181,8 @@ def make_entry(identity, environment, loaded_modules, ldd):
     external = sorted(set(roots.values()) | {str(MODULE_ROOT)})
     external += (["/opt/devtools/gcc/13.3.0"] if identity["target"] == "dsprhbm" else
                  ["/opt/devtools/nvidia/mp_libs"])
+    external_ml = ml_roots(lock or {})
+    external += external_ml
     if "not found" in ldd:
         raise ValueError("native metadata cannot record unresolved runtime libraries")
     resolved = re.findall(r"=>\s+(/\S+)", ldd)
@@ -170,6 +196,10 @@ def make_entry(identity, environment, loaded_modules, ldd):
                               prepend={"MODULEPATH": [str(MODULE_ROOT)],
                                        "LD_LIBRARY_PATH": [prefix + "/dependencies/libtorch/lib", prefix + "/dependencies/nep/lib"]},
                               set={"ABACUS_ROOT": prefix}))
+    if external_ml:
+        entry['runtime']['prepend']['LD_LIBRARY_PATH'] = [roots['MPI_HOME'] + '/lib',
+            prefix + '/lib', prefix + '/dependencies/nep/lib', prefix + '/dependencies/full/lib',
+            external_ml[0] + '/lib']
     return validate_native_entry(entry)
 
 
@@ -190,7 +220,8 @@ def generate(prefix):
         if path.rstrip("/") != "/.singularity.d/libs")
     probe_env["LD_PRELOAD"] = ""
     ldd = subprocess.check_output(["ldd", str(prefix / "bin/abacus")], text=True, env=probe_env)
-    entry = make_entry(identity, os.environ, loaded, ldd)
+    lock = json.loads((metadata / 'dependency-lock.json').read_text())
+    entry = make_entry(identity, os.environ, loaded, ldd, lock)
     module_files = entry["runtime"]["modules"] + ["nvhpc/26.3-gnu-cuda12-tuned"]
     module_hashes = {name: checksum(MODULE_ROOT / name) for name in module_files}
     evidence = dict(identity=identity, modulefile_sha256=module_hashes,
@@ -222,7 +253,7 @@ def main():
     parser.add_argument("target")
     parser.add_argument("--native-phase", choices=("metadata", "inventory", "verify"),
                         help="package native delivery using the shared module/manifest implementation")
-    parser.add_argument("--lock", type=Path, default=Path(__file__).with_name("abacus_dependency_lock.json"))
+    parser.add_argument("--lock", type=Path)
     args = parser.parse_args()
     if args.native_phase:
         # Only build-time packaging needs the exporter; the installed feature
@@ -240,7 +271,8 @@ def main():
             else:
                 print("ABACUS_NATIVE_INVENTORY_VERIFIED")
         return
-    print(json.dumps(verify(args.prefix, args.target, json.loads(args.lock.read_text())), sort_keys=True))
+    lock_path = args.lock or args.prefix / 'share/sai/dependency-lock.json'
+    print(json.dumps(verify(args.prefix, args.target, json.loads(lock_path.read_text())), sort_keys=True))
 
 
 if __name__ == "__main__":

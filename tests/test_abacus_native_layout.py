@@ -68,6 +68,7 @@ class NativeLayoutTests(unittest.TestCase):
         modules = features.MODULES + ["nvhpc/26.3-gnu-cuda12-tuned", "nvmplibs/26.7-tmp"]
         metadata = self.prefix / "share/sai"
         text = {metadata / "release-identity.json": json.dumps(self.identity),
+                metadata / "dependency-lock.json": '{}',
                 metadata / "modules.txt": "\n".join(modules)}
         ldd = "libcuda.so.1 => /usr/lib64/libcuda.so.1 (0x1234)"
         first, second = "/opt/devtools/first/lib", "/opt/devtools/second/lib"

@@ -30,7 +30,7 @@ metadata() {
             if [[ -v "$key" ]]; then printf 'export %s=%q\n' "$key" "${!key}"; fi
         done
         printf '%s\n' 'export PATH="$sai_abacus_prefix/bin:$PATH"' \
-          'export LD_LIBRARY_PATH="$sai_abacus_prefix/dependencies/libtorch/lib:$sai_abacus_prefix/dependencies/nep/lib:${LD_LIBRARY_PATH:-}"' \
+          'export LD_LIBRARY_PATH="$sai_abacus_prefix/lib:$sai_abacus_prefix/lib64:$sai_abacus_prefix/dependencies/full/lib:$sai_abacus_prefix/dependencies/libtorch/lib:$sai_abacus_prefix/dependencies/nep/lib:${LD_LIBRARY_PATH:-}"' \
           'unset sai_abacus_prefix'
     } > "$INSTALL_PREFIX/share/sai/runtime-env.sh"
     python3 /control/abacus_features.py "$INSTALL_PREFIX" "$target" --native-phase metadata
@@ -66,6 +66,8 @@ case "$op" in
     bash /control/create_rootfs.sh /workspace/export
     mkdir -p "/workspace/export$(dirname -- "$INSTALL_PREFIX")"
     cp -a "$INSTALL_PREFIX" "/workspace/export$INSTALL_PREFIX"
+    # Normalize only the packaged software, not the host or rootfs /tmp modes.
+    # cp -a preserves archive modes, including legacy owner-only directories.
     chmod -R a+rX,u+w,go-w "/workspace/export$INSTALL_PREFIX"
     python3 /control/abacus_features.py "$INSTALL_PREFIX" "$target" --native-phase inventory
     mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"

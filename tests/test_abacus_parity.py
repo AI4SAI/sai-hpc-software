@@ -35,6 +35,8 @@ class ParityTests(unittest.TestCase):
         self.info = self.info.replace("LibTorch Support: yes", "LibTorch Support: yes (v2.1.2)")
         self.cache = "\n".join(f"{key}:BOOL=ON" for key in
                                self.lock["required_options"] + self.lock["required_gpu_options"])
+        self.info += '\nRapidJSON Support: yes (v1.1.0)'
+        self.cache += '\nENABLE_RAPIDJSON:BOOL=ON'
         self.ldd = "\n".join([
             "libelpa_openmp.so.19 => /opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia/lib/libelpa_openmp.so.19",
             f"libtorch_cpu.so => {self.prefix}/dependencies/libtorch/lib/libtorch_cpu.so",
@@ -57,6 +59,112 @@ class ParityTests(unittest.TestCase):
             with self.subTest(label=label):
                 with self.assertRaisesRegex(ValueError, "feature parity failed"):
                     self.check(info=self.info.replace(f"{label}: yes", f"{label}: no"))
+
+    def test_full_profile_requires_every_added_backend_and_site_mpi(self):
+        profile = json.loads((ROOT / 'controller/abacus_full_profile.json').read_text())
+        self.assertFalse(profile['enabled'])
+        self.lock['full_features'] = profile
+        self.lock['required_options'] += profile['required_options']
+        self.lock['required_info'] += profile['required_info']
+        self.cache += '\n' + '\n'.join(key + ':BOOL=ON' for key in profile['required_options'])
+        self.info += '\n' + '\n'.join(key + ': yes' for key in profile['required_info'])
+        self.ldd = self.ldd.replace(str(self.prefix / 'dependencies/libtorch/lib'), profile['ml_root'] + '/lib')
+        self.ldd += '\n' + '\n'.join(name + ' => ' + profile['ml_root'] + '/lib/' + name for name in
+                                     ('libdeepmd_c.so', 'libtensorflow_cc.so.2'))
+        self.ldd += '\nlibmpi.so.40 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libmpi.so.40'
+        self.check()
+        for label in profile['required_info']:
+            with self.assertRaises(ValueError):
+                self.check(info=self.info.replace(label + ': yes', label + ': no'))
+        with self.assertRaises(ValueError):
+            self.check(ldd=self.ldd.replace('/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib', profile['ml_root'] + '/lib'))
+
+    def test_external_ml_elf_roots_remain_explicit(self):
+        root = '/opt/apps/conda_env/deepmd-kit-3.1.2'
+        binary = self.prefix / 'bin/abacus'
+        dynamic = '(RUNPATH) Library runpath: [' + root + '/lib]'
+        with self.assertRaises(ValueError):
+            features.check_dynamic(dynamic, binary, self.prefix)
+        features.check_dynamic(dynamic, binary, self.prefix, [root])
+        with self.assertRaises(ValueError):
+            features.check_dynamic(dynamic.replace('3.1.2', 'unreviewed'), binary, self.prefix, [root])
+
+    def test_json_backend_follows_actual_declared_source_option(self):
+        self.assertEqual(deps.json_backend('option(ENABLE_RAPIDJSON "JSON" OFF)'), 'rapidjson')
+        modern = ('option(ENABLE_JSON "JSON" OFF)\n'
+                  'if(DEFINED CACHE{ENABLE_RAPIDJSON})\nmessage(FATAL_ERROR "removed")\nendif()')
+        self.assertEqual(deps.json_backend(modern), 'nlohmann')
+        for source in ('', modern + '\noption(ENABLE_RAPIDJSON "old" OFF)',
+                       '# option(ENABLE_JSON "comment only" OFF)'):
+            with self.assertRaises(ValueError):
+                deps.json_backend(source)
+
+    def test_dftd4_export_repair_restores_cmake_variable_guards(self):
+        templates = {
+            'config/template.cmake': ('OpenMP',),
+            'subprojects/mctc-lib/config/template.cmake': ('OpenMP', 'JSON', 'JSON'),
+            'subprojects/multicharge/config/template.cmake': ('OpenMP',),
+        }
+        with tempfile.TemporaryDirectory() as temporary:
+            source = Path(temporary)
+            originals = {}
+            for relative, flags in templates.items():
+                path = source / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                contents = 'set("@PROJECT_NAME@_WITH_OpenMP" @WITH_OpenMP@)\n'
+                contents += ''.join(f'if(NOT TARGET "dependency" AND "@PROJECT_NAME@_WITH_{flag}")\n'
+                                    '  find_dependency("dependency")\nendif()\n' for flag in flags)
+                path.write_text(contents)
+                originals[path] = contents
+            finder = source / 'subprojects/multicharge/config/cmake/Findcustom-lapack.cmake'
+            finder.parent.mkdir(parents=True, exist_ok=True)
+            finder.write_text('find_package("LAPACK" REQUIRED)\n')
+            # A changed upstream template must not partially modify other files.
+            last = source / 'subprojects/multicharge/config/template.cmake'
+            last.write_text('unexpected source')
+            with self.assertRaisesRegex(ValueError, 'unexpected DFT-D4'):
+                deps.repair_dftd4_cmake(source)
+            for path, contents in originals.items():
+                if path != last:
+                    self.assertEqual(path.read_text(), contents)
+            last.write_text(originals[last])
+            deps.repair_dftd4_cmake(source)
+            self.assertIn('if(TARGET "LAPACK::LAPACK")\n  set(custom-lapack_FOUND TRUE)', finder.read_text())
+            for path, contents in originals.items():
+                self.assertEqual(path.read_text(),
+                                 contents.replace('AND "@PROJECT_NAME@_WITH_OpenMP")',
+                                                  'AND @PROJECT_NAME@_WITH_OpenMP)')
+                                         .replace('AND "@PROJECT_NAME@_WITH_JSON")',
+                                                  'AND @PROJECT_NAME@_WITH_JSON)'))
+            # Not a generic blind text rewrite; reapplying must fail closed.
+            with self.assertRaisesRegex(ValueError, 'unexpected DFT-D4'):
+                deps.repair_dftd4_cmake(source)
+
+    def test_full_recipe_prepares_local_dftd4_packages_before_configure(self):
+        recipe = (ROOT / 'controller/abacus_full_dependencies.sh').read_text()
+        self.assertLess(recipe.index('repair-dftd4-cmake'), recipe.index('full_build_install test-drive'))
+        self.assertLess(recipe.index('full_build_install test-drive'), recipe.index('for package in toml-f'))
+        self.assertIn('test -s "$full_deps/lib/cmake/test-drive/test-drive-config.cmake"', recipe)
+        self.assertIn('-DENABLE_TESTING=OFF', recipe)
+        for package in ('MCTCLIB', 'MSTORE', 'MULTICHARGE', 'TEST_DRIVE'):
+            self.assertIn(f'-D{package}_FIND_METHOD=cmake', recipe)
+        self.assertNotIn('-DWITH_OpenMP=OFF', recipe)
+
+    def test_json_presence_gate_accepts_new_backend_without_weakening_requirement(self):
+        cache = self.cache.replace('ENABLE_RAPIDJSON', 'ENABLE_JSON')
+        info = self.info.replace('RapidJSON Support: yes (v1.1.0)',
+                                 'JSON Support: yes (nlohmann-json v3.12.0)')
+        result = self.check(cache=cache, info=info)
+        self.assertIn('ENABLE_JSON', result['required_options'])
+        self.assertNotIn('ENABLE_RAPIDJSON', result['required_options'])
+        for bad_cache, bad_info in (
+                (cache.replace('ENABLE_JSON:BOOL=ON', 'ENABLE_JSON:BOOL=OFF'), info),
+                (cache, info.replace('JSON Support: yes', 'JSON Support: no')),
+                (cache + '\nENABLE_RAPIDJSON:BOOL=OFF', info),
+                (cache.replace('ENABLE_JSON:BOOL=ON', ''), info),
+                (self.cache, self.info.replace('RapidJSON Support: yes', 'RapidJSON Support: no'))):
+            with self.assertRaises(ValueError):
+                self.check(cache=bad_cache, info=bad_info)
 
     def test_installed_feature_checker_reuses_shared_hash_without_exporter_dependency(self):
         self.assertIs(features.checksum, checksum)
@@ -86,7 +194,7 @@ class ParityTests(unittest.TestCase):
                 self.check(info=self.info.replace(version, "v1.0.0"))
 
     def test_cpu_retains_full_cpu_features_without_requiring_gpu_support(self):
-        cache = "\n".join(f"{key}:BOOL=ON" for key in self.lock["required_options"]) + "\nUSE_CUDA:BOOL=OFF"
+        cache = "\n".join(f"{key}:BOOL=ON" for key in self.lock["required_options"]) + "\nUSE_CUDA:BOOL=OFF\nENABLE_RAPIDJSON:BOOL=ON"
         self.check(cache=cache, target="dsprhbm")
         with self.assertRaises(ValueError):
             self.check(cache=cache.replace("USE_CUDA:BOOL=OFF", "USE_CUDA:BOOL=ON"), target="dsprhbm")
@@ -107,13 +215,20 @@ class ParityTests(unittest.TestCase):
         self.assertEqual(len(features.check_dynamic(valid, binary, self.prefix)), 2)
         for bad in ("/workspace/build", "/control", "/input/repository", "/home/stardust/sai-hpc-software/controller/sha",
                     "$ORIGIN/../../../../../../../workspace", ""):
-            with self.subTest(path=bad):
-                with self.assertRaises(ValueError):
-                    features.check_dynamic(f"(RPATH) Library rpath: [{bad}]", binary, self.prefix)
+                with self.subTest(path=bad):
+                    with self.assertRaises(ValueError):
+                        features.check_dynamic(f"(RPATH) Library rpath: [{bad}]", binary, self.prefix)
         with self.assertRaises(ValueError):
             features.check_dynamic("(NEEDED) Shared library: [/workspace/libnep.so]", binary, self.prefix)
         with self.assertRaises(ValueError):
             features.check_dynamic("[Requesting program interpreter: /control/ld.so]", binary, self.prefix)
+
+    def test_post_install_probe_and_runtime_env_include_final_prefix_libraries(self):
+        build = (ROOT / "controller/abacus_build.sh").read_text()
+        entry = (ROOT / "controller/container_entry.sh").read_text()
+        self.assertIn('LD_LIBRARY_PATH="$abacus_probe_ld" "$INSTALL_PREFIX/bin/abacus" --info', build)
+        self.assertIn('$sai_abacus_prefix/lib:$sai_abacus_prefix/lib64', entry)
+        self.assertIn('$sai_abacus_prefix/dependencies/full/lib', entry)
 
     def test_dependency_archive_members_and_destination_fail_closed(self):
         self.assertIs(deps.checksum, checksum)
@@ -272,7 +387,7 @@ class ParityTests(unittest.TestCase):
                 deps.extract_archive(archive, folder / "bad", "libtorch")
 
     def test_dependency_lock_is_content_pinned_and_build_mount_is_precise_readonly(self):
-        self.assertEqual(len(self.lock["archives"]), 7)
+        self.assertEqual(len(self.lock["archives"]), 8)
         for archive in self.lock["archives"]:
             self.assertRegex(archive["sha256"], r"^[0-9a-f]{64}$")
         args = argparse.Namespace(software="abacus", run_id="test", sha="a" * 40,
@@ -345,7 +460,7 @@ class ParityTests(unittest.TestCase):
             features.check_public_mode(library, executable=True)
         entry = (ROOT / "controller/container_entry.sh").read_text()
         self.assertIn("umask 022", entry)
-        self.assertIn("chmod -R a+rX,u+w,go-w /workspace/export/opt/software", entry)
+        self.assertIn('chmod -R a+rX,u+w,go-w "/workspace/export$INSTALL_PREFIX"', entry)
         self.assertNotIn("chmod -R a+rX,u+w,go-w /workspace/export\n", entry)
 
 

@@ -25,6 +25,7 @@ def contract_files(software):
         return common + ["container_entry.sh", "abacus_build.sh", "runtime_controller.py",
                          "gpu_feature_controller.py", "gpu_feature_runtime.sh", "abacus",
                          "abacus_dependencies.py", "abacus_dependencies.sh",
+                         "abacus_full_profile.json", "abacus_full_dependencies.sh", "abacus_site_mpi.sh", "abacus_site_gpu.sh",
                          "abacus_dependency_lock.json", "abacus_features.py", "abacus_benchmark.py",
                          "native_module.py", "export_native.py"]
     if software == "cp2k":
@@ -318,8 +319,8 @@ def render_job(args):
                    (ROOT / "cache/cp2k-dependencies", "/input/dependencies"),
                    (ROOT / "cache/cp2k-probe", "/input/probe")) if args.software == "cp2k" else ()
     if args.software == "abacus":
-        from abacus_dependencies import dependency_binds
-        extra_binds = dependency_binds(ROOT)
+        from abacus_dependencies import dependency_binds, runtime_binds
+        extra_binds = (*dependency_binds(ROOT), *runtime_binds())
     elif args.software == "gpumd":
         extra_binds = site_app_binds("gpumd")
     def container(phase, final=False):
@@ -331,7 +332,7 @@ def render_job(args):
         binds = site_app_binds("gpumd") if final and args.software == "gpumd" else () if final else extra_binds
         command = container_command(sif if final else image, cmd, overlay=None if final else overlay,
                                  control=CONTROL, repository=None if final else repo,
-                                 jobs=args.jobs, gpu=bool(target["gpus"]), extra_binds=() if final and args.software == "abacus" else binds,
+                                 jobs=args.jobs, gpu=bool(target["gpus"]), extra_binds=runtime_binds() if final and args.software == "abacus" else binds,
                                  runtime=r / "runtime" if final and args.software == "cp2k" else None)
         if args.software == 'cp2k' and not final:
             command[2:2] = ['--bind', str(r / 'results') + ':/results:rw']
