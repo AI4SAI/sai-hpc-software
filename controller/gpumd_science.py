@@ -412,6 +412,83 @@ def xyz(path):
     return energy, forces
 
 
+# A numerical derivative uses the same frozen GNEP model, but does not trust its
+# analytical force implementation. Six predictions cover xyz for the first atom
+# of each of the four independent 40-atom frames.
+GNEP_DISPLACEMENT = 0.025
+GNEP_FORCE_TOLERANCE = 0.02
+MIN_ENGINE_SECONDS = 5.0
+
+
+def displaced_frames(text, axis, displacement):
+    lines = text.splitlines()
+    cursor = 0
+    counts = []
+    while cursor < len(lines):
+        count = int(lines[cursor])
+        if count <= 0 or cursor + count + 2 > len(lines):
+            raise ValueError("invalid GNEP training frame")
+        match = re.search(r'Properties=([^\s]+)', lines[cursor + 1])
+        if not match:
+            raise ValueError("GNEP frame lacks explicit XYZ properties")
+        fields = match.group(1).strip('"').split(":")
+        offset = 0
+        positions = None
+        for index in range(0, len(fields), 3):
+            width = int(fields[index + 2])
+            if fields[index] == "pos" and fields[index + 1:index + 3] == ["R", "3"]:
+                positions = offset
+            offset += width
+        if positions is None:
+            raise ValueError("GNEP frame lacks Cartesian positions")
+        atom = lines[cursor + 2].split()
+        atom[positions + axis] = format(float(atom[positions + axis]) + displacement, ".16g")
+        lines[cursor + 2] = " ".join(atom)
+        counts.append(count)
+        cursor += count + 2
+    if counts != [40] * 4:
+        raise ValueError("GNEP numerical derivative requires four 40-atom frames")
+    return "\n".join(lines) + "\n"
+
+
+def check_gnep_forces(task):
+    reference = task / "gnep-prediction-candidate"
+    forces = numbers(reference / "force_train.out")
+    if len(forces) != 160 or any(len(row) != 6 for row in forces):
+        raise ValueError("GNEP analytical force dimensions changed")
+    errors = []
+    rounding_bounds = []
+    for axis, name in enumerate("xyz"):
+        energies = []
+        for side, sign in (("plus", 1), ("minus", -1)):
+            case = task / f"gnep-force-{name}-{side}-candidate"
+            if (sha(case / "nep.txt") != sha(reference / "nep.txt") or
+                    (case / "gnep.in").read_bytes() != (reference / "gnep.in").read_bytes() or
+                    (case / "train.xyz").read_text() != displaced_frames(
+                        (reference / "train.xyz").read_text(), axis, sign * GNEP_DISPLACEMENT)):
+                raise ValueError("GNEP numerical derivative changed its frozen inputs")
+            values = numbers(case / "energy_train.out")
+            if len(values) != 4 or any(len(row) != 2 for row in values):
+                raise ValueError("GNEP numerical derivative energy dimensions changed")
+            energies.append([row[0] for row in values])
+        for frame, (plus, minus) in enumerate(zip(*energies)):
+            # Upstream uses %g (six significant digits) for per-atom energies.
+            # Include only its calculable quantization error, with a fixed cap
+            # that prevents low-precision output from making the test vacuous.
+            quanta = [10 ** (math.floor(math.log10(abs(value))) - 5) if value else 0
+                      for value in (plus, minus)]
+            rounding = 40 * sum(quanta) / (4 * GNEP_DISPLACEMENT)
+            if rounding > 0.0800000001:
+                raise ValueError("GNEP printed energy precision cannot certify numerical forces")
+            numerical = -(plus - minus) * 40 / (2 * GNEP_DISPLACEMENT)
+            errors.append(compare([[numerical]], [[forces[frame * 40][axis]]],
+                                  GNEP_FORCE_TOLERANCE + rounding, "GNEP finite-difference force"))
+            rounding_bounds.append(rounding)
+    return {"displacement_angstrom": GNEP_DISPLACEMENT, "frames": 4,
+            "components": 12, "max_force_error_ev_per_angstrom": max(errors),
+            "max_output_rounding_ev_per_angstrom": max(rounding_bounds)}
+
+
 def required_results():
     """Fixed evidence set. A reporter cannot omit a failed scientific path."""
     files = set()
@@ -433,14 +510,20 @@ def required_results():
             files.add(f"training-{mode}-candidate/{name}")
     for label, names in {
             "gnep-train-candidate": ("loss.out", "nep.txt", "run.log"),
-            "gnep-prediction-candidate": ("energy_train.out", "force_train.out", "nep.txt", "run.log"),
+            "gnep-prediction-candidate": ("energy_train.out", "force_train.out", "nep.txt", "gnep.in", "train.xyz", "run.log"),
             "gnep-static-candidate": ("nep.txt", "model.xyz", "run.in", "run.log"),
             "plumed-candidate": ("colvar", "dump.xyz", "model.xyz", "nep.txt", "run.log"),
             "throughput-input": ("run.in", "model.xyz", "nep.txt"),
-            "throughput-pilot-baseline": ("run.log", "execution.json", "thermo.out"),
+            "throughput-pilot-baseline": ("run.log", "execution.json", "thermo.out", "run.in", "model.xyz", "nep.txt"),
             "deepmd-input": ("reference.json", "frozen_model.pth", "model.xyz", "model-generation.log"),
     }.items():
         files.update(f"{label}/{name}" for name in names)
+    for axis in "xyz":
+        for side in ("plus", "minus"):
+            files.update(f"gnep-force-{axis}-{side}-candidate/{name}" for name in
+                         ("nep.txt", "gnep.in", "train.xyz", "energy_train.out", "run.log", "execution.json"))
+    files.update(f"throughput-pilot-candidate/{name}" for name in
+                 ("run.log", "execution.json", "thermo.out", "run.in", "model.xyz", "nep.txt"))
     return files
 
 
@@ -458,6 +541,58 @@ def raw_file_inventory(task):
             path.name != "science.json"}
 
 
+def clear_previous_outputs(destination):
+    # Gold arrays are immutable inputs; only generated results are discarded.
+    outputs = [path for path in destination.glob("*.out") if not path.name.startswith("gold-")]
+    for output in (*outputs, destination / "dump.xyz", destination / "colvar",
+                   destination / "run.log", destination / "execution.json"):
+        if output.exists() or output.is_symlink():
+            output.unlink()
+
+
+def throughput_trials():
+    yield "throughput-warmup", "baseline", ""
+    yield "throughput-warmup", "candidate", ""
+    for repeat in range(3):
+        modes = ("baseline", "candidate") if repeat % 2 == 0 else ("candidate", "baseline")
+        for mode in modes:
+            yield "throughput", mode, f"-repeat{repeat}"
+
+
+def engine_metrics(case, report, mode, *, minimum_seconds=MIN_ENGINE_SECONDS):
+    record = json.loads((case / "execution.json").read_text())
+    if (record["host"] != report["host"] or record["job"] != report["job"] or
+            record["gpu_visible"] != report["gpu_visible"] or
+            record["environment"] != report["conditions"] or
+            record["executable_sha256"] != report["executables"][mode]["gpumd"]):
+        raise ValueError("MD benchmark conditions or executable differ")
+    log = (case / "run.log").read_text()
+    durations = re.findall(r"Time used for this run = (\S+) second", log)
+    speeds = re.findall(r"Speed of this run = (\S+) atom\*step/second", log)
+    if len(durations) != 1 or len(speeds) != 1:
+        raise ValueError("missing or ambiguous MD engine timing")
+    duration, speed, elapsed = float(durations[0]), float(speeds[0]), record["wall_seconds"]
+    if any(not math.isfinite(value) or value <= 0 for value in (duration, speed, elapsed)):
+        raise ValueError("nonfinite MD engine timing")
+    if duration < minimum_seconds or duration > elapsed * 1.01:
+        raise ValueError("MD engine measurement is too short or exceeds wall time")
+    n_atoms = int((case / "model.xyz").read_text().splitlines()[0])
+    n_steps = int(re.findall(r"^run (\d+)$", (case / "run.in").read_text(), re.M)[-1])
+    if n_atoms != 2000 or abs(speed * duration / (n_atoms * n_steps) - 1) > 2e-4:
+        raise ValueError("MD engine timing inconsistent with work done")
+    numbers(case / "thermo.out")
+    return {"wall_seconds": elapsed, "engine_seconds": duration, "atom_steps_per_second": speed,
+            "steps_per_second": speed / n_atoms}
+
+
+def calibrated_steps(pilot_seconds):
+    # Leave one second of headroom above the required five-second measurement.
+    steps = max(10000, math.ceil(6 / pilot_seconds) * 1000)
+    if steps > 1000000:
+        raise ValueError("benchmark calibration outside its bounded MD budget")
+    return steps
+
+
 def recheck_results(task, report):
     """Recompute every acceptance comparison from its mandatory raw outputs.
 
@@ -470,6 +605,30 @@ def recheck_results(task, report):
             raise ValueError(f"missing/untrusted mandatory GPUMD result: {relative}")
     checks = {}
     benchmark = {}
+    pilot = task / "throughput-pilot-baseline"
+    pilot_metrics = {mode: engine_metrics(task / f"throughput-pilot-{mode}", report, mode,
+                                         minimum_seconds=0) for mode in ("baseline", "candidate")}
+    for name in ("model.xyz", "nep.txt", "run.in"):
+        if sha(pilot / name) != sha(task / "throughput-pilot-candidate" / name):
+            raise ValueError("MD benchmark pilots used different inputs")
+    if (pilot / "run.in").read_text().count("run 1000\n") != 1:
+        raise ValueError("MD benchmark pilot must contain 1000 steps")
+    steps = calibrated_steps(min(value["engine_seconds"] for value in pilot_metrics.values()))
+    if (task / "throughput-input/run.in").read_text() != (pilot / "run.in").read_text().replace(
+            "run 1000\n", f"run {steps}\n"):
+        raise ValueError("MD benchmark differs from its pilot calibration")
+    for name in ("model.xyz", "nep.txt"):
+        if sha(pilot / name) != sha(task / "throughput-input" / name):
+            raise ValueError("MD benchmark calibration changed its model")
+    order = ["throughput-pilot-baseline", "throughput-pilot-candidate", *(f"{kind}-{mode}{suffix}"
+             for kind, mode, suffix in throughput_trials())]
+    previous = -1
+    for label in order:
+        record = json.loads((task / label / "execution.json").read_text())
+        sequence = record.get("sequence")
+        if type(sequence) is not int or sequence <= previous:
+            raise ValueError("MD benchmark trials did not alternate in the required order")
+        previous = sequence
     for mode in ("candidate", "baseline"):
         for suffix in ("", "-repeat0", "-repeat1", "-repeat2"):
             static = task / f"static-{mode}{suffix}"
@@ -497,25 +656,11 @@ def recheck_results(task, report):
             for name in ("run.in", "model.xyz", "nep.txt"):
                 if sha(case / name) != sha(task / "throughput-input" / name):
                     raise ValueError("MD benchmark input differs between repetitions/baselines")
-            record = json.loads((case / "execution.json").read_text())
-            if (record["host"] != report["host"] or record["job"] != report["job"] or
-                    record["gpu_visible"] != report["gpu_visible"] or
-                    record["environment"] != report["conditions"]):
-                raise ValueError("MD benchmark conditions differ")
-            log = (case / "run.log").read_text()
-            duration = float(re.findall(r"Time used for this run = (\S+) second", log)[-1])
-            speed = float(re.findall(r"Speed of this run = (\S+) atom\*step/second", log)[-1])
-            elapsed = record["wall_seconds"]
-            if any(not math.isfinite(value) or value <= 0 for value in (duration, speed, elapsed)):
-                raise ValueError("nonfinite MD engine timing")
+            metrics = engine_metrics(case, report, mode)
             n_atoms = int((case / "model.xyz").read_text().splitlines()[0])
             n_steps = int(re.findall(r"^run (\d+)$", (case / "run.in").read_text(), re.M)[-1])
-            if n_atoms != 2000 or n_steps < 10000 or abs(speed * duration / (n_atoms * n_steps) - 1) > 2e-4:
-                raise ValueError("MD engine timing inconsistent with work done")
-            numbers(case / "thermo.out")
             if "warmup" not in label:
-                samples.append({"wall_seconds": elapsed, "engine_seconds": duration, "atom_steps_per_second": speed,
-                                "steps_per_second": speed / n_atoms})
+                samples.append(metrics)
         benchmark[f"md-throughput-{mode}"] = {"n_atoms": n_atoms, "n_steps": n_steps, "warmup": 1,
             "samples": samples, "input_sha256": sha(task / "throughput-input/run.in"),
             "model_sha256": sha(task / "throughput-input/model.xyz"),
@@ -558,6 +703,7 @@ def recheck_results(task, report):
         checks["gnep-training-and-prediction"] = {
             "energy_error_ev": compare([[energy]], [[predicted_e[0][0] * 40]], 1e-3, "GNEP energy"),
             "force_error": compare(force, [row[:3] for row in predicted_f[:40]], 2e-4, "GNEP forces")}
+    checks["gnep-finite-difference-forces"] = check_gnep_forces(task)
     plumed = task / "plumed-candidate"
     for name in ("model.xyz", "nep.txt"):
         if sha(plumed / name) != sha(task / "static-candidate" / name):
@@ -597,9 +743,19 @@ def run(prefix, task):
     report["conditions"] = {name: os.environ.get(name, "") for name in
                             ("OMP_NUM_THREADS", "DP_INTRA_OP_PARALLELISM_THREADS", "DP_INTER_OP_PARALLELISM_THREADS")}
 
+    report["executables"] = {mode: {name: sha(root / "bin" / name) for name in names}
+                             for mode, root, names in (("candidate", prefix, COMMANDS),
+                                                       ("baseline", BASELINE, ("gpumd", "nep")))}
+    sequence = 0
+
     def execute(kind, name, case, mode="candidate", suffix=""):
+        nonlocal sequence
+        sequence += 1
         dest = task / f"{kind}-{mode}{suffix}"
         shutil.copytree(case, dest)
+        # A frozen model may come from a previous calculation. Its numerical
+        # outputs must never survive as evidence for a new invocation.
+        clear_previous_outputs(dest)
         executable = (prefix if mode == "candidate" else BASELINE) / "bin" / name
         environment = os.environ.copy()
         environment["GPUMD_SRC"] = str((prefix / "share/gpumd/src") if mode == "candidate" else (BASELINE / "src"))
@@ -610,7 +766,7 @@ def run(prefix, task):
         elapsed = time.monotonic() - start
         (dest / "execution.json").write_text(json.dumps({"wall_seconds": elapsed, "host": report["host"],
             "job": report["job"], "gpu_visible": report["gpu_visible"], "environment": report["conditions"],
-            "executable_sha256": sha(executable)}, sort_keys=True))
+            "executable_sha256": sha(executable), "sequence": sequence}, sort_keys=True))
         return dest, elapsed
 
     # Golden values track the resolved upstream, never an old hardcoded SHA.
@@ -634,36 +790,26 @@ def run(prefix, task):
             report["benchmark"][f"{kind}-{mode}"] = {"seconds": samples,
                 "median_seconds": statistics.median(samples), "min_seconds": min(samples), "warmup": 1}
 
-    def engine_metrics(case, elapsed):
-        log = (case / "run.log").read_text()
-        duration = float(re.findall(r"Time used for this run = (\S+) second", log)[-1])
-        speed = float(re.findall(r"Speed of this run = (\S+) atom\*step/second", log)[-1])
-        if not math.isfinite(duration + speed) or duration <= 0 or speed <= 0:
-            raise ValueError("missing MD engine throughput")
-        numbers(case / "thermo.out")
-        return {"wall_seconds": elapsed, "engine_seconds": duration, "atom_steps_per_second": speed,
-                "steps_per_second": speed / 2000}
-
-    pilot, elapsed = execute("throughput-pilot", "gpumd", inputs / "throughput", "baseline")
-    pilot_metrics = engine_metrics(pilot, elapsed)
-    # Calibrate using the site binary, then freeze identical inputs for both.
-    steps = max(10000, math.ceil(5 / pilot_metrics["engine_seconds"]) * 1000)
-    if steps > 1000000:
-        raise ValueError("benchmark calibration outside its bounded MD budget")
+    pilot_metrics = {}
+    for mode in ("baseline", "candidate"):
+        pilot, elapsed = execute("throughput-pilot", "gpumd", inputs / "throughput", mode)
+        pilot_metrics[mode] = engine_metrics(pilot, report, mode, minimum_seconds=0)
+    steps = calibrated_steps(min(value["engine_seconds"] for value in pilot_metrics.values()))
     throughput = task / "throughput-input"
     shutil.copytree(inputs / "throughput", throughput)
     (throughput / "run.in").write_text((throughput / "run.in").read_text().replace("run 1000\n", f"run {steps}\n"))
+    samples = {mode: [] for mode in ("candidate", "baseline")}
+    for kind, mode, suffix in throughput_trials():
+        case, elapsed = execute(kind, "gpumd", throughput, mode, suffix)
+        metrics = engine_metrics(case, report, mode)
+        if suffix:
+            samples[mode].append(metrics)
     for mode in ("candidate", "baseline"):
-        execute("throughput-warmup", "gpumd", throughput, mode)
-        samples = []
-        for repeat in range(3):
-            case, elapsed = execute("throughput", "gpumd", throughput, mode, f"-repeat{repeat}")
-            samples.append(engine_metrics(case, elapsed))
         report["benchmark"][f"md-throughput-{mode}"] = {"n_atoms": 2000, "n_steps": steps,
-            "warmup": 1, "samples": samples, "input_sha256": sha(throughput / "run.in"),
+            "warmup": 1, "samples": samples[mode], "input_sha256": sha(throughput / "run.in"),
             "model_sha256": sha(throughput / "model.xyz"),
-            "median_atom_steps_per_second": statistics.median(row["atom_steps_per_second"] for row in samples),
-            "median_wall_seconds": statistics.median(row["wall_seconds"] for row in samples)}
+            "median_atom_steps_per_second": statistics.median(row["atom_steps_per_second"] for row in samples[mode]),
+            "median_wall_seconds": statistics.median(row["wall_seconds"] for row in samples[mode])}
 
     train_cases = {}
     for setting in ("off", "on"):
@@ -722,6 +868,15 @@ def run(prefix, task):
         report["checks"]["gnep-training-and-prediction"] = {
             "energy_error_ev": compare([[energy]], [[predicted_energy[0][0] * 40]], 1e-3, "GNEP vs GPUMD energy"),
             "force_error": compare(force, [row[:3] for row in predicted_force[:40]], 2e-4, "GNEP vs GPUMD forces")}
+
+    for axis, name in enumerate("xyz"):
+        for side, sign in (("plus", 1), ("minus", -1)):
+            displaced = task / f"gnep-force-{name}-{side}-input"
+            shutil.copytree(gradient_prediction, displaced)
+            (displaced / "train.xyz").write_text(displaced_frames(
+                (gradient_prediction / "train.xyz").read_text(), axis, sign * GNEP_DISPLACEMENT))
+            execute(f"gnep-force-{name}-{side}", "gnep", displaced)
+    report["checks"]["gnep-finite-difference-forces"] = check_gnep_forces(task)
 
     plumed = task / "plumed-input"
     shutil.copytree(inputs / "static", plumed)

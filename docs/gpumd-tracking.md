@@ -1,11 +1,11 @@
-# GPUMD native GPU tracking (experimental branch)
+# GPUMD native GPU tracking and acceptance
 
-The independent `feat/gpumd-daily-tracking` branch builds upstream
+The integrated workflow builds upstream
 `development`, `prerelease`, and `release` through the shared source resolver.
 Development uses `master`; release channels resolve their live upstream tags.
 Every poll resolves a full current Git SHA; it is
-not a webhook or a zero-delay mirror. Daily polling is dispatched by the shared
-`daily.yml` on the default branch; `gpumd.yml` has no independent cron trigger.
+not a webhook or a zero-delay mirror. Daily polling calls `gpumd.yml` as a reusable workflow from the shared
+`daily.yml`; the parent checks its result. `gpumd.yml` has no independent cron trigger.
 On the experimental branch, push/PR run static tests; workflow dispatch starts
 a cluster build. Explicitly absent release/prerelease channels are reported as
 skipped for every dispatch; an entirely empty result skips the build job.
@@ -62,8 +62,15 @@ No module or `current.sif` is published until all required checks pass:
   NEP prediction energy/forces/virial arrays.
 - Reproducible short NEP training from the same restart, JIT versus generic
   loss comparison, and rejection of the silent JIT-failure fallback.
-- GNEP training and prediction, then GPUMD evaluation of the same trained NEP5
-  model with numerical energy/force agreement.
+- GNEP training and prediction, plus numerical finite-difference force checks
+  for 12 Cartesian components across four structures using its frozen model.
+  The ±0.025 Å displacements must reproduce the analytical force within
+  0.02 eV/Å plus the calculated rounding of upstream's six-significant-digit
+  energy output. The rounding allowance is recorded and capped at 0.08 eV/Å;
+  less precise output cannot certify this check. GPUMD cross-evaluation is also required for supported formats;
+  upstream revisions whose GNEP produces NEP5 while GPUMD accepts only NEP4
+  explicitly record that format boundary and still require the independent
+  numerical derivative. This does not claim NEP5 GPUMD support.
 - PLUMED distance/restraint bias and actual equal/opposite force feedback.
 - A tiny locally generated DeepMD PyTorch model, comparing GPUMD and the
   independent DeepMD Python evaluator on energy and forces, for both the
@@ -71,12 +78,16 @@ No module or `current.sif` is published until all required checks pass:
   a one-step-trained potential has physical predictive accuracy.
 - The published host launcher runs the pinned candidate and reproduces the
   static gold result.
-- A separate 2000-atom NEP MD throughput workload: baseline pilot calibrates
-  at least 10000 steps and approximately five seconds of engine work, then
-  freezes identical inputs for candidate and baseline, each with a warmup and
-  three repeats. Reports include engine atom-step/s, steps/s, wall time and
-  medians. Short static/prediction wall times are labelled microbenchmarks,
-  not production throughput. There is no invented speedup/pass threshold.
+- A separate 2000-atom NEP MD throughput workload: both binaries run a 1000-step
+  pilot, then the faster pilot determines a shared workload of at least 10000
+  steps targeting six seconds. Each actual measurement must contain at least five seconds
+  of engine work. Identical frozen inputs run once for warmup and three times
+  per binary, alternating which binary runs first in each pair. Raw evidence
+  rechecks calibration, invocation order, executable hashes, allocation and
+  thread settings. Reports include engine atom-step/s, steps/s, wall time and
+  medians. More than 10% slower time for identical work triggers one full repeat
+  on the same artifact; a repeated regression blocks publication. Short static
+  and prediction wall times are startup microbenchmarks, not throughput.
 
 Each proof is tied to the SIF checksum, launcher/controller scripts, Slurm job,
 raw numerical outputs and benchmark files. Failed or stale proof cannot hit the
@@ -85,8 +96,9 @@ GPU, not the login node.
 
 ## Installation and copying
 
-Canonical prefix: `/opt/software/gpumd/<track>/<build_id>/<partition>`, using
-the shared release contract. Development labels include the pinned commit's UTC
+Canonical prefix: `/opt/apps/gpumd/GPUMD-<track>-<build_id>/<partition>`, using
+the shared schema-2 release contract. Historical schema-1 `/opt/software`
+identities remain readable without relabeling. Development labels include the pinned commit's UTC
 date; the shared build ID adds source and recipe hashes. The SIF contains
 only the installation; external dependencies remain read-only at their recorded
 site paths. It also contains matching CUDA source/headers under
@@ -132,3 +144,14 @@ The first preflight (`1271011`) failed because the minimal rootfs has no usable
 `awk` alternative; the environment now parses native GCC flags using Bash.
 New package compilation, GNEP/PLUMED/DeepMD acceptance, copied-prefix runtime and
 three-target performance results remain unverified until their real jobs pass.
+
+## 2026-10-15 gate audit
+
+The local GPUMD suite checks all three GPU partitions, source/recipe binding,
+complete native payload inventories, launcher checksum invalidation, raw
+scientific-output tampering, GNEP force derivatives, inherited-output removal,
+calibrated alternating performance trials and the publication slowdown boundary.
+These fixture tests establish gate behavior; no new cluster scientific or
+performance result is asserted by this audit. The initial development canary
+must pass on 16V100 before expansion to 4V100 and 8V100V0. Real export roundtrip
+and publication evidence are coordinated by the shared delivery workflow.

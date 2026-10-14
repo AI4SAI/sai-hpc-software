@@ -329,6 +329,30 @@ class GpumdDeliveryTests(unittest.TestCase):
                 prefixes.add(identity["install_prefix"])
         self.assertEqual(len(prefixes), 9)
 
+    def test_publication_applies_the_ten_percent_gate_to_inverse_throughput(self):
+        entry, _, _ = self.entry()
+        artifact, manifest = self.candidate(entry["identity"])
+        task = self.root / "runtime-tests/science"
+        (task / "results").mkdir(parents=True)
+        request = dict(identity=entry["identity"], artifact=str(artifact),
+                       artifact_sha256=manifest["sha256"], target=manifest["target"],
+                       launcher=str(ROOT / "controller/gpumd"), launcher_sha256="launcher")
+        (task / "request.json").write_text(json.dumps(request))
+        (task / "results/status.json").write_text(json.dumps(
+            dict(job="123", state="COMPLETED", exit_code="0:0", verified=True)))
+        for throughput, regresses in ((110, False), (100, False), (99, True)):
+            evidence = dict(verified=True, job="123", identity=entry["identity"], benchmark={
+                "md-throughput-candidate": {"median_atom_steps_per_second": throughput},
+                "md-throughput-baseline": {"median_atom_steps_per_second": 110}})
+            manifest["gpumd_science"] = dict(evidence, run_id="science", launcher_sha256="launcher")
+            (task / "results/evidence.json").write_text(json.dumps(evidence))
+            with patch.object(acceptance, "verify_evidence", return_value=evidence):
+                if regresses:
+                    with self.assertRaises(layout.PerformanceRegression):
+                        acceptance.validate_manifest(manifest)
+                else:
+                    acceptance.validate_manifest(manifest)
+
     def test_dependency_and_environment_evidence_fail_closed(self):
         entry, environment, reports = self.entry()
         identity = entry["identity"]
@@ -435,7 +459,9 @@ class GpumdWorkflowTests(unittest.TestCase):
         retry = workflow.split("      retry_releases:\n", 1)[1].split("\n  push:", 1)[0]
         self.assertIn("        type: boolean\n", retry)
         self.assertIn("        default: false", retry.splitlines())
-        self.assertIn("          RETRY_RELEASES: ${{ inputs.retry_releases }}", workflow)
+        self.assertIn("      retry_releases: ${{ inputs.retry_releases }}", workflow)
+        delivery = (ROOT / ".github/workflows/software-pair.yml").read_text()
+        self.assertIn("  RETRY_RELEASES: ${{ inputs.retry_releases }}", delivery)
 
     def resolve(self, event="schedule", missing=(), tracks="development", override="", error=None):
         workflow = (ROOT / ".github/workflows/gpumd.yml").read_text()
@@ -490,7 +516,8 @@ class GpumdRawEvidenceTests(unittest.TestCase):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name).resolve()
-        self.report = {"host": "node", "job": "123", "gpu_visible": "0", "conditions": {}}
+        self.report = {"host": "node", "job": "123", "gpu_visible": "0", "conditions": {},
+                       "executables": {mode: {"gpumd": mode} for mode in ("candidate", "baseline")}}
         for relative in science.required_results():
             path = self.root / relative
             path.parent.mkdir(parents=True, exist_ok=True)
@@ -516,12 +543,33 @@ class GpumdRawEvidenceTests(unittest.TestCase):
                         (self.root / f"prediction-{mode}{suffix}/{prefix}{name}").write_text("0 0 0\n")
         for path in self.root.glob("throughput*/model.xyz"):
             path.write_text("2000\nfixture model\n")
+        for mode in ("baseline", "candidate"):
+            pilot = self.root / f"throughput-pilot-{mode}"
+            (pilot / "run.in").write_text("run 1000\n")
+            (pilot / "run.log").write_text("Time used for this run = 1 second.\nSpeed of this run = 2000000 atom*step/second.\n")
+        order = [("throughput-pilot-baseline", "baseline"), ("throughput-pilot-candidate", "candidate"),
+                 *((f"{kind}-{mode}{suffix}", mode) for kind, mode, suffix in science.throughput_trials())]
+        for sequence, (label, mode) in enumerate(order):
+            path = self.root / label / "execution.json"
+            record = json.loads(path.read_text())
+            record.update(sequence=sequence, executable_sha256=mode)
+            path.write_text(json.dumps(record))
         for mode in ("on", "off"):
             (self.root / f"training-{mode}-candidate/loss.out").write_text("1 0.01\n2 0.02\n")
         (self.root / "training-on-candidate/run.log").write_text("Compile specialized NEP training kernels (sm_70).\n")
         (self.root / "gnep-train-candidate/loss.out").write_text("1 0.01\n2 0.02\n")
         (self.root / "gnep-prediction-candidate/energy_train.out").write_text("0.025 0\n" * 4)
         (self.root / "gnep-prediction-candidate/force_train.out").write_text("0 0 0 0 0 0\n" * 160)
+        reference = self.root / "gnep-prediction-candidate"
+        frame = '40\nProperties=species:S:1:pos:R:3:force:R:3\n' + "Cu 0 0 0 0 0 0\n" * 40
+        (reference / "train.xyz").write_text(frame * 4)
+        (reference / "gnep.in").write_text("prediction 1\n")
+        for axis, name in enumerate("xyz"):
+            for side, sign in (("plus", 1), ("minus", -1)):
+                case = self.root / f"gnep-force-{name}-{side}-candidate"
+                (case / "gnep.in").write_bytes((reference / "gnep.in").read_bytes())
+                (case / "train.xyz").write_text(science.displaced_frames(frame * 4, axis, sign * science.GNEP_DISPLACEMENT))
+                (case / "energy_train.out").write_text("0.025 0\n" * 4)
         (self.root / "gnep-static-candidate/dump.xyz").write_text("40\nenergy=1\n" + "Cu 0 0 0 0 0 0\n" * 40)
         (self.root / "plumed-candidate/colvar").write_text("0 1 1\n")
         (self.root / "plumed-candidate/dump.xyz").write_text('2\nenergy=1\nCu 0 0 0 2 0 0\nCu 1 0 0 -2 0 0\n')
@@ -531,6 +579,80 @@ class GpumdRawEvidenceTests(unittest.TestCase):
         checks, benchmark = science.recheck_results(self.root, self.report)
         self.assertEqual(checks["plumed-force-feedback"], 0)
         self.assertEqual(benchmark["md-throughput-candidate"]["median_atom_steps_per_second"], 2000000)
+
+    def test_new_invocation_discards_inherited_outputs_and_keeps_reference_inputs(self):
+        case = self.root / "prediction-candidate"
+        self.assertTrue((case / "energy_train.out").is_file())
+        science.clear_previous_outputs(case)
+        self.assertFalse((case / "energy_train.out").exists())
+        self.assertFalse((case / "execution.json").exists())
+        self.assertTrue((case / "gold-energy_train.out").is_file())
+        self.assertTrue((case / "nep.txt").is_file())
+        self.assertTrue((case / "train.xyz").is_file())
+
+    def test_gnep_numerical_derivative_checks_force_sign_and_per_atom_energy_units(self):
+        reference = self.root / "gnep-prediction-candidate"
+        (reference / "force_train.out").write_text(("1 2 3 0 0 0\n" + "0 0 0 0 0 0\n" * 39) * 4)
+        for axis, name in enumerate("xyz"):
+            for side, sign in (("plus", 1), ("minus", -1)):
+                energy = 0.025 - sign * (axis + 1) * science.GNEP_DISPLACEMENT / 40
+                path = self.root / f"gnep-force-{name}-{side}-candidate/energy_train.out"
+                path.write_text(f"{energy:.12g} 0\n" * 4)
+        self.assertLess(science.check_gnep_forces(self.root)["max_force_error_ev_per_angstrom"], 1e-10)
+
+    def test_gnep_force_check_rejects_a_model_with_wrong_analytic_force(self):
+        path = self.root / "gnep-prediction-candidate/force_train.out"
+        path.write_text("1 0 0 0 0 0\n" * 160)
+        with self.assertRaisesRegex(ValueError, "finite-difference force"):
+            science.check_gnep_forces(self.root)
+
+    def test_gnep_force_check_accounts_for_printed_energy_rounding_with_a_fixed_cap(self):
+        for axis in "xyz":
+            for side in ("plus", "minus"):
+                path = self.root / f"gnep-force-{axis}-{side}-candidate/energy_train.out"
+                path.write_text("-14.1234 0\n" * 4)
+        self.assertAlmostEqual(science.check_gnep_forces(self.root)["max_output_rounding_ev_per_angstrom"], 0.08)
+        (self.root / "gnep-force-x-plus-candidate/energy_train.out").write_text("-100.123 0\n" * 4)
+        with self.assertRaisesRegex(ValueError, "precision cannot certify"):
+            science.check_gnep_forces(self.root)
+
+    def test_gnep_force_check_rejects_changed_model_and_unperturbed_input(self):
+        path = self.root / "gnep-force-x-plus-candidate/nep.txt"
+        path.write_text("different model\n")
+        with self.assertRaisesRegex(ValueError, "frozen inputs"):
+            science.check_gnep_forces(self.root)
+        path.write_text("fixture\n")
+        reference = self.root / "gnep-prediction-candidate/train.xyz"
+        (path.parent / "train.xyz").write_bytes(reference.read_bytes())
+        with self.assertRaisesRegex(ValueError, "frozen inputs"):
+            science.check_gnep_forces(self.root)
+
+    def test_benchmark_rejects_short_measurement_wrong_executable_and_grouped_trials(self):
+        case = self.root / "throughput-candidate-repeat0"
+        path = case / "run.log"
+        original = path.read_text()
+        path.write_text("Time used for this run = 1 second.\nSpeed of this run = 20000000 atom*step/second.\n")
+        with self.assertRaisesRegex(ValueError, "too short"):
+            science.recheck_results(self.root, self.report)
+        path.write_text(original)
+        path = case / "execution.json"
+        original = path.read_text()
+        record = json.loads(original)
+        record["executable_sha256"] = "baseline"
+        path.write_text(json.dumps(record))
+        with self.assertRaisesRegex(ValueError, "executable differ"):
+            science.recheck_results(self.root, self.report)
+        record = json.loads(original)
+        record["sequence"] = 100
+        path.write_text(json.dumps(record))
+        with self.assertRaisesRegex(ValueError, "alternate"):
+            science.recheck_results(self.root, self.report)
+
+    def test_benchmark_rejects_forged_calibration(self):
+        path = self.root / "throughput-pilot-baseline/run.log"
+        path.write_text("Time used for this run = 0.1 second.\nSpeed of this run = 20000000 atom*step/second.\n")
+        with self.assertRaisesRegex(ValueError, "pilot calibration"):
+            science.recheck_results(self.root, self.report)
 
     def test_science_inventory_excludes_generated_symlinks(self):
         target = self.root / "deepmd-input/model.ckpt-1.pt"

@@ -129,7 +129,7 @@ def verify_evidence(task, request):
     if checksum(regular(task / "results/gpu-host.txt")) != science["gpu_metadata_sha256"]:
         raise ValueError("GPU allocation metadata changed")
     required = {"static-candidate", "static-baseline", "nep-jit-vs-generic-loss", "gnep-training-and-prediction",
-                "plumed-force-feedback", "deepmd-candidate", "deepmd-baseline",
+                "plumed-force-feedback", "gnep-finite-difference-forces", "deepmd-candidate", "deepmd-baseline",
                 "installed-jit-resources-from-unrelated-cwd"}
     if not required <= science["checks"].keys() or science["job"] != job or not science["gpu_visible"]:
         raise ValueError("missing GPUMD numerical/feature evidence")
