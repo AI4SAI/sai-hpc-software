@@ -28,7 +28,9 @@ def contract_files(software):
                          "abacus_dependency_lock.json", "abacus_features.py", "abacus_benchmark.py",
                          "native_module.py", "export_native.py"]
     if software == "cp2k":
-        return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k"]
+        return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_feature_contract.py",
+                         "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_benchmark.py",
+                         "native_module.py", "export_native.py", "cp2k"]
     raise ValueError("unknown software contract")
 
 def recipe_fingerprint(software, control=None):
@@ -52,6 +54,10 @@ def identity(args):
     print(json.dumps(request_identity(args), sort_keys=True))
 
 def required_acceptance(software, target):
+    if software == "cp2k":
+        if target not in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
+            raise ValueError("CP2K native publication target is not registered")
+        return ("cp2k_benchmark",)
     if software != "abacus":
         raise ValueError(f"{software.upper()} publication is disabled: scientific acceptance is not registered")
     if target == "dsprhbm":
@@ -71,7 +77,8 @@ def validate_acceptance(manifest):
     for name in required_acceptance(manifest["software"], manifest["target"]):
         proof = manifest.get(name, {})
         benchmark = name.startswith("benchmark_")
-        verifier = ("abacus_benchmark.py" if benchmark else
+        verifier = ("cp2k_benchmark.py" if name == "cp2k_benchmark" else
+                    "abacus_benchmark.py" if benchmark else
                     "runtime_controller.py" if name == "multinode_runtime" else "gpu_feature_controller.py")
         if (proof.get("verified") is not True or
                 proof.get("artifact_sha256") != manifest["sha256"] or
@@ -122,6 +129,8 @@ def validate_acceptance(manifest):
             raise ValueError(f"missing or changed {name} scientific evidence")
         if name == "multinode_runtime":
             from runtime_controller import verify_evidence
+        elif name == "cp2k_benchmark":
+            from cp2k_benchmark import verify_evidence
         elif name == "gpu_features":
             from gpu_feature_controller import verify_evidence
         else:
@@ -285,14 +294,19 @@ def render_job(args):
         extra_binds = dependency_binds(ROOT)
     else:
         extra_binds = ((Path("/opt/apps"), "/opt/apps"),
-                       (ROOT / "cache/cp2k-dependencies", "/input/dependencies"))
+                       (ROOT / "cache/cp2k-dependencies", "/input/dependencies"),
+                       (ROOT / "cache/cp2k-probe", "/input/probe"))
     def container(phase, final=False):
         cmd = argv.copy()
         cmd[2] = phase
+        if args.software == "cp2k":
+            cmd = ["/usr/bin/env", f"SAI_BUILD_PARTITION={target['partition']}", *cmd]
+        # Final artifacts must not rely on source/dependency staging trees.
+        binds = ((Path("/opt/apps"), "/opt/apps"),) if final and args.software == "cp2k" else extra_binds
         return container_command(sif if final else image, cmd, overlay=None if final else overlay,
                                  control=CONTROL, repository=None if final else repo,
-                                 jobs=args.jobs, gpu=bool(target["gpus"]),
-                                 extra_binds=() if final and args.software == "abacus" else extra_binds)
+                                 jobs=args.jobs, gpu=bool(target["gpus"]), extra_binds=() if final and args.software == "abacus" else binds,
+                                 runtime=r / "runtime" if final and args.software == "cp2k" else None)
     emit = container_command(image, ["/usr/bin/cat", "/workspace/final.squashfs"],
                              overlay=str(overlay) + ":ro", jobs=args.jobs)
     q = shlex.quote
@@ -350,9 +364,8 @@ def render_job(args):
     return "\n".join(lines) + "\n"
 
 def submit(args):
-    # CP2K may build a candidate but cannot bypass the publication gate.
-    if args.software != "cp2k":
-        required_acceptance(args.software, args.target)
+    # Do not spend an allocation on a target that cannot pass publication.
+    required_acceptance(args.software, args.target)
     if args.jobs is None:
         args.jobs = TARGETS[args.target].get("build_jobs", 8)
     r = init(args)

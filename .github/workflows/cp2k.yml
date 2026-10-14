@@ -1,4 +1,4 @@
-name: Build CP2K candidate (manual only)
+name: Build CP2K
 
 on:
   workflow_dispatch:
@@ -8,11 +8,14 @@ on:
         required: true
         default: development
       targets:
-        description: Comma-separated targets (dsprhbm,4v100-avx512,16v100-avx2,8v100v0-avx512)
+        description: Native targets (dsprhbm,4v100-avx512,16v100-avx2,8v100v0-avx512)
         required: true
-        default: 4v100-avx512
+        default: 16v100-avx2
       resume_run:
         description: Optional terminated CP2K run id to repack without recompiling
+        required: false
+      reference_run:
+        description: Verified GPU CP2K benchmark run for CPU-only added-feature references
         required: false
       retry_releases:
         description: Explicitly retry selected release/prerelease versions already attempted
@@ -65,8 +68,6 @@ jobs:
           import json, os, sys
           sys.path.insert(0, 'controller')
           from release_contract import SOFTWARE, resolve_tracks
-          if os.environ['GITHUB_EVENT_NAME'] != 'workflow_dispatch':
-              raise ValueError('CP2K builds are manual candidates until scientific acceptance is registered')
           allowed = SOFTWARE['cp2k']['targets']
           requested = list(dict.fromkeys(t.strip() for t in os.environ['TARGETS'].split(',')))
           if not requested or any(t not in allowed for t in requested):
@@ -93,7 +94,7 @@ jobs:
     environment: hpc
     strategy:
       fail-fast: false
-      max-parallel: 2
+      max-parallel: 1
       matrix:
         build: ${{ fromJSON(needs.resolve-source.outputs.builds) }}
     steps:
@@ -108,7 +109,7 @@ jobs:
           mkdir -m 700 "$RUNNER_TEMP/ssh"
           printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
           chmod 600 "$RUNNER_TEMP/ssh/key"
-      - name: Build CP2K candidate SIF (no scientific acceptance or publication)
+      - name: Cache, submit, monitor and verify CP2K SIF
         env:
           SOFTWARE: cp2k
           REMOTE_USER: ${{ secrets.REMOTE_USER }}
@@ -118,6 +119,7 @@ jobs:
           SOFTWARE_VERSION: ${{ matrix.build.source_version }}
           TARGET: ${{ matrix.build.target }}
           RESUME_RUN: ${{ inputs.resume_run }}
+          CP2K_REFERENCE_RUN: ${{ inputs.reference_run }}
           RETRY_RELEASES: ${{ inputs.retry_releases }}
         run: python3 -u controller/ci.py
       - name: Publish build logs and SAI artifact location

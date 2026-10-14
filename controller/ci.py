@@ -77,7 +77,9 @@ def main():
                "abacus_dependency_lock.json", "abacus_features.py", "abacus_benchmark.py",
                "native_module.py", "export_native.py"]
               if software == "abacus" else
-              ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh"])
+              ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_feature_contract.py",
+               "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_benchmark.py",
+               "native_module.py", "export_native.py"])
     for name in common + recipe:
         upload(parent / name, f"{control}/{name}")
     launcher_name = "abacus" if software == "abacus" else "cp2k"
@@ -169,23 +171,34 @@ def main():
                        "--allow-cpu-case-on-gpu")
                 python("abacus_benchmark.py", "submit", benchmark_run)
                 python("abacus_benchmark.py", "monitor", benchmark_run)
-            python("software_controller.py", "publish", run_id)
+        if software == "cp2k":
+            benchmark_run = safe_name(run_id + "-benchmark")
+            reference = os.environ.get("CP2K_REFERENCE_RUN", "")
+            reference_args = ["--reference-run-id", safe_name(reference)] if reference and target == "dsprhbm" else []
+            python("cp2k_benchmark.py", "submit", benchmark_run, version, target,
+                   "--build-run-id", run_id, *reference_args)
+            python("cp2k_benchmark.py", "monitor", benchmark_run)
+        python("software_controller.py", "publish", run_id)
         run(["scp", "-q", *options, "-P", "12022", f"{remote}:{task}/artifact.path", results / "artifact.path"])
         if (results / "artifact.path").read_text().strip() != str(expected_artifact):
-            raise ValueError("artifact differs from the delivery identity layout")
-        if software == "cp2k":
-            (results / "candidate-only.json").write_text(json.dumps({
-                "artifact": str(expected_artifact), "identity": identity,
-                "published": False, "verified": False,
-                "reason": "CP2K scientific acceptance is not registered; manual build candidate only",
-            }, sort_keys=True) + "\n")
-            print(f"CANDIDATE_ARTIFACT_NOT_PUBLISHED {expected_artifact}", flush=True)
-        else:
-            print((results / "artifact.path").read_text(), flush=True)
+            raise ValueError("published artifact differs from the delivery identity layout")
+        print((results / "artifact.path").read_text(), flush=True)
     finally:
         # Only logs/metadata travel back; the single SIF stays in the SAI catalog.
         subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
                         f"{remote}:{task}/results/.", str(results)], check=False)
+        if software == "cp2k":
+            benchmark_results = results / "benchmark"
+            benchmark_results.mkdir(exist_ok=True)
+            subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
+                            f"{remote}:{root}/runtime-tests/{run_id}-benchmark/results/.",
+                            str(benchmark_results)], check=False)
+            # Preserve raw scientific inputs/logs/forces as well as summaries;
+            # never transfer SIFs or build/install trees back to the runner.
+            benchmark_task = f"{root}/runtime-tests/{run_id}-benchmark"
+            for name in ("cases", "fixtures", "request.json", "job.sbatch", "job.id", "rank-exec.sh"):
+                subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
+                                f"{remote}:{benchmark_task}/{name}", str(benchmark_results)], check=False)
         if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             runtime_results = results / "runtime"
             runtime_results.mkdir(exist_ok=True)
