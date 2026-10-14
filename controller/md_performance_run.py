@@ -324,7 +324,7 @@ class Runner:
         _write_json(trial / "record.json", record)
         return record
 
-    def run(self, *, repeats=3, initial_steps=100, minimum=5.0):
+    def run(self, *, repeats=3, initial_steps=100, minimum=5.0, frozen_source=None):
         if type(repeats) is not int or repeats < 3 or not math.isfinite(minimum) or minimum < 5:
             raise ValueError("need >=3 repeats and >=5-second baseline calibration")
 
@@ -333,8 +333,28 @@ class Runner:
             self.calibration_records.append(record)
             return record["stdout"]
 
-        frozen = calibrate(baseline, self.backend, self.fixture_sha256, self.node, self.resources,
-                           minimum=minimum, initial_steps=initial_steps)
+        if frozen_source is None:
+            frozen = calibrate(baseline, self.backend, self.fixture_sha256, self.node, self.resources,
+                               minimum=minimum, initial_steps=initial_steps)
+        else:
+            source = Path(frozen_source)
+            if source.resolve() != source or source.is_symlink() or not source.is_file():
+                raise ValueError('untrusted original frozen workload')
+            frozen = json.loads(source.read_text())
+            from md_performance import render_input
+            if (frozen.get('repeat_of') or frozen.get('backend') != self.backend
+                    or frozen.get('node') != self.node or frozen.get('resources') != self.resources
+                    or frozen.get('fixture_sha256') != self.fixture_sha256
+                    or frozen.get('input') != render_input(self.backend, frozen.get('steps'))
+                    or frozen.get('input_sha256') != hashlib.sha256(
+                        (self.fixture_sha256 + '\n' + frozen['input']).encode()).hexdigest()):
+                raise ValueError('MD retest must reuse the original fixture, node, resources and frozen workload')
+            # Observe the already fixed interval again; never recalibrate to a
+            # different number of steps after a regression.
+            timing = parse_engine_time(baseline(frozen['steps'], frozen['input']), frozen['steps'])
+            if timing['engine_seconds'] < 5.0:
+                raise ValueError('original frozen workload is too short on repeat; changing it is forbidden')
+            frozen = dict(frozen, calibration=[timing], repeat_of={'frozen_sha256': file_digest(source)})
         _write_json(self.output / "frozen.json", frozen)
         _write_json(self.output / "calibration-records.json", self.calibration_records)
         if self.backend == 'pt' and self.nsys:
@@ -374,11 +394,13 @@ def main(argv=None):
     parser.add_argument("--initial-steps", type=int, default=100)
     parser.add_argument("--minimum", type=float, default=5.0)
     parser.add_argument("--timeout", type=float, default=1800)
+    parser.add_argument("--frozen-source", help="reuse the verified first attempt frozen workload; never recalibrate steps")
     parser.add_argument("--nsys", help="absolute Nsight Systems executable; PT GPU evidence required for acceptance")
     args = parser.parse_args(argv)
     runner = Runner(args.case_dir, args.backend, json.loads(args.resources_json), args.launcher,
                     args.output_dir, nsys=args.nsys, timeout=args.timeout)
-    report = runner.run(repeats=args.repeats, initial_steps=args.initial_steps, minimum=args.minimum)
+    report = runner.run(repeats=args.repeats, initial_steps=args.initial_steps, minimum=args.minimum,
+                        frozen_source=args.frozen_source)
     print(json.dumps(report, sort_keys=True, allow_nan=False))
     return 0 if report["passed"] else 1
 

@@ -74,6 +74,8 @@ def build_record(build_run):
 
 
 def acceptance(build_run, science_run, performance_run):
+    if performance_run not in (build_run + '-performance', build_run + '-performance-retest'):
+        raise ValueError('MD publication accepts only the original performance attempt or its one named repeat')
     delivery, image, digest = build_record(build_run)
     expected = dict(build_run=build_run, artifact=str(image), artifact_sha256=digest,
                     delivery=delivery)

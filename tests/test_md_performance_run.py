@@ -182,6 +182,46 @@ class RepresentativeRunnerTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, 'binding/allocation differs'):
                     runner.measure('candidate', 'candidate-01', 100, 'synthetic input')
 
+class FrozenRepeatRunnerTests(unittest.TestCase):
+    def test_repeat_observes_original_steps_without_recalibrating(self):
+        from md_performance import render_input
+        from md_science import file_digest
+        import hashlib
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / 'original-frozen.json'
+            input_text = render_input('tf', 321)
+            frozen = dict(schema=1, backend='tf', steps=321, atoms=2058, node='node1',
+                          resources={'ranks': 1}, fixture_sha256='a' * 64, input=input_text,
+                          input_sha256=hashlib.sha256(('a' * 64 + '\n' + input_text).encode()).hexdigest(),
+                          workload='synthetic replicated fixed-geometry force evaluation',
+                          minimum_engine_seconds=3.0, calibration=[])
+            source.write_text(json.dumps(frozen))
+            runner = Runner.__new__(Runner)
+            runner.backend, runner.nsys, runner.node = 'tf', None, 'node1'
+            runner.resources, runner.fixture_sha256 = {'ranks': 1}, 'a' * 64
+            runner.calibration_records, runner.device_proofs = [], {}
+            runner.output = root / 'repeat'; runner.output.mkdir()
+            def measure(side, name, steps, text, **kwargs):
+                self.assertEqual((steps, text), (321, input_text))
+                return dict(stdout='Loop time of 6 on 1 procs for 321 steps with 2058 atoms\n',
+                            execution_device={'device_verified': True}, profiled=False)
+            with patch.object(runner, 'measure', side_effect=measure) as measured, \
+                    patch('md_performance_run.calibrate') as calibrate, \
+                    patch('md_performance_run.verify_performance', return_value={'speedup': 1.0}):
+                self.assertTrue(runner.run(frozen_source=source)['passed'])
+            calibrate.assert_not_called()
+            self.assertEqual(measured.call_count, 9)
+            repeated = json.loads((runner.output / 'frozen.json').read_text())
+            self.assertEqual(repeated['repeat_of'], {'frozen_sha256': file_digest(source)})
+            self.assertEqual(repeated['steps'], frozen['steps'])
+            self.assertEqual(repeated['input'], frozen['input'])
+            self.assertEqual(repeated['calibration'][0]['steps'], 321)
+            runner.output = root / 'wrong-node'; runner.output.mkdir()
+            runner.node = 'other-node'
+            with self.assertRaisesRegex(ValueError, 'original fixture, node, resources and frozen workload'):
+                runner.run(frozen_source=source)
+
 
 if __name__ == '__main__':
     unittest.main()

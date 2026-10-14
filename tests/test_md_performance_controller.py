@@ -95,7 +95,11 @@ class PerformanceLifecycleTests(unittest.TestCase):
                            recipe_sha256=delivery['recipe_sha256'],
                            job_script_sha256=checksum(directory / 'job.sbatch'))
             (directory / 'request.json').write_text(json.dumps(request))
-            raw_report = dict(files={}, performance=dict(candidate={'median_engine_seconds': 11.01},
+            for backend in controller.BACKENDS:
+                (directory / 'results' / backend).mkdir()
+                (directory / 'results' / backend / 'frozen.json').write_text('{}')
+            raw_report = dict(files={}, binaries={'baseline': 'b' * 64, 'candidate': 'c' * 64},
+                              performance=dict(candidate={'median_engine_seconds': 11.01},
                                                         baseline={'median_engine_seconds': 10.0}))
             actual_is_file = Path.is_file
             def is_file(path):
@@ -126,6 +130,107 @@ class PerformanceLifecycleTests(unittest.TestCase):
                     patch.object(controller, 'verify') as verify:
                 self.assertEqual(controller.monitor(types.SimpleNamespace(run_id='unit', timeout=1, interval=0)), 1)
             verify.assert_not_called()
+
+class RepeatBindingTests(unittest.TestCase):
+    def setUp(self):
+        from source_cache import checksum
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name)
+        patcher = patch.object(controller, 'ROOT', self.root)
+        patcher.start(); self.addCleanup(patcher.stop)
+        self.original_id = 'build-performance'
+        self.repeat_id = self.original_id + '-retest'
+        self.original = dict(run_id=self.original_id, build_run='build', science_run='science',
+                             delivery={'locked': 'pair'}, artifact='/safe/image.sif', artifact_sha256='a' * 64,
+                             target='16v100-avx2', resources=controller.RESOURCES, recipe_sha256='b' * 64)
+        self.reports = {backend: dict(binaries={'baseline': 'c' * 64, 'candidate': 'd' * 64},
+                                     fixture_sha256='e' * 64,
+                                     performance={'device': [backend, 'gpu' if backend == 'pt' else 'cpu', 'node1']})
+                        for backend in controller.BACKENDS}
+        self.evidence = dict(passed=False, performance_verified=False, job='123',
+                             regressed_backends=['pt'], reports=self.reports)
+        original = controller.task(self.original_id)
+        self.write(original / 'request.json', self.original)
+        self.write(original / 'results/evidence.json', self.evidence)
+        self.write(original / 'results/status.json', dict(state='COMPLETED', exit_code='0:0', job='123',
+                   performance_verified=False, evidence_sha256=checksum(original / 'results/evidence.json')))
+        for backend in controller.BACKENDS:
+            frozen = dict(schema=1, workload='fixed scientific workload', backend=backend, atoms=2058,
+                          steps=100, node='node1', resources=controller.RESOURCES, fixture_sha256='e' * 64,
+                          input_sha256='f' * 64, input='fixed input', minimum_engine_seconds=3.0)
+            self.write(original / 'results' / backend / 'frozen.json', frozen)
+        self.repeat = dict(self.original, run_id=self.repeat_id, repeat_of=controller.repeat_binding(self.original_id))
+        for backend in controller.BACKENDS:
+            frozen = json.loads((original / 'results' / backend / 'frozen.json').read_text())
+            frozen['repeat_of'] = {'frozen_sha256': self.repeat['repeat_of']['frozen_sha256'][backend]}
+            self.write(controller.task(self.repeat_id) / 'results' / backend / 'frozen.json', frozen)
+        verifier = patch.object(controller, 'verify', return_value=self.evidence)
+        self.verifier = verifier.start(); self.addCleanup(verifier.stop)
+
+    @staticmethod
+    def write(path, value):
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(value, sort_keys=True))
+
+    def test_valid_repeat_binds_completed_original_raw_regression(self):
+        result = controller.verify_repeat(self.repeat, self.reports)
+        self.assertEqual(result, self.repeat['repeat_of'])
+        self.verifier.assert_called_once_with(self.original_id, enforce_performance=False)
+
+    def test_missing_or_changed_original_status_or_evidence_blocks_repeat(self):
+        path = controller.task(self.original_id) / 'results/evidence.json'
+        path.write_text('{}')
+        with self.assertRaisesRegex(ValueError, 'original raw evidence'):
+            controller.verify_repeat(self.repeat, self.reports)
+
+    def test_repeat_cannot_be_of_a_success_or_a_previous_repeat(self):
+        from source_cache import checksum
+        self.evidence.update(passed=True, performance_verified=True, regressed_backends=[])
+        original = controller.task(self.original_id)
+        self.write(original / 'results/evidence.json', self.evidence)
+        status = json.loads((original / 'results/status.json').read_text())
+        status['evidence_sha256'] = checksum(original / 'results/evidence.json')
+        self.write(original / 'results/status.json', status)
+        with self.assertRaisesRegex(ValueError, 'greater-than-10% regression'):
+            controller.verify_repeat(self.repeat, self.reports)
+        with self.assertRaisesRegex(ValueError, 'first original attempt'):
+            controller.original_for_repeat(dict(self.repeat, run_id=self.repeat_id + '-retest'))
+
+    def test_changed_original_calibration_after_submission_is_rejected(self):
+        path = controller.task(self.original_id) / 'results/tf/frozen.json'
+        value = json.loads(path.read_text()); value['steps'] = 999
+        self.write(path, value)
+        with self.assertRaisesRegex(ValueError, 'changed after repeat submission'):
+            controller.verify_repeat(self.repeat, self.reports)
+
+    def test_repeat_cannot_change_frozen_steps_or_baseline_binary_or_device(self):
+        import copy
+        for field, replacement in (('binaries', {'baseline': '0' * 64, 'candidate': 'd' * 64}),
+                                   ('fixture_sha256', '0' * 64),
+                                   ('performance', {'device': ['pt', 'gpu', 'other-node']})):
+            reports = copy.deepcopy(self.reports)
+            reports['pt'][field] = replacement
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, 'binaries, scientific inputs or device'):
+                controller.verify_repeat(self.repeat, reports)
+        path = controller.task(self.repeat_id) / 'results/pt/frozen.json'
+        value = json.loads(path.read_text()); value['steps'] += 1
+        self.write(path, value)
+        with self.assertRaisesRegex(ValueError, 'original frozen calibrated workload'):
+            controller.verify_repeat(self.repeat, self.reports)
+
+    def test_repeat_cannot_change_artifact_science_or_resources(self):
+        for change in ({'artifact': '/other.sif'}, {'science_run': 'other-science'},
+                       {'resources': dict(controller.RESOURCES, ranks=2)}):
+            with self.subTest(change=change), self.assertRaisesRegex(ValueError, 'scientific inputs, source or allocation'):
+                controller.original_for_repeat(dict(self.repeat, **change))
+
+    def test_repeat_render_pins_original_node_and_source_workloads(self):
+        request = dict(self.repeat, delivery=delivery_request('16v100-avx2'))
+        script = controller.render(request, Path('/safe/repeat'))
+        subprocess.run(['bash', '-n'], input=script, text=True, check=True)
+        self.assertIn('#SBATCH --nodelist=node1', script)
+        self.assertIn('md_performance.sh build-performance-retest science build-performance', script)
 
 
 if __name__ == '__main__':

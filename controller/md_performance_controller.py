@@ -27,6 +27,8 @@ def task(run_id):
 
 
 def validate_request(request):
+    if request['run_id'] not in (request['build_run'] + '-performance', request['build_run'] + '-performance-retest'):
+        raise ValueError('MD performance permits only the first attempt and one named repeat per build')
     delivery = validate_pair(request['delivery'])
     if (request['recipe_sha256'] != fingerprint(CONTROL)
             or delivery['recipe_sha256'] != request['recipe_sha256']
@@ -54,7 +56,10 @@ def render(request, directory):
              'export SAI_SOFTWARE_ROOT=' + shlex.quote(str(PROJECT)),
              'export SAI_MD_DELIVERY=' + shlex.quote(json.dumps(delivery, sort_keys=True)),
              'export SAI_MD_IMAGE=' + shlex.quote(request['artifact']),
-             join(['bash', CONTROL / 'md_performance.sh', request['run_id'], request['science_run']])]
+             join(['bash', CONTROL / 'md_performance.sh', request['run_id'], request['science_run'],
+                   *([request['repeat_of']['run_id']] if request.get('repeat_of') else [])])]
+    if request.get('repeat_of'):
+        lines.insert(2, '#SBATCH --nodelist=' + safe_name(request['repeat_of']['node']))
     return '\n'.join(lines) + '\n'
 
 
@@ -69,6 +74,88 @@ def science_evidence(request):
     return evidence
 
 
+def regular(path):
+    path = Path(path)
+    if path.resolve() != path or path.is_symlink() or not path.is_file():
+        raise ValueError('untrusted performance evidence file')
+    return path
+
+
+def completed_original(run_id):
+    directory = task(run_id)
+    request = json.loads(regular(directory / 'request.json').read_text())
+    if request.get('run_id') != run_id or request.get('repeat_of') or run_id.endswith('-retest'):
+        raise ValueError('MD retest requires the first original performance attempt')
+    status = json.loads(regular(directory / 'results/status.json').read_text())
+    evidence_file = regular(directory / 'results/evidence.json')
+    evidence = verify(run_id, enforce_performance=False)
+    if (status.get('state') != 'COMPLETED' or status.get('exit_code') != '0:0'
+            or status.get('job') != evidence['job'] or status.get('performance_verified') is not False
+            or status.get('evidence_sha256') != checksum(evidence_file)
+            or json.loads(evidence_file.read_text()) != evidence
+            or evidence.get('passed') is not False or not evidence.get('regressed_backends')):
+        raise ValueError('MD retest requires unchanged original raw evidence of a greater-than-10% regression')
+    return request, evidence
+
+
+def repeat_binding(run_id):
+    directory = task(run_id)
+    frozen = {backend: json.loads(regular(directory / 'results' / backend / 'frozen.json').read_text())
+              for backend in BACKENDS}
+    nodes = {safe_name(value['node']) for value in frozen.values()}
+    if len(nodes) != 1 or any(value.get('repeat_of') for value in frozen.values()):
+        raise ValueError('original MD calibration must belong to one node and not be a repeat')
+    return dict(run_id=run_id, node=nodes.pop(), request_sha256=checksum(regular(directory / 'request.json')),
+                evidence_sha256=checksum(regular(directory / 'results/evidence.json')),
+                frozen_sha256={backend: checksum(regular(directory / 'results' / backend / 'frozen.json'))
+                               for backend in BACKENDS})
+
+
+def check_repeat_request(request, original):
+    fields = ('build_run', 'science_run', 'delivery', 'artifact', 'artifact_sha256',
+              'target', 'resources', 'recipe_sha256')
+    if any(request.get(key) != original.get(key) for key in fields):
+        raise ValueError('MD retest changed its image, scientific inputs, source or allocation')
+
+
+def original_for_repeat(request):
+    run_id = request['run_id']
+    repeat = request.get('repeat_of', {})
+    original_id = run_id.removesuffix('-retest')
+    if (not run_id.endswith('-retest') or original_id.endswith('-retest')
+            or repeat.get('run_id') != original_id):
+        raise ValueError('MD retest is not bound to its first original attempt')
+    original, evidence = completed_original(original_id)
+    check_repeat_request(request, original)
+    if repeat != repeat_binding(original_id):
+        raise ValueError('MD original regression or calibrated workload changed after repeat submission')
+    return evidence
+
+
+def verify_repeat(request, reports):
+    if not request['run_id'].endswith('-retest') and not request.get('repeat_of'):
+        for backend in BACKENDS:
+            frozen = json.loads(regular(task(request['run_id']) / 'results' / backend / 'frozen.json').read_text())
+            if frozen.get('repeat_of'):
+                raise ValueError('first MD attempt cannot borrow a different calibrated workload')
+        return None
+    original = original_for_repeat(request)
+    keys = ('schema', 'workload', 'backend', 'atoms', 'steps', 'node', 'resources',
+            'fixture_sha256', 'input_sha256', 'input', 'minimum_engine_seconds')
+    for backend in BACKENDS:
+        report, previous = reports[backend], original['reports'][backend]
+        if (report.get('binaries') != previous.get('binaries') or not report.get('binaries')
+                or report['fixture_sha256'] != previous['fixture_sha256']
+                or report['performance']['device'] != previous['performance']['device']):
+            raise ValueError('MD retest changed baseline/candidate binaries, scientific inputs or device')
+        before = json.loads(regular(task(request['repeat_of']['run_id']) / 'results' / backend / 'frozen.json').read_text())
+        after = json.loads(regular(task(request['run_id']) / 'results' / backend / 'frozen.json').read_text())
+        if (any(after.get(key) != before.get(key) for key in keys)
+                or after.get('repeat_of') != {'frozen_sha256': request['repeat_of']['frozen_sha256'][backend]}):
+            raise ValueError('MD retest changed the original frozen calibrated workload')
+    return request['repeat_of']
+
+
 def submit(args):
     scientific = science.task(args.science_run)
     original = json.loads((scientific / 'request.json').read_text())
@@ -80,6 +167,11 @@ def submit(args):
                    target=original['target'], resources=RESOURCES, recipe_sha256=fingerprint(CONTROL))
     validate_request(request)
     science_evidence(request)
+    if args.run_id.endswith('-retest'):
+        original_id = args.run_id.removesuffix('-retest')
+        previous, _ = completed_original(original_id)
+        check_repeat_request(request, previous)
+        request['repeat_of'] = repeat_binding(original_id)
     directory = task(args.run_id)
     if (directory / 'job.id').exists() or (directory / 'request.json').exists():
         raise ValueError('performance was already submitted; use a new explicit repeat run')
@@ -140,11 +232,17 @@ def verify(run_id, *, enforce_performance=True):
             check_performance(performance['candidate']['median_engine_seconds'], performance['baseline']['median_engine_seconds'])
         except PerformanceRegression:
             regression.append(backend)
+    binaries = [report.get('binaries') for report in reports.values()]
+    if not binaries[0] or any(value != binaries[0] for value in binaries[1:]):
+        raise ValueError('MD performance backends measured different baseline/candidate binaries')
+    repeat = verify_repeat(request, reports)
     evidence = dict(passed=not regression, performance_verified=not regression, published=False,
                     build_run=request['build_run'], science_run=request['science_run'],
                     artifact=request['artifact'], artifact_sha256=request['artifact_sha256'], delivery=delivery,
                     recipe_sha256=request['recipe_sha256'], job=job, reports=reports, files=files,
                     regressed_backends=regression)
+    if repeat is not None:
+        evidence['repeat_of'] = repeat
     if regression and enforce_performance:
         raise PerformanceRegression('MD performance exceeds 10% slowdown: ' + ', '.join(regression))
     return evidence

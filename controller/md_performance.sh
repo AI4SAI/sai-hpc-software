@@ -3,6 +3,10 @@
 set -euo pipefail
 run_id=$1
 science_run=$2
+repeat_run=${3:-}
+if [[ -n "$repeat_run" ]]; then
+  [[ "$repeat_run" =~ ^[A-Za-z0-9][A-Za-z0-9_.-]*$ && "$run_id" == "$repeat_run-retest" ]]
+fi
 [[ "$run_id" =~ ^[A-Za-z0-9][A-Za-z0-9_.-]*$ && "$science_run" =~ ^[A-Za-z0-9][A-Za-z0-9_.-]*$ ]]
 control=$(cd -- "$(dirname -- "$0")" && pwd -P)
 root="$SAI_SOFTWARE_ROOT/experimental/deepmd-lammps"
@@ -20,9 +24,11 @@ nsys=$(realpath -e /opt/devtools/nvidia/cuda-12.9.1/nsight-systems-2025.1.3/bin/
 printf '%s\n' "$nsys" > "$task/results/nsys.path"
 resources='{"nodes":1,"ranks":1,"gpus_per_node":1,"threads_per_rank":1}'
 for backend in tf pt jax; do
+  frozen_args=()
+  if [[ -n "$repeat_run" ]]; then frozen_args=(--frozen-source "$root/runtime-tests/$repeat_run/results/$backend/frozen.json"); fi
   python3 -u "$control/md_performance_run.py" "$task/case" --backend "$backend" \
     --resources-json "$resources" --launcher "$control/md_runtime.sh" \
-    --output-dir "$task/results/$backend" --nsys "$nsys" \
+    --output-dir "$task/results/$backend" --nsys "$nsys" "${frozen_args[@]}" \
     > "$task/results/$backend.log" 2>&1
 done
 echo MD_PERFORMANCE_RAW_EVIDENCE_COLLECTED

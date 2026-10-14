@@ -123,6 +123,11 @@ class MDPublicationTests(unittest.TestCase):
             self.assertNotEqual(self.evaluate(metadata, partition='DSPRHBM').returncode, 0)
         self.assertEqual(self.publish(), manifest)  # Same immutable evidence is idempotent.
 
+    def test_arbitrary_third_attempt_name_cannot_publish(self):
+        with self.assertRaisesRegex(ValueError, 'one named repeat'):
+            publication.publish(self.build_run, self.science_run, self.build_run + '-performance-third')
+        self.exporter.assert_not_called()
+
     def test_raw_performance_regression_blocks_export_and_modules(self):
         self.performance.side_effect = PerformanceRegression('repeat still exceeds 10 percent')
         with self.assertRaises(PerformanceRegression):
