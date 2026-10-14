@@ -1,0 +1,96 @@
+{
+  "schema": 1,
+  "scope": "Allocated site-baseline import and original-model conversion diagnostics only",
+  "scientific_verified": false,
+  "representative_performance_verified": false,
+  "candidate_verified": false,
+  "published": false,
+  "site_python": "/opt/apps/conda_env/deepmd-kit-3.2.0/bin/python",
+  "source_sha": "28b7d068801716765ab8119257f814596e49a10c",
+  "source_graph_sha256": "89e6aaa544dafc4620ecf49340ac2cd9e74ca0cfc2aae2c7bb060028550283a3",
+  "source_reference_sha256": "aa1470918c385a1d68fa8d66632e4b99138002346b1e62e4b058939dec59a042",
+  "converted_model_pb_sha256": "9348a06c24b7edd3b09c41aef9fc15b7cda0bb288924d7352d60ad1910b218de",
+  "environment": {
+    "CUDA_VISIBLE_DEVICES": "",
+    "PYTHONFAULTHANDLER": "1",
+    "OMP_NUM_THREADS": "1",
+    "site_packages_modified": false,
+    "model_weights_or_metadata_modified": false,
+    "source_or_fixture_host_checkout": false
+  },
+  "jobs": [
+    {
+      "job": "1273701",
+      "run": "md-baseline-science-r3",
+      "partition": "4V100",
+      "node": "4v100n02",
+      "state": "FAILED",
+      "exit_code": "1:0",
+      "elapsed": "00:02:02",
+      "raw_slurm_sha256": "8e3fc09ba928dd3ff9665ea4cc4c77af3063dea8e4d5ba4d2895e8da97dbdb1c",
+      "finding": "CPU-isolated pb-to-pth conversion still SIGSEGV11; faulthandler points to triton.knobs import of triton._C.libtriton."
+    },
+    {
+      "job": "1274280",
+      "run": "md-import-order-r1",
+      "partition": "4V100",
+      "node": "4v100n15",
+      "state": "FAILED",
+      "exit_code": "1:0",
+      "elapsed": "00:00:22",
+      "job_script_sha256": "3283f5f5001b4b9d9cb5c93e6e86608fdc2d75a89e080c6073e473931a50a523",
+      "recipe_sha256": "7e8692b6b2142982bae5e240775fab94928d41a7c85906288d98e4cd71fd373a",
+      "raw_slurm_sha256": "227cd76c00189f20f459a38aebbf371413793002ef8cd1d0ada0b38a13c8c993",
+      "cases": [
+        {"modules": ["triton"], "returncode": 0},
+        {"modules": ["torch", "triton"], "returncode": 0},
+        {"modules": ["tensorflow", "torch", "triton"], "returncode": -11},
+        {"modules": ["torch", "tensorflow", "triton"], "returncode": -11},
+        {"modules": ["deepmd.pt.model.descriptor"], "returncode": 0}
+      ]
+    },
+    {
+      "job": "1274406",
+      "run": "md-import-order-r2",
+      "partition": "4V100",
+      "node": "4v100n15",
+      "state": "FAILED",
+      "exit_code": "1:0",
+      "elapsed": "00:00:28",
+      "job_script_sha256": "8653b0ce1b08977ddf253eb74204987ddf08f78097408a2e1aa32246adf0b430",
+      "recipe_sha256": "8dce9c986ffa531c4d4e23a43fa8925e5dfa2dc621dbd800914442292149256b",
+      "raw_slurm_sha256": "4f7c4a01e9fded0e2684f785851a152ee653b08a8120db2db6091deb8d47e142",
+      "cases": [
+        {"modules": ["triton", "tensorflow", "torch"], "returncode": 0},
+        {"modules": ["torch", "triton", "tensorflow"], "returncode": 0},
+        {
+          "command": ["/opt/apps/conda_env/deepmd-kit-3.2.0/bin/python", "-X", "faulthandler", "-m", "deepmd", "convert-from", "pbtxt", "-i", "deeppot.pbtxt", "-o", "model.pb"],
+          "input_sha256": "89e6aaa544dafc4620ecf49340ac2cd9e74ca0cfc2aae2c7bb060028550283a3",
+          "returncode": 0
+        },
+        {
+          "command": ["/opt/apps/conda_env/deepmd-kit-3.2.0/bin/python", "-X", "faulthandler", "-c", "import triton; import runpy; runpy.run_module(\"deepmd\", run_name=\"__main__\")", "convert-backend", "model.pb", "model.pth"],
+          "input_sha256": "9348a06c24b7edd3b09c41aef9fc15b7cda0bb288924d7352d60ad1910b218de",
+          "returncode": 1,
+          "finding": "GraphWithoutTensorError: missing train_attr/training_script:0; not a segmentation fault."
+        }
+      ]
+    }
+  ],
+  "source_bootstrap": {
+    "repository": "lammps/lammps",
+    "commit": "ac6d475f60ec86678d9b633ff99914bdea5b9c94",
+    "remote_cache": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/cache/repositories/lammps",
+    "compressed_size": 902138693,
+    "compressed_sha256": "6ea95c97111a33553d8a698b78ca97bd94fe19cfeeaef08cbf988f23df5600b0",
+    "bundle_sha256": "bb7e8b26ee85c95cd2e5feaa05267251cbf359040a053ea0bc5b3c01cba57cbc",
+    "resumed_part": "source.part.02",
+    "rsync_sent_bytes": 111489034,
+    "original_r1_parts_preserved": true,
+    "separate_receive_staging": "source-bootstrap-r2",
+    "receiver_checksums_verified": true,
+    "git_fsck_full_exit_code": 0,
+    "cache_inventory_verified": true
+  },
+  "next_requirement": "A serializable cross-backend fixture with an independent oracle, or explicitly separate per-backend pinned models and oracles. No automatic Triton workaround or invented training metadata was installed."
+}

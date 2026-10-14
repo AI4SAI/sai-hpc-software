@@ -1,0 +1,79 @@
+name: Build one locked MD pair
+
+on:
+  workflow_call:
+    inputs:
+      pair:
+        type: string
+        required: true
+      retry_releases:
+        type: boolean
+        default: false
+    secrets:
+      REMOTE_SSH_PRIVATE_KEY:
+        required: true
+      REMOTE_USER:
+        required: true
+
+permissions:
+  contents: read
+
+env:
+  MD_PAIR: ${{ inputs.pair }}
+  REMOTE_USER: ${{ secrets.REMOTE_USER }}
+  RETRY_RELEASES: ${{ inputs.retry_releases }}
+
+jobs:
+  deepmd:
+    runs-on: ubuntu-latest
+    environment: hpc
+    timeout-minutes: 270
+    outputs:
+      run_id: ${{ steps.build.outputs.run_id }}
+    env:
+      MD_PHASE: deepmd
+    steps: &md_steps
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Prepare repository-secret SSH key
+        env:
+          KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
+        run: |
+          mkdir -m 700 "$RUNNER_TEMP/ssh"
+          printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
+          chmod 600 "$RUNNER_TEMP/ssh/key"
+      - name: Run isolated MD stage
+        id: build
+        run: python3 -u controller/md_ci.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: md-${{ env.MD_PHASE }}-${{ fromJSON(inputs.pair).selection_sha256 }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/results/
+          if-no-files-found: warn
+      - name: Remove temporary SSH key
+        if: always()
+        run: rm -f -- "$RUNNER_TEMP/ssh/key"
+
+  lammps:
+    needs: deepmd
+    if: needs.deepmd.outputs.run_id != ''
+    runs-on: ubuntu-latest
+    environment: hpc
+    # A 330-minute rush allocation fits in its own hosted-runner job.
+    timeout-minutes: 360
+    env:
+      MD_PHASE: lammps
+      MD_RUN_ID: ${{ needs.deepmd.outputs.run_id }}
+    steps: *md_steps
+
+  acceptance:
+    needs: [deepmd, lammps]
+    runs-on: ubuntu-latest
+    environment: hpc
+    timeout-minutes: 270
+    env:
+      MD_PHASE: acceptance
+      MD_RUN_ID: ${{ needs.deepmd.outputs.run_id }}
+    steps: *md_steps

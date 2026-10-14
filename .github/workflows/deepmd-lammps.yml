@@ -1,0 +1,100 @@
+name: Experimental DeePMD and LAMMPS tracking
+
+on:
+  workflow_dispatch:
+    inputs:
+      software:
+        description: Independently triggered primary software (all, deepmd-kit, lammps)
+        default: all
+        required: true
+      tracks:
+        description: Independent upstream channels, comma separated
+        default: development,prerelease,release
+        required: true
+      targets:
+        description: Native GPU partitions; independent build for every target
+        default: 16v100-avx2
+        required: true
+      build_candidates:
+        description: Spend Slurm allocation on unpublished experimental builds
+        type: boolean
+        default: false
+      retry_releases:
+        description: Explicitly retry the selected release/prerelease versions, including failed attempts
+        type: boolean
+        default: false
+  push:
+    paths: ['controller/md_*', 'controller/remote_controller.py', 'controller/source_cache.py', 'controller/create_rootfs.sh', 'controller/resolve_source.py', 'controller/release_contract.py', 'controller/native_module.py', 'controller/export_native.py', 'tests/test_md_*', 'tests/test_controller.py', 'docs/DEEPMD-LAMMPS.md', 'docs/evidence/deepmd-*', '.github/workflows/deepmd-lammps.yml', '.github/workflows/md-pair.yml']
+  pull_request:
+    paths: ['controller/md_*', 'controller/remote_controller.py', 'controller/source_cache.py', 'controller/create_rootfs.sh', 'controller/resolve_source.py', 'controller/release_contract.py', 'controller/native_module.py', 'controller/export_native.py', 'tests/test_md_*', 'tests/test_controller.py', 'docs/DEEPMD-LAMMPS.md', 'docs/evidence/deepmd-*', '.github/workflows/deepmd-lammps.yml', '.github/workflows/md-pair.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install native delivery test tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y squashfs-tools tcl python3-yaml
+          command -v mksquashfs unsquashfs tclsh
+      - run: python3 -m unittest discover -s tests -v
+      - run: |
+          for script in controller/md_*.sh; do bash -n "$script"; done
+
+  resolve:
+    if: github.event_name == 'workflow_dispatch'
+    needs: validate
+    runs-on: ubuntu-latest
+    outputs:
+      builds: ${{ steps.pair.outputs.builds }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - id: pair
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOFTWARE: ${{ inputs.software || 'all' }}
+          TRACKS: ${{ inputs.tracks || 'development,prerelease,release' }}
+          TARGETS: ${{ inputs.targets || '4v100-avx512,16v100-avx2,8v100v0-avx512' }}
+        run: |
+          python3 - <<'PY'
+          import json, os, sys
+          sys.path.insert(0, 'controller')
+          from md_tracking import resolve_track_pairs, REPOSITORIES
+          software = os.environ['SOFTWARE']
+          if software != 'all' and software not in REPOSITORIES:
+              raise ValueError('unknown MD primary software')
+          result = resolve_track_pairs(os.environ['TRACKS'].split(','), os.environ['TARGETS'].split(','))
+          builds = []
+          for pair in result['pairs']:
+              pair['triggers'] = [trigger for trigger in pair['triggers']
+                                  if software == 'all' or trigger['software'] == software]
+              if pair['triggers']:
+                  builds.append(pair)
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as stream:
+              stream.write('builds=' + json.dumps(builds) + '\n')
+          print(json.dumps(dict(pairs=builds, skipped=result['skipped']), indent=2))
+          PY
+
+  candidate-build:
+    # The default-branch daily scheduler explicitly dispatches this workflow.
+    # Building candidates never enables publication or implies acceptance.
+    if: github.event_name == 'workflow_dispatch' && inputs.build_candidates && needs.resolve.outputs.builds != '[]'
+    needs: [validate, resolve]
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        build: ${{ fromJSON(needs.resolve.outputs.builds) }}
+    uses: ./.github/workflows/md-pair.yml
+    with:
+      pair: ${{ toJSON(matrix.build) }}
+      retry_releases: ${{ inputs.retry_releases || false }}
+    secrets: inherit

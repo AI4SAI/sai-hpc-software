@@ -33,6 +33,7 @@ class PolicyTests(unittest.TestCase):
         binds = [argv[i + 1] for i, x in enumerate(argv) if x == "--bind"]
         self.assertTrue(all(x.endswith(":ro") for x in binds))
         self.assertIn("/opt/devtools:/opt/devtools:ro", binds)
+        self.assertIn("/sbin:/sbin:ro", binds)
         self.assertFalse(any(x.startswith("/opt:") for x in binds))
         self.assertIn("none", argv)
         self.assertNotIn("--writable", argv)

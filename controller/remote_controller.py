@@ -30,7 +30,7 @@ TARGETS = {
         "cuda_arch": "80", "cpu_arch": "x86-64-v3",
     },
 }
-DEPENDENCIES = ("/usr", "/lib", "/lib64", "/opt/devtools", "/opt/modules")
+DEPENDENCIES = ("/usr", "/sbin", "/lib", "/lib64", "/opt/devtools", "/opt/modules")
 
 def safe_name(value):
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,127}", value):
