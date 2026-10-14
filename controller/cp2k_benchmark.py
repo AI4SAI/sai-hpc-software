@@ -888,6 +888,92 @@ def verify_evidence(task, request, *, allow_reference=True):
             "performance_scope": "water64-gpw: fixed 64-water periodic GPW compute workload; other cases are correctness/latency probes; no universal production speed claim"}
 
 
+def completed_benchmark(run_id):
+    """Reload a finished comparison from its raw evidence, including its baseline."""
+    task = run_dir(run_id)
+    files = {}
+    request = json.loads(checked_read(task, "request.json", files))
+    status = json.loads(checked_read(task, "results/status.json", files))
+    stored = json.loads(checked_read(task, "results/evidence.json", files))
+    if (request.get("run_id") != run_id or status.get("verified") is not True or
+            status.get("job") != request.get("job") or status.get("state") != "COMPLETED" or
+            status.get("exit_code") != "0:0"):
+        raise ValueError("CP2K retest original results are incomplete or changed")
+    evidence = verify_evidence(task, request)
+    if evidence != stored:
+        raise ValueError("CP2K retest original results are incomplete or changed")
+    return request, evidence, files["results/evidence.json"]
+
+
+def reference_for_submit(args, identity, artifact_sha256):
+    """Keep a CPU retest's scientific reference pinned to its first comparison."""
+    reference = getattr(args, "reference_run_id", None)
+    if args.run_id.endswith("-retest"):
+        original_id = args.run_id.removesuffix("-retest")
+        if original_id.endswith("-retest"):
+            raise ValueError("CP2K performance permits only one retest")
+        original, _, original_sha = completed_benchmark(original_id)
+        if (original.get("identity") != identity or
+                original.get("artifact_sha256") != artifact_sha256 or
+                any(original.get(key) != getattr(args, key) for key in ("build_run_id", "target", "version"))):
+            raise ValueError("CP2K retest must use the original build and target")
+        pinned_reference = original.get("reference_run_id")
+        if reference is not None and reference != pinned_reference:
+            raise ValueError("CP2K retest cannot change its scientific reference")
+        reference = pinned_reference
+        args.reference_run_id = reference
+        args.retest_original_evidence_sha256 = original_sha
+        reference_sha = original.get("reference_evidence_sha256")
+        if reference:
+            _, observed = accepted_reference(reference, reference_sha)
+            if reference_sha != observed:
+                raise ValueError("CP2K retest scientific reference changed")
+        return reference_sha
+    if TARGETS[args.target]["gpus"]:
+        if reference:
+            raise ValueError("GPU benchmarks must use their own allocation's site baseline")
+        return None
+    if reference:
+        _, reference_sha = accepted_reference(reference)
+    else:
+        reference, reference_sha = latest_accepted_reference()
+    args.reference_run_id = reference
+    return reference_sha
+
+
+def verify_retest(task, request, evidence):
+    """Bind one repeat to the same image, inputs, baseline and resource contract."""
+    if not request["run_id"].endswith("-retest"):
+        return None
+    original_id = request["run_id"].removesuffix("-retest")
+    if Path(task) != run_dir(request["run_id"]) or original_id.endswith("-retest"):
+        raise ValueError("CP2K performance permits only one canonical retest")
+    original, first, report_sha = completed_benchmark(original_id)
+    fields = ("identity", "artifact", "artifact_sha256", "build_run_id", "launcher", "launcher_sha256",
+              "controller_sha256", "version", "target", "baseline_module", "feature_changes_sha256",
+              "reference_run_id", "reference_evidence_sha256", *resources(request["target"]))
+    if (request.get("retest_original_evidence_sha256") != report_sha or
+            any(original.get(key) != request.get(key) for key in fields)):
+        raise ValueError("CP2K retest changed the image, baseline, reference or resource contract")
+    science_fields = ("identity", "artifact_sha256", "input_hashes", "fixture_revision",
+                      "version_syntax_contract", "energy_tolerance_ha", "force_tolerance_ha_bohr",
+                      "versions", "feature_parity", "reference", "requested_resources", "allocated_cpus")
+    if any(first[key] != evidence[key] for key in science_fields):
+        raise ValueError("CP2K retest changed scientific inputs, versions or resources")
+    for kind in ("candidate", "baseline"):
+        for name in ("binary.txt", "binary.sha256", "mpirun.txt", "mpi-version.txt", "modules.txt"):
+            path = f"results/{kind}-version/{name}"
+            if first["files"][path] != evidence["files"][path]:
+                raise ValueError("CP2K retest changed baseline binary, MPI or runtime modules")
+    if set(first["timings"]) != set(evidence["timings"]):
+        raise ValueError("CP2K retest changed measured cases")
+    for case, timing in first["timings"].items():
+        for field in ("warmups", "measured_repetitions", "baseline_available", "performance_comparison"):
+            if timing[field] != evidence["timings"][case][field]:
+                raise ValueError("CP2K retest changed warmup or repetition policy")
+    return dict(run_id=original_id, evidence_sha256=report_sha, job=first["job"])
+
+
 def submit(args):
     safe_name(args.run_id)
     if not 5 <= args.minutes <= 120:
@@ -898,16 +984,7 @@ def submit(args):
     launcher = CONTROL / "cp2k"
     if not launcher.is_file() or launcher.is_symlink() or not os.access(launcher, os.X_OK):
         raise ValueError("trusted CP2K launcher is missing")
-    reference_sha256 = None
-    reference = getattr(args, "reference_run_id", None)
-    if not allocation["gpus_per_node"]:
-        if not reference:
-            reference, reference_sha256 = latest_accepted_reference()
-            args.reference_run_id = reference
-        else:
-            _, reference_sha256 = accepted_reference(reference)
-    elif reference:
-        raise ValueError("GPU benchmarks must use their own allocation's site baseline")
+    reference_sha256 = reference_for_submit(args, identity, manifest["sha256"])
     task = run_dir(args.run_id)
     if task.exists():
         raise ValueError("benchmark already exists; choose a fresh run id")
@@ -996,6 +1073,7 @@ def monitor(args):
                 clear_run_proof(request)
                 if success:
                     evidence = verify_evidence(task, request)
+                    verify_retest(task, request, evidence)
                     evidence_path = task / "results/evidence.json"
                     if evidence_path.is_symlink() or evidence_path.resolve() != evidence_path:
                         raise ValueError("benchmark evidence output path is untrusted")

@@ -1,6 +1,7 @@
 import argparse
 from copy import deepcopy
 import json
+import shutil
 from pathlib import Path
 import subprocess
 import sys
@@ -252,6 +253,76 @@ class EvidenceTests(unittest.TestCase):
     def topology(cores, smt=True, socket=0):
         return "".join(f"{cpu}\t{socket}\t{core}\t{core},{core+16}\n"
                        for core in cores for cpu in ((core, core + 16) if smt else (core,)))
+
+    def retest_pair(self):
+        first = benchmark.verify_evidence(self.task, self.request)
+        self.write("request.json", json.dumps(self.request))
+        self.write("results/evidence.json", json.dumps(first))
+        self.write("results/status.json", json.dumps(dict(job="123", verified=True,
+                                                          state="COMPLETED", exit_code="0:0")))
+        repeat = self.task.with_name(self.task.name + "-retest")
+        shutil.copytree(self.task, repeat)
+        args = argparse.Namespace(run_id=repeat.name, target=self.request["target"],
+                                  version=self.request["version"], build_run_id=self.request["build_run_id"])
+        benchmark.reference_for_submit(args, self.identity, self.request["artifact_sha256"])
+        request = dict(self.request, **vars(args))
+        (repeat / "job.sbatch").write_text(benchmark.render_job(argparse.Namespace(**request)))
+        request["job_script_sha256"] = checksum(repeat / "job.sbatch")
+        (repeat / "request.json").write_text(json.dumps(request))
+        evidence = benchmark.verify_evidence(repeat, request)
+        return repeat, request, evidence
+
+    def test_retest_reverifies_original_raw_science_and_pins_baseline(self):
+        repeat, request, evidence = self.retest_pair()
+        proof = benchmark.verify_retest(repeat, request, evidence)
+        self.assertEqual(proof["run_id"], self.task.name)
+        self.assertEqual(proof["evidence_sha256"], checksum(self.task / "results/evidence.json"))
+        self.assertIsNone(benchmark.verify_retest(self.task, self.request, evidence))
+        for mutate in (
+            lambda data: data["files"].update({"results/baseline-version/binary.sha256": "f" * 64}),
+            lambda data: data["input_hashes"].update({"water64-gpw": {}}),
+            lambda data: data["timings"]["water64-gpw"].update(measured_repetitions=2),
+            lambda data: data.update(allocated_cpus=32),
+        ):
+            changed = deepcopy(evidence)
+            mutate(changed)
+            with self.assertRaises(ValueError):
+                benchmark.verify_retest(repeat, request, changed)
+        self.write("cases/water64-gpw/1-candidate/elapsed.txt", "12345\n")
+        with self.assertRaisesRegex(ValueError, "incomplete or changed"):
+            benchmark.verify_retest(repeat, request, evidence)
+
+    def test_retest_cannot_change_candidate_reference_or_resource_request(self):
+        repeat, request, evidence = self.retest_pair()
+        for field, value in (("artifact_sha256", "c" * 64), ("reference_run_id", "new-reference"),
+                             ("reference_evidence_sha256", "c" * 64), ("omp_threads", 3),
+                             ("retest_original_evidence_sha256", "c" * 64)):
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, "resource contract"):
+                benchmark.verify_retest(repeat, dict(request, **{field: value}), evidence)
+        with self.assertRaisesRegex(ValueError, "only one"):
+            benchmark.verify_retest(repeat.with_name(repeat.name + "-retest"),
+                                    dict(request, run_id=repeat.name + "-retest"), evidence)
+        self.write("results/status.json", json.dumps(dict(verified=False)))
+        with self.assertRaisesRegex(ValueError, "incomplete or changed"):
+            benchmark.verify_retest(repeat, request, evidence)
+
+    def test_cpu_retest_reuses_original_reference_even_when_newer_one_is_available(self):
+        cpu = identity("dsprhbm")
+        original = dict(self.request, identity=cpu, target="dsprhbm", reference_run_id="fixed-gpu",
+                        reference_evidence_sha256="d" * 64)
+        args = argparse.Namespace(run_id="cpu-retest", target="dsprhbm", version="v1", build_run_id="build",
+                                  reference_run_id=None)
+        with patch.object(benchmark, "completed_benchmark", return_value=(original, {}, "e" * 64)), \
+                patch.object(benchmark, "accepted_reference", return_value=({}, "d" * 64)) as accepted, \
+                patch.object(benchmark, "latest_accepted_reference", return_value=("newer-gpu", "f" * 64)) as latest:
+            self.assertEqual(benchmark.reference_for_submit(args, cpu, self.request["artifact_sha256"]), "d" * 64)
+            self.assertEqual(args.reference_run_id, "fixed-gpu")
+            self.assertEqual(args.retest_original_evidence_sha256, "e" * 64)
+            accepted.assert_called_once_with("fixed-gpu", "d" * 64)
+            latest.assert_not_called()
+            args.reference_run_id = "newer-gpu"
+            with self.assertRaisesRegex(ValueError, "cannot change"):
+                benchmark.reference_for_submit(args, cpu, self.request["artifact_sha256"])
 
     def test_raw_evidence_covers_image_job_all_samples_and_compute_time(self):
         result = benchmark.verify_evidence(self.task, self.request)
