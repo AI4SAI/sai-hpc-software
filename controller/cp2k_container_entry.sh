@@ -42,7 +42,7 @@ export)
   bash /control/create_rootfs.sh /workspace/export
   mkdir -p "/workspace/export$(dirname -- "$INSTALL_PREFIX")"
   cp -a "$INSTALL_PREFIX" "/workspace/export$INSTALL_PREFIX"
-  chmod -R a+rX,u+w,go-w /workspace/export/opt/software
+  chmod -R a+rX,u+w,go-w "/workspace/export$INSTALL_PREFIX"
   python3 /control/cp2k_feature_contract.py native-package "$INSTALL_PREFIX" "$target" "$sha" --root /workspace/export
   mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"
   ;;

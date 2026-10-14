@@ -17,7 +17,7 @@ from pathlib import Path, PurePosixPath
 import re
 import stat
 
-from release_contract import (MAX_BUILD_ID, SOFTWARE, TRACKS, allowed_partitions,
+from release_contract import (APP_STEMS, MAX_BUILD_ID, SOFTWARE, TRACKS, allowed_partitions,
                               validate_identity)
 
 
@@ -82,10 +82,21 @@ def _absolute(value):
 def _install_prefix(value):
     path = _absolute(value)
     parts = path.parts
-    if (len(parts) != 7 or parts[1:3] != ("opt", "software") or
-            parts[3] not in SOFTWARE or parts[4] not in TRACKS or
-            not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]*", parts[5]) or
-            len(parts[5]) > MAX_BUILD_ID or parts[6] not in allowed_partitions(parts[3])):
+    legacy = (len(parts) == 7 and parts[1:3] == ("opt", "software") and
+              parts[3] in SOFTWARE and parts[4] in TRACKS and
+              re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]*", parts[5]) and
+              len(parts[5]) <= MAX_BUILD_ID and parts[6] in allowed_partitions(parts[3]))
+    current = False
+    if len(parts) == 6 and parts[1:3] == ("opt", "apps") and parts[3] in SOFTWARE:
+        stem = APP_STEMS.get(parts[3], parts[3])
+        for track in TRACKS:
+            head = f"{stem}-{track}-"
+            build = parts[4].removeprefix(head)
+            if (parts[4].startswith(head) and 0 < len(build) <= MAX_BUILD_ID and
+                    re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]*", build) and
+                    parts[5] in allowed_partitions(parts[3])):
+                current = True
+    if not (legacy or current):
         raise ValueError("allowed_prefixes must be canonical partitioned install prefixes")
     return path
 
@@ -117,6 +128,14 @@ def validate_native_entry(entry, *, allowed_prefixes=()):
     other_prefixes = [path for path in other_prefixes if path.name == identity["partition"]]
     external = _sequence(entry["external_roots"], "external_roots")
     external_paths = [_external_root(value) for value in external]
+    if identity["schema"] == 2:
+        for root in external_paths:
+            for software in SOFTWARE:
+                family = PurePosixPath("/opt/apps") / software
+                stem = APP_STEMS.get(software, software)
+                managed = any(str(root).startswith(f"{family}/{stem}-{track}-") for track in TRACKS)
+                if root == family or managed:
+                    raise ValueError("managed application prefixes are not external site dependencies")
     roots = [prefix, *other_prefixes, *external_paths,
              PurePosixPath("/usr"), PurePosixPath("/lib"), PurePosixPath("/lib64")]
 
@@ -189,12 +208,12 @@ def _stem(software):
     return "SAI_" + software.upper().replace("-", "_")
 
 
-def _regular_tree(path, *, directory=False):
+def _regular_tree(path, *, directory=False, install_root="/opt/software"):
     """Tcl checks reject missing paths and symlinks in every native path component."""
     kind = "isdirectory" if directory else "isfile"
     return [
         f"set sai_native_checked_path {path}",
-        f'if {{![file {kind} $sai_native_checked_path]}} {{error "missing canonical native installation; deploy at the expected /opt/software prefix"}}',
+        f'if {{![file {kind} $sai_native_checked_path]}} {{error "missing canonical native installation; deploy at the expected {install_root} prefix"}}',
         'while {$sai_native_checked_path ne "/"} {',
         '    if {[file type $sai_native_checked_path] eq "link"} {error "native installation path must not contain symlinks"}',
         '    set sai_native_checked_path [file dirname $sai_native_checked_path]',
@@ -228,7 +247,7 @@ def render_native_fragment(entry, *, allowed_prefixes=()):
              '    } else {',
              f'        if {{![info exists env({stem}_NATIVE_PARTITION)] || $env({stem}_NATIVE_PARTITION) ne {tcl(partition)} || ![info exists env({stem}_PREFIX)] || $env({stem}_PREFIX) ne {tcl(prefix)}}} {{error "native unload identity differs from the loaded installation"}}',
              '    }',
-             *('    ' + line for line in _regular_tree(tcl(prefix), directory=True)),
+             *('    ' + line for line in _regular_tree(tcl(prefix), directory=True, install_root='/opt/apps' if identity['schema'] == 2 else '/opt/software')),
              f'    conflict {tcl(identity["software"])}']
     for value in reversed(runtime["prepend"].get("MODULEPATH", [])):
         lines.append(f'    prepend-path MODULEPATH {tcl(value)}')
@@ -266,7 +285,7 @@ def render_native_selector(identity):
     identity = validate_identity(identity)
     software, track, build_id = (identity[name] for name in ("software", "track", "build_id"))
     stem = _stem(software)
-    prefix_base = f"/opt/software/{software}/{track}/{build_id}"
+    prefix_base = str(PurePosixPath(identity["install_prefix"]).parent)
     description = f"{software} {track} {build_id}: native Slurm-partition selection; expected prefix {prefix_base}/<PARTITION>; dependencies external; staging is not relocation"
     lines = ["#%Module1.0", "module-whatis " + tcl(description),
              "proc ModulesHelp {} {", "    puts stderr " + tcl(description), "}",
@@ -280,7 +299,7 @@ def render_native_selector(identity):
              'if {$sai_native_partition ne ""} {',
              '    if {[lsearch -exact [list ' + ' '.join(tcl(partition) for partition in allowed_partitions(software)) + '] $sai_native_partition] < 0} {error "unsupported native software partition"}',
              f'    set sai_native_fragment [file join {tcl(prefix_base)} $sai_native_partition share sai native-module.tcl]',
-             *('    ' + line for line in _regular_tree('$sai_native_fragment')),
+             *('    ' + line for line in _regular_tree('$sai_native_fragment', install_root='/opt/apps' if identity['schema'] == 2 else '/opt/software')),
              '    source $sai_native_fragment', '}', '']
     return "\n".join(lines)
 

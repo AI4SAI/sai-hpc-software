@@ -275,7 +275,7 @@ class RealSquashfsTests(unittest.TestCase):
         self.assertEqual(len(receipt["installations"]), 2)
         self.assertIn("acceptance still required", receipt["validation"])
         for row in manifest["files"]:
-            path = output / Path(row["path"]).relative_to("opt/software")
+            path = output / Path(row["path"]).relative_to("opt/apps")
             if row["kind"] == "file":
                 self.assertEqual(delivery.checksum(path), row["sha256"])
             elif row["kind"] == "symlink":
@@ -293,7 +293,7 @@ class RealSquashfsTests(unittest.TestCase):
                              installation["expected_install_prefix"] + "/modulefiles")
             text = (base / delivery.FRAGMENT_PATH).read_text()
             self.assertNotIn(str(output), text)
-            self.assertIn("/opt/software/abacus/development/", text)
+            self.assertIn("/opt/apps/abacus/abacus-development-", text)
             self.assertEqual((base / "modulefiles").stat().st_mode & 0o777, 0o755)
         self.assertEqual((output / "abacus").stat().st_mode & 0o777, 0o755)
 

@@ -27,6 +27,75 @@ README_PATH = "share/sai/README-export.txt"
 RESERVED_PATHS = (MANIFEST_PATH, EXPORT_PATH, README_PATH)
 MAX_MANIFEST_BYTES = 64 * 1024**2
 
+# Only recipe-owned diagnostics/fixtures are omitted from native installs.
+# Never glob arbitrary share/, data/, model/, dependencies/ or JIT sources.
+NONRUNTIME_COMMON = (
+    "CMakeCache.txt", "hardware.txt", "modules.txt", "resolved-environment.txt",
+    "runtime-env.sh", "ldd.txt", "lscpu.txt", "compiler.txt", "cuda.txt",
+    "native-flags.txt", "native-cpu-flags.txt", "native-compiler-target.txt",
+    "build-hostname", "build-lscpu.txt", "build-options.txt",
+)
+NONRUNTIME_CASES = {
+    "abacus": ("smoke-case", "gpu-cases", "benchmark-cases"),
+    "cp2k": ("smoke-case",),
+    "deepmd-kit": (),
+    "lammps": ("smoke", "upstream-tests"),
+    "gpumd": ("cases",),
+}
+NONRUNTIME_HELPERS = {
+    "abacus": ("abacus_features.py", "release_contract.py", "resolve_source.py",
+               "remote_controller.py", "source_cache.py"),
+    "cp2k": ("cp2k_feature_contract.py",),
+}
+
+
+def runtime_subset(manifest):
+    """Derive a safe runtime inventory, preserving every unknown/runtime file."""
+    excluded = []
+    for entry in manifest["entries"]:
+        identity = entry["identity"]
+        root = identity["install_prefix"].lstrip("/") + "/share/sai/"
+        candidates = [root + name for name in NONRUNTIME_COMMON +
+                      NONRUNTIME_CASES.get(identity["software"], ()) +
+                      NONRUNTIME_HELPERS.get(identity["software"], ())]
+        excluded.extend(path for path in candidates
+                        if any(row["path"] == path for row in manifest["files"]))
+    # Do not silently prune a path declared as part of the runtime contract.
+    for entry in manifest["entries"]:
+        values = [value for paths in entry["runtime"]["prepend"].values() for value in paths]
+        values.extend(entry["runtime"]["set"].values())
+        if any(isinstance(value, str) and value.startswith("/") and
+               beneath(value.lstrip("/"), excluded) for value in values):
+            raise ValueError("nonruntime omission conflicts with a declared runtime path")
+    result = validate_manifest({
+        "schema": 1, "entries": manifest["entries"],
+        "files": [row for row in manifest["files"] if not beneath(row["path"], excluded)],
+    })
+    # validate_manifest also rejects commands and remaining symlinks that would
+    # depend on omitted fixtures. Native module fragments remain mandatory.
+    validate_packaged_modules(result)
+    return result, sorted(excluded)
+
+
+def check_retained_scripts(root, manifest, omitted):
+    """Refuse known hardcoded fixture references in retained executable scripts."""
+    needles = {path[path.index("/share/sai/") + 1:].encode() for path in omitted}
+    if not needles:
+        return
+    for row in manifest["files"]:
+        if row["kind"] != "file" or not row["mode"] & 0o111:
+            continue
+        path = root / row["path"]
+        with path.open("rb") as stream:
+            if stream.read(2) != b"#!":
+                continue
+            tail = b""
+            while block := stream.read(1024**2):
+                data = tail + block
+                if any(needle in data for needle in needles):
+                    raise ValueError("retained executable script references omitted nonruntime data: " + row["path"])
+                tail = data[-max(map(len, needles)):]
+
 
 def canonical(value):
     return json.dumps(value, sort_keys=True, indent=2, allow_nan=False) + "\n"
@@ -390,13 +459,14 @@ class SquashfsReader:
         from release_contract import validate_identity
         listing = subprocess.check_output(
             ["unsquashfs", "-l", "-d", "/image", "-no-progress", "-o", str(self.offset),
-             str(self.image), "opt/software/*/*/*/*/" + MANIFEST_PATH],
+             str(self.image), "opt/software/*/*/*/*/" + MANIFEST_PATH,
+             "opt/apps/*/*/*/" + MANIFEST_PATH],
             text=True, env=dict(os.environ, LC_ALL="C"))
         paths = []
         for line in listing.splitlines():
-            if line.startswith("/image/opt/software/") and line.endswith("/" + MANIFEST_PATH):
+            if line.startswith(("/image/opt/software/", "/image/opt/apps/")) and line.endswith("/" + MANIFEST_PATH):
                 path = relative_path(line.removeprefix("/image/"))
-                if not re.fullmatch(r"opt/software/[^/]+/[^/]+/[^/]+/[^/]+/" + MANIFEST_PATH, path):
+                if not re.fullmatch(r"opt/(?:software/[^/]+/[^/]+/[^/]+/[^/]+|apps/[^/]+/[^/]+/[^/]+)/" + MANIFEST_PATH, path):
                     raise ValueError("manifest is not in a canonical installation directory")
                 if path in paths:
                     raise ValueError("duplicate embedded manifest listing")
@@ -534,7 +604,8 @@ class SquashfsReader:
                     raise
 
 
-def export_image(image, expected_sha256, destination, *, prefixes=None, reader_factory=SquashfsReader.from_sif):
+def export_image(image, expected_sha256, destination, *, prefixes=None, include_diagnostics=False,
+                 reader_factory=SquashfsReader.from_sif):
     image = Path(image).resolve(strict=True)
     if not re.fullmatch(r"[0-9a-f]{64}", expected_sha256 or ""):
         raise ValueError("expected image SHA256 is required")
@@ -551,6 +622,10 @@ def export_image(image, expected_sha256, destination, *, prefixes=None, reader_f
     reader.validate_metadata(manifest)
     prefixes = [entry["identity"]["install_prefix"] for entry in manifest["entries"]]
     manifest_records = reader.selected_manifest_records(manifest)
+    if include_diagnostics:
+        omitted = []
+    else:
+        manifest, omitted = runtime_subset(manifest)
     # TemporaryDirectory only removes the exact newly-created private staging
     # directory on failure. No user destination or existing software is removed.
     with tempfile.TemporaryDirectory(prefix=".sai-native-export-", dir=destination.parent) as temporary:
@@ -561,6 +636,7 @@ def export_image(image, expected_sha256, destination, *, prefixes=None, reader_f
             if row["kind"] == "directory":
                 (root / row["path"]).mkdir(parents=True, exist_ok=True, mode=0o755)
         reader.copy_files([row for row in manifest["files"] if row["kind"] == "file"] + manifest_records, root)
+        check_retained_scripts(root, manifest, omitted)
         # Links are created last, never traversed during extraction or hashing.
         for row in manifest["files"]:
             if row["kind"] == "symlink":
@@ -571,14 +647,31 @@ def export_image(image, expected_sha256, destination, *, prefixes=None, reader_f
             prefix = identity["install_prefix"]
             base = root / prefix.lstrip("/")
             exported_path = ("." if len(prefixes) == 1 else
-                             str(PurePosixPath(prefix).relative_to("/opt/software")))
+                             str(PurePosixPath(prefix).relative_to("/opt/apps" if identity["schema"] == 2 else "/opt/software")))
             local_manifest = next(row for row in manifest_records
                                   if row["path"] == prefix.lstrip("/") + "/" + MANIFEST_PATH)
+            local_omitted = [path for path in omitted if beneath(path, [prefix.lstrip("/")])]
+            if local_omitted:
+                # The source manifest was read and hashed above. Only this new
+                # private staging copy is replaced, never the SIF/history.
+                path = base / MANIFEST_PATH
+                path.unlink()
+                local = {"schema": 2, "entry": entry,
+                         "files": [row for row in manifest["files"]
+                                   if beneath(row["path"], [prefix.lstrip("/")])]}
+                with path.open("x") as output:
+                    output.write(canonical(local))
+                path.chmod(0o444)
             partners = [peer for peer in prefixes if peer != prefix]
             required = required_prefixes(entry, manifest)
             receipt = {
                 "schema": 2, "image_sha256": expected_sha256,
-                "manifest_sha256": local_manifest["sha256"],
+                "manifest_sha256": checksum(base / MANIFEST_PATH),
+                "source_manifest_sha256": local_manifest["sha256"],
+                "payload_profile": "complete" if include_diagnostics else "runtime",
+                "manifest_origin": "derived-runtime-subset" if local_omitted else "original",
+                "omitted_nonruntime_paths": [path.removeprefix(prefix.lstrip("/") + "/")
+                                            for path in local_omitted],
                 "expected_install_prefix": prefix,
                 "bundle_install_prefixes": prefixes,
                 "other_bundle_install_prefixes": partners,
@@ -593,7 +686,10 @@ def export_image(image, expected_sha256, destination, *, prefixes=None, reader_f
             readme = (
                 "This complete installation folder is a staging export, not a privileged installer.\n"
                 "Copy this WHOLE folder to the expected absolute prefix:\n  " + prefix + "\n"
-                "The original manifest and native modules are already inside this folder.\n"
+                "The payload manifest and native modules are already inside this folder.\n"
+                "Runtime exports omit recipe-owned tests and build diagnostics.\n"
+                "Original diagnostics/manifests remain in the SHA256-pinned source SIF.\n"
+                "export.json records both source and payload manifest digests.\n"
                 "Required companion/installation dependencies (if any):\n" +
                 "".join("  " + peer + "\n" for peer in required) +
                 "Other bundled partitions are independent, not dependencies of this installation.\n" +
@@ -653,11 +749,14 @@ def main():
     exp.add_argument("--image-sha256", required=True)
     exp.add_argument("--destination", type=Path, required=True)
     exp.add_argument("--prefix", action="append", help="select a canonical /opt prefix; locked companions are automatic")
+    exp.add_argument("--include-diagnostics", action="store_true",
+                     help="explicit archival export of tests/build diagnostics; not for routine /opt deployment")
     args = parser.parse_args()
     if args.command == "inventory":
         write_manifests([json.loads(path.read_text()) for path in args.entry], root=args.root)
     else:
-        print(canonical(export_image(args.image, args.image_sha256, args.destination, prefixes=args.prefix)), end="")
+        print(canonical(export_image(args.image, args.image_sha256, args.destination, prefixes=args.prefix,
+                                     include_diagnostics=args.include_diagnostics)), end="")
 
 
 if __name__ == "__main__":

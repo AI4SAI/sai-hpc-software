@@ -9,7 +9,7 @@ from pathlib import Path
 import shlex
 import subprocess
 import time
-from remote_controller import TARGETS, safe_name, safe_sha, container_command
+from remote_controller import TARGETS, safe_name, safe_sha, container_command, site_app_binds
 from source_cache import checksum
 from module_publication import publish_module, validate_module
 from release_contract import make_identity, TRACKS
@@ -310,18 +310,18 @@ def render_job(args):
         from abacus_dependencies import dependency_binds
         extra_binds = dependency_binds(ROOT)
     else:
-        extra_binds = ((Path("/opt/apps"), "/opt/apps"),
+        extra_binds = (*site_app_binds(args.software),
                        (ROOT / "cache/cp2k-dependencies", "/input/dependencies"),
                        (ROOT / "cache/cp2k-probe", "/input/probe"))
     if args.software == "gpumd":
-        extra_binds = ((Path("/opt/apps"), "/opt/apps"),)
+        extra_binds = (*site_app_binds(args.software),)
     def container(phase, final=False):
         cmd = argv.copy()
         cmd[2] = phase
         if args.software == "cp2k":
             cmd = ["/usr/bin/env", f"SAI_BUILD_PARTITION={target['partition']}", *cmd]
         # Final artifacts must not rely on source/dependency staging trees.
-        binds = ((Path("/opt/apps"), "/opt/apps"),) if final and args.software == "cp2k" else extra_binds
+        binds = (*site_app_binds(args.software),) if final and args.software == "cp2k" else extra_binds
         return container_command(sif if final else image, cmd, overlay=None if final else overlay,
                                  control=CONTROL, repository=None if final else repo,
                                  jobs=args.jobs, gpu=bool(target["gpus"]), extra_binds=() if final and args.software == "abacus" else binds,

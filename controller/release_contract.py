@@ -15,7 +15,9 @@ from remote_controller import TARGETS, safe_name
 from resolve_source import resolve as _resolve_source
 
 
-SCHEMA = 1
+SCHEMA = 2
+# Schema 1 remains read-only provenance for existing /opt/software artifacts.
+APP_STEMS = {"gpumd": "GPUMD"}
 TRACKS = ("development", "prerelease", "release")
 PARTITIONS = {
     "dsprhbm": "DSPRHBM",
@@ -188,13 +190,15 @@ def _stack(software, source_sha, sources):
 
 
 def make_identity(software, track, source_ref, source_sha, source_version,
-                  recipe_sha256, target, stack_sources=None):
-    """Return schema 1 provenance and its canonical immutable install prefix.
+                  recipe_sha256, target, stack_sources=None, *, layout_schema=SCHEMA):
+    """Return provenance and the final host/container installation prefix.
 
     ``target`` is a registered architecture key, while the final prefix
     component is the real Slurm partition. ``stack_sources``, when supplied,
     maps both ``deepmd-kit`` and ``lammps`` to their full 40-digit commits.
     """
+    if type(layout_schema) is not int or layout_schema not in (1, SCHEMA):
+        raise ValueError("unsupported installation layout schema")
     profile = _software(software)
     _track(track)
     _source_ref(source_ref)
@@ -212,8 +216,11 @@ def make_identity(software, track, source_ref, source_sha, source_version,
         build_id += "-s" + stack_digest[:12]
     if len(build_id) > MAX_BUILD_ID:
         raise ValueError("build_id exceeds the delivery name limit")
+    prefix = (f"/opt/software/{software}/{track}/{build_id}/{PARTITIONS[target]}"
+              if layout_schema == 1 else
+              f"/opt/apps/{software}/{APP_STEMS.get(software, software)}-{track}-{build_id}/{PARTITIONS[target]}")
     return {
-        "schema": SCHEMA, "software": software, "track": track,
+        "schema": layout_schema, "software": software, "track": track,
         "repository": profile["repository"], "source_ref": source_ref,
         "source_sha": source_sha, "source_version": source_version,
         "version_label": label, "recipe_sha256": recipe_sha256,
@@ -221,7 +228,7 @@ def make_identity(software, track, source_ref, source_sha, source_version,
         "cpu_arch": hardware["cpu_arch"], "dependency_isa": hardware["dependency_isa"],
         "cuda_arch": hardware["cuda_arch"], "gpus": hardware["gpus"],
         "build_id": build_id,
-        "install_prefix": f"/opt/software/{software}/{track}/{build_id}/{PARTITIONS[target]}",
+        "install_prefix": prefix,
         "stack_sources": stack, "stack_digest": stack_digest,
     }
 
@@ -233,9 +240,9 @@ def validate_identity(record):
     external signature. Return a fresh canonical record on success.
     """
     if not isinstance(record, dict):
-        raise ValueError("identity must be a schema 1 object")
+        raise ValueError("identity must be a versioned object")
     try:
-        expected = make_identity(**{name: record[name] for name in (
+        expected = make_identity(layout_schema=record["schema"], **{name: record[name] for name in (
             "software", "track", "source_ref", "source_sha", "source_version",
             "recipe_sha256", "target", "stack_sources")})
         # JSON comparison distinguishes bool/int and int/float schema changes.

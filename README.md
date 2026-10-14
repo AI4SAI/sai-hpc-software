@@ -12,10 +12,11 @@ Host source/build/install trees are **not** mounted writable. A build uses the p
 installation and final filesystem assembly all happen inside that image.
 
 The successful artifact is one read-only SquashFS-backed SIF. It contains
-`/opt/software/<software>/<track>/<build_id>/<PARTITION>` at exactly that path. The installed
+`/opt/apps/<software>/<stem>-<track>-<build_id>/<PARTITION>` at exactly that path. The installed
 administrator dependencies are reused read-only at their original paths:
 `/opt/devtools`, `/opt/modules`, `/usr`, `/lib`, `/lib64`.
-The entire `/opt` is never bound over the installation.
+Neither `/opt` nor `/opt/apps` is bound over the installation. Site application dependencies
+are mounted read-only at their exact existing version directories. See [copy-only deployment](docs/site-apps-layout.md).
 
 The trusted entrypoint and bare repository are mounted read-only. Host home, working directory,
 site-wide bind paths and host temporary directories are disabled; the build also has a private

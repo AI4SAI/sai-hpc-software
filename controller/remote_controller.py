@@ -32,6 +32,30 @@ TARGETS = {
 }
 DEPENDENCIES = ("/usr", "/sbin", "/lib", "/lib64", "/opt/devtools", "/opt/modules")
 
+# Observed on SAI 2026-09-20. Never bind all of /opt/apps: it would hide
+# the candidate installed at its final prefix in the overlay / SIF.
+# Alias destinations (e.g. cp2k-2026.1-avx512) retain their literal host path.
+SITE_APPS = {
+    "abacus": (),
+    "cp2k": tuple("/opt/apps/cp2k/" + name for name in
+                  ("cp2k-2026.1", "cp2k-2026.1-avx2", "cp2k-2026.1-avx512")),
+    "gpumd": ("/opt/apps/conda_env/deepmd-kit-3.2.0",
+              "/opt/apps/plumed/plumed-2.10.1", "/opt/apps/gpumd/GPUMD-5.8"),
+    "lammps": ("/opt/apps/conda_env/deepmd-kit-3.2.0",
+               "/opt/apps/conda_env/deepmd-kit-3.1.2",
+               "/opt/apps/conda_env/VeloxChem/gpu",
+               "/opt/apps/plumed/plumed-2.10.1",
+               "/opt/apps/lammps/lammps-4Jul2026-deepmd3.2.0-nvhpc263-ompi5010-sm70",
+               "/opt/apps/lammps/lammps-4Jul2026-deepmd3.2.0-plumed2.10.1-nvhpc263-ompi5010-sm70"),
+}
+SITE_APPS["deepmd-kit"] = SITE_APPS["lammps"]
+
+
+def site_app_binds(software):
+    """Exact dependency versions only; host directories remain read-only."""
+    return tuple((path, path) for path in SITE_APPS[software])
+
+
 def safe_name(value):
     if not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,127}", value):
         raise ValueError("invalid identifier")
@@ -68,6 +92,8 @@ def container_command(image, command, *, overlay=None, control=None, repository=
             source, destination = path, path
         source = Path(source).resolve()
         destination = str(destination)
+        if destination.startswith("/opt/apps") and len(Path(destination).parts) <= 4:
+            raise ValueError("broad /opt/apps bind would hide final-prefix installations")
         if any(c in str(source) for c in ":,\n") or any(c in destination for c in ":,\n"):
             raise ValueError("unsafe bind source")
         args += ["--bind", f"{source}:{destination}:ro"]
@@ -92,3 +118,11 @@ def container_command(image, command, *, overlay=None, control=None, repository=
     args += ["--env", f"BUILD_JOBS={int(jobs)}", "--env",
              "TMPDIR=/runtime" if runtime is not None else "TMPDIR=/workspace/tmp"]
     return args + [str(image)] + list(command)
+
+
+if __name__ == "__main__":
+    import argparse
+    parser = argparse.ArgumentParser(description="Read-only site dependency bind paths")
+    parser.add_argument("software", choices=tuple(SITE_APPS))
+    for source, destination in site_app_binds(parser.parse_args().software):
+        print(destination)

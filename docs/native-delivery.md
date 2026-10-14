@@ -4,7 +4,7 @@
 清单与校验和只证明文件完整性，不能替代科学结果、功能和同资源速度验收。
 旧布局 SIF 不会自动获得新身份，也不能通过改目录名冒充新布局构建。
 
-交付单位是一份**完整安装文件夹**。程序、数据、安装清单、依赖说明和 module
+交付单位是一份**完整运行安装文件夹**。程序、运行数据、安装清单、依赖说明和 module
 都在这个文件夹内部，不要求另建 `/opt/sai-delivery`，也不要求复制外置的
 modulefiles 或校验清单。系统预装依赖仍只读复用，不随安装树重复复制。
 
@@ -54,17 +54,18 @@ SHA 未变；`prerelease`、`release` 只编译尚未尝试的最新上游版本
 | LAMMPS | develop | 4V100、16V100、8V100V0 |
 | GPUMD | master | 4V100、16V100、8V100V0 |
 
-安装前缀从首次配置、编译时即固定为：
+安装前缀从首次配置、编译时即固定为（identity schema 2）：
 
 ```text
-/opt/software/<software>/<track>/<build_id>/<PARTITION>
+/opt/apps/<software>/<stem>-<track>-<build_id>/<PARTITION>
 build_id = <version_label>-g<source_sha12>-r<recipe_sha12>[-s<stack_digest12>]
+stem = 软件名，GPUMD 使用现场既有大写 GPUMD 命名
 ```
 
-例如 `.../abacus/release/v3.11.0-g0123456789ab-rabcdef012345/4V100`。
+例如 `.../abacus/abacus-release-v3.11.0-g0123456789ab-rabcdef012345/4V100`。
 这里的短 SHA 仅为示意，不代表已通过验收的 3.11.0 安装。
 开发版使用上游提交的 **UTC 日期**，日期在 SHA 前，例如
-`.../abacus/development/develop-2026-09-13-g0123456789ab-rabcdef012345/4V100`。
+`.../abacus/abacus-development-develop-2026-09-13-g0123456789ab-rabcdef012345/4V100`。
 日期从已锁定 SHA 的 commit 元数据读取，不用当天日期替代；同一源码跨天重跑
 不会改变安装身份或制造每日缓存失效。稳定版和预发布版保留标签名称，SHA 由
 共享身份逻辑统一追加一次，不在版本标签中重复。
@@ -126,13 +127,25 @@ python3 /control/export_native.py inventory --entry /workspace/native-entry.json
 
 ## 提取到任意暂存位置
 
+默认导出运行负载，不把配方放在 `share/sai/` 的测试算例、基准算例、
+上游验收测试和已知构建诊断文件复制到原生安装树。采用明确的文件名清单，
+不按 `share/`、`data/` 或文件扩展名一刀切；CP2K 数据、模型、依赖库、
+GPUMD JIT 源码、未知文件、原生 module 片段和来源身份均保留。
+若声明的运行环境或保留链接依赖待排除路径，导出直接报错，不生成残缺安装。
+
+原始完整诊断材料仍在 SHA256 锁定的 SIF 和维护者验收目录中。仅需制作离线
+诊断档案时显式加 `--include-diagnostics`，不要用该选项制作普通 `/opt` 安装包。
+精简后的 `manifest.json` 如实记录实际运行负载；`export.json` 同时记录
+`source_manifest_sha256`、`manifest_sha256`、`payload_profile` 和排除清单，
+不把精简清单冒充原始容器清单，不修改原 SIF 或构建身份。
+
 工具依赖 Python 3、Apptainer 的 SIF 元数据命令和 Squashfs-tools 4.6.1。
 不启动镜像中的程序，不执行镜像环境脚本，不解出整个根文件系统，不需要 root。
 
 ```bash
 python3 controller/export_native.py export /shared/artifacts/build.sif \
   --image-sha256 <验收产物记录的完整SHA256> \
-  --prefix /opt/software/abacus/release/<build_id>/4V100 \
+  --prefix /opt/apps/abacus/abacus-release-<build_id>/4V100 \
   --destination /shared/staging/abacus-release-build
 ```
 
@@ -154,7 +167,7 @@ abacus-release-build/
 ```
 
 指定一个独立软件安装时，`--destination` 本身就是完整安装文件夹，没有
-`rootfs` 外壳。批量导出时，在目标下按 `<software>/<track>/<build_id>/<PARTITION>`
+`rootfs` 外壳。批量导出时，在目标下按 `<software>/<stem>-<track>-<build_id>/<PARTITION>`
 排列多个完整文件夹，每份都有自己的清单和 module。若选择 DeePMD/LAMMPS
 配对的一方，会一并选择清单锁定的伙伴，不能只取一方后宣称配套依赖齐全。
 
@@ -171,7 +184,7 @@ abacus-release-build/
 部署完成后，直接使用安装目录自带的 `modulefiles`：
 
 ```bash
-module use /opt/software/abacus/release/<build_id>/4V100/modulefiles
+module use /opt/apps/abacus/abacus-release-<build_id>/4V100/modulefiles
 # 在实际 Slurm allocation 中：
 module load abacus/release/<build_id>
 ```

@@ -64,10 +64,9 @@ case "$op" in
     rm -rf -- /workspace/export
     rm -f -- /workspace/final.squashfs
     bash /control/create_rootfs.sh /workspace/export
-    cp -a /opt/software /workspace/export/opt/software
-    # Normalize only the packaged software, not the host or rootfs /tmp modes.
-    # cp -a preserves archive modes, including legacy owner-only directories.
-    chmod -R a+rX,u+w,go-w /workspace/export/opt/software
+    mkdir -p "/workspace/export$(dirname -- "$INSTALL_PREFIX")"
+    cp -a "$INSTALL_PREFIX" "/workspace/export$INSTALL_PREFIX"
+    chmod -R a+rX,u+w,go-w "/workspace/export$INSTALL_PREFIX"
     python3 /control/abacus_features.py "$INSTALL_PREFIX" "$target" --native-phase inventory
     mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"
     ;;
