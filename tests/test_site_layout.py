@@ -95,7 +95,10 @@ class SiteLayoutTests(unittest.TestCase):
             if not path.exists():
                 continue
             script = path.read_text()
-            self.assertIn('cp -a "$INSTALL_PREFIX" "/workspace/export$INSTALL_PREFIX"', script)
+            if name == 'cp2k_container_entry.sh':
+                self.assertIn('cp2k_payload.py "$INSTALL_PREFIX" /workspace/export', script)
+            else:
+                self.assertIn('cp -a "$INSTALL_PREFIX" "/workspace/export$INSTALL_PREFIX"', script)
             self.assertNotIn("cp -a /opt/apps ", script)
             self.assertNotIn("cp -a /opt/software ", script)
             subprocess.run(["bash", "-n", str(path)], check=True)

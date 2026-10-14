@@ -8,7 +8,7 @@ import re
 import subprocess
 import sys
 
-from cp2k_spack import validate_cache
+from cp2k_spack import validate_cache, validated_prefix
 from cp2k_spack_environment import environment
 
 WHEELS = {
@@ -79,7 +79,7 @@ def prepare(partition):
             raise ValueError('node module ISA mismatch: ' + name)
 
 
-def fetch(partition, target, native_os):
+def fetch(partition, target, native_os, install_prefix=None):
     import spack.environment as ev
     import spack.spec
     from spack.compilers.libraries import CompilerPropertyDetector
@@ -87,8 +87,13 @@ def fetch(partition, target, native_os):
     env = ev.active_environment()
     if env is None:
         raise ValueError('activate the native environment first')
-    prefix = '/opt/software/cp2k/development/spack-native-probe/' + partition
+    prefix = validated_prefix(partition, install_prefix)
     expected = environment(partition, prefix, target, native_os)['spack']
+    # Prefixes are not part of a Spack DAG hash: explicitly reject a stale
+    # environment or an installed pilot being relabelled as a final app build.
+    actual_store = env.manifest.configuration.get('config', {}).get('install_tree', {})
+    if actual_store != expected['config']['install_tree']:
+        raise ValueError('active Spack install tree differs from requested prefix')
     roots = list(env.concrete_roots())
     constraints = {s.split('@')[0]: s for s in expected['specs']}
     if {s.name for s in roots} != set(constraints):
@@ -126,6 +131,7 @@ def fetch(partition, target, native_os):
                       'external': bool(spec.external), 'external_path': spec.external_path,
                       'target': str(spec.architecture.target)})
     write_result('validated-graph.json', {'partition': partition, 'target': target,
+                                         'install_prefix': prefix,
                                          'os': native_os, 'nodes': nodes})
     fetched = []
     for spec in env.all_specs():
@@ -135,6 +141,7 @@ def fetch(partition, target, native_os):
         spec.package.do_fetch(mirror_only=True)
         fetched.append(spec.dag_hash())
     write_result('probe-success.json', {'partition': partition, 'target': target,
+                                       'install_prefix': prefix,
                                        'os': native_os, 'mirror_only': True,
                                        'fetched': fetched, 'installed': False})
 

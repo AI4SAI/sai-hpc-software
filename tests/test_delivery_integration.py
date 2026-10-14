@@ -103,8 +103,8 @@ class DeliveryIntegrationTests(unittest.TestCase):
             self.assertIn('share/sai/release-identity.json', script)
             self.assertIn('umask 022', script)
         cp2k = (REPO / "controller/cp2k_container_entry.sh").read_text()
-        self.assertLess(cp2k.index('mkdir -p "/workspace/export$(dirname -- "$INSTALL_PREFIX")"'),
-                        cp2k.index('cp -a "$INSTALL_PREFIX" "/workspace/export$INSTALL_PREFIX"'))
+        self.assertLess(cp2k.index('cp2k_payload.py "$INSTALL_PREFIX" /workspace/export'),
+                        cp2k.index('cp2k_feature_contract.py native-package'))
 
     def test_launcher_uses_validated_manifest_prefix_and_rejects_wrong_partition(self):
         identity = self.identity()
@@ -127,6 +127,35 @@ class DeliveryIntegrationTests(unittest.TestCase):
         self.assertIn("Gold 6146", recipe)
         self.assertIn('[[ "${OPAL_PREFIX:?}" == *-avx2 ]]', recipe)
         self.assertIn('[[ "${OPENBLAS_ROOT:?}" == *-avx2 ]]', recipe)
+
+    def test_cp2k_build_rebuilds_parallel_hdf5_inside_delivery_prefix(self):
+        recipe = (REPO / "controller/cp2k_build.sh").read_text()
+        from cp2k_spack_environment import environment
+        env = environment('16V100', '/opt/apps/cp2k/cp2k-development-test/16V100', 'zen3', 'ubuntu24.04')['spack']
+        self.assertIn('hdf5@1.14.6 +mpi +fortran ~hl ~cxx ~shared', env['specs'])
+        self.assertEqual(env['config']['install_tree']['root'],
+                         '/opt/apps/cp2k/cp2k-development-test/16V100/dependencies/spack')
+        self.assertIn('hdf5_root="$CP2K_HDF5_ROOT"', recipe)
+        self.assertIn("grep -Eq 'Parallel HDF5:[[:space:]]+yes'", recipe)
+        self.assertIn('-DHDF5_ROOT="$hdf5_root" -DHDF5_PREFER_PARALLEL=ON', recipe)
+        self.assertNotIn('$site', recipe)
+        self.assertIn('/usr/lib/x86_64-linux-gnu/blas:/usr/lib/x86_64-linux-gnu/lapack', recipe)
+
+    def test_cp2k_spack_gets_real_system_alternatives_and_bin_tools(self):
+        args = argparse.Namespace(run_id='cp2k-binds', software='cp2k', sha='a' * 40,
+                                  version='2026.2', target='16v100-avx2', jobs=8, minutes=240,
+                                  overlay_mb=32768, track='development', source_ref='master')
+        script = controller.render_job(args)
+        build = next(line for line in script.splitlines() if 'cp2k_container_entry.sh build' in line)
+        for bind in ('/etc/alternatives:/etc/alternatives:ro', '/usr/bin:/bin:ro',
+                     '/var/lib/dpkg:/var/lib/dpkg:ro', '/input/spack:ro', '/results:rw'):
+            self.assertIn(bind, build)
+        self.assertNotIn('/opt/apps/cp2k/cp2k-2026.1', build)
+
+    def test_build_submit_allows_long_cp2k_compile_with_safe_default(self):
+        recipe = (REPO / "controller/software_controller.py").read_text()
+        self.assertIn("not 1 <= args.minutes <= 360", recipe)
+        self.assertIn('a.add_argument("--minutes", type=int, default=240)', recipe)
 
     def test_ci_installs_real_native_validation_tools_before_tests(self):
         for workflow in ("build.yml", "cp2k.yml"):

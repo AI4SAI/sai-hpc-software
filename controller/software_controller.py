@@ -30,6 +30,10 @@ def contract_files(software):
     if software == "cp2k":
         return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_feature_contract.py",
                          "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_benchmark.py",
+                         "cp2k_spack.py", "cp2k_spack_environment.py", "cp2k_spack_native.py",
+                         "cp2k_spack_seed.py", "cp2k_spack_probe.sh", "cp2k_spack_dependencies.sh",
+                         "cp2k_spack_libint_repair.py", "cp2k_spack_install_evidence.py",
+                         "cp2k_spack_link.py", "cp2k_payload.py", "cp2k_dependency_stage.py",
                          "native_module.py", "export_native.py", "cp2k"]
     if software == "gpumd":
         return [name for name in common if name != "environment.sh"] + [
@@ -306,26 +310,32 @@ def render_job(args):
     entrypoint = "container_entry.sh" if args.software == "abacus" else f"{args.software}_container_entry.sh"
     argv = ["/usr/bin/bash", f"/control/{entrypoint}", "build", args.software, sha, args.version, args.target,
             json.dumps(delivery, sort_keys=True, separators=(",", ":"))]
+    extra_binds = ((ROOT / "cache/spack", "/input/spack"),
+                   ("/var/lib/dpkg", "/var/lib/dpkg"),
+                   ("/etc/os-release", "/etc/os-release"),
+                   ("/etc/alternatives", "/etc/alternatives"),
+                   ("/usr/bin", "/bin"),
+                   (ROOT / "cache/cp2k-dependencies", "/input/dependencies"),
+                   (ROOT / "cache/cp2k-probe", "/input/probe")) if args.software == "cp2k" else ()
     if args.software == "abacus":
         from abacus_dependencies import dependency_binds
         extra_binds = dependency_binds(ROOT)
-    else:
-        extra_binds = (*site_app_binds(args.software),
-                       (ROOT / "cache/cp2k-dependencies", "/input/dependencies"),
-                       (ROOT / "cache/cp2k-probe", "/input/probe"))
-    if args.software == "gpumd":
-        extra_binds = (*site_app_binds(args.software),)
+    elif args.software == "gpumd":
+        extra_binds = site_app_binds("gpumd")
     def container(phase, final=False):
         cmd = argv.copy()
         cmd[2] = phase
         if args.software == "cp2k":
             cmd = ["/usr/bin/env", f"SAI_BUILD_PARTITION={target['partition']}", *cmd]
         # Final artifacts must not rely on source/dependency staging trees.
-        binds = (*site_app_binds(args.software),) if final and args.software == "cp2k" else extra_binds
-        return container_command(sif if final else image, cmd, overlay=None if final else overlay,
+        binds = site_app_binds("gpumd") if final and args.software == "gpumd" else () if final else extra_binds
+        command = container_command(sif if final else image, cmd, overlay=None if final else overlay,
                                  control=CONTROL, repository=None if final else repo,
                                  jobs=args.jobs, gpu=bool(target["gpus"]), extra_binds=() if final and args.software == "abacus" else binds,
                                  runtime=r / "runtime" if final and args.software == "cp2k" else None)
+        if args.software == 'cp2k' and not final:
+            command[2:2] = ['--bind', str(r / 'results') + ':/results:rw']
+        return command
     emit = container_command(image, ["/usr/bin/cat", "/workspace/final.squashfs"],
                              overlay=str(overlay) + ":ro", jobs=args.jobs)
     q = shlex.quote

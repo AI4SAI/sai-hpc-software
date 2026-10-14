@@ -1,6 +1,9 @@
-# Adapter for the site's unmodified LIBXSMM pkg-config package.
-set(_root "$ENV{CP2K_SITE_DEPENDENCIES}/libxsmm-e0c4a2389afba36c453233ad7de07bd92c715bec")
-find_library(_sai_xsmm NAMES xsmm PATHS "${_root}/lib" NO_DEFAULT_PATH REQUIRED)
+# Adapter for the exact private, receipt-verified LIBXSMM root.
+set(_root "$ENV{CP2K_LIBXSMM_ROOT}")
+if(NOT IS_ABSOLUTE "${_root}" OR NOT IS_DIRECTORY "${_root}")
+  message(FATAL_ERROR "Verified CP2K_LIBXSMM_ROOT is required")
+endif()
+find_library(_sai_xsmm NAMES xsmm PATHS "${_root}/lib" "${_root}/lib64" NO_DEFAULT_PATH REQUIRED)
 if(NOT TARGET libxsmm::libxsmm)
   add_library(libxsmm::libxsmm INTERFACE IMPORTED)
   set_target_properties(libxsmm::libxsmm PROPERTIES

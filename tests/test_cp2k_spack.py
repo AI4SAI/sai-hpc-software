@@ -41,6 +41,16 @@ class CP2KSpackTests(unittest.TestCase):
             self.assertFalse(value['container']['bootstrap']['enable'])
             self.assertEqual(value['status'], 'preparation-only-not-concretized')
 
+    def test_new_store_is_built_at_final_apps_prefix(self):
+        from release_contract import make_identity
+        with tempfile.TemporaryDirectory() as directory:
+            row = make_identity("cp2k", "release", "v1", "a" * 40, "v1",
+                                "b" * 64, "16v100-avx2")
+            prefix = row["install_prefix"]
+            value = cp2k_spack.config("16V100", Path(directory), install_prefix=Path(prefix))
+            self.assertEqual(value["container"]["config"]["install_tree"]["root"],
+                             prefix + "/dependencies/spack")
+
     def test_rejects_symlinked_cache_parents(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

@@ -8,8 +8,14 @@ INSTALL_PREFIX=$(python3 /control/delivery_layout.py prefix "$delivery" "$softwa
 export INSTALL_PREFIX
 export CP2K_SOURCE_SHA="$sha"
 case "$op" in
+dependencies)
+  bash /control/cp2k_spack_dependencies.sh "${SAI_BUILD_PARTITION:?}" "$INSTALL_PREFIX"
+  ;;
 build)
   mkdir -p /workspace/tmp
+  if [[ ! -f /results/install-success.json ]]; then
+    bash /control/cp2k_spack_dependencies.sh "${SAI_BUILD_PARTITION:?}" "$INSTALL_PREFIX"
+  fi
   git init /workspace/source
   # Borrow only immutable Git objects from the read-only source cache. Mark the
   # exact requested commit shallow inside this overlay: the cache may contain
@@ -40,8 +46,7 @@ metadata)
 export)
   rm -rf -- /workspace/export /workspace/final.squashfs
   bash /control/create_rootfs.sh /workspace/export
-  mkdir -p "/workspace/export$(dirname -- "$INSTALL_PREFIX")"
-  cp -a "$INSTALL_PREFIX" "/workspace/export$INSTALL_PREFIX"
+  python3 /control/cp2k_payload.py "$INSTALL_PREFIX" /workspace/export "${SAI_BUILD_PARTITION:?}"
   chmod -R a+rX,u+w,go-w "/workspace/export$INSTALL_PREFIX"
   python3 /control/cp2k_feature_contract.py native-package "$INSTALL_PREFIX" "$target" "$sha" --root /workspace/export
   mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"

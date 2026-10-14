@@ -18,12 +18,11 @@ cpu_flags='-march=native -mtune=native'
 # environment.sh already resolved ISA-aware dependencies on this compute node.
 # Do not purge it: that would also discard DSPRHBM's explicit GCC module.
 if [[ "$accel" == CUDA ]]; then module load cuda/12.9.1 nvmplibs/26.7-tmp; fi
-case "${MPI_HOME:?}" in
-  *-avx512) site=/opt/apps/cp2k/cp2k-2026.1-avx512/tools/toolchain/install ;;
-  *-avx2) site=/opt/apps/cp2k/cp2k-2026.1-avx2/tools/toolchain/install ;;
-  *) echo "unknown native dependency ISA: $MPI_HOME" >&2; exit 1 ;;
-esac
-suffix=; [[ "$accel" == CUDA ]] && suffix=-cuda
+module load gcc/13.3.0 spglib/2.7.0
+[[ "${SPGLIB_ROOT:?}" == /opt/devtools/spglib/spglib-2.7.0 ]]
+python3 /control/cp2k_spack_link.py /results/install-success.json "$expected_partition" "$prefix" \
+  > /workspace/cp2k-spack-build-env.sh
+source /workspace/cp2k-spack-build-env.sh
 dbcsr="$prefix/dependencies/dbcsr/lib64/cmake/dbcsr"
 [[ "${ELPA_ROOT:?}" == /opt/devtools/elpa/elpa-2026.02.001-2603-gnu/* ]]
 # The standalone ELPA module selects its NVIDIA build on CPU nodes too.
@@ -43,9 +42,6 @@ if [[ "$target" == 8v100v0-avx512 ]]; then
   [[ "${OPENBLAS_ROOT:?}" == *-avx2 ]]
 fi
 
-new_deps=/input/dependencies/tblite-dependencies.tar.gz
-[[ -s "$new_deps" ]] || { echo "verified tblite/DFT-D4 dependency bundle is required" >&2; exit 1; }
-printf '%s  %s\n' a2f54e22b9397841cb414696abbcd001d94b3599eb6aeabe222d0dd4e8e69a52 "$new_deps" | sha256sum --check --status
 tblite_root="$prefix/dependencies/tblite"
 # The successful 4V100 bundle establishes compatible source versions, not
 # permission to reuse its own compiled libraries across ISA targets. Rebuild
@@ -53,58 +49,19 @@ tblite_root="$prefix/dependencies/tblite"
 export CP2K_NATIVE_FLAGS="-O3 $cpu_flags"
 bash /control/cp2k_dependencies.sh /input/probe /workspace/tblite-build "$tblite_root"
 
-# The preinstalled CP2K toolchain carries a serial HDF5, which does not
-# provide h5pset_fapl_mpio_f even though CP2K's HDF5 interface is enabled.
-# Rebuild this pinned source with the active, ISA-matched OpenMPI wrapper and
-# keep the result under the target prefix so the final artifact is self-contained.
-hdf5_archive="$site/../build/hdf5-1.14.6.tar.gz"
-[[ -s "$hdf5_archive" ]] || { echo "pinned parallel HDF5 source is required: $hdf5_archive" >&2; exit 1; }
-hdf5_root="$prefix/dependencies/hdf5"
-rm -rf /workspace/hdf5-source /workspace/hdf5-build
-mkdir -p /workspace/hdf5-source
-# This site archive records paths as ./hdf5-1.14.6/..., so remove both the
-# leading ./ component and the source-directory component.
-tar --no-same-owner --strip-components=2 -xzf "$hdf5_archive" -C /workspace/hdf5-source
-pushd /workspace/hdf5-source >/dev/null
-[[ -x ./configure ]]
-# The clean container binds /usr without /etc/alternatives.  On these nodes
-# /usr/bin/awk may therefore be a dangling alternatives symlink even though
-# mawk is installed.  HDF5's configure uses awk to materialize its Fortran
-# KIND declarations; keep this repair local to the configure invocation.
-if ! command -v awk >/dev/null 2>&1 || ! awk 'BEGIN { exit 0 }' >/dev/null 2>&1; then
-  hdf5_tools=/workspace/hdf5-tools
-  [[ -x /usr/bin/mawk ]] || { echo "HDF5 configure requires awk or mawk" >&2; exit 1; }
-  mkdir -p "$hdf5_tools"
-  ln -sfn -- /usr/bin/mawk "$hdf5_tools/awk"
-  export PATH="$hdf5_tools:$PATH"
-  hash -r
-fi
-awk 'BEGIN { exit 0 }' >/dev/null
-CC=mpicc CXX=mpicxx FC=mpifort ./configure \
-  --prefix="$hdf5_root" --enable-parallel --enable-fortran \
-  --disable-shared --enable-static --disable-hl \
-  CFLAGS="-O3 -fPIC $cpu_flags" CXXFLAGS="-O3 -fPIC $cpu_flags" FCFLAGS="-O3 -fPIC $cpu_flags" \
-  --cache-file=/workspace/hdf5-config.cache 2>&1 | tee /workspace/hdf5-configure.log
-make -j"$jobs"
-make install
-popd >/dev/null
-grep -q '^                     Parallel HDF5: yes$' "$hdf5_root/lib/libhdf5.settings"
+hdf5_root="$CP2K_HDF5_ROOT"
+grep -Eq 'Parallel HDF5:[[:space:]]+yes' "$hdf5_root"/lib*/libhdf5.settings
 
 prefixes=(
   "$ELPA_ROOT" "$OPENBLAS_ROOT" "$LIBXC_ROOT" "$FFTW_ROOT" "$tblite_root"
-  "$site/COSMA-2.7.0$suffix" "$site/SpLA-1.6.1$suffix"
-  "$site/libint-v2.6.0-cp2k-lmax-5"
-  "$site/libxsmm-e0c4a2389afba36c453233ad7de07bd92c715bec" "$site/spglib-2.5.0"
-  "$site/libvori-220621" "$hdf5_root" "$site/plumed-2.9.3"
+  "$SPGLIB_ROOT" "${cp2k_spack_prefixes[@]}"
 )
 for dependency in "${prefixes[@]}"; do
   [[ -d "$dependency" ]] || { echo "required dependency missing: $dependency" >&2; exit 1; }
   export PKG_CONFIG_PATH="${PKG_CONFIG_PATH:+$PKG_CONFIG_PATH:}$dependency/lib/pkgconfig:$dependency/lib64/pkgconfig"
 done
-# The site Libint2/LIBXSMM installations have pkg-config metadata but lack
-# modern CMake CONFIG packages. Trusted adapters name the real site libraries;
-# they neither rebuild nor copy the host installation into the image.
-export CP2K_SITE_DEPENDENCIES="$site"
+# Explicit adapters resolve only the exact private roots from the verified
+# Spack installation receipt, including lib/lib64 layout differences.
 mkdir -p "$prefix/share/sai/cmake"
 cp /control/cp2k_Libint2Config.cmake "$prefix/share/sai/cmake/Libint2Config.cmake"
 cp /control/cp2k_libxsmmConfig.cmake "$prefix/share/sai/cmake/libxsmmConfig.cmake"
@@ -185,24 +142,22 @@ python3 /control/cp2k_feature_contract.py cache "$prefix" "$target" "$source_sha
 cmake --build /workspace/build --parallel "$jobs"
 cmake --install /workspace/build
 
-# PLUMED and LIBXSMM are supplied by the site CP2K toolchain rather than
-# standalone modules. Vendor the shared objects needed at runtime into this
-# delivery so it never depends on another CP2K installation path.
-cp -a "$site/plumed-2.9.3/lib/libplumed.so"* "$prefix/lib64/"
-cp -a "$site/libxsmm-e0c4a2389afba36c453233ad7de07bd92c715bec/lib/libxsmm.so"* "$prefix/lib64/"
+# Keep libraries at their build-time private Spack paths, including the
+# independent libplumedKernel.so. Never relocate by copying just libplumed.so.
+cp /results/install-success.json "$prefix/share/sai/spack-dependencies.json"
+cp /results/libint-export-repair.json "$prefix/share/sai/libint-export-repair.json"
 
 printf '%s\n' "$source_sha" > "$prefix/share/sai/source-sha"
 printf '%s\n' "$target" > "$prefix/share/sai/target"
 module -t list > "$prefix/share/sai/modules.txt" 2>&1 || true
 cp /workspace/build/CMakeCache.txt "$prefix/share/sai/CMakeCache.txt"
 cp /control/cp2k_feature_contract.py "$prefix/share/sai/cp2k_feature_contract.py"
-runtime_ld="$prefix/lib64:$prefix/lib:$prefix/dependencies/libxs/lib:$tblite_root/lib:/usr/lib/x86_64-linux-gnu/blas:/usr/lib/x86_64-linux-gnu/lapack"
+runtime_ld="$prefix/lib64:$prefix/lib:$prefix/dependencies/libxs/lib:$tblite_root/lib:$cp2k_spack_runtime_ld:/usr/lib/x86_64-linux-gnu/blas:/usr/lib/x86_64-linux-gnu/lapack"
 IFS=: read -ra inherited_ld <<< "${LD_LIBRARY_PATH:-}"
 for entry in "${inherited_ld[@]}"; do
-  [[ -n "$entry" && "$entry" != "$site"/* ]] && runtime_ld+=":$entry"
+  [[ -n "$entry" ]] && runtime_ld+=":$entry"
 done
 for dependency in "${prefixes[@]}"; do
-  [[ "$dependency" == "$site"/* ]] && continue
   runtime_ld+=":$dependency/lib:$dependency/lib64"
 done
 # Only runtime executables and absolute dependency paths are persisted. Build
@@ -213,7 +168,7 @@ printf '%s\n' "$SAI_BUILD_PARTITION" > "$prefix/share/sai/build-partition"
 hostname > "$prefix/share/sai/build-hostname"
 lscpu > "$prefix/share/sai/build-lscpu.txt"
 gcc -Q -march=native -mtune=native --help=target > "$prefix/share/sai/native-compiler-target.txt"
-sha256sum "$new_deps" "$libxs_archive" > "$prefix/share/sai/dependency-archives.sha256"
+sha256sum "$libxs_archive" > "$prefix/share/sai/dependency-archives.sha256"
 sha256sum "$dbcsr_archive" "$fypp_archive" >> "$prefix/share/sai/dependency-archives.sha256"
 cp /workspace/tblite-build/source-archives.sha256 "$prefix/share/sai/tblite-source-archives.sha256"
 python3 /control/cp2k_feature_contract.py source-changes "$prefix" "$target" "$source_sha"

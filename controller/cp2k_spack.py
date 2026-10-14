@@ -62,13 +62,25 @@ def validate_cache(cache: Path, partition: str, *, require_archives: bool = Fals
     return {key: str(value) for key, value in roots.items()}
 
 
+def validated_prefix(partition: str, install_prefix=None, *, app_only=False) -> str:
+    """Preserve historical pilots, but require /opt/apps for new app stages."""
+    if partition not in TARGETS:
+        raise ValueError('unsupported CP2K Spack partition')
+    prefix = (f'/opt/software/cp2k/development/spack-native-probe/{partition}'
+              if install_prefix is None else str(install_prefix))
+    pattern = (r'/opt/(?:software/cp2k/(?:development|prerelease|release)/|'
+               r'apps/cp2k/cp2k-(?:development|prerelease|release)-)'
+               r'[A-Za-z0-9][A-Za-z0-9_.-]*/' + re.escape(partition))
+    if not re.fullmatch(pattern, prefix) or (app_only and not prefix.startswith('/opt/apps/cp2k/')):
+        raise ValueError("Spack store must be inside this partition's canonical CP2K prefix")
+    return prefix
+
+
 def config(partition: str, cache: Path, *, install_prefix: Path) -> dict:
     roots = cache_roots(cache, partition)
     target = TARGETS[partition]
     compiler = target["compiler"]
-    prefix = str(install_prefix)
-    if not re.fullmatch(r"/opt/software/cp2k/(development|prerelease|release)/[A-Za-z0-9][A-Za-z0-9_.-]*/" + partition, prefix):
-        raise ValueError("Spack store must be inside this partition's canonical CP2K prefix")
+    prefix = validated_prefix(partition, install_prefix)
     return {
         "schema": 1,
         "status": "preparation-only-not-concretized",

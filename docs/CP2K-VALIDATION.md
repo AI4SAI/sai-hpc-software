@@ -57,6 +57,53 @@ test proves the modified target schedules generation/preprocessing/configure
 but not tar. Shell syntax and Python compile checks passed. This remains a
 dependency-install pilot, not CP2K native/scientific/performance acceptance.
 
+## Final-prefix integration (2026-09-22)
+
+Both historical dependency pilots completed (DSPRHBM `1416362`, 16V100
+`1422298`). They are not CP2K application/acceptance successes, and their old
+internal stores cannot be relocated by renaming. Old main job `1436043`
+installed CP2K but failed loading the separate `libplumedKernel.so` omitted by
+its frontend-only copy rule.
+
+The new recipe consumes a receipt-checked private Spack store at its final
+`/opt/apps/cp2k/cp2k-<track>-<build>/<PARTITION>` prefix. No old CP2K app is bound
+into new builds. The probe, fetch validator and installation evidence now
+carry and verify the exact prefix; DAG hashes alone do not encode that path.
+Libint's diagnosed one-rule export repair is applied after `do_patch()` in a
+fresh stage, then preserved with `--dont-restage`. Version/features are retained.
+
+`cp2k_spack_link.py` requires all seven roots and their installed link/run
+closure, checks PLUMED frontend and kernel independently, and emits exact
+private library roots. Site `spglib/2.7.0` was inspected and supplies
+`/opt/devtools/spglib/spglib-2.7.0`; other infrastructure remains module-provided.
+`cp2k_payload.py` exports only runtime portions of the link/run closure at
+unchanged paths, omitting build-only Python packages, includes, static archives,
+package-manager metadata and dependency test/docs directories. CP2K data and
+PLUMED runtime data are retained; post-export ELF/manifest checks remain required.
+
+The first stage is DSPRHBM CPU dependencies (8 CPUs, 28 GiB, rush-cpu, 12-hour
+ceiling), cloning only the pinned source/solver seed to a new 32-GiB overlay.
+The main application must follow in a separate verified stage at the **same
+identity/prefix**, cloning the successful terminal overlay without modifying it.
+Do not run the normal all-in-one GPU profile for this initial integration.
+
+Validation: 261 full local tests passed; additionally 8 final-prefix tests
+(including real CMake adapter resolution, source-clone ordering and runtime
+payload exclusion) and 11 delivery-integration tests passed. This is preflight,
+not native CP2K scientific acceptance. Controller snapshot:
+`controller/cp2k-final-spack-20260922-r1/controller`, recipe
+`a89d548857fe901c3a05128a16f7f38faffb8eb036635122f46e3ef77f8fb4dd`.
+
+The first native stage `1440487` exposed an additional fresh-stage assumption:
+the old repair guard expected Spack build() to have removed upstream's
+`&& rm -rf $(EXPORTDIR)` archive suffix, which do_patch() does not remove.
+No compilation was reached. The guard now explicitly distinguishes pristine
+and historical checkpoint forms; the correction still alters only the tgz
+prerequisite. All 48 Spack tests and the real pinned archive/filter regression
+passed. New stage `1440608` uses fresh source-only state and snapshot r2,
+recipe `a0eb9c619c3bce78c2f15405d35001456d3d9e99feff133d425a97bdb2aaf91e`.
+No old snapshot was edited. This repair is not yet a dependency-install success.
+
 ## Current blockers and Spack cache (2026-09-17)
 
 The latest daily run `35196109864` did not produce an accepted candidate:

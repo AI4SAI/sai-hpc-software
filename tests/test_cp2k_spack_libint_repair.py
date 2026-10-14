@@ -23,6 +23,17 @@ class LibintExportRepairTests(unittest.TestCase):
         self.assertIn('exportdir strip_some_preproc_symb', after)
         self.assertIn('$(TAR) -czf', after)
 
+    def test_fresh_upstream_and_failed_build_states_are_distinct_and_explicit(self):
+        fresh = self.source().replace('$(EXPORTDIR) )', '$(EXPORTDIR) && rm -rf $(EXPORTDIR))')
+        fixed = repair_export(fresh, fresh_stage=True)
+        self.assertEqual(fixed, fresh.replace(ORIGINAL, REPAIRED))
+        # Exactly reproduce pinned Spack build()'s later filter_file operation.
+        self.assertEqual(fixed.replace('&& rm -rf $(EXPORTDIR)', ''), repair_export(self.source()))
+        for text, mode in ((fresh, False), (self.source(), True),
+                           (fresh.replace('rm -rf', 'rm -r'), True)):
+            with self.subTest(mode=mode), self.assertRaisesRegex(ValueError, 'archive implementation'):
+                repair_export(text, fresh_stage=mode)
+
     def test_rejects_unknown_duplicate_or_already_modified_rules(self):
         for text in ('', self.source() + ORIGINAL + '\n',
                      self.source().replace(ORIGINAL, REPAIRED),

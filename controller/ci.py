@@ -85,6 +85,10 @@ def main():
               if software == "abacus" else
               ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_feature_contract.py",
                "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_benchmark.py",
+               "cp2k_spack.py", "cp2k_spack_environment.py", "cp2k_spack_native.py",
+               "cp2k_spack_seed.py", "cp2k_spack_probe.sh", "cp2k_spack_dependencies.sh",
+               "cp2k_spack_libint_repair.py", "cp2k_spack_install_evidence.py",
+               "cp2k_spack_link.py", "cp2k_payload.py", "cp2k_dependency_stage.py",
                "native_module.py", "export_native.py"])
     if software == "gpumd":
         recipe = ["gpumd_container_entry.sh", "gpumd_environment.sh", "gpumd_build.sh",
