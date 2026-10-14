@@ -234,10 +234,16 @@ resolved ISA roots and actual `ldd` paths. External system libraries remain
 required, so this is not a promise of portability to an unrelated Linux system.
 After an administrator deploys the folder at its expected prefix, use its
 `modulefiles/` directory and load `abacus/<track>/<build_id>` inside a Slurm
-allocation. Then rerun `python3 share/sai/abacus_features.py PREFIX TARGET`
-and the scientific benchmark. The SIF still uses the recorded runtime shell
-environment; native module load/unload, physical deployment and native speed
-remain separate, pending acceptance checks.
+allocation. The native module includes the same prefix-local `lib`, `lib64`
+and optional dependency library directories as the SIF runtime. Full-profile
+modules keep the site MPI directory before the external Conda libraries.
+The default runtime export omits build diagnostics, feature-checker scripts and
+scientific fixtures. Use `export_native.py export --include-diagnostics` when
+preparing an archival tree for post-deployment feature/scientific checks; then
+`python3 share/sai/abacus_features.py PREFIX TARGET` has its required metadata.
+The SIF still uses the recorded runtime shell environment; native module
+load/unload, physical deployment and native speed remain separate, pending
+acceptance checks. Administrator installation is outside this workflow.
 
 ## Benchmark interpretation
 
@@ -255,9 +261,15 @@ The full-feature CI now runs PW, HSE and DeePKS paired benchmarks after ordinary
 multi-node and GPU-feature acceptance. Each case requires one warmup pair and at
 least three measured pairs against the full-feature system default. Publication
 and subsequent cache hits revalidate all three raw benchmark proofs; merely
-having a feature-enabled binary is insufficient. Timings are measured/reported,
-not forced to pass an invented speedup threshold; correctness failures and missing
-measurements fail the gate.
+having a feature-enabled binary is insufficient. Publication compares each
+case's median summed SCF iteration time with its baseline. A slowdown greater
+than 10% triggers one repeat of the paired measurements on the same SIF;
+a repeated regression blocks publication. A repeat must retain the original
+image, baseline executable path and SHA-256, input hashes, partition, MPI/OpenMP
+resources and sampling counts. The verifier recomputes the initial raw evidence
+and requires its successful completion record; replacing the original report
+or changing the workload cannot clear the regression. New nodes within the same
+partition are allowed for the repeated allocation.
 
 Each MPI rank runs the same inline affinity probe before entering either launch
 path. Evidence records logical CPU IDs, their socket/core topology, local rank,
@@ -345,3 +357,20 @@ teaches the existing path check to ignore ABACUS comments, without changing the
 hashed input or allowing actual absolute/parent-directory references. All 25
 benchmark tests and the commit's GitHub CI passed. A new allocated benchmark is
 still required; neither this parser fix nor the older build proves a speedup.
+
+## Workflow closure preflight (2026-10-15)
+
+Inspection of the cached upstream `f264b4022fd477734de0f3ace723f6da9e306943`
+found that the HSE fixture moved from `tests/08_EXX/01_GO_S1_HSE` to
+`tests/08_RI/scf_hse_gamma`. The builder now recognizes either reviewed layout
+before dependency compilation and validates its spin-unpolarized Gamma HSE SCF
+settings plus every required input and pseudopotential/orbital. An unknown,
+ambiguous or incomplete fixture fails before spending the build allocation.
+The actual current upstream files passed this preflight locally.
+
+All 74 focused ABACUS tests pass, including original/repeat raw evidence binding,
+native module library paths and both source layouts. These checks establish
+controller behavior only. The new development SIF still requires real builds,
+two-node MPI, cuSOLVERMp/NCCL checks on GPU targets, all three paired scientific
+benchmarks, the 10% performance gate and an integrity-checked export roundtrip.
+No new ABACUS cluster job or administrator installation is claimed here.

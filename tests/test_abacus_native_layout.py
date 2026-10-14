@@ -28,6 +28,10 @@ class NativeLayoutTests(unittest.TestCase):
                 self.assertEqual(entry["identity"], identity)
                 self.assertIn("elpa/2026.02.001-2603-gnu", entry["runtime"]["modules"])
                 self.assertEqual("nvmplibs/26.7-tmp" in entry["runtime"]["modules"], target != "dsprhbm")
+                self.assertTrue({identity["install_prefix"] + "/" + suffix for suffix in
+                                 ("lib", "lib64", "dependencies/nep/lib", "dependencies/full/lib",
+                                  "dependencies/libtorch/lib")} <=
+                                set(entry["runtime"]["prepend"]["LD_LIBRARY_PATH"]))
                 if target == "8v100v0-avx512":
                     self.assertTrue(environment["MPI_HOME"].endswith("-avx2"))
                 with self.assertRaisesRegex(ValueError, "not actually loaded"):
@@ -41,6 +45,20 @@ class NativeLayoutTests(unittest.TestCase):
                                         ldd + "\nlibcuda.so.1 => /.singularity.d/libs/libcuda.so.1")
                 with self.assertRaisesRegex(ValueError, "unresolved runtime libraries"):
                     features.make_entry(identity, environment, modules, ldd + "\nlibmissing.so => not found")
+
+    def test_full_native_modules_keep_site_mpi_before_external_conda_libraries(self):
+        identity = self.identity
+        environment = features.expected_roots(identity)
+        modules = features.MODULES + ["nvhpc/26.3-gnu-cuda12-tuned", "nvmplibs/26.7-tmp"]
+        ml_root = "/opt/apps/conda_env/deepmd-kit-3.1.2"
+        ldd = "libmpi.so.40 => " + environment["MPI_HOME"] + "/lib/libmpi.so.40 (0x1234)"
+        entry = features.make_entry(identity, environment, modules, ldd,
+                                    {"full_features": {"ml_root": ml_root}})
+        paths = entry["runtime"]["prepend"]["LD_LIBRARY_PATH"]
+        self.assertEqual(paths[0], environment["MPI_HOME"] + "/lib")
+        self.assertEqual(paths[-1], ml_root + "/lib")
+        self.assertIn(str(self.prefix / "lib64"), paths)
+        self.assertNotIn(str(self.prefix / "dependencies/libtorch/lib"), paths)
 
     def setUp(self):
         temporary = tempfile.TemporaryDirectory(prefix="abacus-native-layout-")

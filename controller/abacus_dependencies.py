@@ -43,6 +43,43 @@ def json_backend(cmake):
     return {'ENABLE_JSON': 'nlohmann', 'ENABLE_RAPIDJSON': 'rapidjson'}[options[0]]
 
 
+def hse_case_source(source):
+    """Recognize the reviewed H2O HSE case before any expensive compilation.
+
+    Upstream renamed 08_EXX/01_GO_S1_HSE to 08_RI/scf_hse_gamma. Do not
+    substitute another hybrid case silently if upstream changes it again.
+    """
+    source = Path(source)
+    candidates = [source / "tests" / name for name in
+                  ("08_EXX/01_GO_S1_HSE", "08_RI/scf_hse_gamma")]
+    available = [path for path in candidates if path.is_dir()]
+    if len(available) != 1:
+        raise ValueError("expected exactly one reviewed ABACUS HSE benchmark case")
+    case = available[0]
+    files = [case / name for name in ("INPUT", "STRU", "KPT", "result.ref")]
+    files += [source / "tests/PP_ORB" / name for name in
+              ("H_ONCV_PBE-1.0.upf", "O_ONCV_PBE-1.0.upf",
+               "H_gga_6au_60Ry_1s.orb", "O_gga_6au_60Ry_1s1p.orb")]
+    if any(not path.is_file() or not path.stat().st_size or
+           not path.resolve().is_relative_to(source.resolve()) for path in files):
+        raise ValueError("HSE benchmark inputs must be complete and stay in the source tree")
+    config = {}
+    for line in (case / "INPUT").read_text().splitlines():
+        fields = re.split(r"#|//", line, maxsplit=1)[0].split()
+        if len(fields) >= 2:
+            if fields[0] in config:
+                raise ValueError("duplicate HSE benchmark input parameter")
+            config[fields[0]] = fields[1]
+    required = {"calculation": "scf", "dft_functional": "hse", "basis_type": "lcao",
+                "gamma_only": "1", "nspin": "1", "suffix": "autotest"}
+    if any(config.get(key) != value for key, value in required.items()):
+        raise ValueError("reviewed HSE benchmark must remain a spin-unpolarized Gamma SCF case")
+    structure = (case / "STRU").read_text().split()
+    if not all(path.name in structure for path in files[4:]):
+        raise ValueError("HSE benchmark structure changed its reviewed pseudopotentials/orbitals")
+    return case
+
+
 def repair_dftd4_cmake(source):
     """Fix pinned 4.2.0 export templates without disabling OpenMP (CMP0054).
 
@@ -199,7 +236,7 @@ def unpack(source, destination, lock):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("operation", choices=("unpack", "json-backend", "runtime-roots", "repair-dftd4-cmake"))
+    parser.add_argument("operation", choices=("unpack", "json-backend", "hse-case-source", "runtime-roots", "repair-dftd4-cmake"))
     parser.add_argument("--cmake", default="/workspace/source/CMakeLists.txt")
     parser.add_argument("--source", default="/input/abacus-dependencies")
     parser.add_argument("--destination", default="/workspace/dependencies")
@@ -211,6 +248,8 @@ def main():
         repair_dftd4_cmake(source)
     elif args.operation == 'json-backend':
         print(json_backend(Path(args.cmake).read_text()))
+    elif args.operation == 'hse-case-source':
+        print(hse_case_source(args.source))
     elif args.operation == 'runtime-roots':
         for source, destination in runtime_binds():
             if source != '/opt/apps/conda_env/deepmd-kit-3.1.2' or destination != source:

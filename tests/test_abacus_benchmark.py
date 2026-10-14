@@ -228,6 +228,42 @@ class BenchmarkTests(unittest.TestCase):
                 with self.assertRaises((ValueError, OSError)):
                     benchmark.analyze(task)
 
+    def retest_pair(self):
+        original = benchmark.prepare(self.args(run_id="comparison"))
+        first_request = self.results(original)
+        first = benchmark.analyze(original)
+        benchmark.dump(original / "results/status.json",
+                       dict(verified=True, state="COMPLETED", exit_code="0:0", job=first["job"]))
+        repeat = benchmark.prepare(self.args(run_id="comparison-retest"))
+        request = self.results(repeat)
+        evidence = benchmark.analyze(repeat)
+        return original, first_request, repeat, request, evidence
+
+    def test_retest_reverifies_original_raw_results_and_binds_baseline_and_inputs(self):
+        original, first_request, repeat, request, evidence = self.retest_pair()
+        receipt = benchmark.verify_retest(repeat, request, evidence)
+        self.assertEqual(receipt["run_id"], original.name)
+        self.assertEqual(receipt["evidence_sha256"], checksum(original / "results/evidence.json"))
+        self.assertIsNone(benchmark.verify_retest(original, first_request,
+                                                 benchmark.verify_evidence(original, first_request)))
+        for field, changed in (("system_binary", {"path": "/another/baseline", "sha256": "f" * 64}),
+                               ("case_files", {"INPUT": "f" * 64})):
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, "inputs or baseline binary"):
+                benchmark.verify_retest(repeat, request, dict(evidence, **{field: changed}))
+        (original / "runs/m000-system/wall-seconds.txt").write_text("999")
+        with self.assertRaisesRegex(ValueError, "incomplete or changed"):
+            benchmark.verify_retest(repeat, request, evidence)
+
+    def test_retest_cannot_change_resource_or_candidate_contract(self):
+        original, _, repeat, request, evidence = self.retest_pair()
+        for field, changed in (("artifact_sha256", "f" * 64), ("threads", 2),
+                               ("repeats", 4), ("system_module", "abacus/changed")):
+            with self.subTest(field=field), self.assertRaisesRegex(ValueError, "resource contract"):
+                benchmark.verify_retest(repeat, dict(request, **{field: changed}), evidence)
+        (original / "results/status.json").write_text('{"verified": false}')
+        with self.assertRaisesRegex(ValueError, "incomplete or changed"):
+            benchmark.verify_retest(repeat, request, evidence)
+
     def test_analysis_rejects_missing_or_invalid_affinity_identity_and_openmp(self):
         cases = {
             "missing": None,

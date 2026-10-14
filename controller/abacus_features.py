@@ -194,11 +194,14 @@ def make_entry(identity, environment, loaded_modules, ldd, lock=None):
     entry = dict(identity=identity, commands={"abacus": "bin/abacus"}, external_roots=external,
                  runtime=dict(modules=modules,
                               prepend={"MODULEPATH": [str(MODULE_ROOT)],
-                                       "LD_LIBRARY_PATH": [prefix + "/dependencies/libtorch/lib", prefix + "/dependencies/nep/lib"]},
+                                       "LD_LIBRARY_PATH": [prefix + "/lib", prefix + "/lib64",
+                                                           prefix + "/dependencies/full/lib",
+                                                           prefix + "/dependencies/libtorch/lib",
+                                                           prefix + "/dependencies/nep/lib"]},
                               set={"ABACUS_ROOT": prefix}))
     if external_ml:
         entry['runtime']['prepend']['LD_LIBRARY_PATH'] = [roots['MPI_HOME'] + '/lib',
-            prefix + '/lib', prefix + '/dependencies/nep/lib', prefix + '/dependencies/full/lib',
+            prefix + '/lib', prefix + '/lib64', prefix + '/dependencies/nep/lib', prefix + '/dependencies/full/lib',
             external_ml[0] + '/lib']
     return validate_native_entry(entry)
 

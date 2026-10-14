@@ -99,6 +99,47 @@ class ParityTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 deps.json_backend(source)
 
+    def test_hse_fixture_accepts_reviewed_release_and_develop_layouts(self):
+        for relative in ("08_EXX/01_GO_S1_HSE", "08_RI/scf_hse_gamma"):
+            with self.subTest(relative=relative), tempfile.TemporaryDirectory() as temporary:
+                source = Path(temporary)
+                case = source / "tests" / relative
+                case.mkdir(parents=True)
+                (case / "INPUT").write_text(
+                    "INPUT_PARAMETERS\nsuffix autotest\ncalculation scf\ndft_functional hse\n"
+                    "basis_type lcao\ngamma_only 1\nnspin 1\n")
+                names = ("H_ONCV_PBE-1.0.upf", "O_ONCV_PBE-1.0.upf",
+                         "H_gga_6au_60Ry_1s.orb", "O_gga_6au_60Ry_1s1p.orb")
+                (case / "STRU").write_text("\n".join(names) + "\n")
+                (case / "KPT").write_text("Gamma\n1 1 1 0 0 0\n")
+                (case / "result.ref").write_text("etotref -428.99\n")
+                pp = source / "tests/PP_ORB"
+                pp.mkdir()
+                for name in names:
+                    (pp / name).write_text("pinned-source-data\n")
+                self.assertEqual(deps.hse_case_source(source), case)
+                original = (case / "INPUT").read_text()
+                for changed in (original.replace("calculation scf", "calculation md"),
+                                original.replace("dft_functional hse", "dft_functional pbe"),
+                                original + "nspin 2\n"):
+                    (case / "INPUT").write_text(changed)
+                    with self.assertRaises(ValueError):
+                        deps.hse_case_source(source)
+                (case / "INPUT").write_text(original)
+                (pp / names[0]).unlink()
+                with self.assertRaisesRegex(ValueError, "must be complete"):
+                    deps.hse_case_source(source)
+
+    def test_hse_fixture_rejects_missing_or_ambiguous_source_layout(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            source = Path(temporary)
+            with self.assertRaisesRegex(ValueError, "exactly one reviewed"):
+                deps.hse_case_source(source)
+            for relative in ("08_EXX/01_GO_S1_HSE", "08_RI/scf_hse_gamma"):
+                (source / "tests" / relative).mkdir(parents=True)
+            with self.assertRaisesRegex(ValueError, "exactly one reviewed"):
+                deps.hse_case_source(source)
+
     def test_dftd4_export_repair_restores_cmake_variable_guards(self):
         templates = {
             'config/template.cmake': ('OpenMP',),

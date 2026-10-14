@@ -485,6 +485,7 @@ def verify_evidence(task, request):
         stats[metric]["candidate_system_ratio"] = stats[metric]["candidate"]["median"] / stats[metric]["system"]["median"]
     return dict(schema=2, identity=r["identity"], job=job, request_sha256=checksum(task / "request.json"),
                     system_module=r["system_module"], case_device=r["case_device"],
+                    system_binary=dict(zip(("path", "sha256"), next(iter(binaries)))),
                     benchmark_case=r["benchmark_case"], case_files=metadata["case_files"],
                     artifact_sha256=r["artifact_sha256"], launcher_sha256=r["launcher_sha256"],
                     controller_sha256=r["controller_sha256"], job_script_sha256=r["job_script_sha256"],
@@ -492,6 +493,39 @@ def verify_evidence(task, request):
                     timing_note="Iteration times sum the rounded SCF TIME/s column; wall measures mpirun only.",
                     affinity_note="Physical/logical CPU sets and OpenMP environment match for every host/local rank; "
                                   "binding is recorded before exec, not sampled per OpenMP worker thread.")
+
+
+def verify_retest(task, request, evidence):
+    """Bind a repeat to its initial, completed raw measurements.
+
+    Call after verify_evidence for the repeat. New nodes are allowed within the
+    same partition, but changing the candidate, baseline, input or resource
+    contract cannot erase the first performance regression.
+    """
+    if not request["run_id"].endswith("-retest"):
+        return None
+    original = task_dir(request["run_id"].removesuffix("-retest"))
+    if Path(task) != task_dir(request["run_id"]) or not original.is_dir():
+        raise ValueError("ABACUS retest requires its original benchmark run")
+    first_request = verify(original, check_controller=False)
+    fields = ("identity", "artifact", "artifact_sha256", "launcher", "launcher_sha256",
+              "controller_sha256", "version", "target", "system_module", "packaged_case",
+              "benchmark_case", "case_device", "nodes", "ranks", "ranks_per_node", "threads",
+              "dependency_isa", "warmup", "repeats", "scf_log", "allow_cpu_case_on_gpu")
+    if any(first_request.get(key) != request.get(key) for key in fields):
+        raise ValueError("ABACUS retest changed the image, baseline, case or resource contract")
+    first = verify_evidence(original, first_request)
+    report = regular(original / "results/evidence.json")
+    report_sha = checksum(report)
+    status = json.loads(regular(original / "results/status.json").read_text())
+    if (json.loads(report.read_text()) != first or
+            regular(original / "results/evidence.sha256").read_text().strip() != report_sha or
+            status.get("verified") is not True or status.get("state") != "COMPLETED" or
+            status.get("exit_code") != "0:0" or status.get("job") != first["job"]):
+        raise ValueError("ABACUS retest original results are incomplete or changed")
+    if any(first[key] != evidence[key] for key in ("case_files", "system_binary")):
+        raise ValueError("ABACUS retest changed the materialized inputs or baseline binary")
+    return dict(run_id=original.name, evidence_sha256=report_sha, job=first["job"])
 
 
 def analyze(task):

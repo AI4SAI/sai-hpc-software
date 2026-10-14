@@ -46,6 +46,9 @@ printf 'NATIVE_BUILD_PROFILE %s expected=%s\n' "$target" "$cpu_arch"
 gcc -march=native -mtune=native -Q --help=target | grep -E 'march=|mtune=|mavx'
 opts+=("-DCMAKE_C_FLAGS=-march=native -mtune=native"
       "-DCMAKE_CXX_FLAGS=-march=native -mtune=native")
+# Validate the renamed upstream HSE fixture before compiling dependencies or
+# ABACUS; both releases and current develop must carry the same reviewed case.
+abacus_hse_case=$(python3 /control/abacus_dependencies.py hse-case-source --source /workspace/source)
 source /control/abacus_dependencies.sh
 opts+=("${abacus_dependency_options[@]}")
 # ABACUS commit 1497232 omits the declarations used by its cuSOLVERMp CUDA
@@ -88,7 +91,7 @@ cp -L /workspace/source/tests/PP_ORB/{As_dojo.upf,Ga_dojo.upf} "$fixture/PP_ORB/
 benchmarks="$INSTALL_PREFIX/share/sai/benchmark-cases"
 mkdir -p "$benchmarks/hse/PP_ORB" "$benchmarks/deepks/PP_ORB" "$benchmarks/deepks/Model_ProjOrb"
 cp -a "$fixture" "$benchmarks/pw"
-cp -L /workspace/source/tests/08_EXX/01_GO_S1_HSE/{INPUT,KPT,STRU,result.ref} "$benchmarks/hse/"
+cp -L "$abacus_hse_case"/{INPUT,KPT,STRU,result.ref} "$benchmarks/hse/"
 cp -L /workspace/source/tests/PP_ORB/{H_ONCV_PBE-1.0.upf,O_ONCV_PBE-1.0.upf,H_gga_6au_60Ry_1s.orb,O_gga_6au_60Ry_1s1p.orb} \
   "$benchmarks/hse/PP_ORB/"
 cp -L /workspace/source/tests/09_DeePKS/01_NO_GO_deepks_scf/{INPUT,KPT,STRU,result.ref} "$benchmarks/deepks/"
