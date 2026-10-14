@@ -34,7 +34,9 @@ def main(argv=None):
     record = binding_record(int(raw_cpu))
     if any(record[key] != '1' for key in ('omp_threads', 'dp_intra_threads', 'dp_inter_threads')):
         raise ValueError('benchmark requires one actual OpenMP and DeepMD worker thread')
-    record.update(node=os.uname().nodename, job=os.environ['SAI_MD_ALLOCATED_JOB'], argv=argv)
+    record.update(node=os.uname().nodename, job=os.environ['SAI_MD_ALLOCATED_JOB'], argv=argv,
+                  artifact=os.environ['SAI_MD_IMAGE'], artifact_sha256=os.environ['SAI_MD_IMAGE_SHA256'],
+                  target=os.environ['SAI_MD_TARGET'], implementation=os.environ['SAI_MD_IMPLEMENTATION'])
     with Path('performance-binding.json').open('x') as stream:
         json.dump(record, stream, sort_keys=True)
         stream.write('\n')

@@ -151,6 +151,8 @@ class RepresentativeRunnerTests(unittest.TestCase):
             runner.launcher = root / 'launcher.sh'
             runner.launcher.write_text('# synthetic test; not executed\n')
             runner.launcher_sha256 = file_digest(runner.launcher)
+            image = root / 'synthetic.sif'
+            image.write_bytes(b'synthetic image; never executed')
             def execute(command, **kwargs):
                 self.assertEqual(command[:3], ['taskset', '--cpu-list', '9'])
                 self.assertNotIn('SAI_MD_PROFILE_LMP', kwargs['env'])
@@ -169,9 +171,12 @@ class RepresentativeRunnerTests(unittest.TestCase):
                     patch('md_performance_run.copy_trial_inputs'), \
                     patch('md_performance_run.verify_large_science', return_value={'passed': True}), \
                     patch('md_performance_run.subprocess.run', side_effect=execute), \
-                    patch.dict(os.environ, {'SLURM_JOB_ID': '123', 'SAI_MD_PROFILE_LMP': '/wrong/nsys'}):
+                    patch.dict(os.environ, {'SLURM_JOB_ID': '123', 'SAI_MD_PROFILE_LMP': '/wrong/nsys',
+                                            'SAI_MD_IMAGE': str(image),
+                                            'SAI_MD_DELIVERY': json.dumps({'plan': {'target': '16v100-avx2'}})}):
                 record = runner.measure('baseline', 'baseline-01', 100, 'synthetic input')
                 self.assertFalse(record['profiled'])
+                self.assertEqual(record['trial'], 'baseline-01')
                 self.assertEqual(record['binding']['physical_cores'], [[1, 4]])
                 runner.physical_cores = [[2, 5]]
                 with self.assertRaisesRegex(ValueError, 'binding/allocation differs'):

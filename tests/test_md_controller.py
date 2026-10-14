@@ -79,6 +79,12 @@ def remote_python_calls(fixture, name, action=None):
 
 
 class MDControllerTests(unittest.TestCase):
+    def setUp(self):
+        # These protocol tests submit no real jobs and reserve no disk space.
+        capacity = patch('remote_controller.require_capacity', return_value={})
+        self.capacity = capacity.start()
+        self.addCleanup(capacity.stop)
+
     def pair(self, target='4v100-avx512'):
         return delivery_request(target)
 
@@ -207,6 +213,20 @@ class MDControllerTests(unittest.TestCase):
                     md.submit(args)
             self.assertFalse(any(call.args[0][:2] == ['sbatch', '--parsable'] for call in invoked.call_args_list))
             self.assertFalse((md.task(args.run_id) / 'job.id').exists())
+
+    def test_capacity_failure_prevents_both_build_submissions(self):
+        with tempfile.TemporaryDirectory() as temporary, patch.object(md, 'ROOT', Path(temporary)):
+            request = self.pair()
+            path = Path(temporary) / 'request.json'
+            path.write_text(json.dumps(request))
+            args = Namespace(request=str(path), run_id='full-disk', overlay_mb=32768)
+            self.capacity.side_effect = ValueError('insufficient build space')
+            with patch.object(md, 'fingerprint', return_value=request['recipe_sha256']), \
+                    patch.object(md, 'run', return_value=subprocess.CompletedProcess([], 0, 'AllowQos=ALL')) as run:
+                with self.assertRaisesRegex(ValueError, 'insufficient build space'):
+                    md.submit(args)
+            self.assertFalse(any(call.args[0][0] == 'sbatch' for call in run.call_args_list))
+            self.capacity.assert_called_once_with(Path(temporary), 32768)
 
     def test_build_uses_readable_offline_site_dependencies(self):
         build = (ROOT / 'controller/md_build.sh').read_text()
@@ -469,13 +489,30 @@ class MDControllerTests(unittest.TestCase):
         import yaml
         workflow = yaml.safe_load((ROOT / '.github/workflows/md-pair.yml').read_text())
         jobs = workflow['jobs']
-        self.assertEqual(set(jobs), {'deepmd', 'lammps', 'acceptance'})
+        self.assertEqual(set(jobs), {'deepmd', 'lammps', 'acceptance', 'result'})
         self.assertEqual(jobs['lammps']['needs'], 'deepmd')
         self.assertEqual(jobs['acceptance']['needs'], ['deepmd', 'lammps'])
-        for phase, job in jobs.items():
+        self.assertEqual(jobs['result']['if'], 'always()')
+        for phase in ('deepmd', 'lammps', 'acceptance'):
+            job = jobs[phase]
             self.assertLessEqual(job['timeout-minutes'], 360)
             self.assertEqual(job['env']['MD_PHASE'], phase)
             self.assertEqual(job['steps'], jobs['deepmd']['steps'])
+
+    def test_pair_result_gate_rejects_missing_publication_and_development_skips(self):
+        import yaml
+        workflow = yaml.safe_load((ROOT / '.github/workflows/md-pair.yml').read_text())
+        command = workflow['jobs']['result']['steps'][0]['run']
+        cases = [('success', 'build1', 'success', 'success', 'development', 0),
+                 ('success', 'build1', 'success', 'skipped', 'development', 1),
+                 ('failure', '', 'skipped', 'skipped', 'release', 1),
+                 ('success', '', 'skipped', 'skipped', 'development', 1),
+                 ('success', '', 'skipped', 'skipped', 'release', 0)]
+        for first, run_id, second, last, track, code in cases:
+            env = dict(os.environ, DEEPMD_RESULT=first, BUILD_RUN=run_id, LAMMPS_RESULT=second,
+                       ACCEPTANCE_RESULT=last, PAIR=json.dumps({'triggers': [{'track': track}]}))
+            result = subprocess.run(['bash', '-c', command], env=env, capture_output=True, text=True)
+            self.assertEqual(result.returncode, code, result.stderr)
 
     def assert_ci_skipped(self, fixture):
         receipt = json.loads((fixture.runner / 'results/build-attempt.json').read_text())
@@ -524,12 +561,12 @@ class MDControllerTests(unittest.TestCase):
                     self.assertEqual(len(remote_python_calls(retried, 'md_controller.py', 'submit')), 1)
                     self.assertEqual(remote_python_calls(retried, 'release_contract.py')[0][5:], ['--retry'])
 
-    def test_only_manual_true_input_enables_retry(self):
+    def test_only_explicit_true_input_enables_retry(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             request = delivery_request(track='release')
             claim_build(root / 'history', list(request['identities'].values()), 'previous')
-            cases = [('schedule', ''), ('schedule', 'true'), ('push', 'true'),
+            cases = [('schedule', ''), ('schedule', 'false'), ('push', ''),
                      ('workflow_dispatch', ''), ('workflow_dispatch', 'false'), ('workflow_dispatch', 'TRUE')]
             for index, (event, retry) in enumerate(cases):
                 with self.subTest(event=event, retry=retry), ci_fixture(
@@ -538,6 +575,17 @@ class MDControllerTests(unittest.TestCase):
                     md_ci.main()
                 self.assert_ci_skipped(fixture)
                 self.assertEqual(remote_python_calls(fixture, 'release_contract.py')[0][5:], [])
+
+    def test_explicit_retry_reaches_reusable_workflow_independent_of_event_name(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            request = delivery_request(track='release')
+            claim_build(root / 'history', list(request['identities'].values()), 'previous')
+            with ci_fixture(request['plan'], root / 'retry', root / 'history',
+                            event='workflow_call', retry='true') as fixture:
+                md_ci.main()
+            self.assertEqual(remote_python_calls(fixture, 'release_contract.py')[0][5:], ['--retry'])
+            self.assertEqual(len(remote_python_calls(fixture, 'md_controller.py', 'submit')), 1)
 
     def test_partial_claim_filters_only_triggers_and_builds_locked_pair_once(self):
         with tempfile.TemporaryDirectory() as temporary:

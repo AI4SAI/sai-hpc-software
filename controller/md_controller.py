@@ -174,7 +174,7 @@ def submit_probe(args):
     if args.target not in MD_TARGETS:
         raise ValueError('unvalidated MD probe target')
     from remote_controller import require_capacity
-    require_capacity(ROOT, args.overlay_mb)
+    require_capacity(ROOT, 8192 if args.op == 'baseline' else 1024)
     r = task(args.run_id)
     if (r / 'job.id').exists():
         raise ValueError('probe already submitted')
@@ -240,6 +240,8 @@ def submit(args):
     required = {resources['qos'] for resources in BUILD_STAGES.values()}
     if allowed != 'ALL' and not required <= set(allowed.split(',')):
         raise ValueError(f'{partition} does not allow both MD stage QoS values: {sorted(required)}')
+    from remote_controller import require_capacity
+    require_capacity(ROOT, args.overlay_mb)
     for part in ('input', 'results', 'runtime', 'apptainer-cache'):
         (r / part).mkdir(parents=True, exist_ok=True)
     for name, source in request['plan']['sources'].items():

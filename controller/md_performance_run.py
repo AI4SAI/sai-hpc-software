@@ -255,9 +255,9 @@ class Runner:
         env.pop('SAI_MD_PROFILE_LMP', None)
         env["SAI_MD_IMPLEMENTATION"] = implementation
         env['SAI_MD_PERFORMANCE_CPU'] = str(self.cpu)
-        for name in ('OMP_NUM_THREADS', 'DP_INTRA_OP_PARALLELISM_THREADS', 'DP_INTER_OP_PARALLELISM_THREADS',
-                     'OPENBLAS_NUM_THREADS', 'MKL_NUM_THREADS', 'TF_NUM_INTRAOP_THREADS', 'TF_NUM_INTEROP_THREADS'):
-            env[name] = '1'
+        for variable in ('OMP_NUM_THREADS', 'DP_INTRA_OP_PARALLELISM_THREADS', 'DP_INTER_OP_PARALLELISM_THREADS',
+                         'OPENBLAS_NUM_THREADS', 'MKL_NUM_THREADS', 'TF_NUM_INTRAOP_THREADS', 'TF_NUM_INTEROP_THREADS'):
+            env[variable] = '1'
         if self.backend in ("tf", "jax"):
             env["CUDA_VISIBLE_DEVICES"] = ""
         if profile and (self.backend != 'pt' or not self.nsys):
@@ -271,7 +271,10 @@ class Runner:
         _write_json(trial / "execution.json", {"command": command, "implementation": implementation,
                     "slurm_job": env.get("SLURM_JOB_ID", ""), "node": self.node,
                     "resources": self.resources, "CUDA_VISIBLE_DEVICES": env.get("CUDA_VISIBLE_DEVICES"),
-                    "launcher_sha256": file_digest(self.launcher)})
+                    "launcher_sha256": file_digest(self.launcher),
+                    "artifact": os.environ["SAI_MD_IMAGE"],
+                    "artifact_sha256": file_digest(Path(os.environ["SAI_MD_IMAGE"])),
+                    "target": json.loads(os.environ["SAI_MD_DELIVERY"])["plan"]["target"]})
         start = time.perf_counter()
         try:
             result = subprocess.run(command, cwd=trial, env=env, text=True,

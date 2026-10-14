@@ -25,12 +25,16 @@ print(identities['lammps']['install_prefix'])
 image = Path(os.environ['SAI_MD_IMAGE'])
 validate_runtime_image(image, delivery)
 print(image)
+print(json.loads(image.with_suffix(".json").read_text())["artifact_sha256"])
 PY
 )
 mapfile -t settings <<< "$settings"
-deepmd_prefix=${settings[0]}; lammps_prefix=${settings[1]}; expected_image=${settings[2]}
+deepmd_prefix=${settings[0]}; lammps_prefix=${settings[1]}; expected_image=${settings[2]}; image_sha256=${settings[3]}
 program=$1; shift
 implementation=${SAI_MD_IMPLEMENTATION:-candidate}
+if [[ "${SAI_MD_PUBLISHED:-}" == 1 ]]; then
+  [[ "$implementation" == candidate && -z "${SAI_MD_TEST_CONTROL:-}" && -z "${SAI_MD_PROFILE_LMP:-}" && -z "${SAI_MD_PERFORMANCE_CPU:-}" && -z "${SAI_MD_TRACE_RANKS:-}" ]]
+fi
 [[ "$implementation" == baseline || "$implementation" == candidate ]]
 case "$program" in
   lmp) executable="$lammps_prefix/bin/lmp" ;;
@@ -61,8 +65,16 @@ root=$(realpath -e "$SAI_SOFTWARE_ROOT/experimental/deepmd-lammps")
 image=$(realpath -e "$SAI_MD_IMAGE")
 [[ "$image" == "$expected_image" && ! -L "$SAI_MD_IMAGE" ]]
 work=$(pwd -P)
-runtime=$(realpath -e "${TMPDIR:?host MPI TMPDIR must be below experimental runtime-tests}")
-[[ "$runtime" == "$root/runtime-tests/"* && -d "$runtime" ]]
+if [[ -n "${SAI_MD_TEST_CONTROL:-}" ]]; then
+  runtime=$(realpath -e "${TMPDIR:?acceptance TMPDIR required}")
+  [[ "$runtime" == "$root/runtime-tests/"* && -d "$runtime" ]]
+else
+  [[ "${SLURM_JOB_ID:-}" =~ ^[0-9]+$ ]]
+  runtime="$root/runtime/jobs/$SLURM_JOB_ID/$(hostname)"
+  [[ "$(realpath -m "$runtime")" == "$runtime" ]]
+  mkdir -p -m 700 "$runtime"
+  [[ "$(realpath -e "$runtime")" == "$runtime" && ! -L "$runtime" ]]
+fi
 if [[ "${SAI_MD_TRACE_RANKS:-}" == 1 ]]; then
   [[ "$work" == "$root/runtime-tests/"* && ! -L "$work/sai-ranks" ]]
   rank=${OMPI_COMM_WORLD_RANK:-0}
@@ -84,7 +96,11 @@ site_paths=$(python3 "$control/remote_controller.py" lammps)
 while IFS= read -r path; do args+=(--bind "$path:$path:ro"); done <<< "$site_paths"
 args+=(--bind "$work:/work:rw" --bind "$runtime:$runtime:rw" --env "TMPDIR=$runtime")
 args+=(--env "SAI_MD_ALLOCATED_JOB=$SLURM_JOB_ID" --env "SAI_MD_ALLOCATED_NODE=$(hostname)")
-if [[ -n "${SAI_MD_PERFORMANCE_CPU:-}" ]]; then args+=(--env "SAI_MD_PERFORMANCE_CPU=$SAI_MD_PERFORMANCE_CPU"); fi
+if [[ -n "${SAI_MD_PERFORMANCE_CPU:-}" ]]; then
+  args+=(--env "SAI_MD_PERFORMANCE_CPU=$SAI_MD_PERFORMANCE_CPU"
+         --env "SAI_MD_IMAGE=$image" --env "SAI_MD_IMAGE_SHA256=$image_sha256"
+         --env "SAI_MD_TARGET=$target" --env "SAI_MD_IMPLEMENTATION=$implementation")
+fi
 if [[ -n "${SAI_MD_TEST_CONTROL:-}" ]]; then
   control=$(realpath -e "$SAI_MD_TEST_CONTROL")
   [[ "$control" == "$root/controller/"* && -d "$control" && ! -L "$SAI_MD_TEST_CONTROL" ]]

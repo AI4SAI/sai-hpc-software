@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Runner-side source transport and isolated experimental candidate execution."""
+"""Runner-side paired builds, raw scientific/performance gates and publication."""
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 import json
@@ -28,6 +28,22 @@ def run(argv, **kwargs):
         raise
 
 
+def run_performance_gate(remote_python, run_id, science_run):
+    """Repeat exactly once only after verified raw evidence exceeds 10% slowdown."""
+    for suffix in ('-performance', '-performance-retest'):
+        performance_run = safe_name(run_id + suffix)
+        remote_python('md_performance_controller.py', 'submit', performance_run, run_id, science_run)
+        try:
+            remote_python('md_performance_controller.py', 'monitor', performance_run)
+        except subprocess.CalledProcessError as error:
+            if error.returncode != 3 or suffix == '-performance-retest':
+                raise
+            print('MD_PERFORMANCE_RETEST: raw-verified slowdown exceeds 10%; repeating identical candidate', flush=True)
+        else:
+            return performance_run
+    raise RuntimeError('MD performance gate did not produce an accepted run')
+
+
 def main():
     phase = os.environ.get('MD_PHASE', 'all')
     if phase not in ('all', 'deepmd', 'lammps', 'acceptance'):
@@ -38,7 +54,7 @@ def main():
     request = dict(schema=2, plan=plan, recipe_sha256=recipe, identities=identify_track_pair(plan, recipe))
     from md_controller import validate_pair
     validate_pair(request)
-    retry = os.environ.get('GITHUB_EVENT_NAME') == 'workflow_dispatch' and os.environ.get('RETRY_RELEASES') == 'true'
+    retry = os.environ.get('RETRY_RELEASES') == 'true'
     user = safe_name(os.environ['REMOTE_USER'])
     sha = safe_sha(os.environ['GITHUB_SHA'])
     run_id = safe_name('-'.join(('md', os.environ['GITHUB_RUN_ID'], os.environ['GITHUB_RUN_ATTEMPT'],
@@ -67,9 +83,9 @@ def main():
         return run(['scp', '-q', *options, '-P', '12022', source, remote + ':' + destination], timeout=1800)
     def python(name, *args, **kwargs):
         return ssh(['python3', snapshot + '/' + name, *args], **kwargs)
-    def collect(science=False):
-        source = (root + '/runtime-tests/' + run_id + '-science' if science else remote_task)
-        destination = results / 'science' if science else results
+    def collect(stage=None):
+        source = root + '/runtime-tests/' + run_id + '-' + stage if stage else remote_task
+        destination = results / stage if stage else results
         destination.mkdir(exist_ok=True)
         subprocess.run(['scp', '-q', *options, '-P', '12022', '-r',
                         remote + ':' + source + '/results/.', str(destination)], check=False)
@@ -77,6 +93,14 @@ def main():
         science_run = safe_name(run_id + '-science')
         python('md_acceptance_controller.py', 'submit', science_run, run_id, '--nodes', '2')
         python('md_acceptance_controller.py', 'monitor', science_run)
+        performance_run = run_performance_gate(python, run_id, science_run)
+        python('md_publication.py', 'publish', run_id, science_run, performance_run)
+        python('md_publication.py', 'verify', run_id)
+        run(['scp', '-q', *options, '-P', '12022',
+             remote + ':' + remote_task + '/results/publication.json', results / 'publication.json'])
+    def collect_acceptance():
+        for stage in ('science', 'performance', 'performance-retest'):
+            collect(stage)
     if phase in ('lammps', 'acceptance'):
         # No upload, claim or resubmission here. Continue the immutable snapshot
         # created by the first job, even when a later Actions job is retried.
@@ -91,13 +115,17 @@ def main():
             else:
                 accept()
         finally:
-            collect(science=phase == 'acceptance')
-        print('EXPERIMENTAL CANDIDATE ONLY: no publication or performance acceptance claimed', flush=True)
+            if phase == 'acceptance':
+                collect_acceptance()
+            else:
+                collect()
+        print('MD_DELIVERY_PUBLISHED' if phase == 'acceptance' else 'MD_BUILD_VERIFIED_AWAITING_ACCEPTANCE', flush=True)
         return
     ssh(['mkdir', '-p', snapshot, remote_task + '/input', remote_task + '/results'])
     files = [path for path in control.glob('md_*.*') if path.suffix in ('.py', '.sh', '.json')]
     files += [control / name for name in ('remote_controller.py', 'source_cache.py', 'resolve_source.py',
-                                          'create_rootfs.sh', 'release_contract.py', 'native_module.py', 'export_native.py')]
+                                          'create_rootfs.sh', 'release_contract.py', 'native_module.py', 'export_native.py',
+                                          'module_publication.py', 'delivery_layout.py')]
     for path in files:
         upload(path, snapshot + '/' + path.name)
     primaries = [request['identities'][trigger['software']] for trigger in plan['triggers']]
@@ -156,8 +184,8 @@ def main():
     finally:
         collect()
         if phase == 'all':
-            collect(science=True)
-    print('EXPERIMENTAL CANDIDATE ONLY: no current.sif/module publication or acceptance-cache hit', flush=True)
+            collect_acceptance()
+    print('MD_DELIVERY_PUBLISHED', flush=True)
 
 
 if __name__ == '__main__':
