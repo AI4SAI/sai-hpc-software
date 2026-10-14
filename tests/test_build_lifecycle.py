@@ -39,6 +39,10 @@ class BuildMonitorLifecycleTests(unittest.TestCase):
         self.task = self.root / "runs/build"
         (self.task / "results").mkdir(parents=True)
         (self.task / "job.id").write_text("100\n")
+        for name in ('export_native.export_delivery', 'export_native.validate_export_record'):
+            gate = patch(name, return_value={'fixture': 'export gate'})
+            gate.start()
+            self.addCleanup(gate.stop)
         self.configure("abacus")
 
     def configure(self, software):
@@ -158,8 +162,9 @@ class CiLifecycleTests(unittest.TestCase):
 
     def execute(self, *, software="abacus", target="4v100-avx512", fail_monitor=None,
                 event="workflow_dispatch", version="v1", track="development",
-                prior=None, alter_identity=None, published_path=None, resume="", retry="false"):
+                prior=None, alter_identity=None, published_path=None, resume="", retry="false", phase="all", handoff=None, publish_failures=0):
         commands = []
+        publish_remaining = publish_failures
         self.remote_commands = []
         self.uploads = []
         self.uploaded_files = {}
@@ -174,18 +179,28 @@ class CiLifecycleTests(unittest.TestCase):
                        "SOURCE_REF": source_ref, "RELEASE_TRACK": track,
                        "REMOTE_USER": "testuser", "GITHUB_RUN_ID": "123",
                        "GITHUB_RUN_ATTEMPT": "1", "RUNNER_TEMP": str(self.root),
-                       "GITHUB_EVENT_NAME": event, "RESUME_RUN": resume, "RETRY_RELEASES": retry}
+                       "GITHUB_EVENT_NAME": event, "RESUME_RUN": resume, "RETRY_RELEASES": retry,
+                       "CI_PHASE": phase, "CP2K_PHASE": "", "CI_RUN_ID": handoff or run_id,
+                       "GITHUB_OUTPUT": str(self.root / 'github-output')}
+        (self.root / 'github-output').write_text('')
 
         def fake_run(argv, **kwargs):
+            nonlocal publish_remaining
             argv = [str(value) for value in argv]
             self.transport.append(argv)
             stdout = ""
             if argv[0] == "ssh":
                 remote = shlex.split(argv[-1])
+                if remote[0] == 'cat' and remote[1].endswith('/input/ci-handoff.json'):
+                    stdout = json.dumps(dict(schema=1, run_id=run_id, workflow_run_id='123',
+                                             controller_sha='b' * 40, identity=identity))
                 if remote[0] == "python3":
                     script, operation = Path(remote[1]).name, remote[2]
                     commands.append((script, operation))
                     self.remote_commands.append((script, remote[2:]))
+                    if script == 'software_controller.py' and operation == 'publish' and publish_remaining:
+                        publish_remaining -= 1
+                        raise subprocess.CalledProcessError(3, argv)
                     if operation == "monitor" and script == fail_monitor:
                         raise subprocess.CalledProcessError(1, argv)
                     if (script, operation) == ("source_cache.py", "inventory"):
@@ -209,7 +224,7 @@ class CiLifecycleTests(unittest.TestCase):
                 patch.object(ci.subprocess, "run", return_value=subprocess.CompletedProcess([], 0)), \
                 redirect_stdout(io.StringIO()):
             clock.now.return_value = datetime(2026, 9, 13, 23, 59, 59, tzinfo=timezone.utc)
-            if fail_monitor:
+            if fail_monitor or publish_failures > 1:
                 with self.assertRaises(subprocess.CalledProcessError):
                     ci.main()
             else:
@@ -217,6 +232,39 @@ class CiLifecycleTests(unittest.TestCase):
             clock.now.assert_called_once_with(timezone.utc)
             self.archive_calls = archives.call_args_list
         return [command for command in commands if command[0] != "source_cache.py"]
+
+    def test_stage_handoff_never_reuploads_or_reclaims_release(self):
+        calls = self.execute(software='cp2k', phase='dependencies', track='release')
+        self.assertEqual(calls[-2:], [('cp2k_dependency_stage.py', 'submit'), ('cp2k_dependency_stage.py', 'monitor')])
+        self.assertIn('run_id=', (self.root / 'github-output').read_text())
+        calls = self.execute(software='cp2k', phase='application', track='release')
+        self.assertEqual(calls, [('software_controller.py', 'identity'),
+                                ('software_controller.py', 'submit'), ('software_controller.py', 'monitor')])
+        self.assertEqual(self.uploads, [])
+        submit = self.remote_commands[1][1]
+        self.assertIn('--dependencies-run', submit)
+        calls = self.execute(software='cp2k', phase='acceptance', track='release')
+        self.assertNotIn(('software_controller.py', 'submit'), calls)
+        self.assertNotIn(('cp2k_dependency_stage.py', 'submit'), calls)
+        self.assertEqual(self.uploads, [])
+        self.assertEqual(calls[-1], ('software_controller.py', 'publish'))
+
+    def test_cross_workflow_handoff_is_rejected_before_transport(self):
+        with self.assertRaisesRegex(ValueError, 'handoff does not belong'):
+            self.execute(phase='acceptance', handoff='124-1-development-4v100-avx512-2026-09-13-' + 'a'*12)
+        self.assertEqual(self.transport, [])
+
+    def test_performance_repeats_once_on_same_image_then_blocks(self):
+        for failures in (1, 2):
+            calls = self.execute(publish_failures=failures)
+            self.assertEqual(calls.count(('software_controller.py', 'publish')), 2)
+            prepares = [args for name, args in self.remote_commands
+                        if name == 'abacus_benchmark.py' and args[0] == 'prepare']
+            self.assertEqual(len(prepares), 6)
+            self.assertTrue(all(args[1].endswith('-retest') for args in prepares[3:]))
+            self.assertEqual(len({args[args.index('--artifact')+1] for args in prepares}), 1)
+            self.assertEqual((self.root / 'results/artifact.path').exists(), failures == 1)
+            (self.root / 'results/artifact.path').unlink(missing_ok=True)
 
     def test_locked_updates_use_runner_download_and_existing_upload_before_submission(self):
         self.execute()
@@ -279,6 +327,7 @@ class CiLifecycleTests(unittest.TestCase):
         for target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             self.assertEqual(self.execute(software="cp2k", target=target), [
                 ("software_controller.py", "identity"),
+                ("cp2k_dependency_stage.py", "submit"), ("cp2k_dependency_stage.py", "monitor"),
                 ("software_controller.py", "submit"), ("software_controller.py", "monitor"),
                 ("cp2k_benchmark.py", "submit"), ("cp2k_benchmark.py", "monitor"),
                 ("software_controller.py", "publish"),
@@ -335,8 +384,8 @@ class CiLifecycleTests(unittest.TestCase):
                 self.assertIn(("software_controller.py", "submit"), calls)
                 self.assertFalse(any(script == "release_contract.py" or op == "lookup" for script, op in calls))
 
-    def test_release_retry_is_only_explicit_manual_or_resume(self):
-        for event, retry, resume, expected in (("schedule", "true", "", False),
+    def test_release_retry_uses_explicit_input_through_reusable_calls(self):
+        for event, retry, resume, expected in (("schedule", "true", "", True),
                                               ("workflow_dispatch", "false", "", False),
                                               ("workflow_dispatch", "true", "", True),
                                               ("workflow_dispatch", "false", "failed", True)):

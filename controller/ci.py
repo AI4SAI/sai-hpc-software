@@ -4,6 +4,7 @@ from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 import json
 import os
+import re
 from pathlib import Path
 import shlex
 import subprocess
@@ -36,6 +37,12 @@ def main():
     software = os.environ.get("SOFTWARE", "abacus")
     if software not in ("abacus", "cp2k", "gpumd"):
         raise ValueError("unknown software recipe")
+    phase = os.environ.get("CP2K_PHASE") or os.environ.get("CI_PHASE", "all")
+    if phase not in ("all", "build", "dependencies", "application", "acceptance"):
+        raise ValueError("unknown software CI phase")
+    if phase in ("dependencies", "application") and software != "cp2k":
+        raise ValueError("dependency handoff is only registered for CP2K")
+    continuing = phase in ("application", "acceptance")
     target = os.environ["TARGET"]
     if target not in SOFTWARE[software]['targets']:
         raise ValueError("unknown target")
@@ -51,6 +58,12 @@ def main():
     run_prefix = "gpumd-" if software == "gpumd" else ""
     run_id = safe_name(run_prefix + "-".join((os.environ["GITHUB_RUN_ID"], os.environ["GITHUB_RUN_ATTEMPT"],
                                  track, target, datetime.now(timezone.utc).date().isoformat(), upstream[:12])))
+    if continuing:
+        run_id = safe_name(os.environ['CI_RUN_ID'])
+        pattern = (re.escape(run_prefix + os.environ['GITHUB_RUN_ID']) + r'-[0-9]+-'
+                   + re.escape(track + '-' + target) + r'-\d{4}-\d{2}-\d{2}-' + re.escape(upstream[:12]))
+        if not re.fullmatch(pattern, run_id):
+            raise ValueError('CI handoff does not belong to this workflow/source/track/target')
     if software == "abacus":
         safe_name("benchmark-" + run_id + "-deepks")
     elif software == "gpumd":
@@ -82,34 +95,35 @@ def main():
                     raise
                 print(f"retrying part {Path(source).name}", flush=True)
                 time.sleep(3)
-    ssh(["mkdir", "-p", control, f"{task}/input", f"{task}/results"])
-    parent = Path(__file__).resolve().parent
-    common = ["software_controller.py", "remote_controller.py", "source_cache.py", "module_publication.py",
-              "runtime_controller.py", "create_rootfs.sh", "release_contract.py", "resolve_source.py",
-              "delivery_layout.py"]
-    recipe = (["container_entry.sh", "environment.sh", "abacus_build.sh",
-               "gpu_feature_controller.py", "gpu_feature_runtime.sh",
-               "abacus_dependencies.py", "abacus_dependencies.sh",
-               "abacus_full_profile.json", "abacus_full_dependencies.sh", "abacus_site_mpi.sh", "abacus_site_gpu.sh",
-               "abacus_dependency_lock.json", "abacus_features.py", "abacus_benchmark.py",
-               "native_module.py", "export_native.py"]
-              if software == "abacus" else
-              ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_feature_contract.py",
-               "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_benchmark.py",
-               "cp2k_spack.py", "cp2k_spack_environment.py", "cp2k_spack_native.py",
-               "cp2k_spack_seed.py", "cp2k_spack_probe.sh", "cp2k_spack_dependencies.sh",
-               "cp2k_spack_libint_repair.py", "cp2k_spack_install_evidence.py",
-               "cp2k_spack_link.py", "cp2k_payload.py", "cp2k_dependency_stage.py",
-               "native_module.py", "export_native.py"])
-    if software == "gpumd":
-        recipe = ["gpumd_container_entry.sh", "gpumd_environment.sh", "gpumd_build.sh",
-                  "gpumd_science.py", "gpumd_deepmd_probe.py", "gpumd_acceptance.py",
-                  "export_native.py", "native_module.py"]
-    for name in common + recipe:
-        upload(parent / name, f"{control}/{name}")
-    for executable in runtime_launchers(software):
-        upload(parent / f"{software}_runtime.sh", f"{control}/{executable}")
-        ssh(["chmod", "0555", f"{control}/{executable}"])
+    if not continuing:
+        ssh(["mkdir", "-p", control, f"{task}/input", f"{task}/results"])
+        parent = Path(__file__).resolve().parent
+        common = ["software_controller.py", "remote_controller.py", "source_cache.py", "module_publication.py",
+                  "runtime_controller.py", "create_rootfs.sh", "release_contract.py", "resolve_source.py",
+                  "delivery_layout.py"]
+        recipe = (["container_entry.sh", "environment.sh", "abacus_build.sh",
+                   "gpu_feature_controller.py", "gpu_feature_runtime.sh",
+                   "abacus_dependencies.py", "abacus_dependencies.sh",
+                   "abacus_full_profile.json", "abacus_full_dependencies.sh", "abacus_site_mpi.sh", "abacus_site_gpu.sh",
+                   "abacus_dependency_lock.json", "abacus_features.py", "abacus_benchmark.py",
+                   "native_module.py", "export_native.py"]
+                  if software == "abacus" else
+                  ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_feature_contract.py",
+                   "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_benchmark.py",
+                   "cp2k_spack.py", "cp2k_spack_environment.py", "cp2k_spack_native.py",
+                   "cp2k_spack_seed.py", "cp2k_spack_probe.sh", "cp2k_spack_dependencies.sh",
+                   "cp2k_spack_libint_repair.py", "cp2k_spack_install_evidence.py",
+                   "cp2k_spack_link.py", "cp2k_payload.py", "cp2k_dependency_stage.py",
+                   "native_module.py", "export_native.py"])
+        if software == "gpumd":
+            recipe = ["gpumd_container_entry.sh", "gpumd_environment.sh", "gpumd_build.sh",
+                      "gpumd_science.py", "gpumd_deepmd_probe.py", "gpumd_acceptance.py",
+                      "export_native.py", "native_module.py"]
+        for name in common + recipe:
+            upload(parent / name, f"{control}/{name}")
+        for executable in runtime_launchers(software):
+            upload(parent / f"{software}_runtime.sh", f"{control}/{executable}")
+            ssh(["chmod", "0555", f"{control}/{executable}"])
     results = temporary / "results"
     results.mkdir(exist_ok=True)
     # The uploaded, immutable remote recipe owns the fingerprint. Never invent
@@ -124,64 +138,95 @@ def main():
     (results / "identity.json").write_text(json.dumps(identity, sort_keys=True) + "\n")
     # Development always rebuilds. Other channels are attempted once per
     # upstream version, even after failure, unless retry is explicitly selected.
-    if track != "development":
-        retry = (["--retry"] if os.environ.get("GITHUB_EVENT_NAME") == "workflow_dispatch" and
-                 (os.environ.get("RETRY_RELEASES") == "true" or os.environ.get("RESUME_RUN")) else [])
+    if not continuing and track != "development":
+        retry = (["--retry"] if (os.environ.get("RETRY_RELEASES") == "true" or os.environ.get("RESUME_RUN")) else [])
         claim = json.loads(python("release_contract.py", root, run_id, json.dumps([identity]),
                                   *retry, capture_output=True).stdout)
         (results / "build-attempt.json").write_text(json.dumps(claim, sort_keys=True) + "\n")
         if not claim["build"]:
             print("UNCHANGED_RELEASE_SKIPPED " + json.dumps(claim["skipped"]), flush=True)
             return
-    inventory = json.loads(python("source_cache.py", "inventory", cache, capture_output=True).stdout)
-    if upstream in inventory["cache_shas"]:
-        print(f"CACHE_HIT {upstream}: zero source upload", flush=True)
+    marker = dict(schema=1, run_id=run_id, workflow_run_id=os.environ['GITHUB_RUN_ID'],
+                  controller_sha=control_sha, identity=identity)
+    if continuing:
+        observed = json.loads(ssh(['cat', task + '/input/ci-handoff.json'], capture_output=True).stdout)
+        if observed != marker:
+            raise ValueError('immutable CI handoff identity changed')
     else:
-        repo = temporary / "source.git"
-        repository = ("https://github.com/deepmodeling/abacus-develop.git"
-                      if software == "abacus" else "https://github.com/cp2k/cp2k.git")
-        if software == "gpumd":
-            repository = "https://github.com/brucefan1983/GPUMD.git"
-        run(["git", "clone", "--bare", repository, repo])
-        run(["git", "-C", repo, "fetch", "--no-tags", "origin", upstream])
-        base = None
-        for candidate in inventory["cache_shas"]:
-            result = subprocess.run(["git", "-C", str(repo), "merge-base", "--is-ancestor", candidate, upstream],
-                                    stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            if result.returncode == 0 and candidate != upstream:
-                base = candidate
-                break
-        parts = temporary / "parts"
-        manifest = pack(repo, upstream, parts, base)
-        print(f"SOURCE_TRANSFER base={base} compressed_bytes={manifest['compressed_size']} parts=8", flush=True)
-        upload(parts / "manifest.json", f"{task}/input/manifest.json")
-        with ThreadPoolExecutor(max_workers=8) as executor:
-            futures = [executor.submit(upload, parts / f"source.part.{i:02d}",
-                                       f"{task}/input/source.part.{i:02d}") for i in range(8)]
-            for future in futures:
-                future.result()
-        python("source_cache.py", "receive", cache, f"{task}/input")
-    # Fail before scheduling if the manually provisioned minimal base is missing.
-    ssh(["test", "-s", f"{root}/containers/base/minimal-v1.sif"])
+        handoff_path = results / 'ci-handoff.json'
+        handoff_path.write_text(json.dumps(marker, sort_keys=True) + '\n')
+        upload(handoff_path, task + '/input/ci-handoff.json')
+        inventory = json.loads(python("source_cache.py", "inventory", cache, capture_output=True).stdout)
+        if upstream in inventory["cache_shas"]:
+            print(f"CACHE_HIT {upstream}: zero source upload", flush=True)
+        else:
+            repo = temporary / "source.git"
+            repository = ("https://github.com/deepmodeling/abacus-develop.git"
+                          if software == "abacus" else "https://github.com/cp2k/cp2k.git")
+            if software == "gpumd":
+                repository = "https://github.com/brucefan1983/GPUMD.git"
+            run(["git", "clone", "--bare", repository, repo])
+            run(["git", "-C", repo, "fetch", "--no-tags", "origin", upstream])
+            base = None
+            for candidate in inventory["cache_shas"]:
+                result = subprocess.run(["git", "-C", str(repo), "merge-base", "--is-ancestor", candidate, upstream],
+                                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                if result.returncode == 0 and candidate != upstream:
+                    base = candidate
+                    break
+            parts = temporary / "parts"
+            manifest = pack(repo, upstream, parts, base)
+            print(f"SOURCE_TRANSFER base={base} compressed_bytes={manifest['compressed_size']} parts=8", flush=True)
+            upload(parts / "manifest.json", f"{task}/input/manifest.json")
+            with ThreadPoolExecutor(max_workers=8) as executor:
+                futures = [executor.submit(upload, parts / f"source.part.{i:02d}",
+                                           f"{task}/input/source.part.{i:02d}") for i in range(8)]
+                for future in futures:
+                    future.result()
+            python("source_cache.py", "receive", cache, f"{task}/input")
+        # Fail before scheduling if the manually provisioned minimal base is missing.
+        ssh(["test", "-s", f"{root}/containers/base/minimal-v1.sif"])
+        if software == "abacus":
+            from abacus_dependencies import cache_archives, load_lock
+            updates = temporary / "abacus-updates"
+            cache_archives(updates)
+            ssh(["mkdir", "-p", f"{task}/input/abacus-updates"])
+            for item in load_lock()["archives"]:
+                if "url" in item:
+                    upload(updates / item["file"], f"{task}/input/abacus-updates/{item['file']}")
+        if software == "cp2k":
+            from cp2k_spack import cache_source_updates
+            archive = cache_source_updates(temporary / 'cp2k-updates')
+            ssh(['mkdir', '-p', f'{task}/input/cp2k-updates'])
+            upload(archive, f'{task}/input/cp2k-updates/{archive.name}')
+    def emit_run_id():
+        if os.environ.get('GITHUB_OUTPUT'):
+            with open(os.environ['GITHUB_OUTPUT'], 'a') as stream:
+                stream.write(f'run_id={run_id}\n')
     resume = os.environ.get("RESUME_RUN", "")
     extras = ["--resume-run", safe_name(resume)] if resume else []
-    if software == "abacus":
-        from abacus_dependencies import cache_archives, load_lock
-        updates = temporary / "abacus-updates"
-        cache_archives(updates)
-        ssh(["mkdir", "-p", f"{task}/input/abacus-updates"])
-        for item in load_lock()["archives"]:
-            if "url" in item:
-                upload(updates / item["file"], f"{task}/input/abacus-updates/{item['file']}")
-    if software == "cp2k":
-        from cp2k_spack import cache_source_updates
-        archive = cache_source_updates(temporary / 'cp2k-updates')
-        ssh(['mkdir', '-p', f'{task}/input/cp2k-updates'])
-        upload(archive, f'{task}/input/cp2k-updates/{archive.name}')
-    python("software_controller.py", "submit", software, run_id, upstream, version, target,
-           *provenance_flags, *extras)
+    dependency_run = safe_name(run_id + '-dependencies')
     try:
-        python("software_controller.py", "monitor", run_id)
+        if software == 'cp2k' and phase != 'acceptance' and not resume:
+            if phase != 'application':
+                python('cp2k_dependency_stage.py', 'submit', root, control, dependency_run,
+                       json.dumps(identity, sort_keys=True))
+                python('cp2k_dependency_stage.py', 'monitor', root, dependency_run)
+            if phase == 'dependencies':
+                emit_run_id()
+                return
+            extras += ['--dependencies-run', dependency_run, '--overlay-mb', '32768']
+        elif phase == 'dependencies':
+            # A user-requested repack consumes its original checkpoint in the next job.
+            emit_run_id()
+            return
+        if phase != 'acceptance':
+            python("software_controller.py", "submit", software, run_id, upstream, version, target,
+                   *provenance_flags, *extras)
+            python("software_controller.py", "monitor", run_id)
+            if phase in ('build', 'application'):
+                emit_run_id()
+                return
         if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             runtime_run = safe_name(run_id + "-multinode")
             python("runtime_controller.py", "submit", runtime_run, version, target,
@@ -230,6 +275,12 @@ def main():
         # Only logs/metadata travel back; the single SIF stays in the SAI catalog.
         subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
                         f"{remote}:{task}/results/.", str(results)], check=False)
+        if software == 'cp2k':
+            dependency_results = results / 'dependencies'
+            dependency_results.mkdir(exist_ok=True)
+            subprocess.run(['scp', '-q', *options, '-P', '12022', '-r',
+                            f'{remote}:{root}/runs/{dependency_run}/results/.',
+                            str(dependency_results)], check=False)
         for suffix in ("", "-retest"):
             if software == "cp2k":
                 benchmark_results = results / ("benchmark" + suffix)

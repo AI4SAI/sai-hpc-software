@@ -84,11 +84,15 @@ class PolicyTests(unittest.TestCase):
         self.assertNotIn("#SBATCH --mem", gpu_script)
         self.assertIn("#SBATCH --gpus-per-node=1", gpu_script)
         args.resume_run = "old-run"
+        args.resume_overlay_sha256 = "c" * 64
         with patch.object(controller, "ROOT", Path("/home/test/sai-hpc-software")):
             repack = controller.render_job(args)
         self.assertNotIn("overlay create", repack)
         self.assertNotIn("container_entry.sh build", repack)
         self.assertIn("container_entry.sh metadata", repack)
+        self.assertIn("cp --sparse=always --reflink=auto", repack)
+        self.assertIn("sha256sum --check --status", repack)
+        self.assertNotIn("mv --", repack)
 
     def test_multinode_runtime_uses_host_mpi_and_runtime_network(self):
         args = argparse.Namespace(run_id="runtime-test", version="develop-aaaa",
@@ -216,11 +220,12 @@ class PolicyTests(unittest.TestCase):
             artifact.write_bytes(b"sif")
             request = {"controller": str(control), "version": "v1", "target": "4v100-avx512",
                        "software": "abacus", "sha": "a" * 40, "recipe_sha256": "b" * 64, "identity": identity}
-            manifest = dict(request)
+            manifest = dict(request, sha256=cache.checksum(artifact), contract_schema=controller.CONTRACT_SCHEMA)
             # Publication mechanics are separate from the fail-closed gate,
             # exercised with complete evidence in test_publication.py.
             with patch.object(controller, "ROOT", root), patch.object(controller, "CONTROL", control), \
                     patch.object(controller, "validate_candidate"), \
+                    patch("export_native.export_delivery", return_value={"fixture": "export gate"}), \
                     patch.object(controller, "recipe_fingerprint", return_value="b" * 64), \
                     patch.object(controller, "required_acceptance", return_value=()):
                 controller.publish_runtime_entry(request, artifact, manifest)

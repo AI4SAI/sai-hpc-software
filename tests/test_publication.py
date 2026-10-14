@@ -63,7 +63,26 @@ class PublicationTests(unittest.TestCase):
                          "verified": False, "published": False,
                          "contract_schema": controller.CONTRACT_SCHEMA,
                          "recipe_sha256": self.request["recipe_sha256"]}
+        self.export_gate = patch('export_native.export_delivery', return_value={'fixture': 'export gate'}).start()
+        self.export_validation = patch('export_native.validate_export_record').start()
         self.save()
+
+    def test_failed_native_export_never_exposes_module_or_current_image(self):
+        self.acceptance()
+        self.export_gate.side_effect = ValueError('export payload changed')
+        with self.assertRaisesRegex(ValueError, 'payload changed'):
+            controller.publish(argparse.Namespace(run_id='build'))
+        self.assertFalse((self.image.parent / 'current.sif').exists())
+        self.assertFalse((self.root / 'modulefiles').exists())
+        self.assertFalse(json.loads(self.image.with_suffix('.json').read_text())['published'])
+
+    def test_published_cache_revalidates_native_export(self):
+        self.acceptance()
+        controller.publish(argparse.Namespace(run_id='build'))
+        manifest = json.loads(self.image.with_suffix('.json').read_text())
+        self.export_validation.side_effect = ValueError('native export modified')
+        with self.assertRaisesRegex(ValueError, 'native export modified'):
+            controller.validate_candidate(manifest, self.image, published=True)
 
     def save(self):
         self.image.with_suffix(".json").write_text(json.dumps(self.manifest))

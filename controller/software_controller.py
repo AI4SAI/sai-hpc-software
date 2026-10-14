@@ -158,6 +158,8 @@ def validate_acceptance(manifest):
             raise ValueError(f"{name} scientific results changed after verification")
         from delivery_layout import check_performance
         if benchmark:
+            from abacus_benchmark import verify_retest
+            verify_retest(task, request, evidence)
             timing = evidence['statistics']['rounded_iteration_seconds']
             check_performance(timing['candidate']['median'], timing['system']['median'])
         elif name == 'cp2k_benchmark':
@@ -199,6 +201,8 @@ def validate_candidate(manifest, artifact, *, published=False):
         raise ValueError("artifact has not passed the publication gate")
     validate_acceptance(manifest)
     if published:
+        from export_native import validate_export_record
+        validate_export_record(manifest.get('native_export'), manifest['sha256'], [delivery])
         validate_module(manifest, artifact, root=ROOT)
 
 def call(argv, **kw):
@@ -271,6 +275,9 @@ def _publish_runtime_entry(request, artifact, manifest):
     for proof_name in required_acceptance(software, request["target"]):
         if manifest[proof_name].get("launcher_sha256") != checksum(launcher):
             raise ValueError("publication launcher was not runtime-tested")
+    from export_native import export_delivery
+    manifest['native_export'] = export_delivery(artifact, manifest['sha256'],
+                                                artifact.with_suffix('.native'), [validate_record(manifest)])
     manifest.update(publish_module(ROOT, request, artifact, launcher, module_lines, description))
     target_dir = artifact.parent
     current_tmp = target_dir / f".current-{os.getpid()}.sif"
@@ -369,9 +376,21 @@ def render_job(args):
     prepare = [shlex.join(["apptainer", "overlay", "create", "--fakeroot", "--sparse",
                           "--size", str(args.overlay_mb), str(overlay)]),
                shlex.join(container("build"))]
+    dependency_run = getattr(args, 'dependencies_run', None)
+    if dependency_run:
+        if args.software != 'cp2k' or resume:
+            raise ValueError('dependency checkpoint cannot be combined with another recipe or repack')
+        prepare = [shlex.join(['/usr/bin/python3', str(CONTROL / 'cp2k_dependency_stage.py'),
+                              'clone', str(ROOT), str(CONTROL), safe_name(dependency_run), args.run_id,
+                              json.dumps(delivery, sort_keys=True)]), shlex.join(container('build'))]
     if resume:
         old_overlay = task_dir(resume) / "work.ext3"
-        prepare = [f"mv -- {q(str(old_overlay))} {q(str(overlay))}", shlex.join(container("metadata"))]
+        digest = getattr(args, 'resume_overlay_sha256', '')
+        if len(digest) != 64 or any(c not in '0123456789abcdef' for c in digest):
+            raise ValueError('repack requires the recorded checkpoint checksum')
+        prepare = [shlex.join(['cp', '--sparse=always', '--reflink=auto', '--', str(old_overlay), str(overlay)]),
+                   shlex.join(['printf', '%s  %s\\n', digest, str(overlay)]) + ' | sha256sum --check --status',
+                   shlex.join(['chmod', '600', str(overlay)]), shlex.join(container('metadata'))]
     lines += [
         "set -eo pipefail",
         "export PATH=/usr/bin:/bin",
@@ -422,6 +441,11 @@ def submit(args):
     call(["git", "--git-dir", repo, "cat-file", "-e", safe_sha(args.sha) + "^{commit}"])
     fingerprint = recipe_fingerprint(args.software)
     args.identity = request_identity(args)
+    if getattr(args, 'dependencies_run', None):
+        if args.software != 'cp2k' or args.resume_run:
+            raise ValueError('dependency checkpoint cannot be combined with another recipe or repack')
+        from cp2k_dependency_stage import validate_completed
+        validate_completed(ROOT, task_dir(args.dependencies_run), args.identity, CONTROL)
     if args.resume_run:
         old = task_dir(args.resume_run)
         previous = json.loads((old / "request.json").read_text())
@@ -437,6 +461,7 @@ def submit(args):
             raise ValueError("cannot resume an active or invalid job")
         if not (old / "work.ext3").is_file() or (old / "work.ext3").is_symlink():
             raise ValueError("missing file-backed build state")
+        args.resume_overlay_sha256 = checksum(old / "work.ext3")
     if args.software == "abacus":
         from abacus_dependencies import ARCHIVE_CACHE, cache_archives
         cache_archives(ROOT / ARCHIVE_CACHE, source=r / "input/abacus-updates")
@@ -548,6 +573,7 @@ def main():
     a.add_argument("--jobs", type=int, default=None)
     a.add_argument("--minutes", type=int, default=240)
     a.add_argument("--overlay-mb", type=int, default=8192)
+    a.add_argument("--dependencies-run", help="consume a verified copy of this exact CP2K dependency checkpoint")
     a.add_argument("--resume-run", help="repack a terminated run's existing overlay; never rebuild source")
     a.add_argument("--track", choices=TRACKS, required=True)
     a.add_argument("--source-ref", required=True)
