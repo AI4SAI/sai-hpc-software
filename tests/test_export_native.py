@@ -192,7 +192,8 @@ class InventoryTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "companion"):
             delivery.validate_manifest(changed)
 
-    def test_sif_primary_partition_offset_and_never_exec(self):
+    @patch.object(delivery, "apptainer_binary", return_value="apptainer")
+    def test_sif_primary_partition_offset_and_never_exec(self, _binary):
         with tempfile.TemporaryDirectory() as temporary:
             image = Path(temporary) / "file.sif"
             image.write_bytes(b"x" * 1000)
@@ -204,6 +205,26 @@ class InventoryTests(unittest.TestCase):
             for bad in ("", listing + listing, listing.replace("900", "9999"), listing.replace("*System", "Data")):
                 with patch.object(delivery.subprocess, "check_output", return_value=bad), self.assertRaises(ValueError):
                     delivery.SquashfsReader.from_sif(image)
+
+    def test_host_sif_reader_resolves_site_installation_without_module_shell(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            image = Path(temporary) / "file.sif"
+            image.write_bytes(b"x" * 1000)
+            listing = "2 |1 |NONE |100-900 |FS (Squashfs/*System/amd64)\n"
+            with patch.object(delivery.shutil, "which", return_value=None), \
+                    patch.object(Path, "is_file", return_value=True), \
+                    patch.object(delivery.os, "access", return_value=True), \
+                    patch.object(delivery.subprocess, "check_output", return_value=listing) as command:
+                reader = delivery.SquashfsReader.from_sif(image)
+            self.assertEqual(reader.offset, 100)
+            self.assertEqual(command.call_args.args[0],
+                             [str(delivery.SITE_APPTAINER), "sif", "list", str(image)])
+        with patch.object(delivery.shutil, "which", return_value="/usr/bin/apptainer"):
+            self.assertEqual(delivery.apptainer_binary(), "/usr/bin/apptainer")
+        with patch.object(delivery.shutil, "which", return_value=None), \
+                patch.object(Path, "is_file", return_value=False):
+            with self.assertRaisesRegex(ValueError, "Apptainer is unavailable"):
+                delivery.apptainer_binary()
 
 
 @unittest.skipUnless(shutil.which("mksquashfs") and shutil.which("unsquashfs"), "Squashfs tools required")

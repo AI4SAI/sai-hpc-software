@@ -13,6 +13,7 @@ import os
 from pathlib import Path, PurePosixPath
 import posixpath
 import re
+import shutil
 import stat
 import subprocess
 import tempfile
@@ -26,6 +27,7 @@ EXPORT_PATH = "share/sai/export.json"
 README_PATH = "share/sai/README-export.txt"
 RESERVED_PATHS = (MANIFEST_PATH, EXPORT_PATH, README_PATH)
 MAX_MANIFEST_BYTES = 64 * 1024**2
+SITE_APPTAINER = Path("/opt/devtools/apptainer/1.4.4/bin/apptainer")
 
 # Only recipe-owned diagnostics/fixtures are omitted from native installs.
 # Never glob arbitrary share/, data/, model/, dependencies/ or JIT sources.
@@ -422,6 +424,16 @@ def required_prefixes(entry, manifest):
     return sorted(required)
 
 
+def apptainer_binary():
+    """Locate the host SIF reader even when the SSH session has no Lmod setup."""
+    available = shutil.which("apptainer")
+    if available:
+        return available
+    if SITE_APPTAINER.is_file() and os.access(SITE_APPTAINER, os.X_OK):
+        return str(SITE_APPTAINER)
+    raise ValueError("Apptainer is unavailable in PATH or at the site's pinned 1.4.4 installation")
+
+
 class SquashfsReader:
     def __init__(self, image, offset):
         self.image = Path(image)
@@ -430,7 +442,7 @@ class SquashfsReader:
 
     @classmethod
     def from_sif(cls, image):
-        listing = subprocess.check_output(["apptainer", "sif", "list", str(image)], text=True)
+        listing = subprocess.check_output([apptainer_binary(), "sif", "list", str(image)], text=True)
         partitions = re.findall(r"^\s*\d+\s*\|[^\n|]*\|[^\n|]*\|\s*(\d+)-(\d+)\s*\|\s*FS \(Squashfs/\*System/[^)]+\)\s*$",
                                 listing, re.MULTILINE)
         if len(partitions) != 1:
