@@ -17,9 +17,12 @@ from source_cache import pack
 def run(argv, **kwargs):
     return subprocess.run([str(x) for x in argv], check=True, text=True, **kwargs)
 
+def runtime_launchers(software):
+    return ("gpumd", "nep", "gnep") if software == "gpumd" else (software,)
+
 def main():
     software = os.environ.get("SOFTWARE", "abacus")
-    if software not in ("abacus", "cp2k"):
+    if software not in ("abacus", "cp2k", "gpumd"):
         raise ValueError("unknown software recipe")
     if software == "cp2k" and os.environ.get("GITHUB_EVENT_NAME") != "workflow_dispatch":
         raise ValueError("CP2K is manual candidate-only until scientific acceptance is registered")
@@ -35,10 +38,13 @@ def main():
     source_ref = os.environ["SOURCE_REF"]
     provenance_flags = ["--track", track, "--source-ref", source_ref]
     user = safe_name(os.environ["REMOTE_USER"])
-    run_id = safe_name("-".join((os.environ["GITHUB_RUN_ID"], os.environ["GITHUB_RUN_ATTEMPT"],
+    run_prefix = "gpumd-" if software == "gpumd" else ""
+    run_id = safe_name(run_prefix + "-".join((os.environ["GITHUB_RUN_ID"], os.environ["GITHUB_RUN_ATTEMPT"],
                                  track, target, datetime.now(timezone.utc).date().isoformat(), upstream[:12])))
     if software == "abacus":
         safe_name("benchmark-" + run_id + "-deepks")
+    elif software == "gpumd":
+        safe_name(run_id + "-science")
     temporary = Path(os.environ["RUNNER_TEMP"])
     key = temporary / "ssh/key"
     known_hosts = Path(__file__).resolve().parents[1] / ".ci/slurm/known_hosts"
@@ -80,12 +86,15 @@ def main():
               ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_feature_contract.py",
                "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_benchmark.py",
                "native_module.py", "export_native.py"])
+    if software == "gpumd":
+        recipe = ["gpumd_container_entry.sh", "gpumd_environment.sh", "gpumd_build.sh",
+                  "gpumd_science.py", "gpumd_deepmd_probe.py", "gpumd_acceptance.py",
+                  "export_native.py", "native_module.py"]
     for name in common + recipe:
         upload(parent / name, f"{control}/{name}")
-    launcher_name = "abacus" if software == "abacus" else "cp2k"
-    upload(parent / ("abacus_runtime.sh" if software == "abacus" else "cp2k_runtime.sh"),
-           f"{control}/{launcher_name}")
-    ssh(["chmod", "0555", f"{control}/{launcher_name}"])
+    for executable in runtime_launchers(software):
+        upload(parent / f"{software}_runtime.sh", f"{control}/{executable}")
+        ssh(["chmod", "0555", f"{control}/{executable}"])
     results = temporary / "results"
     results.mkdir(exist_ok=True)
     # The uploaded, immutable remote recipe owns the fingerprint. Never invent
@@ -116,6 +125,8 @@ def main():
         repo = temporary / "source.git"
         repository = ("https://github.com/deepmodeling/abacus-develop.git"
                       if software == "abacus" else "https://github.com/cp2k/cp2k.git")
+        if software == "gpumd":
+            repository = "https://github.com/brucefan1983/GPUMD.git"
         run(["git", "clone", "--bare", repository, repo])
         run(["git", "-C", repo, "fetch", "--no-tags", "origin", upstream])
         base = None
@@ -178,6 +189,11 @@ def main():
             python("cp2k_benchmark.py", "submit", benchmark_run, version, target,
                    "--build-run-id", run_id, *reference_args)
             python("cp2k_benchmark.py", "monitor", benchmark_run)
+        if software == "gpumd":
+            scientific_run = safe_name(run_id + "-science")
+            python("gpumd_acceptance.py", "submit", scientific_run, version, target,
+                   "--build-run-id", run_id)
+            python("gpumd_acceptance.py", "monitor", scientific_run)
         python("software_controller.py", "publish", run_id)
         run(["scp", "-q", *options, "-P", "12022", f"{remote}:{task}/artifact.path", results / "artifact.path"])
         if (results / "artifact.path").read_text().strip() != str(expected_artifact):
@@ -199,6 +215,13 @@ def main():
             for name in ("cases", "fixtures", "request.json", "job.sbatch", "job.id", "rank-exec.sh"):
                 subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
                                 f"{remote}:{benchmark_task}/{name}", str(benchmark_results)], check=False)
+        if software == "gpumd":
+            scientific_results = results / "gpumd-science"
+            scientific_results.mkdir(exist_ok=True)
+            scientific_run = safe_name(run_id + "-science")
+            subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
+                            f"{remote}:{root}/runtime-tests/{scientific_run}/results/.",
+                            str(scientific_results)], check=False)
         if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             runtime_results = results / "runtime"
             runtime_results.mkdir(exist_ok=True)

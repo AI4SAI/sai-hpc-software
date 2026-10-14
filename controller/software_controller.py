@@ -31,6 +31,11 @@ def contract_files(software):
         return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_feature_contract.py",
                          "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_benchmark.py",
                          "native_module.py", "export_native.py", "cp2k"]
+    if software == "gpumd":
+        return [name for name in common if name != "environment.sh"] + [
+            "gpumd_environment.sh", "gpumd_container_entry.sh", "gpumd_build.sh",
+            "gpumd_science.py", "gpumd_deepmd_probe.py", "gpumd_acceptance.py",
+            "export_native.py", "native_module.py", "gpumd", "nep", "gnep"]
     raise ValueError("unknown software contract")
 
 def recipe_fingerprint(software, control=None):
@@ -39,8 +44,8 @@ def recipe_fingerprint(software, control=None):
     digest = hashlib.sha256(f"sai-contract-{CONTRACT_SCHEMA}\n".encode())
     for name in contract_files(software):
         path = control / name
-        if name in ("abacus", "cp2k") and not path.exists():
-            path = control / f"{name}_runtime.sh"
+        if name in ("abacus", "cp2k", "gpumd", "nep", "gnep") and not path.exists():
+            path = control / f"{'gpumd' if name in ('nep', 'gnep') else name}_runtime.sh"
         if not path.is_file() or path.is_symlink():
             raise ValueError(f"missing trusted contract file: {name}")
         digest.update(f"{name}\0{checksum(path)}\n".encode())
@@ -58,6 +63,10 @@ def required_acceptance(software, target):
         if target not in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             raise ValueError("CP2K native publication target is not registered")
         return ("cp2k_benchmark",)
+    if software == "gpumd":
+        if target not in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
+            raise ValueError("GPUMD publication requires a natively built V100 target")
+        return ("gpumd_science",)
     if software != "abacus":
         raise ValueError(f"{software.upper()} publication is disabled: scientific acceptance is not registered")
     if target == "dsprhbm":
@@ -74,6 +83,10 @@ def atomic_manifest(artifact, manifest):
 
 def validate_acceptance(manifest):
     """Only proofs tied to this image and the current trusted verifier count."""
+    if manifest["software"] == "gpumd":
+        from gpumd_acceptance import validate_manifest
+        validate_manifest(manifest, ROOT, CONTROL)
+        return
     for name in required_acceptance(manifest["software"], manifest["target"]):
         proof = manifest.get(name, {})
         benchmark = name.startswith("benchmark_")
@@ -226,6 +239,10 @@ def _publish_runtime_entry(request, artifact, manifest):
         ]
         if request.get("target") != "dsprhbm":
             module_lines.insert(1, "module load cuda/12.9.1 nvmplibs/26.7-tmp")
+    elif software == "gpumd":
+        launcher_name = module_name = "gpumd"
+        description = "GPUMD"
+        module_lines = []
     else:
         raise ValueError("no trusted runtime publisher for this software")
     launcher = Path(request["controller"]) / launcher_name
@@ -273,7 +290,7 @@ def render_job(args):
     delivery = request_identity(args)
     if getattr(args, "identity", delivery) != delivery:
         raise ValueError("requested identity differs from deployed recipe")
-    if args.software not in ("abacus", "cp2k"):
+    if args.software not in ("abacus", "cp2k", "gpumd"):
         raise ValueError("no trusted recipe registered for this software")
     if not 1 <= args.jobs <= 16 or not 1 <= args.minutes <= 360:
         raise ValueError("resource request outside controller bounds")
@@ -286,7 +303,7 @@ def render_job(args):
     sif = r / "result.sif"
     artifact = artifact_path(ROOT, delivery, args.run_id)
     # Host-provided, read-only interpreter; not a binary writable by a prior build.
-    entrypoint = "container_entry.sh" if args.software == "abacus" else "cp2k_container_entry.sh"
+    entrypoint = "container_entry.sh" if args.software == "abacus" else f"{args.software}_container_entry.sh"
     argv = ["/usr/bin/bash", f"/control/{entrypoint}", "build", args.software, sha, args.version, args.target,
             json.dumps(delivery, sort_keys=True, separators=(",", ":"))]
     if args.software == "abacus":
@@ -296,6 +313,8 @@ def render_job(args):
         extra_binds = ((Path("/opt/apps"), "/opt/apps"),
                        (ROOT / "cache/cp2k-dependencies", "/input/dependencies"),
                        (ROOT / "cache/cp2k-probe", "/input/probe"))
+    if args.software == "gpumd":
+        extra_binds = ((Path("/opt/apps"), "/opt/apps"),)
     def container(phase, final=False):
         cmd = argv.copy()
         cmd[2] = phase
@@ -342,6 +361,9 @@ def render_job(args):
         f"export TMPDIR={q(str(r / 'runtime'))} APPTAINER_TMPDIR={q(str(r / 'runtime'))}",
         f"export APPTAINER_CACHEDIR={q(str(r / 'apptainer-cache'))}",
         "unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH",
+        *([f"source /opt/sai_config/mps_mapping.d/{target['partition']}.bash",
+           'export APPTAINERENV_CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:?}"']
+          if args.software == "gpumd" else []),
         f"test -s {q(str(image))}",
         f"test ! -e {q(str(overlay))}",
         *prepare,

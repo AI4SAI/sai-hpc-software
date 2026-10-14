@@ -1,0 +1,133 @@
+name: Track and build GPUMD
+
+on:
+  workflow_dispatch:
+    inputs:
+      source_ref:
+        description: Optional branch/tag/full SHA override for one selected track
+        required: false
+      tracks:
+        description: Release channels (development,prerelease,release)
+        required: true
+        default: development,prerelease,release
+      targets:
+        description: Native GPU targets (4v100-avx512,16v100-avx2,8v100v0-avx512)
+        required: true
+        default: 16v100-avx2
+      retry_releases:
+        description: Explicitly retry previously attempted release or prerelease versions
+        type: boolean
+        default: false
+  push:
+    paths: ['controller/gpumd_*', 'controller/ci.py', 'controller/software_controller.py', 'controller/remote_controller.py', 'controller/release_contract.py', 'controller/resolve_source.py', 'controller/delivery_layout.py', 'controller/export_native.py', 'controller/native_module.py', 'tests/test_gpumd.py', '.github/workflows/gpumd.yml']
+  pull_request:
+    paths: ['controller/gpumd_*', 'controller/ci.py', 'controller/software_controller.py', 'controller/remote_controller.py', 'controller/release_contract.py', 'controller/resolve_source.py', 'controller/delivery_layout.py', 'controller/export_native.py', 'controller/native_module.py', 'tests/test_gpumd.py', '.github/workflows/gpumd.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y squashfs-tools tcl
+          command -v mksquashfs unsquashfs tclsh
+      - run: python3 -m unittest discover -s tests -v
+      - run: |
+          for script in controller/*.sh controller/*.sbatch; do
+            bash -n "$script"
+          done
+
+  resolve-source:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    needs: validate
+    runs-on: ubuntu-latest
+    outputs:
+      builds: ${{ steps.resolve.outputs.builds }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - id: resolve
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOURCE_REF: ${{ inputs.source_ref }}
+          TRACKS: ${{ inputs.tracks }}
+          TARGETS: ${{ inputs.targets }}
+        run: |
+          python3 - <<'PY'
+          import json, os, sys
+          sys.path.insert(0, 'controller')
+          from resolve_source import resolve
+          from release_contract import GPU_TARGETS, TRACKS, resolve_tracks
+          scheduled = os.environ['GITHUB_EVENT_NAME'] == 'schedule'
+          requested = list(GPU_TARGETS) if scheduled else list(dict.fromkeys(value.strip() for value in os.environ['TARGETS'].split(',')))
+          if not requested or any(target not in GPU_TARGETS for target in requested):
+              raise ValueError('GPUMD supports only its three native V100 GPU targets')
+          tracks = list(TRACKS) if scheduled else [value.strip() for value in os.environ['TRACKS'].split(',')]
+          override = os.environ.get('SOURCE_REF', '')
+          if override and len(tracks) != 1:
+              raise ValueError('a source override requires exactly one explicit track')
+          resolver = (lambda repository, ref: resolve(repository, override)) if override else resolve
+          rows = resolve_tracks('gpumd', tracks, resolver=resolver)
+          builds = []
+          for row in rows:
+              if row['status'] == 'resolved':
+                  builds.extend(dict(row, target=target) for target in requested)
+              else:
+                  print(f"skipped {row['track']}: {row['reason']}")
+                  continue
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('builds=' + json.dumps(builds) + '\n')
+          print(json.dumps(rows, indent=2))
+          PY
+
+  build:
+    if: (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && needs.resolve-source.outputs.builds != '[]'
+    needs: [validate, resolve-source]
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    environment: hpc
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        build: ${{ fromJSON(needs.resolve-source.outputs.builds) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Prepare repository-secret SSH key
+        env:
+          KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          mkdir -m 700 "$RUNNER_TEMP/ssh"
+          printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
+          chmod 600 "$RUNNER_TEMP/ssh/key"
+      - name: Build isolated SIF, verify scientific parity and benchmark, then publish
+        env:
+          SOFTWARE: gpumd
+          REMOTE_USER: ${{ secrets.REMOTE_USER }}
+          SOURCE_SHA: ${{ matrix.build.source_sha }}
+          SOFTWARE_VERSION: ${{ matrix.build.source_version }}
+          SOURCE_REF: ${{ matrix.build.source_ref }}
+          RELEASE_TRACK: ${{ matrix.build.track }}
+          TARGET: ${{ matrix.build.target }}
+          RETRY_RELEASES: ${{ inputs.retry_releases }}
+        run: python3 -u controller/ci.py
+      - name: Retain provenance, numerical outputs and same-node benchmark
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gpumd-${{ matrix.build.track }}-${{ matrix.build.target }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/results/
+          if-no-files-found: warn
+      - name: Remove temporary SSH key
+        if: always()
+        run: rm -f -- "$RUNNER_TEMP/ssh/key"
