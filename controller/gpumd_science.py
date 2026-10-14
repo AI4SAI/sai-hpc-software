@@ -489,9 +489,26 @@ def check_gnep_forces(task):
             "max_output_rounding_ev_per_angstrom": max(rounding_bounds)}
 
 
+def repeat_inputs():
+    """Starting inputs must remain byte-identical across the one permitted repeat."""
+    cases = {
+        "throughput-input": ("run.in", "model.xyz", "nep.txt"),
+        "deepmd-input": ("run.in", "dp_settings.txt", "model.xyz", "reference.json", "frozen_model.pth"),
+        "gnep-train-candidate": ("train.xyz", "gnep.in"),
+        "plumed-input": ("run.in", "plumed.dat", "model.xyz", "nep.txt"),
+    }
+    for mode in ("candidate", "baseline"):
+        cases[f"static-{mode}"] = ("run.in", "model.xyz", "nep.txt", "gold.xyz")
+        cases[f"prediction-{mode}"] = ("nep.in", "nep.txt", "train.xyz", "gold-energy_train.out",
+                                       "gold-force_train.out", "gold-virial_train.out")
+    for setting in ("on", "off"):
+        cases[f"training-input-{setting}"] = ("nep.in", "nep.txt", "nep.restart", "train.xyz")
+    return {f"{case}/{name}" for case, names in cases.items() for name in names}
+
+
 def required_results():
     """Fixed evidence set. A reporter cannot omit a failed scientific path."""
-    files = set()
+    files = repeat_inputs()
     for mode in ("candidate", "baseline"):
         for suffix in ("", "-repeat0", "-repeat1", "-repeat2"):
             for name in ("dump.xyz", "gold.xyz", "run.log", "execution.json", "run.in", "model.xyz", "nep.txt"):
@@ -515,7 +532,7 @@ def required_results():
             "plumed-candidate": ("colvar", "dump.xyz", "model.xyz", "nep.txt", "run.log"),
             "throughput-input": ("run.in", "model.xyz", "nep.txt"),
             "throughput-pilot-baseline": ("run.log", "execution.json", "thermo.out", "run.in", "model.xyz", "nep.txt"),
-            "deepmd-input": ("reference.json", "frozen_model.pth", "model.xyz", "model-generation.log"),
+            "deepmd-input": ("reference.json", "frozen_model.pth", "model.xyz", "model-generation.log", "run.in", "dp_settings.txt"),
     }.items():
         files.update(f"{label}/{name}" for name in names)
     for axis in "xyz":
@@ -613,7 +630,12 @@ def recheck_results(task, report):
             raise ValueError("MD benchmark pilots used different inputs")
     if (pilot / "run.in").read_text().count("run 1000\n") != 1:
         raise ValueError("MD benchmark pilot must contain 1000 steps")
-    steps = calibrated_steps(min(value["engine_seconds"] for value in pilot_metrics.values()))
+    if report.get("repeat_of"):
+        steps = report["repeat_of"]["n_steps"]
+        if type(steps) is not int or not 10000 <= steps <= 1000000:
+            raise ValueError("invalid frozen GPUMD repeat workload")
+    else:
+        steps = calibrated_steps(min(value["engine_seconds"] for value in pilot_metrics.values()))
     if (task / "throughput-input/run.in").read_text() != (pilot / "run.in").read_text().replace(
             "run 1000\n", f"run {steps}\n"):
         raise ValueError("MD benchmark differs from its pilot calibration")
@@ -723,7 +745,7 @@ def recheck_results(task, report):
     return checks, benchmark
 
 
-def run(prefix, task):
+def run(prefix, task, repeat_source=None):
     if not os.environ.get("CUDA_VISIBLE_DEVICES") or not os.environ.get("SLURM_JOB_ID"):
         raise ValueError("scientific/benchmark execution requires the Slurm GPU allocation")
     task.mkdir(parents=True, exist_ok=True)
@@ -746,6 +768,15 @@ def run(prefix, task):
     report["executables"] = {mode: {name: sha(root / "bin" / name) for name in names}
                              for mode, root, names in (("candidate", prefix, COMMANDS),
                                                        ("baseline", BASELINE, ("gpumd", "nep")))}
+    report["packaged_inputs"] = raw_file_inventory(inputs)
+    previous = None
+    if repeat_source is not None:
+        previous = json.loads((repeat_source / "science.json").read_text())
+        for key in ("identity", "executables", "packaged_inputs", "conditions"):
+            if report[key] != previous[key]:
+                raise ValueError("GPUMD retest changed the original inputs, binaries or thread configuration")
+        report["repeat_of"] = {"science_sha256": sha(repeat_source / "science.json"),
+                               "n_steps": previous["benchmark"]["md-throughput-baseline"]["n_steps"]}
     sequence = 0
 
     def execute(kind, name, case, mode="candidate", suffix=""):
@@ -794,10 +825,14 @@ def run(prefix, task):
     for mode in ("baseline", "candidate"):
         pilot, elapsed = execute("throughput-pilot", "gpumd", inputs / "throughput", mode)
         pilot_metrics[mode] = engine_metrics(pilot, report, mode, minimum_seconds=0)
-    steps = calibrated_steps(min(value["engine_seconds"] for value in pilot_metrics.values()))
     throughput = task / "throughput-input"
-    shutil.copytree(inputs / "throughput", throughput)
-    (throughput / "run.in").write_text((throughput / "run.in").read_text().replace("run 1000\n", f"run {steps}\n"))
+    if previous is not None:
+        steps = report["repeat_of"]["n_steps"]
+        shutil.copytree(repeat_source / "throughput-input", throughput)
+    else:
+        steps = calibrated_steps(min(value["engine_seconds"] for value in pilot_metrics.values()))
+        shutil.copytree(inputs / "throughput", throughput)
+        (throughput / "run.in").write_text((throughput / "run.in").read_text().replace("run 1000\n", f"run {steps}\n"))
     samples = {mode: [] for mode in ("candidate", "baseline")}
     for kind, mode, suffix in throughput_trials():
         case, elapsed = execute(kind, "gpumd", throughput, mode, suffix)
@@ -897,10 +932,15 @@ def run(prefix, task):
     report["checks"]["plumed-force-feedback"] = compare(biased_force, expected_force, 2e-4, "PLUMED force feedback")
 
     deepmd = task / "deepmd-input"
-    shutil.copytree(inputs / "deepmd", deepmd)
-    with (deepmd / "model-generation.log").open("w") as log:
-        subprocess.run([os.environ["DEEPMD_PYTHON"], str(Path(__file__).with_name("gpumd_deepmd_probe.py")), deepmd],
-                       check=True, timeout=900, stdout=log, stderr=subprocess.STDOUT)
+    if previous is not None:
+        deepmd.mkdir()
+        for name in ("run.in", "dp_settings.txt", "model.xyz", "reference.json", "frozen_model.pth", "model-generation.log"):
+            shutil.copyfile(repeat_source / "deepmd-input" / name, deepmd / name)
+    else:
+        shutil.copytree(inputs / "deepmd", deepmd)
+        with (deepmd / "model-generation.log").open("w") as log:
+            subprocess.run([os.environ["DEEPMD_PYTHON"], str(Path(__file__).with_name("gpumd_deepmd_probe.py")), deepmd],
+                           check=True, timeout=900, stdout=log, stderr=subprocess.STDOUT)
     reference = json.loads((deepmd / "reference.json").read_text())
     for mode in ("candidate", "baseline"):
         result, _ = execute("deepmd", "gpumd", deepmd, mode)
@@ -923,7 +963,10 @@ if __name__ == "__main__":
     parser.add_argument("prefix", type=Path)
     parser.add_argument("destination", type=Path, nargs="?")
     parser.add_argument("--identity", type=json.loads, help="canonical build identity; package after inspection")
+    parser.add_argument("--repeat-source", type=Path, help="read-only original scientific result directory")
     arguments = parser.parse_args()
+    if arguments.repeat_source is not None and arguments.operation != "run":
+        parser.error("--repeat-source is only supported for a scientific repeat")
     if arguments.identity is not None and arguments.operation != "inspect":
         parser.error("--identity is only supported for final build inspection")
     if arguments.operation == "prepare":
@@ -933,4 +976,4 @@ if __name__ == "__main__":
     elif arguments.operation == "portable":
         portable_check(arguments.prefix, arguments.destination)
     else:
-        run(arguments.prefix, arguments.destination)
+        run(arguments.prefix, arguments.destination, arguments.repeat_source)

@@ -40,13 +40,17 @@ def render_job(request, task):
     prefix = identity["install_prefix"]
     q = shlex.quote
     # A contained RW work directory for outputs/JIT only. Installation is RO.
+    science_args = " --repeat-source /previous" if request.get("repeat_of") else ""
     argv = container_command(request["artifact"], ["/usr/bin/bash", "--noprofile", "--norc", "-c",
         'driver=${LD_LIBRARY_PATH:-}; source "$1"; export LD_LIBRARY_PATH="$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"; '
-        'export CUDACXX="$CUDA_HOME/bin/nvcc"; exec /usr/bin/python3 /control/gpumd_science.py run "$2" /work/science',
+        'export CUDACXX="$CUDA_HOME/bin/nvcc"; exec /usr/bin/python3 /control/gpumd_science.py run "$2" /work/science' + science_args,
         "bash", f"{prefix}/share/sai/runtime-env.sh", prefix],
         control=CONTROL, gpu=True, extra_binds=site_app_binds("gpumd"))
     # Insert trusted write binds/env before the image (the policy helper's
     # extra_binds is intentionally read-only for dependencies).
+    if request.get("repeat_of"):
+        previous = run_dir(request["repeat_of"]["run_id"]) / "results/science"
+        argv[argv.index(request["artifact"]):argv.index(request["artifact"])] = ["--bind", f"{previous}:/previous:ro"]
     index = argv.index(request["artifact"])
     argv[index:index] = ["--bind", f"{task / 'results'}:/work:rw", "--bind", f"{task / 'runtime'}:/runtime:rw",
                         "--env", "TMPDIR=/runtime", "--env", f"SLURM_JOB_ID=${{SLURM_JOB_ID}}",
@@ -87,13 +91,19 @@ def submit(args):
     if (artifact != artifact_path(ROOT, identity, args.build_run_id) or
             identity["source_version"] != args.version):
         raise ValueError("build candidate path mismatch")
-    for name in ("results", "runtime", "cache"):
-        (task / name).mkdir(parents=True)
     request = dict(vars(args), identity=identity, artifact=str(artifact), artifact_sha256=manifest["sha256"],
                    launcher=str(CONTROL / "gpumd"), launcher_sha256=checksum(regular(CONTROL / "gpumd")),
                    controller_sha256=checksum(CONTROL / "gpumd_acceptance.py"),
                    science_sha256=checksum(CONTROL / "gpumd_science.py"),
                    deepmd_probe_sha256=checksum(CONTROL / "gpumd_deepmd_probe.py"))
+    if args.run_id.endswith("-retest"):
+        original_id = args.run_id.removesuffix("-retest")
+        original, original_evidence = completed_evidence(original_id)
+        require_original_regression(original_evidence)
+        check_repeat_request(request, original)
+        request["repeat_of"] = repeat_binding(original_id, original_evidence)
+    for name in ("results", "runtime", "cache"):
+        (task / name).mkdir(parents=True)
     script = task / "job.sbatch"
     script.write_text(render_job(request, task))
     request["job_script_sha256"] = checksum(script)
@@ -108,6 +118,8 @@ def submit(args):
 
 def verify_evidence(task, request):
     from gpumd_science import compare, xyz, recheck_results, required_results
+    if task != run_dir(request["run_id"]):
+        raise ValueError("GPUMD evidence is stored under a different run id")
     artifact = regular(Path(request["artifact"]))
     manifest = load_artifact(ROOT, artifact, software="gpumd", target=request["target"])
     identity = validate_identity(request["identity"])
@@ -161,11 +173,98 @@ def verify_evidence(task, request):
     gold_e, gold_f = xyz(regular(task / "results/science/static-candidate/gold.xyz"))
     compare([[energy]], [[gold_e]], 1e-3, "host launcher energy")
     compare(forces, gold_f, 1e-4, "host launcher forces")
-    return {"verified": True, "job": job, "identity": identity,
+    result = {"verified": True, "job": job, "identity": identity,
             "artifact_sha256": request["artifact_sha256"],
             "science_sha256": checksum(science_file),
             "launcher_result_sha256": checksum(task / "results/launcher/dump.xyz"),
             "checks": science["checks"], "benchmark": science["benchmark"]}
+    if request.get("run_id", "").endswith("-retest") or request.get("repeat_of"):
+        result["repeat_of"] = verify_repeat(task, request, science)
+    elif science.get("repeat_of"):
+        raise ValueError("GPUMD original run cannot claim repeat calibration")
+    return result
+
+
+def performance_gate(evidence):
+    from delivery_layout import check_performance
+    timings = evidence["benchmark"]
+    return check_performance(1 / timings["md-throughput-candidate"]["median_atom_steps_per_second"],
+                             1 / timings["md-throughput-baseline"]["median_atom_steps_per_second"])
+
+
+def require_original_regression(evidence):
+    from delivery_layout import PerformanceRegression
+    try:
+        performance_gate(evidence)
+    except PerformanceRegression:
+        return
+    raise ValueError("GPUMD retest requires an original regression greater than 10%")
+
+
+def completed_evidence(run_id):
+    task = run_dir(run_id)
+    request = json.loads(regular(task / "request.json").read_text())
+    if request.get("run_id") != run_id or request.get("repeat_of") or run_id.endswith("-retest"):
+        raise ValueError("GPUMD retest requires the first original acceptance run")
+    evidence = verify_evidence(task, request)
+    status = json.loads(regular(task / "results/status.json").read_text())
+    if (status != {"job": evidence["job"], "state": "COMPLETED", "exit_code": "0:0", "verified": True} or
+            json.loads(regular(task / "results/evidence.json").read_text()) != evidence):
+        raise ValueError("GPUMD original raw evidence is not verified or has changed")
+    return request, evidence
+
+
+def repeat_binding(run_id, evidence):
+    task = run_dir(run_id)
+    return {"run_id": run_id, "job": evidence["job"], "science_sha256": evidence["science_sha256"],
+            "request_sha256": checksum(regular(task / "request.json")),
+            "evidence_sha256": checksum(regular(task / "results/evidence.json"))}
+
+
+def check_repeat_request(request, original):
+    keys = ("artifact", "artifact_sha256", "identity", "target", "version", "build_run_id", "launcher",
+            "launcher_sha256", "controller_sha256", "science_sha256", "deepmd_probe_sha256")
+    if any(request.get(key) != original.get(key) for key in keys):
+        raise ValueError("GPUMD retest changed its image, source, controller or resources")
+
+
+def gpu_configuration(text):
+    devices = []
+    for line in text.splitlines():
+        fields = [value.strip() for value in line.split(",")]
+        if len(fields) != 3 or not all(fields):
+            raise ValueError("invalid GPUMD GPU metadata")
+        devices.append((fields[0], fields[2]))
+    if not devices:
+        raise ValueError("missing GPUMD GPU metadata")
+    return sorted(devices)
+
+
+def verify_repeat(task, request, science):
+    repeat = request.get("repeat_of", {})
+    original_id = request["run_id"].removesuffix("-retest")
+    if request["run_id"] != original_id + "-retest" or repeat.get("run_id") != original_id:
+        raise ValueError("GPUMD retest is not bound to its original run")
+    original_request, original_evidence = completed_evidence(original_id)
+    require_original_regression(original_evidence)
+    check_repeat_request(request, original_request)
+    if repeat != repeat_binding(original_id, original_evidence):
+        raise ValueError("GPUMD retest binding changed after submission")
+    original_task = run_dir(original_id) / "results/science"
+    original_science = json.loads(regular(original_task / "science.json").read_text())
+    for key in ("executables", "packaged_inputs", "conditions"):
+        if not original_science.get(key) or science.get(key) != original_science[key]:
+            raise ValueError("GPUMD retest changed its binaries, scientific inputs or resources")
+    if gpu_configuration(science["gpu"]) != gpu_configuration(original_science["gpu"]):
+        raise ValueError("GPUMD retest changed its GPU configuration")
+    from gpumd_science import repeat_inputs
+    for relative in repeat_inputs():
+        if checksum(regular(task / "results/science" / relative)) != checksum(regular(original_task / relative)):
+            raise ValueError("GPUMD retest changed frozen scientific inputs")
+    steps = original_evidence["benchmark"]["md-throughput-baseline"]["n_steps"]
+    if science.get("repeat_of") != {"science_sha256": original_evidence["science_sha256"], "n_steps": steps}:
+        raise ValueError("GPUMD retest changed the original calibrated workload")
+    return repeat
 
 
 def validate_manifest(manifest, root=None, control=None):
@@ -189,10 +288,7 @@ def validate_manifest(manifest, root=None, control=None):
     if json.loads(regular(task / "results/evidence.json").read_text()) != evidence or any(
             proof.get(key) != value for key, value in evidence.items()):
         raise ValueError("stale GPUMD science evidence")
-    from delivery_layout import check_performance
-    timings = evidence['benchmark']
-    check_performance(1 / timings['md-throughput-candidate']['median_atom_steps_per_second'],
-                      1 / timings['md-throughput-baseline']['median_atom_steps_per_second'])
+    performance_gate(evidence)
     if proof.get("launcher_sha256") != request["launcher_sha256"]:
         raise ValueError("untested GPUMD launcher")
 

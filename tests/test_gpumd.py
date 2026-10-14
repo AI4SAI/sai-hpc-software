@@ -96,6 +96,18 @@ class GpumdContractTests(unittest.TestCase):
         self.assertIn(request["identity"]["install_prefix"], script)
         self.assertNotIn("/gpumd/master-a/", script)
 
+    def test_repeat_job_binds_original_science_read_only(self):
+        identity = make_identity("gpumd", "development", "master", "a" * 40,
+                                 "master-2026-09-13", "b" * 64, "16v100-avx2")
+        request = dict(identity=identity, target=identity["target"], version=identity["source_version"],
+            build_run_id="build", run_id="build-science-retest", launcher=str(ROOT / "controller/gpumd"),
+            artifact=str(layout.artifact_path(acceptance.ROOT, identity, "build")),
+            repeat_of={"run_id": "build-science"})
+        script = acceptance.render_job(request, acceptance.run_dir(request["run_id"]))
+        subprocess.run(["bash", "-n"], input=script, text=True, check=True)
+        self.assertIn("/runtime-tests/build-science/results/science:/previous:ro", script)
+        self.assertIn("--repeat-source /previous", script)
+
     def test_comparison_rejects_nan_wrong_shape_and_excess_error(self):
         self.assertLess(science.compare([[1.0]], [[1.00001]], 0.001, "test"), 0.001)
         for actual in ([[float("nan")]], [[1, 2]], [[3]], []):
@@ -648,6 +660,16 @@ class GpumdRawEvidenceTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "alternate"):
             science.recheck_results(self.root, self.report)
 
+    def test_repeat_keeps_original_calibration_when_new_pilots_change(self):
+        self.report["repeat_of"] = {"science_sha256": "pinned-original", "n_steps": 10000}
+        path = self.root / "throughput-pilot-baseline/run.log"
+        path.write_text("Time used for this run = 0.1 second.\nSpeed of this run = 20000000 atom*step/second.\n")
+        _, benchmark = science.recheck_results(self.root, self.report)
+        self.assertEqual(benchmark["md-throughput-baseline"]["n_steps"], 10000)
+        self.report["repeat_of"]["n_steps"] = 20000
+        with self.assertRaisesRegex(ValueError, "pilot calibration"):
+            science.recheck_results(self.root, self.report)
+
     def test_benchmark_rejects_forged_calibration(self):
         path = self.root / "throughput-pilot-baseline/run.log"
         path.write_text("Time used for this run = 0.1 second.\nSpeed of this run = 20000000 atom*step/second.\n")
@@ -698,6 +720,104 @@ class GpumdRawEvidenceTests(unittest.TestCase):
         path.write_text(path.read_text() + "Warning: NEP training specialization disabled\n")
         with self.assertRaisesRegex(ValueError, "silently fell back"):
             science.recheck_results(self.root, self.report)
+
+
+class GpumdRepeatTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name).resolve()
+        patcher = patch.object(acceptance, "ROOT", self.root)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        self.original = self.root / "runtime-tests/build-science"
+        self.repeat = self.root / "runtime-tests/build-science-retest"
+        self.request = dict(run_id="build-science", artifact="image", artifact_sha256="image-sha",
+            identity={"identity": True}, target="16v100-avx2", version="v1", build_run_id="build",
+            launcher="launcher", launcher_sha256="launcher-sha", controller_sha256="controller",
+            science_sha256="science", deepmd_probe_sha256="deepmd-probe")
+        self.evidence = dict(job="123", science_sha256="original-science", benchmark={
+            "md-throughput-candidate": {"median_atom_steps_per_second": 80, "n_steps": 10000},
+            "md-throughput-baseline": {"median_atom_steps_per_second": 100, "n_steps": 10000}})
+        self.science = dict(executables={"baseline": {"gpumd": "baseline"}, "candidate": {"gpumd": "candidate"}},
+                            packaged_inputs={"static/model.xyz": "input"}, conditions={"OMP_NUM_THREADS": "2"},
+                            gpu="Tesla V100, GPU-original, 570\n")
+        for task in (self.original, self.repeat):
+            (task / "results/science").mkdir(parents=True)
+            for relative in science.repeat_inputs():
+                path = task / "results/science" / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("same frozen input\n")
+        (self.original / "request.json").write_text(json.dumps(self.request))
+        (self.original / "results/evidence.json").write_text(json.dumps(self.evidence))
+        (self.original / "results/status.json").write_text(json.dumps(
+            dict(job="123", state="COMPLETED", exit_code="0:0", verified=True)))
+        (self.original / "results/science/science.json").write_text(json.dumps(self.science))
+        self.repeat_request = dict(self.request, run_id="build-science-retest",
+            repeat_of=acceptance.repeat_binding("build-science", self.evidence))
+        self.repeat_science = dict(self.science, gpu="Tesla V100, GPU-other, 570\n",
+                                  repeat_of={"science_sha256": "original-science", "n_steps": 10000})
+
+    def verify(self):
+        # Preserve real completed_evidence verification of request/status/stored
+        # evidence; only the expensive SIF/scientific numerical reader is stubbed.
+        with patch.object(acceptance, "verify_evidence", return_value=self.evidence) as raw:
+            result = acceptance.verify_repeat(self.repeat, self.repeat_request, self.repeat_science)
+            raw.assert_called_once_with(self.original, self.request)
+            return result
+
+    def test_repeat_reparses_original_evidence_and_binds_its_request_and_job(self):
+        self.assertEqual(self.verify(), self.repeat_request["repeat_of"])
+        with patch.object(acceptance, "verify_evidence", side_effect=ValueError("changed original raw output")):
+            with self.assertRaisesRegex(ValueError, "changed original raw output"):
+                acceptance.verify_repeat(self.repeat, self.repeat_request, self.repeat_science)
+
+    def test_repeat_rejects_previously_passing_baseline_and_unverified_original(self):
+        self.evidence["benchmark"]["md-throughput-candidate"]["median_atom_steps_per_second"] = 100
+        (self.original / "results/evidence.json").write_text(json.dumps(self.evidence))
+        with self.assertRaisesRegex(ValueError, "original regression"):
+            self.verify()
+        (self.original / "results/status.json").write_text(json.dumps(
+            dict(job="123", state="COMPLETED", exit_code="0:0", verified=False)))
+        with self.assertRaisesRegex(ValueError, "not verified"):
+            self.verify()
+
+    def test_repeat_rejects_changed_baseline_inputs_resources_and_calibration(self):
+        mutations = (("executables", {"baseline": {"gpumd": "new binary"}}),
+                     ("packaged_inputs", {"static/model.xyz": "new input"}),
+                     ("conditions", {"OMP_NUM_THREADS": "4"}),
+                     ("gpu", "Tesla V100, GPU-other, 580\n"),
+                     ("repeat_of", {"science_sha256": "original-science", "n_steps": 20000}))
+        for key, value in mutations:
+            with self.subTest(key=key):
+                previous = self.repeat_science[key]
+                self.repeat_science[key] = value
+                with self.assertRaises(ValueError):
+                    self.verify()
+                self.repeat_science[key] = previous
+        path = self.repeat / "results/science/deepmd-input/frozen_model.pth"
+        path.write_text("new model\n")
+        with self.assertRaisesRegex(ValueError, "frozen scientific inputs"):
+            self.verify()
+
+    def test_repeat_rejects_changed_image_controller_and_original_binding(self):
+        for key in ("artifact_sha256", "target", "controller_sha256", "science_sha256"):
+            with self.subTest(key=key):
+                previous = self.repeat_request[key]
+                self.repeat_request[key] = "changed"
+                with self.assertRaisesRegex(ValueError, "image, source, controller or resources"):
+                    self.verify()
+                self.repeat_request[key] = previous
+        self.repeat_request["repeat_of"]["evidence_sha256"] = "changed"
+        with self.assertRaisesRegex(ValueError, "binding changed"):
+            self.verify()
+
+    def test_repeat_cannot_chain_a_second_retest(self):
+        self.repeat_request["run_id"] += "-retest"
+        self.repeat_request["repeat_of"]["run_id"] += "-retest"
+        (self.repeat / "request.json").write_text(json.dumps(self.repeat_request))
+        with self.assertRaisesRegex(ValueError, "first original acceptance"):
+            self.verify()
 
 
 if __name__ == "__main__":

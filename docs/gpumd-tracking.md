@@ -86,7 +86,12 @@ No module or `current.sif` is published until all required checks pass:
   rechecks calibration, invocation order, executable hashes, allocation and
   thread settings. Reports include engine atom-step/s, steps/s, wall time and
   medians. More than 10% slower time for identical work triggers one full repeat
-  on the same artifact; a repeated regression blocks publication. Short static
+  on the same artifact; a repeated regression blocks publication. The repeat
+  reuses the original calibrated inputs and generated DeepMD model. Submission
+  and publication both reparse the original verified raw evidence, require its
+  actual regression, and pin its job, request and evidence hashes. Changing the
+  image, controller, candidate or baseline binary, input files, thread settings
+  or GPU model/driver configuration invalidates the repeat. Short static
   and prediction wall times are startup microbenchmarks, not throughput.
 
 Each proof is tied to the SIF checksum, launcher/controller scripts, Slurm job,
