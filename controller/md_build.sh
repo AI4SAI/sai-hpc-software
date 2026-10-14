@@ -5,7 +5,12 @@ target=$1
 phase=${2:-all}
 [[ "$phase" == all || "$phase" == deepmd || "$phase" == lammps ]]
 source /control/md_environment.sh "$target"
-[[ "$DEEPMD_PREFIX" == /opt/software/deepmd-kit/* && "$LAMMPS_PREFIX" == /opt/software/lammps/* ]]
+# Prove native replacements on this node before costly compilation. Temporary
+# --nv injection paths must not enter the exported module or saved runtime env.
+md_native_ld=$("$MD_SYSTEM_DEEPMD/bin/python" /control/md_driver_paths.py)
+export LD_LIBRARY_PATH="$md_native_ld"
+unset md_native_ld
+[[ "$DEEPMD_PREFIX" == /opt/apps/deepmd-kit/deepmd-kit-*/* && "$LAMMPS_PREFIX" == /opt/apps/lammps/lammps-*/* ]]
 mkdir -p "$DEEPMD_PREFIX/share/sai" "$LAMMPS_PREFIX/share/sai"
 site=$MD_SYSTEM_DEEPMD/lib/python3.13/site-packages
 # The site's old DeepMD backend RUNPATH contains a stale .new prefix. Resolve
@@ -54,10 +59,10 @@ if [[ "$phase" == deepmd ]]; then
 fi
 fi
 # Official built-in integration, from the SAME source revision as the new C API.
-deepmd_include='include(/workspace/deepmd-kit/source/lmp/builtin.cmake)'
-if ! grep -Fxq "$deepmd_include" /workspace/lammps/cmake/CMakeLists.txt; then
-  printf '\n%s\n' "$deepmd_include" >> /workspace/lammps/cmake/CMakeLists.txt
-fi
+# New LAMMPS releases emit name-keyed style sources before end-of-file includes.
+# Keep the integration patch inside the recipe fingerprint, not a recovery-only script.
+"$MD_SYSTEM_DEEPMD/bin/python" /control/md_registration.py integrate \
+  /workspace/lammps/cmake/CMakeLists.txt
 # Compute nodes are offline.  Add the site's verified potential set without
 # replacing newer files shipped by the selected LAMMPS source revision.
 cp -a --no-clobber "$MD_SYSTEM_LAMMPS/share/lammps/potentials/." /workspace/lammps/potentials/
@@ -71,6 +76,7 @@ PY
 )
 cmake -S /workspace/lammps/cmake -B /workspace/lammps-build \
   -DCMAKE_INSTALL_PREFIX="$LAMMPS_PREFIX" -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_INSTALL_LIBDIR:PATH=lib \
   -DCMAKE_INSTALL_RPATH='$ORIGIN;$ORIGIN/../lib' -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=OFF \
   -DCMAKE_PREFIX_PATH="$DEEPMD_PREFIX;$MD_SYSTEM_PLUMED;$MD_SYSTEM_DEEPMD" \
   -DCMAKE_CXX_FLAGS='-march=native -mtune=native' \
@@ -88,16 +94,19 @@ cmake -S /workspace/lammps/cmake -B /workspace/lammps-build \
   -DPKG_PLUMED=ON -DPLUMED_MODE=runtime -DDOWNLOAD_PLUMED=OFF \
   -DPLUMED_INCLUDE_DIR="$MD_SYSTEM_PLUMED/include" \
   -DPKG_PYTHON=ON -DPython_EXECUTABLE="$DEEPMD_PREFIX/bin/python" "${packages[@]}"
+"$MD_SYSTEM_DEEPMD/bin/python" /control/md_registration.py verify /workspace/lammps-build/styles
 # Require recognized, typed options and generated definitions, not unused -D
 # cache entries. These settings were adapted from SAI-autocompile-kit.
 for setting in FFT_KOKKOS:STRING=CUFFT CUDA_MPS_SUPPORT:BOOL=ON \
-               CUDA_BUILD_MULTIARCH:BOOL=OFF CUDPP_OPT:BOOL=OFF GPU_ARCH:STRING=sm_70; do
+               CUDA_BUILD_MULTIARCH:BOOL=OFF CUDPP_OPT:BOOL=OFF GPU_ARCH:STRING=sm_70 \
+               CMAKE_INSTALL_LIBDIR:PATH=lib; do
   grep -Fxq "$setting" /workspace/lammps-build/CMakeCache.txt
 done
 grep -q -- '-DFFT_KOKKOS_CUFFT' /workspace/lammps-build/CMakeFiles/lammps.dir/flags.make
 grep -q -- '-DCUDA_MPS_SUPPORT' /workspace/lammps-build/CMakeFiles/gpu.dir/flags.make
 cmake --build /workspace/lammps-build -j "$BUILD_JOBS"
 cmake --install /workspace/lammps-build
+test -s "$LAMMPS_PREFIX/lib/liblammps.so"
 cp /workspace/deepmd-cpp/CMakeCache.txt "$DEEPMD_PREFIX/share/sai/"
 cp /workspace/lammps-build/CMakeCache.txt "$LAMMPS_PREFIX/share/sai/"
 # Runtime needs the new C/C++ implementation and backend operators, not the
@@ -112,7 +121,10 @@ for name in PATH LD_LIBRARY_PATH PYTHONPATH; do
   IFS=: read -ra components <<< "${!name}"
   cleaned=()
   for component in "${components[@]}"; do
-    [[ -n "$component" && "$component" != /opt/apps/lammps && "$component" != /opt/apps/lammps/* ]] || continue
+    [[ -n "$component" ]] || continue
+    if [[ "$component" == /opt/apps/lammps || "$component" == /opt/apps/lammps/* ]]; then
+      [[ "$component" == "$LAMMPS_PREFIX" || "$component" == "$LAMMPS_PREFIX/"* ]] || continue
+    fi
     cleaned+=("$component")
   done
   printf -v "$name" '%s' "$(IFS=:; printf '%s' "${cleaned[*]}")"

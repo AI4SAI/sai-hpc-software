@@ -101,7 +101,8 @@ class MDControllerTests(unittest.TestCase):
             self.assertIn('--network none', script)
             self.assertIn('/input/deepmd-kit:ro', script)
             self.assertIn('/input/lammps:ro', script)
-            self.assertIn('/opt/apps:/opt/apps:ro', script)
+            self.assertNotIn('/opt/apps:/opt/apps:ro', script)
+            self.assertIn('/opt/apps/plumed/plumed-2.10.1:/opt/apps/plumed/plumed-2.10.1:ro', script)
             self.assertNotIn('current.sif', script)
             self.assertNotIn('modulefiles/', script)
             self.assertNotRegex(script, r'(?:^|[= :])/tmp(?:/|$)')
@@ -225,11 +226,15 @@ class MDControllerTests(unittest.TestCase):
 
     def test_deepmd_integration_is_idempotent(self):
         build = (ROOT / 'controller/md_build.sh').read_text()
-        block = build.split("deepmd_include=", 1)[1].split('# Compute nodes', 1)[0]
+        marker = '"$MD_SYSTEM_DEEPMD/bin/python" /control/md_registration.py integrate'
+        self.assertIn(marker, build)
+        block = marker + build.split(marker, 1)[1].split('# Compute nodes', 1)[0]
         with tempfile.TemporaryDirectory() as temporary:
             cmake = Path(temporary) / 'CMakeLists.txt'
             cmake.write_text('project(fixture)\n')
-            block = 'deepmd_include=' + block.replace('/workspace/lammps/cmake/CMakeLists.txt', str(cmake))
+            block = block.replace('"$MD_SYSTEM_DEEPMD/bin/python"', shlex.quote(sys.executable))
+            block = block.replace('/control/md_registration.py', shlex.quote(str(ROOT / 'controller/md_registration.py')))
+            block = block.replace('/workspace/lammps/cmake/CMakeLists.txt', shlex.quote(str(cmake)))
             for _ in range(2):
                 subprocess.run(['bash', '-euc', block], check=True)
             self.assertEqual(cmake.read_text().count('include(/workspace/deepmd-kit/source/lmp/builtin.cmake)'), 1)
@@ -238,7 +243,8 @@ class MDControllerTests(unittest.TestCase):
         build = (ROOT / 'controller/md_build.sh').read_text()
         block = build.split('for setting in ', 1)[1].split('cmake --build /workspace/lammps-build', 1)[0]
         cache = ('FFT_KOKKOS:STRING=CUFFT\nCUDA_MPS_SUPPORT:BOOL=ON\n'
-                 'CUDA_BUILD_MULTIARCH:BOOL=OFF\nCUDPP_OPT:BOOL=OFF\nGPU_ARCH:STRING=sm_70\n')
+                 'CUDA_BUILD_MULTIARCH:BOOL=OFF\nCUDPP_OPT:BOOL=OFF\nGPU_ARCH:STRING=sm_70\n'
+                 'CMAKE_INSTALL_LIBDIR:PATH=lib\n')
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             for name, flag in (('lammps', '-DFFT_KOKKOS_CUFFT'), ('gpu', '-DCUDA_MPS_SUPPORT')):
@@ -248,6 +254,7 @@ class MDControllerTests(unittest.TestCase):
             command = ['bash', '-euc', 'for setting in ' + block.replace('/workspace/lammps-build', str(root))]
             for candidate, expected in ((cache, 0), (cache.replace('CUFFT', 'KISS'), 1),
                                         (cache.replace(':BOOL', ':UNINITIALIZED'), 1),
+                                        (cache.replace('LIBDIR:PATH=lib', 'LIBDIR:PATH=lib64'), 1),
                                         (cache.replace('MULTIARCH:BOOL=OFF', 'MULTIARCH:BOOL=ON'), 1)):
                 (root / 'CMakeCache.txt').write_text(candidate)
                 self.assertEqual(subprocess.run(command).returncode, expected)
@@ -358,7 +365,8 @@ class MDControllerTests(unittest.TestCase):
             self.assertEqual(uploaded['recipe_sha256'], tracking.fingerprint(ROOT / 'controller'))
             commands = [list(map(str, call.args[0])) for call in fixture.run.call_args_list]
             uploads = [argv[-2] for argv in commands if argv[0] == 'scp']
-            for name in ('release_contract.py', 'native_module.py', 'export_native.py', 'resolve_source.py'):
+            for name in ('release_contract.py', 'native_module.py', 'export_native.py', 'resolve_source.py',
+                         'md_registration.py', 'md_driver_paths.py'):
                 self.assertIn(str(ROOT / 'controller' / name), uploads)
             self.assertEqual(uploaded, json.loads((Path(temporary) / 'results/delivery.json').read_text()))
             expected_run = 'md-123-1-2026-09-14-' + uploaded['plan']['selection_sha256'][:16]
@@ -600,6 +608,18 @@ class MDControllerTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 md.artifact_path(root, delivery, 'run')
 
+    def test_legacy_pair_keeps_its_paths_and_cannot_mix_layouts(self):
+        request = self.pair()
+        old = copy.deepcopy(request)
+        old['identities'] = tracking.identify_track_pair(
+            old['plan'], old['recipe_sha256'], layout_schema=1)
+        self.assertEqual(md.validate_pair(old), old)
+        self.assertTrue(all(item['install_prefix'].startswith('/opt/software/')
+                            for item in old['identities'].values()))
+        old['identities']['lammps'] = request['identities']['lammps']
+        with self.assertRaisesRegex(ValueError, 'mixed'):
+            md.validate_pair(old)
+
     def test_recipe_uses_shared_writer_for_both_native_prefixes(self):
         recipe = (ROOT / 'controller/md_build.sh').read_text()
         marker = '# Package the observed runtime directly with the shared native delivery writer.'
@@ -646,7 +666,9 @@ class MDControllerTests(unittest.TestCase):
         value = ':'.join([expected[0], old[0] + '/bin', '', '/opt/apps/lammps',
                           old[1] + '/bin', *expected[1:]])
         environment = dict(PATH=value, LD_LIBRARY_PATH=value, PYTHONPATH=value)
-        result = subprocess.run(['/bin/bash', '-c', script], env=environment, capture_output=True, text=True, check=True)
+        result = subprocess.run(['/bin/bash', '-c', script],
+                                env=dict(environment, LAMMPS_PREFIX=self.pair()['identities']['lammps']['install_prefix']),
+                                capture_output=True, text=True, check=True)
         for name, line in zip(environment, result.stdout.splitlines()):
             self.assertEqual(line.split(':'), expected)
             check_metadata('export ' + name + '=' + line, [*prefixes, *SITE_ROOTS])

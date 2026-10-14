@@ -13,7 +13,7 @@ import shlex
 import subprocess
 import time
 from md_tracking import fingerprint, identify_track_pair, TARGETS as MD_TARGETS
-from remote_controller import TARGETS, container_command, safe_name, safe_sha
+from remote_controller import TARGETS, container_command, safe_name, safe_sha, site_app_binds
 from source_cache import checksum
 
 PROJECT = Path(os.environ.get('SAI_SOFTWARE_ROOT', Path.home() / 'sai-hpc-software')).resolve()
@@ -44,7 +44,14 @@ def validate_pair(request):
     if (not isinstance(request, dict) or set(request) != {'schema', 'plan', 'recipe_sha256', 'identities'}
             or type(request['schema']) is not int or request['schema'] != 2):
         raise ValueError('expected schema-2 MD delivery; legacy pairs must be resolved again')
-    identities = identify_track_pair(request['plan'], request['recipe_sha256'])
+    from release_contract import validate_identity
+    if not isinstance(request['identities'], dict) or set(request['identities']) != {'deepmd-kit', 'lammps'}:
+        raise ValueError('missing paired identities')
+    schemas = {validate_identity(item)['schema'] for item in request['identities'].values()}
+    if len(schemas) != 1:
+        raise ValueError('mixed installation layout schemas in paired delivery')
+    identities = identify_track_pair(request['plan'], request['recipe_sha256'],
+                                     layout_schema=schemas.pop())
     if json.dumps(request['identities'], sort_keys=True) != json.dumps(identities, sort_keys=True):
         raise ValueError('MD identities differ from the locked sources, recipe or partition')
     return request
@@ -95,7 +102,7 @@ def render(request, run_id, jobs=None, minutes=None, overlay_mb=32768,
         sources = [(ROOT / 'cache/repositories' / name, '/input/' + name) for name in plan['sources']]
         return container_command(result if final else image, command, overlay=None if final else overlay,
                                  control=CONTROL, jobs=jobs, gpu=True,
-                                 extra_binds=[('/opt/apps', '/opt/apps'), *(sources if not final else [])])
+                                 extra_binds=[*site_app_binds('lammps'), *(sources if not final else [])])
     emit = container_command(image, ['/usr/bin/cat', '/workspace/final.squashfs'],
                              overlay=str(overlay) + ':ro', jobs=jobs)
     lines = ['#!/usr/bin/env bash', f'#SBATCH --job-name=md-{run_id}',
@@ -154,7 +161,7 @@ def submit_probe(args):
     probe_script = {'baseline': 'md_baseline.sh', 'probe': 'md_native_probe.sh',
                     'import-probe': 'md_import_probe.sh', 'conversion-probe': 'md_import_probe.sh'}[args.op]
     entry = ['/usr/bin/bash', '/control/' + probe_script, args.target]
-    binds = [('/opt/apps', '/opt/apps')]
+    binds = list(site_app_binds('lammps'))
     if baseline or args.op == 'conversion-probe':
         entry.append(safe_sha(args.sha))
         repository = ROOT / 'cache/repositories/deepmd-kit'

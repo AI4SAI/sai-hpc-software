@@ -28,6 +28,9 @@ export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin TMPDIR=
 case "$phase" in
   build|build-deepmd|build-lammps)
     mkdir -p /workspace/tmp
+    # Check the allocated node's injected files before slow source checkout.
+    # md_build repeats normalization after modules load to verify precedence.
+    /usr/bin/python3 /control/md_driver_paths.py >/dev/null
     # The first stage owns source checkout and the shared baseline.  A later
     # Slurm stage reuses the same file-backed overlay after an afterok edge;
     # never re-initialize the repositories or overwrite a completed prefix.
@@ -58,8 +61,10 @@ case "$phase" in
     ;;
   export)
     bash /control/create_rootfs.sh /workspace/export
-    mkdir -p /workspace/export/opt/apps /workspace/export/opt/software
-    cp -a /opt/software/deepmd-kit /opt/software/lammps /workspace/export/opt/software/
+    for prefix in "$DEEPMD_PREFIX" "$LAMMPS_PREFIX"; do
+      mkdir -p "/workspace/export$(dirname -- "$prefix")"
+      cp -a "$prefix" "/workspace/export$prefix"
+    done
     mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"
     ;;
   verify)

@@ -80,7 +80,9 @@ done
 export APPTAINER_TMPDIR="$runtime" APPTAINER_CACHEDIR="$runtime/apptainer-cache"
 mkdir -p "$APPTAINER_CACHEDIR"
 args=(apptainer exec --nv --cleanenv --no-home --no-mount bind-paths,home,cwd,tmp,hostfs --pwd /work)
-for path in /usr /lib /lib64 /opt/devtools /opt/apps; do args+=(--bind "$path:$path:ro"); done
+for path in /usr /lib /lib64 /opt/devtools; do args+=(--bind "$path:$path:ro"); done
+site_paths=$(python3 "$control/remote_controller.py" lammps)
+while IFS= read -r path; do args+=(--bind "$path:$path:ro"); done <<< "$site_paths"
 args+=(--bind "$work:/work:rw" --bind "$runtime:$runtime:rw" --env "TMPDIR=$runtime")
 args+=(--env "SAI_MD_ALLOCATED_JOB=$SLURM_JOB_ID" --env "SAI_MD_ALLOCATED_NODE=$(hostname)")
 if [[ -n "${SAI_MD_PERFORMANCE_CPU:-}" ]]; then args+=(--env "SAI_MD_PERFORMANCE_CPU=$SAI_MD_PERFORMANCE_CPU"); fi

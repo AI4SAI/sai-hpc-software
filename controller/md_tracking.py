@@ -68,7 +68,7 @@ def resolve_track_pairs(tracks=("development", "prerelease", "release"), targets
     return {"pairs": list(plans.values()), "skipped": skipped}
 
 
-def identify_track_pair(plan, recipe_sha256):
+def identify_track_pair(plan, recipe_sha256, *, layout_schema=2):
     """Use the actual deployed recipe digest to create both canonical prefixes."""
     from release_contract import make_identity
     if (not isinstance(plan, dict) or set(plan) != {
@@ -86,7 +86,8 @@ def identify_track_pair(plan, recipe_sha256):
                 source["repository"] != REPOSITORIES[software]):
             raise ValueError("tracked MD source repository or schema differs")
         identities[software] = make_identity(software, source["track"], source["ref"], source["sha"],
-                                             source["version"], recipe_sha256, plan["target"], stack_sources=locked)
+                                             source["version"], recipe_sha256, plan["target"], stack_sources=locked,
+                                             layout_schema=layout_schema)
     expected_label = "dp-" + plan["sources"]["deepmd-kit"]["track"] + "-" + locked["deepmd-kit"][:12]
     expected_label += "-lmp-" + plan["sources"]["lammps"]["track"] + "-" + locked["lammps"][:12]
     if plan["version"] != expected_label:

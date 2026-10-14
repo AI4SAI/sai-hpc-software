@@ -80,8 +80,8 @@ class MdReleaseTrackTests(unittest.TestCase):
         self.assertEqual(mixed["triggers"], [{"software": "lammps", "track": "prerelease",
                                             "companion_selection": "latest_release_fallback"}])
         identities = identify_track_pair(mixed, "e" * 64)
-        self.assertIn("/deepmd-kit/release/", identities["deepmd-kit"]["install_prefix"])
-        self.assertIn("/lammps/prerelease/", identities["lammps"]["install_prefix"])
+        self.assertIn("/deepmd-kit/deepmd-kit-release-", identities["deepmd-kit"]["install_prefix"])
+        self.assertIn("/lammps/lammps-prerelease-", identities["lammps"]["install_prefix"])
         self.assertEqual(len(result["skipped"]), 1)
 
     def test_missing_both_partner_channels_explains_skip_without_substituting_development(self):

@@ -5,6 +5,11 @@ import re
 import subprocess
 import sys
 
+# When this file is mounted at a diagnostic path (rather than
+# /control/md_relocate_audit.py), retain imports from the frozen controller.
+if '/control' not in sys.path:
+    sys.path.insert(0, '/control')
+
 SITE_ROOTS = ('/opt/devtools', '/opt/apps/conda_env/deepmd-kit-3.2.0',
               '/opt/apps/plumed/plumed-2.10.1', '/usr', '/lib', '/lib64')
 
@@ -59,13 +64,17 @@ def check_metadata(text, roots):
         raise ValueError('installed operational metadata contains a build/task/home path')
     # ${_IMPORT_PREFIX}/lib is relative to installed CMake metadata. Only
     # literal absolute paths need this allowlist; do not scan URL slashes.
-    for value in re.findall(r'(?<![A-Za-z0-9_$}/.])(/[A-Za-z0-9_.$+{}@/-]+)', text):
+    # Do not interpret the `//host/path` portion of an URL as an absolute
+    # runtime path.  The previous expression started at the first slash
+    # after `https:` and therefore rejected harmless CMake documentation URLs.
+    for value in re.findall(r'(?<![A-Za-z0-9_$}/.:])(/[A-Za-z0-9_.$+{}@/-]+)', text):
         check_reference(value, roots)
 
 
 def audit(prefixes):
     prefixes = list(map(Path, prefixes))
-    if len(prefixes) != 2 or any(not str(p).startswith('/opt/software/') for p in prefixes):
+    from native_module import _install_prefix
+    if len(prefixes) != 2 or any(_install_prefix(str(p)) != p for p in prefixes):
         raise ValueError('exactly two canonical installation prefixes are required')
     roots = [*prefixes, *map(Path, SITE_ROOTS)]
     inspected = 0

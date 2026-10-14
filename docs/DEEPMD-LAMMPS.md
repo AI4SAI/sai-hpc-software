@@ -107,6 +107,41 @@ reference plugin's smaller package list, fixed Zen3 flag or older MPI modules.
 DeepMD's built-in CMake inclusion is idempotent. Scientific, cuFFT runtime
 and performance validation still require a successful live candidate.
 
+### Registration recovery integrated locally (2026-09-21)
+
+Job `1434555` compiled, linked and installed the September 20 DeepMD source
+`1313650a7ecd3ee29ccf5b3d04ff499e59248889` with LAMMPS
+`c8bd2ae5927ee236a8892dbd51c18a92cc9c33cf`, then failed parity. The first reported
+missing category was compute (`deepmd/fparam/dedn`, `deeptensor/atom`); this did
+not mean only two registrations were missing. Read-only inspection of the
+terminal overlay found the declaration headers still present, while generated
+compute/pair/fix/kspace registries lacked the DeepMD entries. The builtin include
+was at CMakeLists line 1159, after `GenerateStyleSources` at line 763. Its own
+`GenerateStyleHeaders` no longer regenerates the new source-based registries.
+
+The earlier September 20 recovery helper fixed that ordering in its isolated
+snapshot, but the later daily CI controller did not contain that repair.
+`md_registration.py` now integrates it into the local formal recipe and adds a
+post-configure, pre-compile guard for all 13 required DeepMD registrations. The
+existing `md_*` fingerprint and upload discovery both include the helper; tests
+exercise the isolated uploaded snapshot as well. Legacy header-registry releases
+retain end-of-file inclusion. Unexpected modern boundaries or duplicate builtin
+includes fail before expensive compilation. Source before/after hashes are
+recorded in the job log. Runtime parity and scientific gates are unchanged.
+
+The pinned, unmodified LAMMPS CMake generator reproduces absent registrations
+with the old order and all 13 registrations with the repair. This is a local
+registration test, not an allocated build or scientific acceptance. The change
+has not been pushed, uploaded to an old controller, or submitted as a new job.
+
+Separate unresolved packaging issue: recovery job `1416235` passed inventory
+parity (71 packages, TF/PT/JAX backends) but failed native-manifest validation.
+Its saved runtime environment includes Apptainer's `/.singularity.d/libs`,
+which is not a valid native site dependency root. Do not whitelist container-only
+paths or remove loader paths without validating their native replacements.
+Both historical builds used `/opt/software`; they must not be renamed into an
+`/opt/apps` release. A new final-prefix candidate is required.
+
 The read-only inventory is recorded in
 [`evidence/deepmd-lammps-site-2026-09-11.json`](evidence/deepmd-lammps-site-2026-09-11.json).
 It is a feature/ABI inventory, **not** scientific acceptance.
