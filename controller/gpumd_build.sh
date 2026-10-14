@@ -3,6 +3,19 @@ set -euo pipefail
 : "${INSTALL_PREFIX:?}" "${BUILD_JOBS:?}" "${GPUMD_CUDA_ARCH:?}"
 cd /workspace/source/src
 test -s makefile
+# Upstream replaced the single LICENCE file with LICENSES/ in newer revisions.
+# Archive the pinned tree, preserving every license and its original name.
+license_paths=()
+for name in LICENCE LICENSE LICENSES; do
+  if git -C /workspace/source cat-file -e "HEAD:$name" 2>/dev/null; then
+    license_paths+=("$name")
+  fi
+done
+if (( ${#license_paths[@]} == 0 )); then
+  echo 'Pinned GPUMD source contains no recognized license files' >&2
+  exit 2
+fi
+# Native compilation starts only after source-layout validation.
 # Never silently lose a feature if upstream changes its build interface.
 grep -Rq 'USE_DEEPMD' force
 grep -Rq 'USE_PLUMED' measure
@@ -33,18 +46,7 @@ git -C /workspace/source archive --format=tar "$source_tree" | \
   tar --exclude='*.o' --exclude='*.obj' --exclude=gpumd --exclude=nep --exclude=gnep \
       -xf - -C "$INSTALL_PREFIX/share/gpumd/src"
 printf '%s\n' "$source_tree" > "$INSTALL_PREFIX/share/sai/jit-source-tree"
-# Upstream replaced the single LICENCE file with LICENSES/ in newer revisions.
-# Archive the pinned tree, preserving every license and its original name.
-license_paths=()
-for name in LICENCE LICENSE LICENSES; do
-  if git -C /workspace/source cat-file -e "HEAD:$name" 2>/dev/null; then
-    license_paths+=("$name")
-  fi
-done
-if (( ${#license_paths[@]} == 0 )); then
-  echo 'Pinned GPUMD source contains no recognized license files' >&2
-  exit 2
-fi
+# Package the upstream license paths validated before compilation.
 git -C /workspace/source archive --format=tar HEAD -- "${license_paths[@]}" | \
   tar -xf - -C "$INSTALL_PREFIX/share/gpumd/"
 python3 /control/gpumd_science.py prepare /workspace/source "$INSTALL_PREFIX/share/sai/cases"

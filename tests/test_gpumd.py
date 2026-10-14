@@ -154,7 +154,7 @@ class GpumdContractTests(unittest.TestCase):
     def test_jit_source_archive_is_complete_pinned_and_excludes_build_outputs(self):
         recipe = (ROOT / "controller/gpumd_build.sh").read_text()
         archive = recipe.split("# NEP JIT requires source at runtime.", 1)[1].split(
-            "\n# Upstream replaced the single LICENCE file", 1)[0]
+            "\n# Package the upstream license paths", 1)[0]
         # Execute the real packaging block with only the fixed workspace path
         # relocated; this fixture does not compile GPUMD or certify any science.
         archive = "# NEP JIT requires source at runtime." + archive
@@ -207,9 +207,12 @@ class GpumdContractTests(unittest.TestCase):
 
     def test_packaging_preserves_legacy_and_new_pinned_upstream_licenses(self):
         recipe = (ROOT / "controller/gpumd_build.sh").read_text()
-        script = recipe.split("# Upstream replaced the single LICENCE file", 1)[1].split(
+        validation = recipe.split("# Upstream replaced the single LICENCE file", 1)[1].split(
+            "# Native compilation starts", 1)[0]
+        packaging = recipe.split("# Package the upstream license paths", 1)[1].split(
             "\npython3 /control/gpumd_science.py", 1)[0]
-        script = "# Upstream replaced the single LICENCE file" + script
+        script = "# Upstream replaced the single LICENCE file" + validation + "\n# Package the upstream license paths" + packaging
+        self.assertLess(recipe.index("license_paths=()"), recipe.index('make -j "$BUILD_JOBS"'))
         script = script.replace("/workspace/source", '"$GPUMD_TEST_SOURCE"')
         for names in (("LICENCE",), ("LICENSE",), ("LICENSES/GPL-3.0.txt", "LICENSES/LGPL-3.0.txt"), ()):
             with self.subTest(names=names), tempfile.TemporaryDirectory() as temporary:
