@@ -698,6 +698,7 @@ def export_image(image, expected_sha256, destination, *, prefixes=None, include_
                 "Load inside a matching Slurm allocation. Do not substitute a staging path for /opt.\n"
                 "Recorded external site dependency modules must remain available.\n"
                 "This export does not certify native scientific results, speed, or arbitrary relocation.\n")
+            receipt["readme_sha256"] = hashlib.sha256(readme.encode()).hexdigest()
             for relative, content in ((EXPORT_PATH, canonical(receipt)), (README_PATH, readme)):
                 path = base / relative
                 with path.open("x") as output:
@@ -736,6 +737,198 @@ def export_image(image, expected_sha256, destination, *, prefixes=None, include_
             # remove a destination once exposed outside our private staging.
             raise RuntimeError(f"incomplete export preserved at {destination}")
     return receipt
+
+
+def verify_export(destination, receipt, expected_sha256, identities):
+    """Read back an entire staged payload without following its symbolic links.
+
+    The receipt is pinned by the publication record. No executable or module
+    from the image is evaluated: module bytes must match the trusted generator.
+    This proves export integrity, not native scientific execution or relocation.
+    """
+    from release_contract import validate_identity
+    destination = Path(destination)
+    if (not destination.is_absolute() or destination.resolve(strict=True) != destination or
+            not destination.is_dir() or destination.is_symlink()):
+        raise ValueError("export requires a regular absolute directory without symlinks")
+    if not re.fullmatch(r"[0-9a-f]{64}", expected_sha256 or ""):
+        raise ValueError("expected image SHA256 is required")
+    identities = [validate_identity(identity) for identity in identities]
+    expected_identities = {identity["install_prefix"]: identity for identity in identities}
+    if not identities or len(expected_identities) != len(identities):
+        raise ValueError("export requires distinct expected delivery identities")
+    if (not isinstance(receipt, dict) or type(receipt.get("schema")) is not int or
+            receipt["schema"] != 2 or receipt.get("image_sha256") != expected_sha256 or
+            not isinstance(receipt.get("installations"), list) or
+            not isinstance(receipt.get("expected_install_prefixes"), list) or
+            any(not isinstance(prefix, str) for prefix in receipt["expected_install_prefixes"]) or
+            set(receipt.get("expected_install_prefixes", [])) != set(expected_identities) or
+            len(receipt["expected_install_prefixes"]) != len(identities) or
+            len(receipt["installations"]) != len(identities)):
+        raise ValueError("export receipt differs from expected image or identities")
+
+    # Discover actual directory entries first, using lstat and never traversing
+    # a symlink. This also rejects special files before opening any payload.
+    actual = {}
+    pending = [destination]
+    while pending:
+        path = pending.pop()
+        info = path.lstat()
+        relative = path.relative_to(destination).as_posix()
+        if stat.S_ISDIR(info.st_mode):
+            actual[relative] = (path, info, "directory")
+            pending.extend(path.iterdir())
+        elif stat.S_ISREG(info.st_mode):
+            actual[relative] = (path, info, "file")
+        elif stat.S_ISLNK(info.st_mode):
+            actual[relative] = (path, info, "symlink")
+        else:
+            raise ValueError("export contains a special file")
+
+    def read_metadata(relative, digest=None):
+        row = actual.get(relative)
+        if row is None or row[2] != "file" or stat.S_IMODE(row[1].st_mode) != 0o444:
+            raise ValueError("export metadata must be a regular mode 0444 file")
+        if row[1].st_size > MAX_MANIFEST_BYTES:
+            raise ValueError("export metadata exceeds size limit")
+        content = row[0].read_bytes()
+        if digest is not None and hashlib.sha256(content).hexdigest() != digest:
+            raise ValueError("export metadata checksum differs from publication receipt")
+        return content
+
+    locals_, mapped, bases, seen = [], {}, {}, set()
+    for installation in receipt["installations"]:
+        if not isinstance(installation, dict):
+            raise ValueError("invalid exported installation receipt")
+        prefix = installation.get("expected_install_prefix")
+        identity = expected_identities.get(prefix)
+        if identity is None or prefix in seen:
+            raise ValueError("export installation differs from expected identity")
+        seen.add(prefix)
+        base = ("." if len(identities) == 1 else str(PurePosixPath(prefix).relative_to(
+            "/opt/apps" if identity["schema"] == 2 else "/opt/software")))
+        if installation.get("path") != base:
+            raise ValueError("export path differs from canonical identity layout")
+        bases[prefix] = base
+        for relative in RESERVED_PATHS:
+            name = str(PurePosixPath(base) / relative)
+            mapped[name] = {"kind": "file", "mode": 0o444}
+        raw = read_metadata(str(PurePosixPath(base) / MANIFEST_PATH), installation.get("manifest_sha256"))
+        local = parse_manifest(raw)
+        if (not isinstance(local, dict) or not isinstance(local.get("entry"), dict) or
+                local["entry"].get("identity") != identity):
+            raise ValueError("exported manifest differs from expected delivery identity")
+        locals_.append(local)
+        metadata = read_metadata(str(PurePosixPath(base) / EXPORT_PATH))
+        if metadata != canonical({key: value for key, value in installation.items() if key != "path"}).encode():
+            raise ValueError("export receipt file differs from publication receipt")
+        read_metadata(str(PurePosixPath(base) / README_PATH), installation.get("readme_sha256"))
+
+    manifest = aggregate_manifests(locals_)
+    indexed_entries = {entry["identity"]["install_prefix"]: entry for entry in manifest["entries"]}
+    prefixes = receipt["expected_install_prefixes"]
+    for installation in receipt["installations"]:
+        prefix = installation["expected_install_prefix"]
+        entry = indexed_entries[prefix]
+        identity = entry["identity"]
+        fields = {
+            "schema": 2, "image_sha256": expected_sha256,
+            "bundle_install_prefixes": prefixes,
+            "other_bundle_install_prefixes": [peer for peer in prefixes if peer != prefix],
+            "required_install_prefixes": required_prefixes(entry, manifest),
+            "external_roots": entry["external_roots"],
+            "dependency_modules": entry["runtime"]["modules"],
+            "module_use": prefix + "/modulefiles",
+            "module_load": f'{identity["software"]}/{identity["track"]}/{identity["build_id"]}',
+        }
+        if any(installation.get(key) != value for key, value in fields.items()):
+            raise ValueError("export dependency/module receipt differs from payload")
+        for key in ("manifest_sha256", "source_manifest_sha256", "readme_sha256"):
+            if not isinstance(installation.get(key), str) or not re.fullmatch(r"[0-9a-f]{64}", installation[key]):
+                raise ValueError("export requires pinned metadata checksums")
+
+    for row in manifest["files"]:
+        prefixes_for_row = [prefix for prefix in bases if beneath("/" + row["path"], [prefix])]
+        if len(prefixes_for_row) != 1:
+            raise ValueError("export inventory has ambiguous installation ownership")
+        prefix = prefixes_for_row[0]
+        relative = str(PurePosixPath(bases[prefix]) / PurePosixPath(row["path"]).relative_to(prefix.lstrip("/")))
+        if relative in mapped:
+            raise ValueError("duplicate export inventory path")
+        mapped[relative] = row
+    # Only the wrapping directories introduced by a multi-install bundle are
+    # allowed beyond the payload inventory and its three reserved metadata files.
+    for relative in list(mapped):
+        parent = str(PurePosixPath(relative).parent)
+        while parent != ".":
+            mapped.setdefault(parent, {"kind": "directory", "mode": 0o755})
+            parent = str(PurePosixPath(parent).parent)
+    mapped.setdefault(".", {"kind": "directory", "mode": 0o755})
+    if set(mapped) != set(actual):
+        raise ValueError("export has missing or unlisted paths")
+    verified_files = 0
+    for relative, expected in mapped.items():
+        path, info, kind = actual[relative]
+        if kind != expected["kind"]:
+            raise ValueError("export file type differs from inventory")
+        if kind == "symlink":
+            if os.readlink(path) != expected["target"]:
+                raise ValueError("export symbolic link differs from inventory")
+        else:
+            if stat.S_IMODE(info.st_mode) != expected["mode"]:
+                raise ValueError("export permissions differ from inventory")
+            if kind == "file":
+                if "sha256" in expected and (info.st_size != expected["size"] or checksum(path) != expected["sha256"]):
+                    raise ValueError("exported payload checksum differs from inventory")
+                verified_files += 1
+    return {"roundtrip_verified": True, "verified_files": verified_files}
+
+
+def validate_export_record(record, expected_sha256, identities):
+    """Revalidate a publication's native export rather than trusting its flag."""
+    from release_contract import validate_identity
+    identities = [validate_identity(identity) for identity in identities]
+    if (not isinstance(record, dict) or type(record.get("schema")) is not int or record["schema"] != 1 or
+            record.get("image_sha256") != expected_sha256 or record.get("identities") != identities or
+            record.get("roundtrip_verified") is not True or not isinstance(record.get("directory"), str)):
+        raise ValueError("native export record differs from publication identity")
+    verified = verify_export(record["directory"], record.get("receipt"), expected_sha256, identities)
+    if record.get("verified_files") != verified["verified_files"]:
+        raise ValueError("native export file count differs from verified payload")
+    return record
+
+
+def export_delivery(image, expected_sha256, destination, identities, *, reader_factory=SquashfsReader.from_sif):
+    """Export and independently re-read a delivery before publishing it.
+
+    An adjacent immutable receipt supports a retry after later publication
+    steps fail; an interrupted/unrecorded export is preserved for inspection.
+    """
+    from release_contract import validate_identity
+    identities = [validate_identity(identity) for identity in identities]
+    destination = Path(destination).absolute()
+    record_path = destination.with_name(destination.name + ".json")
+    if record_path.is_symlink() or record_path.parent.resolve(strict=True) != record_path.parent:
+        raise ValueError("untrusted native export record path")
+    if record_path.exists():
+        if not record_path.is_file() or record_path.stat().st_size > MAX_MANIFEST_BYTES:
+            raise ValueError("invalid native export record file")
+        record = parse_manifest(record_path.read_bytes())
+        if record.get("directory") != str(destination) or checksum(image) != expected_sha256:
+            raise ValueError("native export retry differs from the original image or destination")
+        return validate_export_record(record, expected_sha256, identities)
+    receipt = export_image(image, expected_sha256, destination,
+                           prefixes=[identity["install_prefix"] for identity in identities],
+                           reader_factory=reader_factory)
+    record = {"schema": 1, "directory": str(destination), "image_sha256": expected_sha256,
+              "identities": identities, "receipt": receipt,
+              **verify_export(destination, receipt, expected_sha256, identities)}
+    if checksum(image) != expected_sha256:
+        raise ValueError("image changed during export readback")
+    with record_path.open("x") as output:
+        output.write(canonical(record))
+    record_path.chmod(0o444)
+    return record
 
 
 def main():

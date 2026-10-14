@@ -14,8 +14,9 @@ export PATH=/usr/bin:/bin LD_LIBRARY_PATH= LD_PRELOAD=
 source /etc/profile.d/lmod.sh
 module purge
 set -u
-probe_root=/home/stardust/sai-hpc-software/experimental/module-publication-20260911-v2
-probe_control=/home/stardust/sai-hpc-software/controller/module-publication-probe-20260911-v2
+probe_root=/home/stardust/sai-hpc-software/experimental/module-publication-${SLURM_JOB_ID:?}
+probe_control=${1:?pass the absolute controller snapshot directory}
+[[ "$probe_control" == /home/stardust/sai-hpc-software/controller/* && "$probe_control" != *..* ]]
 # Site Lmod intentionally unsets the last LD_LIBRARY_PATH entry on unload;
 # its shell wrapper is not nounset-safe when a later module is loaded.
 sai_module() {
@@ -25,19 +26,20 @@ sai_module() {
   set -u
   return "$module_status"
 }
-/usr/bin/python3 "$probe_control/probe_module_publication.py" "$probe_root" initial
+module_name=$(/usr/bin/python3 "$probe_control/probe_module_publication.py" "$probe_root" initial)
+build_id=${module_name##*/}
 sai_module use "$probe_root/modulefiles/apps"
-sai_module load cp2k/probe
-[[ "$SAI_CP2K_IMAGE" == "$probe_root/containers/software/cp2k/probe/dsprhbm/cpu-first.sif" ]]
+sai_module load "$module_name"
+[[ "$SAI_CP2K_IMAGE" == "$probe_root/containers/software/cp2k/development/$build_id/DSPRHBM/cpu-first.sif" ]]
 [[ "$(command -v cp2k)" == "$probe_root/controller/cpu-first/cp2k" ]]
 sai_module -t list 2>&1
-/usr/bin/python3 "$probe_control/probe_module_publication.py" "$probe_root" next
-sai_module unload cp2k/probe
+[[ "$module_name" == "$(/usr/bin/python3 "$probe_control/probe_module_publication.py" "$probe_root" next)" ]]
+sai_module unload "$module_name"
 [[ -z "${SAI_CP2K_IMAGE:-}" && "$PATH" != *"$probe_root/controller/cpu-first"* ]]
-sai_module load cp2k/probe
-[[ "$SAI_CP2K_IMAGE" == "$probe_root/containers/software/cp2k/probe/dsprhbm/cpu-next.sif" ]]
+sai_module load "$module_name"
+[[ "$SAI_CP2K_IMAGE" == "$probe_root/containers/software/cp2k/development/$build_id/DSPRHBM/cpu-next.sif" ]]
 [[ "$(command -v cp2k)" == "$probe_root/controller/cpu-next/cp2k" ]]
-sai_module unload cp2k/probe
-sai_module show cp2k/probe
+sai_module unload "$module_name"
+sai_module show "$module_name"
 [[ -z "${SAI_CP2K_IMAGE:-}" ]]
 echo REAL_LMOD_PARTITION_PAIR_AND_RELOAD_VERIFIED

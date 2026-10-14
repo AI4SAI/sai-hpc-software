@@ -262,6 +262,96 @@ class RealSquashfsTests(unittest.TestCase):
         return delivery.export_image(image, digest or delivery.checksum(image), destination or self.root / "export",
                                      prefixes=prefixes, reader_factory=lambda path: delivery.SquashfsReader(path, 0))
 
+    def publish_export(self, image, entries, destination=None):
+        return delivery.export_delivery(image, delivery.checksum(image), destination or self.root / "export",
+                                        [item["identity"] for item in entries],
+                                        reader_factory=lambda path: delivery.SquashfsReader(path, 0))
+
+    def test_publication_export_roundtrip_and_retry_rehash_every_payload(self):
+        image, manifest = self.build_image(command_link=True)
+        record = self.publish_export(image, manifest["entries"])
+        self.assertTrue(record["roundtrip_verified"])
+        self.assertGreater(record["verified_files"], 5)
+        self.assertEqual(self.publish_export(image, manifest["entries"]), record)
+        executable = self.root / "export/bin/abacus_max_gpu"
+        executable.write_bytes(b"#!/bin/sh\nexit 99\n")
+        with self.assertRaisesRegex(ValueError, "payload checksum"):
+            self.publish_export(image, manifest["entries"])
+
+    def test_export_readback_rejects_unlisted_files_links_permissions_and_identity(self):
+        image, manifest = self.build_image()
+        identities = [item["identity"] for item in manifest["entries"]]
+        record = self.publish_export(image, manifest["entries"])
+        output = self.root / "export"
+        extra = output / "unexpected"
+        extra.write_text("not inventoried")
+        with self.assertRaisesRegex(ValueError, "unlisted"):
+            delivery.validate_export_record(record, delivery.checksum(image), identities)
+        extra.unlink()
+        link = output / "link"
+        link.unlink()
+        link.symlink_to("/etc/passwd")
+        with self.assertRaisesRegex(ValueError, "symbolic link"):
+            delivery.validate_export_record(record, delivery.checksum(image), identities)
+        link.unlink()
+        link.symlink_to("bin/abacus")
+        command = output / "bin/abacus"
+        command.chmod(0o700)
+        with self.assertRaisesRegex(ValueError, "permissions"):
+            delivery.validate_export_record(record, delivery.checksum(image), identities)
+        command.chmod(0o755)
+        changed = dict(identities[0], source_sha="c" * 40)
+        with self.assertRaises(ValueError):
+            delivery.validate_export_record(record, delivery.checksum(image), [changed])
+
+    def test_export_readback_checks_receipt_and_manifest_bytes(self):
+        image, manifest = self.build_image()
+        record = self.publish_export(image, manifest["entries"])
+        identities = [item["identity"] for item in manifest["entries"]]
+        for relative in (delivery.MANIFEST_PATH, delivery.EXPORT_PATH, delivery.README_PATH):
+            path = self.root / "export" / relative
+            original = path.read_bytes()
+            path.chmod(0o644)
+            path.write_bytes(original + b"\n")
+            path.chmod(0o444)
+            with self.subTest(relative=relative), self.assertRaises(ValueError):
+                delivery.validate_export_record(record, delivery.checksum(image), identities)
+            path.chmod(0o644)
+            path.write_bytes(original)
+            path.chmod(0o444)
+
+    def test_schema1_export_roundtrip_preserves_legacy_paths(self):
+        current = entry()
+        fields = ("software", "track", "source_ref", "source_sha", "source_version", "recipe_sha256", "target")
+        current["identity"] = make_identity(**{key: current["identity"][key] for key in fields}, layout_schema=1)
+        with patch(__name__ + ".entry", return_value=current):
+            image, manifest = self.build_image()
+        record = self.publish_export(image, manifest["entries"])
+        self.assertTrue(record["roundtrip_verified"])
+        self.assertTrue(record["receipt"]["expected_install_prefixes"][0].startswith("/opt/software/"))
+        self.assertIn("/opt/software/abacus/", (self.root / "export" / delivery.FRAGMENT_PATH).read_text())
+        self.assertNotIn("/opt/apps/", (self.root / "export" / delivery.FRAGMENT_PATH).read_text())
+
+    def test_all_five_software_and_locked_md_pair_export_roundtrip(self):
+        entries = paired_entries()
+        for software, command in (("abacus", "abacus"), ("cp2k", "cp2k.psmp"), ("gpumd", "gpumd")):
+            identity = make_identity(software, "development", "develop", "a" * 40,
+                                     "fixture", "b" * 64, "16v100-avx2")
+            entries.append(dict(identity=identity, commands={command: "bin/" + command},
+                                external_roots=[], runtime={"modules": [], "prepend": {}, "set": {}}))
+        self.make_paired_source(entries)
+        image = self.pack()
+        record = self.publish_export(image, entries)
+        self.assertEqual(len(record["receipt"]["installations"]), 5)
+        self.assertTrue(record["roundtrip_verified"])
+        identities = [entry["identity"] for entry in entries]
+        delivery.validate_export_record(record, delivery.checksum(image), identities)
+        for installation in record["receipt"]["installations"]:
+            identity = next(identity for identity in identities
+                            if identity["install_prefix"] == installation["expected_install_prefix"])
+            self.assertEqual(len(installation["required_install_prefixes"]),
+                             1 if identity["software"] in ("deepmd-kit", "lammps") else 0)
+
     def test_real_export_multiple_partitions_modules_hashes_and_no_unselected_files(self):
         image, manifest = self.build_image(("4v100-avx512", "16v100-avx2"))
         old_umask = os.umask(0o077)
@@ -522,7 +612,7 @@ class RealSquashfsTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unreadable"):
             delivery.inventory([item], self.source)
 
-    def test_not_software_probe_verifies_four_partitions_and_single_folder(self):
+    def test_not_software_probe_verifies_all_five_packages_and_single_folder(self):
         import probe_native_export as probe
         native_run = subprocess.run
         with contextlib.redirect_stdout(io.StringIO()) as output, patch.object(
@@ -540,7 +630,8 @@ class RealSquashfsTests(unittest.TestCase):
         self.assertEqual(result["status"], "PASS")
         self.assertFalse(result["container_executed"])
         self.assertFalse(result["system_opt_modified"])
-        self.assertEqual(len(result["export_receipt"]["installations"]), 4)
+        self.assertTrue(result["roundtrip_verified"])
+        self.assertEqual(len(result["export_receipt"]["installations"]), 17)
         prefix = result["export_receipt"]["expected_install_prefixes"][0]
         with patch.object(probe, "export_image", side_effect=export_fixture), contextlib.redirect_stdout(io.StringIO()) as output:
             probe.verify(prepared["fixture"], self.root / "probe-one", prefixes=[prefix])

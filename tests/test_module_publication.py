@@ -1,12 +1,15 @@
 """Execute generated Tcl, including cross-partition publication and unload."""
 import os
 import copy
+import contextlib
+import io
 from pathlib import Path
 import shutil
 import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'controller'))
 from module_publication import publish_module, validate_module, tcl
@@ -216,6 +219,27 @@ class ModulePublicationTests(unittest.TestCase):
         self.assertNotIn('MODULE load', result.stdout)
         with self.assertRaises(ValueError):
             self.validate(manifest, artifact)
+
+    def test_site_probe_uses_current_identity_layout_and_keeps_loaded_run(self):
+        import probe_module_publication
+        probe_root = self.root / 'sai-hpc-software/experimental/module-publication-test'
+        probe_root.parent.mkdir(parents=True)
+        with patch.object(Path, 'home', return_value=self.root), contextlib.redirect_stdout(io.StringIO()) as captured:
+            probe_module_publication.stage(probe_root, 'initial')
+        module_name = captured.getvalue().strip()
+        selector = probe_root / 'modulefiles/apps' / module_name
+        self.assertTrue(selector.is_file())
+        manifest = {'modulefile': str(selector)}
+        result = self.evaluate(manifest, 'DSPRHBM')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('/DSPRHBM/cpu-first.sif', result.stdout)
+        self.assertNotIn('/dsprhbm/', result.stdout)
+        with patch.object(Path, 'home', return_value=self.root), contextlib.redirect_stdout(io.StringIO()) as captured:
+            probe_module_publication.stage(probe_root, 'next')
+        self.assertEqual(captured.getvalue().strip(), module_name)
+        result = self.evaluate(manifest, 'DSPRHBM')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('/DSPRHBM/cpu-next.sif', result.stdout)
 
 
 if __name__ == '__main__':
