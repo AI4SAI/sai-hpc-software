@@ -3,6 +3,60 @@
 This is an implementation checklist, not a release acceptance result. The
 `feat/cp2k-parity-benchmarks` branch is not yet a four-target accepted release.
 
+## Recovery update (2026-09-20)
+
+After connectivity returned, jobs `1383003` and `1383002` were confirmed FAILED
+(exit 3:0, 2:00:41 and 2:40:05). They passed the prior MPI and `/bin/rm`
+problems and installed Cython, HDF5 and PLUMED. Both stopped at Libint's
+`make export`: GNU tar reported `generated: file changed as we read it`.
+The filesystem/concurrency cause of that warning is not yet established.
+
+The user then authorized at most six **additional** attempts per software,
+minimizing retries. The remote ledger is
+`diagnostics/recovery-20260920/attempts/cp2k`; each newly submitted native
+partition job counts separately. Historical two-repair receipts are retained.
+
+Read-only inspection of the pinned Spack recipe and failed source trees shows
+that Spack builds directly in `generated/`, never consumes `generated.tgz`,
+and only removes the upstream directory-deletion suffix despite its comment
+about skipping tarball creation. `cp2k_spack_libint_repair.py` removes only the
+`tgz` prerequisite from one exact export rule. Code generation, preprocessing,
+configuration, Fortran/shared features and installation remain required.
+This is a recorded **local source patch**, with before/after hashes, not a
+claim of pristine upstream or a binary-cache hit. Tar errors are not ignored.
+
+Attempt 1, job `1415685`, ran on DSPRHBM using a fresh clone of the terminal
+checkpoint, checked before first mount. Snapshot:
+`diagnostics/cp2k-libint-recovery-20260920-01`; run:
+`runs/cp2k-libint-recovery-20260920-DSPRHBM`. The existing exact lock and
+native ABI/features are retained. It has 8 CPUs, 28 GiB and a 12-hour limit
+(rush-cpu allows 48 hours). The GPU counterpart is not yet resubmitted.
+
+That attempt was cancelled after 32:03: a recovery-script omission meant
+Spack's default initial restaging would discard the patch. `--keep-stage`
+preserves the stage after success, not before installation. Allocated read-only
+process inspection found the worker in `unlinkat` inside the generated source
+tree, waiting through FUSE on Lustre `osc_io_fsync_end`; the underlying storage
+cause is not established. The cancelled attempt and its overlay are retained.
+
+The revised explicit Libint repair mode now passes `--dont-restage` and requires
+a successful `.spack_patched` checkpoint without `.spack_patch_failed`.
+The pinned Spack parser was exercised locally to prove the old flags set
+`restage=True` and revised flags set `restage=False`, with clean builds and no
+binary cache still enforced. All 38 Spack-focused tests passed. Attempt 2,
+job `1416362`, uses
+new snapshot `diagnostics/cp2k-libint-recovery-20260920-02` and run
+`runs/cp2k-libint-recovery-20260920-02-DSPRHBM`, cloned from the original terminal
+checkpoint, not from the cancelled partial stage cleanup.
+The complete local suite passed **239 tests** from the repository directory
+after this revision; shell syntax and pinned Spack CLI behavior checks passed.
+
+Local validation: 236 tests passed before the additional parallel-export
+test, and all three Libint patch tests passed afterward. The `make -n -j8`
+test proves the modified target schedules generation/preprocessing/configure
+but not tar. Shell syntax and Python compile checks passed. This remains a
+dependency-install pilot, not CP2K native/scientific/performance acceptance.
+
 ## Current blockers and Spack cache (2026-09-17)
 
 The latest daily run `35196109864` did not produce an accepted candidate:
