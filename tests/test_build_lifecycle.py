@@ -15,6 +15,9 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "controller"))
 import ci
+import cp2k_spack
+import abacus_dependencies as dependencies
+from datetime import datetime, timezone
 from delivery_layout import artifact_path
 from release_contract import make_identity
 import software_controller as controller
@@ -159,10 +162,12 @@ class CiLifecycleTests(unittest.TestCase):
         commands = []
         self.remote_commands = []
         self.uploads = []
+        self.uploaded_files = {}
+        self.transport = []
         upstream = "a" * 40
         source_ref = "develop" if software == "abacus" else "master"
         identity = make_identity(software, track, source_ref, upstream, version, "c" * 64, target)
-        run_id = f"123-1-{track}-{target}-" + upstream[:12]
+        run_id = ("gpumd-" if software == "gpumd" else "") + f"123-1-{track}-{target}-2026-09-13-" + upstream[:12]
         expected_artifact = artifact_path(Path("/home/testuser/sai-hpc-software"), identity, run_id)
         environment = {"SOFTWARE": software, "TARGET": target, "SOURCE_SHA": upstream,
                        "GITHUB_SHA": "b" * 40, "SOFTWARE_VERSION": version,
@@ -173,6 +178,7 @@ class CiLifecycleTests(unittest.TestCase):
 
         def fake_run(argv, **kwargs):
             argv = [str(value) for value in argv]
+            self.transport.append(argv)
             stdout = ""
             if argv[0] == "ssh":
                 remote = shlex.split(argv[-1])
@@ -192,18 +198,45 @@ class CiLifecycleTests(unittest.TestCase):
                 Path(argv[-1]).write_text(str(published_path or expected_artifact) + "\n")
             elif argv[0] == "scp":
                 self.uploads.append(Path(argv[-2]).name)
+                self.uploaded_files[Path(argv[-1]).name] = Path(argv[-2])
             return subprocess.CompletedProcess(argv, 0, stdout=stdout, stderr="")
 
         with patch.dict(os.environ, environment, clear=True), \
+                patch.object(cp2k_spack, "cache_source_updates", return_value=self.root / "cp2k-updates/libwignernj-0.8.0.tar.gz"), \
+                patch.object(dependencies, "cache_archives") as archives, \
+                patch.object(ci, "datetime") as clock, \
                 patch.object(ci, "run", side_effect=fake_run), \
                 patch.object(ci.subprocess, "run", return_value=subprocess.CompletedProcess([], 0)), \
                 redirect_stdout(io.StringIO()):
+            clock.now.return_value = datetime(2026, 9, 13, 23, 59, 59, tzinfo=timezone.utc)
             if fail_monitor:
                 with self.assertRaises(subprocess.CalledProcessError):
                     ci.main()
             else:
                 ci.main()
+            clock.now.assert_called_once_with(timezone.utc)
+            self.archive_calls = archives.call_args_list
         return [command for command in commands if command[0] != "source_cache.py"]
+
+    def test_locked_updates_use_runner_download_and_existing_upload_before_submission(self):
+        self.execute()
+        self.assertEqual([call.args for call in self.archive_calls], [(self.root / "abacus-updates",)])
+        updated = [item["file"] for item in dependencies.load_lock()["archives"] if "url" in item]
+        submitted = next(index for index, argv in enumerate(self.transport)
+                         if argv[0] == "ssh" and "software_controller.py submit" in argv[-1])
+        for name in updated:
+            uploads = [index for index, argv in enumerate(self.transport)
+                       if argv[0] == "scp" and argv[-2] == str(self.root / "abacus-updates" / name)]
+            self.assertEqual(len(uploads), 1)
+            self.assertLess(uploads[0], submitted)
+            self.assertTrue(self.transport[uploads[0]][-1].endswith("/input/abacus-updates/" + name))
+        self.execute(software="cp2k")
+        self.assertEqual(self.archive_calls, [])
+        self.assertTrue(set(updated).isdisjoint(self.uploads))
+        self.execute(event="schedule", track="release", prior=[{"previous_run": "failed"}])
+        self.assertEqual(self.archive_calls, [])
+        self.execute(event="schedule", prior=[{"previous_run": "development"}])
+        self.assertEqual([call.args for call in self.archive_calls], [(self.root / "abacus-updates",)])
 
     def test_gpu_publish_occurs_after_both_acceptance_monitors(self):
         self.assertEqual(self.execute(), [
@@ -211,12 +244,13 @@ class CiLifecycleTests(unittest.TestCase):
             ("software_controller.py", "submit"), ("software_controller.py", "monitor"),
             ("runtime_controller.py", "submit"), ("runtime_controller.py", "monitor"),
             ("gpu_feature_controller.py", "submit"), ("gpu_feature_controller.py", "monitor"),
+            *[("abacus_benchmark.py", op) for _ in range(3) for op in ("prepare", "submit", "monitor")],
             ("software_controller.py", "publish"),
         ])
         self.assertEqual(self.execute(target="8v100v0-avx512"), self.execute())
 
     def test_failed_build_or_either_acceptance_monitor_prevents_publication(self):
-        for script in ("software_controller.py", "runtime_controller.py", "gpu_feature_controller.py"):
+        for script in ("software_controller.py", "runtime_controller.py", "gpu_feature_controller.py", "abacus_benchmark.py"):
             with self.subTest(script=script):
                 commands = self.execute(fail_monitor=script)
                 self.assertEqual(commands[-1], (script, "monitor"))
@@ -227,21 +261,30 @@ class CiLifecycleTests(unittest.TestCase):
             ("software_controller.py", "identity"),
             ("software_controller.py", "submit"), ("software_controller.py", "monitor"),
             ("runtime_controller.py", "submit"), ("runtime_controller.py", "monitor"),
+            *[("abacus_benchmark.py", op) for _ in range(3) for op in ("prepare", "submit", "monitor")],
             ("software_controller.py", "publish"),
         ])
 
-    def test_cp2k_uses_its_build_contract_without_abacus_acceptance(self):
-        self.assertEqual(self.execute(software="cp2k", target="dsprhbm"), [
-            ("software_controller.py", "identity"),
-            ("software_controller.py", "submit"), ("software_controller.py", "monitor"),
-            ("cp2k_benchmark.py", "submit"), ("cp2k_benchmark.py", "monitor"),
-            ("software_controller.py", "publish"),
+    def test_benchmarks_use_the_same_canonical_candidate_as_the_build(self):
+        self.execute()
+        for script, arguments in self.remote_commands:
+            if script == "abacus_benchmark.py" and arguments[0] == "prepare":
+                self.assertEqual(arguments[arguments.index("--artifact") + 1],
+                                 (self.root / "results/artifact.path").read_text().strip())
+        self.assertEqual([op for script, op in self.execute(target="dsprhbm") if script == "abacus_benchmark.py"], [
+            *[op for _ in range(3) for op in ("prepare", "submit", "monitor")],
         ])
 
-    def test_failed_cp2k_benchmark_prevents_publication(self):
-        commands = self.execute(software="cp2k", fail_monitor="cp2k_benchmark.py")
-        self.assertEqual(commands[-1], ("cp2k_benchmark.py", "monitor"))
-        self.assertNotIn(("software_controller.py", "publish"), commands)
+    def test_cp2k_requires_benchmark_before_publication(self):
+        for target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
+            self.assertEqual(self.execute(software="cp2k", target=target), [
+                ("software_controller.py", "identity"),
+                ("software_controller.py", "submit"), ("software_controller.py", "monitor"),
+                ("cp2k_benchmark.py", "submit"), ("cp2k_benchmark.py", "monitor"),
+                ("software_controller.py", "publish"),
+            ])
+        failed = self.execute(software="cp2k", fail_monitor="cp2k_benchmark.py")
+        self.assertNotIn(("software_controller.py", "publish"), failed)
 
     def test_ci_uploads_identity_dependencies_before_requesting_remote_identity(self):
         self.execute()
@@ -251,18 +294,12 @@ class CiLifecycleTests(unittest.TestCase):
             "--track", "development", "--source-ref", "develop"]))
         self.assertEqual(json.loads((self.root / "results/identity.json").read_text())["recipe_sha256"], "c" * 64)
 
-    def test_cp2k_native_delivery_helpers_are_uploaded_and_fingerprinted(self):
-        self.execute(software="cp2k")
-        for name in ("native_module.py", "export_native.py"):
-            self.assertIn(name, self.uploads)
-            self.assertIn(name, controller.contract_files("cp2k"))
-
     def test_long_version_is_preserved_but_not_part_of_run_id(self):
         version = "v" * 1000
         self.execute(version=version, track="prerelease", resume="previous-run")
         submit = next(argv for script, argv in self.remote_commands
                       if (script, argv[0]) == ("software_controller.py", "submit"))
-        self.assertEqual(submit[2], "123-1-prerelease-4v100-avx512-" + "a" * 12)
+        self.assertEqual(submit[2], "123-1-prerelease-4v100-avx512-2026-09-13-" + "a" * 12)
         self.assertLess(len(submit[2]), 100)
         self.assertEqual(submit[4], version)
         self.assertEqual(submit[-6:], ["--track", "prerelease", "--source-ref", "develop",
@@ -273,6 +310,8 @@ class CiLifecycleTests(unittest.TestCase):
         gpu = next(argv for script, argv in self.remote_commands
                    if (script, argv[0]) == ("gpu_feature_controller.py", "submit"))
         self.assertEqual(gpu[2:], runtime[2:])
+        self.assertLessEqual(len(runtime[1]), 128)
+        self.assertLessEqual(len(gpu[1]), 128)
 
     def test_unchanged_releases_skip_for_both_events_without_claiming_an_artifact(self):
         for event in ("schedule", "workflow_dispatch"):

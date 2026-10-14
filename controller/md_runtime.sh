@@ -15,7 +15,7 @@ control=$(cd -- "$(dirname -- "$0")" && pwd -P)
 settings=$(PYTHONPATH="$control" /usr/bin/python3 - <<'PY'
 import json, os
 from pathlib import Path
-from md_controller import ROOT, validate_pair, artifact_path
+from md_controller import validate_pair, validate_runtime_image
 delivery = validate_pair(json.loads(os.environ['SAI_MD_DELIVERY']))
 identities = delivery['identities']
 if identities['lammps']['partition'] != os.environ['SLURM_JOB_PARTITION']:
@@ -23,8 +23,7 @@ if identities['lammps']['partition'] != os.environ['SLURM_JOB_PARTITION']:
 print(identities['deepmd-kit']['install_prefix'])
 print(identities['lammps']['install_prefix'])
 image = Path(os.environ['SAI_MD_IMAGE'])
-if image != artifact_path(ROOT, delivery, image.stem):
-    raise ValueError('MD image differs from its canonical paired delivery path')
+validate_runtime_image(image, delivery)
 print(image)
 PY
 )

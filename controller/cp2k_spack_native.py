@@ -8,7 +8,7 @@ import re
 import subprocess
 import sys
 
-from cp2k_spack import validate_cache, validated_prefix
+from cp2k_spack import TARGETS, validate_cache, validated_prefix
 from cp2k_spack_environment import environment
 
 WHEELS = {
@@ -73,7 +73,7 @@ def prepare(partition):
             raise ValueError(f'node external {name} is {actual}, expected {expected}')
     if profile['gcc'] != '13.3.0' or sys.version_info[:2] != (3, 12):
         raise ValueError('unexpected compiler or offline solver Python ABI')
-    isa = 'avx2' if partition == '16V100' else 'avx512'
+    isa = TARGETS[partition]['isa']
     for name in ('mpi', 'blas'):
         if not profile[name] or not profile[name].endswith('-' + isa):
             raise ValueError('node module ISA mismatch: ' + name)
@@ -125,7 +125,7 @@ def fetch(partition, target, native_os, install_prefix=None):
                 raise ValueError('unapproved external: ' + str(spec))
         elif str(spec.architecture.target) != target or str(spec.architecture.os) != native_os:
             raise ValueError('non-native dependency: ' + str(spec))
-        if spec.name == 'tiled-mm' and partition == '16V100' and not spec.satisfies('+cuda cuda_arch=70'):
+        if spec.name == 'tiled-mm' and TARGETS[partition]['cuda'] and not spec.satisfies('+cuda cuda_arch=70'):
             raise ValueError('incorrect tiled-mm CUDA backend')
         nodes.append({'spec': str(spec), 'hash': spec.dag_hash(),
                       'external': bool(spec.external), 'external_path': spec.external_path,

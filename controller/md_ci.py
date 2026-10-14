@@ -14,7 +14,18 @@ from source_cache import pack
 
 
 def run(argv, **kwargs):
-    return subprocess.run(list(map(str, argv)), check=True, text=True, **kwargs)
+    try:
+        return subprocess.run(list(map(str, argv)), check=True, text=True, **kwargs)
+    except subprocess.CalledProcessError as error:
+        # Machine-readable stdout stays captured; failed remote diagnostics do not.
+        detail = (error.stderr or error.stdout or '').strip()
+        if detail:
+            print(detail, file=__import__('sys').stderr, flush=True)
+            results = Path(os.environ['RUNNER_TEMP']) / 'results'
+            results.mkdir(parents=True, exist_ok=True)
+            with (results / 'command-errors.log').open('a') as stream:
+                stream.write(detail + '\n')
+        raise
 
 
 def main():
@@ -64,7 +75,7 @@ def main():
                         remote + ':' + source + '/results/.', str(destination)], check=False)
     def accept():
         science_run = safe_name(run_id + '-science')
-        python('md_acceptance_controller.py', 'submit', science_run, run_id)
+        python('md_acceptance_controller.py', 'submit', science_run, run_id, '--nodes', '2')
         python('md_acceptance_controller.py', 'monitor', science_run)
     if phase in ('lammps', 'acceptance'):
         # No upload, claim or resubmission here. Continue the immutable snapshot

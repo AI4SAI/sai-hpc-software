@@ -24,8 +24,8 @@ class MdReleaseTrackTests(unittest.TestCase):
         self.assertEqual(inputs['targets']['default'], '16v100-avx2')
         self.assertIs(inputs['build_candidates']['default'], False)
         self.assertIs(inputs['retry_releases']['default'], False)
-        self.assertEqual(workflow['jobs']['resolve']['if'], "github.event_name == 'workflow_dispatch'")
-        self.assertIn("github.event_name == 'workflow_dispatch' && inputs.build_candidates",
+        self.assertEqual(workflow['jobs']['resolve']['if'], "github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'")
+        self.assertIn("(github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && inputs.build_candidates",
                       workflow['jobs']['candidate-build']['if'])
 
     @staticmethod

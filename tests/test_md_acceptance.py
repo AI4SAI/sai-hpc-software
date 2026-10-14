@@ -46,7 +46,7 @@ class AcceptanceRenderTests(unittest.TestCase):
                     self.assertNotIn('#SBATCH --mem', script)
                     self.assertNotIn('current.sif', script)
                     self.assertNotIn('modulefiles/', script)
-                    self.assertNotRegex(script, r'(?:^|[= :])/tmp(?:/|$)')
+                    self.assertNotRegex(script.replace(str(ROOT), "/home/test/repository"), r'(?:^|[= :])/tmp(?:/|$)')
 
     def test_rank_resource_mismatch_rejected(self):
         request = {'target': '4v100-avx512', 'nodes': 1, 'ranks': 2}

@@ -132,6 +132,7 @@ class RepresentativeRunnerTests(unittest.TestCase):
                     patch('md_performance_run.verify_performance', return_value={'speedup': 1.0}) as verify:
                 report = runner.run()
                 self.assertEqual(len(calls), 10)
+                self.assertEqual([row[0] for row in calls[2:]], ["baseline", "candidate"] * 4)
                 self.assertTrue(all(row[2].get('profile') is True for row in calls[:2]))
                 self.assertTrue(all('profile' not in row[2] for row in calls[2:]))
                 self.assertTrue(all(row['profiled'] is False for row in verify.call_args.args[0]))

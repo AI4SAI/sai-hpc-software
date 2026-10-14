@@ -80,6 +80,22 @@ cmake -S /workspace/libxs-source -B /workspace/libxs-build \
 cmake --build /workspace/libxs-build --parallel "$jobs"
 cmake --install /workspace/libxs-build
 prefixes+=("$prefix/dependencies/libxs")
+# Current development requires wignernj; older releases do not. The source
+# archive is fetched and hashed on the runner, never on an offline compute node.
+if grep -Eq 'find_package\(wignernj[[:space:]]' /workspace/source/CMakeLists.txt; then
+  wigner_archive=/input/updates/libwignernj-0.8.0.tar.gz
+  printf '%s  %s\n' 7220cea92652040d6456aba92ff151124d9c69ce8695840490c18dd25a0da80c "$wigner_archive" | sha256sum --check --status
+  mkdir -p /workspace/wignernj-source
+  tar --no-same-owner --strip-components=1 -xzf "$wigner_archive" -C /workspace/wignernj-source
+  cmake -S /workspace/wignernj-source -B /workspace/wignernj-build \
+    -DCMAKE_INSTALL_PREFIX="$prefix/dependencies/wignernj" -DCMAKE_INSTALL_LIBDIR=lib \
+    -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBUILD_SHARED_LIBS=OFF \
+    -DWIGNERNJ_BUILD_FORTRAN=OFF -DWIGNERNJ_BUILD_TESTS=OFF -DWIGNERNJ_BUILD_CXX_TESTS=OFF \
+    -DWIGNERNJ_BUILD_EXAMPLES=OFF -DCMAKE_C_FLAGS="-O3 $cpu_flags"
+  cmake --build /workspace/wignernj-build --parallel "$jobs"
+  cmake --install /workspace/wignernj-build
+  prefixes+=("$prefix/dependencies/wignernj")
+fi
 cmake_prefix=$(IFS=';'; echo "${prefixes[*]}")
 dbcsr_archive=/input/probe/dbcsr-latest.tar.gz
 fypp_archive=/input/probe/fypp-3.2-py3-none-any.whl

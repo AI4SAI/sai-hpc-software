@@ -69,6 +69,25 @@ def artifact_path(root, request, run_id):
     return artifact
 
 
+
+def validate_runtime_image(image, delivery):
+    """Bind runtime execution to the verified build's bytes and paired identity."""
+    image = Path(image)
+    delivery = validate_pair(delivery)
+    if (image != artifact_path(ROOT, delivery, image.stem)
+            or image.is_symlink() or image.resolve() != image):
+        raise ValueError('MD image differs from its canonical paired delivery path')
+    sidecar = image.with_suffix('.json')
+    if sidecar.is_symlink() or sidecar.resolve() != sidecar:
+        raise ValueError('untrusted MD image sidecar')
+    status = json.loads(sidecar.read_text())
+    if (status.get('build_verified') is not True or status.get('state') != 'COMPLETED'
+            or status.get('exit_code') != '0:0' or status.get('artifact') != str(image)
+            or status.get('delivery') != delivery
+            or status.get('artifact_sha256') != checksum(image)):
+        raise ValueError('MD runtime image or build identity changed')
+    return image
+
 def render(request, run_id, jobs=None, minutes=None, overlay_mb=32768,
            stage='all', dependency=None):
     validate_pair(request)
@@ -105,7 +124,7 @@ def render(request, run_id, jobs=None, minutes=None, overlay_mb=32768,
                                  extra_binds=[*site_app_binds('lammps'), *(sources if not final else [])])
     emit = container_command(image, ['/usr/bin/cat', '/workspace/final.squashfs'],
                              overlay=str(overlay) + ':ro', jobs=jobs)
-    lines = ['#!/usr/bin/env bash', f'#SBATCH --job-name=md-{run_id}',
+    lines = ['#!/usr/bin/env bash', '#SBATCH --job-name=sai-software-build', '#SBATCH --dependency=singleton',
              f'#SBATCH --partition={target["partition"]}', f'#SBATCH --qos={resources["qos"]}',
              '#SBATCH --nodes=1', '#SBATCH --ntasks=1', f'#SBATCH --gpus-per-node={resources["gpus"]}',
              f'#SBATCH --time={minutes}', f'#SBATCH --output={r}/results/slurm-%j.log',
@@ -119,11 +138,14 @@ def render(request, run_id, jobs=None, minutes=None, overlay_mb=32768,
              'export APPTAINERENV_SAI_MD_ALLOCATED_NODE="$(hostname)"',
              'unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH']
     if dependency is not None:
-        lines.insert(2, f'#SBATCH --dependency=afterok:{dependency}')
+        lines[2] = f'#SBATCH --dependency=afterok:{dependency},singleton'
         lines.insert(3, '#SBATCH --kill-on-invalid-dep=yes')
     lines += [f'[[ ${{SLURM_CPUS_ON_NODE:?missing CPU allocation}} -ge {jobs} ]]',
               f'echo MD_BUILD_RESOURCES stage={stage} gpus={resources["gpus"]} jobs={jobs} allocated_cpus="$SLURM_CPUS_ON_NODE"',
               join(['test', '-s', image])]
+    lines.append(join(['/usr/bin/python3', '-c',
+                       f'import sys; sys.path.insert(0, {str(CONTROL)!r}); '
+                       f'from remote_controller import require_capacity; require_capacity({str(ROOT)!r}, {overlay_mb})']))
     if stage in ('all', 'deepmd'):
         lines += [join(['test', '!', '-e', overlay]),
                   join(['apptainer', 'overlay', 'create', '--fakeroot', '--sparse', '--size', str(overlay_mb), overlay])]
@@ -151,6 +173,8 @@ def submit_probe(args):
     """One GPU, five minutes, no source checkout or production mutations."""
     if args.target not in MD_TARGETS:
         raise ValueError('unvalidated MD probe target')
+    from remote_controller import require_capacity
+    require_capacity(ROOT, args.overlay_mb)
     r = task(args.run_id)
     if (r / 'job.id').exists():
         raise ValueError('probe already submitted')

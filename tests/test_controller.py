@@ -71,7 +71,7 @@ class PolicyTests(unittest.TestCase):
             script = controller.render_job(args)
         self.assertNotIn("--sandbox", script)
         self.assertNotIn("rm -rf", script)
-        self.assertNotRegex(script, r"(?:^|[= :])/tmp(?:/|$)")
+        self.assertNotRegex(script.replace(str(ROOT), "/home/test/repository"), r"(?:^|[= :])/tmp(?:/|$)")
         self.assertNotIn("--gpus-per-node=0", script)
         self.assertIn("--fakeroot --sparse", script)
         self.assertIn("--cpus-per-task=8", script)
@@ -113,7 +113,7 @@ class PolicyTests(unittest.TestCase):
         self.assertNotIn("--network none", script)
         self.assertNotIn("--containall", script)
         self.assertNotRegex(script, r"--bind /opt:/opt")
-        self.assertNotRegex(script, r"(?:^|[= :])/tmp(?:/|$)")
+        self.assertNotRegex(script.replace(str(ROOT), "/home/test/repository"), r"(?:^|[= :])/tmp(?:/|$)")
         subprocess.run(["bash", "-n"], input=script, text=True, check=True)
 
         args.nodes = 3
@@ -155,7 +155,7 @@ class PolicyTests(unittest.TestCase):
         self.assertIn("$6 !~ /-avx512$/", script)
         self.assertIn("MULTINODE_CONTAINER_MPI_VERIFIED", script)
         self.assertNotRegex(script, r"--bind /opt:/opt")
-        self.assertNotRegex(script, r"(?:^|[= :])/tmp(?:/|$)")
+        self.assertNotRegex(script.replace(str(ROOT), "/home/test/repository"), r"(?:^|[= :])/tmp(?:/|$)")
         subprocess.run(["bash", "-n"], input=script, text=True, check=True)
 
         args.cpus_per_task = 16

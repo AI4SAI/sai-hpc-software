@@ -1,6 +1,28 @@
 name: Experimental DeePMD and LAMMPS tracking
 
 on:
+  workflow_call:
+    inputs:
+      software:
+        type: string
+        required: true
+        default: all
+      tracks:
+        type: string
+        required: true
+        default: development,prerelease,release
+      targets:
+        type: string
+        required: true
+        default: 16v100-avx2
+      build_candidates:
+        type: boolean
+        required: false
+        default: false
+      retry_releases:
+        type: boolean
+        required: false
+        default: false
   workflow_dispatch:
     inputs:
       software:
@@ -48,7 +70,7 @@ jobs:
           for script in controller/md_*.sh; do bash -n "$script"; done
 
   resolve:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
     needs: validate
     runs-on: ubuntu-latest
     outputs:
@@ -86,7 +108,7 @@ jobs:
   candidate-build:
     # The default-branch daily scheduler explicitly dispatches this workflow.
     # Building candidates never enables publication or implies acceptance.
-    if: github.event_name == 'workflow_dispatch' && inputs.build_candidates && needs.resolve.outputs.builds != '[]'
+    if: (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && inputs.build_candidates && needs.resolve.outputs.builds != '[]'
     needs: [validate, resolve]
     strategy:
       fail-fast: false

@@ -1,6 +1,24 @@
 name: Track and build GPUMD
 
 on:
+  workflow_call:
+    inputs:
+      source_ref:
+        type: string
+        required: false
+        default: ''
+      tracks:
+        type: string
+        required: true
+        default: development,prerelease,release
+      targets:
+        type: string
+        required: true
+        default: 16v100-avx2
+      retry_releases:
+        type: boolean
+        required: false
+        default: false
   workflow_dispatch:
     inputs:
       source_ref:
@@ -35,7 +53,7 @@ jobs:
           persist-credentials: false
       - run: |
           sudo apt-get update
-          sudo apt-get install -y squashfs-tools tcl
+          sudo apt-get install -y squashfs-tools tcl python3-yaml
           command -v mksquashfs unsquashfs tclsh
       - run: python3 -m unittest discover -s tests -v
       - run: |
@@ -66,10 +84,10 @@ jobs:
           from resolve_source import resolve
           from release_contract import GPU_TARGETS, TRACKS, resolve_tracks
           scheduled = os.environ['GITHUB_EVENT_NAME'] == 'schedule'
-          requested = list(GPU_TARGETS) if scheduled else list(dict.fromkeys(value.strip() for value in os.environ['TARGETS'].split(',')))
+          requested = list(dict.fromkeys(value.strip() for value in os.environ['TARGETS'].split(',')))
           if not requested or any(target not in GPU_TARGETS for target in requested):
               raise ValueError('GPUMD supports only its three native V100 GPU targets')
-          tracks = list(TRACKS) if scheduled else [value.strip() for value in os.environ['TRACKS'].split(',')]
+          tracks = [value.strip() for value in os.environ['TRACKS'].split(',')]
           override = os.environ.get('SOURCE_REF', '')
           if override and len(tracks) != 1:
               raise ValueError('a source override requires exactly one explicit track')

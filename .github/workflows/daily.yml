@@ -14,7 +14,7 @@ on:
         description: Channels; development always builds, unchanged releases skip
         default: development,prerelease,release
       targets:
-        description: Validation targets only (dsprhbm,16v100-avx2); all selects both
+        description: Native targets — dsprhbm,16v100-avx2,4v100-avx512,8v100v0-avx512
         default: all
       retry_releases:
         description: Explicitly retry the selected release/prerelease versions
@@ -24,86 +24,89 @@ on:
 permissions:
   contents: read
 
+# Serialise complete scheduled runs without cancelling a running Slurm owner.
+concurrency:
+  group: sai-daily-delivery
+  cancel-in-progress: false
+
 jobs:
   plan:
     runs-on: ubuntu-latest
     outputs:
-      requests: ${{ steps.plan.outputs.requests }}
+      abacus: ${{ steps.plan.outputs.abacus }}
+      cp2k: ${{ steps.plan.outputs.cp2k }}
+      deepmd_kit: ${{ steps.plan.outputs.deepmd_kit }}
+      gpumd: ${{ steps.plan.outputs.gpumd }}
     steps:
       - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
       - id: plan
         env:
           SOFTWARE: ${{ inputs.software || 'all' }}
           TRACKS: ${{ inputs.tracks || 'development,prerelease,release' }}
           TARGETS: ${{ inputs.targets || 'all' }}
-          RETRY_RELEASES: ${{ inputs.retry_releases }}
-        run: |
-          python3 - <<'PY'
-          import json, os, sys
-          sys.path.insert(0, 'controller')
-          from release_contract import SOFTWARE, TRACKS
-          # Expand only after native/scientific/performance validation here.
-          active_targets = ('dsprhbm', '16v100-avx2')
-          requested = os.environ['SOFTWARE']
-          tracks = [value.strip() for value in os.environ['TRACKS'].split(',')]
-          targets = list(active_targets) if os.environ['TARGETS'] == 'all' else [value.strip() for value in os.environ['TARGETS'].split(',')]
-          if requested != 'all' and requested not in SOFTWARE:
-              raise ValueError('unknown software')
-          if not tracks or len(set(tracks)) != len(tracks) or any(value not in TRACKS for value in tracks):
-              raise ValueError('invalid tracks')
-          if not targets or len(set(targets)) != len(targets) or any(value not in active_targets for value in targets):
-              raise ValueError('targets must stay within current DSPRHBM/16V100 validation scope')
-          # Only reviewed repository branches; recipes stay isolated until accepted.
-          workflows = [
-              ('abacus', 'build.yml', 'feat/abacus-parity-benchmarks'),
-              ('cp2k', 'cp2k.yml', 'feat/cp2k-parity-benchmarks'),
-              ('deepmd-kit', 'deepmd-lammps.yml', 'feat/deepmd-lammps-tracking'),
-              ('gpumd', 'gpumd.yml', 'feat/gpumd-daily-tracking'),
-          ]
-          retry = os.environ['GITHUB_EVENT_NAME'] == 'workflow_dispatch' and os.environ.get('RETRY_RELEASES') == 'true'
-          requests = []
-          for software, workflow, branch in workflows:
-              if requested not in ('all', software) and not (software == 'deepmd-kit' and requested == 'lammps'):
-                  continue
-              selected = [target for target in targets if target in SOFTWARE[software]['targets']]
-              if not selected:
-                  continue
-              inputs = dict(tracks=','.join(tracks), targets=','.join(selected), retry_releases=str(retry).lower())
-              if software == 'deepmd-kit':
-                  inputs.update(software=requested if requested != 'all' else 'all', build_candidates='true')
-              requests.append(dict(software=software, workflow=workflow, ref=branch, inputs=inputs))
-          if not requests:
-              raise ValueError('no selected software supports the requested targets')
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
-              output.write('requests=' + json.dumps(requests) + '\n')
-          print(json.dumps(requests, indent=2))
-          PY
+        run: python3 controller/daily_plan.py
 
-  dispatch:
-    needs: plan
+  abacus:
+    needs: [plan]
+    if: ${{ !cancelled() && needs.plan.result == 'success' && needs.plan.outputs.abacus != '' }}
+    uses: ./.github/workflows/build.yml
+    with:
+      targets: ${{ needs.plan.outputs.abacus }}
+      tracks: ${{ inputs.tracks || 'development,prerelease,release' }}
+      retry_releases: ${{ inputs.retry_releases || false }}
+    secrets: inherit
+
+  cp2k:
+    needs: [plan, abacus]
+    if: ${{ !cancelled() && needs.plan.result == 'success' && needs.plan.outputs.cp2k != '' }}
+    uses: ./.github/workflows/cp2k.yml
+    with:
+      targets: ${{ needs.plan.outputs.cp2k }}
+      tracks: ${{ inputs.tracks || 'development,prerelease,release' }}
+      retry_releases: ${{ inputs.retry_releases || false }}
+    secrets: inherit
+
+  deepmd_kit:
+    needs: [plan, cp2k]
+    if: ${{ !cancelled() && needs.plan.result == 'success' && needs.plan.outputs.deepmd_kit != '' }}
+    uses: ./.github/workflows/deepmd-lammps.yml
+    with:
+      targets: ${{ needs.plan.outputs.deepmd_kit }}
+      tracks: ${{ inputs.tracks || 'development,prerelease,release' }}
+      retry_releases: ${{ inputs.retry_releases || false }}
+      software: ${{ inputs.software == 'lammps' && 'lammps' || inputs.software == 'deepmd-kit' && 'deepmd-kit' || 'all' }}
+      build_candidates: true
+    secrets: inherit
+
+  gpumd:
+    needs: [plan, deepmd_kit]
+    if: ${{ !cancelled() && needs.plan.result == 'success' && needs.plan.outputs.gpumd != '' }}
+    uses: ./.github/workflows/gpumd.yml
+    with:
+      targets: ${{ needs.plan.outputs.gpumd }}
+      tracks: ${{ inputs.tracks || 'development,prerelease,release' }}
+      retry_releases: ${{ inputs.retry_releases || false }}
+    secrets: inherit
+
+  result:
+    if: always()
+    needs: [plan, abacus, cp2k, deepmd_kit, gpumd]
     runs-on: ubuntu-latest
-    permissions:
-      actions: write
-    strategy:
-      fail-fast: false
-      matrix:
-        request: ${{ fromJSON(needs.plan.outputs.requests) }}
     steps:
-      - name: Dispatch isolated software workflow
+      - name: Require all selected deliveries to succeed
         env:
-          GH_TOKEN: ${{ github.token }}
-          GH_REPO: AI4SAI/sai-hpc-software
-          REQUEST: ${{ toJSON(matrix.request) }}
+          RESULTS: ${{ toJSON(needs) }}
         run: |
           python3 - <<'PY'
-          import json, os, subprocess
-          request = json.loads(os.environ['REQUEST'])
-          endpoint = 'repos/AI4SAI/sai-hpc-software/actions/workflows/' + request['workflow'] + '/dispatches'
-          subprocess.run(['gh', 'api', '--method', 'POST', endpoint, '--input', '-'],
-                         input=json.dumps(dict(ref=request['ref'], inputs=request['inputs'])), text=True, check=True)
-          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as output:
-              output.write('Dispatched `' + request['workflow'] + '` at `' + request['ref'] + '`.\n\n')
-              output.write('Dispatch accepted only; child workflow records build, science and performance results.\n')
+          import json, os
+          results = json.loads(os.environ['RESULTS'])
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
+              out.write('| Task | Result |\n|---|---|\n')
+              for name, job in results.items():
+                  out.write(f"| {name} | {job['result']} |\n")
+          if results['plan']['result'] != 'success':
+              raise SystemExit('Delivery plan failed')
+          for name, targets in results['plan']['outputs'].items():
+              if targets and results[name]['result'] != 'success':
+                  raise SystemExit(f'{name} delivery did not succeed')
           PY

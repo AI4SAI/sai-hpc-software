@@ -68,6 +68,15 @@ class SpackProbeTests(unittest.TestCase):
         self.assertNotIn('--gpus-per-node', text)
         self.assertNotIn('--nv ', text)
 
+    def test_expansion_partitions_request_gpu(self):
+        for partition in ("4V100", "8V100V0"):
+            with self.subTest(partition=partition):
+                result = self.submit(partition, run_id=partition)
+                script = (result / "job.sbatch").read_text()
+                self.assertIn("--gpus-per-node=1", script)
+                self.assertIn("--nv ", script)
+                self.assertIn("--qos=flood-1o2gpu", script)
+
     def test_duplicate_run_never_submits(self):
         self.submit()
         with patch.object(probe.subprocess, 'check_output') as sbatch:

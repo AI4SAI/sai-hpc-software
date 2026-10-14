@@ -342,8 +342,8 @@ class Runner:
                     raise ValueError('separate CUDA device trace did not prove GPU execution')
                 self.device_proofs[implementation] = trace['execution_device']
         records = []
-        for implementation in ("baseline", "candidate"):
-            for index in range(repeats + 1):
+        for index in range(repeats + 1):
+            for implementation in ("baseline", "candidate"):
                 records.append(self.measure(implementation, f"{implementation}-{index:02d}",
                                             frozen["steps"], frozen["input"], warmup=index == 0))
         _write_json(self.output / "records.json", records)

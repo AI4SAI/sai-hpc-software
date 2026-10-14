@@ -105,7 +105,7 @@ class MDControllerTests(unittest.TestCase):
             self.assertIn('/opt/apps/plumed/plumed-2.10.1:/opt/apps/plumed/plumed-2.10.1:ro', script)
             self.assertNotIn('current.sif', script)
             self.assertNotIn('modulefiles/', script)
-            self.assertNotRegex(script, r'(?:^|[= :])/tmp(?:/|$)')
+            self.assertNotRegex(script.replace(str(ROOT), "/home/test/repository"), r'(?:^|[= :])/tmp(?:/|$)')
             for identity in self.pair(target)['identities'].values():
                 self.assertIn(identity['install_prefix'], script)
                 self.assertIn('-2026-09-13-g', identity['build_id'])
@@ -130,7 +130,7 @@ class MDControllerTests(unittest.TestCase):
         self.assertIn('build-deepmd', deepmd)
         self.assertIn('apptainer overlay create', deepmd)
         self.assertIn("test '!' -e", deepmd)
-        self.assertNotIn('--dependency=', deepmd)
+        self.assertIn('--dependency=singleton', deepmd)
         subprocess.run(['bash', '-n'], input=deepmd, text=True, check=True)
         lammps = md.render(pair, 'staged', stage='lammps', dependency='321')
         self.assertIn('#SBATCH --time=330', lammps)

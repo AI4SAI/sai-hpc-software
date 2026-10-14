@@ -459,10 +459,10 @@ class GpumdWorkflowTests(unittest.TestCase):
 
     def test_schedule_resolves_three_channels_and_native_partitions(self):
         rows = self.resolve()
-        self.assertEqual(len(rows), 9)
-        self.assertEqual({row["track"] for row in rows}, set(TRACKS))
-        self.assertEqual({row["target"] for row in rows}, set(acceptance.GPU_TARGETS))
-        self.assertEqual(len(self.resolve(missing=("latest-prerelease",))), 6)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual({row["track"] for row in rows}, {"development"})
+        self.assertEqual({row["target"] for row in rows}, {"4v100-avx512"})
+        self.assertEqual(len(self.resolve(missing=("latest-prerelease",))), 1)
 
     def test_manual_all_tracks_skips_explicitly_absent_releases(self):
         rows = self.resolve("workflow_dispatch", missing=("latest-prerelease", "latest-release"),

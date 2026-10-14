@@ -690,6 +690,23 @@ def accepted_reference(run_id, expected_sha256=None):
     return evidence, files["results/evidence.json"]
 
 
+def latest_accepted_reference():
+    """Select a GPU reference only after revalidating its complete raw evidence."""
+    candidates = list((ROOT / 'runtime-tests').glob('*/results/evidence.json'))
+    candidates.sort(key=lambda path: path.stat().st_mtime_ns, reverse=True)
+    for path in candidates:
+        task = path.parent.parent
+        try:
+            request = json.loads((task / 'request.json').read_text())
+            if request.get('software') != 'cp2k' or not request.get('gpus_per_node'):
+                continue
+            _, digest = accepted_reference(task.name)
+            return task.name, digest
+        except (ValueError, KeyError, OSError):
+            continue  # An old, incomplete or changed reference cannot authorize a CPU build.
+    raise ValueError('no compatible verified CP2K GPU reference; finish GPU acceptance first')
+
+
 def verify_evidence(task, request, *, allow_reference=True):
     """Reparse raw logs/forces/resources, including every warm-up; never trust a marker alone."""
     task = Path(task)
@@ -885,8 +902,10 @@ def submit(args):
     reference = getattr(args, "reference_run_id", None)
     if not allocation["gpus_per_node"]:
         if not reference:
-            raise ValueError("CPU TBLITE/DFTD4 require --reference-run-id from an accepted GPU comparison")
-        _, reference_sha256 = accepted_reference(reference)
+            reference, reference_sha256 = latest_accepted_reference()
+            args.reference_run_id = reference
+        else:
+            _, reference_sha256 = accepted_reference(reference)
     elif reference:
         raise ValueError("GPU benchmarks must use their own allocation's site baseline")
     task = run_dir(args.run_id)

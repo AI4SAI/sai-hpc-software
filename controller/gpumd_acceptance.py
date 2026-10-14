@@ -189,6 +189,10 @@ def validate_manifest(manifest, root=None, control=None):
     if json.loads(regular(task / "results/evidence.json").read_text()) != evidence or any(
             proof.get(key) != value for key, value in evidence.items()):
         raise ValueError("stale GPUMD science evidence")
+    from delivery_layout import check_performance
+    timings = evidence['benchmark']
+    check_performance(1 / timings['md-throughput-candidate']['median_atom_steps_per_second'],
+                      1 / timings['md-throughput-baseline']['median_atom_steps_per_second'])
     if proof.get("launcher_sha256") != request["launcher_sha256"]:
         raise ValueError("untested GPUMD launcher")
 

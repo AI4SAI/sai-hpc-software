@@ -12,7 +12,9 @@ PY
 case "$partition" in
   16V100) target=16v100-avx2 ;;
   DSPRHBM) target=dsprhbm ;;
-  *) echo 'Probe only the first two acceptance partitions' >&2; exit 2 ;;
+  4V100) target=4v100-avx512 ;;
+  8V100V0) target=8v100v0-avx512 ;;
+  *) echo 'Unsupported acceptance partition' >&2; exit 2 ;;
 esac
 mkdir -p /workspace/tmp /workspace/spack /workspace/spack-packages /workspace/solver /workspace/env
 export TMPDIR=/workspace/tmp

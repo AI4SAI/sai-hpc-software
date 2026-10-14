@@ -8,7 +8,7 @@ import re
 import shlex
 import subprocess
 
-from cp2k_spack import validate_cache
+from cp2k_spack import TARGETS, validate_cache
 from remote_controller import container_command, safe_name
 
 
@@ -65,7 +65,7 @@ def submit(partition, run_id, repair_of=None, diagnosis=None, *, extra_approval=
         (run / name).mkdir()
     command = container_command(
         image, ['/bin/bash', '/control/cp2k_spack_probe.sh', partition],
-        overlay=run / 'work.ext3', control=control, jobs=8, gpu=partition == '16V100',
+        overlay=run / 'work.ext3', control=control, jobs=8, gpu=TARGETS[partition]['cuda'],
         extra_binds=[(root / 'cache/spack', '/input/spack'),
                      ('/var/lib/dpkg', '/var/lib/dpkg'),
                      ('/etc/os-release', '/etc/os-release'),
@@ -75,10 +75,10 @@ def submit(partition, run_id, repair_of=None, diagnosis=None, *, extra_approval=
     command[2:2] = ['--bind', str(run / 'results') + ':/results:rw']
     lines = ['#!/bin/bash', '#SBATCH --job-name=cp2k-spack-native',
              '#SBATCH --partition=' + partition,
-             '#SBATCH --qos=' + ('flood-1o2gpu' if partition == '16V100' else 'rush-cpu'),
+             '#SBATCH --qos=' + ('flood-1o2gpu' if TARGETS[partition]['cuda'] else 'rush-cpu'),
              '#SBATCH --nodes=1', '#SBATCH --ntasks=1', '#SBATCH --time=' + str(minutes),
              '#SBATCH --export=NIL', '#SBATCH --output=' + str(run / 'results/slurm-%j.log')]
-    lines += (['#SBATCH --gpus-per-node=1'] if partition == '16V100' else
+    lines += (['#SBATCH --gpus-per-node=1'] if TARGETS[partition]['cuda'] else
               ['#SBATCH --cpus-per-task=8', '#SBATCH --mem=16G'])
     lines += ['set -eo pipefail', 'export PATH=/usr/bin:/bin LD_LIBRARY_PATH="" LD_PRELOAD=""',
               'source /etc/profile.d/lmod.sh', 'module load apptainer/1.4.4', 'set -u',
@@ -127,7 +127,7 @@ def submit(partition, run_id, repair_of=None, diagnosis=None, *, extra_approval=
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('partition', choices=['16V100', 'DSPRHBM'])
+    parser.add_argument('partition', choices=sorted(TARGETS))
     parser.add_argument('run_id')
     parser.add_argument('--repair-of')
     parser.add_argument('--diagnosis')

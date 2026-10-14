@@ -135,7 +135,7 @@ def validate_acceptance(manifest):
                 raise ValueError("GPU feature execution was not verified")
             if proof.get("runtime_sha256") != checksum(CONTROL / "gpu_feature_runtime.sh"):
                 raise ValueError("GPU feature runtime changed")
-        else:
+        elif benchmark:
             if (request.get("packaged_case") != name.removeprefix("benchmark_") or
                     request.get("system_module") != "abacus/v3.9.0.26-sm70-auto" or
                     request.get("warmup", 0) < 1 or request.get("repeats", 0) < 3):
@@ -156,6 +156,14 @@ def validate_acceptance(manifest):
         evidence = verify_evidence(task, request)
         if evidence != json.loads(evidence_path.read_text()):
             raise ValueError(f"{name} scientific results changed after verification")
+        from delivery_layout import check_performance
+        if benchmark:
+            timing = evidence['statistics']['rounded_iteration_seconds']
+            check_performance(timing['candidate']['median'], timing['system']['median'])
+        elif name == 'cp2k_benchmark':
+            timing = evidence['timings']['water64-gpw']
+            check_performance(timing['candidate_cp2k_seconds']['median'],
+                              timing['baseline_cp2k_seconds']['median'])
         if (evidence.get("job") != proof.get("job") or
                 evidence.get("artifact_sha256") != manifest["sha256"]):
             raise ValueError("acceptance evidence does not match its job or image")
@@ -312,6 +320,7 @@ def render_job(args):
     argv = ["/usr/bin/bash", f"/control/{entrypoint}", "build", args.software, sha, args.version, args.target,
             json.dumps(delivery, sort_keys=True, separators=(",", ":"))]
     extra_binds = ((ROOT / "cache/spack", "/input/spack"),
+                   (r / "input/cp2k-updates", "/input/updates"),
                    ("/var/lib/dpkg", "/var/lib/dpkg"),
                    ("/etc/os-release", "/etc/os-release"),
                    ("/etc/alternatives", "/etc/alternatives"),
@@ -342,7 +351,7 @@ def render_job(args):
     q = shlex.quote
     lines = [
         "#!/bin/bash",
-        f"#SBATCH --job-name=software-{args.software}-{args.run_id}",
+        "#SBATCH --job-name=sai-software-build", "#SBATCH --dependency=singleton",
         f"#SBATCH --partition={target['partition']}",
         f"#SBATCH --qos={target['qos']}",
         "#SBATCH --nodes=1", "#SBATCH --ntasks=1",
@@ -377,6 +386,9 @@ def render_job(args):
           if args.software == "gpumd" else []),
         f"test -s {q(str(image))}",
         f"test ! -e {q(str(overlay))}",
+        shlex.join(["/usr/bin/python3", "-c",
+                    f"import sys; sys.path.insert(0, {str(CONTROL)!r}); "
+                    f"from remote_controller import require_capacity; require_capacity({str(ROOT)!r}, {args.overlay_mb})"]),
         *prepare,
         shlex.join(container("export")),
         shlex.join(emit) + " > " + q(str(squash)),
@@ -401,6 +413,8 @@ def submit(args):
     required_acceptance(args.software, args.target)
     if args.jobs is None:
         args.jobs = TARGETS[args.target].get("build_jobs", 8)
+    from remote_controller import require_capacity
+    require_capacity(ROOT, getattr(args, "overlay_mb", 32768))
     r = init(args)
     if (r / "job.id").exists():
         raise ValueError("run already submitted; choose a fresh run id")
@@ -557,4 +571,9 @@ def main():
     return result if isinstance(result, int) else 0
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    from delivery_layout import PerformanceRegression
+    try:
+        raise SystemExit(main())
+    except PerformanceRegression as error:
+        print(str(error), file=__import__('sys').stderr)
+        raise SystemExit(3)

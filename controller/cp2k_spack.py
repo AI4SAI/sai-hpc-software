@@ -29,6 +29,27 @@ TARGETS = {
 }
 
 
+# CP2K's required angular-momentum library, pinned by upstream toolchain.
+WIGNERNJ_ARCHIVE = 'libwignernj-0.8.0.tar.gz'
+WIGNERNJ_SHA256 = '7220cea92652040d6456aba92ff151124d9c69ce8695840490c18dd25a0da80c'
+
+
+def cache_source_updates(destination):
+    import hashlib
+    import urllib.request
+    destination = Path(destination)
+    destination.mkdir(parents=True, exist_ok=True)
+    archive = destination / WIGNERNJ_ARCHIVE
+    if not archive.is_file() or hashlib.sha256(archive.read_bytes()).hexdigest() != WIGNERNJ_SHA256:
+        with urllib.request.urlopen('https://www.cp2k.org/static/downloads/' + WIGNERNJ_ARCHIVE,
+                                    timeout=60) as response:
+            data = response.read()
+        if hashlib.sha256(data).hexdigest() != WIGNERNJ_SHA256:
+            raise ValueError('CP2K wignernj source checksum mismatch')
+        archive.write_bytes(data)
+    return archive
+
+
 def cache_roots(cache: Path, partition: str) -> dict[str, Path]:
     if partition not in TARGETS:
         raise ValueError(f"unsupported CP2K Spack partition: {partition}")

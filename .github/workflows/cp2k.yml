@@ -1,6 +1,28 @@
 name: Build CP2K
 
 on:
+  workflow_call:
+    inputs:
+      tracks:
+        type: string
+        required: true
+        default: development
+      targets:
+        type: string
+        required: true
+        default: 16v100-avx2
+      resume_run:
+        type: string
+        required: false
+        default: ''
+      reference_run:
+        type: string
+        required: false
+        default: ''
+      retry_releases:
+        type: boolean
+        required: false
+        default: false
   workflow_dispatch:
     inputs:
       tracks:
@@ -39,7 +61,7 @@ jobs:
       - name: Install native delivery test tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y squashfs-tools tcl
+          sudo apt-get install -y squashfs-tools tcl python3-yaml
           command -v mksquashfs unsquashfs tclsh
       - run: python3 -m unittest discover -s tests -v
       - run: |
@@ -48,7 +70,7 @@ jobs:
           done
 
   resolve-source:
-    if: github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
     needs: validate
     runs-on: ubuntu-latest
     outputs:
@@ -70,6 +92,7 @@ jobs:
           from release_contract import SOFTWARE, resolve_tracks
           allowed = SOFTWARE['cp2k']['targets']
           requested = list(dict.fromkeys(t.strip() for t in os.environ['TARGETS'].split(',')))
+          requested.sort(key=lambda target: target == 'dsprhbm')
           if not requested or any(t not in allowed for t in requested):
               raise ValueError('invalid target list')
           tracks = [t.strip() for t in os.environ['RELEASE_TRACKS'].split(',')]
