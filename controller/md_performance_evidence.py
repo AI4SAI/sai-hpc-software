@@ -85,6 +85,9 @@ class _Verifier:
             self._input_digest(self.case / name)
         self.fixture_sha = _fixture_digest(self.case, backend)
         self.binding = None
+        baseline = Path(expected['baseline_executable']).resolve(strict=True)
+        self.baseline_sha256 = file_digest(_safe(baseline))
+        self.binaries = {}
         self.frozen = self.read('frozen.json')
         if (self.frozen.get('backend') != backend
                 or self.frozen.get('resources') != expected['resources']
@@ -187,6 +190,15 @@ class _Verifier:
                      '--cpuctxsw=none', '--force-overwrite=false', '--output', '/work/cuda-trace', *child]
         if binding.get('argv') != child:
             raise ValueError('final-container executable or profiler command changed')
+        binary_sha = binding.get('executable_sha256')
+        if (binding.get('executable') != self.expected[side + '_executable']
+                or not isinstance(binary_sha, str) or not _SHA256.fullmatch(binary_sha)):
+            raise ValueError('measured executable checksum is missing or mislabelled')
+        if side == 'baseline' and binary_sha != self.baseline_sha256:
+            raise ValueError('measured baseline executable differs from current site binary')
+        if side in self.binaries and self.binaries[side] != binary_sha:
+            raise ValueError('executable bytes changed between calibration, trace or trials')
+        self.binaries[side] = binary_sha
         # Cached science flags may be stale; only this raw reparse sets success.
         return dict(record, stdout=stdout, scientific_verified=science['passed']), execution
 
@@ -294,11 +306,15 @@ class _Verifier:
                 value['execution_device'] = self.cpu_device(value, execution)
             checked.append(value)
         performance = verify_performance(checked, frozen)
+        performance['device'] = list(performance['device'])
+        if file_digest(_safe(Path(self.expected['baseline_executable']).resolve(strict=True))) != self.baseline_sha256:
+            raise ValueError('site baseline executable changed during verification')
         # report.json is deliberately not an input to the acceptance decision.
         return {'passed': True, 'performance_verified': True, 'backend': self.backend,
                 'artifact': self.expected['artifact'], 'artifact_sha256': self.expected['artifact_sha256'],
                 'slurm_job': self.expected['slurm_job'], 'performance': performance,
-                'fixture_sha256': self.fixture_sha, 'files': dict(sorted(self.files.items()))}
+                'fixture_sha256': self.fixture_sha, 'binaries': dict(self.binaries),
+                'files': dict(sorted(self.files.items()))}
 
 
 def verify_performance_evidence(output_dir, case_dir, *, backend, expected):

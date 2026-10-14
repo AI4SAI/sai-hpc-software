@@ -5,7 +5,7 @@ import os
 from pathlib import Path
 import sys
 
-from md_science import require_execution_context
+from md_science import file_digest, require_execution_context
 
 
 def binding_record(expected_cpu, topology=Path('/sys/devices/system/cpu')):
@@ -23,6 +23,25 @@ def binding_record(expected_cpu, topology=Path('/sys/devices/system/cpu')):
             'dp_inter_threads': os.environ.get('DP_INTER_OP_PARALLELISM_THREADS')}
 
 
+def executable_identity(argv):
+    """Hash the actual LAMMPS child, including a strictly recognized nsys wrapper."""
+    if not argv or not isinstance(argv[0], str) or not Path(argv[0]).is_absolute():
+        raise ValueError('benchmark executable must be absolute')
+    executable = argv[0]
+    if len(argv) > 1 and argv[1] == 'profile':
+        if (not executable.startswith('/opt/devtools/') or len(argv) < 9
+                or argv[1:8] != ['profile', '--trace=cuda', '--sample=none', '--cpuctxsw=none',
+                                  '--force-overwrite=false', '--output', '/work/cuda-trace']):
+            raise ValueError('unrecognized performance profiler wrapper')
+        executable = argv[8]
+    if not isinstance(executable, str) or not Path(executable).is_absolute():
+        raise ValueError('measured LAMMPS executable must be absolute')
+    resolved = Path(executable).resolve(strict=True)
+    if not resolved.is_file():
+        raise ValueError('measured LAMMPS executable must be a regular file')
+    return {'executable': executable, 'executable_sha256': file_digest(resolved)}
+
+
 def main(argv=None):
     require_execution_context()
     argv = list(sys.argv[1:] if argv is None else argv)
@@ -34,6 +53,7 @@ def main(argv=None):
     record = binding_record(int(raw_cpu))
     if any(record[key] != '1' for key in ('omp_threads', 'dp_intra_threads', 'dp_inter_threads')):
         raise ValueError('benchmark requires one actual OpenMP and DeepMD worker thread')
+    record.update(executable_identity(argv))
     record.update(node=os.uname().nodename, job=os.environ['SAI_MD_ALLOCATED_JOB'], argv=argv,
                   artifact=os.environ['SAI_MD_IMAGE'], artifact_sha256=os.environ['SAI_MD_IMAGE_SHA256'],
                   target=os.environ['SAI_MD_TARGET'], implementation=os.environ['SAI_MD_IMPLEMENTATION'])

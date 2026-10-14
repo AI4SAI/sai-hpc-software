@@ -13,6 +13,7 @@ from test_md_science import oracle_text
 from test_md_performance_run import large_dump
 from md_performance import ATOMS, parse_engine_time, render_input
 from md_performance_evidence import verify_performance_evidence
+from md_performance_exec import executable_identity
 from md_performance_run import _fixture_digest, parse_nsight_kernel_trace, replicated_reference
 from md_science import (BACKENDS, TOLERANCES, PLUMED_INPUT, file_digest, parse_reference,
                         render_data, render_lammps_input)
@@ -30,13 +31,16 @@ class RawPerformanceEvidenceTests(unittest.TestCase):
         self.launcher.write_text('# synthetic launcher; never executed\n')
         self.image = self.root / 'candidate.sif'
         self.image.write_bytes(b'synthetic image; never executed')
+        self.baseline = self.root / 'baseline-lmp'
+        self.baseline.write_bytes(b'synthetic baseline binary; never executed')
+        self.candidate_binary_sha = hashlib.sha256(b'synthetic image-resident LAMMPS').hexdigest()
         self.resources = {'nodes': 1, 'ranks': 1, 'threads_per_rank': 1, 'gpus_per_node': 1}
         self.expected = {'slurm_job': '12345', 'resources': self.resources,
                          'launcher_sha256': file_digest(self.launcher),
                          'artifact': str(self.image), 'artifact_sha256': file_digest(self.image),
                          'target': '16v100-avx2', 'nsys': '/opt/devtools/nsys/bin/nsys',
                          'candidate_executable': '/opt/apps/lammps/test/16V100/bin/lmp',
-                         'baseline_executable': '/opt/apps/lammps/preinstalled/bin/lmp'}
+                         'baseline_executable': str(self.baseline)}
         self.binding = {'logical_cpus': [3], 'physical_cores': [[0, 3]], 'omp_threads': '1',
                         'dp_intra_threads': '1', 'dp_inter_threads': '1', 'node': 'node1', 'job': '12345'}
         self.csv = 'Start (ns),Duration (ns),Name,Device,GrdX,GrdY,GrdZ\n1,42,deepmd_compute,Tesla V100,4,1,1\n'
@@ -114,7 +118,9 @@ class RawPerformanceEvidenceTests(unittest.TestCase):
         if profile:
             child = [self.expected['nsys'], 'profile', '--trace=cuda', '--sample=none', '--cpuctxsw=none',
                      '--force-overwrite=false', '--output', '/work/cuda-trace', *child]
-        self.write(trial / 'performance-binding.json', dict(self.binding, **identity, argv=child))
+        self.write(trial / 'performance-binding.json', dict(self.binding, **identity, argv=child,
+            executable=self.expected[side + '_executable'],
+            executable_sha256=file_digest(self.baseline) if side == 'baseline' else self.candidate_binary_sha))
         if self.backend == 'pt':
             if profile:
                 (trial / 'cuda-trace.nsys-rep').write_bytes(b'synthetic binary report')
@@ -163,9 +169,53 @@ class RawPerformanceEvidenceTests(unittest.TestCase):
             result = self.verify()
         execute.assert_not_called()
         self.assertTrue(result['performance_verified'])
+        self.assertEqual(result, json.loads(json.dumps(result)))
         self.assertAlmostEqual(result['performance']['speedup'], 6 / 6.5)
         self.assertEqual(result['files']['candidate-03/result.dump'], file_digest(self.output / 'candidate-03/result.dump'))
         self.assertNotIn('report.json', result['files'])
+        self.assertEqual(result['binaries'], {'baseline': file_digest(self.baseline),
+                                              'candidate': self.candidate_binary_sha})
+
+    def test_executable_wrapper_hashes_measured_lammps_not_profiler(self):
+        direct = [str(self.baseline), '-log', 'log.lammps']
+        profiled = ['/opt/devtools/nsys/bin/nsys', 'profile', '--trace=cuda', '--sample=none',
+                    '--cpuctxsw=none', '--force-overwrite=false', '--output', '/work/cuda-trace', *direct]
+        self.assertEqual(executable_identity(direct), executable_identity(profiled))
+        self.assertEqual(executable_identity(profiled)['executable_sha256'], file_digest(self.baseline))
+        for argv in [profiled[:8], [*profiled[:2], '--unexpected', *profiled[3:]],
+                     ['relative-lmp'], ['/untrusted/nsys', *profiled[1:]]]:
+            with self.subTest(argv=argv), self.assertRaises(ValueError):
+                executable_identity(argv)
+        link = self.root / 'site-lmp'
+        link.symlink_to(self.baseline)
+        self.assertEqual(executable_identity([str(link)])['executable_sha256'], file_digest(self.baseline))
+
+    def test_baseline_site_binary_changes_block_publication(self):
+        self.build()
+        self.baseline.write_bytes(b'changed preinstalled LAMMPS')
+        with self.assertRaisesRegex(ValueError, 'current site binary'):
+            self.verify()
+
+    def test_candidate_binary_consistency_covers_trace_and_measured_trials(self):
+        self.build('pt')
+        path = self.output / 'candidate-01/performance-binding.json'
+        binding = self.read(path)
+        self.write(path, dict(binding, executable_sha256='a' * 64))
+        with patch('md_performance_evidence.subprocess.run', return_value=subprocess.CompletedProcess([], 0, self.csv)):
+            with self.assertRaisesRegex(ValueError, 'executable bytes changed'):
+                self.verify()
+
+    def test_missing_binary_hash_in_calibration_or_candidate_cannot_pass(self):
+        self.build()
+        for trial in ['calibration-00', 'candidate-00']:
+            path = self.output / trial / 'performance-binding.json'
+            original = self.read(path)
+            without_hash = dict(original)
+            without_hash.pop('executable_sha256')
+            self.write(path, without_hash)
+            with self.subTest(trial=trial), self.assertRaisesRegex(ValueError, 'checksum is missing'):
+                self.verify()
+            self.write(path, original)
 
     def test_savedmodel_directory_inputs_are_verified(self):
         self.build('jax')
