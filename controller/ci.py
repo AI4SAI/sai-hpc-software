@@ -38,8 +38,7 @@ def main():
     run_id = safe_name("-".join((os.environ["GITHUB_RUN_ID"], os.environ["GITHUB_RUN_ATTEMPT"],
                                  track, target, datetime.now(timezone.utc).date().isoformat(), upstream[:12])))
     if software == "abacus":
-        # Validate the longest acceptance suffix before any upload/submission.
-        safe_name(run_id + "-gpu-features")
+        safe_name("benchmark-" + run_id + "-deepks")
     temporary = Path(os.environ["RUNNER_TEMP"])
     key = temporary / "ssh/key"
     known_hosts = Path(__file__).resolve().parents[1] / ".ci/slurm/known_hosts"
@@ -73,7 +72,10 @@ def main():
               "runtime_controller.py", "create_rootfs.sh", "release_contract.py", "resolve_source.py",
               "delivery_layout.py"]
     recipe = (["container_entry.sh", "environment.sh", "abacus_build.sh",
-               "gpu_feature_controller.py", "gpu_feature_runtime.sh"]
+               "gpu_feature_controller.py", "gpu_feature_runtime.sh",
+               "abacus_dependencies.py", "abacus_dependencies.sh",
+               "abacus_dependency_lock.json", "abacus_features.py", "abacus_benchmark.py",
+               "native_module.py", "export_native.py"]
               if software == "abacus" else
               ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh"])
     for name in common + recipe:
@@ -135,6 +137,14 @@ def main():
     ssh(["test", "-s", f"{root}/containers/base/minimal-v1.sif"])
     resume = os.environ.get("RESUME_RUN", "")
     extras = ["--resume-run", safe_name(resume)] if resume else []
+    if software == "abacus":
+        from abacus_dependencies import cache_archives, load_lock
+        updates = temporary / "abacus-updates"
+        cache_archives(updates)
+        ssh(["mkdir", "-p", f"{task}/input/abacus-updates"])
+        for item in load_lock()["archives"]:
+            if "url" in item:
+                upload(updates / item["file"], f"{task}/input/abacus-updates/{item['file']}")
     python("software_controller.py", "submit", software, run_id, upstream, version, target,
            *provenance_flags, *extras)
     try:
@@ -150,6 +160,15 @@ def main():
                    "--build-run-id", run_id)
             python("gpu_feature_controller.py", "monitor", feature_run)
         if software == "abacus":
+            artifact = str(expected_artifact)
+            for case in ("pw", "hse", "deepks"):
+                benchmark_run = safe_name(run_id + "-" + case)
+                python("abacus_benchmark.py", "prepare", benchmark_run, version, target,
+                       "--artifact", artifact, "--launcher", f"{control}/abacus",
+                       "--system-module", "abacus/v3.9.0.26-sm70-auto", "--packaged-case", case,
+                       "--allow-cpu-case-on-gpu")
+                python("abacus_benchmark.py", "submit", benchmark_run)
+                python("abacus_benchmark.py", "monitor", benchmark_run)
             python("software_controller.py", "publish", run_id)
         run(["scp", "-q", *options, "-P", "12022", f"{remote}:{task}/artifact.path", results / "artifact.path"])
         if (results / "artifact.path").read_text().strip() != str(expected_artifact):
@@ -181,6 +200,14 @@ def main():
             subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
                             f"{remote}:{root}/runtime-tests/{feature_run}/results/.",
                             str(feature_results)], check=False)
+        if software == "abacus":
+            for case in ("pw", "hse", "deepks"):
+                benchmark_results = results / f"benchmark-{case}"
+                benchmark_results.mkdir(exist_ok=True)
+                benchmark_run = safe_name("benchmark-" + run_id + "-" + case)
+                subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
+                                f"{remote}:{root}/runtime-tests/{benchmark_run}/results/.",
+                                str(benchmark_results)], check=False)
 
 if __name__ == "__main__":
     main()

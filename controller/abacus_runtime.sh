@@ -94,6 +94,9 @@ while IFS= read -r name; do
   case "$name" in
     SLURM_*|OMPI_*|OPAL_*|PMIX_*|PMI_*|PRTE_*|UCX_*|NCCL_*|CUSOLVERMP_*|CUDA_*|NVIDIA_VISIBLE_DEVICES|FI_*|OMP_*)
       [[ "$name" != NCCL_TOPO_FILE ]] || continue
+      # Open MPI uses these two variables for its own argv/command metadata;
+      # they contain commas/newlines and are not valid Apptainer --env maps.
+      [[ "$name" != OMPI_ARGV && "$name" != OMPI_COMMAND ]] || continue
       [[ "$name" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]] || exit 2
       args+=(--env "$name=${!name}")
       ;;

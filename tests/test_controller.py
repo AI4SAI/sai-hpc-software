@@ -132,6 +132,7 @@ class PolicyTests(unittest.TestCase):
         self.assertNotRegex(launcher, r"--bind [\"']?/opt:/opt")
         self.assertIn("4V100) target=4v100-avx512", launcher)
         self.assertIn("16V100) target=16v100-avx2", launcher)
+        self.assertIn('[[ "$name" != OMPI_ARGV && "$name" != OMPI_COMMAND ]] || continue', launcher)
 
     def test_multinode_runtime_accepts_cpu_partition(self):
         args = argparse.Namespace(run_id="runtime-test", version="develop-aaaa",
