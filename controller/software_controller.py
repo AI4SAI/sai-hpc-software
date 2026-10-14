@@ -163,6 +163,8 @@ def validate_acceptance(manifest):
             timing = evidence['statistics']['rounded_iteration_seconds']
             check_performance(timing['candidate']['median'], timing['system']['median'])
         elif name == 'cp2k_benchmark':
+            from cp2k_benchmark import verify_retest
+            verify_retest(task, request, evidence)
             timing = evidence['timings']['water64-gpw']
             check_performance(timing['candidate_cp2k_seconds']['median'],
                               timing['baseline_cp2k_seconds']['median'])

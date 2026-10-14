@@ -211,7 +211,7 @@ def main():
             if phase != 'application':
                 python('cp2k_dependency_stage.py', 'submit', root, control, dependency_run,
                        json.dumps(identity, sort_keys=True))
-                python('cp2k_dependency_stage.py', 'monitor', root, dependency_run)
+                python('cp2k_dependency_stage.py', 'monitor', root, dependency_run, '--timeout', '19800')
             if phase == 'dependencies':
                 emit_run_id()
                 return
@@ -223,7 +223,7 @@ def main():
         if phase != 'acceptance':
             python("software_controller.py", "submit", software, run_id, upstream, version, target,
                    *provenance_flags, *extras)
-            python("software_controller.py", "monitor", run_id)
+            python("software_controller.py", "monitor", run_id, "--timeout", "19800")
             if phase in ('build', 'application'):
                 emit_run_id()
                 return
