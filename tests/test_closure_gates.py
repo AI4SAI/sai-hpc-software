@@ -41,6 +41,11 @@ class ClosureGates(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, 'changed'):
                     md.validate_runtime_image(image, delivery)
 
+    def test_abacus_rejects_retest_of_retest_before_reading_proofs(self):
+        import abacus_benchmark
+        with self.assertRaisesRegex(ValueError, 'only one canonical retest'):
+            abacus_benchmark.verify_retest('/unused', {'run_id': 'candidate-pw-retest-retest'}, {})
+
     def test_performance_boundary_and_nonfinite_values(self):
         self.assertEqual(check_performance(110, 100), 1.1)
         with self.assertRaises(PerformanceRegression):

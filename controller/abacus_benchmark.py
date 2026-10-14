@@ -504,7 +504,10 @@ def verify_retest(task, request, evidence):
     """
     if not request["run_id"].endswith("-retest"):
         return None
-    original = task_dir(request["run_id"].removesuffix("-retest"))
+    original_id = request["run_id"].removesuffix("-retest")
+    if original_id.endswith("-retest"):
+        raise ValueError("ABACUS performance permits only one canonical retest")
+    original = task_dir(original_id)
     if Path(task) != task_dir(request["run_id"]) or not original.is_dir():
         raise ValueError("ABACUS retest requires its original benchmark run")
     first_request = verify(original, check_controller=False)
