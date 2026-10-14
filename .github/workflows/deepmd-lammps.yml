@@ -1,19 +1,19 @@
-name: Experimental DeePMD and LAMMPS tracking
+name: Build and validate DeePMD and LAMMPS
 
 on:
   workflow_call:
     inputs:
       software:
         type: string
-        required: true
+        required: false
         default: all
       tracks:
         type: string
-        required: true
+        required: false
         default: development,prerelease,release
       targets:
         type: string
-        required: true
+        required: false
         default: 16v100-avx2
       build_candidates:
         type: boolean
@@ -38,7 +38,7 @@ on:
         default: 16v100-avx2
         required: true
       build_candidates:
-        description: Spend Slurm allocation on unpublished experimental builds
+        description: Run paired builds, scientific acceptance and performance checks
         type: boolean
         default: false
       retry_releases:
@@ -56,6 +56,7 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
@@ -73,6 +74,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
     needs: validate
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     outputs:
       builds: ${{ steps.pair.outputs.builds }}
     steps:
@@ -106,8 +108,7 @@ jobs:
           PY
 
   candidate-build:
-    # The default-branch daily scheduler explicitly dispatches this workflow.
-    # Building candidates never enables publication or implies acceptance.
+    # The daily caller enables builds; manual tracking-only runs may leave them disabled.
     if: (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && inputs.build_candidates && needs.resolve.outputs.builds != '[]'
     needs: [validate, resolve]
     strategy:
@@ -120,3 +121,34 @@ jobs:
       pair: ${{ toJSON(matrix.build) }}
       retry_releases: ${{ inputs.retry_releases || false }}
     secrets: inherit
+
+  result:
+    if: always()
+    needs: [validate, resolve, candidate-build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify every selected build completed
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+          BUILD_ENABLED: '${{ inputs.build_candidates }}'
+        run: |
+          python3 - <<'PY'
+          import json, os
+          results = json.loads(os.environ['RESULTS'])
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
+              out.write('| Task | Result |\n|---|---|\n')
+              for name, job in results.items():
+                  out.write(f"| {name} | {job['result']} |\n")
+          if results['validate']['result'] != 'success':
+              raise SystemExit('Local validation did not succeed')
+          if os.environ['GITHUB_EVENT_NAME'] in ('workflow_dispatch', 'schedule'):
+              if results['resolve']['result'] != 'success':
+                  raise SystemExit('Source resolution did not succeed')
+              builds = json.loads(results['resolve']['outputs']['builds'])
+              if builds and os.environ['BUILD_ENABLED'] == 'true':
+                  if results['candidate-build']['result'] != 'success':
+                      raise SystemExit('Selected builds did not complete')
+              elif results['candidate-build']['result'] not in ('success', 'skipped'):
+                  raise SystemExit('Build stage did not succeed')
+          PY

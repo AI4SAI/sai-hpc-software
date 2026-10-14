@@ -5,11 +5,11 @@ on:
     inputs:
       tracks:
         type: string
-        required: true
+        required: false
         default: development
       targets:
         type: string
-        required: true
+        required: false
         default: 16v100-avx2
       resume_run:
         type: string
@@ -44,9 +44,9 @@ on:
         type: boolean
         default: false
   push:
-    paths: ['controller/**', 'tests/**', 'profiles/**', '.github/workflows/cp2k.yml']
+    paths: ['controller/**', 'tests/**', 'profiles/**', '.github/workflows/cp2k.yml', '.github/workflows/software-pair.yml']
   pull_request:
-    paths: ['controller/**', 'tests/**', 'profiles/**', '.github/workflows/cp2k.yml']
+    paths: ['controller/**', 'tests/**', 'profiles/**', '.github/workflows/cp2k.yml', '.github/workflows/software-pair.yml']
 
 permissions:
   contents: read
@@ -54,6 +54,7 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
@@ -73,8 +74,11 @@ jobs:
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
     needs: validate
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     outputs:
       builds: ${{ steps.resolve.outputs.builds }}
+      gpu_builds: ${{ steps.resolve.outputs.gpu_builds }}
+      cpu_builds: ${{ steps.resolve.outputs.cpu_builds }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -106,52 +110,72 @@ jobs:
               builds.extend(dict(result, target=t) for t in requested)
           with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
               out.write('builds=' + json.dumps(builds) + '\n')
+              out.write('gpu_builds=' + json.dumps([row for row in builds if row['target'] != 'dsprhbm']) + '\n')
+              out.write('cpu_builds=' + json.dumps([row for row in builds if row['target'] == 'dsprhbm']) + '\n')
           print(builds)
           PY
 
   build:
-    if: github.event_name == 'workflow_dispatch' && needs.resolve-source.outputs.builds != '[]'
+    if: (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && needs.resolve-source.outputs.gpu_builds != '[]'
     needs: [validate, resolve-source]
-    runs-on: ubuntu-latest
-    timeout-minutes: 360
-    environment: hpc
     strategy:
       fail-fast: false
       max-parallel: 1
       matrix:
-        build: ${{ fromJSON(needs.resolve-source.outputs.builds) }}
+        build: ${{ fromJSON(needs.resolve-source.outputs.gpu_builds) }}
+    uses: ./.github/workflows/software-pair.yml
+    with:
+      software: cp2k
+      build: ${{ toJSON(matrix.build) }}
+      resume_run: ${{ inputs.resume_run }}
+      reference_run: ${{ inputs.reference_run }}
+      retry_releases: ${{ inputs.retry_releases }}
+    secrets: inherit
+
+  build-cpu:
+    # Job dependencies, rather than matrix order, ensure a fresh GPU reference
+    # is accepted before CPU-only added-feature comparisons start.
+    if: ${{ !cancelled() && (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && needs.validate.result == 'success' && needs.resolve-source.result == 'success' && (needs.build.result == 'success' || needs.build.result == 'skipped') && needs.resolve-source.outputs.cpu_builds != '[]' }}
+    needs: [validate, resolve-source, build]
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        build: ${{ fromJSON(needs.resolve-source.outputs.cpu_builds) }}
+    uses: ./.github/workflows/software-pair.yml
+    with:
+      software: cp2k
+      build: ${{ toJSON(matrix.build) }}
+      resume_run: ${{ inputs.resume_run }}
+      reference_run: ${{ inputs.reference_run }}
+      retry_releases: ${{ inputs.retry_releases }}
+    secrets: inherit
+
+  result:
+    if: always()
+    needs: [validate, resolve-source, build, build-cpu]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - name: Prepare repository-secret SSH key
+      - name: Verify selected GPU and CPU deliveries completed
         env:
-          KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
+          RESULTS: ${{ toJSON(needs) }}
         run: |
-          set -euo pipefail
-          mkdir -m 700 "$RUNNER_TEMP/ssh"
-          printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
-          chmod 600 "$RUNNER_TEMP/ssh/key"
-      - name: Cache, submit, monitor and verify CP2K SIF
-        env:
-          SOFTWARE: cp2k
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          SOURCE_REF: ${{ matrix.build.source_ref }}
-          RELEASE_TRACK: ${{ matrix.build.track }}
-          SOURCE_SHA: ${{ matrix.build.source_sha }}
-          SOFTWARE_VERSION: ${{ matrix.build.source_version }}
-          TARGET: ${{ matrix.build.target }}
-          RESUME_RUN: ${{ inputs.resume_run }}
-          CP2K_REFERENCE_RUN: ${{ inputs.reference_run }}
-          RETRY_RELEASES: ${{ inputs.retry_releases }}
-        run: python3 -u controller/ci.py
-      - name: Publish build logs and SAI artifact location
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: cp2k-results-${{ matrix.build.track }}-${{ matrix.build.target }}-${{ github.run_id }}-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/results/
-          if-no-files-found: warn
-      - name: Remove temporary SSH key
-        if: always()
-        run: rm -f -- "$RUNNER_TEMP/ssh/key"
+          python3 - <<'PY'
+          import json, os
+          results = json.loads(os.environ['RESULTS'])
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
+              out.write('| Task | Result |\n|---|---|\n')
+              for name, job in results.items():
+                  out.write(f"| {name} | {job['result']} |\n")
+          if results['validate']['result'] != 'success':
+              raise SystemExit('Local validation did not succeed')
+          if os.environ['GITHUB_EVENT_NAME'] in ('workflow_dispatch', 'schedule'):
+              if results['resolve-source']['result'] != 'success':
+                  raise SystemExit('Source resolution did not succeed')
+              for key, name in (('gpu_builds', 'build'), ('cpu_builds', 'build-cpu')):
+                  builds = json.loads(results['resolve-source']['outputs'][key])
+                  expected = 'success' if builds else 'skipped'
+                  if results[name]['result'] != expected:
+                      raise SystemExit(f'{name} deliveries did not complete')
+          PY

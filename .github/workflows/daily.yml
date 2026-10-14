@@ -32,6 +32,7 @@ concurrency:
 jobs:
   plan:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     outputs:
       abacus: ${{ steps.plan.outputs.abacus }}
       cp2k: ${{ steps.plan.outputs.cp2k }}
@@ -39,6 +40,8 @@ jobs:
       gpumd: ${{ steps.plan.outputs.gpumd }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - id: plan
         env:
           SOFTWARE: ${{ inputs.software || 'all' }}
@@ -92,6 +95,7 @@ jobs:
     if: always()
     needs: [plan, abacus, cp2k, deepmd_kit, gpumd]
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
       - name: Require all selected deliveries to succeed
         env:

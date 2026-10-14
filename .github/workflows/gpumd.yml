@@ -9,11 +9,11 @@ on:
         default: ''
       tracks:
         type: string
-        required: true
+        required: false
         default: development,prerelease,release
       targets:
         type: string
-        required: true
+        required: false
         default: 16v100-avx2
       retry_releases:
         type: boolean
@@ -37,9 +37,9 @@ on:
         type: boolean
         default: false
   push:
-    paths: ['controller/gpumd_*', 'controller/ci.py', 'controller/software_controller.py', 'controller/remote_controller.py', 'controller/release_contract.py', 'controller/resolve_source.py', 'controller/delivery_layout.py', 'controller/export_native.py', 'controller/native_module.py', 'tests/test_gpumd.py', '.github/workflows/gpumd.yml']
+    paths: ['controller/gpumd_*', 'controller/ci.py', 'controller/software_controller.py', 'controller/remote_controller.py', 'controller/release_contract.py', 'controller/resolve_source.py', 'controller/delivery_layout.py', 'controller/export_native.py', 'controller/native_module.py', 'tests/test_gpumd.py', '.github/workflows/gpumd.yml', '.github/workflows/software-pair.yml']
   pull_request:
-    paths: ['controller/gpumd_*', 'controller/ci.py', 'controller/software_controller.py', 'controller/remote_controller.py', 'controller/release_contract.py', 'controller/resolve_source.py', 'controller/delivery_layout.py', 'controller/export_native.py', 'controller/native_module.py', 'tests/test_gpumd.py', '.github/workflows/gpumd.yml']
+    paths: ['controller/gpumd_*', 'controller/ci.py', 'controller/software_controller.py', 'controller/remote_controller.py', 'controller/release_contract.py', 'controller/resolve_source.py', 'controller/delivery_layout.py', 'controller/export_native.py', 'controller/native_module.py', 'tests/test_gpumd.py', '.github/workflows/gpumd.yml', '.github/workflows/software-pair.yml']
 
 permissions:
   contents: read
@@ -47,6 +47,7 @@ permissions:
 jobs:
   validate:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
         with:
@@ -65,6 +66,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
     needs: validate
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     outputs:
       builds: ${{ steps.resolve.outputs.builds }}
     steps:
@@ -108,44 +110,45 @@ jobs:
   build:
     if: (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && needs.resolve-source.outputs.builds != '[]'
     needs: [validate, resolve-source]
-    runs-on: ubuntu-latest
-    timeout-minutes: 360
-    environment: hpc
     strategy:
       fail-fast: false
       max-parallel: 1
       matrix:
         build: ${{ fromJSON(needs.resolve-source.outputs.builds) }}
+    uses: ./.github/workflows/software-pair.yml
+    with:
+      software: gpumd
+      build: ${{ toJSON(matrix.build) }}
+      retry_releases: ${{ inputs.retry_releases }}
+    secrets: inherit
+
+  result:
+    if: always()
+    needs: [validate, resolve-source, build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - name: Prepare repository-secret SSH key
+      - name: Verify every selected build completed
         env:
-          KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
+          RESULTS: ${{ toJSON(needs) }}
+          BUILD_ENABLED: 'true'
         run: |
-          set -euo pipefail
-          mkdir -m 700 "$RUNNER_TEMP/ssh"
-          printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
-          chmod 600 "$RUNNER_TEMP/ssh/key"
-      - name: Build isolated SIF, verify scientific parity and benchmark, then publish
-        env:
-          SOFTWARE: gpumd
-          REMOTE_USER: ${{ secrets.REMOTE_USER }}
-          SOURCE_SHA: ${{ matrix.build.source_sha }}
-          SOFTWARE_VERSION: ${{ matrix.build.source_version }}
-          SOURCE_REF: ${{ matrix.build.source_ref }}
-          RELEASE_TRACK: ${{ matrix.build.track }}
-          TARGET: ${{ matrix.build.target }}
-          RETRY_RELEASES: ${{ inputs.retry_releases }}
-        run: python3 -u controller/ci.py
-      - name: Retain provenance, numerical outputs and same-node benchmark
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gpumd-${{ matrix.build.track }}-${{ matrix.build.target }}-${{ github.run_id }}
-          path: ${{ runner.temp }}/results/
-          if-no-files-found: warn
-      - name: Remove temporary SSH key
-        if: always()
-        run: rm -f -- "$RUNNER_TEMP/ssh/key"
+          python3 - <<'PY'
+          import json, os
+          results = json.loads(os.environ['RESULTS'])
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
+              out.write('| Task | Result |\n|---|---|\n')
+              for name, job in results.items():
+                  out.write(f"| {name} | {job['result']} |\n")
+          if results['validate']['result'] != 'success':
+              raise SystemExit('Local validation did not succeed')
+          if os.environ['GITHUB_EVENT_NAME'] in ('workflow_dispatch', 'schedule'):
+              if results['resolve-source']['result'] != 'success':
+                  raise SystemExit('Source resolution did not succeed')
+              builds = json.loads(results['resolve-source']['outputs']['builds'])
+              if builds and os.environ['BUILD_ENABLED'] == 'true':
+                  if results['build']['result'] != 'success':
+                      raise SystemExit('Selected builds did not complete')
+              elif results['build']['result'] not in ('success', 'skipped'):
+                  raise SystemExit('Build stage did not succeed')
+          PY

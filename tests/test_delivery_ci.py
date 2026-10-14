@@ -42,7 +42,7 @@ class WorkflowSourceTests(unittest.TestCase):
                                  original(name, selected, resolver)), redirect_stdout(io.StringIO()):
                 exec(compile(snippet, name, "exec"), {})
             self.resolver_calls = resolver.call_args_list
-            return json.loads(output.read_text().removeprefix("builds="))
+            return json.loads(dict(line.split("=", 1) for line in output.read_text().splitlines())["builds"])
 
     def test_abacus_schedule_resolves_all_three_tracks_and_four_registered_partitions(self):
         for software in ("abacus",):
@@ -99,9 +99,12 @@ class WorkflowSourceTests(unittest.TestCase):
             self.assertNotIn("inputs.source_ref", text)
             self.assertNotIn("schedule:", text)
             self.assertIn("GH_TOKEN: ${{ github.token }}", text)
+            self.assertIn('uses: ./.github/workflows/software-pair.yml', text)
+            self.assertIn('build: ${{ toJSON(matrix.build) }}', text)
+            pair = (ROOT / '.github/workflows/software-pair.yml').read_text()
             for environment, field in (("SOURCE_REF", "source_ref"), ("RELEASE_TRACK", "track"),
                                        ("SOURCE_SHA", "source_sha"), ("SOFTWARE_VERSION", "source_version")):
-                self.assertIn(environment + ": ${{ matrix.build." + field + " }}", text)
+                self.assertIn(environment + ": ${{ fromJSON(inputs.build)." + field + " }}", pair)
 
 
 class DailyWorkflowTests(unittest.TestCase):
