@@ -1,51 +1,95 @@
-# Workflow closure implementation checkpoint — 2026-10-15
+# Workflow closure — 2026-10-15
 
-This branch is an integration checkpoint, not evidence that the production
-software matrix is accepted. Existing worktrees and recovery checkpoints were
-preserved before integration. No administrator installation is included.
+The code now connects build, scientific/performance acceptance, native export
+readback and publication. Production acceptance is still incomplete: none of
+the new software builds has yet passed the complete site matrix. Original dirty
+worktrees and recovery checkpoints remain preserved. Administrator installation
+into physical `/opt/apps` is outside this task.
 
-## Implemented
+## Implemented and locally verified
 
-- Daily orchestration calls local reusable workflows and checks their outcomes,
-  rather than reporting success after dispatching independent runs.
-- Software-specific selection covers DSPRHBM plus 16V100, 4V100 and 8V100V0 where
-  supported. Development remains rebuildable; unchanged release attempts remain
-  deduplicated unless explicitly retried. Schema-1 history remains readable.
-- ABACUS upstream JSON configuration compatibility and CP2K's pinned wignernj
-  source dependency are integrated with the preserved software work.
-- ABACUS, CP2K and GPUMD publication performance checks allow one repeat on the
-  same artifact after a regression greater than 10%; repeated regression blocks
-  publication. CI collects both original and repeat evidence.
-- Build submissions use a shared Slurm singleton name and capacity checks both
-  before submission and at execution. Capacity requires three overlay sizes plus
-  4 GiB. This is conservative, not a reservation against unrelated users.
-- CP2K native Spack probes cover all four partitions. 8V100V0 uses the site's
-  AVX2 MPI/BLAS modules despite the CPU target name containing avx512.
-- MD runtime checks canonical image path, successful build record, paired delivery
-  identity and actual SIF SHA256 before execution. CI requests two-node science
-  acceptance. Performance measurements alternate baseline and candidate, with
-  separate CUDA tracing excluded from timings.
+- Daily and child workflows await reusable jobs and reject unexpected skipped,
+  failed or cancelled deliveries. A recorded unchanged release is an intentional
+  skip; development must produce a fresh run on every trigger. Explicit retry
+  inputs propagate through reusable workflows. Schema-1 history is retained.
+- Long jobs are separated into build and acceptance phases. CP2K additionally
+  has a dependency phase, and its GPU deliveries finish before CPU references
+  are selected. Handoffs validate workflow/source/track/target and the original
+  immutable controller identity, without uploading or claiming a second build.
+- ABACUS supports the upstream JSON option change and renamed HSE fixture,
+  validates packaged scientific inputs before compiling, and includes all
+  required native library paths.
+- CP2K dependencies are built on the target partition, sealed with exact
+  identity, job/script, graph, installation receipt and overlay hashes, then
+  cloned and checked for application compilation. The original overlay remains
+  intact. GPU dependency wall time is capped at the observed 240-minute QOS;
+  historical 158–167 minute successes are references, not proof for this recipe.
+  The required wignernj archive is pinned and checked. All four partition source
+  caches passed read-only verification on SAI.
+- MD connects two-node source-bound science, TF/PT/JAX raw performance checks,
+  one repeat after a slowdown greater than 10%, paired export readback and
+  immutable publication/module generation. PT requires actual Nsight CUDA
+  kernel evidence. TF/JAX follow the established CPU-only baseline scope.
+  Runtime checks bind actual SIF bytes to the paired build identity.
+- GPUMD adds frozen-model GNEP numerical forces, stale-output rejection,
+  calibrated engine intervals and alternating baseline/candidate trials.
+  Scientific and performance verdicts are recomputed from retained raw files.
+- Publication requires all scientific gates and blocks a repeated performance
+  regression greater than 10%. Repeat records bind original evidence, artifact,
+  baseline, inputs and resources; original logs remain available.
+- Every accepted single or paired SIF must export its exact prefixes and pass
+  independent readback of all bytes, permissions, links, identities and native
+  modules before publication. Cache validation rechecks the exported payload.
+  Schema-1 `/opt/software` exports are never relabelled as schema-2 `/opt/apps`.
+- Submission and allocation-start capacity checks plus a shared Slurm singleton
+  serialize builds. Repacking copies and checksum-checks a checkpoint instead
+  of moving the original. Monitors preserve jobs when observation expires.
+
+## Verified on SAI
+
+Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.json).
+
+- Native export tool fixture: real SIF roundtrip passed for 17 software/partition
+  combinations and 102 retained files. This is explicitly a synthetic fixture,
+  not scientific software acceptance; no container code or system `/opt` write
+  was involved.
+- Real Lmod probe job `1790564`: `COMPLETED`, exit `0:0`, 12 seconds. Module load,
+  unload, partition selection and subsequent image/launcher switch all passed.
+- Read-only capacity/reference audit: about 16.05 GiB actually available. Of 17
+  proposed old failed routine overlays, one was found referenced by CP2K recovery
+  records and protected. The remaining 16 could reclaim 141.92 GiB, subject to
+  explicit user approval and immediate file/job revalidation. Nothing deleted.
 
 ## Remaining acceptance work
 
-1. Connect MD raw performance evidence verification, repeat policy, validated
-   native export, module generation and publication. MD remains candidate-only;
-   passing its current science workflow does not imply a published delivery.
-2. Complete CP2K dependency-stage lifecycle and prove it fits site queue limits.
-3. Exercise automated native export roundtrips and module payloads for all five
-   packages; audit uploaded controller dependencies and validate workflows with
-   actionlint in addition to Python YAML tests.
-4. Run real development canaries on 16V100 and DSPRHBM, then expand GPU acceptance
-   to 4V100 and 8V100V0. Require scientific parity and performance evidence before
-   publishing each delivery. No new Slurm builds were submitted at this checkpoint.
-5. Obtain adequate site capacity without deleting recovery checkpoints or logs.
-   The previous read-only inspection found about 17 GiB free and about 313 GiB of
-   old failed overlays; this inventory is not authorization to delete them and
-   must be revalidated against active jobs and resume references before cleanup.
+| Software | DSPRHBM | 16V100 | 4V100 | 8V100V0 |
+|---|---|---|---|---|
+| ABACUS | Pending | Pending | Pending | Pending |
+| CP2K | Pending | Pending | Pending | Pending |
+| DeePMD-kit | Not a GPU target | Pending | Pending | Pending |
+| LAMMPS | Not a GPU target | Pending | Pending | Pending |
+| GPUMD | Not a GPU target | Building: job 1790711 | Pending | Pending |
+
+1. The final MD repeat audit and integrated suite passed. Continue to keep
+   controller upload/fingerprint and workflow inputs aligned when diagnosing
+   canary failures.
+2. Obtain adequate space for the normal ABACUS/CP2K/MD canaries while preserving
+   logs, artifacts and recovery checkpoints. A smaller GPUMD canary may proceed
+   only if its actual capacity check passes after source staging.
+3. Run complete development canaries on 16V100 and DSPRHBM, then GPU acceptance
+   on 4V100 and 8V100V0. Record source/recipe/SIF hashes, Slurm jobs, raw scientific
+   comparisons, performance and any repeat for each accepted delivery.
+4. Validate each real delivery's export, manifests and module invocation, in
+   addition to the synthetic tool probes above. Publish only after every gate
+   passes. Regressions or failed builds require diagnosis; a passing local test
+   or historical result is insufficient.
+5. Review the integrated branch/PR and operational workflow evidence. Do not
+   describe the matrix as closed until all 17 applicable entries are proven.
 
 ## Local validation
 
-The full unittest suite passed with 573 tests (2 skipped) after the partition,
-MD image-binding and alternating measurement changes. This does not establish
-real scientific correctness, GPU execution, performance or export usability on
-SAI. The skipped tests and cluster acceptance must not be represented as passed.
+The latest full integration checkpoint ran **669 unittest tests, all passed,
+with no skips**, using the preserved upstream cache read-only. Actionlint 1.7.12 validates every
+workflow, including reusable phase and final-result jobs. Shell syntax checks and
+Python compilation also passed. These checks do not replace the pending real
+scientific/performance matrix.

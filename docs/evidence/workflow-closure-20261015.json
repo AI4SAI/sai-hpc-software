@@ -1,0 +1,67 @@
+{
+  "schema": 1,
+  "checked_at": "2026-10-15 Asia/Shanghai",
+  "controller_commit": "fe62234",
+  "host": "SAI-stardust",
+  "fixture_only": true,
+  "scientific_software_accepted": false,
+  "native_export": {
+    "status": "PASS",
+    "roundtrip_verified": true,
+    "verified_files": 102,
+    "installations": 17,
+    "image_sha256": "6733124451aeed522dc284084bf294bd2dc9ad03f0d5886a5ff7b66ec12e84ab",
+    "remote_result": "/home/stardust/sai-hpc-software/experimental/closure-probes-20261015/native-export-result.json"
+  },
+  "real_lmod": {
+    "job_id": "1790564",
+    "state": "COMPLETED",
+    "exit_code": "0:0",
+    "elapsed": "00:00:12",
+    "marker": "REAL_LMOD_PARTITION_PAIR_AND_RELOAD_VERIFIED",
+    "remote_log": "/home/stardust/sai-hpc-software/experimental/closure-probes-20261015/lmod-1790564.log"
+  },
+  "capacity": {
+    "available_gib": 17,
+    "cleanup_executed": false,
+    "proposed_unreferenced_overlays": 16,
+    "proposed_reclaim_gib": 141.92385482788086,
+    "protected_recovery_reference": "35575648711-1-development-16v100-avx2-e2a0695b7faa"
+  },
+  "local_validation": {
+    "tests": 669,
+    "skipped": 0,
+    "passed": true,
+    "actionlint": "1.7.12",
+    "shell_syntax": true,
+    "python_compilation": true
+  },
+  "canaries": {
+    "gpumd_16v100": {
+      "run_id": "gpumd-canary-20261015-01",
+      "job_id": "1790711",
+      "state_last_observed": "RUNNING",
+      "node": "16v100n01",
+      "controller_commit": "7c311a26bd6b8ec757775bee893e11bc6a8759a5",
+      "source_sha": "a0e55bc87390b93d009da37c798616982573bab2",
+      "source_version": "master-2026-10-14",
+      "overlay_mib": 4096,
+      "accepted": false
+    },
+    "abacus": {
+      "source_sha": "f264b4022fd477734de0f3ace723f6da9e306943",
+      "source_version": "develop-2026-10-14",
+      "source_cached": true,
+      "dependency_hashes_verified": true,
+      "job_submitted": false
+    },
+    "cp2k": {
+      "source_sha": "75b32874ff70946417281346a706c75d096b2219",
+      "source_version": "master-2026-10-14",
+      "source_parts_prepared": true,
+      "source_bytes_compressed": 13022,
+      "dependency_hashes_verified": true,
+      "job_submitted": false
+    }
+  }
+}
