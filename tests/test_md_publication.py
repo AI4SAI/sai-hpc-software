@@ -215,6 +215,8 @@ class MDPublicationTests(unittest.TestCase):
         metadata = first['modules']['lammps']
         self.assertNotEqual(self.evaluate(metadata, partition='16V100',
                                          saved={'SAI_DEEPMD_KIT_STACK_DIGEST': 'wrong-pair'}).returncode, 0)
+        self.assertNotEqual(self.evaluate(metadata, partition='16V100',
+                                         saved={'SAI_DEEPMD_KIT_IMAGE': str(original_image)}).returncode, 0)
 
     def test_changed_evidence_module_wrapper_or_export_fails_publication_verification(self):
         manifest = self.publish()

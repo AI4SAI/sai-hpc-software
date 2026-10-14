@@ -128,6 +128,7 @@ def module_payload(delivery, image, build_run, software):
     content = '\n'.join([
         '# Immutable paired MD image and launcher; science/performance/export accepted.',
         f'if {{[module-info mode load] && [info exists env({peer}_STACK_DIGEST)] && $env({peer}_STACK_DIGEST) ne {tcl(identity["stack_digest"])}}} {{error "loaded MD companion belongs to another locked pair"}}',
+        f'if {{[module-info mode load] && [info exists env({peer}_IMAGE)] && $env({peer}_IMAGE) ne {tcl(image)}}} {{error "loaded MD companion uses another accepted image"}}',
         'prepend-path MODULEPATH /opt/modules/modulefiles/devtools',
         'module load apptainer/1.4.4 cuda/12.9.1 openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto',
         f'setenv {stem}_STACK_DIGEST {tcl(identity["stack_digest"])}',
