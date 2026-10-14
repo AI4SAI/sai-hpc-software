@@ -10,11 +10,15 @@ export CP2K_SOURCE_SHA="$sha"
 case "$op" in
 dependencies)
   bash /control/cp2k_spack_dependencies.sh "${SAI_BUILD_PARTITION:?}" "$INSTALL_PREFIX"
+  printf '%s\n' "$delivery" > /results/stage-identity.json
   ;;
 build)
   mkdir -p /workspace/tmp
   if [[ ! -f /results/install-success.json ]]; then
     bash /control/cp2k_spack_dependencies.sh "${SAI_BUILD_PARTITION:?}" "$INSTALL_PREFIX"
+  else
+    python3 /control/delivery_layout.py prefix "$delivery" "$software" "$sha" "$version" "$target" \
+      --installed /results/stage-identity.json
   fi
   git init /workspace/source
   # Borrow only immutable Git objects from the read-only source cache. Mark the

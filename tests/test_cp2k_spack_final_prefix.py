@@ -94,7 +94,7 @@ class FinalPrefixTests(unittest.TestCase):
             script = render(root, root / 'controller/frozen', root / 'runs/new', identity)
             subprocess.run(['bash', '-n'], input=script, text=True, check=True)
             self.assertIn('--qos=rush-cpu', script)
-            self.assertIn('--time=720', script)
+            self.assertIn('--time=240', script)
             self.assertIn('--cpus-per-task=8', script)
             self.assertIn('--mem=28G', script)
             self.assertIn(SEED_SHA256, script)
@@ -109,8 +109,12 @@ class FinalPrefixTests(unittest.TestCase):
                 self.assertNotIn(absent, script)
             gpu = make_identity('cp2k', 'development', 'master', 'a' * 40,
                                 '2026.2', 'b' * 64, '16v100-avx2')
+            gpu_script = render(root, root / 'controller/frozen', root / 'runs/new', gpu)
+            self.assertIn('--gpus-per-node=1', gpu_script)
+            self.assertIn('--qos=flood-1o2gpu', gpu_script)
+            self.assertNotIn('--cpus-per-task=', gpu_script)
             with self.assertRaises(ValueError):
-                render(root, root / 'controller/frozen', root / 'runs/new', gpu)
+                render(root, root / 'controller/frozen', root / 'runs/new', gpu, minutes=241)
 
     def test_cmake_adapters_resolve_exact_private_lib64_roots(self):
         with tempfile.TemporaryDirectory() as temporary:
