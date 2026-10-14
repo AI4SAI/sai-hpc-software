@@ -68,7 +68,7 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 | CP2K | Pending | Pending | Pending | Pending |
 | DeePMD-kit | Not a GPU target | Pending | Pending | Pending |
 | LAMMPS | Not a GPU target | Pending | Pending | Pending |
-| GPUMD | Not a GPU target | Building: job 1790711 | Pending | Pending |
+| GPUMD | Not a GPU target | 1790933: corrected build running | Pending | Pending |
 
 1. The final MD repeat audit and integrated suite passed. Continue to keep
    controller upload/fingerprint and workflow inputs aligned when diagnosing
@@ -76,14 +76,21 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 2. Obtain adequate space for the normal ABACUS/CP2K/MD canaries while preserving
    logs, artifacts and recovery checkpoints. A smaller GPUMD canary may proceed
    only if its actual capacity check passes after source staging.
-3. Run complete development canaries on 16V100 and DSPRHBM, then GPU acceptance
+3. GPUMD job `1790711` compiled and linked `gpumd`, `nep` and `gnep`, but
+   failed packaging because current upstream replaced `LICENCE` with `LICENSES/`.
+   The license layout is fixed and preflighted before compilation. Fresh job
+   `1790933` is rebuilding from snapshot `b9cbf83`; the failed overlay/log remain
+   preserved. Its 3 GiB overlay is based on measured prior usage of 340 MiB plus
+   conservative export/JIT headroom, and still passed the normal 13 GiB free-space
+   gate. No scientific acceptance or published SIF is claimed.
+4. Run complete development canaries on 16V100 and DSPRHBM, then GPU acceptance
    on 4V100 and 8V100V0. Record source/recipe/SIF hashes, Slurm jobs, raw scientific
    comparisons, performance and any repeat for each accepted delivery.
-4. Validate each real delivery's export, manifests and module invocation, in
+5. Validate each real delivery's export, manifests and module invocation, in
    addition to the synthetic tool probes above. Publish only after every gate
    passes. Regressions or failed builds require diagnosis; a passing local test
    or historical result is insufficient.
-5. Review the integrated branch/PR and operational workflow evidence. Do not
+6. Review the integrated branch/PR and operational workflow evidence. Do not
    describe the matrix as closed until all 17 applicable entries are proven.
 
 ## Local validation

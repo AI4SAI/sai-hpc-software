@@ -38,15 +38,17 @@
   },
   "canaries": {
     "gpumd_16v100": {
-      "run_id": "gpumd-canary-20261015-01",
-      "job_id": "1790711",
-      "state_last_observed": "RUNNING",
-      "node": "16v100n01",
-      "controller_commit": "7c311a26bd6b8ec757775bee893e11bc6a8759a5",
+      "run_id": "gpumd-canary-20261015-02",
+      "job_id": "1790933",
+      "state_last_observed": "SUBMITTED",
+      "controller_commit": "b9cbf836889b208e871ca63735eebc01124d0722",
       "source_sha": "a0e55bc87390b93d009da37c798616982573bab2",
       "source_version": "master-2026-10-14",
-      "overlay_mib": 4096,
-      "accepted": false
+      "overlay_mib": 3072,
+      "accepted": false,
+      "capacity_required_gib": 13,
+      "prior_overlay_used_bytes": 356700160,
+      "retry_reason": "Diagnosed upstream license layout rename; source compilation rerun with new recipe identity"
     },
     "abacus": {
       "source_sha": "f264b4022fd477734de0f3ace723f6da9e306943",
@@ -62,6 +64,32 @@
       "source_bytes_compressed": 13022,
       "dependency_hashes_verified": true,
       "job_submitted": false
+    },
+    "gpumd_16v100_previous_attempt": {
+      "run_id": "gpumd-canary-20261015-01",
+      "job_id": "1790711",
+      "state_last_observed": "FAILED",
+      "node": "16v100n01",
+      "controller_commit": "7c311a26bd6b8ec757775bee893e11bc6a8759a5",
+      "source_sha": "a0e55bc87390b93d009da37c798616982573bab2",
+      "source_version": "master-2026-10-14",
+      "overlay_mib": 4096,
+      "accepted": false,
+      "exit_code": "1:0",
+      "failure": "Upstream replaced LICENCE with LICENSES/; all three binaries compiled and linked before packaging failure",
+      "published": false
     }
+  },
+  "draft_pr": "https://github.com/AI4SAI/sai-hpc-software/pull/8",
+  "ci_validation": {
+    "head_sha": "31f4c7361edecb9d82a5e131d7d8b9e05af3d631",
+    "runs": [
+      38618396798,
+      38618397256,
+      38618396751,
+      38618396890
+    ],
+    "all_success": true,
+    "scope": "PR validation jobs; remote builds intentionally not selected on pull_request"
   }
 }
