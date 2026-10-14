@@ -8,7 +8,7 @@ import shlex
 import subprocess
 import time
 
-from remote_controller import TARGETS, safe_name, container_command
+from remote_controller import site_app_binds, TARGETS, safe_name, container_command
 from source_cache import checksum
 from delivery_layout import artifact_path, load_artifact, validate_record
 from release_contract import GPU_TARGETS, validate_identity
@@ -44,7 +44,7 @@ def render_job(request, task):
         'driver=${LD_LIBRARY_PATH:-}; source "$1"; export LD_LIBRARY_PATH="$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"; '
         'export CUDACXX="$CUDA_HOME/bin/nvcc"; exec /usr/bin/python3 /control/gpumd_science.py run "$2" /work/science',
         "bash", f"{prefix}/share/sai/runtime-env.sh", prefix],
-        control=CONTROL, gpu=True, extra_binds=((Path("/opt/apps"), "/opt/apps"),))
+        control=CONTROL, gpu=True, extra_binds=site_app_binds("gpumd"))
     # Insert trusted write binds/env before the image (the policy helper's
     # extra_binds is intentionally read-only for dependencies).
     index = argv.index(request["artifact"])

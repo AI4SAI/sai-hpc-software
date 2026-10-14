@@ -22,7 +22,9 @@ export APPTAINER_TMPDIR="$runtime" APPTAINER_CACHEDIR="$runtime/cache"
 mkdir -p "$APPTAINER_CACHEDIR"
 args=(apptainer exec --nv --cleanenv --containall --no-home
       --no-mount bind-paths,home,cwd,tmp,hostfs --pwd /work)
-for dependency in /usr /lib /lib64 /opt/devtools /opt/apps; do args+=(--bind "$dependency:$dependency:ro"); done
+for dependency in /usr /lib /lib64 /opt/devtools; do args+=(--bind "$dependency:$dependency:ro"); done
+site_paths=$(python3 "$launcher_control/remote_controller.py" gpumd)
+while IFS= read -r dependency; do args+=(--bind "$dependency:$dependency:ro"); done <<< "$site_paths"
 args+=(--bind "$work:/work:rw" --bind "$runtime:/runtime:rw" --env TMPDIR=/runtime
        --env "OMP_NUM_THREADS=${OMP_NUM_THREADS:-2}")
 for key in CUDA_VISIBLE_DEVICES DP_INTRA_OP_PARALLELISM_THREADS DP_INTER_OP_PARALLELISM_THREADS; do

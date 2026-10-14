@@ -11,7 +11,8 @@ build)
   mkdir -p /workspace/tmp
   test ! -w /control
   test ! -w /input/repository
-  test ! -w /opt/apps
+  test ! -w /opt/apps/conda_env/deepmd-kit-3.2.0
+  test ! -w /opt/apps/plumed/plumed-2.10.1
   git init /workspace/source
   git -C /workspace/source -c core.hooksPath=/dev/null fetch --depth=1 --no-tags /input/repository "$sha"
   git -C /workspace/source -c core.hooksPath=/dev/null checkout --detach "$sha"
@@ -47,7 +48,8 @@ build)
 export)
   test ! -e /workspace/export
   bash /control/create_rootfs.sh /workspace/export
-  cp -a /opt/software /workspace/export/opt/software
+  mkdir -p "/workspace/export$(dirname -- "$INSTALL_PREFIX")"
+  cp -a "$INSTALL_PREFIX" "/workspace/export$INSTALL_PREFIX"
   mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"
   ;;
 verify)
