@@ -95,8 +95,10 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 
 ## Local validation
 
-The latest full integration checkpoint ran **669 unittest tests, all passed,
+The latest full integration checkpoint ran **671 unittest tests, all passed,
 with no skips**, using the preserved upstream cache read-only. Actionlint 1.7.12 validates every
-workflow, including reusable phase and final-result jobs. Shell syntax checks and
+workflow, including reusable phase and final-result jobs. The four PR validation
+workflows passed on `03af2ab`; remote builds are intentionally not selected by PR
+events. Shell syntax checks and
 Python compilation also passed. These checks do not replace the pending real
 scientific/performance matrix.

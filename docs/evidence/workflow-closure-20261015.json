@@ -22,25 +22,28 @@
     "remote_log": "/home/stardust/sai-hpc-software/experimental/closure-probes-20261015/lmod-1790564.log"
   },
   "capacity": {
-    "available_gib": 17,
+    "available_gib": 16.05,
     "cleanup_executed": false,
     "proposed_unreferenced_overlays": 16,
     "proposed_reclaim_gib": 141.92385482788086,
-    "protected_recovery_reference": "35575648711-1-development-16v100-avx2-e2a0695b7faa"
+    "protected_recovery_reference": "35575648711-1-development-16v100-avx2-e2a0695b7faa",
+    "measurement_note": "Initial read-only capacity audit; space changes as retained canaries run. Each submission rechecks current capacity."
   },
   "local_validation": {
-    "tests": 669,
+    "tests": 671,
     "skipped": 0,
     "passed": true,
     "actionlint": "1.7.12",
     "shell_syntax": true,
-    "python_compilation": true
+    "python_compilation": true,
+    "controller_commit": "03af2ab076eaa6add2064438ddc32fd89525ad84",
+    "log": "/tmp/sai-closure-03af2ab-tests.log"
   },
   "canaries": {
     "gpumd_16v100": {
       "run_id": "gpumd-canary-20261015-02",
       "job_id": "1790933",
-      "state_last_observed": "SUBMITTED",
+      "state_last_observed": "RUNNING",
       "controller_commit": "b9cbf836889b208e871ca63735eebc01124d0722",
       "source_sha": "a0e55bc87390b93d009da37c798616982573bab2",
       "source_version": "master-2026-10-14",
@@ -48,7 +51,8 @@
       "accepted": false,
       "capacity_required_gib": 13,
       "prior_overlay_used_bytes": 356700160,
-      "retry_reason": "Diagnosed upstream license layout rename; source compilation rerun with new recipe identity"
+      "retry_reason": "Diagnosed upstream license layout rename; source compilation rerun with new recipe identity",
+      "node": "16v100n01"
     },
     "abacus": {
       "source_sha": "f264b4022fd477734de0f3ace723f6da9e306943",
@@ -82,12 +86,12 @@
   },
   "draft_pr": "https://github.com/AI4SAI/sai-hpc-software/pull/8",
   "ci_validation": {
-    "head_sha": "31f4c7361edecb9d82a5e131d7d8b9e05af3d631",
+    "head_sha": "03af2ab076eaa6add2064438ddc32fd89525ad84",
     "runs": [
-      38618396798,
-      38618397256,
-      38618396751,
-      38618396890
+      38622107795,
+      38622107668,
+      38622107894,
+      38622107823
     ],
     "all_success": true,
     "scope": "PR validation jobs; remote builds intentionally not selected on pull_request"
