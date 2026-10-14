@@ -154,7 +154,7 @@ class GpumdContractTests(unittest.TestCase):
     def test_jit_source_archive_is_complete_pinned_and_excludes_build_outputs(self):
         recipe = (ROOT / "controller/gpumd_build.sh").read_text()
         archive = recipe.split("# NEP JIT requires source at runtime.", 1)[1].split(
-            "\ncp /workspace/source/LICENCE", 1)[0]
+            "\n# Upstream replaced the single LICENCE file", 1)[0]
         # Execute the real packaging block with only the fixed workspace path
         # relocated; this fixture does not compile GPUMD or certify any science.
         archive = "# NEP JIT requires source at runtime." + archive
@@ -203,6 +203,35 @@ class GpumdContractTests(unittest.TestCase):
             environment["INSTALL_PREFIX"] = str(prefix)
             (source / "src/makefile").write_text("# unexpected configured Makefile\n")
             self.assertNotEqual(run().returncode, 0)
+
+
+    def test_packaging_preserves_legacy_and_new_pinned_upstream_licenses(self):
+        recipe = (ROOT / "controller/gpumd_build.sh").read_text()
+        script = recipe.split("# Upstream replaced the single LICENCE file", 1)[1].split(
+            "\npython3 /control/gpumd_science.py", 1)[0]
+        script = "# Upstream replaced the single LICENCE file" + script
+        script = script.replace("/workspace/source", '"$GPUMD_TEST_SOURCE"')
+        for names in (("LICENCE",), ("LICENSE",), ("LICENSES/GPL-3.0.txt", "LICENSES/LGPL-3.0.txt"), ()):
+            with self.subTest(names=names), tempfile.TemporaryDirectory() as temporary:
+                source = Path(temporary) / "source"
+                source.mkdir()
+                destination = Path(temporary) / "install/share/gpumd"
+                destination.mkdir(parents=True)
+                for name in names:
+                    path = source / name
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text("pinned " + name + "\n")
+                subprocess.run(["git", "init", "-q", source], check=True)
+                subprocess.run(["git", "-C", source, "add", "."], check=True)
+                subprocess.run(["git", "-C", source, "-c", "user.name=GPUMD test", "-c",
+                                "user.email=test@example.invalid", "commit", "--allow-empty", "-qm", "licenses"], check=True)
+                if names:
+                    (source / names[0]).write_text("uncommitted alteration\n")
+                result = subprocess.run(["bash", "-euo", "pipefail", "-c", script], text=True, capture_output=True,
+                    env=dict(os.environ, GPUMD_TEST_SOURCE=str(source), INSTALL_PREFIX=str(Path(temporary) / "install")))
+                self.assertEqual(result.returncode, 0 if names else 2, result.stderr)
+                for name in names:
+                    self.assertEqual((destination / name).read_text(), "pinned " + name + "\n")
 
 
 class GpumdCiTests(unittest.TestCase):
