@@ -50,6 +50,8 @@ def ci_fixture(plan, runner, history, *, run_id='123', attempt='1', retry='',
             if command[0] == 'cat':
                 return subprocess.CompletedProcess(argv, 0, (runner / 'pair.json').read_text())
             if command[0] == 'python3':
+                if command[1] == '-c':
+                    return subprocess.CompletedProcess(argv, 0, 'false')
                 name = Path(command[1]).name
                 if name == 'release_contract.py':
                     decision = claim_build(history, json.loads(command[4]), command[3],

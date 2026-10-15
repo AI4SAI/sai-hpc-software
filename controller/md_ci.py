@@ -2,6 +2,7 @@
 """Runner-side paired builds, raw scientific/performance gates and publication."""
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
+import inspect
 import json
 import os
 from pathlib import Path
@@ -28,13 +29,123 @@ def run(argv, **kwargs):
         raise
 
 
-def run_performance_gate(remote_python, run_id, science_run):
+def inspect_existing_acceptance(root, control, build_run, stage, delivery):
+    """Read-only preflight for resuming a previously submitted Slurm phase.
+
+    This function is sent verbatim to the frozen remote snapshot. A submission
+    without its job handle is ambiguous and must never be silently repeated.
+    """
+    import importlib
+    import json
+    import os
+    from pathlib import Path
+    import sys
+
+    root, control = Path(root), Path(control)
+    if stage not in ('science', 'performance', 'performance-retest'):
+        raise ValueError('unknown MD acceptance continuation stage')
+    for path in (root, control):
+        if not path.is_absolute() or path.resolve() != path or path.is_symlink():
+            raise ValueError('untrusted MD continuation path')
+    if not control.is_relative_to(root / 'controller'):
+        raise ValueError('MD continuation escaped its immutable controller snapshot')
+    sys.dont_write_bytecode = True
+    sys.path.insert(0, str(control))
+    os.environ['SAI_SOFTWARE_ROOT'] = str(root.parent.parent)
+    from md_controller import artifact_path, validate_pair, validate_runtime_image
+    from md_tracking import fingerprint
+    from remote_controller import safe_name
+    from source_cache import checksum
+
+    build_run = safe_name(build_run)
+    run_id = safe_name(build_run + '-' + stage)
+    directory = root / 'runtime-tests' / run_id
+    if directory.resolve() != directory or directory.is_symlink():
+        raise ValueError('untrusted MD continuation task path')
+    if not directory.exists():
+        return False
+
+    def regular(path):
+        if not path.is_file() or path.is_symlink() or path.resolve() != path:
+            raise ValueError('incomplete or untrusted MD submission; recover its recorded Slurm handle before continuing')
+        return path
+
+    request = json.loads(regular(directory / 'request.json').read_text())
+    job = regular(directory / 'job.id').read_text().strip()
+    script = regular(directory / 'job.sbatch')
+    if not job.isdigit() or int(job) <= 0 or ('job' in request and request['job'] != job):
+        raise ValueError('invalid MD continuation Slurm handle')
+    delivery = validate_pair(delivery)
+    if delivery['recipe_sha256'] != fingerprint(control):
+        raise ValueError('MD continuation snapshot recipe changed')
+    build = root / 'runs' / build_run
+    original = json.loads(regular(build / 'request.json').read_text())
+    status = json.loads(regular(build / 'results/status.json').read_text())
+    image = artifact_path(root, delivery, build_run)
+    validate_runtime_image(image, delivery)
+    digest = checksum(image)
+    if (original.get('run_id') != build_run or original.get('delivery') != delivery
+            or original.get('controller') != str(control)
+            or original.get('job_script_sha256') != checksum(regular(build / 'job.sbatch'))
+            or status.get('state') != 'COMPLETED' or status.get('exit_code') != '0:0'
+            or status.get('build_verified') is not True or status.get('delivery') != delivery
+            or status.get('artifact') != str(image) or status.get('artifact_sha256') != digest):
+        raise ValueError('MD continuation build differs from the verified immutable handoff')
+    expected = dict(run_id=run_id, build_run=build_run, delivery=delivery,
+                    artifact=str(image), artifact_sha256=digest, target=delivery['plan']['target'])
+    if stage == 'science':
+        expected.update(nodes=2, ranks=4, sources=delivery['plan']['sources'],
+                        version=delivery['plan']['version'], acceptance_recipe_sha256=delivery['recipe_sha256'])
+        controller = importlib.import_module('md_acceptance_controller')
+    else:
+        controller = importlib.import_module('md_performance_controller')
+        expected.update(science_run=build_run + '-science', resources=controller.RESOURCES,
+                        recipe_sha256=delivery['recipe_sha256'])
+        repeat = request.get('repeat_of')
+        if (stage == 'performance' and repeat) or (stage == 'performance-retest' and (
+                not isinstance(repeat, dict) or repeat.get('run_id') != build_run + '-performance')):
+            raise ValueError('MD continuation changed its single permitted performance repeat')
+    if any(request.get(key) != value for key, value in expected.items()):
+        raise ValueError('existing MD acceptance differs from the immutable CI handoff')
+    if (request.get('job_script_sha256') != checksum(script)
+            or script.read_text() != controller.render(request, directory)):
+        raise ValueError('existing MD acceptance script changed')
+    status_path = directory / 'results/status.json'
+    if status_path.exists() or status_path.is_symlink():
+        status = json.loads(regular(status_path).read_text())
+        if status.get('job') != job:
+            raise ValueError('MD continuation status belongs to another Slurm job')
+        if (status.get('state') == 'COMPLETED' and status.get('exit_code') == '0:0'
+                and status.get('evidence_sha256')):
+            evidence = regular(directory / 'results/evidence.json')
+            if checksum(evidence) != status['evidence_sha256']:
+                raise ValueError('MD continuation evidence differs from its completed receipt')
+            # `verify` re-reads the raw evidence without rewriting the original
+            # status/evidence bytes pinned by an already-submitted repeat.
+            return 'completed'
+    return True
+
+
+def existing_acceptance(ssh, root, control, build_run, stage, delivery):
+    code = inspect.getsource(inspect_existing_acceptance) + (
+        '\nimport json, sys\nprint(json.dumps(inspect_existing_acceptance(*sys.argv[1:5], json.loads(sys.argv[5]))))\n')
+    result = ssh(['python3', '-c', code, root, control, build_run, stage,
+                  json.dumps(delivery, sort_keys=True)], capture_output=True)
+    found = json.loads(result.stdout)
+    if type(found) is not bool and found != 'completed':
+        raise ValueError('invalid MD continuation preflight response')
+    return found
+
+
+def run_performance_gate(remote_python, run_id, science_run, existing=None):
     """Repeat exactly once only after verified raw evidence exceeds 10% slowdown."""
     for suffix in ('-performance', '-performance-retest'):
         performance_run = safe_name(run_id + suffix)
-        remote_python('md_performance_controller.py', 'submit', performance_run, run_id, science_run)
+        previous = existing(suffix.removeprefix('-')) if existing is not None else False
+        if not previous:
+            remote_python('md_performance_controller.py', 'submit', performance_run, run_id, science_run)
         try:
-            remote_python('md_performance_controller.py', 'monitor', performance_run)
+            remote_python('md_performance_controller.py', 'verify' if previous == 'completed' else 'monitor', performance_run)
         except subprocess.CalledProcessError as error:
             if error.returncode != 3 or suffix == '-performance-retest':
                 raise
@@ -42,6 +153,19 @@ def run_performance_gate(remote_python, run_id, science_run):
         else:
             return performance_run
     raise RuntimeError('MD performance gate did not produce an accepted run')
+
+
+def run_acceptance_gate(remote_python, run_id, existing):
+    """Resume fixed science/performance tasks, then revalidate publication."""
+    science_run = safe_name(run_id + '-science')
+    previous = existing('science')
+    if not previous:
+        remote_python('md_acceptance_controller.py', 'submit', science_run, run_id, '--nodes', '2')
+    remote_python('md_acceptance_controller.py', 'verify' if previous == 'completed' else 'monitor', science_run)
+    performance_run = run_performance_gate(remote_python, run_id, science_run, existing=existing)
+    remote_python('md_publication.py', 'publish', run_id, science_run, performance_run)
+    remote_python('md_publication.py', 'verify', run_id)
+    return performance_run
 
 
 def main():
@@ -90,12 +214,9 @@ def main():
         subprocess.run(['scp', '-q', *options, '-P', '12022', '-r',
                         remote + ':' + source + '/results/.', str(destination)], check=False)
     def accept():
-        science_run = safe_name(run_id + '-science')
-        python('md_acceptance_controller.py', 'submit', science_run, run_id, '--nodes', '2')
-        python('md_acceptance_controller.py', 'monitor', science_run)
-        performance_run = run_performance_gate(python, run_id, science_run)
-        python('md_publication.py', 'publish', run_id, science_run, performance_run)
-        python('md_publication.py', 'verify', run_id)
+        def existing(stage):
+            return existing_acceptance(ssh, root, snapshot, run_id, stage, request)
+        run_acceptance_gate(python, run_id, existing)
         run(['scp', '-q', *options, '-P', '12022',
              remote + ':' + remote_task + '/results/publication.json', results / 'publication.json'])
     def collect_acceptance():
@@ -108,6 +229,7 @@ def main():
         validate_pair(observed)
         if observed['recipe_sha256'] != recipe or observed['identities'] != request['identities']:
             raise ValueError('MD handoff differs from the current recipe or source identities')
+        request = observed
         try:
             if phase == 'lammps':
                 python('md_controller.py', 'monitor', run_id, '--timeout', '20700')
