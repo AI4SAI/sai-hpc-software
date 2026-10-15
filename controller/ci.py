@@ -2,6 +2,7 @@
 """GitHub-side orchestration; remote commands always come from this repository."""
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
+import inspect
 import json
 import os
 import re
@@ -32,6 +33,94 @@ def run(argv, **kwargs):
 
 def runtime_launchers(software):
     return ("gpumd", "nep", "gnep") if software == "gpumd" else (software,)
+
+
+def inspect_existing_job(root, control, directory, expected, script):
+    """Read-only continuation preflight, also sent verbatim to the SSH host.
+
+    An incomplete submission is ambiguous: never guess that it is safe to
+    resubmit without its recorded Slurm handle. Monitors reverify raw evidence.
+    """
+    import argparse
+    import json
+    import os
+    from pathlib import Path
+    import sys
+
+    root, control, directory = map(Path, (root, control, directory))
+    for path in (root, control, directory):
+        if not path.is_absolute() or path.resolve() != path or path.is_symlink():
+            raise ValueError('untrusted CI continuation path')
+    if (not control.is_relative_to(root / 'controller') or
+            directory.parent not in (root / 'runs', root / 'runtime-tests')):
+        raise ValueError('CI continuation escaped its immutable project')
+    if not directory.exists():
+        return False
+    names = ('request.json', 'job.id', 'job.sbatch')
+    present = [(directory / name).exists() or (directory / name).is_symlink() for name in names]
+    if script == 'software_controller.py' and not any(present):
+        # Dependencies/source staging create this directory before application submission.
+        if any(path.name not in ('input', 'results', 'runtime', 'apptainer-cache')
+               for path in directory.iterdir()):
+            raise ValueError('ambiguous application submission state')
+        return False
+    if not all(present):
+        raise ValueError('incomplete previous submission; recover its Slurm handle before continuing')
+    for name in names:
+        path = directory / name
+        if not path.is_file() or path.is_symlink() or path.resolve() != path:
+            raise ValueError('untrusted CI continuation metadata')
+    request = json.loads((directory / 'request.json').read_text())
+    if any(request.get(key) != value for key, value in expected.items()):
+        raise ValueError('existing job differs from the immutable CI handoff')
+    job = (directory / 'job.id').read_text().strip()
+    if not job.isdigit() or ('job' in request and request['job'] != job):
+        raise ValueError('existing Slurm handle differs from its request')
+    sys.path.insert(0, str(control))
+    os.environ['SAI_SOFTWARE_ROOT'] = str(root)
+    from source_cache import checksum
+    from software_controller import recipe_fingerprint
+    identity = expected['identity']
+    if recipe_fingerprint(identity['software'], control) != identity['recipe_sha256']:
+        raise ValueError('existing job recipe changed')
+    if script == 'software_controller.py':
+        from software_controller import render_job
+        from delivery_layout import CONTRACT_SCHEMA, validate_record
+        if request.get('contract_schema') != CONTRACT_SCHEMA or validate_record(request) != identity:
+            raise ValueError('existing build identity changed')
+        if (directory / 'job.sbatch').read_text() != render_job(argparse.Namespace(**request)):
+            raise ValueError('existing build script changed')
+    else:
+        from delivery_layout import load_artifact
+        record = load_artifact(root, expected['artifact'], software=identity['software'], target=identity['target'])
+        if record['identity'] != identity or request.get('artifact_sha256') != record['sha256']:
+            raise ValueError('existing acceptance image changed')
+        pins = [(directory / 'job.sbatch', 'job_script_sha256'),
+                (control / identity['software'], 'launcher_sha256'),
+                (control / script, 'controller_sha256')]
+        if request.get('launcher') != str(control / identity['software']):
+            raise ValueError('existing acceptance launcher differs')
+        if script == 'gpu_feature_controller.py':
+            pins.append((control / 'gpu_feature_runtime.sh', 'runtime_sha256'))
+        elif script == 'gpumd_acceptance.py':
+            pins += [(control / 'gpumd_science.py', 'science_sha256'),
+                     (control / 'gpumd_deepmd_probe.py', 'deepmd_probe_sha256')]
+        for path, key in pins:
+            if (not path.is_file() or path.is_symlink() or path.resolve() != path or
+                    checksum(path) != request.get(key)):
+                raise ValueError('existing acceptance pin changed: ' + key)
+    return True
+
+
+def existing_job(ssh, root, control, directory, expected, script):
+    code = inspect.getsource(inspect_existing_job) + "\nimport json, sys\nprint(json.dumps(inspect_existing_job(*sys.argv[1:4], json.loads(sys.argv[4]), sys.argv[5])))\n"
+    result = ssh(['python3', '-c', code, root, control, directory,
+                  json.dumps(expected, sort_keys=True), script], capture_output=True)
+    found = json.loads(result.stdout)
+    if type(found) is not bool:
+        raise ValueError('invalid continuation preflight response')
+    return found
+
 
 def main():
     software = os.environ.get("SOFTWARE", "abacus")
@@ -221,21 +310,38 @@ def main():
             emit_run_id()
             return
         if phase != 'acceptance':
-            python("software_controller.py", "submit", software, run_id, upstream, version, target,
-                   *provenance_flags, *extras)
+            expected_build = dict(run_id=run_id, identity=identity, controller=control,
+                                  software=software, sha=upstream, version=version, target=target,
+                                  track=track, source_ref=source_ref, recipe_sha256=identity['recipe_sha256'],
+                                  resume_run=resume or None,
+                                  dependencies_run=dependency_run if software == 'cp2k' and not resume else None)
+            submitted = continuing and existing_job(ssh, root, control, task, expected_build, 'software_controller.py')
+            if not submitted:
+                python("software_controller.py", "submit", software, run_id, upstream, version, target,
+                       *provenance_flags, *extras)
             python("software_controller.py", "monitor", run_id, "--timeout", "19800")
             if phase in ('build', 'application'):
                 emit_run_id()
                 return
+        def acceptance_exists(script, acceptance_run, **extra):
+            expected = dict(run_id=acceptance_run, version=version, target=target,
+                            identity=identity, artifact=str(expected_artifact), **extra)
+            if script != 'abacus_benchmark.py':
+                expected['build_run_id'] = run_id
+            directory_name = ('benchmark-' if script == 'abacus_benchmark.py' else '') + acceptance_run
+            return existing_job(ssh, root, control, f'{root}/runtime-tests/{directory_name}', expected, script)
+
         if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             runtime_run = safe_name(run_id + "-multinode")
-            python("runtime_controller.py", "submit", runtime_run, version, target,
-                   "--build-run-id", run_id)
+            if not acceptance_exists('runtime_controller.py', runtime_run):
+                python("runtime_controller.py", "submit", runtime_run, version, target,
+                       "--build-run-id", run_id)
             python("runtime_controller.py", "monitor", runtime_run)
         if software == "abacus" and target in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             feature_run = safe_name(run_id + "-gpu-features")
-            python("gpu_feature_controller.py", "submit", feature_run, version, target,
-                   "--build-run-id", run_id)
+            if not acceptance_exists('gpu_feature_controller.py', feature_run):
+                python("gpu_feature_controller.py", "submit", feature_run, version, target,
+                       "--build-run-id", run_id)
             python("gpu_feature_controller.py", "monitor", feature_run)
         for repeat_suffix in ('', '-retest'):
             try:
@@ -243,23 +349,28 @@ def main():
                     artifact = str(expected_artifact)
                     for case in ("pw", "hse", "deepks"):
                         benchmark_run = safe_name(run_id + "-" + case + repeat_suffix)
-                        python("abacus_benchmark.py", "prepare", benchmark_run, version, target,
-                               "--artifact", artifact, "--launcher", f"{control}/abacus",
-                               "--system-module", "abacus/v3.9.0.26-sm70-auto", "--packaged-case", case,
-                               "--allow-cpu-case-on-gpu")
-                        python("abacus_benchmark.py", "submit", benchmark_run)
+                        if not acceptance_exists('abacus_benchmark.py', benchmark_run, packaged_case=case,
+                                                 system_module='abacus/v3.9.0.26-sm70-auto'):
+                            python("abacus_benchmark.py", "prepare", benchmark_run, version, target,
+                                   "--artifact", artifact, "--launcher", f"{control}/abacus",
+                                   "--system-module", "abacus/v3.9.0.26-sm70-auto", "--packaged-case", case,
+                                   "--allow-cpu-case-on-gpu")
+                            python("abacus_benchmark.py", "submit", benchmark_run)
                         python("abacus_benchmark.py", "monitor", benchmark_run)
                 if software == "cp2k":
                     benchmark_run = safe_name(run_id + "-benchmark" + repeat_suffix)
                     reference = os.environ.get("CP2K_REFERENCE_RUN", "")
                     reference_args = ["--reference-run-id", safe_name(reference)] if reference and target == "dsprhbm" else []
-                    python("cp2k_benchmark.py", "submit", benchmark_run, version, target,
-                           "--build-run-id", run_id, *reference_args)
+                    expected_reference = {'reference_run_id': reference} if reference_args else {}
+                    if not acceptance_exists('cp2k_benchmark.py', benchmark_run, **expected_reference):
+                        python("cp2k_benchmark.py", "submit", benchmark_run, version, target,
+                               "--build-run-id", run_id, *reference_args)
                     python("cp2k_benchmark.py", "monitor", benchmark_run)
                 if software == "gpumd":
                     scientific_run = safe_name(run_id + "-science" + repeat_suffix)
-                    python("gpumd_acceptance.py", "submit", scientific_run, version, target,
-                           "--build-run-id", run_id)
+                    if not acceptance_exists('gpumd_acceptance.py', scientific_run):
+                        python("gpumd_acceptance.py", "submit", scientific_run, version, target,
+                               "--build-run-id", run_id)
                     python("gpumd_acceptance.py", "monitor", scientific_run)
                 python("software_controller.py", "publish", run_id)
                 break

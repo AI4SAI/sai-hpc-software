@@ -162,9 +162,10 @@ class CiLifecycleTests(unittest.TestCase):
 
     def execute(self, *, software="abacus", target="4v100-avx512", fail_monitor=None,
                 event="workflow_dispatch", version="v1", track="development",
-                prior=None, alter_identity=None, published_path=None, resume="", retry="false", phase="all", handoff=None, publish_failures=0):
+                prior=None, alter_identity=None, published_path=None, resume="", retry="false", phase="all", handoff=None, publish_failures=0, persisted_jobs=None):
         commands = []
         publish_remaining = publish_failures
+        preflights = {}
         self.remote_commands = []
         self.uploads = []
         self.uploaded_files = {}
@@ -194,10 +195,31 @@ class CiLifecycleTests(unittest.TestCase):
                 if remote[0] == 'cat' and remote[1].endswith('/input/ci-handoff.json'):
                     stdout = json.dumps(dict(schema=1, run_id=run_id, workflow_run_id='123',
                                              controller_sha='b' * 40, identity=identity))
+                if remote[:2] == ['python3', '-c']:
+                    expected = json.loads(remote[6])
+                    preflights[expected['run_id']] = expected
+                    exists = False
+                    if persisted_jobs is not None:
+                        path = persisted_jobs / expected['run_id']
+                        exists = path.exists()
+                        if exists:
+                            stored = json.loads((path / 'request.json').read_text())
+                            if stored != expected or not (path / 'job.id').read_text().strip().isdigit():
+                                raise subprocess.CalledProcessError(1, argv, stderr='existing job differs from immutable handoff')
+                    return subprocess.CompletedProcess(argv, 0, stdout=json.dumps(exists), stderr='')
                 if remote[0] == "python3":
                     script, operation = Path(remote[1]).name, remote[2]
                     commands.append((script, operation))
                     self.remote_commands.append((script, remote[2:]))
+                    if persisted_jobs is not None and operation == 'submit':
+                        selected_run = remote[4] if script == 'software_controller.py' else remote[3]
+                        if selected_run in preflights:
+                            path = persisted_jobs / selected_run
+                            if path.exists():
+                                raise subprocess.CalledProcessError(1, argv, stderr='run already submitted')
+                            path.mkdir(parents=True)
+                            (path / 'request.json').write_text(json.dumps(preflights[selected_run]))
+                            (path / 'job.id').write_text('12345')
                     if script == 'software_controller.py' and operation == 'publish' and publish_remaining:
                         publish_remaining -= 1
                         raise subprocess.CalledProcessError(3, argv)
