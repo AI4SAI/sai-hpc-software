@@ -1,17 +1,19 @@
 {
   "schema": 1,
   "checked_at": "2026-10-15 Asia/Shanghai",
-  "controller_commit": "fe62234",
+  "controller_commit": "6ca236f",
   "host": "SAI-stardust",
-  "fixture_only": true,
-  "scientific_software_accepted": false,
+  "fixture_only": false,
+  "scientific_software_accepted": true,
   "native_export": {
     "status": "PASS",
     "roundtrip_verified": true,
     "verified_files": 102,
     "installations": 17,
     "image_sha256": "6733124451aeed522dc284084bf294bd2dc9ad03f0d5886a5ff7b66ec12e84ab",
-    "remote_result": "/home/stardust/sai-hpc-software/experimental/closure-probes-20261015/native-export-result.json"
+    "remote_result": "/home/stardust/sai-hpc-software/experimental/closure-probes-20261015/native-export-result.json",
+    "fixture_only": true,
+    "controller_commit": "fe62234"
   },
   "real_lmod": {
     "job_id": "1790564",
@@ -19,40 +21,83 @@
     "exit_code": "0:0",
     "elapsed": "00:00:12",
     "marker": "REAL_LMOD_PARTITION_PAIR_AND_RELOAD_VERIFIED",
-    "remote_log": "/home/stardust/sai-hpc-software/experimental/closure-probes-20261015/lmod-1790564.log"
+    "remote_log": "/home/stardust/sai-hpc-software/experimental/closure-probes-20261015/lmod-1790564.log",
+    "fixture_only": true
   },
   "capacity": {
-    "available_gib": 16.05,
+    "available_gib": 0,
     "cleanup_executed": false,
     "proposed_unreferenced_overlays": 16,
     "proposed_reclaim_gib": 141.92385482788086,
     "protected_recovery_reference": "35575648711-1-development-16v100-avx2-e2a0695b7faa",
-    "measurement_note": "Initial read-only capacity audit; space changes as retained canaries run. Each submission rechecks current capacity."
+    "measurement_note": "Current exact statvfs availability; initial audit was 16.05 GiB. Subsequent legacy automatic jobs used further space. No cleanup executed.",
+    "alternative_storage_check": {
+      "result": "No existing authorized writable location with verified 100 GiB free space found",
+      "project_id": 100657,
+      "project_soft_limit_kib": 1178599424,
+      "project_used_kib": 1162904568,
+      "report": "/tmp/sai-storage-preflight-20261015.json",
+      "remote_mutations": false
+    },
+    "available_bytes": 0,
+    "observed_at": "2026-10-15T23:02:00+08:00"
   },
   "local_validation": {
-    "tests": 671,
+    "tests": 692,
     "skipped": 0,
     "passed": true,
     "actionlint": "1.7.12",
     "shell_syntax": true,
     "python_compilation": true,
-    "controller_commit": "03af2ab076eaa6add2064438ddc32fd89525ad84",
-    "log": "/tmp/sai-closure-03af2ab-tests.log"
+    "controller_commit": "6ca236f",
+    "log": "/tmp/sai-closure-resume-integration.log"
   },
   "canaries": {
     "gpumd_16v100": {
       "run_id": "gpumd-canary-20261015-02",
       "job_id": "1790933",
-      "state_last_observed": "RUNNING",
+      "state_last_observed": "PUBLISHED_NATIVE_MODULE_PROBE_PENDING",
       "controller_commit": "b9cbf836889b208e871ca63735eebc01124d0722",
       "source_sha": "a0e55bc87390b93d009da37c798616982573bab2",
       "source_version": "master-2026-10-14",
       "overlay_mib": 3072,
-      "accepted": false,
+      "accepted": true,
       "capacity_required_gib": 13,
       "prior_overlay_used_bytes": 356700160,
       "retry_reason": "Diagnosed upstream license layout rename; source compilation rerun with new recipe identity",
-      "node": "16v100n01"
+      "node": "16v100n01",
+      "build_state": "COMPLETED",
+      "build_exit_code": "0:0",
+      "build_elapsed": "00:20:07",
+      "build_verified": true,
+      "artifact_sha256": "2f1cec97e249643f3cbacd02ee27304d8148533babc70025ea69df3162bb7efa",
+      "science_run_id": "gpumd-canary-20261015-02-science",
+      "science_job_id": "1792098",
+      "science_state_last_observed": "COMPLETED",
+      "published": true,
+      "science_exit_code": "0:0",
+      "science_elapsed": "00:02:33",
+      "native_export_verified": true,
+      "post_publication_readback_verified": true,
+      "performance_repeat_required": false,
+      "md_candidate_atom_steps_per_second": 2396010.0,
+      "md_baseline_atom_steps_per_second": 2408080.0,
+      "md_candidate_time_ratio": 1.0050375415795427,
+      "module_probe": {
+        "job_id": "1803862",
+        "state": "FAILED",
+        "exit_code": "127:0",
+        "elapsed": "00:00:12",
+        "sif_execution_verified": true,
+        "sif_energy_error_ev": 0.0,
+        "sif_force_error_ev_per_angstrom": 0.0,
+        "native_execution_verified": false,
+        "failure": "Probe unloaded apptainer transitively with GPUMD, then invoked bare apptainer for the native-prefix container",
+        "correction_local_file": "/tmp/sai-gpumd-module-probe-v2.py",
+        "corrected_probe_submitted": false,
+        "capacity_blocked": true
+      },
+      "evidence": "gpumd-16v100-closure-20261015.json"
     },
     "abacus": {
       "source_sha": "f264b4022fd477734de0f3ace723f6da9e306943",
@@ -82,6 +127,30 @@
       "exit_code": "1:0",
       "failure": "Upstream replaced LICENCE with LICENSES/; all three binaries compiled and linked before packaging failure",
       "published": false
+    },
+    "gpumd_4v100": {
+      "run_id": "gpumd-canary-20261015-4v100-01",
+      "job_submitted": false,
+      "snapshot_prepared": true,
+      "recipe_sha256": "55e0810f9d7e1e27955d572b6ec1c693883fbbed9ee43923dcccc640337ab2ab",
+      "available_gib": 0,
+      "capacity_required_gib": 13,
+      "preflight": "/tmp/sai-gpumd-canary-20261015-4v100-01-snapshot/capacity-preflight.json"
+    },
+    "deepmd_lammps": {
+      "source_shas": {
+        "deepmd-kit": "025f4f698d4ff50c0b5538f19dc0b00ad1459ba3",
+        "lammps": "1b8520aa9c049778e329114ea9d9f51a06dee153"
+      },
+      "source_cached": true,
+      "source_transfer_bytes": 0,
+      "dependency_preflight_passed": true,
+      "slurm_test_only_stages": 4,
+      "job_submitted": false,
+      "requires_plan_regeneration_after_controller_edits": false,
+      "preflight": "/tmp/sai-md-canary-20261015/preflight.json",
+      "current_prepared": "/tmp/sai-md-canary-20261015-current/prepared.json",
+      "recipe_sha256": "427e6076443e9c4a4b58d2a80f1ff945e0a8039b955111fd8e9fde1b51c12eb7"
     }
   },
   "draft_pr": "https://github.com/AI4SAI/sai-hpc-software/pull/8",
@@ -95,5 +164,27 @@
     ],
     "all_success": true,
     "scope": "PR validation jobs; remote builds intentionally not selected on pull_request"
+  },
+  "scope": "Mixed evidence: synthetic export/Lmod tool probes and real GPUMD 16V100 build, acceptance and publication; full matrix and exported-native execution remain incomplete.",
+  "matrix_complete": false,
+  "stage_recovery": {
+    "commits": [
+      "5d0f9a3",
+      "968ef9a",
+      "6ca236f"
+    ],
+    "scope": [
+      "CP2K application",
+      "ABACUS acceptance",
+      "CP2K acceptance",
+      "GPUMD acceptance",
+      "MD acceptance"
+    ],
+    "new_tests": 21,
+    "preserves_existing_slurm_jobs": true,
+    "preserves_original_repeat_evidence": true,
+    "remote_snapshots_modified": false,
+    "initial_phase_retry_unchanged": true,
+    "real_gpumd_existing_job_preflight_passed": true
   }
 }

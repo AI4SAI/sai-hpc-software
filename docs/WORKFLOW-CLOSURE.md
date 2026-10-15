@@ -1,8 +1,9 @@
 # Workflow closure — 2026-10-15
 
 The code now connects build, scientific/performance acceptance, native export
-readback and publication. Production acceptance is still incomplete: none of
-the new software builds has yet passed the complete site matrix. Original dirty
+readback and publication. GPUMD on 16V100 has passed science, performance and
+publication; its additional exported-native module execution check remains
+pending. Production acceptance is incomplete across the full site matrix. Original dirty
 worktrees and recovery checkpoints remain preserved. Administrator installation
 into physical `/opt/apps` is outside this task.
 
@@ -16,6 +17,12 @@ into physical `/opt/apps` is outside this task.
   has a dependency phase, and its GPU deliveries finish before CPU references
   are selected. Handoffs validate workflow/source/track/target and the original
   immutable controller identity, without uploading or claiming a second build.
+- Re-entering CP2K application or any software's acceptance stage validates and
+  resumes the existing Slurm handle. Completed MD evidence is reverified without
+  rewriting receipts pinned by a performance repeat. An ambiguous submission
+  with no recorded job handle fails closed. This does not automatically recover
+  the initial dependency/build phase across new workflow attempts; unchanged
+  release attempts still require explicit retry authorization.
 - ABACUS supports the upstream JSON option change and renamed HSE fixture,
   validates packaged scientific inputs before compiling, and includes all
   required native library paths.
@@ -47,7 +54,8 @@ into physical `/opt/apps` is outside this task.
 
 ## Verified on SAI
 
-Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.json).
+Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.json) and
+[GPUMD 16V100 proof](evidence/gpumd-16v100-closure-20261015.json).
 
 - Native export tool fixture: real SIF roundtrip passed for 17 software/partition
   combinations and 102 retained files. This is explicitly a synthetic fixture,
@@ -55,10 +63,26 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
   was involved.
 - Real Lmod probe job `1790564`: `COMPLETED`, exit `0:0`, 12 seconds. Module load,
   unload, partition selection and subsequent image/launcher switch all passed.
-- Read-only capacity/reference audit: about 16.05 GiB actually available. Of 17
+- Initial read-only capacity/reference audit: about 16.05 GiB actually available. Of 17
   proposed old failed routine overlays, one was found referenced by CP2K recovery
   records and protected. The remaining 16 could reclaim 141.92 GiB, subject to
   explicit user approval and immediate file/job revalidation. Nothing deleted.
+- GPUMD 16V100 build `1790933` completed `0:0` in 20:07; acceptance `1792098`
+  completed `0:0` in 2:33. All scientific/feature checks and the actual launcher
+  passed. Median MD throughput was 2,396,010 versus baseline 2,408,080 atom-steps/s
+  (about 0.50% slower), within the 10% gate; no repeat was needed. The exact SIF
+  was exported, read back and published. A subsequent read-only verification of
+  the published artifact, raw proofs, export bytes and module records passed.
+- Additional module job `1803862` ran the published SIF module successfully:
+  energy and forces matched its gold fixture exactly. The next exported-native
+  step failed because unloading the SIF module also unloaded Apptainer. This is
+  a probe sequencing defect; the corrected local probe reloads Apptainer and
+  retains the failed attempt. Exported-native execution/JIT is still unproven.
+- At 23:02 Asia/Shanghai, project capacity was **0 available bytes**. The normal
+  13 GiB GPUMD submission check rejected 4V100 before any upload or allocation.
+  Legacy branch job `1798309` subsequently timed out; it is not a closure canary
+  and its overlay/logs are retained. Its old workflow can still start subsequent
+  stages, so capacity must be checked again immediately before any submission.
 
 ## Remaining acceptance work
 
@@ -68,21 +92,26 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 | CP2K | Pending | Pending | Pending | Pending |
 | DeePMD-kit | Not a GPU target | Pending | Pending | Pending |
 | LAMMPS | Not a GPU target | Pending | Pending | Pending |
-| GPUMD | Not a GPU target | 1790933: corrected build running | Pending | Pending |
+| GPUMD | Not a GPU target | Published; native module execution pending | Capacity blocked | Pending |
 
-1. The final MD repeat audit and integrated suite passed. Continue to keep
+1. The final MD repeat/recovery audit and integrated suite passed. Continue to keep
    controller upload/fingerprint and workflow inputs aligned when diagnosing
    canary failures.
-2. Obtain adequate space for the normal ABACUS/CP2K/MD canaries while preserving
+2. Obtain adequate space for all further canaries while preserving
    logs, artifacts and recovery checkpoints. A smaller GPUMD canary may proceed
-   only if its actual capacity check passes after source staging.
+   only if its actual capacity check passes after source staging. Read-only
+   storage checks found no existing authorized alternative with 100 GiB headroom;
+   `/org/home/stardust` shares the same project quota as `/home/stardust`.
 3. GPUMD job `1790711` compiled and linked `gpumd`, `nep` and `gnep`, but
    failed packaging because current upstream replaced `LICENCE` with `LICENSES/`.
    The license layout is fixed and preflighted before compilation. Fresh job
-   `1790933` is rebuilding from snapshot `b9cbf83`; the failed overlay/log remain
+   `1790933` completed from snapshot `b9cbf83` with exit `0:0` in 20:07 and
+   passed artifact verification; science/performance job `1792098` passed
+   against that exact SIF, which is now published. The failed overlay/log remain
    preserved. Its 3 GiB overlay is based on measured prior usage of 340 MiB plus
    conservative export/JIT headroom, and still passed the normal 13 GiB free-space
-   gate. No scientific acceptance or published SIF is claimed.
+   gate. After capacity recovers, rerun the corrected exported-native module
+   probe in a new task, then expand to 4V100 and 8V100V0 with that exact recipe.
 4. Run complete development canaries on 16V100 and DSPRHBM, then GPU acceptance
    on 4V100 and 8V100V0. Record source/recipe/SIF hashes, Slurm jobs, raw scientific
    comparisons, performance and any repeat for each accepted delivery.
@@ -93,9 +122,19 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 6. Review the integrated branch/PR and operational workflow evidence. Do not
    describe the matrix as closed until all 17 applicable entries are proven.
 
+ABACUS and CP2K source/dependency preflights are ready. MD's pinned DeepMD
+`025f4f698d4ff50c0b5538f19dc0b00ad1459ba3` and LAMMPS
+`1b8520aa9c049778e329114ea9d9f51a06dee153` are complete in the remote cache;
+dependencies and four `sbatch --test-only` requests passed. These are not real
+builds. MD's local plan was regenerated for `6ca236f` in
+`/tmp/sai-md-canary-20261015-current`; the original preflight remains preserved.
+Any further controller edit requires a fresh recipe/plan before upload.
+Queue start estimates from `--test-only` are advisory, not evidence that a
+submitted job is blocked or a reason to restart one.
+
 ## Local validation
 
-The latest full integration checkpoint ran **671 unittest tests, all passed,
+The latest full integration checkpoint ran **692 unittest tests, all passed,
 with no skips**, using the preserved upstream cache read-only. Actionlint 1.7.12 validates every
 workflow, including reusable phase and final-result jobs. The four PR validation
 workflows passed on `03af2ab`; remote builds are intentionally not selected by PR
