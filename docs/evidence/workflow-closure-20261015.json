@@ -40,7 +40,20 @@
       "remote_mutations": false
     },
     "available_bytes": 0,
-    "observed_at": "2026-10-15T23:02:00+08:00"
+    "observed_at": "2026-10-15T23:02:00+08:00",
+    "latest_cleanup_audit": {
+      "audited_at_utc": "2026-10-15T15:25:43.464895+00:00",
+      "audit_complete": true,
+      "authorized": false,
+      "eligible_count": 16,
+      "eligible_allocated_bytes": 152389578752,
+      "remote_mutations": false,
+      "files_scanned": 17782,
+      "scan_errors": [],
+      "report": "/tmp/sai-overlay-cleanup-ready-20261015.json",
+      "report_sha256": "785349a80d61f19209c2c9b31ef7d6c8ecae831b9b5c068d516c3348dc2013df",
+      "reviewable_list": "/tmp/sai-overlay-cleanup-ready-20261015.md"
+    }
   },
   "local_validation": {
     "tests": 692,
@@ -155,12 +168,12 @@
   },
   "draft_pr": "https://github.com/AI4SAI/sai-hpc-software/pull/8",
   "ci_validation": {
-    "head_sha": "03af2ab076eaa6add2064438ddc32fd89525ad84",
+    "head_sha": "b5b139190fdca71ef63998b95a8a77b8b43edb47",
     "runs": [
-      38622107795,
-      38622107668,
-      38622107894,
-      38622107823
+      38760347530,
+      38760347658,
+      38760347787,
+      38760347630
     ],
     "all_success": true,
     "scope": "PR validation jobs; remote builds intentionally not selected on pull_request"

@@ -66,7 +66,10 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 - Initial read-only capacity/reference audit: about 16.05 GiB actually available. Of 17
   proposed old failed routine overlays, one was found referenced by CP2K recovery
   records and protected. The remaining 16 could reclaim 141.92 GiB, subject to
-  explicit user approval and immediate file/job revalidation. Nothing deleted.
+  explicit user approval and immediate file/job revalidation. The latest complete
+  audit at 23:25 Asia/Shanghai scanned 17,782 metadata/script files without read
+  errors and revalidated all 16 unchanged failed overlays with no new references.
+  Exact review list: `/tmp/sai-overlay-cleanup-ready-20261015.md`. Nothing deleted.
 - GPUMD 16V100 build `1790933` completed `0:0` in 20:07; acceptance `1792098`
   completed `0:0` in 2:33. All scientific/feature checks and the actual launcher
   passed. Median MD throughput was 2,396,010 versus baseline 2,408,080 atom-steps/s
@@ -137,7 +140,7 @@ submitted job is blocked or a reason to restart one.
 The latest full integration checkpoint ran **692 unittest tests, all passed,
 with no skips**, using the preserved upstream cache read-only. Actionlint 1.7.12 validates every
 workflow, including reusable phase and final-result jobs. The four PR validation
-workflows passed on `03af2ab`; remote builds are intentionally not selected by PR
+workflows passed on `b5b1391`; remote builds are intentionally not selected by PR
 events. Shell syntax checks and
 Python compilation also passed. These checks do not replace the pending real
 scientific/performance matrix.
