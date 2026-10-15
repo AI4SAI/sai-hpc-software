@@ -76,6 +76,7 @@ def inspect_existing_job(root, control, directory, expected, script):
     job = (directory / 'job.id').read_text().strip()
     if not job.isdigit() or ('job' in request and request['job'] != job):
         raise ValueError('existing Slurm handle differs from its request')
+    sys.dont_write_bytecode = True
     sys.path.insert(0, str(control))
     os.environ['SAI_SOFTWARE_ROOT'] = str(root)
     from source_cache import checksum

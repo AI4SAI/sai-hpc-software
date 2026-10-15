@@ -80,6 +80,7 @@ class ContinuationPreflightTests(unittest.TestCase):
         self.assertTrue(self.probe(expected))
         # Status is intentionally not required: recovery covers monitor failure.
         self.assertFalse((self.task / 'results/status.json').exists())
+        self.assertFalse((self.control / '__pycache__').exists())
 
     def test_changed_identity_job_script_image_or_controller_is_rejected(self):
         expected, request, image = self.acceptance()
