@@ -14,8 +14,8 @@ into physical `/opt/apps` is outside this task.
   skip; development must produce a fresh run on every trigger. Explicit retry
   inputs propagate through reusable workflows. Schema-1 history is retained.
 - Long jobs are separated into build and acceptance phases. CP2K additionally
-  has a dependency phase, and its GPU deliveries finish before CPU references
-  are selected. Handoffs validate workflow/source/track/target and the original
+  has a dependency phase. CPU and GPU compilation can run independently; CPU
+  acceptance waits for a verified GPU reference. Handoffs validate workflow/source/track/target and the original
   immutable controller identity, without uploading or claiming a second build.
 - Re-entering CP2K application or any software's acceptance stage validates and
   resumes the existing Slurm handle. Completed MD evidence is reverified without
@@ -48,8 +48,10 @@ into physical `/opt/apps` is outside this task.
   independent readback of all bytes, permissions, links, identities and native
   modules before publication. Cache validation rechecks the exported payload.
   Schema-1 `/opt/software` exports are never relabelled as schema-2 `/opt/apps`.
-- Submission and allocation-start capacity checks plus a shared Slurm singleton
-  serialize builds. Repacking copies and checksum-checks a checkpoint instead
+- Submission and allocation-start capacity checks remain active. CP2K uses
+  target-scoped Slurm singletons and shared disk-growth reservations to allow
+  parallel builds; other software retains its shared singleton.
+  Repacking copies and checksum-checks a checkpoint instead
   of moving the original. Monitors preserve jobs when observation expires.
 
 ## Verified on SAI
@@ -91,7 +93,12 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 
 Current CP2K priority: official `v2026.2` release across all four partitions,
 workflow [38879044765](https://github.com/AI4SAI/sai-hpc-software/actions/runs/38879044765).
-The first native dependency job is running. The historical development SIF
+The first 16V100 dependency job timed out at four hours; 4V100 failed because
+GCC 13.3 cannot resolve the allocated Zen 5 target. At 23:48 Asia/Shanghai,
+8V100V0 dependencies were still running as job `1817573`. The corrected recipe
+uses upstream-pinned GCC 14.3.0 and enables parallel native targets with disk
+reservations; GCC 13 checkpoints remain preserved and cannot be relabelled.
+The historical development SIF
 was rechecked on 16V100 by `1814450`: checksum, version and `ldd` passed;
 scientific acceptance/publication remain unproven. Space recovered to about
 109 GiB at release submission; later stages still recheck actual free capacity.
@@ -100,7 +107,7 @@ scientific acceptance/publication remain unproven. Space recovered to about
 | Software | DSPRHBM | 16V100 | 4V100 | 8V100V0 |
 |---|---|---|---|---|
 | ABACUS | Pending | Pending | Pending | Pending |
-| CP2K | Release pending | Release dependencies running: 1814499 | Release pending | Release pending |
+| CP2K | Release pending | Dependencies timed out: 1814499 | GCC 13/Zen 5 failure: 1817424 | GCC 13 dependencies running: 1817573 |
 | DeePMD-kit | Not a GPU target | Pending | Pending | Pending |
 | LAMMPS | Not a GPU target | Pending | Pending | Pending |
 | GPUMD | Not a GPU target | Published; native module execution pending | Capacity blocked | Pending |

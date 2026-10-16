@@ -124,14 +124,15 @@ class Cp2kReferenceOrderingTests(unittest.TestCase):
                 'build': {'result': 'success' if gpu != '[]' else 'skipped'},
                 'build-cpu': {'result': 'success' if cpu != '[]' else 'skipped'}}
 
-    def test_gpu_reference_is_ordered_by_dependency_not_matrix_scheduling(self):
+    def test_cpu_compiles_independently_and_gpu_matrix_can_run_in_parallel(self):
         jobs = workflow('cp2k')['jobs']
-        self.assertIn('build', jobs['build-cpu']['needs'])
+        self.assertNotIn('build', jobs['build-cpu']['needs'])
         self.assertIn("github.event_name == 'schedule'", jobs['build']['if'])
         self.assertIn("!cancelled()", jobs['build-cpu']['if'])
-        self.assertIn("needs.build.result == 'skipped'", jobs['build-cpu']['if'])
+        self.assertNotIn('needs.build.result', jobs['build-cpu']['if'])
+        self.assertEqual(jobs['build']['strategy']['max-parallel'], 3)
+        self.assertEqual(jobs['build-cpu']['strategy']['max-parallel'], 1)
         for name in ('build', 'build-cpu'):
-            self.assertEqual(jobs[name]['strategy']['max-parallel'], 1)
             self.assertEqual(jobs[name]['uses'], './.github/workflows/software-pair.yml')
 
     def test_gpu_only_cpu_only_and_both_selection_complete(self):

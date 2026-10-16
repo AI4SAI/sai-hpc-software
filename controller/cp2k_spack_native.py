@@ -8,7 +8,7 @@ import re
 import subprocess
 import sys
 
-from cp2k_spack import TARGETS, validate_cache, validated_prefix
+from cp2k_spack import GCC_PREFIX, GCC_VERSION, TARGETS, validate_cache, validated_prefix
 from cp2k_spack_environment import environment
 
 WHEELS = {
@@ -60,8 +60,10 @@ def prepare(partition):
     profile = {
         'partition': partition, 'cpu': output(['lscpu']),
         'python': sys.version, 'system_packages': versions,
-        'gcc': output(['/opt/devtools/gcc/13.3.0/bin/gcc', '-dumpfullversion']),
-        'native_flags': output(['/opt/devtools/gcc/13.3.0/bin/gcc', '-march=native',
+        'gcc': output([GCC_PREFIX + '/bin/gcc', '-dumpfullversion']),
+        'compiler_versions': {name: output([GCC_PREFIX + '/bin/' + name, '-dumpfullversion'])
+                              for name in ('gcc', 'g++', 'gfortran')},
+        'native_flags': output([GCC_PREFIX + '/bin/gcc', '-march=native',
                                 '-mtune=native', '-Q', '--help=target']),
         'mpi': os.environ.get('MPI_HOME'), 'blas': os.environ.get('OPENBLAS_ROOT'),
         'ld_library_path': os.environ.get('LD_LIBRARY_PATH'),
@@ -71,7 +73,8 @@ def prepare(partition):
         actual = upstream_debian_version(versions[name])
         if actual != expected:
             raise ValueError(f'node external {name} is {actual}, expected {expected}')
-    if profile['gcc'] != '13.3.0' or sys.version_info[:2] != (3, 12):
+    if (set(profile['compiler_versions'].values()) != {GCC_VERSION} or
+            sys.version_info[:2] != (3, 12)):
         raise ValueError('unexpected compiler or offline solver Python ABI')
     isa = TARGETS[partition]['isa']
     for name in ('mpi', 'blas'):

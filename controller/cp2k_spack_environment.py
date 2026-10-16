@@ -11,7 +11,7 @@ from copy import deepcopy
 from pathlib import Path
 import re
 
-from cp2k_spack import TARGETS, config, write_config
+from cp2k_spack import GCC_VERSION, TARGETS, config, write_config
 
 ROOT_SPECS = (
     'libint@2.6.0 +fortran +shared tune=cp2k-lmax-5',
@@ -42,17 +42,18 @@ def environment(partition, install_prefix, native_target, native_os, jobs=8):
         raise ValueError('invalid build parallelism')
     manifest = config(partition, Path('/input/spack'), install_prefix=Path(install_prefix))
     isa = TARGETS[partition]['isa']
-    gcc = '/opt/devtools/gcc/13.3.0'
+    gcc = TARGETS[partition]['compiler']
+    compiler_spec = 'gcc@' + GCC_VERSION
     blas = '/opt/devtools/saiblas/2603-gnu-' + isa
     mpi = '/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-' + isa
     packages = {
         'all': {'require': ['target=' + native_target, 'os=' + native_os],
                 'providers': {'mpi': ['openmpi'], 'blas': ['openblas'], 'lapack': ['openblas'],
                               'scalapack': ['netlib-scalapack'], 'zlib-api': ['zlib']}},
-        'c': {'require': 'gcc@13.3.0'},
-        'cxx': {'require': 'gcc@13.3.0'},
-        'fortran': {'require': 'gcc@13.3.0'},
-        'gcc': external('gcc@13.3.0 languages=c,c++,fortran os=' + native_os, gcc,
+        'c': {'require': compiler_spec},
+        'cxx': {'require': compiler_spec},
+        'fortran': {'require': compiler_spec},
+        'gcc': external(compiler_spec + ' languages=c,c++,fortran os=' + native_os, gcc,
                         compilers={name: gcc + '/bin/' + exe for name, exe in
                                    [('c', 'gcc'), ('cxx', 'g++'), ('fortran', 'gfortran')]},
                         flags={name: '-O3 -march=native -mtune=native' for name in

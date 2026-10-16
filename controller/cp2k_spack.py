@@ -20,12 +20,14 @@ SPACK_COMMIT = "3e19345b6e12f5ff1b874f4059622fc6a1fd804a"
 PACKAGES_COMMIT = "535022224b610cb07dcbf63cef5bd68c6a2aae24"
 SPACK_SHA256 = "a4bbe032981461ac166b3acc10f5f38bbb34e804695478de6a2e1d11955f8d58"
 PACKAGES_SHA256 = "f6f827ead872ce90c9c382f5a47043d79369c2a29cf18ca769f01fa9b8e65590"
+GCC_VERSION = "14.3.0"
+GCC_PREFIX = "/opt/devtools/gcc/" + GCC_VERSION
 
 TARGETS = {
-    "DSPRHBM": {"isa": "avx512", "cuda": False, "compiler": "/opt/devtools/gcc/13.3.0"},
-    "4V100": {"isa": "avx512", "cuda": True, "compiler": "/opt/devtools/gcc/13.3.0"},
-    "16V100": {"isa": "avx2", "cuda": True, "compiler": "/opt/devtools/gcc/13.3.0"},
-    "8V100V0": {"isa": "avx2", "cuda": True, "compiler": "/opt/devtools/gcc/13.3.0"},
+    "DSPRHBM": {"isa": "avx512", "cuda": False, "compiler": GCC_PREFIX},
+    "4V100": {"isa": "avx512", "cuda": True, "compiler": GCC_PREFIX},
+    "16V100": {"isa": "avx2", "cuda": True, "compiler": GCC_PREFIX},
+    "8V100V0": {"isa": "avx2", "cuda": True, "compiler": GCC_PREFIX},
 }
 
 
@@ -121,7 +123,7 @@ def config(partition: str, cache: Path, *, install_prefix: Path) -> dict:
         }}, "source_cache": "/workspace/spack-source-cache", "build_stage": ["/workspace/spack-stage"]},
         "bootstrap": {"enable": False},
         "spack_root": "/workspace/spack"},
-        "compiler": {"spec": "gcc@13.3.0 languages='c,c++,fortran'", "prefix": compiler,
+        "compiler": {"spec": "gcc@" + GCC_VERSION + " languages='c,c++,fortran'", "prefix": compiler,
                      "cc": str(Path(compiler) / "bin/gcc"), "cxx": str(Path(compiler) / "bin/g++"),
                      "fortran": str(Path(compiler) / "bin/gfortran")},
         "cuda": target["cuda"],

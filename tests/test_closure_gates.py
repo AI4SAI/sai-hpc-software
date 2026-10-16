@@ -1,5 +1,6 @@
 """Cross-workflow regressions: failures must never become published deliveries."""
 from pathlib import Path
+from contextlib import redirect_stdout
 import io
 import json
 import os
@@ -7,6 +8,7 @@ import subprocess
 import sys
 import tempfile
 import types
+import argparse
 import unittest
 from unittest.mock import patch
 
@@ -20,6 +22,16 @@ import release_contract
 
 
 class ClosureGates(unittest.TestCase):
+    def test_cpu_reference_wait_revalidates_and_fails_without_an_oracle(self):
+        args = argparse.Namespace(timeout=1, interval=1)
+        with patch.object(cp2k_benchmark, 'latest_accepted_reference',
+                          side_effect=[ValueError('no compatible verified reference'), ('gpu', 'a' * 64)]), \
+                patch.object(cp2k_benchmark.time, 'sleep'), redirect_stdout(io.StringIO()):
+            self.assertEqual(cp2k_benchmark.wait_reference(args), 0)
+        with patch.object(cp2k_benchmark, 'latest_accepted_reference', side_effect=ValueError('missing')):
+            with self.assertRaisesRegex(TimeoutError, 'candidate preserved'):
+                cp2k_benchmark.wait_reference(argparse.Namespace(timeout=0, interval=1))
+
     def test_md_runtime_rejects_changed_image_and_identity(self):
         import md_controller as md
         with tempfile.TemporaryDirectory() as tmp:

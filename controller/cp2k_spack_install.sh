@@ -20,7 +20,8 @@ esac
 export TMPDIR=/workspace/tmp
 source /control/environment.sh "$target"
 set +u
-module load gcc/13.3.0
+module unload gcc
+module load gcc/14.3.0
 set -u
 export SPACK_DISABLE_LOCAL_CONFIG=1 SPACK_USER_CONFIG_PATH=/workspace/spack-config
 export SPACK_USER_CACHE_PATH=/workspace/spack-cache PYTHONPATH=/workspace/solver:/control

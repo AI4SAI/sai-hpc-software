@@ -34,7 +34,7 @@ def contract_files(software):
                          "cp2k_spack.py", "cp2k_spack_environment.py", "cp2k_spack_native.py",
                          "cp2k_spack_seed.py", "cp2k_spack_probe.sh", "cp2k_spack_dependencies.sh",
                          "cp2k_spack_libint_repair.py", "cp2k_spack_install_evidence.py",
-                         "cp2k_spack_link.py", "cp2k_payload.py", "cp2k_dependency_stage.py",
+                         "cp2k_spack_link.py", "cp2k_payload.py", "cp2k_dependency_stage.py", "build_capacity.py",
                          "native_module.py", "export_native.py", "cp2k"]
     if software == "gpumd":
         return [name for name in common if name != "environment.sh"] + [
@@ -360,7 +360,8 @@ def render_job(args):
     q = shlex.quote
     lines = [
         "#!/bin/bash",
-        "#SBATCH --job-name=sai-software-build", "#SBATCH --dependency=singleton",
+        "#SBATCH --job-name=" + ('sai-cp2k-build-' + args.target if args.software == 'cp2k' else 'sai-software-build'),
+        "#SBATCH --dependency=singleton",
         f"#SBATCH --partition={target['partition']}",
         f"#SBATCH --qos={target['qos']}",
         "#SBATCH --nodes=1", "#SBATCH --ntasks=1",
@@ -406,6 +407,9 @@ def render_job(args):
            'export APPTAINERENV_CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:?}"']
           if args.software == "gpumd" else []),
         f"test -s {q(str(image))}",
+        *([shlex.join(['/usr/bin/python3', str(CONTROL / 'build_capacity.py'), str(ROOT),
+                      str(r), str(3 * args.overlay_mb), '--', '/bin/bash', '-seu', '-o', 'pipefail']) + " <<'SAI_BUILD_BODY'"]
+          if args.software == 'cp2k' else []),
         f"test ! -e {q(str(overlay))}",
         shlex.join(["/usr/bin/python3", "-c",
                     f"import sys; sys.path.insert(0, {str(CONTROL)!r}); "
@@ -426,6 +430,7 @@ def render_job(args):
         f"printf '%s\\n' {q(str(artifact))} > {q(str(r / 'artifact.path'))}",
         f"sha256sum {q(str(artifact))} > {q(str(r / 'results/artifact.sha256'))}",
         "echo BUILD_AND_ARTIFACT_VERIFIED",
+        *(['SAI_BUILD_BODY'] if args.software == 'cp2k' else []),
     ]
     return "\n".join(lines) + "\n"
 

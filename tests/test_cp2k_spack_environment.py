@@ -59,8 +59,8 @@ class SpackEnvironmentTests(unittest.TestCase):
     def test_spack_12_language_provider_constraints_and_native_flags(self):
         packages = self.env()['packages']
         for name in ('c', 'cxx', 'fortran'):
-            self.assertEqual(packages[name]['require'], 'gcc@13.3.0')
-        self.assertNotIn('%gcc@13.3.0', packages['all']['require'])
+            self.assertEqual(packages[name]['require'], 'gcc@14.3.0')
+        self.assertNotIn('%gcc@14.3.0', packages['all']['require'])
         compiler = packages['gcc']['externals'][0]['extra_attributes']
         for name in ('cflags', 'cxxflags', 'fflags'):
             self.assertEqual(compiler['flags'][name], '-O3 -march=native -mtune=native')

@@ -18,7 +18,12 @@ cpu_flags='-march=native -mtune=native'
 # environment.sh already resolved ISA-aware dependencies on this compute node.
 # Do not purge it: that would also discard DSPRHBM's explicit GCC module.
 if [[ "$accel" == CUDA ]]; then module load cuda/12.9.1 nvmplibs/26.7-tmp; fi
-module load gcc/13.3.0 spglib/2.7.0
+module unload gcc
+module load gcc/14.3.0 spglib/2.7.0
+for compiler in gcc g++ gfortran; do
+  [[ "$(command -v "$compiler")" == "/opt/devtools/gcc/14.3.0/bin/$compiler" ]]
+  [[ "$("$compiler" -dumpfullversion)" == 14.3.0 ]]
+done
 [[ "${SPGLIB_ROOT:?}" == /opt/devtools/spglib/spglib-2.7.0 ]]
 python3 /control/cp2k_spack_link.py /results/install-success.json "$expected_partition" "$prefix" \
   > /workspace/cp2k-spack-build-env.sh

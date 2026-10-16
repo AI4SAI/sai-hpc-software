@@ -32,7 +32,7 @@ class CP2KSpackTests(unittest.TestCase):
             value = cp2k_spack.config("16V100", Path(directory),
                                       install_prefix=Path('/opt/software/cp2k/development/test/16V100'))
             self.assertTrue(value["cuda"])
-            self.assertEqual(value["compiler"]["cc"], "/opt/devtools/gcc/13.3.0/bin/gcc")
+            self.assertEqual(value["compiler"]["cc"], "/opt/devtools/gcc/14.3.0/bin/gcc")
             self.assertEqual(value["spack_commit"], cp2k_spack.SPACK_COMMIT)
             settings = value['container']['config']
             self.assertEqual(settings['install_tree']['root'],

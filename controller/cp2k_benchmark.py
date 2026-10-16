@@ -707,6 +707,24 @@ def latest_accepted_reference():
     raise ValueError('no compatible verified CP2K GPU reference; finish GPU acceptance first')
 
 
+def wait_reference(args):
+    """Allow CPU compilation in parallel, but wait for a verified science oracle."""
+    if not 0 <= args.timeout <= 5400 or not 1 <= args.interval <= 60:
+        raise ValueError('reference wait outside the acceptance job budget')
+    deadline = time.monotonic() + args.timeout
+    while True:
+        try:
+            run_id, digest = latest_accepted_reference()
+        except ValueError:
+            if time.monotonic() >= deadline:
+                raise TimeoutError('no verified GPU reference before deadline; CPU candidate preserved')
+            print('CP2K_CPU_ACCEPTANCE_WAITING_FOR_VERIFIED_GPU_REFERENCE', flush=True)
+            time.sleep(min(args.interval, max(0, deadline - time.monotonic())))
+        else:
+            print('CP2K_VERIFIED_GPU_REFERENCE ' + run_id + ' ' + digest, flush=True)
+            return 0
+
+
 def verify_evidence(task, request, *, allow_reference=True):
     """Reparse raw logs/forces/resources, including every warm-up; never trust a marker alone."""
     task = Path(task)
@@ -1115,8 +1133,11 @@ def main():
     command.add_argument("run_id")
     command.add_argument("--timeout", type=int, default=7200)
     command.add_argument("--interval", type=int, default=15)
+    command = commands.add_parser("wait-reference")
+    command.add_argument("--timeout", type=int, default=5400)
+    command.add_argument("--interval", type=int, default=60)
     args = parser.parse_args()
-    result = {"submit": submit, "monitor": monitor}[args.op](args)
+    result = {"submit": submit, "monitor": monitor, "wait-reference": wait_reference}[args.op](args)
     return result if isinstance(result, int) else 0
 
 

@@ -351,6 +351,7 @@ class CiLifecycleTests(unittest.TestCase):
                 ("software_controller.py", "identity"),
                 ("cp2k_dependency_stage.py", "submit"), ("cp2k_dependency_stage.py", "monitor"),
                 ("software_controller.py", "submit"), ("software_controller.py", "monitor"),
+                *([("cp2k_benchmark.py", "wait-reference")] if target == 'dsprhbm' else []),
                 ("cp2k_benchmark.py", "submit"), ("cp2k_benchmark.py", "monitor"),
                 ("software_controller.py", "publish"),
             ])

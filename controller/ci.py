@@ -203,7 +203,7 @@ def main():
                    "cp2k_spack.py", "cp2k_spack_environment.py", "cp2k_spack_native.py",
                    "cp2k_spack_seed.py", "cp2k_spack_probe.sh", "cp2k_spack_dependencies.sh",
                    "cp2k_spack_libint_repair.py", "cp2k_spack_install_evidence.py",
-                   "cp2k_spack_link.py", "cp2k_payload.py", "cp2k_dependency_stage.py",
+                   "cp2k_spack_link.py", "cp2k_payload.py", "cp2k_dependency_stage.py", "build_capacity.py",
                    "native_module.py", "export_native.py"])
         if software == "gpumd":
             recipe = ["gpumd_container_entry.sh", "gpumd_environment.sh", "gpumd_build.sh",
@@ -300,7 +300,9 @@ def main():
         if software == 'cp2k' and phase != 'acceptance' and not resume:
             if phase != 'application':
                 # The verified CPU dependency pilot took 5h45m; GPU QOS is capped at 4h.
-                resources = ['--minutes', '720'] if target == 'dsprhbm' else []
+                resources = ['--overlay-mb', '16384']
+                if target == 'dsprhbm':
+                    resources += ['--minutes', '720']
                 python('cp2k_dependency_stage.py', 'submit', root, control, dependency_run,
                        json.dumps(identity, sort_keys=True), *resources)
                 observation = '21000' if target == 'dsprhbm' else '19800'
@@ -308,7 +310,7 @@ def main():
             if phase == 'dependencies':
                 emit_run_id()
                 return
-            extras += ['--dependencies-run', dependency_run, '--overlay-mb', '32768']
+            extras += ['--dependencies-run', dependency_run, '--overlay-mb', '16384']
         elif phase == 'dependencies':
             # A user-requested repack consumes its original checkpoint in the next job.
             emit_run_id()
@@ -367,6 +369,8 @@ def main():
                     reference_args = ["--reference-run-id", safe_name(reference)] if reference and target == "dsprhbm" else []
                     expected_reference = {'reference_run_id': reference} if reference_args else {}
                     if not acceptance_exists('cp2k_benchmark.py', benchmark_run, **expected_reference):
+                        if target == 'dsprhbm' and not reference:
+                            python('cp2k_benchmark.py', 'wait-reference', '--timeout', '5400')
                         python("cp2k_benchmark.py", "submit", benchmark_run, version, target,
                                "--build-run-id", run_id, *reference_args)
                     python("cp2k_benchmark.py", "monitor", benchmark_run)

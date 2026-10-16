@@ -120,7 +120,7 @@ jobs:
     needs: [validate, resolve-source]
     strategy:
       fail-fast: false
-      max-parallel: 1
+      max-parallel: 3
       matrix:
         build: ${{ fromJSON(needs.resolve-source.outputs.gpu_builds) }}
     uses: ./.github/workflows/software-pair.yml
@@ -133,10 +133,10 @@ jobs:
     secrets: inherit
 
   build-cpu:
-    # Job dependencies, rather than matrix order, ensure a fresh GPU reference
-    # is accepted before CPU-only added-feature comparisons start.
-    if: ${{ !cancelled() && (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && needs.validate.result == 'success' && needs.resolve-source.result == 'success' && (needs.build.result == 'success' || needs.build.result == 'skipped') && needs.resolve-source.outputs.cpu_builds != '[]' }}
-    needs: [validate, resolve-source, build]
+    # Compile CPU and GPU targets independently. Only CPU science acceptance
+    # waits for a fully reverified GPU reference; a GPU failure cannot skip CPU compilation.
+    if: ${{ !cancelled() && (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && needs.validate.result == 'success' && needs.resolve-source.result == 'success' && needs.resolve-source.outputs.cpu_builds != '[]' }}
+    needs: [validate, resolve-source]
     strategy:
       fail-fast: false
       max-parallel: 1

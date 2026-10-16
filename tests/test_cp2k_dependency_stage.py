@@ -150,6 +150,8 @@ class DependencyStageTests(unittest.TestCase):
             self.assertIn('#SBATCH --partition=' + partition, script)
             self.assertIn('#SBATCH --time=240', script)
             self.assertIn('#SBATCH --dependency=singleton', script)
+            self.assertIn('#SBATCH --job-name=sai-cp2k-deps-' + target, script)
+            self.assertIn('build_capacity.py', script)
             self.assertLess(script.index('require_capacity('), script.index('cp --sparse'))
             self.assertIn(identity['install_prefix'], script)
             if target != 'dsprhbm':

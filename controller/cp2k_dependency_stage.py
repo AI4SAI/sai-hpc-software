@@ -64,7 +64,7 @@ def render(project, controller, run, identity, *, minutes=240, jobs=None, overla
             ('/etc/alternatives', '/etc/alternatives'), ('/usr/bin', '/bin')])
     command[2:2] = ['--bind', str(run / 'results') + ':/results:rw']
     q = shlex.quote
-    lines = ['#!/bin/bash', '#SBATCH --job-name=sai-software-build',
+    lines = ['#!/bin/bash', '#SBATCH --job-name=sai-cp2k-deps-' + identity['target'],
              '#SBATCH --dependency=singleton', '#SBATCH --partition=' + target['partition'],
              '#SBATCH --qos=' + target['qos'], '#SBATCH --nodes=1', '#SBATCH --ntasks=1',
              '#SBATCH --time=' + str(minutes), '#SBATCH --export=NIL',
@@ -76,6 +76,8 @@ def render(project, controller, run, identity, *, minutes=240, jobs=None, overla
              'umask 077', 'unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH',
              'export TMPDIR=' + q(str(run / 'runtime')), 'export APPTAINER_TMPDIR="$TMPDIR"',
              'export APPTAINER_CACHEDIR=' + q(str(run / 'apptainer-cache')),
+             shlex.join(['/usr/bin/python3', str(controller / 'build_capacity.py'), str(project),
+                         str(run), str(overlay_mb), '--', '/bin/bash', '-seu', '-o', 'pipefail']) + " <<'SAI_BUILD_BODY'",
              shlex.join(['/usr/bin/python3', '-c',
                          f'import sys; sys.path.insert(0, {str(controller)!r}); '
                          f'from remote_controller import require_capacity; require_capacity({str(project)!r}, {overlay_mb})']),
@@ -85,7 +87,8 @@ def render(project, controller, run, identity, *, minutes=240, jobs=None, overla
              shlex.join(['printf', '%s  %s\n', SEED_SHA256, str(overlay)]) + ' | sha256sum --check --status',
              shlex.join(['/usr/sbin/e2fsck', '-pf', str(overlay)]) + ' || test "$?" -eq 1',
              shlex.join(['/usr/sbin/resize2fs', str(overlay), str(overlay_mb) + 'M']),
-             shlex.join(command), 'echo CP2K_DEPENDENCY_STAGE_COMPLETE_NOT_APPLICATION_ACCEPTANCE']
+             shlex.join(command), 'echo CP2K_DEPENDENCY_STAGE_COMPLETE_NOT_APPLICATION_ACCEPTANCE',
+             'SAI_BUILD_BODY']
     return '\n'.join(lines) + '\n'
 
 

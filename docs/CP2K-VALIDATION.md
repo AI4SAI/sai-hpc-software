@@ -8,12 +8,31 @@ This is an implementation checklist, not a release acceptance result. The
 Workflow [38879044765](https://github.com/AI4SAI/sai-hpc-software/actions/runs/38879044765)
 was dispatched from `bd89e49` for release only, all four targets, with explicit
 release retry. Resolution pinned the exact `v2026.2` commit on every target.
-16V100 dependency job `1814499` is running and has entered native Spack
-installation. The remaining targets wait for their matrix turn; their Slurm
-resource-only requests passed `--test-only`. These are not application successes.
+At 23:48 Asia/Shanghai, 16V100 dependency job `1814499` had timed out at the
+four-hour GPU QOS limit. 4V100 job `1817424` failed concretization: its allocated
+Ryzen 9950X3D is Zen 5, unsupported by the pinned GCC 13.3 compiler target model.
+8V100V0 dependency job `1817573` was still running after 2h05m. DSPRHBM had not
+been submitted because the original workflow waits for the whole GPU matrix.
+These are not application successes.
 The workflow ran 694 tests: 692 passed and two optional MD source-cache tests
 were skipped on the runner; both were rerun locally with the preserved cache
 and passed.
+
+The corrected recipe pins GCC **14.3.0**, matching the upstream v2026.2
+`tools/toolchain/scripts/stage0/install_gcc.sh`. SAI's `gcc`, `g++`, and
+`gfortran` executables at `/opt/devtools/gcc/14.3.0/bin` each report 14.3.0.
+The module is explicitly switched after the shared site environment is loaded,
+and native profiles record all three compiler versions. Historical GCC 13
+checkpoints retain their original identities and cannot enter a GCC 14 build.
+
+The GPU matrix now allows three concurrent targets; CPU compilation starts
+independently. Only CPU science acceptance waits (at most 90 minutes) for a
+reverified GPU reference. Dependency/application singleton names are scoped to
+the target. Native CP2K stages share file-lock-backed disk reservations, account
+for running older controllers, retain a 4 GiB reserve, and use 16 GiB overlays.
+Dependency stages reserve their overlay growth; application stages additionally
+reserve both image copies. Capacity checks remain active at submission/start.
+No old overlay or scientific/publication gate was removed.
 
 A fresh read-only final-SIF loader check `1814450` completed `0:0` in seven
 seconds on 16V100. It verified the image checksum, version/revision and all
