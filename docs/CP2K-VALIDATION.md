@@ -5,6 +5,31 @@ This is an implementation checklist, not a release acceptance result. The
 
 ## Release-first execution (2026-10-16)
 
+Current workflow: [38929566155](https://github.com/AI4SAI/sai-hpc-software/actions/runs/38929566155),
+controller `46c4b8099bb54cffe370a8eb057cc3be89f371cf`. At 00:21 Asia/Shanghai
+on October 17, all four dependency allocations were simultaneously **RUNNING**:
+
+| Partition | Slurm job | Observed C/C++/Fortran |
+|---|---|---|
+| 16V100 | 1819537 | 14.3.0 / 14.3.0 / 14.3.0 |
+| 4V100 | 1819528 | 14.3.0 / 14.3.0 / 14.3.0 |
+| 8V100V0 | 1819531 | 14.3.0 / 14.3.0 / 14.3.0 |
+| DSPRHBM | 1819530 | 14.3.0 / 14.3.0 / 14.3.0 |
+
+4V100 concretized successfully as Zen 5 and entered dependency installation.
+16V100 is a fresh GCC 14 build, preserving the incompatible GCC 13 checkpoint.
+The old 8V100V0 GCC 13 allocation `1817573` remains untouched. The new disk
+guard accounts for its possible remaining growth. About 105 GiB remained free.
+Both home and GitHub suites ran 700 tests: 698 passed, two optional MD local
+source-cache checks skipped. Home log SHA256:
+`f5503e5b97561f531fc2f225cfa938aedd1f237bc3868165cb618717f23c6018`.
+Raw identities, accounting, compiler observations and progress tails are in
+[the four-target snapshot](evidence/cp2k-gcc14-parallel-20261017.json).
+This proves real parallel allocation and compiler selection, not completed
+CP2K application builds, scientific acceptance or publication.
+
+Previous execution:
+
 Workflow [38879044765](https://github.com/AI4SAI/sai-hpc-software/actions/runs/38879044765)
 was dispatched from `bd89e49` for release only, all four targets, with explicit
 release retry. Resolution pinned the exact `v2026.2` commit on every target.

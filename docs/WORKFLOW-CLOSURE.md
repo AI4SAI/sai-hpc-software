@@ -92,22 +92,28 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 ## Remaining acceptance work
 
 Current CP2K priority: official `v2026.2` release across all four partitions,
-workflow [38879044765](https://github.com/AI4SAI/sai-hpc-software/actions/runs/38879044765).
-The first 16V100 dependency job timed out at four hours; 4V100 failed because
-GCC 13.3 cannot resolve the allocated Zen 5 target. At 23:48 Asia/Shanghai,
-8V100V0 dependencies were still running as job `1817573`. The corrected recipe
-uses upstream-pinned GCC 14.3.0 and enables parallel native targets with disk
-reservations; GCC 13 checkpoints remain preserved and cannot be relabelled.
+workflow [38929566155](https://github.com/AI4SAI/sai-hpc-software/actions/runs/38929566155).
+At 00:21 Asia/Shanghai on October 17, all four dependency allocations below
+were simultaneously RUNNING, with GCC/G++/GFortran 14.3.0 observed on each.
+4V100 passed Zen 5 concretization. Both home and GitHub validation ran 700
+tests: 698 passed, two optional MD local-cache checks skipped.
+The old workflow's 16V100 timed out at four hours and its 4V100 failed because
+GCC 13.3 cannot resolve Zen 5. Old 8V100V0 job `1817573` remains running.
+The corrected recipe uses upstream-pinned GCC 14.3.0 and parallel native
+targets with disk reservations; GCC 13 checkpoints remain preserved and
+cannot be relabelled. These are dependency-stage observations, not application
+or scientific acceptance.
 The historical development SIF
 was rechecked on 16V100 by `1814450`: checksum, version and `ldd` passed;
 scientific acceptance/publication remain unproven. Space recovered to about
 109 GiB at release submission; later stages still recheck actual free capacity.
-[Current evidence](evidence/cp2k-release-priority-20261016.json).
+[Historical loader/source evidence](evidence/cp2k-release-priority-20261016.json).
+[Current parallel-build evidence](evidence/cp2k-gcc14-parallel-20261017.json).
 
 | Software | DSPRHBM | 16V100 | 4V100 | 8V100V0 |
 |---|---|---|---|---|
 | ABACUS | Pending | Pending | Pending | Pending |
-| CP2K | Release pending | Dependencies timed out: 1814499 | GCC 13/Zen 5 failure: 1817424 | GCC 13 dependencies running: 1817573 |
+| CP2K | GCC 14 dependencies: 1819530 | GCC 14 dependencies: 1819537 | GCC 14 dependencies: 1819528 | GCC 14 dependencies: 1819531 |
 | DeePMD-kit | Not a GPU target | Pending | Pending | Pending |
 | LAMMPS | Not a GPU target | Pending | Pending | Pending |
 | GPUMD | Not a GPU target | Published; native module execution pending | Capacity blocked | Pending |
