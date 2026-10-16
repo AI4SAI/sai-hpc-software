@@ -121,5 +121,20 @@
     "shell_syntax": "passed",
     "source_preflight": "release and development passed; missing declared patch rejected",
     "initial_fixture_failure": "Site default umask 002 created a group-writable test payload rejected by the installed-tree gate; unchanged test passed with application umask 022."
+  },
+  "historical_final_prefix_cpu_dependencies": {
+    "job_id": "1440608",
+    "state": "COMPLETED",
+    "exit_code": "0:0",
+    "elapsed": "05:44:54",
+    "run": "cp2k-final-spack-20260922-05-DSPRHBM",
+    "meaning": "development identity native dependency pilot; not release application acceptance"
+  },
+  "dependency_resources": {
+    "gpu_wall_minutes": 240,
+    "cpu_wall_minutes": 720,
+    "gpu_observation_seconds": 19800,
+    "cpu_observation_seconds": 21000,
+    "observation_timeout_cancels_job": false
   }
 }

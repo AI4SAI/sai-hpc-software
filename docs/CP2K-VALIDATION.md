@@ -29,6 +29,11 @@ The release's toolchain uses pristine LIBXS 1.0.0; later development adds a
 JIT-handle patch. Preparation now follows the pinned source rather than
 unconditionally requiring that development-only file. Real upstream archive
 preflights passed for both sources and rejected a declared-but-missing patch.
+The historical final-prefix CPU dependency job `1440608` is now confirmed
+`COMPLETED 0:0` in 5:44:54. The workflow therefore requests 720 minutes for
+DSPRHBM dependencies while retaining the 240-minute GPU QOS bound. The CPU
+observer allows 350 minutes within its six-hour runner limit; expiration
+preserves the Slurm job and requires handle-based continuation, not a rebuild.
 No release application or four-partition scientific acceptance is claimed yet.
 Evidence: [release priority and loader audit](evidence/cp2k-release-priority-20261016.json).
 

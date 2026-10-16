@@ -299,9 +299,12 @@ def main():
     try:
         if software == 'cp2k' and phase != 'acceptance' and not resume:
             if phase != 'application':
+                # The verified CPU dependency pilot took 5h45m; GPU QOS is capped at 4h.
+                resources = ['--minutes', '720'] if target == 'dsprhbm' else []
                 python('cp2k_dependency_stage.py', 'submit', root, control, dependency_run,
-                       json.dumps(identity, sort_keys=True))
-                python('cp2k_dependency_stage.py', 'monitor', root, dependency_run, '--timeout', '19800')
+                       json.dumps(identity, sort_keys=True), *resources)
+                observation = '21000' if target == 'dsprhbm' else '19800'
+                python('cp2k_dependency_stage.py', 'monitor', root, dependency_run, '--timeout', observation)
             if phase == 'dependencies':
                 emit_run_id()
                 return
