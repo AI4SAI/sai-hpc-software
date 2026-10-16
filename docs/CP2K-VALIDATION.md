@@ -5,6 +5,21 @@ This is an implementation checklist, not a release acceptance result. The
 
 ## Release-first execution (2026-10-16)
 
+Workflow [38879044765](https://github.com/AI4SAI/sai-hpc-software/actions/runs/38879044765)
+was dispatched from `bd89e49` for release only, all four targets, with explicit
+release retry. Resolution pinned the exact `v2026.2` commit on every target.
+16V100 dependency job `1814499` is running and has entered native Spack
+installation. The remaining targets wait for their matrix turn; their Slurm
+resource-only requests passed `--test-only`. These are not application successes.
+The workflow ran 694 tests: 692 passed and two optional MD source-cache tests
+were skipped on the runner; both were rerun locally with the preserved cache
+and passed.
+
+A fresh read-only final-SIF loader check `1814450` completed `0:0` in seven
+seconds on 16V100. It verified the image checksum, version/revision and all
+64 loader-output lines with no unresolved libraries in the current site
+environment. Scientific/performance acceptance and publication remain pending.
+
 The current priority is the official `v2026.2` release, commit
 `67b5da876dd6a76b8b021d5a04d1c81ba79a4c50`, on 16V100, 4V100,
 8V100V0 and DSPRHBM. Development remains a required channel. Persistent

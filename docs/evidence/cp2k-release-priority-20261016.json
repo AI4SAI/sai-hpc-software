@@ -1,6 +1,6 @@
 {
   "schema": 1,
-  "checked_at_utc": "2026-10-16T09:07:51.644452+00:00",
+  "checked_at_utc": "2026-10-16T09:25:24.032425+00:00",
   "meaning": "release preparation and historical loader evidence; not four-partition acceptance",
   "priority": "CP2K v2026.2 release before further development canaries",
   "development_checkout": "/home/stardust/sai-hpc-software/development/workflow-closure",
@@ -102,12 +102,12 @@
     }
   ],
   "partition_acceptance": {
-    "16V100": "pending",
+    "16V100": "release dependency job 1814499 running; application/science pending",
     "4V100": "pending",
     "8V100V0": "pending",
     "DSPRHBM": "pending"
   },
-  "slurm_submitted": false,
+  "slurm_submitted": true,
   "validation": {
     "cp2k_tests": {
       "passed": 89,
@@ -136,5 +136,96 @@
     "gpu_observation_seconds": 19800,
     "cpu_observation_seconds": 21000,
     "observation_timeout_cancels_job": false
-  }
+  },
+  "release_workflow": {
+    "id": "38879044765",
+    "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/38879044765",
+    "controller_git_sha": "bd89e498662f3af055ff696c382d3146c2860982",
+    "tracks": [
+      "release"
+    ],
+    "targets": [
+      "16v100-avx2",
+      "4v100-avx512",
+      "8v100v0-avx512",
+      "dsprhbm"
+    ],
+    "retry_releases": true,
+    "validation": {
+      "tests_run": 694,
+      "passed": 692,
+      "ci_skipped": 2,
+      "skips": "optional MD upstream reference cache absent on runner; both checks passed locally at the same code revision"
+    },
+    "resolved_source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50"
+  },
+  "release_16v100_dependencies": {
+    "run_id": "38879044765-1-release-16v100-avx2-2026-10-16-67b5da876dd6-dependencies",
+    "job_id": "1814499",
+    "observed_state": "RUNNING",
+    "identity": {
+      "build_id": "v2026.2-g67b5da876dd6-rcde68fbdfddc",
+      "cpu_arch": "znver3",
+      "cuda_arch": "70",
+      "dependency_isa": "avx2",
+      "gpus": 1,
+      "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rcde68fbdfddc/16V100",
+      "partition": "16V100",
+      "recipe_sha256": "cde68fbdfddcd786b9798aa54b233866c45b22a04fc4d3d4766b19e6f2ce1f13",
+      "repository": "cp2k/cp2k",
+      "schema": 2,
+      "software": "cp2k",
+      "source_ref": "v2026.2",
+      "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+      "source_version": "v2026.2",
+      "stack_digest": null,
+      "stack_sources": {},
+      "target": "16v100-avx2",
+      "track": "release",
+      "version_label": "v2026.2"
+    },
+    "controller": "/home/stardust/sai-hpc-software/controller/bd89e498662f3af055ff696c382d3146c2860982/38879044765-1-release-16v100-avx2-2026-10-16-67b5da876dd6",
+    "meaning": "native dependencies installing; not CP2K application or scientific acceptance"
+  },
+  "current_development_loader_recheck": {
+    "job_id": "1814450",
+    "run_id": "cp2k-history-loader-20261016-01",
+    "state": "COMPLETED",
+    "exit_code": "0:0",
+    "elapsed": "00:00:07",
+    "partition": "16V100",
+    "artifact_sha256": "5c7f6fcef4f81ccaa1f92182a6a17db8bfcd761f9a3a7236f83c0d2932eece39",
+    "artifact_checksum_verified_in_job": true,
+    "version": "CP2K version 2026.2 (Development Version)",
+    "revision": "Source code revision 3aa79cf7c5",
+    "ldd_lines": 64,
+    "unresolved_libraries": [],
+    "raw_log": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-history-loader-20261016-01/results/slurm-1814450.log",
+    "raw_log_sha256": "c2352e8387238141cbe75040fdf8fef8359be391e3038ff0be1f3ed266791b64",
+    "scientific_acceptance": false,
+    "published": false
+  },
+  "remaining_target_resource_preflight": [
+    {
+      "target": "4v100-avx512",
+      "actual_job_submitted": false,
+      "test_only_exit_code": 0,
+      "scheduler_response": "sbatch: Job 1814544 to start at 2026-10-22T22:21:24 a using 8 processors on nodes 4v100n10 in partition 4V100",
+      "script_sha256": "d854bc2252118dfae72b256faf750695648899958f028a4bbddf30d2be756ddf"
+    },
+    {
+      "target": "8v100v0-avx512",
+      "actual_job_submitted": false,
+      "test_only_exit_code": 0,
+      "scheduler_response": "sbatch: Job 1814545 to start at 2026-10-16T19:07:24 a using 6 processors on nodes 8v100v0n06 in partition 8V100V0",
+      "script_sha256": "dda6ae090db9c4708af498ca8b65de3461b9b1a321b23a44b226e22e8faf95eb"
+    },
+    {
+      "target": "dsprhbm",
+      "actual_job_submitted": false,
+      "test_only_exit_code": 0,
+      "scheduler_response": "sbatch: Job 1814546 to start at 2026-10-16T17:25:24 a using 8 processors on nodes d9470n02 in partition DSPRHBM",
+      "script_sha256": "392e2533da4b6700820c6fa1eedfd2eb9d9e8992f680a29571fd16c6bdf3917e"
+    }
+  ]
 }

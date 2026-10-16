@@ -1,4 +1,4 @@
-# Workflow closure — 2026-10-15
+# Workflow closure — 2026-10-16
 
 The code now connects build, scientific/performance acceptance, native export
 readback and publication. GPUMD on 16V100 has passed science, performance and
@@ -89,10 +89,18 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 
 ## Remaining acceptance work
 
+Current CP2K priority: official `v2026.2` release across all four partitions,
+workflow [38879044765](https://github.com/AI4SAI/sai-hpc-software/actions/runs/38879044765).
+The first native dependency job is running. The historical development SIF
+was rechecked on 16V100 by `1814450`: checksum, version and `ldd` passed;
+scientific acceptance/publication remain unproven. Space recovered to about
+109 GiB at release submission; later stages still recheck actual free capacity.
+[Current evidence](evidence/cp2k-release-priority-20261016.json).
+
 | Software | DSPRHBM | 16V100 | 4V100 | 8V100V0 |
 |---|---|---|---|---|
 | ABACUS | Pending | Pending | Pending | Pending |
-| CP2K | Pending | Pending | Pending | Pending |
+| CP2K | Release pending | Release dependencies running: 1814499 | Release pending | Release pending |
 | DeePMD-kit | Not a GPU target | Pending | Pending | Pending |
 | LAMMPS | Not a GPU target | Pending | Pending | Pending |
 | GPUMD | Not a GPU target | Published; native module execution pending | Capacity blocked | Pending |
