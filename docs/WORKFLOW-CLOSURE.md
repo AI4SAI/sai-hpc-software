@@ -115,9 +115,12 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
    conservative export/JIT headroom, and still passed the normal 13 GiB free-space
    gate. After capacity recovers, rerun the corrected exported-native module
    probe in a new task, then expand to 4V100 and 8V100V0 with that exact recipe.
-4. Run complete development canaries on 16V100 and DSPRHBM, then GPU acceptance
-   on 4V100 and 8V100V0. Record source/recipe/SIF hashes, Slurm jobs, raw scientific
-   comparisons, performance and any repeat for each accepted delivery.
+4. Current priority (2026-10-16): run official CP2K `v2026.2` release canaries
+   on 16V100, 4V100 and 8V100V0, followed by DSPRHBM with its GPU scientific
+   reference. Explicitly retry the previously attempted release; retain the
+   development channel and its remaining acceptance work. The working checkout
+   is now `~/sai-hpc-software/development/workflow-closure`. Record source,
+   recipe/SIF hashes, Slurm jobs, raw science/performance and any repeat.
 5. Validate each real delivery's export, manifests and module invocation, in
    addition to the synthetic tool probes above. Publish only after every gate
    passes. Regressions or failed builds require diagnosis; a passing local test

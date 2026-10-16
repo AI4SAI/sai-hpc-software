@@ -246,7 +246,7 @@ def main():
         handoff_path = results / 'ci-handoff.json'
         handoff_path.write_text(json.dumps(marker, sort_keys=True) + '\n')
         upload(handoff_path, task + '/input/ci-handoff.json')
-        inventory = json.loads(python("source_cache.py", "inventory", cache, capture_output=True).stdout)
+        inventory = json.loads(python("source_cache.py", "inventory", cache, "--commit", upstream, capture_output=True).stdout)
         if upstream in inventory["cache_shas"]:
             print(f"CACHE_HIT {upstream}: zero source upload", flush=True)
         else:

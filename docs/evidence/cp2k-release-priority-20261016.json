@@ -1,0 +1,125 @@
+{
+  "schema": 1,
+  "checked_at_utc": "2026-10-16T09:07:51.644452+00:00",
+  "meaning": "release preparation and historical loader evidence; not four-partition acceptance",
+  "priority": "CP2K v2026.2 release before further development canaries",
+  "development_checkout": "/home/stardust/sai-hpc-software/development/workflow-closure",
+  "source": {
+    "ref": "v2026.2",
+    "sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+    "track": "release"
+  },
+  "historical_development": {
+    "run": "35029791253-1-development-16v100-avx2-3aa79cf7c5c1",
+    "job_id": "1345682",
+    "source_sha": "3aa79cf7c5c1bf330dc0b8dacd69da1b8bef5651",
+    "artifact": "/home/stardust/sai-hpc-software/containers/software/cp2k/development/master-3aa79cf7c5c1-g3aa79cf7c5c1-re8a84d2b8f83/16V100/35029791253-1-development-16v100-avx2-3aa79cf7c5c1.sif",
+    "artifact_sha256": "5c7f6fcef4f81ccaa1f92182a6a17db8bfcd761f9a3a7236f83c0d2932eece39",
+    "current_artifact_checksum_matches": true,
+    "log": "/home/stardust/sai-hpc-software/runs/35029791253-1-development-16v100-avx2-3aa79cf7c5c1/results/slurm-1345682.log",
+    "log_sha256": "39d580b000716e80ad22569641758f11bad574b12de6f02b630ea8c0946b1882",
+    "version": "CP2K version 2026.2 (Development Version)",
+    "revision": "3aa79cf7c5",
+    "version_exit_success": true,
+    "final_sif_ldd_lines": 64,
+    "final_sif_ldd_missing": [],
+    "checks_were_run_on": "16V100 during original build",
+    "scientific_acceptance": false,
+    "published": false,
+    "external_dependencies_include": "site CP2K 2026.1 toolchain; not a self-contained or cross-partition guarantee"
+  },
+  "source_transfer": {
+    "base": "c92cc08b45378b85150447011b5a4bb552f5b797",
+    "bundle_sha256": "bae1d7e3fc585d4e63dca35801771ac4918997bb44b27e900ec8561025ddd39d",
+    "bundle_size": 924,
+    "commit": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+    "compressed_sha256": "76a93799d8b507636630633b9071de710eaa8b0b3beff84b75d38ac1334ae130",
+    "compressed_size": 932,
+    "parts": [
+      {
+        "name": "source.part.00",
+        "sha256": "fa3cb93319a8167326774c4bcde03f2f55df99e53031773b0b4f15e7a69c36b9",
+        "size": 117
+      },
+      {
+        "name": "source.part.01",
+        "sha256": "fd7639c33e8fc7812d025ca9560ba067caaf87d2aa8669bea3e53cbe32d48934",
+        "size": 117
+      },
+      {
+        "name": "source.part.02",
+        "sha256": "3772776d2793cd1363057730eb3eb2713ae06bc605f0f5f4700fa0a215752fd2",
+        "size": 117
+      },
+      {
+        "name": "source.part.03",
+        "sha256": "2452656f6768d37d1945f8d973fa28f7de53403da2303ad16b08586d68482e5c",
+        "size": 117
+      },
+      {
+        "name": "source.part.04",
+        "sha256": "9615689132c64fbc028294dbbf1a9766dfd808c5b38eb24b3f0f18f90439b5f3",
+        "size": 117
+      },
+      {
+        "name": "source.part.05",
+        "sha256": "838f4b689c648efb9b6eabcdf856a22818e73acc2138f8c60e225dc9eadc887c",
+        "size": 117
+      },
+      {
+        "name": "source.part.06",
+        "sha256": "311ee02b4e1d219b31ca1b238ef842aeae6341cc0ff6a5cd80968880494455c2",
+        "size": 117
+      },
+      {
+        "name": "source.part.07",
+        "sha256": "2628dda1065899ea4cce314f77ea433ef89c9febd5c93cc6a5ce857369c9a23b",
+        "size": 113
+      }
+    ],
+    "version": 2
+  },
+  "source_preflight": [
+    {
+      "source": "release",
+      "sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+      "libxs_patch_present": false,
+      "before_sha256": "97445aea5ae5b1b29b63b759fb595ca593adde765d8418e15c3e4c47faf9f656",
+      "after_sha256": "97445aea5ae5b1b29b63b759fb595ca593adde765d8418e15c3e4c47faf9f656",
+      "passed": true
+    },
+    {
+      "source": "development",
+      "sha": "e08e82d5ec8fd4b32cdfd48f616907523a658ede",
+      "libxs_patch_present": true,
+      "before_sha256": "97445aea5ae5b1b29b63b759fb595ca593adde765d8418e15c3e4c47faf9f656",
+      "after_sha256": "1d831d0f97e954d22ff5a69ee47b6188761310da573dcf7a15800b1be082c326",
+      "passed": true
+    },
+    {
+      "source": "missing declared patch",
+      "rejected": true
+    }
+  ],
+  "partition_acceptance": {
+    "16V100": "pending",
+    "4V100": "pending",
+    "8V100V0": "pending",
+    "DSPRHBM": "pending"
+  },
+  "slurm_submitted": false,
+  "validation": {
+    "cp2k_tests": {
+      "passed": 89,
+      "skipped": 0,
+      "umask": "022"
+    },
+    "controller_cache_tests": {
+      "passed": 15,
+      "skipped": 0
+    },
+    "shell_syntax": "passed",
+    "source_preflight": "release and development passed; missing declared patch rejected",
+    "initial_fixture_failure": "Site default umask 002 created a group-writable test payload rejected by the installed-tree gate; unchanged test passed with application umask 022."
+  }
+}

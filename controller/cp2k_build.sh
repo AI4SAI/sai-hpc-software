@@ -72,7 +72,15 @@ libxs_archive=/input/dependencies/libxs-1.0.0.tar.gz
 printf '%s  %s\n' de26f50cb986a2f0e4f92c0eb489d40a44f7e4c5acd22751a6cfa2829dabd04d "$libxs_archive" | sha256sum --check --status
 mkdir -p /workspace/libxs-source
 tar --no-same-owner --strip-components=1 -xzf "$libxs_archive" -C /workspace/libxs-source
-patch -d /workspace/libxs-source -p1 < /workspace/source/tools/toolchain/scripts/stage4/libxs-1.0.0-jit-handle.patch
+# Follow the pinned CP2K source toolchain: v2026.2 uses pristine LIBXS,
+# while later development commits carry the upstream JIT-handle repair.
+libxs_patch=/workspace/source/tools/toolchain/scripts/stage4/libxs-1.0.0-jit-handle.patch
+if [[ -f "$libxs_patch" ]]; then
+  patch -d /workspace/libxs-source -p1 < "$libxs_patch"
+elif grep -Fq 'jit-handle.patch' /workspace/source/tools/toolchain/scripts/stage4/install_libxs.sh; then
+  echo "CP2K toolchain declares a missing LIBXS patch: $libxs_patch" >&2
+  exit 1
+fi
 cmake -S /workspace/libxs-source -B /workspace/libxs-build \
   -DCMAKE_INSTALL_PREFIX="$prefix/dependencies/libxs" -DCMAKE_INSTALL_LIBDIR=lib \
   -DCMAKE_BUILD_TYPE=Release -DLIBXS_FORTRAN=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON \

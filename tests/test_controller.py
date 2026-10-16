@@ -2,6 +2,7 @@ import argparse
 from contextlib import redirect_stdout
 import io
 import json
+import os
 import importlib.util
 from pathlib import Path
 import subprocess
@@ -298,6 +299,31 @@ class CacheTests(unittest.TestCase):
         self.assertTrue(cache.complete(store, second))
         self.assertIn(second, cache.inventory(store)["cache_shas"])
         self.assertFalse((store / "code").exists())
+
+    def test_requested_release_remains_visible_after_newer_branch_tips(self):
+        cache.git(self.repo, "update-ref", "refs/cache/" + self.first, self.first)
+        for index in range(13):
+            date = "2030-01-%02dT12:00:00+00:00" % (index + 1)
+            subprocess.run(["git", "-C", str(self.repo), "commit", "--allow-empty", "-m", str(index)],
+                           env=dict(os.environ, GIT_AUTHOR_DATE=date, GIT_COMMITTER_DATE=date),
+                           check=True, capture_output=True)
+            tip = cache.git(self.repo, "rev-parse", "HEAD")
+            cache.git(self.repo, "update-ref", "refs/cache/" + tip, tip)
+        self.assertNotIn(self.first, cache.inventory(self.repo)["cache_shas"])
+        requested = cache.inventory(self.repo, self.first)["cache_shas"]
+        self.assertIn(self.first, requested)
+        self.assertEqual(len(requested), len(set(requested)))
+
+    def test_requested_source_must_be_valid_present_and_complete(self):
+        self.assertEqual(cache.inventory(self.root / "absent", self.first), {"cache_shas": []})
+        self.assertNotIn("a" * 40, cache.inventory(self.repo, "a" * 40)["cache_shas"])
+        invalid = self.root / "broken-commit"
+        invalid.write_text("tree " + "b" * 40 + "\nauthor Test <test@example.invalid> 0 +0000\n"
+                           "committer Test <test@example.invalid> 0 +0000\n\nincomplete tree\n")
+        broken = cache.git(self.repo, "hash-object", "-t", "commit", "-w", str(invalid))
+        self.assertNotIn(broken, cache.inventory(self.repo, broken)["cache_shas"])
+        with self.assertRaises(ValueError):
+            cache.inventory(self.repo, "../not-a-sha")
 
     def test_corruption_and_path_injection(self):
         import json

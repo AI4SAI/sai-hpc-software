@@ -3,6 +3,35 @@
 This is an implementation checklist, not a release acceptance result. The
 `feat/cp2k-parity-benchmarks` branch is not yet a four-target accepted release.
 
+## Release-first execution (2026-10-16)
+
+The current priority is the official `v2026.2` release, commit
+`67b5da876dd6a76b8b021d5a04d1c81ba79a4c50`, on 16V100, 4V100,
+8V100V0 and DSPRHBM. Development remains a required channel. Persistent
+work now lives in `~/sai-hpc-software/development/workflow-closure`, with
+operational records in `diagnostics/cp2k-release-20261016`.
+
+The historical 16V100 development SIF did compile and pass the final-image
+`--version` and `ldd` checks in job `1345682`: version
+`2026.2 (Development Version)`, revision `3aa79cf7c5`, 64 loader-output
+lines with no unresolved libraries. Its current SIF checksum still matches
+its manifest. This is historical loader evidence, not scientific/performance
+acceptance, publication, or proof on another partition; it also uses site
+CP2K 2026.1 toolchain libraries.
+
+The release source is now received and complete in the remote cache using
+only a 932-byte compressed delta from its verified common ancestor.
+Exact-commit inventory lookup prevents older release commits being missed
+when the recent-12-tip window is filled by daily development builds.
+Real-Git regression tests cover that case and missing/incomplete sources.
+
+The release's toolchain uses pristine LIBXS 1.0.0; later development adds a
+JIT-handle patch. Preparation now follows the pinned source rather than
+unconditionally requiring that development-only file. Real upstream archive
+preflights passed for both sources and rejected a declared-but-missing patch.
+No release application or four-partition scientific acceptance is claimed yet.
+Evidence: [release priority and loader audit](evidence/cp2k-release-priority-20261016.json).
+
 ## Recovery update (2026-09-20)
 
 After connectivity returned, jobs `1383003` and `1383002` were confirmed FAILED
