@@ -25,9 +25,37 @@ a global lock. Correct parallelism and unthrottled cgroups were verified.
 Isolated probes `1830438` (DSPRHBM) and `1830468` (16V100) passed with an upstream
 performance fix plus an inherited-OFD-lock adapter: small compiler workloads
 improved about 28x and 20x, with matching output bytes and clean-remount/lock
-checks. This is a tested diagnostic candidate; the four production CP2K jobs
-still use their original immutable recipes/drivers. A fresh real CP2K canary
-and unchanged scientific/export gates are needed before production adoption.
+checks. The pinned driver is now integrated into new immutable production
+recipes, including dependency/app mounts and export. Historical jobs still
+use their original recipes/drivers. Final SIF verification remains independent
+of the build overlay; scientific/export/publication gates remain required.
+
+New release workflow
+[39032306213](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39032306213)
+pins controller `1e7d736e5884fe207460a3e6baf0aeddb5bdb4aa` and recipe
+`9c87f65a7c0a1bb7638f5e942f59bd7bdde750d7cf6cd5420c90cfa13cc517ad`.
+At 20:28:46 Asia/Shanghai, all four dependency jobs were RUNNING:
+
+| Partition | Slurm job | Node |
+|---|---|---|
+| 16V100 | 1830993 | 16v100n04 |
+| 4V100 | 1830994 | 4v100n27 |
+| 8V100V0 | 1830995 | 8v100v0n02 |
+| DSPRHBM | 1830997 | d9470n05 |
+
+The new 16V100 job recorded GCC/G++/GFortran 14.3.0 and the pinned driver
+checksum. A ten-second cgroup sample ending at 20:30:38 measured 7.144/8
+logical CPUs (89.30%) while actual dependencies were compiling. The old
+same-node job measured 0.492/8 (6.15%) in the concurrent sample; these were
+different stages, not a controlled whole-build timing comparison. CI passed
+709 tests (707 passed, two optional skips) and the 20 focused SAI checks passed.
+No new application SIF or accepted release is claimed from these observations.
+The [20:36 production snapshot](evidence/cp2k-private-driver-production-20261017.json)
+confirms all four jobs still RUNNING with GCC/G++/GFortran 14.3.0 and the
+same pinned private driver. HDF5 completed in 2:50 / 1:50 / 2:38 / 3:27 for
+16V100 / 4V100 / 8V100V0 / DSPRHBM respectively. 16V100 and 4V100 had also
+finished Cython and entered PLUMED compilation. Libint remained in progress;
+dependency seals, application SIFs and scientific acceptance were still absent.
 
 At 18:06, 4V100 `1828944` and DSPRHBM `1828946` were compiling dependencies.
 16V100 `1828943` was cancelled at 18:05:44: the agent's additional read-only

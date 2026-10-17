@@ -52,7 +52,7 @@ into physical `/opt/apps` is outside this task.
   submission/allocation free-space gates are removed. Filesystem limits are
   enforced by actual writes, with failures retained. Builds, caches, overlays
   and temporary files stay in home; host `/tmp` is not used for compilation.
-  CP2K keeps target-scoped Slurm singletons and exclusive ownership of each
+  CP2K keeps target/recipe-scoped Slurm singletons and exclusive ownership of each
   run; other software retains its shared singleton.
   Repacking copies and checksum-checks a checkpoint instead
   of moving the original. Monitors preserve jobs when observation expires.
@@ -104,10 +104,25 @@ CPU throttling. A pinned upstream fix plus an Apptainer/Lustre OFD-lock adapter
 passed isolated DSPRHBM `1830438` and 16V100 `1830468` probes. Two-trial median
 32-file compilation improved 27.89x and 20.20x; explicit synchronization,
 filesystem checks, 161-file clean-remount verification, and competing-writer
-rejection passed. Production jobs retain their original drivers/controllers.
-Next: introduce the checksum-pinned private driver through a fresh CP2K release
-canary identity, then validate real build stages and extend to the four targets.
-This is a small compiler experiment, not CP2K application acceptance.
+rejection passed. The pinned driver is now part of the CP2K build recipe and
+CI deployment contract; existing jobs retain their original drivers/controllers.
+Fresh four-target release workflow
+[39032306213](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39032306213)
+passed validation and submitted dependency jobs `1830993` (16V100), `1830994`
+(4V100), `1830995` (8V100V0), and `1830997` (DSPRHBM). All four were RUNNING
+at 20:28:46. At 20:30:38, actual 16V100 compilation used 7.144/8 logical CPUs
+(89.30%) over ten seconds, with the private driver observed in `/proc`; the
+old same-node job used 0.492/8 CPUs (6.15%) over the concurrent sample.
+The stages differ, so this is utilization evidence rather than whole-build
+speedup or CP2K application acceptance. CI passed 709 tests (707 plus two
+optional skips); 20 focused tests passed on SAI. Next: dependencies must seal,
+then the existing workflow compiles CP2K, verifies its final SIF, runs science
+and performance, exports the native payload and publishes only after those gates.
+At 20:36:23 all four new jobs were still RUNNING, each with GCC/G++/GFortran
+14.3.0 and the pinned driver recorded. All four HDF5 builds had completed in
+1:50–3:27; 16V100 and 4V100 had reached PLUMED compilation, with Libint still
+building. No dependency seal or application artifact existed yet.
+[Production execution evidence](evidence/cp2k-private-driver-production-20261017.json).
 [Efficiency report, patch and retained evidence](BUILD-IO-EFFICIENCY.md).
 
 Current CP2K priority: official `v2026.2` release across all four partitions,

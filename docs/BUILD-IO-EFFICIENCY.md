@@ -144,8 +144,8 @@ driver before `$PATH`, because Apptainer inserts its bundled drivers at the
 `$PATH` position. Merely prepending the shell's PATH does not override them.
 Use the exact private driver with its checksum verified before launch. Do not
 replace the system installation or switch a mounted image to another driver.
-The next workflow step is a fresh CP2K 2026.2 canary using this pinned adapter,
-followed by all four partitions if actual dependency/application builds pass.
+The production integration below uses fresh CP2K 2026.2 identities with this
+pinned adapter; actual dependency/application results remain acceptance gates.
 Adding CPUs or moving files to host `/tmp` is not the remedy supported by
 these measurements.
 
@@ -177,4 +177,34 @@ New dependency and application singleton names include the recipe hash, so
 they can proceed alongside a historical recipe without modifying its controller
 or overlay. No prior checkpoint is relabelled with this driver. All driver,
 configuration, temporary and image files remain under the project home.
+
+Workflow [39032306213](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39032306213)
+uses controller `1e7d736e5884fe207460a3e6baf0aeddb5bdb4aa` and recipe
+`9c87f65a7c0a1bb7638f5e942f59bd7bdde750d7cf6cd5420c90cfa13cc517ad`.
+Real dependency jobs started on all four partitions: 16V100 `1830993`,
+4V100 `1830994`, 8V100V0 `1830995`, and DSPRHBM `1830997`.
+
+At 20:30:38 Asia/Shanghai, a ten-second cgroup sample of new 16V100 job
+`1830993` measured 7.144 of eight logical CPUs (89.30%). Its live driver process
+used the pinned private executable. Old job `1829656` on the same node measured
+0.492 CPUs (6.15%) over the concurrent sample. These are different dependency
+stages, so the ratio is not a whole-build speedup. The new job had already
+installed tiled-mm in 17 seconds and costa in 45 seconds while compiling the
+remaining dependencies. Raw samples remain in the home diagnostics directory
+as `cpu-io-1830993-production1-20261017.json` and
+`cpu-io-1829656-production1-20261017.json`.
+
+At 20:36:23, all four new allocations were still RUNNING and had completed
+HDF5: 16V100 2:50, 4V100 1:50, 8V100V0 2:38, DSPRHBM 3:27. 16V100 and
+4V100 had also finished Cython and entered PLUMED compilation; Libint remained
+in progress. A later 20:33 sample measured 21.83%, 23.89%, 36.66% and 35.30%
+allocation CPU utilization respectively, with Libint generation and other
+serial/file operations visible. The earlier 89.30% sample is not a promise
+of constant utilization. [Production snapshot, driver/compiler pins and raw
+sample hashes](evidence/cp2k-private-driver-production-20261017.json).
+
+CI validation passed 709 tests (707 passed, two optional skips). The 20 focused
+driver, dependency-seal and seed-order tests also passed on SAI with temporary
+files in home. Build success, final-SIF loader/version checks, science and
+publication are reported separately from these integration checks.
 
