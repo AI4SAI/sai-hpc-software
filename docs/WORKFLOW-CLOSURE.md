@@ -98,6 +98,28 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 
 ## Remaining acceptance work
 
+At 07:14 Asia/Shanghai on October 18, both formal workflows had completed all
+four dependency stages. Seven application attempts compiled and linked CP2K
+fully but failed during installation: CP2K's `CACHE PATH` declaration converted
+the untyped `CMAKE_INSTALL_LIBDIR=lib64` argument to `/lib64`. The prefix itself
+was correct, but library and export installation escaped it into a read-only
+system bind. The corrected-runtime 8V100V0 application `1837029` was still running.
+No final SIF existed. The recipe now types the value explicitly as STRING and
+rejects a non-relative library directory at configuration time. Recovery is
+being checked on a preserved copy of a completed build before fresh delivery.
+[Install failure and repair](evidence/cp2k-install-layout-20261018/README.md).
+
+The corrected release workflow
+[39078998459](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39078998459)
+uses controller `c3b65b9` and recipe
+`b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150`.
+At 07:32, dependency jobs `1837489` (16V100), `1837488` (4V100),
+`1837486` (DSPRHBM) were RUNNING; `1837487` (8V100V0) was PENDING.
+[Exact submission evidence](evidence/cp2k-install-layout-20261018/formal-start.json).
+CI passed 735 tests (733 passed, two optional skips). Separate recovery job
+`1837454` is checking installation and packaging on a copy of a completed build.
+Final SIF and scientific/performance acceptance are still pending.
+
 Actual PBE smoke exposed a CUDA runtime compatibility issue after successful
 compile/version/ldd checks: host driver 550.163.01 could not JIT CUDA 12.9 PTX.
 Using the existing SDK CUDA 12.9 compatibility libraries, diagnostic `1834460`

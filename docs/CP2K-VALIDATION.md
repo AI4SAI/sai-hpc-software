@@ -5,6 +5,26 @@ No four-target CP2K 2026.2 release has passed all acceptance gates yet.
 
 ## Fresh four-target release workflow
 
+At 07:14 Asia/Shanghai on October 18, all dependency jobs in workflows
+`39054631316` and `39056762371` had succeeded. Seven application jobs completed
+compilation and linking, then failed installing `libcp2k.so.2026.2` into
+read-only `/lib64`; corrected-runtime 8V100V0 application `1837029` was still
+running. No SIF existed. CP2K declares its install library directory as CACHE
+PATH, converting the untyped relative command-line value into an absolute path.
+The recipe now passes `CMAKE_INSTALL_LIBDIR:STRING=lib64` and checks it before
+compilation. Recovery is being verified using a copy of the completed build.
+[Diagnosis and repair](evidence/cp2k-install-layout-20261018/README.md).
+
+Fresh workflow [39078998459](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39078998459)
+uses production commit `c3b65b9`, recipe
+`b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150`.
+Its four native dependency jobs are `1837489` (16V100), `1837488` (4V100),
+`1837487` (8V100V0) and `1837486` (DSPRHBM). At 07:32, all except
+8V100V0 were running; 8V100V0 was queued. CI passed 735 tests with two
+optional skips. Diagnostic recovery `1837454` is checking the remaining
+install/export/SIF path using a preserved copy, not relabelling a failed run.
+[Requests and job identities](evidence/cp2k-install-layout-20261018/formal-start.json).
+
 Actual PBE smoke exposed a CUDA runtime compatibility issue after successful
 compile/version/ldd checks: host driver 550.163.01 could not JIT CUDA 12.9 PTX.
 Using the existing SDK CUDA 12.9 compatibility libraries, diagnostic `1834460`
