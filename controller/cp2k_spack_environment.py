@@ -84,7 +84,9 @@ def environment(partition, install_prefix, native_target, native_os, jobs=8):
     if TARGETS[partition]['cuda']:
         packages['tiled-mm'] = {'require': 'cuda_arch=70'}
     backend = '+cuda ~rocm' if TARGETS[partition]['cuda'] else '~cuda ~rocm'
-    specs = [*ROOT_SPECS, 'cosma@2.7.0 +shared ' + backend,
+    # CP2K links COSMA's pxgemm C++ and prefixed ScaLAPACK interfaces.
+    # This variant also selects COSTA's ScaLAPACK redistribution interface.
+    specs = [*ROOT_SPECS, 'cosma@2.7.0 +shared +scalapack ' + backend,
              'spla@1.6.1 +fortran ~static ' + backend]
     settings = deepcopy(manifest['container']['config'])
     settings.update(build_jobs=jobs, checksum=True, connect_timeout=10,

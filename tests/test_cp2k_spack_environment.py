@@ -28,6 +28,17 @@ class SpackEnvironmentTests(unittest.TestCase):
         self.assertNotIn('cp2k', env['packages'])
         self.assertNotIn('tiled-mm', env['packages'])
 
+    def test_cp2k_requires_cosma_scalapack_interfaces_on_every_target(self):
+        for partition in ('16V100', '4V100', '8V100V0', 'DSPRHBM'):
+            with self.subTest(partition=partition):
+                env = self.env(partition)
+                cosma, = [s for s in env['specs'] if s.startswith('cosma@')]
+                self.assertIn('+scalapack', cosma.split())
+                scalapack = env['packages']['netlib-scalapack']
+                self.assertFalse(scalapack['buildable'])
+                self.assertEqual(scalapack['externals'][0]['prefix'],
+                                 env['packages']['openblas']['externals'][0]['prefix'])
+
     def test_external_mpi_keeps_its_standalone_hcoll_runtime_in_clean_builds(self):
         for partition, isa in [('16V100', 'avx2'), ('DSPRHBM', 'avx512')]:
             external = self.env(partition)['packages']['openmpi']['externals'][0]
