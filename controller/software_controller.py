@@ -34,7 +34,7 @@ def contract_files(software):
                          "cp2k_spack.py", "cp2k_spack_environment.py", "cp2k_spack_native.py",
                          "cp2k_spack_seed.py", "cp2k_spack_probe.sh", "cp2k_spack_dependencies.sh",
                          "cp2k_spack_libint_repair.py", "cp2k_spack_install_evidence.py",
-                         "cp2k_spack_link.py", "cp2k_payload.py", "cp2k_dependency_stage.py", "build_capacity.py",
+                         "cp2k_spack_link.py", "cp2k_payload.py", "cp2k_dependency_stage.py", "cp2k_image_driver.py", "build_capacity.py",
                          "native_module.py", "export_native.py", "cp2k"]
     if software == "gpumd":
         return [name for name in common if name != "environment.sh"] + [
@@ -354,13 +354,19 @@ def render_job(args):
                                  runtime=r / "runtime" if final and args.software == "cp2k" else None)
         if args.software == 'cp2k' and not final:
             command[2:2] = ['--bind', str(r / 'results') + ':/results:rw']
+            from cp2k_image_driver import wrap_command
+            command = wrap_command(ROOT, r, CONTROL, command)
         return command
     emit = container_command(image, ["/usr/bin/cat", "/workspace/final.squashfs"],
                              overlay=str(overlay) + ":ro", jobs=args.jobs)
+    if args.software == 'cp2k':
+        from cp2k_image_driver import wrap_command
+        emit = wrap_command(ROOT, r, CONTROL, emit)
     q = shlex.quote
     lines = [
         "#!/bin/bash",
-        "#SBATCH --job-name=" + ('sai-cp2k-build-' + args.target if args.software == 'cp2k' else 'sai-software-build'),
+        "#SBATCH --job-name=" + ('sai-cp2k-build-' + args.target + '-' + delivery['recipe_sha256'][:12]
+                                if args.software == 'cp2k' else 'sai-software-build'),
         "#SBATCH --dependency=singleton",
         f"#SBATCH --partition={target['partition']}",
         f"#SBATCH --qos={target['qos']}",

@@ -206,7 +206,7 @@ def main():
                    "cp2k_spack.py", "cp2k_spack_environment.py", "cp2k_spack_native.py",
                    "cp2k_spack_seed.py", "cp2k_spack_probe.sh", "cp2k_spack_dependencies.sh",
                    "cp2k_spack_libint_repair.py", "cp2k_spack_install_evidence.py",
-                   "cp2k_spack_link.py", "cp2k_payload.py", "cp2k_dependency_stage.py", "build_capacity.py",
+                   "cp2k_spack_link.py", "cp2k_payload.py", "cp2k_dependency_stage.py", "cp2k_image_driver.py", "build_capacity.py",
                    "native_module.py", "export_native.py"])
         if software == "gpumd":
             recipe = ["gpumd_container_entry.sh", "gpumd_environment.sh", "gpumd_build.sh",

@@ -12,6 +12,7 @@ import subprocess
 import time
 
 from cp2k_spack_link import validate_receipt
+from cp2k_image_driver import wrap_command, validate_receipt as validate_driver_receipt
 from release_contract import validate_identity
 from remote_controller import TARGETS, container_command, require_capacity, safe_name
 from source_cache import checksum
@@ -20,7 +21,7 @@ SEED_SHA256 = '80497b787dc178876e71098840cf465deb63c6c9bec27c9dd5cc0bed3643c337'
 PURPOSE = 'cp2k-final-prefix-dependencies-not-application-acceptance'
 EVIDENCE = ('install-success.json', 'libint-export-repair.json', 'spack.yaml',
             'spack.lock', 'native-profile.json', 'validated-graph.json',
-            'probe-success.json', 'stage-identity.json')
+            'probe-success.json', 'stage-identity.json', 'image-driver.json')
 
 
 def paths(project, controller, run):
@@ -67,8 +68,9 @@ def render(project, controller, run, identity, *, minutes=240, jobs=None, overla
             ('/var/lib/dpkg', '/var/lib/dpkg'), ('/etc/os-release', '/etc/os-release'),
             ('/etc/alternatives', '/etc/alternatives'), ('/usr/bin', '/bin')])
     command[2:2] = ['--bind', str(run / 'results') + ':/results:rw']
+    command = wrap_command(project, run, controller, command)
     q = shlex.quote
-    lines = ['#!/bin/bash', '#SBATCH --job-name=sai-cp2k-deps-' + identity['target'],
+    lines = ['#!/bin/bash', '#SBATCH --job-name=sai-cp2k-deps-' + identity['target'] + '-' + identity['recipe_sha256'][:12],
              '#SBATCH --dependency=singleton', '#SBATCH --partition=' + target['partition'],
              '#SBATCH --qos=' + target['qos'], '#SBATCH --nodes=1', '#SBATCH --ntasks=1',
              '#SBATCH --time=' + str(minutes), '#SBATCH --export=NIL',
@@ -129,6 +131,7 @@ def validate_completed(project, run, identity, controller, *, seal=False):
     if job != request.get('job_id') or state != ['COMPLETED', '0:0']:
         raise ValueError('dependency stage is not a successful terminal allocation')
     results = run / 'results'
+    validate_driver_receipt(project, read_json(results / 'image-driver.json'))
     if read_json(results / 'stage-identity.json') != identity:
         raise ValueError('dependency container identity differs from request')
     validate_receipt(read_json(results / 'install-success.json'), identity['partition'], identity['install_prefix'])

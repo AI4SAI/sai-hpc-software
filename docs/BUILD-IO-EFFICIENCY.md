@@ -154,3 +154,26 @@ A small compilation and successful clean remount do not constitute CP2K
 application, scientific, crash-recovery or publication acceptance. Subsequent
 validation must run the actual CP2K dependency/application stages and retain
 the existing science/export/publication gates.
+# Production integration (2026-10-17)
+
+New CP2K recipes use `controller/cp2k_image_driver.py` for dependency and
+application overlay mounts, export and read-only squashfs extraction. The
+final SIF verifier continues to run independently without an overlay. The
+wrapper verifies the exact binary checksum and creates a per-run Apptainer
+configuration whose `binary path` places the private driver before `$PATH`.
+It leaves the existing container bind/isolation arguments intact.
+
+The tested binary is provisioned read-only at
+`~/sai-hpc-software/cache/tools/fuse2fs-0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9/bin/fuse2fs`.
+Its source and exact rebuild inputs are archived below. A missing, writable,
+redirected or changed binary is rejected before mounting the build image.
+`results/image-driver.json` records the source commit, patched source hash,
+binary hash and configuration hash; dependency sealing includes this receipt,
+and the application retains it under `share/sai/image-driver.json`.
+
+The driver wrapper is part of the recipe fingerprint and CI upload contract.
+New dependency and application singleton names include the recipe hash, so
+they can proceed alongside a historical recipe without modifying its controller
+or overlay. No prior checkpoint is relabelled with this driver. All driver,
+configuration, temporary and image files remain under the project home.
+

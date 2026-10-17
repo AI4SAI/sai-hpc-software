@@ -9,6 +9,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'controller'))
 import cp2k_dependency_stage as stage
+import cp2k_image_driver as driver
 from cp2k_spack_link import ROOTS
 from release_contract import make_identity
 from source_cache import checksum
@@ -36,6 +37,10 @@ class DependencyStageTests(unittest.TestCase):
         for name in stage.EVIDENCE:
             (self.results / name).write_text('{}')
         self.write('install-success.json', install)
+        self.write('image-driver.json', dict(schema=1, source_commit=driver.SOURCE_COMMIT,
+                   patched_source_sha256=driver.PATCHED_SOURCE_SHA256, binary_sha256=driver.DRIVER_SHA256,
+                   driver=str(driver.driver_path(self.root)), apptainer=str(driver.APPTAINER),
+                   config_sha256='e' * 64))
         self.write('stage-identity.json', self.identity)
         for name in ('validated-graph.json', 'probe-success.json'):
             self.write(name, dict(partition='16V100', install_prefix=self.identity['install_prefix'],
@@ -97,6 +102,13 @@ class DependencyStageTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'redirected'):
             self.seal()
 
+    def test_dependency_seal_rejects_unpinned_image_driver(self):
+        record = json.loads((self.results / 'image-driver.json').read_text())
+        record['binary_sha256'] = 'f' * 64
+        self.write('image-driver.json', record)
+        with self.assertRaisesRegex(ValueError, 'image driver provenance'):
+            self.seal()
+
     def test_clone_preserves_checkpoint_and_detects_later_mutation(self):
         receipt = self.seal()
         app = self.root / 'runs/application'
@@ -151,6 +163,8 @@ class DependencyStageTests(unittest.TestCase):
             self.assertIn('#SBATCH --time=240', script)
             self.assertIn('#SBATCH --dependency=singleton', script)
             self.assertIn('#SBATCH --job-name=sai-cp2k-deps-' + target, script)
+            self.assertIn('#SBATCH --job-name=sai-cp2k-deps-' + target + '-bbbbbbbbbbbb\n', script)
+            self.assertIn('cp2k_image_driver.py', script)
             self.assertIn('build_capacity.py', script)
             self.assertLess(script.index('require_capacity('), script.index('cp --sparse'))
             self.assertIn(identity['install_prefix'], script)

@@ -206,6 +206,7 @@ cmake --install /workspace/build
 # independent libplumedKernel.so. Never relocate by copying just libplumed.so.
 cp /results/install-success.json "$prefix/share/sai/spack-dependencies.json"
 cp /results/libint-export-repair.json "$prefix/share/sai/libint-export-repair.json"
+cp /results/image-driver.json "$prefix/share/sai/image-driver.json"
 
 printf '%s\n' "$source_sha" > "$prefix/share/sai/source-sha"
 printf '%s\n' "$target" > "$prefix/share/sai/target"
