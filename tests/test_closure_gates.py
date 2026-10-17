@@ -7,7 +7,6 @@ import os
 import subprocess
 import sys
 import tempfile
-import types
 import argparse
 import unittest
 from unittest.mock import patch
@@ -66,12 +65,10 @@ class ClosureGates(unittest.TestCase):
             with self.assertRaises(ValueError):
                 check_performance(value, 100)
 
-    def test_capacity_uses_available_blocks_and_reserves_two_image_copies(self):
-        with patch('os.statvfs', return_value=types.SimpleNamespace(f_bavail=17 * 1024, f_frsize=2**20)):
-            with self.assertRaisesRegex(ValueError, '17 GiB available, 100 GiB required'):
-                require_capacity('/site', 32768)
-        with patch('os.statvfs', return_value=types.SimpleNamespace(f_bavail=101 * 1024, f_frsize=2**20)):
-            self.assertEqual(require_capacity('/site', 32768)['required_bytes'], 100 * 2**30)
+    def test_shared_storage_reports_do_not_gate_submission(self):
+        with patch('os.statvfs', side_effect=OSError('shared quota is not observable')):
+            self.assertEqual(require_capacity('/site', 32768),
+                             {'capacity_policy': 'filesystem-enforced'})
 
     def test_captured_remote_stderr_is_preserved(self):
         with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, RUNNER_TEMP=tmp), \

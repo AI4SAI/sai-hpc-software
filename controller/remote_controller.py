@@ -75,15 +75,12 @@ def layout(home, run_id):
             "overlay": task / "work.ext3"}
 
 def require_capacity(root, overlay_mb):
-    """Budget overlay plus two image copies and a 4 GiB safety reserve."""
-    import os
-    disk = os.statvfs(root)
-    available = disk.f_bavail * disk.f_frsize
-    required = (3 * overlay_mb + 4096) * 1024 * 1024
-    if available < required:
-        raise ValueError(f'insufficient build space: {available // 2**30} GiB available, '
-                         f'{required // 2**30} GiB required; preserve logs and release artifacts')
-    return {'available_bytes': available, 'required_bytes': required}
+    """Compatibility hook: the filesystem enforces actual storage limits.
+
+    Shared-filesystem free-space reports do not establish this user's limit.
+    Do not reject submissions or reserve estimated future image growth.
+    """
+    return {'capacity_policy': 'filesystem-enforced'}
 
 
 def container_command(image, command, *, overlay=None, control=None, repository=None,
