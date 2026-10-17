@@ -208,3 +208,57 @@ driver, dependency-seal and seed-order tests also passed on SAI with temporary
 files in home. Build success, final-SIF loader/version checks, science and
 publication are reported separately from these integration checks.
 
+At 20:55:09 a further ten-second SSH/cgroup sample observed Libint's generated
+C++ compilation. The new jobs used 7.704/8 cores on 16V100, 6.223/8 on 4V100,
+11.304/12 on 8V100V0, and 5.984/8 on DSPRHBM: about 96%, 78%, 94% and 75%
+respectively. Short-lived compiler CPU time is included by the cgroup
+measurement. This confirms useful parallel work during that interval, not a
+whole-build speed ratio. HDF5, Cython and PLUMED had completed on all four;
+the jobs were still building Libint. The follow-up snapshot below retains
+these samples with their own timestamps.
+
+At 21:05:54, 4V100 dependency job `1830994` had completed `0:0` in 37:19,
+including Libint in 34:14. This is the first completed real dependency stage
+using the pinned driver. The other three remained RUNNING; the 4V100 seal and
+new application SIFs were not yet present. The old DSPRHBM dependency job
+`1828946` separately completed in 3:55:16 and its original application-stage
+job `1831223` had begun image preparation. These runs use different machines/
+recipes and do not establish a controlled whole-build speedup.
+[Follow-up accounting, stage markers and CPU-sample hashes](evidence/cp2k-production-followup-20261017.json).
+
+At 21:16:55 the 4V100 dependency image was sealed and application-stage job
+`1831311` was RUNNING on `4v100n05`, preparing its image since 21:09:11.
+The [handoff snapshot](evidence/cp2k-production-handoff-20261017.json) retains
+the seal bytes/hash and application accounting. No final SIF was present.
+
+## Shared /opt recommendation
+
+There is a useful shared-tool use case for the pinned fuse2fs adapter: other
+users building writable ext images on Lustre can encounter the same rename/
+close synchronization overhead. A versioned, administrator-owned, read-only
+installation such as `/opt/devtools/fuse2fs/<source-commit>-sai-ofd/` plus an
+opt-in module/wrapper would reduce duplicated maintenance. The current home
+installation is sufficient for this workflow; final read-only SIF execution
+does not need the custom ext-image driver.
+
+The shared wrapper should create a per-run Apptainer configuration in the
+user's home, verify the exact binary, and put the driver directory before
+`$PATH` in `binary path`. Merely exporting PATH is ineffective with Apptainer's
+bundled helper precedence. Retain source/patch/binary hashes and compiler/
+library provenance, as the current wrapper does. Keep the site default and
+the previous tool version available for rollback and for workloads outside
+the qualified scope. Existing mounted images must retain their original driver.
+
+Before making this a default replacement, complete the real dependency seal,
+application build, clean unmount, SIF export/readback and final-SIF verification
+on the current production jobs. The existing explicit-sync, lock-exclusion and
+clean-remount tests passed, but do not establish abrupt-crash recovery or
+compatibility with every Apptainer/filesystem combination. The OFD adapter is
+specifically for inherited descriptors of whole regular images; normal path
+mounts retain upstream's locking behavior. A release labelled 1.47.4 alone
+does not contain both pinned upstream performance fixes.
+
+No shared `/opt` installation or system-driver replacement was performed.
+The [source and installed-library review](CP2K-V100-TUNING.md) distinguishes
+this build-I/O improvement from potential CP2K runtime tuning.
+

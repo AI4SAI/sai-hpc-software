@@ -98,6 +98,30 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 
 ## Remaining acceptance work
 
+Latest follow-up, 21:16 Asia/Shanghai on October 17: 4V100's dependency image
+is sealed and application-stage job `1831311` is RUNNING on `4v100n05`
+(started 21:09:11), still in image preparation. The other three new dependency
+jobs remain RUNNING and no new SIF exists.
+[Handoff and seal evidence](evidence/cp2k-production-handoff-20261017.json).
+
+At 21:05 Asia/Shanghai on October 17, private-driver 4V100
+dependency job `1830994` completed `0:0` in 37:19. 16V100 `1830993`,
+8V100V0 `1830995` and DSPRHBM `1830997` remained in Libint compilation;
+HDF5/Cython/PLUMED were complete on all four. The 4V100 seal and all new
+application SIFs were absent at the snapshot. The historical DSPRHBM dependency
+job `1828946` completed in 3:55:16 and handed off to application job `1831223`,
+which was preparing its original image. [Production follow-up and CPU samples](evidence/cp2k-production-followup-20261017.json).
+
+[Review of pinned CP2K/DBCSR sources and older installations](CP2K-V100-TUNING.md)
+found that SpLA was installed as a dependency but not enabled in the CP2K
+application. Commit `6d9b709` restores the old 2026.1 configuration and checks
+the application CMake cache. Its 16 contract tests and 710-test CI passed
+(708 passed, two optional skips). Running frozen controllers retain the
+omission; their results do not establish full installed-feature parity.
+A fresh corrected recipe remains required before final CP2K closure. The
+review also records runtime tuning priorities and the recommendation for an
+optional shared `/opt/devtools` image driver; no system installation occurred.
+
 The October 17 CPU-efficiency investigation found whole-image `fsync` under
 the `fuse2fs 1.47.3` global lock, despite correct `-j8`/`-j12` settings and no
 CPU throttling. A pinned upstream fix plus an Apptainer/Lustre OFD-lock adapter

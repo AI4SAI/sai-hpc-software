@@ -3,6 +3,39 @@
 This records implementation and live build progress, not release acceptance.
 No four-target CP2K 2026.2 release has passed all acceptance gates yet.
 
+## Follow-up at 21:16 Asia/Shanghai, October 17
+
+4V100's dependency image is now sealed. Application-stage job `1831311`
+started at 21:09:11 on `4v100n05` and was still preparing the image at 21:16:55;
+this is not yet proof that the CP2K compiler has started. The other three new
+dependency jobs remained RUNNING, and no new SIF existed.
+[Handoff snapshot with seal and application accounting](evidence/cp2k-production-handoff-20261017.json).
+
+Private-driver workflow `39032306213` completed 4V100 dependency job `1830994`
+with exit `0:0` in **37:19**; Libint itself took 34:14. Dependency sealing was
+not yet present in the 21:05:54 snapshot. The other three new jobs remained
+RUNNING in dependencies: 16V100 `1830993`, 8V100V0 `1830995`, DSPRHBM `1830997`.
+HDF5, Cython and PLUMED had completed on all four. There was no new application
+SIF. [Timestamped production follow-up](evidence/cp2k-production-followup-20261017.json).
+
+A ten-second 20:55 SSH/cgroup sample measured 96% / 78% / 94% / 75% allocation
+CPU utilization on 16V100 / 4V100 / 8V100V0 / DSPRHBM respectively while Libint
+compiled generated C++ code. These are stage observations, not a whole-build
+speed ratio. Separately, the historical DSPRHBM dependency job `1828946`
+completed `0:0` in 3:55:16; its original application-stage job `1831223`
+started at 20:59:12 and was preparing its image. It uses the historical
+controller and stock driver, not the new private-driver recipe.
+
+The [pinned source/installed-library review](CP2K-V100-TUNING.md) found a SpLA
+configuration omission that version flags do not reveal. Commit `6d9b709`
+adds `CP2K_USE_SPLA=ON` and requires it in the CMake contract; SpLA GEMM
+offloading remains OFF, matching the installed 2026.1 baseline. Its 16 focused
+contract tests passed. [GitHub CI](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39034899631)
+ran 710 tests: 708 passed and two optional skips. The running immutable recipe
+does not include this correction. Its future artifacts cannot be described as
+complete installed-feature parity; a fresh corrected recipe must pass the
+build/scientific/export gates before closure. No prior overlay is relabelled.
+
 ## Release-first execution (2026-10-16)
 
 On October 17 the user explicitly required running without software disk
@@ -669,6 +702,7 @@ Existing dependency directories alone do not prove ABI compatibility.
 | libxc | `CP2K_USE_LIBXC=ON` |
 | elpa | `CP2K_USE_ELPA=ON`; verify compatible GPU build |
 | cosma | `CP2K_USE_COSMA=ON`; inspect CUDA dependency build |
+| SpLA (not independently advertised in version flags) | `CP2K_USE_SPLA=ON`; verify the application CMake cache, not just the dependency installation |
 | xsmm | Check latest LIBXS/LIBXSMM integration and required versions |
 | plumed2 | `CP2K_USE_PLUMED=ON` |
 | spglib | `CP2K_USE_SPGLIB=ON` |

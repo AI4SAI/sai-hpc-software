@@ -12,7 +12,9 @@ an existing Slurm job or mount any active CP2K image.
 - `build-fuse2fs-candidate.sh` built pinned upstream `45651efd` in an overlay,
   using checksum-verified source and Ubuntu FUSE headers. `fuse2fs-efficiency.sbatch`
   records its original allocation; its option-test runner remains in the home
-  evidence directory. Direct I/O timed out in that original experiment.
+  evidence directory and is now also archived under
+  `historical-unmodified-driver/run-options-benchmark.py`. Direct I/O timed out
+  in that original experiment.
 - `patch-fuse2fs-inherited-ofd.py` checks the exact upstream source digest and
   applies the adapter shown in `fuse2fs-inherited-ofd.patch`.
 - `job.sbatch` copies the completed driver-build image into a new experiment,
@@ -30,3 +32,21 @@ the repository retains their checksums and compact results. Sources, temporary
 files, compiler outputs and installation trees were inside the home-backed
 images. Only the candidate driver and diagnostic metadata were exported.
 Neither production controllers nor the four running CP2K builds were changed.
+
+Production follow-up tools added later:
+
+- `sample-build-cpu.py JOB_ID` runs read-only over direct compute-node SSH.
+  It discovers the site's opaque job cgroup from `SLURM_JOB_ID` and includes
+  short-lived compiler CPU time. Redirect its JSON to a new home file; do not
+  invoke it with an attached Slurm step.
+- `record-production.py --output HOME_DIAGNOSTICS/NEW_FILE.json` observes the
+  fixed production workflow `39032306213`, the historical DSPRHBM handoff,
+  and retained CPU samples. It writes a new file exclusively. CI validation
+  fields refer to the frozen controller's earlier checks, not a new test run.
+  Raw process samples stay in home; the compact snapshot records their hashes.
+
+`historical-unmodified-driver/` also archives the earlier 16V100 inputs, before
+the OFD-lock adapter. That job failed to mount the upstream candidate. Its
+scripts are retained for reproducibility of that failure, not as the tested
+production recipe. All five files retain their exact original bytes; the
+option runner alone has a different archive filename to avoid collision.
