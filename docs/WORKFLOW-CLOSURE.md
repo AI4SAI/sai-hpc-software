@@ -98,6 +98,16 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 
 ## Remaining acceptance work
 
+Actual PBE smoke exposed a CUDA runtime compatibility issue after successful
+compile/version/ldd checks: host driver 550.163.01 could not JIT CUDA 12.9 PTX.
+Using the existing SDK CUDA 12.9 compatibility libraries, diagnostic `1834460`
+completed both PBE OT and STANDARD diagonalization (`0:0`, 31 seconds), with
+energy difference `5.684e-14 Ha` and maximum force difference `2.710e-10 Ha/Bohr`.
+The next recipe records compatibility library priority and requires it in final
+GPU linkage. Existing frozen workflow `39054631316` continues toward its SIF
+without this runtime correction; it cannot establish corrected acceptance.
+[PBE attempts and actual loaded libraries](evidence/cp2k-hdf5-static-20261018/pbe-smoke.json).
+
 The full compile diagnostic found that v2026.2's TBLITE API is incompatible
 with the hard-coded development dependency. The repair selects TBLITE from
 the pinned CP2K source and uses release's official 0.6.0 bundle plus both

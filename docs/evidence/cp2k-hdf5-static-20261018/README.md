@@ -69,3 +69,35 @@ was dispatched after the complete diagnostic passed. It selects release
 v2026.2 on 16V100, 4V100, 8V100V0 and DSPRHBM, controller `9f17f71`, recipe
 `e139a320651ce69c11cdbd1763ae875f98992de261a465e9e19a24849086bf40`.
 Its final SIF checks and science/performance acceptance are still pending.
+
+The formal release dependency jobs started on all four native partitions:
+16V100 `1834216`, 4V100 `1834214`, 8V100V0 `1834213` and DSPRHBM `1834205`.
+Their frozen controller/source/recipe identities and job-script hashes were
+checked against the requested production identity. [Submission evidence](formal-start.json).
+
+## Actual PBE runtime and CUDA compatibility
+
+The first PBE smoke job `1834231` failed in both OT and STANDARD diagonalization
+before SCF. DBCSR's CUDA 12.9 NVRTC generated PTX rejected by the injected host
+`libcuda` (`CUDA_ERROR_UNSUPPORTED_PTX_VERSION`). The actual node kernel driver
+was 550.163.01, reporting CUDA 12.4 capability; the kernel architecture was
+correctly `compute_70` for V100. Version/ldd success did not prove JIT execution.
+
+Job `1834460` used the same read-only binary and inputs with the existing NVIDIA
+SDK CUDA 12.9 compatibility directory first in the loader path. It completed
+`0:0` in 31 seconds on the same node. Both PBE calculations ended normally with
+SCF convergence; OT/diagonalization differed by `5.684e-14 Ha` in energy and
+`2.710e-10 Ha/Bohr` in forces. Actual process maps proved loading of
+`compat/libcuda.so.575.57.08`, the matching PTX JIT compiler and toolkit
+`libnvrtc.so.12.9.86`. Full before/after image and executable hashes matched.
+[Both attempts and raw evidence](pbe-smoke.json). This small diagnostic is not
+a final SIF, multi-node or performance acceptance.
+
+The next production recipe places the exact compatibility directory in GPU
+build/runtime environments and preserves the saved library order in the SIF
+launcher, with Apptainer driver libraries as a fallback. Its final GPU linkage
+contract rejects the old host `libcuda` path. CPU deliveries do not require
+compat. Three actual shared-library loader tests exercise the launcher order,
+fallback and empty initial path. The existing frozen workflow `39054631316`
+continues toward a SIF but does not include this runtime correction. No shared
+module, library or kernel driver was changed.

@@ -93,7 +93,8 @@ def check_linkage(text, target):
         raise ValueError("ELPA 2026 dynamic linkage was not proven")
     if target != "dsprhbm":
         for library, root in (("libcusolverMp.so", "/opt/devtools/nvidia/mp_libs/lib/"),
-                              ("libnccl.so", "/opt/devtools/nvidia/nccl_2.29.3_")):
+                              ("libnccl.so", "/opt/devtools/nvidia/nccl_2.29.3_"),
+                              ("libcuda.so.1", "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/compat/")):
             if not any(library in line and root in line for line in text.splitlines()):
                 raise ValueError("wrong or missing runtime library: " + library)
 

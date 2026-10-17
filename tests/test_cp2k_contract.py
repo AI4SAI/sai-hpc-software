@@ -157,8 +157,18 @@ class CP2KContractTests(unittest.TestCase):
         links = "\n".join((
             "libelpa_openmp.so => /opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia/lib/libelpa_openmp.so",
             "libcusolverMp.so.0 => /opt/devtools/nvidia/mp_libs/lib/libcusolverMp.so.0",
-            "libnccl.so.2 => /opt/devtools/nvidia/nccl_2.29.3_cuda12.9/lib/libnccl.so.2"))
+            "libnccl.so.2 => /opt/devtools/nvidia/nccl_2.29.3_cuda12.9/lib/libnccl.so.2",
+            "libcuda.so.1 => /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/compat/libcuda.so.1"))
         contract.check_linkage(links, "4v100-avx512")
+        # A resolved host libcuda can still reject the NVRTC 12.9 PTX used by
+        # DBCSR. All GPU deliveries must use the qualified compatibility API.
+        for target in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
+            old_driver = links.replace(
+                "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/compat/libcuda.so.1",
+                "/.singularity.d/libs/libcuda.so.1")
+            with self.subTest(target=target), self.assertRaisesRegex(ValueError, "libcuda"):
+                contract.check_linkage(old_driver, target)
+        contract.check_linkage(links.splitlines()[0], "dsprhbm")
         for extra in ("libfoo => not found", "libfoo => /workspace/lib/libfoo.so"):
             with self.assertRaises(ValueError):
                 contract.check_linkage(links + "\n" + extra, "4v100-avx512")

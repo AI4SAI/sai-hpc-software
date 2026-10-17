@@ -1,0 +1,1035 @@
+{
+  "schema": 2,
+  "status": "diagnostic-smoke-passed-with-explicit-cuda-12.9-compat",
+  "scope": "Diagnostic executable PBE water-dimer runtime smoke only; not SIF, scientific baseline, multi-node/GPU scaling, or performance acceptance.",
+  "attempts": [
+    {
+      "schema": 1,
+      "collected_at_utc": "2026-10-17T17:52:58.036727+00:00",
+      "status": "failed",
+      "scope": "Diagnostic executable PBE water-dimer runtime smoke only; not SIF, scientific baseline, multi-node/GPU scaling, or performance acceptance.",
+      "cluster_alias": "SAI-stardust",
+      "run": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a",
+      "request": {
+        "purpose": "cp2k-release-pbe-ot-diagonalization-diagnostic-not-acceptance",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "fixture_revision": "6d276e9c480f2b55f5a0b9166e22d20d9a3f8da0",
+        "binary": "/home/stardust/sai-hpc-software/runs/cp2k-tblite-release-preflight-20261018-c/cp2k-build/bin/cp2k.psmp",
+        "binary_sha256": "da672a81072e8f3644d8b07e4199a9779af1aeac79f8503b57c7299bfd25a4ab",
+        "validated_compile_run": "/home/stardust/sai-hpc-software/runs/cp2k-hdf5-static-preflight-20261018-b",
+        "candidate_tree": "/home/stardust/sai-hpc-software/runs/cp2k-tblite-release-preflight-20261018-c",
+        "cosma_tree": "/home/stardust/sai-hpc-software/runs/cp2k-cosma-preflight-20261018-b",
+        "application_image": "/home/stardust/sai-hpc-software/runs/39041714911-1-release-4v100-avx512-2026-10-17-67b5da876dd6/work.ext3",
+        "image_sha256": "ae63bf41b5f4067a62169bc1455801014f518aae97dab88fd6313e58d00c0e5d",
+        "dependency_receipt": "/home/stardust/sai-hpc-software/runs/39041714911-1-release-4v100-avx512-2026-10-17-67b5da876dd6/results/install-success.json",
+        "dependency_receipt_sha256": "fcee24c82c0820b082f621192d2a12f3f17008d7459f4b5282f47119ee2745bb",
+        "controller": "/home/stardust/sai-hpc-software/runs/cp2k-hdf5-static-preflight-20261018-b/input/controller",
+        "controller_hashes": {
+          "abacus_baseline_probe.sbatch": "ee77ca5738eb3e0e0aa0bd4136071d5444ba6f08d394be640dd7092f3bb86914",
+          "abacus_benchmark.py": "852c7701aaea3f8d36e2365a09637e91f12612e9284063a7236d70d3e832705b",
+          "abacus_build.sh": "cf67a38908fdbc1145aa515011478e59dcac92ec40bebbdb691cb1c024a16a80",
+          "abacus_cache_runner_reference.py": "ee275b407a58e1ea3bc835e034ad86eee5a218d0134b8a3f8e3af3c277e10ff3",
+          "abacus_dependencies.py": "47c5d90a1c75dd8da1ff085735a26e4cb584aae2a122661c1448fb7cff33afd6",
+          "abacus_dependencies.sh": "905eb88d0ca0dc2f3e011874fbe28b7a95cb8a1a1db526ddc4e5fc4661e20cde",
+          "abacus_dependency_lock.json": "ce7a95f5e0776eb1ff694e76a88cd4389ee617906071502d79ef5727e5a66d6c",
+          "abacus_features.py": "e1b9d5ae501a6f43053c15f5fccabbc224e0278a324b0e2ce628d1324525d64a",
+          "abacus_full_dependencies.sh": "0aefb9b7a59f66a0776a70d914dd4ba34d281022856dd91b9fb1864355419d4c",
+          "abacus_full_profile.json": "d93fbde64a6898e12c0e61cdced1c2ca7d25925611f3d0bfc3ac1b30576bd469",
+          "abacus_runtime.sh": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+          "abacus_site_gpu.sh": "1a8631ca91a9969f56115425ef13489144fa28d292609d96292fc8ce9b898b29",
+          "abacus_site_mpi.sh": "199aeb495069f0812214c8bd944b229799b8d54b9a908667ef8f1d5b2cbc54d1",
+          "build.sbatch.in": "5e0e74a118add2aa80f181dda6bc4bee1bcdb3e241df9c592f8632fbacb21a98",
+          "build_capacity.py": "088494aa992817edaafcd1e4f8a2c63ce389e11af164d6be383824555630b15e",
+          "case.sbatch.in": "d849dca06d71f2ccb3d5e52a5f7a8ea07803a63894bb42aea6385604b5d98698",
+          "ci.py": "ac454fd77a2f98ff755451d68ddbd45134dbb0f96a98870a194826817151a777",
+          "config.ini": "8dc7eee2853aaa96979a8f55e2f1dea0ceb8c7cb0045e19695837b10d99c575c",
+          "container_entry.sh": "618042bbd5fe909dbe0ea2c47f786791d7bb451dc1da841cb2dea83eb72803ef",
+          "cp2k_Libint2Config.cmake": "223aac33a7743bc46a25738cb75b4a4bd1100571b1ea13fe4c19dff7c4019de9",
+          "cp2k_baseline_probe.sbatch": "6462e789df12424f89c9595ff62146f1e51933136b2d6306e5845755b4c5cd52",
+          "cp2k_benchmark.py": "aefd8b234b1b43f2815a6af5f3502204319a490f4919ad417421d920034a10e3",
+          "cp2k_build.sh": "f6ce7693a0cc890008de5589d628b892c1d2d0f006d7c1f8b6642b14d680be18",
+          "cp2k_cmake_prerequisites.cmake": "8c923f94b76475eba88e14280b05e37ddb8f491a03821193253e49e4af519a0d",
+          "cp2k_container_entry.sh": "dc18fecbd30cf5f8ecef30fa4f41167bf4f25fddbf720b7611bcd90b7d5956e6",
+          "cp2k_dependencies.sbatch": "d1fbdbb7f8553b0b912a08d73bc8f85ac376b9bf0e854c79298a03a4718b3197",
+          "cp2k_dependencies.sh": "99d5bbcf9dda385257c0088fe9a12a1f6eea86364e2dc8bef46a17d1af822562",
+          "cp2k_dependency_stage.py": "ac170f92f21e833c5b409074a183a5df034371576d1a79f73b3ad1b85ff6174f",
+          "cp2k_feature_contract.py": "98772888e7d46d1386e2659b6a8ac7881bd8b43412aeaa3c46cfa0ef4fee52e8",
+          "cp2k_image_driver.py": "e0ea6a2b7ce25189b3eb9b7749392b0416894f9d365e1f3c31c577546a8df049",
+          "cp2k_libxsmmConfig.cmake": "734aa00bd820e244cde406866c1c6065f8a2f85571dde413f7c2bf058b1fb038",
+          "cp2k_overlay_probe.sbatch": "69c6044258e990bd6dbf5ccce76b5b6bb0545d118b000587c720975ec9757e1c",
+          "cp2k_overlay_workdir.py": "f22d281427ede157c03c7fc20a8b625e9c5a511e023a6c358de93040589fe468",
+          "cp2k_payload.py": "5a6c59dd438c7daf46abf351e2b27fa7bb016f7870ac5bf1ac66641cee196709",
+          "cp2k_probe.sbatch": "3927f4ece5c157504bc3b0b70e70f603c9319e2709ae36db2a7ce8cbcdc5fa0d",
+          "cp2k_repack.sbatch": "004ede58b234b49dc0297ea437d9a3e1e23ff450f7ea8b3bc65222711ee78c7f",
+          "cp2k_runtime.sh": "f16a6e533d797bc227f8a7458273e523a3e51ce595d0ab57cfb04c8b13791c8e",
+          "cp2k_spack.py": "5f00e913aacd06b4e45d3f08724afc58b47674a7e4fc287dc36d19a5dbc13be7",
+          "cp2k_spack_dependencies.sh": "62977f63321a57a3c7d66f15e20f82cebc2ddf3987f1faa0e6719f7e6a640985",
+          "cp2k_spack_environment.py": "319f1f38602c271ac4de8a3154f9e75d77230bf0ecb771b860987cd4057a8b08",
+          "cp2k_spack_install.sh": "320f8e5f58ba986a5a37c19223183b3826d932ed680173e4cce2ab034f4e37a7",
+          "cp2k_spack_install_evidence.py": "391ad327602cabf1e49db806a6d82c1887669f40da097ba2dfdf3ed193d481cc",
+          "cp2k_spack_install_submit.py": "49a15275a73f7d8ed08566f9b82b3576489f8dd74790b336287e97719d685447",
+          "cp2k_spack_libint_repair.py": "b38fd9292b264bc83c308ca8c4ce4b42a1b2beb3367713de3f7308106b2cd014",
+          "cp2k_spack_link.py": "52efab5e2c77f195e1dd380911a1d7617f2d1f632c3a808dfe5d4e61e3ab88f8",
+          "cp2k_spack_mpi_repair.py": "7036b4f1c89b54d0f25e6bf6c87e79f07306a55cd8a10f4e2c93edfcb8c732e8",
+          "cp2k_spack_native.py": "bdfadff1c81c8cc0bf03d80f950e4dd3f3176496f02febcb9ae102cd847abb04",
+          "cp2k_spack_probe.sh": "4c266c5704f1cf96f4aad3da70030fe7c4f5ea8eb9eae5bb3e409f601cf3723e",
+          "cp2k_spack_probe_submit.py": "e878b1bb56ef2bdf8c4afc133d92cbb18ff63198afbc30f9d892f505c1cc08c4",
+          "cp2k_spack_seed.py": "9c41a9fc602f2f5e351eb845785a0b86882268b58b53573b3972a85b2fa35dfe",
+          "create_rootfs.sh": "ae0818e8bb485222605290fd3f3c410c40354aa518c8f613ac26236b3e382852",
+          "daily_plan.py": "8dcc9907d201caab77f421adc7d77a3471881b6caba475ad2474270ae91b2024",
+          "delivery_layout.py": "268a18bfe45b1f8cca9d955d5b34215392ee74d734dcf4358c5da66728f6d7f2",
+          "environment.sh": "cd1fbc37593a421e889aba160b08c74fc31d7384e9658dfff219efdb9b40871d",
+          "export_native.py": "cf5709c9037af843e360b2ad1b73b2d50dcdc1525940db9350df5783d9e8c619",
+          "finalize_lammps_sif.py": "430113a1b0d271e5d3241460e46166206443dbd92812113f66228dac9ad7fd2f",
+          "gpu_feature_controller.py": "67e0711ccd8d39d1d6fc999baa35a9b6fe32fbe2c9392db5bb8e7cdc09f60eb0",
+          "gpu_feature_runtime.sh": "b499d0fe6bd1ad4623ece45ea6663702bf8e54d95ae1a0679b87f34ce81a0734",
+          "gpumd_acceptance.py": "35080b2962f1cd435ceabfa2ba52b502735ff3c32fcdc9cd560a6e926e7e85bc",
+          "gpumd_build.sh": "4739c263643a94b428fdb28e4ca25de93224106fca8ce193d48bf3c2b997a7fa",
+          "gpumd_container_entry.sh": "2fd02f0abd7736865eda94204f28d7ca0a536a8eb2029d3b9cb0b435034bdb7f",
+          "gpumd_deepmd_probe.py": "78d3e11ad614aed6b092f5fcb3cdf24e9f0dd91fb9adf73c263da2e9ed761319",
+          "gpumd_environment.sh": "6bb0cc52a65b83add6cfc6a7375459f61e82ff822aed2d1e1718faf92f935370",
+          "gpumd_relink_probe.sbatch": "4d1f7b8858f3c9c1f2beb36393b008f52f7d49cf3f696f2d58c39359bdb31997",
+          "gpumd_runtime.sh": "442c2dce979960cfebc58226357ae5374db9e9881649a1f458f78387936b568d",
+          "gpumd_science.py": "ee1328905abaca2ffd2630d6d3dcad7a52af110ddf25d4d594485841144f5e1e",
+          "gpumd_site_probe.py": "3501fc12f9b648a50127a246ff8232af20f288e4d704b9319b5091417c60d5bf",
+          "gpumd_site_probe.sbatch": "b04fba2267207a966b4de8b1660ca2d52d62e94c231627c35107e93c5e4280a7",
+          "lammps_manifest_diagnose.sh": "8bd4b84fb66ecfd424c88963cf24cba3dbdb67b2c1ee420e902f61a23dc53dc2",
+          "lammps_packaging_debug.sbatch": "6b70c42acb0176aa5fa4938726d8d7c72c4323fb0daf0329b860718279cdfaa1",
+          "lammps_packaging_probe.sbatch": "6df4ad1d86c294af6578b0821242030bbc762b974a8be81eb0a84d69f8e6f3e6",
+          "md_acceptance.sh": "fbbd8dc86108044c5efa2b00ca4377ab5d4219a18f4ea91d1ad3336ac2dd05bd",
+          "md_acceptance_controller.py": "88db1b11a2c81b9687b0ba173bb060c7d9eba0873ea22190601981f54f5faa0b",
+          "md_baseline.sh": "e59ca2d8efb63e06ed36caad0c3612a5436191b78ab7b750a8a1c96092cb2621",
+          "md_build.sh": "e2587d64983ec05f41aacdd5dc3a56c3c293b98630b0351a3b66898cfa4f1f4e",
+          "md_ci.py": "c862b2e08f7a9fe8043daa70b4aa08e18d519e23b94dcec6925f3409d3a3bfcc",
+          "md_container_entry.sh": "f1a58ca5f505d4bcefdbb4ab64afa24408b1d4074929fc4e6618b1d9b990a83c",
+          "md_container_entry_verify_patched.sh": "eeb20f2b25a146ae12ea7e8634559b2d7dddacb7f96cde002c567aec85504c68",
+          "md_controller.py": "5073d3fa7bedbe41cd39b3ff41b31d75f6f66cf9e99fda3b68cd7722744839fe",
+          "md_driver_paths.py": "bce00df699cc432d8b7b5d4a8723564498603843639693e640916ab7ed8944a8",
+          "md_environment.sh": "034b390c322dabd790f9f66d48b07c9e24b17c65f32f73ce904c8a4f24dec800",
+          "md_evidence.py": "2d29110ba27718f7d6a43f93fbe7579dd6e0d76249e5a5de3056d73129687772",
+          "md_import_probe.sh": "bddc7bdb3a7b3523531b93ecf51eb2958f6e151c36b4d5a0e93231c8e4dc7806",
+          "md_link_launcher.py": "66b989e7807dd94fc425dbfae36900a5e471b98a94c4043f13738b16fd3527f6",
+          "md_native_probe.sh": "8d8ccc5229f404c931b312743de5a2e705b3973e30593facd6403141436c27ac",
+          "md_packaging_recovery.sh": "d45c0378195e98d1ffeb4452e258e9a0115bd11db053e57124fe4b963056831a",
+          "md_performance.py": "a07d3662f5543f347fa584e942dbac7fc6eaf22377c33a0895ec5e07dce8f73e",
+          "md_performance.sh": "43d4500f7533427e9e52d6f3de19047b37abd70dafa29f3ae94727fe720bbee9",
+          "md_performance_controller.py": "02e24cc2e58b1d88b983b865a4e55c61a2b584bea01f642b54497b2131dc4b62",
+          "md_performance_evidence.py": "e810fdc70801fa99fa033c92f96dfd03e2dbcf938eda7487e12ff46d9cae8ead",
+          "md_performance_exec.py": "95d573f9edae5e4037e252d690f4adcc4bca04d6cdea59109ffb54686a7ff227",
+          "md_performance_run.py": "24f13228ee7333dae8aaf9f8fa57c8f63a5110b93c85ff8ddcb31433e85ef585",
+          "md_probe.py": "ac6be1c22cbac809892d62eff53d1e2dd83ee8d50f7cd752f375fcb1e78f8725",
+          "md_publication.py": "79d4cb06f6b28756d795f762d3268f5e75bd3c5e9664e25302a470133fe4be26",
+          "md_registration.py": "4f4e4db5bb2e7f9c55985d408dcfbf3f6acddbbab1ff8ca327fad0408cec6bb9",
+          "md_relocate_audit.py": "21fe48bf420130c74ca5eebebd8d113fc219009700f970907bea1c7e72ed16b3",
+          "md_runtime.sh": "cd11020142359a4a83313f97dfb6ef7aaa356a5d5c5a92a4f8d5da12b25543fe",
+          "md_science.py": "55d4ee142d65cd7b327dbdca223f0b4b69c8185729b85d991da2652f7979f788",
+          "md_tracking.py": "16f6fa69ebfce0ceb97bc7e3deb527e376423f38346b1312a9d02ad369791ef1",
+          "module_publication.py": "dfb74bdc51f9eeff6931c66458f80bd571b2ba587368c50ee0a752abe6f6d06f",
+          "modules.sh": "c3cba3ad99f373978ad806f61231fc20e9d254e06d5eccdece54629c259cea58",
+          "native_module.py": "feb0065834df656ab4de54df86ffaa650ded3ed030fab4190b2d5df8cd3e4421",
+          "probe_container.sh": "fb680791228f1b6fac07a038e5964be7399a485b86b81be8a383e51234770d78",
+          "probe_module_publication.py": "3d9e4cf82ad5fdf4744a4eceb18d2e7d4d775e6771ee1b9c993aaff4f344d80e",
+          "probe_module_publication.sbatch": "c854cb55c67dbac8b599a8bbc2b802d2e882cd7d9305773ebf723f16554255ba",
+          "probe_native_export.py": "8203e115ae2123c9cff34d37c95d2939712c6e893a5c4ec7b242c199511a07c5",
+          "probe_native_target.sbatch": "ec5cc83d030387d752006ec4d045b15c9b6e191b4916c098a6e400ed0334b1de",
+          "recovery_budget.py": "edd5032692d5dd1f4491ec56f5a873ea61cb659651d558188ad2045683b76e27",
+          "release_contract.py": "5054afa813bece49e24841f83b33c47993ff84391859fad15a8ddd373ede3b02",
+          "remote_controller.py": "40cb626f809b346a0679ae9820d65ebe2315a9cfb70532914bd31ec9f61d2ecf",
+          "resolve_source.py": "2d26c1217d70cec680bbbbe81a9b6806030641edb06636262405bb7b7761fa19",
+          "resume_cp2k_export.py": "549a0dff5240aae4e3fcc8e8a02652f2007a3ca5586ed7d656dee85620969d8d",
+          "resume_lammps_extract.py": "ff359df79536ce76217b6ff0cfb62184c48103d766ae9148e2098a88c4b51793",
+          "resume_lammps_packaging.py": "fc6fd576fe5ecca5609d0c771509ffc1ce8bc94a88f7711a83173fd704b52f07",
+          "resume_lammps_recovery.py": "323d9667dc9780e3e6b4303562fda7bf37d22ed149a00583306ecafba6420e6a",
+          "runtime_controller.py": "5d2c1fa434c9d70506976df08fcbd015dcf7592afbd04df24691bbcb85ee8214",
+          "slurm.py": "705bea32222d5964dd20ad589abe61322106518af61c0a645a42983970d7b220",
+          "software_controller.py": "4c0fbc49a6000e6c22a0227aea97172307178d5bcc0abee43b3919ebeb69306d",
+          "source_cache.py": "1c6ee2a243509f0fdf74e32736bea562e2777569c4c22480b2accdb78334f52b",
+          "submit_abacus_recovery.py": "24e393dfe97e2a5a3cddbd0f0d338e4cae597aa7ccd8a0c4fe2da4526aad060d",
+          "validate_plan.py": "2f9601f5f5e3e64828b5180a36766dbca4c6ffd651ecd3507723fcc3a1cfd0e3"
+        },
+        "input_manifest_sha256": "9cb57c61ffa46272072d9b893e595032376fcfeb9010e2fa0ca7ad251e19562c",
+        "job_script_sha256": "29f3e4f6480e98b5afc1162a1ca0a22de258c8c37561f763c05258be6eebcace",
+        "resources": {
+          "partition": "4V100",
+          "qos": "flood-1o2gpu",
+          "nodes": 1,
+          "tasks": 1,
+          "gpus_per_node": 1,
+          "minutes": 20,
+          "omp_threads": 1
+        },
+        "readonly_binds": [
+          "/candidate",
+          "/probe",
+          "/control",
+          "/input/repository",
+          "/results"
+        ],
+        "input_difference": "Only replace OT block with DIAGONALIZATION ALGORITHM STANDARD; default eigensolver selection retained",
+        "job_id": "1834231"
+      },
+      "slurm": {
+        "job_id": "1834231",
+        "state": "FAILED",
+        "exit_code": "1:0",
+        "elapsed": "00:06:43",
+        "node_list": "4v100n10",
+        "alloc_tres": "billing=194,cpu=8,gres/gpu=1,mem=22G,node=1",
+        "raw": "1834231|FAILED|1:0|00:06:43|4v100n10|billing=194,cpu=8,gres/gpu=1,mem=22G,node=1"
+      },
+      "integrity": {
+        "image_before_sha256": "ae63bf41b5f4067a62169bc1455801014f518aae97dab88fd6313e58d00c0e5d",
+        "image_after_sha256": "ae63bf41b5f4067a62169bc1455801014f518aae97dab88fd6313e58d00c0e5d",
+        "image_unchanged": true,
+        "binary_before_sha256": "da672a81072e8f3644d8b07e4199a9779af1aeac79f8503b57c7299bfd25a4ab",
+        "binary_after_sha256": "da672a81072e8f3644d8b07e4199a9779af1aeac79f8503b57c7299bfd25a4ab",
+        "binary_unchanged": true
+      },
+      "runtime": {
+        "scope": "diagnostic-runtime-smoke-only-not-sif-scientific-or-performance-acceptance",
+        "energy_tolerance_ha": 1e-06,
+        "force_tolerance_ha_bohr": 1e-05,
+        "cases": {
+          "ot": {
+            "input_sha256": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0",
+            "exit_code": 1,
+            "passed": false,
+            "error": "ValueError: CP2K exited 1"
+          },
+          "diagonalization": {
+            "input_sha256": "7340da90d70f2768cfcb3bdb06a610360c16ba5533e4511e2b990c57de7e146a",
+            "exit_code": 1,
+            "passed": false,
+            "error": "ValueError: CP2K exited 1"
+          }
+        },
+        "passed": false,
+        "error": "AssertionError: one or both CP2K cases failed"
+      },
+      "raw_evidence": {
+        "input/data/BASIS_MOLOPT": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/input/data/BASIS_MOLOPT",
+          "bytes": 127679,
+          "sha256": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61"
+        },
+        "input/data/GTH_POTENTIALS": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/input/data/GTH_POTENTIALS",
+          "bytes": 168128,
+          "sha256": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+        },
+        "input/diagonalization.inp": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/input/diagonalization.inp",
+          "bytes": 1501,
+          "sha256": "7340da90d70f2768cfcb3bdb06a610360c16ba5533e4511e2b990c57de7e146a"
+        },
+        "input/job.sbatch": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/input/job.sbatch",
+          "bytes": 3262,
+          "sha256": "29f3e4f6480e98b5afc1162a1ca0a22de258c8c37561f763c05258be6eebcace"
+        },
+        "input/ot.inp": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/input/ot.inp",
+          "bytes": 1506,
+          "sha256": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0"
+        },
+        "input/probe.sh": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/input/probe.sh",
+          "bytes": 960,
+          "sha256": "3bcd5052ba83a6f492431aac06ee9c9229b28eeb79700294e95152eef2f8f802"
+        },
+        "input/run-smoke.py": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/input/run-smoke.py",
+          "bytes": 2687,
+          "sha256": "5dc6a3c3d800fc45dbc69735c79937f80fa47a534a01ca088ef401e38d4ac702"
+        },
+        "results/binary-after.sha256": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/binary-after.sha256",
+          "bytes": 169,
+          "sha256": "3eb94c9891172fbce2efa60e74eae710a3849d65d71b6575e4a9fe331484ce67"
+        },
+        "results/binary-before.sha256": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/binary-before.sha256",
+          "bytes": 169,
+          "sha256": "3eb94c9891172fbce2efa60e74eae710a3849d65d71b6575e4a9fe331484ce67"
+        },
+        "results/cases/diagonalization/BASIS_MOLOPT": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/cases/diagonalization/BASIS_MOLOPT",
+          "bytes": 127679,
+          "sha256": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61"
+        },
+        "results/cases/diagonalization/GTH_POTENTIALS": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/cases/diagonalization/GTH_POTENTIALS",
+          "bytes": 168128,
+          "sha256": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+        },
+        "results/cases/diagonalization/elapsed.txt": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/cases/diagonalization/elapsed.txt",
+          "bytes": 19,
+          "sha256": "a195f09ec994826a7300a728051d08f47f5806ef9f6a686ac7488b2797d499b5"
+        },
+        "results/cases/diagonalization/input.inp": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/cases/diagonalization/input.inp",
+          "bytes": 1501,
+          "sha256": "7340da90d70f2768cfcb3bdb06a610360c16ba5533e4511e2b990c57de7e146a"
+        },
+        "results/cases/diagonalization/output.log": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/cases/diagonalization/output.log",
+          "bytes": 40660,
+          "sha256": "0d1af146f9566af13c01849f52703524174c354ca75c611d069a3955b2810d88"
+        },
+        "results/cases/diagonalization/result.json": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/cases/diagonalization/result.json",
+          "bytes": 166,
+          "sha256": "346d21823f254bd122ca3f36e592a9dd8ff79b0ed12d299976ba0efad9bbbf54"
+        },
+        "results/cases/diagonalization/stderr.log": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/cases/diagonalization/stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "results/cases/diagonalization/stdout.log": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/cases/diagonalization/stdout.log",
+          "bytes": 159,
+          "sha256": "ac7162df8c2839cad992d14c2e8f85a43d612005862f0412fdca36769646e07f"
+        },
+        "results/cases/ot/BASIS_MOLOPT": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/cases/ot/BASIS_MOLOPT",
+          "bytes": 127679,
+          "sha256": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61"
+        },
+        "results/cases/ot/GTH_POTENTIALS": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/cases/ot/GTH_POTENTIALS",
+          "bytes": 168128,
+          "sha256": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+        },
+        "results/cases/ot/elapsed.txt": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/cases/ot/elapsed.txt",
+          "bytes": 19,
+          "sha256": "bc4cfdbce2619347dae04ea98bcc464da82620d79d50c7c6d2582b37abf6902c"
+        },
+        "results/cases/ot/input.inp": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/cases/ot/input.inp",
+          "bytes": 1506,
+          "sha256": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0"
+        },
+        "results/cases/ot/output.log": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/cases/ot/output.log",
+          "bytes": 39845,
+          "sha256": "41269723b683035ebc75ee33e9a975bbbd048a1846658a872c8899862e160979"
+        },
+        "results/cases/ot/result.json": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/cases/ot/result.json",
+          "bytes": 166,
+          "sha256": "c6580f20db682bb649e7202271592d6b36066a97301991755212e7acd3a40266"
+        },
+        "results/cases/ot/stderr.log": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/cases/ot/stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "results/cases/ot/stdout.log": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/cases/ot/stdout.log",
+          "bytes": 159,
+          "sha256": "ac7162df8c2839cad992d14c2e8f85a43d612005862f0412fdca36769646e07f"
+        },
+        "results/gpu.txt": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/gpu.txt",
+          "bytes": 77,
+          "sha256": "a2dd965bc44aef6a13a882e5017c28879af20fa63936da499745f07ede1b6df0"
+        },
+        "results/image-after.sha256": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/image-after.sha256",
+          "bytes": 172,
+          "sha256": "07a1dd8df3c041b6532ac1803d9afdd32e7c3873e1ddfee521c426681563428d"
+        },
+        "results/image-before.sha256": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/image-before.sha256",
+          "bytes": 172,
+          "sha256": "07a1dd8df3c041b6532ac1803d9afdd32e7c3873e1ddfee521c426681563428d"
+        },
+        "results/image-driver.json": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/image-driver.json",
+          "bytes": 540,
+          "sha256": "24e8e2b9dd63dd8e99f5de73badb324019e813a2579bc1837fd9123d9f9404bf"
+        },
+        "results/ldd.txt": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/ldd.txt",
+          "bytes": 7897,
+          "sha256": "51a72754a55f5af1a1185717535d0da9cbddc0157d714eb0180807161407920a"
+        },
+        "results/node.txt": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/node.txt",
+          "bytes": 19,
+          "sha256": "a08349834e9b65c4e2e0d1bae27ac4fec545d193de70f2ec7cd19b0553b947b0"
+        },
+        "results/slurm-1834231.log": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/slurm-1834231.log",
+          "bytes": 2962,
+          "sha256": "1379bd8535768b086fe3f8137d904d694a96f4366f9ab1fb68ee6e8b2a9b4d5d"
+        },
+        "results/slurm-job.txt": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/slurm-job.txt",
+          "bytes": 1601,
+          "sha256": "a8c6c7673d46fdd9e6345fc73577c5fb83bf23738b037c51fe6ba1ecb208a106"
+        },
+        "results/smoke-result.json": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/smoke-result.json",
+          "bytes": 663,
+          "sha256": "6709f822256a9c1503375ce1e3dd80a9d9a647d02828c3bea4abfe230f966650"
+        },
+        "results/smoke.exit": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/smoke.exit",
+          "bytes": 2,
+          "sha256": "4355a46b19d348dc2f57c046f8ef63d4538ebb936000f3c9ee954a27460dd865"
+        },
+        "results/version.txt": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a/results/version.txt",
+          "bytes": 5775,
+          "sha256": "52e3735a91db5c36627c64d83c939da7482a025cf15959a01d14ef67efb324aa"
+        }
+      },
+      "blocker": {
+        "stage": "DBCSR CUDA JIT kernel module loading before molecular SCF convergence",
+        "affected_cases": [
+          "ot",
+          "diagonalization"
+        ],
+        "exact_error": "CUDA DRIVER API ERROR: ModuleLoadDataEx failed with error CUDA_ERROR_UNSUPPORTED_PTX_VERSION (/workspace/dbcsr-source/src/acc/libsmm_acc/libsmm_acc.cpp::431)",
+        "interpretation": "The driver API rejected generated PTX; exact loaded runtime/driver compatibility remains to be investigated.",
+        "scientific_energy_comparison_available": false,
+        "retry_submitted": true,
+        "followup_job_id": "1834460"
+      }
+    },
+    {
+      "schema": 1,
+      "collected_at_utc": "2026-10-17T17:59:26.959651+00:00",
+      "status": "passed",
+      "scope": "Diagnostic executable PBE water-dimer runtime smoke only; not SIF, scientific baseline, multi-node/GPU scaling, or performance acceptance.",
+      "cluster_alias": "SAI-stardust",
+      "run": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b",
+      "request": {
+        "purpose": "cp2k-release-pbe-ot-diagonalization-diagnostic-not-acceptance",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "fixture_revision": "6d276e9c480f2b55f5a0b9166e22d20d9a3f8da0",
+        "binary": "/home/stardust/sai-hpc-software/runs/cp2k-tblite-release-preflight-20261018-c/cp2k-build/bin/cp2k.psmp",
+        "binary_sha256": "da672a81072e8f3644d8b07e4199a9779af1aeac79f8503b57c7299bfd25a4ab",
+        "validated_compile_run": "/home/stardust/sai-hpc-software/runs/cp2k-hdf5-static-preflight-20261018-b",
+        "candidate_tree": "/home/stardust/sai-hpc-software/runs/cp2k-tblite-release-preflight-20261018-c",
+        "cosma_tree": "/home/stardust/sai-hpc-software/runs/cp2k-cosma-preflight-20261018-b",
+        "application_image": "/home/stardust/sai-hpc-software/runs/39041714911-1-release-4v100-avx512-2026-10-17-67b5da876dd6/work.ext3",
+        "image_sha256": "ae63bf41b5f4067a62169bc1455801014f518aae97dab88fd6313e58d00c0e5d",
+        "dependency_receipt": "/home/stardust/sai-hpc-software/runs/39041714911-1-release-4v100-avx512-2026-10-17-67b5da876dd6/results/install-success.json",
+        "dependency_receipt_sha256": "fcee24c82c0820b082f621192d2a12f3f17008d7459f4b5282f47119ee2745bb",
+        "controller": "/home/stardust/sai-hpc-software/runs/cp2k-hdf5-static-preflight-20261018-b/input/controller",
+        "controller_hashes": {
+          "abacus_baseline_probe.sbatch": "ee77ca5738eb3e0e0aa0bd4136071d5444ba6f08d394be640dd7092f3bb86914",
+          "abacus_benchmark.py": "852c7701aaea3f8d36e2365a09637e91f12612e9284063a7236d70d3e832705b",
+          "abacus_build.sh": "cf67a38908fdbc1145aa515011478e59dcac92ec40bebbdb691cb1c024a16a80",
+          "abacus_cache_runner_reference.py": "ee275b407a58e1ea3bc835e034ad86eee5a218d0134b8a3f8e3af3c277e10ff3",
+          "abacus_dependencies.py": "47c5d90a1c75dd8da1ff085735a26e4cb584aae2a122661c1448fb7cff33afd6",
+          "abacus_dependencies.sh": "905eb88d0ca0dc2f3e011874fbe28b7a95cb8a1a1db526ddc4e5fc4661e20cde",
+          "abacus_dependency_lock.json": "ce7a95f5e0776eb1ff694e76a88cd4389ee617906071502d79ef5727e5a66d6c",
+          "abacus_features.py": "e1b9d5ae501a6f43053c15f5fccabbc224e0278a324b0e2ce628d1324525d64a",
+          "abacus_full_dependencies.sh": "0aefb9b7a59f66a0776a70d914dd4ba34d281022856dd91b9fb1864355419d4c",
+          "abacus_full_profile.json": "d93fbde64a6898e12c0e61cdced1c2ca7d25925611f3d0bfc3ac1b30576bd469",
+          "abacus_runtime.sh": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+          "abacus_site_gpu.sh": "1a8631ca91a9969f56115425ef13489144fa28d292609d96292fc8ce9b898b29",
+          "abacus_site_mpi.sh": "199aeb495069f0812214c8bd944b229799b8d54b9a908667ef8f1d5b2cbc54d1",
+          "build.sbatch.in": "5e0e74a118add2aa80f181dda6bc4bee1bcdb3e241df9c592f8632fbacb21a98",
+          "build_capacity.py": "088494aa992817edaafcd1e4f8a2c63ce389e11af164d6be383824555630b15e",
+          "case.sbatch.in": "d849dca06d71f2ccb3d5e52a5f7a8ea07803a63894bb42aea6385604b5d98698",
+          "ci.py": "ac454fd77a2f98ff755451d68ddbd45134dbb0f96a98870a194826817151a777",
+          "config.ini": "8dc7eee2853aaa96979a8f55e2f1dea0ceb8c7cb0045e19695837b10d99c575c",
+          "container_entry.sh": "618042bbd5fe909dbe0ea2c47f786791d7bb451dc1da841cb2dea83eb72803ef",
+          "cp2k_Libint2Config.cmake": "223aac33a7743bc46a25738cb75b4a4bd1100571b1ea13fe4c19dff7c4019de9",
+          "cp2k_baseline_probe.sbatch": "6462e789df12424f89c9595ff62146f1e51933136b2d6306e5845755b4c5cd52",
+          "cp2k_benchmark.py": "aefd8b234b1b43f2815a6af5f3502204319a490f4919ad417421d920034a10e3",
+          "cp2k_build.sh": "f6ce7693a0cc890008de5589d628b892c1d2d0f006d7c1f8b6642b14d680be18",
+          "cp2k_cmake_prerequisites.cmake": "8c923f94b76475eba88e14280b05e37ddb8f491a03821193253e49e4af519a0d",
+          "cp2k_container_entry.sh": "dc18fecbd30cf5f8ecef30fa4f41167bf4f25fddbf720b7611bcd90b7d5956e6",
+          "cp2k_dependencies.sbatch": "d1fbdbb7f8553b0b912a08d73bc8f85ac376b9bf0e854c79298a03a4718b3197",
+          "cp2k_dependencies.sh": "99d5bbcf9dda385257c0088fe9a12a1f6eea86364e2dc8bef46a17d1af822562",
+          "cp2k_dependency_stage.py": "ac170f92f21e833c5b409074a183a5df034371576d1a79f73b3ad1b85ff6174f",
+          "cp2k_feature_contract.py": "98772888e7d46d1386e2659b6a8ac7881bd8b43412aeaa3c46cfa0ef4fee52e8",
+          "cp2k_image_driver.py": "e0ea6a2b7ce25189b3eb9b7749392b0416894f9d365e1f3c31c577546a8df049",
+          "cp2k_libxsmmConfig.cmake": "734aa00bd820e244cde406866c1c6065f8a2f85571dde413f7c2bf058b1fb038",
+          "cp2k_overlay_probe.sbatch": "69c6044258e990bd6dbf5ccce76b5b6bb0545d118b000587c720975ec9757e1c",
+          "cp2k_overlay_workdir.py": "f22d281427ede157c03c7fc20a8b625e9c5a511e023a6c358de93040589fe468",
+          "cp2k_payload.py": "5a6c59dd438c7daf46abf351e2b27fa7bb016f7870ac5bf1ac66641cee196709",
+          "cp2k_probe.sbatch": "3927f4ece5c157504bc3b0b70e70f603c9319e2709ae36db2a7ce8cbcdc5fa0d",
+          "cp2k_repack.sbatch": "004ede58b234b49dc0297ea437d9a3e1e23ff450f7ea8b3bc65222711ee78c7f",
+          "cp2k_runtime.sh": "f16a6e533d797bc227f8a7458273e523a3e51ce595d0ab57cfb04c8b13791c8e",
+          "cp2k_spack.py": "5f00e913aacd06b4e45d3f08724afc58b47674a7e4fc287dc36d19a5dbc13be7",
+          "cp2k_spack_dependencies.sh": "62977f63321a57a3c7d66f15e20f82cebc2ddf3987f1faa0e6719f7e6a640985",
+          "cp2k_spack_environment.py": "319f1f38602c271ac4de8a3154f9e75d77230bf0ecb771b860987cd4057a8b08",
+          "cp2k_spack_install.sh": "320f8e5f58ba986a5a37c19223183b3826d932ed680173e4cce2ab034f4e37a7",
+          "cp2k_spack_install_evidence.py": "391ad327602cabf1e49db806a6d82c1887669f40da097ba2dfdf3ed193d481cc",
+          "cp2k_spack_install_submit.py": "49a15275a73f7d8ed08566f9b82b3576489f8dd74790b336287e97719d685447",
+          "cp2k_spack_libint_repair.py": "b38fd9292b264bc83c308ca8c4ce4b42a1b2beb3367713de3f7308106b2cd014",
+          "cp2k_spack_link.py": "52efab5e2c77f195e1dd380911a1d7617f2d1f632c3a808dfe5d4e61e3ab88f8",
+          "cp2k_spack_mpi_repair.py": "7036b4f1c89b54d0f25e6bf6c87e79f07306a55cd8a10f4e2c93edfcb8c732e8",
+          "cp2k_spack_native.py": "bdfadff1c81c8cc0bf03d80f950e4dd3f3176496f02febcb9ae102cd847abb04",
+          "cp2k_spack_probe.sh": "4c266c5704f1cf96f4aad3da70030fe7c4f5ea8eb9eae5bb3e409f601cf3723e",
+          "cp2k_spack_probe_submit.py": "e878b1bb56ef2bdf8c4afc133d92cbb18ff63198afbc30f9d892f505c1cc08c4",
+          "cp2k_spack_seed.py": "9c41a9fc602f2f5e351eb845785a0b86882268b58b53573b3972a85b2fa35dfe",
+          "create_rootfs.sh": "ae0818e8bb485222605290fd3f3c410c40354aa518c8f613ac26236b3e382852",
+          "daily_plan.py": "8dcc9907d201caab77f421adc7d77a3471881b6caba475ad2474270ae91b2024",
+          "delivery_layout.py": "268a18bfe45b1f8cca9d955d5b34215392ee74d734dcf4358c5da66728f6d7f2",
+          "environment.sh": "cd1fbc37593a421e889aba160b08c74fc31d7384e9658dfff219efdb9b40871d",
+          "export_native.py": "cf5709c9037af843e360b2ad1b73b2d50dcdc1525940db9350df5783d9e8c619",
+          "finalize_lammps_sif.py": "430113a1b0d271e5d3241460e46166206443dbd92812113f66228dac9ad7fd2f",
+          "gpu_feature_controller.py": "67e0711ccd8d39d1d6fc999baa35a9b6fe32fbe2c9392db5bb8e7cdc09f60eb0",
+          "gpu_feature_runtime.sh": "b499d0fe6bd1ad4623ece45ea6663702bf8e54d95ae1a0679b87f34ce81a0734",
+          "gpumd_acceptance.py": "35080b2962f1cd435ceabfa2ba52b502735ff3c32fcdc9cd560a6e926e7e85bc",
+          "gpumd_build.sh": "4739c263643a94b428fdb28e4ca25de93224106fca8ce193d48bf3c2b997a7fa",
+          "gpumd_container_entry.sh": "2fd02f0abd7736865eda94204f28d7ca0a536a8eb2029d3b9cb0b435034bdb7f",
+          "gpumd_deepmd_probe.py": "78d3e11ad614aed6b092f5fcb3cdf24e9f0dd91fb9adf73c263da2e9ed761319",
+          "gpumd_environment.sh": "6bb0cc52a65b83add6cfc6a7375459f61e82ff822aed2d1e1718faf92f935370",
+          "gpumd_relink_probe.sbatch": "4d1f7b8858f3c9c1f2beb36393b008f52f7d49cf3f696f2d58c39359bdb31997",
+          "gpumd_runtime.sh": "442c2dce979960cfebc58226357ae5374db9e9881649a1f458f78387936b568d",
+          "gpumd_science.py": "ee1328905abaca2ffd2630d6d3dcad7a52af110ddf25d4d594485841144f5e1e",
+          "gpumd_site_probe.py": "3501fc12f9b648a50127a246ff8232af20f288e4d704b9319b5091417c60d5bf",
+          "gpumd_site_probe.sbatch": "b04fba2267207a966b4de8b1660ca2d52d62e94c231627c35107e93c5e4280a7",
+          "lammps_manifest_diagnose.sh": "8bd4b84fb66ecfd424c88963cf24cba3dbdb67b2c1ee420e902f61a23dc53dc2",
+          "lammps_packaging_debug.sbatch": "6b70c42acb0176aa5fa4938726d8d7c72c4323fb0daf0329b860718279cdfaa1",
+          "lammps_packaging_probe.sbatch": "6df4ad1d86c294af6578b0821242030bbc762b974a8be81eb0a84d69f8e6f3e6",
+          "md_acceptance.sh": "fbbd8dc86108044c5efa2b00ca4377ab5d4219a18f4ea91d1ad3336ac2dd05bd",
+          "md_acceptance_controller.py": "88db1b11a2c81b9687b0ba173bb060c7d9eba0873ea22190601981f54f5faa0b",
+          "md_baseline.sh": "e59ca2d8efb63e06ed36caad0c3612a5436191b78ab7b750a8a1c96092cb2621",
+          "md_build.sh": "e2587d64983ec05f41aacdd5dc3a56c3c293b98630b0351a3b66898cfa4f1f4e",
+          "md_ci.py": "c862b2e08f7a9fe8043daa70b4aa08e18d519e23b94dcec6925f3409d3a3bfcc",
+          "md_container_entry.sh": "f1a58ca5f505d4bcefdbb4ab64afa24408b1d4074929fc4e6618b1d9b990a83c",
+          "md_container_entry_verify_patched.sh": "eeb20f2b25a146ae12ea7e8634559b2d7dddacb7f96cde002c567aec85504c68",
+          "md_controller.py": "5073d3fa7bedbe41cd39b3ff41b31d75f6f66cf9e99fda3b68cd7722744839fe",
+          "md_driver_paths.py": "bce00df699cc432d8b7b5d4a8723564498603843639693e640916ab7ed8944a8",
+          "md_environment.sh": "034b390c322dabd790f9f66d48b07c9e24b17c65f32f73ce904c8a4f24dec800",
+          "md_evidence.py": "2d29110ba27718f7d6a43f93fbe7579dd6e0d76249e5a5de3056d73129687772",
+          "md_import_probe.sh": "bddc7bdb3a7b3523531b93ecf51eb2958f6e151c36b4d5a0e93231c8e4dc7806",
+          "md_link_launcher.py": "66b989e7807dd94fc425dbfae36900a5e471b98a94c4043f13738b16fd3527f6",
+          "md_native_probe.sh": "8d8ccc5229f404c931b312743de5a2e705b3973e30593facd6403141436c27ac",
+          "md_packaging_recovery.sh": "d45c0378195e98d1ffeb4452e258e9a0115bd11db053e57124fe4b963056831a",
+          "md_performance.py": "a07d3662f5543f347fa584e942dbac7fc6eaf22377c33a0895ec5e07dce8f73e",
+          "md_performance.sh": "43d4500f7533427e9e52d6f3de19047b37abd70dafa29f3ae94727fe720bbee9",
+          "md_performance_controller.py": "02e24cc2e58b1d88b983b865a4e55c61a2b584bea01f642b54497b2131dc4b62",
+          "md_performance_evidence.py": "e810fdc70801fa99fa033c92f96dfd03e2dbcf938eda7487e12ff46d9cae8ead",
+          "md_performance_exec.py": "95d573f9edae5e4037e252d690f4adcc4bca04d6cdea59109ffb54686a7ff227",
+          "md_performance_run.py": "24f13228ee7333dae8aaf9f8fa57c8f63a5110b93c85ff8ddcb31433e85ef585",
+          "md_probe.py": "ac6be1c22cbac809892d62eff53d1e2dd83ee8d50f7cd752f375fcb1e78f8725",
+          "md_publication.py": "79d4cb06f6b28756d795f762d3268f5e75bd3c5e9664e25302a470133fe4be26",
+          "md_registration.py": "4f4e4db5bb2e7f9c55985d408dcfbf3f6acddbbab1ff8ca327fad0408cec6bb9",
+          "md_relocate_audit.py": "21fe48bf420130c74ca5eebebd8d113fc219009700f970907bea1c7e72ed16b3",
+          "md_runtime.sh": "cd11020142359a4a83313f97dfb6ef7aaa356a5d5c5a92a4f8d5da12b25543fe",
+          "md_science.py": "55d4ee142d65cd7b327dbdca223f0b4b69c8185729b85d991da2652f7979f788",
+          "md_tracking.py": "16f6fa69ebfce0ceb97bc7e3deb527e376423f38346b1312a9d02ad369791ef1",
+          "module_publication.py": "dfb74bdc51f9eeff6931c66458f80bd571b2ba587368c50ee0a752abe6f6d06f",
+          "modules.sh": "c3cba3ad99f373978ad806f61231fc20e9d254e06d5eccdece54629c259cea58",
+          "native_module.py": "feb0065834df656ab4de54df86ffaa650ded3ed030fab4190b2d5df8cd3e4421",
+          "probe_container.sh": "fb680791228f1b6fac07a038e5964be7399a485b86b81be8a383e51234770d78",
+          "probe_module_publication.py": "3d9e4cf82ad5fdf4744a4eceb18d2e7d4d775e6771ee1b9c993aaff4f344d80e",
+          "probe_module_publication.sbatch": "c854cb55c67dbac8b599a8bbc2b802d2e882cd7d9305773ebf723f16554255ba",
+          "probe_native_export.py": "8203e115ae2123c9cff34d37c95d2939712c6e893a5c4ec7b242c199511a07c5",
+          "probe_native_target.sbatch": "ec5cc83d030387d752006ec4d045b15c9b6e191b4916c098a6e400ed0334b1de",
+          "recovery_budget.py": "edd5032692d5dd1f4491ec56f5a873ea61cb659651d558188ad2045683b76e27",
+          "release_contract.py": "5054afa813bece49e24841f83b33c47993ff84391859fad15a8ddd373ede3b02",
+          "remote_controller.py": "40cb626f809b346a0679ae9820d65ebe2315a9cfb70532914bd31ec9f61d2ecf",
+          "resolve_source.py": "2d26c1217d70cec680bbbbe81a9b6806030641edb06636262405bb7b7761fa19",
+          "resume_cp2k_export.py": "549a0dff5240aae4e3fcc8e8a02652f2007a3ca5586ed7d656dee85620969d8d",
+          "resume_lammps_extract.py": "ff359df79536ce76217b6ff0cfb62184c48103d766ae9148e2098a88c4b51793",
+          "resume_lammps_packaging.py": "fc6fd576fe5ecca5609d0c771509ffc1ce8bc94a88f7711a83173fd704b52f07",
+          "resume_lammps_recovery.py": "323d9667dc9780e3e6b4303562fda7bf37d22ed149a00583306ecafba6420e6a",
+          "runtime_controller.py": "5d2c1fa434c9d70506976df08fcbd015dcf7592afbd04df24691bbcb85ee8214",
+          "slurm.py": "705bea32222d5964dd20ad589abe61322106518af61c0a645a42983970d7b220",
+          "software_controller.py": "4c0fbc49a6000e6c22a0227aea97172307178d5bcc0abee43b3919ebeb69306d",
+          "source_cache.py": "1c6ee2a243509f0fdf74e32736bea562e2777569c4c22480b2accdb78334f52b",
+          "submit_abacus_recovery.py": "24e393dfe97e2a5a3cddbd0f0d338e4cae597aa7ccd8a0c4fe2da4526aad060d",
+          "validate_plan.py": "2f9601f5f5e3e64828b5180a36766dbca4c6ffd651ecd3507723fcc3a1cfd0e3"
+        },
+        "input_manifest_sha256": "abfe0f4842f0666247a52241bc0fae15e9bed7fd2c9f02adeac36790a8ebff9e",
+        "job_script_sha256": "cd6381a535bbcd849f8ae805e255be595d88bf1587d625cb401892e361f0940b",
+        "resources": {
+          "partition": "4V100",
+          "qos": "flood-1o2gpu",
+          "nodes": 1,
+          "tasks": 1,
+          "gpus_per_node": 1,
+          "minutes": 20,
+          "omp_threads": 1
+        },
+        "readonly_binds": [
+          "/candidate",
+          "/probe",
+          "/control",
+          "/input/repository",
+          "/results"
+        ],
+        "compat_driver": "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/compat",
+        "prior_attempt": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-a",
+        "input_difference": "Only replace OT block with DIAGONALIZATION ALGORITHM STANDARD; default eigensolver selection retained",
+        "job_id": "1834460"
+      },
+      "slurm": {
+        "job_id": "1834460",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed": "00:00:31",
+        "node_list": "4v100n10",
+        "alloc_tres": "billing=194,cpu=8,gres/gpu=1,mem=22G,node=1",
+        "raw": "1834460|COMPLETED|0:0|00:00:31|4v100n10|billing=194,cpu=8,gres/gpu=1,mem=22G,node=1"
+      },
+      "integrity": {
+        "image_before_sha256": "ae63bf41b5f4067a62169bc1455801014f518aae97dab88fd6313e58d00c0e5d",
+        "image_after_sha256": "ae63bf41b5f4067a62169bc1455801014f518aae97dab88fd6313e58d00c0e5d",
+        "image_unchanged": true,
+        "binary_before_sha256": "da672a81072e8f3644d8b07e4199a9779af1aeac79f8503b57c7299bfd25a4ab",
+        "binary_after_sha256": "da672a81072e8f3644d8b07e4199a9779af1aeac79f8503b57c7299bfd25a4ab",
+        "binary_unchanged": true
+      },
+      "runtime": {
+        "scope": "diagnostic-runtime-smoke-only-not-sif-scientific-or-performance-acceptance",
+        "energy_tolerance_ha": 1e-06,
+        "force_tolerance_ha_bohr": 1e-05,
+        "cases": {
+          "ot": {
+            "input_sha256": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0",
+            "mapped_gpu_libraries": [
+              "/.singularity.d/libs/libnvidia-ml.so.1",
+              "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libnvrtc-builtins.so.12.9.86",
+              "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libnvrtc.so.12.9.86",
+              "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/compat/libcuda.so.575.57.08",
+              "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/compat/libnvidia-ptxjitcompiler.so.575.57.08"
+            ],
+            "exit_code": 0,
+            "science": {
+              "energy_ha": -34.44682129478887,
+              "forces_ha_bohr": [
+                [
+                  -0.00945233354,
+                  -0.010457489817,
+                  -2.87128e-07
+                ],
+                [
+                  -0.009818693543,
+                  0.01569111124,
+                  -1.41928e-07
+                ],
+                [
+                  0.010457918678,
+                  0.004642532798,
+                  5.8306e-08
+                ],
+                [
+                  -0.003014175638,
+                  0.009256006937,
+                  -5.6023e-08
+                ],
+                [
+                  0.004272731236,
+                  -0.008357649189,
+                  -0.007545513107
+                ],
+                [
+                  0.004272706358,
+                  -0.008357781986,
+                  0.007545680456
+                ]
+              ],
+              "elapsed_seconds": 12.897162259556353,
+              "cp2k_seconds": 12.42,
+              "dispersion_ha": null
+            },
+            "normal_termination": true,
+            "scf_converged": true,
+            "finite_energy": true,
+            "passed": true
+          },
+          "diagonalization": {
+            "input_sha256": "7340da90d70f2768cfcb3bdb06a610360c16ba5533e4511e2b990c57de7e146a",
+            "mapped_gpu_libraries": [
+              "/.singularity.d/libs/libnvidia-ml.so.1",
+              "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libnvrtc-builtins.so.12.9.86",
+              "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libnvrtc.so.12.9.86",
+              "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/compat/libcuda.so.575.57.08"
+            ],
+            "exit_code": 0,
+            "science": {
+              "energy_ha": -34.446821294788926,
+              "forces_ha_bohr": [
+                [
+                  -0.009452333431,
+                  -0.010457489975,
+                  -2.87209e-07
+                ],
+                [
+                  -0.009818693497,
+                  0.015691111057,
+                  -1.41949e-07
+                ],
+                [
+                  0.010457918407,
+                  0.004642532856,
+                  5.8339e-08
+                ],
+                [
+                  -0.003014175516,
+                  0.009256007037,
+                  -5.5964e-08
+                ],
+                [
+                  0.004272731225,
+                  -0.00835764914,
+                  -0.007545512985
+                ],
+                [
+                  0.004272706362,
+                  -0.008357781857,
+                  0.007545680344
+                ]
+              ],
+              "elapsed_seconds": 8.458023843355477,
+              "cp2k_seconds": 7.99,
+              "dispersion_ha": null
+            },
+            "normal_termination": true,
+            "scf_converged": true,
+            "finite_energy": true,
+            "passed": true
+          }
+        },
+        "comparison": {
+          "energy_delta_ha": 5.684341886080802e-14,
+          "max_force_delta_ha_bohr": 2.7100000021818005e-10
+        },
+        "passed": true
+      },
+      "raw_evidence": {
+        "input/data/BASIS_MOLOPT": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/input/data/BASIS_MOLOPT",
+          "bytes": 127679,
+          "sha256": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61"
+        },
+        "input/data/GTH_POTENTIALS": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/input/data/GTH_POTENTIALS",
+          "bytes": 168128,
+          "sha256": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+        },
+        "input/diagonalization.inp": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/input/diagonalization.inp",
+          "bytes": 1501,
+          "sha256": "7340da90d70f2768cfcb3bdb06a610360c16ba5533e4511e2b990c57de7e146a"
+        },
+        "input/job.sbatch": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/input/job.sbatch",
+          "bytes": 3491,
+          "sha256": "cd6381a535bbcd849f8ae805e255be595d88bf1587d625cb401892e361f0940b"
+        },
+        "input/ot.inp": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/input/ot.inp",
+          "bytes": 1506,
+          "sha256": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0"
+        },
+        "input/probe.sh": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/input/probe.sh",
+          "bytes": 1066,
+          "sha256": "ae963203854e0abf250664814e7346a07ccacdae7561930b3962f1a705bbca45"
+        },
+        "input/run-smoke.py": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/input/run-smoke.py",
+          "bytes": 4815,
+          "sha256": "b757087e028254f9169585c88903a33f5b388d516743e308ac9cdbfb50eab39a"
+        },
+        "results/binary-after.sha256": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/binary-after.sha256",
+          "bytes": 169,
+          "sha256": "3eb94c9891172fbce2efa60e74eae710a3849d65d71b6575e4a9fe331484ce67"
+        },
+        "results/binary-before.sha256": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/binary-before.sha256",
+          "bytes": 169,
+          "sha256": "3eb94c9891172fbce2efa60e74eae710a3849d65d71b6575e4a9fe331484ce67"
+        },
+        "results/cases/diagonalization/BASIS_MOLOPT": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/diagonalization/BASIS_MOLOPT",
+          "bytes": 127679,
+          "sha256": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61"
+        },
+        "results/cases/diagonalization/GTH_POTENTIALS": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/diagonalization/GTH_POTENTIALS",
+          "bytes": 168128,
+          "sha256": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+        },
+        "results/cases/diagonalization/benchmark-RESTART.wfn": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/diagonalization/benchmark-RESTART.wfn",
+          "bytes": 3388,
+          "sha256": "b41613791ee1dfe4d635bb1221e144bc3ec40c21c322b3fcbb7e3a026609c9ff"
+        },
+        "results/cases/diagonalization/benchmark-RESTART.wfn.bak-1": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/diagonalization/benchmark-RESTART.wfn.bak-1",
+          "bytes": 3388,
+          "sha256": "fce93a816bbefa5e32d54617d7884b24c1c1f31cc837e3bed6a79b9983fdd7a5"
+        },
+        "results/cases/diagonalization/elapsed.txt": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/diagonalization/elapsed.txt",
+          "bytes": 18,
+          "sha256": "dba4d57f89d52aa4dd287b1938a4ed4942036a2547ea6263d9375a922a348a92"
+        },
+        "results/cases/diagonalization/forces.xyz": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/diagonalization/forces.xyz",
+          "bytes": 715,
+          "sha256": "3cad992a555302cb0947a63c6b06bf2d2336f21e6f69a9a9b7df4c7bf3dd3919"
+        },
+        "results/cases/diagonalization/input.inp": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/diagonalization/input.inp",
+          "bytes": 1501,
+          "sha256": "7340da90d70f2768cfcb3bdb06a610360c16ba5533e4511e2b990c57de7e146a"
+        },
+        "results/cases/diagonalization/mapped-gpu-libraries.json": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/diagonalization/mapped-gpu-libraries.json",
+          "bytes": 312,
+          "sha256": "763efa4877a7ed96e733f683af212497217272844853b0ed30eab8345cacc3d3"
+        },
+        "results/cases/diagonalization/output.log": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/diagonalization/output.log",
+          "bytes": 60614,
+          "sha256": "200464ffb320834993cc02250fcf9529d52565c356d67a2b0342c3a94bef2819"
+        },
+        "results/cases/diagonalization/result.json": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/diagonalization/result.json",
+          "bytes": 1259,
+          "sha256": "cfe4ce2f6be2ca181c8bb8b8cc5c4d7936f12ebfe8de123850529f9fa59890f2"
+        },
+        "results/cases/diagonalization/stderr.log": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/diagonalization/stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "results/cases/diagonalization/stdout.log": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/diagonalization/stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "results/cases/ot/BASIS_MOLOPT": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/ot/BASIS_MOLOPT",
+          "bytes": 127679,
+          "sha256": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61"
+        },
+        "results/cases/ot/GTH_POTENTIALS": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/ot/GTH_POTENTIALS",
+          "bytes": 168128,
+          "sha256": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+        },
+        "results/cases/ot/benchmark-RESTART.wfn": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/ot/benchmark-RESTART.wfn",
+          "bytes": 3388,
+          "sha256": "dcce784d01b941ea5319ba1ddd22f81f161820e3391940b312ef6d65ae1c7b8a"
+        },
+        "results/cases/ot/benchmark-RESTART.wfn.bak-1": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/ot/benchmark-RESTART.wfn.bak-1",
+          "bytes": 3388,
+          "sha256": "f64fa0d44ae28fc9e75bbcfaa102637705b173f3738cede28409c80610a42798"
+        },
+        "results/cases/ot/elapsed.txt": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/ot/elapsed.txt",
+          "bytes": 19,
+          "sha256": "41d5fb9eb143e0ae78e22c3c888ddc0187500e090f3c3aaf018e53a786e0e35e"
+        },
+        "results/cases/ot/forces.xyz": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/ot/forces.xyz",
+          "bytes": 715,
+          "sha256": "54fa9218acbbd9efd6f0129912297eff3add13d80d755c2eb1ec4d3651a9c829"
+        },
+        "results/cases/ot/input.inp": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/ot/input.inp",
+          "bytes": 1506,
+          "sha256": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0"
+        },
+        "results/cases/ot/mapped-gpu-libraries.json": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/ot/mapped-gpu-libraries.json",
+          "bytes": 419,
+          "sha256": "494a527fd0aed5f4ae8d9b95c44251da5c6201398ede3da72a926201ec0fc9ad"
+        },
+        "results/cases/ot/output.log": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/ot/output.log",
+          "bytes": 64088,
+          "sha256": "fa2a210df2c7322216b614bf0be37a4ea5e2c1ffd390f2c8524845eb5f1120f1"
+        },
+        "results/cases/ot/result.json": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/ot/result.json",
+          "bytes": 1368,
+          "sha256": "709c517bfdd9465201d84f238cc829f8f65639d79844e2d4fdc523dbc8c6b7e6"
+        },
+        "results/cases/ot/stderr.log": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/ot/stderr.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "results/cases/ot/stdout.log": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/cases/ot/stdout.log",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "results/driver-api.json": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/driver-api.json",
+          "bytes": 4372,
+          "sha256": "9e8530bdaab9cde45270ee1c287d963831e02efe9c595dce19adc45a42310d01"
+        },
+        "results/gpu-driver.txt": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/gpu-driver.txt",
+          "bytes": 33,
+          "sha256": "af485b2121cacb77fb458f6826bd446cc1741525ab83bc6ac3f46b8f01236c40"
+        },
+        "results/gpu.txt": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/gpu.txt",
+          "bytes": 77,
+          "sha256": "a2dd965bc44aef6a13a882e5017c28879af20fa63936da499745f07ede1b6df0"
+        },
+        "results/image-after.sha256": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/image-after.sha256",
+          "bytes": 172,
+          "sha256": "07a1dd8df3c041b6532ac1803d9afdd32e7c3873e1ddfee521c426681563428d"
+        },
+        "results/image-before.sha256": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/image-before.sha256",
+          "bytes": 172,
+          "sha256": "07a1dd8df3c041b6532ac1803d9afdd32e7c3873e1ddfee521c426681563428d"
+        },
+        "results/image-driver.json": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/image-driver.json",
+          "bytes": 540,
+          "sha256": "24e8e2b9dd63dd8e99f5de73badb324019e813a2579bc1837fd9123d9f9404bf"
+        },
+        "results/kernel-driver.txt": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/kernel-driver.txt",
+          "bytes": 154,
+          "sha256": "b21be37474347c4262627d448b68e1ee1783a396ff0c55b6bb8333f7296008f7"
+        },
+        "results/ldd.txt": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/ldd.txt",
+          "bytes": 7940,
+          "sha256": "418cb689bea79f60ae5585ae194a71d24c637a6c6bacabd5997220fbd2f12d39"
+        },
+        "results/node.txt": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/node.txt",
+          "bytes": 19,
+          "sha256": "a08349834e9b65c4e2e0d1bae27ac4fec545d193de70f2ec7cd19b0553b947b0"
+        },
+        "results/nvidia-smi.txt": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/nvidia-smi.txt",
+          "bytes": 1778,
+          "sha256": "3f014b03da7e13748df5ad6a68c5490ef7e2a020cd516c504da7a53fdb6f265c"
+        },
+        "results/slurm-1834460.log": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/slurm-1834460.log",
+          "bytes": 6450,
+          "sha256": "37c5763e9a902c5b079bc674ba58f5c37bfa8b744b2adfdc0dca3b80b773e790"
+        },
+        "results/slurm-job.txt": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/slurm-job.txt",
+          "bytes": 1602,
+          "sha256": "aa8fe4b3937bc5b65614c5a4b93dbe45207f565643501221c9454b840ec4b491"
+        },
+        "results/smoke-result.json": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/smoke-result.json",
+          "bytes": 3392,
+          "sha256": "fe90624895abc34dae91735ab91ce8608a2889f96859e4ca9863b0a675582b0a"
+        },
+        "results/smoke.exit": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/smoke.exit",
+          "bytes": 2,
+          "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+        },
+        "results/version.txt": {
+          "path": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b/results/version.txt",
+          "bytes": 5775,
+          "sha256": "52e3735a91db5c36627c64d83c939da7482a025cf15959a01d14ef67efb324aa"
+        }
+      },
+      "driver_evidence": {
+        "driver_api": {
+          "cuInit": 0,
+          "cuDriverGetVersion_status": 0,
+          "cuda_driver_api_version": 12090,
+          "nvrtcVersion_status": 0,
+          "nvrtc_version": [
+            12,
+            9
+          ],
+          "ld_library_path": "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/compat:/probe/cosma/lib:/probe/costa/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/cosma-2.7.0-fosnhjhoc5gegowe347o7foswfomsbqk/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/cosma-2.7.0-fosnhjhoc5gegowe347o7foswfomsbqk/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/costa-2.3.3-bnt2qboj6a4emry3efbgiaecggwjdvne/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/costa-2.3.3-bnt2qboj6a4emry3efbgiaecggwjdvne/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/hdf5-1.14.6-veh6gg4r2kjguzn47akx3jrp3kumhq6r/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/hdf5-1.14.6-veh6gg4r2kjguzn47akx3jrp3kumhq6r/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libvori-220621-kj7qcxqg5wq7bw7iwzkpthzpmvxb2toh/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libvori-220621-kj7qcxqg5wq7bw7iwzkpthzpmvxb2toh/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/spla-1.6.1-uc273bzgwxxngrexd366xlfvkfmeuvgm/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/spla-1.6.1-uc273bzgwxxngrexd366xlfvkfmeuvgm/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/tiled-mm-2.3.2-joxrwvs52itwvriwz6urraxcs3kgwuds/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/tiled-mm-2.3.2-joxrwvs52itwvriwz6urraxcs3kgwuds/lib64:/opt/devtools/spglib/spglib-2.7.0/lib:/opt/devtools/gcc/14.3.0/libexec:/opt/devtools/gcc/14.3.0/lib:/opt/devtools/gcc/14.3.0/lib64:/opt/devtools/nvidia/mp_libs/lib:/opt/devtools/nvidia/cuda-12.9.1/lib64:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/nvshmem/lib:/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/math_libs/12.9/lib64:/opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia/lib:/opt/devtools/saiblas/2603-gnu-avx512/lib:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/devtools/libxc/libxc-7.0.0-avx512/lib:/opt/devtools/fftw/fftw-3.3.10/lib::/.singularity.d/libs",
+          "mapped_libraries": [
+            "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libnvrtc.so.12.9.86",
+            "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/compat/libcuda.so.575.57.08"
+          ]
+        },
+        "nvidia_smi": "Sun Oct 18 01:58:11 2026       \n+-----------------------------------------------------------------------------------------+\n| NVIDIA-SMI 550.163.01             Driver Version: 550.163.01     CUDA Version: 12.4     |\n|-----------------------------------------+------------------------+----------------------+\n| GPU  Name                 Persistence-M | Bus-Id          Disp.A | Volatile Uncorr. ECC |\n| Fan  Temp   Perf          Pwr:Usage/Cap |           Memory-Usage | GPU-Util  Compute M. |\n|                                         |                        |               MIG M. |\n|=========================================+========================+======================|\n|   0  Tesla V100-SXM2-32GB           On  |   00000000:05:00.0 Off |                    0 |\n| N/A   40C    P0             69W /  300W |       1MiB /  32768MiB |      0%      Default |\n|                                         |                        |                  N/A |\n+-----------------------------------------+------------------------+----------------------+\n                                                                                         \n+-----------------------------------------------------------------------------------------+\n| Processes:                                                                              |\n|  GPU   GI   CI        PID   Type   Process name                              GPU Memory |\n|        ID   ID                                                               Usage      |\n|=========================================================================================|\n|  No running processes found                                                             |\n+-----------------------------------------------------------------------------------------+\n",
+        "kernel_driver": "NVRM version: NVIDIA UNIX x86_64 Kernel Module  550.163.01  Tue Apr  8 12:41:17 UTC 2025\nGCC version:  gcc version 13.3.0 (Ubuntu 13.3.0-6ubuntu2~24.04) \n"
+      }
+    }
+  ],
+  "conclusion": {
+    "observed_failure": "On 4v100n10, host driver 550.163.01 / CUDA 12.4 rejected CUDA 12.9 NVRTC PTX with CUDA_ERROR_UNSUPPORTED_PTX_VERSION in both OT and ordinary diagonalization.",
+    "observed_remedy": "Prepending /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/compat allowed the unchanged executable and input/data bytes to complete both calculations.",
+    "loaded_compat_driver": "libcuda.so.575.57.08",
+    "loaded_jit_compiler": "libnvidia-ptxjitcompiler.so.575.57.08",
+    "loaded_nvrtc": "libnvrtc.so.12.9.86",
+    "loaded_nvrtc_builtins": "libnvrtc-builtins.so.12.9.86",
+    "driver_api_version": 12090,
+    "nvrtc_version": [
+      12,
+      9
+    ],
+    "energy_delta_ha": 5.684341886080802e-14,
+    "max_force_delta_ha_bohr": 2.7100000021818005e-10,
+    "requires_production_change": true,
+    "production_constraint": "Saved CUDA compatibility path must precede Apptainer injected /.singularity.d/libs at runtime; the frozen formal build and acceptance have not been changed by this diagnostic.",
+    "actual_eigensolver_backend_claim": "No specific diagonalization library execution is claimed by this small test; default backend selection was retained."
+  },
+  "dbcsr_nvrtc_source_evidence": {
+    "archive": "/home/stardust/sai-hpc-software/cache/cp2k-probe/dbcsr-latest.tar.gz",
+    "archive_sha256": "d963cac9cb79e04d82bedf0f4febce9cd06470f84c7d5a45f74645d11f8c4875",
+    "target": "--gpu-architecture=compute_70",
+    "source_chain": [
+      {
+        "path": "CMakeLists.txt",
+        "line": 304,
+        "text": "set(GPU_ARCH_NUMBER_V100 70)"
+      },
+      {
+        "path": "CMakeLists.txt",
+        "line": 336,
+        "text": "set(ACC_ARCH_NUMBER ${GPU_ARCH_NUMBER_${WITH_GPU}})"
+      },
+      {
+        "path": "src/CMakeLists.txt",
+        "line": 287,
+        "text": "$<$<STREQUAL:${USE_ACCEL},cuda>:ARCH_NUMBER=${ACC_ARCH_NUMBER}>"
+      },
+      {
+        "path": "src/acc/libsmm_acc/libsmm_acc.cpp",
+        "line": 36,
+        "text": "#  define ARCH_OPTION_NAME \"--gpu-architecture=compute_\""
+      },
+      {
+        "path": "src/acc/libsmm_acc/libsmm_acc.cpp",
+        "line": 40,
+        "text": "#define ARCH_OPTION ARCH_OPTION_NAME STRINGIFY(ARCH_NUMBER)"
+      },
+      {
+        "path": "src/acc/libsmm_acc/libsmm_acc.cpp",
+        "line": 391,
+        "text": "const char* compileOptions[] = {\"-D__CUDA\", \"-w\", ARCH_OPTION};"
+      },
+      {
+        "path": "src/acc/libsmm_acc/libsmm_acc.cpp",
+        "line": 397,
+        "text": "ACC_RTC(Result) compileResult = ACC_RTC(CompileProgram)(kernel_program, nOptions, compileOptions);"
+      },
+      {
+        "path": "src/acc/libsmm_acc/libsmm_acc.cpp",
+        "line": 431,
+        "text": "ACC_DRV_CALL(ModuleLoadDataEx, (&module, code, 0, 0, 0));"
+      }
+    ]
+  }
+}

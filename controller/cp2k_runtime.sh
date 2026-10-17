@@ -56,5 +56,5 @@ while IFS= read -r name; do
   esac
 done < <(compgen -e)
 "${args[@]}" "$image" /usr/bin/bash --noprofile --norc -c \
-  'driver=${LD_LIBRARY_PATH:-}; source "$1"; export LD_LIBRARY_PATH="$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"; exec "$2" "${@:3}"' \
+  'driver=${LD_LIBRARY_PATH:-}; source "$1"; export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}${driver:+:$driver}"; exec "$2" "${@:3}"' \
   bash "$prefix/share/sai/runtime-env.sh" "$prefix/bin/cp2k.psmp" "$@"

@@ -20,6 +20,18 @@ cpu_flags='-march=native -mtune=native'
 if [[ "$accel" == CUDA ]]; then module load cuda/12.9.1 nvmplibs/26.7-tmp; fi
 module unload gcc
 module load gcc/14.3.0 spglib/2.7.0
+if [[ "$accel" == CUDA ]]; then
+  # DBCSR JITs CUDA 12.9 PTX. The site's older kernel driver needs NVIDIA's
+  # matching user-space compatibility libraries, including its PTX compiler.
+  cuda_compat=/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/compat
+  for library in libcuda.so.1 libnvidia-ptxjitcompiler.so.1; do
+    [[ -f "$cuda_compat/$library" ]] || {
+      echo "required CUDA 12.9 compatibility library missing: $cuda_compat/$library" >&2
+      exit 1
+    }
+  done
+  export LD_LIBRARY_PATH="$cuda_compat${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+fi
 for compiler in gcc g++ gfortran; do
   [[ "$(command -v "$compiler")" == "/opt/devtools/gcc/14.3.0/bin/$compiler" ]]
   [[ "$("$compiler" -dumpfullversion)" == 14.3.0 ]]
