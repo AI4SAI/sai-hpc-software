@@ -12,18 +12,32 @@ read-only `/lib64`; corrected-runtime 8V100V0 application `1837029` was still
 running. No SIF existed. CP2K declares its install library directory as CACHE
 PATH, converting the untyped relative command-line value into an absolute path.
 The recipe now passes `CMAKE_INSTALL_LIBDIR:STRING=lib64` and checks it before
-compilation. Recovery is being verified using a copy of the completed build.
+compilation. Recovery has since passed using a copy of the completed build.
 [Diagnosis and repair](evidence/cp2k-install-layout-20261018/README.md).
 
 Fresh workflow [39078998459](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39078998459)
 uses production commit `c3b65b9`, recipe
 `b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150`.
 Its four native dependency jobs are `1837489` (16V100), `1837488` (4V100),
-`1837487` (8V100V0) and `1837486` (DSPRHBM). At 07:32, all except
-8V100V0 were running; 8V100V0 was queued. CI passed 735 tests with two
-optional skips. Diagnostic recovery `1837454` is checking the remaining
-install/export/SIF path using a preserved copy, not relabelling a failed run.
+`1837487` (8V100V0) and `1837486` (DSPRHBM). At 07:55, all four were running
+on `16v100n02`, `4v100n12`, `8v100v0n03` and `d9470n02`, respectively.
+CI passed 735 tests with two optional skips. Formal SIF delivery and
+scientific/performance acceptance remain pending.
 [Requests and job identities](evidence/cp2k-install-layout-20261018/formal-start.json).
+
+Recovery diagnostic `1837454` completed `0:0` in 18:52 and produced a real
+187,449,344-byte SIF. Final SIF verification, without the build overlay,
+confirmed CP2K 2026.2, GCC 14.3.0, all required features, 47 ELF files and no
+missing dependencies. PBE OT ran from that SIF, converged in 46 SCF steps and
+exited normally with GPU grid work recorded. Of 1,487 compiled objects,
+1,486 were reused unchanged; the original failed image's SHA256 was unchanged.
+The SIF is retained at
+`/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/diagnostic.sif`.
+It keeps the original identity and has no formal artifact/publication record.
+This establishes the repaired installation and SIF execution path; the smoke
+used pinned external data and does not establish installed-data, multi-GPU or
+comparative performance acceptance.
+[SIF checksum, logs and runtime evidence](evidence/cp2k-install-layout-20261018/recovery-sif.json).
 
 Actual PBE smoke exposed a CUDA runtime compatibility issue after successful
 compile/version/ldd checks: host driver 550.163.01 could not JIT CUDA 12.9 PTX.
@@ -34,9 +48,9 @@ Production commit `9352d6d` records compatibility library priority and requires 
 in final GPU linkage. Fresh four-target release workflow
 [39056762371](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39056762371)
 uses recipe `4b6cb146fa983f69d82e5f7a990eba00b879a1c1e7464e317cc4740dbb41793b`.
-Its final SIF and scientific/performance results remain pending.
-Existing frozen workflow `39054631316` continues toward its SIF
-without this runtime correction; it cannot establish corrected acceptance.
+The later installation failures described above prevented formal delivery.
+Frozen workflow `39054631316` also lacks this runtime correction and cannot
+establish acceptance of the corrected recipe.
 [PBE attempts and actual loaded libraries](evidence/cp2k-hdf5-static-20261018/pbe-smoke.json).
 
 Pinned baseline 2026.1 passed the same small PBE OT input in its default module
