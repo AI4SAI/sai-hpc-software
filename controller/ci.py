@@ -8,8 +8,10 @@ import os
 import re
 from pathlib import Path
 import shlex
+import shutil
 import subprocess
 import sys
+import tempfile
 import time
 from remote_controller import safe_name, safe_sha
 from delivery_layout import artifact_path
@@ -176,14 +178,15 @@ def main():
     def python(script, *args, **kw):
         return ssh(["python3", f"{control}/{script}", *args], **kw)
     def upload(source, destination):
+        sources = list(source) if isinstance(source, (list, tuple)) else [source]
         for attempt in range(3):
             try:
-                return run(["scp", "-q", *options, "-P", "12022", source,
+                return run(["scp", "-q", *options, "-P", "12022", *sources,
                             f"{remote}:{destination}"], timeout=1800)
             except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
                 if attempt == 2:
                     raise
-                print(f"retrying part {Path(source).name}", flush=True)
+                print(f"retrying upload of {len(sources)} file(s)", flush=True)
                 time.sleep(3)
     if not continuing:
         ssh(["mkdir", "-p", control, f"{task}/input", f"{task}/results"])
@@ -209,11 +212,16 @@ def main():
             recipe = ["gpumd_container_entry.sh", "gpumd_environment.sh", "gpumd_build.sh",
                       "gpumd_science.py", "gpumd_deepmd_probe.py", "gpumd_acceptance.py",
                       "export_native.py", "native_module.py"]
-        for name in common + recipe:
-            upload(parent / name, f"{control}/{name}")
+        # One SFTP connection avoids paying the site's SSH handshake latency
+        # for every trusted file. All files still arrive before fingerprinting
+        # or submission, inside this run's own controller directory.
+        staged = Path(tempfile.mkdtemp(prefix='controller-upload-', dir=temporary))
+        for name in dict.fromkeys(common + recipe):
+            shutil.copyfile(parent / name, staged / name)
         for executable in runtime_launchers(software):
-            upload(parent / f"{software}_runtime.sh", f"{control}/{executable}")
-            ssh(["chmod", "0555", f"{control}/{executable}"])
+            shutil.copyfile(parent / f"{software}_runtime.sh", staged / executable)
+        upload(sorted(staged.iterdir()), f"{control}/")
+        ssh(["chmod", "0555", *[f"{control}/{name}" for name in runtime_launchers(software)]])
     results = temporary / "results"
     results.mkdir(exist_ok=True)
     # The uploaded, immutable remote recipe owns the fingerprint. Never invent

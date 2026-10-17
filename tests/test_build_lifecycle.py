@@ -234,8 +234,10 @@ class CiLifecycleTests(unittest.TestCase):
             elif argv[0] == "scp" and argv[-2].endswith("/artifact.path"):
                 Path(argv[-1]).write_text(str(published_path or expected_artifact) + "\n")
             elif argv[0] == "scp":
-                self.uploads.append(Path(argv[-2]).name)
-                self.uploaded_files[Path(argv[-1]).name] = Path(argv[-2])
+                for source in argv[argv.index('-P') + 2:-1]:
+                    self.uploads.append(Path(source).name)
+                    name = Path(source).name if argv[-1].endswith('/') else Path(argv[-1]).name
+                    self.uploaded_files[name] = Path(source)
             return subprocess.CompletedProcess(argv, 0, stdout=stdout, stderr="")
 
         with patch.dict(os.environ, environment, clear=True), \
@@ -271,6 +273,23 @@ class CiLifecycleTests(unittest.TestCase):
         self.assertEqual(self.uploads, [])
         self.assertEqual(calls[-1], ('software_controller.py', 'publish'))
 
+    def test_trusted_controller_uses_one_transfer_before_fingerprinting(self):
+        for name, target in (('cp2k', '16v100-avx2'), ('abacus', '4v100-avx512'),
+                             ('gpumd', '16v100-avx2')):
+            with self.subTest(software=name):
+                self.execute(software=name, target=target)
+                transfers = [(i, argv) for i, argv in enumerate(self.transport)
+                             if argv[0] == 'scp' and '/controller/' in argv[-1]]
+                self.assertEqual(len(transfers), 1)
+                position, transfer = transfers[0]
+                sources = [Path(value) for value in transfer[transfer.index('-P') + 2:-1]]
+                self.assertTrue(set(controller.contract_files(name)) <= {path.name for path in sources})
+                for executable in ci.runtime_launchers(name):
+                    path = next(path for path in sources if path.name == executable)
+                    self.assertEqual(path.read_bytes(), (ROOT / 'controller' / (name + '_runtime.sh')).read_bytes())
+                identity_position = next(i for i, argv in enumerate(self.transport)
+                                         if argv[0] == 'ssh' and 'software_controller.py identity' in argv[-1])
+                self.assertLess(position, identity_position)
     def test_cross_workflow_handoff_is_rejected_before_transport(self):
         with self.assertRaisesRegex(ValueError, 'handoff does not belong'):
             self.execute(phase='acceptance', handoff='124-1-development-4v100-avx512-2026-09-13-' + 'a'*12)
