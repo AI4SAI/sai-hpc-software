@@ -5,6 +5,27 @@ No four-target CP2K 2026.2 release has passed all acceptance gates yet.
 
 ## Fresh four-target release workflow
 
+Follow-up after midnight, October 18: all four dependencies in workflow
+`39041714911` completed, but 4V100 application `1832733` and 16V100 application
+`1833010` failed at CP2K's COSMA interface check. The concrete COSMA and COSTA
+specs had `scalapack=false`; finding their CMake packages did not establish
+that CP2K's required `cosma_pxgemm_cpp` and `cosma_prefixed_pxgemm` targets existed.
+Commit `e8c0969` requires `cosma +scalapack`, which also enables COSTA's interface.
+All 722 CI tests completed with 720 passes and two optional skips.
+[Root cause and retained evidence](evidence/cp2k-cosma-scalapack-20261018/README.md).
+
+Fresh workflow [39047391019](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39047391019)
+selects all four targets with this correction. At 00:03 Asia/Shanghai, dependency
+jobs `1833131` (16V100), `1833125` (8V100V0) and `1833124` (DSPRHBM) were running;
+`1833135` (4V100) was pending and subsequently started. Diagnostic `1833202`
+rebuilt COSTA/COSMA and passed the complete CP2K configure/generate in 43 seconds,
+with the failed 4V100 application image's complete hash unchanged. By 00:13,
+all four fresh targets had installed corrected COSMA/COSTA. Old application
+jobs `1832921`/`1833122` were deliberately cancelled after confirming the same
+missing interfaces; all files remain preserved. Diagnostic compile `1833253`
+runs ahead of the fresh dependencies to catch source/link failures early.
+No new SIF is claimed at this snapshot.
+
 At 23:27 Asia/Shanghai, 4V100 dependency job `1832262` had completed `0:0`
 in 38:43, including Libint in 35:01. Its dependency image was sealed and
 application job `1832733` started on `4v100n06`. The other three targets were

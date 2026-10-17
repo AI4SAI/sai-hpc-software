@@ -98,6 +98,23 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 
 ## Remaining acceptance work
 
+At 00:03 Asia/Shanghai on October 18, fresh workflow
+[39047391019](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39047391019)
+had submitted corrected CP2K release dependencies on all four targets:
+16V100 `1833131`, 4V100 `1833135`, 8V100V0 `1833125`, DSPRHBM `1833124`.
+Commit `e8c0969` adds COSMA's required ScaLAPACK variant, after the previous
+4V100 and 16V100 applications failed on missing pxgemm CMake targets.
+The previous four dependency allocations succeeded, but none established
+application acceptance. The new commit passed 722 CI tests with two optional
+skips. [Root cause and evidence](evidence/cp2k-cosma-scalapack-20261018/README.md).
+The first verified v2026.2 SIF remains the immediate goal; direct-generalized
+tuning stays in issue #9 and does not block the build.
+At 00:13, all four targets had installed the corrected COSMA/COSTA libraries.
+Diagnostic `1833202` completed the full CP2K configure with unchanged source
+image hashes; compile diagnostic `1833253` is running ahead of the new builds.
+The remaining two old applications were deliberately cancelled after checking
+their missing interfaces, with all historical files retained.
+
 At 23:27 Asia/Shanghai, fresh 4V100 dependency job `1832262` completed `0:0`
 in 38:43 and handed its sealed image to application job `1832733`, running
 on `4v100n06`. The other three dependency jobs remained active. The priority
