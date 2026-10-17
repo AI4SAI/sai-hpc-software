@@ -10,7 +10,9 @@ import subprocess
 
 BASE_FLAGS = frozenset("omp libint fftw3 libxc elpa parallel scalapack mpi_f08 cosma plumed2 spglib libdftd4 mctc-lib tblite libvori libbqb hdf5".split())
 GPU_FLAGS = frozenset("dbcsr_acc offload_cuda cusolvermp cusolvermp_nccl".split())
-REQUIRED_OPTIONS = tuple("MPI MPI_F08 FFTW3 LIBXC LIBINT2 ELPA COSMA LIBXS LIBXSMM PLUMED SPGLIB VORI HDF5 DFTD4 TBLITE".split())
+# SpLA has no standalone version flag when GEMM offloading is disabled, as in
+# the site's 2026.1 baseline. Its CMake option must still be checked explicitly.
+REQUIRED_OPTIONS = tuple("MPI MPI_F08 FFTW3 LIBXC LIBINT2 ELPA COSMA SPLA LIBXS LIBXSMM PLUMED SPGLIB VORI HDF5 DFTD4 TBLITE".split())
 TRANSIENT = re.compile(r"/(?:workspace|control|input)(?:/|$)")
 
 

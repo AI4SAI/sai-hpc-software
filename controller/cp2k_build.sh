@@ -166,6 +166,8 @@ cmake "${dbcsr_args[@]}"
 cmake --build /workspace/dbcsr-build --parallel "$jobs"
 cmake --install /workspace/dbcsr-build
 mkdir -p /workspace/build "$prefix/bin" "$prefix/share/sai"
+# Preserve the site's SpLA-enabled 2026.1 configuration. Its local GEMM
+# offloading was disabled; benchmark that additional GPU path separately.
 cmake_args=(
   -S /workspace/source -B /workspace/build -DCMAKE_BUILD_TYPE=Release
   "${cmake_compilers[@]}"
@@ -180,6 +182,7 @@ cmake_args=(
   -DCP2K_USE_MPI=ON -DCP2K_USE_MPI_F08=ON -DCP2K_USE_ACCEL="$accel"
   -DCP2K_USE_DBCSR_CONFIG=ON -DCP2K_USE_FFTW3=ON -DCP2K_USE_LIBXC=ON
   -DCP2K_USE_LIBINT2=ON -DCP2K_USE_ELPA=ON -DCP2K_USE_COSMA=ON
+  -DCP2K_USE_SPLA=ON -DCP2K_USE_SPLA_GEMM_OFFLOADING=OFF
   -DCP2K_USE_LIBXS=ON -DCP2K_USE_LIBXSMM=ON -DCP2K_USE_PLUMED=ON
   -DCP2K_USE_SPGLIB=ON -DCP2K_USE_VORI=ON -DCP2K_USE_HDF5=ON
   -DHDF5_ROOT="$hdf5_root" -DHDF5_PREFER_PARALLEL=ON

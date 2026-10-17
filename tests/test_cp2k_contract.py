@@ -119,6 +119,19 @@ class CP2KContractTests(unittest.TestCase):
                     contract.check_cache(duplicate_text,
                                          "/opt/software/cp2k/test/4v100-avx512", "4v100-avx512")
 
+    def test_spla_dependency_alone_does_not_establish_cp2k_support(self):
+        # Installed dependencies and version flags did not catch the missing
+        # CP2K_USE_SPLA option. Check actual application configuration on both
+        # CPU and GPU targets, including a cache that omits the option entirely.
+        for target in ("dsprhbm", "16v100-avx2"):
+            text = self.cache(target)
+            prefix = "/opt/software/cp2k/test/" + target
+            for replacement in ("CP2K_USE_SPLA:BOOL=OFF", ""):
+                with self.subTest(target=target, replacement=replacement):
+                    bad = text.replace("CP2K_USE_SPLA:STRING=ON", replacement)
+                    with self.assertRaisesRegex(ValueError, "disabled: SPLA"):
+                        contract.check_cache(bad, prefix, target)
+
     def test_ldd_and_rpath_must_resolve_outside_build_tree(self):
         links = "\n".join((
             "libelpa_openmp.so => /opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia/lib/libelpa_openmp.so",
