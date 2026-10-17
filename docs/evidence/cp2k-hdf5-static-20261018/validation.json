@@ -1,0 +1,27 @@
+{
+  "recipe_sha256": "e139a320651ce69c11cdbd1763ae875f98992de261a465e9e19a24849086bf40",
+  "local": {
+    "hdf5_static_link_tests": {
+      "passed": 3,
+      "cmake": "3.31.6",
+      "scope": "actual production options and project hook; synthetic static C symbol chain; real link and execution"
+    },
+    "contract_tests": {
+      "passed": 18,
+      "includes": "export-copy setgid normalization and manifest readback; original store modes retained"
+    },
+    "lifecycle_tests": {
+      "passed": 21,
+      "includes": "all frozen contract files uploaded before fingerprinting"
+    },
+    "shell_syntax": "passed",
+    "git_diff_check": "passed"
+  },
+  "cluster": {
+    "job": "1833977",
+    "status": "running",
+    "configure": "passed",
+    "hdf5_fortran_c_stub_in_link": "verified",
+    "formal_sif": "not yet produced"
+  }
+}

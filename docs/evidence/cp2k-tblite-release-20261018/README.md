@@ -48,10 +48,25 @@ also retained. Both failed diagnostics remain available.
 Diagnostic `1833642` uses the old failed application image read-only, the
 successful COSMA diagnostic libraries, and a new CP2K build tree plus TBLITE
 prefix under `runs/cp2k-tblite-release-preflight-20261018-c`. Its final image hash
-is compared with diagnostic `1833463`'s verified hash. It must complete
-compile, version and ldd checks before another full production recipe is dispatched. This diagnostic
-does not itself establish a release SIF, science/performance acceptance or publication.
+matches diagnostic `1833463`'s verified hash. All CP2K source objects compiled,
+including the formerly incompatible TBLITE interface. Executable linking then
+failed because static HDF5 discovery omitted its Fortran C stub archive.
+[The follow-up repair and retained failure](../cp2k-hdf5-static-20261018/README.md)
+track that separate blocker. This diagnostic does not establish a release SIF,
+science/performance acceptance or publication.
 
 Local regression coverage includes rejection of unknown/missing source versions,
 both archive downloads and cache reuse, corrupted-cache replacement, failed
 checksum rejection, and upload ordering before dependency submission.
+
+Commit `b9ee5fadd0de708a7fa528f4a3a3f0786532ac8c` is synchronized to GitHub and
+SAI's development checkout. [CI 39051265416](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39051265416)
+ran all 725 tests in 28.142 seconds: 723 passed, two optional skips. The local
+CP2K-only run passed 111 tests and could not run two existing adapter tests
+because CMake is absent locally; both are covered by the successful CI run.
+[Validation record](validation.json).
+
+[Retained failed attempts](failures.json) include the exact requests, input
+hashes, error excerpts and unchanged image hashes. Old application `1833599`
+was deliberately cancelled after verifying its immutable 0.7.0 recipe and
+exact Slurm handle; its successful dependency checkpoint is preserved.

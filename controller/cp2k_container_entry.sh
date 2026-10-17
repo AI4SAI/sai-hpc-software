@@ -51,7 +51,7 @@ export)
   rm -rf -- /workspace/export /workspace/final.squashfs
   bash /control/create_rootfs.sh /workspace/export
   python3 /control/cp2k_payload.py "$INSTALL_PREFIX" /workspace/export "${SAI_BUILD_PARTITION:?}"
-  chmod -R a+rX,u+w,go-w "/workspace/export$INSTALL_PREFIX"
+  chmod -R a-s,a+rX,u+w,go-w "/workspace/export$INSTALL_PREFIX"
   python3 /control/cp2k_feature_contract.py native-package "$INSTALL_PREFIX" "$target" "$sha" --root /workspace/export
   mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"
   ;;

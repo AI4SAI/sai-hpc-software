@@ -10,9 +10,14 @@ The next compile diagnostic exposed a second issue after the COSMA repair:
 TBLITE 0.6.0, while the recipe hard-coded the development 0.7.0 API. The
 controller now selects the version declared by the pinned CP2K source and
 builds release's official complete archive with both upstream gradient fixes.
-Diagnostic `1833642` is checking the complete release compile on 4V100 before
-another production dispatch. Workflow `39047391019` retains its frozen old
-TBLITE recipe; its dependency progress alone cannot produce a corrected SIF.
+Diagnostic `1833642` compiled every source object, then failed at final
+executable linking because static HDF5's Fortran C stub was missing. The repair
+selects native HDF5 static targets and discovers their external ZLIB provider.
+Diagnostic `1833977` passed configure/generate and is validating the complete
+executable before another production dispatch.
+[HDF5 repair and failed attempts](evidence/cp2k-hdf5-static-20261018/README.md).
+Workflow `39047391019` retains its frozen old TBLITE recipe; its dependency
+progress alone cannot produce a corrected SIF.
 [Compatibility repair and input checksums](evidence/cp2k-tblite-release-20261018/README.md).
 
 Follow-up after midnight, October 18: all four dependencies in workflow

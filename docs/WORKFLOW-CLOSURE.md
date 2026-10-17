@@ -1,4 +1,4 @@
-# Workflow closure — 2026-10-17
+# Workflow closure — 2026-10-18
 
 The code now connects build, scientific/performance acceptance, native export
 readback and publication. GPUMD on 16V100 has passed science, performance and
@@ -101,9 +101,14 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 The full compile diagnostic found that v2026.2's TBLITE API is incompatible
 with the hard-coded development dependency. The repair selects TBLITE from
 the pinned CP2K source and uses release's official 0.6.0 bundle plus both
-gradient fixes. Independent diagnostic `1833642` checks the full compile and
-link on 4V100 before a new production dispatch. Existing workflow `39047391019`
-keeps its original frozen recipe and is not evidence for this correction.
+gradient fixes. Diagnostic `1833642` compiled all source objects, then failed
+at final executable linking because FindHDF5 omitted the static Fortran C stub.
+The next recipe selects native HDF5 static targets and explicitly discovers
+its external ZLIB provider. Diagnostic `1833977` passed configure/generate with
+the complete HDF5 link chain and is validating the executable on 4V100 before
+a new production dispatch. [HDF5 repair](evidence/cp2k-hdf5-static-20261018/README.md).
+Existing workflow `39047391019` keeps its original frozen recipe and is not
+evidence for these corrections.
 [TBLITE source compatibility](evidence/cp2k-tblite-release-20261018/README.md).
 
 At 00:03 Asia/Shanghai on October 18, fresh workflow

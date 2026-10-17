@@ -2,6 +2,9 @@ import argparse
 import json
 import os
 from pathlib import Path
+import shutil
+import stat
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -10,7 +13,7 @@ from unittest.mock import patch
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "controller"))
 import cp2k_feature_contract as contract
 import software_controller as software
-from export_native import MANIFEST_PATH, read_installed_manifests
+from export_native import MANIFEST_PATH, inventory, read_installed_manifests, write_manifests
 from release_contract import make_identity
 
 
@@ -279,6 +282,39 @@ class CP2KNativeDeliveryTests(unittest.TestCase):
             data.write_text("changed scientific data\n")
             with self.assertRaisesRegex(ValueError, "inventory"):
                 contract.native_delivery(prefix, identity["target"], identity["source_sha"], "native-verify", root)
+
+    def test_export_normalizes_real_setgid_copy_without_changing_build_store(self):
+        identity = self.identity()
+        prefix = Path(identity["install_prefix"]).relative_to('/')
+        entry = contract.native_entry(identity, self.environment(identity))
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = root / 'source' / prefix
+            library = Path('dependencies/spack/linux-zen5/libint-hash/lib')
+            (source / library).mkdir(parents=True)
+            (source / library / 'libint2.so').write_bytes(b'packaging fixture, not ELF')
+            (source / library).chmod(0o2755)
+            (source / 'bin').mkdir()
+            binary = source / 'bin/cp2k.psmp'
+            binary.write_text('#!/bin/sh\nexit 0\n')
+            binary.chmod(0o755)
+            exported = root / 'export' / prefix
+            shutil.copytree(source, exported, symlinks=True)
+            self.assertEqual(stat.S_IMODE((exported / library).stat().st_mode), 0o2755)
+            with self.assertRaisesRegex(ValueError, 'unsafe installed-tree mode'):
+                inventory([entry], root / 'export')
+            # Execute the production normalization itself, substituting only
+            # the private staging directory for its fixed container path.
+            script = (Path(contract.__file__).parent / 'cp2k_container_entry.sh').read_text()
+            command = next(line.strip() for line in script.splitlines() if line.strip().startswith('chmod -R '))
+            command = command.replace('/workspace/export$INSTALL_PREFIX', '$CP2K_TEST_EXPORTED_PREFIX')
+            subprocess.run(['bash', '-eu', '-c', command], check=True,
+                           env=dict(os.environ, CP2K_TEST_EXPORTED_PREFIX=str(exported)))
+            self.assertEqual(stat.S_IMODE((exported / library).stat().st_mode), 0o755)
+            expected = write_manifests([entry], root / 'export')
+            self.assertEqual(read_installed_manifests([entry], root / 'export'), expected)
+            self.assertEqual(stat.S_IMODE((source / library).stat().st_mode), 0o2755)
+            self.assertEqual((source / library / 'libint2.so').read_bytes(), b'packaging fixture, not ELF')
 
 
 if __name__ == "__main__":

@@ -174,6 +174,8 @@ cmake_args=(
   -DCMAKE_INSTALL_PREFIX="$prefix" -DCMAKE_INSTALL_LIBDIR=lib64
   -DCMAKE_LIBRARY_PATH="$cuda_libraries"
   -DCMAKE_PREFIX_PATH="$cmake_prefix" -DDBCSR_DIR="$dbcsr"
+  -DCMAKE_PROJECT_cp2k_INCLUDE=/control/cp2k_cmake_prerequisites.cmake
+  -DZLIB_ROOT=/usr
   -DLibint2_DIR="$prefix/share/sai/cmake" -Dlibxsmm_DIR="$prefix/share/sai/cmake"
   -DCP2K_ELPA_ROOT="$ELPA_ROOT" -DCP2K_ENABLE_ELPA_OPENMP_SUPPORT=ON
   -DCP2K_FFTW3_ROOT="$FFTW_ROOT" -DCP2K_BLAS_VENDOR=OpenBLAS
@@ -185,7 +187,9 @@ cmake_args=(
   -DCP2K_USE_SPLA=ON
   -DCP2K_USE_LIBXS=ON -DCP2K_USE_LIBXSMM=ON -DCP2K_USE_PLUMED=ON
   -DCP2K_USE_SPGLIB=ON -DCP2K_USE_VORI=ON -DCP2K_USE_HDF5=ON
-  -DHDF5_ROOT="$hdf5_root" -DHDF5_PREFER_PARALLEL=ON
+  # The private HDF5 is static. Its config targets carry the Fortran C stub
+  # dependency, which FindHDF5's shared-library fallback otherwise omits.
+  -DHDF5_ROOT="$hdf5_root" -DHDF5_PREFER_PARALLEL=ON -DHDF5_USE_STATIC_LIBRARIES=ON
   -DCP2K_USE_DFTD4=ON -DCP2K_USE_TBLITE=ON
   -DCMAKE_Fortran_FLAGS="-O3 $cpu_flags" -DCMAKE_C_FLAGS="-O3 $cpu_flags"
   -DCMAKE_CXX_FLAGS="-O3 $cpu_flags"
