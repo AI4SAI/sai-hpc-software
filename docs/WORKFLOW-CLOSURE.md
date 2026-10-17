@@ -1,4 +1,4 @@
-# Workflow closure — 2026-10-16
+# Workflow closure — 2026-10-17
 
 The code now connects build, scientific/performance acceptance, native export
 readback and publication. GPUMD on 16V100 has passed science, performance and
@@ -53,6 +53,9 @@ into physical `/opt/apps` is outside this task.
   parallel builds; other software retains its shared singleton.
   Repacking copies and checksum-checks a checkpoint instead
   of moving the original. Monitors preserve jobs when observation expires.
+- Controller staging batches the trusted files into one SFTP connection before
+  fingerprinting/submission. Each run still has its own immutable controller;
+  application/acceptance handoffs do not reupload it.
 
 ## Verified on SAI
 
@@ -92,28 +95,42 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 ## Remaining acceptance work
 
 Current CP2K priority: official `v2026.2` release across all four partitions,
-workflow [38929566155](https://github.com/AI4SAI/sai-hpc-software/actions/runs/38929566155).
-At 00:21 Asia/Shanghai on October 17, all four dependency allocations below
-were simultaneously RUNNING, with GCC/G++/GFortran 14.3.0 observed on each.
-4V100 passed Zen 5 concretization. Both home and GitHub validation ran 700
-tests: 698 passed, two optional MD local-cache checks skipped.
-The old workflow's 16V100 timed out at four hours and its 4V100 failed because
-GCC 13.3 cannot resolve Zen 5. Old 8V100V0 job `1817573` remains running.
-The corrected recipe uses upstream-pinned GCC 14.3.0 and parallel native
-targets with disk reservations; GCC 13 checkpoints remain preserved and
-cannot be relabelled. These are dependency-stage observations, not application
-or scientific acceptance.
+workflow [39018993951](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39018993951).
+At 17:06 Asia/Shanghai on October 17, new 16V100 dependency job `1828943`
+was RUNNING on `16v100n37` (start 16:59:26), with its disk reservation and all
+three GCC 14.3.0 compiler observations. DSPRHBM was also RUNNING with those
+checks; 8V100V0 had allocated twelve CPUs/two GPUs but was waiting for disk
+reservation; 4V100 was PENDING for scheduler priority. The initial Actions
+staging delay was per-file SSH overhead, not a Slurm resource wait. Subsequent
+controller uploads are batched into one connection.
+
+The prior GCC 14 attempt completed dependency stages on 16V100, 4V100 and
+DSPRHBM; 8V100V0 hit its four-hour limit in Libint. All three application jobs
+then failed on a false HDF5 check (`ON` versus the expected `yes`). A separate
+CMake default also selected GCC 13 `f95/cc` despite the loaded GCC 14 module.
+The new recipe checks parallel HDF5 before extra compilation and explicitly
+pins C/C++/Fortran and MPI wrapper compilers. Short native probes `1828866`
+and `1828868` passed HDF5 checks and real GCC 14 CMake compilation/execution
+on 16V100 and DSPRHBM. 4V100's corresponding probe remains pending.
+The corrected suite ran 702 tests on SAI: 700 passed, two optional MD source
+cache checks skipped. The upload change additionally passed 32 lifecycle and
+recovery tests. Old overlays/controllers remain preserved under their original
+identities; recipe changes require fresh prefixes. These are dependency-stage
+and small compiler-probe results, not CP2K application or scientific acceptance.
+The subsequent batch-upload revision also passed GitHub's 703-test suite
+(701 passed, two optional MD cache checks skipped).
 The historical development SIF
 was rechecked on 16V100 by `1814450`: checksum, version and `ldd` passed;
 scientific acceptance/publication remain unproven. Space recovered to about
 109 GiB at release submission; later stages still recheck actual free capacity.
 [Historical loader/source evidence](evidence/cp2k-release-priority-20261016.json).
-[Current parallel-build evidence](evidence/cp2k-gcc14-parallel-20261017.json).
+[Historical parallel-build evidence](evidence/cp2k-gcc14-parallel-20261017.json).
+[Current retry and diagnostic evidence](evidence/cp2k-cmake-hdf5-retry-20261017.json).
 
 | Software | DSPRHBM | 16V100 | 4V100 | 8V100V0 |
 |---|---|---|---|---|
 | ABACUS | Pending | Pending | Pending | Pending |
-| CP2K | GCC 14 dependencies: 1819530 | GCC 14 dependencies: 1819537 | GCC 14 dependencies: 1819528 | GCC 14 dependencies: 1819531 |
+| CP2K | GCC 14 dependencies: 1828946 RUNNING | GCC 14 dependencies: 1828943 RUNNING | Dependencies: 1828944 PENDING | 1828945 allocated; waiting for disk |
 | DeePMD-kit | Not a GPU target | Pending | Pending | Pending |
 | LAMMPS | Not a GPU target | Pending | Pending | Pending |
 | GPUMD | Not a GPU target | Published; native module execution pending | Capacity blocked | Pending |

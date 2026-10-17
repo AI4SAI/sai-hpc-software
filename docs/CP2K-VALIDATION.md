@@ -5,28 +5,60 @@ This is an implementation checklist, not a release acceptance result. The
 
 ## Release-first execution (2026-10-16)
 
-Current workflow: [38929566155](https://github.com/AI4SAI/sai-hpc-software/actions/runs/38929566155),
-controller `46c4b8099bb54cffe370a8eb057cc3be89f371cf`. At 00:21 Asia/Shanghai
-on October 17, all four dependency allocations were simultaneously **RUNNING**:
+Current workflow: [39018993951](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39018993951),
+controller `a65c62db0999e7f01138a09d647597dbc3702a1f`. At 17:06 Asia/Shanghai
+on October 17, actual dependency submissions were:
 
-| Partition | Slurm job | Observed C/C++/Fortran |
+| Partition | Slurm job | State / actual stage |
 |---|---|---|
-| 16V100 | 1819537 | 14.3.0 / 14.3.0 / 14.3.0 |
-| 4V100 | 1819528 | 14.3.0 / 14.3.0 / 14.3.0 |
-| 8V100V0 | 1819531 | 14.3.0 / 14.3.0 / 14.3.0 |
-| DSPRHBM | 1819530 | 14.3.0 / 14.3.0 / 14.3.0 |
+| 16V100 | 1828943 | RUNNING; reserved disk, GCC/G++/GFortran 14.3.0, installing dependencies |
+| 4V100 | 1828944 | PENDING; scheduler priority |
+| 8V100V0 | 1828945 | RUNNING allocation; waiting for disk reservation before compilation |
+| DSPRHBM | 1828946 | RUNNING; reserved disk, GCC/G++/GFortran 14.3.0 |
 
-4V100 concretized successfully as Zen 5 and entered dependency installation.
-16V100 is a fresh GCC 14 build, preserving the incompatible GCC 13 checkpoint.
-The old 8V100V0 GCC 13 allocation `1817573` remains untouched. The new disk
-guard accounts for its possible remaining growth. About 105 GiB remained free.
-Both home and GitHub suites ran 700 tests: 698 passed, two optional MD local
-source-cache checks skipped. Home log SHA256:
-`f5503e5b97561f531fc2f225cfa938aedd1f237bc3868165cb618717f23c6018`.
-Raw identities, accounting, compiler observations and progress tails are in
-[the four-target snapshot](evidence/cp2k-gcc14-parallel-20261017.json).
-This proves real parallel allocation and compiler selection, not completed
-CP2K application builds, scientific acceptance or publication.
+16V100 started at 16:59:26 on `16v100n37`. Before submission, GitHub spent
+several minutes opening a new SSH connection per controller file; triggering
+Actions was not evidence of an actual Slurm job. The subsequent CI transport
+fix batches the same trusted files into one SFTP connection before fingerprinting
+or submission. Its lifecycle and recovery suites passed 32 tests on SAI.
+It does not change this running workflow's immutable controller or recipe.
+
+The previous GCC 14 workflow `38929566155` completed dependencies on 4V100
+(`1819528`, 2:53:17), 16V100 (`1819537`, 3:28:36), and DSPRHBM
+(`1819530`, 4:39:51), each exit `0:0`. Their application jobs `1821074`,
+`1821478`, and `1822145` all failed after TBLITE installation: parallel HDF5
+reports `ON` in its CMake-generated settings, while the old shell check required
+`yes`. Read-only `debugfs` inspection confirmed parallel HDF5 and GCC 14 in
+those dependency installations. It also exposed a separate compiler selection
+defect: CMake had selected the system `/usr/bin/f95` (GCC 13.3) for TBLITE,
+despite the module and executable version checks passing for GCC 14.
+
+The repair exports absolute C/C++/Fortran compiler paths, passes them explicitly
+to every application-side CMake configuration, pins the Open MPI wrapper
+compilers, and rejects system aliases in the CP2K CMake cache. The HDF5 gate
+accepts `ON` or `yes`, rejects disabled/ambiguous settings, and runs before
+TBLITE compilation. Read-only dependency-overlay probes `1828866` (16V100)
+and `1828868` (DSPRHBM) passed `0:0`: HDF5 checks, real CMake compiler metadata,
+three compiled test executables, and `mpifort --version` all passed with 14.3.0.
+4V100 probe `1828867` is still pending. Earlier failed probes are retained.
+
+8V100V0 dependency `1819531` timed out at four hours while building Libint.
+The retry requests two GPUs, which actually allocated twelve CPUs (`1828945`),
+instead of the previous six. Application/scientific resources are unchanged.
+The older GCC 13 job `1817573` also timed out; its checkpoint is preserved.
+Changed recipes get fresh identities and prefixes; no old overlay is relabelled.
+
+The corrected build suite ran 702 tests on SAI with umask 022: 700 passed,
+two optional MD source-cache checks skipped. The subsequent upload fix also
+passed the [GitHub full suite](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39019592103)
+of 703 tests (701 passed, the same two optional checks skipped).
+The first run under site umask
+0002 failed strict native-export permission fixtures; that log is retained.
+Raw accounting, receipts, compiler caches, HDF5 settings and probe logs are in
+[the retry snapshot](evidence/cp2k-cmake-hdf5-retry-20261017.json).
+The earlier [parallel-build snapshot](evidence/cp2k-gcc14-parallel-20261017.json)
+is historical. There is still no successful release CP2K application SIF,
+scientific/performance acceptance, or publication.
 
 Previous execution:
 
