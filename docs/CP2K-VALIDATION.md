@@ -5,6 +5,19 @@ No four-target CP2K 2026.2 release has passed all acceptance gates yet.
 
 ## Fresh four-target release workflow
 
+At 23:27 Asia/Shanghai, 4V100 dependency job `1832262` had completed `0:0`
+in 38:43, including Libint in 35:01. Its dependency image was sealed and
+application job `1832733` started on `4v100n06`. The other three targets were
+still compiling dependencies. No new application SIF was present yet.
+[Earlier CPU samples and accounting](evidence/cp2k-release-followup-20261017/README.md)
+show 8V100V0 progressing from serial generation to 11.43/12 logical CPUs;
+the reported 95.2% is utilization of the entire allocation, not one core.
+
+PBE OT and diagonalization are both user priorities. Optional
+`DIRECT_GENERALIZED_DIAGONALIZATION` experiments are deferred to
+[issue #9](https://github.com/AI4SAI/sai-hpc-software/issues/9); they do not
+block obtaining the first verified release SIF.
+
 Fresh release workflow [39041714911](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39041714911)
 uses controller `2c7fd3e097cf61c0d0ee6612cb2cc96eebb96677`, recipe
 `a280393e353fee8faa1c09209b34c42eb0f55d0a44ad0543bed1ed57101735ec`, and

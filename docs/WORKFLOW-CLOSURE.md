@@ -98,6 +98,16 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 
 ## Remaining acceptance work
 
+At 23:27 Asia/Shanghai, fresh 4V100 dependency job `1832262` completed `0:0`
+in 38:43 and handed its sealed image to application job `1832733`, running
+on `4v100n06`. The other three dependency jobs remained active. The priority
+is the first verified v2026.2 SIF and its existing acceptance gates.
+[CPU/accounting evidence](evidence/cp2k-release-followup-20261017/README.md)
+records actual logical CPUs used as well as allocation-normalized utilization.
+The user confirmed PBE OT and diagonalization as the primary runtime scope;
+optional direct-generalized tuning is deferred to
+[issue #9](https://github.com/AI4SAI/sai-hpc-software/issues/9).
+
 Fresh release workflow [39041714911](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39041714911)
 uses controller `2c7fd3e097cf61c0d0ee6612cb2cc96eebb96677`, recipe
 `a280393e353fee8faa1c09209b34c42eb0f55d0a44ad0543bed1ed57101735ec`, and
