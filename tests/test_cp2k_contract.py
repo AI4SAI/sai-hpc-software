@@ -31,6 +31,7 @@ class CP2KContractTests(unittest.TestCase):
     def cache(self, target="4v100-avx512"):
         entries = {"CP2K_USE_" + key: "ON" for key in contract.REQUIRED_OPTIONS}
         entries.update(CMAKE_INSTALL_PREFIX="/opt/software/cp2k/test/" + target,
+                       CMAKE_INSTALL_LIBDIR="lib64",
                        CP2K_USE_ACCEL="NONE" if target == "dsprhbm" else "CUDA",
                        CP2K_USE_SPLA_GEMM_OFFLOADING="OFF" if target == "dsprhbm" else "ON",
                        CP2K_ELPA_ROOT="/opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia",

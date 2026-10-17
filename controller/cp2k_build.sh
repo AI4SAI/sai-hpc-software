@@ -180,10 +180,13 @@ cmake --install /workspace/dbcsr-build
 mkdir -p /workspace/build "$prefix/bin" "$prefix/share/sai"
 # Enable SpLA on all targets; offload local GEMMs only in GPU deliveries.
 # Keep CP2K's workload thresholds and the runtime BLAS override available.
+# CP2K declares its install libdir as CACHE PATH. An untyped relative -D value
+# becomes absolute at first configure (typically /lib64 in the container).
+# Keep the destination relative to the private prefix with an explicit type.
 cmake_args=(
   -S /workspace/source -B /workspace/build -DCMAKE_BUILD_TYPE=Release
   "${cmake_compilers[@]}"
-  -DCMAKE_INSTALL_PREFIX="$prefix" -DCMAKE_INSTALL_LIBDIR=lib64
+  -DCMAKE_INSTALL_PREFIX="$prefix" -DCMAKE_INSTALL_LIBDIR:STRING=lib64
   -DCMAKE_LIBRARY_PATH="$cuda_libraries"
   -DCMAKE_PREFIX_PATH="$cmake_prefix" -DDBCSR_DIR="$dbcsr"
   -DCMAKE_PROJECT_cp2k_INCLUDE=/control/cp2k_cmake_prerequisites.cmake

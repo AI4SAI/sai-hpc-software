@@ -59,6 +59,8 @@ def check_cache(text, prefix, target):
             raise ValueError("required CP2K option is disabled: " + option)
     if cache.get("CMAKE_INSTALL_PREFIX") != str(prefix):
         raise ValueError("CP2K installation prefix changed")
+    if cache.get("CMAKE_INSTALL_LIBDIR") != "lib64":
+        raise ValueError("CP2K install library directory must be relative lib64")
     for language in ("C", "CXX", "Fortran"):
         executable = {"C": "gcc", "CXX": "g++", "Fortran": "gfortran"}[language]
         if cache.get(f"CMAKE_{language}_COMPILER") != "/opt/devtools/gcc/14.3.0/bin/" + executable:
