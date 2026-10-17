@@ -158,6 +158,8 @@ class DependencyStageTests(unittest.TestCase):
                 with self.assertRaisesRegex(ValueError, 'bounds'):
                     stage.render(self.root, self.control, self.run, identity, minutes=241)
                 self.assertNotIn('--cpus-per-task=', script)
+                self.assertIn('#SBATCH --gpus-per-node=' + ('2' if target == '8v100v0-avx512' else '1'), script)
+                self.assertIn('BUILD_JOBS=' + ('12' if target == '8v100v0-avx512' else '8'), script)
             else:
                 self.assertIn('#SBATCH --time=720', stage.render(self.root, self.control, self.run, identity, minutes=720))
 

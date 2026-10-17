@@ -33,10 +33,31 @@ class CP2KContractTests(unittest.TestCase):
                        CP2K_USE_CUSOLVER_MP="ON")
         for lang in ("C", "CXX", "Fortran"):
             entries[f"CMAKE_{lang}_FLAGS"] = "-O3 -march=native -mtune=native"
+            executable = {"C": "gcc", "CXX": "g++", "Fortran": "gfortran"}[lang]
+            entries[f"CMAKE_{lang}_COMPILER"] = "/opt/devtools/gcc/14.3.0/bin/" + executable
         for library in ("cusolver", "cudart", "cublasLt", "cublas"):
             entries["pkgcfg_lib_CP2K_ELPA_" + library] = (
                 "/opt/devtools/nvidia/cuda-12.9.1/lib64/lib" + library + ".so")
         return "\n".join(f"{key}:STRING={value}" for key, value in entries.items())
+
+    def test_hdf5_accepts_cmake_and_autotools_parallel_settings_only(self):
+        for value in ("yes", "ON", "on", "YES"):
+            contract.check_parallel_hdf5("Features:\n                     Parallel HDF5: " + value + "\n")
+        for text in ("", "Parallel Filtered Dataset Writes: ON\n", "Parallel HDF5: OFF\n",
+                     "Parallel HDF5: no\n", "Parallel HDF5: unknown\n",
+                     "Parallel HDF5: ON\nParallel HDF5: OFF\n", "Parallel HDF5: ON extra\n",
+                     "Parallel HDF5:\nON\n"):
+            with self.subTest(text=text), self.assertRaisesRegex(ValueError, "parallel support"):
+                contract.check_parallel_hdf5(text)
+
+    def test_cmake_cannot_silently_choose_system_compiler_aliases(self):
+        text = self.cache()
+        prefix = "/opt/software/cp2k/test/4v100-avx512"
+        for executable, alias in (("gcc", "cc"), ("g++", "c++"), ("gfortran", "f95")):
+            pinned = "/opt/devtools/gcc/14.3.0/bin/" + executable
+            for wrong in ("/usr/bin/" + alias, pinned.replace("14.3.0", "13.3.0"), ""):
+                with self.subTest(wrong=wrong), self.assertRaisesRegex(ValueError, "pinned GCC"):
+                    contract.check_cache(text.replace(pinned, wrong), prefix, "4v100-avx512")
 
     def test_cpu_elpa_still_requires_resolved_cuda_link_libraries(self):
         text = self.cache("dsprhbm")

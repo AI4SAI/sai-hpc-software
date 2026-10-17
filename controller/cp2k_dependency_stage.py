@@ -46,7 +46,11 @@ def render(project, controller, run, identity, *, minutes=240, jobs=None, overla
     project, controller, run = paths(project, controller, run)
     identity = identity_for_stage(identity)
     target = TARGETS[identity['target']]
-    jobs = target.get('build_jobs', 8) if jobs is None else jobs
+    # 8V100V0 grants six CPUs per GPU. Its six-worker Libint build exceeded
+    # the four-hour QOS, so use two GPUs to obtain twelve CPUs for dependencies.
+    # Application compilation and scientific acceptance retain their own resources.
+    build_gpus = 2 if identity['target'] == '8v100v0-avx512' else target['gpus']
+    jobs = (12 if build_gpus == 2 else target.get('build_jobs', 8)) if jobs is None else jobs
     # Site QOS observed 2026-10-15: flood-1o2gpu 4h, rush-cpu 48h.
     maximum_minutes = 240 if target['gpus'] else 2880
     if not 1 <= jobs <= 16 or not 1 <= minutes <= maximum_minutes or not 8192 <= overlay_mb <= 32768:
@@ -69,7 +73,7 @@ def render(project, controller, run, identity, *, minutes=240, jobs=None, overla
              '#SBATCH --qos=' + target['qos'], '#SBATCH --nodes=1', '#SBATCH --ntasks=1',
              '#SBATCH --time=' + str(minutes), '#SBATCH --export=NIL',
              '#SBATCH --output=' + str(run / 'results/slurm-%j.log')]
-    lines += (['#SBATCH --gpus-per-node=' + str(target['gpus'])] if target['gpus'] else
+    lines += (['#SBATCH --gpus-per-node=' + str(build_gpus)] if target['gpus'] else
               ['#SBATCH --cpus-per-task=' + str(jobs), '#SBATCH --mem=28G'])
     lines += ['set -eo pipefail', 'export PATH=/usr/bin:/bin LD_LIBRARY_PATH="" LD_PRELOAD=""',
              'source /etc/profile.d/lmod.sh', 'module load apptainer/1.4.4', 'set -u',

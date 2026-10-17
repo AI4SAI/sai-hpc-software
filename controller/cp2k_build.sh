@@ -24,10 +24,40 @@ for compiler in gcc g++ gfortran; do
   [[ "$(command -v "$compiler")" == "/opt/devtools/gcc/14.3.0/bin/$compiler" ]]
   [[ "$("$compiler" -dumpfullversion)" == 14.3.0 ]]
 done
+# CMake searches for cc/c++/f95 before gcc/g++/gfortran when these are unset.
+# The site GCC module provides the latter names only, so PATH checks alone
+# still let CMake select the system GCC 13 compiler.
+export CC=/opt/devtools/gcc/14.3.0/bin/gcc
+export CXX=/opt/devtools/gcc/14.3.0/bin/g++
+export FC=/opt/devtools/gcc/14.3.0/bin/gfortran
+export OMPI_CC="$CC" OMPI_CXX="$CXX" OMPI_FC="$FC"
+cmake_compilers=(-DCMAKE_C_COMPILER="$CC" -DCMAKE_CXX_COMPILER="$CXX" -DCMAKE_Fortran_COMPILER="$FC")
+for compiler in "$CC" "$CXX" "$FC"; do
+  printf 'CP2K_APPLICATION_COMPILER %s %s\n' "$compiler" "$("$compiler" -dumpfullversion)"
+done
 [[ "${SPGLIB_ROOT:?}" == /opt/devtools/spglib/spglib-2.7.0 ]]
 python3 /control/cp2k_spack_link.py /results/install-success.json "$expected_partition" "$prefix" \
   > /workspace/cp2k-spack-build-env.sh
 source /workspace/cp2k-spack-build-env.sh
+hdf5_root="$CP2K_HDF5_ROOT"
+# CMake-built HDF5 reports ON; autotools builds report yes. Reject serial or
+# ambiguous settings before compiling the application's extra dependencies.
+python3 - "$hdf5_root" <<'PY'
+import sys
+from pathlib import Path
+sys.path.insert(0, '/control')
+from cp2k_feature_contract import check_parallel_hdf5
+root = Path(sys.argv[1])
+settings = {path.resolve() for lib in ('lib', 'lib64')
+            if (path := root / lib / 'libhdf5.settings').is_file()}
+if len(settings) != 1:
+    raise ValueError('missing or ambiguous private HDF5 settings: ' + str(root))
+path = settings.pop()
+if not path.is_relative_to(root):
+    raise ValueError('private HDF5 settings escaped its receipt prefix')
+check_parallel_hdf5(path.read_text())
+print('CP2K_PARALLEL_HDF5_VERIFIED ' + str(path))
+PY
 dbcsr="$prefix/dependencies/dbcsr/lib64/cmake/dbcsr"
 [[ "${ELPA_ROOT:?}" == /opt/devtools/elpa/elpa-2026.02.001-2603-gnu/* ]]
 # The standalone ELPA module selects its NVIDIA build on CPU nodes too.
@@ -53,9 +83,6 @@ tblite_root="$prefix/dependencies/tblite"
 # its seven locked sources natively inside each target's overlay.
 export CP2K_NATIVE_FLAGS="-O3 $cpu_flags"
 bash /control/cp2k_dependencies.sh /input/probe /workspace/tblite-build "$tblite_root"
-
-hdf5_root="$CP2K_HDF5_ROOT"
-grep -Eq 'Parallel HDF5:[[:space:]]+yes' "$hdf5_root"/lib*/libhdf5.settings
 
 prefixes=(
   "$ELPA_ROOT" "$OPENBLAS_ROOT" "$LIBXC_ROOT" "$FFTW_ROOT" "$tblite_root"
@@ -87,6 +114,7 @@ elif grep -Fq 'jit-handle.patch' /workspace/source/tools/toolchain/scripts/stage
   exit 1
 fi
 cmake -S /workspace/libxs-source -B /workspace/libxs-build \
+  "${cmake_compilers[@]}" \
   -DCMAKE_INSTALL_PREFIX="$prefix/dependencies/libxs" -DCMAKE_INSTALL_LIBDIR=lib \
   -DCMAKE_BUILD_TYPE=Release -DLIBXS_FORTRAN=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
   -DCMAKE_C_FLAGS="-O3 $cpu_flags" -DCMAKE_Fortran_FLAGS="-O3 $cpu_flags"
@@ -101,6 +129,7 @@ if grep -Eq 'find_package\(wignernj[[:space:]]' /workspace/source/CMakeLists.txt
   mkdir -p /workspace/wignernj-source
   tar --no-same-owner --strip-components=1 -xzf "$wigner_archive" -C /workspace/wignernj-source
   cmake -S /workspace/wignernj-source -B /workspace/wignernj-build \
+    "${cmake_compilers[@]}" \
     -DCMAKE_INSTALL_PREFIX="$prefix/dependencies/wignernj" -DCMAKE_INSTALL_LIBDIR=lib \
     -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBUILD_SHARED_LIBS=OFF \
     -DWIGNERNJ_BUILD_FORTRAN=OFF -DWIGNERNJ_BUILD_TESTS=OFF -DWIGNERNJ_BUILD_CXX_TESTS=OFF \
@@ -119,6 +148,7 @@ tar --no-same-owner --strip-components=1 -xzf "$dbcsr_archive" -C /workspace/dbc
 unzip -q "$fypp_archive" -d /workspace/fypp
 dbcsr_args=(
   -S /workspace/dbcsr-source -B /workspace/dbcsr-build
+  "${cmake_compilers[@]}"
   -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$prefix/dependencies/dbcsr"
   -DCMAKE_INSTALL_LIBDIR=lib64 -DCMAKE_POSITION_INDEPENDENT_CODE=ON
   -DFYPP_EXECUTABLE=/workspace/fypp/fypp.py -DCMAKE_PREFIX_PATH="$cmake_prefix"
@@ -138,6 +168,7 @@ cmake --install /workspace/dbcsr-build
 mkdir -p /workspace/build "$prefix/bin" "$prefix/share/sai"
 cmake_args=(
   -S /workspace/source -B /workspace/build -DCMAKE_BUILD_TYPE=Release
+  "${cmake_compilers[@]}"
   -DCMAKE_INSTALL_PREFIX="$prefix" -DCMAKE_INSTALL_LIBDIR=lib64
   -DCMAKE_LIBRARY_PATH="$cuda_libraries"
   -DCMAKE_PREFIX_PATH="$cmake_prefix" -DDBCSR_DIR="$dbcsr"

@@ -18,6 +18,9 @@ build_dependency() {
   mkdir -p "$work/$name-source"
   tar --no-same-owner --strip-components=1 -xzf "$archive" -C "$work/$name-source"
   cmake -S "$work/$name-source" -B "$work/$name-build" \
+    -DCMAKE_C_COMPILER="${CC:?explicit CP2K C compiler required}" \
+    -DCMAKE_CXX_COMPILER="${CXX:?explicit CP2K C++ compiler required}" \
+    -DCMAKE_Fortran_COMPILER="${FC:?explicit CP2K Fortran compiler required}" \
     -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$prefix" \
     -DCMAKE_INSTALL_LIBDIR=lib -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
     -DCMAKE_C_FLAGS="$native_flags" -DCMAKE_CXX_FLAGS="$native_flags" -DCMAKE_Fortran_FLAGS="$native_flags" \

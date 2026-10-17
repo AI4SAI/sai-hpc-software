@@ -136,7 +136,9 @@ class DeliveryIntegrationTests(unittest.TestCase):
         self.assertEqual(env['config']['install_tree']['root'],
                          '/opt/apps/cp2k/cp2k-development-test/16V100/dependencies/spack')
         self.assertIn('hdf5_root="$CP2K_HDF5_ROOT"', recipe)
-        self.assertIn("grep -Eq 'Parallel HDF5:[[:space:]]+yes'", recipe)
+        self.assertIn('check_parallel_hdf5(path.read_text())', recipe)
+        self.assertLess(recipe.index('check_parallel_hdf5(path.read_text())'),
+                        recipe.index('bash /control/cp2k_dependencies.sh'))
         self.assertIn('-DHDF5_ROOT="$hdf5_root" -DHDF5_PREFER_PARALLEL=ON', recipe)
         self.assertNotIn('$site', recipe)
         self.assertIn('/usr/lib/x86_64-linux-gnu/blas:/usr/lib/x86_64-linux-gnu/lapack', recipe)

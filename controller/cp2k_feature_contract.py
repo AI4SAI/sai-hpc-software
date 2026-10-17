@@ -14,6 +14,12 @@ REQUIRED_OPTIONS = tuple("MPI MPI_F08 FFTW3 LIBXC LIBINT2 ELPA COSMA LIBXS LIBXS
 TRANSIENT = re.compile(r"/(?:workspace|control|input)(?:/|$)")
 
 
+def check_parallel_hdf5(text):
+    values = re.findall(r"^[ \t]*Parallel HDF5:[ \t]*([^\r\n]*?)[ \t]*\r?$", text, re.MULTILINE)
+    if len(values) != 1 or values[0].lower() not in ("yes", "on"):
+        raise ValueError("private HDF5 parallel support is missing, disabled or ambiguous")
+
+
 def version_flags(text):
     rows = re.findall(r"^\s*cp2kflags:\s*(.+)$", text, re.MULTILINE)
     if len(rows) != 1:
@@ -53,6 +59,9 @@ def check_cache(text, prefix, target):
     if cache.get("CMAKE_INSTALL_PREFIX") != str(prefix):
         raise ValueError("CP2K installation prefix changed")
     for language in ("C", "CXX", "Fortran"):
+        executable = {"C": "gcc", "CXX": "g++", "Fortran": "gfortran"}[language]
+        if cache.get(f"CMAKE_{language}_COMPILER") != "/opt/devtools/gcc/14.3.0/bin/" + executable:
+            raise ValueError("CP2K must use the pinned GCC 14.3.0 compiler: " + language)
         if not {"-march=native", "-mtune=native"}.issubset(cache.get(f"CMAKE_{language}_FLAGS", "").split()):
             raise ValueError("CP2K must be compiled natively on each target")
     if cache.get("CP2K_USE_ACCEL") != ("NONE" if target == "dsprhbm" else "CUDA"):
