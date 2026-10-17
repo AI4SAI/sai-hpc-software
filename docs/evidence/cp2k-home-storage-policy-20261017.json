@@ -1,0 +1,228 @@
+{
+  "/home/stardust": {
+    "available_bytes": 1175332315136,
+    "device": 4231993238
+  },
+  "/tmp": {
+    "available_bytes": 95809200128,
+    "device": 2050
+  },
+  "accounting": {
+    "1828943": "1828943|16V100|CANCELLED by 1478400690|0:0|01:06:18|2026-10-17T16:59:26|2026-10-17T18:05:44",
+    "1828944": "1828944|4V100|RUNNING|0:0|00:28:59|2026-10-17T17:45:59|Unknown",
+    "1828945": "1828945|8V100V0|FAILED|1:0|00:30:03|2026-10-17T16:59:56|2026-10-17T17:29:59",
+    "1828946": "1828946|DSPRHBM|RUNNING|0:0|01:15:07|2026-10-17T16:59:51|Unknown"
+  },
+  "application_build_success_claimed": false,
+  "build_processes": [
+    {
+      "command": "bash /control/cp2k_spack_dependencies.sh 16V100 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r06e7a1f3f839/16V100 ",
+      "environment": {
+        "TMPDIR": "/workspace/tmp"
+      },
+      "mounts": [
+        "965 721 0:72 / / rw,nodev,noatime unbindable - fuse.fuse-overlayfs fuse-overlayfs rw,user_id=0,group_id=0,default_permissions,allow_other",
+        "1280 965 3863:1033110 /home/stardust/sai-hpc-software/runs/39018993951-1-release-16v100-avx2-2026-10-17-67b5da876dd6-dependencies/results /results rw,nosuid,nodev master:660 - lustre 10.100.251.212@o2ib1:10.100.251.213@o2ib1:10.100.251.214@o2ib1:/saiorg rw,checksum,encrypt,flock,lazystatfs,lruresize,nolock,statfs_project,nouser_fid2path,nouser_xattr,verbose",
+        "1284 965 3863:1033110 /home/stardust/sai-hpc-software/cache/spack /input/spack ro,nosuid,nodev master:660 - lustre 10.100.251.212@o2ib1:10.100.251.213@o2ib1:10.100.251.214@o2ib1:/saiorg rw,checksum,encrypt,flock,lazystatfs,lruresize,nolock,statfs_project,nouser_fid2path,nouser_xattr,verbose"
+      ],
+      "pid": 838842
+    }
+  ],
+  "checked_at": "2026-10-17T18:05:44+0800",
+  "diagnostic_incident": {
+    "agent_responsible": true,
+    "cause": "agent-added srun audit requested one CPU and triggered the site requirement of eight logical CPU cores per 16V100 GPU",
+    "ended_at": "2026-10-17T18:05:44+08:00",
+    "job_id": "1828943",
+    "old_overlay_preserved": true,
+    "state": "CANCELLED"
+  },
+  "image_handles": [
+    {
+      "fd": "3",
+      "path": "/home/stardust/sai-hpc-software/containers/base/minimal-v1.sif",
+      "pid": 838520
+    },
+    {
+      "fd": "4",
+      "path": "/home/stardust/sai-hpc-software/containers/base/minimal-v1.sif",
+      "pid": 838520
+    },
+    {
+      "fd": "3",
+      "path": "/home/stardust/sai-hpc-software/runs/39018993951-1-release-16v100-avx2-2026-10-17-67b5da876dd6-dependencies/work.ext3",
+      "pid": 838525
+    },
+    {
+      "fd": "4",
+      "path": "/home/stardust/sai-hpc-software/runs/39018993951-1-release-16v100-avx2-2026-10-17-67b5da876dd6-dependencies/work.ext3",
+      "pid": 838525
+    }
+  ],
+  "node": "16v100n37.mr-sai.ai",
+  "published": false,
+  "raw_audit_path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/home-storage-audit-20261017.json",
+  "raw_audit_sha256": "07969953ee3f144c9f032e0c237bb5a36068a42f20cbcdcb42460716240614c7",
+  "retry_recipe_sha256": "495cbd26fc50bb5371613753f7aca3d0214271116e8238efdbccc0632f8119e5",
+  "retry_runs": [
+    {
+      "directory": "/home/stardust/sai-hpc-software/runs/39023790564-1-release-16v100-avx2-2026-10-17-67b5da876dd6",
+      "run_id": "39023790564-1-release-16v100-avx2-2026-10-17-67b5da876dd6",
+      "slurm_submitted": false
+    },
+    {
+      "accounting": "1829656|16V100|RUNNING|0:0|00:01:05|8|billing=150,cpu=8,gres/gpu=1,mem=15G,node=1|2026-10-17T18:13:53|Unknown",
+      "capacity.json": {
+        "capacity_policy": "filesystem-enforced",
+        "pid": 1991054,
+        "schema": 1,
+        "state": "running"
+      },
+      "directory": "/home/stardust/sai-hpc-software/runs/39023790564-1-release-16v100-avx2-2026-10-17-67b5da876dd6-dependencies",
+      "job_id": "1829656",
+      "log_sha256": "e899e725e450ae9c747c07466c9ac70cf21b67aec733f2402bd89691233510de",
+      "log_tail": [
+        "WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container",
+        "WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container",
+        "",
+        "Note: the module \"gcc\" cannot be unloaded because it was not loaded.",
+        "",
+        "CP2K_SPACK_PROFILE_READY 2026-10-17T10:14:41Z",
+        "Using verified prepopulated source/solver overlay (no compiled dependencies)",
+        "CP2K_SPACK_BOOTSTRAP_READY 2026-10-17T10:14:41Z",
+        "Offline clingo 5.7.1",
+        "CP2K_SPACK_CONCRETIZE_START 2026-10-17T10:14:43Z"
+      ],
+      "raw_evidence_sha256": {
+        "capacity.json": "294930ea5b93095e3796a6b23d9929d59fc41c63c76647f688256b1e527d1787",
+        "request.json": "07ffef4e9c0954ebd9c57cf9f34cb266791a03d170a63c7f6f52abd8c3b1c69e",
+        "results/native-profile.json": "a0516b017ed9e4bc295fe84d464599c4038f8eb8ae3f163beccd2cd8f0e21e32"
+      },
+      "request.json": {
+        "controller": "/home/stardust/sai-hpc-software/controller/975f8f8dd4681b12ad3173622a9e0a50a7d320b9/39023790564-1-release-16v100-avx2-2026-10-17-67b5da876dd6",
+        "identity": {
+          "build_id": "v2026.2-g67b5da876dd6-r495cbd26fc50",
+          "cpu_arch": "znver3",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r495cbd26fc50/16V100",
+          "partition": "16V100",
+          "recipe_sha256": "495cbd26fc50bb5371613753f7aca3d0214271116e8238efdbccc0632f8119e5",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "v2026.2",
+          "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+          "source_version": "v2026.2",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "16v100-avx2",
+          "track": "release",
+          "version_label": "v2026.2"
+        },
+        "job_id": "1829656",
+        "minutes": 240,
+        "overlay_mb": 16384,
+        "purpose": "cp2k-final-prefix-dependencies-not-application-acceptance",
+        "script_sha256": "582778bd5d9e2767807f4609f874b0666ebc0f97feda2961d30fdb2baabb5372"
+      },
+      "results/native-profile.json": {
+        "blas": "/opt/devtools/saiblas/2603-gnu-avx2",
+        "compiler_versions": {
+          "g++": "14.3.0",
+          "gcc": "14.3.0",
+          "gfortran": "14.3.0"
+        },
+        "gcc": "14.3.0",
+        "mpi": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+        "partition": "16V100"
+      },
+      "run_id": "39023790564-1-release-16v100-avx2-2026-10-17-67b5da876dd6-dependencies",
+      "slurm_submitted": true
+    },
+    {
+      "directory": "/home/stardust/sai-hpc-software/runs/39023790564-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6",
+      "run_id": "39023790564-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6",
+      "slurm_submitted": false
+    },
+    {
+      "accounting": "1829644|8V100V0|RUNNING|0:0|00:01:57|12|billing=360,cpu=12,gres/gpu=2,mem=92G,node=1|2026-10-17T18:13:01|Unknown",
+      "capacity.json": {
+        "capacity_policy": "filesystem-enforced",
+        "pid": 2568863,
+        "schema": 1,
+        "state": "running"
+      },
+      "directory": "/home/stardust/sai-hpc-software/runs/39023790564-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6-dependencies",
+      "job_id": "1829644",
+      "log_sha256": "418e55ee11bcda13f68c626c381b8abd4dfcfe0a61402eba818e440b9c3b62d5",
+      "log_tail": [
+        "BUILD_CAPACITY_POLICY filesystem-enforced 39023790564-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6-dependencies"
+      ],
+      "raw_evidence_sha256": {
+        "capacity.json": "011bdefb75bb1ec355abc299b349b13e9fa28f7af46db587dfee15288fba6558",
+        "request.json": "5514ebf12d3248994e61242fc98ac6da53f8582109deb9c05834b3fe2f7db0fb"
+      },
+      "request.json": {
+        "controller": "/home/stardust/sai-hpc-software/controller/975f8f8dd4681b12ad3173622a9e0a50a7d320b9/39023790564-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6",
+        "identity": {
+          "build_id": "v2026.2-g67b5da876dd6-r495cbd26fc50",
+          "cpu_arch": "skylake-avx512",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r495cbd26fc50/8V100V0",
+          "partition": "8V100V0",
+          "recipe_sha256": "495cbd26fc50bb5371613753f7aca3d0214271116e8238efdbccc0632f8119e5",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "v2026.2",
+          "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+          "source_version": "v2026.2",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "8v100v0-avx512",
+          "track": "release",
+          "version_label": "v2026.2"
+        },
+        "job_id": "1829644",
+        "minutes": 240,
+        "overlay_mb": 16384,
+        "purpose": "cp2k-final-prefix-dependencies-not-application-acceptance",
+        "script_sha256": "17fdf4d88ceaf745b178a310759b917491eb12d9bea81ac2f91622d97a2c4e33"
+      },
+      "run_id": "39023790564-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6-dependencies",
+      "slurm_submitted": true
+    }
+  ],
+  "retry_workflow_run_id": "39023790564",
+  "scientific_acceptance_claimed": false,
+  "site_resource_reminder": "\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550 ERROR Reminder from SAI \u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\nMake sure per-GPU CPU logical core number is 8 for 16V100 partition\nRead: https://vcnn7siwx4yx.feishu.cn/wiki/JEdOwsjbdirwA3kTDW0cBwQWnVe#XmxQd7PVeokH9axH8KwcTZyxnUf\n\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550",
+  "snapshot_at": "2026-10-17T10:14:58.166413+00:00",
+  "source_ref": "v2026.2",
+  "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+  "storage_policy": {
+    "controller_sha": "975f8f8dd4681b12ad3173622a9e0a50a7d320b9",
+    "enforcement": "filesystem writes only",
+    "free_space_admission_gate": false,
+    "host_tmp_for_compilation": false,
+    "software_reservations": false
+  },
+  "validation": {
+    "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/no-capacity-gates-tests-20261017.log",
+    "sha256": "a7042f0b4f308353023950f0eacd95dbb624d01fda90394d9dcb622e95fefa9a",
+    "tail": [
+      "test_missing_upstream_release_is_a_successful_skip_but_validation_is_required (test_workflow_closure.SelectedBuildOutcomeTests.test_missing_upstream_release_is_a_successful_skip_but_validation_is_required) ... ok",
+      "test_push_and_pull_request_validate_without_requiring_remote_jobs (test_workflow_closure.SelectedBuildOutcomeTests.test_push_and_pull_request_validate_without_requiring_remote_jobs) ... ok",
+      "",
+      "----------------------------------------------------------------------",
+      "Ran 703 tests in 114.224s",
+      "",
+      "OK (skipped=2)"
+    ],
+    "tmpdir": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/no-capacity-test-tmp",
+    "umask": "022"
+  }
+}

@@ -47,6 +47,14 @@ does not silently create an on-host sandbox.
 
 All project files live below `/home/stardust/sai-hpc-software`:
 
+Builds use the home filesystem, including source caches, overlays, compiler
+temporary files and Apptainer temporary/cache directories. Container
+`/workspace/tmp` is backed by the per-run `work.ext3` file in home; host `/tmp`
+and `/var/tmp` are not mounted into builds. Shared-filesystem free-space reports
+are not treated as a user storage limit: submissions and running builds do not
+reserve estimated disk growth or wait for a free-space threshold. Actual write
+failures remain build failures with their logs and checkpoints retained.
+
 ```text
 containers/base/minimal-v1.sif
 containers/software/<software>/<track>/<build_id>/<PARTITION>/<run-id>.sif

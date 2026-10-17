@@ -48,9 +48,12 @@ into physical `/opt/apps` is outside this task.
   independent readback of all bytes, permissions, links, identities and native
   modules before publication. Cache validation rechecks the exported payload.
   Schema-1 `/opt/software` exports are never relabelled as schema-2 `/opt/apps`.
-- Submission and allocation-start capacity checks remain active. CP2K uses
-  target-scoped Slurm singletons and shared disk-growth reservations to allow
-  parallel builds; other software retains its shared singleton.
+- Per the user's October 17 instruction, shared disk-growth reservations and
+  submission/allocation free-space gates are removed. Filesystem limits are
+  enforced by actual writes, with failures retained. Builds, caches, overlays
+  and temporary files stay in home; host `/tmp` is not used for compilation.
+  CP2K keeps target-scoped Slurm singletons and exclusive ownership of each
+  run; other software retains its shared singleton.
   Repacking copies and checksum-checks a checkpoint instead
   of moving the original. Monitors preserve jobs when observation expires.
 - Controller staging batches the trusted files into one SFTP connection before
@@ -90,13 +93,38 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
   13 GiB GPUMD submission check rejected 4V100 before any upload or allocation.
   Legacy branch job `1798309` subsequently timed out; it is not a closure canary
   and its overlay/logs are retained. Its old workflow can still start subsequent
-  stages, so capacity must be checked again immediately before any submission.
+  stages. This is historical evidence of the old capacity policy, superseded
+  by the user's October 17 instruction to run without estimated space gates.
 
 ## Remaining acceptance work
 
 Current CP2K priority: official `v2026.2` release across all four partitions,
 workflow [39018993951](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39018993951).
-At 17:51 Asia/Shanghai on October 17, new 16V100 dependency job `1828943`
+At 18:06 Asia/Shanghai, 4V100 `1828944` and DSPRHBM `1828946` were compiling
+dependencies. 16V100 `1828943` was cancelled at 18:05:44 after an operator-added
+read-only `srun` audit requested one CPU and triggered SAI's eight-logical-CPUs
+per GPU rule. This was an agent operational error, not a CP2K compiler result.
+The failed audit's output, old overlay and build log remain preserved. The
+replacement uses the normal native dependency allocation; do not add a step
+with a CPU/GPU request that violates the site's rule.
+
+The home-storage audit observed `TMPDIR=/workspace/tmp`, a FUSE overlay root,
+and an open `work.ext3` under `~/sai-hpc-software/runs/`; there was no separate
+host `/tmp` or `/var/tmp` mount. The current controller removes both free-space
+gates and reservation waiting, while retaining run locks and real write errors.
+Its complete SAI suite passed 703 tests (701 passed, two optional MD-cache skips),
+with test temporary files also in home. Running old controllers are not rewritten.
+
+Fresh retry workflow [39023790564](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39023790564)
+uses controller `975f8f8` for release `v2026.2` on 16V100 and 8V100V0.
+At 18:15, actual jobs `1829656` (16V100, `16v100n04`, start 18:13:53) and
+`1829644` (8V100V0, `8v100v0n09`, start 18:13:01, two GPUs/twelve CPUs) were
+RUNNING and recorded `capacity_policy=filesystem-enforced`. 16V100 was
+concretizing dependencies after its GCC 14 profile/bootstrap; 8V100V0 was
+preparing the overlay/container. Neither is an application-build success.
+[Home-storage policy and audit evidence](evidence/cp2k-home-storage-policy-20261017.json).
+
+Earlier, at 17:51 Asia/Shanghai on October 17, new 16V100 dependency job `1828943`
 was RUNNING for 51:44 on `16v100n37` (start 16:59:26), with its disk reservation
 and all three GCC 14.3.0 compiler observations. DSPRHBM `1828946` was also
 RUNNING for 51:19 with those checks. Both were compiling dependencies, not
@@ -128,9 +156,9 @@ scientific acceptance/publication remain unproven. Space recovered to about
 109 GiB at release submission and was about 72 GiB at this audit. Live budgets
 include the two compiling dependency overlays and old development job `1828523`;
 after their remaining growth, 4V100 was roughly 50 MiB short of its 16 GiB
-overlay plus the 4 GiB safety reserve. Check active budgets before retrying
-8V100V0. Its failed dependency stage skipped application/acceptance; there is
-still no successful release application SIF. Later stages recheck capacity.
+overlay plus the old 4 GiB safety reserve. This historical estimate no longer
+gates new jobs. 8V100V0's failed dependency stage skipped application/acceptance;
+there is still no successful release application SIF.
 [Historical loader/source evidence](evidence/cp2k-release-priority-20261016.json).
 [Historical parallel-build evidence](evidence/cp2k-gcc14-parallel-20261017.json).
 [Current retry and diagnostic evidence](evidence/cp2k-cmake-hdf5-retry-20261017.json).
@@ -138,7 +166,7 @@ still no successful release application SIF. Later stages recheck capacity.
 | Software | DSPRHBM | 16V100 | 4V100 | 8V100V0 |
 |---|---|---|---|---|
 | ABACUS | Pending | Pending | Pending | Pending |
-| CP2K | GCC 14 dependencies: 1828946 RUNNING | GCC 14 dependencies: 1828943 RUNNING | 1828944 allocated; waiting for disk, no compilation | 1828945 FAILED; disk timeout, no compilation |
+| CP2K | GCC 14 dependencies: 1828946 RUNNING | 1829656 RUNNING; dependency configuration | GCC 14 dependencies: 1828944 RUNNING | 1829644 RUNNING; overlay/container preparation |
 | DeePMD-kit | Not a GPU target | Pending | Pending | Pending |
 | LAMMPS | Not a GPU target | Pending | Pending | Pending |
 | GPUMD | Not a GPU target | Published; native module execution pending | Capacity blocked | Pending |
@@ -146,11 +174,11 @@ still no successful release application SIF. Later stages recheck capacity.
 1. The final MD repeat/recovery audit and integrated suite passed. Continue to keep
    controller upload/fingerprint and workflow inputs aligned when diagnosing
    canary failures.
-2. Obtain adequate space for all further canaries while preserving
-   logs, artifacts and recovery checkpoints. A smaller GPUMD canary may proceed
-   only if its actual capacity check passes after source staging. Read-only
-   storage checks found no existing authorized alternative with 100 GiB headroom;
-   `/org/home/stardust` shares the same project quota as `/home/stardust`.
+2. Keep all canaries, caches and temporary files in home while preserving
+   logs, artifacts and recovery checkpoints. Run without software disk
+   reservations or estimated free-space gates, per the user's instruction.
+   Diagnose actual write/quota errors if they occur; do not move builds to
+   host `/tmp` or delete historical checkpoints automatically.
 3. GPUMD job `1790711` compiled and linked `gpumd`, `nep` and `gnep`, but
    failed packaging because current upstream replaced `LICENCE` with `LICENSES/`.
    The license layout is fixed and preflighted before compilation. Fresh job
@@ -159,7 +187,7 @@ still no successful release application SIF. Later stages recheck capacity.
    against that exact SIF, which is now published. The failed overlay/log remain
    preserved. Its 3 GiB overlay is based on measured prior usage of 340 MiB plus
    conservative export/JIT headroom, and still passed the normal 13 GiB free-space
-   gate. After capacity recovers, rerun the corrected exported-native module
+   gate under the historical policy. Rerun the corrected exported-native module
    probe in a new task, then expand to 4V100 and 8V100V0 with that exact recipe.
 4. Current priority (2026-10-16): run official CP2K `v2026.2` release canaries
    on 16V100, 4V100 and 8V100V0, followed by DSPRHBM with its GPU scientific

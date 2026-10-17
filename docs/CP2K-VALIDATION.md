@@ -5,6 +5,49 @@ This is an implementation checklist, not a release acceptance result. The
 
 ## Release-first execution (2026-10-16)
 
+On October 17 the user explicitly required running without software disk
+reservations or free-space admission gates. The current controller implements
+that policy: `require_capacity` is a compatibility no-op, and `build_capacity`
+only holds an exclusive per-run lock. No `statvfs` estimate, other-job budget,
+4 GiB reserve, or 30-minute capacity wait can reject a new build. Actual write
+failures still fail normally and preserve their evidence. The complete SAI
+suite passed 703 tests (701 passed, two optional MD-cache skips).
+
+All build storage stays under `~/sai-hpc-software/`. Host Apptainer temporary
+and cache paths are per-run home directories; compiler and Spack temporary
+files live under container `/workspace`, backed by the home `work.ext3`.
+A live-node audit observed this overlay file open and `TMPDIR=/workspace/tmp`,
+with no separate host `/tmp` or `/var/tmp` mount.
+
+At 18:06, 4V100 `1828944` and DSPRHBM `1828946` were compiling dependencies.
+16V100 `1828943` was cancelled at 18:05:44: the agent's additional read-only
+`srun` audit incorrectly requested one CPU, triggering SAI's rule requiring
+eight logical CPU cores per 16V100 GPU. The agent is responsible for this
+operational error. Original evidence/checkpoints are retained; fresh 16V100
+and 8V100V0 retries use the updated controller. Running controllers remain
+immutable. A changed recipe is never assigned to the old dependency overlay.
+
+Retry workflow [39023790564](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39023790564)
+pins controller `975f8f8dd4681b12ad3173622a9e0a50a7d320b9` and recipe
+`495cbd26fc50bb5371613753f7aca3d0214271116e8238efdbccc0632f8119e5`.
+It selects release `v2026.2` for 16V100 and 8V100V0, leaving the existing
+4V100/DSPRHBM jobs running with their original identities. GitHub validation
+and source resolution passed. At 18:15 Asia/Shanghai, actual Slurm submissions
+were:
+
+| Partition | Slurm job | Actual stage |
+|---|---|---|
+| 16V100 | 1829656 | RUNNING on 16v100n04 since 18:13:53; GCC 14 profile ready, dependency concretization |
+| 8V100V0 | 1829644 | RUNNING on 8v100v0n09 since 18:13:01; 2 GPUs / 12 CPUs, overlay/container preparation |
+
+Both record `capacity_policy=filesystem-enforced`; no capacity reservation or
+capacity wait is active. The old 4V100 `1828944` and DSPRHBM `1828946` jobs were
+also RUNNING. Allocation/startup is not a completed CP2K application build.
+The [home-storage evidence](evidence/cp2k-home-storage-policy-20261017.json)
+retains the live mount/path observations, the audit incident and test log hash.
+
+Historical snapshot before that policy change:
+
 Current workflow: [39018993951](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39018993951),
 controller `a65c62db0999e7f01138a09d647597dbc3702a1f`. At 17:51 Asia/Shanghai
 on October 17, actual dependency submissions were:
@@ -23,8 +66,8 @@ those two dependency overlays and older development job `1828523` on 16V100.
 After those budgets, 4V100 was roughly 50 MiB short of its 16 GiB overlay plus
 the unchanged 4 GiB safety reserve. Its allocation has not begun compiling.
 The failed 8V100V0 stage has no dependency seal; its application/acceptance
-jobs were skipped. Retry it only after checking available capacity against
-all active budgets. Running jobs, old checkpoints and reserves are preserved.
+jobs were skipped. These were outcomes of the old policy; its estimates no
+longer gate new jobs. Old checkpoints remain preserved.
 
 16V100 started at 16:59:26 on `16v100n37`. Before submission, GitHub spent
 several minutes opening a new SSH connection per controller file; triggering
@@ -99,10 +142,9 @@ checkpoints retain their original identities and cannot enter a GCC 14 build.
 The GPU matrix now allows three concurrent targets; CPU compilation starts
 independently. Only CPU science acceptance waits (at most 90 minutes) for a
 reverified GPU reference. Dependency/application singleton names are scoped to
-the target. Native CP2K stages share file-lock-backed disk reservations, account
-for running older controllers, retain a 4 GiB reserve, and use 16 GiB overlays.
-Dependency stages reserve their overlay growth; application stages additionally
-reserve both image copies. Capacity checks remain active at submission/start.
+the target. Native CP2K stages use 16 GiB overlays and an exclusive per-run
+lock. The previous shared reservations and 4 GiB reserve have been removed
+per the user's instruction. Real filesystem errors are not suppressed.
 No old overlay or scientific/publication gate was removed.
 
 A fresh read-only final-SIF loader check `1814450` completed `0:0` in seven
