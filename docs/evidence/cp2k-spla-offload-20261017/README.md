@@ -45,3 +45,27 @@ under project home.
 `production-container-fixes.json` records the later 22:16 state, when all
 four dependency jobs had succeeded and all four application jobs had failed.
 No accepted CP2K application artifact is implied by the dependency probe.
+
+The real installed dependency config probe is now complete. Job `1832078`
+(4V100, `4v100n03`, 10:13, exit `0:0`) resolves COSMA's COSTA/tiled-mm chain
+and SPLA with the new receipt-derived prefixes and GCC 14.3.0. The corrected
+private driver mounted the diagnostic image read-only; complete image hashes
+before/after match. It also matches the pre-mount digest from failed probe C,
+confirming no further image change across that earlier access. C's fixture
+used lowercase `spla`; CP2K upstream uses uppercase `SPLA`, corrected in D.
+This does not restore the invalid original release seal or validate CP2K math.
+`config-probe-results.json` retains both attempts, exact inputs and logs;
+`collect-config-probes.py` gathers them without mounting images.
+
+`container-validation.json` records successful CI at `2c7fd3e`: 719 passed,
+two optional skips. It distinguishes 37 focused checks on SAI home from the
+16 preparation/seal checks on the local workstation. Real filesystem probes
+`1831878` and `1832137` ran independently on SAI, under project home.
+
+`fresh-release-start.json` is the verified 22:45:52 submission snapshot for
+workflow `39041714911` and controller `2c7fd3e`: 16V100 `1832260`, 4V100
+`1832262`, and DSPRHBM `1832265` are RUNNING; 8V100V0 `1832264` is PENDING.
+The 16V100 log has reached dependency concretization; the other running jobs
+are preparing their images. `collect-fresh-release.py` validates source,
+recipe, controller and submitted-script identity while reading accounting
+and logs. It does not modify jobs, mount images, or claim CP2K acceptance.

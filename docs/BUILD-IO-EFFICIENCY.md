@@ -271,6 +271,13 @@ This fixture establishes the repair behavior; the next real CP2K build remains
 required. [Repair evidence](evidence/cp2k-overlay-workdir-20261017/fix-proof-result.json).
 
 
+Real 4V100 config probe `1832078` also passed using the repaired driver and
+installed COSMA/COSTA/tiled-mm/SPLA dependencies. Its complete image digest
+was unchanged across the read-only mount. Fresh release workflow
+[39041714911](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39041714911)
+uses both repairs and passed the 721-test CI gate. Application build, export
+and final-SIF qualification remain pending.
+
 ## Shared /opt recommendation
 
 Further October 17 qualification found a read-only gap: private-driver probe

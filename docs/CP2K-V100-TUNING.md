@@ -134,7 +134,9 @@ reader/writer lock exclusion. The original modified checkpoint stays invalid.
 The earlier forty fresh-image CMake repeats did not expose retained work files;
 a separate [work-directory reproducer](evidence/cp2k-overlay-workdir-20261017/README.md)
 now proves that numeric directory collisions cause `EISDIR` during ordinary
-file removal. These fixes still need actual application build validation.
+file removal. These fixes passed isolated validation and are included in fresh release
+workflow [39041714911](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39041714911).
+Actual application build and science/performance acceptance remain pending.
 
 ## GPU paths already selected
 

@@ -3,6 +3,34 @@
 This records implementation and live build progress, not release acceptance.
 No four-target CP2K 2026.2 release has passed all acceptance gates yet.
 
+## Fresh four-target release workflow
+
+Fresh release workflow [39041714911](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39041714911)
+uses controller `2c7fd3e097cf61c0d0ee6612cb2cc96eebb96677`, recipe
+`a280393e353fee8faa1c09209b34c42eb0f55d0a44ad0543bed1ed57101735ec`, and
+v2026.2 source `67b5da876dd6a76b8b021d5a04d1c81ba79a4c50`. It selects all four
+targets, with SpLA GEMM offload ON for the three V100 partitions and OFF for
+DSPRHBM. Validation passed 721 tests (719 passed, two optional skips).
+Real dependency-config probe `1832078` resolved COSMA/COSTA/tiled-mm and SPLA
+with GCC 14.3.0 on 4V100; complete before/after image hashes matched.
+[Configuration and CI evidence](evidence/cp2k-spla-offload-20261017/README.md).
+These are prerequisite checks; actual dependency/application and
+science/export/publication outcomes must still complete under this fresh identity.
+
+At 22:45:52 Asia/Shanghai, actual Slurm submissions were:
+
+| Target | Dependency job | Observed state |
+|---|---|---|
+| 16V100 | 1832260 | RUNNING on 16v100n81; native profile ready, dependency concretization started |
+| 4V100 | 1832262 | RUNNING on 4v100n13; preparing home-backed image |
+| 8V100V0 | 1832264 | PENDING; scheduler priority |
+| DSPRHBM | 1832265 | RUNNING on d9470n02; preparing home-backed image |
+
+[Verified requests, script hashes, accounting and log tails](evidence/cp2k-spla-offload-20261017/fresh-release-start.json)
+bind these jobs to the new controller and recipe. All compilation, caches and
+temporary files remain under project home. No application SIF or accepted
+multi-partition release is claimed at this submission snapshot.
+
 ## Container fixes and build status at 22:16, October 17
 
 All four dependency jobs completed successfully. Application jobs `1831311`
