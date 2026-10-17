@@ -125,7 +125,7 @@ building. No dependency seal or application artifact existed yet.
 [Production execution evidence](evidence/cp2k-private-driver-production-20261017.json).
 [Efficiency report, patch and retained evidence](BUILD-IO-EFFICIENCY.md).
 
-Current CP2K priority: official `v2026.2` release across all four partitions,
+Earlier official `v2026.2` four-partition attempt:
 workflow [39018993951](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39018993951).
 At 18:06 Asia/Shanghai, 4V100 `1828944` and DSPRHBM `1828946` were compiling
 dependencies. 16V100 `1828943` was cancelled at 18:05:44 after an operator-added

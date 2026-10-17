@@ -1,7 +1,7 @@
 # CP2K validation status
 
-This is an implementation checklist, not a release acceptance result. The
-`feat/cp2k-parity-benchmarks` branch is not yet a four-target accepted release.
+This records implementation and live build progress, not release acceptance.
+No four-target CP2K 2026.2 release has passed all acceptance gates yet.
 
 ## Release-first execution (2026-10-16)
 
