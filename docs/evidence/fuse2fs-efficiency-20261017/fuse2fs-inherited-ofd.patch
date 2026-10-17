@@ -1,0 +1,88 @@
+--- a/misc/fuse2fs.c
++++ b/misc/fuse2fs.c
+@@ -24,6 +24,8 @@
+ #include <sys/ioctl.h>
+ #include <unistd.h>
+ #include <ctype.h>
++#include <fcntl.h>
++#include <limits.h>
+ #define FUSE_DARWIN_ENABLE_EXTENSIONS 0
+ #ifdef __SET_FOB_FOR_FUSE
+ # error Do not set magic value __SET_FOB_FOR_FUSE!!!!
+@@ -4913,6 +4915,51 @@
+ 		return translate_error(fs, EXT2_ROOT_INO, err);
+ 
+ 	return 0;
++}
++
++
++/* Apptainer passes an already OFD-locked image as /proc/self/fd/N.  Reuse
++ * that open file description's lock; an independent BSD flock conflicts
++ * with it on Lustre.  Keep the inherited descriptor open until process exit.
++ * Ordinary pathname mounts still take the upstream BSD lock below.
++ * This adapter is intentionally restricted to whole, regular-file images.
++ */
++static int lock_inherited_image(const char *device, int writable)
++{
++#ifdef F_OFD_SETLK
++	const char prefix[] = "/proc/self/fd/";
++	struct flock lk = {0};
++	struct stat st;
++	char *end;
++	long fd;
++	int mode;
++
++	if (strncmp(device, prefix, sizeof(prefix) - 1))
++		return 0;
++	if (!isdigit((unsigned char)device[sizeof(prefix) - 1]))
++		return -EINVAL;
++	errno = 0;
++	fd = strtol(device + sizeof(prefix) - 1, &end, 10);
++	if (errno || *end || fd < 0 || fd > INT_MAX)
++		return -EINVAL;
++	if (fstat((int)fd, &st) < 0)
++		return -errno;
++	if (!S_ISREG(st.st_mode))
++		return -EINVAL;
++	mode = fcntl((int)fd, F_GETFL);
++	if (mode < 0)
++		return -errno;
++	if (writable && (mode & O_ACCMODE) != O_RDWR)
++		return -EBADF;
++	lk.l_type = writable ? F_WRLCK : F_RDLCK;
++	lk.l_whence = SEEK_SET;
++	/* start=0, len=0 protects the entire image, including future growth. */
++	if (fcntl((int)fd, F_OFD_SETLK, &lk) < 0)
++		return -errno;
++	return 1;
++#else
++	return 0;
++#endif
+ }
+ 
+ int main(int argc, char *argv[])
+@@ -5083,6 +5130,16 @@
+ 	 */
+ 	if (!(global_fs->io->flags & CHANNEL_FLAGS_BLOCK_DEVICE)) {
+ 		unsigned int lock_flags = IO_CHANNEL_FLOCK_TRYLOCK;
++		int inherited = fctx.offset == 0 ?
++			lock_inherited_image(fctx.device, global_fs->flags & EXT2_FLAG_RW) : 0;
++
++		if (inherited < 0) {
++			err = -inherited;
++			err_printf(&fctx, "Could not lock inherited image: %s\n", error_message(err));
++			goto out;
++		}
++		if (inherited)
++			goto image_locked;
+ 
+ 		if (global_fs->flags & IO_FLAG_RW)
+ 			lock_flags |= IO_CHANNEL_FLOCK_EXCLUSIVE;
+@@ -5100,6 +5157,7 @@
+ 		}
+ 	}
+ 
++image_locked:
+ 	fctx.fs = global_fs;
+ 	global_fs->priv_data = &fctx;
+ 	fctx.blocklog = u_log2(fctx.fs->blocksize);

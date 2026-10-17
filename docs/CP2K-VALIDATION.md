@@ -19,6 +19,16 @@ files live under container `/workspace`, backed by the home `work.ext3`.
 A live-node audit observed this overlay file open and `TMPDIR=/workspace/tmp`,
 with no separate host `/tmp` or `/var/tmp` mount.
 
+The subsequent [CPU/I/O investigation](BUILD-IO-EFFICIENCY.md) attributed the
+observed low utilization to `fuse2fs 1.47.3` whole-image synchronization under
+a global lock. Correct parallelism and unthrottled cgroups were verified.
+Isolated probes `1830438` (DSPRHBM) and `1830468` (16V100) passed with an upstream
+performance fix plus an inherited-OFD-lock adapter: small compiler workloads
+improved about 28x and 20x, with matching output bytes and clean-remount/lock
+checks. This is a tested diagnostic candidate; the four production CP2K jobs
+still use their original immutable recipes/drivers. A fresh real CP2K canary
+and unchanged scientific/export gates are needed before production adoption.
+
 At 18:06, 4V100 `1828944` and DSPRHBM `1828946` were compiling dependencies.
 16V100 `1828943` was cancelled at 18:05:44: the agent's additional read-only
 `srun` audit incorrectly requested one CPU, triggering SAI's rule requiring

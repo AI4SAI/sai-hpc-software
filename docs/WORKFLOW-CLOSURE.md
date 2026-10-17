@@ -98,6 +98,18 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 
 ## Remaining acceptance work
 
+The October 17 CPU-efficiency investigation found whole-image `fsync` under
+the `fuse2fs 1.47.3` global lock, despite correct `-j8`/`-j12` settings and no
+CPU throttling. A pinned upstream fix plus an Apptainer/Lustre OFD-lock adapter
+passed isolated DSPRHBM `1830438` and 16V100 `1830468` probes. Two-trial median
+32-file compilation improved 27.89x and 20.20x; explicit synchronization,
+filesystem checks, 161-file clean-remount verification, and competing-writer
+rejection passed. Production jobs retain their original drivers/controllers.
+Next: introduce the checksum-pinned private driver through a fresh CP2K release
+canary identity, then validate real build stages and extend to the four targets.
+This is a small compiler experiment, not CP2K application acceptance.
+[Efficiency report, patch and retained evidence](BUILD-IO-EFFICIENCY.md).
+
 Current CP2K priority: official `v2026.2` release across all four partitions,
 workflow [39018993951](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39018993951).
 At 18:06 Asia/Shanghai, 4V100 `1828944` and DSPRHBM `1828946` were compiling
