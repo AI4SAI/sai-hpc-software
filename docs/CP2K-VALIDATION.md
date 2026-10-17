@@ -3,6 +3,40 @@
 This records implementation and live build progress, not release acceptance.
 No four-target CP2K 2026.2 release has passed all acceptance gates yet.
 
+## GPU GEMM offload follow-up, October 17
+
+At the user's request, the next recipe enables SpLA GEMM offload for all three
+V100 targets and explicitly disables it for DSPRHBM. The application CMake
+cache and GPU `spla_gemm_offloading` version flag are required by the artifact
+contract; 17 focused tests pass. This supersedes the earlier decision to keep
+the new GPU path OFF. Running frozen recipes are unchanged.
+See the [source scope and independent probe](CP2K-V100-TUNING.md#gpu-gemm-offload-enabled-for-the-next-recipe).
+
+The 21:35 snapshot records 4V100 application job `1831311` FAILED `1:0`
+after 16:51: CMake's multicharge FindOpenMP test could not remove a temporary
+`link.txt`, reporting `Is a directory`. Read-only `e2fsck -fn` of the unmounted
+image passed all five phases (exit 0). This does not exclude a live FUSE/overlay
+metadata error; the cause remains under investigation. Preserve the failed
+image and hold shared-driver default deployment pending diagnosis.
+DSPRHBM dependencies completed `0:0` in 52:57 and sealed; application job
+`1831428` was preparing its image. 16V100 `1830993` and 8V100V0 `1830995` were
+still compiling dependencies. No new SIF or application performance result
+was available.
+
+At 21:45, all four private-driver dependency jobs had completed successfully:
+16V100 1:16:27, 4V100 37:19, 8V100V0 1:12:57, DSPRHBM 52:57. DSPRHBM application
+`1831428` then failed at CP2K CMake configuration because COSMA's exported config
+could not find its installed COSTA dependency. The next recipe now includes
+the receipt-validated transitive link/run prefixes in `CMAKE_PREFIX_PATH`.
+
+SpLA probe `1831559` passed actual cuBLAS calls and numerical checks on V100;
+2048-square DGEMM was 2.48x faster than four CPU threads including transfers.
+The 256 case was slower. This is a dependency microbenchmark, not application
+acceptance. A subsequent checksum invalidated the probed 4V100 dependency
+image's old seal: the supposedly read-only driver can change metadata. Keep
+the original receipt and reject this checkpoint; do not silently reseal it.
+See [evidence and limitations](CP2K-V100-TUNING.md#gpu-gemm-offload-enabled-for-the-next-recipe).
+
 ## Follow-up at 21:16 Asia/Shanghai, October 17
 
 4V100's dependency image is now sealed. Application-stage job `1831311`
@@ -29,7 +63,7 @@ controller and stock driver, not the new private-driver recipe.
 The [pinned source/installed-library review](CP2K-V100-TUNING.md) found a SpLA
 configuration omission that version flags do not reveal. Commit `6d9b709`
 adds `CP2K_USE_SPLA=ON` and requires it in the CMake contract; SpLA GEMM
-offloading remains OFF, matching the installed 2026.1 baseline. Its 16 focused
+offloading was OFF in that commit, matching the installed 2026.1 baseline. Its 16 focused
 contract tests passed. [GitHub CI](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39034899631)
 ran 710 tests: 708 passed and two optional skips. The running immutable recipe
 does not include this build-configuration correction. Actual SpLA calls in
@@ -705,7 +739,7 @@ Existing dependency directories alone do not prove ABI compatibility.
 | libxc | `CP2K_USE_LIBXC=ON` |
 | elpa | `CP2K_USE_ELPA=ON`; verify compatible GPU build |
 | cosma | `CP2K_USE_COSMA=ON`; inspect CUDA dependency build |
-| SpLA (not independently advertised in version flags) | `CP2K_USE_SPLA=ON`; verify the application CMake cache, not just the dependency installation |
+| SpLA / local GEMM offload | `CP2K_USE_SPLA=ON` on all targets; GPU additionally requires `CP2K_USE_SPLA_GEMM_OFFLOADING=ON` and `spla_gemm_offloading`; CPU requires offload OFF |
 | xsmm | Check latest LIBXS/LIBXSMM integration and required versions |
 | plumed2 | `CP2K_USE_PLUMED=ON` |
 | spglib | `CP2K_USE_SPGLIB=ON` |

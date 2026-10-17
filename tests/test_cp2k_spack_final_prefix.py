@@ -64,6 +64,38 @@ class FinalPrefixTests(unittest.TestCase):
         self.assertEqual(result.stdout.splitlines()[1], str(len(ROOTS)))
         self.assertNotIn('/opt/software', result.stdout)
 
+    def test_cmake_finds_verified_transitive_cosma_dependencies(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            prefix = str(base / 'prefix')
+            with patch.object(self, 'prefix', prefix):
+                data = self.receipt()
+            for name in ('costa', 'tiled-mm'):
+                path = prefix + '/dependencies/spack/linux-zen3/' + name + '-hash'
+                data['runtime_prefixes'].append(path)
+                data['nodes'].append(dict(name=name, prefix=path, external=False))
+                config = Path(path) / 'lib/cmake' / name
+                config.mkdir(parents=True)
+                (config / (name + 'Config.cmake')).write_text('# private dependency fixture\n')
+            cosma = Path(data['roots']['cosma']) / 'lib/cmake/cosma'
+            cosma.mkdir(parents=True)
+            (cosma / 'cosmaConfig.cmake').write_text('include(CMakeFindDependencyMacro)\n'
+                'find_dependency(costa CONFIG REQUIRED)\nfind_dependency(tiled-mm CONFIG REQUIRED)\n')
+            (base / 'CMakeLists.txt').write_text('cmake_minimum_required(VERSION 3.20)\n'
+                'project(transitive NONE)\nfind_package(cosma CONFIG REQUIRED)\n')
+            # The original roots-only search fails despite the dependencies existing.
+            missing = subprocess.run(['cmake', '-S', str(base), '-B', str(base / 'old'),
+                '-DCMAKE_PREFIX_PATH=' + ';'.join(data['roots'].values())], capture_output=True, text=True)
+            self.assertNotEqual(missing.returncode, 0)
+            self.assertIn('costa', missing.stderr)
+            with patch('cp2k_spack_link.validated_prefix', return_value=prefix):
+                script = shell_variables(data, '16V100', prefix)
+            observed = subprocess.run(['bash', '-eu', '-c', script +
+                'printf "%s\\n" "${cp2k_spack_prefixes[@]}"'], capture_output=True, text=True, check=True)
+            subprocess.run(['cmake', '-S', str(base), '-B', str(base / 'fixed'),
+                '-DCMAKE_PREFIX_PATH=' + ';'.join(observed.stdout.splitlines())],
+                capture_output=True, text=True, check=True)
+
     def test_plumed_frontend_does_not_substitute_for_kernel(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

@@ -98,7 +98,23 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 
 ## Remaining acceptance work
 
-Latest follow-up, 21:16 Asia/Shanghai on October 17: 4V100's dependency image
+Latest follow-up, 21:35 Asia/Shanghai on October 17: 4V100 application job
+`1831311` FAILED `1:0` after 16:51 during multicharge's CMake FindOpenMP cleanup
+(`link.txt`: `Is a directory`). Its unmounted image passed read-only filesystem
+checks; live overlay metadata remains under investigation. DSPRHBM dependencies
+completed `0:0` in 52:57 and sealed; application `1831428` is preparing its
+image. 16V100/8V100V0 are still compiling dependencies. There is no new SIF.
+[Accounting and logs](evidence/cp2k-spla-offload-20261017/production-before.json).
+
+The user requested SpLA GEMM offload for GPU builds. The next recipe enables
+it on all V100 targets, explicitly disables it on CPU, and requires matching
+CMake settings plus GPU version capability. All 17 contract tests pass.
+An independent real SpLA/cuBLAS numerical and timing probe accompanies the
+[source analysis](CP2K-V100-TUNING.md#gpu-gemm-offload-enabled-for-the-next-recipe).
+This does not mark CP2K science/performance or publication complete. Frozen
+controllers and dependency seals retain their original identities.
+
+Earlier follow-up, 21:16 Asia/Shanghai on October 17: 4V100's dependency image
 is sealed and application-stage job `1831311` is RUNNING on `4v100n05`
 (started 21:09:11), still in image preparation. The other three new dependency
 jobs remain RUNNING and no new SIF exists.
@@ -120,7 +136,7 @@ the application CMake cache. Its 16 contract tests and 710-test CI passed
 configuration difference. Actual SpLA calls also require GEMM offloading,
 which the installed baseline disables, so this is not established loss of a
 baseline runtime capability. Existing builds and acceptance continue; real
-build validation of the corrected configuration awaits a fresh recipe. The
+build validation of the corrected configuration requires a fresh recipe. The
 review also records runtime tuning priorities and the recommendation for an
 optional shared `/opt/devtools` image driver; no system installation occurred.
 

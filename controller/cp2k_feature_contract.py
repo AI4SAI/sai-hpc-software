@@ -9,9 +9,8 @@ import re
 import subprocess
 
 BASE_FLAGS = frozenset("omp libint fftw3 libxc elpa parallel scalapack mpi_f08 cosma plumed2 spglib libdftd4 mctc-lib tblite libvori libbqb hdf5".split())
-GPU_FLAGS = frozenset("dbcsr_acc offload_cuda cusolvermp cusolvermp_nccl".split())
-# SpLA has no standalone version flag when GEMM offloading is disabled, as in
-# the site's 2026.1 baseline. Its CMake option must still be checked explicitly.
+GPU_FLAGS = frozenset("dbcsr_acc offload_cuda cusolvermp cusolvermp_nccl spla_gemm_offloading".split())
+# Plain SpLA has no version flag on CPU; verify its CMake option on all targets.
 REQUIRED_OPTIONS = tuple("MPI MPI_F08 FFTW3 LIBXC LIBINT2 ELPA COSMA SPLA LIBXS LIBXSMM PLUMED SPGLIB VORI HDF5 DFTD4 TBLITE".split())
 TRANSIENT = re.compile(r"/(?:workspace|control|input)(?:/|$)")
 
@@ -68,6 +67,8 @@ def check_cache(text, prefix, target):
             raise ValueError("CP2K must be compiled natively on each target")
     if cache.get("CP2K_USE_ACCEL") != ("NONE" if target == "dsprhbm" else "CUDA"):
         raise ValueError("wrong CP2K accelerator backend")
+    if cache.get("CP2K_USE_SPLA_GEMM_OFFLOADING") != ("OFF" if target == "dsprhbm" else "ON"):
+        raise ValueError("wrong or missing SpLA GEMM offload setting for target")
     elpa = cache.get("CP2K_ELPA_ROOT", "")
     if not elpa.startswith("/opt/devtools/elpa/elpa-2026.02.001-2603-gnu/"):
         raise ValueError("ELPA must use the pinned 2026 system module")

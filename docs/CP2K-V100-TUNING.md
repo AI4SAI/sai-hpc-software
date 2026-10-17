@@ -53,8 +53,8 @@ explicitly enable SpLA. Plain SpLA has no standalone `--version` feature flag:
 offload path is enabled. Therefore comparing version flags missed this gap.
 
 Commit `6d9b709` explicitly enables SpLA and requires the application CMake
-cache to prove it. `CP2K_USE_SPLA_GEMM_OFFLOADING=OFF` preserves the baseline
-behavior while its GPU path remains a separate measured experiment. The
+cache to prove it. That commit kept `CP2K_USE_SPLA_GEMM_OFFLOADING=OFF` to
+preserve baseline behavior. The
 16-test contract suite passes, including CPU/GPU rejection of an absent or
 disabled SpLA option. Real compilation/linkage of this correction remains
 to be verified in a fresh recipe.
@@ -69,7 +69,67 @@ installed baseline disables the latter too. Continue the existing builds and
 their scientific acceptance; record the configuration difference explicitly.
 Real build validation of the corrected configuration belongs to a subsequent
 fresh recipe, without relabelling existing dependency overlays. GPU SpLA
-offload would be an additional measured capability, not baseline restoration.
+offload is an additional capability, not baseline restoration.
+
+## GPU GEMM offload enabled for the next recipe
+
+Following the user's October 17 request, GPU recipes now explicitly set
+`CP2K_USE_SPLA_GEMM_OFFLOADING=ON`. DSPRHBM explicitly keeps it OFF. Both retain
+`CP2K_USE_SPLA=ON`. The artifact contract rejects a missing/wrong CMake setting
+and requires `spla_gemm_offloading` in the GPU executable's version flags;
+CPU artifacts must not advertise it. The 17 focused contract tests pass.
+Existing frozen jobs still use their recorded recipe.
+
+This enables selected local double-precision matrix multiplies, computing
+`C = alpha * op(A) * op(B) + beta * C`. Source callers include RI-MP2
+(`src/mp2_ri_gpw.F`), RPA exchange (`src/rpa_exchange.F`) and RPA gradients
+(`src/rpa_grad.F`). MP2 and RPA exchange set a `2*128*128*128` operation threshold
+(4,194,304 FLOPs); SpLA can leave smaller host-buffer multiplies on the CPU.
+Retain these upstream thresholds. The runtime keyword
+`GLOBAL / PREFERRED_DGEMM_LIBRARY BLAS` selects the CPU BLAS path for comparison
+or a workload where offload is slower; the compiled-in default becomes SPLA.
+DBCSR sparse-block, COSMA distributed GEMM, GRID and PW GPU paths are separate.
+The ordinary OT water64 acceptance case does not establish this path's speedup.
+
+The pinned SpLA 1.6.1 package already selects `+cuda`; it has **no** `cuda_arch`
+variant. Its CMake uses CUDAToolkit's cudart/cuBLAS and its GPU DGEMM wrapper
+calls `cublasDgemm`, without compiling custom `.cu` kernels. Do not add an
+unsupported `cuda_arch=70` requirement. The toolkit selects the V100 kernels
+at runtime; CP2K/DBCSR/tiled-mm retain their explicit SM70 configuration.
+
+The [isolated dependency probe](evidence/cp2k-spla-offload-20261017/spla-probe.cpp)
+uses host matrices, CPU and GPU SpLA contexts, the CP2K threshold, one warmup
+and three alternating repeats at 1/4 CPU threads. It counts successful actual
+cuBLAS DGEMM calls, checks full CPU/GPU results and independent scalar entries,
+and includes host/device transfers in the measured call time. A 64-square
+matrix must stay on CPU; 256/1024/2048-square cases must call cuBLAS on SM70.
+Job `1831559` completed on `4v100n05` in 47 seconds using Tesla V100-SXM2-32GB.
+The [raw results and source excerpts](evidence/cp2k-spla-offload-20261017/results.json)
+show all numerical checks passed, with zero observed CPU/GPU elementwise
+difference for the deterministic binary-fraction inputs. The 64 case made no
+cuBLAS calls; every measured larger case made three successful calls.
+
+| Matrix (square, TN) | CPU 4 threads, median | GPU incl. transfers, median | CPU / GPU |
+|---|---:|---:|---:|
+| 256 | 0.074 ms | 0.247 ms | 0.30x |
+| 1024 | 4.009 ms | 3.039 ms | 1.32x |
+| 2048 | 32.146 ms | 12.979 ms | 2.48x |
+
+Against one CPU thread, 1024 and 2048 measured 5.09x and 9.53x respectively.
+These dependency microbenchmarks support enabling the path for large systems,
+as the user confirmed. They do not establish CP2K whole-calculation speedup,
+multi-GPU scaling, or correctness for arbitrary inputs. Keep upstream thresholds
+and the BLAS override; validate the new application artifact separately.
+
+The first probe exposed a private-driver read-only mount error. Probe B used
+stock for the read-only mount, but a subsequent full image checksum showed
+that the sealed dependency image changed. Its original seal remains preserved
+and must fail validation; do not reseal or reuse it as unchanged. Both stock
+and the pinned upstream driver can internally open `-o ro` images writable.
+The numerical results stand, but the mount integrity claim is withdrawn.
+The driver needs a real read-only backing descriptor before further sealed
+image probes. A separate writable-image CMake cleanup probe passed 40 repeats
+and read-only filesystem checks; the original application error remains open.
 
 ## GPU paths already selected
 

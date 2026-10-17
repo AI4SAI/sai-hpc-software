@@ -29,6 +29,7 @@ class CP2KContractTests(unittest.TestCase):
         entries = {"CP2K_USE_" + key: "ON" for key in contract.REQUIRED_OPTIONS}
         entries.update(CMAKE_INSTALL_PREFIX="/opt/software/cp2k/test/" + target,
                        CP2K_USE_ACCEL="NONE" if target == "dsprhbm" else "CUDA",
+                       CP2K_USE_SPLA_GEMM_OFFLOADING="OFF" if target == "dsprhbm" else "ON",
                        CP2K_ELPA_ROOT="/opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia",
                        CP2K_USE_CUSOLVER_MP="ON")
         for lang in ("C", "CXX", "Fortran"):
@@ -91,6 +92,23 @@ class CP2KContractTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             contract.check_cache(self.cache().replace("-march=native", "-march=znver4"),
                                  "/opt/software/cp2k/test/4v100-avx512", "4v100-avx512")
+
+    def test_spla_offload_requires_matching_cache_and_binary_capability(self):
+        for target in ("16v100-avx2", "4v100-avx512", "8v100v0-avx512", "dsprhbm"):
+            text = self.cache(target)
+            prefix = "/opt/software/cp2k/test/" + target
+            expected = "OFF" if target == "dsprhbm" else "ON"
+            entry = "CP2K_USE_SPLA_GEMM_OFFLOADING:STRING=" + expected
+            contract.check_cache(text, prefix, target)
+            for wrong in ("", entry.replace(expected, "ON" if expected == "OFF" else "OFF")):
+                with self.subTest(target=target, wrong=wrong):
+                    with self.assertRaisesRegex(ValueError, "SpLA GEMM offload"):
+                        contract.check_cache(text.replace(entry, wrong), prefix, target)
+            flags = self.flags(gpu=target != "dsprhbm")
+            wrong_flags = (flags.replace("spla_gemm_offloading", "") if target != "dsprhbm"
+                           else flags.rstrip() + " spla_gemm_offloading\n")
+            with self.subTest(target=target), self.assertRaises(ValueError):
+                contract.check_flags(wrong_flags, target)
 
     def test_cmake_on_and_correct_prefix_are_required(self):
         text = self.cache()

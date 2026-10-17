@@ -57,7 +57,10 @@ def check_files(roots):
 
 def shell_variables(data, partition, prefix):
     roots, runtime = validate_receipt(data, partition, prefix)
-    lines = ['cp2k_spack_prefixes=(' + shlex.join([roots[n] for n in sorted(roots)]) + ')']
+    # Exported COSMA CMake targets call find_dependency(costa/tiled-mm).
+    # Root packages alone omit these installed, verified transitive prefixes.
+    prefixes = list(dict.fromkeys([roots[n] for n in sorted(roots)] + sorted(runtime)))
+    lines = ['cp2k_spack_prefixes=(' + shlex.join(prefixes) + ')']
     for name in ('libint', 'libxsmm', 'hdf5', 'plumed'):
         lines.append('export CP2K_' + name.upper() + '_ROOT=' + shlex.quote(roots[name]))
     directories = [p + '/' + lib for p in runtime for lib in ('lib', 'lib64')]

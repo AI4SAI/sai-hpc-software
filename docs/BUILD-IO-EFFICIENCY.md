@@ -233,6 +233,23 @@ the seal bytes/hash and application accounting. No final SIF was present.
 
 ## Shared /opt recommendation
 
+Further October 17 qualification found a read-only gap: private-driver probe
+`1831524` failed on an inherited read-only image descriptor (`EBADF`). Stock
+probe `1831559` mounted successfully, but the image hash then differed from
+the original dependency seal. Stock is therefore **not** an integrity-preserving
+read-only fallback. Both versions initially open libext2fs writable even for
+FUSE `-o ro`, allowing metadata/atime changes. Keep the old seal unchanged and
+reject the modified checkpoint. Correct backing-file open permissions and
+verify whole-image hashes across read-only success/failure before shared use.
+
+Update at 21:35: 4V100 application job `1831311` failed in CMake FindOpenMP
+cleanup (`link.txt` could not be removed: `Is a directory`). Its unmounted
+image passed read-only `e2fsck -fn`, but that does not exclude a live FUSE or
+overlay metadata problem. The dependency stage had completed and sealed.
+Preserve the failed image and diagnose the application-stage failure before
+promoting this driver to a shared default. An isolated fresh-overlay CMake
+reproducer is retained with the [SpLA probe inputs](evidence/cp2k-spla-offload-20261017/openmp-repro.py).
+
 There is a useful shared-tool use case for the pinned fuse2fs adapter: other
 users building writable ext images on Lustre can encounter the same rename/
 close synchronization overhead. A versioned, administrator-owned, read-only

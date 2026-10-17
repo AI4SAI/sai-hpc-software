@@ -166,8 +166,8 @@ cmake "${dbcsr_args[@]}"
 cmake --build /workspace/dbcsr-build --parallel "$jobs"
 cmake --install /workspace/dbcsr-build
 mkdir -p /workspace/build "$prefix/bin" "$prefix/share/sai"
-# Preserve the site's SpLA-enabled 2026.1 configuration. Its local GEMM
-# offloading was disabled; benchmark that additional GPU path separately.
+# Enable SpLA on all targets; offload local GEMMs only in GPU deliveries.
+# Keep CP2K's workload thresholds and the runtime BLAS override available.
 cmake_args=(
   -S /workspace/source -B /workspace/build -DCMAKE_BUILD_TYPE=Release
   "${cmake_compilers[@]}"
@@ -182,7 +182,7 @@ cmake_args=(
   -DCP2K_USE_MPI=ON -DCP2K_USE_MPI_F08=ON -DCP2K_USE_ACCEL="$accel"
   -DCP2K_USE_DBCSR_CONFIG=ON -DCP2K_USE_FFTW3=ON -DCP2K_USE_LIBXC=ON
   -DCP2K_USE_LIBINT2=ON -DCP2K_USE_ELPA=ON -DCP2K_USE_COSMA=ON
-  -DCP2K_USE_SPLA=ON -DCP2K_USE_SPLA_GEMM_OFFLOADING=OFF
+  -DCP2K_USE_SPLA=ON
   -DCP2K_USE_LIBXS=ON -DCP2K_USE_LIBXSMM=ON -DCP2K_USE_PLUMED=ON
   -DCP2K_USE_SPGLIB=ON -DCP2K_USE_VORI=ON -DCP2K_USE_HDF5=ON
   -DHDF5_ROOT="$hdf5_root" -DHDF5_PREFER_PARALLEL=ON
@@ -192,13 +192,14 @@ cmake_args=(
 )
 if [[ "$accel" == CUDA ]]; then
   cmake_args+=(
+    -DCP2K_USE_SPLA_GEMM_OFFLOADING=ON
     -DCP2K_WITH_GPU=V100 -DCP2K_USE_CUDA=ON
     -DCMAKE_CUDA_ARCHITECTURES="$gpu_arch" -DCP2K_USE_CUSOLVER_MP=ON
     -DCP2K_CUSOLVER_MP_ROOT=/opt/devtools/nvidia/mp_libs
     -DCP2K_NCCL_ROOT="${NCCL_ROOT:?NCCL module root required}"
   )
 else
-  cmake_args+=( -DCP2K_USE_CUSOLVER_MP=OFF )
+  cmake_args+=( -DCP2K_USE_CUSOLVER_MP=OFF -DCP2K_USE_SPLA_GEMM_OFFLOADING=OFF )
 fi
 cmake "${cmake_args[@]}"
 python3 /control/cp2k_feature_contract.py cache "$prefix" "$target" "$source_sha"
