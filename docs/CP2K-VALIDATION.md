@@ -32,9 +32,12 @@ adds `CP2K_USE_SPLA=ON` and requires it in the CMake contract; SpLA GEMM
 offloading remains OFF, matching the installed 2026.1 baseline. Its 16 focused
 contract tests passed. [GitHub CI](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39034899631)
 ran 710 tests: 708 passed and two optional skips. The running immutable recipe
-does not include this correction. Its future artifacts cannot be described as
-complete installed-feature parity; a fresh corrected recipe must pass the
-build/scientific/export gates before closure. No prior overlay is relabelled.
+does not include this build-configuration correction. Actual SpLA calls in
+`src/local_gemm_api.F` also require GEMM offloading, which the installed baseline
+disables; this difference alone does not demonstrate a lost baseline runtime
+capability. Existing builds and scientific acceptance continue with that
+configuration difference recorded. The correction still needs real build
+validation in a future fresh recipe; no prior overlay is relabelled.
 
 ## Release-first execution (2026-10-16)
 

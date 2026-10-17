@@ -117,8 +117,10 @@ found that SpLA was installed as a dependency but not enabled in the CP2K
 application. Commit `6d9b709` restores the old 2026.1 configuration and checks
 the application CMake cache. Its 16 contract tests and 710-test CI passed
 (708 passed, two optional skips). Running frozen controllers retain the
-omission; their results do not establish full installed-feature parity.
-A fresh corrected recipe remains required before final CP2K closure. The
+configuration difference. Actual SpLA calls also require GEMM offloading,
+which the installed baseline disables, so this is not established loss of a
+baseline runtime capability. Existing builds and acceptance continue; real
+build validation of the corrected configuration awaits a fresh recipe. The
 review also records runtime tuning priorities and the recommendation for an
 optional shared `/opt/devtools` image driver; no system installation occurred.
 

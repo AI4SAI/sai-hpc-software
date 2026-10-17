@@ -61,10 +61,15 @@ to be verified in a fresh recipe.
 
 The running controller and its dependency images retain their original
 identity. They do not acquire this correction by updating the development
-checkout. Their results remain useful build evidence, but cannot establish
-complete installed-feature parity with 2026.1. Before declaring closure,
-build and accept a new identity containing this correction; do not relabel
-the existing dependency overlay or silently waive SpLA.
+checkout. This is a build-configuration parity correction, not evidence of a
+lost baseline GPU execution path: in
+[local_gemm_api.F](https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/local_gemm_api.F#L118),
+the actual SpLA calls require both `__SPLA` and `__OFFLOAD_GEMM`, and the
+installed baseline disables the latter too. Continue the existing builds and
+their scientific acceptance; record the configuration difference explicitly.
+Real build validation of the corrected configuration belongs to a subsequent
+fresh recipe, without relabelling existing dependency overlays. GPU SpLA
+offload would be an additional measured capability, not baseline restoration.
 
 ## GPU paths already selected
 
