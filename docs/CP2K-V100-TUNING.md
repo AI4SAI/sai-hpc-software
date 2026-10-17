@@ -127,9 +127,14 @@ that the sealed dependency image changed. Its original seal remains preserved
 and must fail validation; do not reseal or reuse it as unchanged. Both stock
 and the pinned upstream driver can internally open `-o ro` images writable.
 The numerical results stand, but the mount integrity claim is withdrawn.
-The driver needs a real read-only backing descriptor before further sealed
-image probes. A separate writable-image CMake cleanup probe passed 40 repeats
-and read-only filesystem checks; the original application error remains open.
+The [read-only driver repair](evidence/fuse2fs-readonly-20261017/README.md)
+subsequently passed all twelve qualification stages in job `1831878`, including
+real `O_RDONLY` opens, zero image writes, unchanged full-image hashes and
+reader/writer lock exclusion. The original modified checkpoint stays invalid.
+The earlier forty fresh-image CMake repeats did not expose retained work files;
+a separate [work-directory reproducer](evidence/cp2k-overlay-workdir-20261017/README.md)
+now proves that numeric directory collisions cause `EISDIR` during ordinary
+file removal. These fixes still need actual application build validation.
 
 ## GPU paths already selected
 

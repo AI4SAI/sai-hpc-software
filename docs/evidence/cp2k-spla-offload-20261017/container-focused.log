@@ -1,0 +1,52 @@
+test_build_export_and_emit_use_driver_but_final_sif_verifies_independently (test_cp2k_image_driver.ImageDriverTests.test_build_export_and_emit_use_driver_but_final_sif_verifies_independently) ... ok
+test_changed_binary_and_configuration_fail_before_mount (test_cp2k_image_driver.ImageDriverTests.test_changed_binary_and_configuration_fail_before_mount) ... ok
+test_exec_wrapper_preserves_all_isolation_and_bind_arguments (test_cp2k_image_driver.ImageDriverTests.test_exec_wrapper_preserves_all_isolation_and_bind_arguments) ... ok
+test_private_driver_precedes_bundled_path_and_receipt_survives_clone (test_cp2k_image_driver.ImageDriverTests.test_private_driver_precedes_bundled_path_and_receipt_survives_clone) ... ok
+test_redirected_driver_or_config_is_rejected (test_cp2k_image_driver.ImageDriverTests.test_redirected_driver_or_config_is_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 5 tests in 0.097s
+
+OK
+test_completed_build_creates_candidate_without_changing_existing_publication (test_build_lifecycle.BuildMonitorLifecycleTests.test_completed_build_creates_candidate_without_changing_existing_publication) ... ok
+test_failed_build_status_invalidates_a_previously_valid_published_sidecar (test_build_lifecycle.BuildMonitorLifecycleTests.test_failed_build_status_invalidates_a_previously_valid_published_sidecar) ... ok
+test_path_or_recipe_validation_exception_leaves_build_status_false (test_build_lifecycle.BuildMonitorLifecycleTests.test_path_or_recipe_validation_exception_leaves_build_status_false) ... ok
+test_benchmarks_use_the_same_canonical_candidate_as_the_build (test_build_lifecycle.CiLifecycleTests.test_benchmarks_use_the_same_canonical_candidate_as_the_build) ... ok
+test_ci_uploads_identity_dependencies_before_requesting_remote_identity (test_build_lifecycle.CiLifecycleTests.test_ci_uploads_identity_dependencies_before_requesting_remote_identity) ... ok
+test_cp2k_requires_benchmark_before_publication (test_build_lifecycle.CiLifecycleTests.test_cp2k_requires_benchmark_before_publication) ... ok
+test_cpu_runs_automatic_multinode_acceptance_before_publication (test_build_lifecycle.CiLifecycleTests.test_cpu_runs_automatic_multinode_acceptance_before_publication) ... ok
+test_cross_workflow_handoff_is_rejected_before_transport (test_build_lifecycle.CiLifecycleTests.test_cross_workflow_handoff_is_rejected_before_transport) ... ok
+test_development_always_builds_for_both_events_even_with_prior_attempt (test_build_lifecycle.CiLifecycleTests.test_development_always_builds_for_both_events_even_with_prior_attempt) ... ok
+test_failed_build_or_either_acceptance_monitor_prevents_publication (test_build_lifecycle.CiLifecycleTests.test_failed_build_or_either_acceptance_monitor_prevents_publication) ... ok
+test_gpu_publish_occurs_after_both_acceptance_monitors (test_build_lifecycle.CiLifecycleTests.test_gpu_publish_occurs_after_both_acceptance_monitors) ... ok
+test_locked_updates_use_runner_download_and_existing_upload_before_submission (test_build_lifecycle.CiLifecycleTests.test_locked_updates_use_runner_download_and_existing_upload_before_submission) ... ok
+test_long_version_is_preserved_but_not_part_of_run_id (test_build_lifecycle.CiLifecycleTests.test_long_version_is_preserved_but_not_part_of_run_id) ... ok
+test_performance_repeats_once_on_same_image_then_blocks (test_build_lifecycle.CiLifecycleTests.test_performance_repeats_once_on_same_image_then_blocks) ... ok
+test_published_artifact_must_match_canonical_layout (test_build_lifecycle.CiLifecycleTests.test_published_artifact_must_match_canonical_layout) ... ok
+test_release_retry_uses_explicit_input_through_reusable_calls (test_build_lifecycle.CiLifecycleTests.test_release_retry_uses_explicit_input_through_reusable_calls) ... ok
+test_remote_identity_mismatch_or_forged_path_stops_before_submission (test_build_lifecycle.CiLifecycleTests.test_remote_identity_mismatch_or_forged_path_stops_before_submission) ... ok
+test_schedule_cache_miss_preserves_identity_flags_for_submission (test_build_lifecycle.CiLifecycleTests.test_schedule_cache_miss_preserves_identity_flags_for_submission) ... ok
+test_stage_handoff_never_reuploads_or_reclaims_release (test_build_lifecycle.CiLifecycleTests.test_stage_handoff_never_reuploads_or_reclaims_release) ... ok
+test_trusted_controller_uses_one_transfer_before_fingerprinting (test_build_lifecycle.CiLifecycleTests.test_trusted_controller_uses_one_transfer_before_fingerprinting) ... ok
+test_unchanged_releases_skip_for_both_events_without_claiming_an_artifact (test_build_lifecycle.CiLifecycleTests.test_unchanged_releases_skip_for_both_events_without_claiming_an_artifact) ... ok
+
+----------------------------------------------------------------------
+Ran 21 tests in 2.341s
+
+OK
+test_absent_acceptance_is_new_existing_job_is_recoverable (test_ci_recovery.ContinuationPreflightTests.test_absent_acceptance_is_new_existing_job_is_recoverable) ... ok
+test_changed_identity_job_script_image_or_controller_is_rejected (test_ci_recovery.ContinuationPreflightTests.test_changed_identity_job_script_image_or_controller_is_rejected) ... ok
+test_cp2k_application_checks_original_dependency_and_rendered_script (test_ci_recovery.ContinuationPreflightTests.test_cp2k_application_checks_original_dependency_and_rendered_script) ... ok
+test_missing_handle_and_redirected_metadata_never_resubmit (test_ci_recovery.ContinuationPreflightTests.test_missing_handle_and_redirected_metadata_never_resubmit) ... ok
+test_abacus_remonitor_preserves_original_bytes_bound_by_retest (test_ci_recovery.RetestEvidenceStabilityTests.test_abacus_remonitor_preserves_original_bytes_bound_by_retest) ... ok
+test_cp2k_remonitor_preserves_original_evidence_hash_pinned_by_retest (test_ci_recovery.RetestEvidenceStabilityTests.test_cp2k_remonitor_preserves_original_evidence_hash_pinned_by_retest) ... ok
+test_gpumd_remonitor_preserves_raw_evidence_and_repeat_binding (test_ci_recovery.RetestEvidenceStabilityTests.test_gpumd_remonitor_preserves_raw_evidence_and_repeat_binding) ... ok
+test_acceptance_rerun_monitors_same_jobs_and_can_republish (test_ci_recovery.StatefulContinuationTests.test_acceptance_rerun_monitors_same_jobs_and_can_republish) ... ok
+test_existing_passing_repeat_is_reused_after_original_regression (test_ci_recovery.StatefulContinuationTests.test_existing_passing_repeat_is_reused_after_original_regression) ... ok
+test_lost_monitor_and_application_rerun_reuse_existing_handle (test_ci_recovery.StatefulContinuationTests.test_lost_monitor_and_application_rerun_reuse_existing_handle) ... ok
+test_repeated_regression_cannot_allocate_third_run_after_job_retry (test_ci_recovery.StatefulContinuationTests.test_repeated_regression_cannot_allocate_third_run_after_job_retry) ... ok
+
+----------------------------------------------------------------------
+Ran 11 tests in 8.176s
+
+OK

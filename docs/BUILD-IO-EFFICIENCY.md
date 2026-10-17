@@ -164,8 +164,10 @@ wrapper verifies the exact binary checksum and creates a per-run Apptainer
 configuration whose `binary path` places the private driver before `$PATH`.
 It leaves the existing container bind/isolation arguments intact.
 
-The tested binary is provisioned read-only at
+The first tested binary was provisioned read-only at
 `~/sai-hpc-software/cache/tools/fuse2fs-0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9/bin/fuse2fs`.
+New recipes use the read-only repair documented below; frozen controllers
+retain this original pin.
 Its source and exact rebuild inputs are archived above. A missing, writable,
 redirected or changed binary is rejected before mounting the build image.
 `results/image-driver.json` records the source commit, patched source hash,
@@ -231,6 +233,44 @@ At 21:16:55 the 4V100 dependency image was sealed and application-stage job
 The [handoff snapshot](evidence/cp2k-production-handoff-20261017.json) retains
 the seal bytes/hash and application accounting. No final SIF was present.
 
+## Read-only and remount corrections
+
+The first driver retained `EXT2_FLAG_RW` even for an explicit `-o ro` mount.
+The repaired source clears this flag before `ext2fs_open2` and prevents error
+reporting from updating the read-only superblock. The backing descriptor is
+actually `O_RDONLY`, and the existing inherited-OFD adapter takes a shared lock.
+Job `1831878` passed twelve validation stages on DSPRHBM: 161-file writes and
+explicit fsync, clean filesystem checks, read-only remounts at image modes
+0600/0400, a nonzero container exit, and rejection of competing writers while
+read-only or writable mounts hold the image. Every read-only image checksum
+remained unchanged; tracing found zero successful image writes.
+[Source patch, rebuild inputs and complete evidence](evidence/fuse2fs-readonly-20261017/README.md).
+
+The current binary is pinned at SHA256
+`46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10`, under the
+matching `~/sai-hpc-software/cache/tools/fuse2fs-<sha>/bin/` directory, mode 0555.
+The changed historical 4V100 image remains invalid against its original seal;
+this repair does not grant it a new identity.
+
+A second issue was reproduced in job `1831861`: retained numeric directories
+under the overlay's `/work/work` collide with fuse-overlayfs's temporary names
+when it removes an open ordinary file. A clean image passed 8192 operations;
+a seeded image failed with traced `renameat(...)=EISDIR`. This explains a
+failure mechanism independent of OpenMP detection. The original 8V100V0
+license-directory error has not been proven to share that cause.
+[Reproducer and source evidence](evidence/cp2k-overlay-workdir-20261017/README.md).
+
+The new application-copy preparation is now integrated. It verifies the sealed
+source and exact copy while holding OFD locks, removes only reviewed temporary
+work entries, rejects unexpected contents or hard links, and retains the derived
+hash and read-only filesystem checks. Job `1832137` passed on a new 256 MiB
+fixture: 8193 entries removed, 8192 file operations without error, three fsck
+checks passed, source hash and upper payload sentinel unchanged. Sixteen
+preparation/seal tests and 37 driver/lifecycle/recovery tests also passed.
+This fixture establishes the repair behavior; the next real CP2K build remains
+required. [Repair evidence](evidence/cp2k-overlay-workdir-20261017/fix-proof-result.json).
+
+
 ## Shared /opt recommendation
 
 Further October 17 qualification found a read-only gap: private-driver probe
@@ -239,8 +279,9 @@ probe `1831559` mounted successfully, but the image hash then differed from
 the original dependency seal. Stock is therefore **not** an integrity-preserving
 read-only fallback. Both versions initially open libext2fs writable even for
 FUSE `-o ro`, allowing metadata/atime changes. Keep the old seal unchanged and
-reject the modified checkpoint. Correct backing-file open permissions and
-verify whole-image hashes across read-only success/failure before shared use.
+reject the modified checkpoint. The repaired backing-file permissions and
+whole-image hash checks above now pass; real application/export completion
+remains required before promoting a shared default.
 
 Update at 21:35: 4V100 application job `1831311` failed in CMake FindOpenMP
 cleanup (`link.txt` could not be removed: `Is a directory`). Its unmounted

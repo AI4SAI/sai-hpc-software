@@ -1,0 +1,47 @@
+SOURCE https://raw.githubusercontent.com/Kitware/CMake/v3.31.6/Source/cmCoreTryCompile.cxx
+SHA256 ac57ac85bac7fb65e8bc3df6e81d571775a8e17a501b07db8ae976fb00c7bb6a
+1376:   cmsys::Directory dir;
+1377:   dir.Load(binDir);
+1378:   std::set<std::string> deletedFiles;
+1379:   for (unsigned long i = 0; i < dir.GetNumberOfFiles(); ++i) {
+1380:     const char* fileName = dir.GetFile(i);
+1381:     if (strcmp(fileName, ".") != 0 && strcmp(fileName, "..") != 0 &&
+1382:         // Do not delete NFS temporary files.
+1383:         !cmHasPrefix(fileName, ".nfs")) {
+1384:       if (deletedFiles.insert(fileName).second) {
+1385:         std::string const fullPath = cmStrCat(binDir, '/', fileName);
+1386:         if (cmSystemTools::FileIsSymlink(fullPath)) {
+1387:           cmSystemTools::RemoveFile(fullPath);
+1388:         } else if (cmSystemTools::FileIsDirectory(fullPath)) {
+1389:           this->CleanupFiles(fullPath);
+1390:           cmSystemTools::RemoveADirectory(fullPath);
+1391:         } else {
+1392: #ifdef _WIN32
+1393:           // Sometimes anti-virus software hangs on to new files so we
+1394:           // cannot delete them immediately.  Try a few times.
+1395:           cmSystemTools::WindowsFileRetry retry =
+1396:             cmSystemTools::GetWindowsFileRetry();
+1397:           cmsys::Status status;
+1398:           while (!((status = cmSystemTools::RemoveFile(fullPath))) &&
+1399:                  --retry.Count && cmSystemTools::FileExists(fullPath)) {
+1400:             cmSystemTools::Delay(retry.Delay);
+1401:           }
+1402:           if (retry.Count == 0)
+1403: #else
+1404:           cmsys::Status status = cmSystemTools::RemoveFile(fullPath);
+1405:           if (!status)
+1406: #endif
+1407:           {
+1408:             this->Makefile->IssueMessage(
+1409:               MessageType::FATAL_ERROR,
+1410:               cmStrCat("The file:\n  ", fullPath,
+1411:                        "\ncould not be removed:\n  ", status.GetString()));
+1412:           }
+1413:         }
+1414:       }
+1415:     }
+1416:   }
+1417: 
+1418:   if (binDir.find("CMakeScratch") != std::string::npos) {
+1419:     cmSystemTools::RemoveADirectory(binDir);
+1420:   }

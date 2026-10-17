@@ -1,0 +1,25 @@
+{
+  "status": "passed",
+  "modules": [
+    {
+      "command": "python3 -B -m unittest discover -s tests -p 'test_cp2k_overlay_workdir.py'",
+      "tests": 8,
+      "seconds": 36.916
+    },
+    {
+      "command": "python3 -B -m unittest discover -s tests -p 'test_cp2k_dependency_stage.py'",
+      "tests": 8,
+      "seconds": 49.361
+    }
+  ],
+  "total_tests": 16,
+  "temporary_directory": "$PWD/.test-work/overlay-final-20261017",
+  "files": {
+    "controller/cp2k_overlay_workdir.py": "f22d281427ede157c03c7fc20a8b625e9c5a511e023a6c358de93040589fe468",
+    "controller/cp2k_dependency_stage.py": "ac170f92f21e833c5b409074a183a5df034371576d1a79f73b3ad1b85ff6174f",
+    "tests/test_cp2k_overlay_workdir.py": "213f9a9fc2f5fffee7a6384b39f581d2c325e234d0bfe6e0f5ceb02b91fd5495",
+    "tests/test_cp2k_dependency_stage.py": "5ad7af1b8e25ead537e8bf07f220dc90b68638ef4e6ca445cc3bc4869850b6c8"
+  },
+  "syntax": "passed",
+  "review": "workflow_audit: no blocking issues, including final zero-inode slot handling"
+}

@@ -98,21 +98,49 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 
 ## Remaining acceptance work
 
-Latest follow-up, 21:35 Asia/Shanghai on October 17: 4V100 application job
-`1831311` FAILED `1:0` after 16:51 during multicharge's CMake FindOpenMP cleanup
-(`link.txt`: `Is a directory`). Its unmounted image passed read-only filesystem
-checks; live overlay metadata remains under investigation. DSPRHBM dependencies
-completed `0:0` in 52:57 and sealed; application `1831428` is preparing its
-image. 16V100/8V100V0 are still compiling dependencies. There is no new SIF.
-[Accounting and logs](evidence/cp2k-spla-offload-20261017/production-before.json).
+Latest follow-up, 22:16 Asia/Shanghai on October 17: all four private-driver
+dependency jobs completed `0:0`, but all four application jobs failed. 4V100
+`1831311` and 16V100 `1831609` hit CMake cleanup `EISDIR`; DSPRHBM `1831428`
+could not resolve COSMA's installed COSTA dependency; 8V100V0 `1831584` failed
+installing the toml-f license directory and ended with a driver cleanup timeout.
+The latter's exact cause remains unconfirmed. There is no new accepted SIF.
+[Accounting and retained logs](evidence/cp2k-spla-offload-20261017/production-container-fixes.json).
 
-The user requested SpLA GEMM offload for GPU builds. The next recipe enables
-it on all V100 targets, explicitly disables it on CPU, and requires matching
-CMake settings plus GPU version capability. All 17 contract tests pass.
-An independent real SpLA/cuBLAS numerical and timing probe accompanies the
-[source analysis](CP2K-V100-TUNING.md#gpu-gemm-offload-enabled-for-the-next-recipe).
-This does not mark CP2K science/performance or publication complete. Frozen
-controllers and dependency seals retain their original identities.
+The GPU recipe now enables SpLA GEMM offload, explicitly disables it on CPU,
+and requires matching CMake settings plus GPU version capability. The user
+confirmed large-system usage. A real V100 dependency probe passed numerical
+checks; 1024/2048-square DGEMMs were 1.32x/2.48x faster than four CPU threads,
+including transfers. This is not CP2K whole-application performance acceptance.
+Commit `f35bf85` also fixes transitive CMake dependency lookup. Its GitHub CI
+passed 710 tests with two optional skips; 26 focused tests passed on SAI.
+[Results and validation](evidence/cp2k-spla-offload-20261017/README.md).
+
+Read-only mount qualification exposed a changed 4V100 dependency image hash.
+The original seal is preserved and must fail verification; that image is now
+a diagnostic source only. A repaired private driver opens the backing file
+`O_RDONLY`; job `1831878` passed all twelve filesystem, explicit-sync,
+read-only hash and reader/writer-lock cases. The new binary is checksum-pinned
+in the recipe and installed read-only in the home cache.
+[Driver qualification](evidence/fuse2fs-readonly-20261017/README.md).
+
+The CMake cleanup failure mechanism was reproduced independently in job
+`1831861`: clean overlays passed 8192 deletions; old numeric work directories
+caused `renameat` to return `EISDIR`. This establishes a fuse-overlayfs work-name
+collision, without proving every old application error has the same cause.
+[Reproducer and retained failures](evidence/cp2k-overlay-workdir-20261017/README.md).
+
+The new application-copy preparation is now integrated. It verifies the sealed
+source and exact copy while holding OFD locks, removes only reviewed temporary
+work entries, rejects unexpected contents or hard links, and retains the derived
+hash and read-only filesystem checks. Job `1832137` passed on a new 256 MiB
+fixture: 8193 entries removed, 8192 file operations without error, three fsck
+checks passed, source hash and upper payload sentinel unchanged. Sixteen
+preparation/seal tests and 37 driver/lifecycle/recovery tests also passed.
+This fixture establishes the repair behavior; the next real CP2K build remains
+required. [Repair evidence](evidence/cp2k-overlay-workdir-20261017/fix-proof-result.json).
+
+Frozen controllers and dependency seals retain their original identities.
+Fresh compilation and science/export/publication gates remain required.
 
 Earlier follow-up, 21:16 Asia/Shanghai on October 17: 4V100's dependency image
 is sealed and application-stage job `1831311` is RUNNING on `4v100n05`

@@ -1,9 +1,10 @@
 #!/usr/bin/env python3
 """Use the measured, checksum-pinned home-backed overlay driver for CP2K.
 
-The adapter preserves Apptainer's inherited OFD image lock and explicit fsync.
-Source, patch, rebuild inputs and filesystem tests are recorded in
-docs/evidence/fuse2fs-efficiency-20261017. No system driver is replaced.
+The adapter preserves Apptainer's inherited OFD image lock and explicit fsync,
+and opens explicitly read-only images with a read-only backing descriptor.
+Source, patches, rebuild inputs and filesystem tests are recorded in
+docs/evidence/fuse2fs-{efficiency,readonly}-20261017. No system driver is replaced.
 """
 import hashlib
 import json
@@ -14,8 +15,8 @@ import sys
 from source_cache import checksum
 
 SOURCE_COMMIT = '45651efd6db7da8738bc9d8d1f17e99259cabfe4'
-PATCHED_SOURCE_SHA256 = '2c299a8eb6a26620c629a40a0270543ffb9aec8cfb8abf84613246cab14b63ff'
-DRIVER_SHA256 = '0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9'
+PATCHED_SOURCE_SHA256 = 'c63d1fb25510d316836952953e9adddacd3214cd91d6002bf3b16aed350c4ddc'
+DRIVER_SHA256 = '46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10'
 APPTAINER = Path('/opt/devtools/apptainer/1.4.4/bin/apptainer')
 SITE_CONFIG = Path('/opt/devtools/apptainer/1.4.4/etc/apptainer/apptainer.conf')
 

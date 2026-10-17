@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 3.21)
+project(cp2k_dependency_configs LANGUAGES C CXX Fortran)
+find_package(cosma CONFIG REQUIRED)
+find_package(SPLA CONFIG REQUIRED)
+message(STATUS "CP2K_PRIVATE_COSMA_SPLA_CONFIGS_VERIFIED")

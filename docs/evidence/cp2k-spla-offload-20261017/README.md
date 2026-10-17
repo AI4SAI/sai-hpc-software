@@ -34,3 +34,14 @@ it writes a new evidence file only under project home diagnostics.
 Local validation on the workstation's Windows-mounted tree encountered mode
 semantics and missing CMake. Focused checks are therefore run on the SAI home
 filesystem, with full CI on Linux. This is separate from the numerical probe.
+
+`validation.json` records successful GitHub CI at `f35bf85`: 710 passed,
+two optional skips, plus 26 focused SAI checks. `container-focused.log`
+adds 37 passing SAI tests for the repaired driver wrapper, workflow lifecycle
+and continuation/recovery behavior. These tests use temporary directories
+under project home.
+
+`production-after.json` retains the intermediate production snapshot;
+`production-container-fixes.json` records the later 22:16 state, when all
+four dependency jobs had succeeded and all four application jobs had failed.
+No accepted CP2K application artifact is implied by the dependency probe.

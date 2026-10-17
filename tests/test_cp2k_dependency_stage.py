@@ -113,7 +113,14 @@ class DependencyStageTests(unittest.TestCase):
         receipt = self.seal()
         app = self.root / 'runs/application'
         (app / 'results').mkdir(parents=True)
-        stage.clone(self.root, self.control, self.run.name, app.name, self.identity)
+        def prepare(source, target, expected, results):
+            self.assertEqual(expected, checksum(source))
+            target.write_bytes(source.read_bytes())
+            (results / stage.WORKDIR_RECEIPT).write_text('{"status":"prepared"}')
+        with patch.object(stage, 'prepare_clone', side_effect=prepare) as preparation:
+            stage.clone(self.root, self.control, self.run.name, app.name, self.identity)
+        preparation.assert_called_once_with(self.run / 'work.ext3', app / 'work.ext3',
+                                             receipt['overlay_sha256'], app / 'results')
         self.assertEqual(checksum(app / 'work.ext3'), receipt['overlay_sha256'])
         self.assertEqual(checksum(self.run / 'work.ext3'), receipt['overlay_sha256'])
         self.assertEqual(json.loads((app / 'results/dependency-stage.json').read_text()), receipt)
@@ -128,6 +135,15 @@ class DependencyStageTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'changed'):
             stage.clone(self.root, self.control, self.run.name, other.name, self.identity)
         self.assertFalse((other / 'work.ext3').exists())
+
+    def test_workdir_preparation_failure_prevents_application_dependency_receipt(self):
+        self.seal()
+        app = self.root / 'runs/application'
+        (app / 'results').mkdir(parents=True)
+        with patch.object(stage, 'prepare_clone', side_effect=ValueError('unsafe work tree')):
+            with self.assertRaisesRegex(ValueError, 'unsafe work tree'):
+                stage.clone(self.root, self.control, self.run.name, app.name, self.identity)
+        self.assertFalse((app / 'results/dependency-stage.json').exists())
 
     def test_submission_records_identity_before_releasing_held_allocation(self):
         submitted = self.root / 'runs/fresh-dependencies'

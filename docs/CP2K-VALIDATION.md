@@ -3,6 +3,44 @@
 This records implementation and live build progress, not release acceptance.
 No four-target CP2K 2026.2 release has passed all acceptance gates yet.
 
+## Container fixes and build status at 22:16, October 17
+
+All four dependency jobs completed successfully. Application jobs `1831311`
+(4V100), `1831609` (16V100), `1831428` (DSPRHBM) and `1831584` (8V100V0)
+failed before producing an accepted SIF. DSPRHBM's missing transitive COSTA
+search prefix is fixed in `f35bf85`; CI passed 710 tests with two optional
+skips, and 26 focused tests passed on SAI. The same commit enables the
+user-requested GPU SpLA GEMM offload.
+[Validation](evidence/cp2k-spla-offload-20261017/validation.json) and
+[all four application outcomes](evidence/cp2k-spla-offload-20261017/production-container-fixes.json).
+
+Read-only driver repair job `1831878` passed all twelve stages, including
+actual `O_RDONLY` image opens, zero traced image writes, unchanged full-image
+hashes, explicit fsync and reader/writer exclusion. The new pinned binary
+is installed in the project home cache. The previously changed 4V100
+dependency checkpoint remains invalid against its preserved original seal.
+[Full driver evidence](evidence/fuse2fs-readonly-20261017/README.md).
+
+Job `1831861` independently reproduced a fuse-overlayfs work-directory
+collision: 8192 deletes pass on a clean image; numeric leftovers produce
+`renameat(...)=EISDIR`. This establishes the cleanup failure mechanism, while
+8V100V0's license-directory installation error and cleanup timeout are not yet
+proved to have the same cause. Historical images are preserved. Changes to
+the next recipe must pass application build and science/export gates; no
+CP2K runtime performance or publication acceptance is claimed here.
+[Reproducer](evidence/cp2k-overlay-workdir-20261017/README.md).
+
+The new application-copy preparation is now integrated. It verifies the sealed
+source and exact copy while holding OFD locks, removes only reviewed temporary
+work entries, rejects unexpected contents or hard links, and retains the derived
+hash and read-only filesystem checks. Job `1832137` passed on a new 256 MiB
+fixture: 8193 entries removed, 8192 file operations without error, three fsck
+checks passed, source hash and upper payload sentinel unchanged. Sixteen
+preparation/seal tests and 37 driver/lifecycle/recovery tests also passed.
+This fixture establishes the repair behavior; the next real CP2K build remains
+required. [Repair evidence](evidence/cp2k-overlay-workdir-20261017/fix-proof-result.json).
+
+
 ## GPU GEMM offload follow-up, October 17
 
 At the user's request, the next recipe enables SpLA GEMM offload for all three

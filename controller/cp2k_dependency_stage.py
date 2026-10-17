@@ -13,6 +13,7 @@ import time
 
 from cp2k_spack_link import validate_receipt
 from cp2k_image_driver import wrap_command, validate_receipt as validate_driver_receipt
+from cp2k_overlay_workdir import prepare_clone, RECEIPT as WORKDIR_RECEIPT
 from release_contract import validate_identity
 from remote_controller import TARGETS, container_command, require_capacity, safe_name
 from source_cache import checksum
@@ -232,15 +233,12 @@ def clone(project, controller, source_id, run_id, identity):
     target = run / 'work.ext3'
     if target.exists() or target.is_symlink() or not run.is_dir() or not (run / 'results').is_dir():
         raise ValueError('application clone requires a prepared run without an overlay')
-    for name in (*EVIDENCE, 'dependency-stage.json'):
+    for name in (*EVIDENCE, 'dependency-stage.json', WORKDIR_RECEIPT, 'overlay-workdir-preparation'):
         destination = run / 'results' / name
         if destination.exists() or destination.is_symlink():
             raise ValueError('application dependency receipt already exists')
     require_capacity(project, read_json(source / 'request.json')['overlay_mb'])
-    subprocess.run(['cp', '--sparse=always', '--reflink=auto', '--', str(source / 'work.ext3'), str(target)], check=True)
-    if checksum(target) != receipt['overlay_sha256']:
-        raise ValueError('dependency clone checksum mismatch')
-    target.chmod(0o600)
+    prepare_clone(source / 'work.ext3', target, receipt['overlay_sha256'], run / 'results')
     for name in EVIDENCE:
         value = (source / 'results' / name).read_bytes()
         destination = run / 'results' / name
