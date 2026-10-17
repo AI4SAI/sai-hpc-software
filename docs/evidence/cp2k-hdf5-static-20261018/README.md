@@ -128,3 +128,21 @@ Final artifact and scientific/performance outcomes are pending.
 At 02:12 Asia/Shanghai, native dependency jobs were `1834668` (16V100),
 `1834662` (4V100), `1834667` (8V100V0) and `1834666` (DSPRHBM).
 [Exact requests, scripts and accounting](compat-formal-start.json).
+
+## Larger PBE diagnostic
+
+Job `1834681` completed `0:0` in 8:45 on `4v100n12`, including before/after
+full image hashes. It ran the repository's fixed 64-water fixture (192 atoms,
+1,472 orbital functions) in OT and ordinary diagonalization. Both converged;
+energy differed by `7.73e-12 Ha` and maximum force by `1.54e-9 Ha/Bohr`.
+Only timing output was expanded in both inputs, and the diagonalization input
+replaced the OT solver section. Direct-generalized diagonalization and backend
+defaults were unchanged.
+
+Timings recorded 112 OT and 24 diagonalization calls to `cp_fm_diag_cusolver`;
+the retained pinned-source evidence traces this routine to `cusolverMpSyevd`.
+Process maps include cuSOLVERMp, NCCL and the compatibility driver/JIT libraries;
+GPU grid and DBCSR accelerator timings are present. The same complete candidate
+binary and read-only image passed unchanged full hashes. This establishes
+single-node, single-rank execution on a larger matrix, not formal SIF acceptance
+or a baseline performance comparison. [Complete evidence](water64-smoke.json).

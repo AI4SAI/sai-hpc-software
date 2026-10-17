@@ -121,6 +121,15 @@ test. These separate small diagnostics establish numerical consistency only.
 [Baseline results and retained setup failures](evidence/cp2k-hdf5-static-20261018/baseline-pbe-smoke.json).
 The production commit passed 732 CI tests: 730 passes and two optional skips.
 
+The repository's 64-water (192-atom, 1,472 orbital functions) diagnostic also
+passed OT and ordinary diagonalization (`1834681`, `COMPLETED 0:0`). Retained
+timings prove 112 and 24 calls through `cp_fm_diag_cusolver`, respectively;
+the pinned source binds that path to `cusolverMpSyevd`. Energy and maximum force
+differences were `7.73e-12 Ha` and `1.54e-9 Ha/Bohr`. Actual loaded libraries,
+GPU grid/DBCSR timings and unchanged full binary/image hashes were checked.
+This is single-node diagnostic execution, with no baseline performance verdict
+and no formal SIF claim. [Raw results](evidence/cp2k-hdf5-static-20261018/water64-smoke.json).
+
 At 02:12 Asia/Shanghai on October 18, the corrected workflow had these native
 dependency jobs. Their frozen controller, source, recipe, Slurm scripts and
 home-backed temporary storage were verified against the requested identity.

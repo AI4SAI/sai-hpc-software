@@ -28,6 +28,14 @@ SIF acceptance, and does not require a baseline environment change.
 [Baseline evidence and diagnostic setup failures](evidence/cp2k-hdf5-static-20261018/baseline-pbe-smoke.json).
 The production commit passed 732 CI tests: 730 passes and two optional skips.
 
+Diagnostic `1834681` passed the repository's 192-atom water workload with
+1,472 orbital functions in both OT and ordinary diagonalization. Timings show
+112 and 24 `cp_fm_diag_cusolver` calls, and the pinned source binds this routine
+to `cusolverMpSyevd`. Energy and maximum force differences were `7.73e-12 Ha`
+and `1.54e-9 Ha/Bohr`. Full binary/image hashes were unchanged. This is a
+single-node diagnostic, not final SIF or comparative performance acceptance.
+[Inputs, timings, maps and numerical results](evidence/cp2k-hdf5-static-20261018/water64-smoke.json).
+
 At 02:12 Asia/Shanghai on October 18, corrected dependency jobs were
 `1834668` (16V100, RUNNING), `1834662` (4V100, RUNNING), `1834667`
 (8V100V0, PENDING) and `1834666` (DSPRHBM, RUNNING). Their actual Slurm
