@@ -175,5 +175,21 @@ def main():
         print(identity["install_prefix"])
 
 
+class PerformanceRegression(ValueError):
+    """The scientific result passed, but publication requires a fresh timing run."""
+
+
+def check_performance(candidate_seconds, baseline_seconds):
+    import math
+    values = (candidate_seconds, baseline_seconds)
+    if any(isinstance(v, bool) or not isinstance(v, (float, int)) or
+           not math.isfinite(v) or v <= 0 for v in values):
+        raise ValueError('performance requires finite positive measured times')
+    ratio = candidate_seconds / baseline_seconds
+    if ratio > 1.10:
+        raise PerformanceRegression(f'performance regression: candidate/baseline={ratio:.4f} > 1.10')
+    return ratio
+
+
 if __name__ == "__main__":
     main()

@@ -12,10 +12,11 @@ Host source/build/install trees are **not** mounted writable. A build uses the p
 installation and final filesystem assembly all happen inside that image.
 
 The successful artifact is one read-only SquashFS-backed SIF. It contains
-`/opt/software/<software>/<track>/<build_id>/<PARTITION>` at exactly that path. The installed
+`/opt/apps/<software>/<stem>-<track>-<build_id>/<PARTITION>` at exactly that path. The installed
 administrator dependencies are reused read-only at their original paths:
 `/opt/devtools`, `/opt/modules`, `/usr`, `/lib`, `/lib64`.
-The entire `/opt` is never bound over the installation.
+Neither `/opt` nor `/opt/apps` is bound over the installation. Site application dependencies
+are mounted read-only at their exact existing version directories. See [copy-only deployment](docs/site-apps-layout.md).
 
 The trusted entrypoint and bare repository are mounted read-only. Host home, working directory,
 site-wide bind paths and host temporary directories are disabled; the build also has a private
@@ -45,6 +46,14 @@ does not silently create an on-host sandbox.
 ## Storage on SAI
 
 All project files live below `/home/stardust/sai-hpc-software`:
+
+Builds use the home filesystem, including source caches, overlays, compiler
+temporary files and Apptainer temporary/cache directories. Container
+`/workspace/tmp` is backed by the per-run `work.ext3` file in home; host `/tmp`
+and `/var/tmp` are not mounted into builds. Shared-filesystem free-space reports
+are not treated as a user storage limit: submissions and running builds do not
+reserve estimated disk growth or wait for a free-space threshold. Actual write
+failures remain build failures with their logs and checkpoints retained.
 
 ```text
 containers/base/minimal-v1.sif

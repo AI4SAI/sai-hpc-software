@@ -1,0 +1,378 @@
+{
+  "schema": 1,
+  "collected_at_utc": "2026-10-17T18:07:56.684966+00:00",
+  "status": "pinned-baseline-default-environment-pbe-ot-passed",
+  "scope": "Diagnostic single-node single-rank native baseline PBE OT only; not formal SIF, complete scientific, two-node, or performance acceptance.",
+  "cluster_alias": "SAI-stardust",
+  "run": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d",
+  "request": {
+    "purpose": "pinned-cp2k-2026.1-baseline-native-pbe-default-and-conditional-compat-smoke",
+    "baseline_module": "cp2k/2026.1-cuda12.9-sm70-auto",
+    "input_fixture": "water-gpw",
+    "controller": "/home/stardust/sai-hpc-software/runs/cp2k-hdf5-static-preflight-20261018-b/input/controller",
+    "parser_sha256": "aefd8b234b1b43f2815a6af5f3502204319a490f4919ad417421d920034a10e3",
+    "parent_fixture_run": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b",
+    "input_manifest_sha256": "762089909e729546631973063b442faf2697c1d70c915ef9d38a3a487c5550ec",
+    "resources": {
+      "partition": "4V100",
+      "qos": "flood-1o2gpu",
+      "nodes": 1,
+      "tasks": 1,
+      "gpus_per_node": 1,
+      "minutes": 10,
+      "ranks": 1,
+      "omp_threads": 1,
+      "map_by": "ppr:1:node:pe=4"
+    },
+    "conditional_retry": "Only if default case reports CUDA_ERROR_UNSUPPORTED_PTX_VERSION; same input/data/executable with exact SDK compat prepended in a new case directory",
+    "job_id": "1834594"
+  },
+  "slurm": {
+    "job_id": "1834594",
+    "state": "COMPLETED",
+    "exit_code": "0:0",
+    "elapsed": "00:00:16",
+    "node": "4v100n10",
+    "alloc_tres": "billing=194,cpu=8,gres/gpu=1,mem=22G,node=1",
+    "raw": "1834594|COMPLETED|0:0|00:00:16|4v100n10|billing=194,cpu=8,gres/gpu=1,mem=22G,node=1"
+  },
+  "binary_sha256": "982c64ced1c7676314fc2579f5a5544f8f7feaee1493aca565ccfc42a7b7c9f3",
+  "binary_unchanged": true,
+  "version": {
+    "version": "2026.1",
+    "flags": [
+      "cosma",
+      "dbcsr_acc",
+      "elpa",
+      "fftw3",
+      "hdf5",
+      "libbqb",
+      "libdftd4",
+      "libint",
+      "libvori",
+      "libxc",
+      "mctc-lib",
+      "mpi_f08",
+      "offload_cuda",
+      "omp",
+      "parallel",
+      "plumed2",
+      "scalapack",
+      "spglib",
+      "tblite",
+      "xsmm"
+    ],
+    "revision": "git:5e54ba2"
+  },
+  "runtime": {
+    "scope": "Pinned baseline single-rank PBE smoke; not candidate or performance acceptance.",
+    "cases": {
+      "default": {
+        "exit_code": 0,
+        "unsupported_ptx": false,
+        "input_sha256": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0",
+        "driver_api": {
+          "cuInit": 0,
+          "cuDriverGetVersion_status": 0,
+          "nvrtcVersion_status": 0,
+          "cuda_driver_api_version": 12040,
+          "nvrtc_version": [
+            12,
+            9
+          ],
+          "rank": "0",
+          "local_rank": "0",
+          "cuda_visible_devices": "0",
+          "ld_library_path": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/apps/cp2k/cp2k-2026.1-avx512/exe/lib:/opt/apps/cp2k/cp2k-2026.1-avx512/tools/toolchain/install/plumed-2.9.3/lib:/opt/apps/cp2k/cp2k-2026.1-avx512/tools/toolchain/install/libxsmm-e0c4a2389afba36c453233ad7de07bd92c715bec/lib:/opt/apps/cp2k/cp2k-2026.1-avx512/tools/toolchain/install/elpa-2024.05.001/nvidia/lib:/opt/apps/cp2k/cp2k-2026.1-avx512/tools/toolchain/install/hdf5-1.14.6/lib:/opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia/lib:/opt/devtools/saiblas/2603-gnu-avx512/lib:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/devtools/nvidia/cuda-12.9.1/lib64:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/nvshmem/lib:/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/math_libs/12.9/lib64:/opt/devtools/libxc/libxc-7.0.0-avx512/lib:/opt/devtools/fftw/fftw-3.3.10/lib",
+          "mapped_libraries": [
+            "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libnvrtc.so.12.9.86",
+            "/usr/lib/x86_64-linux-gnu/libcuda.so.550.163.01"
+          ]
+        },
+        "mapped_gpu_libraries": [
+          "/usr/lib/x86_64-linux-gnu/libcuda.so.550.163.01",
+          "/usr/lib/x86_64-linux-gnu/libnvidia-ml.so.550.163.01",
+          "/usr/lib/x86_64-linux-gnu/libnvidia-ptxjitcompiler.so.550.163.01"
+        ],
+        "science": {
+          "energy_ha": -34.44682129478972,
+          "forces_ha_bohr": [
+            [
+              -0.00945233354,
+              -0.010457489816,
+              -2.87128e-07
+            ],
+            [
+              -0.009818693543,
+              0.01569111124,
+              -1.41928e-07
+            ],
+            [
+              0.010457918678,
+              0.004642532798,
+              5.8306e-08
+            ],
+            [
+              -0.003014175638,
+              0.009256006936,
+              -5.6023e-08
+            ],
+            [
+              0.004272731236,
+              -0.008357649189,
+              -0.007545513107
+            ],
+            [
+              0.004272706359,
+              -0.008357781986,
+              0.007545680456
+            ]
+          ],
+          "elapsed_seconds": 12.429505015723407,
+          "cp2k_seconds": 11.675,
+          "dispersion_ha": null
+        },
+        "passed": true,
+        "normal_termination": true,
+        "scf_converged": true,
+        "finite_energy": true
+      }
+    },
+    "compat_retry": "not required: default run did not fail with unsupported PTX",
+    "requires_baseline_compat": false,
+    "passed": true
+  },
+  "raw_evidence": {
+    "input/data/BASIS_MOLOPT": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/input/data/BASIS_MOLOPT",
+      "bytes": 127679,
+      "sha256": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61"
+    },
+    "input/data/GTH_POTENTIALS": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/input/data/GTH_POTENTIALS",
+      "bytes": 168128,
+      "sha256": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+    },
+    "input/input.inp": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/input/input.inp",
+      "bytes": 1506,
+      "sha256": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0"
+    },
+    "input/job.sbatch": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/input/job.sbatch",
+      "bytes": 2362,
+      "sha256": "b508d2b4885cafe0758d194e0d22e44fdb3d2b1a6ee05ef2ec422f6164070c12"
+    },
+    "input/rank.py": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/input/rank.py",
+      "bytes": 1769,
+      "sha256": "c6bdc473ec88d951ae0522475dea322c0ee56b5dde6eecc6e0ce05c6cb5a4c34"
+    },
+    "input/run.py": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/input/run.py",
+      "bytes": 3696,
+      "sha256": "b0bd335bed1d3fced07c7ece7cba48e9d7076d15fcc7a6db2897138ed564d80b"
+    },
+    "results/baseline-smoke-result.json": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/results/baseline-smoke-result.json",
+      "bytes": 3427,
+      "sha256": "c4de3e3e16a86236ea8024b45d463c53733b2c6d95d26b2228deb64ceabe2636"
+    },
+    "results/binary-after.sha256": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/results/binary-after.sha256",
+      "bytes": 111,
+      "sha256": "6ff9ac3b87e0634abd67cc7470e3e25284ad16a43757b2bba56c91393fcf4929"
+    },
+    "results/binary-before.sha256": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/results/binary-before.sha256",
+      "bytes": 111,
+      "sha256": "6ff9ac3b87e0634abd67cc7470e3e25284ad16a43757b2bba56c91393fcf4929"
+    },
+    "results/binary.txt": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/results/binary.txt",
+      "bytes": 45,
+      "sha256": "34aa4b1e1ccf0fac29bec0fd6979b19f3d788e80d0a3e6ec27d4696378576f24"
+    },
+    "results/kernel-driver.txt": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/results/kernel-driver.txt",
+      "bytes": 154,
+      "sha256": "b21be37474347c4262627d448b68e1ee1783a396ff0c55b6bb8333f7296008f7"
+    },
+    "results/modules.txt": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/results/modules.txt",
+      "bytes": 205,
+      "sha256": "4650965a375be613596683b8b02a5224c1a4029fc6183e8ba28c3e18818a2164"
+    },
+    "results/node.txt": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/results/node.txt",
+      "bytes": 19,
+      "sha256": "a08349834e9b65c4e2e0d1bae27ac4fec545d193de70f2ec7cd19b0553b947b0"
+    },
+    "results/nvidia-smi.txt": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/results/nvidia-smi.txt",
+      "bytes": 1778,
+      "sha256": "f52ff402747a2e99c563dace909f302b75f1733dc9d3084aaedb318d72d55e73"
+    },
+    "results/slurm-1834594.log": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/results/slurm-1834594.log",
+      "bytes": 2517,
+      "sha256": "484dffa68f40b02c3e189e8a2712f8ecd8c01330ae74ec40a631a0b9599e4467"
+    },
+    "results/slurm-job.txt": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/results/slurm-job.txt",
+      "bytes": 1630,
+      "sha256": "f61e48208bb7ef952b476979a23e50d7757c19d2f15f2a61cd3572ebb665e544"
+    },
+    "results/smoke.exit": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/results/smoke.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "cases/default/BASIS_MOLOPT": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/cases/default/BASIS_MOLOPT",
+      "bytes": 127679,
+      "sha256": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61"
+    },
+    "cases/default/GTH_POTENTIALS": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/cases/default/GTH_POTENTIALS",
+      "bytes": 168128,
+      "sha256": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+    },
+    "cases/default/benchmark-RESTART.wfn": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/cases/default/benchmark-RESTART.wfn",
+      "bytes": 3388,
+      "sha256": "c948c2f1392d20e6f55f94483a95d56c84d404fae502d60686e960f752b038c5"
+    },
+    "cases/default/benchmark-RESTART.wfn.bak-1": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/cases/default/benchmark-RESTART.wfn.bak-1",
+      "bytes": 3388,
+      "sha256": "8034b9f726bcb753413649249405c9b604323c2b5d2751d3fcb8293a6088a597"
+    },
+    "cases/default/cp2k.log": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/cases/default/cp2k.log",
+      "bytes": 64282,
+      "sha256": "f4423cce1b0379d6b07bfa23ad39efd60a8c980dda3b9b79c123b8a8fb1be55c"
+    },
+    "cases/default/driver-api.json": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/cases/default/driver-api.json",
+      "bytes": 1676,
+      "sha256": "d4442ea2d6db8da5013419a169a843f2c2cc4332969b4198434d5ccc39015733"
+    },
+    "cases/default/elapsed.txt": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/cases/default/elapsed.txt",
+      "bytes": 19,
+      "sha256": "2c616f99d13038a2b715305ad14942274592e416c3dea50b12c4248a32aaad22"
+    },
+    "cases/default/environment.json": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/cases/default/environment.json",
+      "bytes": 2025,
+      "sha256": "9e52f91931731e8bd600683d29e88cafdbf4c73b9a6ef615d231a907e69aafb4"
+    },
+    "cases/default/forces.xyz": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/cases/default/forces.xyz",
+      "bytes": 715,
+      "sha256": "fc24a4929b67594380049854fa61415c5479e26409bec3b92ee2c7a1c277db36"
+    },
+    "cases/default/input.inp": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/cases/default/input.inp",
+      "bytes": 1506,
+      "sha256": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0"
+    },
+    "cases/default/ldd.exit": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/cases/default/ldd.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "cases/default/ldd.txt": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/cases/default/ldd.txt",
+      "bytes": 5655,
+      "sha256": "980b0486240ebaf30a6e1e975b5bc6e28efbecb097108648940eb2f787a9545b"
+    },
+    "cases/default/mapped-gpu-libraries.json": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/cases/default/mapped-gpu-libraries.json",
+      "bytes": 184,
+      "sha256": "231c7fd7af0d8ba5ea3de21a894df03eb46c3bbd1c7ef2a3716eaf07e395495c"
+    },
+    "cases/default/result.json": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/cases/default/result.json",
+      "bytes": 2885,
+      "sha256": "013e9b63a56912b5cc3d6c04b4bb032587ac1795998b9458e9ee1ff8fea86b92"
+    },
+    "cases/default/version.exit": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/cases/default/version.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "cases/default/version.txt": {
+      "path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-d/cases/default/version.txt",
+      "bytes": 6998,
+      "sha256": "d9a39bca578ea014804aa95b92a5375cf319686367ed1358c3658be1b0dd72c5"
+    }
+  },
+  "diagnostic_setup_failures": [
+    {
+      "run": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-a",
+      "slurm": {
+        "job_id": "1834559",
+        "state": "FAILED",
+        "exit_code": "1:0",
+        "elapsed": "00:00:00",
+        "node": "4v100n10",
+        "alloc_tres": "billing=194,cpu=8,gres/gpu=1,mem=22G,node=1",
+        "raw": "1834559|FAILED|1:0|00:00:00|4v100n10|billing=194,cpu=8,gres/gpu=1,mem=22G,node=1"
+      },
+      "cause": "Diagnostic harness omitted LOGNAME before Lmod under --export=NIL; no CP2K calculation was launched.",
+      "log_path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-a/results/slurm-1834559.log",
+      "log_sha256": "00381a0bb16330814453328991d95e5d5c54734c06e5b66fe6be64a6ce67c49c",
+      "log": "/etc/profile.d/lmod.sh: line 14: LOGNAME: unbound variable\n"
+    },
+    {
+      "run": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-b",
+      "slurm": {
+        "job_id": "1834562",
+        "state": "FAILED",
+        "exit_code": "1:0",
+        "elapsed": "00:00:03",
+        "node": "4v100n10",
+        "alloc_tres": "billing=194,cpu=8,gres/gpu=1,mem=22G,node=1",
+        "raw": "1834562|FAILED|1:0|00:00:03|4v100n10|billing=194,cpu=8,gres/gpu=1,mem=22G,node=1"
+      },
+      "cause": "Diagnostic harness omitted HOME under --export=NIL; direct version command exited 14 before PBE. Original captured version output was not persisted.",
+      "log_path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-b/results/slurm-1834562.log",
+      "log_sha256": "30f5d49a9ba94504cc3134f11e9c7bcbec93be7be2b7c4f91cb06913cc014c14",
+      "log": "Traceback (most recent call last):\n  File \"/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-b/input/run.py\", line 33, in <module>\n    output = subprocess.run(argv, env=env, capture_output=True, text=True, check=True)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/usr/lib/python3.12/subprocess.py\", line 571, in run\n    raise CalledProcessError(retcode, process.args,\nsubprocess.CalledProcessError: Command '['/opt/apps/cp2k/cp2k-2026.1/exe/bin/cp2k.psmp', '--version']' returned non-zero exit status 14.\n"
+    },
+    {
+      "run": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-c",
+      "slurm": {
+        "job_id": "1834577",
+        "state": "FAILED",
+        "exit_code": "1:0",
+        "elapsed": "00:00:03",
+        "node": "4v100n10",
+        "alloc_tres": "billing=194,cpu=8,gres/gpu=1,mem=22G,node=1",
+        "raw": "1834577|FAILED|1:0|00:00:03|4v100n10|billing=194,cpu=8,gres/gpu=1,mem=22G,node=1"
+      },
+      "cause": "MPI explicitly reported Unable to get the user home directory; this was the diagnostic HOME omission, already handled by production render_job(). No CP2K calculation launched.",
+      "log_path": "/home/stardust/sai-hpc-software/runs/cp2k-baseline-pbe-smoke-20261018-c/results/slurm-1834577.log",
+      "log_sha256": "092a1ea23569c436640d4c2b2019a55a46647cd2e38092a9186b324cfa94b53c",
+      "log": "DEFAULT {\"exit_code\": 1, \"unsupported_ptx\": false, \"input_sha256\": \"580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0\", \"passed\": false, \"error\": \"AssertionError: CP2K/mpirun exited 1\"}\n"
+    }
+  ],
+  "candidate_ot_diagnostic_comparison": {
+    "candidate_run": "/home/stardust/sai-hpc-software/runs/cp2k-pbe-smoke-20261018-b",
+    "energy_delta_ha": 8.526512829121202e-13,
+    "max_force_delta_ha_bohr": 1.0000004296850662e-12,
+    "limitation": "Separate diagnostic jobs and driver selections; numerical consistency only, no timing or formal benchmark claim."
+  },
+  "conclusion": {
+    "requires_baseline_compat": false,
+    "production_benchmark_change": false,
+    "reason": "Pinned GPU baseline completed PBE OT with host libcuda/PTX JIT 550.163.01 and no compat path. Conditional compat retry was unnecessary.",
+    "loaded_driver": "/usr/lib/x86_64-linux-gnu/libcuda.so.550.163.01",
+    "driver_api_version": 12040,
+    "nvrtc_observation": "The auxiliary ctypes probe found toolkit NVRTC 12.9.86. No dynamic NVRTC library appeared in sampled CP2K process maps; this does not prove every baseline workload avoids runtime NVRTC.",
+    "unchanged_baseline": true,
+    "unchanged_system": true
+  }
+}

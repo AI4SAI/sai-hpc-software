@@ -1,0 +1,29 @@
+{
+  "purpose": "isolated-ELPA-CUDA-link-repair-not-CP2K-acceptance",
+  "job_id": "1382379",
+  "partition": "DSPRHBM",
+  "state": "COMPLETED",
+  "exit_code": "0:0",
+  "elapsed": "00:01:09",
+  "upstream_cmake_source": "26ffdda5eaee8dc2f3d8268cb2fd92854b42740a",
+  "controller": "/home/stardust/sai-hpc-software/diagnostics/cp2k-elpa-link-20260918-v1",
+  "results": "/home/stardust/sai-hpc-software/runs/cp2k-elpa-link-20260918-a-DSPRHBM/results",
+  "job_script_sha256": "5b4cec47a666353d5686eec031ca0fd2262b41256fc1d0f2bb3cfad084549058",
+  "unfixed_cudart": "cudart",
+  "fixed_cuda_library_directory": "/opt/devtools/nvidia/cuda-12.9.1/lib64",
+  "fixed_cuda_libraries": ["cusolver", "cudart", "cublasLt", "cublas"],
+  "linked_with_no_as_needed": true,
+  "loader_unresolved_libraries": false,
+  "probe_execution_passed": true,
+  "cp2k_built": false,
+  "scientific_verified": false,
+  "published": false,
+  "files_sha256": {
+    "fixed-CMakeCache.txt": "764d3262378dd2204f9325860a00a2085f65f1bdbbe360129b8612a7a728131a",
+    "fixed-resolved.txt": "c539376a95d3ccc5f25a062c53a4a8d8c1eba2a4270f3e1d3912125d27cec2bb",
+    "ldd.txt": "c6f10e8b09ac00012a3a0e850b6ff02484cf79f5805181b82d1980f7fd7bbaa1",
+    "slurm-1382379.log": "2076682a583b3b80f7ab936d51b6a2f003673d6a7804344fbd7f7b64ef692ca4",
+    "unfixed-CMakeCache.txt": "ba9c059d62b63bf741ac405ac26a7177af4bd5420de19434c61777dac0541699",
+    "unfixed-resolved.txt": "556327587b27cc6799197d39fc2071b93489c721f7785cd0e26d191feacc2445"
+  }
+}

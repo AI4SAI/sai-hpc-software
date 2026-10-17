@@ -2,20 +2,25 @@
 """Lmod-only fixtures in an isolated experiment, never scientific artifacts."""
 import argparse
 from pathlib import Path
+import re
 
 from module_publication import publish_module
+from delivery_layout import artifact_path
+from release_contract import make_identity
 
 
 def stage(root, phase):
     expected = Path.home() / 'sai-hpc-software/experimental'
-    if (root.parent != expected or root.name not in ('module-publication-20260911', 'module-publication-20260911-v2')
+    if (root.parent != expected or not re.fullmatch(r'module-publication-[a-z0-9-]+', root.name)
             or root.resolve() != root):
         raise ValueError('probe must use its isolated, fixed experiment root')
     if phase == 'initial' and root.exists():
         raise ValueError('do not overwrite an existing probe')
     pairs = [('dsprhbm', 'cpu-first'), ('8v100v0-avx512', 'gpu-other')] if phase == 'initial' else [('dsprhbm', 'cpu-next')]
     for target, run in pairs:
-        artifact = root / f'containers/software/cp2k/probe/{target}/{run}.sif'
+        identity = make_identity('cp2k', 'development', 'module-routing-fixture', '0' * 40,
+                                 'NOT-SOFTWARE-MODULE-PROBE', '0' * 64, target)
+        artifact = artifact_path(root, identity, run)
         artifact.parent.mkdir(parents=True, exist_ok=True)
         artifact.write_text('NOT A SIF: isolated module-routing metadata fixture only\n')
         launcher = root / f'controller/{run}/cp2k'
@@ -26,9 +31,11 @@ def stage(root, phase):
                    'module load fftw/3.3.10 saiblas/2603-gnu-auto']
         if target != 'dsprhbm':
             modules += ['module load cuda/12.9.1 nvmplibs/26.7-tmp']
-        publish_module(root, {'software': 'cp2k', 'version': 'probe', 'target': target},
+        publish_module(root, {'software': 'cp2k', 'version': identity['source_version'], 'target': target,
+                             'source_sha': identity['source_sha'], 'recipe_sha256': identity['recipe_sha256'],
+                             'identity': identity},
                        artifact, launcher, modules, 'CP2K')
-    print('STAGED_ISOLATED_MODULE_FIXTURES ' + phase)
+    print('cp2k/development/' + identity['build_id'])
 
 
 if __name__ == '__main__':

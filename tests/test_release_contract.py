@@ -159,7 +159,7 @@ class IdentityTests(unittest.TestCase):
     def test_prefix_separates_recipe_source_partition_and_all_three_tracks(self):
         base = self.identity()
         self.assertEqual(base["build_id"], "v3.10.0-g" + "a" * 12 + "-r" + "b" * 12)
-        self.assertEqual(base["install_prefix"], "/opt/software/abacus/release/" + base["build_id"] + "/DSPRHBM")
+        self.assertEqual(base["install_prefix"], "/opt/apps/abacus/abacus-release-" + base["build_id"] + "/DSPRHBM")
         variants = [base, self.identity(source_sha="c" * 40), self.identity(recipe_sha256="d" * 64),
                     self.identity(target="4v100-avx512"), self.identity(track="development"),
                     self.identity(track="prerelease")]
@@ -181,7 +181,7 @@ class IdentityTests(unittest.TestCase):
             self.assertLessEqual(len(identity["build_id"]), contract.MAX_BUILD_ID)
             self.assertRegex(identity["version_label"], r"^[A-Za-z0-9][A-Za-z0-9_.-]*$")
             self.assertEqual(identity, self.identity(source_version=raw))
-            self.assertEqual(len(Path(identity["install_prefix"]).parts), 7)
+            self.assertEqual(len(Path(identity["install_prefix"]).parts), 6)
         self.assertNotEqual(self.identity(source_version="v" * 100 + "a")["install_prefix"],
                             self.identity(source_version="v" * 100 + "b")["install_prefix"])
 
@@ -201,7 +201,7 @@ class IdentityTests(unittest.TestCase):
     def test_every_derived_identity_field_is_recomputed(self):
         original = self.identity()
         alterations = {
-            "schema": (2, True, 1.0), "install_prefix": ("/opt/software/abacus/release/forged/4V100",),
+            "schema": (1, 3, True, 2.0), "install_prefix": ("/opt/software/abacus/release/forged/4V100",),
             "build_id": ("different",), "version_label": ("different",),
             "repository": ("attacker/repo",), "partition": ("4V100",),
             "cpu_arch": ("generic",), "dependency_isa": ("avx2",),
@@ -265,7 +265,7 @@ class ResolveTrackTests(unittest.TestCase):
                 expected = ref + "-2026-09-13-g" + "a" * 12 + "-r" + "b" * 12
                 self.assertEqual(identity["build_id"], expected)
                 self.assertEqual(identity["install_prefix"],
-                                 f"/opt/software/{software}/development/{expected}/4V100")
+                                 f"/opt/apps/{software}/{contract.APP_STEMS.get(software, software)}-development-{expected}/4V100")
                 self.assertEqual(contract.validate_identity(identity), identity)
                 identities.append(identity)
             self.assertEqual(identities[0], identities[1])

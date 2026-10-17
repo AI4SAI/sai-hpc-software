@@ -123,7 +123,7 @@ class GpuFeatureTests(unittest.TestCase):
         self.assertIn(str(self.control / "abacus"), script)
         self.assertNotIn("current.sif", script)
         self.assertNotIn("module load abacus/", script)
-        self.assertNotRegex(script, r"(?:^|[= :])/tmp(?:/|$)")
+        self.assertNotRegex(script.replace(str(ROOT), "/home/test/repository"), r"(?:^|[= :])/tmp(?:/|$)")
         self.evidence()
         self.cli("verify", "gpu")
         self.monitor()

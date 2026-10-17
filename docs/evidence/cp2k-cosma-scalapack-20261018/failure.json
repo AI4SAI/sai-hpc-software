@@ -1,0 +1,2512 @@
+{
+  "checked_at": "2026-10-17T16:01:45.886228+00:00",
+  "fix_commit": "e8c096903b8b79806da47dd280d2de3ccd0c68d9",
+  "fresh_workflow": "39047391019",
+  "records": [
+    {
+      "accounting": "1833010|16V100|FAILED|1:0|00:08:08|16v100n01",
+      "artifact_reference_exists": false,
+      "cosma_costa_specs": [
+        {
+          "annotations": {
+            "original_specfile_version": 5
+          },
+          "arch": {
+            "platform": "linux",
+            "platform_os": "ubuntu24.04",
+            "target": {
+              "cpupart": "",
+              "features": [
+                "abm",
+                "aes",
+                "avx",
+                "avx2",
+                "bmi1",
+                "bmi2",
+                "clflushopt",
+                "clwb",
+                "clzero",
+                "cx16",
+                "f16c",
+                "fma",
+                "fsgsbase",
+                "lahf_lm",
+                "mmx",
+                "movbe",
+                "pclmulqdq",
+                "pku",
+                "popcnt",
+                "rdseed",
+                "sse",
+                "sse2",
+                "sse3",
+                "sse4_1",
+                "sse4_2",
+                "sse4a",
+                "ssse3",
+                "vaes",
+                "vpclmulqdq",
+                "xsave",
+                "xsavec",
+                "xsaveopt"
+              ],
+              "generation": 0,
+              "name": "zen3",
+              "parents": [
+                "zen2"
+              ],
+              "vendor": "AuthenticAMD"
+            }
+          },
+          "dependencies": [
+            {
+              "hash": "ifxznw7ug4hipkb7oavyrn3fepk2fkhw",
+              "name": "cmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "cj36drxonwpeqtef4nv5imckcsnobjt7",
+              "name": "compiler-wrapper",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "xdgmji3tsucqtwsbtw3wqyjueimt25gi",
+              "name": "costa",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "ylpqqnzsltfawifuy6ar5zdtobhfayd4",
+              "name": "cuda",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "4h4i75guf725rqm3zhdnq33gnrse4jpp",
+              "name": "gcc",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": [
+                  "c",
+                  "cxx",
+                  "fortran"
+                ]
+              }
+            },
+            {
+              "hash": "gpfmwc6iyo4ntxrmm4szhzf5shg7shpi",
+              "name": "gcc-runtime",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": [
+                  "fortran-rt",
+                  "libgfortran"
+                ]
+              }
+            },
+            {
+              "hash": "idgtbx4aauhzcsldnnj2riu2evlc2h6n",
+              "name": "glibc",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": [
+                  "libc"
+                ]
+              }
+            },
+            {
+              "hash": "t55qpocv7qz7nvpcyowbtszpieef2yju",
+              "name": "gmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "kh6ibnymn3jodorne4hpxlkryb7uyoy2",
+              "name": "openmpi",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": [
+                  "mpi"
+                ]
+              }
+            },
+            {
+              "hash": "wqmiz7l6rdmi3pfr3ra5oubt4tauqtem",
+              "name": "tiled-mm",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": []
+              }
+            }
+          ],
+          "hash": "tyu2lfn2gymirj6o4zofldezdfcs7d5d",
+          "name": "cosma",
+          "namespace": "builtin",
+          "package_hash": "gfx4idm2f2zeiwwnffvb6bgy5ngm7w5o6v2fcwhquqbfqqgn5uea====",
+          "parameters": {
+            "apps": false,
+            "build_system": "cmake",
+            "build_type": "Release",
+            "cflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "cppflags": [],
+            "cuda": true,
+            "cxxflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "fflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "generator": "make",
+            "gpu_direct": false,
+            "ipo": false,
+            "ldflags": [],
+            "ldlibs": [],
+            "nccl": false,
+            "profiling": false,
+            "rocm": false,
+            "scalapack": false,
+            "shared": true,
+            "tests": false
+          },
+          "version": "2.7.0"
+        },
+        {
+          "annotations": {
+            "original_specfile_version": 5
+          },
+          "arch": {
+            "platform": "linux",
+            "platform_os": "ubuntu24.04",
+            "target": {
+              "cpupart": "",
+              "features": [
+                "abm",
+                "aes",
+                "avx",
+                "avx2",
+                "bmi1",
+                "bmi2",
+                "clflushopt",
+                "clwb",
+                "clzero",
+                "cx16",
+                "f16c",
+                "fma",
+                "fsgsbase",
+                "lahf_lm",
+                "mmx",
+                "movbe",
+                "pclmulqdq",
+                "pku",
+                "popcnt",
+                "rdseed",
+                "sse",
+                "sse2",
+                "sse3",
+                "sse4_1",
+                "sse4_2",
+                "sse4a",
+                "ssse3",
+                "vaes",
+                "vpclmulqdq",
+                "xsave",
+                "xsavec",
+                "xsaveopt"
+              ],
+              "generation": 0,
+              "name": "zen3",
+              "parents": [
+                "zen2"
+              ],
+              "vendor": "AuthenticAMD"
+            }
+          },
+          "dependencies": [
+            {
+              "hash": "ifxznw7ug4hipkb7oavyrn3fepk2fkhw",
+              "name": "cmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "cj36drxonwpeqtef4nv5imckcsnobjt7",
+              "name": "compiler-wrapper",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "4h4i75guf725rqm3zhdnq33gnrse4jpp",
+              "name": "gcc",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": [
+                  "cxx"
+                ]
+              }
+            },
+            {
+              "hash": "gpfmwc6iyo4ntxrmm4szhzf5shg7shpi",
+              "name": "gcc-runtime",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "idgtbx4aauhzcsldnnj2riu2evlc2h6n",
+              "name": "glibc",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": [
+                  "libc"
+                ]
+              }
+            },
+            {
+              "hash": "t55qpocv7qz7nvpcyowbtszpieef2yju",
+              "name": "gmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "kh6ibnymn3jodorne4hpxlkryb7uyoy2",
+              "name": "openmpi",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": [
+                  "mpi"
+                ]
+              }
+            }
+          ],
+          "hash": "xdgmji3tsucqtwsbtw3wqyjueimt25gi",
+          "name": "costa",
+          "namespace": "builtin",
+          "package_hash": "zhgnsrfst3hmg7okmqube2e6c52ipb6rgspa2nsl7n2iw6kfzr5q====",
+          "parameters": {
+            "apps": false,
+            "benchmarks": false,
+            "build_system": "cmake",
+            "build_type": "Release",
+            "cflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "cppflags": [],
+            "cxxflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "fflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "generator": "make",
+            "ipo": false,
+            "ldflags": [],
+            "ldlibs": [],
+            "profiling": false,
+            "scalapack": false,
+            "shared": true,
+            "tests": false
+          },
+          "version": "2.3.3"
+        }
+      ],
+      "job_id": "1833010",
+      "lock_sha256": "494dae979a47e76a4a3448e14870340c559beff212644a1443e25c92e1eb6073",
+      "log_sha256": "761b1b6c21be66ea92c372fb2bf7e9d3dc6b16de1e99121b2d0c0cf7f742ba4f",
+      "log_tail": [
+        "  language is parallel.",
+        "Call Stack (most recent call first):",
+        "  CMakeLists.txt:705 (find_package)",
+        "",
+        "",
+        "-- Found HDF5: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/16V100/dependencies/spack/linux-zen3/hdf5-1.14.6-oatczg6z5jwpt7tsfkayczc5vkcqm7oi/lib/libhdf5.a;/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/16V100/dependencies/spack/linux-zen3/hdf5-1.14.6-oatczg6z5jwpt7tsfkayczc5vkcqm7oi/lib/libhdf5_fortran.a;/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/16V100/dependencies/spack/linux-zen3/hdf5-1.14.6-oatczg6z5jwpt7tsfkayczc5vkcqm7oi/lib/libhdf5.a (found version \"1.14.6\") found components: C Fortran",
+        "-- Found MPI: TRUE (found version \"3.1\") found components: CXX",
+        "CMake Error at CMakeLists.txt:719 (message):",
+        "   COSMA needs to be build with scalapack offloading support. COSTA_SCALAPACK and COSMA_SCALAPACK should probably be set properly",
+        "",
+        "",
+        "-- Configuring incomplete, errors occurred!"
+      ],
+      "run": "39041714911-1-release-16v100-avx2-2026-10-17-67b5da876dd6"
+    },
+    {
+      "accounting": "1832260|16V100|COMPLETED|0:0|01:03:58|16v100n81",
+      "artifact_reference_exists": false,
+      "cosma_costa_specs": [
+        {
+          "annotations": {
+            "original_specfile_version": 5
+          },
+          "arch": {
+            "platform": "linux",
+            "platform_os": "ubuntu24.04",
+            "target": {
+              "cpupart": "",
+              "features": [
+                "abm",
+                "aes",
+                "avx",
+                "avx2",
+                "bmi1",
+                "bmi2",
+                "clflushopt",
+                "clwb",
+                "clzero",
+                "cx16",
+                "f16c",
+                "fma",
+                "fsgsbase",
+                "lahf_lm",
+                "mmx",
+                "movbe",
+                "pclmulqdq",
+                "pku",
+                "popcnt",
+                "rdseed",
+                "sse",
+                "sse2",
+                "sse3",
+                "sse4_1",
+                "sse4_2",
+                "sse4a",
+                "ssse3",
+                "vaes",
+                "vpclmulqdq",
+                "xsave",
+                "xsavec",
+                "xsaveopt"
+              ],
+              "generation": 0,
+              "name": "zen3",
+              "parents": [
+                "zen2"
+              ],
+              "vendor": "AuthenticAMD"
+            }
+          },
+          "dependencies": [
+            {
+              "hash": "ifxznw7ug4hipkb7oavyrn3fepk2fkhw",
+              "name": "cmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "cj36drxonwpeqtef4nv5imckcsnobjt7",
+              "name": "compiler-wrapper",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "xdgmji3tsucqtwsbtw3wqyjueimt25gi",
+              "name": "costa",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "ylpqqnzsltfawifuy6ar5zdtobhfayd4",
+              "name": "cuda",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "4h4i75guf725rqm3zhdnq33gnrse4jpp",
+              "name": "gcc",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": [
+                  "c",
+                  "cxx",
+                  "fortran"
+                ]
+              }
+            },
+            {
+              "hash": "gpfmwc6iyo4ntxrmm4szhzf5shg7shpi",
+              "name": "gcc-runtime",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": [
+                  "fortran-rt",
+                  "libgfortran"
+                ]
+              }
+            },
+            {
+              "hash": "idgtbx4aauhzcsldnnj2riu2evlc2h6n",
+              "name": "glibc",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": [
+                  "libc"
+                ]
+              }
+            },
+            {
+              "hash": "t55qpocv7qz7nvpcyowbtszpieef2yju",
+              "name": "gmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "kh6ibnymn3jodorne4hpxlkryb7uyoy2",
+              "name": "openmpi",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": [
+                  "mpi"
+                ]
+              }
+            },
+            {
+              "hash": "wqmiz7l6rdmi3pfr3ra5oubt4tauqtem",
+              "name": "tiled-mm",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": []
+              }
+            }
+          ],
+          "hash": "tyu2lfn2gymirj6o4zofldezdfcs7d5d",
+          "name": "cosma",
+          "namespace": "builtin",
+          "package_hash": "gfx4idm2f2zeiwwnffvb6bgy5ngm7w5o6v2fcwhquqbfqqgn5uea====",
+          "parameters": {
+            "apps": false,
+            "build_system": "cmake",
+            "build_type": "Release",
+            "cflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "cppflags": [],
+            "cuda": true,
+            "cxxflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "fflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "generator": "make",
+            "gpu_direct": false,
+            "ipo": false,
+            "ldflags": [],
+            "ldlibs": [],
+            "nccl": false,
+            "profiling": false,
+            "rocm": false,
+            "scalapack": false,
+            "shared": true,
+            "tests": false
+          },
+          "version": "2.7.0"
+        },
+        {
+          "annotations": {
+            "original_specfile_version": 5
+          },
+          "arch": {
+            "platform": "linux",
+            "platform_os": "ubuntu24.04",
+            "target": {
+              "cpupart": "",
+              "features": [
+                "abm",
+                "aes",
+                "avx",
+                "avx2",
+                "bmi1",
+                "bmi2",
+                "clflushopt",
+                "clwb",
+                "clzero",
+                "cx16",
+                "f16c",
+                "fma",
+                "fsgsbase",
+                "lahf_lm",
+                "mmx",
+                "movbe",
+                "pclmulqdq",
+                "pku",
+                "popcnt",
+                "rdseed",
+                "sse",
+                "sse2",
+                "sse3",
+                "sse4_1",
+                "sse4_2",
+                "sse4a",
+                "ssse3",
+                "vaes",
+                "vpclmulqdq",
+                "xsave",
+                "xsavec",
+                "xsaveopt"
+              ],
+              "generation": 0,
+              "name": "zen3",
+              "parents": [
+                "zen2"
+              ],
+              "vendor": "AuthenticAMD"
+            }
+          },
+          "dependencies": [
+            {
+              "hash": "ifxznw7ug4hipkb7oavyrn3fepk2fkhw",
+              "name": "cmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "cj36drxonwpeqtef4nv5imckcsnobjt7",
+              "name": "compiler-wrapper",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "4h4i75guf725rqm3zhdnq33gnrse4jpp",
+              "name": "gcc",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": [
+                  "cxx"
+                ]
+              }
+            },
+            {
+              "hash": "gpfmwc6iyo4ntxrmm4szhzf5shg7shpi",
+              "name": "gcc-runtime",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "idgtbx4aauhzcsldnnj2riu2evlc2h6n",
+              "name": "glibc",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": [
+                  "libc"
+                ]
+              }
+            },
+            {
+              "hash": "t55qpocv7qz7nvpcyowbtszpieef2yju",
+              "name": "gmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "kh6ibnymn3jodorne4hpxlkryb7uyoy2",
+              "name": "openmpi",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": [
+                  "mpi"
+                ]
+              }
+            }
+          ],
+          "hash": "xdgmji3tsucqtwsbtw3wqyjueimt25gi",
+          "name": "costa",
+          "namespace": "builtin",
+          "package_hash": "zhgnsrfst3hmg7okmqube2e6c52ipb6rgspa2nsl7n2iw6kfzr5q====",
+          "parameters": {
+            "apps": false,
+            "benchmarks": false,
+            "build_system": "cmake",
+            "build_type": "Release",
+            "cflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "cppflags": [],
+            "cxxflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "fflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "generator": "make",
+            "ipo": false,
+            "ldflags": [],
+            "ldlibs": [],
+            "profiling": false,
+            "scalapack": false,
+            "shared": true,
+            "tests": false
+          },
+          "version": "2.3.3"
+        }
+      ],
+      "job_id": "1832260",
+      "lock_sha256": "494dae979a47e76a4a3448e14870340c559beff212644a1443e25c92e1eb6073",
+      "log_sha256": "4b32029577997288df0ee2ac99e0f5c3e59b2ff1602e60f86d19167a195816e6",
+      "log_tail": [
+        "[ ] np37xjh plumed@2.10.1 autoreconf (17s)",
+        "[ ] np37xjh plumed@2.10.1 configure (18s)",
+        "[ ] np37xjh plumed@2.10.1 build (27s)",
+        "[ ] np37xjh plumed@2.10.1 install (5m27s)",
+        "[+] np37xjh plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/16V100/dependencies/spack/linux-zen3/plumed-2.10.1-np37xjhlxj3qmkfebxzpsypu734ersmo (7m01s)",
+        "[ ] ufynbug libint@2.6.0 install (1h00m)",
+        "[+] ufynbug libint@2.6.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/16V100/dependencies/spack/linux-zen3/libint-2.6.0-ufynbugam3r7u7zghgfuumkuodesgugo (1h01m)",
+        "CP2K_FINAL_PREFIX_DEPENDENCIES_COMPLETE 2026-10-17T15:48:31Z",
+        "INFO:    Terminating fuse2fs after timeout",
+        "INFO:    Timeouts can be caused by a running background process",
+        "INFO:    Cleanup error: while stopping driver for /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0: fuse2fs exited: Ignoring invalid max threads value 4294967295 > max (100000).",
+        "CP2K_DEPENDENCY_STAGE_COMPLETE_NOT_APPLICATION_ACCEPTANCE"
+      ],
+      "run": "39041714911-1-release-16v100-avx2-2026-10-17-67b5da876dd6-dependencies"
+    },
+    {
+      "accounting": "1832733|4V100|FAILED|1:0|00:21:43|4v100n06",
+      "artifact_reference_exists": false,
+      "cosma_costa_specs": [
+        {
+          "annotations": {
+            "original_specfile_version": 5
+          },
+          "arch": {
+            "platform": "linux",
+            "platform_os": "ubuntu24.04",
+            "target": {
+              "cpupart": "",
+              "features": [
+                "abm",
+                "aes",
+                "avx",
+                "avx2",
+                "avx512_bf16",
+                "avx512_bitalg",
+                "avx512_vbmi2",
+                "avx512_vnni",
+                "avx512_vp2intersect",
+                "avx512_vpopcntdq",
+                "avx512bw",
+                "avx512cd",
+                "avx512dq",
+                "avx512f",
+                "avx512ifma",
+                "avx512vbmi",
+                "avx512vl",
+                "avx_vnni",
+                "bmi1",
+                "bmi2",
+                "clflushopt",
+                "clwb",
+                "clzero",
+                "cx16",
+                "f16c",
+                "flush_l1d",
+                "fma",
+                "fsgsbase",
+                "gfni",
+                "lahf_lm",
+                "mmx",
+                "movbe",
+                "movdir64b",
+                "movdiri",
+                "pclmulqdq",
+                "pku",
+                "popcnt",
+                "rdseed",
+                "sse",
+                "sse2",
+                "sse3",
+                "sse4_1",
+                "sse4_2",
+                "sse4a",
+                "ssse3",
+                "tsc_adjust",
+                "vaes",
+                "vpclmulqdq",
+                "xsave",
+                "xsavec",
+                "xsaveopt"
+              ],
+              "generation": 0,
+              "name": "zen5",
+              "parents": [
+                "zen4"
+              ],
+              "vendor": "AuthenticAMD"
+            }
+          },
+          "dependencies": [
+            {
+              "hash": "pcylpksijtgp4kyze64zfg4eaf5b6wr7",
+              "name": "cmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "xavsxje4mjgilcmipnqxlmeja7dtnmnn",
+              "name": "compiler-wrapper",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "bnt2qboj6a4emry3efbgiaecggwjdvne",
+              "name": "costa",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "wcitbdswp5ovj4exhsis5yo3xpv4h5jf",
+              "name": "cuda",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "k5265vmikf4sgy6tnaoemv52yyqmoddm",
+              "name": "gcc",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": [
+                  "c",
+                  "cxx",
+                  "fortran"
+                ]
+              }
+            },
+            {
+              "hash": "77qhgzuzdemuui24pq4mbvevxv5xvock",
+              "name": "gcc-runtime",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": [
+                  "fortran-rt",
+                  "libgfortran"
+                ]
+              }
+            },
+            {
+              "hash": "gqnisuvdgvdjqdntjihql6utndtqeb42",
+              "name": "glibc",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": [
+                  "libc"
+                ]
+              }
+            },
+            {
+              "hash": "rlzx2odftk2sm6gjxrobiuqrdhm2kuin",
+              "name": "gmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "nk4bb6tii2y6fioklszwbdsu2dyfhdvj",
+              "name": "openmpi",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": [
+                  "mpi"
+                ]
+              }
+            },
+            {
+              "hash": "joxrwvs52itwvriwz6urraxcs3kgwuds",
+              "name": "tiled-mm",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": []
+              }
+            }
+          ],
+          "hash": "fosnhjhoc5gegowe347o7foswfomsbqk",
+          "name": "cosma",
+          "namespace": "builtin",
+          "package_hash": "gfx4idm2f2zeiwwnffvb6bgy5ngm7w5o6v2fcwhquqbfqqgn5uea====",
+          "parameters": {
+            "apps": false,
+            "build_system": "cmake",
+            "build_type": "Release",
+            "cflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "cppflags": [],
+            "cuda": true,
+            "cxxflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "fflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "generator": "make",
+            "gpu_direct": false,
+            "ipo": false,
+            "ldflags": [],
+            "ldlibs": [],
+            "nccl": false,
+            "profiling": false,
+            "rocm": false,
+            "scalapack": false,
+            "shared": true,
+            "tests": false
+          },
+          "version": "2.7.0"
+        },
+        {
+          "annotations": {
+            "original_specfile_version": 5
+          },
+          "arch": {
+            "platform": "linux",
+            "platform_os": "ubuntu24.04",
+            "target": {
+              "cpupart": "",
+              "features": [
+                "abm",
+                "aes",
+                "avx",
+                "avx2",
+                "avx512_bf16",
+                "avx512_bitalg",
+                "avx512_vbmi2",
+                "avx512_vnni",
+                "avx512_vp2intersect",
+                "avx512_vpopcntdq",
+                "avx512bw",
+                "avx512cd",
+                "avx512dq",
+                "avx512f",
+                "avx512ifma",
+                "avx512vbmi",
+                "avx512vl",
+                "avx_vnni",
+                "bmi1",
+                "bmi2",
+                "clflushopt",
+                "clwb",
+                "clzero",
+                "cx16",
+                "f16c",
+                "flush_l1d",
+                "fma",
+                "fsgsbase",
+                "gfni",
+                "lahf_lm",
+                "mmx",
+                "movbe",
+                "movdir64b",
+                "movdiri",
+                "pclmulqdq",
+                "pku",
+                "popcnt",
+                "rdseed",
+                "sse",
+                "sse2",
+                "sse3",
+                "sse4_1",
+                "sse4_2",
+                "sse4a",
+                "ssse3",
+                "tsc_adjust",
+                "vaes",
+                "vpclmulqdq",
+                "xsave",
+                "xsavec",
+                "xsaveopt"
+              ],
+              "generation": 0,
+              "name": "zen5",
+              "parents": [
+                "zen4"
+              ],
+              "vendor": "AuthenticAMD"
+            }
+          },
+          "dependencies": [
+            {
+              "hash": "pcylpksijtgp4kyze64zfg4eaf5b6wr7",
+              "name": "cmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "xavsxje4mjgilcmipnqxlmeja7dtnmnn",
+              "name": "compiler-wrapper",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "k5265vmikf4sgy6tnaoemv52yyqmoddm",
+              "name": "gcc",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": [
+                  "cxx"
+                ]
+              }
+            },
+            {
+              "hash": "77qhgzuzdemuui24pq4mbvevxv5xvock",
+              "name": "gcc-runtime",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "gqnisuvdgvdjqdntjihql6utndtqeb42",
+              "name": "glibc",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": [
+                  "libc"
+                ]
+              }
+            },
+            {
+              "hash": "rlzx2odftk2sm6gjxrobiuqrdhm2kuin",
+              "name": "gmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "nk4bb6tii2y6fioklszwbdsu2dyfhdvj",
+              "name": "openmpi",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": [
+                  "mpi"
+                ]
+              }
+            }
+          ],
+          "hash": "bnt2qboj6a4emry3efbgiaecggwjdvne",
+          "name": "costa",
+          "namespace": "builtin",
+          "package_hash": "zhgnsrfst3hmg7okmqube2e6c52ipb6rgspa2nsl7n2iw6kfzr5q====",
+          "parameters": {
+            "apps": false,
+            "benchmarks": false,
+            "build_system": "cmake",
+            "build_type": "Release",
+            "cflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "cppflags": [],
+            "cxxflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "fflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "generator": "make",
+            "ipo": false,
+            "ldflags": [],
+            "ldlibs": [],
+            "profiling": false,
+            "scalapack": false,
+            "shared": true,
+            "tests": false
+          },
+          "version": "2.3.3"
+        }
+      ],
+      "job_id": "1832733",
+      "lock_sha256": "13a8b32302fcf632ef0d2f4dcc21cbee4f499ea69fdc8b55015c136e3ac9efbe",
+      "log_sha256": "560e75bb3bf36e5864c88a7ca93a682bf856c09232bcb34abb91215ba773e216",
+      "log_tail": [
+        "  language is parallel.",
+        "Call Stack (most recent call first):",
+        "  CMakeLists.txt:705 (find_package)",
+        "",
+        "",
+        "-- Found HDF5: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/hdf5-1.14.6-veh6gg4r2kjguzn47akx3jrp3kumhq6r/lib/libhdf5.a;/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/hdf5-1.14.6-veh6gg4r2kjguzn47akx3jrp3kumhq6r/lib/libhdf5_fortran.a;/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/hdf5-1.14.6-veh6gg4r2kjguzn47akx3jrp3kumhq6r/lib/libhdf5.a (found version \"1.14.6\") found components: C Fortran",
+        "-- Found MPI: TRUE (found version \"3.1\") found components: CXX",
+        "CMake Error at CMakeLists.txt:719 (message):",
+        "   COSMA needs to be build with scalapack offloading support. COSTA_SCALAPACK and COSMA_SCALAPACK should probably be set properly",
+        "",
+        "",
+        "-- Configuring incomplete, errors occurred!"
+      ],
+      "run": "39041714911-1-release-4v100-avx512-2026-10-17-67b5da876dd6"
+    },
+    {
+      "accounting": "1832262|4V100|COMPLETED|0:0|00:38:43|4v100n13",
+      "artifact_reference_exists": false,
+      "cosma_costa_specs": [
+        {
+          "annotations": {
+            "original_specfile_version": 5
+          },
+          "arch": {
+            "platform": "linux",
+            "platform_os": "ubuntu24.04",
+            "target": {
+              "cpupart": "",
+              "features": [
+                "abm",
+                "aes",
+                "avx",
+                "avx2",
+                "avx512_bf16",
+                "avx512_bitalg",
+                "avx512_vbmi2",
+                "avx512_vnni",
+                "avx512_vp2intersect",
+                "avx512_vpopcntdq",
+                "avx512bw",
+                "avx512cd",
+                "avx512dq",
+                "avx512f",
+                "avx512ifma",
+                "avx512vbmi",
+                "avx512vl",
+                "avx_vnni",
+                "bmi1",
+                "bmi2",
+                "clflushopt",
+                "clwb",
+                "clzero",
+                "cx16",
+                "f16c",
+                "flush_l1d",
+                "fma",
+                "fsgsbase",
+                "gfni",
+                "lahf_lm",
+                "mmx",
+                "movbe",
+                "movdir64b",
+                "movdiri",
+                "pclmulqdq",
+                "pku",
+                "popcnt",
+                "rdseed",
+                "sse",
+                "sse2",
+                "sse3",
+                "sse4_1",
+                "sse4_2",
+                "sse4a",
+                "ssse3",
+                "tsc_adjust",
+                "vaes",
+                "vpclmulqdq",
+                "xsave",
+                "xsavec",
+                "xsaveopt"
+              ],
+              "generation": 0,
+              "name": "zen5",
+              "parents": [
+                "zen4"
+              ],
+              "vendor": "AuthenticAMD"
+            }
+          },
+          "dependencies": [
+            {
+              "hash": "pcylpksijtgp4kyze64zfg4eaf5b6wr7",
+              "name": "cmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "xavsxje4mjgilcmipnqxlmeja7dtnmnn",
+              "name": "compiler-wrapper",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "bnt2qboj6a4emry3efbgiaecggwjdvne",
+              "name": "costa",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "wcitbdswp5ovj4exhsis5yo3xpv4h5jf",
+              "name": "cuda",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "k5265vmikf4sgy6tnaoemv52yyqmoddm",
+              "name": "gcc",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": [
+                  "c",
+                  "cxx",
+                  "fortran"
+                ]
+              }
+            },
+            {
+              "hash": "77qhgzuzdemuui24pq4mbvevxv5xvock",
+              "name": "gcc-runtime",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": [
+                  "fortran-rt",
+                  "libgfortran"
+                ]
+              }
+            },
+            {
+              "hash": "gqnisuvdgvdjqdntjihql6utndtqeb42",
+              "name": "glibc",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": [
+                  "libc"
+                ]
+              }
+            },
+            {
+              "hash": "rlzx2odftk2sm6gjxrobiuqrdhm2kuin",
+              "name": "gmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "nk4bb6tii2y6fioklszwbdsu2dyfhdvj",
+              "name": "openmpi",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": [
+                  "mpi"
+                ]
+              }
+            },
+            {
+              "hash": "joxrwvs52itwvriwz6urraxcs3kgwuds",
+              "name": "tiled-mm",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": []
+              }
+            }
+          ],
+          "hash": "fosnhjhoc5gegowe347o7foswfomsbqk",
+          "name": "cosma",
+          "namespace": "builtin",
+          "package_hash": "gfx4idm2f2zeiwwnffvb6bgy5ngm7w5o6v2fcwhquqbfqqgn5uea====",
+          "parameters": {
+            "apps": false,
+            "build_system": "cmake",
+            "build_type": "Release",
+            "cflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "cppflags": [],
+            "cuda": true,
+            "cxxflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "fflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "generator": "make",
+            "gpu_direct": false,
+            "ipo": false,
+            "ldflags": [],
+            "ldlibs": [],
+            "nccl": false,
+            "profiling": false,
+            "rocm": false,
+            "scalapack": false,
+            "shared": true,
+            "tests": false
+          },
+          "version": "2.7.0"
+        },
+        {
+          "annotations": {
+            "original_specfile_version": 5
+          },
+          "arch": {
+            "platform": "linux",
+            "platform_os": "ubuntu24.04",
+            "target": {
+              "cpupart": "",
+              "features": [
+                "abm",
+                "aes",
+                "avx",
+                "avx2",
+                "avx512_bf16",
+                "avx512_bitalg",
+                "avx512_vbmi2",
+                "avx512_vnni",
+                "avx512_vp2intersect",
+                "avx512_vpopcntdq",
+                "avx512bw",
+                "avx512cd",
+                "avx512dq",
+                "avx512f",
+                "avx512ifma",
+                "avx512vbmi",
+                "avx512vl",
+                "avx_vnni",
+                "bmi1",
+                "bmi2",
+                "clflushopt",
+                "clwb",
+                "clzero",
+                "cx16",
+                "f16c",
+                "flush_l1d",
+                "fma",
+                "fsgsbase",
+                "gfni",
+                "lahf_lm",
+                "mmx",
+                "movbe",
+                "movdir64b",
+                "movdiri",
+                "pclmulqdq",
+                "pku",
+                "popcnt",
+                "rdseed",
+                "sse",
+                "sse2",
+                "sse3",
+                "sse4_1",
+                "sse4_2",
+                "sse4a",
+                "ssse3",
+                "tsc_adjust",
+                "vaes",
+                "vpclmulqdq",
+                "xsave",
+                "xsavec",
+                "xsaveopt"
+              ],
+              "generation": 0,
+              "name": "zen5",
+              "parents": [
+                "zen4"
+              ],
+              "vendor": "AuthenticAMD"
+            }
+          },
+          "dependencies": [
+            {
+              "hash": "pcylpksijtgp4kyze64zfg4eaf5b6wr7",
+              "name": "cmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "xavsxje4mjgilcmipnqxlmeja7dtnmnn",
+              "name": "compiler-wrapper",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "k5265vmikf4sgy6tnaoemv52yyqmoddm",
+              "name": "gcc",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": [
+                  "cxx"
+                ]
+              }
+            },
+            {
+              "hash": "77qhgzuzdemuui24pq4mbvevxv5xvock",
+              "name": "gcc-runtime",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "gqnisuvdgvdjqdntjihql6utndtqeb42",
+              "name": "glibc",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": [
+                  "libc"
+                ]
+              }
+            },
+            {
+              "hash": "rlzx2odftk2sm6gjxrobiuqrdhm2kuin",
+              "name": "gmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "nk4bb6tii2y6fioklszwbdsu2dyfhdvj",
+              "name": "openmpi",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": [
+                  "mpi"
+                ]
+              }
+            }
+          ],
+          "hash": "bnt2qboj6a4emry3efbgiaecggwjdvne",
+          "name": "costa",
+          "namespace": "builtin",
+          "package_hash": "zhgnsrfst3hmg7okmqube2e6c52ipb6rgspa2nsl7n2iw6kfzr5q====",
+          "parameters": {
+            "apps": false,
+            "benchmarks": false,
+            "build_system": "cmake",
+            "build_type": "Release",
+            "cflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "cppflags": [],
+            "cxxflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "fflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "generator": "make",
+            "ipo": false,
+            "ldflags": [],
+            "ldlibs": [],
+            "profiling": false,
+            "scalapack": false,
+            "shared": true,
+            "tests": false
+          },
+          "version": "2.3.3"
+        }
+      ],
+      "job_id": "1832262",
+      "lock_sha256": "13a8b32302fcf632ef0d2f4dcc21cbee4f499ea69fdc8b55015c136e3ac9efbe",
+      "log_sha256": "6251b610ecfe69c7ac8b41746153d17fc41078e48fd31e29530c5cdd98a20c65",
+      "log_tail": [
+        "[+] veh6gg4 hdf5@1.14.6 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/hdf5-1.14.6-veh6gg4r2kjguzn47akx3jrp3kumhq6r (1m57s)",
+        "[+] lh7rnzg py-cython@3.2.4 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/py-cython-3.2.4-lh7rnzgrf3dzdlgxnsbqyub2o4fl2pvq (2m46s)",
+        "[ ] tuc2skr plumed@2.10.1 staging (4s)",
+        "[ ] tuc2skr plumed@2.10.1 autoreconf (18s)",
+        "[ ] tuc2skr plumed@2.10.1 configure (20s)",
+        "[ ] tuc2skr plumed@2.10.1 build (26s)",
+        "[ ] tuc2skr plumed@2.10.1 install (3m59s)",
+        "[+] tuc2skr plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg (5m33s)",
+        "[ ] vyzopke libint@2.6.0 install (34m19s)",
+        "[+] vyzopke libint@2.6.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz (35m01s)",
+        "CP2K_FINAL_PREFIX_DEPENDENCIES_COMPLETE 2026-10-17T15:23:29Z",
+        "CP2K_DEPENDENCY_STAGE_COMPLETE_NOT_APPLICATION_ACCEPTANCE"
+      ],
+      "run": "39041714911-1-release-4v100-avx512-2026-10-17-67b5da876dd6-dependencies"
+    },
+    {
+      "accounting": "1832264|8V100V0|COMPLETED|0:0|01:11:33|8v100v0n05",
+      "artifact_reference_exists": false,
+      "cosma_costa_specs": [
+        {
+          "annotations": {
+            "original_specfile_version": 5
+          },
+          "arch": {
+            "platform": "linux",
+            "platform_os": "ubuntu24.04",
+            "target": {
+              "cpupart": "",
+              "features": [
+                "abm",
+                "adx",
+                "aes",
+                "avx",
+                "avx2",
+                "avx512bw",
+                "avx512cd",
+                "avx512dq",
+                "avx512f",
+                "avx512vl",
+                "bmi1",
+                "bmi2",
+                "clflushopt",
+                "clwb",
+                "cx16",
+                "f16c",
+                "fma",
+                "lahf_lm",
+                "mmx",
+                "movbe",
+                "pclmulqdq",
+                "popcnt",
+                "rdrand",
+                "rdseed",
+                "sse",
+                "sse2",
+                "sse3",
+                "sse4_1",
+                "sse4_2",
+                "ssse3",
+                "xsave",
+                "xsavec",
+                "xsaveopt"
+              ],
+              "generation": 0,
+              "name": "skylake_avx512",
+              "parents": [
+                "skylake",
+                "x86_64_v4"
+              ],
+              "vendor": "GenuineIntel"
+            }
+          },
+          "dependencies": [
+            {
+              "hash": "gxii4olxiyrotvwr3exciyz5k2o2fc7c",
+              "name": "cmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "t6g6oykfgwxbd66jykpbm5hjuwq46pch",
+              "name": "compiler-wrapper",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "33y2tgbun7igrmptobktkiee3wsjsju5",
+              "name": "costa",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "m2j2cp4ejif2l5d7wdwkbcnij4ilicva",
+              "name": "cuda",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "jonysemrjscpc3s3nd2pol6ctthfipi2",
+              "name": "gcc",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": [
+                  "c",
+                  "cxx",
+                  "fortran"
+                ]
+              }
+            },
+            {
+              "hash": "2vmpyoaetw3l5tzfmngiu5c6ruq2glfr",
+              "name": "gcc-runtime",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": [
+                  "fortran-rt",
+                  "libgfortran"
+                ]
+              }
+            },
+            {
+              "hash": "ifjt2kgs47u7tx7b7qxwwrk33wtgxb72",
+              "name": "glibc",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": [
+                  "libc"
+                ]
+              }
+            },
+            {
+              "hash": "mhibs37ez5f6rhyfkawvqx6lpwm22hga",
+              "name": "gmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "krwidhnjoafizom34nh7y5g6x4cth5hk",
+              "name": "openmpi",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": [
+                  "mpi"
+                ]
+              }
+            },
+            {
+              "hash": "f7gzndzouxxc2uvmwgzfa4f3dypvczzz",
+              "name": "tiled-mm",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": []
+              }
+            }
+          ],
+          "hash": "zi7pmgnb4ye66ohzxxrvarqlos5wqx7r",
+          "name": "cosma",
+          "namespace": "builtin",
+          "package_hash": "gfx4idm2f2zeiwwnffvb6bgy5ngm7w5o6v2fcwhquqbfqqgn5uea====",
+          "parameters": {
+            "apps": false,
+            "build_system": "cmake",
+            "build_type": "Release",
+            "cflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "cppflags": [],
+            "cuda": true,
+            "cxxflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "fflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "generator": "make",
+            "gpu_direct": false,
+            "ipo": false,
+            "ldflags": [],
+            "ldlibs": [],
+            "nccl": false,
+            "profiling": false,
+            "rocm": false,
+            "scalapack": false,
+            "shared": true,
+            "tests": false
+          },
+          "version": "2.7.0"
+        },
+        {
+          "annotations": {
+            "original_specfile_version": 5
+          },
+          "arch": {
+            "platform": "linux",
+            "platform_os": "ubuntu24.04",
+            "target": {
+              "cpupart": "",
+              "features": [
+                "abm",
+                "adx",
+                "aes",
+                "avx",
+                "avx2",
+                "avx512bw",
+                "avx512cd",
+                "avx512dq",
+                "avx512f",
+                "avx512vl",
+                "bmi1",
+                "bmi2",
+                "clflushopt",
+                "clwb",
+                "cx16",
+                "f16c",
+                "fma",
+                "lahf_lm",
+                "mmx",
+                "movbe",
+                "pclmulqdq",
+                "popcnt",
+                "rdrand",
+                "rdseed",
+                "sse",
+                "sse2",
+                "sse3",
+                "sse4_1",
+                "sse4_2",
+                "ssse3",
+                "xsave",
+                "xsavec",
+                "xsaveopt"
+              ],
+              "generation": 0,
+              "name": "skylake_avx512",
+              "parents": [
+                "skylake",
+                "x86_64_v4"
+              ],
+              "vendor": "GenuineIntel"
+            }
+          },
+          "dependencies": [
+            {
+              "hash": "gxii4olxiyrotvwr3exciyz5k2o2fc7c",
+              "name": "cmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "t6g6oykfgwxbd66jykpbm5hjuwq46pch",
+              "name": "compiler-wrapper",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "jonysemrjscpc3s3nd2pol6ctthfipi2",
+              "name": "gcc",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": [
+                  "cxx"
+                ]
+              }
+            },
+            {
+              "hash": "2vmpyoaetw3l5tzfmngiu5c6ruq2glfr",
+              "name": "gcc-runtime",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "ifjt2kgs47u7tx7b7qxwwrk33wtgxb72",
+              "name": "glibc",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": [
+                  "libc"
+                ]
+              }
+            },
+            {
+              "hash": "mhibs37ez5f6rhyfkawvqx6lpwm22hga",
+              "name": "gmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "krwidhnjoafizom34nh7y5g6x4cth5hk",
+              "name": "openmpi",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": [
+                  "mpi"
+                ]
+              }
+            }
+          ],
+          "hash": "33y2tgbun7igrmptobktkiee3wsjsju5",
+          "name": "costa",
+          "namespace": "builtin",
+          "package_hash": "zhgnsrfst3hmg7okmqube2e6c52ipb6rgspa2nsl7n2iw6kfzr5q====",
+          "parameters": {
+            "apps": false,
+            "benchmarks": false,
+            "build_system": "cmake",
+            "build_type": "Release",
+            "cflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "cppflags": [],
+            "cxxflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "fflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "generator": "make",
+            "ipo": false,
+            "ldflags": [],
+            "ldlibs": [],
+            "profiling": false,
+            "scalapack": false,
+            "shared": true,
+            "tests": false
+          },
+          "version": "2.3.3"
+        }
+      ],
+      "job_id": "1832264",
+      "lock_sha256": "a92fbdee646713809b1f03020e1fbeac88720e805c05f21e4cec80353fdc2c09",
+      "log_sha256": "b6cb4992f1b1c172f4d8848a3fe48e422d82d1f909c84a9c5d8636319e287ad8",
+      "log_tail": [
+        "[+] c762spr hdf5@1.14.6 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/8V100V0/dependencies/spack/linux-skylake_avx512/hdf5-1.14.6-c762spr46tnwvmbfpx6o2723tufh4jlt (2m50s)",
+        "[+] xlhkvaq py-cython@3.2.4 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/8V100V0/dependencies/spack/linux-skylake_avx512/py-cython-3.2.4-xlhkvaqhtzwp47bq5j36nggv6ndnxx3u (4m08s)",
+        "[ ] e3rybix plumed@2.10.1 staging (5s)",
+        "[ ] e3rybix plumed@2.10.1 autoreconf (29s)",
+        "[ ] e3rybix plumed@2.10.1 configure (31s)",
+        "[ ] e3rybix plumed@2.10.1 build (43s)",
+        "[ ] e3rybix plumed@2.10.1 install (5m10s)",
+        "[+] e3rybix plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/8V100V0/dependencies/spack/linux-skylake_avx512/plumed-2.10.1-e3rybix5hx3xnaywsnjne37of7mtn4sq (7m02s)",
+        "[ ] r2f3aov libint@2.6.0 install (1h05m)",
+        "[+] r2f3aov libint@2.6.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/8V100V0/dependencies/spack/linux-skylake_avx512/libint-2.6.0-r2f3aov4745lee7lpixxbdoynxahf4lc (1h07m)",
+        "CP2K_FINAL_PREFIX_DEPENDENCIES_COMPLETE 2026-10-17T15:58:46Z",
+        "CP2K_DEPENDENCY_STAGE_COMPLETE_NOT_APPLICATION_ACCEPTANCE"
+      ],
+      "run": "39041714911-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6-dependencies"
+    },
+    {
+      "accounting": "1832921|DSPRHBM|RUNNING|0:0|00:17:49|d9470n02",
+      "artifact_reference_exists": false,
+      "job_id": "1832921",
+      "log_sha256": "3856f47290e1e06c5e2741f595019990cf239d642fb9bb78c2561efdeb4e4bc3",
+      "log_tail": [
+        "BUILD_CAPACITY_POLICY filesystem-enforced 39041714911-1-release-dsprhbm-2026-10-17-67b5da876dd6"
+      ],
+      "run": "39041714911-1-release-dsprhbm-2026-10-17-67b5da876dd6"
+    },
+    {
+      "accounting": "1832265|DSPRHBM|COMPLETED|0:0|00:54:43|d9470n02",
+      "artifact_reference_exists": false,
+      "cosma_costa_specs": [
+        {
+          "annotations": {
+            "original_specfile_version": 5
+          },
+          "arch": {
+            "platform": "linux",
+            "platform_os": "ubuntu24.04",
+            "target": {
+              "cpupart": "",
+              "features": [
+                "abm",
+                "adx",
+                "aes",
+                "amx_bf16",
+                "amx_int8",
+                "amx_tile",
+                "avx",
+                "avx2",
+                "avx512_bf16",
+                "avx512_bitalg",
+                "avx512_vbmi2",
+                "avx512_vnni",
+                "avx512_vpopcntdq",
+                "avx512bw",
+                "avx512cd",
+                "avx512dq",
+                "avx512f",
+                "avx512ifma",
+                "avx512vbmi",
+                "avx512vl",
+                "bmi1",
+                "bmi2",
+                "cldemote",
+                "clflushopt",
+                "clwb",
+                "cx16",
+                "f16c",
+                "fma",
+                "gfni",
+                "lahf_lm",
+                "mmx",
+                "movbe",
+                "movdir64b",
+                "movdiri",
+                "pclmulqdq",
+                "popcnt",
+                "rdpid",
+                "rdrand",
+                "rdseed",
+                "serialize",
+                "sha_ni",
+                "sse",
+                "sse2",
+                "sse3",
+                "sse4_1",
+                "sse4_2",
+                "ssse3",
+                "vaes",
+                "vpclmulqdq",
+                "waitpkg",
+                "xsave",
+                "xsavec",
+                "xsaveopt"
+              ],
+              "generation": 0,
+              "name": "sapphirerapids",
+              "parents": [
+                "icelake"
+              ],
+              "vendor": "GenuineIntel"
+            }
+          },
+          "dependencies": [
+            {
+              "hash": "rbubal55a5vv3epdghkizufabbzp2oo4",
+              "name": "cmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "b5js566kchquhya2ybk4buow3z7bnb3d",
+              "name": "compiler-wrapper",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "tya7qova2ank23jz7mr5tnjkjduzuend",
+              "name": "costa",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "gmkdapvszp64wgqqx3rpxsciqiyqgkj6",
+              "name": "gcc",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": [
+                  "c",
+                  "cxx",
+                  "fortran"
+                ]
+              }
+            },
+            {
+              "hash": "hkx3nzpcza3hnke7x3dzgo2znpnqclp4",
+              "name": "gcc-runtime",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": [
+                  "fortran-rt",
+                  "libgfortran"
+                ]
+              }
+            },
+            {
+              "hash": "w56jc24q3qga3d7ocm5jmtnhnjzc7dlb",
+              "name": "glibc",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": [
+                  "libc"
+                ]
+              }
+            },
+            {
+              "hash": "pn7irafsg4np4wgmgx5eajxei5j7xsoh",
+              "name": "gmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "6etdtxrxlpfcbl5znrztscf2vtv6uk2o",
+              "name": "openblas",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": [
+                  "blas"
+                ]
+              }
+            },
+            {
+              "hash": "45pzacex64gyvlotorh4x6s5tehvidbw",
+              "name": "openmpi",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": [
+                  "mpi"
+                ]
+              }
+            }
+          ],
+          "hash": "5tqnpevastj6oxxox525pxdabt7w2qcf",
+          "name": "cosma",
+          "namespace": "builtin",
+          "package_hash": "gfx4idm2f2zeiwwnffvb6bgy5ngm7w5o6v2fcwhquqbfqqgn5uea====",
+          "parameters": {
+            "apps": false,
+            "build_system": "cmake",
+            "build_type": "Release",
+            "cflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "cppflags": [],
+            "cuda": false,
+            "cxxflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "fflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "generator": "make",
+            "gpu_direct": false,
+            "ipo": false,
+            "ldflags": [],
+            "ldlibs": [],
+            "profiling": false,
+            "rocm": false,
+            "scalapack": false,
+            "shared": true,
+            "tests": false
+          },
+          "version": "2.7.0"
+        },
+        {
+          "annotations": {
+            "original_specfile_version": 5
+          },
+          "arch": {
+            "platform": "linux",
+            "platform_os": "ubuntu24.04",
+            "target": {
+              "cpupart": "",
+              "features": [
+                "abm",
+                "adx",
+                "aes",
+                "amx_bf16",
+                "amx_int8",
+                "amx_tile",
+                "avx",
+                "avx2",
+                "avx512_bf16",
+                "avx512_bitalg",
+                "avx512_vbmi2",
+                "avx512_vnni",
+                "avx512_vpopcntdq",
+                "avx512bw",
+                "avx512cd",
+                "avx512dq",
+                "avx512f",
+                "avx512ifma",
+                "avx512vbmi",
+                "avx512vl",
+                "bmi1",
+                "bmi2",
+                "cldemote",
+                "clflushopt",
+                "clwb",
+                "cx16",
+                "f16c",
+                "fma",
+                "gfni",
+                "lahf_lm",
+                "mmx",
+                "movbe",
+                "movdir64b",
+                "movdiri",
+                "pclmulqdq",
+                "popcnt",
+                "rdpid",
+                "rdrand",
+                "rdseed",
+                "serialize",
+                "sha_ni",
+                "sse",
+                "sse2",
+                "sse3",
+                "sse4_1",
+                "sse4_2",
+                "ssse3",
+                "vaes",
+                "vpclmulqdq",
+                "waitpkg",
+                "xsave",
+                "xsavec",
+                "xsaveopt"
+              ],
+              "generation": 0,
+              "name": "sapphirerapids",
+              "parents": [
+                "icelake"
+              ],
+              "vendor": "GenuineIntel"
+            }
+          },
+          "dependencies": [
+            {
+              "hash": "rbubal55a5vv3epdghkizufabbzp2oo4",
+              "name": "cmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "b5js566kchquhya2ybk4buow3z7bnb3d",
+              "name": "compiler-wrapper",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "gmkdapvszp64wgqqx3rpxsciqiyqgkj6",
+              "name": "gcc",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": [
+                  "cxx"
+                ]
+              }
+            },
+            {
+              "hash": "hkx3nzpcza3hnke7x3dzgo2znpnqclp4",
+              "name": "gcc-runtime",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "w56jc24q3qga3d7ocm5jmtnhnjzc7dlb",
+              "name": "glibc",
+              "parameters": {
+                "deptypes": [
+                  "link"
+                ],
+                "virtuals": [
+                  "libc"
+                ]
+              }
+            },
+            {
+              "hash": "pn7irafsg4np4wgmgx5eajxei5j7xsoh",
+              "name": "gmake",
+              "parameters": {
+                "deptypes": [
+                  "build"
+                ],
+                "virtuals": []
+              }
+            },
+            {
+              "hash": "45pzacex64gyvlotorh4x6s5tehvidbw",
+              "name": "openmpi",
+              "parameters": {
+                "deptypes": [
+                  "build",
+                  "link"
+                ],
+                "virtuals": [
+                  "mpi"
+                ]
+              }
+            }
+          ],
+          "hash": "tya7qova2ank23jz7mr5tnjkjduzuend",
+          "name": "costa",
+          "namespace": "builtin",
+          "package_hash": "zhgnsrfst3hmg7okmqube2e6c52ipb6rgspa2nsl7n2iw6kfzr5q====",
+          "parameters": {
+            "apps": false,
+            "benchmarks": false,
+            "build_system": "cmake",
+            "build_type": "Release",
+            "cflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "cppflags": [],
+            "cxxflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "fflags": [
+              "-O3",
+              "-march=native",
+              "-mtune=native"
+            ],
+            "generator": "make",
+            "ipo": false,
+            "ldflags": [],
+            "ldlibs": [],
+            "profiling": false,
+            "scalapack": false,
+            "shared": true,
+            "tests": false
+          },
+          "version": "2.3.3"
+        }
+      ],
+      "job_id": "1832265",
+      "lock_sha256": "a4565fb2748a877c2d9f994c71f3093c83a732e3e2ae21bb0cc6e301ee819e2a",
+      "log_sha256": "35a049c3707bb889d9767deb2e7d7cafb056c2e956fbba4282dfdd0a24ca269a",
+      "log_tail": [
+        "[+] nzurbzn hdf5@1.14.6 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/DSPRHBM/dependencies/spack/linux-sapphirerapids/hdf5-1.14.6-nzurbzn7nvb3lu6p33d5wu7aq5ezqydb (3m07s)",
+        "[+] 4f4yyk5 py-cython@3.2.4 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/DSPRHBM/dependencies/spack/linux-sapphirerapids/py-cython-3.2.4-4f4yyk5mmtxyuwkiag2wgpbtvn4ea5xp (3m36s)",
+        "[ ] qwwau7j plumed@2.10.1 staging (1s)",
+        "[ ] qwwau7j plumed@2.10.1 autoreconf (26s)",
+        "[ ] qwwau7j plumed@2.10.1 configure (28s)",
+        "[ ] qwwau7j plumed@2.10.1 build (37s)",
+        "[ ] qwwau7j plumed@2.10.1 install (4m31s)",
+        "[+] qwwau7j plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/DSPRHBM/dependencies/spack/linux-sapphirerapids/plumed-2.10.1-qwwau7jv5yf5i3ok3c24ysm4ibpxpllg (6m45s)",
+        "[ ] 4dtgfsz libint@2.6.0 install (49m32s)",
+        "[+] 4dtgfsz libint@2.6.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/DSPRHBM/dependencies/spack/linux-sapphirerapids/libint-2.6.0-4dtgfsz4ycma7uwhbp5mbe6g3aqsqwmb (50m49s)",
+        "CP2K_FINAL_PREFIX_DEPENDENCIES_COMPLETE 2026-10-17T15:39:48Z",
+        "CP2K_DEPENDENCY_STAGE_COMPLETE_NOT_APPLICATION_ACCEPTANCE"
+      ],
+      "run": "39041714911-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies"
+    }
+  ],
+  "workflow": "39041714911"
+}

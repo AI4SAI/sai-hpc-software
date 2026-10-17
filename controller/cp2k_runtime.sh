@@ -10,7 +10,6 @@ case "$SLURM_JOB_PARTITION" in
   4V100) target=4v100-avx512; gpu=true ;;
   16V100) target=16v100-avx2; gpu=true ;;
   8V100V0) target=8v100v0-avx512; gpu=true ;;
-  8A100M40) target=a100; gpu=true ;;
   *) echo "unsupported CP2K partition: $SLURM_JOB_PARTITION" >&2; exit 2 ;;
 esac
 
@@ -34,9 +33,18 @@ export APPTAINER_TMPDIR="$rank_runtime" APPTAINER_CACHEDIR="$rank_runtime/cache"
 cleanup() { rm -rf -- "$rank_runtime" 2>/dev/null || true; rmdir -- "$job_runtime" 2>/dev/null || true; }
 trap cleanup EXIT
 
+if [[ -n "${SAI_CP2K_TRACE_DIR:-}" ]]; then
+  trace=$(realpath -m -- "$SAI_CP2K_TRACE_DIR")
+  [[ "$trace" == "$SAI_SOFTWARE_ROOT/runtime-tests/"* && -d "$trace" && ! -L "$trace" ]] || exit 2
+  printf '%s\t%s\t%s\t%s\t%s\t%s\n' "$(hostname)" "$rank" "$target" "$image" \
+    "${CUDA_VISIBLE_DEVICES:-}" "${MPI_HOME:?host MPI module required}" > "$trace/rank-$rank.tsv"
+fi
+
 args=(apptainer exec --cleanenv --no-home --no-mount bind-paths,home,cwd,tmp,hostfs --pwd /work)
 [[ "$gpu" == true ]] && args+=(--nv)
-for path in /usr /lib /lib64 /opt/devtools /opt/apps; do args+=(--bind "$path:$path:ro"); done
+for path in /usr /lib /lib64 /opt/devtools; do args+=(--bind "$path:$path:ro"); done
+site_paths=$(python3 "$launcher_control/remote_controller.py" cp2k)
+while IFS= read -r path; do args+=(--bind "$path:$path:ro"); done <<< "$site_paths"
 args+=(--bind "$workdir:/work:rw" --bind "$rank_runtime:/runtime:rw"
        --bind "$host_tmp:$host_tmp:rw" --env "TMPDIR=$host_tmp"
        --env "OMP_NUM_THREADS=${OMP_NUM_THREADS:-1}")
@@ -48,5 +56,5 @@ while IFS= read -r name; do
   esac
 done < <(compgen -e)
 "${args[@]}" "$image" /usr/bin/bash --noprofile --norc -c \
-  'driver=${LD_LIBRARY_PATH:-}; source "$1"; export LD_LIBRARY_PATH="$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"; exec "$2" "${@:3}"' \
+  'driver=${LD_LIBRARY_PATH:-}; source "$1"; export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}${driver:+:$driver}"; exec "$2" "${@:3}"' \
   bash "$prefix/share/sai/runtime-env.sh" "$prefix/bin/cp2k.psmp" "$@"

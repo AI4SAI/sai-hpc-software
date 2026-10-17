@@ -1,0 +1,856 @@
+"""GPUMD fail-closed registration, native target, science and cache contracts."""
+import argparse
+import copy
+from contextlib import redirect_stdout
+import io
+import json
+import os
+from pathlib import Path
+import shutil
+import stat
+import subprocess
+import sys
+import tempfile
+import textwrap
+import unittest
+from unittest.mock import patch
+
+ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT / "controller"))
+import gpumd_acceptance as acceptance
+import gpumd_science as science
+import ci
+import software_controller as build
+import delivery_layout as layout
+import export_native
+from release_contract import make_identity, TRACKS
+from source_cache import checksum
+from remote_controller import TARGETS
+import test_build_lifecycle as lifecycle
+
+
+class GpumdContractTests(unittest.TestCase):
+    def test_only_three_native_gpu_targets_are_registered(self):
+        self.assertEqual(set(acceptance.GPU_TARGETS), {"4v100-avx512", "16v100-avx2", "8v100v0-avx512"})
+        for target in acceptance.GPU_TARGETS:
+            self.assertEqual(build.required_acceptance("gpumd", target), ("gpumd_science",))
+            self.assertEqual(TARGETS[target]["cuda_arch"], "70")
+        for target in ("dsprhbm", "a100", "unknown"):
+            with self.assertRaises(ValueError):
+                build.required_acceptance("gpumd", target)
+        self.assertEqual(TARGETS["8v100v0-avx512"]["cpu_arch"], "skylake-avx512")
+        self.assertEqual(TARGETS["8v100v0-avx512"]["dependency_isa"], "avx2")
+
+    def test_all_scientific_build_and_launcher_files_are_hashed(self):
+        contract = build.contract_files("gpumd")
+        self.assertTrue({"gpumd_environment.sh", "gpumd_build.sh", "gpumd_container_entry.sh",
+            "gpumd_science.py", "gpumd_deepmd_probe.py", "gpumd_acceptance.py", "gpumd", "nep", "gnep"} <= set(contract))
+        original = build.recipe_fingerprint("gpumd", ROOT / "controller")
+        with tempfile.TemporaryDirectory() as temporary:
+            control = Path(temporary)
+            for name in contract:
+                shutil.copyfile(ROOT / "controller" / ("gpumd_runtime.sh" if name in ("gpumd", "nep", "gnep") else name), control / name)
+            self.assertEqual(original, build.recipe_fingerprint("gpumd", control))
+            for name in ("gpumd_science.py", "gpumd_deepmd_probe.py", "nep"):
+                previous = (control / name).read_text()
+                (control / name).write_text(previous + "\n# changed\n")
+                self.assertNotEqual(original, build.recipe_fingerprint("gpumd", control))
+                (control / name).write_text(previous)
+
+    def test_missing_numerical_benchmark_proof_blocks_publication(self):
+        with self.assertRaisesRegex(ValueError, "scientific/parity/benchmark"):
+            acceptance.validate_manifest({"software": "gpumd", "target": "4v100-avx512"})
+
+    def test_rendered_build_never_uses_host_tmp_or_host_source_tree(self):
+        for target in acceptance.GPU_TARGETS:
+            args = argparse.Namespace(software="gpumd", target=target, run_id="gpumd-test", sha="a" * 40,
+                version="master-2026-09-13", track="development", source_ref="master",
+                jobs=6, minutes=120, overlay_mb=8192, resume_run=None)
+            script = build.render_job(args)
+            subprocess.run(["bash", "-n"], input=script, text=True, check=True)
+            self.assertIn("/control/gpumd_container_entry.sh build gpumd", script)
+            self.assertNotIn("/opt/apps:/opt/apps:ro", script)
+            self.assertIn("/opt/apps/plumed/plumed-2.10.1:/opt/apps/plumed/plumed-2.10.1:ro", script)
+            self.assertIn("--overlay", script)
+            self.assertIn("APPTAINERENV_CUDA_VISIBLE_DEVICES", script)
+            self.assertIn(f"/opt/sai_config/mps_mapping.d/{TARGETS[target]['partition']}.bash", script)
+            self.assertNotIn("#SBATCH --mem", script)
+            self.assertNotIn("#SBATCH --cpus-per-task", script)
+            self.assertNotIn("TMPDIR=/tmp", script)
+
+    def test_science_script_uses_single_gpu_and_same_image_baseline(self):
+        request = {"target": "8v100v0-avx512", "version": "master-a", "run_id": "gpumd-test-science",
+                   "build_run_id": "build",
+                   "launcher": "/home/test/sai-hpc-software/controller/gpumd-test/gpumd"}
+        request["identity"] = make_identity("gpumd", "development", "master", "a" * 40,
+                                             request["version"], "b" * 64, request["target"])
+        request["artifact"] = str(layout.artifact_path(acceptance.ROOT, request["identity"], "build"))
+        script = acceptance.render_job(request, Path("/home/test/sai-hpc-software/runtime-tests/gpumd-test-science"))
+        subprocess.run(["bash", "-n"], input=script, text=True, check=True)
+        self.assertIn("#SBATCH --partition=8V100V0", script)
+        self.assertIn("#SBATCH --gpus-per-node=1", script)
+        self.assertIn("gpumd_science.py run", script)
+        self.assertIn('"CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES}"', script)
+        self.assertNotIn("TMPDIR=/tmp", script)
+        self.assertIn("/results:/work:rw", script)
+        self.assertIn(request["identity"]["install_prefix"], script)
+        self.assertNotIn("/gpumd/master-a/", script)
+
+    def test_repeat_job_binds_original_science_read_only(self):
+        identity = make_identity("gpumd", "development", "master", "a" * 40,
+                                 "master-2026-09-13", "b" * 64, "16v100-avx2")
+        request = dict(identity=identity, target=identity["target"], version=identity["source_version"],
+            build_run_id="build", run_id="build-science-retest", launcher=str(ROOT / "controller/gpumd"),
+            artifact=str(layout.artifact_path(acceptance.ROOT, identity, "build")),
+            repeat_of={"run_id": "build-science"})
+        script = acceptance.render_job(request, acceptance.run_dir(request["run_id"]))
+        subprocess.run(["bash", "-n"], input=script, text=True, check=True)
+        self.assertIn("/runtime-tests/build-science/results/science:/previous:ro", script)
+        self.assertIn("--repeat-source /previous", script)
+
+    def test_comparison_rejects_nan_wrong_shape_and_excess_error(self):
+        self.assertLess(science.compare([[1.0]], [[1.00001]], 0.001, "test"), 0.001)
+        for actual in ([[float("nan")]], [[1, 2]], [[3]], []):
+            with self.assertRaises(ValueError):
+                science.compare(actual, [[1]], 0.001, "test")
+        with self.assertRaises(ValueError):
+            science.compare([[1, float("nan")]], [[1, 2]], 0.001, "later NaN")
+
+    def test_explicit_native_and_optional_feature_baseline(self):
+        environment = (ROOT / "controller/gpumd_environment.sh").read_text()
+        recipe = (ROOT / "controller/gpumd_build.sh").read_text()
+        self.assertIn("GPUMD_CPU_ARCH=native", environment)
+        self.assertIn("GPUMD_EXPECTED_CPU_ARCH=skylake-avx512", environment)
+        self.assertIn("module load cuda/12.9.1 deepmd-kit/3.2.0 gcc/13.3.0", environment)
+        self.assertNotIn("module load elpa", environment)
+        self.assertIn("-DUSE_DEEPMD -DUSE_PLUMED", recipe)
+        self.assertIn("GPUMD_SYSTEM_BLAS_PATH=/usr/lib/x86_64-linux-gnu/blas:/usr/lib/x86_64-linux-gnu/lapack", environment)
+        self.assertIn('plumed_dependencies=$(ldd "$PLUMED_KERNEL")', environment)
+        self.assertIn("-Xlinker=-rpath-link -Xlinker=$GPUMD_SYSTEM_BLAS_PATH", recipe)
+        self.assertIn("share/gpumd/src", recipe)
+        entry = (ROOT / "controller/gpumd_container_entry.sh").read_text()
+        self.assertIn('chmod -R a+rX,go-w "$INSTALL_PREFIX"', entry)
+        self.assertLess(entry.index('chmod -R a+rX,go-w "$INSTALL_PREFIX"'),
+                        entry.index('gpumd_science.py portable'))
+        self.assertIn('gpumd_science.py portable "$INSTALL_PREFIX" /workspace/gpumd-portability', entry)
+
+    def test_portability_copy_cannot_escape_the_build_overlay(self):
+        with self.assertRaisesRegex(ValueError, "restricted to its overlay path"):
+            science.portable_check(Path("/opt/software/gpumd/v1/target"), Path("/tmp/copy"))
+
+    def test_install_prefix_permissions_remove_group_other_writes(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            prefix = Path(temporary) / "install"
+            prefix.mkdir(mode=0o777)
+            artifact = prefix / "share/sai/runtime-env.sh"
+            artifact.parent.mkdir(parents=True, mode=0o777)
+            artifact.write_text("export GPUMD_SRC=/opt/software/gpumd/src\n")
+            artifact.chmod(0o666)
+            subprocess.run(["chmod", "-R", "a+rX,go-w", str(prefix)], check=True)
+            self.assertEqual(stat.S_IMODE(prefix.stat().st_mode), 0o755)
+            self.assertEqual(stat.S_IMODE(artifact.parent.stat().st_mode), 0o755)
+            self.assertEqual(stat.S_IMODE(artifact.stat().st_mode), 0o644)
+
+    def test_jit_source_archive_is_complete_pinned_and_excludes_build_outputs(self):
+        recipe = (ROOT / "controller/gpumd_build.sh").read_text()
+        archive = recipe.split("# NEP JIT requires source at runtime.", 1)[1].split(
+            "\n# Package the upstream license paths", 1)[0]
+        # Execute the real packaging block with only the fixed workspace path
+        # relocated; this fixture does not compile GPUMD or certify any science.
+        archive = "# NEP JIT requires source at runtime." + archive
+        archive = archive.replace("/workspace/source", '"$GPUMD_TEST_SOURCE"')
+        with tempfile.TemporaryDirectory() as temporary:
+            source = Path(temporary) / "source"
+            prefix = Path(temporary) / "prefix"
+            files = {"makefile": "# unchanged upstream Makefile\n",
+                     "main_nep/nep_specialized.cu": "// JIT kernel\n",
+                     "utilities/nep_utilities.cuh": "// JIT utilities\n",
+                     "nested/extra header.cuh": "// retain every source/header\n"}
+            for name, value in files.items():
+                path = source / "src" / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(value)
+            subprocess.run(["git", "init", "-q", source], check=True)
+            subprocess.run(["git", "-C", source, "add", "src"], check=True)
+            subprocess.run(["git", "-C", source, "-c", "user.name=GPUMD test", "-c",
+                            "user.email=gpumd-test@example.invalid", "commit", "-qm", "source"], check=True)
+            expected_tree = subprocess.check_output(["git", "-C", source, "rev-parse", "HEAD:src"], text=True).strip()
+            for name in ("gpumd", "nep", "gnep", "main_nep/nep.o", "main_nep/nep.obj"):
+                (source / "src" / name).write_text("untracked build output\n")
+            destination = prefix / "share/gpumd/src"
+            destination.mkdir(parents=True)
+            (prefix / "share/sai").mkdir(parents=True)
+            environment = dict(os.environ, INSTALL_PREFIX=str(prefix), GPUMD_TEST_SOURCE=str(source))
+
+            def run(script=archive):
+                return subprocess.run(["bash", "-euo", "pipefail", "-c", script], env=environment,
+                                      text=True, capture_output=True)
+
+            root_mtime = (source / "src").stat().st_mtime_ns
+            result = run()
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual((source / "src").stat().st_mtime_ns, root_mtime)
+            self.assertEqual({str(path.relative_to(destination)): path.read_text()
+                              for path in destination.rglob("*") if path.is_file()}, files)
+            self.assertEqual((prefix / "share/sai/jit-source-tree").read_text().strip(), expected_tree)
+            # Neither an archive producer failure nor extraction failure may
+            # disappear behind a successful command on the other pipeline end.
+            self.assertEqual(run('git() { if [[ "${3:-}" == archive ]]; then '
+                                 'command git "$@"; return 42; '
+                                 'fi; command git "$@"; };\n' + archive).returncode, 42)
+            environment["INSTALL_PREFIX"] = str(Path(temporary) / "missing-prefix")
+            self.assertNotEqual(run().returncode, 0)
+            environment["INSTALL_PREFIX"] = str(prefix)
+            (source / "src/makefile").write_text("# unexpected configured Makefile\n")
+            self.assertNotEqual(run().returncode, 0)
+
+
+    def test_packaging_preserves_legacy_and_new_pinned_upstream_licenses(self):
+        recipe = (ROOT / "controller/gpumd_build.sh").read_text()
+        validation = recipe.split("# Upstream replaced the single LICENCE file", 1)[1].split(
+            "# Native compilation starts", 1)[0]
+        packaging = recipe.split("# Package the upstream license paths", 1)[1].split(
+            "\npython3 /control/gpumd_science.py", 1)[0]
+        script = "# Upstream replaced the single LICENCE file" + validation + "\n# Package the upstream license paths" + packaging
+        self.assertLess(recipe.index("license_paths=()"), recipe.index('make -j "$BUILD_JOBS"'))
+        script = script.replace("/workspace/source", '"$GPUMD_TEST_SOURCE"')
+        for names in (("LICENCE",), ("LICENSE",), ("LICENSES/GPL-3.0.txt", "LICENSES/LGPL-3.0.txt"), ()):
+            with self.subTest(names=names), tempfile.TemporaryDirectory() as temporary:
+                source = Path(temporary) / "source"
+                source.mkdir()
+                destination = Path(temporary) / "install/share/gpumd"
+                destination.mkdir(parents=True)
+                for name in names:
+                    path = source / name
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text("pinned " + name + "\n")
+                subprocess.run(["git", "init", "-q", source], check=True)
+                subprocess.run(["git", "-C", source, "add", "."], check=True)
+                subprocess.run(["git", "-C", source, "-c", "user.name=GPUMD test", "-c",
+                                "user.email=test@example.invalid", "commit", "--allow-empty", "-qm", "licenses"], check=True)
+                if names:
+                    (source / names[0]).write_text("uncommitted alteration\n")
+                result = subprocess.run(["bash", "-euo", "pipefail", "-c", script], text=True, capture_output=True,
+                    env=dict(os.environ, GPUMD_TEST_SOURCE=str(source), INSTALL_PREFIX=str(Path(temporary) / "install")))
+                self.assertEqual(result.returncode, 0 if names else 2, result.stderr)
+                for name in names:
+                    self.assertEqual((destination / name).read_text(), "pinned " + name + "\n")
+
+
+class GpumdCiTests(unittest.TestCase):
+    setUp = lifecycle.CiLifecycleTests.setUp
+    execute = lifecycle.CiLifecycleTests.execute
+
+    def test_each_launcher_upload_occurs_once_before_becoming_readonly(self):
+        self.assertEqual(ci.runtime_launchers("gpumd"), ("gpumd", "nep", "gnep"))
+        for software in ("gpumd", "abacus", "cp2k"):
+            names = ci.runtime_launchers(software)
+            self.assertEqual(len(names), len(set(names)))
+    def test_gpumd_requires_science_and_benchmark_before_publication(self):
+        self.assertEqual(self.execute(software="gpumd"), [
+            ("software_controller.py", "identity"),
+            ("software_controller.py", "submit"), ("software_controller.py", "monitor"),
+            ("gpumd_acceptance.py", "submit"), ("gpumd_acceptance.py", "monitor"),
+            ("software_controller.py", "publish")])
+
+    def test_failed_gpumd_science_cannot_publish(self):
+        commands = self.execute(software="gpumd", fail_monitor="gpumd_acceptance.py")
+        self.assertNotIn(("software_controller.py", "publish"), commands)
+
+    def test_all_native_metadata_helpers_are_uploaded_and_fingerprinted(self):
+        self.execute(software="gpumd")
+        required = {"gpumd_science.py", "export_native.py", "native_module.py",
+                    "release_contract.py", "resolve_source.py", "delivery_layout.py"}
+        self.assertTrue(required <= set(self.uploads))
+        self.assertTrue(required <= set(build.contract_files("gpumd")))
+        self.assertEqual(self.uploads.count("export_native.py"), 1)
+
+    def test_gpumd_run_and_scientific_proof_share_the_dated_utc_run_id(self):
+        self.execute(software="gpumd", target="8v100v0-avx512", track="prerelease")
+        submitted = next(args for script, args in self.remote_commands
+                         if script == "software_controller.py" and args[0] == "submit")
+        run_id = "gpumd-123-1-prerelease-8v100v0-avx512-2026-09-13-" + "a" * 12
+        self.assertEqual(submitted[2], run_id)
+        scientific = next(args for script, args in self.remote_commands
+                          if script == "gpumd_acceptance.py" and args[0] == "submit")
+        self.assertEqual(scientific[1], run_id + "-science")
+        self.assertEqual(scientific[-2:], ["--build-run-id", run_id])
+        self.assertLessEqual(len(scientific[1]), 128)
+
+    def test_isolated_uploaded_snapshot_imports_and_resolves_its_own_identity(self):
+        self.execute(software="gpumd")
+        snapshot = self.root / "uploaded-control"
+        snapshot.mkdir()
+        for name, source in self.uploaded_files.items():
+            shutil.copyfile(source, snapshot / name)
+        self.assertTrue(set(build.contract_files("gpumd")) <= self.uploaded_files.keys())
+        command = [sys.executable, "-E", "-s"]
+        for script in ("software_controller.py", "gpumd_acceptance.py", "gpumd_science.py",
+                       "delivery_layout.py", "export_native.py"):
+            subprocess.run([*command, snapshot / script, "--help"], cwd=self.root,
+                           capture_output=True, text=True, check=True)
+        result = subprocess.run([*command, snapshot / "software_controller.py", "identity", "gpumd",
+            "a" * 40, "master-2026-09-13", "4v100-avx512", "--track", "development",
+            "--source-ref", "master"], cwd=self.root, capture_output=True, text=True, check=True)
+        identity = json.loads(result.stdout)
+        self.assertEqual(identity["recipe_sha256"], build.recipe_fingerprint("gpumd", snapshot))
+        self.assertEqual(identity["partition"], "4V100")
+        # Removing one dependency must fail rather than importing the checkout.
+        (snapshot / "source_cache.py").unlink()
+        missing = subprocess.run([*command, snapshot / "gpumd_science.py", "--help"],
+                                 cwd=self.root, capture_output=True, text=True)
+        self.assertNotEqual(missing.returncode, 0)
+        self.assertIn("source_cache", missing.stderr)
+
+
+class GpumdDeliveryTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name).resolve()
+        for name, value in (("ROOT", self.root), ("CONTROL", ROOT / "controller")):
+            patcher = patch.object(acceptance, name, value)
+            patcher.start()
+            self.addCleanup(patcher.stop)
+
+    def entry(self, track="development", target="4v100-avx512"):
+        identity = make_identity("gpumd", track, "master", "a" * 40,
+                                 "master-2026-09-13", "b" * 64, target)
+        mpi = "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-" + identity["dependency_isa"]
+        environment = dict(CUDA_HOME=science.CUDA, CUDA_PATH=science.CUDA,
+            DEEPMD_ROOT=science.DEEPMD, PLUMED_KERNEL=science.SITE_LIBRARIES["libplumedKernel.so"],
+            DP_CUDA_INFER="2", **science.THREADS, PATH=science.GCC + "/bin:" + science.CUDA + "/bin:/usr/bin:/bin",
+            LOADEDMODULES=":".join((*science.MODULES, "deepmd-kit/3.2.0")),
+            LD_LIBRARY_PATH=":".join((science.DEEPMD + "/lib", science.PLUMED + "/lib",
+                                      science.BLAS, science.LAPACK, mpi + "/lib")))
+        reports = {name: "libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0xabc)\n"
+                   for name in (*science.COMMANDS, *science.SITE_LIBRARIES)}
+        reports["libplumedKernel.so"] += "libmpi.so.40 => " + mpi + "/lib/libmpi.so.40 (0xdef)\n"
+        entry = science.build_native_entry(identity, identity["install_prefix"], environment, reports)
+        return entry, environment, reports
+
+    def candidate(self, identity):
+        artifact = layout.artifact_path(self.root, identity, "build")
+        artifact.parent.mkdir(parents=True, exist_ok=True)
+        artifact.write_bytes(b"synthetic candidate, no scientific acceptance")
+        record = dict(identity=identity, software="gpumd", version=identity["source_version"],
+            target=identity["target"], source_sha=identity["source_sha"],
+            recipe_sha256=identity["recipe_sha256"], contract_schema=layout.CONTRACT_SCHEMA,
+            artifact=str(artifact), sha256=checksum(artifact), build_verified=True)
+        artifact.with_suffix(".json").write_text(json.dumps(record))
+        return artifact, record
+
+    def test_three_tracks_by_three_partitions_package_one_complete_prefix(self):
+        prefixes = set()
+        for track in TRACKS:
+            for target in acceptance.GPU_TARGETS:
+                entry, _, _ = self.entry(track, target)
+                identity = entry["identity"]
+                prefix = self.root / identity["install_prefix"].lstrip("/")
+                for relative in (*entry["commands"].values(), "share/gpumd/src/main_nep/nep_specialized.cu",
+                                 "share/gpumd/src/utilities/nep_utilities.cuh", "share/sai/portability/proof.json"):
+                    path = prefix / relative
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text("# synthetic install fixture\n")
+                    path.chmod(0o555 if relative.startswith("bin/") else 0o444)
+                manifest = export_native.write_manifests([entry], self.root)
+                self.assertEqual(export_native.read_installed_manifests([entry], self.root), manifest)
+                self.assertEqual(export_native.inventory([entry], self.root), manifest)
+                local = json.loads((prefix / "share/sai/manifest.json").read_text())
+                self.assertEqual(local["schema"], 2)
+                self.assertEqual(local["entry"]["identity"], identity)
+                module = (prefix / "share/sai/native-module.tcl").read_text()
+                self.assertIn(identity["install_prefix"], module)
+                self.assertNotIn("apptainer", module.lower())
+                self.assertNotIn("deepmd-kit/3.2.0", module)
+                self.assertEqual(prefix.name, identity["partition"])
+                self.assertTrue(all(row["path"].startswith(identity["install_prefix"].lstrip("/"))
+                                    for row in local["files"]))
+                artifact, record = self.candidate(identity)
+                self.assertEqual(layout.load_artifact(self.root, artifact), record)
+                with self.assertRaisesRegex(ValueError, "scientific/parity/benchmark"):
+                    acceptance.validate_manifest(record, self.root, ROOT / "controller")
+                prefixes.add(identity["install_prefix"])
+        self.assertEqual(len(prefixes), 9)
+
+    def test_publication_applies_the_ten_percent_gate_to_inverse_throughput(self):
+        entry, _, _ = self.entry()
+        artifact, manifest = self.candidate(entry["identity"])
+        task = self.root / "runtime-tests/science"
+        (task / "results").mkdir(parents=True)
+        request = dict(identity=entry["identity"], artifact=str(artifact),
+                       artifact_sha256=manifest["sha256"], target=manifest["target"],
+                       launcher=str(ROOT / "controller/gpumd"), launcher_sha256="launcher")
+        (task / "request.json").write_text(json.dumps(request))
+        (task / "results/status.json").write_text(json.dumps(
+            dict(job="123", state="COMPLETED", exit_code="0:0", verified=True)))
+        for throughput, regresses in ((110, False), (100, False), (99, True)):
+            evidence = dict(verified=True, job="123", identity=entry["identity"], benchmark={
+                "md-throughput-candidate": {"median_atom_steps_per_second": throughput},
+                "md-throughput-baseline": {"median_atom_steps_per_second": 110}})
+            manifest["gpumd_science"] = dict(evidence, run_id="science", launcher_sha256="launcher")
+            (task / "results/evidence.json").write_text(json.dumps(evidence))
+            with patch.object(acceptance, "verify_evidence", return_value=evidence):
+                if regresses:
+                    with self.assertRaises(layout.PerformanceRegression):
+                        acceptance.validate_manifest(manifest)
+                else:
+                    acceptance.validate_manifest(manifest)
+
+    def test_dependency_and_environment_evidence_fail_closed(self):
+        entry, environment, reports = self.entry()
+        identity = entry["identity"]
+        cases = [
+            (dict(environment, GPUMD_SRC="/workspace/source/src"), reports),
+            (dict(environment, LD_LIBRARY_PATH=environment["LD_LIBRARY_PATH"] + ":/workspace/lib"), reports),
+            (dict(environment, LOADEDMODULES=environment["LOADEDMODULES"] + ":lammps/2026"), reports),
+            (environment, dict(reports, gpumd="libdeepmd_cc.so => not found\n")),
+            (environment, dict(reports, gpumd="libbad.so => /home/user/libbad.so (0xabc)\n")),
+            (environment, {key: value for key, value in reports.items() if key != "nep"}),
+        ]
+        for env, observed in cases:
+            with self.subTest(environment=env), self.assertRaises(ValueError):
+                science.build_native_entry(identity, identity["install_prefix"], env, observed)
+        with self.assertRaises(ValueError):
+            science.build_native_entry(identity, identity["install_prefix"], environment, reports, ("gpumd", "nep"))
+        altered = copy.deepcopy(identity)
+        altered["partition"] = "DSPRHBM"
+        with self.assertRaises(ValueError):
+            science.build_native_entry(altered, altered["install_prefix"], environment, reports)
+
+    def test_runtime_launcher_reuses_hash_and_rejects_mismatched_partition(self):
+        entry, _, _ = self.entry()
+        artifact, record = self.candidate(entry["identity"])
+        binary = self.root / "test-bin/apptainer"
+        binary.parent.mkdir()
+        binary.write_text('#!/bin/sh\nprintf "%s\\n" "$@"\n')
+        binary.chmod(0o755)
+        runtime = self.root / "runtime-tests/launcher"
+        runtime.mkdir(parents=True)
+        environment = dict(os.environ, PATH=str(binary.parent) + ":" + os.environ["PATH"],
+            SAI_SOFTWARE_ROOT=str(self.root), SAI_GPUMD_IMAGE=str(artifact), SAI_GPUMD_EXECUTABLE="gpumd",
+            SLURM_JOB_ID="123", SLURM_JOB_PARTITION=entry["identity"]["partition"], TMPDIR=str(runtime))
+        command = ["bash", str(ROOT / "controller/gpumd_runtime.sh"), "example"]
+        for _ in range(2):
+            result = subprocess.run(command, env=environment, cwd=self.root, capture_output=True, text=True, check=True)
+            self.assertIn(entry["identity"]["install_prefix"] + "/bin/gpumd", result.stdout)
+        caches = list((self.root / "runtime/jobs/123").glob("artifact-check-*.json"))
+        self.assertEqual(len(caches), 1)
+        self.assertEqual(json.loads(caches[0].read_text())["sha256"], record["sha256"])
+        environment["SLURM_JOB_PARTITION"] = "16V100"
+        self.assertNotEqual(subprocess.run(command, env=environment, capture_output=True).returncode, 0)
+        environment["SLURM_JOB_PARTITION"] = entry["identity"]["partition"]
+        artifact.write_bytes(b"changed candidate")
+        self.assertNotEqual(subprocess.run(command, env=environment, capture_output=True).returncode, 0)
+
+    def test_scientific_request_cannot_relabel_a_candidate(self):
+        entry, _, _ = self.entry()
+        artifact, _ = self.candidate(entry["identity"])
+        request = dict(identity=entry["identity"], target=entry["identity"]["target"],
+            version=entry["identity"]["source_version"], artifact=str(artifact), build_run_id="build",
+            run_id="science", launcher=str(ROOT / "controller/gpumd_runtime.sh"))
+        with patch.object(acceptance, "ROOT", self.root):
+            acceptance.render_job(request, self.root / "runtime-tests/science")
+            request["identity"] = self.entry(track="release")[0]["identity"]
+            with self.assertRaisesRegex(ValueError, "canonical identity"):
+                acceptance.render_job(request, self.root / "runtime-tests/science")
+
+    def test_scientific_submission_pins_the_canonical_build_candidate(self):
+        entry, _, _ = self.entry(track="prerelease", target="8v100v0-avx512")
+        artifact, record = self.candidate(entry["identity"])
+        build_task = self.root / "runs/build"
+        build_task.mkdir(parents=True)
+        (build_task / "artifact.path").write_text(str(artifact) + "\n")
+        control = self.root / "controller/fixture"
+        control.mkdir(parents=True)
+        for name in ("gpumd", "gpumd_acceptance.py", "gpumd_science.py", "gpumd_deepmd_probe.py"):
+            source = "gpumd_runtime.sh" if name == "gpumd" else name
+            shutil.copyfile(ROOT / "controller" / source, control / name)
+        args = argparse.Namespace(run_id="science", build_run_id="build", version=record["version"],
+                                  target=record["target"])
+        with patch.object(acceptance, "CONTROL", control), \
+                patch.object(acceptance.subprocess, "check_output", return_value="123\n") as submit, \
+                redirect_stdout(io.StringIO()):
+            acceptance.submit(args)
+        self.assertEqual(submit.call_args.args[0][0], "sbatch")
+        task = self.root / "runtime-tests/science"
+        request = json.loads((task / "request.json").read_text())
+        self.assertEqual(request["identity"], entry["identity"])
+        self.assertEqual(request["artifact_sha256"], record["sha256"])
+        self.assertIn(entry["identity"]["install_prefix"], (task / "job.sbatch").read_text())
+        self.assertFalse(artifact.parent.joinpath("current.sif").exists())
+
+
+class GpumdWorkflowTests(unittest.TestCase):
+    def test_manual_default_uses_first_wave_gpu_partition(self):
+        workflow = (ROOT / ".github/workflows/gpumd.yml").read_text()
+        targets = workflow.split("      targets:\n", 1)[1].split("      retry_releases:\n", 1)[0]
+        self.assertIn("        default: 16v100-avx2", targets.splitlines())
+
+    def test_shared_daily_dispatch_is_the_only_scheduled_entry(self):
+        workflow = (ROOT / ".github/workflows/gpumd.yml").read_text()
+        triggers = workflow.split("\npermissions:", 1)[0]
+        self.assertNotIn("  schedule:", triggers)
+        self.assertNotIn("cron:", triggers)
+        self.assertIn("  workflow_dispatch:", triggers)
+        build_job = workflow.split("\n  build:\n", 1)[1]
+        condition = build_job.splitlines()[0]
+        self.assertIn("needs.resolve-source.outputs.builds != '[]'", condition)
+        self.assertIn("(github.event_name == 'workflow_dispatch' || github.event_name == 'schedule')", condition)
+
+    def test_release_retries_are_explicit_and_disabled_by_default(self):
+        workflow = (ROOT / ".github/workflows/gpumd.yml").read_text()
+        retry = workflow.split("      retry_releases:\n", 1)[1].split("\n  push:", 1)[0]
+        self.assertIn("        type: boolean\n", retry)
+        self.assertIn("        default: false", retry.splitlines())
+        self.assertIn("      retry_releases: ${{ inputs.retry_releases }}", workflow)
+        delivery = (ROOT / ".github/workflows/software-pair.yml").read_text()
+        self.assertIn("  RETRY_RELEASES: ${{ inputs.retry_releases }}", delivery)
+
+    def resolve(self, event="schedule", missing=(), tracks="development", override="", error=None):
+        workflow = (ROOT / ".github/workflows/gpumd.yml").read_text()
+        snippet = textwrap.dedent(workflow.split("python3 - <<'PY'\n", 1)[1].split("\n          PY", 1)[0])
+        def resolver(repository, ref):
+            if error:
+                raise ValueError(error)
+            if ref in missing:
+                raise ValueError("no " + ref + " available")
+            return dict(sha="a" * 40, version="master-2026-09-13" if ref == "master" else ref, ref=ref)
+        with tempfile.TemporaryDirectory() as temporary:
+            output = Path(temporary) / "output"
+            environment = dict(GITHUB_EVENT_NAME=event, GITHUB_OUTPUT=str(output), TRACKS=tracks,
+                               TARGETS="4v100-avx512", SOURCE_REF=override)
+            log = io.StringIO()
+            with patch.dict(os.environ, environment, clear=True), \
+                    patch("resolve_source.resolve", side_effect=resolver), redirect_stdout(log):
+                exec(compile(snippet, "gpumd.yml", "exec"), {})
+            self.resolve_log = log.getvalue()
+            return json.loads(output.read_text().removeprefix("builds="))
+
+    def test_schedule_resolves_three_channels_and_native_partitions(self):
+        rows = self.resolve()
+        self.assertEqual(len(rows), 1)
+        self.assertEqual({row["track"] for row in rows}, {"development"})
+        self.assertEqual({row["target"] for row in rows}, {"4v100-avx512"})
+        self.assertEqual(len(self.resolve(missing=("latest-prerelease",))), 1)
+
+    def test_manual_all_tracks_skips_explicitly_absent_releases(self):
+        rows = self.resolve("workflow_dispatch", missing=("latest-prerelease", "latest-release"),
+                            tracks="development,prerelease,release")
+        self.assertEqual([row["track"] for row in rows], ["development"])
+        self.assertIn("skipped prerelease: no latest-prerelease available", self.resolve_log)
+        self.assertIn("skipped release: no latest-release available", self.resolve_log)
+
+    def test_all_absent_tracks_emit_empty_matrix(self):
+        rows = self.resolve("workflow_dispatch", missing=("latest-prerelease", "latest-release"),
+                            tracks="prerelease,release")
+        self.assertEqual(rows, [])
+
+    def test_ambiguous_override_and_unexpected_resolver_errors_fail(self):
+        with self.assertRaises(ValueError):
+            self.resolve("workflow_dispatch", tracks="development,release", override="master")
+        with self.assertRaisesRegex(ValueError, "upstream request failed"):
+            self.resolve("workflow_dispatch", tracks="release", error="upstream request failed")
+        with self.assertRaisesRegex(ValueError, "no master available"):
+            self.resolve("workflow_dispatch", tracks="development", missing=("master",))
+
+
+class GpumdRawEvidenceTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name).resolve()
+        self.report = {"host": "node", "job": "123", "gpu_visible": "0", "conditions": {},
+                       "executables": {mode: {"gpumd": mode} for mode in ("candidate", "baseline")}}
+        for relative in science.required_results():
+            path = self.root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("fixture\n")
+        base_xyz = '2\nenergy=1\nCu 0 0 0 0 0 0\nCu 1 0 0 0 0 0\n'
+        for path in self.root.rglob("*"):
+            if not path.is_file():
+                continue
+            if path.name in ("dump.xyz", "gold.xyz", "model.xyz"):
+                path.write_text(base_xyz)
+            elif path.name in ("run.in", "nep.in"):
+                path.write_text("run 10000\n")
+            elif path.name.endswith(".out"):
+                path.write_text("0 0 0\n")
+            elif path.name == "execution.json":
+                path.write_text(json.dumps(dict(self.report, environment={}, wall_seconds=12)))
+            elif path.name == "run.log":
+                path.write_text("Time used for this run = 10 second.\nSpeed of this run = 2000000 atom*step/second.\n")
+        for mode in ("candidate", "baseline"):
+            for name in ("energy_train.out", "force_train.out", "virial_train.out"):
+                for suffix in ("", "-repeat0", "-repeat1", "-repeat2"):
+                    for prefix in ("", "gold-"):
+                        (self.root / f"prediction-{mode}{suffix}/{prefix}{name}").write_text("0 0 0\n")
+        for path in self.root.glob("throughput*/model.xyz"):
+            path.write_text("2000\nfixture model\n")
+        for mode in ("baseline", "candidate"):
+            pilot = self.root / f"throughput-pilot-{mode}"
+            (pilot / "run.in").write_text("run 1000\n")
+            (pilot / "run.log").write_text("Time used for this run = 1 second.\nSpeed of this run = 2000000 atom*step/second.\n")
+        order = [("throughput-pilot-baseline", "baseline"), ("throughput-pilot-candidate", "candidate"),
+                 *((f"{kind}-{mode}{suffix}", mode) for kind, mode, suffix in science.throughput_trials())]
+        for sequence, (label, mode) in enumerate(order):
+            path = self.root / label / "execution.json"
+            record = json.loads(path.read_text())
+            record.update(sequence=sequence, executable_sha256=mode)
+            path.write_text(json.dumps(record))
+        for mode in ("on", "off"):
+            (self.root / f"training-{mode}-candidate/loss.out").write_text("1 0.01\n2 0.02\n")
+        (self.root / "training-on-candidate/run.log").write_text("Compile specialized NEP training kernels (sm_70).\n")
+        (self.root / "gnep-train-candidate/loss.out").write_text("1 0.01\n2 0.02\n")
+        (self.root / "gnep-prediction-candidate/energy_train.out").write_text("0.025 0\n" * 4)
+        (self.root / "gnep-prediction-candidate/force_train.out").write_text("0 0 0 0 0 0\n" * 160)
+        reference = self.root / "gnep-prediction-candidate"
+        frame = '40\nProperties=species:S:1:pos:R:3:force:R:3\n' + "Cu 0 0 0 0 0 0\n" * 40
+        (reference / "train.xyz").write_text(frame * 4)
+        (reference / "gnep.in").write_text("prediction 1\n")
+        for axis, name in enumerate("xyz"):
+            for side, sign in (("plus", 1), ("minus", -1)):
+                case = self.root / f"gnep-force-{name}-{side}-candidate"
+                (case / "gnep.in").write_bytes((reference / "gnep.in").read_bytes())
+                (case / "train.xyz").write_text(science.displaced_frames(frame * 4, axis, sign * science.GNEP_DISPLACEMENT))
+                (case / "energy_train.out").write_text("0.025 0\n" * 4)
+        (self.root / "gnep-static-candidate/dump.xyz").write_text("40\nenergy=1\n" + "Cu 0 0 0 0 0 0\n" * 40)
+        (self.root / "plumed-candidate/colvar").write_text("0 1 1\n")
+        (self.root / "plumed-candidate/dump.xyz").write_text('2\nenergy=1\nCu 0 0 0 2 0 0\nCu 1 0 0 -2 0 0\n')
+        (self.root / "deepmd-input/reference.json").write_text(json.dumps({"energy": 1, "forces": [[0, 0, 0], [0, 0, 0]]}))
+
+    def test_raw_fixture_recomputes_every_scientific_gate(self):
+        checks, benchmark = science.recheck_results(self.root, self.report)
+        self.assertEqual(checks["plumed-force-feedback"], 0)
+        self.assertEqual(benchmark["md-throughput-candidate"]["median_atom_steps_per_second"], 2000000)
+
+    def test_new_invocation_discards_inherited_outputs_and_keeps_reference_inputs(self):
+        case = self.root / "prediction-candidate"
+        self.assertTrue((case / "energy_train.out").is_file())
+        science.clear_previous_outputs(case)
+        self.assertFalse((case / "energy_train.out").exists())
+        self.assertFalse((case / "execution.json").exists())
+        self.assertTrue((case / "gold-energy_train.out").is_file())
+        self.assertTrue((case / "nep.txt").is_file())
+        self.assertTrue((case / "train.xyz").is_file())
+
+    def test_gnep_numerical_derivative_checks_force_sign_and_per_atom_energy_units(self):
+        reference = self.root / "gnep-prediction-candidate"
+        (reference / "force_train.out").write_text(("1 2 3 0 0 0\n" + "0 0 0 0 0 0\n" * 39) * 4)
+        for axis, name in enumerate("xyz"):
+            for side, sign in (("plus", 1), ("minus", -1)):
+                energy = 0.025 - sign * (axis + 1) * science.GNEP_DISPLACEMENT / 40
+                path = self.root / f"gnep-force-{name}-{side}-candidate/energy_train.out"
+                path.write_text(f"{energy:.12g} 0\n" * 4)
+        self.assertLess(science.check_gnep_forces(self.root)["max_force_error_ev_per_angstrom"], 1e-10)
+
+    def test_gnep_force_check_rejects_a_model_with_wrong_analytic_force(self):
+        path = self.root / "gnep-prediction-candidate/force_train.out"
+        path.write_text("1 0 0 0 0 0\n" * 160)
+        with self.assertRaisesRegex(ValueError, "finite-difference force"):
+            science.check_gnep_forces(self.root)
+
+    def test_gnep_force_check_accounts_for_printed_energy_rounding_with_a_fixed_cap(self):
+        for axis in "xyz":
+            for side in ("plus", "minus"):
+                path = self.root / f"gnep-force-{axis}-{side}-candidate/energy_train.out"
+                path.write_text("-14.1234 0\n" * 4)
+        self.assertAlmostEqual(science.check_gnep_forces(self.root)["max_output_rounding_ev_per_angstrom"], 0.08)
+        (self.root / "gnep-force-x-plus-candidate/energy_train.out").write_text("-100.123 0\n" * 4)
+        with self.assertRaisesRegex(ValueError, "precision cannot certify"):
+            science.check_gnep_forces(self.root)
+
+    def test_gnep_force_check_rejects_changed_model_and_unperturbed_input(self):
+        path = self.root / "gnep-force-x-plus-candidate/nep.txt"
+        path.write_text("different model\n")
+        with self.assertRaisesRegex(ValueError, "frozen inputs"):
+            science.check_gnep_forces(self.root)
+        path.write_text("fixture\n")
+        reference = self.root / "gnep-prediction-candidate/train.xyz"
+        (path.parent / "train.xyz").write_bytes(reference.read_bytes())
+        with self.assertRaisesRegex(ValueError, "frozen inputs"):
+            science.check_gnep_forces(self.root)
+
+    def test_benchmark_rejects_short_measurement_wrong_executable_and_grouped_trials(self):
+        case = self.root / "throughput-candidate-repeat0"
+        path = case / "run.log"
+        original = path.read_text()
+        path.write_text("Time used for this run = 1 second.\nSpeed of this run = 20000000 atom*step/second.\n")
+        with self.assertRaisesRegex(ValueError, "too short"):
+            science.recheck_results(self.root, self.report)
+        path.write_text(original)
+        path = case / "execution.json"
+        original = path.read_text()
+        record = json.loads(original)
+        record["executable_sha256"] = "baseline"
+        path.write_text(json.dumps(record))
+        with self.assertRaisesRegex(ValueError, "executable differ"):
+            science.recheck_results(self.root, self.report)
+        record = json.loads(original)
+        record["sequence"] = 100
+        path.write_text(json.dumps(record))
+        with self.assertRaisesRegex(ValueError, "alternate"):
+            science.recheck_results(self.root, self.report)
+
+    def test_repeat_keeps_original_calibration_when_new_pilots_change(self):
+        self.report["repeat_of"] = {"science_sha256": "pinned-original", "n_steps": 10000}
+        path = self.root / "throughput-pilot-baseline/run.log"
+        path.write_text("Time used for this run = 0.1 second.\nSpeed of this run = 20000000 atom*step/second.\n")
+        _, benchmark = science.recheck_results(self.root, self.report)
+        self.assertEqual(benchmark["md-throughput-baseline"]["n_steps"], 10000)
+        self.report["repeat_of"]["n_steps"] = 20000
+        with self.assertRaisesRegex(ValueError, "pilot calibration"):
+            science.recheck_results(self.root, self.report)
+
+    def test_benchmark_rejects_forged_calibration(self):
+        path = self.root / "throughput-pilot-baseline/run.log"
+        path.write_text("Time used for this run = 0.1 second.\nSpeed of this run = 20000000 atom*step/second.\n")
+        with self.assertRaisesRegex(ValueError, "pilot calibration"):
+            science.recheck_results(self.root, self.report)
+
+    def test_science_inventory_excludes_generated_symlinks(self):
+        target = self.root / "deepmd-input/model.ckpt-1.pt"
+        target.write_text("checkpoint\n")
+        link = self.root / "deepmd-input/model.ckpt.pt"
+        link.symlink_to(target.name)
+        inventory = science.raw_file_inventory(self.root)
+        self.assertIn("deepmd-input/model.ckpt-1.pt", inventory)
+        self.assertNotIn("deepmd-input/model.ckpt.pt", inventory)
+
+    def test_fake_summary_cannot_replace_missing_raw_gold_or_outputs(self):
+        self.report["checks"] = {"static-candidate": True, "deepmd-candidate": True}
+        for relative in ("static-candidate/gold.xyz", "deepmd-baseline/dump.xyz", "gnep-static-candidate/nep.txt"):
+            path = self.root / relative
+            original = path.read_bytes()
+            path.unlink()
+            with self.assertRaisesRegex(ValueError, "mandatory GPUMD result"):
+                science.recheck_results(self.root, self.report)
+            path.write_bytes(original)
+
+    def test_changed_raw_scientific_output_fails_even_with_green_summary(self):
+        self.report["checks"] = {"verified": True}
+        path = self.root / "static-candidate/dump.xyz"
+        path.write_text(path.read_text().replace("energy=1", "energy=2"))
+        with self.assertRaisesRegex(ValueError, "static energy"):
+            science.recheck_results(self.root, self.report)
+
+    def test_benchmark_nan_timing_and_changed_inputs_fail(self):
+        path = self.root / "throughput-candidate-repeat0/execution.json"
+        original = path.read_text()
+        data = json.loads(original)
+        data["wall_seconds"] = float("nan")
+        path.write_text(json.dumps(data))
+        with self.assertRaisesRegex(ValueError, "nonfinite MD"):
+            science.recheck_results(self.root, self.report)
+        path.write_text(original)
+        (self.root / "throughput-candidate-repeat0/run.in").write_text("run 11000\n")
+        with self.assertRaisesRegex(ValueError, "input differs"):
+            science.recheck_results(self.root, self.report)
+
+    def test_jit_silent_fallback_cannot_be_reported_as_accepted(self):
+        path = self.root / "training-on-candidate/run.log"
+        path.write_text(path.read_text() + "Warning: NEP training specialization disabled\n")
+        with self.assertRaisesRegex(ValueError, "silently fell back"):
+            science.recheck_results(self.root, self.report)
+
+
+class GpumdRepeatTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name).resolve()
+        patcher = patch.object(acceptance, "ROOT", self.root)
+        patcher.start()
+        self.addCleanup(patcher.stop)
+        self.original = self.root / "runtime-tests/build-science"
+        self.repeat = self.root / "runtime-tests/build-science-retest"
+        self.request = dict(run_id="build-science", artifact="image", artifact_sha256="image-sha",
+            identity={"identity": True}, target="16v100-avx2", version="v1", build_run_id="build",
+            launcher="launcher", launcher_sha256="launcher-sha", controller_sha256="controller",
+            science_sha256="science", deepmd_probe_sha256="deepmd-probe")
+        self.evidence = dict(job="123", science_sha256="original-science", benchmark={
+            "md-throughput-candidate": {"median_atom_steps_per_second": 80, "n_steps": 10000},
+            "md-throughput-baseline": {"median_atom_steps_per_second": 100, "n_steps": 10000}})
+        self.science = dict(executables={"baseline": {"gpumd": "baseline"}, "candidate": {"gpumd": "candidate"}},
+                            packaged_inputs={"static/model.xyz": "input"}, conditions={"OMP_NUM_THREADS": "2"},
+                            gpu="Tesla V100, GPU-original, 570\n")
+        for task in (self.original, self.repeat):
+            (task / "results/science").mkdir(parents=True)
+            for relative in science.repeat_inputs():
+                path = task / "results/science" / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text("same frozen input\n")
+        (self.original / "request.json").write_text(json.dumps(self.request))
+        (self.original / "results/evidence.json").write_text(json.dumps(self.evidence))
+        (self.original / "results/status.json").write_text(json.dumps(
+            dict(job="123", state="COMPLETED", exit_code="0:0", verified=True)))
+        (self.original / "results/science/science.json").write_text(json.dumps(self.science))
+        self.repeat_request = dict(self.request, run_id="build-science-retest",
+            repeat_of=acceptance.repeat_binding("build-science", self.evidence))
+        self.repeat_science = dict(self.science, gpu="Tesla V100, GPU-other, 570\n",
+                                  repeat_of={"science_sha256": "original-science", "n_steps": 10000})
+
+    def verify(self):
+        # Preserve real completed_evidence verification of request/status/stored
+        # evidence; only the expensive SIF/scientific numerical reader is stubbed.
+        with patch.object(acceptance, "verify_evidence", return_value=self.evidence) as raw:
+            result = acceptance.verify_repeat(self.repeat, self.repeat_request, self.repeat_science)
+            raw.assert_called_once_with(self.original, self.request)
+            return result
+
+    def test_repeat_reparses_original_evidence_and_binds_its_request_and_job(self):
+        self.assertEqual(self.verify(), self.repeat_request["repeat_of"])
+        with patch.object(acceptance, "verify_evidence", side_effect=ValueError("changed original raw output")):
+            with self.assertRaisesRegex(ValueError, "changed original raw output"):
+                acceptance.verify_repeat(self.repeat, self.repeat_request, self.repeat_science)
+
+    def test_repeat_rejects_previously_passing_baseline_and_unverified_original(self):
+        self.evidence["benchmark"]["md-throughput-candidate"]["median_atom_steps_per_second"] = 100
+        (self.original / "results/evidence.json").write_text(json.dumps(self.evidence))
+        with self.assertRaisesRegex(ValueError, "original regression"):
+            self.verify()
+        (self.original / "results/status.json").write_text(json.dumps(
+            dict(job="123", state="COMPLETED", exit_code="0:0", verified=False)))
+        with self.assertRaisesRegex(ValueError, "not verified"):
+            self.verify()
+
+    def test_repeat_rejects_changed_baseline_inputs_resources_and_calibration(self):
+        mutations = (("executables", {"baseline": {"gpumd": "new binary"}}),
+                     ("packaged_inputs", {"static/model.xyz": "new input"}),
+                     ("conditions", {"OMP_NUM_THREADS": "4"}),
+                     ("gpu", "Tesla V100, GPU-other, 580\n"),
+                     ("repeat_of", {"science_sha256": "original-science", "n_steps": 20000}))
+        for key, value in mutations:
+            with self.subTest(key=key):
+                previous = self.repeat_science[key]
+                self.repeat_science[key] = value
+                with self.assertRaises(ValueError):
+                    self.verify()
+                self.repeat_science[key] = previous
+        path = self.repeat / "results/science/deepmd-input/frozen_model.pth"
+        path.write_text("new model\n")
+        with self.assertRaisesRegex(ValueError, "frozen scientific inputs"):
+            self.verify()
+
+    def test_repeat_rejects_changed_image_controller_and_original_binding(self):
+        for key in ("artifact_sha256", "target", "controller_sha256", "science_sha256"):
+            with self.subTest(key=key):
+                previous = self.repeat_request[key]
+                self.repeat_request[key] = "changed"
+                with self.assertRaisesRegex(ValueError, "image, source, controller or resources"):
+                    self.verify()
+                self.repeat_request[key] = previous
+        self.repeat_request["repeat_of"]["evidence_sha256"] = "changed"
+        with self.assertRaisesRegex(ValueError, "binding changed"):
+            self.verify()
+
+    def test_repeat_cannot_chain_a_second_retest(self):
+        self.repeat_request["run_id"] += "-retest"
+        self.repeat_request["repeat_of"]["run_id"] += "-retest"
+        (self.repeat / "request.json").write_text(json.dumps(self.repeat_request))
+        with self.assertRaisesRegex(ValueError, "first original acceptance"):
+            self.verify()
+
+
+if __name__ == "__main__":
+    unittest.main()

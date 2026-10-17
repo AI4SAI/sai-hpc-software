@@ -1,0 +1,641 @@
+{
+  "builds": [
+    {
+      "accounting": "1830993|16V100|RUNNING|2026-10-17T20:27:51|01:07:05|8|16v100n04|0:0",
+      "artifact_path": null,
+      "completed_dependencies": [
+        "[+] deezuov python-venv@1.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/16V100/dependencies/spack/linux-zen3/python-venv-1.0-deezuovw55nvppvrlm2vlv554anxitsr (0s)",
+        "[+] cj36drx compiler-wrapper@1.1.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/16V100/dependencies/spack/linux-zen3/compiler-wrapper-1.1.0-cj36drxonwpeqtef4nv5imckcsnobjt7 (1s)",
+        "[+] gpfmwc6 gcc-runtime@14.3.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/16V100/dependencies/spack/linux-zen3/gcc-runtime-14.3.0-gpfmwc6iyo4ntxrmm4szhzf5shg7shpi (1s)",
+        "[+] wqmiz7l tiled-mm@2.3.2 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/16V100/dependencies/spack/linux-zen3/tiled-mm-2.3.2-wqmiz7l6rdmi3pfr3ra5oubt4tauqtem (17s)",
+        "[+] ihng3u5 py-pip@26.1.2 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/16V100/dependencies/spack/linux-zen3/py-pip-26.1.2-ihng3u52ussk6g5qdogeiadi54q5yjte (27s)",
+        "[+] xdgmji3 costa@2.3.3 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/16V100/dependencies/spack/linux-zen3/costa-2.3.3-xdgmji3tsucqtwsbtw3wqyjueimt25gi (45s)",
+        "[+] ox6apfk libvori@220621 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/16V100/dependencies/spack/linux-zen3/libvori-220621-ox6apfkqq5mdwwkq5upxminesamus7al (1m06s)",
+        "[+] ubrai56 spla@1.6.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/16V100/dependencies/spack/linux-zen3/spla-1.6.1-ubrai56trgmuevwm3thzgn6ky6nmgqkh (1m10s)",
+        "[+] xm55k4p py-wheel@0.45.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/16V100/dependencies/spack/linux-zen3/py-wheel-0.45.1-xm55k4psdktomrsu3a7gdbuvq677dott (4s)",
+        "[+] buedfas py-setuptools@83.0.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/16V100/dependencies/spack/linux-zen3/py-setuptools-83.0.0-buedfas3ph7z6tpsdxm72ohhu5smrdcs (8s)",
+        "[+] 62iurh6 libxsmm@2.0.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/16V100/dependencies/spack/linux-zen3/libxsmm-2.0.0-62iurh6z3ykiyux6lygqelq5c4aqwttv (1m31s)",
+        "[+] tyu2lfn cosma@2.7.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/16V100/dependencies/spack/linux-zen3/cosma-2.7.0-tyu2lfn2gymirj6o4zofldezdfcs7d5d (17s)",
+        "[+] oatczg6 hdf5@1.14.6 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/16V100/dependencies/spack/linux-zen3/hdf5-1.14.6-oatczg6z5jwpt7tsfkayczc5vkcqm7oi (2m50s)",
+        "[+] g3wuvrh py-cython@3.2.4 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/16V100/dependencies/spack/linux-zen3/py-cython-3.2.4-g3wuvrhq2zrntkba4z5kghfwlwecx4ce (3m23s)",
+        "[+] np37xjh plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/16V100/dependencies/spack/linux-zen3/plumed-2.10.1-np37xjhlxj3qmkfebxzpsypu734ersmo (8m06s)"
+      ],
+      "controller": "/home/stardust/sai-hpc-software/controller/1e7d736e5884fe207460a3e6baf0aeddb5bdb4aa/39032306213-1-release-16v100-avx2-2026-10-17-67b5da876dd6",
+      "dependency_sealed": false,
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r9c87f65a7c0a",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "9c87f65a7c0a1bb7638f5e942f59bd7bdde750d7cf6cd5420c90cfa13cc517ad",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "image-driver.json": {
+        "data": {
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "binary_sha256": "0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9",
+          "config_sha256": "09eb938890f440030408e2600c4c6207fbcfa3294c2a3b77dae834c6a3671f0e",
+          "driver": "/home/stardust/sai-hpc-software/cache/tools/fuse2fs-0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9/bin/fuse2fs",
+          "patched_source_sha256": "2c299a8eb6a26620c629a40a0270543ffb9aec8cfb8abf84613246cab14b63ff",
+          "schema": 1,
+          "source_commit": "45651efd6db7da8738bc9d8d1f17e99259cabfe4"
+        },
+        "sha256": "53309ad1a0a7188f741f618253d24465ffacbb65d0591d45168e6658cccb6adb"
+      },
+      "job_id": "1830993",
+      "job_script_sha256": "30a176864f41a32b457154af604901007d588339c1a1186907096de3b98d45f5",
+      "log_tail": [
+        "[ ] g3wuvrh py-cython@3.2.4 install (5s)",
+        "[ ] oatczg6 hdf5@1.14.6 install (2m24s)",
+        "[+] oatczg6 hdf5@1.14.6 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/16V100/dependencies/spack/linux-zen3/hdf5-1.14.6-oatczg6z5jwpt7tsfkayczc5vkcqm7oi (2m50s)",
+        "[+] g3wuvrh py-cython@3.2.4 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/16V100/dependencies/spack/linux-zen3/py-cython-3.2.4-g3wuvrhq2zrntkba4z5kghfwlwecx4ce (3m23s)",
+        "[ ] np37xjh plumed@2.10.1 staging (1s)",
+        "[ ] np37xjh plumed@2.10.1 autoreconf (22s)",
+        "[ ] np37xjh plumed@2.10.1 configure (24s)",
+        "[ ] np37xjh plumed@2.10.1 build (33s)",
+        "[ ] np37xjh plumed@2.10.1 install (6m14s)",
+        "[+] np37xjh plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/16V100/dependencies/spack/linux-zen3/plumed-2.10.1-np37xjhlxj3qmkfebxzpsypu734ersmo (8m06s)"
+      ],
+      "native-profile.json": {
+        "data": {
+          "g++": "14.3.0",
+          "gcc": "14.3.0",
+          "gfortran": "14.3.0"
+        },
+        "sha256": "106114288a23c1d76a2de9eb88418406b9d422ba9da4ec7be1bea0fe39b3c122"
+      },
+      "request_sha256": "f6d7499ec9ac2aecda6f4060133a980c07b25912501ea80400bd27232846267c",
+      "run_id": "39032306213-1-release-16v100-avx2-2026-10-17-67b5da876dd6-dependencies"
+    },
+    {
+      "accounting": "1830994|4V100|COMPLETED|2026-10-17T20:28:08|00:37:19|8|4v100n27|0:0",
+      "application": {
+        "accounting": "1831311|4V100|FAILED|2026-10-17T21:09:11|00:16:51|8|4v100n05|1:0",
+        "job_id": "1831311",
+        "log_tail": [
+          "-- Looking for Fortran sgemm",
+          "-- Looking for Fortran sgemm - not found",
+          "-- Looking for Fortran sgemm",
+          "-- Looking for Fortran sgemm - found",
+          "-- Found BLAS: /opt/devtools/saiblas/2603-gnu-avx512/lib/libopenblas.so",
+          "-- Looking for Fortran cheev",
+          "-- Looking for Fortran cheev - found",
+          "-- Found LAPACK: /opt/devtools/saiblas/2603-gnu-avx512/lib/libopenblas.so;/opt/devtools/saiblas/2603-gnu-avx512/lib/libopenblas.so",
+          "-- mctc-lib: Find installed package",
+          "-- Configuring incomplete, errors occurred!"
+        ]
+      },
+      "artifact_path": null,
+      "completed_dependencies": [
+        "[+] nn4ip74 python-venv@1.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/4V100/dependencies/spack/linux-zen5/python-venv-1.0-nn4ip746s2e3k4e3vreosclxotqco3qr (0s)",
+        "[+] xavsxje compiler-wrapper@1.1.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/4V100/dependencies/spack/linux-zen5/compiler-wrapper-1.1.0-xavsxje4mjgilcmipnqxlmeja7dtnmnn (1s)",
+        "[+] 77qhgzu gcc-runtime@14.3.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock (1s)",
+        "[+] joxrwvs tiled-mm@2.3.2 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/4V100/dependencies/spack/linux-zen5/tiled-mm-2.3.2-joxrwvs52itwvriwz6urraxcs3kgwuds (11s)",
+        "[+] hahe4sv py-pip@26.1.2 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/4V100/dependencies/spack/linux-zen5/py-pip-26.1.2-hahe4sveuvz7hy6moao4trqnoetnliqt (18s)",
+        "[+] bnt2qbo costa@2.3.3 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/4V100/dependencies/spack/linux-zen5/costa-2.3.3-bnt2qboj6a4emry3efbgiaecggwjdvne (25s)",
+        "[+] kj7qcxq libvori@220621 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/4V100/dependencies/spack/linux-zen5/libvori-220621-kj7qcxqg5wq7bw7iwzkpthzpmvxb2toh (35s)",
+        "[+] uc273bz spla@1.6.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/4V100/dependencies/spack/linux-zen5/spla-1.6.1-uc273bzgwxxngrexd366xlfvkfmeuvgm (41s)",
+        "[+] suuplgr py-wheel@0.45.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/4V100/dependencies/spack/linux-zen5/py-wheel-0.45.1-suuplgrwp3mhssjwp3kr4362nfht3mra (3s)",
+        "[+] mjgxmnw py-setuptools@83.0.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/4V100/dependencies/spack/linux-zen5/py-setuptools-83.0.0-mjgxmnw3u3hatdbug7atjehhufpfjo4h (6s)",
+        "[+] 5rlaklb libxsmm@2.0.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk (52s)",
+        "[+] fosnhjh cosma@2.7.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/4V100/dependencies/spack/linux-zen5/cosma-2.7.0-fosnhjhoc5gegowe347o7foswfomsbqk (14s)",
+        "[+] veh6gg4 hdf5@1.14.6 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/4V100/dependencies/spack/linux-zen5/hdf5-1.14.6-veh6gg4r2kjguzn47akx3jrp3kumhq6r (1m50s)",
+        "[+] lh7rnzg py-cython@3.2.4 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/4V100/dependencies/spack/linux-zen5/py-cython-3.2.4-lh7rnzgrf3dzdlgxnsbqyub2o4fl2pvq (2m48s)",
+        "[+] tuc2skr plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/4V100/dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg (5m38s)",
+        "[+] vyzopke libint@2.6.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/4V100/dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz (34m14s)"
+      ],
+      "controller": "/home/stardust/sai-hpc-software/controller/1e7d736e5884fe207460a3e6baf0aeddb5bdb4aa/39032306213-1-release-4v100-avx512-2026-10-17-67b5da876dd6",
+      "dependency_seal": {
+        "data": {
+          "evidence_sha256": {
+            "image-driver.json": "53309ad1a0a7188f741f618253d24465ffacbb65d0591d45168e6658cccb6adb",
+            "install-success.json": "79608cea318fef80612e50ce83518948f6003c7fbbb1130507e41d02d2c48cec",
+            "libint-export-repair.json": "d70e63170aab0d0c4c80c8847ff44522a5cfdb4cd9a12416893ee5f667708f94",
+            "native-profile.json": "0f500fabbcded4a055fb7a1522618e1051262551671ab15936a0918c2f20ee50",
+            "probe-success.json": "636daea0d4d1352180e16bbea4c3fd6f5936c024b75a26c6d98198a8806a6717",
+            "spack.lock": "13a8b32302fcf632ef0d2f4dcc21cbee4f499ea69fdc8b55015c136e3ac9efbe",
+            "spack.yaml": "59c6ff5f091bb1b89f8e8822a9eb7c0c5ce07fd5aeb5c52fe1e344f54f2d1813",
+            "stage-identity.json": "6cfc08a262859df3d73c64e34ca5ebbab6ddaae254c67451ecb4e1f2f8cc870f",
+            "validated-graph.json": "135cc2ad7211c50e0e6783e21cf5d94de6807caaf89b5dc6aee964d4f10ffe16"
+          },
+          "identity": {
+            "build_id": "v2026.2-g67b5da876dd6-r9c87f65a7c0a",
+            "cpu_arch": "znver4",
+            "cuda_arch": "70",
+            "dependency_isa": "avx512",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/4V100",
+            "partition": "4V100",
+            "recipe_sha256": "9c87f65a7c0a1bb7638f5e942f59bd7bdde750d7cf6cd5420c90cfa13cc517ad",
+            "repository": "cp2k/cp2k",
+            "schema": 2,
+            "software": "cp2k",
+            "source_ref": "v2026.2",
+            "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+            "source_version": "v2026.2",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "4v100-avx512",
+            "track": "release",
+            "version_label": "v2026.2"
+          },
+          "job_id": "1830994",
+          "overlay_sha256": "88b35ab046a3cb24b434bc9679ffa05c76d3ea9cf272d68d2e3f8409587e68da",
+          "purpose": "cp2k-final-prefix-dependencies-not-application-acceptance",
+          "schema": 1,
+          "script_sha256": "76290b1fd5304105a03e247479156785d0b6d4811685f370055268bc18bc7074"
+        },
+        "sha256": "83e8b41c69178b67ade5cfa149c4582af67ac38cdc2477a3434b59b9f4bf8f1e"
+      },
+      "dependency_sealed": true,
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r9c87f65a7c0a",
+        "cpu_arch": "znver4",
+        "cuda_arch": "70",
+        "dependency_isa": "avx512",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/4V100",
+        "partition": "4V100",
+        "recipe_sha256": "9c87f65a7c0a1bb7638f5e942f59bd7bdde750d7cf6cd5420c90cfa13cc517ad",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "4v100-avx512",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "image-driver.json": {
+        "data": {
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "binary_sha256": "0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9",
+          "config_sha256": "09eb938890f440030408e2600c4c6207fbcfa3294c2a3b77dae834c6a3671f0e",
+          "driver": "/home/stardust/sai-hpc-software/cache/tools/fuse2fs-0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9/bin/fuse2fs",
+          "patched_source_sha256": "2c299a8eb6a26620c629a40a0270543ffb9aec8cfb8abf84613246cab14b63ff",
+          "schema": 1,
+          "source_commit": "45651efd6db7da8738bc9d8d1f17e99259cabfe4"
+        },
+        "sha256": "53309ad1a0a7188f741f618253d24465ffacbb65d0591d45168e6658cccb6adb"
+      },
+      "job_id": "1830994",
+      "job_script_sha256": "76290b1fd5304105a03e247479156785d0b6d4811685f370055268bc18bc7074",
+      "log_tail": [
+        "[ ] tuc2skr plumed@2.10.1 staging (3s)",
+        "[ ] tuc2skr plumed@2.10.1 autoreconf (19s)",
+        "[ ] tuc2skr plumed@2.10.1 configure (21s)",
+        "[ ] tuc2skr plumed@2.10.1 build (26s)",
+        "[ ] tuc2skr plumed@2.10.1 install (4m10s)",
+        "[+] tuc2skr plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/4V100/dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg (5m38s)",
+        "[ ] vyzopke libint@2.6.0 install (33m31s)",
+        "[+] vyzopke libint@2.6.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/4V100/dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz (34m14s)",
+        "CP2K_FINAL_PREFIX_DEPENDENCIES_COMPLETE 2026-10-17T13:05:23Z",
+        "CP2K_DEPENDENCY_STAGE_COMPLETE_NOT_APPLICATION_ACCEPTANCE"
+      ],
+      "native-profile.json": {
+        "data": {
+          "g++": "14.3.0",
+          "gcc": "14.3.0",
+          "gfortran": "14.3.0"
+        },
+        "sha256": "0f500fabbcded4a055fb7a1522618e1051262551671ab15936a0918c2f20ee50"
+      },
+      "request_sha256": "c632f1e70867c5fab865d8c70f056457b0f074b51d77d2b1733ca70ca20dc4fd",
+      "run_id": "39032306213-1-release-4v100-avx512-2026-10-17-67b5da876dd6-dependencies"
+    },
+    {
+      "accounting": "1830995|8V100V0|RUNNING|2026-10-17T20:28:08|01:06:48|12|8v100v0n02|0:0",
+      "artifact_path": null,
+      "completed_dependencies": [
+        "[+] zzt6a5i python-venv@1.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/8V100V0/dependencies/spack/linux-skylake_avx512/python-venv-1.0-zzt6a5ief7e3notnmc77hor3o2t3f7rt (0s)",
+        "[+] t6g6oyk compiler-wrapper@1.1.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/8V100V0/dependencies/spack/linux-skylake_avx512/compiler-wrapper-1.1.0-t6g6oykfgwxbd66jykpbm5hjuwq46pch (1s)",
+        "[+] 2vmpyoa gcc-runtime@14.3.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/8V100V0/dependencies/spack/linux-skylake_avx512/gcc-runtime-14.3.0-2vmpyoaetw3l5tzfmngiu5c6ruq2glfr (2s)",
+        "[+] f7gzndz tiled-mm@2.3.2 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/8V100V0/dependencies/spack/linux-skylake_avx512/tiled-mm-2.3.2-f7gzndzouxxc2uvmwgzfa4f3dypvczzz (16s)",
+        "[+] 5vpbvdc py-pip@26.1.2 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/8V100V0/dependencies/spack/linux-skylake_avx512/py-pip-26.1.2-5vpbvdch3htmxnmeap4z4556gbg4672b (31s)",
+        "[+] uyxiqsq libvori@220621 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/8V100V0/dependencies/spack/linux-skylake_avx512/libvori-220621-uyxiqsqtzn75sglkxvdsxrcenqpmm4rj (39s)",
+        "[+] 33y2tgb costa@2.3.3 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/8V100V0/dependencies/spack/linux-skylake_avx512/costa-2.3.3-33y2tgbun7igrmptobktkiee3wsjsju5 (42s)",
+        "[+] z2yhipm spla@1.6.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/8V100V0/dependencies/spack/linux-skylake_avx512/spla-1.6.1-z2yhipmv5ulbdeesmn7aygasjeatoju5 (44s)",
+        "[+] nbrjup5 py-wheel@0.45.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/8V100V0/dependencies/spack/linux-skylake_avx512/py-wheel-0.45.1-nbrjup5mqgmxanakbw6xczkzkgpybg7p (4s)",
+        "[+] ojr7tp2 py-setuptools@83.0.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/8V100V0/dependencies/spack/linux-skylake_avx512/py-setuptools-83.0.0-ojr7tp2wx3exxd255kplni7kpiwc7dkw (8s)",
+        "[+] irxk7rp libxsmm@2.0.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/8V100V0/dependencies/spack/linux-skylake_avx512/libxsmm-2.0.0-irxk7rpz4roscuefcqo3rddeycnj25b6 (1m09s)",
+        "[+] zi7pmgn cosma@2.7.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/8V100V0/dependencies/spack/linux-skylake_avx512/cosma-2.7.0-zi7pmgnb4ye66ohzxxrvarqlos5wqx7r (16s)",
+        "[+] c762spr hdf5@1.14.6 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/8V100V0/dependencies/spack/linux-skylake_avx512/hdf5-1.14.6-c762spr46tnwvmbfpx6o2723tufh4jlt (2m38s)",
+        "[+] xlhkvaq py-cython@3.2.4 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/8V100V0/dependencies/spack/linux-skylake_avx512/py-cython-3.2.4-xlhkvaqhtzwp47bq5j36nggv6ndnxx3u (4m17s)",
+        "[+] e3rybix plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/8V100V0/dependencies/spack/linux-skylake_avx512/plumed-2.10.1-e3rybix5hx3xnaywsnjne37of7mtn4sq (6m53s)"
+      ],
+      "controller": "/home/stardust/sai-hpc-software/controller/1e7d736e5884fe207460a3e6baf0aeddb5bdb4aa/39032306213-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6",
+      "dependency_sealed": false,
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r9c87f65a7c0a",
+        "cpu_arch": "skylake-avx512",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/8V100V0",
+        "partition": "8V100V0",
+        "recipe_sha256": "9c87f65a7c0a1bb7638f5e942f59bd7bdde750d7cf6cd5420c90cfa13cc517ad",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "8v100v0-avx512",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "image-driver.json": {
+        "data": {
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "binary_sha256": "0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9",
+          "config_sha256": "09eb938890f440030408e2600c4c6207fbcfa3294c2a3b77dae834c6a3671f0e",
+          "driver": "/home/stardust/sai-hpc-software/cache/tools/fuse2fs-0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9/bin/fuse2fs",
+          "patched_source_sha256": "2c299a8eb6a26620c629a40a0270543ffb9aec8cfb8abf84613246cab14b63ff",
+          "schema": 1,
+          "source_commit": "45651efd6db7da8738bc9d8d1f17e99259cabfe4"
+        },
+        "sha256": "53309ad1a0a7188f741f618253d24465ffacbb65d0591d45168e6658cccb6adb"
+      },
+      "job_id": "1830995",
+      "job_script_sha256": "8ef328a5a0666c59908693e530aeb8e1825cc1e53e0548933c1cc81eb0fd6708",
+      "log_tail": [
+        "[ ] c762spr hdf5@1.14.6 build (1m29s)",
+        "[ ] c762spr hdf5@1.14.6 install (2m13s)",
+        "[+] c762spr hdf5@1.14.6 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/8V100V0/dependencies/spack/linux-skylake_avx512/hdf5-1.14.6-c762spr46tnwvmbfpx6o2723tufh4jlt (2m38s)",
+        "[+] xlhkvaq py-cython@3.2.4 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/8V100V0/dependencies/spack/linux-skylake_avx512/py-cython-3.2.4-xlhkvaqhtzwp47bq5j36nggv6ndnxx3u (4m17s)",
+        "[ ] e3rybix plumed@2.10.1 staging (4s)",
+        "[ ] e3rybix plumed@2.10.1 autoreconf (27s)",
+        "[ ] e3rybix plumed@2.10.1 configure (29s)",
+        "[ ] e3rybix plumed@2.10.1 build (43s)",
+        "[ ] e3rybix plumed@2.10.1 install (5m15s)",
+        "[+] e3rybix plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/8V100V0/dependencies/spack/linux-skylake_avx512/plumed-2.10.1-e3rybix5hx3xnaywsnjne37of7mtn4sq (6m53s)"
+      ],
+      "native-profile.json": {
+        "data": {
+          "g++": "14.3.0",
+          "gcc": "14.3.0",
+          "gfortran": "14.3.0"
+        },
+        "sha256": "82a352f45bb0297ab6d6811140dc27f9686fb2a5e31ca5987fc2c19a0b4f75f3"
+      },
+      "request_sha256": "d0a2b980f77f44fd8509b79cf6a55dc368942b2fc3919b764ace4e7e33d9dc6d",
+      "run_id": "39032306213-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6-dependencies"
+    },
+    {
+      "accounting": "1830997|DSPRHBM|COMPLETED|2026-10-17T20:28:01|00:52:57|8|d9470n05|0:0",
+      "application": {
+        "accounting": "1831428|DSPRHBM|RUNNING|2026-10-17T21:24:59|00:09:57|8|d9470n05|0:0",
+        "job_id": "1831428",
+        "log_tail": [
+          "BUILD_CAPACITY_POLICY filesystem-enforced 39032306213-1-release-dsprhbm-2026-10-17-67b5da876dd6"
+        ]
+      },
+      "artifact_path": null,
+      "completed_dependencies": [
+        "[+] z3cvu4s python-venv@1.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/DSPRHBM/dependencies/spack/linux-sapphirerapids/python-venv-1.0-z3cvu4szefmucq6ysbgtoa4vsggcqnhl (1s)",
+        "[+] b5js566 compiler-wrapper@1.1.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/DSPRHBM/dependencies/spack/linux-sapphirerapids/compiler-wrapper-1.1.0-b5js566kchquhya2ybk4buow3z7bnb3d (1s)",
+        "[+] hkx3nzp gcc-runtime@14.3.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/DSPRHBM/dependencies/spack/linux-sapphirerapids/gcc-runtime-14.3.0-hkx3nzpcza3hnke7x3dzgo2znpnqclp4 (2s)",
+        "[+] ss237lq py-pip@26.1.2 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/DSPRHBM/dependencies/spack/linux-sapphirerapids/py-pip-26.1.2-ss237lqqhstqd2akqklkzqhkdmhzxyj6 (27s)",
+        "[+] tya7qov costa@2.3.3 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/DSPRHBM/dependencies/spack/linux-sapphirerapids/costa-2.3.3-tya7qova2ank23jz7mr5tnjkjduzuend (32s)",
+        "[+] uxed4dw spla@1.6.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/DSPRHBM/dependencies/spack/linux-sapphirerapids/spla-1.6.1-uxed4dw7umencfxxq4gyzacu6r65lbkz (37s)",
+        "[+] tfxodmx libvori@220621 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/DSPRHBM/dependencies/spack/linux-sapphirerapids/libvori-220621-tfxodmxhdmcxuxdc456sablcstwrxpii (40s)",
+        "[+] zcbxz64 py-wheel@0.45.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/DSPRHBM/dependencies/spack/linux-sapphirerapids/py-wheel-0.45.1-zcbxz64qkyaygudpa5zwxzuddbk5aecg (5s)",
+        "[+] m4bapxa py-setuptools@83.0.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/DSPRHBM/dependencies/spack/linux-sapphirerapids/py-setuptools-83.0.0-m4bapxahgcxscgbsaf6omxhczg7twb2n (10s)",
+        "[+] l5muhjn libxsmm@2.0.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/DSPRHBM/dependencies/spack/linux-sapphirerapids/libxsmm-2.0.0-l5muhjnzczl5peiem2fwiixbqjnzm33l (1m03s)",
+        "[+] 5tqnpev cosma@2.7.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/DSPRHBM/dependencies/spack/linux-sapphirerapids/cosma-2.7.0-5tqnpevastj6oxxox525pxdabt7w2qcf (15s)",
+        "[+] nzurbzn hdf5@1.14.6 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/DSPRHBM/dependencies/spack/linux-sapphirerapids/hdf5-1.14.6-nzurbzn7nvb3lu6p33d5wu7aq5ezqydb (3m27s)",
+        "[+] 4f4yyk5 py-cython@3.2.4 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/DSPRHBM/dependencies/spack/linux-sapphirerapids/py-cython-3.2.4-4f4yyk5mmtxyuwkiag2wgpbtvn4ea5xp (3m42s)",
+        "[+] qwwau7j plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/DSPRHBM/dependencies/spack/linux-sapphirerapids/plumed-2.10.1-qwwau7jv5yf5i3ok3c24ysm4ibpxpllg (6m44s)",
+        "[+] 4dtgfsz libint@2.6.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/DSPRHBM/dependencies/spack/linux-sapphirerapids/libint-2.6.0-4dtgfsz4ycma7uwhbp5mbe6g3aqsqwmb (49m08s)"
+      ],
+      "controller": "/home/stardust/sai-hpc-software/controller/1e7d736e5884fe207460a3e6baf0aeddb5bdb4aa/39032306213-1-release-dsprhbm-2026-10-17-67b5da876dd6",
+      "dependency_seal": {
+        "data": {
+          "evidence_sha256": {
+            "image-driver.json": "53309ad1a0a7188f741f618253d24465ffacbb65d0591d45168e6658cccb6adb",
+            "install-success.json": "f98161dc986bbfbb197f065fe510b4a14da175981b48f84cb29307e1435ab78d",
+            "libint-export-repair.json": "80ac789f7215f1aad4258d4ca70b5b41d2353ff2d04b8d12a55f067d4a46a44d",
+            "native-profile.json": "49df8c3f48d712004789c28e3dd904296e0b2b5b5debdec929739de50b44d6e9",
+            "probe-success.json": "a80424ed2d664071c398623a77365b400b83c3c67d04b0ab93cf01c64b24d855",
+            "spack.lock": "a4565fb2748a877c2d9f994c71f3093c83a732e3e2ae21bb0cc6e301ee819e2a",
+            "spack.yaml": "ec99db3009b2f1508a8bbdb73b3e318468a76d74240d4b44f2fb88797f7c1fec",
+            "stage-identity.json": "3d6be07bce2034ee73ea024d225037432b2de21aafb6ce1d444973a0fdaa2759",
+            "validated-graph.json": "9844fdc8f4ea11269677601bfef122539d551cc4fdbc8f34c79878adf33f380a"
+          },
+          "identity": {
+            "build_id": "v2026.2-g67b5da876dd6-r9c87f65a7c0a",
+            "cpu_arch": "x86-64-v4",
+            "cuda_arch": "",
+            "dependency_isa": "avx512",
+            "gpus": 0,
+            "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/DSPRHBM",
+            "partition": "DSPRHBM",
+            "recipe_sha256": "9c87f65a7c0a1bb7638f5e942f59bd7bdde750d7cf6cd5420c90cfa13cc517ad",
+            "repository": "cp2k/cp2k",
+            "schema": 2,
+            "software": "cp2k",
+            "source_ref": "v2026.2",
+            "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+            "source_version": "v2026.2",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "dsprhbm",
+            "track": "release",
+            "version_label": "v2026.2"
+          },
+          "job_id": "1830997",
+          "overlay_sha256": "e6a620288ddcc19436f768ae84aef69f3603b3206126a0d501018f89002b8781",
+          "purpose": "cp2k-final-prefix-dependencies-not-application-acceptance",
+          "schema": 1,
+          "script_sha256": "a30541e6f1d85999f170ff48eaf67aece0598239356cc1a183281a38e38d82db"
+        },
+        "sha256": "08c98936f4183aa92c12af9b0a9b398001f00c0cc7a9f45392b89453048b02c7"
+      },
+      "dependency_sealed": true,
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r9c87f65a7c0a",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "9c87f65a7c0a1bb7638f5e942f59bd7bdde750d7cf6cd5420c90cfa13cc517ad",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "image-driver.json": {
+        "data": {
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "binary_sha256": "0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9",
+          "config_sha256": "09eb938890f440030408e2600c4c6207fbcfa3294c2a3b77dae834c6a3671f0e",
+          "driver": "/home/stardust/sai-hpc-software/cache/tools/fuse2fs-0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9/bin/fuse2fs",
+          "patched_source_sha256": "2c299a8eb6a26620c629a40a0270543ffb9aec8cfb8abf84613246cab14b63ff",
+          "schema": 1,
+          "source_commit": "45651efd6db7da8738bc9d8d1f17e99259cabfe4"
+        },
+        "sha256": "53309ad1a0a7188f741f618253d24465ffacbb65d0591d45168e6658cccb6adb"
+      },
+      "job_id": "1830997",
+      "job_script_sha256": "a30541e6f1d85999f170ff48eaf67aece0598239356cc1a183281a38e38d82db",
+      "log_tail": [
+        "[ ] qwwau7j plumed@2.10.1 build (39s)",
+        "[ ] qwwau7j plumed@2.10.1 install (4m25s)",
+        "[+] qwwau7j plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/DSPRHBM/dependencies/spack/linux-sapphirerapids/plumed-2.10.1-qwwau7jv5yf5i3ok3c24ysm4ibpxpllg (6m44s)",
+        "[ ] 4dtgfsz libint@2.6.0 install (47m57s)",
+        "[+] 4dtgfsz libint@2.6.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r9c87f65a7c0a/DSPRHBM/dependencies/spack/linux-sapphirerapids/libint-2.6.0-4dtgfsz4ycma7uwhbp5mbe6g3aqsqwmb (49m08s)",
+        "CP2K_FINAL_PREFIX_DEPENDENCIES_COMPLETE 2026-10-17T13:20:55Z",
+        "INFO:    Terminating fuse2fs after timeout",
+        "INFO:    Timeouts can be caused by a running background process",
+        "INFO:    Cleanup error: while stopping driver for /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0: fuse2fs exited: Ignoring invalid max threads value 4294967295 > max (100000).",
+        "CP2K_DEPENDENCY_STAGE_COMPLETE_NOT_APPLICATION_ACCEPTANCE"
+      ],
+      "native-profile.json": {
+        "data": {
+          "g++": "14.3.0",
+          "gcc": "14.3.0",
+          "gfortran": "14.3.0"
+        },
+        "sha256": "49df8c3f48d712004789c28e3dd904296e0b2b5b5debdec929739de50b44d6e9"
+      },
+      "request_sha256": "2599549d5aeb4a7befe7ba474cb7b12998fe8b9c510d2c97e8bbf80383848831",
+      "run_id": "39032306213-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies"
+    }
+  ],
+  "checked_at": "2026-10-17T13:34:56.873545+00:00",
+  "controller_sha": "1e7d736e5884fe207460a3e6baf0aeddb5bdb4aa",
+  "cpu_samples": [
+    {
+      "allocated_logical_cpus": 8,
+      "checked_at": "2026-10-17T12:30:38.303367+00:00",
+      "compiler_process_count": 0,
+      "driver_processes": [
+        "/opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/fuse2fs -f -o allow_other /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 "
+      ],
+      "job_id": "1829656",
+      "node": "16v100n04.mr-sai.ai",
+      "sample_seconds": 10.109350988641381,
+      "source": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/cpu-io-1829656-production1-20261017.json",
+      "source_sha256": "7c12425459edbee3687878a21c8823c1748685dacab2b4a2b55b35baa7a3c4ba",
+      "used_logical_cpus": 0.4919637279967852,
+      "utilization_percent": 6.149546599959815
+    },
+    {
+      "allocated_logical_cpus": 8,
+      "checked_at": "2026-10-17T12:30:38.372887+00:00",
+      "compiler_process_count": 6,
+      "driver_processes": [
+        "/home/stardust/sai-hpc-software/cache/tools/fuse2fs-0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9/bin/fuse2fs -f -o allow_other /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 "
+      ],
+      "job_id": "1830993",
+      "node": "16v100n04.mr-sai.ai",
+      "sample_seconds": 10.160982083063573,
+      "source": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/cpu-io-1830993-production1-20261017.json",
+      "source_sha256": "7fdd337d6c07004d750aa83515cbbea12a617e995649e4864ada2842d3ac1a0d",
+      "used_logical_cpus": 7.143999901445929,
+      "utilization_percent": 89.2999987680741
+    },
+    {
+      "allocated_logical_cpus": 8,
+      "checked_at": "2026-10-17T12:33:34.065069+00:00",
+      "compiler_process_count": 1,
+      "driver_processes": [
+        "/home/stardust/sai-hpc-software/cache/tools/fuse2fs-0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9/bin/fuse2fs -f -o allow_other /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 "
+      ],
+      "job_id": "1830993",
+      "node": "16v100n04.mr-sai.ai",
+      "sample_seconds": 10.082978373393416,
+      "source": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/cpu-io-1830993-production2-20261017.json",
+      "source_sha256": "550f04d2c521f01eb3e2928ee316baf09373b8cae06979fec51c93dfa545ddb2",
+      "used_logical_cpus": 1.7462443484418848,
+      "utilization_percent": 21.82805435552356
+    },
+    {
+      "allocated_logical_cpus": 8,
+      "checked_at": "2026-10-17T12:55:09.665773+00:00",
+      "compiler_process_count": 8,
+      "driver_processes": [
+        "/home/stardust/sai-hpc-software/cache/tools/fuse2fs-0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9/bin/fuse2fs -f -o allow_other /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 "
+      ],
+      "job_id": "1830993",
+      "node": "16v100n04.mr-sai.ai",
+      "sample_seconds": 10.157803908921778,
+      "source": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/cpu-io-1830993-production3-20261017.json",
+      "source_sha256": "af3796b5232e5b50d8a732f60af41ffadb0f735261c072d7004738ca8d37e7fe",
+      "used_logical_cpus": 7.704187706484956,
+      "utilization_percent": 96.30234633106195
+    },
+    {
+      "allocated_logical_cpus": 8,
+      "checked_at": "2026-10-17T12:33:33.813491+00:00",
+      "compiler_process_count": 0,
+      "driver_processes": [
+        "/home/stardust/sai-hpc-software/cache/tools/fuse2fs-0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9/bin/fuse2fs -f -o allow_other /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 "
+      ],
+      "job_id": "1830994",
+      "node": "4v100n27.mr-sai.ai",
+      "sample_seconds": 10.013526066206396,
+      "source": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/cpu-io-1830994-production2-20261017.json",
+      "source_sha256": "8ac85c5f31aaee5136d19ec6596d0e27db47d6f8afdfbd3069664a0d9067e050",
+      "used_logical_cpus": 1.9113218334339244,
+      "utilization_percent": 23.891522917924053
+    },
+    {
+      "allocated_logical_cpus": 8,
+      "checked_at": "2026-10-17T12:55:09.119959+00:00",
+      "compiler_process_count": 4,
+      "driver_processes": [
+        "/home/stardust/sai-hpc-software/cache/tools/fuse2fs-0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9/bin/fuse2fs -f -o allow_other /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 "
+      ],
+      "job_id": "1830994",
+      "node": "4v100n27.mr-sai.ai",
+      "sample_seconds": 10.024964408949018,
+      "source": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/cpu-io-1830994-production3-20261017.json",
+      "source_sha256": "f2c8bec86ffc770e8ab1bdec3e10c375df6929c02ed1f32f7a8f517b0b6fbb03",
+      "used_logical_cpus": 6.223487730720111,
+      "utilization_percent": 77.79359663400139
+    },
+    {
+      "allocated_logical_cpus": 12,
+      "checked_at": "2026-10-17T12:33:34.217634+00:00",
+      "compiler_process_count": 4,
+      "driver_processes": [
+        "/home/stardust/sai-hpc-software/cache/tools/fuse2fs-0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9/bin/fuse2fs -f -o allow_other /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 "
+      ],
+      "job_id": "1830995",
+      "node": "8v100v0n02.mr-sai.ai",
+      "sample_seconds": 10.115870520472527,
+      "source": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/cpu-io-1830995-production2-20261017.json",
+      "source_sha256": "4f7ab36d6a8354b8421eb94368bd88dc79fad494a8942bf4ee00489d8b9b09ca",
+      "used_logical_cpus": 4.399522899184074,
+      "utilization_percent": 36.662690826533954
+    },
+    {
+      "allocated_logical_cpus": 12,
+      "checked_at": "2026-10-17T12:55:09.463571+00:00",
+      "compiler_process_count": 12,
+      "driver_processes": [
+        "/home/stardust/sai-hpc-software/cache/tools/fuse2fs-0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9/bin/fuse2fs -f -o allow_other /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 "
+      ],
+      "job_id": "1830995",
+      "node": "8v100v0n02.mr-sai.ai",
+      "sample_seconds": 10.172864968888462,
+      "source": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/cpu-io-1830995-production3-20261017.json",
+      "source_sha256": "df9a0223682d1fa180c8bf8941ed9945491f758e89c59aca0c8225ddc6612278",
+      "used_logical_cpus": 11.303895348230963,
+      "utilization_percent": 94.19912790192468
+    },
+    {
+      "allocated_logical_cpus": 8,
+      "checked_at": "2026-10-17T12:33:34.200392+00:00",
+      "compiler_process_count": 1,
+      "driver_processes": [
+        "/home/stardust/sai-hpc-software/cache/tools/fuse2fs-0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9/bin/fuse2fs -f -o allow_other /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 "
+      ],
+      "job_id": "1830997",
+      "node": "d9470n05.mr-sai.ai",
+      "sample_seconds": 10.05864489695523,
+      "source": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/cpu-io-1830997-production2-20261017.json",
+      "source_sha256": "3f48268604efc0dc8823f0918a82a4611f3283dcf420f14947aee59cb1277e00",
+      "used_logical_cpus": 2.823982483823281,
+      "utilization_percent": 35.299781047791015
+    },
+    {
+      "allocated_logical_cpus": 8,
+      "checked_at": "2026-10-17T12:55:09.209303+00:00",
+      "compiler_process_count": 8,
+      "driver_processes": [
+        "/home/stardust/sai-hpc-software/cache/tools/fuse2fs-0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9/bin/fuse2fs -f -o allow_other /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 "
+      ],
+      "job_id": "1830997",
+      "node": "d9470n05.mr-sai.ai",
+      "sample_seconds": 10.04229937796481,
+      "source": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/cpu-io-1830997-production3-20261017.json",
+      "source_sha256": "ffa2fa731fb48b6ff562417770e96ddce6b9566117a91696cdbd4db20d1b1507",
+      "used_logical_cpus": 5.984049443084685,
+      "utilization_percent": 74.80061803855857
+    }
+  ],
+  "historical_dsprhbm_runs": [
+    {
+      "accounting": "1831223|DSPRHBM|RUNNING|2026-10-17T20:59:12|00:35:44|8|d9470n02|0:0",
+      "artifact_path": null,
+      "dependency_sealed": true,
+      "job_id": "1831223",
+      "log_tail": [
+        "",
+        "  Update the VERSION argument <min> value.  Or, use the <min>...<max> syntax",
+        "  to tell CMake that the project requires at least <min> but has been updated",
+        "  to work with policies introduced by <max> or earlier.",
+        "",
+        "",
+        "-- The Fortran compiler identification is GNU 14.3.0",
+        "-- Detecting Fortran compiler ABI info"
+      ],
+      "run_id": "39018993951-1-release-dsprhbm-2026-10-17-67b5da876dd6"
+    },
+    {
+      "accounting": "1828946|DSPRHBM|COMPLETED|2026-10-17T16:59:51|03:55:16|8|d9470n02|0:0",
+      "artifact_path": null,
+      "dependency_sealed": true,
+      "job_id": "1828946",
+      "log_tail": [
+        "[+] nzurbzn hdf5@1.14.6 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r06e7a1f3f839/DSPRHBM/dependencies/spack/linux-sapphirerapids/hdf5-1.14.6-nzurbzn7nvb3lu6p33d5wu7aq5ezqydb (1h30m)",
+        "[ ] qwwau7j plumed@2.10.1 build (13m34s)",
+        "[ ] qwwau7j plumed@2.10.1 install (24m34s)",
+        "[+] qwwau7j plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r06e7a1f3f839/DSPRHBM/dependencies/spack/linux-sapphirerapids/plumed-2.10.1-qwwau7jv5yf5i3ok3c24ysm4ibpxpllg (29m37s)",
+        "[ ] 4dtgfsz libint@2.6.0 install (3h50m)",
+        "[+] 4dtgfsz libint@2.6.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r06e7a1f3f839/DSPRHBM/dependencies/spack/linux-sapphirerapids/libint-2.6.0-4dtgfsz4ycma7uwhbp5mbe6g3aqsqwmb (3h50m)",
+        "CP2K_FINAL_PREFIX_DEPENDENCIES_COMPLETE 2026-10-17T12:55:06Z",
+        "CP2K_DEPENDENCY_STAGE_COMPLETE_NOT_APPLICATION_ACCEPTANCE"
+      ],
+      "run_id": "39018993951-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies"
+    }
+  ],
+  "notes": [
+    "All build and temporary storage stays under the project home.",
+    "Old running jobs and controllers were preserved.",
+    "Cgroup samples include short-lived compiler CPU time.",
+    "Different dependency stages cannot establish whole-build speedup."
+  ],
+  "purpose": "actual-cp2k-release-build-progress-not-release-acceptance",
+  "schema": 1,
+  "validation": {
+    "ci_passed": 707,
+    "ci_skipped": 2,
+    "ci_total": 709,
+    "ci_url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39032280292",
+    "sai_focused_passed": 20,
+    "sai_focused_total": 20,
+    "sai_log": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/image-driver-focused-tests-20261017.log",
+    "sai_log_sha256": "cef1a4c3cec1b39c709f186fcd23e9b322388bc931e373340f893c399bc2f83c"
+  },
+  "workflow_url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39032306213"
+}

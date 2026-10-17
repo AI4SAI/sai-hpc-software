@@ -9,7 +9,7 @@ from pathlib import Path
 import shlex
 import subprocess
 import time
-from remote_controller import TARGETS, safe_name, safe_sha, container_command
+from remote_controller import TARGETS, safe_name, safe_sha, container_command, site_app_binds
 from source_cache import checksum
 from module_publication import publish_module, validate_module
 from release_contract import make_identity, TRACKS
@@ -23,9 +23,24 @@ def contract_files(software):
               "release_contract.py", "resolve_source.py", "delivery_layout.py"]
     if software == "abacus":
         return common + ["container_entry.sh", "abacus_build.sh", "runtime_controller.py",
-                         "gpu_feature_controller.py", "gpu_feature_runtime.sh", "abacus"]
+                         "gpu_feature_controller.py", "gpu_feature_runtime.sh", "abacus",
+                         "abacus_dependencies.py", "abacus_dependencies.sh",
+                         "abacus_full_profile.json", "abacus_full_dependencies.sh", "abacus_site_mpi.sh", "abacus_site_gpu.sh",
+                         "abacus_dependency_lock.json", "abacus_features.py", "abacus_benchmark.py",
+                         "native_module.py", "export_native.py"]
     if software == "cp2k":
-        return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k"]
+        return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_feature_contract.py",
+                         "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_cmake_prerequisites.cmake", "cp2k_benchmark.py",
+                         "cp2k_spack.py", "cp2k_spack_environment.py", "cp2k_spack_native.py",
+                         "cp2k_spack_seed.py", "cp2k_spack_probe.sh", "cp2k_spack_dependencies.sh",
+                         "cp2k_spack_libint_repair.py", "cp2k_spack_install_evidence.py",
+                         "cp2k_spack_link.py", "cp2k_payload.py", "cp2k_dependency_stage.py", "cp2k_overlay_workdir.py", "cp2k_image_driver.py", "build_capacity.py",
+                         "native_module.py", "export_native.py", "cp2k"]
+    if software == "gpumd":
+        return [name for name in common if name != "environment.sh"] + [
+            "gpumd_environment.sh", "gpumd_container_entry.sh", "gpumd_build.sh",
+            "gpumd_science.py", "gpumd_deepmd_probe.py", "gpumd_acceptance.py",
+            "export_native.py", "native_module.py", "gpumd", "nep", "gnep"]
     raise ValueError("unknown software contract")
 
 def recipe_fingerprint(software, control=None):
@@ -34,8 +49,8 @@ def recipe_fingerprint(software, control=None):
     digest = hashlib.sha256(f"sai-contract-{CONTRACT_SCHEMA}\n".encode())
     for name in contract_files(software):
         path = control / name
-        if name in ("abacus", "cp2k") and not path.exists():
-            path = control / f"{name}_runtime.sh"
+        if name in ("abacus", "cp2k", "gpumd", "nep", "gnep") and not path.exists():
+            path = control / f"{'gpumd' if name in ('nep', 'gnep') else name}_runtime.sh"
         if not path.is_file() or path.is_symlink():
             raise ValueError(f"missing trusted contract file: {name}")
         digest.update(f"{name}\0{checksum(path)}\n".encode())
@@ -49,12 +64,20 @@ def identity(args):
     print(json.dumps(request_identity(args), sort_keys=True))
 
 def required_acceptance(software, target):
+    if software == "cp2k":
+        if target not in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
+            raise ValueError("CP2K native publication target is not registered")
+        return ("cp2k_benchmark",)
+    if software == "gpumd":
+        if target not in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
+            raise ValueError("GPUMD publication requires a natively built V100 target")
+        return ("gpumd_science",)
     if software != "abacus":
         raise ValueError(f"{software.upper()} publication is disabled: scientific acceptance is not registered")
     if target == "dsprhbm":
-        return ("multinode_runtime",)
+        return ("multinode_runtime", "benchmark_pw", "benchmark_hse", "benchmark_deepks")
     if target in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
-        return ("multinode_runtime", "gpu_features")
+        return ("multinode_runtime", "gpu_features", "benchmark_pw", "benchmark_hse", "benchmark_deepks")
     raise ValueError("ABACUS publication acceptance is not registered for this target")
 
 def atomic_manifest(artifact, manifest):
@@ -65,9 +88,16 @@ def atomic_manifest(artifact, manifest):
 
 def validate_acceptance(manifest):
     """Only proofs tied to this image and the current trusted verifier count."""
+    if manifest["software"] == "gpumd":
+        from gpumd_acceptance import validate_manifest
+        validate_manifest(manifest, ROOT, CONTROL)
+        return
     for name in required_acceptance(manifest["software"], manifest["target"]):
         proof = manifest.get(name, {})
-        verifier = "runtime_controller.py" if name == "multinode_runtime" else "gpu_feature_controller.py"
+        benchmark = name.startswith("benchmark_")
+        verifier = ("cp2k_benchmark.py" if name == "cp2k_benchmark" else
+                    "abacus_benchmark.py" if benchmark else
+                    "runtime_controller.py" if name == "multinode_runtime" else "gpu_feature_controller.py")
         if (proof.get("verified") is not True or
                 proof.get("artifact_sha256") != manifest["sha256"] or
                 proof.get("identity") != manifest["identity"] or
@@ -100,11 +130,16 @@ def validate_acceptance(manifest):
                               else request["nodes"] * request["gpus_per_node"])
             if proof.get("nodes") != 2 or proof.get("ranks") != expected_ranks or expected_ranks < 2:
                 raise ValueError("invalid multinode topology")
-        else:
+        elif name == "gpu_features":
             if not all(proof.get(feature) is True for feature in ("nccl_collective", "cusolvermp_eigensolve")):
                 raise ValueError("GPU feature execution was not verified")
             if proof.get("runtime_sha256") != checksum(CONTROL / "gpu_feature_runtime.sh"):
                 raise ValueError("GPU feature runtime changed")
+        elif benchmark:
+            if (request.get("packaged_case") != name.removeprefix("benchmark_") or
+                    request.get("system_module") != "abacus/v3.9.0.26-sm70-auto" or
+                    request.get("warmup", 0) < 1 or request.get("repeats", 0) < 3):
+                raise ValueError("benchmark did not cover the required case and baseline")
         evidence_path = task / "results/evidence.json"
         if (not evidence_path.is_file() or evidence_path.is_symlink() or
                 evidence_path.resolve() != evidence_path or
@@ -112,11 +147,27 @@ def validate_acceptance(manifest):
             raise ValueError(f"missing or changed {name} scientific evidence")
         if name == "multinode_runtime":
             from runtime_controller import verify_evidence
-        else:
+        elif name == "cp2k_benchmark":
+            from cp2k_benchmark import verify_evidence
+        elif name == "gpu_features":
             from gpu_feature_controller import verify_evidence
+        else:
+            from abacus_benchmark import verify_evidence
         evidence = verify_evidence(task, request)
         if evidence != json.loads(evidence_path.read_text()):
             raise ValueError(f"{name} scientific results changed after verification")
+        from delivery_layout import check_performance
+        if benchmark:
+            from abacus_benchmark import verify_retest
+            verify_retest(task, request, evidence)
+            timing = evidence['statistics']['rounded_iteration_seconds']
+            check_performance(timing['candidate']['median'], timing['system']['median'])
+        elif name == 'cp2k_benchmark':
+            from cp2k_benchmark import verify_retest
+            verify_retest(task, request, evidence)
+            timing = evidence['timings']['water64-gpw']
+            check_performance(timing['candidate_cp2k_seconds']['median'],
+                              timing['baseline_cp2k_seconds']['median'])
         if (evidence.get("job") != proof.get("job") or
                 evidence.get("artifact_sha256") != manifest["sha256"]):
             raise ValueError("acceptance evidence does not match its job or image")
@@ -152,6 +203,8 @@ def validate_candidate(manifest, artifact, *, published=False):
         raise ValueError("artifact has not passed the publication gate")
     validate_acceptance(manifest)
     if published:
+        from export_native import validate_export_record
+        validate_export_record(manifest.get('native_export'), manifest['sha256'], [delivery])
         validate_module(manifest, artifact, root=ROOT)
 
 def call(argv, **kw):
@@ -205,6 +258,10 @@ def _publish_runtime_entry(request, artifact, manifest):
         ]
         if request.get("target") != "dsprhbm":
             module_lines.insert(1, "module load cuda/12.9.1 nvmplibs/26.7-tmp")
+    elif software == "gpumd":
+        launcher_name = module_name = "gpumd"
+        description = "GPUMD"
+        module_lines = []
     else:
         raise ValueError("no trusted runtime publisher for this software")
     launcher = Path(request["controller"]) / launcher_name
@@ -220,6 +277,9 @@ def _publish_runtime_entry(request, artifact, manifest):
     for proof_name in required_acceptance(software, request["target"]):
         if manifest[proof_name].get("launcher_sha256") != checksum(launcher):
             raise ValueError("publication launcher was not runtime-tested")
+    from export_native import export_delivery
+    manifest['native_export'] = export_delivery(artifact, manifest['sha256'],
+                                                artifact.with_suffix('.native'), [validate_record(manifest)])
     manifest.update(publish_module(ROOT, request, artifact, launcher, module_lines, description))
     target_dir = artifact.parent
     current_tmp = target_dir / f".current-{os.getpid()}.sif"
@@ -252,9 +312,9 @@ def render_job(args):
     delivery = request_identity(args)
     if getattr(args, "identity", delivery) != delivery:
         raise ValueError("requested identity differs from deployed recipe")
-    if args.software not in ("abacus", "cp2k"):
+    if args.software not in ("abacus", "cp2k", "gpumd"):
         raise ValueError("no trusted recipe registered for this software")
-    if not 1 <= args.jobs <= 16 or not 1 <= args.minutes <= 180:
+    if not 1 <= args.jobs <= 16 or not 1 <= args.minutes <= 360:
         raise ValueError("resource request outside controller bounds")
     if not 256 <= args.overlay_mb <= 32768:
         raise ValueError("overlay size outside policy bounds")
@@ -265,23 +325,49 @@ def render_job(args):
     sif = r / "result.sif"
     artifact = artifact_path(ROOT, delivery, args.run_id)
     # Host-provided, read-only interpreter; not a binary writable by a prior build.
-    entrypoint = "container_entry.sh" if args.software == "abacus" else "cp2k_container_entry.sh"
+    entrypoint = "container_entry.sh" if args.software == "abacus" else f"{args.software}_container_entry.sh"
     argv = ["/usr/bin/bash", f"/control/{entrypoint}", "build", args.software, sha, args.version, args.target,
             json.dumps(delivery, sort_keys=True, separators=(",", ":"))]
-    extra_binds = ((Path("/opt/apps"), "/opt/apps"),
-                   (ROOT / "cache/cp2k-dependencies", "/input/dependencies")) if args.software == "cp2k" else ()
+    extra_binds = ((ROOT / "cache/spack", "/input/spack"),
+                   (r / "input/cp2k-updates", "/input/updates"),
+                   ("/var/lib/dpkg", "/var/lib/dpkg"),
+                   ("/etc/os-release", "/etc/os-release"),
+                   ("/etc/alternatives", "/etc/alternatives"),
+                   ("/usr/bin", "/bin"),
+                   (ROOT / "cache/cp2k-dependencies", "/input/dependencies"),
+                   (ROOT / "cache/cp2k-probe", "/input/probe")) if args.software == "cp2k" else ()
+    if args.software == "abacus":
+        from abacus_dependencies import dependency_binds, runtime_binds
+        extra_binds = (*dependency_binds(ROOT), *runtime_binds())
+    elif args.software == "gpumd":
+        extra_binds = site_app_binds("gpumd")
     def container(phase, final=False):
         cmd = argv.copy()
         cmd[2] = phase
-        return container_command(sif if final else image, cmd, overlay=None if final else overlay,
+        if args.software == "cp2k":
+            cmd = ["/usr/bin/env", f"SAI_BUILD_PARTITION={target['partition']}", *cmd]
+        # Final artifacts must not rely on source/dependency staging trees.
+        binds = site_app_binds("gpumd") if final and args.software == "gpumd" else () if final else extra_binds
+        command = container_command(sif if final else image, cmd, overlay=None if final else overlay,
                                  control=CONTROL, repository=None if final else repo,
-                                 jobs=args.jobs, gpu=bool(target["gpus"]), extra_binds=extra_binds)
+                                 jobs=args.jobs, gpu=bool(target["gpus"]), extra_binds=runtime_binds() if final and args.software == "abacus" else binds,
+                                 runtime=r / "runtime" if final and args.software == "cp2k" else None)
+        if args.software == 'cp2k' and not final:
+            command[2:2] = ['--bind', str(r / 'results') + ':/results:rw']
+            from cp2k_image_driver import wrap_command
+            command = wrap_command(ROOT, r, CONTROL, command)
+        return command
     emit = container_command(image, ["/usr/bin/cat", "/workspace/final.squashfs"],
                              overlay=str(overlay) + ":ro", jobs=args.jobs)
+    if args.software == 'cp2k':
+        from cp2k_image_driver import wrap_command
+        emit = wrap_command(ROOT, r, CONTROL, emit)
     q = shlex.quote
     lines = [
         "#!/bin/bash",
-        f"#SBATCH --job-name=software-{args.software}-{args.run_id}",
+        "#SBATCH --job-name=" + ('sai-cp2k-build-' + args.target + '-' + delivery['recipe_sha256'][:12]
+                                if args.software == 'cp2k' else 'sai-software-build'),
+        "#SBATCH --dependency=singleton",
         f"#SBATCH --partition={target['partition']}",
         f"#SBATCH --qos={target['qos']}",
         "#SBATCH --nodes=1", "#SBATCH --ntasks=1",
@@ -299,9 +385,21 @@ def render_job(args):
     prepare = [shlex.join(["apptainer", "overlay", "create", "--fakeroot", "--sparse",
                           "--size", str(args.overlay_mb), str(overlay)]),
                shlex.join(container("build"))]
+    dependency_run = getattr(args, 'dependencies_run', None)
+    if dependency_run:
+        if args.software != 'cp2k' or resume:
+            raise ValueError('dependency checkpoint cannot be combined with another recipe or repack')
+        prepare = [shlex.join(['/usr/bin/python3', str(CONTROL / 'cp2k_dependency_stage.py'),
+                              'clone', str(ROOT), str(CONTROL), safe_name(dependency_run), args.run_id,
+                              json.dumps(delivery, sort_keys=True)]), shlex.join(container('build'))]
     if resume:
         old_overlay = task_dir(resume) / "work.ext3"
-        prepare = [f"mv -- {q(str(old_overlay))} {q(str(overlay))}", shlex.join(container("metadata"))]
+        digest = getattr(args, 'resume_overlay_sha256', '')
+        if len(digest) != 64 or any(c not in '0123456789abcdef' for c in digest):
+            raise ValueError('repack requires the recorded checkpoint checksum')
+        prepare = [shlex.join(['cp', '--sparse=always', '--reflink=auto', '--', str(old_overlay), str(overlay)]),
+                   shlex.join(['printf', '%s  %s\\n', digest, str(overlay)]) + ' | sha256sum --check --status',
+                   shlex.join(['chmod', '600', str(overlay)]), shlex.join(container('metadata'))]
     lines += [
         "set -eo pipefail",
         "export PATH=/usr/bin:/bin",
@@ -311,8 +409,17 @@ def render_job(args):
         f"export TMPDIR={q(str(r / 'runtime'))} APPTAINER_TMPDIR={q(str(r / 'runtime'))}",
         f"export APPTAINER_CACHEDIR={q(str(r / 'apptainer-cache'))}",
         "unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH",
+        *([f"source /opt/sai_config/mps_mapping.d/{target['partition']}.bash",
+           'export APPTAINERENV_CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:?}"']
+          if args.software == "gpumd" else []),
         f"test -s {q(str(image))}",
+        *([shlex.join(['/usr/bin/python3', str(CONTROL / 'build_capacity.py'), str(ROOT),
+                      str(r), str(3 * args.overlay_mb), '--', '/bin/bash', '-seu', '-o', 'pipefail']) + " <<'SAI_BUILD_BODY'"]
+          if args.software == 'cp2k' else []),
         f"test ! -e {q(str(overlay))}",
+        shlex.join(["/usr/bin/python3", "-c",
+                    f"import sys; sys.path.insert(0, {str(CONTROL)!r}); "
+                    f"from remote_controller import require_capacity; require_capacity({str(ROOT)!r}, {args.overlay_mb})"]),
         *prepare,
         shlex.join(container("export")),
         shlex.join(emit) + " > " + q(str(squash)),
@@ -329,16 +436,17 @@ def render_job(args):
         f"printf '%s\\n' {q(str(artifact))} > {q(str(r / 'artifact.path'))}",
         f"sha256sum {q(str(artifact))} > {q(str(r / 'results/artifact.sha256'))}",
         "echo BUILD_AND_ARTIFACT_VERIFIED",
+        *(['SAI_BUILD_BODY'] if args.software == 'cp2k' else []),
     ]
     return "\n".join(lines) + "\n"
 
 def submit(args):
-    # CP2K may be built manually as a candidate while its scientific gate is
-    # implemented separately. It must still fail direct publish/cache checks.
-    if args.software != "cp2k":
-        required_acceptance(args.software, args.target)
+    # Do not spend an allocation on a target that cannot pass publication.
+    required_acceptance(args.software, args.target)
     if args.jobs is None:
         args.jobs = TARGETS[args.target].get("build_jobs", 8)
+    from remote_controller import require_capacity
+    require_capacity(ROOT, getattr(args, "overlay_mb", 32768))
     r = init(args)
     if (r / "job.id").exists():
         raise ValueError("run already submitted; choose a fresh run id")
@@ -346,6 +454,11 @@ def submit(args):
     call(["git", "--git-dir", repo, "cat-file", "-e", safe_sha(args.sha) + "^{commit}"])
     fingerprint = recipe_fingerprint(args.software)
     args.identity = request_identity(args)
+    if getattr(args, 'dependencies_run', None):
+        if args.software != 'cp2k' or args.resume_run:
+            raise ValueError('dependency checkpoint cannot be combined with another recipe or repack')
+        from cp2k_dependency_stage import validate_completed
+        validate_completed(ROOT, task_dir(args.dependencies_run), args.identity, CONTROL)
     if args.resume_run:
         old = task_dir(args.resume_run)
         previous = json.loads((old / "request.json").read_text())
@@ -361,6 +474,10 @@ def submit(args):
             raise ValueError("cannot resume an active or invalid job")
         if not (old / "work.ext3").is_file() or (old / "work.ext3").is_symlink():
             raise ValueError("missing file-backed build state")
+        args.resume_overlay_sha256 = checksum(old / "work.ext3")
+    if args.software == "abacus":
+        from abacus_dependencies import ARCHIVE_CACHE, cache_archives
+        cache_archives(ROOT / ARCHIVE_CACHE, source=r / "input/abacus-updates")
     script = r / "job.sbatch"
     script.write_text(render_job(args))
     script.chmod(0o700)
@@ -467,8 +584,9 @@ def main():
         a.add_argument(field)
     a.add_argument("target", choices=TARGETS)
     a.add_argument("--jobs", type=int, default=None)
-    a.add_argument("--minutes", type=int, default=120)
+    a.add_argument("--minutes", type=int, default=240)
     a.add_argument("--overlay-mb", type=int, default=8192)
+    a.add_argument("--dependencies-run", help="consume a verified copy of this exact CP2K dependency checkpoint")
     a.add_argument("--resume-run", help="repack a terminated run's existing overlay; never rebuild source")
     a.add_argument("--track", choices=TRACKS, required=True)
     a.add_argument("--source-ref", required=True)
@@ -492,4 +610,9 @@ def main():
     return result if isinstance(result, int) else 0
 
 if __name__ == "__main__":
-    raise SystemExit(main())
+    from delivery_layout import PerformanceRegression
+    try:
+        raise SystemExit(main())
+    except PerformanceRegression as error:
+        print(str(error), file=__import__('sys').stderr)
+        raise SystemExit(3)

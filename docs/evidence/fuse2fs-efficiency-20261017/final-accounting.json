@@ -1,0 +1,21 @@
+{
+  "checked_at": "2026-10-17T19:49:31.988769+08:00",
+  "accounting_command": [
+    "sacct",
+    "-X",
+    "-nP",
+    "-j",
+    "1829656,1829644,1828944,1828946,1830278,1830364,1830438,1830468",
+    "-o",
+    "JobIDRaw,Partition,State,Elapsed,NodeList,ExitCode,AllocCPUS"
+  ],
+  "accounting": "1828944|4V100|RUNNING|02:03:32|4v100n15|0:0|8\n1828946|DSPRHBM|RUNNING|02:49:40|d9470n02|0:0|8\n1829644|8V100V0|RUNNING|01:36:30|8v100v0n09|0:0|12\n1829656|16V100|RUNNING|01:35:38|16v100n04|0:0|8\n1830278|DSPRHBM|FAILED|00:16:09|d9470n02|1:0|8\n1830364|16V100|FAILED|00:01:20|16v100n04|1:0|8\n1830438|DSPRHBM|COMPLETED|00:02:34|d9470n02|0:0|8\n1830468|16V100|COMPLETED|00:02:50|16v100n04|0:0|8\n",
+  "files_sha256": {
+    "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/fuse2fs-efficiency-ofd-20261017-a/benchmark-summary.json": "2da655f74a4c1120f401722dc42c41c6b29c06bffe8430df7cf6244991aac7e8",
+    "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/fuse2fs-efficiency-ofd-20261017-a/driver-build.log": "afe9ac1107a33b9ca9d536901d0a6bc6de5af3d03f3e8273fe28acd4a0b6b98c",
+    "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/fuse2fs-efficiency-16v100-ofd-20261017-a/benchmark-summary.json": "9dac8861588233541202a5ce776f4c882bd7bb0448e1e75084a9c309801d51e0",
+    "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/fuse2fs-efficiency-20261017-a/benchmark-summary.json": "d77ec07b783c929b840c2d0a9c053c185e45c8b7789fdf9158170b130dfe526f",
+    "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/fuse2fs-efficiency-20261017-a/driver-build.log": "4da0a8c215f3a63ebee1a4a2078093c336a6a3bf7a7a9047d414b8e6aa2edfa2"
+  },
+  "scope": "isolated CPU/I/O diagnosis; four CP2K production builds unchanged"
+}

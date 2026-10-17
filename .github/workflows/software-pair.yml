@@ -1,0 +1,134 @@
+name: Build and accept one resolved software delivery
+
+on:
+  workflow_call:
+    inputs:
+      software:
+        type: string
+        required: true
+      build:
+        type: string
+        required: true
+      resume_run:
+        type: string
+        default: ''
+      reference_run:
+        type: string
+        default: ''
+      retry_releases:
+        type: boolean
+        default: false
+    secrets:
+      REMOTE_SSH_PRIVATE_KEY:
+        required: true
+      REMOTE_USER:
+        required: true
+
+permissions:
+  contents: read
+
+env:
+  SOFTWARE: ${{ inputs.software }}
+  REMOTE_USER: ${{ secrets.REMOTE_USER }}
+  SOURCE_REF: ${{ fromJSON(inputs.build).source_ref }}
+  RELEASE_TRACK: ${{ fromJSON(inputs.build).track }}
+  SOURCE_SHA: ${{ fromJSON(inputs.build).source_sha }}
+  SOFTWARE_VERSION: ${{ fromJSON(inputs.build).source_version }}
+  TARGET: ${{ fromJSON(inputs.build).target }}
+  RESUME_RUN: ${{ inputs.resume_run }}
+  CP2K_REFERENCE_RUN: ${{ inputs.reference_run }}
+  RETRY_RELEASES: ${{ inputs.retry_releases }}
+
+jobs:
+  dependencies:
+    if: inputs.software == 'cp2k'
+    runs-on: ubuntu-latest
+    environment: hpc
+    timeout-minutes: 360
+    outputs:
+      run_id: ${{ steps.run.outputs.run_id }}
+    env:
+      CI_PHASE: build
+      CP2K_PHASE: dependencies
+    steps: &delivery_steps
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Prepare repository-secret SSH key
+        env:
+          KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          mkdir -m 700 "$RUNNER_TEMP/ssh"
+          printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
+          chmod 600 "$RUNNER_TEMP/ssh/key"
+      - name: Run delivery phase
+        id: run
+        run: python3 -u controller/ci.py
+      - name: Preserve phase logs and evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ inputs.software }}-${{ fromJSON(inputs.build).track }}-${{ fromJSON(inputs.build).target }}-${{ env.CP2K_PHASE || env.CI_PHASE }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/results/
+          if-no-files-found: warn
+      - name: Remove temporary SSH key
+        if: always()
+        run: rm -f -- "$RUNNER_TEMP/ssh/key"
+
+  build:
+    needs: dependencies
+    # An empty CP2K run id means the release was explicitly deduplicated.
+    if: ${{ !cancelled() && (inputs.software != 'cp2k' || (needs.dependencies.result == 'success' && needs.dependencies.outputs.run_id != '')) }}
+    runs-on: ubuntu-latest
+    environment: hpc
+    timeout-minutes: 360
+    outputs:
+      run_id: ${{ steps.run.outputs.run_id }}
+    env:
+      CI_PHASE: build
+      CP2K_PHASE: ${{ inputs.software == 'cp2k' && 'application' || '' }}
+      CI_RUN_ID: ${{ needs.dependencies.outputs.run_id }}
+    steps: *delivery_steps
+
+  acceptance:
+    needs: build
+    if: needs.build.outputs.run_id != ''
+    runs-on: ubuntu-latest
+    environment: hpc
+    timeout-minutes: 360
+    env:
+      CI_PHASE: acceptance
+      CP2K_PHASE: ${{ inputs.software == 'cp2k' && 'acceptance' || '' }}
+      CI_RUN_ID: ${{ needs.build.outputs.run_id }}
+    steps: *delivery_steps
+
+  result:
+    if: always()
+    needs: [dependencies, build, acceptance]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require acceptance or a recorded unchanged-release skip
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          results = json.loads(os.environ['RESULTS'])
+          cp2k = os.environ['SOFTWARE'] == 'cp2k'
+          if cp2k and results['dependencies']['result'] != 'success':
+              raise SystemExit('Dependency stage did not succeed')
+          deduplicated = cp2k and not results['dependencies']['outputs'].get('run_id')
+          if results['build']['result'] != ('skipped' if deduplicated else 'success'):
+              raise SystemExit('Build stage did not complete')
+          run_id = results['build'].get('outputs', {}).get('run_id')
+          if not run_id and os.environ['RELEASE_TRACK'] == 'development':
+              raise SystemExit('Development delivery must rebuild on every trigger')
+          expected = 'success' if run_id else 'skipped'
+          if results['acceptance']['result'] != expected:
+              raise SystemExit('Selected delivery acceptance did not complete')
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
+              out.write('Accepted delivery: ' + run_id + '\n' if run_id else
+                        'Unchanged release already attempted; no new acceptance claimed.\n')
+          PY

@@ -13,6 +13,7 @@ import os
 from pathlib import Path, PurePosixPath
 import posixpath
 import re
+import shutil
 import stat
 import subprocess
 import tempfile
@@ -26,6 +27,76 @@ EXPORT_PATH = "share/sai/export.json"
 README_PATH = "share/sai/README-export.txt"
 RESERVED_PATHS = (MANIFEST_PATH, EXPORT_PATH, README_PATH)
 MAX_MANIFEST_BYTES = 64 * 1024**2
+SITE_APPTAINER = Path("/opt/devtools/apptainer/1.4.4/bin/apptainer")
+
+# Only recipe-owned diagnostics/fixtures are omitted from native installs.
+# Never glob arbitrary share/, data/, model/, dependencies/ or JIT sources.
+NONRUNTIME_COMMON = (
+    "CMakeCache.txt", "hardware.txt", "modules.txt", "resolved-environment.txt",
+    "runtime-env.sh", "ldd.txt", "lscpu.txt", "compiler.txt", "cuda.txt",
+    "native-flags.txt", "native-cpu-flags.txt", "native-compiler-target.txt",
+    "build-hostname", "build-lscpu.txt", "build-options.txt",
+)
+NONRUNTIME_CASES = {
+    "abacus": ("smoke-case", "gpu-cases", "benchmark-cases"),
+    "cp2k": ("smoke-case",),
+    "deepmd-kit": (),
+    "lammps": ("smoke", "upstream-tests"),
+    "gpumd": ("cases",),
+}
+NONRUNTIME_HELPERS = {
+    "abacus": ("abacus_features.py", "release_contract.py", "resolve_source.py",
+               "remote_controller.py", "source_cache.py"),
+    "cp2k": ("cp2k_feature_contract.py",),
+}
+
+
+def runtime_subset(manifest):
+    """Derive a safe runtime inventory, preserving every unknown/runtime file."""
+    excluded = []
+    for entry in manifest["entries"]:
+        identity = entry["identity"]
+        root = identity["install_prefix"].lstrip("/") + "/share/sai/"
+        candidates = [root + name for name in NONRUNTIME_COMMON +
+                      NONRUNTIME_CASES.get(identity["software"], ()) +
+                      NONRUNTIME_HELPERS.get(identity["software"], ())]
+        excluded.extend(path for path in candidates
+                        if any(row["path"] == path for row in manifest["files"]))
+    # Do not silently prune a path declared as part of the runtime contract.
+    for entry in manifest["entries"]:
+        values = [value for paths in entry["runtime"]["prepend"].values() for value in paths]
+        values.extend(entry["runtime"]["set"].values())
+        if any(isinstance(value, str) and value.startswith("/") and
+               beneath(value.lstrip("/"), excluded) for value in values):
+            raise ValueError("nonruntime omission conflicts with a declared runtime path")
+    result = validate_manifest({
+        "schema": 1, "entries": manifest["entries"],
+        "files": [row for row in manifest["files"] if not beneath(row["path"], excluded)],
+    })
+    # validate_manifest also rejects commands and remaining symlinks that would
+    # depend on omitted fixtures. Native module fragments remain mandatory.
+    validate_packaged_modules(result)
+    return result, sorted(excluded)
+
+
+def check_retained_scripts(root, manifest, omitted):
+    """Refuse known hardcoded fixture references in retained executable scripts."""
+    needles = {path[path.index("/share/sai/") + 1:].encode() for path in omitted}
+    if not needles:
+        return
+    for row in manifest["files"]:
+        if row["kind"] != "file" or not row["mode"] & 0o111:
+            continue
+        path = root / row["path"]
+        with path.open("rb") as stream:
+            if stream.read(2) != b"#!":
+                continue
+            tail = b""
+            while block := stream.read(1024**2):
+                data = tail + block
+                if any(needle in data for needle in needles):
+                    raise ValueError("retained executable script references omitted nonruntime data: " + row["path"])
+                tail = data[-max(map(len, needles)):]
 
 
 def canonical(value):
@@ -353,6 +424,16 @@ def required_prefixes(entry, manifest):
     return sorted(required)
 
 
+def apptainer_binary():
+    """Locate the host SIF reader even when the SSH session has no Lmod setup."""
+    available = shutil.which("apptainer")
+    if available:
+        return available
+    if SITE_APPTAINER.is_file() and os.access(SITE_APPTAINER, os.X_OK):
+        return str(SITE_APPTAINER)
+    raise ValueError("Apptainer is unavailable in PATH or at the site's pinned 1.4.4 installation")
+
+
 class SquashfsReader:
     def __init__(self, image, offset):
         self.image = Path(image)
@@ -361,7 +442,7 @@ class SquashfsReader:
 
     @classmethod
     def from_sif(cls, image):
-        listing = subprocess.check_output(["apptainer", "sif", "list", str(image)], text=True)
+        listing = subprocess.check_output([apptainer_binary(), "sif", "list", str(image)], text=True)
         partitions = re.findall(r"^\s*\d+\s*\|[^\n|]*\|[^\n|]*\|\s*(\d+)-(\d+)\s*\|\s*FS \(Squashfs/\*System/[^)]+\)\s*$",
                                 listing, re.MULTILINE)
         if len(partitions) != 1:
@@ -390,13 +471,14 @@ class SquashfsReader:
         from release_contract import validate_identity
         listing = subprocess.check_output(
             ["unsquashfs", "-l", "-d", "/image", "-no-progress", "-o", str(self.offset),
-             str(self.image), "opt/software/*/*/*/*/" + MANIFEST_PATH],
+             str(self.image), "opt/software/*/*/*/*/" + MANIFEST_PATH,
+             "opt/apps/*/*/*/" + MANIFEST_PATH],
             text=True, env=dict(os.environ, LC_ALL="C"))
         paths = []
         for line in listing.splitlines():
-            if line.startswith("/image/opt/software/") and line.endswith("/" + MANIFEST_PATH):
+            if line.startswith(("/image/opt/software/", "/image/opt/apps/")) and line.endswith("/" + MANIFEST_PATH):
                 path = relative_path(line.removeprefix("/image/"))
-                if not re.fullmatch(r"opt/software/[^/]+/[^/]+/[^/]+/[^/]+/" + MANIFEST_PATH, path):
+                if not re.fullmatch(r"opt/(?:software/[^/]+/[^/]+/[^/]+/[^/]+|apps/[^/]+/[^/]+/[^/]+)/" + MANIFEST_PATH, path):
                     raise ValueError("manifest is not in a canonical installation directory")
                 if path in paths:
                     raise ValueError("duplicate embedded manifest listing")
@@ -534,7 +616,8 @@ class SquashfsReader:
                     raise
 
 
-def export_image(image, expected_sha256, destination, *, prefixes=None, reader_factory=SquashfsReader.from_sif):
+def export_image(image, expected_sha256, destination, *, prefixes=None, include_diagnostics=False,
+                 reader_factory=SquashfsReader.from_sif):
     image = Path(image).resolve(strict=True)
     if not re.fullmatch(r"[0-9a-f]{64}", expected_sha256 or ""):
         raise ValueError("expected image SHA256 is required")
@@ -551,6 +634,10 @@ def export_image(image, expected_sha256, destination, *, prefixes=None, reader_f
     reader.validate_metadata(manifest)
     prefixes = [entry["identity"]["install_prefix"] for entry in manifest["entries"]]
     manifest_records = reader.selected_manifest_records(manifest)
+    if include_diagnostics:
+        omitted = []
+    else:
+        manifest, omitted = runtime_subset(manifest)
     # TemporaryDirectory only removes the exact newly-created private staging
     # directory on failure. No user destination or existing software is removed.
     with tempfile.TemporaryDirectory(prefix=".sai-native-export-", dir=destination.parent) as temporary:
@@ -561,6 +648,7 @@ def export_image(image, expected_sha256, destination, *, prefixes=None, reader_f
             if row["kind"] == "directory":
                 (root / row["path"]).mkdir(parents=True, exist_ok=True, mode=0o755)
         reader.copy_files([row for row in manifest["files"] if row["kind"] == "file"] + manifest_records, root)
+        check_retained_scripts(root, manifest, omitted)
         # Links are created last, never traversed during extraction or hashing.
         for row in manifest["files"]:
             if row["kind"] == "symlink":
@@ -571,14 +659,31 @@ def export_image(image, expected_sha256, destination, *, prefixes=None, reader_f
             prefix = identity["install_prefix"]
             base = root / prefix.lstrip("/")
             exported_path = ("." if len(prefixes) == 1 else
-                             str(PurePosixPath(prefix).relative_to("/opt/software")))
+                             str(PurePosixPath(prefix).relative_to("/opt/apps" if identity["schema"] == 2 else "/opt/software")))
             local_manifest = next(row for row in manifest_records
                                   if row["path"] == prefix.lstrip("/") + "/" + MANIFEST_PATH)
+            local_omitted = [path for path in omitted if beneath(path, [prefix.lstrip("/")])]
+            if local_omitted:
+                # The source manifest was read and hashed above. Only this new
+                # private staging copy is replaced, never the SIF/history.
+                path = base / MANIFEST_PATH
+                path.unlink()
+                local = {"schema": 2, "entry": entry,
+                         "files": [row for row in manifest["files"]
+                                   if beneath(row["path"], [prefix.lstrip("/")])]}
+                with path.open("x") as output:
+                    output.write(canonical(local))
+                path.chmod(0o444)
             partners = [peer for peer in prefixes if peer != prefix]
             required = required_prefixes(entry, manifest)
             receipt = {
                 "schema": 2, "image_sha256": expected_sha256,
-                "manifest_sha256": local_manifest["sha256"],
+                "manifest_sha256": checksum(base / MANIFEST_PATH),
+                "source_manifest_sha256": local_manifest["sha256"],
+                "payload_profile": "complete" if include_diagnostics else "runtime",
+                "manifest_origin": "derived-runtime-subset" if local_omitted else "original",
+                "omitted_nonruntime_paths": [path.removeprefix(prefix.lstrip("/") + "/")
+                                            for path in local_omitted],
                 "expected_install_prefix": prefix,
                 "bundle_install_prefixes": prefixes,
                 "other_bundle_install_prefixes": partners,
@@ -593,7 +698,10 @@ def export_image(image, expected_sha256, destination, *, prefixes=None, reader_f
             readme = (
                 "This complete installation folder is a staging export, not a privileged installer.\n"
                 "Copy this WHOLE folder to the expected absolute prefix:\n  " + prefix + "\n"
-                "The original manifest and native modules are already inside this folder.\n"
+                "The payload manifest and native modules are already inside this folder.\n"
+                "Runtime exports omit recipe-owned tests and build diagnostics.\n"
+                "Original diagnostics/manifests remain in the SHA256-pinned source SIF.\n"
+                "export.json records both source and payload manifest digests.\n"
                 "Required companion/installation dependencies (if any):\n" +
                 "".join("  " + peer + "\n" for peer in required) +
                 "Other bundled partitions are independent, not dependencies of this installation.\n" +
@@ -602,6 +710,7 @@ def export_image(image, expected_sha256, destination, *, prefixes=None, reader_f
                 "Load inside a matching Slurm allocation. Do not substitute a staging path for /opt.\n"
                 "Recorded external site dependency modules must remain available.\n"
                 "This export does not certify native scientific results, speed, or arbitrary relocation.\n")
+            receipt["readme_sha256"] = hashlib.sha256(readme.encode()).hexdigest()
             for relative, content in ((EXPORT_PATH, canonical(receipt)), (README_PATH, readme)):
                 path = base / relative
                 with path.open("x") as output:
@@ -642,6 +751,198 @@ def export_image(image, expected_sha256, destination, *, prefixes=None, reader_f
     return receipt
 
 
+def verify_export(destination, receipt, expected_sha256, identities):
+    """Read back an entire staged payload without following its symbolic links.
+
+    The receipt is pinned by the publication record. No executable or module
+    from the image is evaluated: module bytes must match the trusted generator.
+    This proves export integrity, not native scientific execution or relocation.
+    """
+    from release_contract import validate_identity
+    destination = Path(destination)
+    if (not destination.is_absolute() or destination.resolve(strict=True) != destination or
+            not destination.is_dir() or destination.is_symlink()):
+        raise ValueError("export requires a regular absolute directory without symlinks")
+    if not re.fullmatch(r"[0-9a-f]{64}", expected_sha256 or ""):
+        raise ValueError("expected image SHA256 is required")
+    identities = [validate_identity(identity) for identity in identities]
+    expected_identities = {identity["install_prefix"]: identity for identity in identities}
+    if not identities or len(expected_identities) != len(identities):
+        raise ValueError("export requires distinct expected delivery identities")
+    if (not isinstance(receipt, dict) or type(receipt.get("schema")) is not int or
+            receipt["schema"] != 2 or receipt.get("image_sha256") != expected_sha256 or
+            not isinstance(receipt.get("installations"), list) or
+            not isinstance(receipt.get("expected_install_prefixes"), list) or
+            any(not isinstance(prefix, str) for prefix in receipt["expected_install_prefixes"]) or
+            set(receipt.get("expected_install_prefixes", [])) != set(expected_identities) or
+            len(receipt["expected_install_prefixes"]) != len(identities) or
+            len(receipt["installations"]) != len(identities)):
+        raise ValueError("export receipt differs from expected image or identities")
+
+    # Discover actual directory entries first, using lstat and never traversing
+    # a symlink. This also rejects special files before opening any payload.
+    actual = {}
+    pending = [destination]
+    while pending:
+        path = pending.pop()
+        info = path.lstat()
+        relative = path.relative_to(destination).as_posix()
+        if stat.S_ISDIR(info.st_mode):
+            actual[relative] = (path, info, "directory")
+            pending.extend(path.iterdir())
+        elif stat.S_ISREG(info.st_mode):
+            actual[relative] = (path, info, "file")
+        elif stat.S_ISLNK(info.st_mode):
+            actual[relative] = (path, info, "symlink")
+        else:
+            raise ValueError("export contains a special file")
+
+    def read_metadata(relative, digest=None):
+        row = actual.get(relative)
+        if row is None or row[2] != "file" or stat.S_IMODE(row[1].st_mode) != 0o444:
+            raise ValueError("export metadata must be a regular mode 0444 file")
+        if row[1].st_size > MAX_MANIFEST_BYTES:
+            raise ValueError("export metadata exceeds size limit")
+        content = row[0].read_bytes()
+        if digest is not None and hashlib.sha256(content).hexdigest() != digest:
+            raise ValueError("export metadata checksum differs from publication receipt")
+        return content
+
+    locals_, mapped, bases, seen = [], {}, {}, set()
+    for installation in receipt["installations"]:
+        if not isinstance(installation, dict):
+            raise ValueError("invalid exported installation receipt")
+        prefix = installation.get("expected_install_prefix")
+        identity = expected_identities.get(prefix)
+        if identity is None or prefix in seen:
+            raise ValueError("export installation differs from expected identity")
+        seen.add(prefix)
+        base = ("." if len(identities) == 1 else str(PurePosixPath(prefix).relative_to(
+            "/opt/apps" if identity["schema"] == 2 else "/opt/software")))
+        if installation.get("path") != base:
+            raise ValueError("export path differs from canonical identity layout")
+        bases[prefix] = base
+        for relative in RESERVED_PATHS:
+            name = str(PurePosixPath(base) / relative)
+            mapped[name] = {"kind": "file", "mode": 0o444}
+        raw = read_metadata(str(PurePosixPath(base) / MANIFEST_PATH), installation.get("manifest_sha256"))
+        local = parse_manifest(raw)
+        if (not isinstance(local, dict) or not isinstance(local.get("entry"), dict) or
+                local["entry"].get("identity") != identity):
+            raise ValueError("exported manifest differs from expected delivery identity")
+        locals_.append(local)
+        metadata = read_metadata(str(PurePosixPath(base) / EXPORT_PATH))
+        if metadata != canonical({key: value for key, value in installation.items() if key != "path"}).encode():
+            raise ValueError("export receipt file differs from publication receipt")
+        read_metadata(str(PurePosixPath(base) / README_PATH), installation.get("readme_sha256"))
+
+    manifest = aggregate_manifests(locals_)
+    indexed_entries = {entry["identity"]["install_prefix"]: entry for entry in manifest["entries"]}
+    prefixes = receipt["expected_install_prefixes"]
+    for installation in receipt["installations"]:
+        prefix = installation["expected_install_prefix"]
+        entry = indexed_entries[prefix]
+        identity = entry["identity"]
+        fields = {
+            "schema": 2, "image_sha256": expected_sha256,
+            "bundle_install_prefixes": prefixes,
+            "other_bundle_install_prefixes": [peer for peer in prefixes if peer != prefix],
+            "required_install_prefixes": required_prefixes(entry, manifest),
+            "external_roots": entry["external_roots"],
+            "dependency_modules": entry["runtime"]["modules"],
+            "module_use": prefix + "/modulefiles",
+            "module_load": f'{identity["software"]}/{identity["track"]}/{identity["build_id"]}',
+        }
+        if any(installation.get(key) != value for key, value in fields.items()):
+            raise ValueError("export dependency/module receipt differs from payload")
+        for key in ("manifest_sha256", "source_manifest_sha256", "readme_sha256"):
+            if not isinstance(installation.get(key), str) or not re.fullmatch(r"[0-9a-f]{64}", installation[key]):
+                raise ValueError("export requires pinned metadata checksums")
+
+    for row in manifest["files"]:
+        prefixes_for_row = [prefix for prefix in bases if beneath("/" + row["path"], [prefix])]
+        if len(prefixes_for_row) != 1:
+            raise ValueError("export inventory has ambiguous installation ownership")
+        prefix = prefixes_for_row[0]
+        relative = str(PurePosixPath(bases[prefix]) / PurePosixPath(row["path"]).relative_to(prefix.lstrip("/")))
+        if relative in mapped:
+            raise ValueError("duplicate export inventory path")
+        mapped[relative] = row
+    # Only the wrapping directories introduced by a multi-install bundle are
+    # allowed beyond the payload inventory and its three reserved metadata files.
+    for relative in list(mapped):
+        parent = str(PurePosixPath(relative).parent)
+        while parent != ".":
+            mapped.setdefault(parent, {"kind": "directory", "mode": 0o755})
+            parent = str(PurePosixPath(parent).parent)
+    mapped.setdefault(".", {"kind": "directory", "mode": 0o755})
+    if set(mapped) != set(actual):
+        raise ValueError("export has missing or unlisted paths")
+    verified_files = 0
+    for relative, expected in mapped.items():
+        path, info, kind = actual[relative]
+        if kind != expected["kind"]:
+            raise ValueError("export file type differs from inventory")
+        if kind == "symlink":
+            if os.readlink(path) != expected["target"]:
+                raise ValueError("export symbolic link differs from inventory")
+        else:
+            if stat.S_IMODE(info.st_mode) != expected["mode"]:
+                raise ValueError("export permissions differ from inventory")
+            if kind == "file":
+                if "sha256" in expected and (info.st_size != expected["size"] or checksum(path) != expected["sha256"]):
+                    raise ValueError("exported payload checksum differs from inventory")
+                verified_files += 1
+    return {"roundtrip_verified": True, "verified_files": verified_files}
+
+
+def validate_export_record(record, expected_sha256, identities):
+    """Revalidate a publication's native export rather than trusting its flag."""
+    from release_contract import validate_identity
+    identities = [validate_identity(identity) for identity in identities]
+    if (not isinstance(record, dict) or type(record.get("schema")) is not int or record["schema"] != 1 or
+            record.get("image_sha256") != expected_sha256 or record.get("identities") != identities or
+            record.get("roundtrip_verified") is not True or not isinstance(record.get("directory"), str)):
+        raise ValueError("native export record differs from publication identity")
+    verified = verify_export(record["directory"], record.get("receipt"), expected_sha256, identities)
+    if record.get("verified_files") != verified["verified_files"]:
+        raise ValueError("native export file count differs from verified payload")
+    return record
+
+
+def export_delivery(image, expected_sha256, destination, identities, *, reader_factory=SquashfsReader.from_sif):
+    """Export and independently re-read a delivery before publishing it.
+
+    An adjacent immutable receipt supports a retry after later publication
+    steps fail; an interrupted/unrecorded export is preserved for inspection.
+    """
+    from release_contract import validate_identity
+    identities = [validate_identity(identity) for identity in identities]
+    destination = Path(destination).absolute()
+    record_path = destination.with_name(destination.name + ".json")
+    if record_path.is_symlink() or record_path.parent.resolve(strict=True) != record_path.parent:
+        raise ValueError("untrusted native export record path")
+    if record_path.exists():
+        if not record_path.is_file() or record_path.stat().st_size > MAX_MANIFEST_BYTES:
+            raise ValueError("invalid native export record file")
+        record = parse_manifest(record_path.read_bytes())
+        if record.get("directory") != str(destination) or checksum(image) != expected_sha256:
+            raise ValueError("native export retry differs from the original image or destination")
+        return validate_export_record(record, expected_sha256, identities)
+    receipt = export_image(image, expected_sha256, destination,
+                           prefixes=[identity["install_prefix"] for identity in identities],
+                           reader_factory=reader_factory)
+    record = {"schema": 1, "directory": str(destination), "image_sha256": expected_sha256,
+              "identities": identities, "receipt": receipt,
+              **verify_export(destination, receipt, expected_sha256, identities)}
+    if checksum(image) != expected_sha256:
+        raise ValueError("image changed during export readback")
+    with record_path.open("x") as output:
+        output.write(canonical(record))
+    record_path.chmod(0o444)
+    return record
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest="command", required=True)
@@ -653,11 +954,14 @@ def main():
     exp.add_argument("--image-sha256", required=True)
     exp.add_argument("--destination", type=Path, required=True)
     exp.add_argument("--prefix", action="append", help="select a canonical /opt prefix; locked companions are automatic")
+    exp.add_argument("--include-diagnostics", action="store_true",
+                     help="explicit archival export of tests/build diagnostics; not for routine /opt deployment")
     args = parser.parse_args()
     if args.command == "inventory":
         write_manifests([json.loads(path.read_text()) for path in args.entry], root=args.root)
     else:
-        print(canonical(export_image(args.image, args.image_sha256, args.destination, prefixes=args.prefix)), end="")
+        print(canonical(export_image(args.image, args.image_sha256, args.destination, prefixes=args.prefix,
+                                     include_diagnostics=args.include_diagnostics)), end="")
 
 
 if __name__ == "__main__":

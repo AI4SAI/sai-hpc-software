@@ -12,8 +12,11 @@ from pathlib import Path
 import subprocess
 
 from export_native import (MANIFEST_PATH, FRAGMENT_PATH, canonical, checksum, export_image,
-                           write_manifests)
-from release_contract import make_identity
+                           verify_export, write_manifests)
+from release_contract import SOFTWARE, make_identity
+
+COMMANDS = {"abacus": "abacus", "cp2k": "cp2k.psmp", "deepmd-kit": "dp",
+            "lammps": "lmp", "gpumd": "gpumd"}
 
 
 def prepare(directory):
@@ -24,17 +27,20 @@ def prepare(directory):
     directory.mkdir(mode=0o755)
     root = directory / "fixture-root"
     entries = []
-    for target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
-        identity = make_identity("abacus", "development", "export-tool-fixture",
-                                 "0" * 40, "NOT-SOFTWARE-EXPORT-PROBE", "0" * 64, target)
-        prefix = root / identity["install_prefix"].lstrip("/")
-        (prefix / "bin").mkdir(parents=True)
-        command = prefix / "bin/abacus"
-        command.write_text('#!/bin/sh\necho "NOT ABACUS: export-tool fixture only" >&2\nexit 125\n')
-        command.chmod(0o755)
-        (prefix / "fixture-link").symlink_to("bin/abacus")
-        entries.append({"identity": identity, "commands": {"abacus": "bin/abacus"},
-                        "external_roots": [], "runtime": {"modules": [], "prepend": {}, "set": {}}})
+    for software, profile in SOFTWARE.items():
+        for target in profile["targets"]:
+            stack = {"deepmd-kit": "0" * 40, "lammps": "0" * 40} if software in ("deepmd-kit", "lammps") else None
+            identity = make_identity(software, "development", "export-tool-fixture",
+                                     "0" * 40, "NOT-SOFTWARE-EXPORT-PROBE", "0" * 64, target,
+                                     stack_sources=stack)
+            prefix = root / identity["install_prefix"].lstrip("/")
+            (prefix / "bin").mkdir(parents=True)
+            command = prefix / "bin" / COMMANDS[software]
+            command.write_text('#!/bin/sh\necho "NOT SOFTWARE: export-tool fixture only" >&2\nexit 125\n')
+            command.chmod(0o755)
+            (prefix / "fixture-link").symlink_to("bin/" + COMMANDS[software])
+            entries.append({"identity": identity, "commands": {COMMANDS[software]: "bin/" + COMMANDS[software]},
+                            "external_roots": [], "runtime": {"modules": [], "prepend": {}, "set": {}}})
     write_manifests(entries, root)
     (root / "DO-NOT-EXPORT").write_text("outside declared software prefixes\n")
     squashfs = directory / "fixture.squashfs"
@@ -49,29 +55,33 @@ def verify(image, destination, prefixes=None):
     destination = Path(destination)
     if (destination / "rootfs").exists() or (destination / "DO-NOT-EXPORT").exists():
         raise ValueError("rootfs shell or unselected image file was exported")
-    if len(receipt["expected_install_prefixes"]) != (len(set(prefixes)) if prefixes else 4):
+    if not prefixes and len(receipt["expected_install_prefixes"]) != sum(len(p["targets"]) for p in SOFTWARE.values()):
         raise ValueError("wrong number of selected fixture installations")
+    identities = []
     for installation in receipt["installations"]:
         prefix = installation["expected_install_prefix"]
         directory = destination / installation["path"]
-        if (directory / "fixture-link").readlink() != Path("bin/abacus"):
-            raise ValueError("fixture symlink changed")
-        if "NOT ABACUS" not in (directory / "bin/abacus").read_text():
-            raise ValueError("fixture bytes changed")
         manifest = directory / MANIFEST_PATH
         if checksum(manifest) != installation["manifest_sha256"]:
             raise ValueError("manifest receipt checksum differs")
         local = json.loads(manifest.read_text())
         identity = local["entry"]["identity"]
+        identities.append(identity)
+        command = "bin/" + COMMANDS[identity["software"]]
+        if (directory / "fixture-link").readlink() != Path(command):
+            raise ValueError("fixture symlink changed")
+        if "NOT SOFTWARE" not in (directory / command).read_text():
+            raise ValueError("fixture bytes changed")
         if identity["install_prefix"] != prefix or identity["source_version"] != "NOT-SOFTWARE-EXPORT-PROBE":
             raise ValueError("probe identity changed or was mistaken for real software")
         for relative in (FRAGMENT_PATH,
-                         f'modulefiles/abacus/development/{identity["build_id"]}'):
+                         f'modulefiles/{identity["software"]}/development/{identity["build_id"]}'):
             module = directory / relative
             row = next(row for row in local["files"] if row["path"] == prefix.lstrip("/") + "/" + relative)
             if str(destination) in module.read_text() or checksum(module) != row["sha256"]:
                 raise ValueError("embedded module paths or inventory checksums differ")
-    result = {"status": "PASS", "scientific_artifact": False, "container_executed": False,
+    verified = verify_export(destination, receipt, checksum(image), identities)
+    result = {"status": "PASS", **verified, "scientific_artifact": False, "container_executed": False,
               "system_opt_modified": False, "export_receipt": receipt}
     print(json.dumps(result, sort_keys=True))
 

@@ -1,0 +1,328 @@
+{
+  "status": "passed",
+  "job_id": "1832137",
+  "source_sha256": "71124d8776253e1e19bbc2215d5c5e2ef63c8eca8f60ba4f6e2d013fe164d4f0",
+  "source_unchanged": true,
+  "prepared_sha256": "5887536292828e642169b0146ec5f3ea83e41fc710a43c3bc46777798caaead6",
+  "final_application_sha256": "64f89052c84d45c5220c46580442bcd9311c79d3ef80129ce2750094570faa0c",
+  "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+  "helper_sha256": "f22d281427ede157c03c7fc20a8b625e9c5a511e023a6c358de93040589fe468",
+  "removed_entries": 8193,
+  "cleanup_commands": 8193,
+  "workload": {
+    "failures": [],
+    "last_iteration": 8191,
+    "eisdir_count": 0
+  },
+  "upper_payload_unchanged": true,
+  "final_fsck": "passed",
+  "historical_images_used": false,
+  "preparation": {
+    "cloned_overlay_sha256": "71124d8776253e1e19bbc2215d5c5e2ef63c8eca8f60ba4f6e2d013fe164d4f0",
+    "fsck_before_and_after": "passed",
+    "lock": "exclusive-F_OFD_SETLK",
+    "prepared_overlay_sha256": "5887536292828e642169b0146ec5f3ea83e41fc710a43c3bc46777798caaead6",
+    "remaining_entries": 0,
+    "schema": 1,
+    "scope": "/work/work",
+    "source": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/source.ext3",
+    "source_overlay_sha256": "71124d8776253e1e19bbc2215d5c5e2ef63c8eca8f60ba4f6e2d013fe164d4f0",
+    "source_unchanged": true,
+    "status": "prepared",
+    "target": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/application.ext3",
+    "upper_directory_unchanged": true,
+    "removed_entry_count": 8193,
+    "cleanup_command_count": 8193,
+    "command_logs": [
+      {
+        "argv": [
+          "/usr/sbin/e2fsck",
+          "-fn",
+          "/proc/self/fd/5"
+        ],
+        "returncode": 0,
+        "stderr": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/001.stderr",
+        "stderr_sha256": "f074aa9872d23bd7876c68381422f0b17c739d7dbd64d41e99dfd1398653a818",
+        "stdout": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/001.stdout",
+        "stdout_sha256": "00f62a6a20243118ddf95773cf1ddc0787ad038231b20c62d053c312200b2aa4",
+        "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "argv": [
+          "/usr/sbin/debugfs",
+          "-f",
+          "-",
+          "/proc/self/fd/5"
+        ],
+        "returncode": 0,
+        "stderr": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/002.stderr",
+        "stderr_sha256": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+        "stdout": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/002.stdout",
+        "stdout_sha256": "fbcdbf3fbb145bf2438668bb350cfe36620e72fceeab336f16e0ebc535ba05b7",
+        "stdin_sha256": "5e3139f465a576b2fbca66752ae1e2d5750937377b3fe925fb779c0af497d772"
+      },
+      {
+        "argv": [
+          "/usr/sbin/debugfs",
+          "-f",
+          "-",
+          "/proc/self/fd/5"
+        ],
+        "returncode": 0,
+        "stderr": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/003.stderr",
+        "stderr_sha256": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+        "stdout": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/003.stdout",
+        "stdout_sha256": "0a38808c4dcf6e11e4745f1d0e783b0835fa929aa0e9de401e2620782c956b2a",
+        "stdin_sha256": "d277683ce79f0b57d824f70f290d8fd368aaf0cddd324b8e2ad0bf2212c054e0"
+      },
+      {
+        "argv": [
+          "/usr/sbin/debugfs",
+          "-f",
+          "-",
+          "/proc/self/fd/5"
+        ],
+        "returncode": 0,
+        "stderr": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/004.stderr",
+        "stderr_sha256": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+        "stdout": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/004.stdout",
+        "stdout_sha256": "89da8fe206e6e0d6aad0cd6a2d166bd892244909d74f1d68507d3f1066bdc205",
+        "stdin_sha256": "a32ac26cdfa681da0d550c50bdc5f376ba6aae473a9fd055ac50efc5e618253e"
+      },
+      {
+        "argv": [
+          "/usr/sbin/debugfs",
+          "-f",
+          "-",
+          "/proc/self/fd/5"
+        ],
+        "returncode": 0,
+        "stderr": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/005.stderr",
+        "stderr_sha256": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+        "stdout": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/005.stdout",
+        "stdout_sha256": "cff47753b4bc7f7cf7a5b4ad2b31d0bba886a56101d02fea123a049033965641",
+        "stdin_sha256": "2ea084aee5ed0fec0951c4178d99be3ffde4cdee09db9655f9445e819e0a6d0a"
+      },
+      {
+        "argv": [
+          "/usr/sbin/debugfs",
+          "-w",
+          "-f",
+          "-",
+          "/proc/self/fd/5"
+        ],
+        "returncode": 0,
+        "stderr": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/006.stderr",
+        "stderr_sha256": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+        "stdout": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/006.stdout",
+        "stdout_sha256": "eef1e1bb0abcb0453b659925d4d65a4b3af4c2e2dd1de35ad5f821f64d2adaee",
+        "stdin_sha256": "88be1e33b6510d0683ab9cbdab7056db71114babdd33c8ded3afbfb4a9b2d1a9"
+      },
+      {
+        "argv": [
+          "/usr/sbin/debugfs",
+          "-f",
+          "-",
+          "/proc/self/fd/5"
+        ],
+        "returncode": 0,
+        "stderr": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/007.stderr",
+        "stderr_sha256": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+        "stdout": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/007.stdout",
+        "stdout_sha256": "fbcdbf3fbb145bf2438668bb350cfe36620e72fceeab336f16e0ebc535ba05b7",
+        "stdin_sha256": "5e3139f465a576b2fbca66752ae1e2d5750937377b3fe925fb779c0af497d772"
+      },
+      {
+        "argv": [
+          "/usr/sbin/debugfs",
+          "-f",
+          "-",
+          "/proc/self/fd/5"
+        ],
+        "returncode": 0,
+        "stderr": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/008.stderr",
+        "stderr_sha256": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+        "stdout": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/008.stdout",
+        "stdout_sha256": "3b982c99822f8816eff058f1a336f8d1b4fc2e7963483394251466fc2ff0a4f1",
+        "stdin_sha256": "d277683ce79f0b57d824f70f290d8fd368aaf0cddd324b8e2ad0bf2212c054e0"
+      },
+      {
+        "argv": [
+          "/usr/sbin/e2fsck",
+          "-fn",
+          "/proc/self/fd/5"
+        ],
+        "returncode": 0,
+        "stderr": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/009.stderr",
+        "stderr_sha256": "f074aa9872d23bd7876c68381422f0b17c739d7dbd64d41e99dfd1398653a818",
+        "stdout": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/009.stdout",
+        "stdout_sha256": "9121554dff0720fb91726c5e62d245d1bb66fc95f73fdd573974370c1751c325",
+        "stdin_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    ]
+  },
+  "artifacts": [
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/apptainer.conf",
+      "sha256": "c23981456b0550c502eb7eb4e691abe605485c1469dfedc6ef54ac86dee73fb1",
+      "size_bytes": 18964
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/empty",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/final-fsck.log",
+      "sha256": "5c814a51aded9a9aa1369f9ac6b89008384d3ce3e8ed9937669d9a05e5b31a3e",
+      "size_bytes": 395
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/input/cp2k_overlay_workdir.py",
+      "sha256": "f22d281427ede157c03c7fc20a8b625e9c5a511e023a6c358de93040589fe468",
+      "size_bytes": 13244
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/input/fix-proof.py",
+      "sha256": "011086c0f026007468db376c1f8c95f4779e6caf606107e123c48f9f3a514b7b",
+      "size_bytes": 4956
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/input/fix-proof.sbatch",
+      "sha256": "ae170ae466174a5577f94a06c7cf05edeb508512b15ff29e8ab03b4272e147aa",
+      "size_bytes": 614
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/input/repro.py",
+      "sha256": "69d66d61f20ac61a882c7f27321d876bcc0db63b8d7e5052fe129f36a227f5bd",
+      "size_bytes": 6891
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/payload",
+      "sha256": "0ed648e450f38b796e727a2be7cff4c399905fe34b2653cb07638967e5565290",
+      "size_bytes": 41
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/result.json",
+      "sha256": "fa16cfca3f4f4dc3c2059567bc3f04c783ef81608db7172f95333cf905fa418a",
+      "size_bytes": 766
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/001.stderr",
+      "sha256": "f074aa9872d23bd7876c68381422f0b17c739d7dbd64d41e99dfd1398653a818",
+      "size_bytes": 27
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/001.stdout",
+      "sha256": "00f62a6a20243118ddf95773cf1ddc0787ad038231b20c62d053c312200b2aa4",
+      "size_bytes": 273
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/002.stderr",
+      "sha256": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+      "size_bytes": 28
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/002.stdout",
+      "sha256": "fbcdbf3fbb145bf2438668bb350cfe36620e72fceeab336f16e0ebc535ba05b7",
+      "size_bytes": 325
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/003.stderr",
+      "sha256": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+      "size_bytes": 28
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/003.stdout",
+      "sha256": "0a38808c4dcf6e11e4745f1d0e783b0835fa929aa0e9de401e2620782c956b2a",
+      "size_bytes": 96781
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/004.stderr",
+      "sha256": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+      "size_bytes": 28
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/004.stdout",
+      "sha256": "89da8fe206e6e0d6aad0cd6a2d166bd892244909d74f1d68507d3f1066bdc205",
+      "size_bytes": 432005
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/005.stderr",
+      "sha256": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+      "size_bytes": 28
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/005.stdout",
+      "sha256": "cff47753b4bc7f7cf7a5b4ad2b31d0bba886a56101d02fea123a049033965641",
+      "size_bytes": 4511378
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/006.stderr",
+      "sha256": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+      "size_bytes": 28
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/006.stdout",
+      "sha256": "eef1e1bb0abcb0453b659925d4d65a4b3af4c2e2dd1de35ad5f821f64d2adaee",
+      "size_bytes": 300943
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/007.stderr",
+      "sha256": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+      "size_bytes": 28
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/007.stdout",
+      "sha256": "fbcdbf3fbb145bf2438668bb350cfe36620e72fceeab336f16e0ebc535ba05b7",
+      "size_bytes": 325
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/008.stderr",
+      "sha256": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+      "size_bytes": 28
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/008.stdout",
+      "sha256": "3b982c99822f8816eff058f1a336f8d1b4fc2e7963483394251466fc2ff0a4f1",
+      "size_bytes": 328
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/009.stderr",
+      "sha256": "f074aa9872d23bd7876c68381422f0b17c739d7dbd64d41e99dfd1398653a818",
+      "size_bytes": 27
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation/009.stdout",
+      "sha256": "9121554dff0720fb91726c5e62d245d1bb66fc95f73fdd573974370c1751c325",
+      "size_bytes": 270
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/overlay-workdir-preparation.json",
+      "sha256": "fd3586f087489393b251d7ac8499a64464c9b76431af85ec5ace92b1e3b3c14e",
+      "size_bytes": 1699272
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/results/workload.json",
+      "sha256": "fa49f7957ea80b3b9ffc9bdf4fe0f31496c2c89f0bea1cce4b50eb76cd34627c",
+      "size_bytes": 68
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/seed.log",
+      "sha256": "e007154f21d508c560500dd7fba26181d5ba5680068eda77ff7d4afae4144123",
+      "size_bytes": 816918
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/slurm-1832137.log",
+      "sha256": "246a67abf3e733491bd61c2d29da7aca98dadec6600c5b5a0d5a616a1a580b31",
+      "size_bytes": 720
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b/workload.log",
+      "sha256": "b385e159b6c6b925688ae2242e656a3220b4bfcd378b87fe9f790c6895bf9440",
+      "size_bytes": 386
+    }
+  ],
+  "accounting": "1832137|COMPLETED|0:0|00:01:10|d9470n02\n1832137.batch|COMPLETED|0:0|00:01:10|d9470n02\n1832137.extern|COMPLETED|0:0|00:01:10|d9470n02\n",
+  "diagnostic_base": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-fix-20261017-b"
+}

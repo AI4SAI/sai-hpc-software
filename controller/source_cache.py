@@ -152,13 +152,16 @@ def receive(repo, directory):
                 path.unlink()
         return commit
 
-def inventory(repo):
+def inventory(repo, commit=None):
+    """Include an exact requested source even when newer branch tips fill the window."""
+    if commit is not None:
+        commit = sha(commit)
     repo = Path(repo)
     if not repo.exists():
         return {"cache_shas": []}
     tips = git(repo, "for-each-ref", "--sort=-creatordate", "--count=12",
                "--format=%(objectname)", "refs/cache", "refs/tags").splitlines()
-    result = []
+    result = [commit] if commit and complete(repo, commit) else []
     for tip in tips:
         commit = git(repo, "rev-parse", tip + "^{commit}")
         if commit not in result and complete(repo, commit):
@@ -172,7 +175,7 @@ def main():
     a.add_argument("repo"); a.add_argument("commit"); a.add_argument("output"); a.add_argument("--base")
     a = sub.add_parser("assemble"); a.add_argument("directory")
     a = sub.add_parser("receive"); a.add_argument("repo"); a.add_argument("directory")
-    a = sub.add_parser("inventory"); a.add_argument("repo")
+    a = sub.add_parser("inventory"); a.add_argument("repo"); a.add_argument("--commit")
     args = p.parse_args()
     if args.op == "pack":
         print(json.dumps(pack(args.repo, args.commit, args.output, args.base)))
@@ -181,7 +184,7 @@ def main():
     elif args.op == "receive":
         print(receive(args.repo, args.directory))
     else:
-        print(json.dumps(inventory(args.repo)))
+        print(json.dumps(inventory(args.repo, args.commit)))
 
 if __name__ == "__main__":
     main()

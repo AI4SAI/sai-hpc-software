@@ -1,0 +1,201 @@
+{
+  "builds_modified": false,
+  "checked_at": "2026-10-17T19:09:22.069671+08:00",
+  "jobs": [
+    {
+      "allocated_cpu_utilization_sample_percent": 0.81,
+      "allocated_cpu_utilization_since_start_percent": 2.5,
+      "allocated_logical_cpus": 8,
+      "blocked_threads_each_sample": [
+        {
+          "fuse2fs:osc_io_fsync_end": 1
+        },
+        {
+          "fuse2fs:osc_io_fsync_end": 1
+        },
+        {}
+      ],
+      "cpu_max": "max 100000",
+      "effective_cpuset": "44-47,108-111",
+      "fuse_request_waiters_final": {
+        "ar:request_wait_answer": 1,
+        "cmake:request_wait_answer": 2,
+        "fuse-overlayfs:request_wait_answer": 1,
+        "python3:request_wait_answer": 1
+      },
+      "host_cpu_percent": {
+        "idle": 48.76,
+        "iowait": 0.0,
+        "irq": 0.0,
+        "nice": 0.0,
+        "softirq": 0.04,
+        "steal": 0.0,
+        "system": 2.19,
+        "user": 49.01
+      },
+      "job_id": "1829656",
+      "makeflags": [
+        " -j8 --jobserver-auth=6,7",
+        "w -j8 --jobserver-auth=6,7",
+        "w -j8 --jobserver-auth=6,7 -- DODEPEND=no"
+      ],
+      "node": "16v100n04.mr-sai.ai",
+      "partition": "16V100",
+      "raw_path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/cpu-io-1829656-sample2-20261017.json",
+      "raw_sha256": "912ce4d1bdaa1285ddb262b307093fc333719c4a4c08fb2489257c2b2013f901",
+      "sample_end": "2026-10-17T11:05:56.705257+00:00",
+      "sample_seconds": 10.104551136959344,
+      "state_at_report": "RUNNING",
+      "throttled_usec_delta": 0,
+      "used_cpu_cores_sample": 0.065,
+      "used_cpu_cores_since_start": 0.2001
+    },
+    {
+      "allocated_cpu_utilization_sample_percent": 0.4,
+      "allocated_cpu_utilization_since_start_percent": 1.75,
+      "allocated_logical_cpus": 12,
+      "blocked_threads_each_sample": [
+        {
+          "fuse2fs:osc_io_fsync_end": 1
+        },
+        {
+          "fuse2fs:osc_io_fsync_end": 1
+        },
+        {}
+      ],
+      "cpu_max": "max 100000",
+      "effective_cpuset": "12-17,36-41",
+      "fuse_request_waiters_final": {
+        "as:request_wait_answer": 1,
+        "cmake:request_wait_answer": 2,
+        "fuse-overlayfs:request_wait_answer": 1,
+        "tar:request_wait_answer": 1
+      },
+      "host_cpu_percent": {
+        "idle": 90.94,
+        "iowait": 0.01,
+        "irq": 0.0,
+        "nice": 0.0,
+        "softirq": 0.0,
+        "steal": 0.0,
+        "system": 0.78,
+        "user": 8.28
+      },
+      "job_id": "1829644",
+      "makeflags": [
+        " -j12 --jobserver-auth=6,7",
+        "w -j12 --jobserver-auth=6,7",
+        "w -j12 --jobserver-auth=6,7 -- DODEPEND=no"
+      ],
+      "node": "8v100v0n09.mr-sai.ai",
+      "partition": "8V100V0",
+      "raw_path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/cpu-io-1829644-sample2-20261017.json",
+      "raw_sha256": "256f0a49e45c1bebbca4501e8a4c10f2af3b6777bf6d4341c91d1c23ba5a475b",
+      "sample_end": "2026-10-17T11:05:56.617344+00:00",
+      "sample_seconds": 10.058599460870028,
+      "state_at_report": "RUNNING",
+      "throttled_usec_delta": 0,
+      "used_cpu_cores_sample": 0.0483,
+      "used_cpu_cores_since_start": 0.2098
+    },
+    {
+      "allocated_cpu_utilization_sample_percent": 0.77,
+      "allocated_cpu_utilization_since_start_percent": 1.06,
+      "allocated_logical_cpus": 8,
+      "blocked_threads_each_sample": [
+        {
+          "fuse2fs:osc_io_fsync_end": 1
+        },
+        {},
+        {
+          "fuse2fs:osc_io_fsync_end": 1
+        }
+      ],
+      "cpu_max": "max 100000",
+      "effective_cpuset": "8-11,24-27",
+      "fuse_request_waiters_final": {
+        "build_libint:request_wait_answer": 1,
+        "cc1:request_wait_answer": 1,
+        "cmake:request_wait_answer": 1,
+        "fuse-overlayfs:request_wait_answer": 1
+      },
+      "host_cpu_percent": {
+        "idle": 81.64,
+        "iowait": 0.01,
+        "irq": 0.0,
+        "nice": 0.0,
+        "softirq": 0.02,
+        "steal": 0.0,
+        "system": 0.67,
+        "user": 17.66
+      },
+      "job_id": "1828944",
+      "makeflags": [
+        " -j8 --jobserver-auth=6,7",
+        "w -j8 --jobserver-auth=6,7 -- DODEPEND=no"
+      ],
+      "node": "4v100n15.mr-sai.ai",
+      "partition": "4V100",
+      "raw_path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/cpu-io-1828944-sample2-20261017.json",
+      "raw_sha256": "cfef36630401f094f96e8e3687152deb31e1e7951e9a6e63d46e86d003afa054",
+      "sample_end": "2026-10-17T11:05:56.477501+00:00",
+      "sample_seconds": 10.014440851286054,
+      "state_at_report": "RUNNING",
+      "throttled_usec_delta": 0,
+      "used_cpu_cores_sample": 0.0618,
+      "used_cpu_cores_since_start": 0.0848
+    },
+    {
+      "allocated_cpu_utilization_sample_percent": 29.11,
+      "allocated_cpu_utilization_since_start_percent": 7.55,
+      "allocated_logical_cpus": 8,
+      "blocked_threads_each_sample": [
+        {
+          "fuse2fs:osc_io_fsync_end": 1
+        },
+        {
+          "fuse2fs:osc_io_fsync_end": 1,
+          "g++:filename_unlinkat": 1,
+          "make:lookup_slow": 1
+        },
+        {}
+      ],
+      "cpu_max": "max 100000",
+      "effective_cpuset": "78-85",
+      "fuse_request_waiters_final": {},
+      "host_cpu_percent": {
+        "idle": 97.45,
+        "iowait": 0.26,
+        "irq": 0.0,
+        "nice": 0.0,
+        "softirq": 0.02,
+        "steal": 0.0,
+        "system": 0.35,
+        "user": 1.92
+      },
+      "job_id": "1828946",
+      "makeflags": [
+        " -j8 --jobserver-auth=6,7"
+      ],
+      "node": "d9470n02.mr-sai.ai",
+      "partition": "DSPRHBM",
+      "raw_path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/cpu-io-1828946-sample2-20261017.json",
+      "raw_sha256": "ed1393efde22eed9933268b79e916c90cd49cc55173b74c0bb194460b1c04afc",
+      "sample_end": "2026-10-17T11:05:56.567463+00:00",
+      "sample_seconds": 10.097855415195227,
+      "state_at_report": "RUNNING",
+      "throttled_usec_delta": 0,
+      "used_cpu_cores_sample": 2.3286,
+      "used_cpu_cores_since_start": 0.6038
+    }
+  ],
+  "limitations": [
+    "Ten-second interval utilization is a snapshot, not a whole-job average.",
+    "Cgroup CPU includes short-lived processes missed by a surviving-PID-only calculation.",
+    "The wait chain identifies synchronous FUSE/Lustre I/O, but does not by itself distinguish server latency from image-driver flush policy.",
+    "Initial sample1 files did not map opaque cgroups and are excluded from all job utilization calculations."
+  ],
+  "measurement_method": "SSH login -> SSH compute node; Slurm job environment maps opaque cgroup; cgroup CPU counters sampled over 10 seconds",
+  "sampling_script_sha256": "2c068755d1b4358340089c3dc24cd7869b5b6a92f925cf35d70acd5af18157db",
+  "srun_used": false
+}

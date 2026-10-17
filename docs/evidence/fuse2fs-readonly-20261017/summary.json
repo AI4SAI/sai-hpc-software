@@ -1,0 +1,215 @@
+{
+  "accounting": "1831878|DSPRHBM|COMPLETED|2026-10-17T22:09:07|00:01:55|8|d9470n02|0:0\n1831878.batch||COMPLETED|2026-10-17T22:09:07|00:01:55|8|d9470n02|0:0\n1831878.extern||COMPLETED|2026-10-17T22:09:07|00:01:55|8|d9470n02|0:0\n",
+  "artifacts": {
+    "results-a.json": "0a458f1ad4b5a27ca339ec975ecdea47262e866c46fd8826682328086e411b9a",
+    "results-b.json": "7be2e7de3881460ca13b8114fdf4ce48622ce7ed616e4ea57b25a54d4673f68a",
+    "results-c.json": "cfea61bc99e478100408e671d2c7bc9276bad9e5fedb4616691534c5e86d28d8"
+  },
+  "cases": [
+    {
+      "expected_returncode": 0,
+      "label": "create",
+      "passed": true,
+      "returncode": 0,
+      "sha256_after": "62455e27c8da2c5a13213668736d0e485a10b8b32cc329433ca6212dc33bff3b"
+    },
+    {
+      "expected_returncode": 0,
+      "hash_unchanged": false,
+      "image_mode": "0o600",
+      "label": "rw-workload",
+      "passed": true,
+      "readonly": false,
+      "returncode": 0,
+      "sha256_after": "c5097d48196e482d8f8903fac390f19627d5ddee665f220aa07dfc208f5a5a8f",
+      "sha256_before": "62455e27c8da2c5a13213668736d0e485a10b8b32cc329433ca6212dc33bff3b",
+      "trace": {
+        "image_bytes_written": 774162,
+        "image_successful_writes": 196,
+        "readonly_inherited_fd_opens": 0,
+        "successful_fdatasync": 0,
+        "successful_fsync": 7
+      }
+    },
+    {
+      "expected_returncode": 0,
+      "hash_unchanged": true,
+      "label": "fsck-after-workload",
+      "passed": true,
+      "returncode": 0,
+      "sha256_after": "c5097d48196e482d8f8903fac390f19627d5ddee665f220aa07dfc208f5a5a8f",
+      "sha256_before": "c5097d48196e482d8f8903fac390f19627d5ddee665f220aa07dfc208f5a5a8f"
+    },
+    {
+      "expected_returncode": 0,
+      "hash_unchanged": true,
+      "image_mode": "0o600",
+      "label": "ro-verify-1",
+      "passed": true,
+      "readonly": true,
+      "returncode": 0,
+      "sha256_after": "c5097d48196e482d8f8903fac390f19627d5ddee665f220aa07dfc208f5a5a8f",
+      "sha256_before": "c5097d48196e482d8f8903fac390f19627d5ddee665f220aa07dfc208f5a5a8f",
+      "trace": {
+        "image_bytes_written": 0,
+        "image_successful_writes": 0,
+        "readonly_inherited_fd_opens": 1,
+        "successful_fdatasync": 0,
+        "successful_fsync": 1
+      }
+    },
+    {
+      "expected_returncode": 0,
+      "hash_unchanged": true,
+      "image_mode": "0o400",
+      "label": "ro-verify-2-sealed",
+      "passed": true,
+      "readonly": true,
+      "returncode": 0,
+      "sha256_after": "c5097d48196e482d8f8903fac390f19627d5ddee665f220aa07dfc208f5a5a8f",
+      "sha256_before": "c5097d48196e482d8f8903fac390f19627d5ddee665f220aa07dfc208f5a5a8f",
+      "trace": {
+        "image_bytes_written": 0,
+        "image_successful_writes": 0,
+        "readonly_inherited_fd_opens": 1,
+        "successful_fdatasync": 0,
+        "successful_fsync": 1
+      }
+    },
+    {
+      "expected_returncode": 1,
+      "hash_unchanged": true,
+      "image_mode": "0o400",
+      "label": "ro-false-sealed",
+      "passed": true,
+      "readonly": true,
+      "returncode": 1,
+      "sha256_after": "c5097d48196e482d8f8903fac390f19627d5ddee665f220aa07dfc208f5a5a8f",
+      "sha256_before": "c5097d48196e482d8f8903fac390f19627d5ddee665f220aa07dfc208f5a5a8f",
+      "trace": {
+        "image_bytes_written": 0,
+        "image_successful_writes": 0,
+        "readonly_inherited_fd_opens": 1,
+        "successful_fdatasync": 0,
+        "successful_fsync": 1
+      }
+    },
+    {
+      "hash_unchanged": true,
+      "image_mode": "0o600",
+      "label": "ro-holder",
+      "lock_released_after_unmount": true,
+      "passed": true,
+      "posix_writer_lock_rejected": true,
+      "readonly": true,
+      "returncode": 0,
+      "second_rw_mount_rejected": true,
+      "sha256_after": "c5097d48196e482d8f8903fac390f19627d5ddee665f220aa07dfc208f5a5a8f",
+      "sha256_before": "c5097d48196e482d8f8903fac390f19627d5ddee665f220aa07dfc208f5a5a8f",
+      "trace": {
+        "image_bytes_written": 0,
+        "image_successful_writes": 0,
+        "readonly_inherited_fd_opens": 1,
+        "successful_fdatasync": 0,
+        "successful_fsync": 1
+      }
+    },
+    {
+      "expected_returncode": null,
+      "hash_unchanged": true,
+      "label": "ro-holder-rw-contender",
+      "passed": true,
+      "returncode": 255,
+      "sha256_after": "c5097d48196e482d8f8903fac390f19627d5ddee665f220aa07dfc208f5a5a8f",
+      "sha256_before": "c5097d48196e482d8f8903fac390f19627d5ddee665f220aa07dfc208f5a5a8f"
+    },
+    {
+      "hash_unchanged": false,
+      "image_mode": "0o600",
+      "label": "rw-holder",
+      "lock_released_after_unmount": true,
+      "passed": true,
+      "posix_writer_lock_rejected": true,
+      "readonly": false,
+      "returncode": 0,
+      "second_rw_mount_rejected": true,
+      "sha256_after": "2df8dc9b873cde35e2b28956535d3001b37ee86c00f84fad3813621daaffb2b4",
+      "sha256_before": "c5097d48196e482d8f8903fac390f19627d5ddee665f220aa07dfc208f5a5a8f",
+      "trace": {
+        "image_bytes_written": 57356,
+        "image_successful_writes": 20,
+        "readonly_inherited_fd_opens": 0,
+        "successful_fdatasync": 0,
+        "successful_fsync": 5
+      }
+    },
+    {
+      "expected_returncode": null,
+      "hash_unchanged": true,
+      "label": "rw-holder-rw-contender",
+      "passed": true,
+      "returncode": 255,
+      "sha256_after": "6577b09e758b5b196a85f9671a85189c301ca7015514aa706147ab99202626cd",
+      "sha256_before": "6577b09e758b5b196a85f9671a85189c301ca7015514aa706147ab99202626cd"
+    },
+    {
+      "expected_returncode": 0,
+      "hash_unchanged": true,
+      "label": "fsck-final",
+      "passed": true,
+      "returncode": 0,
+      "sha256_after": "2df8dc9b873cde35e2b28956535d3001b37ee86c00f84fad3813621daaffb2b4",
+      "sha256_before": "2df8dc9b873cde35e2b28956535d3001b37ee86c00f84fad3813621daaffb2b4"
+    },
+    {
+      "expected_returncode": 0,
+      "hash_unchanged": true,
+      "image_mode": "0o600",
+      "label": "ro-final-verify",
+      "passed": true,
+      "readonly": true,
+      "returncode": 0,
+      "sha256_after": "2df8dc9b873cde35e2b28956535d3001b37ee86c00f84fad3813621daaffb2b4",
+      "sha256_before": "2df8dc9b873cde35e2b28956535d3001b37ee86c00f84fad3813621daaffb2b4",
+      "trace": {
+        "image_bytes_written": 0,
+        "image_successful_writes": 0,
+        "readonly_inherited_fd_opens": 1,
+        "successful_fdatasync": 0,
+        "successful_fsync": 1
+      }
+    }
+  ],
+  "checked_at": "2026-10-17T14:12:29.811219+00:00",
+  "corrections": [
+    {
+      "job_id": "1831731",
+      "outcome": "FAILED 1:0",
+      "reason": "Raw directory enumeration counted a zero-byte .wh..wh..opq control file exposed by kernel RO overlay."
+    },
+    {
+      "job_id": "1831841",
+      "outcome": "FAILED 1:0",
+      "reason": "minimal-v1 lacks /bin/false; corrected only the probe path to bound /usr/bin/false."
+    }
+  ],
+  "driver": {
+    "bytes": 1700024,
+    "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/fuse2fs-readonly-20261017-c/driver/fuse2fs",
+    "sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10"
+  },
+  "installed_driver": "/home/stardust/sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs",
+  "limitations": [
+    "Only newly created disposable images are mounted for validation.",
+    "Historical sealed dependency image hash mismatch remains invalid; it was not resealed.",
+    "Original CMake link.txt EISDIR cause is unresolved by this driver read-only fix."
+  ],
+  "node": "d9470n02.mr-sai.ai",
+  "patch_sha256": "92a2a56963874a1249b1b68be69369a9ddcaedc92cd47b8d35da72d36388600c",
+  "patched_source_sha256": "c63d1fb25510d316836952953e9adddacd3214cd91d6002bf3b16aed350c4ddc",
+  "pristine_source_sha256": "ab3794d86b12a8227b4a87823349e974df06f39c42971dcf2983ddf57cf82696",
+  "source_commit": "45651efd6db7da8738bc9d8d1f17e99259cabfe4",
+  "status": "passed",
+  "validation_job_id": "1831878",
+  "validation_run": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/fuse2fs-readonly-20261017-c"
+}
