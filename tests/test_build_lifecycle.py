@@ -241,7 +241,9 @@ class CiLifecycleTests(unittest.TestCase):
             return subprocess.CompletedProcess(argv, 0, stdout=stdout, stderr="")
 
         with patch.dict(os.environ, environment, clear=True), \
-                patch.object(cp2k_spack, "cache_source_updates", return_value=self.root / "cp2k-updates/libwignernj-0.8.0.tar.gz"), \
+                patch.object(cp2k_spack, "cache_source_updates", return_value=[
+                    self.root / "cp2k-updates/libwignernj-0.8.0.tar.gz",
+                    self.root / "cp2k-updates/tblite-0.6.0.tar.xz"]), \
                 patch.object(dependencies, "cache_archives") as archives, \
                 patch.object(ci, "datetime") as clock, \
                 patch.object(ci, "run", side_effect=fake_run), \
@@ -322,6 +324,14 @@ class CiLifecycleTests(unittest.TestCase):
         self.execute(software="cp2k")
         self.assertEqual(self.archive_calls, [])
         self.assertTrue(set(updated).isdisjoint(self.uploads))
+        submitted = next(index for index, argv in enumerate(self.transport)
+                         if argv[0] == "ssh" and "cp2k_dependency_stage.py submit" in argv[-1])
+        for name in ("libwignernj-0.8.0.tar.gz", "tblite-0.6.0.tar.xz"):
+            uploads = [index for index, argv in enumerate(self.transport)
+                       if argv[0] == "scp" and argv[-2] == str(self.root / "cp2k-updates" / name)]
+            self.assertEqual(len(uploads), 1)
+            self.assertLess(uploads[0], submitted)
+            self.assertTrue(self.transport[uploads[0]][-1].endswith("/input/cp2k-updates/" + name))
         self.execute(event="schedule", track="release", prior=[{"previous_run": "failed"}])
         self.assertEqual(self.archive_calls, [])
         self.execute(event="schedule", prior=[{"previous_run": "development"}])

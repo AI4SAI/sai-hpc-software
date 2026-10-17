@@ -34,6 +34,8 @@ TARGETS = {
 # CP2K's required angular-momentum library, pinned by upstream toolchain.
 WIGNERNJ_ARCHIVE = 'libwignernj-0.8.0.tar.gz'
 WIGNERNJ_SHA256 = '7220cea92652040d6456aba92ff151124d9c69ce8695840490c18dd25a0da80c'
+TBLITE_RELEASE_ARCHIVE = 'tblite-0.6.0.tar.xz'
+TBLITE_RELEASE_SHA256 = '372281aedb89234168d00eb691addb303197a9462a9c55d145c835f2cf5e8b42'
 
 
 def cache_source_updates(destination):
@@ -41,15 +43,19 @@ def cache_source_updates(destination):
     import urllib.request
     destination = Path(destination)
     destination.mkdir(parents=True, exist_ok=True)
-    archive = destination / WIGNERNJ_ARCHIVE
-    if not archive.is_file() or hashlib.sha256(archive.read_bytes()).hexdigest() != WIGNERNJ_SHA256:
-        with urllib.request.urlopen('https://www.cp2k.org/static/downloads/' + WIGNERNJ_ARCHIVE,
-                                    timeout=60) as response:
-            data = response.read()
-        if hashlib.sha256(data).hexdigest() != WIGNERNJ_SHA256:
-            raise ValueError('CP2K wignernj source checksum mismatch')
-        archive.write_bytes(data)
-    return archive
+    archives = []
+    for name, digest in ((WIGNERNJ_ARCHIVE, WIGNERNJ_SHA256),
+                         (TBLITE_RELEASE_ARCHIVE, TBLITE_RELEASE_SHA256)):
+        archive = destination / name
+        if not archive.is_file() or hashlib.sha256(archive.read_bytes()).hexdigest() != digest:
+            with urllib.request.urlopen('https://www.cp2k.org/static/downloads/' + name,
+                                        timeout=60) as response:
+                data = response.read()
+            if hashlib.sha256(data).hexdigest() != digest:
+                raise ValueError('CP2K source checksum mismatch: ' + name)
+            archive.write_bytes(data)
+        archives.append(archive)
+    return archives
 
 
 def cache_roots(cache: Path, partition: str) -> dict[str, Path]:

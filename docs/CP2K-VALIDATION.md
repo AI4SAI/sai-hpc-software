@@ -5,6 +5,16 @@ No four-target CP2K 2026.2 release has passed all acceptance gates yet.
 
 ## Fresh four-target release workflow
 
+The next compile diagnostic exposed a second issue after the COSMA repair:
+`1833253` failed at `tblite_interface.F:479` because release v2026.2 requires
+TBLITE 0.6.0, while the recipe hard-coded the development 0.7.0 API. The
+controller now selects the version declared by the pinned CP2K source and
+builds release's official complete archive with both upstream gradient fixes.
+Diagnostic `1833642` is checking the complete release compile on 4V100 before
+another production dispatch. Workflow `39047391019` retains its frozen old
+TBLITE recipe; its dependency progress alone cannot produce a corrected SIF.
+[Compatibility repair and input checksums](evidence/cp2k-tblite-release-20261018/README.md).
+
 Follow-up after midnight, October 18: all four dependencies in workflow
 `39041714911` completed, but 4V100 application `1832733` and 16V100 application
 `1833010` failed at CP2K's COSMA interface check. The concrete COSMA and COSTA
@@ -23,7 +33,7 @@ with the failed 4V100 application image's complete hash unchanged. By 00:13,
 all four fresh targets had installed corrected COSMA/COSTA. Old application
 jobs `1832921`/`1833122` were deliberately cancelled after confirming the same
 missing interfaces; all files remain preserved. Diagnostic compile `1833253`
-runs ahead of the fresh dependencies to catch source/link failures early.
+subsequently found the TBLITE source incompatibility described above.
 No new SIF is claimed at this snapshot.
 
 At 23:27 Asia/Shanghai, 4V100 dependency job `1832262` had completed `0:0`
@@ -859,8 +869,10 @@ CP2K toolchain and must be replaced by independent dependencies.
 ELPA discovery is pinned to the loaded 2026.02.001 module, never to the old
 2024 toolchain copy. The successful TBLITE archive establishes working locked
 source versions, but its own precompiled AVX-512-linked executables are not
-blindly reused on AVX2 targets. Each target compiles TBLITE 0.7.0 and DFT-D4 4.2.0
-from the same checksum-locked source archives in the existing project cache.
+blindly reused on AVX2 targets. The source-driven selection now compiles
+TBLITE 0.6.0 with CP2K's bundled dependencies and gradient patches for v2026.2;
+development sources declaring 0.7.0 retain that version's locked source chain.
+Every target builds these sources natively inside its own overlay.
 
 The older CPU baseline advertises `libgrpp` and `quip`. In 2026.2 libgrpp is
 compiled unconditionally and no longer appears in version flags; the recipe

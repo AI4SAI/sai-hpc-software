@@ -98,6 +98,14 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 
 ## Remaining acceptance work
 
+The full compile diagnostic found that v2026.2's TBLITE API is incompatible
+with the hard-coded development dependency. The repair selects TBLITE from
+the pinned CP2K source and uses release's official 0.6.0 bundle plus both
+gradient fixes. Independent diagnostic `1833642` checks the full compile and
+link on 4V100 before a new production dispatch. Existing workflow `39047391019`
+keeps its original frozen recipe and is not evidence for this correction.
+[TBLITE source compatibility](evidence/cp2k-tblite-release-20261018/README.md).
+
 At 00:03 Asia/Shanghai on October 18, fresh workflow
 [39047391019](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39047391019)
 had submitted corrected CP2K release dependencies on all four targets:
@@ -111,7 +119,7 @@ The first verified v2026.2 SIF remains the immediate goal; direct-generalized
 tuning stays in issue #9 and does not block the build.
 At 00:13, all four targets had installed the corrected COSMA/COSTA libraries.
 Diagnostic `1833202` completed the full CP2K configure with unchanged source
-image hashes; compile diagnostic `1833253` is running ahead of the new builds.
+image hashes; compile diagnostic `1833253` subsequently failed at TBLITE's API.
 The remaining two old applications were deliberately cancelled after checking
 their missing interfaces, with all historical files retained.
 

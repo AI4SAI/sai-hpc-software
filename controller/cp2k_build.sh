@@ -78,11 +78,11 @@ if [[ "$target" == 8v100v0-avx512 ]]; then
 fi
 
 tblite_root="$prefix/dependencies/tblite"
-# The successful 4V100 bundle establishes compatible source versions, not
-# permission to reuse its own compiled libraries across ISA targets. Rebuild
-# its seven locked sources natively inside each target's overlay.
+# Match the pinned CP2K source's TBLITE API and gradient patches. Rebuild its
+# dependencies natively inside each target's overlay.
 export CP2K_NATIVE_FLAGS="-O3 $cpu_flags"
-bash /control/cp2k_dependencies.sh /input/probe /workspace/tblite-build "$tblite_root"
+bash /control/cp2k_dependencies.sh /input/probe /workspace/tblite-build "$tblite_root" \
+  /workspace/source /input/updates
 
 prefixes=(
   "$ELPA_ROOT" "$OPENBLAS_ROOT" "$LIBXC_ROOT" "$FFTW_ROOT" "$tblite_root"

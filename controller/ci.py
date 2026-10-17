@@ -294,9 +294,10 @@ def main():
                     upload(updates / item["file"], f"{task}/input/abacus-updates/{item['file']}")
         if software == "cp2k":
             from cp2k_spack import cache_source_updates
-            archive = cache_source_updates(temporary / 'cp2k-updates')
+            archives = cache_source_updates(temporary / 'cp2k-updates')
             ssh(['mkdir', '-p', f'{task}/input/cp2k-updates'])
-            upload(archive, f'{task}/input/cp2k-updates/{archive.name}')
+            for archive in archives:
+                upload(archive, f'{task}/input/cp2k-updates/{archive.name}')
     def emit_run_id():
         if os.environ.get('GITHUB_OUTPUT'):
             with open(os.environ['GITHUB_OUTPUT'], 'a') as stream:

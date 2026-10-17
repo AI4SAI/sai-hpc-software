@@ -44,6 +44,8 @@ already running. All files and successful dependency checkpoints remain;
 these cancellations do not claim a natural application failure or success.
 [Cancellation decision](superseded-cosma-applications-20261018.json).
 
-Diagnostic compile `1833253` runs ahead of the fresh dependency builds to
-detect source/link errors earlier. These diagnostics do not create a new
+Diagnostic compile `1833253` ran ahead of the fresh dependency builds and
+failed at the release/development TBLITE API mismatch, documented in the
+[subsequent repair](../cp2k-tblite-release-20261018/README.md).
+These diagnostics do not create a new
 release identity, an accepted SIF or a performance result.
