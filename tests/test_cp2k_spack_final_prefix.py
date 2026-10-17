@@ -100,7 +100,7 @@ class FinalPrefixTests(unittest.TestCase):
             self.assertIn(SEED_SHA256, script)
             self.assertLess(script.index('cp --sparse=always'), script.index('sha256sum --check'))
             self.assertLess(script.index('sha256sum --check'), script.index('/usr/sbin/resize2fs'))
-            self.assertLess(script.index('/usr/sbin/resize2fs'), script.index('apptainer exec'))
+        self.assertLess(script.index('/usr/sbin/resize2fs'), script.index('cp2k_image_driver.py'))
             self.assertIn('/usr/bin:/bin:ro', script)
             self.assertIn('/input/spack:ro', script)
             self.assertIn('dependencies cp2k', script)
