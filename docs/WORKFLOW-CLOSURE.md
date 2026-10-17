@@ -103,10 +103,35 @@ compile/version/ldd checks: host driver 550.163.01 could not JIT CUDA 12.9 PTX.
 Using the existing SDK CUDA 12.9 compatibility libraries, diagnostic `1834460`
 completed both PBE OT and STANDARD diagonalization (`0:0`, 31 seconds), with
 energy difference `5.684e-14 Ha` and maximum force difference `2.710e-10 Ha/Bohr`.
-The next recipe records compatibility library priority and requires it in final
-GPU linkage. Existing frozen workflow `39054631316` continues toward its SIF
+Production commit `9352d6d` records compatibility library priority and requires it
+in final GPU linkage. Fresh four-target release workflow
+[39056762371](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39056762371)
+uses recipe `4b6cb146fa983f69d82e5f7a990eba00b879a1c1e7464e317cc4740dbb41793b`.
+Its final SIF and scientific/performance results remain pending.
+Existing frozen workflow `39054631316` continues toward its SIF
 without this runtime correction; it cannot establish corrected acceptance.
 [PBE attempts and actual loaded libraries](evidence/cp2k-hdf5-static-20261018/pbe-smoke.json).
+
+The pinned 2026.1 baseline also passed PBE OT in its default module environment
+(`1834594`, `COMPLETED 0:0`, 16 seconds). Its energy differs from the corrected
+candidate diagnostic by `8.53e-13 Ha`; maximum force difference is `1.00e-12 Ha/Bohr`.
+Actual baseline process maps show the host 550.163.01 driver and no dynamic
+NVRTC in the sampled process. No baseline environment change is required by this
+test. These separate small diagnostics establish numerical consistency only.
+[Baseline results and retained setup failures](evidence/cp2k-hdf5-static-20261018/baseline-pbe-smoke.json).
+The production commit passed 732 CI tests: 730 passes and two optional skips.
+
+At 02:12 Asia/Shanghai on October 18, the corrected workflow had these native
+dependency jobs. Their frozen controller, source, recipe, Slurm scripts and
+home-backed temporary storage were verified against the requested identity.
+[Submission evidence](evidence/cp2k-hdf5-static-20261018/compat-formal-start.json).
+
+| Target | Dependency job | Observed state |
+|---|---|---|
+| 16V100 | 1834668 | RUNNING on 16v100n05 |
+| 4V100 | 1834662 | RUNNING on 4v100n10 |
+| 8V100V0 | 1834667 | PENDING |
+| DSPRHBM | 1834666 | RUNNING on d9470n02 |
 
 The full compile diagnostic found that v2026.2's TBLITE API is incompatible
 with the hard-coded development dependency. The repair selects TBLITE from

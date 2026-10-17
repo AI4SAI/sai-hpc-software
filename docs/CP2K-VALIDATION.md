@@ -10,10 +10,29 @@ compile/version/ldd checks: host driver 550.163.01 could not JIT CUDA 12.9 PTX.
 Using the existing SDK CUDA 12.9 compatibility libraries, diagnostic `1834460`
 completed both PBE OT and STANDARD diagonalization (`0:0`, 31 seconds), with
 energy difference `5.684e-14 Ha` and maximum force difference `2.710e-10 Ha/Bohr`.
-The next recipe records compatibility library priority and requires it in final
-GPU linkage. Existing frozen workflow `39054631316` continues toward its SIF
+Production commit `9352d6d` records compatibility library priority and requires it
+in final GPU linkage. Fresh four-target release workflow
+[39056762371](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39056762371)
+uses recipe `4b6cb146fa983f69d82e5f7a990eba00b879a1c1e7464e317cc4740dbb41793b`.
+Its final SIF and scientific/performance results remain pending.
+Existing frozen workflow `39054631316` continues toward its SIF
 without this runtime correction; it cannot establish corrected acceptance.
 [PBE attempts and actual loaded libraries](evidence/cp2k-hdf5-static-20261018/pbe-smoke.json).
+
+Pinned baseline 2026.1 passed the same small PBE OT input in its default module
+environment (`1834594`, `COMPLETED 0:0`). Its actual process used the host driver
+550.163.01; no dynamic NVRTC appeared in the sampled CP2K maps. Energy and maximum
+force differences from the corrected candidate diagnostic are `8.53e-13 Ha`
+and `1.00e-12 Ha/Bohr`. This does not establish a timing comparison or formal
+SIF acceptance, and does not require a baseline environment change.
+[Baseline evidence and diagnostic setup failures](evidence/cp2k-hdf5-static-20261018/baseline-pbe-smoke.json).
+The production commit passed 732 CI tests: 730 passes and two optional skips.
+
+At 02:12 Asia/Shanghai on October 18, corrected dependency jobs were
+`1834668` (16V100, RUNNING), `1834662` (4V100, RUNNING), `1834667`
+(8V100V0, PENDING) and `1834666` (DSPRHBM, RUNNING). Their actual Slurm
+requests, frozen controller/source/recipe and home-backed storage were verified.
+[Submission evidence](evidence/cp2k-hdf5-static-20261018/compat-formal-start.json).
 
 The next compile diagnostic exposed a second issue after the COSMA repair:
 `1833253` failed at `tblite_interface.F:479` because release v2026.2 requires

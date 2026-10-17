@@ -59,6 +59,11 @@ A ten-second SSH/cgroup sample during diagnostic compilation measured
 or throttling. This is a stage sample, not whole-build or application runtime
 performance. [Accounting evidence](cpu-sample.json).
 
+A second sample from formal dependency job `1834214`, while compiling Libint,
+used 7.20 of eight allocated logical CPUs (89.96%) with no quota or throttling.
+The sample reads the job cgroup, so compiler processes that exit during the
+interval are included. [Formal build sample](formal-cpu-sample.json).
+
 The superseded workflow `39047391019` completed all four dependency jobs.
 Its four old application jobs were cancelled only after checking their exact
 Slurm handles and incompatible frozen recipes; sealed dependencies remain
@@ -101,3 +106,25 @@ compat. Three actual shared-library loader tests exercise the launcher order,
 fallback and empty initial path. The existing frozen workflow `39054631316`
 continues toward a SIF but does not include this runtime correction. No shared
 module, library or kernel driver was changed.
+
+The pinned CP2K 2026.1 native baseline passed the same small PBE OT input in
+its default module environment (`1834594`, `COMPLETED 0:0`, 16 seconds).
+Its actual process loaded host driver 550.163.01; sampled CP2K maps contained
+no dynamic NVRTC. The conditional compatibility retry was therefore unnecessary.
+The unchanged baseline executable and candidate diagnostic differ by
+`8.53e-13 Ha` in energy and `1.00e-12 Ha/Bohr` in maximum force. The three
+preceding harness attempts failed before PBE because of omitted login
+environment variables; their logs and final accounting remain retained.
+[Baseline evidence](baseline-pbe-smoke.json). This comparison uses separate
+single-node diagnostic jobs and makes no performance claim.
+
+Production commit `9352d6dabca0a28e7ea81b2acec8977e7ca9ec06` passed
+[CI 39056288064](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39056288064):
+732 tests, 730 passed and two optional skips. Fresh release workflow
+[39056762371](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39056762371)
+selects all four targets using recipe
+`4b6cb146fa983f69d82e5f7a990eba00b879a1c1e7464e317cc4740dbb41793b`.
+Final artifact and scientific/performance outcomes are pending.
+At 02:12 Asia/Shanghai, native dependency jobs were `1834668` (16V100),
+`1834662` (4V100), `1834667` (8V100V0) and `1834666` (DSPRHBM).
+[Exact requests, scripts and accounting](compat-formal-start.json).
