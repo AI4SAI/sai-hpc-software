@@ -1,53 +1,46 @@
 {
-  "schema": 1,
-  "observed_date": "2026-10-18",
-  "scope": "read-only installed dependency directory metadata; no container executed and no image modified",
-  "host": "SAI-stardust",
-  "image": "/home/stardust/sai-hpc-software/runs/39041714911-1-release-4v100-avx512-2026-10-17-67b5da876dd6/work.ext3",
-  "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100",
   "command_template": "/usr/sbin/debugfs -R 'ls -l /upper<install_prefix>/<relative_path>' <image>",
   "confirmation_command_template": "/usr/sbin/debugfs -R 'stat /upper<install_prefix>/<relative_path>' <image>",
-  "readonly_command_note": "debugfs was invoked without -w; only ls and stat were used",
   "directories": [
     {
-      "relative_path": "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib",
       "debugfs_inode": 24360,
-      "debugfs_mode_octal": "042755"
+      "debugfs_mode_octal": "042755",
+      "relative_path": "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib"
     },
     {
-      "relative_path": "dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg/lib",
       "debugfs_inode": 84846,
-      "debugfs_mode_octal": "042755"
+      "debugfs_mode_octal": "042755",
+      "relative_path": "dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg/lib"
     },
     {
-      "relative_path": "dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz/lib",
       "debugfs_inode": 103106,
-      "debugfs_mode_octal": "042755"
+      "debugfs_mode_octal": "042755",
+      "relative_path": "dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz/lib"
     },
     {
-      "relative_path": "dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/lib64",
       "debugfs_inode": 31161,
-      "debugfs_mode_octal": "042755"
+      "debugfs_mode_octal": "042755",
+      "relative_path": "dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/lib64"
     },
     {
-      "relative_path": "dependencies/spack/linux-zen5/cosma-2.7.0-fosnhjhoc5gegowe347o7foswfomsbqk/lib64",
       "debugfs_inode": 39732,
-      "debugfs_mode_octal": "042755"
+      "debugfs_mode_octal": "042755",
+      "relative_path": "dependencies/spack/linux-zen5/cosma-2.7.0-fosnhjhoc5gegowe347o7foswfomsbqk/lib64"
     },
     {
-      "relative_path": "dependencies/spack/linux-zen5/spla-1.6.1-uc273bzgwxxngrexd366xlfvkfmeuvgm/lib64",
       "debugfs_inode": 29071,
-      "debugfs_mode_octal": "042755"
+      "debugfs_mode_octal": "042755",
+      "relative_path": "dependencies/spack/linux-zen5/spla-1.6.1-uc273bzgwxxngrexd366xlfvkfmeuvgm/lib64"
     },
     {
-      "relative_path": "dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg/lib/plumed",
       "debugfs_inode": 84854,
-      "debugfs_mode_octal": "042755"
+      "debugfs_mode_octal": "042755",
+      "relative_path": "dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg/lib/plumed"
     },
     {
-      "relative_path": "dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz/share/libint",
       "debugfs_inode": 103120,
-      "debugfs_mode_octal": "042755"
+      "debugfs_mode_octal": "042755",
+      "relative_path": "dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz/share/libint"
     }
   ],
   "failure_chain": [
@@ -56,5 +49,141 @@
     "native-package calls export_native.validate_manifest, which rejects permission modes greater than 0777"
   ],
   "fix": "Add a-s only to the chmod command over /workspace/export$INSTALL_PREFIX; original dependency installations are unchanged",
-  "limitation": "This confirms a packaging permission blocker; it does not establish successful CP2K linking, a completed SIF, scientific correctness or performance"
+  "host": "SAI-stardust",
+  "image": "/home/stardust/sai-hpc-software/runs/39041714911-1-release-4v100-avx512-2026-10-17-67b5da876dd6/work.ext3",
+  "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100",
+  "limitation": "This confirms a packaging permission blocker; it does not establish successful CP2K linking, a completed SIF, scientific correctness or performance",
+  "observed_date": "2026-10-18",
+  "readonly_command_note": "debugfs was invoked without -w; only ls and stat were used",
+  "schema": 1,
+  "scope": "read-only installed dependency directory metadata; no container executed and no image modified",
+  "symlink_review": {
+    "absent_optional_package_subdirs": [
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/cosma-2.7.0-fosnhjhoc5gegowe347o7foswfomsbqk/lib",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/cosma-2.7.0-fosnhjhoc5gegowe347o7foswfomsbqk/share",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/costa-2.3.3-bnt2qboj6a4emry3efbgiaecggwjdvne/lib",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/costa-2.3.3-bnt2qboj6a4emry3efbgiaecggwjdvne/share",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib64",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/share",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/hdf5-1.14.6-veh6gg4r2kjguzn47akx3jrp3kumhq6r/lib64",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz/lib64",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libvori-220621-kj7qcxqg5wq7bw7iwzkpthzpmvxb2toh/lib64",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libvori-220621-kj7qcxqg5wq7bw7iwzkpthzpmvxb2toh/share",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/lib",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/share",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg/lib64",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg/share",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/spla-1.6.1-uc273bzgwxxngrexd366xlfvkfmeuvgm/lib",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/spla-1.6.1-uc273bzgwxxngrexd366xlfvkfmeuvgm/share",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/tiled-mm-2.3.2-joxrwvs52itwvriwz6urraxcs3kgwuds/lib",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/tiled-mm-2.3.2-joxrwvs52itwvriwz6urraxcs3kgwuds/share"
+    ],
+    "command_templates": [
+      "/usr/sbin/debugfs -R \"ls -p /upper<absolute-package-directory>\" <image>",
+      "/usr/sbin/debugfs -R \"stat <inode>\" <image>",
+      "/usr/sbin/debugfs -R \"cat <inode>\" <image> (only non-fast symlink target bytes)"
+    ],
+    "dangling_or_omitted": [],
+    "host": "SAI-stardust",
+    "ignored_overlay_metadata": ".wh.* entries are overlay implementation metadata, not mounted payload files",
+    "image": "/home/stardust/sai-hpc-software/runs/39041714911-1-release-4v100-avx512-2026-10-17-67b5da876dd6/work.ext3",
+    "inspected_directories": 70,
+    "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100",
+    "limitation": "Does not execute shared libraries or prove complete final CP2K installation, RPATH, ldd, scientific correctness or performance; no source image writes or Slurm operations",
+    "observed_at": "2026-10-17T17:32:21.377674+00:00",
+    "outside_prefix": [],
+    "package_symlink_counts": {
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/cosma-2.7.0-fosnhjhoc5gegowe347o7foswfomsbqk": 0,
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/costa-2.3.3-bnt2qboj6a4emry3efbgiaecggwjdvne": 0,
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock": 0,
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/hdf5-1.14.6-veh6gg4r2kjguzn47akx3jrp3kumhq6r": 0,
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz": 2,
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libvori-220621-kj7qcxqg5wq7bw7iwzkpthzpmvxb2toh": 0,
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk": 4,
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg": 0,
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/spla-1.6.1-uc273bzgwxxngrexd366xlfvkfmeuvgm": 2,
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/tiled-mm-2.3.2-joxrwvs52itwvriwz6urraxcs3kgwuds": 0
+    },
+    "retained_entries": 804,
+    "runtime_prefixes": [
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/cosma-2.7.0-fosnhjhoc5gegowe347o7foswfomsbqk",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/costa-2.3.3-bnt2qboj6a4emry3efbgiaecggwjdvne",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/hdf5-1.14.6-veh6gg4r2kjguzn47akx3jrp3kumhq6r",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libvori-220621-kj7qcxqg5wq7bw7iwzkpthzpmvxb2toh",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/spla-1.6.1-uc273bzgwxxngrexd366xlfvkfmeuvgm",
+      "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/tiled-mm-2.3.2-joxrwvs52itwvriwz6urraxcs3kgwuds"
+    ],
+    "schema": 1,
+    "scope": "read-only debugfs inventory of actual private runtime package lib/lib64/share trees using cp2k_payload dependency_ignore rules",
+    "symlinks": [
+      {
+        "exists_in_staged_inventory": true,
+        "inode": 34354,
+        "inside_install_prefix": true,
+        "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/spla-1.6.1-uc273bzgwxxngrexd366xlfvkfmeuvgm/lib64/libspla.so.1",
+        "resolved": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/spla-1.6.1-uc273bzgwxxngrexd366xlfvkfmeuvgm/lib64/libspla.so.1.6.1",
+        "target": "libspla.so.1.6.1"
+      },
+      {
+        "exists_in_staged_inventory": true,
+        "inode": 34359,
+        "inside_install_prefix": true,
+        "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/spla-1.6.1-uc273bzgwxxngrexd366xlfvkfmeuvgm/lib64/libspla.so",
+        "resolved": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/spla-1.6.1-uc273bzgwxxngrexd366xlfvkfmeuvgm/lib64/libspla.so.1.6.1",
+        "target": "libspla.so.1"
+      },
+      {
+        "exists_in_staged_inventory": true,
+        "inode": 36280,
+        "inside_install_prefix": true,
+        "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/lib64/libxsmm.so.2",
+        "resolved": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/lib64/libxsmm.so.2.0.0",
+        "target": "libxsmm.so.2.0.0"
+      },
+      {
+        "exists_in_staged_inventory": true,
+        "inode": 36283,
+        "inside_install_prefix": true,
+        "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/lib64/libxsmm.so",
+        "resolved": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/lib64/libxsmm.so.2.0.0",
+        "target": "libxsmm.so.2"
+      },
+      {
+        "exists_in_staged_inventory": true,
+        "inode": 36285,
+        "inside_install_prefix": true,
+        "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/lib64/libxsmmf.so.2",
+        "resolved": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/lib64/libxsmmf.so.2.0.0",
+        "target": "libxsmmf.so.2.0.0"
+      },
+      {
+        "exists_in_staged_inventory": true,
+        "inode": 36288,
+        "inside_install_prefix": true,
+        "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/lib64/libxsmmf.so",
+        "resolved": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/lib64/libxsmmf.so.2.0.0",
+        "target": "libxsmmf.so.2"
+      },
+      {
+        "exists_in_staged_inventory": true,
+        "inode": 103133,
+        "inside_install_prefix": true,
+        "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz/lib/libint2.so.2",
+        "resolved": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz/lib/libint2.so.2.0.3",
+        "target": "libint2.so.2.0.3"
+      },
+      {
+        "exists_in_staged_inventory": true,
+        "inode": 103135,
+        "inside_install_prefix": true,
+        "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz/lib/libint2.so",
+        "resolved": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra280393e353f/4V100/dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz/lib/libint2.so.2.0.3",
+        "target": "libint2.so.2.0.3"
+      }
+    ]
+  }
 }

@@ -15,13 +15,50 @@
       "includes": "all frozen contract files uploaded before fingerprinting"
     },
     "shell_syntax": "passed",
-    "git_diff_check": "passed"
+    "git_diff_check": "passed",
+    "broad_cp2k_suite": {
+      "status": "incomplete",
+      "detail": "Repository-mounted fixture IO was slow; 120-second attempt timed out before completing benchmark evidence tests. The other local attempt was interrupted. No success claimed; complete coverage passed in GitHub CI."
+    }
   },
   "cluster": {
     "job": "1833977",
-    "status": "running",
+    "status": "COMPLETED",
+    "exit": "0:0",
+    "elapsed": "00:15:51",
+    "node": "4v100n04",
     "configure": "passed",
-    "hdf5_fortran_c_stub_in_link": "verified",
+    "compile": "passed",
+    "version": "CP2K 2026.2 source 67b5da876d compiler GCC 14.3.0",
+    "ldd": "no unresolved libraries",
+    "feature_flags": "all required GPU and base flags passed",
+    "old_image_sha256": "ae63bf41b5f4067a62169bc1455801014f518aae97dab88fd6313e58d00c0e5d",
+    "old_image_unchanged": true,
     "formal_sif": "not yet produced"
+  },
+  "controller_sha": "9f17f715263016c4e063580b4e97c1ea2f6df2c9",
+  "github_ci": {
+    "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39053853904",
+    "status": "success",
+    "tests": 729,
+    "passed": 727,
+    "skipped": 2,
+    "seconds": 42.269
+  },
+  "production": {
+    "workflow": "39054631316",
+    "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39054631316",
+    "controller_sha": "9f17f715263016c4e063580b4e97c1ea2f6df2c9",
+    "recipe_sha256": "e139a320651ce69c11cdbd1763ae875f98992de261a465e9e19a24849086bf40",
+    "track": "release",
+    "version": "v2026.2",
+    "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+    "targets": [
+      "16v100-avx2",
+      "4v100-avx512",
+      "8v100v0-avx512",
+      "dsprhbm"
+    ],
+    "status": "dispatched"
   }
 }

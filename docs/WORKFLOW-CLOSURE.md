@@ -104,9 +104,11 @@ the pinned CP2K source and uses release's official 0.6.0 bundle plus both
 gradient fixes. Diagnostic `1833642` compiled all source objects, then failed
 at final executable linking because FindHDF5 omitted the static Fortran C stub.
 The next recipe selects native HDF5 static targets and explicitly discovers
-its external ZLIB provider. Diagnostic `1833977` passed configure/generate with
-the complete HDF5 link chain and is validating the executable on 4V100 before
-a new production dispatch. [HDF5 repair](evidence/cp2k-hdf5-static-20261018/README.md).
+its external ZLIB provider. Diagnostic `1833977` completed `0:0` in 15:51 on 4V100: full compile,
+version, ldd and all required feature flags passed; the old image hash was
+unchanged. Fresh four-target release workflow `39054631316` now uses controller
+`9f17f71` and recipe `e139a320651ce69c11cdbd1763ae875f98992de261a465e9e19a24849086bf40`.
+Final SIF and scientific/performance acceptance are still pending. [HDF5 repair](evidence/cp2k-hdf5-static-20261018/README.md).
 Existing workflow `39047391019` keeps its original frozen recipe and is not
 evidence for these corrections.
 [TBLITE source compatibility](evidence/cp2k-tblite-release-20261018/README.md).

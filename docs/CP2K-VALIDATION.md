@@ -13,8 +13,13 @@ builds release's official complete archive with both upstream gradient fixes.
 Diagnostic `1833642` compiled every source object, then failed at final
 executable linking because static HDF5's Fortran C stub was missing. The repair
 selects native HDF5 static targets and discovers their external ZLIB provider.
-Diagnostic `1833977` passed configure/generate and is validating the complete
-executable before another production dispatch.
+Diagnostic `1833977` completed `0:0` in 15:51 on 4V100. Full compile,
+version, ldd and all required feature flags passed, and the old image hash
+remained unchanged. Fresh four-target release workflow
+[39054631316](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39054631316)
+uses controller `9f17f71` and recipe
+`e139a320651ce69c11cdbd1763ae875f98992de261a465e9e19a24849086bf40`.
+Final SIF and scientific/performance acceptance are still pending.
 [HDF5 repair and failed attempts](evidence/cp2k-hdf5-static-20261018/README.md).
 Workflow `39047391019` retains its frozen old TBLITE recipe; its dependency
 progress alone cannot produce a corrected SIF.

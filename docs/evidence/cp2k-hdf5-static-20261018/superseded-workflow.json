@@ -1,0 +1,163 @@
+{
+  "schema": 1,
+  "purpose": "Final status of superseded CP2K workflow; not application acceptance evidence",
+  "observed_at": "2026-10-17T17:33:56.728929+00:00",
+  "workflow_run_id": "39047391019",
+  "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+  "recipe_sha256": "237c8aaf3d50e04cc5a75257756729ea9385e3a81530af9012d86291dd8cb4f3",
+  "controller_git_sha": "e8c096903b8b79806da47dd280d2de3ccd0c68d9",
+  "application_accepted": false,
+  "superseded_reason": "The frozen recipe builds TBLITE 0.7.0, while CP2K v2026.2 requires TBLITE 0.6.0; compilation job 1833253 demonstrated the incompatible API. All four old applications were cancelled. Dependency completion does not establish application success.",
+  "preservation": {
+    "dependency_jobs": "Completed without cancellation",
+    "dependency_images": "Retained at their original paths",
+    "frozen_controllers_and_run_data": "Retained"
+  },
+  "image_digest_scope": "Overlay digests below come from the dependency seals; this read-only collection checked image existence and seal identity without mounting or rehashing the images.",
+  "three_target_monitor": {
+    "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/tblite-release-fix/old-three-target-followup.json",
+    "sha256": "f0230762bb5f915f4a208b37511ebf05b323cc425acc5804a0492687f0080953",
+    "status": "complete",
+    "started_at": "2026-10-17T16:58:24.002625+00:00",
+    "finished_at": "2026-10-17T17:30:31.582430+00:00",
+    "polls": 65,
+    "validation_error_events": 0
+  },
+  "accounting_command": [
+    "sacct",
+    "-X",
+    "-j",
+    "1833135,1833599,1833131,1834078,1833125,1833940,1833124,1833836",
+    "--format=JobIDRaw,State,ExitCode,Elapsed,NodeList",
+    "--noheader",
+    "--parsable2"
+  ],
+  "targets": {
+    "4v100-avx512": {
+      "partition": "4V100",
+      "run_directory": "/home/stardust/sai-hpc-software/runs/39047391019-1-release-4v100-avx512-2026-10-17-67b5da876dd6",
+      "dependency": {
+        "job_id": "1833135",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed": "00:39:19",
+        "node_list": "4v100n04"
+      },
+      "dependency_seal": {
+        "path": "/home/stardust/sai-hpc-software/runs/39047391019-1-release-4v100-avx512-2026-10-17-67b5da876dd6-dependencies/results/dependency-stage.json",
+        "sha256": "00e118492b7f8bd6570a5a1da34d97899975c3d9405949f1abe3826490f9fc64"
+      },
+      "dependency_image": {
+        "path": "/home/stardust/sai-hpc-software/runs/39047391019-1-release-4v100-avx512-2026-10-17-67b5da876dd6-dependencies/work.ext3",
+        "present": true,
+        "sha256_from_seal": "a32781bc84fdf997b93aa422e6475f43aeab2ed823fb44ca23cd514bb44ef5a7"
+      },
+      "application": {
+        "job_id": "1833599",
+        "state": "CANCELLED by 1478400690",
+        "exit_code": "0:0",
+        "elapsed": "00:03:06",
+        "node_list": "4v100n04",
+        "job_script_sha256": "8ddaa30f13fa914e1341460a96a08d1938e0a438307dac1ca46f90597b6ae6e2",
+        "cancellation_evidence": "Cancelled previously by the main agent; final accounting and request identity independently verified during this collection."
+      },
+      "identity_verified": true
+    },
+    "16v100-avx2": {
+      "partition": "16V100",
+      "run_directory": "/home/stardust/sai-hpc-software/runs/39047391019-1-release-16v100-avx2-2026-10-17-67b5da876dd6",
+      "dependency": {
+        "job_id": "1833131",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed": "01:23:19",
+        "node_list": "16v100n08"
+      },
+      "dependency_seal": {
+        "path": "/home/stardust/sai-hpc-software/runs/39047391019-1-release-16v100-avx2-2026-10-17-67b5da876dd6-dependencies/results/dependency-stage.json",
+        "sha256": "a94941e059850554435f064cf9eb79c583e4d982637eb9eccac6f2fafaf45f3e"
+      },
+      "dependency_image": {
+        "path": "/home/stardust/sai-hpc-software/runs/39047391019-1-release-16v100-avx2-2026-10-17-67b5da876dd6-dependencies/work.ext3",
+        "present": true,
+        "sha256_from_seal": "37fa530fc714949567dc7e3da452eca7f3928ed686f77a9bf03df004deaaaf91"
+      },
+      "application": {
+        "job_id": "1834078",
+        "state": "CANCELLED by 1478400690",
+        "exit_code": "0:0",
+        "elapsed": "00:00:12",
+        "node_list": "16v100n08",
+        "job_script_sha256": "ce2138583570f8ee4c4b7187e0bc7690fb64603088677d548cea95fec6c8d60e",
+        "scancel_at": "2026-10-17T17:30:00.869384+00:00",
+        "scancel_returncode": 0,
+        "cancellation_evidence": "three_target_monitor"
+      },
+      "identity_verified": true
+    },
+    "8v100v0-avx512": {
+      "partition": "8V100V0",
+      "run_directory": "/home/stardust/sai-hpc-software/runs/39047391019-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6",
+      "dependency": {
+        "job_id": "1833125",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed": "01:10:18",
+        "node_list": "8v100v0n05"
+      },
+      "dependency_seal": {
+        "path": "/home/stardust/sai-hpc-software/runs/39047391019-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6-dependencies/results/dependency-stage.json",
+        "sha256": "977b87dc35e1573e43105460fdbb2fe6b0d7811140a3dcc9738aad7fd6a9ee27"
+      },
+      "dependency_image": {
+        "path": "/home/stardust/sai-hpc-software/runs/39047391019-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6-dependencies/work.ext3",
+        "present": true,
+        "sha256_from_seal": "51ef9f148df7c5bf854d66bff4f95fcae8d2213a07c0c4bda21560170c02c013"
+      },
+      "application": {
+        "job_id": "1833940",
+        "state": "CANCELLED by 1478400690",
+        "exit_code": "0:0",
+        "elapsed": "00:00:16",
+        "node_list": "8v100v0n03",
+        "job_script_sha256": "ccaf25fe11dc1358cb226a80d8dd2e3b66f13e2303fe96addccedb8887034b62",
+        "scancel_at": "2026-10-17T17:16:56.816139+00:00",
+        "scancel_returncode": 0,
+        "cancellation_evidence": "three_target_monitor"
+      },
+      "identity_verified": true
+    },
+    "dsprhbm": {
+      "partition": "DSPRHBM",
+      "run_directory": "/home/stardust/sai-hpc-software/runs/39047391019-1-release-dsprhbm-2026-10-17-67b5da876dd6",
+      "dependency": {
+        "job_id": "1833124",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed": "00:58:15",
+        "node_list": "d9470n02"
+      },
+      "dependency_seal": {
+        "path": "/home/stardust/sai-hpc-software/runs/39047391019-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies/results/dependency-stage.json",
+        "sha256": "04a58b5cbda9346e8488425513f8cdae17b9bac25aa4d26ab2e077b2d025310a"
+      },
+      "dependency_image": {
+        "path": "/home/stardust/sai-hpc-software/runs/39047391019-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies/work.ext3",
+        "present": true,
+        "sha256_from_seal": "0bded042e8dbcf01c03741e0cc15c5e5a9ce491747b79bbf9e0dc53e3488e057"
+      },
+      "application": {
+        "job_id": "1833836",
+        "state": "CANCELLED by 1478400690",
+        "exit_code": "0:0",
+        "elapsed": "00:00:05",
+        "node_list": "d9470n02",
+        "job_script_sha256": "59676d6742f2987be179a4ac1da2578d0f0bfc8ed174b83a1a2cf42ec0f9a47f",
+        "scancel_at": "2026-10-17T17:04:25.574886+00:00",
+        "scancel_returncode": 0,
+        "cancellation_evidence": "three_target_monitor"
+      },
+      "identity_verified": true
+    }
+  }
+}

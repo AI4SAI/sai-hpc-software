@@ -27,8 +27,11 @@ feature contract. Its link command now includes
 `libhdf5_fortran.a`, `libhdf5_f90cstub.a` and `libhdf5.a`. It reuses the prior
 CP2K build tree; imported-target definitions cause CMake to recompile affected
 objects. All output is under the project home. The old application image and
-COSMA diagnostic are mounted read-only. Full compile, version, ldd and feature
-flag results are pending; this diagnostic is not a formal SIF delivery.
+COSMA diagnostic are mounted read-only. Full compile, version, ldd and all required feature flags passed. Job `1833977`
+completed `0:0` in 15:51 on `4v100n04`, with the old image hash unchanged.
+The executable reports CP2K 2026.2, source `67b5da876d`, GCC 14.3.0, CUDA,
+cuSOLVERMp/NCCL, SpLA GEMM offload, TBLITE and HDF5.
+[Complete diagnostic proof](complete-build-proof.json). This is not a formal SIF delivery.
 
 Three regression tests use the actual production configuration and hook with
 small static libraries to exercise FindHDF5 and a real shared-library/executable
@@ -44,3 +47,25 @@ on the staged copy with `chmod ... a-s`; the original dependency store remains
 unchanged. A real filesystem regression verifies rejection before normalization,
 successful manifest write/read afterward, and retention of the original mode.
 [Read-only image evidence](payload-mode-evidence.json).
+
+Commit `9f17f715263016c4e063580b4e97c1ea2f6df2c9` is synchronized to GitHub
+and SAI's home development checkout. [CI 39053853904](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39053853904)
+ran 729 tests: 727 passed, two optional skips. Local focused tests passed;
+the broad local suite was interrupted/timed out on slow repository-mounted
+fixture IO and is not claimed as a completed pass. [Validation](validation.json).
+
+A ten-second SSH/cgroup sample during diagnostic compilation measured
+7.13 logical CPUs out of eight allocated (89.18%), with no cgroup CPU quota
+or throttling. This is a stage sample, not whole-build or application runtime
+performance. [Accounting evidence](cpu-sample.json).
+
+The superseded workflow `39047391019` completed all four dependency jobs.
+Its four old application jobs were cancelled only after checking their exact
+Slurm handles and incompatible frozen recipes; sealed dependencies remain
+preserved. [Final accounting and seals](superseded-workflow.json).
+
+Fresh production workflow [39054631316](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39054631316)
+was dispatched after the complete diagnostic passed. It selects release
+v2026.2 on 16V100, 4V100, 8V100V0 and DSPRHBM, controller `9f17f71`, recipe
+`e139a320651ce69c11cdbd1763ae875f98992de261a465e9e19a24849086bf40`.
+Its final SIF checks and science/performance acceptance are still pending.
