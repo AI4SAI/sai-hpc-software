@@ -96,11 +96,13 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 
 Current CP2K priority: official `v2026.2` release across all four partitions,
 workflow [39018993951](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39018993951).
-At 17:06 Asia/Shanghai on October 17, new 16V100 dependency job `1828943`
-was RUNNING on `16v100n37` (start 16:59:26), with its disk reservation and all
-three GCC 14.3.0 compiler observations. DSPRHBM was also RUNNING with those
-checks; 8V100V0 had allocated twelve CPUs/two GPUs but was waiting for disk
-reservation; 4V100 was PENDING for scheduler priority. The initial Actions
+At 17:51 Asia/Shanghai on October 17, new 16V100 dependency job `1828943`
+was RUNNING for 51:44 on `16v100n37` (start 16:59:26), with its disk reservation
+and all three GCC 14.3.0 compiler observations. DSPRHBM `1828946` was also
+RUNNING for 51:19 with those checks. Both were compiling dependencies, not
+the CP2K application. 8V100V0 `1828945` failed `1:0` at 17:29:59 after waiting
+30 minutes for disk reservation; compilation never started. 4V100 `1828944`
+was allocated at 17:45:59 but was also waiting for disk reservation. The initial Actions
 staging delay was per-file SSH overhead, not a Slurm resource wait. Subsequent
 controller uploads are batched into one connection.
 
@@ -111,7 +113,8 @@ CMake default also selected GCC 13 `f95/cc` despite the loaded GCC 14 module.
 The new recipe checks parallel HDF5 before extra compilation and explicitly
 pins C/C++/Fortran and MPI wrapper compilers. Short native probes `1828866`
 and `1828868` passed HDF5 checks and real GCC 14 CMake compilation/execution
-on 16V100 and DSPRHBM. 4V100's corresponding probe remains pending.
+on 16V100 and DSPRHBM. 4V100 probe `1828867` failed before compiler execution
+because Apptainer's `fuse2fs` overlay mount timed out.
 The corrected suite ran 702 tests on SAI: 700 passed, two optional MD source
 cache checks skipped. The upload change additionally passed 32 lifecycle and
 recovery tests. Old overlays/controllers remain preserved under their original
@@ -122,7 +125,12 @@ The subsequent batch-upload revision also passed GitHub's 703-test suite
 The historical development SIF
 was rechecked on 16V100 by `1814450`: checksum, version and `ldd` passed;
 scientific acceptance/publication remain unproven. Space recovered to about
-109 GiB at release submission; later stages still recheck actual free capacity.
+109 GiB at release submission and was about 72 GiB at this audit. Live budgets
+include the two compiling dependency overlays and old development job `1828523`;
+after their remaining growth, 4V100 was roughly 50 MiB short of its 16 GiB
+overlay plus the 4 GiB safety reserve. Check active budgets before retrying
+8V100V0. Its failed dependency stage skipped application/acceptance; there is
+still no successful release application SIF. Later stages recheck capacity.
 [Historical loader/source evidence](evidence/cp2k-release-priority-20261016.json).
 [Historical parallel-build evidence](evidence/cp2k-gcc14-parallel-20261017.json).
 [Current retry and diagnostic evidence](evidence/cp2k-cmake-hdf5-retry-20261017.json).
@@ -130,7 +138,7 @@ scientific acceptance/publication remain unproven. Space recovered to about
 | Software | DSPRHBM | 16V100 | 4V100 | 8V100V0 |
 |---|---|---|---|---|
 | ABACUS | Pending | Pending | Pending | Pending |
-| CP2K | GCC 14 dependencies: 1828946 RUNNING | GCC 14 dependencies: 1828943 RUNNING | Dependencies: 1828944 PENDING | 1828945 allocated; waiting for disk |
+| CP2K | GCC 14 dependencies: 1828946 RUNNING | GCC 14 dependencies: 1828943 RUNNING | 1828944 allocated; waiting for disk, no compilation | 1828945 FAILED; disk timeout, no compilation |
 | DeePMD-kit | Not a GPU target | Pending | Pending | Pending |
 | LAMMPS | Not a GPU target | Pending | Pending | Pending |
 | GPUMD | Not a GPU target | Published; native module execution pending | Capacity blocked | Pending |

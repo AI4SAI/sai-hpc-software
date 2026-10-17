@@ -6,15 +6,25 @@ This is an implementation checklist, not a release acceptance result. The
 ## Release-first execution (2026-10-16)
 
 Current workflow: [39018993951](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39018993951),
-controller `a65c62db0999e7f01138a09d647597dbc3702a1f`. At 17:06 Asia/Shanghai
+controller `a65c62db0999e7f01138a09d647597dbc3702a1f`. At 17:51 Asia/Shanghai
 on October 17, actual dependency submissions were:
 
 | Partition | Slurm job | State / actual stage |
 |---|---|---|
 | 16V100 | 1828943 | RUNNING; reserved disk, GCC/G++/GFortran 14.3.0, installing dependencies |
-| 4V100 | 1828944 | PENDING; scheduler priority |
-| 8V100V0 | 1828945 | RUNNING allocation; waiting for disk reservation before compilation |
-| DSPRHBM | 1828946 | RUNNING; reserved disk, GCC/G++/GFortran 14.3.0 |
+| 4V100 | 1828944 | RUNNING allocation since 17:45:59; waiting for disk reservation, compilation not started |
+| 8V100V0 | 1828945 | FAILED 1:0 at 17:29:59; 30-minute disk reservation timeout, compilation never started |
+| DSPRHBM | 1828946 | RUNNING; reserved disk, GCC/G++/GFortran 14.3.0, installing dependencies |
+
+16V100 had run for 51:44 and DSPRHBM for 51:19. Both were building Libint
+and configuring HDF5; neither had started the CP2K application. About 72 GiB
+was physically free, but live reservations also cover remaining growth of
+those two dependency overlays and older development job `1828523` on 16V100.
+After those budgets, 4V100 was roughly 50 MiB short of its 16 GiB overlay plus
+the unchanged 4 GiB safety reserve. Its allocation has not begun compiling.
+The failed 8V100V0 stage has no dependency seal; its application/acceptance
+jobs were skipped. Retry it only after checking available capacity against
+all active budgets. Running jobs, old checkpoints and reserves are preserved.
 
 16V100 started at 16:59:26 on `16v100n37`. Before submission, GitHub spent
 several minutes opening a new SSH connection per controller file; triggering
@@ -40,11 +50,15 @@ accepts `ON` or `yes`, rejects disabled/ambiguous settings, and runs before
 TBLITE compilation. Read-only dependency-overlay probes `1828866` (16V100)
 and `1828868` (DSPRHBM) passed `0:0`: HDF5 checks, real CMake compiler metadata,
 three compiled test executables, and `mpifort --version` all passed with 14.3.0.
-4V100 probe `1828867` is still pending. Earlier failed probes are retained.
+4V100 probe `1828867` failed `255:0` after one minute: Apptainer's `fuse2fs`
+overlay mount exceeded its 10-second limit. Its compiler probe did not run;
+this is not a compiler or HDF5 validation result. Earlier failed probes are retained.
 
 8V100V0 dependency `1819531` timed out at four hours while building Libint.
-The retry requests two GPUs, which actually allocated twelve CPUs (`1828945`),
-instead of the previous six. Application/scientific resources are unchanged.
+The retry requested two GPUs and actually allocated twelve CPUs (`1828945`),
+instead of the previous six, but the capacity timeout prevented any compiler
+work, so the twelve-CPU Libint build remains untested. Application/scientific
+resources are unchanged.
 The older GCC 13 job `1817573` also timed out; its checkpoint is preserved.
 Changed recipes get fresh identities and prefixes; no old overlay is relabelled.
 
