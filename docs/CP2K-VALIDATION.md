@@ -3,7 +3,28 @@
 This records implementation and live build progress, not release acceptance.
 No four-target CP2K 2026.2 release has passed all acceptance gates yet.
 
-## Fresh four-target release workflow
+## Current private-ELPA release build
+
+Fresh workflow [39094062144](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39094062144)
+uses code commit `84027c9`, source v2026.2 / `67b5da876dd6` and recipe
+`4d454c7403097d4a5cae4c37452ef15aff32d753f0e9076533433dc939535782`.
+This is the recipe that includes private ELPA and the upstream source fixes;
+the older four SIFs below retain their previous recipe.
+At the submission audit (2026-10-18T03:42:17.150246+00:00):
+
+| Partition | Dependency job | Actual state | New application SIF |
+|---|---|---|---|
+| 4V100 | 1839366 | RUNNING on 4v100n10 | not yet produced |
+| 16V100 | 1839368 | RUNNING on 16v100n72 | not yet produced |
+| 8V100V0 | 1839369 | RUNNING on 8v100v0n13 | not yet produced |
+| DSPRHBM | 1839362 | RUNNING on d9470n02 | not yet produced |
+
+All four dependencies were submitted to their native partitions. The new
+application builds and formal science/export/publication gates are pending.
+The build uses the canonical `/opt/apps/cp2k/<build>/<partition>` identity and
+home-backed build storage. [Frozen requests, scripts and accounting](evidence/cp2k-install-layout-20261018/native-elpa-formal-start.json).
+
+## Original four-target release artifacts
 
 Fresh workflow [39078998459](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39078998459)
 uses production commit `c3b65b9`, recipe
