@@ -1,6 +1,19 @@
 # CP2K installation and ELPA closure evidence
 
-Current state: all four original-recipe targets have built SIFs; none is yet a
+Current state: the private-ELPA release has accepted/published deliveries on
+4V100, 16V100 and 8V100V0; DSPRHBM's recovery dependencies completed and its
+application phase is in progress.
+[Third accepted partition and independent validation](native-elpa-third-publication.json).
+The exported 16V100 native tree also passed version/loader and three PBE cases
+at its canonical prefix with the legacy HCOLL alias absent, using a private
+mount namespace and host runtime libraries. Physical `/opt` installation is
+not claimed. [Native runtime proof](hcoll-native-alias-free.json),
+[reproducer](hcoll-native-alias-free.py),
+[two-node native proof](hcoll-native-multinode-alias-free.json),
+[two-node diagnostic derivation](prepare-hcoll-native-multinode.py),
+[real ELPA diagnostic-copy normalization](real-elpa-normalization.json).
+
+All four original-recipe targets had built SIFs; none became a
 published four-partition release. 8V100V0 `1838191` and DSPRHBM retry `1838412`
 completed successfully after the earlier snapshots below.
 [8V100V0 complete artifact](third-artifact-8v100v0.json),

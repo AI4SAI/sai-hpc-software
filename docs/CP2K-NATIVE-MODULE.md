@@ -45,6 +45,47 @@ deliveries use their own `dependencies/elpa`; do not copy the reference ABACUS
 module's shared `elpa/2026.02.001-2603-gnu` dependency into the new CP2K module.
 GPU runtime entries also retain the tested CUDA compatibility library priority.
 
+HCOLL is a runtime dependency of the site's OpenMPI. The physical shared
+installation is:
+
+```text
+/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib
+```
+
+The generated native module already records that directory and the adjacent
+`sharp/lib` explicitly. Native installation therefore does not require creating
+`/opt/mellanox/hcoll`. The site's MPI `.la` files refer to that legacy absolute
+path during linking, and `libmpi.so.40` also retains it as a RUNPATH fallback.
+Its actual HCOLL dependency is the SONAME `libhcoll.so.1`, so the recorded real
+library directory takes precedence over that RUNPATH at runtime.
+
+The build alias is now restricted to compilation. Export, final SIF checks and
+the runtime launcher do not mount it. Newly built private ELPA libraries have
+the inherited alias removed with `chrpath` before hashes and manifests are
+written; all other loader paths are preserved. Runtime checks reject that alias
+in packaged ELF paths and native environment entries and require the real
+HCOLL/SHARP directories and actual HPCX HCOLL linkage. `chrpath` is a build tool,
+not a native runtime dependency.
+
+Existing accepted artifacts and their frozen controllers remain unchanged.
+Their private ELPA also contains the legacy RUNPATH fallback. Job `1841692`
+executed the actual 16V100 native export at its exact prefix in a private mount
+namespace, using host system libraries and the generated native module, with
+the legacy HCOLL directory empty. Version/loader checks and PBE OT, ordinary
+diagonalization and forced ELPA all passed. Loader traces show HCOLL and OCOMS
+loaded from the real HPCX directory; installed CP2K data were used, and energy
+and forces matched the accepted SIF. No application SIF was executed and no
+physical `/opt` directory was changed. This establishes the tested native
+runtime path without claiming administrator installation or full native
+multi-partition acceptance. Follow-up job `1841817` completed `0:0` in 1:24
+on `16v100n49,50`: all three cases also passed on two MPI nodes. Each rank
+independently checked alias absence and recorded actual HPCX HCOLL loading;
+energies differed from the accepted two-node SIF by at most `1.43e-14 Ha`,
+with identical printed forces.
+[Native execution evidence](evidence/cp2k-install-layout-20261018/hcoll-native-alias-free.json),
+[two-node native execution](evidence/cp2k-install-layout-20261018/hcoll-native-multinode-alias-free.json),
+[normalization of a diagnostic copy of the real ELPA](evidence/cp2k-install-layout-20261018/real-elpa-normalization.json).
+
 The workflow already packages a complete partition selector at:
 
 ```text

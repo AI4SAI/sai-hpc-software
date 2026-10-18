@@ -15,6 +15,7 @@ upstream_sha=$(sed -nE 's/^elpa_sha256="([0-9a-f]{64})"$/\1/p' "$toolchain")
 }
 [[ "$prefix" == "${INSTALL_PREFIX:?}/dependencies/elpa" && "$prefix" == /opt/apps/cp2k/* ]]
 [[ "$work" == /workspace/* && "$jobs" =~ ^[1-9][0-9]*$ ]]
+command -v chrpath >/dev/null
 case "$target" in
   dsprhbm) gpu=no ;;
   4v100-avx512|16v100-avx2|8v100v0-avx512) gpu=yes ;;
@@ -93,6 +94,10 @@ printf '\n' >> "$prefix/share/sai/configure-command.txt"
   LIBS='-lscalapack -lopenblas' > configure.log 2>&1 || { tail -80 configure.log; exit 1; }
 make -j "$jobs" > make.log 2>&1 || { tail -80 make.log; exit 1; }
 make install > install.log 2>&1 || { tail -80 install.log; exit 1; }
+# libtool copies the site's historical MPI HCOLL alias into ELPA's RUNPATH.
+# Keep that alias at link time only. Runtime/module entries record the real
+# shared HPCX paths, which are identical inside and outside the container.
+python3 /control/cp2k_elpa_runtime.py "$prefix/lib/libelpa_openmp.so" "$prefix/share/sai/hcoll-runtime.json"
 cp config.log config.h "$prefix/share/sai/"
 printf '%s\n' "$version" > "$prefix/share/sai/version"
 printf '%s\n' "$target" > "$prefix/share/sai/target"

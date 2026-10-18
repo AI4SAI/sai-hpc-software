@@ -9,7 +9,7 @@ from pathlib import Path
 import shlex
 import subprocess
 import time
-from remote_controller import TARGETS, safe_name, safe_sha, container_command, site_app_binds, cp2k_mpi_binds
+from remote_controller import TARGETS, safe_name, safe_sha, container_command, site_app_binds, cp2k_mpi_build_binds
 from source_cache import checksum
 from module_publication import publish_module, validate_module
 from release_contract import make_identity, TRACKS
@@ -29,7 +29,7 @@ def contract_files(software):
                          "abacus_dependency_lock.json", "abacus_features.py", "abacus_benchmark.py",
                          "native_module.py", "export_native.py"]
     if software == "cp2k":
-        return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_elpa.sh", "cp2k_feature_contract.py",
+        return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_elpa.sh", "cp2k_elpa_runtime.py", "cp2k_feature_contract.py",
                          "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_cmake_prerequisites.cmake", "cp2k_benchmark.py", "cp2k_acceptance.py", "cp2k_source_fixes.py",
                          "cp2k_spack.py", "cp2k_spack_environment.py", "cp2k_spack_native.py",
                          "cp2k_spack_seed.py", "cp2k_spack_probe.sh", "cp2k_spack_dependencies.sh",
@@ -328,7 +328,6 @@ def render_job(args):
                    ("/etc/os-release", "/etc/os-release"),
                    ("/etc/alternatives", "/etc/alternatives"),
                    ("/usr/bin", "/bin"),
-                   *cp2k_mpi_binds(),
                    (ROOT / "cache/cp2k-dependencies", "/input/dependencies"),
                    (ROOT / "cache/cp2k-probe", "/input/probe")) if args.software == "cp2k" else ()
     if args.software == "abacus":
@@ -343,8 +342,8 @@ def render_job(args):
             cmd = ["/usr/bin/env", f"SAI_BUILD_PARTITION={target['partition']}", *cmd]
         # Final artifacts must not rely on source/dependency staging trees.
         binds = site_app_binds("gpumd") if final and args.software == "gpumd" else () if final else extra_binds
-        if final and args.software == "cp2k":
-            binds = cp2k_mpi_binds()
+        if args.software == "cp2k" and phase == "build" and not final:
+            binds = (*binds, *cp2k_mpi_build_binds())
         command = container_command(sif if final else image, cmd, overlay=None if final else overlay,
                                  control=CONTROL, repository=None if final else repo,
                                  jobs=args.jobs, gpu=bool(target["gpus"]), extra_binds=runtime_binds() if final and args.software == "abacus" else binds,

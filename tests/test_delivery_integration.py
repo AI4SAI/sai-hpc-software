@@ -157,7 +157,7 @@ class DeliveryIntegrationTests(unittest.TestCase):
             self.assertIn(bind, build)
         self.assertNotIn('/opt/apps/cp2k/cp2k-2026.1', build)
 
-    def test_cp2k_cpu_and_gpu_builds_use_shared_hcoll_for_every_container_phase(self):
+    def test_cp2k_hcoll_alias_is_available_only_while_building(self):
         for target in ('dsprhbm', '4v100-avx512', '16v100-avx2', '8v100v0-avx512'):
             args = argparse.Namespace(run_id='cp2k-hcoll', software='cp2k', sha='a' * 40,
                                       version='2026.2', target=target, jobs=8, minutes=240,
@@ -167,10 +167,13 @@ class DeliveryIntegrationTests(unittest.TestCase):
                 with self.subTest(target=target, phase=phase):
                     line = next(line for line in script.splitlines()
                                 if 'cp2k_container_entry.sh ' + phase in line)
-                    self.assertIn(HPCX_ROOT + '/hcoll:/opt/mellanox/hcoll:ro', line)
+                    if phase == 'build':
+                        self.assertIn(HPCX_ROOT + '/hcoll:/opt/mellanox/hcoll:ro', line)
+                    else:
+                        self.assertNotIn('/opt/mellanox', line)
                     self.assertNotIn('--bind /opt/mellanox/hcoll:', line)
 
-    def test_actual_cp2k_launcher_uses_shared_hcoll_without_old_cp2k_bindings(self):
+    def test_actual_cp2k_launcher_never_mounts_build_only_hcoll_alias(self):
         commands = self.root / 'commands'
         commands.mkdir()
         apptainer = commands / 'apptainer'
@@ -195,8 +198,8 @@ class DeliveryIntegrationTests(unittest.TestCase):
             argv = json.loads(captured.read_text())
             binds = [argv[i + 1] for i, word in enumerate(argv) if word == '--bind']
             with self.subTest(target=target):
-                self.assertIn(HPCX_ROOT + '/hcoll:/opt/mellanox/hcoll:ro', binds)
-                self.assertNotIn('/opt/mellanox/hcoll:/opt/mellanox/hcoll:ro', binds)
+                self.assertFalse(any('/opt/mellanox' in bind for bind in binds))
+                self.assertIn('/opt/devtools:/opt/devtools:ro', binds)
                 self.assertFalse(any('cp2k-2026.1' in bind or bind == '::ro' for bind in binds))
                 self.assertEqual('--nv' in argv, target != 'dsprhbm')
 

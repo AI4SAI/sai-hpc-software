@@ -15,12 +15,25 @@ import cp2k_feature_contract as contract
 import software_controller as software
 from export_native import MANIFEST_PATH, inventory, read_installed_manifests, write_manifests
 from release_contract import make_identity
+from remote_controller import HPCX_ROOT, HCOLL_BUILD_PREFIX
 
 
 class CP2KContractTests(unittest.TestCase):
+    def test_installed_verifier_runs_without_controller_imports(self):
+        self.assertEqual(contract.HPCX_ROOT, HPCX_ROOT)
+        self.assertEqual(contract.HCOLL_BUILD_PREFIX, HCOLL_BUILD_PREFIX)
+        with tempfile.TemporaryDirectory() as temporary:
+            installed = Path(temporary) / "cp2k_feature_contract.py"
+            shutil.copyfile(contract.__file__, installed)
+            process = subprocess.run([sys.executable, "-I", str(installed), "--help"],
+                                     cwd=temporary, text=True, capture_output=True)
+            self.assertEqual(process.returncode, 0, process.stderr)
+            self.assertIn("verify", process.stdout)
+
     def test_runtime_roots_exclude_other_cp2k_installation(self):
         roots = contract.runtime_roots("16v100-avx2")
         self.assertFalse(any(root.startswith("/opt/apps/cp2k/") for root in roots))
+        self.assertFalse(any(root.startswith("/opt/mellanox") for root in roots))
 
     def flags(self, gpu=True):
         flags = contract.BASE_FLAGS | {"libxs", "libxsmm"}
@@ -158,6 +171,8 @@ class CP2KContractTests(unittest.TestCase):
         prefix = "/opt/apps/cp2k/test/4V100"
         links = "\n".join((
             "libelpa_openmp.so => " + prefix + "/dependencies/elpa/lib/libelpa_openmp.so.19",
+            "libhcoll.so.1 => " + HPCX_ROOT + "/hcoll/lib/libhcoll.so.1",
+            "libocoms.so.0 => " + HPCX_ROOT + "/hcoll/lib/libocoms.so.0",
             "libcusolverMp.so.0 => /opt/devtools/nvidia/mp_libs/lib/libcusolverMp.so.0",
             "libnccl.so.2 => /opt/devtools/nvidia/nccl_2.29.3_cuda12.9/lib/libnccl.so.2",
             "libcuda.so.1 => /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/compat/libcuda.so.1"))
@@ -173,7 +188,10 @@ class CP2KContractTests(unittest.TestCase):
                 "/.singularity.d/libs/libcuda.so.1")
             with self.subTest(target=target), self.assertRaisesRegex(ValueError, "libcuda"):
                 contract.check_linkage(old_driver, target, prefix)
-        contract.check_linkage(links.splitlines()[0], "dsprhbm", prefix)
+        contract.check_linkage("\n".join(links.splitlines()[:3]), "dsprhbm", prefix)
+        for replacement in ("/opt/mellanox/hcoll", "/opt/devtools/another-hpcx/hcoll"):
+            with self.subTest(replacement=replacement), self.assertRaisesRegex(ValueError, "shared HPCX"):
+                contract.check_linkage(links.replace(HPCX_ROOT + "/hcoll", replacement), "4v100-avx512", prefix)
         for extra in ("libfoo => not found", "libfoo => /workspace/lib/libfoo.so"):
             with self.assertRaises(ValueError):
                 contract.check_linkage(links + "\n" + extra, "4v100-avx512", prefix)
@@ -198,6 +216,8 @@ class CP2KContractTests(unittest.TestCase):
                                ("RUNPATH", "/opt/software/cp2k-dependencies/tblite/lib"),
                                ("RUNPATH", "/home/stardust/controller/lib"),
                                ("RUNPATH", "/opt/apps/unrelated/lib"),
+                               ("RUNPATH", "/opt/mellanox/hcoll/lib"),
+                               ("RUNPATH", "/opt/mellanox/./hcoll/lib"),
                                ("RUNPATH", "$ORIGIN/../../../../../../outside"),
                                ("RUNPATH", "$ORIGIN:")):
                 with self.subTest(tag=tag, value=value), self.assertRaises(ValueError):
@@ -235,6 +255,7 @@ class CP2KNativeDeliveryTests(unittest.TestCase):
         prefix = identity["install_prefix"]
         return {"PATH": prefix + "/bin:/usr/bin:/bin",
                 "LD_LIBRARY_PATH": prefix + "/lib64:" + prefix + "/dependencies/tblite/lib:"
+                                   + HPCX_ROOT + "/hcoll/lib:" + HPCX_ROOT + "/sharp/lib:"
                                    "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia/lib:"
                                    "/opt/devtools/openmpi/5.0.10/lib:/.singularity.d/libs",
                 "LOADEDMODULES": "cmake/3.31.6:openmpi/5.0.10:elpa/2026.02.001-2603-gnu:apptainer/1.4.4",
@@ -262,6 +283,9 @@ class CP2KNativeDeliveryTests(unittest.TestCase):
                             ("MODULEPATH", "/workspace/modules"),
                             ("PATH", "/workspace/bin:/usr/bin"),
                             ("LD_LIBRARY_PATH", "/workspace/lib"),
+                            ("LD_LIBRARY_PATH", environment["LD_LIBRARY_PATH"] + ":/opt/mellanox/hcoll/lib"),
+                            ("LD_LIBRARY_PATH", environment["LD_LIBRARY_PATH"].replace(HPCX_ROOT + "/hcoll/lib:", "")),
+                            ("LD_LIBRARY_PATH", environment["LD_LIBRARY_PATH"].replace(HPCX_ROOT + "/sharp/lib:", "")),
                             ("LD_LIBRARY_PATH", "/opt/software/cp2k/old/lib"),
                             ("LD_LIBRARY_PATH", "/opt/apps/unrelated/lib")):
             with self.subTest(name=name, value=value), self.assertRaises(ValueError):

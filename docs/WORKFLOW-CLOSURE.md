@@ -1,7 +1,7 @@
 # Workflow closure — 2026-10-18
 
 The code now connects build, scientific/performance acceptance, native export
-readback and publication. CP2K 2026.2 on 4V100 and 16V100 has passed candidate
+readback and publication. CP2K 2026.2 on 4V100, 16V100 and 8V100V0 has passed candidate
 science, native export readback and publication. GPUMD on 16V100 has passed science, performance and
 publication; its additional exported-native module execution check remains
 pending. Production acceptance is incomplete across the full site matrix. Original dirty
@@ -128,14 +128,18 @@ energy/force differences across node counts were `4.77e-12 Ha` and
 produced a 188,928,000-byte SIF with successful final version/loader/feature
 checks and an independently matched SHA256. About 56 minutes went into clone
 preparation and 27 minutes into application setup/build/packaging/checks.
-Science job `1841482` is RUNNING on two 8V100V0 nodes; acceptance, export and
-publication remain pending. The clone receipt confirms the sealed source is
-unchanged.
+Science job `1841482` completed `0:0` in 15:24 on two 8V100V0 nodes. All
+fourteen calculations passed; maximum energy/force differences across node
+counts were `2.14e-11 Ha` and `1.30e-11 Ha/Bohr`. Native export readback verified
+1,126 files and the delivery was published. Independent full frozen-controller
+publication validation passed. The clone receipt confirms the sealed source
+is unchanged.
 DSPRHBM application `1839750` failed mounting missing `/opt/mellanox/hcoll`.
 The new fix maps the shared HPCX copy to MPI's expected absolute path, and
 CPU MPI/libtool preflight `1841002` passed `0:0`. Fresh CPU workflow
 `39101032802`, frozen at `33e80c8`, uses new recipe `fb4adb0598fc`.
-Its dependency job `1841174` is RUNNING on `d9470n02`; application/science
+Its dependency job `1841174` completed `0:0` in 1:08:26 on `d9470n02` at
+14:53:38. The GitHub application phase started at 14:56:24; application/science
 remain pending. Existing successful GPU identities and frozen controllers
 remain unchanged.
 The CPU dependencies had already succeeded. Repeating them followed from the
@@ -154,6 +158,26 @@ GCC 14.3.0 Libint workers were observed at 14:19.
 [clone receipt and CPU/GPU progress](evidence/cp2k-install-layout-20261018/native-elpa-remaining-progress.json),
 [14:06 compile progress](evidence/cp2k-install-layout-20261018/native-elpa-progress-1406.json).
 [8V100V0 SIF, timings, science submission and CPU failure explanation](evidence/cp2k-install-layout-20261018/native-elpa-8v100v0-artifact.json).
+[8V100V0 accepted publication and independent validation](evidence/cp2k-install-layout-20261018/native-elpa-third-publication.json).
+
+The legacy HCOLL alias is now a compilation-only compatibility bind. Site MPI
+needs HCOLL at runtime, and generated native modules already record its real
+shared HPCX path. Existing accepted private ELPA libraries contain an inherited
+legacy RUNPATH fallback. Native-export job `1841692` ran the actual 16V100
+export at the canonical prefix with the alias absent: version, loader, PBE OT,
+ordinary diagonalization and forced ELPA all passed. Actual loader traces
+confirmed the real HPCX HCOLL/OCOMS paths, with energy/force agreement against
+the accepted SIF. Follow-up `1841817` passed the same three cases on two native
+MPI nodes, with alias absence and actual library paths checked independently
+on each rank. No application SIF was executed or physical `/opt` changed.
+New builds remove the private-ELPA fallback before hashes/manifests are written;
+export, final SIF checks and launch omit the alias, and runtime policy rejects
+it in ELF paths and native entries. Existing controllers/artifacts and the CPU
+job are preserved. Physical installation acceptance remains separate.
+[Native execution](evidence/cp2k-install-layout-20261018/hcoll-native-alias-free.json),
+[two-node native execution](evidence/cp2k-install-layout-20261018/hcoll-native-multinode-alias-free.json),
+[real ELPA copy normalization](evidence/cp2k-install-layout-20261018/real-elpa-normalization.json),
+[native deployment and shared dependencies](CP2K-NATIVE-MODULE.md).
 
 The original workflow is not fully successful. Its GPU result jobs also failed
 at startup because reusable workflows incorrectly required caller-scope SSH
@@ -170,8 +194,8 @@ Original frozen runs retain their failed states and accepted
 artifact proofs remain independently valid.
 [GitHub annotations and secret-scope diagnosis](evidence/cp2k-install-layout-20261018/github-environment-secret-result.json).
 
-Accepted deliveries are available on 4V100 and 16V100; 8V100V0 and DSPRHBM
-continue toward the full matrix.
+Accepted deliveries are available on 4V100, 16V100 and 8V100V0; DSPRHBM
+continues toward the full matrix.
 The system ELPA library's generic allocation code was independently shown to
 execute AVX512 on an AVX2-only node, despite advertising both kernel sets.
 The new recipe therefore builds CP2K's own pinned ELPA 2026.02.002 under

@@ -1,7 +1,7 @@
 # CP2K validation status
 
 This records implementation, live builds and partition-scoped acceptance.
-4V100 and 16V100 have passed science, native export readback and publication.
+4V100, 16V100 and 8V100V0 have passed science, native export readback and publication.
 No four-target CP2K 2026.2 release has passed all acceptance gates yet.
 
 ## Current private-ELPA release build
@@ -11,13 +11,13 @@ uses code commit `84027c9`, source v2026.2 / `67b5da876dd6` and recipe
 `4d454c7403097d4a5cae4c37452ef15aff32d753f0e9076533433dc939535782`.
 This is the recipe that includes private ELPA and the upstream source fixes;
 the older four SIFs below retain their previous recipe.
-At the publication/recovery audit (2026-10-18 14:21 Asia/Shanghai):
+At the latest publication/recovery audit (2026-10-18):
 
 | Partition | Dependency job / state | Application job / actual stage | New application SIF |
 |---|---|---|---|
 | 4V100 | 1839366: COMPLETED `0:0`, 36:56, sealed | 1839644: COMPLETED `0:0`, 38:30 | 189,743,104 bytes, accepted and published |
 | 16V100 | 1839368: COMPLETED `0:0`, 1:09:17, sealed | 1839900: COMPLETED `0:0`, 24:52 | 188,497,920 bytes, accepted and published |
-| 8V100V0 | 1839369: COMPLETED `0:0`, 1:10:43, sealed | 1839913: COMPLETED `0:0`, 1:22:48 | 188,928,000 bytes; science job 1841482 RUNNING |
+| 8V100V0 | 1839369: COMPLETED `0:0`, 1:10:43, sealed | 1839913: COMPLETED `0:0`, 1:22:48 | 188,928,000 bytes, accepted and published |
 | DSPRHBM | 1839362: COMPLETED `0:0`, 52:17, sealed | 1839750: FAILED `255:0`, 21:21, missing host HCOLL bind source | not produced |
 
 4V100 science job `1840021` completed `0:0` in 7:59 on `4v100n18,20`. All seven
@@ -60,8 +60,9 @@ recorded and do not count as library tests. Fresh CPU workflow
 [39101032802](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39101032802)
 uses frozen controller `33e80c8`, new recipe `fb4adb0598fc` and canonical
 prefix `/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM`.
-Its dependency job `1841174` is RUNNING on `d9470n02`; it is not an application
-or acceptance success. Successful GPU artifacts retain their original identities.
+Its dependency job `1841174` completed `0:0` in 1:08:26 on `d9470n02` at
+14:53:38. The GitHub application phase started at 14:56:24; application and
+acceptance remain pending. Successful GPU artifacts retain their original identities.
 [CPU alias preflight and retained attempts](evidence/cp2k-install-layout-20261018/hcoll-cpu-preflight.json).
 [Fresh CPU identity, actual submission and accounting](evidence/cp2k-install-layout-20261018/hcoll-cpu-recovery-start.json).
 
@@ -84,9 +85,37 @@ Of its 1:22:48 allocation, roughly 56 minutes preceded the prepared clone
 receipt at 13:49:50; the remaining roughly 27 minutes covered application
 setup, build, packaging and verification. Its receipt confirms both filesystem
 checks, an empty overlay work directory and an unchanged sealed source.
-Science job `1841482` started at 14:20:05 on `8v100v0n02,04` and is RUNNING;
-science/export/publication are still pending.
+Science job `1841482` completed `0:0` in 15:24 at 14:35:29 on
+`8v100v0n02,04`. All fourteen calculations passed, including forced ELPA and
+larger PBE water cases. Maximum single/two-node energy and force differences
+were `2.14e-11 Ha` and `1.30e-11 Ha/Bohr`. The workflow read back 1,126 native
+files and published the delivery. A separate full publication validation with
+its original frozen controller passed.
 [New SIF, exact phase timings, science handoff and original CPU mount failure](evidence/cp2k-install-layout-20261018/native-elpa-8v100v0-artifact.json).
+[Third accepted delivery and independent publication validation](evidence/cp2k-install-layout-20261018/native-elpa-third-publication.json).
+
+HCOLL runtime audit: the accepted 4V100 and 16V100 private ELPA libraries retain
+`/opt/mellanox/hcoll/lib` in RUNPATH, inherited from site MPI's libtool metadata.
+The native modules already record the real shared HPCX HCOLL/SHARP paths.
+Native-export diagnostic `1841692` completed `0:0` in 1:36 on `16v100n49`,
+with the HCOLL alias unavailable and the export mounted at its canonical prefix.
+It loaded the actual generated native module, passed version/loader checks and
+PBE OT, ordinary diagonalization and forced ELPA. Loader traces resolve
+`libhcoll.so.1` and `libocoms.so.0` from shared HPCX; maximum differences from
+the accepted SIF were `1.78e-13 Ha` and `1.00e-12 Ha/Bohr`. Two-node native
+follow-up `1841817` passed the same three cases in 1:24 on `16v100n49,50`.
+Each rank checked alias absence and actual HPCX loading. Maximum differences
+against the accepted two-node SIF were `1.43e-14 Ha` and zero printed force
+difference. The original export and sealed SIF remained unchanged. This uses host runtime binds in a private
+mount namespace, not the application SIF or a physical `/opt` installation.
+The build code now limits the alias to compilation, strips its inherited
+private-ELPA RUNPATH before packaging and rejects it in runtime entries/ELF
+paths. Existing frozen builds continue with their original identities.
+[Native runtime proof](evidence/cp2k-install-layout-20261018/hcoll-native-alias-free.json),
+[two-node native runtime proof](evidence/cp2k-install-layout-20261018/hcoll-native-multinode-alias-free.json),
+[real ELPA diagnostic-copy cleanup](evidence/cp2k-install-layout-20261018/real-elpa-normalization.json),
+[23 focused regressions with real ELF loading](evidence/cp2k-install-layout-20261018/hcoll-runtime-regressions.json),
+[deployment policy](CP2K-NATIVE-MODULE.md).
 
 Earlier progress: at 13:47 the clone process was reading 40 MiB in three
 seconds with shared-filesystem I/O waits; at 14:06 CP2K compilation was at

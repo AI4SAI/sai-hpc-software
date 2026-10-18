@@ -52,7 +52,7 @@ jobs:
       - name: Install native delivery test tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y squashfs-tools tcl python3-yaml
+          sudo apt-get install -y squashfs-tools tcl python3-yaml chrpath
           command -v mksquashfs unsquashfs tclsh
       - run: python3 -m unittest discover -s tests -v
       - run: |

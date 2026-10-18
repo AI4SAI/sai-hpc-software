@@ -1,0 +1,219 @@
+{
+  "artifact_sha256": "d83620878d735a4513e0d33e88515eeb488998b21f138f200478c9ad1b9ea45e",
+  "cases": {
+    "water-diag": {
+      "actual_hcoll_loads": [
+        "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libhcoll.so.1",
+        "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libocoms.so.0"
+      ],
+      "alias_absent": true,
+      "comparison_with_accepted_sif": {
+        "energy_delta_ha": 7.105427357601002e-15,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "installed_data_used": true,
+      "placements": [
+        [
+          "0",
+          "16v100n49"
+        ],
+        [
+          "1",
+          "16v100n50"
+        ]
+      ],
+      "science": {
+        "cp2k_seconds": 15.138,
+        "dispersion_ha": null,
+        "elapsed_seconds": 20.537587867118418,
+        "energy_ha": -34.446821294788926,
+        "forces_ha_bohr": [
+          [
+            -0.009452333431,
+            -0.010457489975,
+            -2.87209e-07
+          ],
+          [
+            -0.009818693497,
+            0.015691111057,
+            -1.41949e-07
+          ],
+          [
+            0.010457918407,
+            0.004642532856,
+            5.8339e-08
+          ],
+          [
+            -0.003014175516,
+            0.009256007037,
+            -5.5964e-08
+          ],
+          [
+            0.004272731225,
+            -0.00835764914,
+            -0.007545512985
+          ],
+          [
+            0.004272706362,
+            -0.008357781857,
+            0.007545680344
+          ]
+        ]
+      }
+    },
+    "water-elpa": {
+      "actual_hcoll_loads": [
+        "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libhcoll.so.1",
+        "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libocoms.so.0"
+      ],
+      "alias_absent": true,
+      "comparison_with_accepted_sif": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "installed_data_used": true,
+      "placements": [
+        [
+          "0",
+          "16v100n49"
+        ],
+        [
+          "1",
+          "16v100n50"
+        ]
+      ],
+      "science": {
+        "cp2k_seconds": 16.09,
+        "dispersion_ha": null,
+        "elapsed_seconds": 23.29107998125255,
+        "energy_ha": -34.44682129478892,
+        "forces_ha_bohr": [
+          [
+            -0.009452333431,
+            -0.010457489975,
+            -2.87209e-07
+          ],
+          [
+            -0.009818693497,
+            0.015691111057,
+            -1.41949e-07
+          ],
+          [
+            0.010457918407,
+            0.004642532856,
+            5.8339e-08
+          ],
+          [
+            -0.003014175516,
+            0.009256007037,
+            -5.5964e-08
+          ],
+          [
+            0.004272731225,
+            -0.00835764914,
+            -0.007545512985
+          ],
+          [
+            0.004272706362,
+            -0.008357781857,
+            0.007545680344
+          ]
+        ]
+      }
+    },
+    "water-gpw": {
+      "actual_hcoll_loads": [
+        "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libhcoll.so.1",
+        "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libocoms.so.0"
+      ],
+      "alias_absent": true,
+      "comparison_with_accepted_sif": {
+        "energy_delta_ha": 1.4210854715202004e-14,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "installed_data_used": true,
+      "placements": [
+        [
+          "0",
+          "16v100n49"
+        ],
+        [
+          "1",
+          "16v100n50"
+        ]
+      ],
+      "science": {
+        "cp2k_seconds": 22.534,
+        "dispersion_ha": null,
+        "elapsed_seconds": 28.42519877292216,
+        "energy_ha": -34.44682129478909,
+        "forces_ha_bohr": [
+          [
+            -0.00945233354,
+            -0.010457489817,
+            -2.87128e-07
+          ],
+          [
+            -0.009818693543,
+            0.01569111124,
+            -1.41928e-07
+          ],
+          [
+            0.010457918678,
+            0.004642532798,
+            5.8306e-08
+          ],
+          [
+            -0.003014175638,
+            0.009256006937,
+            -5.6023e-08
+          ],
+          [
+            0.004272731236,
+            -0.008357649189,
+            -0.007545513107
+          ],
+          [
+            0.004272706358,
+            -0.008357781986,
+            0.007545680456
+          ]
+        ]
+      }
+    }
+  },
+  "collected_at": "2026-10-18T06:53:33.741812+00:00",
+  "cp2k_sif_executed": false,
+  "hcoll_linkage": [
+    "libhcoll.so.1 => /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libhcoll.so.1 (0x000014c3de800000)",
+    "libocoms.so.0 => /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libocoms.so.0 (0x000014c3de400000)"
+  ],
+  "identity": {
+    "build_id": "v2026.2-g67b5da876dd6-r4d454c740309",
+    "cpu_arch": "znver3",
+    "cuda_arch": "70",
+    "dependency_isa": "avx2",
+    "gpus": 1,
+    "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/16V100",
+    "partition": "16V100",
+    "recipe_sha256": "4d454c7403097d4a5cae4c37452ef15aff32d753f0e9076533433dc939535782",
+    "repository": "cp2k/cp2k",
+    "schema": 2,
+    "software": "cp2k",
+    "source_ref": "v2026.2",
+    "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+    "source_version": "v2026.2",
+    "stack_digest": null,
+    "stack_sources": {},
+    "target": "16v100-avx2",
+    "track": "release",
+    "version_label": "v2026.2"
+  },
+  "native": "/home/stardust/sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-r4d454c740309/16V100/39094062144-1-release-16v100-avx2-2026-10-18-67b5da876dd6.native",
+  "native_export_unchanged": true,
+  "passed": true,
+  "physical_opt_modified": false,
+  "scope": "two-node native-export MPI execution in a private mount namespace at the canonical prefix; host runtime binds; HCOLL alias absent on both ranks; not physical installation acceptance",
+  "sealed_sif_unchanged": true,
+  "slurm_job_id": "1841817"
+}

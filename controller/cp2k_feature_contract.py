@@ -8,6 +8,10 @@ from pathlib import Path
 import re
 import subprocess
 
+# The installed verifier must also run without any controller imports.
+# Regression tests keep these site paths aligned with remote_controller.
+HPCX_ROOT = "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1"
+HCOLL_BUILD_PREFIX = "/opt/mellanox/hcoll"
 BASE_FLAGS = frozenset("omp libint fftw3 libxc elpa parallel scalapack mpi_f08 cosma plumed2 spglib libdftd4 mctc-lib tblite libvori libbqb hdf5".split())
 GPU_FLAGS = frozenset("dbcsr_acc offload_cuda cusolvermp cusolvermp_nccl spla_gemm_offloading".split())
 # Plain SpLA has no version flag on CPU; verify its CMake option on all targets.
@@ -93,6 +97,10 @@ def check_linkage(text, target, prefix):
     expected = str(Path(prefix) / "dependencies/elpa/lib/libelpa_openmp.so")
     if (len(elpa_lines) != 1 or not re.search(re.escape(expected) + r"(?:\.[0-9]+)*(?:\s|$)", elpa_lines[0])):
         raise ValueError("native ELPA dynamic linkage escaped this delivery")
+    for library in ("libhcoll.so.1", "libocoms.so.0"):
+        expected = HPCX_ROOT + "/hcoll/lib/" + library
+        if not re.search(r"^\s*" + re.escape(library) + r"\s+=>\s+" + re.escape(expected) + r"(?:\s|$)", text, re.M):
+            raise ValueError("MPI runtime must resolve shared HPCX library: " + library)
     if target != "dsprhbm":
         for library, root in (("libcusolverMp.so", "/opt/devtools/nvidia/mp_libs/lib/"),
                               ("libnccl.so", "/opt/devtools/nvidia/nccl_2.29.3_"),
@@ -120,8 +128,25 @@ def inside(path, root):
 def runtime_roots(target):
     # Runtime dependencies must come from the delivery or standalone site
     # modules; another CP2K installation is never an approved root.
-    return ("/opt/devtools", "/opt/mellanox/hcoll", "/usr", "/bin", "/lib", "/lib64",
-            )
+    return ("/opt/devtools", "/usr", "/bin", "/lib", "/lib64")
+
+
+def is_hcoll_build_path(path):
+    # Inspect the spelling too: resolving a host symlink must not approve a
+    # container-only alias as a portable native runtime path.
+    value = os.path.normpath(str(path))
+    return value == HCOLL_BUILD_PREFIX or value.startswith(HCOLL_BUILD_PREFIX + "/")
+
+
+def runtime_path_allowed(path, prefix, target):
+    return (not is_hcoll_build_path(path) and
+            any(inside(path, root) for root in (prefix, *runtime_roots(target))))
+
+
+def check_mpi_runtime_paths(libraries):
+    for component in ("hcoll", "sharp"):
+        if HPCX_ROOT + "/" + component + "/lib" not in libraries:
+            raise ValueError("MPI runtime must record the real shared HPCX " + component + " directory")
 
 
 def check_dynamic(text, binary, prefix, target):
@@ -138,7 +163,7 @@ def check_dynamic(text, binary, prefix, target):
             expanded = entry.replace("${ORIGIN}", str(binary.parent)).replace("$ORIGIN", str(binary.parent))
             path = Path(expanded)
             if (not entry or "$" in expanded or not path.is_absolute() or
-                    not any(inside(path, root) for root in (prefix, *runtime_roots(target)))):
+                    not runtime_path_allowed(path, prefix, target)):
                 raise ValueError(f"untrusted {tag} in {binary}: {entry}")
     for interpreter in re.findall(r"Requesting program interpreter:\s*([^\]]+)\]", text):
         if not Path(interpreter).is_absolute() or not any(inside(interpreter, root) for root in
@@ -180,8 +205,9 @@ def check_runtime_environment(prefix, target):
             if name == "LD_LIBRARY_PATH" and entry == "/.singularity.d/libs":
                 continue
             if (not entry or not Path(entry).is_absolute() or
-                    not any(inside(entry, root) for root in (prefix, *runtime_roots(target)))):
+                    not runtime_path_allowed(entry, prefix, target)):
                 raise ValueError(f"untrusted installed {name}: {entry}")
+    check_mpi_runtime_paths(os.environ.get("LD_LIBRARY_PATH", "").split(":"))
 
 
 def native_entry(identity, environment):
@@ -205,10 +231,11 @@ def native_entry(identity, environment):
                 continue
             if not value or not Path(value).is_absolute() or TRANSIENT.search(value):
                 raise ValueError("invalid native CP2K runtime path")
-            if not any(inside(value, root) for root in (prefix, *runtime_roots(identity["target"]))):
+            if not runtime_path_allowed(value, prefix, identity["target"]):
                 raise ValueError("native CP2K runtime depends on an unapproved installation")
             if value not in values:
                 values.append(value)
+    check_mpi_runtime_paths(libraries)
     if paths != [prefix + "/bin", "/usr/bin"]:
         raise ValueError("native CP2K PATH must contain only its installed commands and system tools")
     modules = list(dict.fromkeys(value for value in environment.get("LOADEDMODULES", "").split(":")
