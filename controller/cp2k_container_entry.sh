@@ -29,7 +29,7 @@ build)
   printf '%s\n' "$sha" > /workspace/source/.git/shallow
   git -C /workspace/source -c core.hooksPath=/dev/null checkout --detach "$sha"
   test "$(git -C /workspace/source rev-parse HEAD)" = "$sha"
-  source /control/environment.sh "$target"
+  source /control/environment.sh "$target" cp2k
   bash /control/cp2k_build.sh "$target"
   printf '%s\n' "$delivery" > "$INSTALL_PREFIX/share/sai/release-identity.json"
   source "$INSTALL_PREFIX/share/sai/runtime-env.sh"

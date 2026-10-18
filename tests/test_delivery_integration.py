@@ -150,7 +150,8 @@ class DeliveryIntegrationTests(unittest.TestCase):
         script = controller.render_job(args)
         build = next(line for line in script.splitlines() if 'cp2k_container_entry.sh build' in line)
         for bind in ('/etc/alternatives:/etc/alternatives:ro', '/usr/bin:/bin:ro',
-                     '/var/lib/dpkg:/var/lib/dpkg:ro', '/input/spack:ro', '/results:rw'):
+                     '/var/lib/dpkg:/var/lib/dpkg:ro', '/opt/mellanox/hcoll:/opt/mellanox/hcoll:ro',
+                     '/input/spack:ro', '/results:rw'):
             self.assertIn(bind, build)
         self.assertNotIn('/opt/apps/cp2k/cp2k-2026.1', build)
 

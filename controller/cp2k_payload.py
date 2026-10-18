@@ -31,7 +31,7 @@ def stage(prefix, root, partition):
         source = prefix / name
         if source.exists():
             shutil.copytree(source, destination / name, symlinks=True)
-    for dependency in ('dbcsr', 'libxs', 'tblite'):
+    for dependency in ('dbcsr', 'libxs', 'tblite', 'elpa'):
         source = prefix / 'dependencies' / dependency
         if not source.is_dir() or source.is_symlink():
             raise ValueError('missing native dependency: ' + dependency)

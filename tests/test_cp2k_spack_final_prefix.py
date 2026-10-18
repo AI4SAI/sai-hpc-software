@@ -180,6 +180,8 @@ class FinalPrefixTests(unittest.TestCase):
                         'share/cp2k/data/BASIS_MOLOPT',
                         'dependencies/dbcsr/lib64/libdbcsr.so',
                         'dependencies/libxs/lib/libxs.so', 'dependencies/tblite/lib/libtblite.a',
+                        'dependencies/elpa/lib/libelpa_openmp.so.19',
+                        'dependencies/elpa/share/sai/version',
                         'dependencies/spack/linux-zen3/python-venv-hash/bin/python',
                         'dependencies/spack/linux-zen3/plumed-hash/lib/libplumed.so',
                         'dependencies/spack/linux-zen3/plumed-hash/lib/libplumedKernel.so.1',
@@ -201,6 +203,8 @@ class FinalPrefixTests(unittest.TestCase):
             self.assertEqual((result / relative_package / 'lib/libplumedKernel.so').read_bytes(), b'{}')
             self.assertTrue((result / relative_package / 'share/plumed/runtime-data').is_file())
             self.assertTrue((result / 'share/cp2k/data/BASIS_MOLOPT').is_file())
+            self.assertTrue((result / 'dependencies/elpa/lib/libelpa_openmp.so.19').is_file())
+            self.assertTrue((result / 'dependencies/elpa/share/sai/version').is_file())
             for omitted in ('include', '.spack', 'share/doc', 'lib/libplumed.a'):
                 self.assertFalse((result / relative_package / omitted).exists())
             self.assertFalse((result / 'dependencies/spack/linux-zen3/python-venv-hash').exists())

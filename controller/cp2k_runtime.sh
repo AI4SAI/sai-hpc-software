@@ -36,13 +36,13 @@ trap cleanup EXIT
 if [[ -n "${SAI_CP2K_TRACE_DIR:-}" ]]; then
   trace=$(realpath -m -- "$SAI_CP2K_TRACE_DIR")
   [[ "$trace" == "$SAI_SOFTWARE_ROOT/runtime-tests/"* && -d "$trace" && ! -L "$trace" ]] || exit 2
-  printf '%s\t%s\t%s\t%s\t%s\t%s\n' "$(hostname)" "$rank" "$target" "$image" \
+  printf '%s\t%s\t%s\t%s\t%s\t%s\n' "$(hostname -s)" "$rank" "$target" "$image" \
     "${CUDA_VISIBLE_DEVICES:-}" "${MPI_HOME:?host MPI module required}" > "$trace/rank-$rank.tsv"
 fi
 
 args=(apptainer exec --cleanenv --no-home --no-mount bind-paths,home,cwd,tmp,hostfs --pwd /work)
 [[ "$gpu" == true ]] && args+=(--nv)
-for path in /usr /lib /lib64 /opt/devtools; do args+=(--bind "$path:$path:ro"); done
+for path in /usr /lib /lib64 /opt/devtools /opt/mellanox/hcoll; do args+=(--bind "$path:$path:ro"); done
 site_paths=$(python3 "$launcher_control/remote_controller.py" cp2k)
 while IFS= read -r path; do args+=(--bind "$path:$path:ro"); done <<< "$site_paths"
 args+=(--bind "$workdir:/work:rw" --bind "$rank_runtime:/runtime:rw"

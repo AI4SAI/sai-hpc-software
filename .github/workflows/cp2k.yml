@@ -16,6 +16,7 @@ on:
         required: false
         default: ''
       reference_run:
+        description: Legacy compatibility input; unused by candidate-only CP2K science acceptance
         type: string
         required: false
         default: ''
@@ -37,7 +38,7 @@ on:
         description: Optional terminated CP2K run id to repack without recompiling
         required: false
       reference_run:
-        description: Verified GPU CP2K benchmark run for CPU-only added-feature references
+        description: Legacy compatibility input; unused by candidate-only CP2K science acceptance
         required: false
       retry_releases:
         description: Explicitly retry selected release/prerelease versions already attempted
@@ -133,8 +134,8 @@ jobs:
     secrets: inherit
 
   build-cpu:
-    # Compile CPU and GPU targets independently. Only CPU science acceptance
-    # waits for a fully reverified GPU reference; a GPU failure cannot skip CPU compilation.
+    # CPU and GPU builds and candidate-only science acceptance run independently.
+    # Neither target requires an older installation or another target's reference.
     if: ${{ !cancelled() && (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && needs.validate.result == 'success' && needs.resolve-source.result == 'success' && needs.resolve-source.outputs.cpu_builds != '[]' }}
     needs: [validate, resolve-source]
     strategy:

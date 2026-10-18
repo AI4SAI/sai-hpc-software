@@ -250,7 +250,7 @@ class CiLifecycleTests(unittest.TestCase):
                 patch.object(ci.subprocess, "run", return_value=subprocess.CompletedProcess([], 0)), \
                 redirect_stdout(io.StringIO()):
             clock.now.return_value = datetime(2026, 9, 13, 23, 59, 59, tzinfo=timezone.utc)
-            if fail_monitor or publish_failures > 1:
+            if fail_monitor or publish_failures > 1 or (software == 'cp2k' and publish_failures):
                 with self.assertRaises(subprocess.CalledProcessError):
                     ci.main()
             else:
@@ -374,18 +374,25 @@ class CiLifecycleTests(unittest.TestCase):
             *[op for _ in range(3) for op in ("prepare", "submit", "monitor")],
         ])
 
-    def test_cp2k_requires_benchmark_before_publication(self):
+    def test_cp2k_requires_candidate_science_without_system_baseline(self):
         for target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             self.assertEqual(self.execute(software="cp2k", target=target), [
                 ("software_controller.py", "identity"),
                 ("cp2k_dependency_stage.py", "submit"), ("cp2k_dependency_stage.py", "monitor"),
                 ("software_controller.py", "submit"), ("software_controller.py", "monitor"),
-                *([("cp2k_benchmark.py", "wait-reference")] if target == 'dsprhbm' else []),
-                ("cp2k_benchmark.py", "submit"), ("cp2k_benchmark.py", "monitor"),
+                ("cp2k_acceptance.py", "submit"), ("cp2k_acceptance.py", "monitor"),
                 ("software_controller.py", "publish"),
             ])
-        failed = self.execute(software="cp2k", fail_monitor="cp2k_benchmark.py")
+            self.assertTrue({'cp2k_acceptance.py', 'cp2k_source_fixes.py'} <= set(self.uploads))
+        failed = self.execute(software="cp2k", fail_monitor="cp2k_acceptance.py")
         self.assertNotIn(("software_controller.py", "publish"), failed)
+
+    def test_cp2k_publication_failure_does_not_allocate_legacy_performance_retest(self):
+        calls = self.execute(software='cp2k', publish_failures=1)
+        self.assertEqual(calls.count(('software_controller.py', 'publish')), 1)
+        self.assertEqual(calls.count(('cp2k_acceptance.py', 'submit')), 1)
+        self.assertFalse(any(name == 'cp2k_benchmark.py' for name, _ in calls))
+        self.assertFalse(any('-retest' in argument for _, args in self.remote_commands for argument in args))
 
     def test_ci_uploads_identity_dependencies_before_requesting_remote_identity(self):
         self.execute()

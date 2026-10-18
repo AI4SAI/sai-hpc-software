@@ -108,6 +108,9 @@ def inspect_existing_job(root, control, directory, expected, script):
         elif script == 'gpumd_acceptance.py':
             pins += [(control / 'gpumd_science.py', 'science_sha256'),
                      (control / 'gpumd_deepmd_probe.py', 'deepmd_probe_sha256')]
+        elif script == 'cp2k_acceptance.py':
+            pins += [(control / 'cp2k_benchmark.py', 'helpers_sha256'),
+                     (directory / 'rank-exec.sh', 'rank_wrapper_sha256')]
         for path, key in pins:
             if (not path.is_file() or path.is_symlink() or path.resolve() != path or
                     checksum(path) != request.get(key)):
@@ -201,8 +204,8 @@ def main():
                    "abacus_dependency_lock.json", "abacus_features.py", "abacus_benchmark.py",
                    "native_module.py", "export_native.py"]
                   if software == "abacus" else
-                  ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_feature_contract.py",
-                   "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_cmake_prerequisites.cmake", "cp2k_benchmark.py",
+                  ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_elpa.sh", "cp2k_feature_contract.py",
+                   "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_cmake_prerequisites.cmake", "cp2k_benchmark.py", "cp2k_acceptance.py", "cp2k_source_fixes.py",
                    "cp2k_spack.py", "cp2k_spack_environment.py", "cp2k_spack_native.py",
                    "cp2k_spack_seed.py", "cp2k_spack_probe.sh", "cp2k_spack_dependencies.sh",
                    "cp2k_spack_libint_repair.py", "cp2k_spack_install_evidence.py",
@@ -373,16 +376,11 @@ def main():
                             python("abacus_benchmark.py", "submit", benchmark_run)
                         python("abacus_benchmark.py", "monitor", benchmark_run)
                 if software == "cp2k":
-                    benchmark_run = safe_name(run_id + "-benchmark" + repeat_suffix)
-                    reference = os.environ.get("CP2K_REFERENCE_RUN", "")
-                    reference_args = ["--reference-run-id", safe_name(reference)] if reference and target == "dsprhbm" else []
-                    expected_reference = {'reference_run_id': reference} if reference_args else {}
-                    if not acceptance_exists('cp2k_benchmark.py', benchmark_run, **expected_reference):
-                        if target == 'dsprhbm' and not reference:
-                            python('cp2k_benchmark.py', 'wait-reference', '--timeout', '5400')
-                        python("cp2k_benchmark.py", "submit", benchmark_run, version, target,
-                               "--build-run-id", run_id, *reference_args)
-                    python("cp2k_benchmark.py", "monitor", benchmark_run)
+                    scientific_run = safe_name(run_id + "-science")
+                    if not acceptance_exists('cp2k_acceptance.py', scientific_run):
+                        python("cp2k_acceptance.py", "submit", scientific_run, version, target,
+                               "--build-run-id", run_id)
+                    python("cp2k_acceptance.py", "monitor", scientific_run)
                 if software == "gpumd":
                     scientific_run = safe_name(run_id + "-science" + repeat_suffix)
                     if not acceptance_exists('gpumd_acceptance.py', scientific_run):
@@ -392,7 +390,7 @@ def main():
                 python("software_controller.py", "publish", run_id)
                 break
             except subprocess.CalledProcessError as error:
-                if error.returncode != 3 or repeat_suffix:
+                if software == 'cp2k' or error.returncode != 3 or repeat_suffix:
                     raise
                 print('PERFORMANCE_RETEST: repeating on the same artifact before publication', flush=True)
         run(["scp", "-q", *options, "-P", "12022", f"{remote}:{task}/artifact.path", results / "artifact.path"])
@@ -410,18 +408,18 @@ def main():
                             f'{remote}:{root}/runs/{dependency_run}/results/.',
                             str(dependency_results)], check=False)
         for suffix in ("", "-retest"):
-            if software == "cp2k":
-                benchmark_results = results / ("benchmark" + suffix)
-                benchmark_results.mkdir(exist_ok=True)
+            if software == "cp2k" and not suffix:
+                scientific_results = results / "cp2k-science"
+                scientific_results.mkdir(exist_ok=True)
                 subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
-                                f"{remote}:{root}/runtime-tests/{run_id}-benchmark{suffix}/results/.",
-                                str(benchmark_results)], check=False)
+                                f"{remote}:{root}/runtime-tests/{run_id}-science/results/.",
+                                str(scientific_results)], check=False)
                 # Preserve raw scientific inputs/logs/forces as well as summaries;
                 # never transfer SIFs or build/install trees back to the runner.
-                benchmark_task = f"{root}/runtime-tests/{run_id}-benchmark{suffix}"
+                scientific_task = f"{root}/runtime-tests/{run_id}-science"
                 for name in ("cases", "fixtures", "request.json", "job.sbatch", "job.id", "rank-exec.sh"):
                     subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
-                                    f"{remote}:{benchmark_task}/{name}", str(benchmark_results)], check=False)
+                                    f"{remote}:{scientific_task}/{name}", str(scientific_results)], check=False)
             if software == "gpumd":
                 scientific_results = results / ("gpumd-science" + suffix)
                 scientific_results.mkdir(exist_ok=True)

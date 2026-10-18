@@ -36,6 +36,8 @@ WIGNERNJ_ARCHIVE = 'libwignernj-0.8.0.tar.gz'
 WIGNERNJ_SHA256 = '7220cea92652040d6456aba92ff151124d9c69ce8695840490c18dd25a0da80c'
 TBLITE_RELEASE_ARCHIVE = 'tblite-0.6.0.tar.xz'
 TBLITE_RELEASE_SHA256 = '372281aedb89234168d00eb691addb303197a9462a9c55d145c835f2cf5e8b42'
+ELPA_ARCHIVE = 'elpa-2026.02.002.tar.gz'
+ELPA_SHA256 = '02e3c59fec53cd8eb66a4cc15fa4fbf190cf9654227223fb8ad55713e9427932'
 
 
 def cache_source_updates(destination):
@@ -45,7 +47,8 @@ def cache_source_updates(destination):
     destination.mkdir(parents=True, exist_ok=True)
     archives = []
     for name, digest in ((WIGNERNJ_ARCHIVE, WIGNERNJ_SHA256),
-                         (TBLITE_RELEASE_ARCHIVE, TBLITE_RELEASE_SHA256)):
+                         (TBLITE_RELEASE_ARCHIVE, TBLITE_RELEASE_SHA256),
+                         (ELPA_ARCHIVE, ELPA_SHA256)):
         archive = destination / name
         if not archive.is_file() or hashlib.sha256(archive.read_bytes()).hexdigest() != digest:
             with urllib.request.urlopen('https://www.cp2k.org/static/downloads/' + name,

@@ -29,8 +29,8 @@ def contract_files(software):
                          "abacus_dependency_lock.json", "abacus_features.py", "abacus_benchmark.py",
                          "native_module.py", "export_native.py"]
     if software == "cp2k":
-        return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_feature_contract.py",
-                         "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_cmake_prerequisites.cmake", "cp2k_benchmark.py",
+        return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_elpa.sh", "cp2k_feature_contract.py",
+                         "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_cmake_prerequisites.cmake", "cp2k_benchmark.py", "cp2k_acceptance.py", "cp2k_source_fixes.py",
                          "cp2k_spack.py", "cp2k_spack_environment.py", "cp2k_spack_native.py",
                          "cp2k_spack_seed.py", "cp2k_spack_probe.sh", "cp2k_spack_dependencies.sh",
                          "cp2k_spack_libint_repair.py", "cp2k_spack_install_evidence.py",
@@ -67,7 +67,7 @@ def required_acceptance(software, target):
     if software == "cp2k":
         if target not in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             raise ValueError("CP2K native publication target is not registered")
-        return ("cp2k_benchmark",)
+        return ("cp2k_science",)
     if software == "gpumd":
         if target not in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             raise ValueError("GPUMD publication requires a natively built V100 target")
@@ -95,7 +95,7 @@ def validate_acceptance(manifest):
     for name in required_acceptance(manifest["software"], manifest["target"]):
         proof = manifest.get(name, {})
         benchmark = name.startswith("benchmark_")
-        verifier = ("cp2k_benchmark.py" if name == "cp2k_benchmark" else
+        verifier = ("cp2k_acceptance.py" if name == "cp2k_science" else
                     "abacus_benchmark.py" if benchmark else
                     "runtime_controller.py" if name == "multinode_runtime" else "gpu_feature_controller.py")
         if (proof.get("verified") is not True or
@@ -147,8 +147,8 @@ def validate_acceptance(manifest):
             raise ValueError(f"missing or changed {name} scientific evidence")
         if name == "multinode_runtime":
             from runtime_controller import verify_evidence
-        elif name == "cp2k_benchmark":
-            from cp2k_benchmark import verify_evidence
+        elif name == "cp2k_science":
+            from cp2k_acceptance import verify_evidence
         elif name == "gpu_features":
             from gpu_feature_controller import verify_evidence
         else:
@@ -162,12 +162,6 @@ def validate_acceptance(manifest):
             verify_retest(task, request, evidence)
             timing = evidence['statistics']['rounded_iteration_seconds']
             check_performance(timing['candidate']['median'], timing['system']['median'])
-        elif name == 'cp2k_benchmark':
-            from cp2k_benchmark import verify_retest
-            verify_retest(task, request, evidence)
-            timing = evidence['timings']['water64-gpw']
-            check_performance(timing['candidate_cp2k_seconds']['median'],
-                              timing['baseline_cp2k_seconds']['median'])
         if (evidence.get("job") != proof.get("job") or
                 evidence.get("artifact_sha256") != manifest["sha256"]):
             raise ValueError("acceptance evidence does not match its job or image")
@@ -334,6 +328,7 @@ def render_job(args):
                    ("/etc/os-release", "/etc/os-release"),
                    ("/etc/alternatives", "/etc/alternatives"),
                    ("/usr/bin", "/bin"),
+                   ("/opt/mellanox/hcoll", "/opt/mellanox/hcoll"),
                    (ROOT / "cache/cp2k-dependencies", "/input/dependencies"),
                    (ROOT / "cache/cp2k-probe", "/input/probe")) if args.software == "cp2k" else ()
     if args.software == "abacus":
@@ -348,6 +343,8 @@ def render_job(args):
             cmd = ["/usr/bin/env", f"SAI_BUILD_PARTITION={target['partition']}", *cmd]
         # Final artifacts must not rely on source/dependency staging trees.
         binds = site_app_binds("gpumd") if final and args.software == "gpumd" else () if final else extra_binds
+        if final and args.software == "cp2k":
+            binds = (("/opt/mellanox/hcoll", "/opt/mellanox/hcoll"),)
         command = container_command(sif if final else image, cmd, overlay=None if final else overlay,
                                  control=CONTROL, repository=None if final else repo,
                                  jobs=args.jobs, gpu=bool(target["gpus"]), extra_binds=runtime_binds() if final and args.software == "abacus" else binds,

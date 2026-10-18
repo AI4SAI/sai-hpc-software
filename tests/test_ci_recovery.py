@@ -136,6 +136,31 @@ class ContinuationPreflightTests(unittest.TestCase):
         with self.assertRaises(subprocess.CalledProcessError):
             self.probe(expected, 'software_controller.py', task)
 
+    def test_cp2k_science_continuation_rechecks_rank_wrapper_and_shared_parser(self):
+        identity = self.identity('cp2k')
+        image = self.candidate(identity)
+        self.task.mkdir(parents=True)
+        (self.task / 'job.id').write_text('1003\n')
+        (self.task / 'job.sbatch').write_text('#!/bin/bash\n# candidate science\n')
+        (self.task / 'rank-exec.sh').write_text('#!/bin/bash\nexec candidate "$@"\n')
+        expected = dict(run_id='build-science', build_run_id='build', identity=identity,
+                        version='v1', target='16v100-avx2', artifact=str(image))
+        request = dict(expected, job='1003', launcher=str(self.control / 'cp2k'),
+                       artifact_sha256=checksum(image),
+                       job_script_sha256=checksum(self.task / 'job.sbatch'),
+                       launcher_sha256=checksum(self.control / 'cp2k'),
+                       controller_sha256=checksum(self.control / 'cp2k_acceptance.py'),
+                       helpers_sha256=checksum(self.control / 'cp2k_benchmark.py'),
+                       rank_wrapper_sha256=checksum(self.task / 'rank-exec.sh'))
+        (self.task / 'request.json').write_text(json.dumps(request))
+        self.assertTrue(self.probe(expected, 'cp2k_acceptance.py'))
+        for path in (self.task / 'rank-exec.sh', self.control / 'cp2k_benchmark.py'):
+            original = path.read_bytes()
+            path.write_bytes(original + b'# changed\n')
+            with self.subTest(path=path), self.assertRaises(subprocess.CalledProcessError):
+                self.probe(expected, 'cp2k_acceptance.py')
+            path.write_bytes(original)
+
 
 class StatefulContinuationTests(unittest.TestCase):
     setUp = lifecycle.CiLifecycleTests.setUp
@@ -161,7 +186,7 @@ class StatefulContinuationTests(unittest.TestCase):
         self.assertIn(('software_controller.py', 'monitor'), calls)
 
     def test_existing_passing_repeat_is_reused_after_original_regression(self):
-        for software in ('abacus', 'cp2k', 'gpumd'):
+        for software in ('abacus', 'gpumd'):
             state = self.root / ('passed-repeat-' + software)
             self.execute(software=software, target='16v100-avx2', phase='acceptance', persisted_jobs=state,
                          publish_failures=1)
@@ -173,7 +198,7 @@ class StatefulContinuationTests(unittest.TestCase):
             self.assertEqual(recorded, {p.name for p in state.iterdir()})
 
     def test_repeated_regression_cannot_allocate_third_run_after_job_retry(self):
-        for software in ('abacus', 'cp2k', 'gpumd'):
+        for software in ('abacus', 'gpumd'):
             state = self.root / ('regression-' + software)
             self.execute(software=software, target='16v100-avx2', phase='acceptance', persisted_jobs=state,
                          publish_failures=2)

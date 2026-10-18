@@ -13,6 +13,7 @@ on:
         type: string
         default: ''
       reference_run:
+        description: Legacy compatibility input; unused by candidate-only CP2K science acceptance
         type: string
         default: ''
       retry_releases:
@@ -36,6 +37,7 @@ env:
   SOFTWARE_VERSION: ${{ fromJSON(inputs.build).source_version }}
   TARGET: ${{ fromJSON(inputs.build).target }}
   RESUME_RUN: ${{ inputs.resume_run }}
+  # Retained for callers of historical workflows; current CP2K acceptance ignores it.
   CP2K_REFERENCE_RUN: ${{ inputs.reference_run }}
   RETRY_RELEASES: ${{ inputs.retry_releases }}
 

@@ -72,10 +72,10 @@ def check_cache(text, prefix, target):
     if cache.get("CP2K_USE_SPLA_GEMM_OFFLOADING") != ("OFF" if target == "dsprhbm" else "ON"):
         raise ValueError("wrong or missing SpLA GEMM offload setting for target")
     elpa = cache.get("CP2K_ELPA_ROOT", "")
-    if not elpa.startswith("/opt/devtools/elpa/elpa-2026.02.001-2603-gnu/"):
-        raise ValueError("ELPA must use the pinned 2026 system module")
-    if elpa.endswith("/nvidia"):
-        for library in ("cusolver", "cudart", "cublasLt", "cublas"):
+    if elpa != str(Path(prefix) / "dependencies/elpa"):
+        raise ValueError("ELPA must use this delivery's native dependency prefix")
+    if target != "dsprhbm":
+        for library in ("cudart", "cublas"):
             resolved = Path(cache.get("pkgcfg_lib_CP2K_ELPA_" + library, ""))
             cuda = Path("/opt/devtools/nvidia/cuda-12.9.1")
             if (resolved.parent not in (cuda / "lib64", cuda / "targets/x86_64-linux/lib")
@@ -86,13 +86,13 @@ def check_cache(text, prefix, target):
     return cache
 
 
-def check_linkage(text, target):
+def check_linkage(text, target, prefix):
     if "not found" in text or TRANSIENT.search(text):
         raise ValueError("unresolved or transient CP2K dynamic dependency")
-    if "elpa-2024" in text:
-        raise ValueError("CP2K linked the obsolete toolchain ELPA")
-    if "libelpa" not in text or "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu/" not in text:
-        raise ValueError("ELPA 2026 dynamic linkage was not proven")
+    elpa_lines = [line for line in text.splitlines() if "libelpa" in line]
+    expected = str(Path(prefix) / "dependencies/elpa/lib/libelpa_openmp.so")
+    if (len(elpa_lines) != 1 or not re.search(re.escape(expected) + r"(?:\.[0-9]+)*(?:\s|$)", elpa_lines[0])):
+        raise ValueError("native ELPA dynamic linkage escaped this delivery")
     if target != "dsprhbm":
         for library, root in (("libcusolverMp.so", "/opt/devtools/nvidia/mp_libs/lib/"),
                               ("libnccl.so", "/opt/devtools/nvidia/nccl_2.29.3_"),
@@ -120,7 +120,7 @@ def inside(path, root):
 def runtime_roots(target):
     # Runtime dependencies must come from the delivery or standalone site
     # modules; another CP2K installation is never an approved root.
-    return ("/opt/devtools", "/usr", "/bin", "/lib", "/lib64",
+    return ("/opt/devtools", "/opt/mellanox/hcoll", "/usr", "/bin", "/lib", "/lib64",
             )
 
 
@@ -296,7 +296,7 @@ def verify(prefix, target, sha):
     version = run([str(prefix / "bin/cp2k.psmp"), "--version"])
     flags = check_flags(version, target)
     linkage = run(["ldd", str(prefix / "bin/cp2k.psmp")])
-    check_linkage(linkage, target)
+    check_linkage(linkage, target, prefix)
     elf = verify_tree(prefix, target)
     print(version, end="")
     print(linkage, end="")

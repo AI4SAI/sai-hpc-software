@@ -1,6 +1,7 @@
 import argparse
 from copy import deepcopy
 import json
+import os
 import shutil
 from pathlib import Path
 import subprocess
@@ -349,6 +350,62 @@ class EvidenceTests(unittest.TestCase):
             with self.subTest(name=name), self.assertRaises(ValueError):
                 benchmark.verify_evidence(self.task, self.request)
             path.write_text(original)
+
+    def test_actual_launcher_trace_matches_short_scheduler_and_resource_hosts(self):
+        # The site hostname command returns an FQDN by default, whereas Slurm
+        # and RANK_WRAPPER record short names. Run the real launcher through
+        # its artifact checks and trace writer; only container execution and
+        # the host's name are replaced by local executables.
+        self.launcher.chmod(0o755)
+        shutil.copyfile(ROOT / "controller/cp2k_runtime.sh", self.launcher)
+        for name in ("delivery_layout.py", "release_contract.py", "resolve_source.py",
+                     "remote_controller.py", "source_cache.py"):
+            shutil.copyfile(ROOT / "controller" / name, self.control / name)
+        commands = self.root / "commands"
+        commands.mkdir()
+        hostname = commands / "hostname"
+        hostname.write_text('#!/bin/bash\n'
+                            'if [[ "${1:-}" == -s ]]; then printf "%s\\n" "$TEST_NODE"; '
+                            'else printf "%s.mr-sai.ai\\n" "$TEST_NODE"; fi\n')
+        apptainer = commands / "apptainer"
+        apptainer.write_text('#!/bin/bash\nprintf "%s\\n" "$@" > "$TEST_CONTAINER_ARGS"\n')
+        for command in (hostname, apptainer):
+            command.chmod(0o755)
+        temporary = self.root / "runtime/mpi"
+        temporary.mkdir(parents=True)
+        folder = "results/candidate-version"
+        trace = self.task / folder / "ranks"
+        environment = dict(os.environ, PATH=f"{commands}:{os.environ['PATH']}",
+                           SAI_SOFTWARE_ROOT=str(self.root), SAI_CP2K_IMAGE=self.request["artifact"],
+                           SAI_CP2K_TRACE_DIR=str(trace), SLURM_JOB_PARTITION="4V100",
+                           TMPDIR=str(temporary), OMP_NUM_THREADS="1",
+                           CUDA_VISIBLE_DEVICES="0", MPI_HOME="/opt/devtools/mpi-avx512",
+                           PYTHONDONTWRITEBYTECODE="1")
+        # Exercise full artifact verification without its optional per-job
+        # cache; this test can run on a checkout without POSIX mode support.
+        environment.pop("SLURM_JOB_ID", None)
+        for rank, host in enumerate(("node1", "node2")):
+            arguments = self.root / f"container-{rank}.args"
+            subprocess.run(["bash", str(self.launcher), "--version"], cwd=self.task,
+                           env=dict(environment, TEST_NODE=host, TEST_CONTAINER_ARGS=str(arguments),
+                                    OMPI_COMM_WORLD_RANK=str(rank), SLURM_NODEID=str(rank)),
+                           check=True, text=True)
+            self.assertIn(self.request["artifact"], arguments.read_text().splitlines())
+            row = (trace / f"rank-{rank}.tsv").read_text().split("\t")
+            resource_host = (self.task / folder / "resources" / f"rank-{rank}.tsv").read_text().split("\t")[0]
+            self.assertEqual(row[0], resource_host)
+        hosts = (self.task / "results/nodes.txt").read_text().splitlines()
+        proof = benchmark.verify_rank_evidence(self.task, folder, self.request, hosts, {},
+                                               binary=self.request["artifact"])
+        self.assertEqual(proof["nodes"], {"node1": 1, "node2": 1})
+        # Matching arbitrary names in both records must not bypass the
+        # allocation's allowed-node list.
+        for relative in ("ranks/rank-0.tsv", "resources/rank-0.tsv"):
+            path = self.task / folder / relative
+            path.write_text(path.read_text().replace("node1\t", "unknown\t", 1))
+        with self.assertRaisesRegex(ValueError, "pinned image/target/MPI ISA/allocation"):
+            benchmark.verify_rank_evidence(self.task, folder, self.request, hosts, {},
+                                           binary=self.request["artifact"])
 
     def test_same_map_string_but_different_actual_affinity_is_rejected(self):
         self.write("cases/water-gpw/1-candidate/resources/rank-1.tsv", "node2\t1\t0\t1\t4-7,20-23\t0\t123\n")

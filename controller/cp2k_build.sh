@@ -71,16 +71,18 @@ check_parallel_hdf5(path.read_text())
 print('CP2K_PARALLEL_HDF5_VERIFIED ' + str(path))
 PY
 dbcsr="$prefix/dependencies/dbcsr/lib64/cmake/dbcsr"
-[[ "${ELPA_ROOT:?}" == /opt/devtools/elpa/elpa-2026.02.001-2603-gnu/* ]]
-# The standalone ELPA module selects its NVIDIA build on CPU nodes too.
-# Its .pc file lists CUDA libraries without a CUDA -L, and the CUDA module
-# sets LD_LIBRARY_PATH but not LIBRARY_PATH. Give FindPkgConfig an explicit
-# search directory so it resolves full paths instead of retaining -lcudart.
-# This does not enable CP2K GPU offload on DSPRHBM.
+# ELPA follows this CP2K source's toolchain pin and is part of the delivery.
+# The site's shared ELPA 2026 library contains unconditional AVX-512 code,
+# including in generic allocation routines, and cannot run on 16V100.
+export ELPA_ROOT="$prefix/dependencies/elpa"
+bash /control/cp2k_elpa.sh /workspace/source /input/updates /workspace/elpa-build "$ELPA_ROOT" "$target"
+export LD_LIBRARY_PATH="$ELPA_ROOT/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+python3 /control/cp2k_source_fixes.py /workspace/source "$prefix/share/sai"
+# FindPkgConfig must resolve CUDA dependencies to full toolkit paths.
 cuda_libraries=/opt/devtools/nvidia/cuda-12.9.1/lib64
 for library in cusolver cudart cublasLt cublas; do
   [[ -f "$cuda_libraries/lib$library.so" ]] || {
-    echo "standalone ELPA requires $cuda_libraries/lib$library.so" >&2; exit 1;
+    echo "required toolkit library missing: $cuda_libraries/lib$library.so" >&2; exit 1;
   }
 done
 if [[ "$target" == 8v100v0-avx512 ]]; then

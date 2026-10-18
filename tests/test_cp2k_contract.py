@@ -34,7 +34,7 @@ class CP2KContractTests(unittest.TestCase):
                        CMAKE_INSTALL_LIBDIR="lib64",
                        CP2K_USE_ACCEL="NONE" if target == "dsprhbm" else "CUDA",
                        CP2K_USE_SPLA_GEMM_OFFLOADING="OFF" if target == "dsprhbm" else "ON",
-                       CP2K_ELPA_ROOT="/opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia",
+                       CP2K_ELPA_ROOT="/opt/software/cp2k/test/" + target + "/dependencies/elpa",
                        CP2K_USE_CUSOLVER_MP="ON")
         for lang in ("C", "CXX", "Fortran"):
             entries[f"CMAKE_{lang}_FLAGS"] = "-O3 -march=native -mtune=native"
@@ -64,19 +64,19 @@ class CP2KContractTests(unittest.TestCase):
                 with self.subTest(wrong=wrong), self.assertRaisesRegex(ValueError, "pinned GCC"):
                     contract.check_cache(text.replace(pinned, wrong), prefix, "4v100-avx512")
 
-    def test_cpu_elpa_still_requires_resolved_cuda_link_libraries(self):
-        text = self.cache("dsprhbm")
-        prefix = "/opt/software/cp2k/test/dsprhbm"
-        for library in ("cusolver", "cudart", "cublasLt", "cublas"):
+    def test_native_gpu_elpa_requires_resolved_cuda_link_libraries(self):
+        text = self.cache("16v100-avx2")
+        prefix = "/opt/software/cp2k/test/16v100-avx2"
+        for library in ("cudart", "cublas"):
             full = "/opt/devtools/nvidia/cuda-12.9.1/lib64/lib" + library + ".so"
             for replacement in (library, "-l" + library, "", full + "-NOTFOUND",
                                 full.replace("12.9.1", "12.8.0")):
                 with self.subTest(library=library, replacement=replacement):
                     with self.assertRaisesRegex(ValueError, "ELPA CUDA library"):
-                        contract.check_cache(text.replace(full, replacement), prefix, "dsprhbm")
+                        contract.check_cache(text.replace(full, replacement), prefix, "16v100-avx2")
         parsed = contract.check_cache(text.replace("/lib64/lib", "/targets/x86_64-linux/lib/lib"),
-                                      prefix, "dsprhbm")
-        self.assertEqual(parsed["CP2K_USE_ACCEL"], "NONE")
+                                      prefix, "16v100-avx2")
+        self.assertEqual(parsed["CP2K_USE_ACCEL"], "CUDA")
         script = (Path(contract.__file__).parent / "cp2k_build.sh").read_text()
         self.assertIn('-DCMAKE_LIBRARY_PATH="$cuda_libraries"', script)
 
@@ -118,7 +118,7 @@ class CP2KContractTests(unittest.TestCase):
         text = self.cache()
         contract.check_cache(text, "/opt/software/cp2k/test/4v100-avx512", "4v100-avx512")
         for bad in (text.replace("CP2K_USE_ELPA:STRING=ON", "CP2K_USE_ELPA:STRING=OFF"),
-                    text.replace("elpa-2026.02.001", "elpa-2024.05.001"),
+                    text.replace("/dependencies/elpa", "/dependencies/wrong-elpa"),
                     text.replace("-mtune=native", "-mtune=generic"),
                     text.replace("/opt/software/cp2k/test/", "/opt/software/test/")):
             with self.assertRaises(ValueError):
@@ -155,12 +155,16 @@ class CP2KContractTests(unittest.TestCase):
                         contract.check_cache(bad, prefix, target)
 
     def test_ldd_and_rpath_must_resolve_outside_build_tree(self):
+        prefix = "/opt/apps/cp2k/test/4V100"
         links = "\n".join((
-            "libelpa_openmp.so => /opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia/lib/libelpa_openmp.so",
+            "libelpa_openmp.so => " + prefix + "/dependencies/elpa/lib/libelpa_openmp.so.19",
             "libcusolverMp.so.0 => /opt/devtools/nvidia/mp_libs/lib/libcusolverMp.so.0",
             "libnccl.so.2 => /opt/devtools/nvidia/nccl_2.29.3_cuda12.9/lib/libnccl.so.2",
             "libcuda.so.1 => /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/compat/libcuda.so.1"))
-        contract.check_linkage(links, "4v100-avx512")
+        contract.check_linkage(links, "4v100-avx512", prefix)
+        for wrong in ("/opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia", prefix + "/../another"):
+            with self.assertRaisesRegex(ValueError, "native ELPA"):
+                contract.check_linkage(links.replace(prefix + "/dependencies/elpa", wrong), "4v100-avx512", prefix)
         # A resolved host libcuda can still reject the NVRTC 12.9 PTX used by
         # DBCSR. All GPU deliveries must use the qualified compatibility API.
         for target in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
@@ -168,18 +172,18 @@ class CP2KContractTests(unittest.TestCase):
                 "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/compat/libcuda.so.1",
                 "/.singularity.d/libs/libcuda.so.1")
             with self.subTest(target=target), self.assertRaisesRegex(ValueError, "libcuda"):
-                contract.check_linkage(old_driver, target)
-        contract.check_linkage(links.splitlines()[0], "dsprhbm")
+                contract.check_linkage(old_driver, target, prefix)
+        contract.check_linkage(links.splitlines()[0], "dsprhbm", prefix)
         for extra in ("libfoo => not found", "libfoo => /workspace/lib/libfoo.so"):
             with self.assertRaises(ValueError):
-                contract.check_linkage(links + "\n" + extra, "4v100-avx512")
+                contract.check_linkage(links + "\n" + extra, "4v100-avx512", prefix)
         contract.check_dynamic_paths("(RUNPATH) Library runpath: [$ORIGIN/../lib64:/opt/devtools/test/lib]")
         with self.assertRaises(ValueError):
             contract.check_dynamic_paths("(RUNPATH) Library runpath: [/workspace/build/lib]")
 
-    def test_cp2k_cannot_publish_without_scientific_benchmark(self):
+    def test_cp2k_cannot_publish_without_candidate_scientific_acceptance(self):
         for target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
-            self.assertEqual(software.required_acceptance("cp2k", target), ("cp2k_benchmark",))
+            self.assertEqual(software.required_acceptance("cp2k", target), ("cp2k_science",))
         with self.assertRaises(ValueError):
             software.required_acceptance("cp2k", "a100")
 

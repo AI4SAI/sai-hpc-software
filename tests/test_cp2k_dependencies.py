@@ -64,9 +64,11 @@ class CP2KDependencyArchiveTests(unittest.TestCase):
         self.contents = {
             "libwignernj-0.8.0.tar.gz": b"verified wignernj fixture",
             "tblite-0.6.0.tar.xz": b"verified tblite release fixture",
+            "elpa-2026.02.002.tar.gz": b"verified ELPA toolchain fixture",
         }
         for constant, name in (("WIGNERNJ_SHA256", "libwignernj-0.8.0.tar.gz"),
-                               ("TBLITE_RELEASE_SHA256", "tblite-0.6.0.tar.xz")):
+                               ("TBLITE_RELEASE_SHA256", "tblite-0.6.0.tar.xz"),
+                               ("ELPA_SHA256", "elpa-2026.02.002.tar.gz")):
             digest = patch.object(cp2k_spack, constant,
                                   hashlib.sha256(self.contents[name]).hexdigest())
             digest.start()
@@ -76,11 +78,11 @@ class CP2KDependencyArchiveTests(unittest.TestCase):
         name = url.removeprefix("https://www.cp2k.org/static/downloads/")
         return io.BytesIO(self.contents[name])
 
-    def test_downloads_both_archives_and_only_refetches_damaged_cache_entries(self):
+    def test_downloads_archives_and_only_refetches_damaged_cache_entries(self):
         expected = [self.cache / name for name in self.contents]
         with patch("urllib.request.urlopen", side_effect=self.download) as download:
             self.assertEqual(cp2k_spack.cache_source_updates(self.cache), expected)
-            self.assertEqual(download.call_count, 2)
+            self.assertEqual(download.call_count, 3)
             for archive in expected:
                 self.assertEqual(archive.read_bytes(), self.contents[archive.name])
             download.reset_mock()
