@@ -14,6 +14,7 @@ from pathlib import Path, PurePosixPath
 import shutil
 import stat
 import tempfile
+import time
 
 
 PACKAGE = Path(__file__).resolve().parent
@@ -225,7 +226,10 @@ def load_deliveries(project):
             {'4V100', '16V100', '8V100V0', 'DSPRHBM'} and len(release['deliveries']) == 4,
             'release must identify exactly four accepted partitions')
     deliveries = []
-    for spec in release['deliveries']:
+    for index, spec in enumerate(release['deliveries'], start=1):
+        started = time.monotonic()
+        progress = f"[{index}/{len(release['deliveries'])}] {spec['partition']}"
+        print(progress + ': checking accepted source metadata...', flush=True)
         prefix = APP_ROOT / ('cp2k-release-' + spec['build_id']) / spec['partition']
         source = (project / 'containers/software/cp2k/release' / spec['build_id'] /
                   spec['partition'] / (spec['run_id'] + '.native'))
@@ -245,8 +249,15 @@ def load_deliveries(project):
                 published.get('identity') == identity and published.get('sha256') == spec['image_sha256'],
                 'SIF is not the accepted published delivery')
         plain_path(image)
+        image_started = time.monotonic()
+        print(f"{progress}: hashing SIF ({image.stat().st_size / 1024**2:.2f} MiB)...", flush=True)
         require(checksum(image) == spec['image_sha256'], 'accepted SIF checksum mismatch')
+        image_elapsed = time.monotonic() - image_started
         rows, removed = runtime_records(manifest, prefix)
+        count = sum(row['kind'] == 'file' for row in rows)
+        size = sum(row.get('size', 0) for row in rows)
+        runtime_started = time.monotonic()
+        print(f"{progress}: hashing {count} runtime files ({size / 1024**2:.2f} MiB)...", flush=True)
         # Read selected source files only. The immutable manifest pins all bytes;
         # excluded unit tests and development files do not enter the deployment.
         for row in rows:
@@ -261,6 +272,8 @@ def load_deliveries(project):
                         'source runtime link mismatch: ' + str(path))
             else:
                 require(stat.S_ISDIR(info.st_mode), 'source runtime directory mismatch: ' + str(path))
+        print(f"{progress}: source verified in {time.monotonic() - started:.1f}s "
+              f"(SIF {image_elapsed:.1f}s, runtime {time.monotonic() - runtime_started:.1f}s)", flush=True)
         receipt = {'schema': 1, 'policy': POLICY, 'identity': identity,
                    'image_sha256': spec['image_sha256'],
                    'source_native_manifest_sha256': spec['manifest_sha256'],

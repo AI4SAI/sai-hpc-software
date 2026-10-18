@@ -52,22 +52,28 @@ ACL 不向该账号授予写权限，也不开放整个家目录或其他软件�
 换其他账号执行时，目录所有者需为该账号设置对应的只读 ACL。
 
 `--install` 另外需要目标 `/opt/apps/cp2k` 和 module 目录的写权限，
-可以用有管理权限的账号或下面的 `sudo` 命令执行。
+由具备这些权限的账号执行。
 
 ## 执行顺序
 
-在 SAI-stardust 登录节点先预检；默认也只做预检：
+`--check` 是可选的完整只读预检；默认也只做预检：
 
 ```bash
 cd /home/stardust/sai-hpc-software/deployment/cp2k-2026.2
 bash install.sh --check
 ```
 
-用具有目标 `/opt` 写权限的账号安装，例如：
+它会完整读取约 0.70 GiB 的 SIF 和 1.87 GiB 的运行文件进行 SHA256 校验，
+并检查源路径和安装冲突，并非只检查权限。输出会逐分区显示当前校验阶段及耗时。
+`--install` 已包含相同预检；准备直接安装时，无需先单独执行 `--check`。
+
+用具有目标 `/opt` 写权限的账号直接安装，例如 `saiuser01` 已有对应组权限：
 
 ```bash
-sudo bash /home/stardust/sai-hpc-software/deployment/cp2k-2026.2/install.sh --install
+bash /home/stardust/sai-hpc-software/deployment/cp2k-2026.2/install.sh --install
 ```
+
+需要管理员身份的其他账号可使用 `sudo` 执行同一命令。
 
 脚本先核验四份产物、保留文件的 SHA256、已有安装及 module 冲突。
 随后在目标分区目录的同一文件系统建立隐藏暂存目录，复制保留文件、回读校验，
