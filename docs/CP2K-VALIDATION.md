@@ -92,6 +92,17 @@ claimed by these checks.
 [Fourth accepted delivery and independent publication validation](evidence/cp2k-install-layout-20261018/native-elpa-fourth-publication.json).
 [Build preparation, parallel compilation and CPU limits](evidence/cp2k-install-layout-20261018/dsprhbm-build-efficiency.json).
 
+The frozen CPU workflow subsequently ended with a failed GitHub conclusion at
+16:16:37. Its dependency, application and acceptance jobs all succeeded; the
+reusable `result` job failed before executing because its old workflow still
+required caller-scope `REMOTE_SSH_PRIVATE_KEY` and `REMOTE_USER` secrets. This
+is the same Environment-secret scope defect already fixed in current code at
+`6cbe030` and exercised by workflow `39102356436`, described below. The frozen
+workflow at `33e80c8` retains its actual failed conclusion. The published
+artifact separately passed full validation of raw science, exported bytes
+and module records.
+[CPU workflow jobs and exact GitHub annotations](evidence/cp2k-install-layout-20261018/dsprhbm-workflow-result.json).
+
 The old CPU dependency job `1839362` had succeeded; its failure was the
 application container's missing mount source before application compilation.
 The HCOLL fix did not change dependency versions or compilers. Rebuilding

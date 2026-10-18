@@ -209,6 +209,15 @@ Original frozen runs retain their failed states and accepted
 artifact proofs remain independently valid.
 [GitHub annotations and secret-scope diagnosis](evidence/cp2k-install-layout-20261018/github-environment-secret-result.json).
 
+CPU recovery workflow `39101032802` also ended with a failed GitHub conclusion
+at 16:16:37 after successful dependency, application and acceptance jobs.
+Its frozen `33e80c8` reusable `result` job retained the old required
+caller-scope SSH secrets and failed before running. Current code already
+contains the `6cbe030` repair and its real skip/result validation above. The
+original failed workflow is preserved alongside the independently revalidated
+accepted CPU delivery.
+[CPU workflow job states and annotations](evidence/cp2k-install-layout-20261018/dsprhbm-workflow-result.json).
+
 Accepted CP2K 2026.2 deliveries are available on all four partitions.
 The system ELPA library's generic allocation code was independently shown to
 execute AVX512 on an AVX2-only node, despite advertising both kernel sets.

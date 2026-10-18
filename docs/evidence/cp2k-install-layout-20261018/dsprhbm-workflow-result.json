@@ -1,0 +1,165 @@
+{
+  "collected_at": "2026-10-18T08:22:24.943236+00:00",
+  "jobs": [
+    {
+      "check_run_url": "https://api.github.com/repos/AI4SAI/sai-hpc-software/check-runs/117597172609",
+      "completed_at": "2026-10-18T05:35:45Z",
+      "conclusion": "success",
+      "failed_steps": [],
+      "id": 117597172609,
+      "name": "validate",
+      "started_at": "2026-10-18T05:34:49Z",
+      "status": "completed"
+    },
+    {
+      "check_run_url": "https://api.github.com/repos/AI4SAI/sai-hpc-software/check-runs/117597329895",
+      "completed_at": "2026-10-18T05:35:55Z",
+      "conclusion": "success",
+      "failed_steps": [],
+      "id": 117597329895,
+      "name": "resolve-source",
+      "started_at": "2026-10-18T05:35:47Z",
+      "status": "completed"
+    },
+    {
+      "check_run_url": "https://api.github.com/repos/AI4SAI/sai-hpc-software/check-runs/117597357592",
+      "completed_at": "2026-10-18T06:56:21Z",
+      "conclusion": "success",
+      "failed_steps": [],
+      "id": 117597357592,
+      "name": "build-cpu (cp2k, release, cp2k/cp2k, latest-release, resolved, v2026.2, 67b5da876dd6a76b8b021d5a0... / dependencies",
+      "started_at": "2026-10-18T05:35:58Z",
+      "status": "completed"
+    },
+    {
+      "check_run_url": "https://api.github.com/repos/AI4SAI/sai-hpc-software/check-runs/117597358562",
+      "completed_at": "2026-10-18T05:35:55Z",
+      "conclusion": "skipped",
+      "failed_steps": [],
+      "id": 117597358562,
+      "name": "build",
+      "started_at": "2026-10-18T05:35:56Z",
+      "status": "completed"
+    },
+    {
+      "check_run_url": "https://api.github.com/repos/AI4SAI/sai-hpc-software/check-runs/117611287786",
+      "completed_at": "2026-10-18T07:43:36Z",
+      "conclusion": "success",
+      "failed_steps": [],
+      "id": 117611287786,
+      "name": "build-cpu (cp2k, release, cp2k/cp2k, latest-release, resolved, v2026.2, 67b5da876dd6a76b8b021d5a0... / build",
+      "started_at": "2026-10-18T06:56:24Z",
+      "status": "completed"
+    },
+    {
+      "check_run_url": "https://api.github.com/repos/AI4SAI/sai-hpc-software/check-runs/117620118723",
+      "completed_at": "2026-10-18T08:16:30Z",
+      "conclusion": "success",
+      "failed_steps": [],
+      "id": 117620118723,
+      "name": "build-cpu (cp2k, release, cp2k/cp2k, latest-release, resolved, v2026.2, 67b5da876dd6a76b8b021d5a0... / acceptance",
+      "started_at": "2026-10-18T07:43:38Z",
+      "status": "completed"
+    },
+    {
+      "annotations": [
+        {
+          "annotation_level": "failure",
+          "blob_href": "https://github.com/AI4SAI/sai-hpc-software/blob/33e80c8f138ad6a7352d3ff36d0884beae51699b/.github",
+          "end_column": null,
+          "end_line": 1,
+          "message": "Error when evaluating 'secrets'. .github/workflows/cp2k.yml (Line: 146, Col: 11): Secret REMOTE_SSH_PRIVATE_KEY is required, but not provided while calling., .github/workflows/cp2k.yml (Line: 146, Col: 11): Secret REMOTE_USER is required, but not provided while calling.",
+          "path": ".github",
+          "raw_details": "",
+          "start_column": null,
+          "start_line": 1,
+          "title": ""
+        },
+        {
+          "annotation_level": "notice",
+          "blob_href": "https://github.com/AI4SAI/sai-hpc-software/blob/33e80c8f138ad6a7352d3ff36d0884beae51699b/.github",
+          "end_column": null,
+          "end_line": 1,
+          "message": "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+          "path": ".github",
+          "raw_details": "",
+          "start_column": null,
+          "start_line": 1,
+          "title": ""
+        }
+      ],
+      "check_output": {
+        "annotations_count": 2,
+        "annotations_url": "https://api.github.com/repos/AI4SAI/sai-hpc-software/check-runs/117626368334/annotations",
+        "summary": null,
+        "text": null,
+        "title": null
+      },
+      "check_run_url": "https://api.github.com/repos/AI4SAI/sai-hpc-software/check-runs/117626368334",
+      "completed_at": "2026-10-18T08:16:32Z",
+      "conclusion": "failure",
+      "failed_steps": [],
+      "id": 117626368334,
+      "name": "build-cpu (cp2k, release, cp2k/cp2k, latest-release, resolved, v2026.2, 67b5da876dd6a76b8b021d5a0... / result",
+      "started_at": "2026-10-18T08:16:30Z",
+      "status": "completed"
+    },
+    {
+      "annotations": [
+        {
+          "annotation_level": "failure",
+          "blob_href": "https://github.com/AI4SAI/sai-hpc-software/blob/33e80c8f138ad6a7352d3ff36d0884beae51699b/.github",
+          "end_column": null,
+          "end_line": 46,
+          "message": "Process completed with exit code 1.",
+          "path": ".github",
+          "raw_details": "",
+          "start_column": null,
+          "start_line": 46,
+          "title": ""
+        },
+        {
+          "annotation_level": "notice",
+          "blob_href": "https://github.com/AI4SAI/sai-hpc-software/blob/33e80c8f138ad6a7352d3ff36d0884beae51699b/.github",
+          "end_column": null,
+          "end_line": 1,
+          "message": "\"The ubuntu-latest label will migrate to Ubuntu 26 beginning October 19, 2026. For more information, see https://github.com/actions/runner-images/issues/14748\"",
+          "path": ".github",
+          "raw_details": "",
+          "start_column": null,
+          "start_line": 1,
+          "title": ""
+        }
+      ],
+      "check_output": {
+        "annotations_count": 2,
+        "annotations_url": "https://api.github.com/repos/AI4SAI/sai-hpc-software/check-runs/117626374830/annotations",
+        "summary": null,
+        "text": null,
+        "title": null
+      },
+      "check_run_url": "https://api.github.com/repos/AI4SAI/sai-hpc-software/check-runs/117626374830",
+      "completed_at": "2026-10-18T08:16:36Z",
+      "conclusion": "failure",
+      "failed_steps": [
+        {
+          "conclusion": "failure",
+          "name": "Verify selected GPU and CPU deliveries completed"
+        }
+      ],
+      "id": 117626374830,
+      "name": "result",
+      "started_at": "2026-10-18T08:16:34Z",
+      "status": "completed"
+    }
+  ],
+  "workflow": {
+    "conclusion": "failure",
+    "event": "workflow_dispatch",
+    "head_sha": "33e80c8f138ad6a7352d3ff36d0884beae51699b",
+    "html_url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39101032802",
+    "id": 39101032802,
+    "status": "completed",
+    "updated_at": "2026-10-18T08:16:37Z"
+  }
+}
