@@ -6,8 +6,12 @@ readback and publication. CP2K 2026.2 on all four partitions (4V100, 16V100,
 publication. Development is not yet accepted. GPUMD on 16V100 has passed science, performance and
 publication; its additional exported-native module execution check remains
 pending. Production acceptance is incomplete across the full site matrix. Original dirty
-worktrees and recovery checkpoints remain preserved. Administrator installation
-into physical `/opt/apps` is outside this task.
+worktrees and recovery checkpoints remain preserved. At the user's request,
+the ready-to-run [CP2K physical deployment package](../deployment/cp2k-2026.2/README.md)
+now includes the four-partition module, selective installer and post-install
+native science scripts. Four accepted source exports passed deployment preflight;
+administrator installation into physical `/opt/apps` and its subsequent native
+science remain pending.
 
 ## Implemented and locally verified
 

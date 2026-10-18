@@ -10,6 +10,16 @@ single native module inside the Slurm job. The runtime executes
 its packaged Tcl fragment sets the matching dependencies, library paths and
 `CP2K_DATA_DIR`.
 
+The four accepted 2026.2 deliveries now have a ready-to-run
+[physical deployment package](../deployment/cp2k-2026.2/README.md), including
+the exact public `cp2k/2026.2-auto` module, an integrity-checked installer and
+post-install single/two-node science scripts. Its explicit pruning removes
+build/test files while retaining all original CP2K data, shared libraries,
+runtime support and provenance. It adds no selected examples or benchmarks.
+The original SIFs and native exports remain unchanged; the actual installed
+subset is recorded separately in `share/sai/deployment.json`.
+[Four-partition payload and data preflight](evidence/cp2k-install-layout-20261018/physical-deployment-preflight.json).
+
 The reviewed site module is
 `/opt/modules/modulefiles/apps/abacus/develop-git-079fd0c-260724-sm70-auto`.
 It loads shared OpenMPI, FFTW, LibXC, SAIBLAS, ELPA and NVIDIA math modules and

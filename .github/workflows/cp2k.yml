@@ -45,9 +45,9 @@ on:
         type: boolean
         default: false
   push:
-    paths: ['controller/**', 'tests/**', 'profiles/**', '.github/workflows/cp2k.yml', '.github/workflows/software-pair.yml']
+    paths: ['controller/**', 'tests/**', 'profiles/**', 'deployment/**', '.github/workflows/cp2k.yml', '.github/workflows/software-pair.yml']
   pull_request:
-    paths: ['controller/**', 'tests/**', 'profiles/**', '.github/workflows/cp2k.yml', '.github/workflows/software-pair.yml']
+    paths: ['controller/**', 'tests/**', 'profiles/**', 'deployment/**', '.github/workflows/cp2k.yml', '.github/workflows/software-pair.yml']
 
 permissions:
   contents: read
@@ -67,7 +67,7 @@ jobs:
           command -v mksquashfs unsquashfs tclsh
       - run: python3 -m unittest discover -s tests -v
       - run: |
-          for script in controller/*.sh controller/*.sbatch; do
+          for script in controller/*.sh controller/*.sbatch deployment/*/*.sh deployment/*/*.sbatch; do
             bash -n "$script"
           done
 
