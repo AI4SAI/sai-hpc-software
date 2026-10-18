@@ -1,0 +1,315 @@
+{
+  "application_accounting": {
+    "elapsed": "00:30:36",
+    "end": "2026-10-18T09:49:46",
+    "exit_code": "0:0",
+    "job_id": "1838412",
+    "node_list": "d9470n02",
+    "partition": "DSPRHBM",
+    "start": "2026-10-18T09:19:10",
+    "state": "COMPLETED"
+  },
+  "artifact": {
+    "checksum_matches": true,
+    "checksum_record_path": "/home/stardust/sai-hpc-software/runs/cp2k-v2026-2-dsprhbm-retry-20261018-a/results/artifact.sha256",
+    "checksum_record_sha256": "3d66025243f742ba5481a5ff11c231b07a122738e45d70961d9e3dd74590fd11",
+    "independent_sha256": "036b5c67683f3cae1a0d024f2423726aa410765e9e37d24be736774c3cd03602",
+    "large_file_rehashed": true,
+    "mode": "0o444",
+    "mtime": "2026-10-18T01:49:39+00:00",
+    "path": "/home/stardust/sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-rb59c9f26a184/DSPRHBM/cp2k-v2026-2-dsprhbm-retry-20261018-a.sif",
+    "pointer_path": "/home/stardust/sai-hpc-software/runs/cp2k-v2026-2-dsprhbm-retry-20261018-a/artifact.path",
+    "pointer_sha256": "d50082f3c96c98836849b6f18da9c74c4852263cac7461e9d546e0690d9b12ff",
+    "present": true,
+    "recorded_sha256": "036b5c67683f3cae1a0d024f2423726aa410765e9e37d24be736774c3cd03602",
+    "size_bytes": 184406016,
+    "stable_during_hash": true
+  },
+  "artifact_manifest": {
+    "acceptance_keys": {},
+    "fields": {
+      "build_verified": true,
+      "contract_schema": 3,
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-rb59c9f26a184",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "published": false,
+      "recipe_sha256": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+      "software": "cp2k",
+      "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+      "target": "dsprhbm",
+      "verified": false,
+      "version": "v2026.2"
+    },
+    "path": "/home/stardust/sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-rb59c9f26a184/DSPRHBM/cp2k-v2026-2-dsprhbm-retry-20261018-a.json",
+    "sha256": "b095d6fe146cdfc76860b727653b84af16642829854b1b9eefcf4486a0672850"
+  },
+  "collector_remote_mutations": false,
+  "controller": "/home/stardust/sai-hpc-software/controller/c3b65b97f9d95ecb29a453713dfe292af20f6d39/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6",
+  "controller_git_sha": "c3b65b97f9d95ecb29a453713dfe292af20f6d39",
+  "controller_script_sha256": {
+    "build_capacity.py": "088494aa992817edaafcd1e4f8a2c63ce389e11af164d6be383824555630b15e",
+    "cp2k_build.sh": "11aabffbe7528ba57383414f2e4bf7d50006c9d593e30c48299e5e4ab2c61c33",
+    "cp2k_cmake_prerequisites.cmake": "8c923f94b76475eba88e14280b05e37ddb8f491a03821193253e49e4af519a0d",
+    "cp2k_container_entry.sh": "2f53b0af453a22fa505d28c2c595f53dc0708fca1ec943af4d13ee3c271b28f0",
+    "cp2k_dependencies.sh": "99d5bbcf9dda385257c0088fe9a12a1f6eea86364e2dc8bef46a17d1af822562",
+    "cp2k_dependency_stage.py": "ac170f92f21e833c5b409074a183a5df034371576d1a79f73b3ad1b85ff6174f",
+    "cp2k_image_driver.py": "e0ea6a2b7ce25189b3eb9b7749392b0416894f9d365e1f3c31c577546a8df049",
+    "cp2k_spack_dependencies.sh": "62977f63321a57a3c7d66f15e20f82cebc2ddf3987f1faa0e6719f7e6a640985",
+    "remote_controller.py": "40cb626f809b346a0679ae9820d65ebe2315a9cfb70532914bd31ec9f61d2ecf",
+    "software_controller.py": "0ca83428f8633af7f1e2de3d88fadb3ed8251180ea08cb32b37a851cf50a53db"
+  },
+  "controller_scripts_match_original_formal_snapshot": true,
+  "dependency": {
+    "accounting": {
+      "elapsed": "01:11:51",
+      "end": "2026-10-18T08:40:40",
+      "exit_code": "0:0",
+      "job_id": "1837486",
+      "node_list": "d9470n02",
+      "partition": "DSPRHBM",
+      "start": "2026-10-18T07:28:49",
+      "state": "COMPLETED"
+    },
+    "overlay_rehashed": false,
+    "seal": {
+      "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies/results/dependency-stage.json",
+      "record": {
+        "evidence_sha256": {
+          "image-driver.json": "24e8e2b9dd63dd8e99f5de73badb324019e813a2579bc1837fd9123d9f9404bf",
+          "install-success.json": "35c1659d3e3e1c77acee1f76cb9bf2e8c25e12a53cd947d5cfee461b05fde1cd",
+          "libint-export-repair.json": "80ac789f7215f1aad4258d4ca70b5b41d2353ff2d04b8d12a55f067d4a46a44d",
+          "native-profile.json": "8499ef928082a6255e5840f21dcd744780f736c50f8cf19e296b7ee7c70a5fea",
+          "probe-success.json": "fb61f8810907ea5bf72fc9942403dc25d4a3758c69fd74ae5f3a87707d031df0",
+          "spack.lock": "1d92ca3fbbc0b577a0e1eae2449647389959d6b22f548140fa6001f77f4100a5",
+          "spack.yaml": "883b8ac0fd63bfc686986123966b78f0524abd0008459f531d562acb151ee105",
+          "stage-identity.json": "2a8dffb9f3b7a2b29e4ec88bfc77750d9ffcb7a0817a674f94c4297e325d2d4c",
+          "validated-graph.json": "75ab321287dd23012177f321a8508c8bf12cb7851311898c75f757f28b2c2669"
+        },
+        "identity": {
+          "build_id": "v2026.2-g67b5da876dd6-rb59c9f26a184",
+          "cpu_arch": "x86-64-v4",
+          "cuda_arch": "",
+          "dependency_isa": "avx512",
+          "gpus": 0,
+          "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/DSPRHBM",
+          "partition": "DSPRHBM",
+          "recipe_sha256": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "v2026.2",
+          "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+          "source_version": "v2026.2",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "dsprhbm",
+          "track": "release",
+          "version_label": "v2026.2"
+        },
+        "job_id": "1837486",
+        "overlay_sha256": "665b92e0bc3732acb8c8ec3d4a890bc625261cadd28a0d1da888a933843a6b2c",
+        "purpose": "cp2k-final-prefix-dependencies-not-application-acceptance",
+        "schema": 1,
+        "script_sha256": "a4c5be3e7e72fe373d6fefee3985019173d76914496b266f292ef9ab037cdf71"
+      },
+      "sha256": "91d912a1fa6787551afd3fc4861720aa6b652e530e7c269fc3c1c965f2979df1"
+    },
+    "sealed_overlay_path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies/work.ext3",
+    "sealed_overlay_retained": true,
+    "sealed_overlay_size_bytes": 17179869184
+  },
+  "identity": {
+    "build_id": "v2026.2-g67b5da876dd6-rb59c9f26a184",
+    "cpu_arch": "x86-64-v4",
+    "cuda_arch": "",
+    "dependency_isa": "avx512",
+    "gpus": 0,
+    "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/DSPRHBM",
+    "partition": "DSPRHBM",
+    "recipe_sha256": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+    "repository": "cp2k/cp2k",
+    "schema": 2,
+    "software": "cp2k",
+    "source_ref": "v2026.2",
+    "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+    "source_version": "v2026.2",
+    "stack_digest": null,
+    "stack_sources": {},
+    "target": "dsprhbm",
+    "track": "release",
+    "version_label": "v2026.2"
+  },
+  "job_script_sha256": "93185afeadc3a94e78abaa4143dc17770c0ad3cbf5e2196676acc07aeced0963",
+  "local_provenance_baselines": {
+    "dsprhbm-retry-submitted.json": "58ca0105dc9d2d5e437e64ef5f5934603609fd668ba370824d6f243c4c303690",
+    "first-artifact.json": "7060150288504ce893f8052c2397bda05fe0264e8a25b19c4d666dd397bf673b"
+  },
+  "log": {
+    "bytes": 635349,
+    "completion_markers": [
+      {
+        "line": 6568,
+        "text": "BUILD_AND_ARTIFACT_VERIFIED"
+      }
+    ],
+    "correct_install_destination_excerpt": [
+      {
+        "line": 4648,
+        "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/DSPRHBM/bin/cp2k.psmp"
+      },
+      {
+        "line": 4962,
+        "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/DSPRHBM/lib64/libcp2k.so.2026.2"
+      },
+      {
+        "line": 4964,
+        "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/DSPRHBM/lib64/libcp2k.so"
+      }
+    ],
+    "path": "/home/stardust/sai-hpc-software/runs/cp2k-v2026-2-dsprhbm-retry-20261018-a/results/slurm-1838412.log",
+    "sha256": "9ae6073df8977de261f490114bc20b175fb109a0009266bafd481d807b5a475e",
+    "stable_during_read": true
+  },
+  "observed_at": "2026-10-18T03:01:05.722385+00:00",
+  "original_application_accounting": {
+    "elapsed": "00:22:15",
+    "end": "2026-10-18T09:05:59",
+    "exit_code": "255:0",
+    "job_id": "1838161",
+    "node_list": "d9470n02",
+    "partition": "DSPRHBM",
+    "start": "2026-10-18T08:43:44",
+    "state": "FAILED"
+  },
+  "original_application_job": "1838161",
+  "original_run_id": "39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6",
+  "original_workflow": "39078998459",
+  "original_workflow_success_claimed": false,
+  "purpose": "DSPRHBM application-only retry SIF with independently recomputed full artifact checksum; build/artifact validation only",
+  "request": {
+    "path": "/home/stardust/sai-hpc-software/runs/cp2k-v2026-2-dsprhbm-retry-20261018-a/request.json",
+    "record": {
+      "contract_schema": 3,
+      "controller": "/home/stardust/sai-hpc-software/controller/c3b65b97f9d95ecb29a453713dfe292af20f6d39/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6",
+      "dependencies_run": "39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies",
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-rb59c9f26a184",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "jobs": 8,
+      "minutes": 240,
+      "op": "submit",
+      "overlay_mb": 16384,
+      "recipe_sha256": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+      "resume_run": null,
+      "run_id": "cp2k-v2026-2-dsprhbm-retry-20261018-a",
+      "sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+      "software": "cp2k",
+      "source_ref": "v2026.2",
+      "target": "dsprhbm",
+      "track": "release",
+      "version": "v2026.2"
+    },
+    "sha256": "54182cfc8798e52347248545d9b00c896840483fb6ad0121a1c8a19a9db4ed4a"
+  },
+  "request_and_job_script_unchanged_since_retry_submission": true,
+  "run_directory": "/home/stardust/sai-hpc-software/runs/cp2k-v2026-2-dsprhbm-retry-20261018-a",
+  "run_id": "cp2k-v2026-2-dsprhbm-retry-20261018-a",
+  "sacct_stdout": "1837486|DSPRHBM|COMPLETED|0:0|01:11:51|d9470n02|2026-10-18T07:28:49|2026-10-18T08:40:40\n1838161|DSPRHBM|FAILED|255:0|00:22:15|d9470n02|2026-10-18T08:43:44|2026-10-18T09:05:59\n1838412|DSPRHBM|COMPLETED|0:0|00:30:36|d9470n02|2026-10-18T09:19:10|2026-10-18T09:49:46\n",
+  "schema": 1,
+  "scientific_acceptance_claimed": false,
+  "status_record": {
+    "path": "/home/stardust/sai-hpc-software/runs/cp2k-v2026-2-dsprhbm-retry-20261018-a/results/status.json",
+    "record": {
+      "exit_code": "0:0",
+      "job": "1838412",
+      "state": "COMPLETED",
+      "verified": true
+    },
+    "sha256": "440a5e554c9c9f89eaf85f1527176024a2f5cf6eb7411fb48e26600136b2dd8c"
+  },
+  "successful_build_cleanup": {
+    "application_work_overlay_exists": false,
+    "note": "Observed after the production script completed; collector performed no cleanup.",
+    "temporary_final_squashfs_exists": false
+  },
+  "verification": {
+    "artifact_checks": true,
+    "completion_marker": "BUILD_AND_ARTIFACT_VERIFIED",
+    "cp2k_binary_sha256": "70d5d0bb3f44cd04d76ed8a605585a0670759c81ec9aea0d35e14ba709f2176f",
+    "deployment_scope": "loader contract checked; no claim of physical deployment",
+    "elf_count": 46,
+    "external_runtime_roots": [
+      "/opt/devtools",
+      "/usr",
+      "/bin",
+      "/lib",
+      "/lib64"
+    ],
+    "flags": [
+      "cosma",
+      "dftd4_v4_2",
+      "elpa",
+      "fftw3",
+      "hdf5",
+      "libbqb",
+      "libdftd4",
+      "libint",
+      "libvori",
+      "libxc",
+      "libxs",
+      "libxsmm",
+      "mctc-lib",
+      "mpi_f08",
+      "omp",
+      "parallel",
+      "plumed2",
+      "s_dftd3",
+      "scalapack",
+      "spglib",
+      "tblite"
+    ],
+    "libcp2k_sha256": "68b2e1a6d879acdb5654ca221545abcf1d87f52daa2cea90e65f7df557b8a635",
+    "log_line": 6567,
+    "prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/DSPRHBM",
+    "scientific_acceptance": false,
+    "target": "dsprhbm",
+    "verification_json_line_sha256": "c6e363aa7dc0ced7d39b3af20447a8e599766937b82fa04f456c47b4250865b1"
+  }
+}

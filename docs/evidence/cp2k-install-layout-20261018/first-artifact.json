@@ -1,0 +1,209 @@
+{
+  "schema": 1,
+  "purpose": "First formal CP2K SIF after install-layout correction; build/artifact validation only",
+  "observed_at": "2026-10-18T00:59:12.424598+00:00",
+  "workflow": "39078998459",
+  "run_id": "39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6",
+  "run_directory": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6",
+  "identity": {
+    "build_id": "v2026.2-g67b5da876dd6-rb59c9f26a184",
+    "cpu_arch": "znver4",
+    "cuda_arch": "70",
+    "dependency_isa": "avx512",
+    "gpus": 1,
+    "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100",
+    "partition": "4V100",
+    "recipe_sha256": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+    "repository": "cp2k/cp2k",
+    "schema": 2,
+    "software": "cp2k",
+    "source_ref": "v2026.2",
+    "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+    "source_version": "v2026.2",
+    "stack_digest": null,
+    "stack_sources": {},
+    "target": "4v100-avx512",
+    "track": "release",
+    "version_label": "v2026.2"
+  },
+  "controller": "/home/stardust/sai-hpc-software/controller/c3b65b97f9d95ecb29a453713dfe292af20f6d39/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6",
+  "controller_git_sha": "c3b65b97f9d95ecb29a453713dfe292af20f6d39",
+  "controller_script_sha256": {
+    "cp2k_build.sh": "11aabffbe7528ba57383414f2e4bf7d50006c9d593e30c48299e5e4ab2c61c33",
+    "cp2k_dependencies.sh": "99d5bbcf9dda385257c0088fe9a12a1f6eea86364e2dc8bef46a17d1af822562",
+    "cp2k_container_entry.sh": "2f53b0af453a22fa505d28c2c595f53dc0708fca1ec943af4d13ee3c271b28f0",
+    "cp2k_cmake_prerequisites.cmake": "8c923f94b76475eba88e14280b05e37ddb8f491a03821193253e49e4af519a0d",
+    "cp2k_spack_dependencies.sh": "62977f63321a57a3c7d66f15e20f82cebc2ddf3987f1faa0e6719f7e6a640985",
+    "cp2k_dependency_stage.py": "ac170f92f21e833c5b409074a183a5df034371576d1a79f73b3ad1b85ff6174f",
+    "remote_controller.py": "40cb626f809b346a0679ae9820d65ebe2315a9cfb70532914bd31ec9f61d2ecf",
+    "build_capacity.py": "088494aa992817edaafcd1e4f8a2c63ce389e11af164d6be383824555630b15e",
+    "cp2k_image_driver.py": "e0ea6a2b7ce25189b3eb9b7749392b0416894f9d365e1f3c31c577546a8df049",
+    "software_controller.py": "0ca83428f8633af7f1e2de3d88fadb3ed8251180ea08cb32b37a851cf50a53db"
+  },
+  "controller_scripts_still_match_initial_git_verification": true,
+  "request_sha256": "c48055585a439d0a978607a3abba47a9ff431c3ab51798e18090aa0da4641798",
+  "job_script_sha256": "e55d3fea59f2fa39ac17726dbb3a42a90f2f25f4dfdc2f6d380ce85bce013ddf",
+  "application_accounting": {
+    "job_id": "1837815",
+    "partition": "4V100",
+    "state": "COMPLETED",
+    "exit_code": "0:0",
+    "elapsed": "00:47:17",
+    "node_list": "4v100n01",
+    "start": "2026-10-18T08:09:37",
+    "end": "2026-10-18T08:56:54"
+  },
+  "host_tmpdir": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6/runtime",
+  "artifact": {
+    "path": "/home/stardust/sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6.sif",
+    "present": true,
+    "size_bytes": 187445248,
+    "mode": "0o444",
+    "mtime": "2026-10-18T00:56:51+00:00",
+    "recorded_sha256": "1ec8fdf693f4273f7fa1c52fcc27b4aba858d6077a45ff569f2b421677aa3b00",
+    "checksum_record_path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6/results/artifact.sha256",
+    "checksum_record_sha256": "1668bc850ccc19a5d6f06344997a2bab7e2b89f7639a65489705fa0e8a0bf4ee",
+    "large_file_rehashed": false
+  },
+  "verification": {
+    "artifact_checks": true,
+    "scientific_acceptance": false,
+    "deployment_scope": "loader contract checked; no claim of physical deployment",
+    "flags": [
+      "cosma",
+      "cusolvermp",
+      "cusolvermp_nccl",
+      "dbcsr_acc",
+      "dftd4_v4_2",
+      "elpa",
+      "fftw3",
+      "hdf5",
+      "libbqb",
+      "libdftd4",
+      "libint",
+      "libvori",
+      "libxc",
+      "libxs",
+      "libxsmm",
+      "mctc-lib",
+      "mpi_f08",
+      "offload_cuda",
+      "omp",
+      "parallel",
+      "plumed2",
+      "s_dftd3",
+      "scalapack",
+      "spglib",
+      "spla_gemm_offloading",
+      "tblite"
+    ],
+    "external_runtime_roots": [
+      "/opt/devtools",
+      "/usr",
+      "/bin",
+      "/lib",
+      "/lib64"
+    ],
+    "elf_count": 47,
+    "cp2k_binary_sha256": "79d18c43771bec2cba85718f87d4542917385224c0c1cd0324684b8c86d067cd",
+    "libcp2k_sha256": "beb468fbe06c97c7701b13148c99e61f57a948deadf47196a96a47b4be8852af",
+    "log_line": 6755,
+    "verification_json_line_sha256": "95454ffc52d32a073daa0f1fc18bdb09fa888138b881d02a4faba7a97abd6b29",
+    "completion_marker": "BUILD_AND_ARTIFACT_VERIFIED"
+  },
+  "status_record": {
+    "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6/results/status.json",
+    "sha256": "316e21fca746efffde4709b16dfea93a9241267e5ad54da754489e2b8c3476b2",
+    "record": {
+      "job": "1837815",
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "verified": true
+    }
+  },
+  "log": {
+    "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6/results/slurm-1837815.log",
+    "sha256": "383ea2ab9f94366f198f918addd655369c5d80d1fd168d2a0a2757a2dabcf470",
+    "bytes": 657327,
+    "stable_during_read": true,
+    "correct_install_destination_excerpt": [
+      {
+        "line": 4796,
+        "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/bin/cp2k.psmp"
+      },
+      {
+        "line": 5110,
+        "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/lib64/libcp2k.so.2026.2"
+      },
+      {
+        "line": 5112,
+        "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/lib64/libcp2k.so"
+      }
+    ]
+  },
+  "dependency": {
+    "accounting": {
+      "job_id": "1837488",
+      "partition": "4V100",
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "elapsed": "00:37:21",
+      "allocated_cpus": "8",
+      "node_list": "4v100n12"
+    },
+    "seal": {
+      "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6-dependencies/results/dependency-stage.json",
+      "sha256": "118e2dc42a0a055f2ee8c43a0e863269d1a83d041c12bcc01ac21e4e33a77eaf",
+      "overlay_sha256": "3ac2af1da5f192a1b6f35613bcad9174dcc0b3f7b6c928d23462d5c8320f5575"
+    },
+    "sealed_overlay_retained": true
+  },
+  "successful_build_cleanup": {
+    "application_work_overlay_exists": false,
+    "temporary_final_squashfs_exists": false,
+    "note": "Paths observed after the production script completed; no cleanup performed by this evidence collector."
+  },
+  "all_applications_accounting": {
+    "1837815": {
+      "job_id": "1837815",
+      "partition": "4V100",
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "elapsed": "00:47:17",
+      "node_list": "4v100n01",
+      "start": "2026-10-18T08:09:37",
+      "end": "2026-10-18T08:56:54"
+    },
+    "1838161": {
+      "job_id": "1838161",
+      "partition": "DSPRHBM",
+      "state": "RUNNING",
+      "exit_code": "0:0",
+      "elapsed": "00:15:28",
+      "node_list": "d9470n02",
+      "start": "2026-10-18T08:43:44",
+      "end": "Unknown"
+    },
+    "1838191": {
+      "job_id": "1838191",
+      "partition": "8V100V0",
+      "state": "RUNNING",
+      "exit_code": "0:0",
+      "elapsed": "00:11:56",
+      "node_list": "8v100v0n02",
+      "start": "2026-10-18T08:47:16",
+      "end": "Unknown"
+    },
+    "1838194": {
+      "job_id": "1838194",
+      "partition": "16V100",
+      "state": "RUNNING",
+      "exit_code": "0:0",
+      "elapsed": "00:11:06",
+      "node_list": "16v100n59",
+      "start": "2026-10-18T08:48:06",
+      "end": "Unknown"
+    }
+  },
+  "sacct_stdout": "1837815|4V100|COMPLETED|0:0|00:47:17|4v100n01|2026-10-18T08:09:37|2026-10-18T08:56:54\n1838161|DSPRHBM|RUNNING|0:0|00:15:28|d9470n02|2026-10-18T08:43:44|Unknown\n1838191|8V100V0|RUNNING|0:0|00:11:56|8v100v0n02|2026-10-18T08:47:16|Unknown\n1838194|16V100|RUNNING|0:0|00:11:06|16v100n59|2026-10-18T08:48:06|Unknown\n"
+}

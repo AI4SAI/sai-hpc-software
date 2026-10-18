@@ -14,8 +14,9 @@ into physical `/opt/apps` is outside this task.
   skip; development must produce a fresh run on every trigger. Explicit retry
   inputs propagate through reusable workflows. Schema-1 history is retained.
 - Long jobs are separated into build and acceptance phases. CP2K additionally
-  has a dependency phase. CPU and GPU compilation can run independently; CPU
-  acceptance waits for a verified GPU reference. Handoffs validate workflow/source/track/target and the original
+  has a dependency phase. CPU and GPU compilation can run independently. CP2K now
+  validates each candidate independently on one and two nodes; ABACUS retains
+  its existing reference policy. Handoffs validate workflow/source/track/target and the original
   immutable controller identity, without uploading or claiming a second build.
 - Re-entering CP2K application or any software's acceptance stage validates and
   resumes the existing Slurm handle. Completed MD evidence is reverified without
@@ -41,8 +42,9 @@ into physical `/opt/apps` is outside this task.
 - GPUMD adds frozen-model GNEP numerical forces, stale-output rejection,
   calibrated engine intervals and alternating baseline/candidate trials.
   Scientific and performance verdicts are recomputed from retained raw files.
-- Publication requires all scientific gates and blocks a repeated performance
-  regression greater than 10%. Repeat records bind original evidence, artifact,
+- Publication requires all scientific gates. Software with a historical
+  comparison policy blocks a repeated performance regression greater than 10%;
+  CP2K now uses candidate-only correctness checks and descriptive timings. Repeat records bind original evidence, artifact,
   baseline, inputs and resources; original logs remain available.
 - Every accepted single or paired SIF must export its exact prefixes and pass
   independent readback of all bytes, permissions, links, identities and native
@@ -98,29 +100,42 @@ Evidence: [workflow-closure-20261015.json](evidence/workflow-closure-20261015.js
 
 ## Remaining acceptance work
 
-At 07:14 Asia/Shanghai on October 18, both formal workflows had completed all
-four dependency stages. Seven application attempts compiled and linked CP2K
-fully but failed during installation: CP2K's `CACHE PATH` declaration converted
-the untyped `CMAKE_INSTALL_LIBDIR=lib64` argument to `/lib64`. The prefix itself
-was correct, but library and export installation escaped it into a read-only
-system bind. The corrected-runtime 8V100V0 application `1837029` was still running.
-No final SIF existed. The recipe now types the value explicitly as STRING and
-rejects a non-relative library directory at configuration time. Recovery has
-since passed on a preserved copy of a completed build.
-[Install failure and repair](evidence/cp2k-install-layout-20261018/README.md).
+CP2K 2026.2 has four SIFs from the original corrected installation recipe:
+4V100 `1837815`, 16V100 `1838194`, 8V100V0 `1838191`, and DSPRHBM retry
+`1838412` all completed `0:0`. They remain build-only artifacts with the
+original system ELPA linkage, not published multi-partition releases. The
+original GitHub workflow `39078998459` ended with failure and is retained.
+[Artifact/diagnostic status](CP2K-VALIDATION.md),
+[installation repair and original identities](evidence/cp2k-install-layout-20261018/README.md).
 
-The corrected release workflow
-[39078998459](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39078998459)
-uses controller `c3b65b9` and recipe
-`b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150`.
-By 08:11, 4V100 dependency `1837488` had completed `0:0` in 37:21 and
-its sealed image was handed to application `1837815`, RUNNING on `4v100n01`.
-The other dependency jobs remained RUNNING: `1837489` (16V100),
-`1837487` (8V100V0) and `1837486` (DSPRHBM).
-[Exact submission evidence](evidence/cp2k-install-layout-20261018/formal-start.json).
-[Verified stage transition](evidence/cp2k-install-layout-20261018/formal-progress.json).
-CI passed 735 tests (733 passed, two optional skips). Formal SIF delivery and
-scientific/performance acceptance are still pending.
+The current priority is one fully usable release delivery, starting on 16V100.
+The system ELPA library's generic allocation code was independently shown to
+execute AVX512 on an AVX2-only node, despite advertising both kernel sets.
+The new recipe therefore builds CP2K's own pinned ELPA 2026.02.002 under
+`<CP2K prefix>/dependencies/elpa`, with GCC 14.3.0, native partition flags and
+V100 kernels. It includes the upstream communicator/GPU-setup repairs and
+exports the dependency with the software directory.
+[Independent ISA evidence](evidence/cp2k-install-layout-20261018/system-elpa-isa-probe.json).
+
+Private-ELPA pilot `1838654` built successfully and passed small OT, ordinary
+diagonalization, DFT-D4 and TBLITE. Its small diagonalization did not pass the
+ELPA dispatch threshold, so actual ELPA remains a separate required test.
+Diagnostic `1838989` found root-only pilot-overlay permissions and loaded the
+old system library. A separately exported, readable copy passed all eight calculations in
+`1839059` (`COMPLETED 0:0`, 16:08), including small/large ELPA on one and two
+nodes. Each rank proved private linkage; ELPA recorded GPU kernel selection
+and positive solver calls. Original artifacts and failed evidence remain
+unchanged. [Diagnostic results and raw evidence](evidence/cp2k-install-layout-20261018/native-elpa-16v100-multinode.json).
+
+The user has retired the old CP2K 2026.1 comparison. Fresh acceptance uses
+`cp2k_acceptance.py`: one/two-node candidate consistency, OT and ordinary/forced
+ELPA agreement, DFT-D4, TBLITE and larger PBE water workloads. Actual solver
+calls, rank placement, inputs and artifact identity are verified. Timings are
+reported without claiming a baseline speed ratio. Full scientific acceptance,
+new-recipe artifacts, export readback and publication remain pending. The new
+implementation passed 772 tests (two optional skips) in a home-directory
+snapshot. Physical deployment can use the packaged native partition selector
+under one site module name; [deployment assessment](CP2K-NATIVE-MODULE.md).
 
 Recovery job `1837454` completed `0:0` in 18:52, producing a verified
 187,449,344-byte diagnostic SIF. Installation and final SIF verification passed:
@@ -134,9 +149,9 @@ workflow. Its fixture data and single-GPU smoke do not establish comparative
 performance or multi-GPU acceptance.
 [SIF path, checksum and runtime proof](evidence/cp2k-install-layout-20261018/recovery-sif.json).
 Read-only SIF inspection also confirmed installed data and its configured
-lookup directory. The prepared formal-SIF smoke will exercise OT, ordinary
-diagonalization and OT without local data copies; none has yet run against
-the new formal artifact. [Installed-data checks](evidence/cp2k-install-layout-20261018/installed-data.json).
+lookup directory. The later formal-SIF smoke verified its own installed data
+and dynamic lookup, as recorded above.
+[Earlier diagnostic installed-data checks](evidence/cp2k-install-layout-20261018/installed-data.json).
 
 Actual PBE smoke exposed a CUDA runtime compatibility issue after successful
 compile/version/ldd checks: host driver 550.163.01 could not JIT CUDA 12.9 PTX.

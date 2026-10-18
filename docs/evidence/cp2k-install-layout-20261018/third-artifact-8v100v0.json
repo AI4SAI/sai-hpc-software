@@ -1,0 +1,170 @@
+{
+  "application_accounting_raw": "1838191|8V100V0|COMPLETED|0:0|01:37:45|8v100v0n02|2026-10-18T08:47:16|2026-10-18T10:25:01",
+  "application_overlay_retained": false,
+  "artifact": {
+    "checksum_record_sha256": "a051fd88b56a2c7a07ad26e584072b6fb7202973ca00f81343eb055bf6e1777f",
+    "large_file_rehashed": false,
+    "mode": "0o444",
+    "mtime": "2026-10-18T02:24:54+00:00",
+    "path": "/home/stardust/sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-rb59c9f26a184/8V100V0/39078998459-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6.sif",
+    "recorded_sha256": "1ca6b25cf3f2b68642fab52f66d93328c7430ae52e23efe871577edf0e7b7e72",
+    "size_bytes": 186687488
+  },
+  "controller": "/home/stardust/sai-hpc-software/controller/c3b65b97f9d95ecb29a453713dfe292af20f6d39/39078998459-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6",
+  "controller_script_sha256": {
+    "build_capacity.py": "088494aa992817edaafcd1e4f8a2c63ce389e11af164d6be383824555630b15e",
+    "cp2k_build.sh": "11aabffbe7528ba57383414f2e4bf7d50006c9d593e30c48299e5e4ab2c61c33",
+    "cp2k_cmake_prerequisites.cmake": "8c923f94b76475eba88e14280b05e37ddb8f491a03821193253e49e4af519a0d",
+    "cp2k_container_entry.sh": "2f53b0af453a22fa505d28c2c595f53dc0708fca1ec943af4d13ee3c271b28f0",
+    "cp2k_dependencies.sh": "99d5bbcf9dda385257c0088fe9a12a1f6eea86364e2dc8bef46a17d1af822562",
+    "cp2k_dependency_stage.py": "ac170f92f21e833c5b409074a183a5df034371576d1a79f73b3ad1b85ff6174f",
+    "cp2k_image_driver.py": "e0ea6a2b7ce25189b3eb9b7749392b0416894f9d365e1f3c31c577546a8df049",
+    "cp2k_spack_dependencies.sh": "62977f63321a57a3c7d66f15e20f82cebc2ddf3987f1faa0e6719f7e6a640985",
+    "remote_controller.py": "40cb626f809b346a0679ae9820d65ebe2315a9cfb70532914bd31ec9f61d2ecf",
+    "software_controller.py": "0ca83428f8633af7f1e2de3d88fadb3ed8251180ea08cb32b37a851cf50a53db"
+  },
+  "dependency": {
+    "record": {
+      "evidence_sha256": {
+        "image-driver.json": "24e8e2b9dd63dd8e99f5de73badb324019e813a2579bc1837fd9123d9f9404bf",
+        "install-success.json": "c3f5868b2269c55119e8feed48076475a380ec4f7070796c89fface29887e978",
+        "libint-export-repair.json": "75aabc92aa3efa33a8101325ec863df191fbd87130e033c676457a4f72ea75c2",
+        "native-profile.json": "00c21e33424fed3dfc5ff38cb72106ef94cc4cfb36d3678e6df123e4dda7470b",
+        "probe-success.json": "b88be514933b20421b558504ece9168c03601e0b47b04407bf46463fd5f96a67",
+        "spack.lock": "851e4f6ed20cd9c612c5b5c8d8f7611e43f5b3c3baa70e2cefbff9a4c1d71d02",
+        "spack.yaml": "57a97da082ce1dd5c8f06b010cda950e8a0acef93a77e4806dae89616947c102",
+        "stage-identity.json": "ef46ef24acaa137e4e6008d93fdc467f7cf3cda5d7ee4f7764a93d4eb5bae71b",
+        "validated-graph.json": "5adb6b731be9d5eb0bf54bcab03ca8ad0822ce94414d4ddd2d8ff646a982993e"
+      },
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-rb59c9f26a184",
+        "cpu_arch": "skylake-avx512",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/8V100V0",
+        "partition": "8V100V0",
+        "recipe_sha256": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "8v100v0-avx512",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "job_id": "1837487",
+      "overlay_sha256": "b3f94160ffdbed725356f163ce9de29a45926a1181a43fac34e181c12e0a5b2f",
+      "purpose": "cp2k-final-prefix-dependencies-not-application-acceptance",
+      "schema": 1,
+      "script_sha256": "d599531a6faf25682575e8d137409c9e0e3d90e6fdc6eb468a8c9b2cf8fa8bf7"
+    },
+    "seal_path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6-dependencies/results/dependency-stage.json",
+    "seal_sha256": "63172d01fa7fc289432231de7407f61423fe7d0edf85e38e2a71460e2e8b5200",
+    "sealed_overlay_retained": true
+  },
+  "identity": {
+    "build_id": "v2026.2-g67b5da876dd6-rb59c9f26a184",
+    "cpu_arch": "skylake-avx512",
+    "cuda_arch": "70",
+    "dependency_isa": "avx2",
+    "gpus": 1,
+    "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/8V100V0",
+    "partition": "8V100V0",
+    "recipe_sha256": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+    "repository": "cp2k/cp2k",
+    "schema": 2,
+    "software": "cp2k",
+    "source_ref": "v2026.2",
+    "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+    "source_version": "v2026.2",
+    "stack_digest": null,
+    "stack_sources": {},
+    "target": "8v100v0-avx512",
+    "track": "release",
+    "version_label": "v2026.2"
+  },
+  "job_script_sha256": "144c029b190b08bfed4d6d50d74db4b69efd0f8b0e8f2321a10fea7e4a359dfe",
+  "log": {
+    "bytes": 663210,
+    "correct_install_destination_excerpt": [
+      {
+        "line": 4796,
+        "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/8V100V0/bin/cp2k.psmp"
+      },
+      {
+        "line": 5110,
+        "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/8V100V0/lib64/libcp2k.so.2026.2"
+      },
+      {
+        "line": 5112,
+        "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/8V100V0/lib64/libcp2k.so"
+      }
+    ],
+    "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6/results/slurm-1838191.log",
+    "sha256": "a3140fbbc5da54e78bf3b1678a01aad05028a0bd11864e26a44c5d804e99a506",
+    "stable_during_read": true
+  },
+  "mutations_performed": false,
+  "observed_at": "2026-10-18T02:55:27.252057+00:00",
+  "purpose": "Third formal CP2K SIF after install-layout correction; build/artifact validation only",
+  "request_sha256": "93ccac7780983f01a6620a62687919d03f6a915c39cb73c2e05b6150cdebb3c5",
+  "run_id": "39078998459-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6",
+  "schema": 1,
+  "status": {
+    "exit_code": "0:0",
+    "job": "1838191",
+    "state": "COMPLETED",
+    "verified": true
+  },
+  "verification": {
+    "artifact_checks": true,
+    "completion_marker": "BUILD_AND_ARTIFACT_VERIFIED",
+    "deployment_scope": "loader contract checked; no claim of physical deployment",
+    "elf_count": 47,
+    "external_runtime_roots": [
+      "/opt/devtools",
+      "/usr",
+      "/bin",
+      "/lib",
+      "/lib64"
+    ],
+    "flags": [
+      "cosma",
+      "cusolvermp",
+      "cusolvermp_nccl",
+      "dbcsr_acc",
+      "dftd4_v4_2",
+      "elpa",
+      "fftw3",
+      "hdf5",
+      "libbqb",
+      "libdftd4",
+      "libint",
+      "libvori",
+      "libxc",
+      "libxs",
+      "libxsmm",
+      "mctc-lib",
+      "mpi_f08",
+      "offload_cuda",
+      "omp",
+      "parallel",
+      "plumed2",
+      "s_dftd3",
+      "scalapack",
+      "spglib",
+      "spla_gemm_offloading",
+      "tblite"
+    ],
+    "log_line": 6758,
+    "prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/8V100V0",
+    "scientific_acceptance": false,
+    "target": "8v100v0-avx512"
+  },
+  "workflow": "39078998459"
+}

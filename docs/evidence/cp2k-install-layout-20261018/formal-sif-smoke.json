@@ -1,0 +1,711 @@
+{
+  "schema": 1,
+  "collected_at_utc": "2026-10-18T01:14:43.143585+00:00",
+  "status": "independently-recomputed-formal-sif-three-case-smoke-passed",
+  "scope": "Single-node, single-MPI-rank, one allocated GPU, OMP=1 two-water PBE runtime smoke. Same-SIF internal consistency and installed-data lookup, not independent scientific baseline, multinode, performance or publication acceptance.",
+  "cluster_alias": "SAI-stardust",
+  "workflow": "39078998459",
+  "task": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a",
+  "slurm": {
+    "smoke": {
+      "JobIDRaw": "1838355",
+      "JobName": "cp2k-formal-sif-pbe-smoke",
+      "Partition": "4V100",
+      "State": "COMPLETED",
+      "ExitCode": "0:0",
+      "Elapsed": "00:00:45",
+      "Start": "2026-10-18T09:09:58",
+      "End": "2026-10-18T09:10:43",
+      "NodeList": "4v100n04",
+      "AllocTRES": "billing=194,cpu=8,gres/gpu=1,mem=22G,node=1",
+      "User": "stardust"
+    },
+    "build": {
+      "JobIDRaw": "1837815",
+      "JobName": "sai-cp2k-build-4v100-avx512-b59c9f26a184",
+      "Partition": "4V100",
+      "State": "COMPLETED",
+      "ExitCode": "0:0",
+      "Elapsed": "00:47:17",
+      "Start": "2026-10-18T08:09:37",
+      "End": "2026-10-18T08:56:54",
+      "NodeList": "4v100n01",
+      "AllocTRES": "billing=194,cpu=8,gres/gpu=1,mem=22G,node=1",
+      "User": "stardust"
+    },
+    "accounting_time_zone": "Cluster-local Asia/Shanghai",
+    "allocated_resources": {
+      "billing": "194",
+      "cpu": "8",
+      "gres/gpu": "1",
+      "mem": "22G",
+      "node": "1"
+    },
+    "mpi_ranks": 1,
+    "omp_threads": 1,
+    "home": "/home/stardust",
+    "host_mpi_tmpdir": "/home/stardust/sai-hpc-software/runtime/ps-13330a9b",
+    "elapsed_note": "45 seconds is the whole smoke job duration; per-case wall time includes MPI and launcher integrity overhead."
+  },
+  "artifact": {
+    "path": "/home/stardust/sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6.sif",
+    "bytes": 187445248,
+    "sha256": "1ec8fdf693f4273f7fa1c52fcc27b4aba858d6077a45ff569f2b421677aa3b00",
+    "sha256_recomputed_before_and_after_collection": true,
+    "identity": {
+      "build_id": "v2026.2-g67b5da876dd6-rb59c9f26a184",
+      "cpu_arch": "znver4",
+      "cuda_arch": "70",
+      "dependency_isa": "avx512",
+      "gpus": 1,
+      "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100",
+      "partition": "4V100",
+      "recipe_sha256": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+      "repository": "cp2k/cp2k",
+      "schema": 2,
+      "software": "cp2k",
+      "source_ref": "v2026.2",
+      "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+      "source_version": "v2026.2",
+      "stack_digest": null,
+      "stack_sources": {},
+      "target": "4v100-avx512",
+      "track": "release",
+      "version_label": "v2026.2"
+    },
+    "sidecar_sha256": "4889a8036f5f9811cd28c4f6c8e0f65fce165b2acb2d68b630b1c25f7f134c5d",
+    "sidecar_build_verified": true,
+    "sidecar_verified": false,
+    "sidecar_published": false,
+    "formal_build_request_matches": true
+  },
+  "integrity": {
+    "locked_formal_files_rehashed": 42,
+    "locked_formal_file_mismatches": [],
+    "prepared_files_verified": [
+      "lock.json",
+      "job.sbatch",
+      "input/runner.py",
+      "input/ot.inp",
+      "input/diagonalization.inp",
+      "input/data/BASIS_MOLOPT",
+      "input/data/GTH_POTENTIALS"
+    ],
+    "frozen_controller": "/home/stardust/sai-hpc-software/controller/c3b65b97f9d95ecb29a453713dfe292af20f6d39/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6",
+    "frozen_controller_sha": "c3b65b97f9d95ecb29a453713dfe292af20f6d39",
+    "recipe_fingerprint_recomputed": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+    "launcher": "/home/stardust/sai-hpc-software/controller/c3b65b97f9d95ecb29a453713dfe292af20f6d39/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6/cp2k",
+    "launcher_sha256": "21e5404e8b750c5f1526905ec59fa26e84dd816d36b46148ff310e3aa0b574c0",
+    "prepared_sha256_manifest_matches": true,
+    "archived_runner": {
+      "relative_path": "prepare-formal-sif-smoke.py",
+      "sha256": "6b723159ac8368c0711b3738cdab4508e3e28b737426e149430c00850482a952",
+      "matches_actual_executed_input_runner": true
+    }
+  },
+  "independent_recomputation": {
+    "parser": "/home/stardust/sai-hpc-software/controller/c3b65b97f9d95ecb29a453713dfe292af20f6d39/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6/cp2k_benchmark.py",
+    "parser_sha256": "aefd8b234b1b43f2815a6af5f3502204319a490f4919ad417421d920034a10e3",
+    "methods": [
+      "parse_science(raw output.log, raw forces.xyz, raw elapsed.txt, water-gpw)",
+      "compare_science for both pairs",
+      "independent arithmetic on all energy and force components"
+    ],
+    "original_report_fields_also_compared": true,
+    "process_exit_note": "Exit codes are recorded by the original runner; this readback independently verifies terminal Slurm accounting and raw converged/normal program endings.",
+    "energy_tolerance_ha": 1e-06,
+    "force_tolerance_ha_bohr": 1e-05
+  },
+  "installed_data": {
+    "directory": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/share/cp2k/data",
+    "files": {
+      "BASIS_MOLOPT": {
+        "bytes": 127679,
+        "sha256": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61"
+      },
+      "GTH_POTENTIALS": {
+        "bytes": 168128,
+        "sha256": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+      }
+    },
+    "runtime_environment_sha256": "6d7ed48a550bc1c6cc0d8d8665e16af386e22ad0957d356557c08dad69c771c4",
+    "method": "Frozen SquashfsReader metadata and unsquashfs -cat directly from the formal SIF; no container execution or extraction.",
+    "matches_locked_hashes_and_local_fixture_bytes": true,
+    "identical_ot_input_verified": true,
+    "local_files_and_symlinks_absent_at_readback": true,
+    "original_runner_checked_absence_before_and_after": true,
+    "fallback_runtime_exercised": true,
+    "evidence_note": "The frozen launcher sources this SIF runtime-env and binds only the case work directory as /work; the installed-data case had no local data copies. This is distinct from the earlier recovered diagnostic SIF static check."
+  },
+  "cases": {
+    "ot": {
+      "input_sha256": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0",
+      "input_kind": "OT",
+      "data_source": "pinned-local-fixture",
+      "reported_process_exit_code": 0,
+      "recomputed_science": {
+        "energy_ha": -34.446821294788634,
+        "forces_ha_bohr": [
+          [
+            -0.00945233354,
+            -0.010457489817,
+            -2.87128e-07
+          ],
+          [
+            -0.009818693543,
+            0.01569111124,
+            -1.41928e-07
+          ],
+          [
+            0.010457918678,
+            0.004642532798,
+            5.8306e-08
+          ],
+          [
+            -0.003014175638,
+            0.009256006937,
+            -5.6023e-08
+          ],
+          [
+            0.004272731236,
+            -0.008357649189,
+            -0.007545513107
+          ],
+          [
+            0.004272706358,
+            -0.008357781986,
+            0.007545680456
+          ]
+        ],
+        "elapsed_seconds": 20.38944956008345,
+        "cp2k_seconds": 12.515,
+        "dispersion_ha": null
+      },
+      "matches_original_case_and_summary": true,
+      "normal_termination": true,
+      "converged_scf_steps": [
+        46
+      ],
+      "rank_trace": {
+        "host": "4v100n04.mr-sai.ai",
+        "rank": "0",
+        "target": "4v100-avx512",
+        "image": "/home/stardust/sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6.sif",
+        "cuda_visible_devices": "0",
+        "mpi_home": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512"
+      },
+      "raw_rank_trace": "4v100n04.mr-sai.ai\t0\t4v100-avx512\t/home/stardust/sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6.sif\t0\t/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512\n",
+      "omp_threads": 1,
+      "local_data_path_observations": {
+        "BASIS_MOLOPT": {
+          "exists": true,
+          "is_symlink": false
+        },
+        "GTH_POTENTIALS": {
+          "exists": true,
+          "is_symlink": false
+        }
+      },
+      "selected_log_lines": [
+        " DBCSR| ACC: Number of devices/node                                            1",
+        " DBCSR| ACC: GPU backend is enabled                                            T (D)",
+        " GLOBAL| Number of distributed systems (nodes)                                 1",
+        " GLOBAL| Number of threads for this process                                    1",
+        "  *** SCF run converged in    46 steps ***",
+        " ENERGY| Total FORCE_EVAL ( QS ) energy [hartree]            -34.446821294788634",
+        " 2     collocate ortho    GPU                                  10622      24.03%",
+        " 2     integrate ortho    GPU                                  10396      23.52%",
+        " 3     integrate ortho    GPU                                   8276      18.72%",
+        " 3     collocate ortho    GPU                                   8225      18.61%",
+        " 4     integrate ortho    GPU                                   3349       7.58%",
+        " 4     collocate ortho    GPU                                   3243       7.34%",
+        " 5     integrate ortho    GPU                                     69       0.16%",
+        "  **** **** ******  **  PROGRAM ENDED AT                 2026-10-18 01:10:20.744"
+      ],
+      "stderr_notes": {
+        "prte_shared_filesystem_warning": true,
+        "apptainer_skipped_optional_nvidia_mount_warnings": true,
+        "mpi_binding_lines": [
+          "[4v100n04.mr-sai.ai:2802802] Rank 0 bound to package[0][core:L0-3]"
+        ]
+      }
+    },
+    "diagonalization": {
+      "input_sha256": "7340da90d70f2768cfcb3bdb06a610360c16ba5533e4511e2b990c57de7e146a",
+      "input_kind": "STANDARD diagonalization",
+      "data_source": "pinned-local-fixture",
+      "reported_process_exit_code": 0,
+      "recomputed_science": {
+        "energy_ha": -34.446821294788926,
+        "forces_ha_bohr": [
+          [
+            -0.009452333431,
+            -0.010457489975,
+            -2.87209e-07
+          ],
+          [
+            -0.009818693497,
+            0.015691111057,
+            -1.41949e-07
+          ],
+          [
+            0.010457918407,
+            0.004642532856,
+            5.8339e-08
+          ],
+          [
+            -0.003014175516,
+            0.009256007037,
+            -5.5964e-08
+          ],
+          [
+            0.004272731225,
+            -0.00835764914,
+            -0.007545512985
+          ],
+          [
+            0.004272706362,
+            -0.008357781857,
+            0.007545680344
+          ]
+        ],
+        "elapsed_seconds": 9.260712028946728,
+        "cp2k_seconds": 8.322,
+        "dispersion_ha": null
+      },
+      "matches_original_case_and_summary": true,
+      "normal_termination": true,
+      "converged_scf_steps": [
+        30
+      ],
+      "rank_trace": {
+        "host": "4v100n04.mr-sai.ai",
+        "rank": "0",
+        "target": "4v100-avx512",
+        "image": "/home/stardust/sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6.sif",
+        "cuda_visible_devices": "0",
+        "mpi_home": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512"
+      },
+      "raw_rank_trace": "4v100n04.mr-sai.ai\t0\t4v100-avx512\t/home/stardust/sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6.sif\t0\t/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512\n",
+      "omp_threads": 1,
+      "local_data_path_observations": {
+        "BASIS_MOLOPT": {
+          "exists": true,
+          "is_symlink": false
+        },
+        "GTH_POTENTIALS": {
+          "exists": true,
+          "is_symlink": false
+        }
+      },
+      "selected_log_lines": [
+        " DBCSR| ACC: Number of devices/node                                            1",
+        " DBCSR| ACC: GPU backend is enabled                                            T (D)",
+        " GLOBAL| Number of distributed systems (nodes)                                 1",
+        " GLOBAL| Number of threads for this process                                    1",
+        "  *** SCF run converged in    30 steps ***",
+        " ENERGY| Total FORCE_EVAL ( QS ) energy [hartree]            -34.446821294788926",
+        " 2     collocate ortho    GPU                                   7006      24.02%",
+        " 2     integrate ortho    GPU                                   6780      23.25%",
+        " 3     integrate ortho    GPU                                   5476      18.78%",
+        " 3     collocate ortho    GPU                                   5425      18.60%",
+        " 4     integrate ortho    GPU                                   2245       7.70%",
+        " 4     collocate ortho    GPU                                   2139       7.33%",
+        " 5     integrate ortho    GPU                                     69       0.24%",
+        "  **** **** ******  **  PROGRAM ENDED AT                 2026-10-18 01:10:30.016"
+      ],
+      "stderr_notes": {
+        "prte_shared_filesystem_warning": true,
+        "apptainer_skipped_optional_nvidia_mount_warnings": true,
+        "mpi_binding_lines": [
+          "[4v100n04.mr-sai.ai:2802933] Rank 0 bound to package[0][core:L0-3]"
+        ]
+      }
+    },
+    "ot-installed-data": {
+      "input_sha256": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0",
+      "input_kind": "OT",
+      "data_source": "installed-sif-data",
+      "reported_process_exit_code": 0,
+      "recomputed_science": {
+        "energy_ha": -34.44682129478862,
+        "forces_ha_bohr": [
+          [
+            -0.00945233354,
+            -0.010457489817,
+            -2.87128e-07
+          ],
+          [
+            -0.009818693543,
+            0.01569111124,
+            -1.41928e-07
+          ],
+          [
+            0.010457918678,
+            0.004642532798,
+            5.8306e-08
+          ],
+          [
+            -0.003014175638,
+            0.009256006937,
+            -5.6023e-08
+          ],
+          [
+            0.004272731236,
+            -0.008357649189,
+            -0.007545513107
+          ],
+          [
+            0.004272706358,
+            -0.008357781986,
+            0.007545680456
+          ]
+        ],
+        "elapsed_seconds": 13.452757186954841,
+        "cp2k_seconds": 12.483,
+        "dispersion_ha": null
+      },
+      "matches_original_case_and_summary": true,
+      "normal_termination": true,
+      "converged_scf_steps": [
+        46
+      ],
+      "rank_trace": {
+        "host": "4v100n04.mr-sai.ai",
+        "rank": "0",
+        "target": "4v100-avx512",
+        "image": "/home/stardust/sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6.sif",
+        "cuda_visible_devices": "0",
+        "mpi_home": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512"
+      },
+      "raw_rank_trace": "4v100n04.mr-sai.ai\t0\t4v100-avx512\t/home/stardust/sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6.sif\t0\t/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512\n",
+      "omp_threads": 1,
+      "local_data_path_observations": {
+        "BASIS_MOLOPT": {
+          "exists": false,
+          "is_symlink": false
+        },
+        "GTH_POTENTIALS": {
+          "exists": false,
+          "is_symlink": false
+        }
+      },
+      "selected_log_lines": [
+        " DBCSR| ACC: Number of devices/node                                            1",
+        " DBCSR| ACC: GPU backend is enabled                                            T (D)",
+        " GLOBAL| Number of distributed systems (nodes)                                 1",
+        " GLOBAL| Number of threads for this process                                    1",
+        "  *** SCF run converged in    46 steps ***",
+        " ENERGY| Total FORCE_EVAL ( QS ) energy [hartree]            -34.446821294788620",
+        " 2     collocate ortho    GPU                                  10622      24.03%",
+        " 2     integrate ortho    GPU                                  10396      23.52%",
+        " 3     integrate ortho    GPU                                   8276      18.72%",
+        " 3     collocate ortho    GPU                                   8225      18.61%",
+        " 4     integrate ortho    GPU                                   3349       7.58%",
+        " 4     collocate ortho    GPU                                   3243       7.34%",
+        " 5     integrate ortho    GPU                                     69       0.16%",
+        "  **** **** ******  **  PROGRAM ENDED AT                 2026-10-18 01:10:43.482"
+      ],
+      "stderr_notes": {
+        "prte_shared_filesystem_warning": true,
+        "apptainer_skipped_optional_nvidia_mount_warnings": true,
+        "mpi_binding_lines": [
+          "[4v100n04.mr-sai.ai:2803044] Rank 0 bound to package[0][core:L0-3]"
+        ]
+      }
+    }
+  },
+  "comparisons": {
+    "ot_vs_standard_diagonalization": {
+      "energy_delta_ha": 2.913225216616411e-13,
+      "max_force_delta_ha_bohr": 2.7100000021818005e-10,
+      "matches_original_summary": true,
+      "within_energy_and_force_tolerances": true
+    },
+    "ot_local_vs_installed_data": {
+      "energy_delta_ha": 1.4210854715202004e-14,
+      "max_force_delta_ha_bohr": 0.0,
+      "matches_original_summary": true,
+      "within_energy_and_force_tolerances": true
+    }
+  },
+  "evidence_files": {
+    "input/data/BASIS_MOLOPT": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/input/data/BASIS_MOLOPT",
+      "bytes": 127679,
+      "sha256": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61"
+    },
+    "input/data/GTH_POTENTIALS": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/input/data/GTH_POTENTIALS",
+      "bytes": 168128,
+      "sha256": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+    },
+    "input/diagonalization.inp": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/input/diagonalization.inp",
+      "bytes": 1501,
+      "sha256": "7340da90d70f2768cfcb3bdb06a610360c16ba5533e4511e2b990c57de7e146a"
+    },
+    "input/ot.inp": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/input/ot.inp",
+      "bytes": 1506,
+      "sha256": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0"
+    },
+    "input/runner.py": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/input/runner.py",
+      "bytes": 18305,
+      "sha256": "6b723159ac8368c0711b3738cdab4508e3e28b737426e149430c00850482a952"
+    },
+    "job.id": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/job.id",
+      "bytes": 8,
+      "sha256": "8ab33fefe6c44656a26aa765063a30f37aa068264efb1004aee11e3a826f3820"
+    },
+    "job.sbatch": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/job.sbatch",
+      "bytes": 2276,
+      "sha256": "ccd154344e72a2d58edf4f527dab72e616d259311806b366f59a4b50a012a6b4"
+    },
+    "lock.json": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/lock.json",
+      "bytes": 12841,
+      "sha256": "e54df970611399b9db82bd5a2841825122ebd1a4102da5e2237909141cadd0c5"
+    },
+    "prepared.sha256": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/prepared.sha256",
+      "bytes": 588,
+      "sha256": "217728a29ce688e13cd2e98c241a993090141d7f69e063d9bcf2c399ab096c27"
+    },
+    "results/allocation.txt": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/allocation.txt",
+      "bytes": 1554,
+      "sha256": "c4232db860d9d4f8f19eb0607bcd3e3ac3e663a94d15ddcf8b8a321b5ca7dbf1"
+    },
+    "results/cases/diagonalization/BASIS_MOLOPT": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/diagonalization/BASIS_MOLOPT",
+      "bytes": 127679,
+      "sha256": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61"
+    },
+    "results/cases/diagonalization/GTH_POTENTIALS": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/diagonalization/GTH_POTENTIALS",
+      "bytes": 168128,
+      "sha256": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+    },
+    "results/cases/diagonalization/benchmark-RESTART.wfn": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/diagonalization/benchmark-RESTART.wfn",
+      "bytes": 3388,
+      "sha256": "a22950d873bde688a5d26b2fb8a9aa6e00994d9019ebed978bc36d1cadd726b6"
+    },
+    "results/cases/diagonalization/benchmark-RESTART.wfn.bak-1": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/diagonalization/benchmark-RESTART.wfn.bak-1",
+      "bytes": 3388,
+      "sha256": "d7c8a18a44212d8a9872640744e0fa4f2f66c6a029356c04f86f77762c90d743"
+    },
+    "results/cases/diagonalization/elapsed.txt": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/diagonalization/elapsed.txt",
+      "bytes": 18,
+      "sha256": "21ea905650f2e27f3f532910015fa8ec0c73abc91b6b606204221043caa72a95"
+    },
+    "results/cases/diagonalization/forces.xyz": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/diagonalization/forces.xyz",
+      "bytes": 715,
+      "sha256": "3cad992a555302cb0947a63c6b06bf2d2336f21e6f69a9a9b7df4c7bf3dd3919"
+    },
+    "results/cases/diagonalization/input.inp": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/diagonalization/input.inp",
+      "bytes": 1501,
+      "sha256": "7340da90d70f2768cfcb3bdb06a610360c16ba5533e4511e2b990c57de7e146a"
+    },
+    "results/cases/diagonalization/output.log": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/diagonalization/output.log",
+      "bytes": 60919,
+      "sha256": "135de7d4e27a51290ef734b3021fb77bf7ae93816989bf110edf11066ef3a3ce"
+    },
+    "results/cases/diagonalization/ranks/rank-0.tsv": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/diagonalization/ranks/rank-0.tsv",
+      "bytes": 270,
+      "sha256": "2a275297240e564d206f3e7c644d4bbfe53b5bb641e90ce51b6bae10d0f79978"
+    },
+    "results/cases/diagonalization/result.json": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/diagonalization/result.json",
+      "bytes": 952,
+      "sha256": "e51f4375715395f0b7ab6951e4890999dc66cde66bfe33bb3f5448ce0342ce7c"
+    },
+    "results/cases/diagonalization/stderr.log": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/diagonalization/stderr.log",
+      "bytes": 2759,
+      "sha256": "dd239ae524949cf3db58655a1739af9f543c60e82482921aff96904713f48c04"
+    },
+    "results/cases/diagonalization/stdout.log": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/diagonalization/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/cases/ot/BASIS_MOLOPT": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot/BASIS_MOLOPT",
+      "bytes": 127679,
+      "sha256": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61"
+    },
+    "results/cases/ot/GTH_POTENTIALS": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot/GTH_POTENTIALS",
+      "bytes": 168128,
+      "sha256": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+    },
+    "results/cases/ot/benchmark-RESTART.wfn": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot/benchmark-RESTART.wfn",
+      "bytes": 3388,
+      "sha256": "acd8cb66c1a36ab0f936bfb028f6be4ce0ffd0b97d1c530894571d79365cffe7"
+    },
+    "results/cases/ot/benchmark-RESTART.wfn.bak-1": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot/benchmark-RESTART.wfn.bak-1",
+      "bytes": 3388,
+      "sha256": "e0749f99aa7671c5b506a1f10de0662d00abf90424e1b1b55cb80a69faf7b09b"
+    },
+    "results/cases/ot/elapsed.txt": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot/elapsed.txt",
+      "bytes": 18,
+      "sha256": "ea39cb382fb8ac9d00914e2781f208938ae58f784b4c0871681bf5c44874a300"
+    },
+    "results/cases/ot/forces.xyz": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot/forces.xyz",
+      "bytes": 715,
+      "sha256": "54fa9218acbbd9efd6f0129912297eff3add13d80d755c2eb1ec4d3651a9c829"
+    },
+    "results/cases/ot/input.inp": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot/input.inp",
+      "bytes": 1506,
+      "sha256": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0"
+    },
+    "results/cases/ot/output.log": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot/output.log",
+      "bytes": 64091,
+      "sha256": "e54bac28a182a2c02fdf5348774ef89aa2f8443ddd698dbffef9145763b258db"
+    },
+    "results/cases/ot/ranks/rank-0.tsv": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot/ranks/rank-0.tsv",
+      "bytes": 270,
+      "sha256": "2a275297240e564d206f3e7c644d4bbfe53b5bb641e90ce51b6bae10d0f79978"
+    },
+    "results/cases/ot/result.json": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot/result.json",
+      "bytes": 952,
+      "sha256": "380023c547a24cf458a886a0da0a0e842cc8ce5784c40e7f349d40ce81c397a5"
+    },
+    "results/cases/ot/stderr.log": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot/stderr.log",
+      "bytes": 2759,
+      "sha256": "88e8cafd0b6e0faf98ddb49f3fa3fc6ae1a4f99da2b8aab67ce22f6816bd9edf"
+    },
+    "results/cases/ot/stdout.log": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/cases/ot-installed-data/benchmark-RESTART.wfn": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot-installed-data/benchmark-RESTART.wfn",
+      "bytes": 3388,
+      "sha256": "4441d0fa98d84cffa004b68d99b7a88042ca66236a2f102eebe78cf759e8328f"
+    },
+    "results/cases/ot-installed-data/benchmark-RESTART.wfn.bak-1": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot-installed-data/benchmark-RESTART.wfn.bak-1",
+      "bytes": 3388,
+      "sha256": "df04e67fa6f89a8606321e133239bb2aae71e26277419981875367422648084e"
+    },
+    "results/cases/ot-installed-data/elapsed.txt": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot-installed-data/elapsed.txt",
+      "bytes": 19,
+      "sha256": "41893b2d8930c8f91df26d91c8b05014942d9ced72b6a858b3cc850c7f72e4d1"
+    },
+    "results/cases/ot-installed-data/forces.xyz": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot-installed-data/forces.xyz",
+      "bytes": 715,
+      "sha256": "54fa9218acbbd9efd6f0129912297eff3add13d80d755c2eb1ec4d3651a9c829"
+    },
+    "results/cases/ot-installed-data/input.inp": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot-installed-data/input.inp",
+      "bytes": 1506,
+      "sha256": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0"
+    },
+    "results/cases/ot-installed-data/output.log": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot-installed-data/output.log",
+      "bytes": 64088,
+      "sha256": "ca87e24faca1bfe94b8f91148e24e02173b111870fc91b7e0947070071c5ff72"
+    },
+    "results/cases/ot-installed-data/ranks/rank-0.tsv": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot-installed-data/ranks/rank-0.tsv",
+      "bytes": 270,
+      "sha256": "2a275297240e564d206f3e7c644d4bbfe53b5bb641e90ce51b6bae10d0f79978"
+    },
+    "results/cases/ot-installed-data/result.json": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot-installed-data/result.json",
+      "bytes": 1640,
+      "sha256": "419db57f905d0df72ae39dadf434b5ebd02ad04ea14260b4b3bd406e2d7223d8"
+    },
+    "results/cases/ot-installed-data/stderr.log": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot-installed-data/stderr.log",
+      "bytes": 2759,
+      "sha256": "a49383e3a001f2fed96afa193f5a94c39d0ec47623917ad027044053eb7c31d3"
+    },
+    "results/cases/ot-installed-data/stdout.log": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/cases/ot-installed-data/stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "results/modules.txt": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/modules.txt",
+      "bytes": 97,
+      "sha256": "0ddca348c0c9b1170b3f2ecd75343c2222eb1bfd5a2ef8eb5c6ad346a9f90400"
+    },
+    "results/mpi-version.txt": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/mpi-version.txt",
+      "bytes": 83,
+      "sha256": "dbefbbfa3051a687ec6d12c60decfadc9e432e1e88b88e634e861777f1367714"
+    },
+    "results/node.txt": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/node.txt",
+      "bytes": 19,
+      "sha256": "e8a63656ebe24b2a8efa45693f6f98fe53246a689a62e62039cb569a56068955"
+    },
+    "results/nvidia-smi.txt": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/nvidia-smi.txt",
+      "bytes": 1778,
+      "sha256": "932459e98b684a378a429fc04251b55aa5ab1b95ac896e0aef090a64d7762bab"
+    },
+    "results/slurm-1838355.log": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/slurm-1838355.log",
+      "bytes": 7407,
+      "sha256": "458c2758da180079f2c2639f640164524c20ff096ac0bf7cdcf90fab5ad47a81"
+    },
+    "results/smoke-result.json": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/results/smoke-result.json",
+      "bytes": 5163,
+      "sha256": "f75ed595bd45ea81d73e49afa4dd92a54c8fd52b9ac69d16632840fa13b73ee6"
+    },
+    "submission.json": {
+      "remote_path": "/home/stardust/sai-hpc-software/runtime-tests/pbe-sif-20261018-a/submission.json",
+      "bytes": 320,
+      "sha256": "1697cc1274de1702d8bb834bf034aa2c18a3703f90a617b83e15afe450ca8394"
+    }
+  },
+  "boundaries": [
+    "The two comparisons measure internal consistency of the same binary; no independently run system CP2K baseline is part of this job.",
+    "STANDARD diagonalization and OT passing do not establish execution of every compiled optional feature, ELPA, cuSolverMp, SpLA, DFTD4 or TBLITE.",
+    "All three cases share one Slurm allocation on one 4V100 node; this does not validate other partitions, CPU targets or multinode MPI.",
+    "Rank traces record the host launcher before container execution. Here their complete host/rank/target/image/GPU mask/MPI paths were checked against accounting and the raw calculation results; GPU UUID attribution was not recorded.",
+    "Raw logs report one enabled DBCSR GPU device and nonzero collocate/integrate GPU work; this is not a utilization or performance measurement.",
+    "MPI reported its session directory is on Lustre; optional NVIDIA tool/config bind paths were absent. These warnings were present despite successful calculations and remain recorded in stderr hashes.",
+    "This job invokes the pinned frozen launcher directly; it does not publish or validate a public module or native installation.",
+    "No simulation, container execution, Slurm submission or remote file modification was performed during this independent collection."
+  ],
+  "archive": {
+    "directory": "formal-sif-smoke-raw",
+    "files": [
+      "lock.json",
+      "smoke-result.json"
+    ],
+    "note": "Exact original small records; raw calculation files remain at the recorded remote paths and are hashed above."
+  },
+  "collector": {
+    "local_path": "/mnt/g/work/agent/sai-hpc-software/.work/cp2k-release-20261016/collect-formal-sif-smoke-20261018.py",
+    "sha256": "8ddf6ded4f21fa41e8a0937371c8147b5b00d6c3b56dfc1e203d3a0dba511631"
+  }
+}

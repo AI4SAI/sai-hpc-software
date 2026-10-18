@@ -5,28 +5,96 @@ No four-target CP2K 2026.2 release has passed all acceptance gates yet.
 
 ## Fresh four-target release workflow
 
-At 07:14 Asia/Shanghai on October 18, all dependency jobs in workflows
-`39054631316` and `39056762371` had succeeded. Seven application jobs completed
-compilation and linking, then failed installing `libcp2k.so.2026.2` into
-read-only `/lib64`; corrected-runtime 8V100V0 application `1837029` was still
-running. No SIF existed. CP2K declares its install library directory as CACHE
-PATH, converting the untyped relative command-line value into an absolute path.
-The recipe now passes `CMAKE_INSTALL_LIBDIR:STRING=lib64` and checks it before
-compilation. Recovery has since passed using a copy of the completed build.
-[Diagnosis and repair](evidence/cp2k-install-layout-20261018/README.md).
-
 Fresh workflow [39078998459](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39078998459)
 uses production commit `c3b65b9`, recipe
 `b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150`.
-Its four native dependency jobs are `1837489` (16V100), `1837488` (4V100),
-`1837487` (8V100V0) and `1837486` (DSPRHBM). By 08:11, 4V100 dependencies
-had completed `0:0` in 37:21 and their sealed image was handed to application
-`1837815`, RUNNING on `4v100n01`. The other three dependencies remained RUNNING
-on `16v100n02`, `8v100v0n03` and `d9470n02`.
-CI passed 735 tests with two optional skips. Formal SIF delivery and
-scientific/performance acceptance remain pending.
-[Requests and job identities](evidence/cp2k-install-layout-20261018/formal-start.json).
-[Verified stage transition](evidence/cp2k-install-layout-20261018/formal-progress.json).
+All four native dependency stages completed and passed checkpoint sealing.
+By 10:25 Asia/Shanghai on October 18, all four targets had produced SIFs;
+DSPRHBM used an explicitly recorded application retry after a mount timeout.
+
+| Target | Dependency job / elapsed | Application job / result |
+|---|---|---|
+| 4V100 | 1837488 / 37:21 | 1837815: COMPLETED `0:0`, 47:17 |
+| 16V100 | 1837489 / 1:15:19 | 1838194: COMPLETED `0:0`, 20:27 |
+| 8V100V0 | 1837487 / 1:11:15 | 1838191: COMPLETED `0:0`, 1:37:45 |
+| DSPRHBM | 1837486 / 1:11:51 | 1838412 retry: COMPLETED `0:0`, 30:36 |
+
+These are build successes, not accepted or published deliveries. All retain the
+original recipe and its system ELPA linkage. The GitHub workflow ended with
+failure; the successful DSPRHBM retry does not rewrite its failed original job.
+[4V100 and 16V100 artifacts](evidence/cp2k-install-layout-20261018/two-formal-artifacts.json),
+[8V100V0 artifact](evidence/cp2k-install-layout-20261018/third-artifact-8v100v0.json),
+[DSPRHBM complete artifact](evidence/cp2k-install-layout-20261018/dsprhbm-retry-artifact.json).
+
+Formal-SIF smoke jobs `1838355` (4V100) and `1838410` (16V100) passed PBE OT,
+ordinary diagonalization and dynamic installed-data lookup. On 4V100, OT versus
+diagonalization differed by `2.91e-13 Ha` in energy and at most
+`2.71e-10 Ha/Bohr` in forces. These single-node checks do not establish the
+whole scientific, multi-node or export acceptance chain.
+[4V100 smoke](evidence/cp2k-install-layout-20261018/formal-sif-smoke.json),
+[16V100 smoke](evidence/cp2k-install-layout-20261018/formal-sif-16v100-smoke.json).
+
+The old baseline comparison is retired at the user's request. Its retained
+4V100 run `1838283` executed its calculations but failed hostname validation;
+16V100 run `1838359` reached a baseline ELPA illegal instruction. Neither is
+accepted, and neither will be repaired or used to gate the new candidate.
+
+## ELPA in the software installation directory
+
+A standalone MPI/C probe isolated the installed system ELPA fault on
+`16v100n57` (AVX2, without AVX512F/BW). `elpa_init` succeeded, but
+`elpa_allocate` raised SIGILL in the generic allocation path at offset
+`0x328b27`: `vmovdqu8 %zmm0,0x18(%rsp)`. The module advertises both AVX2 and
+AVX512 kernels; that does not make this binary's generic code AVX2-compatible.
+This is a finding about this installed binary, not a claim that ELPA itself
+requires AVX512. [Probe source, GDB, CPU flags and library hash](evidence/cp2k-install-layout-20261018/system-elpa-isa-probe.json).
+
+The new recipe uses CP2K v2026.2's own toolchain pin, ELPA 2026.02.002, built
+natively with GCC 14.3.0 in each partition. It installs under the delivery's
+`/opt/apps/cp2k/.../<partition>/dependencies/elpa`, alongside the other private
+libraries, and travels with the exported software directory. GPU deliveries
+retain V100 kernels and GEMM offload. The build records the pinned source,
+compiler, CPU flags, actual linkage and upstream ELPA communicator and CP2K
+GPU-setup fixes. It does not require a separate shared ELPA installation.
+
+Pilot `1838654` completed `0:0` in 3:28 on 16V100, built and linked the native
+library, and passed small OT, ordinary diagonalization, DFT-D4 and TBLITE cases.
+Its small input labelled water-elpa was below the default eigenvector threshold
+and used ScaLAPACK; it does **not** establish ELPA solver acceptance.
+[Explicitly scoped pilot evidence](evidence/cp2k-install-layout-20261018/native-elpa-16v100-pilot.json).
+
+Diagnostic `1838989` then exposed root-only `0700` directories in that pilot's
+overlay. Ordinary MPI processes could not read the private library and loaded
+the old system library. Its failures are not evidence against the new ELPA.
+A fresh diagnostic export normalizes permissions without changing the original
+SIF or overlay. Follow-up `1839059` completed `0:0` in 16:08 on two 16V100 nodes. All eight
+small/large OT and forced-ELPA calculations completed. Every rank resolved the
+private library, and small/large ELPA cases recorded 30/112 solver calls with
+NVIDIA_GPU kernels. The independently checked energy/force comparisons are
+[retained with raw logs](evidence/cp2k-install-layout-20261018/native-elpa-16v100-multinode.json).
+This diagnostic uses an original SIF plus a private-library bind, not a new
+formal recipe identity. New build, full acceptance and export remain required.
+
+`cp2k_acceptance.py` replaces the historical comparison for fresh deliveries.
+It runs the candidate itself on one and two nodes and compares converged
+energies/forces across ranks and OT/ordinary/ELPA solvers. Forced ELPA inputs
+and positive solver timers prevent the small-matrix fallback from masquerading
+as an ELPA test. Larger water cases cover the workload relevant to the user's
+PBE use. Timing is recorded; no old 2026.1 performance ratio is required.
+Native export/readback and publication remain separate mandatory gates.
+The current implementation passed 772 tests in the SAI home-directory snapshot
+(770 passed, two optional skips); shell and workflow syntax checks also passed.
+[Physical-prefix deployment and a simple partition module](CP2K-NATIVE-MODULE.md).
+
+The previous workflows `39054631316` and `39056762371` completed their dependencies,
+but all eight application jobs eventually failed installing `libcp2k.so.2026.2`
+into read-only `/lib64` after compilation and linking. The last old 8V100V0
+application `1837029` ended at 08:35 with the same error. CP2K declares its
+install library directory as CACHE PATH, converting an untyped relative
+command-line value into an absolute path. The new recipe passes
+`CMAKE_INSTALL_LIBDIR:STRING=lib64` and checks it before compilation.
+[Diagnosis and repair](evidence/cp2k-install-layout-20261018/README.md),
+[last historical failure](evidence/cp2k-install-layout-20261018/old-8v100-terminal.json).
 
 Recovery diagnostic `1837454` completed `0:0` in 18:52 and produced a real
 187,449,344-byte SIF. Final SIF verification, without the build overlay,
@@ -45,8 +113,8 @@ comparative performance acceptance.
 Read-only inspection of the diagnostic SIF also confirmed 280 installed data
 files, the exact `CP2K_DATA_DIR`, and BASIS_MOLOPT/GTH_POTENTIALS bytes identical
 to the successful fixture. The pinned source supports lookup from this directory
-when a local file is absent. Dynamic fallback remains to be exercised alongside
-OT and ordinary diagonalization in the prepared formal-SIF smoke.
+when a local file is absent. The formal-SIF smoke above subsequently verified
+dynamic fallback against its own artifact and installed data.
 [Installed data evidence](evidence/cp2k-install-layout-20261018/installed-data.json).
 
 Actual PBE smoke exposed a CUDA runtime compatibility issue after successful

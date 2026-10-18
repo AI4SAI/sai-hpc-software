@@ -1,0 +1,182 @@
+{
+  "artifact": "/home/stardust/sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-rb59c9f26a184/16V100/39078998459-1-release-16v100-avx2-2026-10-17-67b5da876dd6.sif",
+  "artifact_sha256": "c746fed344d9e909332e7fc40ead03bcc155458c02787cd1eac710ae87bfc355",
+  "build_accounting": "1838194|16V100|COMPLETED|0:0|00:20:27|16v100n59|stardust",
+  "build_job_id": "1838194",
+  "cases": {
+    "diagonalization": {
+      "data_source": "pinned-local-fixture",
+      "exit_code": 0,
+      "finite_energy": true,
+      "input_sha256": "7340da90d70f2768cfcb3bdb06a610360c16ba5533e4511e2b990c57de7e146a",
+      "normal_termination": true,
+      "passed": true,
+      "scf_converged": true,
+      "science": {
+        "cp2k_seconds": 17.831,
+        "dispersion_ha": null,
+        "elapsed_seconds": 21.893634751439095,
+        "energy_ha": -34.44682129478893,
+        "forces_ha_bohr": [
+          [
+            -0.009452333431,
+            -0.010457489975,
+            -2.87209e-07
+          ],
+          [
+            -0.009818693497,
+            0.015691111057,
+            -1.41949e-07
+          ],
+          [
+            0.010457918407,
+            0.004642532856,
+            5.8339e-08
+          ],
+          [
+            -0.003014175516,
+            0.009256007037,
+            -5.5964e-08
+          ],
+          [
+            0.004272731225,
+            -0.00835764914,
+            -0.007545512985
+          ],
+          [
+            0.004272706362,
+            -0.008357781857,
+            0.007545680344
+          ]
+        ]
+      }
+    },
+    "ot": {
+      "data_source": "pinned-local-fixture",
+      "exit_code": 0,
+      "finite_energy": true,
+      "input_sha256": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0",
+      "normal_termination": true,
+      "passed": true,
+      "scf_converged": true,
+      "science": {
+        "cp2k_seconds": 26.066,
+        "dispersion_ha": null,
+        "elapsed_seconds": 31.214992636814713,
+        "energy_ha": -34.44682129478863,
+        "forces_ha_bohr": [
+          [
+            -0.00945233354,
+            -0.010457489817,
+            -2.87128e-07
+          ],
+          [
+            -0.009818693543,
+            0.01569111124,
+            -1.41928e-07
+          ],
+          [
+            0.010457918678,
+            0.004642532798,
+            5.8306e-08
+          ],
+          [
+            -0.003014175638,
+            0.009256006937,
+            -5.6023e-08
+          ],
+          [
+            0.004272731236,
+            -0.008357649189,
+            -0.007545513107
+          ],
+          [
+            0.004272706358,
+            -0.008357781986,
+            0.007545680456
+          ]
+        ]
+      }
+    },
+    "ot-installed-data": {
+      "data_source": "installed-sif-data",
+      "exit_code": 0,
+      "finite_energy": true,
+      "input_sha256": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0",
+      "installed_data": {
+        "directory": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/16V100/share/cp2k/data",
+        "files": {
+          "BASIS_MOLOPT": {
+            "bytes": 127679,
+            "sha256": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61"
+          },
+          "GTH_POTENTIALS": {
+            "bytes": 168128,
+            "sha256": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+          }
+        },
+        "method": "Read-only SquashfsReader from the frozen formal controller",
+        "runtime_environment_sha256": "a02012f54d77874bf79653fb1e0aadc2f8138f483f114800d88dba8ba2f04be0"
+      },
+      "local_data_absent_after": true,
+      "local_data_absent_before": true,
+      "normal_termination": true,
+      "passed": true,
+      "scf_converged": true,
+      "science": {
+        "cp2k_seconds": 26.223,
+        "dispersion_ha": null,
+        "elapsed_seconds": 29.892265006899834,
+        "energy_ha": -34.44682129478882,
+        "forces_ha_bohr": [
+          [
+            -0.00945233354,
+            -0.010457489817,
+            -2.87128e-07
+          ],
+          [
+            -0.009818693543,
+            0.01569111124,
+            -1.41928e-07
+          ],
+          [
+            0.010457918678,
+            0.004642532798,
+            5.8306e-08
+          ],
+          [
+            -0.003014175638,
+            0.009256006937,
+            -5.6023e-08
+          ],
+          [
+            0.004272731236,
+            -0.008357649189,
+            -0.007545513107
+          ],
+          [
+            0.004272706358,
+            -0.008357781986,
+            0.007545680456
+          ]
+        ]
+      }
+    }
+  },
+  "comparison": {
+    "energy_delta_ha": 3.055333763768431e-13,
+    "max_force_delta_ha_bohr": 2.7100000021818005e-10
+  },
+  "energy_tolerance_ha": 1e-06,
+  "force_tolerance_ha_bohr": 1e-05,
+  "formal_files_unchanged": true,
+  "installed_data_comparison": {
+    "energy_delta_ha": 1.9184653865522705e-13,
+    "max_force_delta_ha_bohr": 0.0
+  },
+  "passed": true,
+  "schema": 1,
+  "scope": "formal-sif-runtime-smoke-only-not-scientific-performance-or-publication-acceptance",
+  "slurm_job_id": "1838410",
+  "workflow": "39078998459"
+}
