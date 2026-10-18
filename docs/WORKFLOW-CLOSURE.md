@@ -245,6 +245,13 @@ V100 kernels. It includes the upstream communicator/GPU-setup repairs and
 exports the dependency with the software directory.
 [Independent ISA evidence](evidence/cp2k-install-layout-20261018/system-elpa-isa-probe.json).
 
+A separate shared ELPA 2026.02.001 delivery now preserves the site's GNU/CUDA
+configuration while splitting AVX2 and AVX512 into distinct final `/opt/devtools`
+prefixes. Both SIFs passed 48 numerical solves plus C/Fortran consumer and actual
+module checks; their inventoried handoff awaits administrator installation.
+This does not replace CP2K's accepted private ELPA dependency.
+[Shared ELPA build, compatibility fixes and deployment evidence](evidence/elpa-site-20261018/README.md).
+
 Private-ELPA pilot `1838654` built successfully and passed small OT, ordinary
 diagonalization, DFT-D4 and TBLITE. Its small diagonalization did not pass the
 ELPA dispatch threshold, so actual ELPA remains a separate required test.

@@ -7,7 +7,7 @@ acceptance is integrated. Its historical hand-built SIF is not a validated catal
 
 ## Container contract
 
-Host source/build/install trees are **not** mounted writable. A build uses the pre-provisioned
+The application controller does **not** mount host source/build/install trees writable. A build uses the pre-provisioned
 ~1.9 MB base SIF plus one sparse ext3 image. Git checkout, CMake, compiler temporary files,
 installation and final filesystem assembly all happen inside that image.
 
@@ -228,6 +228,15 @@ paths without needing writable temporary files. Packaging/verification failures
 can be retried using the workflow's `resume_run` input: this moves the old run's
 single ext3 image into the new run and repacks the existing installation. The
 source SHA, version, target and recipe fingerprint must match, and active jobs cannot be resumed.
+
+## Shared ELPA
+
+[ELPA 2026.02.001 deployment](deployment/elpa-2026.02.001/README.md) provides separate
+AVX2 and AVX512 builds of the site's GNU/CUDA configuration. This standalone dependency
+recipe runs inside Apptainer with task-owned home directories bound for build storage and
+the exact future `/opt/devtools/elpa/.../nvidia` prefix. Site dependencies are read-only.
+Final SIFs are checked with CPU/GPU, real/complex, MPI/OpenMP numerical solves before
+preparing an inventoried administrator handoff and an automatic ISA module selector.
 
 ## Local checks
 

@@ -1,0 +1,37 @@
+#%Module1.0
+proc ModulesHelp {} {
+    puts stderr "ELPA 2026.02.001, GNU/OpenMP/CUDA; load on the node where you build or run."
+    puts stderr "Selects the same CPU tier as the site's OpenMPI and SAI BLAS modules."
+}
+module-whatis "ELPA 2026.02.001; GCC 13.3.0; OpenMPI 5.0.10; CUDA 12.9; sm70/75/80/86/89; AVX2/AVX512 selector"
+conflict elpa
+
+if {[module-info mode remove] && [info exists env(SAI_ELPA_2603_ISA)]} {
+    set isa $env(SAI_ELPA_2603_ISA)
+} else {
+    set flags [exec lscpu]
+    # The shared MPI/BLAS AVX512 builds require VNNI. Gold 6146 (8V100V0)
+    # therefore uses the AVX2 stack, just like their existing auto modules.
+    if {[regexp {\mavx512_vnni\M} $flags]} {
+        set isa avx512
+    } elseif {[regexp {\mavx2\M} $flags]} {
+        set isa avx2
+    } else {
+        error "ELPA requires an AVX2-capable CPU"
+    }
+}
+set prefix /opt/devtools/elpa/elpa-2026.02.001-2603-gnu-${isa}/nvidia
+if {[module-info mode load] && ![file isfile $prefix/lib/libelpa_openmp.so.19]} {
+    error "ELPA installation missing: $prefix"
+}
+module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto saiblas/2603-gnu-auto
+setenv SAI_ELPA_2603_ISA $isa
+setenv ELPA_ROOT $prefix
+prepend-path PATH $prefix/bin
+prepend-path LD_LIBRARY_PATH $prefix/lib
+prepend-path LD_RUN_PATH $prefix/lib
+prepend-path LIBRARY_PATH $prefix/lib
+prepend-path PKG_CONFIG_PATH $prefix/lib/pkgconfig
+prepend-path CMAKE_PREFIX_PATH $prefix
+prepend-path CPATH $prefix/include
+prepend-path CPATH $prefix/include/elpa_openmp-2026.02.001

@@ -1,0 +1,34 @@
+{
+  "builds": {
+    "avx2": {
+      "job_id": "1846755",
+      "manifest_sha256": "52e83c6cd7905439ea33c9f4932ad32881763d55d1aa90f9d5df29f5b184e125",
+      "max_errors": {
+        "orthogonality": 1.665e-15,
+        "residual": 6.46e-16,
+        "spectrum": 2.22e-15
+      },
+      "numeric_passes": 48,
+      "prefix": "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx2/nvidia",
+      "sif": "/home/stardust/sai-hpc-software/runs/elpa-2026.02.001-20261018-2204-avx2/elpa-avx2.sif",
+      "sif_sha256": "6eb9d8a7e79abb1f9e908120b7520a41b53fb4a2e78b011440dc2c1ffb3f9e81"
+    },
+    "avx512": {
+      "job_id": "1846756",
+      "manifest_sha256": "98171ee66dac2ceb82f3b2cb67b16aa6df3f5f8f876ca2b94b24016e5ada3708",
+      "max_errors": {
+        "orthogonality": 1.665e-15,
+        "residual": 5.905e-16,
+        "spectrum": 2.22e-15
+      },
+      "numeric_passes": 48,
+      "prefix": "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/nvidia",
+      "sif": "/home/stardust/sai-hpc-software/runs/elpa-2026.02.001-20261018-2204-avx512/elpa-avx512.sif",
+      "sif_sha256": "0e48c58157cfad30d88f82bc31a4f6cd255d101cb241bccef4783f8241382e98"
+    }
+  },
+  "compatibility_patch_sha256": "aaa3f15cee9024a2e8b92be22c32da9eecd0ae2be2b475d9cd168707631041ae",
+  "module_sha256": "cce432ff7bcbb6f6001baa79f4620c53ed26419dff0dcc2d78076018b0bbcbf6",
+  "source_sha256": "a379f27f4dbd27b2ee45017afec656d064301e97150c874649bdfd64957b75ed",
+  "version": "2026.02.001"
+}
