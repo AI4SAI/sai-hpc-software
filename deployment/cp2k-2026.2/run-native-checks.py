@@ -3,7 +3,7 @@
 
 Uses the original frozen acceptance parser and the actual accepted SIF result
 for this partition. No comparison to the retired 2026.1 installation occurs.
-Only result directories under the project home are written.
+References are read-only; results live under the executing user's home work tree.
 """
 import hashlib
 import json
@@ -18,9 +18,9 @@ sys.dont_write_bytecode = True
 import install as deployment
 
 
-def run(project, output):
-    deployment.require(output.is_relative_to(project / 'runtime-tests'),
-                       'native check results must be inside the project home')
+def run(project, output, work_root):
+    deployment.require(output.is_relative_to(work_root / 'runtime-tests'),
+                       'native check results must be inside the writable home work directory')
     partition = os.environ['SLURM_JOB_PARTITION']
     release = json.loads((deployment.PACKAGE / 'release.json').read_text())
     spec = next(item for item in release['deliveries'] if item['partition'] == partition)
@@ -120,4 +120,5 @@ def run(project, output):
 
 
 if __name__ == '__main__':
-    run(Path(sys.argv[1]).resolve(strict=True), Path(sys.argv[2]).resolve(strict=True))
+    run(Path(sys.argv[1]).resolve(strict=True), Path(sys.argv[2]).resolve(strict=True),
+        Path(sys.argv[3]).resolve(strict=True))

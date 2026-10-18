@@ -20,6 +20,14 @@ The original SIFs and native exports remain unchanged; the actual installed
 subset is recorded separately in `share/sai/deployment.json`.
 [Four-partition payload and data preflight](evidence/cp2k-install-layout-20261018/physical-deployment-preflight.json).
 
+Installation can be run by another site account with read/traverse access to
+the accepted exports and their ancestors. Only the physical `/opt` installation
+requires write privileges. The post-install checks read the original artifacts
+and scientific references without modifying them; results, caches and MPI
+scratch default to the executing account's `$HOME/sai-hpc-software`.
+`SAI_CP2K_NATIVE_WORK_ROOT` can select a shorter home work directory independently
+of the reference location, `SAI_SOFTWARE_ROOT`.
+
 The reviewed site module is
 `/opt/modules/modulefiles/apps/abacus/develop-git-079fd0c-260724-sm70-auto`.
 It loads shared OpenMPI, FFTW, LibXC, SAIBLAS, ELPA and NVIDIA math modules and

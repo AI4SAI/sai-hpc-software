@@ -13,6 +13,13 @@ native science scripts. Four accepted source exports passed deployment preflight
 administrator installation into physical `/opt/apps` and its subsequent native
 science remain pending.
 
+Cross-account deployment now grants `saiuser01` read/traverse ACLs only on the
+blocked release/reference paths, with no added write access. The 2,415 required
+paths passed effective POSIX ACL checks; native checks write results, caches and
+MPI scratch to the executing account's own home work tree. Frozen manifests,
+scientific references and inputs still match their pinned hashes.
+[Cross-account access evidence](evidence/cp2k-install-layout-20261018/cross-account-access.json).
+
 ## Implemented and locally verified
 
 - Daily and child workflows await reusable jobs and reject unexpected skipped,

@@ -40,6 +40,20 @@ LIBXS 开发文档，以及 PLUMED 的外部软件补丁、Fortran 开发接口�
 总计约 1.87 GiB。`deployment-plan.json` 是在服务器上生成的逐文件清单，
 同时列出拟部署和剔除的文件；无需另外复制原生导出之外的源码、系统镜像或构建缓存。
 
+## 跨账号权限
+
+`--check` 只需要读取安装包、四份 SIF、`.native` 和产物记录，以及进入它们的父目录；
+不需要对 stardust 的家目录或产物增加写权限。目录的 `x` 权限用于进入目录，
+只给文件 `r` 而不给父目录 `x` 仍会报 `Permission denied`。
+
+已为 `saiuser01` 在阻挡访问的指定目录添加 `r-x` ACL，并为原验收输入添加 `r--` ACL；
+原生导出内的文件原本已可读，不改动其内容、权限或冻结清单。
+ACL 不向该账号授予写权限，也不开放整个家目录或其他软件的私有目录。
+换其他账号执行时，目录所有者需为该账号设置对应的只读 ACL。
+
+`--install` 另外需要目标 `/opt/apps/cp2k` 和 module 目录的写权限，
+可以用有管理权限的账号或下面的 `sudo` 命令执行。
+
 ## 执行顺序
 
 在 SAI-stardust 登录节点先预检；默认也只做预检：
@@ -99,9 +113,13 @@ SIF 的原始七种输入，分别跑单节点和双节点，共 14 项；结果
 没有容器启动器。版本、功能标志、每 rank 的节点及动态库加载一并检查，
 HCOLL 必须从真实 HPCX 目录加载。
 
-运行证据与 CUDA 缓存写入家目录的 `runtime-tests/cp2k-2026.2-physical-*/<分区>/`，
-MPI 临时文件使用同一家目录下较短的 `runtime/cn-<job>` 路径，避免 Unix socket
-文件名长度限制；均不使用节点 `/tmp`。任务成功后生成 `native-acceptance.json`，
+原产物和科学参考仍从 `/home/stardust/sai-hpc-software` 只读访问。
+新结果默认写入执行账号自己的 `$HOME/sai-hpc-software/runtime-tests/cp2k-2026.2-physical-*/<分区>/`，
+MPI 临时文件使用同一工作目录下较短的 `runtime/cn-<job>` 路径，避免 Unix socket
+文件名长度限制；CUDA 等缓存也写入新结果目录，均不使用节点 `/tmp`。
+可通过 `SAI_CP2K_NATIVE_WORK_ROOT` 指定本人家目录下更短的工作路径；
+`SAI_SOFTWARE_ROOT` 单独指定原产物和科学参考的位置，不改变结果目录。
+任务成功后生成 `native-acceptance.json`，
 并在 Slurm 日志中写出 `CP2K_PHYSICAL_NATIVE_ACCEPTANCE_PASSED`。
 此验收脚本复用原始冻结控制器中的科学解析器和原始 SIF 验收记录，
 所以应保留家目录中的对应 `controller/`、产物侧车和 `runtime-tests/` 科学证据。

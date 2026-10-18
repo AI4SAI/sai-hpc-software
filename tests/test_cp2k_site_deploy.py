@@ -172,6 +172,45 @@ class SiteDeploymentTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'checksum mismatch'):
             deploy.verify_installed(self.system)
 
+    def test_cross_account_checks_write_to_own_home_and_keep_references_read_only(self):
+        reference = self.directory / 'other-user-reference'
+        reference.mkdir(mode=0o555)
+        tools = self.directory / 'tools'
+        tools.mkdir()
+        commands = {
+            'python3': '#!/usr/bin/env bash\n[[ $1 == */install.py && $2 == --verify ]]\n',
+            'sbatch': '#!/usr/bin/env bash\nprintf "%s\\0" "$@" > "$SAI_TEST_SBATCH_ARGS"\nprintf "12345\\n"\n',
+        }
+        for name, content in commands.items():
+            path = tools / name
+            path.write_text(content)
+            path.chmod(0o755)
+        for override in (False, True):
+            with self.subTest(override=override):
+                home = self.directory / ('user home ' + str(override))
+                home.mkdir()
+                args = home / 'sbatch.args'
+                environment = {**os.environ, 'HOME': str(home),
+                               'PATH': str(tools) + os.pathsep + os.environ['PATH'],
+                               'SAI_SOFTWARE_ROOT': str(reference), 'SAI_TEST_SBATCH_ARGS': str(args)}
+                environment.pop('SAI_CP2K_NATIVE_WORK_ROOT', None)
+                work = home / 'sai-hpc-software'
+                if override:
+                    work = home / 'short-work'
+                    environment['SAI_CP2K_NATIVE_WORK_ROOT'] = str(work)
+                result = subprocess.run(['bash', str(PACKAGE / 'submit-native-checks.sh'), '4V100'],
+                                        env=environment, capture_output=True, text=True)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                results = list((work / 'runtime-tests').glob('cp2k-2026.2-physical-*'))
+                self.assertEqual(len(results), 1)
+                output = results[0] / '4V100'
+                self.assertEqual((output / 'job.id').read_text(), '12345\n')
+                arguments = args.read_bytes().decode().split('\0')[:-1]
+                self.assertEqual(arguments[-5:], [str(PACKAGE / 'verify-native.sbatch'),
+                                                 str(PACKAGE), str(reference), str(output), str(work)])
+                self.assertIn(str(output), (results[0] / 'jobs.tsv').read_text())
+                self.assertEqual(list(reference.iterdir()), [])
+
     @unittest.skipUnless(shutil.which('tclsh'), 'Tcl interpreter required')
     def test_module_show_and_saved_partition_unload(self):
         script = (PACKAGE / '2026.2-auto').read_text()
