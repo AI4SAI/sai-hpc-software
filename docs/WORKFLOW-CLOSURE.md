@@ -254,6 +254,14 @@ partitions, including actual loader evidence and fresh C/Fortran consumers.
 DSPRHBM passed 24 CPU solves through the host-array C API (`1847682`), while the
 explicit pointer-detecting C API failed without a CUDA driver (`1847654`).
 This remaining interface limitation prevents unconditional pure-CPU acceptance.
+On October 19, CPU-only build `1848059` completed on DSPRHBM and passed all 24
+original explicit-C-interface solves. The shared recipe disables GPU support at
+compile time for `/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/cpu`, removing
+CUDA dependencies and pointer dispatch. Four new partition-module checks
+`1848160`–`1848163` passed, retaining the accepted V100 libraries and selecting the
+new CPU library for DSPRHBM. The 12.81 MiB supplement passed deployment preflight;
+administrator installation and physical CPU acceptance remain pending.
+[CPU supplement and partition selector evidence](evidence/elpa-cpu-20261019/README.md).
 This does not replace CP2K's accepted private ELPA dependency.
 [Shared ELPA build, compatibility fixes and deployment evidence](evidence/elpa-site-20261018/README.md).
 

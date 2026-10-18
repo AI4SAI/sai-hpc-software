@@ -17,8 +17,18 @@ if [[ "$isa" == avx2 ]]; then
 else
   grep -q ELPA_2STAGE_REAL_AVX512_BLOCK kernels.txt
 fi
-/opt/devtools/nvidia/cuda-12.9.1/bin/cuobjdump --list-elf "$so" > gpu-kernels.txt
-for sm in 70 75 80 86 89; do grep -q "sm_$sm.cubin" gpu-kernels.txt; done
+gpu_modes=(0 1)
+if [[ "$elpa_backend" == nvidia ]]; then
+  /opt/devtools/nvidia/cuda-12.9.1/bin/cuobjdump --list-elf "$so" > gpu-kernels.txt
+  for sm in 70 75 80 86 89; do grep -q "sm_$sm.cubin" gpu-kernels.txt; done
+else
+  gpu_modes=(0)
+  ! grep -Eq 'lib(cuda|cublas|cusolver)' ldd.txt dynamic.txt
+  ! grep -Eq 'ELPA_2STAGE_(REAL|COMPLEX)_NVIDIA' kernels.txt
+  nm -D "$so" > symbols.txt
+  ! grep -Eq 'is_device_ptr|cudaPointerGetAttributes' symbols.txt
+  printf 'ELPA_CPU_NO_CUDA_DEPENDENCY\n' > gpu-kernels.txt
+fi
 # Compile a fresh consumer against the final SIF's headers and shared library.
 "$MPI_HOME/bin/mpicc" -std=c11 -O2 /control/smoke.c $(pkg-config --cflags --libs elpa_openmp) -lm -o smoke
 ldd ./smoke > consumer-ldd.txt
@@ -43,7 +53,7 @@ F90
 timeout 60 "$MPI_HOME/bin/mpiexec" --bind-to none -n 1 ./fortran-smoke > fortran-smoke.log 2>&1
 grep -q ELPA_FORTRAN_CONSUMER_PASS fortran-smoke.log
 for ranks in 1 2; do
-  for gpu in 0 1; do
+  for gpu in "${gpu_modes[@]}"; do
     for solver in 1 2; do
       for complex in 0 1; do
         log=r$ranks-g$gpu-s$solver-c$complex.log

@@ -1,13 +1,17 @@
 #!/usr/bin/env bash
 # Source inside a container or on a compute node. Match the site's 26.3 stack.
-elpa_isa=${1:?avx2 or avx512 required}
-case "$elpa_isa" in avx2|avx512) ;; *) return 2 ;; esac
+elpa_target=${1:?avx2, avx512 or dsprhbm required}
+case "$elpa_target" in
+  avx2|avx512) elpa_isa=$elpa_target; elpa_backend=nvidia ;;
+  dsprhbm) elpa_isa=avx512; elpa_backend=cpu ;;
+  *) return 2 ;;
+esac
 set +u
 source /etc/profile.d/lmod.sh
 module use /opt/modules/modulefiles/devtools
 module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto saiblas/2603-gnu-auto
 set -u
-export ELPA_ROOT=/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-${elpa_isa}/nvidia
+export ELPA_ROOT=/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-${elpa_isa}/${elpa_backend}
 [[ "$MPI_HOME" == /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-${elpa_isa} ]]
 [[ "$OPENBLAS_ROOT" == /opt/devtools/saiblas/2603-gnu-${elpa_isa} ]]
 export OMPI_CC=/usr/bin/gcc OMPI_CXX=/usr/bin/g++ OMPI_FC=/usr/bin/gfortran

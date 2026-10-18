@@ -3,12 +3,16 @@
 set -euo pipefail
 mode=${1:?build or verify}; run=${2:?absolute run directory}; isa=${3:?}; shift 3
 [[ "$run" == /home/stardust/sai-hpc-software/runs/elpa-* && "$run" != *:* && "$run" != *,* && "$run" != *..* ]]
-case "$isa" in avx2|avx512) ;; *) exit 2 ;; esac
-prefix=/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-$isa/nvidia
+case "$isa" in
+  avx2|avx512) prefix=/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-$isa/nvidia ;;
+  dsprhbm) prefix=/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/cpu ;;
+  *) exit 2 ;;
+esac
 export TMPDIR=$run/runtime APPTAINER_TMPDIR=$run/runtime APPTAINER_CACHEDIR=$run/cache
 unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH
 args=(exec --userns --cleanenv --containall --no-home
-  --no-mount bind-paths,home,cwd,tmp,hostfs --pwd / --nv)
+  --no-mount bind-paths,home,cwd,tmp,hostfs --pwd /)
+if [[ "$isa" != dsprhbm ]]; then args+=(--nv); fi
 for p in /usr /lib /lib64 /etc/alternatives /opt/devtools/nvidia /opt/devtools/openmpi /opt/devtools/saiblas /opt/modules; do
   args+=(--bind "$p:$p:ro")
 done

@@ -1,0 +1,64 @@
+ELPA_CPU_JOB 1848059 d9470n02.mr-sai.ai jobs=16 2026-10-19T00:12:59+08:00
+pid 206511's current affinity list: 0-15
+/input/elpa-2026.02.001.tar.gz: OK
+patching file src/elpa2/elpa2_trans_ev_band_to_full_template.F90
+patching file src/elpa2/elpa2_trans_ev_tridi_to_band_template.F90
+ELPA_CONFIGURE_START dsprhbm 2026-10-18T16:13:00+00:00
+ELPA_MAKE_START dsprhbm jobs=16 2026-10-18T16:13:21+00:00
+/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/cpu/lib/libelpa_openmp.so.19.5.1: RUNPATH=/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/mellanox/hcoll/lib:/usr/lib/x86_64-linux-gnu:/opt/devtools/saiblas/2603-gnu-avx512/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib
+/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/cpu/lib/libelpa_openmp.so.19.5.1: new RUNPATH: /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/usr/lib/x86_64-linux-gnu:/opt/devtools/saiblas/2603-gnu-avx512/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib
+ELPA_INSTALLED dsprhbm 2026-10-18T16:14:42+00:00
+ELPA_PACKED dsprhbm 2026-10-18T16:14:57+00:00
+	linux-vdso.so.1 (0x0000123d7b9ee000)
+	libscalapack.so.2.2 => /opt/devtools/saiblas/2603-gnu-avx512/lib/libscalapack.so.2.2 (0x0000123d7b0d6000)
+	libopenblas.so.0 => /opt/devtools/saiblas/2603-gnu-avx512/lib/libopenblas.so.0 (0x0000123d7a297000)
+	libmpi_mpifh.so.40 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libmpi_mpifh.so.40 (0x0000123d7a229000)
+	libmpi.so.40 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libmpi.so.40 (0x0000123d79e5c000)
+	libgfortran.so.5 => /usr/lib/x86_64-linux-gnu/libgfortran.so.5 (0x0000123d79a00000)
+	libgomp.so.1 => /usr/lib/x86_64-linux-gnu/libgomp.so.1 (0x0000123d79e06000)
+	libc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x0000123d79600000)
+	libgcc_s.so.1 => /usr/lib/x86_64-linux-gnu/libgcc_s.so.1 (0x0000123d79dd8000)
+	libm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x0000123d79917000)
+	/lib64/ld-linux-x86-64.so.2 (0x0000123d7b9f0000)
+	libopen-pal.so.80 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libopen-pal.so.80 (0x0000123d794e2000)
+	libucc.so.1 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libucc.so.1 (0x0000123d79d90000)
+	libhcoll.so.1 => /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libhcoll.so.1 (0x0000123d79000000)
+	libucp.so.0 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libucp.so.0 (0x0000123d79819000)
+	libucs.so.0 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libucs.so.0 (0x0000123d7946b000)
+	libpmix.so.2 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libpmix.so.2 (0x0000123d78dbc000)
+	libevent_core-2.1.so.7 => /lib/x86_64-linux-gnu/libevent_core-2.1.so.7 (0x0000123d79d59000)
+	libevent_pthreads-2.1.so.7 => /lib/x86_64-linux-gnu/libevent_pthreads-2.1.so.7 (0x0000123d79d54000)
+	libhwloc.so.15 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libhwloc.so.15 (0x0000123d7940d000)
+	libucm.so.0 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libucm.so.0 (0x0000123d79d36000)
+	libocoms.so.0 => /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libocoms.so.0 (0x0000123d78a00000)
+	libdl.so.2 => /lib/x86_64-linux-gnu/libdl.so.2 (0x0000123d79d2f000)
+	libutil.so.1 => /lib/x86_64-linux-gnu/libutil.so.1 (0x0000123d79d2a000)
+	librt.so.1 => /lib/x86_64-linux-gnu/librt.so.1 (0x0000123d79d25000)
+	librdmacm.so.1 => /lib/x86_64-linux-gnu/librdmacm.so.1 (0x0000123d793ec000)
+	libibverbs.so.1 => /lib/x86_64-linux-gnu/libibverbs.so.1 (0x0000123d793c7000)
+	libpthread.so.0 => /lib/x86_64-linux-gnu/libpthread.so.0 (0x0000123d79d1e000)
+	libuct.so.0 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libuct.so.0 (0x0000123d79386000)
+	libmunge.so.2 => /lib/x86_64-linux-gnu/libmunge.so.2 (0x0000123d7937e000)
+	libnl-3.so.200 => /lib/x86_64-linux-gnu/libnl-3.so.200 (0x0000123d7935c000)
+	libnl-route-3.so.200 => /lib/x86_64-linux-gnu/libnl-route-3.so.200 (0x0000123d78d2d000)
+	libelpa_openmp.so.19 => /opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/cpu/lib/libelpa_openmp.so.19 (0x0000083e8e515000)
+ELPA_NUMERIC PASS ranks=1 gpu=0 solver=1 complex=0 nonblocking=0 repeat=0 spectrum=1.332e-15 residual=4.927e-16 orthogonality=1.332e-15
+ELPA_NUMERIC PASS ranks=1 gpu=0 solver=1 complex=0 nonblocking=0 repeat=1 spectrum=1.332e-15 residual=4.927e-16 orthogonality=1.332e-15
+ELPA_NUMERIC PASS ranks=1 gpu=0 solver=1 complex=1 nonblocking=0 repeat=0 spectrum=1.332e-15 residual=5.477e-16 orthogonality=1.110e-15
+ELPA_NUMERIC PASS ranks=1 gpu=0 solver=1 complex=1 nonblocking=0 repeat=1 spectrum=1.332e-15 residual=5.477e-16 orthogonality=1.110e-15
+ELPA_NUMERIC PASS ranks=1 gpu=0 solver=2 complex=0 nonblocking=0 repeat=0 spectrum=1.332e-15 residual=4.927e-16 orthogonality=1.332e-15
+ELPA_NUMERIC PASS ranks=1 gpu=0 solver=2 complex=0 nonblocking=0 repeat=1 spectrum=1.332e-15 residual=4.927e-16 orthogonality=1.332e-15
+ELPA_NUMERIC PASS ranks=1 gpu=0 solver=2 complex=0 nonblocking=1 repeat=0 spectrum=1.332e-15 residual=4.927e-16 orthogonality=1.332e-15
+ELPA_NUMERIC PASS ranks=1 gpu=0 solver=2 complex=0 nonblocking=1 repeat=1 spectrum=1.332e-15 residual=4.927e-16 orthogonality=1.332e-15
+ELPA_NUMERIC PASS ranks=1 gpu=0 solver=2 complex=1 nonblocking=0 repeat=0 spectrum=1.332e-15 residual=4.583e-16 orthogonality=9.992e-16
+ELPA_NUMERIC PASS ranks=1 gpu=0 solver=2 complex=1 nonblocking=0 repeat=1 spectrum=1.332e-15 residual=4.583e-16 orthogonality=9.992e-16
+ELPA_NUMERIC PASS ranks=1 gpu=0 solver=2 complex=1 nonblocking=1 repeat=0 spectrum=1.332e-15 residual=4.583e-16 orthogonality=9.992e-16
+ELPA_NUMERIC PASS ranks=1 gpu=0 solver=2 complex=1 nonblocking=1 repeat=1 spectrum=1.332e-15 residual=4.583e-16 orthogonality=9.992e-16
+grep: r2-g0-s1-c0.log: binary file matches
+grep: r2-g0-s1-c1.log: binary file matches
+grep: r2-g0-s2-c0.log: binary file matches
+grep: r2-g0-s2-c0-nbc1.log: binary file matches
+grep: r2-g0-s2-c1.log: binary file matches
+grep: r2-g0-s2-c1-nbc1.log: binary file matches
+ELPA_SIF_VERIFIED dsprhbm
+ELPA_BUILD_AND_CHECKS_PASSED dsprhbm 2026-10-19T00:15:02+08:00

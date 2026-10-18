@@ -14,6 +14,10 @@ DSPRHBM 的主机数组接口也通过 24 次 CPU 求解（`1847682`），但
 会因自动检测设备指针而退出（`1847654`）。因此不能声称纯 CPU 节点的所有 C 接口均可用。
 详见[物理验收及接口限制](../../docs/evidence/elpa-site-20261018/README.md#physical-installation-acceptance)。
 
+2026-10-19：已为此限制构建并验收[纯 CPU 补充包及分区 module](../elpa-2026.02.001-cpu/README.md)。
+新 CPU 库的原始显式 C 接口通过全部 24 次求解，待管理员新增安装到 `-gnu-avx512/cpu`；
+使用新 `elpa/2026.02.001-2603-gnu-partition` 即可让 DSPRHBM 选择该库。
+
 沿用集群 `elpa/2026.02.001-2603-gnu` 的上游源码、GCC/GFortran 13.3.0、
 OpenMPI 5.0.10、CUDA 12.9.1 / NVHPC 26.3、OpenBLAS 0.3.32 和 ScaLAPACK 2.2.3。
 保留 OpenMP、cuSOLVER、CUDA-aware MPI、CUB、SM80 专用内核，GPU 目标仍为

@@ -59,6 +59,11 @@ permission. Administrator instructions are in the
 
 ## Physical installation acceptance
 
+Follow-up: the [October 19 CPU-only supplement](../elpa-cpu-20261019/README.md)
+passes the original explicit C API without a CUDA driver. Its container/module
+acceptance is complete; the new CPU prefix awaits administrator installation.
+The results below retain the actual behavior of the original NVIDIA build.
+
 The `stardust` account verified both installed file inventories, byte hashes,
 symlinks, modes and the exact public module. It then loaded the module on each
 compute node and compiled fresh consumers against physical `/opt`. Apptainer

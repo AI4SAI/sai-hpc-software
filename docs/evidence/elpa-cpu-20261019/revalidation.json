@@ -1,0 +1,52 @@
+{
+  "status": "accepted",
+  "job_id": "1848059",
+  "numeric_passes": 24,
+  "max_errors": {
+    "spectrum": 1.332e-15,
+    "residual": 5.477e-16,
+    "orthogonality": 1.665e-15
+  },
+  "partition_module_checks": {
+    "16V100": {
+      "job_id": "1848160",
+      "partition": "16V100",
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "elapsed": "00:00:04",
+      "node": "16v100n02",
+      "isa": "avx2",
+      "backend": "nvidia"
+    },
+    "4V100": {
+      "job_id": "1848161",
+      "partition": "4V100",
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "elapsed": "00:00:02",
+      "node": "4v100n04",
+      "isa": "avx512",
+      "backend": "nvidia"
+    },
+    "8V100V0": {
+      "job_id": "1848162",
+      "partition": "8V100V0",
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "elapsed": "00:00:03",
+      "node": "8v100v0n09",
+      "isa": "avx2",
+      "backend": "nvidia"
+    },
+    "DSPRHBM": {
+      "job_id": "1848163",
+      "partition": "DSPRHBM",
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "elapsed": "00:00:08",
+      "node": "d9470n02",
+      "isa": "avx512",
+      "backend": "cpu"
+    }
+  }
+}
