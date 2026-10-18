@@ -2,8 +2,42 @@
 
 This records implementation, live builds and partition-scoped acceptance.
 CP2K 2026.2 on 4V100, 16V100, 8V100V0 and DSPRHBM has passed candidate
-science, native export readback and publication. Development and physical
-installation acceptance remain separate work.
+science, native export readback, publication and physical installation acceptance.
+Development remains unaccepted.
+
+## Physical installation acceptance — 2026-10-18
+
+After the user installed the selective runtime trees at their original `/opt`
+prefixes, `stardust` verified all installed bytes, links, permissions and the
+public `cp2k/2026.2-auto` module. Each partition then ran the original seven
+cases on one and two nodes directly from physical storage, without Apptainer.
+
+| Partition | Job | Nodes | State | Elapsed | Calculations |
+| --- | --- | --- | --- | --- | --- |
+| 4V100 | 1844993 | 4v100n08,17 | COMPLETED `0:0` | 8:02 | 14/14 |
+| 16V100 | 1844994 | 16v100n49,50 | COMPLETED `0:0` | 14:38 | 14/14 |
+| 8V100V0 | 1844995 | 8v100v0n02,04 | COMPLETED `0:0` | 16:11 | 14/14 |
+| DSPRHBM | 1844996 | d9470n02,04 | COMPLETED `0:0` | 17:09 | 14/14 |
+
+All 56 calculations passed, covering PBE OT, ordinary and forced ELPA
+diagonalization, DFT-D4, TBLITE, and 192-atom PBE water with OT and ELPA.
+Independent revalidation reparsed the raw logs, forces and inputs with each
+delivery's original frozen scientific parser. Maximum differences from the
+accepted SIF results were `2.12e-11 Ha` and `1.60e-11 Ha/Bohr`, below tolerances
+of `1e-6 Ha` and `1e-5 Ha/Bohr`. Versions and feature flags exactly match the
+accepted images; GPU versions retain CUDA/DBCSR and SpLA GEMM offload.
+
+Per-rank loader traces confirm the installed private ELPA and actual HPCX HCOLL
+path, with no missing libraries or loading from `/opt/mellanox/hcoll`.
+MPI placement confirms one rank per requested node. All original data remain
+installed (280 regular files and two links per partition). Timings describe
+these correctness runs; they do not establish production-scale performance.
+
+Raw evidence, the nine frozen deployment files and `revalidate.py` are under
+`/home/stardust/sai-hpc-software/runtime-tests/cp2k-2026.2-physical-20261018-193800-3592647/`.
+The independent report records hashes for 376 raw files.
+[Acceptance report](evidence/cp2k-install-layout-20261018/physical-native-acceptance.json),
+[revalidation script](evidence/cp2k-install-layout-20261018/physical-native-revalidate.py).
 
 ## Current private-ELPA release build
 

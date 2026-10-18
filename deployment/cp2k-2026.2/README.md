@@ -142,4 +142,8 @@ mpirun ... cp2k.psmp -i input.inp
 module 只按当前 `SLURM_JOB_PARTITION` 选择版本和记录过的依赖。
 MPI rank、GPU 映射、OpenMP 线程数仍按作业本身设置；卸载使用加载时保存的分区。
 
-当前记录的是部署包预检通过；管理员物理安装和随后的原生科学验收须执行上面的步骤。
+2026-10-18：用户已完成物理安装，`stardust` 已验证全部安装文件，并在四分区各跑完
+14 项原生科学计算，共 56/56 项通过。任务 `1844993`（4V100）、`1844994`（16V100）、
+`1844995`（8V100V0）、`1844996`（DSPRHBM）均为 `COMPLETED 0:0`。
+原始日志独立复核通过，版本、动态库、双节点分布和科学结果均符合验收要求。
+[完整验收记录](../../docs/evidence/cp2k-install-layout-20261018/physical-native-acceptance.json)。

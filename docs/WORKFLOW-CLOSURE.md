@@ -2,16 +2,23 @@
 
 The code now connects build, scientific/performance acceptance, native export
 readback and publication. CP2K 2026.2 on all four partitions (4V100, 16V100,
-8V100V0 and DSPRHBM) has passed candidate science, native export readback and
-publication. Development is not yet accepted. GPUMD on 16V100 has passed science, performance and
+8V100V0 and DSPRHBM) has passed candidate science, native export readback,
+publication, physical `/opt` installation and native single/two-node science.
+Development is not yet accepted. GPUMD on 16V100 has passed science, performance and
 publication; its additional exported-native module execution check remains
 pending. Production acceptance is incomplete across the full site matrix. Original dirty
 worktrees and recovery checkpoints remain preserved. At the user's request,
 the ready-to-run [CP2K physical deployment package](../deployment/cp2k-2026.2/README.md)
 now includes the four-partition module, selective installer and post-install
-native science scripts. Four accepted source exports passed deployment preflight;
-administrator installation into physical `/opt/apps` and its subsequent native
-science remain pending.
+native science scripts. The user installed all four accepted trees and the public
+module. The `stardust` account verified the physical bytes, links and permissions,
+then jobs `1844993`–`1844996` passed all 56 native scientific calculations, each
+ending `COMPLETED 0:0`. Independent raw-log revalidation confirmed energies,
+forces, exact versions/features, real HPCX HCOLL/private ELPA loading and MPI
+placement. Maximum differences from the accepted SIF results were `2.12e-11 Ha`
+and `1.60e-11 Ha/Bohr`. Original data remain complete (280 files and two links
+per partition); no application container is used for native execution.
+[Physical installation acceptance and raw evidence hashes](evidence/cp2k-install-layout-20261018/physical-native-acceptance.json).
 
 Cross-account deployment now grants `saiuser01` read/traverse ACLs only on the
 blocked release/reference paths, with no added write access. The 2,415 required

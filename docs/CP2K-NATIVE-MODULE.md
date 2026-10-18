@@ -20,6 +20,13 @@ The original SIFs and native exports remain unchanged; the actual installed
 subset is recorded separately in `share/sai/deployment.json`.
 [Four-partition payload and data preflight](evidence/cp2k-install-layout-20261018/physical-deployment-preflight.json).
 
+The physical installation is now accepted on all four partitions. After the
+user installed these trees, `stardust` verified the physical files and ran jobs
+`1844993`–`1844996`: all 56 single/two-node calculations completed successfully.
+Independent raw-log checks confirmed the installed versions, real HPCX HCOLL,
+private ELPA, node placement, and agreement with the accepted SIF energies and
+forces. [Physical native acceptance](evidence/cp2k-install-layout-20261018/physical-native-acceptance.json).
+
 Installation can be run by another site account with read/traverse access to
 the accepted exports and their ancestors. Only the physical `/opt` installation
 requires write privileges. The post-install checks read the original artifacts
@@ -127,9 +134,9 @@ map the four partitions to these accepted prefixes; a generated selector for
 just one build identity does not cover both identities.
 
 For these accepted deliveries, the site selector can be written as follows.
-Install each complete `.native` payload at its recorded prefix before making
-this module public. This is a deployment example, not a claim that physical
-installation has been performed.
+The deployed public module follows the mapping below, with the selective runtime
+payloads installed at their exact recorded prefixes. The physical acceptance
+above verifies this deployment.
 
 ```tcl
 #%Module1.0
@@ -174,7 +181,7 @@ mpirun ... cp2k.psmp -i input.inp
 
 Keep the allocation's existing MPI rank, GPU mapping and thread choices. This
 module selects software and its dependencies; it does not select resources or
-set a workload-specific thread count. Native execution should receive a final
-loader/version and PBE smoke check after the administrator installs the exact
-accepted prefixes. The separate diagnostic SIF plus ELPA bind test does not
-establish that physical installation check.
+set a workload-specific thread count. The physical loader/version and complete
+single/two-node science checks have now passed on all four partitions. These
+checks use the installed files directly and are separate from the earlier
+diagnostic SIF plus ELPA bind tests.
