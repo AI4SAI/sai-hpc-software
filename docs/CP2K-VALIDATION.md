@@ -11,13 +11,13 @@ uses code commit `84027c9`, source v2026.2 / `67b5da876dd6` and recipe
 `4d454c7403097d4a5cae4c37452ef15aff32d753f0e9076533433dc939535782`.
 This is the recipe that includes private ELPA and the upstream source fixes;
 the older four SIFs below retain their previous recipe.
-At the publication/recovery audit (2026-10-18 13:50 Asia/Shanghai):
+At the publication/recovery audit (2026-10-18 14:06 Asia/Shanghai):
 
 | Partition | Dependency job / state | Application job / actual stage | New application SIF |
 |---|---|---|---|
 | 4V100 | 1839366: COMPLETED `0:0`, 36:56, sealed | 1839644: COMPLETED `0:0`, 38:30 | 189,743,104 bytes, accepted and published |
 | 16V100 | 1839368: COMPLETED `0:0`, 1:09:17, sealed | 1839900: COMPLETED `0:0`, 24:52 | 188,497,920 bytes, accepted and published |
-| 8V100V0 | 1839369: COMPLETED `0:0`, 1:10:43, sealed | 1839913: RUNNING, clone verified and application container started | not yet produced |
+| 8V100V0 | 1839369: COMPLETED `0:0`, 1:10:43, sealed | 1839913: RUNNING, CP2K compilation at 83% | not yet produced |
 | DSPRHBM | 1839362: COMPLETED `0:0`, 52:17, sealed | 1839750: FAILED `255:0`, 21:21, missing host HCOLL bind source | not produced |
 
 4V100 science job `1840021` completed `0:0` in 7:59 on `4v100n18,20`. All seven
@@ -70,8 +70,11 @@ started the application container/source setup. Its preparation receipt
 confirms both filesystem checks, an empty overlay work directory and an
 unchanged sealed source. At 13:47 the clone process was still reading
 40 MiB in three seconds, with shared-filesystem I/O waits. No new SIF has
-been produced. DSPRHBM's fresh job had entered actual dependency compilation.
+been produced. At 14:06, CP2K's compile progress had reached 83%. DSPRHBM's
+fresh job had installed HDF5, COSMA, libxsmm and PLUMED and was still building
+dependencies.
 [Latest two-job progress and clone receipt](evidence/cp2k-install-layout-20261018/native-elpa-remaining-progress.json).
+[14:06 compile progress and release-skip probe](evidence/cp2k-install-layout-20261018/native-elpa-progress-1406.json).
 
 The original GitHub run does not have a successful workflow result. In addition
 to its retained CPU build failure, GPU `result` jobs failed before starting a
@@ -79,7 +82,13 @@ runner: caller-required SSH secrets were unavailable outside the `hpc`
 Environment, despite successful environment-backed build/acceptance jobs.
 The fix permits environment-only credentials and explicitly rejects missing
 credentials inside the execution jobs. Twenty-one focused workflow/resolver
-tests passed; live result-job validation is pending. This orchestration issue
+tests passed locally. Linux CI at `6cbe030` passed 777 tests (775 passed, two
+optional skips). Live workflow
+[39102356436](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39102356436)
+passed both reusable and parent result jobs on an intentional release skip;
+the retained claim and absent Slurm handles confirm no extra build was
+submitted. This validates the secret scope and skip/result path without
+claiming fresh application/science acceptance. This orchestration issue
 does not replace or invalidate the independently revalidated artifact proofs.
 [Original annotations, credential scope and repair](evidence/cp2k-install-layout-20261018/github-environment-secret-result.json).
 
