@@ -21,9 +21,11 @@ on:
         default: false
     secrets:
       REMOTE_SSH_PRIVATE_KEY:
-        required: true
+        description: May be supplied by the caller or the hpc Environment
+        required: false
       REMOTE_USER:
-        required: true
+        description: May be supplied by the caller or the hpc Environment
+        required: false
 
 permissions:
   contents: read
@@ -56,11 +58,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
-      - name: Prepare repository-secret SSH key
+      - name: Prepare HPC SSH credentials
         env:
           KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
         run: |
           set -euo pipefail
+          : "${REMOTE_USER:?Configure REMOTE_USER in the hpc Environment or caller secrets}"
+          : "${KEY:?Configure REMOTE_SSH_PRIVATE_KEY in the hpc Environment or caller secrets}"
           mkdir -m 700 "$RUNNER_TEMP/ssh"
           printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
           chmod 600 "$RUNNER_TEMP/ssh/key"

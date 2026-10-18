@@ -125,6 +125,9 @@ No source checkout or build/install directory is created by the receiver.
 The public host key is versioned in `.ci/slurm/known_hosts`.
 `REMOTE_SSH_PRIVATE_KEY` and `REMOTE_USER` are Actions secrets
 (current deployment: the repository's `hpc` Environment).
+Reusable workflows resolve these credentials inside their `hpc` jobs; caller
+secrets are optional. Missing credentials stop the SSH preparation step before
+any remote action. Result jobs require no environment credentials.
 No private key is committed. Only scheduled and manually dispatched trusted runs access the SSH key;
 push and PR runs only validate. Keep the `hpc` Environment limited to trusted branches.
 

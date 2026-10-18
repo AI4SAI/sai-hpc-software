@@ -2,6 +2,7 @@
 import json
 import os
 from pathlib import Path
+import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -24,6 +25,51 @@ def gate(name, results, **environment):
             'GITHUB_EVENT_NAME': 'schedule', 'BUILD_ENABLED': 'true',
             'SOFTWARE': 'abacus', 'RELEASE_TRACK': 'development', **environment}):
         exec(compile(code, name + '.yml', 'exec'), {})
+
+
+class EnvironmentCredentialTests(unittest.TestCase):
+    def preparation(self, name):
+        data = workflow(name)
+        phases = [job for job in data['jobs'].values() if job.get('environment') == 'hpc']
+        self.assertTrue(phases)
+        return next(step['run'] for step in phases[0]['steps'] if 'KEY' in step.get('env', {}))
+
+    def test_environment_only_secrets_do_not_require_caller_repository_secrets(self):
+        # Environment secrets are unavailable in the caller and in the result
+        # job. Required workflow_call secrets made result fail before a runner
+        # started, even after successful environment-backed publication.
+        for name in ('software-pair', 'md-pair'):
+            data = workflow(name)
+            for credential in ('REMOTE_SSH_PRIVATE_KEY', 'REMOTE_USER'):
+                with self.subTest(workflow=name, credential=credential):
+                    self.assertFalse(data[True]['workflow_call']['secrets'][credential]['required'])
+            self.assertNotIn('environment', data['jobs']['result'])
+
+    def test_missing_environment_credentials_fail_before_creating_key(self):
+        for name in ('software-pair', 'md-pair'):
+            for missing in ('REMOTE_USER', 'KEY'):
+                with self.subTest(workflow=name, missing=missing), tempfile.TemporaryDirectory() as tmp:
+                    environment = dict(PATH=os.defpath, RUNNER_TEMP=tmp,
+                                       REMOTE_USER='unit-user', KEY='unit-private-key')
+                    environment.pop(missing)
+                    result = subprocess.run(['bash', '-c', self.preparation(name)],
+                                            env=environment, capture_output=True, text=True)
+                    self.assertNotEqual(result.returncode, 0)
+                    self.assertIn('hpc Environment or caller secrets', result.stderr)
+                    self.assertNotIn('unit-private-key', result.stdout + result.stderr)
+                    self.assertFalse((Path(tmp) / 'ssh').exists())
+
+    def test_resolved_environment_credentials_prepare_exact_key_without_logging_it(self):
+        for name in ('software-pair', 'md-pair'):
+            with self.subTest(workflow=name), tempfile.TemporaryDirectory() as tmp:
+                key = 'unit-private-key\nsecond-line'
+                result = subprocess.run(['bash', '-c', self.preparation(name)],
+                                        env=dict(PATH=os.defpath, RUNNER_TEMP=tmp,
+                                                 REMOTE_USER='unit-user', KEY=key),
+                                        capture_output=True, text=True)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual((Path(tmp) / 'ssh/key').read_text(), key + '\n')
+                self.assertNotIn(key, result.stdout + result.stderr)
 
 
 class SelectedBuildOutcomeTests(unittest.TestCase):

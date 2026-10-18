@@ -11,13 +11,13 @@ uses code commit `84027c9`, source v2026.2 / `67b5da876dd6` and recipe
 `4d454c7403097d4a5cae4c37452ef15aff32d753f0e9076533433dc939535782`.
 This is the recipe that includes private ELPA and the upstream source fixes;
 the older four SIFs below retain their previous recipe.
-At the publication/recovery audit (2026-10-18 13:48 Asia/Shanghai):
+At the publication/recovery audit (2026-10-18 13:50 Asia/Shanghai):
 
 | Partition | Dependency job / state | Application job / actual stage | New application SIF |
 |---|---|---|---|
 | 4V100 | 1839366: COMPLETED `0:0`, 36:56, sealed | 1839644: COMPLETED `0:0`, 38:30 | 189,743,104 bytes, accepted and published |
 | 16V100 | 1839368: COMPLETED `0:0`, 1:09:17, sealed | 1839900: COMPLETED `0:0`, 24:52 | 188,497,920 bytes, accepted and published |
-| 8V100V0 | 1839369: COMPLETED `0:0`, 1:10:43, sealed | 1839913: RUNNING, preparing dependency clone | not yet produced |
+| 8V100V0 | 1839369: COMPLETED `0:0`, 1:10:43, sealed | 1839913: RUNNING, clone verified and application container started | not yet produced |
 | DSPRHBM | 1839362: COMPLETED `0:0`, 52:17, sealed | 1839750: FAILED `255:0`, 21:21, missing host HCOLL bind source | not produced |
 
 4V100 science job `1840021` completed `0:0` in 7:59 on `4v100n18,20`. All seven
@@ -65,10 +65,23 @@ or acceptance success. Successful GPU artifacts retain their original identities
 [CPU alias preflight and retained attempts](evidence/cp2k-install-layout-20261018/hcoll-cpu-preflight.json).
 [Fresh CPU identity, actual submission and accounting](evidence/cp2k-install-layout-20261018/hcoll-cpu-recovery-start.json).
 
-8V100V0 remains in dependency-clone preparation under job `1839913`, not yet
-CP2K compilation. Read-only node sampling at 13:47 showed the clone process
-reading 40 MiB in three seconds, with shared-filesystem I/O waits. Preparation
-is progressing slowly; no new SIF has been produced.
+8V100V0 job `1839913` completed dependency-clone preparation by 13:50 and
+started the application container/source setup. Its preparation receipt
+confirms both filesystem checks, an empty overlay work directory and an
+unchanged sealed source. At 13:47 the clone process was still reading
+40 MiB in three seconds, with shared-filesystem I/O waits. No new SIF has
+been produced. DSPRHBM's fresh job had entered actual dependency compilation.
+[Latest two-job progress and clone receipt](evidence/cp2k-install-layout-20261018/native-elpa-remaining-progress.json).
+
+The original GitHub run does not have a successful workflow result. In addition
+to its retained CPU build failure, GPU `result` jobs failed before starting a
+runner: caller-required SSH secrets were unavailable outside the `hpc`
+Environment, despite successful environment-backed build/acceptance jobs.
+The fix permits environment-only credentials and explicitly rejects missing
+credentials inside the execution jobs. Twenty-one focused workflow/resolver
+tests passed; live result-job validation is pending. This orchestration issue
+does not replace or invalidate the independently revalidated artifact proofs.
+[Original annotations, credential scope and repair](evidence/cp2k-install-layout-20261018/github-environment-secret-result.json).
 
 All stages use their native partitions, canonical
 `/opt/apps/cp2k/<build>/<partition>` identities and home-backed build storage.

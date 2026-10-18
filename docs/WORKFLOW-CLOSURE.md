@@ -111,7 +111,7 @@ original GitHub workflow `39078998459` ended with failure and is retained.
 
 Fresh private-ELPA recipe workflow `39094062144` uses identity
 `v2026.2-g67b5da876dd6-r4d454c740309`. All four dependency jobs completed and
-sealed. By 13:48 Asia/Shanghai, 4V100 application `1839644` had completed `0:0`
+sealed. By 13:50 Asia/Shanghai, 4V100 application `1839644` had completed `0:0`
 in 38:30 and science `1840021` passed all fourteen single/two-node cases in
 7:59. The workflow exported and read back the complete runtime delivery and
 published it. A separate read-only call to the frozen publication validator
@@ -124,8 +124,9 @@ the workflow read back 1,126 native-export files and published the delivery.
 A separate full frozen-controller publication revalidation passed. Maximum
 energy/force differences across node counts were `4.77e-12 Ha` and
 `1.10e-11 Ha/Bohr`.
-8V100V0 application `1839913` was still preparing its dependency clone;
-direct node sampling confirmed continuing reads and shared-filesystem I/O waits.
+8V100V0 application `1839913` completed its dependency clone and started the
+application container/source setup. Its receipt confirms the original sealed
+source is unchanged. Earlier node sampling showed slow shared-filesystem reads.
 DSPRHBM application `1839750` failed mounting missing `/opt/mellanox/hcoll`.
 The new fix maps the shared HPCX copy to MPI's expected absolute path, and
 CPU MPI/libtool preflight `1841002` passed `0:0`. Fresh CPU workflow
@@ -138,7 +139,19 @@ remain unchanged.
 [first publication and independent revalidation](evidence/cp2k-install-layout-20261018/native-elpa-first-publication.json),
 [second publication and independent revalidation](evidence/cp2k-install-layout-20261018/native-elpa-second-publication.json),
 [CPU HCOLL preflight](evidence/cp2k-install-layout-20261018/hcoll-cpu-preflight.json),
-[fresh CPU submission and accounting](evidence/cp2k-install-layout-20261018/hcoll-cpu-recovery-start.json).
+[fresh CPU submission and accounting](evidence/cp2k-install-layout-20261018/hcoll-cpu-recovery-start.json),
+[latest CPU/GPU progress](evidence/cp2k-install-layout-20261018/native-elpa-remaining-progress.json).
+
+The original workflow is not fully successful. Its GPU result jobs also failed
+at startup because reusable workflows incorrectly required caller-scope SSH
+secrets while this deployment supplies them in the `hpc` Environment. Both
+reusable delivery workflows now allow environment-only credentials, and their
+execution steps fail before preparing a key if either resolved credential is
+missing. The credential-free result jobs need no environment. Twenty-one
+focused workflow/resolver tests pass; live validation of the corrected result
+job is pending. Original frozen runs retain their failed states and accepted
+artifact proofs remain independently valid.
+[GitHub annotations and secret-scope diagnosis](evidence/cp2k-install-layout-20261018/github-environment-secret-result.json).
 
 Accepted deliveries are available on 4V100 and 16V100; 8V100V0 and DSPRHBM
 continue toward the full matrix.
