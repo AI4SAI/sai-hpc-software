@@ -6,6 +6,14 @@ AVX2 构建任务为 `1846755`，AVX512 为 `1846756`，均 `COMPLETED 0:0`。
 `--check` 已通过，约需复制 19.43 MiB + 20.56 MiB。
 [验收记录](https://github.com/AI4SAI/sai-hpc-software/blob/fix/workflow-closure/docs/evidence/elpa-site-20261018/README.md)；SIF 和清单校验值见 `release.json`。
 
+管理员已完成物理安装。`stardust` 在 16V100、4V100、8V100V0 上的任务
+`1847651`、`1847652`、`1847653` 各通过 48 次 CPU/GPU 求解，文件清单、module、
+C/Fortran 调用及真实进程的库加载路径均通过检查，直接执行物理 `/opt`，不使用容器。
+DSPRHBM 的主机数组接口也通过 24 次 CPU 求解（`1847682`），但
+`elpa_eigenvectors_double` / `elpa_eigenvectors_double_complex` 在无 CUDA 驱动的节点
+会因自动检测设备指针而退出（`1847654`）。因此不能声称纯 CPU 节点的所有 C 接口均可用。
+详见[物理验收及接口限制](../../docs/evidence/elpa-site-20261018/README.md#physical-installation-acceptance)。
+
 沿用集群 `elpa/2026.02.001-2603-gnu` 的上游源码、GCC/GFortran 13.3.0、
 OpenMPI 5.0.10、CUDA 12.9.1 / NVHPC 26.3、OpenBLAS 0.3.32 和 ScaLAPACK 2.2.3。
 保留 OpenMP、cuSOLVER、CUDA-aware MPI、CUB、SM80 专用内核，GPU 目标仍为
@@ -82,3 +90,30 @@ bash install.sh --verify
 `--check` 默认只读核对文件及目标冲突；`--install` 只写上面的两个新安装目录和新增
 module，不覆盖不同内容的已有安装。无需管理员启动容器或执行其中的代码。
 `--verify` 核对物理文件；安装后的计算节点数值验收仍须另行进行。
+
+## 物理运行复验
+
+从本目录执行 `bash submit-native-checks.sh all` 可重新提交四分区检查，结果和 MPI/CUDA
+临时文件均落在执行账号的家目录。脚本保留用户环境中的真实 `HOME`，显式申请两个 MPI
+进程名额，在计算节点加载正式 module，再编译独立调用程序。已有物理安装只读访问。
+上述默认测试保留显式 C 接口，因此当前 DSPRHBM 会重现已知的 CUDA 指针检测错误。
+
+独立检查主机数组接口可执行：
+
+```bash
+ELPA_NATIVE_C_API=host bash submit-native-checks.sh DSPRHBM
+```
+
+该诊断调用头文件中公开的 `elpa_eigenvectors_a_h_a_d` / `elpa_eigenvectors_a_h_a_dc`，
+也是 C/C++ 泛型 `elpa_eigenvectors(...)` 的主机数组实现；没有替换已安装的库。
+它通过不代表显式自动识别接口已修复，也不代表大型应用已经验收。
+
+保存对应任务的 `sacct -X -n -P --format=JobID,Partition,State,ExitCode,Elapsed,NodeList`
+为结果目录的 `accounting.txt` 后，使用 `verify-native-results.py` 独立校验原始日志：
+
+```bash
+python3 verify-native-results.py <GPU结果目录> --partitions 16V100 4V100 8V100V0
+python3 verify-native-results.py <CPU诊断结果目录> --partitions DSPRHBM --api host
+```
+
+记录同时固定被验收的分区和 C 接口，不把未通过的接口或分区计入成功。

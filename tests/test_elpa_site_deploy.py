@@ -11,6 +11,9 @@ SOURCE = Path(__file__).resolve().parents[1] / 'deployment/elpa-2026.02.001/inst
 spec = importlib.util.spec_from_file_location('elpa_site_install', SOURCE)
 deploy = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(deploy)
+result_spec = importlib.util.spec_from_file_location('elpa_native_results', SOURCE.parent/'verify-native-results.py')
+results = importlib.util.module_from_spec(result_spec)
+result_spec.loader.exec_module(results)
 
 
 class ElpaInventoryTests(unittest.TestCase):
@@ -97,6 +100,32 @@ proc file {op args} {
     def test_unload_uses_loaded_identity(self):
         self.assertIn('-gnu-avx2/nvidia',
                       self.selected('avx2 avx512_vnni', mode='remove', saved='avx2'))
+
+
+class ElpaNativeResultTests(unittest.TestCase):
+    def setUp(self):
+        self.log = '\n'.join(
+            'ELPA_NUMERIC PASS ranks=2 gpu=1 solver=2 complex=1 nonblocking=1 '
+            f'repeat={repeat} spectrum=2.2e-15 residual=6.4e-16 orthogonality=1.7e-15'
+            for repeat in (0, 1))
+
+    def parse(self, log):
+        return results.parse_case(log, 2, 1, 2, 1, 1)
+
+    def test_complete_repeated_solve(self):
+        self.assertEqual(self.parse(self.log)['spectrum'], 2.2e-15)
+        self.assertEqual(self.parse('MPI advisory\n\0' + self.log)['spectrum'], 2.2e-15)
+
+    def test_reject_missing_repeat_or_wrong_execution(self):
+        for bad in (self.log.splitlines()[0], self.log.replace('ranks=2', 'ranks=1'),
+                    self.log.replace('repeat=1', 'repeat=0'), self.log.replace('PASS', 'FAIL')):
+            with self.subTest(log=bad), self.assertRaises(ValueError):
+                self.parse(bad)
+
+    def test_reject_nonfinite_negative_and_excessive_errors(self):
+        for error in ('nan', 'inf', '-1e-15', '1e-10'):
+            with self.subTest(error=error), self.assertRaises(ValueError):
+                self.parse(self.log.replace('6.4e-16', error))
 
 
 if __name__ == '__main__':

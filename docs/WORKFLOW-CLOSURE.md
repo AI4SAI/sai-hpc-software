@@ -248,7 +248,12 @@ exports the dependency with the software directory.
 A separate shared ELPA 2026.02.001 delivery now preserves the site's GNU/CUDA
 configuration while splitting AVX2 and AVX512 into distinct final `/opt/devtools`
 prefixes. Both SIFs passed 48 numerical solves plus C/Fortran consumer and actual
-module checks; their inventoried handoff awaits administrator installation.
+module checks. The administrator has installed the exact trees and public module;
+physical jobs `1847651`–`1847653` passed 144 CPU/GPU solves across all three V100
+partitions, including actual loader evidence and fresh C/Fortran consumers.
+DSPRHBM passed 24 CPU solves through the host-array C API (`1847682`), while the
+explicit pointer-detecting C API failed without a CUDA driver (`1847654`).
+This remaining interface limitation prevents unconditional pure-CPU acceptance.
 This does not replace CP2K's accepted private ELPA dependency.
 [Shared ELPA build, compatibility fixes and deployment evidence](evidence/elpa-site-20261018/README.md).
 

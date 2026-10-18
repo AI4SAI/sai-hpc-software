@@ -237,6 +237,10 @@ recipe runs inside Apptainer with task-owned home directories bound for build st
 the exact future `/opt/devtools/elpa/.../nvidia` prefix. Site dependencies are read-only.
 Final SIFs are checked with CPU/GPU, real/complex, MPI/OpenMP numerical solves before
 preparing an inventoried administrator handoff and an automatic ISA module selector.
+The installed physical libraries passed 144 CPU/GPU solves across the three V100
+partitions. DSPRHBM passed 24 CPU solves through the host-array API, but the explicit
+C pointer-detection API still requires a CUDA driver. This restriction and raw
+native evidence are recorded in the [ELPA acceptance report](docs/evidence/elpa-site-20261018/README.md#physical-installation-acceptance).
 
 ## Local checks
 
