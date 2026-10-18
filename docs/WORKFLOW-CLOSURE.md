@@ -1,8 +1,8 @@
 # Workflow closure — 2026-10-18
 
 The code now connects build, scientific/performance acceptance, native export
-readback and publication. CP2K 2026.2 on 4V100 has passed candidate science,
-native export readback and publication. GPUMD on 16V100 has passed science, performance and
+readback and publication. CP2K 2026.2 on 4V100 and 16V100 has passed candidate
+science, native export readback and publication. GPUMD on 16V100 has passed science, performance and
 publication; its additional exported-native module execution check remains
 pending. Production acceptance is incomplete across the full site matrix. Original dirty
 worktrees and recovery checkpoints remain preserved. Administrator installation
@@ -111,7 +111,7 @@ original GitHub workflow `39078998459` ended with failure and is retained.
 
 Fresh private-ELPA recipe workflow `39094062144` uses identity
 `v2026.2-g67b5da876dd6-r4d454c740309`. All four dependency jobs completed and
-sealed. By 13:24 Asia/Shanghai, 4V100 application `1839644` had completed `0:0`
+sealed. By 13:48 Asia/Shanghai, 4V100 application `1839644` had completed `0:0`
 in 38:30 and science `1840021` passed all fourteen single/two-node cases in
 7:59. The workflow exported and read back the complete runtime delivery and
 published it. A separate read-only call to the frozen publication validator
@@ -119,18 +119,29 @@ rechecked the image, science, export bytes and module successfully. This is
 the first accepted private-ELPA release delivery; physical `/opt` installation
 and native scientific execution are not claimed by export integrity checks.
 16V100 application `1839900` completed `0:0` in 24:52 and science `1840585`
-was RUNNING. 8V100V0 application `1839913` was preparing its dependency clone.
+completed `0:0` in 13:30. All fourteen single/two-node calculations passed;
+the workflow read back 1,126 native-export files and published the delivery.
+A separate full frozen-controller publication revalidation passed. Maximum
+energy/force differences across node counts were `4.77e-12 Ha` and
+`1.10e-11 Ha/Bohr`.
+8V100V0 application `1839913` was still preparing its dependency clone;
+direct node sampling confirmed continuing reads and shared-filesystem I/O waits.
 DSPRHBM application `1839750` failed mounting missing `/opt/mellanox/hcoll`.
 The new fix maps the shared HPCX copy to MPI's expected absolute path, and
-CPU MPI/libtool preflight `1841002` passed `0:0`. CPU needs a fresh recipe/run;
-existing successful GPU identities and frozen controllers remain unchanged.
+CPU MPI/libtool preflight `1841002` passed `0:0`. Fresh CPU workflow
+`39101032802`, frozen at `33e80c8`, uses new recipe `fb4adb0598fc`.
+Its dependency job `1841174` is RUNNING on `d9470n02`; application/science
+remain pending. Existing successful GPU identities and frozen controllers
+remain unchanged.
 [Initial submissions](evidence/cp2k-install-layout-20261018/native-elpa-formal-start.json),
 [actual handoffs](evidence/cp2k-install-layout-20261018/native-elpa-application-handoff.json),
 [first publication and independent revalidation](evidence/cp2k-install-layout-20261018/native-elpa-first-publication.json),
-[CPU HCOLL preflight](evidence/cp2k-install-layout-20261018/hcoll-cpu-preflight.json).
+[second publication and independent revalidation](evidence/cp2k-install-layout-20261018/native-elpa-second-publication.json),
+[CPU HCOLL preflight](evidence/cp2k-install-layout-20261018/hcoll-cpu-preflight.json),
+[fresh CPU submission and accounting](evidence/cp2k-install-layout-20261018/hcoll-cpu-recovery-start.json).
 
-The first accepted delivery is available on 4V100; 16V100 acceptance and the
-remaining partitions continue toward the full matrix.
+Accepted deliveries are available on 4V100 and 16V100; 8V100V0 and DSPRHBM
+continue toward the full matrix.
 The system ELPA library's generic allocation code was independently shown to
 execute AVX512 on an AVX2-only node, despite advertising both kernel sets.
 The new recipe therefore builds CP2K's own pinned ELPA 2026.02.002 under
@@ -155,8 +166,8 @@ ELPA agreement, DFT-D4, TBLITE and larger PBE water workloads. Actual solver
 calls, rank placement, inputs and artifact identity are verified. Timings are
 reported without claiming a baseline speed ratio. Full-matrix scientific acceptance,
 artifacts, export readback and publication remain incomplete. The new
-implementation passed 772 tests (two optional skips) in a home-directory
-snapshot. Physical deployment can use the packaged native partition selector
+HCOLL repair passed 774 Linux CI tests (772 passed, two optional skips) at
+`33e80c8`. Physical deployment can use the packaged native partition selector
 under one site module name; [deployment assessment](CP2K-NATIVE-MODULE.md).
 
 Recovery job `1837454` completed `0:0` in 18:52, producing a verified
