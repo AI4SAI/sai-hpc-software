@@ -12,6 +12,7 @@ from pathlib import Path
 import re
 
 from cp2k_spack import GCC_VERSION, TARGETS, config, write_config
+from remote_controller import HPCX_ROOT
 
 ROOT_SPECS = (
     'libint@2.6.0 +fortran +shared tune=cp2k-lmax-5',
@@ -20,7 +21,6 @@ ROOT_SPECS = (
     'hdf5@1.14.6 +mpi +fortran ~hl ~cxx ~shared',
     'plumed@2.10.1 +mpi +shared +gsl optional_modules=all',
 )
-HPCX_ROOT = '/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1'
 MPI_RUNTIME_PATH = HPCX_ROOT + '/hcoll/lib:' + HPCX_ROOT + '/sharp/lib'
 
 

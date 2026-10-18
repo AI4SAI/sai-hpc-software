@@ -3,6 +3,7 @@ import argparse
 from contextlib import redirect_stdout
 import io
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -17,6 +18,7 @@ import abacus_dependencies as dependencies
 import software_controller as controller
 from release_contract import make_identity
 from source_cache import checksum
+from remote_controller import HPCX_ROOT
 
 
 class DeliveryIntegrationTests(unittest.TestCase):
@@ -150,10 +152,53 @@ class DeliveryIntegrationTests(unittest.TestCase):
         script = controller.render_job(args)
         build = next(line for line in script.splitlines() if 'cp2k_container_entry.sh build' in line)
         for bind in ('/etc/alternatives:/etc/alternatives:ro', '/usr/bin:/bin:ro',
-                     '/var/lib/dpkg:/var/lib/dpkg:ro', '/opt/mellanox/hcoll:/opt/mellanox/hcoll:ro',
+                     '/var/lib/dpkg:/var/lib/dpkg:ro', HPCX_ROOT + '/hcoll:/opt/mellanox/hcoll:ro',
                      '/input/spack:ro', '/results:rw'):
             self.assertIn(bind, build)
         self.assertNotIn('/opt/apps/cp2k/cp2k-2026.1', build)
+
+    def test_cp2k_cpu_and_gpu_builds_use_shared_hcoll_for_every_container_phase(self):
+        for target in ('dsprhbm', '4v100-avx512', '16v100-avx2', '8v100v0-avx512'):
+            args = argparse.Namespace(run_id='cp2k-hcoll', software='cp2k', sha='a' * 40,
+                                      version='2026.2', target=target, jobs=8, minutes=240,
+                                      overlay_mb=16384, track='release', source_ref='v2026.2')
+            script = controller.render_job(args)
+            for phase in ('build', 'export', 'verify'):
+                with self.subTest(target=target, phase=phase):
+                    line = next(line for line in script.splitlines()
+                                if 'cp2k_container_entry.sh ' + phase in line)
+                    self.assertIn(HPCX_ROOT + '/hcoll:/opt/mellanox/hcoll:ro', line)
+                    self.assertNotIn('--bind /opt/mellanox/hcoll:', line)
+
+    def test_actual_cp2k_launcher_uses_shared_hcoll_without_old_cp2k_bindings(self):
+        commands = self.root / 'commands'
+        commands.mkdir()
+        apptainer = commands / 'apptainer'
+        apptainer.write_text('#!/usr/bin/env python3\nimport json,os,sys\n'
+                            'with open(os.environ["CP2K_TEST_ARGV"], "w") as f: '
+                            'json.dump(sys.argv[1:], f)\n')
+        apptainer.chmod(0o755)
+        temporary = self.root / 'runtime/mpi'
+        temporary.mkdir(parents=True)
+        for target in ('dsprhbm', '16v100-avx2'):
+            identity = self.identity(software='cp2k', target=target)
+            artifact, _ = self.candidate(identity)
+            captured = self.root / (target + '.argv.json')
+            environment = dict(os.environ, PATH=f'{commands}:{os.environ["PATH"]}',
+                               SAI_SOFTWARE_ROOT=str(self.root), SAI_CP2K_IMAGE=str(artifact),
+                               SLURM_JOB_PARTITION=identity['partition'], TMPDIR=str(temporary),
+                               CP2K_TEST_ARGV=str(captured), PYTHONDONTWRITEBYTECODE='1')
+            for name in ('SAI_CP2K_TRACE_DIR', 'SLURM_JOB_ID'):
+                environment.pop(name, None)
+            subprocess.run(['bash', str(REPO / 'controller/cp2k_runtime.sh'), '--version'],
+                           cwd=self.root, env=environment, check=True, capture_output=True, text=True)
+            argv = json.loads(captured.read_text())
+            binds = [argv[i + 1] for i, word in enumerate(argv) if word == '--bind']
+            with self.subTest(target=target):
+                self.assertIn(HPCX_ROOT + '/hcoll:/opt/mellanox/hcoll:ro', binds)
+                self.assertNotIn('/opt/mellanox/hcoll:/opt/mellanox/hcoll:ro', binds)
+                self.assertFalse(any('cp2k-2026.1' in bind or bind == '::ro' for bind in binds))
+                self.assertEqual('--nv' in argv, target != 'dsprhbm')
 
     def test_build_submit_allows_long_cp2k_compile_with_safe_default(self):
         recipe = (REPO / "controller/software_controller.py").read_text()

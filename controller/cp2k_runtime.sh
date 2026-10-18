@@ -42,9 +42,11 @@ fi
 
 args=(apptainer exec --cleanenv --no-home --no-mount bind-paths,home,cwd,tmp,hostfs --pwd /work)
 [[ "$gpu" == true ]] && args+=(--nv)
-for path in /usr /lib /lib64 /opt/devtools /opt/mellanox/hcoll; do args+=(--bind "$path:$path:ro"); done
+for path in /usr /lib /lib64 /opt/devtools; do args+=(--bind "$path:$path:ro"); done
+mpi_binds=$(python3 "$launcher_control/remote_controller.py" cp2k --mpi-binds)
+while IFS= read -r bind; do args+=(--bind "$bind"); done <<< "$mpi_binds"
 site_paths=$(python3 "$launcher_control/remote_controller.py" cp2k)
-while IFS= read -r path; do args+=(--bind "$path:$path:ro"); done <<< "$site_paths"
+while IFS= read -r path; do [[ -z "$path" ]] || args+=(--bind "$path:$path:ro"); done <<< "$site_paths"
 args+=(--bind "$workdir:/work:rw" --bind "$rank_runtime:/runtime:rw"
        --bind "$host_tmp:$host_tmp:rw" --env "TMPDIR=$host_tmp"
        --env "OMP_NUM_THREADS=${OMP_NUM_THREADS:-1}")

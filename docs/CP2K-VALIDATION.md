@@ -1,7 +1,8 @@
 # CP2K validation status
 
-This records implementation and live build progress, not release acceptance.
-No four-target CP2K 2026.2 release has passed all acceptance gates yet.
+This records implementation, live builds and partition-scoped acceptance.
+4V100 has passed science, native export readback and publication. No four-target
+CP2K 2026.2 release has passed all acceptance gates yet.
 
 ## Current private-ELPA release build
 
@@ -10,27 +11,46 @@ uses code commit `84027c9`, source v2026.2 / `67b5da876dd6` and recipe
 `4d454c7403097d4a5cae4c37452ef15aff32d753f0e9076533433dc939535782`.
 This is the recipe that includes private ELPA and the upstream source fixes;
 the older four SIFs below retain their previous recipe.
-At the handoff audit (2026-10-18 12:39 Asia/Shanghai):
+At the publication audit (2026-10-18 13:24 Asia/Shanghai):
 
 | Partition | Dependency job / state | Application job / actual stage | New application SIF |
 |---|---|---|---|
-| 4V100 | 1839366: COMPLETED `0:0`, 36:56, sealed | 1839644: RUNNING on 4v100n05, building support libraries | not yet produced |
-| 16V100 | 1839368: RUNNING on 16v100n72, Libint | not submitted yet | not yet produced |
-| 8V100V0 | 1839369: RUNNING on 8v100v0n13, Libint | not submitted yet | not yet produced |
-| DSPRHBM | 1839362: COMPLETED `0:0`, 52:17, sealed | 1839750: RUNNING on d9470n02, verifying/cloning dependency checkpoint | not yet produced |
+| 4V100 | 1839366: COMPLETED `0:0`, 36:56, sealed | 1839644: COMPLETED `0:0`, 38:30 | 189,743,104 bytes, accepted and published |
+| 16V100 | 1839368: COMPLETED `0:0`, 1:09:17, sealed | 1839900: COMPLETED `0:0`, 24:52 | 188,497,920 bytes; science job 1840585 RUNNING |
+| 8V100V0 | 1839369: COMPLETED `0:0`, 1:10:43, sealed | 1839913: RUNNING, preparing dependency clone | not yet produced |
+| DSPRHBM | 1839362: COMPLETED `0:0`, 52:17, sealed | 1839750: FAILED `255:0`, 21:21, missing host HCOLL bind source | not produced |
 
-DSPRHBM dependency job `1839362` left the queue after successful completion at
-12:31:27; its application job `1839750` started at 12:34:24. The node's clone
-process read another 240 MiB in a three-second sample at 12:40, confirming
-ongoing checkpoint I/O while the application log was still quiet. Direct node
-observations also showed multiple active GCC 14.3 compiler processes on
-16V100 and 8V100V0. Library-local percentage counters in the 4V100 log are not
-whole-application completion percentages.
+4V100 science job `1840021` completed `0:0` in 7:59 on `4v100n18,20`. All seven
+cases ran on one and two nodes, including OT, ordinary/forced ELPA
+diagonalization, DFT-D4, TBLITE and 192-atom PBE water. Positive ELPA solver
+timers prevent fallback from counting as an ELPA test. The maximum energy
+difference across node counts was `1.21e-11 Ha`; the maximum force difference
+was `1.40e-11 Ha/Bohr`. These are correctness checks with descriptive timings,
+not a performance claim against CP2K 2026.1.
 
-All four stages use their native partitions. The new application builds are
-in progress; formal science/export/publication gates remain pending.
-The build uses the canonical `/opt/apps/cp2k/<build>/<partition>` identity and
-home-backed build storage.
+Its SIF SHA256 is
+`f6cb5d5ab9d2aa928fb0cdb8e1ea42d697a149096a71e96aedaa1763ef171e44`.
+An independent read-only call to the frozen controller's full publication
+validator rechecked the actual image, original science files, exported bytes
+and module record successfully. The adjacent `.native` directory contains the
+software tree ready for administrator installation at its canonical prefix;
+physical `/opt/apps` installation and native scientific execution remain
+separate from export readback.
+[First accepted artifact, raw science proof and independent revalidation](evidence/cp2k-install-layout-20261018/native-elpa-first-publication.json).
+
+DSPRHBM's dependency-to-application handoff initially worked, but its application
+container then failed to mount `/opt/mellanox/hcoll`, which is absent on that
+CPU node. The sealed dependency and prepared clone remain retained. The
+corrected recipe maps the existing shared HPCX HCOLL directory read-only to
+MPI's legacy absolute path and removes obsolete CP2K 2026.1 runtime binds.
+CPU diagnostic `1841002` passed actual libtool/MPI linking, `ldd` and MPI startup
+with that alias (`0:0`, two seconds). Earlier diagnostic setup failures remain
+recorded and do not count as library tests. A fresh CPU recipe/run is required;
+successful GPU artifacts retain their original identities.
+[CPU alias preflight and retained attempts](evidence/cp2k-install-layout-20261018/hcoll-cpu-preflight.json).
+
+All stages use their native partitions, canonical
+`/opt/apps/cp2k/<build>/<partition>` identities and home-backed build storage.
 [Initial frozen requests and scripts](evidence/cp2k-install-layout-20261018/native-elpa-formal-start.json),
 [handoff accounting, checkpoint seals and node observations](evidence/cp2k-install-layout-20261018/native-elpa-application-handoff.json).
 

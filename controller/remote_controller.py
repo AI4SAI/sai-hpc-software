@@ -31,14 +31,14 @@ TARGETS = {
     },
 }
 DEPENDENCIES = ("/usr", "/sbin", "/lib", "/lib64", "/opt/devtools", "/opt/modules")
+HPCX_ROOT = "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1"
 
 # Observed on SAI 2026-09-20. Never bind all of /opt/apps: it would hide
 # the candidate installed at its final prefix in the overlay / SIF.
 # Alias destinations (e.g. cp2k-2026.1-avx512) retain their literal host path.
 SITE_APPS = {
     "abacus": (),
-    "cp2k": tuple("/opt/apps/cp2k/" + name for name in
-                  ("cp2k-2026.1", "cp2k-2026.1-avx2", "cp2k-2026.1-avx512")),
+    "cp2k": (),
     "gpumd": ("/opt/apps/conda_env/deepmd-kit-3.2.0",
               "/opt/apps/plumed/plumed-2.10.1", "/opt/apps/gpumd/GPUMD-5.8"),
     "lammps": ("/opt/apps/conda_env/deepmd-kit-3.2.0",
@@ -54,6 +54,15 @@ SITE_APPS["deepmd-kit"] = SITE_APPS["lammps"]
 def site_app_binds(software):
     """Exact dependency versions only; host directories remain read-only."""
     return tuple((path, path) for path in SITE_APPS[software])
+
+
+def cp2k_mpi_binds():
+    """Map shared HCOLL to the absolute path in the site's MPI libtool files.
+
+    /opt/mellanox/hcoll exists on GPU nodes but is absent on DSPRHBM.
+    The standalone HPCX installation is already required by every partition.
+    """
+    return ((HPCX_ROOT + "/hcoll", "/opt/mellanox/hcoll"),)
 
 
 def safe_name(value):
@@ -133,5 +142,13 @@ if __name__ == "__main__":
     import argparse
     parser = argparse.ArgumentParser(description="Read-only site dependency bind paths")
     parser.add_argument("software", choices=tuple(SITE_APPS))
-    for source, destination in site_app_binds(parser.parse_args().software):
-        print(destination)
+    parser.add_argument("--mpi-binds", action="store_true", help="CP2K MPI source:destination:ro bindings")
+    args = parser.parse_args()
+    if args.mpi_binds:
+        if args.software != "cp2k":
+            parser.error("MPI aliases are only registered for CP2K")
+        for source, destination in cp2k_mpi_binds():
+            print(f"{source}:{destination}:ro")
+    else:
+        for source, destination in site_app_binds(args.software):
+            print(destination)

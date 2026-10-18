@@ -1,7 +1,8 @@
 # Workflow closure — 2026-10-18
 
 The code now connects build, scientific/performance acceptance, native export
-readback and publication. GPUMD on 16V100 has passed science, performance and
+readback and publication. CP2K 2026.2 on 4V100 has passed candidate science,
+native export readback and publication. GPUMD on 16V100 has passed science, performance and
 publication; its additional exported-native module execution check remains
 pending. Production acceptance is incomplete across the full site matrix. Original dirty
 worktrees and recovery checkpoints remain preserved. Administrator installation
@@ -109,18 +110,27 @@ original GitHub workflow `39078998459` ended with failure and is retained.
 [installation repair and original identities](evidence/cp2k-install-layout-20261018/README.md).
 
 Fresh private-ELPA recipe workflow `39094062144` uses identity
-`v2026.2-g67b5da876dd6-r4d454c740309`. At 12:39 Asia/Shanghai, 4V100 dependency
-`1839366` and DSPRHBM dependency `1839362` had completed `0:0` and sealed;
-their application jobs `1839644` and `1839750` were RUNNING on the corresponding
-native partitions. DSPRHBM's queue gap was the normal stage handoff from
-12:31:27 to 12:34:24. Its new job was verifying/cloning the dependency image,
-with another 240 MiB read in a three-second node sample. 16V100 `1839368` and
-8V100V0 `1839369` were still building Libint with multiple active compiler
-processes. No new application SIF existed at this audit.
+`v2026.2-g67b5da876dd6-r4d454c740309`. All four dependency jobs completed and
+sealed. By 13:24 Asia/Shanghai, 4V100 application `1839644` had completed `0:0`
+in 38:30 and science `1840021` passed all fourteen single/two-node cases in
+7:59. The workflow exported and read back the complete runtime delivery and
+published it. A separate read-only call to the frozen publication validator
+rechecked the image, science, export bytes and module successfully. This is
+the first accepted private-ELPA release delivery; physical `/opt` installation
+and native scientific execution are not claimed by export integrity checks.
+16V100 application `1839900` completed `0:0` in 24:52 and science `1840585`
+was RUNNING. 8V100V0 application `1839913` was preparing its dependency clone.
+DSPRHBM application `1839750` failed mounting missing `/opt/mellanox/hcoll`.
+The new fix maps the shared HPCX copy to MPI's expected absolute path, and
+CPU MPI/libtool preflight `1841002` passed `0:0`. CPU needs a fresh recipe/run;
+existing successful GPU identities and frozen controllers remain unchanged.
 [Initial submissions](evidence/cp2k-install-layout-20261018/native-elpa-formal-start.json),
-[actual handoffs, seals and node observations](evidence/cp2k-install-layout-20261018/native-elpa-application-handoff.json).
+[actual handoffs](evidence/cp2k-install-layout-20261018/native-elpa-application-handoff.json),
+[first publication and independent revalidation](evidence/cp2k-install-layout-20261018/native-elpa-first-publication.json),
+[CPU HCOLL preflight](evidence/cp2k-install-layout-20261018/hcoll-cpu-preflight.json).
 
-The current priority is one fully usable release delivery, starting on 16V100.
+The first accepted delivery is available on 4V100; 16V100 acceptance and the
+remaining partitions continue toward the full matrix.
 The system ELPA library's generic allocation code was independently shown to
 execute AVX512 on an AVX2-only node, despite advertising both kernel sets.
 The new recipe therefore builds CP2K's own pinned ELPA 2026.02.002 under
@@ -143,8 +153,8 @@ The user has retired the old CP2K 2026.1 comparison. Fresh acceptance uses
 `cp2k_acceptance.py`: one/two-node candidate consistency, OT and ordinary/forced
 ELPA agreement, DFT-D4, TBLITE and larger PBE water workloads. Actual solver
 calls, rank placement, inputs and artifact identity are verified. Timings are
-reported without claiming a baseline speed ratio. Full scientific acceptance,
-new-recipe artifacts, export readback and publication remain pending. The new
+reported without claiming a baseline speed ratio. Full-matrix scientific acceptance,
+artifacts, export readback and publication remain incomplete. The new
 implementation passed 772 tests (two optional skips) in a home-directory
 snapshot. Physical deployment can use the packaged native partition selector
 under one site module name; [deployment assessment](CP2K-NATIVE-MODULE.md).
