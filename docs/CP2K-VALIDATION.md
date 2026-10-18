@@ -61,10 +61,13 @@ recorded and do not count as library tests. Fresh CPU workflow
 uses frozen controller `33e80c8`, new recipe `fb4adb0598fc` and canonical
 prefix `/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM`.
 Its dependency job `1841174` completed `0:0` in 1:08:26 on `d9470n02` at
-14:53:38. The GitHub application phase started at 14:56:24; application and
-acceptance remain pending. Successful GPU artifacts retain their original identities.
+14:53:38. The workflow automatically submitted application job `1841857`,
+RUNNING on `d9470n02` since 14:57:10 with the same frozen CPU identity. This
+job is preparing/building the application; scientific acceptance remains pending.
+Successful GPU artifacts retain their original identities.
 [CPU alias preflight and retained attempts](evidence/cp2k-install-layout-20261018/hcoll-cpu-preflight.json).
 [Fresh CPU identity, actual submission and accounting](evidence/cp2k-install-layout-20261018/hcoll-cpu-recovery-start.json).
+[Completed CPU dependencies and automatic application handoff](evidence/cp2k-install-layout-20261018/dsprhbm-native-elpa-application-start.json).
 
 The old CPU dependency job `1839362` had succeeded; its failure was the
 application container's missing mount source before application compilation.
@@ -116,6 +119,14 @@ paths. Existing frozen builds continue with their original identities.
 [real ELPA diagnostic-copy cleanup](evidence/cp2k-install-layout-20261018/real-elpa-normalization.json),
 [23 focused regressions with real ELF loading](evidence/cp2k-install-layout-20261018/hcoll-runtime-regressions.json),
 [deployment policy](CP2K-NATIVE-MODULE.md).
+
+The HCOLL runtime-policy change at `dc08073` passed full Linux CI
+[39106152298](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39106152298):
+782 tests completed, 780 passed and two optional skips, plus shell checks.
+This includes actual ELF loading after alias removal and an isolated test of
+the installed verifier without controller imports. Native cluster science
+evidence above is independent of this CI result.
+[CI identity, steps and test summary](evidence/cp2k-install-layout-20261018/hcoll-github-validation.json).
 
 Earlier progress: at 13:47 the clone process was reading 40 MiB in three
 seconds with shared-filesystem I/O waits; at 14:06 CP2K compilation was at

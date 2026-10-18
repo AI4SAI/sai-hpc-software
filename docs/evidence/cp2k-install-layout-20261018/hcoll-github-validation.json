@@ -1,0 +1,126 @@
+{
+  "collected_at": "2026-10-18T07:06:14.923713+00:00",
+  "conclusion": "success",
+  "headSha": "dc08073be7263c18f76d4b8c92c99f9b704a5bad",
+  "jobs": [
+    {
+      "completedAt": "2026-10-18T07:02:54Z",
+      "conclusion": "success",
+      "databaseId": 117612304871,
+      "name": "validate",
+      "startedAt": "2026-10-18T07:01:52Z",
+      "status": "completed",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run actions/checkout@v4",
+          "number": 2,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Install native delivery test tools",
+          "number": 3,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run python3 -m unittest discover -s tests -v",
+          "number": 4,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Run for script in controller/*.sh controller/*.sbatch; do",
+          "number": 5,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Post Run actions/checkout@v4",
+          "number": 10,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 11,
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39106152298/job/117612304871"
+    },
+    {
+      "completedAt": "2026-10-18T07:02:59Z",
+      "conclusion": "success",
+      "databaseId": 117612502375,
+      "name": "result",
+      "startedAt": "2026-10-18T07:02:56Z",
+      "status": "completed",
+      "steps": [
+        {
+          "conclusion": "success",
+          "name": "Set up job",
+          "number": 1,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Verify selected GPU and CPU deliveries completed",
+          "number": 2,
+          "status": "completed"
+        },
+        {
+          "conclusion": "success",
+          "name": "Complete job",
+          "number": 3,
+          "status": "completed"
+        }
+      ],
+      "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39106152298/job/117612502375"
+    },
+    {
+      "completedAt": "2026-10-18T07:02:54Z",
+      "conclusion": "skipped",
+      "databaseId": 117612502961,
+      "name": "build",
+      "startedAt": "2026-10-18T07:02:54Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39106152298/job/117612502961"
+    },
+    {
+      "completedAt": "2026-10-18T07:02:54Z",
+      "conclusion": "skipped",
+      "databaseId": 117612503063,
+      "name": "resolve-source",
+      "startedAt": "2026-10-18T07:02:54Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39106152298/job/117612503063"
+    },
+    {
+      "completedAt": "2026-10-18T07:02:54Z",
+      "conclusion": "skipped",
+      "databaseId": 117612503607,
+      "name": "build-cpu",
+      "startedAt": "2026-10-18T07:02:54Z",
+      "status": "completed",
+      "steps": [],
+      "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39106152298/job/117612503607"
+    }
+  ],
+  "scope": "full Linux CI for HCOLL runtime-policy changes; separate from cluster science acceptance",
+  "status": "completed",
+  "test_summary": [
+    "validate\tRun python3 -m unittest discover -s tests -v\t2026-10-18T07:02:52.3351159Z Ran 782 tests in 40.369s",
+    "validate\tRun python3 -m unittest discover -s tests -v\t2026-10-18T07:02:52.3351707Z OK (skipped=2)"
+  ],
+  "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39106152298"
+}

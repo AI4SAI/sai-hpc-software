@@ -139,8 +139,9 @@ The new fix maps the shared HPCX copy to MPI's expected absolute path, and
 CPU MPI/libtool preflight `1841002` passed `0:0`. Fresh CPU workflow
 `39101032802`, frozen at `33e80c8`, uses new recipe `fb4adb0598fc`.
 Its dependency job `1841174` completed `0:0` in 1:08:26 on `d9470n02` at
-14:53:38. The GitHub application phase started at 14:56:24; application/science
-remain pending. Existing successful GPU identities and frozen controllers
+14:53:38. The workflow automatically handed off to application job `1841857`,
+RUNNING on `d9470n02` since 14:57:10 with the same frozen CPU identity.
+Application completion and science remain pending. Existing successful GPU identities and frozen controllers
 remain unchanged.
 The CPU dependencies had already succeeded. Repeating them followed from the
 overly broad recipe identity: a mount-policy repair changes the prefix and
@@ -155,6 +156,7 @@ GCC 14.3.0 Libint workers were observed at 14:19.
 [second publication and independent revalidation](evidence/cp2k-install-layout-20261018/native-elpa-second-publication.json),
 [CPU HCOLL preflight](evidence/cp2k-install-layout-20261018/hcoll-cpu-preflight.json),
 [fresh CPU submission and accounting](evidence/cp2k-install-layout-20261018/hcoll-cpu-recovery-start.json),
+[completed CPU dependencies and application handoff](evidence/cp2k-install-layout-20261018/dsprhbm-native-elpa-application-start.json),
 [clone receipt and CPU/GPU progress](evidence/cp2k-install-layout-20261018/native-elpa-remaining-progress.json),
 [14:06 compile progress](evidence/cp2k-install-layout-20261018/native-elpa-progress-1406.json).
 [8V100V0 SIF, timings, science submission and CPU failure explanation](evidence/cp2k-install-layout-20261018/native-elpa-8v100v0-artifact.json).
@@ -174,9 +176,13 @@ New builds remove the private-ELPA fallback before hashes/manifests are written;
 export, final SIF checks and launch omit the alias, and runtime policy rejects
 it in ELF paths and native entries. Existing controllers/artifacts and the CPU
 job are preserved. Physical installation acceptance remains separate.
+Full Linux CI at `dc08073` passed 782 tests (780 passed, two optional skips),
+including real ELF loading after removing the alias and standalone installed
+verifier execution. This does not reassign new policy to frozen artifacts.
 [Native execution](evidence/cp2k-install-layout-20261018/hcoll-native-alias-free.json),
 [two-node native execution](evidence/cp2k-install-layout-20261018/hcoll-native-multinode-alias-free.json),
 [real ELPA copy normalization](evidence/cp2k-install-layout-20261018/real-elpa-normalization.json),
+[Linux CI proof](evidence/cp2k-install-layout-20261018/hcoll-github-validation.json),
 [native deployment and shared dependencies](CP2K-NATIVE-MODULE.md).
 
 The original workflow is not fully successful. Its GPU result jobs also failed
