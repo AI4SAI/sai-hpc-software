@@ -1,0 +1,64 @@
+{
+  "schema": 1,
+  "collected_at_utc": "2026-10-18T00:08:03.852830+00:00",
+  "scope": "One localhost-only non-GPU /bin/true per long/short TMPDIR, no Slurm/srun/science; --host localhost and plm_rsh_agent=/bin/false prevent remote SSH launch.",
+  "run": "/home/stardust/sai-hpc-software/diagnostics/cp2k-post-sif-readiness-20261018-b",
+  "prior_harness_failure": "/home/stardust/sai-hpc-software/diagnostics/cp2k-post-sif-readiness-20261018-a",
+  "shell_script": "set -euo pipefail\nsource /etc/profile.d/lmod.sh\nmodule use /opt/modules/modulefiles/devtools\nmodule load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto\nmodule -t list\nmpirun --version\npython3 - <<'ENV'\nimport json,os\nprint(json.dumps({k:v for k,v in os.environ.items() if k.startswith(('OMPI_','PMIX_','PRTE_','PMI_')) or k in ('PATH','LD_LIBRARY_PATH','TMPDIR','TMP','TEMP','MPI_HOME','OPAL_PREFIX')},sort_keys=True))\nENV\nexec /usr/bin/timeout --kill-after=5s 30s mpirun --host localhost --prtemca plm_rsh_agent /bin/false --report-bindings -np 1 /bin/true\n",
+  "shell_script_sha256": "9656a00012e8bb59e81f052e3d6bddca48f8cb977ea725679b3ef83f4e96d7ed",
+  "cases": {
+    "long": {
+      "tmpdir": "/home/stardust/sai-hpc-software/diagnostics/cp2k-post-sif-readiness-20261018-b/long-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "tmpdir_bytes": 130,
+      "command": [
+        "/usr/bin/bash",
+        "--noprofile",
+        "--norc",
+        "/home/stardust/sai-hpc-software/diagnostics/cp2k-post-sif-readiness-20261018-b/probe.sh"
+      ],
+      "initial_environment": {
+        "HOME": "/home/stardust",
+        "USER": "stardust",
+        "LOGNAME": "stardust",
+        "PATH": "/usr/bin:/bin",
+        "LD_LIBRARY_PATH": "",
+        "LD_PRELOAD": "",
+        "TMPDIR": "/home/stardust/sai-hpc-software/diagnostics/cp2k-post-sif-readiness-20261018-b/long-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONNOUSERSITE": "1"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.32585432898486033,
+      "stdout": "mpirun (Open MPI) 5.0.10\n\nReport bugs to https://www.open-mpi.org/community/help/\n\n{\"LD_LIBRARY_PATH\": \"/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/devtools/nvidia/cuda-12.9.1/lib64:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/nvshmem/lib:/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/math_libs/12.9/lib64\", \"MPI_HOME\": \"/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512\", \"OMPI_HOME\": \"/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512\", \"OPAL_PREFIX\": \"/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512\", \"PATH\": \"/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/bin:/opt/devtools/nvidia/cuda-12.9.1/bin:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/bin:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/bin:/usr/bin:/bin\", \"PMIX_INSTALL_PREFIX\": \"/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512\", \"TMPDIR\": \"/home/stardust/sai-hpc-software/diagnostics/cp2k-post-sif-readiness-20261018-b/long-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\"}\n",
+      "stderr": "cuda/12.9.1\nnvhpc/26.3-gnu-cuda12-tuned\nopenmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto\n--------------------------------------------------------------------------\nPRTE has detected that the head of the session directory tree (where\nscratch files and shared memory backing storage will be placed)\nresides on a shared file system:\n\n   Directory: /home/stardust/sai-hpc-software/diagnostics/cp2k-post-sif-readiness-20261018-b/long-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n   File system type: lustre\n\nFor performance reasons, it is strongly recommended that the session\ndirectory be located on a local file system. This can be controlled by\nsetting the system temporary directory to be used by PRTE using either\nthe TMPDIR envar or the \"prte_tmpdir_base\" MCA param.\n\nIf you need the temporary directory to be different on remote nodes\nfrom the local one where prterun is running (e.g., when a login node is\nbeing employed), then you can set the local temporary directory using\nthe \"prte_local_tmpdir_base\" MCA param and the one to be used on all\nother nodes using the \"prte_remote_tmpdir_base\" param.\n\nThis is only a warning advisory and your job will continue. You can\ndisable this warning in the future by setting the\n\"prte_silence_shared_fs\" MCA param to \"1\".\n--------------------------------------------------------------------------\n--------------------------------------------------------------------------\nPRTE has detected that the head of the session directory tree (where\nscratch files and shared memory backing storage will be placed)\nresides on a shared file system:\n\n   Directory: /home/stardust/sai-hpc-software/diagnostics/cp2k-post-sif-readiness-20261018-b/long-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx\n   File system type: lustre\n\nFor performance reasons, it is strongly recommended that the session\ndirectory be located on a local file system. This can be controlled by\nsetting the system temporary directory to be used by PRTE using either\nthe TMPDIR envar or the \"prte_tmpdir_base\" MCA param.\n\nIf you need the temporary directory to be different on remote nodes\nfrom the local one where prterun is running (e.g., when a login node is\nbeing employed), then you can set the local temporary directory using\nthe \"prte_local_tmpdir_base\" MCA param and the one to be used on all\nother nodes using the \"prte_remote_tmpdir_base\" param.\n\nThis is only a warning advisory and your job will continue. You can\ndisable this warning in the future by setting the\n\"prte_silence_shared_fs\" MCA param to \"1\".\n--------------------------------------------------------------------------\n[login-01.mr-sai.ai:537407] Rank 0 bound to package[0][core:L0]\n"
+    },
+    "short": {
+      "tmpdir": "/home/stardust/sai-hpc-software/runtime/pb-20261018a",
+      "tmpdir_bytes": 52,
+      "command": [
+        "/usr/bin/bash",
+        "--noprofile",
+        "--norc",
+        "/home/stardust/sai-hpc-software/diagnostics/cp2k-post-sif-readiness-20261018-b/probe.sh"
+      ],
+      "initial_environment": {
+        "HOME": "/home/stardust",
+        "USER": "stardust",
+        "LOGNAME": "stardust",
+        "PATH": "/usr/bin:/bin",
+        "LD_LIBRARY_PATH": "",
+        "LD_PRELOAD": "",
+        "TMPDIR": "/home/stardust/sai-hpc-software/runtime/pb-20261018a",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "PYTHONNOUSERSITE": "1"
+      },
+      "exit_code": 0,
+      "elapsed_seconds": 0.29433916800189763,
+      "stdout": "mpirun (Open MPI) 5.0.10\n\nReport bugs to https://www.open-mpi.org/community/help/\n\n{\"LD_LIBRARY_PATH\": \"/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/devtools/nvidia/cuda-12.9.1/lib64:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/nvshmem/lib:/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/math_libs/12.9/lib64\", \"MPI_HOME\": \"/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512\", \"OMPI_HOME\": \"/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512\", \"OPAL_PREFIX\": \"/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512\", \"PATH\": \"/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/bin:/opt/devtools/nvidia/cuda-12.9.1/bin:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/bin:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/bin:/usr/bin:/bin\", \"PMIX_INSTALL_PREFIX\": \"/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512\", \"TMPDIR\": \"/home/stardust/sai-hpc-software/runtime/pb-20261018a\"}\n",
+      "stderr": "cuda/12.9.1\nnvhpc/26.3-gnu-cuda12-tuned\nopenmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto\n--------------------------------------------------------------------------\nPRTE has detected that the head of the session directory tree (where\nscratch files and shared memory backing storage will be placed)\nresides on a shared file system:\n\n   Directory: /home/stardust/sai-hpc-software/runtime/pb-20261018a\n   File system type: lustre\n\nFor performance reasons, it is strongly recommended that the session\ndirectory be located on a local file system. This can be controlled by\nsetting the system temporary directory to be used by PRTE using either\nthe TMPDIR envar or the \"prte_tmpdir_base\" MCA param.\n\nIf you need the temporary directory to be different on remote nodes\nfrom the local one where prterun is running (e.g., when a login node is\nbeing employed), then you can set the local temporary directory using\nthe \"prte_local_tmpdir_base\" MCA param and the one to be used on all\nother nodes using the \"prte_remote_tmpdir_base\" param.\n\nThis is only a warning advisory and your job will continue. You can\ndisable this warning in the future by setting the\n\"prte_silence_shared_fs\" MCA param to \"1\".\n--------------------------------------------------------------------------\n--------------------------------------------------------------------------\nPRTE has detected that the head of the session directory tree (where\nscratch files and shared memory backing storage will be placed)\nresides on a shared file system:\n\n   Directory: /home/stardust/sai-hpc-software/runtime/pb-20261018a\n   File system type: lustre\n\nFor performance reasons, it is strongly recommended that the session\ndirectory be located on a local file system. This can be controlled by\nsetting the system temporary directory to be used by PRTE using either\nthe TMPDIR envar or the \"prte_tmpdir_base\" MCA param.\n\nIf you need the temporary directory to be different on remote nodes\nfrom the local one where prterun is running (e.g., when a login node is\nbeing employed), then you can set the local temporary directory using\nthe \"prte_local_tmpdir_base\" MCA param and the one to be used on all\nother nodes using the \"prte_remote_tmpdir_base\" param.\n\nThis is only a warning advisory and your job will continue. You can\ndisable this warning in the future by setting the\n\"prte_silence_shared_fs\" MCA param to \"1\".\n--------------------------------------------------------------------------\n[login-01.mr-sai.ai:537454] Rank 0 bound to package[0][core:L0]\n"
+    }
+  },
+  "status": "passed-localhost-launch-only",
+  "conclusion": "The installed launcher accepts a 130-byte TMPDIR without a 108-byte Unix socket path error. This /bin/true test does not exercise CP2K MPI_Init, the SIF launcher, Slurm or multi-node transport.",
+  "warnings": "PRRTE warns that TMPDIR is on Lustre in both cases and explicitly continues. No parameters were changed to suppress this warning."
+}

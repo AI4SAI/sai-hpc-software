@@ -1,0 +1,69 @@
+{
+  "schema": 1,
+  "workflow": "39078998459",
+  "controller": "c3b65b97f9d95ecb29a453713dfe292af20f6d39",
+  "recipe": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+  "note": "CPU is measured from whole-batch cgroup usage, including compiler processes that start and exit between samples. Summing only surviving processes substantially undercounts this workload. These short intervals do not establish whole-build utilization or a speedup.",
+  "samples": [
+    {
+      "partition": "4V100",
+      "job_id": "1837488",
+      "checked_at": "2026-10-18T00:00:25.020396+00:00",
+      "node": "4v100n12.mr-sai.ai",
+      "scope": "Read-only SSH sample of Slurm batch cgroup; no added srun step",
+      "raw_file": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/install-layout-fix/install-formal-cpu-1837488.json",
+      "raw_sha256": "5ceae24435dcd7c1c120b0a311099998a4c9ec08318616a7e76243af5b19f78b",
+      "sample_seconds": 10.022472377400845,
+      "cgroup": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M56366BT00/step_batch",
+      "batch_cpu_microseconds": 60600531,
+      "logical_cpus_average": 6.046465,
+      "allocated_logical_cpus": 8,
+      "allocation_utilization_percent": 75.581,
+      "cpu_max": "max 100000",
+      "cpuset": "0-3,16-19",
+      "throttled_period_delta": 0,
+      "make": [
+        {
+          "pid": 1171654,
+          "cwd": "/workspace/spack-stage/root/spack-stage-libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz/spack-src/generated",
+          "environment": {
+            "BUILD_JOBS": "8",
+            "MAKEFLAGS": " -j8 --jobserver-auth=6,7",
+            "TMPDIR": "/workspace/tmp"
+          }
+        }
+      ],
+      "gcc_14_cc1plus_processes_at_last_sample": 8
+    },
+    {
+      "partition": "16V100",
+      "job_id": "1837489",
+      "checked_at": "2026-10-18T00:00:25.028109+00:00",
+      "node": "16v100n02.mr-sai.ai",
+      "scope": "Read-only SSH sample of Slurm batch cgroup; no added srun step",
+      "raw_file": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/install-layout-fix/install-formal-cpu-1837489.json",
+      "raw_sha256": "99a5075691f529687860b278ccc5e26b730856eb4ad9aa17fbfe5fab7ecd831d",
+      "sample_seconds": 10.1083849305287,
+      "cgroup": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5636C3100/step_batch",
+      "batch_cpu_microseconds": 78376106,
+      "logical_cpus_average": 7.753574,
+      "allocated_logical_cpus": 8,
+      "allocation_utilization_percent": 96.92,
+      "cpu_max": "max 100000",
+      "cpuset": "48-51,112-115",
+      "throttled_period_delta": 0,
+      "make": [
+        {
+          "pid": 975205,
+          "cwd": "/workspace/spack-stage/root/spack-stage-libint-2.6.0-ufynbugam3r7u7zghgfuumkuodesgugo/spack-src/generated",
+          "environment": {
+            "BUILD_JOBS": "8",
+            "MAKEFLAGS": " -j8 --jobserver-auth=6,7",
+            "TMPDIR": "/workspace/tmp"
+          }
+        }
+      ],
+      "gcc_14_cc1plus_processes_at_last_sample": 8
+    }
+  ]
+}

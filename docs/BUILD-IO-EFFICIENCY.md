@@ -1,9 +1,19 @@
-# CP2K build I/O efficiency — 2026-10-17
+# CP2K build I/O efficiency — 2026-10-18
 
-The immediate bottleneck observed in the four CP2K release dependency builds
-is synchronous I/O through the home-backed ext image, not missing `make -j`
+The original bottleneck observed in the four CP2K release dependency builds
+was synchronous I/O through the home-backed ext image, not missing `make -j`
 or a CPU quota. All build storage, caches and temporary files remain in home.
 No software free-space reservations are needed for this investigation.
+
+The current repaired workflow `39078998459` was sampled at 08:00 Asia/Shanghai
+on October 18 during Libint compilation. Whole-batch cgroup usage measured
+6.046/8 logical CPUs on 4V100 (`1837488`) and 7.754/8 on 16V100 (`1837489`),
+or 75.57% and 96.92% of their allocations. Both ran eight GCC 14.3.0 compiler
+processes with `make -j8`, `cpu.max=max` and no additional throttling. Summing
+only processes surviving the whole sampling interval would miss short-lived
+compiler work and substantially understate utilization. These ten-second
+samples establish current parallel work, not whole-build utilization or a
+performance ratio. [Counters and retained raw-sample hashes](evidence/cp2k-install-layout-20261018/live-cpu.json).
 
 ## Live build evidence
 

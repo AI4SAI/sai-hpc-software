@@ -113,9 +113,12 @@ The corrected release workflow
 [39078998459](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39078998459)
 uses controller `c3b65b9` and recipe
 `b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150`.
-At 07:55, all four dependency jobs were RUNNING: `1837489` (16V100),
-`1837488` (4V100), `1837487` (8V100V0) and `1837486` (DSPRHBM).
+By 08:11, 4V100 dependency `1837488` had completed `0:0` in 37:21 and
+its sealed image was handed to application `1837815`, RUNNING on `4v100n01`.
+The other dependency jobs remained RUNNING: `1837489` (16V100),
+`1837487` (8V100V0) and `1837486` (DSPRHBM).
 [Exact submission evidence](evidence/cp2k-install-layout-20261018/formal-start.json).
+[Verified stage transition](evidence/cp2k-install-layout-20261018/formal-progress.json).
 CI passed 735 tests (733 passed, two optional skips). Formal SIF delivery and
 scientific/performance acceptance are still pending.
 
@@ -130,6 +133,10 @@ has no formal artifact/publication record and does not substitute for the new
 workflow. Its fixture data and single-GPU smoke do not establish comparative
 performance or multi-GPU acceptance.
 [SIF path, checksum and runtime proof](evidence/cp2k-install-layout-20261018/recovery-sif.json).
+Read-only SIF inspection also confirmed installed data and its configured
+lookup directory. The prepared formal-SIF smoke will exercise OT, ordinary
+diagonalization and OT without local data copies; none has yet run against
+the new formal artifact. [Installed-data checks](evidence/cp2k-install-layout-20261018/installed-data.json).
 
 Actual PBE smoke exposed a CUDA runtime compatibility issue after successful
 compile/version/ldd checks: host driver 550.163.01 could not JIT CUDA 12.9 PTX.

@@ -19,11 +19,14 @@ Fresh workflow [39078998459](https://github.com/AI4SAI/sai-hpc-software/actions/
 uses production commit `c3b65b9`, recipe
 `b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150`.
 Its four native dependency jobs are `1837489` (16V100), `1837488` (4V100),
-`1837487` (8V100V0) and `1837486` (DSPRHBM). At 07:55, all four were running
-on `16v100n02`, `4v100n12`, `8v100v0n03` and `d9470n02`, respectively.
+`1837487` (8V100V0) and `1837486` (DSPRHBM). By 08:11, 4V100 dependencies
+had completed `0:0` in 37:21 and their sealed image was handed to application
+`1837815`, RUNNING on `4v100n01`. The other three dependencies remained RUNNING
+on `16v100n02`, `8v100v0n03` and `d9470n02`.
 CI passed 735 tests with two optional skips. Formal SIF delivery and
 scientific/performance acceptance remain pending.
 [Requests and job identities](evidence/cp2k-install-layout-20261018/formal-start.json).
+[Verified stage transition](evidence/cp2k-install-layout-20261018/formal-progress.json).
 
 Recovery diagnostic `1837454` completed `0:0` in 18:52 and produced a real
 187,449,344-byte SIF. Final SIF verification, without the build overlay,
@@ -38,6 +41,13 @@ This establishes the repaired installation and SIF execution path; the smoke
 used pinned external data and does not establish installed-data, multi-GPU or
 comparative performance acceptance.
 [SIF checksum, logs and runtime evidence](evidence/cp2k-install-layout-20261018/recovery-sif.json).
+
+Read-only inspection of the diagnostic SIF also confirmed 280 installed data
+files, the exact `CP2K_DATA_DIR`, and BASIS_MOLOPT/GTH_POTENTIALS bytes identical
+to the successful fixture. The pinned source supports lookup from this directory
+when a local file is absent. Dynamic fallback remains to be exercised alongside
+OT and ordinary diagonalization in the prepared formal-SIF smoke.
+[Installed data evidence](evidence/cp2k-install-layout-20261018/installed-data.json).
 
 Actual PBE smoke exposed a CUDA runtime compatibility issue after successful
 compile/version/ldd checks: host driver 550.163.01 could not JIT CUDA 12.9 PTX.

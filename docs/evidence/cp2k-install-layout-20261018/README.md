@@ -58,9 +58,51 @@ passed locally. Fresh four-target release workflow
 [39078998459](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39078998459)
 uses this commit and recipe
 `b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150`.
-At 07:55 Asia/Shanghai, all four dependency jobs were running:
-16V100 `1837489` on `16v100n02`, 4V100 `1837488` on `4v100n12`,
-8V100V0 `1837487` on `8v100v0n03` and DSPRHBM `1837486` on `d9470n02`.
+At 08:11 Asia/Shanghai, 4V100 dependency `1837488` had completed `0:0` in
+37:21, its checkpoint was sealed, and application `1837815` was RUNNING
+on `4v100n01`. The source, controller, recipe, scripts and home-backed storage
+were checked for both phases. The other dependencies remained RUNNING:
+16V100 `1837489` on `16v100n02`, 8V100V0 `1837487` on `8v100v0n03`
+and DSPRHBM `1837486` on `d9470n02`.
 The live observer is retained in the home directory at
 `diagnostics/cp2k-release-20261016/install-layout-fix/formal-progress.json`.
 [Actual requests, scripts and frozen identities](formal-start.json).
+[Stage handoff and artifact absence at this snapshot](formal-progress.json).
+
+At 08:00, read-only compute-node SSH samples measured whole-batch CPU usage
+while Libint compiled: 4V100 used 6.046 of eight logical CPUs (75.57%), and
+16V100 used 7.754 of eight (96.92%). Both had `make -j8`, eight GCC 14.3.0
+compiler processes, no CPU quota and no throttling during the interval.
+These are approximately ten-second samples, not whole-build utilization.
+Counting only processes present at both ends misses most short-lived compiler
+work; the cgroup counters include it. [Counters and raw-sample hashes](live-cpu.json).
+
+The diagnostic SIF's installed data were independently read without running
+the image: its manifest contains 280 data files; the runtime exports the exact
+`CP2K_DATA_DIR`, and BASIS_MOLOPT/GTH_POTENTIALS bytes match the successful
+fixture. The fixed source tries this directory after the working directory.
+This static verification does not replace a dynamic installed-data lookup.
+[Installed-data evidence](installed-data.json).
+
+A bounded review found no confirmed blocker in the frozen formal acceptance
+entry. One known difference remains: the launcher forwards the site's absolute
+NCCL topology path without mounting that file. The installed NCCL library
+continues successfully when the file is missing; communication and timing
+effects still need the actual two-node test. The 130-byte MPI temporary path
+also passed a localhost-only `/bin/true` launcher check, as did a 52-byte
+control. This did not exercise CP2K MPI initialization or remote transport.
+The first unavailable-component harness attempt is retained and explicitly
+excluded from the passing result. [Readiness review](post-sif-readiness.json),
+[valid MPI path probe](mpi-tmpdir-localhost.json) and
+[retained harness failure](mpi-tmpdir-localhost-harness-failure.json).
+
+[Prepared formal-SIF smoke helper](prepare-formal-sif-smoke.py) pins this
+workflow, controller, recipe, artifact checksum and deployed launcher. It
+prepares but never submits a job. The single job runs PBE OT, ordinary
+diagonalization and the same OT input without local data copies, then compares
+energies and forces. It reads the new formal SIF's installed runtime/data
+before preparation; it cannot substitute the diagnostic SIF for that artifact.
+The new data-reader function was exercised read-only against the recovered
+SIF and returned the independently verified hashes above. Python parsing and
+generated shell syntax checks passed; the three-case job still awaits the
+completed formal SIF and has not run.
