@@ -111,7 +111,7 @@ original GitHub workflow `39078998459` ended with failure and is retained.
 
 Fresh private-ELPA recipe workflow `39094062144` uses identity
 `v2026.2-g67b5da876dd6-r4d454c740309`. All four dependency jobs completed and
-sealed. By 14:06 Asia/Shanghai, 4V100 application `1839644` had completed `0:0`
+sealed. By 14:21 Asia/Shanghai, 4V100 application `1839644` had completed `0:0`
 in 38:30 and science `1840021` passed all fourteen single/two-node cases in
 7:59. The workflow exported and read back the complete runtime delivery and
 published it. A separate read-only call to the frozen publication validator
@@ -124,10 +124,13 @@ the workflow read back 1,126 native-export files and published the delivery.
 A separate full frozen-controller publication revalidation passed. Maximum
 energy/force differences across node counts were `4.77e-12 Ha` and
 `1.10e-11 Ha/Bohr`.
-8V100V0 application `1839913` completed its dependency clone and started the
-application container/source setup; by 14:06 CP2K compilation had reached 83%.
-Its receipt confirms the original sealed source is unchanged. Earlier node
-sampling showed slow shared-filesystem reads.
+8V100V0 application `1839913` completed `0:0` at 14:16:27 in 1:22:48 and
+produced a 188,928,000-byte SIF with successful final version/loader/feature
+checks and an independently matched SHA256. About 56 minutes went into clone
+preparation and 27 minutes into application setup/build/packaging/checks.
+Science job `1841482` is RUNNING on two 8V100V0 nodes; acceptance, export and
+publication remain pending. The clone receipt confirms the sealed source is
+unchanged.
 DSPRHBM application `1839750` failed mounting missing `/opt/mellanox/hcoll`.
 The new fix maps the shared HPCX copy to MPI's expected absolute path, and
 CPU MPI/libtool preflight `1841002` passed `0:0`. Fresh CPU workflow
@@ -135,6 +138,13 @@ CPU MPI/libtool preflight `1841002` passed `0:0`. Fresh CPU workflow
 Its dependency job `1841174` is RUNNING on `d9470n02`; application/science
 remain pending. Existing successful GPU identities and frozen controllers
 remain unchanged.
+The CPU dependencies had already succeeded. Repeating them followed from the
+overly broad recipe identity: a mount-policy repair changes the prefix and
+invalidates exact checkpoint reuse, although dependency sources/compilers did
+not change. Future dependency reuse should separate dependency compatibility
+from runtime/container policy with explicit provenance and preserved absolute
+paths. The existing CPU job continues rather than restarting again; eight
+GCC 14.3.0 Libint workers were observed at 14:19.
 [Initial submissions](evidence/cp2k-install-layout-20261018/native-elpa-formal-start.json),
 [actual handoffs](evidence/cp2k-install-layout-20261018/native-elpa-application-handoff.json),
 [first publication and independent revalidation](evidence/cp2k-install-layout-20261018/native-elpa-first-publication.json),
@@ -143,6 +153,7 @@ remain unchanged.
 [fresh CPU submission and accounting](evidence/cp2k-install-layout-20261018/hcoll-cpu-recovery-start.json),
 [clone receipt and CPU/GPU progress](evidence/cp2k-install-layout-20261018/native-elpa-remaining-progress.json),
 [14:06 compile progress](evidence/cp2k-install-layout-20261018/native-elpa-progress-1406.json).
+[8V100V0 SIF, timings, science submission and CPU failure explanation](evidence/cp2k-install-layout-20261018/native-elpa-8v100v0-artifact.json).
 
 The original workflow is not fully successful. Its GPU result jobs also failed
 at startup because reusable workflows incorrectly required caller-scope SSH

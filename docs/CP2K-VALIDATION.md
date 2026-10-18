@@ -11,13 +11,13 @@ uses code commit `84027c9`, source v2026.2 / `67b5da876dd6` and recipe
 `4d454c7403097d4a5cae4c37452ef15aff32d753f0e9076533433dc939535782`.
 This is the recipe that includes private ELPA and the upstream source fixes;
 the older four SIFs below retain their previous recipe.
-At the publication/recovery audit (2026-10-18 14:06 Asia/Shanghai):
+At the publication/recovery audit (2026-10-18 14:21 Asia/Shanghai):
 
 | Partition | Dependency job / state | Application job / actual stage | New application SIF |
 |---|---|---|---|
 | 4V100 | 1839366: COMPLETED `0:0`, 36:56, sealed | 1839644: COMPLETED `0:0`, 38:30 | 189,743,104 bytes, accepted and published |
 | 16V100 | 1839368: COMPLETED `0:0`, 1:09:17, sealed | 1839900: COMPLETED `0:0`, 24:52 | 188,497,920 bytes, accepted and published |
-| 8V100V0 | 1839369: COMPLETED `0:0`, 1:10:43, sealed | 1839913: RUNNING, CP2K compilation at 83% | not yet produced |
+| 8V100V0 | 1839369: COMPLETED `0:0`, 1:10:43, sealed | 1839913: COMPLETED `0:0`, 1:22:48 | 188,928,000 bytes; science job 1841482 RUNNING |
 | DSPRHBM | 1839362: COMPLETED `0:0`, 52:17, sealed | 1839750: FAILED `255:0`, 21:21, missing host HCOLL bind source | not produced |
 
 4V100 science job `1840021` completed `0:0` in 7:59 on `4v100n18,20`. All seven
@@ -65,14 +65,33 @@ or acceptance success. Successful GPU artifacts retain their original identities
 [CPU alias preflight and retained attempts](evidence/cp2k-install-layout-20261018/hcoll-cpu-preflight.json).
 [Fresh CPU identity, actual submission and accounting](evidence/cp2k-install-layout-20261018/hcoll-cpu-recovery-start.json).
 
-8V100V0 job `1839913` completed dependency-clone preparation by 13:50 and
-started the application container/source setup. Its preparation receipt
-confirms both filesystem checks, an empty overlay work directory and an
-unchanged sealed source. At 13:47 the clone process was still reading
-40 MiB in three seconds, with shared-filesystem I/O waits. No new SIF has
-been produced. At 14:06, CP2K's compile progress had reached 83%. DSPRHBM's
-fresh job had installed HDF5, COSMA, libxsmm and PLUMED and was still building
-dependencies.
+The old CPU dependency job `1839362` had succeeded; its failure was the
+application container's missing mount source before application compilation.
+The HCOLL fix did not change dependency versions or compilers. Rebuilding
+dependencies was a consequence of the current broad recipe fingerprint:
+changing container/launcher policy changes the final prefix, while checkpoint
+reuse requires identical identity/controller/prefix. This recovery repeated
+dependency compilation unnecessarily at the workflow-design level. Future
+reuse must separate dependency compatibility from container/runtime policy
+with explicit provenance and preserved absolute paths; old libraries must
+not simply be relabelled with a new prefix. The current CPU job continues;
+direct node inspection at 14:19 found eight GCC 14.3.0 Libint compiler workers.
+
+8V100V0 job `1839913` completed `0:0` at 14:16:27 and produced a SIF. Final
+version, loader and required-feature checks passed; an independent SHA256
+check matched `5a1b12cee097b79c333a9f955edd70cc5a5ee262ffe4b0a622c0f1a0ec0b2334`.
+Of its 1:22:48 allocation, roughly 56 minutes preceded the prepared clone
+receipt at 13:49:50; the remaining roughly 27 minutes covered application
+setup, build, packaging and verification. Its receipt confirms both filesystem
+checks, an empty overlay work directory and an unchanged sealed source.
+Science job `1841482` started at 14:20:05 on `8v100v0n02,04` and is RUNNING;
+science/export/publication are still pending.
+[New SIF, exact phase timings, science handoff and original CPU mount failure](evidence/cp2k-install-layout-20261018/native-elpa-8v100v0-artifact.json).
+
+Earlier progress: at 13:47 the clone process was reading 40 MiB in three
+seconds with shared-filesystem I/O waits; at 14:06 CP2K compilation was at
+83%. DSPRHBM had installed HDF5, COSMA, libxsmm and PLUMED and was still
+building dependencies.
 [Latest two-job progress and clone receipt](evidence/cp2k-install-layout-20261018/native-elpa-remaining-progress.json).
 [14:06 compile progress and release-skip probe](evidence/cp2k-install-layout-20261018/native-elpa-progress-1406.json).
 
