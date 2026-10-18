@@ -1,8 +1,9 @@
 # Workflow closure — 2026-10-18
 
 The code now connects build, scientific/performance acceptance, native export
-readback and publication. CP2K 2026.2 on 4V100, 16V100 and 8V100V0 has passed candidate
-science, native export readback and publication. GPUMD on 16V100 has passed science, performance and
+readback and publication. CP2K 2026.2 on all four partitions (4V100, 16V100,
+8V100V0 and DSPRHBM) has passed candidate science, native export readback and
+publication. Development is not yet accepted. GPUMD on 16V100 has passed science, performance and
 publication; its additional exported-native module execution check remains
 pending. Production acceptance is incomplete across the full site matrix. Original dirty
 worktrees and recovery checkpoints remain preserved. Administrator installation
@@ -140,16 +141,23 @@ CPU MPI/libtool preflight `1841002` passed `0:0`. Fresh CPU workflow
 `39101032802`, frozen at `33e80c8`, uses new recipe `fb4adb0598fc`.
 Its dependency job `1841174` completed `0:0` in 1:08:26 on `d9470n02` at
 14:53:38. The workflow automatically handed off to application job `1841857`,
-RUNNING on `d9470n02` since 14:57:10 with the same frozen CPU identity.
-Application completion and science remain pending. Existing successful GPU identities and frozen controllers
-remain unchanged.
+which completed `0:0` in 43:12 at 15:40:22. Clone preparation occupied about
+26:32; application setup/build/packaging/checks occupied the remaining 16:40.
+Science `1842261` completed `0:0` in 18:10 at 16:02:15 on `d9470n02,04`.
+All fourteen calculations passed, including small/large private-ELPA execution;
+maximum single/two-node energy and force differences were `4.32e-12 Ha` and
+`1.40e-11 Ha/Bohr`. The workflow read back 1,125 native runtime files and
+published the delivery. Independent full frozen-controller publication
+validation passed. All four release partitions now have accepted deliveries;
+the CPU recovery and GPU deliveries retain different recipe/build-directory
+identities, with the same CP2K source. Preserve their exact absolute prefixes.
 The CPU dependencies had already succeeded. Repeating them followed from the
 overly broad recipe identity: a mount-policy repair changes the prefix and
 invalidates exact checkpoint reuse, although dependency sources/compilers did
 not change. Future dependency reuse should separate dependency compatibility
 from runtime/container policy with explicit provenance and preserved absolute
-paths. The existing CPU job continues rather than restarting again; eight
-GCC 14.3.0 Libint workers were observed at 14:19.
+paths. This CPU recovery completed without another restart; eight GCC 14.3.0
+Libint workers were observed at 14:19.
 [Initial submissions](evidence/cp2k-install-layout-20261018/native-elpa-formal-start.json),
 [actual handoffs](evidence/cp2k-install-layout-20261018/native-elpa-application-handoff.json),
 [first publication and independent revalidation](evidence/cp2k-install-layout-20261018/native-elpa-first-publication.json),
@@ -161,6 +169,7 @@ GCC 14.3.0 Libint workers were observed at 14:19.
 [14:06 compile progress](evidence/cp2k-install-layout-20261018/native-elpa-progress-1406.json).
 [8V100V0 SIF, timings, science submission and CPU failure explanation](evidence/cp2k-install-layout-20261018/native-elpa-8v100v0-artifact.json).
 [8V100V0 accepted publication and independent validation](evidence/cp2k-install-layout-20261018/native-elpa-third-publication.json).
+[DSPRHBM accepted publication and independent validation](evidence/cp2k-install-layout-20261018/native-elpa-fourth-publication.json).
 
 The legacy HCOLL alias is now a compilation-only compatibility bind. Site MPI
 needs HCOLL at runtime, and generated native modules already record its real
@@ -174,8 +183,8 @@ MPI nodes, with alias absence and actual library paths checked independently
 on each rank. No application SIF was executed or physical `/opt` changed.
 New builds remove the private-ELPA fallback before hashes/manifests are written;
 export, final SIF checks and launch omit the alias, and runtime policy rejects
-it in ELF paths and native entries. Existing controllers/artifacts and the CPU
-job are preserved. Physical installation acceptance remains separate.
+it in ELF paths and native entries. Existing frozen controllers and accepted
+artifacts are preserved. Physical installation acceptance remains separate.
 Full Linux CI at `dc08073` passed 782 tests (780 passed, two optional skips),
 including real ELF loading after removing the alias and standalone installed
 verifier execution. This does not reassign new policy to frozen artifacts.
@@ -200,8 +209,7 @@ Original frozen runs retain their failed states and accepted
 artifact proofs remain independently valid.
 [GitHub annotations and secret-scope diagnosis](evidence/cp2k-install-layout-20261018/github-environment-secret-result.json).
 
-Accepted deliveries are available on 4V100, 16V100 and 8V100V0; DSPRHBM
-continues toward the full matrix.
+Accepted CP2K 2026.2 deliveries are available on all four partitions.
 The system ELPA library's generic allocation code was independently shown to
 execute AVX512 on an AVX2-only node, despite advertising both kernel sets.
 The new recipe therefore builds CP2K's own pinned ELPA 2026.02.002 under

@@ -1,0 +1,153 @@
+{
+  "elpa_and_parallel_make_observation": {
+    "at": "2026-10-18T15:25:48.102506+08:00",
+    "processes": "    PID    PPID STAT PSR %CPU NLWP WCHAN                            ELAPSED COMMAND\n3632715 3632714 R     87 98.3    1 -                                  00:08 /opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/f951 /workspace/elpa-build/source/src/elpa2/elpa2_compute.F90 -cpp=/workspace/tmp/cczlj23k.fii -quiet -I . -I /workspace/elpa-build/source -I modules -I private_modules -I /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/include -I /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib -imultiarch x86_64-linux-gnu -D_REENTRANT -D HAVE_CONFIG_H /workspace/elpa-build/source/src/elpa2/elpa2_compute.F90 -march=sapphirerapids -mmmx -mpopcnt -msse -msse2 -msse3 -mssse3 -msse4.1 -msse4.2 -mavx -mavx2 -mno-sse4a -mno-fma4 -mno-xop -mfma -mavx512f -mbmi -mbmi2 -maes -mpclmul -mavx512vl -mavx512bw -mavx512dq -mavx512cd -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mavx512vbmi2 -mgfni -mvpclmulqdq -mavx512vnni -mavx512bitalg -mavx512bf16 -mno-avx512vp2intersect -mno-3dnow -madx -mabm -mcldemote -mclflushopt -mclwb -mno-clzero -mcx16 -menqcmd -mf16c -mfsgsbase -mfxsr -mno-hle -msahf -mno-lwp -mlzcnt -mmovbe -mmovdir64b -mmovdiri -mno-mwaitx -mpconfig -mpku -mprfchw -mptwrite -mrdpid -mrdrnd -mrdseed -mno-rtm -mserialize -msgx -msha -mshstk -mno-tbm -mtsxldtrk -mvaes -mwaitpkg -mwbnoinvd -mxsave -mxsavec -mxsaveopt -mxsaves -mamx-tile -mamx-int8 -mamx-bf16 -muintr -mno-hreset -mno-kl -mno-widekl -mavxvnni -mavx512fp16 -mno-avxifma -mno-avxvnniint8 -mno-avxneconvert -mno-cmpccxadd -mno-amx-fp16 -mno-prefetchi -mno-raoint -mno-amx-complex -mno-avxvnniint16 -mno-sm3 -mno-sha512 -mno-sm4 -mno-apxf -mno-usermsr --param l1-cache-size=48 --param l1-cache-line-size=64 --param l2-cache-size=107520 -mtune=sapphirerapids -quiet -dumpdir src/elpa2/.libs/ -dumpbase libelpa_openmp_private_la-elpa2_compute.F90 -dumpbase-ext .F90 -O3 -fopenmp -fno-lto -fPIC -J private_modules -fintrinsic-modules-path /opt/devtools/gcc/14.3.0/lib/gcc/x86_64-pc-linux-gnu/14.3.0/finclude -fpre-include=/usr/include/finclude/x86_64-linux-gnu/math-vector-fortran.h -o /workspace/tmp/ccMSuPhw.s\n3614271 3614206 Sl    86 16.3    6 futex_do_wait                      02:05 /home/stardust/sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs -f -o allow_other /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0\n3614527 3614206 S     89  2.2    1 fuse_dev_do_read                   01:54 /opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/fuse-overlayfs -f -o allow_other,lowerdir=/opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-lowerdir:/opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/rootfs,upperdir=/opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0/upper,workdir=/opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0/work,noacl /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final\n3621151 3621140 S     85  1.2    1 do_wait                            00:58 make all-am\n3614545 3614248 Ss    84  0.5    1 do_msgrcv                          01:54 /.singularity.d/libs/faked\n3621140 3615069 S     86  0.4    1 do_wait                            00:58 make -j 8\n3632670 3621151 S     88  0.2    1 do_wait                            00:08 /bin/bash ./libtool --silent --tag=FC --mode=compile /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/bin/mpifort -DHAVE_CONFIG_H -I. -I/workspace/elpa-build/source -Imodules -Jprivate_modules -Iprivate_modules -fopenmp -O3 -march=native -mtune=native -fno-lto -c -o src/elpa2/libelpa_openmp_private_la-elpa2_compute.lo /workspace/elpa-build/source/src/elpa2/elpa2_compute.F90\n3614206 3614190 Sl    84  0.0   11 futex_do_wait                      02:05 Apptainer runtime parent: minimal-v1.sif\n3614190 3608392 Sl    83  0.0   13 futex_do_wait                      02:05 /opt/devtools/apptainer/1.4.4/bin/apptainer --config /home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6/runtime/apptainer-fuse2fs.conf exec --bind /home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6/results:/results:rw --fakeroot --cleanenv --containall --no-home --no-mount bind-paths,home,cwd,tmp,hostfs --pwd / --net --network none --bind /usr:/usr:ro --bind /sbin:/sbin:ro --bind /lib:/lib:ro --bind /lib64:/lib64:ro --bind /opt/devtools:/opt/devtools:ro --bind /opt/modules:/opt/modules:ro --bind /home/stardust/sai-hpc-software/cache/spack:/input/spack:ro --bind /home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6/input/cp2k-updates:/input/updates:ro --bind /var/lib/dpkg:/var/lib/dpkg:ro --bind /usr/lib/os-release:/etc/os-release:ro --bind /etc/alternatives:/etc/alternatives:ro --bind /usr/bin:/bin:ro --bind /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll:/opt/mellanox/hcoll:ro --bind /home/stardust/sai-hpc-software/cache/cp2k-dependencies:/input/dependencies:ro --bind /home/stardust/sai-hpc-software/cache/cp2k-probe:/input/probe:ro --bind /etc/profile.d/lmod.sh:/etc/profile.d/lmod.sh:ro --bind /etc/lmod:/etc/lmod:ro --bind /home/stardust/sai-hpc-software/controller/33e80c8f138ad6a7352d3ff36d0884beae51699b/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6:/control:ro --bind /home/stardust/sai-hpc-software/cache/repositories/cp2k:/input/repository:ro --overlay /home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6/work.ext3 --env BUILD_JOBS=8 --env TMPDIR=/workspace/tmp /home/stardust/sai-hpc-software/containers/base/minimal-v1.sif /usr/bin/env SAI_BUILD_PARTITION=DSPRHBM /usr/bin/bash /control/cp2k_container_entry.sh build cp2k 67b5da876dd6a76b8b021d5a04d1c81ba79a4c50 v2026.2 dsprhbm {\"build_id\":\"v2026.2-g67b5da876dd6-rfb4adb0598fc\",\"cpu_arch\":\"x86-64-v4\",\"cuda_arch\":\"\",\"dependency_isa\":\"avx512\",\"gpus\":0,\"install_prefix\":\"/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM\",\"partition\":\"DSPRHBM\",\"recipe_sha256\":\"fb4adb0598fca95c3146f9c9a8a2119febde29882594a832d13b5de4052bc35a\",\"repository\":\"cp2k/cp2k\",\"schema\":2,\"software\":\"cp2k\",\"source_ref\":\"v2026.2\",\"source_sha\":\"67b5da876dd6a76b8b021d5a04d1c81ba79a4c50\",\"source_version\":\"v2026.2\",\"stack_digest\":null,\"stack_sources\":{},\"target\":\"dsprhbm\",\"track\":\"release\",\"version_label\":\"v2026.2\"}\n3614266 3614206 Sl    89  0.0    4 futex_do_wait                      02:05 /opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/squashfuse_ll -f -o allow_other,ro,uid=0,gid=0,offset=36864 /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/rootfs\n3608332       1 Sl    83  0.0    9 -                                  28:37 slurmstepd: [1841857.extern]\n3608342       1 Sl    83  0.0    9 -                                  28:37 slurmstepd: [1841857.batch]\n3608391 3608351 S     83  0.0    1 do_wait                            28:34 /usr/bin/python3 /home/stardust/sai-hpc-software/controller/33e80c8f138ad6a7352d3ff36d0884beae51699b/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6/build_capacity.py /home/stardust/sai-hpc-software /home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6 49152 -- /bin/bash -seu -o pipefail\n3608351 3608342 S     83  0.0    1 do_wait                            28:37 /bin/bash /var/spool/slurmd/job1841857/slurm_script\n3608392 3608391 S     85  0.0    1 do_wait                            28:34 /bin/bash -seu -o pipefail\n3614248 3614206 Sl    85  0.0    7 futex_do_wait                      02:05 appinit\n3614539 3614248 S     83  0.0    1 do_wait                            01:54 /bin/sh /.singularity.d/libs/fakeroot -f /.singularity.d/libs/faked -l /.singularity.d/libs/libfakeroot.so /usr/bin/env SAI_BUILD_PARTITION=DSPRHBM /usr/bin/bash /control/cp2k_container_entry.sh build cp2k 67b5da876dd6a76b8b021d5a04d1c81ba79a4c50 v2026.2 dsprhbm {\"build_id\":\"v2026.2-g67b5da876dd6-rfb4adb0598fc\",\"cpu_arch\":\"x86-64-v4\",\"cuda_arch\":\"\",\"dependency_isa\":\"avx512\",\"gpus\":0,\"install_prefix\":\"/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM\",\"partition\":\"DSPRHBM\",\"recipe_sha256\":\"fb4adb0598fca95c3146f9c9a8a2119febde29882594a832d13b5de4052bc35a\",\"repository\":\"cp2k/cp2k\",\"schema\":2,\"software\":\"cp2k\",\"source_ref\":\"v2026.2\",\"source_sha\":\"67b5da876dd6a76b8b021d5a04d1c81ba79a4c50\",\"source_version\":\"v2026.2\",\"stack_digest\":null,\"stack_sources\":{},\"target\":\"dsprhbm\",\"track\":\"release\",\"version_label\":\"v2026.2\"}\n3614552 3614539 S     83  0.0    1 do_wait                            01:54 /usr/bin/bash /control/cp2k_container_entry.sh build cp2k 67b5da876dd6a76b8b021d5a04d1c81ba79a4c50 v2026.2 dsprhbm {\"build_id\":\"v2026.2-g67b5da876dd6-rfb4adb0598fc\",\"cpu_arch\":\"x86-64-v4\",\"cuda_arch\":\"\",\"dependency_isa\":\"avx512\",\"gpus\":0,\"install_prefix\":\"/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM\",\"partition\":\"DSPRHBM\",\"recipe_sha256\":\"fb4adb0598fca95c3146f9c9a8a2119febde29882594a832d13b5de4052bc35a\",\"repository\":\"cp2k/cp2k\",\"schema\":2,\"software\":\"cp2k\",\"source_ref\":\"v2026.2\",\"source_sha\":\"67b5da876dd6a76b8b021d5a04d1c81ba79a4c50\",\"source_version\":\"v2026.2\",\"stack_digest\":null,\"stack_sources\":{},\"target\":\"dsprhbm\",\"track\":\"release\",\"version_label\":\"v2026.2\"}\n3615045 3614552 S     83  0.0    1 do_wait                            01:22 bash /control/cp2k_build.sh dsprhbm\n3615069 3615045 S     84  0.0    1 do_wait                            01:21 bash /control/cp2k_elpa.sh /workspace/source /input/updates /workspace/elpa-build /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM/dependencies/elpa dsprhbm\n3632713 3632670 S     83  0.0    1 do_wait                            00:08 /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/bin/mpifort -DHAVE_CONFIG_H -I. -I/workspace/elpa-build/source -Imodules -Jprivate_modules -Iprivate_modules -fopenmp -O3 -march=native -mtune=native -fno-lto -c /workspace/elpa-build/source/src/elpa2/elpa2_compute.F90 -fPIC -o src/elpa2/.libs/libelpa_openmp_private_la-elpa2_compute.o\n3632714 3632713 S     85  0.0    1 do_wait                            00:08 /opt/devtools/gcc/14.3.0/bin/gfortran -DHAVE_CONFIG_H -I. -I/workspace/elpa-build/source -Imodules -Jprivate_modules -Iprivate_modules -fopenmp -O3 -march=native -mtune=native -fno-lto -c /workspace/elpa-build/source/src/elpa2/elpa2_compute.F90 -fPIC -o src/elpa2/.libs/libelpa_openmp_private_la-elpa2_compute.o -I/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/include -I/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib\n"
+  },
+  "interpretation": "Preparation completed without restarting the allocation. Earlier inspection observed the clone reader waiting in folio_wait_bit_common. ELPA used make -j 8; one large Fortran unit occupied about one core before the build moved on to TBLITE/DFT-D4. Eight CPUs were allowed and no cpu.max quota or CPU throttling was present.",
+  "job": "1841857",
+  "later_cpu_observation": {
+    "affinity": [
+      83,
+      84,
+      85,
+      86,
+      87,
+      88,
+      89,
+      90
+    ],
+    "at": "2026-10-18T15:26:53.047538+08:00",
+    "cgroup": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M56WTR1C00/step_batch/user/task_0",
+    "cpu_cores_used": 1.7044853770677104,
+    "cpu_samples": [
+      {
+        "burst_usec": 0,
+        "core_sched.force_idle_usec": 0,
+        "nice_usec": 0,
+        "nr_bursts": 0,
+        "nr_periods": 0,
+        "nr_throttled": 0,
+        "system_usec": 69610419,
+        "throttled_usec": 0,
+        "usage_usec": 352987790,
+        "user_usec": 283377371
+      },
+      {
+        "burst_usec": 0,
+        "core_sched.force_idle_usec": 0,
+        "nice_usec": 0,
+        "nr_bursts": 0,
+        "nr_periods": 0,
+        "nr_throttled": 0,
+        "system_usec": 70733478,
+        "throttled_usec": 0,
+        "usage_usec": 361510851,
+        "user_usec": 290777373
+      }
+    ],
+    "limits": [
+      {
+        "cpu.max": "max 100000",
+        "cpuset.cpus.effective": "83-90",
+        "memory.max": "max",
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M56WTR1C00/step_batch/user/task_0"
+      },
+      {
+        "cpu.max": "max 100000",
+        "cpuset.cpus.effective": "83-90",
+        "memory.max": "30064771072",
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M56WTR1C00/step_batch/user"
+      },
+      {
+        "cpu.max": "max 100000",
+        "cpuset.cpus.effective": "83-90",
+        "memory.max": "max",
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M56WTR1C00/step_batch"
+      },
+      {
+        "cpu.max": "max 100000",
+        "cpuset.cpus.effective": "83-90",
+        "memory.max": "30064771072",
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M56WTR1C00"
+      },
+      {
+        "cpu.max": "max 100000",
+        "cpuset.cpus.effective": "0-103",
+        "memory.max": "max",
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope"
+      },
+      {
+        "cpu.max": "max 100000",
+        "cpuset.cpus.effective": "0-103",
+        "memory.max": "max",
+        "path": "/sys/fs/cgroup/system.slice"
+      },
+      {
+        "cpuset.cpus.effective": "0-103",
+        "path": "/sys/fs/cgroup"
+      }
+    ],
+    "sample_seconds": 5.0003720270469785
+  },
+  "node": "d9470n02",
+  "phase_times_asia_shanghai": {
+    "application_completed": "2026-10-18T15:40:22+08:00",
+    "clone_prepared_receipt_mtime": "2026-10-18T15:23:42+08:00",
+    "start": "2026-10-18T14:57:10+08:00"
+  },
+  "preparation_receipt": {
+    "cloned_overlay_sha256": "b6e3893c36cb667ffab7bc5bdea03d92675e4098dbe2b65f58fcab859f972486",
+    "commands": [
+      {
+        "returncode": 0,
+        "tool": "/usr/sbin/e2fsck"
+      },
+      {
+        "returncode": 0,
+        "tool": "/usr/sbin/debugfs"
+      },
+      {
+        "returncode": 0,
+        "tool": "/usr/sbin/debugfs"
+      },
+      {
+        "returncode": 0,
+        "tool": "/usr/sbin/debugfs"
+      },
+      {
+        "returncode": 0,
+        "tool": "/usr/sbin/debugfs"
+      },
+      {
+        "returncode": 0,
+        "tool": "/usr/sbin/debugfs"
+      },
+      {
+        "returncode": 0,
+        "tool": "/usr/sbin/debugfs"
+      },
+      {
+        "returncode": 0,
+        "tool": "/usr/sbin/debugfs"
+      },
+      {
+        "returncode": 0,
+        "tool": "/usr/sbin/e2fsck"
+      }
+    ],
+    "fsck_before_and_after": "passed",
+    "lock": "exclusive-F_OFD_SETLK",
+    "prepared_overlay_sha256": "c9829bf45c7f2744da4c6dcc655e425e1041cc2152b0e8b1897cdc1db9d84bc9",
+    "remaining_entries": 0,
+    "schema": 1,
+    "scope": "/work/work",
+    "source": "/home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies/work.ext3",
+    "source_overlay_sha256": "b6e3893c36cb667ffab7bc5bdea03d92675e4098dbe2b65f58fcab859f972486",
+    "source_unchanged": true,
+    "status": "prepared",
+    "target": "/home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6/work.ext3",
+    "upper_directory_unchanged": true
+  },
+  "run_id": "39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6",
+  "scope": "read-only process and cgroup observations of the unchanged DSPRHBM release application allocation"
+}

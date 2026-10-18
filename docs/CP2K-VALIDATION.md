@@ -1,8 +1,9 @@
 # CP2K validation status
 
 This records implementation, live builds and partition-scoped acceptance.
-4V100, 16V100 and 8V100V0 have passed science, native export readback and publication.
-No four-target CP2K 2026.2 release has passed all acceptance gates yet.
+CP2K 2026.2 on 4V100, 16V100, 8V100V0 and DSPRHBM has passed candidate
+science, native export readback and publication. Development and physical
+installation acceptance remain separate work.
 
 ## Current private-ELPA release build
 
@@ -10,7 +11,10 @@ Fresh workflow [39094062144](https://github.com/AI4SAI/sai-hpc-software/actions/
 uses code commit `84027c9`, source v2026.2 / `67b5da876dd6` and recipe
 `4d454c7403097d4a5cae4c37452ef15aff32d753f0e9076533433dc939535782`.
 This is the recipe that includes private ELPA and the upstream source fixes;
-the older four SIFs below retain their previous recipe.
+the older four SIFs below retain their previous recipe. The GPU rows retain
+this identity; the successful DSPRHBM recovery uses workflow `39101032802`
+and recipe `fb4adb0598fc`, as detailed below. The two build-directory names
+and their absolute prefixes must be preserved.
 At the latest publication/recovery audit (2026-10-18):
 
 | Partition | Dependency job / state | Application job / actual stage | New application SIF |
@@ -18,7 +22,7 @@ At the latest publication/recovery audit (2026-10-18):
 | 4V100 | 1839366: COMPLETED `0:0`, 36:56, sealed | 1839644: COMPLETED `0:0`, 38:30 | 189,743,104 bytes, accepted and published |
 | 16V100 | 1839368: COMPLETED `0:0`, 1:09:17, sealed | 1839900: COMPLETED `0:0`, 24:52 | 188,497,920 bytes, accepted and published |
 | 8V100V0 | 1839369: COMPLETED `0:0`, 1:10:43, sealed | 1839913: COMPLETED `0:0`, 1:22:48 | 188,928,000 bytes, accepted and published |
-| DSPRHBM | 1839362: COMPLETED `0:0`, 52:17, sealed | 1839750: FAILED `255:0`, 21:21, missing host HCOLL bind source | not produced |
+| DSPRHBM | 1841174: COMPLETED `0:0`, 1:08:26, sealed | 1841857: COMPLETED `0:0`, 43:12 | 186,093,568 bytes, accepted and published |
 
 4V100 science job `1840021` completed `0:0` in 7:59 on `4v100n18,20`. All seven
 cases ran on one and two nodes, including OT, ordinary/forced ELPA
@@ -49,9 +53,10 @@ Its SIF SHA256 is
 `d83620878d735a4513e0d33e88515eeb488998b21f138f200478c9ad1b9ea45e`.
 [Second accepted artifact and independent revalidation](evidence/cp2k-install-layout-20261018/native-elpa-second-publication.json).
 
-DSPRHBM's dependency-to-application handoff initially worked, but its application
-container then failed to mount `/opt/mellanox/hcoll`, which is absent on that
-CPU node. The sealed dependency and prepared clone remain retained. The
+DSPRHBM's original dependency job `1839362` completed `0:0` in 52:17, but
+application `1839750` failed `255:0` in 21:21 mounting `/opt/mellanox/hcoll`,
+which is absent on that CPU node. The sealed dependency, prepared clone and
+failed allocation remain retained. The
 corrected recipe maps the existing shared HPCX HCOLL directory read-only to
 MPI's legacy absolute path and removes obsolete CP2K 2026.1 runtime binds.
 CPU diagnostic `1841002` passed actual libtool/MPI linking, `ldd` and MPI startup
@@ -62,12 +67,30 @@ uses frozen controller `33e80c8`, new recipe `fb4adb0598fc` and canonical
 prefix `/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM`.
 Its dependency job `1841174` completed `0:0` in 1:08:26 on `d9470n02` at
 14:53:38. The workflow automatically submitted application job `1841857`,
-RUNNING on `d9470n02` since 14:57:10 with the same frozen CPU identity. This
-job is preparing/building the application; scientific acceptance remains pending.
-Successful GPU artifacts retain their original identities.
+which completed `0:0` in 43:12 at 15:40:22. About 26:32 preceded the prepared
+clone receipt at 15:23:42; the remaining 16:40 covered application setup,
+compilation, packaging and checks. Direct node inspection found shared-storage
+read waits during preparation, eight allowed CPUs, `make -j 8`, and no CPU
+quota or throttling. The large serial Fortran compilation step subsequently
+completed without a restart.
+
+Science job `1842261` completed `0:0` in 18:10 at 16:02:15 on `d9470n02,04`.
+All fourteen single/two-node calculations passed, including actual private
+ELPA execution for both small and 192-atom PBE fixtures. Maximum energy and
+force differences across node counts were `4.32e-12 Ha` and
+`1.40e-11 Ha/Bohr`. The workflow exported and read back 1,125 native runtime
+files and published the delivery. Independent read-only full publication
+validation with the original frozen controller passed, rechecking the SIF,
+raw science, export payload and module records. Its SIF SHA256 is
+`c7157c5287694521a05b9ee7f3d4a33abc2da5031a5bc2b16800765e1332814a`.
+Successful GPU artifacts retain their original identities; no GPU rebuild was
+needed to complete this release matrix. Physical `/opt` installation is not
+claimed by these checks.
 [CPU alias preflight and retained attempts](evidence/cp2k-install-layout-20261018/hcoll-cpu-preflight.json).
 [Fresh CPU identity, actual submission and accounting](evidence/cp2k-install-layout-20261018/hcoll-cpu-recovery-start.json).
 [Completed CPU dependencies and automatic application handoff](evidence/cp2k-install-layout-20261018/dsprhbm-native-elpa-application-start.json).
+[Fourth accepted delivery and independent publication validation](evidence/cp2k-install-layout-20261018/native-elpa-fourth-publication.json).
+[Build preparation, parallel compilation and CPU limits](evidence/cp2k-install-layout-20261018/dsprhbm-build-efficiency.json).
 
 The old CPU dependency job `1839362` had succeeded; its failure was the
 application container's missing mount source before application compilation.
@@ -78,8 +101,9 @@ reuse requires identical identity/controller/prefix. This recovery repeated
 dependency compilation unnecessarily at the workflow-design level. Future
 reuse must separate dependency compatibility from container/runtime policy
 with explicit provenance and preserved absolute paths; old libraries must
-not simply be relabelled with a new prefix. The current CPU job continues;
-direct node inspection at 14:19 found eight GCC 14.3.0 Libint compiler workers.
+not simply be relabelled with a new prefix. This CPU recovery completed without
+another restart; direct node inspection at 14:19 found eight GCC 14.3.0 Libint
+compiler workers.
 
 8V100V0 job `1839913` completed `0:0` at 14:16:27 and produced a SIF. Final
 version, loader and required-feature checks passed; an independent SHA256

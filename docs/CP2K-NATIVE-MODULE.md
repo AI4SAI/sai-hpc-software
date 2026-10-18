@@ -99,15 +99,28 @@ partitions of the same build. It sources the selected partition's
 supports unload using the saved partition. No new module generator is needed.
 The existing generator also checks canonical paths and build consistency.
 
-For a manually maintained site selector, the same selection can be expressed
-as follows. Replace `EXACT_BUILD_DIRECTORY` with the directory from the accepted
-delivery identity; the production workflow's generated selector remains the
-preferred ready-to-install file.
+The four accepted 2026.2 deliveries share source `67b5da876dd6`, but the CPU
+HCOLL recovery changed its recipe and therefore its build directory. Keep
+both exact directory names: GPU partitions use
+`cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309`, while DSPRHBM uses
+`cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc`. Do not rename the CPU tree
+to match the GPU tree. A single public `cp2k/2026.2-auto` module can explicitly
+map the four partitions to these accepted prefixes; a generated selector for
+just one build identity does not cover both identities.
+
+For these accepted deliveries, the site selector can be written as follows.
+Install each complete `.native` payload at its recorded prefix before making
+this module public. This is a deployment example, not a claim that physical
+installation has been performed.
 
 ```tcl
 #%Module1.0
 module-whatis "CP2K 2026.2; native, selected by Slurm partition"
-set app_home /opt/apps/cp2k/EXACT_BUILD_DIRECTORY
+set app_home /opt/apps/cp2k
+set gpu_build cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309
+set cpu_build cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc
+set builds [dict create DSPRHBM $cpu_build 4V100 $gpu_build \
+    16V100 $gpu_build 8V100V0 $gpu_build]
 
 if {[module-info mode load]} {
     if {![info exists env(SLURM_JOB_PARTITION)]} {
@@ -122,12 +135,14 @@ if {[module-info mode load]} {
 if {$partition ni {DSPRHBM 4V100 16V100 8V100V0}} {
     error "Unsupported CP2K partition: $partition"
 }
-source [file join $app_home $partition share sai native-module.tcl]
+source [file join $app_home [dict get $builds $partition] $partition \
+    share sai native-module.tcl]
 ```
 
-The selection itself is simply `<base>/$SLURM_JOB_PARTITION`. The surrounding
-lines let `module show` work on the login node, reject unsupported partitions,
-and unload the previously selected variant even if Slurm variables change.
+The map selects the accepted build directory for `$SLURM_JOB_PARTITION`.
+The surrounding lines let `module show` work on the login node, reject
+unsupported partitions, and unload the previously selected variant even if
+Slurm variables change.
 Do not source `runtime-env.sh` in Tcl: that is a shell file, while the packaged
 `native-module.tcl` is the appropriate module interface.
 
