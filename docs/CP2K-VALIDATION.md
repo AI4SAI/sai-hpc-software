@@ -10,19 +10,29 @@ uses code commit `84027c9`, source v2026.2 / `67b5da876dd6` and recipe
 `4d454c7403097d4a5cae4c37452ef15aff32d753f0e9076533433dc939535782`.
 This is the recipe that includes private ELPA and the upstream source fixes;
 the older four SIFs below retain their previous recipe.
-At the submission audit (2026-10-18T03:42:17.150246+00:00):
+At the handoff audit (2026-10-18 12:39 Asia/Shanghai):
 
-| Partition | Dependency job | Actual state | New application SIF |
+| Partition | Dependency job / state | Application job / actual stage | New application SIF |
 |---|---|---|---|
-| 4V100 | 1839366 | RUNNING on 4v100n10 | not yet produced |
-| 16V100 | 1839368 | RUNNING on 16v100n72 | not yet produced |
-| 8V100V0 | 1839369 | RUNNING on 8v100v0n13 | not yet produced |
-| DSPRHBM | 1839362 | RUNNING on d9470n02 | not yet produced |
+| 4V100 | 1839366: COMPLETED `0:0`, 36:56, sealed | 1839644: RUNNING on 4v100n05, building support libraries | not yet produced |
+| 16V100 | 1839368: RUNNING on 16v100n72, Libint | not submitted yet | not yet produced |
+| 8V100V0 | 1839369: RUNNING on 8v100v0n13, Libint | not submitted yet | not yet produced |
+| DSPRHBM | 1839362: COMPLETED `0:0`, 52:17, sealed | 1839750: RUNNING on d9470n02, verifying/cloning dependency checkpoint | not yet produced |
 
-All four dependencies were submitted to their native partitions. The new
-application builds and formal science/export/publication gates are pending.
+DSPRHBM dependency job `1839362` left the queue after successful completion at
+12:31:27; its application job `1839750` started at 12:34:24. The node's clone
+process read another 240 MiB in a three-second sample at 12:40, confirming
+ongoing checkpoint I/O while the application log was still quiet. Direct node
+observations also showed multiple active GCC 14.3 compiler processes on
+16V100 and 8V100V0. Library-local percentage counters in the 4V100 log are not
+whole-application completion percentages.
+
+All four stages use their native partitions. The new application builds are
+in progress; formal science/export/publication gates remain pending.
 The build uses the canonical `/opt/apps/cp2k/<build>/<partition>` identity and
-home-backed build storage. [Frozen requests, scripts and accounting](evidence/cp2k-install-layout-20261018/native-elpa-formal-start.json).
+home-backed build storage.
+[Initial frozen requests and scripts](evidence/cp2k-install-layout-20261018/native-elpa-formal-start.json),
+[handoff accounting, checkpoint seals and node observations](evidence/cp2k-install-layout-20261018/native-elpa-application-handoff.json).
 
 ## Original four-target release artifacts
 

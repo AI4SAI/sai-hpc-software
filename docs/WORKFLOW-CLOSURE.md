@@ -108,11 +108,17 @@ original GitHub workflow `39078998459` ended with failure and is retained.
 [Artifact/diagnostic status](CP2K-VALIDATION.md),
 [installation repair and original identities](evidence/cp2k-install-layout-20261018/README.md).
 
-Fresh private-ELPA recipe workflow `39094062144` is now running four native
-dependency jobs: 4V100 `1839366`, 16V100 `1839368`, 8V100V0 `1839369`,
-and DSPRHBM `1839362`. These use the new identity
-`v2026.2-g67b5da876dd6-r4d454c740309`; none had a new application SIF at the
-submission audit. [Actual submissions and accounting](evidence/cp2k-install-layout-20261018/native-elpa-formal-start.json).
+Fresh private-ELPA recipe workflow `39094062144` uses identity
+`v2026.2-g67b5da876dd6-r4d454c740309`. At 12:39 Asia/Shanghai, 4V100 dependency
+`1839366` and DSPRHBM dependency `1839362` had completed `0:0` and sealed;
+their application jobs `1839644` and `1839750` were RUNNING on the corresponding
+native partitions. DSPRHBM's queue gap was the normal stage handoff from
+12:31:27 to 12:34:24. Its new job was verifying/cloning the dependency image,
+with another 240 MiB read in a three-second node sample. 16V100 `1839368` and
+8V100V0 `1839369` were still building Libint with multiple active compiler
+processes. No new application SIF existed at this audit.
+[Initial submissions](evidence/cp2k-install-layout-20261018/native-elpa-formal-start.json),
+[actual handoffs, seals and node observations](evidence/cp2k-install-layout-20261018/native-elpa-application-handoff.json).
 
 The current priority is one fully usable release delivery, starting on 16V100.
 The system ELPA library's generic allocation code was independently shown to

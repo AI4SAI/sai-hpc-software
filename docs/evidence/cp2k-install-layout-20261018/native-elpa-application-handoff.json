@@ -1,0 +1,331 @@
+{
+  "collected_at": "2026-10-18T04:39:16.684477+00:00",
+  "partitions": [
+    {
+      "partition": "4V100",
+      "run": "/home/stardust/sai-hpc-software/runs/39094062144-1-release-4v100-avx512-2026-10-18-67b5da876dd6",
+      "dependency_job": "1839366",
+      "application_job": "1839644",
+      "dependency_seal": {
+        "evidence_sha256": {
+          "image-driver.json": "24e8e2b9dd63dd8e99f5de73badb324019e813a2579bc1837fd9123d9f9404bf",
+          "install-success.json": "2cbe34ef494143ed2d045e7e1152b0991d19a6dd7512cb97621510000149ea14",
+          "libint-export-repair.json": "d70e63170aab0d0c4c80c8847ff44522a5cfdb4cd9a12416893ee5f667708f94",
+          "native-profile.json": "d2c471d24cfc445b86c6206d3e103f9a7f55310babf12ea02bb4ee88c3e13121",
+          "probe-success.json": "6fd1fbcd07fe126b56ebd229d8b1bd97b6ad97cd174d5ed58431eb5d902d324c",
+          "spack.lock": "36edf9f13989da73545de58ba9f3d5dce67f075ae34b8c9485a664c993088faf",
+          "spack.yaml": "b1f2c29f483eebd9676d0be26c6cd71e7078d430e14f887f48f6a49e227e0027",
+          "stage-identity.json": "3454577caba49950a913d7ce1bfeed707784ff02eca2bcabba6cbc9478eb3fbb",
+          "validated-graph.json": "2fb6124f5f6797de02fd9c7e2d2f4e579d03bb07e66f6aed497035bcd739aa32"
+        },
+        "identity": {
+          "build_id": "v2026.2-g67b5da876dd6-r4d454c740309",
+          "cpu_arch": "znver4",
+          "cuda_arch": "70",
+          "dependency_isa": "avx512",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/4V100",
+          "partition": "4V100",
+          "recipe_sha256": "4d454c7403097d4a5cae4c37452ef15aff32d753f0e9076533433dc939535782",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "v2026.2",
+          "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+          "source_version": "v2026.2",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "4v100-avx512",
+          "track": "release",
+          "version_label": "v2026.2"
+        },
+        "job_id": "1839366",
+        "overlay_sha256": "929efd71524b15163695094a1d0550a4918e33dddcd2a71211fcae6500e20754",
+        "purpose": "cp2k-final-prefix-dependencies-not-application-acceptance",
+        "schema": 1,
+        "script_sha256": "3228b521c0ad997a3b6d87711b3fcb4767b9803772daaac034eb1aa3cdfd2222"
+      },
+      "dependency_seal_sha256": "8cc72439bf861502157ea4ec6462444571f595389acc5f6d9295d75c90cd8b55",
+      "application_dependency_receipt_present": true,
+      "dependency_log": {
+        "path": "/home/stardust/sai-hpc-software/runs/39094062144-1-release-4v100-avx512-2026-10-18-67b5da876dd6-dependencies/results/slurm-1839366.log",
+        "bytes": 16914,
+        "mtime": "2026-10-18T04:16:28+00:00",
+        "tail": "[ ] suuplgr py-wheel@0.45.1 install (1s)\n[+] suuplgr py-wheel@0.45.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/4V100/dependencies/spack/linux-zen5/py-wheel-0.45.1-suuplgrwp3mhssjwp3kr4362nfht3mra (4s)\n[ ] mjgxmnw py-setuptools@83.0.0 staging (0s)\n[ ] nxkgtx7 cosma@2.7.0 staging (0s)\n[ ] mjgxmnw py-setuptools@83.0.0 install (0s)\n[ ] nxkgtx7 cosma@2.7.0 cmake (0s)\n[+] mjgxmnw py-setuptools@83.0.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/4V100/dependencies/spack/linux-zen5/py-setuptools-83.0.0-mjgxmnw3u3hatdbug7atjehhufpfjo4h (3s)\n[ ] lh7rnzg py-cython@3.2.4 staging (0s)\n[ ] 5rlaklb libxsmm@2.0.0 install (53s)\n[ ] nxkgtx7 cosma@2.7.0 build (4s)\n[ ] lh7rnzg py-cython@3.2.4 install (1s)\n[ ] veh6gg4 hdf5@1.14.6 build (54s)\n[+] 5rlaklb libxsmm@2.0.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk (57s)\n[ ] nxkgtx7 cosma@2.7.0 install (16s)\n[+] nxkgtx7 cosma@2.7.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/4V100/dependencies/spack/linux-zen5/cosma-2.7.0-nxkgtx7kzj7x2fhs74xieconnpza7qsf (18s)\n[ ] veh6gg4 hdf5@1.14.6 install (1m32s)\n[+] veh6gg4 hdf5@1.14.6 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/4V100/dependencies/spack/linux-zen5/hdf5-1.14.6-veh6gg4r2kjguzn47akx3jrp3kumhq6r (2m19s)\n[+] lh7rnzg py-cython@3.2.4 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/4V100/dependencies/spack/linux-zen5/py-cython-3.2.4-lh7rnzgrf3dzdlgxnsbqyub2o4fl2pvq (2m49s)\n[ ] tuc2skr plumed@2.10.1 staging (0s)\n[ ] tuc2skr plumed@2.10.1 autoreconf (16s)\n[ ] tuc2skr plumed@2.10.1 configure (18s)\n[ ] tuc2skr plumed@2.10.1 build (22s)\n[ ] tuc2skr plumed@2.10.1 install (3m52s)\n[+] tuc2skr plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/4V100/dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg (5m24s)\n[ ] vyzopke libint@2.6.0 install (33m17s)\n[+] vyzopke libint@2.6.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/4V100/dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz (34m00s)\nCP2K_FINAL_PREFIX_DEPENDENCIES_COMPLETE 2026-10-18T04:16:28Z\nCP2K_DEPENDENCY_STAGE_COMPLETE_NOT_APPLICATION_ACCEPTANCE"
+      },
+      "application_log": {
+        "path": "/home/stardust/sai-hpc-software/runs/39094062144-1-release-4v100-avx512-2026-10-18-67b5da876dd6/results/slurm-1839644.log",
+        "bytes": 156280,
+        "mtime": "2026-10-18T04:39:15+00:00",
+        "tail": "[ 82%] Building Fortran object src/CMakeFiles/dbcsr.dir/mm/dbcsr_mm_csr.F.o\n[ 82%] Building Fortran object src/CMakeFiles/dbcsr.dir/mm/dbcsr_mm_multrec.F.o\n[ 83%] Building Fortran object src/CMakeFiles/dbcsr.dir/block/dbcsr_block_access.F.o\n[ 83%] Building Fortran object src/CMakeFiles/dbcsr.dir/mm/dbcsr_mm_common.F.o\n[ 83%] Building Fortran object src/CMakeFiles/dbcsr.dir/ops/dbcsr_operations.F.o\n[ 85%] Building Fortran object src/CMakeFiles/dbcsr.dir/ops/dbcsr_test_methods.F.o\n[ 85%] Building Fortran object src/CMakeFiles/dbcsr.dir/mm/dbcsr_mm_3d.F.o\n[ 86%] Building Fortran object src/CMakeFiles/dbcsr.dir/tas/dbcsr_tas_base.F.o\n[ 86%] Building Fortran object src/CMakeFiles/dbcsr.dir/ops/dbcsr_transformations.F.o\n[ 88%] Building Fortran object src/CMakeFiles/dbcsr.dir/tas/dbcsr_tas_io.F.o\n[ 88%] Building Fortran object src/CMakeFiles/dbcsr.dir/tas/dbcsr_tas_reshape_ops.F.o\n[ 88%] Building Fortran object src/CMakeFiles/dbcsr.dir/ops/dbcsr_io.F.o\n[ 89%] Building Fortran object src/CMakeFiles/dbcsr.dir/ops/dbcsr_csr_conversions.F.o\n[ 91%] Building Fortran object src/CMakeFiles/dbcsr.dir/mm/dbcsr_mm_cannon.F.o\n[ 91%] Building Fortran object src/CMakeFiles/dbcsr.dir/tensors/dbcsr_tensor_index.F.o\n[ 92%] Building Fortran object src/CMakeFiles/dbcsr.dir/tensors/dbcsr_array_list_methods.F.o\n[ 92%] Building Fortran object src/CMakeFiles/dbcsr.dir/mm/dbcsr_mm.F.o\n[ 94%] Building Fortran object src/CMakeFiles/dbcsr.dir/core/dbcsr_lib.F.o\n[ 94%] Building Fortran object src/CMakeFiles/dbcsr.dir/mm/dbcsr_multiply_api.F.o\n[ 94%] Building Fortran object src/CMakeFiles/dbcsr.dir/ops/dbcsr_tests.F.o\n[ 94%] Building Fortran object src/CMakeFiles/dbcsr.dir/tas/dbcsr_tas_mm.F.o\n[ 94%] Building Fortran object src/CMakeFiles/dbcsr.dir/dbcsr_api.F.o\n[ 94%] Building Fortran object src/CMakeFiles/dbcsr.dir/tensors/dbcsr_tensor_types.F.o\n[ 94%] Building Fortran object src/CMakeFiles/dbcsr.dir/tas/dbcsr_tas_test.F.o\n[ 94%] Building Fortran object src/CMakeFiles/dbcsr.dir/tensors/dbcsr_tensor_block.F.o\n[ 95%] Building Fortran object src/CMakeFiles/dbcsr.dir/tensors/dbcsr_tensor_split.F.o\n[ 95%] Building Fortran object src/CMakeFiles/dbcsr.dir/tensors/dbcsr_tensor_io.F.o\n[ 95%] Building Fortran object src/CMakeFiles/dbcsr.dir/tensors/dbcsr_tensor_reshape.F.o"
+      },
+      "artifact_path_record_present": false,
+      "request.json_sha256": "79f7e53cdeb49c0bbd2c942100190f13c8a34179caf2ce1f6fcc53dc6a96cc4a",
+      "job.sbatch_sha256": "3340f4875982740f753757340e0d2d9f5c1a0d93274f4cae37623342b33b6cb3"
+    },
+    {
+      "partition": "16V100",
+      "run": "/home/stardust/sai-hpc-software/runs/39094062144-1-release-16v100-avx2-2026-10-18-67b5da876dd6",
+      "dependency_job": "1839368",
+      "application_job": null,
+      "dependency_seal": null,
+      "dependency_seal_sha256": null,
+      "application_dependency_receipt_present": false,
+      "dependency_log": {
+        "path": "/home/stardust/sai-hpc-software/runs/39094062144-1-release-16v100-avx2-2026-10-18-67b5da876dd6-dependencies/results/slurm-1839368.log",
+        "bytes": 16595,
+        "mtime": "2026-10-18T03:55:48+00:00",
+        "tail": "[ ] ubrai56 spla@1.6.1 install (50s)\n[+] ox6apfk libvori@220621 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/16V100/dependencies/spack/linux-zen3/libvori-220621-ox6apfkqq5mdwwkq5upxminesamus7al (52s)\n[+] ubrai56 spla@1.6.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/16V100/dependencies/spack/linux-zen3/spla-1.6.1-ubrai56trgmuevwm3thzgn6ky6nmgqkh (53s)\n[ ] xm55k4p py-wheel@0.45.1 staging (0s)\n[ ] buedfas py-setuptools@83.0.0 staging (0s)\n[ ] xm55k4p py-wheel@0.45.1 install (0s)\n[ ] 5mo4n2d cosma@2.7.0 staging (0s)\n[ ] buedfas py-setuptools@83.0.0 install (0s)\n[ ] oatczg6 hdf5@1.14.6 build (1m12s)\n[ ] 5mo4n2d cosma@2.7.0 cmake (1s)\n[+] xm55k4p py-wheel@0.45.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/16V100/dependencies/spack/linux-zen3/py-wheel-0.45.1-xm55k4psdktomrsu3a7gdbuvq677dott (4s)\n[ ] 62iurh6 libxsmm@2.0.0 install (1m17s)\n[+] buedfas py-setuptools@83.0.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/16V100/dependencies/spack/linux-zen3/py-setuptools-83.0.0-buedfas3ph7z6tpsdxm72ohhu5smrdcs (7s)\n[+] 62iurh6 libxsmm@2.0.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/16V100/dependencies/spack/linux-zen3/libxsmm-2.0.0-62iurh6z3ykiyux6lygqelq5c4aqwttv (1m19s)\n[ ] 5mo4n2d cosma@2.7.0 build (10s)\n[ ] 5mo4n2d cosma@2.7.0 install (25s)\n[+] 5mo4n2d cosma@2.7.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/16V100/dependencies/spack/linux-zen3/cosma-2.7.0-5mo4n2dvf2cbmcfhqswalnp4rvuzh54o (26s)\n[ ] g3wuvrh py-cython@3.2.4 staging (0s)\n[ ] g3wuvrh py-cython@3.2.4 install (4s)\n[ ] oatczg6 hdf5@1.14.6 install (2m04s)\n[+] oatczg6 hdf5@1.14.6 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/16V100/dependencies/spack/linux-zen3/hdf5-1.14.6-oatczg6z5jwpt7tsfkayczc5vkcqm7oi (2m31s)\n[+] g3wuvrh py-cython@3.2.4 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/16V100/dependencies/spack/linux-zen3/py-cython-3.2.4-g3wuvrhq2zrntkba4z5kghfwlwecx4ce (2m53s)\n[ ] np37xjh plumed@2.10.1 staging (1m10s)\n[ ] np37xjh plumed@2.10.1 autoreconf (1m39s)\n[ ] np37xjh plumed@2.10.1 configure (1m40s)\n[ ] np37xjh plumed@2.10.1 build (1m50s)\n[ ] np37xjh plumed@2.10.1 install (7m24s)\n[+] np37xjh plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/16V100/dependencies/spack/linux-zen3/plumed-2.10.1-np37xjhlxj3qmkfebxzpsypu734ersmo (9m41s)"
+      },
+      "application_log": null,
+      "artifact_path_record_present": false
+    },
+    {
+      "partition": "8V100V0",
+      "run": "/home/stardust/sai-hpc-software/runs/39094062144-1-release-8v100v0-avx512-2026-10-18-67b5da876dd6",
+      "dependency_job": "1839369",
+      "application_job": null,
+      "dependency_seal": null,
+      "dependency_seal_sha256": null,
+      "application_dependency_receipt_present": false,
+      "dependency_log": {
+        "path": "/home/stardust/sai-hpc-software/runs/39094062144-1-release-8v100v0-avx512-2026-10-18-67b5da876dd6-dependencies/results/slurm-1839369.log",
+        "bytes": 17108,
+        "mtime": "2026-10-18T03:57:22+00:00",
+        "tail": "[+] z2yhipm spla@1.6.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/8V100V0/dependencies/spack/linux-skylake_avx512/spla-1.6.1-z2yhipmv5ulbdeesmn7aygasjeatoju5 (44s)\n[ ] znkbigf costa@2.3.3 install (46s)\n[+] znkbigf costa@2.3.3 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/8V100V0/dependencies/spack/linux-skylake_avx512/costa-2.3.3-znkbigfp5cbbwu5zn55ptti2nhiynsr3 (49s)\n[ ] nbrjup5 py-wheel@0.45.1 staging (0s)\n[ ] ojr7tp2 py-setuptools@83.0.0 staging (0s)\n[ ] qx7o5v3 cosma@2.7.0 staging (0s)\n[ ] nbrjup5 py-wheel@0.45.1 install (0s)\n[ ] ojr7tp2 py-setuptools@83.0.0 install (0s)\n[ ] qx7o5v3 cosma@2.7.0 cmake (1s)\n[+] nbrjup5 py-wheel@0.45.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/8V100V0/dependencies/spack/linux-skylake_avx512/py-wheel-0.45.1-nbrjup5mqgmxanakbw6xczkzkgpybg7p (3s)\n[ ] irxk7rp libxsmm@2.0.0 install (1m06s)\n[+] ojr7tp2 py-setuptools@83.0.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/8V100V0/dependencies/spack/linux-skylake_avx512/py-setuptools-83.0.0-ojr7tp2wx3exxd255kplni7kpiwc7dkw (6s)\n[ ] xlhkvaq py-cython@3.2.4 staging (1s)\n[+] irxk7rp libxsmm@2.0.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/8V100V0/dependencies/spack/linux-skylake_avx512/libxsmm-2.0.0-irxk7rpz4roscuefcqo3rddeycnj25b6 (1m11s)\n[ ] xlhkvaq py-cython@3.2.4 install (3s)\n[ ] qx7o5v3 cosma@2.7.0 build (11s)\n[ ] qx7o5v3 cosma@2.7.0 install (23s)\n[+] qx7o5v3 cosma@2.7.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/8V100V0/dependencies/spack/linux-skylake_avx512/cosma-2.7.0-qx7o5v367h6uydkiiypuva4ly7u3pysc (26s)\n[ ] c762spr hdf5@1.14.6 build (1m32s)\n[ ] c762spr hdf5@1.14.6 install (2m16s)\n[+] c762spr hdf5@1.14.6 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/8V100V0/dependencies/spack/linux-skylake_avx512/hdf5-1.14.6-c762spr46tnwvmbfpx6o2723tufh4jlt (2m50s)\n[+] xlhkvaq py-cython@3.2.4 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/8V100V0/dependencies/spack/linux-skylake_avx512/py-cython-3.2.4-xlhkvaqhtzwp47bq5j36nggv6ndnxx3u (4m10s)\n[ ] e3rybix plumed@2.10.1 staging (1s)\n[ ] e3rybix plumed@2.10.1 autoreconf (23s)\n[ ] e3rybix plumed@2.10.1 configure (25s)\n[ ] e3rybix plumed@2.10.1 build (37s)\n[ ] e3rybix plumed@2.10.1 install (4m58s)\n[+] e3rybix plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/8V100V0/dependencies/spack/linux-skylake_avx512/plumed-2.10.1-e3rybix5hx3xnaywsnjne37of7mtn4sq (6m30s)"
+      },
+      "application_log": null,
+      "artifact_path_record_present": false
+    },
+    {
+      "partition": "DSPRHBM",
+      "run": "/home/stardust/sai-hpc-software/runs/39094062144-1-release-dsprhbm-2026-10-18-67b5da876dd6",
+      "dependency_job": "1839362",
+      "application_job": "1839750",
+      "dependency_seal": {
+        "evidence_sha256": {
+          "image-driver.json": "24e8e2b9dd63dd8e99f5de73badb324019e813a2579bc1837fd9123d9f9404bf",
+          "install-success.json": "8d8253996ffe758ba4ad6972deeac9b26ed76a1ba98cc6a8929b1ca9b1f404cb",
+          "libint-export-repair.json": "80ac789f7215f1aad4258d4ca70b5b41d2353ff2d04b8d12a55f067d4a46a44d",
+          "native-profile.json": "8499ef928082a6255e5840f21dcd744780f736c50f8cf19e296b7ee7c70a5fea",
+          "probe-success.json": "d6d5ecaa73a5f6bd6a530027e740331315b6c667e18869f82dcc73d36f898d68",
+          "spack.lock": "1d92ca3fbbc0b577a0e1eae2449647389959d6b22f548140fa6001f77f4100a5",
+          "spack.yaml": "3a49187fcc4329074d9027779ffbe9e97da182a05c97cbb1e899bdb52ffa41db",
+          "stage-identity.json": "7ac955343b1eb57f636aa917c5cd4ea464c5082f18adb77dcc294eb749b25f95",
+          "validated-graph.json": "4991edbe2f85412ac6c43495744f98d977ef84527fde00ade1c395b11f636b2e"
+        },
+        "identity": {
+          "build_id": "v2026.2-g67b5da876dd6-r4d454c740309",
+          "cpu_arch": "x86-64-v4",
+          "cuda_arch": "",
+          "dependency_isa": "avx512",
+          "gpus": 0,
+          "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/DSPRHBM",
+          "partition": "DSPRHBM",
+          "recipe_sha256": "4d454c7403097d4a5cae4c37452ef15aff32d753f0e9076533433dc939535782",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "v2026.2",
+          "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+          "source_version": "v2026.2",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "dsprhbm",
+          "track": "release",
+          "version_label": "v2026.2"
+        },
+        "job_id": "1839362",
+        "overlay_sha256": "385936043328e49a285568314005346d1df417b9a595a3ffc52981063850bbfd",
+        "purpose": "cp2k-final-prefix-dependencies-not-application-acceptance",
+        "schema": 1,
+        "script_sha256": "b95b808b2b933d78b0d56ce58b2a757d96b3901f9e4db21b0055bbdde33ec7ab"
+      },
+      "dependency_seal_sha256": "ba7e5cde7bea48a78450aa5bf8381dc35f7b1356e9e14c97ad8bdf4bbb0b7d01",
+      "application_dependency_receipt_present": false,
+      "dependency_log": {
+        "path": "/home/stardust/sai-hpc-software/runs/39094062144-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies/results/slurm-1839362.log",
+        "bytes": 14890,
+        "mtime": "2026-10-18T04:31:27+00:00",
+        "tail": "[ ] m4bapxa py-setuptools@83.0.0 staging (0s)\n[ ] goq7bml cosma@2.7.0 staging (0s)\n[ ] zcbxz64 py-wheel@0.45.1 install (0s)\n[ ] m4bapxa py-setuptools@83.0.0 install (0s)\n[ ] goq7bml cosma@2.7.0 cmake (1s)\n[+] zcbxz64 py-wheel@0.45.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/DSPRHBM/dependencies/spack/linux-sapphirerapids/py-wheel-0.45.1-zcbxz64qkyaygudpa5zwxzuddbk5aecg (3s)\n[ ] l5muhjn libxsmm@2.0.0 install (58s)\n[+] m4bapxa py-setuptools@83.0.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/DSPRHBM/dependencies/spack/linux-sapphirerapids/py-setuptools-83.0.0-m4bapxahgcxscgbsaf6omxhczg7twb2n (6s)\n[ ] 4f4yyk5 py-cython@3.2.4 staging (0s)\n[+] l5muhjn libxsmm@2.0.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/DSPRHBM/dependencies/spack/linux-sapphirerapids/libxsmm-2.0.0-l5muhjnzczl5peiem2fwiixbqjnzm33l (1m03s)\n[ ] goq7bml cosma@2.7.0 build (8s)\n[ ] 4f4yyk5 py-cython@3.2.4 install (3s)\n[ ] goq7bml cosma@2.7.0 install (17s)\n[+] goq7bml cosma@2.7.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/DSPRHBM/dependencies/spack/linux-sapphirerapids/cosma-2.7.0-goq7bmlsruxt5lhhemq4ytm366mnfw5l (18s)\n[ ] nzurbzn hdf5@1.14.6 build (1m21s)\n[ ] nzurbzn hdf5@1.14.6 install (2m05s)\n[+] nzurbzn hdf5@1.14.6 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/DSPRHBM/dependencies/spack/linux-sapphirerapids/hdf5-1.14.6-nzurbzn7nvb3lu6p33d5wu7aq5ezqydb (3m23s)\n[+] 4f4yyk5 py-cython@3.2.4 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/DSPRHBM/dependencies/spack/linux-sapphirerapids/py-cython-3.2.4-4f4yyk5mmtxyuwkiag2wgpbtvn4ea5xp (3m34s)\n[ ] qwwau7j plumed@2.10.1 staging (1s)\n[ ] qwwau7j plumed@2.10.1 autoreconf (24s)\n[ ] qwwau7j plumed@2.10.1 configure (26s)\n[ ] qwwau7j plumed@2.10.1 build (35s)\n[ ] qwwau7j plumed@2.10.1 install (4m32s)\n[+] qwwau7j plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/DSPRHBM/dependencies/spack/linux-sapphirerapids/plumed-2.10.1-qwwau7jv5yf5i3ok3c24ysm4ibpxpllg (6m52s)\n[ ] 4dtgfsz libint@2.6.0 install (48m14s)\n[+] 4dtgfsz libint@2.6.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/DSPRHBM/dependencies/spack/linux-sapphirerapids/libint-2.6.0-4dtgfsz4ycma7uwhbp5mbe6g3aqsqwmb (49m30s)\nCP2K_FINAL_PREFIX_DEPENDENCIES_COMPLETE 2026-10-18T04:31:26Z\nCP2K_DEPENDENCY_STAGE_COMPLETE_NOT_APPLICATION_ACCEPTANCE"
+      },
+      "application_log": {
+        "path": "/home/stardust/sai-hpc-software/runs/39094062144-1-release-dsprhbm-2026-10-18-67b5da876dd6/results/slurm-1839750.log",
+        "bytes": 96,
+        "mtime": "2026-10-18T04:34:27+00:00",
+        "tail": "BUILD_CAPACITY_POLICY filesystem-enforced 39094062144-1-release-dsprhbm-2026-10-18-67b5da876dd6"
+      },
+      "artifact_path_record_present": false,
+      "request.json_sha256": "3a999bf92b1076288bb4eab048eb608fa186164c79e7f72abe2cb8d7286d4af2",
+      "job.sbatch_sha256": "2359de7d55a0be87cc3eb4d30f0fd6de65c13797402ff3e4ea139fde3c0fcec8"
+    }
+  ],
+  "accounting": {
+    "argv": [
+      "sacct",
+      "-X",
+      "-j",
+      "1839366,1839644,1839368,1839369,1839362,1839750",
+      "--format=JobIDRaw,Partition,State,ExitCode,Elapsed,NodeList,Start,End,AllocTRES",
+      "-n",
+      "-P"
+    ],
+    "returncode": 0,
+    "stdout": "1839362|DSPRHBM|COMPLETED|0:0|00:52:17|d9470n02|2026-10-18T11:39:10|2026-10-18T12:31:27|billing=194,cpu=8,mem=28G,node=1\n1839366|4V100|COMPLETED|0:0|00:36:56|4v100n10|2026-10-18T11:39:32|2026-10-18T12:16:28|billing=194,cpu=8,gres/gpu=1,mem=22G,node=1\n1839368|16V100|RUNNING|0:0|00:59:28|16v100n72|2026-10-18T11:39:48|Unknown|billing=150,cpu=8,gres/gpu=1,mem=15G,node=1\n1839369|8V100V0|RUNNING|0:0|00:59:21|8v100v0n13|2026-10-18T11:39:55|Unknown|billing=360,cpu=12,gres/gpu=2,mem=92G,node=1\n1839644|4V100|RUNNING|0:0|00:20:04|4v100n05|2026-10-18T12:19:12|Unknown|billing=194,cpu=8,gres/gpu=1,mem=22G,node=1\n1839750|DSPRHBM|RUNNING|0:0|00:04:52|d9470n02|2026-10-18T12:34:24|Unknown|billing=194,cpu=8,mem=28G,node=1\n",
+    "stderr": ""
+  },
+  "queue": {
+    "argv": [
+      "squeue",
+      "-u",
+      "stardust",
+      "-o",
+      "%.18i %.12P %.48j %.10T %.12M %.28R"
+    ],
+    "returncode": 0,
+    "stdout": "             JOBID    PARTITION                                             NAME      STATE         TIME             NODELIST(REASON)\n           1839368       16V100           sai-cp2k-deps-16v100-avx2-4d454c740309    RUNNING        59:28                    16v100n72\n           1839644        4V100         sai-cp2k-build-4v100-avx512-4d454c740309    RUNNING        20:04                     4v100n05\n           1839369      8V100V0        sai-cp2k-deps-8v100v0-avx512-4d454c740309    RUNNING        59:21                   8v100v0n13\n           1839750      DSPRHBM              sai-cp2k-build-dsprhbm-4d454c740309    RUNNING         4:52                     d9470n02\n",
+    "stderr": ""
+  },
+  "nodes": {
+    "d9470n02": {
+      "argv": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=10",
+        "d9470n02",
+        "ps -u stardust -o pid,ppid,etimes,pcpu,stat,comm --sort=-pcpu | head -18"
+      ],
+      "returncode": 0,
+      "stdout": "    PID    PPID ELAPSED %CPU STAT COMMAND\n3160034 3160029     295  4.2 D    python3\n3160028 3159988     295  0.0 S    python3\n3159988 3159979     297  0.0 S    slurm_script\n3160029 3160028     295  0.0 S    bash\n3160191 3160180       0  0.0 S    sshd\n3160192 3160191       0  0.0 Ss   bash\n3160193 3160192       0  0.0 R    ps\n3160194 3160192       0  0.0 S    head\n",
+      "stderr": ""
+    },
+    "16v100n72": {
+      "argv": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=10",
+        "16v100n72",
+        "ps -u stardust -o pid,ppid,etimes,pcpu,stat,comm --sort=-pcpu | head -18"
+      ],
+      "returncode": 0,
+      "stdout": "    PID    PPID ELAPSED %CPU STAT COMMAND\n3688665 3688664       0  104 R    cc1plus\n3688653 3688652       1  100 R    cc1plus\n3688650 3688649       1  100 R    cc1plus\n3688656 3688655       1  100 R    cc1plus\n3688674 3688673       0  100 R    cc1plus\n3688609 3688607       1 95.7 R    cc1plus\n3688660 3688659       0 90.9 R    cc1plus\n3414883 3414821    3536 42.6 Sl   fuse2fs\n3415146 3414821    3536  2.9 S    fuse-overlayfs\n3688621 3460548       1  1.2 S    bash\n3688565 3460548       1  1.0 S    bash\n3688553 3460548       2  0.9 S    bash\n3688512 3460548       2  0.7 S    bash\n3688480 3460548       2  0.7 S    bash\n3688451 3460548       2  0.6 S    bash\n3688414 3460548       3  0.5 S    bash\n3687863 3460548      11  0.1 S    bash\n",
+      "stderr": ""
+    },
+    "8v100v0n13": {
+      "argv": [
+        "ssh",
+        "-o",
+        "BatchMode=yes",
+        "-o",
+        "ConnectTimeout=10",
+        "8v100v0n13",
+        "ps -u stardust -o pid,ppid,etimes,pcpu,stat,comm --sort=-pcpu | head -18"
+      ],
+      "returncode": 0,
+      "stdout": "    PID    PPID ELAPSED %CPU STAT COMMAND\n 355278  355277       0  103 R    cc1plus\n 354519  354518       9 99.2 R    cc1plus\n 353138  353137      26 99.2 R    cc1plus\n 355272  355271       0 98.2 R    cc1plus\n 355191  355188       1 95.8 R    cc1plus\n 355213  355204       1 96.4 R    cc1plus\n 355234  355233       1 93.2 R    cc1plus\n 355166  355148       1 92.3 R    cc1plus\n 355190  355187       1 90.9 R    cc1plus\n 355181  355177       1 87.2 R    cc1plus\n 355199  355196       1 85.3 R    cc1plus\n 355189  355183       1 81.9 R    cc1plus\n  90016   89950    3317 49.3 Sl   fuse2fs\n  90117   89950    3317  3.9 S    fuse-overlayfs\n 355238  157268       0  2.7 S    bash\n 355203  157268       1  2.6 S    bash\n 355137  157268       1  1.8 S    bash\n",
+      "stderr": ""
+    }
+  },
+  "workflow_url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39094062144",
+  "code_commit": "84027c97fe5bef6cade03406f27ee3de312b289c",
+  "build_id": "v2026.2-g67b5da876dd6-r4d454c740309",
+  "scope": "dependency-to-application handoff and live process observation; not application or scientific acceptance",
+  "github_jobs": [
+    {
+      "id": 117576684951,
+      "name": "validate",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-18T03:33:49Z",
+      "completed_at": "2026-10-18T03:34:50Z"
+    },
+    {
+      "id": 117576866811,
+      "name": "resolve-source",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-18T03:34:52Z",
+      "completed_at": "2026-10-18T03:34:58Z"
+    },
+    {
+      "id": 117576892087,
+      "name": "build (cp2k, release, cp2k/cp2k, latest-release, resolved, v2026.2, 67b5da876dd6a76b8b021d5a04d1c... / dependencies",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-18T03:35:01Z",
+      "completed_at": "2026-10-18T04:18:33Z"
+    },
+    {
+      "id": 117576892107,
+      "name": "build-cpu (cp2k, release, cp2k/cp2k, latest-release, resolved, v2026.2, 67b5da876dd6a76b8b021d5a0... / dependencies",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-10-18T03:35:01Z",
+      "completed_at": "2026-10-18T04:33:44Z"
+    },
+    {
+      "id": 117576892117,
+      "name": "build (cp2k, release, cp2k/cp2k, latest-release, resolved, v2026.2, 67b5da876dd6a76b8b021d5a04d1c... / dependencies",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-18T03:35:01Z",
+      "completed_at": null
+    },
+    {
+      "id": 117576892144,
+      "name": "build (cp2k, release, cp2k/cp2k, latest-release, resolved, v2026.2, 67b5da876dd6a76b8b021d5a04d1c... / dependencies",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-18T03:35:01Z",
+      "completed_at": null
+    },
+    {
+      "id": 117584363839,
+      "name": "build (cp2k, release, cp2k/cp2k, latest-release, resolved, v2026.2, 67b5da876dd6a76b8b021d5a04d1c... / build",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-18T04:18:36Z",
+      "completed_at": null
+    },
+    {
+      "id": 117586936052,
+      "name": "build-cpu (cp2k, release, cp2k/cp2k, latest-release, resolved, v2026.2, 67b5da876dd6a76b8b021d5a0... / build",
+      "status": "in_progress",
+      "conclusion": null,
+      "started_at": "2026-10-18T04:33:47Z",
+      "completed_at": null
+    }
+  ],
+  "dsprhbm_clone_io_samples": [
+    {
+      "at": "2026-10-18T04:40:06.379021+00:00",
+      "pid": 3160034,
+      "io": "rchar: 18423527286\nwchar: 321\nsyscr: 4630\nsyscw: 3\nread_bytes: 575565824\nwrite_bytes: 0\ncancelled_write_bytes: 0\n",
+      "wchan": "cl_sync_io_wait",
+      "overlay_fds": [
+        {
+          "fd": "4",
+          "target": "/home/stardust/sai-hpc-software/runs/39094062144-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies/work.ext3",
+          "info": "pos:\t0\nflags:\t02500000\nmnt_id:\t100\nino:\t144115786418504308\nlock:\t1: OFDLCK ADVISORY  READ -1 f17:fc396:144115786418504308 0 EOF\n"
+        }
+      ]
+    },
+    {
+      "at": "2026-10-18T04:40:09.379442+00:00",
+      "pid": 3160034,
+      "io": "rchar: 18675185526\nwchar: 321\nsyscr: 4660\nsyscw: 3\nread_bytes: 575565824\nwrite_bytes: 0\ncancelled_write_bytes: 0\n",
+      "wchan": "cl_sync_io_wait",
+      "overlay_fds": [
+        {
+          "fd": "4",
+          "target": "/home/stardust/sai-hpc-software/runs/39094062144-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies/work.ext3",
+          "info": "pos:\t0\nflags:\t02500000\nmnt_id:\t100\nino:\t144115786418504308\nlock:\t1: OFDLCK ADVISORY  READ -1 f17:fc396:144115786418504308 0 EOF\n"
+        }
+      ]
+    }
+  ]
+}
