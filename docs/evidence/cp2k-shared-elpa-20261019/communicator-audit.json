@@ -1,0 +1,44 @@
+{
+  "job_id": "1862456",
+  "state": "COMPLETED",
+  "exit_code": "0:0",
+  "elapsed": "00:00:06",
+  "node": "16v100n01",
+  "run": "/home/stardust/sai-hpc-software/runs/elpa-communicator-audit-20261019-16v100",
+  "checks": {
+    "0": {
+      "numeric_passes": 16,
+      "created": 0,
+      "explicitly_freed": 0,
+      "live_at_exit": 0
+    },
+    "1": {
+      "numeric_passes": 16,
+      "created": 8,
+      "explicitly_freed": 0,
+      "live_at_exit": 8
+    }
+  },
+  "library": "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx2/nvidia/lib/libelpa_openmp.so.19.5.1",
+  "library_sha256": "eb4474ed5bddd66740010867e2898550b93a0feec4ecf70df698bebf354d5ebf",
+  "source_archive_sha256": "a379f27f4dbd27b2ee45017afec656d064301e97150c874649bdfd64957b75ed",
+  "source_file_sha256": "d8b569137da84ad080c3646a57537290a315fb407adb3131558fee66632798a7",
+  "upstream_fix": "https://github.com/marekandreas/elpa/pull/85",
+  "upstream_commit": "20be982db53a671b9aac866a726aebe153a766e6",
+  "patched_source_sha256": "af18210afa4781c58144941d1f5fef6b4807afdf4eac57bc5e6b7fd6463c9741",
+  "patch_applied_to_shared_install": false,
+  "files_sha256": {
+    "job.id": "2aaaa494b2f0d6b6f44f88d034b1cdbbb78e846c1444a80e1c46ae0a5c6e9c2f",
+    "slurm-1862456.log": "2d047ba7704ff1c8ce31d3f2159efcba90c0693dac55672ede99a5460289204a",
+    "work/gpu-0.log": "953899473969c68f8e9008d0492b34fa9a125a4bfee930dd3266e0eb84ca1413",
+    "work/gpu-1.log": "8e8d5f870330882d5567a600ade95ca8b4d288108e3156467814210d0cc489b2",
+    "work/consumer-ldd.txt": "47fc7859f02cc9913887e2a925aa5329e15edafab61fd65d071bb05ba0e912b8",
+    "check_for_gpu_template.F90": "d8b569137da84ad080c3646a57537290a315fb407adb3131558fee66632798a7",
+    "upstream-communicator-fix.patch": "fd4cca359af5bb559b2dc2ab29bd272919c8fd2f7873b2072c65f9dd26536bac",
+    "control/comm-trace.c": "9ce354c8e01568645a302fd65917b3060281ece6fe7f25a93d5145b839a9ee6a",
+    "control/environment.sh": "68bfc2f69c1df2f9b35fdf9d273dbf35e377c44b490ff19ebc6c41ac7dad58d0",
+    "control/inside.sh": "0163846fc46a4977709acc3bd9e2f5c4d6d4bfd8c7575b9b2fc4d2e565dd60fc",
+    "control/probe.sbatch": "2740bb5bd82cd9a108d0c752db39aa35adf613fdb3634668daa2029b9e4c2f4f",
+    "control/smoke.c": "ebfa8c65341b471021521cf321eb4de5c0988f6d7803f5cb4b318397aab44472"
+  }
+}

@@ -1,4 +1,4 @@
-# Workflow closure — 2026-10-18
+# Workflow closure — 2026-10-19
 
 The code now connects build, scientific/performance acceptance, native export
 readback and publication. CP2K 2026.2 on all four partitions (4V100, 16V100,
@@ -38,6 +38,19 @@ scientific references and inputs still match their pinned hashes.
   The previously installed four-partition CP2K remains the accepted release
   until new candidate science completes. [Preflight evidence](evidence/cp2k-shared-elpa-20261019/preflight.json)
   and [issue #9 tuning protocol](CP2K-V100-TUNING.md#shared-elpa-rebuild-and-issue-9).
+  Release workflow [39262701906](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39262701906)
+  passed 818 Linux tests (816 passed, two skipped), resolved v2026.2 and started
+  fresh dependencies on 16V100 `1862478`, 4V100 `1862509`, 8V100V0 `1862503`
+  and DSPRHBM `1862508`. Recipe `46ac9460660f` installs at a new canonical
+  prefix. [Frozen submissions and observed progress](evidence/cp2k-shared-elpa-20261019/build-start.json).
+  A separate GPU object-lifecycle audit `1862456` found the accepted shared
+  ELPA lacks upstream PR #85's temporary-communicator free: eight objects
+  left eight tracked communicators, despite passing all numerical checks.
+  The integration build continues; long-running GPU qualification requires
+  the [archived repair and fresh dependency validation](ELPA.md#gpu-求解器生命周期限制).
+  The old development job `1861248`, frozen at controller `a7dd890`, failed
+  CMake because that recipe omitted wignernj. The current recipe contains
+  the pinned wignernj build; development still has no newly accepted artifact.
 
 - Daily and child workflows await reusable jobs and reject unexpected skipped,
   failed or cancelled deliveries. A recorded unchanged release is an intentional

@@ -1,5 +1,9 @@
 # ELPA 2026.02.001: AVX2 / AVX512 容器构建与管理员部署
 
+当前统一入口和复现流程见 [ELPA 文档](../../docs/ELPA.md)。10 月 19 日后续审计确认
+共享 GPU 版仍缺少上游 MPI communicator 回收修复；数值验收通过，但长时间反复
+GPU 对角化需修复后重新验收。详见该文档末尾的复现记录和补丁。
+
 2026-10-18：两套 SIF 均已通过 48 次数值求解及 C/Fortran、module 检查。
 AVX2 构建任务为 `1846755`，AVX512 为 `1846756`，均 `COMPLETED 0:0`。
 管理员部署包位于 `/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001`，

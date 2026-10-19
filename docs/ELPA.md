@@ -4,6 +4,9 @@
 `stardust` 已在四个分区完成物理环境验收。源码、补丁、构建/部署脚本、安装文件清单
 和原始验收日志均在本仓库；大体积源码压缩包、SIF 和构建缓存保留在集群家目录。
 
+后续 GPU 生命周期审计发现此安装仍缺少上游 MPI communicator 回收修复。
+下述数值验收成立，但长时间反复 GPU 对角化需要先修复并复验，见文末限制。
+
 ## 分区选择和固定路径
 
 | 分区 | ISA / 后端 | 容器内和物理机上的相同安装前缀 |
@@ -111,6 +114,8 @@ pkg-config、补丁和构建参数的哈希，来源与上述发布清单逐项�
 最大误差分别为 `1.33e-15`、`8.88e-16`。
 [原始日志和哈希](evidence/cp2k-shared-elpa-20261019/preflight.json) 只证明这个接口兼容性，
 新 CP2K 应用的科学验收仍须随完整构建执行。
+另有 `1862389`、`1862390` 验证正式构建使用的 fakeroot/隔离网络和 CMake 查找，
+分别在 16V100、DSPRHBM 通过；[完整证据](evidence/cp2k-shared-elpa-20261019/cmake-preflight.json)。
 
 新配方需要新的 recipe 身份、容器内/外相同的 `/opt/apps/cp2k/<构建名>/<分区>`
 前缀，以及独立科学验收。手动触发四分区 release 构建：
@@ -125,3 +130,20 @@ release 与 development 各自解析源码并保持独立记录；`tracks=develo
 使用共享 ELPA 的候选仍须通过 PBE OT、普通对角化、强制 ELPA、DFT-D4、TBLITE、
 较大水体系及单/双节点测试。issue #9 的 direct generalized diagonalization 是另行测量的
 运行时选项，详见 [V100 调优记录](CP2K-V100-TUNING.md#shared-elpa-rebuild-and-issue-9)。
+
+## GPU 求解器生命周期限制
+
+作业 `1862456` 在 16V100 对同一物理 GPU 库分别执行 CPU/GPU 求解。
+每个进程创建和销毁 8 个 ELPA 对象，每对象求解两次，32 次数值结果全部通过。
+跟踪 ELPA 调用的 Fortran `MPI_Comm_split_type` / `MPI_Comm_free` 后，CPU 路径
+未创建这类临时 communicator；GPU 路径创建 8 个、显式释放 0 个，进程退出前仍有 8 个。
+
+源码 `src/GPU/check_for_gpu_template.F90` 创建局部 communicator 读取每节点 rank 数，
+随后没有释放。CP2K 2026.2 在每次 ELPA 对角化中创建/销毁对象，长时间反复调用
+会积累这种资源。[上游 PR #85](https://github.com/marekandreas/elpa/pull/85)
+已提供回收修复；旧 CP2K 私有 ELPA 配方包含该修复，此次沿用站点方案的共享库未包含。
+
+[复现代码、原始日志及适用于 2026.02.001 的补丁](evidence/cp2k-shared-elpa-20261019/communicator-audit.json)
+已存档。补丁尚未应用到管理员安装的共享库。本轮 CP2K 编译用于验证共享依赖集成；
+将新候选用于长时间 GPU 对角化前，应构建修复后的共享 ELPA、复验对象生命周期，
+并以新文件哈希更新 CP2K 依赖锁和候选身份。不要原地替换库后继续使用旧验收记录。

@@ -1,0 +1,59 @@
+{
+  "purpose": "GCC14 shared ELPA consumer under fakeroot/network isolation and CMake lookup; not CP2K acceptance",
+  "partitions": [
+    {
+      "target": "16v100-avx2",
+      "partition": "16V100",
+      "job_id": "1862389",
+      "run": "/home/stardust/sai-hpc-software/runs/cp2k-site-elpa-cmake-fakeroot-20261019-16v100-avx2",
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "elapsed": "00:00:04",
+      "node": "16v100n09",
+      "files_sha256": {
+        "16v100-avx2/slurm-1862389.log": "7248f87dddb0e2d3cc9bbf8b09102c7ecc0d7b6afd603629d7b022a0ae1b03b4",
+        "16v100-avx2/job.id": "36b2e45f106b6de70d61424d6cdc94e938228e2b6f4830ff590937338480f780",
+        "16v100-avx2/work/consumer.log": "17addb37fb199bcdeec363d4df8a2f8308c080735cd12882f28487a396eaa340",
+        "16v100-avx2/work/consumer-ldd.txt": "6335d6d6673e89d92bfdf862f6cfbdc87bb6f3f8e74064d419f4ced35abbfef8",
+        "16v100-avx2/work/compiler.txt": "dc4217d44172a237a08667d59d6bf4213c05d1ad7ce21d25c11f0d5cd3a1ab3e",
+        "16v100-avx2/work/cmake-consumer.log": "516b17be393986a82898698ec56aaf06a02bbaadd197753bd4c1822e70b9ef28",
+        "16v100-avx2/work/CMakeCache.txt": "582cbac4b53727e863f0609a6afd33d995d3d57b14abc156c534322fa7ed8383",
+        "16v100-avx2/work/candidate/share/sai/site-elpa.json": "3218e64f23fc3a4125f5e7b7fc88acb396e6a126e40f16e45afb817ac0339c27",
+        "16v100-avx2/control/CMakeLists.txt": "55fcaa9fd25c451fbb7dc7eefc43dfaafb89b4c3b42ddd0728710f3b9194a2f5",
+        "16v100-avx2/control/cp2k_elpa_abi.f90": "95c2ef65486385219c646424c2d8724574b8dabaa0fc4ce89c2e78bae43478a5",
+        "16v100-avx2/control/cp2k_feature_contract.py": "2d2ea42d9e74d5ecbe8278bebd8b23c81d1bcfe86c35b0d303cf3f7b09e93917",
+        "16v100-avx2/control/cp2k_site_elpa.json": "d69861199a9f1a525582590b963155253034b185eb64f4ad400771ad45e330dd",
+        "16v100-avx2/control/environment.sh": "68bfc2f69c1df2f9b35fdf9d273dbf35e377c44b490ff19ebc6c41ac7dad58d0",
+        "16v100-avx2/control/inside.sh": "a398282d1a554a18194fac1109230dd5546540ed9e290a161546697541021f25",
+        "16v100-avx2/control/probe.sbatch": "ae5efc1a448d7914b3410189f122599de5b02dafc780988f92ab2f06bdb79aba"
+      }
+    },
+    {
+      "target": "dsprhbm",
+      "partition": "DSPRHBM",
+      "job_id": "1862390",
+      "run": "/home/stardust/sai-hpc-software/runs/cp2k-site-elpa-cmake-fakeroot-20261019-dsprhbm",
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "elapsed": "00:00:03",
+      "node": "d9470n02",
+      "files_sha256": {
+        "dsprhbm/slurm-1862390.log": "1ac5187b08cd296196bc7e2a87c0f34d734fc4ffd594409c5654698230e34029",
+        "dsprhbm/job.id": "97d1f99372d6350f6a184741815f41c16697d73fe1f45e3830f17896a6e5023d",
+        "dsprhbm/work/consumer.log": "686052b7e4449c7efbd774cfc8e39853574fd5f8d5be47e280d4df362215b7d5",
+        "dsprhbm/work/consumer-ldd.txt": "3b865f3e15903099f6ac06331f5af2751d53001cf263e38970b9e0b610ca0c8a",
+        "dsprhbm/work/compiler.txt": "dc4217d44172a237a08667d59d6bf4213c05d1ad7ce21d25c11f0d5cd3a1ab3e",
+        "dsprhbm/work/cmake-consumer.log": "686052b7e4449c7efbd774cfc8e39853574fd5f8d5be47e280d4df362215b7d5",
+        "dsprhbm/work/CMakeCache.txt": "d2dd90e6a8c2178f39d391fd8905b9bf7045428dedac2a67042ecfe1f6d5beea",
+        "dsprhbm/work/candidate/share/sai/site-elpa.json": "29b974dc0a210b8e3314dd1d103b595b53d09ca34d060e23b30c4b1f418b3a48",
+        "dsprhbm/control/CMakeLists.txt": "55fcaa9fd25c451fbb7dc7eefc43dfaafb89b4c3b42ddd0728710f3b9194a2f5",
+        "dsprhbm/control/cp2k_elpa_abi.f90": "95c2ef65486385219c646424c2d8724574b8dabaa0fc4ce89c2e78bae43478a5",
+        "dsprhbm/control/cp2k_feature_contract.py": "2d2ea42d9e74d5ecbe8278bebd8b23c81d1bcfe86c35b0d303cf3f7b09e93917",
+        "dsprhbm/control/cp2k_site_elpa.json": "d69861199a9f1a525582590b963155253034b185eb64f4ad400771ad45e330dd",
+        "dsprhbm/control/environment.sh": "68bfc2f69c1df2f9b35fdf9d273dbf35e377c44b490ff19ebc6c41ac7dad58d0",
+        "dsprhbm/control/inside.sh": "a398282d1a554a18194fac1109230dd5546540ed9e290a161546697541021f25",
+        "dsprhbm/control/probe.sbatch": "ae5efc1a448d7914b3410189f122599de5b02dafc780988f92ab2f06bdb79aba"
+      }
+    }
+  ]
+}

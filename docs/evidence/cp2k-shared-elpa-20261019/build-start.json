@@ -1,0 +1,179 @@
+{
+  "observed_at": "2026-10-19T21:58:54.025641+08:00",
+  "workflow_url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39262701906",
+  "controller_commit": "797d6c3b45c3f847efa4d083f9998001816d826b",
+  "recipe_sha256": "46ac9460660f9bf876ddfaacd2b0c5e38c8f2df161edff34035aa8335a1467be",
+  "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+  "version": "2026.2",
+  "stage": "dependencies",
+  "artifact_ready": false,
+  "partitions": [
+    {
+      "partition": "16V100",
+      "job_id": "1862478",
+      "state": "RUNNING",
+      "exit_code": "0:0",
+      "elapsed": "00:03:58",
+      "node": "16v100n04",
+      "allocated_cpus": 8,
+      "run": "/home/stardust/sai-hpc-software/runs/39262701906-1-release-16v100-avx2-2026-10-19-67b5da876dd6-dependencies",
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r46ac9460660f",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r46ac9460660f/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "46ac9460660f9bf876ddfaacd2b0c5e38c8f2df161edff34035aa8335a1467be",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "files_sha256": {
+        "16v100-avx2/request.json": "1f4ba7483440c551225ffa0db9891f5f61d034402b4ea7deb85f6d6039dfec16",
+        "16v100-avx2/job.sbatch": "8ffb5c880286ddf1fe0bc5b261010bf71574f31acbbec4f092b27876cc7949f2",
+        "16v100-avx2/ci-handoff.json": "9f1077d4f8b61703bcd700977edab35d8b77788cf1f55b278f8ba08ff06867b9"
+      },
+      "log_tail": [
+        "[ ] buedfas py-setuptools@83.0.0 install (0s)",
+        "[ ] 5mo4n2d cosma@2.7.0 cmake (1s)",
+        "[+] xm55k4p py-wheel@0.45.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r46ac9460660f/16V100/dependencies/spack/linux-zen3/py-wheel-0.45.1-xm55k4psdktomrsu3a7gdbuvq677dott (3s)",
+        "[ ] 62iurh6 libxsmm@2.0.0 install (1m37s)",
+        "[+] buedfas py-setuptools@83.0.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r46ac9460660f/16V100/dependencies/spack/linux-zen3/py-setuptools-83.0.0-buedfas3ph7z6tpsdxm72ohhu5smrdcs (8s)",
+        "[ ] g3wuvrh py-cython@3.2.4 staging (0s)",
+        "[+] 62iurh6 libxsmm@2.0.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r46ac9460660f/16V100/dependencies/spack/linux-zen3/libxsmm-2.0.0-62iurh6z3ykiyux6lygqelq5c4aqwttv (1m41s)",
+        "[ ] oatczg6 hdf5@1.14.6 build (1m41s)",
+        "[ ] g3wuvrh py-cython@3.2.4 install (4s)",
+        "[ ] 5mo4n2d cosma@2.7.0 build (13s)"
+      ]
+    },
+    {
+      "partition": "4V100",
+      "job_id": "1862509",
+      "state": "RUNNING",
+      "exit_code": "0:0",
+      "elapsed": "00:01:32",
+      "node": "4v100n01",
+      "allocated_cpus": 8,
+      "run": "/home/stardust/sai-hpc-software/runs/39262701906-1-release-4v100-avx512-2026-10-19-67b5da876dd6-dependencies",
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r46ac9460660f",
+        "cpu_arch": "znver4",
+        "cuda_arch": "70",
+        "dependency_isa": "avx512",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r46ac9460660f/4V100",
+        "partition": "4V100",
+        "recipe_sha256": "46ac9460660f9bf876ddfaacd2b0c5e38c8f2df161edff34035aa8335a1467be",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "4v100-avx512",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "files_sha256": {
+        "4v100-avx512/request.json": "0d74302675cd5b8f49bd5525af97462238cb2a2e37dc9298f6a571c62b28b8e9",
+        "4v100-avx512/job.sbatch": "31520d352a9610abee81ad8d6890cd0a95c95b3b6c21f49d38a326f0acea33fc",
+        "4v100-avx512/ci-handoff.json": "566745692d2dd84ff557fb95505891baee40969682d79246e8ee3780d961d9b8"
+      },
+      "log_tail": [
+        "BUILD_CAPACITY_POLICY filesystem-enforced 39262701906-1-release-4v100-avx512-2026-10-19-67b5da876dd6-dependencies"
+      ]
+    },
+    {
+      "partition": "8V100V0",
+      "job_id": "1862503",
+      "state": "RUNNING",
+      "exit_code": "0:0",
+      "elapsed": "00:02:06",
+      "node": "8v100v0n11",
+      "allocated_cpus": 12,
+      "run": "/home/stardust/sai-hpc-software/runs/39262701906-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-dependencies",
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r46ac9460660f",
+        "cpu_arch": "skylake-avx512",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r46ac9460660f/8V100V0",
+        "partition": "8V100V0",
+        "recipe_sha256": "46ac9460660f9bf876ddfaacd2b0c5e38c8f2df161edff34035aa8335a1467be",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "8v100v0-avx512",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "files_sha256": {
+        "8v100v0-avx512/request.json": "b70c001fa70e8c004d8d1b49e11a89883dffe367903650f8c2492d1f913d97fe",
+        "8v100v0-avx512/job.sbatch": "3539ec8380084fdd599a11c53471e261946fc1d7c6cb86db47e3e2d8a56dfbe2",
+        "8v100v0-avx512/ci-handoff.json": "f25bdcf759c415d8c993fc05941364b75177e3b8fcc9546368c1e36335803497"
+      },
+      "log_tail": [
+        "BUILD_CAPACITY_POLICY filesystem-enforced 39262701906-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-dependencies"
+      ]
+    },
+    {
+      "partition": "DSPRHBM",
+      "job_id": "1862508",
+      "state": "RUNNING",
+      "exit_code": "0:0",
+      "elapsed": "00:01:48",
+      "node": "d9470n02",
+      "allocated_cpus": 8,
+      "run": "/home/stardust/sai-hpc-software/runs/39262701906-1-release-dsprhbm-2026-10-19-67b5da876dd6-dependencies",
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r46ac9460660f",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r46ac9460660f/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "46ac9460660f9bf876ddfaacd2b0c5e38c8f2df161edff34035aa8335a1467be",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "files_sha256": {
+        "dsprhbm/request.json": "0feee3fe9d9e956d5f9d9e6d8a0a4623888e1f425fa3bf2ffec91fb5f2c31fc1",
+        "dsprhbm/job.sbatch": "9bf4710f43e2033bc2b73a128b84e3ab1ba4e1272370be7440d30ea759c7d714",
+        "dsprhbm/ci-handoff.json": "eefbafe749434c996ec7648d33c423a0705e523e07b88432819b925084f327a8"
+      },
+      "log_tail": [
+        "BUILD_CAPACITY_POLICY filesystem-enforced 39262701906-1-release-dsprhbm-2026-10-19-67b5da876dd6-dependencies"
+      ]
+    }
+  ],
+  "runtime_tuning_issue": "https://github.com/AI4SAI/sai-hpc-software/issues/9",
+  "long_running_gpu_limitation": "Accepted shared ELPA lacks the upstream GPU temporary-communicator release; repeated-object audit 1862456 is archived. This integration attempt does not establish long-running production qualification."
+}

@@ -252,6 +252,9 @@ jobs `1861947`–`1861950` passed all 168 CPU/GPU solves across the four partiti
 including the original explicit C APIs on DSPRHBM, fresh Fortran consumers and
 actual ELPA/MPI/BLAS/HCOLL loader evidence. See the
 [native acceptance report](docs/evidence/elpa-auto-native-20261019/README.md).
+The subsequent [GPU lifecycle audit](docs/ELPA.md#gpu-求解器生命周期限制) found
+a missing upstream MPI communicator free. The small numerical results stand;
+repeated long-running GPU diagonalization needs the archived repair and renewed qualification.
 
 ## Local checks
 

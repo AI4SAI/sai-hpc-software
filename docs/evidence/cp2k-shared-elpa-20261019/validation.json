@@ -1,0 +1,20 @@
+{
+  "controller_commit": "797d6c3b45c3f847efa4d083f9998001816d826b",
+  "recipe_sha256": "46ac9460660f9bf876ddfaacd2b0c5e38c8f2df161edff34035aa8335a1467be",
+  "workflow_url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39262616115",
+  "linux_ci": {
+    "tests": 818,
+    "passed": 816,
+    "skipped": 2,
+    "result": "success",
+    "elapsed_seconds": 45.547,
+    "log_sha256": "55e60340061aa0abad8d69b5d5b4763f446eb22eb7347b7a9f98f4cab8bda1c4"
+  },
+  "local": {
+    "tests": 92,
+    "passed": 90,
+    "failures": 1,
+    "errors": 1,
+    "limitation": "Two installed-mode/setgid tests fail when TMPDIR is on this mounted workspace filesystem; the same tests pass on Linux CI. No validation was waived."
+  }
+}
