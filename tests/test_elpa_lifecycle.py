@@ -24,6 +24,10 @@ class LifecycleTests(unittest.TestCase):
                 self.assertEqual(report['numerical_solves'], 64)
                 self.assertEqual(report['live_per_rank'], 0)
 
+    def test_site_mpi_advisory_prefix_does_not_hide_a_solve(self):
+        report = lifecycle.validate('MPI shared-filesystem advisory\n\0'+self.log(), 2, 1, 32)
+        self.assertEqual(report['numerical_solves'], 64)
+
     def test_observed_unpatched_gpu_log_is_rejected(self):
         log = (ROOT/'docs/evidence/cp2k-shared-elpa-20261019/communicator-audit/work/gpu-1.log').read_text()
         with self.assertRaisesRegex(ValueError, 'Communicator lifetime failed'):

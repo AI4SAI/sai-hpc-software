@@ -8,6 +8,9 @@ import re
 
 
 def validate(text, ranks, gpu, objects):
+    # Site MPI advisories can leave a NUL before the next stdout line. Retain
+    # raw evidence and trim only this prefix, as the numerical verifier does.
+    text = '\n'.join(line.lstrip('\0') for line in text.splitlines())
     expected = objects if gpu else 0
     traces = re.findall(r'^ELPA_COMM_TRACE created=(\d+) explicitly_freed=(\d+) live_at_exit=(\d+)$', text, re.M)
     if len(traces) != ranks or any(tuple(map(int, row)) != (expected, expected, 0) for row in traces):
