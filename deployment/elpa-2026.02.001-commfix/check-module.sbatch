@@ -7,6 +7,7 @@
 #SBATCH --export=ALL
 set -euo pipefail
 control=${1:?frozen controls}; output=${2:?results}
+mode=${3:-candidate}
 partition=${SLURM_JOB_PARTITION:?}
 export PATH=/usr/bin:/bin LD_LIBRARY_PATH= LD_PRELOAD=
 export TMPDIR=$output/runtime CUDA_CACHE_PATH=$output/runtime/cuda-cache XDG_CACHE_HOME=$output/runtime/cache
@@ -31,4 +32,7 @@ for target, prefix in install.PREFIXES.items():
     install.verify(prefix, install.read_manifest(target+'-manifest.json', release['builds'][target]['manifest_sha256']))
 print('ELPA_REPAIRED_PHYSICAL_FILES_PASS', flush=True)
 PY
-bash "$control/check-partition.sh" "$control" "$output" "$partition"
+if [[ "$mode" == public ]]; then
+  python3 "$control/install.py" --verify > "$output/installed-files.txt"
+fi
+bash "$control/check-partition.sh" "$control" "$output" "$partition" "$mode"

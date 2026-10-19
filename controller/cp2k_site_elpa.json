@@ -19,13 +19,15 @@
         "include/elpa_openmp-2026.02.001/src/helpers/lapack_interfaces.h": "80de90dfd3369212d1392d0f3e4fd5e8beb32ac33810e0a93e32f1beae2d1a83",
         "include/elpa_openmp-2026.02.001/src/helpers/scalapack_interfaces.h": "8227fe93308ac6d3eee6f0f774670aaeda47a1f2fd7ba4913595ea302e1a5683",
         "lib/libelpa_openmp.la": "00bbf05a670ca0c1fc5f6c8351bcc14a1c53c27c36c54b6045870686d572d1d0",
-        "lib/libelpa_openmp.so.19.5.1": "eb4474ed5bddd66740010867e2898550b93a0feec4ecf70df698bebf354d5ebf",
+        "lib/libelpa_openmp.so.19.5.1": "6f0233529b800c67acb5a54bdfc595f03e94663baed261f7e50add27f8ce8426",
         "lib/pkgconfig/elpa_openmp.pc": "181d7647c3b324e103735a2a5cc3063472647f5ea9956a151e4a353a25989948",
         "share/sai/configure-command.txt": "49c4606b42418c7fd2ef3d8f0bb884ca2691ca4df3b295ec7f84bc9c632736ea",
         "share/sai/cuda-aware-cpu.patch": "aaa3f15cee9024a2e8b92be22c32da9eecd0ae2be2b475d9cd168707631041ae",
-        "share/sai/recipe.sha256": "8164eb4c452891d36307225cdb820e8a55ff9f7d9b97c43bc7066ba2e987a830"
+        "share/sai/mpi-communicator-fix.json": "e315148a23349a3ab94fd2345582ec1683f2162ddd81c1709fc057d14db7cb7c",
+        "share/sai/mpi-communicator.patch": "fd4cca359af5bb559b2dc2ab29bd272919c8fd2f7873b2072c65f9dd26536bac",
+        "share/sai/recipe.sha256": "7d5a3eb52aadecd82b5fc51b52dd747290a8c4394381fa4eccfea0972c02ac36"
       },
-      "manifest_sha256": "52e83c6cd7905439ea33c9f4932ad32881763d55d1aa90f9d5df29f5b184e125",
+      "manifest_sha256": "77a5b8df32f0724b492ce8555fb62cef1264864b3a77c11bf46914e26c875bfe",
       "prefix": "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx2/nvidia",
       "symlinks": {
         "include/elpa": "elpa_openmp-2026.02.001/elpa",
@@ -50,13 +52,15 @@
         "include/elpa_openmp-2026.02.001/src/helpers/lapack_interfaces.h": "80de90dfd3369212d1392d0f3e4fd5e8beb32ac33810e0a93e32f1beae2d1a83",
         "include/elpa_openmp-2026.02.001/src/helpers/scalapack_interfaces.h": "8227fe93308ac6d3eee6f0f774670aaeda47a1f2fd7ba4913595ea302e1a5683",
         "lib/libelpa_openmp.la": "6b756a0f55aec46e7314fbac215fcd7a22d569e383969f88ff22d1b18d2c57c0",
-        "lib/libelpa_openmp.so.19.5.1": "d3f23b0440bd588da8d3f272c52196f466d38d691b12b72ccc68cfe15fee9240",
+        "lib/libelpa_openmp.so.19.5.1": "7eda04e2afae8762b81afdfd0937c6476829032a23b9224270846f83e755a01e",
         "lib/pkgconfig/elpa_openmp.pc": "e7d0d59d475aed38a9f5234f7d6621daeaa88bece60fb457199d6757859463f3",
         "share/sai/configure-command.txt": "94a2162dcb4a9e09b4643b3df660cb79754d236f20cc08f1238fa21686bc5778",
         "share/sai/cuda-aware-cpu.patch": "aaa3f15cee9024a2e8b92be22c32da9eecd0ae2be2b475d9cd168707631041ae",
-        "share/sai/recipe.sha256": "8164eb4c452891d36307225cdb820e8a55ff9f7d9b97c43bc7066ba2e987a830"
+        "share/sai/mpi-communicator-fix.json": "e315148a23349a3ab94fd2345582ec1683f2162ddd81c1709fc057d14db7cb7c",
+        "share/sai/mpi-communicator.patch": "fd4cca359af5bb559b2dc2ab29bd272919c8fd2f7873b2072c65f9dd26536bac",
+        "share/sai/recipe.sha256": "7d5a3eb52aadecd82b5fc51b52dd747290a8c4394381fa4eccfea0972c02ac36"
       },
-      "manifest_sha256": "98171ee66dac2ceb82f3b2cb67b16aa6df3f5f8f876ca2b94b24016e5ada3708",
+      "manifest_sha256": "b0696b457a9cf58e463cd68caf0753f97eba29a6f9a995844ea556becbe679a2",
       "prefix": "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/nvidia",
       "symlinks": {
         "include/elpa": "elpa_openmp-2026.02.001/elpa",
@@ -81,13 +85,15 @@
         "include/elpa_openmp-2026.02.001/src/helpers/lapack_interfaces.h": "80de90dfd3369212d1392d0f3e4fd5e8beb32ac33810e0a93e32f1beae2d1a83",
         "include/elpa_openmp-2026.02.001/src/helpers/scalapack_interfaces.h": "8227fe93308ac6d3eee6f0f774670aaeda47a1f2fd7ba4913595ea302e1a5683",
         "lib/libelpa_openmp.la": "a182235d7864c0504e60343c3c953d1b0ef009e2c9c75f88b8e7314de894a136",
-        "lib/libelpa_openmp.so.19.5.1": "2d8dc261ad99fb84a3d6d79f032f53eb2811dc39dd4c8e73a14504cde0513545",
+        "lib/libelpa_openmp.so.19.5.1": "2a06d3aec623e5d35a63647ae357d2e165997560c6d784da1520cc2cde57eadc",
         "lib/pkgconfig/elpa_openmp.pc": "45ecb627a93c99cc91da726739d4318a219cf263e52d4ef037b4bfa25b80d137",
         "share/sai/configure-command.txt": "cd74ec9e57e284a2c8312b90a55b3bf9c568e8e4dc2650d8a140f952c5b1d449",
         "share/sai/cuda-aware-cpu.patch": "aaa3f15cee9024a2e8b92be22c32da9eecd0ae2be2b475d9cd168707631041ae",
-        "share/sai/recipe.sha256": "e30b7a3e611e4954516d06a046172b427d7d8d56381b623d0d63529e9b532d24"
+        "share/sai/mpi-communicator-fix.json": "e315148a23349a3ab94fd2345582ec1683f2162ddd81c1709fc057d14db7cb7c",
+        "share/sai/mpi-communicator.patch": "fd4cca359af5bb559b2dc2ab29bd272919c8fd2f7873b2072c65f9dd26536bac",
+        "share/sai/recipe.sha256": "86b8e6955be62529281a97d90dc76b1198306d6866a42a35341e52c406b48964"
       },
-      "manifest_sha256": "2fc94653ba9975838e1e573b323bbe5db291ce312926eb7ba667f6bfc7329b4c",
+      "manifest_sha256": "dec7d3c62b20a0a1498686353fa95480d82a10a014fc8a9df0812a44bf8b8b6a",
       "prefix": "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/cpu",
       "symlinks": {
         "include/elpa": "elpa_openmp-2026.02.001/elpa",

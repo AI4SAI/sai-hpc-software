@@ -54,6 +54,16 @@ def validate(root):
         require((output/'selection.txt').read_text().splitlines() ==
                 [f'partition={partition}', f'isa={isa}', f'backend={backend}', f'prefix={prefix}'], 'Wrong selection')
         require((output/'module.sha256').read_text().split()[0] == release['module_sha256'], 'Tested module changed')
+        mode_file = output/'module-mode.txt'
+        mode = mode_file.read_text().strip() if mode_file.exists() else 'candidate'
+        require(mode in ('public', 'candidate'), 'Unknown module execution mode')
+        modulefile = (output/'modulefile.txt').read_text().strip()
+        if mode == 'public':
+            require(modulefile == '/opt/modules/modulefiles/devtools/elpa/'+NAME, 'Public module not loaded')
+            require('Repaired physical ELPA files and simplified auto module verified.' in
+                    (output/'installed-files.txt').read_text(), 'Installed module and files not verified')
+        else:
+            require(modulefile.endswith('/'+partition+'/modulefiles/elpa/'+NAME), 'Candidate module not loaded')
         require(checksum(output/'modulefiles/elpa'/NAME) == release['module_sha256'], 'Final module changed')
         require('ELPA_FORTRAN_CONSUMER_PASS' in (output/'fortran-smoke.log').read_text(), 'Fortran check failed')
         require((output/'previous-unload.txt').read_text().strip() == 'ELPA_PREVIOUS_AUTO_UNLOAD_PASS', 'Upgrade unload failed')
@@ -83,9 +93,11 @@ def validate(root):
         for trace in traces:
             for key in errors:
                 errors[key] = max(errors[key], trace['max_errors'][key])
-        report['partitions'][partition] = dict(job_id=job, **info, prefix=prefix, backend=backend,
+        report['partitions'][partition] = dict(job_id=job, **info, prefix=prefix, backend=backend, module_mode=mode,
             numerical_solves=2+sum(t['numerical_solves'] for t in traces), max_errors=errors, lifecycle=traces)
     report['numerical_solves'] = sum(p['numerical_solves'] for p in report['partitions'].values())
+    if all(p['module_mode'] == 'public' for p in report['partitions'].values()):
+        report['execution'] = 'physical /opt libraries and public module'
     return report
 
 

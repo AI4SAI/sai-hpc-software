@@ -4,6 +4,8 @@ set -eo pipefail
 package=${1:?candidate module and smoke source}
 output=${2:?writable result directory}
 partition=${3:?partition}
+mode=${4:-candidate}
+[[ "$mode" == candidate || "$mode" == public ]]
 export LD_PRELOAD=
 export OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=1
 export OMPI_CC=/usr/bin/gcc OMPI_CXX=/usr/bin/g++ OMPI_FC=/usr/bin/gfortran
@@ -14,7 +16,11 @@ cp "$package/$name" "$output/modulefiles/elpa/$name"
 source /etc/profile.d/lmod.sh
 module purge
 module use /opt/modules/modulefiles/devtools
-module use "$output/modulefiles"
+modulefile=/opt/modules/modulefiles/devtools/elpa/$name
+if [[ "$mode" == candidate ]]; then
+  module use "$output/modulefiles"
+  modulefile=$output/modulefiles/elpa/$name
+fi
 export SLURM_JOB_PARTITION=$partition
 module load "elpa/$name"
 set -u
@@ -29,8 +35,9 @@ prefix=/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-$isa/$backend
 [[ "$MPI_HOME" == /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-$isa ]]
 [[ "$OPENBLAS_ROOT" == /opt/devtools/saiblas/2603-gnu-$isa ]]
 cd "$output"
+printf '%s\n' "$mode" > module-mode.txt
 lscpu > cpu.txt
-printf '%s\n' "${_LMFILES_:?}" | tr ':' '\n' | grep -Fx "$output/modulefiles/elpa/$name" > modulefile.txt
+printf '%s\n' "${_LMFILES_:?}" | tr ':' '\n' | grep -Fx "$modulefile" > modulefile.txt
 set +u
 module -t list > modules.txt 2>&1
 set -u
@@ -71,7 +78,7 @@ for mode in $(seq 0 "$gpu"); do
     ./smoke "$mode" 2 0 > "lifecycle-g$mode.log" 2>&1
   python3 "$package/verify-lifecycle.py" "lifecycle-g$mode.log" --ranks 2 --gpu "$mode" --objects 32
 done
-sha256sum "$output/modulefiles/elpa/$name" > module.sha256
+sha256sum "$modulefile" > module.sha256
 # Unload must use ELPA_ROOT even after the partition variable changes.
 assert_unloaded() {
   [[ -z ${ELPA_ROOT:-} && -z ${SAI_ELPA_2603_ISA:-} && -z ${SAI_ELPA_2603_PARTITION:-} && -z ${SAI_ELPA_2603_BACKEND:-} ]]
@@ -86,6 +93,9 @@ module unload "elpa/$name"
 set -u
 assert_unloaded
 # Exercise replacement of the currently deployed partition selector on all nodes.
+set +u
+module use "$output/modulefiles"
+set -u
 cp "$package/previous-auto" "$output/modulefiles/elpa/$name"
 export SLURM_JOB_PARTITION=$partition
 set +u

@@ -2,7 +2,8 @@
 
 2026-10-20：三套修复库已由管理员安装，物理文件清单全部匹配。
 简化后的 module 在四分区通过原生 C/Fortran、456 次数值求解、communicator 生命周期、
-加载/卸载和旧 module 替换兼容验收；公共 module 尚待管理员替换。
+加载/卸载和旧 module 替换兼容验收。管理员已替换公共 module，四分区公共入口
+复验 `1865327`–`1865330` 全部 `COMPLETED 0:0`。
 AVX2 GPU 19.44 MiB、AVX512 GPU 20.57 MiB、CPU 12.82 MiB。
 [构建、数值和资源释放验收记录](../../docs/evidence/elpa-commfix-20261019/README.md)。
 [简化 module 和修复库的物理验收](../../docs/evidence/elpa-simple-module-20261020/README.md)。
@@ -79,6 +80,8 @@ bash install.sh --verify
 
 ```bash
 bash deployment/elpa-2026.02.001-commfix/submit-module-checks.sh
+# 安装后的公共入口验收：
+bash deployment/elpa-2026.02.001-commfix/submit-module-checks.sh public
 # 将四个作业的 sacct 记录保存到结果目录的 accounting.txt 后：
 python3 deployment/elpa-2026.02.001-commfix/verify-module-results.py <结果目录>
 ```

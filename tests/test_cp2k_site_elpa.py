@@ -18,10 +18,10 @@ ROOT = Path(__file__).resolve().parents[1]
 
 class SharedELPATests(unittest.TestCase):
     def test_pins_match_the_archived_deployment_manifests(self):
-        paths = {"16v100-avx2": "elpa-2026.02.001/avx2-manifest.json",
-                 "8v100v0-avx512": "elpa-2026.02.001/avx2-manifest.json",
-                 "4v100-avx512": "elpa-2026.02.001/avx512-manifest.json",
-                 "dsprhbm": "elpa-2026.02.001-cpu/cpu-manifest.json"}
+        paths = {"16v100-avx2": "elpa-2026.02.001-commfix/avx2-manifest.json",
+                 "8v100v0-avx512": "elpa-2026.02.001-commfix/avx2-manifest.json",
+                 "4v100-avx512": "elpa-2026.02.001-commfix/avx512-manifest.json",
+                 "dsprhbm": "elpa-2026.02.001-commfix/dsprhbm-manifest.json"}
         for target, name in paths.items():
             with self.subTest(target=target):
                 record, spec = contract.site_elpa_spec(target)
@@ -36,6 +36,8 @@ class SharedELPATests(unittest.TestCase):
                             if row["path"].startswith(("include/", "lib/"))
                             and row["kind"] != "directory"}
                 self.assertTrue(required <= spec["files"].keys() | spec["symlinks"].keys())
+                self.assertIn('share/sai/mpi-communicator-fix.json', spec['files'])
+                self.assertIn('share/sai/mpi-communicator.patch', spec['files'])
                 self.assertEqual(record["version"], "2026.02.001")
                 self.assertTrue(record["prefix"].endswith("/cpu" if target == "dsprhbm" else "/nvidia"))
         self.assertEqual(contract.site_elpa_spec("16v100-avx2")[1],
