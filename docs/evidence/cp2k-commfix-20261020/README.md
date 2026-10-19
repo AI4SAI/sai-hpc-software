@@ -34,3 +34,12 @@ GCC 14.3, V100/SM70, cuSOLVERMp/NCCL, SpLA GEMM offload, full Libint capability,
 fixed final prefixes and home-backed build/cache/temp storage are retained.
 The [independent direct-generalized experiment](../../../deployment/cp2k-diagonalization/README.md)
 does not change the build default or its scientific acceptance protocol.
+
+The frozen tuning watcher is active on SAI; `tuning-watch.json` records its
+workflow, recipe, source checkout and three GPU targets. It waits for new
+`cp2k_science` acceptance before submitting the 216-water experiment.
+CI at `d36b666` passed 831 tests with two optional skips (833 total).
+
+The [separate 64-water pilot](../cp2k-direct-pilot-20261020/README.md) completed
+all 16 cases on the earlier accepted 2026.2 SIF. Direct TRUE/FALSE differ by
+about 1.2% in median total time with overlapping samples; no default is changed.

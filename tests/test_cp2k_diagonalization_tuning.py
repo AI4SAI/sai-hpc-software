@@ -36,6 +36,7 @@ class TuningTests(unittest.TestCase):
             (folder/'forces.xyz').write_text('missing forces')
             with self.assertRaises(ValueError):
                 tuning.parse_sample(folder, 'cusolver-direct', 4)
+            self.assertNotIn('tuning', tuning.fixtures.CASES)
 
     def test_standard_and_direct_change_only_keyword(self):
         for edge in (4,6):

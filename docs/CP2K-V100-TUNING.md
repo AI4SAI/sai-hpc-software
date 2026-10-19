@@ -241,3 +241,9 @@ utilization are sampled separately. A watcher can submit the larger experiment
 only after the new recipe's science acceptance is recorded. The old accepted
 2026.2 SIF is used for a separate 64-water script pilot; that pilot is not
 acceptance of the repaired-shared-ELPA CP2K build.
+
+Pilot job `1865445` completed all 16 calculations. Its 64-water medians are
+41.391 s (cuSOLVER FALSE), 40.915 s (TRUE), 33.557 s (ELPA), and 155.899 s (OT
+FULL_ALL with cuSOLVER). The direct ratio is only 1.0116, with overlapping sample
+ranges; retain the upstream default pending the larger new-build measurement.
+All numerical/dispatch/affinity checks pass. [Raw pilot results and scope](evidence/cp2k-direct-pilot-20261020/README.md).

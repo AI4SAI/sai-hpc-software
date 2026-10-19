@@ -67,8 +67,12 @@ def parse_sample(folder, mode, edge):
     log = (folder/'cp2k.log').read_text()
     forces = (folder/'forces.xyz').read_text()
     # Reuse the independently checked science parser, extending only atom count.
-    fixtures.CASES['tuning'] = dict(elements=['O', 'H', 'H']*(edge**3))
-    sample = fixtures.parse_science(log, forces, (folder/'elapsed.txt').read_text(), 'tuning')
+    original_cases = fixtures.CASES
+    fixtures.CASES = {**original_cases, 'tuning': dict(elements=['O', 'H', 'H']*(edge**3))}
+    try:
+        sample = fixtures.parse_science(log, forces, (folder/'elapsed.txt').read_text(), 'tuning')
+    finally:
+        fixtures.CASES = original_cases
     timers = {}
     pattern = r'^\s*(\w+)\s+(\d+)\s+([\d.]+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)(?:\s+\d+)?\s*$'
     for row in re.findall(pattern, log, re.M):
