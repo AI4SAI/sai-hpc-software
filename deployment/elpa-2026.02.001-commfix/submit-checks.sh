@@ -24,7 +24,8 @@ for partition in 16V100 4V100 8V100V0 DSPRHBM; do
   cp "$package/../elpa-2026.02.001/"{verify.sh,smoke.c,comm-trace.c,verify-lifecycle.py} "$run/control/"
   cp "$package/check.sbatch" "$run/control/"
   cp "$package/2026.02.001-2603-gnu-auto" "$run/control/"
-  cp "$package/../elpa-2026.02.001-cpu/check-partition.sh" "$run/control/"
+  cp "$package/check-partition.sh" "$run/control/"
+  cp "$package/../elpa-2026.02.001-cpu/2026.02.001-2603-gnu-auto" "$run/control/previous-auto"
   cp "$package/../elpa-2026.02.001/2026.02.001-2603-gnu-auto" "$run/control/legacy-auto"
   if [[ ! -L "$run/elpa-$target.sif" ]]; then ln -s "$build/elpa-$target.sif" "$run/elpa-$target.sif"; fi
   [[ $(readlink "$run/elpa-$target.sif") == "$build/elpa-$target.sif" ]]

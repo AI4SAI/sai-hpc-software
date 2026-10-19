@@ -4,10 +4,11 @@
 `stardust` 已在四个分区完成物理环境验收。源码、补丁、构建/部署脚本、安装文件清单
 和原始验收日志均在本仓库；大体积源码压缩包、SIF 和构建缓存保留在集群家目录。
 
-后续 GPU 生命周期审计发现此安装仍缺少上游 MPI communicator 回收修复。
-三套修复候选已重新编译并通过四分区容器验收，管理员
-[替换包](../deployment/elpa-2026.02.001-commfix/README.md) 已准备且 `--check` 通过。
-当前物理安装尚未替换；下述旧安装数值验收仍成立，修复后的物理复验须在管理员替换后执行。
+2026-10-20：管理员已安装包含上游 MPI communicator 回收修复的三套库，
+物理文件清单核对通过。36 行的简化 module 也已在四分区通过原生 C/Fortran、数值、
+资源释放及卸载兼容测试，公共入口尚待替换。
+[更新包和操作](../deployment/elpa-2026.02.001-commfix/README.md)、
+[此次原生验收](evidence/elpa-simple-module-20261020/README.md)。下述较早记录保留为历史。
 
 ## 分区选择和固定路径
 
@@ -22,7 +23,8 @@
 不会为了判断指针类型而初始化 CUDA 驱动。
 
 请在实际 Slurm 分配的计算节点加载 module。该 module 按 `SLURM_JOB_PARTITION`
-选择，并核对 CPU ISA、MPI 和 BLAS；登录节点上加载会明确报错。查看不需要分配：
+选择；简化版把重复的 ISA 探测移到验收中，按表选择 ELPA 后继续加载站点 MPI/BLAS。
+实际库路径一致性在四分区验收中检查。未设置作业分区时加载会明确报错，查看不需要分配：
 
 ```bash
 module show elpa/2026.02.001-2603-gnu-auto
@@ -78,14 +80,15 @@ bash deployment/elpa-2026.02.001/submit-cpu.sh
 `/var/tmp` 也绑定到这些 run 的家目录存储。依赖只读，安装直接使用表中的最终前缀。
 
 GPU 脚本和最初发布清单见 [GPU 部署包](../deployment/elpa-2026.02.001/README.md)，
-CPU 版及当前分区 module 的安装流程见 [CPU 补充包](../deployment/elpa-2026.02.001-cpu/README.md)。
+最初 CPU 版的安装流程见 [CPU 补充包](../deployment/elpa-2026.02.001-cpu/README.md)；
+后续部署使用 [修复库和简化 module 包](../deployment/elpa-2026.02.001-commfix/README.md)。
 构建后通过最终 SIF 编译独立 C/Fortran 消费程序并运行数值验收，再由 `prepare-release.py`
 生成给管理员的部署包。安装器只搬库、头文件、Fortran module、pkg-config、必要工具和来源记录；
 不搬源码树、对象和缓存。重新编译的字节哈希可能变化，应生成新的发布清单并重新验收。
 
 ## 已完成的验收和复验入口
 
-当前物理验收作业 `1861947`–`1861950` 全部 `COMPLETED 0:0`，共 **168 次求解**：
+旧库的物理验收作业 `1861947`–`1861950` 全部 `COMPLETED 0:0`，共 **168 次求解**：
 GPU 分区各 48 次，DSPRHBM 24 次。覆盖原始显式 C 接口、实数/复数、ELPA1/2、
 1/2 MPI rank、重复求解及非阻塞选项，并验证 Fortran 消费程序、文件清单、module
 加载/卸载以及实际 ELPA/MPI/BLAS/HCOLL 库路径。
@@ -96,7 +99,7 @@ GPU 分区各 48 次，DSPRHBM 24 次。覆盖原始显式 C 接口、实数/复
 bash deployment/elpa-2026.02.001-cpu/submit-native-checks.sh all
 ```
 
-[物理验收报告与 205 份原始记录](evidence/elpa-auto-native-20261019/README.md) 是当前验收依据；
+[旧库物理验收报告与 205 份原始记录](evidence/elpa-auto-native-20261019/README.md)；
 [最初 GPU 构建记录](evidence/elpa-site-20261018/README.md)、
 [CPU 补充记录](evidence/elpa-cpu-20261019/README.md) 和
 [module 升级记录](evidence/elpa-auto-20261019/README.md) 保留完整历史。
@@ -149,7 +152,7 @@ release 与 development 各自解析源码并保持独立记录；`tracks=develo
 已提供回收修复；旧 CP2K 私有 ELPA 配方包含该修复，此次沿用站点方案的共享库未包含。
 
 [复现代码、原始日志及适用于 2026.02.001 的补丁](evidence/cp2k-shared-elpa-20261019/communicator-audit.json)
-已存档。补丁已加入新构建配方，但尚未应用到管理员安装的共享库。
+已存档。补丁已加入新构建配方，并于 10 月 20 日核对管理员安装的共享库已更新。
 
 10 月 19 日修复构建 `1862858`（AVX2 GPU）、`1862859`（AVX512 GPU）、
 `1862898`（AVX512 CPU）全部成功。四分区独立复验 `1862899`、`1862929`、
@@ -159,7 +162,8 @@ CPU 路径为 0/0/0。原有实数/复数、ELPA1/2、非阻塞选项、C/Fortra
 [完整原始记录](evidence/elpa-commfix-20261019/README.md)。
 
 管理员包在 `/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-commfix`，
-约 52.83 MiB，保留三个原安装前缀和现有 `-auto` module。安装器先校验、暂存、备份旧树，
+约 52.83 MiB，保留三个原安装前缀和现有 `-auto` 名称。安装器先校验、暂存、备份旧树，
 再逐个切换；管理员执行 `bash install.sh --check`、`--install`、`--verify`。
-替换后须执行物理复验，并以新文件哈希更新 CP2K 依赖锁和候选身份。
+三套库已在物理环境通过新的资源释放复验；再次安装会跳过库，只更新简化后的 module。
+接下来须以新文件哈希更新 CP2K 依赖锁和候选身份。
 当前旧哈希下的 CP2K 集成构建不能直接作为修复后的验收。

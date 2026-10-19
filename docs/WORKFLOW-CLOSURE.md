@@ -1,4 +1,4 @@
-# Workflow closure — 2026-10-19
+# Workflow closure — 2026-10-20
 
 The code now connects build, scientific/performance acceptance, native export
 readback and publication. CP2K 2026.2 on all four partitions (4V100, 16V100,
@@ -52,8 +52,12 @@ scientific references and inputs still match their pinned hashes.
   CPU job `1862898` passed, as did four-partition candidate checks
   `1862899`/`1862929`/`1862930`/`1862931`. Tracked GPU communicators now return to
   zero after 32 object lifetimes per rank. The administrator replacement package
-  passed preflight; physical replacement, native revalidation and CP2K lock
-  migration remain pending. [Repair and deployment evidence](evidence/elpa-commfix-20261019/README.md).
+  passed preflight. On October 20 the physical files matched all three repaired
+  inventories. A simplified 36-line selector passed four native checks
+  `1864706`–`1864709`, including 456 solves and zero remaining tracked GPU
+  communicators. Public module replacement and CP2K lock migration remain
+  pending. [Repair and deployment evidence](evidence/elpa-commfix-20261019/README.md),
+  [simplified module and repaired physical-library acceptance](evidence/elpa-simple-module-20261020/README.md).
   The old development job `1861248`, frozen at controller `a7dd890`, failed
   CMake because that recipe omitted wignernj. The current recipe contains
   the pinned wignernj build; development still has no newly accepted artifact.

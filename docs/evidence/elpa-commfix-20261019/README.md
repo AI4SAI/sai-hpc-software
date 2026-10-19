@@ -1,5 +1,10 @@
 # Shared ELPA communicator repair acceptance
 
+Follow-up on October 20: the administrator installed the repaired libraries.
+All three physical inventories now match; the [simplified-module native checks](../elpa-simple-module-20261020/README.md)
+passed on four partitions, including communicator cleanup. The descriptions
+below record the original October 19 handoff state; its raw evidence is unchanged.
+
 Three ELPA 2026.02.001 variants were rebuilt inside Apptainer at their existing
 final `/opt/devtools/elpa/` prefixes, using home-backed build and temporary storage.
 The only additional library source change is upstream PR #85, merged 2026-10-15,

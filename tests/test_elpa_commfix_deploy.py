@@ -78,5 +78,54 @@ class ReplacementTests(unittest.TestCase):
             deploy.replace_one(alias, self.source, self.before, self.after, self.digest)
 
 
+class ModuleUpgradeTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        root = Path(self.temp.name)
+        self.package = root/'package'
+        self.package.mkdir()
+        self.module = root/deploy.NAME
+        self.module.write_text('previous module\n')
+        (self.package/deploy.NAME).write_text('simplified module\n')
+        self.release = dict(module_name=deploy.NAME,
+            module_sha256=deploy.checksum(self.package/deploy.NAME),
+            previous_module_sha256=deploy.checksum(self.module))
+        self.enterContext(mock.patch.multiple(deploy, PACKAGE=self.package, MODULE=self.module))
+
+    def test_backup_atomic_replacement_and_repeat(self):
+        original = self.module.read_bytes()
+        with self.module.open('rb') as reader:
+            deploy.install_module(self.release)
+            self.assertEqual(reader.read(), original)
+        backup = self.module.with_name('.'+deploy.NAME+'.before-'+self.release['previous_module_sha256'])
+        self.assertEqual(backup.read_bytes(), original)
+        self.assertEqual(self.module.read_bytes(), (self.package/deploy.NAME).read_bytes())
+        self.assertEqual(self.module.stat().st_mode & 0o777, 0o644)
+        inode = self.module.stat().st_ino
+        deploy.install_module(self.release)
+        self.assertEqual(self.module.stat().st_ino, inode)
+
+    def test_failed_switch_keeps_original_and_allows_retry(self):
+        original = self.module.read_bytes()
+        with mock.patch.object(deploy.os, 'replace', side_effect=OSError('simulated failure')):
+            with self.assertRaises(OSError):
+                deploy.install_module(self.release)
+        self.assertEqual(self.module.read_bytes(), original)
+        self.assertFalse(list(self.module.parent.glob('*.install-*')))
+        deploy.install_module(self.release)
+        self.assertEqual(deploy.checksum(self.module), self.release['module_sha256'])
+
+    def test_reject_changed_or_symlink_module(self):
+        self.module.write_text('administrator edits')
+        with self.assertRaisesRegex(ValueError, 'both accepted versions'):
+            deploy.install_module(self.release)
+        self.assertEqual(self.module.read_text(), 'administrator edits')
+        self.module.unlink()
+        self.module.symlink_to(self.package/deploy.NAME)
+        with self.assertRaisesRegex(ValueError, 'Symlink'):
+            deploy.install_module(self.release)
+
+
 if __name__ == '__main__':
     unittest.main()

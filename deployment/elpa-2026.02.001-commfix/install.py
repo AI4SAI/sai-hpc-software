@@ -8,6 +8,7 @@ from pathlib import Path, PurePosixPath
 import shutil
 import stat
 import sys
+import tempfile
 
 PACKAGE = Path(__file__).resolve().parent
 NAME = '2026.02.001-2603-gnu-auto'
@@ -113,19 +114,58 @@ def replace_one(prefix, source, before, after, old_digest):
     verify(prefix, after)
 
 
+def module_state(release):
+    plain(MODULE)
+    require(release['module_name'] == NAME, 'Unexpected module name')
+    digest = checksum(MODULE)
+    require(digest in {release['module_sha256'], release['previous_module_sha256']},
+            f'Existing auto module differs from both accepted versions: {MODULE}')
+    return digest
+
+
+def install_module(release):
+    previous = module_state(release)
+    if previous == release['module_sha256']:
+        return
+    backup = MODULE.with_name(f'.{NAME}.before-{previous}')
+    plain(backup)
+    if not backup.exists():
+        with backup.open('xb') as stream:
+            stream.write(MODULE.read_bytes())
+            stream.flush()
+            os.fsync(stream.fileno())
+        backup.chmod(0o644)
+    require(checksum(backup) == previous, f'Previous module backup differs: {backup}')
+    with tempfile.NamedTemporaryFile(prefix=f'.{NAME}.install-', dir=MODULE.parent, delete=False) as stream:
+        stage = Path(stream.name)
+        try:
+            stream.write((PACKAGE/NAME).read_bytes())
+            stream.flush()
+            os.fsync(stream.fileno())
+            stage.chmod(0o644)
+            require(checksum(stage) == release['module_sha256'], 'Staged module checksum mismatch')
+            require(module_state(release) == previous, 'Auto module changed during installation')
+            os.replace(stage, MODULE)
+        finally:
+            if stage.exists():
+                stage.unlink()
+    print(f'Previous auto module preserved: {backup}', flush=True)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     modes = parser.add_mutually_exclusive_group()
     modes.add_argument('--check', action='store_true', help='Read-only payload and existing-installation check (default)')
-    modes.add_argument('--install', action='store_true', help='Back up and replace the three known installation trees')
-    modes.add_argument('--verify', action='store_true', help='Verify the repaired physical files and existing auto module')
+    modes.add_argument('--install', action='store_true', help='Back up and replace the known installations and auto module')
+    modes.add_argument('--verify', action='store_true', help='Verify the repaired physical files and simplified auto module')
     args = parser.parse_args()
     release = json.loads((PACKAGE/'release.json').read_text())
     require(release['revision'] == 'commfix-1' and set(release['builds']) == set(PREFIXES), 'Unexpected repair release')
     require(release['upstream_commit'] == '20be982db53a671b9aac866a726aebe153a766e6', 'Unexpected repair commit')
-    plain(MODULE)
-    require(checksum(PACKAGE/NAME) == release['module_sha256'] == checksum(MODULE),
-            'Installed auto module differs from the accepted partition selector')
+    require(checksum(PACKAGE/NAME) == release['module_sha256'], 'Candidate module checksum mismatch')
+    installed_module = module_state(release)
+    if args.verify:
+        require(installed_module == release['module_sha256'], 'Simplified auto module has not been installed')
     plan = []
     for key, prefix in PREFIXES.items():
         build = release['builds'][key]
@@ -152,12 +192,14 @@ def main():
         print(f'{key}: {size/1024**2:.2f} MiB; current={state}; {prefix}', flush=True)
         plan.append((prefix, source, before, after, build['previous_manifest_sha256']))
     if args.verify:
-        print('Repaired physical ELPA files and existing auto module verified. Compute-node runtime acceptance is separate.')
+        print('Repaired physical ELPA files and simplified auto module verified. Compute-node runtime acceptance is separate.')
     elif args.install:
         for entry in plan:
             replace_one(*entry)
-        print('Installed all three repaired ELPA variants. The existing auto module selects the same paths.')
+        install_module(release)
+        print('Installed all three repaired ELPA variants and simplified auto module.')
     else:
+        print('Auto module: '+('current' if installed_module == release['module_sha256'] else 'previous; will back up and replace'))
         print('Preflight passed. Administrator: bash install.sh --install')
 
 

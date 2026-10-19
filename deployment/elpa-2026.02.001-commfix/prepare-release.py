@@ -87,9 +87,10 @@ def main():
     release = dict(version='2026.02.001', revision='commfix-1',
         upstream_commit='20be982db53a671b9aac866a726aebe153a766e6',
         source_sha256=old['source_sha256'], module_name=NAME, module_sha256=checksum(PACKAGE/NAME),
+        previous_module_sha256=old['module_sha256'],
+        partition_checks_module_sha256=checksum(PACKAGE/NAME),
         communicator_patch_sha256=checksum(BUILD/'mpi-communicator.patch'),
         compatibility_patch_sha256=checksum(BUILD/'cuda-aware-cpu.patch'), builds={}, partition_checks={})
-    require(release['module_sha256'] == old['module_sha256'], 'Partition module unexpectedly changed')
     build_proofs = {}
     for target, run in runs.items():
         require((run/'accepted.txt').read_text().startswith(f'ELPA_BUILD_AND_CHECKS_PASSED {target} '), 'Build acceptance missing')
