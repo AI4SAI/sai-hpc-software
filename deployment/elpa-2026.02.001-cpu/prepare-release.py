@@ -8,7 +8,7 @@ import re
 import shutil
 import subprocess
 
-from install import NAME, PREFIX, checksum, inventory, require
+from install import NAME, PREFIX, checksum, inventory, require, verify
 
 
 def write_json(path, value):
@@ -21,6 +21,8 @@ def main():
     parser.add_argument('--run', type=Path, required=True)
     parser.add_argument('--module-checks', type=Path, required=True)
     parser.add_argument('--output', type=Path)
+    parser.add_argument('--payload-from', type=Path,
+                        help='Reuse an inventoried payload from the same accepted CPU SIF')
     parser.add_argument('--verify-only', action='store_true', help='Revalidate SIF and raw evidence without extraction')
     args = parser.parse_args()
     require(args.verify_only or args.output is not None, 'Specify --output or --verify-only')
@@ -61,6 +63,9 @@ def main():
     require(set(proof.glob('r*-g*-s*-c*.log')) == set(logs), 'Unexpected CPU test inventory')
     require('ELPA_FORTRAN_CONSUMER_PASS' in (proof/'fortran-smoke.log').read_text(), 'Fortran check failed')
     module_hash = checksum(package/NAME)
+    gpu_release = json.loads((original/'release.json').read_text())
+    previous_module_hash = checksum(original/NAME)
+    require(previous_module_hash == gpu_release['module_sha256'], 'Previous auto module changed')
     accounting = {}
     for line in (args.module_checks/'accounting.txt').read_text().splitlines():
         job, partition, state, code, elapsed, node = line.split('|')
@@ -70,11 +75,16 @@ def main():
                                     ('8V100V0','avx2','nvidia'), ('DSPRHBM','avx512','cpu')]:
         folder = args.module_checks/partition
         job = (folder/'job.id').read_text().strip()
-        require(accounting[job]['state'] == 'COMPLETED' and accounting[job]['exit_code'] == '0:0',
+        require(accounting[job]['partition'] == partition and
+                accounting[job]['state'] == 'COMPLETED' and accounting[job]['exit_code'] == '0:0',
                 f'Module job did not complete: {job}')
         require((folder/'module.sha256').read_text().split()[0] == module_hash, 'Untested module')
         require((folder/'passed.txt').read_text().strip() ==
                 f'ELPA_PARTITION_MODULE_PASS {partition} {isa} {backend}', 'Module check failed')
+        require(f'elpa/{NAME}' in (folder/'modules.txt').read_text().split(), 'Wrong module name loaded')
+        if backend == 'nvidia':
+            require((folder/'legacy-unload.txt').read_text().strip() == 'ELPA_LEGACY_AUTO_UNLOAD_PASS',
+                    'Legacy auto module upgrade/unload check is missing')
         numeric.parse_case((folder/'numeric.log').read_text(), 2, int(backend == 'nvidia'), 2, 1, 1)
         expected = f'/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-{isa}/{backend}/lib/libelpa_openmp.so.19'
         traces = list(folder.glob('loader.*'))
@@ -87,6 +97,8 @@ def main():
         module_results[partition] = dict(job_id=job, **accounting[job], isa=isa, backend=backend)
     if args.verify_only:
         print(json.dumps(dict(status='accepted', job_id=build_job, numeric_passes=24,
+                              module_name=NAME, module_sha256=module_hash,
+                              previous_module_sha256=previous_module_hash,
                               max_errors=maxima, partition_module_checks=module_results), indent=2))
         return
     out = args.output
@@ -95,23 +107,38 @@ def main():
     for name in ['install.py', 'install.sh', 'README.md', NAME]:
         shutil.copyfile(package/name, out/name)
         (out/name).chmod(0o644)
-    squash = run/'work/cpu-handoff.squashfs'
-    with squash.open('xb') as stream:
-        subprocess.run(['/opt/devtools/apptainer/1.4.4/bin/apptainer','sif','dump','1',str(sif)],stdout=stream,check=True)
-    extracted = run/'work/cpu-handoff-root'
-    require(not extracted.exists(), 'CPU handoff extraction already exists')
-    subprocess.run(['unsquashfs','-no-progress','-no-xattrs','-processors','2','-d',str(extracted),str(squash),str(PREFIX).lstrip('/')],check=True)
+    if args.payload_from:
+        previous = args.payload_from.resolve(strict=True)
+        accepted = json.loads((previous/'release.json').read_text())
+        require(accepted['sif_sha256'] == checksum(sif) and accepted['prefix'] == str(PREFIX),
+                'Existing payload came from a different CPU build')
+        require(checksum(previous/'cpu-manifest.json') == accepted['manifest_sha256'] ==
+                checksum(package/'cpu-manifest.json'), 'Existing CPU manifest changed')
+        verify(previous/'payload/cpu', json.loads((previous/'cpu-manifest.json').read_text()))
+        source = previous/'payload/cpu'
+    else:
+        scratch = run/'work'/f'cpu-handoff-{out.name}'
+        scratch.mkdir()
+        squash = scratch/'root.squashfs'
+        with squash.open('xb') as stream:
+            subprocess.run(['/opt/devtools/apptainer/1.4.4/bin/apptainer','sif','dump','1',str(sif)],stdout=stream,check=True)
+        extracted = scratch/'root'
+        subprocess.run(['unsquashfs','-no-progress','-no-xattrs','-processors','2','-d',str(extracted),str(squash),str(PREFIX).lstrip('/')],check=True)
+        source = extracted/str(PREFIX).lstrip('/')
     payload = out/'payload/cpu'
     payload.parent.mkdir()
-    shutil.copytree(extracted/str(PREFIX).lstrip('/'), payload, symlinks=True)
+    shutil.copytree(source, payload, symlinks=True)
     require((payload/'share/sai/backend').read_text().strip() == 'cpu', 'Unexpected backend')
     write_json(out/'cpu-manifest.json', inventory(payload))
-    gpu_release = json.loads((original/'release.json').read_text())
     for isa in ('avx2', 'avx512'):
         shutil.copyfile(original/f'{isa}-manifest.json', out/f'{isa}-manifest.json')
     shutil.copytree(proof, out/'evidence/cpu', ignore=shutil.ignore_patterns('smoke','fortran-smoke'))
     shutil.copytree(args.module_checks, out/'evidence/partition-module', ignore=shutil.ignore_patterns('smoke'))
-    release = dict(version='2026.02.001', prefix=str(PREFIX), module_sha256=module_hash,
+    for path in (out/'evidence').rglob('*'):
+        if not path.is_symlink():
+            path.chmod(0o755 if path.is_dir() else 0o644)
+    release = dict(version='2026.02.001', prefix=str(PREFIX), module_name=NAME, module_sha256=module_hash,
+                   previous_module_sha256=previous_module_hash,
                    sif=str(sif), sif_sha256=checksum(sif), job_id=build_job,
                    manifest_sha256=checksum(out/'cpu-manifest.json'), numeric_passes=24, max_errors=maxima,
                    gpu_prerequisites=gpu_release['builds'], partition_module_checks=module_results,

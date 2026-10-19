@@ -18,11 +18,12 @@ hostname > "$output/hostname.txt"
 scontrol show job -o "$SLURM_JOB_ID" > "$output/allocation.txt"
 if [[ "$partition" == DSPRHBM ]]; then
   # Freeze controls separately from the accepted build recipe.
-  mkdir -p "$cpu_run/work/partition-control"
-  cp "$package"/{check-partition.sh,2026.02.001-2603-gnu-partition,smoke.c} "$cpu_run/work/partition-control/"
+  check=auto-module-$SLURM_JOB_ID
+  mkdir -p "$cpu_run/work/$check/control"
+  cp "$package"/{check-partition.sh,2026.02.001-2603-gnu-auto,smoke.c} "$cpu_run/work/$check/control/"
   bash "$cpu_run/control/container.sh" verify "$cpu_run" dsprhbm \
-    bash /workspace/partition-control/check-partition.sh /workspace/partition-control /workspace/partition-check DSPRHBM
-  cp -a "$cpu_run/work/partition-check/." "$output/"
+    bash "/workspace/$check/control/check-partition.sh" "/workspace/$check/control" "/workspace/$check/results" DSPRHBM
+  cp -a "$cpu_run/work/$check/results/." "$output/"
 else
   set +u
   source "/opt/sai_config/mps_mapping.d/$partition.bash"

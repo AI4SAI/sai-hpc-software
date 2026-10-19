@@ -9,11 +9,12 @@ export OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=1
 export OMPI_CC=/usr/bin/gcc OMPI_CXX=/usr/bin/g++ OMPI_FC=/usr/bin/gfortran
 export OMPI_MCA_plm_slurm_args=--external-launcher PRTE_MCA_plm_slurm_args=--external-launcher
 mkdir -p "$output/modulefiles/elpa"
-name=2026.02.001-2603-gnu-partition
+name=2026.02.001-2603-gnu-auto
 cp "$package/$name" "$output/modulefiles/elpa/$name"
 source /etc/profile.d/lmod.sh
 module purge
-module use "$output/modulefiles" /opt/modules/modulefiles/devtools
+module use /opt/modules/modulefiles/devtools
+module use "$output/modulefiles"
 export SLURM_JOB_PARTITION=$partition
 module load "elpa/$name"
 set -u
@@ -28,6 +29,7 @@ prefix=/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-$isa/$backend
 [[ "$MPI_HOME" == /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-$isa ]]
 [[ "$OPENBLAS_ROOT" == /opt/devtools/saiblas/2603-gnu-$isa ]]
 cd "$output"
+printf '%s\n' "${_LMFILES_:?}" | tr ':' '\n' | grep -Fx "$output/modulefiles/elpa/$name" > modulefile.txt
 set +u
 module -t list > modules.txt 2>&1
 set -u
@@ -48,5 +50,19 @@ set +u
 module unload "elpa/$name"
 set -u
 [[ -z ${ELPA_ROOT:-} && -z ${SAI_ELPA_2603_PARTITION:-} && -z ${SAI_ELPA_2603_BACKEND:-} ]]
+if [[ "$backend" == nvidia ]]; then
+  # Exercise an existing shell across replacement of the old module in place.
+  cp "$package/legacy-auto" "$output/modulefiles/elpa/$name"
+  set +u
+  module load "elpa/$name"
+  set -u
+  [[ "$ELPA_ROOT" == "$prefix" && -z ${SAI_ELPA_2603_PARTITION:-} ]]
+  cp "$package/$name" "$output/modulefiles/elpa/$name"
+  set +u
+  module unload "elpa/$name"
+  set -u
+  [[ -z ${ELPA_ROOT:-} && -z ${SAI_ELPA_2603_ISA:-} ]]
+  printf 'ELPA_LEGACY_AUTO_UNLOAD_PASS\n' > legacy-unload.txt
+fi
 printf 'ELPA_PARTITION_MODULE_PASS %s %s %s\n' "$partition" "$isa" "$backend" > passed.txt
 cat passed.txt

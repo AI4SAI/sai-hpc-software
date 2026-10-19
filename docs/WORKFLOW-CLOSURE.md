@@ -262,6 +262,13 @@ CUDA dependencies and pointer dispatch. Four new partition-module checks
 new CPU library for DSPRHBM. The 12.81 MiB supplement passed deployment preflight;
 administrator installation and physical CPU acceptance remain pending.
 [CPU supplement and partition selector evidence](evidence/elpa-cpu-20261019/README.md).
+The administrator package now upgrades the existing `elpa/2026.02.001-2603-gnu-auto`
+name in place. Jobs `1861785`–`1861788` passed the same four-partition selections,
+fresh numerical consumers and loader checks; V100 checks also unloaded a shell's
+previous auto module after replacement. The installer first installs the CPU
+prefix, then backs up the known old module and replaces it atomically. It refuses
+unknown existing module content. The old `-partition` candidate is not installed.
+[Auto module upgrade evidence](evidence/elpa-auto-20261019/README.md).
 This does not replace CP2K's accepted private ELPA dependency.
 [Shared ELPA build, compatibility fixes and deployment evidence](evidence/elpa-site-20261018/README.md).
 

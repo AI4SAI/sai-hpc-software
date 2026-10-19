@@ -5,6 +5,7 @@ import shutil
 import subprocess
 import tempfile
 import unittest
+from unittest import mock
 
 PACKAGE = Path(__file__).resolve().parents[1]/'deployment/elpa-2026.02.001-cpu'
 spec = importlib.util.spec_from_file_location('elpa_cpu_install', PACKAGE/'install.py')
@@ -14,7 +15,7 @@ spec.loader.exec_module(deploy)
 
 @unittest.skipUnless(shutil.which('tclsh'), 'Tcl unavailable')
 class PartitionModuleTests(unittest.TestCase):
-    def evaluate(self, partition='', flags='avx2 avx512_vnni', mode='load', saved=''):
+    def evaluate(self, partition='', flags='avx2 avx512_vnni', mode='load', saved='', legacy_isa=''):
         script = r'''
 proc module-whatis {args} {}
 proc conflict {args} {}
@@ -29,15 +30,18 @@ proc file {op args} {
     if {$op eq "isfile"} {return 1}
     return [real_file $op {*}$args]
 }
-unset -nocomplain env(SLURM_JOB_PARTITION) env(SAI_ELPA_2603_PARTITION) env(ELPA_ROOT)
+unset -nocomplain env(SLURM_JOB_PARTITION) env(SAI_ELPA_2603_PARTITION) env(ELPA_ROOT) env(SAI_ELPA_2603_ISA) env(SAI_ELPA_2603_BACKEND)
 '''
         script += f'set test_mode {{{mode}}}\nset test_flags {{{flags}}}\n'
         if partition:
             script += f'set env(SLURM_JOB_PARTITION) {{{partition}}}\n'
         if saved:
             script += f'set env(SAI_ELPA_2603_PARTITION) {{{saved}}}\n'
-        script += 'if {[catch {source {'+str(PACKAGE/'2026.02.001-2603-gnu-partition')+'}} problem]} {puts stderr $problem; exit 1}\n'
-        script += 'if {[info exists env(ELPA_ROOT)]} {puts "$env(ELPA_ROOT)|$env(SAI_ELPA_2603_BACKEND)"}\n'
+        if legacy_isa:
+            script += f'set env(SAI_ELPA_2603_ISA) {{{legacy_isa}}}\n'
+            script += f'set env(ELPA_ROOT) /opt/devtools/elpa/elpa-2026.02.001-2603-gnu-{legacy_isa}/nvidia\n'
+        script += 'if {[catch {source {'+str(PACKAGE/deploy.NAME)+'}} problem]} {puts stderr $problem; exit 1}\n'
+        script += 'if {[info exists env(ELPA_ROOT)]} {puts "$env(ELPA_ROOT)|$backend"}\n'
         return subprocess.run(['tclsh'], input=script, text=True, capture_output=True)
 
     def test_partition_and_backend_selection(self):
@@ -62,6 +66,62 @@ unset -nocomplain env(SLURM_JOB_PARTITION) env(SAI_ELPA_2603_PARTITION) env(ELPA
         result = self.evaluate('16V100', 'avx2', 'remove', 'DSPRHBM')
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertTrue(result.stdout.strip().endswith('/cpu|cpu'))
+
+
+    def test_unload_previous_auto_after_in_place_upgrade(self):
+        for isa in ('avx2', 'avx512'):
+            with self.subTest(isa=isa):
+                result = self.evaluate('DSPRHBM', '', 'remove', legacy_isa=isa)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                self.assertEqual(result.stdout.strip(),
+                    f'/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-{isa}/nvidia|nvidia')
+        self.assertNotEqual(self.evaluate(mode='remove').returncode, 0)
+
+
+class AutoModuleUpgradeTests(unittest.TestCase):
+    def setUp(self):
+        self.temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temp.cleanup)
+        root = Path(self.temp.name)
+        self.package = root/'package'
+        self.package.mkdir()
+        self.module = root/'modules'/deploy.NAME
+        self.module.parent.mkdir()
+        self.module.write_bytes(b'previous accepted auto module\n')
+        (self.package/deploy.NAME).write_bytes(b'new partition-aware auto module\n')
+        self.release = dict(module_name=deploy.NAME, module_sha256=deploy.checksum(self.package/deploy.NAME),
+                            previous_module_sha256=deploy.checksum(self.module))
+        self.enterContext(mock.patch.multiple(deploy, PACKAGE=self.package, MODULE=self.module))
+
+    def test_replace_known_version_preserve_backup_and_repeat(self):
+        previous = self.module.read_bytes()
+        deploy.install_module(self.release)
+        backup = self.module.with_name(f'.{deploy.NAME}.before-{self.release["previous_module_sha256"]}')
+        self.assertEqual(backup.read_bytes(), previous)
+        self.assertEqual(deploy.checksum(self.module), self.release['module_sha256'])
+        self.assertEqual(self.module.stat().st_mode & 0o777, 0o644)
+        inode = self.module.stat().st_ino
+        deploy.install_module(self.release)
+        self.assertEqual(self.module.stat().st_ino, inode)
+        self.assertEqual(len(list(self.module.parent.iterdir())), 2)
+
+    def test_refuse_unrecognized_or_symlink_module(self):
+        self.module.write_text('administrator edits')
+        with self.assertRaisesRegex(ValueError, 'both accepted versions'):
+            deploy.install_module(self.release)
+        self.assertEqual(self.module.read_text(), 'administrator edits')
+        self.module.unlink()
+        self.module.symlink_to(self.package/deploy.NAME)
+        with self.assertRaisesRegex(ValueError, 'Symlink'):
+            deploy.install_module(self.release)
+
+    def test_failed_replace_keeps_old_module_and_no_staging_file(self):
+        previous = self.module.read_bytes()
+        with mock.patch.object(deploy.os, 'replace', side_effect=OSError('simulated failure')):
+            with self.assertRaises(OSError):
+                deploy.install_module(self.release)
+        self.assertEqual(self.module.read_bytes(), previous)
+        self.assertFalse(list(self.module.parent.glob('*.install-*')))
 
 
 class CpuInventoryTests(unittest.TestCase):

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Add the accepted CPU prefix and partition module; verify existing GPU prerequisites."""
+"""Add the accepted CPU prefix and upgrade the existing auto module to partition selection."""
 import argparse
 import hashlib
 import json
@@ -8,9 +8,10 @@ from pathlib import Path, PurePosixPath
 import shutil
 import stat
 import sys
+import tempfile
 
 PACKAGE = Path(__file__).resolve().parent
-NAME = '2026.02.001-2603-gnu-partition'
+NAME = '2026.02.001-2603-gnu-auto'
 PREFIX = Path('/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/cpu')
 MODULE = Path('/opt/modules/modulefiles/devtools/elpa') / NAME
 
@@ -73,6 +74,47 @@ def verify(root, rows):
     require(inventory(root) == rows, f'Installed content differs: {root}')
 
 
+def module_state(release):
+    plain(MODULE)
+    require(release['module_name'] == NAME, 'Unexpected module name')
+    if not MODULE.exists():
+        return None
+    digest = checksum(MODULE)
+    require(digest in {release['module_sha256'], release['previous_module_sha256']},
+            f'Existing auto module differs from both accepted versions: {MODULE}')
+    return digest
+
+
+def install_module(release):
+    previous = module_state(release)
+    if previous == release['module_sha256']:
+        return
+    if previous is not None:
+        backup = MODULE.with_name(f'.{NAME}.before-{previous}')
+        plain(backup)
+        if not backup.exists():
+            with backup.open('xb') as stream:
+                stream.write(MODULE.read_bytes())
+                stream.flush()
+                os.fsync(stream.fileno())
+            backup.chmod(0o644)
+        require(checksum(backup) == previous, f'Previous module backup differs: {backup}')
+        print(f'Previous auto module preserved: {backup}', flush=True)
+    with tempfile.NamedTemporaryFile(prefix=f'.{NAME}.install-', dir=MODULE.parent, delete=False) as stream:
+        stage = Path(stream.name)
+        try:
+            stream.write((PACKAGE/NAME).read_bytes())
+            stream.flush()
+            os.fsync(stream.fileno())
+            stage.chmod(0o644)
+            require(checksum(stage) == release['module_sha256'], 'Staged module checksum mismatch')
+            require(module_state(release) == previous, 'Auto module changed during installation')
+            os.replace(stage, MODULE)
+        finally:
+            if stage.exists():
+                stage.unlink()
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     modes = parser.add_mutually_exclusive_group()
@@ -84,9 +126,7 @@ def main():
     require(release['prefix'] == str(PREFIX), 'Unexpected CPU prefix')
     require(checksum(PACKAGE/NAME) == release['module_sha256'], 'Module checksum mismatch')
     plain(PREFIX)
-    plain(MODULE)
-    if MODULE.exists():
-        require(checksum(MODULE) == release['module_sha256'], 'Existing partition module differs')
+    installed_module = module_state(release)
     rows = manifest('cpu-manifest.json', release['manifest_sha256'])
     require(set(release['gpu_prerequisites']) == {'avx2', 'avx512'}, 'Missing GPU prerequisites')
     for isa, build in release['gpu_prerequisites'].items():
@@ -96,13 +136,15 @@ def main():
         print(f'{isa}: existing GPU prerequisite verified', flush=True)
     if args.verify:
         verify(PREFIX, rows)
-        require(MODULE.is_file(), 'Partition module is missing')
-        print('Physical CPU ELPA and partition module verified; compute-node runtime check is separate.')
+        require(installed_module == release['module_sha256'], 'Auto module has not been upgraded')
+        print('Physical CPU ELPA and partition-aware auto module verified; compute-node runtime check is separate.')
         return
     verify(PACKAGE/'payload/cpu', rows)
     if PREFIX.exists():
         verify(PREFIX, rows)
     print(f'CPU payload: {sum(row.get("size", 0) for row in rows)/1024**2:.2f} MiB verified', flush=True)
+    if installed_module == release['previous_module_sha256']:
+        print('Existing auto module: accepted previous version; will back up and replace after CPU installation.', flush=True)
     if not args.install:
         print('Preflight passed. Administrator: bash install.sh --install')
         return
@@ -113,10 +155,7 @@ def main():
         verify(stage, rows)
         require(not PREFIX.exists(), 'CPU destination appeared during copy')
         stage.rename(PREFIX)
-    if not MODULE.exists():
-        with MODULE.open('xb') as stream:
-            stream.write((PACKAGE/NAME).read_bytes())
-        MODULE.chmod(0o644)
+    install_module(release)
     print(f'Installed {PREFIX} and {MODULE}')
 
 

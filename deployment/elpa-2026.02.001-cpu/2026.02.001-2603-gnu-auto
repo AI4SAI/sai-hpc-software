@@ -6,24 +6,35 @@ proc ModulesHelp {} {
 module-whatis "ELPA 2026.02.001; GNU/OpenMP; CPU on DSPRHBM, CUDA on V100; partition selector"
 conflict elpa
 
+set legacy_unload 0
 if {[module-info mode load]} {
     if {![info exists env(SLURM_JOB_PARTITION)]} {
-        error "Load elpa/2026.02.001-2603-gnu-partition inside a Slurm job or allocation"
+        error "Load elpa/2026.02.001-2603-gnu-auto inside a Slurm job or allocation"
     }
     set partition $env(SLURM_JOB_PARTITION)
 } elseif {[module-info mode remove]} {
-    if {![info exists env(SAI_ELPA_2603_PARTITION)]} {
+    if {[info exists env(SAI_ELPA_2603_PARTITION)]} {
+        set partition $env(SAI_ELPA_2603_PARTITION)
+    } elseif {[info exists env(SAI_ELPA_2603_ISA)] && [info exists env(ELPA_ROOT)] &&
+              $env(SAI_ELPA_2603_ISA) in {avx2 avx512} &&
+              $env(ELPA_ROOT) eq "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-$env(SAI_ELPA_2603_ISA)/nvidia"} {
+        # A shell may still have the previous auto module loaded during upgrade.
+        set isa $env(SAI_ELPA_2603_ISA)
+        set backend nvidia
+        set legacy_unload 1
+    } else {
         error "Missing the loaded ELPA partition identity"
     }
-    set partition $env(SAI_ELPA_2603_PARTITION)
 } else {
     return
 }
-switch -- $partition {
-    16V100 - 8V100V0 {set isa avx2; set backend nvidia}
-    4V100 {set isa avx512; set backend nvidia}
-    DSPRHBM {set isa avx512; set backend cpu}
-    default {error "Unsupported ELPA partition: $partition"}
+if {!$legacy_unload} {
+    switch -- $partition {
+        16V100 - 8V100V0 {set isa avx2; set backend nvidia}
+        4V100 {set isa avx512; set backend nvidia}
+        DSPRHBM {set isa avx512; set backend cpu}
+        default {error "Unsupported ELPA partition: $partition"}
+    }
 }
 set prefix /opt/devtools/elpa/elpa-2026.02.001-2603-gnu-${isa}/${backend}
 if {[module-info mode load]} {
@@ -37,9 +48,11 @@ if {[module-info mode load]} {
     }
 }
 module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto saiblas/2603-gnu-auto
-setenv SAI_ELPA_2603_PARTITION $partition
+if {!$legacy_unload} {
+    setenv SAI_ELPA_2603_PARTITION $partition
+    setenv SAI_ELPA_2603_BACKEND $backend
+}
 setenv SAI_ELPA_2603_ISA $isa
-setenv SAI_ELPA_2603_BACKEND $backend
 setenv ELPA_ROOT $prefix
 prepend-path PATH $prefix/bin
 prepend-path LD_LIBRARY_PATH $prefix/lib

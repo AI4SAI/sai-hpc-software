@@ -16,7 +16,9 @@ DSPRHBM 的主机数组接口也通过 24 次 CPU 求解（`1847682`），但
 
 2026-10-19：已为此限制构建并验收[纯 CPU 补充包及分区 module](../elpa-2026.02.001-cpu/README.md)。
 新 CPU 库的原始显式 C 接口通过全部 24 次求解，待管理员新增安装到 `-gnu-avx512/cpu`；
-使用新 `elpa/2026.02.001-2603-gnu-partition` 即可让 DSPRHBM 选择该库。
+CPU 补充包会升级现有 `elpa/2026.02.001-2603-gnu-auto`，让它按分区选择库，
+DSPRHBM 使用 CPU 版，其余三个 V100 分区使用相应 GPU 版。下文和本目录脚本保留
+最初 GPU 部署的验收状态；升级后请使用补充包的安装器核对物理文件。
 
 沿用集群 `elpa/2026.02.001-2603-gnu` 的上游源码、GCC/GFortran 13.3.0、
 OpenMPI 5.0.10、CUDA 12.9.1 / NVHPC 26.3、OpenBLAS 0.3.32 和 ScaLAPACK 2.2.3。
