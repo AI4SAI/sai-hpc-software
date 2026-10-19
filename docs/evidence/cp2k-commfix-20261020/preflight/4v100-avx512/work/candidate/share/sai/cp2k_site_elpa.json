@@ -1,0 +1,106 @@
+{
+  "schema": 1,
+  "source_sha256": "a379f27f4dbd27b2ee45017afec656d064301e97150c874649bdfd64957b75ed",
+  "variants": {
+    "avx2": {
+      "files": {
+        "include/elpa_openmp-2026.02.001/elpa/elpa.h": "774a386dc15d625130293ce072327f09256b4ea7d6947bd8bfe8226b35a98a14",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_configured_options.h": "378030caab2305ac62cb296cfd14898d5c806e994cde45c55cdf3de91bafaf80",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_constants.h": "f35c44b4fb02129abf4465038b1f0f15128b2eef598289c5507931a345c442af",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_explicit_name.h": "38d1d27afad37e34f7654d4042078e12fc6ff00751bdaf020e5c338576615dd6",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_generated.h": "bf69a3c12bff675e6eb6c5643aeaacb6bf035e4f783b7c551dd2bc8eb4ed0e28",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_generated_c_api.h": "daf6070fae7ab0857f8b26fcff581e8f2608f4841d25fec9f2cb877d1eb4933e",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_generic.h": "9491ca60a7d71fb84387bf2f9ffa66cec74c4930322ef73710510801b1431161",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_simd_constants.h": "275b9d881a5c9c41c3e6b4c74ebeb8d06a6def29ef48fc33022cd55829dacd1d",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_version.h": "60087aac7c6679db9823b2b51e29a95a55387904290d64abd0d287d6cd06e053",
+        "include/elpa_openmp-2026.02.001/modules/elpa.mod": "300373d5738600f40c9cfe75e9115fc2d5d2e749f2a75ea306e3a6076da8e286",
+        "include/elpa_openmp-2026.02.001/modules/elpa_api.mod": "6f172b58d5cf03f0dee622c01924ffce065c84684b0d867f931b1a5ff40e5150",
+        "include/elpa_openmp-2026.02.001/modules/elpa_constants.mod": "b58f516928cf550386783daeecea10f1517b1d3e6781cafae9797bbb989ed1cc",
+        "include/elpa_openmp-2026.02.001/src/helpers/lapack_interfaces.h": "80de90dfd3369212d1392d0f3e4fd5e8beb32ac33810e0a93e32f1beae2d1a83",
+        "include/elpa_openmp-2026.02.001/src/helpers/scalapack_interfaces.h": "8227fe93308ac6d3eee6f0f774670aaeda47a1f2fd7ba4913595ea302e1a5683",
+        "lib/libelpa_openmp.la": "00bbf05a670ca0c1fc5f6c8351bcc14a1c53c27c36c54b6045870686d572d1d0",
+        "lib/libelpa_openmp.so.19.5.1": "6f0233529b800c67acb5a54bdfc595f03e94663baed261f7e50add27f8ce8426",
+        "lib/pkgconfig/elpa_openmp.pc": "181d7647c3b324e103735a2a5cc3063472647f5ea9956a151e4a353a25989948",
+        "share/sai/configure-command.txt": "49c4606b42418c7fd2ef3d8f0bb884ca2691ca4df3b295ec7f84bc9c632736ea",
+        "share/sai/cuda-aware-cpu.patch": "aaa3f15cee9024a2e8b92be22c32da9eecd0ae2be2b475d9cd168707631041ae",
+        "share/sai/mpi-communicator-fix.json": "e315148a23349a3ab94fd2345582ec1683f2162ddd81c1709fc057d14db7cb7c",
+        "share/sai/mpi-communicator.patch": "fd4cca359af5bb559b2dc2ab29bd272919c8fd2f7873b2072c65f9dd26536bac",
+        "share/sai/recipe.sha256": "7d5a3eb52aadecd82b5fc51b52dd747290a8c4394381fa4eccfea0972c02ac36"
+      },
+      "manifest_sha256": "77a5b8df32f0724b492ce8555fb62cef1264864b3a77c11bf46914e26c875bfe",
+      "prefix": "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx2/nvidia",
+      "symlinks": {
+        "include/elpa": "elpa_openmp-2026.02.001/elpa",
+        "lib/libelpa_openmp.so": "libelpa_openmp.so.19.5.1",
+        "lib/libelpa_openmp.so.19": "libelpa_openmp.so.19.5.1"
+      }
+    },
+    "avx512": {
+      "files": {
+        "include/elpa_openmp-2026.02.001/elpa/elpa.h": "774a386dc15d625130293ce072327f09256b4ea7d6947bd8bfe8226b35a98a14",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_configured_options.h": "378030caab2305ac62cb296cfd14898d5c806e994cde45c55cdf3de91bafaf80",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_constants.h": "97050ebb26164555bdda0a2b65f15a64f86c29d2e74aca80dc3d77046e90584e",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_explicit_name.h": "38d1d27afad37e34f7654d4042078e12fc6ff00751bdaf020e5c338576615dd6",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_generated.h": "bf69a3c12bff675e6eb6c5643aeaacb6bf035e4f783b7c551dd2bc8eb4ed0e28",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_generated_c_api.h": "daf6070fae7ab0857f8b26fcff581e8f2608f4841d25fec9f2cb877d1eb4933e",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_generic.h": "9491ca60a7d71fb84387bf2f9ffa66cec74c4930322ef73710510801b1431161",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_simd_constants.h": "275b9d881a5c9c41c3e6b4c74ebeb8d06a6def29ef48fc33022cd55829dacd1d",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_version.h": "60087aac7c6679db9823b2b51e29a95a55387904290d64abd0d287d6cd06e053",
+        "include/elpa_openmp-2026.02.001/modules/elpa.mod": "388e97bcc25a0a63e098a1aaa3b95304015a63996efa307bbcc532ed9c8f1543",
+        "include/elpa_openmp-2026.02.001/modules/elpa_api.mod": "8a4bfcc31fd9fbe4e025c8c787f5d7ebcbdca8cfb5836cda83bb3b6deac1ab0d",
+        "include/elpa_openmp-2026.02.001/modules/elpa_constants.mod": "4abaad5dcefc081753ff7edcdec8e1305a92b8ced8fe363457b6540ad0d7e8d7",
+        "include/elpa_openmp-2026.02.001/src/helpers/lapack_interfaces.h": "80de90dfd3369212d1392d0f3e4fd5e8beb32ac33810e0a93e32f1beae2d1a83",
+        "include/elpa_openmp-2026.02.001/src/helpers/scalapack_interfaces.h": "8227fe93308ac6d3eee6f0f774670aaeda47a1f2fd7ba4913595ea302e1a5683",
+        "lib/libelpa_openmp.la": "6b756a0f55aec46e7314fbac215fcd7a22d569e383969f88ff22d1b18d2c57c0",
+        "lib/libelpa_openmp.so.19.5.1": "7eda04e2afae8762b81afdfd0937c6476829032a23b9224270846f83e755a01e",
+        "lib/pkgconfig/elpa_openmp.pc": "e7d0d59d475aed38a9f5234f7d6621daeaa88bece60fb457199d6757859463f3",
+        "share/sai/configure-command.txt": "94a2162dcb4a9e09b4643b3df660cb79754d236f20cc08f1238fa21686bc5778",
+        "share/sai/cuda-aware-cpu.patch": "aaa3f15cee9024a2e8b92be22c32da9eecd0ae2be2b475d9cd168707631041ae",
+        "share/sai/mpi-communicator-fix.json": "e315148a23349a3ab94fd2345582ec1683f2162ddd81c1709fc057d14db7cb7c",
+        "share/sai/mpi-communicator.patch": "fd4cca359af5bb559b2dc2ab29bd272919c8fd2f7873b2072c65f9dd26536bac",
+        "share/sai/recipe.sha256": "7d5a3eb52aadecd82b5fc51b52dd747290a8c4394381fa4eccfea0972c02ac36"
+      },
+      "manifest_sha256": "b0696b457a9cf58e463cd68caf0753f97eba29a6f9a995844ea556becbe679a2",
+      "prefix": "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/nvidia",
+      "symlinks": {
+        "include/elpa": "elpa_openmp-2026.02.001/elpa",
+        "lib/libelpa_openmp.so": "libelpa_openmp.so.19.5.1",
+        "lib/libelpa_openmp.so.19": "libelpa_openmp.so.19.5.1"
+      }
+    },
+    "cpu": {
+      "files": {
+        "include/elpa_openmp-2026.02.001/elpa/elpa.h": "774a386dc15d625130293ce072327f09256b4ea7d6947bd8bfe8226b35a98a14",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_configured_options.h": "fce88b3f5c327ca4b9febb8c4a6081af4992c9a937abc40409ef4b9a2104398e",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_constants.h": "08498be5675342f244503caf9b822e6466d5d91e0e674b4a508a72e85f4db4d5",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_explicit_name.h": "38d1d27afad37e34f7654d4042078e12fc6ff00751bdaf020e5c338576615dd6",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_generated.h": "bf69a3c12bff675e6eb6c5643aeaacb6bf035e4f783b7c551dd2bc8eb4ed0e28",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_generated_c_api.h": "daf6070fae7ab0857f8b26fcff581e8f2608f4841d25fec9f2cb877d1eb4933e",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_generic.h": "9491ca60a7d71fb84387bf2f9ffa66cec74c4930322ef73710510801b1431161",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_simd_constants.h": "275b9d881a5c9c41c3e6b4c74ebeb8d06a6def29ef48fc33022cd55829dacd1d",
+        "include/elpa_openmp-2026.02.001/elpa/elpa_version.h": "60087aac7c6679db9823b2b51e29a95a55387904290d64abd0d287d6cd06e053",
+        "include/elpa_openmp-2026.02.001/modules/elpa.mod": "388e97bcc25a0a63e098a1aaa3b95304015a63996efa307bbcc532ed9c8f1543",
+        "include/elpa_openmp-2026.02.001/modules/elpa_api.mod": "8a4bfcc31fd9fbe4e025c8c787f5d7ebcbdca8cfb5836cda83bb3b6deac1ab0d",
+        "include/elpa_openmp-2026.02.001/modules/elpa_constants.mod": "4abaad5dcefc081753ff7edcdec8e1305a92b8ced8fe363457b6540ad0d7e8d7",
+        "include/elpa_openmp-2026.02.001/src/helpers/lapack_interfaces.h": "80de90dfd3369212d1392d0f3e4fd5e8beb32ac33810e0a93e32f1beae2d1a83",
+        "include/elpa_openmp-2026.02.001/src/helpers/scalapack_interfaces.h": "8227fe93308ac6d3eee6f0f774670aaeda47a1f2fd7ba4913595ea302e1a5683",
+        "lib/libelpa_openmp.la": "a182235d7864c0504e60343c3c953d1b0ef009e2c9c75f88b8e7314de894a136",
+        "lib/libelpa_openmp.so.19.5.1": "2a06d3aec623e5d35a63647ae357d2e165997560c6d784da1520cc2cde57eadc",
+        "lib/pkgconfig/elpa_openmp.pc": "45ecb627a93c99cc91da726739d4318a219cf263e52d4ef037b4bfa25b80d137",
+        "share/sai/configure-command.txt": "cd74ec9e57e284a2c8312b90a55b3bf9c568e8e4dc2650d8a140f952c5b1d449",
+        "share/sai/cuda-aware-cpu.patch": "aaa3f15cee9024a2e8b92be22c32da9eecd0ae2be2b475d9cd168707631041ae",
+        "share/sai/mpi-communicator-fix.json": "e315148a23349a3ab94fd2345582ec1683f2162ddd81c1709fc057d14db7cb7c",
+        "share/sai/mpi-communicator.patch": "fd4cca359af5bb559b2dc2ab29bd272919c8fd2f7873b2072c65f9dd26536bac",
+        "share/sai/recipe.sha256": "86b8e6955be62529281a97d90dc76b1198306d6866a42a35341e52c406b48964"
+      },
+      "manifest_sha256": "dec7d3c62b20a0a1498686353fa95480d82a10a014fc8a9df0812a44bf8b8b6a",
+      "prefix": "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/cpu",
+      "symlinks": {
+        "include/elpa": "elpa_openmp-2026.02.001/elpa",
+        "lib/libelpa_openmp.so": "libelpa_openmp.so.19.5.1",
+        "lib/libelpa_openmp.so.19": "libelpa_openmp.so.19.5.1"
+      }
+    }
+  },
+  "version": "2026.02.001"
+}

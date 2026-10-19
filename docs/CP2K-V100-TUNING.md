@@ -231,3 +231,13 @@ a recommendation. No speedup is inferred from replacing the dependency.
 Source: [SCF dispatch](https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/qs_scf_diagonalization.F#L236),
 [cuSOLVER generalized branch](https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/fm/cp_fm_diag.F#L1503),
 and [upstream PR #5108](https://github.com/cp2k/cp2k/pull/5108).
+
+The October 20 [experiment runner](../deployment/cp2k-diagonalization/README.md)
+implements this comparison for 64/216 periodic waters, one MPI rank per V100,
+the allocated physical CPU cores, one warmup and three alternating repeats.
+It checks actual generalized/standard/ELPA/OT dispatch, energy/force agreement,
+SCF convergence and affinity before computing timing summaries. GPU memory and
+utilization are sampled separately. A watcher can submit the larger experiment
+only after the new recipe's science acceptance is recorded. The old accepted
+2026.2 SIF is used for a separate 64-water script pilot; that pilot is not
+acceptance of the repaired-shared-ELPA CP2K build.

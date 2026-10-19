@@ -55,8 +55,14 @@ scientific references and inputs still match their pinned hashes.
   passed preflight. On October 20 the physical files matched all three repaired
   inventories. A simplified 36-line selector passed four native checks
   `1864706`–`1864709`, including 456 solves and zero remaining tracked GPU
-  communicators. Public module replacement and CP2K lock migration remain
-  pending. [Repair and deployment evidence](evidence/elpa-commfix-20261019/README.md),
+  communicators. The administrator then replaced the public module; jobs
+  `1865327`–`1865330` verified it on all four partitions, and GCC 14.3/CMake
+  probes `1865334`–`1865337` passed with the repaired lock. Fresh release
+  workflow [39293908513](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39293908513)
+  submitted four dependency builds using recipe `38dfba7e3ed7`; application
+  compilation and new CP2K acceptance remain pending.
+  [Lock migration and rebuild](evidence/cp2k-commfix-20261020/README.md).
+  [Repair and deployment evidence](evidence/elpa-commfix-20261019/README.md),
   [simplified module and repaired physical-library acceptance](evidence/elpa-simple-module-20261020/README.md).
   The old development job `1861248`, frozen at controller `a7dd890`, failed
   CMake because that recipe omitted wignernj. The current recipe contains

@@ -97,7 +97,7 @@ GPU 分区各 48 次，DSPRHBM 24 次。覆盖原始显式 C 接口、实数/复
 这些结果不代表大体系或跨节点性能测试。
 
 ```bash
-bash deployment/elpa-2026.02.001-cpu/submit-native-checks.sh all
+bash deployment/elpa-2026.02.001-commfix/submit-module-checks.sh public
 ```
 
 [旧库物理验收报告与 205 份原始记录](evidence/elpa-auto-native-20261019/README.md)；
@@ -165,7 +165,7 @@ CPU 路径为 0/0/0。原有实数/复数、ELPA1/2、非阻塞选项、C/Fortra
 管理员包在 `/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-commfix`，
 约 52.83 MiB，保留三个原安装前缀和现有 `-auto` 名称。安装器先校验、暂存、备份旧树，
 再逐个切换；管理员执行 `bash install.sh --check`、`--install`、`--verify`。
-三套库已在物理环境通过新的资源释放复验；再次安装会跳过库，只更新简化后的 module。
+三套库和简化 module 均已安装并通过公共入口复验；重复安装会跳过内容一致的文件。
 CP2K 依赖锁已更新至三套修复清单，并加入 communicator 补丁与修复来源文件的哈希。
 新 release 构建使用新的 recipe 身份，保留 GCC 14.3、SM70 和现有科学功能。
 当前旧哈希下的 CP2K 集成构建不能直接作为修复后的验收。
