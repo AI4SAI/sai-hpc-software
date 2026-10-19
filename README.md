@@ -242,9 +242,11 @@ partitions. The NVIDIA library's explicit C pointer-detection API requires a CUD
 driver on DSPRHBM. A [CPU-only supplement](deployment/elpa-2026.02.001-cpu/README.md)
 now passes all 24 explicit-API CPU solves without that dependency; it upgrades the
 existing `elpa/2026.02.001-2603-gnu-auto` module to select CPU on DSPRHBM and the
-accepted GPU libraries on V100. Container and
-four-partition module acceptance are complete; administrator installation of the
-new CPU prefix and subsequent physical CPU acceptance remain pending.
+accepted GPU libraries on V100. Administrator installation is complete. Physical
+jobs `1861947`–`1861950` passed all 168 CPU/GPU solves across the four partitions,
+including the original explicit C APIs on DSPRHBM, fresh Fortran consumers and
+actual ELPA/MPI/BLAS/HCOLL loader evidence. See the
+[native acceptance report](docs/evidence/elpa-auto-native-20261019/README.md).
 
 ## Local checks
 

@@ -45,7 +45,7 @@ def parse_case(text, ranks, gpu, solver, complex_value, nbc):
     return maxima
 
 
-def validate(root, partitions=None, api='explicit'):
+def validate(root, partitions=None, api='explicit', release_path=None):
     partitions = list(PARTITIONS) if partitions is None else partitions
     require(partitions and len(set(partitions)) == len(partitions) and
             set(partitions) <= set(PARTITIONS), 'Invalid partition selection')
@@ -57,8 +57,9 @@ def validate(root, partitions=None, api='explicit'):
         require(sha256(control/name) == digest, f'Changed frozen control: {name}')
     package = Path(__file__).resolve().parent
     release = json.loads((control/'release.json').read_text())
-    require(release == json.loads((package/'release.json').read_text()), 'Release identity changed')
+    require(release == json.loads((release_path or package/'release.json').read_text()), 'Release identity changed')
     require(sha256(control/MODULE.split('/')[1]) == release['module_sha256'], 'Wrong module')
+    cpu_supplement = 'gpu_prerequisites' in release
     jobs = {}
     for line in (root/'accounting.txt').read_text().splitlines():
         job, partition, state, code, elapsed, node = line.split('|')
@@ -90,10 +91,27 @@ def validate(root, partitions=None, api='explicit'):
                 'Fortran consumer failed')
         require((output/'pkg-version.txt').read_text().strip() == release['version'], 'Wrong version')
         require(MODULE in (output/'modules.txt').read_text().splitlines(), 'Public module not loaded')
-        require('avx2: physical installation verified' in (output/'installed-files.txt').read_text()
-                and 'avx512: physical installation verified' in (output/'installed-files.txt').read_text(),
-                'Installed inventories unverified')
-        prefix = release['builds'][isa]['prefix']
+        backend = 'cpu' if cpu_supplement and partition == 'DSPRHBM' else 'nvidia'
+        installed = (output/'installed-files.txt').read_text()
+        if cpu_supplement:
+            require(all(text in installed for text in
+                        ['avx2: existing GPU prerequisite verified',
+                         'avx512: existing GPU prerequisite verified',
+                         'Physical CPU ELPA and partition-aware auto module verified;']),
+                    'Installed CPU/GPU inventories or auto module unverified')
+            require((output/'backend.txt').read_text().strip() == backend, 'Wrong ELPA backend')
+            require((output/'modulefile.txt').read_text().strip() ==
+                    '/opt/modules/modulefiles/devtools/'+MODULE, 'Physical public module not used')
+            require((output/'module.sha256').read_text().split()[0] == release['module_sha256'],
+                    'Installed auto module changed')
+            prefix = release['prefix'] if backend == 'cpu' else release['gpu_prerequisites'][isa]['prefix']
+        else:
+            require('avx2: physical installation verified' in installed
+                    and 'avx512: physical installation verified' in installed,
+                    'Installed inventories unverified')
+            prefix = release['builds'][isa]['prefix']
+        require(prefix == f'/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-{isa}/{backend}',
+                'Unexpected ELPA prefix')
         expected_libs = [prefix+'/lib/libelpa_openmp.so.19',
                          f'/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-{isa}/lib/libmpi.so.40',
                          f'/opt/devtools/saiblas/2603-gnu-{isa}/lib/libopenblas.so.0',
@@ -102,6 +120,12 @@ def validate(root, partitions=None, api='explicit'):
             text = (output/name).read_text()
             require('not found' not in text and '/opt/mellanox/hcoll' not in text,
                     f'Unresolved or legacy library: {name}')
+        if backend == 'cpu':
+            require(not re.search(r'lib(?:cuda|cublas|cusolver)',
+                                 (output/'ldd.txt').read_text() + (output/'dynamic.txt').read_text()),
+                    'CPU ELPA still depends on CUDA')
+            require(not re.search(r'is_device_ptr|cudaPointerGetAttributes', (output/'symbols.txt').read_text()),
+                    'CPU ELPA retained CUDA pointer dispatch')
         require(all(path in (output/'consumer-ldd.txt').read_text() for path in expected_libs),
                 'Consumer linked unexpected libraries')
         loaders = sorted(output.glob('loader.*'))
@@ -124,7 +148,7 @@ def validate(root, partitions=None, api='explicit'):
                                 maxima[key] = max(maxima[key], errors[key])
         require({p.name for p in output.glob('r*-g*-s*-c*-nbc*.log')} == expected_logs,
                 'Unexpected numerical case inventory')
-        result['partitions'][partition] = dict(job_id=job_id, **job, isa=isa, prefix=prefix,
+        result['partitions'][partition] = dict(job_id=job_id, **job, isa=isa, backend=backend, prefix=prefix,
             numerical_solves=2*len(expected_logs), max_errors=maxima, loaded_libraries=expected_libs)
     result['total_solves'] = sum(p['numerical_solves'] for p in result['partitions'].values())
     evidence = [p for p in root.rglob('*') if p.is_file() and
@@ -138,5 +162,6 @@ if __name__ == '__main__':
     parser.add_argument('results', type=Path)
     parser.add_argument('--partitions', nargs='+', choices=list(PARTITIONS), default=list(PARTITIONS))
     parser.add_argument('--api', choices=['explicit', 'host'], default='explicit')
+    parser.add_argument('--release', type=Path, help='Pin the installed CPU supplement release metadata')
     args = parser.parse_args()
-    print(json.dumps(validate(args.results.resolve(), args.partitions, args.api), indent=2, sort_keys=True))
+    print(json.dumps(validate(args.results.resolve(), args.partitions, args.api, args.release), indent=2, sort_keys=True))

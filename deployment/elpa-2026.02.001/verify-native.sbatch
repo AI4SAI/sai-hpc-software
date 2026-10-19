@@ -11,6 +11,8 @@ output=${2:?results directory}
 work_root=${3:?home-backed work directory}
 isa=${4:?expected ISA}
 gpu_max=${5:?0 for CPU-only or 1 for CPU and GPU}
+backend=${6:-nvidia}
+partition=${SLURM_JOB_PARTITION:?}
 api=${ELPA_NATIVE_C_API:-explicit}
 case "$api" in explicit|host) ;; *) exit 2 ;; esac
 [[ -d ${HOME:?Slurm must preserve the executing account home for OpenMPI} ]]
@@ -31,7 +33,12 @@ fi
 set -u
 [[ "$isa" == avx2 || "$isa" == avx512 ]]
 [[ "$gpu_max" == 0 || "$gpu_max" == 1 ]]
-[[ "$ELPA_ROOT" == /opt/devtools/elpa/elpa-2026.02.001-2603-gnu-$isa/nvidia ]]
+[[ "$backend" == cpu || "$backend" == nvidia ]]
+[[ "$backend" != cpu || "$gpu_max" == 0 ]]
+[[ "$ELPA_ROOT" == /opt/devtools/elpa/elpa-2026.02.001-2603-gnu-$isa/$backend ]]
+if [[ $# == 6 ]]; then
+  [[ "$SAI_ELPA_2603_BACKEND" == "$backend" && "$SAI_ELPA_2603_PARTITION" == "$partition" ]]
+fi
 [[ "$MPI_HOME" == /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-$isa ]]
 [[ "$OPENBLAS_ROOT" == /opt/devtools/saiblas/2603-gnu-$isa ]]
 export OMP_NUM_THREADS=2 OPENBLAS_NUM_THREADS=1
@@ -39,6 +46,10 @@ export OMPI_CC=/usr/bin/gcc OMPI_CXX=/usr/bin/g++ OMPI_FC=/usr/bin/gfortran
 export OMPI_MCA_plm_slurm_args=--external-launcher PRTE_MCA_plm_slurm_args=--external-launcher
 cd "$output"
 python3 "$control/install.py" --verify > installed-files.txt
+name=2026.02.001-2603-gnu-auto
+printf '%s\n' "${_LMFILES_:?}" | tr ':' '\n' | grep -Fx "/opt/modules/modulefiles/devtools/elpa/$name" > modulefile.txt
+sha256sum "/opt/modules/modulefiles/devtools/elpa/$name" > module.sha256
+printf '%s\n' "$backend" > backend.txt
 hostname > hostname.txt
 lscpu > cpu.txt
 taskset -pc $$ > affinity.txt
@@ -59,6 +70,12 @@ readelf -d "$ELPA_ROOT/lib/libelpa_openmp.so" > dynamic.txt
 ! grep -Eq 'not found|/opt/mellanox/hcoll' ldd.txt
 ! grep -q '/opt/mellanox/hcoll' dynamic.txt
 elpa2_print_kernels_openmp > kernels.txt
+if [[ "$backend" == cpu ]]; then
+  nm -D "$ELPA_ROOT/lib/libelpa_openmp.so" > symbols.txt
+  ! grep -Eq 'lib(cuda|cublas|cusolver)' ldd.txt dynamic.txt
+  ! grep -Eq 'is_device_ptr|cudaPointerGetAttributes' symbols.txt
+  ! grep -Eq 'ELPA_2STAGE_(REAL|COMPLEX)_NVIDIA' kernels.txt
+fi
 grep -q ELPA_2STAGE_REAL_AVX2_BLOCK kernels.txt
 if [[ "$isa" == avx2 ]]; then
   ! grep -q ELPA_2STAGE_REAL_AVX512 kernels.txt
@@ -118,8 +135,10 @@ for ranks in 1 2; do
     done
   done
 done
+export SLURM_JOB_PARTITION=not-the-loaded-partition
 set +u
 module unload elpa/2026.02.001-2603-gnu-auto
 set -u
-[[ -z ${ELPA_ROOT:-} && -z ${SAI_ELPA_2603_ISA:-} ]]
-printf 'ELPA_PHYSICAL_VERIFIED %s %s api=%s\n' "$SLURM_JOB_PARTITION" "$isa" "$api" | tee passed.txt
+[[ -z ${ELPA_ROOT:-} && -z ${SAI_ELPA_2603_ISA:-} && -z ${SAI_ELPA_2603_PARTITION:-} && -z ${SAI_ELPA_2603_BACKEND:-} ]]
+export SLURM_JOB_PARTITION=$partition
+printf 'ELPA_PHYSICAL_VERIFIED %s %s api=%s\n' "$partition" "$isa" "$api" | tee passed.txt

@@ -11,6 +11,10 @@ PACKAGE = Path(__file__).resolve().parents[1]/'deployment/elpa-2026.02.001-cpu'
 spec = importlib.util.spec_from_file_location('elpa_cpu_install', PACKAGE/'install.py')
 deploy = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(deploy)
+result_spec = importlib.util.spec_from_file_location(
+    'elpa_cpu_native_results', PACKAGE.with_name('elpa-2026.02.001')/'verify-native-results.py')
+native_results = importlib.util.module_from_spec(result_spec)
+result_spec.loader.exec_module(native_results)
 
 
 @unittest.skipUnless(shutil.which('tclsh'), 'Tcl unavailable')
@@ -141,6 +145,40 @@ class CpuInventoryTests(unittest.TestCase):
             (Path(tmp)/'outside').write_text('outside')
             with self.assertRaises(ValueError):
                 deploy.inventory(root)
+
+
+class NativePartitionEvidenceTests(unittest.TestCase):
+    evidence = PACKAGE.parents[1]/'docs/evidence/elpa-auto-native-20261019'
+
+    def test_accepted_physical_cpu_and_gpu_results(self):
+        report = native_results.validate(self.evidence, release_path=PACKAGE/'release.json')
+        self.assertEqual(report['total_solves'], 168)
+        self.assertEqual(report['unaccepted_partitions'], [])
+        self.assertEqual(report['partitions']['DSPRHBM']['backend'], 'cpu')
+        self.assertEqual(report['partitions']['DSPRHBM']['numerical_solves'], 24)
+
+    def test_refuse_wrong_cpu_backend_api_module_and_cuda_dispatch(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)/'evidence'
+            root.mkdir()
+            shutil.copytree(self.evidence/'control', root/'control')
+            shutil.copytree(self.evidence/'DSPRHBM', root/'DSPRHBM')
+            for name in ['controls.sha256', 'accounting.txt']:
+                shutil.copyfile(self.evidence/name, root/name)
+            changes = [('backend.txt', 'nvidia\n'), ('c-api.txt', 'host\n'),
+                       ('modulefile.txt', '/home/user/modulefiles/elpa/2026.02.001-2603-gnu-auto\n'),
+                       ('dynamic.txt', ' (NEEDED) Shared library: [libcuda.so.1]\n'),
+                       ('symbols.txt', ' U cudaPointerGetAttributes\n')]
+            for name, bad in changes:
+                path = root/'DSPRHBM'/name
+                original = path.read_text()
+                with self.subTest(name=name):
+                    path.write_text(bad)
+                    try:
+                        with self.assertRaises(ValueError):
+                            native_results.validate(root, ['DSPRHBM'], release_path=PACKAGE/'release.json')
+                    finally:
+                        path.write_text(original)
 
 
 if __name__ == '__main__':

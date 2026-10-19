@@ -253,14 +253,13 @@ physical jobs `1847651`–`1847653` passed 144 CPU/GPU solves across all three V
 partitions, including actual loader evidence and fresh C/Fortran consumers.
 DSPRHBM passed 24 CPU solves through the host-array C API (`1847682`), while the
 explicit pointer-detecting C API failed without a CUDA driver (`1847654`).
-This remaining interface limitation prevents unconditional pure-CPU acceptance.
+This interface limitation initially prevented unconditional pure-CPU acceptance.
 On October 19, CPU-only build `1848059` completed on DSPRHBM and passed all 24
 original explicit-C-interface solves. The shared recipe disables GPU support at
 compile time for `/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/cpu`, removing
 CUDA dependencies and pointer dispatch. Four new partition-module checks
 `1848160`–`1848163` passed, retaining the accepted V100 libraries and selecting the
-new CPU library for DSPRHBM. The 12.81 MiB supplement passed deployment preflight;
-administrator installation and physical CPU acceptance remain pending.
+new CPU library for DSPRHBM. The 12.81 MiB supplement passed deployment preflight.
 [CPU supplement and partition selector evidence](evidence/elpa-cpu-20261019/README.md).
 The administrator package now upgrades the existing `elpa/2026.02.001-2603-gnu-auto`
 name in place. Jobs `1861785`–`1861788` passed the same four-partition selections,
@@ -269,6 +268,18 @@ previous auto module after replacement. The installer first installs the CPU
 prefix, then backs up the known old module and replaces it atomically. It refuses
 unknown existing module content. The old `-partition` candidate is not installed.
 [Auto module upgrade evidence](evidence/elpa-auto-20261019/README.md).
+The administrator subsequently installed the CPU prefix and replaced the auto
+module. Physical jobs `1861947`–`1861950`, run by `stardust`, all completed `0:0`
+and passed 168 solves (48 per V100 partition; 24 on DSPRHBM) through the original
+explicit C APIs. Fresh Fortran consumers, installed inventories, public module
+load/unload and both-rank ELPA/MPI/BLAS/real-HCOLL traces also passed. The CPU
+library contains no CUDA linkage or pointer-dispatch symbols. Independent
+revalidation pins all numerical cases and hashes 205 raw files; maximum spectrum,
+residual and orthogonality errors were `2.22e-15`, `6.46e-16` and `1.665e-15`.
+The shared ELPA physical deployment is accepted on all four partitions for these
+small single-node correctness cases. Large-system performance and multi-node
+scaling remain outside this evidence.
+[Physical auto module acceptance](evidence/elpa-auto-native-20261019/README.md).
 This does not replace CP2K's accepted private ELPA dependency.
 [Shared ELPA build, compatibility fixes and deployment evidence](evidence/elpa-site-20261018/README.md).
 

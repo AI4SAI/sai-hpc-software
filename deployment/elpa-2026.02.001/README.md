@@ -11,12 +11,13 @@ AVX2 构建任务为 `1846755`，AVX512 为 `1846756`，均 `COMPLETED 0:0`。
 C/Fortran 调用及真实进程的库加载路径均通过检查，直接执行物理 `/opt`，不使用容器。
 DSPRHBM 的主机数组接口也通过 24 次 CPU 求解（`1847682`），但
 `elpa_eigenvectors_double` / `elpa_eigenvectors_double_complex` 在无 CUDA 驱动的节点
-会因自动检测设备指针而退出（`1847654`）。因此不能声称纯 CPU 节点的所有 C 接口均可用。
+会因自动检测设备指针而退出（`1847654`）。当时尚未通过纯 CPU 节点的显式 C 接口验收。
 详见[物理验收及接口限制](../../docs/evidence/elpa-site-20261018/README.md#physical-installation-acceptance)。
 
 2026-10-19：已为此限制构建并验收[纯 CPU 补充包及分区 module](../elpa-2026.02.001-cpu/README.md)。
-新 CPU 库的原始显式 C 接口通过全部 24 次求解，待管理员新增安装到 `-gnu-avx512/cpu`；
-CPU 补充包会升级现有 `elpa/2026.02.001-2603-gnu-auto`，让它按分区选择库，
+管理员已安装到 `-gnu-avx512/cpu` 并升级现有 `elpa/2026.02.001-2603-gnu-auto`。
+物理任务 `1861947`–`1861950` 已通过四分区 168 次求解，包括 CPU 原始显式接口的 24 次。
+正式 module 按分区选择库，
 DSPRHBM 使用 CPU 版，其余三个 V100 分区使用相应 GPU 版。下文和本目录脚本保留
 最初 GPU 部署的验收状态；升级后请使用补充包的安装器核对物理文件。
 
@@ -99,23 +100,18 @@ module，不覆盖不同内容的已有安装。无需管理员启动容器或�
 
 ## 物理运行复验
 
-从本目录执行 `bash submit-native-checks.sh all` 可重新提交四分区检查，结果和 MPI/CUDA
-临时文件均落在执行账号的家目录。脚本保留用户环境中的真实 `HOME`，显式申请两个 MPI
-进程名额，在计算节点加载正式 module，再编译独立调用程序。已有物理安装只读访问。
-上述默认测试保留显式 C 接口，因此当前 DSPRHBM 会重现已知的 CUDA 指针检测错误。
-
-独立检查主机数组接口可执行：
+升级后的安装使用 CPU 补充包的入口，从开发 checkout 执行：
 
 ```bash
-ELPA_NATIVE_C_API=host bash submit-native-checks.sh DSPRHBM
+bash deployment/elpa-2026.02.001-cpu/submit-native-checks.sh all
 ```
 
-该诊断调用头文件中公开的 `elpa_eigenvectors_a_h_a_d` / `elpa_eigenvectors_a_h_a_dc`，
-也是 C/C++ 泛型 `elpa_eigenvectors(...)` 的主机数组实现；没有替换已安装的库。
-它通过不代表显式自动识别接口已修复，也不代表大型应用已经验收。
+结果和 MPI/CUDA 临时文件均落在执行账号的家目录，默认验证原始显式 C 接口。
+完整命令见[CPU 补充包的物理复验说明](../elpa-2026.02.001-cpu/README.md#物理运行复验)。
+本目录旧提交入口及原始发布清单保留最初 GPU 部署身份，不用于升级后的物理安装。
 
-保存对应任务的 `sacct -X -n -P --format=JobID,Partition,State,ExitCode,Elapsed,NodeList`
-为结果目录的 `accounting.txt` 后，使用 `verify-native-results.py` 独立校验原始日志：
+历史主机数组诊断使用 `elpa_eigenvectors_a_h_a_d` / `elpa_eigenvectors_a_h_a_dc`，
+其原始日志仍可用以下命令独立校验；新 CPU 验收无需该别名替换：
 
 ```bash
 python3 verify-native-results.py <GPU结果目录> --partitions 16V100 4V100 8V100V0

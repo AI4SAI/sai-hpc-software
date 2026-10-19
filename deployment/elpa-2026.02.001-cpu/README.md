@@ -1,9 +1,15 @@
 # ELPA 2026.02.001：DSPRHBM 纯 CPU 版和分区 module
 
-2026-10-19：CPU 构建/验收任务 `1848059` 已 `COMPLETED 0:0`，用时 2 分 4 秒，
+2026-10-19：管理员已完成物理 CPU 安装和 `-auto` module 升级。`stardust` 直接使用
+物理 `/opt` 的任务 `1861947`–`1861950` 全部 `COMPLETED 0:0`，四分区共 168 次求解通过，
+包含 DSPRHBM 原始显式 C 接口的 24 次 CPU 求解。C/Fortran 调用、文件清单、正式 module
+及实际库加载路径均通过检查。
+[物理运行验收](../../docs/evidence/elpa-auto-native-20261019/README.md)。
+
+CPU 构建/验收任务 `1848059` 已 `COMPLETED 0:0`，用时 2 分 4 秒，
 原始显式 C 接口的 24 次求解全部通过。四分区 module 任务 `1848160`–`1848163`
 也全部通过。管理员补充包位于 `/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-cpu`，
-12.81 MiB 的 CPU 载荷已通过预检；尚待管理员安装。
+12.81 MiB 的 CPU 载荷已通过物理文件核对。
 [验收证据](https://github.com/AI4SAI/sai-hpc-software/blob/fix/workflow-closure/docs/evidence/elpa-cpu-20261019/README.md)。
 
 同日后续：按用户要求沿用 `-auto` 名称，替换候选的四分区任务 `1861785`–`1861788`
@@ -14,7 +20,7 @@
 OpenMPI 5.0.10、OpenBLAS 0.3.32、ScaLAPACK 2.2.3 和 OpenMP 配置。
 CPU 编译参数为 `-march=x86-64-v4 -mtune=sapphirerapids`。
 构建在 DSPRHBM 上的 Apptainer 容器内执行，源码、对象和临时文件均位于家目录。
-容器内和未来物理安装使用同一前缀：
+容器内和物理安装使用同一前缀：
 
 ```text
 /opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/cpu
@@ -35,7 +41,7 @@ CPU 库和 pkg-config 信息不引入 CUDA 库依赖。站点 MPI 本身仍沿�
 | 16V100 | `-gnu-avx2/nvidia` | 已验收的 GPU 版 |
 | 8V100V0 | `-gnu-avx2/nvidia` | 已验收的 GPU 版 |
 | 4V100 | `-gnu-avx512/nvidia` | 已验收的 GPU 版 |
-| DSPRHBM | `-gnu-avx512/cpu` | 新增纯 CPU 版 |
+| DSPRHBM | `-gnu-avx512/cpu` | 已验收的纯 CPU 版 |
 
 管理员安装后，原有 `module load elpa/2026.02.001-2603-gnu-auto` 命令直接使用上述分区映射。
 不另行安装 `-partition` module。CP2K 已验收的私有 ELPA 不受此操作影响。
@@ -61,11 +67,35 @@ bash install.sh --verify
 module load elpa/2026.02.001-2603-gnu-auto
 ```
 
-`--verify` 仅核对物理文件。物理 CPU 路径上的数值运行验收在管理员安装后进行。
+`--verify` 仅核对物理文件。安装后的物理数值运行验收已完成，可按下节命令复验。
 容器阶段验收使用原始显式 C 接口、实数/复数矩阵、ELPA1/ELPA2、单/双 MPI 进程、
 两次重复求解和 ELPA2 非阻塞选项，并编译运行 Fortran 初始化调用程序。
 分区 module 另检查加载/卸载和实际 MPI 进程的库加载路径。
 需要切换版本的已有会话应在对应 Slurm 分配内先 `module unload` 再 `module load`。
+
+## 物理运行复验
+
+从集群开发 checkout 执行：
+
+```bash
+bash deployment/elpa-2026.02.001-cpu/submit-native-checks.sh all
+```
+
+也可将 `all` 换为单个分区名。脚本固定使用原始显式 C 接口，编译新的调用程序，
+直接加载物理 module 和库；不执行容器。结果、MPI/CUDA 缓存均放在执行账号家目录。
+GPU 分区各进行 48 次 CPU/GPU 求解，DSPRHBM 进行 24 次 CPU 求解；各含 ELPA1/ELPA2、
+实数/复数、单/双 MPI 进程、两次重复和 ELPA2 非阻塞选项。
+
+将对应任务的 `sacct -X -n -P --format=JobIDRaw,Partition,State,ExitCode,Elapsed,NodeList`
+保存为结果目录的 `accounting.txt`，再独立复核原始日志：
+
+```bash
+python3 deployment/elpa-2026.02.001/verify-native-results.py <结果目录> \
+  --release deployment/elpa-2026.02.001-cpu/release.json
+```
+
+单分区复验添加 `--partitions <分区>`。验证器固定 CPU/GPU 前缀、原始接口、正式 module、
+两 MPI 进程加载的库及每个数值用例。小矩阵正确性检查不代表大型体系性能或多节点扩展性。
 
 ## 重现构建
 
