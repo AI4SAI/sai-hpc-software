@@ -195,3 +195,39 @@ to continue these builds or to run the final read-only SIF. See
 Release 2026.2 remains the first acceptance target. The source review and
 configuration correction do not establish current-development acceptance;
 release and development retain independent source, recipe and artifact records.
+
+## Shared ELPA rebuild and issue #9
+
+The October 19 recipe uses the accepted shared ELPA 2026.02.001 libraries;
+see [reproduction and pinned partition mapping](ELPA.md). Existing accepted
+CP2K installations use private ELPA 2026.02.002. New candidates need their own
+science results; standalone ELPA acceptance is not CP2K acceptance. GCC 14.3,
+SM70, cuSOLVERMp/NCCL and GPU SpLA GEMM offload remain enabled.
+
+[Issue #9](https://github.com/AI4SAI/sai-hpc-software/issues/9) concerns
+`GLOBAL / DIRECT_GENERALIZED_DIAGONALIZATION`, an input option defaulting to
+`FALSE`, not a missing compile flag. In v2026.2 ordinary SCF this branch uses
+cuSOLVER, not ELPA. It requires a matrix of at least 64, compatible Cholesky and
+level-shift settings, and actual dispatch to the supported backend. Setting
+the keyword to `TRUE` alone is not proof of execution.
+
+After the new candidate passes science, use the same sufficiently large PBE
+system, basis, cutoff, SCF tolerance and resources for these independent runs:
+
+| Case | `PREFERRED_DIAG_LIBRARY` | Direct generalized | Purpose |
+|---|---|---|---|
+| PBE diagonalization | `CUSOLVER` | `FALSE` | Standard reduction control |
+| Same diagonalization | `CUSOLVER` | `TRUE` | Measure the actual generalized branch |
+| Same diagonalization | `ELPA` | `FALSE` | Shared ELPA control |
+| PBE OT | Explicitly recorded backend | `FALSE` | Separate common workload; OT has its own Cholesky |
+
+Use one visible GPU per cuSOLVER MPI rank, preserve affinity and GPU memory
+records, perform a warmup followed by alternating repeated runs, and retain
+SCF convergence, energies, forces, actual solver calls and CP2K internal
+timing. The existing small ELPA cases establish correctness, not large-system
+performance. Keep the upstream direct default until SAI measurements justify
+a recommendation. No speedup is inferred from replacing the dependency.
+
+Source: [SCF dispatch](https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/qs_scf_diagonalization.F#L236),
+[cuSOLVER generalized branch](https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/fm/cp_fm_diag.F#L1503),
+and [upstream PR #5108](https://github.com/cp2k/cp2k/pull/5108).

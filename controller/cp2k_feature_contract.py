@@ -17,6 +17,76 @@ GPU_FLAGS = frozenset("dbcsr_acc offload_cuda cusolvermp cusolvermp_nccl spla_ge
 # Plain SpLA has no version flag on CPU; verify its CMake option on all targets.
 REQUIRED_OPTIONS = tuple("MPI MPI_F08 FFTW3 LIBXC LIBINT2 ELPA COSMA SPLA LIBXS LIBXSMM PLUMED SPGLIB VORI HDF5 DFTD4 TBLITE".split())
 TRANSIENT = re.compile(r"/(?:workspace|control|input)(?:/|$)")
+SITE_ELPA_TARGETS = {
+    "16v100-avx2": "avx2", "8v100v0-avx512": "avx2",
+    "4v100-avx512": "avx512", "dsprhbm": "cpu",
+}
+
+
+def site_elpa_spec(target):
+    """The recipe pins the accepted site files, not a mutable module selection."""
+    lock = Path(__file__).with_name("cp2k_site_elpa.json")
+    data = json.loads(lock.read_text())
+    variant = SITE_ELPA_TARGETS[target]
+    spec = data["variants"][variant]
+    record = dict(provider="site-elpa", target=target, version=data["version"],
+                  source_sha256=data["source_sha256"], prefix=spec["prefix"],
+                  manifest_sha256=spec["manifest_sha256"],
+                  lock_sha256=hashlib.sha256(lock.read_bytes()).hexdigest())
+    return record, spec
+
+
+def elpa_root(prefix, target, provider=None):
+    if provider is None:
+        # Preserve validation of previously accepted, self-contained deliveries.
+        return Path(prefix) / "dependencies/elpa"
+    expected, _ = site_elpa_spec(target)
+    if provider != expected:
+        raise ValueError("shared ELPA provider differs from the pinned partition delivery")
+    return Path(expected["prefix"])
+
+
+def check_site_elpa(provider, target):
+    root = elpa_root("/", target, provider)
+    _, spec = site_elpa_spec(target)
+    if not root.is_dir() or root.resolve() != root:
+        raise ValueError("shared ELPA prefix is missing or redirected")
+    for name, digest in spec["files"].items():
+        path = root / name
+        if (not path.is_file() or path.resolve() != path or
+                hashlib.sha256(path.read_bytes()).hexdigest() != digest):
+            raise ValueError("shared ELPA file differs from the accepted inventory: " + str(path))
+    for name, destination in spec["symlinks"].items():
+        path = root / name
+        if (not path.is_symlink() or os.readlink(path) != destination or
+                not path.exists() or not inside(path, root)):
+            raise ValueError("shared ELPA link differs from the accepted inventory: " + str(path))
+    return root
+
+
+def read_elpa_provider(prefix, target):
+    path = Path(prefix) / "share/sai/site-elpa.json"
+    if not path.exists() and not path.is_symlink():
+        return None
+    if not path.is_file() or path.resolve() != path:
+        raise ValueError("missing or redirected shared ELPA provenance")
+    provider = json.loads(path.read_text())
+    check_site_elpa(provider, target)
+    return provider
+
+
+def prepare_site_elpa(prefix, target):
+    provider, _ = site_elpa_spec(target)
+    root = check_site_elpa(provider, target)
+    metadata = Path(prefix) / "share/sai"
+    metadata.mkdir(parents=True, exist_ok=True)
+    with (metadata / "site-elpa.json").open("x") as stream:
+        json.dump(provider, stream, sort_keys=True)
+        stream.write("\n")
+    # Ship the pinned contract alongside the standalone installed verifier.
+    (metadata / "cp2k_site_elpa.json").write_bytes(
+        Path(__file__).with_name("cp2k_site_elpa.json").read_bytes())
+    return root
 
 
 def check_parallel_hdf5(text):
@@ -45,7 +115,7 @@ def check_flags(text, target):
     return sorted(flags)
 
 
-def check_cache(text, prefix, target):
+def check_cache(text, prefix, target, provider=None):
     # Parse one physical line at a time. Negated character classes containing
     # newlines otherwise swallow blank lines and // comments into option names.
     cache = {}
@@ -76,8 +146,14 @@ def check_cache(text, prefix, target):
     if cache.get("CP2K_USE_SPLA_GEMM_OFFLOADING") != ("OFF" if target == "dsprhbm" else "ON"):
         raise ValueError("wrong or missing SpLA GEMM offload setting for target")
     elpa = cache.get("CP2K_ELPA_ROOT", "")
-    if elpa != str(Path(prefix) / "dependencies/elpa"):
-        raise ValueError("ELPA must use this delivery's native dependency prefix")
+    if elpa != str(elpa_root(prefix, target, provider)):
+        raise ValueError("ELPA must use this delivery's pinned dependency prefix")
+    if provider is not None:
+        expected_library = elpa + "/lib/libelpa_openmp.so"
+        if cache.get("pkgcfg_lib_CP2K_ELPA_elpa_openmp") != expected_library:
+            raise ValueError("shared ELPA CMake library differs from the pinned prefix")
+        if cache.get("CP2K_ELPA_VERSION") != provider["version"]:
+            raise ValueError("shared ELPA CMake version differs from the pinned release")
     if target != "dsprhbm":
         for library in ("cudart", "cublas"):
             resolved = Path(cache.get("pkgcfg_lib_CP2K_ELPA_" + library, ""))
@@ -90,13 +166,20 @@ def check_cache(text, prefix, target):
     return cache
 
 
-def check_linkage(text, target, prefix):
+def check_linkage(text, target, prefix, provider=None):
     if "not found" in text or TRANSIENT.search(text):
         raise ValueError("unresolved or transient CP2K dynamic dependency")
     elpa_lines = [line for line in text.splitlines() if "libelpa" in line]
-    expected = str(Path(prefix) / "dependencies/elpa/lib/libelpa_openmp.so")
+    expected = str(elpa_root(prefix, target, provider) / "lib/libelpa_openmp.so")
     if (len(elpa_lines) != 1 or not re.search(re.escape(expected) + r"(?:\.[0-9]+)*(?:\s|$)", elpa_lines[0])):
         raise ValueError("native ELPA dynamic linkage escaped this delivery")
+    if provider is not None:
+        _, spec = site_elpa_spec(target)
+        names = [name for name in (*spec["files"], *spec["symlinks"])
+                 if name.startswith("lib/libelpa_openmp.so")]
+        paths = "|".join(re.escape(str(Path(provider["prefix"]) / name)) for name in names)
+        if not re.search(r"^\s*libelpa_openmp\.so\.19\s+=>\s+(?:" + paths + r")(?:\s|$)", elpa_lines[0]):
+            raise ValueError("shared ELPA loader selected an unpinned library file")
     for library in ("libhcoll.so.1", "libocoms.so.0"):
         expected = HPCX_ROOT + "/hcoll/lib/" + library
         if not re.search(r"^\s*" + re.escape(library) + r"\s+=>\s+" + re.escape(expected) + r"(?:\s|$)", text, re.M):
@@ -312,7 +395,8 @@ def verify(prefix, target, sha):
     metadata = prefix / "share/sai"
     if (metadata / "source-sha").read_text().strip() != sha or (metadata / "target").read_text().strip() != target:
         raise ValueError("artifact provenance mismatch")
-    check_cache((metadata / "CMakeCache.txt").read_text(), prefix, target)
+    provider = read_elpa_provider(prefix, target)
+    check_cache((metadata / "CMakeCache.txt").read_text(), prefix, target, provider)
     env = (metadata / "runtime-env.sh").read_text()
     if TRANSIENT.search(env):
         raise ValueError("saved environment depends on build-only paths")
@@ -323,26 +407,30 @@ def verify(prefix, target, sha):
     version = run([str(prefix / "bin/cp2k.psmp"), "--version"])
     flags = check_flags(version, target)
     linkage = run(["ldd", str(prefix / "bin/cp2k.psmp")])
-    check_linkage(linkage, target, prefix)
+    check_linkage(linkage, target, prefix, provider)
     elf = verify_tree(prefix, target)
     print(version, end="")
     print(linkage, end="")
     print(json.dumps({"artifact_checks": True, "scientific_acceptance": False,
                       "prefix": str(prefix), "target": target, "flags": flags,
                       "elf": elf, "external_runtime_roots": runtime_roots(target),
+                      "elpa_provider": provider or {"provider": "private"},
                       "deployment_scope": "loader contract checked; no claim of physical deployment"}, sort_keys=True))
 
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("op", choices=("cache", "verify", "source-changes", "native-entry", "native-package", "native-verify"))
+    parser.add_argument("op", choices=("cache", "verify", "site-elpa", "source-changes", "native-entry", "native-package", "native-verify"))
     parser.add_argument("prefix", type=Path)
     parser.add_argument("target")
     parser.add_argument("sha")
     parser.add_argument("--root", type=Path, default=Path("/"))
     args = parser.parse_args()
     if args.op == "cache":
-        check_cache(Path("/workspace/build/CMakeCache.txt").read_text(), args.prefix, args.target)
+        check_cache(Path("/workspace/build/CMakeCache.txt").read_text(), args.prefix, args.target,
+                    read_elpa_provider(args.prefix, args.target))
+    elif args.op == "site-elpa":
+        print(prepare_site_elpa(args.prefix, args.target))
     elif args.op == "source-changes":
         source_changes(args.prefix, args.sha)
     elif args.op.startswith("native-"):

@@ -210,6 +210,27 @@ class FinalPrefixTests(unittest.TestCase):
             self.assertFalse((result / 'dependencies/spack/linux-zen3/python-venv-hash').exists())
             self.assertTrue((package / 'lib/libplumed.a').exists())  # Build store untouched.
 
+    def test_shared_elpa_payload_keeps_provenance_without_copying_site_library(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            base = Path(temporary)
+            prefix = base / 'installed'
+            for relative in ('bin/cp2k.psmp', 'share/sai/spack-dependencies.json',
+                             'share/sai/site-elpa.json', 'share/sai/cp2k_site_elpa.json',
+                             'dependencies/dbcsr/lib64/libdbcsr.so',
+                             'dependencies/libxs/lib/libxs.so', 'dependencies/tblite/lib/libtblite.a'):
+                path = prefix / relative
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text('{}')
+            with patch.object(payload, 'validate_receipt', return_value=({}, [])), \
+                    patch.object(payload, 'read_elpa_provider', return_value={'provider': 'site-elpa'}):
+                result = payload.stage(prefix, base / 'export', '16V100')
+                self.assertTrue((result / 'share/sai/site-elpa.json').is_file())
+                self.assertTrue((result / 'share/sai/cp2k_site_elpa.json').is_file())
+                self.assertFalse((result / 'dependencies/elpa').exists())
+                (prefix / 'dependencies/elpa').mkdir()
+                with self.assertRaisesRegex(ValueError, 'second private ELPA'):
+                    payload.stage(prefix, base / 'mixed-export', '16V100')
+
 
 if __name__ == '__main__':
     unittest.main()

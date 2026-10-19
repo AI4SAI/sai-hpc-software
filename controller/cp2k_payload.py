@@ -6,6 +6,10 @@ from pathlib import Path
 import shutil
 
 from cp2k_spack_link import validate_receipt
+from cp2k_feature_contract import read_elpa_provider
+
+PARTITION_TARGETS = {"16V100": "16v100-avx2", "4V100": "4v100-avx512",
+                     "8V100V0": "8v100v0-avx512", "DSPRHBM": "dsprhbm"}
 
 
 def dependency_ignore(directory, names):
@@ -31,7 +35,13 @@ def stage(prefix, root, partition):
         source = prefix / name
         if source.exists():
             shutil.copytree(source, destination / name, symlinks=True)
-    for dependency in ('dbcsr', 'libxs', 'tblite', 'elpa'):
+    provider = read_elpa_provider(prefix, PARTITION_TARGETS[partition])
+    dependencies = ['dbcsr', 'libxs', 'tblite']
+    if provider is None:
+        dependencies.append('elpa')
+    elif (prefix / 'dependencies/elpa').exists():
+        raise ValueError('shared ELPA delivery must not contain a second private ELPA')
+    for dependency in dependencies:
         source = prefix / 'dependencies' / dependency
         if not source.is_dir() or source.is_symlink():
             raise ValueError('missing native dependency: ' + dependency)

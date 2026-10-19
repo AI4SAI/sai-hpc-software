@@ -2,8 +2,10 @@
 
 Independent GitHub Actions → SSH → Slurm → Apptainer builds on SAI.
 ABACUS has automated build and scientific acceptance. CP2K has a separate manually dispatched
-candidate recipe; automatic builds and publication remain disabled until its scientific
-acceptance is integrated. Its historical hand-built SIF is not a validated catalog release.
+build, science and publication workflow. CP2K 2026.2 with its private ELPA dependency has passed
+physical installation and single/two-node science on all four partitions; the shared-ELPA
+replacement is a new candidate recipe. Development acceptance remains separate.
+See [current delivery status](docs/WORKFLOW-CLOSURE.md).
 
 ## Container contract
 
@@ -94,8 +96,8 @@ Build verification creates a **candidate**, with `build_verified: true` but
 `verified: false, published: false`. It does not update `current.sif` or the module.
 Only `software_controller.py publish RUN_ID`, after all required acceptance has passed,
 exposes the image. A failed acceptance leaves the previous published image unchanged.
-CP2K currently stops at the candidate stage; direct publication and accepted-cache lookup
-cannot treat its missing scientific acceptance as success.
+CP2K publication requires all seven candidate scientific cases on one and two nodes,
+followed by native export readback. An untested candidate cannot become an accepted cache hit.
 The gate binds the build, image, launcher, verifier, job, raw rank traces and scientific
 outputs by checksums; an exit code of zero without those results does not pass.
 
@@ -213,14 +215,14 @@ apptainer exec --cleanenv --containall --no-home \
 The shared exporter packages each install as one complete folder, including
 `share/sai/manifest.json` and `modulefiles/`. It does not create `/opt/sai-delivery`.
 An arbitrary export destination is staging, not a claim that compiled-in paths are relocatable.
-See [native delivery](docs/native-delivery.md) for usage and tested limits: shared tooling has
-passed real SIF/Tcl checks, while per-software native inventories and full-feature science/speed
-acceptance remain on independent experimental branches.
+See [native delivery](docs/native-delivery.md) for usage and tested limits and
+[workflow status](docs/WORKFLOW-CLOSURE.md) for per-software evidence. CP2K 2026.2 has passed
+physical native science; timings are descriptive, with no retired 2026.1 baseline required.
 
 The SIF records the upstream SHA, module list and CMake cache below the installation's
 `share/sai/` directory. Loading its recorded modules is required to run software
 that dynamically links to the cluster environment. Administrative deployment into the host
-`/opt` is out of scope.
+`/opt` is performed separately by an administrator using the inventoried deployment package.
 
 For a read-only runtime, source `share/sai/runtime-env.sh` inside the container
 instead of initializing Lmod there; it records the original absolute dependency
@@ -230,6 +232,9 @@ single ext3 image into the new run and repacks the existing installation. The
 source SHA, version, target and recipe fingerprint must match, and active jobs cannot be resumed.
 
 ## Shared ELPA
+
+Start with the [ELPA reproduction and integration guide](docs/ELPA.md) for the
+partition map, pinned source, build commands, current acceptance and CP2K usage.
 
 [ELPA 2026.02.001 deployment](deployment/elpa-2026.02.001/README.md) provides separate
 AVX2 and AVX512 builds of the site's GNU/CUDA configuration. This standalone dependency

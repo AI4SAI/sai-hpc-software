@@ -29,6 +29,16 @@ scientific references and inputs still match their pinned hashes.
 
 ## Implemented and locally verified
 
+- October 19 shared-ELPA follow-up: the accepted standalone dependency now has
+  a [unified reproduction guide](ELPA.md). A new CP2K recipe pins its three
+  physical ELPA variants by file hashes and uses the matching partition paths.
+  All four GCC 14.3 Fortran compatibility probes (`1862298`–`1862301`) passed
+  against the site's GCC 13.3 ELPA modules and library. This establishes a
+  cross-compiler consumer check, not acceptance of a new CP2K application.
+  The previously installed four-partition CP2K remains the accepted release
+  until new candidate science completes. [Preflight evidence](evidence/cp2k-shared-elpa-20261019/preflight.json)
+  and [issue #9 tuning protocol](CP2K-V100-TUNING.md#shared-elpa-rebuild-and-issue-9).
+
 - Daily and child workflows await reusable jobs and reject unexpected skipped,
   failed or cancelled deliveries. A recorded unchanged release is an intentional
   skip; development must produce a fresh run on every trigger. Explicit retry

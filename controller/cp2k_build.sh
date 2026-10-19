@@ -71,12 +71,37 @@ check_parallel_hdf5(path.read_text())
 print('CP2K_PARALLEL_HDF5_VERIFIED ' + str(path))
 PY
 dbcsr="$prefix/dependencies/dbcsr/lib64/cmake/dbcsr"
-# ELPA follows this CP2K source's toolchain pin and is part of the delivery.
-# The site's shared ELPA 2026 library contains unconditional AVX-512 code,
-# including in generic allocation routines, and cannot run on 16V100.
-export ELPA_ROOT="$prefix/dependencies/elpa"
-bash /control/cp2k_elpa.sh /workspace/source /input/updates /workspace/elpa-build "$ELPA_ROOT" "$target"
+# Use the numerically accepted partition-specific standalone ELPA. Select from
+# the frozen target, since the container deliberately strips Slurm variables.
+# The provider receipt pins headers, Fortran modules, library and pkg-config;
+# an installed module with the same name is not sufficient provenance.
+ELPA_ROOT=$(python3 /control/cp2k_feature_contract.py site-elpa "$prefix" "$target" "$source_sha")
+export ELPA_ROOT
+case "$target" in
+  16v100-avx2|8v100v0-avx512) elpa_isa=avx2 ;;
+  *) elpa_isa=avx512 ;;
+esac
+[[ "$OPAL_PREFIX" == "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-$elpa_isa" ]]
+[[ "$OPENBLAS_ROOT" == "/opt/devtools/saiblas/2603-gnu-$elpa_isa" ]]
 export LD_LIBRARY_PATH="$ELPA_ROOT/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export PKG_CONFIG_PATH="$ELPA_ROOT/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
+[[ "$(pkg-config --variable=prefix elpa_openmp)" == "$ELPA_ROOT" ]]
+[[ "$(pkg-config --modversion elpa_openmp)" == 2026.02.001 ]]
+# The site ELPA keeps GCC 13.3; CP2K keeps GCC 14.3. Test the real Fortran
+# module/type-bound API and a numerical solve before building the application.
+mkdir -p /workspace/elpa-consumer
+cp /control/cp2k_elpa_abi.f90 "$prefix/share/sai/"
+"$MPI_HOME/bin/mpifort" -fopenmp $(pkg-config --variable=fcflags elpa_openmp) \
+  /control/cp2k_elpa_abi.f90 $(pkg-config --libs elpa_openmp) \
+  -o /workspace/elpa-consumer/probe
+ldd /workspace/elpa-consumer/probe > "$prefix/share/sai/elpa-consumer-ldd.txt"
+grep -F "$ELPA_ROOT/lib/libelpa_openmp.so.19" "$prefix/share/sai/elpa-consumer-ldd.txt"
+OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 timeout 60 \
+  "$MPI_HOME/bin/mpiexec" --allow-run-as-root --bind-to none -n 1 /workspace/elpa-consumer/probe \
+  > "$prefix/share/sai/elpa-consumer.log" 2>&1 || {
+    cat "$prefix/share/sai/elpa-consumer.log"; exit 1;
+  }
+grep CP2K_SITE_ELPA_GCC14_PASS "$prefix/share/sai/elpa-consumer.log"
 python3 /control/cp2k_source_fixes.py /workspace/source "$prefix/share/sai"
 # FindPkgConfig must resolve CUDA dependencies to full toolkit paths.
 cuda_libraries=/opt/devtools/nvidia/cuda-12.9.1/lib64
