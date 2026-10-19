@@ -48,6 +48,12 @@ scientific references and inputs still match their pinned hashes.
   left eight tracked communicators, despite passing all numerical checks.
   The integration build continues; long-running GPU qualification requires
   the [archived repair and fresh dependency validation](ELPA.md#gpu-求解器生命周期限制).
+  The repair is now in the shared build recipe: GPU jobs `1862858`/`1862859` and
+  CPU job `1862898` passed, as did four-partition candidate checks
+  `1862899`/`1862929`/`1862930`/`1862931`. Tracked GPU communicators now return to
+  zero after 32 object lifetimes per rank. The administrator replacement package
+  passed preflight; physical replacement, native revalidation and CP2K lock
+  migration remain pending. [Repair and deployment evidence](evidence/elpa-commfix-20261019/README.md).
   The old development job `1861248`, frozen at controller `a7dd890`, failed
   CMake because that recipe omitted wignernj. The current recipe contains
   the pinned wignernj build; development still has no newly accepted artifact.

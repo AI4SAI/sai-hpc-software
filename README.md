@@ -255,6 +255,11 @@ actual ELPA/MPI/BLAS/HCOLL loader evidence. See the
 The subsequent [GPU lifecycle audit](docs/ELPA.md#gpu-求解器生命周期限制) found
 a missing upstream MPI communicator free. The small numerical results stand;
 repeated long-running GPU diagonalization needs the archived repair and renewed qualification.
+The [repair replacement package](deployment/elpa-2026.02.001-commfix/README.md)
+now contains three rebuilt variants with upstream PR #85. All four partition
+checks passed, including 32 communicator creations and 32 frees per GPU rank.
+The administrator preflight passed; physical replacement and subsequent native
+acceptance are still pending. [Repair evidence](docs/evidence/elpa-commfix-20261019/README.md).
 
 ## Local checks
 

@@ -5,7 +5,9 @@
 和原始验收日志均在本仓库；大体积源码压缩包、SIF 和构建缓存保留在集群家目录。
 
 后续 GPU 生命周期审计发现此安装仍缺少上游 MPI communicator 回收修复。
-下述数值验收成立，但长时间反复 GPU 对角化需要先修复并复验，见文末限制。
+三套修复候选已重新编译并通过四分区容器验收，管理员
+[替换包](../deployment/elpa-2026.02.001-commfix/README.md) 已准备且 `--check` 通过。
+当前物理安装尚未替换；下述旧安装数值验收仍成立，修复后的物理复验须在管理员替换后执行。
 
 ## 分区选择和固定路径
 
@@ -47,6 +49,9 @@ CUDA-aware MPI、SM80 专用内核以及 `sm_70,sm_75,sm_80,sm_86,sm_89`。
 - AVX512 CPU：`-march=x86-64-v4 -mtune=sapphirerapids`，禁用 GPU、cuSOLVER、CUB 和 CUDA-aware MPI。
 - [兼容补丁](../deployment/elpa-2026.02.001/cuda-aware-cpu.patch) 修复 CPU 求解误用设备缓冲区，
   并将三个 GPU collective 的“非阻塞后立即等待”改成阻塞调用，绕开站点 OpenMPI libnbc 崩溃。
+- [communicator 补丁](../deployment/elpa-2026.02.001/mpi-communicator.patch) 回补上游
+  PR #85，读取每节点 rank 数后立即释放临时 communicator。构建核对修复前后的源码哈希，
+  并将补丁及上游提交写入 `share/sai/mpi-communicator-fix.json`。
 - 交付库保留实际 HPCX HCOLL 路径；`/opt/mellanox/hcoll` 只用于编译兼容。
   pkg-config 补齐 CUDA 的链接路径，便于下游直接编译。
 
@@ -144,6 +149,17 @@ release 与 development 各自解析源码并保持独立记录；`tracks=develo
 已提供回收修复；旧 CP2K 私有 ELPA 配方包含该修复，此次沿用站点方案的共享库未包含。
 
 [复现代码、原始日志及适用于 2026.02.001 的补丁](evidence/cp2k-shared-elpa-20261019/communicator-audit.json)
-已存档。补丁尚未应用到管理员安装的共享库。本轮 CP2K 编译用于验证共享依赖集成；
-将新候选用于长时间 GPU 对角化前，应构建修复后的共享 ELPA、复验对象生命周期，
-并以新文件哈希更新 CP2K 依赖锁和候选身份。不要原地替换库后继续使用旧验收记录。
+已存档。补丁已加入新构建配方，但尚未应用到管理员安装的共享库。
+
+10 月 19 日修复构建 `1862858`（AVX2 GPU）、`1862859`（AVX512 GPU）、
+`1862898`（AVX512 CPU）全部成功。四分区独立复验 `1862899`、`1862929`、
+`1862930`、`1862931` 也全部 `COMPLETED 0:0`。每个 GPU MPI rank 反复创建/销毁
+32 个 ELPA 对象，两次求解每对象，跟踪到的 communicator 创建/释放均为 32，剩余为 0。
+CPU 路径为 0/0/0。原有实数/复数、ELPA1/2、非阻塞选项、C/Fortran、module 和库加载检查均通过。
+[完整原始记录](evidence/elpa-commfix-20261019/README.md)。
+
+管理员包在 `/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-commfix`，
+约 52.83 MiB，保留三个原安装前缀和现有 `-auto` module。安装器先校验、暂存、备份旧树，
+再逐个切换；管理员执行 `bash install.sh --check`、`--install`、`--verify`。
+替换后须执行物理复验，并以新文件哈希更新 CP2K 依赖锁和候选身份。
+当前旧哈希下的 CP2K 集成构建不能直接作为修复后的验收。

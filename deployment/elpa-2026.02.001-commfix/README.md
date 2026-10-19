@@ -1,5 +1,9 @@
 # ELPA 2026.02.001 communicator 修复替换包
 
+2026-10-19：三套最终 SIF 和四分区容器复验均已通过，管理员包 `--check` 通过。
+AVX2 GPU 19.44 MiB、AVX512 GPU 20.57 MiB、CPU 12.82 MiB；物理替换尚未执行。
+[构建、数值和资源释放验收记录](../../docs/evidence/elpa-commfix-20261019/README.md)。
+
 将上游 [PR #85](https://github.com/marekandreas/elpa/pull/85) 的修复
 `20be982db53a671b9aac866a726aebe153a766e6` 回补到官方 2026.02.001。
 沿用此前的 GCC 13.3、MPI/BLAS、CUDA、多架构内核和 CUDA-aware MPI 兼容补丁。
@@ -19,6 +23,7 @@
 ```bash
 bash deployment/elpa-2026.02.001/submit.sh <唯一标识>
 bash deployment/elpa-2026.02.001/submit-cpu.sh <同一标识>
+bash deployment/elpa-2026.02.001-commfix/submit-checks.sh <AVX2运行目录> <AVX512运行目录> <CPU运行目录>
 ```
 
 每套最终 SIF 先通过原有 C/Fortran、ELPA1/2、实数/复数、单/双 MPI rank 数值测试，
@@ -30,6 +35,12 @@ CPU 路径要求该类 communicator 为 0。缺少跟踪输出也会判失败。
 `prepare-release.py` 从最终 SIF 导出库、头文件、Fortran module、pkg-config、必要工具、
 上游文档和构建元数据；保留原始验收日志及 SHA256 清单。源码树、对象、缓存和系统依赖
 不放入载荷。发布清单中的作业号、SIF 哈希和测试结果是具体部署包的验收依据。
+
+```bash
+python3 deployment/elpa-2026.02.001-commfix/prepare-release.py \
+  --avx2 <AVX2运行目录> --avx512 <AVX512运行目录> --dsprhbm <CPU运行目录> \
+  --checks <四分区结果目录> --output <新部署目录绝对路径>
+```
 
 ## 管理员替换
 

@@ -1,8 +1,10 @@
 # ELPA 2026.02.001: AVX2 / AVX512 容器构建与管理员部署
 
 当前统一入口和复现流程见 [ELPA 文档](../../docs/ELPA.md)。10 月 19 日后续审计确认
-共享 GPU 版仍缺少上游 MPI communicator 回收修复；数值验收通过，但长时间反复
-GPU 对角化需修复后重新验收。详见该文档末尾的复现记录和补丁。
+物理共享 GPU 版仍缺少上游 MPI communicator 回收修复。
+当前构建脚本已补上该修复，新三套 SIF 和四分区复验均已通过，
+[管理员替换包](../elpa-2026.02.001-commfix/README.md) 已准备。
+本目录原发布清单保留 10 月 18 日的历史身份；替换须使用新包，不能修改旧清单冒充新验收。
 
 2026-10-18：两套 SIF 均已通过 48 次数值求解及 C/Fortran、module 检查。
 AVX2 构建任务为 `1846755`，AVX512 为 `1846756`，均 `COMPLETED 0:0`。
@@ -33,8 +35,7 @@ OpenMPI 5.0.10、CUDA 12.9.1 / NVHPC 26.3、OpenBLAS 0.3.32 和 ScaLAPACK 2.2.3�
 参考脚本来自
 `/opt/apps/abacus/abacus-develop-3.9.0.26_nvhpc263gnu/toolchain/scripts/stage3/install_elpa.sh`。
 源码 SHA256：`a379f27f4dbd27b2ee45017afec656d064301e97150c874649bdfd64957b75ed`。
-本次没有应用 CP2K 私有 ELPA 的源码补丁，也没有替换 CP2K 已验收的依赖。
-单独应用 `cuda-aware-cpu.patch`：ELPA2 的 tridi-to-band、band-to-full 阶段在 CPU 求解时
+最初 10 月 18 日构建只应用 `cuda-aware-cpu.patch`：ELPA2 的 tridi-to-band、band-to-full 阶段在 CPU 求解时
 使用主机缓冲区做 MPI 广播和归约，修复启用 CUDA-aware MPI 后误用未初始化设备指针的错误。
 GPU 分支和 CUDA-aware 功能保留。补丁随安装元数据保存。
 站点 OpenMPI 的 libnbc 在多 rank 的 GPU 缓冲区归约上崩溃；补丁还把这两个
