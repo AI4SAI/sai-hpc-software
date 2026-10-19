@@ -74,12 +74,18 @@ def main():
     partitions = {'16V100': 'avx2', '4V100': 'avx512', '8V100V0': 'avx2', 'DSPRHBM': 'dsprhbm'}
     checks = {key: (args.checks/key).resolve(strict=True) for key in partitions}
     ids = [(run/'job.id').read_text().strip() for run in [*runs.values(), *checks.values()]]
-    raw_accounting = subprocess.check_output(['sacct', '-X', '-n', '-P', '-j', ','.join(ids),
+    # A short check may run as a Slurm step in our own existing allocation.
+    # Keep the step's completion/exit status and its parent partition identity.
+    query_ids = sorted(set(ids) | {job.split('.')[0] for job in ids})
+    raw_accounting = subprocess.check_output(['sacct', '-n', '-P', '-j', ','.join(query_ids),
         '--format=JobIDRaw,Partition,State,ExitCode,Elapsed,NodeList'], text=True)
     accounting = {}
     for line in raw_accounting.splitlines():
         job, partition, state, code, elapsed, node = line.split('|')
         accounting[job] = dict(partition=partition, state=state, exit_code=code, elapsed=elapsed, node=node)
+    for job, record in accounting.items():
+        if '.' in job and not record['partition']:
+            record['partition'] = accounting[job.split('.')[0]]['partition']
     for job in ids:
         require(accounting[job]['state'] == 'COMPLETED' and accounting[job]['exit_code'] == '0:0',
                 f'Job not completed successfully: {job}')
