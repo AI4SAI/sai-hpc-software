@@ -11,6 +11,25 @@ printf '%s  %s\n' a379f27f4dbd27b2ee45017afec656d064301e97150c874649bdfd64957b75
 mkdir -p /workspace/source /workspace/build "$ELPA_ROOT/share/sai/reference"
 tar --no-same-owner --strip-components=1 -xzf "$archive" -C /workspace/source
 patch --batch --fuzz=0 -p1 -d /workspace/source < /control/cuda-aware-cpu.patch
+# ELPA upstream PR #85, merged 2026-10-15, is absent from this release archive.
+python3 - <<'PY'
+import hashlib, json, subprocess
+from pathlib import Path
+source = Path('/workspace/source/src/GPU/check_for_gpu_template.F90')
+digest = lambda path: hashlib.sha256(path.read_bytes()).hexdigest()
+before = digest(source)
+assert before == 'd8b569137da84ad080c3646a57537290a315fb407adb3131558fee66632798a7'
+patch = Path('/control/mpi-communicator.patch')
+with patch.open('rb') as stream:
+    subprocess.run(['patch', '--batch', '--fuzz=0', '-p1', '-d', '/workspace/source'], stdin=stream, check=True)
+after = digest(source)
+assert after == 'af18210afa4781c58144941d1f5fef6b4807afdf4eac57bc5e6b7fd6463c9741'
+import os
+out = Path(os.environ['ELPA_ROOT'])/'share/sai/mpi-communicator-fix.json'
+out.write_text(json.dumps(dict(upstream='https://github.com/marekandreas/elpa/pull/85',
+    upstream_commit='20be982db53a671b9aac866a726aebe153a766e6',
+    source_sha256=before, patched_sha256=after, patch_sha256=digest(patch)), indent=2)+'\n')
+PY
 flags='-O2 -g -fno-omit-frame-pointer -fopenmp -fno-lto'
 case "$isa" in
   avx2) flags+=' -march=x86-64-v3 -mtune=znver3 -mno-avx512f'; avx512=no ;;
@@ -41,7 +60,7 @@ options=(--prefix="$ELPA_ROOT" --libdir="$ELPA_ROOT/lib"
   LIBS='-lscalapack -lopenblas'
   SCALAPACK_LDFLAGS="-L$OPENBLAS_ROOT/lib" SCALAPACK_FCFLAGS="-I$OPENBLAS_ROOT/include")
 cp /input/reference/* "$ELPA_ROOT/share/sai/reference/"
-cp /control/{build.sh,environment.sh,smoke.c,verify.sh,cuda-aware-cpu.patch} "$ELPA_ROOT/share/sai/"
+cp /control/{build.sh,environment.sh,smoke.c,verify.sh,cuda-aware-cpu.patch,mpi-communicator.patch,comm-trace.c,verify-lifecycle.py} "$ELPA_ROOT/share/sai/"
 printf '%s\n' "$flags" > "$ELPA_ROOT/share/sai/compiler-flags.txt"
 printf '%s\n' "$elpa_isa" > "$ELPA_ROOT/share/sai/isa"
 printf '%s\n' "$elpa_backend" > "$ELPA_ROOT/share/sai/backend"

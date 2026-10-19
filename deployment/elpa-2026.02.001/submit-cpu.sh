@@ -7,7 +7,7 @@ stamp=${1:-$(date +%Y%m%d-%H%M%S)}
 run=$root/runs/elpa-2026.02.001-$stamp-dsprhbm
 [[ ! -e "$run" ]]
 mkdir -p "$run"/{control,input/reference,install,work,runtime,cache}
-cp "$package"/{build.sh,build-cpu.sbatch,container.sh,environment.sh,smoke.c,verify.sh,cuda-aware-cpu.patch} "$run/control/"
+cp "$package"/{build.sh,build-cpu.sbatch,container.sh,environment.sh,smoke.c,verify.sh,cuda-aware-cpu.patch,mpi-communicator.patch,comm-trace.c,verify-lifecycle.py} "$run/control/"
 cp "$package/../../controller/create_rootfs.sh" "$run/control/"
 reference=/opt/apps/abacus/abacus-develop-3.9.0.26_nvhpc263gnu/toolchain
 cp "$reference/build/elpa-2026.02.001.tar.gz" "$run/input/"

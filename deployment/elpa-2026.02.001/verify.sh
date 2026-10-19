@@ -72,4 +72,17 @@ for ranks in 1 2; do
     done
   done
 done
+# Trace the exact Fortran MPI entry points called by ELPA. Repeated object
+# lifetimes model CP2K's per-diagonalization allocation and destruction.
+"$MPI_HOME/bin/mpicc" -shared -fPIC -O2 /control/comm-trace.c -ldl -o comm-trace.so
+for ranks in 1 2; do
+  for gpu in "${gpu_modes[@]}"; do
+    log=lifecycle-r$ranks-g$gpu.log
+    timeout 300 "$MPI_HOME/bin/mpiexec" --bind-to none -n "$ranks" \
+      env ELPA_OBJECT_REPEATS=32 LD_PRELOAD=/workspace/verify/comm-trace.so \
+      ./smoke "$gpu" 2 0 > "$log" 2>&1 || { cat "$log"; exit 1; }
+    python3 /control/verify-lifecycle.py "$log" --ranks "$ranks" --gpu "$gpu" --objects 32
+  done
+done
+printf 'ELPA_LIFECYCLE_PASS %s objects=32\n' "$isa" > lifecycle-passed.txt
 printf 'ELPA_SIF_VERIFIED %s\n' "$isa" | tee passed.txt

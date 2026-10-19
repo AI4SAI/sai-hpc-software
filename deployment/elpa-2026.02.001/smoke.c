@@ -31,6 +31,12 @@ int main(int argc, char **argv) {
     if (n % (nb * ranks)) MPI_Abort(MPI_COMM_WORLD, 3);
     int nr = n / ranks;
     check(elpa_init(20221109), "init");
+    const char *repeats_env = getenv("ELPA_OBJECT_REPEATS");
+    char *end = NULL;
+    long objects = repeats_env ? strtol(repeats_env, &end, 10) : 1;
+    if (objects < 1 || objects > 128 || (repeats_env && (end == repeats_env || *end)))
+        MPI_Abort(MPI_COMM_WORLD, 5);
+    for (long allocation = 0; allocation < objects; ++allocation) {
     elpa_t e = elpa_allocate(&error);
     check(error, "allocate");
     set(e, "na", n); set(e, "nev", n); set(e, "nblk", nb);
@@ -103,8 +109,9 @@ int main(int argc, char **argv) {
         free(qall);
     }
     elpa_deallocate(e, &error); check(error, "deallocate");
-    elpa_uninit(&error); check(error, "uninit");
     free(eval);
+    }
+    elpa_uninit(&error); check(error, "uninit");
     MPI_Finalize();
     return 0;
 }

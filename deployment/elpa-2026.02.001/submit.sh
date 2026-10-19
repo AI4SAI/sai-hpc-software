@@ -10,7 +10,7 @@ for isa in avx2 avx512; do
   run=$root/runs/elpa-2026.02.001-$stamp-$isa
   [[ ! -e "$run" ]]
   mkdir -p "$run"/{control,input/reference,install,work,runtime,cache}
-  cp "$package"/{build.sh,build.sbatch,container.sh,environment.sh,smoke.c,verify.sh,cuda-aware-cpu.patch} "$run/control/"
+  cp "$package"/{build.sh,build.sbatch,container.sh,environment.sh,smoke.c,verify.sh,cuda-aware-cpu.patch,mpi-communicator.patch,comm-trace.c,verify-lifecycle.py} "$run/control/"
   cp "$package/../../controller/create_rootfs.sh" "$run/control/"
   cp "$reference/build/elpa-2026.02.001.tar.gz" "$run/input/"
   cp "$reference/scripts/stage3/install_elpa.sh" "$run/input/reference/"
