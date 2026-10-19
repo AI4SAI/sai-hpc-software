@@ -16,7 +16,8 @@ for partition in 16V100 4V100 8V100V0 DSPRHBM; do
   [[ "$build" == "$root/runs/elpa-"* && -f "$build/job.id" ]]
   run=$root/runs/elpa-commfix-check-$stamp-$partition
   mkdir -p "$run"/{control,work,runtime,cache}
-  cp "$build/control/"{container.sh,environment.sh,verify.sh,smoke.c,comm-trace.c,verify-lifecycle.py} "$run/control/"
+  cp "$build/control/"{container.sh,environment.sh} "$run/control/"
+  cp "$package/../elpa-2026.02.001/"{verify.sh,smoke.c,comm-trace.c,verify-lifecycle.py} "$run/control/"
   cp "$package/check.sbatch" "$run/control/"
   cp "$package/2026.02.001-2603-gnu-auto" "$run/control/"
   cp "$package/../elpa-2026.02.001-cpu/check-partition.sh" "$run/control/"

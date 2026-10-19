@@ -59,14 +59,14 @@ for ranks in 1 2; do
         log=r$ranks-g$gpu-s$solver-c$complex.log
         timeout 180 "$MPI_HOME/bin/mpiexec" --bind-to none -n "$ranks" \
           ./smoke "$gpu" "$solver" "$complex" > "$log" 2>&1 || { cat "$log"; exit 1; }
-        [[ $(grep -c '^ELPA_NUMERIC PASS' "$log") == 2 ]]
-        grep '^ELPA_NUMERIC PASS' "$log"
+        [[ $(tr -d '\000' < "$log" | grep -c '^ELPA_NUMERIC PASS') == 2 ]]
+        tr -d '\000' < "$log" | grep '^ELPA_NUMERIC PASS'
         if [[ "$solver" == 2 ]]; then
           log=r$ranks-g$gpu-s$solver-c$complex-nbc1.log
           timeout 180 "$MPI_HOME/bin/mpiexec" --bind-to none -n "$ranks" \
             ./smoke "$gpu" "$solver" "$complex" 1 > "$log" 2>&1 || { cat "$log"; exit 1; }
-          [[ $(grep -c '^ELPA_NUMERIC PASS' "$log") == 2 ]]
-          grep '^ELPA_NUMERIC PASS' "$log"
+          [[ $(tr -d '\000' < "$log" | grep -c '^ELPA_NUMERIC PASS') == 2 ]]
+          tr -d '\000' < "$log" | grep '^ELPA_NUMERIC PASS'
         fi
       done
     done
