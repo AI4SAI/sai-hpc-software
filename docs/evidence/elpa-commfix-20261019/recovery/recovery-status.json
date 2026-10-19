@@ -1,0 +1,40 @@
+{
+  "observed_at": "2026-10-19T23:35:47.848860+08:00",
+  "cancelled_job": "1862503",
+  "cloned_recovery_job": "1863579",
+  "cloned_recovery_accepted": false,
+  "reason": "Cloned interrupted overlay failed e2fsck -pf with an unconnected directory; no successful dependency receipt was produced.",
+  "original_and_clone_retained": true,
+  "fresh_run": "/home/stardust/sai-hpc-software/runs/cp2k-deps-8v100v0-clean-recovery-20261019",
+  "fresh_job": "1863884",
+  "request": {
+    "controller": "/home/stardust/sai-hpc-software/controller/797d6c3b45c3f847efa4d083f9998001816d826b/39262701906-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6",
+    "identity": {
+      "build_id": "v2026.2-g67b5da876dd6-r46ac9460660f",
+      "cpu_arch": "skylake-avx512",
+      "cuda_arch": "70",
+      "dependency_isa": "avx2",
+      "gpus": 1,
+      "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r46ac9460660f/8V100V0",
+      "partition": "8V100V0",
+      "recipe_sha256": "46ac9460660f9bf876ddfaacd2b0c5e38c8f2df161edff34035aa8335a1467be",
+      "repository": "cp2k/cp2k",
+      "schema": 2,
+      "software": "cp2k",
+      "source_ref": "v2026.2",
+      "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+      "source_version": "v2026.2",
+      "stack_digest": null,
+      "stack_sources": {},
+      "target": "8v100v0-avx512",
+      "track": "release",
+      "version_label": "v2026.2"
+    },
+    "job_id": "1863884",
+    "minutes": 240,
+    "overlay_mb": 16384,
+    "purpose": "cp2k-final-prefix-dependencies-not-application-acceptance",
+    "script_sha256": "27641c507e84340ba9154bee5dc0c2347285426253e168865893a76f7d2c7775"
+  },
+  "accounting": "1862503|8V100V0|CANCELLED by 1478400690|0:0|00:47:27|8v100v0n11\n1863579|8V100V0|FAILED|1:0|00:13:58|8v100v0n02\n1863884|8V100V0|PENDING|0:0|00:00:00|None assigned\n"
+}

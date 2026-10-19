@@ -73,9 +73,16 @@ the node/compiler/external graph, and continue the original install with
 `--dont-restage`. The recovery allocation requests the original two GPUs and
 12 CPUs under the normal batch policy. Its request and accounting are recorded
 alongside these scripts; no previous evidence is relabelled as a new build.
-Recovery job `1863579` is submitted and pending resources as of this handoff.
-A detached monitor will validate and seal the checkpoint when it succeeds;
-the original workflow's cancelled allocation is not reported as successful.
+The cloned recovery job `1863579` subsequently failed the filesystem check:
+`e2fsck -pf` found deleted/unused inodes and an unconnected directory after the
+interrupted write. It never reached dependency compilation and is **not accepted**.
+Both original and clone are retained. Fresh dependency job `1863884` was then
+submitted using the original frozen controller, identity and source-only seed,
+without borrowing the inconsistent overlay. `recovery/recovery-status.json`
+records that request and observed accounting; `recovery/failed-clone-fsck.log`
+preserves the failed check. A detached monitor will validate and seal the fresh
+checkpoint if it succeeds. Neither cancelled nor failed allocations are reported
+as successful, and the original GitHub phase has not been relabelled.
 
 CP2K still pins the old shared ELPA bytes. After administrator replacement,
 native ELPA revalidation and a new CP2K dependency lock/identity are required.
