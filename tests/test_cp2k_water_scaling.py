@@ -1,7 +1,9 @@
 """Guard the scientific/resource distinctions in the large-water comparison."""
 import importlib.util
 import json
+import copy
 from pathlib import Path
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -10,6 +12,10 @@ ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('water_scaling', ROOT/'deployment/cp2k-water-scaling/run.py')
 water = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(water)
+campaign_spec = importlib.util.spec_from_file_location('water_campaign', ROOT/'deployment/cp2k-water-scaling/campaign.py')
+campaign = importlib.util.module_from_spec(campaign_spec)
+with patch.dict(sys.modules, {'run': water}):
+    campaign_spec.loader.exec_module(campaign)
 
 
 class WaterScalingTests(unittest.TestCase):
@@ -79,6 +85,20 @@ class WaterScalingTests(unittest.TestCase):
                     with self.assertRaisesRegex(ValueError, 'did not complete successfully'):
                         water.verify(folder)
             self.assertFalse((folder/'results/verified.json').exists())
+
+    def test_host_limited_size_needs_full_science_and_observed_ram_limit(self):
+        proof = dict(full_calibration=True, limiting_resource='host_memory_limit',
+                     selected=dict(science_accepted=True, peak_gpu_fraction={'GPU-a': .55, 'GPU-b': .63}))
+        self.assertTrue(campaign.host_limited_selection(proof, True))
+        self.assertFalse(campaign.host_limited_selection(proof, False))
+        for key, value in (('full_calibration', False), ('limiting_resource', 'gpu_memory_guard'), ('selected', None)):
+            bad = {**proof, key: value}
+            self.assertFalse(campaign.host_limited_selection(bad, True))
+        bad = copy.deepcopy(proof); bad['selected']['science_accepted'] = False
+        self.assertFalse(campaign.host_limited_selection(bad, True))
+        for fraction in (.49, .76):
+            bad = copy.deepcopy(proof); bad['selected']['peak_gpu_fraction']['GPU-a'] = fraction
+            self.assertFalse(campaign.host_limited_selection(bad, True))
 
 
 if __name__ == '__main__':

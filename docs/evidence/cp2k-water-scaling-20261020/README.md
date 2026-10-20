@@ -1,5 +1,24 @@
 # CP2K water scaling: calibration and CPU acceptance
 
+**Follow-up at 23:05 China time:** the initial 448-water 4V100 single-GPU
+comparison **1882361** hit the host-memory guard during its fifth SCF update.
+The full-calculation calibration **1882535** then rejected 432 waters near the
+22 GiB host quota and completed **392 waters (9,016 basis functions)** in 20 SCF
+steps, including forces, with **54.99% GPU memory** and **18.35 GiB host memory**.
+Its replacement comparison **1882731** is running. This point is explicitly
+limited by host RAM rather than satisfying the preferred 60–75% VRAM window.
+
+The 4V100 four-GPU short calibration **1882208** reached the host-memory guard at
+1,100 and 1,089 waters and ended `OUT_OF_MEMORY`; it is not accepted evidence.
+The new complete 900-water calibration **1882713** is queued. It carries the
+earlier larger run's measured RAM-limit evidence, so it need not repeat a known
+unsafe size. The watcher requires a converged complete calculation before using
+a host-limited size and preserves the superseded jobs. The 16V100 288- and
+648-water comparisons remain running, and the 16-GPU calibration remains queued
+for resources. Raw follow-up evidence is in [host-memory-followup.json](host-memory-followup.json).
+**No final speedup is available.** The following table and progress JSON retain
+the earlier snapshot for traceability.
+
 Snapshot: **2026-10-20 22:20 China time**. This is progress evidence, not a
 completed performance comparison. The machine-readable snapshot is
 [progress.json](progress.json); the executable protocol is

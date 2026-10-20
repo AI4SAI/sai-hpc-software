@@ -83,6 +83,22 @@ limit prevent the requested window, the report records that limitation rather
 than pretending the target was achieved. Complete ENERGY_FORCE runs must
 recheck the memory peak.
 
+Use `--full-calibration` when later SCF iterations or forces consume more host
+RAM than the short probe. It converges ENERGY_FORCE at each trial size and records
+the limiting resource. On 4V100, 22 GiB of host RAM per GPU can become the limit
+before a 32 GiB card reaches the preferred VRAM range. A campaign point explicitly
+marked `allow_host_limited` may use a fully converged selection at 50–75% VRAM
+only after an actual larger calculation hits the host-memory guard. This preserves
+the user's preference for using most available memory within the identical
+GPU-associated CPU/RAM quota, and the result is labelled as limited by host RAM.
+Ordinary calibration cannot enable this exception. Failed comparisons remain
+listed in `previous_comparisons`, with a new `attempt` name for the replacement.
+`--host-limit-run RUN` can also attach a previous larger calculation's measured
+RAM-limit evidence to a new complete calibration. Its partition, GPU count and
+executable must match, and the failed sample's measured memory must prove that
+the host guard was reached. This avoids repeating a known unsafe large size just
+to rediscover the same RAM limit; it still requires a converged new selection.
+
 The CPU smoke test verifies the source/version, absent CUDA features, native
 libraries, full convergence and agreement with the GPU at 64 waters. CPU MPI ×
 OpenMP layouts are G×4, 2G×2 and 4G×1, all using exactly 4G physical cores.

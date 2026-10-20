@@ -240,7 +240,7 @@ def run_case(root, request, devices, name, mode, shape, ranks, threads, calibrat
                     peaks[device['uuid']] = max(peaks[device['uuid']], memory)
                 if sample['cgroup'] and sample['cgroup']['used'] > .92*sample['cgroup']['limit']:
                     stop = 'host_memory_limit'
-                if calibration and any(peaks[d['uuid']] > .86*d['total_mib'] for d in devices):
+                if request['stage'] == 'calibrate' and any(peaks[d['uuid']] > .86*d['total_mib'] for d in devices):
                     stop = 'gpu_memory_guard'
                 if time.monotonic()-started > request['case_seconds']:
                     stop = 'case_timeout'
@@ -291,8 +291,8 @@ def run_case(root, request, devices, name, mode, shape, ranks, threads, calibrat
 
 
 def next_shape(waters, lower, upper, tried):
-    candidates = {(x, y, z) for x in range(3, 41) for y in range(x, min(x+3, 41))
-                  for z in range(y, min(x+3, 41)) if lower < x*y*z < upper and (x, y, z) not in tried}
+    candidates = {(x, y, z) for x in range(3, 41) for y in range(x, min(int(1.5*x)+1, 41))
+                  for z in range(y, min(int(1.5*x)+1, 41)) if lower < x*y*z < upper and (x, y, z) not in tried}
     return min(candidates, key=lambda s: abs(math.log(math.prod(s)/waters))) if candidates else None
 
 
@@ -302,9 +302,11 @@ def calibrate(root, request, devices):
     lower, upper = 0, 40**3+1
     selected = None
     reason = 'probe_limit'
+    limiting_resource = 'host_memory_limit' if request.get('prior_host_limit') else None
     for attempt in range(request['probes']):
         tried.add(shape)
-        sample = run_case(root, request, devices, f'calibration-{attempt}', 'gpu', shape, request['gpus'], 4, True)
+        sample = run_case(root, request, devices, f'calibration-{attempt}', 'gpu', shape, request['gpus'], 4,
+                          not request.get('full_calibration', False))
         results.append(sample)
         maximum = max(sample['peak_gpu_fraction'].values())
         minimum = min(sample['peak_gpu_fraction'].values())
@@ -320,17 +322,20 @@ def calibrate(root, request, devices):
             reason = 'execution_failed'
             break
         else:
+            limiting_resource = sample['stop'] or 'gpu_memory_target'
             upper = min(upper, sample['waters'])
             target = sample['waters']*.8
         if upper < 40**3+1:
-            target = (lower+upper)/2
+            target = (lower+upper)/2 if lower else .9*upper
         shape = next_shape(target, lower, upper, tried)
         write_json(root/'results/calibration.json', dict(selected=selected, reason='in_progress', probes=results))
         if shape is None:
             reason = 'discrete_size_or_memory_limit'
             break
     report = dict(selected=selected, reason=reason, probes=results, performance_result=False,
-                  target_fraction=[.60, .75], scope='3 SCF steps, memory calibration only; full-run peak must be checked again')
+                  limiting_resource=limiting_resource, full_calibration=request.get('full_calibration', False),
+                  target_fraction=[.60, .75], scope=('complete ENERGY_FORCE memory calibration' if request.get('full_calibration')
+                    else '3 SCF steps, memory calibration only; full-run peak must be checked again'))
     write_json(root/'results/calibration.json', report)
     require(selected is not None, 'No completed safe calibration point; inspect raw evidence')
 
@@ -434,6 +439,8 @@ def verify(root):
             if sample['returncode'] == 0 and sample['stop'] is None:
                 require(timers((case/'cp2k.log').read_text(), 'gpu') == sample['timers'], 'Changed calibration timers')
             continue
+        if request['stage'] == 'calibrate' and (sample['returncode'] != 0 or sample['stop']):
+            continue
         require(sample['returncode'] == 0 and sample['stop'] is None, 'Failed science case')
         fixtures.CASES['scaling'] = dict(elements=['O', 'H', 'H']*math.prod(launch['shape']))
         actual = fixtures.parse_science((case/'cp2k.log').read_text(), (case/'forces.xyz').read_text(),
@@ -490,9 +497,25 @@ def submit(args):
     binary = prefix/'bin/cp2k.psmp'
     shape = args.shape or ([4, 4, 4] if args.stage == 'smoke' else START[(args.partition, args.gpus)])
     request = dict(partition=args.partition, gpus=args.gpus, physical_cores=4*args.gpus, stage=args.stage,
-        shape=shape, probes=args.probes, case_seconds=args.case_seconds,
+        shape=shape, probes=args.probes, case_seconds=args.case_seconds, full_calibration=args.full_calibration,
         source_sha=SOURCE, gpu_binary=str(binary), gpu_binary_sha256=digest(binary),
         cpu_binary=args.cpu_binary, install_receipt_sha256=digest(prefix/'share/sai/deployment.json'))
+    if args.host_limit_run:
+        require(args.stage == 'calibrate' and args.full_calibration, 'Prior RAM limits require complete calibration')
+        previous = Path(args.host_limit_run)
+        prior_request = json.loads((previous/'request.json').read_text())
+        require(all(prior_request[k] == request[k] for k in ('partition', 'gpus', 'gpu_binary_sha256')),
+                'Prior host-memory limit used different resources or executable')
+        limits = []
+        for sample_path in (previous/'cases').glob('*/sample.json'):
+            sample = json.loads(sample_path.read_text())
+            memory = sample.get('host_memory') or {}
+            if (sample.get('stop') == 'host_memory_limit' and sample['waters'] > math.prod(shape) and
+                    memory.get('used', 0) >= .92*memory.get('limit', math.inf)):
+                limits.append(dict(path=str(sample_path), sha256=digest(sample_path), waters=sample['waters'], memory=memory))
+        require(limits, 'No larger run with an observed host-memory limit')
+        request['prior_host_limit'] = dict(run=str(previous), request_sha256=digest(previous/'request.json'),
+                                          observations=limits)
     if args.stage != 'calibrate':
         require(args.cpu_binary, 'Native CPU binary is required')
         require((Path(args.cpu_binary).parents[2]/'results/build-complete').is_file(), 'CPU build is incomplete')
@@ -558,6 +581,8 @@ def main():
     p.add_argument('--calibration-run')
     p.add_argument('--cpu-smoke-run')
     p.add_argument('--probes', type=int, default=6)
+    p.add_argument('--full-calibration', action='store_true', help='Converge ENERGY_FORCE to include late SCF/force memory')
+    p.add_argument('--host-limit-run', help='Existing larger run with measured RAM exhaustion in the same allocation')
     p.add_argument('--case-seconds', type=int, default=1800)
     p.add_argument('--minutes', type=int, default=180)
     p = sub.add_parser('execute'); p.add_argument('root', type=Path)

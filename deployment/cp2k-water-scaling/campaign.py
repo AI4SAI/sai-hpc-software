@@ -30,6 +30,14 @@ def state(path, states):
     return states.get(job.read_text().strip(), {}).get('state', 'UNKNOWN') if job.is_file() else 'NOT_SUBMITTED'
 
 
+def host_limited_selection(memory, allowed):
+    selected = memory.get('selected') or {}
+    fractions = list(selected.get('peak_gpu_fraction', {}).values())
+    return bool(allowed and memory.get('full_calibration') and
+        memory.get('limiting_resource') == 'host_memory_limit' and selected.get('science_accepted') and
+        fractions and min(fractions) >= .50 and max(fractions) <= .75)
+
+
 def ensure_verified(path):
     record = Path(path)/'results/verified.json'
     if not record.is_file():
@@ -86,9 +94,13 @@ def tick(path):
             if row['calibration_state'] == 'COMPLETED' and not row.get('comparison') and cpu.get('accepted'):
                 ensure_verified(row['calibration'])
                 memory = json.loads((Path(row['calibration'])/'results/calibration.json').read_text())
-                protocol.require(memory['reason'] == 'all_gpus_in_target', 'Memory window requires review: '+memory['reason'])
+                host_limited = host_limited_selection(memory, row.get('allow_host_limited', False))
+                protocol.require(memory['reason'] == 'all_gpus_in_target' or host_limited,
+                                 'Memory window requires review: '+memory['reason'])
                 row['shape'] = memory['selected']['shape']
-                row['comparison'] = submit(campaign['name']+'-'+row['partition'].lower()+'-g'+str(row['gpus'])+'-compare',
+                row['host_memory_limited'] = bool(host_limited)
+                suffix = ('-r'+str(row['attempt'])) if row.get('attempt') else ''
+                row['comparison'] = submit(campaign['name']+'-'+row['partition'].lower()+'-g'+str(row['gpus'])+'-compare'+suffix,
                     row['partition'], row['gpus'], 'compare', cpu['build']+'/install/bin/cp2k.psmp',
                     shape=row['shape'], calibration=row['calibration'], smoke=cpu['smoke'])
             if row.get('comparison'):
