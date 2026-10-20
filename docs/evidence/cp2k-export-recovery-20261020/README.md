@@ -7,8 +7,10 @@ the GPU candidates **failed science**: 16V100 fails the 64-water ELPA2
 calculation; 4V100 and 8V100V0 fail the small distributed ELPA2 calculation at
 `cudaHostRegister`. An isolated ELPA workaround has now passed all **42/42**
 unchanged CP2K calculations on the three GPU partitions. Its two-library
-administrator package passed preflight. Physical replacement/acceptance and a
-new CP2K dependency lock and delivery identity remain pending; the original GPU
+administrator package passed preflight and was subsequently installed.
+[Four-partition physical acceptance](../elpa-backtransform-native-20261020/README.md)
+then passed 460 numerical solves, and the CP2K dependency lock was updated.
+New-identity CP2K compilation and science remain pending; the original GPU
 deliveries retain their failures. No 216-water GPU tuning run has started.
 The sections below retain the original failures and recovery snapshots.
 

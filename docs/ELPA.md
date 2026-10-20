@@ -19,8 +19,11 @@ cuSOLVERMp、ELPA CPU kernel 或 ELPA 单阶段 GPU 路径可正常收敛；不�
 已通过独立数值、Fortran 和 communicator 生命周期检查，并在 16V100、4V100、
 8V100V0 通过全部 **42 项 CP2K 单/双节点测试**，包括此前失败的输入。
 约 39.8 MiB 的 [GPU 替换包](../deployment/elpa-2026.02.001-backtransform/README.md)
-已生成并通过预检查，等待管理员替换公共安装；随后还需物理验收和新的 CP2K
-依赖锁。此本地兼容方案的通过范围是上述算例，性能仍待单独测量。详见
+已由管理员安装。公共 module 物理复验 `1869223`–`1869226` 四分区均通过，
+共 460 次数值求解；GPU 每 rank 的 32 个临时 communicator 全部释放，
+GCC 14.3 Fortran 数值消费者也通过。CP2K 依赖锁已固定新 GPU 库和回变换补丁，
+新身份 CP2K 的构建和科学验收仍需完成。此本地兼容方案的通过范围是上述算例，
+性能仍待单独测量。[最新物理验收](evidence/elpa-backtransform-native-20261020/README.md)；详见
 [集成失败、控制实验及候选修复](evidence/cp2k-export-recovery-20261020/README.md)。
 
 ## 分区选择和固定路径

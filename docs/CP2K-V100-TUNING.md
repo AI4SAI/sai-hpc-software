@@ -283,7 +283,8 @@ The October 20 shared-ELPA integration exposed GPU back-transformation failures
 before tuning. Both isolated replacement libraries now pass standalone checks
 and all 42 unmodified CP2K calculations across the three GPU partitions; see
 the [integration evidence and administrator handoff](evidence/cp2k-export-recovery-20261020/README.md).
-The public GPU libraries are still the previous ones. Physical replacement,
-acceptance and a fresh CP2K dependency lock/delivery identity precede the
-216-water measurements. The host-staging workaround can alter communication
+The administrator subsequently installed both libraries. All four public-module
+native jobs passed 460 solves, including GCC 14.3 consumers and communicator
+lifecycle checks. The CP2K lock now pins those files. Fresh CP2K compilation and
+science acceptance precede the 216-water measurements. The host-staging workaround can alter communication
 costs, so earlier private-ELPA timing does not establish the new library's speed.

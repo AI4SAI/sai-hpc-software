@@ -77,9 +77,14 @@ scientific references and inputs still match their pinned hashes.
   All 42 unchanged CP2K calculations then passed on 4V100 (`1868636`), 16V100
   (`1868645`) and 8V100V0 (`1868647`), with independent numerical revalidation.
   The 39.8 MiB [NVIDIA-only replacement package](../deployment/elpa-2026.02.001-backtransform/README.md)
-  passed preflight. Administrator installation, physical acceptance and a new
-  CP2K dependency lock/delivery identity remain required; the old GPU deliveries
-  remain failed and 216-water tuning has not started. The final integration
+  was installed by the administrator. Public-module native jobs `1869223`–`1869226`
+  then passed on all four partitions: 460 numerical solves, zero remaining GPU
+  communicators and successful GCC 14.3 Fortran probes. The CP2K dependency lock
+  now pins the new GPU libraries and back-transformation patch. New-identity
+  CP2K compilation/science remains required; the old GPU deliveries
+  remain failed and 216-water tuning has not started.
+  [Physical ELPA acceptance](evidence/elpa-backtransform-native-20261020/README.md).
+  The final integration
   archive contains 2,156 independently hash-verified files. Linux CI at
   `0e0ed1c` passed 840 tests (838 passed, two optional skips).
   [Diagnosis and export recovery](evidence/cp2k-export-recovery-20261020/README.md).
