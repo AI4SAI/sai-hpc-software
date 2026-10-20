@@ -1,0 +1,58 @@
+{
+  "archive": "/home/stardust/sai-hpc-software/cache/cp2k-probe/dbcsr-latest.tar.gz",
+  "archive_sha256": "d963cac9cb79e04d82bedf0f4febce9cd06470f84c7d5a45f74645d11f8c4875",
+  "member": "dbcsr-latest/src/acc/libsmm_acc/libsmm_acc.cpp",
+  "source_sha256": "fb40d18f0ee8cc85d9a3c41a6267f3d501be50a5c6ea44c4d82209cc5ea46d5c",
+  "start_line": 378,
+  "end_line": 402,
+  "lines": [
+    "  timeset(routineN, handle);",
+    "",
+    "  // Create nvrtcProgram",
+    "  ACC_RTC(Program) kernel_program;",
+    "  std::string transpose_code = smm_acc_common + smm_acc_transpose;",
+    "  ACC_RTC_CALL(CreateProgram, (&kernel_program, transpose_code.c_str(), \"transpose_kernel.cu\", 0, NULL, NULL));",
+    "",
+    "  // Add lowered name",
+    "  std::string kernel_name = \"transpose_d<\" + std::to_string(m) + \", \" + std::to_string(n) + \">\";",
+    "  ACC_RTC_CALL(AddNameExpression, (kernel_program, kernel_name.c_str()));",
+    "",
+    "  // (JIT-)compile",
+    "#if defined(__CUDA) || defined(__HIP_PLATFORM_NVCC__)",
+    "  const char* compileOptions[] = {\"-D__CUDA\", \"-w\", ARCH_OPTION};",
+    "  size_t nOptions = 3;",
+    "#else",
+    "  const char* compileOptions[] = {\"-D__HIP\"};",
+    "  size_t nOptions = 1;",
+    "#endif",
+    "  ACC_RTC(Result) compileResult = ACC_RTC(CompileProgram)(kernel_program, nOptions, compileOptions);",
+    "  if (compileResult != ACC_RTC_SUCCESS) {",
+    "    // if compilation fails:",
+    "    // print source, compilation options and compilation log",
+    "    size_t logSize;",
+    "    ACC_RTC_CALL(GetProgramLogSize, (kernel_program, &logSize));"
+  ],
+  "macro_definitions": {
+    "dbcsr-latest/src/acc/hip/acc_hip.h": [
+      {
+        "line": 26,
+        "text": "#define ACC_RTC(x) hiprtc##x"
+      },
+      {
+        "line": 46,
+        "text": "#define ACC_RTC_CALL(func, args) \\"
+      }
+    ],
+    "dbcsr-latest/src/acc/cuda/acc_cuda.h": [
+      {
+        "line": 22,
+        "text": "#define ACC_RTC(x) nvrtc##x"
+      },
+      {
+        "line": 51,
+        "text": "#define ACC_RTC_CALL(func, args) \\"
+      }
+    ]
+  },
+  "note": "Backtrace caller line 397 invokes ACC_RTC(CompileProgram), which expands to NVRTC on CUDA. This identifies the failing call, not the underlying cause; all six diagnostic cases passed on a different node."
+}

@@ -1,0 +1,12 @@
+[
+  "mpirun",
+  "-np",
+  "1",
+  "--map-by",
+  "ppr:1:node:pe=2",
+  "--report-bindings",
+  "bash",
+  "/home/stardust/sai-hpc-software/runtime-tests/cp2k-container-overhead-20261020-DSPRHBM/control/deployment/cp2k-container-overhead/rank.sh",
+  "sif",
+  "probe"
+]

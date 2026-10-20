@@ -67,3 +67,15 @@ the practical SIF route also creates mounts and a process environment, exposes
 host drivers, and decompresses image pages when needed. All measured routes
 use a warm filesystem cache to an uncontrolled extent; no cold-start claim is
 made. One rank/node does not establish overhead at many-rank or many-node scale.
+
+The recorded mount tables show another site-specific distinction: the physical
+`/opt/apps` installation is on NFS, while the SIF and bound home working
+directories are on Lustre. This measures the practical deployment routes at
+this site, not a packaging-only comparison on identical backing storage. Warm
+repetitions reduce loading effects but do not remove that distinction. Inputs
+and outputs use the same Lustre filesystem in both routes.
+
+The [completed four-partition report](../../docs/evidence/cp2k-container-overhead-20261020/README.md)
+contains all 112 scientific calculations, the separate 20-pair startup check,
+raw evidence and an offline revalidator. It also records storage variability
+and the failed original 4V100 native attempt before the successful retry.

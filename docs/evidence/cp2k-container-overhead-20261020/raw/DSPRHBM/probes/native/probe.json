@@ -1,0 +1,416 @@
+{
+  "affinity": [
+    69,
+    70
+  ],
+  "binary": {
+    "dev": 53,
+    "inode": 6672347,
+    "sha256": "f77465a354cff28894ec663c18b56eb232e514662fa0afeea5fd10d957961d43",
+    "uid": 1478400146
+  },
+  "cwd": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-container-overhead-20261020-DSPRHBM/probes/native",
+  "cwd_dev": 4231993238,
+  "cwd_inode": 144115790948419429,
+  "data": {
+    "BASIS_MOLOPT": {
+      "dev": 53,
+      "inode": 6728792,
+      "sha256": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+      "uid": 1478400146
+    },
+    "GTH_POTENTIALS": {
+      "dev": 53,
+      "inode": 6728969,
+      "sha256": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+      "uid": 1478400146
+    }
+  },
+  "environment": {
+    "CP2K_DATA_DIR": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/share/cp2k/data",
+    "CUDA_VISIBLE_DEVICES": null,
+    "MKL_NUM_THREADS": "1",
+    "MPI_HOME": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512",
+    "OMP_NUM_THREADS": "2",
+    "OMP_PLACES": "cores",
+    "OMP_PROC_BIND": "close",
+    "OPENBLAS_NUM_THREADS": "1",
+    "TMPDIR": "/home/stardust/sai-hpc-software/runtime/co-1882051"
+  },
+  "euid": 1478400690,
+  "host": "d9470n02.mr-sai.ai",
+  "libraries": {
+    "libc.so.6": {
+      "dev": 66306,
+      "inode": 40413,
+      "path": "/lib/x86_64-linux-gnu/libc.so.6",
+      "sha256": "d8db8739a1633c972cec6a4fe0566bdcec6fd088f98723492ab0361f66238f75",
+      "uid": 0
+    },
+    "libcosma.so": {
+      "dev": 53,
+      "inode": 6667935,
+      "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/dependencies/spack/linux-sapphirerapids/cosma-2.7.0-goq7bmlsruxt5lhhemq4ytm366mnfw5l/lib64/libcosma.so",
+      "sha256": "835695cd9bf179eb444b6f7da6f1947e9d26f0bf59d21d1b1b2da000fc1ffe0e",
+      "uid": 1478400146
+    },
+    "libcosma_prefixed_pxgemm.so": {
+      "dev": 53,
+      "inode": 6676799,
+      "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/dependencies/spack/linux-sapphirerapids/cosma-2.7.0-goq7bmlsruxt5lhhemq4ytm366mnfw5l/lib64/libcosma_prefixed_pxgemm.so",
+      "sha256": "24658eb2b2e755236c7f5bc35997a0fcb8dd01302ea344ae262c47c9ddc0e004",
+      "uid": 1478400146
+    },
+    "libcosta.so": {
+      "dev": 53,
+      "inode": 6672349,
+      "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/dependencies/spack/linux-sapphirerapids/costa-2.3.3-atwoealp6a2oujemkdh23i7qgfho3l7x/lib64/libcosta.so",
+      "sha256": "78a6795c8bdf08d6aae0428e6bdf4061ad9d04a07182f27888199ac2cfe488aa",
+      "uid": 1478400146
+    },
+    "libcp2k.so.2026.2": {
+      "dev": 53,
+      "inode": 6727886,
+      "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/lib64/libcp2k.so.2026.2",
+      "sha256": "c4f6c22f0d55cb1e567c6c1e5eda5b42bf0e165b27c066e9a76d3804c33f87a9",
+      "uid": 1478400146
+    },
+    "libdl.so.2": {
+      "dev": 66306,
+      "inode": 40429,
+      "path": "/lib/x86_64-linux-gnu/libdl.so.2",
+      "sha256": "850b46fd4f4478060fc106f4d1dc4aa35c969eb5c9bd98aaf64dc6cb3d6a5e32",
+      "uid": 0
+    },
+    "libelpa_openmp.so.19": {
+      "dev": 53,
+      "inode": 6724332,
+      "path": "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/cpu/lib/libelpa_openmp.so.19",
+      "sha256": "2a06d3aec623e5d35a63647ae357d2e165997560c6d784da1520cc2cde57eadc",
+      "uid": 1478400146
+    },
+    "libevent_core-2.1.so.7": {
+      "dev": 66306,
+      "inode": 26694,
+      "path": "/lib/x86_64-linux-gnu/libevent_core-2.1.so.7",
+      "sha256": "07bc5c896da3469064935f60595b5a3e44f5cc5bad9b8d7d71adc4ea1cd628aa",
+      "uid": 0
+    },
+    "libevent_pthreads-2.1.so.7": {
+      "dev": 66306,
+      "inode": 41662,
+      "path": "/lib/x86_64-linux-gnu/libevent_pthreads-2.1.so.7",
+      "sha256": "9d1cbb4b2598f7e1e02f161547a61dcb527beb6fb9afec2109e40cb5fc82a263",
+      "uid": 0
+    },
+    "libfftw3.so.3": {
+      "dev": 53,
+      "inode": 562173,
+      "path": "/opt/devtools/fftw/fftw-3.3.10/lib/libfftw3.so.3",
+      "sha256": "099d5c771afe46775296229a656479c76b7cdaba2ea4f18f416668b40e6b1641",
+      "uid": 1000
+    },
+    "libfftw3_omp.so.3": {
+      "dev": 53,
+      "inode": 559150,
+      "path": "/opt/devtools/fftw/fftw-3.3.10/lib/libfftw3_omp.so.3",
+      "sha256": "6cd5706a285eda265f484105cd7325b1ce70c2a04c11f75e96f3807997858287",
+      "uid": 1000
+    },
+    "libgcc_s.so.1": {
+      "dev": 53,
+      "inode": 6681463,
+      "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/dependencies/spack/linux-sapphirerapids/gcc-runtime-14.3.0-hkx3nzpcza3hnke7x3dzgo2znpnqclp4/lib/libgcc_s.so.1",
+      "sha256": "264e0f33085d0508606f0cf2a1c727a3ac828e86fdd7fe40a9f461cb92e8bc80",
+      "uid": 1478400146
+    },
+    "libgfortran.so.5": {
+      "dev": 53,
+      "inode": 6660256,
+      "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/dependencies/spack/linux-sapphirerapids/gcc-runtime-14.3.0-hkx3nzpcza3hnke7x3dzgo2znpnqclp4/lib/libgfortran.so.5",
+      "sha256": "7d8bc2ccca9e0cfc2a2e3a7c4e0f3cae80c0656af2992be94fcf24c27421f408",
+      "uid": 1478400146
+    },
+    "libgomp.so.1": {
+      "dev": 53,
+      "inode": 6728052,
+      "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/dependencies/spack/linux-sapphirerapids/gcc-runtime-14.3.0-hkx3nzpcza3hnke7x3dzgo2znpnqclp4/lib/libgomp.so.1",
+      "sha256": "b88c7b8861f1dd1c0c577aa6f52dfec1fff82a9cc9afdbf508617c17f3906ad0",
+      "uid": 1478400146
+    },
+    "libgsl.so.27": {
+      "dev": 66306,
+      "inode": 41984,
+      "path": "/lib/x86_64-linux-gnu/libgsl.so.27",
+      "sha256": "99a902f1c0df5c709ba20cb64f014eda51b978305c2923d9397f0b1b902eda18",
+      "uid": 0
+    },
+    "libgslcblas.so.0": {
+      "dev": 66306,
+      "inode": 41982,
+      "path": "/lib/x86_64-linux-gnu/libgslcblas.so.0",
+      "sha256": "cbaeb658d6d3fd2dc46695923083c0e8b5ceb5f9fb76b1f607a643e00cb2a1c5",
+      "uid": 0
+    },
+    "libhcoll.so.1": {
+      "dev": 53,
+      "inode": 6158415,
+      "path": "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libhcoll.so.1",
+      "sha256": "8dc9d0e195b94a003e13deeeb6d2011d013eed6a46c74e633ed655cf726c81cb",
+      "uid": 1000
+    },
+    "libhwloc.so.15": {
+      "dev": 53,
+      "inode": 6129921,
+      "path": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libhwloc.so.15",
+      "sha256": "752eea2f4145cc1de9e263d834976e7f766a7cd59b6bcc4d7548e68a62a4a5bf",
+      "uid": 1000
+    },
+    "libibverbs.so.1": {
+      "dev": 66306,
+      "inode": 10584,
+      "path": "/lib/x86_64-linux-gnu/libibverbs.so.1",
+      "sha256": "f57002b9b935f0dc2d37555abd053ecbec05aeb0942659327a44c0097020edec",
+      "uid": 0
+    },
+    "libint2.so.2": {
+      "dev": 53,
+      "inode": 6681471,
+      "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/dependencies/spack/linux-sapphirerapids/libint-2.6.0-4dtgfsz4ycma7uwhbp5mbe6g3aqsqwmb/lib/libint2.so.2",
+      "sha256": "0062c4db1c58a86083ff6d70c27023bcfeeaa66dad91776c3b075658e3833b5d",
+      "uid": 1478400146
+    },
+    "libm.so.6": {
+      "dev": 66306,
+      "inode": 40439,
+      "path": "/lib/x86_64-linux-gnu/libm.so.6",
+      "sha256": "1b87a1a50b496cfead2b0ad134c2ff536705c82608db240c7e8aa48d6c0e4217",
+      "uid": 0
+    },
+    "libmpi.so.40": {
+      "dev": 53,
+      "inode": 6140012,
+      "path": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libmpi.so.40",
+      "sha256": "e800fdd91324ffc710ea642e83d01fa3a407d98eea44e1df3dbe91600d773376",
+      "uid": 1000
+    },
+    "libmpi_mpifh.so.40": {
+      "dev": 53,
+      "inode": 6119237,
+      "path": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libmpi_mpifh.so.40",
+      "sha256": "2d15b90b37d463e4c76d0f7aaf65204bc1e2540c9b21302499e1e55cfc57c21c",
+      "uid": 1000
+    },
+    "libmpi_usempi_ignore_tkr.so.40": {
+      "dev": 53,
+      "inode": 6142054,
+      "path": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libmpi_usempi_ignore_tkr.so.40",
+      "sha256": "ea9422ca21abc3163da92ae013244e4a4c55e07d60f0d93e0d3b6b0fa0a349ef",
+      "uid": 1000
+    },
+    "libmpi_usempif08.so.40": {
+      "dev": 53,
+      "inode": 6142658,
+      "path": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libmpi_usempif08.so.40",
+      "sha256": "5b515ae8959925c4528f30bfdb75607c0ddbc07c7922854089911dfc6d91e225",
+      "uid": 1000
+    },
+    "libmunge.so.2": {
+      "dev": 66306,
+      "inode": 8678,
+      "path": "/lib/x86_64-linux-gnu/libmunge.so.2",
+      "sha256": "b04aabb753f32c3c637570c43b2de2977e96682dcfcf37f838e13a136e8403d2",
+      "uid": 0
+    },
+    "libmvec.so.1": {
+      "dev": 66306,
+      "inode": 40448,
+      "path": "/lib/x86_64-linux-gnu/libmvec.so.1",
+      "sha256": "48cb1a87e6f8a713037a45fe4db113c5ed43ac0730963871640f7f1a0a713384",
+      "uid": 0
+    },
+    "libnl-3.so.200": {
+      "dev": 66306,
+      "inode": 26804,
+      "path": "/lib/x86_64-linux-gnu/libnl-3.so.200",
+      "sha256": "afcb69e2ef0b46c2ce7b7483848332fa9462776d33163f64209acf01f86eddd7",
+      "uid": 0
+    },
+    "libnl-route-3.so.200": {
+      "dev": 66306,
+      "inode": 26806,
+      "path": "/lib/x86_64-linux-gnu/libnl-route-3.so.200",
+      "sha256": "088b0021d638306f5541e7baab06a0182b07db0a280e19b3b40c746f729b3773",
+      "uid": 0
+    },
+    "libocoms.so.0": {
+      "dev": 53,
+      "inode": 6158413,
+      "path": "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libocoms.so.0",
+      "sha256": "b166a1a8919b0f02ba35c48280d764294a5c002f7bfa47f8d69ebf4ac0a88fb6",
+      "uid": 1000
+    },
+    "libopen-pal.so.80": {
+      "dev": 53,
+      "inode": 6133096,
+      "path": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libopen-pal.so.80",
+      "sha256": "9e5f5636573f405d0787330e61911fd28a7e555f7ed9c8074a601f890251df76",
+      "uid": 1000
+    },
+    "libopenblas.so.0": {
+      "dev": 53,
+      "inode": 5974516,
+      "path": "/opt/devtools/saiblas/2603-gnu-avx512/lib/libopenblas.so.0",
+      "sha256": "cd4210aa98e985585c354a509bb0e93e4a6ff5f02875c7c61059691fa54e31ad",
+      "uid": 1000
+    },
+    "libplumed.so": {
+      "dev": 53,
+      "inode": 6672358,
+      "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/dependencies/spack/linux-sapphirerapids/plumed-2.10.1-qwwau7jv5yf5i3ok3c24ysm4ibpxpllg/lib/libplumed.so",
+      "sha256": "18a6d3098e2026e4f0af42535a8986009c1fe101490b2c45bcca750db0ddc245",
+      "uid": 1478400146
+    },
+    "libplumedKernel.so": {
+      "dev": 53,
+      "inode": 6728771,
+      "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/dependencies/spack/linux-sapphirerapids/plumed-2.10.1-qwwau7jv5yf5i3ok3c24ysm4ibpxpllg/lib/libplumedKernel.so",
+      "sha256": "05c88a7e97cde85f74046b153190bf9db2fc64baedabab0b9a624eb5dd03d1c3",
+      "uid": 1478400146
+    },
+    "libpmix.so.2": {
+      "dev": 53,
+      "inode": 6131841,
+      "path": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libpmix.so.2",
+      "sha256": "1653f1d5ffbcc7903cdf34d9882820bffd074385e9d88173b863bfd059aefb39",
+      "uid": 1000
+    },
+    "libpthread.so.0": {
+      "dev": 66306,
+      "inode": 40567,
+      "path": "/lib/x86_64-linux-gnu/libpthread.so.0",
+      "sha256": "92dcea07a5b11d939c22a96131d3fbb995e0a84a4d02db7d799bf357689cd794",
+      "uid": 0
+    },
+    "libquadmath.so.0": {
+      "dev": 53,
+      "inode": 6672351,
+      "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/dependencies/spack/linux-sapphirerapids/gcc-runtime-14.3.0-hkx3nzpcza3hnke7x3dzgo2znpnqclp4/lib/libquadmath.so.0",
+      "sha256": "2a86aaedb01e94e5c882f76ae5c57b349283853801cb88f39755f9bb6bf966cf",
+      "uid": 1478400146
+    },
+    "librdmacm.so.1": {
+      "dev": 66306,
+      "inode": 11028,
+      "path": "/lib/x86_64-linux-gnu/librdmacm.so.1",
+      "sha256": "6ba7cf251ba8fd9239605c97112b58cd6d836da6b1942eb0094908b3fa5857e4",
+      "uid": 0
+    },
+    "librt.so.1": {
+      "dev": 66306,
+      "inode": 40598,
+      "path": "/lib/x86_64-linux-gnu/librt.so.1",
+      "sha256": "9d1cefae4c0e4995cc35ea3195f805454b2d59a27ad15397a1096e735d341faf",
+      "uid": 0
+    },
+    "libscalapack.so.2.2": {
+      "dev": 53,
+      "inode": 5993383,
+      "path": "/opt/devtools/saiblas/2603-gnu-avx512/lib/libscalapack.so.2.2",
+      "sha256": "e79689fb44c72e3f9119349d4500e7ba1312209d616084d31627284e75358023",
+      "uid": 1000
+    },
+    "libspla.so.1": {
+      "dev": 53,
+      "inode": 6727875,
+      "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/dependencies/spack/linux-sapphirerapids/spla-1.6.1-uxed4dw7umencfxxq4gyzacu6r65lbkz/lib64/libspla.so.1",
+      "sha256": "b147e022e8a21270a010f0429d7da01ba013690be1ea2994ce9bb3b49c03828c",
+      "uid": 1478400146
+    },
+    "libstdc++.so.6": {
+      "dev": 53,
+      "inode": 6672353,
+      "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/dependencies/spack/linux-sapphirerapids/gcc-runtime-14.3.0-hkx3nzpcza3hnke7x3dzgo2znpnqclp4/lib/libstdc++.so.6",
+      "sha256": "a9e25404c726ee7201e66e3253113599dd1980db9380ebed7ba2ad747f3c42a0",
+      "uid": 1478400146
+    },
+    "libsymspg.so.2": {
+      "dev": 53,
+      "inode": 5203757,
+      "path": "/opt/devtools/spglib/spglib-2.7.0/lib/libsymspg.so.2",
+      "sha256": "ae4da8bc627ca05f4088858e91a50277ff4e58c7a220c18c351e59e266327b98",
+      "uid": 1478400151
+    },
+    "libucc.so.1": {
+      "dev": 53,
+      "inode": 6100327,
+      "path": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libucc.so.1",
+      "sha256": "95457e23df1caca58202694722a64384c3d0481a1f09c45f29097cef5192acf8",
+      "uid": 1000
+    },
+    "libucm.so.0": {
+      "dev": 53,
+      "inode": 6020898,
+      "path": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libucm.so.0",
+      "sha256": "887eab29fb72140fd1827b6af1ce8b3d47a2af8745908929f90268e346e5f910",
+      "uid": 1000
+    },
+    "libucp.so.0": {
+      "dev": 53,
+      "inode": 6097881,
+      "path": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libucp.so.0",
+      "sha256": "d0fc685f8161446a5c940135c246b13e7a17f63303072d6affc4403b99161731",
+      "uid": 1000
+    },
+    "libucs.so.0": {
+      "dev": 53,
+      "inode": 6024708,
+      "path": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libucs.so.0",
+      "sha256": "2f2ebcf591d16f02fc7f6ba37063581e3db236c27f49355edc8f2c256c1d41ea",
+      "uid": 1000
+    },
+    "libuct.so.0": {
+      "dev": 53,
+      "inode": 6011570,
+      "path": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libuct.so.0",
+      "sha256": "3d1475a87db6a2948c135fbee2a2195d2dc939fc41e05cf70be43580c5117a74",
+      "uid": 1000
+    },
+    "libutil.so.1": {
+      "dev": 66306,
+      "inode": 40610,
+      "path": "/lib/x86_64-linux-gnu/libutil.so.1",
+      "sha256": "7f2d5e4bc602fc6d0fd16f58c08094ab34c0ad4579095aa5f3663dc6092755e6",
+      "uid": 0
+    },
+    "libxc.so.15": {
+      "dev": 53,
+      "inode": 4708854,
+      "path": "/opt/devtools/libxc/libxc-7.0.0-avx512/lib/libxc.so.15",
+      "sha256": "2d39609c0fdad04ffbd6da5f80ba5001cc4c10bd36b8dc3f475d3a1404c7416c",
+      "uid": 1000
+    },
+    "libxcf03.so.15": {
+      "dev": 53,
+      "inode": 4708856,
+      "path": "/opt/devtools/libxc/libxc-7.0.0-avx512/lib/libxcf03.so.15",
+      "sha256": "2a1617e9509edae9181f2e47899e2484cea3e618b9f997ede1706fb9c249fec0",
+      "uid": 1000
+    },
+    "libxsmm.so.2": {
+      "dev": 53,
+      "inode": 6728770,
+      "path": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/dependencies/spack/linux-sapphirerapids/libxsmm-2.0.0-l5muhjnzczl5peiem2fwiixbqjnzm33l/lib64/libxsmm.so.2",
+      "sha256": "6e9622bf32d26608e174734d0e0c0778a4b0e474095aa06c2ac7c347955a044d",
+      "uid": 1478400146
+    },
+    "libz.so.1": {
+      "dev": 66306,
+      "inode": 26932,
+      "path": "/lib/x86_64-linux-gnu/libz.so.1",
+      "sha256": "9b64150b28505a33d6bc3ecf709c279f6de97a1c184dbda65d06ee4537f6d286",
+      "uid": 0
+    }
+  },
+  "uid": 1478400690
+}

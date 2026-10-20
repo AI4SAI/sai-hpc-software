@@ -42,6 +42,18 @@ all 24 calculations; shared ELPA reduced OT total time by 13.10%, 7.06% and
 [diagonalization comparison](evidence/cp2k-water216-tuning-20261020/README.md),
 [OT comparison](evidence/cp2k-ot-backends-20261020/README.md).
 
+An ordinary-user native-versus-SIF benchmark now passes all 112 scientific
+calculations across four partitions, with physical home input/output in both
+routes and matching executable/library bytes. Twenty alternating startup pairs
+on 16V100 measured a 0.400 s median additional rank lifetime for direct SIF
+execution. The 64-water OT wall-time medians increased by 0.82% on 16V100 and
+0.43% on 8V100V0; substantial storage variability limits interpretation of other
+cases. Independent remote/local revalidation agrees on all 2,251 archived file
+hashes and raw results. The failed first 4V100 native attempt and differing
+shared CUDA library hashes on that node remain documented; another node passed
+the full retry without a workaround.
+[Container overhead measurements and complete evidence](evidence/cp2k-container-overhead-20261020/README.md).
+
 Cross-account deployment now grants `saiuser01` read/traverse ACLs only on the
 blocked release/reference paths, with no added write access. The 2,415 required
 paths passed effective POSIX ACL checks; native checks write results, caches and
