@@ -31,8 +31,19 @@ GPU package 可用 `-sf gpu -pk gpu 1`；Kokkos 可用
 ## 安装到物理 /opt
 
 `release.json` 固定三个已发布镜像、发布记录、六个配套安装目录，以及全部清单的 SHA256。
-导出目录中的内容按原样部署，保留精确编译前缀。DeePMD 和 LAMMPS 必须一起安装，
+`runtime-plan.json` 从原始清单选择标准运行文件，保留精确编译前缀。
+DeePMD 和 LAMMPS 必须一起安装，
 不能只复制 `lmp`。GCC、MPI、CUDA、PLUMED 和后端环境继续引用已有站点依赖。
+
+`/opt` 中保留可执行文件、共享库、DeePMD/DPA Python 包及包版本信息、
+`pyvenv.cfg`、全部 287 个 LAMMPS 势函数文件，以及标准头文件、CMake/pkg-config
+接口和 man 手册。头文件及开发接口很小，保留它们支持用户调用程序库和编译插件。
+不复制 `share/sai` 工作流元数据/自写测试、内嵌 module、上游 `bench` 输入、
+pip/环境激活脚本或 Python 字节码缓存。原始导出保持完整；验收脚本、参考材料、
+SHA256 清单都留在本家目录发布包及原始工作目录中。
+每分区的标准安装约 1.09 GiB，比完整导出少约 59.6 MiB 和 1,940 个文件/链接。
+公用 module 独立选择配套前缀和 MPI ISA，不再从软件目录或家目录加载 module 片段；
+它也禁止 Python 向公用安装目录生成字节码缓存。
 
 默认只做只读预检，可由能读取源文件的账号执行：
 
@@ -48,7 +59,7 @@ bash /home/stardust/sai-hpc-software/deployment/lammps-30Sep2026/install.sh --ch
 bash /home/stardust/sai-hpc-software/deployment/lammps-30Sep2026/install.sh --install
 ```
 
-脚本校验源 SIF、发布记录和每个原生文件；先复制到目标文件系统的隐藏暂存目录，
+脚本校验源 SIF、发布记录、原始清单和每个选中的运行文件；先复制到目标文件系统的隐藏暂存目录，
 回读校验全部文件、权限和符号链接，再更名为最终目录。已有相同安装可重入，
 不同内容会报错，失败的暂存目录保留。六个目录全部就绪后才发布：
 
@@ -110,6 +121,15 @@ rank 节点和 module 卸载，并查询 Slurm，要求对应分区 `COMPLETED /
 
 ```bash
 python3 native_checks.py preflight all
+```
+
+`source-access.py` 供源目录所有者核查跨账号权限，覆盖发布记录、镜像、运行文件、
+验收输入和原始参考输出，以及三个安装目标父目录。默认只审计，显式 `--apply`
+才为指定账号补充被阻挡源路径的只读/目录穿越 ACL；不递归开放其他工作目录，
+不授予源写权限，不更改 `/opt` 权限。报告路径须尚不存在，例如：
+
+```bash
+python3 source-access.py --account saiuser01 --report "$HOME/lammps-source-access.json"
 ```
 
 失败日志、暂存目录和原始产物全部保留。此交付已完成脚本测试和只读预检；

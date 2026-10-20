@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Install the accepted LAMMPS/DeePMD pair at its exact native prefixes.
 
-Default is read-only preflight. --install copies all six accepted runtime
-trees and publishes the partition selector. --verify checks installed bytes.
+Default is read-only preflight. --install copies the selected runtime files
+and publishes the partition selector. Workflow metadata stays in this package.
 """
 import argparse
 import fcntl
@@ -16,6 +16,7 @@ import stat
 PACKAGE = Path(__file__).resolve().parent
 PROJECT = Path('/home/stardust/sai-hpc-software')
 MODULE = Path('/opt/modules/modulefiles/apps/lammps/30Sep2026-deepmd320-auto')
+POLICY = 'lammps-deepmd-standard-runtime-v1'
 
 
 def require(condition, message):
@@ -41,10 +42,7 @@ def pinned(path, expected):
     return json.loads(path.read_text())
 
 
-def verify_tree(root, spec):
-    """Verify the complete exported tree, including links and reserved metadata."""
-    plain(root)
-    manifest = pinned(root / 'share/sai/manifest.json', spec['manifest_sha256'])
+def manifest_records(manifest, spec):
     prefix = Path(spec['prefix'])
     require(manifest['entry']['identity'] == spec['identity'], 'native identity changed')
     expected = {}
@@ -54,6 +52,109 @@ def verify_tree(root, spec):
         relative = str(absolute.relative_to(prefix))
         require(relative not in expected, 'duplicate inventory path')
         expected[relative] = item
+    return expected
+
+
+def omission(relative):
+    parts = Path(relative).parts
+    if parts[:2] == ('share', 'sai'):
+        return 'workflow metadata and validation material stay in the home deployment package'
+    if parts[:1] == ('modulefiles',):
+        return 'replaced by the standalone site module'
+    if parts[:3] == ('share', 'lammps', 'bench'):
+        return 'upstream benchmark inputs'
+    if '__pycache__' in parts or Path(relative).suffix in ('.pyc', '.pyo'):
+        return 'regenerable Python bytecode cache'
+    if relative == '.gitignore':
+        return 'virtualenv development metadata'
+    if parts[:1] == ('bin',) and len(parts) == 2 and (
+            parts[1] in ('Activate.ps1', 'activate', 'activate.csh', 'activate.fish') or
+            parts[1] == 'pip' or parts[1].startswith('pip3')):
+        return 'environment installation/activation tool; users load the site module'
+    if 'site-packages' in parts:
+        packages = parts[parts.index('site-packages') + 1:]
+        if packages and (packages[0] == 'pip' or
+                         packages[0].startswith('pip-') and packages[0].endswith('.dist-info')):
+            return 'pip installation tool'
+    return None
+
+
+def runtime_records(manifest, spec):
+    """Omit only known non-runtime material; preserve public APIs and all data."""
+    original = manifest_records(manifest, spec)
+    selected, removed = {}, []
+    for name, row in original.items():
+        require(row['kind'] in ('file', 'directory', 'symlink'), 'special export entry')
+        require(type(row['mode']) is int and 0 <= row['mode'] <= 0o777, 'invalid export mode')
+        reason = omission(name)
+        if reason:
+            if row['kind'] != 'directory':
+                removed.append(dict(path=name, bytes=row.get('size', 0), reason=reason))
+        elif row['kind'] != 'directory':
+            selected[name] = dict(row, path=name)
+    for name in list(selected):
+        for parent in Path(name).parents:
+            key = str(parent)
+            require(original.get(key, {}).get('kind') == 'directory', 'missing parent directory')
+            selected[key] = dict(original[key], path=key)
+    prefix = Path(spec['prefix'])
+    # Resolve retained links against the projected inventory, not the source
+    # filesystem, to catch links into omitted files before anything is copied.
+    for name, row in selected.items():
+        if row['kind'] != 'symlink':
+            continue
+        pending, resolved, links = str(prefix / name).split('/'), [], 0
+        while pending:
+            part = pending.pop(0)
+            if part in ('', '.'):
+                continue
+            if part == '..':
+                if resolved:
+                    resolved.pop()
+                continue
+            resolved.append(part)
+            path = Path('/' + '/'.join(resolved))
+            if path.is_relative_to(prefix):
+                entry = selected.get(str(path.relative_to(prefix)))
+                require(entry is not None, 'pruning breaks a runtime link: ' + name)
+                if entry['kind'] == 'symlink':
+                    links += 1
+                    require(links <= 40, 'cyclic runtime link: ' + name)
+                    resolved.pop()
+                    if entry['target'].startswith('/'):
+                        resolved = []
+                    pending = entry['target'].split('/') + pending
+                elif pending:
+                    require(entry['kind'] == 'directory', 'link traverses a file')
+        target = Path('/' + '/'.join(resolved))
+        roots = [prefix, *map(Path, manifest['entry'].get('external_roots', []))]
+        require(any(target.is_relative_to(root) for root in roots), 'link escapes declared runtime roots')
+    return sorted(selected.values(), key=lambda row: row['path']), sorted(removed, key=lambda row: row['path'])
+
+
+def runtime_plan(release):
+    plan = json.loads((PACKAGE / 'runtime-plan.json').read_text())
+    require(plan['schema'] == 1 and plan['policy'] == POLICY and
+            plan['release_sha256'] == digest(PACKAGE / 'release.json'), 'wrong runtime deployment plan')
+    entries = {row['prefix']: row for row in plan['installations']}
+    require(len(entries) == len(plan['installations']), 'duplicate runtime prefix')
+    for delivery in release['deliveries']:
+        for spec in delivery['installations']:
+            entry = entries[spec['prefix']]
+            require(entry['identity'] == spec['identity'] and entry['manifest_sha256'] == spec['manifest_sha256'],
+                    'runtime plan identity changed')
+            paths = [row['path'] for row in entry['files']]
+            require(len(paths) == len(set(paths)) and '.' in paths, 'invalid runtime inventory')
+            require(all(not Path(name).is_absolute() and '..' not in Path(name).parts and
+                        omission(name) is None for name in paths), 'non-runtime or unsafe path in deployment plan')
+    return entries
+
+
+def verify_tree(root, spec):
+    """Verify the full original export when explicitly auditing source material."""
+    plain(root)
+    manifest = pinned(root / 'share/sai/manifest.json', spec['manifest_sha256'])
+    expected = manifest_records(manifest, spec)
     for name, checksum in spec['metadata_sha256'].items():
         require(name in ('share/sai/manifest.json', 'share/sai/export.json', 'share/sai/README-export.txt'),
                 'unknown reserved export metadata')
@@ -61,7 +162,12 @@ def verify_tree(root, spec):
         expected[name] = dict(kind='file', mode=0o444, sha256=checksum)
     require(set(spec['metadata_sha256']) ==
             {'share/sai/manifest.json', 'share/sai/export.json', 'share/sai/README-export.txt'}, 'incomplete metadata pins')
-    seen, pending, files, size = set(), [root], 0, 0
+    return verify_records(root, expected)
+
+
+def verify_records(root, expected, *, subset=False):
+    plain(root)
+    seen, pending, files, size = set(), ([root / name for name in expected] if subset else [root]), 0, 0
     while pending:
         path = pending.pop()
         name = str(path.relative_to(root))
@@ -76,7 +182,8 @@ def verify_tree(root, spec):
         else:
             require(stat.S_IMODE(info.st_mode) == row['mode'], 'permissions changed: ' + str(path))
             if kind == 'directory':
-                pending.extend(path.iterdir())
+                if not subset:
+                    pending.extend(path.iterdir())
             else:
                 require(('size' not in row or info.st_size == row['size']) and digest(path) == row['sha256'],
                         'payload changed: ' + str(path))
@@ -104,6 +211,7 @@ def load_release():
 
 
 def preflight(release, project, physical_root=Path('/'), *, installed=False):
+    plan = runtime_plan(release)
     for delivery in release['deliveries']:
         print(delivery['partition'] + ': checking ' + ('installed files' if installed else 'accepted export'), flush=True)
         if not installed:
@@ -117,10 +225,11 @@ def preflight(release, project, physical_root=Path('/'), *, installed=False):
             require(str(image) == publication['artifact'] and digest(image) == delivery['image_sha256'] ==
                     publication['artifact_sha256'], 'SIF changed')
         for spec in delivery['installations']:
+            expected = {row['path']: row for row in plan[spec['prefix']]['files']}
             target = physical_root / Path(spec['prefix']).relative_to('/')
             plain(target)
             if installed:
-                result = verify_tree(target, spec)
+                result = verify_records(target, expected)
             else:
                 require(publication['delivery']['identities'][spec['identity']['software']] == spec['identity'],
                         'export identity differs from publication')
@@ -128,9 +237,14 @@ def preflight(release, project, physical_root=Path('/'), *, installed=False):
                              if item['expected_install_prefix'] == spec['prefix'])
                 require(project / spec['source'] == Path(publication['native_export']['directory']) / entry['path']
                         and spec['manifest_sha256'] == entry['manifest_sha256'], 'export differs from publication')
-                result = verify_tree(project / spec['source'], spec)
+                source = project / spec['source']
+                manifest = pinned(source / 'share/sai/manifest.json', spec['manifest_sha256'])
+                rows, removed = runtime_records(manifest, spec)
+                require(rows == plan[spec['prefix']]['files'] and removed == plan[spec['prefix']]['omitted'],
+                        'runtime plan differs from the pinned source inventory')
+                result = verify_records(source, expected, subset=True)
                 if target.exists():
-                    verify_tree(target, spec)
+                    verify_records(target, expected)
             print(f"  {spec['identity']['software']}: {result['files']} files, {result['bytes']/1024**2:.2f} MiB", flush=True)
     module = physical_root / MODULE.relative_to('/')
     plain(module)
@@ -150,26 +264,46 @@ def directories(path):
 
 def install(release, project, physical_root=Path('/')):
     preflight(release, project, physical_root)
+    plan = runtime_plan(release)
     # The installing account may own the application subdirectories without
     # having write access to /opt/apps itself, as in the CP2K deployment.
     app_root = physical_root / 'opt/apps/lammps'
     directories(app_root)
-    lock_path = app_root / '.lammps-30Sep2026-install.lock'
-    plain(lock_path)
-    with lock_path.open('a') as lock:
-        fcntl.flock(lock, fcntl.LOCK_EX)
+    # Lock the existing application directory itself: no workflow lock/receipt
+    # files need to be left in /opt.
+    descriptor = os.open(app_root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    try:
+        fcntl.flock(descriptor, fcntl.LOCK_EX)
         for delivery in release['deliveries']:
             for spec in delivery['installations']:
                 target = physical_root / Path(spec['prefix']).relative_to('/')
+                rows = plan[spec['prefix']]['files']
+                expected = {row['path']: row for row in rows}
                 plain(target)
                 if target.exists():
-                    verify_tree(target, spec)
+                    verify_records(target, expected)
                     continue
                 directories(target.parent)
                 stage = target.with_name('.' + target.name + '.incoming-' + str(os.getpid()))
                 require(not stage.exists() and not stage.is_symlink(), 'staging path already exists')
-                shutil.copytree(project / spec['source'], stage, symlinks=True)
-                verify_tree(stage, spec)
+                stage.mkdir(mode=0o755)
+                for row in rows:
+                    source, destination = project / spec['source'] / row['path'], stage / row['path']
+                    if row['kind'] == 'directory':
+                        if row['path'] != '.':
+                            destination.mkdir(mode=0o755)
+                    elif row['kind'] == 'symlink':
+                        require(source.is_symlink() and os.readlink(source) == row['target'], 'source link changed')
+                        destination.symlink_to(row['target'])
+                    else:
+                        plain(source)
+                        with source.open('rb') as incoming, destination.open('xb') as outgoing:
+                            shutil.copyfileobj(incoming, outgoing, 1024 * 1024)
+                        destination.chmod(row['mode'])
+                for row in reversed(rows):
+                    if row['kind'] == 'directory':
+                        (stage / row['path']).chmod(row['mode'])
+                verify_records(stage, expected)
                 require(not target.exists() and not target.is_symlink(), 'destination appeared while copying')
                 stage.rename(target)
                 print('Installed ' + str(target), flush=True)
@@ -185,6 +319,8 @@ def install(release, project, physical_root=Path('/')):
             os.link(stage, module)  # Atomic publish; never replaces another module.
             stage.unlink()
         preflight(release, project, physical_root, installed=True)
+    finally:
+        os.close(descriptor)
 
 
 def main():

@@ -25,7 +25,7 @@ PACKAGE = Path(__file__).resolve().parent
 PARTITIONS = ('4V100', '16V100', '8V100V0')
 BACKENDS = ('tf', 'pt', 'jax')
 CONTROLS = ('native_checks.py', 'native-rank.sh', 'verify-native.sbatch', 'install.py',
-            'release.json', 'native-reference.json', deployment.MODULE.name)
+            'release.json', 'runtime-plan.json', 'native-reference.json', deployment.MODULE.name)
 MODES = {'single': 1, 'multi': 2}
 
 

@@ -39,7 +39,15 @@ The [deployment package](../deployment/lammps-30Sep2026/README.md) includes the
 partition selector, exact source/target paths, a default read-only installer
 preflight and post-install native Slurm validation scripts. It preserves the
 paired LAMMPS/DeePMD prefixes and existing site dependencies. Each partition's
-complete native pair is approximately 1.15 GiB. After installation,
+standard runtime pair is approximately 1.09 GiB. The installer derives
+`runtime-plan.json` from the pinned original inventories and copies only the
+selected executables, libraries, Python packages, all 287 potential files,
+and standard headers/CMake/pkg-config/man interfaces. It omits `share/sai`,
+embedded modules, benchmark inputs, pip/activation tools and bytecode caches;
+all workflow records, checks and reference material stay in the home tree.
+The standalone public module selects matching LAMMPS/DeePMD prefixes and MPI
+ISA without sourcing any application or home-directory module fragments.
+After installation,
 `submit-native-checks.sh all` checks installed bytes and submits one two-node
 job per GPU partition. Each job directly runs physical executables, checks
 version/full features/loader/rank placement and 17 scientific cases covering
@@ -51,6 +59,18 @@ records all six source-tree checks, frozen-input/model checks, actual accepted
 help parsing and 16 passing deployment tests on the cluster home filesystem.
 The native C API probe checks the complete style registry, including Kokkos
 aliases that upstream deliberately omits from `lmp -h`.
+
+The administrator's first install attempt exposed a cross-account source
+permission gap: private run/results directories blocked `saiuser01` before
+any physical copy. Named-user read/traverse ACLs now cover precisely the
+published sources and native reference files. An effective POSIX ACL audit
+checks source read access, absence of source write access, and write access
+to the three target parent directories; this is not impersonated execution.
+Frozen export modes and all compiled payload bytes remain unchanged.
+[Runtime deployment evidence](evidence/lammps-release-20261020/runtime-deployment-preflight.json)
+records the selected inventory, ACL correction, module environment comparison,
+input snapshot verification and installer regression checks. Physical install
+and native science still await the administrator's execution.
 
 The current implementation builds both programs in one Apptainer overlay,
 then exports a SIF and runs separate scientific, performance and publication

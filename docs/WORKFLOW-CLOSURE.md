@@ -12,7 +12,14 @@ records GPU scope explicitly; CPU timing is excluded. The
 accepted images and evidence. The [physical installation package](../deployment/lammps-30Sep2026/README.md)
 passed its full read-only preflight and now includes post-install native
 Slurm checks plus raw-result revalidation: 17 scientific cases per partition
-cover single/two-node GPU/Kokkos, TF/PT/JAX and PLUMED execution. `/opt` copying
+cover single/two-node GPU/Kokkos, TF/PT/JAX and PLUMED execution. The physical
+installer now copies only standard runtime/API/data files (about 1.09 GiB per
+partition); workflow metadata, custom checks and reference material stay in
+the home tree. Its public module is standalone. The cross-account read/traverse
+gap reported by `saiuser01` is repaired with targeted ACLs; effective source
+and target access is audited in the
+[runtime deployment evidence](evidence/lammps-release-20261020/runtime-deployment-preflight.json).
+`/opt` copying
 and these native calculations are still pending user execution. The live
 daily dispatcher still runs the old MD feature branch; its release history
 check rejects newer recovery identities, while its development build fails

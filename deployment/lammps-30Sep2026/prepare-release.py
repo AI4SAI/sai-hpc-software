@@ -26,9 +26,9 @@ def write(path, content):
         stream.write(content)
 
 
-def selector(choices, native):
+def selector(choices):
     # Values are fixed canonical receipt paths, never user-provided Tcl.
-    stem = 'SAI_LAMMPS_NATIVE_PARTITION' if native else 'SAI_LAMMPS_RELEASE_PARTITION'
+    stem = 'SAI_LAMMPS_RELEASE_PARTITION'
     return '\n'.join([
         '#%Module1.0',
         'module-whatis "LAMMPS 30 Sep 2026 / DeePMD 3.2.0; V100 partition selection"',
@@ -45,11 +45,11 @@ def selector(choices, native):
         'set fragment [dict get $fragments $partition]',
         'if {![file isfile $fragment] || [file type $fragment] eq "link"} {error "Missing accepted LAMMPS installation"}',
         'source $fragment',
-        *([] if native else [f'setenv {stem} $partition']), ''])
+        f'setenv {stem} $partition', ''])
 
 
 def main():
-    deliveries, native, container = [], {}, {}
+    deliveries, container = [], {}
     for partition, build in BUILDS.items():
         publication = ROOT / 'runs' / build / 'results/publication.json'
         manifest = json.loads(publication.read_text())
@@ -73,15 +73,14 @@ def main():
                 source=str(source.relative_to(PROJECT)), manifest_sha256=item['manifest_sha256'],
                 metadata_sha256={name: digest(source / name) for name in
                     ('share/sai/manifest.json', 'share/sai/export.json', 'share/sai/README-export.txt')}))
-            if identity['software'] == 'lammps':
-                native[partition] = prefix + '/share/sai/native-module.tcl'
         container[partition] = manifest['modules']['lammps']['module_fragment']
         deliveries.append(result)
     release = dict(schema=1, version='stable_30Sep2026', deepmd_version='v3.2.0',
                    generated_at=datetime.now(timezone.utc).isoformat(), deliveries=deliveries)
     write(PACKAGE / 'release.json', json.dumps(release, sort_keys=True, indent=2) + '\n')
-    write(PACKAGE / '30Sep2026-deepmd320-auto', selector(native, True))
-    write(PACKAGE / 'modulefiles/lammps/30Sep2026-deepmd320-gpu', selector(container, False))
+    # The native selector is maintained independently in this package. It must
+    # not source workflow metadata from the public application installation.
+    write(PACKAGE / 'modulefiles/lammps/30Sep2026-deepmd320-gpu', selector(container))
     print('Prepared three accepted GPU partitions; no physical /opt files modified.')
 
 

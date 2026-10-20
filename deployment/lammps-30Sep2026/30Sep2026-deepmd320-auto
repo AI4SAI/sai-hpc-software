@@ -2,14 +2,70 @@
 module-whatis "LAMMPS 30 Sep 2026 / DeePMD 3.2.0; V100 partition selection"
 conflict lammps
 if {[module-info mode load]} {
-    if {![info exists env(SLURM_JOB_PARTITION)]} {error "Load this module inside a Slurm allocation"}
+    if {![info exists env(SLURM_JOB_ID)] || ![regexp {^[1-9][0-9]*$} $env(SLURM_JOB_ID)] || ![info exists env(SLURM_JOB_PARTITION)]} {
+        error "Load this module inside a Slurm allocation"
+    }
     set partition $env(SLURM_JOB_PARTITION)
 } elseif {[module-info mode remove]} {
     if {![info exists env(SAI_LAMMPS_NATIVE_PARTITION)]} {error "Missing loaded LAMMPS partition"}
     set partition $env(SAI_LAMMPS_NATIVE_PARTITION)
 } else {return}
-set fragments [dict create 4V100 {/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/4V100/share/sai/native-module.tcl} 16V100 {/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100/share/sai/native-module.tcl} 8V100V0 {/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/share/sai/native-module.tcl}]
-if {![dict exists $fragments $partition]} {error "Unsupported LAMMPS GPU partition: $partition"}
-set fragment [dict get $fragments $partition]
-if {![file isfile $fragment] || [file type $fragment] eq "link"} {error "Missing accepted LAMMPS installation"}
-source $fragment
+set configurations [dict create 4V100 {296ed3baa11b avx512} 16V100 {296ed3baa11b avx2} 8V100V0 {795dbd80e2a4 avx2}]
+if {![dict exists $configurations $partition]} {error "Unsupported LAMMPS GPU partition: $partition"}
+lassign [dict get $configurations $partition] recipe isa
+set lammps /opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r${recipe}-s4abbad547102/$partition
+set deepmd /opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r${recipe}-s4abbad547102/$partition
+if {[info exists env(SAI_LAMMPS_NATIVE_PARTITION)] && $env(SAI_LAMMPS_NATIVE_PARTITION) ne $partition} {error "Another native partition is loaded"}
+if {[info exists env(SAI_LAMMPS_PREFIX)] && $env(SAI_LAMMPS_PREFIX) ne $lammps} {error "Another native build is loaded"}
+if {[module-info mode remove] && ![info exists env(SAI_LAMMPS_PREFIX)]} {error "Missing loaded LAMMPS prefix"}
+foreach prefix [list $lammps $deepmd] {
+    if {![file isdirectory $prefix]} {error "Missing paired LAMMPS/DeePMD installation: $prefix"}
+    for {set path $prefix} {$path ne "/"} {set path [file dirname $path]} {
+        if {[file type $path] eq "link"} {error "Native installation path must not contain symlinks"}
+    }
+}
+foreach category {mpi mathlib compiler devtools apps} {
+    prepend-path MODULEPATH /opt/modules/modulefiles/$category
+}
+foreach dependency {cuda/12.9.1 nvhpc/26.3-gnu-cuda12-tuned openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto gcc/14.3.0} {
+    if {[llength [info commands depends-on]]} {depends-on $dependency} else {module load $dependency}
+}
+set hpc /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3
+set hpcx $hpc/comm_libs/12.9/hpcx/hpcx-2.25.1
+set cuda /opt/devtools/nvidia/cuda-12.9.1
+set mpi /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-$isa
+set gcc /opt/devtools/gcc/14.3.0
+set plumed /opt/apps/plumed/plumed-2.10.1
+set python /opt/apps/conda_env/deepmd-kit-3.2.0
+set python_site $python/lib/python3.13/site-packages
+set deepmd_site $deepmd/lib/python3.13/site-packages
+# Preserve the library precedence of the accepted container export.
+foreach path [list /usr/lib /usr/lib/x86_64-linux-gnu \
+        $hpc/math_libs/12.9/targets/x86_64-linux/lib \
+        /opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/lib \
+        $hpc/comm_libs/12.9/nvshmem/lib $hpcx/hcoll/lib $hpcx/sharp/lib \
+        $cuda/targets/x86_64-linux/lib $mpi/lib $plumed/lib $gcc/lib64 $gcc/lib $gcc/libexec \
+        /lib/x86_64-linux-gnu/blas /lib/x86_64-linux-gnu/lapack $python/lib \
+        $python_site/torch/lib $python_site/tensorflow $deepmd_site/deepmd/lib $deepmd/lib $lammps/lib] {
+    prepend-path LD_LIBRARY_PATH $path
+}
+foreach path [list /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin /opt/devtools/cmake/3.31.6/bin \
+        $hpcx/hcoll/bin $hpcx/sharp/bin $cuda/bin $mpi/bin $python/bin $plumed/bin $gcc/bin $deepmd/bin $lammps/bin] {
+    prepend-path PATH $path
+}
+prepend-path PYTHONPATH $deepmd_site
+setenv PYTHONDONTWRITEBYTECODE 1
+setenv LAMMPS_POTENTIALS $lammps/share/lammps/potentials
+setenv PLUMED_KERNEL $plumed/lib/libplumedKernel.so
+foreach directory {lib64 lib} {
+    if {[file isdirectory $lammps/$directory]} {
+        prepend-path LD_LIBRARY_PATH $lammps/$directory
+        prepend-path LIBRARY_PATH $lammps/$directory
+    }
+}
+foreach {variable directory} {CPATH include PKG_CONFIG_PATH lib64/pkgconfig PKG_CONFIG_PATH lib/pkgconfig MANPATH share/man} {
+    if {[file isdirectory $lammps/$directory]} {prepend-path $variable $lammps/$directory}
+}
+prepend-path CMAKE_PREFIX_PATH $lammps
+setenv SAI_LAMMPS_PREFIX $lammps
+setenv SAI_LAMMPS_NATIVE_PARTITION $partition
