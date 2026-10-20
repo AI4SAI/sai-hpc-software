@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Finish metadata and SIF export for the compiled 4V100 release, without rebuilding."""
+"""Finish metadata and SIF export for the compiled releases, without rebuilding."""
+import argparse
 import json
 import os
 from pathlib import Path
@@ -10,8 +11,10 @@ import sys
 
 PROJECT = Path('/home/stardust/sai-hpc-software')
 ROOT = PROJECT / 'experimental/deepmd-lammps'
-SOURCE_RUN = 'md-39403117741-1-2026-10-20-9bf6ae82814537d7'
-SOURCE_JOB = '1877799'
+SOURCES = {
+    '4V100': ('md-39403117741-1-2026-10-20-9bf6ae82814537d7', '1877799'),
+    '16V100': ('md-39403084059-1-2026-10-20-5fef92e054bacdaf', '1879155'),
+}
 RECIPE = '296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097'
 DIAGNOSTICS = PROJECT / 'diagnostics/lammps-release-20261020'
 
@@ -84,7 +87,11 @@ PY
 
 
 def main():
-    old, new = (ROOT / 'runs' / name for name in (SOURCE_RUN, SOURCE_RUN + '-export'))
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--target', choices=SOURCES, default='4V100')
+    args = parser.parse_args()
+    source_run, source_job = SOURCES[args.target]
+    old, new = (ROOT / 'runs' / name for name in (source_run, source_run + '-export'))
     if (new / 'job.id').exists():
         raise ValueError('recovery already submitted')
     request = json.loads((old / 'request.json').read_text())
@@ -94,16 +101,16 @@ def main():
     from md_tracking import fingerprint
     from source_cache import checksum
     from cp2k_image_driver import wrap_command
-    if (request['run_id'] != SOURCE_RUN or request['stage_jobs']['lammps'] != SOURCE_JOB
+    if (request['run_id'] != source_run or request['stage_jobs']['lammps'] != source_job
             or request['delivery']['recipe_sha256'] != RECIPE or fingerprint(control) != RECIPE):
         raise ValueError('compiled source identity or controller changed')
-    if SOURCE_JOB in execute(['squeue', '-h', '-u', 'stardust', '-o', '%A']).split():
+    if source_job in execute(['squeue', '-h', '-u', 'stardust', '-o', '%A']).split():
         raise ValueError('compiled source job is still active')
-    accounting = execute(['sacct', '-X', '-nP', '-j', SOURCE_JOB, '-o', 'JobIDRaw,State,ExitCode'])
-    if accounting.strip().split('|')[:3] != [SOURCE_JOB, 'FAILED', '1:0']:
+    accounting = execute(['sacct', '-X', '-nP', '-j', source_job, '-o', 'JobIDRaw,State,ExitCode'])
+    if accounting.strip().split('|')[:3] != [source_job, 'FAILED', '1:0']:
         raise ValueError('unexpected source accounting')
     source = json.loads((new / 'input/source.json').read_text())
-    if (source['source'] != str(old) or source['source_job'] != SOURCE_JOB
+    if (source['source'] != str(old) or source['source_job'] != source_job
             or source['request_sha256'] != checksum(old / 'request.json')):
         raise ValueError('clone provenance differs')
     # Reuse the qualified CP2K work-directory inspector on the new clone.
@@ -170,7 +177,7 @@ def main():
     lines = script.splitlines()
     for index, line in enumerate(lines):
         if line == '#SBATCH --gpus-per-node=4': lines[index] = '#SBATCH --gpus-per-node=1'
-        elif line == '#SBATCH --qos=rush-gpu': lines[index] = '#SBATCH --qos=flood-1o2gpu'
+        elif line == '#SBATCH --qos=rush-gpu': lines[index] = '#SBATCH --qos=rush-1o2gpu'
         elif line.startswith('echo MD_BUILD_RESOURCES '): lines[index] = 'echo MD_RECOVERY_RESOURCES gpus=1 jobs=6'
         elif 'md_container_entry.sh build-lammps ' in line:
             argv = md.container_command(PROJECT / 'containers/base/minimal-v1.sif',
@@ -201,7 +208,7 @@ def main():
     (new / 'request.json').write_text(json.dumps(request, sort_keys=True)+'\n')
     (new / 'job.id').write_text(job+'\n')
     execute(['scontrol', 'release', job])
-    print(json.dumps(dict(job=job, run=new.name, source=SOURCE_RUN, no_recompilation=True)), flush=True)
+    print(json.dumps(dict(job=job, run=new.name, source=source_run, no_recompilation=True)), flush=True)
 
 
 if __name__ == '__main__':

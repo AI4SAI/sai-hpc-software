@@ -6,8 +6,9 @@ The latest upstream stable release is `stable_30Sep2026`, commit
 `8de817dd79bfe4525d5d39246a212d833e6dee07`. The paired stable DeePMD-kit is
 `v3.2.0`, commit `8cfd46e37448feca361ff3427a6c2b514ce5a2bb`.
 No accepted or published delivery of this release exists in this workflow.
-Fresh release builds are now running with the qualified CP2K overlay driver;
-see the live restart below for exact jobs and observed progress.
+The 4V100 payload has compiled and passed installed feature parity; its
+metadata/export recovery is queued. The 16V100 payload is still compiling.
+Both use the qualified CP2K overlay driver; see the live restart below.
 
 The current implementation builds both programs in one Apptainer overlay,
 then exports a SIF and runs separate scientific, performance and publication
@@ -268,3 +269,22 @@ validator, and runs the frozen final-SIF verifier without fakeroot. No compiler
 command is present in this recovery. New normal builds include the fixes in
 their recipe; the current compiled payload is explicitly recorded as a
 metadata recovery of recipe `296ed3baa11b`.
+
+The 4V100 recovery is job `1879413`, run
+`md-39403117741-1-2026-10-20-9bf6ae82814537d7-export`. It requests one GPU and
+six worker processes for metadata/export/verification only. The queued job
+was changed from `flood-1o2gpu` to the permitted `rush-1o2gpu` QoS, preserving
+its script and compiled identity; `results/qos-update.json` records both
+scheduler descriptions. The original compiled overlay remains read-only.
+
+The [follow-up helper](evidence/lammps-release-20261020/follow_export.py) is
+running from the cluster home directory. It monitors the export, then calls
+the existing frozen controller's two-node scientific, performance and
+publication gates. A process lock prevents duplicate chains, per-command
+receipts record failures, and submission uses the same short-task QoS. No
+acceptance threshold is relaxed. Publication here refers to the home project;
+system `/opt` installation still requires the separate native handoff.
+
+The native metadata fix's GitHub validation ran 846 tests: 844 passed and two
+optional upstream-cache tests skipped. This is controller regression evidence,
+not a substitute for the pending SIF and scientific checks.
