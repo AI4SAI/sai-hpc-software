@@ -1,0 +1,34 @@
+{
+  "method": "Reparse archived inputs, CP2K logs, forces and elapsed files with hash-matched science parser; compare regenerated samples and comparisons against original receipts.",
+  "parser_sha256": "84db91909883510765fa87c03f2816f1af9ac0271f85f95f03c62371dcd098eb",
+  "helpers_sha256": "aefd8b234b1b43f2815a6af5f3502204319a490f4919ad417421d920034a10e3",
+  "targets": {
+    "16v100-avx2": {
+      "job": "1868645",
+      "calculations": 14,
+      "inputs_matched": true,
+      "numerical_reparse_passed": true,
+      "max_energy_delta_ha": 1.4779288903810084e-11,
+      "max_force_delta_ha_bohr": 1.5390000003556725e-09,
+      "publication_allowed": false
+    },
+    "4v100-avx512": {
+      "job": "1868636",
+      "calculations": 14,
+      "inputs_matched": true,
+      "numerical_reparse_passed": true,
+      "max_energy_delta_ha": 4.7975845518521965e-11,
+      "max_force_delta_ha_bohr": 1.5339999999419707e-09,
+      "publication_allowed": false
+    },
+    "8v100v0-avx512": {
+      "job": "1868647",
+      "calculations": 14,
+      "inputs_matched": true,
+      "numerical_reparse_passed": true,
+      "max_energy_delta_ha": 1.9099388737231493e-11,
+      "max_force_delta_ha_bohr": 1.5390000003556725e-09,
+      "publication_allowed": false
+    }
+  }
+}

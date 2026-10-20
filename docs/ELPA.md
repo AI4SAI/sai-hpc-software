@@ -15,8 +15,12 @@
 64 水分子对角化中发散，小矩阵双节点测试还会触发 `cudaHostRegister` 错误。
 这些情况不在先前 128 阶解析矩阵测试的覆盖范围内。相同 CP2K 输入改用
 cuSOLVERMp、ELPA CPU kernel 或 ELPA 单阶段 GPU 路径可正常收敛；不能据此
-宣称默认 ELPA2 集成已通过。当前在容器内验证保留 GPU 计算、使用主机缓冲回变换
-的隔离候选库，尚未替换公共安装。详见
+宣称公共 ELPA2 集成已通过。保留 GPU 计算、使用主机缓冲回变换的两套隔离候选库
+已通过独立数值、Fortran 和 communicator 生命周期检查，并在 16V100、4V100、
+8V100V0 通过全部 **42 项 CP2K 单/双节点测试**，包括此前失败的输入。
+约 39.8 MiB 的 [GPU 替换包](../deployment/elpa-2026.02.001-backtransform/README.md)
+已生成并通过预检查，等待管理员替换公共安装；随后还需物理验收和新的 CP2K
+依赖锁。此本地兼容方案的通过范围是上述算例，性能仍待单独测量。详见
 [集成失败、控制实验及候选修复](evidence/cp2k-export-recovery-20261020/README.md)。
 
 ## 分区选择和固定路径
@@ -90,7 +94,10 @@ bash deployment/elpa-2026.02.001/submit-cpu.sh
 
 GPU 脚本和最初发布清单见 [GPU 部署包](../deployment/elpa-2026.02.001/README.md)，
 最初 CPU 版的安装流程见 [CPU 补充包](../deployment/elpa-2026.02.001-cpu/README.md)；
-后续部署使用 [修复库和简化 module 包](../deployment/elpa-2026.02.001-commfix/README.md)。
+communicator 修复和简化 module 使用
+[已安装的更新包](../deployment/elpa-2026.02.001-commfix/README.md)。
+本次 GPU 回变换更新使用 [NVIDIA 替换包](../deployment/elpa-2026.02.001-backtransform/README.md)，
+其独立构建脚本保留前述配方并加入经 CP2K 集成验证的补丁。
 构建后通过最终 SIF 编译独立 C/Fortran 消费程序并运行数值验收，再由 `prepare-release.py`
 生成给管理员的部署包。安装器只搬库、头文件、Fortran module、pkg-config、必要工具和来源记录；
 不搬源码树、对象和缓存。重新编译的字节哈希可能变化，应生成新的发布清单并重新验收。

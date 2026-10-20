@@ -1,0 +1,135 @@
+{
+  "allocated_cpus": 16,
+  "artifact": "/home/stardust/sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-r38dfba7e3ed7/4V100/39293908513-1-release-4v100-avx512-2026-10-19-67b5da876dd6-export.sif",
+  "artifact_sha256": "2e4beba48d3dcce7d58922c64b88808f5402011114a83abc6d6a1153b5f4d696",
+  "build_run_id": "39293908513-1-release-4v100-avx512-2026-10-19-67b5da876dd6-export",
+  "controller_sha256": "84db91909883510765fa87c03f2816f1af9ac0271f85f95f03c62371dcd098eb",
+  "cores_per_rank": 4,
+  "gpus_per_node": 1,
+  "helpers_sha256": "aefd8b234b1b43f2815a6af5f3502204319a490f4919ad417421d920034a10e3",
+  "identity": {
+    "build_id": "v2026.2-g67b5da876dd6-r38dfba7e3ed7",
+    "cpu_arch": "znver4",
+    "cuda_arch": "70",
+    "dependency_isa": "avx512",
+    "gpus": 1,
+    "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r38dfba7e3ed7/4V100",
+    "partition": "4V100",
+    "recipe_sha256": "38dfba7e3ed7e870c3320f22d2a430b8fae1f3b31c378d65bdd96337d57147cc",
+    "repository": "cp2k/cp2k",
+    "schema": 2,
+    "software": "cp2k",
+    "source_ref": "v2026.2",
+    "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+    "source_version": "v2026.2",
+    "stack_digest": null,
+    "stack_sources": {},
+    "target": "4v100-avx512",
+    "track": "release",
+    "version_label": "v2026.2"
+  },
+  "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r38dfba7e3ed7/4V100",
+  "job": "1868440",
+  "job_script_sha256": "352155277154267b958ba14e3248e70e70f2de3a4006195d2810a19c97079a06",
+  "launcher": "/home/stardust/sai-hpc-software/controller/c1f63becb1502cb324c0fe4816f9ec4187fb04a1/39293908513-1-release-4v100-avx512-2026-10-19-67b5da876dd6/cp2k",
+  "launcher_sha256": "210ddd657ec01da4c1bd13294f95ee51991f24219c3b1965c52874c6270b4540",
+  "minutes": 60,
+  "nodes": 2,
+  "omp_threads": 1,
+  "op": "submit",
+  "purpose": "cp2k-shared-elpa-failure-diagnostic",
+  "rank_wrapper_sha256": "cd8a16306182ca597ffcb495ef0e14fa2d334d6c8d71c7f7f117d905afbeaa03",
+  "ranks": 2,
+  "ranks_per_node": 1,
+  "recipe_sha256": "38dfba7e3ed7e870c3320f22d2a430b8fae1f3b31c378d65bdd96337d57147cc",
+  "run_id": "cp2k-elpa-diagnostic-20261020-4v100-avx512",
+  "schema": 1,
+  "software": "cp2k",
+  "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+  "target": "4v100-avx512",
+  "version": "v2026.2",
+  "parent_science": "39293908513-1-release-4v100-avx512-2026-10-19-67b5da876dd6-export-science",
+  "controller": "/home/stardust/sai-hpc-software/controller/c1f63becb1502cb324c0fe4816f9ec4187fb04a1/39293908513-1-release-4v100-avx512-2026-10-19-67b5da876dd6",
+  "diagnostic_schedule": [
+    [
+      "large-cusolver",
+      "single",
+      "water64-elpa",
+      "cusolver"
+    ],
+    [
+      "large-cpu",
+      "single",
+      "water64-elpa",
+      "cpu"
+    ],
+    [
+      "large-one-stage",
+      "single",
+      "water64-elpa",
+      "one-stage"
+    ],
+    [
+      "small-gpu",
+      "multi",
+      "water-elpa",
+      "gpu"
+    ],
+    [
+      "small-cpu",
+      "multi",
+      "water-elpa",
+      "cpu"
+    ],
+    [
+      "small-one-stage",
+      "multi",
+      "water-elpa",
+      "one-stage"
+    ],
+    [
+      "large-gpu",
+      "single",
+      "water64-elpa",
+      "gpu"
+    ]
+  ],
+  "fixture_hashes": {
+    "large-cusolver": {
+      "BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+      "GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+      "input.inp": "c8bcae25b7876bbf96114693c75cda96fd50197521f241bddff6dfeea1457b3c"
+    },
+    "large-cpu": {
+      "BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+      "GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+      "input.inp": "10583251b75ace330c39fb23b33f0eaf60c91de87d5981b6a82dfc60e8ac96f7"
+    },
+    "large-one-stage": {
+      "input.inp": "4a2b73e8c63cef01c5a149a73cc3ae911f1d8c420b98ff78d8ee07624ab3d9e0",
+      "BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+      "GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+    },
+    "small-gpu": {
+      "GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+      "BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+      "input.inp": "572d320d3c4f63b84e53948edfb1939acc47c03f970539901890a242b584116d"
+    },
+    "small-cpu": {
+      "input.inp": "2df5461887310f95ccc916027d4c9991e56622db8e0d37fa1237c0530d1e7a92",
+      "GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+      "BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61"
+    },
+    "small-one-stage": {
+      "BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+      "GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+      "input.inp": "3603dad6436e7f75e9589faec4f7706f0a8af703f2931dde11d94d3462fd70fb"
+    },
+    "large-gpu": {
+      "GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+      "input.inp": "c1425a1376ef7b15fa97b65008c3f4a4882a75dc96088c058aeb1371af36343b",
+      "BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61"
+    }
+  },
+  "diagnostic_tool_sha256": "e9348b2c58b05f3a99b96e61845e6f35310b8c4467fd6135d2e7bd582f8a54c4"
+}

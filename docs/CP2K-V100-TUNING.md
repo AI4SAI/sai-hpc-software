@@ -278,3 +278,12 @@ hidden in total time, or outweighed by communication. Recommendations should
 state the measured problem size and rank/GPU count, not impose one backend on
 all workloads. Multi-GPU experiments are planned, not yet implemented or run
 by the single-GPU automatic runner.
+
+The October 20 shared-ELPA integration exposed GPU back-transformation failures
+before tuning. Both isolated replacement libraries now pass standalone checks
+and all 42 unmodified CP2K calculations across the three GPU partitions; see
+the [integration evidence and administrator handoff](evidence/cp2k-export-recovery-20261020/README.md).
+The public GPU libraries are still the previous ones. Physical replacement,
+acceptance and a fresh CP2K dependency lock/delivery identity precede the
+216-water measurements. The host-staging workaround can alter communication
+costs, so earlier private-ELPA timing does not establish the new library's speed.

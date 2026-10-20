@@ -1,7 +1,7 @@
 # Workflow closure — 2026-10-20
 
 The code now connects build, scientific/performance acceptance, native export
-readback and publication. CP2K 2026.2 on all four partitions (4V100, 16V100,
+readback and publication. The original private-ELPA CP2K 2026.2 on all four partitions (4V100, 16V100,
 8V100V0 and DSPRHBM) has passed candidate science, native export readback,
 publication, physical `/opt` installation and native single/two-node science.
 Development is not yet accepted. GPUMD on 16V100 has passed science, performance and
@@ -72,9 +72,16 @@ scientific references and inputs still match their pinned hashes.
   nonconvergence and a small distributed-matrix CUDA host-registration failure;
   the same inputs converge with cuSOLVERMp, ELPA CPU kernels and ELPA1 GPU.
   DSPRHBM passed all 14 scientific calculations and numerical acceptance.
-  Isolated ELPA builds test upstream
-  host-staged back-transformations while preserving GPU computation; no new
-  GPU publication or 216-water tuning is claimed before science passes.
+  Isolated ELPA builds using upstream host-staged back-transformations preserve
+  GPU computation and passed standalone numerical, Fortran and lifecycle checks.
+  All 42 unchanged CP2K calculations then passed on 4V100 (`1868636`), 16V100
+  (`1868645`) and 8V100V0 (`1868647`), with independent numerical revalidation.
+  The 39.8 MiB [NVIDIA-only replacement package](../deployment/elpa-2026.02.001-backtransform/README.md)
+  passed preflight. Administrator installation, physical acceptance and a new
+  CP2K dependency lock/delivery identity remain required; the old GPU deliveries
+  remain failed and 216-water tuning has not started. The final integration
+  archive contains 2,156 independently hash-verified files. Linux CI at
+  `0e0ed1c` passed 840 tests (838 passed, two optional skips).
   [Diagnosis and export recovery](evidence/cp2k-export-recovery-20261020/README.md).
   [Lock migration and rebuild](evidence/cp2k-commfix-20261020/README.md).
   [Repair and deployment evidence](evidence/elpa-commfix-20261019/README.md),

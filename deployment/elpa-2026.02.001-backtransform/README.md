@@ -1,8 +1,9 @@
-# ELPA2 GPU 回变换候选修复
+# ELPA2 GPU 回变换替换包
 
-此目录提供两套 NVIDIA 库的替换工具。只有新 SIF 的独立数值、communicator
-生命周期检查和三个 GPU 分区各 14 项 CP2K 验收全部通过，才能生成部署载荷。
-实际资格以生成包的 `release.json` 和逐文件清单为准。
+两套 NVIDIA 库已在容器内编译完成，独立数值、Fortran 消费程序和 communicator
+生命周期检查通过。16V100、4V100、8V100V0 的全部 **42 项 CP2K 测试**也通过，
+输入和验收容差保持原样。管理员部署包已经生成，`--check` 通过；
+[release.json](release.json) 和逐文件清单固定本次构建与验证证据。
 
 共享 ELPA 的两阶段 GPU 路径在 CP2K 64 水分子输入中发散，小矩阵多节点测试
 出现 `cudaHostRegister` 错误。候选补丁使两次特征向量回变换采用上游已有的
@@ -22,10 +23,15 @@ module 无需替换。只接受已知旧清单或本次新清单，拒绝覆盖�
 在生成的集群家目录部署包中，由管理员执行：
 
 ```bash
+cd /home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform
 bash install.sh --check
 bash install.sh --install
 bash install.sh --verify
 ```
+
+载荷分别为 AVX2 19.31 MiB、AVX512 20.44 MiB。安装入口禁用 Python 字节码缓存，
+检查时只需读取包；跨账号权限按 `saiuser01` 的有效 POSIX ACL 核对，保留读/遍历权限，
+不增加写权限。构建、载荷和验收日志均保存在 stardust 家目录。
 
 应在相关 ELPA 作业结束后切换。随后由 stardust 复验物理安装，更新 CP2K 的
 共享依赖锁，再生成和验收新身份的 CP2K 产物。隔离候选库的 CP2K 测试结果不能

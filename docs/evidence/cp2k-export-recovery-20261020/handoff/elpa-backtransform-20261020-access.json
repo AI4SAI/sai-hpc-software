@@ -1,0 +1,3099 @@
+{
+  "account": "saiuser01",
+  "checked_paths": 308,
+  "failures": [],
+  "groups": [
+    1410000000,
+    1450000001,
+    1450000002,
+    1478400145
+  ],
+  "method": "Effective POSIX ACL evaluation; no impersonated execution",
+  "observed_utc": "2026-10-20T02:54:55.461596+00:00",
+  "passed": true,
+  "paths": [
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 0,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/",
+      "required": 1,
+      "uid": 0
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 0,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home",
+      "required": 1,
+      "uid": 0
+    },
+    {
+      "acl": "user::rwx\ngroup::--x\nother::--x\n\n",
+      "effective": 1,
+      "gid": 1478400690,
+      "mode": "0o711",
+      "passed": true,
+      "path": "/home/stardust",
+      "required": 1,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::rwx\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o775",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software",
+      "required": 1,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::rwx\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o775",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment",
+      "required": 1,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/README.md",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/__pycache__",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/__pycache__/base_install.cpython-312.pyc",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/avx2-manifest.json",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/avx2-previous-manifest.json",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/avx512-manifest.json",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/avx512-previous-manifest.json",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/base_install.py",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/16v100-avx2-cp2k.json",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/4v100-avx512-cp2k.json",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/8v100v0-avx512-cp2k.json",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/consumer-ldd.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/dynamic.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/fortran-smoke.f90",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/fortran-smoke.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/gpu-kernels.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/kernels.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/ldd.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/lifecycle-passed.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/lifecycle-r1-g0.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/lifecycle-r1-g1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/lifecycle-r2-g0.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/lifecycle-r2-g1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/passed.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r1-g0-s1-c0.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r1-g0-s1-c1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r1-g0-s2-c0-nbc1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r1-g0-s2-c0.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r1-g0-s2-c1-nbc1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r1-g0-s2-c1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r1-g1-s1-c0.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r1-g1-s1-c1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r1-g1-s2-c0-nbc1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r1-g1-s2-c0.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r1-g1-s2-c1-nbc1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r1-g1-s2-c1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r2-g0-s1-c0.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r2-g0-s1-c1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r2-g0-s2-c0-nbc1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r2-g0-s2-c0.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r2-g0-s2-c1-nbc1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r2-g0-s2-c1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r2-g1-s1-c0.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r2-g1-s1-c1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r2-g1-s2-c0-nbc1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r2-g1-s2-c0.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r2-g1-s2-c1-nbc1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx2/r2-g1-s2-c1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/consumer-ldd.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/dynamic.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/fortran-smoke.f90",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/fortran-smoke.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/gpu-kernels.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/kernels.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/ldd.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/lifecycle-passed.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/lifecycle-r1-g0.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/lifecycle-r1-g1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/lifecycle-r2-g0.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/lifecycle-r2-g1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/passed.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r1-g0-s1-c0.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r1-g0-s1-c1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r1-g0-s2-c0-nbc1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r1-g0-s2-c0.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r1-g0-s2-c1-nbc1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r1-g0-s2-c1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r1-g1-s1-c0.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r1-g1-s1-c1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r1-g1-s2-c0-nbc1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r1-g1-s2-c0.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r1-g1-s2-c1-nbc1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r1-g1-s2-c1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r2-g0-s1-c0.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r2-g0-s1-c1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r2-g0-s2-c0-nbc1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r2-g0-s2-c0.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r2-g0-s2-c1-nbc1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r2-g0-s2-c1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r2-g1-s1-c0.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r2-g1-s1-c1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r2-g1-s2-c0-nbc1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r2-g1-s2-c0.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r2-g1-s2-c1-nbc1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/evidence/avx512/r2-g1-s2-c1.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/install.py",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/install.sh",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/bin",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/bin/elpa2_print_kernels_openmp",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/include",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/include/elpa_openmp-2026.02.001",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/include/elpa_openmp-2026.02.001/elpa",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/include/elpa_openmp-2026.02.001/elpa/elpa.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/include/elpa_openmp-2026.02.001/elpa/elpa_configured_options.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/include/elpa_openmp-2026.02.001/elpa/elpa_constants.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/include/elpa_openmp-2026.02.001/elpa/elpa_explicit_name.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/include/elpa_openmp-2026.02.001/elpa/elpa_generated.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/include/elpa_openmp-2026.02.001/elpa/elpa_generated_c_api.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/include/elpa_openmp-2026.02.001/elpa/elpa_generic.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/include/elpa_openmp-2026.02.001/elpa/elpa_simd_constants.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/include/elpa_openmp-2026.02.001/elpa/elpa_version.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/include/elpa_openmp-2026.02.001/modules",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/include/elpa_openmp-2026.02.001/modules/elpa.mod",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/include/elpa_openmp-2026.02.001/modules/elpa_api.mod",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/include/elpa_openmp-2026.02.001/modules/elpa_constants.mod",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/include/elpa_openmp-2026.02.001/src",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/include/elpa_openmp-2026.02.001/src/helpers",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/include/elpa_openmp-2026.02.001/src/helpers/lapack_interfaces.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/include/elpa_openmp-2026.02.001/src/helpers/scalapack_interfaces.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/lib",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/lib/libelpa_openmp.la",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/lib/libelpa_openmp.so.19.5.1",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/lib/pkgconfig",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/lib/pkgconfig/elpa_openmp.pc",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/doc",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/doc/elpa",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/doc/elpa/CONTRIBUTING.md",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/doc/elpa/COPYING",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/doc/elpa/Changelog",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/doc/elpa/INSTALL.md",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/doc/elpa/LICENSE",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/doc/elpa/PERFORMANCE_TUNING.md",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/doc/elpa/README.md",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/doc/elpa/USERS_GUIDE.md",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/doc/elpa/gpl.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/doc/elpa/lgpl.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/doc/elpa/mpi_elpa1.png",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/doc/elpa/mpi_elpa2.png",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man1",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man1/elpa2_print_kernels.1",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_allocate.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_autotune_deallocate.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_autotune_load_state.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_autotune_print_state.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_autotune_save_state.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_autotune_set_best.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_autotune_setup.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_autotune_step.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_cholesky.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_deallocate.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_eigenvalues.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_eigenvalues_double.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_eigenvalues_double_complex.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_eigenvalues_float.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_eigenvalues_float_complex.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_eigenvectors.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_eigenvectors_double.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_eigenvectors_double_complex.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_eigenvectors_float.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_eigenvectors_float_complex.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_generalized_eigenvalues.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_generalized_eigenvectors.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_hermitian_multiply.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_init.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_invert_triangular.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_load_settings.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_print_settings.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_set.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_setup.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_skew_eigenvalues.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_skew_eigenvectors.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_solve_tridiagonal.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_store_settings.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/man/man3/elpa_uninit.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/backend",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/build-lscpu.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/build.sh",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/comm-trace.c",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/compiler-flags.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/config.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/config.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/configure-command.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/cuda-aware-cpu.patch",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/environment.sh",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/gpu-backtransform-host-staging.patch",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/isa",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/modules.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/mpi-communicator-fix.json",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/mpi-communicator.patch",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/recipe.sha256",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/reference",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/reference/install_elpa.sh",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/reference/original-module.tcl",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/runtime-paths.json",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/smoke.c",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/verify-lifecycle.py",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx2/share/sai/verify.sh",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/bin",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/bin/elpa2_print_kernels_openmp",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/include",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/include/elpa_openmp-2026.02.001",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/include/elpa_openmp-2026.02.001/elpa",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/include/elpa_openmp-2026.02.001/elpa/elpa.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/include/elpa_openmp-2026.02.001/elpa/elpa_configured_options.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/include/elpa_openmp-2026.02.001/elpa/elpa_constants.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/include/elpa_openmp-2026.02.001/elpa/elpa_explicit_name.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/include/elpa_openmp-2026.02.001/elpa/elpa_generated.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/include/elpa_openmp-2026.02.001/elpa/elpa_generated_c_api.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/include/elpa_openmp-2026.02.001/elpa/elpa_generic.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/include/elpa_openmp-2026.02.001/elpa/elpa_simd_constants.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/include/elpa_openmp-2026.02.001/elpa/elpa_version.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/include/elpa_openmp-2026.02.001/modules",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/include/elpa_openmp-2026.02.001/modules/elpa.mod",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/include/elpa_openmp-2026.02.001/modules/elpa_api.mod",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/include/elpa_openmp-2026.02.001/modules/elpa_constants.mod",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/include/elpa_openmp-2026.02.001/src",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/include/elpa_openmp-2026.02.001/src/helpers",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/include/elpa_openmp-2026.02.001/src/helpers/lapack_interfaces.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/include/elpa_openmp-2026.02.001/src/helpers/scalapack_interfaces.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/lib",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/lib/libelpa_openmp.la",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/lib/libelpa_openmp.so.19.5.1",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/lib/pkgconfig",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/lib/pkgconfig/elpa_openmp.pc",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/doc",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/doc/elpa",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/doc/elpa/CONTRIBUTING.md",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/doc/elpa/COPYING",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/doc/elpa/Changelog",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/doc/elpa/INSTALL.md",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/doc/elpa/LICENSE",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/doc/elpa/PERFORMANCE_TUNING.md",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/doc/elpa/README.md",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/doc/elpa/USERS_GUIDE.md",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/doc/elpa/gpl.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/doc/elpa/lgpl.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/doc/elpa/mpi_elpa1.png",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/doc/elpa/mpi_elpa2.png",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man1",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man1/elpa2_print_kernels.1",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_allocate.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_autotune_deallocate.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_autotune_load_state.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_autotune_print_state.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_autotune_save_state.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_autotune_set_best.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_autotune_setup.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_autotune_step.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_cholesky.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_deallocate.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_eigenvalues.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_eigenvalues_double.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_eigenvalues_double_complex.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_eigenvalues_float.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_eigenvalues_float_complex.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_eigenvectors.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_eigenvectors_double.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_eigenvectors_double_complex.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_eigenvectors_float.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_eigenvectors_float_complex.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_generalized_eigenvalues.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_generalized_eigenvectors.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_hermitian_multiply.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_init.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_invert_triangular.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_load_settings.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_print_settings.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_set.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_setup.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_skew_eigenvalues.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_skew_eigenvectors.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_solve_tridiagonal.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_store_settings.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/man/man3/elpa_uninit.3",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/backend",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/build-lscpu.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/build.sh",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/comm-trace.c",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/compiler-flags.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/config.h",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/config.log",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/configure-command.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/cuda-aware-cpu.patch",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/environment.sh",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/gpu-backtransform-host-staging.patch",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/isa",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/modules.txt",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/mpi-communicator-fix.json",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/mpi-communicator.patch",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/recipe.sha256",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rwx\ngroup::r-x\nother::r-x\n\n",
+      "effective": 5,
+      "gid": 1478400690,
+      "mode": "0o755",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/reference",
+      "required": 5,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/reference/install_elpa.sh",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/reference/original-module.tcl",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/runtime-paths.json",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/smoke.c",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/verify-lifecycle.py",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/payload/avx512/share/sai/verify.sh",
+      "required": 4,
+      "uid": 1478400690
+    },
+    {
+      "acl": "user::rw-\ngroup::r--\nother::r--\n\n",
+      "effective": 4,
+      "gid": 1478400690,
+      "mode": "0o644",
+      "passed": true,
+      "path": "/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-backtransform/release.json",
+      "required": 4,
+      "uid": 1478400690
+    }
+  ],
+  "release_sha256": "55ad83878710fc1c47295fe0854d987b4f393b68ad69e009e4a65ee5f5d2f78b",
+  "symlinks": 6,
+  "uid": 1478400146
+}

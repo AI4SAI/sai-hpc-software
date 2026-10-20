@@ -1,11 +1,15 @@
 # Completed CP2K compilation: recover skipped export
 
 All four recovered SIFs now pass version/features, dynamic loading and native
-inventory checks. The current shared-ELPA GPU candidates **have not passed
-science**: 16V100 fails the 64-water ELPA2 calculation; 4V100 and 8V100V0 fail
-the small distributed ELPA2 calculation at `cudaHostRegister`. DSPRHBM passed
-all 14 scientific calculations and the frozen numerical verifier. Consequently
-no 216-water GPU tuning run has started.
+inventory checks. DSPRHBM passed all 14 scientific calculations, the frozen
+numerical verifier and publication. With the currently installed shared ELPA,
+the GPU candidates **failed science**: 16V100 fails the 64-water ELPA2
+calculation; 4V100 and 8V100V0 fail the small distributed ELPA2 calculation at
+`cudaHostRegister`. An isolated ELPA workaround has now passed all **42/42**
+unchanged CP2K calculations on the three GPU partitions. Its two-library
+administrator package passed preflight. Physical replacement/acceptance and a
+new CP2K dependency lock and delivery identity remain pending; the original GPU
+deliveries retain their failures. No 216-water GPU tuning run has started.
 The sections below retain the original failures and recovery snapshots.
 
 Workflow [39293908513](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39293908513)
@@ -128,8 +132,8 @@ small-matrix error occurs in GPU registration of `hh_trans` in
 spectrum test did not cover these CP2K matrix sizes, partial eigenspaces and
 multi-node distributions.
 
-`gpu-backtransform-host-staging.patch` is a **candidate local workaround**,
-not an upstream repair or an accepted default. It chooses the upstream
+`gpu-backtransform-host-staging.patch` is a **qualified local workaround** for
+the tested cases, not an upstream repair or a performance result. It chooses the upstream
 host-staged paths for the two ELPA2 back-transformations while retaining GPU
 matrix operations, GPU kernels, cuSOLVER, the five CUDA architectures, and
 CUDA-aware MPI elsewhere. `build_elpa_host_staging.py` freezes builds inside
@@ -143,8 +147,8 @@ path and reruns all 14 **unmodified** CP2K science inputs. Each MPI rank records
 the candidate library hash. Its verifier checks unchanged scientific inputs,
 rank placement, positive backend execution, convergence, energies and forces,
 and rechecks the candidate files. Jobs `1868636` (4V100), `1868645` (16V100)
-and `1868647` (8V100V0) run this protocol. `follow_candidates.py` independently
-verifies completed jobs and records failures without installing or publishing.
+and `1868647` (8V100V0) completed this protocol, all `COMPLETED 0:0`.
+`follow_candidates.py` independently verified all three jobs without installing or publishing.
 The result is explicitly ineligible for
 publication: a changed shared-library inventory needs its own dependency lock
 and accepted delivery identity. `collect_state.py` archives these attempts,
@@ -152,3 +156,44 @@ receipts and diagnostics with hashes; earlier snapshots remain immutable.
 
 Linux CI for `e06e7e5` also passed. The focused export contract, delivery
 integration and recovery suites passed 35 tests before that commit.
+
+## Qualified ELPA handoff and final integration snapshot
+
+| Partition | Candidate science job | Calculations | Frozen numerical verifier |
+| --- | --- | --- | --- |
+| 4V100 | 1868636 | 14/14 passed | Passed |
+| 16V100 | 1868645 | 14/14 passed | Passed |
+| 8V100V0 | 1868647 | 14/14 passed | Passed |
+
+Both small distributed ELPA2 and 64-water ELPA2 cases now converge. Across
+single/two-node and solver comparisons, the maximum energy difference is
+`4.798e-11 Ha` and maximum force difference is `1.539e-9 Ha/Bohr`, within the
+unchanged tolerances. These are correctness checks, not a timing comparison.
+The per-rank library hashes match the exported AVX2/AVX512 payloads. AVX2 serves
+both 16V100 and 8V100V0; AVX512 serves 4V100.
+After download, the hash-matched parser independently reproduced all 42 samples
+and every comparison from the raw inputs, logs and forces; see
+[local revalidation](handoff/local-science-revalidation.json).
+
+The [administrator package](../../../deployment/elpa-2026.02.001-backtransform/README.md)
+contains 19.31 MiB AVX2 and 20.44 MiB AVX512 payloads. Its generated
+`release.json` pins both SIFs, new/previous inventories, the unchanged public
+module, patch and all three candidate-science receipts. Package generation
+reverified the 42 calculations and both standalone numerical/Fortran/lifecycle
+protocols, then compared SIF extraction with the actual CP2K-tested libraries.
+The installer preserves old trees and changes only the two NVIDIA prefixes.
+Physical installation has not been performed by stardust.
+
+`raw-integration/` contains **2,156 files**: 2,155 remotely hashed evidence files
+and their hash index, all independently verified after download. The archive
+SHA256 is `4f4544ef5fec6e6f679c5c0aba699fb774ee30762d59472bd609231933c4b13d`;
+its size is 14,343,068 bytes. [Import receipt](integration-archive.json).
+It preserves all four export outcomes, failed original GPU science, DSPRHBM
+acceptance/publication, the control experiments, both ELPA builds and all 42
+candidate calculations. The earlier `raw/` and `raw-retry16/` snapshots remain
+unchanged. Deployment preflight and effective cross-account access evidence
+are retained separately in `handoff/`.
+
+[Linux CI at `0e0ed1c`](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39360092429)
+passed **840 tests: 838 passed, two optional skips**. The NVIDIA-only handoff and
+existing backup/rollback suites passed all 10 focused tests.

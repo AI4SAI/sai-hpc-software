@@ -1,0 +1,1986 @@
+--------------------------------------------------------------------------
+PRTE has detected that the head of the session directory tree (where
+scratch files and shared memory backing storage will be placed)
+resides on a shared file system:
+
+   Directory: /home/stardust/sai-hpc-software/runtime/cs-1463cadd5be8
+   File system type: lustre
+
+For performance reasons, it is strongly recommended that the session
+directory be located on a local file system. This can be controlled by
+setting the system temporary directory to be used by PRTE using either
+the TMPDIR envar or the "prte_tmpdir_base" MCA param.
+
+If you need the temporary directory to be different on remote nodes
+from the local one where prterun is running (e.g., when a login node is
+being employed), then you can set the local temporary directory using
+the "prte_local_tmpdir_base" MCA param and the one to be used on all
+other nodes using the "prte_remote_tmpdir_base" param.
+
+This is only a warning advisory and your job will continue. You can
+disable this warning in the future by setting the
+"prte_silence_shared_fs" MCA param to "1".
+--------------------------------------------------------------------------
+[4v100n10.mr-sai.ai:3407342] Rank 0 bound to package[0][core:L0-3]
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+ DBCSR| CPU Multiplication driver                                           XSMM (U)
+ DBCSR| Multrec recursion limit                                              512 (U)
+ DBCSR| Multiplication stack size                                          30000 (D)
+ DBCSR| Maximum elements for images                                    UNLIMITED (U)
+ DBCSR| Multiplicative factor virtual images                                   1 (U)
+ DBCSR| Use multiplication densification                                       F (D)
+ DBCSR| Multiplication size stacks                                             3 (U)
+ DBCSR| Use memory pool for CPU allocation                                     F (U)
+ DBCSR| Number of 3D layers                                               SINGLE (U)
+ DBCSR| Use MPI memory allocation                                              F (U)
+ DBCSR| Use RMA algorithm                                                      F (U)
+ DBCSR| Use Communication thread                                               T (U)
+ DBCSR| Communication thread load                                             87 (D)
+ DBCSR| MPI: My process id                                                     0
+ DBCSR| MPI: Number of processes                                               1
+ DBCSR| OMP: Current number of threads                                         1
+ DBCSR| OMP: Max number of threads                                             1
+ DBCSR| ACC: Number of devices/node                                            1
+ DBCSR| ACC: Number of stack-buffers per thread                                8 (U)
+ DBCSR| ACC: Avoid driver after busy                                           F (U)
+ DBCSR| ACC: Process inhomogeneous stacks                                      T (U)
+ DBCSR| ACC: Min. flop for processing                                          0 (U)
+ DBCSR| ACC: Use G2G algorithm                                                 F (D)
+ DBCSR| ACC: Min. flop for sorting                                          4000 (U)
+ DBCSR| ACC: Number of binning bins                                         4096 (U)
+ DBCSR| ACC: Size of binning bins                                             16 (U)
+ DBCSR| ACC: GPU backend is enabled                                            T (D)
+ DBCSR| Split modifier for TAS multiplication algorithm                  1.0E+00 (U)
+
+
+  **** **** ******  **  PROGRAM STARTED AT               2026-10-20 02:18:57.460
+ ***** ** ***  *** **   PROGRAM STARTED ON                    4v100n10.mr-sai.ai
+ **    ****   ******    PROGRAM STARTED BY                             <unknown>
+ ***** **    ** ** **   PROGRAM PROCESS ID                               3407399
+  **** **  *******  **  PROGRAM STARTED IN                                 /work
+
+ CP2K| version string:                                       CP2K version 2026.2
+ CP2K| source code revision number:                                   67b5da876d
+ CP2K| cp2kflags: omp libint fftw3 libxc elpa parallel scalapack mpi_f08 cosma l
+ CP2K|            ibxs libxsmm dbcsr_acc plumed2 spglib libdftd4 dftd4_v4_2 s_df
+ CP2K|            ftd3 mctc-lib tblite libvori libbqb offload_cuda spla_gemm_off
+ CP2K|            floading cusolvermp cusolvermp_nccl hdf5
+ CP2K| is freely available from                            https://www.cp2k.org/
+ CP2K| Program compiled at                                   2026-10-19 18:54:24
+ CP2K| Program compiled on                                                      
+ CP2K| Program compiled for                                               x86_64
+ CP2K| Data directory path    /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-
+ CP2K| Input file name                                                 input.inp
+
+ GLOBAL| Force Environment number                                              1
+ GLOBAL| Basis set file name                                        BASIS_MOLOPT
+ GLOBAL| Potential file name                                      GTH_POTENTIALS
+ GLOBAL| MM Potential file name                                     MM_POTENTIAL
+ GLOBAL| Coordinate file name                                      __STD_INPUT__
+ GLOBAL| Method name                                                        CP2K
+ GLOBAL| Project name                                                  benchmark
+ GLOBAL| Run type                                                   ENERGY_FORCE
+ GLOBAL| FFT library                                                       FFTW3
+ GLOBAL| Diagonalization library                                            ELPA
+ GLOBAL| Cholesky decomposition library                                ScaLAPACK
+ GLOBAL| DGEMM library                                                      SPLA
+ GLOBAL| Minimum number of eigenvectors for ELPA usage                         1
+ GLOBAL| Orthonormality check for eigenvectors                          DISABLED
+ GLOBAL| Matrix multiplication library                                     COSMA
+ GLOBAL| All-to-all communication in single precision                          F
+ GLOBAL| FFTs using library dependent lengths                                  F
+ GLOBAL| Grid backend                                                       AUTO
+ GLOBAL| Global print level                                               MEDIUM
+ GLOBAL| MPI I/O enabled                                                       T
+ GLOBAL| Total number of message passing processes                             1
+ GLOBAL| Number of distributed systems (nodes)                                 1
+ GLOBAL| Number of threads for this process                                    1
+ GLOBAL| This output is from process                                           0
+ GLOBAL| OpenMP stack size per thread (OMP_STACKSIZE)                    default
+ GLOBAL| CPU model name                    AMD Ryzen 9 9950X3D 16-Core Processor
+ GLOBAL| CPUID                                                              1003
+
+ MEMORY| system memory details [Kb]
+ MEMORY|                        rank 0           min           max       average
+ MEMORY| MemTotal             98340176      98340176      98340176      98340176
+ MEMORY| MemFree              69925816      69925816      69925816      69925816
+ MEMORY| Buffers               1097912       1097912       1097912       1097912
+ MEMORY| Cached               16817428      16817428      16817428      16817428
+ MEMORY| Slab                  4000544       4000544       4000544       4000544
+ MEMORY| SReclaimable          1199712       1199712       1199712       1199712
+ MEMORY| MemLikelyFree        89040868      89040868      89040868      89040868
+
+
+ *** Fundamental physical constants (SI units) ***
+
+ *** Literature: B. J. Mohr and B. N. Taylor,
+ ***             CODATA recommended values of the fundamental physical
+ ***             constants: 2006, Web Version 5.1
+ ***             http://physics.nist.gov/constants
+
+ Speed of light in vacuum [m/s]                             2.99792458000000E+08
+ Magnetic constant or permeability of vacuum [N/A**2]       1.25663706143592E-06
+ Electric constant or permittivity of vacuum [F/m]          8.85418781762039E-12
+ Planck constant (h) [J*s]                                  6.62606896000000E-34
+ Planck constant (h-bar) [J*s]                              1.05457162825177E-34
+ Elementary charge [C]                                      1.60217648700000E-19
+ Electron mass [kg]                                         9.10938215000000E-31
+ Electron g factor [ ]                                     -2.00231930436220E+00
+ Proton mass [kg]                                           1.67262163700000E-27
+ Fine-structure constant                                    7.29735253760000E-03
+ Rydberg constant [1/m]                                     1.09737315685270E+07
+ Avogadro constant [1/mol]                                  6.02214179000000E+23
+ Boltzmann constant [J/K]                                   1.38065040000000E-23
+ Atomic mass unit [kg]                                      1.66053878200000E-27
+ Bohr radius [m]                                            5.29177208590000E-11
+
+ *** Conversion factors ***
+
+ [u] -> [a.u.]                                              1.82288848426455E+03
+ [Angstrom] -> [Bohr] = [a.u.]                              1.88972613288564E+00
+ [a.u.] = [Bohr] -> [Angstrom]                              5.29177208590000E-01
+ [a.u.] -> [s]                                              2.41888432650478E-17
+ [a.u.] -> [fs]                                             2.41888432650478E-02
+ [a.u.] -> [J]                                              4.35974393937059E-18
+ [a.u.] -> [N]                                              8.23872205491840E-08
+ [a.u.] -> [K]                                              3.15774647902944E+05
+ [a.u.] -> [kJ/mol]                                         2.62549961709828E+03
+ [a.u.] -> [kcal/mol]                                       6.27509468713739E+02
+ [a.u.] -> [Pa]                                             2.94210107994716E+13
+ [a.u.] -> [bar]                                            2.94210107994716E+08
+ [a.u.] -> [atm]                                            2.90362800883016E+08
+ [a.u.] -> [eV]                                             2.72113838565563E+01
+ [a.u.] -> [Hz]                                             6.57968392072181E+15
+ [a.u.] -> [1/cm] (wave numbers)                            2.19474631370540E+05
+ [a.u./Bohr**2] -> [1/cm]                                   5.14048714338585E+03
+ 
+
+ CELL| Volume [angstrom^3]:                                          1906.624000
+ CELL| Vector a [angstrom]:      12.400     0.000     0.000   |a| =    12.400000
+ CELL| Vector b [angstrom]:       0.000    12.400     0.000   |b| =    12.400000
+ CELL| Vector c [angstrom]:       0.000     0.000    12.400   |c| =    12.400000
+ CELL| Angle (b,c), alpha [degree]:                                    90.000000
+ CELL| Angle (a,c), beta  [degree]:                                    90.000000
+ CELL| Angle (a,b), gamma [degree]:                                    90.000000
+ CELL| Numerically orthorhombic:                                             YES
+ CELL| Periodicity                                                           XYZ
+
+ CELL_REF| Volume [angstrom^3]:                                      1906.624000
+ CELL_REF| Vector a [angstrom    12.400     0.000     0.000   |a| =    12.400000
+ CELL_REF| Vector b [angstrom     0.000    12.400     0.000   |b| =    12.400000
+ CELL_REF| Vector c [angstrom     0.000     0.000    12.400   |c| =    12.400000
+ CELL_REF| Angle (b,c), alpha [degree]:                                90.000000
+ CELL_REF| Angle (a,c), beta  [degree]:                                90.000000
+ CELL_REF| Angle (a,b), gamma [degree]:                                90.000000
+ CELL_REF| Numerically orthorhombic:                                         YES
+ CELL_REF| Periodicity                                                       XYZ
+
+ GENERATE|  Preliminary Number of Bonds generated:                             0
+ GENERATE|  Achieved consistency in connectivity generation.
+
+ *******************************************************************************
+ *******************************************************************************
+ **                                                                           **
+ **     #####                         ##              ##                      **
+ **    ##   ##            ##          ##              ##                      **
+ **   ##     ##                       ##            ######                    **
+ **   ##     ##  ##   ##  ##   #####  ##  ##   ####   ##    #####    #####    **
+ **   ##     ##  ##   ##  ##  ##      ## ##   ##      ##   ##   ##  ##   ##   **
+ **   ##  ## ##  ##   ##  ##  ##      ####     ###    ##   ######   ######    **
+ **    ##  ###   ##   ##  ##  ##      ## ##      ##   ##   ##       ##        **
+ **     #######   #####   ##   #####  ##  ##  ####    ##    #####   ##        **
+ **           ##                                                    ##        **
+ **                                                                           **
+ **                                                ... make the atoms dance   **
+ **                                                                           **
+ **            Copyright (C) by CP2K developers group (2000-2026)             **
+ **                      J. Chem. Phys. 152, 194103 (2020)                    **
+ **                                                                           **
+ *******************************************************************************
+
+ DFT| Spin restricted Kohn-Sham (RKS) calculation                            RKS
+ DFT| Multiplicity                                                             1
+ DFT| Number of spin states                                                    1
+ DFT| Charge                                                                   0
+ DFT| Self-interaction correction (SIC)                                       NO
+ DFT| Cutoffs: density                                              1.000000E-10
+ DFT|          gradient                                             1.000000E-10
+ DFT|          tau                                                  1.000000E-10
+ DFT|          cutoff_smoothing_range                               0.000000E+00
+ DFT| XC density smoothing                                                  NONE
+ DFT| XC derivatives                                                          PW
+
+ FUNCTIONAL| PBE:
+ FUNCTIONAL| J.P.Perdew, K.Burke, M.Ernzerhof, Phys. Rev. Letter, vol. 77, n 18,
+ FUNCTIONAL|  pp. 3865-3868, (1996) {spin unpolarized}                          
+
+
+ QS| Method:                                                                 GPW
+ QS| Density plane wave grid type                        NON-SPHERICAL FULLSPACE
+ QS| Number of grid levels:                                                    4
+ QS| Density cutoff [a.u.]:                                                150.0
+ QS| Multi grid cutoff [a.u.]: 1) grid level                               150.0
+ QS|                           2) grid level                                50.0
+ QS|                           3) grid level                                16.7
+ QS|                           4) grid level                                 5.6
+ QS| Grid level progression factor:                                          3.0
+ QS| Relative density cutoff [a.u.]:                                        20.0
+ QS| Interaction thresholds: eps_pgf_orb:                                1.0E-06
+ QS|                         eps_filter_matrix:                          0.0E+00
+ QS|                         eps_core_charge:                            1.0E-14
+ QS|                         eps_rho_gspace:                             1.0E-12
+ QS|                         eps_rho_rspace:                             1.0E-12
+ QS|                         eps_gvg_rspace:                             1.0E-06
+ QS|                         eps_ppl:                                    1.0E-02
+ QS|                         eps_ppnl:                                   1.0E-08
+
+
+ ATOMIC KIND INFORMATION
+
+  1. Atomic kind: O                                     Number of atoms:      64
+
+     Orbital Basis Set                                        DZVP-MOLOPT-SR-GTH
+
+       Number of orbital shell sets:                                           1
+       Number of orbital shells:                                               5
+       Number of primitive Cartesian functions:                                5
+       Number of Cartesian basis functions:                                   14
+       Number of spherical basis functions:                                   13
+       Norm type:                                                              2
+
+       Normalised Cartesian orbitals:
+
+                        Set   Shell   Orbital            Exponent    Coefficient
+
+                          1       1    2s               10.389228       0.396646
+                                                         3.849621       0.208811
+                                                         1.388401      -0.301641
+                                                         0.496955      -0.274061
+                                                         0.162492      -0.033677
+
+                          1       2    3s               10.389228       0.303673
+                                                         3.849621       0.240943
+                                                         1.388401      -0.313066
+                                                         0.496955      -0.043055
+                                                         0.162492       0.213991
+
+                          1       3    3px              10.389228      -1.530415
+                                                         3.849621      -1.371928
+                                                         1.388401      -0.761951
+                                                         0.496955      -0.253695
+                                                         0.162492      -0.035541
+                          1       3    3py              10.389228      -1.530415
+                                                         3.849621      -1.371928
+                                                         1.388401      -0.761951
+                                                         0.496955      -0.253695
+                                                         0.162492      -0.035541
+                          1       3    3pz              10.389228      -1.530415
+                                                         3.849621      -1.371928
+                                                         1.388401      -0.761951
+                                                         0.496955      -0.253695
+                                                         0.162492      -0.035541
+
+                          1       4    4px              10.389228      -0.565392
+                                                         3.849621      -0.038231
+                                                         1.388401      -0.382373
+                                                         0.496955       0.179070
+                                                         0.162492       0.122714
+                          1       4    4py              10.389228      -0.565392
+                                                         3.849621      -0.038231
+                                                         1.388401      -0.382373
+                                                         0.496955       0.179070
+                                                         0.162492       0.122714
+                          1       4    4pz              10.389228      -0.565392
+                                                         3.849621      -0.038231
+                                                         1.388401      -0.382373
+                                                         0.496955       0.179070
+                                                         0.162492       0.122714
+
+                          1       5    4dx2             10.389228       1.867377
+                                                         3.849621       0.670994
+                                                         1.388401       1.353441
+                                                         0.496955       0.273538
+                                                         0.162492       0.006620
+                          1       5    4dxy             10.389228       3.234392
+                                                         3.849621       1.162195
+                                                         1.388401       2.344229
+                                                         0.496955       0.473781
+                                                         0.162492       0.011466
+                          1       5    4dxz             10.389228       3.234392
+                                                         3.849621       1.162195
+                                                         1.388401       2.344229
+                                                         0.496955       0.473781
+                                                         0.162492       0.011466
+                          1       5    4dy2             10.389228       1.867377
+                                                         3.849621       0.670994
+                                                         1.388401       1.353441
+                                                         0.496955       0.273538
+                                                         0.162492       0.006620
+                          1       5    4dyz             10.389228       3.234392
+                                                         3.849621       1.162195
+                                                         1.388401       2.344229
+                                                         0.496955       0.473781
+                                                         0.162492       0.011466
+                          1       5    4dz2             10.389228       1.867377
+                                                         3.849621       0.670994
+                                                         1.388401       1.353441
+                                                         0.496955       0.273538
+                                                         0.162492       0.006620
+
+       Atomic covalent radius [Angstrom]:                                  0.730
+
+       Atomic van der Waals radius [Angstrom]:                             1.520
+
+     GTH Potential information for                                    GTH-PBE-q6
+
+       Description:                       Goedecker-Teter-Hutter pseudopotential
+                                           Goedecker et al., PRB 54, 1703 (1996)
+                                          Hartwigsen et al., PRB 58, 3641 (1998)
+                                                      Krack, TCA 114, 145 (2005)
+
+       Gaussian exponent of the core charge distribution:               8.360253
+       Electronic configuration (s p d ...):                               2   4
+
+       Parameters of the local part of the GTH pseudopotential:
+
+                          rloc        C1          C2          C3          C4
+                        0.244554  -16.667215    2.487311
+
+       Parameters of the non-local part of the GTH pseudopotential:
+
+                   l      r(l)      h(i,j,l)
+
+                   0    0.220956   18.337458
+                   1    0.211332
+
+  2. Atomic kind: H                                     Number of atoms:     128
+
+     Orbital Basis Set                                        DZVP-MOLOPT-SR-GTH
+
+       Number of orbital shell sets:                                           1
+       Number of orbital shells:                                               3
+       Number of primitive Cartesian functions:                                5
+       Number of Cartesian basis functions:                                    5
+       Number of spherical basis functions:                                    5
+       Norm type:                                                              2
+
+       Normalised Cartesian orbitals:
+
+                        Set   Shell   Orbital            Exponent    Coefficient
+
+                          1       1    2s               10.068468      -0.133023
+                                                         2.680223      -0.177618
+                                                         0.791502      -0.258419
+                                                         0.239116      -0.107525
+                                                         0.082193      -0.014019
+
+                          1       2    3s               10.068468       0.344673
+                                                         2.680223       1.819821
+                                                         0.791502      -0.999069
+                                                         0.239116       0.017430
+                                                         0.082193       0.082660
+
+                          1       3    3px              10.068468       0.155326
+                                                         2.680223       0.367157
+                                                         0.791502       0.311480
+                                                         0.239116       0.080105
+                                                         0.082193       0.033440
+                          1       3    3py              10.068468       0.155326
+                                                         2.680223       0.367157
+                                                         0.791502       0.311480
+                                                         0.239116       0.080105
+                                                         0.082193       0.033440
+                          1       3    3pz              10.068468       0.155326
+                                                         2.680223       0.367157
+                                                         0.791502       0.311480
+                                                         0.239116       0.080105
+                                                         0.082193       0.033440
+
+       Atomic covalent radius [Angstrom]:                                  0.320
+
+       Atomic van der Waals radius [Angstrom]:                             1.090
+
+     GTH Potential information for                                    GTH-PBE-q1
+
+       Description:                       Goedecker-Teter-Hutter pseudopotential
+                                           Goedecker et al., PRB 54, 1703 (1996)
+                                          Hartwigsen et al., PRB 58, 3641 (1998)
+                                                      Krack, TCA 114, 145 (2005)
+
+       Gaussian exponent of the core charge distribution:              12.500000
+       Electronic configuration (s p d ...):                                   1
+
+       Parameters of the local part of the GTH pseudopotential:
+
+                          rloc        C1          C2          C3          C4
+                        0.200000   -4.178900    0.724463
+
+
+ MOLECULE KIND INFORMATION
+
+
+ All atoms are their own molecule, skipping detailed information
+
+
+ TOTAL NUMBERS AND MAXIMUM NUMBERS
+
+  Total number of            - Atomic kinds:                                   2
+                             - Atoms:                                        192
+                             - Shell sets:                                   192
+                             - Shells:                                       704
+                             - Primitive Cartesian functions:                960
+                             - Cartesian basis functions:                   1536
+                             - Spherical basis functions:                   1472
+
+  Maximum angular momentum of- Orbital basis functions:                        2
+                             - Local part of the GTH pseudopotential:          2
+                             - Non-local part of the GTH pseudopotential:      0
+
+
+ MODULE QUICKSTEP: ATOMIC COORDINATES IN ANGSTROM
+
+   Atom Kind Element         X             Y             Z       Z(eff)     Mass
+      1    1 O     8      0.800000      0.800000      0.800000   6.0000  15.9994
+      2    2 H     1      1.757200      0.800000      0.800000   1.0000   1.0079
+      3    2 H     1      0.560013      1.727297      0.800000   1.0000   1.0079
+      4    1 O     8      0.800000      0.800000      3.900000   6.0000  15.9994
+      5    2 H     1      1.757200      0.800000      3.900000   1.0000   1.0079
+      6    2 H     1      0.560013      1.727297      3.900000   1.0000   1.0079
+      7    1 O     8      0.800000      0.800000      7.000000   6.0000  15.9994
+      8    2 H     1      1.757200      0.800000      7.000000   1.0000   1.0079
+      9    2 H     1      0.560013      1.727297      7.000000   1.0000   1.0079
+     10    1 O     8      0.800000      0.800000     10.100000   6.0000  15.9994
+     11    2 H     1      1.757200      0.800000     10.100000   1.0000   1.0079
+     12    2 H     1      0.560013      1.727297     10.100000   1.0000   1.0079
+     13    1 O     8      0.800000      3.900000      0.800000   6.0000  15.9994
+     14    2 H     1      1.757200      3.900000      0.800000   1.0000   1.0079
+     15    2 H     1      0.560013      4.827297      0.800000   1.0000   1.0079
+     16    1 O     8      0.800000      3.900000      3.900000   6.0000  15.9994
+     17    2 H     1      1.757200      3.900000      3.900000   1.0000   1.0079
+     18    2 H     1      0.560013      4.827297      3.900000   1.0000   1.0079
+     19    1 O     8      0.800000      3.900000      7.000000   6.0000  15.9994
+     20    2 H     1      1.757200      3.900000      7.000000   1.0000   1.0079
+     21    2 H     1      0.560013      4.827297      7.000000   1.0000   1.0079
+     22    1 O     8      0.800000      3.900000     10.100000   6.0000  15.9994
+     23    2 H     1      1.757200      3.900000     10.100000   1.0000   1.0079
+     24    2 H     1      0.560013      4.827297     10.100000   1.0000   1.0079
+     25    1 O     8      0.800000      7.000000      0.800000   6.0000  15.9994
+     26    2 H     1      1.757200      7.000000      0.800000   1.0000   1.0079
+     27    2 H     1      0.560013      7.927297      0.800000   1.0000   1.0079
+     28    1 O     8      0.800000      7.000000      3.900000   6.0000  15.9994
+     29    2 H     1      1.757200      7.000000      3.900000   1.0000   1.0079
+     30    2 H     1      0.560013      7.927297      3.900000   1.0000   1.0079
+     31    1 O     8      0.800000      7.000000      7.000000   6.0000  15.9994
+     32    2 H     1      1.757200      7.000000      7.000000   1.0000   1.0079
+     33    2 H     1      0.560013      7.927297      7.000000   1.0000   1.0079
+     34    1 O     8      0.800000      7.000000     10.100000   6.0000  15.9994
+     35    2 H     1      1.757200      7.000000     10.100000   1.0000   1.0079
+     36    2 H     1      0.560013      7.927297     10.100000   1.0000   1.0079
+     37    1 O     8      0.800000     10.100000      0.800000   6.0000  15.9994
+     38    2 H     1      1.757200     10.100000      0.800000   1.0000   1.0079
+     39    2 H     1      0.560013     11.027297      0.800000   1.0000   1.0079
+     40    1 O     8      0.800000     10.100000      3.900000   6.0000  15.9994
+     41    2 H     1      1.757200     10.100000      3.900000   1.0000   1.0079
+     42    2 H     1      0.560013     11.027297      3.900000   1.0000   1.0079
+     43    1 O     8      0.800000     10.100000      7.000000   6.0000  15.9994
+     44    2 H     1      1.757200     10.100000      7.000000   1.0000   1.0079
+     45    2 H     1      0.560013     11.027297      7.000000   1.0000   1.0079
+     46    1 O     8      0.800000     10.100000     10.100000   6.0000  15.9994
+     47    2 H     1      1.757200     10.100000     10.100000   1.0000   1.0079
+     48    2 H     1      0.560013     11.027297     10.100000   1.0000   1.0079
+     49    1 O     8      3.900000      0.800000      0.800000   6.0000  15.9994
+     50    2 H     1      4.857200      0.800000      0.800000   1.0000   1.0079
+     51    2 H     1      3.660013      1.727297      0.800000   1.0000   1.0079
+     52    1 O     8      3.900000      0.800000      3.900000   6.0000  15.9994
+     53    2 H     1      4.857200      0.800000      3.900000   1.0000   1.0079
+     54    2 H     1      3.660013      1.727297      3.900000   1.0000   1.0079
+     55    1 O     8      3.900000      0.800000      7.000000   6.0000  15.9994
+     56    2 H     1      4.857200      0.800000      7.000000   1.0000   1.0079
+     57    2 H     1      3.660013      1.727297      7.000000   1.0000   1.0079
+     58    1 O     8      3.900000      0.800000     10.100000   6.0000  15.9994
+     59    2 H     1      4.857200      0.800000     10.100000   1.0000   1.0079
+     60    2 H     1      3.660013      1.727297     10.100000   1.0000   1.0079
+     61    1 O     8      3.900000      3.900000      0.800000   6.0000  15.9994
+     62    2 H     1      4.857200      3.900000      0.800000   1.0000   1.0079
+     63    2 H     1      3.660013      4.827297      0.800000   1.0000   1.0079
+     64    1 O     8      3.900000      3.900000      3.900000   6.0000  15.9994
+     65    2 H     1      4.857200      3.900000      3.900000   1.0000   1.0079
+     66    2 H     1      3.660013      4.827297      3.900000   1.0000   1.0079
+     67    1 O     8      3.900000      3.900000      7.000000   6.0000  15.9994
+     68    2 H     1      4.857200      3.900000      7.000000   1.0000   1.0079
+     69    2 H     1      3.660013      4.827297      7.000000   1.0000   1.0079
+     70    1 O     8      3.900000      3.900000     10.100000   6.0000  15.9994
+     71    2 H     1      4.857200      3.900000     10.100000   1.0000   1.0079
+     72    2 H     1      3.660013      4.827297     10.100000   1.0000   1.0079
+     73    1 O     8      3.900000      7.000000      0.800000   6.0000  15.9994
+     74    2 H     1      4.857200      7.000000      0.800000   1.0000   1.0079
+     75    2 H     1      3.660013      7.927297      0.800000   1.0000   1.0079
+     76    1 O     8      3.900000      7.000000      3.900000   6.0000  15.9994
+     77    2 H     1      4.857200      7.000000      3.900000   1.0000   1.0079
+     78    2 H     1      3.660013      7.927297      3.900000   1.0000   1.0079
+     79    1 O     8      3.900000      7.000000      7.000000   6.0000  15.9994
+     80    2 H     1      4.857200      7.000000      7.000000   1.0000   1.0079
+     81    2 H     1      3.660013      7.927297      7.000000   1.0000   1.0079
+     82    1 O     8      3.900000      7.000000     10.100000   6.0000  15.9994
+     83    2 H     1      4.857200      7.000000     10.100000   1.0000   1.0079
+     84    2 H     1      3.660013      7.927297     10.100000   1.0000   1.0079
+     85    1 O     8      3.900000     10.100000      0.800000   6.0000  15.9994
+     86    2 H     1      4.857200     10.100000      0.800000   1.0000   1.0079
+     87    2 H     1      3.660013     11.027297      0.800000   1.0000   1.0079
+     88    1 O     8      3.900000     10.100000      3.900000   6.0000  15.9994
+     89    2 H     1      4.857200     10.100000      3.900000   1.0000   1.0079
+     90    2 H     1      3.660013     11.027297      3.900000   1.0000   1.0079
+     91    1 O     8      3.900000     10.100000      7.000000   6.0000  15.9994
+     92    2 H     1      4.857200     10.100000      7.000000   1.0000   1.0079
+     93    2 H     1      3.660013     11.027297      7.000000   1.0000   1.0079
+     94    1 O     8      3.900000     10.100000     10.100000   6.0000  15.9994
+     95    2 H     1      4.857200     10.100000     10.100000   1.0000   1.0079
+     96    2 H     1      3.660013     11.027297     10.100000   1.0000   1.0079
+     97    1 O     8      7.000000      0.800000      0.800000   6.0000  15.9994
+     98    2 H     1      7.957200      0.800000      0.800000   1.0000   1.0079
+     99    2 H     1      6.760013      1.727297      0.800000   1.0000   1.0079
+    100    1 O     8      7.000000      0.800000      3.900000   6.0000  15.9994
+    101    2 H     1      7.957200      0.800000      3.900000   1.0000   1.0079
+    102    2 H     1      6.760013      1.727297      3.900000   1.0000   1.0079
+    103    1 O     8      7.000000      0.800000      7.000000   6.0000  15.9994
+    104    2 H     1      7.957200      0.800000      7.000000   1.0000   1.0079
+    105    2 H     1      6.760013      1.727297      7.000000   1.0000   1.0079
+    106    1 O     8      7.000000      0.800000     10.100000   6.0000  15.9994
+    107    2 H     1      7.957200      0.800000     10.100000   1.0000   1.0079
+    108    2 H     1      6.760013      1.727297     10.100000   1.0000   1.0079
+    109    1 O     8      7.000000      3.900000      0.800000   6.0000  15.9994
+    110    2 H     1      7.957200      3.900000      0.800000   1.0000   1.0079
+    111    2 H     1      6.760013      4.827297      0.800000   1.0000   1.0079
+    112    1 O     8      7.000000      3.900000      3.900000   6.0000  15.9994
+    113    2 H     1      7.957200      3.900000      3.900000   1.0000   1.0079
+    114    2 H     1      6.760013      4.827297      3.900000   1.0000   1.0079
+    115    1 O     8      7.000000      3.900000      7.000000   6.0000  15.9994
+    116    2 H     1      7.957200      3.900000      7.000000   1.0000   1.0079
+    117    2 H     1      6.760013      4.827297      7.000000   1.0000   1.0079
+    118    1 O     8      7.000000      3.900000     10.100000   6.0000  15.9994
+    119    2 H     1      7.957200      3.900000     10.100000   1.0000   1.0079
+    120    2 H     1      6.760013      4.827297     10.100000   1.0000   1.0079
+    121    1 O     8      7.000000      7.000000      0.800000   6.0000  15.9994
+    122    2 H     1      7.957200      7.000000      0.800000   1.0000   1.0079
+    123    2 H     1      6.760013      7.927297      0.800000   1.0000   1.0079
+    124    1 O     8      7.000000      7.000000      3.900000   6.0000  15.9994
+    125    2 H     1      7.957200      7.000000      3.900000   1.0000   1.0079
+    126    2 H     1      6.760013      7.927297      3.900000   1.0000   1.0079
+    127    1 O     8      7.000000      7.000000      7.000000   6.0000  15.9994
+    128    2 H     1      7.957200      7.000000      7.000000   1.0000   1.0079
+    129    2 H     1      6.760013      7.927297      7.000000   1.0000   1.0079
+    130    1 O     8      7.000000      7.000000     10.100000   6.0000  15.9994
+    131    2 H     1      7.957200      7.000000     10.100000   1.0000   1.0079
+    132    2 H     1      6.760013      7.927297     10.100000   1.0000   1.0079
+    133    1 O     8      7.000000     10.100000      0.800000   6.0000  15.9994
+    134    2 H     1      7.957200     10.100000      0.800000   1.0000   1.0079
+    135    2 H     1      6.760013     11.027297      0.800000   1.0000   1.0079
+    136    1 O     8      7.000000     10.100000      3.900000   6.0000  15.9994
+    137    2 H     1      7.957200     10.100000      3.900000   1.0000   1.0079
+    138    2 H     1      6.760013     11.027297      3.900000   1.0000   1.0079
+    139    1 O     8      7.000000     10.100000      7.000000   6.0000  15.9994
+    140    2 H     1      7.957200     10.100000      7.000000   1.0000   1.0079
+    141    2 H     1      6.760013     11.027297      7.000000   1.0000   1.0079
+    142    1 O     8      7.000000     10.100000     10.100000   6.0000  15.9994
+    143    2 H     1      7.957200     10.100000     10.100000   1.0000   1.0079
+    144    2 H     1      6.760013     11.027297     10.100000   1.0000   1.0079
+    145    1 O     8     10.100000      0.800000      0.800000   6.0000  15.9994
+    146    2 H     1     11.057200      0.800000      0.800000   1.0000   1.0079
+    147    2 H     1      9.860013      1.727297      0.800000   1.0000   1.0079
+    148    1 O     8     10.100000      0.800000      3.900000   6.0000  15.9994
+    149    2 H     1     11.057200      0.800000      3.900000   1.0000   1.0079
+    150    2 H     1      9.860013      1.727297      3.900000   1.0000   1.0079
+    151    1 O     8     10.100000      0.800000      7.000000   6.0000  15.9994
+    152    2 H     1     11.057200      0.800000      7.000000   1.0000   1.0079
+    153    2 H     1      9.860013      1.727297      7.000000   1.0000   1.0079
+    154    1 O     8     10.100000      0.800000     10.100000   6.0000  15.9994
+    155    2 H     1     11.057200      0.800000     10.100000   1.0000   1.0079
+    156    2 H     1      9.860013      1.727297     10.100000   1.0000   1.0079
+    157    1 O     8     10.100000      3.900000      0.800000   6.0000  15.9994
+    158    2 H     1     11.057200      3.900000      0.800000   1.0000   1.0079
+    159    2 H     1      9.860013      4.827297      0.800000   1.0000   1.0079
+    160    1 O     8     10.100000      3.900000      3.900000   6.0000  15.9994
+    161    2 H     1     11.057200      3.900000      3.900000   1.0000   1.0079
+    162    2 H     1      9.860013      4.827297      3.900000   1.0000   1.0079
+    163    1 O     8     10.100000      3.900000      7.000000   6.0000  15.9994
+    164    2 H     1     11.057200      3.900000      7.000000   1.0000   1.0079
+    165    2 H     1      9.860013      4.827297      7.000000   1.0000   1.0079
+    166    1 O     8     10.100000      3.900000     10.100000   6.0000  15.9994
+    167    2 H     1     11.057200      3.900000     10.100000   1.0000   1.0079
+    168    2 H     1      9.860013      4.827297     10.100000   1.0000   1.0079
+    169    1 O     8     10.100000      7.000000      0.800000   6.0000  15.9994
+    170    2 H     1     11.057200      7.000000      0.800000   1.0000   1.0079
+    171    2 H     1      9.860013      7.927297      0.800000   1.0000   1.0079
+    172    1 O     8     10.100000      7.000000      3.900000   6.0000  15.9994
+    173    2 H     1     11.057200      7.000000      3.900000   1.0000   1.0079
+    174    2 H     1      9.860013      7.927297      3.900000   1.0000   1.0079
+    175    1 O     8     10.100000      7.000000      7.000000   6.0000  15.9994
+    176    2 H     1     11.057200      7.000000      7.000000   1.0000   1.0079
+    177    2 H     1      9.860013      7.927297      7.000000   1.0000   1.0079
+    178    1 O     8     10.100000      7.000000     10.100000   6.0000  15.9994
+    179    2 H     1     11.057200      7.000000     10.100000   1.0000   1.0079
+    180    2 H     1      9.860013      7.927297     10.100000   1.0000   1.0079
+    181    1 O     8     10.100000     10.100000      0.800000   6.0000  15.9994
+    182    2 H     1     11.057200     10.100000      0.800000   1.0000   1.0079
+    183    2 H     1      9.860013     11.027297      0.800000   1.0000   1.0079
+    184    1 O     8     10.100000     10.100000      3.900000   6.0000  15.9994
+    185    2 H     1     11.057200     10.100000      3.900000   1.0000   1.0079
+    186    2 H     1      9.860013     11.027297      3.900000   1.0000   1.0079
+    187    1 O     8     10.100000     10.100000      7.000000   6.0000  15.9994
+    188    2 H     1     11.057200     10.100000      7.000000   1.0000   1.0079
+    189    2 H     1      9.860013     11.027297      7.000000   1.0000   1.0079
+    190    1 O     8     10.100000     10.100000     10.100000   6.0000  15.9994
+    191    2 H     1     11.057200     10.100000     10.100000   1.0000   1.0079
+    192    2 H     1      9.860013     11.027297     10.100000   1.0000   1.0079
+
+
+
+ SCF PARAMETERS         Density guess:                                    ATOMIC
+                        --------------------------------------------------------
+                        max_scf:                                             100
+                        max_scf_history:                                       0
+                        max_diis:                                              4
+                        --------------------------------------------------------
+                        eps_scf:                                        1.00E-09
+                        eps_scf_history:                                0.00E+00
+                        eps_diis:                                       1.00E-01
+                        eps_eigval:                                     1.00E-05
+                        --------------------------------------------------------
+                        level_shift [a.u.]:                             0.000000
+                        --------------------------------------------------------
+                        Mixing method:                           DIRECT_P_MIXING
+                        --------------------------------------------------------
+                        Outer loop SCF in use 
+                        No variables optimised in outer loop
+                        eps_scf                                         1.00E-09
+                        max_scf                                               10
+                        No outer loop optimization
+                        step_size                                       5.00E-01
+
+ PW_GRID| Information for grid number                                          1
+ PW_GRID| Cutoff [a.u.]                                                    150.0
+ PW_GRID| spherical cutoff:                                                   NO
+ PW_GRID|   Bounds   1            -67      67                Points:         135
+ PW_GRID|   Bounds   2            -67      67                Points:         135
+ PW_GRID|   Bounds   3            -67      67                Points:         135
+ PW_GRID| Volume element (a.u.^3)  0.5230E-02     Volume (a.u.^3)     12866.5367
+ PW_GRID| Grid span                                                    FULLSPACE
+
+ PW_GRID| Information for grid number                                          2
+ PW_GRID| Number of the reference grid                                         1
+ PW_GRID| Cutoff [a.u.]                                                     50.0
+ PW_GRID| spherical cutoff:                                                   NO
+ PW_GRID|   Bounds   1            -37      37                Points:          75
+ PW_GRID|   Bounds   2            -37      37                Points:          75
+ PW_GRID|   Bounds   3            -37      37                Points:          75
+ PW_GRID| Volume element (a.u.^3)  0.3050E-01     Volume (a.u.^3)     12866.5367
+ PW_GRID| Grid span                                                    FULLSPACE
+
+ PW_GRID| Information for grid number                                          3
+ PW_GRID| Number of the reference grid                                         1
+ PW_GRID| Cutoff [a.u.]                                                     16.7
+ PW_GRID| spherical cutoff:                                                   NO
+ PW_GRID|   Bounds   1            -22      22                Points:          45
+ PW_GRID|   Bounds   2            -22      22                Points:          45
+ PW_GRID|   Bounds   3            -22      22                Points:          45
+ PW_GRID| Volume element (a.u.^3)  0.1412         Volume (a.u.^3)     12866.5367
+ PW_GRID| Grid span                                                    FULLSPACE
+
+ PW_GRID| Information for grid number                                          4
+ PW_GRID| Number of the reference grid                                         1
+ PW_GRID| Cutoff [a.u.]                                                      5.6
+ PW_GRID| spherical cutoff:                                                   NO
+ PW_GRID|   Bounds   1            -12      12                Points:          25
+ PW_GRID|   Bounds   2            -12      12                Points:          25
+ PW_GRID|   Bounds   3            -12      12                Points:          25
+ PW_GRID| Volume element (a.u.^3)  0.8235         Volume (a.u.^3)     12866.5367
+ PW_GRID| Grid span                                                    FULLSPACE
+
+ POISSON| Solver                                                        PERIODIC
+ POISSON| Periodicity                                                        XYZ
+
+ RS_GRID| Information for grid number                                          1
+ RS_GRID|   Bounds   1            -67      67                Points:         135
+ RS_GRID|   Bounds   2            -67      67                Points:         135
+ RS_GRID|   Bounds   3            -67      67                Points:         135
+
+ RS_GRID| Information for grid number                                          2
+ RS_GRID|   Bounds   1            -37      37                Points:          75
+ RS_GRID|   Bounds   2            -37      37                Points:          75
+ RS_GRID|   Bounds   3            -37      37                Points:          75
+
+ RS_GRID| Information for grid number                                          3
+ RS_GRID|   Bounds   1            -22      22                Points:          45
+ RS_GRID|   Bounds   2            -22      22                Points:          45
+ RS_GRID|   Bounds   3            -22      22                Points:          45
+
+ RS_GRID| Information for grid number                                          4
+ RS_GRID|   Bounds   1            -12      12                Points:          25
+ RS_GRID|   Bounds   2            -12      12                Points:          25
+ RS_GRID|   Bounds   3            -12      12                Points:          25
+
+ Extrapolation method: initial_guess
+
+ Atomic guess: The first density matrix is obtained in terms of atomic orbitals
+               and electronic configurations assigned to each atomic kind
+
+ Guess for atomic kind: O
+
+ Electronic structure
+    Total number of core electrons                                          2.00
+    Total number of valence electrons                                       6.00
+    Total number of electrons                                               8.00
+    Multiplicity                                                   not specified
+    S   [  2.00] 2.00
+    P      4.00
+
+
+ *******************************************************************************
+                  Iteration          Convergence                     Energy [au]
+ *******************************************************************************
+                          1        0.702811                     -15.577904332270
+                          2        0.612408                     -15.588447180504
+                          3        0.955344E-02                 -15.655871208406
+                          4        0.223754E-02                 -15.655885053552
+                          5        0.157183E-02                 -15.655885461027
+                          6        0.124953E-02                 -15.655885607150
+                          7        0.312011E-06                 -15.655885858066
+
+ Energy components [Hartree]           Total Energy ::          -15.655885858066
+                                        Band Energy ::           -2.983128125584
+                                     Kinetic Energy ::           11.754765134683
+                                   Potential Energy ::          -27.410650992749
+                                      Virial (-V/T) ::            2.331875684345
+                                        Core Energy ::          -26.153522949072
+                                          XC Energy ::           -3.157392363346
+                                     Coulomb Energy ::           13.655029454351
+                       Total Pseudopotential Energy ::          -37.943026860963
+                       Local Pseudopotential Energy ::          -39.220419683052
+                    Nonlocal Pseudopotential Energy ::            1.277392822089
+                                        Confinement ::            0.347387772086
+
+ Orbital energies  State     L     Occupation   Energy[a.u.]          Energy[eV]
+
+                       1     0          2.000      -0.861522          -23.443215
+
+                       1     1          4.000      -0.315021           -8.572154
+
+
+ Total Electron Density at R=0:                                         0.000093
+
+ Guess for atomic kind: H
+
+ Electronic structure
+    Total number of core electrons                                          0.00
+    Total number of valence electrons                                       1.00
+    Total number of electrons                                               1.00
+    Multiplicity                                                   not specified
+    S      1.00
+
+
+ *******************************************************************************
+                  Iteration          Convergence                     Energy [au]
+ *******************************************************************************
+                          1        0.250972E-02                  -0.375256815885
+                          2        0.570752E-04                  -0.375258666164
+                          3        0.832405E-09                  -0.375258667122
+
+ Energy components [Hartree]           Total Energy ::           -0.375258667122
+                                        Band Energy ::           -0.076317618391
+                                     Kinetic Energy ::            0.771356566341
+                                   Potential Energy ::           -1.146615233463
+                                      Virial (-V/T) ::            1.486491829455
+                                        Core Energy ::           -0.456090715790
+                                          XC Energy ::           -0.314218627334
+                                     Coulomb Energy ::            0.395050676003
+                       Total Pseudopotential Energy ::           -1.238482237174
+                       Local Pseudopotential Energy ::           -1.238482237174
+                    Nonlocal Pseudopotential Energy ::            0.000000000000
+                                        Confinement ::            0.110349550431
+
+ Orbital energies  State     L     Occupation   Energy[a.u.]          Energy[eV]
+
+                       1     0          1.000      -0.076318           -2.076708
+
+
+ Total Electron Density at R=0:                                         0.425022
+ Re-scaling the density matrix to get the right number of electrons
+                  # Electrons              Trace(P)               Scaling factor
+                          512               512.000                        1.000
+
+ Number of electrons:                                                        512
+ Number of occupied orbitals:                                                256
+ Number of molecular orbitals:                                               256
+
+ Number of orbital functions:                                               1472
+ Number of independent orbital functions:                                   1472
+
+
+ SCF WAVEFUNCTION OPTIMIZATION
+
+  Step     Update method      Time    Convergence         Total energy    Change
+  ------------------------------------------------------------------------------
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+     1 P_Mix/Diag. 0.40E+00    1.1     9.00405529     -1086.7158257494 -1.09E+03
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+     2 P_Mix/Diag. 0.40E+00    1.0    24.91520740      -651.1097240932  4.36E+02
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+     3 P_Mix/Diag. 0.40E+00    1.0    12.81186619      -111.5232044957  5.40E+02
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+     4 P_Mix/Diag. 0.40E+00    1.0     4.66450021       362.5325612031  4.74E+02
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+     5 P_Mix/Diag. 0.40E+00    1.0     7.19337028       483.3478977974  1.21E+02
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+     6 P_Mix/Diag. 0.40E+00    1.0     5.88395254       638.2891349768  1.55E+02
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+     7 P_Mix/Diag. 0.40E+00    1.0     4.77068472       700.4426700162  6.22E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+     8 P_Mix/Diag. 0.40E+00    1.0     5.39595128       803.4308187270  1.03E+02
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+     9 P_Mix/Diag. 0.40E+00    1.0     5.13565153       795.4295457944 -8.00E+00
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    10 P_Mix/Diag. 0.40E+00    1.0     4.38252789       853.8832832459  5.85E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    11 P_Mix/Diag. 0.40E+00    1.0     4.33913979       799.6757480841 -5.42E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    12 P_Mix/Diag. 0.40E+00    1.0     5.81934697       889.2065276328  8.95E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    13 P_Mix/Diag. 0.40E+00    1.0    19.04987026       867.0724245381 -2.21E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    14 P_Mix/Diag. 0.40E+00    1.0     7.54188218       985.6856335066  1.19E+02
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    15 P_Mix/Diag. 0.40E+00    1.0     5.34815138       918.3737122186 -6.73E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    16 P_Mix/Diag. 0.40E+00    1.0     4.64056493       929.2429920718  1.09E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    17 P_Mix/Diag. 0.40E+00    1.0     5.69720926       886.0232961280 -4.32E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    18 P_Mix/Diag. 0.40E+00    1.0     4.65633506       909.6526022899  2.36E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    19 P_Mix/Diag. 0.40E+00    1.0     4.73135921       908.7699238260 -8.83E-01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    20 P_Mix/Diag. 0.40E+00    1.0     3.76896113       907.5789074174 -1.19E+00
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    21 P_Mix/Diag. 0.40E+00    1.0     4.82365481       840.2211616179 -6.74E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    22 P_Mix/Diag. 0.40E+00    1.0     4.12457524       889.8294202655  4.96E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    23 P_Mix/Diag. 0.40E+00    1.0     5.72687524       846.6858615124 -4.31E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    24 P_Mix/Diag. 0.40E+00    1.0     4.34270445       899.7926553703  5.31E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    25 P_Mix/Diag. 0.40E+00    1.0    12.25825788       894.3308286629 -5.46E+00
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    26 P_Mix/Diag. 0.40E+00    1.0     6.14088987       970.2664451404  7.59E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    27 P_Mix/Diag. 0.40E+00    1.0     4.42038965       958.8928225884 -1.14E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    28 P_Mix/Diag. 0.40E+00    1.0     5.09013202       944.1873219175 -1.47E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    29 P_Mix/Diag. 0.40E+00    1.0     8.02432273       860.8082050113 -8.34E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    30 P_Mix/Diag. 0.40E+00    1.0    10.31585987       904.9699720765  4.42E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    31 P_Mix/Diag. 0.40E+00    1.0     5.40203227       913.2174790507  8.25E+00
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    32 P_Mix/Diag. 0.40E+00    1.0     5.12057655       928.5820599272  1.54E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    33 P_Mix/Diag. 0.40E+00    1.0     4.80311070       849.6096584500 -7.90E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    34 P_Mix/Diag. 0.40E+00    1.0     4.11396443       878.9359669202  2.93E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    35 P_Mix/Diag. 0.40E+00    1.0     4.00618290       798.2381554812 -8.07E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    36 P_Mix/Diag. 0.40E+00    1.0     3.79287956       859.6683756215  6.14E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    37 P_Mix/Diag. 0.40E+00    1.0     4.11042365       801.0019903527 -5.87E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    38 P_Mix/Diag. 0.40E+00    1.0     7.60809846       850.7376410718  4.97E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    39 P_Mix/Diag. 0.40E+00    1.0     6.99888377       830.0548503936 -2.07E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    40 P_Mix/Diag. 0.40E+00    1.0     7.07099623       951.3144847423  1.21E+02
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    41 P_Mix/Diag. 0.40E+00    1.0     5.19357183       885.8282511268 -6.55E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    42 P_Mix/Diag. 0.40E+00    1.0     5.32135985       910.7082356948  2.49E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    43 P_Mix/Diag. 0.40E+00    1.0     4.65320935       844.5682722615 -6.61E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    44 P_Mix/Diag. 0.40E+00    1.0     4.60740048       869.8747769455  2.53E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    45 P_Mix/Diag. 0.40E+00    1.0     4.48140385       840.7621941576 -2.91E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    46 P_Mix/Diag. 0.40E+00    1.0     5.89707444       898.4084016078  5.76E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    47 P_Mix/Diag. 0.40E+00    1.0    13.75756745       869.1153497604 -2.93E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    48 P_Mix/Diag. 0.40E+00    1.0     9.59526433       999.3852635834  1.30E+02
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    49 P_Mix/Diag. 0.40E+00    1.0     5.21027169       977.4786992990 -2.19E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    50 P_Mix/Diag. 0.40E+00    1.0     7.10306431       951.8906432628 -2.56E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    51 P_Mix/Diag. 0.40E+00    1.0     9.13077749       942.6129134922 -9.28E+00
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    52 P_Mix/Diag. 0.40E+00    1.0     6.75471579       978.8810276385  3.63E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    53 P_Mix/Diag. 0.40E+00    1.0     4.96226987       916.1826850152 -6.27E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    54 P_Mix/Diag. 0.40E+00    1.0     5.95140717       892.2351700891 -2.39E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    55 P_Mix/Diag. 0.40E+00    1.0     6.20368970       844.8753068414 -4.74E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    56 P_Mix/Diag. 0.40E+00    1.0     4.04106986       912.2944458343  6.74E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    57 P_Mix/Diag. 0.40E+00    1.0     5.99276106       854.4315295777 -5.79E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    58 P_Mix/Diag. 0.40E+00    1.0     3.71490343       894.0280637916  3.96E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    59 P_Mix/Diag. 0.40E+00    1.0     7.37748882       852.0313096776 -4.20E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    60 P_Mix/Diag. 0.40E+00    1.0     6.51393418       891.9964261306  4.00E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    61 P_Mix/Diag. 0.40E+00    1.0     6.16763692       831.7483607543 -6.02E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    62 P_Mix/Diag. 0.40E+00    1.0     4.13725115       891.5183006840  5.98E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    63 P_Mix/Diag. 0.40E+00    1.0     4.53580146       801.1653444345 -9.04E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    64 P_Mix/Diag. 0.40E+00    1.0     3.64405336       828.2033900938  2.70E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    65 P_Mix/Diag. 0.40E+00    1.0     3.64470267       772.5470343963 -5.57E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    66 P_Mix/Diag. 0.40E+00    1.0     4.75013563       825.7371441003  5.32E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    67 P_Mix/Diag. 0.40E+00    1.0     5.40835645       791.7606259549 -3.40E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    68 P_Mix/Diag. 0.40E+00    1.0     3.95915131       823.3875106023  3.16E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    69 P_Mix/Diag. 0.40E+00    1.0     5.09343864       794.0306653345 -2.94E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    70 P_Mix/Diag. 0.40E+00    1.0     4.48083853       887.8926036170  9.39E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    71 P_Mix/Diag. 0.40E+00    1.0     5.50304138       844.9834774045 -4.29E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    72 P_Mix/Diag. 0.40E+00    1.0     5.57105824       929.8105114306  8.48E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    73 P_Mix/Diag. 0.40E+00    1.0     6.46775846       869.3547218338 -6.05E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    74 P_Mix/Diag. 0.40E+00    1.0     4.86755099       886.1787359258  1.68E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    75 P_Mix/Diag. 0.40E+00    1.0     3.82868334       869.2694126025 -1.69E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    76 P_Mix/Diag. 0.40E+00    1.0     5.69274830       899.1158670971  2.98E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    77 P_Mix/Diag. 0.40E+00    1.0     6.55867060       870.0437368098 -2.91E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    78 P_Mix/Diag. 0.40E+00    1.0     6.01535503       958.3279663427  8.83E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    79 P_Mix/Diag. 0.40E+00    1.0     5.61304470       869.6908357922 -8.86E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    80 P_Mix/Diag. 0.40E+00    1.0     5.28648122       903.4933780680  3.38E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    81 P_Mix/Diag. 0.40E+00    1.0     5.17442290       874.3807199124 -2.91E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    82 P_Mix/Diag. 0.40E+00    1.0     7.11080238       969.0336971479  9.47E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    83 P_Mix/Diag. 0.40E+00    1.0     4.61071041       906.0759949785 -6.30E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    84 P_Mix/Diag. 0.40E+00    1.0     4.13409138       929.2331152884  2.32E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    85 P_Mix/Diag. 0.40E+00    1.0     5.80046777       879.6753155328 -4.96E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    86 P_Mix/Diag. 0.40E+00    1.0     4.35139724       944.2538239844  6.46E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    87 P_Mix/Diag. 0.40E+00    1.0     4.81642861       866.3906745368 -7.79E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    88 P_Mix/Diag. 0.40E+00    1.0     4.10205860       910.8112679703  4.44E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    89 P_Mix/Diag. 0.40E+00    1.0     4.63273337       856.4875928261 -5.43E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    90 P_Mix/Diag. 0.40E+00    1.0     6.04673990       930.4392034848  7.40E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    91 P_Mix/Diag. 0.40E+00    1.0    14.46363122       885.5852982278 -4.49E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    92 P_Mix/Diag. 0.40E+00    1.0     7.89574759      1079.7667638538  1.94E+02
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    93 P_Mix/Diag. 0.40E+00    1.0     7.49259321       944.5085307861 -1.35E+02
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    94 P_Mix/Diag. 0.40E+00    1.0     4.82497764      1020.6282917825  7.61E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    95 P_Mix/Diag. 0.40E+00    1.0     5.10227225       916.9367141899 -1.04E+02
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    96 P_Mix/Diag. 0.40E+00    1.0     4.78861564       957.2236794180  4.03E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    97 P_Mix/Diag. 0.40E+00    1.0    79.06954517       913.0750284466 -4.41E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    98 P_Mix/Diag. 0.40E+00    1.0    32.99510687      1357.0599033519  4.44E+02
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+    99 P_Mix/Diag. 0.40E+00    1.0    19.25032300      1182.8479076947 -1.74E+02
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                    1472
+ ELPA| Matrix block size (NBLK)                                               64
+ ELPA| Number of eigenvectors (NEV)                                          256
+ ELPA| Local rows (LOCAL_NROWS)                                             1472
+ ELPA| Local columns (LOCAL_NCOLS)                                          1472
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+ELPA: Option 'gpu_solve_tridi' is set to '0' due to environment variable ELPA_FORCE_gpu_solve_tridi
+   100 P_Mix/Diag. 0.40E+00    1.0    11.36158488      1043.8461772873 -1.39E+02
+
+  Leaving inner SCF loop after reaching   100 steps.
+
+
+  Electronic density on regular grids:       -857.0875357024     -345.0875357024
+  Core density on regular grids:              511.9999999998       -0.0000000002
+  Total charge density on r-space grids:     -345.0875357025
+  Total charge density g-space grids:        -345.0875357025
+
+  Overlap energy of the core charge distribution:               0.00000432505073
+  Self energy of the core charge distribution:              -2838.21791979120962
+  Core Hamiltonian energy:                                   2546.80947585098875
+  Hartree energy:                                            1781.89872124979070
+  Exchange-correlation energy:                               -446.64410434734498
+
+  Total energy:                                              1043.84617728727562
+
+  outer SCF iter =    1 RMS gradient =   0.00E+00 energy =       1043.8461772873
+  outer SCF loop converged in   1 iterations or  100 steps
+
+
+ *******************************************************************************
+ *   ___                                                                       *
+ *  /   \                                                                      *
+ * [ABORT]                                                                     *
+ *  \___/     SCF run NOT converged. To continue the calculation regardless,   *
+ *    |             please set the keyword IGNORE_CONVERGENCE_FAILURE.         *
+ *  O/|                                                                        *
+ * /| |                                                                        *
+ * / \                                                            qs_scf.F:702 *
+ *******************************************************************************
+
+
+ ===== Routine Calling Stack ===== 
+
+            4 scf_env_do_scf
+            3 qs_energies
+            2 qs_forces
+            1 CP2K
+--------------------------------------------------------------------------
+MPI_ABORT was invoked on rank 0 in communicator MPI_COMM_WORLD
+  Proc: [[22364,1],0]
+  Errorcode: 1
+
+NOTE: invoking MPI_ABORT causes Open MPI to kill all MPI processes.
+You may or may not see output from other processes, depending on
+exactly when Open MPI kills them.
+--------------------------------------------------------------------------
+--------------------------------------------------------------------------
+prterun has exited due to process rank 0 with PID 0 on node 4v100n10 calling
+"abort". This may have caused other processes in the application to be
+terminated by signals sent by prterun (as reported here).
+--------------------------------------------------------------------------
+ 
