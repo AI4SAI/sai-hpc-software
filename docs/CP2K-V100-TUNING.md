@@ -211,6 +211,13 @@ cuSOLVER, not ELPA. It requires a matrix of at least 64, compatible Cholesky and
 level-shift settings, and actual dispatch to the supported backend. Setting
 the keyword to `TRUE` alone is not proof of execution.
 
+`PREFERRED_DIAG_LIBRARY CUSOLVER` is the input spelling for **cuSOLVERMp** in
+this release. There is no separate `CUSOLVER_MP` selector to compare. The pinned
+[`cp_fm_cusolver.c`](https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/fm/cp_fm_cusolver.c)
+calls `cusolverMpSyevd` for the standard route and `cusolverMpSygvd` for direct
+generalized diagonalization, including when run with one rank and one GPU.
+Testing that backend on one GPU does not establish its multi-GPU scaling.
+
 After the new candidate passes science, use the same sufficiently large PBE
 system, basis, cutoff, SCF tolerance and resources for these independent runs:
 
@@ -247,3 +254,21 @@ Pilot job `1865445` completed all 16 calculations. Its 64-water medians are
 FULL_ALL with cuSOLVER). The direct ratio is only 1.0116, with overlapping sample
 ranges; retain the upstream default pending the larger new-build measurement.
 All numerical/dispatch/affinity checks pass. [Raw pilot results and scope](evidence/cp2k-direct-pilot-20261020/README.md).
+
+That result is restricted to **16V100, one V100, 64 waters and 1472 basis
+functions**. It does not establish a size-independent benefit or lack of benefit.
+ELPA's faster time in that sample likewise does not establish the best backend
+on a different problem or GPU count. Both backends and the direct input option
+remain available. Selecting them at runtime does not require another build.
+
+The next automatic experiment uses 216 waters (4968 basis functions) on each
+of the three GPU partitions after new-artifact science acceptance. It still
+uses one GPU. Subsequent scaling work should compare ELPA, cuSOLVERMp standard
+and cuSOLVERMp direct on the **same problem** at 1/2/4 GPUs, then a larger
+representative PBE system or basis. Record both total SCF time and solver/
+Cholesky/redistribution timers, SCF iterations, memory and GPU placement.
+Different systems can shift which stage dominates; a solver speedup can be
+hidden in total time, or outweighed by communication. Recommendations should
+state the measured problem size and rank/GPU count, not impose one backend on
+all workloads. Multi-GPU experiments are planned, not yet implemented or run
+by the single-GPU automatic runner.

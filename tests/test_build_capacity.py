@@ -4,6 +4,7 @@ import io
 import json
 from pathlib import Path
 import subprocess
+import shlex
 import sys
 import tempfile
 import unittest
@@ -93,6 +94,30 @@ with capacity.reserve(Path(sys.argv[2]), Path(sys.argv[3]), 64):
         self.assertNotEqual(result.returncode, 0)
         self.assertIn('No space left on device', result.stderr)
         self.assertEqual(artifact.read_bytes(), b'preserved checkpoint')
+
+    def run_script(self, script):
+        return subprocess.run([sys.executable, capacity.__file__, '--shell-script-stdin',
+            str(self.root), str(self.first), '16384'], input=script,
+            capture_output=True, text=True, timeout=10)
+
+    def test_stdin_reading_child_cannot_consume_export_and_verification(self):
+        reader = shlex.join([sys.executable, '-c',
+            'import sys; assert sys.stdin.read() == ""; print("PROBE_COMPLETE")'])
+        script = reader + '\necho EXPORT_COMPLETE\necho VERIFY_COMPLETE\n'
+        result = self.run_script(script)
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertEqual(result.stdout.splitlines()[-3:],
+                         ['PROBE_COMPLETE', 'EXPORT_COMPLETE', 'VERIFY_COMPLETE'])
+
+    def test_script_failure_still_stops_following_stages_and_releases_lock(self):
+        for script in ('false | true\necho MUST_NOT_EXPORT\n',
+                       'echo "$UNDEFINED_SAI_TEST_VARIABLE"\necho MUST_NOT_EXPORT\n'):
+            with self.subTest(script=script):
+                result = self.run_script(script)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertNotIn('MUST_NOT_EXPORT', result.stdout)
+                self.assertEqual(json.loads((self.first / 'capacity.json').read_text())['state'],
+                                 'released')
 
 
 if __name__ == '__main__':

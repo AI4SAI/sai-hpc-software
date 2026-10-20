@@ -182,6 +182,7 @@ class DependencyStageTests(unittest.TestCase):
             self.assertIn('#SBATCH --job-name=sai-cp2k-deps-' + target + '-bbbbbbbbbbbb\n', script)
             self.assertIn('cp2k_image_driver.py', script)
             self.assertIn('build_capacity.py', script)
+            self.assertIn('--shell-script-stdin', script)
             self.assertLess(script.index('require_capacity('), script.index('cp --sparse'))
             self.assertIn(identity['install_prefix'], script)
             if target != 'dsprhbm':

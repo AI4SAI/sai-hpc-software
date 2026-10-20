@@ -83,8 +83,8 @@ def render(project, controller, run, identity, *, minutes=240, jobs=None, overla
              'umask 077', 'unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH',
              'export TMPDIR=' + q(str(run / 'runtime')), 'export APPTAINER_TMPDIR="$TMPDIR"',
              'export APPTAINER_CACHEDIR=' + q(str(run / 'apptainer-cache')),
-             shlex.join(['/usr/bin/python3', str(controller / 'build_capacity.py'), str(project),
-                         str(run), str(overlay_mb), '--', '/bin/bash', '-seu', '-o', 'pipefail']) + " <<'SAI_BUILD_BODY'",
+             shlex.join(['/usr/bin/python3', str(controller / 'build_capacity.py'), '--shell-script-stdin',
+                         str(project), str(run), str(overlay_mb)]) + " <<'SAI_BUILD_BODY'",
              shlex.join(['/usr/bin/python3', '-c',
                          f'import sys; sys.path.insert(0, {str(controller)!r}); '
                          f'from remote_controller import require_capacity; require_capacity({str(project)!r}, {overlay_mb})']),

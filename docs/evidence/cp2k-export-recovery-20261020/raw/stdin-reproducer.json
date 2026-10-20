@@ -1,0 +1,22 @@
+{
+  "host": "login-01.mr-sai.ai",
+  "tmpdir": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-export-recovery-39293908513",
+  "script": "mpiexec --allow-run-as-root --bind-to none -n 1 /bin/true\necho EXPORT_SENTINEL\necho VERIFY_SENTINEL\n",
+  "mpi_version": "mpiexec (Open MPI) 5.0.10\n\nReport bugs to https://www.open-mpi.org/community/help/\n\n",
+  "cases": {
+    "legacy": {
+      "returncode": 0,
+      "stdout": "",
+      "stderr": "--------------------------------------------------------------------------\nPRTE has detected that the head of the session directory tree (where\nscratch files and shared memory backing storage will be placed)\nresides on a shared file system:\n\n   Directory: /home/stardust/sai-hpc-software/runtime-tests/cp2k-export-recovery-39293908513\n   File system type: lustre\n\nFor performance reasons, it is strongly recommended that the session\ndirectory be located on a local file system. This can be controlled by\nsetting the system temporary directory to be used by PRTE using either\nthe TMPDIR envar or the \"prte_tmpdir_base\" MCA param.\n\nIf you need the temporary directory to be different on remote nodes\nfrom the local one where prterun is running (e.g., when a login node is\nbeing employed), then you can set the local temporary directory using\nthe \"prte_local_tmpdir_base\" MCA param and the one to be used on all\nother nodes using the \"prte_remote_tmpdir_base\" param.\n\nThis is only a warning advisory and your job will continue. You can\ndisable this warning in the future by setting the\n\"prte_silence_shared_fs\" MCA param to \"1\".\n--------------------------------------------------------------------------\n",
+      "export_executed": false,
+      "verify_executed": false
+    },
+    "isolated": {
+      "returncode": 0,
+      "stdout": "EXPORT_SENTINEL\nVERIFY_SENTINEL\n",
+      "stderr": "/etc/bash.bashrc: line 7: PS1: unbound variable\n--------------------------------------------------------------------------\nPRTE has detected that the head of the session directory tree (where\nscratch files and shared memory backing storage will be placed)\nresides on a shared file system:\n\n   Directory: /home/stardust/sai-hpc-software/runtime-tests/cp2k-export-recovery-39293908513\n   File system type: lustre\n\nFor performance reasons, it is strongly recommended that the session\ndirectory be located on a local file system. This can be controlled by\nsetting the system temporary directory to be used by PRTE using either\nthe TMPDIR envar or the \"prte_tmpdir_base\" MCA param.\n\nIf you need the temporary directory to be different on remote nodes\nfrom the local one where prterun is running (e.g., when a login node is\nbeing employed), then you can set the local temporary directory using\nthe \"prte_local_tmpdir_base\" MCA param and the one to be used on all\nother nodes using the \"prte_remote_tmpdir_base\" param.\n\nThis is only a warning advisory and your job will continue. You can\ndisable this warning in the future by setting the\n\"prte_silence_shared_fs\" MCA param to \"1\".\n--------------------------------------------------------------------------\n",
+      "export_executed": true,
+      "verify_executed": true
+    }
+  }
+}

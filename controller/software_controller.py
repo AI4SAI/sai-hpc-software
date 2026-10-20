@@ -409,8 +409,8 @@ def render_job(args):
            'export APPTAINERENV_CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:?}"']
           if args.software == "gpumd" else []),
         f"test -s {q(str(image))}",
-        *([shlex.join(['/usr/bin/python3', str(CONTROL / 'build_capacity.py'), str(ROOT),
-                      str(r), str(3 * args.overlay_mb), '--', '/bin/bash', '-seu', '-o', 'pipefail']) + " <<'SAI_BUILD_BODY'"]
+        *([shlex.join(['/usr/bin/python3', str(CONTROL / 'build_capacity.py'), '--shell-script-stdin',
+                      str(ROOT), str(r), str(3 * args.overlay_mb)]) + " <<'SAI_BUILD_BODY'"]
           if args.software == 'cp2k' else []),
         f"test ! -e {q(str(overlay))}",
         shlex.join(["/usr/bin/python3", "-c",

@@ -59,8 +59,16 @@ scientific references and inputs still match their pinned hashes.
   `1865327`–`1865330` verified it on all four partitions, and GCC 14.3/CMake
   probes `1865334`–`1865337` passed with the repaired lock. Fresh release
   workflow [39293908513](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39293908513)
-  submitted four dependency builds using recipe `38dfba7e3ed7`; application
-  compilation and new CP2K acceptance remain pending.
+  completed all four dependency and application compilations with recipe
+  `38dfba7e3ed7`. Application jobs `1865877` (16V100), `1865642` (4V100),
+  `1866021` (8V100V0) and `1865863` (DSPRHBM) installed the binaries and native
+  metadata successfully, but MPI stdin forwarding consumed the shell's pending
+  export commands. No SIF was produced and GitHub correctly rejected the
+  incomplete deliveries. The shell wrapper now reads its entire command source
+  before starting children and isolates their stdin. Recovery preserves the
+  frozen recipe and original overlays, clones their compiled contents, and runs
+  metadata/export/verification followed by science. New CP2K acceptance remains
+  pending. [Diagnosis and export recovery](evidence/cp2k-export-recovery-20261020/README.md).
   [Lock migration and rebuild](evidence/cp2k-commfix-20261020/README.md).
   [Repair and deployment evidence](evidence/elpa-commfix-20261019/README.md),
   [simplified module and repaired physical-library acceptance](evidence/elpa-simple-module-20261020/README.md).
