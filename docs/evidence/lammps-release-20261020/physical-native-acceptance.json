@@ -1,0 +1,315 @@
+{
+  "captured_at": "2026-10-20T18:37:26.330887+00:00",
+  "container_invoked": false,
+  "installed_by": "saiuser01",
+  "module": {
+    "mode": "0o644",
+    "owner": "saiuser01",
+    "path": "/opt/modules/modulefiles/apps/lammps/30Sep2026-deepmd320-auto",
+    "sha256": "6c155ab067244d0c4903af4d56c0ad184d6df606c4065b3da659ad9ff2f93c19"
+  },
+  "native_reference_sha256": "e5f75411c7891cb4df63bb71410daa6f21e5c91b6ee7bb8f987b41e4e0880478",
+  "partitions": {
+    "16V100": {
+      "accounting": "1885342|16V100|COMPLETED|0:0|00:01:44|16|16v100n[01-02]",
+      "case_names": [
+        "coulomb-pppm-candidate-gpu-multi",
+        "coulomb-pppm-candidate-gpu-single",
+        "coulomb-pppm-candidate-kokkos-multi",
+        "coulomb-pppm-candidate-kokkos-single",
+        "deepmd-jax-multi",
+        "deepmd-jax-single",
+        "deepmd-pt-multi",
+        "deepmd-pt-single",
+        "deepmd-tf-multi",
+        "deepmd-tf-single",
+        "lj-candidate-gpu-multi",
+        "lj-candidate-gpu-single",
+        "lj-candidate-kokkos-multi",
+        "lj-candidate-kokkos-single",
+        "python-jax",
+        "python-pt",
+        "python-tf"
+      ],
+      "distinct_nodes": [
+        "16v100n01",
+        "16v100n02"
+      ],
+      "evidence_sha256": {
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/16V100/allocation.txt": "fb44d1a76fdebaddb80c0a8ae93a202582dd7486b6ef938f4036d091b49d668b",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/16V100/binary.txt": "c4e790d69713f69ae5d95100f1004dd99b3d489d693e9165147cbd6319e5b221",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/16V100/module-unloaded.txt": "2b475304c06172002d26a81753870dc8fd5898b1e2da120c892ecb6098f55a97",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/16V100/modules.txt": "d6f9dbc80a4818c85de5dbd9260b404dbbdfc14a0979de00b956176fa8b4b291",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/16V100/mpi-version.txt": "dbefbbfa3051a687ec6d12c60decfadc9e432e1e88b88e634e861777f1367714",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/16V100/mpirun.txt": "0d0f01600bd10b9f9789d180bacc0bbfc3855116dd4ec61e642d45862e4848ca",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/16V100/native-acceptance.json": "4065c9333933012530e7e885363eaceeccc4135e847f85d2b3b15c5f281fec44",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/16V100/nodes.txt": "25d87ebce5b70ae6a10f87034b5f32980ddfaa1eeb607ea3cb79207a7bef22b4",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/16V100/request.json": "f634dbd93d1291dd4aa71f880c35d531e194cc0fdf0de37317ef286a5e3e0ba3",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/16V100/results/version/ranks/cpu-0.txt": "3bad4bff3630a29f8d1807774ecf3efe075824a74a8ddb172d57b1be6b83ffe9",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/16V100/results/version/ranks/cpu-1.txt": "3bad4bff3630a29f8d1807774ecf3efe075824a74a8ddb172d57b1be6b83ffe9",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/16V100/results/version/ranks/gpu-0.txt": "11bb293433a0a48b579b435209ac9dec4aa8f5c104ede6350624cece9336cac4",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/16V100/results/version/ranks/gpu-1.txt": "11bb293433a0a48b579b435209ac9dec4aa8f5c104ede6350624cece9336cac4",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/16V100/results/version/ranks/ldd-0.txt": "a1e297245e8e3ca30b840ff0507c267b03e78db3b9f448736b7b1c1f482ff525",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/16V100/results/version/ranks/ldd-1.txt": "4f7f94e4c73818e05e4657cc25556617195682406dd4d610528288862b3db4f0",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/16V100/slurm-1885342.log": "8750603e7a469fe233b619764c0973ea008d08c9ba9dee18b5afea3e774c1e85"
+      },
+      "frozen_control_sha256": {
+        "30Sep2026-deepmd320-auto": "6c155ab067244d0c4903af4d56c0ad184d6df606c4065b3da659ad9ff2f93c19",
+        "install.py": "16ac266a86f91b1f3ec71d5fd5b4b4797e324b77284fa72c4fe02abfc2f31283",
+        "native-rank.sh": "11392c0d3a4f07ef0fd6d2ea24feba9f215f4cc1fc78bd6c568770c6aef2365b",
+        "native-reference.json": "e5f75411c7891cb4df63bb71410daa6f21e5c91b6ee7bb8f987b41e4e0880478",
+        "native_checks.py": "ce4a6e3b1f699d7c671e6ad712b17ee7b10f92f79cca58786b111ea1001e1209",
+        "release.json": "4ceddb23a4f9e6995375a9239af6d46c42982190aa18224672c9aeb659be3dd1",
+        "runtime-plan.json": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e",
+        "verify-native.sbatch": "424ce93c38d0554903073e6b341741e2721ac73be4835416aa381a16c8a404e4"
+      },
+      "gpu_probes": [
+        [
+          "Tesla V100-SXM2-16GB, 550.163.01"
+        ],
+        [
+          "Tesla V100-SXM2-16GB, 550.163.01"
+        ]
+      ],
+      "installations": [
+        {
+          "bytes": 162749291,
+          "files": 1030,
+          "group": "sai-partner",
+          "mode": "0o755",
+          "owner": "saiuser01",
+          "prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100",
+          "software": "deepmd-kit"
+        },
+        {
+          "bytes": 1005771604,
+          "files": 340,
+          "group": "sai-partner",
+          "mode": "0o755",
+          "owner": "saiuser01",
+          "prefix": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100",
+          "software": "lammps"
+        }
+      ],
+      "installed_file_readback_passed": true,
+      "job": "1885342",
+      "module_unload_passed": true,
+      "mpi_isa": "avx2",
+      "packages": 71,
+      "passed": true,
+      "raw_inventory_file_count": 164,
+      "raw_inventory_sha256": "4065c9333933012530e7e885363eaceeccc4135e847f85d2b3b15c5f281fec44",
+      "scientific_cases": 17,
+      "styles": 2473
+    },
+    "4V100": {
+      "accounting": "1885341|4V100|COMPLETED|0:0|00:00:48|16|4v100n[03-04]",
+      "case_names": [
+        "coulomb-pppm-candidate-gpu-multi",
+        "coulomb-pppm-candidate-gpu-single",
+        "coulomb-pppm-candidate-kokkos-multi",
+        "coulomb-pppm-candidate-kokkos-single",
+        "deepmd-jax-multi",
+        "deepmd-jax-single",
+        "deepmd-pt-multi",
+        "deepmd-pt-single",
+        "deepmd-tf-multi",
+        "deepmd-tf-single",
+        "lj-candidate-gpu-multi",
+        "lj-candidate-gpu-single",
+        "lj-candidate-kokkos-multi",
+        "lj-candidate-kokkos-single",
+        "python-jax",
+        "python-pt",
+        "python-tf"
+      ],
+      "distinct_nodes": [
+        "4v100n03",
+        "4v100n04"
+      ],
+      "evidence_sha256": {
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/4V100/allocation.txt": "a3e0d505ae0d5e4a155837ab24e093c3f60d1891abdf0f6cd690742c7a20a927",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/4V100/binary.txt": "c98c00b7e947075733faba395925401c1ea7ee89df159d6e01c4ff8bfd179042",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/4V100/module-unloaded.txt": "2b475304c06172002d26a81753870dc8fd5898b1e2da120c892ecb6098f55a97",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/4V100/modules.txt": "d6f9dbc80a4818c85de5dbd9260b404dbbdfc14a0979de00b956176fa8b4b291",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/4V100/mpi-version.txt": "dbefbbfa3051a687ec6d12c60decfadc9e432e1e88b88e634e861777f1367714",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/4V100/mpirun.txt": "25c80c91443a570f981101dc6b49e827a5ff947f142b0b0d8d26e0b6fba2c31c",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/4V100/native-acceptance.json": "5402ccf8af410ff280b18cae32e0c9912fd8d3a9a853a433253ca3fef120d5b9",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/4V100/nodes.txt": "38bf9f23402e9fd7786d832c06621eabf2382972959a22d5d6c91fda22d7481d",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/4V100/request.json": "fd20c90441b0eab8baf55750e2fed1255e57b15172e0aa876b1c6bb0d7d53be3",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/4V100/results/version/ranks/cpu-0.txt": "5f9de7e402348adea01d18c98e432b04dda6e660f778aa2d80d510cef311b782",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/4V100/results/version/ranks/cpu-1.txt": "5f9de7e402348adea01d18c98e432b04dda6e660f778aa2d80d510cef311b782",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/4V100/results/version/ranks/gpu-0.txt": "af485b2121cacb77fb458f6826bd446cc1741525ab83bc6ac3f46b8f01236c40",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/4V100/results/version/ranks/gpu-1.txt": "af485b2121cacb77fb458f6826bd446cc1741525ab83bc6ac3f46b8f01236c40",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/4V100/results/version/ranks/ldd-0.txt": "62da3372a8b36918b0ebe766d48ee846f21cc67b0a39bd0bec6a286806106df3",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/4V100/results/version/ranks/ldd-1.txt": "ba962203a1017f6da9b3575906f4dbc3d2406a4a4aeae256038ea14e4c94f7e6",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/4V100/slurm-1885341.log": "77895b67b296e762cbb891274c4b4f5ea230e1324e9bcc46e2f171d6b1268cbe"
+      },
+      "frozen_control_sha256": {
+        "30Sep2026-deepmd320-auto": "6c155ab067244d0c4903af4d56c0ad184d6df606c4065b3da659ad9ff2f93c19",
+        "install.py": "16ac266a86f91b1f3ec71d5fd5b4b4797e324b77284fa72c4fe02abfc2f31283",
+        "native-rank.sh": "11392c0d3a4f07ef0fd6d2ea24feba9f215f4cc1fc78bd6c568770c6aef2365b",
+        "native-reference.json": "e5f75411c7891cb4df63bb71410daa6f21e5c91b6ee7bb8f987b41e4e0880478",
+        "native_checks.py": "ce4a6e3b1f699d7c671e6ad712b17ee7b10f92f79cca58786b111ea1001e1209",
+        "release.json": "4ceddb23a4f9e6995375a9239af6d46c42982190aa18224672c9aeb659be3dd1",
+        "runtime-plan.json": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e",
+        "verify-native.sbatch": "424ce93c38d0554903073e6b341741e2721ac73be4835416aa381a16c8a404e4"
+      },
+      "gpu_probes": [
+        [
+          "Tesla V100-SXM2-32GB, 550.163.01"
+        ],
+        [
+          "Tesla V100-SXM2-32GB, 550.163.01"
+        ]
+      ],
+      "installations": [
+        {
+          "bytes": 162982782,
+          "files": 1030,
+          "group": "sai-partner",
+          "mode": "0o755",
+          "owner": "saiuser01",
+          "prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/4V100",
+          "software": "deepmd-kit"
+        },
+        {
+          "bytes": 1006920392,
+          "files": 340,
+          "group": "sai-partner",
+          "mode": "0o755",
+          "owner": "saiuser01",
+          "prefix": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/4V100",
+          "software": "lammps"
+        }
+      ],
+      "installed_file_readback_passed": true,
+      "job": "1885341",
+      "module_unload_passed": true,
+      "mpi_isa": "avx512",
+      "packages": 71,
+      "passed": true,
+      "raw_inventory_file_count": 164,
+      "raw_inventory_sha256": "5402ccf8af410ff280b18cae32e0c9912fd8d3a9a853a433253ca3fef120d5b9",
+      "scientific_cases": 17,
+      "styles": 2473
+    },
+    "8V100V0": {
+      "accounting": "1885343|8V100V0|COMPLETED|0:0|00:02:11|12|8v100v0n[02-03]",
+      "case_names": [
+        "coulomb-pppm-candidate-gpu-multi",
+        "coulomb-pppm-candidate-gpu-single",
+        "coulomb-pppm-candidate-kokkos-multi",
+        "coulomb-pppm-candidate-kokkos-single",
+        "deepmd-jax-multi",
+        "deepmd-jax-single",
+        "deepmd-pt-multi",
+        "deepmd-pt-single",
+        "deepmd-tf-multi",
+        "deepmd-tf-single",
+        "lj-candidate-gpu-multi",
+        "lj-candidate-gpu-single",
+        "lj-candidate-kokkos-multi",
+        "lj-candidate-kokkos-single",
+        "python-jax",
+        "python-pt",
+        "python-tf"
+      ],
+      "distinct_nodes": [
+        "8v100v0n02",
+        "8v100v0n03"
+      ],
+      "evidence_sha256": {
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/8V100V0/allocation.txt": "aa645b53a1aa454d366459bdacb2191584476dcbfcbc6bb9847402aca9080d94",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/8V100V0/binary.txt": "175ccb7fa6d1b333b8e36e16ff58436425c4b592b92ca69fb0e8fee2d42f24f7",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/8V100V0/module-unloaded.txt": "2b475304c06172002d26a81753870dc8fd5898b1e2da120c892ecb6098f55a97",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/8V100V0/modules.txt": "d6f9dbc80a4818c85de5dbd9260b404dbbdfc14a0979de00b956176fa8b4b291",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/8V100V0/mpi-version.txt": "dbefbbfa3051a687ec6d12c60decfadc9e432e1e88b88e634e861777f1367714",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/8V100V0/mpirun.txt": "0d0f01600bd10b9f9789d180bacc0bbfc3855116dd4ec61e642d45862e4848ca",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/8V100V0/native-acceptance.json": "5800f8cfe666518b95bbbe856d1df7d892237323a1c1bea40d7dea98d16749ef",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/8V100V0/nodes.txt": "ffdb9c6f74799fe1f27d39dc8aceaac9a6c6010639265b05ee23042a24085c6e",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/8V100V0/request.json": "a0c6f5468114baf7cfdfb7c96798620e44c622b2f79792e201b4252008feb48d",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/8V100V0/results/version/ranks/cpu-0.txt": "d9431c7310b1970e93fea3c7b0ebc386630db8a96452cc999a7c936be65ba141",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/8V100V0/results/version/ranks/cpu-1.txt": "d9431c7310b1970e93fea3c7b0ebc386630db8a96452cc999a7c936be65ba141",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/8V100V0/results/version/ranks/gpu-0.txt": "af485b2121cacb77fb458f6826bd446cc1741525ab83bc6ac3f46b8f01236c40",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/8V100V0/results/version/ranks/gpu-1.txt": "af485b2121cacb77fb458f6826bd446cc1741525ab83bc6ac3f46b8f01236c40",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/8V100V0/results/version/ranks/ldd-0.txt": "ac5a462dc619657871faf0304a444f8a775818f063793c0fe235098947b6d74c",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/8V100V0/results/version/ranks/ldd-1.txt": "33831fd084adc99e2b73b35e026801f624797b76e12d181ad182324bbeb23114",
+        "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/8V100V0/slurm-1885343.log": "69dc88ccdeaf0f24796a4de49c0801c0d659b20c19d353afd8eda51c83b204e2"
+      },
+      "frozen_control_sha256": {
+        "30Sep2026-deepmd320-auto": "6c155ab067244d0c4903af4d56c0ad184d6df606c4065b3da659ad9ff2f93c19",
+        "install.py": "16ac266a86f91b1f3ec71d5fd5b4b4797e324b77284fa72c4fe02abfc2f31283",
+        "native-rank.sh": "11392c0d3a4f07ef0fd6d2ea24feba9f215f4cc1fc78bd6c568770c6aef2365b",
+        "native-reference.json": "e5f75411c7891cb4df63bb71410daa6f21e5c91b6ee7bb8f987b41e4e0880478",
+        "native_checks.py": "ce4a6e3b1f699d7c671e6ad712b17ee7b10f92f79cca58786b111ea1001e1209",
+        "release.json": "4ceddb23a4f9e6995375a9239af6d46c42982190aa18224672c9aeb659be3dd1",
+        "runtime-plan.json": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e",
+        "verify-native.sbatch": "424ce93c38d0554903073e6b341741e2721ac73be4835416aa381a16c8a404e4"
+      },
+      "gpu_probes": [
+        [
+          "Tesla V100-SXM2-32GB, 550.163.01"
+        ],
+        [
+          "Tesla V100-SXM2-32GB, 550.163.01"
+        ]
+      ],
+      "installations": [
+        {
+          "bytes": 162679664,
+          "files": 1030,
+          "group": "sai-partner",
+          "mode": "0o755",
+          "owner": "saiuser01",
+          "prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0",
+          "software": "deepmd-kit"
+        },
+        {
+          "bytes": 1004932592,
+          "files": 340,
+          "group": "sai-partner",
+          "mode": "0o755",
+          "owner": "saiuser01",
+          "prefix": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0",
+          "software": "lammps"
+        }
+      ],
+      "installed_file_readback_passed": true,
+      "job": "1885343",
+      "module_unload_passed": true,
+      "mpi_isa": "avx2",
+      "packages": 71,
+      "passed": true,
+      "raw_inventory_file_count": 164,
+      "raw_inventory_sha256": "5800f8cfe666518b95bbbe856d1df7d892237323a1c1bea40d7dea98d16749ef",
+      "scientific_cases": 17,
+      "styles": 2473
+    }
+  },
+  "passed": true,
+  "physical_native": true,
+  "release_sha256": "4ceddb23a4f9e6995375a9239af6d46c42982190aa18224672c9aeb659be3dd1",
+  "result_directory": "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894",
+  "retained_submission_failure": {
+    "directory": "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023307-2252581",
+    "job_submitted": false,
+    "reason": "SAI GPU policy rejects explicit CPUsPerTask. Removed --cpus-per-task; CPUs now follow GPU count."
+  },
+  "revalidation_evidence_sha256": {
+    "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/installed-readback.log": "c3bcd6013b50c145a5504306173ce98c2828e297c6bb15b0fdb0b9b2dad39a63",
+    "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/jobs.tsv": "9685ac8110f9c718b84ec3c51448672607e540e3d399aae59dd9d4b46b32ce54",
+    "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/native-reverification.json": "b8f16e2747d0a5fb29ffec1c06dd0a9081170de824befd2b69bbb965c4e5fa24",
+    "/home/stardust/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-20261021-023421-2268894/submission.json": "9ceaa49e0ee22358ea2e8882b8eae2e5f8a14cf8a4e499462e618960d5fad195"
+  },
+  "runtime_plan_sha256": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e",
+  "schema": 1,
+  "scope": "Physical /opt LAMMPS/DeePMD GPU installation; single/two-node numerical correctness; no throughput claim",
+  "source_control_sha256": {
+    "install.py": "16ac266a86f91b1f3ec71d5fd5b4b4797e324b77284fa72c4fe02abfc2f31283",
+    "native-rank.sh": "11392c0d3a4f07ef0fd6d2ea24feba9f215f4cc1fc78bd6c568770c6aef2365b",
+    "native_checks.py": "ce4a6e3b1f699d7c671e6ad712b17ee7b10f92f79cca58786b111ea1001e1209",
+    "verify-native.sbatch": "424ce93c38d0554903073e6b341741e2721ac73be4835416aa381a16c8a404e4"
+  },
+  "validation_account": "stardust"
+}

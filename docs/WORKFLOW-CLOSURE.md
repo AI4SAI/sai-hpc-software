@@ -19,8 +19,13 @@ the home tree. Its public module is standalone. The cross-account read/traverse
 gap reported by `saiuser01` is repaired with targeted ACLs; effective source
 and target access is audited in the
 [runtime deployment evidence](evidence/lammps-release-20261020/runtime-deployment-preflight.json).
-`/opt` copying
-and these native calculations are still pending user execution. The live
+The administrator's physical `/opt` installation is now accepted on all three
+partitions. Native jobs `1885341`/`1885342`/`1885343` passed 17 scientific
+cases each, full feature/loader/placement checks and module unload, with
+`COMPLETED / 0:0`. Independent raw-result revalidation and post-run installed
+file readback also passed; [physical native evidence](evidence/lammps-release-20261020/physical-native-acceptance.json)
+pins the frozen inputs, results and accounting. The native batch script now
+lets site policy derive CPU allocation from GPU count. The live
 daily dispatcher still runs the old MD feature branch; its release history
 check rejects newer recovery identities, while its development build fails
 CUDA configuration. The stable restart uses the integrated controller,

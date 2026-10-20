@@ -17,21 +17,25 @@ delivery scope; manifests explicitly record `performance_scope="gpu"` and
 
 [Final delivery evidence](evidence/lammps-release-20261020/final-delivery.json)
 pins the SIFs, publication receipts, raw acceptance summaries, native export
-readback and public-module jobs. Physical `/opt` installation is prepared and
-preflighted, but has not been executed. The production daily scheduler and
+readback and public-module jobs. The administrator has now installed all six
+standard runtime trees and the public native module. Independent
+[physical native acceptance](evidence/lammps-release-20261020/physical-native-acceptance.json)
+passed on all three GPU partitions: exact installed bytes/modes/links, version,
+71 packages/2,473 styles, loader/MPI ISA, 17 numerical cases per partition,
+two-node placement and module unload. The production daily scheduler and
 development builds remain separate outstanding work.
 
-| Partition | Two-node science | GPU performance | Public-module execution | Published |
+| Partition | Two-node container science | GPU performance | Container module | Physical native acceptance |
 | --- | --- | --- | --- | --- |
-| 4V100 | `1882873`, pass | `1883013`, pass | `1884195`, pass | Yes |
-| 16V100 | `1882874`, pass | `1882993`, pass | `1884196`, pass | Yes |
-| 8V100V0 | `1883145`, pass | `1883197`, pass | `1884197`, pass | Yes |
+| 4V100 | `1882873`, pass | `1883013`, pass | `1884195`, pass | `1885341`, pass (48 s) |
+| 16V100 | `1882874`, pass | `1882993`, pass | `1884196`, pass | `1885342`, pass (1m44s) |
+| 8V100V0 | `1883145`, pass | `1883197`, pass | `1884197`, pass | `1885343`, pass (2m11s) |
 
 Load inside an allocation on one of these three partitions:
 
 ```bash
-module use /home/stardust/sai-hpc-software/deployment/lammps-30Sep2026/modulefiles
-module load lammps/30Sep2026-deepmd320-gpu
+module use /opt/modules/modulefiles/apps
+module load lammps/30Sep2026-deepmd320-auto
 lmp -h
 ```
 
@@ -52,8 +56,9 @@ After installation,
 job per GPU partition. Each job directly runs physical executables, checks
 version/full features/loader/rank placement and 17 scientific cases covering
 TF/PT/JAX, PLUMED and GPU/Kokkos LJ/PPPM. `native_checks.py verify RESULTS`
-reparses raw results and requires successful Slurm completion. These scripts
-are prepared; physical native calculation success is not yet claimed.
+reparses raw results and requires successful Slurm completion. The physical
+jobs above and independent raw-result revalidation all passed. Timings in
+the table are validation wall times, not application throughput measurements.
 [Script preflight evidence](evidence/lammps-release-20261020/native-script-preflight.json)
 records all six source-tree checks, frozen-input/model checks, actual accepted
 help parsing and 16 passing deployment tests on the cluster home filesystem.
@@ -69,8 +74,14 @@ to the three target parent directories; this is not impersonated execution.
 Frozen export modes and all compiled payload bytes remain unchanged.
 [Runtime deployment evidence](evidence/lammps-release-20261020/runtime-deployment-preflight.json)
 records the selected inventory, ACL correction, module environment comparison,
-input snapshot verification and installer regression checks. Physical install
-and native science still await the administrator's execution.
+input snapshot verification and installer regression checks. The subsequent
+physical run used `stardust` to verify the `saiuser01` installation. The first
+submission was rejected because site policy forbids explicit CPUsPerTask for
+GPU jobs; the corrected script lets the site assign CPUs from GPU count.
+The failed frozen submission is retained. All three corrected jobs finished
+`COMPLETED / 0:0`, and post-run readback confirmed the installed files still
+match the standard runtime inventory. All tests, results and scratch remain
+under home storage.
 
 The current implementation builds both programs in one Apptainer overlay,
 then exports a SIF and runs separate scientific, performance and publication

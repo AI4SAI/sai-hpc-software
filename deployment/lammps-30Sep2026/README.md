@@ -6,6 +6,13 @@ MPI/OpenMP、PLUMED 2.10.1，以及 TF/PT/JAX 后端。
 站点 PyTorch 后端使用 CUDA；TF/JAX 继续保留其数值正确性验收。
 性能验收范围是 PyTorch GPU，不包含纯 CPU 性能比较。
 
+2026-10-21：`saiuser01` 已完成六个标准运行目录及公用 module 的物理安装。
+`stardust` 独立复核全部安装文件，并完成三分区原生 GPU 验收：
+4V100 `1885341`、16V100 `1885342`、8V100V0 `1885343` 均为 `COMPLETED / 0:0`。
+每分区 17 项科学检查、完整功能清单、动态库/MPI 路径及 module 卸载均通过，
+原始结果复验和运行后安装文件校验也通过。
+详见 [物理安装验收记录](../../docs/evidence/lammps-release-20261020/physical-native-acceptance.json)。
+
 服务器准备目录：
 
 ```text
@@ -67,8 +74,7 @@ bash /home/stardust/sai-hpc-software/deployment/lammps-30Sep2026/install.sh --in
 /opt/modules/modulefiles/apps/lammps/30Sep2026-deepmd320-auto
 ```
 
-本次只准备材料和执行预检，尚未写入物理 `/opt`。
-安装后的字节校验：
+管理员已完成本次物理安装。需要复核安装文件时执行：
 
 ```bash
 bash /home/stardust/sai-hpc-software/deployment/lammps-30Sep2026/install.sh --verify
@@ -133,8 +139,8 @@ python3 native_checks.py preflight all
 python3 source-access.py --account saiuser01 --report "$HOME/lammps-source-access.json"
 ```
 
-失败日志、暂存目录和原始产物全部保留。此交付已完成脚本测试和只读预检；
-真实物理安装及其科学验收仍需按上述顺序执行。
+失败日志、暂存目录和原始产物全部保留。此交付已通过物理安装后的科学验收，
+上述命令可用于后续复核。验收用时反映小型正确性检查，不代表生产体系性能。
 
 验收通过后，在对应分区的 Slurm allocation 内使用：
 
