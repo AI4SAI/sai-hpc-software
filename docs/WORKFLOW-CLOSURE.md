@@ -20,6 +20,14 @@ and `1.60e-11 Ha/Bohr`. Original data remain complete (280 files and two links
 per partition); no application container is used for native execution.
 [Physical installation acceptance and raw evidence hashes](evidence/cp2k-install-layout-20261018/physical-native-acceptance.json).
 
+The new shared-ELPA recipe `aed7aa53ff43` has now also completed all four
+application builds, 56 single/two-node scientific calculations, native export
+readback and publication in the user delivery tree. Its new physical `/opt`
+installation is still pending. The 216-water tuning experiment completed on
+4V100: direct cuSOLVERMp reduced median total time from 123.823 to 111.638 s
+(9.84%); the 16V100 and 8V100V0 experiments are still running as of 14:47
+Asia/Shanghai. [Accepted shared-ELPA release and tuning evidence](evidence/cp2k-shared-elpa-release-20261020/README.md).
+
 Cross-account deployment now grants `saiuser01` read/traverse ACLs only on the
 blocked release/reference paths, with no added write access. The 2,415 required
 paths passed effective POSIX ACL checks; native checks write results, caches and
@@ -80,15 +88,18 @@ scientific references and inputs still match their pinned hashes.
   was installed by the administrator. Public-module native jobs `1869223`–`1869226`
   then passed on all four partitions: 460 numerical solves, zero remaining GPU
   communicators and successful GCC 14.3 Fortran probes. The CP2K dependency lock
-  now pins the new GPU libraries and back-transformation patch. New-identity
-  CP2K compilation/science remains required; the old GPU deliveries
-  remain failed and 216-water tuning has not started.
+  now pins the new GPU libraries and back-transformation patch. The old GPU
+  deliveries remain failed; the fresh identity has now passed its own science.
   [Physical ELPA acceptance](evidence/elpa-backtransform-native-20261020/README.md).
   Fresh [workflow 39365139034](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39365139034)
   passed 840 tests (838 passed, two skipped) and submitted recipe `aed7aa53ff43`:
   dependency jobs `1869397` (16V100), `1869396` (4V100), `1869360` (8V100V0)
-  and `1869407` (DSPRHBM) were all observed running. Its frozen watcher waits for
-  new science acceptance before starting the 216-water comparisons.
+  and `1869407` (DSPRHBM) all completed, followed by application jobs `1870431`,
+  `1869890`, `1870216` and `1870183`. Science jobs `1870898`, `1870420`,
+  `1871559` and `1870992` passed all 56 calculations. All four deliveries have
+  verified native exports. Its frozen watcher then submitted the 216-water
+  comparisons; 4V100 completed and the other GPU partitions remain in progress.
+  [New release acceptance and first tuning results](evidence/cp2k-shared-elpa-release-20261020/README.md).
   The final integration
   archive contains 2,156 independently hash-verified files. Linux CI at
   `0e0ed1c` passed 840 tests (838 passed, two optional skips).

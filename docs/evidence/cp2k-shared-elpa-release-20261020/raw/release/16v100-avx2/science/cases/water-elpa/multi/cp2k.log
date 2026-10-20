@@ -1,0 +1,1802 @@
+--------------------------------------------------------------------------
+PRTE has detected that the head of the session directory tree (where
+scratch files and shared memory backing storage will be placed)
+resides on a shared file system:
+
+   Directory: /home/stardust/sai-hpc-software/runtime/cs-2d1307456f51
+   File system type: lustre
+
+For performance reasons, it is strongly recommended that the session
+directory be located on a local file system. This can be controlled by
+setting the system temporary directory to be used by PRTE using either
+the TMPDIR envar or the "prte_tmpdir_base" MCA param.
+
+If you need the temporary directory to be different on remote nodes
+from the local one where prterun is running (e.g., when a login node is
+being employed), then you can set the local temporary directory using
+the "prte_local_tmpdir_base" MCA param and the one to be used on all
+other nodes using the "prte_remote_tmpdir_base" param.
+
+This is only a warning advisory and your job will continue. You can
+disable this warning in the future by setting the
+"prte_silence_shared_fs" MCA param to "1".
+--------------------------------------------------------------------------
+[16v100n73.mr-sai.ai:3844752] Rank 0 bound to package[0][core:L0-3]
+[16v100n76.mr-sai.ai:2456041] Rank 1 bound to package[0][core:L0-3]
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+ DBCSR| CPU Multiplication driver                                           XSMM (U)
+ DBCSR| Multrec recursion limit                                              512 (U)
+ DBCSR| Multiplication stack size                                          30000 (D)
+ DBCSR| Maximum elements for images                                    UNLIMITED (U)
+ DBCSR| Multiplicative factor virtual images                                   1 (U)
+ DBCSR| Use multiplication densification                                       F (D)
+ DBCSR| Multiplication size stacks                                             3 (U)
+ DBCSR| Use memory pool for CPU allocation                                     F (U)
+ DBCSR| Number of 3D layers                                               SINGLE (U)
+ DBCSR| Use MPI memory allocation                                              F (U)
+ DBCSR| Use RMA algorithm                                                      F (U)
+ DBCSR| Use Communication thread                                               T (U)
+ DBCSR| Communication thread load                                             87 (D)
+ DBCSR| MPI: My process id                                                     0
+ DBCSR| MPI: Number of processes                                               2
+ DBCSR| OMP: Current number of threads                                         1
+ DBCSR| OMP: Max number of threads                                             1
+ DBCSR| ACC: Number of devices/node                                            1
+ DBCSR| ACC: Number of stack-buffers per thread                                8 (U)
+ DBCSR| ACC: Avoid driver after busy                                           F (U)
+ DBCSR| ACC: Process inhomogeneous stacks                                      T (U)
+ DBCSR| ACC: Min. flop for processing                                          0 (U)
+ DBCSR| ACC: Use G2G algorithm                                                 F (D)
+ DBCSR| ACC: Min. flop for sorting                                          4000 (U)
+ DBCSR| ACC: Number of binning bins                                         4096 (U)
+ DBCSR| ACC: Size of binning bins                                             16 (U)
+ DBCSR| ACC: GPU backend is enabled                                            T (D)
+ DBCSR| Split modifier for TAS multiplication algorithm                  1.0E+00 (U)
+
+
+  **** **** ******  **  PROGRAM STARTED AT               2026-10-20 05:38:43.275
+ ***** ** ***  *** **   PROGRAM STARTED ON                   16v100n73.mr-sai.ai
+ **    ****   ******    PROGRAM STARTED BY                             <unknown>
+ ***** **    ** ** **   PROGRAM PROCESS ID                               3844826
+  **** **  *******  **  PROGRAM STARTED IN                                 /work
+
+ CP2K| version string:                                       CP2K version 2026.2
+ CP2K| source code revision number:                                   67b5da876d
+ CP2K| cp2kflags: omp libint fftw3 libxc elpa parallel scalapack mpi_f08 cosma l
+ CP2K|            ibxs libxsmm dbcsr_acc plumed2 spglib libdftd4 dftd4_v4_2 s_df
+ CP2K|            ftd3 mctc-lib tblite libvori libbqb offload_cuda spla_gemm_off
+ CP2K|            floading cusolvermp cusolvermp_nccl hdf5
+ CP2K| is freely available from                            https://www.cp2k.org/
+ CP2K| Program compiled at                                   2026-10-20 05:17:48
+ CP2K| Program compiled on                                                      
+ CP2K| Program compiled for                                               x86_64
+ CP2K| Data directory path    /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-
+ CP2K| Input file name                                                 input.inp
+
+ GLOBAL| Force Environment number                                              1
+ GLOBAL| Basis set file name                                        BASIS_MOLOPT
+ GLOBAL| Potential file name                                      GTH_POTENTIALS
+ GLOBAL| MM Potential file name                                     MM_POTENTIAL
+ GLOBAL| Coordinate file name                                      __STD_INPUT__
+ GLOBAL| Method name                                                        CP2K
+ GLOBAL| Project name                                                  benchmark
+ GLOBAL| Run type                                                   ENERGY_FORCE
+ GLOBAL| FFT library                                                       FFTW3
+ GLOBAL| Diagonalization library                                            ELPA
+ GLOBAL| Cholesky decomposition library                                ScaLAPACK
+ GLOBAL| DGEMM library                                                      SPLA
+ GLOBAL| Minimum number of eigenvectors for ELPA usage                         1
+ GLOBAL| Orthonormality check for eigenvectors                          DISABLED
+ GLOBAL| Matrix multiplication library                                     COSMA
+ GLOBAL| All-to-all communication in single precision                          F
+ GLOBAL| FFTs using library dependent lengths                                  F
+ GLOBAL| Grid backend                                                       AUTO
+ GLOBAL| Global print level                                               MEDIUM
+ GLOBAL| MPI I/O enabled                                                       T
+ GLOBAL| Total number of message passing processes                             2
+ GLOBAL| Number of distributed systems (nodes)                                 2
+ GLOBAL| Number of threads for this process                                    1
+ GLOBAL| This output is from process                                           0
+ GLOBAL| OpenMP stack size per thread (OMP_STACKSIZE)                    default
+ GLOBAL| CPU model name               AMD Ryzen Threadripper PRO 5995WX 64-Cores
+ GLOBAL| CPUID                                                              1002
+
+ MEMORY| system memory details [Kb]
+ MEMORY|                        rank 0           min           max       average
+ MEMORY| MemTotal            263883340     263883324     263883340     263883332
+ MEMORY| MemFree             224414092     224414092     249602332     237008212
+ MEMORY| Buffers                438664        438664        509164        473914
+ MEMORY| Cached                3594652       1917160       3594652       2755906
+ MEMORY| Slab                  8147004       2305792       8147004       5226398
+ MEMORY| SReclaimable           531776        385224        531776        458500
+ MEMORY| MemLikelyFree       228979184     228979184     252413880     240696532
+
+
+ *** Fundamental physical constants (SI units) ***
+
+ *** Literature: B. J. Mohr and B. N. Taylor,
+ ***             CODATA recommended values of the fundamental physical
+ ***             constants: 2006, Web Version 5.1
+ ***             http://physics.nist.gov/constants
+
+ Speed of light in vacuum [m/s]                             2.99792458000000E+08
+ Magnetic constant or permeability of vacuum [N/A**2]       1.25663706143592E-06
+ Electric constant or permittivity of vacuum [F/m]          8.85418781762039E-12
+ Planck constant (h) [J*s]                                  6.62606896000000E-34
+ Planck constant (h-bar) [J*s]                              1.05457162825177E-34
+ Elementary charge [C]                                      1.60217648700000E-19
+ Electron mass [kg]                                         9.10938215000000E-31
+ Electron g factor [ ]                                     -2.00231930436220E+00
+ Proton mass [kg]                                           1.67262163700000E-27
+ Fine-structure constant                                    7.29735253760000E-03
+ Rydberg constant [1/m]                                     1.09737315685270E+07
+ Avogadro constant [1/mol]                                  6.02214179000000E+23
+ Boltzmann constant [J/K]                                   1.38065040000000E-23
+ Atomic mass unit [kg]                                      1.66053878200000E-27
+ Bohr radius [m]                                            5.29177208590000E-11
+
+ *** Conversion factors ***
+
+ [u] -> [a.u.]                                              1.82288848426455E+03
+ [Angstrom] -> [Bohr] = [a.u.]                              1.88972613288564E+00
+ [a.u.] = [Bohr] -> [Angstrom]                              5.29177208590000E-01
+ [a.u.] -> [s]                                              2.41888432650478E-17
+ [a.u.] -> [fs]                                             2.41888432650478E-02
+ [a.u.] -> [J]                                              4.35974393937059E-18
+ [a.u.] -> [N]                                              8.23872205491840E-08
+ [a.u.] -> [K]                                              3.15774647902944E+05
+ [a.u.] -> [kJ/mol]                                         2.62549961709828E+03
+ [a.u.] -> [kcal/mol]                                       6.27509468713739E+02
+ [a.u.] -> [Pa]                                             2.94210107994716E+13
+ [a.u.] -> [bar]                                            2.94210107994716E+08
+ [a.u.] -> [atm]                                            2.90362800883016E+08
+ [a.u.] -> [eV]                                             2.72113838565563E+01
+ [a.u.] -> [Hz]                                             6.57968392072181E+15
+ [a.u.] -> [1/cm] (wave numbers)                            2.19474631370540E+05
+ [a.u./Bohr**2] -> [1/cm]                                   5.14048714338585E+03
+ 
+
+ CELL| Volume [angstrom^3]:                                          1728.000000
+ CELL| Vector a [angstrom]:      12.000     0.000     0.000   |a| =    12.000000
+ CELL| Vector b [angstrom]:       0.000    12.000     0.000   |b| =    12.000000
+ CELL| Vector c [angstrom]:       0.000     0.000    12.000   |c| =    12.000000
+ CELL| Angle (b,c), alpha [degree]:                                    90.000000
+ CELL| Angle (a,c), beta  [degree]:                                    90.000000
+ CELL| Angle (a,b), gamma [degree]:                                    90.000000
+ CELL| Numerically orthorhombic:                                             YES
+ CELL| Periodicity                                                          NONE
+
+ CELL_REF| Volume [angstrom^3]:                                      1728.000000
+ CELL_REF| Vector a [angstrom    12.000     0.000     0.000   |a| =    12.000000
+ CELL_REF| Vector b [angstrom     0.000    12.000     0.000   |b| =    12.000000
+ CELL_REF| Vector c [angstrom     0.000     0.000    12.000   |c| =    12.000000
+ CELL_REF| Angle (b,c), alpha [degree]:                                90.000000
+ CELL_REF| Angle (a,c), beta  [degree]:                                90.000000
+ CELL_REF| Angle (a,b), gamma [degree]:                                90.000000
+ CELL_REF| Numerically orthorhombic:                                         YES
+ CELL_REF| Periodicity                                                      NONE
+
+ GENERATE|  Preliminary Number of Bonds generated:                             0
+ GENERATE|  Achieved consistency in connectivity generation.
+
+ *******************************************************************************
+ *******************************************************************************
+ **                                                                           **
+ **     #####                         ##              ##                      **
+ **    ##   ##            ##          ##              ##                      **
+ **   ##     ##                       ##            ######                    **
+ **   ##     ##  ##   ##  ##   #####  ##  ##   ####   ##    #####    #####    **
+ **   ##     ##  ##   ##  ##  ##      ## ##   ##      ##   ##   ##  ##   ##   **
+ **   ##  ## ##  ##   ##  ##  ##      ####     ###    ##   ######   ######    **
+ **    ##  ###   ##   ##  ##  ##      ## ##      ##   ##   ##       ##        **
+ **     #######   #####   ##   #####  ##  ##  ####    ##    #####   ##        **
+ **           ##                                                    ##        **
+ **                                                                           **
+ **                                                ... make the atoms dance   **
+ **                                                                           **
+ **            Copyright (C) by CP2K developers group (2000-2026)             **
+ **                      J. Chem. Phys. 152, 194103 (2020)                    **
+ **                                                                           **
+ *******************************************************************************
+
+ DFT| Spin restricted Kohn-Sham (RKS) calculation                            RKS
+ DFT| Multiplicity                                                             1
+ DFT| Number of spin states                                                    1
+ DFT| Charge                                                                   0
+ DFT| Self-interaction correction (SIC)                                       NO
+ DFT| Cutoffs: density                                              1.000000E-10
+ DFT|          gradient                                             1.000000E-10
+ DFT|          tau                                                  1.000000E-10
+ DFT|          cutoff_smoothing_range                               0.000000E+00
+ DFT| XC density smoothing                                                  NONE
+ DFT| XC derivatives                                                          PW
+
+ FUNCTIONAL| PBE:
+ FUNCTIONAL| J.P.Perdew, K.Burke, M.Ernzerhof, Phys. Rev. Letter, vol. 77, n 18,
+ FUNCTIONAL|  pp. 3865-3868, (1996) {spin unpolarized}                          
+
+
+ QS| Method:                                                                 GPW
+ QS| Density plane wave grid type                        NON-SPHERICAL FULLSPACE
+ QS| Number of grid levels:                                                    4
+ QS| Density cutoff [a.u.]:                                                150.0
+ QS| Multi grid cutoff [a.u.]: 1) grid level                               150.0
+ QS|                           2) grid level                                50.0
+ QS|                           3) grid level                                16.7
+ QS|                           4) grid level                                 5.6
+ QS| Grid level progression factor:                                          3.0
+ QS| Relative density cutoff [a.u.]:                                        20.0
+ QS| Interaction thresholds: eps_pgf_orb:                                1.0E-06
+ QS|                         eps_filter_matrix:                          0.0E+00
+ QS|                         eps_core_charge:                            1.0E-14
+ QS|                         eps_rho_gspace:                             1.0E-12
+ QS|                         eps_rho_rspace:                             1.0E-12
+ QS|                         eps_gvg_rspace:                             1.0E-06
+ QS|                         eps_ppl:                                    1.0E-02
+ QS|                         eps_ppnl:                                   1.0E-08
+
+
+ ATOMIC KIND INFORMATION
+
+  1. Atomic kind: O                                     Number of atoms:       2
+
+     Orbital Basis Set                                        DZVP-MOLOPT-SR-GTH
+
+       Number of orbital shell sets:                                           1
+       Number of orbital shells:                                               5
+       Number of primitive Cartesian functions:                                5
+       Number of Cartesian basis functions:                                   14
+       Number of spherical basis functions:                                   13
+       Norm type:                                                              2
+
+       Normalised Cartesian orbitals:
+
+                        Set   Shell   Orbital            Exponent    Coefficient
+
+                          1       1    2s               10.389228       0.396646
+                                                         3.849621       0.208811
+                                                         1.388401      -0.301641
+                                                         0.496955      -0.274061
+                                                         0.162492      -0.033677
+
+                          1       2    3s               10.389228       0.303673
+                                                         3.849621       0.240943
+                                                         1.388401      -0.313066
+                                                         0.496955      -0.043055
+                                                         0.162492       0.213991
+
+                          1       3    3px              10.389228      -1.530415
+                                                         3.849621      -1.371928
+                                                         1.388401      -0.761951
+                                                         0.496955      -0.253695
+                                                         0.162492      -0.035541
+                          1       3    3py              10.389228      -1.530415
+                                                         3.849621      -1.371928
+                                                         1.388401      -0.761951
+                                                         0.496955      -0.253695
+                                                         0.162492      -0.035541
+                          1       3    3pz              10.389228      -1.530415
+                                                         3.849621      -1.371928
+                                                         1.388401      -0.761951
+                                                         0.496955      -0.253695
+                                                         0.162492      -0.035541
+
+                          1       4    4px              10.389228      -0.565392
+                                                         3.849621      -0.038231
+                                                         1.388401      -0.382373
+                                                         0.496955       0.179070
+                                                         0.162492       0.122714
+                          1       4    4py              10.389228      -0.565392
+                                                         3.849621      -0.038231
+                                                         1.388401      -0.382373
+                                                         0.496955       0.179070
+                                                         0.162492       0.122714
+                          1       4    4pz              10.389228      -0.565392
+                                                         3.849621      -0.038231
+                                                         1.388401      -0.382373
+                                                         0.496955       0.179070
+                                                         0.162492       0.122714
+
+                          1       5    4dx2             10.389228       1.867377
+                                                         3.849621       0.670994
+                                                         1.388401       1.353441
+                                                         0.496955       0.273538
+                                                         0.162492       0.006620
+                          1       5    4dxy             10.389228       3.234392
+                                                         3.849621       1.162195
+                                                         1.388401       2.344229
+                                                         0.496955       0.473781
+                                                         0.162492       0.011466
+                          1       5    4dxz             10.389228       3.234392
+                                                         3.849621       1.162195
+                                                         1.388401       2.344229
+                                                         0.496955       0.473781
+                                                         0.162492       0.011466
+                          1       5    4dy2             10.389228       1.867377
+                                                         3.849621       0.670994
+                                                         1.388401       1.353441
+                                                         0.496955       0.273538
+                                                         0.162492       0.006620
+                          1       5    4dyz             10.389228       3.234392
+                                                         3.849621       1.162195
+                                                         1.388401       2.344229
+                                                         0.496955       0.473781
+                                                         0.162492       0.011466
+                          1       5    4dz2             10.389228       1.867377
+                                                         3.849621       0.670994
+                                                         1.388401       1.353441
+                                                         0.496955       0.273538
+                                                         0.162492       0.006620
+
+       Atomic covalent radius [Angstrom]:                                  0.730
+
+       Atomic van der Waals radius [Angstrom]:                             1.520
+
+     GTH Potential information for                                    GTH-PBE-q6
+
+       Description:                       Goedecker-Teter-Hutter pseudopotential
+                                           Goedecker et al., PRB 54, 1703 (1996)
+                                          Hartwigsen et al., PRB 58, 3641 (1998)
+                                                      Krack, TCA 114, 145 (2005)
+
+       Gaussian exponent of the core charge distribution:               8.360253
+       Electronic configuration (s p d ...):                               2   4
+
+       Parameters of the local part of the GTH pseudopotential:
+
+                          rloc        C1          C2          C3          C4
+                        0.244554  -16.667215    2.487311
+
+       Parameters of the non-local part of the GTH pseudopotential:
+
+                   l      r(l)      h(i,j,l)
+
+                   0    0.220956   18.337458
+                   1    0.211332
+
+  2. Atomic kind: H                                     Number of atoms:       4
+
+     Orbital Basis Set                                        DZVP-MOLOPT-SR-GTH
+
+       Number of orbital shell sets:                                           1
+       Number of orbital shells:                                               3
+       Number of primitive Cartesian functions:                                5
+       Number of Cartesian basis functions:                                    5
+       Number of spherical basis functions:                                    5
+       Norm type:                                                              2
+
+       Normalised Cartesian orbitals:
+
+                        Set   Shell   Orbital            Exponent    Coefficient
+
+                          1       1    2s               10.068468      -0.133023
+                                                         2.680223      -0.177618
+                                                         0.791502      -0.258419
+                                                         0.239116      -0.107525
+                                                         0.082193      -0.014019
+
+                          1       2    3s               10.068468       0.344673
+                                                         2.680223       1.819821
+                                                         0.791502      -0.999069
+                                                         0.239116       0.017430
+                                                         0.082193       0.082660
+
+                          1       3    3px              10.068468       0.155326
+                                                         2.680223       0.367157
+                                                         0.791502       0.311480
+                                                         0.239116       0.080105
+                                                         0.082193       0.033440
+                          1       3    3py              10.068468       0.155326
+                                                         2.680223       0.367157
+                                                         0.791502       0.311480
+                                                         0.239116       0.080105
+                                                         0.082193       0.033440
+                          1       3    3pz              10.068468       0.155326
+                                                         2.680223       0.367157
+                                                         0.791502       0.311480
+                                                         0.239116       0.080105
+                                                         0.082193       0.033440
+
+       Atomic covalent radius [Angstrom]:                                  0.320
+
+       Atomic van der Waals radius [Angstrom]:                             1.090
+
+     GTH Potential information for                                    GTH-PBE-q1
+
+       Description:                       Goedecker-Teter-Hutter pseudopotential
+                                           Goedecker et al., PRB 54, 1703 (1996)
+                                          Hartwigsen et al., PRB 58, 3641 (1998)
+                                                      Krack, TCA 114, 145 (2005)
+
+       Gaussian exponent of the core charge distribution:              12.500000
+       Electronic configuration (s p d ...):                                   1
+
+       Parameters of the local part of the GTH pseudopotential:
+
+                          rloc        C1          C2          C3          C4
+                        0.200000   -4.178900    0.724463
+
+
+ MOLECULE KIND INFORMATION
+
+
+ All atoms are their own molecule, skipping detailed information
+
+
+ TOTAL NUMBERS AND MAXIMUM NUMBERS
+
+  Total number of            - Atomic kinds:                                   2
+                             - Atoms:                                          6
+                             - Shell sets:                                     6
+                             - Shells:                                        22
+                             - Primitive Cartesian functions:                 30
+                             - Cartesian basis functions:                     48
+                             - Spherical basis functions:                     46
+
+  Maximum angular momentum of- Orbital basis functions:                        2
+                             - Local part of the GTH pseudopotential:          2
+                             - Non-local part of the GTH pseudopotential:      0
+
+
+ MODULE QUICKSTEP: ATOMIC COORDINATES IN ANGSTROM
+
+   Atom Kind Element         X             Y             Z       Z(eff)     Mass
+      1    1 O     8     -1.609754     -0.128135      0.000003   6.0000  15.9994
+      2    1 O     8      1.284198      0.134594      0.000001   6.0000  15.9994
+      3    2 H     1     -0.657653      0.042499     -0.000003   1.0000   1.0079
+      4    2 H     1     -2.031449      0.732500     -0.000001   1.0000   1.0079
+      5    2 H     1      1.507328     -0.390728     -0.770157   1.0000   1.0079
+      6    2 H     1      1.507330     -0.390730      0.770157   1.0000   1.0079
+
+
+
+ SCF PARAMETERS         Density guess:                                    ATOMIC
+                        --------------------------------------------------------
+                        max_scf:                                             100
+                        max_scf_history:                                       0
+                        max_diis:                                              4
+                        --------------------------------------------------------
+                        eps_scf:                                        1.00E-09
+                        eps_scf_history:                                0.00E+00
+                        eps_diis:                                       1.00E-01
+                        eps_eigval:                                     1.00E-05
+                        --------------------------------------------------------
+                        level_shift [a.u.]:                             0.000000
+                        --------------------------------------------------------
+                        Mixing method:                           DIRECT_P_MIXING
+                        --------------------------------------------------------
+                        Outer loop SCF in use 
+                        No variables optimised in outer loop
+                        eps_scf                                         1.00E-09
+                        max_scf                                               10
+                        No outer loop optimization
+                        step_size                                       5.00E-01
+
+ PW_GRID| Information for grid number                                          1
+ PW_GRID| Grid distributed over                                     2 processors
+ PW_GRID| Real space group dimensions                                     2    1
+ PW_GRID| the grid is blocked:                                                NO
+ PW_GRID| Cutoff [a.u.]                                                    300.0
+ PW_GRID| spherical cutoff:                                                   NO
+ PW_GRID|   Bounds   1            -90      89                Points:         180
+ PW_GRID|   Bounds   2            -90      89                Points:         180
+ PW_GRID|   Bounds   3            -90      89                Points:         180
+ PW_GRID| Volume element (a.u.^3)  0.2000E-02     Volume (a.u.^3)     11661.1222
+ PW_GRID| Grid span                                                    FULLSPACE
+ PW_GRID|   Distribution                         Average         Max         Min
+ PW_GRID|   G-Vectors                          2916000.0     2916000     2916000
+ PW_GRID|   G-Rays                               16200.0       16200       16200
+ PW_GRID|   Real Space Points                  2916000.0     2916000     2916000
+
+ PW_GRID| Information for grid number                                          2
+ PW_GRID| Number of the reference grid                                         1
+ PW_GRID| Grid distributed over                                     2 processors
+ PW_GRID| Real space group dimensions                                     2    1
+ PW_GRID| the grid is blocked:                                                NO
+ PW_GRID| Cutoff [a.u.]                                                    150.0
+ PW_GRID| spherical cutoff:                                                   NO
+ PW_GRID|   Bounds   1            -62      62                Points:         125
+ PW_GRID|   Bounds   2            -62      62                Points:         125
+ PW_GRID|   Bounds   3            -62      62                Points:         125
+ PW_GRID| Volume element (a.u.^3)  0.5970E-02     Volume (a.u.^3)     11661.1222
+ PW_GRID| Grid span                                                    FULLSPACE
+ PW_GRID|   Distribution                         Average         Max         Min
+ PW_GRID|   G-Vectors                           976562.5      976625      976500
+ PW_GRID|   G-Rays                                7812.5        7813        7812
+ PW_GRID|   Real Space Points                   976562.5      984375      968750
+
+ PW_GRID| Information for grid number                                          3
+ PW_GRID| Number of the reference grid                                         2
+ PW_GRID| Grid distributed over                                     2 processors
+ PW_GRID| Real space group dimensions                                     2    1
+ PW_GRID| the grid is blocked:                                                NO
+ PW_GRID| Cutoff [a.u.]                                                     50.0
+ PW_GRID| spherical cutoff:                                                   NO
+ PW_GRID|   Bounds   1            -37      37                Points:          75
+ PW_GRID|   Bounds   2            -37      37                Points:          75
+ PW_GRID|   Bounds   3            -37      37                Points:          75
+ PW_GRID| Volume element (a.u.^3)  0.2764E-01     Volume (a.u.^3)     11661.1222
+ PW_GRID| Grid span                                                    FULLSPACE
+ PW_GRID|   Distribution                         Average         Max         Min
+ PW_GRID|   G-Vectors                           210937.5      210975      210900
+ PW_GRID|   G-Rays                                2812.5        2813        2812
+ PW_GRID|   Real Space Points                   210937.5      213750      208125
+
+ PW_GRID| Information for grid number                                          4
+ PW_GRID| Number of the reference grid                                         2
+ PW_GRID| Grid distributed over                                     2 processors
+ PW_GRID| Real space group dimensions                                     2    1
+ PW_GRID| the grid is blocked:                                                NO
+ PW_GRID| Cutoff [a.u.]                                                     16.7
+ PW_GRID| spherical cutoff:                                                   NO
+ PW_GRID|   Bounds   1            -22      22                Points:          45
+ PW_GRID|   Bounds   2            -22      22                Points:          45
+ PW_GRID|   Bounds   3            -22      22                Points:          45
+ PW_GRID| Volume element (a.u.^3)  0.1280         Volume (a.u.^3)     11661.1222
+ PW_GRID| Grid span                                                    FULLSPACE
+ PW_GRID|   Distribution                         Average         Max         Min
+ PW_GRID|   G-Vectors                            45562.5       45585       45540
+ PW_GRID|   G-Rays                                1012.5        1013        1012
+ PW_GRID|   Real Space Points                    45562.5       46575       44550
+
+ PW_GRID| Information for grid number                                          5
+ PW_GRID| Number of the reference grid                                         2
+ PW_GRID| Grid distributed over                                     2 processors
+ PW_GRID| Real space group dimensions                                     2    1
+ PW_GRID| the grid is blocked:                                                NO
+ PW_GRID| Cutoff [a.u.]                                                      5.6
+ PW_GRID| spherical cutoff:                                                   NO
+ PW_GRID|   Bounds   1            -12      12                Points:          25
+ PW_GRID|   Bounds   2            -12      12                Points:          25
+ PW_GRID|   Bounds   3            -12      12                Points:          25
+ PW_GRID| Volume element (a.u.^3)  0.7463         Volume (a.u.^3)     11661.1222
+ PW_GRID| Grid span                                                    FULLSPACE
+ PW_GRID|   Distribution                         Average         Max         Min
+ PW_GRID|   G-Vectors                             7812.5        7825        7800
+ PW_GRID|   G-Rays                                 312.5         313         312
+ PW_GRID|   Real Space Points                     7812.5        8125        7500
+
+ POISSON| Solver                                          Martyna-Tuckerman (MT)
+ POISSON| MT| Alpha                                                        7.000
+ POISSON| MT| Relative cutoff                                                2.0
+ POISSON| Periodicity                                                       NONE
+
+ RS_GRID| Information for grid number                                          2
+ RS_GRID|   Bounds   1            -62      62                Points:         125
+ RS_GRID|   Bounds   2            -62      62                Points:         125
+ RS_GRID|   Bounds   3            -62      62                Points:         125
+ RS_GRID| Real space fully replicated
+ RS_GRID| Group size                                                           1
+
+ RS_GRID| Information for grid number                                          3
+ RS_GRID|   Bounds   1            -37      37                Points:          75
+ RS_GRID|   Bounds   2            -37      37                Points:          75
+ RS_GRID|   Bounds   3            -37      37                Points:          75
+ RS_GRID| Real space fully replicated
+ RS_GRID| Group size                                                           1
+
+ RS_GRID| Information for grid number                                          4
+ RS_GRID|   Bounds   1            -22      22                Points:          45
+ RS_GRID|   Bounds   2            -22      22                Points:          45
+ RS_GRID|   Bounds   3            -22      22                Points:          45
+ RS_GRID| Real space fully replicated
+ RS_GRID| Group size                                                           1
+
+ RS_GRID| Information for grid number                                          5
+ RS_GRID|   Bounds   1            -12      12                Points:          25
+ RS_GRID|   Bounds   2            -12      12                Points:          25
+ RS_GRID|   Bounds   3            -12      12                Points:          25
+ RS_GRID| Real space fully replicated
+ RS_GRID| Group size                                                           1
+
+ Extrapolation method: initial_guess
+
+ Atomic guess: The first density matrix is obtained in terms of atomic orbitals
+               and electronic configurations assigned to each atomic kind
+
+ Guess for atomic kind: O
+
+ Electronic structure
+    Total number of core electrons                                          2.00
+    Total number of valence electrons                                       6.00
+    Total number of electrons                                               8.00
+    Multiplicity                                                   not specified
+    S   [  2.00] 2.00
+    P      4.00
+
+
+ *******************************************************************************
+                  Iteration          Convergence                     Energy [au]
+ *******************************************************************************
+                          1        0.702811                     -15.577904332270
+                          2        0.612408                     -15.588447180504
+                          3        0.955344E-02                 -15.655871208406
+                          4        0.223754E-02                 -15.655885053552
+                          5        0.157183E-02                 -15.655885461027
+                          6        0.124953E-02                 -15.655885607150
+                          7        0.312011E-06                 -15.655885858066
+
+ Energy components [Hartree]           Total Energy ::          -15.655885858066
+                                        Band Energy ::           -2.983128125584
+                                     Kinetic Energy ::           11.754765134683
+                                   Potential Energy ::          -27.410650992749
+                                      Virial (-V/T) ::            2.331875684345
+                                        Core Energy ::          -26.153522949071
+                                          XC Energy ::           -3.157392363346
+                                     Coulomb Energy ::           13.655029454351
+                       Total Pseudopotential Energy ::          -37.943026860963
+                       Local Pseudopotential Energy ::          -39.220419683052
+                    Nonlocal Pseudopotential Energy ::            1.277392822089
+                                        Confinement ::            0.347387772086
+
+ Orbital energies  State     L     Occupation   Energy[a.u.]          Energy[eV]
+
+                       1     0          2.000      -0.861522          -23.443215
+
+                       1     1          4.000      -0.315021           -8.572154
+
+
+ Total Electron Density at R=0:                                         0.000093
+
+ Guess for atomic kind: H
+
+ Electronic structure
+    Total number of core electrons                                          0.00
+    Total number of valence electrons                                       1.00
+    Total number of electrons                                               1.00
+    Multiplicity                                                   not specified
+    S      1.00
+
+
+ *******************************************************************************
+                  Iteration          Convergence                     Energy [au]
+ *******************************************************************************
+                          1        0.250972E-02                  -0.375256815885
+                          2        0.570752E-04                  -0.375258666164
+                          3        0.832405E-09                  -0.375258667122
+
+ Energy components [Hartree]           Total Energy ::           -0.375258667122
+                                        Band Energy ::           -0.076317618391
+                                     Kinetic Energy ::            0.771356566341
+                                   Potential Energy ::           -1.146615233463
+                                      Virial (-V/T) ::            1.486491829455
+                                        Core Energy ::           -0.456090715790
+                                          XC Energy ::           -0.314218627334
+                                     Coulomb Energy ::            0.395050676003
+                       Total Pseudopotential Energy ::           -1.238482237174
+                       Local Pseudopotential Energy ::           -1.238482237174
+                    Nonlocal Pseudopotential Energy ::            0.000000000000
+                                        Confinement ::            0.110349550431
+
+ Orbital energies  State     L     Occupation   Energy[a.u.]          Energy[eV]
+
+                       1     0          1.000      -0.076318           -2.076708
+
+
+ Total Electron Density at R=0:                                         0.425022
+ Re-scaling the density matrix to get the right number of electrons
+                  # Electrons              Trace(P)               Scaling factor
+                           16                16.000                        1.000
+
+ Number of electrons:                                                         16
+ Number of occupied orbitals:                                                  8
+ Number of molecular orbitals:                                                 8
+
+ Number of orbital functions:                                                 46
+ Number of independent orbital functions:                                     46
+
+
+ SCF WAVEFUNCTION OPTIMIZATION
+
+  Step     Update method      Time    Convergence         Total energy    Change
+  ------------------------------------------------------------------------------
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+     1 P_Mix/Diag. 0.40E+00    0.8     0.68742558       -33.9356141582 -3.39E+01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+     2 P_Mix/Diag. 0.40E+00    0.4     0.38832264       -34.1421820537 -2.07E-01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+     3 P_Mix/Diag. 0.40E+00    0.3     0.24199014       -34.2652816793 -1.23E-01
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+     4 P_Mix/Diag. 0.40E+00    0.3     0.14871844       -34.3381972861 -7.29E-02
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+     5 P_Mix/Diag. 0.40E+00    0.3     0.09098881       -34.3817183151 -4.35E-02
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+     6 DIIS/Diag.  0.25E-02    0.3     0.05629433       -34.4077765103 -2.61E-02
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+     7 DIIS/Diag.  0.21E-03    0.3     0.00018322       -34.4468212666 -3.90E-02
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+     8 DIIS/Diag.  0.21E-03    0.3     0.00018181       -34.4468212736 -7.00E-09
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+     9 DIIS/Diag.  0.11E-03    0.3     0.00006109       -34.4468212885 -1.49E-08
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+    10 DIIS/Diag.  0.15E-04    0.3     0.00001168       -34.4468212947 -6.15E-09
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+    11 DIIS/Diag.  0.62E-05    0.3     0.00000393       -34.4468212948 -9.67E-11
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+    12 DIIS/Diag.  0.13E-05    0.3     0.00000082       -34.4468212948 -2.02E-11
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+    13 DIIS/Diag.  0.10E-06    0.3     0.00000008       -34.4468212948 -1.04E-12
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+    14 DIIS/Diag.  0.25E-07    0.3     0.00000002       -34.4468212948 -1.42E-14
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+    15 DIIS/Diag.  0.31E-07    0.3     0.00000002       -34.4468212948  1.42E-14
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+    16 DIIS/Diag.  0.97E-08    0.3     0.00000002       -34.4468212948  1.42E-14
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+    17 DIIS/Diag.  0.33E-07    0.3     0.00000003       -34.4468212948  0.00E+00
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+    18 DIIS/Diag.  0.20E-07    0.3     9.9828E-09       -34.4468212948 -2.13E-14
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+    19 DIIS/Diag.  0.12E-07    0.3     0.00000001       -34.4468212948  7.11E-15
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+    20 DIIS/Diag.  0.11E-07    0.3     5.0132E-09       -34.4468212948 -1.42E-14
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+    21 DIIS/Diag.  0.13E-08    0.3     8.3929E-09       -34.4468212948  2.84E-14
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+    22 DIIS/Diag.  0.14E-07    0.3     8.1764E-09       -34.4468212948 -2.13E-14
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+    23 DIIS/Diag.  0.31E-08    0.3     2.3455E-09       -34.4468212948 -7.11E-15
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+    24 DIIS/Diag.  0.73E-08    0.3     4.1373E-09       -34.4468212948  0.00E+00
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+    25 DIIS/Diag.  0.55E-08    0.3     1.0745E-09       -34.4468212948  1.42E-14
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+    26 DIIS/Diag.  0.35E-08    0.3     4.4291E-09       -34.4468212948 -7.11E-15
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+    27 DIIS/Diag.  0.48E-08    0.3     1.9447E-09       -34.4468212948 -7.11E-15
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+    28 DIIS/Diag.  0.22E-08    0.3     2.1461E-09       -34.4468212948  1.42E-14
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+    29 DIIS/Diag.  0.28E-08    0.3     1.6983E-09       -34.4468212948 -2.13E-14
+
+ ELPA| Matrix diagonalization information
+ ELPA| Matrix order (NA)                                                      46
+ ELPA| Matrix block size (NBLK)                                               16
+ ELPA| Number of eigenvectors (NEV)                                            8
+ ELPA| Local rows (LOCAL_NROWS)                                               46
+ ELPA| Local columns (LOCAL_NCOLS)                                            46
+ ELPA| Kernel                                                         NVIDIA_GPU
+ ELPA| QR step requested                                                      NO
+    30 DIIS/Diag.  0.21E-08    0.3     3.6576E-10       -34.4468212948  0.00E+00
+
+  *** SCF run converged in    30 steps ***
+
+
+  Electronic density on regular grids:        -16.0000000125       -0.0000000125
+  Core density on regular grids:               16.0000000004        0.0000000004
+  Total charge density on r-space grids:       -0.0000000122
+  Total charge density g-space grids:          -0.0000000122
+
+  Overlap energy of the core charge distribution:               0.00000012143046
+  Self energy of the core charge distribution:                -88.69430999347530
+  Core Hamiltonian energy:                                     25.85254525635001
+  Hartree energy:                                              36.86706966019702
+  Exchange-correlation energy:                                 -8.47212633929111
+
+  Total energy:                                               -34.44682129478893
+
+  outer SCF iter =    1 RMS gradient =   0.00E+00 energy =        -34.4468212948
+  outer SCF loop converged in   1 iterations or   30 steps
+
+
+ !-----------------------------------------------------------------------------!
+                     Mulliken Population Analysis
+
+ #  Atom  Element  Kind  Atomic population                           Net charge
+       1     O        1          6.260470                             -0.260470
+       2     O        1          6.240174                             -0.240174
+       3     H        2          0.886527                              0.113473
+       4     H        2          0.888928                              0.111072
+       5     H        2          0.861950                              0.138050
+       6     H        2          0.861950                              0.138050
+ # Total charge                             16.000000                 -0.000000
+
+ !-----------------------------------------------------------------------------!
+
+ !-----------------------------------------------------------------------------!
+                           Hirshfeld Charges
+
+  #Atom  Element  Kind  Ref Charge     Population                    Net charge
+      1       O      1       6.000          7.117                        -1.117
+      2       O      1       6.000          7.133                        -1.133
+      3       H      2       1.000          0.430                         0.570
+      4       H      2       1.000          0.443                         0.557
+      5       H      2       1.000          0.435                         0.565
+      6       H      2       1.000          0.435                         0.565
+
+  Total Charge                                                            0.007
+ !-----------------------------------------------------------------------------!
+
+ ENERGY| Total FORCE_EVAL ( QS ) energy [hartree]            -34.446821294788904
+
+ -------------------------------------------------------------------------------
+ -                                                                             -
+ -                                DBCSR STATISTICS                             -
+ -                                                                             -
+ -------------------------------------------------------------------------------
+ COUNTER                                    TOTAL       BLAS       SMM       ACC
+ flops     5 x     5 x     8               124000       0.0%      0.0%    100.0%     
+ flops    13 x     5 x     8               128960       0.0%      0.0%    100.0%     
+ flops     5 x    13 x     8               128960       0.0%      0.0%    100.0%     
+ flops    13 x    13 x     8               251472       0.0%      0.0%    100.0%     
+ flops inhomo. stacks                           0       0.0%      0.0%      0.0%
+ flops total                       633.392000E+03       0.0%      0.0%    100.0%
+ flops max/rank                    358.608000E+03       0.0%      0.0%    100.0%
+ matmuls inhomo. stacks                         0       0.0%      0.0%      0.0%
+ matmuls total                                651       0.0%      0.0%    100.0%
+ number of processed stacks                   248       0.0%      0.0%    100.0%
+ average stack size                                     0.0       0.0       2.6
+ marketing flops                     1.049536E+06
+ -------------------------------------------------------------------------------
+ # multiplications                             31
+ max memory usage/rank              10.646684E+09
+ # max total images/rank                        2
+ # max 3D layers                                1
+ # MPI messages exchanged                      62
+ MPI messages size (bytes):
+  total size                        91.264000E+03
+  min size                           0.000000E+00
+  max size                           2.944000E+03
+  average size                       1.472000E+03
+ MPI breakdown and total messages size (bytes):
+             size <=      128                  31                        0
+       128 < size <=     8192                  31                    91264
+      8192 < size <=    32768                   0                        0
+     32768 < size <=   131072                   0                        0
+    131072 < size <=  4194304                   0                        0
+   4194304 < size <= 16777216                   0                        0
+  16777216 < size                               0                        0
+ -------------------------------------------------------------------------------
+
+ *** WARNING in dbcsr_mm.F:301 :: Using a non-square number of MPI ranks ***
+ *** might lead to poor performance. Used ranks: 2 Suggested: 1 4        ***
+
+ -------------------------------------------------------------------------------
+ -                                                                             -
+ -                      DBCSR MESSAGE PASSING PERFORMANCE                      -
+ -                                                                             -
+ -------------------------------------------------------------------------------
+ ROUTINE             CALLS      AVE VOLUME [Bytes]
+ MP_Bcast                5                     12.
+ MP_Allreduce          120                     12.
+ MP_Alltoall          1006                   3711.
+ MP_ISend              186                    563.
+ MP_IRecv              248                    236.
+ -------------------------------------------------------------------------------
+
+ -------------------------------------------------------------------------------
+ -                                                                             -
+ -                                GRID STATISTICS                              -
+ -                                                                             -
+ -------------------------------------------------------------------------------
+ LP    KERNEL             BACKEND                              COUNT     PERCENT
+ 2     collocate ortho    GPU                                   3348      22.11%
+ 2     integrate ortho    GPU                                   3240      21.40%
+ 3     integrate ortho    GPU                                   2868      18.94%
+ 3     collocate ortho    GPU                                   2852      18.84%
+ 4     integrate ortho    GPU                                   1412       9.33%
+ 4     collocate ortho    GPU                                   1364       9.01%
+ 5     integrate ortho    GPU                                     44       0.29%
+ 0     collocate general  CPU                                      6       0.04%
+ 0     integrate general  CPU                                      3       0.02%
+ 1     integrate general  CPU                                      3       0.02%
+ -------------------------------------------------------------------------------
+
+ -------------------------------------------------------------------------------
+ -                                                                             -
+ -                          OFFLOAD MEMPOOL STATISTICS                         -
+ -                                                                             -
+ -------------------------------------------------------------------------------
+ Memory consumption                Number of allocations  Used [MiB]  Size [MiB]
+ Device                                                6          19          19
+ Host                                                  6          19    22154035
+ -------------------------------------------------------------------------------
+
+ MEMORY| Estimated peak process memory [MiB]                                2052
+
+ -------------------------------------------------------------------------------
+ ----                             MULTIGRID INFO                            ----
+ -------------------------------------------------------------------------------
+ count for grid        1:           8804          cutoff [a.u.]          150.00
+ count for grid        2:           2705          cutoff [a.u.]           50.00
+ count for grid        3:           1663          cutoff [a.u.]           16.67
+ count for grid        4:            418          cutoff [a.u.]            5.56
+ total gridlevel count  :          13590
+
+ -------------------------------------------------------------------------------
+ -                                                                             -
+ -                         MESSAGE PASSING PERFORMANCE                         -
+ -                                                                             -
+ -------------------------------------------------------------------------------
+
+ ROUTINE             CALLS      AVE VOLUME [Bytes]
+ MP_Group                5
+ MP_Bcast              138                 118973.
+ MP_Allreduce          569                   1204.
+ MP_Sync                34
+ MP_Alltoall           529               42920515.
+ MP_SendRecv           126                2590878.
+ MP_ISendRecv          126                2590878.
+ MP_Wait               126
+ MP_comm_split          30
+ -------------------------------------------------------------------------------
+
+
+ -------------------------------------------------------------------------------
+ -                                                                             -
+ -                           R E F E R E N C E S                               -
+ -                                                                             -
+ -------------------------------------------------------------------------------
+ 
+ CP2K version 2026.2, the CP2K developers group (2026).
+ CP2K is freely available from https://www.cp2k.org/ .
+ 
+ M. Iannuzzi, J. Wilhelm, F. Stein, A. Bussy, H. Elgabarty, D. Golze, A. Hehn, 
+ M. Graml, S. Marek, B. Sertcan Gökmen, C. Schran, H. Forbert, R. Z. 
+ Khaliullin, A. Kozhevnikov, M. Taillefumier, R. Meli, V. V. Rybkin, M. Brehm, 
+ R. Schade, O. Schütt, J. V. Pototschnig, H. Mirhosseini, A. Knüpfer, D. Marx, 
+ M. Krack, J. Hutter, T. D. Kühne.
+ J. Phys. Chem. B 130, 1237-1310 (2026).
+ The CP2K Program Package Made Simple.
+ https://doi.org/10.1021/acs.jpcb.5c05851
+
+ T. D. Kühne, M. Iannuzzi, M. Del Ben, V. V. Rybkin, P. Seewald, F. Stein, T. 
+ Laino, R. Z. Khaliullin, O. Schütt, F. Schiffmann, D. Golze, J. Wilhelm, S. 
+ Chulkov, M. H. Bani-Hashemian, V. Weber, U. Borstnik, M. Taillefumier, A. S. 
+ Jakobovits, A. Lazzaro, H. Pabst, T. Müller, R. Schade, M. Guidon, S. 
+ Andermatt, N. Holmberg, G. K. Schenter, A. Hehn, A. Bussy, F. Belleflamme, G. 
+ Tabacchi, A. Glöß, M. Lass, I. Bethune, C. J. Mundy, C. Plessl, M. Watkins, 
+ J. VandeVondele, M. Krack, J. Hutter.
+ J. Chem. Phys. 152, 194103 (2020).
+ CP2K: An electronic structure and molecular dynamics software package - 
+ Quickstep: Efficient and accurate electronic structure calculations.
+ https://doi.org/10.1063/5.0007045
+
+ O. Schuett, P. Messmer, J. Hutter, J. VandeVondele.
+ Electronic Structure Calculations on Graphics Processing Units, 173-190 (2016).
+ GPU-Accelerated Sparse Matrix-Matrix Multiplication for Linear Scaling Density 
+ Functional Theory.
+ https://doi.org/10.1002/9781118670712.ch8
+
+ A. Heinecke, G. Henry, M. Hutchinson, H. Pabst.
+ Proceedings of Intl. Supercomputing Conference, 981-991 (2016).
+ LIBXSMM: Accelerating Small Matrix Multiplications by Runtime Code Generation.
+ https://doi.org/10.1109/SC.2016.83
+
+ U. Borstnik, J. VandeVondele, V. Weber, J. Hutter.
+ Parallel Comput. 40, 47-58 (2014).
+ Sparse matrix multiplication: The distributed block-compressed sparse row 
+ library.
+ https://doi.org/10.1016/j.parco.2014.03.012
+
+ A. Marek, V. Blum, R. Johanni, V. Havu, B. Lang, T. Auckenthaler, A. Heinecke, 
+ H. Bungartz, H. Lederer.
+ J. Phys. Condens. Matter 26, 213201 (2014).
+ The ELPA library: scalable parallel eigenvalue solutions for electronic 
+ structure theory and computational science.
+ https://doi.org/10.1088/0953-8984/26/21/213201
+
+ J. VandeVondele, J. Hutter.
+ J. Chem. Phys. 127, 114105 (2007).
+ Gaussian basis sets for accurate calculations on molecular systems in gas and 
+ condensed phases.
+ https://doi.org/10.1063/1.2770708
+
+ J. VandeVondele, M. Krack, F. Mohamed, M. Parrinello, T. Chassaing, J. Hutter.
+ Comput. Phys. Commun. 167, 103-128 (2005).
+ QUICKSTEP: Fast and accurate density functional calculations using a mixed 
+ Gaussian and plane waves approach.
+ https://doi.org/10.1016/j.cpc.2004.12.014
+
+ M. Krack.
+ Theor. Chem. Acc. 114, 145-152 (2005).
+ Pseudopotentials for H to Kr optimized for gradient-corrected 
+ exchange-correlation functionals.
+ https://doi.org/10.1007/s00214-005-0655-y
+
+ M. Frigo, S. G. Johnson.
+ Proc. IEEE 93, 216-231 (2005).
+ The design and implementation of FFTW3.
+ https://doi.org/10.1109/JPROC.2004.840301
+
+ G. J. Martyna, M. E. Tuckerman.
+ J. Chem. Phys. 110, 2810-2821 (1999).
+ A reciprocal space based method for treating long range interactions in ab 
+ initio and force-field-based calculations in clusters.
+ https://doi.org/10.1063/1.477923
+
+ C. Hartwigsen, S. Goedecker, J. Hutter.
+ Phys. Rev. B 58, 3641-3662 (1998).
+ Relativistic separable dual-space Gaussian pseudopotentials from H to Rn.
+ https://doi.org/10.1103/PhysRevB.58.3641
+
+ G. Lippert, J. Hutter, M. Parrinello.
+ Mol. Phys. 92, 477-487 (1997).
+ A hybrid Gaussian and plane wave density functional scheme.
+ https://doi.org/10.1080/002689797170220
+
+ S. Goedecker, M. Teter, J. Hutter.
+ Phys. Rev. B 54, 1703-1710 (1996).
+ Separable dual-space Gaussian pseudopotentials.
+ https://doi.org/10.1103/PhysRevB.54.1703
+
+ J. P. Perdew, K. Burke, M. Ernzerhof.
+ Phys. Rev. Lett. 77, 3865-3868 (1996).
+ Generalized gradient approximation made simple.
+ https://doi.org/10.1103/PhysRevLett.77.3865
+
+
+ -------------------------------------------------------------------------------
+ -                                                                             -
+ -                                T I M I N G                                  -
+ -                                                                             -
+ -------------------------------------------------------------------------------
+ SUBROUTINE                       CALLS  ASD         SELF TIME        TOTAL TIME
+                                MAXIMUM       AVERAGE  MAXIMUM  AVERAGE  MAXIMUM
+ CP2K                                 1  1.0    0.061    0.070   11.715   11.715
+ qs_forces                            1  2.0    0.002    0.002   10.920   10.920
+ qs_energies                          1  3.0    0.006    0.006   10.637   10.637
+ scf_env_do_scf                       1  4.0    0.001    0.001   10.321   10.322
+ scf_env_do_scf_inner_loop           30  5.0    0.002    0.003   10.320   10.320
+ rebuild_ks_matrix                   31  6.9    0.000    0.000    8.496    8.496
+ qs_ks_build_kohn_sham_matrix        31  7.9    0.007    0.007    8.495    8.496
+ qs_ks_update_qs_env                 30  6.0    0.000    0.000    8.217    8.217
+ qs_vxc_create                       31  8.9    0.003    0.003    6.295    6.298
+ xc_vxc_pw_create                    31  9.9    0.138    0.141    6.292    6.294
+ fft_wrap_pw1pw2                    529 11.2    0.005    0.005    4.707    4.764
+ fft_wrap_pw1pw2_150                342 12.6    0.001    0.001    4.220    4.280
+ xc_rho_set_and_dset_create          31 10.9    0.083    0.084    4.153    4.219
+ xc_pw_derive                       186 11.9    0.001    0.001    2.787    2.850
+ xc_functional_eval                  31 11.9    0.000    0.000    2.635    2.696
+ pbe_lda_eval                        31 12.9    2.634    2.696    2.634    2.696
+ pw_gpu_c1dr3d_3d_ps                279 13.6    0.671    0.679    2.407    2.416
+ pw_gpu_r3dc1d_3d_ps                250 12.8    0.646    0.647    2.293    2.360
+ xc_pw_divergence                    31 10.9    0.000    0.000    1.938    2.001
+ qs_rho_update_rho_low               31  6.0    0.000    0.000    1.426    1.426
+ calculate_rho_elec                  31  7.0    0.082    0.083    1.426    1.426
+ density_rs2pw                       31  8.0    0.001    0.001    1.247    1.248
+ sum_up_and_integrate                31  8.9    0.000    0.000    0.911    0.912
+ integrate_v_rspace                  31  9.9    0.001    0.001    0.883    0.884
+ qs_scf_new_mos                      30  6.0    0.000    0.000    0.824    0.824
+ pw_poisson_solve                    31  8.9    0.000    0.000    0.782    0.787
+ potential_pw2rs                     31 10.9    0.004    0.004    0.752    0.753
+ mp_alltoall_z22v                   529 15.2    0.626    0.692    0.626    0.692
+ qs_init_subsys                       1  2.0    0.014    0.014    0.685    0.686
+ yz_to_x                            250 13.8    0.289    0.298    0.606    0.672
+ qs_env_setup                         1  3.0    0.003    0.003    0.666    0.667
+ qs_env_rebuild_pw_env                3  3.7    0.000    0.000    0.662    0.663
+ pw_env_rebuild                       1  5.0    0.005    0.006    0.662    0.663
+ pw_grid_setup                        5  6.0    0.000    0.000    0.650    0.651
+ pw_gpu_sf                          279 14.6    0.641    0.641    0.641    0.641
+ pw_grid_setup_internal               5  7.0    0.006    0.007    0.639    0.640
+ x_to_yz                            279 14.6    0.326    0.332    0.635    0.638
+ pw_derive                          279 12.2    0.592    0.592    0.592    0.592
+ pw_gpu_fg                          250 13.8    0.568    0.572    0.568    0.572
+ pw_grid_sort                         5  8.0    0.419    0.420    0.559    0.559
+ pw_copy                            465 11.4    0.466    0.466    0.466    0.466
+ pw_gpu_ffc                         279 14.6    0.457    0.462    0.457    0.462
+ pw_gpu_cff                         250 13.8    0.438    0.439    0.438    0.439
+ eigensolver                         30  7.0    0.001    0.001    0.428    0.428
+ cp_fm_diag_elpa                     30  8.0    0.000    0.000    0.421    0.422
+ cp_fm_redistribute_end              30  9.0    0.209    0.415    0.210    0.415
+ cp_fm_diag_elpa_base                30  9.0    0.205    0.410    0.205    0.410
+ pw_poisson_set                      32  9.8    0.000    0.000    0.330    0.334
+ qs_ks_update_qs_env_forces           1  3.0    0.000    0.000    0.280    0.280
+ cp_dbcsr_plus_fm_fm_t               31  7.9    0.000    0.000    0.275    0.275
+ calculate_dm_sparse                 30  7.0    0.000    0.000    0.274    0.274
+ dbcsr_multiply_generic              31  8.9    0.002    0.002    0.272    0.272
+ multiply_cannon                     31  9.9    0.001    0.001    0.263    0.263
+ multiply_cannon_loop                31 10.9    0.001    0.001    0.257    0.258
+ pw_axpy                            311 10.2    0.242    0.243    0.242    0.243
+ transfer_rs2pw                     126  9.0    0.000    0.000    0.223    0.223
+ multiply_cannon_multrec             62 11.9    0.001    0.001    0.212    0.212
+ dbcsr_mm_accdrv_process            124 12.9    0.002    0.002    0.210    0.210
+ jit_kernel_multiply                  4 14.0    0.207    0.208    0.207    0.208
+ pw_poisson_rebuild                  31  9.9    0.002    0.002    0.188    0.190
+ MTin_create_screen_fn                1 11.0    0.011    0.011    0.187    0.188
+ fft_wrap_pw1pw2_50                  62 11.5    0.000    0.000    0.187    0.188
+ transfer_rs2pw_150                  33  9.9    0.150    0.156    0.178    0.179
+ init_scf_run                         1  4.0    0.001    0.001    0.170    0.170
+ scf_env_initial_rho_setup            1  5.0    0.000    0.000    0.167    0.167
+ transfer_pw2rs                     126 11.8    0.000    0.000    0.162    0.162
+ pw_integral_ab_c1d_c1d_gs           31  9.9    0.127    0.128    0.145    0.146
+ sort_shells                          5  9.0    0.140    0.140    0.140    0.140
+ grid_integrate_task_list            31 10.9    0.130    0.130    0.130    0.130
+ transfer_pw2rs_150                  33 12.6    0.092    0.099    0.126    0.128
+ fft_wrap_pw1pw2_300                  1 13.0    0.000    0.000    0.115    0.117
+ qs_energies_init_hamiltonians        1  4.0    0.004    0.004    0.117    0.117
+ fft_wrap_pw1pw2_20                  62 11.5    0.000    0.000    0.112    0.114
+ qs_diis_b_step                      29  7.0    0.001    0.001    0.110    0.110
+ pw_zero                            156 11.3    0.108    0.108    0.108    0.108
+ qs_env_update_s_mstruct              1  5.0    0.000    0.000    0.097    0.097
+ parallel_gemm_fm_cosma              58  8.0    0.097    0.097    0.097    0.097
+ calculate_rho_core                   1  6.0    0.006    0.007    0.093    0.093
+ grid_collocate_task_list            31  8.0    0.090    0.091    0.090    0.091
+ fft_wrap_pw1pw2_10                  62 11.5    0.000    0.000    0.066    0.067
+ pw_grid_assign                       5  8.0    0.058    0.059    0.059    0.059
+ mt0din                               1 12.0    0.056    0.056    0.056    0.056
+ mp_sum_d                           705  4.6    0.047    0.055    0.047    0.055
+ pw_scale                           124 10.4    0.053    0.053    0.053    0.053
+ mp_waitall_1                       994 13.4    0.035    0.050    0.035    0.050
+ pw_multiply_with                    31  9.9    0.047    0.047    0.047    0.047
+ acc_transpose_blocks                62 11.9    0.000    0.000    0.044    0.044
+ acc_transpose_blocks_kernels        62 12.9    0.001    0.001    0.043    0.043
+ jit_kernel_transpose                 2 14.0    0.043    0.043    0.043    0.043
+ mp_sendrecv_dv                     126 11.0    0.037    0.041    0.037    0.041
+ create_qs_kind_set                   1  2.0    0.000    0.000    0.032    0.039
+ read_qs_kind                         2  3.0    0.013    0.015    0.032    0.039
+ transfer_rs2pw_50                   31 10.0    0.027    0.029    0.034    0.036
+ get_fft_scratch                    530 14.2    0.033    0.033    0.033    0.033
+ transfer_pw2rs_50                   31 12.9    0.017    0.019    0.027    0.029
+ parser_read_line                  6298  4.0    0.001    0.001    0.019    0.027
+ parser_read_line_low                 8  5.0    0.002    0.004    0.018    0.026
+ broadcast_input_information          8  6.0    0.002    0.002    0.016    0.026
+ scf_post_calculation_gpw             1  4.0    0.000    0.000    0.020    0.020
+ mp_bcast_i_src                      32  7.0    0.010    0.020    0.010    0.020
+ write_available_results              1  5.0    0.000    0.001    0.019    0.019
+ mp_isendrecv_dv                    126 13.8    0.012    0.019    0.012    0.019
+ copy_dbcsr_to_fm                    60  7.5    0.001    0.001    0.018    0.018
+ write_mo_free_results                1  6.0    0.006    0.006    0.017    0.018
+ build_core_hamiltonian_matrix        1  5.0    0.002    0.002    0.015    0.015
+ xc_pw_smooth                        31 10.9    0.000    0.000    0.015    0.015
+ topology_control                     1  2.0    0.004    0.005    0.011    0.012
+ dbcsr_complete_redistribute         92  8.9    0.002    0.002    0.011    0.011
+ pw_grid_create_ghatmap               5  7.0    0.011    0.011    0.011    0.011
+ build_overlap_matrix_low             2  5.0    0.008    0.008    0.010    0.011
+ calculate_first_density_matrix       1  6.0    0.001    0.001    0.009    0.009
+ transfer_rs2pw_20                   31 10.0    0.006    0.007    0.008    0.008
+ pw_grid_remap                        5  8.0    0.005    0.005    0.007    0.008
+ calculate_atomic_block_dm            1  7.0    0.004    0.004    0.007    0.007
+ calculate_hirshfeld_normalizat       1  7.0    0.000    0.000    0.007    0.007
+ mp_maxloc_dv                      1001  1.0    0.007    0.007    0.007    0.007
+ cp_fm_redistribute_start            30  9.0    0.005    0.006    0.007    0.007
+ dbcsr_desymmetrize_deep             60  8.4    0.001    0.001    0.005    0.006
+ transfer_pw2rs_20                   31 12.9    0.004    0.004    0.006    0.006
+ connectivity_control                 1  3.0    0.001    0.001    0.005    0.006
+ pw_grid_allocate                     5  8.0    0.005    0.006    0.005    0.006
+ mp_sum_l                           124  8.4    0.004    0.006    0.004    0.006
+ offload_create_buffer                6  7.3    0.005    0.005    0.005    0.005
+ rs_grid_create                       4  6.0    0.000    0.000    0.005    0.005
+ cp_fm_symm                          58  8.0    0.005    0.005    0.005    0.005
+ cp_fm_cholesky_restore              90  8.0    0.005    0.005    0.005    0.005
+ write_mo_set_to_restart             30  6.0    0.002    0.004    0.004    0.005
+ rs_grid_zero                         2  7.5    0.004    0.005    0.004    0.005
+ mp_max_i                           486  1.7    0.004    0.004    0.004    0.004
+ make_m2s                            62  9.9    0.000    0.000    0.004    0.004
+ make_images                         62 10.9    0.001    0.001    0.004    0.004
+ integrate_v_core_rspace              1  6.0    0.000    0.000    0.003    0.004
+ qs_create_task_list                  1  6.0    0.001    0.002    0.003    0.003
+ topology_generate_bond               1  4.0    0.000    0.000    0.003    0.003
+ write_mo_set_low                     2  7.0    0.000    0.000    0.002    0.003
+ cp_fm_write_unformatted              2  8.0    0.002    0.003    0.002    0.003
+ topology_generate_bond_3             1  5.0    0.001    0.001    0.003    0.003
+ hirshfeld_integration                1  7.0    0.000    0.000    0.003    0.003
+ dbcsr_create_new                   596 10.1    0.002    0.002    0.003    0.003
+ mp_cart_sub                        122  9.4    0.003    0.003    0.003    0.003
+ mp_bcast_am_src                      8  7.0    0.003    0.003    0.003    0.003
+ mp_sum_im3                           5  9.0    0.002    0.003    0.002    0.003
+ mp_cart_create                      66  9.4    0.003    0.003    0.003    0.003
+ mp_max_d                            60  8.4    0.002    0.003    0.002    0.003
+ dbcsr_mm_multrec_init               31 10.9    0.000    0.000    0.003    0.003
+ dbcsr_mm_csr_init                   31 11.9    0.000    0.000    0.003    0.003
+ scf_env_density_mixing              31  6.0    0.000    0.000    0.002    0.003
+ cp_sm_mix                           30  7.0    0.000    0.000    0.002    0.003
+ dbcsr_dot                           63  8.9    0.001    0.001    0.002    0.003
+ dbcsr_mm_sched_init                 31 12.9    0.000    0.000    0.002    0.002
+ build_fist_neighbor_lists            1  6.0    0.001    0.001    0.002    0.002
+ copy_fm_to_dbcsr                    32  8.9    0.000    0.000    0.002    0.002
+ dbcsr_mm_accdrv_init                31 13.9    0.002    0.002    0.002    0.002
+ mp_alltoall_i22                    152  9.8    0.002    0.002    0.002    0.002
+ hybrid_alltoall_any                122 11.2    0.001    0.001    0.002    0.002
+ transfer_rs2pw_10                   31 10.0    0.001    0.001    0.002    0.002
+ evaluate_core_matrix_traces         31  6.9    0.000    0.000    0.002    0.002
+ calculate_ptrace_kp                 62  7.9    0.000    0.000    0.002    0.002
+ mp_max_l                            22  1.8    0.001    0.002    0.001    0.002
+ generate_qs_task_list                1  7.0    0.000    0.000    0.002    0.002
+ mp_rank_compare                    529 14.2    0.002    0.002    0.002    0.002
+ calculate_ecore_overlap              2  4.0    0.000    0.000    0.001    0.002
+ mp_bcast_av                        501  1.0    0.001    0.002    0.001    0.002
+ scf_c_read_parameters                1  3.0    0.002    0.002    0.002    0.002
+ dbcsr_copy                         127  8.6    0.001    0.001    0.002    0.002
+ transfer_pw2rs_10                   31 12.9    0.001    0.001    0.002    0.002
+ cp_dbcsr_alloc_block_from_nbl        9  5.7    0.001    0.001    0.002    0.002
+ write_mo_dependent_results           1  6.0    0.002    0.002    0.002    0.002
+ dbcsr_finalize                     205  9.4    0.000    0.000    0.002    0.002
+ grid_create_task_list                1  8.0    0.002    0.002    0.002    0.002
+ mp_alltoall_d11v                   456 10.1    0.002    0.002    0.002    0.002
+ pw_pool_create_pw                  941 10.6    0.001    0.001    0.002    0.002
+ write_dft_control                    1  3.0    0.001    0.002    0.001    0.002
+ mp_sum_im                           37  8.8    0.001    0.002    0.001    0.002
+ coordinate_control                   1  3.0    0.000    0.000    0.001    0.001
+ external_control                    30  6.0    0.001    0.001    0.001    0.001
+ buffer_matrices_ensure_size         62 10.9    0.001    0.001    0.001    0.001
+ cp_fm_trace_a0b0t0                 109  8.0    0.001    0.001    0.001    0.001
+ mp_bcast_b_src                      60  8.0    0.001    0.001    0.001    0.001
+ dbcsr_destroy                      535  9.5    0.000    0.000    0.001    0.001
+ scf_c_create                         1  3.0    0.001    0.001    0.001    0.001
+ qs_energies_properties               1  4.0    0.001    0.001    0.001    0.001
+ mp_cart_get                       1063 14.2    0.001    0.001    0.001    0.001
+ dbcsr_data_release                2942 11.1    0.001    0.001    0.001    0.001
+ build_core_hamiltonian_matrix_       1  3.0    0.000    0.000    0.001    0.001
+ cp_fm_uplo_to_full                  60  8.7    0.001    0.001    0.001    0.001
+ mp_comm_size                      1399 13.2    0.001    0.001    0.001    0.001
+ dbcsr_data_new                    1830 10.9    0.001    0.001    0.001    0.001
+ mp_bcast_iv_src                      8  7.0    0.001    0.001    0.001    0.001
+ distribute_molecules_2d              1  4.0    0.001    0.001    0.001    0.001
+ dbcsr_reserve_blocks                41 10.7    0.001    0.001    0.001    0.001
+ coordinate_control_READ_COORDI       1  4.0    0.001    0.001    0.001    0.001
+ build_neighbor_lists                 1  7.0    0.001    0.001    0.001    0.001
+ qs_scf_post_charges                  1  5.0    0.001    0.001    0.001    0.001
+ calculate_atom                       2  8.0    0.000    0.000    0.001    0.001
+ calculate_atom_restricted            2  9.0    0.001    0.001    0.001    0.001
+ make_images_data                    62 11.9    0.000    0.000    0.001    0.001
+ connectivity_control_check_ele       1  4.0    0.001    0.001    0.001    0.001
+ build_kinetic_matrix_low             2  5.0    0.001    0.001    0.001    0.001
+ rs_grid_create_descriptor            4  6.0    0.000    0.000    0.001    0.001
+ atom_int_setup                       2  8.0    0.001    0.001    0.001    0.001
+ mp_comm_split                       30 10.0    0.001    0.001    0.001    0.001
+ dbcsr_merge_all                    123 10.9    0.000    0.000    0.001    0.001
+ pw_grid_distribute                   5  8.0    0.000    0.001    0.001    0.001
+ scf_c_write_parameters               1  3.0    0.000    0.001    0.000    0.001
+ compute_matrix_w                     1  4.0    0.000    0.000    0.001    0.001
+ mp_sync                             34  9.6    0.001    0.001    0.001    0.001
+ dbcsr_scale_d                        1  8.0    0.000    0.000    0.001    0.001
+ calculate_w_matrix_1                 1  5.0    0.000    0.000    0.001    0.001
+ dbcsr_scale_anytype                  1  9.0    0.001    0.001    0.001    0.001
+ dbcsr_copy_into_existing             2  6.0    0.001    0.001    0.001    0.001
+ pw_pool_give_back_pw              1058 10.7    0.001    0.001    0.001    0.001
+ mp_alltoall_i11v                   336  9.9    0.001    0.001    0.001    0.001
+ build_core_ppl_forces                1  4.0    0.001    0.001    0.001    0.001
+ make_images_sizes                   62 11.9    0.000    0.000    0.001    0.001
+ acc_transpose_blocks_sync          186 12.9    0.001    0.001    0.001    0.001
+ dbcsr_iterator_start               713 10.4    0.000    0.000    0.001    0.001
+ mp_alltoall_i44                     62 12.9    0.001    0.001    0.001    0.001
+ cp_fm_maxabsval                     29  8.0    0.000    0.000    0.001    0.001
+ copy_fm_to_dbcsr_bc                 32  9.9    0.000    0.000    0.001    0.001
+ read_smeagol_control                 1  3.0    0.001    0.001    0.001    0.001
+ init_scf_loop                        1  5.0    0.001    0.001    0.001    0.001
+ cp_fm_cholesky_decompose             1  5.0    0.000    0.001    0.000    0.001
+ mp_sum_dm                           43  3.1    0.000    0.001    0.000    0.001
+ dbcsr_special_finalize              93 11.9    0.000    0.000    0.001    0.001
+ compute_max_radius                   1  6.0    0.001    0.001    0.001    0.001
+ mp_comm_rank                      1399 13.2    0.001    0.001    0.001    0.001
+ build_core_ppnl                      1  6.0    0.001    0.001    0.001    0.001
+ multiply_cannon_multrec_finali      31 12.9    0.000    0.000    0.001    0.001
+ quick_finalize                      91 11.3    0.000    0.000    0.001    0.001
+ copy_dbcsr_to_fm_bc                 60  8.4    0.000    0.000    0.000    0.001
+ mp_comm_free                       297  8.9    0.001    0.001    0.001    0.001
+ dbcsr_mm_multrec_finalize           31 13.9    0.000    0.000    0.000    0.000
+ diamat_all                          25  8.0    0.000    0.000    0.000    0.000
+ multiply_cannon_sync_h2d            62 11.9    0.000    0.000    0.000    0.000
+ qs_scf_write_mos                    31  6.0    0.000    0.000    0.000    0.000
+ dbcsr_work_create                  276 10.6    0.000    0.000    0.000    0.000
+ dbcsr_mm_sched_finalize             31 14.9    0.000    0.000    0.000    0.000
+ dbcsr_mm_accdrv_process_sort       124 13.9    0.000    0.000    0.000    0.000
+ qs_scf_loop_print                   30  6.0    0.000    0.000    0.000    0.000
+ mp_sum_iv                           73  9.0    0.000    0.000    0.000    0.000
+ build_core_ppl                       1  6.0    0.000    0.000    0.000    0.000
+ dbcsr_iterator_stop                713 10.4    0.000    0.000    0.000    0.000
+ dbcsr_make_untransposed_blocks      62  9.9    0.000    0.000    0.000    0.000
+ fft3d_s                              1  2.0    0.000    0.000    0.000    0.000
+ mp_allgather_i34                    31 10.9    0.000    0.000    0.000    0.000
+ mulliken_population_analysis         1  7.0    0.000    0.000    0.000    0.000
+ pw_create_c1d                      532 11.4    0.000    0.000    0.000    0.000
+ dbcsr_new_transposed                31  9.9    0.000    0.000    0.000    0.000
+ init_cube_info                       4  6.0    0.000    0.000    0.000    0.000
+ dbcsr_make_index_exist             596 11.1    0.000    0.000    0.000    0.000
+ setup_buffer_matrices               62 10.9    0.000    0.000    0.000    0.000
+ dbcsr_merge_single_wm               62 12.9    0.000    0.000    0.000    0.000
+ dbcsr_reserve_all_blocks            32 10.9    0.000    0.000    0.000    0.000
+ dbcsr_add_wm_from_matrix            31  9.9    0.000    0.000    0.000    0.000
+ dbcsr_sort_indices                 379 11.7    0.000    0.000    0.000    0.000
+ write_qs_kind_set                    1  3.0    0.000    0.000    0.000    0.000
+ pw_create_r3d                      564 11.6    0.000    0.000    0.000    0.000
+ dbcsr_iterator_seek                713 11.4    0.000    0.000    0.000    0.000
+ dbcsr_switch_data_area             184 11.6    0.000    0.000    0.000    0.000
+ tree_to_linear_d                    92 11.9    0.000    0.000    0.000    0.000
+ dbcsr_distribution_new             218  9.6    0.000    0.000    0.000    0.000
+ multiply_cannon_metrocomm2          31 11.9    0.000    0.000    0.000    0.000
+ make_images_pack                    62 11.9    0.000    0.000    0.000    0.000
+ dbcsr_work_destroy_all             276 11.5    0.000    0.000    0.000    0.000
+ dbcsr_fill_wm_from_matrix           31 10.9    0.000    0.000    0.000    0.000
+ mp_sum_lv                           11  4.7    0.000    0.000    0.000    0.000
+ qs_scf_ensure_work_matrices          1  4.0    0.000    0.000    0.000    0.000
+ multiply_cannon_metrocomm1          62 11.9    0.000    0.000    0.000    0.000
+ multiply_cannon_acc_sync_right      31 11.9    0.000    0.000    0.000    0.000
+ mp_isend_dv                         62 13.3    0.000    0.000    0.000    0.000
+ dbcsr_make_index_list               93 10.9    0.000    0.000    0.000    0.000
+ mpools_rebuild_fm_pools              1  4.0    0.000    0.000    0.000    0.000
+ build_qs_neighbor_lists              1  5.0    0.000    0.000    0.000    0.000
+ mp_comm_dup                          4  7.0    0.000    0.000    0.000    0.000
+ dbcsr_set                          131  9.2    0.000    0.000    0.000    0.000
+ mp_isend_iv                        155 12.9    0.000    0.000    0.000    0.000
+ restraint_control                    1  2.0    0.000    0.000    0.000    0.000
+ mp_bcast_dv                         30 10.0    0.000    0.000    0.000    0.000
+ init_interaction_radii               1  3.0    0.000    0.000    0.000    0.000
+ mp_sum_i                             2  2.0    0.000    0.000    0.000    0.000
+ qs_efield_local_operator            31  8.9    0.000    0.000    0.000    0.000
+ distribute_tasks                     1  8.0    0.000    0.000    0.000    0.000
+ merge_index                        123 11.9    0.000    0.000    0.000    0.000
+ set_mo_occupation_2                 30  7.0    0.000    0.000    0.000    0.000
+ cp_fm_scale_and_add                100  8.0    0.000    0.000    0.000    0.000
+ topology_generate_bond_1             1  5.0    0.000    0.000    0.000    0.000
+ calculate_atom_vxc_lda              10 10.0    0.000    0.000    0.000    0.000
+ setup_rec_index_2d                  62 10.9    0.000    0.000    0.000    0.000
+ topology_generate_bond_2             1  5.0    0.000    0.000    0.000    0.000
+ topology_connectivity_pack           1  3.0    0.000    0.000    0.000    0.000
+ build_core_ppnl_forces               1  4.0    0.000    0.000    0.000    0.000
+ qs_scf_ensure_mos                    1  4.0    0.000    0.000    0.000    0.000
+ dbcsr_data_copy_aa2                123 11.9    0.000    0.000    0.000    0.000
+ dbcsr_make_dbcsr_index             410 12.0    0.000    0.000    0.000    0.000
+ init_qs_kind_set                     1  3.0    0.000    0.000    0.000    0.000
+ init_qs_kind                         2  4.0    0.000    0.000    0.000    0.000
+ dbcsr_get_data_size_used           183 10.8    0.000    0.000    0.000    0.000
+ init_orb_basis_set                   2  5.0    0.000    0.000    0.000    0.000
+ mp_max_lv                            5  8.0    0.000    0.000    0.000    0.000
+ cp_fm_to_fm_matrix                  35  7.9    0.000    0.000    0.000    0.000
+ mp_max_r                             1  2.0    0.000    0.000    0.000    0.000
+ wfs_update                           1  4.0    0.000    0.000    0.000    0.000
+ topology_connectivity_pack_5         1  4.0    0.000    0.000    0.000    0.000
+ dbcsr_make_index_local_row          93 10.9    0.000    0.000    0.000    0.000
+ qs_env_rebuild_rho                   1  6.0    0.000    0.000    0.000    0.000
+ init_cphi_and_sphi                   2  6.0    0.000    0.000    0.000    0.000
+ atom_ppint_setup                     2  8.0    0.000    0.000    0.000    0.000
+ set_mo_occupation_1                 31  7.9    0.000    0.000    0.000    0.000
+ cp_fm_create                        74  9.2    0.000    0.000    0.000    0.000
+ dbcsr_zero                         131 10.2    0.000    0.000    0.000    0.000
+ qs_rho_rebuild                       1  7.0    0.000    0.000    0.000    0.000
+ transpose_index_local               31 10.9    0.000    0.000    0.000    0.000
+ dbcsr_sort_data                     62 13.9    0.000    0.000    0.000    0.000
+ check_for_derivatives               31 10.9    0.000    0.000    0.000    0.000
+ mp_min_lv                            5  8.0    0.000    0.000    0.000    0.000
+ mp_irecv_dv                         62 13.3    0.000    0.000    0.000    0.000
+ read_atoms_input                     1  5.0    0.000    0.000    0.000    0.000
+ mp_irecv_iv                        186 12.9    0.000    0.000    0.000    0.000
+ mp_sum_dv                            1  8.0    0.000    0.000    0.000    0.000
+ write_qs_particle_coordinates        1  3.0    0.000    0.000    0.000    0.000
+ write_qs_control                     1  3.0    0.000    0.000    0.000    0.000
+ qs_diis_b_check_i_alloc             29  8.0    0.000    0.000    0.000    0.000
+ acc_transpose_blocks_comp           62 12.9    0.000    0.000    0.000    0.000
+ write_orbpop                         1  8.0    0.000    0.000    0.000    0.000
+ fill_hash_tables                    31 12.9    0.000    0.000    0.000    0.000
+ dbcsr_verify_matrix                 31  8.9    0.000    0.000    0.000    0.000
+ qs_scf_print_scf_summary             1  6.0    0.000    0.000    0.000    0.000
+ build_neighbor_lists_sab_orb         1  6.0    0.000    0.000    0.000    0.000
+ qs_scf_initial_info                  1  5.0    0.000    0.000    0.000    0.000
+ create_grid_atom                     2  8.0    0.000    0.000    0.000    0.000
+ topology_molecules_check             1  4.0    0.000    0.000    0.000    0.000
+ check_diag                          30  8.0    0.000    0.000    0.000    0.000
+ dbcsr_filter_anytype                35  8.6    0.000    0.000    0.000    0.000
+ enumerate_blk_sizes                 62 10.9    0.000    0.000    0.000    0.000
+ qs_ks_did_change                    32  6.0    0.000    0.000    0.000    0.000
+ sort_neighbor_lists                  1  7.0    0.000    0.000    0.000    0.000
+ acc_transpose_blocks_ensure         62 12.9    0.000    0.000    0.000    0.000
+ external_read_density                1  5.0    0.000    0.000    0.000    0.000
+ check_cp2k_input                     1  2.0    0.000    0.000    0.000    0.000
+ xc_libxc_check_functional            1  4.0    0.000    0.000    0.000    0.000
+ topology_generate_bond_4             1  5.0    0.000    0.000    0.000    0.000
+ qs_efield_berry_phase               31  8.9    0.000    0.000    0.000    0.000
+ mp_bcast_iv                          5  2.0    0.000    0.000    0.000    0.000
+ scf_env_cleanup                      1  4.0    0.000    0.000    0.000    0.000
+ cp_result_value_p_reallocate         4  7.8    0.000    0.000    0.000    0.000
+ read_qs_section                      1  3.0    0.000    0.000    0.000    0.000
+ build_neighbor_lists_sab_core        1  6.0    0.000    0.000    0.000    0.000
+ cp_fm_set_all                       26  7.9    0.000    0.000    0.000    0.000
+ dbcsr_mempool_clear                 30  9.9    0.000    0.000    0.000    0.000
+ build_neighbor_lists_sac_ppl         1  6.0    0.000    0.000    0.000    0.000
+ wfi_extrapolate                      1  6.0    0.000    0.000    0.000    0.000
+ mixing_allocate                      1  4.0    0.000    0.000    0.000    0.000
+ dbcsr_get_local_rows                31  9.9    0.000    0.000    0.000    0.000
+ topology_coordinate_pack             1  3.0    0.000    0.000    0.000    0.000
+ mp_cart_coords                      10  9.0    0.000    0.000    0.000    0.000
+ scf_env_release                      1  2.0    0.000    0.000    0.000    0.000
+ qs_scf_post_kubo_transport           1  7.0    0.000    0.000    0.000    0.000
+ qs_scf_post_ps_implicit              1  7.0    0.000    0.000    0.000    0.000
+ read_tddfpt2_control                 1  3.0    0.000    0.000    0.000    0.000
+ linres_calculation_low               1  5.0    0.000    0.000    0.000    0.000
+ topology_constraint_pack             1  3.0    0.000    0.000    0.000    0.000
+ dump_info_core_hamiltonian           2  5.0    0.000    0.000    0.000    0.000
+ mp_sum_lm3                           1  2.0    0.000    0.000    0.000    0.000
+ topology_generate_molecule           1  4.0    0.000    0.000    0.000    0.000
+ write_molecule_kind_set              1  3.0    0.000    0.000    0.000    0.000
+ distribute_molecules_1d              1  3.0    0.000    0.000    0.000    0.000
+ mp_sum_r                             1  2.0    0.000    0.000    0.000    0.000
+ dbcsr_mm_hostdrv_init               31 13.9    0.000    0.000    0.000    0.000
+ qs_scf_post_epr                      1  5.0    0.000    0.000    0.000    0.000
+ multiply_cannon_metrocomm3          62 11.9    0.000    0.000    0.000    0.000
+ dbcsr_get_local_cols                31  9.9    0.000    0.000    0.000    0.000
+ qs_scf_post_transport                1  7.0    0.000    0.000    0.000    0.000
+ build_neighbor_lists_sap_ppnl        1  6.0    0.000    0.000    0.000    0.000
+ dbcsr_get_global_row_map            31  9.9    0.000    0.000    0.000    0.000
+ fix_atom_control                     1  2.0    0.000    0.000    0.000    0.000
+ mp_min_rv                            1  2.0    0.000    0.000    0.000    0.000
+ mp_max_rv                            1  2.0    0.000    0.000    0.000    0.000
+ mp_sum_rv                            1  2.0    0.000    0.000    0.000    0.000
+ write_particle_distances             1  3.0    0.000    0.000    0.000    0.000
+ transport_current                    1  8.0    0.000    0.000    0.000    0.000
+ build_neighbor_lists_sab_all         1  6.0    0.000    0.000    0.000    0.000
+ wfi_create                           1  3.0    0.000    0.000    0.000    0.000
+ diag                                 5  9.0    0.000    0.000    0.000    0.000
+ read_topology_section                1  3.0    0.000    0.000    0.000    0.000
+ grid_free_task_list                  1  2.0    0.000    0.000    0.000    0.000
+ dbcsr_get_global_col_map            31  9.9    0.000    0.000    0.000    0.000
+ topology_connectivity_pack_9         1  4.0    0.000    0.000    0.000    0.000
+ qs_scf_post_elf                      1  5.0    0.000    0.000    0.000    0.000
+ read_mgrid_section                   1  3.0    0.000    0.000    0.000    0.000
+ qs_scf_post_efg                      1  5.0    0.000    0.000    0.000    0.000
+ cp_result_release                    1  2.0    0.000    0.000    0.000    0.000
+ cp_result_value_release             10  6.3    0.000    0.000    0.000    0.000
+ offload_free_buffer                  6  2.0    0.000    0.000    0.000    0.000
+ sg_erf                               5  9.0    0.000    0.000    0.000    0.000
+ topology_constraint_pack_5           1  4.0    0.000    0.000    0.000    0.000
+ contract2                           15  9.0    0.000    0.000    0.000    0.000
+ make_basic_distribution              1  5.0    0.000    0.000    0.000    0.000
+ atom2d_build                         1  6.0    0.000    0.000    0.000    0.000
+ outer_loop_gradient                  1  6.0    0.000    0.000    0.000    0.000
+ grid_free_basis_set                  2  2.0    0.000    0.000    0.000    0.000
+ scf_env_create                       1  4.0    0.000    0.000    0.000    0.000
+ qs_scf_post_xray                     1  5.0    0.000    0.000    0.000    0.000
+ grid_create_basis_set                2  8.0    0.000    0.000    0.000    0.000
+ qs_scf_post_moments                  1  5.0    0.000    0.000    0.000    0.000
+ contract2add                        10  9.0    0.000    0.000    0.000    0.000
+ resp_fit                             1  6.0    0.000    0.000    0.000    0.000
+ calculate_ecore_self                 2  4.0    0.000    0.000    0.000    0.000
+ ec_env_release                       1  2.0    0.000    0.000    0.000    0.000
+ topology_set_atm_mass                1  4.0    0.000    0.000    0.000    0.000
+ write_ks_matrix_csr                  1  7.0    0.000    0.000    0.000    0.000
+ write_s_matrix_csr                   1  7.0    0.000    0.000    0.000    0.000
+ check_generate_mol                   1  6.0    0.000    0.000    0.000    0.000
+ outer_loop_extrapolate               1  5.0    0.000    0.000    0.000    0.000
+ topology_generate_bond_6             1  5.0    0.000    0.000    0.000    0.000
+ qs_scf_post_molopt                   1  5.0    0.000    0.000    0.000    0.000
+ write_hcore_matrix_csr               1  7.0    0.000    0.000    0.000    0.000
+ write_structure_data                 1  3.0    0.000    0.000    0.000    0.000
+ write_p_matrix_csr                   1  7.0    0.000    0.000    0.000    0.000
+ topology_connectivity_pack_2         1  4.0    0.000    0.000    0.000    0.000
+ qs_scf_post_local_energy             1  7.0    0.000    0.000    0.000    0.000
+ qs_scf_post_local_stress             1  7.0    0.000    0.000    0.000    0.000
+ topology_connectivity_pack_6         1  4.0    0.000    0.000    0.000    0.000
+ write_adjacency_matrix               1  7.0    0.000    0.000    0.000    0.000
+ cp_ddapc_init                        1  6.0    0.000    0.000    0.000    0.000
+ topology_constraint_pack_1           1  4.0    0.000    0.000    0.000    0.000
+ write_dm_binary_restart              1  7.0    0.000    0.000    0.000    0.000
+ cp_result_value_create              10  8.6    0.000    0.000    0.000    0.000
+ atom_relint_setup                    2  8.0    0.000    0.000    0.000    0.000
+ write_gto_basis_sets                 1  3.0    0.000    0.000    0.000    0.000
+ cp_result_value_copy                 6  8.5    0.000    0.000    0.000    0.000
+ write_mos_molden                     1  7.0    0.000    0.000    0.000    0.000
+ topology_connectivity_pack_4         1  4.0    0.000    0.000    0.000    0.000
+ calculate_ecore_efield               2  4.0    0.000    0.000    0.000    0.000
+ create_local_fixd_list               1  3.0    0.000    0.000    0.000    0.000
+ fp_env_read                          1  2.0    0.000    0.000    0.000    0.000
+ handle_ext_restart                   1  3.0    0.000    0.000    0.000    0.000
+ metadyn_read                         1  2.0    0.000    0.000    0.000    0.000
+ kpoint_initialize                    1  2.0    0.000    0.000    0.000    0.000
+ write_symmetry                       1  3.0    0.000    0.000    0.000    0.000
+ read_binary_coordinates              1  3.0    0.000    0.000    0.000    0.000
+ topology_coordinate_pack_1           1  4.0    0.000    0.000    0.000    0.000
+ qs_scf_post_et                       1  5.0    0.000    0.000    0.000    0.000
+ ps_implicit_release                  2  4.0    0.000    0.000    0.000    0.000
+ add_external_potential               1  2.0    0.000    0.000    0.000    0.000
+ topology_connectivity_pack_1         1  4.0    0.000    0.000    0.000    0.000
+ init_ec_env                          1  2.0    0.000    0.000    0.000    0.000
+ external_c_potential                 2  4.0    0.000    0.000    0.000    0.000
+ topology_connectivity_pack_10        1  4.0    0.000    0.000    0.000    0.000
+ topology_generate_onfo               1  4.0    0.000    0.000    0.000    0.000
+ topology_connectivity_pack_14        1  4.0    0.000    0.000    0.000    0.000
+ allocate_qs_energy                   1  3.0    0.000    0.000    0.000    0.000
+ external_e_potential                 2  4.0    0.000    0.000    0.000    0.000
+ topology_connectivity_pack_7         1  4.0    0.000    0.000    0.000    0.000
+ topology_connectivity_pack_11        1  4.0    0.000    0.000    0.000    0.000
+ cp_result_value_init                 4  7.8    0.000    0.000    0.000    0.000
+ excited_state_energy                 2  3.5    0.000    0.000    0.000    0.000
+ topology_coordinate_pack_89          1  4.0    0.000    0.000    0.000    0.000
+ topology_muc                         1  4.0    0.000    0.000    0.000    0.000
+ topology_connectivity_pack_13        1  4.0    0.000    0.000    0.000    0.000
+ topology_coordinate_pack_11          1  4.0    0.000    0.000    0.000    0.000
+ topology_connectivity_pack_12        1  4.0    0.000    0.000    0.000    0.000
+ topology_connectivity_pack_3         1  4.0    0.000    0.000    0.000    0.000
+ qs_diis_b_create                     1  6.0    0.000    0.000    0.000    0.000
+ init_harris_env                      1  3.0    0.000    0.000    0.000    0.000
+ topology_constraint_pack_6           1  4.0    0.000    0.000    0.000    0.000
+ topology_constraint_pack_2           1  4.0    0.000    0.000    0.000    0.000
+ topology_connectivity_pack_11_       1  4.0    0.000    0.000    0.000    0.000
+ wfn_mix                              1  5.0    0.000    0.000    0.000    0.000
+ fist_neighbor_init                   1  8.0    0.000    0.000    0.000    0.000
+ tddfpt2_control_create               2  3.0    0.000    0.000    0.000    0.000
+ topology_coordinate_pack_6           1  4.0    0.000    0.000    0.000    0.000
+ wannier90_interface                  1  5.0    0.000    0.000    0.000    0.000
+ fp_env_write                         1  2.0    0.000    0.000    0.000    0.000
+ topology_constraint_pack_7           1  4.0    0.000    0.000    0.000    0.000
+ tddfpt2_control_release              2  2.0    0.000    0.000    0.000    0.000
+ topology_generate_bend               1  4.0    0.000    0.000    0.000    0.000
+ rescale_forces                       1  2.0    0.000    0.000    0.000    0.000
+ topology_generate_molecule_PAR       1  5.0    0.000    0.000    0.000    0.000
+ atom2d_cleanup                       1  6.0    0.000    0.000    0.000    0.000
+ smeagol_control_create               1  3.0    0.000    0.000    0.000    0.000
+ topology_coordinate_pack_4           1  4.0    0.000    0.000    0.000    0.000
+ topology_coordinate_pack_7a          1  4.0    0.000    0.000    0.000    0.000
+ smeagol_control_release              1  2.0    0.000    0.000    0.000    0.000
+ topology_coordinate_pack_5           1  4.0    0.000    0.000    0.000    0.000
+ pw_env_create                        1  5.0    0.000    0.000    0.000    0.000
+ topology_connectivity_pack_13_       1  4.0    0.000    0.000    0.000    0.000
+ topology_connectivity_pack_14_       1  4.0    0.000    0.000    0.000    0.000
+ check_qs_kind_set                    1  3.0    0.000    0.000    0.000    0.000
+ topology_generate_dihe               1  4.0    0.000    0.000    0.000    0.000
+ topology_connectivity_pack_12_       1  4.0    0.000    0.000    0.000    0.000
+ topology_constraint_pack_3           1  4.0    0.000    0.000    0.000    0.000
+ topology_coordinate_pack_10          1  4.0    0.000    0.000    0.000    0.000
+ topology_generate_impr               1  4.0    0.000    0.000    0.000    0.000
+ cp_result_create                     1  2.0    0.000    0.000    0.000    0.000
+ topology_generate_bond_7             1  5.0    0.000    0.000    0.000    0.000
+ topology_coordinate_pack_2           1  4.0    0.000    0.000    0.000    0.000
+ topology_coordinate_pack_7b          1  4.0    0.000    0.000    0.000    0.000
+ topology_connectivity_pack_8         1  4.0    0.000    0.000    0.000    0.000
+ topology_coordinate_pack_3           1  4.0    0.000    0.000    0.000    0.000
+ cleanup_scf_loop                     1  6.0    0.000    0.000    0.000    0.000
+ topology_generate_ub                 1  4.0    0.000    0.000    0.000    0.000
+ topology_connectivity_pack_1.1       1  4.0    0.000    0.000    0.000    0.000
+ topology_constraint_pack_4           1  4.0    0.000    0.000    0.000    0.000
+ -------------------------------------------------------------------------------
+
+ The number of warnings for this run is : 1
+ 
+ -------------------------------------------------------------------------------
+  **** **** ******  **  PROGRAM ENDED AT                 2026-10-20 05:38:56.048
+ ***** ** ***  *** **   PROGRAM RAN ON                       16v100n73.mr-sai.ai
+ **    ****   ******    PROGRAM RAN BY                                 <unknown>
+ ***** **    ** ** **   PROGRAM PROCESS ID                               3844826
+  **** **  *******  **  PROGRAM STOPPED IN                                 /work

@@ -36,8 +36,10 @@ the project home. No failed receipt is rewritten.
 The CP2K lock now uses these new GPU manifests and pins
 `share/sai/gpu-backtransform-host-staging.patch`, retaining the communicator
 repair pins and unchanged CPU variant. This generates a new CP2K recipe identity
-and final install prefix. Prior failed GPU SIFs are not relabelled accepted;
-the new build still needs its own scientific and native-export acceptance.
+and final install prefix. Prior failed GPU SIFs are not relabelled accepted.
+The fresh build subsequently passed its own scientific and native-export
+acceptance on all four partitions; see the
+[new release evidence](../cp2k-shared-elpa-release-20261020/README.md).
 
 `raw/` preserves 206 files (205 remotely hashed inputs/results and their index),
 including both the failed submission and successful physical acceptance. All
@@ -53,12 +55,12 @@ uses commit `13e1a7e` and recipe `aed7aa53ff43`. Its validation passed 840 tests
 (838 passed, two optional skips). Source resolution still selects v2026.2 at
 `67b5da876dd6a76b8b021d5a04d1c81ba79a4c50`.
 
-| Partition | Dependency job | Observed state |
+| Partition | Dependency job | Final state |
 | --- | --- | --- |
-| 16V100 | 1869397 | RUNNING |
-| 4V100 | 1869396 | RUNNING |
-| 8V100V0 | 1869360 | RUNNING |
-| DSPRHBM | 1869407 | RUNNING |
+| 16V100 | 1869397 | COMPLETED 0:0 |
+| 4V100 | 1869396 | COMPLETED 0:0 |
+| 8V100V0 | 1869360 | COMPLETED 0:0 |
+| DSPRHBM | 1869407 | COMPLETED 0:0 |
 
 The workflow owns the dependency/application/science/export handoffs. The
 container and physical install prefix is
@@ -68,6 +70,8 @@ The [submission snapshot](build-start/snapshot.json) and its hashed raw records
 establish the observed jobs and identities, not a completed build.
 
 The frozen [tuning watcher](tuning-watch.json) is bound to this workflow and
-recipe. It waits for each new GPU artifact's verified scientific receipt before
-submitting the 216-water ELPA/cuSOLVERMp standard/direct/PBE-OT experiment.
-No new 216-water measurement has completed; multi-GPU scaling remains separate.
+recipe. After each new GPU artifact passed science, it submitted the 216-water
+ELPA/cuSOLVERMp standard/direct/PBE-OT experiment. The 4V100 experiment has
+completed; 16V100 and 8V100V0 remain in progress as of 14:47 Asia/Shanghai.
+[Accepted release and tuning results](../cp2k-shared-elpa-release-20261020/README.md).
+Multi-GPU scaling remains separate.

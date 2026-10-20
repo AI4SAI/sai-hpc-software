@@ -285,6 +285,21 @@ and all 42 unmodified CP2K calculations across the three GPU partitions; see
 the [integration evidence and administrator handoff](evidence/cp2k-export-recovery-20261020/README.md).
 The administrator subsequently installed both libraries. All four public-module
 native jobs passed 460 solves, including GCC 14.3 consumers and communicator
-lifecycle checks. The CP2K lock now pins those files. Fresh CP2K compilation and
-science acceptance precede the 216-water measurements. The host-staging workaround can alter communication
-costs, so earlier private-ELPA timing does not establish the new library's speed.
+lifecycle checks. The CP2K lock now pins those files. Fresh recipe `aed7aa53ff43`
+subsequently passed all four builds and all 56 scientific calculations, and
+the watcher submitted all three 216-water experiments. The host-staging
+workaround can alter communication costs, so earlier private-ELPA timing does
+not establish the new library's speed.
+
+The [completed 4V100 experiment](evidence/cp2k-shared-elpa-release-20261020/README.md)
+(`1870680`) independently passed all 16 numerical, dispatch and affinity checks.
+With 216 waters/4968 basis functions, one V100, one MPI rank and four physical
+cores, median CP2K internal total times were 123.823 s (cuSOLVERMp standard),
+111.638 s (direct), 143.875 s (shared ELPA) and 368.940 s (PBE OT FULL_ALL).
+Direct reduced total time by 9.84%; this supports trying the option on larger
+diagonalization workloads while retaining explicit workload-specific choices.
+These results do not establish multi-GPU scaling or a universally best solver.
+The old 64-water pilot used another partition and ELPA build, so comparing the
+two experiments does not isolate matrix size as the cause of the difference.
+As of 14:47 Asia/Shanghai, 16V100 (`1871044`) and 8V100V0 (`1872055`) were still
+running the same 216-water protocol; final medians remain pending.
