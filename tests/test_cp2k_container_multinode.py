@@ -95,6 +95,20 @@ class MultinodeOverheadTests(unittest.TestCase):
         self.assertEqual(set(result), {'water216-ot'})
         self.assertEqual(result['water216-ot']['elapsed_seconds']['paired_delta_median'], 1)
 
+    def test_new_sif_mount_number_is_valid_but_physical_executable_is_not(self):
+        native = multi.check_ranks(self.root, self.request, self.inventory)
+        first_sif = copy.deepcopy(native)
+        next_sif = copy.deepcopy(native)
+        for rank in native:
+            first_sif[rank]['binary_dev'] = 100+int(rank)
+            next_sif[rank]['binary_dev'] = 200+int(rank)
+        multi.same_placement(next_sif, first_sif)
+        multi.check_binary_origin(next_sif, native, 'sif')
+        with self.assertRaisesRegex(ValueError, 'wrong backing filesystem'):
+            multi.check_binary_origin(native, native, 'sif')
+        with self.assertRaisesRegex(ValueError, 'wrong backing filesystem'):
+            multi.check_binary_origin(next_sif, native, 'native')
+
 
 if __name__ == '__main__':
     unittest.main()

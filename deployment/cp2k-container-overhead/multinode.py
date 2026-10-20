@@ -118,8 +118,15 @@ def summaries(samples, cases=CASES):
 
 def same_placement(actual, baseline):
     for rank, record in actual.items():
-        for key in ('host', 'rank', 'local_rank', 'affinity', 'topology', 'gpu', 'environment', 'binary_dev'):
+        for key in ('host', 'rank', 'local_rank', 'affinity', 'topology', 'gpu', 'environment'):
             require(record[key] == baseline[rank][key], 'Rank placement changed between samples: '+key)
+
+
+def check_binary_origin(actual, native, mode):
+    # Every apptainer exec may allocate a different SquashFS device number.
+    for rank, record in actual.items():
+        physical = record['binary_dev'] == native[rank]['binary_dev']
+        require(physical == (mode == 'native'), 'Executable is on the wrong backing filesystem')
 
 
 def inventories(root, request):
@@ -179,6 +186,7 @@ def execute(root):
             invoke(folder, mode, 'cp2k', ['-i', 'input.inp'], root/'fixtures'/(case+'.inp'))
             placements[key] = check_ranks(folder, request, inventory)
             same_placement(placements[key], probes['placements'][mode])
+            check_binary_origin(placements[key], probes['placements']['native'], mode)
             sample = parse(folder, case, references[case])
             samples[key] = sample
             sample['comparison_to_native_warmup'] = common.science.compare_science(sample, samples[f'{case}/warmup/native'])
@@ -275,6 +283,7 @@ def verify(root):
             require(checksum(folder/'input.inp') == request['inputs'][f'fixtures/{case}.inp'], 'Different scientific input')
             require(check_ranks(folder, request, inventory) == recorded['placements'][key], 'Changed rank placement')
             same_placement(recorded['placements'][key], recorded['probes']['placements'][mode])
+            check_binary_origin(recorded['placements'][key], recorded['probes']['placements']['native'], mode)
             sample = parse(folder, case, references[case]); samples[key] = sample
             sample['comparison_to_native_warmup'] = common.science.compare_science(sample, samples[f'{case}/warmup/native'])
             require(sample['scf_steps'] == samples[f'{case}/warmup/native']['scf_steps'], 'Different SCF work')
