@@ -45,3 +45,29 @@ file hashes were checked after download; the local independent reparse passed
 all 460 solves. See [archive receipt](archive.json),
 [remote verification](raw/native/validation.json) and
 [local verification](local-validation.json).
+
+## Fresh CP2K release build
+
+[Workflow 39365139034](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39365139034)
+uses commit `13e1a7e` and recipe `aed7aa53ff43`. Its validation passed 840 tests
+(838 passed, two optional skips). Source resolution still selects v2026.2 at
+`67b5da876dd6a76b8b021d5a04d1c81ba79a4c50`.
+
+| Partition | Dependency job | Observed state |
+| --- | --- | --- |
+| 16V100 | 1869397 | RUNNING |
+| 4V100 | 1869396 | RUNNING |
+| 8V100V0 | 1869360 | RUNNING |
+| DSPRHBM | 1869407 | RUNNING |
+
+The workflow owns the dependency/application/science/export handoffs. The
+container and physical install prefix is
+`/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/<partition>`.
+GCC 14.3, V100 SM70, cuSOLVERMp/NCCL and SpLA GEMM offload are retained.
+The [submission snapshot](build-start/snapshot.json) and its hashed raw records
+establish the observed jobs and identities, not a completed build.
+
+The frozen [tuning watcher](tuning-watch.json) is bound to this workflow and
+recipe. It waits for each new GPU artifact's verified scientific receipt before
+submitting the 216-water ELPA/cuSOLVERMp standard/direct/PBE-OT experiment.
+No new 216-water measurement has completed; multi-GPU scaling remains separate.

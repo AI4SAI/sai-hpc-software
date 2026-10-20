@@ -84,6 +84,11 @@ scientific references and inputs still match their pinned hashes.
   CP2K compilation/science remains required; the old GPU deliveries
   remain failed and 216-water tuning has not started.
   [Physical ELPA acceptance](evidence/elpa-backtransform-native-20261020/README.md).
+  Fresh [workflow 39365139034](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39365139034)
+  passed 840 tests (838 passed, two skipped) and submitted recipe `aed7aa53ff43`:
+  dependency jobs `1869397` (16V100), `1869396` (4V100), `1869360` (8V100V0)
+  and `1869407` (DSPRHBM) were all observed running. Its frozen watcher waits for
+  new science acceptance before starting the 216-water comparisons.
   The final integration
   archive contains 2,156 independently hash-verified files. Linux CI at
   `0e0ed1c` passed 840 tests (838 passed, two optional skips).
