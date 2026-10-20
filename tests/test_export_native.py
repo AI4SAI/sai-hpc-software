@@ -362,7 +362,12 @@ class RealSquashfsTests(unittest.TestCase):
                                 external_roots=[], runtime={"modules": [], "prepend": {}, "set": {}}))
         self.make_paired_source(entries)
         image = self.pack()
-        record = self.publish_export(image, entries)
+        old_umask = os.umask(0o077)
+        try:
+            record = self.publish_export(image, entries)
+            self.assertEqual(self.publish_export(image, entries), record)
+        finally:
+            os.umask(old_umask)
         self.assertEqual(len(record["receipt"]["installations"]), 5)
         self.assertTrue(record["roundtrip_verified"])
         identities = [entry["identity"] for entry in entries]
