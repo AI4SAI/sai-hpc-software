@@ -88,7 +88,8 @@ bash submit-native-checks.sh all
 可把 `all` 换成 `4V100`、`16V100` 或 `8V100V0` 单独验证。提交前检查选中分区
 的物理安装文件和 module，并校验 `native-reference.json` 固定的已验收输入、模型、
 原始输出及解析器。全部通过后，才向各分区提交一个双节点作业：每节点 1 个 MPI rank、
-1 张 GPU、1 个 CPU，时限 40 分钟。16V100 使用 `flood-1o2gpu`，其余使用 `rush-1o2gpu`。
+1 张 GPU，CPU 数由站点按 GPU 数分配；每 rank 使用 1 个计算线程，时限 40 分钟。
+16V100 使用 `flood-1o2gpu`，其余使用 `rush-1o2gpu`。
 脚本、模型和输入复制到本次结果目录并固定 SHA256，排队期间仓库更新不影响已提交作业。
 
 每个分区验证版本、71 个 package / 2,473 个 style、动态库解析、MPI ISA、每个 rank

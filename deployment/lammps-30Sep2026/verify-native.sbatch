@@ -2,10 +2,10 @@
 #SBATCH --nodes=2
 #SBATCH --ntasks=2
 #SBATCH --ntasks-per-node=1
-#SBATCH --cpus-per-task=1
 #SBATCH --gpus-per-node=1
 #SBATCH --time=00:40:00
 #SBATCH --export=ALL
+# The site's GPU policy assigns CPUs from GPU count; do not request CPUsPerTask.
 set -eo pipefail
 output=${1:?native result directory required}
 work_root=${2:?writable home work directory required}
