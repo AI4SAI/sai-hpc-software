@@ -1,5 +1,49 @@
 # CP2K water scaling: calibration and CPU acceptance
 
+**Follow-up at 2026-10-21 00:00 China time:** four formal comparisons are
+running. The latest machine-readable snapshot, completed tuning summaries,
+numerical comparisons and raw-file hashes are in
+[large-system-followup.json](large-system-followup.json).
+
+| Partition | GPUs / physical cores | Waters / basis functions | Current stage and job |
+| --- | --- | --- | --- |
+| 16V100 | 1 / 4 | 288 / 6,624 | All nine tuning cases passed; warm-up pair running, **1882305** |
+| 16V100 | 4 / 16 | 648 / 14,904 | Six GPU settings passed; CPU tuning running, **1882313** |
+| 16V100 | 16 / 64 | 1,452 / 33,396 | Memory calibration passed; full comparison running, **1883254** |
+| 4V100 | 1 / 4 | 392 / 9,016 | Six GPU settings passed; CPU tuning running, **1882731** |
+| 4V100 | 4 / 16 | 900 / 20,700 proposed | Complete memory calibration **1882713** queued for resources |
+
+The 16-GPU calibration **1882207** completed `0:0` and passed independent
+verification: the 11×11×12 water cell used **67.03–68.81% VRAM per GPU**.
+This remains a three-SCF-step memory probe; full convergence and force acceptance
+are still pending. The 4V100 single-GPU point remains explicitly limited by
+host RAM at approximately 55% VRAM.
+
+For 288 waters, all three CPU layouts converged in 20 SCF steps and agreed
+with the GPU in energy and forces. Sampled utilization of the four allocated
+physical cores was **64.1% (1×4 MPI×OMP), 74.2% (2×2), and 99.3% (4×1)**.
+All used the CPU-only executable with no GPU compute clients. The selected
+layouts now enter one excluded warm-up pair and three measured pairs.
+The tuning timings are not the final repeated comparison or a general speedup.
+
+The initial 16-GPU comparison **1883125** was deliberately cancelled after
+16 minutes to correct its inherited two-hour case ceiling. It did not fail a
+scientific or memory check. Four-GPU CPU measurements already took about
+300 seconds per SCF step, making a two-hour ceiling unsuitable for the much
+larger 16-GPU point. Replacement **1883254** keeps the same scientific inputs
+and resource quota, with six hours per calculation and 72 hours for the whole
+comparison; `huge-gpu` permits up to 30 days. The partial old run is retained
+and excluded from performance results. The watcher now uses `control-v3` and
+will also allow six-hour cases in the pending 4V100 four-GPU comparison.
+Existing smaller comparisons keep their frozen settings.
+
+The pending 900-water calibration has just one calculation with a one-hour
+case ceiling. Its allocation was shortened from three hours to 90 minutes,
+including setup margin, to allow shorter scheduler backfill windows. It is
+still queued. Both scheduling changes and the retained old run are recorded
+in the latest JSON. Seven focused water-scaling tests pass.
+**No final repeated speedup result is available yet.**
+
 **Follow-up at 23:05 China time:** the initial 448-water 4V100 single-GPU
 comparison **1882361** hit the host-memory guard during its fifth SCF update.
 The full-calculation calibration **1882535** then rejected 432 waters near the

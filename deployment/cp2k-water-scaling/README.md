@@ -73,6 +73,12 @@ competing with other four-GPU experiments for the 16-GPU per-user limit of the
 rush queue. Retain the normal user environment for native Open MPI startup.
 Comparison jobs request enough MPI slots for the largest CPU layout (4G),
 while the site still allocates the same 4G physical cores from the GPU count.
+The campaign allows six hours per complete calculation at the four- and
+16-GPU points, because the equally resourced CPU ScaLAPACK path can take hours
+on these matrix sizes. Four-GPU jobs retain the rush queue's one-day limit;
+16-GPU comparisons request three days in the huge queue (site maximum 30 days).
+These are ceilings, not required durations: a finished comparison exits early.
+Single-GPU comparisons keep their two-hour case limit and the queue limits above.
 
 Calibration performs only three SCF steps, allows nonconvergence explicitly,
 and must never be reported as scientific or performance acceptance. It samples

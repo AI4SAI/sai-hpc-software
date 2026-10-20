@@ -57,10 +57,14 @@ def submit(name, partition, gpus, stage, binary, *, shape=None, calibration=None
                          request['gpus'] == gpus and request['stage'] == stage and request['cpu_binary'] == binary,
                          'Existing submission requires manual review: '+str(root))
         return str(root)
-    minutes = 120 if stage == 'smoke' else (240 if partition == '16V100' and gpus == 1 else 1440)
+    # The large CPU ScaLAPACK cases can take hours each. The 16-GPU huge queue
+    # permits longer jobs; keep enough time for tuning and all repeated pairs.
+    minutes = 120 if stage == 'smoke' else (4320 if gpus == 16 else
+        (240 if partition == '16V100' and gpus == 1 else 1440))
+    case_seconds = 21600 if stage == 'compare' and gpus >= 4 else 7200
     argv = [sys.executable, '-B', str(Path(__file__).with_name('run.py')), 'submit', '--name', name,
             '--partition', partition, '--gpus', str(gpus), '--stage', stage, '--cpu-binary', binary,
-            '--minutes', str(minutes), '--case-seconds', '7200']
+            '--minutes', str(minutes), '--case-seconds', str(case_seconds)]
     if shape:
         argv += ['--shape', *map(str, shape), '--calibration-run', calibration, '--cpu-smoke-run', smoke]
     subprocess.run(argv, check=True, timeout=300)
