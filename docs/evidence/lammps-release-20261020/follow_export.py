@@ -46,10 +46,12 @@ def main():
         delivery = validate_pair(request['delivery'])
         if delivery['recipe_sha256'] != RECIPE or fingerprint(control) != RECIPE:
             raise ValueError('frozen compiled recipe changed')
+        qos = ('rush-1o2gpu' if delivery['identities']['lammps']['partition'] == '4V100'
+               else 'flood-1o2gpu')
         record = dict(run_id=args.run_id, controller=str(control), recipe_sha256=RECIPE,
                       helper_sha256=checksum(Path(__file__)), pid=os.getpid(),
                       started_at=datetime.now(timezone.utc).isoformat(),
-                      scheduler_override={'SBATCH_QOS': 'rush-1o2gpu',
+                      scheduler_override={'SBATCH_QOS': qos,
                                           'SBATCH_EXPORT': 'HOME=' + str(Path.home())}, commands=[])
         receipt = directory / 'results' / ('follow-export-' + str(os.getpid()) + '.json')
 
@@ -62,7 +64,7 @@ def main():
             # QoS affects queue priority only. Keep the frozen job scripts,
             # target, ranks, GPU counts and science/performance rules intact.
             if argv[0] == 'submit':
-                environment['SBATCH_QOS'] = 'rush-1o2gpu'
+                environment['SBATCH_QOS'] = qos
                 # The frozen NIL script predates explicit restoration of the
                 # real account home, needed by the host Open MPI launcher.
                 environment['SBATCH_EXPORT'] = 'HOME=' + str(Path.home())

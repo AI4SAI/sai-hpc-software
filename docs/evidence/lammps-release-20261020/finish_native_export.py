@@ -188,7 +188,8 @@ def main():
     lines = script.splitlines()
     for index, line in enumerate(lines):
         if line == '#SBATCH --gpus-per-node=4': lines[index] = '#SBATCH --gpus-per-node=1'
-        elif line == '#SBATCH --qos=rush-gpu': lines[index] = '#SBATCH --qos=rush-1o2gpu'
+        elif line == '#SBATCH --qos=rush-gpu':
+            lines[index] = '#SBATCH --qos=' + ('rush-1o2gpu' if args.target == '4V100' else 'flood-1o2gpu')
         elif line.startswith('echo MD_BUILD_RESOURCES '): lines[index] = 'echo MD_RECOVERY_RESOURCES gpus=1 jobs=6'
         elif 'md_container_entry.sh build-lammps ' in line:
             argv = md.container_command(PROJECT / 'containers/base/minimal-v1.sif',
