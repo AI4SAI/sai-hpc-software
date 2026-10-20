@@ -109,6 +109,25 @@ class MultinodeOverheadTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'wrong backing filesystem'):
             multi.check_binary_origin(next_sif, native, 'native')
 
+    def test_topology_evidence_survives_site_exit_cleanup(self):
+        (self.root/'results').mkdir()
+        kept = self.root/'results/nccl-topology.xml'
+        temporary = self.root/'.nccl_topo_123.xml'
+        kept.write_text('<system/>\n')
+        temporary.write_bytes(kept.read_bytes())
+        before = multi.evidence_files(self.root)
+        temporary.unlink()
+        self.assertEqual(before, multi.evidence_files(self.root))
+        self.assertIn('results/nccl-topology.xml', before)
+        self.assertNotIn(temporary.name, before)
+
+    def test_different_topology_copy_is_rejected(self):
+        (self.root/'results').mkdir()
+        (self.root/'results/nccl-topology.xml').write_text('<system/>\n')
+        (self.root/'.nccl_topo_123.xml').write_text('<different/>\n')
+        with self.assertRaisesRegex(ValueError, 'Preserved NCCL topology differs'):
+            multi.evidence_files(self.root)
+
 
 if __name__ == '__main__':
     unittest.main()

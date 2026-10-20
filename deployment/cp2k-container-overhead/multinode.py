@@ -140,6 +140,22 @@ def inventories(root, request):
     return result
 
 
+def evidence_files(root):
+    files = {}
+    for path in root.rglob('*'):
+        if not path.is_file() or not (path.suffix in ('.json', '.txt', '.inp', '.py', '.xml') or
+                                      path.name in ('cp2k.log', 'forces.xyz')):
+            continue
+        digest = checksum(path)
+        if path.parent == root and re.fullmatch(r'\.nccl_topo_\d+\.xml', path.name):
+            # The site's mapping script deletes its temporary topology at EXIT.
+            # The batch script uses and retains the identical permanent copy.
+            require(checksum(root/'results/nccl-topology.xml') == digest, 'Preserved NCCL topology differs')
+            continue
+        files[str(path.relative_to(root))] = digest
+    return files
+
+
 def execute(root):
     request = json.loads((root/'request.json').read_text())
     cases = request['cases']
@@ -196,8 +212,7 @@ def execute(root):
     require(common.signature(Path(request['image'])) == request['image_stat'], 'SIF changed during experiment')
     result = dict(passed=True, request=request, inventory=inventory, probes=probes,
                   samples=samples, placements=placements, summary=summaries(samples, cases))
-    result['files'] = {str(p.relative_to(root)): checksum(p) for p in root.rglob('*') if p.is_file() and
-        (p.suffix in ('.json', '.txt', '.inp', '.py', '.xml') or p.name in ('cp2k.log', 'forces.xyz'))}
+    result['files'] = evidence_files(root)
     write(root/'results/evidence.json', result)
     (root/'results/passed.txt').write_text(MARKER+'\n')
     print(MARKER, flush=True)
