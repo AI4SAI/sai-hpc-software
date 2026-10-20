@@ -40,6 +40,24 @@ class PerformanceTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 parse_engine_time(text, 100)
 
+    def test_live_post_no_warmup_is_excluded_from_measured_engine_time(self):
+        stdout = ('Loop time of 0.108853 on 1 procs for 1 steps with 2058 atoms\n'
+                  'Loop time of 10.1153 on 1 procs for 100 steps with 2058 atoms\n')
+        timing = parse_engine_time(stdout, 100)
+        self.assertEqual(timing['engine_seconds'], 10.1153)
+        self.assertEqual(timing['ranks'], 1)
+        self.assertEqual(timing['steps'], 100)
+
+    def test_warmup_must_match_fixed_input_and_allocation(self):
+        measured = output(100, 10)
+        for warmup in (output(2, 0.1), output(1, 0.1).replace('2 procs', '1 procs'),
+                       output(1, 0.1).replace('2058 atoms', '6 atoms'), output(1, 'nan'),
+                       output(1, -1), output(1, 0.1) * 2, 'Loop time of malformed\n'):
+            with self.subTest(warmup=warmup), self.assertRaises(ValueError):
+                parse_engine_time(warmup + measured, 100)
+        with self.assertRaises(ValueError):
+            parse_engine_time(measured + output(1, 0.1), 100)
+
     def test_fairness_device_science_interval_and_identity_gates(self):
         frozen = self.frozen()
         for change in [dict(node='other'), dict(resources={'ranks': 1}), dict(input_sha256='b' * 64),

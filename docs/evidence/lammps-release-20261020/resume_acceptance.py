@@ -15,7 +15,8 @@ BUILDS = {
     '16V100': 'md-39403084059-1-2026-10-20-5fef92e054bacdaf-export',
     '4V100': 'md-39403117741-1-2026-10-20-9bf6ae82814537d7-export',
 }
-REASON = 'Restore baseline wheel backend plugin lookup and requested OpenMP threads; restore isolated MPI HOME'
+REASON = ('Restore baseline wheel backend plugin lookup and requested OpenMP threads; '
+          'restore isolated MPI HOME; parse the documented one-step LAMMPS warmup separately')
 
 
 def main():
@@ -78,6 +79,8 @@ def main():
             directory = ROOT / 'runtime-tests' / run
             if not directory.exists():
                 return False
+            if {path.name for path in directory.iterdir()} == {'recovery-attempts'}:
+                return False  # An explicit setup-only recovery retained the failed attempt.
             request = json.loads((directory / 'request.json').read_text())
             module = science if stage == 'science' else performance
             expected = dict(run_id=run, build_run=build_run, delivery=delivery,

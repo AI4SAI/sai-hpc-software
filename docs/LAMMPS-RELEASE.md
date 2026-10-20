@@ -9,8 +9,10 @@ No scientifically accepted or published delivery of this release exists yet.
 Both 4V100 and 16V100 release SIFs pass complete build verification, including
 native inventory and permissions. Each also passed candidate-only two-node
 numerical checks against the locked upstream reference, across TF/PT/JAX and
-Python/LAMMPS. Paired system-baseline science, performance and publication
-remain pending; the baseline launcher needed a backend-plugin path repair.
+Python/LAMMPS. 16V100 also passed paired system-baseline science. Performance
+and publication remain pending: baseline plugin lookup is repaired, and the
+timing parser now distinguishes LAMMPS's printed one-step warmup. 8V100V0's
+first release build has been dispatched.
 Both use the qualified CP2K overlay driver; see the live restart below.
 
 The current implementation builds both programs in one Apptainer overlay,
@@ -410,3 +412,47 @@ permission checks; the preserved cluster log records that setup error. The
 successful run used normal 022 test-fixture permissions. Recovery tests reject
 changed source/build/runtime bindings and mismatched performance evidence;
 the baseline startup test executes the actual shell command.
+
+### Paired science passed; repair performance warmup parsing
+
+The pinned acceptance controller `0ab58dd`, recipe `795dbd80e2a4`, completed
+16V100 science job `1881404` in 2:34 on `16v100n[65-66]`. All 48 records
+(baseline/candidate, TF/PT/JAX, Python/LAMMPS, warmup plus three trials) passed
+numeric, PLUMED and MPI-distribution checks.
+[Read-only raw revalidation](evidence/lammps-release-20261020/16v-paired-science-1881404.json)
+also passed; the small-case elapsed times are not performance acceptance.
+[The launch receipt](evidence/lammps-release-20261020/acceptance-restart-0ab58dd.json)
+pins the original compiled recipe and separate acceptance snapshot.
+
+Performance job `1881437` ran the installed baseline for 100 steps on the
+2,058-atom input in 10.1153 engine seconds, but failed before freezing the
+calibration. LAMMPS prints a `Loop time` even for `run 1 post no`: the preceding
+one-step warmup took 0.108853 seconds. The parser had required exactly one
+line. It now accepts the exact one-step warmup followed by one measured
+interval, checks both atom/rank counts and finite positive timings, and
+excludes the warmup from the reported time. Extra intervals, a different
+warmup or inconsistent allocation still fail. Read-only revalidation of the
+failed job's 2,058-atom energy, every force, virial and PLUMED data passed.
+
+The [setup recovery](evidence/lammps-release-20261020/prepare_timing_retry.py)
+requires that exact terminal parser failure, a successful process exit, no
+frozen calibration and no comparison records. It archives the original task
+under `recovery-attempts/1881437` with
+[file hashes and the original controller binding](evidence/lammps-release-20261020/16v-performance-setup-recovery.json).
+This preserves the measured comparison's one permitted regression retest.
+Queued 4V100 science `1881402` was cancelled before execution so the next
+snapshot can perform both science and performance consistently. Its frozen
+task and scheduler record remain retained. The original 16V100 science is
+also retained; the new snapshot must rerun science before performance.
+
+The [230-test MD run](evidence/lammps-release-20261020/md-warmup-timing-tests.log)
+passed 228 tests with two optional upstream-cache skips. GitHub's preceding
+`0ab58dd` full suite passed 862 tests with two skips (864 total).
+
+The 8V100V0 release build is
+[workflow 39427644750](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39427644750),
+using compiler/version/overlay/packaging fixes from `0ab58dd` and the same
+locked stable pair. The partition allows both stage QoS values and allocates
+six logical CPUs per GPU. This compilation remains valid; its frozen
+acceptance snapshot predates the timing-parser repair and will need an
+explicit recovery before performance acceptance.
