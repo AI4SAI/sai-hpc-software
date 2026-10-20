@@ -1,5 +1,11 @@
 # Experimental DeePMD-kit / LAMMPS tracking
 
+> Current release takeover: see [LAMMPS-RELEASE.md](LAMMPS-RELEASE.md) for the
+> October 20 live audit, the latest stable source pair and the integrated
+> workflow restart. The older narrative below documents historical stages;
+> its "not pushed" and "no publisher" statements are not the current
+> `fix/workflow-closure` implementation status.
+
 Work lives on `feat/deepmd-lammps-tracking`, not the production ABACUS branch.
 This is an **unpublished experimental pipeline**, not a tested replacement for
 the installed software. Daily builds remain unpublished candidates until all

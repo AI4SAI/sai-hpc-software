@@ -1,0 +1,212 @@
+{
+  "audited_at": "2026-10-20T06:57:39.965207+00:00",
+  "root": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps",
+  "history_validation": [
+    {
+      "controller": "daily",
+      "valid_identities": 98,
+      "errors": [
+        {
+          "run": "md-20260921-native-recovery-03",
+          "error": "identity does not match its canonical delivery contract",
+          "type": "ValueError"
+        },
+        {
+          "run": "md-20260922-native-recovery-04",
+          "error": "identity does not match its canonical delivery contract",
+          "type": "ValueError"
+        },
+        {
+          "run": "md-20260922-native-recovery-05",
+          "error": "identity does not match its canonical delivery contract",
+          "type": "ValueError"
+        },
+        {
+          "run": "md-20260922-native-recovery-08",
+          "error": "identity does not match its canonical delivery contract",
+          "type": "ValueError"
+        },
+        {
+          "run": "md-20260922-native-recovery-10",
+          "error": "identity does not match its canonical delivery contract",
+          "type": "ValueError"
+        },
+        {
+          "run": "md-20260922-native-recovery-12",
+          "error": "identity does not match its canonical delivery contract",
+          "type": "ValueError"
+        },
+        {
+          "run": "md-20260922-native-recovery-13",
+          "error": "identity does not match its canonical delivery contract",
+          "type": "ValueError"
+        },
+        {
+          "run": "md-20260922-native-recovery-14",
+          "error": "identity does not match its canonical delivery contract",
+          "type": "ValueError"
+        }
+      ]
+    },
+    {
+      "controller": "closure",
+      "valid_identities": 114,
+      "errors": []
+    }
+  ],
+  "latest_development": {
+    "status.json": {
+      "job": "1856547",
+      "state": "FAILED",
+      "exit_code": "1:0",
+      "build_verified": false,
+      "scientific_verified": false,
+      "published": false,
+      "stage_jobs": {
+        "deepmd": "1856546",
+        "lammps": "1856547"
+      },
+      "stage_job_script_sha256": {
+        "deepmd": "6aba348f319af22a244f1e85c9083d9ba2c3036650a2a31a8fca5eedf98c4b57",
+        "lammps": "801de57019392f94f81aae1950f4a2054f78d43ed5f3a529500acf2a96c11e80"
+      }
+    },
+    "deepmd-status.json": {
+      "job": "1856546",
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "build_verified": false,
+      "scientific_verified": false,
+      "published": false,
+      "stage_jobs": {
+        "deepmd": "1856546",
+        "lammps": "1856547"
+      },
+      "stage_job_script_sha256": {
+        "deepmd": "6aba348f319af22a244f1e85c9083d9ba2c3036650a2a31a8fca5eedf98c4b57",
+        "lammps": "801de57019392f94f81aae1950f4a2054f78d43ed5f3a529500acf2a96c11e80"
+      }
+    },
+    "lammps_log_tail": "--       Host Serial: NONE\n-- \n-- Architectures:\n--  VOLTA70\n-- Found CUDAToolkit: /opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/include (found version \"12.9.86\")\n-- Found OpenMP_CXX: -fopenmp (found suitable version \"4.5\", minimum required is \"3.0\")\n-- Found OpenMP: TRUE (found suitable version \"4.5\", minimum required is \"3.0\") found components: CXX\n-- Using bundled desul_atomics copy (desul/desul@83d26f34db50b4fefe30ed4db38b10e04c7a9384)\n-- Performing Test KOKKOS_LINK_OPTIONS_CHECK\n-- Performing Test KOKKOS_LINK_OPTIONS_CHECK - Success\n-- Performing Test KOKKOS_COMPILE_OPTIONS_CHECK\n-- Performing Test KOKKOS_COMPILE_OPTIONS_CHECK - Success\n-- Using bundled mdspan copy (kokkos/mdspan@5d4eb209c77f4744980c0b0c2af44636cc81b08b)\n-- Kokkos Backends: OPENMP;CUDA\nCMake Error at /opt/devtools/cmake/3.31.6/share/cmake-3.31/Modules/Internal/CMakeCUDAArchitecturesValidate.cmake:9 (message):\n  CMAKE_CUDA_ARCHITECTURES:\n\n    sm_70\n\n  is not one of the following:\n\n    * a semicolon-separated list of integers, each optionally\n      followed by '-real' or '-virtual'\n    * a special value: all, all-major, native\n\nCall Stack (most recent call first):\n  /opt/devtools/cmake/3.31.6/share/cmake-3.31/Modules/CMakeDetermineCUDACompiler.cmake:112 (cmake_cuda_architectures_validate)\n  Modules/Packages/GPU.cmake:67 (enable_language)\n  CMakeLists.txt:762 (include)\n\n\n-- Configuring incomplete, errors occurred!"
+  },
+  "slurm_accounting": "JobID|Partition|State|ExitCode|Elapsed|AllocCPUS|NodeList\n1856546|16V100|COMPLETED|0:0|02:56:57|8|16v100n35\n1856547|16V100|FAILED|1:0|00:09:01|32|16v100n52\n",
+  "queue": "       JOBID  PARTITION                                          NAME      STATE       TIME               NODELIST(REASON)\n     1871044     16V100  cp2k-direct-39365139034-16v100-avx2-water216    RUNNING    1:09:16                      16v100n07\n     1872055    8V100V0 cp2k-direct-39365139034-8v100v0-avx512-water2    RUNNING      18:09                     8v100v0n02\n",
+  "historical_sifs": [
+    {
+      "path": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/containers/software/deepmd-lammps/d7313de8f3c90f0be1eddcf1fa384762c6dba45336149e1545c18a33a3a1c2f5/64e5a0fa63cb76663e9151b03abceaf27cb8dab2eaba79a98e74701c15fcd7b5/16V100/md-20260922-native-recovery-14.sif",
+      "size": 471130112
+    }
+  ],
+  "historical_build_receipt": {
+    "artifact": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/containers/software/deepmd-lammps/d7313de8f3c90f0be1eddcf1fa384762c6dba45336149e1545c18a33a3a1c2f5/64e5a0fa63cb76663e9151b03abceaf27cb8dab2eaba79a98e74701c15fcd7b5/16V100/md-20260922-native-recovery-14.sif",
+    "artifact_sha256": "a4db8957072c4db679cd33637ed51e46679ce6b73e16f932740e3abf996bb4af",
+    "build_verified": true,
+    "delivery": {
+      "identities": {
+        "deepmd-kit": {
+          "build_id": "master-2026-09-20-g1313650a7ecd-r64e5a0fa63cb-s8ee8c7ef2080",
+          "cpu_arch": "znver3",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-09-20-g1313650a7ecd-r64e5a0fa63cb-s8ee8c7ef2080/16V100",
+          "partition": "16V100",
+          "recipe_sha256": "64e5a0fa63cb76663e9151b03abceaf27cb8dab2eaba79a98e74701c15fcd7b5",
+          "repository": "deepmodeling/deepmd-kit",
+          "schema": 2,
+          "software": "deepmd-kit",
+          "source_ref": "master",
+          "source_sha": "1313650a7ecd3ee29ccf5b3d04ff499e59248889",
+          "source_version": "master-2026-09-20",
+          "stack_digest": "8ee8c7ef2080eb6411f207fed95adae2e1987c7a4fff05459d77a35b45407e29",
+          "stack_sources": {
+            "deepmd-kit": "1313650a7ecd3ee29ccf5b3d04ff499e59248889",
+            "lammps": "c8bd2ae5927ee236a8892dbd51c18a92cc9c33cf"
+          },
+          "target": "16v100-avx2",
+          "track": "development",
+          "version_label": "master-2026-09-20"
+        },
+        "lammps": {
+          "build_id": "develop-2026-09-15-gc8bd2ae5927e-r64e5a0fa63cb-s8ee8c7ef2080",
+          "cpu_arch": "znver3",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/lammps/lammps-development-develop-2026-09-15-gc8bd2ae5927e-r64e5a0fa63cb-s8ee8c7ef2080/16V100",
+          "partition": "16V100",
+          "recipe_sha256": "64e5a0fa63cb76663e9151b03abceaf27cb8dab2eaba79a98e74701c15fcd7b5",
+          "repository": "lammps/lammps",
+          "schema": 2,
+          "software": "lammps",
+          "source_ref": "develop",
+          "source_sha": "c8bd2ae5927ee236a8892dbd51c18a92cc9c33cf",
+          "source_version": "develop-2026-09-15",
+          "stack_digest": "8ee8c7ef2080eb6411f207fed95adae2e1987c7a4fff05459d77a35b45407e29",
+          "stack_sources": {
+            "deepmd-kit": "1313650a7ecd3ee29ccf5b3d04ff499e59248889",
+            "lammps": "c8bd2ae5927ee236a8892dbd51c18a92cc9c33cf"
+          },
+          "target": "16v100-avx2",
+          "track": "development",
+          "version_label": "develop-2026-09-15"
+        }
+      },
+      "plan": {
+        "schema": 2,
+        "selection_sha256": "d7313de8f3c90f0be1eddcf1fa384762c6dba45336149e1545c18a33a3a1c2f5",
+        "sources": {
+          "deepmd-kit": {
+            "ref": "master",
+            "repository": "deepmodeling/deepmd-kit",
+            "sha": "1313650a7ecd3ee29ccf5b3d04ff499e59248889",
+            "track": "development",
+            "version": "master-2026-09-20"
+          },
+          "lammps": {
+            "ref": "develop",
+            "repository": "lammps/lammps",
+            "sha": "c8bd2ae5927ee236a8892dbd51c18a92cc9c33cf",
+            "track": "development",
+            "version": "develop-2026-09-15"
+          }
+        },
+        "target": "16v100-avx2",
+        "triggers": [
+          {
+            "companion_selection": "same_track",
+            "software": "deepmd-kit",
+            "track": "development"
+          },
+          {
+            "companion_selection": "same_track",
+            "software": "lammps",
+            "track": "development"
+          }
+        ],
+        "version": "dp-development-1313650a7ecd-lmp-development-c8bd2ae5927e"
+      },
+      "recipe_sha256": "64e5a0fa63cb76663e9151b03abceaf27cb8dab2eaba79a98e74701c15fcd7b5",
+      "schema": 2
+    },
+    "exit_code": "0:0",
+    "job": "1451646",
+    "published": false,
+    "scientific_verified": false,
+    "state": "COMPLETED",
+    "verification_log": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/runs/md-20260922-native-recovery-14/results/slurm-1451646.log",
+    "verification_log_sha256": "3711dfd19e53ad4ee9744be8200d43bfbe05e4d48107905f0bf8c5e03af9e6e1",
+    "verification_markers": [
+      "MD_RUNTIME_PATH_AUDIT_PASSED 29",
+      "MD_SIF_VERIFY_PASSED_SCIENCE_PENDING"
+    ]
+  },
+  "historical_single_node_science": {
+    "evidence_sha256": "10d6a02746824ff7444e35e186cea14b20803769ab61ac167f62a0786277268d",
+    "exit_code": "0:0",
+    "job": "1468679",
+    "published": false,
+    "scientific_verified": true,
+    "state": "COMPLETED"
+  }
+}

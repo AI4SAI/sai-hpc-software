@@ -1,5 +1,12 @@
 # Workflow closure — 2026-10-20
 
+LAMMPS release work is now tracked in [LAMMPS-RELEASE.md](LAMMPS-RELEASE.md).
+The October 20 audit found no accepted `stable_30Sep2026` delivery. The live
+daily dispatcher still runs the old MD feature branch; its release history
+check rejects newer recovery identities, while its development build fails
+CUDA configuration. Restart the stable pair from the integrated controller
+with explicit GCC 14.3.0, first on 16V100, preserving all existing evidence.
+
 The code now connects build, scientific/performance acceptance, native export
 readback and publication. The original private-ELPA CP2K 2026.2 on all four partitions (4V100, 16V100,
 8V100V0 and DSPRHBM) has passed candidate science, native export readback,
