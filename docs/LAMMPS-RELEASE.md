@@ -6,7 +6,8 @@ The latest upstream stable release is `stable_30Sep2026`, commit
 `8de817dd79bfe4525d5d39246a212d833e6dee07`. The paired stable DeePMD-kit is
 `v3.2.0`, commit `8cfd46e37448feca361ff3427a6c2b514ce5a2bb`.
 No accepted or published delivery of this release exists in this workflow.
-There was no MD build in the user's Slurm queue at the audit.
+Fresh release builds are now running with the qualified CP2K overlay driver;
+see the live restart below for exact jobs and observed progress.
 
 The current implementation builds both programs in one Apptainer overlay,
 then exports a SIF and runs separate scientific, performance and publication
@@ -121,8 +122,8 @@ ran commit `c6611e6` and recipe
 `2a57ec0f43aaee1f2a4d5d5b006a0d343728c6cd0afcd0c90c0535c0011bcfbe`.
 GitHub validation passed 840 tests (two optional upstream-cache skips), then
 resolved the intended stable pair. DeePMD job `1873708` completed on
-`16v100n14`; LAMMPS job `1873709` was submitted with `afterok` and waits for
-its four-GPU allocation. Both stages keep their frozen controller and overlay.
+`16v100n14`; LAMMPS job `1873709` later started on `16v100n74` and was stopped
+after the I/O diagnosis below. Both stages keep their frozen controller and overlay.
 [The receipt](evidence/lammps-release-20261020/first-build-progress.json)
 records actual source identities, accounting and compiler messages.
 
@@ -130,8 +131,8 @@ The live build exposed missing release tags in the commit-only source
 transport: the correct DeePMD 3.2.0 source was installed with the fallback
 Python version `0.1.dev1+g8cfd46e37`. This first canary is retained for compile
 diagnostics. Its Actions workflow was intentionally cancelled to prevent its
-automatic acceptance/publication chain; the already submitted Slurm build
-jobs continue. No frozen recipe, old overlay or installation identity is
+automatic acceptance/publication chain; its LAMMPS job initially continued
+for diagnosis and was subsequently stopped. No frozen recipe or installation identity is
 silently rewritten.
 
 The corrected recipe restores a local lightweight tag only after checking
@@ -140,8 +141,8 @@ It rejects conflicting tags, does not tag development snapshots, and checks
 the actual installed DeePMD distribution version after wheel installation
 and again in the final SIF. The source tree is unchanged. Build job names
 include their run ID so Slurm's `singleton` does not serialize unrelated
-partition builds. The corrected release starts on 4V100 while the original
-16V100 diagnostic continues; each partition still compiles natively.
+partition builds. The intermediate 4V100 attempt was cancelled before it ran,
+so the next attempts include both the version and I/O repairs.
 
 [The corrected MD regression run](evidence/lammps-release-20261020/md-tests-release-tags.log)
 passed 214 tests with the two optional upstream-cache skips. A metadata-only
@@ -187,3 +188,43 @@ passed with two optional upstream-cache skips, and all
 passed on the cluster's native home filesystem. The actual MD driver copy and
 configuration passed the shared provenance check before submission:
 [driver preflight](evidence/lammps-release-20261020/driver-preflight.json).
+
+## Live restart with the qualified driver
+
+Both new workflows use commit `9d1985ea5ba0030a5df162a93bff2f4496449d4a`
+and recipe `296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097`:
+
+| Target | Workflow | DeePMD stage | LAMMPS stage |
+| --- | --- | --- | --- |
+| 16V100 | [39403084059](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39403084059) | `1877774`, completed in 14:01 | `1877775`, pre-entry image mount timeout; recovery below |
+| 4V100 | [39403117741](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39403117741) | `1877798`, completed in 7:42 | `1877799`, compiling Kokkos CUDA files at 93% at 18:38 Asia/Shanghai |
+
+Both installed wheels report exactly DeePMD 3.2.0. Both checkouts preserve the
+locked release tag/SHA, and live NVCC commands use GCC 14.3.0 and SM70.
+The 4V100 runner reports cache hits for both exact source commits, with no
+redundant source transfer. GitHub validation ran 845 tests, with 843 passing
+and two optional upstream-cache skips.
+
+SSH samples read the complete job cgroup, including short-lived compiler
+processes. During the six-way DeePMD compilation, 16V100 used 5.710 logical
+CPUs and 4V100 used 5.521. During the 24-way LAMMPS Kokkos compilation, 4V100
+used 19.355 logical CPUs. All samples had unrestricted `cpu.max` and zero
+CPU throttling. The actual running fuse2fs executable and its SHA256 match
+the qualified driver. These short samples demonstrate parallel work; they
+are not whole-build speedup measurements.
+[Raw-derived CPU and driver records](evidence/lammps-release-20261020/driver-live-cpu.json)
+retain the original sample paths and hashes;
+[CI and cache excerpts](evidence/lammps-release-20261020/github-driver-validation.log)
+record the full-suite result and the exact-commit cache hits.
+
+Both DeePMD stages reported an Apptainer driver-unmount timeout. The 4V100
+LAMMPS stage mounted successfully and proceeded through configuration and
+compilation. The 16V100 stage failed during the first mount, before executing
+the container entrypoint. Its retained image has stale free-block/inode
+counters after the unmount timeout. The narrowly scoped
+[retry tool](evidence/lammps-release-20261020/retry_mount_timeout.py) archives
+the original image and failure records, exclusively locks the workspace,
+repairs the filesystem and verifies it read-only, then submits the identical
+LAMMPS script on hold. It records the new handle before release. It retains
+the completed DeePMD stage, source/recipe identities and frozen controller.
+This recovery does not establish final-SIF or scientific acceptance.

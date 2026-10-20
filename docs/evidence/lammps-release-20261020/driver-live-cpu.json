@@ -1,0 +1,899 @@
+{
+  "commit": "9d1985ea5ba0030a5df162a93bff2f4496449d4a",
+  "recipe_sha256": "296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097",
+  "samples": [
+    {
+      "cgroups": [
+        {
+          "final": {
+            "cpu.max": "max 100000",
+            "cpu.stat": "usage_usec 1306768024\nuser_usec 1208229842\nsystem_usec 98538182\nnr_periods 0\nnr_throttled 0\nthrottled_usec 0",
+            "cpuset.cpus": "24-27,88-91",
+            "cpuset.cpus.effective": "24-27,88-91"
+          },
+          "initial": {
+            "cpu.max": "max 100000",
+            "cpu.stat": "usage_usec 1248664922\nuser_usec 1154141469\nsystem_usec 94523453\nnr_periods 0\nnr_throttled 0\nthrottled_usec 0",
+            "cpuset.cpus": "24-27,88-91",
+            "cpuset.cpus.effective": "24-27,88-91"
+          },
+          "logical_cpus_used": 5.709914431522583,
+          "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CBPFW400"
+        }
+      ],
+      "checked_at": "2026-10-20T09:58:32.747568+00:00",
+      "compilers": [
+        {
+          "command": "/opt/devtools/nvidia/cuda-12.9.1/bin/../nvvm/bin/cicc --c++17 --gnu_version=140300 --display_error_number --orig_src_file_name /workspace/deepmd-kit/source/op/pt/dpa4c_graph_compress.cu --orig_src_path_name /workspace/deepmd-kit/source/op/pt/dpa4c_graph_compress.cu --allow_managed --extended-lambda --relaxed_constexpr --diag_suppress=cc_clobber_ignored --diag_suppress=field_without_dll_interface --diag_suppress=base_class_has_different_dll_interface --diag_suppress=dll_interface_conflict_none_as",
+          "cpu_allowed_list": "24-27,88-91",
+          "name": "cicc",
+          "pid": 3371029,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/nvidia/cuda-12.9.1/bin/nvcc -forward-unknown-to-host-compiler -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DGOOGLE_CUDA -DTF_MAJOR_VERSION=2 -DTF_MINOR_VERSION=21 -DTF_PATCH_VERSION=0 -DUSE_C10D_GLOO -DUSE_C10D_NCCL -DUSE_DISTRIBUTED -DUSE_MPI -DUSE_NVSHMEM -DUSE_RPC -DUSE_TENSORPIPE -D_GLIBCXX_USE_CXX11_ABI=1 -Ddeepmd_op_pt_EXPORTS --options-file CMakeFiles/deepmd_op_pt.dir/includes_CUDA.rsp -DONNX_NAMESPACE=onnx_c2 -gencode arch=compute_70,code=sm_70 -Xcudafe --diag_suppress=cc_clobb",
+          "cpu_allowed_list": "24-27,88-91",
+          "name": "nvcc",
+          "pid": 3368473,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "/opt/devtools/nvidia/cuda-12.9.1/bin/nvcc -forward-unknown-to-host-compiler -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DGOOGLE_CUDA -DTF_MAJOR_VERSION=2 -DTF_MINOR_VERSION=21 -DTF_PATCH_VERSION=0 -DUSE_C10D_GLOO -DUSE_C10D_NCCL -DUSE_DISTRIBUTED -DUSE_MPI -DUSE_NVSHMEM -DUSE_RPC -DUSE_TENSORPIPE -D_GLIBCXX_USE_CXX11_ABI=1 -Ddeepmd_op_pt_EXPORTS --options-file CMakeFiles/deepmd_op_pt.dir/includes_CUDA.rsp -DONNX_NAMESPACE=onnx_c2 -gencode arch=compute_70,code=sm_70 -Xcudafe --diag_suppress=cc_clobb",
+          "cpu_allowed_list": "24-27,88-91",
+          "name": "nvcc",
+          "pid": 3370526,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "/opt/devtools/nvidia/cuda-12.9.1/bin/nvcc -forward-unknown-to-host-compiler -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DGOOGLE_CUDA -DTF_MAJOR_VERSION=2 -DTF_MINOR_VERSION=21 -DTF_PATCH_VERSION=0 -DUSE_C10D_GLOO -DUSE_C10D_NCCL -DUSE_DISTRIBUTED -DUSE_MPI -DUSE_NVSHMEM -DUSE_RPC -DUSE_TENSORPIPE -D_GLIBCXX_USE_CXX11_ABI=1 -Ddeepmd_op_pt_EXPORTS --options-file CMakeFiles/deepmd_op_pt.dir/includes_CUDA.rsp -DONNX_NAMESPACE=onnx_c2 -gencode arch=compute_70,code=sm_70 -Xcudafe --diag_suppress=cc_clobb",
+          "cpu_allowed_list": "24-27,88-91",
+          "name": "nvcc",
+          "pid": 3370759,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "/opt/devtools/nvidia/cuda-12.9.1/bin/nvcc -forward-unknown-to-host-compiler -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DGOOGLE_CUDA -DTF_MAJOR_VERSION=2 -DTF_MINOR_VERSION=21 -DTF_PATCH_VERSION=0 -DUSE_C10D_GLOO -DUSE_C10D_NCCL -DUSE_DISTRIBUTED -DUSE_MPI -DUSE_NVSHMEM -DUSE_RPC -DUSE_TENSORPIPE -D_GLIBCXX_USE_CXX11_ABI=1 -Ddeepmd_op_pt_EXPORTS --options-file CMakeFiles/deepmd_op_pt.dir/includes_CUDA.rsp -DONNX_NAMESPACE=onnx_c2 -gencode arch=compute_70,code=sm_70 -Xcudafe --diag_suppress=cc_clobb",
+          "cpu_allowed_list": "24-27,88-91",
+          "name": "nvcc",
+          "pid": 3371182,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "/opt/devtools/nvidia/cuda-12.9.1/bin/../nvvm/bin/cicc --c++17 --gnu_version=140300 --display_error_number --orig_src_file_name /workspace/deepmd-kit/source/op/pt/dpa4c_graph_compress_c128.cu --orig_src_path_name /workspace/deepmd-kit/source/op/pt/dpa4c_graph_compress_c128.cu --allow_managed --extended-lambda --relaxed_constexpr --diag_suppress=cc_clobber_ignored --diag_suppress=field_without_dll_interface --diag_suppress=base_class_has_different_dll_interface --diag_suppress=dll_interface_confli",
+          "cpu_allowed_list": "24-27,88-91",
+          "name": "cicc",
+          "pid": 3371191,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/nvidia/cuda-12.9.1/bin/nvcc -forward-unknown-to-host-compiler -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DGOOGLE_CUDA -DTF_MAJOR_VERSION=2 -DTF_MINOR_VERSION=21 -DTF_PATCH_VERSION=0 -DUSE_C10D_GLOO -DUSE_C10D_NCCL -DUSE_DISTRIBUTED -DUSE_MPI -DUSE_NVSHMEM -DUSE_RPC -DUSE_TENSORPIPE -D_GLIBCXX_USE_CXX11_ABI=1 -Ddeepmd_op_pt_EXPORTS --options-file CMakeFiles/deepmd_op_pt.dir/includes_CUDA.rsp -DONNX_NAMESPACE=onnx_c2 -gencode arch=compute_70,code=sm_70 -Xcudafe --diag_suppress=cc_clobb",
+          "cpu_allowed_list": "24-27,88-91",
+          "name": "nvcc",
+          "pid": 3371221,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -E -quiet -I /workspace/deepmd-kit/source/lib/include -I /opt/devtools/nvidia/cuda-12.9.1/include -I /workspace/deepmd-kit/source/lib/src/gpu/../../include -I /opt/devtools/nvidia/cuda-12.9.1/bin/../targets/x86_64-linux/include -imultiarch x86_64-linux-gnu -D_GNU_SOURCE -D __CUDA_ARCH_LIST__=700 -D __NV_LEGACY_LAUNCH -D __CUDACC__ -D __NVCC__ -D __CUDACC_EXTENDED_LAMBDA__ -D __CUDACC_RELAXED_CONSTEXPR__ -D GOOGLE_CUDA -D TF_",
+          "cpu_allowed_list": "24-27,88-91",
+          "name": "cc1plus",
+          "pid": 3371281,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/nvidia/cuda-12.9.1/bin/nvcc -forward-unknown-to-host-compiler -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DGOOGLE_CUDA -DTF_MAJOR_VERSION=2 -DTF_MINOR_VERSION=21 -DTF_PATCH_VERSION=0 -DUSE_C10D_GLOO -DUSE_C10D_NCCL -DUSE_DISTRIBUTED -DUSE_MPI -DUSE_NVSHMEM -DUSE_RPC -DUSE_TENSORPIPE -D_GLIBCXX_USE_CXX11_ABI=1 -Ddeepmd_op_pt_EXPORTS --options-file CMakeFiles/deepmd_op_pt.dir/includes_CUDA.rsp -DONNX_NAMESPACE=onnx_c2 -gencode arch=compute_70,code=sm_70 -Xcudafe --diag_suppress=cc_clobb",
+          "cpu_allowed_list": "24-27,88-91",
+          "name": "nvcc",
+          "pid": 3371285,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -E -quiet -I /workspace/deepmd-kit/source/lib/include -I /opt/devtools/nvidia/cuda-12.9.1/include -I /workspace/deepmd-kit/source/lib/src/gpu/../../include -I /opt/devtools/nvidia/cuda-12.9.1/bin/../targets/x86_64-linux/include -imultiarch x86_64-linux-gnu -D_GNU_SOURCE -D __CUDA_ARCH__=700 -D __CUDA_ARCH_LIST__=700 -D __NV_LEGACY_LAUNCH -D CUDA_DOUBLE_MATH_FUNCTIONS -D __CUDACC__ -D __NVCC__ -D __CUDACC_EXTENDED_LAMBDA__ -D",
+          "cpu_allowed_list": "24-27,88-91",
+          "name": "cc1plus",
+          "pid": 3371289,
+          "wchan": "0"
+        }
+      ],
+      "drivers": [
+        {
+          "command": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs -f -o allow_other /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 ",
+          "cpu_allowed_list": "24-27,88-91",
+          "executable": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs",
+          "pid": 3365873,
+          "sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10"
+        }
+      ],
+      "job_id": "1877774",
+      "node": "16v100n20.mr-sai.ai",
+      "raw_path": "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/cpu-1877774-driver-r3-1.json",
+      "raw_sha256": "cc841403e79b284c6c59808cb89d965b6f08233fb23be70ce2baa558d314971a",
+      "sample_seconds": 10.175827098079026
+    },
+    {
+      "cgroups": [
+        {
+          "final": {
+            "cpu.max": "max 100000",
+            "cpu.stat": "usage_usec 843956380\nuser_usec 795122586\nsystem_usec 48833794\ncore_sched.force_idle_usec 0\nnr_periods 0\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0",
+            "cpuset.cpus": "0-3,16-19",
+            "cpuset.cpus.effective": "0-3,16-19"
+          },
+          "initial": {
+            "cpu.max": "max 100000",
+            "cpu.stat": "usage_usec 788631499\nuser_usec 742269277\nsystem_usec 46362222\ncore_sched.force_idle_usec 0\nnr_periods 0\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0",
+            "cpuset.cpus": "0-3,16-19",
+            "cpuset.cpus.effective": "0-3,16-19"
+          },
+          "logical_cpus_used": 5.52148286805916,
+          "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CBRH2H00"
+        }
+      ],
+      "checked_at": "2026-10-20T09:58:32.077106+00:00",
+      "compilers": [
+        {
+          "command": "/opt/devtools/nvidia/cuda-12.9.1/bin/nvcc -forward-unknown-to-host-compiler -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DGOOGLE_CUDA -DTF_MAJOR_VERSION=2 -DTF_MINOR_VERSION=21 -DTF_PATCH_VERSION=0 -DUSE_C10D_GLOO -DUSE_C10D_NCCL -DUSE_DISTRIBUTED -DUSE_MPI -DUSE_NVSHMEM -DUSE_RPC -DUSE_TENSORPIPE -D_GLIBCXX_USE_CXX11_ABI=1 -Ddeepmd_op_pt_EXPORTS --options-file CMakeFiles/deepmd_op_pt.dir/includes_CUDA.rsp -DONNX_NAMESPACE=onnx_c2 -gencode arch=compute_70,code=sm_70 -Xcudafe --diag_suppress=cc_clobb",
+          "cpu_allowed_list": "0-3,16-19",
+          "name": "nvcc",
+          "pid": 3893350,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "/opt/devtools/nvidia/cuda-12.9.1/bin/nvcc -forward-unknown-to-host-compiler -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DGOOGLE_CUDA -DTF_MAJOR_VERSION=2 -DTF_MINOR_VERSION=21 -DTF_PATCH_VERSION=0 -DUSE_C10D_GLOO -DUSE_C10D_NCCL -DUSE_DISTRIBUTED -DUSE_MPI -DUSE_NVSHMEM -DUSE_RPC -DUSE_TENSORPIPE -D_GLIBCXX_USE_CXX11_ABI=1 -Ddeepmd_op_pt_EXPORTS --options-file CMakeFiles/deepmd_op_pt.dir/includes_CUDA.rsp -DONNX_NAMESPACE=onnx_c2 -gencode arch=compute_70,code=sm_70 -Xcudafe --diag_suppress=cc_clobb",
+          "cpu_allowed_list": "0-3,16-19",
+          "name": "nvcc",
+          "pid": 3893372,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "/opt/devtools/nvidia/cuda-12.9.1/bin/nvcc -forward-unknown-to-host-compiler -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DGOOGLE_CUDA -DTF_MAJOR_VERSION=2 -DTF_MINOR_VERSION=21 -DTF_PATCH_VERSION=0 -DUSE_C10D_GLOO -DUSE_C10D_NCCL -DUSE_DISTRIBUTED -DUSE_MPI -DUSE_NVSHMEM -DUSE_RPC -DUSE_TENSORPIPE -D_GLIBCXX_USE_CXX11_ABI=1 -Ddeepmd_op_pt_EXPORTS --options-file CMakeFiles/deepmd_op_pt.dir/includes_CUDA.rsp -DONNX_NAMESPACE=onnx_c2 -gencode arch=compute_70,code=sm_70 -Xcudafe --diag_suppress=cc_clobb",
+          "cpu_allowed_list": "0-3,16-19",
+          "name": "nvcc",
+          "pid": 3893384,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "/opt/devtools/nvidia/cuda-12.9.1/bin/../nvvm/bin/cicc --c++17 --gnu_version=140300 --display_error_number --orig_src_file_name /workspace/deepmd-kit/source/op/pt/graph_fitting.cu --orig_src_path_name /workspace/deepmd-kit/source/op/pt/graph_fitting.cu --allow_managed --extended-lambda --relaxed_constexpr --diag_suppress=cc_clobber_ignored --diag_suppress=field_without_dll_interface --diag_suppress=base_class_has_different_dll_interface --diag_suppress=dll_interface_conflict_none_assumed --diag_s",
+          "cpu_allowed_list": "0-3,16-19",
+          "name": "cicc",
+          "pid": 3893440,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -quiet -I /workspace/deepmd-kit/source/lib/include -I /opt/devtools/nvidia/cuda-12.9.1/include -I /workspace/deepmd-kit/source/lib/src/gpu/../../include -imultiarch x86_64-linux-gnu -MD CMakeFiles/deepmd_op_pt.dir/tabulate_multi_device.cc.d -MF CMakeFiles/deepmd_op_pt.dir/tabulate_multi_device.cc.o.d -MT op/pt/CMakeFiles/deepmd_op_pt.dir/tabulate_multi_device.cc.o -D_GNU_SOURCE -D_REENTRANT -D GOOGLE_CUDA -D TF_MAJOR_VERSION",
+          "cpu_allowed_list": "0-3,16-19",
+          "name": "cc1plus",
+          "pid": 3893443,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/nvidia/cuda-12.9.1/bin/../nvvm/bin/cicc --c++17 --gnu_version=140300 --display_error_number --orig_src_file_name /workspace/deepmd-kit/source/op/pt/edge_force_virial.cu --orig_src_path_name /workspace/deepmd-kit/source/op/pt/edge_force_virial.cu --allow_managed --extended-lambda --relaxed_constexpr --diag_suppress=cc_clobber_ignored --diag_suppress=field_without_dll_interface --diag_suppress=base_class_has_different_dll_interface --diag_suppress=dll_interface_conflict_none_assumed ",
+          "cpu_allowed_list": "0-3,16-19",
+          "name": "cicc",
+          "pid": 3893448,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/nvidia/cuda-12.9.1/bin/../nvvm/bin/cicc --c++17 --gnu_version=140300 --display_error_number --orig_src_file_name /workspace/deepmd-kit/source/op/pt/dpa1_graph_energy_force.cu --orig_src_path_name /workspace/deepmd-kit/source/op/pt/dpa1_graph_energy_force.cu --allow_managed --extended-lambda --relaxed_constexpr --diag_suppress=cc_clobber_ignored --diag_suppress=field_without_dll_interface --diag_suppress=base_class_has_different_dll_interface --diag_suppress=dll_interface_conflict_n",
+          "cpu_allowed_list": "0-3,16-19",
+          "name": "cicc",
+          "pid": 3893450,
+          "wchan": "0"
+        }
+      ],
+      "drivers": [
+        {
+          "command": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs -f -o allow_other /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 ",
+          "cpu_allowed_list": "0-3,16-19",
+          "executable": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs",
+          "pid": 3891303,
+          "sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10"
+        }
+      ],
+      "job_id": "1877798",
+      "node": "4v100n15.mr-sai.ai",
+      "raw_path": "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/cpu-1877798-driver-r3-1.json",
+      "raw_sha256": "025fd03b12770cd604b9b6e8dc2e27c56ef514551b3c4aec3f7ad3ab59b46c3a",
+      "sample_seconds": 10.019931660033762
+    },
+    {
+      "cgroups": [
+        {
+          "final": {
+            "cpu.max": "max 100000",
+            "cpu.stat": "usage_usec 2685123\nuser_usec 797177\nsystem_usec 1887946\ncore_sched.force_idle_usec 0\nnr_periods 0\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0",
+            "cpuset.cpus": "0-31",
+            "cpuset.cpus.effective": "0-31"
+          },
+          "initial": {
+            "cpu.max": "max 100000",
+            "cpu.stat": "usage_usec 2677286\nuser_usec 790247\nsystem_usec 1887039\ncore_sched.force_idle_usec 0\nnr_periods 0\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0",
+            "cpuset.cpus": "0-31",
+            "cpuset.cpus.effective": "0-31"
+          },
+          "logical_cpus_used": 0.0007830954852109235,
+          "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CBRH2Y00"
+        }
+      ],
+      "checked_at": "2026-10-20T10:04:11.689595+00:00",
+      "compilers": [],
+      "drivers": [
+        {
+          "command": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs -f -o allow_other /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 ",
+          "cpu_allowed_list": "0-31",
+          "executable": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs",
+          "pid": 1303681,
+          "sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10"
+        }
+      ],
+      "job_id": "1877799",
+      "node": "4v100n35.mr-sai.ai",
+      "raw_path": "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/cpu-1877799-driver-r3-1.json",
+      "raw_sha256": "0a7bb04e43ed94ef1f125d7a7999154ce23b4814110ccb6de2bb03db18edb8ac",
+      "sample_seconds": 10.007719554007053
+    },
+    {
+      "cgroups": [
+        {
+          "final": {
+            "cpu.max": "max 100000",
+            "cpu.stat": "usage_usec 360256876\nuser_usec 303220930\nsystem_usec 57035946\ncore_sched.force_idle_usec 0\nnr_periods 0\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0",
+            "cpuset.cpus": "0-31",
+            "cpuset.cpus.effective": "0-31"
+          },
+          "initial": {
+            "cpu.max": "max 100000",
+            "cpu.stat": "usage_usec 302620333\nuser_usec 254019934\nsystem_usec 48600398\ncore_sched.force_idle_usec 0\nnr_periods 0\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0",
+            "cpuset.cpus": "0-31",
+            "cpuset.cpus.effective": "0-31"
+          },
+          "logical_cpus_used": 5.741757074379836,
+          "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CBRH2Y00"
+        }
+      ],
+      "checked_at": "2026-10-20T10:05:44.648071+00:00",
+      "compilers": [
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DKOKKOS_DEPENDENCE -I/workspace/lammps-build/lib/kokkos/containers/src -I/workspace/lammps/lib/kokkos/containers/src -I/workspace/lammps-build/lib/kokkos -I/workspace/lammps-build/lib/kokkos/core/src -I/workspace/lammps/lib/kokkos/core/src -O3 -DNDEBUG -std c++20 -Xcompiler -isystem,/workspace/lammps/lib/kokkos/",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1311598,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_LAMMPS -DCOLVARS_MPI -DLEPTON -DLEPTON_BUILDING_STATIC_LIBRARY=1 -DLEPTON_USE_JIT=1 -DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX -D_MPICC_H -I/workspace/lammps/lib/colvars -I/workspace/lammps/src -I/workspace/lammps/lib/lepton/include -I/workspace/lammps/lib/lepton -O",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1312374,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DCUDA_MPS_SUPPORT -DLAMMPS_SMALLBIG -DMPICH_SKIP_MPICXX -DMPI_GERYON -DOMPI_SKIP_MPICXX -DUCL_NO_EXIT -DUSE_CUDA -D_MPICC_H -D_SINGLE_DOUBLE -I/workspace/lammps-build/lib/gpu -I/opt/devtools/nvidia/cuda-12.9.1/include -I/workspace/lammps/src/GPU -I/workspace/lammps/lib/gpu/include -O3 -DNDEBUG -std c++20 -Xcompiler -isystem,/opt/devtools/openmpi/openmpi-5",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1312448,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_LAMMPS -DCOLVARS_MPI -DLEPTON -DLEPTON_BUILDING_STATIC_LIBRARY=1 -DLEPTON_USE_JIT=1 -DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX -D_MPICC_H -I/workspace/lammps/lib/colvars -I/workspace/lammps/src -I/workspace/lammps/lib/lepton/include -I/workspace/lammps/lib/lepton -O",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1312514,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DCUDA_MPS_SUPPORT -DLAMMPS_SMALLBIG -DMPICH_SKIP_MPICXX -DMPI_GERYON -DOMPI_SKIP_MPICXX -DUCL_NO_EXIT -DUSE_CUDA -D_MPICC_H -D_SINGLE_DOUBLE -I/workspace/lammps-build/lib/gpu -I/opt/devtools/nvidia/cuda-12.9.1/include -I/workspace/lammps/src/GPU -I/workspace/lammps/lib/gpu/include -O3 -DNDEBUG -std c++20 -Xcompiler -isystem,/opt/devtools/openmpi/openmpi-5",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1312568,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DCUDA_MPS_SUPPORT -DLAMMPS_SMALLBIG -DMPICH_SKIP_MPICXX -DMPI_GERYON -DOMPI_SKIP_MPICXX -DUCL_NO_EXIT -DUSE_CUDA -D_MPICC_H -D_SINGLE_DOUBLE -I/workspace/lammps-build/lib/gpu -I/opt/devtools/nvidia/cuda-12.9.1/include -I/workspace/lammps/src/GPU -I/workspace/lammps/lib/gpu/include -O3 -DNDEBUG -std c++20 -Xcompiler -isystem,/opt/devtools/openmpi/openmpi-5",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1312631,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_LAMMPS -DCOLVARS_MPI -DLEPTON -DLEPTON_BUILDING_STATIC_LIBRARY=1 -DLEPTON_USE_JIT=1 -DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX -D_MPICC_H -I/workspace/lammps/lib/colvars -I/workspace/lammps/src -I/workspace/lammps/lib/lepton/include -I/workspace/lammps/lib/lepton -O",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1312714,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_LAMMPS -DCOLVARS_MPI -DLEPTON -DLEPTON_BUILDING_STATIC_LIBRARY=1 -DLEPTON_USE_JIT=1 -DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX -D_MPICC_H -I/workspace/lammps/lib/colvars -I/workspace/lammps/src -I/workspace/lammps/lib/lepton/include -I/workspace/lammps/lib/lepton -O",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1312814,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DCUDA_MPS_SUPPORT -DLAMMPS_SMALLBIG -DMPICH_SKIP_MPICXX -DMPI_GERYON -DOMPI_SKIP_MPICXX -DUCL_NO_EXIT -DUSE_CUDA -D_MPICC_H -D_SINGLE_DOUBLE -I/workspace/lammps-build/lib/gpu -I/opt/devtools/nvidia/cuda-12.9.1/include -I/workspace/lammps/src/GPU -I/workspace/lammps/lib/gpu/include -O3 -DNDEBUG -std c++20 -Xcompiler -isystem,/opt/devtools/openmpi/openmpi-5",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1312816,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DCUDA_MPS_SUPPORT -DLAMMPS_SMALLBIG -DMPICH_SKIP_MPICXX -DMPI_GERYON -DOMPI_SKIP_MPICXX -DUCL_NO_EXIT -DUSE_CUDA -D_MPICC_H -D_SINGLE_DOUBLE -I/workspace/lammps-build/lib/gpu -I/opt/devtools/nvidia/cuda-12.9.1/include -I/workspace/lammps/src/GPU -I/workspace/lammps/lib/gpu/include -O3 -DNDEBUG -std c++20 -Xcompiler -isystem,/opt/devtools/openmpi/openmpi-5",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1312867,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_LAMMPS -DCOLVARS_MPI -DLEPTON -DLEPTON_BUILDING_STATIC_LIBRARY=1 -DLEPTON_USE_JIT=1 -DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX -D_MPICC_H -I/workspace/lammps/lib/colvars -I/workspace/lammps/src -I/workspace/lammps/lib/lepton/include -I/workspace/lammps/lib/lepton -O",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1312946,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_LAMMPS -DCOLVARS_MPI -DLEPTON -DLEPTON_BUILDING_STATIC_LIBRARY=1 -DLEPTON_USE_JIT=1 -DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX -D_MPICC_H -I/workspace/lammps/lib/colvars -I/workspace/lammps/src -I/workspace/lammps/lib/lepton/include -I/workspace/lammps/lib/lepton -O",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1313001,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_LAMMPS -DCOLVARS_MPI -DLEPTON -DLEPTON_BUILDING_STATIC_LIBRARY=1 -DLEPTON_USE_JIT=1 -DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX -D_MPICC_H -I/workspace/lammps/lib/colvars -I/workspace/lammps/src -I/workspace/lammps/lib/lepton/include -I/workspace/lammps/lib/lepton -O",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1313086,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DCUDA_MPS_SUPPORT -DLAMMPS_SMALLBIG -DMPICH_SKIP_MPICXX -DMPI_GERYON -DOMPI_SKIP_MPICXX -DUCL_NO_EXIT -DUSE_CUDA -D_MPICC_H -D_SINGLE_DOUBLE -I/workspace/lammps-build/lib/gpu -I/opt/devtools/nvidia/cuda-12.9.1/include -I/workspace/lammps/src/GPU -I/workspace/lammps/lib/gpu/include -O3 -DNDEBUG -std c++20 -Xcompiler -isystem,/opt/devtools/openmpi/openmpi-5",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1313105,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DCUDA_MPS_SUPPORT -DLAMMPS_SMALLBIG -DMPICH_SKIP_MPICXX -DMPI_GERYON -DOMPI_SKIP_MPICXX -DUCL_NO_EXIT -DUSE_CUDA -D_MPICC_H -D_SINGLE_DOUBLE -I/workspace/lammps-build/lib/gpu -I/opt/devtools/nvidia/cuda-12.9.1/include -I/workspace/lammps/src/GPU -I/workspace/lammps/lib/gpu/include -O3 -DNDEBUG -std c++20 -Xcompiler -isystem,/opt/devtools/openmpi/openmpi-5",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1313113,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -E -quiet -I /workspace/lammps-build/lib/kokkos/containers/src -I /workspace/lammps/lib/kokkos/containers/src -I /workspace/lammps-build/lib/kokkos -I /workspace/lammps-build/lib/kokkos/core/src -I /workspace/lammps/lib/kokkos/core/src -I /opt/devtools/nvidia/cuda-12.9.1/bin/../targets/x86_64-linux/include -imultiarch x86_64-linux-gnu -D_GNU_SOURCE -D_REENTRANT -D __CUDA_ARCH__=700 -D __CUDA_ARCH_LIST__=700 -D __NV_LEGACY_LA",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1313129,
+          "wchan": "request_wait_answer"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DCUDA_MPS_SUPPORT -DLAMMPS_SMALLBIG -DMPICH_SKIP_MPICXX -DMPI_GERYON -DOMPI_SKIP_MPICXX -DUCL_NO_EXIT -DUSE_CUDA -D_MPICC_H -D_SINGLE_DOUBLE -I/workspace/lammps-build/lib/gpu -I/opt/devtools/nvidia/cuda-12.9.1/include -I/workspace/lammps/src/GPU -I/workspace/lammps/lib/gpu/include -O3 -DNDEBUG -std c++20 -Xcompiler -isystem,/opt/devtools/openmpi/openmpi-5",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1313138,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DCUDA_MPS_SUPPORT -DLAMMPS_SMALLBIG -DMPICH_SKIP_MPICXX -DMPI_GERYON -DOMPI_SKIP_MPICXX -DUCL_NO_EXIT -DUSE_CUDA -D_MPICC_H -D_SINGLE_DOUBLE -I/workspace/lammps-build/lib/gpu -I/opt/devtools/nvidia/cuda-12.9.1/include -I/workspace/lammps/src/GPU -I/workspace/lammps/lib/gpu/include -O3 -DNDEBUG -std c++20 -Xcompiler -isystem,/opt/devtools/openmpi/openmpi-5",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1313191,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_LAMMPS -DCOLVARS_MPI -DLEPTON -DLEPTON_BUILDING_STATIC_LIBRARY=1 -DLEPTON_USE_JIT=1 -DMPICH_SKIP_MPICXX -DOMPI_SKIP_MPICXX -D_MPICC_H -I/workspace/lammps/lib/colvars -I/workspace/lammps/src -I/workspace/lammps/lib/lepton/include -I/workspace/lammps/lib/lepton -O",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1313261,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DCUDA_MPS_SUPPORT -DLAMMPS_SMALLBIG -DMPICH_SKIP_MPICXX -DMPI_GERYON -DOMPI_SKIP_MPICXX -DUCL_NO_EXIT -DUSE_CUDA -D_MPICC_H -D_SINGLE_DOUBLE -I/workspace/lammps-build/lib/gpu -I/opt/devtools/nvidia/cuda-12.9.1/include -I/workspace/lammps/src/GPU -I/workspace/lammps/lib/gpu/include -O3 -DNDEBUG -std c++20 -Xcompiler -isystem,/opt/devtools/openmpi/openmpi-5",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1313264,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -E -quiet -I /workspace/lammps/lib/colvars -I /workspace/lammps/src -I /workspace/lammps/lib/lepton/include -I /workspace/lammps/lib/lepton -I /opt/devtools/nvidia/cuda-12.9.1/bin/../targets/x86_64-linux/include -imultiarch x86_64-linux-gnu -D_GNU_SOURCE -D_REENTRANT -D __CUDA_ARCH_LIST__=800 -D __NV_LEGACY_LAUNCH -D __CUDACC__ -D __NVCC__ -D ASMJIT_BUILD_RELEASE=1 -D ASMJIT_BUILD_X86=1 -D ASMJIT_NO_AARCH64=1 -D ASMJIT_STATI",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1313269,
+          "wchan": "request_wait_answer"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -E -quiet -I /workspace/lammps-build/lib/gpu -I /opt/devtools/nvidia/cuda-12.9.1/include -I /workspace/lammps/src/GPU -I /workspace/lammps/lib/gpu/include -I /opt/devtools/nvidia/cuda-12.9.1/bin/../targets/x86_64-linux/include -imultiarch x86_64-linux-gnu -D_GNU_SOURCE -D_REENTRANT -D __CUDA_ARCH__=800 -D __CUDA_ARCH_LIST__=800 -D __NV_LEGACY_LAUNCH -D CUDA_DOUBLE_MATH_FUNCTIONS -D __CUDACC__ -D __NVCC__ -D CUDA_MPS_SUPPORT ",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1313271,
+          "wchan": "request_wait_answer"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -E -quiet -I /workspace/lammps-build/lib/gpu -I /opt/devtools/nvidia/cuda-12.9.1/include -I /workspace/lammps/src/GPU -I /workspace/lammps/lib/gpu/include -I /opt/devtools/nvidia/cuda-12.9.1/bin/../targets/x86_64-linux/include -imultiarch x86_64-linux-gnu -D_GNU_SOURCE -D_REENTRANT -D __CUDA_ARCH__=800 -D __CUDA_ARCH_LIST__=800 -D __NV_LEGACY_LAUNCH -D CUDA_DOUBLE_MATH_FUNCTIONS -D __CUDACC__ -D __NVCC__ -D CUDA_MPS_SUPPORT ",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1313283,
+          "wchan": "request_wait_answer"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DCUDA_MPS_SUPPORT -DLAMMPS_SMALLBIG -DMPICH_SKIP_MPICXX -DMPI_GERYON -DOMPI_SKIP_MPICXX -DUCL_NO_EXIT -DUSE_CUDA -D_MPICC_H -D_SINGLE_DOUBLE -I/workspace/lammps-build/lib/gpu -I/opt/devtools/nvidia/cuda-12.9.1/include -I/workspace/lammps/src/GPU -I/workspace/lammps/lib/gpu/include -O3 -DNDEBUG -std c++20 -Xcompiler -isystem,/opt/devtools/openmpi/openmpi-5",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1313336,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DCUDA_MPS_SUPPORT -DLAMMPS_SMALLBIG -DMPICH_SKIP_MPICXX -DMPI_GERYON -DOMPI_SKIP_MPICXX -DUCL_NO_EXIT -DUSE_CUDA -D_MPICC_H -D_SINGLE_DOUBLE -I/workspace/lammps-build/lib/gpu -I/opt/devtools/nvidia/cuda-12.9.1/include -I/workspace/lammps/src/GPU -I/workspace/lammps/lib/gpu/include -O3 -DNDEBUG -std c++20 -Xcompiler -isystem,/opt/devtools/openmpi/openmpi-5",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1313379,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -E -quiet -I /workspace/lammps-build/lib/gpu -I /opt/devtools/nvidia/cuda-12.9.1/include -I /workspace/lammps/src/GPU -I /workspace/lammps/lib/gpu/include -I /opt/devtools/nvidia/cuda-12.9.1/bin/../targets/x86_64-linux/include -imultiarch x86_64-linux-gnu -D_GNU_SOURCE -D_REENTRANT -D __CUDA_ARCH_LIST__=800 -D __NV_LEGACY_LAUNCH -D __CUDACC__ -D __NVCC__ -D CUDA_MPS_SUPPORT -D LAMMPS_SMALLBIG -D MPICH_SKIP_MPICXX -D MPI_GERY",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1313383,
+          "wchan": "request_wait_answer"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -E -quiet -I /workspace/lammps-build/lib/gpu -I /opt/devtools/nvidia/cuda-12.9.1/include -I /workspace/lammps/src/GPU -I /workspace/lammps/lib/gpu/include -I /opt/devtools/nvidia/cuda-12.9.1/bin/../targets/x86_64-linux/include -imultiarch x86_64-linux-gnu -D_GNU_SOURCE -D_REENTRANT -D __CUDA_ARCH_LIST__=800 -D __NV_LEGACY_LAUNCH -D __CUDACC__ -D __NVCC__ -D CUDA_MPS_SUPPORT -D LAMMPS_SMALLBIG -D MPICH_SKIP_MPICXX -D MPI_GERY",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1313385,
+          "wchan": "request_wait_answer"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -E -quiet -I /workspace/lammps-build/lib/gpu -I /opt/devtools/nvidia/cuda-12.9.1/include -I /workspace/lammps/src/GPU -I /workspace/lammps/lib/gpu/include -I /opt/devtools/nvidia/cuda-12.9.1/bin/../targets/x86_64-linux/include -imultiarch x86_64-linux-gnu -D_GNU_SOURCE -D_REENTRANT -D __CUDA_ARCH__=800 -D __CUDA_ARCH_LIST__=800 -D __NV_LEGACY_LAUNCH -D CUDA_DOUBLE_MATH_FUNCTIONS -D __CUDACC__ -D __NVCC__ -D CUDA_MPS_SUPPORT ",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1313387,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -E -quiet -I /workspace/lammps-build/lib/gpu -I /opt/devtools/nvidia/cuda-12.9.1/include -I /workspace/lammps/src/GPU -I /workspace/lammps/lib/gpu/include -I /opt/devtools/nvidia/cuda-12.9.1/bin/../targets/x86_64-linux/include -imultiarch x86_64-linux-gnu -D_GNU_SOURCE -D_REENTRANT -D __CUDA_ARCH_LIST__=800 -D __NV_LEGACY_LAUNCH -D __CUDACC__ -D __NVCC__ -D CUDA_MPS_SUPPORT -D LAMMPS_SMALLBIG -D MPICH_SKIP_MPICXX -D MPI_GERY",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1313391,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -E -quiet -I /workspace/lammps-build/lib/gpu -I /opt/devtools/nvidia/cuda-12.9.1/include -I /workspace/lammps/src/GPU -I /workspace/lammps/lib/gpu/include -I /opt/devtools/nvidia/cuda-12.9.1/bin/../targets/x86_64-linux/include -imultiarch x86_64-linux-gnu -D_GNU_SOURCE -D_REENTRANT -D __CUDA_ARCH_LIST__=800 -D __NV_LEGACY_LAUNCH -D __CUDACC__ -D __NVCC__ -D CUDA_MPS_SUPPORT -D LAMMPS_SMALLBIG -D MPICH_SKIP_MPICXX -D MPI_GERY",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1313392,
+          "wchan": "request_wait_answer"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DCUDA_MPS_SUPPORT -DLAMMPS_SMALLBIG -DMPICH_SKIP_MPICXX -DMPI_GERYON -DOMPI_SKIP_MPICXX -DUCL_NO_EXIT -DUSE_CUDA -D_MPICC_H -D_SINGLE_DOUBLE -I/workspace/lammps-build/lib/gpu -I/opt/devtools/nvidia/cuda-12.9.1/include -I/workspace/lammps/src/GPU -I/workspace/lammps/lib/gpu/include -O3 -DNDEBUG -std c++20 -Xcompiler -isystem,/opt/devtools/openmpi/openmpi-5",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1313394,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -E -quiet -I /workspace/lammps-build/lib/gpu -I /opt/devtools/nvidia/cuda-12.9.1/include -I /workspace/lammps/src/GPU -I /workspace/lammps/lib/gpu/include -I /opt/devtools/nvidia/cuda-12.9.1/bin/../targets/x86_64-linux/include -imultiarch x86_64-linux-gnu -D_GNU_SOURCE -D_REENTRANT -D __CUDA_ARCH__=800 -D __CUDA_ARCH_LIST__=800 -D __NV_LEGACY_LAUNCH -D CUDA_DOUBLE_MATH_FUNCTIONS -D __CUDACC__ -D __NVCC__ -D CUDA_MPS_SUPPORT ",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1313398,
+          "wchan": "request_wait_answer"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DCUDA_MPS_SUPPORT -DLAMMPS_SMALLBIG -DMPICH_SKIP_MPICXX -DMPI_GERYON -DOMPI_SKIP_MPICXX -DUCL_NO_EXIT -DUSE_CUDA -D_MPICC_H -D_SINGLE_DOUBLE -I/workspace/lammps-build/lib/gpu -I/opt/devtools/nvidia/cuda-12.9.1/include -I/workspace/lammps/src/GPU -I/workspace/lammps/lib/gpu/include -O3 -DNDEBUG -std c++20 -Xcompiler -isystem,/opt/devtools/openmpi/openmpi-5",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1313399,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -E -quiet -I /workspace/lammps-build/lib/gpu -I /opt/devtools/nvidia/cuda-12.9.1/include -I /workspace/lammps/src/GPU -I /workspace/lammps/lib/gpu/include -I /opt/devtools/nvidia/cuda-12.9.1/bin/../targets/x86_64-linux/include -imultiarch x86_64-linux-gnu -D_GNU_SOURCE -D_REENTRANT -D __CUDA_ARCH__=800 -D __CUDA_ARCH_LIST__=800 -D __NV_LEGACY_LAUNCH -D CUDA_DOUBLE_MATH_FUNCTIONS -D __CUDACC__ -D __NVCC__ -D CUDA_MPS_SUPPORT ",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1313404,
+          "wchan": "request_wait_answer"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -arch sm_80 -DCUDA_MPS_SUPPORT -DLAMMPS_SMALLBIG -DMPICH_SKIP_MPICXX -DMPI_GERYON -DOMPI_SKIP_MPICXX -DUCL_NO_EXIT -DUSE_CUDA -D_MPICC_H -D_SINGLE_DOUBLE -I/workspace/lammps-build/lib/gpu -I/opt/devtools/nvidia/cuda-12.9.1/include -I/workspace/lammps/src/GPU -I/workspace/lammps/lib/gpu/include -O3 -DNDEBUG -std c++20 -Xcompiler -isystem,/opt/devtools/openmpi/openmpi-5",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1313451,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -E -quiet -I /workspace/lammps-build/lib/gpu -I /opt/devtools/nvidia/cuda-12.9.1/include -I /workspace/lammps/src/GPU -I /workspace/lammps/lib/gpu/include -I /opt/devtools/nvidia/cuda-12.9.1/bin/../targets/x86_64-linux/include -imultiarch x86_64-linux-gnu -D_GNU_SOURCE -D_REENTRANT -D __CUDA_ARCH__=800 -D __CUDA_ARCH_LIST__=800 -D __NV_LEGACY_LAUNCH -D CUDA_DOUBLE_MATH_FUNCTIONS -D __CUDACC__ -D __NVCC__ -D CUDA_MPS_SUPPORT ",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1313452,
+          "wchan": "request_wait_answer"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -E -quiet -I /workspace/lammps-build/lib/gpu -I /opt/devtools/nvidia/cuda-12.9.1/include -I /workspace/lammps/src/GPU -I /workspace/lammps/lib/gpu/include -I /opt/devtools/nvidia/cuda-12.9.1/bin/../targets/x86_64-linux/include -imultiarch x86_64-linux-gnu -D_GNU_SOURCE -D_REENTRANT -D __CUDA_ARCH_LIST__=800 -D __NV_LEGACY_LAUNCH -D __CUDACC__ -D __NVCC__ -D CUDA_MPS_SUPPORT -D LAMMPS_SMALLBIG -D MPICH_SKIP_MPICXX -D MPI_GERY",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1313456,
+          "wchan": "request_wait_answer"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -E -quiet -I /workspace/lammps/lib/colvars -I /workspace/lammps/src -I /workspace/lammps/lib/lepton/include -I /workspace/lammps/lib/lepton -I /opt/devtools/nvidia/cuda-12.9.1/bin/../targets/x86_64-linux/include -imultiarch x86_64-linux-gnu -D_GNU_SOURCE -D_REENTRANT -D __CUDA_ARCH__=800 -D __CUDA_ARCH_LIST__=800 -D __NV_LEGACY_LAUNCH -D CUDA_DOUBLE_MATH_FUNCTIONS -D __CUDACC__ -D __NVCC__ -D ASMJIT_BUILD_RELEASE=1 -D ASMJIT",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1313461,
+          "wchan": "request_wait_answer"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -E -quiet -I /workspace/lammps-build/lib/gpu -I /opt/devtools/nvidia/cuda-12.9.1/include -I /workspace/lammps/src/GPU -I /workspace/lammps/lib/gpu/include -I /opt/devtools/nvidia/cuda-12.9.1/bin/../targets/x86_64-linux/include -imultiarch x86_64-linux-gnu -D_GNU_SOURCE -D_REENTRANT -D __CUDA_ARCH__=800 -D __CUDA_ARCH_LIST__=800 -D __NV_LEGACY_LAUNCH -D CUDA_DOUBLE_MATH_FUNCTIONS -D __CUDACC__ -D __NVCC__ -D CUDA_MPS_SUPPORT ",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1313463,
+          "wchan": "request_wait_answer"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -E -quiet -I /workspace/lammps-build/lib/gpu -I /opt/devtools/nvidia/cuda-12.9.1/include -I /workspace/lammps/src/GPU -I /workspace/lammps/lib/gpu/include -I /opt/devtools/nvidia/cuda-12.9.1/bin/../targets/x86_64-linux/include -imultiarch x86_64-linux-gnu -D_GNU_SOURCE -D_REENTRANT -D __CUDA_ARCH_LIST__=800 -D __NV_LEGACY_LAUNCH -D __CUDACC__ -D __NVCC__ -D CUDA_MPS_SUPPORT -D LAMMPS_SMALLBIG -D MPICH_SKIP_MPICXX -D MPI_GERY",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1313469,
+          "wchan": "request_wait_answer"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -quiet -I /workspace/lammps-build/lib/gpu -I /opt/devtools/nvidia/cuda-12.9.1/include -I /workspace/lammps/src/GPU -I /workspace/lammps/lib/gpu/include -I /opt/devtools/nvidia/cuda-12.9.1/bin/../targets/x86_64-linux/include -imultiarch x86_64-linux-gnu -D_GNU_SOURCE -D_REENTRANT -D __CUDA_ARCH__=800 -D __CUDA_ARCH_LIST__=800 -D __NV_LEGACY_LAUNCH -D CUDA_DOUBLE_MATH_FUNCTIONS -isystem /opt/devtools/openmpi/openmpi-5.0.10-nvh",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1313471,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -quiet -I /workspace/lammps/lib/colvars -I /workspace/lammps/src -I /workspace/lammps/lib/lepton/include -I /workspace/lammps/lib/lepton -I /opt/devtools/nvidia/cuda-12.9.1/bin/../targets/x86_64-linux/include -imultiarch x86_64-linux-gnu -D_GNU_SOURCE -D_REENTRANT -D __CUDA_ARCH__=800 -D __CUDA_ARCH_LIST__=800 -D __NV_LEGACY_LAUNCH -D CUDA_DOUBLE_MATH_FUNCTIONS -isystem /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda1",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1313475,
+          "wchan": "0"
+        }
+      ],
+      "drivers": [
+        {
+          "command": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs -f -o allow_other /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 ",
+          "cpu_allowed_list": "0-31",
+          "executable": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs",
+          "pid": 1303681,
+          "sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10"
+        }
+      ],
+      "job_id": "1877799",
+      "node": "4v100n35.mr-sai.ai",
+      "raw_path": "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/cpu-1877799-driver-r3-2.json",
+      "raw_sha256": "f8ae51675eb851d803e47da11a412396a79928e7ea6a61104c5547688331a512",
+      "sample_seconds": 10.038136802613735
+    },
+    {
+      "cgroups": [
+        {
+          "final": {
+            "cpu.max": "max 100000",
+            "cpu.stat": "usage_usec 19445414966\nuser_usec 17583654331\nsystem_usec 1861760634\ncore_sched.force_idle_usec 0\nnr_periods 0\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0",
+            "cpuset.cpus": "0-31",
+            "cpuset.cpus.effective": "0-31"
+          },
+          "initial": {
+            "cpu.max": "max 100000",
+            "cpu.stat": "usage_usec 19250771265\nuser_usec 17395860529\nsystem_usec 1854910735\ncore_sched.force_idle_usec 0\nnr_periods 0\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0",
+            "cpuset.cpus": "0-31",
+            "cpuset.cpus.effective": "0-31"
+          },
+          "logical_cpus_used": 19.35500229055023,
+          "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CBRH2Y00"
+        }
+      ],
+      "checked_at": "2026-10-20T10:38:03.923873+00:00",
+      "compilers": [
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -quiet -I /workspace/lammps/src -I /workspace/lammps/third_party -I /workspace/lammps/src/AMOEBA -I /workspace/lammps/src/ASPHERE -I /workspace/lammps/src/BOCS -I /workspace/lammps/src/BODY -I /workspace/lammps/src/BPM -I /workspace/lammps/src/BROWNIAN -I /workspace/lammps/src/CG-DNA -I /workspace/lammps/src/CG-SPICA -I /workspace/lammps/src/CLASS2 -I /workspace/lammps/src/COLLOID -I /workspace/lammps/src/COLVARS -I /workspa",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1621991,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -quiet -I /workspace/lammps/src -I /workspace/lammps/third_party -I /workspace/lammps/src/AMOEBA -I /workspace/lammps/src/ASPHERE -I /workspace/lammps/src/BOCS -I /workspace/lammps/src/BODY -I /workspace/lammps/src/BPM -I /workspace/lammps/src/BROWNIAN -I /workspace/lammps/src/CG-DNA -I /workspace/lammps/src/CG-SPICA -I /workspace/lammps/src/CLASS2 -I /workspace/lammps/src/COLLOID -I /workspace/lammps/src/COLVARS -I /workspa",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1628882,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -quiet -I /workspace/lammps/src -I /workspace/lammps/third_party -I /workspace/lammps/src/AMOEBA -I /workspace/lammps/src/ASPHERE -I /workspace/lammps/src/BOCS -I /workspace/lammps/src/BODY -I /workspace/lammps/src/BPM -I /workspace/lammps/src/BROWNIAN -I /workspace/lammps/src/CG-DNA -I /workspace/lammps/src/CG-SPICA -I /workspace/lammps/src/CLASS2 -I /workspace/lammps/src/COLLOID -I /workspace/lammps/src/COLVARS -I /workspa",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1625066,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -quiet -I /workspace/lammps/src -I /workspace/lammps/third_party -I /workspace/lammps/src/AMOEBA -I /workspace/lammps/src/ASPHERE -I /workspace/lammps/src/BOCS -I /workspace/lammps/src/BODY -I /workspace/lammps/src/BPM -I /workspace/lammps/src/BROWNIAN -I /workspace/lammps/src/CG-DNA -I /workspace/lammps/src/CG-SPICA -I /workspace/lammps/src/CLASS2 -I /workspace/lammps/src/COLLOID -I /workspace/lammps/src/COLVARS -I /workspa",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1628371,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -quiet -I /workspace/lammps/src -I /workspace/lammps/third_party -I /workspace/lammps/src/AMOEBA -I /workspace/lammps/src/ASPHERE -I /workspace/lammps/src/BOCS -I /workspace/lammps/src/BODY -I /workspace/lammps/src/BPM -I /workspace/lammps/src/BROWNIAN -I /workspace/lammps/src/CG-DNA -I /workspace/lammps/src/CG-SPICA -I /workspace/lammps/src/CLASS2 -I /workspace/lammps/src/COLLOID -I /workspace/lammps/src/COLVARS -I /workspa",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1627236,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -quiet -I /workspace/lammps/src -I /workspace/lammps/third_party -I /workspace/lammps/src/AMOEBA -I /workspace/lammps/src/ASPHERE -I /workspace/lammps/src/BOCS -I /workspace/lammps/src/BODY -I /workspace/lammps/src/BPM -I /workspace/lammps/src/BROWNIAN -I /workspace/lammps/src/CG-DNA -I /workspace/lammps/src/CG-SPICA -I /workspace/lammps/src/CLASS2 -I /workspace/lammps/src/COLLOID -I /workspace/lammps/src/COLVARS -I /workspa",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1628536,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -quiet -I /workspace/lammps/src -I /workspace/lammps/third_party -I /workspace/lammps/src/AMOEBA -I /workspace/lammps/src/ASPHERE -I /workspace/lammps/src/BOCS -I /workspace/lammps/src/BODY -I /workspace/lammps/src/BPM -I /workspace/lammps/src/BROWNIAN -I /workspace/lammps/src/CG-DNA -I /workspace/lammps/src/CG-SPICA -I /workspace/lammps/src/CLASS2 -I /workspace/lammps/src/COLLOID -I /workspace/lammps/src/COLVARS -I /workspa",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1629238,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -quiet -I /workspace/lammps/src -I /workspace/lammps/third_party -I /workspace/lammps/src/AMOEBA -I /workspace/lammps/src/ASPHERE -I /workspace/lammps/src/BOCS -I /workspace/lammps/src/BODY -I /workspace/lammps/src/BPM -I /workspace/lammps/src/BROWNIAN -I /workspace/lammps/src/CG-DNA -I /workspace/lammps/src/CG-SPICA -I /workspace/lammps/src/CLASS2 -I /workspace/lammps/src/COLLOID -I /workspace/lammps/src/COLVARS -I /workspa",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1629709,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -quiet -I /workspace/lammps/src -I /workspace/lammps/third_party -I /workspace/lammps/src/AMOEBA -I /workspace/lammps/src/ASPHERE -I /workspace/lammps/src/BOCS -I /workspace/lammps/src/BODY -I /workspace/lammps/src/BPM -I /workspace/lammps/src/BROWNIAN -I /workspace/lammps/src/CG-DNA -I /workspace/lammps/src/CG-SPICA -I /workspace/lammps/src/CLASS2 -I /workspace/lammps/src/COLLOID -I /workspace/lammps/src/COLVARS -I /workspa",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1627040,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -quiet -I /workspace/lammps/src -I /workspace/lammps/third_party -I /workspace/lammps/src/AMOEBA -I /workspace/lammps/src/ASPHERE -I /workspace/lammps/src/BOCS -I /workspace/lammps/src/BODY -I /workspace/lammps/src/BPM -I /workspace/lammps/src/BROWNIAN -I /workspace/lammps/src/CG-DNA -I /workspace/lammps/src/CG-SPICA -I /workspace/lammps/src/CLASS2 -I /workspace/lammps/src/COLLOID -I /workspace/lammps/src/COLVARS -I /workspa",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1628732,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -quiet -I /workspace/lammps/src -I /workspace/lammps/third_party -I /workspace/lammps/src/AMOEBA -I /workspace/lammps/src/ASPHERE -I /workspace/lammps/src/BOCS -I /workspace/lammps/src/BODY -I /workspace/lammps/src/BPM -I /workspace/lammps/src/BROWNIAN -I /workspace/lammps/src/CG-DNA -I /workspace/lammps/src/CG-SPICA -I /workspace/lammps/src/CLASS2 -I /workspace/lammps/src/COLLOID -I /workspace/lammps/src/COLVARS -I /workspa",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1629037,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -quiet -I /workspace/lammps/src -I /workspace/lammps/third_party -I /workspace/lammps/src/AMOEBA -I /workspace/lammps/src/ASPHERE -I /workspace/lammps/src/BOCS -I /workspace/lammps/src/BODY -I /workspace/lammps/src/BPM -I /workspace/lammps/src/BROWNIAN -I /workspace/lammps/src/CG-DNA -I /workspace/lammps/src/CG-SPICA -I /workspace/lammps/src/CLASS2 -I /workspace/lammps/src/COLLOID -I /workspace/lammps/src/COLVARS -I /workspa",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1628724,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -quiet -I /workspace/lammps/src -I /workspace/lammps/third_party -I /workspace/lammps/src/AMOEBA -I /workspace/lammps/src/ASPHERE -I /workspace/lammps/src/BOCS -I /workspace/lammps/src/BODY -I /workspace/lammps/src/BPM -I /workspace/lammps/src/BROWNIAN -I /workspace/lammps/src/CG-DNA -I /workspace/lammps/src/CG-SPICA -I /workspace/lammps/src/CLASS2 -I /workspace/lammps/src/COLLOID -I /workspace/lammps/src/COLVARS -I /workspa",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1627051,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -quiet -I /workspace/lammps/src -I /workspace/lammps/third_party -I /workspace/lammps/src/AMOEBA -I /workspace/lammps/src/ASPHERE -I /workspace/lammps/src/BOCS -I /workspace/lammps/src/BODY -I /workspace/lammps/src/BPM -I /workspace/lammps/src/BROWNIAN -I /workspace/lammps/src/CG-DNA -I /workspace/lammps/src/CG-SPICA -I /workspace/lammps/src/CLASS2 -I /workspace/lammps/src/COLLOID -I /workspace/lammps/src/COLVARS -I /workspa",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1627044,
+          "wchan": "0"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1620451,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1622945,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1626069,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1626214,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1626360,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1626658,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1627227,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1627566,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1627729,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1628042,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1628186,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1628349,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1628511,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1628692,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1628874,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1629023,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1629214,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1629377,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1629520,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1629692,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1629741,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "/opt/devtools/nvidia/cuda-12.9.1/bin/../nvvm/bin/cicc --c++20 --gnu_version=140300 --diag_warn this_addr_capture_ext_lambda --display_error_number --orig_src_file_name /workspace/lammps/src/KOKKOS/pair_pedone_kokkos.cpp --orig_src_path_name /workspace/lammps/src/KOKKOS/pair_pedone_kokkos.cpp --allow_managed --extended-lambda --diag_suppress=unrecognized_pragma --diag_suppress=128 --diag_suppress=186 -arch compute_70 -m64 --no-version-ident -ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 --include_file_n",
+          "cpu_allowed_list": "0-31",
+          "name": "cicc",
+          "pid": 1629745,
+          "wchan": "request_wait_answer"
+        },
+        {
+          "command": "/opt/devtools/nvidia/cuda-12.9.1/bin/../nvvm/bin/cicc --c++20 --gnu_version=140300 --diag_warn this_addr_capture_ext_lambda --display_error_number --orig_src_file_name /workspace/lammps/src/KOKKOS/pair_ufm_kokkos.cpp --orig_src_path_name /workspace/lammps/src/KOKKOS/pair_ufm_kokkos.cpp --allow_managed --extended-lambda --diag_suppress=unrecognized_pragma --diag_suppress=128 --diag_suppress=186 -arch compute_70 -m64 --no-version-ident -ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 --include_file_name tm",
+          "cpu_allowed_list": "0-31",
+          "name": "cicc",
+          "pid": 1629759,
+          "wchan": "request_wait_answer"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1630022,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1630027,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "nvcc -Xcudafe --diag_suppress=unrecognized_pragma,--diag_suppress=128,--diag_suppress=186 -extended-lambda -Wext-lambda-captures-this -arch sm_70 -ccbin /opt/devtools/gcc/14.3.0/bin/g++ -DASMJIT_BUILD_RELEASE=1 -DASMJIT_BUILD_X86=1 -DASMJIT_NO_AARCH64=1 -DASMJIT_STATIC=1 -DCOLVARS_MPI -DEIGEN_NO_CUDA -DFFT_KISS -DFFT_KOKKOS_CUFFT -DKOKKOS_DEPENDENCE -DLAMMPS_CURL -DLAMMPS_GZIP -DLAMMPS_MEMALIGN=64 -DLAMMPS_OMP_COMPAT=4 -DLAMMPS_SMALLBIG -DLAMMPS_VERSION_NUMBER=20260930 -DLAMMPS_ZLIB -DLAMMPS_ZST",
+          "cpu_allowed_list": "0-31",
+          "name": "nvcc",
+          "pid": 1630178,
+          "wchan": "do_wait"
+        },
+        {
+          "command": "/opt/devtools/gcc/14.3.0/libexec/gcc/x86_64-pc-linux-gnu/14.3.0/cc1plus -E -quiet -I /workspace/lammps/src -I /workspace/lammps/third_party -I /workspace/lammps/src/AMOEBA -I /workspace/lammps/src/ASPHERE -I /workspace/lammps/src/BOCS -I /workspace/lammps/src/BODY -I /workspace/lammps/src/BPM -I /workspace/lammps/src/BROWNIAN -I /workspace/lammps/src/CG-DNA -I /workspace/lammps/src/CG-SPICA -I /workspace/lammps/src/CLASS2 -I /workspace/lammps/src/COLLOID -I /workspace/lammps/src/COLVARS -I /work",
+          "cpu_allowed_list": "0-31",
+          "name": "cc1plus",
+          "pid": 1630185,
+          "wchan": "0"
+        },
+        {
+          "command": "/opt/devtools/nvidia/cuda-12.9.1/bin/../nvvm/bin/cicc --c++20 --gnu_version=140300 --diag_warn this_addr_capture_ext_lambda --display_error_number --orig_src_file_name /workspace/lammps/src/KOKKOS/pair_wf_cut_kokkos.cpp --orig_src_path_name /workspace/lammps/src/KOKKOS/pair_wf_cut_kokkos.cpp --allow_managed --extended-lambda --diag_suppress=unrecognized_pragma --diag_suppress=128 --diag_suppress=186 -arch compute_70 -m64 --no-version-ident -ftz=0 -prec_div=1 -prec_sqrt=1 -fmad=1 --include_file_n",
+          "cpu_allowed_list": "0-31",
+          "name": "cicc",
+          "pid": 1630190,
+          "wchan": "0"
+        }
+      ],
+      "drivers": [
+        {
+          "command": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs -f -o allow_other /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 ",
+          "cpu_allowed_list": "0-31",
+          "executable": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs",
+          "pid": 1303681,
+          "sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10"
+        }
+      ],
+      "job_id": "1877799",
+      "node": "4v100n35.mr-sai.ai",
+      "raw_path": "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/cpu-1877799-driver-r3-3.json",
+      "raw_sha256": "6bcfe687d5377c9b0150c7058d984e3aedf1be3aa5ca90fc8347aa70714eb54b",
+      "sample_seconds": 10.056506223976612
+    }
+  ],
+  "schema": 1,
+  "scope": "Whole-job cgroup samples during production MD builds, not whole-build speedup measurements"
+}
