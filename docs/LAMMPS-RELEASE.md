@@ -9,10 +9,11 @@ No scientifically accepted or published delivery of this release exists yet.
 Both 4V100 and 16V100 release SIFs pass complete build verification, including
 native inventory and permissions. Each also passed candidate-only two-node
 numerical checks against the locked upstream reference, across TF/PT/JAX and
-Python/LAMMPS. 16V100 also passed paired system-baseline science. Performance
-and publication remain pending: baseline plugin lookup is repaired, and the
-timing parser now distinguishes LAMMPS's printed one-step warmup. 8V100V0's
-first release build has been dispatched.
+Python/LAMMPS. Both also passed paired system-baseline science. TensorFlow
+benchmark medians are within 1% of the baseline; full performance acceptance
+and publication remain pending. Baseline plugin lookup, warmup timing and
+Nsight's literal temporary directory have been repaired. 8V100V0 completed
+DeePMD and is compiling LAMMPS after recovery of a pre-entry mount timeout.
 Both use the qualified CP2K overlay driver; see the live restart below.
 
 The current implementation builds both programs in one Apptainer overlay,
@@ -456,3 +457,63 @@ locked stable pair. The partition allows both stage QoS values and allocates
 six logical CPUs per GPU. This compilation remains valid; its frozen
 acceptance snapshot predates the timing-parser repair and will need an
 explicit recovery before performance acceptance.
+
+### Both paired science gates passed; home-backed Nsight profiling
+
+With snapshot `8f7d954` / recipe `6a03d0a37eda`, science jobs `1881610`
+(16V100, 2:42) and `1881609` (4V100, 1:30) each passed all 48 paired records
+and the full raw verifier. Performance jobs `1881635` and `1881749` then
+completed the 2,058-atom TensorFlow comparisons before stopping at PyTorch's
+separate Nsight baseline profile. TF engine medians were 12.8058 versus
+12.85 seconds on 16V100 (baseline/candidate); 4V100's baseline/candidate
+ratio was 1.0078195. Both are within 1% and below the 10% regression limit.
+These partial measurements do not establish complete performance acceptance.
+
+Nsight failed with `Cannot create CUDA config file`. A short `/runtime`
+alias alone did not help. File tracing in diagnostic job `1882139` showed
+literal `/tmp/nsys-RunShellCommand-*` and `/tmp/injection_config_*` writes
+failing with `EROFS`. The runtime now binds the allocated job's home-backed
+runtime directory to the container's `/tmp` **only for explicit profiling**.
+Automatic host `/tmp` mounts remain disabled; no host temporary disk is used.
+
+The [probe](evidence/lammps-release-20261020/probe_nsight_temp.py), job
+`1882158`, completed in 15 seconds. Its
+[raw CUDA trace receipt](evidence/lammps-release-20261020/nsight-home-tmp-probe.json)
+records 1,505 GPU kernel events on a Tesla V100-SXM2-16GB. This was a baseline
+profiler preflight; candidate profiling and complete performance still run
+through the normal gate. Failed diagnostics `1882081` (missing initial loader
+environment), `1882099` (short alias only) and `1882139` (file tracing) remain
+retained under the cluster's runtime-tests directory.
+
+[Explicit profiler setup recovery](evidence/lammps-release-20261020/prepare_nsight_retry.py)
+revalidates completed TF raw evidence and rejects recovery if it already
+exceeds the regression limit. It requires the exact terminal Nsight failure
+before any PT comparison or JAX trial, then archives all earlier records,
+including TF timings and frozen calibrations:
+[16V100](evidence/lammps-release-20261020/16v-nsight-recovery.json) and
+[4V100](evidence/lammps-release-20261020/4v-nsight-recovery.json).
+The full new snapshot must rerun science and performance; the one allowed
+regression retest is not consumed or bypassed by these incomplete setup runs.
+
+[231 MD tests](evidence/lammps-release-20261020/md-nsight-runtime-tests.log)
+passed with two optional upstream-cache skips, including actual shell
+argument assembly proving that profiling's `/tmp` source is job home storage.
+The preceding `8f7d954` GitHub suite ran 866 tests, with 864 passing and two
+optional skips.
+
+### 8V100V0 compilation continues under a home-directory follower
+
+DeePMD job `1881545` completed in 17:46 on `8v100v0n02`; LAMMPS job
+`1881546` failed before entry with the known fuse2fs mount timeout. The
+[scoped recovery](evidence/lammps-release-20261020/8v-mount-retry.json)
+preserves the original image and logs, validates terminal accounting and
+unchanged controller/script hashes, repairs/checks the locked image, then
+submits the same stage as `1882104`. It runs 24 compile processes on
+`8v100v0n05`. Completed DeePMD is reused without changing its source or recipe.
+
+GitHub workflow `39427644750` was intentionally cancelled after both Slurm
+stages had been submitted, so its old timing parser cannot launch acceptance.
+The [home-directory follower](evidence/lammps-release-20261020/follow_8v_build.py)
+monitors the existing build and explicitly selects a newer, hash-pinned
+acceptance controller. Cancelling the hosted observer does not cancel or
+replace the Slurm compilation. The original GitHub/controller records remain.

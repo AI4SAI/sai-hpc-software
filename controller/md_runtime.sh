@@ -94,7 +94,14 @@ args=(apptainer exec --nv --cleanenv --no-home --no-mount bind-paths,home,cwd,tm
 for path in /usr /lib /lib64 /opt/devtools; do args+=(--bind "$path:$path:ro"); done
 site_paths=$(python3 "$control/remote_controller.py" lammps)
 while IFS= read -r path; do args+=(--bind "$path:$path:ro"); done <<< "$site_paths"
-args+=(--bind "$work:/work:rw" --bind "$runtime:$runtime:rw" --env "TMPDIR=$runtime")
+args+=(--bind "$work:/work:rw" --bind "$runtime:$runtime:rw")
+if [[ -n "${SAI_MD_PROFILE_LMP:-}" ]]; then
+  # Nsight also writes literal /tmp paths. Back them with this job's home
+  # directory; automatic host /tmp mounts remain disabled above.
+  args+=(--bind "$runtime:/tmp:rw" --env TMPDIR=/tmp)
+else
+  args+=(--env "TMPDIR=$runtime")
+fi
 args+=(--env "SAI_MD_ALLOCATED_JOB=$SLURM_JOB_ID" --env "SAI_MD_ALLOCATED_NODE=$(hostname)")
 if [[ -n "${SAI_MD_PERFORMANCE_CPU:-}" ]]; then
   args+=(--env "SAI_MD_PERFORMANCE_CPU=$SAI_MD_PERFORMANCE_CPU"

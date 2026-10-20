@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Accept the two existing release SIFs with an explicitly pinned new controller."""
+"""Accept the scoped release SIFs with an explicitly pinned new controller."""
 import argparse
 from datetime import datetime, timezone
 import fcntl
@@ -14,9 +14,11 @@ ROOT = PROJECT / 'experimental/deepmd-lammps'
 BUILDS = {
     '16V100': 'md-39403084059-1-2026-10-20-5fef92e054bacdaf-export',
     '4V100': 'md-39403117741-1-2026-10-20-9bf6ae82814537d7-export',
+    '8V100V0': 'md-39427644750-1-2026-10-20-1dfd6f53c113abda',
 }
 REASON = ('Restore baseline wheel backend plugin lookup and requested OpenMP threads; '
-          'restore isolated MPI HOME; parse the documented one-step LAMMPS warmup separately')
+          'restore isolated MPI HOME; parse the one-step warmup separately; '
+          'back Nsight container temporary files with dedicated home storage')
 
 
 def main():

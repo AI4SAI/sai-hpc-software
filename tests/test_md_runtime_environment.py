@@ -9,6 +9,25 @@ import unittest
 
 
 class BaselineEnvironmentTests(unittest.TestCase):
+    def test_profile_tmp_is_backed_by_job_storage_and_never_host_tmp(self):
+        root = Path(__file__).resolve().parents[1]
+        script = (root / 'controller/md_runtime.sh').read_text()
+        start = script.index('args=(apptainer exec')
+        end = script.index('args+=(--env "SAI_MD_ALLOCATED_JOB=')
+        assembly = script[start:end]
+        runtime = '/home/test/project/runtime-tests/one/runtime'
+        for profile in ('', '/opt/devtools/nsys'):
+            env = dict(os.environ, control=str(root / 'controller'), runtime=runtime,
+                       work='/home/test/project/runtime-tests/one/case', SAI_MD_PROFILE_LMP=profile)
+            result = subprocess.run(['bash', '-euc', assembly +
+                                     '\npython3 -c "import json,sys; print(json.dumps(sys.argv[1:]))" "${args[@]}"'],
+                                    env=env, text=True, capture_output=True, check=True)
+            args = json.loads(result.stdout)
+            self.assertIn('bind-paths,home,cwd,tmp,hostfs', args)
+            self.assertNotIn('/tmp:/tmp:rw', args)
+            self.assertEqual((runtime + ':/tmp:rw') in args, bool(profile))
+            self.assertIn('TMPDIR=/tmp' if profile else 'TMPDIR=' + runtime, args)
+
     def test_site_module_thread_override_and_wheel_plugin_directory(self):
         script = (Path(__file__).resolve().parents[1] / 'controller/md_runtime.sh').read_text()
         line = next(line.strip() for line in script.splitlines()

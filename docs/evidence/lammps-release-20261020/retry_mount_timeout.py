@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
-"""Retry only job 1877775's pre-entry mount failure using its unchanged recipe."""
+"""Retry a scoped pre-entry mount failure using its unchanged compiled recipe."""
+import argparse
 import ctypes
 import fcntl
 import hashlib
@@ -160,4 +161,13 @@ def main():
 
 
 if __name__ == '__main__':
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--target', choices=('16V100', '8V100V0'), default='16V100')
+    args = parser.parse_args()
+    if args.target == '8V100V0':
+        RUN = 'md-39427644750-1-2026-10-20-1dfd6f53c113abda'
+        RECIPE = '795dbd80e2a43d3e7a32c1bc373d30b88476fcca8d63f26ccc6d42a84515707c'
+        COMMIT = '0ab58dd71054a26cf9e666e31991971757eedfe5'
+        PREVIOUS = '1881546'
+        DEEPMD = '1881545'
     main()

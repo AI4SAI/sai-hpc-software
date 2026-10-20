@@ -3,7 +3,7 @@
 LAMMPS release work is now tracked in [LAMMPS-RELEASE.md](LAMMPS-RELEASE.md).
 The October 20 release restart produced build-verified `stable_30Sep2026`
 SIFs on 4V100 and 16V100. Both passed two-node candidate numerical tests
-against upstream references, and 16V100 passed paired baseline science.
+against upstream references, and both passed paired baseline science.
 Performance and publication are still pending. The live
 daily dispatcher still runs the old MD feature branch; its release history
 check rejects newer recovery identities, while its development build fails
