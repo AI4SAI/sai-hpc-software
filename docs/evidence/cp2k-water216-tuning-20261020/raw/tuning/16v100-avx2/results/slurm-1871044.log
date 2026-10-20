@@ -1,0 +1,32 @@
+CP2K_TUNING_START warmup cusolver-standard
+CP2K_TUNING_PASS warmup cusolver-standard compute=269.032
+CP2K_TUNING_START warmup cusolver-direct
+CP2K_TUNING_PASS warmup cusolver-direct compute=217.177
+CP2K_TUNING_START warmup elpa
+CP2K_TUNING_PASS warmup elpa compute=320.309
+CP2K_TUNING_START warmup ot
+CP2K_TUNING_PASS warmup ot compute=613.421
+CP2K_TUNING_START 0 cusolver-standard
+CP2K_TUNING_PASS 0 cusolver-standard compute=266.766
+CP2K_TUNING_START 0 cusolver-direct
+CP2K_TUNING_PASS 0 cusolver-direct compute=207.497
+CP2K_TUNING_START 0 elpa
+CP2K_TUNING_PASS 0 elpa compute=321.027
+CP2K_TUNING_START 0 ot
+CP2K_TUNING_PASS 0 ot compute=553.069
+CP2K_TUNING_START 1 ot
+CP2K_TUNING_PASS 1 ot compute=539.819
+CP2K_TUNING_START 1 elpa
+CP2K_TUNING_PASS 1 elpa compute=259.227
+CP2K_TUNING_START 1 cusolver-direct
+CP2K_TUNING_PASS 1 cusolver-direct compute=186.057
+CP2K_TUNING_START 1 cusolver-standard
+CP2K_TUNING_PASS 1 cusolver-standard compute=238.346
+CP2K_TUNING_START 2 cusolver-standard
+CP2K_TUNING_PASS 2 cusolver-standard compute=270.474
+CP2K_TUNING_START 2 cusolver-direct
+CP2K_TUNING_PASS 2 cusolver-direct compute=211.458
+CP2K_TUNING_START 2 elpa
+CP2K_TUNING_PASS 2 elpa compute=319.984
+CP2K_TUNING_START 2 ot
+CP2K_TUNING_PASS 2 ot compute=600.518

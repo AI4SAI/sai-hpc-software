@@ -77,6 +77,9 @@ controlled size-only comparison.
 At 14:47 Asia/Shanghai, the same 216-water protocol was still running on
 16V100 (`1871044`, nine validated samples) and 8V100V0 (`1872055`, one
 validated sample). Their final medians are not reported here.
+Both subsequently completed and passed remote and local independent verification;
+the [supplementary comparison](../cp2k-water216-tuning-20261020/README.md) archives
+their final results and the separately submitted OT backend experiment.
 
 ## Evidence
 

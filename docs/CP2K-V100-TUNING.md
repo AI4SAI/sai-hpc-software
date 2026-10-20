@@ -301,5 +301,36 @@ diagonalization workloads while retaining explicit workload-specific choices.
 These results do not establish multi-GPU scaling or a universally best solver.
 The old 64-water pilot used another partition and ELPA build, so comparing the
 two experiments does not isolate matrix size as the cause of the difference.
-As of 14:47 Asia/Shanghai, 16V100 (`1871044`) and 8V100V0 (`1872055`) were still
-running the same 216-water protocol; final medians remain pending.
+16V100 (`1871044`) and 8V100V0 (`1872055`) subsequently completed the same protocol
+and passed both frozen remote verification and local raw-data reparse. Their
+standard/direct/shared-ELPA/OT medians were 266.766/207.497/319.984/553.069 s and
+289.649/248.545/357.341/651.133 s, respectively. Direct reduced total time by
+22.22% and 14.19%. The [completed three-partition comparison](evidence/cp2k-water216-tuning-20261020/README.md)
+retains the inputs, numerical checks, resource scope and raw evidence.
+
+## OT and eigensolver selection
+
+OT avoids a full SCF Hamiltonian diagonalization at every iteration, but can
+still call eigensolvers when constructing a `FULL_ALL` preconditioner and
+performing orbital matrix operations. In v2026.2,
+[`preconditioner_makes.F`](https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/preconditioner_makes.F#L490)
+performs its own Cholesky reduction and calls `choose_eigv_solver`;
+[`qs_ot_p2m_diag`](https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/qs_ot.F#L1401)
+uses `cp_dbcsr_syevd`, which also dispatches through the selected backend.
+`DIRECT_GENERALIZED_DIAGONALIZATION` does not alter these ordinary eigenproblems.
+
+The archived 4V100 `0-ot` sample records 112 `cp_fm_diag_cusolver` calls,
+totalling 59.029 s within 368.940 s of CP2K total time. It also records 100
+`qs_ot_p2m_diag` calls totalling 54.208 s; these are nested times and must not
+be added together. This proves OT can use cuSOLVERMp, not that this backend
+makes OT faster than ELPA. The log has 107 inner iterations across two outer
+iterations; its final "converged in 7 steps" message is not the total count.
+
+To isolate the backend effect, controller `4aa35c8` submitted an `ot-backends`
+comparison on the same accepted release and 216-water input: 4V100 `1877200`,
+16V100 `1877201`, and 8V100V0 `1877206`. The only input difference is
+`PREFERRED_DIAG_LIBRARY`; both retain OT/DIIS, `FULL_ALL`, direct `FALSE`, and
+identical resources. Each mode has one warmup and three measured repetitions.
+These runs must finish and pass independent verification before drawing an OT
+speedup conclusion. Other preconditioners, matrix sizes and multi-GPU runs
+can give different results.
