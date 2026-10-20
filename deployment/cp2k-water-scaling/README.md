@@ -143,6 +143,14 @@ the last CPU repetition reached 13.83 GiB of its 15 GiB quota and tripped the
 has scheduler status `FAILED`, not `OUT_OF_MEMORY`; its incomplete last case
 and two completed measured pairs are excluded from the replacement's result.
 
+The 392-water 4V100 single-GPU comparison subsequently stopped at the same
+92% guard during its second measured CPU calculation, at 20.28 GiB of its
+22 GiB quota. Its replacement also uses `--host-memory-fraction .95`, retaining
+the same size and resource quota, importing the nine validated tuning cases,
+and repeating all warm-up and measured pairs. The original failed job and its
+completed timings are retained as excluded evidence. The point remains
+explicitly host-RAM limited at approximately 55% GPU memory.
+
 Before publishing results, retain scheduler accounting (`COMPLETED`, `0:0`),
 original inputs, logs, force files, rank traces, samples and build provenance.
 Queued jobs and memory-only probes are progress, not completed benchmark results.

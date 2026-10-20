@@ -1,5 +1,36 @@
 # CP2K water scaling: calibration and CPU acceptance
 
+**2026-10-21 follow-up: 4V100 single-GPU measurement recovery.** Job
+**1882731** passed all nine tuning cases, both warm-up calculations, the first
+measured CPU/GPU pair and the second measured GPU calculation. The second
+measured CPU calculation then reached **20.28 GiB / 22 GiB**, crossing the
+runner's 92% early-stop threshold. Its retained sample records
+`stop=host_memory_limit`; scheduler accounting is `FAILED 1:0`, not an
+observed OOM. The stopped CPU calculation used approximately **99.8%** of its
+four physical cores. Completed energy and force comparisons still passed.
+
+Replacement **1884985** is running on `4v100n02`, with the same 392 waters,
+one GPU, four physical cores and 22 GiB RAM quota. The explicit 95% guard is
+**20.90 GiB**. All nine original tuning cases were independently validated
+and imported, and their inputs match the new frozen input generator. Only
+tuning is reused: the excluded warm-up pair and three measured pairs all run
+afresh. Earlier measured timings remain excluded from the replacement result.
+This point remains host-RAM limited at approximately 55% VRAM, below the
+preferred 60–75% window. The watcher retains both failed predecessors and now
+tracks attempt 3.
+
+The 16V100 single-GPU recovery has passed both warm-up calculations and is
+measuring its first CPU repetition; CPU warm-up used approximately 99.8% of
+the four physical cores. The 16-GPU point has passed three complete GPU tuning
+calculations at 1,452 waters, each converging in 22 SCF steps, and is testing
+the fourth setting. The four-GPU 16V100 point is still testing its second CPU
+layout. Four-GPU 4V100 calibration remains queued for resources.
+
+[4v100-measurement-recovery.json](4v100-measurement-recovery.json) retains the
+failed sample and raw-file hashes, stopped job log, completed tuning and
+excluded timings, replacement provenance and allocation, and campaign state.
+**No final repeated speedup is yet accepted.** Earlier snapshots follow.
+
 **2026-10-21 follow-up: single-GPU measurement recovery.** The original
 16V100 single-GPU job **1882305** completed tuning, warm-up and two measured
 pairs, then stopped during the last CPU repetition. Its sampled host RAM was

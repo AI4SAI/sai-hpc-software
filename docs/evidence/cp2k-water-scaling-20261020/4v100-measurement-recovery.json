@@ -1,0 +1,2070 @@
+{
+  "accounting": "1882313|RUNNING|0:0|03:53:48|16v100n26\n1882713|PENDING|0:0|00:00:00|None assigned\n1882731|FAILED|1:0|02:50:03|4v100n10\n1883254|RUNNING|0:0|02:09:17|16v100n60\n1884617|RUNNING|0:0|00:39:59|16v100n01\n1884985|RUNNING|0:0|00:01:19|4v100n02\n",
+  "campaign": {
+    "complete": false,
+    "controller_revision": "control-v4",
+    "cpu": {
+      "16V100": {
+        "accepted": true,
+        "build": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-16v100-a",
+        "build_state": "COMPLETED",
+        "smoke": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-smoke-b",
+        "smoke_state": "COMPLETED"
+      },
+      "4V100": {
+        "accepted": true,
+        "build": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-4v100-a",
+        "build_state": "COMPLETED",
+        "smoke": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-smoke",
+        "smoke_state": "COMPLETED"
+      }
+    },
+    "errors": [],
+    "memory_followup": "4V100 has 22 GiB host RAM per 32 GiB GPU; require complete ENERGY_FORCE memory validation and retain earlier failures.",
+    "name": "20261020-large-water",
+    "points": [
+      {
+        "attempt": 2,
+        "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g1-d",
+        "calibration_state": "COMPLETED",
+        "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g1-compare-r2",
+        "comparison_state": "RUNNING",
+        "gpus": 1,
+        "partition": "16V100",
+        "previous_comparisons": [
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g1-compare"
+        ],
+        "replacement_reason": "Last CPU pair stopped at the 92% RAM guard; use 95% with the same 15 GiB quota. Revalidate and reuse nine tuning cases, then run all warm-up/measured pairs afresh.",
+        "shape": [
+          6,
+          6,
+          8
+        ]
+      },
+      {
+        "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g4-e",
+        "calibration_state": "COMPLETED",
+        "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g4-compare",
+        "comparison_state": "RUNNING",
+        "gpus": 4,
+        "partition": "16V100",
+        "shape": [
+          8,
+          9,
+          9
+        ]
+      },
+      {
+        "attempt": 2,
+        "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g16-e",
+        "calibration_state": "COMPLETED",
+        "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare-r2",
+        "comparison_state": "RUNNING",
+        "gpus": 16,
+        "host_memory_limited": false,
+        "partition": "16V100",
+        "previous_comparisons": [
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare"
+        ],
+        "replacement_reason": "Increase the large CPU calculation budget: six hours per case, 72 hours total.",
+        "shape": [
+          11,
+          11,
+          12
+        ]
+      },
+      {
+        "allow_host_limited": true,
+        "attempt": 3,
+        "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g1-full-a",
+        "calibration_state": "COMPLETED",
+        "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r3",
+        "comparison_state": "RUNNING",
+        "gpus": 1,
+        "host_memory_limited": true,
+        "partition": "4V100",
+        "previous_calibrations": [
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g1-f"
+        ],
+        "previous_comparisons": [
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare",
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r2"
+        ],
+        "replacement_reason": "Second CPU measured pair stopped at 20.28/22 GiB under the 92% RAM guard. Keep the same allocation and 392 waters; use 95%, revalidate nine original tuning cases, and run all warm-up/measured pairs afresh.",
+        "shape": [
+          7,
+          7,
+          8
+        ]
+      },
+      {
+        "allow_host_limited": true,
+        "attempt": 1,
+        "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-full-a",
+        "calibration_state": "PENDING",
+        "gpus": 4,
+        "partition": "4V100",
+        "previous_calibrations": [
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-e"
+        ]
+      }
+    ],
+    "scheduler": {
+      "1882046": {
+        "elapsed": "00:06:40",
+        "exit_code": "0:0",
+        "nodes": "16v100n67",
+        "state": "COMPLETED"
+      },
+      "1882047": {
+        "elapsed": "00:22:31",
+        "exit_code": "0:0",
+        "nodes": "4v100n10",
+        "state": "COMPLETED"
+      },
+      "1882071": {
+        "elapsed": "00:01:59",
+        "exit_code": "0:0",
+        "nodes": "16v100n02",
+        "state": "COMPLETED"
+      },
+      "1882180": {
+        "elapsed": "00:05:44",
+        "exit_code": "0:0",
+        "nodes": "16v100n07",
+        "state": "COMPLETED"
+      },
+      "1882207": {
+        "elapsed": "00:11:59",
+        "exit_code": "0:0",
+        "nodes": "16v100n60",
+        "state": "COMPLETED"
+      },
+      "1882209": {
+        "elapsed": "00:01:54",
+        "exit_code": "0:0",
+        "nodes": "16v100n07",
+        "state": "COMPLETED"
+      },
+      "1882304": {
+        "elapsed": "00:02:26",
+        "exit_code": "0:0",
+        "nodes": "4v100n04",
+        "state": "COMPLETED"
+      },
+      "1882313": {
+        "elapsed": "03:52:55",
+        "exit_code": "0:0",
+        "nodes": "16v100n26",
+        "state": "RUNNING"
+      },
+      "1882535": {
+        "elapsed": "00:07:42",
+        "exit_code": "0:0",
+        "nodes": "4v100n09",
+        "state": "COMPLETED"
+      },
+      "1882713": {
+        "elapsed": "00:00:00",
+        "exit_code": "0:0",
+        "nodes": "None assigned",
+        "state": "PENDING"
+      },
+      "1883254": {
+        "elapsed": "02:08:24",
+        "exit_code": "0:0",
+        "nodes": "16v100n60",
+        "state": "RUNNING"
+      },
+      "1884617": {
+        "elapsed": "00:39:06",
+        "exit_code": "0:0",
+        "nodes": "16v100n01",
+        "state": "RUNNING"
+      },
+      "1884985": {
+        "elapsed": "00:00:26",
+        "exit_code": "0:0",
+        "nodes": "4v100n02",
+        "state": "RUNNING"
+      }
+    },
+    "updated_utc": "2026-10-20T18:01:44.563703+00:00"
+  },
+  "captured_utc": "2026-10-20T18:02:37.863469+00:00",
+  "failure_raw_hashes": {
+    "cases/pair-2-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+    "cases/pair-2-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+    "cases/pair-2-cpu/cp2k.log": "576c8c5668460ee0aa4df9530bd8a538c06595992473cf3580f5b83112090d91",
+    "cases/pair-2-cpu/elapsed.txt": "d67a9761f946b740039b45a31d9f7ff41d68c9f8a1ba19f836c2d0fa646bdb7d",
+    "cases/pair-2-cpu/input.inp": "f7382cf02cbc053fd7527e9e2b66cd53c9696e43c9d40a86326e2266d37d1d5f",
+    "cases/pair-2-cpu/launch.json": "8f50ef3b046f922f547f7763c4615e332c50ce09eb483789e15537de79c88947",
+    "cases/pair-2-cpu/rank-0.json": "b763f8fb81db1a28c80bfd51e2c7582cdbfef3707b809a4f853d5da7820c8535",
+    "cases/pair-2-cpu/rank-1.json": "52d79cca16fde5e1b6058787b519ca2fcfc72061e5c8c74b788d6ec545a06709",
+    "cases/pair-2-cpu/rank-2.json": "fd356857ba6bc7726d6262970ef84ed06ce21ee747c2dad92c2605f93483c616",
+    "cases/pair-2-cpu/rank-3.json": "9f44b213a8c458009ebb493b4900737ef0d80d93c3cf7d4f756d7e680d3baf39",
+    "cases/pair-2-cpu/resources.jsonl": "18a8057ae50ee4f7b76412de1447da65325c77bd6792b6ab321ff7f0487d81c6",
+    "cases/pair-2-cpu/sample.json": "29025e65e8f955c88c659fe634e2a5ec4c388e44848e8ad61b120425a7917e7b",
+    "cases/pair-2-cpu/stopped-ranks.json": "46f3b5dfb7b82278ad902389e5edfe2f00210b00d6b9ed1577794ef36d4e25fc"
+  },
+  "old_completed_tuning": [
+    {
+      "average_physical_core_utilization": 0.4356019843533157,
+      "basis_functions": 9016,
+      "block": 32,
+      "calibration": false,
+      "comparison": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "cp2k_seconds": 300.27,
+      "dispersion_ha": null,
+      "elapsed_seconds": 301.4621253274381,
+      "energy_ha": -6753.293436371946,
+      "host_memory": {
+        "limit": 23622320128,
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+        "used": 19844292608
+      },
+      "mode": "gpu",
+      "name": "tune-0-gpu",
+      "peak_gpu_fraction": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.54986572265625
+      },
+      "peak_gpu_mib": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 18018.0
+      },
+      "ranks": 1,
+      "returncode": 0,
+      "sampled_cpu_seconds": 525.27,
+      "scf_steps": [
+        20
+      ],
+      "science_accepted": true,
+      "shape": [
+        7,
+        7,
+        8
+      ],
+      "stop": null,
+      "threads": 4,
+      "waters": 392
+    },
+    {
+      "average_physical_core_utilization": 0.2900487150661344,
+      "basis_functions": 9016,
+      "block": 32,
+      "calibration": false,
+      "comparison": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 9.999999960041972e-13
+      },
+      "cp2k_seconds": 377.036,
+      "dispersion_ha": null,
+      "elapsed_seconds": 378.76396030560136,
+      "energy_ha": -6753.293436371946,
+      "host_memory": {
+        "limit": 23622320128,
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+        "used": 19772420096
+      },
+      "mode": "gpu",
+      "name": "tune-1-gpu",
+      "peak_gpu_fraction": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.5491943359375
+      },
+      "peak_gpu_mib": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 17996.0
+      },
+      "ranks": 1,
+      "returncode": 0,
+      "sampled_cpu_seconds": 439.44,
+      "scf_steps": [
+        20
+      ],
+      "science_accepted": true,
+      "shape": [
+        7,
+        7,
+        8
+      ],
+      "stop": null,
+      "threads": 2,
+      "waters": 392
+    },
+    {
+      "average_physical_core_utilization": 0.14893951557486484,
+      "basis_functions": 9016,
+      "block": 32,
+      "calibration": false,
+      "comparison": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 1.0000004296850662e-12
+      },
+      "cp2k_seconds": 623.527,
+      "dispersion_ha": null,
+      "elapsed_seconds": 671.5477730268613,
+      "energy_ha": -6753.293436371946,
+      "host_memory": {
+        "limit": 23622320128,
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+        "used": 19624689664
+      },
+      "mode": "gpu",
+      "name": "tune-2-gpu",
+      "peak_gpu_fraction": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.54876708984375
+      },
+      "peak_gpu_mib": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 17982.0
+      },
+      "ranks": 1,
+      "returncode": 0,
+      "sampled_cpu_seconds": 400.08,
+      "scf_steps": [
+        20
+      ],
+      "science_accepted": true,
+      "shape": [
+        7,
+        7,
+        8
+      ],
+      "stop": null,
+      "threads": 1,
+      "waters": 392
+    },
+    {
+      "average_physical_core_utilization": 0.3590802305084568,
+      "basis_functions": 9016,
+      "block": 64,
+      "calibration": false,
+      "comparison": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 1.0000004296850662e-12
+      },
+      "cp2k_seconds": 368.013,
+      "dispersion_ha": null,
+      "elapsed_seconds": 369.89644295349717,
+      "energy_ha": -6753.293436371946,
+      "host_memory": {
+        "limit": 23622320128,
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+        "used": 19201138688
+      },
+      "mode": "gpu",
+      "name": "tune-3-gpu",
+      "peak_gpu_fraction": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.54986572265625
+      },
+      "peak_gpu_mib": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 18018.0
+      },
+      "ranks": 1,
+      "returncode": 0,
+      "sampled_cpu_seconds": 531.29,
+      "scf_steps": [
+        20
+      ],
+      "science_accepted": true,
+      "shape": [
+        7,
+        7,
+        8
+      ],
+      "stop": null,
+      "threads": 4,
+      "waters": 392
+    },
+    {
+      "average_physical_core_utilization": 0.30550395969236227,
+      "basis_functions": 9016,
+      "block": 64,
+      "calibration": false,
+      "comparison": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 9.999999960041972e-13
+      },
+      "cp2k_seconds": 358.635,
+      "dispersion_ha": null,
+      "elapsed_seconds": 360.1589979743585,
+      "energy_ha": -6753.293436371946,
+      "host_memory": {
+        "limit": 23622320128,
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+        "used": 19297755136
+      },
+      "mode": "gpu",
+      "name": "tune-4-gpu",
+      "peak_gpu_fraction": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.5491943359375
+      },
+      "peak_gpu_mib": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 17996.0
+      },
+      "ranks": 1,
+      "returncode": 0,
+      "sampled_cpu_seconds": 440.12,
+      "scf_steps": [
+        20
+      ],
+      "science_accepted": true,
+      "shape": [
+        7,
+        7,
+        8
+      ],
+      "stop": null,
+      "threads": 2,
+      "waters": 392
+    },
+    {
+      "average_physical_core_utilization": 0.2391360954577466,
+      "basis_functions": 9016,
+      "block": 64,
+      "calibration": false,
+      "comparison": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 1.0000004296850662e-12
+      },
+      "cp2k_seconds": 425.722,
+      "dispersion_ha": null,
+      "elapsed_seconds": 427.59124173317105,
+      "energy_ha": -6753.293436371946,
+      "host_memory": {
+        "limit": 23622320128,
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00/step_batch/user",
+        "used": 19062988800
+      },
+      "mode": "gpu",
+      "name": "tune-5-gpu",
+      "peak_gpu_fraction": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.54876708984375
+      },
+      "peak_gpu_mib": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 17982.0
+      },
+      "ranks": 1,
+      "returncode": 0,
+      "sampled_cpu_seconds": 409.01,
+      "scf_steps": [
+        20
+      ],
+      "science_accepted": true,
+      "shape": [
+        7,
+        7,
+        8
+      ],
+      "stop": null,
+      "threads": 1,
+      "waters": 392
+    },
+    {
+      "average_physical_core_utilization": 0.6881171632524681,
+      "basis_functions": 9016,
+      "block": 32,
+      "calibration": false,
+      "comparison": {
+        "energy_delta_ha": 5.4569682106375694e-12,
+        "max_force_delta_ha_bohr": 1.0000004296850662e-12
+      },
+      "cp2k_seconds": 1280.591,
+      "dispersion_ha": null,
+      "elapsed_seconds": 1282.4523891089484,
+      "energy_ha": -6753.293436371951,
+      "host_memory": {
+        "limit": 23622320128,
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+        "used": 18512969728
+      },
+      "mode": "cpu",
+      "name": "tune-6-cpu",
+      "peak_gpu_fraction": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.0001220703125
+      },
+      "peak_gpu_mib": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 4.0
+      },
+      "ranks": 1,
+      "returncode": 0,
+      "sampled_cpu_seconds": 3529.91,
+      "scf_steps": [
+        20
+      ],
+      "science_accepted": true,
+      "shape": [
+        7,
+        7,
+        8
+      ],
+      "stop": null,
+      "threads": 4,
+      "waters": 392
+    },
+    {
+      "average_physical_core_utilization": 0.7312106263090568,
+      "basis_functions": 9016,
+      "block": 32,
+      "calibration": false,
+      "comparison": {
+        "energy_delta_ha": 9.240466170012951e-10,
+        "max_force_delta_ha_bohr": 1.0000004296850662e-12
+      },
+      "cp2k_seconds": 1365.254,
+      "dispersion_ha": null,
+      "elapsed_seconds": 1367.9813503930345,
+      "energy_ha": -6753.29343637287,
+      "host_memory": {
+        "limit": 23622320128,
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+        "used": 20858753024
+      },
+      "mode": "cpu",
+      "name": "tune-7-cpu",
+      "peak_gpu_fraction": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.0001220703125
+      },
+      "peak_gpu_mib": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 4.0
+      },
+      "ranks": 2,
+      "returncode": 0,
+      "sampled_cpu_seconds": 4001.13,
+      "scf_steps": [
+        20
+      ],
+      "science_accepted": true,
+      "shape": [
+        7,
+        7,
+        8
+      ],
+      "stop": null,
+      "threads": 2,
+      "waters": 392
+    },
+    {
+      "average_physical_core_utilization": 0.9968735977588633,
+      "basis_functions": 9016,
+      "block": 32,
+      "calibration": false,
+      "comparison": {
+        "energy_delta_ha": 1.3205863069742918e-09,
+        "max_force_delta_ha_bohr": 1.0000004296850662e-12
+      },
+      "cp2k_seconds": 1151.462,
+      "dispersion_ha": null,
+      "elapsed_seconds": 1153.0774840302765,
+      "energy_ha": -6753.293436373267,
+      "host_memory": {
+        "limit": 23622320128,
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+        "used": 21516410880
+      },
+      "mode": "cpu",
+      "name": "tune-8-cpu",
+      "peak_gpu_fraction": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.0001220703125
+      },
+      "peak_gpu_mib": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 4.0
+      },
+      "ranks": 4,
+      "returncode": 0,
+      "sampled_cpu_seconds": 4597.89,
+      "scf_steps": [
+        20
+      ],
+      "science_accepted": true,
+      "shape": [
+        7,
+        7,
+        8
+      ],
+      "stop": null,
+      "threads": 1,
+      "waters": 392
+    }
+  ],
+  "old_excluded_pairs": [
+    {
+      "average_physical_core_utilization": 0.43409069894393376,
+      "basis_functions": 9016,
+      "block": 32,
+      "calibration": false,
+      "comparison": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 1.0000004296850662e-12
+      },
+      "cp2k_seconds": 294.334,
+      "dispersion_ha": null,
+      "elapsed_seconds": 296.1593056768179,
+      "energy_ha": -6753.293436371946,
+      "host_memory": {
+        "limit": 23622320128,
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00/step_batch/user",
+        "used": 20632150016
+      },
+      "mode": "gpu",
+      "name": "pair-0-gpu",
+      "peak_gpu_fraction": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.54986572265625
+      },
+      "peak_gpu_mib": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 18018.0
+      },
+      "ranks": 1,
+      "returncode": 0,
+      "sampled_cpu_seconds": 514.24,
+      "scf_steps": [
+        20
+      ],
+      "science_accepted": true,
+      "shape": [
+        7,
+        7,
+        8
+      ],
+      "stop": null,
+      "threads": 4,
+      "warmup": true,
+      "waters": 392
+    },
+    {
+      "average_physical_core_utilization": 0.9977190045602002,
+      "basis_functions": 9016,
+      "block": 32,
+      "calibration": false,
+      "comparison": {
+        "energy_delta_ha": 1.3205863069742918e-09,
+        "max_force_delta_ha_bohr": 1.0000004296850662e-12
+      },
+      "cp2k_seconds": 1150.616,
+      "dispersion_ha": null,
+      "elapsed_seconds": 1152.2106873234734,
+      "energy_ha": -6753.293436373267,
+      "host_memory": {
+        "limit": 23622320128,
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+        "used": 21666603008
+      },
+      "mode": "cpu",
+      "name": "pair-0-cpu",
+      "peak_gpu_fraction": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.0001220703125
+      },
+      "peak_gpu_mib": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 4.0
+      },
+      "ranks": 4,
+      "returncode": 0,
+      "sampled_cpu_seconds": 4598.33,
+      "scf_steps": [
+        20
+      ],
+      "science_accepted": true,
+      "shape": [
+        7,
+        7,
+        8
+      ],
+      "stop": null,
+      "threads": 1,
+      "warmup": true,
+      "waters": 392
+    },
+    {
+      "average_physical_core_utilization": 0.997704533147364,
+      "basis_functions": 9016,
+      "block": 32,
+      "calibration": false,
+      "comparison": {
+        "energy_delta_ha": 1.3205863069742918e-09,
+        "max_force_delta_ha_bohr": 1.0000004296850662e-12
+      },
+      "cp2k_seconds": 1147.652,
+      "dispersion_ha": null,
+      "elapsed_seconds": 1148.736887447536,
+      "energy_ha": -6753.293436373267,
+      "host_memory": {
+        "limit": 23622320128,
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+        "used": 21478010880
+      },
+      "mode": "cpu",
+      "name": "pair-1-cpu",
+      "peak_gpu_fraction": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.0001220703125
+      },
+      "peak_gpu_mib": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 4.0
+      },
+      "ranks": 4,
+      "returncode": 0,
+      "sampled_cpu_seconds": 4584.4,
+      "scf_steps": [
+        20
+      ],
+      "science_accepted": true,
+      "shape": [
+        7,
+        7,
+        8
+      ],
+      "stop": null,
+      "threads": 1,
+      "warmup": false,
+      "waters": 392
+    },
+    {
+      "average_physical_core_utilization": 0.43107371735486577,
+      "basis_functions": 9016,
+      "block": 32,
+      "calibration": false,
+      "comparison": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 1.0000004296850662e-12
+      },
+      "cp2k_seconds": 301.528,
+      "dispersion_ha": null,
+      "elapsed_seconds": 303.3819848783314,
+      "energy_ha": -6753.293436371946,
+      "host_memory": {
+        "limit": 23622320128,
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+        "used": 19376893952
+      },
+      "mode": "gpu",
+      "name": "pair-1-gpu",
+      "peak_gpu_fraction": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.54986572265625
+      },
+      "peak_gpu_mib": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 18018.0
+      },
+      "ranks": 1,
+      "returncode": 0,
+      "sampled_cpu_seconds": 523.12,
+      "scf_steps": [
+        20
+      ],
+      "science_accepted": true,
+      "shape": [
+        7,
+        7,
+        8
+      ],
+      "stop": null,
+      "threads": 4,
+      "warmup": false,
+      "waters": 392
+    },
+    {
+      "average_physical_core_utilization": 0.4340707139280554,
+      "basis_functions": 9016,
+      "block": 32,
+      "calibration": false,
+      "comparison": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 1.0000004296850662e-12
+      },
+      "cp2k_seconds": 298.296,
+      "dispersion_ha": null,
+      "elapsed_seconds": 299.23119858652353,
+      "energy_ha": -6753.293436371946,
+      "host_memory": {
+        "limit": 23622320128,
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00/step_batch/user",
+        "used": 19446697984
+      },
+      "mode": "gpu",
+      "name": "pair-2-gpu",
+      "peak_gpu_fraction": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.54986572265625
+      },
+      "peak_gpu_mib": {
+        "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 18018.0
+      },
+      "ranks": 1,
+      "returncode": 0,
+      "sampled_cpu_seconds": 519.55,
+      "scf_steps": [
+        20
+      ],
+      "science_accepted": true,
+      "shape": [
+        7,
+        7,
+        8
+      ],
+      "stop": null,
+      "threads": 4,
+      "warmup": false,
+      "waters": 392
+    }
+  ],
+  "original_failed_case": {
+    "average_physical_core_utilization": 0.9982169813189031,
+    "basis_functions": 9016,
+    "block": 32,
+    "calibration": false,
+    "elapsed_seconds": 501.53174046240747,
+    "host_memory": {
+      "limit": 23622320128,
+      "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+      "used": 21775413248
+    },
+    "mode": "cpu",
+    "name": "pair-2-cpu",
+    "peak_gpu_fraction": {
+      "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.0001220703125
+    },
+    "peak_gpu_mib": {
+      "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 4.0
+    },
+    "ranks": 4,
+    "returncode": 1,
+    "sampled_cpu_seconds": 2002.55,
+    "science_accepted": false,
+    "shape": [
+      7,
+      7,
+      8
+    ],
+    "stop": "host_memory_limit",
+    "threads": 1,
+    "waters": 392
+  },
+  "original_job": "1882731",
+  "original_run": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r2",
+  "original_slurm_log": "START tune-0-gpu: 392 waters, 1 MPI x 4 OMP, gpu\nFINISH tune-0-gpu: rc=0, stop=None, GPU fractions=[0.54986572265625]\nSTART tune-1-gpu: 392 waters, 1 MPI x 2 OMP, gpu\nFINISH tune-1-gpu: rc=0, stop=None, GPU fractions=[0.5491943359375]\nSTART tune-2-gpu: 392 waters, 1 MPI x 1 OMP, gpu\nFINISH tune-2-gpu: rc=0, stop=None, GPU fractions=[0.54876708984375]\nSTART tune-3-gpu: 392 waters, 1 MPI x 4 OMP, gpu\nFINISH tune-3-gpu: rc=0, stop=None, GPU fractions=[0.54986572265625]\nSTART tune-4-gpu: 392 waters, 1 MPI x 2 OMP, gpu\nFINISH tune-4-gpu: rc=0, stop=None, GPU fractions=[0.5491943359375]\nSTART tune-5-gpu: 392 waters, 1 MPI x 1 OMP, gpu\nFINISH tune-5-gpu: rc=0, stop=None, GPU fractions=[0.54876708984375]\nSTART tune-6-cpu: 392 waters, 1 MPI x 4 OMP, cpu\nFINISH tune-6-cpu: rc=0, stop=None, GPU fractions=[0.0001220703125]\nSTART tune-7-cpu: 392 waters, 2 MPI x 2 OMP, cpu\nFINISH tune-7-cpu: rc=0, stop=None, GPU fractions=[0.0001220703125]\nSTART tune-8-cpu: 392 waters, 4 MPI x 1 OMP, cpu\nFINISH tune-8-cpu: rc=0, stop=None, GPU fractions=[0.0001220703125]\nSTART pair-0-gpu: 392 waters, 1 MPI x 4 OMP, gpu\nFINISH pair-0-gpu: rc=0, stop=None, GPU fractions=[0.54986572265625]\nSTART pair-0-cpu: 392 waters, 4 MPI x 1 OMP, cpu\nFINISH pair-0-cpu: rc=0, stop=None, GPU fractions=[0.0001220703125]\nSTART pair-1-cpu: 392 waters, 4 MPI x 1 OMP, cpu\nFINISH pair-1-cpu: rc=0, stop=None, GPU fractions=[0.0001220703125]\nSTART pair-1-gpu: 392 waters, 1 MPI x 4 OMP, gpu\nFINISH pair-1-gpu: rc=0, stop=None, GPU fractions=[0.54986572265625]\nSTART pair-2-gpu: 392 waters, 1 MPI x 4 OMP, gpu\nFINISH pair-2-gpu: rc=0, stop=None, GPU fractions=[0.54986572265625]\nSTART pair-2-cpu: 392 waters, 4 MPI x 1 OMP, cpu\nFINISH pair-2-cpu: rc=1, stop=host_memory_limit, GPU fractions=[0.0001220703125]\nTraceback (most recent call last):\n  File \"/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r2/control/deployment/cp2k-water-scaling/run.py\", line 600, in <module>\n    main()\n  File \"/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r2/control/deployment/cp2k-water-scaling/run.py\", line 594, in main\n    execute(args.root)\n  File \"/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r2/control/deployment/cp2k-water-scaling/run.py\", line 568, in execute\n    {'calibrate': calibrate, 'compare': compare, 'smoke': smoke}[request['stage']](root, request, devices)\n  File \"/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r2/control/deployment/cp2k-water-scaling/run.py\", line 365, in compare\n    require(sample['science_accepted'], 'Measured calculation failed')\n  File \"/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r2/control/deployment/cp2k-water-scaling/run.py\", line 34, in require\n    raise ValueError(message)\nValueError: Measured calculation failed\n",
+  "other_points": [
+    {
+      "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g1-d",
+      "calibration_state": "COMPLETED",
+      "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g1-compare-r2",
+      "comparison_state": "RUNNING",
+      "gpus": 1,
+      "host_memory_limited": null,
+      "pairs.json": [
+        {
+          "average_physical_core_utilization": 0.4803769779359401,
+          "block": 64,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 272.424,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D5DDQS00",
+            "used": 12703756288
+          },
+          "mode": "gpu",
+          "name": "pair-0-gpu",
+          "ranks": 1,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 4,
+          "warmup": true
+        },
+        {
+          "average_physical_core_utilization": 0.9979535000815519,
+          "block": 32,
+          "comparison": {
+            "energy_delta_ha": 9.194991434924304e-10,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 1257.262,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D5DDQS00",
+            "used": 14704431104
+          },
+          "mode": "cpu",
+          "name": "pair-0-cpu",
+          "ranks": 4,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 1,
+          "warmup": true
+        }
+      ],
+      "partition": "16V100",
+      "shape": [
+        6,
+        6,
+        8
+      ],
+      "tuning.json": [
+        {
+          "average_physical_core_utilization": 0.44416680196607905,
+          "block": 32,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "cp2k_seconds": 269.936,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTABHW00",
+            "used": 12802662400
+          },
+          "mode": "gpu",
+          "name": "tune-0-gpu",
+          "ranks": 1,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 4,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.29414859650101466,
+          "block": 32,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 324.318,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTABHW00",
+            "used": 12886028288
+          },
+          "mode": "gpu",
+          "name": "tune-1-gpu",
+          "ranks": 1,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 2,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.2383553135176366,
+          "block": 32,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 369.639,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTABHW00",
+            "used": 12941414400
+          },
+          "mode": "gpu",
+          "name": "tune-2-gpu",
+          "ranks": 1,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 1,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.43022341726142516,
+          "block": 64,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 251.248,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTABHW00",
+            "used": 12483579904
+          },
+          "mode": "gpu",
+          "name": "tune-3-gpu",
+          "ranks": 1,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 4,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.3056581664248089,
+          "block": 64,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 323.832,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTABHW00",
+            "used": 12725616640
+          },
+          "mode": "gpu",
+          "name": "tune-4-gpu",
+          "ranks": 1,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 2,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.21143989173341865,
+          "block": 64,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 445.761,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTABHW00",
+            "used": 12906094592
+          },
+          "mode": "gpu",
+          "name": "tune-5-gpu",
+          "ranks": 1,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 1,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.6412851129132875,
+          "block": 32,
+          "comparison": {
+            "energy_delta_ha": 1.8189894035458565e-12,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 1252.759,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTABHW00",
+            "used": 12113965056
+          },
+          "mode": "cpu",
+          "name": "tune-6-cpu",
+          "ranks": 1,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 4,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.741850761431314,
+          "block": 32,
+          "comparison": {
+            "energy_delta_ha": 7.175913196988404e-10,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 1328.796,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTABHW00",
+            "used": 14413787136
+          },
+          "mode": "cpu",
+          "name": "tune-7-cpu",
+          "ranks": 2,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 2,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.9929474673398684,
+          "block": 32,
+          "comparison": {
+            "energy_delta_ha": 9.194991434924304e-10,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 1219.457,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTABHW00",
+            "used": 14645231616
+          },
+          "mode": "cpu",
+          "name": "tune-8-cpu",
+          "ranks": 4,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 1,
+          "warmup": null
+        }
+      ]
+    },
+    {
+      "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g4-e",
+      "calibration_state": "COMPLETED",
+      "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g4-compare",
+      "comparison_state": "RUNNING",
+      "gpus": 4,
+      "host_memory_limited": null,
+      "partition": "16V100",
+      "shape": [
+        8,
+        9,
+        9
+      ],
+      "tuning.json": [
+        {
+          "average_physical_core_utilization": 0.5115727854079317,
+          "block": 32,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "cp2k_seconds": 648.947,
+          "host_memory": {
+            "limit": 64424509440,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTAH7300",
+            "used": 54613057536
+          },
+          "mode": "gpu",
+          "name": "tune-0-gpu",
+          "ranks": 4,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 4,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.3753596935054631,
+          "block": 32,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 712.694,
+          "host_memory": {
+            "limit": 64424509440,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTAH7300",
+            "used": 54379487232
+          },
+          "mode": "gpu",
+          "name": "tune-1-gpu",
+          "ranks": 4,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 2,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.2568877639859794,
+          "block": 32,
+          "comparison": {
+            "energy_delta_ha": 1.8189894035458565e-12,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 975.402,
+          "host_memory": {
+            "limit": 64424509440,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTAH7300",
+            "used": 53643022336
+          },
+          "mode": "gpu",
+          "name": "tune-2-gpu",
+          "ranks": 4,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 1,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.5157927581079566,
+          "block": 64,
+          "comparison": {
+            "energy_delta_ha": 3.637978807091713e-12,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 654.548,
+          "host_memory": {
+            "limit": 64424509440,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTAH7300",
+            "used": 54295961600
+          },
+          "mode": "gpu",
+          "name": "tune-3-gpu",
+          "ranks": 4,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 4,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.37483233650391756,
+          "block": 64,
+          "comparison": {
+            "energy_delta_ha": 1.8189894035458565e-12,
+            "max_force_delta_ha_bohr": 1.0000000010863949e-12
+          },
+          "cp2k_seconds": 736.768,
+          "host_memory": {
+            "limit": 64424509440,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTAH7300",
+            "used": 54390403072
+          },
+          "mode": "gpu",
+          "name": "tune-4-gpu",
+          "ranks": 4,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 2,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.2621590016832774,
+          "block": 64,
+          "comparison": {
+            "energy_delta_ha": 1.8189894035458565e-12,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 1009.919,
+          "host_memory": {
+            "limit": 64424509440,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTAH7300",
+            "used": 53994250240
+          },
+          "mode": "gpu",
+          "name": "tune-5-gpu",
+          "ranks": 4,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 1,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.5769448552709892,
+          "block": 32,
+          "comparison": {
+            "energy_delta_ha": 1.2732925824820995e-11,
+            "max_force_delta_ha_bohr": 1.0000021644085422e-12
+          },
+          "cp2k_seconds": 6286.839,
+          "host_memory": {
+            "limit": 64424509440,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTAH7300",
+            "used": 48557838336
+          },
+          "mode": "cpu",
+          "name": "tune-6-cpu",
+          "ranks": 4,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 4,
+          "warmup": null
+        }
+      ]
+    },
+    {
+      "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g16-e",
+      "calibration_state": "COMPLETED",
+      "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare-r2",
+      "comparison_state": "RUNNING",
+      "gpus": 16,
+      "host_memory_limited": false,
+      "partition": "16V100",
+      "shape": [
+        11,
+        11,
+        12
+      ],
+      "tuning.json": [
+        {
+          "average_physical_core_utilization": 0.564224600286456,
+          "block": 32,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "cp2k_seconds": 1876.547,
+          "host_memory": {
+            "limit": 257698037760,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D09X0800",
+            "used": 226653720576
+          },
+          "mode": "gpu",
+          "name": "tune-0-gpu",
+          "ranks": 16,
+          "scf_steps": [
+            22
+          ],
+          "science_accepted": true,
+          "threads": 4,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.4132549139548143,
+          "block": 32,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000021644085422e-12
+          },
+          "cp2k_seconds": 1943.129,
+          "host_memory": {
+            "limit": 257698037760,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D09X0800",
+            "used": 227159334912
+          },
+          "mode": "gpu",
+          "name": "tune-1-gpu",
+          "ranks": 16,
+          "scf_steps": [
+            22
+          ],
+          "science_accepted": true,
+          "threads": 2,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.3161368819825064,
+          "block": 32,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000021644085422e-12
+          },
+          "cp2k_seconds": 2310.367,
+          "host_memory": {
+            "limit": 257698037760,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D09X0800",
+            "used": 224126828544
+          },
+          "mode": "gpu",
+          "name": "tune-2-gpu",
+          "ranks": 16,
+          "scf_steps": [
+            22
+          ],
+          "science_accepted": true,
+          "threads": 1,
+          "warmup": null
+        }
+      ]
+    },
+    {
+      "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g1-full-a",
+      "calibration_state": "COMPLETED",
+      "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r3",
+      "comparison_state": "RUNNING",
+      "gpus": 1,
+      "host_memory_limited": true,
+      "partition": "4V100",
+      "shape": [
+        7,
+        7,
+        8
+      ],
+      "tuning.json": [
+        {
+          "average_physical_core_utilization": 0.4356019843533157,
+          "block": 32,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "cp2k_seconds": 300.27,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+            "used": 19844292608
+          },
+          "mode": "gpu",
+          "name": "tune-0-gpu",
+          "ranks": 1,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 4,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.2900487150661344,
+          "block": 32,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 9.999999960041972e-13
+          },
+          "cp2k_seconds": 377.036,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+            "used": 19772420096
+          },
+          "mode": "gpu",
+          "name": "tune-1-gpu",
+          "ranks": 1,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 2,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.14893951557486484,
+          "block": 32,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 623.527,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+            "used": 19624689664
+          },
+          "mode": "gpu",
+          "name": "tune-2-gpu",
+          "ranks": 1,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 1,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.3590802305084568,
+          "block": 64,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 368.013,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+            "used": 19201138688
+          },
+          "mode": "gpu",
+          "name": "tune-3-gpu",
+          "ranks": 1,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 4,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.30550395969236227,
+          "block": 64,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 9.999999960041972e-13
+          },
+          "cp2k_seconds": 358.635,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+            "used": 19297755136
+          },
+          "mode": "gpu",
+          "name": "tune-4-gpu",
+          "ranks": 1,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 2,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.2391360954577466,
+          "block": 64,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 425.722,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00/step_batch/user",
+            "used": 19062988800
+          },
+          "mode": "gpu",
+          "name": "tune-5-gpu",
+          "ranks": 1,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 1,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.6881171632524681,
+          "block": 32,
+          "comparison": {
+            "energy_delta_ha": 5.4569682106375694e-12,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 1280.591,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+            "used": 18512969728
+          },
+          "mode": "cpu",
+          "name": "tune-6-cpu",
+          "ranks": 1,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 4,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.7312106263090568,
+          "block": 32,
+          "comparison": {
+            "energy_delta_ha": 9.240466170012951e-10,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 1365.254,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+            "used": 20858753024
+          },
+          "mode": "cpu",
+          "name": "tune-7-cpu",
+          "ranks": 2,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 2,
+          "warmup": null
+        },
+        {
+          "average_physical_core_utilization": 0.9968735977588633,
+          "block": 32,
+          "comparison": {
+            "energy_delta_ha": 1.3205863069742918e-09,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 1151.462,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+            "used": 21516410880
+          },
+          "mode": "cpu",
+          "name": "tune-8-cpu",
+          "ranks": 4,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "threads": 1,
+          "warmup": null
+        }
+      ]
+    },
+    {
+      "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-full-a",
+      "calibration_state": "PENDING",
+      "comparison": null,
+      "comparison_state": null,
+      "gpus": 4,
+      "host_memory_limited": null,
+      "partition": "4V100",
+      "shape": null
+    }
+  ],
+  "peak_resource_sample": {
+    "cgroup": {
+      "limit": 23622320128,
+      "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+      "used": 21775413248
+    },
+    "gpu_processes": [],
+    "gpus": {
+      "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": {
+        "memory_mib": 4.0,
+        "power_w": 66.19,
+        "sm_mhz": 1530.0,
+        "util_percent": 0.0
+      }
+    },
+    "processes": [
+      {
+        "cpu_seconds": 500.78,
+        "rank": 3,
+        "rss_bytes": 4722868224
+      },
+      {
+        "cpu_seconds": 500.77,
+        "rank": 2,
+        "rss_bytes": 4800430080
+      },
+      {
+        "cpu_seconds": 500.51,
+        "rank": 0,
+        "rss_bytes": 6061555712
+      },
+      {
+        "cpu_seconds": 500.49,
+        "rank": 1,
+        "rss_bytes": 6197710848
+      }
+    ],
+    "time": 1792518678.0994327
+  },
+  "performance_result": false,
+  "replacement_allocation": "JobId=1884985 JobName=cp2k-water-20261020-large-water-4v100-g1-compare-r3\n   UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A\n   Priority=10077 Nice=0 Account=private-stardust QOS=rush-1o2gpu WCKey=*\n   JobState=RUNNING Reason=None Dependency=(null)\n   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0\n   RunTime=00:01:19 TimeLimit=04:00:00 TimeMin=N/A\n   SubmitTime=2026-10-21T02:00:49 EligibleTime=2026-10-21T02:00:49\n   AccrueTime=2026-10-21T02:00:49\n   StartTime=2026-10-21T02:01:18 EndTime=2026-10-21T06:01:18 Deadline=N/A\n   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-21T02:01:18 Scheduler=Backfill\n   Partition=4V100 AllocNode:Sid=login-01:1603971\n   ReqNodeList=(null) ExcNodeList=(null)\n   NodeList=4v100n02\n   BatchHost=4v100n02\n   NumNodes=1 NumCPUs=8 NumTasks=4 CPUs/Task=1 ReqB:S:C:T=0:0:*:*\n   ReqTRES=cpu=4,mem=22G,node=1,billing=194,gres/gpu=1\n   AllocTRES=cpu=8,mem=22G,node=1,billing=194,gres/gpu=1\n   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*\n   MinCPUsNode=1 MinMemoryTRES=22G MinTmpDiskNode=0\n   Features=(null) DelayBoot=00:00:00\n   OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null)\n   Command=/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r3/control/deployment/cp2k-water-scaling/job.sbatch\n   SubmitLine=sbatch --parsable --partition=4V100 --qos=rush-1o2gpu --nodes=1 --ntasks=4 --gpus-per-node=1 --time=240 --job-name=cp2k-water-20261020-large-water-4v100-g1-compare-r3 --output=/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r3/results/slurm-%j.log /home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r3/control/deployment/cp2k-water-scaling/job.sbatch /home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r3\n   WorkDir=/home/stardust\n   StdErr=\n   StdIn=/dev/null\n   StdOut=/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r3/results/slurm-1884985.log\n   CpusPerTres=gpu:8\n   MemPerTres=gpu:22528\n   TresPerNode=gres/gpu:1\n\n",
+  "replacement_job": "1884985",
+  "replacement_log": "Reused 9 validated tuning cases; all warm-up and measured pairs are new\nSTART pair-0-gpu: 392 waters, 1 MPI x 4 OMP, gpu\n",
+  "replacement_request": {
+    "calibration": {
+      "path": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g1-full-a",
+      "reason": "discrete_size_or_memory_limit",
+      "sha256": "9d4d18aeb2d14fc9a0055b4a65f5c7affb3aeae10d326edaa0c2fdddf4aa47d2"
+    },
+    "case_seconds": 7200,
+    "cpu_acceptance": {
+      "path": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-smoke/results/smoke.json",
+      "sha256": "acb37661fc8a75dbccaf051665ac095f052ce3cf67d03094d71f8af52ef590e6"
+    },
+    "cpu_binary": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-4v100-a/install/bin/cp2k.psmp",
+    "cpu_binary_sha256": "1c7b9a8fe59a3b4015dfa571b519cd5a9b1f451d1c65a30b35b8ce6aad85225c",
+    "full_calibration": false,
+    "gpu_binary": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/4V100/bin/cp2k.psmp",
+    "gpu_binary_sha256": "68ef030537fdadd18347252e2c3770d17df6f20606ec1ef9e6dfbf02fcf5c4f9",
+    "gpus": 1,
+    "host_memory_fraction": 0.95,
+    "inputs": {
+      "control/controller/abacus_baseline_probe.sbatch": "ee77ca5738eb3e0e0aa0bd4136071d5444ba6f08d394be640dd7092f3bb86914",
+      "control/controller/abacus_benchmark.py": "852c7701aaea3f8d36e2365a09637e91f12612e9284063a7236d70d3e832705b",
+      "control/controller/abacus_build.sh": "cf67a38908fdbc1145aa515011478e59dcac92ec40bebbdb691cb1c024a16a80",
+      "control/controller/abacus_cache_runner_reference.py": "ee275b407a58e1ea3bc835e034ad86eee5a218d0134b8a3f8e3af3c277e10ff3",
+      "control/controller/abacus_dependencies.py": "47c5d90a1c75dd8da1ff085735a26e4cb584aae2a122661c1448fb7cff33afd6",
+      "control/controller/abacus_dependencies.sh": "905eb88d0ca0dc2f3e011874fbe28b7a95cb8a1a1db526ddc4e5fc4661e20cde",
+      "control/controller/abacus_dependency_lock.json": "ce7a95f5e0776eb1ff694e76a88cd4389ee617906071502d79ef5727e5a66d6c",
+      "control/controller/abacus_features.py": "e1b9d5ae501a6f43053c15f5fccabbc224e0278a324b0e2ce628d1324525d64a",
+      "control/controller/abacus_full_dependencies.sh": "0aefb9b7a59f66a0776a70d914dd4ba34d281022856dd91b9fb1864355419d4c",
+      "control/controller/abacus_full_profile.json": "d93fbde64a6898e12c0e61cdced1c2ca7d25925611f3d0bfc3ac1b30576bd469",
+      "control/controller/abacus_runtime.sh": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+      "control/controller/abacus_site_gpu.sh": "1a8631ca91a9969f56115425ef13489144fa28d292609d96292fc8ce9b898b29",
+      "control/controller/abacus_site_mpi.sh": "199aeb495069f0812214c8bd944b229799b8d54b9a908667ef8f1d5b2cbc54d1",
+      "control/controller/build.sbatch.in": "5e0e74a118add2aa80f181dda6bc4bee1bcdb3e241df9c592f8632fbacb21a98",
+      "control/controller/build_capacity.py": "bff0a1cbf9acedb858c9776efd73a9c98737787e1bb439e0965048f47e0ee66c",
+      "control/controller/case.sbatch.in": "d849dca06d71f2ccb3d5e52a5f7a8ea07803a63894bb42aea6385604b5d98698",
+      "control/controller/ci.py": "1b713224de667d460744548c0c6dd965dfeb9c01aef54cc64de80bcd3fefde4b",
+      "control/controller/config.ini": "8dc7eee2853aaa96979a8f55e2f1dea0ceb8c7cb0045e19695837b10d99c575c",
+      "control/controller/container_entry.sh": "618042bbd5fe909dbe0ea2c47f786791d7bb451dc1da841cb2dea83eb72803ef",
+      "control/controller/cp2k_Libint2Config.cmake": "223aac33a7743bc46a25738cb75b4a4bd1100571b1ea13fe4c19dff7c4019de9",
+      "control/controller/cp2k_acceptance.py": "84db91909883510765fa87c03f2816f1af9ac0271f85f95f03c62371dcd098eb",
+      "control/controller/cp2k_baseline_probe.sbatch": "6462e789df12424f89c9595ff62146f1e51933136b2d6306e5845755b4c5cd52",
+      "control/controller/cp2k_benchmark.py": "aefd8b234b1b43f2815a6af5f3502204319a490f4919ad417421d920034a10e3",
+      "control/controller/cp2k_build.sh": "74461284a5b63385f9a75c679f4502d2f21d72f6d317ab06dcc3a33af4975f23",
+      "control/controller/cp2k_cmake_prerequisites.cmake": "8c923f94b76475eba88e14280b05e37ddb8f491a03821193253e49e4af519a0d",
+      "control/controller/cp2k_container_entry.sh": "05f7c0036558ded066641499209d70744519c8d4dbc23bb35f727c06ede2955d",
+      "control/controller/cp2k_dependencies.sbatch": "d1fbdbb7f8553b0b912a08d73bc8f85ac376b9bf0e854c79298a03a4718b3197",
+      "control/controller/cp2k_dependencies.sh": "99d5bbcf9dda385257c0088fe9a12a1f6eea86364e2dc8bef46a17d1af822562",
+      "control/controller/cp2k_dependency_stage.py": "babdea468491a5f809d7c86a1f170d48b9c55d8c6d5abae954ff1d969c5d9a9e",
+      "control/controller/cp2k_elpa.sh": "508b4887216c5ac57bf6777dee83d70b0bf655a3335a26647b7291a1b3ac4ea0",
+      "control/controller/cp2k_elpa_abi.f90": "95c2ef65486385219c646424c2d8724574b8dabaa0fc4ce89c2e78bae43478a5",
+      "control/controller/cp2k_elpa_runtime.py": "0ceaf73725599632c002e5b6588d855c08e1d9a3798cba3bab9a5bf9b048fcc2",
+      "control/controller/cp2k_feature_contract.py": "2d2ea42d9e74d5ecbe8278bebd8b23c81d1bcfe86c35b0d303cf3f7b09e93917",
+      "control/controller/cp2k_image_driver.py": "e0ea6a2b7ce25189b3eb9b7749392b0416894f9d365e1f3c31c577546a8df049",
+      "control/controller/cp2k_libxsmmConfig.cmake": "734aa00bd820e244cde406866c1c6065f8a2f85571dde413f7c2bf058b1fb038",
+      "control/controller/cp2k_overlay_probe.sbatch": "69c6044258e990bd6dbf5ccce76b5b6bb0545d118b000587c720975ec9757e1c",
+      "control/controller/cp2k_overlay_workdir.py": "f22d281427ede157c03c7fc20a8b625e9c5a511e023a6c358de93040589fe468",
+      "control/controller/cp2k_payload.py": "8e71ae39fa9f82c9033107dc00c37f780b06a4b032c5de78190336509c120d83",
+      "control/controller/cp2k_probe.sbatch": "3927f4ece5c157504bc3b0b70e70f603c9319e2709ae36db2a7ce8cbcdc5fa0d",
+      "control/controller/cp2k_repack.sbatch": "004ede58b234b49dc0297ea437d9a3e1e23ff450f7ea8b3bc65222711ee78c7f",
+      "control/controller/cp2k_runtime.sh": "210ddd657ec01da4c1bd13294f95ee51991f24219c3b1965c52874c6270b4540",
+      "control/controller/cp2k_site_elpa.json": "9b3253261d2cee47df156136c575c6fc7748f30344b029b4bc56fd83bed4fea0",
+      "control/controller/cp2k_source_fixes.py": "9ea20a68ddbeaf7184f8968e5a966eef3ee2b84f9ba8cffc56f71c1496563ad9",
+      "control/controller/cp2k_spack.py": "0235341aed673e851a375457076a220d644d178332d577f8a661712c5d7775ad",
+      "control/controller/cp2k_spack_dependencies.sh": "62977f63321a57a3c7d66f15e20f82cebc2ddf3987f1faa0e6719f7e6a640985",
+      "control/controller/cp2k_spack_environment.py": "70603447fee7d634fe939a2a11faca829407eceacd21090812705bd373c0d1ba",
+      "control/controller/cp2k_spack_install.sh": "320f8e5f58ba986a5a37c19223183b3826d932ed680173e4cce2ab034f4e37a7",
+      "control/controller/cp2k_spack_install_evidence.py": "391ad327602cabf1e49db806a6d82c1887669f40da097ba2dfdf3ed193d481cc",
+      "control/controller/cp2k_spack_install_submit.py": "49a15275a73f7d8ed08566f9b82b3576489f8dd74790b336287e97719d685447",
+      "control/controller/cp2k_spack_libint_repair.py": "b38fd9292b264bc83c308ca8c4ce4b42a1b2beb3367713de3f7308106b2cd014",
+      "control/controller/cp2k_spack_link.py": "52efab5e2c77f195e1dd380911a1d7617f2d1f632c3a808dfe5d4e61e3ab88f8",
+      "control/controller/cp2k_spack_mpi_repair.py": "7036b4f1c89b54d0f25e6bf6c87e79f07306a55cd8a10f4e2c93edfcb8c732e8",
+      "control/controller/cp2k_spack_native.py": "bdfadff1c81c8cc0bf03d80f950e4dd3f3176496f02febcb9ae102cd847abb04",
+      "control/controller/cp2k_spack_probe.sh": "4c266c5704f1cf96f4aad3da70030fe7c4f5ea8eb9eae5bb3e409f601cf3723e",
+      "control/controller/cp2k_spack_probe_submit.py": "e878b1bb56ef2bdf8c4afc133d92cbb18ff63198afbc30f9d892f505c1cc08c4",
+      "control/controller/cp2k_spack_seed.py": "9c41a9fc602f2f5e351eb845785a0b86882268b58b53573b3972a85b2fa35dfe",
+      "control/controller/create_rootfs.sh": "ae0818e8bb485222605290fd3f3c410c40354aa518c8f613ac26236b3e382852",
+      "control/controller/daily_plan.py": "8dcc9907d201caab77f421adc7d77a3471881b6caba475ad2474270ae91b2024",
+      "control/controller/delivery_layout.py": "268a18bfe45b1f8cca9d955d5b34215392ee74d734dcf4358c5da66728f6d7f2",
+      "control/controller/environment.sh": "68bfc2f69c1df2f9b35fdf9d273dbf35e377c44b490ff19ebc6c41ac7dad58d0",
+      "control/controller/export_native.py": "cf5709c9037af843e360b2ad1b73b2d50dcdc1525940db9350df5783d9e8c619",
+      "control/controller/finalize_lammps_sif.py": "430113a1b0d271e5d3241460e46166206443dbd92812113f66228dac9ad7fd2f",
+      "control/controller/gpu_feature_controller.py": "67e0711ccd8d39d1d6fc999baa35a9b6fe32fbe2c9392db5bb8e7cdc09f60eb0",
+      "control/controller/gpu_feature_runtime.sh": "b499d0fe6bd1ad4623ece45ea6663702bf8e54d95ae1a0679b87f34ce81a0734",
+      "control/controller/gpumd_acceptance.py": "35080b2962f1cd435ceabfa2ba52b502735ff3c32fcdc9cd560a6e926e7e85bc",
+      "control/controller/gpumd_build.sh": "4739c263643a94b428fdb28e4ca25de93224106fca8ce193d48bf3c2b997a7fa",
+      "control/controller/gpumd_container_entry.sh": "2fd02f0abd7736865eda94204f28d7ca0a536a8eb2029d3b9cb0b435034bdb7f",
+      "control/controller/gpumd_deepmd_probe.py": "78d3e11ad614aed6b092f5fcb3cdf24e9f0dd91fb9adf73c263da2e9ed761319",
+      "control/controller/gpumd_environment.sh": "6bb0cc52a65b83add6cfc6a7375459f61e82ff822aed2d1e1718faf92f935370",
+      "control/controller/gpumd_relink_probe.sbatch": "4d1f7b8858f3c9c1f2beb36393b008f52f7d49cf3f696f2d58c39359bdb31997",
+      "control/controller/gpumd_runtime.sh": "442c2dce979960cfebc58226357ae5374db9e9881649a1f458f78387936b568d",
+      "control/controller/gpumd_science.py": "ee1328905abaca2ffd2630d6d3dcad7a52af110ddf25d4d594485841144f5e1e",
+      "control/controller/gpumd_site_probe.py": "3501fc12f9b648a50127a246ff8232af20f288e4d704b9319b5091417c60d5bf",
+      "control/controller/gpumd_site_probe.sbatch": "b04fba2267207a966b4de8b1660ca2d52d62e94c231627c35107e93c5e4280a7",
+      "control/controller/lammps_manifest_diagnose.sh": "8bd4b84fb66ecfd424c88963cf24cba3dbdb67b2c1ee420e902f61a23dc53dc2",
+      "control/controller/lammps_packaging_debug.sbatch": "6b70c42acb0176aa5fa4938726d8d7c72c4323fb0daf0329b860718279cdfaa1",
+      "control/controller/lammps_packaging_probe.sbatch": "6df4ad1d86c294af6578b0821242030bbc762b974a8be81eb0a84d69f8e6f3e6",
+      "control/controller/md_acceptance.sh": "fbbd8dc86108044c5efa2b00ca4377ab5d4219a18f4ea91d1ad3336ac2dd05bd",
+      "control/controller/md_acceptance_controller.py": "88db1b11a2c81b9687b0ba173bb060c7d9eba0873ea22190601981f54f5faa0b",
+      "control/controller/md_baseline.sh": "e59ca2d8efb63e06ed36caad0c3612a5436191b78ab7b750a8a1c96092cb2621",
+      "control/controller/md_build.sh": "e2587d64983ec05f41aacdd5dc3a56c3c293b98630b0351a3b66898cfa4f1f4e",
+      "control/controller/md_ci.py": "c862b2e08f7a9fe8043daa70b4aa08e18d519e23b94dcec6925f3409d3a3bfcc",
+      "control/controller/md_container_entry.sh": "f1a58ca5f505d4bcefdbb4ab64afa24408b1d4074929fc4e6618b1d9b990a83c",
+      "control/controller/md_container_entry_verify_patched.sh": "eeb20f2b25a146ae12ea7e8634559b2d7dddacb7f96cde002c567aec85504c68",
+      "control/controller/md_controller.py": "5073d3fa7bedbe41cd39b3ff41b31d75f6f66cf9e99fda3b68cd7722744839fe",
+      "control/controller/md_driver_paths.py": "bce00df699cc432d8b7b5d4a8723564498603843639693e640916ab7ed8944a8",
+      "control/controller/md_environment.sh": "034b390c322dabd790f9f66d48b07c9e24b17c65f32f73ce904c8a4f24dec800",
+      "control/controller/md_evidence.py": "2d29110ba27718f7d6a43f93fbe7579dd6e0d76249e5a5de3056d73129687772",
+      "control/controller/md_import_probe.sh": "bddc7bdb3a7b3523531b93ecf51eb2958f6e151c36b4d5a0e93231c8e4dc7806",
+      "control/controller/md_link_launcher.py": "66b989e7807dd94fc425dbfae36900a5e471b98a94c4043f13738b16fd3527f6",
+      "control/controller/md_native_probe.sh": "8d8ccc5229f404c931b312743de5a2e705b3973e30593facd6403141436c27ac",
+      "control/controller/md_packaging_recovery.sh": "d45c0378195e98d1ffeb4452e258e9a0115bd11db053e57124fe4b963056831a",
+      "control/controller/md_performance.py": "a07d3662f5543f347fa584e942dbac7fc6eaf22377c33a0895ec5e07dce8f73e",
+      "control/controller/md_performance.sh": "43d4500f7533427e9e52d6f3de19047b37abd70dafa29f3ae94727fe720bbee9",
+      "control/controller/md_performance_controller.py": "02e24cc2e58b1d88b983b865a4e55c61a2b584bea01f642b54497b2131dc4b62",
+      "control/controller/md_performance_evidence.py": "e810fdc70801fa99fa033c92f96dfd03e2dbcf938eda7487e12ff46d9cae8ead",
+      "control/controller/md_performance_exec.py": "95d573f9edae5e4037e252d690f4adcc4bca04d6cdea59109ffb54686a7ff227",
+      "control/controller/md_performance_run.py": "24f13228ee7333dae8aaf9f8fa57c8f63a5110b93c85ff8ddcb31433e85ef585",
+      "control/controller/md_probe.py": "ac6be1c22cbac809892d62eff53d1e2dd83ee8d50f7cd752f375fcb1e78f8725",
+      "control/controller/md_publication.py": "79d4cb06f6b28756d795f762d3268f5e75bd3c5e9664e25302a470133fe4be26",
+      "control/controller/md_registration.py": "4f4e4db5bb2e7f9c55985d408dcfbf3f6acddbbab1ff8ca327fad0408cec6bb9",
+      "control/controller/md_relocate_audit.py": "21fe48bf420130c74ca5eebebd8d113fc219009700f970907bea1c7e72ed16b3",
+      "control/controller/md_runtime.sh": "cd11020142359a4a83313f97dfb6ef7aaa356a5d5c5a92a4f8d5da12b25543fe",
+      "control/controller/md_science.py": "55d4ee142d65cd7b327dbdca223f0b4b69c8185729b85d991da2652f7979f788",
+      "control/controller/md_tracking.py": "16f6fa69ebfce0ceb97bc7e3deb527e376423f38346b1312a9d02ad369791ef1",
+      "control/controller/module_publication.py": "dfb74bdc51f9eeff6931c66458f80bd571b2ba587368c50ee0a752abe6f6d06f",
+      "control/controller/modules.sh": "c3cba3ad99f373978ad806f61231fc20e9d254e06d5eccdece54629c259cea58",
+      "control/controller/native_module.py": "feb0065834df656ab4de54df86ffaa650ded3ed030fab4190b2d5df8cd3e4421",
+      "control/controller/probe_container.sh": "fb680791228f1b6fac07a038e5964be7399a485b86b81be8a383e51234770d78",
+      "control/controller/probe_module_publication.py": "3d9e4cf82ad5fdf4744a4eceb18d2e7d4d775e6771ee1b9c993aaff4f344d80e",
+      "control/controller/probe_module_publication.sbatch": "c854cb55c67dbac8b599a8bbc2b802d2e882cd7d9305773ebf723f16554255ba",
+      "control/controller/probe_native_export.py": "8203e115ae2123c9cff34d37c95d2939712c6e893a5c4ec7b242c199511a07c5",
+      "control/controller/probe_native_target.sbatch": "ec5cc83d030387d752006ec4d045b15c9b6e191b4916c098a6e400ed0334b1de",
+      "control/controller/recovery_budget.py": "edd5032692d5dd1f4491ec56f5a873ea61cb659651d558188ad2045683b76e27",
+      "control/controller/release_contract.py": "5054afa813bece49e24841f83b33c47993ff84391859fad15a8ddd373ede3b02",
+      "control/controller/remote_controller.py": "2c7df9d4c2f812b9f0a27b4aee8097609addd75ef6c6951605fed8920cd7f2ef",
+      "control/controller/resolve_source.py": "2d26c1217d70cec680bbbbe81a9b6806030641edb06636262405bb7b7761fa19",
+      "control/controller/resume_cp2k_export.py": "549a0dff5240aae4e3fcc8e8a02652f2007a3ca5586ed7d656dee85620969d8d",
+      "control/controller/resume_lammps_extract.py": "ff359df79536ce76217b6ff0cfb62184c48103d766ae9148e2098a88c4b51793",
+      "control/controller/resume_lammps_packaging.py": "fc6fd576fe5ecca5609d0c771509ffc1ce8bc94a88f7711a83173fd704b52f07",
+      "control/controller/resume_lammps_recovery.py": "323d9667dc9780e3e6b4303562fda7bf37d22ed149a00583306ecafba6420e6a",
+      "control/controller/runtime_controller.py": "5d2c1fa434c9d70506976df08fcbd015dcf7592afbd04df24691bbcb85ee8214",
+      "control/controller/slurm.py": "705bea32222d5964dd20ad589abe61322106518af61c0a645a42983970d7b220",
+      "control/controller/software_controller.py": "658d3ab105eddaf1804924724a97d1b6c064cfb9f8c1f76073a7c76cdaa0e215",
+      "control/controller/source_cache.py": "1c6ee2a243509f0fdf74e32736bea562e2777569c4c22480b2accdb78334f52b",
+      "control/controller/submit_abacus_recovery.py": "24e393dfe97e2a5a3cddbd0f0d338e4cae597aa7ccd8a0c4fe2da4526aad060d",
+      "control/controller/validate_plan.py": "2f9601f5f5e3e64828b5180a36766dbca4c6ffd651ecd3507723fcc3a1cfd0e3",
+      "control/deployment/cp2k-water-scaling/README.md": "ce46d46f85dea9779f6df1e04abb8ab1509bfe6b42837dfaef0f600326d4eebb",
+      "control/deployment/cp2k-water-scaling/build-cpu.sbatch": "6d98ee945a6d816144c872ddb1250293f1b4d15177b4e8c8cb66368bc42969d3",
+      "control/deployment/cp2k-water-scaling/build-cpu.sh": "540cf12c5d5b5b42dc6107a6dfd52ad85a9888e300ade78f842349253b45ca06",
+      "control/deployment/cp2k-water-scaling/campaign.py": "2811740c76ccf7ed2e5eae98438d5f085bdf3e957c9ef36d81109e697d9a8b7a",
+      "control/deployment/cp2k-water-scaling/job.sbatch": "07be8871cae5070c672a4fc3aa0d78da7085f06b688853ef1adf5cde9d7e77bc",
+      "control/deployment/cp2k-water-scaling/rank.py": "9db06188cc27c310f10b9ffef3587a901748f9c3669913a9096a275afe79f746",
+      "control/deployment/cp2k-water-scaling/run.py": "4d89122e8e3089a3cd0346b69819b2096f1612a74b773bbac9ab5cff6f3838f5",
+      "control/deployment/cp2k-water-scaling/submit-cpu.py": "946a0eba95402b61d03d03b2585e58224788ea64402b0fcb81360477b894182a",
+      "fixtures/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+      "fixtures/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+    },
+    "install_receipt_sha256": "7b2779db91a33b338c6f9c0aa1c3ec78ac9a0c706bfe2362528ffcaaed18850e",
+    "partition": "4V100",
+    "physical_cores": 4,
+    "probes": 6,
+    "shape": [
+      7,
+      7,
+      8
+    ],
+    "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+    "stage": "compare",
+    "tuning_import": {
+      "completed_tuning_cases": 9,
+      "files": {
+        "cases/tune-0-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/tune-0-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/tune-0-gpu/cp2k.log": "78e1defe4adb885600c12c1b0de208dff55895f6915e251be6ab175dc31bd7cd",
+        "cases/tune-0-gpu/elapsed.txt": "947adc429ae611dd4ca83044413c3ddf8bf228dab4f92dec3ab5babbf6538fc2",
+        "cases/tune-0-gpu/forces.xyz": "a1d9f58623430bea79af114807926c295f6bee1864da4386e85602cf35d3332f",
+        "cases/tune-0-gpu/input.inp": "68e87e8e95afeeef4a42154c020e43ec2e629f21f0a533521a89bc937739daa9",
+        "cases/tune-0-gpu/launch.json": "3e8c1c8123418211aa134ffffd6335c265479164b5dffa7fc7cd6ce0fc1fa372",
+        "cases/tune-0-gpu/rank-0.json": "6d35d002b26619851669a99eaa833db6644c8adb4bd4c5549a78ea16b146ce1a",
+        "cases/tune-0-gpu/resources.jsonl": "ad7d3bab3780aaae44fae842ac5a9442302906a43d52fc40b9a1824d4f8a61a4",
+        "cases/tune-0-gpu/sample.json": "907299bcb8ecba0a39e986b174afa1eb857f10fd46de90b7a9c15e12fd6df67f",
+        "cases/tune-1-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/tune-1-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/tune-1-gpu/cp2k.log": "a878fbf6a75a6bf4832426de9658fbbdd516574471f68a412c2558a538dd05f5",
+        "cases/tune-1-gpu/elapsed.txt": "851e0257e8e8b1cd0f28ac880b477959266939afd4738b244b89ccaf9b1dc96e",
+        "cases/tune-1-gpu/forces.xyz": "85687d40fa262673b790dd97a57157b8e6577b034f5c5f478d04c16850c27ad2",
+        "cases/tune-1-gpu/input.inp": "68e87e8e95afeeef4a42154c020e43ec2e629f21f0a533521a89bc937739daa9",
+        "cases/tune-1-gpu/launch.json": "e1d583e2c236f10d58c30652caa854db600b313ab93e48cfd345c5032161995e",
+        "cases/tune-1-gpu/rank-0.json": "f5511086d8a58503248d32ba059cf435507d0c8e650abe7d555cc8aa5fecb9b3",
+        "cases/tune-1-gpu/resources.jsonl": "ec9786b4cb5611668764a456ea37529755a7bb4c29cccf788fdd36ae4d62e9c1",
+        "cases/tune-1-gpu/sample.json": "f4e0457f12267c8253b518039a1a5b58167f1fd21bb491990c2fd0a348c66ab0",
+        "cases/tune-2-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/tune-2-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/tune-2-gpu/cp2k.log": "faac07176fbc8469d3f62056810b0f3d29a2032c192a605f18be31ce16a4673e",
+        "cases/tune-2-gpu/elapsed.txt": "6327418f9db9de1606cb5db0b7675cbd19ddc09b1c2fdd03be5f7ce935309b3b",
+        "cases/tune-2-gpu/forces.xyz": "daf716ebf68a51c811ba8b474511f869d7f3ce94780b2d156d82ddabbb5222c0",
+        "cases/tune-2-gpu/input.inp": "68e87e8e95afeeef4a42154c020e43ec2e629f21f0a533521a89bc937739daa9",
+        "cases/tune-2-gpu/launch.json": "24d5f6ae7da84f14b5d705fc0d764b91e18c9a39f6b3eeb62fbb2200af2ff7d8",
+        "cases/tune-2-gpu/rank-0.json": "1be26bb053dd4e77c05c1ca922608fef21155cf10ee1f4dd493536753f3fbfeb",
+        "cases/tune-2-gpu/resources.jsonl": "e16042ba30dd73eaa340f1986596c12d324d9d84e479941d0e8d8e441c4ac4ec",
+        "cases/tune-2-gpu/sample.json": "7d995a186910f4f4afb5ba232fb8d253d796969576bea86cb0fc673d6093aaa7",
+        "cases/tune-3-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/tune-3-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/tune-3-gpu/cp2k.log": "616f9b052691a3c116435d2d2fb5192f87db98436834aded390a19212a0febf9",
+        "cases/tune-3-gpu/elapsed.txt": "2317e16d03f3c1dc9394ec1e1e969df0de3b8174f51f0600498b1d9797fc1ab1",
+        "cases/tune-3-gpu/forces.xyz": "678c7a3608160eefecd7d824218fbc97d6876313212c2a8389259e451e0abff7",
+        "cases/tune-3-gpu/input.inp": "d5b3c05c6473a73fae695422a6736fe4a48748a2a31da10e1c98ee4d3fd3b3d1",
+        "cases/tune-3-gpu/launch.json": "45e71af85385ce841f4aff085e58341f2dbb3aff426ea4f696f1b6a681027f4f",
+        "cases/tune-3-gpu/rank-0.json": "2ae8635e77e64ba176507930c43ca50b25e73ea11f195f307b51516639266381",
+        "cases/tune-3-gpu/resources.jsonl": "cd869799f718f1eea2a127b65954f1328030a24e11ecb2b25a025a07650bbb13",
+        "cases/tune-3-gpu/sample.json": "96f97ac4290169828f9c3e6344e3a0a9fc558dc9807d56dd7a4cd741bd0c103a",
+        "cases/tune-4-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/tune-4-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/tune-4-gpu/cp2k.log": "9089736d363c4b25b392e1a7bd9cab440a48fdff3364d66d2c8724546e9e8449",
+        "cases/tune-4-gpu/elapsed.txt": "381e5a6244aa8e81f8b0db1638ad877128e2137896016b7f65c8814f716c1951",
+        "cases/tune-4-gpu/forces.xyz": "5c7b0c78a8e0119a610cddfc17536ead10b0a0e444274645dc81ab6f2c480b7c",
+        "cases/tune-4-gpu/input.inp": "d5b3c05c6473a73fae695422a6736fe4a48748a2a31da10e1c98ee4d3fd3b3d1",
+        "cases/tune-4-gpu/launch.json": "5c9015babf6fb70eb423832ce77cf1f03f02814cae469ecdce5ed754b97e0a0c",
+        "cases/tune-4-gpu/rank-0.json": "a37841cb046defa9976c7a1706fabd051062fd6ea1ca53ff3518d060a7ef6736",
+        "cases/tune-4-gpu/resources.jsonl": "607fc27bad1955008822d7a30e51961fb251a438b7f66a34beb5efc4edb88c5c",
+        "cases/tune-4-gpu/sample.json": "1877988073085ad355eebb85fee3d83ad3b1b371a78587cbfcea9e44a2799970",
+        "cases/tune-5-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/tune-5-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/tune-5-gpu/cp2k.log": "da6f2cf17a96cfd682ce3dc561bae18c7f32d70a12fa4927f59a3180946cc4f6",
+        "cases/tune-5-gpu/elapsed.txt": "0678f17fbbbb5b1a6e263c5cfbf0122cebf5f1c92a233f4534f6c2031c7923d2",
+        "cases/tune-5-gpu/forces.xyz": "9f78599c70137d0e6d170a1ee4070053d063de366a8923d52351682520988414",
+        "cases/tune-5-gpu/input.inp": "d5b3c05c6473a73fae695422a6736fe4a48748a2a31da10e1c98ee4d3fd3b3d1",
+        "cases/tune-5-gpu/launch.json": "66e04a1c6fd9b4dd4a48d9b64ed0264bd9aaa66cecac42813b449406dcc91ba1",
+        "cases/tune-5-gpu/rank-0.json": "be5f0739b7baff4306072443fe57c76132b5119c4df9f8596dc59c50b318c875",
+        "cases/tune-5-gpu/resources.jsonl": "77e83a237fde97f43403df144fe3d441b5186a1246d7e731cc41132643838cf9",
+        "cases/tune-5-gpu/sample.json": "6ff8f2686c325c47744cbad1e5ffc2129852e51c5f523a48a573f0a9065ba78d",
+        "cases/tune-6-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/tune-6-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/tune-6-cpu/cp2k.log": "9d051b9323233f95c8de9fd9ec6f0690ae221d6f397889976a81e57a14a8fbc2",
+        "cases/tune-6-cpu/elapsed.txt": "b796fdd5c3ab4aa6f09a54f57fd48a9ca94f42be39730e27b049a56c068c9493",
+        "cases/tune-6-cpu/forces.xyz": "4fcdc7bfbc80943ae70e9de3a837aa05d227e217f279079f6dbb422601fd0f6e",
+        "cases/tune-6-cpu/input.inp": "f7382cf02cbc053fd7527e9e2b66cd53c9696e43c9d40a86326e2266d37d1d5f",
+        "cases/tune-6-cpu/launch.json": "d244f4a209fcd888605a19324e9d2234dd9a79bfd50e4ee4e49d0743cc67c76d",
+        "cases/tune-6-cpu/rank-0.json": "fadb4f3f18131dae5ca1328a6060b1a81d7ed0768f0081a10ee71bfc509a933f",
+        "cases/tune-6-cpu/resources.jsonl": "794ca6f10f56cf23f42e62810e7fda9717006e64eb765e5062050443d045d5b9",
+        "cases/tune-6-cpu/sample.json": "ff4113b90fbe065d0759bdf27f914f39a2201f4faad3b90197bed036ebbdf889",
+        "cases/tune-7-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/tune-7-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/tune-7-cpu/cp2k.log": "f15e9fbf407ad5068a39428c7fc42d4821c2fa73b5bb4cf5ea2f9d3ea74bb2fd",
+        "cases/tune-7-cpu/elapsed.txt": "8b50f4f9b5a10c5d74dee9fef6b9ec05990a0a655627a0b778094915acd651d5",
+        "cases/tune-7-cpu/forces.xyz": "1b28222f65661fa1c7578c3df02c321846a79e28aac62f93ae75467387228faf",
+        "cases/tune-7-cpu/input.inp": "f7382cf02cbc053fd7527e9e2b66cd53c9696e43c9d40a86326e2266d37d1d5f",
+        "cases/tune-7-cpu/launch.json": "9c633e783d66f67e5f5595b76655365d1d78439b180af38fa0fa0e11c207222e",
+        "cases/tune-7-cpu/rank-0.json": "2c5665d12f3ac334dced39a9f9a933edb31229006ebe6abdc61d851694e9a859",
+        "cases/tune-7-cpu/rank-1.json": "27f1a2c0610a52e7218f1f2a2c5781ad07529434bbfbbf8d8399d6ec995ae485",
+        "cases/tune-7-cpu/resources.jsonl": "80af16d900eaf70c0c409a8c483a51ddf7cdc99e13b063903d60b8e100ab4f7b",
+        "cases/tune-7-cpu/sample.json": "a2b06019ebeb7fa99a46c89c8fef9fd6704e9f830642e9a632712ef3fc382b2e",
+        "cases/tune-8-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/tune-8-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/tune-8-cpu/cp2k.log": "c819ca5e1e2ab1520290552a055dd1bc20a956b88b7ae08670e2ab6ee9a2813d",
+        "cases/tune-8-cpu/elapsed.txt": "0dfd84fe862545b50042c2992ddfa844778c4f6ae5fa24e935dd08123a13d7f7",
+        "cases/tune-8-cpu/forces.xyz": "64d0f9cfaa9716c327f8d43bac172d204e23c9c06655eb2250fa75007277e824",
+        "cases/tune-8-cpu/input.inp": "f7382cf02cbc053fd7527e9e2b66cd53c9696e43c9d40a86326e2266d37d1d5f",
+        "cases/tune-8-cpu/launch.json": "8f50ef3b046f922f547f7763c4615e332c50ce09eb483789e15537de79c88947",
+        "cases/tune-8-cpu/rank-0.json": "4d232e97f37bc6c4d02004477df3f3193c44c5b012a8f1398a0ea61f089b9266",
+        "cases/tune-8-cpu/rank-1.json": "773111181fac6d222240db4925f48afa9c637893069884325e6dd45bb56fe4d6",
+        "cases/tune-8-cpu/rank-2.json": "5032b19b9a122909e5b10ffdb4d9741011ebdd96e65a897eb4cb5a3400111f48",
+        "cases/tune-8-cpu/rank-3.json": "dbc3040d966b2a6af41cd0ea0195e45237f3792292bdab858bf92e4917109721",
+        "cases/tune-8-cpu/resources.jsonl": "59e667a4cf5007e899e5a520f2017ced6b19a4c8598d2699c40a1e376599a811",
+        "cases/tune-8-cpu/sample.json": "6fdf9728bc67844be71b87c19506a02ba7269a8f1b6619020342f1ea50b8d0df",
+        "control/controller/abacus_baseline_probe.sbatch": "ee77ca5738eb3e0e0aa0bd4136071d5444ba6f08d394be640dd7092f3bb86914",
+        "control/controller/abacus_benchmark.py": "852c7701aaea3f8d36e2365a09637e91f12612e9284063a7236d70d3e832705b",
+        "control/controller/abacus_build.sh": "cf67a38908fdbc1145aa515011478e59dcac92ec40bebbdb691cb1c024a16a80",
+        "control/controller/abacus_cache_runner_reference.py": "ee275b407a58e1ea3bc835e034ad86eee5a218d0134b8a3f8e3af3c277e10ff3",
+        "control/controller/abacus_dependencies.py": "47c5d90a1c75dd8da1ff085735a26e4cb584aae2a122661c1448fb7cff33afd6",
+        "control/controller/abacus_dependencies.sh": "905eb88d0ca0dc2f3e011874fbe28b7a95cb8a1a1db526ddc4e5fc4661e20cde",
+        "control/controller/abacus_dependency_lock.json": "ce7a95f5e0776eb1ff694e76a88cd4389ee617906071502d79ef5727e5a66d6c",
+        "control/controller/abacus_features.py": "e1b9d5ae501a6f43053c15f5fccabbc224e0278a324b0e2ce628d1324525d64a",
+        "control/controller/abacus_full_dependencies.sh": "0aefb9b7a59f66a0776a70d914dd4ba34d281022856dd91b9fb1864355419d4c",
+        "control/controller/abacus_full_profile.json": "d93fbde64a6898e12c0e61cdced1c2ca7d25925611f3d0bfc3ac1b30576bd469",
+        "control/controller/abacus_runtime.sh": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+        "control/controller/abacus_site_gpu.sh": "1a8631ca91a9969f56115425ef13489144fa28d292609d96292fc8ce9b898b29",
+        "control/controller/abacus_site_mpi.sh": "199aeb495069f0812214c8bd944b229799b8d54b9a908667ef8f1d5b2cbc54d1",
+        "control/controller/build.sbatch.in": "5e0e74a118add2aa80f181dda6bc4bee1bcdb3e241df9c592f8632fbacb21a98",
+        "control/controller/build_capacity.py": "bff0a1cbf9acedb858c9776efd73a9c98737787e1bb439e0965048f47e0ee66c",
+        "control/controller/case.sbatch.in": "d849dca06d71f2ccb3d5e52a5f7a8ea07803a63894bb42aea6385604b5d98698",
+        "control/controller/ci.py": "1b713224de667d460744548c0c6dd965dfeb9c01aef54cc64de80bcd3fefde4b",
+        "control/controller/config.ini": "8dc7eee2853aaa96979a8f55e2f1dea0ceb8c7cb0045e19695837b10d99c575c",
+        "control/controller/container_entry.sh": "618042bbd5fe909dbe0ea2c47f786791d7bb451dc1da841cb2dea83eb72803ef",
+        "control/controller/cp2k_Libint2Config.cmake": "223aac33a7743bc46a25738cb75b4a4bd1100571b1ea13fe4c19dff7c4019de9",
+        "control/controller/cp2k_acceptance.py": "84db91909883510765fa87c03f2816f1af9ac0271f85f95f03c62371dcd098eb",
+        "control/controller/cp2k_baseline_probe.sbatch": "6462e789df12424f89c9595ff62146f1e51933136b2d6306e5845755b4c5cd52",
+        "control/controller/cp2k_benchmark.py": "aefd8b234b1b43f2815a6af5f3502204319a490f4919ad417421d920034a10e3",
+        "control/controller/cp2k_build.sh": "74461284a5b63385f9a75c679f4502d2f21d72f6d317ab06dcc3a33af4975f23",
+        "control/controller/cp2k_cmake_prerequisites.cmake": "8c923f94b76475eba88e14280b05e37ddb8f491a03821193253e49e4af519a0d",
+        "control/controller/cp2k_container_entry.sh": "05f7c0036558ded066641499209d70744519c8d4dbc23bb35f727c06ede2955d",
+        "control/controller/cp2k_dependencies.sbatch": "d1fbdbb7f8553b0b912a08d73bc8f85ac376b9bf0e854c79298a03a4718b3197",
+        "control/controller/cp2k_dependencies.sh": "99d5bbcf9dda385257c0088fe9a12a1f6eea86364e2dc8bef46a17d1af822562",
+        "control/controller/cp2k_dependency_stage.py": "babdea468491a5f809d7c86a1f170d48b9c55d8c6d5abae954ff1d969c5d9a9e",
+        "control/controller/cp2k_elpa.sh": "508b4887216c5ac57bf6777dee83d70b0bf655a3335a26647b7291a1b3ac4ea0",
+        "control/controller/cp2k_elpa_abi.f90": "95c2ef65486385219c646424c2d8724574b8dabaa0fc4ce89c2e78bae43478a5",
+        "control/controller/cp2k_elpa_runtime.py": "0ceaf73725599632c002e5b6588d855c08e1d9a3798cba3bab9a5bf9b048fcc2",
+        "control/controller/cp2k_feature_contract.py": "2d2ea42d9e74d5ecbe8278bebd8b23c81d1bcfe86c35b0d303cf3f7b09e93917",
+        "control/controller/cp2k_image_driver.py": "e0ea6a2b7ce25189b3eb9b7749392b0416894f9d365e1f3c31c577546a8df049",
+        "control/controller/cp2k_libxsmmConfig.cmake": "734aa00bd820e244cde406866c1c6065f8a2f85571dde413f7c2bf058b1fb038",
+        "control/controller/cp2k_overlay_probe.sbatch": "69c6044258e990bd6dbf5ccce76b5b6bb0545d118b000587c720975ec9757e1c",
+        "control/controller/cp2k_overlay_workdir.py": "f22d281427ede157c03c7fc20a8b625e9c5a511e023a6c358de93040589fe468",
+        "control/controller/cp2k_payload.py": "8e71ae39fa9f82c9033107dc00c37f780b06a4b032c5de78190336509c120d83",
+        "control/controller/cp2k_probe.sbatch": "3927f4ece5c157504bc3b0b70e70f603c9319e2709ae36db2a7ce8cbcdc5fa0d",
+        "control/controller/cp2k_repack.sbatch": "004ede58b234b49dc0297ea437d9a3e1e23ff450f7ea8b3bc65222711ee78c7f",
+        "control/controller/cp2k_runtime.sh": "210ddd657ec01da4c1bd13294f95ee51991f24219c3b1965c52874c6270b4540",
+        "control/controller/cp2k_site_elpa.json": "9b3253261d2cee47df156136c575c6fc7748f30344b029b4bc56fd83bed4fea0",
+        "control/controller/cp2k_source_fixes.py": "9ea20a68ddbeaf7184f8968e5a966eef3ee2b84f9ba8cffc56f71c1496563ad9",
+        "control/controller/cp2k_spack.py": "0235341aed673e851a375457076a220d644d178332d577f8a661712c5d7775ad",
+        "control/controller/cp2k_spack_dependencies.sh": "62977f63321a57a3c7d66f15e20f82cebc2ddf3987f1faa0e6719f7e6a640985",
+        "control/controller/cp2k_spack_environment.py": "70603447fee7d634fe939a2a11faca829407eceacd21090812705bd373c0d1ba",
+        "control/controller/cp2k_spack_install.sh": "320f8e5f58ba986a5a37c19223183b3826d932ed680173e4cce2ab034f4e37a7",
+        "control/controller/cp2k_spack_install_evidence.py": "391ad327602cabf1e49db806a6d82c1887669f40da097ba2dfdf3ed193d481cc",
+        "control/controller/cp2k_spack_install_submit.py": "49a15275a73f7d8ed08566f9b82b3576489f8dd74790b336287e97719d685447",
+        "control/controller/cp2k_spack_libint_repair.py": "b38fd9292b264bc83c308ca8c4ce4b42a1b2beb3367713de3f7308106b2cd014",
+        "control/controller/cp2k_spack_link.py": "52efab5e2c77f195e1dd380911a1d7617f2d1f632c3a808dfe5d4e61e3ab88f8",
+        "control/controller/cp2k_spack_mpi_repair.py": "7036b4f1c89b54d0f25e6bf6c87e79f07306a55cd8a10f4e2c93edfcb8c732e8",
+        "control/controller/cp2k_spack_native.py": "bdfadff1c81c8cc0bf03d80f950e4dd3f3176496f02febcb9ae102cd847abb04",
+        "control/controller/cp2k_spack_probe.sh": "4c266c5704f1cf96f4aad3da70030fe7c4f5ea8eb9eae5bb3e409f601cf3723e",
+        "control/controller/cp2k_spack_probe_submit.py": "e878b1bb56ef2bdf8c4afc133d92cbb18ff63198afbc30f9d892f505c1cc08c4",
+        "control/controller/cp2k_spack_seed.py": "9c41a9fc602f2f5e351eb845785a0b86882268b58b53573b3972a85b2fa35dfe",
+        "control/controller/create_rootfs.sh": "ae0818e8bb485222605290fd3f3c410c40354aa518c8f613ac26236b3e382852",
+        "control/controller/daily_plan.py": "8dcc9907d201caab77f421adc7d77a3471881b6caba475ad2474270ae91b2024",
+        "control/controller/delivery_layout.py": "268a18bfe45b1f8cca9d955d5b34215392ee74d734dcf4358c5da66728f6d7f2",
+        "control/controller/environment.sh": "68bfc2f69c1df2f9b35fdf9d273dbf35e377c44b490ff19ebc6c41ac7dad58d0",
+        "control/controller/export_native.py": "cf5709c9037af843e360b2ad1b73b2d50dcdc1525940db9350df5783d9e8c619",
+        "control/controller/finalize_lammps_sif.py": "430113a1b0d271e5d3241460e46166206443dbd92812113f66228dac9ad7fd2f",
+        "control/controller/gpu_feature_controller.py": "67e0711ccd8d39d1d6fc999baa35a9b6fe32fbe2c9392db5bb8e7cdc09f60eb0",
+        "control/controller/gpu_feature_runtime.sh": "b499d0fe6bd1ad4623ece45ea6663702bf8e54d95ae1a0679b87f34ce81a0734",
+        "control/controller/gpumd_acceptance.py": "35080b2962f1cd435ceabfa2ba52b502735ff3c32fcdc9cd560a6e926e7e85bc",
+        "control/controller/gpumd_build.sh": "4739c263643a94b428fdb28e4ca25de93224106fca8ce193d48bf3c2b997a7fa",
+        "control/controller/gpumd_container_entry.sh": "2fd02f0abd7736865eda94204f28d7ca0a536a8eb2029d3b9cb0b435034bdb7f",
+        "control/controller/gpumd_deepmd_probe.py": "78d3e11ad614aed6b092f5fcb3cdf24e9f0dd91fb9adf73c263da2e9ed761319",
+        "control/controller/gpumd_environment.sh": "6bb0cc52a65b83add6cfc6a7375459f61e82ff822aed2d1e1718faf92f935370",
+        "control/controller/gpumd_relink_probe.sbatch": "4d1f7b8858f3c9c1f2beb36393b008f52f7d49cf3f696f2d58c39359bdb31997",
+        "control/controller/gpumd_runtime.sh": "442c2dce979960cfebc58226357ae5374db9e9881649a1f458f78387936b568d",
+        "control/controller/gpumd_science.py": "ee1328905abaca2ffd2630d6d3dcad7a52af110ddf25d4d594485841144f5e1e",
+        "control/controller/gpumd_site_probe.py": "3501fc12f9b648a50127a246ff8232af20f288e4d704b9319b5091417c60d5bf",
+        "control/controller/gpumd_site_probe.sbatch": "b04fba2267207a966b4de8b1660ca2d52d62e94c231627c35107e93c5e4280a7",
+        "control/controller/lammps_manifest_diagnose.sh": "8bd4b84fb66ecfd424c88963cf24cba3dbdb67b2c1ee420e902f61a23dc53dc2",
+        "control/controller/lammps_packaging_debug.sbatch": "6b70c42acb0176aa5fa4938726d8d7c72c4323fb0daf0329b860718279cdfaa1",
+        "control/controller/lammps_packaging_probe.sbatch": "6df4ad1d86c294af6578b0821242030bbc762b974a8be81eb0a84d69f8e6f3e6",
+        "control/controller/md_acceptance.sh": "fbbd8dc86108044c5efa2b00ca4377ab5d4219a18f4ea91d1ad3336ac2dd05bd",
+        "control/controller/md_acceptance_controller.py": "88db1b11a2c81b9687b0ba173bb060c7d9eba0873ea22190601981f54f5faa0b",
+        "control/controller/md_baseline.sh": "e59ca2d8efb63e06ed36caad0c3612a5436191b78ab7b750a8a1c96092cb2621",
+        "control/controller/md_build.sh": "e2587d64983ec05f41aacdd5dc3a56c3c293b98630b0351a3b66898cfa4f1f4e",
+        "control/controller/md_ci.py": "c862b2e08f7a9fe8043daa70b4aa08e18d519e23b94dcec6925f3409d3a3bfcc",
+        "control/controller/md_container_entry.sh": "f1a58ca5f505d4bcefdbb4ab64afa24408b1d4074929fc4e6618b1d9b990a83c",
+        "control/controller/md_container_entry_verify_patched.sh": "eeb20f2b25a146ae12ea7e8634559b2d7dddacb7f96cde002c567aec85504c68",
+        "control/controller/md_controller.py": "5073d3fa7bedbe41cd39b3ff41b31d75f6f66cf9e99fda3b68cd7722744839fe",
+        "control/controller/md_driver_paths.py": "bce00df699cc432d8b7b5d4a8723564498603843639693e640916ab7ed8944a8",
+        "control/controller/md_environment.sh": "034b390c322dabd790f9f66d48b07c9e24b17c65f32f73ce904c8a4f24dec800",
+        "control/controller/md_evidence.py": "2d29110ba27718f7d6a43f93fbe7579dd6e0d76249e5a5de3056d73129687772",
+        "control/controller/md_import_probe.sh": "bddc7bdb3a7b3523531b93ecf51eb2958f6e151c36b4d5a0e93231c8e4dc7806",
+        "control/controller/md_link_launcher.py": "66b989e7807dd94fc425dbfae36900a5e471b98a94c4043f13738b16fd3527f6",
+        "control/controller/md_native_probe.sh": "8d8ccc5229f404c931b312743de5a2e705b3973e30593facd6403141436c27ac",
+        "control/controller/md_packaging_recovery.sh": "d45c0378195e98d1ffeb4452e258e9a0115bd11db053e57124fe4b963056831a",
+        "control/controller/md_performance.py": "a07d3662f5543f347fa584e942dbac7fc6eaf22377c33a0895ec5e07dce8f73e",
+        "control/controller/md_performance.sh": "43d4500f7533427e9e52d6f3de19047b37abd70dafa29f3ae94727fe720bbee9",
+        "control/controller/md_performance_controller.py": "02e24cc2e58b1d88b983b865a4e55c61a2b584bea01f642b54497b2131dc4b62",
+        "control/controller/md_performance_evidence.py": "e810fdc70801fa99fa033c92f96dfd03e2dbcf938eda7487e12ff46d9cae8ead",
+        "control/controller/md_performance_exec.py": "95d573f9edae5e4037e252d690f4adcc4bca04d6cdea59109ffb54686a7ff227",
+        "control/controller/md_performance_run.py": "24f13228ee7333dae8aaf9f8fa57c8f63a5110b93c85ff8ddcb31433e85ef585",
+        "control/controller/md_probe.py": "ac6be1c22cbac809892d62eff53d1e2dd83ee8d50f7cd752f375fcb1e78f8725",
+        "control/controller/md_publication.py": "79d4cb06f6b28756d795f762d3268f5e75bd3c5e9664e25302a470133fe4be26",
+        "control/controller/md_registration.py": "4f4e4db5bb2e7f9c55985d408dcfbf3f6acddbbab1ff8ca327fad0408cec6bb9",
+        "control/controller/md_relocate_audit.py": "21fe48bf420130c74ca5eebebd8d113fc219009700f970907bea1c7e72ed16b3",
+        "control/controller/md_runtime.sh": "cd11020142359a4a83313f97dfb6ef7aaa356a5d5c5a92a4f8d5da12b25543fe",
+        "control/controller/md_science.py": "55d4ee142d65cd7b327dbdca223f0b4b69c8185729b85d991da2652f7979f788",
+        "control/controller/md_tracking.py": "16f6fa69ebfce0ceb97bc7e3deb527e376423f38346b1312a9d02ad369791ef1",
+        "control/controller/module_publication.py": "dfb74bdc51f9eeff6931c66458f80bd571b2ba587368c50ee0a752abe6f6d06f",
+        "control/controller/modules.sh": "c3cba3ad99f373978ad806f61231fc20e9d254e06d5eccdece54629c259cea58",
+        "control/controller/native_module.py": "feb0065834df656ab4de54df86ffaa650ded3ed030fab4190b2d5df8cd3e4421",
+        "control/controller/probe_container.sh": "fb680791228f1b6fac07a038e5964be7399a485b86b81be8a383e51234770d78",
+        "control/controller/probe_module_publication.py": "3d9e4cf82ad5fdf4744a4eceb18d2e7d4d775e6771ee1b9c993aaff4f344d80e",
+        "control/controller/probe_module_publication.sbatch": "c854cb55c67dbac8b599a8bbc2b802d2e882cd7d9305773ebf723f16554255ba",
+        "control/controller/probe_native_export.py": "8203e115ae2123c9cff34d37c95d2939712c6e893a5c4ec7b242c199511a07c5",
+        "control/controller/probe_native_target.sbatch": "ec5cc83d030387d752006ec4d045b15c9b6e191b4916c098a6e400ed0334b1de",
+        "control/controller/recovery_budget.py": "edd5032692d5dd1f4491ec56f5a873ea61cb659651d558188ad2045683b76e27",
+        "control/controller/release_contract.py": "5054afa813bece49e24841f83b33c47993ff84391859fad15a8ddd373ede3b02",
+        "control/controller/remote_controller.py": "2c7df9d4c2f812b9f0a27b4aee8097609addd75ef6c6951605fed8920cd7f2ef",
+        "control/controller/resolve_source.py": "2d26c1217d70cec680bbbbe81a9b6806030641edb06636262405bb7b7761fa19",
+        "control/controller/resume_cp2k_export.py": "549a0dff5240aae4e3fcc8e8a02652f2007a3ca5586ed7d656dee85620969d8d",
+        "control/controller/resume_lammps_extract.py": "ff359df79536ce76217b6ff0cfb62184c48103d766ae9148e2098a88c4b51793",
+        "control/controller/resume_lammps_packaging.py": "fc6fd576fe5ecca5609d0c771509ffc1ce8bc94a88f7711a83173fd704b52f07",
+        "control/controller/resume_lammps_recovery.py": "323d9667dc9780e3e6b4303562fda7bf37d22ed149a00583306ecafba6420e6a",
+        "control/controller/runtime_controller.py": "5d2c1fa434c9d70506976df08fcbd015dcf7592afbd04df24691bbcb85ee8214",
+        "control/controller/slurm.py": "705bea32222d5964dd20ad589abe61322106518af61c0a645a42983970d7b220",
+        "control/controller/software_controller.py": "658d3ab105eddaf1804924724a97d1b6c064cfb9f8c1f76073a7c76cdaa0e215",
+        "control/controller/source_cache.py": "1c6ee2a243509f0fdf74e32736bea562e2777569c4c22480b2accdb78334f52b",
+        "control/controller/submit_abacus_recovery.py": "24e393dfe97e2a5a3cddbd0f0d338e4cae597aa7ccd8a0c4fe2da4526aad060d",
+        "control/controller/validate_plan.py": "2f9601f5f5e3e64828b5180a36766dbca4c6ffd651ecd3507723fcc3a1cfd0e3",
+        "control/deployment/cp2k-water-scaling/README.md": "b76cff74daeacb791de9434fe4b3c893fafbbe889ea0bf9976ce443077bb828e",
+        "control/deployment/cp2k-water-scaling/build-cpu.sbatch": "6d98ee945a6d816144c872ddb1250293f1b4d15177b4e8c8cb66368bc42969d3",
+        "control/deployment/cp2k-water-scaling/build-cpu.sh": "540cf12c5d5b5b42dc6107a6dfd52ad85a9888e300ade78f842349253b45ca06",
+        "control/deployment/cp2k-water-scaling/campaign.py": "2ec35846fe3d76ff6b54081a635aa5ca8f2eff861fa7e1c20d169dbf1d874fe2",
+        "control/deployment/cp2k-water-scaling/job.sbatch": "07be8871cae5070c672a4fc3aa0d78da7085f06b688853ef1adf5cde9d7e77bc",
+        "control/deployment/cp2k-water-scaling/rank.py": "9db06188cc27c310f10b9ffef3587a901748f9c3669913a9096a275afe79f746",
+        "control/deployment/cp2k-water-scaling/run.py": "c7dcab5fd26e4e5861c1638c66cd94ff048e42933478c76283dda459ef8c1135",
+        "control/deployment/cp2k-water-scaling/submit-cpu.py": "946a0eba95402b61d03d03b2585e58224788ea64402b0fcb81360477b894182a",
+        "fixtures/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "fixtures/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "job.id": "5b656a03c773a43282863bd628e55a4985dfe51751e7f5f47269ceaa32d554b2",
+        "request.json": "926d25891975aaea585186e396dcca999b9d42bc8a73ab218e3bb854ecc46e2f",
+        "results/devices.json": "8446aaef195f37fc3d43567001fcabcafe0dc42210e05937e08d9633e5a7116b",
+        "results/tuning.json": "3548b0a9e61e45c010fedccba69b042fae7c25f6dd9e62687604ac205c6923c3"
+      },
+      "job": "1882731",
+      "path": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r2",
+      "performance_result": false,
+      "scheduler_state": "FAILED"
+    }
+  },
+  "replacement_request_sha256": "39179f7d51d0c112f731096afdc554e85321db289abff847a8f46a7fdbbf5833",
+  "replacement_run": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r3",
+  "retained_raw_evidence": "Complete input, force, timer, binding and resource files remain in the original home run; imported tuning raw files are hashed in replacement_request.tuning_import.files. Earlier timing pairs are excluded from the replacement medians.",
+  "same_scientific_inputs_verified": true
+}
