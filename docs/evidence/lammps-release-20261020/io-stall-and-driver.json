@@ -1,0 +1,163 @@
+{
+  "observed_at": "2026-10-20T09:28:16.550582+00:00",
+  "job": "1873709",
+  "stock_driver_probe": {
+    "node": "16v100n74.mr-sai.ai",
+    "processes": [
+      {
+        "pid": "4116803",
+        "name": "fuse2fs",
+        "wchan": "futex_wait_queue_me",
+        "executable": "/opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/fuse2fs",
+        "threads": {
+          "4116803": "futex_wait_queue_me",
+          "4117065": "fuse_dev_do_read",
+          "4117066": "fuse_dev_do_read",
+          "4117069": "fuse_dev_do_read",
+          "4117254": "fuse_dev_do_read",
+          "4125048": "fuse_dev_do_read",
+          "4125050": "fuse_dev_do_read",
+          "4125471": "osc_io_fsync_end",
+          "4125472": "fuse_dev_do_read"
+        }
+      },
+      {
+        "pid": "4117068",
+        "name": "fuse-overlayfs",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144320",
+        "name": "cc1plus",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144335",
+        "name": "cc1plus",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144488",
+        "name": "cudafe++",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144490",
+        "name": "cc1plus",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144492",
+        "name": "cc1plus",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144502",
+        "name": "cc1plus",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144503",
+        "name": "cudafe++",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144563",
+        "name": "cc1plus",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144630",
+        "name": "cc1plus",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144633",
+        "name": "cc1plus",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144635",
+        "name": "cudafe++",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144649",
+        "name": "cc1plus",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144651",
+        "name": "cudafe++",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144712",
+        "name": "cc1plus",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144713",
+        "name": "cc1plus",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144716",
+        "name": "cc1plus",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144717",
+        "name": "cc1plus",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144722",
+        "name": "cc1plus",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144724",
+        "name": "cc1plus",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144725",
+        "name": "cc1plus",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144728",
+        "name": "cc1plus",
+        "wchan": "request_wait_answer"
+      },
+      {
+        "pid": "4144742",
+        "name": "cc1plus",
+        "wchan": "rwsem_down_write_slowpath"
+      }
+    ],
+    "cgroups": {
+      "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5C3EQXP00": {
+        "cpu.max": "max 100000\n",
+        "cpu.stat": "usage_usec 1244675523\nuser_usec 981263109\nsystem_usec 263412413\nnr_periods 0\nnr_throttled 0\nthrottled_usec 0\n",
+        "memory.max": "64424509440\n",
+        "memory.current": "3807010816\n",
+        "memory.events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\n",
+        "memory.pressure": "some avg10=0.00 avg60=0.00 avg300=0.00 total=0\nfull avg10=0.00 avg60=0.00 avg300=0.00 total=0\n",
+        "sample": {
+          "seconds": 5.000795977190137,
+          "logical_cpus_used": 0.14112693323604603
+        }
+      }
+    }
+  },
+  "accounting": "JobID|Partition|State|ExitCode|Elapsed|AllocCPUS|NodeList\n1873708|16V100|COMPLETED|0:0|01:07:05|8|16v100n14\n1873709|16V100|RUNNING|0:0|00:49:08|32|16v100n74\n1876915|4V100|PENDING|0:0|00:00:00|0|None assigned\n1876916|4V100|PENDING|0:0|00:00:00|0|None assigned\n",
+  "pinned_driver": {
+    "source": "/home/stardust/sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs",
+    "md_copy": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs",
+    "sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+    "mode": "0o555"
+  },
+  "decision": "Use the previously qualified explicit-fsync/OFD/read-only driver for new MD builds; preserve stopped diagnostics and frozen controllers."
+}

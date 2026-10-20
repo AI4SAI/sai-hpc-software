@@ -247,7 +247,7 @@ def main():
     files = [path for path in control.glob('md_*.*') if path.suffix in ('.py', '.sh', '.json')]
     files += [control / name for name in ('remote_controller.py', 'source_cache.py', 'resolve_source.py',
                                           'create_rootfs.sh', 'release_contract.py', 'native_module.py', 'export_native.py',
-                                          'module_publication.py', 'delivery_layout.py')]
+                                          'module_publication.py', 'delivery_layout.py', 'cp2k_image_driver.py')]
     for path in files:
         upload(path, snapshot + '/' + path.name)
     primaries = [request['identities'][trigger['software']] for trigger in plan['triggers']]
@@ -270,7 +270,8 @@ def main():
     (results / 'delivery.json').write_text(json.dumps(request, sort_keys=True) + '\n')
     for name, source in plan['sources'].items():
         cache = root + '/cache/repositories/' + name
-        inventory = json.loads(python('source_cache.py', 'inventory', cache, capture_output=True).stdout)
+        inventory = json.loads(python('source_cache.py', 'inventory', cache, '--commit',
+                                      source['sha'], capture_output=True).stdout)
         if source['sha'] in inventory['cache_shas']:
             print(f'SOURCE_CACHE_HIT {name} {source["sha"]}', flush=True)
             continue

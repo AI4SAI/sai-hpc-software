@@ -148,3 +148,42 @@ passed 214 tests with the two optional upstream-cache skips. A metadata-only
 checkout of the actual locked DeePMD commit also confirmed that the restored
 tag makes the site's `setuptools_scm` report exactly `3.2.0`:
 [upstream version preflight](evidence/lammps-release-20261020/upstream-version-preflight.json).
+
+## Reuse the qualified overlay driver
+
+The first 16V100 LAMMPS stage passed configuration and all 13 DeepMD registry
+checks, then stalled around 14% with 24 compiler processes. Its job had 32
+allowed logical CPUs, `cpu.max=max`, zero throttling and zero memory-pressure
+or OOM events. Compiler processes waited in `request_wait_answer`; the bundled
+`fuse2fs` driver had a thread in Lustre `osc_io_fsync_end`. This is the same
+whole-image synchronization bottleneck already diagnosed and repaired for
+CP2K; increasing build parallelism does not fix it.
+
+New MD builds reuse the existing `cp2k_image_driver.py` wrapper and the exact
+qualified driver SHA256
+`46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10`.
+A byte-identical, mode-0555 copy lives under the MD project's `cache/tools`.
+Build, export and read-only extraction use it; final-SIF validation runs
+independently without a writable overlay. The helper is included in the MD
+recipe hash and immutable CI upload. This preserves explicit fsync, image
+locking and genuine read-only mounts; no system driver is replaced.
+[Driver qualification](evidence/fuse2fs-readonly-20261017/README.md) and
+[live MD stall/driver evidence](evidence/lammps-release-20261020/io-stall-and-driver.json).
+
+The MD runner also passes its exact requested commit to the existing source
+cache inventory. Previously, the 12 most recent development tips could hide
+an already-cached release, causing redundant full source uploads (observed
+74,425,892 bytes for DeePMD). Cache completeness verification is unchanged.
+
+The superseded 4V100 workflow `39398366074` and its still-pending jobs
+`1876915`/`1876916` were cancelled before compilation. The inefficient 16V100
+diagnostic `1873709` was also stopped; its completed DeePMD stage, logs,
+overlays and controllers remain intact. Fresh builds use a new recipe and
+installation identity, incorporating both version and driver corrections.
+
+Validation: the [215-test MD suite](evidence/lammps-release-20261020/md-tests-image-driver.log)
+passed with two optional upstream-cache skips, and all
+[five shared-driver tests](evidence/lammps-release-20261020/driver-tests.log)
+passed on the cluster's native home filesystem. The actual MD driver copy and
+configuration passed the shared provenance check before submission:
+[driver preflight](evidence/lammps-release-20261020/driver-preflight.json).
