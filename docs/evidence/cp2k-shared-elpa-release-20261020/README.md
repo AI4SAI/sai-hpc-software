@@ -47,8 +47,10 @@ This does not establish physical installation of the new CP2K build. At the
 accepted private-ELPA release. Updating the administrator handoff and verifying
 the new physical installation remain separate work.
 The [new administrator handoff](../../../deployment/cp2k-2026.2-shared-elpa/README.md)
-has since been prepared and passed source/dependency/access preflight; public
-installation and physical runtime acceptance remain pending.
+subsequently passed source/dependency/access preflight, and the administrator
+installed the new public release. All four physical native jobs then passed
+56 calculations with independent raw-log revalidation; see the
+[completed installation acceptance](../cp2k-shared-elpa-native-20261020/README.md).
 
 ## 216-water tuning on 4V100
 

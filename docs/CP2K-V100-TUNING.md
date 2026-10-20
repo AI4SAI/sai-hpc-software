@@ -331,6 +331,12 @@ comparison on the same accepted release and 216-water input: 4V100 `1877200`,
 16V100 `1877201`, and 8V100V0 `1877206`. The only input difference is
 `PREFERRED_DIAG_LIBRARY`; both retain OT/DIIS, `FULL_ALL`, direct `FALSE`, and
 identical resources. Each mode has one warmup and three measured repetitions.
-These runs must finish and pass independent verification before drawing an OT
-speedup conclusion. Other preconditioners, matrix sizes and multi-GPU runs
-can give different results.
+All three jobs subsequently completed and passed remote and independent local
+verification: 24 calculations, with actual requested backend dispatch and
+numerical agreement. Median OT totals for cuSOLVERMp/shared ELPA were
+357.948/311.043 s on 4V100, 651.275/605.292 s on 16V100, and
+649.035/612.902 s on 8V100V0. Shared ELPA reduced total time by 13.10%, 7.06%
+and 5.57% for this input. See the [controlled OT results and raw evidence](evidence/cp2k-ot-backends-20261020/README.md).
+The diagonalization experiment favored cuSOLVERMp, so these results support
+measuring the backend for the actual workload. Other preconditioners, matrix
+sizes and multi-GPU runs can give different results; no default was changed.

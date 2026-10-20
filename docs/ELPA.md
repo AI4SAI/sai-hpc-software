@@ -24,7 +24,9 @@ cuSOLVERMp、ELPA CPU kernel 或 ELPA 单阶段 GPU 路径可正常收敛；不�
 GCC 14.3 Fortran 数值消费者也通过。CP2K 依赖锁已固定新 GPU 库和回变换补丁，
 新身份 CP2K 2026.2 的四分区构建、全部 **56 项单/双节点科学测试**、SIF 验证和
 物理部署导出包回读也已通过；[正式发布验收](evidence/cp2k-shared-elpa-release-20261020/README.md)。
-新 CP2K 产物已交付到家目录，公共 CP2K module 仍指向先前私有 ELPA 的安装。
+管理员已将新 CP2K 安装到物理 `/opt`，公共 `cp2k/2026.2-auto` 已切换。
+`stardust` 完成四分区全部 **56 项物理环境测试**，原始日志独立复核通过；
+[安装后验收](evidence/cp2k-shared-elpa-native-20261020/README.md)。
 此本地兼容方案的通过范围是记录中的算例，性能按独立测量报告。
 [最新 ELPA 物理验收](evidence/elpa-backtransform-native-20261020/README.md)；详见
 [集成失败、控制实验及候选修复](evidence/cp2k-export-recovery-20261020/README.md)。
@@ -153,15 +155,18 @@ bash deployment/elpa-2026.02.001-commfix/submit-module-checks.sh public
 
 ## CP2K 使用此库
 
-已经部署的 CP2K 2026.2 仍对应原先验收过的私有 ELPA 2026.02.002。
-新配方改用表中的共享 ELPA 2026.02.001，并继续使用 **GCC 14.3.0** 编译 CP2K。
+已经部署的 CP2K 2026.2 使用表中的共享 ELPA 2026.02.001，
+继续使用 **GCC 14.3.0** 编译 CP2K。原先的私有 ELPA 安装保留供回退。
 新配方 `aed7aa53ff43` 已在
 [工作流 39365139034](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39365139034)
 完成四分区正式验收。新 SIF 和 `.native` 导出位于
 `containers/software/cp2k/release/v2026.2-g67b5da876dd6-raed7aa53ff43/<分区>/`。
-这是独立的发布身份；管理员更新公共 CP2K 安装及其物理复验尚待进行。
-[管理员上线包](../deployment/cp2k-2026.2-shared-elpa/README.md) 已准备并通过四分区预检，
-安装后仍使用 `cp2k/2026.2-auto`，由 Slurm 分区选择新前缀。
+这是独立的发布身份；管理员已使用
+[上线包](../deployment/cp2k-2026.2-shared-elpa/README.md) 完成物理安装和公共 module 更新。
+作业 `1879431`–`1879434` 均 `COMPLETED 0:0`，全部 56 项物理计算通过，
+并核实实际加载共享 ELPA 和真实 HPCX HCOLL 路径。
+[完整验收](evidence/cp2k-shared-elpa-native-20261020/README.md)。
+仍使用 `cp2k/2026.2-auto`，由 Slurm 分区选择新前缀。
 
 [依赖锁](../controller/cp2k_site_elpa.json) 固定每套库、头文件、Fortran module、
 pkg-config、补丁和构建参数的哈希，来源与上述发布清单逐项对应。

@@ -33,7 +33,7 @@ ELPA against the earlier private build under otherwise identical conditions.
 The OT column changes the SCF algorithm and therefore does not measure the
 effect of changing OT's internal eigensolver.
 
-## OT backend comparison submitted separately
+## OT backend comparison
 
 Controller `4aa35c8` adds the `ot-backends` profile to the
 [runner](../../../deployment/cp2k-diagonalization/README.md). Both modes retain
@@ -51,4 +51,7 @@ fallback. Numerical checks precede timing summaries.
 
 Runs are under `/home/stardust/sai-hpc-software/runtime-tests/cp2k-direct-<suffix>`.
 Their submission identities are preserved in [`ot-submissions.json`](ot-submissions.json).
-These are pending measurements; no OT speedup is claimed from their submission.
+All three jobs subsequently completed and passed 24 calculations with remote
+and independent local verification. Shared ELPA reduced OT total time by
+13.10%, 7.06% and 5.57%, respectively, for this input. See the
+[completed controlled OT comparison](../cp2k-ot-backends-20261020/README.md).

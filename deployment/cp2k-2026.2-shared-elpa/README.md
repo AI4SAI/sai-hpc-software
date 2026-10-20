@@ -4,6 +4,12 @@
 然后更新公共 `cp2k/2026.2-auto`。四分区 SIF 和原生导出已通过检查，
 共 56 项单/双节点科学计算通过；[验收记录](../../docs/evidence/cp2k-shared-elpa-release-20261020/README.md)。
 
+2026-10-20 管理员已完成安装和公共 module 更新。`stardust` 对物理文件、
+权限、共享依赖及实际运行完成复验：四分区作业 `1879431`–`1879434`
+均 `COMPLETED 0:0`，全部 **56 项物理环境计算通过**，原始日志独立复核通过。
+[安装后验收与复核脚本](../../docs/evidence/cp2k-shared-elpa-native-20261020/README.md)。
+已安装环境可直接在 Slurm 作业内加载 `cp2k/2026.2-auto`。
+
 ## 管理员执行
 
 ```bash

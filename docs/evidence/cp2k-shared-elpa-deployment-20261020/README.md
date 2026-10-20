@@ -35,7 +35,10 @@ their recorded modes were not changed.
 At preparation time the new `/opt/apps/cp2k/...raed7aa53ff43` prefix was absent,
 and the public module matched the pinned previous release. **No public install
 or module switch has been performed by this preparation.** Administrator install
-and subsequent 56-case physical runtime acceptance remain pending.
+and subsequent 56-case physical runtime acceptance were pending at handoff.
+The administrator subsequently installed it, and all four `stardust` physical
+acceptance jobs passed. See the [completed physical runtime acceptance](../cp2k-shared-elpa-native-20261020/README.md)
+for all 56 calculations and independent raw-log revalidation.
 
 Evidence: [package hashes and observed public state](preparation.json),
 [original preparation log](prepare.log), [administrator preflight](preflight.log).
