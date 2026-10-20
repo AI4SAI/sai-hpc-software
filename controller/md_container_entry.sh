@@ -66,7 +66,11 @@ case "$phase" in
       mkdir -p "/workspace/export$(dirname -- "$prefix")"
       cp -a "$prefix" "/workspace/export$prefix"
     done
-    mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"
+    # fakeroot's read-only chmod state does not survive the build/export
+    # process boundary. Restore the declared modes on the packaging copy and
+    # read real filesystem permissions when writing Squashfs.
+    env -u LD_PRELOAD /usr/bin/python3 /control/md_packaging.py /workspace/export
+    env -u LD_PRELOAD mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"
     ;;
   verify)
     export TMPDIR=/runtime

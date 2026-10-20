@@ -6,8 +6,9 @@ The latest upstream stable release is `stable_30Sep2026`, commit
 `8de817dd79bfe4525d5d39246a212d833e6dee07`. The paired stable DeePMD-kit is
 `v3.2.0`, commit `8cfd46e37448feca361ff3427a6c2b514ce5a2bb`.
 No accepted or published delivery of this release exists in this workflow.
-The 4V100 payload has compiled and passed installed feature parity; its
-metadata/export recovery is queued. The 16V100 payload is still compiling.
+The 4V100 payload has compiled and produced a candidate SIF; its version,
+help and loader-path checks pass, while packaged metadata permissions require
+the recovery below. The 16V100 payload is still compiling.
 Both use the qualified CP2K overlay driver; see the live restart below.
 
 The current implementation builds both programs in one Apptainer overlay,
@@ -277,8 +278,8 @@ was changed from `flood-1o2gpu` to the permitted `rush-1o2gpu` QoS, preserving
 its script and compiled identity; `results/qos-update.json` records both
 scheduler descriptions. The original compiled overlay remains read-only.
 
-The [follow-up helper](evidence/lammps-release-20261020/follow_export.py) is
-running from the cluster home directory. It monitors the export, then calls
+The [follow-up helper](evidence/lammps-release-20261020/follow_export.py)
+runs from the cluster home directory. It monitors the export, then calls
 the existing frozen controller's two-node scientific, performance and
 publication gates. A process lock prevents duplicate chains, per-command
 receipts record failures, and submission uses the same short-task QoS. No
@@ -288,3 +289,34 @@ system `/opt` installation still requires the separate native handoff.
 The native metadata fix's GitHub validation ran 846 tests: 844 passed and two
 optional upstream-cache tests skipped. This is controller regression evidence,
 not a substitute for the pending SIF and scientific checks.
+
+### Preserve real permissions across fakeroot sessions
+
+Recovery job `1879413` produced `candidate.sif` (348,381,184 bytes) in 3:37.
+DeePMD version, `lmp -h` and all 29 runtime-path checks passed. Final native
+manifest validation rejected mode `0644` where `0444` was required. A fresh
+read-only SIF comparison found six metadata payload files and the two
+manifests affected; every payload byte, symlink and file-set entry matched.
+[The complete difference](evidence/lammps-release-20261020/4v-packaged-mode-diff.json)
+is retained. This failed candidate and its logs remain preserved.
+
+The site's fakeroot keeps owner-write on backing files and represents a
+read-only chmod in its process-local state. The later export process loses
+that state. `md_packaging.py` verifies the entire copied installation against
+the embedded inventory, permits only this extra owner-write bit, then
+materializes the declared modes without `LD_PRELOAD`. Squashfs packaging also
+runs without the preload. Content changes, additional files and unexpected
+permission changes still fail; manifests and compiled files are not rewritten.
+
+[The packaging recovery](evidence/lammps-release-20261020/repack_permissions.py)
+reuses the existing export tree, archives the failed job records, and writes
+new Squashfs/SIF filenames. It does not recompile or overwrite the failed SIF.
+The 16V100 metadata recovery includes the same packaging fix from the start.
+[Its clone preparation](evidence/lammps-release-20261020/prepare_export_clone.py)
+requires terminal accounting and the exact post-install failure before
+sealing the compiled source and creating a separately locked copy.
+
+[The native-filesystem regression run](evidence/lammps-release-20261020/md-packaging-tests.log)
+ran 219 MD tests: 217 passed and two optional upstream-cache tests skipped.
+The new test checks real file permissions through a Squashfs round trip and
+rejects changed content, added files and changed identities before chmod.

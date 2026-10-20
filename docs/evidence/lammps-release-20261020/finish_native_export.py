@@ -160,17 +160,28 @@ def main():
     if original.count('  verify)\n') != 1:
         raise ValueError('unknown final verifier')
     verify.write_text(original.replace('  verify)\n', '  verify)\n    export TMPDIR=/runtime\n'))
+    packing = new / 'input/md_packaging.py'
+    shutil.copyfile(DIAGNOSTICS / 'preflight-packaging-r5/controller/md_packaging.py', packing)
+    exporter = new / 'input/export.sh'
+    old_pack = '    mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"'
+    if original.count(old_pack) != 1:
+        raise ValueError('unknown frozen packaging command')
+    exporter.write_text(original.replace(old_pack,
+        '    env -u LD_PRELOAD PYTHONPATH=/control /usr/bin/python3 /recovery/md_packaging.py /workspace/export\n'
+        '    env -u LD_PRELOAD mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"'))
     record = dict(source=source, compiled_recipe_sha256=RECIPE, frozen_controller=str(control),
                   recovery_tool_sha256=checksum(Path(__file__)), metadata_sha256=checksum(metadata),
                   verification_wrapper_sha256=checksum(verify),
+                  packaging_helper_sha256=checksum(packing), export_wrapper_sha256=checksum(exporter),
                   changes=['normalize /bin and /sbin in saved PATH',
                            'write native manifests with unchanged shared validators',
+                           'materialize recorded permissions without fakeroot preload before packing',
                            'verify read-only SIF without fakeroot and with home-backed TMPDIR'],
                   acceptance='unchanged source-bound scientific and performance gates required')
     (new / 'input/recovery.json').write_text(json.dumps(record, sort_keys=True)+'\n')
-    for path in (metadata, verify, new / 'input/recovery.json'):
+    for path in (metadata, verify, packing, exporter, new / 'input/recovery.json'):
         path.chmod(0o444)
-    for path in (metadata, verify):
+    for path in (metadata, verify, exporter):
         execute(['bash', '-n', path])
     delivery = request['delivery']
     script = md.render(delivery, new.name, jobs=6, minutes=45, stage='lammps')
@@ -182,6 +193,12 @@ def main():
         elif 'md_container_entry.sh build-lammps ' in line:
             argv = md.container_command(PROJECT / 'containers/base/minimal-v1.sif',
                 ['/usr/bin/bash', '/recovery/finish-metadata.sh', json.dumps(delivery, sort_keys=True)],
+                overlay=overlay, control=control, jobs=6, gpu=True,
+                extra_binds=[*md.site_app_binds('lammps'), (new / 'input', '/recovery')])
+            lines[index] = shlex.join(wrap_command(ROOT, new, control, argv))
+        elif 'md_container_entry.sh export ' in line:
+            argv = md.container_command(PROJECT / 'containers/base/minimal-v1.sif',
+                ['/usr/bin/bash', '/recovery/export.sh', 'export', json.dumps(delivery, sort_keys=True)],
                 overlay=overlay, control=control, jobs=6, gpu=True,
                 extra_binds=[*md.site_app_binds('lammps'), (new / 'input', '/recovery')])
             lines[index] = shlex.join(wrap_command(ROOT, new, control, argv))
