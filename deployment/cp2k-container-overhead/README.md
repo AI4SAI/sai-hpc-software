@@ -79,3 +79,33 @@ The [completed four-partition report](../../docs/evidence/cp2k-container-overhea
 contains all 112 scientific calculations, the separate 20-pair startup check,
 raw evidence and an offline revalidator. It also records storage variability
 and the failed original 4V100 native attempt before the successful retry.
+
+`multinode.py` extends the comparison to two 16V100 nodes, four MPI ranks and
+four allocated V100s per node, with four physical cores/OpenMP threads per rank.
+It reuses the accepted 64-water OT input and the accepted 216-water OT/ELPA
+input, including their original restart I/O. Each size has one excluded warmup
+per route and five alternating measured pairs. This compares deployment routes;
+it does not compare eigensolver choices or change CP2K defaults.
+
+```bash
+python3 -B deployment/cp2k-container-overhead/multinode.py submit \
+  /home/stardust/sai-hpc-software/runtime-tests/cp2k-container-overhead-20261020-16V100 \
+  --ot-parent /home/stardust/sai-hpc-software/runtime-tests/cp2k-direct-39365139034-16v100-avx2-ot-water216 \
+  --name UNIQUE_RUN_NAME
+```
+
+An ordinary Slurm step inventories each node's allocated devices through the
+CUDA driver and device cgroup, requiring exactly four visible devices before
+proceeding. Numeric `CUDA_VISIBLE_DEVICES` is omitted only for this inventory;
+its original value is archived. Every rank selects its own node's GPU UUID; it does not reuse the
+first node's numeric GPU indices. All eight ranks prove physical-core binding,
+ordinary UID, host working-directory identity and unchanged placement between
+samples. Native/SIF probes check executable bytes on every rank, library/data
+bytes on each node, actual SIF mounts, and exactly one visible GPU per rank.
+The same instrumentation runs in both routes; individual rank lifetimes and
+external MPI wall time are recorded separately. All temporary files remain in
+the project home. Full SIF hashing occurs before submission, outside timing.
+
+After completion, save accounting as described above and run the frozen
+`multinode.py verify RUN`. It reparses all 24 calculations, convergence, energies,
+forces, SCF iteration counts and rank/resource evidence before reporting timings.

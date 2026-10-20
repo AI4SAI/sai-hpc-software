@@ -1,0 +1,92 @@
+"""Reject multi-node measurements that silently share GPUs or physical cores."""
+import copy
+import importlib.util
+import json
+from pathlib import Path
+import sys
+import tempfile
+import unittest
+from unittest.mock import patch
+
+ROOT = Path(__file__).resolve().parents[1]
+PACKAGE = ROOT/'deployment/cp2k-container-overhead'
+
+
+def load(name, path):
+    spec = importlib.util.spec_from_file_location(name, path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
+
+
+common = load('container_common', PACKAGE/'run.py')
+with patch.dict(sys.modules, {'run': common}):
+    multi = load('container_multinode', PACKAGE/'multinode.py')
+
+
+class MultinodeOverheadTests(unittest.TestCase):
+    def setUp(self):
+        self.directory = tempfile.TemporaryDirectory()
+        self.addCleanup(self.directory.cleanup)
+        self.root = Path(self.directory.name)
+        (self.root/'ranks').mkdir()
+        self.request = dict(uid=1234, prefix='/opt/apps/cp2k/accepted/16V100')
+        self.inventory = {host: dict(devices=[dict(uuid=f'GPU-{host}-{i}') for i in range(4)])
+                          for host in ('node-a', 'node-b')}
+        self.rows = []
+        for rank in range(8):
+            host, local = ('node-a' if rank < 4 else 'node-b'), rank % 4
+            cpus = list(range(local*4, local*4+4))
+            row = dict(uid=1234, euid=1234, host=host, rank=rank, local_rank=local, size=8,
+                       gpu=f'GPU-{host}-{local}', affinity=cpus,
+                       topology={str(c): [0, c] for c in cpus}, cwd='/host/work', cwd_dev=4, cwd_inode=5,
+                       environment={'OMP_NUM_THREADS': '4', 'OPENBLAS_NUM_THREADS': '1', 'MKL_NUM_THREADS': '1'},
+                       binary=self.request['prefix']+'/bin/cp2k.psmp', binary_dev=7, pid=1000+rank)
+            self.rows.append(row)
+        self.save()
+
+    def save(self):
+        for row in self.rows:
+            rank = row['rank']
+            (self.root/f'ranks/inside-{rank}.json').write_text(json.dumps(row))
+            host = {k: v for k, v in row.items() if k not in ('binary', 'binary_dev', 'pid')}
+            (self.root/f'ranks/host-{rank}.json').write_text(json.dumps(host))
+
+    def test_two_nodes_use_eight_distinct_cards(self):
+        self.assertEqual(len(multi.check_ranks(self.root, self.request, self.inventory)), 8)
+
+    def test_duplicate_gpu_rejected_even_with_eight_processes(self):
+        self.rows[3]['gpu'] = self.rows[0]['gpu']
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'GPU mapping'):
+            multi.check_ranks(self.root, self.request, self.inventory)
+
+    def test_overlapping_physical_cores_rejected(self):
+        self.rows[3]['topology'] = self.rows[0]['topology']
+        self.rows[3]['affinity'] = self.rows[0]['affinity']
+        self.save()
+        with self.assertRaisesRegex(ValueError, 'Overlapping physical cores'):
+            multi.check_ranks(self.root, self.request, self.inventory)
+
+    def test_container_must_use_same_host_work_directory(self):
+        path = self.root/'ranks/inside-3.json'
+        changed = {**self.rows[3], 'cwd_inode': 999}
+        path.write_text(json.dumps(changed))
+        with self.assertRaisesRegex(ValueError, 'rank context differs'):
+            multi.check_ranks(self.root, self.request, self.inventory)
+
+    def test_missing_remote_rank_rejected(self):
+        (self.root/'ranks/inside-7.json').unlink()
+        with self.assertRaisesRegex(ValueError, 'Missing or extra MPI ranks'):
+            multi.check_ranks(self.root, self.request, self.inventory)
+
+    def test_each_sample_must_keep_the_same_binding(self):
+        baseline = multi.check_ranks(self.root, self.request, self.inventory)
+        actual = copy.deepcopy(baseline)
+        actual['7']['affinity'] = [100, 101, 102, 103]
+        with self.assertRaisesRegex(ValueError, 'placement changed'):
+            multi.same_placement(actual, baseline)
+
+
+if __name__ == '__main__':
+    unittest.main()
