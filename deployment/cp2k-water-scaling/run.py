@@ -43,6 +43,12 @@ def write_json(path, value):
     Path(path).write_text(json.dumps(value, indent=2, sort_keys=True)+'\n')
 
 
+def host_memory_fraction(request):
+    value = request.get('host_memory_fraction', .92)
+    require(math.isfinite(value) and .85 <= value <= .97, 'Host-memory guard must be between 85% and 97%')
+    return value
+
+
 def input_text(mode, shape, calibration=False, block=32):
     require(mode in ('gpu', 'cpu'), 'Unknown backend')
     require(len(shape) == 3 and all(isinstance(n, int) and 2 <= n <= 40 for n in shape), 'Bad water cell')
@@ -203,6 +209,7 @@ def verify_ranks(case, mode, gpus, ranks, pe):
 
 
 def run_case(root, request, devices, name, mode, shape, ranks, threads, calibration=False, block=32):
+    memory_fraction = host_memory_fraction(request)
     case = root/'cases'/name
     case.mkdir()
     pe = request['gpus']*4//ranks
@@ -238,7 +245,7 @@ def run_case(root, request, devices, name, mode, shape, ranks, threads, calibrat
                     memory = sample['gpus'][device['uuid']]['memory_mib']
                     require(memory is not None, 'Missing GPU memory measurement')
                     peaks[device['uuid']] = max(peaks[device['uuid']], memory)
-                if sample['cgroup'] and sample['cgroup']['used'] > .92*sample['cgroup']['limit']:
+                if sample['cgroup'] and sample['cgroup']['used'] > memory_fraction*sample['cgroup']['limit']:
                     stop = 'host_memory_limit'
                 if request['stage'] == 'calibrate' and any(peaks[d['uuid']] > .86*d['total_mib'] for d in devices):
                     stop = 'gpu_memory_guard'
@@ -264,7 +271,7 @@ def run_case(root, request, devices, name, mode, shape, ranks, threads, calibrat
     result = dict(name=name, mode=mode, shape=shape, waters=math.prod(shape), basis_functions=23*math.prod(shape),
                   ranks=ranks, threads=threads, block=block, calibration=calibration, returncode=code, stop=stop,
                   peak_gpu_mib=peaks, peak_gpu_fraction={d['uuid']: peaks[d['uuid']]/d['total_mib'] for d in devices},
-                  elapsed_seconds=elapsed, science_accepted=False)
+                  elapsed_seconds=elapsed, science_accepted=False, host_memory_fraction=memory_fraction)
     cgroups = [s['cgroup'] for s in samples if s['cgroup']]
     result['host_memory'] = max(cgroups, key=lambda c: c['used']) if cgroups else None
     result['sampled_cpu_seconds'] = sum(max((p['cpu_seconds'] for s in samples for p in s['processes'] if p['rank'] == r), default=0)
@@ -340,14 +347,92 @@ def calibrate(root, request, devices):
     require(selected is not None, 'No completed safe calibration point; inspect raw evidence')
 
 
+def tuning_trials(gpus):
+    # CPU layouts all consume the full physical-core allocation. GPU uses one distinct card per rank.
+    return ([('gpu', gpus, t, b) for b in (32, 64) for t in (4, 2, 1)] +
+            [('cpu', gpus*m, 4//m, 32) for m in (1, 2, 4)])
+
+
+def read_tuning(root, request, expected=None):
+    """Reuse only nine independently checked tuning cases, never old timing pairs."""
+    root = Path(root)
+    if expected:
+        require(str(root) == expected['path'], 'Different tuning source')
+        for name, value in expected['files'].items():
+            require(digest(root/name) == value, 'Imported tuning evidence changed: '+name)
+    source = json.loads((root/'request.json').read_text())
+    require(source['stage'] == 'compare' and not source.get('tuning_import'), 'Use the original full tuning run')
+    identity = ('partition', 'gpus', 'physical_cores', 'shape', 'source_sha',
+                'gpu_binary_sha256', 'cpu_binary_sha256', 'install_receipt_sha256')
+    require(all(source[k] == request[k] for k in identity), 'Tuning identity differs')
+    job = (root/'job.id').read_text().strip()
+    accounting = subprocess.check_output(['sacct', '-X', '-j', job, '-n', '-P',
+        '-o', 'JobID,State,ExitCode,Elapsed,NodeList'], text=True, timeout=30)
+    rows = [line.strip().split('|') for line in accounting.splitlines() if line.strip()]
+    require(len(rows) == 1 and rows[0][0] == job and rows[0][1].split()[0] in
+            ('COMPLETED', 'FAILED', 'TIMEOUT', 'CANCELLED', 'OUT_OF_MEMORY'), 'Tuning source is not terminal')
+    hashes = {name: digest(root/name) for name in source['inputs']}
+    require(hashes == source['inputs'], 'Frozen tuning source changed')
+    for name in ('request.json', 'job.id', 'results/tuning.json', 'results/devices.json'):
+        hashes[name] = digest(root/name)
+    spec = importlib.util.spec_from_file_location('frozen_tuning_protocol',
+        root/'control/deployment/cp2k-water-scaling/run.py')
+    protocol = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(protocol)
+    devices = json.loads((root/'results/devices.json').read_text())
+    samples = json.loads((root/'results/tuning.json').read_text())
+    trials = tuning_trials(request['gpus'])
+    require(len(samples) == len(trials), 'Incomplete tuning schedule')
+    for i, (sample, (mode, ranks, threads, block)) in enumerate(zip(samples, trials)):
+        name = f'tune-{i}-{mode}'
+        require(sample['name'] == name, 'Wrong tuning case order')
+        case = root/'cases'/name
+        launch = json.loads((case/'launch.json').read_text())
+        layout = dict(mode=mode, ranks=ranks, threads=threads, block=block,
+                      shape=request['shape'], physical_cores=request['physical_cores'], calibration=False)
+        require(all(launch[k] == v and (k not in sample or sample[k] == v) for k, v in layout.items()),
+                'Wrong tuning layout')
+        raw = json.loads((case/'sample.json').read_text())
+        require(all(sample.get(k) == v for k, v in raw.items()), 'Changed tuning summary')
+        require(raw['science_accepted'] and raw['returncode'] == 0 and raw['stop'] is None,
+                'Unaccepted tuning case')
+        require((case/'input.inp').read_text() == protocol.input_text(mode, request['shape'], False, block),
+                'Changed tuning scientific input')
+        fixtures.CASES['scaling'] = dict(elements=['O', 'H', 'H']*math.prod(request['shape']))
+        actual = fixtures.parse_science((case/'cp2k.log').read_text(), (case/'forces.xyz').read_text(),
+                                        (case/'elapsed.txt').read_text(), 'scaling')
+        require(all(actual[k] == sample[k] for k in actual), 'Tuning science differs from raw evidence')
+        require(timers((case/'cp2k.log').read_text(), mode) == sample['timers'], 'Changed tuning backend timers')
+        resource = [json.loads(line) for line in (case/'resources.jsonl').read_text().splitlines()]
+        peaks = {d['uuid']: max(s['gpus'][d['uuid']]['memory_mib'] for s in resource) for d in devices}
+        require(peaks == sample['peak_gpu_mib'], 'Changed tuning memory summary')
+        bindings = verify_ranks(case, mode, request['gpus'], ranks, request['physical_cores']//ranks)
+        require(all(r['omp_threads'] == threads for r in bindings), 'Wrong tuning OpenMP count')
+        if mode == 'cpu':
+            pids = {r['pid'] for r in bindings}
+            require(not any(p['pid'] in pids for s in resource for p in s['gpu_processes']), 'Tuning CPU used GPU')
+        require(fixtures.compare_science(sample, samples[0]) == sample['comparison'], 'Changed tuning agreement')
+        for path in case.iterdir():
+            if path.is_file():
+                hashes[str(path.relative_to(root))] = digest(path)
+    manifest = dict(path=str(root), job=job, scheduler_state=rows[0][1], files=hashes,
+                    completed_tuning_cases=len(samples), performance_result=False)
+    if expected:
+        require(manifest == expected, 'Tuning provenance changed')
+    return samples, manifest
+
+
 def compare(root, request, devices):
     shape, gpus = request['shape'], request['gpus']
-    # CPU layouts all consume the full physical-core allocation. GPU uses one distinct card per rank.
-    trials = [('gpu', gpus, t, b) for b in (32, 64) for t in (4, 2, 1)]
-    trials += [('cpu', gpus*m, 4//m, 32) for m in (1, 2, 4)]
     samples = []
     reference = None
-    for i, (mode, ranks, threads, block) in enumerate(trials):
+    if request.get('tuning_import'):
+        samples, manifest = read_tuning(request['tuning_import']['path'], request, request['tuning_import'])
+        reference = samples[0]
+        write_json(root/'results/imported-tuning.json', manifest)
+        write_json(root/'results/tuning.json', samples)
+        print(f'Reused {len(samples)} validated tuning cases; all warm-up and measured pairs are new', flush=True)
+    for i, (mode, ranks, threads, block) in enumerate([] if samples else tuning_trials(gpus)):
         sample = run_case(root, request, devices, f'tune-{i}-{mode}', mode, shape, ranks, threads, block=block)
         require(sample['science_accepted'], 'Tuning calculation failed')
         if reference is None:
@@ -458,12 +543,28 @@ def verify(root):
         report = json.loads((root/'results/calibration.json').read_text())
         require(report['selected'] == samples[report['selected']['name']], 'Changed calibration selection')
     else:
-        require(len(parsed) == (4 if request['stage'] == 'smoke' else 17), 'Incomplete benchmark schedule')
+        imported = []
+        if request.get('tuning_import'):
+            require(request['stage'] == 'compare', 'Only comparisons can reuse tuning')
+            imported, _ = read_tuning(request['tuning_import']['path'], request, request['tuning_import'])
+            require(json.loads((root/'results/tuning.json').read_text()) == imported, 'Changed imported tuning')
+            require(set(parsed) == {f'pair-{r}-{mode}' for r in range(4) for mode in ('cpu', 'gpu')},
+                    'All timing pairs must be freshly completed in this allocation')
+        require(len(parsed)+len(imported) == (4 if request['stage'] == 'smoke' else 17), 'Incomplete benchmark schedule')
         reference = next(iter(parsed.values()))
-        for sample in parsed.values():
+        for sample in [*parsed.values(), *imported]:
             fixtures.compare_science(sample, reference)
         if request['stage'] == 'compare':
             report = json.loads((root/'results/comparison.json').read_text())
+            if imported:
+                winners = {mode: min((s for s in imported if s['mode'] == mode), key=lambda s: s['cp2k_seconds'])
+                           for mode in ('gpu', 'cpu')}
+                require(report['selected_layouts'] == winners, 'Changed layout selection')
+                for case_name, sample in samples.items():
+                    choice = winners[sample['mode']]
+                    launch = json.loads((root/'cases'/case_name/'launch.json').read_text())
+                    require(all(launch[k] == choice[k] for k in ('mode', 'ranks', 'threads', 'block')),
+                            'Timing pair did not use the selected layout')
             medians = {mode: statistics.median(parsed[f'pair-{r}-{mode}']['cp2k_seconds'] for r in (1, 2, 3))
                        for mode in ('cpu', 'gpu')}
             require(report['median_seconds'] == medians and report['cpu_over_gpu'] == medians['cpu']/medians['gpu'],
@@ -481,6 +582,8 @@ def verify(root):
 def submit(args):
     require(args.gpus in POINTS[args.partition], 'Unsupported resource point')
     require(re.fullmatch(r'[a-zA-Z0-9][a-zA-Z0-9._-]{0,80}', args.name), 'Unsafe run name')
+    host_memory_fraction({'host_memory_fraction': args.host_memory_fraction})
+    require(not args.tuning_run or args.stage == 'compare', 'Tuning reuse requires a comparison')
     root = ROOT/'runtime-tests'/('cp2k-water-'+args.name)
     root.mkdir()
     for folder in ('results', 'cases', 'fixtures', 'control', 'runtime'):
@@ -498,6 +601,7 @@ def submit(args):
     shape = args.shape or ([4, 4, 4] if args.stage == 'smoke' else START[(args.partition, args.gpus)])
     request = dict(partition=args.partition, gpus=args.gpus, physical_cores=4*args.gpus, stage=args.stage,
         shape=shape, probes=args.probes, case_seconds=args.case_seconds, full_calibration=args.full_calibration,
+        host_memory_fraction=args.host_memory_fraction,
         source_sha=SOURCE, gpu_binary=str(binary), gpu_binary_sha256=digest(binary),
         cpu_binary=args.cpu_binary, install_receipt_sha256=digest(prefix/'share/sai/deployment.json'))
     if args.host_limit_run:
@@ -534,6 +638,8 @@ def submit(args):
                 ('partition', 'cpu_binary_sha256', 'gpu_binary_sha256')), 'CPU acceptance differs')
         request['calibration'] = dict(path=str(calibration), sha256=digest(calibration/'results/calibration.json'), reason=proof['reason'])
         request['cpu_acceptance'] = dict(path=str(smoke_path), sha256=digest(smoke_path))
+        if args.tuning_run:
+            _, request['tuning_import'] = read_tuning(Path(args.tuning_run).resolve(), request)
     request['inputs'] = {str(p.relative_to(root)): digest(p) for f in ('control', 'fixtures')
                          for p in (root/f).rglob('*') if p.is_file()}
     write_json(root/'request.json', request)
@@ -583,6 +689,9 @@ def main():
     p.add_argument('--probes', type=int, default=6)
     p.add_argument('--full-calibration', action='store_true', help='Converge ENERGY_FORCE to include late SCF/force memory')
     p.add_argument('--host-limit-run', help='Existing larger run with measured RAM exhaustion in the same allocation')
+    p.add_argument('--host-memory-fraction', type=float, default=.92,
+                   help='Recorded early-stop fraction of the actual cgroup RAM limit (0.85 to 0.97)')
+    p.add_argument('--tuning-run', help='Reuse nine validated tuning cases; all four timing pairs run afresh')
     p.add_argument('--case-seconds', type=int, default=1800)
     p.add_argument('--minutes', type=int, default=180)
     p = sub.add_parser('execute'); p.add_argument('root', type=Path)

@@ -1,5 +1,38 @@
 # CP2K water scaling: calibration and CPU acceptance
 
+**2026-10-21 follow-up: single-GPU measurement recovery.** The original
+16V100 single-GPU job **1882305** completed tuning, warm-up and two measured
+pairs, then stopped during the last CPU repetition. Its sampled host RAM was
+**13.83 GiB / 15 GiB**, just above the runner's 92% early-stop threshold.
+Scheduler accounting is `FAILED 1:0`, with `stop=host_memory_limit` in the
+runner; it is not an observed cgroup OOM. Completed energy/force comparisons
+still passed. This incomplete job does **not** produce an accepted speedup.
+
+Replacement **1884617** runs the same 288-water input with one GPU, four
+physical CPU cores and the same 15 GiB RAM quota. Its recorded early-stop
+fraction is **95% (14.25 GiB)**. Nine original tuning cases were independently
+reparsed and their raw evidence hashed; no tuning calculation is repeated.
+The new frozen scientific inputs were also checked against all original tuning
+inputs. One fresh excluded warm-up pair and all three fresh measured pairs
+run on the replacement node. The previous pairs remain in the evidence but
+are excluded from the replacement medians. The watcher now uses `control-v4`
+and retains the failed predecessor in `previous_comparisons`.
+
+The 16-GPU point has completed two full GPU tuning calculations at 1,452 waters,
+both converging in 22 SCF steps with forces accepted. The four-GPU 16V100 point
+has completed its first CPU calculation in **6,286.839 seconds** (20 SCF steps),
+with numerical agreement; further CPU layouts are running. The 4V100 single-GPU
+point has completed all tuning and warm-up and is measuring repeated pairs.
+The 900-water 4V100 four-GPU full calibration remains queued for resources.
+
+[measurement-recovery.json](measurement-recovery.json) records the failed
+sample, its peak resource observation, raw hashes, excluded old pairs, the
+replacement request and allocation, imported tuning provenance and the updated
+campaign state. Ten water-scaling tests and five diagonalization tests pass,
+including changed-evidence rejection and requiring all eight fresh timing cases
+while excluding warm-up from the medians. **No final repeated speedup is yet
+accepted.** Earlier snapshots follow for traceability.
+
 **Follow-up at 2026-10-21 00:00 China time:** four formal comparisons are
 running. The latest machine-readable snapshot, completed tuning summaries,
 numerical comparisons and raw-file hashes are in

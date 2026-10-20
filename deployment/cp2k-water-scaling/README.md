@@ -124,6 +124,25 @@ ratio. Reports include CP2K internal total time, MPI-launch wall time, SCF step
 counts, backend timers, sampled CPU seconds and memory peaks. Reserving all
 cores does not imply 100% utilization; measured utilization is retained.
 
+If a comparison stops after all nine tuning cases have passed, a replacement
+can use `--tuning-run ORIGINAL_RUN`. Submission, execution and final verification
+reparse the original inputs, energies, forces, timers, memory samples and rank
+bindings, verify all frozen inputs, and pin hashes of the raw tuning evidence.
+The source must be a terminal job with identical binaries, partition, size and
+CPU/GPU quota. Its later failure is retained; it is never labelled a successful
+comparison. Only tuning is reused. One new warm-up pair and all three new measured
+pairs run in the replacement allocation, so timings from different nodes or jobs
+are not mixed into the final medians.
+
+The default host-memory early-stop fraction remains 92% of the actual cgroup
+limit. `--host-memory-fraction` records a per-run override between 85% and 97%;
+it does not change the Slurm RAM quota or any scientific acceptance tolerance.
+For the 288-water 16V100 single-GPU recovery, use `--host-memory-fraction .95`:
+the last CPU repetition reached 13.83 GiB of its 15 GiB quota and tripped the
+92% guard, while all earlier completed calculations passed. The original run
+has scheduler status `FAILED`, not `OUT_OF_MEMORY`; its incomplete last case
+and two completed measured pairs are excluded from the replacement's result.
+
 Before publishing results, retain scheduler accounting (`COMPLETED`, `0:0`),
 original inputs, logs, force files, rank traces, samples and build provenance.
 Queued jobs and memory-only probes are progress, not completed benchmark results.

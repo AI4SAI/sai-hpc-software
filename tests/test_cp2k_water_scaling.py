@@ -100,6 +100,44 @@ class WaterScalingTests(unittest.TestCase):
             bad = copy.deepcopy(proof); bad['selected']['peak_gpu_fraction']['GPU-a'] = fraction
             self.assertFalse(campaign.host_limited_selection(bad, True))
 
+    def test_memory_guard_remains_below_the_actual_quota(self):
+        self.assertEqual(water.host_memory_fraction({}), .92)
+        self.assertEqual(water.host_memory_fraction({'host_memory_fraction': .95}), .95)
+        for invalid in (0, 1, float('nan'), float('inf')):
+            with self.assertRaisesRegex(ValueError, 'Host-memory guard'):
+                water.host_memory_fraction({'host_memory_fraction': invalid})
+
+    def test_import_rejects_changed_evidence_before_using_timings(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            (root/'request.json').write_text('{"shape": [6, 6, 8]}')
+            manifest = dict(path=str(root), files={'request.json': water.digest(root/'request.json')})
+            (root/'request.json').write_text('{"shape": [6, 6, 7]}')
+            with self.assertRaisesRegex(ValueError, 'Imported tuning evidence changed'):
+                water.read_tuning(root, {}, manifest)
+
+    def test_reused_tuning_still_runs_every_pair_and_excludes_warmup(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder); (root/'results').mkdir()
+            samples = [dict(name=f'tune-{i}-{mode}', mode=mode, ranks=ranks, threads=threads,
+                            block=block, cp2k_seconds=i+1)
+                       for i, (mode, ranks, threads, block) in enumerate(water.tuning_trials(1))]
+            request = dict(gpus=1, shape=[6, 6, 8], tuning_import={'path': 'source'})
+            def run_case(root, request, devices, name, mode, shape, ranks, threads, block):
+                repeat = int(name.split('-')[1])
+                return dict(name=name, mode=mode, science_accepted=True,
+                            cp2k_seconds=10000 if repeat == 0 else repeat*(10 if mode == 'cpu' else 1))
+            with patch.object(water, 'read_tuning', return_value=(samples, {'path': 'source'})), \
+                 patch.object(water, 'run_case', side_effect=run_case) as run, \
+                 patch.object(water.fixtures, 'compare_science', return_value={}):
+                water.compare(root, request, [])
+            self.assertEqual([c.args[3] for c in run.call_args_list],
+                ['pair-0-gpu', 'pair-0-cpu', 'pair-1-cpu', 'pair-1-gpu',
+                 'pair-2-gpu', 'pair-2-cpu', 'pair-3-cpu', 'pair-3-gpu'])
+            report = json.loads((root/'results/comparison.json').read_text())
+            self.assertEqual(report['median_seconds'], {'gpu': 2, 'cpu': 20})
+            self.assertEqual(report['cpu_over_gpu'], 10)
+
 
 if __name__ == '__main__':
     unittest.main()
