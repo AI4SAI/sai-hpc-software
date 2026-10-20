@@ -150,7 +150,9 @@ def directories(path):
 
 def install(release, project, physical_root=Path('/')):
     preflight(release, project, physical_root)
-    app_root = physical_root / 'opt/apps'
+    # The installing account may own the application subdirectories without
+    # having write access to /opt/apps itself, as in the CP2K deployment.
+    app_root = physical_root / 'opt/apps/lammps'
     directories(app_root)
     lock_path = app_root / '.lammps-30Sep2026-install.lock'
     plain(lock_path)

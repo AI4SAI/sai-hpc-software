@@ -10,8 +10,10 @@ the old 70 packages/2,197 styles. At the user's request, performance acceptance
 records GPU scope explicitly; CPU timing is excluded. The
 [delivery record](evidence/lammps-release-20261020/final-delivery.json) pins the
 accepted images and evidence. The [physical installation package](../deployment/lammps-30Sep2026/README.md)
-passed its full read-only preflight; `/opt` copying and subsequent native
-execution are still pending administrator execution. The live
+passed its full read-only preflight and now includes post-install native
+Slurm checks plus raw-result revalidation: 17 scientific cases per partition
+cover single/two-node GPU/Kokkos, TF/PT/JAX and PLUMED execution. `/opt` copying
+and these native calculations are still pending user execution. The live
 daily dispatcher still runs the old MD feature branch; its release history
 check rejects newer recovery identities, while its development build fails
 CUDA configuration. The stable restart uses the integrated controller,

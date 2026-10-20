@@ -40,7 +40,9 @@ GPU package 可用 `-sf gpu -pk gpu 1`；Kokkos 可用
 bash /home/stardust/sai-hpc-software/deployment/lammps-30Sep2026/install.sh --check
 ```
 
-由具有目标 `/opt/apps` 和 module 目录写权限的账号执行安装：
+由能读取源文件、并能写入 `/opt/apps/lammps`、`/opt/apps/deepmd-kit`
+和 `/opt/modules/modulefiles/apps/lammps` 的账号执行安装。
+安装已包含完整预检，无需先重复运行 `--check`：
 
 ```bash
 bash /home/stardust/sai-hpc-software/deployment/lammps-30Sep2026/install.sh --install
@@ -61,8 +63,64 @@ bash /home/stardust/sai-hpc-software/deployment/lammps-30Sep2026/install.sh --in
 bash /home/stardust/sai-hpc-software/deployment/lammps-30Sep2026/install.sh --verify
 ```
 
-随后可在对应 Slurm allocation 内加载 `lammps/30Sep2026-deepmd320-auto`。
-物理安装后的实际计算验收需要在管理员完成复制后执行；容器验收和字节校验
-不能替代这一检查。安装不会更改旧版 module 或默认版本。
+安装不会更改旧版 module 或默认版本。
+
+## 安装后的原生运行验收
+
+完成安装后，用普通集群账号在登录节点提交：
+
+```bash
+cd /home/stardust/sai-hpc-software/deployment/lammps-30Sep2026
+bash submit-native-checks.sh all
+```
+
+可把 `all` 换成 `4V100`、`16V100` 或 `8V100V0` 单独验证。提交前检查选中分区
+的物理安装文件和 module，并校验 `native-reference.json` 固定的已验收输入、模型、
+原始输出及解析器。全部通过后，才向各分区提交一个双节点作业：每节点 1 个 MPI rank、
+1 张 GPU、1 个 CPU，时限 40 分钟。16V100 使用 `flood-1o2gpu`，其余使用 `rush-1o2gpu`。
+脚本、模型和输入复制到本次结果目录并固定 SHA256，排队期间仓库更新不影响已提交作业。
+
+每个分区验证版本、71 个 package / 2,473 个 style、动态库解析、MPI ISA、每个 rank
+实际执行的二进制和节点，以及 17 项科学检查：
+
+- TF/PT/JAX 各跑单节点和双节点 LAMMPS，比较能量、全部力和 virial，并检查 PLUMED。
+- GPU package 和 Kokkos 各跑单节点、双节点的 LJ 与 Coulomb/PPPM，比较能量、压力和全部力。
+- 配套 DeePMD Python 的 TF/PT/JAX 推理，核对实际导入路径，防止误用旧安装。
+
+这些作业加载 `/opt` 公用 module，直接执行精确安装前缀下的 `bin/lmp` 和配套
+`bin/python`，不调用 Apptainer。GPU 保持可见；TF/JAX 继续使用站点提供的后端，
+不新增纯 CPU 性能比较。数值容差沿用已验收容器的标准，并比较单、双节点结果。
+
+脚本输出本次结果目录和 `jobs.tsv`。作业完成后，把下面路径替换成输出的目录：
+
+```bash
+python3 native_checks.py verify /home/你的账号/sai-hpc-software/runtime-tests/lammps-30Sep2026-physical-时间戳-进程号
+```
+
+验证器重新读取原始日志、dump、COLVAR 和 Python 观测值，核对文件 SHA256、完整算例矩阵、
+rank 节点和 module 卸载，并查询 Slurm，要求对应分区 `COMPLETED / 0:0`。
+全部通过时输出顶层 `"passed": true` 并返回 0；排队、运行中、失败或缺少证据均返回非零，
+逐分区显示原因。单独存在 `native-acceptance.json` 不代表作业最终成功。
+
+结果默认写到执行账号的 `$HOME/sai-hpc-software/runtime-tests/`，MPI scratch 写到
+同一工作根的 `runtime/ln-作业号`，CUDA/XDG cache 放在本次结果目录；不使用主机 `/tmp`。
+可用 `SAI_LAMMPS_NATIVE_WORK_ROOT` 指定该账号家目录内的另一个工作根。
+参考材料默认从 `/home/stardust/sai-hpc-software` 读取，可用 `SAI_SOFTWARE_ROOT` 指定。
+提交账号须有这些原始参考文件的读取权限；跨账号使用前可先执行以下只读检查：
+
+```bash
+python3 native_checks.py preflight all
+```
+
+失败日志、暂存目录和原始产物全部保留。此交付已完成脚本测试和只读预检；
+真实物理安装及其科学验收仍需按上述顺序执行。
+
+验收通过后，在对应分区的 Slurm allocation 内使用：
+
+```bash
+module use /opt/modules/modulefiles/apps
+module load lammps/30Sep2026-deepmd320-auto
+lmp -h
+```
 
 完整验收来源见 [LAMMPS-RELEASE.md](../../docs/LAMMPS-RELEASE.md)。

@@ -36,9 +36,21 @@ lmp -h
 ```
 
 The [deployment package](../deployment/lammps-30Sep2026/README.md) includes the
-partition selector, exact source/target paths and a default read-only installer
-preflight. It preserves the paired LAMMPS/DeePMD prefixes and existing site
-dependencies. Each partition's complete native pair is approximately 1.15 GiB.
+partition selector, exact source/target paths, a default read-only installer
+preflight and post-install native Slurm validation scripts. It preserves the
+paired LAMMPS/DeePMD prefixes and existing site dependencies. Each partition's
+complete native pair is approximately 1.15 GiB. After installation,
+`submit-native-checks.sh all` checks installed bytes and submits one two-node
+job per GPU partition. Each job directly runs physical executables, checks
+version/full features/loader/rank placement and 17 scientific cases covering
+TF/PT/JAX, PLUMED and GPU/Kokkos LJ/PPPM. `native_checks.py verify RESULTS`
+reparses raw results and requires successful Slurm completion. These scripts
+are prepared; physical native calculation success is not yet claimed.
+[Script preflight evidence](evidence/lammps-release-20261020/native-script-preflight.json)
+records all six source-tree checks, frozen-input/model checks, actual accepted
+help parsing and 16 passing deployment tests on the cluster home filesystem.
+The native C API probe checks the complete style registry, including Kokkos
+aliases that upstream deliberately omits from `lmp -h`.
 
 The current implementation builds both programs in one Apptainer overlay,
 then exports a SIF and runs separate scientific, performance and publication
