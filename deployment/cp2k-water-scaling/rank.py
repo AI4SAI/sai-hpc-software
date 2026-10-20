@@ -26,7 +26,8 @@ def main():
     assert len({tuple(v) for v in cores.values()}) == int(os.environ['WATER_CORES_PER_RANK'])
     record = dict(rank=rank, local_rank=local_rank, pid=os.getpid(), host=socket.gethostname(),
                   affinity=affinity, cores=cores, gpu=os.environ['CUDA_VISIBLE_DEVICES'],
-                  omp_threads=int(os.environ['OMP_NUM_THREADS']), binary=os.environ['WATER_BINARY'])
+                  omp_threads=int(os.environ['OMP_NUM_THREADS']), binary=os.environ['WATER_BINARY'],
+                  start_ticks=int(Path('/proc/self/stat').read_text().rsplit(')', 1)[1].split()[19]))
     Path(f'rank-{rank}.json').write_text(json.dumps(record, sort_keys=True)+'\n')
     os.execv(os.environ['WATER_BINARY'], [os.environ['WATER_BINARY'], *sys.argv[1:]])
 

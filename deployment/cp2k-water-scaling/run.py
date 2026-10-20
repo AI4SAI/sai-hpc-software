@@ -3,6 +3,7 @@
 import argparse
 import csv
 import hashlib
+import importlib.util
 import itertools
 import json
 import math
@@ -66,6 +67,10 @@ def input_text(mode, shape, calibration=False, block=32):
                         '      CHOLESKY RESTORE\n      LEVEL_SHIFT 0\n'
                         '      &DIAGONALIZATION\n        ALGORITHM STANDARD\n'
                         '      &END DIAGONALIZATION\n')+text[end:]
+    # Every sample starts from ATOMIC. Unused wavefunctions and backups would
+    # otherwise add quadratic shared-storage traffic to these large cases.
+    text = text.replace('    &END SCF\n', '      &PRINT\n        &RESTART OFF\n        &END RESTART\n'
+        '        &RESTART_HISTORY OFF\n        &END RESTART_HISTORY\n      &END PRINT\n    &END SCF\n')
     if calibration:
         text = text.replace('RUN_TYPE ENERGY_FORCE', 'RUN_TYPE ENERGY')
         text = text.replace('      MAX_SCF 100', '      MAX_SCF 3\n      IGNORE_CONVERGENCE_FAILURE T')
@@ -125,14 +130,11 @@ def cgroup_memory():
 def resource_sample(case, devices):
     rows = subprocess.check_output(['nvidia-smi', '-i', ','.join(d['uuid'] for d in devices),
         '--query-gpu=uuid,memory.used,utilization.gpu,clocks.sm,power.draw',
-        '--format=csv,noheader,nounits'], text=True)
+        '--format=csv,noheader,nounits'], text=True, timeout=15)
     gpus = {row[0].strip(): dict(zip(('memory_mib', 'util_percent', 'sm_mhz', 'power_w'),
             [float(v.strip()) if v.strip().replace('.', '', 1).isdigit() else None for v in row[1:]]))
             for row in csv.reader(rows.splitlines())}
-    compute = subprocess.check_output(['nvidia-smi', '--query-compute-apps=gpu_uuid,pid,used_gpu_memory',
-                                      '--format=csv,noheader,nounits'], text=True)
-    gpu_processes = [dict(uuid=row[0].strip(), pid=int(row[1]), used_mib=row[2].strip())
-                     for row in csv.reader(compute.splitlines()) if len(row) == 3 and row[0].strip() in gpus]
+    gpu_processes = gpu_clients(devices)
     processes = []
     for record in case.glob('rank-*.json'):
         try:
@@ -143,6 +145,40 @@ def resource_sample(case, devices):
         except (FileNotFoundError, ProcessLookupError, json.JSONDecodeError):
             pass
     return dict(time=time.time(), gpus=gpus, processes=processes, gpu_processes=gpu_processes, cgroup=cgroup_memory())
+
+
+def gpu_clients(devices):
+    compute = subprocess.check_output(['nvidia-smi', '--query-compute-apps=gpu_uuid,pid,used_gpu_memory',
+        '--format=csv,noheader,nounits'], text=True, timeout=15)
+    uuids = {d['uuid'] for d in devices}
+    return [dict(uuid=row[0].strip(), pid=int(row[1]), used_mib=row[2].strip())
+            for row in csv.reader(compute.splitlines()) if len(row) == 3 and row[0].strip() in uuids]
+
+
+def await_idle_gpus(devices):
+    # A terminated MPI launcher may return before CUDA contexts disappear.
+    # Never count a previous calculation's allocations against the next size.
+    for _ in range(30):
+        clients = gpu_clients(devices)
+        if not clients:
+            return
+        time.sleep(1)
+    raise ValueError('Allocated GPUs still have compute clients: '+str(clients))
+
+
+def cleanup_stopped_ranks(case):
+    stopped = []
+    for path in case.glob('rank-*.json'):
+        record = json.loads(path.read_text())
+        try:
+            stat = Path(f'/proc/{record["pid"]}/stat').read_text().rsplit(')', 1)[1].split()
+            if int(stat[19]) == record['start_ticks'] and stat[0] != 'Z':
+                # Only this launch's recorded process, including PID reuse protection.
+                os.kill(record['pid'], signal.SIGKILL)
+                stopped.append(record['pid'])
+        except (FileNotFoundError, ProcessLookupError):
+            pass
+    return stopped
 
 
 def cpu_environment(binary):
@@ -185,6 +221,7 @@ def run_case(root, request, devices, name, mode, shape, ranks, threads, calibrat
             '--report-bindings', 'python3', str(Path(__file__).with_name('rank.py')), '-i', 'input.inp']
     write_json(case/'launch.json', dict(argv=argv, mode=mode, shape=shape, ranks=ranks, threads=threads,
                                       physical_cores=ranks*pe, calibration=calibration, block=block))
+    await_idle_gpus(devices)
     print(f'START {name}: {math.prod(shape)} waters, {ranks} MPI x {threads} OMP, {mode}', flush=True)
     peaks = {d['uuid']: 0.0 for d in devices}
     samples = []
@@ -220,6 +257,8 @@ def run_case(root, request, devices, name, mode, shape, ranks, threads, calibrat
             if process.poll() is None:
                 os.killpg(process.pid, signal.SIGKILL)
                 process.wait(timeout=20)
+            if stop:
+                write_json(case/'stopped-ranks.json', cleanup_stopped_ranks(case))
     elapsed = time.monotonic()-started
     (case/'elapsed.txt').write_text(str(elapsed)+'\n')
     result = dict(name=name, mode=mode, shape=shape, waters=math.prod(shape), basis_functions=23*math.prod(shape),
@@ -365,6 +404,73 @@ def describe_cpu(root, request):
             require(not re.search(r'lib(?:cusolver|cublas|cufft|elpa|spla|cosma)', linked), 'CPU binary loads GPU math libraries')
 
 
+def verify(root):
+    """Reparse raw science/resource evidence only after successful scheduler completion."""
+    request = json.loads((root/'request.json').read_text())
+    job = (root/'job.id').read_text().strip()
+    accounting = subprocess.check_output(['sacct', '-X', '-j', job, '-n', '-P',
+        '-o', 'JobID,State,ExitCode,Elapsed,NodeList'], text=True)
+    rows = [line.strip().split('|') for line in accounting.splitlines() if line.strip()]
+    require(len(rows) == 1 and rows[0][:3] == [job, 'COMPLETED', '0:0'], 'Job did not complete successfully')
+    (root/'results/accounting.txt').write_text(accounting)
+    for name, expected in request['inputs'].items():
+        require(digest(root/name) == expected, 'Frozen input changed: '+name)
+    frozen = root/'control/deployment/cp2k-water-scaling/run.py'
+    spec = importlib.util.spec_from_file_location('frozen_water_protocol', frozen)
+    protocol = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(protocol)
+    devices = json.loads((root/'results/devices.json').read_text())
+    samples, parsed = {}, {}
+    for case in sorted((root/'cases').iterdir()):
+        launch = json.loads((case/'launch.json').read_text())
+        sample = json.loads((case/'sample.json').read_text())
+        samples[case.name] = sample
+        require((case/'input.inp').read_text() == protocol.input_text(launch['mode'], launch['shape'],
+                launch['calibration'], launch['block']), 'Scientific input differs from protocol')
+        resource = [json.loads(line) for line in (case/'resources.jsonl').read_text().splitlines()]
+        peaks = {d['uuid']: max(s['gpus'][d['uuid']]['memory_mib'] for s in resource) for d in devices}
+        require(peaks == sample['peak_gpu_mib'], 'Memory summary differs from samples')
+        if launch['calibration']:
+            if sample['returncode'] == 0 and sample['stop'] is None:
+                require(timers((case/'cp2k.log').read_text(), 'gpu') == sample['timers'], 'Changed calibration timers')
+            continue
+        require(sample['returncode'] == 0 and sample['stop'] is None, 'Failed science case')
+        fixtures.CASES['scaling'] = dict(elements=['O', 'H', 'H']*math.prod(launch['shape']))
+        actual = fixtures.parse_science((case/'cp2k.log').read_text(), (case/'forces.xyz').read_text(),
+                                        (case/'elapsed.txt').read_text(), 'scaling')
+        require(all(actual[k] == sample[k] for k in actual), 'Science summary differs from raw files')
+        require(timers((case/'cp2k.log').read_text(), launch['mode']) == sample['timers'], 'Changed backend timers')
+        ranks = verify_ranks(case, launch['mode'], request['gpus'], launch['ranks'],
+                             request['physical_cores']//launch['ranks'])
+        require(all(r['omp_threads'] == launch['threads'] for r in ranks), 'Wrong OpenMP count')
+        if launch['mode'] == 'cpu':
+            pids = {r['pid'] for r in ranks}
+            require(not any(p['pid'] in pids for s in resource for p in s['gpu_processes']), 'CPU used GPU')
+        parsed[case.name] = actual
+    if request['stage'] == 'calibrate':
+        report = json.loads((root/'results/calibration.json').read_text())
+        require(report['selected'] == samples[report['selected']['name']], 'Changed calibration selection')
+    else:
+        require(len(parsed) == (4 if request['stage'] == 'smoke' else 17), 'Incomplete benchmark schedule')
+        reference = next(iter(parsed.values()))
+        for sample in parsed.values():
+            fixtures.compare_science(sample, reference)
+        if request['stage'] == 'compare':
+            report = json.loads((root/'results/comparison.json').read_text())
+            medians = {mode: statistics.median(parsed[f'pair-{r}-{mode}']['cp2k_seconds'] for r in (1, 2, 3))
+                       for mode in ('cpu', 'gpu')}
+            require(report['median_seconds'] == medians and report['cpu_over_gpu'] == medians['cpu']/medians['gpu'],
+                    'Changed performance summary')
+    hashes = {str(p.relative_to(root)): digest(p) for folder in ('cases', 'fixtures', 'results')
+              for p in (root/folder).rglob('*') if p.is_file() and p.name != 'verified.json' and
+              not p.name.startswith('slurm-')}
+    result = dict(verified=True, request_sha256=digest(root/'request.json'), job=job,
+                  stage=request['stage'], completed_cases=len(parsed), files=hashes)
+    write_json(root/'results/verified.json', result)
+    print(json.dumps({k: v for k, v in result.items() if k != 'files'}))
+    return result
+
+
 def submit(args):
     require(args.gpus in POINTS[args.partition], 'Unsupported resource point')
     require(re.fullmatch(r'[a-zA-Z0-9][a-zA-Z0-9._-]{0,80}', args.name), 'Unsafe run name')
@@ -399,6 +505,7 @@ def submit(args):
         require(proof['selected'] and list(proof['selected']['shape']) == list(shape), 'Size differs from calibration')
         require(all(previous[k] == request[k] for k in ('partition', 'gpus', 'gpu_binary_sha256')), 'Calibration identity differs')
         smoke_path = Path(args.cpu_smoke_run)/'results/smoke.json'
+        verify(Path(args.cpu_smoke_run))
         accepted = json.loads(smoke_path.read_text())
         require(accepted['accepted'] and all(accepted['request'][k] == request[k] for k in
                 ('partition', 'cpu_binary_sha256', 'gpu_binary_sha256')), 'CPU acceptance differs')
@@ -407,9 +514,13 @@ def submit(args):
     request['inputs'] = {str(p.relative_to(root)): digest(p) for f in ('control', 'fixtures')
                          for p in (root/f).rglob('*') if p.is_file()}
     write_json(root/'request.json', request)
-    qos = ('rush-1o2gpu' if args.partition == '4V100' else 'flood-1o2gpu') if args.gpus == 1 else 'rush-gpu'
+    qos = ('rush-1o2gpu' if args.partition == '4V100' else 'flood-1o2gpu') if args.gpus == 1 else (
+        'huge-gpu' if args.gpus == 16 else 'rush-gpu')
+    require(not (args.partition == '16V100' and args.gpus == 1 and args.minutes > 240),
+            '16V100 single-GPU QOS permits at most four hours')
     command = ['sbatch', '--parsable', '--partition='+args.partition, '--qos='+qos,
-        '--nodes=1', '--ntasks='+str(args.gpus), '--gpus-per-node='+str(args.gpus),
+        '--nodes=1', '--ntasks='+str(args.gpus if args.stage == 'calibrate' else args.gpus*4),
+        '--gpus-per-node='+str(args.gpus),
         '--time='+str(args.minutes), '--job-name=cp2k-water-'+args.name,
         '--output='+str(root/'results/slurm-%j.log'), str(root/'control/deployment/cp2k-water-scaling/job.sbatch'), str(root)]
     job = subprocess.check_output(command, text=True).strip()
@@ -450,11 +561,14 @@ def main():
     p.add_argument('--case-seconds', type=int, default=1800)
     p.add_argument('--minutes', type=int, default=180)
     p = sub.add_parser('execute'); p.add_argument('root', type=Path)
+    p = sub.add_parser('verify'); p.add_argument('root', type=Path)
     args = parser.parse_args()
     if args.command == 'submit':
         submit(args)
-    else:
+    elif args.command == 'execute':
         execute(args.root)
+    else:
+        verify(args.root)
 
 
 if __name__ == '__main__':

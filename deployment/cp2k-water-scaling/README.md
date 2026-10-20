@@ -60,15 +60,19 @@ python3 -B deployment/cp2k-water-scaling/run.py submit --stage compare \
   --cpu-binary /home/stardust/sai-hpc-software/runs/cp2k-water-cpu-UNIQUE_CPU_BUILD/install/bin/cp2k.psmp \
   --calibration-run /home/stardust/sai-hpc-software/runtime-tests/cp2k-water-UNIQUE_CALIBRATION \
   --cpu-smoke-run /home/stardust/sai-hpc-software/runtime-tests/cp2k-water-UNIQUE_SMOKE \
-  --minutes 1440 --case-seconds 7200
+  --minutes 240 --case-seconds 7200
 ```
 
 Use a unique run name each time. Submitters freeze the scripts and fixtures.
 Do not edit frozen runs to change the experiment. The site assigns eight logical
 CPUs (four physical cores) and a fixed RAM quota per GPU; it rejects explicit
 `--cpus-per-task` for these GPU jobs. Single-GPU 16V100 jobs use
-`flood-1o2gpu`, single-GPU 4V100 jobs use `rush-1o2gpu`, and multiples of four
-use `rush-gpu`. Retain the normal user environment for native Open MPI startup.
+`flood-1o2gpu` (at most four hours), single-GPU 4V100 jobs use `rush-1o2gpu`,
+four-GPU jobs use `rush-gpu`, and 16-GPU jobs use `huge-gpu`. The latter avoids
+competing with other four-GPU experiments for the 16-GPU per-user limit of the
+rush queue. Retain the normal user environment for native Open MPI startup.
+Comparison jobs request enough MPI slots for the largest CPU layout (4G),
+while the site still allocates the same 4G physical cores from the GPU count.
 
 Calibration performs only three SCF steps, allows nonconvergence explicitly,
 and must never be reported as scientific or performance acceptance. It samples
@@ -90,7 +94,8 @@ and the sampler checks that their rank PIDs never appear as GPU compute clients.
 
 After tuning, one warm-up pair is excluded, followed by three alternating
 CPU/GPU pairs at the selected layouts. All cases start from the same atomic
-guess in fresh directories. Absolute total-energy tolerance is 1e-6 Ha and
+guess in fresh directories; unused wavefunction restart files are disabled.
+Absolute total-energy tolerance is 1e-6 Ha and
 maximum force-component tolerance is 1e-5 Ha/bohr, unchanged from prior
 acceptance. Only fully converged, numerically agreeing runs can produce a speed
 ratio. Reports include CP2K internal total time, MPI-launch wall time, SCF step
@@ -100,3 +105,14 @@ cores does not imply 100% utilization; measured utilization is retained.
 Before publishing results, retain scheduler accounting (`COMPLETED`, `0:0`),
 original inputs, logs, force files, rank traces, samples and build provenance.
 Queued jobs and memory-only probes are progress, not completed benchmark results.
+`run.py verify RUN` independently reparses these raw files, checks scheduler
+completion and numerical agreement, and writes a hashed `results/verified.json`.
+
+`campaign.py CAMPAIGN.json --watch` can advance a recorded set of runs every
+60 seconds. It submits one CPU smoke test per partition after its build finishes,
+and submits each comparison only after successful CPU acceptance and a completed
+calibration with every GPU in the requested window. It preserves failed jobs for
+review rather than silently retrying them. Run one watcher under `flock` and keep
+its log, PID and campaign JSON in the task's home directory. Restarting adopts
+only an existing recorded submission with matching identity. The current
+campaign is `/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-campaign-20261020`.

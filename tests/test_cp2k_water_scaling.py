@@ -4,6 +4,7 @@ import json
 from pathlib import Path
 import tempfile
 import unittest
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('water_scaling', ROOT/'deployment/cp2k-water-scaling/run.py')
@@ -52,6 +53,32 @@ class WaterScalingTests(unittest.TestCase):
         shape = water.next_shape(550, 512, 729, {(8, 8, 8)})
         self.assertTrue(512 < water.math.prod(shape) < 729)
         self.assertIsNone(water.next_shape(512, 511, 513, {(8, 8, 8)}))
+
+    def test_cleanup_never_signals_a_reused_pid(self):
+        with tempfile.TemporaryDirectory() as directory:
+            folder = Path(directory)
+            (folder/'rank-0.json').write_text(json.dumps(dict(pid=999999, start_ticks=10)))
+            read_text = Path.read_text
+            def proc_read(path, *args, **kwargs):
+                if str(path) == '/proc/999999/stat':
+                    fields = ['0']*22
+                    fields[0] = 'S'; fields[19] = '11'
+                    return '999999 (cp2k) '+' '.join(fields)
+                return read_text(path, *args, **kwargs)
+            with patch.object(Path, 'read_text', proc_read), patch.object(water.os, 'kill') as kill:
+                self.assertEqual(water.cleanup_stopped_ranks(folder), [])
+                kill.assert_not_called()
+
+    def test_scheduler_failure_cannot_be_published_as_success(self):
+        with tempfile.TemporaryDirectory() as directory:
+            folder = Path(directory)
+            (folder/'request.json').write_text('{}')
+            (folder/'job.id').write_text('123\n')
+            for accounting in ('123|FAILED|1:0|01:00|node\n', '123|RUNNING|0:0|01:00|node\n'):
+                with patch.object(water.subprocess, 'check_output', return_value=accounting):
+                    with self.assertRaisesRegex(ValueError, 'did not complete successfully'):
+                        water.verify(folder)
+            self.assertFalse((folder/'results/verified.json').exists())
 
 
 if __name__ == '__main__':
