@@ -20,6 +20,14 @@ RESOURCES = dict(nodes=1, ranks=1, gpus_per_node=1, threads_per_rank=1)
 BASELINE = '/opt/apps/lammps/lammps-4Jul2026-deepmd3.2.0-plumed2.10.1-nvhpc263-ompi5010-sm70/bin/lmp'
 
 
+def performance_backends(request):
+    """An explicit GPU scope excludes CPU timing, never backend correctness."""
+    scope = request.get('performance_scope', 'all')
+    if scope not in ('all', 'gpu'):
+        raise ValueError('unknown MD performance scope')
+    return ('pt',) if scope == 'gpu' else tuple(BACKENDS)
+
+
 def task(run_id):
     path = ROOT / 'runtime-tests' / safe_name(run_id)
     if path.resolve() != path:
@@ -28,6 +36,7 @@ def task(run_id):
 
 
 def validate_request(request):
+    performance_backends(request)
     if request['run_id'] not in (request['build_run'] + '-performance', request['build_run'] + '-performance-retest'):
         raise ValueError('MD performance permits only the first attempt and one named repeat per build')
     delivery = validate_pair(request['delivery'])
@@ -61,6 +70,7 @@ def render(request, directory):
              'export SAI_SOFTWARE_ROOT=' + shlex.quote(str(PROJECT)),
              'export SAI_MD_DELIVERY=' + shlex.quote(json.dumps(delivery, sort_keys=True)),
              'export SAI_MD_IMAGE=' + shlex.quote(request['artifact']),
+             'export SAI_MD_PERFORMANCE_BACKENDS=' + shlex.quote(' '.join(performance_backends(request))),
              join(['bash', CONTROL / 'md_performance.sh', request['run_id'], request['science_run'],
                    *([request['repeat_of']['run_id']] if request.get('repeat_of') else [])])]
     if request.get('repeat_of'):
@@ -107,15 +117,16 @@ def completed_original(run_id):
 
 def repeat_binding(run_id):
     directory = task(run_id)
+    backends = performance_backends(json.loads(regular(directory / 'request.json').read_text()))
     frozen = {backend: json.loads(regular(directory / 'results' / backend / 'frozen.json').read_text())
-              for backend in BACKENDS}
+              for backend in backends}
     nodes = {safe_name(value['node']) for value in frozen.values()}
     if len(nodes) != 1 or any(value.get('repeat_of') for value in frozen.values()):
         raise ValueError('original MD calibration must belong to one node and not be a repeat')
     return dict(run_id=run_id, node=nodes.pop(), request_sha256=checksum(regular(directory / 'request.json')),
                 evidence_sha256=checksum(regular(directory / 'results/evidence.json')),
                 frozen_sha256={backend: checksum(regular(directory / 'results' / backend / 'frozen.json'))
-                               for backend in BACKENDS})
+                               for backend in backends})
 
 
 def check_repeat_request(request, original):
@@ -123,6 +134,8 @@ def check_repeat_request(request, original):
               'target', 'resources', 'recipe_sha256', 'controller_recovery')
     if any(request.get(key) != original.get(key) for key in fields):
         raise ValueError('MD retest changed its image, scientific inputs, source or allocation')
+    if performance_backends(request) != performance_backends(original):
+        raise ValueError('MD retest changed its performance scope')
 
 
 def original_for_repeat(request):
@@ -141,7 +154,7 @@ def original_for_repeat(request):
 
 def verify_repeat(request, reports):
     if not request['run_id'].endswith('-retest') and not request.get('repeat_of'):
-        for backend in BACKENDS:
+        for backend in performance_backends(request):
             frozen = json.loads(regular(task(request['run_id']) / 'results' / backend / 'frozen.json').read_text())
             if frozen.get('repeat_of'):
                 raise ValueError('first MD attempt cannot borrow a different calibrated workload')
@@ -149,7 +162,7 @@ def verify_repeat(request, reports):
     original = original_for_repeat(request)
     keys = ('schema', 'workload', 'backend', 'atoms', 'steps', 'node', 'resources',
             'fixture_sha256', 'input_sha256', 'input', 'minimum_engine_seconds')
-    for backend in BACKENDS:
+    for backend in performance_backends(request):
         report, previous = reports[backend], original['reports'][backend]
         if (report.get('binaries') != previous.get('binaries') or not report.get('binaries')
                 or report['fixture_sha256'] != previous['fixture_sha256']
@@ -172,6 +185,8 @@ def submit(args):
                    science_run=safe_name(args.science_run), delivery=original['delivery'],
                    artifact=original['artifact'], artifact_sha256=original['artifact_sha256'],
                    target=original['target'], resources=RESOURCES, recipe_sha256=fingerprint(CONTROL))
+    if getattr(args, 'scope', 'all') != 'all':
+        request['performance_scope'] = args.scope
     if 'controller_recovery' in original:
         request['controller_recovery'] = original['controller_recovery']
     validate_request(request)
@@ -203,7 +218,8 @@ def verify(run_id, *, enforce_performance=True):
     directory = task(run_id)
     request = json.loads((directory / 'request.json').read_text())
     delivery = validate_request(request)
-    if request['run_id'] != run_id or request['job_script_sha256'] != checksum(directory / 'job.sbatch'):
+    if (request['run_id'] != run_id or request['job_script_sha256'] != checksum(directory / 'job.sbatch')
+            or (directory / 'job.sbatch').read_text() != render(request, directory)):
         raise ValueError('performance request or job script changed')
     science_evidence(request)
     job = (directory / 'job.id').read_text().strip()
@@ -231,7 +247,7 @@ def verify(run_id, *, enforce_performance=True):
                     baseline_executable=BASELINE, nsys=nsys)
     reports = {}
     regression = []
-    for backend in BACKENDS:
+    for backend in performance_backends(request):
         report = verify_performance_evidence(directory / 'results' / backend, case, backend=backend, expected=expected)
         reports[backend] = report
         for name, digest in report['files'].items():
@@ -250,6 +266,9 @@ def verify(run_id, *, enforce_performance=True):
                     artifact=request['artifact'], artifact_sha256=request['artifact_sha256'], delivery=delivery,
                     recipe_sha256=request['recipe_sha256'], job=job, reports=reports, files=files,
                     regressed_backends=regression)
+    if 'performance_scope' in request:
+        evidence.update(performance_scope=request['performance_scope'],
+                        performance_backends=list(performance_backends(request)))
     if 'controller_recovery' in request:
         evidence['controller_recovery'] = request['controller_recovery']
     if repeat is not None:
@@ -291,6 +310,7 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     sub = parser.add_subparsers(dest='op', required=True)
     p = sub.add_parser('submit'); p.add_argument('run_id'); p.add_argument('build_run'); p.add_argument('science_run')
+    p.add_argument('--scope', choices=('all', 'gpu'), default='all')
     p = sub.add_parser('monitor'); p.add_argument('run_id'); p.add_argument('--timeout', type=int, default=12600); p.add_argument('--interval', type=int, default=30)
     p = sub.add_parser('verify'); p.add_argument('run_id')
     args = parser.parse_args()

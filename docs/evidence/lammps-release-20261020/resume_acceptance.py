@@ -18,7 +18,8 @@ BUILDS = {
 }
 REASON = ('Restore baseline wheel backend plugin lookup and requested OpenMP threads; '
           'restore isolated MPI HOME; parse the one-step warmup separately; '
-          'back Nsight container temporary files with dedicated home storage')
+          'back Nsight container temporary files with dedicated home storage; '
+          'use user-requested GPU performance scope while retaining all backend scientific checks')
 
 
 def main():
@@ -91,6 +92,7 @@ def main():
                 expected.update(nodes=2, ranks=4, acceptance_recipe_sha256=args.recipe)
             else:
                 expected.update(science_run=science_run, recipe_sha256=args.recipe)
+                expected['performance_scope'] = 'gpu'
             if (any(request.get(key) != value for key, value in expected.items())
                     or request.get('job_script_sha256') != checksum(directory / 'job.sbatch')
                     or (directory / 'job.sbatch').read_text() != module.render(request, directory)):
@@ -112,7 +114,7 @@ def main():
                 call('md_acceptance_controller.py', 'submit', science_run, build_run,
                      '--nodes', '2', '--recover-controller', REASON)
             call('md_acceptance_controller.py', 'verify' if previous == 'completed' else 'monitor', science_run)
-            record['performance_run'] = run_performance_gate(call, build_run, science_run, existing)
+            record['performance_run'] = run_performance_gate(call, build_run, science_run, existing, scope='gpu')
             call('md_publication.py', 'publish', build_run, science_run, record['performance_run'])
             call('md_publication.py', 'verify', build_run)
             record['state'] = 'published-and-reverified'

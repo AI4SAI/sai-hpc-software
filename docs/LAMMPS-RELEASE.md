@@ -5,14 +5,17 @@
 The latest upstream stable release is `stable_30Sep2026`, commit
 `8de817dd79bfe4525d5d39246a212d833e6dee07`. The paired stable DeePMD-kit is
 `v3.2.0`, commit `8cfd46e37448feca361ff3427a6c2b514ce5a2bb`.
-No scientifically accepted or published delivery of this release exists yet.
+No published delivery of this release exists yet.
 Both 4V100 and 16V100 release SIFs pass complete build verification, including
 native inventory and permissions. Each also passed candidate-only two-node
 numerical checks against the locked upstream reference, across TF/PT/JAX and
-Python/LAMMPS. Both also passed paired system-baseline science. TensorFlow
-benchmark medians are within 1% of the baseline; full performance acceptance
-and publication remain pending. Baseline plugin lookup, warmup timing and
-Nsight's literal temporary directory have been repaired. 8V100V0 completed
+Python/LAMMPS. Both also passed paired system-baseline science. PyTorch GPU
+comparisons completed on both partitions with actual CUDA kernel traces and
+no observed regression. The user has scoped delivery to GPU functionality,
+feature/option parity and numerical correctness; CPU performance comparisons
+are no longer a delivery gate. Publication under this explicit scope remains
+pending. Baseline plugin lookup, warmup timing and Nsight's literal temporary
+directory have been repaired. 8V100V0 completed
 DeePMD and is compiling LAMMPS after recovery of a pre-entry mount timeout.
 Both use the qualified CP2K overlay driver; see the live restart below.
 
@@ -86,8 +89,10 @@ dependencies. The build still checks C++ ABI and SM70 backend support live.
    Record exact sources, recipe, image checksum and Slurm handles.
 2. Verify final-SIF `lmp -h`, loader resolution, full package/style parity,
    backend inference, PLUMED, and single/two-node MPI scientific results.
-3. Run the existing larger-system performance gate. Publish only when its
-   trusted controller validates the raw results.
+3. Run the larger-system PyTorch CUDA check with explicit `--scope gpu`.
+   Retain TF/PT/JAX numerical correctness checks. Publish only when the trusted
+   controller validates the raw results; record `performance_scope=gpu` and
+   `performance_backends=["pt"]` in the delivery manifest.
 4. Build and accept the same release independently on 4V100 and 8V100V0,
    then prepare the physical `/opt/apps` installation and partition selector
    for administrator execution. Container acceptance alone is not native
@@ -517,3 +522,47 @@ The [home-directory follower](evidence/lammps-release-20261020/follow_8v_build.p
 monitors the existing build and explicitly selects a newer, hash-pinned
 acceptance controller. Cancelling the hosted observer does not cancel or
 replace the Slurm compilation. The original GitHub/controller records remain.
+
+## GPU delivery scope requested by the user
+
+The user clarified that delivery must compile correctly on GPU partitions,
+preserve the previous release's functions/build options, and compute correct
+results. Pure CPU LAMMPS timing is not a release requirement. New CI acceptance
+therefore selects an explicit GPU performance scope. All TF/PT/JAX scientific
+checks, two-node MPI checks, feature parity, loader checks and native export
+validation remain required. The manifest records the scope; a GPU result is
+never represented as an all-backend performance result. Historical requests
+without a scope still require all three performance backends. A regression
+retest cannot change scope or relax the existing single-repeat limit.
+
+Full-performance jobs `1882230` (4V100) and `1882253` (16V100) completed TF and
+PT measurements, then failed during the installed JAX baseline's first
+calibration. That old harness hid GPUs with `CUDA_VISIBLE_DEVICES=""` to force
+CPU inference; DeePMD's CUDA-enabled JAX C++ initialization then raised
+`no CUDA-capable device is detected`. Ordinary GPU-visible JAX science had
+already passed. The [diagnostic helper](evidence/lammps-release-20261020/probe_jax_device.py)
+ran as `1882465`, completed successfully, and preserved its raw traces. Further
+CPU benchmarking is outside the requested delivery scope.
+
+Completed PT results from those attempts, on 2,058 atoms and three measured
+pairs after warmup:
+
+| Partition | Installed median | Candidate median | Baseline / candidate |
+| --- | ---: | ---: | ---: |
+| 4V100 | 5.77933 s | 5.77429 s | 1.00087 |
+| 16V100 | 5.70660 s | 5.62264 s | 1.01493 |
+
+Each uses an independent Nsight trace for baseline and candidate; timed
+intervals are unprofiled. This synthetic fixture is not a claim about all
+production simulations. The [scope transition helper](evidence/lammps-release-20261020/prepare_gpu_acceptance.py)
+revalidates both completed raw comparisons and archives all failed-attempt
+files before a new, explicitly scoped request. It never converts a failed
+full comparison into a successful one.
+
+The [GPU functionality check](evidence/lammps-release-20261020/gpu_functional_smoke.py)
+additionally tests explicit GPU-package and Kokkos CUDA pair styles, including
+Kokkos PPPM/CUFFT, on a deterministic neutral 256-atom LJ/Coulomb system. It
+compares energy, pressure and every force component after five integration
+steps to the installed reference. This is a correctness check, not a CPU
+throughput benchmark. The 233-test MD controller suite passed with two optional
+cache-dependent skips, including scope identity and script-provenance checks.

@@ -128,6 +128,20 @@ class MDPublicationTests(unittest.TestCase):
             publication.publish(self.build_run, self.science_run, self.build_run + '-performance-third')
         self.exporter.assert_not_called()
 
+    def test_gpu_scope_is_preserved_and_cannot_be_relabelled_as_full_performance(self):
+        path = self.root / 'runtime-tests' / self.performance_run / 'request.json'
+        request = json.loads(path.read_text())
+        self.write_json(path, dict(request, performance_scope='gpu'))
+        self.performance.return_value.update(performance_scope='gpu', performance_backends=['pt'],
+                                             reports={'pt': {'raw_verified': True}})
+        manifest = self.publish()
+        self.assertEqual(manifest['performance_scope'], 'gpu')
+        self.assertEqual(manifest['performance_backends'], ['pt'])
+        self.assertEqual(publication.verify(self.build_run), manifest)
+        self.performance.return_value['performance_scope'] = 'all'
+        with self.assertRaisesRegex(ValueError, 'declared scope'):
+            publication.verify(self.build_run)
+
     def test_raw_performance_regression_blocks_export_and_modules(self):
         self.performance.side_effect = PerformanceRegression('repeat still exceeds 10 percent')
         with self.assertRaises(PerformanceRegression):

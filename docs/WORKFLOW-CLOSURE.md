@@ -4,7 +4,11 @@ LAMMPS release work is now tracked in [LAMMPS-RELEASE.md](LAMMPS-RELEASE.md).
 The October 20 release restart produced build-verified `stable_30Sep2026`
 SIFs on 4V100 and 16V100. Both passed two-node candidate numerical tests
 against upstream references, and both passed paired baseline science.
-Performance and publication are still pending. The live
+Both also completed PyTorch CUDA numerical/performance comparisons with no
+observed regression. At the user's request, delivery now requires GPU
+functionality, old-feature/build-option coverage and numerical correctness;
+CPU timing is excluded from the explicitly recorded GPU acceptance scope.
+Publication under that scope and GPU/Kokkos functional checks are pending. The live
 daily dispatcher still runs the old MD feature branch; its release history
 check rejects newer recovery identities, while its development build fails
 CUDA configuration. The stable restart uses the integrated controller,
@@ -136,10 +140,13 @@ scientific references and inputs still match their pinned hashes.
   historical 158–167 minute successes are references, not proof for this recipe.
   The required wignernj archive is pinned and checked. All four partition source
   caches passed read-only verification on SAI.
-- MD connects two-node source-bound science, TF/PT/JAX raw performance checks,
+- MD connects two-node source-bound TF/PT/JAX science, explicitly scoped raw performance checks,
   one repeat after a slowdown greater than 10%, paired export readback and
   immutable publication/module generation. PT requires actual Nsight CUDA
-  kernel evidence. TF/JAX follow the established CPU-only baseline scope.
+  kernel evidence. New GPU deliveries benchmark PT only; TF/JAX CPU timing
+  remains available in the historical all-backend scope, with all-backend
+  numerical correctness retained in either scope. Published manifests name
+  the accepted performance scope and backends.
   Runtime checks bind actual SIF bytes to the paired build identity.
 - GPUMD adds frozen-model GNEP numerical forces, stale-output rejection,
   calibrated engine intervals and alternating baseline/candidate trials.

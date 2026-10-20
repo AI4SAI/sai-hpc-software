@@ -98,6 +98,14 @@ def acceptance(build_run, science_run, performance_run):
                                   or status.get('scientific_verified') is not True):
             raise ValueError('MD publication requires completed two-node scientific acceptance')
         result = verifier(run_id)  # Reparse raw evidence; a stored JSON verdict is insufficient.
+        if kind == 'performance':
+            from md_performance_controller import performance_backends
+            backends = performance_backends(request)
+            if (result.get('performance_scope', 'all') != request.get('performance_scope', 'all')
+                    or (request.get('performance_scope') == 'gpu'
+                        and (result.get('performance_backends') != list(backends)
+                             or set(result.get('reports', {})) != set(backends)))):
+                raise ValueError('MD raw performance evidence differs from its declared scope')
         fields = ('artifact', 'artifact_sha256', 'delivery')
         if (any(result.get(key) != expected[key] for key in fields)
                 or result.get('controller_recovery') != recovery
@@ -207,6 +215,10 @@ def publish(build_run, science_run, performance_run):
                     published=True, native_export=native_export, modules=modules, acceptance=evidence,
                     runtime_launcher=str(CONTROL / 'md_runtime.sh'),
                     runtime_launcher_sha256=checksum(regular(CONTROL / 'md_runtime.sh')))
+    performance = evidence['performance']['evidence']
+    if 'performance_scope' in performance:
+        manifest.update(performance_scope=performance['performance_scope'],
+                        performance_backends=performance['performance_backends'])
     recovery = evidence['science']['evidence'].get('controller_recovery')
     if recovery is not None:
         manifest.update(controller_recovery=recovery,
@@ -243,6 +255,9 @@ def verify(build_run):
         raise ValueError('published MD runtime launcher changed')
     accepted = manifest['acceptance']
     _, _, _, actual = acceptance(build_run, accepted['science']['run_id'], accepted['performance']['run_id'])
+    for key in ('performance_scope', 'performance_backends'):
+        if manifest.get(key) != actual['performance']['evidence'].get(key):
+            raise ValueError('published MD performance scope changed')
     if (actual != accepted or actual['science']['evidence'].get('controller_recovery') != recovery
             or (recovery is not None and manifest.get('acceptance_recipe_sha256') != fingerprint(CONTROL))):
         raise ValueError('published MD raw acceptance evidence changed')
