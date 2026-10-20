@@ -177,6 +177,40 @@ class MDPublicationTests(unittest.TestCase):
             self.publish()
         self.exporter.assert_not_called()
 
+    def test_explicit_recovery_pins_both_controllers_through_publication_and_runtime(self):
+        from md_acceptance_recovery import capture
+        original = self.root / 'controller/original'
+        original.mkdir()
+        self.request['controller'] = str(original)
+        self.write_json(self.build_dir / 'request.json', self.request)
+        acceptance_recipe = 'f' * 64
+        recipe_for = lambda path: self.recipe if Path(path) == original else acceptance_recipe
+        self.fingerprint.side_effect = recipe_for
+        (self.control / 'md_tracking.py').write_text('def fingerprint(path):\n    return ' + repr(acceptance_recipe) + '\n')
+        with patch('md_acceptance_recovery.fingerprint', side_effect=recipe_for):
+            with self.assertRaises(ValueError):
+                self.publish()  # A different controller is never accepted implicitly.
+            binding = capture(self.root, self.control, self.build_run, self.delivery, 'Repair baseline runtime')
+            for run_id in (self.science_run, self.performance_run):
+                path = self.root / 'runtime-tests' / run_id / 'request.json'
+                request = json.loads(path.read_text())
+                self.write_json(path, dict(request, controller_recovery=binding))
+            self.science.return_value['controller_recovery'] = binding
+            with self.assertRaises(ValueError):
+                self.publish()  # Performance evidence must use the same pinned recovery.
+            self.exporter.assert_not_called()
+            self.performance.return_value['controller_recovery'] = binding
+            manifest = self.publish()
+            self.assertEqual(manifest['recipe_sha256'], self.recipe)
+            self.assertEqual(manifest['acceptance_recipe_sha256'], acceptance_recipe)
+            self.assertEqual(publication.verify(self.build_run), manifest)
+            launcher = next(iter(manifest['modules']['lammps']['launchers']))
+            self.assertEqual(subprocess.run([launcher], capture_output=True).returncode, 0)
+            self.request['changed'] = True
+            self.write_json(self.build_dir / 'request.json', self.request)
+            with self.assertRaisesRegex(ValueError, 'binding changed'):
+                publication.verify(self.build_run)
+
     def test_runtime_wrappers_pin_pair_image_control_and_strip_test_overrides(self):
         manifest = self.publish()
         environment = dict(os.environ, SAI_MD_IMAGE='/elsewhere.sif', SAI_MD_IMPLEMENTATION='baseline',

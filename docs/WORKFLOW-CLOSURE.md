@@ -1,11 +1,15 @@
 # Workflow closure — 2026-10-20
 
 LAMMPS release work is now tracked in [LAMMPS-RELEASE.md](LAMMPS-RELEASE.md).
-The October 20 audit found no accepted `stable_30Sep2026` delivery. The live
+The October 20 release restart produced build-verified `stable_30Sep2026`
+SIFs on 4V100 and 16V100. Both passed two-node candidate numerical tests
+against upstream references; paired baseline science, performance and
+publication are still pending. The live
 daily dispatcher still runs the old MD feature branch; its release history
 check rejects newer recovery identities, while its development build fails
-CUDA configuration. Restart the stable pair from the integrated controller
-with explicit GCC 14.3.0, first on 16V100, preserving all existing evidence.
+CUDA configuration. The stable restart uses the integrated controller,
+explicit GCC 14.3.0 and the qualified CP2K overlay driver, preserving all
+existing evidence. 8V100V0 has not yet built this release.
 
 The code now connects build, scientific/performance acceptance, native export
 readback and publication. The original private-ELPA CP2K 2026.2 on all four partitions (4V100, 16V100,

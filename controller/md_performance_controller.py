@@ -14,6 +14,7 @@ from md_science import BACKENDS, file_digest
 from remote_controller import TARGETS, safe_name
 from source_cache import checksum
 from delivery_layout import PerformanceRegression, check_performance
+from md_acceptance_recovery import validate as validate_recovery
 
 RESOURCES = dict(nodes=1, ranks=1, gpus_per_node=1, threads_per_rank=1)
 BASELINE = '/opt/apps/lammps/lammps-4Jul2026-deepmd3.2.0-plumed2.10.1-nvhpc263-ompi5010-sm70/bin/lmp'
@@ -30,8 +31,11 @@ def validate_request(request):
     if request['run_id'] not in (request['build_run'] + '-performance', request['build_run'] + '-performance-retest'):
         raise ValueError('MD performance permits only the first attempt and one named repeat per build')
     delivery = validate_pair(request['delivery'])
+    recovery = request.get('controller_recovery')
+    if recovery is not None:
+        validate_recovery(recovery, ROOT, CONTROL, request['build_run'], delivery)
     if (request['recipe_sha256'] != fingerprint(CONTROL)
-            or delivery['recipe_sha256'] != request['recipe_sha256']
+            or (recovery is None and delivery['recipe_sha256'] != request['recipe_sha256'])
             or request['resources'] != RESOURCES
             or request['artifact'] != str(artifact_path(ROOT, delivery, request['build_run']))
             or request['target'] != delivery['plan']['target']):
@@ -69,6 +73,8 @@ def science_evidence(request):
     evidence = science.verify(request['science_run'])
     original = json.loads((science.task(request['science_run']) / 'request.json').read_text())
     if (evidence.get('passed') is not True or original.get('build_run') != request['build_run']
+            or original.get('controller_recovery') != request.get('controller_recovery')
+            or evidence.get('controller_recovery') != request.get('controller_recovery')
             or original.get('nodes') != 2 or original.get('ranks') != 4
             or any(evidence.get(key) != request[key] for key in ('artifact', 'artifact_sha256', 'delivery'))):
         raise ValueError('performance requires matching two-node scientific acceptance')
@@ -114,7 +120,7 @@ def repeat_binding(run_id):
 
 def check_repeat_request(request, original):
     fields = ('build_run', 'science_run', 'delivery', 'artifact', 'artifact_sha256',
-              'target', 'resources', 'recipe_sha256')
+              'target', 'resources', 'recipe_sha256', 'controller_recovery')
     if any(request.get(key) != original.get(key) for key in fields):
         raise ValueError('MD retest changed its image, scientific inputs, source or allocation')
 
@@ -166,6 +172,8 @@ def submit(args):
                    science_run=safe_name(args.science_run), delivery=original['delivery'],
                    artifact=original['artifact'], artifact_sha256=original['artifact_sha256'],
                    target=original['target'], resources=RESOURCES, recipe_sha256=fingerprint(CONTROL))
+    if 'controller_recovery' in original:
+        request['controller_recovery'] = original['controller_recovery']
     validate_request(request)
     science_evidence(request)
     if args.run_id.endswith('-retest'):
@@ -242,6 +250,8 @@ def verify(run_id, *, enforce_performance=True):
                     artifact=request['artifact'], artifact_sha256=request['artifact_sha256'], delivery=delivery,
                     recipe_sha256=request['recipe_sha256'], job=job, reports=reports, files=files,
                     regressed_backends=regression)
+    if 'controller_recovery' in request:
+        evidence['controller_recovery'] = request['controller_recovery']
     if repeat is not None:
         evidence['repeat_of'] = repeat
     if regression and enforce_performance:

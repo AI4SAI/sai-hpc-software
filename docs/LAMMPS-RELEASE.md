@@ -6,9 +6,11 @@ The latest upstream stable release is `stable_30Sep2026`, commit
 `8de817dd79bfe4525d5d39246a212d833e6dee07`. The paired stable DeePMD-kit is
 `v3.2.0`, commit `8cfd46e37448feca361ff3427a6c2b514ce5a2bb`.
 No scientifically accepted or published delivery of this release exists yet.
-The 4V100 release SIF now passes complete build verification, including native
-inventory and permissions. Its two-node scientific job is queued. The 16V100
-payload has also compiled and installed; its metadata/export recovery follows.
+Both 4V100 and 16V100 release SIFs pass complete build verification, including
+native inventory and permissions. Each also passed candidate-only two-node
+numerical checks against the locked upstream reference, across TF/PT/JAX and
+Python/LAMMPS. Paired system-baseline science, performance and publication
+remain pending; the baseline launcher needed a backend-plugin path repair.
 Both use the qualified CP2K overlay driver; see the live restart below.
 
 The current implementation builds both programs in one Apptainer overlay,
@@ -339,8 +341,72 @@ binds the retained failed SIF, helper and replacement job hashes.
   permissions recovery, not a rebuild under a new identity.
 
 The automatic continuation submitted two-node/four-rank scientific job
-`1879995`. TF/PT/JAX, Python/LAMMPS, MPI distribution and PLUMED must pass
-before the performance stage and home-project publication. No scientific,
-performance or physical `/opt` acceptance is claimed by the build receipt.
+`1879995`; its startup failure and subsequent recovery are recorded below.
+No scientific, performance or physical `/opt` acceptance is claimed by the
+build receipt.
 The packaging fix's full GitHub suite ran 855 tests: 853 passed and two
 optional upstream-cache tests skipped.
+
+## Both release artifacts execute correctly against upstream references
+
+16V100 export job `1880105` completed `0:0` in 2:31 on `16v100n12`.
+[Its build receipt](evidence/lammps-release-20261020/16v-built-sif.json) records
+the full SIF path, 347,705,344 bytes, and SHA256
+`04c8b3c209000dc8241847d6b45d4b24550b6beeec540981d324eceeabe9522c`.
+Both artifacts retain compiled recipe `296ed3baa11b` and the same locked
+stable sources. Final-SIF version, loader paths and native manifests pass.
+
+The [candidate oracle helper](evidence/lammps-release-20261020/candidate_oracle.py)
+ran the existing scientific inputs on each new artifact while baseline startup
+was being repaired. It verifies energy, forces and virial against the locked
+upstream source; reparses LAMMPS stdout/dumps and PLUMED COLVAR; checks all
+MPI rank traces, actual executable/image paths and dependency ISA; and retains
+raw file hashes. It does not substitute for paired acceptance or performance.
+
+| Partition | Job | Nodes | Elapsed | Source-oracle result |
+| --- | --- | --- | --- | --- |
+| 16V100 | `1880588` | `16v100n[65-66]` | 1:20 | [24 records passed](evidence/lammps-release-20261020/16v-candidate-source-oracle.json) |
+| 4V100 | `1881087` | `4v100n[01,03]` | 0:54 | [24 records passed](evidence/lammps-release-20261020/4v-candidate-source-oracle.json) |
+
+Each job used four MPI ranks across two nodes and one GPU per node. Each of
+TF/PT/JAX through Python/LAMMPS ran one warmup plus three trials. The diagnostics
+and their read-only revalidation passed. TF/JAX use the site's CPU backends;
+PT supplies CUDA inference. These small scientific cases do not establish
+large-system throughput, GPU performance or physical native installation.
+
+## Resume paired acceptance without changing the compiled identity
+
+The first 4V100 science job `1879995` lacked HOME under Slurm `--export=NIL`,
+so host Open MPI failed before calculation. The renderer now restores the
+account home explicitly. Two subsequent retries (`1880186`, `1880251`) were
+cancelled by Slurm before execution, without a stated reason. An explicit
+minimal submission environment with `SBATCH_EXPORT=ALL` allowed job `1880390`
+to enter the 16V100 paired tests. Keep all of these original records.
+16V100 uses permitted `flood-1o2gpu`; 4V100 uses `rush-1o2gpu`.
+
+Job `1880390` passed baseline TensorFlow Python inference, then the installed
+July LAMMPS failed to find `libdeepmd_backend_tf.so`. The baseline's top-level
+`lib` lacks that plugin; all backend plugins are under its Python wheel's
+`site-packages/deepmd/lib`. The runtime now sets `DP_BACKEND_PLUGIN_PATH` and
+adds that directory to the baseline loader search. It also restores the
+requested OpenMP thread count after the system module forces it to two.
+
+For these already compiled SIFs, `md_acceptance_controller.py submit
+--recover-controller REASON` explicitly records separate build and acceptance
+controller paths and recipe hashes, plus the original build-request hash.
+Both snapshots, build scripts, image and delivery are revalidated. The binding
+must remain identical through science, performance and publication. Without
+this explicit recovery, differing recipes are rejected as before. Published
+launchers pin the accepted runtime snapshot while retaining the original
+compiled recipe and installation identity. Neither frozen controller nor SIF
+is edited. The [recovery follower](evidence/lammps-release-20261020/resume_acceptance.py)
+uses a new scientific task and retains failed original tasks; it keeps all
+existing numeric and performance thresholds and the single permitted retest.
+
+The [228-test MD run](evidence/lammps-release-20261020/md-acceptance-recovery-tests.log)
+passed 226 tests with two optional upstream-cache skips. An initial run with
+umask 077 produced private fixture directories and failed existing native
+permission checks; the preserved cluster log records that setup error. The
+successful run used normal 022 test-fixture permissions. Recovery tests reject
+changed source/build/runtime bindings and mismatched performance evidence;
+the baseline startup test executes the actual shell command.

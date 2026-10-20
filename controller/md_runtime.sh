@@ -119,7 +119,7 @@ while IFS= read -r name; do
 done < <(compgen -e)
 if [[ "$implementation" == baseline ]]; then
   exec "${args[@]}" "$image" /usr/bin/bash --noprofile --norc -c \
-    'driver=${LD_LIBRARY_PATH:-}; source /control/md_environment.sh "$1"; shift; site=$MD_SYSTEM_DEEPMD/lib/python3.13/site-packages; export LD_LIBRARY_PATH="$driver:$site/tensorflow:$site/torch/lib:$MD_SYSTEM_DEEPMD/lib:${LD_LIBRARY_PATH:-}"; unset PYTHONPATH; exec "$@"' \
+    'threads=${OMP_NUM_THREADS:-1}; driver=${LD_LIBRARY_PATH:-}; source /control/md_environment.sh "$1"; shift; site=$MD_SYSTEM_DEEPMD/lib/python3.13/site-packages; export OMP_NUM_THREADS="$threads" DP_BACKEND_PLUGIN_PATH="$site/deepmd/lib" LD_LIBRARY_PATH="$driver:$site/tensorflow:$site/torch/lib:$MD_SYSTEM_DEEPMD/lib:$site/deepmd/lib:${LD_LIBRARY_PATH:-}"; unset PYTHONPATH; exec "$@"' \
     bash "$target" "${program_argv[@]}" "$@"
 else
   exec "${args[@]}" "$image" /usr/bin/bash --noprofile --norc -c \

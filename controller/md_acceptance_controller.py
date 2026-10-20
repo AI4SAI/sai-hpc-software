@@ -14,6 +14,7 @@ from md_science import (verify_science, parse_serialized_reference, parse_lammps
 from md_tracking import TARGETS as MD_TARGETS, fingerprint
 from remote_controller import TARGETS, safe_name
 from source_cache import checksum
+from md_acceptance_recovery import capture as capture_recovery, validate as validate_recovery
 
 
 def task(run_id):
@@ -56,11 +57,17 @@ def submit(args):
     source_request = delivery['plan']
     status = json.loads((build / 'results/status.json').read_text())
     artifact = Path(status['artifact'])
+    recovery = None
+    if getattr(args, 'recover_controller', None):
+        recovery = capture_recovery(ROOT, CONTROL, args.build_run, delivery, args.recover_controller)
+        from md_publication import build_record
+        build_record(args.build_run, controller_recovery=recovery)
     if (status.get('build_verified') is not True or status.get('state') != 'COMPLETED'
             or status.get('exit_code') != '0:0' or artifact.is_symlink()
             or artifact.resolve() != artifact or checksum(artifact) != status.get('artifact_sha256')
             or artifact != artifact_path(ROOT, delivery, args.build_run) or source_record['run_id'] != args.build_run
-            or status.get('delivery') != delivery or delivery['recipe_sha256'] != fingerprint(CONTROL)
+            or status.get('delivery') != delivery
+            or (recovery is None and delivery['recipe_sha256'] != fingerprint(CONTROL))
             or source_record['job_script_sha256'] != checksum(build / 'job.sbatch')):
         raise ValueError('not a verified immutable candidate')
     if source_request['target'] not in MD_TARGETS:
@@ -74,6 +81,8 @@ def submit(args):
                    target=source_request['target'], sources=source_request['sources'],
                    artifact=str(artifact), artifact_sha256=checksum(artifact), nodes=args.nodes, ranks=args.nodes * 2,
                    acceptance_recipe_sha256=fingerprint(CONTROL))
+    if recovery is not None:
+        request['controller_recovery'] = recovery
     script = r / 'job.sbatch'
     script.write_text(render(request, r))
     subprocess.run(['bash', '-n', str(script)], check=True)
@@ -90,8 +99,13 @@ def verify(run_id):
     r = task(run_id)
     request = json.loads((r / 'request.json').read_text())
     delivery = validate_pair(request['delivery'])
+    recovery = request.get('controller_recovery')
+    if recovery is not None:
+        validate_recovery(recovery, ROOT, CONTROL, request['build_run'], delivery)
+        from md_publication import build_record
+        build_record(request['build_run'], controller_recovery=recovery)
     if (request['acceptance_recipe_sha256'] != fingerprint(CONTROL)
-            or delivery['recipe_sha256'] != request['acceptance_recipe_sha256']
+            or (recovery is None and delivery['recipe_sha256'] != request['acceptance_recipe_sha256'])
             or request['target'] != delivery['plan']['target'] or request['sources'] != delivery['plan']['sources']
             or request['version'] != delivery['plan']['version']
             or Path(request['artifact']) != artifact_path(ROOT, delivery, request['build_run'])
@@ -168,9 +182,12 @@ def verify(run_id):
                 records += rows
                 files[str(path.relative_to(r))] = checksum(path)
     summary = verify_science(records)
-    return dict(summary, artifact=request['artifact'], artifact_sha256=request['artifact_sha256'],
+    evidence = dict(summary, artifact=request['artifact'], artifact_sha256=request['artifact_sha256'],
                 job=job, files=files, delivery=delivery,
                 recipe_sha256=request['acceptance_recipe_sha256'], performance_verified=False, published=False)
+    if recovery is not None:
+        evidence['controller_recovery'] = recovery
+    return evidence
 
 
 def monitor(args):
@@ -204,6 +221,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     sub = parser.add_subparsers(dest='op', required=True)
     p = sub.add_parser('submit'); p.add_argument('run_id'); p.add_argument('build_run'); p.add_argument('--nodes', type=int, default=1)
+    p.add_argument('--recover-controller', metavar='REASON', help='explicitly bind this new acceptance snapshot to the original verified build')
     p = sub.add_parser('monitor'); p.add_argument('run_id'); p.add_argument('--timeout', type=int, default=14400); p.add_argument('--interval', type=int, default=30)
     p = sub.add_parser('verify'); p.add_argument('run_id')
     args = parser.parse_args()

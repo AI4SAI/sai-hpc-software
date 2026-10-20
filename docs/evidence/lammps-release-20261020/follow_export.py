@@ -52,7 +52,11 @@ def main():
                       helper_sha256=checksum(Path(__file__)), pid=os.getpid(),
                       started_at=datetime.now(timezone.utc).isoformat(),
                       scheduler_override={'SBATCH_QOS': qos,
-                                          'SBATCH_EXPORT': 'HOME=' + str(Path.home())}, commands=[])
+                                          'SBATCH_EXPORT': 'ALL'}, commands=[])
+        record['submission_environment'] = dict(
+            PATH='/usr/bin:/bin', HOME=str(Path.home()), USER='stardust', LOGNAME='stardust',
+            SAI_SOFTWARE_ROOT=str(PROJECT), PYTHONDONTWRITEBYTECODE='1',
+            **record['scheduler_override'])
         receipt = directory / 'results' / ('follow-export-' + str(os.getpid()) + '.json')
 
         def save():
@@ -64,10 +68,10 @@ def main():
             # QoS affects queue priority only. Keep the frozen job scripts,
             # target, ranks, GPU counts and science/performance rules intact.
             if argv[0] == 'submit':
-                environment['SBATCH_QOS'] = qos
                 # The frozen NIL script predates explicit restoration of the
-                # real account home, needed by the host Open MPI launcher.
-                environment['SBATCH_EXPORT'] = 'HOME=' + str(Path.home())
+                # real account home. ALL exports only this explicit minimal
+                # environment and avoids Slurm's implicit login-env retrieval.
+                environment = dict(record['submission_environment'])
             if argv[0] == 'monitor':
                 command += ['--timeout', '172800', '--interval', '30']
             event = dict(argv=command, started_at=datetime.now(timezone.utc).isoformat())
