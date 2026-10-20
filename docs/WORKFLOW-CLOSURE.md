@@ -8,12 +8,14 @@ Both also completed PyTorch CUDA numerical/performance comparisons with no
 observed regression. At the user's request, delivery now requires GPU
 functionality, old-feature/build-option coverage and numerical correctness;
 CPU timing is excluded from the explicitly recorded GPU acceptance scope.
-Publication under that scope and GPU/Kokkos functional checks are pending. The live
+Both partitions also passed raw revalidation of 12 GPU/Kokkos LJ/PPPM cases.
+Publication under the explicit GPU scope is pending. The live
 daily dispatcher still runs the old MD feature branch; its release history
 check rejects newer recovery identities, while its development build fails
 CUDA configuration. The stable restart uses the integrated controller,
 explicit GCC 14.3.0 and the qualified CP2K overlay driver, preserving all
-existing evidence. 8V100V0's first release build is in progress.
+existing evidence. 8V100V0 completed compilation and packaging; job `1882907`
+recovers extraction of the completed SquashFS after an overlay mount timeout.
 
 The code now connects build, scientific/performance acceptance, native export
 readback and publication. The original private-ELPA CP2K 2026.2 on all four partitions (4V100, 16V100,

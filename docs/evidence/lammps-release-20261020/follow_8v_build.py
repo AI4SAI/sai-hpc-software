@@ -32,11 +32,16 @@ def main():
     task = ROOT / 'runs' / BUILD
     request = json.loads((task / 'request.json').read_text())
     control = Path(request['controller'])
+    stage_job = request['stage_jobs'].get('lammps')
+    mount = request.get('mount_timeout_retry', {})
+    extraction = request.get('artifact_extraction_recovery', {})
+    known_stage = (stage_job == '1881546'
+                   or mount.get('previous_job') == '1881546' and mount.get('job') == stage_job
+                   or extraction.get('previous_job') == '1882104' and extraction.get('job') == stage_job
+                   and extraction.get('no_recompilation') is True)
     if (control.resolve() != control or not control.is_relative_to(ROOT / 'controller')
             or request['stage_jobs'].get('deepmd') != '1881545'
-            or (request['stage_jobs'].get('lammps') != '1881546'
-                and (request.get('mount_timeout_retry', {}).get('previous_job') != '1881546'
-                     or request['mount_timeout_retry'].get('job') != request['stage_jobs'].get('lammps')))
+            or not known_stage
             or request['delivery']['plan']['target'] != '8v100v0-avx512'):
         raise ValueError('unexpected 8V100V0 build')
     sys.path.insert(0, str(control))

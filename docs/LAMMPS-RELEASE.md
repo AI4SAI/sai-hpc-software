@@ -15,8 +15,8 @@ no observed regression. The user has scoped delivery to GPU functionality,
 feature/option parity and numerical correctness; CPU performance comparisons
 are no longer a delivery gate. Publication under this explicit scope remains
 pending. Baseline plugin lookup, warmup timing and Nsight's literal temporary
-directory have been repaired. 8V100V0 completed
-DeePMD and is compiling LAMMPS after recovery of a pre-entry mount timeout.
+directory have been repaired. 8V100V0 completed compilation, parity and
+SquashFS packaging; read-only extraction is recovering from a mount timeout.
 Both use the qualified CP2K overlay driver; see the live restart below.
 
 The current implementation builds both programs in one Apptainer overlay,
@@ -566,3 +566,47 @@ compares energy, pressure and every force component after five integration
 steps to the installed reference. This is a correctness check, not a CPU
 throughput benchmark. The 233-test MD controller suite passed with two optional
 cache-dependent skips, including scope identity and script-provenance checks.
+
+### GPU package, Kokkos and PPPM results
+
+The [4V100](evidence/lammps-release-20261020/4v-gpu-functional.json) and
+[16V100](evidence/lammps-release-20261020/16v-gpu-functional.json) raw rechecks
+pass all 12 cases per partition. They exercise explicit `lj/cut/gpu`,
+`lj/cut/coul/long/gpu`, Kokkos CUDA pair styles and `pppm/kk` with double
+precision cuFFT. All 768 force components and seven energy/pressure values
+are checked for each case. Matched-precision force differences are at most
+`5.78e-15`; the largest double-precision energy/pressure difference is
+`4.78e-12` in reduced LJ units.
+
+The initial Slurm jobs `1882690` and `1882701` finished every calculation with
+exit 0 but their final comparison exited 1: the baseline GPU package itself
+uses mixed precision, with forces about `4.16e-6` from the CPU double reference.
+The initial generic cross-precision force tolerance was too tight for that
+installed baseline. The revised raw verifier retains the original tolerance,
+compares the mixed-precision GPU path to the installed GPU path, and compares
+double-precision paths to the installed CPU reference. It also checks the
+reported precision/acceleration and records every difference from the CPU
+reference. The old failed Slurm verdicts and frozen helpers are preserved;
+the linked results are separate raw revalidation, not rewritten job statuses.
+
+### 8V100V0 final artifact extraction
+
+Job `1882104` completed compilation, 71-package/2,473-style parity, all backend
+fixture preparation and packaged-mode verification. It built a 331.92 MiB
+SquashFS before a third overlay mount timed out while copying that finished
+file to the host. No final SIF had been constructed yet.
+
+[Recovery job `1882907`](evidence/lammps-release-20261020/8v-extraction-recovery.json)
+uses the [scoped extraction helper](evidence/lammps-release-20261020/recover_8v_squashfs.py).
+It locks the existing image, opens it read-only, hashes it, and uses read-only
+`debugfs` to dump the already completed SquashFS inode. It checks the inode
+size and SquashFS magic, then runs the original SIF construction and frozen
+final verifier. It does not rebuild, repack, repair or write the source overlay.
+The original request, script, failure log and empty host extraction are kept
+under `recovery-attempts/1882104`. The new extraction script/handle and unchanged
+compiled recipe are explicitly recorded in the current request.
+
+The [resumed observer](evidence/lammps-release-20261020/8v-extraction-observer.json)
+continues with the same immutable GPU-scope acceptance snapshot as 4V100 and
+16V100: recipe `345e160f793a5c2c724a13ccf52191e0f5034a5fee637238a2f42a9467d9eb6e`.
+No physical `/opt` installation is implied by these container checks.

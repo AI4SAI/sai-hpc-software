@@ -88,7 +88,7 @@ def verify(task):
     results = {}
     files = {}
     for potential in ('lj', 'coulomb-pppm'):
-        reference = values(task / (potential + '-baseline-reference'))
+        cpu_reference = values(task / (potential + '-baseline-reference'))
         for side in ('baseline', 'candidate'):
             for mode in ('reference', 'gpu', 'kokkos'):
                 name = f'{potential}-{side}-{mode}'
@@ -98,6 +98,19 @@ def verify(task):
                     raise ValueError('GPU smoke process failed or input changed')
                 if (case / 'data.lmp').read_text() != data():
                     raise ValueError('GPU smoke geometry changed')
+                # The GPU package intentionally uses mixed precision; Kokkos
+                # uses double. Compare the mixed path to the installed mixed
+                # path, and double paths to the installed double reference.
+                # Keep all CPU differences visible; never widen tolerances to
+                # disguise the baseline's own mixed-precision rounding.
+                reference_name = potential + '-baseline-' + ('gpu' if mode == 'gpu' else 'reference')
+                reference = values(task / reference_name)
+                stdout = (case / 'stdout.txt').read_text()
+                if mode == 'gpu' and ('(Mixed Precision)' not in stdout or '- Using acceleration for' not in stdout):
+                    raise ValueError('expected GPU mixed-precision execution was not reported')
+                if mode == 'kokkos' and ('KOKKOS mode' not in stdout or 'using double precision' not in stdout
+                                         or potential != 'lj' and 'using double precision cuFFT' not in stdout):
+                    raise ValueError('expected Kokkos double-precision/CUFFT execution was not reported')
                 observed = values(case)
                 errors = {}
                 for field, actual, expected in zip(('energy_and_pressure', 'all_forces'), observed, reference):
@@ -105,12 +118,17 @@ def verify(task):
                         if abs(a - b) > 2e-6 + 2e-5 * abs(b):
                             raise ValueError(f'{name}: {field} differs: {a} vs {b}')
                     errors[field] = max(abs(a - b) for a, b in zip(actual, expected))
-                results[name] = dict(passed=True, max_absolute_error=errors)
+                cpu_errors = {field: max(abs(a-b) for a, b in zip(actual, expected))
+                              for field, actual, expected in zip(('energy_and_pressure', 'all_forces'), observed, cpu_reference)}
+                results[name] = dict(passed=True, reference=reference_name, max_absolute_error=errors,
+                                     cpu_reference_max_absolute_error=cpu_errors)
                 for path in case.iterdir():
                     if path.is_file():
                         files[str(path.relative_to(task))] = digest(path)
     return dict(passed=True, scope='GPU package and Kokkos CUDA LJ/PPPM numerical correctness; no speed claim',
                 artifact=request['artifact'], artifact_sha256=request['artifact_sha256'],
+                verification_helper_sha256=digest(Path(__file__)),
+                executed_helper_sha256=request['helper_sha256'],
                 tolerances=dict(atol=2e-6, rtol=2e-5), results=results, files=files)
 
 
