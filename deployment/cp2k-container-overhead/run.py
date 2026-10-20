@@ -261,11 +261,11 @@ def validate(root):
             if case!='version':
                 require(checksum(folder/'input.inp')==request['inputs']['fixtures/'+case+'.inp'],'Input differs between routes')
             sample = parse(folder,case,reference)
+            samples[key] = sample
             if case!='version':
                 sample['comparison_to_native_warmup'] = science.compare_science(sample,samples[case+'/warmup/native'])
                 comparisons.append(sample['comparison_to_native_warmup'])
             require(sample==recorded['samples'][key], 'Recorded numerical sample differs')
-            samples[key]=sample
     require(set(samples)==set(recorded['samples']),'Missing or extra samples')
     summary = summaries(samples)
     require(summary==recorded['summary'],'Recorded timings differ')
