@@ -57,6 +57,23 @@ submission snapshot, not final acceptance. All 50 focused regression tests
 passed (build lock, dependency stage, CP2K contract, delivery integration,
 and export recovery).
 
+The first 16V100 recovery `1867803` stopped before metadata because its frozen
+renderer still bound `input/cp2k-updates`, which the new run had not created.
+The empty export-only mount directories were added to all four runs; future
+production metadata/export commands omit unused source/cache mounts entirely.
+`retry_missing_bind.py` preserves the failed attempt, repairs stale filesystem
+counters only on its disposable clone, and continues metadata/export/verify
+without copying or compiling again. Job **1867844** produced a new SIF and
+passed version/features, loader and native-inventory checks. Science job
+**1867852** then started; this snapshot does not yet establish science success.
+The 21 files in `raw-retry16/` independently match their remote hashes and
+preserve both the failed attempt and successful continuation. Its separate
+follower PID is `2742475`; PID `2616159` continues the other three targets.
+
+Linux CI for the stdin fix at `3ebee81` passed **837 tests: 835 passed, two
+optional skips**. The follow-up export mount changes also passed the focused
+contract/integration/recovery suites.
+
 The 64-water pilot's 1.2% difference applies only to one V100 on 16V100, with
 1472 basis functions. In this CP2K version `PREFERRED_DIAG_LIBRARY CUSOLVER`
 calls cuSOLVERMp even on one GPU. No separate `CUSOLVER_MP` input is needed.

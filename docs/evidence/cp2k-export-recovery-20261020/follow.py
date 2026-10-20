@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Follow the four export recoveries through frozen science gates and tuning."""
 from concurrent.futures import ThreadPoolExecutor, as_completed
+import argparse
 import json
 from pathlib import Path
 import subprocess
@@ -44,11 +45,14 @@ def follow(target):
 
 
 def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('--targets', nargs='+', choices=TARGETS, default=TARGETS)
+    args = parser.parse_args()
     state = ROOT / 'runtime-tests/cp2k-export-recovery-39293908513'
     state.mkdir(exist_ok=True)
     outcomes = {}
     with ThreadPoolExecutor(max_workers=4) as pool:
-        futures = {pool.submit(follow, target): target for target in TARGETS}
+        futures = {pool.submit(follow, target): target for target in args.targets}
         for future in as_completed(futures):
             target = futures[future]
             try:

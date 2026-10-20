@@ -260,6 +260,12 @@ functions**. It does not establish a size-independent benefit or lack of benefit
 ELPA's faster time in that sample likewise does not establish the best backend
 on a different problem or GPU count. Both backends and the direct input option
 remain available. Selecting them at runtime does not require another build.
+All three diagonalization modes converged in 24 SCF iterations. The median
+`eigensolver`/`eigensolver_generalized` timers were 15.898 s (cuSOLVERMp
+standard), 15.598 s (direct), and 7.979 s (ELPA). The nested backend wrapper
+timers were 14.397, 14.364 and 6.493 s respectively; do not add these nested
+times to the enclosing solver or CP2K totals. These numbers are recomputed
+from the three measured samples in the archived pilot `validation.json`.
 
 The next automatic experiment uses 216 waters (4968 basis functions) on each
 of the three GPU partitions after new-artifact science acceptance. It still

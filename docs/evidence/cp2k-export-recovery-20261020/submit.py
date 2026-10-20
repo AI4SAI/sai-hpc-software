@@ -78,6 +78,9 @@ def main():
     new.mkdir(mode=0o700)
     for directory in ('input', 'results', 'runtime', 'apptainer-cache'):
         (new / directory).mkdir(mode=0o700)
+    # The frozen renderer retains this read-only bind in metadata/export.
+    # These phases do not consume source updates, but its mountpoint must exist.
+    (new / 'input/cp2k-updates').mkdir(mode=0o700)
     options = argparse.Namespace(**request)
     options.run_id = new.name
     options.resume_run = old.name

@@ -342,10 +342,17 @@ def render_job(args):
             cmd = ["/usr/bin/env", f"SAI_BUILD_PARTITION={target['partition']}", *cmd]
         # Final artifacts must not rely on source/dependency staging trees.
         binds = site_app_binds("gpumd") if final and args.software == "gpumd" else () if final else extra_binds
+        source_repo = None if final else repo
+        if args.software == 'cp2k' and phase != 'build':
+            # Metadata/export consume installed files in the overlay. A repack
+            # run need not recreate the original source-update/cache mounts.
+            binds = tuple((source, destination) for source, destination in binds
+                          if not str(destination).startswith('/input/'))
+            source_repo = None
         if args.software == "cp2k" and phase == "build" and not final:
             binds = (*binds, *cp2k_mpi_build_binds())
         command = container_command(sif if final else image, cmd, overlay=None if final else overlay,
-                                 control=CONTROL, repository=None if final else repo,
+                                 control=CONTROL, repository=source_repo,
                                  jobs=args.jobs, gpu=bool(target["gpus"]), extra_binds=runtime_binds() if final and args.software == "abacus" else binds,
                                  runtime=r / "runtime" if final and args.software == "cp2k" else None)
         if args.software == 'cp2k' and not final:

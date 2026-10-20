@@ -236,6 +236,8 @@ class CP2KContractTests(unittest.TestCase):
                                   overlay_mb=16384, track="development", source_ref="master")
         script = software.render_job(args)
         self.assertIn('--shell-script-stdin', script)
+        export = next(line for line in script.splitlines() if 'cp2k_container_entry.sh export' in line)
+        self.assertNotIn('/input/', export)
         final = next(line for line in script.splitlines() if "cp2k_container_entry.sh verify" in line)
         self.assertIn("result.sif", final)
         self.assertNotIn("--overlay", final)
