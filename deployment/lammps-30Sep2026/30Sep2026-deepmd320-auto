@@ -1,0 +1,15 @@
+#%Module1.0
+module-whatis "LAMMPS 30 Sep 2026 / DeePMD 3.2.0; V100 partition selection"
+conflict lammps
+if {[module-info mode load]} {
+    if {![info exists env(SLURM_JOB_PARTITION)]} {error "Load this module inside a Slurm allocation"}
+    set partition $env(SLURM_JOB_PARTITION)
+} elseif {[module-info mode remove]} {
+    if {![info exists env(SAI_LAMMPS_NATIVE_PARTITION)]} {error "Missing loaded LAMMPS partition"}
+    set partition $env(SAI_LAMMPS_NATIVE_PARTITION)
+} else {return}
+set fragments [dict create 4V100 {/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/4V100/share/sai/native-module.tcl} 16V100 {/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100/share/sai/native-module.tcl} 8V100V0 {/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/share/sai/native-module.tcl}]
+if {![dict exists $fragments $partition]} {error "Unsupported LAMMPS GPU partition: $partition"}
+set fragment [dict get $fragments $partition]
+if {![file isfile $fragment] || [file type $fragment] eq "link"} {error "Missing accepted LAMMPS installation"}
+source $fragment

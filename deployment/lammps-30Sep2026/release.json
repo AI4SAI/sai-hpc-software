@@ -1,0 +1,302 @@
+{
+  "deepmd_version": "v3.2.0",
+  "deliveries": [
+    {
+      "build_run": "md-39403117741-1-2026-10-20-9bf6ae82814537d7-export",
+      "image": "experimental/deepmd-lammps/containers/software/deepmd-lammps/9bf6ae82814537d74ed93e838526ed42bfcf45c575ee85ce77de6b44ed5ba14f/296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097/4V100/md-39403117741-1-2026-10-20-9bf6ae82814537d7-export.sif",
+      "image_bytes": 348381184,
+      "image_sha256": "86a575fc46daf8426b9b7b1de2b93c69619c4219f14b8eaefd886ae94007acf2",
+      "installations": [
+        {
+          "identity": {
+            "build_id": "v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102",
+            "cpu_arch": "znver4",
+            "cuda_arch": "70",
+            "dependency_isa": "avx512",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/4V100",
+            "partition": "4V100",
+            "recipe_sha256": "296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097",
+            "repository": "deepmodeling/deepmd-kit",
+            "schema": 2,
+            "software": "deepmd-kit",
+            "source_ref": "v3.2.0",
+            "source_sha": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+            "source_version": "v3.2.0",
+            "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+            "stack_sources": {
+              "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+              "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+            },
+            "target": "4v100-avx512",
+            "track": "release",
+            "version_label": "v3.2.0"
+          },
+          "manifest_sha256": "798671ac5c1a4cf74043fb0c3935031fcea0802ebbd3421e463143c99a07405d",
+          "metadata_sha256": {
+            "share/sai/README-export.txt": "08ff0fa0cee9aa163ba04641b7e3ed8cfb7789d9917e55d48a7e8e20e057b660",
+            "share/sai/export.json": "177f1b98bcff5019dbc5240de53337adbd8341d02103be47ede795a9f994b9ca",
+            "share/sai/manifest.json": "798671ac5c1a4cf74043fb0c3935031fcea0802ebbd3421e463143c99a07405d"
+          },
+          "prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/4V100",
+          "source": "experimental/deepmd-lammps/exports/md-39403117741-1-2026-10-20-9bf6ae82814537d7-export/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/4V100"
+        },
+        {
+          "identity": {
+            "build_id": "stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102",
+            "cpu_arch": "znver4",
+            "cuda_arch": "70",
+            "dependency_isa": "avx512",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/4V100",
+            "partition": "4V100",
+            "recipe_sha256": "296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097",
+            "repository": "lammps/lammps",
+            "schema": 2,
+            "software": "lammps",
+            "source_ref": "stable_30Sep2026",
+            "source_sha": "8de817dd79bfe4525d5d39246a212d833e6dee07",
+            "source_version": "stable_30Sep2026",
+            "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+            "stack_sources": {
+              "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+              "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+            },
+            "target": "4v100-avx512",
+            "track": "release",
+            "version_label": "stable_30Sep2026"
+          },
+          "manifest_sha256": "c4446095728c2d1a8d194fba671abc548fbd725ed401bf6dc68844afd9e2950e",
+          "metadata_sha256": {
+            "share/sai/README-export.txt": "a4879e40fc6d42f5a33247bc1d258436a18c9f2cca976dbd94941657b1a21053",
+            "share/sai/export.json": "9be99371c0488e8edaf59ac52ca1e3df6fc17c16dc22d3b9afe7296bfc99f863",
+            "share/sai/manifest.json": "c4446095728c2d1a8d194fba671abc548fbd725ed401bf6dc68844afd9e2950e"
+          },
+          "prefix": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/4V100",
+          "source": "experimental/deepmd-lammps/exports/md-39403117741-1-2026-10-20-9bf6ae82814537d7-export/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/4V100"
+        }
+      ],
+      "modules": {
+        "deepmd-kit": {
+          "launchers": {
+            "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/controller/published/296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097/md-39403117741-1-2026-10-20-9bf6ae82814537d7-export/deepmd-kit/bin/dp": "9a43141ec6f84196c11be7096b22170d6f996bbe9aa6a4510c92893ba9a135e8",
+            "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/controller/published/296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097/md-39403117741-1-2026-10-20-9bf6ae82814537d7-export/deepmd-kit/bin/python": "4fedb6db02d07616ea60e31e1c8cefd10db41c548e991020703bf03a089420e9"
+          },
+          "module_fragment": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/containers/software/deepmd-kit/release/v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/4V100/md-39403117741-1-2026-10-20-9bf6ae82814537d7-export.module",
+          "module_fragment_sha256": "f0f20727ac5038d03e182d7942d212fdc97cbffb9cc7d584176556a13a3c3fc1",
+          "modulefile": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/modulefiles/apps/deepmd-kit/release/v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102"
+        },
+        "lammps": {
+          "launchers": {
+            "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/controller/published/296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097/md-39403117741-1-2026-10-20-9bf6ae82814537d7-export/lammps/bin/lmp": "b17c3aeb37f67288916411f64c79a5f36a9352aca632978c77f60d96357c0e8e"
+          },
+          "module_fragment": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/containers/software/lammps/release/stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/4V100/md-39403117741-1-2026-10-20-9bf6ae82814537d7-export.module",
+          "module_fragment_sha256": "e0131e89ab6c295c2a0476351172ad4b9ef5992d026019464f1d685c4ce8d9ee",
+          "modulefile": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/modulefiles/apps/lammps/release/stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102"
+        }
+      },
+      "partition": "4V100",
+      "publication": "experimental/deepmd-lammps/runs/md-39403117741-1-2026-10-20-9bf6ae82814537d7-export/results/publication.json",
+      "publication_sha256": "069372f55b0cc1151310304ad365690b68febb1ebe10cb0d28d7f608fb4d7339"
+    },
+    {
+      "build_run": "md-39403084059-1-2026-10-20-5fef92e054bacdaf-export",
+      "image": "experimental/deepmd-lammps/containers/software/deepmd-lammps/5fef92e054bacdaf6188e7f90dc2ba546606c112bcdf72742082901a41f6e431/296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097/16V100/md-39403084059-1-2026-10-20-5fef92e054bacdaf-export.sif",
+      "image_bytes": 347705344,
+      "image_sha256": "04c8b3c209000dc8241847d6b45d4b24550b6beeec540981d324eceeabe9522c",
+      "installations": [
+        {
+          "identity": {
+            "build_id": "v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102",
+            "cpu_arch": "znver3",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100",
+            "partition": "16V100",
+            "recipe_sha256": "296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097",
+            "repository": "deepmodeling/deepmd-kit",
+            "schema": 2,
+            "software": "deepmd-kit",
+            "source_ref": "v3.2.0",
+            "source_sha": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+            "source_version": "v3.2.0",
+            "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+            "stack_sources": {
+              "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+              "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+            },
+            "target": "16v100-avx2",
+            "track": "release",
+            "version_label": "v3.2.0"
+          },
+          "manifest_sha256": "42cde51d0cc55abc77ff8c16352c09369d6274d014f501b79b0023c267a4a75a",
+          "metadata_sha256": {
+            "share/sai/README-export.txt": "eae8bf3be7b8f81058e1fb7eff4686b841fce23474e4bbde8a6e0f570bf292eb",
+            "share/sai/export.json": "b780f05a81870faf8033b7429259dd4852a159fafaff274afea51d20857cb342",
+            "share/sai/manifest.json": "42cde51d0cc55abc77ff8c16352c09369d6274d014f501b79b0023c267a4a75a"
+          },
+          "prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100",
+          "source": "experimental/deepmd-lammps/exports/md-39403084059-1-2026-10-20-5fef92e054bacdaf-export/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100"
+        },
+        {
+          "identity": {
+            "build_id": "stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102",
+            "cpu_arch": "znver3",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100",
+            "partition": "16V100",
+            "recipe_sha256": "296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097",
+            "repository": "lammps/lammps",
+            "schema": 2,
+            "software": "lammps",
+            "source_ref": "stable_30Sep2026",
+            "source_sha": "8de817dd79bfe4525d5d39246a212d833e6dee07",
+            "source_version": "stable_30Sep2026",
+            "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+            "stack_sources": {
+              "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+              "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+            },
+            "target": "16v100-avx2",
+            "track": "release",
+            "version_label": "stable_30Sep2026"
+          },
+          "manifest_sha256": "773aaf4e7179854c50754a848cef798859cc41509463409f93503f941568083c",
+          "metadata_sha256": {
+            "share/sai/README-export.txt": "833989681f4599e94a1bf38a036e2c2eee78ab22fba3a6f27e1ccac19455ebfe",
+            "share/sai/export.json": "ea3de5ae7dab16266bb22cd19c2429947df2b7daaf24f6e0e91c69c98f28ec33",
+            "share/sai/manifest.json": "773aaf4e7179854c50754a848cef798859cc41509463409f93503f941568083c"
+          },
+          "prefix": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100",
+          "source": "experimental/deepmd-lammps/exports/md-39403084059-1-2026-10-20-5fef92e054bacdaf-export/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100"
+        }
+      ],
+      "modules": {
+        "deepmd-kit": {
+          "launchers": {
+            "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/controller/published/296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097/md-39403084059-1-2026-10-20-5fef92e054bacdaf-export/deepmd-kit/bin/dp": "eae6580a6b4b4fe85790ccd37e4f38b830c77cf2de12f146ba9c9c706f6680aa",
+            "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/controller/published/296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097/md-39403084059-1-2026-10-20-5fef92e054bacdaf-export/deepmd-kit/bin/python": "b6fb416d84da7d58df193fb2af0fcbe8980ef90fd1b93efea1ffb70aa699ba77"
+          },
+          "module_fragment": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/containers/software/deepmd-kit/release/v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100/md-39403084059-1-2026-10-20-5fef92e054bacdaf-export.module",
+          "module_fragment_sha256": "a01443efa47ec66ae577530c0d485911bfaf68434af5975f6521ba3d1e60840e",
+          "modulefile": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/modulefiles/apps/deepmd-kit/release/v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102"
+        },
+        "lammps": {
+          "launchers": {
+            "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/controller/published/296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097/md-39403084059-1-2026-10-20-5fef92e054bacdaf-export/lammps/bin/lmp": "f74b3038aee3042a8fc17879eb65bf578b245809158d4feda95febdd5ca36f87"
+          },
+          "module_fragment": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/containers/software/lammps/release/stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100/md-39403084059-1-2026-10-20-5fef92e054bacdaf-export.module",
+          "module_fragment_sha256": "dd97c555583a8dd5cd2996d8ff3e0ef1d91e23b757f07ecdcd624080156d74a0",
+          "modulefile": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/modulefiles/apps/lammps/release/stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102"
+        }
+      },
+      "partition": "16V100",
+      "publication": "experimental/deepmd-lammps/runs/md-39403084059-1-2026-10-20-5fef92e054bacdaf-export/results/publication.json",
+      "publication_sha256": "e6b84335127ab9bbd71dbe9392d9ab5c03860543351f09b8665c967a6b8bca38"
+    },
+    {
+      "build_run": "md-39427644750-1-2026-10-20-1dfd6f53c113abda",
+      "image": "experimental/deepmd-lammps/containers/software/deepmd-lammps/1dfd6f53c113abdac2a33f423b4d49d75d01061dd976de6cea96796af2e440aa/795dbd80e2a43d3e7a32c1bc373d30b88476fcca8d63f26ccc6d42a84515707c/8V100V0/md-39427644750-1-2026-10-20-1dfd6f53c113abda.sif",
+      "image_bytes": 348078080,
+      "image_sha256": "1b1667b851501da6d42477f1d23f52074b192dedf3dd6b9751732d90f39ae51e",
+      "installations": [
+        {
+          "identity": {
+            "build_id": "v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102",
+            "cpu_arch": "skylake-avx512",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0",
+            "partition": "8V100V0",
+            "recipe_sha256": "795dbd80e2a43d3e7a32c1bc373d30b88476fcca8d63f26ccc6d42a84515707c",
+            "repository": "deepmodeling/deepmd-kit",
+            "schema": 2,
+            "software": "deepmd-kit",
+            "source_ref": "v3.2.0",
+            "source_sha": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+            "source_version": "v3.2.0",
+            "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+            "stack_sources": {
+              "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+              "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+            },
+            "target": "8v100v0-avx512",
+            "track": "release",
+            "version_label": "v3.2.0"
+          },
+          "manifest_sha256": "5d9eb79efdabba5a999a14afd684285541e7cb80af6436a1f21e664d8cf31252",
+          "metadata_sha256": {
+            "share/sai/README-export.txt": "f21fd2eeda80a6fc1ed9996540c97d3ec4a231cb55ca7b3be1cd9b18f9f8f50f",
+            "share/sai/export.json": "5eae4169feff862138c7cb49e1c3e6795cea6fab7c503abc26e2d6fe4020444b",
+            "share/sai/manifest.json": "5d9eb79efdabba5a999a14afd684285541e7cb80af6436a1f21e664d8cf31252"
+          },
+          "prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0",
+          "source": "experimental/deepmd-lammps/exports/md-39427644750-1-2026-10-20-1dfd6f53c113abda/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0"
+        },
+        {
+          "identity": {
+            "build_id": "stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102",
+            "cpu_arch": "skylake-avx512",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0",
+            "partition": "8V100V0",
+            "recipe_sha256": "795dbd80e2a43d3e7a32c1bc373d30b88476fcca8d63f26ccc6d42a84515707c",
+            "repository": "lammps/lammps",
+            "schema": 2,
+            "software": "lammps",
+            "source_ref": "stable_30Sep2026",
+            "source_sha": "8de817dd79bfe4525d5d39246a212d833e6dee07",
+            "source_version": "stable_30Sep2026",
+            "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+            "stack_sources": {
+              "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+              "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+            },
+            "target": "8v100v0-avx512",
+            "track": "release",
+            "version_label": "stable_30Sep2026"
+          },
+          "manifest_sha256": "15ef82d12177bc1d6d3330cae3de10e6618d8326e27f4a84d3e99c0c21cd3f05",
+          "metadata_sha256": {
+            "share/sai/README-export.txt": "cdc3eaa6c8814f8a3c040dee6d9b3ae06cec56ad3a844828c426b5635f7d2c66",
+            "share/sai/export.json": "a297f2fcf0152d82c63872da7b68c1fd8bb63977bb39aff92bf53b176012c72d",
+            "share/sai/manifest.json": "15ef82d12177bc1d6d3330cae3de10e6618d8326e27f4a84d3e99c0c21cd3f05"
+          },
+          "prefix": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0",
+          "source": "experimental/deepmd-lammps/exports/md-39427644750-1-2026-10-20-1dfd6f53c113abda/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0"
+        }
+      ],
+      "modules": {
+        "deepmd-kit": {
+          "launchers": {
+            "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/controller/published/795dbd80e2a43d3e7a32c1bc373d30b88476fcca8d63f26ccc6d42a84515707c/md-39427644750-1-2026-10-20-1dfd6f53c113abda/deepmd-kit/bin/dp": "20fb04d019eb3c162661aa54c3aed117ab38f750972ce6a91aabe27477f21783",
+            "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/controller/published/795dbd80e2a43d3e7a32c1bc373d30b88476fcca8d63f26ccc6d42a84515707c/md-39427644750-1-2026-10-20-1dfd6f53c113abda/deepmd-kit/bin/python": "dff958b2d957e7ab9430434abf1d5aef5b87f5a58c3666363ac259c154952a4e"
+          },
+          "module_fragment": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/containers/software/deepmd-kit/release/v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0/md-39427644750-1-2026-10-20-1dfd6f53c113abda.module",
+          "module_fragment_sha256": "2483f1eefe5c89fb08277d99260407e2e9f8dddcbb3fc51064010197e3f93f3f",
+          "modulefile": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/modulefiles/apps/deepmd-kit/release/v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102"
+        },
+        "lammps": {
+          "launchers": {
+            "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/controller/published/795dbd80e2a43d3e7a32c1bc373d30b88476fcca8d63f26ccc6d42a84515707c/md-39427644750-1-2026-10-20-1dfd6f53c113abda/lammps/bin/lmp": "e30ff06b47d9b8cc730c35301a5af60a3fff82a5f02f8a3ad1f13f17f5163447"
+          },
+          "module_fragment": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/containers/software/lammps/release/stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/md-39427644750-1-2026-10-20-1dfd6f53c113abda.module",
+          "module_fragment_sha256": "8f241bbfb640bb8052ba5efc471f4651163a769d588af0e1bf765520087be96c",
+          "modulefile": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/modulefiles/apps/lammps/release/stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102"
+        }
+      },
+      "partition": "8V100V0",
+      "publication": "experimental/deepmd-lammps/runs/md-39427644750-1-2026-10-20-1dfd6f53c113abda/results/publication.json",
+      "publication_sha256": "2c1f5ce518789386c9f525bcc645ad71cc68149f78210c28fca1507fcd060ca9"
+    }
+  ],
+  "generated_at": "2026-10-20T16:20:21.295888+00:00",
+  "schema": 1,
+  "version": "stable_30Sep2026"
+}

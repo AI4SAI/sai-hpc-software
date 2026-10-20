@@ -1,21 +1,23 @@
-# Workflow closure — 2026-10-20
+# Workflow closure — 2026-10-21
 
 LAMMPS release work is now tracked in [LAMMPS-RELEASE.md](LAMMPS-RELEASE.md).
-The October 20 release restart produced build-verified `stable_30Sep2026`
-SIFs on 4V100 and 16V100. Both passed two-node candidate numerical tests
-against upstream references, and both passed paired baseline science.
-Both also completed PyTorch CUDA numerical/performance comparisons with no
-observed regression. At the user's request, delivery now requires GPU
-functionality, old-feature/build-option coverage and numerical correctness;
-CPU timing is excluded from the explicitly recorded GPU acceptance scope.
-Both partitions also passed raw revalidation of 12 GPU/Kokkos LJ/PPPM cases.
-Publication under the explicit GPU scope is pending. The live
+The October 20 release restart now has published, reverified `stable_30Sep2026`
+SIFs paired with DeePMD 3.2.0 on **4V100, 16V100 and 8V100V0**. All three passed
+two-node TF/PT/JAX numerical acceptance, explicit GPU/Kokkos LJ/PPPM checks,
+PyTorch CUDA performance, full native export readback and actual execution
+through the public container module. The new 71 packages/2,473 styles preserve
+the old 70 packages/2,197 styles. At the user's request, performance acceptance
+records GPU scope explicitly; CPU timing is excluded. The
+[delivery record](evidence/lammps-release-20261020/final-delivery.json) pins the
+accepted images and evidence. The [physical installation package](../deployment/lammps-30Sep2026/README.md)
+passed its full read-only preflight; `/opt` copying and subsequent native
+execution are still pending administrator execution. The live
 daily dispatcher still runs the old MD feature branch; its release history
 check rejects newer recovery identities, while its development build fails
 CUDA configuration. The stable restart uses the integrated controller,
 explicit GCC 14.3.0 and the qualified CP2K overlay driver, preserving all
-existing evidence. 8V100V0 completed compilation and packaging; job `1882907`
-recovers extraction of the completed SquashFS after an overlay mount timeout.
+existing evidence. 8V100V0 extraction recovery `1882907` completed successfully.
+An export wrapper permission issue was repaired and all failed attempts retained.
 
 The code now connects build, scientific/performance acceptance, native export
 readback and publication. The original private-ELPA CP2K 2026.2 on all four partitions (4V100, 16V100,

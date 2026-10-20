@@ -1,0 +1,657 @@
+{
+  "collected_at": "2026-10-20T16:26:50.767053+00:00",
+  "deepmd": "v3.2.0",
+  "deliveries": [
+    {
+      "acceptance_recipe_sha256": "345e160f793a5c2c724a13ccf52191e0f5034a5fee637238a2f42a9467d9eb6e",
+      "artifact": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/containers/software/deepmd-lammps/9bf6ae82814537d74ed93e838526ed42bfcf45c575ee85ce77de6b44ed5ba14f/296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097/4V100/md-39403117741-1-2026-10-20-9bf6ae82814537d7-export.sif",
+      "artifact_bytes": 348381184,
+      "artifact_sha256": "86a575fc46daf8426b9b7b1de2b93c69619c4219f14b8eaefd886ae94007acf2",
+      "build_run": "md-39403117741-1-2026-10-20-9bf6ae82814537d7-export",
+      "compiled_recipe_sha256": "296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097",
+      "native_export": {
+        "directory": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/exports/md-39403117741-1-2026-10-20-9bf6ae82814537d7-export",
+        "roundtrip_verified": true,
+        "verified_files": 3298
+      },
+      "partition": "4V100",
+      "performance": {
+        "backends": [
+          "pt"
+        ],
+        "reports": {
+          "pt": {
+            "baseline": {
+              "median_atom_steps_per_second": 99600.03733445797,
+              "median_engine_seconds": 5.78554,
+              "median_wall_seconds": 7.905684877187014
+            },
+            "candidate": {
+              "median_atom_steps_per_second": 99614.50031980916,
+              "median_engine_seconds": 5.7847,
+              "median_wall_seconds": 8.061558839865029
+            },
+            "device": [
+              "pt",
+              "gpu",
+              "Tesla V100-SXM2-32GB (0)"
+            ],
+            "scope": "synthetic replicated fixed-geometry force evaluation",
+            "speedup": 1.0001452106418656
+          }
+        },
+        "run_id": "md-39403117741-1-2026-10-20-9bf6ae82814537d7-export-performance",
+        "scope": "gpu"
+      },
+      "public_module": {
+        "accounting": "1884195|COMPLETED|0:0|00:00:10|4v100n22",
+        "evidence": {
+          "cases": {
+            "coulomb-pppm-candidate-kokkos": {
+              "dump_sha256": "5b48cb542bda1619e27ed0baaa9b3492165d65f077c32cf73af59f8c45d6cf56",
+              "max_absolute_error": 1.5543122344752192e-15,
+              "passed": true,
+              "stdout_sha256": "e4d479907975dbf4eab74f2553d9bc4fa0ff0cf2e8fc139b46fea0704c8f1956"
+            },
+            "lj-candidate-gpu": {
+              "dump_sha256": "a57039f219afd29a1b8573fe65539c38990c275856935729f27638cfd3fb6c0b",
+              "max_absolute_error": 0.0,
+              "passed": true,
+              "stdout_sha256": "b3609519feea6c23fa243b1f572ccff43b2f40261be834eb2aac9de80913dd5b"
+            }
+          },
+          "image": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/containers/software/deepmd-lammps/9bf6ae82814537d74ed93e838526ed42bfcf45c575ee85ce77de6b44ed5ba14f/296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097/4V100/md-39403117741-1-2026-10-20-9bf6ae82814537d7-export.sif",
+          "job": "1884195",
+          "launcher": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/controller/published/296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097/md-39403117741-1-2026-10-20-9bf6ae82814537d7-export/lammps/bin/lmp",
+          "module_sha256": "75c2a1ba175c178a7e42d93b598fc77eefc3dd2ae8c96c586997c6ee56d273e3",
+          "node": "4v100n22.mr-sai.ai",
+          "partition": "4V100",
+          "passed": true
+        },
+        "help_sha256": "afd15a3b36f2953fa0f6235eea888ee61ff4b077e49aae5bb41348c2ef2d281f",
+        "job_script_sha256": "8c680e5d57a439b80711f314c832f3b0a04a7af7121e21639b64d4eb1a1c867f",
+        "request_sha256": "882cbb0367a287c0935f10596f02622afdf76e674560c88d2237a0b8b1d7ed04",
+        "unload_passed": true
+      },
+      "publication": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/runs/md-39403117741-1-2026-10-20-9bf6ae82814537d7-export/results/publication.json",
+      "publication_recovery": {
+        "archived_export": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/exports/recovery-attempts/md-39403117741-1-2026-10-20-9bf6ae82814537d7-export-umask-077",
+        "artifact": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/containers/software/deepmd-lammps/9bf6ae82814537d74ed93e838526ed42bfcf45c575ee85ce77de6b44ed5ba14f/296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097/4V100/md-39403117741-1-2026-10-20-9bf6ae82814537d7-export.sif",
+        "artifact_sha256": "86a575fc46daf8426b9b7b1de2b93c69619c4219f14b8eaefd886ae94007acf2",
+        "build_run": "md-39403117741-1-2026-10-20-9bf6ae82814537d7-export",
+        "controller": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/controller/acceptance/298825d3c4af605ee1846041637ac67cd0db9daf/lammps-release-20261020",
+        "finished_at": "2026-10-20T16:10:46.872296+00:00",
+        "helper_sha256": "211da9b698c1e2714370b887bf7bfc3c97c95f0fb5444c1e3b0e4fc7b07544aa",
+        "metadata_sha256": {
+          "deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/4V100/share/sai/export.json": "177f1b98bcff5019dbc5240de53337adbd8341d02103be47ede795a9f994b9ca",
+          "deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/4V100/share/sai/manifest.json": "798671ac5c1a4cf74043fb0c3935031fcea0802ebbd3421e463143c99a07405d",
+          "lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/4V100/share/sai/export.json": "9be99371c0488e8edaf59ac52ca1e3df6fc17c16dc22d3b9afe7296bfc99f863",
+          "lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/4V100/share/sai/manifest.json": "c4446095728c2d1a8d194fba671abc548fbd725ed401bf6dc68844afd9e2950e"
+        },
+        "native_export": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/exports/md-39403117741-1-2026-10-20-9bf6ae82814537d7-export",
+        "original_root_mode": "0o700",
+        "partition": "4V100",
+        "publication_sha256": "069372f55b0cc1151310304ad365690b68febb1ebe10cb0d28d7f608fb4d7339",
+        "reason": "Multi-install export wrapper root inherited umask 077; re-export from unchanged SIF",
+        "recipe_sha256": "345e160f793a5c2c724a13ccf52191e0f5034a5fee637238a2f42a9467d9eb6e",
+        "started_at": "2026-10-20T15:58:47.180403+00:00",
+        "state": "published-and-reverified",
+        "umask": "022"
+      },
+      "publication_sha256": "069372f55b0cc1151310304ad365690b68febb1ebe10cb0d28d7f608fb4d7339",
+      "published": true,
+      "reverified": true,
+      "scientific": {
+        "benchmarks": {
+          "jax/lammps": {
+            "measurements": {
+              "baseline": 3,
+              "candidate": 3
+            },
+            "median_seconds": {
+              "baseline": 2.1110824020579457,
+              "candidate": 2.218894999474287
+            },
+            "passed": true,
+            "performance_threshold_applied": false,
+            "speedup": 0.9514115821425146,
+            "warmups": {
+              "baseline": 1,
+              "candidate": 1
+            }
+          },
+          "jax/python": {
+            "measurements": {
+              "baseline": 3,
+              "candidate": 3
+            },
+            "median_seconds": {
+              "baseline": 0.0015648482367396355,
+              "candidate": 0.001611887477338314
+            },
+            "passed": true,
+            "performance_threshold_applied": false,
+            "speedup": 0.9708172926088154,
+            "warmups": {
+              "baseline": 1,
+              "candidate": 1
+            }
+          },
+          "pt/lammps": {
+            "measurements": {
+              "baseline": 3,
+              "candidate": 3
+            },
+            "median_seconds": {
+              "baseline": 2.621046354994178,
+              "candidate": 2.666805222630501
+            },
+            "passed": true,
+            "performance_threshold_applied": false,
+            "speedup": 0.9828413161756197,
+            "warmups": {
+              "baseline": 1,
+              "candidate": 1
+            }
+          },
+          "pt/python": {
+            "measurements": {
+              "baseline": 3,
+              "candidate": 3
+            },
+            "median_seconds": {
+              "baseline": 0.13298323936760426,
+              "candidate": 0.1330664288252592
+            },
+            "passed": true,
+            "performance_threshold_applied": false,
+            "speedup": 0.999374827607614,
+            "warmups": {
+              "baseline": 1,
+              "candidate": 1
+            }
+          },
+          "tf/lammps": {
+            "measurements": {
+              "baseline": 3,
+              "candidate": 3
+            },
+            "median_seconds": {
+              "baseline": 1.744282566010952,
+              "candidate": 1.8380295895040035
+            },
+            "passed": true,
+            "performance_threshold_applied": false,
+            "speedup": 0.948995911693484,
+            "warmups": {
+              "baseline": 1,
+              "candidate": 1
+            }
+          },
+          "tf/python": {
+            "measurements": {
+              "baseline": 3,
+              "candidate": 3
+            },
+            "median_seconds": {
+              "baseline": 0.00048367027193307877,
+              "candidate": 0.0005460185930132866
+            },
+            "passed": true,
+            "performance_threshold_applied": false,
+            "speedup": 0.8858128241821782,
+            "warmups": {
+              "baseline": 1,
+              "candidate": 1
+            }
+          }
+        },
+        "complete_backends": [
+          "tf",
+          "pt",
+          "jax"
+        ],
+        "job": "1882873",
+        "passed": true,
+        "run_id": "md-39403117741-1-2026-10-20-9bf6ae82814537d7-export-science-recovery-345e160f793a"
+      }
+    },
+    {
+      "acceptance_recipe_sha256": "345e160f793a5c2c724a13ccf52191e0f5034a5fee637238a2f42a9467d9eb6e",
+      "artifact": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/containers/software/deepmd-lammps/5fef92e054bacdaf6188e7f90dc2ba546606c112bcdf72742082901a41f6e431/296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097/16V100/md-39403084059-1-2026-10-20-5fef92e054bacdaf-export.sif",
+      "artifact_bytes": 347705344,
+      "artifact_sha256": "04c8b3c209000dc8241847d6b45d4b24550b6beeec540981d324eceeabe9522c",
+      "build_run": "md-39403084059-1-2026-10-20-5fef92e054bacdaf-export",
+      "compiled_recipe_sha256": "296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097",
+      "native_export": {
+        "directory": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/exports/md-39403084059-1-2026-10-20-5fef92e054bacdaf-export",
+        "roundtrip_verified": true,
+        "verified_files": 3298
+      },
+      "partition": "16V100",
+      "performance": {
+        "backends": [
+          "pt"
+        ],
+        "reports": {
+          "pt": {
+            "baseline": {
+              "median_atom_steps_per_second": 91494.60268808361,
+              "median_engine_seconds": 5.53331,
+              "median_wall_seconds": 38.662787249311805
+            },
+            "candidate": {
+              "median_atom_steps_per_second": 90705.29933028275,
+              "median_engine_seconds": 5.58146,
+              "median_wall_seconds": 12.225960854440928
+            },
+            "device": [
+              "pt",
+              "gpu",
+              "Tesla V100-SXM2-16GB (0)"
+            ],
+            "scope": "synthetic replicated fixed-geometry force evaluation",
+            "speedup": 0.9913732249268113
+          }
+        },
+        "run_id": "md-39403084059-1-2026-10-20-5fef92e054bacdaf-export-performance",
+        "scope": "gpu"
+      },
+      "public_module": {
+        "accounting": "1884196|COMPLETED|0:0|00:00:21|16v100n02",
+        "evidence": {
+          "cases": {
+            "coulomb-pppm-candidate-kokkos": {
+              "dump_sha256": "9991085d2d1095a7edb8a4a03d6a73e44f7eb68605d6cccbd7835e4df6f1666d",
+              "max_absolute_error": 1.7763568394002505e-15,
+              "passed": true,
+              "stdout_sha256": "f72fb8858eabe60370ae6a0cb2813ba71c1a7a84d18b4c68a73e7de599707403"
+            },
+            "lj-candidate-gpu": {
+              "dump_sha256": "a57039f219afd29a1b8573fe65539c38990c275856935729f27638cfd3fb6c0b",
+              "max_absolute_error": 0.0,
+              "passed": true,
+              "stdout_sha256": "17be1628b29f35ef4a7aa04ad4027c026876ff0440b3a332f94769a1dcca56fa"
+            }
+          },
+          "image": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/containers/software/deepmd-lammps/5fef92e054bacdaf6188e7f90dc2ba546606c112bcdf72742082901a41f6e431/296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097/16V100/md-39403084059-1-2026-10-20-5fef92e054bacdaf-export.sif",
+          "job": "1884196",
+          "launcher": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/controller/published/296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097/md-39403084059-1-2026-10-20-5fef92e054bacdaf-export/lammps/bin/lmp",
+          "module_sha256": "75c2a1ba175c178a7e42d93b598fc77eefc3dd2ae8c96c586997c6ee56d273e3",
+          "node": "16v100n02.mr-sai.ai",
+          "partition": "16V100",
+          "passed": true
+        },
+        "help_sha256": "4466ff680d41982523430e8787b049f1d9e5350451f3cedf104e9625a87b64ab",
+        "job_script_sha256": "32f0207e8bc4081aca3751f18709912c84dfc642a1b659641dc101667b4421a6",
+        "request_sha256": "1a8e1463ddff2b89e951181d239a65b92717c691e6c7a458cccf9f2c98c8208d",
+        "unload_passed": true
+      },
+      "publication": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/runs/md-39403084059-1-2026-10-20-5fef92e054bacdaf-export/results/publication.json",
+      "publication_recovery": {
+        "archived_export": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/exports/recovery-attempts/md-39403084059-1-2026-10-20-5fef92e054bacdaf-export-umask-077",
+        "artifact": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/containers/software/deepmd-lammps/5fef92e054bacdaf6188e7f90dc2ba546606c112bcdf72742082901a41f6e431/296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097/16V100/md-39403084059-1-2026-10-20-5fef92e054bacdaf-export.sif",
+        "artifact_sha256": "04c8b3c209000dc8241847d6b45d4b24550b6beeec540981d324eceeabe9522c",
+        "build_run": "md-39403084059-1-2026-10-20-5fef92e054bacdaf-export",
+        "controller": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/controller/acceptance/298825d3c4af605ee1846041637ac67cd0db9daf/lammps-release-20261020",
+        "finished_at": "2026-10-20T16:10:40.390153+00:00",
+        "helper_sha256": "211da9b698c1e2714370b887bf7bfc3c97c95f0fb5444c1e3b0e4fc7b07544aa",
+        "metadata_sha256": {
+          "deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100/share/sai/export.json": "b780f05a81870faf8033b7429259dd4852a159fafaff274afea51d20857cb342",
+          "deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100/share/sai/manifest.json": "42cde51d0cc55abc77ff8c16352c09369d6274d014f501b79b0023c267a4a75a",
+          "lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100/share/sai/export.json": "ea3de5ae7dab16266bb22cd19c2429947df2b7daaf24f6e0e91c69c98f28ec33",
+          "lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100/share/sai/manifest.json": "773aaf4e7179854c50754a848cef798859cc41509463409f93503f941568083c"
+        },
+        "native_export": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/exports/md-39403084059-1-2026-10-20-5fef92e054bacdaf-export",
+        "original_root_mode": "0o700",
+        "partition": "16V100",
+        "publication_sha256": "e6b84335127ab9bbd71dbe9392d9ab5c03860543351f09b8665c967a6b8bca38",
+        "reason": "Multi-install export wrapper root inherited umask 077; re-export from unchanged SIF",
+        "recipe_sha256": "345e160f793a5c2c724a13ccf52191e0f5034a5fee637238a2f42a9467d9eb6e",
+        "started_at": "2026-10-20T15:58:45.477771+00:00",
+        "state": "published-and-reverified",
+        "umask": "022"
+      },
+      "publication_sha256": "e6b84335127ab9bbd71dbe9392d9ab5c03860543351f09b8665c967a6b8bca38",
+      "published": true,
+      "reverified": true,
+      "scientific": {
+        "benchmarks": {
+          "jax/lammps": {
+            "measurements": {
+              "baseline": 3,
+              "candidate": 3
+            },
+            "median_seconds": {
+              "baseline": 6.237720379140228,
+              "candidate": 6.108219176996499
+            },
+            "passed": true,
+            "performance_threshold_applied": false,
+            "speedup": 1.0212011387265587,
+            "warmups": {
+              "baseline": 1,
+              "candidate": 1
+            }
+          },
+          "jax/python": {
+            "measurements": {
+              "baseline": 3,
+              "candidate": 3
+            },
+            "median_seconds": {
+              "baseline": 0.0034219534136354923,
+              "candidate": 0.0034710639156401157
+            },
+            "passed": true,
+            "performance_threshold_applied": false,
+            "speedup": 0.9858514555772544,
+            "warmups": {
+              "baseline": 1,
+              "candidate": 1
+            }
+          },
+          "pt/lammps": {
+            "measurements": {
+              "baseline": 3,
+              "candidate": 3
+            },
+            "median_seconds": {
+              "baseline": 7.493502377998084,
+              "candidate": 10.65724969888106
+            },
+            "passed": true,
+            "performance_threshold_applied": false,
+            "speedup": 0.7031366055714029,
+            "warmups": {
+              "baseline": 1,
+              "candidate": 1
+            }
+          },
+          "pt/python": {
+            "measurements": {
+              "baseline": 3,
+              "candidate": 3
+            },
+            "median_seconds": {
+              "baseline": 0.21773973014205694,
+              "candidate": 0.21593543188646436
+            },
+            "passed": true,
+            "performance_threshold_applied": false,
+            "speedup": 1.0083557304136233,
+            "warmups": {
+              "baseline": 1,
+              "candidate": 1
+            }
+          },
+          "tf/lammps": {
+            "measurements": {
+              "baseline": 3,
+              "candidate": 3
+            },
+            "median_seconds": {
+              "baseline": 4.632427503820509,
+              "candidate": 6.002080560196191
+            },
+            "passed": true,
+            "performance_threshold_applied": false,
+            "speedup": 0.7718036199882475,
+            "warmups": {
+              "baseline": 1,
+              "candidate": 1
+            }
+          },
+          "tf/python": {
+            "measurements": {
+              "baseline": 3,
+              "candidate": 3
+            },
+            "median_seconds": {
+              "baseline": 0.0008455631323158741,
+              "candidate": 0.0009600748308002949
+            },
+            "passed": true,
+            "performance_threshold_applied": false,
+            "speedup": 0.8807262779829708,
+            "warmups": {
+              "baseline": 1,
+              "candidate": 1
+            }
+          }
+        },
+        "complete_backends": [
+          "tf",
+          "pt",
+          "jax"
+        ],
+        "job": "1882874",
+        "passed": true,
+        "run_id": "md-39403084059-1-2026-10-20-5fef92e054bacdaf-export-science-recovery-345e160f793a"
+      }
+    },
+    {
+      "acceptance_recipe_sha256": "345e160f793a5c2c724a13ccf52191e0f5034a5fee637238a2f42a9467d9eb6e",
+      "artifact": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/containers/software/deepmd-lammps/1dfd6f53c113abdac2a33f423b4d49d75d01061dd976de6cea96796af2e440aa/795dbd80e2a43d3e7a32c1bc373d30b88476fcca8d63f26ccc6d42a84515707c/8V100V0/md-39427644750-1-2026-10-20-1dfd6f53c113abda.sif",
+      "artifact_bytes": 348078080,
+      "artifact_sha256": "1b1667b851501da6d42477f1d23f52074b192dedf3dd6b9751732d90f39ae51e",
+      "build_run": "md-39427644750-1-2026-10-20-1dfd6f53c113abda",
+      "compiled_recipe_sha256": "795dbd80e2a43d3e7a32c1bc373d30b88476fcca8d63f26ccc6d42a84515707c",
+      "native_export": {
+        "directory": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/exports/md-39427644750-1-2026-10-20-1dfd6f53c113abda",
+        "roundtrip_verified": true,
+        "verified_files": 3296
+      },
+      "partition": "8V100V0",
+      "performance": {
+        "backends": [
+          "pt"
+        ],
+        "reports": {
+          "pt": {
+            "baseline": {
+              "median_atom_steps_per_second": 94866.420214185,
+              "median_engine_seconds": 5.51019,
+              "median_wall_seconds": 11.341487876838073
+            },
+            "candidate": {
+              "median_atom_steps_per_second": 94658.72791673004,
+              "median_engine_seconds": 5.52228,
+              "median_wall_seconds": 11.483775021042675
+            },
+            "device": [
+              "pt",
+              "gpu",
+              "Tesla V100-SXM2-32GB (0)"
+            ],
+            "scope": "synthetic replicated fixed-geometry force evaluation",
+            "speedup": 0.9978106868901975
+          }
+        },
+        "run_id": "md-39427644750-1-2026-10-20-1dfd6f53c113abda-performance",
+        "scope": "gpu"
+      },
+      "public_module": {
+        "accounting": "1884197|COMPLETED|0:0|00:00:33|8v100v0n03",
+        "evidence": {
+          "cases": {
+            "coulomb-pppm-candidate-kokkos": {
+              "dump_sha256": "787d8233aada6c79da97756b62f6d11164a89a0dc1f22c133540be3d71d98b56",
+              "max_absolute_error": 1.7763568394002505e-15,
+              "passed": true,
+              "stdout_sha256": "68e59eeb680f7ba46f8a77338e1a4673bae8e94296281661167351c9e2ab7480"
+            },
+            "lj-candidate-gpu": {
+              "dump_sha256": "a57039f219afd29a1b8573fe65539c38990c275856935729f27638cfd3fb6c0b",
+              "max_absolute_error": 0.0,
+              "passed": true,
+              "stdout_sha256": "230641f0396c38f8e5d71ab0e6c96f76d665e89e31d79720f8d7ba8b0e08659b"
+            }
+          },
+          "image": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/containers/software/deepmd-lammps/1dfd6f53c113abdac2a33f423b4d49d75d01061dd976de6cea96796af2e440aa/795dbd80e2a43d3e7a32c1bc373d30b88476fcca8d63f26ccc6d42a84515707c/8V100V0/md-39427644750-1-2026-10-20-1dfd6f53c113abda.sif",
+          "job": "1884197",
+          "launcher": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/controller/published/795dbd80e2a43d3e7a32c1bc373d30b88476fcca8d63f26ccc6d42a84515707c/md-39427644750-1-2026-10-20-1dfd6f53c113abda/lammps/bin/lmp",
+          "module_sha256": "75c2a1ba175c178a7e42d93b598fc77eefc3dd2ae8c96c586997c6ee56d273e3",
+          "node": "8v100v0n03.mr-sai.ai",
+          "partition": "8V100V0",
+          "passed": true
+        },
+        "help_sha256": "dde468861a473f69c37c545cd10ba528fc546acb7f0f44032cf86dfb563139f7",
+        "job_script_sha256": "9e5aa121e3045f88812382395d0591c780a8dbc5b72b6aab9bc615e1b06e3b76",
+        "request_sha256": "92a0ac39283c4cb0c5e226e83d80e209f5384b6381c6bb4a72d490495a22d50c",
+        "unload_passed": true
+      },
+      "publication": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/runs/md-39427644750-1-2026-10-20-1dfd6f53c113abda/results/publication.json",
+      "publication_recovery": {
+        "archived_export": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/exports/recovery-attempts/md-39427644750-1-2026-10-20-1dfd6f53c113abda-umask-077",
+        "artifact": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/containers/software/deepmd-lammps/1dfd6f53c113abdac2a33f423b4d49d75d01061dd976de6cea96796af2e440aa/795dbd80e2a43d3e7a32c1bc373d30b88476fcca8d63f26ccc6d42a84515707c/8V100V0/md-39427644750-1-2026-10-20-1dfd6f53c113abda.sif",
+        "artifact_sha256": "1b1667b851501da6d42477f1d23f52074b192dedf3dd6b9751732d90f39ae51e",
+        "build_run": "md-39427644750-1-2026-10-20-1dfd6f53c113abda",
+        "controller": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/controller/acceptance/298825d3c4af605ee1846041637ac67cd0db9daf/lammps-release-20261020",
+        "finished_at": "2026-10-20T16:16:46.469076+00:00",
+        "helper_sha256": "211da9b698c1e2714370b887bf7bfc3c97c95f0fb5444c1e3b0e4fc7b07544aa",
+        "metadata_sha256": {
+          "deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0/share/sai/export.json": "5eae4169feff862138c7cb49e1c3e6795cea6fab7c503abc26e2d6fe4020444b",
+          "deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0/share/sai/manifest.json": "5d9eb79efdabba5a999a14afd684285541e7cb80af6436a1f21e664d8cf31252",
+          "lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/share/sai/export.json": "a297f2fcf0152d82c63872da7b68c1fd8bb63977bb39aff92bf53b176012c72d",
+          "lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/share/sai/manifest.json": "15ef82d12177bc1d6d3330cae3de10e6618d8326e27f4a84d3e99c0c21cd3f05"
+        },
+        "native_export": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/exports/md-39427644750-1-2026-10-20-1dfd6f53c113abda",
+        "original_root_mode": "0o700",
+        "partition": "8V100V0",
+        "publication_sha256": "2c1f5ce518789386c9f525bcc645ad71cc68149f78210c28fca1507fcd060ca9",
+        "reason": "Multi-install export wrapper root inherited umask 077; re-export from unchanged SIF",
+        "recipe_sha256": "345e160f793a5c2c724a13ccf52191e0f5034a5fee637238a2f42a9467d9eb6e",
+        "started_at": "2026-10-20T16:13:04.935562+00:00",
+        "state": "published-and-reverified",
+        "umask": "022"
+      },
+      "publication_sha256": "2c1f5ce518789386c9f525bcc645ad71cc68149f78210c28fca1507fcd060ca9",
+      "published": true,
+      "reverified": true,
+      "scientific": {
+        "benchmarks": {
+          "jax/lammps": {
+            "measurements": {
+              "baseline": 3,
+              "candidate": 3
+            },
+            "median_seconds": {
+              "baseline": 5.826915382873267,
+              "candidate": 5.957925620954484
+            },
+            "passed": true,
+            "performance_threshold_applied": false,
+            "speedup": 0.9780107630715557,
+            "warmups": {
+              "baseline": 1,
+              "candidate": 1
+            }
+          },
+          "jax/python": {
+            "measurements": {
+              "baseline": 3,
+              "candidate": 3
+            },
+            "median_seconds": {
+              "baseline": 0.004427439067512751,
+              "candidate": 0.004686994943767786
+            },
+            "passed": true,
+            "performance_threshold_applied": false,
+            "speedup": 0.9446221130235777,
+            "warmups": {
+              "baseline": 1,
+              "candidate": 1
+            }
+          },
+          "pt/lammps": {
+            "measurements": {
+              "baseline": 3,
+              "candidate": 3
+            },
+            "median_seconds": {
+              "baseline": 18.135161264101043,
+              "candidate": 10.493065444054082
+            },
+            "passed": true,
+            "performance_threshold_applied": false,
+            "speedup": 1.7282996433017932,
+            "warmups": {
+              "baseline": 1,
+              "candidate": 1
+            }
+          },
+          "pt/python": {
+            "measurements": {
+              "baseline": 3,
+              "candidate": 3
+            },
+            "median_seconds": {
+              "baseline": 0.3362309748772532,
+              "candidate": 0.3415223150514066
+            },
+            "passed": true,
+            "performance_threshold_applied": false,
+            "speedup": 0.9845066048660481,
+            "warmups": {
+              "baseline": 1,
+              "candidate": 1
+            }
+          },
+          "tf/lammps": {
+            "measurements": {
+              "baseline": 3,
+              "candidate": 3
+            },
+            "median_seconds": {
+              "baseline": 4.9686947639565915,
+              "candidate": 4.829897525021806
+            },
+            "passed": true,
+            "performance_threshold_applied": false,
+            "speedup": 1.0287370980886719,
+            "warmups": {
+              "baseline": 1,
+              "candidate": 1
+            }
+          },
+          "tf/python": {
+            "measurements": {
+              "baseline": 3,
+              "candidate": 3
+            },
+            "median_seconds": {
+              "baseline": 0.0012686741538345814,
+              "candidate": 0.0013503830414265394
+            },
+            "passed": true,
+            "performance_threshold_applied": false,
+            "speedup": 0.9394920662617022,
+            "warmups": {
+              "baseline": 1,
+              "candidate": 1
+            }
+          }
+        },
+        "complete_backends": [
+          "tf",
+          "pt",
+          "jax"
+        ],
+        "job": "1883145",
+        "passed": true,
+        "run_id": "md-39427644750-1-2026-10-20-1dfd6f53c113abda-science-recovery-345e160f793a"
+      }
+    }
+  ],
+  "physical_deployment": {
+    "installed": false,
+    "package": "/home/stardust/sai-hpc-software/deployment/lammps-30Sep2026",
+    "preflight_log": "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/native-preflight.log",
+    "preflight_log_sha256": "ad2b10e5ef531c828a2a20a5f97c9b06e773067098265dc25f11adc458326794",
+    "preflight_passed": true,
+    "release_sha256": "4ceddb23a4f9e6995375a9239af6d46c42982190aa18224672c9aeb659be3dd1"
+  },
+  "release": "stable_30Sep2026"
+}

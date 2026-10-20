@@ -1,23 +1,44 @@
 # LAMMPS stable release delivery
 
-## Status audited on 2026-10-20
+## Status audited on 2026-10-21
 
 The latest upstream stable release is `stable_30Sep2026`, commit
 `8de817dd79bfe4525d5d39246a212d833e6dee07`. The paired stable DeePMD-kit is
 `v3.2.0`, commit `8cfd46e37448feca361ff3427a6c2b514ce5a2bb`.
-No published delivery of this release exists yet.
-Both 4V100 and 16V100 release SIFs pass complete build verification, including
-native inventory and permissions. Each also passed candidate-only two-node
-numerical checks against the locked upstream reference, across TF/PT/JAX and
-Python/LAMMPS. Both also passed paired system-baseline science. PyTorch GPU
-comparisons completed on both partitions with actual CUDA kernel traces and
-no observed regression. The user has scoped delivery to GPU functionality,
-feature/option parity and numerical correctness; CPU performance comparisons
-are no longer a delivery gate. Publication under this explicit scope remains
-pending. Baseline plugin lookup, warmup timing and Nsight's literal temporary
-directory have been repaired. 8V100V0 completed compilation, parity and
-SquashFS packaging; read-only extraction is recovering from a mount timeout.
-Both use the qualified CP2K overlay driver; see the live restart below.
+All three GPU partitions now have published, independently reverified SIFs
+and complete native exports. Build verification covers loader resolution,
+native inventory/permissions and the installed feature baseline. Two-node
+TF/PT/JAX science, PyTorch CUDA timing, and explicit GPU-package/Kokkos
+LJ/PPPM numerical checks passed on 4V100, 16V100 and 8V100V0.
+The friendly container module also passed load, actual GPU/Kokkos calculations
+and unload on each partition. CPU performance is outside the user-requested
+delivery scope; manifests explicitly record `performance_scope="gpu"` and
+`performance_backends=["pt"]`.
+
+[Final delivery evidence](evidence/lammps-release-20261020/final-delivery.json)
+pins the SIFs, publication receipts, raw acceptance summaries, native export
+readback and public-module jobs. Physical `/opt` installation is prepared and
+preflighted, but has not been executed. The production daily scheduler and
+development builds remain separate outstanding work.
+
+| Partition | Two-node science | GPU performance | Public-module execution | Published |
+| --- | --- | --- | --- | --- |
+| 4V100 | `1882873`, pass | `1883013`, pass | `1884195`, pass | Yes |
+| 16V100 | `1882874`, pass | `1882993`, pass | `1884196`, pass | Yes |
+| 8V100V0 | `1883145`, pass | `1883197`, pass | `1884197`, pass | Yes |
+
+Load inside an allocation on one of these three partitions:
+
+```bash
+module use /home/stardust/sai-hpc-software/deployment/lammps-30Sep2026/modulefiles
+module load lammps/30Sep2026-deepmd320-gpu
+lmp -h
+```
+
+The [deployment package](../deployment/lammps-30Sep2026/README.md) includes the
+partition selector, exact source/target paths and a default read-only installer
+preflight. It preserves the paired LAMMPS/DeePMD prefixes and existing site
+dependencies. Each partition's complete native pair is approximately 1.15 GiB.
 
 The current implementation builds both programs in one Apptainer overlay,
 then exports a SIF and runs separate scientific, performance and publication
@@ -610,3 +631,49 @@ The [resumed observer](evidence/lammps-release-20261020/8v-extraction-observer.j
 continues with the same immutable GPU-scope acceptance snapshot as 4V100 and
 16V100: recipe `345e160f793a5c2c724a13ccf52191e0f5034a5fee637238a2f42a9467d9eb6e`.
 No physical `/opt` installation is implied by these container checks.
+
+### Completed GPU release delivery
+
+Extraction job `1882907` completed `0:0` in 21:23 and produced the 8V100V0 SIF
+with SHA256 `1b1667b851501da6d42477f1d23f52074b192dedf3dd6b9751732d90f39ae51e`.
+Its original compiled controller, overlay and failed mount attempts remain
+preserved. GPU functionality job `1883249` completed `0:0`; all twelve cases
+passed using the matched-precision verifier:
+[8V100V0 raw results](evidence/lammps-release-20261020/8v-gpu-functional.json).
+
+The final explicitly scoped PyTorch GPU comparisons used the same 2,058-atom
+workload on each baseline/candidate pair, with warmup, three unprofiled measured
+trials and separate CUDA kernel traces:
+
+| Partition | Installed engine median | Candidate engine median | Baseline / candidate |
+| --- | ---: | ---: | ---: |
+| 4V100 | 5.78554 s | 5.78470 s | 1.00015 |
+| 16V100 | 5.53331 s | 5.58146 s | 0.99137 |
+| 8V100V0 | 5.51019 s | 5.52228 s | 0.99781 |
+
+All three passed the unchanged regression policy without a performance retest.
+These results establish this workload's behavior, not a universal speedup.
+Feature parity retains the old 70 packages/2,197 styles within the new
+71 packages/2,473 styles, including MPI/OpenMP, GPU, Kokkos CUDA/SM70,
+Kokkos cuFFT, PLUMED and TF/PT/JAX support.
+
+The first publication attempts stopped because the new multi-install bundle
+root inherited `umask 077` and became mode 0700; the inventoried payloads were
+already correct. The exporter now sets the wrapping root to 0755 explicitly.
+The [32 export tests](evidence/lammps-release-20261020/export-tests-umask.log)
+include publication and repeat readback under umask 077; the
+[13 MD publication tests](evidence/lammps-release-20261020/publication-tests-umask.log)
+also passed. The [scoped recovery](evidence/lammps-release-20261020/retry_publication.py)
+archived each failed export unchanged and reran the original frozen publisher
+with umask 022. It reparsed the existing science/performance evidence, exported
+the unchanged SIF, and independently reverified publication. No simulation or
+compiled identity was replaced to fix the directory permission.
+
+The three public-module jobs additionally invoked the published launcher for
+`lmp -h`, GPU LJ and Kokkos Coulomb/PPPM, compared numerical output against the
+accepted candidate and checked module unload. The six native installation
+trees passed the [physical deployment preflight](evidence/lammps-release-20261020/native-preflight.log),
+and [four installer tests](evidence/lammps-release-20261020/deployment-tests.log)
+cover paired copies, private umask, repeated installation, changed payloads,
+existing targets and symlink boundaries. The scripts are ready for an account
+with `/opt` write access; physical native execution still follows that install.
