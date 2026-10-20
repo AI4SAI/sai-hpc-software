@@ -1,0 +1,102 @@
+# CP2K 2026.2 large-water GPU/CPU comparison
+
+This experiment uses the accepted physical shared-ELPA release at
+`/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/<partition>`.
+It does not modify the public installation or its defaults.
+
+| Partition | GPU counts | Physical CPU cores | GPU memory per card |
+| --- | --- | --- | --- |
+| 4V100 | 1, 4 | 4, 16 | 32 GiB |
+| 16V100 | 1, 4, 16 | 4, 16, 64 | 16 GiB |
+
+The user selected **60–75% measured VRAM per card**, with system size increasing
+with resources. This is memory-scaled growth, not conventional weak scaling
+with constant atoms per rank: dense-matrix storage is quadratic in basis size.
+Different GPU memory capacities mean that the two partitions need independent
+calibration. Report water count, basis size, peak memory and resource allocation
+beside every timing; do not compare different-size cases as fixed-work speedups.
+
+The fixture extends the existing synthetic periodic water lattice (3.1 angstrom
+spacing), with PBE, DZVP-MOLOPT-SR-GTH, 300 Ry cutoff, 40 Ry relative cutoff,
+`EPS_DEFAULT=1e-12`, and `EPS_SCF=1e-9`. Each water contributes 23 basis functions.
+This is a controlled scaling workload, not an equilibrated liquid-water sample
+or a universal production performance claim. Both paths read identical original
+CP2K basis/potential bytes, checked against the existing fixture hashes.
+
+GPU uses `PREFERRED_DIAG_LIBRARY CUSOLVER` (cuSOLVERMp) and
+`DIRECT_GENERALIZED_DIAGONALIZATION T`, with one MPI rank per distinct GPU.
+The timing log must prove calls to `eigensolver_generalized` and
+`cp_fm_general_cusolver`. CPU uses standard ScaLAPACK diagonalization with the
+direct option disabled, CPU GRID, and CPU BLAS. Changing only the eigensolver
+on the CUDA executable is not a pure CPU baseline because its FFT and other
+components still execute GPU code.
+
+`submit-cpu.py` therefore builds a companion from the same pinned source,
+GCC 14.3.0, native CPU optimization, site MPI/BLAS/FFTW/LibXC and accepted
+Libint/LIBXSMM dependencies. CPU DBCSR and LIBXS are built explicitly.
+CUDA/cuSOLVERMp, ELPA, COSMA and SpLA are disabled. Optional methods unused by
+this PBE workload (e.g. TBLITE, PLUMED and HDF5) are not enabled in the companion;
+it is a benchmark executable, not a replacement for the complete public release.
+
+Compilation runs in a container, mounting the original sealed dependency overlay
+read-only. All new work, installs, caches, MPI scratch and results live under
+`/home/stardust/sai-hpc-software`. The CPU install has exactly the same absolute
+home path inside and outside the container. Container `/tmp` and `/var/tmp` are
+binds of home storage. Native benchmarks run without a container. Existing
+installations, artifacts and build overlays are not rewritten.
+
+Example commands from the cluster home checkout:
+
+```bash
+python3 -B deployment/cp2k-water-scaling/submit-cpu.py \
+  --partition 16V100 --gpus 4 --name UNIQUE_CPU_BUILD
+python3 -B deployment/cp2k-water-scaling/run.py submit \
+  --partition 16V100 --gpus 1 --name UNIQUE_CALIBRATION
+python3 -B deployment/cp2k-water-scaling/run.py submit --stage smoke \
+  --partition 16V100 --gpus 1 --name UNIQUE_SMOKE \
+  --cpu-binary /home/stardust/sai-hpc-software/runs/cp2k-water-cpu-UNIQUE_CPU_BUILD/install/bin/cp2k.psmp
+python3 -B deployment/cp2k-water-scaling/run.py submit --stage compare \
+  --partition 16V100 --gpus 1 --name UNIQUE_COMPARISON --shape 6 6 8 \
+  --cpu-binary /home/stardust/sai-hpc-software/runs/cp2k-water-cpu-UNIQUE_CPU_BUILD/install/bin/cp2k.psmp \
+  --calibration-run /home/stardust/sai-hpc-software/runtime-tests/cp2k-water-UNIQUE_CALIBRATION \
+  --cpu-smoke-run /home/stardust/sai-hpc-software/runtime-tests/cp2k-water-UNIQUE_SMOKE \
+  --minutes 1440 --case-seconds 7200
+```
+
+Use a unique run name each time. Submitters freeze the scripts and fixtures.
+Do not edit frozen runs to change the experiment. The site assigns eight logical
+CPUs (four physical cores) and a fixed RAM quota per GPU; it rejects explicit
+`--cpus-per-task` for these GPU jobs. Single-GPU 16V100 jobs use
+`flood-1o2gpu`, single-GPU 4V100 jobs use `rush-1o2gpu`, and multiples of four
+use `rush-gpu`. Retain the normal user environment for native Open MPI startup.
+
+Calibration performs only three SCF steps, allows nonconvergence explicitly,
+and must never be reported as scientific or performance acceptance. It samples
+each allocated GPU by UUID and the actual cgroup RAM limit. A 92% host-memory
+guard and an 86% GPU-memory guard prevent knowingly continuing past the memory
+budget. If host RAM, uneven GPU distribution, discrete cell sizes or the probe
+limit prevent the requested window, the report records that limitation rather
+than pretending the target was achieved. Complete ENERGY_FORCE runs must
+recheck the memory peak.
+
+The CPU smoke test verifies the source/version, absent CUDA features, native
+libraries, full convergence and agreement with the GPU at 64 waters. CPU MPI ×
+OpenMP layouts are G×4, 2G×2 and 4G×1, all using exactly 4G physical cores.
+Formal tuning also tests GPU OpenMP counts 4/2/1 and SCF matrix block sizes
+32/64. It selects the fastest of these measured choices, not a claimed global
+optimum. Each rank records its actual CPU topology and affinity; overlapping
+physical cores or duplicate GPU assignments fail validation. CPU runs hide GPUs
+and the sampler checks that their rank PIDs never appear as GPU compute clients.
+
+After tuning, one warm-up pair is excluded, followed by three alternating
+CPU/GPU pairs at the selected layouts. All cases start from the same atomic
+guess in fresh directories. Absolute total-energy tolerance is 1e-6 Ha and
+maximum force-component tolerance is 1e-5 Ha/bohr, unchanged from prior
+acceptance. Only fully converged, numerically agreeing runs can produce a speed
+ratio. Reports include CP2K internal total time, MPI-launch wall time, SCF step
+counts, backend timers, sampled CPU seconds and memory peaks. Reserving all
+cores does not imply 100% utilization; measured utilization is retained.
+
+Before publishing results, retain scheduler accounting (`COMPLETED`, `0:0`),
+original inputs, logs, force files, rank traces, samples and build provenance.
+Queued jobs and memory-only probes are progress, not completed benchmark results.

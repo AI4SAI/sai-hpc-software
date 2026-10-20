@@ -1,0 +1,461 @@
+#!/usr/bin/env python3
+"""Native CP2K water memory calibration and equal-CPU-budget comparisons."""
+import argparse
+import csv
+import hashlib
+import itertools
+import json
+import math
+import os
+from pathlib import Path
+import re
+import shutil
+import signal
+import statistics
+import subprocess
+import sys
+import time
+
+REPO = Path(__file__).resolve().parents[2]
+sys.path.insert(0, str(REPO/'controller'))
+import cp2k_benchmark as fixtures
+
+ROOT = Path('/home/stardust/sai-hpc-software')
+SOURCE = '67b5da876dd6a76b8b021d5a04d1c81ba79a4c50'
+BUILD = 'cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43'
+POINTS = {'4V100': (1, 4), '16V100': (1, 4, 16)}
+START = {('4V100', 1): (7, 7, 7), ('4V100', 4): (9, 9, 9),
+         ('16V100', 1): (6, 6, 6), ('16V100', 4): (8, 8, 8), ('16V100', 16): (10, 10, 10)}
+
+
+def require(value, message):
+    if not value:
+        raise ValueError(message)
+
+
+def digest(path):
+    with Path(path).open('rb') as f:
+        return hashlib.file_digest(f, 'sha256').hexdigest()
+
+
+def write_json(path, value):
+    Path(path).write_text(json.dumps(value, indent=2, sort_keys=True)+'\n')
+
+
+def input_text(mode, shape, calibration=False, block=32):
+    require(mode in ('gpu', 'cpu'), 'Unknown backend')
+    require(len(shape) == 3 and all(isinstance(n, int) and 2 <= n <= 40 for n in shape), 'Bad water cell')
+    text = fixtures.water_input()
+    coords = []
+    for x, y, z in itertools.product(*(range(n) for n in shape)):
+        for atom, dx, dy in (('O', 0, 0), ('H', .9572, 0), ('H', -.239987, .927297)):
+            coords.append(f'      {atom} {0.8+3.1*x+dx:.6f} {0.8+3.1*y+dy:.6f} {0.8+3.1*z:.6f}\n')
+    text = text.replace(fixtures.WATER_COORDINATES, ''.join(coords))
+    text = text.replace('ABC 12.0 12.0 12.0', 'ABC '+' '.join(f'{3.1*n:.1f}' for n in shape))
+    text = text.replace('PERIODIC NONE', 'PERIODIC XYZ').replace('POISSON_SOLVER MT', 'POISSON_SOLVER PERIODIC')
+    control = (f'  PREFERRED_DIAG_LIBRARY {"CUSOLVER" if mode == "gpu" else "SL"}\n'
+               f'  DIRECT_GENERALIZED_DIAGONALIZATION {"T" if mode == "gpu" else "F"}\n'
+               '  BLACS_GRID SQUARE\n'
+               '  &TIMINGS\n    THRESHOLD 0\n    TIMINGS_LEVEL 1\n  &END TIMINGS\n')
+    if mode == 'cpu':
+        control += '  PREFERRED_DGEMM_LIBRARY BLAS\n  &GRID\n    BACKEND CPU\n  &END GRID\n'
+    text = text.replace('  RUN_TYPE ENERGY_FORCE\n', '  RUN_TYPE ENERGY_FORCE\n'+control)
+    start = text.index('      &OT ON\n')
+    end = text.index('      &END OT\n', start)+len('      &END OT\n')
+    text = text[:start]+(f'      NROW_BLOCK {block}\n      NCOL_BLOCK {block}\n'
+                        '      CHOLESKY RESTORE\n      LEVEL_SHIFT 0\n'
+                        '      &DIAGONALIZATION\n        ALGORITHM STANDARD\n'
+                        '      &END DIAGONALIZATION\n')+text[end:]
+    if calibration:
+        text = text.replace('RUN_TYPE ENERGY_FORCE', 'RUN_TYPE ENERGY')
+        text = text.replace('      MAX_SCF 100', '      MAX_SCF 3\n      IGNORE_CONVERGENCE_FAILURE T')
+        text = text.replace('        MAX_SCF 10', '        MAX_SCF 1')
+    return text
+
+
+def timers(log, mode):
+    result = {}
+    pattern = r'^\s*(\w+)\s+(\d+)\s+([\d.]+)\s+(\S+)\s+(\S+)\s+(\S+)\s+(\S+)(?:\s+\d+)?\s*$'
+    for row in re.findall(pattern, log, re.M):
+        if row[0].startswith(('cp_fm_', 'eigensolver', 'qs_', 'pw_', 'grid_', 'dbcsr_')) or row[0] == 'CP2K':
+            require(row[0] not in result, 'Duplicate timer')
+            result[row[0]] = dict(calls=int(row[1]), seconds=fixtures.number(row[6]))
+    called = lambda key: result.get(key, {}).get('calls', 0) > 0
+    if mode == 'gpu':
+        require(called('eigensolver_generalized') and called('cp_fm_general_cusolver'), 'Direct cuSOLVER not executed')
+    else:
+        require(called('eigensolver') and called('cp_fm_syevd'), 'Standard ScaLAPACK diagonalization not executed')
+        require(not any('cusolver' in k or 'elpa' in k or k == 'eigensolver_generalized' for k in result),
+                'Unexpected accelerated eigensolver in CPU baseline')
+    return result
+
+
+def gpu_inventory():
+    visible = os.environ.get('CUDA_VISIBLE_DEVICES', '').split(',')
+    require(visible and all(visible), 'Missing allocated GPU visibility')
+    rows = subprocess.check_output(['nvidia-smi', '-i', ','.join(visible),
+        '--query-gpu=uuid,memory.total,name,pci.bus_id', '--format=csv,noheader,nounits'], text=True)
+    values = [dict(zip(('uuid', 'total_mib', 'name', 'pci_bus'), [x.strip() for x in row]))
+              for row in csv.reader(rows.splitlines())]
+    for value in values:
+        value['total_mib'] = float(value['total_mib'])
+    require(len(values) == len(visible) and len({v['uuid'] for v in values}) == len(values), 'Ambiguous GPUs')
+    return values
+
+
+def cgroup_memory():
+    # Select the strictest finite cgroup limit; parent job limits include all MPI ranks.
+    entries = []
+    for row in Path('/proc/self/cgroup').read_text().splitlines():
+        hierarchy, controllers, relative = row.split(':', 2)
+        if hierarchy != '0' or controllers:
+            continue
+        current = Path('/sys/fs/cgroup')/relative.lstrip('/')
+        while current != Path('/sys/fs'):
+            maximum = current/'memory.max'
+            if maximum.is_file() and maximum.read_text().strip().isdigit():
+                entries.append(dict(path=str(current), limit=int(maximum.read_text()),
+                                    used=int((current/'memory.current').read_text())))
+            if current == Path('/sys/fs/cgroup'):
+                break
+            current = current.parent
+    return min(entries, key=lambda v: (v['limit'], -v['used'])) if entries else None
+
+
+def resource_sample(case, devices):
+    rows = subprocess.check_output(['nvidia-smi', '-i', ','.join(d['uuid'] for d in devices),
+        '--query-gpu=uuid,memory.used,utilization.gpu,clocks.sm,power.draw',
+        '--format=csv,noheader,nounits'], text=True)
+    gpus = {row[0].strip(): dict(zip(('memory_mib', 'util_percent', 'sm_mhz', 'power_w'),
+            [float(v.strip()) if v.strip().replace('.', '', 1).isdigit() else None for v in row[1:]]))
+            for row in csv.reader(rows.splitlines())}
+    compute = subprocess.check_output(['nvidia-smi', '--query-compute-apps=gpu_uuid,pid,used_gpu_memory',
+                                      '--format=csv,noheader,nounits'], text=True)
+    gpu_processes = [dict(uuid=row[0].strip(), pid=int(row[1]), used_mib=row[2].strip())
+                     for row in csv.reader(compute.splitlines()) if len(row) == 3 and row[0].strip() in gpus]
+    processes = []
+    for record in case.glob('rank-*.json'):
+        try:
+            rank = json.loads(record.read_text())
+            fields = Path(f'/proc/{rank["pid"]}/stat').read_text().rsplit(')', 1)[1].split()
+            processes.append(dict(rank=rank['rank'], cpu_seconds=(int(fields[11])+int(fields[12]))/os.sysconf('SC_CLK_TCK'),
+                                  rss_bytes=int(fields[21])*os.sysconf('SC_PAGE_SIZE')))
+        except (FileNotFoundError, ProcessLookupError, json.JSONDecodeError):
+            pass
+    return dict(time=time.time(), gpus=gpus, processes=processes, gpu_processes=gpu_processes, cgroup=cgroup_memory())
+
+
+def cpu_environment(binary):
+    prefix = Path(binary).parents[1]
+    return dict(os.environ, CUDA_VISIBLE_DEVICES='',
+        LD_LIBRARY_PATH=':'.join(str(prefix/p) for p in
+            ('lib64', 'dependencies/dbcsr/lib64', 'dependencies/libxs/lib'))+':'+os.environ.get('LD_LIBRARY_PATH', ''))
+
+
+def verify_ranks(case, mode, gpus, ranks, pe):
+    records = [json.loads(p.read_text()) for p in sorted(case.glob('rank-*.json'))]
+    require(len(records) == ranks and {r['rank'] for r in records} == set(range(ranks)), 'Missing rank trace')
+    used = set()
+    for record in records:
+        cores = {tuple(v) for v in record['cores'].values()}
+        require(len(cores) == pe and not cores & used, 'Overlapping or incorrect physical-core binding')
+        used |= cores
+    require(len(used) == gpus*4, 'Incorrect physical CPU quota')
+    assigned = [r['gpu'] for r in records]
+    require((len(set(assigned)) == gpus and all(assigned)) if mode == 'gpu' else not any(assigned), 'Incorrect GPU mapping')
+    return records
+
+
+def run_case(root, request, devices, name, mode, shape, ranks, threads, calibration=False, block=32):
+    case = root/'cases'/name
+    case.mkdir()
+    pe = request['gpus']*4//ranks
+    require(ranks*pe == request['gpus']*4 and threads <= pe, 'CPU oversubscription')
+    for filename in fixtures.DATA_HASHES:
+        shutil.copyfile(root/'fixtures'/filename, case/filename)
+    (case/'input.inp').write_text(input_text(mode, shape, calibration, block))
+    binary = request['gpu_binary'] if mode == 'gpu' else request['cpu_binary']
+    env = dict(os.environ, WATER_MODE=mode, WATER_GPU_UUIDS=json.dumps([d['uuid'] for d in devices]),
+               WATER_CORES_PER_RANK=str(pe), WATER_BINARY=binary, OMP_NUM_THREADS=str(threads),
+               OPENBLAS_NUM_THREADS=str(threads), OMP_PLACES='cores', OMP_PROC_BIND='close',
+               OMP_DYNAMIC='FALSE', OMP_MAX_ACTIVE_LEVELS='1')
+    if mode == 'cpu':
+        env['LD_LIBRARY_PATH'] = cpu_environment(binary)['LD_LIBRARY_PATH']
+    argv = ['mpirun', '-np', str(ranks), '--map-by', f'ppr:{ranks}:node:pe={pe}', '--bind-to', 'core',
+            '--report-bindings', 'python3', str(Path(__file__).with_name('rank.py')), '-i', 'input.inp']
+    write_json(case/'launch.json', dict(argv=argv, mode=mode, shape=shape, ranks=ranks, threads=threads,
+                                      physical_cores=ranks*pe, calibration=calibration, block=block))
+    print(f'START {name}: {math.prod(shape)} waters, {ranks} MPI x {threads} OMP, {mode}', flush=True)
+    peaks = {d['uuid']: 0.0 for d in devices}
+    samples = []
+    stop = None
+    started = time.monotonic()
+    with (case/'cp2k.log').open('w') as output, (case/'resources.jsonl').open('w') as stream:
+        process = subprocess.Popen(argv, cwd=case, env=env, stdout=output, stderr=subprocess.STDOUT, start_new_session=True)
+        try:
+            while process.poll() is None:
+                sample = resource_sample(case, devices)
+                samples.append(sample)
+                stream.write(json.dumps(sample, sort_keys=True)+'\n'); stream.flush()
+                for device in devices:
+                    memory = sample['gpus'][device['uuid']]['memory_mib']
+                    require(memory is not None, 'Missing GPU memory measurement')
+                    peaks[device['uuid']] = max(peaks[device['uuid']], memory)
+                if sample['cgroup'] and sample['cgroup']['used'] > .92*sample['cgroup']['limit']:
+                    stop = 'host_memory_limit'
+                if calibration and any(peaks[d['uuid']] > .86*d['total_mib'] for d in devices):
+                    stop = 'gpu_memory_guard'
+                if time.monotonic()-started > request['case_seconds']:
+                    stop = 'case_timeout'
+                if stop:
+                    os.killpg(process.pid, signal.SIGTERM)
+                    break
+                time.sleep(1)
+            try:
+                code = process.wait(timeout=20)
+            except subprocess.TimeoutExpired:
+                os.killpg(process.pid, signal.SIGKILL)
+                code = process.wait(timeout=20)
+        finally:
+            if process.poll() is None:
+                os.killpg(process.pid, signal.SIGKILL)
+                process.wait(timeout=20)
+    elapsed = time.monotonic()-started
+    (case/'elapsed.txt').write_text(str(elapsed)+'\n')
+    result = dict(name=name, mode=mode, shape=shape, waters=math.prod(shape), basis_functions=23*math.prod(shape),
+                  ranks=ranks, threads=threads, block=block, calibration=calibration, returncode=code, stop=stop,
+                  peak_gpu_mib=peaks, peak_gpu_fraction={d['uuid']: peaks[d['uuid']]/d['total_mib'] for d in devices},
+                  elapsed_seconds=elapsed, science_accepted=False)
+    cgroups = [s['cgroup'] for s in samples if s['cgroup']]
+    result['host_memory'] = max(cgroups, key=lambda c: c['used']) if cgroups else None
+    result['sampled_cpu_seconds'] = sum(max((p['cpu_seconds'] for s in samples for p in s['processes'] if p['rank'] == r), default=0)
+                                         for r in range(ranks))
+    result['average_physical_core_utilization'] = result['sampled_cpu_seconds']/elapsed/(4*request['gpus'])
+    write_json(case/'sample.json', result)  # Preserve diagnostics even on a parser/backend failure.
+    if code == 0 and not stop:
+        log = (case/'cp2k.log').read_text()
+        require('PROGRAM ENDED AT' in log and not re.search(r'\bABORT\b', log), 'Incomplete CP2K run')
+        result['timers'] = timers(log, mode)
+        result['bindings'] = verify_ranks(case, mode, request['gpus'], ranks, pe)
+        if mode == 'cpu':
+            pids = {r['pid'] for r in result['bindings']}
+            require(not any(p['pid'] in pids for s in samples for p in s['gpu_processes']), 'CPU calculation used a GPU')
+            result['no_gpu_compute_process_verified'] = True
+        if not calibration:
+            fixtures.CASES['scaling'] = dict(elements=['O', 'H', 'H']*math.prod(shape))
+            result.update(fixtures.parse_science(log, (case/'forces.xyz').read_text(), str(elapsed), 'scaling'))
+            result['science_accepted'] = True
+        result['scf_steps'] = [int(v) for v in re.findall(r'SCF run converged in\s+(\d+) steps', log)]
+    write_json(case/'sample.json', result)
+    print(f'FINISH {name}: rc={code}, stop={stop}, GPU fractions={list(result["peak_gpu_fraction"].values())}', flush=True)
+    return result
+
+
+def next_shape(waters, lower, upper, tried):
+    candidates = {(x, y, z) for x in range(3, 41) for y in range(x, min(x+3, 41))
+                  for z in range(y, min(x+3, 41)) if lower < x*y*z < upper and (x, y, z) not in tried}
+    return min(candidates, key=lambda s: abs(math.log(math.prod(s)/waters))) if candidates else None
+
+
+def calibrate(root, request, devices):
+    shape = tuple(request['shape'])
+    tried, results = set(), []
+    lower, upper = 0, 40**3+1
+    selected = None
+    reason = 'probe_limit'
+    for attempt in range(request['probes']):
+        tried.add(shape)
+        sample = run_case(root, request, devices, f'calibration-{attempt}', 'gpu', shape, request['gpus'], 4, True)
+        results.append(sample)
+        maximum = max(sample['peak_gpu_fraction'].values())
+        minimum = min(sample['peak_gpu_fraction'].values())
+        completed = sample['returncode'] == 0 and sample['stop'] is None and 'timers' in sample
+        if completed and minimum >= .60 and maximum <= .75:
+            selected, reason = sample, 'all_gpus_in_target'
+            break
+        if completed and maximum <= .75:
+            selected = sample
+            lower = max(lower, sample['waters'])
+            target = sample['waters']*min(1.5, max(1.12, math.sqrt(.675/max(maximum, .01))))
+        elif not completed and sample['stop'] not in ('host_memory_limit', 'gpu_memory_guard'):
+            reason = 'execution_failed'
+            break
+        else:
+            upper = min(upper, sample['waters'])
+            target = sample['waters']*.8
+        if upper < 40**3+1:
+            target = (lower+upper)/2
+        shape = next_shape(target, lower, upper, tried)
+        write_json(root/'results/calibration.json', dict(selected=selected, reason='in_progress', probes=results))
+        if shape is None:
+            reason = 'discrete_size_or_memory_limit'
+            break
+    report = dict(selected=selected, reason=reason, probes=results, performance_result=False,
+                  target_fraction=[.60, .75], scope='3 SCF steps, memory calibration only; full-run peak must be checked again')
+    write_json(root/'results/calibration.json', report)
+    require(selected is not None, 'No completed safe calibration point; inspect raw evidence')
+
+
+def compare(root, request, devices):
+    shape, gpus = request['shape'], request['gpus']
+    # CPU layouts all consume the full physical-core allocation. GPU uses one distinct card per rank.
+    trials = [('gpu', gpus, t, b) for b in (32, 64) for t in (4, 2, 1)]
+    trials += [('cpu', gpus*m, 4//m, 32) for m in (1, 2, 4)]
+    samples = []
+    reference = None
+    for i, (mode, ranks, threads, block) in enumerate(trials):
+        sample = run_case(root, request, devices, f'tune-{i}-{mode}', mode, shape, ranks, threads, block=block)
+        require(sample['science_accepted'], 'Tuning calculation failed')
+        if reference is None:
+            reference = sample
+        sample['comparison'] = fixtures.compare_science(sample, reference)
+        samples.append(sample)
+        write_json(root/'results/tuning.json', samples)
+    winners = {mode: min((s for s in samples if s['mode'] == mode), key=lambda s: s['cp2k_seconds']) for mode in ('gpu', 'cpu')}
+    measured = []
+    for repeat in range(4):  # First pair is an excluded warm-up after selecting the layouts.
+        for mode in (('gpu', 'cpu') if repeat % 2 == 0 else ('cpu', 'gpu')):
+            choice = winners[mode]
+            sample = run_case(root, request, devices, f'pair-{repeat}-{mode}', mode, shape,
+                              choice['ranks'], choice['threads'], block=choice['block'])
+            require(sample['science_accepted'], 'Measured calculation failed')
+            sample['comparison'] = fixtures.compare_science(sample, reference)
+            sample['warmup'] = repeat == 0
+            measured.append(sample)
+            write_json(root/'results/pairs.json', measured)
+    medians = {mode: statistics.median(s['cp2k_seconds'] for s in measured if s['mode'] == mode and not s['warmup']) for mode in winners}
+    write_json(root/'results/comparison.json', dict(request=request, selected_layouts=winners, samples=measured,
+        median_seconds=medians, cpu_over_gpu=medians['cpu']/medians['gpu'], scope='best among measured layouts; synthetic PBE water, standard diagonalization'))
+
+
+def smoke(root, request, devices):
+    gpus = request['gpus']
+    reference = run_case(root, request, devices, 'smoke-gpu', 'gpu', request['shape'], gpus, 4)
+    require(reference['science_accepted'], 'GPU smoke failed')
+    samples = [reference]
+    for multiplier in (1, 2, 4):
+        sample = run_case(root, request, devices, f'smoke-cpu-{multiplier}', 'cpu', request['shape'],
+                          gpus*multiplier, 4//multiplier)
+        require(sample['science_accepted'], 'CPU smoke failed')
+        sample['comparison'] = fixtures.compare_science(sample, reference)
+        samples.append(sample)
+    write_json(root/'results/smoke.json', dict(accepted=True, request=request, samples=samples,
+                                              performance_result=False))
+
+
+def describe_cpu(root, request):
+    binary = request['cpu_binary']
+    prefix = Path(binary).parents[1]
+    cache = (prefix/'share/sai/CMakeCache.txt').read_text()
+    require(re.search(r'^CP2K_USE_ACCEL:STRING=NONE$', cache, re.M), 'CPU build enables acceleration')
+    require((prefix/'share/sai/source-sha').read_text().strip() == SOURCE, 'CPU source differs')
+    for mode, executable in (('cpu', binary), ('gpu', request['gpu_binary'])):
+        env = cpu_environment(binary) if mode == 'cpu' else dict(os.environ)
+        env.update(OMP_NUM_THREADS='1', OPENBLAS_NUM_THREADS='1')
+        version = subprocess.check_output([executable, '--version'], env=env, text=True, stderr=subprocess.STDOUT, timeout=120)
+        (root/'results'/f'{mode}-version.txt').write_text(version)
+        parsed = fixtures.parse_version(version)
+        require('2026.2' in parsed['version'] and SOURCE[:10] in parsed['revision'], 'Wrong CP2K version/source')
+        if mode == 'cpu':
+            require(not {'offload_cuda', 'dbcsr_acc', 'cusolvermp'} & set(parsed['flags']), 'CPU binary has GPU features')
+        linked = subprocess.check_output(['ldd', executable], env=env, text=True, stderr=subprocess.STDOUT)
+        (root/'results'/f'{mode}-ldd.txt').write_text(linked)
+        require('not found' not in linked, 'Missing native library')
+        if mode == 'cpu':
+            require(not re.search(r'lib(?:cusolver|cublas|cufft|elpa|spla|cosma)', linked), 'CPU binary loads GPU math libraries')
+
+
+def submit(args):
+    require(args.gpus in POINTS[args.partition], 'Unsupported resource point')
+    require(re.fullmatch(r'[a-zA-Z0-9][a-zA-Z0-9._-]{0,80}', args.name), 'Unsafe run name')
+    root = ROOT/'runtime-tests'/('cp2k-water-'+args.name)
+    root.mkdir()
+    for folder in ('results', 'cases', 'fixtures', 'control', 'runtime'):
+        (root/folder).mkdir()
+    shutil.copytree(REPO/'deployment/cp2k-water-scaling', root/'control/deployment/cp2k-water-scaling',
+                    ignore=shutil.ignore_patterns('__pycache__'))
+    shutil.copytree(REPO/'controller', root/'control/controller', ignore=shutil.ignore_patterns('__pycache__'))
+    prefix = Path('/opt/apps/cp2k')/BUILD/args.partition
+    for filename, expected in fixtures.DATA_HASHES.items():
+        source = prefix/'share/cp2k/data'/filename
+        require(digest(source) == expected, 'Changed basis/potential data')
+        shutil.copyfile(source, root/'fixtures'/filename)
+    require((prefix/'share/sai/source-sha').read_text().strip() == SOURCE, 'Wrong installed source')
+    binary = prefix/'bin/cp2k.psmp'
+    shape = args.shape or ([4, 4, 4] if args.stage == 'smoke' else START[(args.partition, args.gpus)])
+    request = dict(partition=args.partition, gpus=args.gpus, physical_cores=4*args.gpus, stage=args.stage,
+        shape=shape, probes=args.probes, case_seconds=args.case_seconds,
+        source_sha=SOURCE, gpu_binary=str(binary), gpu_binary_sha256=digest(binary),
+        cpu_binary=args.cpu_binary, install_receipt_sha256=digest(prefix/'share/sai/deployment.json'))
+    if args.stage != 'calibrate':
+        require(args.cpu_binary, 'Native CPU binary is required')
+        require((Path(args.cpu_binary).parents[2]/'results/build-complete').is_file(), 'CPU build is incomplete')
+        request['cpu_binary_sha256'] = digest(args.cpu_binary)
+    if args.stage == 'compare':
+        require(args.calibration_run and args.cpu_smoke_run, 'Comparison needs calibration and CPU numerical acceptance')
+        calibration = Path(args.calibration_run)
+        proof = json.loads((calibration/'results/calibration.json').read_text())
+        previous = json.loads((calibration/'request.json').read_text())
+        require(proof['selected'] and list(proof['selected']['shape']) == list(shape), 'Size differs from calibration')
+        require(all(previous[k] == request[k] for k in ('partition', 'gpus', 'gpu_binary_sha256')), 'Calibration identity differs')
+        smoke_path = Path(args.cpu_smoke_run)/'results/smoke.json'
+        accepted = json.loads(smoke_path.read_text())
+        require(accepted['accepted'] and all(accepted['request'][k] == request[k] for k in
+                ('partition', 'cpu_binary_sha256', 'gpu_binary_sha256')), 'CPU acceptance differs')
+        request['calibration'] = dict(path=str(calibration), sha256=digest(calibration/'results/calibration.json'), reason=proof['reason'])
+        request['cpu_acceptance'] = dict(path=str(smoke_path), sha256=digest(smoke_path))
+    request['inputs'] = {str(p.relative_to(root)): digest(p) for f in ('control', 'fixtures')
+                         for p in (root/f).rglob('*') if p.is_file()}
+    write_json(root/'request.json', request)
+    qos = ('rush-1o2gpu' if args.partition == '4V100' else 'flood-1o2gpu') if args.gpus == 1 else 'rush-gpu'
+    command = ['sbatch', '--parsable', '--partition='+args.partition, '--qos='+qos,
+        '--nodes=1', '--ntasks='+str(args.gpus), '--gpus-per-node='+str(args.gpus),
+        '--time='+str(args.minutes), '--job-name=cp2k-water-'+args.name,
+        '--output='+str(root/'results/slurm-%j.log'), str(root/'control/deployment/cp2k-water-scaling/job.sbatch'), str(root)]
+    job = subprocess.check_output(command, text=True).strip()
+    require(job.isdigit(), 'Unexpected scheduler response')
+    (root/'job.id').write_text(job+'\n')
+    print(json.dumps(dict(job=job, run=str(root), stage=args.stage, partition=args.partition, gpus=args.gpus)))
+
+
+def execute(root):
+    request = json.loads((root/'request.json').read_text())
+    for name, expected in request['inputs'].items():
+        require(digest(root/name) == expected, 'Frozen input changed: '+name)
+    require(os.environ['SLURM_JOB_PARTITION'] == request['partition'], 'Wrong partition')
+    require(digest(request['gpu_binary']) == request['gpu_binary_sha256'], 'Installed GPU binary changed')
+    if request['stage'] != 'calibrate':
+        require(digest(request['cpu_binary']) == request['cpu_binary_sha256'], 'CPU binary changed')
+        describe_cpu(root, request)
+    devices = gpu_inventory()
+    require(len(devices) == request['gpus'], 'Wrong GPU allocation')
+    write_json(root/'results/devices.json', devices)
+    write_json(root/'results/environment.json', {k: v for k, v in os.environ.items() if k.startswith(('OMP_', 'OPENBLAS_', 'NCCL_', 'CUDA_', 'SLURM_', 'OMPI_', 'PRTE_'))})
+    {'calibrate': calibrate, 'compare': compare, 'smoke': smoke}[request['stage']](root, request, devices)
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    sub = parser.add_subparsers(dest='command', required=True)
+    p = sub.add_parser('submit')
+    p.add_argument('--name', required=True)
+    p.add_argument('--partition', choices=POINTS, required=True)
+    p.add_argument('--gpus', type=int, required=True)
+    p.add_argument('--stage', choices=('calibrate', 'compare', 'smoke'), default='calibrate')
+    p.add_argument('--shape', nargs=3, type=int)
+    p.add_argument('--cpu-binary')
+    p.add_argument('--calibration-run')
+    p.add_argument('--cpu-smoke-run')
+    p.add_argument('--probes', type=int, default=6)
+    p.add_argument('--case-seconds', type=int, default=1800)
+    p.add_argument('--minutes', type=int, default=180)
+    p = sub.add_parser('execute'); p.add_argument('root', type=Path)
+    args = parser.parse_args()
+    if args.command == 'submit':
+        submit(args)
+    else:
+        execute(args.root)
+
+
+if __name__ == '__main__':
+    main()
