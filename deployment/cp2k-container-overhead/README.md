@@ -114,3 +114,12 @@ allocations, add `--case water64-gpw` or `--case water216-ot` (12 calculations
 each), use different names, and pass the first allocation's hosts to the second
 submission's `--exclude NODE1,NODE2`. Each job allows up to four hours within the
 ordinary `flood-gpu` QoS; faster completion releases its allocation immediately.
+
+The [completed two-node report](../../docs/evidence/cp2k-container-multinode-20261021/README.md)
+contains all 24 calculations for 64-water OT/cuSOLVER and 216-water OT/ELPA,
+with independent remote/local raw revalidation. For 216 water, external wall
+medians were 223.874 s native and 224.633 s SIF (+0.34%); the paired delta
+median was -2.248 s. The 64-water case had a strong time trend in cuSOLVER
+calls, so its -7.13% median ratio is not evidence of container acceleration.
+All individual pairs, failed initial attempts and topology-copy provenance
+are preserved.

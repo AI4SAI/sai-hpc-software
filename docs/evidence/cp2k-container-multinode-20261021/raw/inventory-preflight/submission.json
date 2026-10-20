@@ -1,0 +1,14 @@
+{
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--partition=16V100",
+    "--qos=flood-gpu",
+    "--job-name=cp2k-sif-2n8g-ot",
+    "--output=/home/stardust/sai-hpc-software/runtime-tests/cp2k-container-multinode-20261021-16V100-2n8g/results/slurm-%j.log",
+    "/home/stardust/sai-hpc-software/runtime-tests/cp2k-container-multinode-20261021-16V100-2n8g/control/deployment/cp2k-container-overhead/multinode.sbatch",
+    "/home/stardust/sai-hpc-software/runtime-tests/cp2k-container-multinode-20261021-16V100-2n8g"
+  ],
+  "job": "1884418",
+  "request_sha256": "59ba3cfe2e281add362584a7a83cee9213f629e3c57a24cea9c9ff43f6f92da0"
+}

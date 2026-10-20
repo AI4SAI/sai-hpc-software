@@ -1,0 +1,72 @@
+{
+  "affinity": [
+    20,
+    21,
+    22,
+    23,
+    84,
+    85,
+    86,
+    87
+  ],
+  "binary": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/bin/cp2k.psmp",
+  "binary_dev": 56,
+  "cwd": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-container-multinode-20261021-16V100-2n8g-water216-r2/cases/water216-ot/warmup/native",
+  "cwd_dev": 4231993238,
+  "cwd_inode": 144115794421223098,
+  "environment": {
+    "CP2K_DATA_DIR": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/share/cp2k/data",
+    "CUDA_CACHE_PATH": "/home/stardust/sai-hpc-software/runtime/com-1884745/16v100n14/1/cuda",
+    "MKL_NUM_THREADS": "1",
+    "MPI_HOME": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+    "OMP_NUM_THREADS": "4",
+    "OMP_PLACES": "cores",
+    "OMP_PROC_BIND": "close",
+    "OMP_STACKSIZE": null,
+    "OPENBLAS_NUM_THREADS": "1",
+    "TMPDIR": "/home/stardust/sai-hpc-software/runtime/com-1884745/16v100n14/1",
+    "XDG_CACHE_HOME": "/home/stardust/sai-hpc-software/runtime/com-1884745/16v100n14/1/cache"
+  },
+  "euid": 1478400690,
+  "gpu": "GPU-26f79a3b-ed34-dd6e-0e32-8db765f18af2",
+  "host": "16v100n14",
+  "local_rank": 1,
+  "pid": 3695863,
+  "rank": 5,
+  "size": 8,
+  "topology": {
+    "20": [
+      0,
+      20
+    ],
+    "21": [
+      0,
+      21
+    ],
+    "22": [
+      0,
+      22
+    ],
+    "23": [
+      0,
+      23
+    ],
+    "84": [
+      0,
+      20
+    ],
+    "85": [
+      0,
+      21
+    ],
+    "86": [
+      0,
+      22
+    ],
+    "87": [
+      0,
+      23
+    ]
+  },
+  "uid": 1478400690
+}

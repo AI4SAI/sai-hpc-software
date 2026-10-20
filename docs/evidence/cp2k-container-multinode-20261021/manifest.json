@@ -1,0 +1,11 @@
+{
+  "runs": [
+    {"label": "water64", "run": "cp2k-container-multinode-20261021-16V100-2n8g-water64-r2", "job": "1884803", "state": "COMPLETED", "kind": "science"},
+    {"label": "water216", "run": "cp2k-container-multinode-20261021-16V100-2n8g-water216-r2", "job": "1884745", "state": "COMPLETED", "kind": "science"},
+    {"label": "water64-mount-check", "run": "cp2k-container-multinode-20261021-16V100-2n8g-water64", "job": "1884605", "state": "FAILED", "kind": "mount-check"},
+    {"label": "water216-mount-check", "run": "cp2k-container-multinode-20261021-16V100-2n8g-water216", "job": "1884614", "state": "FAILED", "kind": "mount-check"},
+    {"label": "inventory-preflight", "run": "cp2k-container-multinode-20261021-16V100-2n8g", "job": "1884418", "state": "FAILED", "kind": "inventory-preflight"},
+    {"label": "slots-preflight", "run": "cp2k-container-multinode-20261021-16V100-2n8g-r2", "job": "1884477", "state": "FAILED", "kind": "slots-preflight"},
+    {"label": "pilot", "run": "cp2k-container-multinode-20261021-16V100-2n8g-r3", "job": "1884535", "state": "CANCELLED", "kind": "pilot"}
+  ]
+}

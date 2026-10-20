@@ -54,6 +54,16 @@ shared CUDA library hashes on that node remain documented; another node passed
 the full retry without a workaround.
 [Container overhead measurements and complete evidence](evidence/cp2k-container-overhead-20261020/README.md).
 
+The two-node follow-up on 16V100 also passes: four V100s per node, eight MPI
+ranks and ordinary-user host-filesystem I/O. Jobs `1884803` and `1884745`
+completed all 24 calculations for 64-water OT/cuSOLVER and 216-water OT/ELPA.
+Independent remote/local revalidation agrees on 2,063 archived file hashes
+and raw results. The 216-water wall-time median ratio was +0.34% for SIF,
+with a -2.248 s paired delta median; no clear SIF performance loss appears
+in these five pairs. The 64-water -7.13% median ratio coincides with a strong
+time trend inside cuSOLVER and is not evidence of container acceleration.
+[Two-node measurements, all pairs and retained attempts](evidence/cp2k-container-multinode-20261021/README.md).
+
 Cross-account deployment now grants `saiuser01` read/traverse ACLs only on the
 blocked release/reference paths, with no added write access. The 2,415 required
 paths passed effective POSIX ACL checks; native checks write results, caches and
