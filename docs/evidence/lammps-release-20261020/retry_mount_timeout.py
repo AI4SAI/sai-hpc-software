@@ -69,11 +69,19 @@ def main():
         if path.exists() or path.is_symlink():
             raise ValueError('a candidate or export already exists')
     history = build / 'recovery-attempts' / PREVIOUS
-    history.mkdir(parents=True)
+    history.mkdir(parents=True, exist_ok=True)
     for name in ('request.json', 'job.id', 'job.sbatch', 'job-deepmd.sbatch'):
-        shutil.copyfile(build / name, history / name)
+        if (history / name).exists():
+            if (history / name).read_bytes() != (build / name).read_bytes():
+                raise ValueError('prior retry preparation differs from current run')
+        else:
+            shutil.copyfile(build / name, history / name)
     for name in ('status.json', 'deepmd-status.json', 'slurm-' + PREVIOUS + '.log'):
-        shutil.copyfile(build / 'results' / name, history / name)
+        if (history / name).exists():
+            if (history / name).read_bytes() != (build / 'results' / name).read_bytes():
+                raise ValueError('prior retry evidence differs from current run')
+        else:
+            shutil.copyfile(build / 'results' / name, history / name)
     (history / 'accounting.txt').write_text(accounting)
     fd = os.open(build / 'work.ext3', os.O_RDWR | os.O_NOFOLLOW)
     try:
@@ -85,7 +93,8 @@ def main():
             offset += len(data)
         checked = subprocess.run(['/usr/sbin/e2fsck', '-fn', '/proc/self/fd/' + str(fd)],
                                  pass_fds=(fd,), capture_output=True, text=True, timeout=180)
-        (history / 'pre-retry-fsck.log').write_text(checked.stdout + checked.stderr)
+        fsck_name = 'pre-retry-fsck-recheck.log' if (history / 'pre-retry-fsck.log').exists() else 'pre-retry-fsck.log'
+        (history / fsck_name).write_text(checked.stdout + checked.stderr)
         if checked.returncode != 0:
             raise ValueError('overlay failed read-only inspection; no repair or submission performed')
         before_digest = digest.hexdigest()
@@ -93,24 +102,38 @@ def main():
         # check found only stale free-space counters, despite exiting zero.
         # Keep the exact old image before preening the resumable workspace.
         archive = history / 'work.ext3.before-fsck'
-        execute(['cp', '--sparse=always', '--reflink=auto', '--', build / 'work.ext3', archive])
-        if checksum(archive) != before_digest:
-            raise ValueError('preserved image differs from the locked original')
-        archive.chmod(0o400)
-        repaired = subprocess.run(['/usr/sbin/e2fsck', '-pf', '/proc/self/fd/' + str(fd)],
-                                  pass_fds=(fd,), capture_output=True, text=True, timeout=180)
-        (history / 'repair-fsck.log').write_text(repaired.stdout + repaired.stderr)
-        if repaired.returncode not in (0, 1):
-            raise ValueError('automatic filesystem check failed; original image is preserved')
+        prepared_before = archive.exists()
+        if prepared_before:
+            if (archive.is_symlink() or archive.stat().st_mode & 0o222
+                    or not (history / 'post-repair-fsck.log').is_file()
+                    or any(word in (history / 'post-repair-fsck.log').read_text()
+                           for word in ('Fix?', ' wrong', 'WARNING', 'UNEXPECTED'))):
+                raise ValueError('existing preparation is incomplete or inconsistent')
+            before_digest = checksum(archive)
+        else:
+            execute(['cp', '--sparse=always', '--reflink=auto', '--', build / 'work.ext3', archive])
+            if checksum(archive) != before_digest:
+                raise ValueError('preserved image differs from the locked original')
+            archive.chmod(0o400)
+            repaired = subprocess.run(['/usr/sbin/e2fsck', '-pf', '/proc/self/fd/' + str(fd)],
+                                      pass_fds=(fd,), capture_output=True, text=True, timeout=180)
+            (history / 'repair-fsck.log').write_text(repaired.stdout + repaired.stderr)
+            if repaired.returncode not in (0, 1):
+                raise ValueError('automatic filesystem check failed; original image is preserved')
         checked = subprocess.run(['/usr/sbin/e2fsck', '-fn', '/proc/self/fd/' + str(fd)],
                                  pass_fds=(fd,), capture_output=True, text=True, timeout=180)
-        (history / 'post-repair-fsck.log').write_text(checked.stdout + checked.stderr)
+        fsck_name = 'post-repair-fsck-recheck.log' if prepared_before else 'post-repair-fsck.log'
+        (history / fsck_name).write_text(checked.stdout + checked.stderr)
         if checked.returncode != 0 or any(word in checked.stdout + checked.stderr
                                          for word in ('Fix?', ' wrong', 'WARNING', 'UNEXPECTED')):
             raise ValueError('filesystem still needs repair; original image is preserved')
         execute(['bash', '-n', build / 'job.sbatch'])
-        execute(['sbatch', '--test-only', build / 'job.sbatch'])
-        job = execute(['sbatch', '--hold', '--parsable', build / 'job.sbatch']).strip().split(';')[0]
+        # The completed predecessor has expired from scontrol's active job
+        # table. Its accounting was checked above; override only the stale
+        # afterok dependency while retaining singleton and the script bytes.
+        execute(['sbatch', '--test-only', '--dependency=singleton', build / 'job.sbatch'])
+        job = execute(['sbatch', '--hold', '--parsable', '--dependency=singleton',
+                       build / 'job.sbatch']).strip().split(';')[0]
         if not job.isdigit():
             raise ValueError('ambiguous held submission')
         retry = dict(previous_job=PREVIOUS, job=job, completed_deepmd_job=DEEPMD,
@@ -120,6 +143,7 @@ def main():
                      original_overlay_sha256=before_digest, original_overlay=str(archive),
                      overlay_sha256_before_retry=checksum(build / 'work.ext3'),
                      fsck='original archived; e2fsck -pf then clean read-only -fn',
+                     dependency_override='singleton; completed predecessor verified in sacct',
                      tool_sha256=checksum(Path(__file__)),
                      previous_attempt=str(history))
         with (build / 'retry-mount-timeout.json').open('x') as stream:

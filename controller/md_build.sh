@@ -124,6 +124,11 @@ for name in PATH LD_LIBRARY_PATH PYTHONPATH; do
   cleaned=()
   for component in "${components[@]}"; do
     [[ -n "$component" ]] || continue
+    # The minimal rootfs has real /bin and /sbin directories, unlike the
+    # merged-/usr host. Use the bound native OS paths in exported metadata.
+    if [[ "$name" == PATH ]]; then
+      case "$component" in /bin) component=/usr/bin ;; /sbin) component=/usr/sbin ;; esac
+    fi
     if [[ "$component" == /opt/apps/lammps || "$component" == /opt/apps/lammps/* ]]; then
       [[ "$component" == "$LAMMPS_PREFIX" || "$component" == "$LAMMPS_PREFIX/"* ]] || continue
     fi

@@ -69,6 +69,7 @@ case "$phase" in
     mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"
     ;;
   verify)
+    export TMPDIR=/runtime
     source "$LAMMPS_PREFIX/share/sai/runtime-env.sh"
     "$DEEPMD_PREFIX/bin/dp" --version
     "$DEEPMD_PREFIX/bin/python" /control/md_source_version.py verify-deepmd

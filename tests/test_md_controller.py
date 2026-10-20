@@ -173,6 +173,10 @@ class MDControllerTests(unittest.TestCase):
         final = next(line for line in script.splitlines() if 'md_container_entry.sh verify' in line)
         self.assertTrue(final.startswith('apptainer exec '))
         self.assertNotIn('--overlay', final)
+        self.assertNotIn('--fakeroot', shlex.split(final))
+        self.assertIn('--nv', shlex.split(final))
+        self.assertIn('--cleanenv', shlex.split(final))
+        self.assertIn(str(md.task('pinned-driver') / 'runtime') + ':/runtime:rw', shlex.split(final))
 
     def test_submit_records_both_staged_jobs_and_hashes(self):
         with tempfile.TemporaryDirectory() as temporary, patch.object(md, 'ROOT', Path(temporary)):
@@ -744,6 +748,22 @@ class MDControllerTests(unittest.TestCase):
         first = tracking.fingerprint(ROOT / 'controller')
         self.assertRegex(first, r'^[a-f0-9]{64}$')
         self.assertEqual(first, tracking.fingerprint(ROOT / 'controller'))
+
+    def test_exported_os_search_paths_work_with_unmerged_container_directories(self):
+        from md_relocate_audit import check_metadata, SITE_ROOTS
+        from native_module import _external_root
+        recipe = (ROOT / 'controller/md_build.sh').read_text()
+        cleanup = recipe.split('for name in PATH LD_LIBRARY_PATH PYTHONPATH; do\n', 1)[1].split('\ndone\n', 1)[0]
+        script = 'set -euo pipefail\nfor name in PATH LD_LIBRARY_PATH PYTHONPATH; do\n' + cleanup + '\ndone\n'
+        script += 'printf "%s\\n" "$PATH"\n'
+        result = subprocess.run(['/bin/bash', '-c', script], capture_output=True, text=True, check=True,
+                                env=dict(PATH='/usr/local/bin:/bin:/sbin', LD_LIBRARY_PATH='', PYTHONPATH=''))
+        self.assertEqual(result.stdout.strip(), '/usr/local/bin:/usr/bin:/usr/sbin')
+        # Validate the literal directory paths; do not let the test host's
+        # /bin -> /usr/bin symlink hide the minimal-image failure again.
+        for value in result.stdout.strip().split(':'):
+            _external_root(value)
+        check_metadata('export PATH=' + result.stdout.strip(), SITE_ROOTS)
 
     def test_runtime_and_build_require_new_package_and_native_configuration(self):
         recipe = (ROOT / 'controller/md_build.sh').read_text()

@@ -196,8 +196,8 @@ and recipe `296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097`:
 
 | Target | Workflow | DeePMD stage | LAMMPS stage |
 | --- | --- | --- | --- |
-| 16V100 | [39403084059](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39403084059) | `1877774`, completed in 14:01 | `1877775`, pre-entry image mount timeout; recovery below |
-| 4V100 | [39403117741](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39403117741) | `1877798`, completed in 7:42 | `1877799`, compiling Kokkos CUDA files at 93% at 18:38 Asia/Shanghai |
+| 16V100 | [39403084059](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39403084059) | `1877774`, completed in 14:01 | `1877775` failed before entry; retry `1879155` is compiling on `16v100n19` |
+| 4V100 | [39403117741](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39403117741) | `1877798`, completed in 7:42 | `1877799` compiled/installed, then failed during native metadata generation in 45:11 |
 
 Both installed wheels report exactly DeePMD 3.2.0. Both checkouts preserve the
 locked release tag/SHA, and live NVCC commands use GCC 14.3.0 and SM70.
@@ -228,3 +228,43 @@ repairs the filesystem and verifies it read-only, then submits the identical
 LAMMPS script on hold. It records the new handle before release. It retains
 the completed DeePMD stage, source/recipe identities and frozen controller.
 This recovery does not establish final-SIF or scientific acceptance.
+The [retry receipt](evidence/lammps-release-20261020/16v-mount-retry.json)
+records the archived and repaired image hashes and new job `1879155`.
+The completed predecessor had expired from Slurm's active job table, so
+submission overrides its obsolete `afterok` with `singleton` after checking
+the original `COMPLETED 0:0` accounting. The script bytes are unchanged.
+
+## Compiled 4V100 payload and native metadata recovery
+
+Job `1877799` completed LAMMPS compilation, linking, installation, feature
+parity and TF/PT/JAX scientific-fixture preparation. Its installed LAMMPS
+reports `20260930`, and DeePMD reports `3.2.0`. The
+[installed inventory comparison](evidence/lammps-release-20261020/4v-compiled-parity.json)
+passes with 71 packages and 2,473 styles, retaining the baseline's 70 packages
+and 2,197 styles. The backend set and PLUMED kernel also pass parity.
+These checks precede final-SIF runtime and scientific acceptance.
+
+Native metadata generation then rejected the container's literal `/bin` and
+`/sbin` runtime paths. These are real directories in the minimal rootfs, while
+the previous test host resolved them through merged-/usr symlinks. Exported
+PATH now uses `/usr/bin` and `/usr/sbin`. A regression validates the literal
+paths without relying on host symlinks. Final read-only SIF verification also
+omits fakeroot, whose injected `/.singularity.d/libs/libfakeroot.so` was visible
+in build-time `ldd`, and uses a home-backed `/runtime` for temporary files.
+Native-path allowlists and science/performance requirements stay enforced.
+
+The [216-test native-filesystem run](evidence/lammps-release-20261020/md-native-fix-tests.log)
+passes with two optional upstream-cache skips. Its initial staging attempt
+lacked workflow/inventory fixtures and inherited a group-writable umask;
+the complete rerun includes those fixtures and uses umask 022.
+
+The [export recovery tool](evidence/lammps-release-20261020/finish_native_export.py)
+uses the already compiled image's unchanged source and recipe identities.
+The original image is read-only; a separately hashed clone receives only
+filesystem preparation and runtime metadata fixes. It reuses the qualified
+CP2K work-directory inspector, records hashes of compiled ELF files before
+and after metadata changes, writes native manifests through the same shared
+validator, and runs the frozen final-SIF verifier without fakeroot. No compiler
+command is present in this recovery. New normal builds include the fixes in
+their recipe; the current compiled payload is explicitly recorded as a
+metadata recovery of recipe `296ed3baa11b`.

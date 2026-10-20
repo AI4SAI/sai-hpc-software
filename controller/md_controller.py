@@ -122,10 +122,15 @@ def render(request, run_id, jobs=None, minutes=None, overlay_mb=32768,
         sources = [(ROOT / 'cache/repositories' / name, '/input/' + name) for name in plan['sources']]
         argv = container_command(result if final else image, command, overlay=None if final else overlay,
                                  control=CONTROL, jobs=jobs, gpu=True,
+                                 runtime=r / 'runtime' if final else None,
                                  extra_binds=[*site_app_binds('lammps'), *(sources if not final else [])])
         # Reuse the checksum-pinned driver already qualified for CP2K. Its
         # independent copy in ROOT/cache/tools keeps the MD run-path contract.
-        return argv if final else image_driver_command(ROOT, r, CONTROL, argv)
+        if final:
+            # A read-only SIF needs no fake ownership. Fakeroot injects its
+            # private libfakeroot.so into ldd and contaminates native auditing.
+            return [argument for argument in argv if argument != '--fakeroot']
+        return image_driver_command(ROOT, r, CONTROL, argv)
     emit = image_driver_command(ROOT, r, CONTROL, container_command(
         image, ['/usr/bin/cat', '/workspace/final.squashfs'],
         overlay=str(overlay) + ':ro', jobs=jobs))
