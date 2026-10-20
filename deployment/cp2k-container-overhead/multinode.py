@@ -100,9 +100,9 @@ def parse(folder, case, reference):
     return result
 
 
-def summaries(samples):
+def summaries(samples, cases=CASES):
     result = {}
-    for case in CASES:
+    for case in cases:
         entry = {}
         for metric in ('elapsed_seconds', 'cp2k_seconds', 'max_rank_wall_seconds'):
             values = {mode: [samples[f'{case}/{i}/{mode}'][metric] for i in range(REPEATS)]
@@ -135,6 +135,8 @@ def inventories(root, request):
 
 def execute(root):
     request = json.loads((root/'request.json').read_text())
+    cases = request['cases']
+    require(cases and set(cases) <= set(CASES), 'Unsupported workload selection')
     require(os.getuid() == os.geteuid() == request['uid'] != 0, 'Unexpected executing user')
     require(os.environ['SLURM_JOB_PARTITION'] == '16V100' and os.environ['SAI_CP2K_PREFIX'] == request['prefix'],
             'Wrong partition or public module')
@@ -170,7 +172,7 @@ def execute(root):
     probes = check_probes(root, request, inventory)
     print('MATCHED_TWO_NODES_EIGHT_GPUS_EXECUTABLE_LIBRARIES_AND_HOST_FILESYSTEM', flush=True)
     samples, placements = {}, {}
-    for case in CASES:
+    for case in cases:
         for repeat, mode in common.schedule(case, REPEATS):
             key = f'{case}/{repeat}/{mode}'
             folder = root/'cases'/key
@@ -185,7 +187,7 @@ def execute(root):
             print('DONE', key, 'wall=', sample['elapsed_seconds'], 'cp2k=', sample['cp2k_seconds'], flush=True)
     require(common.signature(Path(request['image'])) == request['image_stat'], 'SIF changed during experiment')
     result = dict(passed=True, request=request, inventory=inventory, probes=probes,
-                  samples=samples, placements=placements, summary=summaries(samples))
+                  samples=samples, placements=placements, summary=summaries(samples, cases))
     result['files'] = {str(p.relative_to(root)): checksum(p) for p in root.rglob('*') if p.is_file() and
         (p.suffix in ('.json', '.txt', '.inp', '.py', '.xml') or p.name in ('cp2k.log', 'forces.xyz'))}
     write(root/'results/evidence.json', result)
@@ -193,7 +195,7 @@ def execute(root):
     print(MARKER, flush=True)
 
 
-def submit(parent, ot_parent, name):
+def submit(parent, ot_parent, name, cases=CASES, exclude=None):
     request = json.loads((parent/'request.json').read_text())
     require(request['partition'] == '16V100' and os.getuid() == request['uid'] != 0, 'Use the accepted ordinary-user 16V100 parent')
     require((parent/'results/passed.txt').read_text().strip() == common.MARKER, 'Parent benchmark did not pass')
@@ -229,14 +231,18 @@ def submit(parent, ot_parent, name):
     shutil.copyfile(ot_parent/'fixtures/ot-elpa.inp', root/'fixtures/water216-ot.inp')
     request.update(profile='two-node-four-gpus-ot', parent_run=str(parent), ot_parent_run=str(ot_parent),
                    nodes=2, ranks=8, ranks_per_node=4, gpus_per_node=4, threads=4,
-                   cases=list(CASES), paired_repeats=REPEATS, image_stat=common.signature(Path(request['image'])),
+                   cases=list(cases), paired_repeats=REPEATS, image_stat=common.signature(Path(request['image'])),
                    scope='Two nodes, four MPI ranks/GPUs per node, four physical cores per rank; physical host home I/O',
                    inputs={str(p.relative_to(root)): checksum(p) for p in root.rglob('*') if p.is_file()})
     request.pop('version_repeats', None)
     write(root/'request.json', request)
     command = ['sbatch', '--parsable', '--partition=16V100', '--qos=flood-gpu',
-               '--job-name=cp2k-sif-2n8g-ot', '--output='+str(root/'results/slurm-%j.log'),
-               str(destination/'multinode.sbatch'), str(root)]
+               '--job-name=cp2k-sif-2n8g-'+('both' if len(cases) == 2 else cases[0]),
+               '--output='+str(root/'results/slurm-%j.log')]
+    if exclude:
+        require(re.fullmatch(r'16v100n\d+(?:,16v100n\d+)*', exclude), 'Invalid excluded 16V100 node list')
+        command.append('--exclude='+exclude)
+    command += [str(destination/'multinode.sbatch'), str(root)]
     job = subprocess.check_output(command, text=True).strip().split(';')[0]
     require(job.isdigit(), 'Invalid submitted job')
     (root/'job.id').write_text(job+'\n')
@@ -246,6 +252,8 @@ def submit(parent, ot_parent, name):
 
 def verify(root):
     request = json.loads((root/'request.json').read_text())
+    cases = request['cases']
+    require(cases and set(cases) <= set(CASES), 'Unsupported workload selection')
     recorded = json.loads((root/'results/evidence.json').read_text())
     require(recorded['passed'] and recorded['request'] == request, 'Changed request or incomplete experiment')
     require((root/'results/passed.txt').read_text().strip() == MARKER, 'Missing completion marker')
@@ -260,7 +268,7 @@ def verify(root):
     references = {case: json.loads((root/name).read_text()) for case, name in
                   [('water64-gpw', 'reference.json'), ('water216-ot', 'reference216.json')]}
     samples = {}
-    for case in CASES:
+    for case in cases:
         for repeat, mode in common.schedule(case, REPEATS):
             key = f'{case}/{repeat}/{mode}'
             folder = root/'cases'/key
@@ -271,10 +279,10 @@ def verify(root):
             sample['comparison_to_native_warmup'] = common.science.compare_science(sample, samples[f'{case}/warmup/native'])
             require(sample['scf_steps'] == samples[f'{case}/warmup/native']['scf_steps'], 'Different SCF work')
             require(sample == recorded['samples'][key], 'Raw scientific/timing reparse differs')
-    require(set(samples) == set(recorded['samples']) and summaries(samples) == recorded['summary'], 'Changed timing summary')
+    require(set(samples) == set(recorded['samples']) and summaries(samples, cases) == recorded['summary'], 'Changed timing summary')
     return dict(passed=True, job=job, partition=row[1], state=row[2], exit_code=row[3], elapsed=row[4],
                 nodes=sorted(inventory), ranks=8, gpus_per_node=4, uid=request['uid'], user=request['user'],
-                science_calculations=len(samples), summary=summaries(samples),
+                science_calculations=len(samples), summary=summaries(samples, cases),
                 max_energy_delta_ha=max(v['comparison_to_native_warmup']['energy_delta_ha'] for v in samples.values()),
                 max_force_delta_ha_bohr=max(v['comparison_to_native_warmup']['max_force_delta_ha_bohr'] for v in samples.values()))
 
@@ -285,10 +293,12 @@ if __name__ == '__main__':
     parser.add_argument('run', type=Path)
     parser.add_argument('--ot-parent', type=Path)
     parser.add_argument('--name')
+    parser.add_argument('--case', choices=CASES)
+    parser.add_argument('--exclude', help='Comma-separated 16V100 nodes used by another benchmark')
     args = parser.parse_args()
     if args.op == 'submit':
         require(args.ot_parent is not None and args.name, 'Submission requires both reference parents and a unique name')
-        submit(args.run, args.ot_parent, args.name)
+        submit(args.run, args.ot_parent, args.name, (args.case,) if args.case else CASES, args.exclude)
     elif args.op == 'execute':
         execute(args.run)
     else:

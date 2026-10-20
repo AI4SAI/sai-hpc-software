@@ -107,5 +107,10 @@ external MPI wall time are recorded separately. All temporary files remain in
 the project home. Full SIF hashing occurs before submission, outside timing.
 
 After completion, save accounting as described above and run the frozen
-`multinode.py verify RUN`. It reparses all 24 calculations, convergence, energies,
+`multinode.py verify RUN`. It reparses all selected calculations, convergence, energies,
 forces, SCF iteration counts and rank/resource evidence before reporting timings.
+Both sizes together produce 24 calculations. To run them concurrently in separate
+allocations, add `--case water64-gpw` or `--case water216-ot` (12 calculations
+each), use different names, and pass the first allocation's hosts to the second
+submission's `--exclude NODE1,NODE2`. Each job allows up to four hours within the
+ordinary `flood-gpu` QoS; faster completion releases its allocation immediately.

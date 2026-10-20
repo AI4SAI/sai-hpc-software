@@ -87,6 +87,14 @@ class MultinodeOverheadTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'placement changed'):
             multi.same_placement(actual, baseline)
 
+    def test_separate_workload_job_requires_only_its_own_samples(self):
+        samples = {f'water216-ot/{i}/{mode}': dict(elapsed_seconds=100+extra,
+                    cp2k_seconds=90, max_rank_wall_seconds=99+extra)
+                   for i in range(5) for mode, extra in [('native', 0), ('sif', 1)]}
+        result = multi.summaries(samples, ['water216-ot'])
+        self.assertEqual(set(result), {'water216-ot'})
+        self.assertEqual(result['water216-ot']['elapsed_seconds']['paired_delta_median'], 1)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -3,7 +3,7 @@
 #SBATCH --ntasks=8
 #SBATCH --ntasks-per-node=4
 #SBATCH --gpus-per-node=4
-#SBATCH --time=01:30:00
+#SBATCH --time=04:00:00
 #SBATCH --export=ALL
 set -eo pipefail
 run=${1:?frozen experiment directory}
