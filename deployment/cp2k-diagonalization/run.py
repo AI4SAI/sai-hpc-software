@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Compare cuSOLVER direct F/T, ELPA and PBE OT using one accepted CP2K SIF."""
+"""Compare diagonalization or OT backends using one accepted CP2K SIF."""
 import argparse
 import hashlib
 import json
@@ -21,6 +21,7 @@ from remote_controller import safe_name
 ROOT = Path('/home/stardust/sai-hpc-software')
 SOURCE = '67b5da876dd6a76b8b021d5a04d1c81ba79a4c50'
 MODES = ('cusolver-standard', 'cusolver-direct', 'elpa', 'ot')
+PROFILES = {'diagonalization': MODES, 'ot-backends': ('ot-cusolver', 'ot-elpa')}
 
 
 def require(value, message):
@@ -36,8 +37,23 @@ def write_json(path, value):
     path.write_text(json.dumps(value, indent=2, sort_keys=True)+'\n')
 
 
+def experiment_modes(request):
+    return PROFILES[request.get('profile', 'diagonalization')]
+
+
+def comparison_ratio(medians):
+    if 'ot-cusolver' in medians:
+        return {'elpa_over_cusolver': medians['ot-elpa']/medians['ot-cusolver']}
+    return {'standard_over_direct': medians['cusolver-standard']/medians['cusolver-direct']}
+
+
+def pass_marker(request):
+    return ('CP2K_OT_BACKEND_COMPARISON_PASS' if request.get('profile') == 'ot-backends'
+            else 'CP2K_DIRECT_COMPARISON_PASS')
+
+
 def input_text(mode, edge):
-    require(mode in MODES and edge in (4, 6), 'Unsupported experiment')
+    require(mode in (*MODES, *PROFILES['ot-backends']) and edge in (4, 6), 'Unsupported experiment')
     text = fixtures.water_input()
     coords = []
     for x in range(edge):
@@ -48,13 +64,13 @@ def input_text(mode, edge):
     text = text.replace(fixtures.WATER_COORDINATES, ''.join(coords))
     text = text.replace('ABC 12.0 12.0 12.0', 'ABC '+ ' '.join([f'{3.1*edge:.1f}']*3))
     text = text.replace('PERIODIC NONE', 'PERIODIC XYZ').replace('POISSON_SOLVER MT', 'POISSON_SOLVER PERIODIC')
-    backend = 'ELPA' if mode == 'elpa' else 'CUSOLVER'
+    backend = 'ELPA' if mode in ('elpa', 'ot-elpa') else 'CUSOLVER'
     controls = (f'  PREFERRED_DIAG_LIBRARY {backend}\n'
                 f'  DIRECT_GENERALIZED_DIAGONALIZATION {"T" if mode == "cusolver-direct" else "F"}\n'
                 '  ELPA_NEIGVEC_MIN 1\n  ELPA_PRINT T\n'
                 '  &TIMINGS\n    THRESHOLD 0\n    TIMINGS_LEVEL 1\n  &END TIMINGS\n')
     text = text.replace('  RUN_TYPE ENERGY_FORCE\n', '  RUN_TYPE ENERGY_FORCE\n'+controls)
-    if mode != 'ot':
+    if mode not in ('ot', 'ot-cusolver', 'ot-elpa'):
         start = text.index('      &OT ON\n')
         end = text.index('      &END OT\n', start)+len('      &END OT\n')
         text = text[:start]+('      CHOLESKY RESTORE\n      LEVEL_SHIFT 0\n'
@@ -90,8 +106,13 @@ def parse_sample(folder, mode, edge):
         require(called('eigensolver') and called('cp_fm_diag_cusolver'), 'Standard cuSOLVER was not executed')
     elif mode == 'elpa':
         require(called('cp_fm_diag_elpa') or called('cp_fm_diag_elpa_base'), 'ELPA was not executed')
-    elif mode == 'ot':
+    elif mode in ('ot', 'ot-cusolver', 'ot-elpa'):
         require(any(name.startswith('ot_') and row['calls'] > 0 for name, row in timers.items()), 'OT was not executed')
+        if mode != 'ot':
+            elpa_called = called('cp_fm_diag_elpa') or called('cp_fm_diag_elpa_base')
+            require((called('cp_fm_diag_cusolver'), elpa_called) ==
+                    ((True, False) if mode == 'ot-cusolver' else (False, True)),
+                    'OT eigensolver backend differs from the requested comparison')
     sample['timers'] = timers
     sample['scf_steps'] = [int(n) for n in re.findall(r'SCF run converged in\s+(\d+) steps', log)]
     return sample
@@ -143,11 +164,13 @@ def submit(args):
                                        'show', fixtures.FIXTURE_REVISION+':data/'+name])
         require(hashlib.sha256(data).hexdigest() == expected, 'Scientific data changed')
         (root/'fixtures'/name).write_bytes(data)
-    for mode in MODES:
+    modes = PROFILES[args.profile]
+    for mode in modes:
         (root/'fixtures'/(mode+'.inp')).write_text(input_text(mode, args.edge))
     request = dict(build_run=args.build_run, artifact=str(artifact), artifact_sha256=manifest['sha256'],
                    identity=identity, science=manifest['cp2k_science'], edge=args.edge, waters=args.edge**3,
-                   repeats=args.repeats, omp_threads=3 if identity['partition']=='8V100V0' else 4,
+                   repeats=args.repeats, profile=args.profile,
+                   omp_threads=3 if identity['partition']=='8V100V0' else 4,
                    ranks=1, nodes=1, gpus=1)
     request['inputs'] = {str(p.relative_to(root)): digest(p) for tree in ('control','fixtures')
                          for p in (root/tree).rglob('*') if p.is_file()}
@@ -163,6 +186,7 @@ def submit(args):
 
 def execute(root):
     request = json.loads((root/'request.json').read_text())
+    modes = experiment_modes(request)
     for name, expected in request['inputs'].items():
         require(digest(root/name) == expected, 'Frozen experiment changed: '+name)
     artifact, manifest = accepted_artifact(request['build_run'])
@@ -180,10 +204,9 @@ def execute(root):
         subprocess.run(mpi+['--version'], cwd=version, env=env, stdout=stream, stderr=subprocess.STDOUT, check=True, timeout=120)
     require('2026.2' in (version/'cp2k.log').read_text(), 'Wrong executable version')
     samples = {}
-    order = [('warmup', mode) for mode in MODES]
+    order = [('warmup', mode) for mode in modes]
     for repeat in range(request['repeats']):
-        modes = MODES if repeat % 2 == 0 else tuple(reversed(MODES))
-        order.extend((str(repeat), mode) for mode in modes)
+        order.extend((str(repeat), mode) for mode in (modes if repeat % 2 == 0 else tuple(reversed(modes))))
     write_json(root/'results/order.json', order)
     for repeat, mode in order:
         case = root/'cases'/(repeat+'-'+mode)
@@ -212,23 +235,25 @@ def execute(root):
         require(memory, 'Missing GPU sampling')
         sample['sampled_gpu_memory_max_mib'] = max(memory)
         if samples:
-            sample['comparison'] = fixtures.compare_science(sample, samples['warmup-cusolver-standard'])
+            sample['comparison'] = fixtures.compare_science(sample, samples['warmup-'+modes[0]])
         write_json(case/'sample.json', sample)
         samples[case.name] = sample
         print(f'CP2K_TUNING_PASS {repeat} {mode} compute={sample["cp2k_seconds"]}', flush=True)
     report = dict(request=request, samples=samples, scope='one node, one MPI rank, one V100; CP2K internal total time')
     report['median_seconds'] = {mode: statistics.median(samples[str(r)+'-'+mode]['cp2k_seconds']
-                                   for r in range(request['repeats'])) for mode in MODES}
-    report['standard_over_direct'] = report['median_seconds']['cusolver-standard']/report['median_seconds']['cusolver-direct']
+                                   for r in range(request['repeats'])) for mode in modes}
+    report.update(comparison_ratio(report['median_seconds']))
     report['files'] = {str(p.relative_to(root)): digest(p) for p in root.rglob('*')
                        if p.is_file() and (p.name in ('cp2k.log','forces.xyz','input.inp','gpu.csv','affinity.txt',
-                                                     'topology.txt','rank.json','elapsed.txt','sample.json','request.json'))}
+                                                     'topology.txt','rank.json','elapsed.txt','sample.json','request.json',
+                                                     *fixtures.DATA_HASHES))}
     write_json(root/'results/evidence.json', report)
-    (root/'results/passed.txt').write_text('CP2K_DIRECT_COMPARISON_PASS\n')
+    (root/'results/passed.txt').write_text(pass_marker(request)+'\n')
 
 
 def validate(root):
     request = json.loads((root/'request.json').read_text())
+    modes = experiment_modes(request)
     recorded = json.loads((root/'results/evidence.json').read_text())
     require(recorded['request'] == request, 'Experiment identity changed')
     for name, expected in {**request['inputs'], **recorded['files']}.items():
@@ -238,10 +263,10 @@ def validate(root):
     rows = [row for row in entries if row[0] == job]
     require(len(rows) == 1 and rows[0][1] == request['identity']['partition'] and rows[0][2:4] == ['COMPLETED','0:0'],
             'Experiment job did not complete successfully')
-    require((root/'results/passed.txt').read_text().strip() == 'CP2K_DIRECT_COMPARISON_PASS', 'Missing completed experiment')
-    order = [('warmup', mode) for mode in MODES]
+    require((root/'results/passed.txt').read_text().strip() == pass_marker(request), 'Missing completed experiment')
+    order = [('warmup', mode) for mode in modes]
     for repeat in range(request['repeats']):
-        order += [(str(repeat), mode) for mode in (MODES if repeat%2==0 else tuple(reversed(MODES)))]
+        order += [(str(repeat), mode) for mode in (modes if repeat%2==0 else tuple(reversed(modes)))]
     require(json.loads((root/'results/order.json').read_text()) == [list(row) for row in order], 'Run order differs')
     samples = {}
     for repeat, mode in order:
@@ -253,15 +278,15 @@ def validate(root):
         rank = check_rank(folder,request)
         require(rank['host'].split('.')[0] == rows[0][5], 'Unexpected compute node')
         if samples:
-            sample['comparison'] = fixtures.compare_science(sample,samples['warmup-cusolver-standard'])
+            sample['comparison'] = fixtures.compare_science(sample,samples['warmup-'+modes[0]])
         samples[folder.name] = sample
     medians = {mode:statistics.median(samples[str(r)+'-'+mode]['cp2k_seconds'] for r in range(request['repeats']))
-               for mode in MODES}
+               for mode in modes}
     require(medians == recorded['median_seconds'], 'Recorded medians differ from raw timings')
     return dict(job_id=job,partition=rows[0][1],state=rows[0][2],exit_code=rows[0][3],elapsed=rows[0][4],node=rows[0][5],
                 identity=request['identity'],artifact_sha256=request['artifact_sha256'],waters=request['waters'],
                 mode='one warmup and three alternating repetitions' if request['repeats']==3 else 'one warmup and five alternating repetitions',
-                median_seconds=medians,standard_over_direct=medians['cusolver-standard']/medians['cusolver-direct'],
+                median_seconds=medians,**comparison_ratio(medians),
                 max_energy_delta_ha=max(s.get('comparison',{}).get('energy_delta_ha',0) for s in samples.values()),
                 max_force_delta_ha_bohr=max(s.get('comparison',{}).get('max_force_delta_ha_bohr',0) for s in samples.values()),
                 samples=samples,scope=recorded['scope'])
@@ -275,6 +300,7 @@ if __name__ == '__main__':
     command.add_argument('--name', required=True)
     command.add_argument('--edge', type=int, choices=(4, 6), default=6)
     command.add_argument('--repeats', type=int, choices=(3, 5), default=3)
+    command.add_argument('--profile', choices=tuple(PROFILES), default='diagonalization')
     command = commands.add_parser('execute')
     command.add_argument('run', type=Path)
     command = commands.add_parser('verify')
