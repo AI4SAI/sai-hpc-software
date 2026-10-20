@@ -113,3 +113,38 @@ local checkout cannot enforce `chmod 0755` (observed `0777`), so its two
 permission-sensitive export failures were checked on the native filesystem,
 without weakening the export policy. These are controller checks, not release
 compilation or acceptance results.
+
+## First live release canary and version fix
+
+[Workflow 39384172116](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39384172116)
+ran commit `c6611e6` and recipe
+`2a57ec0f43aaee1f2a4d5d5b006a0d343728c6cd0afcd0c90c0535c0011bcfbe`.
+GitHub validation passed 840 tests (two optional upstream-cache skips), then
+resolved the intended stable pair. DeePMD job `1873708` completed on
+`16v100n14`; LAMMPS job `1873709` was submitted with `afterok` and waits for
+its four-GPU allocation. Both stages keep their frozen controller and overlay.
+[The receipt](evidence/lammps-release-20261020/first-build-progress.json)
+records actual source identities, accounting and compiler messages.
+
+The live build exposed missing release tags in the commit-only source
+transport: the correct DeePMD 3.2.0 source was installed with the fallback
+Python version `0.1.dev1+g8cfd46e37`. This first canary is retained for compile
+diagnostics. Its Actions workflow was intentionally cancelled to prevent its
+automatic acceptance/publication chain; the already submitted Slurm build
+jobs continue. No frozen recipe, old overlay or installation identity is
+silently rewritten.
+
+The corrected recipe restores a local lightweight tag only after checking
+that the checkout equals the commit resolved from the upstream release tag.
+It rejects conflicting tags, does not tag development snapshots, and checks
+the actual installed DeePMD distribution version after wheel installation
+and again in the final SIF. The source tree is unchanged. Build job names
+include their run ID so Slurm's `singleton` does not serialize unrelated
+partition builds. The corrected release starts on 4V100 while the original
+16V100 diagnostic continues; each partition still compiles natively.
+
+[The corrected MD regression run](evidence/lammps-release-20261020/md-tests-release-tags.log)
+passed 214 tests with the two optional upstream-cache skips. A metadata-only
+checkout of the actual locked DeePMD commit also confirmed that the restored
+tag makes the site's `setuptools_scm` report exactly `3.2.0`:
+[upstream version preflight](evidence/lammps-release-20261020/upstream-version-preflight.json).

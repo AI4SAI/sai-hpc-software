@@ -1,0 +1,123 @@
+{
+  "observed_at": "2026-10-20T08:40:36.977947+00:00",
+  "request": {
+    "controller": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/controller/c6611e6343b4177aa57b020fc716d1f3c4c53fdb/md-39384172116-1-2026-10-20-5fef92e054bacdaf",
+    "delivery": {
+      "identities": {
+        "deepmd-kit": {
+          "build_id": "v3.2.0-g8cfd46e37448-r2a57ec0f43aa-s4abbad547102",
+          "cpu_arch": "znver3",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r2a57ec0f43aa-s4abbad547102/16V100",
+          "partition": "16V100",
+          "recipe_sha256": "2a57ec0f43aaee1f2a4d5d5b006a0d343728c6cd0afcd0c90c0535c0011bcfbe",
+          "repository": "deepmodeling/deepmd-kit",
+          "schema": 2,
+          "software": "deepmd-kit",
+          "source_ref": "v3.2.0",
+          "source_sha": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+          "source_version": "v3.2.0",
+          "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+          "stack_sources": {
+            "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+            "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+          },
+          "target": "16v100-avx2",
+          "track": "release",
+          "version_label": "v3.2.0"
+        },
+        "lammps": {
+          "build_id": "stable_30Sep2026-g8de817dd79bf-r2a57ec0f43aa-s4abbad547102",
+          "cpu_arch": "znver3",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r2a57ec0f43aa-s4abbad547102/16V100",
+          "partition": "16V100",
+          "recipe_sha256": "2a57ec0f43aaee1f2a4d5d5b006a0d343728c6cd0afcd0c90c0535c0011bcfbe",
+          "repository": "lammps/lammps",
+          "schema": 2,
+          "software": "lammps",
+          "source_ref": "stable_30Sep2026",
+          "source_sha": "8de817dd79bfe4525d5d39246a212d833e6dee07",
+          "source_version": "stable_30Sep2026",
+          "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+          "stack_sources": {
+            "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+            "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+          },
+          "target": "16v100-avx2",
+          "track": "release",
+          "version_label": "stable_30Sep2026"
+        }
+      },
+      "plan": {
+        "schema": 2,
+        "selection_sha256": "5fef92e054bacdaf6188e7f90dc2ba546606c112bcdf72742082901a41f6e431",
+        "sources": {
+          "deepmd-kit": {
+            "ref": "v3.2.0",
+            "repository": "deepmodeling/deepmd-kit",
+            "sha": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+            "track": "release",
+            "version": "v3.2.0"
+          },
+          "lammps": {
+            "ref": "stable_30Sep2026",
+            "repository": "lammps/lammps",
+            "sha": "8de817dd79bfe4525d5d39246a212d833e6dee07",
+            "track": "release",
+            "version": "stable_30Sep2026"
+          }
+        },
+        "target": "16v100-avx2",
+        "triggers": [
+          {
+            "companion_selection": "same_track",
+            "software": "lammps",
+            "track": "release"
+          }
+        ],
+        "version": "dp-release-8cfd46e37448-lmp-release-8de817dd79bf"
+      },
+      "recipe_sha256": "2a57ec0f43aaee1f2a4d5d5b006a0d343728c6cd0afcd0c90c0535c0011bcfbe",
+      "schema": 2
+    },
+    "job_script_sha256": "d5c716d114a52c1bb60fb106718b60b3c5ee3ef283098029cefeee94007c3a52",
+    "run_id": "md-39384172116-1-2026-10-20-5fef92e054bacdaf",
+    "stage_job_script_sha256": {
+      "deepmd": "0d967d5593dd73749338c1c5c8d7f320b149e9dd4a25ab5daaca67f0c5a0d03b",
+      "lammps": "d5c716d114a52c1bb60fb106718b60b3c5ee3ef283098029cefeee94007c3a52"
+    },
+    "stage_jobs": {
+      "deepmd": "1873708",
+      "lammps": "1873709"
+    }
+  },
+  "accounting": "JobID|Partition|State|ExitCode|Elapsed|AllocCPUS|NodeList\n1873708|16V100|COMPLETED|0:0|01:07:05|8|16v100n14\n1873709|16V100|RUNNING|0:0|00:01:28|32|16v100n74\n",
+  "compiler_and_version": [
+    "MD_BUILD_RESOURCES stage=deepmd gpus=1 jobs=6 allocated_cpus=8",
+    "MD_COMPILER CC=/opt/devtools/gcc/14.3.0/bin/gcc version=14.3.0",
+    "MD_COMPILER CXX=/opt/devtools/gcc/14.3.0/bin/g++ version=14.3.0",
+    "MD_COMPILER FC=/opt/devtools/gcc/14.3.0/bin/gfortran version=14.3.0",
+    "Successfully installed deepmd-kit-0.1.dev1+g8cfd46e37",
+    "-- The C compiler identification is GNU 14.3.0",
+    "-- The CXX compiler identification is GNU 14.3.0",
+    "-- The CUDA compiler identification is NVIDIA 12.9.86 with host compiler GNU 14.3.0",
+    "-- The ASM compiler identification is GNU",
+    "MD_DEEPMD_STAGE_COMPLETE",
+    "MD_DEEPMD_STAGE_BUILT"
+  ],
+  "release_metadata_blocker": "commit-only checkout omits resolved release tags; DeepMD fallback version is wrong; this first canary must not auto-publish",
+  "cpu_observation": {
+    "node": "16v100n14",
+    "cpus_allowed_list": "36-39,100-103",
+    "compile_jobs": 6,
+    "observed_host_compiler": "/opt/devtools/gcc/14.3.0/bin/g++",
+    "five_second_existing_compiler_cpu_percent_lower_bound": 391.4,
+    "fuse2fs_cpu_percent": 8.8,
+    "method": "login-node SSH to allocated node, /proc delta sample; short-lived new compiler processes not included in CPU delta"
+  }
+}

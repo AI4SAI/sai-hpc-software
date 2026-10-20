@@ -124,7 +124,7 @@ def render(request, run_id, jobs=None, minutes=None, overlay_mb=32768,
                                  extra_binds=[*site_app_binds('lammps'), *(sources if not final else [])])
     emit = container_command(image, ['/usr/bin/cat', '/workspace/final.squashfs'],
                              overlay=str(overlay) + ':ro', jobs=jobs)
-    lines = ['#!/usr/bin/env bash', '#SBATCH --job-name=sai-software-build', '#SBATCH --dependency=singleton',
+    lines = ['#!/usr/bin/env bash', f'#SBATCH --job-name=md-{safe_name(run_id)}', '#SBATCH --dependency=singleton',
              f'#SBATCH --partition={target["partition"]}', f'#SBATCH --qos={resources["qos"]}',
              '#SBATCH --nodes=1', '#SBATCH --ntasks=1', f'#SBATCH --gpus-per-node={resources["gpus"]}',
              f'#SBATCH --time={minutes}', f'#SBATCH --output={r}/results/slurm-%j.log',

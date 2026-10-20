@@ -46,6 +46,7 @@ case "$phase" in
       git -C "/workspace/$name" -c core.hooksPath=/dev/null checkout --detach "$sha"
       [[ "$(git -C "/workspace/$name" rev-parse HEAD)" == "$sha" ]]
     done
+    /usr/bin/python3 /control/md_source_version.py restore
     if [[ "$phase" == build-deepmd ]]; then
       bash /control/md_build.sh "$target" deepmd
     elif [[ "$phase" == build-lammps ]]; then
@@ -70,6 +71,7 @@ case "$phase" in
   verify)
     source "$LAMMPS_PREFIX/share/sai/runtime-env.sh"
     "$DEEPMD_PREFIX/bin/dp" --version
+    "$DEEPMD_PREFIX/bin/python" /control/md_source_version.py verify-deepmd
     "$LAMMPS_PREFIX/bin/lmp" -h
     "$DEEPMD_PREFIX/bin/python" /control/md_relocate_audit.py "$DEEPMD_PREFIX" "$LAMMPS_PREFIX"
     /usr/bin/python3 - <<'PY'
