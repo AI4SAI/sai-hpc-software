@@ -11,6 +11,14 @@
 [更新包和操作](../deployment/elpa-2026.02.001-commfix/README.md)、
 [此次原生验收](evidence/elpa-simple-module-20261020/README.md)。下述较早记录保留为历史。
 
+同日新增的 CP2K 2026.2 集成验收发现：共享 NVIDIA 库的 ELPA2 路径在
+64 水分子对角化中发散，小矩阵双节点测试还会触发 `cudaHostRegister` 错误。
+这些情况不在先前 128 阶解析矩阵测试的覆盖范围内。相同 CP2K 输入改用
+cuSOLVERMp、ELPA CPU kernel 或 ELPA 单阶段 GPU 路径可正常收敛；不能据此
+宣称默认 ELPA2 集成已通过。当前在容器内验证保留 GPU 计算、使用主机缓冲回变换
+的隔离候选库，尚未替换公共安装。详见
+[集成失败、控制实验及候选修复](evidence/cp2k-export-recovery-20261020/README.md)。
+
 ## 分区选择和固定路径
 
 | 分区 | ISA / 后端 | 容器内和物理机上的相同安装前缀 |

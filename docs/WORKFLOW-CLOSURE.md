@@ -67,8 +67,15 @@ scientific references and inputs still match their pinned hashes.
   incomplete deliveries. The shell wrapper now reads its entire command source
   before starting children and isolates their stdin. Recovery preserves the
   frozen recipe and original overlays, clones their compiled contents, and runs
-  metadata/export/verification followed by science. New CP2K acceptance remains
-  pending. [Diagnosis and export recovery](evidence/cp2k-export-recovery-20261020/README.md).
+  metadata/export/verification followed by science. All four recovered SIFs now
+  pass the artifact checks. Shared-ELPA GPU science exposed large-matrix ELPA2
+  nonconvergence and a small distributed-matrix CUDA host-registration failure;
+  the same inputs converge with cuSOLVERMp, ELPA CPU kernels and ELPA1 GPU.
+  DSPRHBM passed all 14 scientific calculations and numerical acceptance.
+  Isolated ELPA builds test upstream
+  host-staged back-transformations while preserving GPU computation; no new
+  GPU publication or 216-water tuning is claimed before science passes.
+  [Diagnosis and export recovery](evidence/cp2k-export-recovery-20261020/README.md).
   [Lock migration and rebuild](evidence/cp2k-commfix-20261020/README.md).
   [Repair and deployment evidence](evidence/elpa-commfix-20261019/README.md),
   [simplified module and repaired physical-library acceptance](evidence/elpa-simple-module-20261020/README.md).
