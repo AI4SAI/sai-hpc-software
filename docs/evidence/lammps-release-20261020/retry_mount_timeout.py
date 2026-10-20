@@ -47,7 +47,7 @@ def main():
             raise ValueError('stage script changed')
     if checksum(build / 'job.sbatch') != request['job_script_sha256']:
         raise ValueError('final stage script changed')
-    if execute(['squeue', '-h', '-j', PREVIOUS + ',' + DEEPMD, '-o', '%A']).strip():
+    if {PREVIOUS, DEEPMD} & set(execute(['squeue', '-h', '-u', 'stardust', '-o', '%A']).split()):
         raise ValueError('previous jobs must be terminal')
     accounting = execute(['sacct', '-X', '-nP', '-j', PREVIOUS + ',' + DEEPMD,
                           '-o', 'JobIDRaw,State,ExitCode'])

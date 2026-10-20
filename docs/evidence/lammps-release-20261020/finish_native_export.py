@@ -97,7 +97,7 @@ def main():
     if (request['run_id'] != SOURCE_RUN or request['stage_jobs']['lammps'] != SOURCE_JOB
             or request['delivery']['recipe_sha256'] != RECIPE or fingerprint(control) != RECIPE):
         raise ValueError('compiled source identity or controller changed')
-    if execute(['squeue', '-h', '-j', SOURCE_JOB, '-o', '%A']).strip():
+    if SOURCE_JOB in execute(['squeue', '-h', '-u', 'stardust', '-o', '%A']).split():
         raise ValueError('compiled source job is still active')
     accounting = execute(['sacct', '-X', '-nP', '-j', SOURCE_JOB, '-o', 'JobIDRaw,State,ExitCode'])
     if accounting.strip().split('|')[:3] != [SOURCE_JOB, 'FAILED', '1:0']:
