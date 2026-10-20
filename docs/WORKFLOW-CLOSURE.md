@@ -98,8 +98,15 @@ scientific references and inputs still match their pinned hashes.
   `1869890`, `1870216` and `1870183`. Science jobs `1870898`, `1870420`,
   `1871559` and `1870992` passed all 56 calculations. All four deliveries have
   verified native exports. Its frozen watcher then submitted the 216-water
-  comparisons; 4V100 completed and the other GPU partitions remain in progress.
+  comparisons; all three GPU partitions completed and independently passed.
   [New release acceptance and first tuning results](evidence/cp2k-shared-elpa-release-20261020/README.md).
+  The [shared-ELPA administrator deployment package](../deployment/cp2k-2026.2-shared-elpa/README.md)
+  is now prepared in the cluster home: 1.85 GiB of selected runtime files, all
+  four source preflights passed, with `saiuser01` read/traverse access verified.
+  It preserves exact build prefixes and switches the public module only after
+  all four copied trees pass verification. The old installation/module are retained.
+  Administrator installation and physical CP2K acceptance remain pending;
+  [handoff evidence](evidence/cp2k-shared-elpa-deployment-20261020/README.md).
   The final integration
   archive contains 2,156 independently hash-verified files. Linux CI at
   `0e0ed1c` passed 840 tests (838 passed, two optional skips).

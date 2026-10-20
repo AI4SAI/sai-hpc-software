@@ -160,6 +160,8 @@ bash deployment/elpa-2026.02.001-commfix/submit-module-checks.sh public
 完成四分区正式验收。新 SIF 和 `.native` 导出位于
 `containers/software/cp2k/release/v2026.2-g67b5da876dd6-raed7aa53ff43/<分区>/`。
 这是独立的发布身份；管理员更新公共 CP2K 安装及其物理复验尚待进行。
+[管理员上线包](../deployment/cp2k-2026.2-shared-elpa/README.md) 已准备并通过四分区预检，
+安装后仍使用 `cp2k/2026.2-auto`，由 Slurm 分区选择新前缀。
 
 [依赖锁](../controller/cp2k_site_elpa.json) 固定每套库、头文件、Fortran module、
 pkg-config、补丁和构建参数的哈希，来源与上述发布清单逐项对应。

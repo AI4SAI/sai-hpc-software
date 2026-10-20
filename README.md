@@ -223,6 +223,10 @@ The SIF records the upstream SHA, module list and CMake cache below the installa
 `share/sai/` directory. Loading its recorded modules is required to run software
 that dynamically links to the cluster environment. Administrative deployment into the host
 `/opt` is performed separately by an administrator using the inventoried deployment package.
+The accepted four-partition CP2K 2026.2 release using repaired shared ELPA now has
+a [prepared administrator upgrade package](deployment/cp2k-2026.2-shared-elpa/README.md).
+It preserves exact build prefixes and updates `cp2k/2026.2-auto` after all runtime
+files pass installation readback. Public installation and native revalidation are pending.
 
 For a read-only runtime, source `share/sai/runtime-env.sh` inside the container
 instead of initializing Lmod there; it records the original absolute dependency

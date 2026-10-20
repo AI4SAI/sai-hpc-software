@@ -68,6 +68,9 @@ def omission(relative):
     if parts[:2] in {('lib64', 'cmake'), ('lib64', 'pkgconfig'),
                      ('lib', 'cmake'), ('lib', 'pkgconfig')} or parts[:3] == ('share', 'sai', 'cmake'):
         return 'CMake or development metadata'
+    if relative in {'share/sai/cp2k_elpa_abi.f90', 'share/sai/elpa-consumer.log',
+                    'share/sai/elpa-consumer-ldd.txt'}:
+        return 'ELPA build-time consumer probe'
     if parts[:4] == ('dependencies', 'elpa', 'share', 'sai'):
         if parts[-1] not in {'libraries.sha256', 'source-archives.sha256',
                              'mpi-communicator-fix.json', 'version', 'target'}:
@@ -220,8 +223,10 @@ def copy_records(source, destination, records):
             (destination / row['path']).chmod(row['mode'])
 
 
-def load_deliveries(project):
+def load_deliveries(project, *, hash_images=None):
     release = json.loads((PACKAGE / 'release.json').read_text())
+    if hash_images is None:
+        hash_images = release.get('hash_images', True)
     require(release['schema'] == 1 and {d['partition'] for d in release['deliveries']} ==
             {'4V100', '16V100', '8V100V0', 'DSPRHBM'} and len(release['deliveries']) == 4,
             'release must identify exactly four accepted partitions')
@@ -243,16 +248,19 @@ def load_deliveries(project):
         require(export['image_sha256'] == spec['image_sha256'] and
                 export['manifest_sha256'] == spec['manifest_sha256'], 'accepted export identity mismatch')
         image = source.with_suffix('.sif')
-        published = json.loads(source.with_suffix('.json').read_text())
+        published = (pinned_json(source.with_suffix('.json'), spec['sidecar_sha256'])
+                     if 'sidecar_sha256' in spec else json.loads(source.with_suffix('.json').read_text()))
         require(published.get('published') is True and published.get('verified') is True and
                 published.get('cp2k_science', {}).get('verified') is True and
                 published.get('identity') == identity and published.get('sha256') == spec['image_sha256'],
                 'SIF is not the accepted published delivery')
         plain_path(image)
-        image_started = time.monotonic()
-        print(f"{progress}: hashing SIF ({image.stat().st_size / 1024**2:.2f} MiB)...", flush=True)
-        require(checksum(image) == spec['image_sha256'], 'accepted SIF checksum mismatch')
-        image_elapsed = time.monotonic() - image_started
+        image_elapsed = 0
+        if hash_images:
+            image_started = time.monotonic()
+            print(f"{progress}: hashing SIF ({image.stat().st_size / 1024**2:.2f} MiB)...", flush=True)
+            require(checksum(image) == spec['image_sha256'], 'accepted SIF checksum mismatch')
+            image_elapsed = time.monotonic() - image_started
         rows, removed = runtime_records(manifest, prefix)
         count = sum(row['kind'] == 'file' for row in rows)
         size = sum(row.get('size', 0) for row in rows)
@@ -280,12 +288,90 @@ def load_deliveries(project):
                    'source_export_sha256': spec['export_sha256'],
                    'omitted_files': removed, 'files': rows,
                    'scope': 'physical byte integrity; native runtime checks are separate'}
+        if 'receipt_sha256' in spec:
+            require(receipt == pinned_json(PACKAGE / (spec['partition'] + '-receipt.json'),
+                                           spec['receipt_sha256']), 'runtime selection changed')
         deliveries.append({'prefix': prefix, 'source': source, 'receipt': receipt})
     return deliveries
 
 
 def physical_prefix(root, prefix):
     return root / prefix.relative_to('/')
+
+
+def shared_dependencies(root=Path('/')):
+    release = json.loads((PACKAGE / 'release.json').read_text())
+    if 'shared_elpa_sha256' not in release:
+        return
+    lock = pinned_json(PACKAGE / 'shared-elpa.json', release['shared_elpa_sha256'])
+    for variant, spec in lock['variants'].items():
+        prefix = physical_prefix(root, Path(spec['prefix']))
+        plain_path(prefix)
+        for name, digest in spec['files'].items():
+            path = prefix / name
+            plain_path(path)
+            require(path.is_file() and checksum(path) == digest,
+                    'shared ELPA changed: ' + str(path))
+        for name, destination in spec['symlinks'].items():
+            path = prefix / name
+            plain_path(path.parent)
+            require(path.is_symlink() and os.readlink(path) == destination and path.exists()
+                    and path.resolve().is_relative_to(prefix), 'shared ELPA link changed: ' + str(path))
+        print('Shared ELPA verified: ' + variant, flush=True)
+
+
+def module_state(root=Path('/')):
+    release = json.loads((PACKAGE / 'release.json').read_text())
+    desired = (PACKAGE / '2026.2-auto').read_bytes()
+    if 'module_sha256' in release:
+        require(hashlib.sha256(desired).hexdigest() == release['module_sha256'], 'package module changed')
+    target = physical_prefix(root, MODULE)
+    plain_path(target)
+    if not target.exists():
+        return 'absent', None
+    require(target.is_file() and stat.S_IMODE(target.stat().st_mode) == 0o644,
+            'invalid public module file: ' + str(target))
+    current = target.read_bytes()
+    if current == desired:
+        return 'current', current
+    previous = release.get('previous_module_sha256')
+    require(previous and hashlib.sha256(current).hexdigest() == previous,
+            'existing site module differs; review it before deployment: ' + str(target))
+    backup = target.with_name('.' + target.name + '.before-' + previous[:16])
+    plain_path(backup)
+    if backup.exists():
+        require(backup.is_file() and backup.read_bytes() == current,
+                'previous module backup differs: ' + str(backup))
+    return 'previous', current
+
+
+def publish_module(root=Path('/')):
+    state, previous = module_state(root)
+    target = physical_prefix(root, MODULE)
+    make_directories(target.parent)
+    if state == 'current':
+        return
+    if state == 'previous':
+        digest = hashlib.sha256(previous).hexdigest()
+        backup = target.with_name('.' + target.name + '.before-' + digest[:16])
+        if not backup.exists():
+            # A hard link preserves the complete old file before atomic replacement.
+            os.link(target, backup)
+        require(backup.read_bytes() == previous, 'module backup changed')
+        print('Previous module retained: ' + str(backup), flush=True)
+    descriptor, temporary = tempfile.mkstemp(prefix='.2026.2-auto-', dir=target.parent)
+    temporary = Path(temporary)
+    with os.fdopen(descriptor, 'wb') as stream:
+        stream.write((PACKAGE / '2026.2-auto').read_bytes())
+        stream.flush()
+        os.fsync(stream.fileno())
+    temporary.chmod(0o644)
+    require(module_state(root) == (state, previous), 'public module changed during installation')
+    if state == 'absent':
+        os.link(temporary, target)
+        temporary.unlink()
+    else:
+        os.replace(temporary, target)
 
 
 def preflight(deliveries, root=Path('/')):
@@ -300,12 +386,7 @@ def preflight(deliveries, root=Path('/')):
         print(f"{target.name}: {count} files, {size / 1024**2:.2f} MiB; "
               f"{'already installed and identical' if target.exists() else 'ready to install'}", flush=True)
         print('  ' + str(delivery['prefix']), flush=True)
-    target = physical_prefix(root, MODULE)
-    plain_path(target)
-    if target.exists():
-        require(target.is_file() and stat.S_IMODE(target.stat().st_mode) == 0o644 and
-                target.read_bytes() == (PACKAGE / '2026.2-auto').read_bytes(),
-                'existing site module differs; review it before deployment: ' + str(target))
+    module_state(root)
 
 
 def make_directories(path):
@@ -327,6 +408,7 @@ def install(deliveries, root=Path('/')):
     with lock_path.open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
         preflight(deliveries, root)
+        shared_dependencies(root)
         for delivery in deliveries:
             target = physical_prefix(root, delivery['prefix'])
             if target.exists():
@@ -345,18 +427,8 @@ def install(deliveries, root=Path('/')):
         # Publish only once every physical prefix has passed readback.
         for delivery in deliveries:
             require(physical_prefix(root, delivery['prefix']).is_dir(), 'installation is incomplete')
-        target = physical_prefix(root, MODULE)
-        make_directories(target.parent)
-        if not target.exists():
-            descriptor, temporary = tempfile.mkstemp(prefix='.2026.2-auto-', dir=target.parent)
-            temporary = Path(temporary)
-            with os.fdopen(descriptor, 'wb') as stream:
-                stream.write((PACKAGE / '2026.2-auto').read_bytes())
-                stream.flush()
-                os.fsync(stream.fileno())
-            temporary.chmod(0o644)
-            os.link(temporary, target)  # Atomic publication; refuses to replace an existing file.
-            temporary.unlink()
+        shared_dependencies(root)
+        publish_module(root)
         print('Published module: ' + str(MODULE), flush=True)
 
 
@@ -367,16 +439,17 @@ def verify_installed(root=Path('/')):
         target = physical_prefix(root, prefix)
         plain_path(target / RECEIPT)
         receipt = json.loads((target / RECEIPT).read_text())
+        if 'receipt_sha256' in spec:
+            require(receipt == pinned_json(PACKAGE / (spec['partition'] + '-receipt.json'),
+                                           spec['receipt_sha256']), 'installed receipt differs from release')
         require(receipt['policy'] == POLICY and receipt['identity']['install_prefix'] == str(prefix)
                 and receipt['image_sha256'] == spec['image_sha256'] and
                 receipt['source_native_manifest_sha256'] == spec['manifest_sha256'],
                 'installed delivery differs from the accepted release')
         verify_tree(target, receipt['files'], installed=True, receipt=receipt)
         print(spec['partition'] + ': installed bytes, links and permissions verified', flush=True)
-    module = physical_prefix(root, MODULE)
-    plain_path(module)
-    require(stat.S_IMODE(module.stat().st_mode) == 0o644 and
-            module.read_bytes() == (PACKAGE / '2026.2-auto').read_bytes(), 'installed site module differs')
+    require(module_state(root)[0] == 'current', 'installed site module differs')
+    shared_dependencies(root)
 
 
 def main():
@@ -387,11 +460,13 @@ def main():
     action.add_argument('--verify', action='store_true', help='verify installed bytes without SIF/source access')
     parser.add_argument('--project-root', type=Path, default=Path('/home/stardust/sai-hpc-software'))
     parser.add_argument('--report', type=Path, help='write a new JSON file listing installed and omitted files')
+    parser.add_argument('--check-images', action='store_true', help='also hash original SIFs during preflight/install')
     args = parser.parse_args()
     if args.verify:
         verify_installed()
     else:
-        deliveries = load_deliveries(args.project_root.absolute())
+        shared_dependencies()
+        deliveries = load_deliveries(args.project_root.absolute(), hash_images=True if args.check_images else None)
         if args.install:
             install(deliveries)
         else:
