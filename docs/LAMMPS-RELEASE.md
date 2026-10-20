@@ -5,10 +5,10 @@
 The latest upstream stable release is `stable_30Sep2026`, commit
 `8de817dd79bfe4525d5d39246a212d833e6dee07`. The paired stable DeePMD-kit is
 `v3.2.0`, commit `8cfd46e37448feca361ff3427a6c2b514ce5a2bb`.
-No accepted or published delivery of this release exists in this workflow.
-The 4V100 payload has compiled and produced a candidate SIF; its version,
-help and loader-path checks pass, while packaged metadata permissions require
-the recovery below. The 16V100 payload is still compiling.
+No scientifically accepted or published delivery of this release exists yet.
+The 4V100 release SIF now passes complete build verification, including native
+inventory and permissions. Its two-node scientific job is queued. The 16V100
+payload has also compiled and installed; its metadata/export recovery follows.
 Both use the qualified CP2K overlay driver; see the live restart below.
 
 The current implementation builds both programs in one Apptainer overlay,
@@ -198,7 +198,7 @@ and recipe `296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097`:
 
 | Target | Workflow | DeePMD stage | LAMMPS stage |
 | --- | --- | --- | --- |
-| 16V100 | [39403084059](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39403084059) | `1877774`, completed in 14:01 | `1877775` failed before entry; retry `1879155` is compiling on `16v100n19` |
+| 16V100 | [39403084059](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39403084059) | `1877774`, completed in 14:01 | `1877775` failed before entry; retry `1879155` compiled/installed on `16v100n19`, then reached the known metadata failure in 51:21 |
 | 4V100 | [39403117741](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39403117741) | `1877798`, completed in 7:42 | `1877799` compiled/installed, then failed during native metadata generation in 45:11 |
 
 Both installed wheels report exactly DeePMD 3.2.0. Both checkouts preserve the
@@ -320,3 +320,27 @@ sealing the compiled source and creating a separately locked copy.
 ran 219 MD tests: 217 passed and two optional upstream-cache tests skipped.
 The new test checks real file permissions through a Squashfs round trip and
 rejects changed content, added files and changed identities before chmod.
+
+## First verified release SIF
+
+4V100 recovery job `1879803` completed `0:0` in 2:10 on `4v100n27`.
+It verified 3,865 payload entries and both manifests, restoring the six
+payload metadata modes and both manifest modes without changing file bytes.
+Final-SIF DeePMD version, LAMMPS help, all 29 runtime-path checks and the
+entire native inventory passed. [The build receipt](evidence/lammps-release-20261020/4v-built-sif.json)
+records `build_verified: true` and the full artifact path; [the recovery receipt](evidence/lammps-release-20261020/4v-permission-recovery.json)
+binds the retained failed SIF, helper and replacement job hashes.
+
+- Run: `md-39403117741-1-2026-10-20-9bf6ae82814537d7-export`.
+- SIF size: 348,381,184 bytes.
+- SHA256: `86a575fc46daf8426b9b7b1de2b93c69619c4219f14b8eaefd886ae94007acf2`.
+- Locked sources: LAMMPS `stable_30Sep2026`, DeePMD `v3.2.0`.
+- Compiled recipe remains `296ed3baa11b`; this is the recorded metadata and
+  permissions recovery, not a rebuild under a new identity.
+
+The automatic continuation submitted two-node/four-rank scientific job
+`1879995`. TF/PT/JAX, Python/LAMMPS, MPI distribution and PLUMED must pass
+before the performance stage and home-project publication. No scientific,
+performance or physical `/opt` acceptance is claimed by the build receipt.
+The packaging fix's full GitHub suite ran 855 tests: 853 passed and two
+optional upstream-cache tests skipped.

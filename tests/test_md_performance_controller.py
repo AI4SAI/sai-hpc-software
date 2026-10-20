@@ -48,6 +48,11 @@ class PerformanceLifecycleTests(unittest.TestCase):
                            delivery=delivery, artifact='/safe/candidate.sif', resources=controller.RESOURCES)
             script = controller.render(request, Path('/safe/performance1'))
             subprocess.run(['bash', '-n'], input=script, text=True, check=True)
+            prefix = '\n'.join(script.splitlines()[:-1]) + '\n'
+            restored = subprocess.run(['/usr/bin/bash', '--noprofile', '--norc'], env={},
+                                      input=prefix + 'printf "%s\\n" "$HOME"\n',
+                                      text=True, check=True, capture_output=True)
+            self.assertEqual(restored.stdout.strip(), str(Path.home()))
             self.assertIn('#SBATCH --nodes=1', script)
             self.assertIn('#SBATCH --ntasks=1', script)
             self.assertIn('#SBATCH --gpus-per-node=1', script)

@@ -34,6 +34,11 @@ class AcceptanceRenderTests(unittest.TestCase):
                     with patch.object(acceptance, 'ROOT', Path('/experimental')):
                         script = acceptance.render(request, Path('/experimental/science-unit'))
                     subprocess.run(['bash', '-n'], input=script, text=True, check=True)
+                    prefix = '\n'.join(script.splitlines()[:-1]) + '\n'
+                    restored = subprocess.run(['/usr/bin/bash', '--noprofile', '--norc'], env={},
+                                              input=prefix + 'printf "%s\\n" "$HOME"\n',
+                                              text=True, check=True, capture_output=True)
+                    self.assertEqual(restored.stdout.strip(), str(Path.home()))
                     self.assertIn('#SBATCH --partition=' + acceptance.TARGETS[target]['partition'], script)
                     self.assertIn(f'#SBATCH --nodes={nodes}', script)
                     self.assertIn('#SBATCH --ntasks-per-node=2', script)

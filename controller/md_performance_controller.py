@@ -52,6 +52,7 @@ def render(request, directory):
              '#SBATCH --nodes=1', '#SBATCH --ntasks=1', '#SBATCH --gpus-per-node=1',
              '#SBATCH --time=120', f'#SBATCH --output={directory}/results/slurm-%j.log',
              'set -eo pipefail', 'export PATH=/usr/bin:/bin LD_LIBRARY_PATH="" LD_PRELOAD=""',
+             'export HOME=' + shlex.quote(str(Path.home())),
              'export USER=stardust LOGNAME=stardust',
              'export SAI_SOFTWARE_ROOT=' + shlex.quote(str(PROJECT)),
              'export SAI_MD_DELIVERY=' + shlex.quote(json.dumps(delivery, sort_keys=True)),

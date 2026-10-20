@@ -49,7 +49,8 @@ def main():
         record = dict(run_id=args.run_id, controller=str(control), recipe_sha256=RECIPE,
                       helper_sha256=checksum(Path(__file__)), pid=os.getpid(),
                       started_at=datetime.now(timezone.utc).isoformat(),
-                      scheduler_override={'SBATCH_QOS': 'rush-1o2gpu'}, commands=[])
+                      scheduler_override={'SBATCH_QOS': 'rush-1o2gpu',
+                                          'SBATCH_EXPORT': 'HOME=' + str(Path.home())}, commands=[])
         receipt = directory / 'results' / ('follow-export-' + str(os.getpid()) + '.json')
 
         def save():
@@ -62,6 +63,9 @@ def main():
             # target, ranks, GPU counts and science/performance rules intact.
             if argv[0] == 'submit':
                 environment['SBATCH_QOS'] = 'rush-1o2gpu'
+                # The frozen NIL script predates explicit restoration of the
+                # real account home, needed by the host Open MPI launcher.
+                environment['SBATCH_EXPORT'] = 'HOME=' + str(Path.home())
             if argv[0] == 'monitor':
                 command += ['--timeout', '172800', '--interval', '30']
             event = dict(argv=command, started_at=datetime.now(timezone.utc).isoformat())
@@ -78,7 +82,16 @@ def main():
             return inspect_existing_acceptance(ROOT, control, args.run_id, stage, delivery)
 
         try:
-            remote_python('md_controller.py', 'monitor', args.run_id)
+            status_file = directory / 'results/status.json'
+            status = json.loads(status_file.read_text()) if status_file.exists() else {}
+            if (status.get('build_verified') is True and
+                    status.get('job') == (directory / 'job.id').read_text().strip()):
+                from md_publication import build_record
+                _, image, digest = build_record(args.run_id)
+                record['revalidated_build'] = dict(artifact=str(image), artifact_sha256=digest)
+                save()
+            else:
+                remote_python('md_controller.py', 'monitor', args.run_id)
             record['performance_run'] = run_acceptance_gate(remote_python, args.run_id, existing)
             record['state'] = 'published-and-reverified'
         except BaseException as error:
