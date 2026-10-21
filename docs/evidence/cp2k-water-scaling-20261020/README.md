@@ -34,23 +34,43 @@ cross-partition performance comparison.
 version output, scheduler accounting, verification receipts with raw-file
 hashes, selected layouts and all eight new measurements for each point.
 
-**Remaining points:** 16V100 four GPUs has finished all nine tuning cases,
-warm-up and its first measured pair, and is running the second CPU repetition.
-The first pair took GPU 684.576 s and CPU 5,705.461 s; it is not yet a final
-repeated result. The sixteen-GPU job **1883254** passed all six complete GPU
+**Remaining points, updated 2026-10-21 13:21 China time:** 16V100 four GPUs
+finished all nine tuning cases, warm-up, the first measured pair and the second
+GPU repetition. Its second CPU repetition then hit the original two-hour
+case ceiling (`case_timeout`), with peak host RAM about 52.39 / 60 GiB.
+Replacement **1889092** independently imports all nine validated tuning
+cases and runs every warm-up and measured pair afresh with the current
+six-hour case limit and the same 648-water input and resource quota. It is
+running on `16v100n01`. The old first pair (GPU 684.576 s, CPU 5,705.461 s)
+and all other old pair timings remain excluded from the replacement result.
+
+The sixteen-GPU job **1883254** passed all six complete GPU
 tuning cases, then its first CPU calculation hit the six-hour case ceiling
 at SCF step 13. Its RAM peak was about 187.09 / 240 GiB; the recorded stop
 reason is `case_timeout`. Replacement **1887923** independently imports
 those six GPU cases, then runs all three CPU tuning layouts and every
 warm-up/measured pair afresh, with 18 hours per calculation and a seven-day
 allocation ceiling. It keeps the 1,452-water input and 64 physical cores.
+The replacement is running on `16v100n27`; its first CPU trial has reached
+SCF step 8 without another stop.
 
 Four-GPU 4V100 calibration **1882713** stopped at the 92% memory guard,
-81.26 / 88 GiB, with 900 waters. Replacement **1887901** begins at 864 waters
-and allows six complete calibration probes, retaining the larger-size
-failure evidence. Both replacements are running and tracked by `control-v5`.
+81.26 / 88 GiB, with 900 waters. Replacement **1887901** completed `0:0`
+and passed independent verification. Complete 864- and 900-water calculations
+passed; 960 and 968 waters hit the host-memory guard. The selected 900-water
+case used **52.51–56.56% GPU memory per card** and about 80.48 / 88 GiB host
+RAM. This remains explicitly host-RAM limited, below the preferred VRAM range;
+the earlier 900-water failure is retained as evidence of limited RAM margin.
+The automatically submitted comparison **1888437**, on `4v100n16`, has passed
+all six complete GPU tuning cases and is running its first CPU layout.
+
+[four-gpu-followup.json](four-gpu-followup.json) records the accepted complete
+calibration, its raw-file verification hashes, the 16V100 four-GPU timeout
+and recovery, and the other live comparisons. All three unfinished points
+are running under the `control-v5` watcher. Code and evidence through
+`9dc5205` passed all six GitHub CI runs, including both CP2K checks.
 [large-point-recovery.json](large-point-recovery.json) records their source
-failures, requests, allocations and campaign snapshot. Eleven focused tests
+failures, requests, allocations and the earlier campaign snapshot. Eleven focused tests
 pass, including recovery after partial GPU tuning and rejection of missing
 fresh CPU tuning cases, missing pairs and changed selected layouts. The new
 verifier also independently accepted both completed single-GPU jobs.
