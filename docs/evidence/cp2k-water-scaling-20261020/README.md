@@ -260,6 +260,13 @@ The same-size repeat **1882154** and subsequent 448-water calibration **1882166*
 completed. This does not establish a root-cause fix; the failure evidence is
 preserved and further complete calculations remain subject to acceptance.
 
+The [2026-10-21 node investigation](../cp2k-nvrtc-node-20261021/README.md)
+subsequently reproduced that failure and found 1,456 damaged bytes in
+`4v100n06`'s toolkit `libnvrtc.so.12.9.86`. Using an intact same-version copy in
+an isolated home environment restores the original failing case. Public node
+repair is still pending; exclude this node until the installed library passes
+the documented integrity and runtime checks.
+
 A first 16V100 four-GPU calibration exceeded the memory guard at 720 waters.
 Its immediately following 648-water attempt observed residual allocations after
 termination and is excluded. The runner now checks for idle GPUs before another

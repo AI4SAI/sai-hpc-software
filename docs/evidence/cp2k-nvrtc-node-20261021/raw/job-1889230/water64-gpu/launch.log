@@ -1,0 +1,76 @@
+--------------------------------------------------------------------------
+PRTE has detected that the head of the session directory tree (where
+scratch files and shared memory backing storage will be placed)
+resides on a shared file system:
+
+   Directory: /home/stardust/sai-hpc-software/runtime-tests/cp2k-nvrtc-20261021/job-1889230/runtime
+   File system type: lustre
+
+For performance reasons, it is strongly recommended that the session
+directory be located on a local file system. This can be controlled by
+setting the system temporary directory to be used by PRTE using either
+the TMPDIR envar or the "prte_tmpdir_base" MCA param.
+
+If you need the temporary directory to be different on remote nodes
+from the local one where prterun is running (e.g., when a login node is
+being employed), then you can set the local temporary directory using
+the "prte_local_tmpdir_base" MCA param and the one to be used on all
+other nodes using the "prte_remote_tmpdir_base" param.
+
+This is only a warning advisory and your job will continue. You can
+disable this warning in the future by setting the
+"prte_silence_shared_fs" MCA param to "1".
+--------------------------------------------------------------------------
+[4v100n06.mr-sai.ai:1201222] Rank 0 bound to package[0][core:L0-3]
+
+Program received signal SIGSEGV: Segmentation fault - invalid memory reference.
+
+Backtrace for this error:
+#0  0x14569aa4532f in ???
+	at ./signal/../sysdeps/unix/sysv/linux/x86_64/libc_sigaction.c:0
+#1  0x1456cc2cb9dc in ???
+#2  0x1456cc2cfecd in ???
+#3  0x14572722327f in _Z20jit_transpose_handleRP9CUfunc_stii
+	at /workspace/dbcsr-source/src/acc/libsmm_acc/libsmm_acc.cpp:397
+#4  0x14572722481d in _Z22libsmm_acc_transpose_dPKiiiPdiiP11CUstream_st
+	at /workspace/dbcsr-source/src/acc/libsmm_acc/libsmm_acc.cpp:466
+#5  0x1457272beae1 in __dbcsr_acc_operations_MOD_dbcsr_acc_transpose
+	at /workspace/dbcsr-build/src/mm/dbcsr_acc_operations.F:179
+#6  0x14572728fc36 in __dbcsr_mm_common_MOD_acc_transpose_blocks
+	at /workspace/dbcsr-build/src/mm/dbcsr_mm_common.F:482
+#7  0x14572728698f in __dbcsr_mm_cannon_MOD_multiply_cannon
+	at /workspace/dbcsr-build/src/mm/dbcsr_mm_cannon.F:1628
+#8  0x14572712435a in __dbcsr_mm_MOD_dbcsr_multiply_generic
+	at /workspace/dbcsr-build/src/mm/dbcsr_mm.F:909
+#9  0x145727133fd7 in __dbcsr_multiply_api_MOD_dbcsr_multiply_d
+	at /workspace/dbcsr-build/src/mm/dbcsr_multiply_api.F:96
+#10  0x145723780997 in __cp_dbcsr_operations_MOD_cp_dbcsr_sm_fm_multiply
+	at /workspace/source/src/cp_dbcsr_operations.F:619
+#11  0x145724b938cb in __qs_initial_guess_MOD_calculate_first_density_matrix
+	at /workspace/source/src/qs_initial_guess.F:690
+#12  0x145724f607ec in scf_env_initial_rho_setup
+	at /workspace/source/src/qs_scf_initialization.F:1281
+#13  0x145724f607ec in init_scf_run
+	at /workspace/source/src/qs_scf_initialization.F:1154
+#14  0x145724f6415d in __qs_scf_initialization_MOD_qs_scf_env_initialize
+	at /workspace/source/src/qs_scf_initialization.F:218
+#15  0x145724f5ac34 in __qs_scf_MOD_scf
+	at /workspace/source/src/qs_scf.F:239
+#16  0x145724a89b64 in __qs_energy_MOD_qs_energies
+	at /workspace/source/src/qs_energy.F:126
+#17  0x145724af0df3 in qs_forces
+	at /workspace/source/src/qs_force.F:205
+#18  0x145723c22924 in __force_env_methods_MOD_force_env_calc_energy_force
+	at /workspace/source/src/force_env_methods.F:284
+#19  0x1457266836f5 in cp2k_run
+	at /workspace/source/src/start/cp2k_runs.F:334
+#20  0x1457266852fa in __cp2k_runs_MOD_run_input
+	at /workspace/source/src/start/cp2k_runs.F:938
+#21  0x403f57 in cp2k
+	at /workspace/source/src/start/cp2k.F:381
+#22  0x40229e in main
+	at /workspace/source/src/start/cp2k.F:44
+--------------------------------------------------------------------------
+prterun noticed that process rank 0 with PID 1201235 on node 4v100n06 exited on
+signal 11 (Segmentation fault).
+--------------------------------------------------------------------------
