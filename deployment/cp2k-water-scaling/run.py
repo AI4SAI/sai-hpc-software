@@ -354,7 +354,7 @@ def tuning_trials(gpus):
 
 
 def read_tuning(root, request, expected=None):
-    """Reuse only nine independently checked tuning cases, never old timing pairs."""
+    """Reuse an independently checked tuning prefix, never old timing pairs."""
     root = Path(root)
     if expected:
         require(str(root) == expected['path'], 'Different tuning source')
@@ -382,7 +382,7 @@ def read_tuning(root, request, expected=None):
     devices = json.loads((root/'results/devices.json').read_text())
     samples = json.loads((root/'results/tuning.json').read_text())
     trials = tuning_trials(request['gpus'])
-    require(len(samples) == len(trials), 'Incomplete tuning schedule')
+    require(0 < len(samples) <= len(trials), 'Invalid completed tuning prefix')
     for i, (sample, (mode, ranks, threads, block)) in enumerate(zip(samples, trials)):
         name = f'tune-{i}-{mode}'
         require(sample['name'] == name, 'Wrong tuning case order')
@@ -432,7 +432,7 @@ def compare(root, request, devices):
         write_json(root/'results/imported-tuning.json', manifest)
         write_json(root/'results/tuning.json', samples)
         print(f'Reused {len(samples)} validated tuning cases; all warm-up and measured pairs are new', flush=True)
-    for i, (mode, ranks, threads, block) in enumerate([] if samples else tuning_trials(gpus)):
+    for i, (mode, ranks, threads, block) in enumerate(tuning_trials(gpus)[len(samples):], start=len(samples)):
         sample = run_case(root, request, devices, f'tune-{i}-{mode}', mode, shape, ranks, threads, block=block)
         require(sample['science_accepted'], 'Tuning calculation failed')
         if reference is None:
@@ -455,6 +455,36 @@ def compare(root, request, devices):
     medians = {mode: statistics.median(s['cp2k_seconds'] for s in measured if s['mode'] == mode and not s['warmup']) for mode in winners}
     write_json(root/'results/comparison.json', dict(request=request, selected_layouts=winners, samples=measured,
         median_seconds=medians, cpu_over_gpu=medians['cpu']/medians['gpu'], scope='best among measured layouts; synthetic PBE water, standard diagonalization'))
+
+
+def verify_comparison_schedule(root, request, samples, imported, report):
+    """Require every unimported tuning case and every fresh timing pair."""
+    tuning = json.loads((root/'results/tuning.json').read_text())
+    trials = tuning_trials(request['gpus'])
+    require(len(tuning) == len(trials), 'Incomplete tuning schedule')
+    require(tuning[:len(imported)] == imported, 'Changed imported tuning')
+    expected = {f'pair-{r}-{mode}' for r in range(4) for mode in ('cpu', 'gpu')}
+    expected.update(f'tune-{i}-{mode}' for i, (mode, _, _, _) in enumerate(trials) if i >= len(imported))
+    require(set(samples) == expected, 'Missing fresh tuning or timing cases')
+    for i, (sample, (mode, ranks, threads, block)) in enumerate(zip(tuning, trials)):
+        name = f'tune-{i}-{mode}'
+        layout = dict(name=name, mode=mode, ranks=ranks, threads=threads, block=block)
+        require(all(sample.get(k) == v for k, v in layout.items()), 'Changed tuning schedule')
+        if i >= len(imported):
+            require(all(sample.get(k) == v for k, v in samples[name].items()), 'Changed fresh tuning summary')
+            launch = json.loads((root/'cases'/name/'launch.json').read_text())
+            require(all(launch[k] == v for k, v in layout.items() if k != 'name'), 'Changed fresh tuning layout')
+        require(fixtures.compare_science(sample, tuning[0]) == sample['comparison'], 'Changed tuning agreement')
+    winners = {mode: min((s for s in tuning if s['mode'] == mode), key=lambda s: s['cp2k_seconds'])
+               for mode in ('gpu', 'cpu')}
+    require(report['selected_layouts'] == winners, 'Changed layout selection')
+    for name, sample in samples.items():
+        if not name.startswith('pair-'):
+            continue
+        choice = winners[sample['mode']]
+        launch = json.loads((root/'cases'/name/'launch.json').read_text())
+        require(all(launch[k] == choice[k] and sample[k] == choice[k]
+                    for k in ('mode', 'ranks', 'threads', 'block')), 'Timing pair did not use the selected layout')
 
 
 def smoke(root, request, devices):
@@ -547,24 +577,13 @@ def verify(root):
         if request.get('tuning_import'):
             require(request['stage'] == 'compare', 'Only comparisons can reuse tuning')
             imported, _ = read_tuning(request['tuning_import']['path'], request, request['tuning_import'])
-            require(json.loads((root/'results/tuning.json').read_text()) == imported, 'Changed imported tuning')
-            require(set(parsed) == {f'pair-{r}-{mode}' for r in range(4) for mode in ('cpu', 'gpu')},
-                    'All timing pairs must be freshly completed in this allocation')
         require(len(parsed)+len(imported) == (4 if request['stage'] == 'smoke' else 17), 'Incomplete benchmark schedule')
         reference = next(iter(parsed.values()))
         for sample in [*parsed.values(), *imported]:
             fixtures.compare_science(sample, reference)
         if request['stage'] == 'compare':
             report = json.loads((root/'results/comparison.json').read_text())
-            if imported:
-                winners = {mode: min((s for s in imported if s['mode'] == mode), key=lambda s: s['cp2k_seconds'])
-                           for mode in ('gpu', 'cpu')}
-                require(report['selected_layouts'] == winners, 'Changed layout selection')
-                for case_name, sample in samples.items():
-                    choice = winners[sample['mode']]
-                    launch = json.loads((root/'cases'/case_name/'launch.json').read_text())
-                    require(all(launch[k] == choice[k] for k in ('mode', 'ranks', 'threads', 'block')),
-                            'Timing pair did not use the selected layout')
+            verify_comparison_schedule(root, request, samples, imported, report)
             medians = {mode: statistics.median(parsed[f'pair-{r}-{mode}']['cp2k_seconds'] for r in (1, 2, 3))
                        for mode in ('cpu', 'gpu')}
             require(report['median_seconds'] == medians and report['cpu_over_gpu'] == medians['cpu']/medians['gpu'],
@@ -691,7 +710,7 @@ def main():
     p.add_argument('--host-limit-run', help='Existing larger run with measured RAM exhaustion in the same allocation')
     p.add_argument('--host-memory-fraction', type=float, default=.92,
                    help='Recorded early-stop fraction of the actual cgroup RAM limit (0.85 to 0.97)')
-    p.add_argument('--tuning-run', help='Reuse nine validated tuning cases; all four timing pairs run afresh')
+    p.add_argument('--tuning-run', help='Reuse a validated tuning prefix; finish tuning and run all timing pairs afresh')
     p.add_argument('--case-seconds', type=int, default=1800)
     p.add_argument('--minutes', type=int, default=180)
     p = sub.add_parser('execute'); p.add_argument('root', type=Path)

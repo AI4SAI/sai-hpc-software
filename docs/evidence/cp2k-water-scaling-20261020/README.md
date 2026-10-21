@@ -1,4 +1,61 @@
-# CP2K water scaling: calibration and CPU acceptance
+# CP2K water scaling: accepted results and remaining comparisons
+
+**2026-10-21: both single-GPU comparisons accepted.** Jobs **1884617**
+(16V100) and **1884985** (4V100) finished `COMPLETED 0:0`. Independent
+verification reparsed their frozen inputs, numerical results, backend timers,
+GPU samples and CPU bindings, including the original imported tuning evidence.
+Each result uses three fresh measured pairs from one allocation, excluding
+the first warm-up pair and all timings from earlier failed allocations.
+
+| Partition | Waters / basis functions | GPU / physical CPU cores | GPU median | CPU median | CPU / GPU time | GPU memory |
+| --- | --- | --- | ---: | ---: | ---: | --- |
+| 16V100 | 288 / 6,624 | 1 / 4 | 269.938 s | 1,262.882 s | **4.678×** | 67.59% of 16 GiB |
+| 4V100 | 392 / 9,016 | 1 / 4 | 290.154 s | 1,166.439 s | **4.020×** | 54.99% of 32 GiB; host-RAM limited |
+
+GPU uses direct cuSOLVERMp and 1 MPI rank × 4 OpenMP threads; the selected
+matrix block is 64 on 16V100 and 32 on 4V100. CPU uses the CPU-only ScaLAPACK
+companion, 4 MPI ranks × 1 thread and block 32. Both reserve the same four
+physical cores, with CPU measurements using approximately **99.7–99.8%** of
+that budget. These are the fastest among the tested layouts, not a global
+optimization claim or the isolated benefit of the direct option.
+
+The three 16V100 GPU times are 276.410, 269.938 and 266.073 seconds; CPU times
+are 1,252.655, 1,265.812 and 1,262.882 seconds. All converge in 20 SCF steps.
+On 4V100, GPU times are 290.154, 289.340 and 291.312 seconds (20 steps each),
+while CPU times are 1,166.439, 1,285.829 and 1,118.086 seconds (21, 23 and 20
+steps). Thus the latter complete-calculation ratio includes a small variation
+in iterations required to meet the same convergence threshold. Maximum
+energy differences are 9.20e-10 and 1.33e-9 Ha, respectively; maximum force
+differences are 1.01e-12 and 2.55e-10 Ha/bohr, well within acceptance limits.
+The two partitions use different system sizes and are not a fixed-work
+cross-partition performance comparison.
+
+[single-gpu-accepted.json](single-gpu-accepted.json) contains the requests,
+version output, scheduler accounting, verification receipts with raw-file
+hashes, selected layouts and all eight new measurements for each point.
+
+**Remaining points:** 16V100 four GPUs has finished all nine tuning cases,
+warm-up and its first measured pair, and is running the second CPU repetition.
+The first pair took GPU 684.576 s and CPU 5,705.461 s; it is not yet a final
+repeated result. The sixteen-GPU job **1883254** passed all six complete GPU
+tuning cases, then its first CPU calculation hit the six-hour case ceiling
+at SCF step 13. Its RAM peak was about 187.09 / 240 GiB; the recorded stop
+reason is `case_timeout`. Replacement **1887923** independently imports
+those six GPU cases, then runs all three CPU tuning layouts and every
+warm-up/measured pair afresh, with 18 hours per calculation and a seven-day
+allocation ceiling. It keeps the 1,452-water input and 64 physical cores.
+
+Four-GPU 4V100 calibration **1882713** stopped at the 92% memory guard,
+81.26 / 88 GiB, with 900 waters. Replacement **1887901** begins at 864 waters
+and allows six complete calibration probes, retaining the larger-size
+failure evidence. Both replacements are running and tracked by `control-v5`.
+[large-point-recovery.json](large-point-recovery.json) records their source
+failures, requests, allocations and campaign snapshot. Eleven focused tests
+pass, including recovery after partial GPU tuning and rejection of missing
+fresh CPU tuning cases, missing pairs and changed selected layouts. The new
+verifier also independently accepted both completed single-GPU jobs.
+
+Earlier snapshots below retain the development and recovery history.
 
 **2026-10-21 follow-up: 4V100 single-GPU measurement recovery.** Job
 **1882731** passed all nine tuning cases, both warm-up calculations, the first

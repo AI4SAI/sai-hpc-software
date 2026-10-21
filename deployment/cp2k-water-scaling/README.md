@@ -73,10 +73,12 @@ competing with other four-GPU experiments for the 16-GPU per-user limit of the
 rush queue. Retain the normal user environment for native Open MPI startup.
 Comparison jobs request enough MPI slots for the largest CPU layout (4G),
 while the site still allocates the same 4G physical cores from the GPU count.
-The campaign allows six hours per complete calculation at the four- and
-16-GPU points, because the equally resourced CPU ScaLAPACK path can take hours
-on these matrix sizes. Four-GPU jobs retain the rush queue's one-day limit;
-16-GPU comparisons request three days in the huge queue (site maximum 30 days).
+The campaign allows six hours per complete calculation at four GPUs and
+18 hours at 16 GPUs, because the equally resourced CPU ScaLAPACK path can take
+hours on these matrix sizes. The first 1,452-water CPU trial reached only SCF
+step 13 before its former six-hour ceiling. Four-GPU jobs retain the rush
+queue's one-day limit; 16-GPU comparisons request seven days in the huge
+queue (site maximum 30 days).
 These are ceilings, not required durations: a finished comparison exits early.
 Single-GPU comparisons keep their two-hour case limit and the queue limits above.
 
@@ -124,15 +126,20 @@ ratio. Reports include CP2K internal total time, MPI-launch wall time, SCF step
 counts, backend timers, sampled CPU seconds and memory peaks. Reserving all
 cores does not imply 100% utilization; measured utilization is retained.
 
-If a comparison stops after all nine tuning cases have passed, a replacement
+If a comparison stops after some tuning cases have passed, a replacement
 can use `--tuning-run ORIGINAL_RUN`. Submission, execution and final verification
 reparse the original inputs, energies, forces, timers, memory samples and rank
 bindings, verify all frozen inputs, and pin hashes of the raw tuning evidence.
 The source must be a terminal job with identical binaries, partition, size and
 CPU/GPU quota. Its later failure is retained; it is never labelled a successful
-comparison. Only tuning is reused. One new warm-up pair and all three new measured
-pairs run in the replacement allocation, so timings from different nodes or jobs
-are not mixed into the final medians.
+comparison. Only the completed, ordered prefix of the nine tuning cases is
+reused. The replacement runs every remaining tuning case before choosing a
+layout. One new warm-up pair and all three new measured pairs run in the
+replacement allocation, so timings from different nodes or jobs are not mixed
+into the final medians. Final verification checks the full tuning schedule,
+selected layouts and every new timing pair. A failed or partial calculation
+cannot be imported; use the original tuning job, not another importing job,
+as the source.
 
 The default host-memory early-stop fraction remains 92% of the actual cgroup
 limit. `--host-memory-fraction` records a per-run override between 85% and 97%;

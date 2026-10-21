@@ -59,9 +59,9 @@ def submit(name, partition, gpus, stage, binary, *, shape=None, calibration=None
         return str(root)
     # The large CPU ScaLAPACK cases can take hours each. The 16-GPU huge queue
     # permits longer jobs; keep enough time for tuning and all repeated pairs.
-    minutes = 120 if stage == 'smoke' else (4320 if gpus == 16 else
+    minutes = 120 if stage == 'smoke' else (10080 if gpus == 16 else
         (240 if partition == '16V100' and gpus == 1 else 1440))
-    case_seconds = 21600 if stage == 'compare' and gpus >= 4 else 7200
+    case_seconds = (64800 if gpus == 16 else 21600) if stage == 'compare' and gpus >= 4 else 7200
     argv = [sys.executable, '-B', str(Path(__file__).with_name('run.py')), 'submit', '--name', name,
             '--partition', partition, '--gpus', str(gpus), '--stage', stage, '--cpu-binary', binary,
             '--minutes', str(minutes), '--case-seconds', str(case_seconds)]

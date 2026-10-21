@@ -138,6 +138,53 @@ class WaterScalingTests(unittest.TestCase):
             self.assertEqual(report['median_seconds'], {'gpu': 2, 'cpu': 20})
             self.assertEqual(report['cpu_over_gpu'], 10)
 
+    def test_partial_gpu_tuning_runs_all_cpu_layouts_before_measuring(self):
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder); (root/'results').mkdir(); (root/'cases').mkdir()
+            imported = [dict(name=f'tune-{i}-{mode}', mode=mode, ranks=ranks, threads=threads,
+                             block=block, cp2k_seconds=i+1, comparison={})
+                        for i, (mode, ranks, threads, block) in enumerate(water.tuning_trials(16)[:6])]
+            request = dict(gpus=16, shape=[11, 11, 12], tuning_import={'path': 'source'})
+            local = {}
+            def run_case(root, request, devices, name, mode, shape, ranks, threads, block):
+                index = int(name.split('-')[1])
+                seconds = 100-index if name.startswith('tune-') else (
+                    10000 if index == 0 else index*(10 if mode == 'cpu' else 1))
+                result = dict(name=name, mode=mode, ranks=ranks, threads=threads, block=block,
+                              science_accepted=True, cp2k_seconds=seconds)
+                case = root/'cases'/name; case.mkdir()
+                water.write_json(case/'launch.json', result)
+                local[name] = dict(result)
+                return result
+            with patch.object(water, 'read_tuning', return_value=(copy.deepcopy(imported), {'path': 'source'})), \
+                 patch.object(water, 'run_case', side_effect=run_case) as run, \
+                 patch.object(water.fixtures, 'compare_science', return_value={}):
+                water.compare(root, request, [])
+                self.assertEqual([c.args[3] for c in run.call_args_list],
+                    ['tune-6-cpu', 'tune-7-cpu', 'tune-8-cpu',
+                     'pair-0-gpu', 'pair-0-cpu', 'pair-1-cpu', 'pair-1-gpu',
+                     'pair-2-gpu', 'pair-2-cpu', 'pair-3-cpu', 'pair-3-gpu'])
+                report = json.loads((root/'results/comparison.json').read_text())
+                self.assertEqual(report['median_seconds'], {'gpu': 2, 'cpu': 20})
+                self.assertEqual(report['selected_layouts']['cpu']['ranks'], 64)
+                self.assertEqual(report['selected_layouts']['gpu']['ranks'], 16)
+                water.verify_comparison_schedule(root, request, local, imported, report)
+                for name in ('tune-6-cpu', 'pair-3-cpu'):
+                    with self.assertRaisesRegex(ValueError, 'Missing fresh'):
+                        water.verify_comparison_schedule(root, request,
+                            {k: v for k, v in local.items() if k != name}, imported, report)
+                bad_report = copy.deepcopy(report)
+                bad_report['selected_layouts']['cpu']['ranks'] = 16
+                with self.assertRaisesRegex(ValueError, 'Changed layout selection'):
+                    water.verify_comparison_schedule(root, request, local, imported, bad_report)
+                water.write_json(root/'cases/pair-1-cpu/launch.json', dict(local['pair-1-cpu'], threads=4))
+                with self.assertRaisesRegex(ValueError, 'selected layout'):
+                    water.verify_comparison_schedule(root, request, local, imported, report)
+                tuning = json.loads((root/'results/tuning.json').read_text())
+                water.write_json(root/'results/tuning.json', tuning[:6])
+                with self.assertRaisesRegex(ValueError, 'Incomplete tuning'):
+                    water.verify_comparison_schedule(root, request, local, imported, report)
+
 
 if __name__ == '__main__':
     unittest.main()
