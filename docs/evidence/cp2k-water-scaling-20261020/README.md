@@ -1,7 +1,8 @@
 # CP2K water scaling: accepted results and remaining comparisons
 
-**2026-10-21: both single-GPU comparisons accepted.** Jobs **1884617**
-(16V100) and **1884985** (4V100) finished `COMPLETED 0:0`. Independent
+**2026-10-22: three of five comparisons accepted.** Jobs **1884617**
+(16V100, one GPU), **1884985** (4V100, one GPU) and **1889092** (16V100,
+four GPUs) finished `COMPLETED 0:0`. Independent
 verification reparsed their frozen inputs, numerical results, backend timers,
 GPU samples and CPU bindings, including the original imported tuning evidence.
 Each result uses three fresh measured pairs from one allocation, excluding
@@ -11,13 +12,21 @@ the first warm-up pair and all timings from earlier failed allocations.
 | --- | --- | --- | ---: | ---: | ---: | --- |
 | 16V100 | 288 / 6,624 | 1 / 4 | 269.938 s | 1,262.882 s | **4.678×** | 67.59% of 16 GiB |
 | 4V100 | 392 / 9,016 | 1 / 4 | 290.154 s | 1,166.439 s | **4.020×** | 54.99% of 32 GiB; host-RAM limited |
+| 16V100 | 648 / 14,904 | 4 / 16 | 653.205 s | 6,804.804 s | **10.418×** | 62.21–63.43% of 16 GiB per card |
 
-GPU uses direct cuSOLVERMp and 1 MPI rank × 4 OpenMP threads; the selected
+Times above are CP2K's reported complete-calculation times, with each mode's
+median taken independently. GPU uses cuSOLVERMp with
+`DIRECT_GENERALIZED_DIAGONALIZATION TRUE`; CPU uses the CPU-only ScaLAPACK
+companion. Each comparison reserves the same physical CPU-core quota for both
+modes. These are the fastest among the tested layouts, not a global
+optimization claim or the isolated benefit of the direct option. System size
+grows with available memory; this is not fixed-atoms-per-GPU weak scaling.
+
+For the single-GPU points, GPU uses 1 MPI rank × 4 OpenMP threads; the selected
 matrix block is 64 on 16V100 and 32 on 4V100. CPU uses the CPU-only ScaLAPACK
 companion, 4 MPI ranks × 1 thread and block 32. Both reserve the same four
 physical cores, with CPU measurements using approximately **99.7–99.8%** of
-that budget. These are the fastest among the tested layouts, not a global
-optimization claim or the isolated benefit of the direct option.
+that budget.
 
 The three 16V100 GPU times are 276.410, 269.938 and 266.073 seconds; CPU times
 are 1,252.655, 1,265.812 and 1,262.882 seconds. All converge in 20 SCF steps.
@@ -34,15 +43,36 @@ cross-partition performance comparison.
 version output, scheduler accounting, verification receipts with raw-file
 hashes, selected layouts and all eight new measurements for each point.
 
-**Remaining points, updated 2026-10-21 13:21 China time:** 16V100 four GPUs
-finished all nine tuning cases, warm-up, the first measured pair and the second
-GPU repetition. Its second CPU repetition then hit the original two-hour
-case ceiling (`case_timeout`), with peak host RAM about 52.39 / 60 GiB.
-Replacement **1889092** independently imports all nine validated tuning
-cases and runs every warm-up and measured pair afresh with the current
-six-hour case limit and the same 648-water input and resource quota. It is
-running on `16v100n01`. The old first pair (GPU 684.576 s, CPU 5,705.461 s)
-and all other old pair timings remain excluded from the replacement result.
+The newly accepted **16V100 four-GPU** result uses GPU 4 MPI ranks × 4 OpenMP
+threads and CPU 16 MPI ranks × 1 thread, both with block 32. GPU measured times
+are **662.472, 653.205 and 651.325 seconds**; CPU times are **6,804.804,
+6,781.105 and 6,865.305 seconds**. Every warm-up and measured calculation
+converged in 20 SCF steps. The CPU measurements use **93.85–95.70%** of the
+16 physical cores and have no GPU compute clients. Measured host-memory peaks
+are 51.17 GiB for GPU and 52.30 GiB for CPU, within the common 60 GiB quota.
+Maximum energy and force differences are 1.19e-9 Ha and 1.01e-12 Ha/bohr.
+Including launcher/setup/teardown time gives an 11.225× median ratio; the
+table consistently uses CP2K timing. [four-gpu-accepted.json](four-gpu-accepted.json)
+contains all eight compact measurements, selected layouts, versions, the
+frozen request, accounting and the independent verifier's raw-file hashes.
+
+Job 1889092 completed on `16v100n01` in 08:55:08. It independently imported
+all nine validated tuning cases from **1882313**, which had failed at its old
+two-hour case ceiling. All warm-up and measured pairs ran afresh under the
+six-hour case ceiling. The old first pair (GPU 684.576 s, CPU 5,705.461 s)
+and every other old pair timing remain excluded from the accepted result.
+
+**Remaining points, updated 2026-10-22 00:51 China time:** four-GPU 4V100
+job **1888437** is running on `4v100n16`, with 900 waters and 16 physical cores.
+All nine tuning cases and the excluded warm-up pair passed. The first measured
+pair and the second measured GPU calculation passed; the second CPU measurement
+has reached SCF step 7. The selected layouts are GPU 4×4 and CPU 8×2 MPI×OMP,
+both block 32. The CPU 8×2 trial was the fastest complete calculation despite
+using about 71% of the CPU budget; the 16×1 trial used about 95% but took longer
+and needed 22 SCF steps versus 20. All layouts reserve and bind the full
+16-core quota. Do not interpret the completed first pair as a repeated speedup.
+About 9.5 hours remain on the allocation, enough for the approximately four
+hours of remaining work if the observed timings hold.
 
 The sixteen-GPU job **1883254** passed all six complete GPU
 tuning cases, then its first CPU calculation hit the six-hour case ceiling
@@ -51,8 +81,13 @@ reason is `case_timeout`. Replacement **1887923** independently imports
 those six GPU cases, then runs all three CPU tuning layouts and every
 warm-up/measured pair afresh, with 18 hours per calculation and a seven-day
 allocation ceiling. It keeps the 1,452-water input and 64 physical cores.
-The replacement is running on `16v100n27`; its first CPU trial has reached
-SCF step 8 without another stop.
+The replacement is running on `16v100n27`. Its first CPU layout (16 MPI ×
+4 OpenMP) completed in **43,506.550 CP2K seconds**, or 47,616.625 seconds
+including launch/setup/teardown, and passed energy/force acceptance in 22 SCF
+steps. It used about 44.4% of the 64-core budget. The second layout (32×2) has
+reached SCF step 4; the 64×1 layout and all fresh warm-up/measured pairs remain.
+The first CPU time is a tuning sample, not the final CPU baseline. Both active
+jobs have fresh resource samples and no recorded stop in their completed cases.
 
 Four-GPU 4V100 calibration **1882713** stopped at the 92% memory guard,
 81.26 / 88 GiB, with 900 waters. Replacement **1887901** completed `0:0`
@@ -61,14 +96,14 @@ passed; 960 and 968 waters hit the host-memory guard. The selected 900-water
 case used **52.51–56.56% GPU memory per card** and about 80.48 / 88 GiB host
 RAM. This remains explicitly host-RAM limited, below the preferred VRAM range;
 the earlier 900-water failure is retained as evidence of limited RAM margin.
-The automatically submitted comparison **1888437**, on `4v100n16`, has passed
-all six complete GPU tuning cases and is running its first CPU layout.
-
 [four-gpu-followup.json](four-gpu-followup.json) records the accepted complete
 calibration, its raw-file verification hashes, the 16V100 four-GPU timeout
-and recovery, and the other live comparisons. All three unfinished points
-are running under the `control-v5` watcher. Code and evidence through
-`9dc5205` passed all six GitHub CI runs, including both CP2K checks.
+and recovery, and the earlier running comparisons.
+[multigpu-progress-20261022.json](multigpu-progress-20261022.json) records the
+latest completed tuning and timing samples, active-case observations,
+scheduler accounting and campaign state. Both unfinished points remain under
+the live `control-v5` watcher. Code and evidence through `c1d2442` passed all
+four GitHub CI runs; the preceding code commit `9dc5205` passed all six runs.
 [large-point-recovery.json](large-point-recovery.json) records their source
 failures, requests, allocations and the earlier campaign snapshot. Eleven focused tests
 pass, including recovery after partial GPU tuning and rejection of missing
