@@ -6,9 +6,29 @@ compiles ten block sizes twice for V100, and records loaded library paths and
 SHA-256 hashes. It uses Python's standard library and the installed NVRTC.
 
 The [2026-10-21 investigation](../../docs/evidence/cp2k-nvrtc-node-20261021/README.md)
-identified a damaged CUDA toolkit NVRTC file on `4v100n06`. The same-version
-HPC SDK copy and the toolkit copy on `4v100n35` are intact. Public installation
-repair remains an administrator action.
+identified anomalous CUDA toolkit NVRTC bytes read by `4v100n06`. The
+same-version HPC SDK path and toolkit reads on `4v100n35` return the expected
+bytes. `/opt/devtools` is shared NFS, so this observation must not be labelled a
+damaged node-local installation or used alone to justify replacing a shared file.
+The follow-up on `4v100n06` reads abnormal bytes through the ordinary path,
+expected bytes with `O_DIRECT`, and abnormal bytes again on a second ordinary
+read. Four additional clients return the expected bytes by both methods.
+This isolates inconsistent client-cache reads, without establishing what
+originally corrupted the cache or certifying every node in the cluster.
+
+`storage_probe.py` records the actual NFS mount, file identity and timestamps,
+then compares ordinary reads, `dd iflag=direct` reads bypassing the client page
+cache, and a second ordinary read. It checks both toolkit and SDK NVRTC paths
+without writing them or dropping caches. An unsupported/failed direct read is
+recorded as an error, not as a valid checksum. Run it on allocated compute nodes
+or another host where normal account access is available; retain its JSON output
+under the home-backed diagnostic directory.
+
+The [administrator guide](ADMIN-RECOVERY.md) provides read-only node collection
+commands and the maintenance/retest sequence. It includes a cluster-wide
+collection example for an account with node access; an unreachable node or a
+failed read must never be counted as healthy. It does not automatically drain
+nodes, clear caches, remount filesystems or replace shared files.
 
 Inside a Slurm allocation, after loading `cp2k/2026.2-auto`:
 

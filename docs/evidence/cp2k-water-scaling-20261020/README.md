@@ -261,11 +261,14 @@ completed. This does not establish a root-cause fix; the failure evidence is
 preserved and further complete calculations remain subject to acceptance.
 
 The [2026-10-21 node investigation](../cp2k-nvrtc-node-20261021/README.md)
-subsequently reproduced that failure and found 1,456 damaged bytes in
-`4v100n06`'s toolkit `libnvrtc.so.12.9.86`. Using an intact same-version copy in
-an isolated home environment restores the original failing case. Public node
-repair is still pending; exclude this node until the installed library passes
-the documented integrity and runtime checks.
+subsequently reproduced that failure and found 1,456 anomalous bytes in reads
+of the toolkit `libnvrtc.so.12.9.86` through `4v100n06`. Using an intact
+same-version copy in an isolated home environment restores the original failing
+case. The toolkit is on shared NFS. On that same client, direct reads bypassing
+the page cache return the expected bytes while ordinary reads remain wrong;
+four other clients pass both paths. This identifies inconsistent client-cache
+reads, not a damaged node-local installation. Exclude this node until its cache
+issue is resolved and its reads and GPU runtime pass the documented checks.
 
 A first 16V100 four-GPU calibration exceeded the memory guard at 720 waters.
 Its immediately following 648-water attempt observed residual allocations after
