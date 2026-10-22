@@ -1,0 +1,237 @@
+{
+  "archived_source_access": {
+    "path": "/home/stardust/sai-hpc-software/diagnostics/abacus-beta11-deployment-20261023/source-access-final.json",
+    "sha256": "cd68e461cfae3b31132d61878e4a8e7a199d35d454c41bbf3c3d3d522b7f2dae"
+  },
+  "copy_rehearsal": {
+    "observed_at": "2026-10-22T17:50:42.677716+00:00",
+    "passed": true,
+    "physical_opt_installed": false,
+    "release_sha256": "326fe112cb9a9ed5af86d551efab073a8aacd154153c2d6fffaf713f118f7bae",
+    "root": "/home/stardust/sai-hpc-software/diagnostics/abacus-beta11-deployment-20261023/physical-rehearsal",
+    "runtime_plan_sha256": "a87c7cd9f6551c9aeba1061cc5d8aacee699d29fdcdecb6d5c4dc052163c047d",
+    "scope": "Copy/readback rehearsal in home mirror; physical /opt untouched"
+  },
+  "installations": [
+    {
+      "bytes": 494463508,
+      "omitted": {
+        "header-only build dependency": {
+          "bytes": 2905142,
+          "files": 271
+        },
+        "private dependency development interface": {
+          "bytes": 27534214,
+          "files": 8377
+        },
+        "private dependency static archive": {
+          "bytes": 214638798,
+          "files": 32
+        },
+        "replaced by the standalone public module": {
+          "bytes": 1925,
+          "files": 1
+        },
+        "upstream LibTorch test library": {
+          "bytes": 926888,
+          "files": 2
+        },
+        "workflow metadata and tests remain in the home tree": {
+          "bytes": 23930,
+          "files": 8
+        }
+      },
+      "partition": "4V100",
+      "prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/4V100",
+      "regular_files": 19,
+      "symlinks": 1
+    },
+    {
+      "bytes": 493845820,
+      "omitted": {
+        "header-only build dependency": {
+          "bytes": 2905144,
+          "files": 271
+        },
+        "private dependency development interface": {
+          "bytes": 27534214,
+          "files": 8377
+        },
+        "private dependency static archive": {
+          "bytes": 214638798,
+          "files": 32
+        },
+        "replaced by the standalone public module": {
+          "bytes": 1925,
+          "files": 1
+        },
+        "upstream LibTorch test library": {
+          "bytes": 926888,
+          "files": 2
+        },
+        "workflow metadata and tests remain in the home tree": {
+          "bytes": 23925,
+          "files": 8
+        }
+      },
+      "partition": "16V100",
+      "prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/16V100",
+      "regular_files": 19,
+      "symlinks": 1
+    },
+    {
+      "bytes": 493726796,
+      "omitted": {
+        "header-only build dependency": {
+          "bytes": 2905146,
+          "files": 271
+        },
+        "private dependency development interface": {
+          "bytes": 27534214,
+          "files": 8377
+        },
+        "private dependency static archive": {
+          "bytes": 214638798,
+          "files": 32
+        },
+        "replaced by the standalone public module": {
+          "bytes": 1925,
+          "files": 1
+        },
+        "upstream LibTorch test library": {
+          "bytes": 926888,
+          "files": 2
+        },
+        "workflow metadata and tests remain in the home tree": {
+          "bytes": 24012,
+          "files": 8
+        }
+      },
+      "partition": "8V100V0",
+      "prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/8V100V0",
+      "regular_files": 19,
+      "symlinks": 1
+    },
+    {
+      "bytes": 484615004,
+      "omitted": {
+        "header-only build dependency": {
+          "bytes": 2905146,
+          "files": 271
+        },
+        "private dependency development interface": {
+          "bytes": 27534214,
+          "files": 8377
+        },
+        "private dependency static archive": {
+          "bytes": 214638798,
+          "files": 32
+        },
+        "replaced by the standalone public module": {
+          "bytes": 1925,
+          "files": 1
+        },
+        "upstream LibTorch test library": {
+          "bytes": 926888,
+          "files": 2
+        },
+        "workflow metadata and tests remain in the home tree": {
+          "bytes": 22918,
+          "files": 8
+        }
+      },
+      "partition": "DSPRHBM",
+      "prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/DSPRHBM",
+      "regular_files": 19,
+      "symlinks": 1
+    }
+  ],
+  "local_validation": {
+    "deployment_tests": 21,
+    "passed": true,
+    "shell_syntax_passed": true
+  },
+  "native_reference_preflight_passed": true,
+  "native_runtime_acceptance": "pending administrator installation",
+  "observed_at": "2026-10-22T17:57:34.949859+00:00",
+  "package": "deployment/abacus-3.11.0-beta11",
+  "physical_opt_installed": false,
+  "source_access": {
+    "account": "saiuser01",
+    "captured_at": "2026-10-22T17:57:34.949859+00:00",
+    "checked_paths": 535,
+    "method": "Effective POSIX ACL evaluation; no impersonated execution",
+    "passed": true,
+    "release_sha256": "326fe112cb9a9ed5af86d551efab073a8aacd154153c2d6fffaf713f118f7bae",
+    "runtime_plan_sha256": "a87c7cd9f6551c9aeba1061cc5d8aacee699d29fdcdecb6d5c4dc052163c047d",
+    "source_writable_paths": [],
+    "targets": [
+      "/opt/apps/abacus",
+      "/opt/modules/modulefiles/apps/abacus"
+    ]
+  },
+  "source_acl_changes": [
+    {
+      "after": "# file: /home/stardust/sai-hpc-software/containers/software/abacus\n# owner: 1478400690\n# group: 1478400690\nuser::rwx\nuser:1478400146:--x\ngroup::---\nmask::--x\nother::---",
+      "before": "# file: /home/stardust/sai-hpc-software/containers/software/abacus\n# owner: 1478400690\n# group: 1478400690\nuser::rwx\ngroup::---\nother::---",
+      "grant": "u:1478400146:--x,m::--x",
+      "path": "/home/stardust/sai-hpc-software/containers/software/abacus"
+    },
+    {
+      "after": "# file: /home/stardust/sai-hpc-software/containers/software/abacus/release\n# owner: 1478400690\n# group: 1478400690\nuser::rwx\nuser:1478400146:--x\ngroup::---\nmask::--x\nother::---",
+      "before": "# file: /home/stardust/sai-hpc-software/containers/software/abacus/release\n# owner: 1478400690\n# group: 1478400690\nuser::rwx\ngroup::---\nother::---",
+      "grant": "u:1478400146:--x,m::--x",
+      "path": "/home/stardust/sai-hpc-software/containers/software/abacus/release"
+    },
+    {
+      "after": "# file: /home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a\n# owner: 1478400690\n# group: 1478400690\nuser::rwx\nuser:1478400146:--x\ngroup::---\nmask::--x\nother::---",
+      "before": "# file: /home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a\n# owner: 1478400690\n# group: 1478400690\nuser::rwx\ngroup::---\nother::---",
+      "grant": "u:1478400146:--x,m::--x",
+      "path": "/home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a"
+    },
+    {
+      "after": "# file: /home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/16V100\n# owner: 1478400690\n# group: 1478400690\nuser::rwx\nuser:1478400146:--x\ngroup::---\nmask::--x\nother::---",
+      "before": "# file: /home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/16V100\n# owner: 1478400690\n# group: 1478400690\nuser::rwx\ngroup::---\nother::---",
+      "grant": "u:1478400146:--x,m::--x",
+      "path": "/home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/16V100"
+    },
+    {
+      "after": "# file: /home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/4V100\n# owner: 1478400690\n# group: 1478400690\nuser::rwx\nuser:1478400146:--x\ngroup::---\nmask::--x\nother::---",
+      "before": "# file: /home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/4V100\n# owner: 1478400690\n# group: 1478400690\nuser::rwx\ngroup::---\nother::---",
+      "grant": "u:1478400146:--x,m::--x",
+      "path": "/home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/4V100"
+    },
+    {
+      "after": "# file: /home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/8V100V0\n# owner: 1478400690\n# group: 1478400690\nuser::rwx\nuser:1478400146:--x\ngroup::---\nmask::--x\nother::---",
+      "before": "# file: /home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/8V100V0\n# owner: 1478400690\n# group: 1478400690\nuser::rwx\ngroup::---\nother::---",
+      "grant": "u:1478400146:--x,m::--x",
+      "path": "/home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/8V100V0"
+    },
+    {
+      "after": "# file: /home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/DSPRHBM\n# owner: 1478400690\n# group: 1478400690\nuser::rwx\nuser:1478400146:--x\ngroup::---\nmask::--x\nother::---",
+      "before": "# file: /home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/DSPRHBM\n# owner: 1478400690\n# group: 1478400690\nuser::rwx\ngroup::---\nother::---",
+      "grant": "u:1478400146:--x,m::--x",
+      "path": "/home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/DSPRHBM"
+    }
+  ],
+  "source_preflight_passed": true,
+  "target_access": [
+    {
+      "effective": 7,
+      "mode": 509,
+      "owner": 1000,
+      "passed": true,
+      "path": "/opt/apps/abacus",
+      "required": 7
+    },
+    {
+      "effective": 7,
+      "mode": 509,
+      "owner": 1000,
+      "passed": true,
+      "path": "/opt/modules/modulefiles/apps/abacus",
+      "required": 7
+    }
+  ],
+  "version": "v3.11.0-beta11"
+}
