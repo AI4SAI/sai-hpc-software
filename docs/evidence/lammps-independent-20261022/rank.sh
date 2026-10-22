@@ -23,7 +23,7 @@ for path in /usr /lib /lib64 /opt/devtools \
   args+=(--bind "$path:$path:ro")
 done
 args+=(--bind "$output:/acceptance:ro" --bind "$work:/work:rw"
-       --bind "$runtime:$runtime:rw" --bind "$runtime:/tmp:rw"
+       --bind "$TMPDIR:$TMPDIR:rw" --bind "$runtime:/tmp:rw"
        --env "TMPDIR=$runtime" --env "TMP=$runtime" --env "TEMP=$runtime"
        --env "CUDA_CACHE_PATH=$runtime/cuda" --env "XDG_CACHE_HOME=$runtime/cache"
        --env PYTHONDONTWRITEBYTECODE=1 --env PYTHONNOUSERSITE=1
@@ -45,8 +45,13 @@ exec "${args[@]}" "$image" /usr/bin/bash --noprofile --norc -c '
   if [[ "$SAI_LMP_PROGRAM" == lmp ]]; then
     rank=${OMPI_COMM_WORLD_RANK:?}
     binary="$SAI_LMP_PREFIX/bin/lmp"
+    cpu=
+    while read -r name value; do
+      [[ "$name" != Cpus_allowed_list: ]] || cpu=$value
+    done < /proc/self/status
+    [[ -n "$cpu" ]]
     printf "%s\t%s\t%s\t%s\t%s\t%s\t%s\n" "$rank" "$(hostname -s)" "$binary" \
-      "$CUDA_VISIBLE_DEVICES" "$(awk "/^Cpus_allowed_list:/ {print \$2}" /proc/self/status)" \
+      "$CUDA_VISIBLE_DEVICES" "$cpu" \
       "$(sha256sum "$binary" | cut -d " " -f 1)" "$SAI_LMP_IMAGE" > "/work/ranks/rank-$rank.tsv"
     if [[ "${2:-}" == -h ]]; then
       ldd "$binary" > "/work/ranks/ldd-$rank.txt"
