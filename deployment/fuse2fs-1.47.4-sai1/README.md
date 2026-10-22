@@ -25,9 +25,12 @@ evaluates all ancestor/source/target POSIX ACLs for `saiuser01`, without
 impersonating the account. The current `stardust` connection cannot write
 these `/opt` parents; the administrator runs the installation below.
 
-[Pre-install qualification](../../docs/evidence/fuse2fs-public-20261022/README.md)
-passed all 13 driver/module checks in DSPRHBM job `1897998`. The actual public
-prefix still needs installation and post-install validation.
+[Pre-install qualification under this version name](../../docs/evidence/fuse2fs-versioned-20261022/README.md)
+passed all 13 driver/module checks in DSPRHBM job `1899786`, and all seven
+installer tests passed on the site's home filesystem. The actual public prefix
+still needs installation and post-install validation. The earlier
+[commit-named package qualification](../../docs/evidence/fuse2fs-public-20261022/README.md)
+remains archived with its original paths.
 
 ## Installation
 
