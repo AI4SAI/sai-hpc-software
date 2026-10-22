@@ -329,7 +329,13 @@ def verify_raw(output):
         arguments = process['command'][len(start):]
         stdout = (folder / 'stdout.txt').read_text()
         if name == 'version':
-            require(arguments == ['-h'] and 'LAMMPS (' in stdout, 'missing LAMMPS help')
+            # -h uses the long Simulator banner; normal calculation output
+            # uses LAMMPS (...). Develop commits may retain the release date.
+            banner = re.search(r'^Large-scale Atomic/Molecular Massively Parallel Simulator - '
+                               r'(\d{1,2} [A-Za-z]{3} \d{4})(?:\s|$)', stdout, re.M)
+            require(arguments == ['-h'] and banner is not None and
+                    datetime.strptime(banner[1], '%d %b %Y').strftime('%Y%m%d') == features['version'],
+                    'help version differs from candidate C API inventory')
             continue
         if name.startswith('deepmd-'):
             backend = name.split('-')[1]
