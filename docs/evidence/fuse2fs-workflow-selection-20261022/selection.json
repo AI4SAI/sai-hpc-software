@@ -1,0 +1,44 @@
+{
+  "controller_sha256": "12df0e8153cea1ecb6733470c76607a8d89ab13838f3f32b39c5cb041fee6351",
+  "cases": [
+    {
+      "software": "abacus",
+      "module_command": "module --ignore_cache load apptainer/1.4.4 fuse2fs/1.47.4-sai",
+      "selection": {
+        "config": "/opt/devtools/fuse2fs/1.47.4-sai1/etc/apptainer.conf",
+        "root": "/opt/devtools/fuse2fs/1.47.4-sai1",
+        "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+        "fuse2fs": "/opt/devtools/fuse2fs/1.47.4-sai1/bin/fuse2fs"
+      },
+      "pinned_wrapper_commands": 0,
+      "module_purge_restores_environment": true,
+      "script_sha256": "716cfa81094aa21e398112aab245a9e449572b89f4f7a9aae4d816bb38edda6a"
+    },
+    {
+      "software": "gpumd",
+      "module_command": "module --ignore_cache load apptainer/1.4.4 fuse2fs/1.47.4-sai",
+      "selection": {
+        "config": "/opt/devtools/fuse2fs/1.47.4-sai1/etc/apptainer.conf",
+        "root": "/opt/devtools/fuse2fs/1.47.4-sai1",
+        "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+        "fuse2fs": "/opt/devtools/fuse2fs/1.47.4-sai1/bin/fuse2fs"
+      },
+      "pinned_wrapper_commands": 0,
+      "module_purge_restores_environment": true,
+      "script_sha256": "ab1a46723f59184ae557c628da098771acf05de348f212e1e1f62cf4fc9dbee7"
+    },
+    {
+      "software": "cp2k",
+      "module_command": "module load apptainer/1.4.4",
+      "selection": {
+        "config": null,
+        "root": null,
+        "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+        "fuse2fs": null
+      },
+      "pinned_wrapper_commands": 3,
+      "module_purge_restores_environment": true,
+      "script_sha256": "7703ecb2e07cd8052c57abf10e1cd38ae4c3247c541ea3eba73f6ebcd779e255"
+    }
+  ]
+}

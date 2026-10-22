@@ -407,7 +407,11 @@ def render_job(args):
         "set -eo pipefail",
         "export PATH=/usr/bin:/bin",
         'export LD_LIBRARY_PATH="" LD_PRELOAD=""',
-        "source /etc/profile.d/lmod.sh", "module load apptainer/1.4.4",
+        "source /etc/profile.d/lmod.sh",
+        # CP2K selects its pinned driver through an explicit --config below.
+        # Other writable-image builds use the qualified public driver module.
+        ("module load apptainer/1.4.4" if args.software == "cp2k" else
+         "module --ignore_cache load apptainer/1.4.4 fuse2fs/1.47.4-sai"),
         "set -u", "umask 077",
         f"export TMPDIR={q(str(r / 'runtime'))} APPTAINER_TMPDIR={q(str(r / 'runtime'))}",
         f"export APPTAINER_CACHEDIR={q(str(r / 'apptainer-cache'))}",

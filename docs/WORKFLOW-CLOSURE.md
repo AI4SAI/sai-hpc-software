@@ -11,6 +11,15 @@ source fixes still need a new release build and scientific acceptance.
 Optional public deployment of the container image driver is tracked in
 [issue #12](https://github.com/AI4SAI/sai-hpc-software/issues/12).
 
+The installed `fuse2fs/1.47.4-sai` module has passed all 13 public-install
+checks. New ABACUS and GPUMD batch scripts now load it with Apptainer, covering
+their writable build/export and read-only overlay extraction phases. CP2K,
+DeePMD and LAMMPS already explicitly select the same optimized driver bytes.
+Loading only `apptainer/1.4.4` still uses its bundled helper; see the
+[single-command opt-in and workflow behavior](../deployment/fuse2fs-1.47.4-sai1/README.md#use).
+This enables the measured I/O optimization for future builds; scientific
+acceptance of new ABACUS/GPUMD deliveries remains part of their own workflows.
+
 October 22: [independent LAMMPS candidates](LAMMPS-INDEPENDENT.md) reuse the
 accepted physical DeePMD 3.2.0 dependency. The first 16V100 develop build
 (`a0e2bd6efb3d`, job `1896356`) completed in 55m57s and produced a verified
