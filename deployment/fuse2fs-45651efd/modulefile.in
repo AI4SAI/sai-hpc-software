@@ -1,0 +1,23 @@
+#%Module1.0
+proc ModulesHelp {} {
+    puts stderr "Optional fuse2fs for Apptainer 1.4.4 writable ext images on Lustre."
+    puts stderr "Preserves inherited OFD locks and explicit read-only backing files."
+    puts stderr "Load apptainer/1.4.4 first; keep build/cache/scratch under your home."
+}
+module-whatis "fuse2fs 45651efd with SAI OFD/read-only fixes for Apptainer 1.4.4"
+conflict fuse2fs
+prereq apptainer/1.4.4
+set prefix {@PREFIX@}
+if {[module-info mode load]} {
+    foreach {path expected} [list "$prefix/bin/fuse2fs" {@BINARY_SHA256@} \
+        /opt/devtools/apptainer/1.4.4/etc/apptainer/apptainer.conf {@SITE_SHA256@} \
+        "$prefix/etc/apptainer.conf" {@CONFIG_SHA256@}] {
+        if {![file isfile $path] || [lindex [exec /usr/bin/sha256sum -- $path] 0] ne $expected} {
+            error "fuse2fs payload or site configuration changed: $path; revalidate this module"
+        }
+    }
+}
+prepend-path PATH "$prefix/bin"
+prepend-path MANPATH "$prefix/share/man"
+pushenv FUSE2FS_ROOT $prefix
+pushenv APPTAINER_CONFIG_FILE "$prefix/etc/apptainer.conf"
