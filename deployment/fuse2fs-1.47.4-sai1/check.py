@@ -68,7 +68,7 @@ module unload "$2"
 [[ -z ${FUSE2FS_ROOT+x} ]]
 '''
     loaded = json.loads(subprocess.check_output(
-        ['/bin/bash', '-c', shell, 'module-check', str(module_root), 'fuse2fs/' + deploy.VERSION], text=True))
+        ['/bin/bash', '-c', shell, 'module-check', str(module_root), 'fuse2fs/' + deploy.MODULE.name], text=True))
     deploy.require(loaded['config'] == str(prefix / 'etc/apptainer.conf')
                    and loaded['driver'] == str(prefix / 'bin/fuse2fs'), 'Wrong module selection')
     (output / 'module.json').write_text(json.dumps(dict(**loaded, unload_restored=True), indent=2) + '\n')

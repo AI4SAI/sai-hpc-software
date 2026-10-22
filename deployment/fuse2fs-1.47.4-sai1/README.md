@@ -6,7 +6,10 @@ fuse2fs mounts ext filesystem images for Apptainer; it is an executable helper,
 not a scientific library. This package adds a separately selectable helper for
 the existing Apptainer installation.
 
-The public version is **1.47.4-sai1**. The `sai1` suffix identifies our first
+The build revision is **1.47.4-sai1**; the administrator chose the shorter public
+module name **fuse2fs/1.47.4-sai**. The installation prefix and module help still
+identify the pinned build revision. Renaming only the module file does not
+change the selected driver or its configuration. The `sai1` suffix identifies our first
 site package: upstream commit `45651efd6db7da8738bc9d8d1f17e99259cabfe4`
 includes I/O fixes after v1.47.4, plus our OFD/read-only patches. It is not the
 unmodified v1.47.4 release. The binary still reports `1.47.4`; `release.json`
@@ -25,12 +28,12 @@ evaluates all ancestor/source/target POSIX ACLs for `saiuser01`, without
 impersonating the account. The current `stardust` connection cannot write
 these `/opt` parents; the administrator runs the installation below.
 
-[Pre-install qualification under this version name](../../docs/evidence/fuse2fs-versioned-20261022/README.md)
-passed all 13 driver/module checks in DSPRHBM job `1899786`, and all seven
-installer tests passed on the site's home filesystem. The actual public prefix
-still needs installation and post-install validation. The earlier
-[commit-named package qualification](../../docs/evidence/fuse2fs-public-20261022/README.md)
-remains archived with its original paths.
+[Public installation acceptance](../../docs/evidence/fuse2fs-installed-20261022/README.md)
+passed all 13 driver/module checks in DSPRHBM job `1900053`, using the actual
+`/opt` files and module as account `stardust`, after installation by
+`saiuser01`. Seven installer tests also passed on the site's home filesystem.
+The earlier [pre-install qualification](../../docs/evidence/fuse2fs-versioned-20261022/README.md)
+retains its original version name and paths.
 
 ## Installation
 
@@ -54,7 +57,7 @@ share/licenses/e2fsprogs/NOTICE
 ```
 
 The module is
-`/opt/modules/modulefiles/devtools/fuse2fs/1.47.4-sai1`.
+`/opt/modules/modulefiles/devtools/fuse2fs/1.47.4-sai`.
 No runtime libraries need copying: this binary links the site OS's libfuse3,
 libblkid, libuuid and libc. It requires neither GCC nor CUDA at runtime.
 The installer checks exact contents/modes, stages in the destination parent
@@ -68,7 +71,7 @@ as installed. Tests, source code, receipts and logs stay in the home project.
 ```bash
 module use /opt/modules/modulefiles/devtools
 module load apptainer/1.4.4
-module --ignore_cache load fuse2fs/1.47.4-sai1
+module --ignore_cache load fuse2fs/1.47.4-sai
 fuse2fs -V
 # Keep host build, cache and scratch storage in home:
 export TMPDIR="$HOME/.cache/apptainer/tmp"
@@ -93,7 +96,7 @@ Loading verifies the binary, selected config and original site config hashes.
 If the site config changes, the module fails with a request to regenerate and
 revalidate this version. The checksum and source commit identify the build;
 its upstream version banner still says `1.47.4`, although the two performance
-fixes are later commits. `module unload fuse2fs/1.47.4-sai1` restores
+fixes are later commits. `module unload fuse2fs/1.47.4-sai` restores
 the previous config environment. The original Apptainer installation and
 site defaults are untouched. Native CP2K/LAMMPS and final read-only SIF
 execution do not require this module.
