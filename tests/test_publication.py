@@ -156,9 +156,14 @@ class PublicationTests(unittest.TestCase):
             (work / "info.log").write_text("ABACUS v3.9.0.26\n")
             native = "/opt/apps/abacus/system/bin/abacus"
             if spec["arm"] == "system":
+                with (work / 'modules.log').open('a') as stream:
+                    stream.write(benchmark.CPU_ELPA_MODULE + '\n')
                 (work / "executable.path").write_text(native + "\n")
                 (work / "executable.sha256").write_text("a" * 64 + "\n")
-                (work / "ldd.log").write_text("libmpi.so => /opt/devtools/mpi/lib/libmpi.so\n")
+                (work / "ldd.log").write_text(
+                    "libmpi.so => /opt/devtools/mpi/lib/libmpi.so\n"
+                    "libelpa_openmp.so.19 => " + benchmark.elpa_root('dsprhbm') +
+                    "/lib/libelpa_openmp.so.19\n")
             ranks_per_node = request['ranks_per_node']
             for rank in range(request['ranks']):
                 image = native if spec["arm"] == "system" else str(self.image)
