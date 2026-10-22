@@ -1,4 +1,15 @@
-# Workflow closure — 2026-10-21
+# Workflow closure — 2026-10-22
+
+PRs [#8](https://github.com/AI4SAI/sai-hpc-software/pull/8) and
+[#10](https://github.com/AI4SAI/sai-hpc-software/pull/10) are merged into `main`.
+Daily delivery now uses reusable workflows from its own revision and waits
+for their results. The old feature-branch dispatch failures described below
+are historical; no new scheduled production matrix is claimed yet. ABACUS's
+latest GitHub release is `v3.11.0-beta11` (`b0411118d360`), but it has no accepted
+artifact or physical installation from this workflow. The integrated JSON/HSE
+source fixes still need a new release build and scientific acceptance.
+Optional public deployment of the container image driver is tracked in
+[issue #12](https://github.com/AI4SAI/sai-hpc-software/issues/12).
 
 October 22: [independent LAMMPS candidates](LAMMPS-INDEPENDENT.md) reuse the
 accepted physical DeePMD 3.2.0 dependency. The first 16V100 develop build
@@ -6,8 +17,12 @@ accepted physical DeePMD 3.2.0 dependency. The first 16V100 develop build
 252 MiB SIF. Its 14 single/two-node GPU scientific cases passed in job
 `1896820`, independently reverified with the pinned installed DeePMD dependency.
 All release packages/styles remain present (71 packages, 2,497 styles).
-Native publication, other partitions' development acceptance and automatic
-daily integration are still pending.
+The 4V100 build `1896871` completed in 41m08s; science job `1897165` passed
+the same 14 single/two-node cases in 57s, with independent raw revalidation.
+Two earlier attempts failed in MPI core binding before application execution;
+the new acceptance launch keeps Slurm's CPU affinity without extra PRTE binding.
+The SIF and scientific inputs are unchanged. Native publication, 8V100V0's
+development acceptance and automatic daily integration are still pending.
 
 LAMMPS release work is now tracked in [LAMMPS-RELEASE.md](LAMMPS-RELEASE.md).
 The October 20 release restart now has published, reverified `stable_30Sep2026`
@@ -34,8 +49,8 @@ cases each, full feature/loader/placement checks and module unload, with
 `COMPLETED / 0:0`. Independent raw-result revalidation and post-run installed
 file readback also passed; [physical native evidence](evidence/lammps-release-20261020/physical-native-acceptance.json)
 pins the frozen inputs, results and accounting. The native batch script now
-lets site policy derive CPU allocation from GPU count. The live
-daily dispatcher still runs the old MD feature branch; its release history
+lets site policy derive CPU allocation from GPU count. Before the October 22
+integration, the daily dispatcher ran the old MD feature branch; its release history
 check rejects newer recovery identities, while its development build fails
 CUDA configuration. The stable restart uses the integrated controller,
 explicit GCC 14.3.0 and the qualified CP2K overlay driver, preserving all

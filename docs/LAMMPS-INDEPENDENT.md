@@ -73,7 +73,8 @@ plus GPU-package/Kokkos LJ and PPPM. It also checks the exact SIF executable,
 MPI/DeePMD loading, visible V100 devices and preservation of all release
 packages/styles. All rank scratch is backed by home. Only LAMMPS runs are
 required; this does not rerun a separate DeePMD build or training acceptance.
-Scientific acceptance completed on October 22; native installation is pending.
+Scientific acceptance completed on October 22 for 16V100 and 4V100; native
+installation is pending.
 
 On the cluster, using a frozen copy of these three evidence helpers:
 
@@ -123,11 +124,31 @@ needed. The accepted run used helper commit `f028ef9`, whose full Linux CI
 passed **898 tests (896 passed, 2 optional skips)** in
 [workflow 39732789452](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39732789452).
 
-The additional development builds are dispatched on the same implementation:
+The additional development builds use the same implementation:
 [4V100 workflow 39733175749](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39733175749)
 and [8V100V0 workflow 39733178970](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39733178970).
-Their build and scientific acceptance results are still pending.
+The 4V100 build and science are now accepted; 8V100V0 remains pending.
+
+4V100 build job **1896871** completed `0:0` in **41m08s**, producing a
+264,884,224-byte SIF. Job **1897165** then passed all **14 scientific cases**
+in **57s** on `4v100n18` and `4v100n19`. All 71 release packages and 2,473
+release styles remain available among the candidate's 71 packages / 2,497
+styles. Independent verification reparsed the raw results and rechecked the
+image and installed DeePMD bytes.
+[Build record](evidence/lammps-independent-20261022/4V100-build-completed.json),
+[scientific summary](evidence/lammps-independent-20261022/4V100-scientific-acceptance-summary.json),
+and [numerical/rank evidence](evidence/lammps-independent-20261022/4V100-scientific-acceptance.json).
+
+Two preceding 4V100 attempts failed before application execution during MPI
+process binding. The second captured `hwloc_set_cpubind` failure for CPUs
+`12,28` on `4v100n18`; neither attempt reached scientific calculations. The
+acceptance launcher now uses one MPI rank per node with Slurm's inherited CPU
+affinity and no additional PRTE core binding. Thread limits, inputs, tolerances
+and SIF bytes are unchanged; timings are not a performance comparison.
+[Failed attempts and exact logs](evidence/lammps-independent-20261022/4V100-acceptance-attempts.json)
+remain archived. The earlier 16V100 run retains its original frozen launcher
+and verifier in its recorded home directory.
 
 The workflow remains a manual build entry plus separate scientific acceptance.
 The daily scheduler, independent DeePMD entry and automatic deployment are
-not complete. Only 16V100 is scientifically accepted for this develop SHA.
+not complete. 16V100 and 4V100 are scientifically accepted for this develop SHA.

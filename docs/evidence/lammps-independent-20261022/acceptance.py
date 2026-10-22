@@ -183,8 +183,12 @@ def guard(output):
 
 
 def command(output, hosts, arguments):
+    # Slurm already constrains each rank to its allocated CPUs. On shared GPU
+    # nodes PRTE's extra core binding can select a core outside that mask and
+    # abort before starting bash (hwloc_set_cpubind). Keep one rank per node
+    # and the inherited allocation; these checks make no timing claim.
     return [shutil.which('mpirun'), '-np', str(len(hosts)), '--host', ','.join(hosts),
-            '--map-by', 'ppr:1:node:PE=1', '--bind-to', 'core', '--report-bindings',
+            '--map-by', 'ppr:1:node', '--bind-to', 'none', '--report-bindings',
             'bash', str(output / 'control/rank.sh'), 'lmp', *arguments]
 
 
@@ -336,7 +340,7 @@ def verify_raw(output):
                 require('not found' not in loader and mpi + '/lib/libmpi.so.40' in loader and
                         dependency['install_prefix'] + '/lib/libdeepmd' in loader, 'wrong MPI/DeePMD loader')
         start = [mpi + '/bin/mpirun', '-np', str(count), '--host', ','.join(hosts[:count]),
-                 '--map-by', 'ppr:1:node:PE=1', '--bind-to', 'core', '--report-bindings',
+                 '--map-by', 'ppr:1:node', '--bind-to', 'none', '--report-bindings',
                  'bash', str(output / 'control/rank.sh'), 'lmp']
         require(process['command'][:len(start)] == start, 'wrong MPI launch')
         arguments = process['command'][len(start):]
