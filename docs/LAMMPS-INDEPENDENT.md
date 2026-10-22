@@ -46,3 +46,16 @@ than resubmitted. No public module or installed dependency is modified.
 
 DeePMD's independent build/acceptance entry and the default daily scheduler
 have not yet been switched to this model. CP2K is already a separate workflow.
+
+## October 22 first live build
+
+[Workflow 39724118766](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39724118766)
+submitted Slurm job **1896356** on `16v100n02`, using recipe commit `3546d33` and
+LAMMPS develop commit `a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b`. Configuration
+passed with GCC 14.3.0 and CUDA 12.9, all 13 DeePMD styles were registered,
+and the generated native-CUDA Volta configuration passed its checks. The
+container sees 32 logical CPUs and compiles with 24 parallel workers. C++ and
+CUDA compilation has started; there is no completed candidate or scientific
+acceptance yet. [Recorded progress](evidence/lammps-independent-20261022/build-progress.json).
+
+Linux CI for the recipe passed all 895 tests (893 passed, 2 optional skips).
