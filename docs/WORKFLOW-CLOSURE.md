@@ -1,8 +1,10 @@
 # Workflow closure — 2026-10-21
 
 October 22: [independent LAMMPS candidates](LAMMPS-INDEPENDENT.md) reuse the
-accepted physical DeePMD 3.2.0 dependency. This new build entry does not yet
-establish development-branch scientific acceptance or native publication.
+accepted physical DeePMD 3.2.0 dependency. The first 16V100 develop build
+(`a0e2bd6efb3d`, job `1896356`) completed in 55m57s and produced a verified
+252 MiB SIF. Development-branch scientific acceptance and native publication
+are still pending.
 
 LAMMPS release work is now tracked in [LAMMPS-RELEASE.md](LAMMPS-RELEASE.md).
 The October 20 release restart now has published, reverified `stable_30Sep2026`

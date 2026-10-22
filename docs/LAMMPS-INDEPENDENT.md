@@ -54,8 +54,36 @@ submitted Slurm job **1896356** on `16v100n02`, using recipe commit `3546d33` an
 LAMMPS develop commit `a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b`. Configuration
 passed with GCC 14.3.0 and CUDA 12.9, all 13 DeePMD styles were registered,
 and the generated native-CUDA Volta configuration passed its checks. The
-container sees 32 logical CPUs and compiles with 24 parallel workers. C++ and
-CUDA compilation has started; there is no completed candidate or scientific
-acceptance yet. [Recorded progress](evidence/lammps-independent-20261022/build-progress.json).
+container sees 32 logical CPUs and compiles with 24 parallel workers.
+The job completed successfully in **55m57s**, consuming 9h04m49s of CPU time
+(about 9.7 CPUs averaged over build, linking, packaging and verification).
+The workflow is green and the **264,478,720-byte SIF** passed its installed
+file inventory and runtime-path audit. Its SHA256 is
+`c268e2ec543bce00e2712bb817ceee7841ea693a47b6a858e8b4ad931e4aed54`.
+The candidate is under
+`experimental/deepmd-lammps/runs/lmp-39724118766-1-16v100-avx2-20261022/candidate.sif`
+in the cluster home project. [Completed build evidence](evidence/lammps-independent-20261022/build-completed.json)
+supersedes the earlier [progress snapshot](evidence/lammps-independent-20261022/build-progress.json).
+
+The [acceptance harness](evidence/lammps-independent-20261022/acceptance.py)
+uses the release's frozen numerical references and inputs. It runs 14
+scientific cases: single/two-node TF/PT/JAX DeePMD potentials with PLUMED,
+plus GPU-package/Kokkos LJ and PPPM. It also checks the exact SIF executable,
+MPI/DeePMD loading, visible V100 devices and preservation of all release
+packages/styles. All rank scratch is backed by home. Only LAMMPS runs are
+required; this does not rerun a separate DeePMD build or training acceptance.
+Scientific acceptance and native installation are still pending.
+
+On the cluster, using a frozen copy of these three evidence helpers:
+
+```bash
+python3 acceptance.py submit /home/stardust/sai-hpc-software/experimental/deepmd-lammps/runs/BUILD_RUN \
+  --reference /path/to/deployment/lammps-30Sep2026/native-reference.json
+# After the recorded job completes:
+python3 acceptance.py verify /home/stardust/sai-hpc-software/experimental/deepmd-lammps/runtime-tests/ACCEPTANCE_RUN
+```
+
+The acceptance report is separate from the immutable build record; it cannot
+mark a candidate as physically installed or published.
 
 Linux CI for the recipe passed all 895 tests (893 passed, 2 optional skips).
