@@ -46,6 +46,7 @@ case "$phase" in
       git -C "/workspace/$name" -c core.hooksPath=/dev/null checkout --detach "$sha"
       [[ "$(git -C "/workspace/$name" rev-parse HEAD)" == "$sha" ]]
     done
+    /usr/bin/python3 /control/md_source_version.py restore
     if [[ "$phase" == build-deepmd ]]; then
       bash /control/md_build.sh "$target" deepmd
     elif [[ "$phase" == build-lammps ]]; then
@@ -65,11 +66,17 @@ case "$phase" in
       mkdir -p "/workspace/export$(dirname -- "$prefix")"
       cp -a "$prefix" "/workspace/export$prefix"
     done
-    mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"
+    # fakeroot's read-only chmod state does not survive the build/export
+    # process boundary. Restore the declared modes on the packaging copy and
+    # read real filesystem permissions when writing Squashfs.
+    env -u LD_PRELOAD /usr/bin/python3 /control/md_packaging.py /workspace/export
+    env -u LD_PRELOAD mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"
     ;;
   verify)
+    export TMPDIR=/runtime
     source "$LAMMPS_PREFIX/share/sai/runtime-env.sh"
     "$DEEPMD_PREFIX/bin/dp" --version
+    "$DEEPMD_PREFIX/bin/python" /control/md_source_version.py verify-deepmd
     "$LAMMPS_PREFIX/bin/lmp" -h
     "$DEEPMD_PREFIX/bin/python" /control/md_relocate_audit.py "$DEEPMD_PREFIX" "$LAMMPS_PREFIX"
     /usr/bin/python3 - <<'PY'

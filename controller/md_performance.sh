@@ -23,7 +23,11 @@ nsys=$(realpath -e /opt/devtools/nvidia/cuda-12.9.1/nsight-systems-2025.1.3/bin/
 [[ "$nsys" == /opt/devtools/* && -x "$nsys" ]]
 printf '%s\n' "$nsys" > "$task/results/nsys.path"
 resources='{"nodes":1,"ranks":1,"gpus_per_node":1,"threads_per_rank":1}'
-for backend in tf pt jax; do
+case "${SAI_MD_PERFORMANCE_BACKENDS:?explicit benchmark backend scope required}" in
+  'tf pt jax'|'pt') ;;
+  *) echo 'unvalidated performance backend scope' >&2; exit 2 ;;
+esac
+for backend in $SAI_MD_PERFORMANCE_BACKENDS; do
   frozen_args=()
   if [[ -n "$repeat_run" ]]; then frozen_args=(--frozen-source "$root/runtime-tests/$repeat_run/results/$backend/frozen.json"); fi
   python3 -u "$control/md_performance_run.py" "$task/case" --backend "$backend" \

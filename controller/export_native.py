@@ -725,6 +725,10 @@ def export_image(image, expected_sha256, destination, *, prefixes=None, include_
             (root / prefixes[0].lstrip("/")).rename(stage)
         else:
             stage.mkdir(mode=0o755)
+            # mkdir's mode is filtered by the caller's umask. The bundle root
+            # is part of the public export and must pass the same readback as
+            # its explicitly restored wrapping and inventoried directories.
+            stage.chmod(0o755)
             for item in installations:
                 output = stage / item["path"]
                 output.parent.mkdir(parents=True, exist_ok=True, mode=0o755)
@@ -888,7 +892,8 @@ def verify_export(destination, receipt, expected_sha256, identities):
                 raise ValueError("export symbolic link differs from inventory")
         else:
             if stat.S_IMODE(info.st_mode) != expected["mode"]:
-                raise ValueError("export permissions differ from inventory")
+                raise ValueError(f"export permissions differ from inventory: {relative} "
+                                 f"({stat.S_IMODE(info.st_mode):04o} != {expected['mode']:04o})")
             if kind == "file":
                 if "sha256" in expected and (info.st_size != expected["size"] or checksum(path) != expected["sha256"]):
                     raise ValueError("exported payload checksum differs from inventory")

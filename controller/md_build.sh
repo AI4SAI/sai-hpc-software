@@ -43,6 +43,7 @@ export DP_ENABLE_NATIVE_OPTIMIZATION=1 CMAKE_BUILD_PARALLEL_LEVEL="$BUILD_JOBS"
 export CMAKE_ARGS="-DCMAKE_CUDA_ARCHITECTURES=70 -DCMAKE_INSTALL_RPATH=\$ORIGIN -DENABLE_JAX=ON"
 "$DEEPMD_PREFIX/bin/python" -m pip install --no-index --no-deps --no-build-isolation \
   --ignore-installed /workspace/deepmd-kit
+"$DEEPMD_PREFIX/bin/python" /control/md_source_version.py verify-deepmd
 cmake -S /workspace/deepmd-kit/source -B /workspace/deepmd-cpp \
   -DCMAKE_INSTALL_PREFIX="$DEEPMD_PREFIX" -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_INSTALL_RPATH='$ORIGIN' -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=OFF \
@@ -86,6 +87,7 @@ cmake -S /workspace/lammps/cmake -B /workspace/lammps-build \
   '-DCMAKE_CXX_LINKER_LAUNCHER=/usr/bin/python3;/control/md_link_launcher.py' \
   -DFFT_KOKKOS=CUFFT \
   -DPKG_GPU=ON -DGPU_API=cuda -DGPU_ARCH=sm_70 -DCUDA_BUILD_MULTIARCH=OFF \
+  -DCUDA_HOST_COMPILER="$CXX" \
   -DCUDA_MPS_SUPPORT=ON -DCUDPP_OPT=OFF \
   -DDOWNLOAD_POTENTIALS=ON \
   -DDOWNLOAD_VORO=OFF -DVORO_INCLUDE_DIR="$MD_SYSTEM_VORO/include/voro++" \
@@ -122,6 +124,11 @@ for name in PATH LD_LIBRARY_PATH PYTHONPATH; do
   cleaned=()
   for component in "${components[@]}"; do
     [[ -n "$component" ]] || continue
+    # The minimal rootfs has real /bin and /sbin directories, unlike the
+    # merged-/usr host. Use the bound native OS paths in exported metadata.
+    if [[ "$name" == PATH ]]; then
+      case "$component" in /bin) component=/usr/bin ;; /sbin) component=/usr/sbin ;; esac
+    fi
     if [[ "$component" == /opt/apps/lammps || "$component" == /opt/apps/lammps/* ]]; then
       [[ "$component" == "$LAMMPS_PREFIX" || "$component" == "$LAMMPS_PREFIX/"* ]] || continue
     fi

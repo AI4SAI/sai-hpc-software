@@ -16,6 +16,19 @@ from test_md_controller import delivery_request
 
 
 class PerformanceLifecycleTests(unittest.TestCase):
+    def test_gpu_scope_is_explicit_and_keeps_the_same_single_repeat_limit(self):
+        remote = Mock(side_effect=[None, subprocess.CalledProcessError(3, 'monitor'), None, None])
+        self.assertEqual(md_ci.run_performance_gate(remote, 'build1', 'science1', scope='gpu'),
+                         'build1-performance-retest')
+        for index in (0, 2):
+            self.assertEqual(remote.call_args_list[index].args[-2:], ('--scope', 'gpu'))
+        self.assertEqual(controller.performance_backends({}), ('tf', 'pt', 'jax'))
+        self.assertEqual(controller.performance_backends({'performance_scope': 'gpu'}), ('pt',))
+        with self.assertRaises(ValueError):
+            controller.performance_backends({'performance_scope': 'none'})
+        with self.assertRaisesRegex(ValueError, 'scope'):
+            controller.check_repeat_request({'performance_scope': 'gpu'}, {})
+
     def test_first_success_publishes_no_second_trial(self):
         remote = Mock()
         accepted = md_ci.run_performance_gate(remote, 'build1', 'science1')
@@ -48,11 +61,19 @@ class PerformanceLifecycleTests(unittest.TestCase):
                            delivery=delivery, artifact='/safe/candidate.sif', resources=controller.RESOURCES)
             script = controller.render(request, Path('/safe/performance1'))
             subprocess.run(['bash', '-n'], input=script, text=True, check=True)
+            prefix = '\n'.join(script.splitlines()[:-1]) + '\n'
+            restored = subprocess.run(['/usr/bin/bash', '--noprofile', '--norc'], env={},
+                                      input=prefix + 'printf "%s\\n" "$HOME"\n',
+                                      text=True, check=True, capture_output=True)
+            self.assertEqual(restored.stdout.strip(), str(Path.home()))
             self.assertIn('#SBATCH --nodes=1', script)
             self.assertIn('#SBATCH --ntasks=1', script)
             self.assertIn('#SBATCH --gpus-per-node=1', script)
             self.assertIn('#SBATCH --time=120', script)
             self.assertIn('md_performance.sh performance1 science1', script)
+            self.assertIn("export SAI_MD_PERFORMANCE_BACKENDS='tf pt jax'", script)
+            gpu = controller.render(dict(request, performance_scope='gpu'), Path('/safe/performance1'))
+            self.assertIn('export SAI_MD_PERFORMANCE_BACKENDS=pt\n', gpu)
             self.assertIn('#SBATCH --partition=' + delivery['identities']['lammps']['partition'], script)
             with self.assertRaises(ValueError):
                 controller.render(dict(request, resources=dict(controller.RESOURCES, ranks=2)), Path('/safe'))
@@ -106,6 +127,7 @@ class PerformanceLifecycleTests(unittest.TestCase):
                 return path == Path('/opt/devtools/nsys') or actual_is_file(path)
             with patch.object(controller, 'task', return_value=directory), \
                     patch.object(controller, 'validate_request', return_value=delivery), \
+                    patch.object(controller, 'render', return_value='# synthetic job') as rendered, \
                     patch.object(controller, 'science_evidence'), \
                     patch.object(controller.science, 'task', return_value=scientific), \
                     patch.object(controller, 'CONTROL', root), patch.object(Path, 'is_file', is_file), \
@@ -116,6 +138,20 @@ class PerformanceLifecycleTests(unittest.TestCase):
                 self.assertEqual(raw.call_count, 3)
                 with self.assertRaises(controller.PerformanceRegression):
                     controller.verify('unit')
+                request['performance_scope'] = 'gpu'
+                (directory / 'request.json').write_text(json.dumps(request))
+                raw.reset_mock()
+                gpu = controller.verify('unit', enforce_performance=False)
+                self.assertEqual(raw.call_count, 1)
+                self.assertEqual(raw.call_args.kwargs['backend'], 'pt')
+                self.assertEqual(gpu['performance_scope'], 'gpu')
+                self.assertEqual(gpu['performance_backends'], ['pt'])
+                self.assertEqual(gpu['regressed_backends'], ['pt'])
+                self.assertFalse(gpu['performance_verified'])
+                rendered.return_value = '# changed scope in script'
+                with self.assertRaisesRegex(ValueError, 'job script changed'):
+                    controller.verify('unit')
+                rendered.return_value = '# synthetic job'
                 raw.side_effect = ValueError('raw forces changed')
                 with self.assertRaisesRegex(ValueError, 'raw forces changed'):
                     controller.verify('unit')

@@ -158,7 +158,25 @@ class MDControllerTests(unittest.TestCase):
             for cpus, expected in ((jobs - 1, 1), (jobs, 0), (jobs + 8, 0)):
                 result = subprocess.run(['bash', '-uc', guard], env=dict(os.environ, SLURM_CPUS_ON_NODE=str(cpus)))
                 self.assertEqual(result.returncode, expected)
-            self.assertLess(script.index(guard), script.index('apptainer exec'))
+            self.assertLess(script.index(guard), script.index('cp2k_image_driver.py'))
+
+    def test_build_export_and_readonly_emit_use_verified_driver(self):
+        script = md.render(self.pair('16v100-avx2'), 'pinned-driver')
+        commands = [shlex.split(line.split(' > ')[0]) for line in script.splitlines()
+                    if '--overlay' in line]
+        self.assertEqual(len(commands), 3)
+        for command in commands:
+            self.assertEqual(command[:2], ['/usr/bin/python3', str(md.CONTROL / 'cp2k_image_driver.py')])
+            self.assertEqual(command[2:5], [str(md.ROOT), str(md.task('pinned-driver')), 'exec'])
+            self.assertIn('--containall', command)
+        self.assertTrue(any(str(md.task('pinned-driver') / 'work.ext3') + ':ro' in c for c in commands))
+        final = next(line for line in script.splitlines() if 'md_container_entry.sh verify' in line)
+        self.assertTrue(final.startswith('apptainer exec '))
+        self.assertNotIn('--overlay', final)
+        self.assertNotIn('--fakeroot', shlex.split(final))
+        self.assertIn('--nv', shlex.split(final))
+        self.assertIn('--cleanenv', shlex.split(final))
+        self.assertIn(str(md.task('pinned-driver') / 'runtime') + ':/runtime:rw', shlex.split(final))
 
     def test_submit_records_both_staged_jobs_and_hashes(self):
         with tempfile.TemporaryDirectory() as temporary, patch.object(md, 'ROOT', Path(temporary)):
@@ -388,7 +406,7 @@ class MDControllerTests(unittest.TestCase):
             commands = [list(map(str, call.args[0])) for call in fixture.run.call_args_list]
             uploads = [argv[-2] for argv in commands if argv[0] == 'scp']
             for name in ('release_contract.py', 'native_module.py', 'export_native.py', 'resolve_source.py',
-                         'md_registration.py', 'md_driver_paths.py'):
+                         'md_registration.py', 'md_driver_paths.py', 'cp2k_image_driver.py'):
                 self.assertIn(str(ROOT / 'controller' / name), uploads)
             self.assertEqual(uploaded, json.loads((Path(temporary) / 'results/delivery.json').read_text()))
             expected_run = 'md-123-1-2026-09-14-' + uploaded['plan']['selection_sha256'][:16]
@@ -396,6 +414,9 @@ class MDControllerTests(unittest.TestCase):
             self.assertTrue(any(expected_run + '-science' in argv[-1] for argv in commands if argv[0] == 'ssh'))
             claim = remote_python_calls(fixture, 'release_contract.py')[0]
             inventory = remote_python_calls(fixture, 'source_cache.py', 'inventory')[0]
+            for command in remote_python_calls(fixture, 'source_cache.py', 'inventory'):
+                software = Path(command[3]).name
+                self.assertEqual(command[4:], ['--commit', uploaded['plan']['sources'][software]['sha']])
             remote = [shlex.split(argv[-1]) for argv in commands if argv[0] == 'ssh']
             self.assertLess(remote.index(claim), remote.index(inventory))
             self.assertEqual(json.loads(claim[4]), list(uploaded['identities'].values()))
@@ -727,6 +748,22 @@ class MDControllerTests(unittest.TestCase):
         first = tracking.fingerprint(ROOT / 'controller')
         self.assertRegex(first, r'^[a-f0-9]{64}$')
         self.assertEqual(first, tracking.fingerprint(ROOT / 'controller'))
+
+    def test_exported_os_search_paths_work_with_unmerged_container_directories(self):
+        from md_relocate_audit import check_metadata, SITE_ROOTS
+        from native_module import _external_root
+        recipe = (ROOT / 'controller/md_build.sh').read_text()
+        cleanup = recipe.split('for name in PATH LD_LIBRARY_PATH PYTHONPATH; do\n', 1)[1].split('\ndone\n', 1)[0]
+        script = 'set -euo pipefail\nfor name in PATH LD_LIBRARY_PATH PYTHONPATH; do\n' + cleanup + '\ndone\n'
+        script += 'printf "%s\\n" "$PATH"\n'
+        result = subprocess.run(['/bin/bash', '-c', script], capture_output=True, text=True, check=True,
+                                env=dict(PATH='/usr/local/bin:/bin:/sbin', LD_LIBRARY_PATH='', PYTHONPATH=''))
+        self.assertEqual(result.stdout.strip(), '/usr/local/bin:/usr/bin:/usr/sbin')
+        # Validate the literal directory paths; do not let the test host's
+        # /bin -> /usr/bin symlink hide the minimal-image failure again.
+        for value in result.stdout.strip().split(':'):
+            _external_root(value)
+        check_metadata('export PATH=' + result.stdout.strip(), SITE_ROOTS)
 
     def test_runtime_and_build_require_new_package_and_native_configuration(self):
         recipe = (ROOT / 'controller/md_build.sh').read_text()

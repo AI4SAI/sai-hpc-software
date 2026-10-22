@@ -12,6 +12,9 @@ module use /opt/modules/modulefiles/devtools /opt/modules/modulefiles/apps
 module load cmake/3.31.6 cuda/12.9.1
 module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto
 module load lammps/4jul2026-deepmd320-plumed2101-nvhpc263-ompi5010-sm70
+# The GNU NVHPC module does not select GCC: without an explicit module the
+# login node and recent 16V100 builds used the system GCC 13.3.0.
+module load gcc/14.3.0
 export MD_SYSTEM_DEEPMD=/opt/apps/conda_env/deepmd-kit-3.2.0
 export MD_SYSTEM_LAMMPS=/opt/apps/lammps/lammps-4Jul2026-deepmd3.2.0-plumed2.10.1-nvhpc263-ompi5010-sm70
 export MD_SYSTEM_PLUMED=/opt/apps/plumed/plumed-2.10.1
@@ -20,7 +23,16 @@ export MD_SYSTEM_PLUMED=/opt/apps/plumed/plumed-2.10.1
 export MD_SYSTEM_VORO=/opt/apps/conda_env/deepmd-kit-3.1.2
 export MD_SYSTEM_EIGEN=/opt/apps/conda_env/VeloxChem/gpu
 export PYTHONNOUSERSITE=1 PYTHONDONTWRITEBYTECODE=1 PIP_NO_INDEX=1 PIP_DISABLE_PIP_VERSION_CHECK=1
-export CC=gcc CXX=g++ FC=gfortran
+export CC=/opt/devtools/gcc/14.3.0/bin/gcc
+export CXX=/opt/devtools/gcc/14.3.0/bin/g++
+export FC=/opt/devtools/gcc/14.3.0/bin/gfortran
+for compiler in CC CXX FC; do
+  [[ "$("${!compiler}" -dumpfullversion)" == 14.3.0 ]]
+  printf 'MD_COMPILER %s=%s version=14.3.0\n' "$compiler" "${!compiler}" >&2
+done
+# MPI wrappers and Kokkos's nvcc_wrapper have their own host-compiler defaults.
+export OMPI_CC="$CC" OMPI_CXX="$CXX" OMPI_FC="$FC"
+export CUDAHOSTCXX="$CXX" NVCC_WRAPPER_DEFAULT_COMPILER="$CXX"
 export PLUMED_KERNEL="$MD_SYSTEM_PLUMED/lib/libplumedKernel.so"
 export PKG_CONFIG_PATH="$MD_SYSTEM_PLUMED/lib/pkgconfig:${PKG_CONFIG_PATH:-}"
 # Minimal SIF omits host ld.so cache and /etc/alternatives. Bind real OS

@@ -29,13 +29,24 @@ def render_input(backend, steps):
 
 
 def parse_engine_time(stdout, steps):
-    matches = re.findall(r'^Loop time of ([0-9.eE+-]+) on ([0-9]+) procs for ([0-9]+) steps with ([0-9]+) atoms\s*$', stdout, re.M)
-    if len(matches) != 1:
-        raise ValueError('exactly one measured LAMMPS engine interval is required')
-    seconds, procs, actual_steps, atoms = matches[0]
-    seconds = float(seconds)
-    if not math.isfinite(seconds) or seconds <= 0:
-        raise ValueError('invalid LAMMPS engine timing')
+    lines = re.findall(r'^Loop time of (.*)$', stdout, re.M)
+    if len(lines) not in (1, 2):
+        raise ValueError('one measured interval and at most one warmup interval are required')
+    intervals = []
+    for line in lines:
+        match = re.fullmatch(r'(\S+) on ([0-9]+) procs for ([0-9]+) steps with ([0-9]+) atoms\s*', line)
+        if match is None:
+            raise ValueError('invalid LAMMPS engine timing')
+        duration, ranks, count, atoms = match.groups()
+        duration = float(duration)
+        if not math.isfinite(duration) or duration <= 0 or int(ranks) < 1 or int(atoms) != ATOMS:
+            raise ValueError('invalid LAMMPS engine timing or workload')
+        intervals.append((duration, int(ranks), int(count), int(atoms)))
+    seconds, procs, actual_steps, atoms = intervals[-1]
+    # LAMMPS prints Loop time even with "run 1 post no". Accept only the
+    # exact one-step warmup emitted by render_input, on the same allocation.
+    if len(intervals) == 2 and intervals[0][1:] != (procs, 1, ATOMS):
+        raise ValueError('unexpected LAMMPS warmup interval')
     if int(actual_steps) != steps or int(atoms) != ATOMS or int(procs) < 1:
         raise ValueError('LAMMPS measured a different workload or rank count')
     return {'engine_seconds': seconds, 'ranks': int(procs), 'steps': steps,

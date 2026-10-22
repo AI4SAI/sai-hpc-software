@@ -1,0 +1,79 @@
+{
+  "checked_at": "2026-10-20T17:27:19.265652+00:00",
+  "native_reference_sha256": "e5f75411c7891cb4df63bb71410daa6f21e5c91b6ee7bb8f987b41e4e0880478",
+  "native_science_executed": false,
+  "package_sha256": {
+    "30Sep2026-deepmd320-auto": "0aad2089e7b0a6e357ebebba0bdff4e6dd187dabc8667a95983018cb4b03ad48",
+    "README.md": "8b28f361bcb140566c175278a270a15c853e63658040f63e898d4d8fdbbb06a7",
+    "install.py": "77d5f6a728f38f696a74080389b2602929485d1ec302e51a09095924d26b1425",
+    "install.sh": "745a0bfc036eba3ad2f390bc34e269540590cd292bbe8ea307c72c4d1316e52f",
+    "native-rank.sh": "11392c0d3a4f07ef0fd6d2ea24feba9f215f4cc1fc78bd6c568770c6aef2365b",
+    "native-reference.json": "e5f75411c7891cb4df63bb71410daa6f21e5c91b6ee7bb8f987b41e4e0880478",
+    "native_checks.py": "551415ef5e029ecce1a30bfb984b5520cc51abb0f405858aa446baf0473b2e18",
+    "prepare-native-reference.py": "bce77dee8895f63fbaab5a62a5d4394e3165fefc5ca721e00e5a541f225b8142",
+    "prepare-release.py": "9560fe6b7f83a4687fc5338c1ee3259ab69b0c1c9576ca301a6e98e951654239",
+    "release.json": "4ceddb23a4f9e6995375a9239af6d46c42982190aa18224672c9aeb659be3dd1",
+    "submit-native-checks.sh": "bec459d542062c52794a5a46daf4c25a71e5d96bfc2f6aa1c18543ab2418dc60",
+    "verify-native.sbatch": "35deead82bf5a9bb51649b339e735f0b939b96ba51500889e074c04c9fdd7e76"
+  },
+  "partitions": {
+    "16V100": {
+      "accepted_help": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/runtime-tests/md-39403084059-1-2026-10-20-5fef92e054bacdaf-export-published-module/results/help.txt",
+      "accepted_help_sha256": "4466ff680d41982523430e8787b049f1d9e5350451f3cedf104e9625a87b64ab",
+      "model_checks": [
+        "tf",
+        "pt",
+        "jax"
+      ],
+      "packages": 71,
+      "snapshot_files": 31,
+      "styles": 2473
+    },
+    "4V100": {
+      "accepted_help": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/runtime-tests/md-39403117741-1-2026-10-20-9bf6ae82814537d7-export-published-module/results/help.txt",
+      "accepted_help_sha256": "afd15a3b36f2953fa0f6235eea888ee61ff4b077e49aae5bb41348c2ef2d281f",
+      "model_checks": [
+        "tf",
+        "pt",
+        "jax"
+      ],
+      "packages": 71,
+      "snapshot_files": 31,
+      "styles": 2473
+    },
+    "8V100V0": {
+      "accepted_help": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/runtime-tests/md-39427644750-1-2026-10-20-1dfd6f53c113abda-published-module/results/help.txt",
+      "accepted_help_sha256": "dde468861a473f69c37c545cd10ba528fc546acb7f0f44032cf86dfb563139f7",
+      "model_checks": [
+        "tf",
+        "pt",
+        "jax"
+      ],
+      "packages": 71,
+      "snapshot_files": 31,
+      "styles": 2473
+    }
+  },
+  "physical_installation_executed": false,
+  "release_sha256": "4ceddb23a4f9e6995375a9239af6d46c42982190aa18224672c9aeb659be3dd1",
+  "scope": "deployment script and input preflight only; no physical installation or native science executed",
+  "snapshot_root": "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/native-snapshot-preflight-r2",
+  "source_preflight": {
+    "command": "bash /home/stardust/sai-hpc-software/deployment/lammps-30Sep2026/install.sh --check",
+    "marker": "LAMMPS_NATIVE_PREFLIGHT_PASSED",
+    "partitions": [
+      "4V100",
+      "16V100",
+      "8V100V0"
+    ],
+    "passed": true
+  },
+  "unit_tests": {
+    "command": "TMPDIR=\"$PWD/runtime\" PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p \"test_lammps*.py\" -v",
+    "errors": 0,
+    "failures": 0,
+    "location": "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/preflight-native-20261021",
+    "passed": true,
+    "tests": 16
+  }
+}

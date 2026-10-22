@@ -15,6 +15,7 @@ import time
 from md_tracking import fingerprint, identify_track_pair, TARGETS as MD_TARGETS
 from remote_controller import TARGETS, container_command, safe_name, safe_sha, site_app_binds
 from source_cache import checksum
+from cp2k_image_driver import wrap_command as image_driver_command
 
 PROJECT = Path(os.environ.get('SAI_SOFTWARE_ROOT', Path.home() / 'sai-hpc-software')).resolve()
 ROOT = PROJECT / 'experimental/deepmd-lammps'
@@ -119,12 +120,21 @@ def render(request, run_id, jobs=None, minutes=None, overlay_mb=32768,
         command = args.copy()
         command[2] = phase
         sources = [(ROOT / 'cache/repositories' / name, '/input/' + name) for name in plan['sources']]
-        return container_command(result if final else image, command, overlay=None if final else overlay,
+        argv = container_command(result if final else image, command, overlay=None if final else overlay,
                                  control=CONTROL, jobs=jobs, gpu=True,
+                                 runtime=r / 'runtime' if final else None,
                                  extra_binds=[*site_app_binds('lammps'), *(sources if not final else [])])
-    emit = container_command(image, ['/usr/bin/cat', '/workspace/final.squashfs'],
-                             overlay=str(overlay) + ':ro', jobs=jobs)
-    lines = ['#!/usr/bin/env bash', '#SBATCH --job-name=sai-software-build', '#SBATCH --dependency=singleton',
+        # Reuse the checksum-pinned driver already qualified for CP2K. Its
+        # independent copy in ROOT/cache/tools keeps the MD run-path contract.
+        if final:
+            # A read-only SIF needs no fake ownership. Fakeroot injects its
+            # private libfakeroot.so into ldd and contaminates native auditing.
+            return [argument for argument in argv if argument != '--fakeroot']
+        return image_driver_command(ROOT, r, CONTROL, argv)
+    emit = image_driver_command(ROOT, r, CONTROL, container_command(
+        image, ['/usr/bin/cat', '/workspace/final.squashfs'],
+        overlay=str(overlay) + ':ro', jobs=jobs))
+    lines = ['#!/usr/bin/env bash', f'#SBATCH --job-name=md-{safe_name(run_id)}', '#SBATCH --dependency=singleton',
              f'#SBATCH --partition={target["partition"]}', f'#SBATCH --qos={resources["qos"]}',
              '#SBATCH --nodes=1', '#SBATCH --ntasks=1', f'#SBATCH --gpus-per-node={resources["gpus"]}',
              f'#SBATCH --time={minutes}', f'#SBATCH --output={r}/results/slurm-%j.log',

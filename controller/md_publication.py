@@ -12,6 +12,7 @@ from module_publication import atomic_text, render_selector, tcl
 from delivery_layout import catalog_dir
 from remote_controller import safe_name
 from source_cache import checksum
+from md_acceptance_recovery import validate as validate_recovery
 
 
 def canonical(value):
@@ -49,19 +50,21 @@ def validate_export(record, digest, identities):
     return validate_export_record(record, digest, identities)
 
 
-def build_record(build_run):
+def build_record(build_run, *, controller_recovery=None):
     build_run = safe_name(build_run)
     directory = ROOT / 'runs' / build_run
     request = read_json(directory / 'request.json')
     delivery = validate_pair(request['delivery'])
+    build_control = (validate_recovery(controller_recovery, ROOT, CONTROL, build_run, delivery)
+                     if controller_recovery is not None else CONTROL)
     status = read_json(directory / 'results/status.json')
     image = regular(artifact_path(ROOT, delivery, build_run))
     sidecar = read_json(image.with_suffix('.json'))
     expected = dict(artifact=str(image), artifact_sha256=checksum(image), delivery=delivery,
                     build_verified=True, state='COMPLETED', exit_code='0:0')
-    if (request.get('run_id') != build_run or request.get('controller') != str(CONTROL)
-            or CONTROL.resolve() != CONTROL or not CONTROL.is_relative_to(ROOT / 'controller')
-            or delivery['recipe_sha256'] != fingerprint(CONTROL)
+    if (request.get('run_id') != build_run or request.get('controller') != str(build_control)
+            or build_control.resolve() != build_control or not build_control.is_relative_to(ROOT / 'controller')
+            or delivery['recipe_sha256'] != fingerprint(build_control)
             or any(status.get(key) != value or sidecar.get(key) != value
                    for key, value in expected.items())):
         raise ValueError('MD publication build, image or controller provenance changed')
@@ -76,7 +79,9 @@ def build_record(build_run):
 def acceptance(build_run, science_run, performance_run):
     if performance_run not in (build_run + '-performance', build_run + '-performance-retest'):
         raise ValueError('MD publication accepts only the original performance attempt or its one named repeat')
-    delivery, image, digest = build_record(build_run)
+    science_request = read_json(ROOT / 'runtime-tests' / safe_name(science_run) / 'request.json')
+    recovery = science_request.get('controller_recovery')
+    delivery, image, digest = build_record(build_run, controller_recovery=recovery)
     expected = dict(build_run=build_run, artifact=str(image), artifact_sha256=digest,
                     delivery=delivery)
     evidence = {}
@@ -86,14 +91,24 @@ def acceptance(build_run, science_run, performance_run):
         request = read_json(directory / 'request.json')
         status = read_json(directory / 'results/status.json')
         if (request.get('run_id') != run_id or any(request.get(key) != value for key, value in expected.items())
+                or request.get('controller_recovery') != recovery
                 or status.get('state') != 'COMPLETED' or status.get('exit_code') != '0:0'):
             raise ValueError('MD acceptance request differs from the completed paired build')
         if kind == 'science' and (request.get('nodes') != 2 or request.get('ranks') != 4
                                   or status.get('scientific_verified') is not True):
             raise ValueError('MD publication requires completed two-node scientific acceptance')
         result = verifier(run_id)  # Reparse raw evidence; a stored JSON verdict is insufficient.
+        if kind == 'performance':
+            from md_performance_controller import performance_backends
+            backends = performance_backends(request)
+            if (result.get('performance_scope', 'all') != request.get('performance_scope', 'all')
+                    or (request.get('performance_scope') == 'gpu'
+                        and (result.get('performance_backends') != list(backends)
+                             or set(result.get('reports', {})) != set(backends)))):
+                raise ValueError('MD raw performance evidence differs from its declared scope')
         fields = ('artifact', 'artifact_sha256', 'delivery')
         if (any(result.get(key) != expected[key] for key in fields)
+                or result.get('controller_recovery') != recovery
                 or (kind == 'science' and result.get('passed') is not True)
                 or (kind == 'performance' and (result.get('performance_verified') is not True
                                               or result.get('build_run') != build_run))):
@@ -114,7 +129,7 @@ def launcher_text(delivery, image, program):
         'export SAI_SOFTWARE_ROOT=' + shlex.quote(str(PROJECT)),
         'export SAI_MD_IMAGE=' + shlex.quote(str(image)),
         'export SAI_MD_DELIVERY=' + shlex.quote(canonical(delivery).strip()),
-        shlex.join(['/usr/bin/python3', '-I', '-B', '-c', verifier, str(CONTROL), delivery['recipe_sha256']]),
+        shlex.join(['/usr/bin/python3', '-I', '-B', '-c', verifier, str(CONTROL), fingerprint(CONTROL)]),
         shlex.join(['exec', 'bash', str(CONTROL / 'md_runtime.sh'), program]) + ' "$@"', ''])
 
 
@@ -200,6 +215,14 @@ def publish(build_run, science_run, performance_run):
                     published=True, native_export=native_export, modules=modules, acceptance=evidence,
                     runtime_launcher=str(CONTROL / 'md_runtime.sh'),
                     runtime_launcher_sha256=checksum(regular(CONTROL / 'md_runtime.sh')))
+    performance = evidence['performance']['evidence']
+    if 'performance_scope' in performance:
+        manifest.update(performance_scope=performance['performance_scope'],
+                        performance_backends=performance['performance_backends'])
+    recovery = evidence['science']['evidence'].get('controller_recovery')
+    if recovery is not None:
+        manifest.update(controller_recovery=recovery,
+                        acceptance_recipe_sha256=recovery['acceptance_recipe_sha256'])
     validate_modules(manifest)
     # Write the immutable receipt before exposing selectors. A retry can finish
     # activation, but cannot replace evidence for an already published run.
@@ -215,21 +238,28 @@ def publish(build_run, science_run, performance_run):
 
 
 def verify(build_run):
-    delivery, image, digest = build_record(build_run)
+    build_run = safe_name(build_run)
+    receipt = read_json(ROOT / 'runs' / build_run / 'results/publication.json')
+    recovery = receipt.get('controller_recovery')
+    delivery, image, digest = build_record(build_run, controller_recovery=recovery)
     manifest = read_json(image.with_suffix('.published.json'))
     expected = dict(schema=1, build_run=build_run, delivery=delivery, artifact=str(image),
                     artifact_sha256=digest, recipe_sha256=delivery['recipe_sha256'],
                     build_verified=True, scientific_verified=True, performance_verified=True, published=True)
     if any(manifest.get(key) != value for key, value in expected.items()):
         raise ValueError('published MD manifest identity changed')
-    if read_json(ROOT / 'runs' / build_run / 'results/publication.json') != manifest:
+    if receipt != manifest:
         raise ValueError('MD publication was not completed')
     launcher = regular(CONTROL / 'md_runtime.sh')
     if manifest.get('runtime_launcher') != str(launcher) or manifest.get('runtime_launcher_sha256') != checksum(launcher):
         raise ValueError('published MD runtime launcher changed')
     accepted = manifest['acceptance']
     _, _, _, actual = acceptance(build_run, accepted['science']['run_id'], accepted['performance']['run_id'])
-    if actual != accepted:
+    for key in ('performance_scope', 'performance_backends'):
+        if manifest.get(key) != actual['performance']['evidence'].get(key):
+            raise ValueError('published MD performance scope changed')
+    if (actual != accepted or actual['science']['evidence'].get('controller_recovery') != recovery
+            or (recovery is not None and manifest.get('acceptance_recipe_sha256') != fingerprint(CONTROL))):
         raise ValueError('published MD raw acceptance evidence changed')
     validate_export(manifest['native_export'], digest,
                     [delivery['identities'][name] for name in sorted(delivery['identities'])])

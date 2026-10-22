@@ -29,7 +29,7 @@ def run(argv, **kwargs):
         raise
 
 
-def inspect_existing_acceptance(root, control, build_run, stage, delivery):
+def inspect_existing_acceptance(root, control, build_run, stage, delivery, performance_scope='all'):
     """Read-only preflight for resuming a previously submitted Slurm phase.
 
     This function is sent verbatim to the frozen remote snapshot. A submission
@@ -99,6 +99,8 @@ def inspect_existing_acceptance(root, control, build_run, stage, delivery):
         controller = importlib.import_module('md_acceptance_controller')
     else:
         controller = importlib.import_module('md_performance_controller')
+        if request.get('performance_scope', 'all') != performance_scope:
+            raise ValueError('existing MD performance scope differs from the requested continuation')
         expected.update(science_run=build_run + '-science', resources=controller.RESOURCES,
                         recipe_sha256=delivery['recipe_sha256'])
         repeat = request.get('repeat_of')
@@ -126,24 +128,27 @@ def inspect_existing_acceptance(root, control, build_run, stage, delivery):
     return True
 
 
-def existing_acceptance(ssh, root, control, build_run, stage, delivery):
+def existing_acceptance(ssh, root, control, build_run, stage, delivery, *, performance_scope='all'):
     code = inspect.getsource(inspect_existing_acceptance) + (
-        '\nimport json, sys\nprint(json.dumps(inspect_existing_acceptance(*sys.argv[1:5], json.loads(sys.argv[5]))))\n')
+        '\nimport json, sys\nprint(json.dumps(inspect_existing_acceptance(*sys.argv[1:5], json.loads(sys.argv[5]), sys.argv[6])))\n')
     result = ssh(['python3', '-c', code, root, control, build_run, stage,
-                  json.dumps(delivery, sort_keys=True)], capture_output=True)
+                  json.dumps(delivery, sort_keys=True), performance_scope], capture_output=True)
     found = json.loads(result.stdout)
     if type(found) is not bool and found != 'completed':
         raise ValueError('invalid MD continuation preflight response')
     return found
 
 
-def run_performance_gate(remote_python, run_id, science_run, existing=None):
+def run_performance_gate(remote_python, run_id, science_run, existing=None, *, scope='all'):
     """Repeat exactly once only after verified raw evidence exceeds 10% slowdown."""
+    if scope not in ('all', 'gpu'):
+        raise ValueError('unknown MD performance scope')
     for suffix in ('-performance', '-performance-retest'):
         performance_run = safe_name(run_id + suffix)
         previous = existing(suffix.removeprefix('-')) if existing is not None else False
         if not previous:
-            remote_python('md_performance_controller.py', 'submit', performance_run, run_id, science_run)
+            remote_python('md_performance_controller.py', 'submit', performance_run, run_id, science_run,
+                          *(['--scope', scope] if scope != 'all' else []))
         try:
             remote_python('md_performance_controller.py', 'verify' if previous == 'completed' else 'monitor', performance_run)
         except subprocess.CalledProcessError as error:
@@ -162,7 +167,7 @@ def run_acceptance_gate(remote_python, run_id, existing):
     if not previous:
         remote_python('md_acceptance_controller.py', 'submit', science_run, run_id, '--nodes', '2')
     remote_python('md_acceptance_controller.py', 'verify' if previous == 'completed' else 'monitor', science_run)
-    performance_run = run_performance_gate(remote_python, run_id, science_run, existing=existing)
+    performance_run = run_performance_gate(remote_python, run_id, science_run, existing=existing, scope='gpu')
     remote_python('md_publication.py', 'publish', run_id, science_run, performance_run)
     remote_python('md_publication.py', 'verify', run_id)
     return performance_run
@@ -215,7 +220,7 @@ def main():
                         remote + ':' + source + '/results/.', str(destination)], check=False)
     def accept():
         def existing(stage):
-            return existing_acceptance(ssh, root, snapshot, run_id, stage, request)
+            return existing_acceptance(ssh, root, snapshot, run_id, stage, request, performance_scope='gpu')
         run_acceptance_gate(python, run_id, existing)
         run(['scp', '-q', *options, '-P', '12022',
              remote + ':' + remote_task + '/results/publication.json', results / 'publication.json'])
@@ -247,7 +252,7 @@ def main():
     files = [path for path in control.glob('md_*.*') if path.suffix in ('.py', '.sh', '.json')]
     files += [control / name for name in ('remote_controller.py', 'source_cache.py', 'resolve_source.py',
                                           'create_rootfs.sh', 'release_contract.py', 'native_module.py', 'export_native.py',
-                                          'module_publication.py', 'delivery_layout.py')]
+                                          'module_publication.py', 'delivery_layout.py', 'cp2k_image_driver.py')]
     for path in files:
         upload(path, snapshot + '/' + path.name)
     primaries = [request['identities'][trigger['software']] for trigger in plan['triggers']]
@@ -270,7 +275,8 @@ def main():
     (results / 'delivery.json').write_text(json.dumps(request, sort_keys=True) + '\n')
     for name, source in plan['sources'].items():
         cache = root + '/cache/repositories/' + name
-        inventory = json.loads(python('source_cache.py', 'inventory', cache, capture_output=True).stdout)
+        inventory = json.loads(python('source_cache.py', 'inventory', cache, '--commit',
+                                      source['sha'], capture_output=True).stdout)
         if source['sha'] in inventory['cache_shas']:
             print(f'SOURCE_CACHE_HIT {name} {source["sha"]}', flush=True)
             continue

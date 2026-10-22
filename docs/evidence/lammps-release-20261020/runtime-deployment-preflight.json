@@ -1,0 +1,253 @@
+{
+  "captured_at": "2026-10-20T18:23:47.569455+00:00",
+  "control_sha256": {
+    "30Sep2026-deepmd320-auto": "6c155ab067244d0c4903af4d56c0ad184d6df606c4065b3da659ad9ff2f93c19",
+    "README.md": "55476e63655a2b1b8684f1936ca838e4d1ee64d1f50589bd6bc406de91ab0db0",
+    "install.py": "16ac266a86f91b1f3ec71d5fd5b4b4797e324b77284fa72c4fe02abfc2f31283",
+    "install.sh": "745a0bfc036eba3ad2f390bc34e269540590cd292bbe8ea307c72c4d1316e52f",
+    "modulefiles/lammps/30Sep2026-deepmd320-gpu": "75c2a1ba175c178a7e42d93b598fc77eefc3dd2ae8c96c586997c6ee56d273e3",
+    "native-rank.sh": "11392c0d3a4f07ef0fd6d2ea24feba9f215f4cc1fc78bd6c568770c6aef2365b",
+    "native-reference.json": "e5f75411c7891cb4df63bb71410daa6f21e5c91b6ee7bb8f987b41e4e0880478",
+    "native_checks.py": "ce4a6e3b1f699d7c671e6ad712b17ee7b10f92f79cca58786b111ea1001e1209",
+    "prepare-native-reference.py": "bce77dee8895f63fbaab5a62a5d4394e3165fefc5ca721e00e5a541f225b8142",
+    "prepare-release.py": "1420f806179d809091563d183f9373205b0cf6047f4229d36042309213bcc012",
+    "prepare-runtime.py": "584c53ad5d66e28746db50a5f8d4d26e9fdf7eb992039f0a569140bfe3c6964c",
+    "release.json": "4ceddb23a4f9e6995375a9239af6d46c42982190aa18224672c9aeb659be3dd1",
+    "runtime-plan.json": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e",
+    "source-access.py": "d66107bc21a4d52e452768ab8cd1f6be4897086f3fc616fdded934120157535f",
+    "submit-native-checks.sh": "bec459d542062c52794a5a46daf4c25a71e5d96bfc2f6aa1c18543ab2418dc60",
+    "verify-native.sbatch": "35deead82bf5a9bb51649b339e735f0b939b96ba51500889e074c04c9fdd7e76"
+  },
+  "directory_lock": {
+    "created_files": false,
+    "directory_flock_passed": true,
+    "path": "/opt/apps/lammps"
+  },
+  "input_snapshot": {
+    "checked_at": "2026-10-20T18:18:41.702131+00:00",
+    "native_reference_sha256": "e5f75411c7891cb4df63bb71410daa6f21e5c91b6ee7bb8f987b41e4e0880478",
+    "native_science_executed": false,
+    "partitions": {
+      "16V100": {
+        "accepted_help": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/runtime-tests/md-39403084059-1-2026-10-20-5fef92e054bacdaf-export-published-module/results/help.txt",
+        "accepted_help_sha256": "4466ff680d41982523430e8787b049f1d9e5350451f3cedf104e9625a87b64ab",
+        "model_checks": [
+          "tf",
+          "pt",
+          "jax"
+        ],
+        "packages": 71,
+        "snapshot_files": 32,
+        "styles": 2473
+      },
+      "4V100": {
+        "accepted_help": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/runtime-tests/md-39403117741-1-2026-10-20-9bf6ae82814537d7-export-published-module/results/help.txt",
+        "accepted_help_sha256": "afd15a3b36f2953fa0f6235eea888ee61ff4b077e49aae5bb41348c2ef2d281f",
+        "model_checks": [
+          "tf",
+          "pt",
+          "jax"
+        ],
+        "packages": 71,
+        "snapshot_files": 32,
+        "styles": 2473
+      },
+      "8V100V0": {
+        "accepted_help": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/runtime-tests/md-39427644750-1-2026-10-20-1dfd6f53c113abda-published-module/results/help.txt",
+        "accepted_help_sha256": "dde468861a473f69c37c545cd10ba528fc546acb7f0f44032cf86dfb563139f7",
+        "model_checks": [
+          "tf",
+          "pt",
+          "jax"
+        ],
+        "packages": 71,
+        "snapshot_files": 32,
+        "styles": 2473
+      }
+    },
+    "physical_installation_executed": false,
+    "release_sha256": "4ceddb23a4f9e6995375a9239af6d46c42982190aa18224672c9aeb659be3dd1",
+    "scope": "deployment script and input preflight only; no physical installation or native science executed",
+    "snapshot_root": "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/runtime-only-20261021/native-snapshot"
+  },
+  "module_equivalence": {
+    "cases": [
+      {
+        "mode": "load",
+        "partition": "4V100",
+        "passed": true
+      },
+      {
+        "mode": "remove",
+        "partition": "4V100",
+        "passed": true
+      },
+      {
+        "mode": "load",
+        "partition": "16V100",
+        "passed": true
+      },
+      {
+        "mode": "remove",
+        "partition": "16V100",
+        "passed": true
+      },
+      {
+        "mode": "load",
+        "partition": "8V100V0",
+        "passed": true
+      },
+      {
+        "mode": "remove",
+        "partition": "8V100V0",
+        "passed": true
+      }
+    ],
+    "only_environment_addition": "PYTHONDONTWRITEBYTECODE=1",
+    "scope": "Tcl environment/dependency equivalence against accepted native fragments; installation-path existence is mapped to exports, not physical module execution"
+  },
+  "native_reference_sha256": "e5f75411c7891cb4df63bb71410daa6f21e5c91b6ee7bb8f987b41e4e0880478",
+  "native_science_executed": false,
+  "partitions": {
+    "16V100": [
+      {
+        "omitted_bytes": 24080419,
+        "omitted_files_and_links": 1819,
+        "physical_prefix_exists": false,
+        "potentials_files": 0,
+        "prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100",
+        "runtime_bytes": 162749291,
+        "runtime_files": 1030,
+        "runtime_symlinks": 5,
+        "software": "deepmd-kit"
+      },
+      {
+        "omitted_bytes": 38429836,
+        "omitted_files_and_links": 120,
+        "physical_prefix_exists": false,
+        "potentials_files": 287,
+        "prefix": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100",
+        "runtime_bytes": 1005771604,
+        "runtime_files": 340,
+        "runtime_symlinks": 1,
+        "software": "lammps"
+      }
+    ],
+    "4V100": [
+      {
+        "omitted_bytes": 24074979,
+        "omitted_files_and_links": 1819,
+        "physical_prefix_exists": false,
+        "potentials_files": 0,
+        "prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/4V100",
+        "runtime_bytes": 162982782,
+        "runtime_files": 1030,
+        "runtime_symlinks": 5,
+        "software": "deepmd-kit"
+      },
+      {
+        "omitted_bytes": 38427930,
+        "omitted_files_and_links": 120,
+        "physical_prefix_exists": false,
+        "potentials_files": 287,
+        "prefix": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/4V100",
+        "runtime_bytes": 1006920392,
+        "runtime_files": 340,
+        "runtime_symlinks": 1,
+        "software": "lammps"
+      }
+    ],
+    "8V100V0": [
+      {
+        "omitted_bytes": 24076746,
+        "omitted_files_and_links": 1818,
+        "physical_prefix_exists": false,
+        "potentials_files": 0,
+        "prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0",
+        "runtime_bytes": 162679664,
+        "runtime_files": 1030,
+        "runtime_symlinks": 5,
+        "software": "deepmd-kit"
+      },
+      {
+        "omitted_bytes": 38422121,
+        "omitted_files_and_links": 119,
+        "physical_prefix_exists": false,
+        "potentials_files": 287,
+        "prefix": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0",
+        "runtime_bytes": 1004932592,
+        "runtime_files": 340,
+        "runtime_symlinks": 1,
+        "software": "lammps"
+      }
+    ]
+  },
+  "physical_installation_executed": false,
+  "policy": "lammps-deepmd-standard-runtime-v1",
+  "public_package_modes": {
+    "directory": "0755",
+    "files": "0644"
+  },
+  "raw_evidence": {
+    "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/runtime-only-20261021/access-after.json": "2c02096df282291441c6b700221a8185c215a98ad74984be469d58bd840ec680",
+    "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/runtime-only-20261021/access-before.json": "516289607bc8c04cb502489452e347bcc1c6f9c41d6a1934c81e299d096ae09a",
+    "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/runtime-only-20261021/access-final.json": "4f6d7aaa5f67dda3b4892440f9f201c94d8d519d91184de6049074764df52819",
+    "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/runtime-only-20261021/check-runtime-module.py": "cc6088ec8d7ac1956205a34ea3a69a0f4f1276e6eb7bf63fecedcb5a97b8708b",
+    "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/runtime-only-20261021/directory-lock.json": "eee5bd15bb23ece9fc48fa5ee9a22bde01cfb4fad1093824e507bceb40f86646",
+    "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/runtime-only-20261021/final-tests.log": "945673e0095cebfd83f1ca9c588e1d7daabda0a4df1dc260e7d066d1bfbfb8a4",
+    "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/runtime-only-20261021/module-equivalence.json": "74364fa20699ae64b6d477c1ba5aea8deee132e851cf2120425a3facb85fe001",
+    "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/runtime-only-20261021/native-snapshot/preflight.json": "83b51b5b44dbca952bbf04f536a1416857c13bd1e98b5b7e838843b0329d5973",
+    "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/runtime-only-20261021/native-tests.log": "556faa05c3f0cb88b961be629ddcd604bbbd99c8ff7c1eab79d3c5bdbd83d54f",
+    "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/runtime-only-20261021/reference-preflight.log": "641a9da854429fd100800cde72376251381b7f623e9e776d4bc127c3c28f430b",
+    "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/runtime-only-20261021/runtime-preflight.log": "e66f54d04f7b4edeee02a04612fed4562e778b119366c60464092ed969776655",
+    "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/runtime-only-20261021/snapshot-preflight.log": "48af29b13d8f765f1671893af5ae70bd326350b187c9beafeba3fb6958170c65",
+    "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/runtime-only-20261021/tests.log": "c875889253792c14692dc000365658464e60153662ee60dbb9a0a5041c50235f"
+  },
+  "release_sha256": "4ceddb23a4f9e6995375a9239af6d46c42982190aa18224672c9aeb659be3dd1",
+  "runtime_plan_sha256": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e",
+  "schema": 1,
+  "scope": "Runtime selection and source-access handoff; no physical installation or native science executed",
+  "source_access": {
+    "account": "saiuser01",
+    "before_after_acl_log": "/home/stardust/sai-hpc-software/diagnostics/lammps-release-20261020/runtime-only-20261021/access-after.json",
+    "checked_paths": 4857,
+    "method": "Effective POSIX ACL evaluation; no impersonated execution",
+    "named_acl_changes": 155,
+    "no_acl_edits_inside_frozen_exports": true,
+    "no_source_write_grants": true,
+    "passed": true,
+    "source_writable_paths": [],
+    "targets": [
+      {
+        "effective": 7,
+        "mode": 509,
+        "owner": 1000,
+        "passed": true,
+        "path": "/opt/apps/deepmd-kit",
+        "required": 7
+      },
+      {
+        "effective": 7,
+        "mode": 509,
+        "owner": 1000,
+        "passed": true,
+        "path": "/opt/apps/lammps",
+        "required": 7
+      },
+      {
+        "effective": 7,
+        "mode": 509,
+        "owner": 1000,
+        "passed": true,
+        "path": "/opt/modules/modulefiles/apps/lammps",
+        "required": 7
+      }
+    ]
+  },
+  "tests": {
+    "failed": 0,
+    "initial_harness_issue": "First combined run lacked the diagnostic controller directory; linked the existing checkout, then all 24 tests passed. Original failed log retained.",
+    "passed": 24,
+    "total": 24
+  }
+}

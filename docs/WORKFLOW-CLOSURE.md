@@ -1,4 +1,37 @@
-# Workflow closure — 2026-10-20
+# Workflow closure — 2026-10-21
+
+LAMMPS release work is now tracked in [LAMMPS-RELEASE.md](LAMMPS-RELEASE.md).
+The October 20 release restart now has published, reverified `stable_30Sep2026`
+SIFs paired with DeePMD 3.2.0 on **4V100, 16V100 and 8V100V0**. All three passed
+two-node TF/PT/JAX numerical acceptance, explicit GPU/Kokkos LJ/PPPM checks,
+PyTorch CUDA performance, full native export readback and actual execution
+through the public container module. The new 71 packages/2,473 styles preserve
+the old 70 packages/2,197 styles. At the user's request, performance acceptance
+records GPU scope explicitly; CPU timing is excluded. The
+[delivery record](evidence/lammps-release-20261020/final-delivery.json) pins the
+accepted images and evidence. The [physical installation package](../deployment/lammps-30Sep2026/README.md)
+passed its full read-only preflight and now includes post-install native
+Slurm checks plus raw-result revalidation: 17 scientific cases per partition
+cover single/two-node GPU/Kokkos, TF/PT/JAX and PLUMED execution. The physical
+installer now copies only standard runtime/API/data files (about 1.09 GiB per
+partition); workflow metadata, custom checks and reference material stay in
+the home tree. Its public module is standalone. The cross-account read/traverse
+gap reported by `saiuser01` is repaired with targeted ACLs; effective source
+and target access is audited in the
+[runtime deployment evidence](evidence/lammps-release-20261020/runtime-deployment-preflight.json).
+The administrator's physical `/opt` installation is now accepted on all three
+partitions. Native jobs `1885341`/`1885342`/`1885343` passed 17 scientific
+cases each, full feature/loader/placement checks and module unload, with
+`COMPLETED / 0:0`. Independent raw-result revalidation and post-run installed
+file readback also passed; [physical native evidence](evidence/lammps-release-20261020/physical-native-acceptance.json)
+pins the frozen inputs, results and accounting. The native batch script now
+lets site policy derive CPU allocation from GPU count. The live
+daily dispatcher still runs the old MD feature branch; its release history
+check rejects newer recovery identities, while its development build fails
+CUDA configuration. The stable restart uses the integrated controller,
+explicit GCC 14.3.0 and the qualified CP2K overlay driver, preserving all
+existing evidence. 8V100V0 extraction recovery `1882907` completed successfully.
+An export wrapper permission issue was repaired and all failed attempts retained.
 
 The code now connects build, scientific/performance acceptance, native export
 readback and publication. The current shared-ELPA CP2K 2026.2 is physically
@@ -181,10 +214,13 @@ scientific references and inputs still match their pinned hashes.
   historical 158–167 minute successes are references, not proof for this recipe.
   The required wignernj archive is pinned and checked. All four partition source
   caches passed read-only verification on SAI.
-- MD connects two-node source-bound science, TF/PT/JAX raw performance checks,
+- MD connects two-node source-bound TF/PT/JAX science, explicitly scoped raw performance checks,
   one repeat after a slowdown greater than 10%, paired export readback and
   immutable publication/module generation. PT requires actual Nsight CUDA
-  kernel evidence. TF/JAX follow the established CPU-only baseline scope.
+  kernel evidence. New GPU deliveries benchmark PT only; TF/JAX CPU timing
+  remains available in the historical all-backend scope, with all-backend
+  numerical correctness retained in either scope. Published manifests name
+  the accepted performance scope and backends.
   Runtime checks bind actual SIF bytes to the paired build identity.
 - GPUMD adds frozen-model GNEP numerical forces, stale-output rejection,
   calibrated engine intervals and alternating baseline/candidate trials.
