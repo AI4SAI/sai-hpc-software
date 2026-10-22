@@ -1,0 +1,265 @@
+{
+  "cache_scope": "First observed invocation plus warmed repetitions; no cache flush, no cold-cache claim",
+  "elapsed": "00:51:38",
+  "exit_code": "0:0",
+  "identity": {
+    "build_id": "v2026.2-g67b5da876dd6-raed7aa53ff43",
+    "cpu_arch": "skylake-avx512",
+    "cuda_arch": "70",
+    "dependency_isa": "avx2",
+    "gpus": 1,
+    "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/8V100V0",
+    "partition": "8V100V0",
+    "recipe_sha256": "aed7aa53ff436310f28e5fdc21e1c3ca211f2422c5dd6abe44b19aa1d3ae9277",
+    "repository": "cp2k/cp2k",
+    "schema": 2,
+    "software": "cp2k",
+    "source_ref": "v2026.2",
+    "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+    "source_version": "v2026.2",
+    "stack_digest": null,
+    "stack_sources": {},
+    "target": "8v100v0-avx512",
+    "track": "release",
+    "version_label": "v2026.2"
+  },
+  "image_sha256": "601b10438d54008f25b74fc7e40e2d71d3ee36f6c4d9efb7d1d6a5daa0abd138",
+  "job": "1882053",
+  "max_energy_delta_ha": 5.184119800105691e-11,
+  "max_force_delta_ha_bohr": 1.3999999076697023e-11,
+  "node": "8v100v0n03",
+  "partition": "8V100V0",
+  "passed": true,
+  "science_calculations": 28,
+  "scope": "One rank on one node; native versus Apptainer SIF; same physical host work filesystem",
+  "state": "COMPLETED",
+  "summary": {
+    "version": {
+      "measured_repetitions": 7,
+      "modes": {
+        "checked": {
+          "paired_wall_delta_median_seconds": 0.6508919452317059,
+          "paired_wall_delta_seconds": [
+            0.6006531240418553,
+            0.651624551974237,
+            0.6508919452317059,
+            0.5007926542311907,
+            0.6514625761192292,
+            0.7015110140200704,
+            0.6003221981227398
+          ],
+          "wall_max_seconds": 2.7202061431016773,
+          "wall_median_ratio_to_native": 1.3227708645475886,
+          "wall_median_seconds": 2.6704701900016516,
+          "wall_min_seconds": 2.5219862221274525,
+          "wall_seconds": [
+            2.6705582400318235,
+            2.6704701900016516,
+            2.7202061431016773,
+            2.670491976197809,
+            2.5721693481318653,
+            2.6218530528713018,
+            2.5219862221274525
+          ]
+        },
+        "native": {
+          "wall_max_seconds": 2.1696993219666183,
+          "wall_median_seconds": 2.0188456380274147,
+          "wall_min_seconds": 1.9203420388512313,
+          "wall_seconds": [
+            2.069905115989968,
+            2.0188456380274147,
+            2.0693141978699714,
+            2.1696993219666183,
+            1.920706772012636,
+            1.9203420388512313,
+            1.9216640240047127
+          ]
+        },
+        "sif": {
+          "paired_wall_delta_median_seconds": 0.4511329769156873,
+          "paired_wall_delta_seconds": [
+            0.4511329769156873,
+            0.501447238959372,
+            0.4006299111060798,
+            0.30047182412818074,
+            0.7508176090195775,
+            0.5512512191198766,
+            0.44998970115557313
+          ],
+          "wall_max_seconds": 2.6715243810322136,
+          "wall_median_ratio_to_native": 1.2242606425254319,
+          "wall_median_seconds": 2.471593257971108,
+          "wall_min_seconds": 2.371653725160286,
+          "wall_seconds": [
+            2.5210380929056555,
+            2.5202928769867867,
+            2.469944108976051,
+            2.470171146094799,
+            2.6715243810322136,
+            2.471593257971108,
+            2.371653725160286
+          ]
+        }
+      }
+    },
+    "water-gpw": {
+      "measured_repetitions": 5,
+      "modes": {
+        "native": {
+          "cp2k_median_seconds": 21.297,
+          "cp2k_seconds": [
+            21.125,
+            21.338,
+            21.297,
+            21.427,
+            21.242
+          ],
+          "outside_cp2k_timer_median_seconds": 1.9844273149389764,
+          "wall_max_seconds": 23.52156313089654,
+          "wall_median_seconds": 23.271121205063537,
+          "wall_min_seconds": 23.171706767054275,
+          "wall_seconds": [
+            23.171706767054275,
+            23.322427314938977,
+            23.271121205063537,
+            23.52156313089654,
+            23.221585860010237
+          ]
+        },
+        "sif": {
+          "cp2k_median_seconds": 21.494,
+          "cp2k_seconds": [
+            21.634,
+            21.494,
+            21.43,
+            21.509,
+            21.432
+          ],
+          "outside_cp2k_timer_median_seconds": 2.54214971203357,
+          "paired_cp2k_delta_median_seconds": 0.1559999999999988,
+          "paired_scf_steps_equal": true,
+          "paired_wall_delta_median_seconds": 0.701028506970033,
+          "paired_wall_delta_seconds": [
+            1.0483333561569452,
+            0.650863632094115,
+            0.701028506970033,
+            0.45120597002096474,
+            0.7532208969350904
+          ],
+          "wall_max_seconds": 24.22004012321122,
+          "wall_median_ratio_to_native": 1.0301734383909604,
+          "wall_median_seconds": 23.973290947033092,
+          "wall_min_seconds": 23.97214971203357,
+          "wall_seconds": [
+            24.22004012321122,
+            23.973290947033092,
+            23.97214971203357,
+            23.972769100917503,
+            23.974806756945327
+          ]
+        }
+      }
+    },
+    "water64-elpa": {
+      "measured_repetitions": 3,
+      "modes": {
+        "native": {
+          "cp2k_median_seconds": 128.065,
+          "cp2k_seconds": [
+            128.065,
+            83.161,
+            157.285
+          ],
+          "outside_cp2k_timer_median_seconds": 4.889184798058125,
+          "wall_max_seconds": 198.83188599394634,
+          "wall_median_seconds": 132.95418479805812,
+          "wall_min_seconds": 85.21687219804153,
+          "wall_seconds": [
+            132.95418479805812,
+            85.21687219804153,
+            198.83188599394634
+          ]
+        },
+        "sif": {
+          "cp2k_median_seconds": 125.609,
+          "cp2k_seconds": [
+            125.609,
+            134.864,
+            124.739
+          ],
+          "outside_cp2k_timer_median_seconds": 2.7596033568810725,
+          "paired_cp2k_delta_median_seconds": -2.456000000000003,
+          "paired_scf_steps_equal": true,
+          "paired_wall_delta_median_seconds": -4.585581441177055,
+          "paired_wall_delta_seconds": [
+            -4.585581441177055,
+            58.53414143691771,
+            -71.40763391088694
+          ],
+          "wall_max_seconds": 143.75101363495924,
+          "wall_median_ratio_to_native": 0.9655100631233081,
+          "wall_median_seconds": 128.36860335688107,
+          "wall_min_seconds": 127.4242520830594,
+          "wall_seconds": [
+            128.36860335688107,
+            143.75101363495924,
+            127.4242520830594
+          ]
+        }
+      }
+    },
+    "water64-gpw": {
+      "measured_repetitions": 3,
+      "modes": {
+        "native": {
+          "cp2k_median_seconds": 171.19,
+          "cp2k_seconds": [
+            171.07,
+            171.19,
+            171.275
+          ],
+          "outside_cp2k_timer_median_seconds": 2.0961179951205793,
+          "wall_max_seconds": 173.37111799512058,
+          "wall_median_seconds": 173.3198081110604,
+          "wall_min_seconds": 173.11392239807174,
+          "wall_seconds": [
+            173.11392239807174,
+            173.3198081110604,
+            173.37111799512058
+          ]
+        },
+        "sif": {
+          "cp2k_median_seconds": 171.591,
+          "cp2k_seconds": [
+            171.591,
+            171.692,
+            171.121
+          ],
+          "outside_cp2k_timer_median_seconds": 2.4754530620220976,
+          "paired_cp2k_delta_median_seconds": 0.5020000000000095,
+          "paired_scf_steps_equal": true,
+          "paired_wall_delta_median_seconds": 0.8476449509616941,
+          "paired_wall_delta_seconds": [
+            0.9519670489244163,
+            0.8476449509616941,
+            0.3036202120129019
+          ],
+          "wall_max_seconds": 174.1674530620221,
+          "wall_median_ratio_to_native": 1.0043046512921228,
+          "wall_median_seconds": 174.06588944699615,
+          "wall_min_seconds": 173.6747382071335,
+          "wall_seconds": [
+            174.06588944699615,
+            174.1674530620221,
+            173.6747382071335
+          ]
+        }
+      }
+    }
+  },
+  "threads": 3,
+  "uid": 1478400690,
+  "user": "stardust",
+  "version_invocations": 24
+}

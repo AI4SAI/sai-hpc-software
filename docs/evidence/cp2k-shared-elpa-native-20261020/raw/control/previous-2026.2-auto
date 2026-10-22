@@ -1,0 +1,34 @@
+#%Module1.0
+proc ModulesHelp {} {
+    puts stderr "CP2K 2026.2: load inside a Slurm allocation; selects that partition's native installation."
+    puts stderr "Run cp2k.psmp; CP2K_DATA_DIR points to the original packaged data."
+}
+module-whatis "CP2K 2026.2; native MPI/OpenMP; Slurm partition selection"
+
+set gpu_build cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309
+set cpu_build cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc
+set builds [dict create 4V100 $gpu_build 16V100 $gpu_build \
+    8V100V0 $gpu_build DSPRHBM $cpu_build]
+
+if {[module-info mode load]} {
+    if {![info exists env(SLURM_JOB_PARTITION)]} {
+        error "Load cp2k/2026.2-auto inside a Slurm job or allocation"
+    }
+    set partition $env(SLURM_JOB_PARTITION)
+} elseif {[module-info mode remove]} {
+    if {![info exists env(SAI_CP2K_NATIVE_PARTITION)]} {
+        error "Missing the loaded CP2K partition identity"
+    }
+    set partition $env(SAI_CP2K_NATIVE_PARTITION)
+} else {
+    return
+}
+if {![dict exists $builds $partition]} {
+    error "Unsupported CP2K partition: $partition"
+}
+set fragment [file join /opt/apps/cp2k [dict get $builds $partition] \
+    $partition share sai native-module.tcl]
+if {![file isfile $fragment] || [file type $fragment] eq "link"} {
+    error "Missing native CP2K installation: $fragment"
+}
+source $fragment

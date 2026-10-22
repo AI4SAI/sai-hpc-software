@@ -1,0 +1,80 @@
+{
+  "affinity": [
+    24,
+    25,
+    26,
+    27,
+    88,
+    89,
+    90,
+    91
+  ],
+  "binary": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/bin/cp2k.psmp",
+  "binary_dev": 56,
+  "binary_sha256": "7bc5d0f8afcba6e08e90800fd702908d088caae2ccb4164662fbbd029db8ca33",
+  "cwd": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-container-multinode-20261021-16V100-2n8g-water216-r2/probes/native",
+  "cwd_dev": 4231993238,
+  "cwd_inode": 144115794421222907,
+  "devices": [
+    {
+      "name": "Tesla V100-SXM2-16GB",
+      "pci_bus": "0000:8D:00.0",
+      "uuid": "GPU-5a084f76-9fb1-e235-ea70-1e6a4b61abd5"
+    }
+  ],
+  "environment": {
+    "CP2K_DATA_DIR": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/share/cp2k/data",
+    "CUDA_CACHE_PATH": "/home/stardust/sai-hpc-software/runtime/com-1884745/16v100n14/2/cuda",
+    "MKL_NUM_THREADS": "1",
+    "MPI_HOME": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+    "OMP_NUM_THREADS": "4",
+    "OMP_PLACES": "cores",
+    "OMP_PROC_BIND": "close",
+    "OMP_STACKSIZE": null,
+    "OPENBLAS_NUM_THREADS": "1",
+    "TMPDIR": "/home/stardust/sai-hpc-software/runtime/com-1884745/16v100n14/2",
+    "XDG_CACHE_HOME": "/home/stardust/sai-hpc-software/runtime/com-1884745/16v100n14/2/cache"
+  },
+  "euid": 1478400690,
+  "gpu": "GPU-5a084f76-9fb1-e235-ea70-1e6a4b61abd5",
+  "host": "16v100n14",
+  "local_rank": 2,
+  "pid": 3695290,
+  "rank": 6,
+  "size": 8,
+  "topology": {
+    "24": [
+      0,
+      24
+    ],
+    "25": [
+      0,
+      25
+    ],
+    "26": [
+      0,
+      26
+    ],
+    "27": [
+      0,
+      27
+    ],
+    "88": [
+      0,
+      24
+    ],
+    "89": [
+      0,
+      25
+    ],
+    "90": [
+      0,
+      26
+    ],
+    "91": [
+      0,
+      27
+    ]
+  },
+  "uid": 1478400690
+}

@@ -1,0 +1,90 @@
+{
+  "calculations": 32,
+  "files_hashed": 661,
+  "results": {
+    "16v100-avx2": {
+      "artifact_sha256": "adf6e250bd43050e6d6ce589ffceae8d8c818e0202a5e27b9cd6b43476172fe5",
+      "elapsed": "01:31:23",
+      "exit_code": "0:0",
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-raed7aa53ff43",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "aed7aa53ff436310f28e5fdc21e1c3ca211f2422c5dd6abe44b19aa1d3ae9277",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "job_id": "1871044",
+      "max_energy_delta_ha": 6.275513442233205e-11,
+      "max_force_delta_ha_bohr": 3.044999998674802e-09,
+      "median_seconds": {
+        "cusolver-direct": 207.497,
+        "cusolver-standard": 266.766,
+        "elpa": 319.984,
+        "ot": 553.069
+      },
+      "mode": "one warmup and three alternating repetitions",
+      "node": "16v100n07",
+      "partition": "16V100",
+      "scope": "one node, one MPI rank, one V100; CP2K internal total time",
+      "standard_over_direct": 1.2856378646438262,
+      "state": "COMPLETED",
+      "waters": 216
+    },
+    "8v100v0-avx512": {
+      "artifact_sha256": "601b10438d54008f25b74fc7e40e2d71d3ee36f6c4d9efb7d1d6a5daa0abd138",
+      "elapsed": "01:44:35",
+      "exit_code": "0:0",
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-raed7aa53ff43",
+        "cpu_arch": "skylake-avx512",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/8V100V0",
+        "partition": "8V100V0",
+        "recipe_sha256": "aed7aa53ff436310f28e5fdc21e1c3ca211f2422c5dd6abe44b19aa1d3ae9277",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "8v100v0-avx512",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "job_id": "1872055",
+      "max_energy_delta_ha": 6.639311322942376e-11,
+      "max_force_delta_ha_bohr": 3.0429999995501555e-09,
+      "median_seconds": {
+        "cusolver-direct": 248.545,
+        "cusolver-standard": 289.649,
+        "elpa": 357.341,
+        "ot": 651.133
+      },
+      "mode": "one warmup and three alternating repetitions",
+      "node": "8v100v0n02",
+      "partition": "8V100V0",
+      "scope": "one node, one MPI rank, one V100; CP2K internal total time",
+      "standard_over_direct": 1.1653785028868013,
+      "state": "COMPLETED",
+      "waters": 216
+    }
+  }
+}

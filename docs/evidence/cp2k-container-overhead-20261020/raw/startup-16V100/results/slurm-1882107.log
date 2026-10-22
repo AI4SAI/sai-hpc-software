@@ -1,0 +1,66 @@
+--------------------------------------------------------------------------
+PRTE has detected that the head of the session directory tree (where
+scratch files and shared memory backing storage will be placed)
+resides on a shared file system:
+
+   Directory: /home/stardust/sai-hpc-software/runtime/co-1882107
+   File system type: lustre
+
+For performance reasons, it is strongly recommended that the session
+directory be located on a local file system. This can be controlled by
+setting the system temporary directory to be used by PRTE using either
+the TMPDIR envar or the "prte_tmpdir_base" MCA param.
+
+If you need the temporary directory to be different on remote nodes
+from the local one where prterun is running (e.g., when a login node is
+being employed), then you can set the local temporary directory using
+the "prte_local_tmpdir_base" MCA param and the one to be used on all
+other nodes using the "prte_remote_tmpdir_base" param.
+
+This is only a warning advisory and your job will continue. You can
+disable this warning in the future by setting the
+"prte_silence_shared_fs" MCA param to "1".
+--------------------------------------------------------------------------
+warmup native 1.83
+warmup sif 2.1
+0 native 1.8
+0 sif 2.02
+1 sif 1.96
+1 native 1.56
+2 native 1.67
+2 sif 2.15
+3 sif 1.96
+3 native 1.4
+4 native 1.76
+4 sif 1.91
+5 sif 1.95
+5 native 1.76
+6 native 1.59
+6 sif 2.12
+7 sif 2.22
+7 native 1.44
+8 native 1.61
+8 sif 2.05
+9 sif 2.0
+9 native 1.56
+10 native 1.73
+10 sif 2.13
+11 sif 1.85
+11 native 1.54
+12 native 1.93
+12 sif 1.92
+13 sif 1.97
+13 native 1.8
+14 native 1.5
+14 sif 1.81
+15 sif 2.29
+15 native 1.45
+16 native 1.75
+16 sif 2.09
+17 sif 1.85
+17 native 1.43
+18 native 1.33
+18 sif 2.19
+19 sif 1.76
+19 native 1.47
+CP2K_RANK_STARTUP_PASSED

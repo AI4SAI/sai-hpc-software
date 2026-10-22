@@ -22,8 +22,13 @@ cuSOLVERMp、ELPA CPU kernel 或 ELPA 单阶段 GPU 路径可正常收敛；不�
 已由管理员安装。公共 module 物理复验 `1869223`–`1869226` 四分区均通过，
 共 460 次数值求解；GPU 每 rank 的 32 个临时 communicator 全部释放，
 GCC 14.3 Fortran 数值消费者也通过。CP2K 依赖锁已固定新 GPU 库和回变换补丁，
-新身份 CP2K 的构建和科学验收仍需完成。此本地兼容方案的通过范围是上述算例，
-性能仍待单独测量。[最新物理验收](evidence/elpa-backtransform-native-20261020/README.md)；详见
+新身份 CP2K 2026.2 的四分区构建、全部 **56 项单/双节点科学测试**、SIF 验证和
+物理部署导出包回读也已通过；[正式发布验收](evidence/cp2k-shared-elpa-release-20261020/README.md)。
+管理员已将新 CP2K 安装到物理 `/opt`，公共 `cp2k/2026.2-auto` 已切换。
+`stardust` 完成四分区全部 **56 项物理环境测试**，原始日志独立复核通过；
+[安装后验收](evidence/cp2k-shared-elpa-native-20261020/README.md)。
+此本地兼容方案的通过范围是记录中的算例，性能按独立测量报告。
+[最新 ELPA 物理验收](evidence/elpa-backtransform-native-20261020/README.md)；详见
 [集成失败、控制实验及候选修复](evidence/cp2k-export-recovery-20261020/README.md)。
 
 ## 分区选择和固定路径
@@ -70,8 +75,33 @@ CUDA-aware MPI、SM80 专用内核以及 `sm_70,sm_75,sm_80,sm_86,sm_89`。
 - [communicator 补丁](../deployment/elpa-2026.02.001/mpi-communicator.patch) 回补上游
   PR #85，读取每节点 rank 数后立即释放临时 communicator。构建核对修复前后的源码哈希，
   并将补丁及上游提交写入 `share/sai/mpi-communicator-fix.json`。
+- [回变换补丁](evidence/cp2k-export-recovery-20261020/gpu-backtransform-host-staging.patch)
+  将 ELPA2 的 tridi→band、band→full 两段通信改用主机缓冲，保留 GPU 计算。
+  这是针对数值发散和 `cudaHostRegister` 错误的兼容修复，会改变这两段的通信成本。
 - 交付库保留实际 HPCX HCOLL 路径；`/opt/mellanox/hcoll` 只用于编译兼容。
   pkg-config 补齐 CUDA 的链接路径，便于下游直接编译。
+
+## 与 CP2K toolchain 的配置差异
+
+对照对象为 CP2K v2026.2 固定提交的
+[install_elpa.sh](https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/tools/toolchain/scripts/stage5/install_elpa.sh)，
+以及本仓库先前的 [私有 ELPA 配方](../controller/cp2k_elpa.sh)。
+2026-10-20 在物理安装的 `share/sai/configure-command.txt` 和 `config.h` 中核实：
+
+| 功能 | toolchain / 先前私有配方 | 当前共享 NVIDIA ELPA |
+|---|---|---|
+| ELPA 内部 cuSOLVER | 显式 `--without-cusolver` | `--with-cusolver`，`WITH_NVIDIA_CUSOLVER=1` |
+| NVIDIA CUB 归约内核 | 未显式启用 | `--enable-nvidia-cub`，`WITH_CUCUB=1` |
+| CUDA-aware MPI | 未显式启用 | `--enable-cuda-aware-mpi`，保留上述两段主机缓冲例外 |
+| GPU streams | 不应算作本次新增；ELPA 默认开启 | `WITH_GPU_STREAMS=1`，继续保留 |
+| CUDA 架构 | toolchain 按目标架构；先前私有配方仅 SM70 | SM70/75/80/86/89 和 SM80 专用内核 |
+
+上述源码归档的 `configure.ac` 中，CUB 和 CUDA-aware MPI 默认关闭，GPU streams
+默认开启；因此不能把 streams、已有的 OpenMP 或 SIMD 支持都称为新增调优。
+SM80 专用内核适用于较新 GPU，V100 使用 SM70，它不会因编入 SM80 而自动提速。
+ELPA 内部 cuSOLVER 与 CP2K 的 `PREFERRED_DIAG_LIBRARY CUSOLVER` 所选
+cuSOLVERMp 是两条不同的求解器路径。编译支持不等于每次求解均会调用，
+也不能据此宣称共享 ELPA 一定比 toolchain 版本快；应比较相同输入和资源下的完整计时。
 
 ## 从仓库重新构建
 
@@ -125,9 +155,18 @@ bash deployment/elpa-2026.02.001-commfix/submit-module-checks.sh public
 
 ## CP2K 使用此库
 
-已经部署的 CP2K 2026.2 仍对应原先验收过的私有 ELPA 2026.02.002。
-新配方改用表中的共享 ELPA 2026.02.001，并继续使用 **GCC 14.3.0** 编译 CP2K。
-两者是不同候选，不能通过修改旧产物记录来完成迁移。
+已经部署的 CP2K 2026.2 使用表中的共享 ELPA 2026.02.001，
+继续使用 **GCC 14.3.0** 编译 CP2K。原先的私有 ELPA 安装保留供回退。
+新配方 `aed7aa53ff43` 已在
+[工作流 39365139034](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39365139034)
+完成四分区正式验收。新 SIF 和 `.native` 导出位于
+`containers/software/cp2k/release/v2026.2-g67b5da876dd6-raed7aa53ff43/<分区>/`。
+这是独立的发布身份；管理员已使用
+[上线包](../deployment/cp2k-2026.2-shared-elpa/README.md) 完成物理安装和公共 module 更新。
+作业 `1879431`–`1879434` 均 `COMPLETED 0:0`，全部 56 项物理计算通过，
+并核实实际加载共享 ELPA 和真实 HPCX HCOLL 路径。
+[完整验收](evidence/cp2k-shared-elpa-native-20261020/README.md)。
+仍使用 `cp2k/2026.2-auto`，由 Slurm 分区选择新前缀。
 
 [依赖锁](../controller/cp2k_site_elpa.json) 固定每套库、头文件、Fortran module、
 pkg-config、补丁和构建参数的哈希，来源与上述发布清单逐项对应。
@@ -140,7 +179,7 @@ pkg-config、补丁和构建参数的哈希，来源与上述发布清单逐项�
 读取 ELPA 13.3 的 `.mod`，调用 type-bound API 求解 32 阶矩阵，并核对解析特征值和残差。
 最大误差分别为 `1.33e-15`、`8.88e-16`。
 [原始日志和哈希](evidence/cp2k-shared-elpa-20261019/preflight.json) 只证明这个接口兼容性，
-新 CP2K 应用的科学验收仍须随完整构建执行。
+完整 CP2K 应用现已另行通过上述正式发布的科学验收。
 另有 `1862389`、`1862390` 验证正式构建使用的 fakeroot/隔离网络和 CMake 查找，
 分别在 16V100、DSPRHBM 通过；[完整证据](evidence/cp2k-shared-elpa-20261019/cmake-preflight.json)。
 
@@ -154,8 +193,9 @@ gh workflow run cp2k.yml --repo AI4SAI/sai-hpc-software --ref fix/workflow-closu
 ```
 
 release 与 development 各自解析源码并保持独立记录；`tracks=development` 可构建最新分支。
-使用共享 ELPA 的候选仍须通过 PBE OT、普通对角化、强制 ELPA、DFT-D4、TBLITE、
-较大水体系及单/双节点测试。issue #9 的 direct generalized diagonalization 是另行测量的
+使用共享 ELPA 的正式候选已通过 PBE OT、普通对角化、强制 ELPA、DFT-D4、TBLITE、
+较大水体系及单/双节点测试。后续候选仍需重复这些验收。
+issue #9 的 direct generalized diagonalization 是另行测量的
 运行时选项，详见 [V100 调优记录](CP2K-V100-TUNING.md#shared-elpa-rebuild-and-issue-9)。
 
 ## GPU 求解器生命周期限制

@@ -1,0 +1,17 @@
+[
+  "mpirun",
+  "-np",
+  "8",
+  "--host",
+  "16v100n05,16v100n06",
+  "--map-by",
+  "ppr:4:node:pe=4",
+  "--bind-to",
+  "core",
+  "--report-bindings",
+  "/usr/bin/python3",
+  "/home/stardust/sai-hpc-software/runtime-tests/cp2k-container-multinode-20261021-16V100-2n8g-r2/probes/native/entry.py",
+  "host",
+  "native",
+  "probe"
+]

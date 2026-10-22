@@ -34,7 +34,17 @@ existing evidence. 8V100V0 extraction recovery `1882907` completed successfully.
 An export wrapper permission issue was repaired and all failed attempts retained.
 
 The code now connects build, scientific/performance acceptance, native export
-readback and publication. The original private-ELPA CP2K 2026.2 on all four partitions (4V100, 16V100,
+readback and publication. The current shared-ELPA CP2K 2026.2 is physically
+installed on all four partitions and selected by `cp2k/2026.2-auto`. Jobs
+`1879431`–`1879434`, executed as `stardust`, passed all 56 native single/two-node
+calculations and ended `COMPLETED 0:0`. Independent remote and local raw-log
+revalidation confirmed version/features, actual shared ELPA/HPCX HCOLL loading,
+MPI placement and numerical agreement with the accepted SIFs. Maximum energy
+and force differences were `2.87e-11 Ha` and `1.30e-11 Ha/Bohr`. Original data
+remain complete; runtime uses the physical installation without Apptainer.
+[Current physical acceptance and raw evidence](evidence/cp2k-shared-elpa-native-20261020/README.md).
+
+The original private-ELPA CP2K 2026.2 on all four partitions (4V100, 16V100,
 8V100V0 and DSPRHBM) has passed candidate science, native export readback,
 publication, physical `/opt` installation and native single/two-node science.
 Development is not yet accepted. GPUMD on 16V100 has passed science, performance and
@@ -52,6 +62,40 @@ placement. Maximum differences from the accepted SIF results were `2.12e-11 Ha`
 and `1.60e-11 Ha/Bohr`. Original data remain complete (280 files and two links
 per partition); no application container is used for native execution.
 [Physical installation acceptance and raw evidence hashes](evidence/cp2k-install-layout-20261018/physical-native-acceptance.json).
+
+The new shared-ELPA recipe `aed7aa53ff43` has now also completed all four
+application builds, 56 single/two-node scientific calculations, native export
+readback, publication, administrator installation and physical acceptance.
+The 216-water diagonalization experiment completed on all three GPU partitions:
+direct cuSOLVERMp reduced median total time by 9.84%, 22.22% and 14.19% on
+4V100, 16V100 and 8V100V0. A separate controlled OT backend experiment passed
+all 24 calculations; shared ELPA reduced OT total time by 13.10%, 7.06% and
+5.57% for that input. Defaults remain unchanged.
+[Accepted release](evidence/cp2k-shared-elpa-release-20261020/README.md),
+[diagonalization comparison](evidence/cp2k-water216-tuning-20261020/README.md),
+[OT comparison](evidence/cp2k-ot-backends-20261020/README.md).
+
+An ordinary-user native-versus-SIF benchmark now passes all 112 scientific
+calculations across four partitions, with physical home input/output in both
+routes and matching executable/library bytes. Twenty alternating startup pairs
+on 16V100 measured a 0.400 s median additional rank lifetime for direct SIF
+execution. The 64-water OT wall-time medians increased by 0.82% on 16V100 and
+0.43% on 8V100V0; substantial storage variability limits interpretation of other
+cases. Independent remote/local revalidation agrees on all 2,251 archived file
+hashes and raw results. The failed first 4V100 native attempt and differing
+shared CUDA library hashes on that node remain documented; another node passed
+the full retry without a workaround.
+[Container overhead measurements and complete evidence](evidence/cp2k-container-overhead-20261020/README.md).
+
+The two-node follow-up on 16V100 also passes: four V100s per node, eight MPI
+ranks and ordinary-user host-filesystem I/O. Jobs `1884803` and `1884745`
+completed all 24 calculations for 64-water OT/cuSOLVER and 216-water OT/ELPA.
+Independent remote/local revalidation agrees on 2,063 archived file hashes
+and raw results. The 216-water wall-time median ratio was +0.34% for SIF,
+with a -2.248 s paired delta median; no clear SIF performance loss appears
+in these five pairs. The 64-water -7.13% median ratio coincides with a strong
+time trend inside cuSOLVER and is not evidence of container acceleration.
+[Two-node measurements, all pairs and retained attempts](evidence/cp2k-container-multinode-20261021/README.md).
 
 Cross-account deployment now grants `saiuser01` read/traverse ACLs only on the
 blocked release/reference paths, with no added write access. The 2,415 required
@@ -113,15 +157,27 @@ scientific references and inputs still match their pinned hashes.
   was installed by the administrator. Public-module native jobs `1869223`–`1869226`
   then passed on all four partitions: 460 numerical solves, zero remaining GPU
   communicators and successful GCC 14.3 Fortran probes. The CP2K dependency lock
-  now pins the new GPU libraries and back-transformation patch. New-identity
-  CP2K compilation/science remains required; the old GPU deliveries
-  remain failed and 216-water tuning has not started.
+  now pins the new GPU libraries and back-transformation patch. The old GPU
+  deliveries remain failed; the fresh identity has now passed its own science.
   [Physical ELPA acceptance](evidence/elpa-backtransform-native-20261020/README.md).
   Fresh [workflow 39365139034](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39365139034)
   passed 840 tests (838 passed, two skipped) and submitted recipe `aed7aa53ff43`:
   dependency jobs `1869397` (16V100), `1869396` (4V100), `1869360` (8V100V0)
-  and `1869407` (DSPRHBM) were all observed running. Its frozen watcher waits for
-  new science acceptance before starting the 216-water comparisons.
+  and `1869407` (DSPRHBM) all completed, followed by application jobs `1870431`,
+  `1869890`, `1870216` and `1870183`. Science jobs `1870898`, `1870420`,
+  `1871559` and `1870992` passed all 56 calculations. All four deliveries have
+  verified native exports. Its frozen watcher then submitted the 216-water
+  comparisons; all three GPU partitions completed and independently passed.
+  [New release acceptance and first tuning results](evidence/cp2k-shared-elpa-release-20261020/README.md).
+  The [shared-ELPA administrator deployment package](../deployment/cp2k-2026.2-shared-elpa/README.md)
+  is now prepared in the cluster home: 1.85 GiB of selected runtime files, all
+  four source preflights passed, with `saiuser01` read/traverse access verified.
+  It preserves exact build prefixes and switches the public module only after
+  all four copied trees pass verification. The old installation/module are retained.
+  The administrator subsequently installed it; `stardust` verified all physical
+  files and completed 56/56 native calculations across the four partitions.
+  [Handoff evidence](evidence/cp2k-shared-elpa-deployment-20261020/README.md) and
+  [completed physical acceptance](evidence/cp2k-shared-elpa-native-20261020/README.md).
   The final integration
   archive contains 2,156 independently hash-verified files. Linux CI at
   `0e0ed1c` passed 840 tests (838 passed, two optional skips).

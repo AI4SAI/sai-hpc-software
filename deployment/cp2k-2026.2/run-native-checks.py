@@ -31,6 +31,9 @@ def run(project, output, work_root):
                        receipt['source_native_manifest_sha256'] == spec['manifest_sha256'],
                        'installed runtime differs from the accepted artifact')
     deployment.verify_tree(prefix, receipt['files'], installed=True, receipt=receipt)
+    deployment.shared_dependencies()
+    provider_path = prefix / 'share/sai/site-elpa.json'
+    elpa_prefix = json.loads(provider_path.read_text())['prefix'] if provider_path.exists() else None
     sidecar = (project / 'containers/software/cp2k/release' / spec['build_id'] /
                partition / (spec['run_id'] + '.json'))
     accepted = json.loads(sidecar.read_text())
@@ -86,6 +89,10 @@ def run(project, output, work_root):
         deployment.require(any('/hpcx/hpcx-2.25.1/hcoll/lib/libhcoll.so.1' in path for path in loaded)
                            and not any('/opt/mellanox/hcoll/' in path for path in loaded),
                            'HCOLL did not load from the real HPCX directory')
+        if elpa_prefix:
+            elpa_loaded = [path for path in loaded if Path(path).name.startswith('libelpa')]
+            deployment.require(elpa_loaded and all(path.startswith(elpa_prefix + '/lib/') for path in elpa_loaded),
+                               'ELPA did not load from the accepted shared installation')
     for name, digest in science.DATA_HASHES.items():
         deployment.require(deployment.checksum(prefix / 'share/cp2k/data' / name) == digest,
                            'installed basis/potential data differ from the accepted fixtures')

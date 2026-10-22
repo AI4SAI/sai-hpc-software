@@ -1,0 +1,59 @@
+--------------------------------------------------------------------------
+PRTE has detected that the head of the session directory tree (where
+scratch files and shared memory backing storage will be placed)
+resides on a shared file system:
+
+   Directory: /home/stardust/sai-hpc-software/runtime/co-1882052
+   File system type: lustre
+
+For performance reasons, it is strongly recommended that the session
+directory be located on a local file system. This can be controlled by
+setting the system temporary directory to be used by PRTE using either
+the TMPDIR envar or the "prte_tmpdir_base" MCA param.
+
+If you need the temporary directory to be different on remote nodes
+from the local one where prterun is running (e.g., when a login node is
+being employed), then you can set the local temporary directory using
+the "prte_local_tmpdir_base" MCA param and the one to be used on all
+other nodes using the "prte_remote_tmpdir_base" param.
+
+This is only a warning advisory and your job will continue. You can
+disable this warning in the future by setting the
+"prte_silence_shared_fs" MCA param to "1".
+--------------------------------------------------------------------------
+version/warmup/native 0.8152957240818068
+version/warmup/sif 5.070240653003566
+version/warmup/checked 1.1158304379787296
+version/0/native 0.7151790740899742
+version/0/sif 0.9656507319305092
+version/0/checked 1.0157592570176348
+version/1/sif 0.9155550160212442
+version/1/checked 1.0157001869520172
+version/1/native 0.7152777829905972
+version/2/checked 1.0157752570230514
+version/2/native 0.7152363429777324
+version/2/sif 0.915574325947091
+version/3/native 0.7652857590001076
+version/3/sif 0.9154983860207722
+version/3/checked 0.9656510120257735
+version/4/sif 0.9155186449643224
+version/4/checked 1.0157517669722438
+version/4/native 0.7151550829876214
+version/5/checked 1.015749006997794
+version/5/native 0.7152980539249256
+version/5/sif 0.9154774060007185
+version/6/native 0.765328569104895
+version/6/sif 0.9155476560117677
+version/6/checked 1.0157116469927132
+MATCHED_EXECUTABLE_LIBRARIES_UID_AFFINITY_AND_HOST_FILESYSTEM
+Traceback (most recent call last):
+  File "/home/stardust/sai-hpc-software/runtime-tests/cp2k-container-overhead-20261020-4V100/control/deployment/cp2k-container-overhead/run.py", line 292, in <module>
+    elif args.op=='execute': execute(args.run)
+                             ^^^^^^^^^^^^^^^^^
+  File "/home/stardust/sai-hpc-software/runtime-tests/cp2k-container-overhead-20261020-4V100/control/deployment/cp2k-container-overhead/run.py", line 162, in execute
+    invoke(folder,mode,'cp2k',['-i','input.inp'])
+  File "/home/stardust/sai-hpc-software/runtime-tests/cp2k-container-overhead-20261020-4V100/control/deployment/cp2k-container-overhead/run.py", line 139, in invoke
+    subprocess.run(command,cwd=folder,env=environment,stdout=log,stderr=subprocess.STDOUT,check=True,timeout=1200)
+  File "/usr/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['mpirun', '-np', '1', '--map-by', 'ppr:1:node:pe=4', '--report-bindings', 'bash', '/home/stardust/sai-hpc-software/runtime-tests/cp2k-container-overhead-20261020-4V100/control/deployment/cp2k-container-overhead/rank.sh', 'native', 'cp2k', '-i', 'input.inp']' returned non-zero exit status 139.

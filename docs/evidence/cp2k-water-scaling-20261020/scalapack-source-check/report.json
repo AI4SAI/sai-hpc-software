@@ -1,0 +1,113 @@
+{
+  "source": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-16v100-a/work/source",
+  "source_sha256": {
+    "src/fm/cp_fm_diag_utils.F": "e3edf28d199b4ba624bd94b0e3e73a8863f6db2a7ffc8e4d8e0017f32f7e8c83",
+    "src/mpiwrap/message_passing.F": "d332f39cbf43d243a3dcd3a5a0913162129e1db67946dd86e4fae2569c9dc178"
+  },
+  "compiler": "GNU Fortran (GCC) 14.3.0",
+  "scope": "source control flow only; no MPI or numerical eigensolver execution",
+  "runs": [
+    {
+      "variant": "original",
+      "flags": "-O0",
+      "argv": [
+        "/opt/devtools/gcc/14.3.0/bin/gfortran",
+        "-O0",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-J",
+        "/home/stardust/sai-hpc-software/development/cp2k-scalapack-source-check-20261022/output",
+        "/home/stardust/sai-hpc-software/development/cp2k-scalapack-source-check-20261022/output/original.f90",
+        "-o",
+        "/home/stardust/sai-hpc-software/development/cp2k-scalapack-source-check-20261022/output/original-O0"
+      ],
+      "output": "INIT a x print elpa =       -1      -1  F  F\nTARGET matrix_order_33396 =   -33396\nRANKS allocated solving =       16       8\nRANKS allocated solving =       32      16\nRANKS allocated solving =       64      32\nCLEANUP a x print elpa =       -1      -1  F  F\nAFTER_CLEANUP target =   -33396\n",
+      "source_sha256": "9007444971eee9121858a139da595ae58ef24b534e8a38488995c3383dc158cd"
+    },
+    {
+      "variant": "original",
+      "flags": "-O3",
+      "argv": [
+        "/opt/devtools/gcc/14.3.0/bin/gfortran",
+        "-O3",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-J",
+        "/home/stardust/sai-hpc-software/development/cp2k-scalapack-source-check-20261022/output",
+        "/home/stardust/sai-hpc-software/development/cp2k-scalapack-source-check-20261022/output/original.f90",
+        "-o",
+        "/home/stardust/sai-hpc-software/development/cp2k-scalapack-source-check-20261022/output/original-O3"
+      ],
+      "output": "INIT a x print elpa =       -1      -1  F  F\nTARGET matrix_order_33396 =   -33396\nRANKS allocated solving =       16       8\nRANKS allocated solving =       32      16\nRANKS allocated solving =       64      32\nCLEANUP a x print elpa =       -1      -1  F  F\nAFTER_CLEANUP target =   -33396\n",
+      "source_sha256": "9007444971eee9121858a139da595ae58ef24b534e8a38488995c3383dc158cd"
+    },
+    {
+      "variant": "init_only",
+      "flags": "-O0",
+      "argv": [
+        "/opt/devtools/gcc/14.3.0/bin/gfortran",
+        "-O0",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-J",
+        "/home/stardust/sai-hpc-software/development/cp2k-scalapack-source-check-20261022/output",
+        "/home/stardust/sai-hpc-software/development/cp2k-scalapack-source-check-20261022/output/init_only.f90",
+        "-o",
+        "/home/stardust/sai-hpc-software/development/cp2k-scalapack-source-check-20261022/output/init_only-O0"
+      ],
+      "output": "INIT a x print elpa =        4      60  T  T\nTARGET matrix_order_33396 =      560\nRANKS allocated solving =       16      16\nRANKS allocated solving =       32      32\nRANKS allocated solving =       64      64\nCLEANUP a x print elpa =       -1      -1  F  F\nAFTER_CLEANUP target =   -33396\n",
+      "source_sha256": "9d5673c9393cc9f78dd3532dc36de91a78f949f3f523fe25f85a4cc3bb77e1b8"
+    },
+    {
+      "variant": "init_only",
+      "flags": "-O3",
+      "argv": [
+        "/opt/devtools/gcc/14.3.0/bin/gfortran",
+        "-O3",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-J",
+        "/home/stardust/sai-hpc-software/development/cp2k-scalapack-source-check-20261022/output",
+        "/home/stardust/sai-hpc-software/development/cp2k-scalapack-source-check-20261022/output/init_only.f90",
+        "-o",
+        "/home/stardust/sai-hpc-software/development/cp2k-scalapack-source-check-20261022/output/init_only-O3"
+      ],
+      "output": "INIT a x print elpa =        4      60  T  T\nTARGET matrix_order_33396 =      560\nRANKS allocated solving =       16      16\nRANKS allocated solving =       32      32\nRANKS allocated solving =       64      64\nCLEANUP a x print elpa =       -1      -1  F  F\nAFTER_CLEANUP target =   -33396\n",
+      "source_sha256": "9d5673c9393cc9f78dd3532dc36de91a78f949f3f523fe25f85a4cc3bb77e1b8"
+    },
+    {
+      "variant": "preserve_settings",
+      "flags": "-O0",
+      "argv": [
+        "/opt/devtools/gcc/14.3.0/bin/gfortran",
+        "-O0",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-J",
+        "/home/stardust/sai-hpc-software/development/cp2k-scalapack-source-check-20261022/output",
+        "/home/stardust/sai-hpc-software/development/cp2k-scalapack-source-check-20261022/output/preserve_settings.f90",
+        "-o",
+        "/home/stardust/sai-hpc-software/development/cp2k-scalapack-source-check-20261022/output/preserve_settings-O0"
+      ],
+      "output": "INIT a x print elpa =        4      60  T  T\nTARGET matrix_order_33396 =      560\nRANKS allocated solving =       16      16\nRANKS allocated solving =       32      32\nRANKS allocated solving =       64      64\nCLEANUP a x print elpa =        4      60  T  T\nAFTER_CLEANUP target =      560\n",
+      "source_sha256": "214cd88536afc422918ca15fa2db81f6ff840e64a9d4c1f8b9b7657150dd6560"
+    },
+    {
+      "variant": "preserve_settings",
+      "flags": "-O3",
+      "argv": [
+        "/opt/devtools/gcc/14.3.0/bin/gfortran",
+        "-O3",
+        "-ffree-line-length-none",
+        "-fcheck=all",
+        "-J",
+        "/home/stardust/sai-hpc-software/development/cp2k-scalapack-source-check-20261022/output",
+        "/home/stardust/sai-hpc-software/development/cp2k-scalapack-source-check-20261022/output/preserve_settings.f90",
+        "-o",
+        "/home/stardust/sai-hpc-software/development/cp2k-scalapack-source-check-20261022/output/preserve_settings-O3"
+      ],
+      "output": "INIT a x print elpa =        4      60  T  T\nTARGET matrix_order_33396 =      560\nRANKS allocated solving =       16      16\nRANKS allocated solving =       32      32\nRANKS allocated solving =       64      64\nCLEANUP a x print elpa =        4      60  T  T\nAFTER_CLEANUP target =      560\n",
+      "source_sha256": "214cd88536afc422918ca15fa2db81f6ff840e64a9d4c1f8b9b7657150dd6560"
+    }
+  ]
+}

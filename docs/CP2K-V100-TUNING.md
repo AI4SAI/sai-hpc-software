@@ -285,6 +285,58 @@ and all 42 unmodified CP2K calculations across the three GPU partitions; see
 the [integration evidence and administrator handoff](evidence/cp2k-export-recovery-20261020/README.md).
 The administrator subsequently installed both libraries. All four public-module
 native jobs passed 460 solves, including GCC 14.3 consumers and communicator
-lifecycle checks. The CP2K lock now pins those files. Fresh CP2K compilation and
-science acceptance precede the 216-water measurements. The host-staging workaround can alter communication
-costs, so earlier private-ELPA timing does not establish the new library's speed.
+lifecycle checks. The CP2K lock now pins those files. Fresh recipe `aed7aa53ff43`
+subsequently passed all four builds and all 56 scientific calculations, and
+the watcher submitted all three 216-water experiments. The host-staging
+workaround can alter communication costs, so earlier private-ELPA timing does
+not establish the new library's speed.
+
+The [completed 4V100 experiment](evidence/cp2k-shared-elpa-release-20261020/README.md)
+(`1870680`) independently passed all 16 numerical, dispatch and affinity checks.
+With 216 waters/4968 basis functions, one V100, one MPI rank and four physical
+cores, median CP2K internal total times were 123.823 s (cuSOLVERMp standard),
+111.638 s (direct), 143.875 s (shared ELPA) and 368.940 s (PBE OT FULL_ALL).
+Direct reduced total time by 9.84%; this supports trying the option on larger
+diagonalization workloads while retaining explicit workload-specific choices.
+These results do not establish multi-GPU scaling or a universally best solver.
+The old 64-water pilot used another partition and ELPA build, so comparing the
+two experiments does not isolate matrix size as the cause of the difference.
+16V100 (`1871044`) and 8V100V0 (`1872055`) subsequently completed the same protocol
+and passed both frozen remote verification and local raw-data reparse. Their
+standard/direct/shared-ELPA/OT medians were 266.766/207.497/319.984/553.069 s and
+289.649/248.545/357.341/651.133 s, respectively. Direct reduced total time by
+22.22% and 14.19%. The [completed three-partition comparison](evidence/cp2k-water216-tuning-20261020/README.md)
+retains the inputs, numerical checks, resource scope and raw evidence.
+
+## OT and eigensolver selection
+
+OT avoids a full SCF Hamiltonian diagonalization at every iteration, but can
+still call eigensolvers when constructing a `FULL_ALL` preconditioner and
+performing orbital matrix operations. In v2026.2,
+[`preconditioner_makes.F`](https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/preconditioner_makes.F#L490)
+performs its own Cholesky reduction and calls `choose_eigv_solver`;
+[`qs_ot_p2m_diag`](https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/qs_ot.F#L1401)
+uses `cp_dbcsr_syevd`, which also dispatches through the selected backend.
+`DIRECT_GENERALIZED_DIAGONALIZATION` does not alter these ordinary eigenproblems.
+
+The archived 4V100 `0-ot` sample records 112 `cp_fm_diag_cusolver` calls,
+totalling 59.029 s within 368.940 s of CP2K total time. It also records 100
+`qs_ot_p2m_diag` calls totalling 54.208 s; these are nested times and must not
+be added together. This proves OT can use cuSOLVERMp, not that this backend
+makes OT faster than ELPA. The log has 107 inner iterations across two outer
+iterations; its final "converged in 7 steps" message is not the total count.
+
+To isolate the backend effect, controller `4aa35c8` submitted an `ot-backends`
+comparison on the same accepted release and 216-water input: 4V100 `1877200`,
+16V100 `1877201`, and 8V100V0 `1877206`. The only input difference is
+`PREFERRED_DIAG_LIBRARY`; both retain OT/DIIS, `FULL_ALL`, direct `FALSE`, and
+identical resources. Each mode has one warmup and three measured repetitions.
+All three jobs subsequently completed and passed remote and independent local
+verification: 24 calculations, with actual requested backend dispatch and
+numerical agreement. Median OT totals for cuSOLVERMp/shared ELPA were
+357.948/311.043 s on 4V100, 651.275/605.292 s on 16V100, and
+649.035/612.902 s on 8V100V0. Shared ELPA reduced total time by 13.10%, 7.06%
+and 5.57% for this input. See the [controlled OT results and raw evidence](evidence/cp2k-ot-backends-20261020/README.md).
+The diagonalization experiment favored cuSOLVERMp, so these results support
+measuring the backend for the actual workload. Other preconditioners, matrix
+sizes and multi-GPU runs can give different results; no default was changed.

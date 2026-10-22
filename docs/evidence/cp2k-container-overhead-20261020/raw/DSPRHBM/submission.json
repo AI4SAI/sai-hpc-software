@@ -1,0 +1,17 @@
+{
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--partition=DSPRHBM",
+    "--job-name=cp2k-container-io",
+    "--output=/home/stardust/sai-hpc-software/runtime-tests/cp2k-container-overhead-20261020-DSPRHBM/results/slurm-%j.log",
+    "--qos=rush-cpu",
+    "--time=02:00:00",
+    "--cpus-per-task=2",
+    "--mem=8G",
+    "/home/stardust/sai-hpc-software/runtime-tests/cp2k-container-overhead-20261020-DSPRHBM/control/deployment/cp2k-container-overhead/job.sbatch",
+    "/home/stardust/sai-hpc-software/runtime-tests/cp2k-container-overhead-20261020-DSPRHBM"
+  ],
+  "job": "1882051",
+  "request_sha256": "cd766daff515897c41c5ca83a15ea6a1ab5f3bc70412b396db14c24156d690ec"
+}
