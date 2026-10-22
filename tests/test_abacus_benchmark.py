@@ -117,12 +117,19 @@ class BenchmarkTests(unittest.TestCase):
             for name in ("artifact", "launcher"):
                 (work / f"{name}.sha256").write_text(f"{request[name + '_sha256']}  {request[name]}\n")
             (work / "modules.log").write_text(benchmark.MPI_MODULE + "\n" + benchmark.SYSTEM_MODULE + "\n")
+            if request['target'] == 'dsprhbm':
+                with (work / 'modules.log').open('a') as stream:
+                    stream.write(benchmark.CPU_ELPA_MODULE + '\n')
             native = "/opt/software/abacus/system/bin/abacus"
             (work / "info.log").write_text("ABACUS v3.9.0.26\n")
             if spec["arm"] == "system":
                 (work / "executable.path").write_text(native + "\n")
                 (work / "executable.sha256").write_text("a" * 64 + "  " + native + "\n")
                 (work / "ldd.log").write_text("libmpi => /opt/openmpi/lib/libmpi.so\n")
+                if request['target'] == 'dsprhbm':
+                    with (work / 'ldd.log').open('a') as stream:
+                        stream.write('libelpa_openmp.so.19 => ' + benchmark.elpa_root('dsprhbm') +
+                                     '/lib/libelpa_openmp.so.19\n')
             for rank in range(request["ranks"]):
                 executable = native if spec["arm"] == "system" else request["artifact"]
                 gpu = "0" if benchmark.TARGETS[request["target"]]["gpus"] else ""
@@ -181,10 +188,31 @@ class BenchmarkTests(unittest.TestCase):
                     self.assertEqual((request["ranks"], request["threads"]), (8, 2))
                     self.assertIn("#SBATCH --ntasks-per-node=4", script)
                     self.assertNotIn("#SBATCH --gpus-per-node", script)
+                    self.assertIn('module unload elpa/2026.02.001-2603-gnu', script)
+                    self.assertIn('module load ' + benchmark.CPU_ELPA_MODULE, script)
                 else:
                     self.assertEqual(request["dependency_isa"], "avx2")
                     self.assertIn("#SBATCH --gpus-per-node=1", script)
                     self.assertIn("#SBATCH --ntasks=2", script)
+                    self.assertNotIn('module load ' + benchmark.CPU_ELPA_MODULE, script)
+
+    def test_cpu_reference_rejects_old_or_wrong_elpa_even_with_successful_scf(self):
+        task = benchmark.prepare(self.args('dsprhbm'))
+        self.results(task)
+        benchmark.analyze(task)
+        work = task / 'runs/m000-system'
+        loader = (work / 'ldd.log').read_text()
+        modules = (work / 'modules.log').read_text()
+        for wrong in ('/opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia',
+                      '/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/nvidia'):
+            with self.subTest(library=wrong):
+                (work / 'ldd.log').write_text(loader.replace(benchmark.elpa_root('dsprhbm'), wrong))
+                with self.assertRaisesRegex(ValueError, 'partition-qualified CPU ELPA'):
+                    benchmark.analyze(task)
+        (work / 'ldd.log').write_text(loader)
+        (work / 'modules.log').write_text(modules.replace(benchmark.CPU_ELPA_MODULE + '\n', ''))
+        with self.assertRaisesRegex(ValueError, 'partition-qualified CPU ELPA'):
+            benchmark.analyze(task)
 
     def test_analysis_excludes_warmup_and_hashes_raw_evidence(self):
         task = benchmark.prepare(self.args())

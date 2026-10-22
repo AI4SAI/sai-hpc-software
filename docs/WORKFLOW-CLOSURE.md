@@ -1,23 +1,28 @@
-# Workflow closure — 2026-10-22
+# Workflow closure — 2026-10-23
 
 PRs [#8](https://github.com/AI4SAI/sai-hpc-software/pull/8) and
 [#10](https://github.com/AI4SAI/sai-hpc-software/pull/10) are merged into `main`.
 Daily delivery now uses reusable workflows from its own revision and waits
 for their results. The old feature-branch dispatch failures described below
-are historical. The October 22 daily run built ABACUS's latest GitHub release,
-`v3.11.0-beta11` (`b0411118d360`), on all four partitions. Each SIF passed
-version, library and feature checks with the integrated JSON/HSE fixes.
-The acceptance jobs were incorrectly skipped because their CP2K-only ancestor
-was skipped; the final result gate correctly reported failure. The shared
-workflow now explicitly handles that ancestor while requiring a successful
-build, its run ID and no cancellation. Acceptance of the existing SIFs exposed
-an ELPA instruction-set failure in HSE, now reproduced with GDB and resolved
-in a diagnostic run using the public partition-specific ELPA. The recipe now
-selects that module, carries the partition through the clean container
-environment, and allows independent partitions to build concurrently. GPU
-benchmarks inherit Slurm's CPU affinity; packaged HSE/DeePKS science uses the
-candidate source's reference energy at the unchanged tolerance. Corrected
-release builds and full acceptance are still required. See the
+are historical. ABACUS's latest GitHub release, `v3.11.0-beta11`
+(`b0411118d360`), now has corrected SIFs on all four partitions from
+[run 39808766467](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39808766467).
+All passed version, library, feature and packaged-file checks. 4V100 and
+16V100 passed automatic two-node SCF, distributed cuSOLVERMp/NCCL, PW, HSE
+and DeePKS acceptance and were published with reverified native exports.
+DSPRHBM also passed and was published after a diagnosed CPU reference-library
+recovery using the same SIF. The old reference loaded unified NVIDIA ELPA;
+selecting the installed AVX512 CPU ELPA fixed its HSE failure. Future CPU
+benchmarks select and verify that library without changing ranks, scientific
+tolerances or timing thresholds. 8V100V0's two-node runtime job `1901416`
+is queued for resources; its SIF is build-verified, not yet accepted/published.
+Its existing workflow owns the remaining acceptance and publication steps.
+The original CPU acceptance job remains failed in GitHub's audit history;
+this run is not claimed as an entirely successful automatic workflow.
+PR #17 repaired acceptance after skipped CP2K dependencies, selected
+partition-specific ELPA inside the build container, enabled concurrent
+partition builds and corrected GPU affinity and upstream energy references.
+See the
 [release build and acceptance record](evidence/abacus-beta11-20261022/README.md).
 No physical beta11 `/opt` installation is claimed.
 Optional public deployment of the container image driver is tracked in

@@ -1,0 +1,234 @@
+{
+  "finding": "Reducing ranks did not repair the old CPU reference. Selecting the public AVX512 CPU ELPA while preserving the original eight ranks, input and executable resolved the failure.",
+  "observed_at": "2026-10-22T16:42:52.967421+00:00",
+  "runs": [
+    {
+      "artifact_sha256": "ae2e91a6c0fee9fa8a8cfd9a4e5a08246c7967685fcebab31184c11a5f7b1637",
+      "files": {
+        "/home/stardust/sai-hpc-software/runtime-tests/benchmark-39808766467-1-release-dsprhbm-2026-10-22-b0411118d360-hse/job.sbatch": "f413830b5cd490a46129c5d7d26539e5ccbd59e4241cd5740dcb3f5805acaedb",
+        "/home/stardust/sai-hpc-software/runtime-tests/benchmark-39808766467-1-release-dsprhbm-2026-10-22-b0411118d360-hse/request.json": "98b4443b3ee640108fc4a81201470ccc539391bfdf60a2f474c9520ad5c62431",
+        "/home/stardust/sai-hpc-software/runtime-tests/benchmark-39808766467-1-release-dsprhbm-2026-10-22-b0411118d360-hse/runs/w000-system/ldd.log": "df1f10c51ddbbae0266fe17994726d67d4054a1ea6b1daf7f1ab1fc6a2d52b64",
+        "/home/stardust/sai-hpc-software/runtime-tests/benchmark-39808766467-1-release-dsprhbm-2026-10-22-b0411118d360-hse/runs/w000-system/stdout.log": "1c7eb018f66c0eff9de4473e1b67368a668e724bd198c0cbc69b7218b6678618"
+      },
+      "job": "1901343",
+      "reference_library": [
+        "libelpa_openmp.so.19 => /opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia/lib/libelpa_openmp.so.19 (0x000010e5d530b000)"
+      ],
+      "reference_stdout_tail": [
+        " DONE(0.667148   SEC) : POTENTIALS",
+        "",
+        " ================================================================",
+        " SELF-CONSISTENT: ",
+        " ================================================================",
+        "3 more processes have sent help message help-opal-shmem-mmap.txt / mmap on nfs",
+        "\u00001 more process has sent help message help-opal-shmem-mmap.txt / mmap on nfs",
+        " DONE(5.60849    SEC) : INIT SCF",
+        "\u0000 Returing early from merge_systems (na1==1 .or. na1==2)",
+        " Returing early from merge_systems (na1==1 .or. na1==2)",
+        " Returing early from merge_systems (na1==1 .or. na1==2)",
+        " Returing early from merge_systems (na1==1 .or. na1==2)",
+        "[1792686597.707382] [d9470n17:4068377:0]        mm_xpmem.c:136  UCX  ERROR   failed to attach xpmem apid 0x2003e1419 offset 0x3fe1866527cc8000 length 8192: Invalid argument",
+        "[1792686597.707405] [d9470n17:4068377:0]        ucp_rkey.c:1032 UCX  ERROR   failed to unpack remote key from remote md[8]: Input/output error",
+        "Operating system error: Cannot allocate memory",
+        "Integer overflow in xmallocarray",
+        "--------------------------------------------------------------------------",
+        "prterun detected that one or more processes exited with non-zero status,",
+        "thus causing the job to be terminated. The first process to do so was:",
+        "",
+        "   Process name: [prterun-d9470n17-4068358@1,1]",
+        "   Exit code:    1",
+        "--------------------------------------------------------------------------"
+      ],
+      "resources": {
+        "nodes": 2,
+        "ranks": 8,
+        "ranks_per_node": 4,
+        "threads": 2
+      },
+      "run_id": "benchmark-39808766467-1-release-dsprhbm-2026-10-22-b0411118d360-hse",
+      "status": {
+        "exit_code": "1:0",
+        "job": "1901343",
+        "state": "FAILED",
+        "verified": false
+      },
+      "target": "dsprhbm"
+    },
+    {
+      "artifact_sha256": "ae2e91a6c0fee9fa8a8cfd9a4e5a08246c7967685fcebab31184c11a5f7b1637",
+      "files": {
+        "/home/stardust/sai-hpc-software/runtime-tests/benchmark-abacus-beta11-cpu-small-hse-20261023/job.sbatch": "be0728609cfda201faefdf0e2112fcd37e57321aff9e1daaf07006040c29de00",
+        "/home/stardust/sai-hpc-software/runtime-tests/benchmark-abacus-beta11-cpu-small-hse-20261023/request.json": "2b2d9ac5b239a82d21087d2aa37d0fdbfd4b8cb814a782ae1bec09699718f247",
+        "/home/stardust/sai-hpc-software/runtime-tests/benchmark-abacus-beta11-cpu-small-hse-20261023/runs/w000-system/ldd.log": "8d690cff052b2b0af1948b2d91120073efddc15d315dbf9251db833f1e9aead7",
+        "/home/stardust/sai-hpc-software/runtime-tests/benchmark-abacus-beta11-cpu-small-hse-20261023/runs/w000-system/stdout.log": "6dafa6b26e3e72abc6fb3c2f40dbcd3ccf69a679946e01e7e53182ca1ebbe2cb"
+      },
+      "job": "1901377",
+      "reference_library": [
+        "libelpa_openmp.so.19 => /opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia/lib/libelpa_openmp.so.19 (0x0000115f06633000)"
+      ],
+      "reference_stdout_tail": [
+        " START CHARGE      : atomic",
+        " DONE(0.0778019  SEC) : CHARGE",
+        " DONE(0.602106   SEC) : POTENTIALS",
+        "",
+        " ================================================================",
+        " SELF-CONSISTENT: ",
+        " ================================================================",
+        " DONE(1.88747    SEC) : INIT SCF",
+        "[1792686814.397223] [d9470n17:4070679:0]           ib_md.c:296  UCX  ERROR ibv_reg_mr(address=(nil), length=3072, access=0xf) failed: Bad address",
+        "[1792686814.397242] [d9470n17:4070679:0]          ucp_mm.c:81   UCX  ERROR failed to register address (nil) (host) length 3072 on md[5]=mlx5_2: Input/output error (md supports: host)",
+        "[d9470n17.mr-sai.ai:4070679] ../../../../../ompi/mca/pml/ucx/pml_ucx.c:940  Error: ucx send failed: Input/output error",
+        "[d9470n17:00000] *** An error occurred in MPI_Bcast",
+        "[d9470n17:00000] *** reported by process [932511745,0]",
+        "[d9470n17:00000] *** on communicator MPI COMM 14 SPLIT FROM 0",
+        "[d9470n17:00000] *** MPI_ERR_OTHER: known error not in list",
+        "[d9470n17:00000] *** MPI_ERRORS_ARE_FATAL (processes in this communicator will now abort,",
+        "[d9470n17:00000] ***    and MPI will try to terminate your MPI job as well)",
+        "--------------------------------------------------------------------------",
+        "prterun has exited due to process rank 0 with PID 0 on node d9470n17 calling",
+        "\"abort\". This may have caused other processes in the application to be",
+        "terminated by signals sent by prterun (as reported here).",
+        "--------------------------------------------------------------------------",
+        "\u0000"
+      ],
+      "resources": {
+        "nodes": 2,
+        "ranks": 2,
+        "ranks_per_node": 1,
+        "threads": 2
+      },
+      "run_id": "benchmark-abacus-beta11-cpu-small-hse-20261023",
+      "status": {
+        "exit_code": "16:0",
+        "job": "1901377",
+        "state": "FAILED",
+        "verified": false
+      },
+      "target": "dsprhbm"
+    },
+    {
+      "artifact_sha256": "ae2e91a6c0fee9fa8a8cfd9a4e5a08246c7967685fcebab31184c11a5f7b1637",
+      "current_cpu_loader_check_passed": true,
+      "energy_reference": {
+        "candidate_max_error_ev": 1.2505552149377763e-12,
+        "energy_ev": -428.9943139416827,
+        "source": "pinned upstream result.ref",
+        "tolerance_ev": 1e-05
+      },
+      "files": {
+        "/home/stardust/sai-hpc-software/runtime-tests/benchmark-abacus-beta11-cpu-elpa-hse-20261023/job.sbatch": "f5e16ab5649c3e9d0e04d2324d6fa6c925841f2e9b6547a28752322f7866537e",
+        "/home/stardust/sai-hpc-software/runtime-tests/benchmark-abacus-beta11-cpu-elpa-hse-20261023/request.json": "f92003446a3fa7ec71fe809d5017aaeffeae658d096a0cfebe4c3e9c0bc4d4eb",
+        "/home/stardust/sai-hpc-software/runtime-tests/benchmark-abacus-beta11-cpu-elpa-hse-20261023/runs/w000-system/ldd.log": "a3a3741c2fc3f72b90dbaeb32654be7dea083b7b2d714dd7ac37a42f177af372",
+        "/home/stardust/sai-hpc-software/runtime-tests/benchmark-abacus-beta11-cpu-elpa-hse-20261023/runs/w000-system/stdout.log": "70a619916f4591a30ce80d4164b59a5730a6d191e35e27819fa9ffd74b10dffe"
+      },
+      "job": "1901386",
+      "reference_library": [
+        "libelpa_openmp.so.19 => /opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/cpu/lib/libelpa_openmp.so.19 (0x0000056fe8b27000)"
+      ],
+      "resources": {
+        "nodes": 2,
+        "ranks": 8,
+        "ranks_per_node": 4,
+        "threads": 2
+      },
+      "run_id": "benchmark-abacus-beta11-cpu-elpa-hse-20261023",
+      "statistics": {
+        "rounded_iteration_seconds": {
+          "candidate": {
+            "max": 0.47,
+            "median": 0.4,
+            "min": 0.38
+          },
+          "candidate_system_ratio": 0.8510638297872342,
+          "system": {
+            "max": 0.47,
+            "median": 0.47,
+            "min": 0.47
+          }
+        },
+        "wall_seconds": {
+          "candidate": {
+            "max": 16.58,
+            "median": 16.13,
+            "min": 15.88
+          },
+          "candidate_system_ratio": 0.9920049200492004,
+          "system": {
+            "max": 17.52,
+            "median": 16.26,
+            "min": 15.03
+          }
+        }
+      },
+      "status": {
+        "exit_code": "0:0",
+        "job": "1901386",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "target": "dsprhbm"
+    },
+    {
+      "artifact_sha256": "ae2e91a6c0fee9fa8a8cfd9a4e5a08246c7967685fcebab31184c11a5f7b1637",
+      "current_cpu_loader_check_passed": true,
+      "energy_reference": {
+        "candidate_max_error_ev": 1.9042545318370685e-12,
+        "energy_ev": -71.32203132091935,
+        "source": "pinned upstream result.ref",
+        "tolerance_ev": 1e-05
+      },
+      "files": {
+        "/home/stardust/sai-hpc-software/runtime-tests/benchmark-abacus-beta11-cpu-elpa-deepks-20261023/job.sbatch": "e53624103d9c7ff7e196775fa2af64093e7cbc92aeaf058d09fe0dbd4a5b332a",
+        "/home/stardust/sai-hpc-software/runtime-tests/benchmark-abacus-beta11-cpu-elpa-deepks-20261023/request.json": "528d982bbd88355c974a1236f8dfcc3e14895b9b10c632ff82cdbdd46258e2c6",
+        "/home/stardust/sai-hpc-software/runtime-tests/benchmark-abacus-beta11-cpu-elpa-deepks-20261023/runs/w000-system/ldd.log": "5270a6ba9c36216339ee8971599c0aafa0bf79b2c6a15f760ba9eb5cec25ad2d",
+        "/home/stardust/sai-hpc-software/runtime-tests/benchmark-abacus-beta11-cpu-elpa-deepks-20261023/runs/w000-system/stdout.log": "2d3cf88ed69475199c58e277d7c9dd69f34e63acc94ed104eeedec031b2f12f2"
+      },
+      "job": "1901442",
+      "reference_library": [
+        "libelpa_openmp.so.19 => /opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/cpu/lib/libelpa_openmp.so.19 (0x000010c5800fe000)"
+      ],
+      "resources": {
+        "nodes": 2,
+        "ranks": 8,
+        "ranks_per_node": 4,
+        "threads": 2
+      },
+      "run_id": "benchmark-abacus-beta11-cpu-elpa-deepks-20261023",
+      "statistics": {
+        "rounded_iteration_seconds": {
+          "candidate": {
+            "max": 0.49,
+            "median": 0.49,
+            "min": 0.49
+          },
+          "candidate_system_ratio": 0.8032786885245902,
+          "system": {
+            "max": 0.62,
+            "median": 0.61,
+            "min": 0.6
+          }
+        },
+        "wall_seconds": {
+          "candidate": {
+            "max": 2.98,
+            "median": 2.96,
+            "min": 2.95
+          },
+          "candidate_system_ratio": 1.2595744680851064,
+          "system": {
+            "max": 2.35,
+            "median": 2.35,
+            "min": 2.33
+          }
+        }
+      },
+      "status": {
+        "exit_code": "0:0",
+        "job": "1901442",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "target": "dsprhbm"
+    }
+  ]
+}
