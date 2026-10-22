@@ -1,0 +1,160 @@
+{
+  "job": "1900121",
+  "passed": true,
+  "files": 161,
+  "identical_manifests": true,
+  "compile_seconds": {
+    "stock": [
+      23.07196518778801,
+      10.48026721784845
+    ],
+    "public": [
+      0.8511070529930294,
+      0.8743905192241073
+    ]
+  },
+  "compile_ratio": 19.44496065707257,
+  "rows": [
+    {
+      "label": "stock-1",
+      "driver": "/opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/fuse2fs",
+      "phases": [
+        {
+          "phase": "create_64",
+          "wall_seconds": 0.050678950268775225,
+          "client_cpu_seconds": 0.012368999999999998,
+          "client_average_cores": 0.24406582879876457,
+          "finished_epoch": 1792675064.0864167
+        },
+        {
+          "phase": "rename_64",
+          "wall_seconds": 19.57520161010325,
+          "client_cpu_seconds": 0.020365000000000008,
+          "client_average_cores": 0.0010403468840642297,
+          "finished_epoch": 1792675083.6630645
+        },
+        {
+          "phase": "compile_32_j8",
+          "wall_seconds": 23.07196518778801,
+          "client_cpu_seconds": 5.702764999999999,
+          "client_average_cores": 0.24717291975711167,
+          "finished_epoch": 1792675106.7742248
+        },
+        {
+          "phase": "explicit_fsync",
+          "wall_seconds": 0.5270761386491358,
+          "client_cpu_seconds": 0.00022300000000008424,
+          "client_average_cores": 0.00042308877911191296,
+          "finished_epoch": 1792675107.302572
+        }
+      ],
+      "workload_seconds": 45.9793045418337
+    },
+    {
+      "label": "upstream-1",
+      "driver": "/opt/devtools/fuse2fs/1.47.4-sai1/bin/fuse2fs",
+      "phases": [
+        {
+          "phase": "create_64",
+          "wall_seconds": 0.06851025903597474,
+          "client_cpu_seconds": 0.011500999999999997,
+          "client_average_cores": 0.1678726684416829,
+          "finished_epoch": 1792675116.442587
+        },
+        {
+          "phase": "rename_64",
+          "wall_seconds": 0.037192035000771284,
+          "client_cpu_seconds": 0.008490999999999999,
+          "client_average_cores": 0.22830157047937585,
+          "finished_epoch": 1792675117.8582046
+        },
+        {
+          "phase": "compile_32_j8",
+          "wall_seconds": 0.8511070529930294,
+          "client_cpu_seconds": 5.735741,
+          "client_average_cores": 6.739153411817604,
+          "finished_epoch": 1792675118.7299855
+        },
+        {
+          "phase": "explicit_fsync",
+          "wall_seconds": 0.6864977614022791,
+          "client_cpu_seconds": 0.0002319999999995659,
+          "client_average_cores": 0.0003379472054295845,
+          "finished_epoch": 1792675119.417261
+        }
+      ],
+      "workload_seconds": 4.328282043337822
+    },
+    {
+      "label": "upstream-2",
+      "driver": "/opt/devtools/fuse2fs/1.47.4-sai1/bin/fuse2fs",
+      "phases": [
+        {
+          "phase": "create_64",
+          "wall_seconds": 0.07343863090500236,
+          "client_cpu_seconds": 0.012015999999999999,
+          "client_average_cores": 0.16361960799001654,
+          "finished_epoch": 1792675132.7937012
+        },
+        {
+          "phase": "rename_64",
+          "wall_seconds": 0.03252045018598437,
+          "client_cpu_seconds": 0.007025999999999991,
+          "client_average_cores": 0.21604866967764327,
+          "finished_epoch": 1792675132.8309348
+        },
+        {
+          "phase": "compile_32_j8",
+          "wall_seconds": 0.8743905192241073,
+          "client_cpu_seconds": 5.689363999999999,
+          "client_average_cores": 6.506662497951684,
+          "finished_epoch": 1792675133.72548
+        },
+        {
+          "phase": "explicit_fsync",
+          "wall_seconds": 0.42798812314867973,
+          "client_cpu_seconds": 0.00020599999999948437,
+          "client_average_cores": 0.00048132176772560016,
+          "finished_epoch": 1792675134.1544821
+        }
+      ],
+      "workload_seconds": 2.222099132835865
+    },
+    {
+      "label": "stock-2",
+      "driver": "/opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/fuse2fs",
+      "phases": [
+        {
+          "phase": "create_64",
+          "wall_seconds": 0.04955530911684036,
+          "client_cpu_seconds": 0.011562999999999997,
+          "client_average_cores": 0.23333524108863943,
+          "finished_epoch": 1792675144.4086323
+        },
+        {
+          "phase": "rename_64",
+          "wall_seconds": 8.572419912088662,
+          "client_cpu_seconds": 0.019579,
+          "client_average_cores": 0.0022839525129176265,
+          "finished_epoch": 1792675152.9913409
+        },
+        {
+          "phase": "compile_32_j8",
+          "wall_seconds": 10.48026721784845,
+          "client_cpu_seconds": 5.6641379999999995,
+          "client_average_cores": 0.5404574026847019,
+          "finished_epoch": 1792675163.5076866
+        },
+        {
+          "phase": "explicit_fsync",
+          "wall_seconds": 0.28205630276352167,
+          "client_cpu_seconds": 0.00021100000000018326,
+          "client_average_cores": 0.000748077592781493,
+          "finished_epoch": 1792675163.7906144
+        }
+      ],
+      "workload_seconds": 21.08338194899261
+    }
+  ],
+  "scope": "Two samples per driver, 32 C++ units at -j8 on DSPRHBM/Lustre; not a full application build speedup"
+}

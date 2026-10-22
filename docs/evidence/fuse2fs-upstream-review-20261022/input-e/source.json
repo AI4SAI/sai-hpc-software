@@ -1,0 +1,17 @@
+{
+  "upstream": "8fd79523d051d5ea881237f27eb1c664486e0078",
+  "misc_build_workaround": "LOCAL_CFLAGS=-include stdbool.h",
+  "reuse": "configured workspace-d libraries; force fresh fuse2fs object and executable for each variant",
+  "files": {
+    "build.sh": "fbc6fd4f301bd332230a7726080aa37dd7c9b00a6f88e726189bd12aec3998f3",
+    "combined.c": "097bcc135db2caf49adb9fee97bb27cb170ffc2f44f5c21d4e293c7e10b6d3f8",
+    "fuse2fs_inherited_lock.py": "aa2b38202378ce5082ef5a33b930498d58586ec5bcab3fff60edc081367ac6f7",
+    "fuse2fs_norecovery.py": "63d3c73b20d0680e6cfbdc110bed5f282b2c685375cfa4182dcb92ad0026084a",
+    "inherited-lock.c": "9875b5881b5a7c9654a7ab7c404ea14fcbb8765fa418a0fbc46727dc5f84700e",
+    "inherited-lock.patch": "2f712b160a01dba1c060c5b869988cf9486dd141a0995f11da9d7df74cebfbb9",
+    "norecovery.c": "fb9f6c378a92ae58db4c67ca85a0613f2961302164f401fc324ab35156f805c0",
+    "norecovery.patch": "a9b13977967c9d6cca990ce04628022dbd8dc09e5d4b29125392182d406b1ab7",
+    "run-tests.py": "6d00d87c5cc7c97c070e3e7fdd6ca794325b541b52abf2ffa7b8893fd2750d0b",
+    "run.sbatch": "8521da95c0b9389a7a7f5a01548ad6800fb007844405561762b232de83647db7"
+  }
+}

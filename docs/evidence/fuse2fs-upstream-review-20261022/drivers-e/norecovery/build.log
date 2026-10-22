@@ -1,0 +1,6 @@
+make: Entering directory '/workspace/build/misc'
+gcc -c -I. -I../lib -I../../source/lib  -I/workspace/dev/usr/include/fuse3  -g -O2 -pthread  -DHAVE_CONFIG_H -include stdbool.h ../../source/misc/fuse2fs.c -o fuse2fs.o
+gcc  -pthread    -o fuse2fs fuse2fs.o journal.o recovery.o revoke.o ../lib/libext2fs.a ../lib/libcom_err.a    ../lib/libsupport.a \
+	/usr/lib/x86_64-linux-gnu/libfuse3.so.3 -lblkid   -luuid   -luuid   ../lib/libext2fs.a  \
+	 -lpthread ../lib/libe2p.a ../lib/libcom_err.a  
+make: Leaving directory '/workspace/build/misc'
