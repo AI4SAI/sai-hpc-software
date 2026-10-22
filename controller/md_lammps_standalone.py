@@ -169,7 +169,12 @@ def status(run_id):
     job = (directory / 'job.id').read_text().strip()
     if not job.isdigit():
         raise ValueError('invalid standalone Slurm job handle')
-    active = subprocess.check_output(['squeue', '-h', '-j', job, '-o', '%T|%R'], text=True).strip()
+    # A completed job eventually disappears from slurmctld. Query the user's
+    # queue instead of squeue -j, which then exits with "Invalid job id" and
+    # would prevent the authoritative sacct lookup below.
+    queue = subprocess.check_output(['squeue', '-h', '--me', '-o', '%i|%T|%R'], text=True)
+    active = next((line.split('|', 1)[1] for line in queue.splitlines()
+                   if line.split('|', 1)[0] == job), '')
     if active:
         print(job + ': ' + active, flush=True)
         return 3

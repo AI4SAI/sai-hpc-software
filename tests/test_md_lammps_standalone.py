@@ -1,6 +1,8 @@
 import copy
 import hashlib
+import io
 import json
+from contextlib import redirect_stdout
 from pathlib import Path
 import stat
 import subprocess
@@ -187,6 +189,38 @@ class StandaloneTests(unittest.TestCase):
             subprocess.run(['bash', '-c', shell, 'recipe', '16v100-avx2', 'lammps-installed'], env=env, check=True)
             self.assertEqual(list(dep.iterdir()), [])
             self.assertIn('probe', (work / 'calls').read_text())
+
+    def test_status_uses_accounting_after_build_disappears_from_live_queue(self):
+        for state, exit_code, accepted in [('COMPLETED', '0:0', True), ('FAILED', '1:0', False)]:
+            with self.subTest(state=state), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                (root / 'results').mkdir()
+                (root / 'job.sbatch').write_text('build script')
+                (root / 'job.id').write_text('1234\n')
+                (root / 'candidate.sif').write_bytes(b'verified candidate')
+                (root / 'results/slurm-1234.log').write_text('LAMMPS_STANDALONE_BUILD_VERIFIED_NOT_PUBLISHED\n')
+                delivery = dict(identity=dict(target='16v100-avx2'))
+                (root / 'request.json').write_text(json.dumps(dict(
+                    delivery=delivery, controller=str(standalone.CONTROL),
+                    job_script_sha256=standalone.checksum(root / 'job.sbatch'))))
+
+                def scheduler(argv, **kwargs):
+                    if argv[0] == 'squeue':
+                        self.assertNotIn('-j', argv)
+                        return '12340|RUNNING|another-node\n'
+                    self.assertEqual(argv[0], 'sacct')
+                    return f'1234|{state}|{exit_code}|\n'
+
+                with patch.object(standalone, 'task', return_value=root), \
+                        patch.object(standalone, 'validate_delivery', return_value=delivery), \
+                        patch.object(standalone, 'dependency', return_value=({}, [])), \
+                        patch.object(standalone, 'verify_dependency'), \
+                        patch.object(standalone.subprocess, 'check_output', side_effect=scheduler), \
+                        redirect_stdout(io.StringIO()):
+                    self.assertEqual(standalone.status('archived-build'), 0 if accepted else 1)
+                result = json.loads((root / 'results/status.json').read_text())
+                self.assertEqual(result['build_verified'], accepted)
+                self.assertFalse(result['scientific_verified'])
 
 
 if __name__ == '__main__':

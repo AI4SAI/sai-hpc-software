@@ -64,9 +64,32 @@ def build_status(build):
     control = Path(record['controller'])
     require(control.is_relative_to(ROOT / 'controller') and not control.is_symlink(),
             'invalid frozen build controller')
-    status = json.loads(subprocess.check_output(
-        ['/usr/bin/python3', '-B', str(control / 'md_lammps_standalone.py'), 'status', build.name],
-        text=True))
+    # Older frozen status entrypoints used squeue -j, which fails once the job
+    # ages out of slurmctld. Keep that controller immutable: validate its recipe
+    # and dependency with its own helpers, then check durable sacct evidence.
+    code = '''import json, sys
+from pathlib import Path
+sys.path.insert(0, sys.argv[1])
+import md_lammps_standalone as original
+record = json.loads((Path(sys.argv[2]) / 'request.json').read_text())
+delivery = original.validate_delivery(record['delivery'])
+dep, files = original.dependency(delivery['identity']['target'])
+original.verify_dependency(dep, files)
+print(json.dumps(delivery, sort_keys=True))
+'''
+    delivery = json.loads(subprocess.check_output(
+        ['/usr/bin/python3', '-B', '-c', code, str(control), str(build)], text=True))
+    status = read(build / 'results/status.json')
+    job = (build / 'job.id').read_text().strip()
+    accounting = subprocess.check_output(['sacct', '-X', '-n', '-P', '-j', job,
+        '--format=JobIDRaw,State,ExitCode,Partition'], text=True)
+    rows = [line.split('|') for line in accounting.splitlines() if line.split('|')[0] == job]
+    require(len(rows) == 1 and rows[0][1:4] == ['COMPLETED', '0:0', delivery['identity']['partition']],
+            'build accounting is not successful')
+    require(status['job'] == job and delivery == status['delivery'] and
+            digest(build / 'job.sbatch') == record['job_script_sha256'], 'build provenance changed')
+    require('LAMMPS_STANDALONE_BUILD_VERIFIED_NOT_PUBLISHED' in
+            (build / ('results/slurm-' + job + '.log')).read_text(), 'missing completed-build marker')
     require(status['build_verified'] is True and status['state'] == 'COMPLETED'
             and status['exit_code'] == '0:0' and status['delivery'] == record['delivery'],
             'standalone build is not verified')
