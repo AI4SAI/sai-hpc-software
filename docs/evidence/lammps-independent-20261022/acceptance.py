@@ -272,6 +272,19 @@ def compare_science(observed, expected, tolerance, evidence):
         evidence._compare_numeric(observed[field], expected[field], **limit, path=field)
 
 
+def help_version(stdout):
+    banners = re.findall(r'^Large-scale Atomic/Molecular Massively Parallel Simulator - '
+                         r'(\d{1,2} [A-Za-z]{3} \d{4})([^\n]*)$', stdout, re.M)
+    require(len(banners) == 1, 'missing/duplicate LAMMPS help banner')
+    date, update = banners[0]
+    number = int(datetime.strptime(date, '%d %b %Y').strftime('%Y%m%d'))
+    # src/lammps.cpp increments num_ver for Development/Maintenance. This
+    # is integer addition, not the following calendar day (Sep 30 -> 20260931).
+    if re.match(r'^ - (?:Development|Maintenance)(?: -|\s*$)', update):
+        number += 1
+    return str(number)
+
+
 def verify_raw(output):
     request, ref, identity, dependency = context(output)
     evidence, science, _, gpu = helpers(output)
@@ -329,12 +342,7 @@ def verify_raw(output):
         arguments = process['command'][len(start):]
         stdout = (folder / 'stdout.txt').read_text()
         if name == 'version':
-            # -h uses the long Simulator banner; normal calculation output
-            # uses LAMMPS (...). Develop commits may retain the release date.
-            banner = re.search(r'^Large-scale Atomic/Molecular Massively Parallel Simulator - '
-                               r'(\d{1,2} [A-Za-z]{3} \d{4})(?:\s|$)', stdout, re.M)
-            require(arguments == ['-h'] and banner is not None and
-                    datetime.strptime(banner[1], '%d %b %Y').strftime('%Y%m%d') == features['version'],
+            require(arguments == ['-h'] and help_version(stdout) == features['version'],
                     'help version differs from candidate C API inventory')
             continue
         if name.startswith('deepmd-'):
