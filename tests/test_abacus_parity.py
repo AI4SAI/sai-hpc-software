@@ -38,7 +38,7 @@ class ParityTests(unittest.TestCase):
         self.info += '\nRapidJSON Support: yes (v1.1.0)'
         self.cache += '\nENABLE_RAPIDJSON:BOOL=ON'
         self.ldd = "\n".join([
-            "libelpa_openmp.so.19 => /opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia/lib/libelpa_openmp.so.19",
+            "libelpa_openmp.so.19 => /opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/nvidia/lib/libelpa_openmp.so.19",
             f"libtorch_cpu.so => {self.prefix}/dependencies/libtorch/lib/libtorch_cpu.so",
             f"libnep.so => {self.prefix}/dependencies/nep/lib/libnep.so",
             "libcusolverMp.so.0 => /opt/devtools/nvidia/mp_libs/lib/libcusolverMp.so.0",
@@ -236,9 +236,21 @@ class ParityTests(unittest.TestCase):
 
     def test_cpu_retains_full_cpu_features_without_requiring_gpu_support(self):
         cache = "\n".join(f"{key}:BOOL=ON" for key in self.lock["required_options"]) + "\nUSE_CUDA:BOOL=OFF\nENABLE_RAPIDJSON:BOOL=ON"
-        self.check(cache=cache, target="dsprhbm")
+        ldd = self.ldd.replace("gnu-avx512/nvidia", "gnu-avx512/cpu")
+        self.check(cache=cache, target="dsprhbm", ldd=ldd)
         with self.assertRaises(ValueError):
-            self.check(cache=cache.replace("USE_CUDA:BOOL=OFF", "USE_CUDA:BOOL=ON"), target="dsprhbm")
+            self.check(cache=cache.replace("USE_CUDA:BOOL=OFF", "USE_CUDA:BOOL=ON"), target="dsprhbm", ldd=ldd)
+
+    def test_gpu_elpa_rejects_legacy_and_wrong_partition_libraries(self):
+        for target, variant in (("4v100-avx512", "avx512"), ("16v100-avx2", "avx2"),
+                                ("8v100v0-avx512", "avx2")):
+            with self.subTest(target=target):
+                ldd = self.ldd.replace("gnu-avx512/nvidia", "gnu-" + variant + "/nvidia")
+                self.check(target=target, ldd=ldd)
+                for wrong in ("gnu/nvidia", "gnu-avx512/cpu",
+                              "gnu-" + ("avx2" if variant == "avx512" else "avx512") + "/nvidia"):
+                    with self.assertRaisesRegex(ValueError, "libelpa must resolve"):
+                        self.check(target=target, ldd=ldd.replace("gnu-" + variant + "/nvidia", wrong))
 
     def test_system_elpa_and_packaged_optional_libraries_are_not_interchangeable(self):
         for previous, wrong in (("elpa-2026.02.001", "elpa-2025.06.001"),

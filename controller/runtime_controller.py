@@ -70,7 +70,7 @@ def runtime_resources(args):
     gpus_per_node = getattr(args, "gpus_per_node", None)
     if gpus_per_node is None:
         gpus_per_node = 0 if cpu_only else 1
-    ranks_per_node = getattr(args, "ranks_per_node", 8) if cpu_only else gpus_per_node
+    ranks_per_node = getattr(args, "ranks_per_node", 4) if cpu_only else gpus_per_node
     cpus_per_task = getattr(args, "cpus_per_task", 2) if cpu_only else 1
     if args.nodes != 2 or gpus_per_node != (0 if cpu_only else 1):
         raise ValueError("runtime resources outside acceptance bounds")
@@ -410,7 +410,7 @@ def main():
     command.add_argument("--nodes", type=int, default=2)
     command.add_argument("--gpus-per-node", type=int, default=None,
                          help="default: 0 for CPU targets, 1 for GPU targets")
-    command.add_argument("--ranks-per-node", type=int, default=8)
+    command.add_argument("--ranks-per-node", type=int, default=4)
     command.add_argument("--cpus-per-task", type=int, default=2)
     command.add_argument("--minutes", type=int, default=30)
     command = commands.add_parser("monitor")

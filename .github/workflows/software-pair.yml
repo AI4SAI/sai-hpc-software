@@ -99,7 +99,9 @@ jobs:
 
   acceptance:
     needs: build
-    if: needs.build.outputs.run_id != ''
+    # ABACUS/GPUMD skip the CP2K-only dependency ancestor. Without a status
+    # function GitHub adds success(), which also skips their acceptance jobs.
+    if: ${{ !cancelled() && needs.build.result == 'success' && needs.build.outputs.run_id != '' }}
     runs-on: ubuntu-latest
     environment: hpc
     timeout-minutes: 360

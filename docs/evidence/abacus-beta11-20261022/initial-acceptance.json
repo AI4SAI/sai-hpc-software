@@ -1,0 +1,808 @@
+{
+  "observed_at": "2026-10-22T15:44:45.609331+00:00",
+  "deliveries": [
+    {
+      "run_id": "39742021186-1-release-16v100-avx2-2026-10-22-b0411118d360",
+      "manifest": {
+        "artifact": "/home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r851137534055/16V100/39742021186-1-release-16v100-avx2-2026-10-22-b0411118d360.sif",
+        "benchmark_pw": {
+          "artifact_sha256": "ba4d4b9c28c48451064279ebc3dc558d625b0096be8752c8bcaf4d3a0aef1dea",
+          "benchmark_case": "pw",
+          "case_device": "gpu",
+          "controller_sha256": "852c7701aaea3f8d36e2365a09637e91f12612e9284063a7236d70d3e832705b",
+          "evidence_sha256": "7da4d5140a2871ee087352f69b939c305e55ff09a3e384835757e7d093abf81b",
+          "identity": {
+            "build_id": "v3.11.0-beta11-gb0411118d360-r851137534055",
+            "cpu_arch": "znver3",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/16V100",
+            "partition": "16V100",
+            "recipe_sha256": "8511375340556e9e44c0935b36d7421cb7d7cb5b66380f731708bdc2105f606f",
+            "repository": "deepmodeling/abacus-develop",
+            "schema": 2,
+            "software": "abacus",
+            "source_ref": "v3.11.0-beta11",
+            "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+            "source_version": "v3.11.0-beta11",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "16v100-avx2",
+            "track": "release",
+            "version_label": "v3.11.0-beta11"
+          },
+          "job": "1900883",
+          "job_script_sha256": "e30d80201ec587596a043407de156b98e7f5ffb74ff38150989f9c4c2ba3d98b",
+          "launcher": "/home/stardust/sai-hpc-software/controller/f1f19288b87512b4a17da7ebb619250f5a1233d6/39742021186-1-release-16v100-avx2-2026-10-22-b0411118d360/abacus",
+          "launcher_sha256": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+          "nodes": 2,
+          "ranks": 2,
+          "run_id": "benchmark-39742021186-1-release-16v100-avx2-2026-10-22-b0411118d360-pw",
+          "system_module": "abacus/v3.9.0.26-sm70-auto",
+          "verified": true
+        },
+        "build_verified": true,
+        "contract_schema": 3,
+        "controller": "/home/stardust/sai-hpc-software/controller/f1f19288b87512b4a17da7ebb619250f5a1233d6/39742021186-1-release-16v100-avx2-2026-10-22-b0411118d360",
+        "gpu_features": {
+          "artifact_sha256": "ba4d4b9c28c48451064279ebc3dc558d625b0096be8752c8bcaf4d3a0aef1dea",
+          "controller_sha256": "67e0711ccd8d39d1d6fc999baa35a9b6fe32fbe2c9392db5bb8e7cdc09f60eb0",
+          "cusolvermp_eigensolve": true,
+          "evidence_sha256": "c5049a20a83bffb8f73a83c96d79b964e895aa6ceaa3a3611a86fd3ca4c27737",
+          "execution_evidence": {
+            "cusolvermp": [
+              "[2026-10-22 15:19:33][cusolverMp][171762][Api][cusolverMpSygvd] handle=0x555bfcfd7f10, ibtype=1, jobz=1, uplo=0, N=26, d_A=0x14da1fdf9000, IA=1, JA=1, descA=0x555bfcfe65e0, d_B=0x14da1fdf9c00, IB=1, JB=1, descB=0x555bfcfe65e0, d_W=0x14da1fdfa800, d_Z=0x14da1fdfaa00, IZ=1, JZ=1, descZ=0x555bfcfe65e0, computeType=1, d_work=0x14da33d83400, workspaceInBytesOnDevice=42496 h_work=0x555befe4ab30, workspaceInBytesOnHost=708 info=0x14da1fdfb600 ",
+              "[2026-10-22 15:19:33][cusolverMp][171762][Trace][cusolverMpSygvd] handle=0x555bfcfd7f10 ibtype=1 jobz=1 uplo=0 m=26a=0x14da1fdf9000 ia=1 ja=1 descA=0x555bfcfe65e0 b=0x14da1fdf9c00 ib=1 jb=1 descB=0x555bfcfe65e0 w=0x14da1fdfa800 z=0x14da1fdfaa00 iz=1 jz=1 descZ=0x555bfcfe65e0 computeType=1 workspaceInBytesOnDevice=0xa600 workspaceInBytesOnHost=0x2c4 ",
+              "[2026-10-22 15:19:33][cusolverMp][442375][Api][cusolverMpSygvd] handle=0x561cf724df20, ibtype=1, jobz=1, uplo=0, N=26, d_A=0x148bdddf9000, IA=1, JA=1, descA=0x561cf725ca60, d_B=0x148bdddf9c00, IB=1, JB=1, descB=0x561cf725ca60, d_W=0x148bdddfa800, d_Z=0x148bdddfaa00, IZ=1, JZ=1, descZ=0x561cf725ca60, computeType=1, d_work=0x148bf1d83400, workspaceInBytesOnDevice=42496 h_work=0x561cea073bd0, workspaceInBytesOnHost=708 info=0x148bdddfb600 ",
+              "[2026-10-22 15:19:33][cusolverMp][442375][Trace][cusolverMpSygvd] handle=0x561cf724df20 ibtype=1 jobz=1 uplo=0 m=26a=0x148bdddf9000 ia=1 ja=1 descA=0x561cf725ca60 b=0x148bdddf9c00 ib=1 jb=1 descB=0x561cf725ca60 w=0x148bdddfa800 z=0x148bdddfaa00 iz=1 jz=1 descZ=0x561cf725ca60 computeType=1 workspaceInBytesOnDevice=0xa600 workspaceInBytesOnHost=0x2c4 "
+            ],
+            "nccl": [
+              "16v100n49:172219:172219 [0] NCCL INFO AllGather: opCount 0 sendbuff 0x14b70dffe800 recvbuff 0x14b6fbff0400 count 4608 datatype 1 op 0 root 0 comm 0x5595c0f2dd90 [nranks=2] stream (nil)",
+              "16v100n50:442818:442818 [0] NCCL INFO AllGather: opCount 0 sendbuff 0x14d83fffe800 recvbuff 0x14d82dff0400 count 4608 datatype 1 op 0 root 0 comm 0x5559ac1800a0 [nranks=2] stream (nil)",
+              "16v100n49:172219:172219 [0] NCCL INFO AllGather: opCount 1 sendbuff 0x14b70dffe800 recvbuff 0x14b6fbff0400 count 4608 datatype 1 op 0 root 0 comm 0x5595c0f2dd90 [nranks=2] stream (nil)",
+              "16v100n50:442818:442818 [0] NCCL INFO AllGather: opCount 1 sendbuff 0x14d83fffe800 recvbuff 0x14d82dff0400 count 4608 datatype 1 op 0 root 0 comm 0x5559ac1800a0 [nranks=2] stream (nil)"
+            ]
+          },
+          "files": {
+            "cases/cusolvermp/OUT.autotest/running_scf.log": "c76b715dd6975d470e5f66df839e3f07374bbc363f65e7074a43ec1a1316110b",
+            "cases/nccl/OUT.autotest/running_scf.log": "96f0970227bbf5f45d4b18cab1a22a2a7a9e5d57fa44194edc2f48e0492df77d",
+            "job.id": "3c035e9227e03794bcd63d7f802be687225bc521cda9ff217419ae71e4c46c39",
+            "job.sbatch": "da6841257a3a7791620cd7497dfa2c0ee59b4f23cc4d313c12d292743f869e9c",
+            "results/cusolvermp/abacus.log": "18f05433144c41ed5de0995739f0ffec1fa8405d887dc3530266303c48da3c5b",
+            "results/cusolvermp/ranks/rank-0.tsv": "0c58930d8bd07d6c40229d694181889c4686d65f427debbd741e09d34cd475e7",
+            "results/cusolvermp/ranks/rank-1.tsv": "bb7a2c2e24e2885756d8158c7e2c0e6342571a56530280d9dd472e9e73f0c962",
+            "results/nccl/abacus.log": "e56d94b650d58e1a25fcb7286f9d076d5a269cbd62e9c7d0f7bdc710c0e4f2ee",
+            "results/nccl/ranks/rank-0.tsv": "0c58930d8bd07d6c40229d694181889c4686d65f427debbd741e09d34cd475e7",
+            "results/nccl/ranks/rank-1.tsv": "bb7a2c2e24e2885756d8158c7e2c0e6342571a56530280d9dd472e9e73f0c962"
+          },
+          "final_energy_ev": {
+            "cusolvermp": -196.62217499802043,
+            "nccl": -4869.747051979826
+          },
+          "identity": {
+            "build_id": "v3.11.0-beta11-gb0411118d360-r851137534055",
+            "cpu_arch": "znver3",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/16V100",
+            "partition": "16V100",
+            "recipe_sha256": "8511375340556e9e44c0935b36d7421cb7d7cb5b66380f731708bdc2105f606f",
+            "repository": "deepmodeling/abacus-develop",
+            "schema": 2,
+            "software": "abacus",
+            "source_ref": "v3.11.0-beta11",
+            "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+            "source_version": "v3.11.0-beta11",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "16v100-avx2",
+            "track": "release",
+            "version_label": "v3.11.0-beta11"
+          },
+          "job": "1900874",
+          "job_script_sha256": "da6841257a3a7791620cd7497dfa2c0ee59b4f23cc4d313c12d292743f869e9c",
+          "launcher": "/home/stardust/sai-hpc-software/controller/f1f19288b87512b4a17da7ebb619250f5a1233d6/39742021186-1-release-16v100-avx2-2026-10-22-b0411118d360/abacus",
+          "launcher_sha256": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+          "nccl_collective": true,
+          "nccl_collectives": [
+            "AllGather"
+          ],
+          "nodes": 2,
+          "partition": "16V100",
+          "ranks": 2,
+          "run_id": "39742021186-1-release-16v100-avx2-2026-10-22-b0411118d360-gpu-features",
+          "runtime_sha256": "b499d0fe6bd1ad4623ece45ea6663702bf8e54d95ae1a0679b87f34ce81a0734",
+          "verified": true
+        },
+        "identity": {
+          "build_id": "v3.11.0-beta11-gb0411118d360-r851137534055",
+          "cpu_arch": "znver3",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/16V100",
+          "partition": "16V100",
+          "recipe_sha256": "8511375340556e9e44c0935b36d7421cb7d7cb5b66380f731708bdc2105f606f",
+          "repository": "deepmodeling/abacus-develop",
+          "schema": 2,
+          "software": "abacus",
+          "source_ref": "v3.11.0-beta11",
+          "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+          "source_version": "v3.11.0-beta11",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "16v100-avx2",
+          "track": "release",
+          "version_label": "v3.11.0-beta11"
+        },
+        "multinode_runtime": {
+          "artifact_sha256": "ba4d4b9c28c48451064279ebc3dc558d625b0096be8752c8bcaf4d3a0aef1dea",
+          "controller_sha256": "5d2c1fa434c9d70506976df08fcbd015dcf7592afbd04df24691bbcb85ee8214",
+          "cpus_per_task": 1,
+          "evidence_sha256": "6010fa86791878a1f7d775bc07ef1b8cb65131c1eabbbf2273afee2cb4cb5189",
+          "gpus_per_node": 1,
+          "identity": {
+            "build_id": "v3.11.0-beta11-gb0411118d360-r851137534055",
+            "cpu_arch": "znver3",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/16V100",
+            "partition": "16V100",
+            "recipe_sha256": "8511375340556e9e44c0935b36d7421cb7d7cb5b66380f731708bdc2105f606f",
+            "repository": "deepmodeling/abacus-develop",
+            "schema": 2,
+            "software": "abacus",
+            "source_ref": "v3.11.0-beta11",
+            "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+            "source_version": "v3.11.0-beta11",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "16v100-avx2",
+            "track": "release",
+            "version_label": "v3.11.0-beta11"
+          },
+          "job": "1900862",
+          "job_script_sha256": "140fab8ce7f972f8f3dbdcc228407d3dae3bbf0738f1cb7090f1b63257ffb4d2",
+          "launcher": "/home/stardust/sai-hpc-software/controller/f1f19288b87512b4a17da7ebb619250f5a1233d6/39742021186-1-release-16v100-avx2-2026-10-22-b0411118d360/abacus",
+          "launcher_sha256": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+          "nodes": 2,
+          "partition": "16V100",
+          "ranks": 2,
+          "ranks_per_node": 1,
+          "run_id": "39742021186-1-release-16v100-avx2-2026-10-22-b0411118d360-multinode",
+          "verified": true
+        },
+        "published": false,
+        "recipe_sha256": "8511375340556e9e44c0935b36d7421cb7d7cb5b66380f731708bdc2105f606f",
+        "sha256": "ba4d4b9c28c48451064279ebc3dc558d625b0096be8752c8bcaf4d3a0aef1dea",
+        "software": "abacus",
+        "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+        "target": "16v100-avx2",
+        "verified": false,
+        "version": "v3.11.0-beta11"
+      },
+      "tests": {
+        "39742021186-1-release-16v100-avx2-2026-10-22-b0411118d360-gpu-features": {
+          "job": "1900874",
+          "results/status.json": {
+            "job": "1900874",
+            "state": "COMPLETED",
+            "exit_code": "0:0",
+            "verified": true
+          },
+          "results/evidence.json": {
+            "cusolvermp_eigensolve": true,
+            "final_energy_ev": {
+              "cusolvermp": -196.62217499802043,
+              "nccl": -4869.747051979826
+            },
+            "nccl_collectives": [
+              "AllGather"
+            ],
+            "nodes": 2,
+            "ranks": 2,
+            "verified": true
+          }
+        },
+        "39742021186-1-release-16v100-avx2-2026-10-22-b0411118d360-multinode": {
+          "job": "1900862",
+          "results/status.json": {
+            "job": "1900862",
+            "state": "COMPLETED",
+            "exit_code": "0:0",
+            "verified": true
+          },
+          "results/evidence.json": {
+            "final_energy_ev": -4869.74705195015,
+            "nodes": {
+              "16v100n49.mr-sai.ai": 1,
+              "16v100n50.mr-sai.ai": 1
+            },
+            "ranks": 2
+          }
+        },
+        "benchmark-39742021186-1-release-16v100-avx2-2026-10-22-b0411118d360-hse": {
+          "job": "1900890",
+          "results/status.json": {
+            "exit_code": "132:0",
+            "job": "1900890",
+            "state": "FAILED",
+            "verified": false
+          }
+        },
+        "benchmark-39742021186-1-release-16v100-avx2-2026-10-22-b0411118d360-pw": {
+          "job": "1900883",
+          "results/status.json": {
+            "exit_code": "0:0",
+            "job": "1900883",
+            "state": "COMPLETED",
+            "verified": true
+          },
+          "results/evidence.json": {
+            "energy_spread_ev": 2.1191226551309228e-10,
+            "statistics": {
+              "rounded_iteration_seconds": {
+                "candidate": {
+                  "max": 1.09,
+                  "median": 1.08,
+                  "min": 1.07
+                },
+                "candidate_system_ratio": 0.9152542372881357,
+                "system": {
+                  "max": 1.19,
+                  "median": 1.18,
+                  "min": 1.17
+                }
+              },
+              "wall_seconds": {
+                "candidate": {
+                  "max": 4.81,
+                  "median": 4.65,
+                  "min": 4.53
+                },
+                "candidate_system_ratio": 1.1204819277108433,
+                "system": {
+                  "max": 4.36,
+                  "median": 4.15,
+                  "min": 4.05
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "run_id": "39742021186-1-release-4v100-avx512-2026-10-22-b0411118d360",
+      "manifest": {
+        "artifact": "/home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r851137534055/4V100/39742021186-1-release-4v100-avx512-2026-10-22-b0411118d360.sif",
+        "build_verified": true,
+        "contract_schema": 3,
+        "controller": "/home/stardust/sai-hpc-software/controller/f1f19288b87512b4a17da7ebb619250f5a1233d6/39742021186-1-release-4v100-avx512-2026-10-22-b0411118d360",
+        "gpu_features": {
+          "artifact_sha256": "72ad4ce357494606f3043b5a19a8021a0d121cce8d8adc7f3da1b3f47f9e88a9",
+          "controller_sha256": "67e0711ccd8d39d1d6fc999baa35a9b6fe32fbe2c9392db5bb8e7cdc09f60eb0",
+          "cusolvermp_eigensolve": true,
+          "evidence_sha256": "378f6cd44044b02ad65a669043431a34dff6944c595f10435558d9295e513ae9",
+          "execution_evidence": {
+            "cusolvermp": [
+              "[2026-10-22 15:19:29][cusolverMp][598963][Api][cusolverMpSygvd] handle=0x59c0c0571680, ibtype=1, jobz=1, uplo=0, N=26, d_A=0x10a721df9000, IA=1, JA=1, descA=0x59c0c057fac0, d_B=0x10a721df9c00, IB=1, JB=1, descB=0x59c0c057fac0, d_W=0x10a721dfa800, d_Z=0x10a721dfaa00, IZ=1, JZ=1, descZ=0x59c0c057fac0, computeType=1, d_work=0x10a735d83400, workspaceInBytesOnDevice=42496 h_work=0x59c0b5eb5ba0, workspaceInBytesOnHost=708 info=0x10a721dfb600 ",
+              "[2026-10-22 15:19:29][cusolverMp][598963][Trace][cusolverMpSygvd] handle=0x59c0c0571680 ibtype=1 jobz=1 uplo=0 m=26a=0x10a721df9000 ia=1 ja=1 descA=0x59c0c057fac0 b=0x10a721df9c00 ib=1 jb=1 descB=0x59c0c057fac0 w=0x10a721dfa800 z=0x10a721dfaa00 iz=1 jz=1 descZ=0x59c0c057fac0 computeType=1 workspaceInBytesOnDevice=0xa600 workspaceInBytesOnHost=0x2c4 ",
+              "[2026-10-22 15:19:29][cusolverMp][1386372][Api][cusolverMpSygvd] handle=0x58500cd5b700, ibtype=1, jobz=1, uplo=0, N=26, d_A=0x11e433df9000, IA=1, JA=1, descA=0x58500cd69450, d_B=0x11e433df9c00, IB=1, JB=1, descB=0x58500cd69450, d_W=0x11e433dfa800, d_Z=0x11e433dfaa00, IZ=1, JZ=1, descZ=0x58500cd69450, computeType=1, d_work=0x11e447d83400, workspaceInBytesOnDevice=42496 h_work=0x58500608a520, workspaceInBytesOnHost=708 info=0x11e433dfb600 ",
+              "[2026-10-22 15:19:29][cusolverMp][1386372][Trace][cusolverMpSygvd] handle=0x58500cd5b700 ibtype=1 jobz=1 uplo=0 m=26a=0x11e433df9000 ia=1 ja=1 descA=0x58500cd69450 b=0x11e433df9c00 ib=1 jb=1 descB=0x58500cd69450 w=0x11e433dfa800 z=0x11e433dfaa00 iz=1 jz=1 descZ=0x58500cd69450 computeType=1 workspaceInBytesOnDevice=0xa600 workspaceInBytesOnHost=0x2c4 "
+            ],
+            "nccl": [
+              "4v100n09:599379:599379 [0] NCCL INFO AllGather: opCount 0 sendbuff 0x66419ffe800 recvbuff 0x66407ff0400 count 4608 datatype 1 op 0 root 0 comm 0x5ec917380560 [nranks=2] stream (nil)",
+              "4v100n06:1386822:1386822 [0] NCCL INFO AllGather: opCount 0 sendbuff 0xf7995ffe800 recvbuff 0xf7983ff0400 count 4608 datatype 1 op 0 root 0 comm 0x5cae92abbda0 [nranks=2] stream (nil)",
+              "4v100n06:1386822:1386822 [0] NCCL INFO AllGather: opCount 1 sendbuff 0xf7995ffe800 recvbuff 0xf7983ff0400 count 4608 datatype 1 op 0 root 0 comm 0x5cae92abbda0 [nranks=2] stream (nil)",
+              "4v100n09:599379:599379 [0] NCCL INFO AllGather: opCount 1 sendbuff 0x66419ffe800 recvbuff 0x66407ff0400 count 4608 datatype 1 op 0 root 0 comm 0x5ec917380560 [nranks=2] stream (nil)"
+            ]
+          },
+          "files": {
+            "cases/cusolvermp/OUT.autotest/running_scf.log": "f80c7ef6f31ef7e581800c3c4513c157b0541b14545c58b8c420f2fa8ea94e84",
+            "cases/nccl/OUT.autotest/running_scf.log": "e3a5fab9fa263551805c9e6d8b5010f1d8c85271e2001490a8a6ba08cc54a097",
+            "job.id": "66f543d5be8c7b1f8f1308fb084873a4f02dd1b216fdd89a026e1ef61aade52d",
+            "job.sbatch": "16ca807f4d138c33c24625084aafb46f2a20f7821e60c58811955edc2fa7088d",
+            "results/cusolvermp/abacus.log": "11c42b633bab3c3c9bcf54f6a60f198b146e78c24f1d0396eca14fd1151e1bd2",
+            "results/cusolvermp/ranks/rank-0.tsv": "2f84d9c31a6bf0241a6540f69d9a698c172529a35b0acc5bfe2754db4d8f5817",
+            "results/cusolvermp/ranks/rank-1.tsv": "14f5f18b32e72eba87c0087989e46c44cd364e7074d7fa96e9cf74309767f7bd",
+            "results/nccl/abacus.log": "d06962ebf2cc895825a11f9a72056dbfdd8d0c6180c0a066b4a01c7e9d40193a",
+            "results/nccl/ranks/rank-0.tsv": "2f84d9c31a6bf0241a6540f69d9a698c172529a35b0acc5bfe2754db4d8f5817",
+            "results/nccl/ranks/rank-1.tsv": "14f5f18b32e72eba87c0087989e46c44cd364e7074d7fa96e9cf74309767f7bd"
+          },
+          "final_energy_ev": {
+            "cusolvermp": -196.62217499802028,
+            "nccl": -4869.747051979826
+          },
+          "identity": {
+            "build_id": "v3.11.0-beta11-gb0411118d360-r851137534055",
+            "cpu_arch": "znver4",
+            "cuda_arch": "70",
+            "dependency_isa": "avx512",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/4V100",
+            "partition": "4V100",
+            "recipe_sha256": "8511375340556e9e44c0935b36d7421cb7d7cb5b66380f731708bdc2105f606f",
+            "repository": "deepmodeling/abacus-develop",
+            "schema": 2,
+            "software": "abacus",
+            "source_ref": "v3.11.0-beta11",
+            "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+            "source_version": "v3.11.0-beta11",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "4v100-avx512",
+            "track": "release",
+            "version_label": "v3.11.0-beta11"
+          },
+          "job": "1900875",
+          "job_script_sha256": "16ca807f4d138c33c24625084aafb46f2a20f7821e60c58811955edc2fa7088d",
+          "launcher": "/home/stardust/sai-hpc-software/controller/f1f19288b87512b4a17da7ebb619250f5a1233d6/39742021186-1-release-4v100-avx512-2026-10-22-b0411118d360/abacus",
+          "launcher_sha256": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+          "nccl_collective": true,
+          "nccl_collectives": [
+            "AllGather"
+          ],
+          "nodes": 2,
+          "partition": "4V100",
+          "ranks": 2,
+          "run_id": "39742021186-1-release-4v100-avx512-2026-10-22-b0411118d360-gpu-features",
+          "runtime_sha256": "b499d0fe6bd1ad4623ece45ea6663702bf8e54d95ae1a0679b87f34ce81a0734",
+          "verified": true
+        },
+        "identity": {
+          "build_id": "v3.11.0-beta11-gb0411118d360-r851137534055",
+          "cpu_arch": "znver4",
+          "cuda_arch": "70",
+          "dependency_isa": "avx512",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/4V100",
+          "partition": "4V100",
+          "recipe_sha256": "8511375340556e9e44c0935b36d7421cb7d7cb5b66380f731708bdc2105f606f",
+          "repository": "deepmodeling/abacus-develop",
+          "schema": 2,
+          "software": "abacus",
+          "source_ref": "v3.11.0-beta11",
+          "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+          "source_version": "v3.11.0-beta11",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "4v100-avx512",
+          "track": "release",
+          "version_label": "v3.11.0-beta11"
+        },
+        "multinode_runtime": {
+          "artifact_sha256": "72ad4ce357494606f3043b5a19a8021a0d121cce8d8adc7f3da1b3f47f9e88a9",
+          "controller_sha256": "5d2c1fa434c9d70506976df08fcbd015dcf7592afbd04df24691bbcb85ee8214",
+          "cpus_per_task": 1,
+          "evidence_sha256": "d115b93259afa17829a667fee3faa2ab38be4a34c3d98885b7b6371ad0c763eb",
+          "gpus_per_node": 1,
+          "identity": {
+            "build_id": "v3.11.0-beta11-gb0411118d360-r851137534055",
+            "cpu_arch": "znver4",
+            "cuda_arch": "70",
+            "dependency_isa": "avx512",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/4V100",
+            "partition": "4V100",
+            "recipe_sha256": "8511375340556e9e44c0935b36d7421cb7d7cb5b66380f731708bdc2105f606f",
+            "repository": "deepmodeling/abacus-develop",
+            "schema": 2,
+            "software": "abacus",
+            "source_ref": "v3.11.0-beta11",
+            "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+            "source_version": "v3.11.0-beta11",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "4v100-avx512",
+            "track": "release",
+            "version_label": "v3.11.0-beta11"
+          },
+          "job": "1900863",
+          "job_script_sha256": "e91f716f55d8f0ea996d9d7c65eebc485dcb180a5ba7c25ebecb4e81f6c586e5",
+          "launcher": "/home/stardust/sai-hpc-software/controller/f1f19288b87512b4a17da7ebb619250f5a1233d6/39742021186-1-release-4v100-avx512-2026-10-22-b0411118d360/abacus",
+          "launcher_sha256": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+          "nodes": 2,
+          "partition": "4V100",
+          "ranks": 2,
+          "ranks_per_node": 1,
+          "run_id": "39742021186-1-release-4v100-avx512-2026-10-22-b0411118d360-multinode",
+          "verified": true
+        },
+        "published": false,
+        "recipe_sha256": "8511375340556e9e44c0935b36d7421cb7d7cb5b66380f731708bdc2105f606f",
+        "sha256": "72ad4ce357494606f3043b5a19a8021a0d121cce8d8adc7f3da1b3f47f9e88a9",
+        "software": "abacus",
+        "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+        "target": "4v100-avx512",
+        "verified": false,
+        "version": "v3.11.0-beta11"
+      },
+      "tests": {
+        "39742021186-1-release-4v100-avx512-2026-10-22-b0411118d360-gpu-features": {
+          "job": "1900875",
+          "results/status.json": {
+            "job": "1900875",
+            "state": "COMPLETED",
+            "exit_code": "0:0",
+            "verified": true
+          },
+          "results/evidence.json": {
+            "cusolvermp_eigensolve": true,
+            "final_energy_ev": {
+              "cusolvermp": -196.62217499802028,
+              "nccl": -4869.747051979826
+            },
+            "nccl_collectives": [
+              "AllGather"
+            ],
+            "nodes": 2,
+            "ranks": 2,
+            "verified": true
+          }
+        },
+        "39742021186-1-release-4v100-avx512-2026-10-22-b0411118d360-multinode": {
+          "job": "1900863",
+          "results/status.json": {
+            "job": "1900863",
+            "state": "COMPLETED",
+            "exit_code": "0:0",
+            "verified": true
+          },
+          "results/evidence.json": {
+            "final_energy_ev": -4869.747051950149,
+            "nodes": {
+              "4v100n09.mr-sai.ai": 1,
+              "4v100n17.mr-sai.ai": 1
+            },
+            "ranks": 2
+          }
+        },
+        "benchmark-39742021186-1-release-4v100-avx512-2026-10-22-b0411118d360-pw": {
+          "job": "1900881",
+          "results/status.json": {
+            "exit_code": "213:0",
+            "job": "1900881",
+            "state": "FAILED",
+            "verified": false
+          }
+        },
+        "benchmark-39742021186-1-release-4v100-avx512-2026-10-22-b0411118d360-pw-retest": {
+          "job": "1900892",
+          "results/status.json": {
+            "exit_code": "134:0",
+            "job": "1900892",
+            "state": "FAILED",
+            "verified": false
+          }
+        }
+      }
+    },
+    {
+      "run_id": "39742021186-1-release-8v100v0-avx512-2026-10-22-b0411118d360",
+      "manifest": {
+        "artifact": "/home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r851137534055/8V100V0/39742021186-1-release-8v100v0-avx512-2026-10-22-b0411118d360.sif",
+        "benchmark_pw": {
+          "artifact_sha256": "4a7e25960393bb4bf986528237afba6cbe120efbdd3f7b865f50724fdb013346",
+          "benchmark_case": "pw",
+          "case_device": "gpu",
+          "controller_sha256": "852c7701aaea3f8d36e2365a09637e91f12612e9284063a7236d70d3e832705b",
+          "evidence_sha256": "a82cf94835176d6777ece368c831db16ca8a2dbc649223f8ea7e793e98b9a668",
+          "identity": {
+            "build_id": "v3.11.0-beta11-gb0411118d360-r851137534055",
+            "cpu_arch": "skylake-avx512",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/8V100V0",
+            "partition": "8V100V0",
+            "recipe_sha256": "8511375340556e9e44c0935b36d7421cb7d7cb5b66380f731708bdc2105f606f",
+            "repository": "deepmodeling/abacus-develop",
+            "schema": 2,
+            "software": "abacus",
+            "source_ref": "v3.11.0-beta11",
+            "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+            "source_version": "v3.11.0-beta11",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "8v100v0-avx512",
+            "track": "release",
+            "version_label": "v3.11.0-beta11"
+          },
+          "job": "1900884",
+          "job_script_sha256": "618c2c224bdd5a398daafefce9853f7b9689e24249848b0ec28b964d84b156f9",
+          "launcher": "/home/stardust/sai-hpc-software/controller/f1f19288b87512b4a17da7ebb619250f5a1233d6/39742021186-1-release-8v100v0-avx512-2026-10-22-b0411118d360/abacus",
+          "launcher_sha256": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+          "nodes": 2,
+          "ranks": 2,
+          "run_id": "benchmark-39742021186-1-release-8v100v0-avx512-2026-10-22-b0411118d360-pw",
+          "system_module": "abacus/v3.9.0.26-sm70-auto",
+          "verified": true
+        },
+        "build_verified": true,
+        "contract_schema": 3,
+        "controller": "/home/stardust/sai-hpc-software/controller/f1f19288b87512b4a17da7ebb619250f5a1233d6/39742021186-1-release-8v100v0-avx512-2026-10-22-b0411118d360",
+        "gpu_features": {
+          "artifact_sha256": "4a7e25960393bb4bf986528237afba6cbe120efbdd3f7b865f50724fdb013346",
+          "controller_sha256": "67e0711ccd8d39d1d6fc999baa35a9b6fe32fbe2c9392db5bb8e7cdc09f60eb0",
+          "cusolvermp_eigensolve": true,
+          "evidence_sha256": "b914e937a99e575e6c84eadd8ad6730484c0f0e42cfab35b953de41b681be4cf",
+          "execution_evidence": {
+            "cusolvermp": [
+              "[2026-10-22 15:19:43][cusolverMp][3900930][Api][cusolverMpSygvd] handle=0x55ca8289f010, ibtype=1, jobz=1, uplo=0, N=26, d_A=0x146439df9000, IA=1, JA=1, descA=0x55ca828adee0, d_B=0x146439df9c00, IB=1, JB=1, descB=0x55ca828adee0, d_W=0x146439dfa800, d_Z=0x146439dfaa00, IZ=1, JZ=1, descZ=0x55ca828adee0, computeType=1, d_work=0x14644dd83400, workspaceInBytesOnDevice=42496 h_work=0x55ca7bd23cb0, workspaceInBytesOnHost=708 info=0x146439dfb600 ",
+              "[2026-10-22 15:19:43][cusolverMp][3900930][Trace][cusolverMpSygvd] handle=0x55ca8289f010 ibtype=1 jobz=1 uplo=0 m=26a=0x146439df9000 ia=1 ja=1 descA=0x55ca828adee0 b=0x146439df9c00 ib=1 jb=1 descB=0x55ca828adee0 w=0x146439dfa800 z=0x146439dfaa00 iz=1 jz=1 descZ=0x55ca828adee0 computeType=1 workspaceInBytesOnDevice=0xa600 workspaceInBytesOnHost=0x2c4 ",
+              "[2026-10-22 15:19:43][cusolverMp][415904][Api][cusolverMpSygvd] handle=0x561ae8603c20, ibtype=1, jobz=1, uplo=0, N=26, d_A=0x14d7e5df9000, IA=1, JA=1, descA=0x561ae8612b90, d_B=0x14d7e5df9c00, IB=1, JB=1, descB=0x561ae8612b90, d_W=0x14d7e5dfa800, d_Z=0x14d7e5dfaa00, IZ=1, JZ=1, descZ=0x561ae8612b90, computeType=1, d_work=0x14d7f9d83400, workspaceInBytesOnDevice=42496 h_work=0x561add0f1a20, workspaceInBytesOnHost=708 info=0x14d7e5dfb600 ",
+              "[2026-10-22 15:19:43][cusolverMp][415904][Trace][cusolverMpSygvd] handle=0x561ae8603c20 ibtype=1 jobz=1 uplo=0 m=26a=0x14d7e5df9000 ia=1 ja=1 descA=0x561ae8612b90 b=0x14d7e5df9c00 ib=1 jb=1 descB=0x561ae8612b90 w=0x14d7e5dfa800 z=0x14d7e5dfaa00 iz=1 jz=1 descZ=0x561ae8612b90 computeType=1 workspaceInBytesOnDevice=0xa600 workspaceInBytesOnHost=0x2c4 "
+            ],
+            "nccl": [
+              "8v100v0n02:3901347:3901347 [0] NCCL INFO AllGather: opCount 0 sendbuff 0x1550a5ffe800 recvbuff 0x155093ff0400 count 4608 datatype 1 op 0 root 0 comm 0x55c5419ecb60 [nranks=2] stream (nil)",
+              "8v100v0n06:418226:418226 [0] NCCL INFO AllGather: opCount 0 sendbuff 0x146099ffe800 recvbuff 0x146087ff0400 count 4608 datatype 1 op 0 root 0 comm 0x561cfa03b860 [nranks=2] stream (nil)",
+              "8v100v0n02:3901347:3901347 [0] NCCL INFO AllGather: opCount 1 sendbuff 0x1550a5ffe800 recvbuff 0x155093ff0400 count 4608 datatype 1 op 0 root 0 comm 0x55c5419ecb60 [nranks=2] stream (nil)",
+              "8v100v0n06:418226:418226 [0] NCCL INFO AllGather: opCount 1 sendbuff 0x146099ffe800 recvbuff 0x146087ff0400 count 4608 datatype 1 op 0 root 0 comm 0x561cfa03b860 [nranks=2] stream (nil)"
+            ]
+          },
+          "files": {
+            "cases/cusolvermp/OUT.autotest/running_scf.log": "3081c1deb0c99843ac56104880f517c76131d2fbd1181a30c177ab5083cedb99",
+            "cases/nccl/OUT.autotest/running_scf.log": "6356daebd8f24a57d1ef0f246f233410540e46129731f72e4ff6ca751ebc4e7b",
+            "job.id": "df31005ebc3199bea40d1197b109bc94513c008360135d7077acd9f037902497",
+            "job.sbatch": "f13d226ea19ace64dc4ccda3f3fa146f1eb95a94b874843c3d562ee0e57ace85",
+            "results/cusolvermp/abacus.log": "f913150efa2cb99623676c3b672c47d5f0138e07384e3f804644b869209e7457",
+            "results/cusolvermp/ranks/rank-0.tsv": "bbce906c4edd91bcfca2d5d3c2811771bfa370837e0dfcc9dc5b156c6b4d40bd",
+            "results/cusolvermp/ranks/rank-1.tsv": "c2e453870ccb4521dcf97c901fcf6713d2fb3dd655eaa90f6f4feda73d2cfa91",
+            "results/nccl/abacus.log": "442cd468f030451208f6955044c3f616eca8c6b1fcad9d477aa208f7b9d9f292",
+            "results/nccl/ranks/rank-0.tsv": "bbce906c4edd91bcfca2d5d3c2811771bfa370837e0dfcc9dc5b156c6b4d40bd",
+            "results/nccl/ranks/rank-1.tsv": "c2e453870ccb4521dcf97c901fcf6713d2fb3dd655eaa90f6f4feda73d2cfa91"
+          },
+          "final_energy_ev": {
+            "cusolvermp": -196.62217499801994,
+            "nccl": -4869.747051979826
+          },
+          "identity": {
+            "build_id": "v3.11.0-beta11-gb0411118d360-r851137534055",
+            "cpu_arch": "skylake-avx512",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/8V100V0",
+            "partition": "8V100V0",
+            "recipe_sha256": "8511375340556e9e44c0935b36d7421cb7d7cb5b66380f731708bdc2105f606f",
+            "repository": "deepmodeling/abacus-develop",
+            "schema": 2,
+            "software": "abacus",
+            "source_ref": "v3.11.0-beta11",
+            "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+            "source_version": "v3.11.0-beta11",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "8v100v0-avx512",
+            "track": "release",
+            "version_label": "v3.11.0-beta11"
+          },
+          "job": "1900873",
+          "job_script_sha256": "f13d226ea19ace64dc4ccda3f3fa146f1eb95a94b874843c3d562ee0e57ace85",
+          "launcher": "/home/stardust/sai-hpc-software/controller/f1f19288b87512b4a17da7ebb619250f5a1233d6/39742021186-1-release-8v100v0-avx512-2026-10-22-b0411118d360/abacus",
+          "launcher_sha256": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+          "nccl_collective": true,
+          "nccl_collectives": [
+            "AllGather"
+          ],
+          "nodes": 2,
+          "partition": "8V100V0",
+          "ranks": 2,
+          "run_id": "39742021186-1-release-8v100v0-avx512-2026-10-22-b0411118d360-gpu-features",
+          "runtime_sha256": "b499d0fe6bd1ad4623ece45ea6663702bf8e54d95ae1a0679b87f34ce81a0734",
+          "verified": true
+        },
+        "identity": {
+          "build_id": "v3.11.0-beta11-gb0411118d360-r851137534055",
+          "cpu_arch": "skylake-avx512",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/8V100V0",
+          "partition": "8V100V0",
+          "recipe_sha256": "8511375340556e9e44c0935b36d7421cb7d7cb5b66380f731708bdc2105f606f",
+          "repository": "deepmodeling/abacus-develop",
+          "schema": 2,
+          "software": "abacus",
+          "source_ref": "v3.11.0-beta11",
+          "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+          "source_version": "v3.11.0-beta11",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "8v100v0-avx512",
+          "track": "release",
+          "version_label": "v3.11.0-beta11"
+        },
+        "multinode_runtime": {
+          "artifact_sha256": "4a7e25960393bb4bf986528237afba6cbe120efbdd3f7b865f50724fdb013346",
+          "controller_sha256": "5d2c1fa434c9d70506976df08fcbd015dcf7592afbd04df24691bbcb85ee8214",
+          "cpus_per_task": 1,
+          "evidence_sha256": "16695eaeb886439be3f5e270f5e4a2921191928d08a3b7e6d9163801cdfbbe28",
+          "gpus_per_node": 1,
+          "identity": {
+            "build_id": "v3.11.0-beta11-gb0411118d360-r851137534055",
+            "cpu_arch": "skylake-avx512",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/8V100V0",
+            "partition": "8V100V0",
+            "recipe_sha256": "8511375340556e9e44c0935b36d7421cb7d7cb5b66380f731708bdc2105f606f",
+            "repository": "deepmodeling/abacus-develop",
+            "schema": 2,
+            "software": "abacus",
+            "source_ref": "v3.11.0-beta11",
+            "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+            "source_version": "v3.11.0-beta11",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "8v100v0-avx512",
+            "track": "release",
+            "version_label": "v3.11.0-beta11"
+          },
+          "job": "1900864",
+          "job_script_sha256": "1142d2101368aeb95fe52ed3cb452a651d7c2b91bce4ee74fca00e9f51072f10",
+          "launcher": "/home/stardust/sai-hpc-software/controller/f1f19288b87512b4a17da7ebb619250f5a1233d6/39742021186-1-release-8v100v0-avx512-2026-10-22-b0411118d360/abacus",
+          "launcher_sha256": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+          "nodes": 2,
+          "partition": "8V100V0",
+          "ranks": 2,
+          "ranks_per_node": 1,
+          "run_id": "39742021186-1-release-8v100v0-avx512-2026-10-22-b0411118d360-multinode",
+          "verified": true
+        },
+        "published": false,
+        "recipe_sha256": "8511375340556e9e44c0935b36d7421cb7d7cb5b66380f731708bdc2105f606f",
+        "sha256": "4a7e25960393bb4bf986528237afba6cbe120efbdd3f7b865f50724fdb013346",
+        "software": "abacus",
+        "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+        "target": "8v100v0-avx512",
+        "verified": false,
+        "version": "v3.11.0-beta11"
+      },
+      "tests": {
+        "39742021186-1-release-8v100v0-avx512-2026-10-22-b0411118d360-gpu-features": {
+          "job": "1900873",
+          "results/status.json": {
+            "job": "1900873",
+            "state": "COMPLETED",
+            "exit_code": "0:0",
+            "verified": true
+          },
+          "results/evidence.json": {
+            "cusolvermp_eigensolve": true,
+            "final_energy_ev": {
+              "cusolvermp": -196.62217499801994,
+              "nccl": -4869.747051979826
+            },
+            "nccl_collectives": [
+              "AllGather"
+            ],
+            "nodes": 2,
+            "ranks": 2,
+            "verified": true
+          }
+        },
+        "39742021186-1-release-8v100v0-avx512-2026-10-22-b0411118d360-multinode": {
+          "job": "1900864",
+          "results/status.json": {
+            "job": "1900864",
+            "state": "COMPLETED",
+            "exit_code": "0:0",
+            "verified": true
+          },
+          "results/evidence.json": {
+            "final_energy_ev": -4869.747051950166,
+            "nodes": {
+              "8v100v0n02.mr-sai.ai": 1,
+              "8v100v0n06.mr-sai.ai": 1
+            },
+            "ranks": 2
+          }
+        },
+        "benchmark-39742021186-1-release-8v100v0-avx512-2026-10-22-b0411118d360-hse": {
+          "job": "1900893",
+          "results/status.json": {
+            "exit_code": "16:0",
+            "job": "1900893",
+            "state": "FAILED",
+            "verified": false
+          }
+        },
+        "benchmark-39742021186-1-release-8v100v0-avx512-2026-10-22-b0411118d360-pw": {
+          "job": "1900884",
+          "results/status.json": {
+            "exit_code": "0:0",
+            "job": "1900884",
+            "state": "COMPLETED",
+            "verified": true
+          },
+          "results/evidence.json": {
+            "energy_spread_ev": 2.0463630789890885e-10,
+            "statistics": {
+              "rounded_iteration_seconds": {
+                "candidate": {
+                  "max": 1.23,
+                  "median": 1.22,
+                  "min": 1.2
+                },
+                "candidate_system_ratio": 0.9242424242424242,
+                "system": {
+                  "max": 1.46,
+                  "median": 1.32,
+                  "min": 1.32
+                }
+              },
+              "wall_seconds": {
+                "candidate": {
+                  "max": 4.94,
+                  "median": 4.94,
+                  "min": 4.93
+                },
+                "candidate_system_ratio": 1.1330275229357798,
+                "system": {
+                  "max": 4.42,
+                  "median": 4.36,
+                  "min": 4.35
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "run_id": "39742021186-1-release-dsprhbm-2026-10-22-b0411118d360",
+      "manifest": {
+        "artifact": "/home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r851137534055/DSPRHBM/39742021186-1-release-dsprhbm-2026-10-22-b0411118d360.sif",
+        "build_verified": true,
+        "contract_schema": 3,
+        "controller": "/home/stardust/sai-hpc-software/controller/f1f19288b87512b4a17da7ebb619250f5a1233d6/39742021186-1-release-dsprhbm-2026-10-22-b0411118d360",
+        "identity": {
+          "build_id": "v3.11.0-beta11-gb0411118d360-r851137534055",
+          "cpu_arch": "x86-64-v4",
+          "cuda_arch": "",
+          "dependency_isa": "avx512",
+          "gpus": 0,
+          "install_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/DSPRHBM",
+          "partition": "DSPRHBM",
+          "recipe_sha256": "8511375340556e9e44c0935b36d7421cb7d7cb5b66380f731708bdc2105f606f",
+          "repository": "deepmodeling/abacus-develop",
+          "schema": 2,
+          "software": "abacus",
+          "source_ref": "v3.11.0-beta11",
+          "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+          "source_version": "v3.11.0-beta11",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "dsprhbm",
+          "track": "release",
+          "version_label": "v3.11.0-beta11"
+        },
+        "published": false,
+        "recipe_sha256": "8511375340556e9e44c0935b36d7421cb7d7cb5b66380f731708bdc2105f606f",
+        "sha256": "369db4de858f13cf9a7ce720761c9172d74131214e8c53866cf28eb507252491",
+        "software": "abacus",
+        "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+        "target": "dsprhbm",
+        "verified": false,
+        "version": "v3.11.0-beta11"
+      },
+      "tests": {
+        "39742021186-1-release-dsprhbm-2026-10-22-b0411118d360-multinode": {
+          "job": "1900865",
+          "results/status.json": {
+            "job": "1900865",
+            "state": "CANCELLED by 1478400690",
+            "exit_code": "0:0",
+            "verified": false
+          }
+        }
+      }
+    }
+  ]
+}

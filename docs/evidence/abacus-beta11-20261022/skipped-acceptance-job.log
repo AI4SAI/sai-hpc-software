@@ -1,0 +1,100 @@
+﻿2026-10-22T12:10:49.5378536Z Current runner version: '2.338.0'
+2026-10-22T12:10:49.5399756Z ##[group]Runner Image Provisioner
+2026-10-22T12:10:49.5400456Z Hosted Compute Agent
+2026-10-22T12:10:49.5401032Z Version: 20261015.610
+2026-10-22T12:10:49.5401598Z Commit: 267fdb4e8bbec4ab5ea31367f3a00d5c480c7656
+2026-10-22T12:10:49.5402218Z Build Date: 2026-10-14T17:06:54Z
+2026-10-22T12:10:49.5402814Z Worker ID: {818800d5-e73d-4941-a377-357cc59dd6d1}
+2026-10-22T12:10:49.5403418Z Region: westus3
+2026-10-22T12:10:49.5403934Z Cloud: Azure
+2026-10-22T12:10:49.5404423Z ##[endgroup]
+2026-10-22T12:10:49.5405535Z ##[group]Operating System
+2026-10-22T12:10:49.5406077Z Ubuntu
+2026-10-22T12:10:49.5406527Z 24.04.5
+2026-10-22T12:10:49.5407000Z LTS
+2026-10-22T12:10:49.5407477Z ##[endgroup]
+2026-10-22T12:10:49.5408070Z ##[group]Runner Image
+2026-10-22T12:10:49.5408629Z Image: ubuntu-24.04
+2026-10-22T12:10:49.5409153Z Version: 20261018.339.1
+2026-10-22T12:10:49.5410195Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20261018.339/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-22T12:10:49.5411455Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20261018.339
+2026-10-22T12:10:49.5412367Z ##[endgroup]
+2026-10-22T12:10:49.5413258Z ##[group]GITHUB_TOKEN Permissions
+2026-10-22T12:10:49.5414924Z Contents: read
+2026-10-22T12:10:49.5415431Z Metadata: read
+2026-10-22T12:10:49.5415972Z ##[endgroup]
+2026-10-22T12:10:49.5417886Z Secret source: Actions
+2026-10-22T12:10:49.5418783Z Cache mode: write
+2026-10-22T12:10:49.5419389Z Prepare workflow directory
+2026-10-22T12:10:49.5924887Z Prepare all required actions
+2026-10-22T12:10:49.5974620Z Uses: AI4SAI/sai-hpc-software/.github/workflows/software-pair.yml@refs/heads/main (f1f19288b87512b4a17da7ebb619250f5a1233d6)
+2026-10-22T12:10:49.5979028Z ##[group] Inputs
+2026-10-22T12:10:49.5979632Z   software: abacus
+2026-10-22T12:10:49.5981326Z   build: {
+  "software": "abacus",
+  "track": "release",
+  "repository": "deepmodeling/abacus-develop",
+  "requested_ref": "latest-release",
+  "status": "resolved",
+  "source_ref": "v3.11.0-beta11",
+  "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+  "source_version": "v3.11.0-beta11",
+  "target": "dsprhbm"
+}
+2026-10-22T12:10:49.5983029Z   resume_run: 
+2026-10-22T12:10:49.5983465Z   reference_run: 
+2026-10-22T12:10:49.5984292Z   retry_releases: false
+2026-10-22T12:10:49.5984829Z ##[endgroup]
+2026-10-22T12:10:49.5985802Z Complete job name: abacus / build (abacus, release, deepmodeling/abacus-develop, latest-release, resolved, v3.11.0-beta11, b0... / result
+2026-10-22T12:10:49.6508203Z ##[group]Run python3 - <<'PY'
+2026-10-22T12:10:49.6508971Z [36;1mpython3 - <<'PY'[0m
+2026-10-22T12:10:49.6509507Z [36;1mimport json, os[0m
+2026-10-22T12:10:49.6510110Z [36;1mresults = json.loads(os.environ['RESULTS'])[0m
+2026-10-22T12:10:49.6510824Z [36;1mcp2k = os.environ['SOFTWARE'] == 'cp2k'[0m
+2026-10-22T12:10:49.6511501Z [36;1mif cp2k and results['dependencies']['result'] != 'success':[0m
+2026-10-22T12:10:49.6512358Z [36;1m    raise SystemExit('Dependency stage did not succeed')[0m
+2026-10-22T12:10:49.6513208Z [36;1mdeduplicated = cp2k and not results['dependencies']['outputs'].get('run_id')[0m
+2026-10-22T12:10:49.6514108Z [36;1mif results['build']['result'] != ('skipped' if deduplicated else 'success'):[0m
+2026-10-22T12:10:49.6514925Z [36;1m    raise SystemExit('Build stage did not complete')[0m
+2026-10-22T12:10:49.6515675Z [36;1mrun_id = results['build'].get('outputs', {}).get('run_id')[0m
+2026-10-22T12:10:49.6516569Z [36;1mif not run_id and os.environ['RELEASE_TRACK'] == 'development':[0m
+2026-10-22T12:10:49.6517419Z [36;1m    raise SystemExit('Development delivery must rebuild on every trigger')[0m
+2026-10-22T12:10:49.6518376Z [36;1mexpected = 'success' if run_id else 'skipped'[0m
+2026-10-22T12:10:49.6519112Z [36;1mif results['acceptance']['result'] != expected:[0m
+2026-10-22T12:10:49.6519896Z [36;1m    raise SystemExit('Selected delivery acceptance did not complete')[0m
+2026-10-22T12:10:49.6520722Z [36;1mwith open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:[0m
+2026-10-22T12:10:49.6521750Z [36;1m    out.write('Accepted delivery: ' + run_id + '\n' if run_id else[0m
+2026-10-22T12:10:49.6522642Z [36;1m              'Unchanged release already attempted; no new acceptance claimed.\n')[0m
+2026-10-22T12:10:49.6523373Z [36;1mPY[0m
+2026-10-22T12:10:49.8393608Z shell: /usr/bin/bash -e {0}
+2026-10-22T12:10:49.8394451Z env:
+2026-10-22T12:10:49.8395050Z   SOFTWARE: abacus
+2026-10-22T12:10:49.8395565Z   REMOTE_USER: 
+2026-10-22T12:10:49.8396082Z   SOURCE_REF: v3.11.0-beta11
+2026-10-22T12:10:49.8396614Z   RELEASE_TRACK: release
+2026-10-22T12:10:49.8397227Z   SOURCE_SHA: b0411118d360eebe3563f28aeb502ae9d5a9d200
+2026-10-22T12:10:49.8398040Z   SOFTWARE_VERSION: v3.11.0-beta11
+2026-10-22T12:10:49.8398673Z   TARGET: dsprhbm
+2026-10-22T12:10:49.8399105Z   RESUME_RUN: 
+2026-10-22T12:10:49.8399617Z   CP2K_REFERENCE_RUN: 
+2026-10-22T12:10:49.8400128Z   RETRY_RELEASES: false
+2026-10-22T12:10:49.8401529Z   RESULTS: {
+  "dependencies": {
+    "result": "skipped",
+    "outputs": {}
+  },
+  "build": {
+    "result": "success",
+    "outputs": {
+      "run_id": "39742021186-1-release-dsprhbm-2026-10-22-b0411118d360"
+    }
+  },
+  "acceptance": {
+    "result": "skipped",
+    "outputs": {}
+  }
+}
+2026-10-22T12:10:49.8402959Z ##[endgroup]
+2026-10-22T12:10:49.8715438Z Selected delivery acceptance did not complete
+2026-10-22T12:10:49.8746619Z ##[error]Process completed with exit code 1.
+2026-10-22T12:10:49.8947228Z Cleaning up orphan processes

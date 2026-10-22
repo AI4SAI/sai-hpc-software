@@ -119,8 +119,13 @@ def render_job(r, task):
     # reserve enough node memory for the system and candidate arms alike.
     resource = (["#SBATCH --cpus-per-task=2", "#SBATCH --mem=100G"] if cpu else
                 ["#SBATCH --gpus-per-node=1"])
-    mapping = (f"export MAP_OPT=ppr:8:node:pe=2" if cpu else
+    mapping = (f"export MAP_OPT=ppr:{r['ranks_per_node']}:node:pe={r['threads']}" if cpu else
                f"source /opt/sai_config/mps_mapping.d/{target['partition']}.bash")
+    # One GPU rank per node inherits the Slurm cpuset. Explicit PRTE core
+    # binding can choose cores outside that cpuset on the second 4V100 node.
+    # The affinity audit still requires the site-prescribed physical core count.
+    placement = ('--map-by "$MAP_OPT" --bind-to core' if cpu else
+                 '--map-by ppr:1:node --bind-to none')
     trace = ('printf "%s\\t%s\\t%s\\t%s\\t%s\\t%s\\n" "$(hostname)" '
              '"$OMPI_COMM_WORLD_RANK" "$BENCH_TARGET" "$1" "${CUDA_VISIBLE_DEVICES:-}" '
              '"${OPAL_PREFIX:-}" > "$SAI_ABACUS_TRACE_DIR/rank-$OMPI_COMM_WORLD_RANK.tsv"; exec "$@"')
@@ -176,7 +181,7 @@ def render_job(r, task):
              f'read -r actual _ < artifact.sha256; [[ "$actual" == {r["artifact_sha256"]} ]]',
              f'read -r actual _ < launcher.sha256; [[ "$actual" == {r["launcher_sha256"]} ]]',
              f'/usr/bin/time -f %e -o wall-seconds.txt mpirun -np {r["ranks"]} '
-             '--map-by "$MAP_OPT" --bind-to core --report-bindings "${command[@]}" > stdout.log 2>&1',
+             f'{placement} --report-bindings "${{command[@]}}" > stdout.log 2>&1',
              'printf "%s\\n" "$SLURM_JOB_ID" > completed.job', ")"]
     lines += [f"run_one {s['arm']} {s['id']}" for s in r["runs"]]
     lines += ['echo ABACUS_BENCHMARK_RUNS_COMPLETED']
@@ -233,7 +238,7 @@ def prepare(args):
              artifact_sha256=candidate["sha256"], launcher_sha256=checksum(launcher),
              controller_sha256=checksum(CONTROL), case_files=files, case_device=device,
              allow_cpu_case_on_gpu=allow_cpu,
-             ranks_per_node=8 if cpu else 1, ranks=16 if cpu else 2, threads=2 if cpu else 1,
+             ranks_per_node=4 if cpu else 1, ranks=8 if cpu else 2, threads=2 if cpu else 1,
              dependency_isa=target.get("dependency_isa", "avx512" if args.target in
                                        {"dsprhbm", "4v100-avx512"} else "avx2"),
              runs=sequence(args.warmup, args.repeats), schema=2)
@@ -474,7 +479,26 @@ def verify_evidence(task, request):
     if len(binaries) != 1 or len({tuple(sorted(x["nodes"])) for x in records}) != 1:
         raise ValueError("system binary or allocation nodes changed")
     delta = max(x["energy_ev"] for x in records) - min(x["energy_ev"] for x in records)
-    if delta > 1e-5:
+    reference = None
+    if r['packaged_case'] in ('hse', 'deepks'):
+        # Upstream changes numerical results between releases. The old site
+        # binary is a timing comparator; the candidate's pinned upstream case
+        # supplies its scientific reference. Keep the same absolute tolerance.
+        values = re.findall(r'^etotref\s+(\S+)\s*$', read('input/result.ref'), re.M)
+        if len(values) != 1 or not math.isfinite(float(values[0])):
+            raise ValueError('missing or invalid upstream energy reference')
+        expected_energy = float(values[0])
+        candidate_error = max(abs(x['energy_ev'] - expected_energy)
+                              for x in records if x['arm'] == 'candidate')
+        if candidate_error > 1e-5:
+            raise ValueError('candidate SCF energy differs from upstream reference by more than 1e-5 eV')
+        for arm in ('system', 'candidate'):
+            energies = [x['energy_ev'] for x in records if x['arm'] == arm]
+            if max(energies) - min(energies) > 1e-5:
+                raise ValueError('SCF energy repeat spread exceeds 1e-5 eV')
+        reference = dict(source='pinned upstream result.ref', energy_ev=expected_energy,
+                         candidate_max_error_ev=candidate_error, tolerance_ev=1e-5)
+    elif delta > 1e-5:
         raise ValueError("SCF energy difference exceeds 1e-5 eV")
     stats = {}
     for metric in ("wall_seconds", "rounded_iteration_seconds"):
@@ -489,7 +513,8 @@ def verify_evidence(task, request):
                     benchmark_case=r["benchmark_case"], case_files=metadata["case_files"],
                     artifact_sha256=r["artifact_sha256"], launcher_sha256=r["launcher_sha256"],
                     controller_sha256=r["controller_sha256"], job_script_sha256=r["job_script_sha256"],
-                    energy_spread_ev=delta, statistics=stats, runs=records, files=files,
+                    energy_spread_ev=delta, energy_reference=reference,
+                    statistics=stats, runs=records, files=files,
                     timing_note="Iteration times sum the rounded SCF TIME/s column; wall measures mpirun only.",
                     affinity_note="Physical/logical CPU sets and OpenMP environment match for every host/local rank; "
                                   "binding is recorded before exec, not sampled per OpenMP worker thread.")

@@ -355,6 +355,10 @@ def render_job(args):
                                  control=CONTROL, repository=source_repo,
                                  jobs=args.jobs, gpu=bool(target["gpus"]), extra_binds=runtime_binds() if final and args.software == "abacus" else binds,
                                  runtime=r / "runtime" if final and args.software == "cp2k" else None)
+        if args.software == 'abacus':
+            # The public ELPA selector needs the allocation partition even
+            # though the build container deliberately uses --cleanenv.
+            command[2:2] = ['--env', 'SLURM_JOB_PARTITION=' + target['partition']]
         if args.software == 'cp2k' and not final:
             command[2:2] = ['--bind', str(r / 'results') + ':/results:rw']
             from cp2k_image_driver import wrap_command
@@ -368,8 +372,8 @@ def render_job(args):
     q = shlex.quote
     lines = [
         "#!/bin/bash",
-        "#SBATCH --job-name=" + ('sai-cp2k-build-' + args.target + '-' + delivery['recipe_sha256'][:12]
-                                if args.software == 'cp2k' else 'sai-software-build'),
+        "#SBATCH --job-name=" + ('sai-' + args.software + '-build-' + args.target + '-' + delivery['recipe_sha256'][:12]
+                                if args.software in ('abacus', 'cp2k') else 'sai-software-build'),
         "#SBATCH --dependency=singleton",
         f"#SBATCH --partition={target['partition']}",
         f"#SBATCH --qos={target['qos']}",

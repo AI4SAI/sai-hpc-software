@@ -1,0 +1,247 @@
+--------------------------------------------------------------------------
+PRTE has detected that the head of the session directory tree (where
+scratch files and shared memory backing storage will be placed)
+resides on a shared file system:
+
+   Directory: /home/stardust/sai-hpc-software/runtime-tests/abacus-beta11-debug16-20261022/mpi-runtime
+   File system type: lustre
+
+For performance reasons, it is strongly recommended that the session
+directory be located on a local file system. This can be controlled by
+setting the system temporary directory to be used by PRTE using either
+the TMPDIR envar or the "prte_tmpdir_base" MCA param.
+
+If you need the temporary directory to be different on remote nodes
+from the local one where prterun is running (e.g., when a login node is
+being employed), then you can set the local temporary directory using
+the "prte_local_tmpdir_base" MCA param and the one to be used on all
+other nodes using the "prte_remote_tmpdir_base" param.
+
+This is only a warning advisory and your job will continue. You can
+disable this warning in the future by setting the
+"prte_silence_shared_fs" MCA param to "1".
+--------------------------------------------------------------------------
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x155496bff000 (LWP 504347)]
+[New Thread 0x1554953ff000 (LWP 504348)]
+[New Thread 0x155494fa4000 (LWP 504349)]
+Info: Local MPI proc number: 1,OpenMP thread number: 1,Total thread number: 1,Local thread limit: 128
+
+                     ▄████▄ █████▄ ▄████▄ ▄█████ ██  ██ ▄█████ 
+                     ██▄▄██ ██▄▄██ ██▄▄██ ██     ██  ██ ▀▀▀▄▄▄ 
+                     ██  ██ ██▄▄█▀ ██  ██ ▀█████ ▀████▀ █████▀ 
+
+                                                                                     
+                                v3.11.0-beta11
+
+               Atomic-orbital Based Ab-initio Computation at UStc                    
+
+                     Website: http://abacus.ustc.edu.cn/                             
+               Documentation: https://abacus.deepmodeling.com/                       
+                  Repository: https://github.com/abacusmodeling/abacus-develop       
+                              https://github.com/deepmodeling/abacus-develop         
+                      Commit: b041111 (Sun Oct 18 21:15:08 2026 +0800)
+
+ Thu Oct 22 15:27:58 2026
+ MAKE THE DIR         : OUT.autotest/
+ RUNNING WITH DEVICE  : CPU / AMD Ryzen Threadripper PRO 5995WX 64-Cores (x1)
+ WARNING: some of potential function is set to zero cause of less than 1e-30.
+ NAME OF ELEMENT      : H
+ DFT FUNC. (PSEUDO)   : PBE
+ DFT FUNC. (SET TO)   : HSE
+ MAKE SURE THIS DFT FUNCTIONAL IS WHAT YOU NEED
+ WARNING: some of potential function is set to zero cause of less than 1e-30.
+ NAME OF ELEMENT      : O
+ DFT FUNC. (PSEUDO)   : PBE
+ DFT FUNC. (SET TO)   : HSE
+ MAKE SURE THIS DFT FUNCTIONAL IS WHAT YOU NEED
+ UNIFORM GRID DIM          : 27 * 27 * 27
+ UNIFORM GRID DIM (BIG)    : 9 * 9 * 9
+ DONE(0.0764412  SEC) : SETUP UNITCELL
+ DONE(0.0798599  SEC) : INIT K-POINTS
+ ----------------------------------------------------------------
+ Self-consistent calculations for electrons
+ ----------------------------------------------------------------
+ SPIN    KPOINTS         PROCESSES   THREADS/PROC  THREADS/TOTAL 
+ 1       Gamma           1           1             1             
+ ----------------------------------------------------------------
+ Use Systematically Improvable Atomic bases
+ ----------------------------------------------------------------
+ TOTAL NBASE 6
+ ELEMENT ORBITALS        NBASE       NATOM       
+ H       1s0p-6au        1           2           
+ O       1s1p0d-6au      4           1           
+ ----------------------------------------------------------------
+ Initial plane wave basis and FFT box
+ ----------------------------------------------------------------
+ DONE(0.0851522  SEC) : INIT PLANEWAVE
+ START CHARGE         : ATOMIC
+ DONE(0.122006   SEC) : CHARGE
+ DONE(0.518447   SEC) : POTENTIALS
+
+ ================================================================
+ SELF-CONSISTENT: 
+ ================================================================
+ DONE(0.531968   SEC) : INIT SCF
+
+Thread 1 "abacus" received signal SIGILL, Illegal instruction.
+warning: 500	../src/elpa_index.c: No such file or directory
+find_int_entry (name=0x5555652e8100 "na") at ../src/elpa_index.c:500
+
+Thread 4 (Thread 0x155494fa4000 (LWP 504349) "async"):
+#0  0x00001554f6dc0072 in epoll_wait (epfd=37, events=events@entry=0x155494f486c0, maxevents=16, timeout=-1) at ../sysdeps/unix/sysv/linux/epoll_wait.c:30
+#1  0x00001555285cbf4b in ucs_event_set_wait (event_set=<optimized out>, num_events=num_events@entry=0x155494f4881c, timeout_ms=<optimized out>, event_set_handler=event_set_handler@entry=0x1555285a85e0 <ucs_async_thread_ev_handler>, arg=arg@entry=0x155494f48820) at /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/ucx-1.20.0/contrib/../src/ucs/sys/event_set.c:198
+#2  0x00001555285a8cfe in ucs_async_thread_func (arg=0x555559f7ead0) at /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/ucx-1.20.0/contrib/../src/ucs/async/thread.c:131
+#3  0x00001554f6d32aa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#4  0x00001554f6dbfc6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 3 (Thread 0x1554953ff000 (LWP 504348) "cuda00004000011"):
+#0  0x00001554f6db14fd in __GI___poll (fds=0x555559f834e0, nfds=3, timeout=-1) at ../sysdeps/unix/sysv/linux/poll.c:29
+#1  0x000015549fd8c44f in ?? () from /.singularity.d/libs/libcuda.so.1
+#2  0x000015549fe5080f in ?? () from /.singularity.d/libs/libcuda.so.1
+#3  0x000015549fd84143 in ?? () from /.singularity.d/libs/libcuda.so.1
+#4  0x00001554f6d32aa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#5  0x00001554f6dbfc6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 2 (Thread 0x155496bff000 (LWP 504347) "abacus"):
+#0  0x00001554f6dc0072 in epoll_wait (epfd=8, events=0x555559ebc390, maxevents=32, timeout=119656) at ../sysdeps/unix/sysv/linux/epoll_wait.c:30
+#1  0x00001555288e0f15 in ?? () from /lib/x86_64-linux-gnu/libevent_core-2.1.so.7
+#2  0x00001555288dbda8 in event_base_loop () from /lib/x86_64-linux-gnu/libevent_core-2.1.so.7
+#3  0x000015549f487551 in progress_engine () from /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libpmix.so.2
+#4  0x00001554f6d32aa4 in start_thread (arg=<optimized out>) at ./nptl/pthread_create.c:447
+#5  0x00001554f6dbfc6c in clone3 () at ../sysdeps/unix/sysv/linux/x86_64/clone3.S:78
+
+Thread 1 (Thread 0x155510ded000 (LWP 504342) "abacus"):
+#0  find_int_entry (name=0x5555652e8100 "na") at ../src/elpa_index.c:500
+#1  elpa_index_get_int_loc (index=0x5555652e9270, name=name@entry=0x5555652e8100 "na") at ../src/elpa_index.c:579
+#2  0x0000155528a686d6 in elpa_impl::elpa_associate_int (self=..., name=..., _name=_name@entry=2) at ../src/elpa_impl.F90:1569
+#3  0x0000155528a721ce in elpa_impl::elpa_impl_allocate (error=0) at ../src/elpa_impl.F90:327
+#4  0x0000555556142c41 in ELPA_Solver::ELPA_Solver(bool, ompi_communicator_t*, int, int, int, int const*, bool) ()
+#5  0x00005555559776cc in hsolver::DiagoElpa<double>::diag(ModuleBase::MatrixBlock<double>&, ModuleBase::MatrixBlock<double>&, psi::Psi<double, base_device::DEVICE_CPU>&, double*) ()
+#6  0x000055555595ca9b in hsolver::HSolverLCAO<double>::hamiltSolvePsiK(ModuleBase::MatrixBlock<double>&, ModuleBase::MatrixBlock<double>&, psi::Psi<double, base_device::DEVICE_CPU>&, double*) ()
+#7  0x0000555555960a8b in hsolver::HSolverLCAO<double>::solve(hsolver::HSMatrix<double>&, psi::Psi<double, base_device::DEVICE_CPU>&, elecstate::ElecState*, module_dm::DensityMatrix<double, double>&, Charge&, int, double, bool) ()
+   0x155528d16b17 <elpa_index_get_int_loc+55>:	xor    %eax,%eax
+   0x155528d16b19 <elpa_index_get_int_loc+57>:	mov    %rsi,0x10(%rsp)
+   0x155528d16b1e <elpa_index_get_int_loc+62>:	movq   $0x55,0x8(%rsp)
+=> 0x155528d16b27 <elpa_index_get_int_loc+71>:	vmovdqu8 %zmm0,0x18(%rsp)
+   0x155528d16b32 <elpa_index_get_int_loc+82>:	vmovdqu8 %ymm0,0x58(%rsp)
+   0x155528d16b3d <elpa_index_get_int_loc+93>:	lea    0x8(%rsp),%rdx
+   0x155528d16b42 <elpa_index_get_int_loc+98>:	lea    0x10(%rsp),%rdi
+   0x155528d16b47 <elpa_index_get_int_loc+103>:	mov    %r12,%rsi
+From                To                  Syms Read   Shared Object Library
+0x000015555551d000  0x0000155555547195  Yes         /lib64/ld-linux-x86-64.so.2
+0x000015555546ee50  0x00001555554e8290  Yes (*)     /opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/16V100/dependencies/libtorch/lib/libc10.so
+0x00001555432546f0  0x0000155543d19862  Yes (*)     /opt/devtools/nvidia/cuda-12.9.1/lib64/libcusolver.so.11
+0x000015553ca31360  0x000015553cfaa212  Yes (*)     /opt/devtools/nvidia/cuda-12.9.1/lib64/libcublas.so.12
+0x000015552ac27630  0x000015552b0f7c2a  Yes (*)     /opt/devtools/nvidia/cuda-12.9.1/lib64/libcufft.so.11
+0x0000155529488d80  0x000015552ab23d40  Yes         /opt/devtools/libxc/libxc-7.0.0-avx2/lib/libxc.so.15
+0x0000155528a3f180  0x0000155528daada2  Yes         /opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia/lib/libelpa_openmp.so.19
+0x00001555430fba40  0x000015554311df7c  Yes (*)     /opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/16V100/dependencies/nep/lib/libnep.so
+0x000015552860dfb0  0x000015552868e614  Yes (*)     /opt/devtools/nvidia/cuda-12.9.1/lib64/libcudart.so.12
+0x0000155526c64740  0x0000155526f71732  Yes (*)     /opt/devtools/nvidia/mp_libs/lib/libcusolverMp.so.0
+0x0000155510f191e0  0x00001555111167f2  Yes (*)     /opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/lib/libnccl.so.2
+0x000015550ea1d790  0x000015550ed4c212  Yes (*)     /opt/devtools/nvidia/mp_libs/lib/libcublasmp.so.0
+0x000015550e44d640  0x000015550e92e255  Yes (*)     /opt/devtools/saiblas/2603-gnu-avx2/lib/libscalapack.so.2.2
+0x0000155555445600  0x0000155555447f59  Yes (*)     /opt/devtools/fftw/fftw-3.3.10/lib/libfftw3_omp.so.3
+0x000015550e0e5f60  0x000015550e3b7da9  Yes (*)     /opt/devtools/fftw/fftw-3.3.10/lib/libfftw3.so.3
+0x000015550d377600  0x000015550dff6a20  Yes         /opt/devtools/saiblas/2603-gnu-avx2/lib/libopenblas.so.0
+0x000015555536a420  0x00001555553e83a6  Yes         /lib/x86_64-linux-gnu/libm.so.6
+0x000015550cf69f30  0x000015550d1cadb9  Yes         /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libmpi.so.40
+0x00001555430abf00  0x00001555430e6ce2  Yes (*)     /lib/x86_64-linux-gnu/libgomp.so.1
+0x00001554f81bd300  0x000015550972e5d0  Yes (*)     /opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/16V100/dependencies/libtorch/lib/libtorch_cpu.so
+0x000015554309d520  0x000015554309d5fa  Yes (*)     /opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/16V100/dependencies/libtorch/lib/libtorch.so
+0x00001554f6f4d5c0  0x00001554f708cce2  Yes (*)     /lib/x86_64-linux-gnu/libstdc++.so.6
+0x0000155543073780  0x0000155543096745  Yes (*)     /lib/x86_64-linux-gnu/libgcc_s.so.1
+0x00001554f6cbe800  0x00001554f6e45d39  Yes         /lib/x86_64-linux-gnu/libc.so.6
+0x0000155543069040  0x0000155543069105  Yes         /lib/x86_64-linux-gnu/libdl.so.2
+0x00001554f13420c0  0x00001554f5819cf1  Yes (*)     /opt/devtools/nvidia/cuda-12.9.1/lib64/libnvJitLink.so.12
+0x00001554d3e6c480  0x00001554d4921f02  Yes (*)     /opt/devtools/nvidia/cuda-12.9.1/lib64/libcusparse.so.12
+0x00001554a245a9c0  0x00001554aa018ed2  Yes (*)     /opt/devtools/nvidia/cuda-12.9.1/lib64/libcublasLt.so.12
+0x0000155543064080  0x00001555430642b1  Yes         /lib/x86_64-linux-gnu/librt.so.1
+0x000015554305d040  0x000015554305d105  Yes         /lib/x86_64-linux-gnu/libpthread.so.0
+0x000015553c9dcc80  0x000015553c9f1e30  Yes (*)     /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libmpi_mpifh.so.40
+0x00001554a1703300  0x00001554a19d3518  Yes (*)     /lib/x86_64-linux-gnu/libgfortran.so.5
+0x000015549fbf4d80  0x00001554a00c87c4  Yes (*)     /.singularity.d/libs/libcuda.so.1
+0x000015553c959100  0x000015553c97e720  Yes         /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libucc.so.1
+0x000015549f6132a0  0x000015549f6fb074  Yes (*)     /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libhcoll.so.1
+0x000015553c8545e0  0x000015553c915100  Yes (*)     /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libopen-pal.so.80
+0x0000155528914650  0x00001555289bce8e  Yes         /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libucp.so.0
+0x00001555285a0da0  0x00001555285dc060  Yes         /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libucs.so.0
+0x000015549f403ad0  0x000015549f58a1ec  Yes (*)     /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libpmix.so.2
+0x00001555288c4b80  0x00001555288e2074  Yes (*)     /lib/x86_64-linux-gnu/libevent_core-2.1.so.7
+0x00001555430542e0  0x00001555430546fc  Yes (*)     /lib/x86_64-linux-gnu/libevent_pthreads-2.1.so.7
+0x0000155528532910  0x000015552857219e  Yes         /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libhwloc.so.15
+0x000015549f0073e0  0x000015549f02591e  Yes (*)     /opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/16V100/dependencies/libtorch/lib/libgomp-52f2fd74.so.1
+0x000015549ec0e1f0  0x000015549ec3b53d  Yes (*)     /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libocoms.so.0
+0x000015553c82a040  0x000015553c82a105  Yes         /lib/x86_64-linux-gnu/libutil.so.1
+0x000015552850ff90  0x0000155528524282  Yes (*)     /lib/x86_64-linux-gnu/librdmacm.so.1
+0x00001555284ee120  0x0000155528503115  Yes         /lib/x86_64-linux-gnu/libibverbs.so.1
+0x00001555284cf350  0x00001555284de7e7  Yes         /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libucm.so.0
+0x0000155510e94980  0x0000155510eac355  Yes         /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libuct.so.0
+0x00001555284c2320  0x00001555284c5775  Yes (*)     /lib/x86_64-linux-gnu/libmunge.so.2
+0x00001555284a78c0  0x00001555284b5cb9  Yes (*)     /lib/x86_64-linux-gnu/libnl-3.so.200
+0x0000155510e0e480  0x0000155510e53914  Yes (*)     /lib/x86_64-linux-gnu/libnl-route-3.so.200
+0x0000155510d655e0  0x0000155510d66f7c  Yes (*)     /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/openmpi/mca_accelerator_cuda.so
+0x0000155510d5f200  0x0000155510d5f8b8  Yes (*)     /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/pmix/pmix_mca_pcompress_zlib.so
+0x00001554f0f9e260  0x00001554f0fafc40  Yes (*)     /lib/x86_64-linux-gnu/libz.so.1
+0x00001554f0f98300  0x00001554f0f9891b  Yes         /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/hwloc/hwloc_cuda.so
+0x00001554f0f92500  0x00001554f0f931b7  Yes         /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/hwloc/hwloc_nvml.so
+0x00001554958187a0  0x000015549596b6f2  Yes (*)     /.singularity.d/libs/libnvidia-ml.so.1
+0x00001554f0f8b560  0x00001554f0f8c1e2  Yes         /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/hwloc/hwloc_pci.so
+0x00001554f0f805c0  0x00001554f0f84980  Yes (*)     /lib/x86_64-linux-gnu/libpciaccess.so.0
+0x00001554f0f7a340  0x00001554f0f7abfb  Yes         /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/hwloc/hwloc_opencl.so
+0x00001554954026d0  0x0000155495404a24  Yes (*)     /opt/devtools/nvidia/cuda-12.9.1/lib64/libOpenCL.so.1
+0x00001554f0f73320  0x00001554f0f756d0  Yes (*)     /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/openmpi/mca_rcache_rgpusm.so
+0x00001554f0f6e290  0x00001554f0f6ea97  Yes (*)     /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/openmpi/mca_rcache_gpusm.so
+0x00001554f0f45480  0x00001554f0f53c26  Yes         /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/ucx/libuct_cuda.so.0
+0x00001554f0f265a0  0x00001554f0f27d34  Yes         /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/ucx/libuct_cuda_gdrcopy.so.0
+0x00001554f0f1d360  0x00001554f0f1fa4f  Yes (*)     /lib/x86_64-linux-gnu/libgdrapi.so.2
+0x000015549fae0d60  0x000015549fb007c0  Yes         /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/ucx/libuct_ib.so.0
+0x000015549fa72300  0x000015549fab6baf  Yes         /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/ucx/libuct_ib_mlx5.so.0
+0x000015549f9dc240  0x000015549fa4ac2a  Yes (*)     /lib/x86_64-linux-gnu/libmlx5.so.1
+0x00001554f0f11ac0  0x00001554f0f1744a  Yes         /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/ucx/libuct_ib_efa.so.0
+0x00001554f0f01500  0x00001554f0f08057  Yes (*)     /lib/x86_64-linux-gnu/libefa.so.1
+0x00001554d3c93de0  0x00001554d3c98ac5  Yes         /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/ucx/libuct_rdmacm.so.0
+0x00001554d3c8a500  0x00001554d3c8b3cf  Yes         /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/ucx/libuct_cma.so.0
+0x00001554d3c82380  0x00001554d3c8331a  Yes         /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/ucx/libuct_knem.so.0
+0x000015549f9cf4c0  0x000015549f9d0c48  Yes         /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/ucx/libuct_xpmem.so.0
+0x00001554f0efb100  0x00001554f0efb580  Yes (*)     /lib/x86_64-linux-gnu/libxpmem.so.0
+0x000015549f9c55c0  0x000015549f9c8a4c  Yes         /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/ucx/libucm_cuda.so.0
+(*): Shared library is missing debugging information.
+--------------------------------------------------------------------------
+prterun has exited due to process rank 0 with PID 504252 on node 16v100n01 exiting
+improperly. There are three reasons this could occur:
+
+1. this process did not call "init" before exiting, but others in the
+job did. This can cause a job to hang indefinitely while it waits for
+all processes to call "init". By rule, if one process calls "init",
+then ALL processes must call "init" prior to termination.
+
+2. this process called "init", but exited without calling "finalize".
+By rule, all processes that call "init" MUST call "finalize" prior to
+exiting or it will be considered an "abnormal termination"
+
+3. this process called "MPI_Abort" or "prte_abort" and the mca
+parameter prte_create_session_dirs is set to false. In this case, the
+run-time cannot detect that the abort call was an abnormal
+termination. Hence, the only error message you will receive is this
+one.
+
+This may have caused other processes in the application to be
+terminated by signals sent by prterun (as reported here).
+
+You can avoid this message by specifying -quiet on the prterun command
+line.
+--------------------------------------------------------------------------
