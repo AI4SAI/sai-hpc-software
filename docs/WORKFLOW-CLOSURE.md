@@ -3,8 +3,11 @@
 October 22: [independent LAMMPS candidates](LAMMPS-INDEPENDENT.md) reuse the
 accepted physical DeePMD 3.2.0 dependency. The first 16V100 develop build
 (`a0e2bd6efb3d`, job `1896356`) completed in 55m57s and produced a verified
-252 MiB SIF. Development-branch scientific acceptance and native publication
-are still pending.
+252 MiB SIF. Its 14 single/two-node GPU scientific cases passed in job
+`1896820`, independently reverified with the pinned installed DeePMD dependency.
+All release packages/styles remain present (71 packages, 2,497 styles).
+Native publication, other partitions' development acceptance and automatic
+daily integration are still pending.
 
 LAMMPS release work is now tracked in [LAMMPS-RELEASE.md](LAMMPS-RELEASE.md).
 The October 20 release restart now has published, reverified `stable_30Sep2026`

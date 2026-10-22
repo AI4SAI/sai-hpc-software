@@ -25,9 +25,10 @@ host scratch, logs and images stay under the home project.
 Run **Build LAMMPS with installed DeePMD** (`lammps.yml`) on the reviewed branch,
 selecting `development` and a GPU target. This workflow currently produces a
 **build-verified candidate**, not a scientific acceptance or `/opt` publication.
-The status record keeps `scientific_verified`, `native_runtime_verified` and
-`published` false. GPU numerical checks, DeePMD-potential calculations and
-native export/install remain separate follow-up stages. The existing paired
+The build status record keeps `scientific_verified`, `native_runtime_verified`
+and `published` false. GPU scientific acceptance is recorded separately; the
+first 16V100 develop candidate passed it on October 22, as detailed below.
+Native export/install remain separate follow-up stages. The existing paired
 workflow remains available for testing simultaneous upstream changes.
 
 The cluster controller can also be used with a frozen copy of `controller/`
@@ -72,7 +73,7 @@ plus GPU-package/Kokkos LJ and PPPM. It also checks the exact SIF executable,
 MPI/DeePMD loading, visible V100 devices and preservation of all release
 packages/styles. All rank scratch is backed by home. Only LAMMPS runs are
 required; this does not rerun a separate DeePMD build or training acceptance.
-Scientific acceptance and native installation are still pending.
+Scientific acceptance completed on October 22; native installation is pending.
 
 On the cluster, using a frozen copy of these three evidence helpers:
 
@@ -86,4 +87,47 @@ python3 acceptance.py verify /home/stardust/sai-hpc-software/experimental/deepmd
 The acceptance report is separate from the immutable build record; it cannot
 mark a candidate as physically installed or published.
 
-Linux CI for the recipe passed all 895 tests (893 passed, 2 optional skips).
+Linux CI for the original build recipe passed 895 tests (893 passed, 2 optional
+skips). The status query now handles completed jobs that have aged out of
+Slurm's live queue; it reads their durable accounting records. That fix passed
+896 tests (894 passed, 2 skips). The build's frozen controller is preserved;
+acceptance validates its recipe and dependency through its original helpers.
+
+## October 22 GPU scientific acceptance
+
+Job **1896820** completed `0:0` in **1m28s** on `16v100n13` and `16v100n14`.
+All **14 scientific cases** passed, alongside executable/loader and feature
+checks. Independent raw-result revalidation, image SHA256 verification and
+installed DeePMD inventory verification also passed.
+[Acceptance summary](evidence/lammps-independent-20261022/scientific-acceptance-summary.json)
+and [numerical results, rank placement and raw-file hashes](evidence/lammps-independent-20261022/scientific-acceptance.json).
+
+The candidate has **71 packages and 2,497 styles**; all 71 packages and 2,473
+styles from the accepted release remain available. Both single/two-node
+DeePMD cases match the accepted release's energy, force and virial values
+exactly at recorded precision, and also pass the upstream reference checks.
+The GPU/Kokkos LJ/PPPM maximum differences from release are `2.96e-12` for
+energy/pressure and `2.22e-15` for forces, within the unchanged tolerances.
+All rank traces retain visible allocated GPUs. PyTorch reports loading the
+model onto GPU 0 on both nodes; its device is a Tesla V100-SXM2-16GB, SM70.
+TF/JAX use the site's CPU backends with the GPUs still visible. This is
+correctness acceptance, with no performance or DeePMD training claim.
+
+Three failed acceptance attempts are retained in the home tree and
+[documented](evidence/lammps-independent-20261022/acceptance-attempts.json).
+The fixes expose the home-backed parent MPI session directory to each SIF
+rank and interpret `lmp -h` using upstream's version rule: Development and
+Maintenance increment the integer date version, e.g. September 30 becomes
+`20260931`. The same SIF was used throughout; no rebuild or `/opt` write was
+needed. The accepted run used helper commit `f028ef9`, whose full Linux CI
+passed **898 tests (896 passed, 2 optional skips)** in
+[workflow 39732789452](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39732789452).
+
+The additional development builds are dispatched on the same implementation:
+[4V100 workflow 39733175749](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39733175749)
+and [8V100V0 workflow 39733178970](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39733178970).
+Their build and scientific acceptance results are still pending.
+
+The workflow remains a manual build entry plus separate scientific acceptance.
+The daily scheduler, independent DeePMD entry and automatic deployment are
+not complete. Only 16V100 is scientifically accepted for this develop SHA.
