@@ -1,0 +1,217 @@
+{
+  "complete": false,
+  "controller_revision": "control-v5",
+  "cpu": {
+    "16V100": {
+      "accepted": true,
+      "build": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-16v100-a",
+      "build_state": "COMPLETED",
+      "smoke": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-smoke-b",
+      "smoke_state": "COMPLETED"
+    },
+    "4V100": {
+      "accepted": true,
+      "build": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-4v100-a",
+      "build_state": "COMPLETED",
+      "smoke": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-smoke",
+      "smoke_state": "COMPLETED"
+    }
+  },
+  "errors": [],
+  "memory_followup": "4V100 has 22 GiB host RAM per 32 GiB GPU; require complete ENERGY_FORCE memory validation and retain earlier failures.",
+  "name": "20261020-large-water",
+  "points": [
+    {
+      "accepted": true,
+      "attempt": 2,
+      "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g1-d",
+      "calibration_state": "COMPLETED",
+      "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g1-compare-r2",
+      "comparison_state": "COMPLETED",
+      "gpus": 1,
+      "partition": "16V100",
+      "previous_comparisons": [
+        "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g1-compare"
+      ],
+      "replacement_reason": "Last CPU pair stopped at the 92% RAM guard; use 95% with the same 15 GiB quota. Revalidate and reuse nine tuning cases, then run all warm-up/measured pairs afresh.",
+      "shape": [
+        6,
+        6,
+        8
+      ]
+    },
+    {
+      "accepted": true,
+      "attempt": 2,
+      "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g4-e",
+      "calibration_state": "COMPLETED",
+      "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261021-large-water-16v100-g4-compare-r2",
+      "comparison_state": "COMPLETED",
+      "gpus": 4,
+      "partition": "16V100",
+      "previous_comparisons": [
+        "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g4-compare"
+      ],
+      "replacement_reason": "The second measured CPU case crossed the original two-hour case ceiling. Revalidate all nine tuning cases; keep 648 waters and the same resource quota, then run every warm-up and measured pair afresh with the current six-hour case ceiling.",
+      "shape": [
+        8,
+        9,
+        9
+      ]
+    },
+    {
+      "attempt": 3,
+      "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g16-e",
+      "calibration_state": "COMPLETED",
+      "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261021-large-water-16v100-g16-compare-r3",
+      "comparison_state": "NODE_FAIL",
+      "gpus": 16,
+      "host_memory_limited": false,
+      "partition": "16V100",
+      "previous_comparisons": [
+        "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare",
+        "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare-r2"
+      ],
+      "replacement_reason": "The first CPU tuning case reached SCF step 13 at the six-hour case ceiling. Revalidate six GPU tuning cases; run remaining CPU tuning and every timing pair afresh, with 18 hours per case and seven days for the allocation.",
+      "shape": [
+        11,
+        11,
+        12
+      ]
+    },
+    {
+      "accepted": true,
+      "allow_host_limited": true,
+      "attempt": 3,
+      "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g1-full-a",
+      "calibration_state": "COMPLETED",
+      "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r3",
+      "comparison_state": "COMPLETED",
+      "gpus": 1,
+      "host_memory_limited": true,
+      "partition": "4V100",
+      "previous_calibrations": [
+        "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g1-f"
+      ],
+      "previous_comparisons": [
+        "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare",
+        "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r2"
+      ],
+      "replacement_reason": "Second CPU measured pair stopped at 20.28/22 GiB under the 92% RAM guard. Keep the same allocation and 392 waters; use 95%, revalidate nine original tuning cases, and run all warm-up/measured pairs afresh.",
+      "shape": [
+        7,
+        7,
+        8
+      ]
+    },
+    {
+      "accepted": true,
+      "allow_host_limited": true,
+      "attempt": 2,
+      "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261021-4v100-g4-full-b",
+      "calibration_state": "COMPLETED",
+      "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g4-compare-r2",
+      "comparison_state": "COMPLETED",
+      "gpus": 4,
+      "host_memory_limited": true,
+      "partition": "4V100",
+      "previous_calibrations": [
+        "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-e",
+        "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-full-a"
+      ],
+      "replacement_reason": "The 900-water full calculation hit the 92% host-memory guard at 81.26/88 GiB. Start complete calibration from 864 waters with six probes, retaining the larger-size RAM evidence.",
+      "shape": [
+        9,
+        10,
+        10
+      ]
+    }
+  ],
+  "scheduler": {
+    "1882046": {
+      "elapsed": "00:06:40",
+      "exit_code": "0:0",
+      "nodes": "16v100n67",
+      "state": "COMPLETED"
+    },
+    "1882047": {
+      "elapsed": "00:22:31",
+      "exit_code": "0:0",
+      "nodes": "4v100n10",
+      "state": "COMPLETED"
+    },
+    "1882071": {
+      "elapsed": "00:01:59",
+      "exit_code": "0:0",
+      "nodes": "16v100n02",
+      "state": "COMPLETED"
+    },
+    "1882180": {
+      "elapsed": "00:05:44",
+      "exit_code": "0:0",
+      "nodes": "16v100n07",
+      "state": "COMPLETED"
+    },
+    "1882207": {
+      "elapsed": "00:11:59",
+      "exit_code": "0:0",
+      "nodes": "16v100n60",
+      "state": "COMPLETED"
+    },
+    "1882209": {
+      "elapsed": "00:01:54",
+      "exit_code": "0:0",
+      "nodes": "16v100n07",
+      "state": "COMPLETED"
+    },
+    "1882304": {
+      "elapsed": "00:02:26",
+      "exit_code": "0:0",
+      "nodes": "4v100n04",
+      "state": "COMPLETED"
+    },
+    "1882535": {
+      "elapsed": "00:07:42",
+      "exit_code": "0:0",
+      "nodes": "4v100n09",
+      "state": "COMPLETED"
+    },
+    "1884617": {
+      "elapsed": "01:42:35",
+      "exit_code": "0:0",
+      "nodes": "16v100n01",
+      "state": "COMPLETED"
+    },
+    "1884985": {
+      "elapsed": "01:37:37",
+      "exit_code": "0:0",
+      "nodes": "4v100n02",
+      "state": "COMPLETED"
+    },
+    "1887901": {
+      "elapsed": "00:32:11",
+      "exit_code": "0:0",
+      "nodes": "4v100n16",
+      "state": "COMPLETED"
+    },
+    "1887923": {
+      "elapsed": "1-05:08:41",
+      "exit_code": "1:0",
+      "nodes": "16v100n27",
+      "state": "NODE_FAIL"
+    },
+    "1888437": {
+      "elapsed": "18:16:16",
+      "exit_code": "0:0",
+      "nodes": "4v100n16",
+      "state": "COMPLETED"
+    },
+    "1889092": {
+      "elapsed": "08:55:08",
+      "exit_code": "0:0",
+      "nodes": "16v100n01",
+      "state": "COMPLETED"
+    }
+  },
+  "updated_utc": "2026-10-22T08:46:35.980464+00:00"
+}

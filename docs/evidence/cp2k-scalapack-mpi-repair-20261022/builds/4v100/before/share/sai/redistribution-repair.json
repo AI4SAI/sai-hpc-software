@@ -1,0 +1,12 @@
+{
+  "after_sha256": "d2f091078e805fed2ea8b1be8e387d2a48abeb98408c6e62b280a637f74c6a90",
+  "before_sha256": "e3edf28d199b4ba624bd94b0e3e73a8863f6db2a7ffc8e4d8e0017f32f7e8c83",
+  "diff": "--- a/src/fm/cp_fm_diag_utils.F\n+++ b/src/fm/cp_fm_diag_utils.F\n@@ -126,8 +126,10 @@\n          DEALLOCATE (work_redistribute%group_distribution)\n          DEALLOCATE (work_redistribute%group_partition)\n       END IF\n-      ! Return work to its initial state\n-      work_redistribute = cp_fm_redistribute_type()\n+      NULLIFY (work_redistribute%group_distribution)\n+      NULLIFY (work_redistribute%group_partition)\n+      NULLIFY (work_redistribute%blacs_env_new)\n+      NULLIFY (work_redistribute%para_env_new)\n \n    END SUBROUTINE cp_fm_redistribute_work_finalize\n \n@@ -148,12 +150,11 @@\n       INTEGER, INTENT(IN)                                :: a, x\n       LOGICAL, INTENT(IN)                                :: should_print, elpa_force_redistribute\n \n+      work_redistribute = cp_fm_redistribute_type()\n       work_redistribute%a = a\n       work_redistribute%x = x\n       work_redistribute%should_print = should_print\n       work_redistribute%elpa_force_redistribute = elpa_force_redistribute\n-      ! Init work\n-      work_redistribute = cp_fm_redistribute_type()\n \n    END SUBROUTINE cp_fm_redistribute_init\n \n",
+  "executable_sha256": "1c7b9a8fe59a3b4015dfa571b519cd5a9b1f451d1c65a30b35b8ce6aad85225c",
+  "library_sha256": "34689d7075c47b2a84db2a63f69c32180f3ad0242595e1055da8818123eec099",
+  "original_build": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-4v100-a",
+  "scope": "CPU ScaLAPACK companion; public GPU install unchanged",
+  "source_file": "src/fm/cp_fm_diag_utils.F",
+  "upstream_issue": "https://github.com/cp2k/cp2k/issues/6074",
+  "variant": "before"
+}

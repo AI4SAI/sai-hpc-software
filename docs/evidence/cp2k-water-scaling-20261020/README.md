@@ -12,9 +12,12 @@ The [minimal repair and MPI retest](../../../deployment/cp2k-water-scaling/READM
 is now implemented for the CPU companion. Both ISA builds have passed a
 byte-identical original-library relink and a one-object repaired relink.
 Actual ScaLAPACK tracing has confirmed the predicted participation change on
-16V100: 2→4, 4→8 and 8→16 solving ranks, retained through 24 consecutive
-diagonalizations with numerical agreement. Repeated timing and the 64-rank
-and 4V100 tests are in progress; these early checks are not final speedups.
+both partitions, through 64 MPI ranks and 22–24 consecutive diagonalizations.
+All three controlled A/B jobs completed `0:0`. For the 216-water causal test,
+median total times fall by 5.79% on 4V100/16 cores, 38.30% on 16V100/16 cores
+and 16.24% on 16V100/64 cores. These measure the source repair's effect;
+the original larger-water CPU/GPU ratios below still require fresh repeats.
+[Build controls and real MPI/timing evidence](../cp2k-scalapack-mpi-repair-20261022/README.md).
 
 The follow-up [source confirmation](scalapack-source-check/README.md) finds
 the same defect in both official v2026.2 and the inspected current master,
