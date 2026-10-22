@@ -1,0 +1,44 @@
+[
+  {
+    "variant": "master",
+    "suite": "norecovery",
+    "returncode": 1,
+    "expected_returncode": 1,
+    "passed": true
+  },
+  {
+    "variant": "master",
+    "suite": "inherited_lock",
+    "returncode": 1,
+    "expected_returncode": 1,
+    "passed": true
+  },
+  {
+    "variant": "norecovery",
+    "suite": "norecovery",
+    "returncode": 0,
+    "expected_returncode": 0,
+    "passed": true
+  },
+  {
+    "variant": "inherited-lock",
+    "suite": "inherited_lock",
+    "returncode": 0,
+    "expected_returncode": 0,
+    "passed": true
+  },
+  {
+    "variant": "combined",
+    "suite": "norecovery",
+    "returncode": 0,
+    "expected_returncode": 0,
+    "passed": true
+  },
+  {
+    "variant": "combined",
+    "suite": "inherited_lock",
+    "returncode": 0,
+    "expected_returncode": 0,
+    "passed": true
+  }
+]

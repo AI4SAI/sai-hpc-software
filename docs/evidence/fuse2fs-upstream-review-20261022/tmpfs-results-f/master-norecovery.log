@@ -1,0 +1,85 @@
+test_clean_noload_alias (__main__.NoRecoveryTests.test_clean_noload_alias) ... FAIL
+test_clean_norecovery (__main__.NoRecoveryTests.test_clean_norecovery) ... FAIL
+test_norecovery_overrides_rw_in_either_order (__main__.NoRecoveryTests.test_norecovery_overrides_rw_in_either_order) ... 
+  test_norecovery_overrides_rw_in_either_order (__main__.NoRecoveryTests.test_norecovery_overrides_rw_in_either_order) (options='rw,norecovery') ... FAIL
+  test_norecovery_overrides_rw_in_either_order (__main__.NoRecoveryTests.test_norecovery_overrides_rw_in_either_order) (options='norecovery,rw') ... FAIL
+test_pending_recovery_is_not_replayed (__main__.NoRecoveryTests.test_pending_recovery_is_not_replayed) ... FAIL
+test_plain_ro_still_replays_journal (__main__.NoRecoveryTests.test_plain_ro_still_replays_journal) ... ok
+test_read_error_does_not_modify_superblock (__main__.NoRecoveryTests.test_read_error_does_not_modify_superblock) ... FAIL
+test_write_protected_image (__main__.NoRecoveryTests.test_write_protected_image) ... FAIL
+
+======================================================================
+FAIL: test_clean_noload_alias (__main__.NoRecoveryTests.test_clean_noload_alias)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/input-e/fuse2fs_norecovery.py", line 119, in test_clean_noload_alias
+    self.assert_readonly('noload')
+  File "/work/input-e/fuse2fs_norecovery.py", line 107, in assert_readonly
+    self.assertTrue(all(flags & os.O_ACCMODE == os.O_RDONLY for flags in descriptors),
+AssertionError: False is not true : backing image was opened writable
+
+======================================================================
+FAIL: test_clean_norecovery (__main__.NoRecoveryTests.test_clean_norecovery)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/input-e/fuse2fs_norecovery.py", line 116, in test_clean_norecovery
+    self.assert_readonly('norecovery')
+  File "/work/input-e/fuse2fs_norecovery.py", line 107, in assert_readonly
+    self.assertTrue(all(flags & os.O_ACCMODE == os.O_RDONLY for flags in descriptors),
+AssertionError: False is not true : backing image was opened writable
+
+======================================================================
+FAIL: test_norecovery_overrides_rw_in_either_order (__main__.NoRecoveryTests.test_norecovery_overrides_rw_in_either_order) (options='rw,norecovery')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/input-e/fuse2fs_norecovery.py", line 124, in test_norecovery_overrides_rw_in_either_order
+    self.assert_readonly(options)
+  File "/work/input-e/fuse2fs_norecovery.py", line 107, in assert_readonly
+    self.assertTrue(all(flags & os.O_ACCMODE == os.O_RDONLY for flags in descriptors),
+AssertionError: False is not true : backing image was opened writable
+
+======================================================================
+FAIL: test_norecovery_overrides_rw_in_either_order (__main__.NoRecoveryTests.test_norecovery_overrides_rw_in_either_order) (options='norecovery,rw')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/input-e/fuse2fs_norecovery.py", line 124, in test_norecovery_overrides_rw_in_either_order
+    self.assert_readonly(options)
+  File "/work/input-e/fuse2fs_norecovery.py", line 107, in assert_readonly
+    self.assertTrue(all(flags & os.O_ACCMODE == os.O_RDONLY for flags in descriptors),
+AssertionError: False is not true : backing image was opened writable
+
+======================================================================
+FAIL: test_pending_recovery_is_not_replayed (__main__.NoRecoveryTests.test_pending_recovery_is_not_replayed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/input-e/fuse2fs_norecovery.py", line 133, in test_pending_recovery_is_not_replayed
+    self.assert_readonly('norecovery')
+  File "/work/input-e/fuse2fs_norecovery.py", line 107, in assert_readonly
+    self.assertTrue(all(flags & os.O_ACCMODE == os.O_RDONLY for flags in descriptors),
+AssertionError: False is not true : backing image was opened writable
+
+======================================================================
+FAIL: test_read_error_does_not_modify_superblock (__main__.NoRecoveryTests.test_read_error_does_not_modify_superblock)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/input-e/fuse2fs_norecovery.py", line 153, in test_read_error_does_not_modify_superblock
+    self.assertEqual(before, digest(self.image), 'error reporting modified the image')
+AssertionError: '22b3fb0ca5d41d989b3be62a800d5f76e94e38b06342038ee7abe82ef46e03c7' != '4321ef2de439ade70ad2aaaaed663a2134e0e72ebafb89465aa41ee4266f3eef'
+- 22b3fb0ca5d41d989b3be62a800d5f76e94e38b06342038ee7abe82ef46e03c7
++ 4321ef2de439ade70ad2aaaaed663a2134e0e72ebafb89465aa41ee4266f3eef
+ : error reporting modified the image
+
+======================================================================
+FAIL: test_write_protected_image (__main__.NoRecoveryTests.test_write_protected_image)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/input-e/fuse2fs_norecovery.py", line 128, in test_write_protected_image
+    self.assert_readonly('norecovery')
+  File "/work/input-e/fuse2fs_norecovery.py", line 107, in assert_readonly
+    self.assertTrue(all(flags & os.O_ACCMODE == os.O_RDONLY for flags in descriptors),
+AssertionError: False is not true : backing image was opened writable
+
+----------------------------------------------------------------------
+Ran 7 tests in 1.408s
+
+FAILED (failures=7)

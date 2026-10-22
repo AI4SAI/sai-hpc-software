@@ -1,0 +1,75 @@
+test_clean_noload_alias (__main__.NoRecoveryTests.test_clean_noload_alias) ... FAIL
+test_clean_norecovery (__main__.NoRecoveryTests.test_clean_norecovery) ... FAIL
+test_norecovery_overrides_rw_in_either_order (__main__.NoRecoveryTests.test_norecovery_overrides_rw_in_either_order) ... 
+  test_norecovery_overrides_rw_in_either_order (__main__.NoRecoveryTests.test_norecovery_overrides_rw_in_either_order) (options='rw,norecovery') ... FAIL
+  test_norecovery_overrides_rw_in_either_order (__main__.NoRecoveryTests.test_norecovery_overrides_rw_in_either_order) (options='norecovery,rw') ... FAIL
+test_pending_recovery_is_not_replayed (__main__.NoRecoveryTests.test_pending_recovery_is_not_replayed) ... FAIL
+test_plain_ro_still_replays_journal (__main__.NoRecoveryTests.test_plain_ro_still_replays_journal) ... ok
+test_read_error_does_not_modify_superblock (__main__.NoRecoveryTests.test_read_error_does_not_modify_superblock) ... FAIL
+test_write_protected_image (__main__.NoRecoveryTests.test_write_protected_image) ... ok
+
+======================================================================
+FAIL: test_clean_noload_alias (__main__.NoRecoveryTests.test_clean_noload_alias)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/stardust/sai-hpc-software/diagnostics/fuse2fs-upstream-review-20261022/input-e/fuse2fs_norecovery.py", line 119, in test_clean_noload_alias
+    self.assert_readonly('noload')
+  File "/home/stardust/sai-hpc-software/diagnostics/fuse2fs-upstream-review-20261022/input-e/fuse2fs_norecovery.py", line 107, in assert_readonly
+    self.assertTrue(all(flags & os.O_ACCMODE == os.O_RDONLY for flags in descriptors),
+AssertionError: False is not true : backing image was opened writable
+
+======================================================================
+FAIL: test_clean_norecovery (__main__.NoRecoveryTests.test_clean_norecovery)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/stardust/sai-hpc-software/diagnostics/fuse2fs-upstream-review-20261022/input-e/fuse2fs_norecovery.py", line 116, in test_clean_norecovery
+    self.assert_readonly('norecovery')
+  File "/home/stardust/sai-hpc-software/diagnostics/fuse2fs-upstream-review-20261022/input-e/fuse2fs_norecovery.py", line 107, in assert_readonly
+    self.assertTrue(all(flags & os.O_ACCMODE == os.O_RDONLY for flags in descriptors),
+AssertionError: False is not true : backing image was opened writable
+
+======================================================================
+FAIL: test_norecovery_overrides_rw_in_either_order (__main__.NoRecoveryTests.test_norecovery_overrides_rw_in_either_order) (options='rw,norecovery')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/stardust/sai-hpc-software/diagnostics/fuse2fs-upstream-review-20261022/input-e/fuse2fs_norecovery.py", line 124, in test_norecovery_overrides_rw_in_either_order
+    self.assert_readonly(options)
+  File "/home/stardust/sai-hpc-software/diagnostics/fuse2fs-upstream-review-20261022/input-e/fuse2fs_norecovery.py", line 107, in assert_readonly
+    self.assertTrue(all(flags & os.O_ACCMODE == os.O_RDONLY for flags in descriptors),
+AssertionError: False is not true : backing image was opened writable
+
+======================================================================
+FAIL: test_norecovery_overrides_rw_in_either_order (__main__.NoRecoveryTests.test_norecovery_overrides_rw_in_either_order) (options='norecovery,rw')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/stardust/sai-hpc-software/diagnostics/fuse2fs-upstream-review-20261022/input-e/fuse2fs_norecovery.py", line 124, in test_norecovery_overrides_rw_in_either_order
+    self.assert_readonly(options)
+  File "/home/stardust/sai-hpc-software/diagnostics/fuse2fs-upstream-review-20261022/input-e/fuse2fs_norecovery.py", line 107, in assert_readonly
+    self.assertTrue(all(flags & os.O_ACCMODE == os.O_RDONLY for flags in descriptors),
+AssertionError: False is not true : backing image was opened writable
+
+======================================================================
+FAIL: test_pending_recovery_is_not_replayed (__main__.NoRecoveryTests.test_pending_recovery_is_not_replayed)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/stardust/sai-hpc-software/diagnostics/fuse2fs-upstream-review-20261022/input-e/fuse2fs_norecovery.py", line 133, in test_pending_recovery_is_not_replayed
+    self.assert_readonly('norecovery')
+  File "/home/stardust/sai-hpc-software/diagnostics/fuse2fs-upstream-review-20261022/input-e/fuse2fs_norecovery.py", line 107, in assert_readonly
+    self.assertTrue(all(flags & os.O_ACCMODE == os.O_RDONLY for flags in descriptors),
+AssertionError: False is not true : backing image was opened writable
+
+======================================================================
+FAIL: test_read_error_does_not_modify_superblock (__main__.NoRecoveryTests.test_read_error_does_not_modify_superblock)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/home/stardust/sai-hpc-software/diagnostics/fuse2fs-upstream-review-20261022/input-e/fuse2fs_norecovery.py", line 153, in test_read_error_does_not_modify_superblock
+    self.assertEqual(before, digest(self.image), 'error reporting modified the image')
+AssertionError: '15e2e899b2ce474a3ebe668063eb4a6a4604b02d15cba268eea12dffa2f67f54' != '28afb6950b0144db389346e0d0eb6865ee750e349a367c088239bb039e8bb593'
+- 15e2e899b2ce474a3ebe668063eb4a6a4604b02d15cba268eea12dffa2f67f54
++ 28afb6950b0144db389346e0d0eb6865ee750e349a367c088239bb039e8bb593
+ : error reporting modified the image
+
+----------------------------------------------------------------------
+Ran 7 tests in 20.254s
+
+FAILED (failures=6)

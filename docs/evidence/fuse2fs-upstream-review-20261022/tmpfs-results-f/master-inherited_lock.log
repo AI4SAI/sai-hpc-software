@@ -1,0 +1,53 @@
+test_competing_pathname_mount_is_rejected (__main__.InheritedImageLockTests.test_competing_pathname_mount_is_rejected) ... ok
+test_daemon_retains_lock_passed_on_stdin (__main__.InheritedImageLockTests.test_daemon_retains_lock_passed_on_stdin) ... FAIL
+test_inherited_bsd_writer (__main__.InheritedImageLockTests.test_inherited_bsd_writer) ... FAIL
+test_inherited_descriptor_with_image_offset (__main__.InheritedImageLockTests.test_inherited_descriptor_with_image_offset) ... FAIL
+test_inherited_ofd_writer (__main__.InheritedImageLockTests.test_inherited_ofd_writer) ... ok
+test_ordinary_pathname_still_excludes_writers (__main__.InheritedImageLockTests.test_ordinary_pathname_still_excludes_writers) ... ok
+test_path_relative_to_directory_descriptor (__main__.InheritedImageLockTests.test_path_relative_to_directory_descriptor) ... ok
+test_shared_inherited_reader (__main__.InheritedImageLockTests.test_shared_inherited_reader) ... skipped 'read-only fallback needs an unprivileged user'
+
+======================================================================
+FAIL: test_daemon_retains_lock_passed_on_stdin (__main__.InheritedImageLockTests.test_daemon_retains_lock_passed_on_stdin)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/input-e/fuse2fs_inherited_lock.py", line 207, in test_daemon_retains_lock_passed_on_stdin
+    self.assertEqual(result.returncode, 0, logfile.read_text())
+AssertionError: 32 != 0 : FUSE2FS (0): Could not lock filesystem image: Resource temporarily unavailable
+Mount failed while opening filesystem.  Check dmesg(1) for details.
+
+
+======================================================================
+FAIL: test_inherited_bsd_writer (__main__.InheritedImageLockTests.test_inherited_bsd_writer)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/input-e/fuse2fs_inherited_lock.py", line 117, in test_inherited_bsd_writer
+    with self.mounted(fd):
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/work/input-e/fuse2fs_inherited_lock.py", line 75, in mounted
+    self.fail('mount failed: ' + logfile.read_text())
+AssertionError: mount failed: FUSE2FS (3): Could not lock filesystem image: Resource temporarily unavailable
+Mount failed while opening filesystem.  Check dmesg(1) for details.
+
+
+======================================================================
+FAIL: test_inherited_descriptor_with_image_offset (__main__.InheritedImageLockTests.test_inherited_descriptor_with_image_offset)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/work/input-e/fuse2fs_inherited_lock.py", line 191, in test_inherited_descriptor_with_image_offset
+    with self.mounted(fd, 'offset=4096'):
+  File "/usr/lib/python3.12/contextlib.py", line 137, in __enter__
+    return next(self.gen)
+           ^^^^^^^^^^^^^^
+  File "/work/input-e/fuse2fs_inherited_lock.py", line 75, in mounted
+    self.fail('mount failed: ' + logfile.read_text())
+AssertionError: mount failed: FUSE2FS (3): Could not lock filesystem image: Resource temporarily unavailable
+Mount failed while opening filesystem.  Check dmesg(1) for details.
+
+
+----------------------------------------------------------------------
+Ran 8 tests in 60.403s
+
+FAILED (failures=3, skipped=1)

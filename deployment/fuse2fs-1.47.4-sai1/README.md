@@ -128,6 +128,12 @@ build evidence and pre-install tests do not replace that check. Broader
 cross-account/partition and abrupt-termination recovery qualification remains
 tracked in [issue #12](https://github.com/AI4SAI/sai-hpc-software/issues/12).
 
+Two independent fixes have also been prepared against current upstream master
+in the user's fork for human review. Their [candidate validation record](../../docs/evidence/fuse2fs-upstream-review-20261022/README.md)
+includes independent/combined regression tests and unpatched negative controls
+on Lustre and private tmpfs. These candidates have not replaced this installed
+package, and upstream submission awaits review.
+
 `prepare.py` is a maintainer-only packaging step. It verifies the pinned source
 archive, extracts only its NOTICE/man text, copies the already qualified binary
 and records hashes in `release.json`. It performs no compilation or host
