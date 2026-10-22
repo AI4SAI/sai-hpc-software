@@ -1,5 +1,6 @@
 """Exercise physical deployment, pruning and partition selection without /opt writes."""
 import contextlib
+import hashlib
 import importlib.util
 import io
 import json
@@ -9,6 +10,7 @@ import shutil
 import subprocess
 import tempfile
 import unittest
+from unittest import mock
 
 
 PACKAGE = Path(__file__).resolve().parents[1] / 'deployment/cp2k-2026.2'
@@ -171,6 +173,97 @@ class SiteDeploymentTests(unittest.TestCase):
         data.write_bytes(b'broken')
         with self.assertRaisesRegex(ValueError, 'checksum mismatch'):
             deploy.verify_installed(self.system)
+
+    def upgrade_package(self):
+        package = self.directory / 'upgrade'
+        package.mkdir()
+        previous = (PACKAGE / '2026.2-auto').read_bytes()
+        desired = PACKAGE.with_name('cp2k-2026.2-shared-elpa') / '2026.2-auto'
+        shutil.copyfile(desired, package / '2026.2-auto')
+        release = {**self.release, 'previous_module_sha256': hashlib.sha256(previous).hexdigest(),
+                   'module_sha256': deploy.checksum(package / '2026.2-auto')}
+        (package / 'release.json').write_bytes(deploy.canonical(release))
+        module = deploy.physical_prefix(self.system, deploy.MODULE)
+        module.parent.mkdir(parents=True)
+        module.write_bytes(previous)
+        module.chmod(0o644)
+        return package, release, module, previous
+
+    def test_upgrade_retains_old_module_and_publishes_only_after_all_payloads_pass(self):
+        deliveries = [self.fixture(index)[0] for index in range(4)]
+        package, release, module, previous = self.upgrade_package()
+        with mock.patch.object(deploy, 'PACKAGE', package):
+            self.install(deliveries)
+            self.assertEqual(module.read_bytes(), (package / '2026.2-auto').read_bytes())
+            backup = module.with_name('.2026.2-auto.before-' + release['previous_module_sha256'][:16])
+            self.assertEqual(backup.read_bytes(), previous)
+            self.install(deliveries)
+            with contextlib.redirect_stdout(io.StringIO()):
+                deploy.verify_installed(self.system)
+            self.assertEqual(backup.read_bytes(), previous)
+
+    def test_upgrade_failure_preserves_active_module_and_rejects_unknown_module(self):
+        deliveries = [self.fixture(index)[0] for index in range(4)]
+        package, _, module, previous = self.upgrade_package()
+        (deliveries[-1]['source'] / 'bin/cp2k.psmp').write_bytes(b'corrupt')
+        with mock.patch.object(deploy, 'PACKAGE', package):
+            with self.assertRaisesRegex(ValueError, 'checksum mismatch'):
+                self.install(deliveries)
+            self.assertEqual(module.read_bytes(), previous)
+            module.write_bytes(b'local administrator change')
+            with self.assertRaisesRegex(ValueError, 'existing site module differs'):
+                self.install(deliveries)
+            self.assertEqual(module.read_bytes(), b'local administrator change')
+
+    def test_shared_dependency_mismatch_blocks_upgrade_before_copying(self):
+        deliveries = [self.fixture(index)[0] for index in range(4)]
+        package, release, module, previous = self.upgrade_package()
+        lock = package / 'shared-elpa.json'
+        lock.write_bytes(deploy.canonical({'variants': {'gpu': {'prefix': '/opt/devtools/elpa/test',
+            'files': {'lib/libelpa.so.1': '0'*64}, 'symlinks': {}}}}))
+        release['shared_elpa_sha256'] = deploy.checksum(lock)
+        (package / 'release.json').write_bytes(deploy.canonical(release))
+        with mock.patch.object(deploy, 'PACKAGE', package):
+            with self.assertRaisesRegex(ValueError, 'shared ELPA changed'):
+                self.install(deliveries)
+        self.assertEqual(module.read_bytes(), previous)
+        self.assertFalse(deploy.physical_prefix(self.system, deliveries[0]['prefix']).exists())
+
+    @unittest.skipUnless(shutil.which('tclsh'), 'Tcl interpreter required')
+    def test_upgraded_selector_loads_new_partition_and_unloads_previously_loaded_build(self):
+        new_package = PACKAGE.with_name('cp2k-2026.2-shared-elpa')
+        selector = self.directory / 'new-selector.tcl'
+        selector.write_text((new_package / '2026.2-auto').read_text().replace(
+            '/opt/apps/cp2k', str(self.system / 'opt/apps/cp2k')))
+        for entry in self.release['deliveries']:
+            partition = entry['partition']
+            old = self.system / 'opt/apps/cp2k' / ('cp2k-release-' + entry['build_id']) / partition
+            new = self.system / 'opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43' / partition
+            for prefix in (old, new):
+                fragment = prefix / 'share/sai/native-module.tcl'
+                fragment.parent.mkdir(parents=True)
+                fragment.write_text('set selected {' + str(prefix) + '}\n')
+            code = '''
+proc module-whatis {args} {}
+proc module-info {unused wanted} {global mode; return [expr {$wanted eq $mode}]}
+''' + f'''
+set mode load
+set env(SLURM_JOB_PARTITION) {partition}
+source {{{selector}}}
+if {{$selected ne "{new}"}} {{error "wrong new prefix"}}
+set mode remove
+set env(SAI_CP2K_NATIVE_PARTITION) {partition}
+set env(SLURM_JOB_PARTITION) changed
+foreach prefix {{{old} {new}}} {{
+    set env(SAI_CP2K_PREFIX) $prefix
+    source {{{selector}}}
+    if {{$selected ne $prefix}} {{error "unload selected a different build"}}
+}}
+puts PASS
+'''
+            result = subprocess.run(['tclsh'], input=code, text=True, capture_output=True)
+            self.assertEqual(result.stderr, '')
+            self.assertEqual(result.stdout.strip(), 'PASS')
 
     def test_cross_account_checks_write_to_own_home_and_keep_references_read_only(self):
         reference = self.directory / 'other-user-reference'

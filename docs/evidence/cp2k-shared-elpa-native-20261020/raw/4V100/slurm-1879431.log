@@ -1,0 +1,42 @@
+[INFO] NCCL Topology dumped via C-API and successfully patched to force GDR=1.
+--------------------------------------------------------------------------
+PRTE has detected that the head of the session directory tree (where
+scratch files and shared memory backing storage will be placed)
+resides on a shared file system:
+
+   Directory: /home/stardust/sai-hpc-software/runtime/cn-1879431
+   File system type: lustre
+
+For performance reasons, it is strongly recommended that the session
+directory be located on a local file system. This can be controlled by
+setting the system temporary directory to be used by PRTE using either
+the TMPDIR envar or the "prte_tmpdir_base" MCA param.
+
+If you need the temporary directory to be different on remote nodes
+from the local one where prterun is running (e.g., when a login node is
+being employed), then you can set the local temporary directory using
+the "prte_local_tmpdir_base" MCA param and the one to be used on all
+other nodes using the "prte_remote_tmpdir_base" param.
+
+This is only a warning advisory and your job will continue. You can
+disable this warning in the future by setting the
+"prte_silence_shared_fs" MCA param to "1".
+--------------------------------------------------------------------------
+Shared ELPA verified: avx2
+Shared ELPA verified: avx512
+Shared ELPA verified: cpu
+water-gpw/single: native energy/forces agree with accepted SIF
+water-gpw/multi: native energy/forces agree with accepted SIF
+water-diag/single: native energy/forces agree with accepted SIF
+water-diag/multi: native energy/forces agree with accepted SIF
+water-elpa/single: native energy/forces agree with accepted SIF
+water-elpa/multi: native energy/forces agree with accepted SIF
+water-dftd4/single: native energy/forces agree with accepted SIF
+water-dftd4/multi: native energy/forces agree with accepted SIF
+ch2o-tblite/single: native energy/forces agree with accepted SIF
+ch2o-tblite/multi: native energy/forces agree with accepted SIF
+water64-gpw/single: native energy/forces agree with accepted SIF
+water64-gpw/multi: native energy/forces agree with accepted SIF
+water64-elpa/single: native energy/forces agree with accepted SIF
+water64-elpa/multi: native energy/forces agree with accepted SIF
+CP2K_PHYSICAL_NATIVE_ACCEPTANCE_PASSED

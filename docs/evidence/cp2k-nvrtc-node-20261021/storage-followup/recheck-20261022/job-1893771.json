@@ -1,0 +1,115 @@
+{
+  "hostname": "8v100v0n08.mr-sai.ai",
+  "job_id": "1893771",
+  "time_utc": "2026-10-21T16:43:17Z",
+  "files": [
+    {
+      "path": "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libnvrtc.so.12.9.86",
+      "resolved": "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libnvrtc.so.12.9.86",
+      "before": {
+        "inode": 1738756,
+        "device": 58,
+        "size": 106237008,
+        "mtime_ns": 1758048689364056884,
+        "ctime_ns": 1758048831880672806
+      },
+      "mount": {
+        "filesystems": [
+          {
+            "target": "/opt/devtools",
+            "source": "sai-apprepo:/opt/devtools",
+            "fstype": "nfs4",
+            "options": "rw,relatime,vers=4.2,rsize=1048576,wsize=1048576,namlen=255,hard,proto=rdma,port=20049,timeo=600,retrans=2,sec=sys,clientaddr=10.100.0.58,local_lock=none,addr=10.100.0.216"
+          }
+        ]
+      },
+      "reads": [
+        {
+          "direct": false,
+          "sha256": "c3430e8b6b0d8d3a74f5f839118a85e13e3ad6e4d6203ea1b6a27a0c0b4fe10a",
+          "bytes": 106237008,
+          "exit": 0,
+          "stderr": "",
+          "seconds": 0.27321324963122606
+        },
+        {
+          "direct": true,
+          "sha256": "c3430e8b6b0d8d3a74f5f839118a85e13e3ad6e4d6203ea1b6a27a0c0b4fe10a",
+          "bytes": 106237008,
+          "exit": 0,
+          "stderr": "",
+          "seconds": 0.27820500917732716
+        },
+        {
+          "direct": false,
+          "sha256": "c3430e8b6b0d8d3a74f5f839118a85e13e3ad6e4d6203ea1b6a27a0c0b4fe10a",
+          "bytes": 106237008,
+          "exit": 0,
+          "stderr": "",
+          "seconds": 0.27968099247664213
+        }
+      ],
+      "after": {
+        "inode": 1738756,
+        "device": 58,
+        "size": 106237008,
+        "mtime_ns": 1758048689364056884,
+        "ctime_ns": 1758048831880672806
+      }
+    },
+    {
+      "path": "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/targets/x86_64-linux/lib/libnvrtc.so.12.9.86",
+      "resolved": "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/targets/x86_64-linux/lib/libnvrtc.so.12.9.86",
+      "before": {
+        "inode": 6162926,
+        "device": 58,
+        "size": 106237008,
+        "mtime_ns": 1774035085000000000,
+        "ctime_ns": 1774755121053899176
+      },
+      "mount": {
+        "filesystems": [
+          {
+            "target": "/opt/devtools",
+            "source": "sai-apprepo:/opt/devtools",
+            "fstype": "nfs4",
+            "options": "rw,relatime,vers=4.2,rsize=1048576,wsize=1048576,namlen=255,hard,proto=rdma,port=20049,timeo=600,retrans=2,sec=sys,clientaddr=10.100.0.58,local_lock=none,addr=10.100.0.216"
+          }
+        ]
+      },
+      "reads": [
+        {
+          "direct": false,
+          "sha256": "c3430e8b6b0d8d3a74f5f839118a85e13e3ad6e4d6203ea1b6a27a0c0b4fe10a",
+          "bytes": 106237008,
+          "exit": 0,
+          "stderr": "",
+          "seconds": 0.2737331772223115
+        },
+        {
+          "direct": true,
+          "sha256": "c3430e8b6b0d8d3a74f5f839118a85e13e3ad6e4d6203ea1b6a27a0c0b4fe10a",
+          "bytes": 106237008,
+          "exit": 0,
+          "stderr": "",
+          "seconds": 0.27986126858741045
+        },
+        {
+          "direct": false,
+          "sha256": "c3430e8b6b0d8d3a74f5f839118a85e13e3ad6e4d6203ea1b6a27a0c0b4fe10a",
+          "bytes": 106237008,
+          "exit": 0,
+          "stderr": "",
+          "seconds": 0.2689864933490753
+        }
+      ],
+      "after": {
+        "inode": 6162926,
+        "device": 58,
+        "size": 106237008,
+        "mtime_ns": 1774035085000000000,
+        "ctime_ns": 1774755121053899176
+      }
+    }
+  ]
+}

@@ -1,0 +1,120 @@
+--------------------------------------------------------------------------
+PRTE has detected that the head of the session directory tree (where
+scratch files and shared memory backing storage will be placed)
+resides on a shared file system:
+
+   Directory: /home/stardust/sai-hpc-software/runtime/cn-1879432
+   File system type: lustre
+
+For performance reasons, it is strongly recommended that the session
+directory be located on a local file system. This can be controlled by
+setting the system temporary directory to be used by PRTE using either
+the TMPDIR envar or the "prte_tmpdir_base" MCA param.
+
+If you need the temporary directory to be different on remote nodes
+from the local one where prterun is running (e.g., when a login node is
+being employed), then you can set the local temporary directory using
+the "prte_local_tmpdir_base" MCA param and the one to be used on all
+other nodes using the "prte_remote_tmpdir_base" param.
+
+This is only a warning advisory and your job will continue. You can
+disable this warning in the future by setting the
+"prte_silence_shared_fs" MCA param to "1".
+--------------------------------------------------------------------------
+[16v100n13.mr-sai.ai:4097666] Rank 0 bound to package[0][core:L0-3]
+	libhcoll.so.1 => /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libhcoll.so.1 (0x0000154728c00000)
+[16v100n14.mr-sai.ai:3372536] Rank 1 bound to package[0][core:L0-3]
+	libhcoll.so.1 => /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libhcoll.so.1 (0x0000149d69200000)
+ CP2K version 2026.2
+ Source code revision 67b5da876d
+ cp2kflags: omp libint fftw3 libxc elpa parallel scalapack mpi_f08 cosma libxs libxsmm dbcsr_acc plumed2 spglib libdftd4 dftd4_v4_2 s_dftd3 mctc-lib tblite libvori libbqb offload_cuda spla_gemm_offloading cusolvermp cusolvermp_nccl hdf5
+ compiler: GCC version 14.3.0
+ compiler options:
+   -cpp -I /workspace/source/src -I /workspace/build/src -I /workspace/
+   source/src/base -I /workspace/source/src/common -I /workspace/source
+   /src/motion -I /workspace/source/src/dbm -I /workspace/build/src/mod
+   _files -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa5
+   3ff43/16V100/dependencies/spack/linux-zen3/libint-2.6.0-ufynbugam3r7
+   u7zghgfuumkuodesgugo/include -I /opt/devtools/nvidia/cuda-12.9.1/tar
+   gets/x86_64-linux/include -I /opt/apps/cp2k/cp2k-release-v2026.2-g67
+   b5da876dd6-raed7aa53ff43/16V100/dependencies/tblite/include -I /opt/
+   apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/de
+   pendencies/tblite/include/mctc-lib/modules -I /opt/apps/cp2k/cp2k-re
+   lease-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/dependencies/tblite
+   /include/dftd4/GNU-14.3.0 -I /opt/apps/cp2k/cp2k-release-v2026.2-g67
+   b5da876dd6-raed7aa53ff43/16V100/dependencies/tblite/include/multicha
+   rge/GNU-14.3.0 -I /opt/devtools/saiblas/2603-gnu-avx2/include -I /op
+   t/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/
+   dependencies/tblite/include/tblite/GNU-14.3.0 -I /opt/apps/cp2k/cp2k
+   -release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/dependencies/tbl
+   ite/include/toml-f/modules -I /opt/apps/cp2k/cp2k-release-v2026.2-g6
+   7b5da876dd6-raed7aa53ff43/16V100/dependencies/tblite/include/s-dftd3
+   /GNU-14.3.0 -I /opt/devtools/spglib/spglib-2.7.0/include -I /opt/dev
+   tools/libxc/libxc-7.0.0-avx2/include -I /opt/devtools/elpa/elpa-2026
+   .02.001-2603-gnu-avx2/nvidia/include/elpa_openmp-2026.02.001 -I /opt
+   /devtools/elpa/elpa-2026.02.001-2603-gnu-avx2/nvidia/include/elpa_op
+   enmp-2026.02.001/modules -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b
+   5da876dd6-raed7aa53ff43/16V100/dependencies/spack/linux-zen3/plumed-
+   2.10.1-np37xjhlxj3qmkfebxzpsypu734ersmo/include -I /opt/devtools/fft
+   w/fftw-3.3.10/include -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da
+   876dd6-raed7aa53ff43/16V100/dependencies/spack/linux-zen3/spla-1.6.1
+   -ubrai56trgmuevwm3thzgn6ky6nmgqkh/include -I /opt/apps/cp2k/cp2k-rel
+   ease-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/dependencies/spack/l
+   inux-zen3/spla-1.6.1-ubrai56trgmuevwm3thzgn6ky6nmgqkh/include/spla -
+   I /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/incl
+   ude -I /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2
+   /lib -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53f
+   f43/16V100/dependencies/spack/linux-zen3/cosma-2.7.0-5mo4n2dvf2cbmcf
+   hqswalnp4rvuzh54o/include -I /opt/apps/cp2k/cp2k-release-v2026.2-g67
+   b5da876dd6-raed7aa53ff43/16V100/dependencies/spack/linux-zen3/costa-
+   2.3.3-mei6tamap43oogvx64e6pnv5wd4zt3gr/include -I /opt/apps/cp2k/cp2
+   k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/dependencies/sp
+   ack/linux-zen3/tiled-mm-2.3.2-wqmiz7l6rdmi3pfr3ra5oubt4tauqtem/inclu
+   de -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff4
+   3/16V100/dependencies/spack/linux-zen3/tiled-mm-2.3.2-wqmiz7l6rdmi3p
+   fr3ra5oubt4tauqtem/include/Tiled-MM -I /opt/apps/cp2k/cp2k-release-v
+   2026.2-g67b5da876dd6-raed7aa53ff43/16V100/dependencies/spack/linux-z
+   en3/hdf5-1.14.6-oatczg6z5jwpt7tsfkayczc5vkcqm7oi/include -I /opt/app
+   s/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/depen
+   dencies/spack/linux-zen3/hdf5-1.14.6-oatczg6z5jwpt7tsfkayczc5vkcqm7o
+   i/mod/static -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra
+   ed7aa53ff43/16V100/dependencies/dbcsr/include -I /opt/apps/cp2k/cp2k
+   -release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/dependencies/lib
+   xs/include -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed
+   7aa53ff43/16V100/dependencies/libxs/include/libxs -I /opt/apps/cp2k/
+   cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/dependencies
+   /spack/linux-zen3/libxsmm-2.0.0-62iurh6z3ykiyux6lygqelq5c4aqwttv/inc
+   lude -I /opt/devtools/nvidia/mp_libs/include -I /opt/devtools/nvidia
+   /nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/include -imultiarch x86_64
+   -linux-gnu -D_REENTRANT -D COSMA_HAVE_GPU -D IK=i4 -D TILED_MM_CUDA 
+   -D USING_Libxc -D _FILE_OFFSET_BITS=64 -D _GNU_SOURCE -D _LARGEFILE_
+   SOURCE -D _POSIX_C_SOURCE=200809L -D __BLAS -D __COMPILE_ARCH="x86_6
+   4" -D __COMPILE_HOST="" -D __COSMA -D __CUSOLVERMP -D __CUSOLVERMP_N
+   CCL -D __DATA_DIR="/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6
+   -raed7aa53ff43/16V100/share/cp2k/data" -D __DBCSR_ACC -D __DFTD4 -D 
+   __DFTD4_V4_2 -D __ELPA -D __FFTW3 -D __HDF5 -D __LIBINT -D __LIBVORI
+    -D __LIBXC -D __LIBXS -D __LIBXSMM -D __MPI_F08 -D __OFFLOAD_CUDA -
+   D __OFFLOAD_GEMM -D __PLUMED2 -D __SPGLIB -D __SPLA -D __S_DFTD3 -D 
+   __TBLITE -D __parallel -D __SHORT_FILE__="start/cp2k.F" -march=znver
+   3 -mmmx -mpopcnt -msse -msse2 -msse3 -mssse3 -msse4.1 -msse4.2 -mavx
+    -mavx2 -msse4a -mno-fma4 -mno-xop -mfma -mno-avx512f -mbmi -mbmi2 -
+   maes -mpclmul -mno-avx512vl -mno-avx512bw -mno-avx512dq -mno-avx512c
+   d -mno-avx512vbmi -mno-avx512ifma -mno-avx512vpopcntdq -mno-avx512vb
+   mi2 -mno-gfni -mvpclmulqdq -mno-avx512vnni -mno-avx512bitalg -mno-av
+   x512bf16 -mno-avx512vp2intersect -mno-3dnow -madx -mabm -mno-cldemot
+   e -mclflushopt -mclwb -mclzero -mcx16 -mno-enqcmd -mf16c -mfsgsbase 
+   -mfxsr -mno-hle -msahf -mno-lwp -mlzcnt -mmovbe -mno-movdir64b -mno-
+   movdiri -mmwaitx -mno-pconfig -mpku -mprfchw -mno-ptwrite -mrdpid -m
+   rdrnd -mrdseed -mno-rtm -mno-serialize -mno-sgx -msha -mshstk -mno-t
+   bm -mno-tsxldtrk -mvaes -mno-waitpkg -mwbnoinvd -mxsave -mxsavec -mx
+   saveopt -mxsaves -mno-amx-tile -mno-amx-int8 -mno-amx-bf16 -mno-uint
+   r -mno-hreset -mno-kl -mno-widekl -mno-avxvnni -mno-avx512fp16 -mno-
+   avxifma -mno-avxvnniint8 -mno-avxneconvert -mno-cmpccxadd -mno-amx-f
+   p16 -mno-prefetchi -mno-raoint -mno-amx-complex -mno-avxvnniint16 -m
+   no-sm3 -mno-sha512 -mno-sm4 -mno-apxf -mno-usermsr --param=l1-cache-
+   size=32 --param=l1-cache-line-size=64 --param=l2-cache-size=512 -mtu
+   ne=znver3 -g -O3 -O3 -O3 -Wno-deprecated-declarations -Wno-maybe-uni
+   nitialized -Wuninitialized -Wuse-without-only -std=f2008 -fPIE -ffre
+   e-form -fimplicit-none -fno-omit-frame-pointer -fbacktrace -fallow-a
+   rgument-mismatch -funroll-loops -fopenmp -fpre-include=/usr/include/
+   finclude/x86_64-linux-gnu/math-vector-fortran.h

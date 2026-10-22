@@ -1,0 +1,678 @@
+{
+  "accounting": "1887923|RUNNING|0:0|14:58:17|7-00:00:00|16v100n27\n1888437|RUNNING|0:0|14:28:57|1-00:00:00|4v100n16\n1889092|COMPLETED|0:0|08:55:08|1-00:00:00|16v100n01\n",
+  "campaign": {
+    "complete": false,
+    "controller_revision": "control-v5",
+    "cpu": {
+      "16V100": {
+        "accepted": true,
+        "build": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-16v100-a",
+        "build_state": "COMPLETED",
+        "smoke": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-smoke-b",
+        "smoke_state": "COMPLETED"
+      },
+      "4V100": {
+        "accepted": true,
+        "build": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-4v100-a",
+        "build_state": "COMPLETED",
+        "smoke": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-smoke",
+        "smoke_state": "COMPLETED"
+      }
+    },
+    "errors": [],
+    "memory_followup": "4V100 has 22 GiB host RAM per 32 GiB GPU; require complete ENERGY_FORCE memory validation and retain earlier failures.",
+    "name": "20261020-large-water",
+    "points": [
+      {
+        "accepted": true,
+        "attempt": 2,
+        "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g1-d",
+        "calibration_state": "COMPLETED",
+        "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g1-compare-r2",
+        "comparison_state": "COMPLETED",
+        "gpus": 1,
+        "partition": "16V100",
+        "previous_comparisons": [
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g1-compare"
+        ],
+        "replacement_reason": "Last CPU pair stopped at the 92% RAM guard; use 95% with the same 15 GiB quota. Revalidate and reuse nine tuning cases, then run all warm-up/measured pairs afresh.",
+        "shape": [
+          6,
+          6,
+          8
+        ]
+      },
+      {
+        "accepted": true,
+        "attempt": 2,
+        "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g4-e",
+        "calibration_state": "COMPLETED",
+        "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261021-large-water-16v100-g4-compare-r2",
+        "comparison_state": "COMPLETED",
+        "gpus": 4,
+        "partition": "16V100",
+        "previous_comparisons": [
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g4-compare"
+        ],
+        "replacement_reason": "The second measured CPU case crossed the original two-hour case ceiling. Revalidate all nine tuning cases; keep 648 waters and the same resource quota, then run every warm-up and measured pair afresh with the current six-hour case ceiling.",
+        "shape": [
+          8,
+          9,
+          9
+        ]
+      },
+      {
+        "attempt": 3,
+        "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g16-e",
+        "calibration_state": "COMPLETED",
+        "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261021-large-water-16v100-g16-compare-r3",
+        "comparison_state": "RUNNING",
+        "gpus": 16,
+        "host_memory_limited": false,
+        "partition": "16V100",
+        "previous_comparisons": [
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare",
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare-r2"
+        ],
+        "replacement_reason": "The first CPU tuning case reached SCF step 13 at the six-hour case ceiling. Revalidate six GPU tuning cases; run remaining CPU tuning and every timing pair afresh, with 18 hours per case and seven days for the allocation.",
+        "shape": [
+          11,
+          11,
+          12
+        ]
+      },
+      {
+        "accepted": true,
+        "allow_host_limited": true,
+        "attempt": 3,
+        "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g1-full-a",
+        "calibration_state": "COMPLETED",
+        "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r3",
+        "comparison_state": "COMPLETED",
+        "gpus": 1,
+        "host_memory_limited": true,
+        "partition": "4V100",
+        "previous_calibrations": [
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g1-f"
+        ],
+        "previous_comparisons": [
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare",
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r2"
+        ],
+        "replacement_reason": "Second CPU measured pair stopped at 20.28/22 GiB under the 92% RAM guard. Keep the same allocation and 392 waters; use 95%, revalidate nine original tuning cases, and run all warm-up/measured pairs afresh.",
+        "shape": [
+          7,
+          7,
+          8
+        ]
+      },
+      {
+        "allow_host_limited": true,
+        "attempt": 2,
+        "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261021-4v100-g4-full-b",
+        "calibration_state": "COMPLETED",
+        "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g4-compare-r2",
+        "comparison_state": "RUNNING",
+        "gpus": 4,
+        "host_memory_limited": true,
+        "partition": "4V100",
+        "previous_calibrations": [
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-e",
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-full-a"
+        ],
+        "replacement_reason": "The 900-water full calculation hit the 92% host-memory guard at 81.26/88 GiB. Start complete calibration from 864 waters with six probes, retaining the larger-size RAM evidence.",
+        "shape": [
+          9,
+          10,
+          10
+        ]
+      }
+    ],
+    "scheduler": {
+      "1882046": {
+        "elapsed": "00:06:40",
+        "exit_code": "0:0",
+        "nodes": "16v100n67",
+        "state": "COMPLETED"
+      },
+      "1882047": {
+        "elapsed": "00:22:31",
+        "exit_code": "0:0",
+        "nodes": "4v100n10",
+        "state": "COMPLETED"
+      },
+      "1882071": {
+        "elapsed": "00:01:59",
+        "exit_code": "0:0",
+        "nodes": "16v100n02",
+        "state": "COMPLETED"
+      },
+      "1882180": {
+        "elapsed": "00:05:44",
+        "exit_code": "0:0",
+        "nodes": "16v100n07",
+        "state": "COMPLETED"
+      },
+      "1882207": {
+        "elapsed": "00:11:59",
+        "exit_code": "0:0",
+        "nodes": "16v100n60",
+        "state": "COMPLETED"
+      },
+      "1882209": {
+        "elapsed": "00:01:54",
+        "exit_code": "0:0",
+        "nodes": "16v100n07",
+        "state": "COMPLETED"
+      },
+      "1882304": {
+        "elapsed": "00:02:26",
+        "exit_code": "0:0",
+        "nodes": "4v100n04",
+        "state": "COMPLETED"
+      },
+      "1882535": {
+        "elapsed": "00:07:42",
+        "exit_code": "0:0",
+        "nodes": "4v100n09",
+        "state": "COMPLETED"
+      },
+      "1884617": {
+        "elapsed": "01:42:35",
+        "exit_code": "0:0",
+        "nodes": "16v100n01",
+        "state": "COMPLETED"
+      },
+      "1884985": {
+        "elapsed": "01:37:37",
+        "exit_code": "0:0",
+        "nodes": "4v100n02",
+        "state": "COMPLETED"
+      },
+      "1887901": {
+        "elapsed": "00:32:11",
+        "exit_code": "0:0",
+        "nodes": "4v100n16",
+        "state": "COMPLETED"
+      },
+      "1887923": {
+        "elapsed": "14:58:05",
+        "exit_code": "0:0",
+        "nodes": "16v100n27",
+        "state": "RUNNING"
+      },
+      "1888437": {
+        "elapsed": "14:28:45",
+        "exit_code": "0:0",
+        "nodes": "4v100n16",
+        "state": "RUNNING"
+      },
+      "1889092": {
+        "elapsed": "08:55:08",
+        "exit_code": "0:0",
+        "nodes": "16v100n01",
+        "state": "COMPLETED"
+      }
+    },
+    "updated_utc": "2026-10-21T16:50:53.248362+00:00"
+  },
+  "captured_utc": "2026-10-21T16:51:05.323785+00:00",
+  "performance_result": false,
+  "points": [
+    {
+      "active": [
+        {
+          "last_scf_lines": [
+            "     4 P_Mix/Diag. 0.40E+00  383.0     0.15277994    -15457.7648677137 -3.17E+01",
+            "     5 P_Mix/Diag. 0.40E+00  381.4     0.09349255    -15476.6985199050 -1.89E+01",
+            "     6 DIIS/Diag.  0.33E-02  384.2     0.05790902    -15488.0361492732 -1.13E+01",
+            "     7 DIIS/Diag.  0.14E-03  388.9     0.00011194    -15505.0280292037 -1.70E+01"
+          ],
+          "latest_resource": {
+            "cgroup": {
+              "limit": 94489280512,
+              "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+              "used": 71287140352
+            },
+            "cpu_equivalent_cores": 9.648338859899763,
+            "gpu_compute_clients": 0,
+            "observed_ranks": 8,
+            "sample_utc": "2026-10-21T16:51:04.931389+00:00",
+            "utilization_interval_seconds": 33.97476029396057
+          },
+          "launch": {
+            "argv": [
+              "mpirun",
+              "-np",
+              "8",
+              "--map-by",
+              "ppr:8:node:pe=2",
+              "--bind-to",
+              "core",
+              "--report-bindings",
+              "python3",
+              "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g4-compare-r2/control/deployment/cp2k-water-scaling/rank.py",
+              "-i",
+              "input.inp"
+            ],
+            "block": 32,
+            "calibration": false,
+            "mode": "cpu",
+            "physical_cores": 16,
+            "ranks": 8,
+            "shape": [
+              9,
+              10,
+              10
+            ],
+            "threads": 2
+          },
+          "log_mtime_utc": "2026-10-21T16:47:38+00:00",
+          "name": "pair-2-cpu"
+        }
+      ],
+      "case_seconds": 21600,
+      "completed": [
+        {
+          "average_physical_core_utilization": 0.7081696820503881,
+          "block": 32,
+          "cp2k_seconds": 7822.327,
+          "elapsed_seconds": 7876.542714805342,
+          "host_memory": {
+            "limit": 94489280512,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+            "used": 82164977664
+          },
+          "mode": "cpu",
+          "name": "pair-0-cpu",
+          "ranks": 8,
+          "sample_sha256": "4f8e2aa535d157581046b27b17574c3a50188f5144854486cd985ad5952a4c68",
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "stop": null,
+          "threads": 2
+        },
+        {
+          "average_physical_core_utilization": 0.45240698582621525,
+          "block": 32,
+          "cp2k_seconds": 807.137,
+          "elapsed_seconds": 809.7810963969678,
+          "host_memory": {
+            "limit": 94489280512,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+            "used": 86198231040
+          },
+          "mode": "gpu",
+          "name": "pair-0-gpu",
+          "ranks": 4,
+          "sample_sha256": "58239138561c396cdd06159f740ab420191c47c381066ca50ed156438e3027da",
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "stop": null,
+          "threads": 4
+        },
+        {
+          "average_physical_core_utilization": 0.7070220691504564,
+          "block": 32,
+          "cp2k_seconds": 7883.406,
+          "elapsed_seconds": 7928.36107186228,
+          "host_memory": {
+            "limit": 94489280512,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+            "used": 82017787904
+          },
+          "mode": "cpu",
+          "name": "pair-1-cpu",
+          "ranks": 8,
+          "sample_sha256": "6c2dc5f48b3eb90459a3054c2f7c313694a2301d9a61f93f92f3367106bd334a",
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "stop": null,
+          "threads": 2
+        },
+        {
+          "average_physical_core_utilization": 0.45149848606919546,
+          "block": 32,
+          "cp2k_seconds": 806.865,
+          "elapsed_seconds": 809.5085283275694,
+          "host_memory": {
+            "limit": 94489280512,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+            "used": 86189277184
+          },
+          "mode": "gpu",
+          "name": "pair-1-gpu",
+          "ranks": 4,
+          "sample_sha256": "6ba528942a752735344073687ef904fa3eb4f7e79b8734f8122964a9b4a11f88",
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "stop": null,
+          "threads": 4
+        },
+        {
+          "average_physical_core_utilization": 0.4528978146425654,
+          "block": 32,
+          "cp2k_seconds": 806.609,
+          "elapsed_seconds": 808.231433593668,
+          "host_memory": {
+            "limit": 94489280512,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+            "used": 86526074880
+          },
+          "mode": "gpu",
+          "name": "pair-2-gpu",
+          "ranks": 4,
+          "sample_sha256": "398c116b813aaec3c8146c3d7125377dc351dde4f20bb836e1e09b7886b7a936",
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "stop": null,
+          "threads": 4
+        },
+        {
+          "average_physical_core_utilization": 0.45293702379728246,
+          "block": 32,
+          "cp2k_seconds": 807.608,
+          "elapsed_seconds": 809.7428135266528,
+          "host_memory": {
+            "limit": 94489280512,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+            "used": 86745858048
+          },
+          "mode": "gpu",
+          "name": "tune-0-gpu",
+          "ranks": 4,
+          "sample_sha256": "630ca477b6eb21dbfcdb69e9fa1ef2b7217b8568ed128c05e3dbd05297b71de0",
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "stop": null,
+          "threads": 4
+        },
+        {
+          "average_physical_core_utilization": 0.3281336520311922,
+          "block": 32,
+          "cp2k_seconds": 875.53,
+          "elapsed_seconds": 877.3997217835858,
+          "host_memory": {
+            "limit": 94489280512,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+            "used": 85589753856
+          },
+          "mode": "gpu",
+          "name": "tune-1-gpu",
+          "ranks": 4,
+          "sample_sha256": "fafd4a262a088885426f11f64ce015948f2fa84afb0c8f011b8d95dbdc83f667",
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "stop": null,
+          "threads": 2
+        },
+        {
+          "average_physical_core_utilization": 0.24514042939480055,
+          "block": 32,
+          "cp2k_seconds": 1025.676,
+          "elapsed_seconds": 1027.5793781625107,
+          "host_memory": {
+            "limit": 94489280512,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+            "used": 85084471296
+          },
+          "mode": "gpu",
+          "name": "tune-2-gpu",
+          "ranks": 4,
+          "sample_sha256": "78c6be25ac0398165d31adf4e21ddb49bbafc5e9317ea5a5d94ac3658fe7f6cf",
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "stop": null,
+          "threads": 1
+        },
+        {
+          "average_physical_core_utilization": 0.45077500835985457,
+          "block": 64,
+          "cp2k_seconds": 809.691,
+          "elapsed_seconds": 811.9405317781493,
+          "host_memory": {
+            "limit": 94489280512,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700/step_batch/user",
+            "used": 86089097216
+          },
+          "mode": "gpu",
+          "name": "tune-3-gpu",
+          "ranks": 4,
+          "sample_sha256": "3a677b39228694848b24ac583571694cb9c27a3831bbd5a340666a9bd3192b0a",
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "stop": null,
+          "threads": 4
+        },
+        {
+          "average_physical_core_utilization": 0.3278231989049032,
+          "block": 64,
+          "cp2k_seconds": 876.956,
+          "elapsed_seconds": 879.5766314379871,
+          "host_memory": {
+            "limit": 94489280512,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+            "used": 85306740736
+          },
+          "mode": "gpu",
+          "name": "tune-4-gpu",
+          "ranks": 4,
+          "sample_sha256": "629edda3aec444d652d72431d85be4f138dc72df4b6111b6392b8e718240727e",
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "stop": null,
+          "threads": 2
+        },
+        {
+          "average_physical_core_utilization": 0.2450511888994583,
+          "block": 64,
+          "cp2k_seconds": 1024.217,
+          "elapsed_seconds": 1026.349335947074,
+          "host_memory": {
+            "limit": 94489280512,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700/step_batch/user",
+            "used": 84616642560
+          },
+          "mode": "gpu",
+          "name": "tune-5-gpu",
+          "ranks": 4,
+          "sample_sha256": "911c89860fda4ee9ed1a256d522a4f4e31934bde586823443f153898f17b9e6c",
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "stop": null,
+          "threads": 1
+        },
+        {
+          "average_physical_core_utilization": 0.6826475427993267,
+          "block": 32,
+          "cp2k_seconds": 8435.929,
+          "elapsed_seconds": 8438.209711235017,
+          "host_memory": {
+            "limit": 94489280512,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+            "used": 81968467968
+          },
+          "mode": "cpu",
+          "name": "tune-6-cpu",
+          "ranks": 4,
+          "sample_sha256": "4e6e08c5ff0a6a0517c6f3993d41abcabe4c4ce06ea99de39ff93224c0213555",
+          "scf_steps": [
+            21
+          ],
+          "science_accepted": true,
+          "stop": null,
+          "threads": 4
+        },
+        {
+          "average_physical_core_utilization": 0.7089180737826956,
+          "block": 32,
+          "cp2k_seconds": 7809.608,
+          "elapsed_seconds": 7859.250005111098,
+          "host_memory": {
+            "limit": 94489280512,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+            "used": 81898237952
+          },
+          "mode": "cpu",
+          "name": "tune-7-cpu",
+          "ranks": 8,
+          "sample_sha256": "47cc2a003d76a92f849887bc1b0ce860814604917ce6b34aec54cdc5bfe32366",
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "stop": null,
+          "threads": 2
+        },
+        {
+          "average_physical_core_utilization": 0.9474045778399988,
+          "block": 32,
+          "cp2k_seconds": 8531.274,
+          "elapsed_seconds": 9306.282216940075,
+          "host_memory": {
+            "limit": 94489280512,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+            "used": 85207728128
+          },
+          "mode": "cpu",
+          "name": "tune-8-cpu",
+          "ranks": 16,
+          "sample_sha256": "3d07816e55b9e7010087917395873b1a3151586c0ce05d7698b9d9401ee1031a",
+          "scf_steps": [
+            22
+          ],
+          "science_accepted": true,
+          "stop": null,
+          "threads": 1
+        }
+      ],
+      "gpus": 4,
+      "job": "1888437",
+      "partition": "4V100",
+      "performance_result": false,
+      "physical_cores": 16,
+      "request_sha256": "855e503443acbdc94763e6c510d9128e5afde1ab74893c1a548cd184e018cb6d",
+      "run": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g4-compare-r2",
+      "shape": [
+        9,
+        10,
+        10
+      ]
+    },
+    {
+      "active": [
+        {
+          "last_scf_lines": [
+            "     1 P_Mix/Diag. 0.40E+00 1175.3     0.68183213    -24654.8595612867 -2.47E+04",
+            "     2 P_Mix/Diag. 0.40E+00 1297.3     0.39980266    -24800.9606937454 -1.46E+02",
+            "     3 P_Mix/Diag. 0.40E+00 1355.4     0.24841644    -24887.3571590636 -8.64E+01",
+            "     4 P_Mix/Diag. 0.40E+00 1417.6     0.15277108    -24938.5303957914 -5.12E+01"
+          ],
+          "latest_resource": {
+            "cgroup": {
+              "limit": 257698037760,
+              "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E2KFND00",
+              "used": 181633671168
+            },
+            "cpu_equivalent_cores": 32.63890518762075,
+            "gpu_compute_clients": 0,
+            "observed_ranks": 32,
+            "sample_utc": "2026-10-21T16:51:04.088869+00:00",
+            "utilization_interval_seconds": 10.684794664382935
+          },
+          "launch": {
+            "argv": [
+              "mpirun",
+              "-np",
+              "32",
+              "--map-by",
+              "ppr:32:node:pe=2",
+              "--bind-to",
+              "core",
+              "--report-bindings",
+              "python3",
+              "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261021-large-water-16v100-g16-compare-r3/control/deployment/cp2k-water-scaling/rank.py",
+              "-i",
+              "input.inp"
+            ],
+            "block": 32,
+            "calibration": false,
+            "mode": "cpu",
+            "physical_cores": 64,
+            "ranks": 32,
+            "shape": [
+              11,
+              11,
+              12
+            ],
+            "threads": 2
+          },
+          "log_mtime_utc": "2026-10-21T16:34:26+00:00",
+          "name": "tune-7-cpu"
+        }
+      ],
+      "case_seconds": 64800,
+      "completed": [
+        {
+          "average_physical_core_utilization": 0.4443480854146737,
+          "block": 32,
+          "cp2k_seconds": 43506.55,
+          "elapsed_seconds": 47616.62486742716,
+          "host_memory": {
+            "limit": 257698037760,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E2KFND00",
+            "used": 203176624128
+          },
+          "mode": "cpu",
+          "name": "tune-6-cpu",
+          "ranks": 16,
+          "sample_sha256": "44117d0cbbaf7a5ca96f19e7e37980a6af8ff3caafb88bbecd43cf9a8ac8e2d7",
+          "scf_steps": [
+            22
+          ],
+          "science_accepted": true,
+          "stop": null,
+          "threads": 4
+        }
+      ],
+      "gpus": 16,
+      "job": "1887923",
+      "partition": "16V100",
+      "performance_result": false,
+      "physical_cores": 64,
+      "request_sha256": "d3c8c77998103643019e88b94b60f5663fc9ff619227dd892f7f77a15cce3687",
+      "run": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261021-large-water-16v100-g16-compare-r3",
+      "shape": [
+        11,
+        11,
+        12
+      ]
+    }
+  ],
+  "watcher": {
+    "cmdline": "flock -n /home/stardust/sai-hpc-software/runtime-tests/cp2k-water-campaign-20261020/watch.lock python3 -B /home/stardust/sai-hpc-software/runtime-tests/cp2k-water-campaign-20261020/control-v5/deployment/cp2k-water-scaling/campaign.py /home/stardust/sai-hpc-software/runtime-tests/cp2k-water-campaign-20261020/campaign.json --watch ",
+    "pid": 1114541
+  }
+}

@@ -1,0 +1,229 @@
+{
+  "jobs": {
+    "1889229": {
+      "hostname": "4v100n35.mr-sai.ai",
+      "nvrtc_exit": 0,
+      "cases": {
+        "water343-original": {
+          "exit": 0,
+          "program_ended": true,
+          "scf_converged": false,
+          "energy_ha": -5879.02024267406
+        },
+        "water64-gpu": {
+          "exit": 0,
+          "program_ended": true,
+          "scf_converged": true,
+          "energy_ha": -1102.5771871497643
+        },
+        "water64-noacc": {
+          "exit": 0,
+          "program_ended": true,
+          "scf_converged": true,
+          "energy_ha": -1102.5771871497448
+        }
+      },
+      "nvrtc_libraries": [
+        {
+          "path": "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libnvrtc.so.12.9.86",
+          "sha256": "c3430e8b6b0d8d3a74f5f839118a85e13e3ad6e4d6203ea1b6a27a0c0b4fe10a"
+        },
+        {
+          "path": "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libnvrtc-builtins.so.12.9.86",
+          "sha256": "6507cf33450cfb22970c2c1e7aa8e7c0a33e39d864720277b05f61a92791e2e8"
+        },
+        {
+          "path": "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libnvrtc.so.12.9.86",
+          "sha256": "c3430e8b6b0d8d3a74f5f839118a85e13e3ad6e4d6203ea1b6a27a0c0b4fe10a"
+        },
+        {
+          "path": "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/compat/libcuda.so.575.57.08",
+          "sha256": "f2470aa637fa72422534edeaeb9de19afe3d0646388baf7ffb5337b2edafc59e"
+        }
+      ],
+      "nvrtc_last_record": {
+        "count": 20,
+        "stage": "passed"
+      }
+    },
+    "1889230": {
+      "hostname": "4v100n06.mr-sai.ai",
+      "nvrtc_exit": 139,
+      "cases": {
+        "water343-original": {
+          "exit": 139,
+          "program_ended": false,
+          "scf_converged": false,
+          "energy_ha": null
+        },
+        "water64-gpu": {
+          "exit": 139,
+          "program_ended": false,
+          "scf_converged": false,
+          "energy_ha": null
+        },
+        "water64-noacc": {
+          "exit": 0,
+          "program_ended": true,
+          "scf_converged": true,
+          "energy_ha": -1102.5771871497516
+        }
+      },
+      "nvrtc_libraries": [
+        {
+          "path": "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libnvrtc.so.12.9.86",
+          "sha256": "7903a559640531e1859c53b4d8e0327bd037418fdba3afe04d636dba040ea40a"
+        }
+      ],
+      "nvrtc_last_record": {
+        "m": 5,
+        "n": 5,
+        "repeat": 0,
+        "stage": "compile"
+      }
+    },
+    "1889246": {
+      "hostname": "4v100n06.mr-sai.ai",
+      "nvrtc_exit": 0,
+      "cases": {
+        "water2-gpu": {
+          "exit": 0,
+          "program_ended": true,
+          "scf_converged": true,
+          "energy_ha": -34.44682129478834
+        },
+        "water2-noacc": {
+          "exit": 0,
+          "program_ended": true,
+          "scf_converged": true,
+          "energy_ha": -34.44682129478865
+        },
+        "water343-original": {
+          "exit": 0,
+          "program_ended": true,
+          "scf_converged": false,
+          "energy_ha": -5879.020242674058
+        }
+      },
+      "nvrtc_libraries": [
+        {
+          "path": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-nvrtc-20261021/known-good-nvrtc/libnvrtc.so.12.9.86",
+          "sha256": "c3430e8b6b0d8d3a74f5f839118a85e13e3ad6e4d6203ea1b6a27a0c0b4fe10a"
+        },
+        {
+          "path": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-nvrtc-20261021/known-good-nvrtc/libnvrtc-builtins.so.12.9.86",
+          "sha256": "6507cf33450cfb22970c2c1e7aa8e7c0a33e39d864720277b05f61a92791e2e8"
+        },
+        {
+          "path": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-nvrtc-20261021/known-good-nvrtc/libnvrtc.so.12.9.86",
+          "sha256": "c3430e8b6b0d8d3a74f5f839118a85e13e3ad6e4d6203ea1b6a27a0c0b4fe10a"
+        },
+        {
+          "path": "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/compat/libcuda.so.575.57.08",
+          "sha256": "f2470aa637fa72422534edeaeb9de19afe3d0646388baf7ffb5337b2edafc59e"
+        }
+      ],
+      "nvrtc_last_record": {
+        "count": 20,
+        "stage": "passed"
+      }
+    },
+    "1889247": {
+      "hostname": "4v100n35.mr-sai.ai",
+      "nvrtc_exit": 0,
+      "cases": {
+        "water2-gpu": {
+          "exit": 0,
+          "program_ended": true,
+          "scf_converged": true,
+          "energy_ha": -34.446821294788705
+        },
+        "water2-noacc": {
+          "exit": 0,
+          "program_ended": true,
+          "scf_converged": true,
+          "energy_ha": -34.4468212947881
+        },
+        "water343-original": {
+          "exit": 0,
+          "program_ended": true,
+          "scf_converged": false,
+          "energy_ha": -5879.020242674058
+        }
+      },
+      "nvrtc_libraries": [
+        {
+          "path": "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libnvrtc.so.12.9.86",
+          "sha256": "c3430e8b6b0d8d3a74f5f839118a85e13e3ad6e4d6203ea1b6a27a0c0b4fe10a"
+        },
+        {
+          "path": "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libnvrtc-builtins.so.12.9.86",
+          "sha256": "6507cf33450cfb22970c2c1e7aa8e7c0a33e39d864720277b05f61a92791e2e8"
+        },
+        {
+          "path": "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libnvrtc.so.12.9.86",
+          "sha256": "c3430e8b6b0d8d3a74f5f839118a85e13e3ad6e4d6203ea1b6a27a0c0b4fe10a"
+        },
+        {
+          "path": "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/compat/libcuda.so.575.57.08",
+          "sha256": "f2470aa637fa72422534edeaeb9de19afe3d0646388baf7ffb5337b2edafc59e"
+        }
+      ],
+      "nvrtc_last_record": {
+        "count": 20,
+        "stage": "passed"
+      }
+    }
+  },
+  "comparisons": [
+    {
+      "reference": [
+        1889229,
+        "water64-gpu"
+      ],
+      "candidate": [
+        1889230,
+        "water64-noacc"
+      ],
+      "energy_difference_ha": 1.2732925824820995e-11,
+      "max_force_difference_ha_bohr": 1.09999995223653e-11
+    },
+    {
+      "reference": [
+        1889247,
+        "water2-gpu"
+      ],
+      "candidate": [
+        1889246,
+        "water2-gpu"
+      ],
+      "energy_difference_ha": 3.623767952376511e-13,
+      "max_force_difference_ha_bohr": 1.0000004296850662e-12
+    },
+    {
+      "reference": [
+        1889246,
+        "water2-gpu"
+      ],
+      "candidate": [
+        1889246,
+        "water2-noacc"
+      ],
+      "energy_difference_ha": 3.055333763768431e-13,
+      "max_force_difference_ha_bohr": 1.0000004296850662e-12
+    },
+    {
+      "reference": [
+        1889229,
+        "water64-gpu"
+      ],
+      "candidate": [
+        1889229,
+        "water64-noacc"
+      ],
+      "energy_difference_ha": 1.9554136088117957e-11,
+      "max_force_difference_ha_bohr": 1.1000002991812252e-11
+    }
+  ],
+  "scheduler": "1889222|FAILED|1:0|00:00:01|4v100n35\n1889223|CANCELLED by 1478400690|0:0|00:00:00|None assigned\n1889229|COMPLETED|0:0|00:04:36|4v100n35\n1889230|COMPLETED|0:0|00:02:17|4v100n06\n1889246|COMPLETED|0:0|00:01:02|4v100n06\n1889247|COMPLETED|0:0|00:00:59|4v100n35\n1889255|COMPLETED|0:0|00:00:03|4v100n06\n"
+}

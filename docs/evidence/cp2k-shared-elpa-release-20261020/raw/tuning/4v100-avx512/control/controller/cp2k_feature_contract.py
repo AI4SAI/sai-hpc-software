@@ -1,0 +1,443 @@
+#!/usr/bin/env python3
+"""Fail-closed CP2K artifact checks; scientific acceptance is a separate gate."""
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path
+import re
+import subprocess
+
+# The installed verifier must also run without any controller imports.
+# Regression tests keep these site paths aligned with remote_controller.
+HPCX_ROOT = "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1"
+HCOLL_BUILD_PREFIX = "/opt/mellanox/hcoll"
+BASE_FLAGS = frozenset("omp libint fftw3 libxc elpa parallel scalapack mpi_f08 cosma plumed2 spglib libdftd4 mctc-lib tblite libvori libbqb hdf5".split())
+GPU_FLAGS = frozenset("dbcsr_acc offload_cuda cusolvermp cusolvermp_nccl spla_gemm_offloading".split())
+# Plain SpLA has no version flag on CPU; verify its CMake option on all targets.
+REQUIRED_OPTIONS = tuple("MPI MPI_F08 FFTW3 LIBXC LIBINT2 ELPA COSMA SPLA LIBXS LIBXSMM PLUMED SPGLIB VORI HDF5 DFTD4 TBLITE".split())
+TRANSIENT = re.compile(r"/(?:workspace|control|input)(?:/|$)")
+SITE_ELPA_TARGETS = {
+    "16v100-avx2": "avx2", "8v100v0-avx512": "avx2",
+    "4v100-avx512": "avx512", "dsprhbm": "cpu",
+}
+
+
+def site_elpa_spec(target):
+    """The recipe pins the accepted site files, not a mutable module selection."""
+    lock = Path(__file__).with_name("cp2k_site_elpa.json")
+    data = json.loads(lock.read_text())
+    variant = SITE_ELPA_TARGETS[target]
+    spec = data["variants"][variant]
+    record = dict(provider="site-elpa", target=target, version=data["version"],
+                  source_sha256=data["source_sha256"], prefix=spec["prefix"],
+                  manifest_sha256=spec["manifest_sha256"],
+                  lock_sha256=hashlib.sha256(lock.read_bytes()).hexdigest())
+    return record, spec
+
+
+def elpa_root(prefix, target, provider=None):
+    if provider is None:
+        # Preserve validation of previously accepted, self-contained deliveries.
+        return Path(prefix) / "dependencies/elpa"
+    expected, _ = site_elpa_spec(target)
+    if provider != expected:
+        raise ValueError("shared ELPA provider differs from the pinned partition delivery")
+    return Path(expected["prefix"])
+
+
+def check_site_elpa(provider, target):
+    root = elpa_root("/", target, provider)
+    _, spec = site_elpa_spec(target)
+    if not root.is_dir() or root.resolve() != root:
+        raise ValueError("shared ELPA prefix is missing or redirected")
+    for name, digest in spec["files"].items():
+        path = root / name
+        if (not path.is_file() or path.resolve() != path or
+                hashlib.sha256(path.read_bytes()).hexdigest() != digest):
+            raise ValueError("shared ELPA file differs from the accepted inventory: " + str(path))
+    for name, destination in spec["symlinks"].items():
+        path = root / name
+        if (not path.is_symlink() or os.readlink(path) != destination or
+                not path.exists() or not inside(path, root)):
+            raise ValueError("shared ELPA link differs from the accepted inventory: " + str(path))
+    return root
+
+
+def read_elpa_provider(prefix, target):
+    path = Path(prefix) / "share/sai/site-elpa.json"
+    if not path.exists() and not path.is_symlink():
+        return None
+    if not path.is_file() or path.resolve() != path:
+        raise ValueError("missing or redirected shared ELPA provenance")
+    provider = json.loads(path.read_text())
+    check_site_elpa(provider, target)
+    return provider
+
+
+def prepare_site_elpa(prefix, target):
+    provider, _ = site_elpa_spec(target)
+    root = check_site_elpa(provider, target)
+    metadata = Path(prefix) / "share/sai"
+    metadata.mkdir(parents=True, exist_ok=True)
+    with (metadata / "site-elpa.json").open("x") as stream:
+        json.dump(provider, stream, sort_keys=True)
+        stream.write("\n")
+    # Ship the pinned contract alongside the standalone installed verifier.
+    (metadata / "cp2k_site_elpa.json").write_bytes(
+        Path(__file__).with_name("cp2k_site_elpa.json").read_bytes())
+    return root
+
+
+def check_parallel_hdf5(text):
+    values = re.findall(r"^[ \t]*Parallel HDF5:[ \t]*([^\r\n]*?)[ \t]*\r?$", text, re.MULTILINE)
+    if len(values) != 1 or values[0].lower() not in ("yes", "on"):
+        raise ValueError("private HDF5 parallel support is missing, disabled or ambiguous")
+
+
+def version_flags(text):
+    rows = re.findall(r"^\s*cp2kflags:\s*(.+)$", text, re.MULTILINE)
+    if len(rows) != 1:
+        raise ValueError("missing or ambiguous CP2K flags")
+    return set(rows[0].split())
+
+
+def check_flags(text, target):
+    flags = version_flags(text)
+    missing = set((BASE_FLAGS | (GPU_FLAGS if target != "dsprhbm" else set())) - flags)
+    # CP2K 2026.2 split the old xsmm flag into LIBXS and LIBXSMM.
+    if not {"libxs", "libxsmm"}.issubset(flags):
+        missing.add("libxs+libxsmm")
+    if missing:
+        raise ValueError("CP2K feature loss: " + ", ".join(sorted(missing)))
+    if target == "dsprhbm" and flags & GPU_FLAGS:
+        raise ValueError("CPU artifact unexpectedly requires GPU offload")
+    return sorted(flags)
+
+
+def check_cache(text, prefix, target, provider=None):
+    # Parse one physical line at a time. Negated character classes containing
+    # newlines otherwise swallow blank lines and // comments into option names.
+    cache = {}
+    for line in text.splitlines():
+        if not line or line.startswith(("#", "//")):
+            continue
+        entry = re.fullmatch(r"([^:=]+):([^=]+)=(.*)", line)
+        if entry:
+            key, _, value = entry.groups()
+            if key in cache:
+                raise ValueError("duplicate CMake cache option: " + key)
+            cache[key] = value
+    for option in REQUIRED_OPTIONS:
+        if cache.get("CP2K_USE_" + option) not in ("ON", "TRUE", "1"):
+            raise ValueError("required CP2K option is disabled: " + option)
+    if cache.get("CMAKE_INSTALL_PREFIX") != str(prefix):
+        raise ValueError("CP2K installation prefix changed")
+    if cache.get("CMAKE_INSTALL_LIBDIR") != "lib64":
+        raise ValueError("CP2K install library directory must be relative lib64")
+    for language in ("C", "CXX", "Fortran"):
+        executable = {"C": "gcc", "CXX": "g++", "Fortran": "gfortran"}[language]
+        if cache.get(f"CMAKE_{language}_COMPILER") != "/opt/devtools/gcc/14.3.0/bin/" + executable:
+            raise ValueError("CP2K must use the pinned GCC 14.3.0 compiler: " + language)
+        if not {"-march=native", "-mtune=native"}.issubset(cache.get(f"CMAKE_{language}_FLAGS", "").split()):
+            raise ValueError("CP2K must be compiled natively on each target")
+    if cache.get("CP2K_USE_ACCEL") != ("NONE" if target == "dsprhbm" else "CUDA"):
+        raise ValueError("wrong CP2K accelerator backend")
+    if cache.get("CP2K_USE_SPLA_GEMM_OFFLOADING") != ("OFF" if target == "dsprhbm" else "ON"):
+        raise ValueError("wrong or missing SpLA GEMM offload setting for target")
+    elpa = cache.get("CP2K_ELPA_ROOT", "")
+    if elpa != str(elpa_root(prefix, target, provider)):
+        raise ValueError("ELPA must use this delivery's pinned dependency prefix")
+    if provider is not None:
+        expected_library = elpa + "/lib/libelpa_openmp.so"
+        if cache.get("pkgcfg_lib_CP2K_ELPA_elpa_openmp") != expected_library:
+            raise ValueError("shared ELPA CMake library differs from the pinned prefix")
+        if cache.get("CP2K_ELPA_VERSION") != provider["version"]:
+            raise ValueError("shared ELPA CMake version differs from the pinned release")
+    if target != "dsprhbm":
+        for library in ("cudart", "cublas"):
+            resolved = Path(cache.get("pkgcfg_lib_CP2K_ELPA_" + library, ""))
+            cuda = Path("/opt/devtools/nvidia/cuda-12.9.1")
+            if (resolved.parent not in (cuda / "lib64", cuda / "targets/x86_64-linux/lib")
+                    or resolved.name != "lib" + library + ".so"):
+                raise ValueError("ELPA CUDA library was not resolved from the pinned toolkit: " + library)
+    if target != "dsprhbm" and cache.get("CP2K_USE_CUSOLVER_MP") != "ON":
+        raise ValueError("cuSOLVERMp was not enabled")
+    return cache
+
+
+def check_linkage(text, target, prefix, provider=None):
+    if "not found" in text or TRANSIENT.search(text):
+        raise ValueError("unresolved or transient CP2K dynamic dependency")
+    elpa_lines = [line for line in text.splitlines() if "libelpa" in line]
+    expected = str(elpa_root(prefix, target, provider) / "lib/libelpa_openmp.so")
+    if (len(elpa_lines) != 1 or not re.search(re.escape(expected) + r"(?:\.[0-9]+)*(?:\s|$)", elpa_lines[0])):
+        raise ValueError("native ELPA dynamic linkage escaped this delivery")
+    if provider is not None:
+        _, spec = site_elpa_spec(target)
+        names = [name for name in (*spec["files"], *spec["symlinks"])
+                 if name.startswith("lib/libelpa_openmp.so")]
+        paths = "|".join(re.escape(str(Path(provider["prefix"]) / name)) for name in names)
+        if not re.search(r"^\s*libelpa_openmp\.so\.19\s+=>\s+(?:" + paths + r")(?:\s|$)", elpa_lines[0]):
+            raise ValueError("shared ELPA loader selected an unpinned library file")
+    for library in ("libhcoll.so.1", "libocoms.so.0"):
+        expected = HPCX_ROOT + "/hcoll/lib/" + library
+        if not re.search(r"^\s*" + re.escape(library) + r"\s+=>\s+" + re.escape(expected) + r"(?:\s|$)", text, re.M):
+            raise ValueError("MPI runtime must resolve shared HPCX library: " + library)
+    if target != "dsprhbm":
+        for library, root in (("libcusolverMp.so", "/opt/devtools/nvidia/mp_libs/lib/"),
+                              ("libnccl.so", "/opt/devtools/nvidia/nccl_2.29.3_"),
+                              ("libcuda.so.1", "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/compat/")):
+            if not any(library in line and root in line for line in text.splitlines()):
+                raise ValueError("wrong or missing runtime library: " + library)
+
+
+def check_dynamic_paths(text):
+    for line in text.splitlines():
+        if "RPATH" in line or "RUNPATH" in line:
+            if TRANSIENT.search(line):
+                raise ValueError("installed ELF retains build-only RPATH")
+
+
+def inside(path, root):
+    """Path-component comparison (works on the cluster's Python 3.8 too)."""
+    try:
+        Path(path).resolve().relative_to(Path(root).resolve())
+        return True
+    except ValueError:
+        return False
+
+
+def runtime_roots(target):
+    # Runtime dependencies must come from the delivery or standalone site
+    # modules; another CP2K installation is never an approved root.
+    return ("/opt/devtools", "/usr", "/bin", "/lib", "/lib64")
+
+
+def is_hcoll_build_path(path):
+    # Inspect the spelling too: resolving a host symlink must not approve a
+    # container-only alias as a portable native runtime path.
+    value = os.path.normpath(str(path))
+    return value == HCOLL_BUILD_PREFIX or value.startswith(HCOLL_BUILD_PREFIX + "/")
+
+
+def runtime_path_allowed(path, prefix, target):
+    return (not is_hcoll_build_path(path) and
+            any(inside(path, root) for root in (prefix, *runtime_roots(target))))
+
+
+def check_mpi_runtime_paths(libraries):
+    for component in ("hcoll", "sharp"):
+        if HPCX_ROOT + "/" + component + "/lib" not in libraries:
+            raise ValueError("MPI runtime must record the real shared HPCX " + component + " directory")
+
+
+def check_dynamic(text, binary, prefix, target):
+    """Validate loader tags for every packaged ELF, including dependencies."""
+    binary, prefix = Path(binary), Path(prefix)
+    tags = []
+    for tag, value in re.findall(r"\((NEEDED|RPATH|RUNPATH)\).*?\[(.*?)\]", text):
+        tags.append({"tag": tag, "value": value})
+        if tag == "NEEDED":
+            if not value or "/" in value:
+                raise ValueError(f"path-valued DT_NEEDED in {binary}: {value}")
+            continue
+        for entry in value.split(":"):
+            expanded = entry.replace("${ORIGIN}", str(binary.parent)).replace("$ORIGIN", str(binary.parent))
+            path = Path(expanded)
+            if (not entry or "$" in expanded or not path.is_absolute() or
+                    not runtime_path_allowed(path, prefix, target)):
+                raise ValueError(f"untrusted {tag} in {binary}: {entry}")
+    for interpreter in re.findall(r"Requesting program interpreter:\s*([^\]]+)\]", text):
+        if not Path(interpreter).is_absolute() or not any(inside(interpreter, root) for root in
+                                                        ("/usr/lib", "/usr/lib64", "/lib", "/lib64")):
+            raise ValueError(f"untrusted ELF interpreter in {binary}: {interpreter}")
+        tags.append({"tag": "INTERP", "value": interpreter})
+    return tags
+
+
+def verify_tree(prefix, target):
+    prefix = Path(prefix).resolve()
+    result = {}
+    for path in sorted(prefix.rglob("*")):
+        if path.is_symlink():
+            if not path.exists() or not inside(path, prefix):
+                raise ValueError(f"broken or escaping installation symlink: {path}")
+            continue
+        if not path.is_file():
+            continue
+        with path.open("rb") as stream:
+            if stream.read(4) != b"\x7fELF":
+                continue
+        dynamic = run(["readelf", "-d", str(path)]) + run(["readelf", "-l", str(path)])
+        result[str(path.relative_to(prefix))] = {
+            "sha256": hashlib.sha256(path.read_bytes()).hexdigest(),
+            "dynamic": check_dynamic(dynamic, path, prefix, target)}
+    if not result:
+        raise ValueError("installation contains no verified ELF objects")
+    return result
+
+
+def check_runtime_environment(prefix, target):
+    expected_data = str(Path(prefix) / "share/cp2k/data")
+    if os.environ.get("CP2K_DATA_DIR") != expected_data:
+        raise ValueError("CP2K_DATA_DIR must resolve to installed /opt data")
+    for name in ("PATH", "LD_LIBRARY_PATH"):
+        for entry in os.environ.get(name, "").split(":"):
+            # Apptainer --nv adds its own host-driver directory.
+            if name == "LD_LIBRARY_PATH" and entry == "/.singularity.d/libs":
+                continue
+            if (not entry or not Path(entry).is_absolute() or
+                    not runtime_path_allowed(entry, prefix, target)):
+                raise ValueError(f"untrusted installed {name}: {entry}")
+    check_mpi_runtime_paths(os.environ.get("LD_LIBRARY_PATH", "").split(":"))
+
+
+def native_entry(identity, environment):
+    """Describe the observed runtime without retaining build tools or a SIF launcher."""
+    from native_module import validate_native_entry
+    from release_contract import validate_identity
+    identity = validate_identity(identity)
+    if identity["software"] != "cp2k":
+        raise ValueError("CP2K native entry requires its own delivery identity")
+    prefix = identity["install_prefix"]
+    if environment.get("CP2K_DATA_DIR") != prefix + "/share/cp2k/data":
+        raise ValueError("native CP2K data must remain inside its delivery prefix")
+    paths, libraries = [], []
+    for name, values in (("PATH", paths), ("LD_LIBRARY_PATH", libraries)):
+        for value in environment.get(name, "").split(":"):
+            # The rootfs uses /bin -> /usr/bin. The container driver mount is
+            # supplied by --nv; native execution resolves its host drivers.
+            if value == "/bin":
+                value = "/usr/bin"
+            if name == "LD_LIBRARY_PATH" and value == "/.singularity.d/libs":
+                continue
+            if not value or not Path(value).is_absolute() or TRANSIENT.search(value):
+                raise ValueError("invalid native CP2K runtime path")
+            if not runtime_path_allowed(value, prefix, identity["target"]):
+                raise ValueError("native CP2K runtime depends on an unapproved installation")
+            if value not in values:
+                values.append(value)
+    check_mpi_runtime_paths(libraries)
+    if paths != [prefix + "/bin", "/usr/bin"]:
+        raise ValueError("native CP2K PATH must contain only its installed commands and system tools")
+    modules = list(dict.fromkeys(value for value in environment.get("LOADEDMODULES", "").split(":")
+                                if value and value.split("/", 1)[0] not in ("cmake", "apptainer")))
+    if not modules:
+        raise ValueError("native CP2K dependencies require the recorded runtime modules")
+    module_root = "/opt/modules/modulefiles/devtools"
+    if module_root not in environment.get("MODULEPATH", "").split(":"):
+        raise ValueError("native CP2K dependencies require the observed site module search root")
+    external = [module_root]
+    for value in libraries:
+        if value == prefix or value.startswith(prefix + "/") or value.startswith(("/usr/", "/lib/", "/lib64/")):
+            continue
+        if value not in external:
+            external.append(value)
+    return validate_native_entry(dict(identity=identity, commands={"cp2k.psmp": "bin/cp2k.psmp"},
+        external_roots=external, runtime=dict(modules=modules,
+            prepend={"MODULEPATH": [module_root], "LD_LIBRARY_PATH": libraries},
+            set={"CP2K_ROOT": prefix, "CP2K_DATA_DIR": environment["CP2K_DATA_DIR"]})))
+
+
+def native_delivery(prefix, target, sha, operation, root=Path("/")):
+    """Write or verify the same prefix-local manifest used by native export."""
+    from export_native import inventory, read_installed_manifests, write_manifests
+    from native_module import validate_native_entry
+    from release_contract import validate_identity
+    prefix, root = Path(prefix), Path(root).resolve(strict=True)
+    metadata = root / prefix.relative_to("/") / "share/sai"
+    identity = validate_identity(json.loads((metadata / "release-identity.json").read_text()))
+    if (identity["software"] != "cp2k" or identity["install_prefix"] != str(prefix) or
+            identity["target"] != target or identity["source_sha"] != sha):
+        raise ValueError("native CP2K delivery differs from the build identity")
+    path = metadata / "native-entry.json"
+    if operation == "native-entry":
+        entry = native_entry(identity, os.environ)
+        with path.open("x") as stream:
+            stream.write(json.dumps(entry, sort_keys=True) + "\n")
+    else:
+        if path.is_symlink() or path.resolve() != path:
+            raise ValueError("untrusted native CP2K runtime entry")
+        entry = validate_native_entry(json.loads(path.read_text()))
+        if entry["identity"] != identity:
+            raise ValueError("native CP2K runtime entry has a different identity")
+        if operation == "native-package":
+            write_manifests([entry], root)
+        if read_installed_manifests([entry], root) != inventory([entry], root):
+            raise ValueError("native CP2K files differ from the packaged inventory")
+
+
+def run(argv):
+    return subprocess.run(argv, check=True, text=True, capture_output=True).stdout
+
+
+def source_changes(prefix, sha):
+    """Prove renamed/builtin features from this source, never silently waive them."""
+    source = Path("/workspace/source")
+    files = {name: (source / name).read_bytes() for name in
+             ("src/CMakeLists.txt", "src/libgrpp_integrals.F", "CMakeLists.txt")}
+    cmake = files["src/CMakeLists.txt"].decode()
+    if "grpp/libgrpp.F" not in cmake or "grpp/grpp.c" not in cmake:
+        raise ValueError("libgrpp is no longer proven built in")
+    if "USE libgrpp" not in files["src/libgrpp_integrals.F"].decode():
+        raise ValueError("libgrpp integration is absent")
+    if "CP2K_USE_QUIP" in files["CMakeLists.txt"].decode():
+        raise ValueError("QUIP support returned upstream; enable and test it")
+    changes = {"source_sha": sha, "libgrpp": "builtin", "quip": "upstream_removed",
+               "approved_parity_exceptions": {"quip": "user-approved CP2K 2026 upstream removal"},
+               "evidence": {name: hashlib.sha256(data).hexdigest() for name, data in files.items()}}
+    (Path(prefix) / "share/sai/upstream-feature-changes.json").write_text(json.dumps(changes, sort_keys=True) + "\n")
+
+
+def verify(prefix, target, sha):
+    prefix = Path(prefix)
+    metadata = prefix / "share/sai"
+    if (metadata / "source-sha").read_text().strip() != sha or (metadata / "target").read_text().strip() != target:
+        raise ValueError("artifact provenance mismatch")
+    provider = read_elpa_provider(prefix, target)
+    check_cache((metadata / "CMakeCache.txt").read_text(), prefix, target, provider)
+    env = (metadata / "runtime-env.sh").read_text()
+    if TRANSIENT.search(env):
+        raise ValueError("saved environment depends on build-only paths")
+    for name in ("BASIS_MOLOPT", "GTH_POTENTIALS"):
+        if not (prefix / "share/cp2k/data" / name).is_file():
+            raise ValueError("installed CP2K scientific data missing: " + name)
+    check_runtime_environment(prefix, target)
+    version = run([str(prefix / "bin/cp2k.psmp"), "--version"])
+    flags = check_flags(version, target)
+    linkage = run(["ldd", str(prefix / "bin/cp2k.psmp")])
+    check_linkage(linkage, target, prefix, provider)
+    elf = verify_tree(prefix, target)
+    print(version, end="")
+    print(linkage, end="")
+    print(json.dumps({"artifact_checks": True, "scientific_acceptance": False,
+                      "prefix": str(prefix), "target": target, "flags": flags,
+                      "elf": elf, "external_runtime_roots": runtime_roots(target),
+                      "elpa_provider": provider or {"provider": "private"},
+                      "deployment_scope": "loader contract checked; no claim of physical deployment"}, sort_keys=True))
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("op", choices=("cache", "verify", "site-elpa", "source-changes", "native-entry", "native-package", "native-verify"))
+    parser.add_argument("prefix", type=Path)
+    parser.add_argument("target")
+    parser.add_argument("sha")
+    parser.add_argument("--root", type=Path, default=Path("/"))
+    args = parser.parse_args()
+    if args.op == "cache":
+        check_cache(Path("/workspace/build/CMakeCache.txt").read_text(), args.prefix, args.target,
+                    read_elpa_provider(args.prefix, args.target))
+    elif args.op == "site-elpa":
+        print(prepare_site_elpa(args.prefix, args.target))
+    elif args.op == "source-changes":
+        source_changes(args.prefix, args.sha)
+    elif args.op.startswith("native-"):
+        native_delivery(args.prefix, args.target, args.sha, args.op, args.root)
+    else:
+        verify(args.prefix, args.target, args.sha)
+
+
+if __name__ == "__main__":
+    main()

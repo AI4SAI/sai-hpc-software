@@ -2,9 +2,9 @@
 
 Independent GitHub Actions → SSH → Slurm → Apptainer builds on SAI.
 ABACUS has automated build and scientific acceptance. CP2K has a separate manually dispatched
-build, science and publication workflow. CP2K 2026.2 with its private ELPA dependency has passed
-physical installation and single/two-node science on all four partitions; the shared-ELPA
-replacement is a new candidate recipe. Development acceptance remains separate.
+build, science and publication workflow. CP2K 2026.2 with repaired shared ELPA is installed
+under physical `/opt` and has passed all 56 single/two-node scientific calculations on
+the four partitions. The public entry is `cp2k/2026.2-auto`; development acceptance remains separate.
 See [current delivery status](docs/WORKFLOW-CLOSURE.md).
 
 ## Container contract
@@ -223,6 +223,11 @@ The SIF records the upstream SHA, module list and CMake cache below the installa
 `share/sai/` directory. Loading its recorded modules is required to run software
 that dynamically links to the cluster environment. Administrative deployment into the host
 `/opt` is performed separately by an administrator using the inventoried deployment package.
+The accepted four-partition CP2K 2026.2 release using repaired shared ELPA was
+installed with the [administrator upgrade package](deployment/cp2k-2026.2-shared-elpa/README.md).
+It preserves exact build prefixes, and `cp2k/2026.2-auto` selects the new installation
+inside Slurm allocations. File readback and all 56 physical native calculations passed;
+see the [independently revalidated evidence](docs/evidence/cp2k-shared-elpa-native-20261020/README.md).
 
 For a read-only runtime, source `share/sai/runtime-env.sh` inside the container
 instead of initializing Lmod there; it records the original absolute dependency

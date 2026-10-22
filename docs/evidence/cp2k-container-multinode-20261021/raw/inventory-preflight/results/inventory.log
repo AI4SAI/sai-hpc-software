@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/home/stardust/sai-hpc-software/runtime-tests/cp2k-container-multinode-20261021-16V100-2n8g/control/deployment/cp2k-container-overhead/multinode_rank.py", line 148, in <module>
+    inventory(sys.argv[2])
+  File "/home/stardust/sai-hpc-software/runtime-tests/cp2k-container-multinode-20261021-16V100-2n8g/control/deployment/cp2k-container-overhead/multinode_rank.py", line 68, in inventory
+    assert len(record['devices']) == 4
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError
+srun: error: 16v100n06: task 1: Exited with exit code 1

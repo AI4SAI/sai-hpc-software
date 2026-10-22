@@ -1,0 +1,2679 @@
+{
+  "accounting": "1882207|COMPLETED|0:0|00:11:59|16v100n60\n1882305|RUNNING|0:0|01:51:42|16v100n11\n1882313|RUNNING|0:0|01:52:01|16v100n26\n1882713|PENDING|0:0|00:00:00|None assigned\n1882731|RUNNING|0:0|00:59:35|4v100n10\n1883125|CANCELLED by 1478400690|0:0|00:16:20|16v100n58\n1883254|RUNNING|0:0|00:07:30|16v100n60\n",
+  "campaign": {
+    "complete": false,
+    "controller_revision": "control-v3",
+    "cpu": {
+      "16V100": {
+        "accepted": true,
+        "build": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-16v100-a",
+        "build_state": "COMPLETED",
+        "smoke": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-smoke-b",
+        "smoke_state": "COMPLETED"
+      },
+      "4V100": {
+        "accepted": true,
+        "build": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-4v100-a",
+        "build_state": "COMPLETED",
+        "smoke": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-smoke",
+        "smoke_state": "COMPLETED"
+      }
+    },
+    "errors": [],
+    "memory_followup": "4V100 has 22 GiB host RAM per 32 GiB GPU; require complete ENERGY_FORCE memory validation and retain earlier failures.",
+    "name": "20261020-large-water",
+    "points": [
+      {
+        "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g1-d",
+        "calibration_state": "COMPLETED",
+        "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g1-compare",
+        "comparison_state": "RUNNING",
+        "gpus": 1,
+        "partition": "16V100",
+        "shape": [
+          6,
+          6,
+          8
+        ]
+      },
+      {
+        "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g4-e",
+        "calibration_state": "COMPLETED",
+        "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g4-compare",
+        "comparison_state": "RUNNING",
+        "gpus": 4,
+        "partition": "16V100",
+        "shape": [
+          8,
+          9,
+          9
+        ]
+      },
+      {
+        "attempt": 2,
+        "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g16-e",
+        "calibration_state": "COMPLETED",
+        "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare-r2",
+        "comparison_state": "RUNNING",
+        "gpus": 16,
+        "host_memory_limited": false,
+        "partition": "16V100",
+        "previous_comparisons": [
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare"
+        ],
+        "replacement_reason": "Increase the large CPU calculation budget: six hours per case, 72 hours total.",
+        "shape": [
+          11,
+          11,
+          12
+        ]
+      },
+      {
+        "allow_host_limited": true,
+        "attempt": 2,
+        "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g1-full-a",
+        "calibration_state": "COMPLETED",
+        "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r2",
+        "comparison_state": "RUNNING",
+        "gpus": 1,
+        "host_memory_limited": true,
+        "partition": "4V100",
+        "previous_calibrations": [
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g1-f"
+        ],
+        "previous_comparisons": [
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare"
+        ],
+        "shape": [
+          7,
+          7,
+          8
+        ]
+      },
+      {
+        "allow_host_limited": true,
+        "attempt": 1,
+        "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-full-a",
+        "calibration_state": "PENDING",
+        "gpus": 4,
+        "partition": "4V100",
+        "previous_calibrations": [
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-e"
+        ]
+      }
+    ],
+    "scheduler": {
+      "1882046": {
+        "elapsed": "00:06:40",
+        "exit_code": "0:0",
+        "nodes": "16v100n67",
+        "state": "COMPLETED"
+      },
+      "1882047": {
+        "elapsed": "00:22:31",
+        "exit_code": "0:0",
+        "nodes": "4v100n10",
+        "state": "COMPLETED"
+      },
+      "1882071": {
+        "elapsed": "00:01:59",
+        "exit_code": "0:0",
+        "nodes": "16v100n02",
+        "state": "COMPLETED"
+      },
+      "1882180": {
+        "elapsed": "00:05:44",
+        "exit_code": "0:0",
+        "nodes": "16v100n07",
+        "state": "COMPLETED"
+      },
+      "1882207": {
+        "elapsed": "00:11:59",
+        "exit_code": "0:0",
+        "nodes": "16v100n60",
+        "state": "COMPLETED"
+      },
+      "1882209": {
+        "elapsed": "00:01:54",
+        "exit_code": "0:0",
+        "nodes": "16v100n07",
+        "state": "COMPLETED"
+      },
+      "1882304": {
+        "elapsed": "00:02:26",
+        "exit_code": "0:0",
+        "nodes": "4v100n04",
+        "state": "COMPLETED"
+      },
+      "1882305": {
+        "elapsed": "01:51:19",
+        "exit_code": "0:0",
+        "nodes": "16v100n11",
+        "state": "RUNNING"
+      },
+      "1882313": {
+        "elapsed": "01:51:38",
+        "exit_code": "0:0",
+        "nodes": "16v100n26",
+        "state": "RUNNING"
+      },
+      "1882535": {
+        "elapsed": "00:07:42",
+        "exit_code": "0:0",
+        "nodes": "4v100n09",
+        "state": "COMPLETED"
+      },
+      "1882713": {
+        "elapsed": "00:00:00",
+        "exit_code": "0:0",
+        "nodes": "None assigned",
+        "state": "PENDING"
+      },
+      "1882731": {
+        "elapsed": "00:59:12",
+        "exit_code": "0:0",
+        "nodes": "4v100n10",
+        "state": "RUNNING"
+      },
+      "1883254": {
+        "elapsed": "00:07:07",
+        "exit_code": "0:0",
+        "nodes": "16v100n60",
+        "state": "RUNNING"
+      }
+    },
+    "updated_utc": "2026-10-20T16:00:27.119725+00:00"
+  },
+  "captured_utc": "2026-10-20T16:00:45.783076+00:00",
+  "finished_capture_utc": "2026-10-20T16:00:50.581930+00:00",
+  "long-comparison-replacement": {
+    "at": "2026-10-20T15:55:30.328801+00:00",
+    "new_allocation": "JobId=1883254 JobName=cp2k-water-20261020-large-water-16v100-g16-compare-r2\n   UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A\n   Priority=6744 Nice=0 Account=private-stardust QOS=huge-gpu WCKey=*\n   JobState=RUNNING Reason=None Dependency=(null)\n   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0\n   RunTime=00:02:10 TimeLimit=3-00:00:00 TimeMin=N/A\n   SubmitTime=2026-10-20T23:53:19 EligibleTime=2026-10-20T23:53:19\n   AccrueTime=2026-10-20T23:53:19\n   StartTime=2026-10-20T23:53:20 EndTime=2026-10-23T23:53:20 Deadline=N/A\n   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-20T23:53:20 Scheduler=Main\n   Partition=16V100 AllocNode:Sid=login-01:103530\n   ReqNodeList=(null) ExcNodeList=(null)\n   NodeList=16v100n60\n   BatchHost=16v100n60\n   NumNodes=1 NumCPUs=128 NumTasks=64 CPUs/Task=1 ReqB:S:C:T=0:0:*:*\n   ReqTRES=cpu=64,mem=240G,node=1,billing=2400,gres/gpu=16\n   AllocTRES=cpu=128,mem=240G,node=1,billing=2400,gres/gpu=16\n   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*\n   MinCPUsNode=1 MinMemoryTRES=15G MinTmpDiskNode=0\n   Features=(null) DelayBoot=00:00:00\n   OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null)\n   Command=/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare-r2/control/deployment/cp2k-water-scaling/job.sbatch\n   SubmitLine=sbatch --parsable --partition=16V100 --qos=huge-gpu --nodes=1 --ntasks=64 --gpus-per-node=16 --time=4320 --job-name=cp2k-water-20261020-large-water-16v100-g16-compare-r2 --output=/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare-r2/results/slurm-%j.log /home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare-r2/control/deployment/cp2k-water-scaling/job.sbatch /home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare-r2\n   WorkDir=/home/stardust/sai-hpc-software/development/workflow-closure\n   StdErr=\n   StdIn=/dev/null\n   StdOut=/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare-r2/results/slurm-1883254.log\n   CpusPerTres=gpu:8\n   MemPerTres=gpu:15360\n   TresPerNode=gres/gpu:16\n\n",
+    "new_case_seconds": 21600,
+    "new_job": "1883254",
+    "new_run": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare-r2",
+    "old_allocation": "JobId=1883125 JobName=cp2k-water-20261020-large-water-16v100-g16-compare\n   UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A\n   Priority=6744 Nice=0 Account=private-stardust QOS=huge-gpu WCKey=*\n   JobState=RUNNING Reason=None Dependency=(null)\n   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0\n   RunTime=00:16:20 TimeLimit=1-00:00:00 TimeMin=N/A\n   SubmitTime=2026-10-20T23:38:44 EligibleTime=2026-10-20T23:38:44\n   AccrueTime=2026-10-20T23:38:44\n   StartTime=2026-10-20T23:39:10 EndTime=2026-10-21T23:39:10 Deadline=N/A\n   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-20T23:39:10 Scheduler=Main\n   Partition=16V100 AllocNode:Sid=login-01:3603087\n   ReqNodeList=(null) ExcNodeList=(null)\n   NodeList=16v100n58\n   BatchHost=16v100n58\n   NumNodes=1 NumCPUs=128 NumTasks=64 CPUs/Task=1 ReqB:S:C:T=0:0:*:*\n   ReqTRES=cpu=64,mem=240G,node=1,billing=2400,gres/gpu=16\n   AllocTRES=cpu=128,mem=240G,node=1,billing=2400,gres/gpu=16\n   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*\n   MinCPUsNode=1 MinMemoryTRES=15G MinTmpDiskNode=0\n   Features=(null) DelayBoot=00:00:00\n   OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null)\n   Command=/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare/control/deployment/cp2k-water-scaling/job.sbatch\n   SubmitLine=sbatch --parsable --partition=16V100 --qos=huge-gpu --nodes=1 --ntasks=64 --gpus-per-node=16 --time=1440 --job-name=cp2k-water-20261020-large-water-16v100-g16-compare --output=/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare/results/slurm-%j.log /home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare/control/deployment/cp2k-water-scaling/job.sbatch /home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare\n   WorkDir=/home/stardust\n   StdErr=\n   StdIn=/dev/null\n   StdOut=/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare/results/slurm-1883125.log\n   CpusPerTres=gpu:8\n   MemPerTres=gpu:15360\n   TresPerNode=gres/gpu:16\n\n",
+    "old_case_seconds": 7200,
+    "old_job": "1883125",
+    "old_run": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare",
+    "partial_sample_preserved": false,
+    "reason": "Proactive runtime-budget correction before the long CPU trials: 648-water/16-core CPU measurements take about 300 seconds per SCF step. The 1452-water/64-core dense solve may exceed the inherited two-hour case limit. Keep the science, CPU quota and GPU mapping identical; allow six hours per case and 72 hours for the whole comparison in huge-gpu."
+  },
+  "performance_result": false,
+  "points": [
+    {
+      "calibration": {
+        "performance_result": false,
+        "probes": [
+          {
+            "average_physical_core_utilization": 0.38473820365159983,
+            "backend_timers": {
+              "CP2K": {
+                "calls": 1,
+                "seconds": 29.674
+              },
+              "cp_fm_general_cusolver": {
+                "calls": 3,
+                "seconds": 5.354
+              },
+              "eigensolver_generalized": {
+                "calls": 3,
+                "seconds": 7.204
+              }
+            },
+            "basis_functions": 4968,
+            "block": 32,
+            "calibration": true,
+            "elapsed_seconds": 32.47662925440818,
+            "host_memory": {
+              "limit": 16106127360,
+              "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CRS5EX00",
+              "used": 7175831552
+            },
+            "mode": "gpu",
+            "name": "calibration-0",
+            "peak_gpu_fraction": {
+              "GPU-99af3e17-17cc-3352-65ab-5987f3d5c12b": 0.5042724609375
+            },
+            "ranks": 1,
+            "returncode": 0,
+            "sampled_cpu_seconds": 49.98,
+            "scf_steps": [],
+            "science_accepted": false,
+            "shape": [
+              6,
+              6,
+              6
+            ],
+            "stop": null,
+            "threads": 4,
+            "waters": 216
+          },
+          {
+            "average_physical_core_utilization": 0.4019402256635123,
+            "backend_timers": {
+              "CP2K": {
+                "calls": 1,
+                "seconds": 35.179
+              },
+              "cp_fm_general_cusolver": {
+                "calls": 3,
+                "seconds": 6.23
+              },
+              "eigensolver_generalized": {
+                "calls": 3,
+                "seconds": 8.705
+              }
+            },
+            "basis_functions": 5796,
+            "block": 32,
+            "calibration": true,
+            "elapsed_seconds": 38.475870322436094,
+            "host_memory": {
+              "limit": 16106127360,
+              "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CRS5EX00",
+              "used": 8403619840
+            },
+            "mode": "gpu",
+            "name": "calibration-1",
+            "peak_gpu_fraction": {
+              "GPU-99af3e17-17cc-3352-65ab-5987f3d5c12b": 0.580078125
+            },
+            "ranks": 1,
+            "returncode": 0,
+            "sampled_cpu_seconds": 61.86,
+            "scf_steps": [],
+            "science_accepted": false,
+            "shape": [
+              6,
+              6,
+              7
+            ],
+            "stop": null,
+            "threads": 4,
+            "waters": 252
+          },
+          {
+            "average_physical_core_utilization": 0.41731095263668105,
+            "backend_timers": {
+              "CP2K": {
+                "calls": 1,
+                "seconds": 41.902
+              },
+              "cp_fm_general_cusolver": {
+                "calls": 3,
+                "seconds": 7.381
+              },
+              "eigensolver_generalized": {
+                "calls": 3,
+                "seconds": 10.348
+              }
+            },
+            "basis_functions": 6624,
+            "block": 32,
+            "calibration": true,
+            "elapsed_seconds": 44.91255233436823,
+            "host_memory": {
+              "limit": 16106127360,
+              "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CRS5EX00",
+              "used": 10497613824
+            },
+            "mode": "gpu",
+            "name": "calibration-2",
+            "peak_gpu_fraction": {
+              "GPU-99af3e17-17cc-3352-65ab-5987f3d5c12b": 0.6759033203125
+            },
+            "ranks": 1,
+            "returncode": 0,
+            "sampled_cpu_seconds": 74.97,
+            "scf_steps": [],
+            "science_accepted": false,
+            "shape": [
+              6,
+              6,
+              8
+            ],
+            "stop": null,
+            "threads": 4,
+            "waters": 288
+          }
+        ],
+        "reason": "all_gpus_in_target",
+        "scope": "3 SCF steps, memory calibration only; full-run peak must be checked again",
+        "selected": {
+          "average_physical_core_utilization": 0.41731095263668105,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 41.902
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 3,
+              "seconds": 7.381
+            },
+            "eigensolver_generalized": {
+              "calls": 3,
+              "seconds": 10.348
+            }
+          },
+          "basis_functions": 6624,
+          "block": 32,
+          "calibration": true,
+          "elapsed_seconds": 44.91255233436823,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CRS5EX00",
+            "used": 10497613824
+          },
+          "mode": "gpu",
+          "name": "calibration-2",
+          "peak_gpu_fraction": {
+            "GPU-99af3e17-17cc-3352-65ab-5987f3d5c12b": 0.6759033203125
+          },
+          "ranks": 1,
+          "returncode": 0,
+          "sampled_cpu_seconds": 74.97,
+          "scf_steps": [],
+          "science_accepted": false,
+          "shape": [
+            6,
+            6,
+            8
+          ],
+          "stop": null,
+          "threads": 4,
+          "waters": 288
+        },
+        "target_fraction": [
+          0.6,
+          0.75
+        ]
+      },
+      "calibration_run": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g1-d",
+      "calibration_sha256": "b1a1379a89828e0d6adae8255ffb0817e2367092d192514c08e24dfd31816985",
+      "calibration_verification": {
+        "completed_cases": 0,
+        "files": {
+          "cases/calibration-0/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/calibration-0/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/calibration-0/benchmark-RESTART.wfn": "ea641fbe85b21554a056ea39056a893450c0483a9b152e38038616f0117d7362",
+          "cases/calibration-0/cp2k.log": "4b958cadec6b7ad440ef71b8d86768c21ec3bf21c14bf3a1465c978fcf517352",
+          "cases/calibration-0/elapsed.txt": "10018e8542681308e04270194797e2aa023b62d5cb3e9bb600cf9e096debbb25",
+          "cases/calibration-0/forces.xyz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "cases/calibration-0/input.inp": "96fcd2ec5f282767def2bac932da1dc840ada4546d4b1c3b2e7af0f9afa4c394",
+          "cases/calibration-0/launch.json": "2f36b1e7fe9ff00bc8fc4772a6fd94a07d796332a4420806185ef40ee8310901",
+          "cases/calibration-0/rank-0.json": "6828c11b333ac134293378c3924067994da9f3291934cfc192b05861221d379a",
+          "cases/calibration-0/resources.jsonl": "9bc0c0a23814b3e8530b47ad3cc63b02749233881752e6256d564c37eb518ddf",
+          "cases/calibration-0/sample.json": "e29bba6d39d8ccc2a48e2f75f8b7a983183ebbd7f5fd9dea551efd5f7b2cb31a",
+          "cases/calibration-1/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/calibration-1/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/calibration-1/benchmark-RESTART.wfn": "95d073ca60631af0b61c9c8be931df3beb3e5f8b3ec0317565bcacd635c26319",
+          "cases/calibration-1/cp2k.log": "f21f6be624bd0e7fc6c31231025132144ba1cc6a99db90fba6036d444db2a50f",
+          "cases/calibration-1/elapsed.txt": "c2ac01cee6d1de17613d72bbb821a8d8b76a6c44e13b9feb888bc1dc347d33ee",
+          "cases/calibration-1/forces.xyz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "cases/calibration-1/input.inp": "4f08fdf311c3859e4416fa1362ca7ee98c1d96fe8c0e3a93f418afa68e8351f5",
+          "cases/calibration-1/launch.json": "836b26d60cfecda83bc798caa039944363c502101e9de8cd5504423bac529d2f",
+          "cases/calibration-1/rank-0.json": "25cd85f011e46f653f1309f51d603af583a7088b9201a17453b9c78a5b2e210a",
+          "cases/calibration-1/resources.jsonl": "165e028c25cf61cb7726ed360c3e2d177d029e487fc343fcb7a28578e07d76ce",
+          "cases/calibration-1/sample.json": "5837cc9fcb2153fcb1da2e4c8fa485c5df284b9421d0945ca06efa1f44b1bd20",
+          "cases/calibration-2/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/calibration-2/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/calibration-2/benchmark-RESTART.wfn": "27b72748e5633dcea600b36a20b136bdc56be1a7323e5981b119d6b956f818ac",
+          "cases/calibration-2/cp2k.log": "bfeb0d8cffd3ef0b7bf948850bdfbbd7a4e2f28fc154a2867a120c0bc8448a95",
+          "cases/calibration-2/elapsed.txt": "21128386919cbbb658116efaf31a137a803a837f1a8cd552a2c05b6f74d3946f",
+          "cases/calibration-2/forces.xyz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "cases/calibration-2/input.inp": "a83d0dd78bd59ceb0b89d76e2da8ae8c1db202a56f6ad3a349ac8032f1456fbf",
+          "cases/calibration-2/launch.json": "06c563edfbcf413da8c67953e741657158ddb27d7fef1cd69f29dd8c7c686a04",
+          "cases/calibration-2/rank-0.json": "994b30abd91bee5014823c6a87deb7eb2d74e9dc627ccb2f95b98a99786d4279",
+          "cases/calibration-2/resources.jsonl": "d0b13130cf62388452995a6dd7c213c62c48c98158b24dc1e1a513cf31ab63e0",
+          "cases/calibration-2/sample.json": "7d2407c480b7b4451e27edac6020e01057db0f4332599bb2b9f8f0d1e61af20e",
+          "fixtures/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "fixtures/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "results/accounting.txt": "b2adae895b0b4577a5a5cbd81a3b4f7f9839c10e945d36bb38d861b81cd6857a",
+          "results/allocation.txt": "9fab9879f5fc43288baeb74123dd0f669b0dd355ee96d7d099914ed3d64601fd",
+          "results/calibration.json": "b1a1379a89828e0d6adae8255ffb0817e2367092d192514c08e24dfd31816985",
+          "results/devices.json": "b891976a285df015155fe0d8770f3f9001f258bc1f06846cd052cf9e069868d3",
+          "results/environment.json": "0cf75b21045d173a74b09deaae71f78496d1f8f656e928bf820f22037847aeec",
+          "results/gpu-topology.txt": "5d148eda41969a72dac4fda7ae26ecba0d5497df7f8c47a85bb5818584a3ffe2",
+          "results/lscpu.txt": "c9a6f294aea44d314934a116e4099b8b6d94b82c2f7e62a4d6d138e19821bcb9",
+          "results/modules.txt": "6057b203159ae7f51ba5d5a20445426d2c3bed351e5206623e5d6f9b687df22e"
+        },
+        "job": "1882071",
+        "request_sha256": "03bb80b8bd2207ca02a8fbff0dac345948a8b2750400ac9b9790df778a213506",
+        "stage": "calibrate",
+        "verified": true
+      },
+      "comparison_run": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g1-compare",
+      "completed_pairs": [
+        {
+          "average_physical_core_utilization": 0.46000449316364667,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 270.71
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 20,
+              "seconds": 46.01
+            },
+            "eigensolver_generalized": {
+              "calls": 20,
+              "seconds": 66.108
+            }
+          },
+          "basis_functions": 6624,
+          "block": 64,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 270.71,
+          "elapsed_seconds": 274.1984086558223,
+          "energy_ha": -4961.610943760151,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTABHW00",
+            "used": 13029425152
+          },
+          "mode": "gpu",
+          "name": "pair-0-gpu",
+          "peak_gpu_fraction": {
+            "GPU-2b7168cf-77f0-c7ec-1ec5-88c9bd3e2887": 0.6759033203125
+          },
+          "ranks": 1,
+          "raw_hashes": {
+            "cp2k.log": "667671e4b48dc900c85549638364712820b6bd653642cf43648c54286b0dab9e",
+            "elapsed.txt": "359f99b91b3d7449db7cd163e071d1e0efdea1f9b3c8e07c2593aaa91a90f4ca",
+            "forces.xyz": "a9495f4d87bcec9803a82c140351d2fe58cea4970a184a0dd36d2b1565d5341c",
+            "input.inp": "1090ebd9645f77742248d7b44284c307244b627ebb14dc699fac62c6558acaa6",
+            "launch.json": "6f99e55b156c90814d605d07bf24ea8a708c7c53cc53845964ab4a4854d8a08d",
+            "rank-0.json": "9bb0b315f74373d00606008302e09f1e5e23111b48ba2754d507267627e88763",
+            "sample.json": "fa598b2854e18ae45161b937ddef423cb95a60d26712059c4fb3981b223a24d1"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 504.53,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            6,
+            6,
+            8
+          ],
+          "stop": null,
+          "threads": 4,
+          "warmup": true,
+          "waters": 288
+        }
+      ],
+      "completed_tuning": [
+        {
+          "average_physical_core_utilization": 0.44416680196607905,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 269.936
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 20,
+              "seconds": 45.918
+            },
+            "eigensolver_generalized": {
+              "calls": 20,
+              "seconds": 66.264
+            }
+          },
+          "basis_functions": 6624,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "cp2k_seconds": 269.936,
+          "elapsed_seconds": 273.58528251573443,
+          "energy_ha": -4961.610943760151,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTABHW00",
+            "used": 12802662400
+          },
+          "mode": "gpu",
+          "name": "tune-0-gpu",
+          "peak_gpu_fraction": {
+            "GPU-2b7168cf-77f0-c7ec-1ec5-88c9bd3e2887": 0.6759033203125
+          },
+          "ranks": 1,
+          "raw_hashes": {
+            "cp2k.log": "8af3d065e4f641fbb73e884c312279613a5562670f3001c542fbecad58283899",
+            "elapsed.txt": "bc26ddc9c1a35b18b0d0add9b380b931a9ccb73a7cbead29e2a88e5453c536d8",
+            "forces.xyz": "0495003cc0aa66504aad93a76be46d26f6219ba86c9bd9a1630d13d1783cbe3a",
+            "input.inp": "4d46b1c52296f28f300fef09fe2be83760c94334beb4ef10a4ca855cc8132ec3",
+            "launch.json": "91945272677f2bb10999633dceab0f3c0786fe1492cc255046e6bd003ead9ab7",
+            "rank-0.json": "fd1983cdcb465cf7ac3d84285cced9c02efa699c352068db1d0775f1fee4e5fe",
+            "sample.json": "393cea6a75aee3500f366196cd53c27e9adbab755a30aac6405187426d02e99b"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 486.07,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            6,
+            6,
+            8
+          ],
+          "stop": null,
+          "threads": 4,
+          "waters": 288
+        },
+        {
+          "average_physical_core_utilization": 0.29414859650101466,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 324.318
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 20,
+              "seconds": 43.826
+            },
+            "eigensolver_generalized": {
+              "calls": 20,
+              "seconds": 63.686
+            }
+          },
+          "basis_functions": 6624,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 324.318,
+          "elapsed_seconds": 335.3747091554105,
+          "energy_ha": -4961.610943760151,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTABHW00",
+            "used": 12886028288
+          },
+          "mode": "gpu",
+          "name": "tune-1-gpu",
+          "peak_gpu_fraction": {
+            "GPU-2b7168cf-77f0-c7ec-1ec5-88c9bd3e2887": 0.6741943359375
+          },
+          "ranks": 1,
+          "raw_hashes": {
+            "cp2k.log": "b4ce455ec29d3713303b3624d1f610a8d55e538918fe6eb5b9016dd79abb7e63",
+            "elapsed.txt": "586865b7178b2caab74f2b565909fc1b64855720fde1acd58f3947b8736c6ab9",
+            "forces.xyz": "fa1c125bd7e01f4a3fc48ca532da889422fe9471d113b1a531fcc404afe8ef13",
+            "input.inp": "4d46b1c52296f28f300fef09fe2be83760c94334beb4ef10a4ca855cc8132ec3",
+            "launch.json": "eb9e8b1c35e82909d3e4704b133493d91262b1996de47f0ce3e2a5c7b342bdbd",
+            "rank-0.json": "f15a0b83795f4befcfec7a6f0dc2ad1c3aad703a03705fcbcda2e263d17a8308",
+            "sample.json": "57b836f5a4339c62a40b51ae8604229c5d7a06c4caf15ab7c7adbf6dda852a13"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 394.6,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            6,
+            6,
+            8
+          ],
+          "stop": null,
+          "threads": 2,
+          "waters": 288
+        },
+        {
+          "average_physical_core_utilization": 0.2383553135176366,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 369.639
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 20,
+              "seconds": 43.808
+            },
+            "eigensolver_generalized": {
+              "calls": 20,
+              "seconds": 62.27
+            }
+          },
+          "basis_functions": 6624,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 369.639,
+          "elapsed_seconds": 372.9725957773626,
+          "energy_ha": -4961.610943760151,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTABHW00",
+            "used": 12941414400
+          },
+          "mode": "gpu",
+          "name": "tune-2-gpu",
+          "peak_gpu_fraction": {
+            "GPU-2b7168cf-77f0-c7ec-1ec5-88c9bd3e2887": 0.673583984375
+          },
+          "ranks": 1,
+          "raw_hashes": {
+            "cp2k.log": "5ceef753b50a516f8c9542e7d0764e245ae21c0e2c5570bbca4ce7dbdcd7154b",
+            "elapsed.txt": "84a32519cebe55bb155503c32004433d8db5189b9ff99aac33da4d688050d90b",
+            "forces.xyz": "5927c3fd994820270acbf7b0d42b026219ebc26404da5539540f953a5a192a3b",
+            "input.inp": "4d46b1c52296f28f300fef09fe2be83760c94334beb4ef10a4ca855cc8132ec3",
+            "launch.json": "f4bf74a4682dd03038b3f1b5e85fb32a4e786a1e3109bf100a7346c697097ef9",
+            "rank-0.json": "f722f9efab4423a60e61e068db358a64ceee5afa38dbe8699a885af7b11468a4",
+            "sample.json": "758a92ccf0250e8ba9fbfa713ab56e4cb70d442d5b35d4a77cf587a26ad4ec1a"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 355.6,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            6,
+            6,
+            8
+          ],
+          "stop": null,
+          "threads": 1,
+          "waters": 288
+        },
+        {
+          "average_physical_core_utilization": 0.43022341726142516,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 251.248
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 20,
+              "seconds": 42.39
+            },
+            "eigensolver_generalized": {
+              "calls": 20,
+              "seconds": 61.294
+            }
+          },
+          "basis_functions": 6624,
+          "block": 64,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 251.248,
+          "elapsed_seconds": 258.5458985660225,
+          "energy_ha": -4961.610943760151,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTABHW00",
+            "used": 12483579904
+          },
+          "mode": "gpu",
+          "name": "tune-3-gpu",
+          "peak_gpu_fraction": {
+            "GPU-2b7168cf-77f0-c7ec-1ec5-88c9bd3e2887": 0.6759033203125
+          },
+          "ranks": 1,
+          "raw_hashes": {
+            "cp2k.log": "198c2c647f37586f99dca4d1fe322edb5a4649ee315a6d47d5276d629362443b",
+            "elapsed.txt": "6d0d501b99254071e679860113f1eefcb2f8ee8688fd79f653e7e95462b1f75c",
+            "forces.xyz": "443cc65bb987aae1620cf16c78ec64f6bb738c54a81569df35ef0f008a7ee814",
+            "input.inp": "1090ebd9645f77742248d7b44284c307244b627ebb14dc699fac62c6558acaa6",
+            "launch.json": "6f99e55b156c90814d605d07bf24ea8a708c7c53cc53845964ab4a4854d8a08d",
+            "rank-0.json": "a0f1e92acf896f7f72cf3ba42c28269f72b3309654290b465ee33aaec7aee832",
+            "sample.json": "06eabe970022cb1b90b01035dbd3c09787297295d6ce4b733f0b69c3db0a885e"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 444.93,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            6,
+            6,
+            8
+          ],
+          "stop": null,
+          "threads": 4,
+          "waters": 288
+        },
+        {
+          "average_physical_core_utilization": 0.3056581664248089,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 323.832
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 20,
+              "seconds": 44.804
+            },
+            "eigensolver_generalized": {
+              "calls": 20,
+              "seconds": 64.148
+            }
+          },
+          "basis_functions": 6624,
+          "block": 64,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 323.832,
+          "elapsed_seconds": 327.31826265342534,
+          "energy_ha": -4961.610943760151,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTABHW00",
+            "used": 12725616640
+          },
+          "mode": "gpu",
+          "name": "tune-4-gpu",
+          "peak_gpu_fraction": {
+            "GPU-2b7168cf-77f0-c7ec-1ec5-88c9bd3e2887": 0.6741943359375
+          },
+          "ranks": 1,
+          "raw_hashes": {
+            "cp2k.log": "1d4668fedd17a4a6f8663c91324d6a20eef712636ac50198bfb9f2d7d4abc89c",
+            "elapsed.txt": "462e2256d6c57773c18b0c02b57576034a2eb220e684087218493ae05d370267",
+            "forces.xyz": "5ccf273ef0f913b25569c45a3607aa2ae6f352df52edde0e6e1fff300f5763d1",
+            "input.inp": "1090ebd9645f77742248d7b44284c307244b627ebb14dc699fac62c6558acaa6",
+            "launch.json": "8a26b7fc2817e4593f9116f577f2a838ee41514535fca64a36dd210679b8c85c",
+            "rank-0.json": "d8627dbde76b13b8a06da7989632932f975a466c71d9771d1b0f79351c2545fa",
+            "sample.json": "a803f0a172a3a19652d88926da5b90e071631b7520f4cc661f4dfe4ea8df7f2f"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 400.19,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            6,
+            6,
+            8
+          ],
+          "stop": null,
+          "threads": 2,
+          "waters": 288
+        },
+        {
+          "average_physical_core_utilization": 0.21143989173341865,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 445.761
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 20,
+              "seconds": 45.255
+            },
+            "eigensolver_generalized": {
+              "calls": 20,
+              "seconds": 65.927
+            }
+          },
+          "basis_functions": 6624,
+          "block": 64,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 445.761,
+          "elapsed_seconds": 450.7309345398098,
+          "energy_ha": -4961.610943760151,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTABHW00",
+            "used": 12906094592
+          },
+          "mode": "gpu",
+          "name": "tune-5-gpu",
+          "peak_gpu_fraction": {
+            "GPU-2b7168cf-77f0-c7ec-1ec5-88c9bd3e2887": 0.673583984375
+          },
+          "ranks": 1,
+          "raw_hashes": {
+            "cp2k.log": "35c7ff199e288bf7b2333f7b14ec9b15324171ee2040870d999d9e00a06dd7dc",
+            "elapsed.txt": "51652e20aa16d508819ddbc212c624cf5efb50e6a98516c2df06dfd430abc324",
+            "forces.xyz": "e1194cef67916444233f9e6f4b1b4a37d188c6e4d0a147e3cddb057823db7c86",
+            "input.inp": "1090ebd9645f77742248d7b44284c307244b627ebb14dc699fac62c6558acaa6",
+            "launch.json": "8c65cf996bb2d8b85f484d5f8af760e75c283cfbcd0ada27aefce863a221b585",
+            "rank-0.json": "8993ce890c3c7828cbb9c4c8da60cecfc006b4002aa8e5418404d98c8630f73a",
+            "sample.json": "4fcd8017657fe77406bf5fc1d13c5ebb0d0a444ca224d5209d03276e208f9a33"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 381.21,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            6,
+            6,
+            8
+          ],
+          "stop": null,
+          "threads": 1,
+          "waters": 288
+        },
+        {
+          "average_physical_core_utilization": 0.6412851129132875,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 1252.759
+            },
+            "cp_fm_syevd": {
+              "calls": 20,
+              "seconds": 629.435
+            },
+            "eigensolver": {
+              "calls": 20,
+              "seconds": 755.658
+            }
+          },
+          "basis_functions": 6624,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 1.8189894035458565e-12,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 1252.759,
+          "elapsed_seconds": 1260.6093354132026,
+          "energy_ha": -4961.610943760153,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTABHW00",
+            "used": 12113965056
+          },
+          "mode": "cpu",
+          "name": "tune-6-cpu",
+          "no_gpu_compute_process_verified": true,
+          "peak_gpu_fraction": {
+            "GPU-2b7168cf-77f0-c7ec-1ec5-88c9bd3e2887": 0.000244140625
+          },
+          "ranks": 1,
+          "raw_hashes": {
+            "cp2k.log": "3981152f4fc4b97d7d73ad8b3650cad8e484b3e751925eed7ca6265ca41d508c",
+            "elapsed.txt": "889fe464fb7e2ac1c79eb758cd18910c7757da48fea79918afef787495536114",
+            "forces.xyz": "cb1c33bc10cc6215aba5503d4ac9d1394486d37c497553aa1df8aedc93863e1b",
+            "input.inp": "4f3876c59fe75a3080b5cb74ed9bb811712df587840897fa850e00b9e1ff8772",
+            "launch.json": "027c84674a7197a59b3a58aed14b3e9431a216d9ac76818acb678cbda9792e24",
+            "rank-0.json": "e6f5cbfb7654f88b538ec51ede5eed4fd3fd52108b0bc6f73879260ded0d8a1e",
+            "sample.json": "0a5cd361f56fe4d75555070724db38f3ba59541e2b2bfa1b25ccc12b84cf7ec0"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 3233.64,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            6,
+            6,
+            8
+          ],
+          "stop": null,
+          "threads": 4,
+          "waters": 288
+        },
+        {
+          "average_physical_core_utilization": 0.741850761431314,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 1328.796
+            },
+            "cp_fm_syevd": {
+              "calls": 20,
+              "seconds": 743.04
+            },
+            "eigensolver": {
+              "calls": 20,
+              "seconds": 892.542
+            }
+          },
+          "basis_functions": 6624,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 7.175913196988404e-10,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 1328.796,
+          "elapsed_seconds": 1331.069605017081,
+          "energy_ha": -4961.610943760868,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTABHW00",
+            "used": 14413787136
+          },
+          "mode": "cpu",
+          "name": "tune-7-cpu",
+          "no_gpu_compute_process_verified": true,
+          "peak_gpu_fraction": {
+            "GPU-2b7168cf-77f0-c7ec-1ec5-88c9bd3e2887": 0.000244140625
+          },
+          "ranks": 2,
+          "raw_hashes": {
+            "cp2k.log": "ba8ba04b52e2dc95c128a12bbbbc842b1102518766912b3ba306662d024de016",
+            "elapsed.txt": "52bcd0c9c70cde40bb42c426a2a529ae2581b6d294f6dd24291ede8e8ec08cf1",
+            "forces.xyz": "ba57250ce8a5d58bc5ab33edcd13696914111d38d6afda3d9de4dfa4067c3a32",
+            "input.inp": "4f3876c59fe75a3080b5cb74ed9bb811712df587840897fa850e00b9e1ff8772",
+            "launch.json": "e2ab0e6badc43b9fef6a7a48a6dafd0bd5fb99a3f79247c2accbe84612cb556d",
+            "rank-0.json": "dc25b9a64201b74556061e5563797303d13fa2b2ccb3017537a2f4f4e573437b",
+            "rank-1.json": "376cd988cfdfcf7761d7ad0f9f34b54d64113d6948062b6db86e855c494885ce",
+            "sample.json": "1da3380fcc72727916377bd23524fbc61b1affca7521c0ce3661fcdcffeb318a"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 3949.8199999999997,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            6,
+            6,
+            8
+          ],
+          "stop": null,
+          "threads": 2,
+          "waters": 288
+        },
+        {
+          "average_physical_core_utilization": 0.9929474673398684,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 1219.457
+            },
+            "cp_fm_syevd": {
+              "calls": 20,
+              "seconds": 681.882
+            },
+            "eigensolver": {
+              "calls": 20,
+              "seconds": 807.766
+            }
+          },
+          "basis_functions": 6624,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 9.194991434924304e-10,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 1219.457,
+          "elapsed_seconds": 1222.6653875783086,
+          "energy_ha": -4961.61094376107,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTABHW00",
+            "used": 14645231616
+          },
+          "mode": "cpu",
+          "name": "tune-8-cpu",
+          "no_gpu_compute_process_verified": true,
+          "peak_gpu_fraction": {
+            "GPU-2b7168cf-77f0-c7ec-1ec5-88c9bd3e2887": 0.000244140625
+          },
+          "ranks": 4,
+          "raw_hashes": {
+            "cp2k.log": "96995f3d908cfd3d43539b958138c45fd373f8668fd3d88fa2f7980d40c2b82a",
+            "elapsed.txt": "743389fd84f3731e35f6e479b49e3b82b7c0ac34e87b153f253a74ff5bd4171d",
+            "forces.xyz": "4f64bf54fbad863a78988fe94f7a26b629a889fe95fc360117fc7cbefa8e2f4e",
+            "input.inp": "4f3876c59fe75a3080b5cb74ed9bb811712df587840897fa850e00b9e1ff8772",
+            "launch.json": "92bce2af9cee3523eaf3fa4c4c601b66966d0968d35f71e47a4c1d152619bd82",
+            "rank-0.json": "524f3919f1ccfc112f982915cfb5f513c24814d740f550fb41427ec5f168ff37",
+            "rank-1.json": "a9c0807822230791ac402b95204987e00711dc268583e5190d9ba7f16d15e7e4",
+            "rank-2.json": "8fe37a319b96bf2ffec011207966bb00d5b4d90915b3ba29d870760495d8d7d6",
+            "rank-3.json": "8c424fc9f2f44de136870e5d2dd49c25c87c0c923ad35ffb7c97a14aecfb738f",
+            "sample.json": "f2f3df412d39fa4084f77be2e3f9d2a391f6ebf5f88bd1c931da2b27cd6e457d"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 4856.17,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            6,
+            6,
+            8
+          ],
+          "stop": null,
+          "threads": 1,
+          "waters": 288
+        }
+      ],
+      "gpus": 1,
+      "job": "1882305",
+      "latest_case": "pair-0-cpu",
+      "latest_log_tail": "  Energy[a.u.]          Energy[eV]\n\n                       1     0          1.000      -0.076318           -2.076708\n\n\n Total Electron Density at R=0:                                         0.425022\n Re-scaling the density matrix to get the right number of electrons\n                  # Electrons              Trace(P)               Scaling factor\n                         2304              2304.000                        1.000\n\n Number of electrons:                                                       2304\n Number of occupied orbitals:                                               1152\n Number of molecular orbitals:                                              1152\n\n Number of orbital functions:                                               6624\n Number of independent orbital functions:                                   6624\n\n\n SCF WAVEFUNCTION OPTIMIZATION\n\n  Step     Update method      Time    Convergence         Total energy    Change\n  ------------------------------------------------------------------------------\n     1 P_Mix/Diag. 0.40E+00   56.2     0.68181301     -4890.2208171869 -4.89E+03\n     2 P_Mix/Diag. 0.40E+00   60.5     0.39980864     -4919.1999127872 -2.90E+01\n     3 P_Mix/Diag. 0.40E+00   59.7     0.24842316     -4936.3365203213 -1.71E+01\n     4 P_Mix/Diag. 0.40E+00   60.4     0.15277689     -4946.4866134912 -1.02E+01\n     5 P_Mix/Diag. 0.40E+00   56.5     0.09348976     -4952.5454301188 -6.06E+00\n     6 DIIS/Diag.  0.33E-02   60.5     0.05790763     -4956.1734986643 -3.63E+00\n     7 DIIS/Diag.  0.14E-03   60.6     0.00011217     -4961.6109401572 -5.44E+00\n",
+      "partition": "16V100",
+      "request": {
+        "calibration": {
+          "path": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g1-d",
+          "reason": "all_gpus_in_target",
+          "sha256": "b1a1379a89828e0d6adae8255ffb0817e2367092d192514c08e24dfd31816985"
+        },
+        "case_seconds": 7200,
+        "cpu_acceptance": {
+          "path": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-smoke-b/results/smoke.json",
+          "sha256": "d55c4a3b36b3ffe5bf4804f90d65faad7d3a54bc0bab68b5f5bf0ec96a1f506d"
+        },
+        "cpu_binary": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-16v100-a/install/bin/cp2k.psmp",
+        "cpu_binary_sha256": "334927fba16531e479836fabd940b6d7844ea39fba8f883aabb8d4d71e8dd840",
+        "gpu_binary": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/bin/cp2k.psmp",
+        "gpu_binary_sha256": "7bc5d0f8afcba6e08e90800fd702908d088caae2ccb4164662fbbd029db8ca33",
+        "gpus": 1,
+        "install_receipt_sha256": "2fe5555f35a585018b4dd70f99181413a5c2037c628bf03915cc1d118f590f39",
+        "partition": "16V100",
+        "physical_cores": 4,
+        "probes": 6,
+        "shape": [
+          6,
+          6,
+          8
+        ],
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "stage": "compare"
+      },
+      "request_sha256": "242d1c08052d411a4ba0d9ff12dfef370b83bb41559295473cbf4aee1c9389e4",
+      "slurm_log_tail": "pu: 288 waters, 1 MPI x 4 OMP, gpu\nFINISH tune-0-gpu: rc=0, stop=None, GPU fractions=[0.6759033203125]\nSTART tune-1-gpu: 288 waters, 1 MPI x 2 OMP, gpu\nFINISH tune-1-gpu: rc=0, stop=None, GPU fractions=[0.6741943359375]\nSTART tune-2-gpu: 288 waters, 1 MPI x 1 OMP, gpu\nFINISH tune-2-gpu: rc=0, stop=None, GPU fractions=[0.673583984375]\nSTART tune-3-gpu: 288 waters, 1 MPI x 4 OMP, gpu\nFINISH tune-3-gpu: rc=0, stop=None, GPU fractions=[0.6759033203125]\nSTART tune-4-gpu: 288 waters, 1 MPI x 2 OMP, gpu\nFINISH tune-4-gpu: rc=0, stop=None, GPU fractions=[0.6741943359375]\nSTART tune-5-gpu: 288 waters, 1 MPI x 1 OMP, gpu\nFINISH tune-5-gpu: rc=0, stop=None, GPU fractions=[0.673583984375]\nSTART tune-6-cpu: 288 waters, 1 MPI x 4 OMP, cpu\nFINISH tune-6-cpu: rc=0, stop=None, GPU fractions=[0.000244140625]\nSTART tune-7-cpu: 288 waters, 2 MPI x 2 OMP, cpu\nFINISH tune-7-cpu: rc=0, stop=None, GPU fractions=[0.000244140625]\nSTART tune-8-cpu: 288 waters, 4 MPI x 1 OMP, cpu\nFINISH tune-8-cpu: rc=0, stop=None, GPU fractions=[0.000244140625]\nSTART pair-0-gpu: 288 waters, 1 MPI x 4 OMP, gpu\nFINISH pair-0-gpu: rc=0, stop=None, GPU fractions=[0.6759033203125]\nSTART pair-0-cpu: 288 waters, 4 MPI x 1 OMP, cpu\n"
+    },
+    {
+      "calibration": {
+        "performance_result": false,
+        "probes": [
+          {
+            "average_physical_core_utilization": 0.48616859308424726,
+            "backend_timers": {
+              "CP2K": {
+                "calls": 1,
+                "seconds": 105.435
+              },
+              "cp_fm_general_cusolver": {
+                "calls": 3,
+                "seconds": 49.094
+              },
+              "eigensolver_generalized": {
+                "calls": 3,
+                "seconds": 52.665
+              }
+            },
+            "basis_functions": 14904,
+            "block": 32,
+            "calibration": true,
+            "elapsed_seconds": 110.99544636905193,
+            "host_memory": {
+              "limit": 64424509440,
+              "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CSWD8W00",
+              "used": 46947536896
+            },
+            "mode": "gpu",
+            "name": "calibration-0",
+            "peak_gpu_fraction": {
+              "GPU-7562683f-a562-cd70-0587-acbbfaa7c3c4": 0.6136474609375,
+              "GPU-ac320ce2-fa48-76e7-bd38-a25129974777": 0.627197265625,
+              "GPU-c492f7ed-1e07-fb40-a243-6aded2b54e98": 0.62255859375,
+              "GPU-dedb7af5-6d87-8aba-cb81-bcb88d57e0cf": 0.6190185546875
+            },
+            "ranks": 4,
+            "returncode": 0,
+            "sampled_cpu_seconds": 863.4,
+            "scf_steps": [],
+            "science_accepted": false,
+            "shape": [
+              8,
+              9,
+              9
+            ],
+            "stop": null,
+            "threads": 4,
+            "waters": 648
+          }
+        ],
+        "reason": "all_gpus_in_target",
+        "scope": "3 SCF steps, memory calibration only; full-run peak must be checked again",
+        "selected": {
+          "average_physical_core_utilization": 0.48616859308424726,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 105.435
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 3,
+              "seconds": 49.094
+            },
+            "eigensolver_generalized": {
+              "calls": 3,
+              "seconds": 52.665
+            }
+          },
+          "basis_functions": 14904,
+          "block": 32,
+          "calibration": true,
+          "elapsed_seconds": 110.99544636905193,
+          "host_memory": {
+            "limit": 64424509440,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CSWD8W00",
+            "used": 46947536896
+          },
+          "mode": "gpu",
+          "name": "calibration-0",
+          "peak_gpu_fraction": {
+            "GPU-7562683f-a562-cd70-0587-acbbfaa7c3c4": 0.6136474609375,
+            "GPU-ac320ce2-fa48-76e7-bd38-a25129974777": 0.627197265625,
+            "GPU-c492f7ed-1e07-fb40-a243-6aded2b54e98": 0.62255859375,
+            "GPU-dedb7af5-6d87-8aba-cb81-bcb88d57e0cf": 0.6190185546875
+          },
+          "ranks": 4,
+          "returncode": 0,
+          "sampled_cpu_seconds": 863.4,
+          "scf_steps": [],
+          "science_accepted": false,
+          "shape": [
+            8,
+            9,
+            9
+          ],
+          "stop": null,
+          "threads": 4,
+          "waters": 648
+        },
+        "target_fraction": [
+          0.6,
+          0.75
+        ]
+      },
+      "calibration_run": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g4-e",
+      "calibration_sha256": "0c5d972b69510501e2b2316fa1900d0700d90620b9723e5eef5377195e403d36",
+      "calibration_verification": {
+        "completed_cases": 0,
+        "files": {
+          "cases/calibration-0/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/calibration-0/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/calibration-0/benchmark-RESTART.wfn": "1e0244b85c07886c2ad470fcc2cbae0a0c3434e48175df90a0db6def7d06bb9a",
+          "cases/calibration-0/cp2k.log": "9f152a3e256679b05d23d376c9c7067d8bac3b9275c3ca27a630abc2f1a69964",
+          "cases/calibration-0/elapsed.txt": "cb395f092d3e310357e726b554a339d49d76c170aabfe777f5b85908087442f5",
+          "cases/calibration-0/forces.xyz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "cases/calibration-0/input.inp": "f4868159179a92f44b383e41d9c9c7d1cd867d385776f5b1c8d134f2ef4429d4",
+          "cases/calibration-0/launch.json": "2bb74616b6c47b054e426bde14cd0faaebac3245cf88fed0c330d45b9d2235c9",
+          "cases/calibration-0/rank-0.json": "95e8f9b48d6c5a49a943e7185db30f144534d0cb359e73ed7c17e49976f710bf",
+          "cases/calibration-0/rank-1.json": "bb5371d8673a5b599938bd205ea6407d11b156e9a25cc77c98709e4139ad9a23",
+          "cases/calibration-0/rank-2.json": "a4283a26e2ef69cf38387746142ac93c337bf45cf76bfc2b57ef1efd05c2abea",
+          "cases/calibration-0/rank-3.json": "7a18b2ad59b1d4190205eca96522522c4aad60b3161398c5f5fc68e6a915cff4",
+          "cases/calibration-0/resources.jsonl": "0e6060583a88a5ca648594f5ee5285aa46e082201aa5d1c275c9822065573a3a",
+          "cases/calibration-0/sample.json": "a6d2696c7d92d2182052f05c630f292fc7554e286680339bb07c54e4709a9dc2",
+          "fixtures/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "fixtures/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "results/accounting.txt": "3f2385123996323874d56d051b7d69883e744482cec8dc3df7da24ef82401b06",
+          "results/allocation.txt": "db99ee6b1e447271c9cf467ca0462175963f073130e9b04588ff16b03a641c65",
+          "results/calibration.json": "0c5d972b69510501e2b2316fa1900d0700d90620b9723e5eef5377195e403d36",
+          "results/devices.json": "b69cb4e02cb3af68b08010128bdec55a6a7915adaf90caf4f345b5032aa35d7c",
+          "results/environment.json": "3e2145b49b75aed4e9d7c156b07dc48a23d7e3013d97d96e6755de50048df4b9",
+          "results/gpu-topology.txt": "b0592d4d9eaca713759063d257a78c52e46e601e451ff9059ccbf099367eb8ad",
+          "results/lscpu.txt": "680dda2890bd9c2f2c35b9690f129eacd6ae7dad647c01733697b574910c0228",
+          "results/modules.txt": "6057b203159ae7f51ba5d5a20445426d2c3bed351e5206623e5d6f9b687df22e"
+        },
+        "job": "1882209",
+        "request_sha256": "40e38c4739ef3689861b18405abbf6528234bc3b23821bebf92a276fd81a3386",
+        "stage": "calibrate",
+        "verified": true
+      },
+      "comparison_run": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g4-compare",
+      "completed_pairs": [],
+      "completed_tuning": [
+        {
+          "average_physical_core_utilization": 0.5115727854079317,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 648.947
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 20,
+              "seconds": 265.231
+            },
+            "eigensolver_generalized": {
+              "calls": 20,
+              "seconds": 289.465
+            }
+          },
+          "basis_functions": 14904,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "cp2k_seconds": 648.947,
+          "elapsed_seconds": 667.1948933480307,
+          "energy_ha": -11163.623558326019,
+          "host_memory": {
+            "limit": 64424509440,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTAH7300",
+            "used": 54613057536
+          },
+          "mode": "gpu",
+          "name": "tune-0-gpu",
+          "peak_gpu_fraction": {
+            "GPU-25ab6ebf-2487-4719-95ee-4d60e9556e1b": 0.620849609375,
+            "GPU-31731acd-c0c8-1952-3675-02f59d880270": 0.613037109375,
+            "GPU-b598d0e2-70cb-a91b-dd01-eb4614ae0d72": 0.625732421875,
+            "GPU-d54d5a6f-f9b1-ba76-239c-a1fcea730cdd": 0.619140625
+          },
+          "ranks": 4,
+          "raw_hashes": {
+            "cp2k.log": "2d9b42575151c0110b6474e8e0b1cc330a1a2efa11ccc6c5a8f52dff534ce8c1",
+            "elapsed.txt": "23288db8163d287b60c966407dac2ed1a7753e99c4fbfd40097c773dd2d0190d",
+            "forces.xyz": "27528796b77add26f00a446c3574c8f883ecb37b2fc4437e786da6298df44656",
+            "input.inp": "0a571417801f98fbbb0693b295ea08ac492a66648facd3f8a924e6e9bd9624ab",
+            "launch.json": "f4e7eb753b32228c02450e62e0145a277308e51ee7cd1a2c59dcedcb747efedf",
+            "rank-0.json": "d9178ae69196c770d156380f200ccdc7381c3896d5774033257b935800b988c0",
+            "rank-1.json": "d39dd8ba5c38b86ed300315736afb1dc49c6f4b1f096ee2c8a6a8bd10cf388df",
+            "rank-2.json": "d3959e8e4cee196f772e04f2ad9ddfae29fe622f2959827de9142700606faa64",
+            "rank-3.json": "e7e7119bc959142a6a329ee3a23202a303a46f598080843b3098bffeb747f32c",
+            "sample.json": "70e342dbe939814cdf384dda830bf0a5730ed304ec7a508cea543cedf6101d1f"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 5461.1,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            8,
+            9,
+            9
+          ],
+          "stop": null,
+          "threads": 4,
+          "waters": 648
+        },
+        {
+          "average_physical_core_utilization": 0.3753596935054631,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 712.694
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 20,
+              "seconds": 264.675
+            },
+            "eigensolver_generalized": {
+              "calls": 20,
+              "seconds": 287.523
+            }
+          },
+          "basis_functions": 14904,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 712.694,
+          "elapsed_seconds": 717.0721967676654,
+          "energy_ha": -11163.623558326019,
+          "host_memory": {
+            "limit": 64424509440,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTAH7300",
+            "used": 54379487232
+          },
+          "mode": "gpu",
+          "name": "tune-1-gpu",
+          "peak_gpu_fraction": {
+            "GPU-25ab6ebf-2487-4719-95ee-4d60e9556e1b": 0.6195068359375,
+            "GPU-31731acd-c0c8-1952-3675-02f59d880270": 0.6116943359375,
+            "GPU-b598d0e2-70cb-a91b-dd01-eb4614ae0d72": 0.6243896484375,
+            "GPU-d54d5a6f-f9b1-ba76-239c-a1fcea730cdd": 0.6177978515625
+          },
+          "ranks": 4,
+          "raw_hashes": {
+            "cp2k.log": "c12dcdbc35fb0935632ede6a5bc1a4c1ff86b6c353806e5b1a01095c91350a96",
+            "elapsed.txt": "e762d856f89e79f6ed5d6f3dbbc8d9765364bcd5deabfbf128fff4f6f170c505",
+            "forces.xyz": "64ad542741bbaf20848e60173438156d8145d354b05c28e591a5314f02e3f5e0",
+            "input.inp": "0a571417801f98fbbb0693b295ea08ac492a66648facd3f8a924e6e9bd9624ab",
+            "launch.json": "b60a799a2985ac67bf6021f161863fbe60a000dac9ec44c4653a1cdc698f239a",
+            "rank-0.json": "1a2d7d6ed894ce78f5d54a2f7beb4af8f631acc709012edd9c1740d893f5c878",
+            "rank-1.json": "c2dab46f5c14bc8f93c486dbdfa7554480ed2b67071518e18d7ea5ce0094c3f5",
+            "rank-2.json": "d6a91dba614184c03b10a8f839f54953101f56e379f0c972998ac0dd63bdbae6",
+            "rank-3.json": "6d71bbd03302a9bdafb6b695f047a37a31226460c5b57b053e408ef01de468a7",
+            "sample.json": "b2e95c9de002bdaf35c1cd6d3d58d819daf11d00787b36d071b3b70fd1714916"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 4306.56,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            8,
+            9,
+            9
+          ],
+          "stop": null,
+          "threads": 2,
+          "waters": 648
+        },
+        {
+          "average_physical_core_utilization": 0.2568877639859794,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 975.402
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 20,
+              "seconds": 262.661
+            },
+            "eigensolver_generalized": {
+              "calls": 20,
+              "seconds": 284.055
+            }
+          },
+          "basis_functions": 14904,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 1.8189894035458565e-12,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 975.402,
+          "elapsed_seconds": 987.7733024833724,
+          "energy_ha": -11163.62355832602,
+          "host_memory": {
+            "limit": 64424509440,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTAH7300",
+            "used": 53643022336
+          },
+          "mode": "gpu",
+          "name": "tune-2-gpu",
+          "peak_gpu_fraction": {
+            "GPU-25ab6ebf-2487-4719-95ee-4d60e9556e1b": 0.6181640625,
+            "GPU-31731acd-c0c8-1952-3675-02f59d880270": 0.6109619140625,
+            "GPU-b598d0e2-70cb-a91b-dd01-eb4614ae0d72": 0.6236572265625,
+            "GPU-d54d5a6f-f9b1-ba76-239c-a1fcea730cdd": 0.616455078125
+          },
+          "ranks": 4,
+          "raw_hashes": {
+            "cp2k.log": "ede439ae830a85d8655e19d5a5811fbbdd6dfe41e549f5652d4a383e949158c2",
+            "elapsed.txt": "4797d36aec05ac3360c421d3b81dd29d0b596162ad2a53034454639d784aafb1",
+            "forces.xyz": "cb9a329b10a5d6ce3f82d5b1598f86681d873b96cd91968b6775b5160740e4db",
+            "input.inp": "0a571417801f98fbbb0693b295ea08ac492a66648facd3f8a924e6e9bd9624ab",
+            "launch.json": "e43565e4456d04f471c27d45b5e904326203fc5d0d25c47c9eb8d43d5d2ac443",
+            "rank-0.json": "e1b1566ae388ed299533572d7818f8f6e08c3352e7f3e495307d572518e0bfbe",
+            "rank-1.json": "0c4e76e094019417c9d39ce2faa7bc9591f78ac3678066f878ddaf720fae7b12",
+            "rank-2.json": "f1692ed65f0016578d8c6f8760152e7bbcf24e2ca366c92ed7d2ddfec6e7e4e4",
+            "rank-3.json": "d4ff9de66d24c8a3b3eed69b260663dce40d91ad619c9533ad281c73c339bf49",
+            "sample.json": "1bef02eecbfb95d7b8697852c093c5bc2bce85c3a1c57432646c5f74db206ca9"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 4059.95,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            8,
+            9,
+            9
+          ],
+          "stop": null,
+          "threads": 1,
+          "waters": 648
+        },
+        {
+          "average_physical_core_utilization": 0.5157927581079566,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 654.548
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 20,
+              "seconds": 268.232
+            },
+            "eigensolver_generalized": {
+              "calls": 20,
+              "seconds": 293.299
+            }
+          },
+          "basis_functions": 14904,
+          "block": 64,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 3.637978807091713e-12,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 654.548,
+          "elapsed_seconds": 662.4644678095356,
+          "energy_ha": -11163.623558326022,
+          "host_memory": {
+            "limit": 64424509440,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTAH7300",
+            "used": 54295961600
+          },
+          "mode": "gpu",
+          "name": "tune-3-gpu",
+          "peak_gpu_fraction": {
+            "GPU-25ab6ebf-2487-4719-95ee-4d60e9556e1b": 0.620849609375,
+            "GPU-31731acd-c0c8-1952-3675-02f59d880270": 0.613037109375,
+            "GPU-b598d0e2-70cb-a91b-dd01-eb4614ae0d72": 0.625732421875,
+            "GPU-d54d5a6f-f9b1-ba76-239c-a1fcea730cdd": 0.619140625
+          },
+          "ranks": 4,
+          "raw_hashes": {
+            "cp2k.log": "4f685f70375cab5f1f8e9df36bad52d8f69a34bac276da58f288b6b5bd9cde4c",
+            "elapsed.txt": "42f9056dee179994929b28d8f632684d79b261b9654683ff97fc6498b28d9c5e",
+            "forces.xyz": "982bafe6de40b65f395acb2ee7bf1645b17a6873c082de33e3bf3f4da619d3a9",
+            "input.inp": "913c0a48d9d5f0099dd5aa775fce84868038a6933b933bdae341ee7f6d3c29f0",
+            "launch.json": "08eff748654871d952eadda3d9d0417804a0eeb7688fe5d8b44fe20f224548db",
+            "rank-0.json": "157bfe922b0589694011a5ed4529b9132896d3529ea563158601cd5c0fb771d8",
+            "rank-1.json": "2560d67bf2e38da560e357d9059e5f50e24657849f34012ae746877d1c59b41f",
+            "rank-2.json": "7c6b5c1660876252c50849b23b895bd1bc3b5caaffe09a8ea94489ba8edfe61d",
+            "rank-3.json": "eb05bf82dd4edf4dc19f748c5354d75eb658276862f8b8ec240163ad9ddca12e",
+            "sample.json": "bfd2b44a13a646b6be80b0c8c5090f9610b1060ebc976b75cb795f1aeb8246a9"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 5467.11,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            8,
+            9,
+            9
+          ],
+          "stop": null,
+          "threads": 4,
+          "waters": 648
+        },
+        {
+          "average_physical_core_utilization": 0.37483233650391756,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 736.768
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 20,
+              "seconds": 267.949
+            },
+            "eigensolver_generalized": {
+              "calls": 20,
+              "seconds": 292.164
+            }
+          },
+          "basis_functions": 14904,
+          "block": 64,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 1.8189894035458565e-12,
+            "max_force_delta_ha_bohr": 1.0000000010863949e-12
+          },
+          "cp2k_seconds": 736.768,
+          "elapsed_seconds": 742.2501953672618,
+          "energy_ha": -11163.62355832602,
+          "host_memory": {
+            "limit": 64424509440,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTAH7300",
+            "used": 54390403072
+          },
+          "mode": "gpu",
+          "name": "tune-4-gpu",
+          "peak_gpu_fraction": {
+            "GPU-25ab6ebf-2487-4719-95ee-4d60e9556e1b": 0.6195068359375,
+            "GPU-31731acd-c0c8-1952-3675-02f59d880270": 0.6116943359375,
+            "GPU-b598d0e2-70cb-a91b-dd01-eb4614ae0d72": 0.6243896484375,
+            "GPU-d54d5a6f-f9b1-ba76-239c-a1fcea730cdd": 0.6177978515625
+          },
+          "ranks": 4,
+          "raw_hashes": {
+            "cp2k.log": "956b149529eb314bf8d96ab1d4ad3c696736ad7f8707c3ec824a4b8fda7621e6",
+            "elapsed.txt": "563c5d4e6e494f7622e850c2addcbc6fa9586bdbf37335cf693754d573d9fccf",
+            "forces.xyz": "30742c9eca27c4294c1c68fa1028cf54b7dacc742780f9117119a82d72e15b57",
+            "input.inp": "913c0a48d9d5f0099dd5aa775fce84868038a6933b933bdae341ee7f6d3c29f0",
+            "launch.json": "ddc1235a78d48f6fd2844ba1e6143c3879fe0ee30718489e1f6c5c0a8405419e",
+            "rank-0.json": "12be04afc4e68076623cb0deda09697e666a746853091f92708542f56130cb3b",
+            "rank-1.json": "5cbf6b0aacff92936bda7e1d362f15de283d7c6f896c156cc6b67dfcc77f3ac8",
+            "rank-2.json": "ceb2032621acbbff34dcfce708920a3fbe7072beb90ed2c60d510420ca606c3d",
+            "rank-3.json": "728d7dc24b78ad3eb38aa1681a7f88f9b696f975a6e55503d32ee13f0d7a9039",
+            "sample.json": "d3a45180be44fa5c4f519196c0162b57b923cecfa700df575ac91e0baf29f224"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 4451.51,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            8,
+            9,
+            9
+          ],
+          "stop": null,
+          "threads": 2,
+          "waters": 648
+        },
+        {
+          "average_physical_core_utilization": 0.2621590016832774,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 1009.919
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 20,
+              "seconds": 265.038
+            },
+            "eigensolver_generalized": {
+              "calls": 20,
+              "seconds": 288.193
+            }
+          },
+          "basis_functions": 14904,
+          "block": 64,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 1.8189894035458565e-12,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 1009.919,
+          "elapsed_seconds": 1018.8044213056564,
+          "energy_ha": -11163.62355832602,
+          "host_memory": {
+            "limit": 64424509440,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTAH7300",
+            "used": 53994250240
+          },
+          "mode": "gpu",
+          "name": "tune-5-gpu",
+          "peak_gpu_fraction": {
+            "GPU-25ab6ebf-2487-4719-95ee-4d60e9556e1b": 0.6181640625,
+            "GPU-31731acd-c0c8-1952-3675-02f59d880270": 0.6109619140625,
+            "GPU-b598d0e2-70cb-a91b-dd01-eb4614ae0d72": 0.6236572265625,
+            "GPU-d54d5a6f-f9b1-ba76-239c-a1fcea730cdd": 0.616455078125
+          },
+          "ranks": 4,
+          "raw_hashes": {
+            "cp2k.log": "6b55340fe572c12a245c8fa26caba44c5944a3ae8345b69a9eb5ba928a1789dd",
+            "elapsed.txt": "98b5dce14a7ff0cba2bd2441b0e25ca4eb98f396d35b214f4a8bad6259f3e4dd",
+            "forces.xyz": "7993dc8999d8ee122af9e96a90cf5de7cba6ef0412da1ca37ae3ea2bb8763322",
+            "input.inp": "913c0a48d9d5f0099dd5aa775fce84868038a6933b933bdae341ee7f6d3c29f0",
+            "launch.json": "c78c4e8b8e8e3d9035edb3e7725784bc9e763802b4d2b6ab13b08e8360f2397e",
+            "rank-0.json": "1e096a8e4a3621ed27d4314e8d50bd153f92cd073c6d40b463253d097795ea6c",
+            "rank-1.json": "a9f49152942b255eb60b16ae4f2eccf312a0e18d3de0509fd79142bf4c5b687a",
+            "rank-2.json": "74dae4c50bff2532389994744183d04ee4000aa7686ba348e8624daa1b756155",
+            "rank-3.json": "7d5bc53c296bf04ff1bc2a5c5cb9d026a7af096fac5ae095b3f0242b791e5f19",
+            "sample.json": "9370fa33e9eec80e36660164c686ea7e13ca2f7007b20535f304655c1d5a1be5"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 4273.42,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            8,
+            9,
+            9
+          ],
+          "stop": null,
+          "threads": 1,
+          "waters": 648
+        }
+      ],
+      "gpus": 4,
+      "job": "1882313",
+      "latest_case": "tune-6-cpu",
+      "latest_log_tail": "ment ::            0.110349550431\n\n Orbital energies  State     L     Occupation   Energy[a.u.]          Energy[eV]\n\n                       1     0          1.000      -0.076318           -2.076708\n\n\n Total Electron Density at R=0:                                         0.425022\n Re-scaling the density matrix to get the right number of electrons\n                  # Electrons              Trace(P)               Scaling factor\n                         5184              5184.000                        1.000\n\n Number of electrons:                                                       5184\n Number of occupied orbitals:                                               2592\n Number of molecular orbitals:                                              2592\n\n Number of orbital functions:                                              14904\n Number of independent orbital functions:                                  14904\n\n\n SCF WAVEFUNCTION OPTIMIZATION\n\n  Step     Update method      Time    Convergence         Total energy    Change\n  ------------------------------------------------------------------------------\n     1 P_Mix/Diag. 0.40E+00  291.0     0.68181032    -11002.9966396322 -1.10E+04\n     2 P_Mix/Diag. 0.40E+00  291.6     0.39979724    -11068.1991264775 -6.52E+01\n     3 P_Mix/Diag. 0.40E+00  296.2     0.24840582    -11106.7562655899 -3.86E+01\n     4 P_Mix/Diag. 0.40E+00  293.3     0.15276302    -11129.5938698322 -2.28E+01\n     5 P_Mix/Diag. 0.40E+00  288.6     0.09348095    -11143.2261664168 -1.36E+01\n     6 DIIS/Diag.  0.33E-02  303.8     0.05790335    -11151.3893073829 -8.16E+00\n",
+      "partition": "16V100",
+      "request": {
+        "calibration": {
+          "path": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g4-e",
+          "reason": "all_gpus_in_target",
+          "sha256": "0c5d972b69510501e2b2316fa1900d0700d90620b9723e5eef5377195e403d36"
+        },
+        "case_seconds": 7200,
+        "cpu_acceptance": {
+          "path": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-smoke-b/results/smoke.json",
+          "sha256": "d55c4a3b36b3ffe5bf4804f90d65faad7d3a54bc0bab68b5f5bf0ec96a1f506d"
+        },
+        "cpu_binary": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-16v100-a/install/bin/cp2k.psmp",
+        "cpu_binary_sha256": "334927fba16531e479836fabd940b6d7844ea39fba8f883aabb8d4d71e8dd840",
+        "gpu_binary": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/bin/cp2k.psmp",
+        "gpu_binary_sha256": "7bc5d0f8afcba6e08e90800fd702908d088caae2ccb4164662fbbd029db8ca33",
+        "gpus": 4,
+        "install_receipt_sha256": "2fe5555f35a585018b4dd70f99181413a5c2037c628bf03915cc1d118f590f39",
+        "partition": "16V100",
+        "physical_cores": 16,
+        "probes": 6,
+        "shape": [
+          8,
+          9,
+          9
+        ],
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "stage": "compare"
+      },
+      "request_sha256": "928dd46bd8a02300b4db2395b5b3a5fab57119657b903a6becc9542e18fcdd86",
+      "slurm_log_tail": "START tune-0-gpu: 648 waters, 4 MPI x 4 OMP, gpu\nFINISH tune-0-gpu: rc=0, stop=None, GPU fractions=[0.619140625, 0.613037109375, 0.625732421875, 0.620849609375]\nSTART tune-1-gpu: 648 waters, 4 MPI x 2 OMP, gpu\nFINISH tune-1-gpu: rc=0, stop=None, GPU fractions=[0.6177978515625, 0.6116943359375, 0.6243896484375, 0.6195068359375]\nSTART tune-2-gpu: 648 waters, 4 MPI x 1 OMP, gpu\nFINISH tune-2-gpu: rc=0, stop=None, GPU fractions=[0.616455078125, 0.6109619140625, 0.6236572265625, 0.6181640625]\nSTART tune-3-gpu: 648 waters, 4 MPI x 4 OMP, gpu\nFINISH tune-3-gpu: rc=0, stop=None, GPU fractions=[0.619140625, 0.613037109375, 0.625732421875, 0.620849609375]\nSTART tune-4-gpu: 648 waters, 4 MPI x 2 OMP, gpu\nFINISH tune-4-gpu: rc=0, stop=None, GPU fractions=[0.6177978515625, 0.6116943359375, 0.6243896484375, 0.6195068359375]\nSTART tune-5-gpu: 648 waters, 4 MPI x 1 OMP, gpu\nFINISH tune-5-gpu: rc=0, stop=None, GPU fractions=[0.616455078125, 0.6109619140625, 0.6236572265625, 0.6181640625]\nSTART tune-6-cpu: 648 waters, 4 MPI x 4 OMP, cpu\n"
+    },
+    {
+      "calibration": {
+        "performance_result": false,
+        "probes": [
+          {
+            "average_physical_core_utilization": 0.41321950719140654,
+            "backend_timers": {
+              "CP2K": {
+                "calls": 1,
+                "seconds": 142.428
+              },
+              "cp_fm_general_cusolver": {
+                "calls": 3,
+                "seconds": 104.128
+              },
+              "eigensolver_generalized": {
+                "calls": 3,
+                "seconds": 105.896
+              }
+            },
+            "basis_functions": 23000,
+            "block": 32,
+            "calibration": true,
+            "elapsed_seconds": 151.30578037071973,
+            "host_memory": {
+              "limit": 257698037760,
+              "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CSWBQV00",
+              "used": 113453264896
+            },
+            "mode": "gpu",
+            "name": "calibration-0",
+            "peak_gpu_fraction": {
+              "GPU-0ec4c0d2-abf6-0eee-2b5c-afc47da735bb": 0.3878173828125,
+              "GPU-0ef83cb0-57aa-2e4e-4f74-5c227b3f0228": 0.40087890625,
+              "GPU-1baacd6e-342c-c388-9ac8-198e46b28c03": 0.396240234375,
+              "GPU-2214a982-51d3-140e-19da-864c2062ca80": 0.391357421875,
+              "GPU-3a56f154-5609-25ac-8ff8-6f791e580af1": 0.3751220703125,
+              "GPU-4923ec61-4ce1-42bc-28ca-cb10038de381": 0.387451171875,
+              "GPU-4b1f7f11-1e44-4aa9-bbf9-91bf176f24dc": 0.3907470703125,
+              "GPU-5227d361-5285-f9fa-b237-2e0b51846646": 0.3778076171875,
+              "GPU-69551d63-b87e-eb62-8df8-1587a1cb7560": 0.4019775390625,
+              "GPU-71a3916b-c161-98f4-4d7b-a66dd7233533": 0.4063720703125,
+              "GPU-7a663b0d-22c5-a777-2927-e7f3de42f16a": 0.3984375,
+              "GPU-91165345-b1c7-bf2a-b62d-2fdfa7540b7a": 0.4068603515625,
+              "GPU-99cefda4-8371-7d96-b6e4-e04dd65ee756": 0.3797607421875,
+              "GPU-aacc27a0-31f3-ff35-23e5-1370e2864ae4": 0.400390625,
+              "GPU-d15a739e-c58e-f3f9-4732-ad3b7fc96ad7": 0.3800048828125,
+              "GPU-e1922087-26f7-3268-33ce-3c24f438d9f0": 0.4058837890625
+            },
+            "ranks": 16,
+            "returncode": 0,
+            "sampled_cpu_seconds": 4001.44,
+            "scf_steps": [],
+            "science_accepted": false,
+            "shape": [
+              10,
+              10,
+              10
+            ],
+            "stop": null,
+            "threads": 4,
+            "waters": 1000
+          },
+          {
+            "average_physical_core_utilization": 0.40300091517672393,
+            "backend_timers": {
+              "CP2K": {
+                "calls": 1,
+                "seconds": 291.868
+              },
+              "cp_fm_general_cusolver": {
+                "calls": 3,
+                "seconds": 131.74
+              },
+              "eigensolver_generalized": {
+                "calls": 3,
+                "seconds": 134.29
+              }
+            },
+            "basis_functions": 30360,
+            "block": 32,
+            "calibration": true,
+            "elapsed_seconds": 301.36407989729196,
+            "host_memory": {
+              "limit": 257698037760,
+              "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CSWBQV00",
+              "used": 164691234816
+            },
+            "mode": "gpu",
+            "name": "calibration-1",
+            "peak_gpu_fraction": {
+              "GPU-0ec4c0d2-abf6-0eee-2b5c-afc47da735bb": 0.507568359375,
+              "GPU-0ef83cb0-57aa-2e4e-4f74-5c227b3f0228": 0.515869140625,
+              "GPU-1baacd6e-342c-c388-9ac8-198e46b28c03": 0.5089111328125,
+              "GPU-2214a982-51d3-140e-19da-864c2062ca80": 0.5189208984375,
+              "GPU-3a56f154-5609-25ac-8ff8-6f791e580af1": 0.502197265625,
+              "GPU-4923ec61-4ce1-42bc-28ca-cb10038de381": 0.5166015625,
+              "GPU-4b1f7f11-1e44-4aa9-bbf9-91bf176f24dc": 0.5181884765625,
+              "GPU-5227d361-5285-f9fa-b237-2e0b51846646": 0.5159912109375,
+              "GPU-69551d63-b87e-eb62-8df8-1587a1cb7560": 0.50439453125,
+              "GPU-71a3916b-c161-98f4-4d7b-a66dd7233533": 0.5135498046875,
+              "GPU-7a663b0d-22c5-a777-2927-e7f3de42f16a": 0.505615234375,
+              "GPU-91165345-b1c7-bf2a-b62d-2fdfa7540b7a": 0.5115966796875,
+              "GPU-99cefda4-8371-7d96-b6e4-e04dd65ee756": 0.5115966796875,
+              "GPU-aacc27a0-31f3-ff35-23e5-1370e2864ae4": 0.518310546875,
+              "GPU-d15a739e-c58e-f3f9-4732-ad3b7fc96ad7": 0.51953125,
+              "GPU-e1922087-26f7-3268-33ce-3c24f438d9f0": 0.509033203125
+            },
+            "ranks": 16,
+            "returncode": 0,
+            "sampled_cpu_seconds": 7772.8,
+            "scf_steps": [],
+            "science_accepted": false,
+            "shape": [
+              10,
+              11,
+              12
+            ],
+            "stop": null,
+            "threads": 4,
+            "waters": 1320
+          },
+          {
+            "average_physical_core_utilization": 0.5005547457234497,
+            "backend_timers": {
+              "CP2K": {
+                "calls": 1,
+                "seconds": 238.135
+              },
+              "cp_fm_general_cusolver": {
+                "calls": 3,
+                "seconds": 150.922
+              },
+              "eigensolver_generalized": {
+                "calls": 3,
+                "seconds": 153.81
+              }
+            },
+            "basis_functions": 33396,
+            "block": 32,
+            "calibration": true,
+            "elapsed_seconds": 247.78227518498898,
+            "host_memory": {
+              "limit": 257698037760,
+              "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CSWBQV00",
+              "used": 189468684288
+            },
+            "mode": "gpu",
+            "name": "calibration-2",
+            "peak_gpu_fraction": {
+              "GPU-0ec4c0d2-abf6-0eee-2b5c-afc47da735bb": 0.6749267578125,
+              "GPU-0ef83cb0-57aa-2e4e-4f74-5c227b3f0228": 0.6842041015625,
+              "GPU-1baacd6e-342c-c388-9ac8-198e46b28c03": 0.6768798828125,
+              "GPU-2214a982-51d3-140e-19da-864c2062ca80": 0.6875,
+              "GPU-3a56f154-5609-25ac-8ff8-6f791e580af1": 0.6702880859375,
+              "GPU-4923ec61-4ce1-42bc-28ca-cb10038de381": 0.6859130859375,
+              "GPU-4b1f7f11-1e44-4aa9-bbf9-91bf176f24dc": 0.6871337890625,
+              "GPU-5227d361-5285-f9fa-b237-2e0b51846646": 0.6839599609375,
+              "GPU-69551d63-b87e-eb62-8df8-1587a1cb7560": 0.6724853515625,
+              "GPU-71a3916b-c161-98f4-4d7b-a66dd7233533": 0.681884765625,
+              "GPU-7a663b0d-22c5-a777-2927-e7f3de42f16a": 0.6732177734375,
+              "GPU-91165345-b1c7-bf2a-b62d-2fdfa7540b7a": 0.679443359375,
+              "GPU-99cefda4-8371-7d96-b6e4-e04dd65ee756": 0.679443359375,
+              "GPU-aacc27a0-31f3-ff35-23e5-1370e2864ae4": 0.6864013671875,
+              "GPU-d15a739e-c58e-f3f9-4732-ad3b7fc96ad7": 0.6881103515625,
+              "GPU-e1922087-26f7-3268-33ce-3c24f438d9f0": 0.677001953125
+            },
+            "ranks": 16,
+            "returncode": 0,
+            "sampled_cpu_seconds": 7937.83,
+            "scf_steps": [],
+            "science_accepted": false,
+            "shape": [
+              11,
+              11,
+              12
+            ],
+            "stop": null,
+            "threads": 4,
+            "waters": 1452
+          }
+        ],
+        "reason": "all_gpus_in_target",
+        "scope": "3 SCF steps, memory calibration only; full-run peak must be checked again",
+        "selected": {
+          "average_physical_core_utilization": 0.5005547457234497,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 238.135
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 3,
+              "seconds": 150.922
+            },
+            "eigensolver_generalized": {
+              "calls": 3,
+              "seconds": 153.81
+            }
+          },
+          "basis_functions": 33396,
+          "block": 32,
+          "calibration": true,
+          "elapsed_seconds": 247.78227518498898,
+          "host_memory": {
+            "limit": 257698037760,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CSWBQV00",
+            "used": 189468684288
+          },
+          "mode": "gpu",
+          "name": "calibration-2",
+          "peak_gpu_fraction": {
+            "GPU-0ec4c0d2-abf6-0eee-2b5c-afc47da735bb": 0.6749267578125,
+            "GPU-0ef83cb0-57aa-2e4e-4f74-5c227b3f0228": 0.6842041015625,
+            "GPU-1baacd6e-342c-c388-9ac8-198e46b28c03": 0.6768798828125,
+            "GPU-2214a982-51d3-140e-19da-864c2062ca80": 0.6875,
+            "GPU-3a56f154-5609-25ac-8ff8-6f791e580af1": 0.6702880859375,
+            "GPU-4923ec61-4ce1-42bc-28ca-cb10038de381": 0.6859130859375,
+            "GPU-4b1f7f11-1e44-4aa9-bbf9-91bf176f24dc": 0.6871337890625,
+            "GPU-5227d361-5285-f9fa-b237-2e0b51846646": 0.6839599609375,
+            "GPU-69551d63-b87e-eb62-8df8-1587a1cb7560": 0.6724853515625,
+            "GPU-71a3916b-c161-98f4-4d7b-a66dd7233533": 0.681884765625,
+            "GPU-7a663b0d-22c5-a777-2927-e7f3de42f16a": 0.6732177734375,
+            "GPU-91165345-b1c7-bf2a-b62d-2fdfa7540b7a": 0.679443359375,
+            "GPU-99cefda4-8371-7d96-b6e4-e04dd65ee756": 0.679443359375,
+            "GPU-aacc27a0-31f3-ff35-23e5-1370e2864ae4": 0.6864013671875,
+            "GPU-d15a739e-c58e-f3f9-4732-ad3b7fc96ad7": 0.6881103515625,
+            "GPU-e1922087-26f7-3268-33ce-3c24f438d9f0": 0.677001953125
+          },
+          "ranks": 16,
+          "returncode": 0,
+          "sampled_cpu_seconds": 7937.83,
+          "scf_steps": [],
+          "science_accepted": false,
+          "shape": [
+            11,
+            11,
+            12
+          ],
+          "stop": null,
+          "threads": 4,
+          "waters": 1452
+        },
+        "target_fraction": [
+          0.6,
+          0.75
+        ]
+      },
+      "calibration_run": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g16-e",
+      "calibration_sha256": "c202bb5ce4eb3e745da56e129d63f76ca0890743eb98508b22f1b689793cfdb9",
+      "calibration_verification": {
+        "completed_cases": 0,
+        "files": {
+          "cases/calibration-0/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/calibration-0/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/calibration-0/benchmark-RESTART.wfn": "278b8bf65c1744f86d0b58874ebd1e616f03549b90258a7d6fb0fb9cf2ae3001",
+          "cases/calibration-0/cp2k.log": "e5a3596b08c33c920ce61a592b315efd0cae9ab65a75706e9606ba794062f4d4",
+          "cases/calibration-0/elapsed.txt": "191c94d5ea8829c0e4a5936222f9d7e6d1378018e5676781f317dbd333ca3bda",
+          "cases/calibration-0/forces.xyz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "cases/calibration-0/input.inp": "6b391e2d14044198968ad6a47a06d034961846138c83130b5203cd38f11f3c8e",
+          "cases/calibration-0/launch.json": "e1d31ce70075ef5b4188c37fd42b1ceb17eb979aa9d4752c5803ea8db777fbb8",
+          "cases/calibration-0/rank-0.json": "0320f7884be25c8cc0016fb481aa50a6984fec56ef8862327a40c26ea4228467",
+          "cases/calibration-0/rank-1.json": "3de114d5f7438ba890feb21dc482e6aaf3e030d7948fb863976966d68078f026",
+          "cases/calibration-0/rank-10.json": "bb717104587e14ec304ebf34fef255aedfa4cbc90126f00b782c05e867662e6a",
+          "cases/calibration-0/rank-11.json": "14fff67fb4d4ff8caaf47da329e608fa57ad6b4d14b75e8c95331d2a6ee122da",
+          "cases/calibration-0/rank-12.json": "22de8e978e191f11b2701250cc40d071f4554c2afc8f340c18cb1f2429a42a52",
+          "cases/calibration-0/rank-13.json": "e915dea2638b68d881dcb843ff37e2e4817dafbe82104ff4ac388f1125dfbc56",
+          "cases/calibration-0/rank-14.json": "211ebec1d5d89e3f954a22a73d437268e68a700004df9b6a8fc9790127efccf9",
+          "cases/calibration-0/rank-15.json": "0d646c936c3fc64a15fb3a5dc763a03af3c169e860c08680267e10162a39197c",
+          "cases/calibration-0/rank-2.json": "36e4ce78bbb9e47d40b5f7b89fd28a5bdc78ecbc51a2b061e8289c26a93e62f8",
+          "cases/calibration-0/rank-3.json": "01d86a3a1be6781b275c2b2befa74837568232809952ce32330f237d77db3224",
+          "cases/calibration-0/rank-4.json": "09e133e71fd1cabbd4ec6979d2e34fec3d732da78c6f9414e9f8044848c39b59",
+          "cases/calibration-0/rank-5.json": "1de960585ea67c0da8567fcbe5ead1abd83aa22016be236360f9755b2d2fbb27",
+          "cases/calibration-0/rank-6.json": "6b9ba379b6ae61f9b8aafc0ac95afa86d646d4ef379700b020aa4f1906cf5133",
+          "cases/calibration-0/rank-7.json": "a602be4a1f2cacf13c14e1d1566ca0908a35c15338780adbb6e684bc9c9262cd",
+          "cases/calibration-0/rank-8.json": "8d98c3948f80c9ee656cb41b14831539565660769fb630ccb6474da26ea4016d",
+          "cases/calibration-0/rank-9.json": "56d0f59985f7084eed31fa0a2f923599ce3855d8284a9feb5cd6af42fb09ffd0",
+          "cases/calibration-0/resources.jsonl": "fc738bb75df62102bde62a6a8cbbd8fe48f8501c49c4ed3203b730ccbc746c50",
+          "cases/calibration-0/sample.json": "49f357e8de71ee70d1dec1406e574d0d63d61bd5a23128c108b4eeba4dfafaaf",
+          "cases/calibration-1/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/calibration-1/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/calibration-1/benchmark-RESTART.wfn": "ad5f7d07bc2a8c0eb4f67e30a18ff9adbe07b5fb83321d21a08e123014497df7",
+          "cases/calibration-1/cp2k.log": "27102f931aff89bc5e80897c76a9aa55da7b369d542f46970192752598c83086",
+          "cases/calibration-1/elapsed.txt": "b3d728260a50ddae754ceec55431a0a124fc7c98d45665dceee7854c32bc3683",
+          "cases/calibration-1/forces.xyz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "cases/calibration-1/input.inp": "faf7b539b66492c91e24ca95531b59fdf4c09fcd87ccd6fff38fed9555e31126",
+          "cases/calibration-1/launch.json": "c9547bc06f48fd0e2167a8f47878f098fa9b5e370061d99ec51cfa016c0e1404",
+          "cases/calibration-1/rank-0.json": "11d8a10bedf1e58bfa0f720e56ba1c473e111ed5bdeb679044f165faf9bece0e",
+          "cases/calibration-1/rank-1.json": "fcb72189b4a9420d6b60bcaadb6a54480a7cac57803fb89ff52522f785437f07",
+          "cases/calibration-1/rank-10.json": "3830796b1d7b44b5efd523a068adead374a0bad2a46c6bccc281d7ecbdc2806e",
+          "cases/calibration-1/rank-11.json": "45f7f0f7191b7eedf9075bbcfab40938efab8d94e6d9b7cb02db6cafb22c8658",
+          "cases/calibration-1/rank-12.json": "ace173db3285fe6202065b6f9e307e2c2104f023ada3d80227bee9b58ed69c37",
+          "cases/calibration-1/rank-13.json": "83f2cac9eed5aba93819ac71528476c4788fea4cef20a9b5552bdde87091ed24",
+          "cases/calibration-1/rank-14.json": "7049eb1d7a270a32b0c1669384e630f5c7289abef4af27b7e25e9ad15e618f07",
+          "cases/calibration-1/rank-15.json": "60056b0c2d4f7db308d87be0408576909dd433f954ff34afeccb4f7c1108c02e",
+          "cases/calibration-1/rank-2.json": "0a66158e188b6f3dc8d9435921019594641bb4724eb0bf8a6b8e9ecc841c2143",
+          "cases/calibration-1/rank-3.json": "856ceb4f1c32fafdaab9372d8b04cac590855fdba4b78dc8957717ff5f87b701",
+          "cases/calibration-1/rank-4.json": "034c6866278d0850888708026517dee36079d1e3cccd8dd6a21c869264bce345",
+          "cases/calibration-1/rank-5.json": "16b8a0b3191cac88e110ac82df8f07a72b1a6fc0e7e23daa1b002d167572ae05",
+          "cases/calibration-1/rank-6.json": "2bb541afd1593b412f196383dda96fbb9cd5209d982dc24b2d650aeee5928f39",
+          "cases/calibration-1/rank-7.json": "c789139f70cc215b8f76c13f3531d51d09a20d3dafcea3a98d0c12f2000c6285",
+          "cases/calibration-1/rank-8.json": "eb389f11d2dca313bafbe978140dbaac1b4a4c6067bfbffecda2d1f7e5de1c4b",
+          "cases/calibration-1/rank-9.json": "ef6bd47bbda933809ae1f95cdf17298c40064ad36ee97352b1d4e2b9edd2ae66",
+          "cases/calibration-1/resources.jsonl": "e6e3a97947ea401b5e1b38bb08e0d4797292c5ffc3f64d8f3a99697928a73ff9",
+          "cases/calibration-1/sample.json": "8af6b9ee446dcfe5f549261e181865e166b30e9a4dc412bfa34ead664925762a",
+          "cases/calibration-2/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/calibration-2/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/calibration-2/benchmark-RESTART.wfn": "b3188bdd5e4480ec2048a7825a7237b0814579d7c7e7ea6f1222db7d6fdab051",
+          "cases/calibration-2/cp2k.log": "d0da4b64ae6221769a35cc598fecea3ffb813d291cb40b4f6eaf0d8269af0b9f",
+          "cases/calibration-2/elapsed.txt": "f9bfb4ef53b66a4128a4843b59a6ed39c3c443522be1af93754deea2556adbec",
+          "cases/calibration-2/forces.xyz": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "cases/calibration-2/input.inp": "8cf210a2ec1b26599db8f430cb5feeeef972fb03d33e3b25a6d416aea3a1cefd",
+          "cases/calibration-2/launch.json": "bf26d55ab473df23bd23df0874d4028871d8ab1a7344acccfd1802a5d17c4d30",
+          "cases/calibration-2/rank-0.json": "361aad713fe543e0e5df96d9dcf54a666c9604903ba81c750174bf08797955db",
+          "cases/calibration-2/rank-1.json": "423c314d43ba3fd9b549572b26811cfc94640a6615cb4a54a79893250daa7e00",
+          "cases/calibration-2/rank-10.json": "d926fdfde4ab0560ee07c8b1c7950b148f6adaed22852a8d44f08c6dee4d7141",
+          "cases/calibration-2/rank-11.json": "d9c6aabe75329c64030178320c2a810093da9517766e03864de689734fed0e2f",
+          "cases/calibration-2/rank-12.json": "95b8d5edab45a09ad95d8414e92a510c0fa2f3af1e00276f40ea1e8f87f0cf17",
+          "cases/calibration-2/rank-13.json": "b629d4829e7e8c90f366dc8be712496b3af061bcf3ebf56ceec9cce25d33e48b",
+          "cases/calibration-2/rank-14.json": "e164ebd113e33b11cd878aa9695854b95f9f5133141ec7cf904d8772cf872360",
+          "cases/calibration-2/rank-15.json": "f60e0a4ca2e2f15ee20f08e80801ba0fe4b85b4904289ec8565a7a6d2726536d",
+          "cases/calibration-2/rank-2.json": "ac1ff27b85255457171418bba31f5eb0fdd9381c1f9acab8250b993eb30f5f64",
+          "cases/calibration-2/rank-3.json": "a4035794cb298162fb248e7c03346b91ffc5a47d053609b62a6fece6e52ffaa5",
+          "cases/calibration-2/rank-4.json": "18f7c7d2336093db6b47cae010cf33b2626750a0b679b3176d483f7bb93d07b0",
+          "cases/calibration-2/rank-5.json": "451d57d2c19e51ae111c98e38f7167b9059f264200ada13e8394cf4ce5967a09",
+          "cases/calibration-2/rank-6.json": "84a81dcae7819caa12bc91c31a5540f14bc72541a548f10b93b5c30ed11c4e4d",
+          "cases/calibration-2/rank-7.json": "3d00c19543e5a9be6c6b6bbff83ecd5c0df1a2372a3cdc7b6afaf515f77e9e6c",
+          "cases/calibration-2/rank-8.json": "6e06c8b745233bcc0eea85fb91e05a2232f001a9ae2e9258da3f89ef58d54b30",
+          "cases/calibration-2/rank-9.json": "c3437af1c0f39172e563042bf0cc790ac1d05a6ba6e9a9c5d5561b02ef288921",
+          "cases/calibration-2/resources.jsonl": "3bf1a1bb388eaa0fb866832a99cc87cd1fbd048ed70edc1dd08fe2b2613b09b5",
+          "cases/calibration-2/sample.json": "2f6135df7456c3d2586aae0b0d8255762af0adc48c3bab7c4fbcf61fc191e860",
+          "fixtures/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "fixtures/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "results/accounting.txt": "00a01096ce38fabd76abcca1fcb41f5ff5bd8987fd0f72c7ea539e32da5521ff",
+          "results/allocation.txt": "0544864ce58f9e0bd473d4367ea7c263bb3d51cca77b48cb013adfd3088537e8",
+          "results/calibration.json": "c202bb5ce4eb3e745da56e129d63f76ca0890743eb98508b22f1b689793cfdb9",
+          "results/devices.json": "b32215b8b3a850c1d3deba744b15394fd195c9d6b54e319504693b2d7e461cd9",
+          "results/environment.json": "9f8f513a69859b3ac1d1a5030a91ebf81009ffe75e9590b63a95c552af6906e3",
+          "results/gpu-topology.txt": "b980cf5f5acfcecb3ab3ba338af432113efb3be33345b1caebdace419aad5179",
+          "results/lscpu.txt": "c580f35ec37149b7b2090ffb403d049087025c152075cc8b4d23ab699be96e7c",
+          "results/modules.txt": "6057b203159ae7f51ba5d5a20445426d2c3bed351e5206623e5d6f9b687df22e"
+        },
+        "job": "1882207",
+        "request_sha256": "0e6ac1ccc989356484f8ddd06bad2aa791bce33db270cd7eaaa9c49ef4c585a1",
+        "stage": "calibrate",
+        "verified": true
+      },
+      "comparison_run": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare-r2",
+      "completed_pairs": [],
+      "completed_tuning": [],
+      "gpus": 16,
+      "job": "1883254",
+      "latest_case": "tune-0-gpu",
+      "latest_log_tail": "ergy ::           -0.314218627334\n                                     Coulomb Energy ::            0.395050676003\n                       Total Pseudopotential Energy ::           -1.238482237174\n                       Local Pseudopotential Energy ::           -1.238482237174\n                    Nonlocal Pseudopotential Energy ::            0.000000000000\n                                        Confinement ::            0.110349550431\n\n Orbital energies  State     L     Occupation   Energy[a.u.]          Energy[eV]\n\n                       1     0          1.000      -0.076318           -2.076708\n\n\n Total Electron Density at R=0:                                         0.425022\n Re-scaling the density matrix to get the right number of electrons\n                  # Electrons              Trace(P)               Scaling factor\n                        11616             11616.000                        1.000\n\n Number of electrons:                                                      11616\n Number of occupied orbitals:                                               5808\n Number of molecular orbitals:                                              5808\n\n Number of orbital functions:                                              33396\n Number of independent orbital functions:                                  33396\n\n\n SCF WAVEFUNCTION OPTIMIZATION\n\n  Step     Update method      Time    Convergence         Total energy    Change\n  ------------------------------------------------------------------------------\n     1 P_Mix/Diag. 0.40E+00   60.0     0.68183213    -24654.8595612869 -2.47E+04\n",
+      "partition": "16V100",
+      "request": {
+        "calibration": {
+          "path": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g16-e",
+          "reason": "all_gpus_in_target",
+          "sha256": "c202bb5ce4eb3e745da56e129d63f76ca0890743eb98508b22f1b689793cfdb9"
+        },
+        "case_seconds": 21600,
+        "cpu_acceptance": {
+          "path": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-smoke-b/results/smoke.json",
+          "sha256": "d55c4a3b36b3ffe5bf4804f90d65faad7d3a54bc0bab68b5f5bf0ec96a1f506d"
+        },
+        "cpu_binary": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-16v100-a/install/bin/cp2k.psmp",
+        "cpu_binary_sha256": "334927fba16531e479836fabd940b6d7844ea39fba8f883aabb8d4d71e8dd840",
+        "full_calibration": false,
+        "gpu_binary": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/bin/cp2k.psmp",
+        "gpu_binary_sha256": "7bc5d0f8afcba6e08e90800fd702908d088caae2ccb4164662fbbd029db8ca33",
+        "gpus": 16,
+        "install_receipt_sha256": "2fe5555f35a585018b4dd70f99181413a5c2037c628bf03915cc1d118f590f39",
+        "partition": "16V100",
+        "physical_cores": 64,
+        "probes": 6,
+        "shape": [
+          11,
+          11,
+          12
+        ],
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "stage": "compare"
+      },
+      "request_sha256": "d7c6ad9c7d653b6c3c61f999ee6b8e4a1daa6fa2985f287f2409075562507e87",
+      "slurm_log_tail": "START tune-0-gpu: 1452 waters, 16 MPI x 4 OMP, gpu\n"
+    },
+    {
+      "calibration": {
+        "full_calibration": true,
+        "limiting_resource": "host_memory_limit",
+        "performance_result": false,
+        "probes": [
+          {
+            "average_physical_core_utilization": 0.23983137426569162,
+            "backend_timers": {},
+            "basis_functions": 9936,
+            "block": 32,
+            "calibration": false,
+            "elapsed_seconds": 131.7592416619882,
+            "host_memory": {
+              "limit": 23622320128,
+              "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CWBKHM00",
+              "used": 22892933120
+            },
+            "mode": "gpu",
+            "name": "calibration-0",
+            "peak_gpu_fraction": {
+              "GPU-53505058-ac4c-ccc0-f75f-21fd8b4fd6bf": 0.603759765625
+            },
+            "ranks": 1,
+            "returncode": 1,
+            "sampled_cpu_seconds": 126.4,
+            "science_accepted": false,
+            "shape": [
+              6,
+              8,
+              9
+            ],
+            "stop": "host_memory_limit",
+            "threads": 4,
+            "waters": 432
+          },
+          {
+            "average_physical_core_utilization": 0.3792665880977055,
+            "backend_timers": {
+              "CP2K": {
+                "calls": 1,
+                "seconds": 305.56
+              },
+              "cp_fm_general_cusolver": {
+                "calls": 20,
+                "seconds": 90.443
+              },
+              "eigensolver_generalized": {
+                "calls": 20,
+                "seconds": 106.57
+              }
+            },
+            "basis_functions": 9016,
+            "block": 32,
+            "calibration": false,
+            "cp2k_seconds": 305.56,
+            "elapsed_seconds": 306.5653649671003,
+            "energy_ha": -6753.293436371946,
+            "host_memory": {
+              "limit": 23622320128,
+              "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CWBKHM00",
+              "used": 19702419456
+            },
+            "mode": "gpu",
+            "name": "calibration-1",
+            "peak_gpu_fraction": {
+              "GPU-53505058-ac4c-ccc0-f75f-21fd8b4fd6bf": 0.54986572265625
+            },
+            "ranks": 1,
+            "returncode": 0,
+            "sampled_cpu_seconds": 465.08,
+            "scf_steps": [
+              20
+            ],
+            "science_accepted": true,
+            "shape": [
+              7,
+              7,
+              8
+            ],
+            "stop": null,
+            "threads": 4,
+            "waters": 392
+          }
+        ],
+        "reason": "discrete_size_or_memory_limit",
+        "scope": "complete ENERGY_FORCE memory calibration",
+        "selected": {
+          "average_physical_core_utilization": 0.3792665880977055,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 305.56
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 20,
+              "seconds": 90.443
+            },
+            "eigensolver_generalized": {
+              "calls": 20,
+              "seconds": 106.57
+            }
+          },
+          "basis_functions": 9016,
+          "block": 32,
+          "calibration": false,
+          "cp2k_seconds": 305.56,
+          "elapsed_seconds": 306.5653649671003,
+          "energy_ha": -6753.293436371946,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CWBKHM00",
+            "used": 19702419456
+          },
+          "mode": "gpu",
+          "name": "calibration-1",
+          "peak_gpu_fraction": {
+            "GPU-53505058-ac4c-ccc0-f75f-21fd8b4fd6bf": 0.54986572265625
+          },
+          "ranks": 1,
+          "returncode": 0,
+          "sampled_cpu_seconds": 465.08,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            7,
+            7,
+            8
+          ],
+          "stop": null,
+          "threads": 4,
+          "waters": 392
+        },
+        "target_fraction": [
+          0.6,
+          0.75
+        ]
+      },
+      "calibration_run": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g1-full-a",
+      "calibration_sha256": "9d4d18aeb2d14fc9a0055b4a65f5c7affb3aeae10d326edaa0c2fdddf4aa47d2",
+      "calibration_verification": {
+        "completed_cases": 1,
+        "files": {
+          "cases/calibration-0/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/calibration-0/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/calibration-0/cp2k.log": "adc79dab98e5eb1c0a4afaee60ab35de5afc141da97bc6d08395317929a9a0b8",
+          "cases/calibration-0/elapsed.txt": "a4dd2470f07edb962b94016f3a209081d517c1d6c2367a4371ae2673ad5ae307",
+          "cases/calibration-0/input.inp": "25f2d3317f2064eb4b624a57e3ae80e5ccf90021123bfcf5114ddad4a10b76a6",
+          "cases/calibration-0/launch.json": "a66915f4ceda17768e658b6f48871c25ebf970fd734b8fc3d1058c0c069a77cf",
+          "cases/calibration-0/rank-0.json": "0ec46256b7a979992606a25cbf7d58259cc3219bea34d54839ed78cd33f6795f",
+          "cases/calibration-0/resources.jsonl": "60c9c5324ed1aac4aaf592163270962cd0159ad2b0e2eaf1f4bd75d1a89eec94",
+          "cases/calibration-0/sample.json": "843e3dde227c83d7f2eaf11b0fece7bed2ec5962bcaadca77c1f4e128131d854",
+          "cases/calibration-0/stopped-ranks.json": "8c0c37700b1f4263b1afafca4fa502214039814cc66a2be7282560e695beb8c4",
+          "cases/calibration-1/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/calibration-1/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/calibration-1/cp2k.log": "78c68a2df11d376a59b014fefa525372e674f273671f038d034e78751081eb65",
+          "cases/calibration-1/elapsed.txt": "ca164896241d8910b22b61a99fbe4951168dfef13770ea2852696375baa4da7d",
+          "cases/calibration-1/forces.xyz": "01db929b19d52531bf1b9d09c873f04d2348cfb57ae5bc8626f7e4b1248439e7",
+          "cases/calibration-1/input.inp": "68e87e8e95afeeef4a42154c020e43ec2e629f21f0a533521a89bc937739daa9",
+          "cases/calibration-1/launch.json": "a26960b6c6bf71256c739582a3e6439aa8670c65b3bde091869e9348589050b7",
+          "cases/calibration-1/rank-0.json": "4a18cd283b56d57be4a7de1b75c7d6011be7ec54b6c497f51687039db283407e",
+          "cases/calibration-1/resources.jsonl": "11e9ba19901301879d12848d8177beef1aa16042c9e22f1e900bf13f575e5230",
+          "cases/calibration-1/sample.json": "2ddb5e40ee32ec63336ad3787ed7943d2195a7e5b4192daa06152708e7e3478a",
+          "fixtures/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "fixtures/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "results/accounting.txt": "ced9799f609293949f545d8a650cc4b8754b7746872ebfed5b41c5b39cdc480e",
+          "results/allocation.txt": "42b20cc678110ed628f64fc707bc0512f9e5bf9530ced7ba69b4cd43c93ac39b",
+          "results/calibration.json": "9d4d18aeb2d14fc9a0055b4a65f5c7affb3aeae10d326edaa0c2fdddf4aa47d2",
+          "results/devices.json": "1fe9dae96657a236c2fa073cb26b7796958856cb318565f5e356572422543454",
+          "results/environment.json": "cd9e81cf69274322855ab3110407df725ca1e10864308fc9897c7d56d06e5a23",
+          "results/gpu-topology.txt": "083c74568f801470e057968ed1a8ef09376559f6000be16c6d6708f3a983fd2d",
+          "results/lscpu.txt": "91314767b215a5bfb2d1ea2c01be1d31e71af3e92fde854bdc29c77ef28a0422",
+          "results/modules.txt": "6057b203159ae7f51ba5d5a20445426d2c3bed351e5206623e5d6f9b687df22e"
+        },
+        "job": "1882535",
+        "request_sha256": "37a3d91ab3a8d8e34184ea03e903fbbbd89ef8d886adfaf1504fb46ab41651f6",
+        "stage": "calibrate",
+        "verified": true
+      },
+      "comparison_run": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r2",
+      "completed_pairs": [],
+      "completed_tuning": [
+        {
+          "average_physical_core_utilization": 0.4356019843533157,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 300.27
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 20,
+              "seconds": 90.506
+            },
+            "eigensolver_generalized": {
+              "calls": 20,
+              "seconds": 108.895
+            }
+          },
+          "basis_functions": 9016,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "cp2k_seconds": 300.27,
+          "elapsed_seconds": 301.4621253274381,
+          "energy_ha": -6753.293436371946,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+            "used": 19844292608
+          },
+          "mode": "gpu",
+          "name": "tune-0-gpu",
+          "peak_gpu_fraction": {
+            "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.54986572265625
+          },
+          "ranks": 1,
+          "raw_hashes": {
+            "cp2k.log": "78e1defe4adb885600c12c1b0de208dff55895f6915e251be6ab175dc31bd7cd",
+            "elapsed.txt": "947adc429ae611dd4ca83044413c3ddf8bf228dab4f92dec3ab5babbf6538fc2",
+            "forces.xyz": "a1d9f58623430bea79af114807926c295f6bee1864da4386e85602cf35d3332f",
+            "input.inp": "68e87e8e95afeeef4a42154c020e43ec2e629f21f0a533521a89bc937739daa9",
+            "launch.json": "3e8c1c8123418211aa134ffffd6335c265479164b5dffa7fc7cd6ce0fc1fa372",
+            "rank-0.json": "6d35d002b26619851669a99eaa833db6644c8adb4bd4c5549a78ea16b146ce1a",
+            "sample.json": "907299bcb8ecba0a39e986b174afa1eb857f10fd46de90b7a9c15e12fd6df67f"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 525.27,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            7,
+            7,
+            8
+          ],
+          "stop": null,
+          "threads": 4,
+          "waters": 392
+        },
+        {
+          "average_physical_core_utilization": 0.2900487150661344,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 377.036
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 20,
+              "seconds": 90.519
+            },
+            "eigensolver_generalized": {
+              "calls": 20,
+              "seconds": 107.899
+            }
+          },
+          "basis_functions": 9016,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 9.999999960041972e-13
+          },
+          "cp2k_seconds": 377.036,
+          "elapsed_seconds": 378.76396030560136,
+          "energy_ha": -6753.293436371946,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+            "used": 19772420096
+          },
+          "mode": "gpu",
+          "name": "tune-1-gpu",
+          "peak_gpu_fraction": {
+            "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.5491943359375
+          },
+          "ranks": 1,
+          "raw_hashes": {
+            "cp2k.log": "a878fbf6a75a6bf4832426de9658fbbdd516574471f68a412c2558a538dd05f5",
+            "elapsed.txt": "851e0257e8e8b1cd0f28ac880b477959266939afd4738b244b89ccaf9b1dc96e",
+            "forces.xyz": "85687d40fa262673b790dd97a57157b8e6577b034f5c5f478d04c16850c27ad2",
+            "input.inp": "68e87e8e95afeeef4a42154c020e43ec2e629f21f0a533521a89bc937739daa9",
+            "launch.json": "e1d583e2c236f10d58c30652caa854db600b313ab93e48cfd345c5032161995e",
+            "rank-0.json": "f5511086d8a58503248d32ba059cf435507d0c8e650abe7d555cc8aa5fecb9b3",
+            "sample.json": "f4e0457f12267c8253b518039a1a5b58167f1fd21bb491990c2fd0a348c66ab0"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 439.44,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            7,
+            7,
+            8
+          ],
+          "stop": null,
+          "threads": 2,
+          "waters": 392
+        },
+        {
+          "average_physical_core_utilization": 0.14893951557486484,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 623.527
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 20,
+              "seconds": 90.509
+            },
+            "eigensolver_generalized": {
+              "calls": 20,
+              "seconds": 108.383
+            }
+          },
+          "basis_functions": 9016,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 623.527,
+          "elapsed_seconds": 671.5477730268613,
+          "energy_ha": -6753.293436371946,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+            "used": 19624689664
+          },
+          "mode": "gpu",
+          "name": "tune-2-gpu",
+          "peak_gpu_fraction": {
+            "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.54876708984375
+          },
+          "ranks": 1,
+          "raw_hashes": {
+            "cp2k.log": "faac07176fbc8469d3f62056810b0f3d29a2032c192a605f18be31ce16a4673e",
+            "elapsed.txt": "6327418f9db9de1606cb5db0b7675cbd19ddc09b1c2fdd03be5f7ce935309b3b",
+            "forces.xyz": "daf716ebf68a51c811ba8b474511f869d7f3ce94780b2d156d82ddabbb5222c0",
+            "input.inp": "68e87e8e95afeeef4a42154c020e43ec2e629f21f0a533521a89bc937739daa9",
+            "launch.json": "24d5f6ae7da84f14b5d705fc0d764b91e18c9a39f6b3eeb62fbb2200af2ff7d8",
+            "rank-0.json": "1be26bb053dd4e77c05c1ca922608fef21155cf10ee1f4dd493536753f3fbfeb",
+            "sample.json": "7d995a186910f4f4afb5ba232fb8d253d796969576bea86cb0fc673d6093aaa7"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 400.08,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            7,
+            7,
+            8
+          ],
+          "stop": null,
+          "threads": 1,
+          "waters": 392
+        },
+        {
+          "average_physical_core_utilization": 0.3590802305084568,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 368.013
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 20,
+              "seconds": 90.534
+            },
+            "eigensolver_generalized": {
+              "calls": 20,
+              "seconds": 109.645
+            }
+          },
+          "basis_functions": 9016,
+          "block": 64,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 368.013,
+          "elapsed_seconds": 369.89644295349717,
+          "energy_ha": -6753.293436371946,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+            "used": 19201138688
+          },
+          "mode": "gpu",
+          "name": "tune-3-gpu",
+          "peak_gpu_fraction": {
+            "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.54986572265625
+          },
+          "ranks": 1,
+          "raw_hashes": {
+            "cp2k.log": "616f9b052691a3c116435d2d2fb5192f87db98436834aded390a19212a0febf9",
+            "elapsed.txt": "2317e16d03f3c1dc9394ec1e1e969df0de3b8174f51f0600498b1d9797fc1ab1",
+            "forces.xyz": "678c7a3608160eefecd7d824218fbc97d6876313212c2a8389259e451e0abff7",
+            "input.inp": "d5b3c05c6473a73fae695422a6736fe4a48748a2a31da10e1c98ee4d3fd3b3d1",
+            "launch.json": "45e71af85385ce841f4aff085e58341f2dbb3aff426ea4f696f1b6a681027f4f",
+            "rank-0.json": "2ae8635e77e64ba176507930c43ca50b25e73ea11f195f307b51516639266381",
+            "sample.json": "96f97ac4290169828f9c3e6344e3a0a9fc558dc9807d56dd7a4cd741bd0c103a"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 531.29,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            7,
+            7,
+            8
+          ],
+          "stop": null,
+          "threads": 4,
+          "waters": 392
+        },
+        {
+          "average_physical_core_utilization": 0.30550395969236227,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 358.635
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 20,
+              "seconds": 90.515
+            },
+            "eigensolver_generalized": {
+              "calls": 20,
+              "seconds": 108.461
+            }
+          },
+          "basis_functions": 9016,
+          "block": 64,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 9.999999960041972e-13
+          },
+          "cp2k_seconds": 358.635,
+          "elapsed_seconds": 360.1589979743585,
+          "energy_ha": -6753.293436371946,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+            "used": 19297755136
+          },
+          "mode": "gpu",
+          "name": "tune-4-gpu",
+          "peak_gpu_fraction": {
+            "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.5491943359375
+          },
+          "ranks": 1,
+          "raw_hashes": {
+            "cp2k.log": "9089736d363c4b25b392e1a7bd9cab440a48fdff3364d66d2c8724546e9e8449",
+            "elapsed.txt": "381e5a6244aa8e81f8b0db1638ad877128e2137896016b7f65c8814f716c1951",
+            "forces.xyz": "5c7b0c78a8e0119a610cddfc17536ead10b0a0e444274645dc81ab6f2c480b7c",
+            "input.inp": "d5b3c05c6473a73fae695422a6736fe4a48748a2a31da10e1c98ee4d3fd3b3d1",
+            "launch.json": "5c9015babf6fb70eb423832ce77cf1f03f02814cae469ecdce5ed754b97e0a0c",
+            "rank-0.json": "a37841cb046defa9976c7a1706fabd051062fd6ea1ca53ff3518d060a7ef6736",
+            "sample.json": "1877988073085ad355eebb85fee3d83ad3b1b371a78587cbfcea9e44a2799970"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 440.12,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            7,
+            7,
+            8
+          ],
+          "stop": null,
+          "threads": 2,
+          "waters": 392
+        },
+        {
+          "average_physical_core_utilization": 0.2391360954577466,
+          "backend_timers": {
+            "CP2K": {
+              "calls": 1,
+              "seconds": 425.722
+            },
+            "cp_fm_general_cusolver": {
+              "calls": 20,
+              "seconds": 90.505
+            },
+            "eigensolver_generalized": {
+              "calls": 20,
+              "seconds": 109.717
+            }
+          },
+          "basis_functions": 9016,
+          "block": 64,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 425.722,
+          "elapsed_seconds": 427.59124173317105,
+          "energy_ha": -6753.293436371946,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00/step_batch/user",
+            "used": 19062988800
+          },
+          "mode": "gpu",
+          "name": "tune-5-gpu",
+          "peak_gpu_fraction": {
+            "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.54876708984375
+          },
+          "ranks": 1,
+          "raw_hashes": {
+            "cp2k.log": "da6f2cf17a96cfd682ce3dc561bae18c7f32d70a12fa4927f59a3180946cc4f6",
+            "elapsed.txt": "0678f17fbbbb5b1a6e263c5cfbf0122cebf5f1c92a233f4534f6c2031c7923d2",
+            "forces.xyz": "9f78599c70137d0e6d170a1ee4070053d063de366a8923d52351682520988414",
+            "input.inp": "d5b3c05c6473a73fae695422a6736fe4a48748a2a31da10e1c98ee4d3fd3b3d1",
+            "launch.json": "66e04a1c6fd9b4dd4a48d9b64ed0264bd9aaa66cecac42813b449406dcc91ba1",
+            "rank-0.json": "be5f0739b7baff4306072443fe57c76132b5119c4df9f8596dc59c50b318c875",
+            "sample.json": "6ff8f2686c325c47744cbad1e5ffc2129852e51c5f523a48a573f0a9065ba78d"
+          },
+          "returncode": 0,
+          "sampled_cpu_seconds": 409.01,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            7,
+            7,
+            8
+          ],
+          "stop": null,
+          "threads": 1,
+          "waters": 392
+        }
+      ],
+      "gpus": 1,
+      "job": "1882731",
+      "latest_case": "tune-6-cpu",
+      "latest_log_tail": "                     3136\n Number of occupied orbitals:                                               1568\n Number of molecular orbitals:                                              1568\n\n Number of orbital functions:                                               9016\n Number of independent orbital functions:                                   9016\n\n\n SCF WAVEFUNCTION OPTIMIZATION\n\n  Step     Update method      Time    Convergence         Total energy    Change\n  ------------------------------------------------------------------------------\n     1 P_Mix/Diag. 0.40E+00   53.6     0.68176733     -6656.1247176434 -6.66E+03\n     2 P_Mix/Diag. 0.40E+00   60.9     0.39979170     -6695.5672748882 -3.94E+01\n     3 P_Mix/Diag. 0.40E+00   69.3     0.24840225     -6718.8919810196 -2.33E+01\n     4 P_Mix/Diag. 0.40E+00   62.1     0.15276055     -6732.7074539130 -1.38E+01\n     5 P_Mix/Diag. 0.40E+00   61.0     0.09348058     -6740.9542302858 -8.25E+00\n     6 DIIS/Diag.  0.33E-02   61.1     0.05790712     -6745.8924596176 -4.94E+00\n     7 DIIS/Diag.  0.14E-03   62.7     0.00011217     -6753.2934314696 -7.40E+00\n     8 DIIS/Diag.  0.32E-04   62.7     0.00003492     -6753.2934361920 -4.72E-06\n     9 DIIS/Diag.  0.40E-04   62.7     0.00002259     -6753.2934361506  4.15E-08\n    10 DIIS/Diag.  0.24E-05   62.3     0.00000186     -6753.2934363712 -2.21E-07\n    11 DIIS/Diag.  0.59E-06   63.2     0.00000048     -6753.2934363719 -7.00E-10\n    12 DIIS/Diag.  0.30E-06   63.3     0.00000020     -6753.2934363720 -5.18E-11\n    13 DIIS/Diag.  0.11E-06   62.8     0.00000007     -6753.2934363720 -2.73E-12\n",
+      "partition": "4V100",
+      "request": {
+        "calibration": {
+          "path": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g1-full-a",
+          "reason": "discrete_size_or_memory_limit",
+          "sha256": "9d4d18aeb2d14fc9a0055b4a65f5c7affb3aeae10d326edaa0c2fdddf4aa47d2"
+        },
+        "case_seconds": 7200,
+        "cpu_acceptance": {
+          "path": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-smoke/results/smoke.json",
+          "sha256": "acb37661fc8a75dbccaf051665ac095f052ce3cf67d03094d71f8af52ef590e6"
+        },
+        "cpu_binary": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-4v100-a/install/bin/cp2k.psmp",
+        "cpu_binary_sha256": "1c7b9a8fe59a3b4015dfa571b519cd5a9b1f451d1c65a30b35b8ce6aad85225c",
+        "full_calibration": false,
+        "gpu_binary": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/4V100/bin/cp2k.psmp",
+        "gpu_binary_sha256": "68ef030537fdadd18347252e2c3770d17df6f20606ec1ef9e6dfbf02fcf5c4f9",
+        "gpus": 1,
+        "install_receipt_sha256": "7b2779db91a33b338c6f9c0aa1c3ec78ac9a0c706bfe2362528ffcaaed18850e",
+        "partition": "4V100",
+        "physical_cores": 4,
+        "probes": 6,
+        "shape": [
+          7,
+          7,
+          8
+        ],
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "stage": "compare"
+      },
+      "request_sha256": "926d25891975aaea585186e396dcca999b9d42bc8a73ab218e3bb854ecc46e2f",
+      "slurm_log_tail": "START tune-0-gpu: 392 waters, 1 MPI x 4 OMP, gpu\nFINISH tune-0-gpu: rc=0, stop=None, GPU fractions=[0.54986572265625]\nSTART tune-1-gpu: 392 waters, 1 MPI x 2 OMP, gpu\nFINISH tune-1-gpu: rc=0, stop=None, GPU fractions=[0.5491943359375]\nSTART tune-2-gpu: 392 waters, 1 MPI x 1 OMP, gpu\nFINISH tune-2-gpu: rc=0, stop=None, GPU fractions=[0.54876708984375]\nSTART tune-3-gpu: 392 waters, 1 MPI x 4 OMP, gpu\nFINISH tune-3-gpu: rc=0, stop=None, GPU fractions=[0.54986572265625]\nSTART tune-4-gpu: 392 waters, 1 MPI x 2 OMP, gpu\nFINISH tune-4-gpu: rc=0, stop=None, GPU fractions=[0.5491943359375]\nSTART tune-5-gpu: 392 waters, 1 MPI x 1 OMP, gpu\nFINISH tune-5-gpu: rc=0, stop=None, GPU fractions=[0.54876708984375]\nSTART tune-6-cpu: 392 waters, 1 MPI x 4 OMP, cpu\n"
+    },
+    {
+      "calibration_run": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-full-a",
+      "gpus": 4,
+      "partition": "4V100"
+    }
+  ],
+  "shorter-calibration-allocation": {
+    "after": "JobId=1882713 JobName=cp2k-water-20261020-4v100-g4-full-a\n   UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A\n   Priority=10079 Nice=0 Account=private-stardust QOS=rush-gpu WCKey=*\n   JobState=PENDING Reason=None Dependency=(null)\n   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0\n   RunTime=00:00:00 TimeLimit=01:30:00 TimeMin=N/A\n   SubmitTime=2026-10-20T23:00:17 EligibleTime=2026-10-20T23:00:17\n   AccrueTime=2026-10-20T23:00:17\n   StartTime=2026-10-21T04:02:02 EndTime=2026-10-21T05:32:02 Deadline=N/A\n   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-20T23:53:53 Scheduler=Backfill:*\n   Partition=4V100 AllocNode:Sid=login-01:3549688\n   ReqNodeList=(null) ExcNodeList=(null)\n   NodeList= SchedNodeList=4v100n34\n   NumNodes=1-1 NumCPUs=4 NumTasks=4 CPUs/Task=1 ReqB:S:C:T=0:0:*:*\n   ReqTRES=cpu=4,mem=88G,node=1,billing=776,gres/gpu=4\n   AllocTRES=(null)\n   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*\n   MinCPUsNode=1 MinMemoryTRES=22G MinTmpDiskNode=0\n   Features=(null) DelayBoot=00:00:00\n   OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null)\n   Command=/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-full-a/control/deployment/cp2k-water-scaling/job.sbatch\n   SubmitLine=sbatch --parsable --partition=4V100 --qos=rush-gpu --nodes=1 --ntasks=4 --gpus-per-node=4 --time=180 --job-name=cp2k-water-20261020-4v100-g4-full-a --output=/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-full-a/results/slurm-%j.log /home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-full-a/control/deployment/cp2k-water-scaling/job.sbatch /home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-full-a\n   WorkDir=/home/stardust/sai-hpc-software/development/workflow-closure\n   StdErr=\n   StdIn=/dev/null\n   StdOut=/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-full-a/results/slurm-1882713.log\n   CpusPerTres=gpu:8\n   MemPerTres=gpu:22528\n   TresPerNode=gres/gpu:4\n\n",
+    "at": "2026-10-20T15:53:56.204897+00:00",
+    "before": "JobId=1882713 JobName=cp2k-water-20261020-4v100-g4-full-a\n   UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A\n   Priority=10079 Nice=0 Account=private-stardust QOS=rush-gpu WCKey=*\n   JobState=PENDING Reason=Resources Dependency=(null)\n   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0\n   RunTime=00:00:00 TimeLimit=03:00:00 TimeMin=N/A\n   SubmitTime=2026-10-20T23:00:17 EligibleTime=2026-10-20T23:00:17\n   AccrueTime=2026-10-20T23:00:17\n   StartTime=2026-10-21T04:02:02 EndTime=2026-10-21T07:02:02 Deadline=N/A\n   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-20T23:53:53 Scheduler=Backfill:*\n   Partition=4V100 AllocNode:Sid=login-01:3549688\n   ReqNodeList=(null) ExcNodeList=(null)\n   NodeList= SchedNodeList=4v100n34\n   NumNodes=1-1 NumCPUs=4 NumTasks=4 CPUs/Task=1 ReqB:S:C:T=0:0:*:*\n   ReqTRES=cpu=4,mem=88G,node=1,billing=776,gres/gpu=4\n   AllocTRES=(null)\n   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*\n   MinCPUsNode=1 MinMemoryTRES=22G MinTmpDiskNode=0\n   Features=(null) DelayBoot=00:00:00\n   OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null)\n   Command=/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-full-a/control/deployment/cp2k-water-scaling/job.sbatch\n   SubmitLine=sbatch --parsable --partition=4V100 --qos=rush-gpu --nodes=1 --ntasks=4 --gpus-per-node=4 --time=180 --job-name=cp2k-water-20261020-4v100-g4-full-a --output=/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-full-a/results/slurm-%j.log /home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-full-a/control/deployment/cp2k-water-scaling/job.sbatch /home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-full-a\n   WorkDir=/home/stardust/sai-hpc-software/development/workflow-closure\n   StdErr=\n   StdIn=/dev/null\n   StdOut=/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-full-a/results/slurm-1882713.log\n   CpusPerTres=gpu:8\n   MemPerTres=gpu:22528\n   TresPerNode=gres/gpu:4\n\n",
+    "job": "1882713",
+    "reason": "One full calibration probe has a 3600-second case ceiling. A 90-minute allocation includes 30 minutes of setup/cleanup margin and can fit shorter backfill windows.",
+    "run": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-full-a"
+  },
+  "watcher_log_tail": "{\"complete\": false, \"errors\": [], \"points\": [{\"accepted\": null, \"calibration_state\": \"COMPLETED\", \"comparison_state\": \"RUNNING\", \"gpus\": 1, \"partition\": \"16V100\"}, {\"accepted\": null, \"calibration_state\": \"COMPLETED\", \"comparison_state\": \"RUNNING\", \"gpus\": 4, \"partition\": \"16V100\"}, {\"accepted\": null, \"calibration_state\": \"COMPLETED\", \"comparison_state\": \"RUNNING\", \"gpus\": 16, \"partition\": \"16V100\"}, {\"accepted\": null, \"calibration_state\": \"COMPLETED\", \"comparison_state\": \"RUNNING\", \"gpus\": 1, \"partition\": \"4V100\"}, {\"accepted\": null, \"calibration_state\": \"PENDING\", \"comparison_state\": null, \"gpus\": 4, \"partition\": \"4V100\"}], \"updated\": \"2026-10-20T16:00:27.119725+00:00\"}",
+  "watcher_pid": 163630
+}

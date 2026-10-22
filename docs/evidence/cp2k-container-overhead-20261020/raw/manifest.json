@@ -1,0 +1,16 @@
+{
+  "science_verifier": {
+    "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-container-overhead-control-v3-20261020/deployment/cp2k-container-overhead/run.py",
+    "sha256": "e13c5b4c2508625aaaf9c5735fe14e615f94639d432c5cec7a8e114f786776b3",
+    "correction": "Insert the native warmup sample before its self-comparison during verification. Execution, original frozen controllers, numerical samples and timing records are unchanged."
+  },
+  "runs": [
+    {"label": "4V100", "run": "cp2k-container-overhead-20261020-retry-4V100", "partition": "4V100", "kind": "science", "state": "COMPLETED"},
+    {"label": "16V100", "run": "cp2k-container-overhead-20261020-16V100", "partition": "16V100", "kind": "science", "state": "COMPLETED"},
+    {"label": "8V100V0", "run": "cp2k-container-overhead-20261020-8V100V0", "partition": "8V100V0", "kind": "science", "state": "COMPLETED"},
+    {"label": "DSPRHBM", "run": "cp2k-container-overhead-20261020-DSPRHBM", "partition": "DSPRHBM", "kind": "science", "state": "COMPLETED"},
+    {"label": "startup-16V100", "run": "cp2k-container-startup-20261020-16V100", "partition": "16V100", "kind": "startup", "state": "COMPLETED"},
+    {"label": "4V100-original", "run": "cp2k-container-overhead-20261020-4V100", "partition": "4V100", "kind": "failed-native", "state": "FAILED"},
+    {"label": "4V100-diagnostic", "run": "cp2k-container-jit-probe-20261020-4V100", "partition": "4V100", "kind": "diagnostic", "state": "COMPLETED"}
+  ]
+}

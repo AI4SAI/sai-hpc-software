@@ -1,0 +1,15 @@
+{
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--partition=16V100",
+    "--job-name=cp2k-container-io",
+    "--output=/home/stardust/sai-hpc-software/runtime-tests/cp2k-container-overhead-20261020-16V100/results/slurm-%j.log",
+    "--qos=flood-1o2gpu",
+    "--gpus-per-node=1",
+    "/home/stardust/sai-hpc-software/runtime-tests/cp2k-container-overhead-20261020-16V100/control/deployment/cp2k-container-overhead/job.sbatch",
+    "/home/stardust/sai-hpc-software/runtime-tests/cp2k-container-overhead-20261020-16V100"
+  ],
+  "job": "1881686",
+  "request_sha256": "1fbbe51cf7df57c3b6a06be8a34ee48c34834521925d56fa6ff0947d86482564"
+}

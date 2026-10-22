@@ -1,0 +1,77 @@
+--------------------------------------------------------------------------
+PRTE has detected that the head of the session directory tree (where
+scratch files and shared memory backing storage will be placed)
+resides on a shared file system:
+
+   Directory: /home/stardust/sai-hpc-software/runtime/co-1882053
+   File system type: lustre
+
+For performance reasons, it is strongly recommended that the session
+directory be located on a local file system. This can be controlled by
+setting the system temporary directory to be used by PRTE using either
+the TMPDIR envar or the "prte_tmpdir_base" MCA param.
+
+If you need the temporary directory to be different on remote nodes
+from the local one where prterun is running (e.g., when a login node is
+being employed), then you can set the local temporary directory using
+the "prte_local_tmpdir_base" MCA param and the one to be used on all
+other nodes using the "prte_remote_tmpdir_base" param.
+
+This is only a warning advisory and your job will continue. You can
+disable this warning in the future by setting the
+"prte_silence_shared_fs" MCA param to "1".
+--------------------------------------------------------------------------
+version/warmup/native 2.0205586350057274
+version/warmup/sif 4.125464671989903
+version/warmup/checked 3.071864269906655
+version/0/native 2.069905115989968
+version/0/sif 2.5210380929056555
+version/0/checked 2.6705582400318235
+version/1/sif 2.5202928769867867
+version/1/checked 2.6704701900016516
+version/1/native 2.0188456380274147
+version/2/checked 2.7202061431016773
+version/2/native 2.0693141978699714
+version/2/sif 2.469944108976051
+version/3/native 2.1696993219666183
+version/3/sif 2.470171146094799
+version/3/checked 2.670491976197809
+version/4/sif 2.6715243810322136
+version/4/checked 2.5721693481318653
+version/4/native 1.920706772012636
+version/5/checked 2.6218530528713018
+version/5/native 1.9203420388512313
+version/5/sif 2.471593257971108
+version/6/native 1.9216640240047127
+version/6/sif 2.371653725160286
+version/6/checked 2.5219862221274525
+MATCHED_EXECUTABLE_LIBRARIES_UID_AFFINITY_AND_HOST_FILESYSTEM
+water-gpw/warmup/native wall= 24.22123355208896 cp2k= 22.181
+water-gpw/warmup/sif wall= 23.770661556860432 cp2k= 21.318
+water-gpw/0/native wall= 23.171706767054275 cp2k= 21.125
+water-gpw/0/sif wall= 24.22004012321122 cp2k= 21.634
+water-gpw/1/sif wall= 23.973290947033092 cp2k= 21.494
+water-gpw/1/native wall= 23.322427314938977 cp2k= 21.338
+water-gpw/2/native wall= 23.271121205063537 cp2k= 21.297
+water-gpw/2/sif wall= 23.97214971203357 cp2k= 21.43
+water-gpw/3/sif wall= 23.972769100917503 cp2k= 21.509
+water-gpw/3/native wall= 23.52156313089654 cp2k= 21.427
+water-gpw/4/native wall= 23.221585860010237 cp2k= 21.242
+water-gpw/4/sif wall= 23.974806756945327 cp2k= 21.432
+water64-gpw/warmup/native wall= 173.61735726706684 cp2k= 171.559
+water64-gpw/warmup/sif wall= 173.91554490104318 cp2k= 171.393
+water64-gpw/0/native wall= 173.11392239807174 cp2k= 171.07
+water64-gpw/0/sif wall= 174.06588944699615 cp2k= 171.591
+water64-gpw/1/sif wall= 174.1674530620221 cp2k= 171.692
+water64-gpw/1/native wall= 173.3198081110604 cp2k= 171.19
+water64-gpw/2/native wall= 173.37111799512058 cp2k= 171.275
+water64-gpw/2/sif wall= 173.6747382071335 cp2k= 171.121
+water64-elpa/warmup/native wall= 46.57180699589662 cp2k= 44.485
+water64-elpa/warmup/sif wall= 96.93609336600639 cp2k= 94.28
+water64-elpa/0/native wall= 132.95418479805812 cp2k= 128.065
+water64-elpa/0/sif wall= 128.36860335688107 cp2k= 125.609
+water64-elpa/1/sif wall= 143.75101363495924 cp2k= 134.864
+water64-elpa/1/native wall= 85.21687219804153 cp2k= 83.161
+water64-elpa/2/native wall= 198.83188599394634 cp2k= 157.285
+water64-elpa/2/sif wall= 127.4242520830594 cp2k= 124.739
+CP2K_CONTAINER_OVERHEAD_PASSED

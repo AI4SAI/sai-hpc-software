@@ -17,6 +17,28 @@ python3 deployment/cp2k-diagonalization/run.py submit \
 cuSOLVER F/T 的输入只有该开关不同；显式使用 `CHOLESKY RESTORE`，不加 level shift。
 每组先预热一次，再按正序/倒序交替重复三次。每次从相同原子初猜独立开始。
 
+## OT 内部的求解器对照
+
+要判断 cuSOLVERMp 是否加速 OT，使用独立的 `ot-backends` profile：
+
+```bash
+python3 deployment/cp2k-diagonalization/run.py submit \
+  --build-run <已通过科学验收的构建run> --name <唯一标识>-ot-water216 \
+  --edge 6 --repeats 3 --profile ot-backends
+```
+
+两组都保留 OT/DIIS、`PRECONDITIONER FULL_ALL` 和相同的收敛参数，
+只改变 `PREFERRED_DIAG_LIBRARY CUSOLVER/ELPA`。两组的
+`DIRECT_GENERALIZED_DIAGONALIZATION` 均为 `F`：OT 中的预条件器和轨道矩阵
+操作会调用普通特征值求解器，该 direct 开关不改变这些调用。
+验证器要求实际执行 OT 及指定的求解器，拒绝回落到另一后端或 generalized direct 路径。
+每组一次预热、三次交替测量，共八次计算；报告 `elpa_over_cusolver` 时间比，
+大于 1 才表示该 OT 算例中 cuSOLVERMp 更快。它不代表所有 OT 输入都会调用或受益于同一后端。
+默认 `diagonalization` profile 保持原来的四组对照；其中 OT 与普通对角化的总时间
+比较不能回答 OT 内部更换求解器的收益。
+
+## 验证和结果
+
 判定使用 `eigensolver_generalized` 和 `cp_fm_general_cusolver` 的真实调用计数，不能仅靠
 输入开关判断 direct 分支是否执行。普通 cuSOLVER、ELPA、OT 同样需要实际调用计时。
 所有能量、力、SCF 收敛、CPU 亲和性和 GPU 可见性先通过检查，才汇总 CP2K 内部总时间。

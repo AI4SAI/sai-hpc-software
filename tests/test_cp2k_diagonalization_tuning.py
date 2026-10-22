@@ -61,6 +61,34 @@ class TuningTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'physical-core'):
                 tuning.check_rank(folder, request)
 
+    def test_ot_comparison_changes_only_backend(self):
+        for edge in (4, 6):
+            a = tuning.input_text('ot-cusolver', edge)
+            b = tuning.input_text('ot-elpa', edge)
+            self.assertEqual(a.replace('PREFERRED_DIAG_LIBRARY CUSOLVER',
+                                       'PREFERRED_DIAG_LIBRARY ELPA'), b)
+            self.assertIn('&OT ON', b)
+            self.assertIn('PRECONDITIONER FULL_ALL', b)
+            self.assertIn('DIRECT_GENERALIZED_DIAGONALIZATION F', b)
+            self.assertNotIn('&DIAGONALIZATION', b)
+
+    def test_ot_comparison_requires_requested_backend_and_ot_execution(self):
+        with tempfile.TemporaryDirectory() as directory:
+            folder = Path(directory)
+            ot = ' ot_scf_mini 10 1.0 0.1 0.1 1.0 1.0\n'
+            cuda = ' cp_fm_diag_cusolver 10 1.0 0.1 0.1 1.0 1.0\n'
+            elpa = ' cp_fm_diag_elpa 10 1.0 0.1 0.1 1.0 1.0\n'
+            for mode, own, wrong in (('ot-cusolver', cuda, elpa), ('ot-elpa', elpa, cuda)):
+                self.fixture(folder, ot+own)
+                tuning.parse_sample(folder, mode, 4)
+                for timers in (ot, ot+wrong, ot+own+wrong):
+                    self.fixture(folder, timers)
+                    with self.assertRaisesRegex(ValueError, 'backend differs'):
+                        tuning.parse_sample(folder, mode, 4)
+                self.fixture(folder, own)
+                with self.assertRaisesRegex(ValueError, 'OT was not executed'):
+                    tuning.parse_sample(folder, mode, 4)
+
 
 if __name__ == '__main__':
     unittest.main()

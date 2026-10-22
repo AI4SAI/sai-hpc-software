@@ -1,0 +1,2172 @@
+{
+  "captured_utc": "2026-10-21T01:55:31.700530+00:00",
+  "points": [
+    {
+      "accounting": "1884617|COMPLETED|0:0|01:42:35|16v100n01\n",
+      "basis_functions": 6624,
+      "cpu_over_gpu": 4.678415043454423,
+      "job": "1884617",
+      "launch_wall_cpu_over_gpu": 4.617751358794101,
+      "median_seconds": {
+        "cpu": 1262.882,
+        "gpu": 269.938
+      },
+      "modes": {
+        "cpu": {
+          "cpu_utilization": [
+            0.9969263580157053,
+            0.9978125794484307,
+            0.9979702761883859
+          ],
+          "gpu_peak_fractions": [
+            [
+              0.000244140625
+            ],
+            [
+              0.000244140625
+            ],
+            [
+              0.000244140625
+            ]
+          ],
+          "host_limit_gib": 15.0,
+          "launch_seconds": [
+            1256.163496863097,
+            1268.3895012624562,
+            1265.2606296278536
+          ],
+          "max_energy_delta_ha": 9.194991434924304e-10,
+          "max_force_delta_ha_bohr": 1.0000004296850662e-12,
+          "peak_host_gib": 13.702045440673828,
+          "scf_steps": [
+            [
+              20
+            ],
+            [
+              20
+            ],
+            [
+              20
+            ]
+          ],
+          "seconds": [
+            1252.655,
+            1265.812,
+            1262.882
+          ]
+        },
+        "gpu": {
+          "cpu_utilization": [
+            0.470003197064321,
+            0.4802202088346336,
+            0.4861794703195389
+          ],
+          "gpu_peak_fractions": [
+            [
+              0.6759033203125
+            ],
+            [
+              0.6759033203125
+            ],
+            [
+              0.6759033203125
+            ]
+          ],
+          "host_limit_gib": 15.0,
+          "launch_seconds": [
+            279.6417148243636,
+            273.99929777905345,
+            269.1290109679103
+          ],
+          "max_energy_delta_ha": 0.0,
+          "max_force_delta_ha_bohr": 1.0000004296850662e-12,
+          "peak_host_gib": 11.842811584472656,
+          "scf_steps": [
+            [
+              20
+            ],
+            [
+              20
+            ],
+            [
+              20
+            ]
+          ],
+          "seconds": [
+            276.41,
+            269.938,
+            266.073
+          ]
+        }
+      },
+      "performance_result": true,
+      "request": {
+        "calibration": {
+          "path": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g1-d",
+          "reason": "all_gpus_in_target",
+          "sha256": "b1a1379a89828e0d6adae8255ffb0817e2367092d192514c08e24dfd31816985"
+        },
+        "case_seconds": 7200,
+        "cpu_acceptance": {
+          "path": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-smoke-b/results/smoke.json",
+          "sha256": "d55c4a3b36b3ffe5bf4804f90d65faad7d3a54bc0bab68b5f5bf0ec96a1f506d"
+        },
+        "cpu_binary": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-16v100-a/install/bin/cp2k.psmp",
+        "cpu_binary_sha256": "334927fba16531e479836fabd940b6d7844ea39fba8f883aabb8d4d71e8dd840",
+        "full_calibration": false,
+        "gpu_binary": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/bin/cp2k.psmp",
+        "gpu_binary_sha256": "7bc5d0f8afcba6e08e90800fd702908d088caae2ccb4164662fbbd029db8ca33",
+        "gpus": 1,
+        "host_memory_fraction": 0.95,
+        "inputs": {
+          "control/controller/abacus_baseline_probe.sbatch": "ee77ca5738eb3e0e0aa0bd4136071d5444ba6f08d394be640dd7092f3bb86914",
+          "control/controller/abacus_benchmark.py": "852c7701aaea3f8d36e2365a09637e91f12612e9284063a7236d70d3e832705b",
+          "control/controller/abacus_build.sh": "cf67a38908fdbc1145aa515011478e59dcac92ec40bebbdb691cb1c024a16a80",
+          "control/controller/abacus_cache_runner_reference.py": "ee275b407a58e1ea3bc835e034ad86eee5a218d0134b8a3f8e3af3c277e10ff3",
+          "control/controller/abacus_dependencies.py": "47c5d90a1c75dd8da1ff085735a26e4cb584aae2a122661c1448fb7cff33afd6",
+          "control/controller/abacus_dependencies.sh": "905eb88d0ca0dc2f3e011874fbe28b7a95cb8a1a1db526ddc4e5fc4661e20cde",
+          "control/controller/abacus_dependency_lock.json": "ce7a95f5e0776eb1ff694e76a88cd4389ee617906071502d79ef5727e5a66d6c",
+          "control/controller/abacus_features.py": "e1b9d5ae501a6f43053c15f5fccabbc224e0278a324b0e2ce628d1324525d64a",
+          "control/controller/abacus_full_dependencies.sh": "0aefb9b7a59f66a0776a70d914dd4ba34d281022856dd91b9fb1864355419d4c",
+          "control/controller/abacus_full_profile.json": "d93fbde64a6898e12c0e61cdced1c2ca7d25925611f3d0bfc3ac1b30576bd469",
+          "control/controller/abacus_runtime.sh": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+          "control/controller/abacus_site_gpu.sh": "1a8631ca91a9969f56115425ef13489144fa28d292609d96292fc8ce9b898b29",
+          "control/controller/abacus_site_mpi.sh": "199aeb495069f0812214c8bd944b229799b8d54b9a908667ef8f1d5b2cbc54d1",
+          "control/controller/build.sbatch.in": "5e0e74a118add2aa80f181dda6bc4bee1bcdb3e241df9c592f8632fbacb21a98",
+          "control/controller/build_capacity.py": "bff0a1cbf9acedb858c9776efd73a9c98737787e1bb439e0965048f47e0ee66c",
+          "control/controller/case.sbatch.in": "d849dca06d71f2ccb3d5e52a5f7a8ea07803a63894bb42aea6385604b5d98698",
+          "control/controller/ci.py": "1b713224de667d460744548c0c6dd965dfeb9c01aef54cc64de80bcd3fefde4b",
+          "control/controller/config.ini": "8dc7eee2853aaa96979a8f55e2f1dea0ceb8c7cb0045e19695837b10d99c575c",
+          "control/controller/container_entry.sh": "618042bbd5fe909dbe0ea2c47f786791d7bb451dc1da841cb2dea83eb72803ef",
+          "control/controller/cp2k_Libint2Config.cmake": "223aac33a7743bc46a25738cb75b4a4bd1100571b1ea13fe4c19dff7c4019de9",
+          "control/controller/cp2k_acceptance.py": "84db91909883510765fa87c03f2816f1af9ac0271f85f95f03c62371dcd098eb",
+          "control/controller/cp2k_baseline_probe.sbatch": "6462e789df12424f89c9595ff62146f1e51933136b2d6306e5845755b4c5cd52",
+          "control/controller/cp2k_benchmark.py": "aefd8b234b1b43f2815a6af5f3502204319a490f4919ad417421d920034a10e3",
+          "control/controller/cp2k_build.sh": "74461284a5b63385f9a75c679f4502d2f21d72f6d317ab06dcc3a33af4975f23",
+          "control/controller/cp2k_cmake_prerequisites.cmake": "8c923f94b76475eba88e14280b05e37ddb8f491a03821193253e49e4af519a0d",
+          "control/controller/cp2k_container_entry.sh": "05f7c0036558ded066641499209d70744519c8d4dbc23bb35f727c06ede2955d",
+          "control/controller/cp2k_dependencies.sbatch": "d1fbdbb7f8553b0b912a08d73bc8f85ac376b9bf0e854c79298a03a4718b3197",
+          "control/controller/cp2k_dependencies.sh": "99d5bbcf9dda385257c0088fe9a12a1f6eea86364e2dc8bef46a17d1af822562",
+          "control/controller/cp2k_dependency_stage.py": "babdea468491a5f809d7c86a1f170d48b9c55d8c6d5abae954ff1d969c5d9a9e",
+          "control/controller/cp2k_elpa.sh": "508b4887216c5ac57bf6777dee83d70b0bf655a3335a26647b7291a1b3ac4ea0",
+          "control/controller/cp2k_elpa_abi.f90": "95c2ef65486385219c646424c2d8724574b8dabaa0fc4ce89c2e78bae43478a5",
+          "control/controller/cp2k_elpa_runtime.py": "0ceaf73725599632c002e5b6588d855c08e1d9a3798cba3bab9a5bf9b048fcc2",
+          "control/controller/cp2k_feature_contract.py": "2d2ea42d9e74d5ecbe8278bebd8b23c81d1bcfe86c35b0d303cf3f7b09e93917",
+          "control/controller/cp2k_image_driver.py": "e0ea6a2b7ce25189b3eb9b7749392b0416894f9d365e1f3c31c577546a8df049",
+          "control/controller/cp2k_libxsmmConfig.cmake": "734aa00bd820e244cde406866c1c6065f8a2f85571dde413f7c2bf058b1fb038",
+          "control/controller/cp2k_overlay_probe.sbatch": "69c6044258e990bd6dbf5ccce76b5b6bb0545d118b000587c720975ec9757e1c",
+          "control/controller/cp2k_overlay_workdir.py": "f22d281427ede157c03c7fc20a8b625e9c5a511e023a6c358de93040589fe468",
+          "control/controller/cp2k_payload.py": "8e71ae39fa9f82c9033107dc00c37f780b06a4b032c5de78190336509c120d83",
+          "control/controller/cp2k_probe.sbatch": "3927f4ece5c157504bc3b0b70e70f603c9319e2709ae36db2a7ce8cbcdc5fa0d",
+          "control/controller/cp2k_repack.sbatch": "004ede58b234b49dc0297ea437d9a3e1e23ff450f7ea8b3bc65222711ee78c7f",
+          "control/controller/cp2k_runtime.sh": "210ddd657ec01da4c1bd13294f95ee51991f24219c3b1965c52874c6270b4540",
+          "control/controller/cp2k_site_elpa.json": "9b3253261d2cee47df156136c575c6fc7748f30344b029b4bc56fd83bed4fea0",
+          "control/controller/cp2k_source_fixes.py": "9ea20a68ddbeaf7184f8968e5a966eef3ee2b84f9ba8cffc56f71c1496563ad9",
+          "control/controller/cp2k_spack.py": "0235341aed673e851a375457076a220d644d178332d577f8a661712c5d7775ad",
+          "control/controller/cp2k_spack_dependencies.sh": "62977f63321a57a3c7d66f15e20f82cebc2ddf3987f1faa0e6719f7e6a640985",
+          "control/controller/cp2k_spack_environment.py": "70603447fee7d634fe939a2a11faca829407eceacd21090812705bd373c0d1ba",
+          "control/controller/cp2k_spack_install.sh": "320f8e5f58ba986a5a37c19223183b3826d932ed680173e4cce2ab034f4e37a7",
+          "control/controller/cp2k_spack_install_evidence.py": "391ad327602cabf1e49db806a6d82c1887669f40da097ba2dfdf3ed193d481cc",
+          "control/controller/cp2k_spack_install_submit.py": "49a15275a73f7d8ed08566f9b82b3576489f8dd74790b336287e97719d685447",
+          "control/controller/cp2k_spack_libint_repair.py": "b38fd9292b264bc83c308ca8c4ce4b42a1b2beb3367713de3f7308106b2cd014",
+          "control/controller/cp2k_spack_link.py": "52efab5e2c77f195e1dd380911a1d7617f2d1f632c3a808dfe5d4e61e3ab88f8",
+          "control/controller/cp2k_spack_mpi_repair.py": "7036b4f1c89b54d0f25e6bf6c87e79f07306a55cd8a10f4e2c93edfcb8c732e8",
+          "control/controller/cp2k_spack_native.py": "bdfadff1c81c8cc0bf03d80f950e4dd3f3176496f02febcb9ae102cd847abb04",
+          "control/controller/cp2k_spack_probe.sh": "4c266c5704f1cf96f4aad3da70030fe7c4f5ea8eb9eae5bb3e409f601cf3723e",
+          "control/controller/cp2k_spack_probe_submit.py": "e878b1bb56ef2bdf8c4afc133d92cbb18ff63198afbc30f9d892f505c1cc08c4",
+          "control/controller/cp2k_spack_seed.py": "9c41a9fc602f2f5e351eb845785a0b86882268b58b53573b3972a85b2fa35dfe",
+          "control/controller/create_rootfs.sh": "ae0818e8bb485222605290fd3f3c410c40354aa518c8f613ac26236b3e382852",
+          "control/controller/daily_plan.py": "8dcc9907d201caab77f421adc7d77a3471881b6caba475ad2474270ae91b2024",
+          "control/controller/delivery_layout.py": "268a18bfe45b1f8cca9d955d5b34215392ee74d734dcf4358c5da66728f6d7f2",
+          "control/controller/environment.sh": "68bfc2f69c1df2f9b35fdf9d273dbf35e377c44b490ff19ebc6c41ac7dad58d0",
+          "control/controller/export_native.py": "cf5709c9037af843e360b2ad1b73b2d50dcdc1525940db9350df5783d9e8c619",
+          "control/controller/finalize_lammps_sif.py": "430113a1b0d271e5d3241460e46166206443dbd92812113f66228dac9ad7fd2f",
+          "control/controller/gpu_feature_controller.py": "67e0711ccd8d39d1d6fc999baa35a9b6fe32fbe2c9392db5bb8e7cdc09f60eb0",
+          "control/controller/gpu_feature_runtime.sh": "b499d0fe6bd1ad4623ece45ea6663702bf8e54d95ae1a0679b87f34ce81a0734",
+          "control/controller/gpumd_acceptance.py": "35080b2962f1cd435ceabfa2ba52b502735ff3c32fcdc9cd560a6e926e7e85bc",
+          "control/controller/gpumd_build.sh": "4739c263643a94b428fdb28e4ca25de93224106fca8ce193d48bf3c2b997a7fa",
+          "control/controller/gpumd_container_entry.sh": "2fd02f0abd7736865eda94204f28d7ca0a536a8eb2029d3b9cb0b435034bdb7f",
+          "control/controller/gpumd_deepmd_probe.py": "78d3e11ad614aed6b092f5fcb3cdf24e9f0dd91fb9adf73c263da2e9ed761319",
+          "control/controller/gpumd_environment.sh": "6bb0cc52a65b83add6cfc6a7375459f61e82ff822aed2d1e1718faf92f935370",
+          "control/controller/gpumd_relink_probe.sbatch": "4d1f7b8858f3c9c1f2beb36393b008f52f7d49cf3f696f2d58c39359bdb31997",
+          "control/controller/gpumd_runtime.sh": "442c2dce979960cfebc58226357ae5374db9e9881649a1f458f78387936b568d",
+          "control/controller/gpumd_science.py": "ee1328905abaca2ffd2630d6d3dcad7a52af110ddf25d4d594485841144f5e1e",
+          "control/controller/gpumd_site_probe.py": "3501fc12f9b648a50127a246ff8232af20f288e4d704b9319b5091417c60d5bf",
+          "control/controller/gpumd_site_probe.sbatch": "b04fba2267207a966b4de8b1660ca2d52d62e94c231627c35107e93c5e4280a7",
+          "control/controller/lammps_manifest_diagnose.sh": "8bd4b84fb66ecfd424c88963cf24cba3dbdb67b2c1ee420e902f61a23dc53dc2",
+          "control/controller/lammps_packaging_debug.sbatch": "6b70c42acb0176aa5fa4938726d8d7c72c4323fb0daf0329b860718279cdfaa1",
+          "control/controller/lammps_packaging_probe.sbatch": "6df4ad1d86c294af6578b0821242030bbc762b974a8be81eb0a84d69f8e6f3e6",
+          "control/controller/md_acceptance.sh": "fbbd8dc86108044c5efa2b00ca4377ab5d4219a18f4ea91d1ad3336ac2dd05bd",
+          "control/controller/md_acceptance_controller.py": "88db1b11a2c81b9687b0ba173bb060c7d9eba0873ea22190601981f54f5faa0b",
+          "control/controller/md_baseline.sh": "e59ca2d8efb63e06ed36caad0c3612a5436191b78ab7b750a8a1c96092cb2621",
+          "control/controller/md_build.sh": "e2587d64983ec05f41aacdd5dc3a56c3c293b98630b0351a3b66898cfa4f1f4e",
+          "control/controller/md_ci.py": "c862b2e08f7a9fe8043daa70b4aa08e18d519e23b94dcec6925f3409d3a3bfcc",
+          "control/controller/md_container_entry.sh": "f1a58ca5f505d4bcefdbb4ab64afa24408b1d4074929fc4e6618b1d9b990a83c",
+          "control/controller/md_container_entry_verify_patched.sh": "eeb20f2b25a146ae12ea7e8634559b2d7dddacb7f96cde002c567aec85504c68",
+          "control/controller/md_controller.py": "5073d3fa7bedbe41cd39b3ff41b31d75f6f66cf9e99fda3b68cd7722744839fe",
+          "control/controller/md_driver_paths.py": "bce00df699cc432d8b7b5d4a8723564498603843639693e640916ab7ed8944a8",
+          "control/controller/md_environment.sh": "034b390c322dabd790f9f66d48b07c9e24b17c65f32f73ce904c8a4f24dec800",
+          "control/controller/md_evidence.py": "2d29110ba27718f7d6a43f93fbe7579dd6e0d76249e5a5de3056d73129687772",
+          "control/controller/md_import_probe.sh": "bddc7bdb3a7b3523531b93ecf51eb2958f6e151c36b4d5a0e93231c8e4dc7806",
+          "control/controller/md_link_launcher.py": "66b989e7807dd94fc425dbfae36900a5e471b98a94c4043f13738b16fd3527f6",
+          "control/controller/md_native_probe.sh": "8d8ccc5229f404c931b312743de5a2e705b3973e30593facd6403141436c27ac",
+          "control/controller/md_packaging_recovery.sh": "d45c0378195e98d1ffeb4452e258e9a0115bd11db053e57124fe4b963056831a",
+          "control/controller/md_performance.py": "a07d3662f5543f347fa584e942dbac7fc6eaf22377c33a0895ec5e07dce8f73e",
+          "control/controller/md_performance.sh": "43d4500f7533427e9e52d6f3de19047b37abd70dafa29f3ae94727fe720bbee9",
+          "control/controller/md_performance_controller.py": "02e24cc2e58b1d88b983b865a4e55c61a2b584bea01f642b54497b2131dc4b62",
+          "control/controller/md_performance_evidence.py": "e810fdc70801fa99fa033c92f96dfd03e2dbcf938eda7487e12ff46d9cae8ead",
+          "control/controller/md_performance_exec.py": "95d573f9edae5e4037e252d690f4adcc4bca04d6cdea59109ffb54686a7ff227",
+          "control/controller/md_performance_run.py": "24f13228ee7333dae8aaf9f8fa57c8f63a5110b93c85ff8ddcb31433e85ef585",
+          "control/controller/md_probe.py": "ac6be1c22cbac809892d62eff53d1e2dd83ee8d50f7cd752f375fcb1e78f8725",
+          "control/controller/md_publication.py": "79d4cb06f6b28756d795f762d3268f5e75bd3c5e9664e25302a470133fe4be26",
+          "control/controller/md_registration.py": "4f4e4db5bb2e7f9c55985d408dcfbf3f6acddbbab1ff8ca327fad0408cec6bb9",
+          "control/controller/md_relocate_audit.py": "21fe48bf420130c74ca5eebebd8d113fc219009700f970907bea1c7e72ed16b3",
+          "control/controller/md_runtime.sh": "cd11020142359a4a83313f97dfb6ef7aaa356a5d5c5a92a4f8d5da12b25543fe",
+          "control/controller/md_science.py": "55d4ee142d65cd7b327dbdca223f0b4b69c8185729b85d991da2652f7979f788",
+          "control/controller/md_tracking.py": "16f6fa69ebfce0ceb97bc7e3deb527e376423f38346b1312a9d02ad369791ef1",
+          "control/controller/module_publication.py": "dfb74bdc51f9eeff6931c66458f80bd571b2ba587368c50ee0a752abe6f6d06f",
+          "control/controller/modules.sh": "c3cba3ad99f373978ad806f61231fc20e9d254e06d5eccdece54629c259cea58",
+          "control/controller/native_module.py": "feb0065834df656ab4de54df86ffaa650ded3ed030fab4190b2d5df8cd3e4421",
+          "control/controller/probe_container.sh": "fb680791228f1b6fac07a038e5964be7399a485b86b81be8a383e51234770d78",
+          "control/controller/probe_module_publication.py": "3d9e4cf82ad5fdf4744a4eceb18d2e7d4d775e6771ee1b9c993aaff4f344d80e",
+          "control/controller/probe_module_publication.sbatch": "c854cb55c67dbac8b599a8bbc2b802d2e882cd7d9305773ebf723f16554255ba",
+          "control/controller/probe_native_export.py": "8203e115ae2123c9cff34d37c95d2939712c6e893a5c4ec7b242c199511a07c5",
+          "control/controller/probe_native_target.sbatch": "ec5cc83d030387d752006ec4d045b15c9b6e191b4916c098a6e400ed0334b1de",
+          "control/controller/recovery_budget.py": "edd5032692d5dd1f4491ec56f5a873ea61cb659651d558188ad2045683b76e27",
+          "control/controller/release_contract.py": "5054afa813bece49e24841f83b33c47993ff84391859fad15a8ddd373ede3b02",
+          "control/controller/remote_controller.py": "2c7df9d4c2f812b9f0a27b4aee8097609addd75ef6c6951605fed8920cd7f2ef",
+          "control/controller/resolve_source.py": "2d26c1217d70cec680bbbbe81a9b6806030641edb06636262405bb7b7761fa19",
+          "control/controller/resume_cp2k_export.py": "549a0dff5240aae4e3fcc8e8a02652f2007a3ca5586ed7d656dee85620969d8d",
+          "control/controller/resume_lammps_extract.py": "ff359df79536ce76217b6ff0cfb62184c48103d766ae9148e2098a88c4b51793",
+          "control/controller/resume_lammps_packaging.py": "fc6fd576fe5ecca5609d0c771509ffc1ce8bc94a88f7711a83173fd704b52f07",
+          "control/controller/resume_lammps_recovery.py": "323d9667dc9780e3e6b4303562fda7bf37d22ed149a00583306ecafba6420e6a",
+          "control/controller/runtime_controller.py": "5d2c1fa434c9d70506976df08fcbd015dcf7592afbd04df24691bbcb85ee8214",
+          "control/controller/slurm.py": "705bea32222d5964dd20ad589abe61322106518af61c0a645a42983970d7b220",
+          "control/controller/software_controller.py": "658d3ab105eddaf1804924724a97d1b6c064cfb9f8c1f76073a7c76cdaa0e215",
+          "control/controller/source_cache.py": "1c6ee2a243509f0fdf74e32736bea562e2777569c4c22480b2accdb78334f52b",
+          "control/controller/submit_abacus_recovery.py": "24e393dfe97e2a5a3cddbd0f0d338e4cae597aa7ccd8a0c4fe2da4526aad060d",
+          "control/controller/validate_plan.py": "2f9601f5f5e3e64828b5180a36766dbca4c6ffd651ecd3507723fcc3a1cfd0e3",
+          "control/deployment/cp2k-water-scaling/README.md": "ce46d46f85dea9779f6df1e04abb8ab1509bfe6b42837dfaef0f600326d4eebb",
+          "control/deployment/cp2k-water-scaling/build-cpu.sbatch": "6d98ee945a6d816144c872ddb1250293f1b4d15177b4e8c8cb66368bc42969d3",
+          "control/deployment/cp2k-water-scaling/build-cpu.sh": "540cf12c5d5b5b42dc6107a6dfd52ad85a9888e300ade78f842349253b45ca06",
+          "control/deployment/cp2k-water-scaling/campaign.py": "2811740c76ccf7ed2e5eae98438d5f085bdf3e957c9ef36d81109e697d9a8b7a",
+          "control/deployment/cp2k-water-scaling/job.sbatch": "07be8871cae5070c672a4fc3aa0d78da7085f06b688853ef1adf5cde9d7e77bc",
+          "control/deployment/cp2k-water-scaling/rank.py": "9db06188cc27c310f10b9ffef3587a901748f9c3669913a9096a275afe79f746",
+          "control/deployment/cp2k-water-scaling/run.py": "4d89122e8e3089a3cd0346b69819b2096f1612a74b773bbac9ab5cff6f3838f5",
+          "control/deployment/cp2k-water-scaling/submit-cpu.py": "946a0eba95402b61d03d03b2585e58224788ea64402b0fcb81360477b894182a",
+          "fixtures/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "fixtures/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+        },
+        "install_receipt_sha256": "2fe5555f35a585018b4dd70f99181413a5c2037c628bf03915cc1d118f590f39",
+        "partition": "16V100",
+        "physical_cores": 4,
+        "probes": 6,
+        "shape": [
+          6,
+          6,
+          8
+        ],
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "stage": "compare",
+        "tuning_import": {
+          "completed_tuning_cases": 9,
+          "files": {
+            "cases/tune-0-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+            "cases/tune-0-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+            "cases/tune-0-gpu/cp2k.log": "8af3d065e4f641fbb73e884c312279613a5562670f3001c542fbecad58283899",
+            "cases/tune-0-gpu/elapsed.txt": "bc26ddc9c1a35b18b0d0add9b380b931a9ccb73a7cbead29e2a88e5453c536d8",
+            "cases/tune-0-gpu/forces.xyz": "0495003cc0aa66504aad93a76be46d26f6219ba86c9bd9a1630d13d1783cbe3a",
+            "cases/tune-0-gpu/input.inp": "4d46b1c52296f28f300fef09fe2be83760c94334beb4ef10a4ca855cc8132ec3",
+            "cases/tune-0-gpu/launch.json": "91945272677f2bb10999633dceab0f3c0786fe1492cc255046e6bd003ead9ab7",
+            "cases/tune-0-gpu/rank-0.json": "fd1983cdcb465cf7ac3d84285cced9c02efa699c352068db1d0775f1fee4e5fe",
+            "cases/tune-0-gpu/resources.jsonl": "c23fb3bffcb649972d1a06f723163392ea546cef8d7e3804d61c9cbbb0f19af8",
+            "cases/tune-0-gpu/sample.json": "393cea6a75aee3500f366196cd53c27e9adbab755a30aac6405187426d02e99b",
+            "cases/tune-1-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+            "cases/tune-1-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+            "cases/tune-1-gpu/cp2k.log": "b4ce455ec29d3713303b3624d1f610a8d55e538918fe6eb5b9016dd79abb7e63",
+            "cases/tune-1-gpu/elapsed.txt": "586865b7178b2caab74f2b565909fc1b64855720fde1acd58f3947b8736c6ab9",
+            "cases/tune-1-gpu/forces.xyz": "fa1c125bd7e01f4a3fc48ca532da889422fe9471d113b1a531fcc404afe8ef13",
+            "cases/tune-1-gpu/input.inp": "4d46b1c52296f28f300fef09fe2be83760c94334beb4ef10a4ca855cc8132ec3",
+            "cases/tune-1-gpu/launch.json": "eb9e8b1c35e82909d3e4704b133493d91262b1996de47f0ce3e2a5c7b342bdbd",
+            "cases/tune-1-gpu/rank-0.json": "f15a0b83795f4befcfec7a6f0dc2ad1c3aad703a03705fcbcda2e263d17a8308",
+            "cases/tune-1-gpu/resources.jsonl": "1367b8eb24428835f56ecee4982fc45c852feb803c83b2d697eccffa82d6c1b6",
+            "cases/tune-1-gpu/sample.json": "57b836f5a4339c62a40b51ae8604229c5d7a06c4caf15ab7c7adbf6dda852a13",
+            "cases/tune-2-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+            "cases/tune-2-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+            "cases/tune-2-gpu/cp2k.log": "5ceef753b50a516f8c9542e7d0764e245ae21c0e2c5570bbca4ce7dbdcd7154b",
+            "cases/tune-2-gpu/elapsed.txt": "84a32519cebe55bb155503c32004433d8db5189b9ff99aac33da4d688050d90b",
+            "cases/tune-2-gpu/forces.xyz": "5927c3fd994820270acbf7b0d42b026219ebc26404da5539540f953a5a192a3b",
+            "cases/tune-2-gpu/input.inp": "4d46b1c52296f28f300fef09fe2be83760c94334beb4ef10a4ca855cc8132ec3",
+            "cases/tune-2-gpu/launch.json": "f4bf74a4682dd03038b3f1b5e85fb32a4e786a1e3109bf100a7346c697097ef9",
+            "cases/tune-2-gpu/rank-0.json": "f722f9efab4423a60e61e068db358a64ceee5afa38dbe8699a885af7b11468a4",
+            "cases/tune-2-gpu/resources.jsonl": "b48d744a3096d104627d946d0059eab08c85e1d19b9f2b72005288d83c1d541c",
+            "cases/tune-2-gpu/sample.json": "758a92ccf0250e8ba9fbfa713ab56e4cb70d442d5b35d4a77cf587a26ad4ec1a",
+            "cases/tune-3-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+            "cases/tune-3-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+            "cases/tune-3-gpu/cp2k.log": "198c2c647f37586f99dca4d1fe322edb5a4649ee315a6d47d5276d629362443b",
+            "cases/tune-3-gpu/elapsed.txt": "6d0d501b99254071e679860113f1eefcb2f8ee8688fd79f653e7e95462b1f75c",
+            "cases/tune-3-gpu/forces.xyz": "443cc65bb987aae1620cf16c78ec64f6bb738c54a81569df35ef0f008a7ee814",
+            "cases/tune-3-gpu/input.inp": "1090ebd9645f77742248d7b44284c307244b627ebb14dc699fac62c6558acaa6",
+            "cases/tune-3-gpu/launch.json": "6f99e55b156c90814d605d07bf24ea8a708c7c53cc53845964ab4a4854d8a08d",
+            "cases/tune-3-gpu/rank-0.json": "a0f1e92acf896f7f72cf3ba42c28269f72b3309654290b465ee33aaec7aee832",
+            "cases/tune-3-gpu/resources.jsonl": "f90bc92feb153d665a0d76da524ba9fd3a9cedbb6a4ba9faeae2b52f4cc6dc64",
+            "cases/tune-3-gpu/sample.json": "06eabe970022cb1b90b01035dbd3c09787297295d6ce4b733f0b69c3db0a885e",
+            "cases/tune-4-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+            "cases/tune-4-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+            "cases/tune-4-gpu/cp2k.log": "1d4668fedd17a4a6f8663c91324d6a20eef712636ac50198bfb9f2d7d4abc89c",
+            "cases/tune-4-gpu/elapsed.txt": "462e2256d6c57773c18b0c02b57576034a2eb220e684087218493ae05d370267",
+            "cases/tune-4-gpu/forces.xyz": "5ccf273ef0f913b25569c45a3607aa2ae6f352df52edde0e6e1fff300f5763d1",
+            "cases/tune-4-gpu/input.inp": "1090ebd9645f77742248d7b44284c307244b627ebb14dc699fac62c6558acaa6",
+            "cases/tune-4-gpu/launch.json": "8a26b7fc2817e4593f9116f577f2a838ee41514535fca64a36dd210679b8c85c",
+            "cases/tune-4-gpu/rank-0.json": "d8627dbde76b13b8a06da7989632932f975a466c71d9771d1b0f79351c2545fa",
+            "cases/tune-4-gpu/resources.jsonl": "bb41ab267eeb603a45d03b8c774cd381ef4649c033f2a4069f40745eab87093f",
+            "cases/tune-4-gpu/sample.json": "a803f0a172a3a19652d88926da5b90e071631b7520f4cc661f4dfe4ea8df7f2f",
+            "cases/tune-5-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+            "cases/tune-5-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+            "cases/tune-5-gpu/cp2k.log": "35c7ff199e288bf7b2333f7b14ec9b15324171ee2040870d999d9e00a06dd7dc",
+            "cases/tune-5-gpu/elapsed.txt": "51652e20aa16d508819ddbc212c624cf5efb50e6a98516c2df06dfd430abc324",
+            "cases/tune-5-gpu/forces.xyz": "e1194cef67916444233f9e6f4b1b4a37d188c6e4d0a147e3cddb057823db7c86",
+            "cases/tune-5-gpu/input.inp": "1090ebd9645f77742248d7b44284c307244b627ebb14dc699fac62c6558acaa6",
+            "cases/tune-5-gpu/launch.json": "8c65cf996bb2d8b85f484d5f8af760e75c283cfbcd0ada27aefce863a221b585",
+            "cases/tune-5-gpu/rank-0.json": "8993ce890c3c7828cbb9c4c8da60cecfc006b4002aa8e5418404d98c8630f73a",
+            "cases/tune-5-gpu/resources.jsonl": "53b1c599b3e4967027c5d23edf014d870e0db1d89933b9ed3c475216cb589db0",
+            "cases/tune-5-gpu/sample.json": "4fcd8017657fe77406bf5fc1d13c5ebb0d0a444ca224d5209d03276e208f9a33",
+            "cases/tune-6-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+            "cases/tune-6-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+            "cases/tune-6-cpu/cp2k.log": "3981152f4fc4b97d7d73ad8b3650cad8e484b3e751925eed7ca6265ca41d508c",
+            "cases/tune-6-cpu/elapsed.txt": "889fe464fb7e2ac1c79eb758cd18910c7757da48fea79918afef787495536114",
+            "cases/tune-6-cpu/forces.xyz": "cb1c33bc10cc6215aba5503d4ac9d1394486d37c497553aa1df8aedc93863e1b",
+            "cases/tune-6-cpu/input.inp": "4f3876c59fe75a3080b5cb74ed9bb811712df587840897fa850e00b9e1ff8772",
+            "cases/tune-6-cpu/launch.json": "027c84674a7197a59b3a58aed14b3e9431a216d9ac76818acb678cbda9792e24",
+            "cases/tune-6-cpu/rank-0.json": "e6f5cbfb7654f88b538ec51ede5eed4fd3fd52108b0bc6f73879260ded0d8a1e",
+            "cases/tune-6-cpu/resources.jsonl": "69d7f4e111e57f4952e54ceb3ae791eae5e9185f15a0a022e5a640856b224364",
+            "cases/tune-6-cpu/sample.json": "0a5cd361f56fe4d75555070724db38f3ba59541e2b2bfa1b25ccc12b84cf7ec0",
+            "cases/tune-7-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+            "cases/tune-7-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+            "cases/tune-7-cpu/cp2k.log": "ba8ba04b52e2dc95c128a12bbbbc842b1102518766912b3ba306662d024de016",
+            "cases/tune-7-cpu/elapsed.txt": "52bcd0c9c70cde40bb42c426a2a529ae2581b6d294f6dd24291ede8e8ec08cf1",
+            "cases/tune-7-cpu/forces.xyz": "ba57250ce8a5d58bc5ab33edcd13696914111d38d6afda3d9de4dfa4067c3a32",
+            "cases/tune-7-cpu/input.inp": "4f3876c59fe75a3080b5cb74ed9bb811712df587840897fa850e00b9e1ff8772",
+            "cases/tune-7-cpu/launch.json": "e2ab0e6badc43b9fef6a7a48a6dafd0bd5fb99a3f79247c2accbe84612cb556d",
+            "cases/tune-7-cpu/rank-0.json": "dc25b9a64201b74556061e5563797303d13fa2b2ccb3017537a2f4f4e573437b",
+            "cases/tune-7-cpu/rank-1.json": "376cd988cfdfcf7761d7ad0f9f34b54d64113d6948062b6db86e855c494885ce",
+            "cases/tune-7-cpu/resources.jsonl": "f4849c231b3d5020003fb9b1a7dbbec65f3c7da67ad7cf51ac7fafcf94450f6e",
+            "cases/tune-7-cpu/sample.json": "1da3380fcc72727916377bd23524fbc61b1affca7521c0ce3661fcdcffeb318a",
+            "cases/tune-8-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+            "cases/tune-8-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+            "cases/tune-8-cpu/cp2k.log": "96995f3d908cfd3d43539b958138c45fd373f8668fd3d88fa2f7980d40c2b82a",
+            "cases/tune-8-cpu/elapsed.txt": "743389fd84f3731e35f6e479b49e3b82b7c0ac34e87b153f253a74ff5bd4171d",
+            "cases/tune-8-cpu/forces.xyz": "4f64bf54fbad863a78988fe94f7a26b629a889fe95fc360117fc7cbefa8e2f4e",
+            "cases/tune-8-cpu/input.inp": "4f3876c59fe75a3080b5cb74ed9bb811712df587840897fa850e00b9e1ff8772",
+            "cases/tune-8-cpu/launch.json": "92bce2af9cee3523eaf3fa4c4c601b66966d0968d35f71e47a4c1d152619bd82",
+            "cases/tune-8-cpu/rank-0.json": "524f3919f1ccfc112f982915cfb5f513c24814d740f550fb41427ec5f168ff37",
+            "cases/tune-8-cpu/rank-1.json": "a9c0807822230791ac402b95204987e00711dc268583e5190d9ba7f16d15e7e4",
+            "cases/tune-8-cpu/rank-2.json": "8fe37a319b96bf2ffec011207966bb00d5b4d90915b3ba29d870760495d8d7d6",
+            "cases/tune-8-cpu/rank-3.json": "8c424fc9f2f44de136870e5d2dd49c25c87c0c923ad35ffb7c97a14aecfb738f",
+            "cases/tune-8-cpu/resources.jsonl": "4ea5766f2d5486a42775dd1cf1fa24d9812b3ae6bb0e891238bc15524f8b5647",
+            "cases/tune-8-cpu/sample.json": "f2f3df412d39fa4084f77be2e3f9d2a391f6ebf5f88bd1c931da2b27cd6e457d",
+            "control/controller/abacus_baseline_probe.sbatch": "ee77ca5738eb3e0e0aa0bd4136071d5444ba6f08d394be640dd7092f3bb86914",
+            "control/controller/abacus_benchmark.py": "852c7701aaea3f8d36e2365a09637e91f12612e9284063a7236d70d3e832705b",
+            "control/controller/abacus_build.sh": "cf67a38908fdbc1145aa515011478e59dcac92ec40bebbdb691cb1c024a16a80",
+            "control/controller/abacus_cache_runner_reference.py": "ee275b407a58e1ea3bc835e034ad86eee5a218d0134b8a3f8e3af3c277e10ff3",
+            "control/controller/abacus_dependencies.py": "47c5d90a1c75dd8da1ff085735a26e4cb584aae2a122661c1448fb7cff33afd6",
+            "control/controller/abacus_dependencies.sh": "905eb88d0ca0dc2f3e011874fbe28b7a95cb8a1a1db526ddc4e5fc4661e20cde",
+            "control/controller/abacus_dependency_lock.json": "ce7a95f5e0776eb1ff694e76a88cd4389ee617906071502d79ef5727e5a66d6c",
+            "control/controller/abacus_features.py": "e1b9d5ae501a6f43053c15f5fccabbc224e0278a324b0e2ce628d1324525d64a",
+            "control/controller/abacus_full_dependencies.sh": "0aefb9b7a59f66a0776a70d914dd4ba34d281022856dd91b9fb1864355419d4c",
+            "control/controller/abacus_full_profile.json": "d93fbde64a6898e12c0e61cdced1c2ca7d25925611f3d0bfc3ac1b30576bd469",
+            "control/controller/abacus_runtime.sh": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+            "control/controller/abacus_site_gpu.sh": "1a8631ca91a9969f56115425ef13489144fa28d292609d96292fc8ce9b898b29",
+            "control/controller/abacus_site_mpi.sh": "199aeb495069f0812214c8bd944b229799b8d54b9a908667ef8f1d5b2cbc54d1",
+            "control/controller/build.sbatch.in": "5e0e74a118add2aa80f181dda6bc4bee1bcdb3e241df9c592f8632fbacb21a98",
+            "control/controller/build_capacity.py": "bff0a1cbf9acedb858c9776efd73a9c98737787e1bb439e0965048f47e0ee66c",
+            "control/controller/case.sbatch.in": "d849dca06d71f2ccb3d5e52a5f7a8ea07803a63894bb42aea6385604b5d98698",
+            "control/controller/ci.py": "1b713224de667d460744548c0c6dd965dfeb9c01aef54cc64de80bcd3fefde4b",
+            "control/controller/config.ini": "8dc7eee2853aaa96979a8f55e2f1dea0ceb8c7cb0045e19695837b10d99c575c",
+            "control/controller/container_entry.sh": "618042bbd5fe909dbe0ea2c47f786791d7bb451dc1da841cb2dea83eb72803ef",
+            "control/controller/cp2k_Libint2Config.cmake": "223aac33a7743bc46a25738cb75b4a4bd1100571b1ea13fe4c19dff7c4019de9",
+            "control/controller/cp2k_acceptance.py": "84db91909883510765fa87c03f2816f1af9ac0271f85f95f03c62371dcd098eb",
+            "control/controller/cp2k_baseline_probe.sbatch": "6462e789df12424f89c9595ff62146f1e51933136b2d6306e5845755b4c5cd52",
+            "control/controller/cp2k_benchmark.py": "aefd8b234b1b43f2815a6af5f3502204319a490f4919ad417421d920034a10e3",
+            "control/controller/cp2k_build.sh": "74461284a5b63385f9a75c679f4502d2f21d72f6d317ab06dcc3a33af4975f23",
+            "control/controller/cp2k_cmake_prerequisites.cmake": "8c923f94b76475eba88e14280b05e37ddb8f491a03821193253e49e4af519a0d",
+            "control/controller/cp2k_container_entry.sh": "05f7c0036558ded066641499209d70744519c8d4dbc23bb35f727c06ede2955d",
+            "control/controller/cp2k_dependencies.sbatch": "d1fbdbb7f8553b0b912a08d73bc8f85ac376b9bf0e854c79298a03a4718b3197",
+            "control/controller/cp2k_dependencies.sh": "99d5bbcf9dda385257c0088fe9a12a1f6eea86364e2dc8bef46a17d1af822562",
+            "control/controller/cp2k_dependency_stage.py": "babdea468491a5f809d7c86a1f170d48b9c55d8c6d5abae954ff1d969c5d9a9e",
+            "control/controller/cp2k_elpa.sh": "508b4887216c5ac57bf6777dee83d70b0bf655a3335a26647b7291a1b3ac4ea0",
+            "control/controller/cp2k_elpa_abi.f90": "95c2ef65486385219c646424c2d8724574b8dabaa0fc4ce89c2e78bae43478a5",
+            "control/controller/cp2k_elpa_runtime.py": "0ceaf73725599632c002e5b6588d855c08e1d9a3798cba3bab9a5bf9b048fcc2",
+            "control/controller/cp2k_feature_contract.py": "2d2ea42d9e74d5ecbe8278bebd8b23c81d1bcfe86c35b0d303cf3f7b09e93917",
+            "control/controller/cp2k_image_driver.py": "e0ea6a2b7ce25189b3eb9b7749392b0416894f9d365e1f3c31c577546a8df049",
+            "control/controller/cp2k_libxsmmConfig.cmake": "734aa00bd820e244cde406866c1c6065f8a2f85571dde413f7c2bf058b1fb038",
+            "control/controller/cp2k_overlay_probe.sbatch": "69c6044258e990bd6dbf5ccce76b5b6bb0545d118b000587c720975ec9757e1c",
+            "control/controller/cp2k_overlay_workdir.py": "f22d281427ede157c03c7fc20a8b625e9c5a511e023a6c358de93040589fe468",
+            "control/controller/cp2k_payload.py": "8e71ae39fa9f82c9033107dc00c37f780b06a4b032c5de78190336509c120d83",
+            "control/controller/cp2k_probe.sbatch": "3927f4ece5c157504bc3b0b70e70f603c9319e2709ae36db2a7ce8cbcdc5fa0d",
+            "control/controller/cp2k_repack.sbatch": "004ede58b234b49dc0297ea437d9a3e1e23ff450f7ea8b3bc65222711ee78c7f",
+            "control/controller/cp2k_runtime.sh": "210ddd657ec01da4c1bd13294f95ee51991f24219c3b1965c52874c6270b4540",
+            "control/controller/cp2k_site_elpa.json": "9b3253261d2cee47df156136c575c6fc7748f30344b029b4bc56fd83bed4fea0",
+            "control/controller/cp2k_source_fixes.py": "9ea20a68ddbeaf7184f8968e5a966eef3ee2b84f9ba8cffc56f71c1496563ad9",
+            "control/controller/cp2k_spack.py": "0235341aed673e851a375457076a220d644d178332d577f8a661712c5d7775ad",
+            "control/controller/cp2k_spack_dependencies.sh": "62977f63321a57a3c7d66f15e20f82cebc2ddf3987f1faa0e6719f7e6a640985",
+            "control/controller/cp2k_spack_environment.py": "70603447fee7d634fe939a2a11faca829407eceacd21090812705bd373c0d1ba",
+            "control/controller/cp2k_spack_install.sh": "320f8e5f58ba986a5a37c19223183b3826d932ed680173e4cce2ab034f4e37a7",
+            "control/controller/cp2k_spack_install_evidence.py": "391ad327602cabf1e49db806a6d82c1887669f40da097ba2dfdf3ed193d481cc",
+            "control/controller/cp2k_spack_install_submit.py": "49a15275a73f7d8ed08566f9b82b3576489f8dd74790b336287e97719d685447",
+            "control/controller/cp2k_spack_libint_repair.py": "b38fd9292b264bc83c308ca8c4ce4b42a1b2beb3367713de3f7308106b2cd014",
+            "control/controller/cp2k_spack_link.py": "52efab5e2c77f195e1dd380911a1d7617f2d1f632c3a808dfe5d4e61e3ab88f8",
+            "control/controller/cp2k_spack_mpi_repair.py": "7036b4f1c89b54d0f25e6bf6c87e79f07306a55cd8a10f4e2c93edfcb8c732e8",
+            "control/controller/cp2k_spack_native.py": "bdfadff1c81c8cc0bf03d80f950e4dd3f3176496f02febcb9ae102cd847abb04",
+            "control/controller/cp2k_spack_probe.sh": "4c266c5704f1cf96f4aad3da70030fe7c4f5ea8eb9eae5bb3e409f601cf3723e",
+            "control/controller/cp2k_spack_probe_submit.py": "e878b1bb56ef2bdf8c4afc133d92cbb18ff63198afbc30f9d892f505c1cc08c4",
+            "control/controller/cp2k_spack_seed.py": "9c41a9fc602f2f5e351eb845785a0b86882268b58b53573b3972a85b2fa35dfe",
+            "control/controller/create_rootfs.sh": "ae0818e8bb485222605290fd3f3c410c40354aa518c8f613ac26236b3e382852",
+            "control/controller/daily_plan.py": "8dcc9907d201caab77f421adc7d77a3471881b6caba475ad2474270ae91b2024",
+            "control/controller/delivery_layout.py": "268a18bfe45b1f8cca9d955d5b34215392ee74d734dcf4358c5da66728f6d7f2",
+            "control/controller/environment.sh": "68bfc2f69c1df2f9b35fdf9d273dbf35e377c44b490ff19ebc6c41ac7dad58d0",
+            "control/controller/export_native.py": "cf5709c9037af843e360b2ad1b73b2d50dcdc1525940db9350df5783d9e8c619",
+            "control/controller/finalize_lammps_sif.py": "430113a1b0d271e5d3241460e46166206443dbd92812113f66228dac9ad7fd2f",
+            "control/controller/gpu_feature_controller.py": "67e0711ccd8d39d1d6fc999baa35a9b6fe32fbe2c9392db5bb8e7cdc09f60eb0",
+            "control/controller/gpu_feature_runtime.sh": "b499d0fe6bd1ad4623ece45ea6663702bf8e54d95ae1a0679b87f34ce81a0734",
+            "control/controller/gpumd_acceptance.py": "35080b2962f1cd435ceabfa2ba52b502735ff3c32fcdc9cd560a6e926e7e85bc",
+            "control/controller/gpumd_build.sh": "4739c263643a94b428fdb28e4ca25de93224106fca8ce193d48bf3c2b997a7fa",
+            "control/controller/gpumd_container_entry.sh": "2fd02f0abd7736865eda94204f28d7ca0a536a8eb2029d3b9cb0b435034bdb7f",
+            "control/controller/gpumd_deepmd_probe.py": "78d3e11ad614aed6b092f5fcb3cdf24e9f0dd91fb9adf73c263da2e9ed761319",
+            "control/controller/gpumd_environment.sh": "6bb0cc52a65b83add6cfc6a7375459f61e82ff822aed2d1e1718faf92f935370",
+            "control/controller/gpumd_relink_probe.sbatch": "4d1f7b8858f3c9c1f2beb36393b008f52f7d49cf3f696f2d58c39359bdb31997",
+            "control/controller/gpumd_runtime.sh": "442c2dce979960cfebc58226357ae5374db9e9881649a1f458f78387936b568d",
+            "control/controller/gpumd_science.py": "ee1328905abaca2ffd2630d6d3dcad7a52af110ddf25d4d594485841144f5e1e",
+            "control/controller/gpumd_site_probe.py": "3501fc12f9b648a50127a246ff8232af20f288e4d704b9319b5091417c60d5bf",
+            "control/controller/gpumd_site_probe.sbatch": "b04fba2267207a966b4de8b1660ca2d52d62e94c231627c35107e93c5e4280a7",
+            "control/controller/lammps_manifest_diagnose.sh": "8bd4b84fb66ecfd424c88963cf24cba3dbdb67b2c1ee420e902f61a23dc53dc2",
+            "control/controller/lammps_packaging_debug.sbatch": "6b70c42acb0176aa5fa4938726d8d7c72c4323fb0daf0329b860718279cdfaa1",
+            "control/controller/lammps_packaging_probe.sbatch": "6df4ad1d86c294af6578b0821242030bbc762b974a8be81eb0a84d69f8e6f3e6",
+            "control/controller/md_acceptance.sh": "fbbd8dc86108044c5efa2b00ca4377ab5d4219a18f4ea91d1ad3336ac2dd05bd",
+            "control/controller/md_acceptance_controller.py": "88db1b11a2c81b9687b0ba173bb060c7d9eba0873ea22190601981f54f5faa0b",
+            "control/controller/md_baseline.sh": "e59ca2d8efb63e06ed36caad0c3612a5436191b78ab7b750a8a1c96092cb2621",
+            "control/controller/md_build.sh": "e2587d64983ec05f41aacdd5dc3a56c3c293b98630b0351a3b66898cfa4f1f4e",
+            "control/controller/md_ci.py": "c862b2e08f7a9fe8043daa70b4aa08e18d519e23b94dcec6925f3409d3a3bfcc",
+            "control/controller/md_container_entry.sh": "f1a58ca5f505d4bcefdbb4ab64afa24408b1d4074929fc4e6618b1d9b990a83c",
+            "control/controller/md_container_entry_verify_patched.sh": "eeb20f2b25a146ae12ea7e8634559b2d7dddacb7f96cde002c567aec85504c68",
+            "control/controller/md_controller.py": "5073d3fa7bedbe41cd39b3ff41b31d75f6f66cf9e99fda3b68cd7722744839fe",
+            "control/controller/md_driver_paths.py": "bce00df699cc432d8b7b5d4a8723564498603843639693e640916ab7ed8944a8",
+            "control/controller/md_environment.sh": "034b390c322dabd790f9f66d48b07c9e24b17c65f32f73ce904c8a4f24dec800",
+            "control/controller/md_evidence.py": "2d29110ba27718f7d6a43f93fbe7579dd6e0d76249e5a5de3056d73129687772",
+            "control/controller/md_import_probe.sh": "bddc7bdb3a7b3523531b93ecf51eb2958f6e151c36b4d5a0e93231c8e4dc7806",
+            "control/controller/md_link_launcher.py": "66b989e7807dd94fc425dbfae36900a5e471b98a94c4043f13738b16fd3527f6",
+            "control/controller/md_native_probe.sh": "8d8ccc5229f404c931b312743de5a2e705b3973e30593facd6403141436c27ac",
+            "control/controller/md_packaging_recovery.sh": "d45c0378195e98d1ffeb4452e258e9a0115bd11db053e57124fe4b963056831a",
+            "control/controller/md_performance.py": "a07d3662f5543f347fa584e942dbac7fc6eaf22377c33a0895ec5e07dce8f73e",
+            "control/controller/md_performance.sh": "43d4500f7533427e9e52d6f3de19047b37abd70dafa29f3ae94727fe720bbee9",
+            "control/controller/md_performance_controller.py": "02e24cc2e58b1d88b983b865a4e55c61a2b584bea01f642b54497b2131dc4b62",
+            "control/controller/md_performance_evidence.py": "e810fdc70801fa99fa033c92f96dfd03e2dbcf938eda7487e12ff46d9cae8ead",
+            "control/controller/md_performance_exec.py": "95d573f9edae5e4037e252d690f4adcc4bca04d6cdea59109ffb54686a7ff227",
+            "control/controller/md_performance_run.py": "24f13228ee7333dae8aaf9f8fa57c8f63a5110b93c85ff8ddcb31433e85ef585",
+            "control/controller/md_probe.py": "ac6be1c22cbac809892d62eff53d1e2dd83ee8d50f7cd752f375fcb1e78f8725",
+            "control/controller/md_publication.py": "79d4cb06f6b28756d795f762d3268f5e75bd3c5e9664e25302a470133fe4be26",
+            "control/controller/md_registration.py": "4f4e4db5bb2e7f9c55985d408dcfbf3f6acddbbab1ff8ca327fad0408cec6bb9",
+            "control/controller/md_relocate_audit.py": "21fe48bf420130c74ca5eebebd8d113fc219009700f970907bea1c7e72ed16b3",
+            "control/controller/md_runtime.sh": "cd11020142359a4a83313f97dfb6ef7aaa356a5d5c5a92a4f8d5da12b25543fe",
+            "control/controller/md_science.py": "55d4ee142d65cd7b327dbdca223f0b4b69c8185729b85d991da2652f7979f788",
+            "control/controller/md_tracking.py": "16f6fa69ebfce0ceb97bc7e3deb527e376423f38346b1312a9d02ad369791ef1",
+            "control/controller/module_publication.py": "dfb74bdc51f9eeff6931c66458f80bd571b2ba587368c50ee0a752abe6f6d06f",
+            "control/controller/modules.sh": "c3cba3ad99f373978ad806f61231fc20e9d254e06d5eccdece54629c259cea58",
+            "control/controller/native_module.py": "feb0065834df656ab4de54df86ffaa650ded3ed030fab4190b2d5df8cd3e4421",
+            "control/controller/probe_container.sh": "fb680791228f1b6fac07a038e5964be7399a485b86b81be8a383e51234770d78",
+            "control/controller/probe_module_publication.py": "3d9e4cf82ad5fdf4744a4eceb18d2e7d4d775e6771ee1b9c993aaff4f344d80e",
+            "control/controller/probe_module_publication.sbatch": "c854cb55c67dbac8b599a8bbc2b802d2e882cd7d9305773ebf723f16554255ba",
+            "control/controller/probe_native_export.py": "8203e115ae2123c9cff34d37c95d2939712c6e893a5c4ec7b242c199511a07c5",
+            "control/controller/probe_native_target.sbatch": "ec5cc83d030387d752006ec4d045b15c9b6e191b4916c098a6e400ed0334b1de",
+            "control/controller/recovery_budget.py": "edd5032692d5dd1f4491ec56f5a873ea61cb659651d558188ad2045683b76e27",
+            "control/controller/release_contract.py": "5054afa813bece49e24841f83b33c47993ff84391859fad15a8ddd373ede3b02",
+            "control/controller/remote_controller.py": "2c7df9d4c2f812b9f0a27b4aee8097609addd75ef6c6951605fed8920cd7f2ef",
+            "control/controller/resolve_source.py": "2d26c1217d70cec680bbbbe81a9b6806030641edb06636262405bb7b7761fa19",
+            "control/controller/resume_cp2k_export.py": "549a0dff5240aae4e3fcc8e8a02652f2007a3ca5586ed7d656dee85620969d8d",
+            "control/controller/resume_lammps_extract.py": "ff359df79536ce76217b6ff0cfb62184c48103d766ae9148e2098a88c4b51793",
+            "control/controller/resume_lammps_packaging.py": "fc6fd576fe5ecca5609d0c771509ffc1ce8bc94a88f7711a83173fd704b52f07",
+            "control/controller/resume_lammps_recovery.py": "323d9667dc9780e3e6b4303562fda7bf37d22ed149a00583306ecafba6420e6a",
+            "control/controller/runtime_controller.py": "5d2c1fa434c9d70506976df08fcbd015dcf7592afbd04df24691bbcb85ee8214",
+            "control/controller/slurm.py": "705bea32222d5964dd20ad589abe61322106518af61c0a645a42983970d7b220",
+            "control/controller/software_controller.py": "658d3ab105eddaf1804924724a97d1b6c064cfb9f8c1f76073a7c76cdaa0e215",
+            "control/controller/source_cache.py": "1c6ee2a243509f0fdf74e32736bea562e2777569c4c22480b2accdb78334f52b",
+            "control/controller/submit_abacus_recovery.py": "24e393dfe97e2a5a3cddbd0f0d338e4cae597aa7ccd8a0c4fe2da4526aad060d",
+            "control/controller/validate_plan.py": "2f9601f5f5e3e64828b5180a36766dbca4c6ffd651ecd3507723fcc3a1cfd0e3",
+            "control/deployment/cp2k-water-scaling/README.md": "6ea21ec53a4d967516d1cecea086e3067a57de9dfd920d4ab5f760b79d26f06e",
+            "control/deployment/cp2k-water-scaling/build-cpu.sbatch": "6d98ee945a6d816144c872ddb1250293f1b4d15177b4e8c8cb66368bc42969d3",
+            "control/deployment/cp2k-water-scaling/build-cpu.sh": "540cf12c5d5b5b42dc6107a6dfd52ad85a9888e300ade78f842349253b45ca06",
+            "control/deployment/cp2k-water-scaling/campaign.py": "1d79a338b98dfe9f9d27e5d7765d6137d496adbb0696937adc928e0f8db004da",
+            "control/deployment/cp2k-water-scaling/job.sbatch": "07be8871cae5070c672a4fc3aa0d78da7085f06b688853ef1adf5cde9d7e77bc",
+            "control/deployment/cp2k-water-scaling/rank.py": "9db06188cc27c310f10b9ffef3587a901748f9c3669913a9096a275afe79f746",
+            "control/deployment/cp2k-water-scaling/run.py": "a9c30cbaedb37f6cfed9e184c8da17b44f315323c9328a19f1f29f82275f1f6a",
+            "control/deployment/cp2k-water-scaling/submit-cpu.py": "946a0eba95402b61d03d03b2585e58224788ea64402b0fcb81360477b894182a",
+            "fixtures/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+            "fixtures/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+            "job.id": "3612e1bab5b930944fe55dfceb123b362a7ff8920d3d42d160c9a254a16bcaca",
+            "request.json": "242d1c08052d411a4ba0d9ff12dfef370b83bb41559295473cbf4aee1c9389e4",
+            "results/devices.json": "783142e5f931b4c109f8aa1b6fcc81d06c6f27a7a85fa7768df24025946a7b27",
+            "results/tuning.json": "2ca71fd80d1e4f3d745f544a6052da29ff3c3c671f30bff18ee43a627861efbe"
+          },
+          "job": "1882305",
+          "path": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g1-compare",
+          "performance_result": false,
+          "scheduler_state": "FAILED"
+        }
+      },
+      "run": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g1-compare-r2",
+      "samples": [
+        {
+          "average_physical_core_utilization": 0.4803769779359401,
+          "basis_functions": 6624,
+          "block": 64,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 272.424,
+          "dispersion_ha": null,
+          "elapsed_seconds": 275.30461715348065,
+          "energy_ha": -4961.610943760151,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D5DDQS00",
+            "used": 12703756288
+          },
+          "host_memory_fraction": 0.95,
+          "mode": "gpu",
+          "name": "pair-0-gpu",
+          "peak_gpu_fraction": {
+            "GPU-a0d9a2e8-acb3-5768-ee40-13a39411a288": 0.6759033203125
+          },
+          "peak_gpu_mib": {
+            "GPU-a0d9a2e8-acb3-5768-ee40-13a39411a288": 11074.0
+          },
+          "ranks": 1,
+          "returncode": 0,
+          "sampled_cpu_seconds": 529.0,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            6,
+            6,
+            8
+          ],
+          "stop": null,
+          "threads": 4,
+          "warmup": true,
+          "waters": 288
+        },
+        {
+          "average_physical_core_utilization": 0.9979535000815519,
+          "basis_functions": 6624,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 9.194991434924304e-10,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 1257.262,
+          "dispersion_ha": null,
+          "elapsed_seconds": 1259.705487176776,
+          "energy_ha": -4961.61094376107,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D5DDQS00",
+            "used": 14704431104
+          },
+          "host_memory_fraction": 0.95,
+          "mode": "cpu",
+          "name": "pair-0-cpu",
+          "no_gpu_compute_process_verified": true,
+          "peak_gpu_fraction": {
+            "GPU-a0d9a2e8-acb3-5768-ee40-13a39411a288": 0.000244140625
+          },
+          "peak_gpu_mib": {
+            "GPU-a0d9a2e8-acb3-5768-ee40-13a39411a288": 4.0
+          },
+          "ranks": 4,
+          "returncode": 0,
+          "sampled_cpu_seconds": 5028.51,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            6,
+            6,
+            8
+          ],
+          "stop": null,
+          "threads": 1,
+          "warmup": true,
+          "waters": 288
+        },
+        {
+          "average_physical_core_utilization": 0.9969263580157053,
+          "basis_functions": 6624,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 9.194991434924304e-10,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 1252.655,
+          "dispersion_ha": null,
+          "elapsed_seconds": 1256.163496863097,
+          "energy_ha": -4961.61094376107,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D5DDQS00",
+            "used": 14712459264
+          },
+          "host_memory_fraction": 0.95,
+          "mode": "cpu",
+          "name": "pair-1-cpu",
+          "no_gpu_compute_process_verified": true,
+          "peak_gpu_fraction": {
+            "GPU-a0d9a2e8-acb3-5768-ee40-13a39411a288": 0.000244140625
+          },
+          "peak_gpu_mib": {
+            "GPU-a0d9a2e8-acb3-5768-ee40-13a39411a288": 4.0
+          },
+          "ranks": 4,
+          "returncode": 0,
+          "sampled_cpu_seconds": 5009.21,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            6,
+            6,
+            8
+          ],
+          "stop": null,
+          "threads": 1,
+          "warmup": false,
+          "waters": 288
+        },
+        {
+          "average_physical_core_utilization": 0.470003197064321,
+          "basis_functions": 6624,
+          "block": 64,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 276.41,
+          "dispersion_ha": null,
+          "elapsed_seconds": 279.6417148243636,
+          "energy_ha": -4961.610943760151,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D5DDQS00",
+            "used": 12657786880
+          },
+          "host_memory_fraction": 0.95,
+          "mode": "gpu",
+          "name": "pair-1-gpu",
+          "peak_gpu_fraction": {
+            "GPU-a0d9a2e8-acb3-5768-ee40-13a39411a288": 0.6759033203125
+          },
+          "peak_gpu_mib": {
+            "GPU-a0d9a2e8-acb3-5768-ee40-13a39411a288": 11074.0
+          },
+          "ranks": 1,
+          "returncode": 0,
+          "sampled_cpu_seconds": 525.73,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            6,
+            6,
+            8
+          ],
+          "stop": null,
+          "threads": 4,
+          "warmup": false,
+          "waters": 288
+        },
+        {
+          "average_physical_core_utilization": 0.4802202088346336,
+          "basis_functions": 6624,
+          "block": 64,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 269.938,
+          "dispersion_ha": null,
+          "elapsed_seconds": 273.99929777905345,
+          "energy_ha": -4961.610943760151,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D5DDQS00",
+            "used": 12573093888
+          },
+          "host_memory_fraction": 0.95,
+          "mode": "gpu",
+          "name": "pair-2-gpu",
+          "peak_gpu_fraction": {
+            "GPU-a0d9a2e8-acb3-5768-ee40-13a39411a288": 0.6759033203125
+          },
+          "peak_gpu_mib": {
+            "GPU-a0d9a2e8-acb3-5768-ee40-13a39411a288": 11074.0
+          },
+          "ranks": 1,
+          "returncode": 0,
+          "sampled_cpu_seconds": 526.32,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            6,
+            6,
+            8
+          ],
+          "stop": null,
+          "threads": 4,
+          "warmup": false,
+          "waters": 288
+        },
+        {
+          "average_physical_core_utilization": 0.9978125794484307,
+          "basis_functions": 6624,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 9.194991434924304e-10,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 1265.812,
+          "dispersion_ha": null,
+          "elapsed_seconds": 1268.3895012624562,
+          "energy_ha": -4961.61094376107,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D5DDQS00",
+            "used": 14637588480
+          },
+          "host_memory_fraction": 0.95,
+          "mode": "cpu",
+          "name": "pair-2-cpu",
+          "no_gpu_compute_process_verified": true,
+          "peak_gpu_fraction": {
+            "GPU-a0d9a2e8-acb3-5768-ee40-13a39411a288": 0.000244140625
+          },
+          "peak_gpu_mib": {
+            "GPU-a0d9a2e8-acb3-5768-ee40-13a39411a288": 4.0
+          },
+          "ranks": 4,
+          "returncode": 0,
+          "sampled_cpu_seconds": 5062.46,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            6,
+            6,
+            8
+          ],
+          "stop": null,
+          "threads": 1,
+          "warmup": false,
+          "waters": 288
+        },
+        {
+          "average_physical_core_utilization": 0.9979702761883859,
+          "basis_functions": 6624,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 9.194991434924304e-10,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 1262.882,
+          "dispersion_ha": null,
+          "elapsed_seconds": 1265.2606296278536,
+          "energy_ha": -4961.61094376107,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D5DDQS00",
+            "used": 14614323200
+          },
+          "host_memory_fraction": 0.95,
+          "mode": "cpu",
+          "name": "pair-3-cpu",
+          "no_gpu_compute_process_verified": true,
+          "peak_gpu_fraction": {
+            "GPU-a0d9a2e8-acb3-5768-ee40-13a39411a288": 0.000244140625
+          },
+          "peak_gpu_mib": {
+            "GPU-a0d9a2e8-acb3-5768-ee40-13a39411a288": 4.0
+          },
+          "ranks": 4,
+          "returncode": 0,
+          "sampled_cpu_seconds": 5050.77,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            6,
+            6,
+            8
+          ],
+          "stop": null,
+          "threads": 1,
+          "warmup": false,
+          "waters": 288
+        },
+        {
+          "average_physical_core_utilization": 0.4861794703195389,
+          "basis_functions": 6624,
+          "block": 64,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 266.073,
+          "dispersion_ha": null,
+          "elapsed_seconds": 269.1290109679103,
+          "energy_ha": -4961.610943760151,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D5DDQS00",
+            "used": 12716122112
+          },
+          "host_memory_fraction": 0.95,
+          "mode": "gpu",
+          "name": "pair-3-gpu",
+          "peak_gpu_fraction": {
+            "GPU-a0d9a2e8-acb3-5768-ee40-13a39411a288": 0.6759033203125
+          },
+          "peak_gpu_mib": {
+            "GPU-a0d9a2e8-acb3-5768-ee40-13a39411a288": 11074.0
+          },
+          "ranks": 1,
+          "returncode": 0,
+          "sampled_cpu_seconds": 523.38,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            6,
+            6,
+            8
+          ],
+          "stop": null,
+          "threads": 4,
+          "warmup": false,
+          "waters": 288
+        }
+      ],
+      "selected_layouts": {
+        "cpu": {
+          "average_physical_core_utilization": 0.9929474673398684,
+          "basis_functions": 6624,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 9.194991434924304e-10,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 1219.457,
+          "dispersion_ha": null,
+          "elapsed_seconds": 1222.6653875783086,
+          "energy_ha": -4961.61094376107,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTABHW00",
+            "used": 14645231616
+          },
+          "mode": "cpu",
+          "name": "tune-8-cpu",
+          "no_gpu_compute_process_verified": true,
+          "peak_gpu_fraction": {
+            "GPU-2b7168cf-77f0-c7ec-1ec5-88c9bd3e2887": 0.000244140625
+          },
+          "peak_gpu_mib": {
+            "GPU-2b7168cf-77f0-c7ec-1ec5-88c9bd3e2887": 4.0
+          },
+          "ranks": 4,
+          "returncode": 0,
+          "sampled_cpu_seconds": 4856.17,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            6,
+            6,
+            8
+          ],
+          "stop": null,
+          "threads": 1,
+          "waters": 288
+        },
+        "gpu": {
+          "average_physical_core_utilization": 0.43022341726142516,
+          "basis_functions": 6624,
+          "block": 64,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 251.248,
+          "dispersion_ha": null,
+          "elapsed_seconds": 258.5458985660225,
+          "energy_ha": -4961.610943760151,
+          "host_memory": {
+            "limit": 16106127360,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CTABHW00",
+            "used": 12483579904
+          },
+          "mode": "gpu",
+          "name": "tune-3-gpu",
+          "peak_gpu_fraction": {
+            "GPU-2b7168cf-77f0-c7ec-1ec5-88c9bd3e2887": 0.6759033203125
+          },
+          "peak_gpu_mib": {
+            "GPU-2b7168cf-77f0-c7ec-1ec5-88c9bd3e2887": 11074.0
+          },
+          "ranks": 1,
+          "returncode": 0,
+          "sampled_cpu_seconds": 444.93,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            6,
+            6,
+            8
+          ],
+          "stop": null,
+          "threads": 4,
+          "waters": 288
+        }
+      },
+      "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+      "verification": {
+        "completed_cases": 8,
+        "files": {
+          "cases/pair-0-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/pair-0-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/pair-0-cpu/cp2k.log": "8a24b3e25dcf198ee3577c1b6b1c070e8da1d54d9787d9f536521bdc81b5c01a",
+          "cases/pair-0-cpu/elapsed.txt": "2d7e8423de2c4b66231d0fc5e391040aba527fdafb6bd7a015de6eca23a8e072",
+          "cases/pair-0-cpu/forces.xyz": "4f64bf54fbad863a78988fe94f7a26b629a889fe95fc360117fc7cbefa8e2f4e",
+          "cases/pair-0-cpu/input.inp": "4f3876c59fe75a3080b5cb74ed9bb811712df587840897fa850e00b9e1ff8772",
+          "cases/pair-0-cpu/launch.json": "3694280deffe327f924f92dfc6f33bb1512d2d725962770789de8c1e334a9c5a",
+          "cases/pair-0-cpu/rank-0.json": "cda5e70ce139d6cb66bf3beaae69408a8879f2300ad4969d441edc7c04f7ac99",
+          "cases/pair-0-cpu/rank-1.json": "5ca0bd6cf6455fb230361f81cea5703aff72ac2e789a18466845db3bd69d2c96",
+          "cases/pair-0-cpu/rank-2.json": "cdf8dabc31456fbfd68944396d7ba29bcc0e8f6fcdf41e989271bae4b16d52fa",
+          "cases/pair-0-cpu/rank-3.json": "c6dc7cfc2946c2fe463b1fca0beb6e99e7084d58b4a1983d60735a0d41ee8380",
+          "cases/pair-0-cpu/resources.jsonl": "0c045482be56b497f06322178a30350e1db067ae8c9b7695a0d5f2cd6c1a94e2",
+          "cases/pair-0-cpu/sample.json": "ea95629e26dec378fe56e4dc3d1253cf500c63ffee7246a512dd8c1ddcfc8094",
+          "cases/pair-0-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/pair-0-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/pair-0-gpu/cp2k.log": "3b91bce2fd478037a00e18ac0ce439b3ece8aececa6c3f466d1ccdb4e638662b",
+          "cases/pair-0-gpu/elapsed.txt": "7916be5532bdb292ea015162e267919540eef0c8994250bcc7ab3eace3a0d153",
+          "cases/pair-0-gpu/forces.xyz": "e4c7b408f6b85fe89e57033f1e6f94f4398f195fa492dcbdf50e61e9935a706b",
+          "cases/pair-0-gpu/input.inp": "1090ebd9645f77742248d7b44284c307244b627ebb14dc699fac62c6558acaa6",
+          "cases/pair-0-gpu/launch.json": "a68b85c71b93f535f963be95cc263bed5e404f6a08f79463b0cd11914ff600c7",
+          "cases/pair-0-gpu/rank-0.json": "07df65a3a3603150b78d2a553aadbc06c4f33bd45e66bab60baeddf9dcaa591c",
+          "cases/pair-0-gpu/resources.jsonl": "34897c0c0f419d6239b7e3fba91ec5fd8e43e92bb10e3f5ceab7d06c2353146e",
+          "cases/pair-0-gpu/sample.json": "2df153fc0252a2e6e3eeb36840f810d43ebd3a703b8e3421c8a3df94165410b6",
+          "cases/pair-1-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/pair-1-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/pair-1-cpu/cp2k.log": "595f46711aea7e19cca5f158ebef04b8ae01bc19d98623e1371a70a85fc12d1a",
+          "cases/pair-1-cpu/elapsed.txt": "fb295555412ad6cd86b998047b7fce95faba4f639516ad646eca842dd9b50ec1",
+          "cases/pair-1-cpu/forces.xyz": "4f64bf54fbad863a78988fe94f7a26b629a889fe95fc360117fc7cbefa8e2f4e",
+          "cases/pair-1-cpu/input.inp": "4f3876c59fe75a3080b5cb74ed9bb811712df587840897fa850e00b9e1ff8772",
+          "cases/pair-1-cpu/launch.json": "3694280deffe327f924f92dfc6f33bb1512d2d725962770789de8c1e334a9c5a",
+          "cases/pair-1-cpu/rank-0.json": "4b677d6c93c3d15ec0789550cc4a9a9840560cd8217d6eb9c7465f2f48038fe6",
+          "cases/pair-1-cpu/rank-1.json": "9b62495659d554d81568c3bc61f00c4f5a04c5fefbd94ff16c3d734ebb40e85d",
+          "cases/pair-1-cpu/rank-2.json": "33ffd46ba8643be4cfc533dbadc13c0eb0026e3fd365f6f024b7679027bea0e1",
+          "cases/pair-1-cpu/rank-3.json": "b4897cb511c83c8357d9354b3fea7961a4126600dc5809f9adf8338e431643af",
+          "cases/pair-1-cpu/resources.jsonl": "35b05d57ac32d985fa317e41a8a56d40ea5a15af2b533ffee4d41a1d387c0033",
+          "cases/pair-1-cpu/sample.json": "c77664eec7290fbda06f919ced69a1a289a0d03079e73b19ce0ca5aa8b7ef236",
+          "cases/pair-1-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/pair-1-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/pair-1-gpu/cp2k.log": "ab2013188dcfe5be49df724635e6b462cb7b812062801f26eb1c85ceb343099b",
+          "cases/pair-1-gpu/elapsed.txt": "3a6cb9b509c393dd68cddec8eae2911a40f8a6a0eaaf977cb8e3bf6c67bc7955",
+          "cases/pair-1-gpu/forces.xyz": "4c2a5258766f23fcf3a1432a2c115037e2ddec1908d14e2c4c1ee964cd8afe84",
+          "cases/pair-1-gpu/input.inp": "1090ebd9645f77742248d7b44284c307244b627ebb14dc699fac62c6558acaa6",
+          "cases/pair-1-gpu/launch.json": "a68b85c71b93f535f963be95cc263bed5e404f6a08f79463b0cd11914ff600c7",
+          "cases/pair-1-gpu/rank-0.json": "13fd9c6131ada1cf9f239021cffbdbee6e5407064f93eae10ee6ed220c4066b0",
+          "cases/pair-1-gpu/resources.jsonl": "e42dfe9ec2a91b6504e99601b2fcc893a4b7e270d890e1eb391ba138fe53e7a6",
+          "cases/pair-1-gpu/sample.json": "008259b8c126f0b580ec5a013b2b00acf890dd89fd62f47ba82a4c1e3190071a",
+          "cases/pair-2-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/pair-2-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/pair-2-cpu/cp2k.log": "f5d84a5771c44d195d7e020b560d0dbe2796c30e6644f12c5fcc65fde25fef31",
+          "cases/pair-2-cpu/elapsed.txt": "82368aaae9dbc30b1e26bc87f9e1cdca1cf9a9494037f6a1e8aa3e9e86b49c8f",
+          "cases/pair-2-cpu/forces.xyz": "4f64bf54fbad863a78988fe94f7a26b629a889fe95fc360117fc7cbefa8e2f4e",
+          "cases/pair-2-cpu/input.inp": "4f3876c59fe75a3080b5cb74ed9bb811712df587840897fa850e00b9e1ff8772",
+          "cases/pair-2-cpu/launch.json": "3694280deffe327f924f92dfc6f33bb1512d2d725962770789de8c1e334a9c5a",
+          "cases/pair-2-cpu/rank-0.json": "1a2cd5efce131a47fc6494f4f2cf93b25d09821d73f01a69534fa488550d4cca",
+          "cases/pair-2-cpu/rank-1.json": "93d36dd2bc624291d27710c8682b70e29a5849de3066b7f76d049a3dd2f0244a",
+          "cases/pair-2-cpu/rank-2.json": "da4eee29c927c3265f4a497ff6922a27ea09ec8128e3017cc549f1cc7f6539a8",
+          "cases/pair-2-cpu/rank-3.json": "2545f24718ca9ec7eaf402d2d8ea5cb4209475f670aebf682cc1ebf8a257e44a",
+          "cases/pair-2-cpu/resources.jsonl": "b89faf9c28a361bcd70e89c1410312c47fd5b5bbab0ae9185af219f92848d830",
+          "cases/pair-2-cpu/sample.json": "9c1cbaedc80c5c801ac462e7160322001a5bbdba44f2fab7fb561a938181742f",
+          "cases/pair-2-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/pair-2-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/pair-2-gpu/cp2k.log": "553bed79c9a6c1a56a380bddac127214f32186b7b5a2e27aadddaea12005c8e7",
+          "cases/pair-2-gpu/elapsed.txt": "525cd419d1ac5616d445050702905d13c1073174faa1f3303070fed1f0ff5b0d",
+          "cases/pair-2-gpu/forces.xyz": "f40120dfec469c0a6b41abc90b8ec942d67ee33b0f542a25090c99fdaec8cb71",
+          "cases/pair-2-gpu/input.inp": "1090ebd9645f77742248d7b44284c307244b627ebb14dc699fac62c6558acaa6",
+          "cases/pair-2-gpu/launch.json": "a68b85c71b93f535f963be95cc263bed5e404f6a08f79463b0cd11914ff600c7",
+          "cases/pair-2-gpu/rank-0.json": "592da02b388da63dc43e99a6de10386f633e60915758698902f1278e0f17726c",
+          "cases/pair-2-gpu/resources.jsonl": "a50582b0e0abe7734cf3ee5816b2f5e93bf61f4664bb8ae8c4e316eae1a9c64a",
+          "cases/pair-2-gpu/sample.json": "142d6a741b11e3103d4547fca922989248ca60fd24376907dc773407f25c1181",
+          "cases/pair-3-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/pair-3-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/pair-3-cpu/cp2k.log": "cb5f5e16180a85151a27c4ed1ea2edcadc4f3446bd8b1218e60ec1bbd21eeeb3",
+          "cases/pair-3-cpu/elapsed.txt": "d7bddbc8fc08ec3a5504ef7f2035d36a646676c7bd03e794b8845c5053feaf25",
+          "cases/pair-3-cpu/forces.xyz": "4f64bf54fbad863a78988fe94f7a26b629a889fe95fc360117fc7cbefa8e2f4e",
+          "cases/pair-3-cpu/input.inp": "4f3876c59fe75a3080b5cb74ed9bb811712df587840897fa850e00b9e1ff8772",
+          "cases/pair-3-cpu/launch.json": "3694280deffe327f924f92dfc6f33bb1512d2d725962770789de8c1e334a9c5a",
+          "cases/pair-3-cpu/rank-0.json": "246581902ab664110351830be2ce4b74daa712be73a7ccbca16f867cdfa6863b",
+          "cases/pair-3-cpu/rank-1.json": "09194d413fd1f576fd8e79d94ab570aee7962d228c89a5c0aa7ea08591c69afd",
+          "cases/pair-3-cpu/rank-2.json": "5a474947eb6af71b0ef2d747a23703641a36743c3bcc3bf75bf4e2b7a207628c",
+          "cases/pair-3-cpu/rank-3.json": "0582d77ab097d620716d992fe232f639c78535c47f12cc4b1d28615ac0e27ae8",
+          "cases/pair-3-cpu/resources.jsonl": "ca057946577483d5fe5edb8269287a0b66c54648c20595d5757f3f65f021567a",
+          "cases/pair-3-cpu/sample.json": "ff8a050bb11aa7e1fba70a1429e555971b2b3bc31cd4691b31eb38016ea62bd9",
+          "cases/pair-3-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/pair-3-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/pair-3-gpu/cp2k.log": "1e2ecb4663f777c0c3aab0470647b784b79b1377ea2d1a3668fd526abc94aa58",
+          "cases/pair-3-gpu/elapsed.txt": "4534197bf17daf823942fa6e1c8c2acb8abd9ca6c7f44242f7c7454562a1c66e",
+          "cases/pair-3-gpu/forces.xyz": "498fb6ec394d61bf00a4e56d41e8e223a27b6c850e9f38b3e7df9a9aacaf4297",
+          "cases/pair-3-gpu/input.inp": "1090ebd9645f77742248d7b44284c307244b627ebb14dc699fac62c6558acaa6",
+          "cases/pair-3-gpu/launch.json": "a68b85c71b93f535f963be95cc263bed5e404f6a08f79463b0cd11914ff600c7",
+          "cases/pair-3-gpu/rank-0.json": "81d2a80900677684e1e3a5457c7f6b0087ca9d6d8f8c39e342b0aaa109826319",
+          "cases/pair-3-gpu/resources.jsonl": "632218122c1783dbd11486e885b62358c5c3acad6f9bfc9a3959fdfbc3cd6b07",
+          "cases/pair-3-gpu/sample.json": "509eebae32f3456ab7f2acf94c4746c5ca232f450367d710719c28fbcd2cda8f",
+          "fixtures/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "fixtures/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "results/accounting.txt": "a5d55b786496f3f23664ef8e7487751c86b37eba26b3a7a720ee00fdc704af90",
+          "results/allocation.txt": "02a685e0d4bf14fb3e841d2b38002600f13ef2a9936af416c24b6ce5e6dadb0a",
+          "results/comparison.json": "510a53b2b999f1dff557defd1340b4a18294ac52b42cef0e0f79711f7c9ce327",
+          "results/cpu-ldd.txt": "8e4e9224c38225856b6f470afaa683527b063ba73328d8661f53b83800ec542b",
+          "results/cpu-version.txt": "055ac47f8d459bad8a36111f48d2752676c1104a57abb8713c10c440c1e343f6",
+          "results/devices.json": "87e360715f3c6f1325d57a15649300f4f9e257d05b90a07d530f2a52008ff7f4",
+          "results/environment.json": "3ae050c567bd5ea68740cbaee3cb23cf433450de09847689ba20bd6dc143265a",
+          "results/gpu-ldd.txt": "87a310b7c25d2fda91d2ded8e1bbd686dedb25fa8d629721f321cfff5d2b8886",
+          "results/gpu-topology.txt": "5d148eda41969a72dac4fda7ae26ecba0d5497df7f8c47a85bb5818584a3ffe2",
+          "results/gpu-version.txt": "3df1cdf185d9169a652240db41e050ef9c1aff9cdfcdc88002e5a08f21eb8b22",
+          "results/imported-tuning.json": "e08cebaa2a28904028dbdbaf284f68b0cbfb9622cb6d8db5aba1fc6324708fe4",
+          "results/lscpu.txt": "e88fda2dd5308eed6f62526571d3aa09a79864d50c512abdaca6a8cebc9cc430",
+          "results/modules.txt": "6057b203159ae7f51ba5d5a20445426d2c3bed351e5206623e5d6f9b687df22e",
+          "results/pairs.json": "6da33b4caaa6c7072e71be5b0772b7533b4e0668756a38f11f0b530e4e638f1e",
+          "results/tuning.json": "2ca71fd80d1e4f3d745f544a6052da29ff3c3c671f30bff18ee43a627861efbe"
+        },
+        "job": "1884617",
+        "request_sha256": "d680b29627d41e4d18b8c53ffba3ec6e5b5dc42d53fb0688ff7a1ac140d78719",
+        "stage": "compare",
+        "verified": true
+      },
+      "versions": {
+        "cpu": " CP2K version 2026.2\n Source code revision 67b5da876d\n cp2kflags: omp libint fftw3 libxc parallel scalapack mpi_f08 libxs libxsmm spglib\n compiler: GCC version 14.3.0\n compiler options:\n   -cpp -I /home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020\n   -16v100-a/work/source/src -I /home/stardust/sai-hpc-software/runs/cp\n   2k-water-cpu-20261020-16v100-a/work/cp2k-build/src -I /home/stardust\n   /sai-hpc-software/runs/cp2k-water-cpu-20261020-16v100-a/work/source/\n   src/base -I /home/stardust/sai-hpc-software/runs/cp2k-water-cpu-2026\n   1020-16v100-a/work/source/src/common -I /home/stardust/sai-hpc-softw\n   are/runs/cp2k-water-cpu-20261020-16v100-a/work/source/src/motion -I \n   /home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-16v100-\n   a/work/source/src/dbm -I /home/stardust/sai-hpc-software/runs/cp2k-w\n   ater-cpu-20261020-16v100-a/work/cp2k-build/src/mod_files -I /opt/app\n   s/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/depen\n   dencies/spack/linux-zen3/libint-2.6.0-ufynbugam3r7u7zghgfuumkuodesgu\n   go/include -I /opt/devtools/spglib/spglib-2.7.0/include -I /opt/devt\n   ools/libxc/libxc-7.0.0-avx2/include -I /opt/devtools/fftw/fftw-3.3.1\n   0/include -I /home/stardust/sai-hpc-software/runs/cp2k-water-cpu-202\n   61020-16v100-a/install/dependencies/dbcsr/include -I /opt/devtools/o\n   penmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/include -I /opt/devto\n   ols/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib -I /home/sta\n   rdust/sai-hpc-software/runs/cp2k-water-cpu-20261020-16v100-a/install\n   /dependencies/libxs/include -I /home/stardust/sai-hpc-software/runs/\n   cp2k-water-cpu-20261020-16v100-a/install/dependencies/libxs/include/\n   libxs -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53\n   ff43/16V100/dependencies/spack/linux-zen3/libxsmm-2.0.0-62iurh6z3yki\n   yux6lygqelq5c4aqwttv/include -I /opt/devtools/saiblas/2603-gnu-avx2/\n   include -imultiarch x86_64-linux-gnu -D_REENTRANT -D USING_Libxc -D \n   __BLAS -D __COMPILE_ARCH=\"x86_64\" -D __COMPILE_HOST=\"\" -D __DATA_DIR\n   =\"/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-16v10\n   0-a/install/share/cp2k/data\" -D __FFTW3 -D __LIBINT -D __LIBXC -D __\n   LIBXS -D __LIBXSMM -D __MPI_F08 -D __SPGLIB -D __parallel -D __SHORT\n   _FILE__=\"start/cp2k.F\" -march=znver3 -mmmx -mpopcnt -msse -msse2 -ms\n   se3 -mssse3 -msse4.1 -msse4.2 -mavx -mavx2 -msse4a -mno-fma4 -mno-xo\n   p -mfma -mno-avx512f -mbmi -mbmi2 -maes -mpclmul -mno-avx512vl -mno-\n   avx512bw -mno-avx512dq -mno-avx512cd -mno-avx512vbmi -mno-avx512ifma\n    -mno-avx512vpopcntdq -mno-avx512vbmi2 -mno-gfni -mvpclmulqdq -mno-a\n   vx512vnni -mno-avx512bitalg -mno-avx512bf16 -mno-avx512vp2intersect \n   -mno-3dnow -madx -mabm -mno-cldemote -mclflushopt -mclwb -mclzero -m\n   cx16 -mno-enqcmd -mf16c -mfsgsbase -mfxsr -mno-hle -msahf -mno-lwp -\n   mlzcnt -mmovbe -mno-movdir64b -mno-movdiri -mmwaitx -mno-pconfig -mp\n   ku -mprfchw -mno-ptwrite -mrdpid -mrdrnd -mrdseed -mno-rtm -mno-seri\n   alize -mno-sgx -msha -mshstk -mno-tbm -mno-tsxldtrk -mvaes -mno-wait\n   pkg -mwbnoinvd -mxsave -mxsavec -mxsaveopt -mxsaves -mno-amx-tile -m\n   no-amx-int8 -mno-amx-bf16 -mno-uintr -mno-hreset -mno-kl -mno-widekl\n    -mno-avxvnni -mno-avx512fp16 -mno-avxifma -mno-avxvnniint8 -mno-avx\n   neconvert -mno-cmpccxadd -mno-amx-fp16 -mno-prefetchi -mno-raoint -m\n   no-amx-complex -mno-avxvnniint16 -mno-sm3 -mno-sha512 -mno-sm4 -mno-\n   apxf -mno-usermsr --param=l1-cache-size=32 --param=l1-cache-line-siz\n   e=64 --param=l2-cache-size=512 -mtune=znver3 -g -O3 -O3 -O3 -Wno-dep\n   recated-declarations -Wno-maybe-uninitialized -Wuninitialized -Wuse-\n   without-only -std=f2008 -fPIE -ffree-form -fimplicit-none -fno-omit-\n   frame-pointer -fbacktrace -fallow-argument-mismatch -funroll-loops -\n   fopenmp -fpre-include=/usr/include/finclude/x86_64-linux-gnu/math-ve\n   ctor-fortran.h\n",
+        "gpu": " CP2K version 2026.2\n Source code revision 67b5da876d\n cp2kflags: omp libint fftw3 libxc elpa parallel scalapack mpi_f08 cosma libxs libxsmm dbcsr_acc plumed2 spglib libdftd4 dftd4_v4_2 s_dftd3 mctc-lib tblite libvori libbqb offload_cuda spla_gemm_offloading cusolvermp cusolvermp_nccl hdf5\n compiler: GCC version 14.3.0\n compiler options:\n   -cpp -I /workspace/source/src -I /workspace/build/src -I /workspace/\n   source/src/base -I /workspace/source/src/common -I /workspace/source\n   /src/motion -I /workspace/source/src/dbm -I /workspace/build/src/mod\n   _files -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa5\n   3ff43/16V100/dependencies/spack/linux-zen3/libint-2.6.0-ufynbugam3r7\n   u7zghgfuumkuodesgugo/include -I /opt/devtools/nvidia/cuda-12.9.1/tar\n   gets/x86_64-linux/include -I /opt/apps/cp2k/cp2k-release-v2026.2-g67\n   b5da876dd6-raed7aa53ff43/16V100/dependencies/tblite/include -I /opt/\n   apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/de\n   pendencies/tblite/include/mctc-lib/modules -I /opt/apps/cp2k/cp2k-re\n   lease-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/dependencies/tblite\n   /include/dftd4/GNU-14.3.0 -I /opt/apps/cp2k/cp2k-release-v2026.2-g67\n   b5da876dd6-raed7aa53ff43/16V100/dependencies/tblite/include/multicha\n   rge/GNU-14.3.0 -I /opt/devtools/saiblas/2603-gnu-avx2/include -I /op\n   t/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/\n   dependencies/tblite/include/tblite/GNU-14.3.0 -I /opt/apps/cp2k/cp2k\n   -release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/dependencies/tbl\n   ite/include/toml-f/modules -I /opt/apps/cp2k/cp2k-release-v2026.2-g6\n   7b5da876dd6-raed7aa53ff43/16V100/dependencies/tblite/include/s-dftd3\n   /GNU-14.3.0 -I /opt/devtools/spglib/spglib-2.7.0/include -I /opt/dev\n   tools/libxc/libxc-7.0.0-avx2/include -I /opt/devtools/elpa/elpa-2026\n   .02.001-2603-gnu-avx2/nvidia/include/elpa_openmp-2026.02.001 -I /opt\n   /devtools/elpa/elpa-2026.02.001-2603-gnu-avx2/nvidia/include/elpa_op\n   enmp-2026.02.001/modules -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b\n   5da876dd6-raed7aa53ff43/16V100/dependencies/spack/linux-zen3/plumed-\n   2.10.1-np37xjhlxj3qmkfebxzpsypu734ersmo/include -I /opt/devtools/fft\n   w/fftw-3.3.10/include -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da\n   876dd6-raed7aa53ff43/16V100/dependencies/spack/linux-zen3/spla-1.6.1\n   -ubrai56trgmuevwm3thzgn6ky6nmgqkh/include -I /opt/apps/cp2k/cp2k-rel\n   ease-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/dependencies/spack/l\n   inux-zen3/spla-1.6.1-ubrai56trgmuevwm3thzgn6ky6nmgqkh/include/spla -\n   I /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/incl\n   ude -I /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2\n   /lib -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53f\n   f43/16V100/dependencies/spack/linux-zen3/cosma-2.7.0-5mo4n2dvf2cbmcf\n   hqswalnp4rvuzh54o/include -I /opt/apps/cp2k/cp2k-release-v2026.2-g67\n   b5da876dd6-raed7aa53ff43/16V100/dependencies/spack/linux-zen3/costa-\n   2.3.3-mei6tamap43oogvx64e6pnv5wd4zt3gr/include -I /opt/apps/cp2k/cp2\n   k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/dependencies/sp\n   ack/linux-zen3/tiled-mm-2.3.2-wqmiz7l6rdmi3pfr3ra5oubt4tauqtem/inclu\n   de -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff4\n   3/16V100/dependencies/spack/linux-zen3/tiled-mm-2.3.2-wqmiz7l6rdmi3p\n   fr3ra5oubt4tauqtem/include/Tiled-MM -I /opt/apps/cp2k/cp2k-release-v\n   2026.2-g67b5da876dd6-raed7aa53ff43/16V100/dependencies/spack/linux-z\n   en3/hdf5-1.14.6-oatczg6z5jwpt7tsfkayczc5vkcqm7oi/include -I /opt/app\n   s/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/depen\n   dencies/spack/linux-zen3/hdf5-1.14.6-oatczg6z5jwpt7tsfkayczc5vkcqm7o\n   i/mod/static -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-ra\n   ed7aa53ff43/16V100/dependencies/dbcsr/include -I /opt/apps/cp2k/cp2k\n   -release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/dependencies/lib\n   xs/include -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed\n   7aa53ff43/16V100/dependencies/libxs/include/libxs -I /opt/apps/cp2k/\n   cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100/dependencies\n   /spack/linux-zen3/libxsmm-2.0.0-62iurh6z3ykiyux6lygqelq5c4aqwttv/inc\n   lude -I /opt/devtools/nvidia/mp_libs/include -I /opt/devtools/nvidia\n   /nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/include -imultiarch x86_64\n   -linux-gnu -D_REENTRANT -D COSMA_HAVE_GPU -D IK=i4 -D TILED_MM_CUDA \n   -D USING_Libxc -D _FILE_OFFSET_BITS=64 -D _GNU_SOURCE -D _LARGEFILE_\n   SOURCE -D _POSIX_C_SOURCE=200809L -D __BLAS -D __COMPILE_ARCH=\"x86_6\n   4\" -D __COMPILE_HOST=\"\" -D __COSMA -D __CUSOLVERMP -D __CUSOLVERMP_N\n   CCL -D __DATA_DIR=\"/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6\n   -raed7aa53ff43/16V100/share/cp2k/data\" -D __DBCSR_ACC -D __DFTD4 -D \n   __DFTD4_V4_2 -D __ELPA -D __FFTW3 -D __HDF5 -D __LIBINT -D __LIBVORI\n    -D __LIBXC -D __LIBXS -D __LIBXSMM -D __MPI_F08 -D __OFFLOAD_CUDA -\n   D __OFFLOAD_GEMM -D __PLUMED2 -D __SPGLIB -D __SPLA -D __S_DFTD3 -D \n   __TBLITE -D __parallel -D __SHORT_FILE__=\"start/cp2k.F\" -march=znver\n   3 -mmmx -mpopcnt -msse -msse2 -msse3 -mssse3 -msse4.1 -msse4.2 -mavx\n    -mavx2 -msse4a -mno-fma4 -mno-xop -mfma -mno-avx512f -mbmi -mbmi2 -\n   maes -mpclmul -mno-avx512vl -mno-avx512bw -mno-avx512dq -mno-avx512c\n   d -mno-avx512vbmi -mno-avx512ifma -mno-avx512vpopcntdq -mno-avx512vb\n   mi2 -mno-gfni -mvpclmulqdq -mno-avx512vnni -mno-avx512bitalg -mno-av\n   x512bf16 -mno-avx512vp2intersect -mno-3dnow -madx -mabm -mno-cldemot\n   e -mclflushopt -mclwb -mclzero -mcx16 -mno-enqcmd -mf16c -mfsgsbase \n   -mfxsr -mno-hle -msahf -mno-lwp -mlzcnt -mmovbe -mno-movdir64b -mno-\n   movdiri -mmwaitx -mno-pconfig -mpku -mprfchw -mno-ptwrite -mrdpid -m\n   rdrnd -mrdseed -mno-rtm -mno-serialize -mno-sgx -msha -mshstk -mno-t\n   bm -mno-tsxldtrk -mvaes -mno-waitpkg -mwbnoinvd -mxsave -mxsavec -mx\n   saveopt -mxsaves -mno-amx-tile -mno-amx-int8 -mno-amx-bf16 -mno-uint\n   r -mno-hreset -mno-kl -mno-widekl -mno-avxvnni -mno-avx512fp16 -mno-\n   avxifma -mno-avxvnniint8 -mno-avxneconvert -mno-cmpccxadd -mno-amx-f\n   p16 -mno-prefetchi -mno-raoint -mno-amx-complex -mno-avxvnniint16 -m\n   no-sm3 -mno-sha512 -mno-sm4 -mno-apxf -mno-usermsr --param=l1-cache-\n   size=32 --param=l1-cache-line-size=64 --param=l2-cache-size=512 -mtu\n   ne=znver3 -g -O3 -O3 -O3 -Wno-deprecated-declarations -Wno-maybe-uni\n   nitialized -Wuninitialized -Wuse-without-only -std=f2008 -fPIE -ffre\n   e-form -fimplicit-none -fno-omit-frame-pointer -fbacktrace -fallow-a\n   rgument-mismatch -funroll-loops -fopenmp -fpre-include=/usr/include/\n   finclude/x86_64-linux-gnu/math-vector-fortran.h\n"
+      },
+      "waters": 288
+    },
+    {
+      "accounting": "1884985|COMPLETED|0:0|01:37:37|4v100n02\n",
+      "basis_functions": 9016,
+      "cpu_over_gpu": 4.020068653197957,
+      "job": "1884985",
+      "launch_wall_cpu_over_gpu": 4.002341498121738,
+      "median_seconds": {
+        "cpu": 1166.439,
+        "gpu": 290.154
+      },
+      "modes": {
+        "cpu": {
+          "cpu_utilization": [
+            0.9977135948190368,
+            0.9979163984985511,
+            0.9976946044308617
+          ],
+          "gpu_peak_fractions": [
+            [
+              0.0001220703125
+            ],
+            [
+              0.0001220703125
+            ],
+            [
+              0.0001220703125
+            ]
+          ],
+          "host_limit_gib": 22.0,
+          "launch_seconds": [
+            1167.577054225956,
+            1286.4354187700665,
+            1119.435742200003
+          ],
+          "max_energy_delta_ha": 1.3278622645884752e-09,
+          "max_force_delta_ha_bohr": 2.540000015871513e-10,
+          "peak_host_gib": 20.242958068847656,
+          "scf_steps": [
+            [
+              21
+            ],
+            [
+              23
+            ],
+            [
+              20
+            ]
+          ],
+          "seconds": [
+            1166.439,
+            1285.829,
+            1118.086
+          ]
+        },
+        "gpu": {
+          "cpu_utilization": [
+            0.43137594915419847,
+            0.43181857188926737,
+            0.4292947203600416
+          ],
+          "gpu_peak_fractions": [
+            [
+              0.54986572265625
+            ],
+            [
+              0.54986572265625
+            ],
+            [
+              0.54986572265625
+            ]
+          ],
+          "host_limit_gib": 22.0,
+          "launch_seconds": [
+            291.72349605197087,
+            290.1913168110186,
+            292.87571926007513
+          ],
+          "max_energy_delta_ha": 0.0,
+          "max_force_delta_ha_bohr": 1.0000004296850662e-12,
+          "peak_host_gib": 17.86223602294922,
+          "scf_steps": [
+            [
+              20
+            ],
+            [
+              20
+            ],
+            [
+              20
+            ]
+          ],
+          "seconds": [
+            290.154,
+            289.34,
+            291.312
+          ]
+        }
+      },
+      "performance_result": true,
+      "request": {
+        "calibration": {
+          "path": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g1-full-a",
+          "reason": "discrete_size_or_memory_limit",
+          "sha256": "9d4d18aeb2d14fc9a0055b4a65f5c7affb3aeae10d326edaa0c2fdddf4aa47d2"
+        },
+        "case_seconds": 7200,
+        "cpu_acceptance": {
+          "path": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-smoke/results/smoke.json",
+          "sha256": "acb37661fc8a75dbccaf051665ac095f052ce3cf67d03094d71f8af52ef590e6"
+        },
+        "cpu_binary": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-4v100-a/install/bin/cp2k.psmp",
+        "cpu_binary_sha256": "1c7b9a8fe59a3b4015dfa571b519cd5a9b1f451d1c65a30b35b8ce6aad85225c",
+        "full_calibration": false,
+        "gpu_binary": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/4V100/bin/cp2k.psmp",
+        "gpu_binary_sha256": "68ef030537fdadd18347252e2c3770d17df6f20606ec1ef9e6dfbf02fcf5c4f9",
+        "gpus": 1,
+        "host_memory_fraction": 0.95,
+        "inputs": {
+          "control/controller/abacus_baseline_probe.sbatch": "ee77ca5738eb3e0e0aa0bd4136071d5444ba6f08d394be640dd7092f3bb86914",
+          "control/controller/abacus_benchmark.py": "852c7701aaea3f8d36e2365a09637e91f12612e9284063a7236d70d3e832705b",
+          "control/controller/abacus_build.sh": "cf67a38908fdbc1145aa515011478e59dcac92ec40bebbdb691cb1c024a16a80",
+          "control/controller/abacus_cache_runner_reference.py": "ee275b407a58e1ea3bc835e034ad86eee5a218d0134b8a3f8e3af3c277e10ff3",
+          "control/controller/abacus_dependencies.py": "47c5d90a1c75dd8da1ff085735a26e4cb584aae2a122661c1448fb7cff33afd6",
+          "control/controller/abacus_dependencies.sh": "905eb88d0ca0dc2f3e011874fbe28b7a95cb8a1a1db526ddc4e5fc4661e20cde",
+          "control/controller/abacus_dependency_lock.json": "ce7a95f5e0776eb1ff694e76a88cd4389ee617906071502d79ef5727e5a66d6c",
+          "control/controller/abacus_features.py": "e1b9d5ae501a6f43053c15f5fccabbc224e0278a324b0e2ce628d1324525d64a",
+          "control/controller/abacus_full_dependencies.sh": "0aefb9b7a59f66a0776a70d914dd4ba34d281022856dd91b9fb1864355419d4c",
+          "control/controller/abacus_full_profile.json": "d93fbde64a6898e12c0e61cdced1c2ca7d25925611f3d0bfc3ac1b30576bd469",
+          "control/controller/abacus_runtime.sh": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+          "control/controller/abacus_site_gpu.sh": "1a8631ca91a9969f56115425ef13489144fa28d292609d96292fc8ce9b898b29",
+          "control/controller/abacus_site_mpi.sh": "199aeb495069f0812214c8bd944b229799b8d54b9a908667ef8f1d5b2cbc54d1",
+          "control/controller/build.sbatch.in": "5e0e74a118add2aa80f181dda6bc4bee1bcdb3e241df9c592f8632fbacb21a98",
+          "control/controller/build_capacity.py": "bff0a1cbf9acedb858c9776efd73a9c98737787e1bb439e0965048f47e0ee66c",
+          "control/controller/case.sbatch.in": "d849dca06d71f2ccb3d5e52a5f7a8ea07803a63894bb42aea6385604b5d98698",
+          "control/controller/ci.py": "1b713224de667d460744548c0c6dd965dfeb9c01aef54cc64de80bcd3fefde4b",
+          "control/controller/config.ini": "8dc7eee2853aaa96979a8f55e2f1dea0ceb8c7cb0045e19695837b10d99c575c",
+          "control/controller/container_entry.sh": "618042bbd5fe909dbe0ea2c47f786791d7bb451dc1da841cb2dea83eb72803ef",
+          "control/controller/cp2k_Libint2Config.cmake": "223aac33a7743bc46a25738cb75b4a4bd1100571b1ea13fe4c19dff7c4019de9",
+          "control/controller/cp2k_acceptance.py": "84db91909883510765fa87c03f2816f1af9ac0271f85f95f03c62371dcd098eb",
+          "control/controller/cp2k_baseline_probe.sbatch": "6462e789df12424f89c9595ff62146f1e51933136b2d6306e5845755b4c5cd52",
+          "control/controller/cp2k_benchmark.py": "aefd8b234b1b43f2815a6af5f3502204319a490f4919ad417421d920034a10e3",
+          "control/controller/cp2k_build.sh": "74461284a5b63385f9a75c679f4502d2f21d72f6d317ab06dcc3a33af4975f23",
+          "control/controller/cp2k_cmake_prerequisites.cmake": "8c923f94b76475eba88e14280b05e37ddb8f491a03821193253e49e4af519a0d",
+          "control/controller/cp2k_container_entry.sh": "05f7c0036558ded066641499209d70744519c8d4dbc23bb35f727c06ede2955d",
+          "control/controller/cp2k_dependencies.sbatch": "d1fbdbb7f8553b0b912a08d73bc8f85ac376b9bf0e854c79298a03a4718b3197",
+          "control/controller/cp2k_dependencies.sh": "99d5bbcf9dda385257c0088fe9a12a1f6eea86364e2dc8bef46a17d1af822562",
+          "control/controller/cp2k_dependency_stage.py": "babdea468491a5f809d7c86a1f170d48b9c55d8c6d5abae954ff1d969c5d9a9e",
+          "control/controller/cp2k_elpa.sh": "508b4887216c5ac57bf6777dee83d70b0bf655a3335a26647b7291a1b3ac4ea0",
+          "control/controller/cp2k_elpa_abi.f90": "95c2ef65486385219c646424c2d8724574b8dabaa0fc4ce89c2e78bae43478a5",
+          "control/controller/cp2k_elpa_runtime.py": "0ceaf73725599632c002e5b6588d855c08e1d9a3798cba3bab9a5bf9b048fcc2",
+          "control/controller/cp2k_feature_contract.py": "2d2ea42d9e74d5ecbe8278bebd8b23c81d1bcfe86c35b0d303cf3f7b09e93917",
+          "control/controller/cp2k_image_driver.py": "e0ea6a2b7ce25189b3eb9b7749392b0416894f9d365e1f3c31c577546a8df049",
+          "control/controller/cp2k_libxsmmConfig.cmake": "734aa00bd820e244cde406866c1c6065f8a2f85571dde413f7c2bf058b1fb038",
+          "control/controller/cp2k_overlay_probe.sbatch": "69c6044258e990bd6dbf5ccce76b5b6bb0545d118b000587c720975ec9757e1c",
+          "control/controller/cp2k_overlay_workdir.py": "f22d281427ede157c03c7fc20a8b625e9c5a511e023a6c358de93040589fe468",
+          "control/controller/cp2k_payload.py": "8e71ae39fa9f82c9033107dc00c37f780b06a4b032c5de78190336509c120d83",
+          "control/controller/cp2k_probe.sbatch": "3927f4ece5c157504bc3b0b70e70f603c9319e2709ae36db2a7ce8cbcdc5fa0d",
+          "control/controller/cp2k_repack.sbatch": "004ede58b234b49dc0297ea437d9a3e1e23ff450f7ea8b3bc65222711ee78c7f",
+          "control/controller/cp2k_runtime.sh": "210ddd657ec01da4c1bd13294f95ee51991f24219c3b1965c52874c6270b4540",
+          "control/controller/cp2k_site_elpa.json": "9b3253261d2cee47df156136c575c6fc7748f30344b029b4bc56fd83bed4fea0",
+          "control/controller/cp2k_source_fixes.py": "9ea20a68ddbeaf7184f8968e5a966eef3ee2b84f9ba8cffc56f71c1496563ad9",
+          "control/controller/cp2k_spack.py": "0235341aed673e851a375457076a220d644d178332d577f8a661712c5d7775ad",
+          "control/controller/cp2k_spack_dependencies.sh": "62977f63321a57a3c7d66f15e20f82cebc2ddf3987f1faa0e6719f7e6a640985",
+          "control/controller/cp2k_spack_environment.py": "70603447fee7d634fe939a2a11faca829407eceacd21090812705bd373c0d1ba",
+          "control/controller/cp2k_spack_install.sh": "320f8e5f58ba986a5a37c19223183b3826d932ed680173e4cce2ab034f4e37a7",
+          "control/controller/cp2k_spack_install_evidence.py": "391ad327602cabf1e49db806a6d82c1887669f40da097ba2dfdf3ed193d481cc",
+          "control/controller/cp2k_spack_install_submit.py": "49a15275a73f7d8ed08566f9b82b3576489f8dd74790b336287e97719d685447",
+          "control/controller/cp2k_spack_libint_repair.py": "b38fd9292b264bc83c308ca8c4ce4b42a1b2beb3367713de3f7308106b2cd014",
+          "control/controller/cp2k_spack_link.py": "52efab5e2c77f195e1dd380911a1d7617f2d1f632c3a808dfe5d4e61e3ab88f8",
+          "control/controller/cp2k_spack_mpi_repair.py": "7036b4f1c89b54d0f25e6bf6c87e79f07306a55cd8a10f4e2c93edfcb8c732e8",
+          "control/controller/cp2k_spack_native.py": "bdfadff1c81c8cc0bf03d80f950e4dd3f3176496f02febcb9ae102cd847abb04",
+          "control/controller/cp2k_spack_probe.sh": "4c266c5704f1cf96f4aad3da70030fe7c4f5ea8eb9eae5bb3e409f601cf3723e",
+          "control/controller/cp2k_spack_probe_submit.py": "e878b1bb56ef2bdf8c4afc133d92cbb18ff63198afbc30f9d892f505c1cc08c4",
+          "control/controller/cp2k_spack_seed.py": "9c41a9fc602f2f5e351eb845785a0b86882268b58b53573b3972a85b2fa35dfe",
+          "control/controller/create_rootfs.sh": "ae0818e8bb485222605290fd3f3c410c40354aa518c8f613ac26236b3e382852",
+          "control/controller/daily_plan.py": "8dcc9907d201caab77f421adc7d77a3471881b6caba475ad2474270ae91b2024",
+          "control/controller/delivery_layout.py": "268a18bfe45b1f8cca9d955d5b34215392ee74d734dcf4358c5da66728f6d7f2",
+          "control/controller/environment.sh": "68bfc2f69c1df2f9b35fdf9d273dbf35e377c44b490ff19ebc6c41ac7dad58d0",
+          "control/controller/export_native.py": "cf5709c9037af843e360b2ad1b73b2d50dcdc1525940db9350df5783d9e8c619",
+          "control/controller/finalize_lammps_sif.py": "430113a1b0d271e5d3241460e46166206443dbd92812113f66228dac9ad7fd2f",
+          "control/controller/gpu_feature_controller.py": "67e0711ccd8d39d1d6fc999baa35a9b6fe32fbe2c9392db5bb8e7cdc09f60eb0",
+          "control/controller/gpu_feature_runtime.sh": "b499d0fe6bd1ad4623ece45ea6663702bf8e54d95ae1a0679b87f34ce81a0734",
+          "control/controller/gpumd_acceptance.py": "35080b2962f1cd435ceabfa2ba52b502735ff3c32fcdc9cd560a6e926e7e85bc",
+          "control/controller/gpumd_build.sh": "4739c263643a94b428fdb28e4ca25de93224106fca8ce193d48bf3c2b997a7fa",
+          "control/controller/gpumd_container_entry.sh": "2fd02f0abd7736865eda94204f28d7ca0a536a8eb2029d3b9cb0b435034bdb7f",
+          "control/controller/gpumd_deepmd_probe.py": "78d3e11ad614aed6b092f5fcb3cdf24e9f0dd91fb9adf73c263da2e9ed761319",
+          "control/controller/gpumd_environment.sh": "6bb0cc52a65b83add6cfc6a7375459f61e82ff822aed2d1e1718faf92f935370",
+          "control/controller/gpumd_relink_probe.sbatch": "4d1f7b8858f3c9c1f2beb36393b008f52f7d49cf3f696f2d58c39359bdb31997",
+          "control/controller/gpumd_runtime.sh": "442c2dce979960cfebc58226357ae5374db9e9881649a1f458f78387936b568d",
+          "control/controller/gpumd_science.py": "ee1328905abaca2ffd2630d6d3dcad7a52af110ddf25d4d594485841144f5e1e",
+          "control/controller/gpumd_site_probe.py": "3501fc12f9b648a50127a246ff8232af20f288e4d704b9319b5091417c60d5bf",
+          "control/controller/gpumd_site_probe.sbatch": "b04fba2267207a966b4de8b1660ca2d52d62e94c231627c35107e93c5e4280a7",
+          "control/controller/lammps_manifest_diagnose.sh": "8bd4b84fb66ecfd424c88963cf24cba3dbdb67b2c1ee420e902f61a23dc53dc2",
+          "control/controller/lammps_packaging_debug.sbatch": "6b70c42acb0176aa5fa4938726d8d7c72c4323fb0daf0329b860718279cdfaa1",
+          "control/controller/lammps_packaging_probe.sbatch": "6df4ad1d86c294af6578b0821242030bbc762b974a8be81eb0a84d69f8e6f3e6",
+          "control/controller/md_acceptance.sh": "fbbd8dc86108044c5efa2b00ca4377ab5d4219a18f4ea91d1ad3336ac2dd05bd",
+          "control/controller/md_acceptance_controller.py": "88db1b11a2c81b9687b0ba173bb060c7d9eba0873ea22190601981f54f5faa0b",
+          "control/controller/md_baseline.sh": "e59ca2d8efb63e06ed36caad0c3612a5436191b78ab7b750a8a1c96092cb2621",
+          "control/controller/md_build.sh": "e2587d64983ec05f41aacdd5dc3a56c3c293b98630b0351a3b66898cfa4f1f4e",
+          "control/controller/md_ci.py": "c862b2e08f7a9fe8043daa70b4aa08e18d519e23b94dcec6925f3409d3a3bfcc",
+          "control/controller/md_container_entry.sh": "f1a58ca5f505d4bcefdbb4ab64afa24408b1d4074929fc4e6618b1d9b990a83c",
+          "control/controller/md_container_entry_verify_patched.sh": "eeb20f2b25a146ae12ea7e8634559b2d7dddacb7f96cde002c567aec85504c68",
+          "control/controller/md_controller.py": "5073d3fa7bedbe41cd39b3ff41b31d75f6f66cf9e99fda3b68cd7722744839fe",
+          "control/controller/md_driver_paths.py": "bce00df699cc432d8b7b5d4a8723564498603843639693e640916ab7ed8944a8",
+          "control/controller/md_environment.sh": "034b390c322dabd790f9f66d48b07c9e24b17c65f32f73ce904c8a4f24dec800",
+          "control/controller/md_evidence.py": "2d29110ba27718f7d6a43f93fbe7579dd6e0d76249e5a5de3056d73129687772",
+          "control/controller/md_import_probe.sh": "bddc7bdb3a7b3523531b93ecf51eb2958f6e151c36b4d5a0e93231c8e4dc7806",
+          "control/controller/md_link_launcher.py": "66b989e7807dd94fc425dbfae36900a5e471b98a94c4043f13738b16fd3527f6",
+          "control/controller/md_native_probe.sh": "8d8ccc5229f404c931b312743de5a2e705b3973e30593facd6403141436c27ac",
+          "control/controller/md_packaging_recovery.sh": "d45c0378195e98d1ffeb4452e258e9a0115bd11db053e57124fe4b963056831a",
+          "control/controller/md_performance.py": "a07d3662f5543f347fa584e942dbac7fc6eaf22377c33a0895ec5e07dce8f73e",
+          "control/controller/md_performance.sh": "43d4500f7533427e9e52d6f3de19047b37abd70dafa29f3ae94727fe720bbee9",
+          "control/controller/md_performance_controller.py": "02e24cc2e58b1d88b983b865a4e55c61a2b584bea01f642b54497b2131dc4b62",
+          "control/controller/md_performance_evidence.py": "e810fdc70801fa99fa033c92f96dfd03e2dbcf938eda7487e12ff46d9cae8ead",
+          "control/controller/md_performance_exec.py": "95d573f9edae5e4037e252d690f4adcc4bca04d6cdea59109ffb54686a7ff227",
+          "control/controller/md_performance_run.py": "24f13228ee7333dae8aaf9f8fa57c8f63a5110b93c85ff8ddcb31433e85ef585",
+          "control/controller/md_probe.py": "ac6be1c22cbac809892d62eff53d1e2dd83ee8d50f7cd752f375fcb1e78f8725",
+          "control/controller/md_publication.py": "79d4cb06f6b28756d795f762d3268f5e75bd3c5e9664e25302a470133fe4be26",
+          "control/controller/md_registration.py": "4f4e4db5bb2e7f9c55985d408dcfbf3f6acddbbab1ff8ca327fad0408cec6bb9",
+          "control/controller/md_relocate_audit.py": "21fe48bf420130c74ca5eebebd8d113fc219009700f970907bea1c7e72ed16b3",
+          "control/controller/md_runtime.sh": "cd11020142359a4a83313f97dfb6ef7aaa356a5d5c5a92a4f8d5da12b25543fe",
+          "control/controller/md_science.py": "55d4ee142d65cd7b327dbdca223f0b4b69c8185729b85d991da2652f7979f788",
+          "control/controller/md_tracking.py": "16f6fa69ebfce0ceb97bc7e3deb527e376423f38346b1312a9d02ad369791ef1",
+          "control/controller/module_publication.py": "dfb74bdc51f9eeff6931c66458f80bd571b2ba587368c50ee0a752abe6f6d06f",
+          "control/controller/modules.sh": "c3cba3ad99f373978ad806f61231fc20e9d254e06d5eccdece54629c259cea58",
+          "control/controller/native_module.py": "feb0065834df656ab4de54df86ffaa650ded3ed030fab4190b2d5df8cd3e4421",
+          "control/controller/probe_container.sh": "fb680791228f1b6fac07a038e5964be7399a485b86b81be8a383e51234770d78",
+          "control/controller/probe_module_publication.py": "3d9e4cf82ad5fdf4744a4eceb18d2e7d4d775e6771ee1b9c993aaff4f344d80e",
+          "control/controller/probe_module_publication.sbatch": "c854cb55c67dbac8b599a8bbc2b802d2e882cd7d9305773ebf723f16554255ba",
+          "control/controller/probe_native_export.py": "8203e115ae2123c9cff34d37c95d2939712c6e893a5c4ec7b242c199511a07c5",
+          "control/controller/probe_native_target.sbatch": "ec5cc83d030387d752006ec4d045b15c9b6e191b4916c098a6e400ed0334b1de",
+          "control/controller/recovery_budget.py": "edd5032692d5dd1f4491ec56f5a873ea61cb659651d558188ad2045683b76e27",
+          "control/controller/release_contract.py": "5054afa813bece49e24841f83b33c47993ff84391859fad15a8ddd373ede3b02",
+          "control/controller/remote_controller.py": "2c7df9d4c2f812b9f0a27b4aee8097609addd75ef6c6951605fed8920cd7f2ef",
+          "control/controller/resolve_source.py": "2d26c1217d70cec680bbbbe81a9b6806030641edb06636262405bb7b7761fa19",
+          "control/controller/resume_cp2k_export.py": "549a0dff5240aae4e3fcc8e8a02652f2007a3ca5586ed7d656dee85620969d8d",
+          "control/controller/resume_lammps_extract.py": "ff359df79536ce76217b6ff0cfb62184c48103d766ae9148e2098a88c4b51793",
+          "control/controller/resume_lammps_packaging.py": "fc6fd576fe5ecca5609d0c771509ffc1ce8bc94a88f7711a83173fd704b52f07",
+          "control/controller/resume_lammps_recovery.py": "323d9667dc9780e3e6b4303562fda7bf37d22ed149a00583306ecafba6420e6a",
+          "control/controller/runtime_controller.py": "5d2c1fa434c9d70506976df08fcbd015dcf7592afbd04df24691bbcb85ee8214",
+          "control/controller/slurm.py": "705bea32222d5964dd20ad589abe61322106518af61c0a645a42983970d7b220",
+          "control/controller/software_controller.py": "658d3ab105eddaf1804924724a97d1b6c064cfb9f8c1f76073a7c76cdaa0e215",
+          "control/controller/source_cache.py": "1c6ee2a243509f0fdf74e32736bea562e2777569c4c22480b2accdb78334f52b",
+          "control/controller/submit_abacus_recovery.py": "24e393dfe97e2a5a3cddbd0f0d338e4cae597aa7ccd8a0c4fe2da4526aad060d",
+          "control/controller/validate_plan.py": "2f9601f5f5e3e64828b5180a36766dbca4c6ffd651ecd3507723fcc3a1cfd0e3",
+          "control/deployment/cp2k-water-scaling/README.md": "ce46d46f85dea9779f6df1e04abb8ab1509bfe6b42837dfaef0f600326d4eebb",
+          "control/deployment/cp2k-water-scaling/build-cpu.sbatch": "6d98ee945a6d816144c872ddb1250293f1b4d15177b4e8c8cb66368bc42969d3",
+          "control/deployment/cp2k-water-scaling/build-cpu.sh": "540cf12c5d5b5b42dc6107a6dfd52ad85a9888e300ade78f842349253b45ca06",
+          "control/deployment/cp2k-water-scaling/campaign.py": "2811740c76ccf7ed2e5eae98438d5f085bdf3e957c9ef36d81109e697d9a8b7a",
+          "control/deployment/cp2k-water-scaling/job.sbatch": "07be8871cae5070c672a4fc3aa0d78da7085f06b688853ef1adf5cde9d7e77bc",
+          "control/deployment/cp2k-water-scaling/rank.py": "9db06188cc27c310f10b9ffef3587a901748f9c3669913a9096a275afe79f746",
+          "control/deployment/cp2k-water-scaling/run.py": "4d89122e8e3089a3cd0346b69819b2096f1612a74b773bbac9ab5cff6f3838f5",
+          "control/deployment/cp2k-water-scaling/submit-cpu.py": "946a0eba95402b61d03d03b2585e58224788ea64402b0fcb81360477b894182a",
+          "fixtures/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "fixtures/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+        },
+        "install_receipt_sha256": "7b2779db91a33b338c6f9c0aa1c3ec78ac9a0c706bfe2362528ffcaaed18850e",
+        "partition": "4V100",
+        "physical_cores": 4,
+        "probes": 6,
+        "shape": [
+          7,
+          7,
+          8
+        ],
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "stage": "compare",
+        "tuning_import": {
+          "completed_tuning_cases": 9,
+          "files": {
+            "cases/tune-0-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+            "cases/tune-0-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+            "cases/tune-0-gpu/cp2k.log": "78e1defe4adb885600c12c1b0de208dff55895f6915e251be6ab175dc31bd7cd",
+            "cases/tune-0-gpu/elapsed.txt": "947adc429ae611dd4ca83044413c3ddf8bf228dab4f92dec3ab5babbf6538fc2",
+            "cases/tune-0-gpu/forces.xyz": "a1d9f58623430bea79af114807926c295f6bee1864da4386e85602cf35d3332f",
+            "cases/tune-0-gpu/input.inp": "68e87e8e95afeeef4a42154c020e43ec2e629f21f0a533521a89bc937739daa9",
+            "cases/tune-0-gpu/launch.json": "3e8c1c8123418211aa134ffffd6335c265479164b5dffa7fc7cd6ce0fc1fa372",
+            "cases/tune-0-gpu/rank-0.json": "6d35d002b26619851669a99eaa833db6644c8adb4bd4c5549a78ea16b146ce1a",
+            "cases/tune-0-gpu/resources.jsonl": "ad7d3bab3780aaae44fae842ac5a9442302906a43d52fc40b9a1824d4f8a61a4",
+            "cases/tune-0-gpu/sample.json": "907299bcb8ecba0a39e986b174afa1eb857f10fd46de90b7a9c15e12fd6df67f",
+            "cases/tune-1-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+            "cases/tune-1-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+            "cases/tune-1-gpu/cp2k.log": "a878fbf6a75a6bf4832426de9658fbbdd516574471f68a412c2558a538dd05f5",
+            "cases/tune-1-gpu/elapsed.txt": "851e0257e8e8b1cd0f28ac880b477959266939afd4738b244b89ccaf9b1dc96e",
+            "cases/tune-1-gpu/forces.xyz": "85687d40fa262673b790dd97a57157b8e6577b034f5c5f478d04c16850c27ad2",
+            "cases/tune-1-gpu/input.inp": "68e87e8e95afeeef4a42154c020e43ec2e629f21f0a533521a89bc937739daa9",
+            "cases/tune-1-gpu/launch.json": "e1d583e2c236f10d58c30652caa854db600b313ab93e48cfd345c5032161995e",
+            "cases/tune-1-gpu/rank-0.json": "f5511086d8a58503248d32ba059cf435507d0c8e650abe7d555cc8aa5fecb9b3",
+            "cases/tune-1-gpu/resources.jsonl": "ec9786b4cb5611668764a456ea37529755a7bb4c29cccf788fdd36ae4d62e9c1",
+            "cases/tune-1-gpu/sample.json": "f4e0457f12267c8253b518039a1a5b58167f1fd21bb491990c2fd0a348c66ab0",
+            "cases/tune-2-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+            "cases/tune-2-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+            "cases/tune-2-gpu/cp2k.log": "faac07176fbc8469d3f62056810b0f3d29a2032c192a605f18be31ce16a4673e",
+            "cases/tune-2-gpu/elapsed.txt": "6327418f9db9de1606cb5db0b7675cbd19ddc09b1c2fdd03be5f7ce935309b3b",
+            "cases/tune-2-gpu/forces.xyz": "daf716ebf68a51c811ba8b474511f869d7f3ce94780b2d156d82ddabbb5222c0",
+            "cases/tune-2-gpu/input.inp": "68e87e8e95afeeef4a42154c020e43ec2e629f21f0a533521a89bc937739daa9",
+            "cases/tune-2-gpu/launch.json": "24d5f6ae7da84f14b5d705fc0d764b91e18c9a39f6b3eeb62fbb2200af2ff7d8",
+            "cases/tune-2-gpu/rank-0.json": "1be26bb053dd4e77c05c1ca922608fef21155cf10ee1f4dd493536753f3fbfeb",
+            "cases/tune-2-gpu/resources.jsonl": "e16042ba30dd73eaa340f1986596c12d324d9d84e479941d0e8d8e441c4ac4ec",
+            "cases/tune-2-gpu/sample.json": "7d995a186910f4f4afb5ba232fb8d253d796969576bea86cb0fc673d6093aaa7",
+            "cases/tune-3-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+            "cases/tune-3-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+            "cases/tune-3-gpu/cp2k.log": "616f9b052691a3c116435d2d2fb5192f87db98436834aded390a19212a0febf9",
+            "cases/tune-3-gpu/elapsed.txt": "2317e16d03f3c1dc9394ec1e1e969df0de3b8174f51f0600498b1d9797fc1ab1",
+            "cases/tune-3-gpu/forces.xyz": "678c7a3608160eefecd7d824218fbc97d6876313212c2a8389259e451e0abff7",
+            "cases/tune-3-gpu/input.inp": "d5b3c05c6473a73fae695422a6736fe4a48748a2a31da10e1c98ee4d3fd3b3d1",
+            "cases/tune-3-gpu/launch.json": "45e71af85385ce841f4aff085e58341f2dbb3aff426ea4f696f1b6a681027f4f",
+            "cases/tune-3-gpu/rank-0.json": "2ae8635e77e64ba176507930c43ca50b25e73ea11f195f307b51516639266381",
+            "cases/tune-3-gpu/resources.jsonl": "cd869799f718f1eea2a127b65954f1328030a24e11ecb2b25a025a07650bbb13",
+            "cases/tune-3-gpu/sample.json": "96f97ac4290169828f9c3e6344e3a0a9fc558dc9807d56dd7a4cd741bd0c103a",
+            "cases/tune-4-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+            "cases/tune-4-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+            "cases/tune-4-gpu/cp2k.log": "9089736d363c4b25b392e1a7bd9cab440a48fdff3364d66d2c8724546e9e8449",
+            "cases/tune-4-gpu/elapsed.txt": "381e5a6244aa8e81f8b0db1638ad877128e2137896016b7f65c8814f716c1951",
+            "cases/tune-4-gpu/forces.xyz": "5c7b0c78a8e0119a610cddfc17536ead10b0a0e444274645dc81ab6f2c480b7c",
+            "cases/tune-4-gpu/input.inp": "d5b3c05c6473a73fae695422a6736fe4a48748a2a31da10e1c98ee4d3fd3b3d1",
+            "cases/tune-4-gpu/launch.json": "5c9015babf6fb70eb423832ce77cf1f03f02814cae469ecdce5ed754b97e0a0c",
+            "cases/tune-4-gpu/rank-0.json": "a37841cb046defa9976c7a1706fabd051062fd6ea1ca53ff3518d060a7ef6736",
+            "cases/tune-4-gpu/resources.jsonl": "607fc27bad1955008822d7a30e51961fb251a438b7f66a34beb5efc4edb88c5c",
+            "cases/tune-4-gpu/sample.json": "1877988073085ad355eebb85fee3d83ad3b1b371a78587cbfcea9e44a2799970",
+            "cases/tune-5-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+            "cases/tune-5-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+            "cases/tune-5-gpu/cp2k.log": "da6f2cf17a96cfd682ce3dc561bae18c7f32d70a12fa4927f59a3180946cc4f6",
+            "cases/tune-5-gpu/elapsed.txt": "0678f17fbbbb5b1a6e263c5cfbf0122cebf5f1c92a233f4534f6c2031c7923d2",
+            "cases/tune-5-gpu/forces.xyz": "9f78599c70137d0e6d170a1ee4070053d063de366a8923d52351682520988414",
+            "cases/tune-5-gpu/input.inp": "d5b3c05c6473a73fae695422a6736fe4a48748a2a31da10e1c98ee4d3fd3b3d1",
+            "cases/tune-5-gpu/launch.json": "66e04a1c6fd9b4dd4a48d9b64ed0264bd9aaa66cecac42813b449406dcc91ba1",
+            "cases/tune-5-gpu/rank-0.json": "be5f0739b7baff4306072443fe57c76132b5119c4df9f8596dc59c50b318c875",
+            "cases/tune-5-gpu/resources.jsonl": "77e83a237fde97f43403df144fe3d441b5186a1246d7e731cc41132643838cf9",
+            "cases/tune-5-gpu/sample.json": "6ff8f2686c325c47744cbad1e5ffc2129852e51c5f523a48a573f0a9065ba78d",
+            "cases/tune-6-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+            "cases/tune-6-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+            "cases/tune-6-cpu/cp2k.log": "9d051b9323233f95c8de9fd9ec6f0690ae221d6f397889976a81e57a14a8fbc2",
+            "cases/tune-6-cpu/elapsed.txt": "b796fdd5c3ab4aa6f09a54f57fd48a9ca94f42be39730e27b049a56c068c9493",
+            "cases/tune-6-cpu/forces.xyz": "4fcdc7bfbc80943ae70e9de3a837aa05d227e217f279079f6dbb422601fd0f6e",
+            "cases/tune-6-cpu/input.inp": "f7382cf02cbc053fd7527e9e2b66cd53c9696e43c9d40a86326e2266d37d1d5f",
+            "cases/tune-6-cpu/launch.json": "d244f4a209fcd888605a19324e9d2234dd9a79bfd50e4ee4e49d0743cc67c76d",
+            "cases/tune-6-cpu/rank-0.json": "fadb4f3f18131dae5ca1328a6060b1a81d7ed0768f0081a10ee71bfc509a933f",
+            "cases/tune-6-cpu/resources.jsonl": "794ca6f10f56cf23f42e62810e7fda9717006e64eb765e5062050443d045d5b9",
+            "cases/tune-6-cpu/sample.json": "ff4113b90fbe065d0759bdf27f914f39a2201f4faad3b90197bed036ebbdf889",
+            "cases/tune-7-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+            "cases/tune-7-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+            "cases/tune-7-cpu/cp2k.log": "f15e9fbf407ad5068a39428c7fc42d4821c2fa73b5bb4cf5ea2f9d3ea74bb2fd",
+            "cases/tune-7-cpu/elapsed.txt": "8b50f4f9b5a10c5d74dee9fef6b9ec05990a0a655627a0b778094915acd651d5",
+            "cases/tune-7-cpu/forces.xyz": "1b28222f65661fa1c7578c3df02c321846a79e28aac62f93ae75467387228faf",
+            "cases/tune-7-cpu/input.inp": "f7382cf02cbc053fd7527e9e2b66cd53c9696e43c9d40a86326e2266d37d1d5f",
+            "cases/tune-7-cpu/launch.json": "9c633e783d66f67e5f5595b76655365d1d78439b180af38fa0fa0e11c207222e",
+            "cases/tune-7-cpu/rank-0.json": "2c5665d12f3ac334dced39a9f9a933edb31229006ebe6abdc61d851694e9a859",
+            "cases/tune-7-cpu/rank-1.json": "27f1a2c0610a52e7218f1f2a2c5781ad07529434bbfbbf8d8399d6ec995ae485",
+            "cases/tune-7-cpu/resources.jsonl": "80af16d900eaf70c0c409a8c483a51ddf7cdc99e13b063903d60b8e100ab4f7b",
+            "cases/tune-7-cpu/sample.json": "a2b06019ebeb7fa99a46c89c8fef9fd6704e9f830642e9a632712ef3fc382b2e",
+            "cases/tune-8-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+            "cases/tune-8-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+            "cases/tune-8-cpu/cp2k.log": "c819ca5e1e2ab1520290552a055dd1bc20a956b88b7ae08670e2ab6ee9a2813d",
+            "cases/tune-8-cpu/elapsed.txt": "0dfd84fe862545b50042c2992ddfa844778c4f6ae5fa24e935dd08123a13d7f7",
+            "cases/tune-8-cpu/forces.xyz": "64d0f9cfaa9716c327f8d43bac172d204e23c9c06655eb2250fa75007277e824",
+            "cases/tune-8-cpu/input.inp": "f7382cf02cbc053fd7527e9e2b66cd53c9696e43c9d40a86326e2266d37d1d5f",
+            "cases/tune-8-cpu/launch.json": "8f50ef3b046f922f547f7763c4615e332c50ce09eb483789e15537de79c88947",
+            "cases/tune-8-cpu/rank-0.json": "4d232e97f37bc6c4d02004477df3f3193c44c5b012a8f1398a0ea61f089b9266",
+            "cases/tune-8-cpu/rank-1.json": "773111181fac6d222240db4925f48afa9c637893069884325e6dd45bb56fe4d6",
+            "cases/tune-8-cpu/rank-2.json": "5032b19b9a122909e5b10ffdb4d9741011ebdd96e65a897eb4cb5a3400111f48",
+            "cases/tune-8-cpu/rank-3.json": "dbc3040d966b2a6af41cd0ea0195e45237f3792292bdab858bf92e4917109721",
+            "cases/tune-8-cpu/resources.jsonl": "59e667a4cf5007e899e5a520f2017ced6b19a4c8598d2699c40a1e376599a811",
+            "cases/tune-8-cpu/sample.json": "6fdf9728bc67844be71b87c19506a02ba7269a8f1b6619020342f1ea50b8d0df",
+            "control/controller/abacus_baseline_probe.sbatch": "ee77ca5738eb3e0e0aa0bd4136071d5444ba6f08d394be640dd7092f3bb86914",
+            "control/controller/abacus_benchmark.py": "852c7701aaea3f8d36e2365a09637e91f12612e9284063a7236d70d3e832705b",
+            "control/controller/abacus_build.sh": "cf67a38908fdbc1145aa515011478e59dcac92ec40bebbdb691cb1c024a16a80",
+            "control/controller/abacus_cache_runner_reference.py": "ee275b407a58e1ea3bc835e034ad86eee5a218d0134b8a3f8e3af3c277e10ff3",
+            "control/controller/abacus_dependencies.py": "47c5d90a1c75dd8da1ff085735a26e4cb584aae2a122661c1448fb7cff33afd6",
+            "control/controller/abacus_dependencies.sh": "905eb88d0ca0dc2f3e011874fbe28b7a95cb8a1a1db526ddc4e5fc4661e20cde",
+            "control/controller/abacus_dependency_lock.json": "ce7a95f5e0776eb1ff694e76a88cd4389ee617906071502d79ef5727e5a66d6c",
+            "control/controller/abacus_features.py": "e1b9d5ae501a6f43053c15f5fccabbc224e0278a324b0e2ce628d1324525d64a",
+            "control/controller/abacus_full_dependencies.sh": "0aefb9b7a59f66a0776a70d914dd4ba34d281022856dd91b9fb1864355419d4c",
+            "control/controller/abacus_full_profile.json": "d93fbde64a6898e12c0e61cdced1c2ca7d25925611f3d0bfc3ac1b30576bd469",
+            "control/controller/abacus_runtime.sh": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+            "control/controller/abacus_site_gpu.sh": "1a8631ca91a9969f56115425ef13489144fa28d292609d96292fc8ce9b898b29",
+            "control/controller/abacus_site_mpi.sh": "199aeb495069f0812214c8bd944b229799b8d54b9a908667ef8f1d5b2cbc54d1",
+            "control/controller/build.sbatch.in": "5e0e74a118add2aa80f181dda6bc4bee1bcdb3e241df9c592f8632fbacb21a98",
+            "control/controller/build_capacity.py": "bff0a1cbf9acedb858c9776efd73a9c98737787e1bb439e0965048f47e0ee66c",
+            "control/controller/case.sbatch.in": "d849dca06d71f2ccb3d5e52a5f7a8ea07803a63894bb42aea6385604b5d98698",
+            "control/controller/ci.py": "1b713224de667d460744548c0c6dd965dfeb9c01aef54cc64de80bcd3fefde4b",
+            "control/controller/config.ini": "8dc7eee2853aaa96979a8f55e2f1dea0ceb8c7cb0045e19695837b10d99c575c",
+            "control/controller/container_entry.sh": "618042bbd5fe909dbe0ea2c47f786791d7bb451dc1da841cb2dea83eb72803ef",
+            "control/controller/cp2k_Libint2Config.cmake": "223aac33a7743bc46a25738cb75b4a4bd1100571b1ea13fe4c19dff7c4019de9",
+            "control/controller/cp2k_acceptance.py": "84db91909883510765fa87c03f2816f1af9ac0271f85f95f03c62371dcd098eb",
+            "control/controller/cp2k_baseline_probe.sbatch": "6462e789df12424f89c9595ff62146f1e51933136b2d6306e5845755b4c5cd52",
+            "control/controller/cp2k_benchmark.py": "aefd8b234b1b43f2815a6af5f3502204319a490f4919ad417421d920034a10e3",
+            "control/controller/cp2k_build.sh": "74461284a5b63385f9a75c679f4502d2f21d72f6d317ab06dcc3a33af4975f23",
+            "control/controller/cp2k_cmake_prerequisites.cmake": "8c923f94b76475eba88e14280b05e37ddb8f491a03821193253e49e4af519a0d",
+            "control/controller/cp2k_container_entry.sh": "05f7c0036558ded066641499209d70744519c8d4dbc23bb35f727c06ede2955d",
+            "control/controller/cp2k_dependencies.sbatch": "d1fbdbb7f8553b0b912a08d73bc8f85ac376b9bf0e854c79298a03a4718b3197",
+            "control/controller/cp2k_dependencies.sh": "99d5bbcf9dda385257c0088fe9a12a1f6eea86364e2dc8bef46a17d1af822562",
+            "control/controller/cp2k_dependency_stage.py": "babdea468491a5f809d7c86a1f170d48b9c55d8c6d5abae954ff1d969c5d9a9e",
+            "control/controller/cp2k_elpa.sh": "508b4887216c5ac57bf6777dee83d70b0bf655a3335a26647b7291a1b3ac4ea0",
+            "control/controller/cp2k_elpa_abi.f90": "95c2ef65486385219c646424c2d8724574b8dabaa0fc4ce89c2e78bae43478a5",
+            "control/controller/cp2k_elpa_runtime.py": "0ceaf73725599632c002e5b6588d855c08e1d9a3798cba3bab9a5bf9b048fcc2",
+            "control/controller/cp2k_feature_contract.py": "2d2ea42d9e74d5ecbe8278bebd8b23c81d1bcfe86c35b0d303cf3f7b09e93917",
+            "control/controller/cp2k_image_driver.py": "e0ea6a2b7ce25189b3eb9b7749392b0416894f9d365e1f3c31c577546a8df049",
+            "control/controller/cp2k_libxsmmConfig.cmake": "734aa00bd820e244cde406866c1c6065f8a2f85571dde413f7c2bf058b1fb038",
+            "control/controller/cp2k_overlay_probe.sbatch": "69c6044258e990bd6dbf5ccce76b5b6bb0545d118b000587c720975ec9757e1c",
+            "control/controller/cp2k_overlay_workdir.py": "f22d281427ede157c03c7fc20a8b625e9c5a511e023a6c358de93040589fe468",
+            "control/controller/cp2k_payload.py": "8e71ae39fa9f82c9033107dc00c37f780b06a4b032c5de78190336509c120d83",
+            "control/controller/cp2k_probe.sbatch": "3927f4ece5c157504bc3b0b70e70f603c9319e2709ae36db2a7ce8cbcdc5fa0d",
+            "control/controller/cp2k_repack.sbatch": "004ede58b234b49dc0297ea437d9a3e1e23ff450f7ea8b3bc65222711ee78c7f",
+            "control/controller/cp2k_runtime.sh": "210ddd657ec01da4c1bd13294f95ee51991f24219c3b1965c52874c6270b4540",
+            "control/controller/cp2k_site_elpa.json": "9b3253261d2cee47df156136c575c6fc7748f30344b029b4bc56fd83bed4fea0",
+            "control/controller/cp2k_source_fixes.py": "9ea20a68ddbeaf7184f8968e5a966eef3ee2b84f9ba8cffc56f71c1496563ad9",
+            "control/controller/cp2k_spack.py": "0235341aed673e851a375457076a220d644d178332d577f8a661712c5d7775ad",
+            "control/controller/cp2k_spack_dependencies.sh": "62977f63321a57a3c7d66f15e20f82cebc2ddf3987f1faa0e6719f7e6a640985",
+            "control/controller/cp2k_spack_environment.py": "70603447fee7d634fe939a2a11faca829407eceacd21090812705bd373c0d1ba",
+            "control/controller/cp2k_spack_install.sh": "320f8e5f58ba986a5a37c19223183b3826d932ed680173e4cce2ab034f4e37a7",
+            "control/controller/cp2k_spack_install_evidence.py": "391ad327602cabf1e49db806a6d82c1887669f40da097ba2dfdf3ed193d481cc",
+            "control/controller/cp2k_spack_install_submit.py": "49a15275a73f7d8ed08566f9b82b3576489f8dd74790b336287e97719d685447",
+            "control/controller/cp2k_spack_libint_repair.py": "b38fd9292b264bc83c308ca8c4ce4b42a1b2beb3367713de3f7308106b2cd014",
+            "control/controller/cp2k_spack_link.py": "52efab5e2c77f195e1dd380911a1d7617f2d1f632c3a808dfe5d4e61e3ab88f8",
+            "control/controller/cp2k_spack_mpi_repair.py": "7036b4f1c89b54d0f25e6bf6c87e79f07306a55cd8a10f4e2c93edfcb8c732e8",
+            "control/controller/cp2k_spack_native.py": "bdfadff1c81c8cc0bf03d80f950e4dd3f3176496f02febcb9ae102cd847abb04",
+            "control/controller/cp2k_spack_probe.sh": "4c266c5704f1cf96f4aad3da70030fe7c4f5ea8eb9eae5bb3e409f601cf3723e",
+            "control/controller/cp2k_spack_probe_submit.py": "e878b1bb56ef2bdf8c4afc133d92cbb18ff63198afbc30f9d892f505c1cc08c4",
+            "control/controller/cp2k_spack_seed.py": "9c41a9fc602f2f5e351eb845785a0b86882268b58b53573b3972a85b2fa35dfe",
+            "control/controller/create_rootfs.sh": "ae0818e8bb485222605290fd3f3c410c40354aa518c8f613ac26236b3e382852",
+            "control/controller/daily_plan.py": "8dcc9907d201caab77f421adc7d77a3471881b6caba475ad2474270ae91b2024",
+            "control/controller/delivery_layout.py": "268a18bfe45b1f8cca9d955d5b34215392ee74d734dcf4358c5da66728f6d7f2",
+            "control/controller/environment.sh": "68bfc2f69c1df2f9b35fdf9d273dbf35e377c44b490ff19ebc6c41ac7dad58d0",
+            "control/controller/export_native.py": "cf5709c9037af843e360b2ad1b73b2d50dcdc1525940db9350df5783d9e8c619",
+            "control/controller/finalize_lammps_sif.py": "430113a1b0d271e5d3241460e46166206443dbd92812113f66228dac9ad7fd2f",
+            "control/controller/gpu_feature_controller.py": "67e0711ccd8d39d1d6fc999baa35a9b6fe32fbe2c9392db5bb8e7cdc09f60eb0",
+            "control/controller/gpu_feature_runtime.sh": "b499d0fe6bd1ad4623ece45ea6663702bf8e54d95ae1a0679b87f34ce81a0734",
+            "control/controller/gpumd_acceptance.py": "35080b2962f1cd435ceabfa2ba52b502735ff3c32fcdc9cd560a6e926e7e85bc",
+            "control/controller/gpumd_build.sh": "4739c263643a94b428fdb28e4ca25de93224106fca8ce193d48bf3c2b997a7fa",
+            "control/controller/gpumd_container_entry.sh": "2fd02f0abd7736865eda94204f28d7ca0a536a8eb2029d3b9cb0b435034bdb7f",
+            "control/controller/gpumd_deepmd_probe.py": "78d3e11ad614aed6b092f5fcb3cdf24e9f0dd91fb9adf73c263da2e9ed761319",
+            "control/controller/gpumd_environment.sh": "6bb0cc52a65b83add6cfc6a7375459f61e82ff822aed2d1e1718faf92f935370",
+            "control/controller/gpumd_relink_probe.sbatch": "4d1f7b8858f3c9c1f2beb36393b008f52f7d49cf3f696f2d58c39359bdb31997",
+            "control/controller/gpumd_runtime.sh": "442c2dce979960cfebc58226357ae5374db9e9881649a1f458f78387936b568d",
+            "control/controller/gpumd_science.py": "ee1328905abaca2ffd2630d6d3dcad7a52af110ddf25d4d594485841144f5e1e",
+            "control/controller/gpumd_site_probe.py": "3501fc12f9b648a50127a246ff8232af20f288e4d704b9319b5091417c60d5bf",
+            "control/controller/gpumd_site_probe.sbatch": "b04fba2267207a966b4de8b1660ca2d52d62e94c231627c35107e93c5e4280a7",
+            "control/controller/lammps_manifest_diagnose.sh": "8bd4b84fb66ecfd424c88963cf24cba3dbdb67b2c1ee420e902f61a23dc53dc2",
+            "control/controller/lammps_packaging_debug.sbatch": "6b70c42acb0176aa5fa4938726d8d7c72c4323fb0daf0329b860718279cdfaa1",
+            "control/controller/lammps_packaging_probe.sbatch": "6df4ad1d86c294af6578b0821242030bbc762b974a8be81eb0a84d69f8e6f3e6",
+            "control/controller/md_acceptance.sh": "fbbd8dc86108044c5efa2b00ca4377ab5d4219a18f4ea91d1ad3336ac2dd05bd",
+            "control/controller/md_acceptance_controller.py": "88db1b11a2c81b9687b0ba173bb060c7d9eba0873ea22190601981f54f5faa0b",
+            "control/controller/md_baseline.sh": "e59ca2d8efb63e06ed36caad0c3612a5436191b78ab7b750a8a1c96092cb2621",
+            "control/controller/md_build.sh": "e2587d64983ec05f41aacdd5dc3a56c3c293b98630b0351a3b66898cfa4f1f4e",
+            "control/controller/md_ci.py": "c862b2e08f7a9fe8043daa70b4aa08e18d519e23b94dcec6925f3409d3a3bfcc",
+            "control/controller/md_container_entry.sh": "f1a58ca5f505d4bcefdbb4ab64afa24408b1d4074929fc4e6618b1d9b990a83c",
+            "control/controller/md_container_entry_verify_patched.sh": "eeb20f2b25a146ae12ea7e8634559b2d7dddacb7f96cde002c567aec85504c68",
+            "control/controller/md_controller.py": "5073d3fa7bedbe41cd39b3ff41b31d75f6f66cf9e99fda3b68cd7722744839fe",
+            "control/controller/md_driver_paths.py": "bce00df699cc432d8b7b5d4a8723564498603843639693e640916ab7ed8944a8",
+            "control/controller/md_environment.sh": "034b390c322dabd790f9f66d48b07c9e24b17c65f32f73ce904c8a4f24dec800",
+            "control/controller/md_evidence.py": "2d29110ba27718f7d6a43f93fbe7579dd6e0d76249e5a5de3056d73129687772",
+            "control/controller/md_import_probe.sh": "bddc7bdb3a7b3523531b93ecf51eb2958f6e151c36b4d5a0e93231c8e4dc7806",
+            "control/controller/md_link_launcher.py": "66b989e7807dd94fc425dbfae36900a5e471b98a94c4043f13738b16fd3527f6",
+            "control/controller/md_native_probe.sh": "8d8ccc5229f404c931b312743de5a2e705b3973e30593facd6403141436c27ac",
+            "control/controller/md_packaging_recovery.sh": "d45c0378195e98d1ffeb4452e258e9a0115bd11db053e57124fe4b963056831a",
+            "control/controller/md_performance.py": "a07d3662f5543f347fa584e942dbac7fc6eaf22377c33a0895ec5e07dce8f73e",
+            "control/controller/md_performance.sh": "43d4500f7533427e9e52d6f3de19047b37abd70dafa29f3ae94727fe720bbee9",
+            "control/controller/md_performance_controller.py": "02e24cc2e58b1d88b983b865a4e55c61a2b584bea01f642b54497b2131dc4b62",
+            "control/controller/md_performance_evidence.py": "e810fdc70801fa99fa033c92f96dfd03e2dbcf938eda7487e12ff46d9cae8ead",
+            "control/controller/md_performance_exec.py": "95d573f9edae5e4037e252d690f4adcc4bca04d6cdea59109ffb54686a7ff227",
+            "control/controller/md_performance_run.py": "24f13228ee7333dae8aaf9f8fa57c8f63a5110b93c85ff8ddcb31433e85ef585",
+            "control/controller/md_probe.py": "ac6be1c22cbac809892d62eff53d1e2dd83ee8d50f7cd752f375fcb1e78f8725",
+            "control/controller/md_publication.py": "79d4cb06f6b28756d795f762d3268f5e75bd3c5e9664e25302a470133fe4be26",
+            "control/controller/md_registration.py": "4f4e4db5bb2e7f9c55985d408dcfbf3f6acddbbab1ff8ca327fad0408cec6bb9",
+            "control/controller/md_relocate_audit.py": "21fe48bf420130c74ca5eebebd8d113fc219009700f970907bea1c7e72ed16b3",
+            "control/controller/md_runtime.sh": "cd11020142359a4a83313f97dfb6ef7aaa356a5d5c5a92a4f8d5da12b25543fe",
+            "control/controller/md_science.py": "55d4ee142d65cd7b327dbdca223f0b4b69c8185729b85d991da2652f7979f788",
+            "control/controller/md_tracking.py": "16f6fa69ebfce0ceb97bc7e3deb527e376423f38346b1312a9d02ad369791ef1",
+            "control/controller/module_publication.py": "dfb74bdc51f9eeff6931c66458f80bd571b2ba587368c50ee0a752abe6f6d06f",
+            "control/controller/modules.sh": "c3cba3ad99f373978ad806f61231fc20e9d254e06d5eccdece54629c259cea58",
+            "control/controller/native_module.py": "feb0065834df656ab4de54df86ffaa650ded3ed030fab4190b2d5df8cd3e4421",
+            "control/controller/probe_container.sh": "fb680791228f1b6fac07a038e5964be7399a485b86b81be8a383e51234770d78",
+            "control/controller/probe_module_publication.py": "3d9e4cf82ad5fdf4744a4eceb18d2e7d4d775e6771ee1b9c993aaff4f344d80e",
+            "control/controller/probe_module_publication.sbatch": "c854cb55c67dbac8b599a8bbc2b802d2e882cd7d9305773ebf723f16554255ba",
+            "control/controller/probe_native_export.py": "8203e115ae2123c9cff34d37c95d2939712c6e893a5c4ec7b242c199511a07c5",
+            "control/controller/probe_native_target.sbatch": "ec5cc83d030387d752006ec4d045b15c9b6e191b4916c098a6e400ed0334b1de",
+            "control/controller/recovery_budget.py": "edd5032692d5dd1f4491ec56f5a873ea61cb659651d558188ad2045683b76e27",
+            "control/controller/release_contract.py": "5054afa813bece49e24841f83b33c47993ff84391859fad15a8ddd373ede3b02",
+            "control/controller/remote_controller.py": "2c7df9d4c2f812b9f0a27b4aee8097609addd75ef6c6951605fed8920cd7f2ef",
+            "control/controller/resolve_source.py": "2d26c1217d70cec680bbbbe81a9b6806030641edb06636262405bb7b7761fa19",
+            "control/controller/resume_cp2k_export.py": "549a0dff5240aae4e3fcc8e8a02652f2007a3ca5586ed7d656dee85620969d8d",
+            "control/controller/resume_lammps_extract.py": "ff359df79536ce76217b6ff0cfb62184c48103d766ae9148e2098a88c4b51793",
+            "control/controller/resume_lammps_packaging.py": "fc6fd576fe5ecca5609d0c771509ffc1ce8bc94a88f7711a83173fd704b52f07",
+            "control/controller/resume_lammps_recovery.py": "323d9667dc9780e3e6b4303562fda7bf37d22ed149a00583306ecafba6420e6a",
+            "control/controller/runtime_controller.py": "5d2c1fa434c9d70506976df08fcbd015dcf7592afbd04df24691bbcb85ee8214",
+            "control/controller/slurm.py": "705bea32222d5964dd20ad589abe61322106518af61c0a645a42983970d7b220",
+            "control/controller/software_controller.py": "658d3ab105eddaf1804924724a97d1b6c064cfb9f8c1f76073a7c76cdaa0e215",
+            "control/controller/source_cache.py": "1c6ee2a243509f0fdf74e32736bea562e2777569c4c22480b2accdb78334f52b",
+            "control/controller/submit_abacus_recovery.py": "24e393dfe97e2a5a3cddbd0f0d338e4cae597aa7ccd8a0c4fe2da4526aad060d",
+            "control/controller/validate_plan.py": "2f9601f5f5e3e64828b5180a36766dbca4c6ffd651ecd3507723fcc3a1cfd0e3",
+            "control/deployment/cp2k-water-scaling/README.md": "b76cff74daeacb791de9434fe4b3c893fafbbe889ea0bf9976ce443077bb828e",
+            "control/deployment/cp2k-water-scaling/build-cpu.sbatch": "6d98ee945a6d816144c872ddb1250293f1b4d15177b4e8c8cb66368bc42969d3",
+            "control/deployment/cp2k-water-scaling/build-cpu.sh": "540cf12c5d5b5b42dc6107a6dfd52ad85a9888e300ade78f842349253b45ca06",
+            "control/deployment/cp2k-water-scaling/campaign.py": "2ec35846fe3d76ff6b54081a635aa5ca8f2eff861fa7e1c20d169dbf1d874fe2",
+            "control/deployment/cp2k-water-scaling/job.sbatch": "07be8871cae5070c672a4fc3aa0d78da7085f06b688853ef1adf5cde9d7e77bc",
+            "control/deployment/cp2k-water-scaling/rank.py": "9db06188cc27c310f10b9ffef3587a901748f9c3669913a9096a275afe79f746",
+            "control/deployment/cp2k-water-scaling/run.py": "c7dcab5fd26e4e5861c1638c66cd94ff048e42933478c76283dda459ef8c1135",
+            "control/deployment/cp2k-water-scaling/submit-cpu.py": "946a0eba95402b61d03d03b2585e58224788ea64402b0fcb81360477b894182a",
+            "fixtures/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+            "fixtures/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+            "job.id": "5b656a03c773a43282863bd628e55a4985dfe51751e7f5f47269ceaa32d554b2",
+            "request.json": "926d25891975aaea585186e396dcca999b9d42bc8a73ab218e3bb854ecc46e2f",
+            "results/devices.json": "8446aaef195f37fc3d43567001fcabcafe0dc42210e05937e08d9633e5a7116b",
+            "results/tuning.json": "3548b0a9e61e45c010fedccba69b042fae7c25f6dd9e62687604ac205c6923c3"
+          },
+          "job": "1882731",
+          "path": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r2",
+          "performance_result": false,
+          "scheduler_state": "FAILED"
+        }
+      },
+      "run": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r3",
+      "samples": [
+        {
+          "average_physical_core_utilization": 0.43071900674045766,
+          "basis_functions": 9016,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 3.637978807091713e-12,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 290.348,
+          "dispersion_ha": null,
+          "elapsed_seconds": 291.7099037510343,
+          "energy_ha": -6753.29343637195,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D7KBF200",
+            "used": 18942201856
+          },
+          "host_memory_fraction": 0.95,
+          "mode": "gpu",
+          "name": "pair-0-gpu",
+          "peak_gpu_fraction": {
+            "GPU-10e0425d-1ee7-7ac7-79d6-d318c23e7fe8": 0.54986572265625
+          },
+          "peak_gpu_mib": {
+            "GPU-10e0425d-1ee7-7ac7-79d6-d318c23e7fe8": 18018.0
+          },
+          "ranks": 1,
+          "returncode": 0,
+          "sampled_cpu_seconds": 502.58,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            7,
+            7,
+            8
+          ],
+          "stop": null,
+          "threads": 4,
+          "warmup": true,
+          "waters": 392
+        },
+        {
+          "average_physical_core_utilization": 0.9973812353681942,
+          "basis_functions": 9016,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 1.3205863069742918e-09,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 1112.856,
+          "dispersion_ha": null,
+          "elapsed_seconds": 1113.7341074899305,
+          "energy_ha": -6753.293436373267,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D7KBF200",
+            "used": 21625778176
+          },
+          "host_memory_fraction": 0.95,
+          "mode": "cpu",
+          "name": "pair-0-cpu",
+          "no_gpu_compute_process_verified": true,
+          "peak_gpu_fraction": {
+            "GPU-10e0425d-1ee7-7ac7-79d6-d318c23e7fe8": 0.0001220703125
+          },
+          "peak_gpu_mib": {
+            "GPU-10e0425d-1ee7-7ac7-79d6-d318c23e7fe8": 4.0
+          },
+          "ranks": 4,
+          "returncode": 0,
+          "sampled_cpu_seconds": 4443.27,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            7,
+            7,
+            8
+          ],
+          "stop": null,
+          "threads": 1,
+          "warmup": true,
+          "waters": 392
+        },
+        {
+          "average_physical_core_utilization": 0.9977135948190368,
+          "basis_functions": 9016,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 1.3142198440618813e-09,
+            "max_force_delta_ha_bohr": 9.899999917073465e-11
+          },
+          "cp2k_seconds": 1166.439,
+          "dispersion_ha": null,
+          "elapsed_seconds": 1167.577054225956,
+          "energy_ha": -6753.29343637326,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D7KBF200",
+            "used": 21614313472
+          },
+          "host_memory_fraction": 0.95,
+          "mode": "cpu",
+          "name": "pair-1-cpu",
+          "no_gpu_compute_process_verified": true,
+          "peak_gpu_fraction": {
+            "GPU-10e0425d-1ee7-7ac7-79d6-d318c23e7fe8": 0.0001220703125
+          },
+          "peak_gpu_mib": {
+            "GPU-10e0425d-1ee7-7ac7-79d6-d318c23e7fe8": 4.0
+          },
+          "ranks": 4,
+          "returncode": 0,
+          "sampled_cpu_seconds": 4659.63,
+          "scf_steps": [
+            21
+          ],
+          "science_accepted": true,
+          "shape": [
+            7,
+            7,
+            8
+          ],
+          "stop": null,
+          "threads": 1,
+          "warmup": false,
+          "waters": 392
+        },
+        {
+          "average_physical_core_utilization": 0.43137594915419847,
+          "basis_functions": 9016,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 290.154,
+          "dispersion_ha": null,
+          "elapsed_seconds": 291.72349605197087,
+          "energy_ha": -6753.293436371946,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D7KBF200",
+            "used": 19179429888
+          },
+          "host_memory_fraction": 0.95,
+          "mode": "gpu",
+          "name": "pair-1-gpu",
+          "peak_gpu_fraction": {
+            "GPU-10e0425d-1ee7-7ac7-79d6-d318c23e7fe8": 0.54986572265625
+          },
+          "peak_gpu_mib": {
+            "GPU-10e0425d-1ee7-7ac7-79d6-d318c23e7fe8": 18018.0
+          },
+          "ranks": 1,
+          "returncode": 0,
+          "sampled_cpu_seconds": 503.37,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            7,
+            7,
+            8
+          ],
+          "stop": null,
+          "threads": 4,
+          "warmup": false,
+          "waters": 392
+        },
+        {
+          "average_physical_core_utilization": 0.43181857188926737,
+          "basis_functions": 9016,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 289.34,
+          "dispersion_ha": null,
+          "elapsed_seconds": 290.1913168110186,
+          "energy_ha": -6753.293436371946,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D7KBF200/step_batch/user",
+            "used": 19088064512
+          },
+          "host_memory_fraction": 0.95,
+          "mode": "gpu",
+          "name": "pair-2-gpu",
+          "peak_gpu_fraction": {
+            "GPU-10e0425d-1ee7-7ac7-79d6-d318c23e7fe8": 0.54986572265625
+          },
+          "peak_gpu_mib": {
+            "GPU-10e0425d-1ee7-7ac7-79d6-d318c23e7fe8": 18018.0
+          },
+          "ranks": 1,
+          "returncode": 0,
+          "sampled_cpu_seconds": 501.24,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            7,
+            7,
+            8
+          ],
+          "stop": null,
+          "threads": 4,
+          "warmup": false,
+          "waters": 392
+        },
+        {
+          "average_physical_core_utilization": 0.9979163984985511,
+          "basis_functions": 9016,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 1.3278622645884752e-09,
+            "max_force_delta_ha_bohr": 2.540000015871513e-10
+          },
+          "cp2k_seconds": 1285.829,
+          "dispersion_ha": null,
+          "elapsed_seconds": 1286.4354187700665,
+          "energy_ha": -6753.293436373274,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D7KBF200",
+            "used": 21735710720
+          },
+          "host_memory_fraction": 0.95,
+          "mode": "cpu",
+          "name": "pair-2-cpu",
+          "no_gpu_compute_process_verified": true,
+          "peak_gpu_fraction": {
+            "GPU-10e0425d-1ee7-7ac7-79d6-d318c23e7fe8": 0.0001220703125
+          },
+          "peak_gpu_mib": {
+            "GPU-10e0425d-1ee7-7ac7-79d6-d318c23e7fe8": 4.0
+          },
+          "ranks": 4,
+          "returncode": 0,
+          "sampled_cpu_seconds": 5135.02,
+          "scf_steps": [
+            23
+          ],
+          "science_accepted": true,
+          "shape": [
+            7,
+            7,
+            8
+          ],
+          "stop": null,
+          "threads": 1,
+          "warmup": false,
+          "waters": 392
+        },
+        {
+          "average_physical_core_utilization": 0.9976946044308617,
+          "basis_functions": 9016,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 1.3205863069742918e-09,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 1118.086,
+          "dispersion_ha": null,
+          "elapsed_seconds": 1119.435742200003,
+          "energy_ha": -6753.293436373267,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D7KBF200",
+            "used": 21528498176
+          },
+          "host_memory_fraction": 0.95,
+          "mode": "cpu",
+          "name": "pair-3-cpu",
+          "no_gpu_compute_process_verified": true,
+          "peak_gpu_fraction": {
+            "GPU-10e0425d-1ee7-7ac7-79d6-d318c23e7fe8": 0.0001220703125
+          },
+          "peak_gpu_mib": {
+            "GPU-10e0425d-1ee7-7ac7-79d6-d318c23e7fe8": 4.0
+          },
+          "ranks": 4,
+          "returncode": 0,
+          "sampled_cpu_seconds": 4467.42,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            7,
+            7,
+            8
+          ],
+          "stop": null,
+          "threads": 1,
+          "warmup": false,
+          "waters": 392
+        },
+        {
+          "average_physical_core_utilization": 0.4292947203600416,
+          "basis_functions": 9016,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 291.312,
+          "dispersion_ha": null,
+          "elapsed_seconds": 292.87571926007513,
+          "energy_ha": -6753.293436371946,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D7KBF200",
+            "used": 19110821888
+          },
+          "host_memory_fraction": 0.95,
+          "mode": "gpu",
+          "name": "pair-3-gpu",
+          "peak_gpu_fraction": {
+            "GPU-10e0425d-1ee7-7ac7-79d6-d318c23e7fe8": 0.54986572265625
+          },
+          "peak_gpu_mib": {
+            "GPU-10e0425d-1ee7-7ac7-79d6-d318c23e7fe8": 18018.0
+          },
+          "ranks": 1,
+          "returncode": 0,
+          "sampled_cpu_seconds": 502.92,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            7,
+            7,
+            8
+          ],
+          "stop": null,
+          "threads": 4,
+          "warmup": false,
+          "waters": 392
+        }
+      ],
+      "selected_layouts": {
+        "cpu": {
+          "average_physical_core_utilization": 0.9968735977588633,
+          "basis_functions": 9016,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 1.3205863069742918e-09,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "cp2k_seconds": 1151.462,
+          "dispersion_ha": null,
+          "elapsed_seconds": 1153.0774840302765,
+          "energy_ha": -6753.293436373267,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+            "used": 21516410880
+          },
+          "mode": "cpu",
+          "name": "tune-8-cpu",
+          "no_gpu_compute_process_verified": true,
+          "peak_gpu_fraction": {
+            "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.0001220703125
+          },
+          "peak_gpu_mib": {
+            "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 4.0
+          },
+          "ranks": 4,
+          "returncode": 0,
+          "sampled_cpu_seconds": 4597.89,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            7,
+            7,
+            8
+          ],
+          "stop": null,
+          "threads": 1,
+          "waters": 392
+        },
+        "gpu": {
+          "average_physical_core_utilization": 0.4356019843533157,
+          "basis_functions": 9016,
+          "block": 32,
+          "calibration": false,
+          "comparison": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "cp2k_seconds": 300.27,
+          "dispersion_ha": null,
+          "elapsed_seconds": 301.4621253274381,
+          "energy_ha": -6753.293436371946,
+          "host_memory": {
+            "limit": 23622320128,
+            "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5CXA9CH00",
+            "used": 19844292608
+          },
+          "mode": "gpu",
+          "name": "tune-0-gpu",
+          "peak_gpu_fraction": {
+            "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 0.54986572265625
+          },
+          "peak_gpu_mib": {
+            "GPU-3f1c409d-5241-9b53-16f4-a67029b95e6a": 18018.0
+          },
+          "ranks": 1,
+          "returncode": 0,
+          "sampled_cpu_seconds": 525.27,
+          "scf_steps": [
+            20
+          ],
+          "science_accepted": true,
+          "shape": [
+            7,
+            7,
+            8
+          ],
+          "stop": null,
+          "threads": 4,
+          "waters": 392
+        }
+      },
+      "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+      "verification": {
+        "completed_cases": 8,
+        "files": {
+          "cases/pair-0-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/pair-0-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/pair-0-cpu/cp2k.log": "0ad110b84807b024f0b12b7ba158f80c7d66123bdd50c57e9e8079f9bdbf6f02",
+          "cases/pair-0-cpu/elapsed.txt": "c47adfe34c198ea01bb25b3a66ce92327a6583b930e9b4abfdfafd82c0d8dd6a",
+          "cases/pair-0-cpu/forces.xyz": "64d0f9cfaa9716c327f8d43bac172d204e23c9c06655eb2250fa75007277e824",
+          "cases/pair-0-cpu/input.inp": "f7382cf02cbc053fd7527e9e2b66cd53c9696e43c9d40a86326e2266d37d1d5f",
+          "cases/pair-0-cpu/launch.json": "dcdb5e414d9e73edf4d453f4437b915ee4771475da5e7a4761677061dd7ee9ce",
+          "cases/pair-0-cpu/rank-0.json": "1494ae57203759af330499caad55e0edbe6a53807883519e0a52a640bfdd0099",
+          "cases/pair-0-cpu/rank-1.json": "57a38758015923e901a4d6c0acc1a4faea6a5e0ed7162ee51af93bfa93a48960",
+          "cases/pair-0-cpu/rank-2.json": "3911ae1d0555c9a510c1be6ca73a7a63254799b0ecbc57a2f7f165df0df59a4b",
+          "cases/pair-0-cpu/rank-3.json": "9798d5f4b1f7a73765b73e342ca2d70da10f861f61bac4720553d82d9f0fd971",
+          "cases/pair-0-cpu/resources.jsonl": "f4e0985a2f309917294c93d71fb6620e67d08861a9e2db85ef76753afcfb109c",
+          "cases/pair-0-cpu/sample.json": "583ec4907074270a6aac8a89883f33fc438ec8232dc0aa5df9f3b05f4d68d6ba",
+          "cases/pair-0-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/pair-0-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/pair-0-gpu/cp2k.log": "131c396ea2d6ca84f2385bab9a440f9c0510b417bc71200c34f7cd115e2a77de",
+          "cases/pair-0-gpu/elapsed.txt": "b640de6caee7f877ad9f6521c960d669bef69dc3d1c27b533c9a556c522ac33b",
+          "cases/pair-0-gpu/forces.xyz": "a4e6aa8aecf8e05cef0935d564eafe1044abf1d2b5723cecd94bb017e8771329",
+          "cases/pair-0-gpu/input.inp": "68e87e8e95afeeef4a42154c020e43ec2e629f21f0a533521a89bc937739daa9",
+          "cases/pair-0-gpu/launch.json": "d17a2f8c2fdca19688d30d2f8336d8a79ce0219f65be64f5ede819a0394740cf",
+          "cases/pair-0-gpu/rank-0.json": "d4f6d4c7c7eec27c41038c44fc9993ae3a05aa9c1ca7aa4b8224f5da7d1ffd60",
+          "cases/pair-0-gpu/resources.jsonl": "3b9f2344e78b70bb9804bcfad5c234b2e48bdf0e56c1c9c947b8c8d59424de42",
+          "cases/pair-0-gpu/sample.json": "aeb70b49652c7963d0abb1bc8a4ce75d339f61a66dcd0a75728f7a52af5232f6",
+          "cases/pair-1-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/pair-1-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/pair-1-cpu/cp2k.log": "a18bd74699bccb634a84c00edeb760e9c7e4973edbee3c58b245f440a09a0c9e",
+          "cases/pair-1-cpu/elapsed.txt": "ae89cf754b2cf917774fd6258b1a5fa3dc61c30fccbdefdc05352ecea28da409",
+          "cases/pair-1-cpu/forces.xyz": "f2c22ddbe8122b6679fad4cff8edef44e94feb37a1757e81a572a5169e3c5ce0",
+          "cases/pair-1-cpu/input.inp": "f7382cf02cbc053fd7527e9e2b66cd53c9696e43c9d40a86326e2266d37d1d5f",
+          "cases/pair-1-cpu/launch.json": "dcdb5e414d9e73edf4d453f4437b915ee4771475da5e7a4761677061dd7ee9ce",
+          "cases/pair-1-cpu/rank-0.json": "ddcd90d6fde9aaa6d76f7efcf626f687312b76cc3958f1134d4bfc5bf060bc58",
+          "cases/pair-1-cpu/rank-1.json": "03beabcd878a04d7c5cdc9518667838693d0569cc906eed3e40f03762ee01f6a",
+          "cases/pair-1-cpu/rank-2.json": "f7809ee2bf3d2557ae7d121411046f9b1a9daa049f5ec26ccdae0f8d4c14cfaa",
+          "cases/pair-1-cpu/rank-3.json": "b207393a3f2b4d18133d09d5ee38e380716e4dc3e292c04af0cb63034291d7ea",
+          "cases/pair-1-cpu/resources.jsonl": "f60780b17452a377aed0fa4999d32a9b93c550602716ae352cfacad3050c84d0",
+          "cases/pair-1-cpu/sample.json": "801826ee2e063ab40b91ea1c18b9d24aa3dceb0717defa4fe296bcdb1511bffe",
+          "cases/pair-1-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/pair-1-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/pair-1-gpu/cp2k.log": "b54bed1a1e888600da4ac44736e64acbdcd5dfe05d50c3736c781dfd93e8a184",
+          "cases/pair-1-gpu/elapsed.txt": "5c9396e1514ff5a6f13e7b6461e422e80cc8eeff600b4f2f87574a5ea85b2d75",
+          "cases/pair-1-gpu/forces.xyz": "91b3652a61dede3c4c68a45df8c11c3c06bccc5d8604e240082224565e6d5246",
+          "cases/pair-1-gpu/input.inp": "68e87e8e95afeeef4a42154c020e43ec2e629f21f0a533521a89bc937739daa9",
+          "cases/pair-1-gpu/launch.json": "d17a2f8c2fdca19688d30d2f8336d8a79ce0219f65be64f5ede819a0394740cf",
+          "cases/pair-1-gpu/rank-0.json": "9896a972ae3e9b93d82226be06ee7cac656ab2c7408ab1a31553977e5600356d",
+          "cases/pair-1-gpu/resources.jsonl": "8d73bf6c89e27569329ce257ea8e53b5abcfbeb78f9a3d1b691fcbf4d442dd64",
+          "cases/pair-1-gpu/sample.json": "fc4f1f02f7befba3952b3893563f436bdd3059551f4a5f9ad49a27384593f268",
+          "cases/pair-2-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/pair-2-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/pair-2-cpu/cp2k.log": "0ad81138cef6d1e933c5dd064dee457894da3bdd58ca91bc3afa324ebf431d65",
+          "cases/pair-2-cpu/elapsed.txt": "c3c71527de13f4f1780e1069e4226057da44e11c4aed5640748e77b2c2286b13",
+          "cases/pair-2-cpu/forces.xyz": "d43cbc4b097d4fc5fe326473690bb1e7d47f2767217da3c3989e1b8183e719bf",
+          "cases/pair-2-cpu/input.inp": "f7382cf02cbc053fd7527e9e2b66cd53c9696e43c9d40a86326e2266d37d1d5f",
+          "cases/pair-2-cpu/launch.json": "dcdb5e414d9e73edf4d453f4437b915ee4771475da5e7a4761677061dd7ee9ce",
+          "cases/pair-2-cpu/rank-0.json": "cb2a7da2dd10a438177a0a92dcf77d13c2ce0f2f71fb3eca89e28f98a596d2fa",
+          "cases/pair-2-cpu/rank-1.json": "d6043a8d142135b90b96871b93511a539ec6f65ec8c3161b45b83d37398ad618",
+          "cases/pair-2-cpu/rank-2.json": "2d2890792863050fa3b4b06f2daf591bda2894632b036bbe96c56a9444536901",
+          "cases/pair-2-cpu/rank-3.json": "69df9d1b705aea2a1c6cd9d590c844776cb53241a9eea12ad8c5bf4edf609db9",
+          "cases/pair-2-cpu/resources.jsonl": "6155b4141ed400163f805af91e8d45a25a6628d39a42a7b3d4999a3a7a0191bb",
+          "cases/pair-2-cpu/sample.json": "7ee0871cadaf97b2862784a45a2f58cfc345e5904b87462d06bcb5027188cf37",
+          "cases/pair-2-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/pair-2-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/pair-2-gpu/cp2k.log": "787661cbfa0915a630975ff67cf71a37fda353267d0bde02c330f62367ac40c4",
+          "cases/pair-2-gpu/elapsed.txt": "0de8e17704ae405b26327f5aa35eb23f4539ce9bd3352fffb2ef31ede68a1e14",
+          "cases/pair-2-gpu/forces.xyz": "91b79e3a9584a50e42b964902d6911c148545889b71d7a7f25f76a3a245f8b01",
+          "cases/pair-2-gpu/input.inp": "68e87e8e95afeeef4a42154c020e43ec2e629f21f0a533521a89bc937739daa9",
+          "cases/pair-2-gpu/launch.json": "d17a2f8c2fdca19688d30d2f8336d8a79ce0219f65be64f5ede819a0394740cf",
+          "cases/pair-2-gpu/rank-0.json": "4dea783c3a2d8fb63e758b101e52c88281677946e39737d97e575edcbbe1eade",
+          "cases/pair-2-gpu/resources.jsonl": "4aa8d88cc92030684e65f94d83027c038de6ba38130d04c1d2fc44d2c4a6c0ac",
+          "cases/pair-2-gpu/sample.json": "d33e89f04786c4ec78cfdc317dbc7ceef8006ed4f9ce23ce3639e085d358b4e2",
+          "cases/pair-3-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/pair-3-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/pair-3-cpu/cp2k.log": "3cc351569853984f4ea9abd509a994bb12b6c31b849acdf91f954798373f1ad6",
+          "cases/pair-3-cpu/elapsed.txt": "bcd46d877056aaaa9eba1a6f30e53be2953c244cc96dcadd48e88580e0e34095",
+          "cases/pair-3-cpu/forces.xyz": "64d0f9cfaa9716c327f8d43bac172d204e23c9c06655eb2250fa75007277e824",
+          "cases/pair-3-cpu/input.inp": "f7382cf02cbc053fd7527e9e2b66cd53c9696e43c9d40a86326e2266d37d1d5f",
+          "cases/pair-3-cpu/launch.json": "dcdb5e414d9e73edf4d453f4437b915ee4771475da5e7a4761677061dd7ee9ce",
+          "cases/pair-3-cpu/rank-0.json": "50a38aad211d4723c58ac2200b3b3cd9dbf3221e3869d1fc637c7ec936c6184f",
+          "cases/pair-3-cpu/rank-1.json": "0e490b00c94e57c29f8a497e1047523852c3c2ea55d7f4a452caa5d66a2f8545",
+          "cases/pair-3-cpu/rank-2.json": "f44cd4d89f2281bfa477572b770777176a00a576f7a3711f1e71628c640312d9",
+          "cases/pair-3-cpu/rank-3.json": "d9ddaa749501a52493b3514f1b85df62f0cf41e279c912814f6769f84ce82372",
+          "cases/pair-3-cpu/resources.jsonl": "e24124b2c95d01cd56c0f810d51fb071ca5bfc586f0914e312c9c94907600ea7",
+          "cases/pair-3-cpu/sample.json": "f9350b9f263afc1c9939977a133ecb4447126c5c464b2aab05fcfe2185b6525e",
+          "cases/pair-3-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "cases/pair-3-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "cases/pair-3-gpu/cp2k.log": "069d363ab12037dcc0def2e6663cb4e4631172055f9ea75e9afc219bd4b83ae6",
+          "cases/pair-3-gpu/elapsed.txt": "a23cda4bafbb3fa404810526a0fde7c4927d84c740b81da7c545f9fca5458ac2",
+          "cases/pair-3-gpu/forces.xyz": "a42b76374c774c5f7851c887d3630a4371f3222713db02d3ee997943a47e1d10",
+          "cases/pair-3-gpu/input.inp": "68e87e8e95afeeef4a42154c020e43ec2e629f21f0a533521a89bc937739daa9",
+          "cases/pair-3-gpu/launch.json": "d17a2f8c2fdca19688d30d2f8336d8a79ce0219f65be64f5ede819a0394740cf",
+          "cases/pair-3-gpu/rank-0.json": "30cf9ee5bd56221f8f7ed3af265c06aae8f8a7502930ccc61e21c6e345a9c0d0",
+          "cases/pair-3-gpu/resources.jsonl": "e12ff1dca9a159fd7e8e146ccc62beaf633a2faa5a04d0cc334e1b617898ebbb",
+          "cases/pair-3-gpu/sample.json": "c89966c7d3093a8f1b4b13a0688562bca0c76ca23b08872fb9fac4f5b6905442",
+          "fixtures/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+          "fixtures/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+          "results/accounting.txt": "6a4644d438be5e7e475819e36df77f1b291b2926812706c0049ca5446cde4ff6",
+          "results/allocation.txt": "f9b75bd627792ee242de48094fac23eb4499c496644525a1cd2c3bae6cf23f6b",
+          "results/comparison.json": "34e3152ff745389b88b49fa416d5715ef655a1cd250c8b4a1ad58aa91b5f90b2",
+          "results/cpu-ldd.txt": "2fbd76297f442a1162c5c13ddee525d9bbf551b7ac3c4e71f6173e9ebc37da27",
+          "results/cpu-version.txt": "9fcb5e2c116e0dcb782e053939313683756a38cb8677748b8f300d5f824e7a69",
+          "results/devices.json": "595494a05d88d81ca2d864d999361fd404e97c5d3a3b668f9884ca8125278b93",
+          "results/environment.json": "70fec90a9539541e9c16405d3850dd111ccd13ec6b29ea44d5e85557ef1fe712",
+          "results/gpu-ldd.txt": "aa0acc80367057f89390ae0901421eb181204a19fb6fee153d1ba406e7fa9917",
+          "results/gpu-topology.txt": "f5a6ae81331181e2205354c9a984eaea9fb7340958221da2d4b5056f986de50d",
+          "results/gpu-version.txt": "99c918c1a212847fd69421bb1ae89682344c6ca40c5f10627a4de415d87eb6af",
+          "results/imported-tuning.json": "6e34eb32659612a8e0611031ed9d3e9d27e6a115e7a04941c31721aedc4d7a96",
+          "results/lscpu.txt": "14202de02b9dc0f637b58d134f1d9c4d14242b95461bfe623b79fce5ad4ac290",
+          "results/modules.txt": "6057b203159ae7f51ba5d5a20445426d2c3bed351e5206623e5d6f9b687df22e",
+          "results/pairs.json": "c0f6d7dabc8ec0896c09eade259757add19ecabec32aa1535f0ba822d41ec1dd",
+          "results/tuning.json": "3548b0a9e61e45c010fedccba69b042fae7c25f6dd9e62687604ac205c6923c3"
+        },
+        "job": "1884985",
+        "request_sha256": "39179f7d51d0c112f731096afdc554e85321db289abff847a8f46a7fdbbf5833",
+        "stage": "compare",
+        "verified": true
+      },
+      "versions": {
+        "cpu": " CP2K version 2026.2\n Source code revision 67b5da876d\n cp2kflags: omp libint fftw3 libxc parallel scalapack mpi_f08 libxs libxsmm spglib\n compiler: GCC version 14.3.0\n compiler options:\n   -cpp -I /home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020\n   -4v100-a/work/source/src -I /home/stardust/sai-hpc-software/runs/cp2\n   k-water-cpu-20261020-4v100-a/work/cp2k-build/src -I /home/stardust/s\n   ai-hpc-software/runs/cp2k-water-cpu-20261020-4v100-a/work/source/src\n   /base -I /home/stardust/sai-hpc-software/runs/cp2k-water-cpu-2026102\n   0-4v100-a/work/source/src/common -I /home/stardust/sai-hpc-software/\n   runs/cp2k-water-cpu-20261020-4v100-a/work/source/src/motion -I /home\n   /stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-4v100-a/work\n   /source/src/dbm -I /home/stardust/sai-hpc-software/runs/cp2k-water-c\n   pu-20261020-4v100-a/work/cp2k-build/src/mod_files -I /opt/apps/cp2k/\n   cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/4V100/dependencies/\n   spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz/inclu\n   de -I /opt/devtools/spglib/spglib-2.7.0/include -I /opt/devtools/lib\n   xc/libxc-7.0.0-avx512/include -I /opt/devtools/fftw/fftw-3.3.10/incl\n   ude -I /home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-\n   4v100-a/install/dependencies/dbcsr/include -I /opt/devtools/openmpi/\n   openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/include -I /opt/devtools/o\n   penmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib -I /home/stardu\n   st/sai-hpc-software/runs/cp2k-water-cpu-20261020-4v100-a/install/dep\n   endencies/libxs/include -I /home/stardust/sai-hpc-software/runs/cp2k\n   -water-cpu-20261020-4v100-a/install/dependencies/libxs/include/libxs\n    -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/\n   4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7q\n   xubasr24vwogpk/include -I /opt/devtools/saiblas/2603-gnu-avx512/incl\n   ude -imultiarch x86_64-linux-gnu -D_REENTRANT -D USING_Libxc -D __BL\n   AS -D __COMPILE_ARCH=\"x86_64\" -D __COMPILE_HOST=\"\" -D __DATA_DIR=\"/h\n   ome/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-4v100-a/i\n   nstall/share/cp2k/data\" -D __FFTW3 -D __LIBINT -D __LIBXC -D __LIBXS\n    -D __LIBXSMM -D __MPI_F08 -D __SPGLIB -D __parallel -D __SHORT_FILE\n   __=\"start/cp2k.F\" -march=znver5 -mmmx -mpopcnt -msse -msse2 -msse3 -\n   mssse3 -msse4.1 -msse4.2 -mavx -mavx2 -msse4a -mno-fma4 -mno-xop -mf\n   ma -mavx512f -mbmi -mbmi2 -maes -mpclmul -mavx512vl -mavx512bw -mavx\n   512dq -mavx512cd -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mavx51\n   2vbmi2 -mgfni -mvpclmulqdq -mavx512vnni -mavx512bitalg -mavx512bf16 \n   -mavx512vp2intersect -mno-3dnow -madx -mabm -mno-cldemote -mclflusho\n   pt -mclwb -mclzero -mcx16 -mno-enqcmd -mf16c -mfsgsbase -mfxsr -mno-\n   hle -msahf -mno-lwp -mlzcnt -mmovbe -mmovdir64b -mmovdiri -mmwaitx -\n   mno-pconfig -mpku -mprfchw -mno-ptwrite -mrdpid -mrdrnd -mrdseed -mn\n   o-rtm -mno-serialize -mno-sgx -msha -mshstk -mno-tbm -mno-tsxldtrk -\n   mvaes -mno-waitpkg -mwbnoinvd -mxsave -mxsavec -mxsaveopt -mxsaves -\n   mno-amx-tile -mno-amx-int8 -mno-amx-bf16 -mno-uintr -mno-hreset -mno\n   -kl -mno-widekl -mavxvnni -mno-avx512fp16 -mno-avxifma -mno-avxvnnii\n   nt8 -mno-avxneconvert -mno-cmpccxadd -mno-amx-fp16 -mno-prefetchi -m\n   no-raoint -mno-amx-complex -mno-avxvnniint16 -mno-sm3 -mno-sha512 -m\n   no-sm4 -mno-apxf -mno-usermsr --param=l1-cache-size=48 --param=l1-ca\n   che-line-size=64 --param=l2-cache-size=1024 -mtune=znver5 -g -O3 -O3\n    -O3 -Wno-deprecated-declarations -Wno-maybe-uninitialized -Wuniniti\n   alized -Wuse-without-only -std=f2008 -fPIE -ffree-form -fimplicit-no\n   ne -fno-omit-frame-pointer -fbacktrace -fallow-argument-mismatch -fu\n   nroll-loops -fopenmp -fpre-include=/usr/include/finclude/x86_64-linu\n   x-gnu/math-vector-fortran.h\n",
+        "gpu": " CP2K version 2026.2\n Source code revision 67b5da876d\n cp2kflags: omp libint fftw3 libxc elpa parallel scalapack mpi_f08 cosma libxs libxsmm dbcsr_acc plumed2 spglib libdftd4 dftd4_v4_2 s_dftd3 mctc-lib tblite libvori libbqb offload_cuda spla_gemm_offloading cusolvermp cusolvermp_nccl hdf5\n compiler: GCC version 14.3.0\n compiler options:\n   -cpp -I /workspace/source/src -I /workspace/build/src -I /workspace/\n   source/src/base -I /workspace/source/src/common -I /workspace/source\n   /src/motion -I /workspace/source/src/dbm -I /workspace/build/src/mod\n   _files -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa5\n   3ff43/4V100/dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqa\n   vmw4kzsza7osl5co4hz/include -I /opt/devtools/nvidia/cuda-12.9.1/targ\n   ets/x86_64-linux/include -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b\n   5da876dd6-raed7aa53ff43/4V100/dependencies/tblite/include -I /opt/ap\n   ps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/4V100/depen\n   dencies/tblite/include/mctc-lib/modules -I /opt/apps/cp2k/cp2k-relea\n   se-v2026.2-g67b5da876dd6-raed7aa53ff43/4V100/dependencies/tblite/inc\n   lude/dftd4/GNU-14.3.0 -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da\n   876dd6-raed7aa53ff43/4V100/dependencies/tblite/include/multicharge/G\n   NU-14.3.0 -I /opt/devtools/saiblas/2603-gnu-avx512/include -I /opt/a\n   pps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/4V100/depe\n   ndencies/tblite/include/tblite/GNU-14.3.0 -I /opt/apps/cp2k/cp2k-rel\n   ease-v2026.2-g67b5da876dd6-raed7aa53ff43/4V100/dependencies/tblite/i\n   nclude/toml-f/modules -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da\n   876dd6-raed7aa53ff43/4V100/dependencies/tblite/include/s-dftd3/GNU-1\n   4.3.0 -I /opt/devtools/spglib/spglib-2.7.0/include -I /opt/devtools/\n   libxc/libxc-7.0.0-avx512/include -I /opt/devtools/elpa/elpa-2026.02.\n   001-2603-gnu-avx512/nvidia/include/elpa_openmp-2026.02.001 -I /opt/d\n   evtools/elpa/elpa-2026.02.001-2603-gnu-avx512/nvidia/include/elpa_op\n   enmp-2026.02.001/modules -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b\n   5da876dd6-raed7aa53ff43/4V100/dependencies/spack/linux-zen5/plumed-2\n   .10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg/include -I /opt/devtools/fftw\n   /fftw-3.3.10/include -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da8\n   76dd6-raed7aa53ff43/4V100/dependencies/spack/linux-zen5/spla-1.6.1-u\n   c273bzgwxxngrexd366xlfvkfmeuvgm/include -I /opt/apps/cp2k/cp2k-relea\n   se-v2026.2-g67b5da876dd6-raed7aa53ff43/4V100/dependencies/spack/linu\n   x-zen5/spla-1.6.1-uc273bzgwxxngrexd366xlfvkfmeuvgm/include/spla -I /\n   opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/inclu\n   de -I /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx51\n   2/lib -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53\n   ff43/4V100/dependencies/spack/linux-zen5/cosma-2.7.0-nxkgtx7kzj7x2fh\n   s74xieconnpza7qsf/include -I /opt/apps/cp2k/cp2k-release-v2026.2-g67\n   b5da876dd6-raed7aa53ff43/4V100/dependencies/spack/linux-zen5/costa-2\n   .3.3-zlqyozosmfk6c6v2pjhdc3d6xchzenfd/include -I /opt/apps/cp2k/cp2k\n   -release-v2026.2-g67b5da876dd6-raed7aa53ff43/4V100/dependencies/spac\n   k/linux-zen5/tiled-mm-2.3.2-joxrwvs52itwvriwz6urraxcs3kgwuds/include\n    -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/\n   4V100/dependencies/spack/linux-zen5/tiled-mm-2.3.2-joxrwvs52itwvriwz\n   6urraxcs3kgwuds/include/Tiled-MM -I /opt/apps/cp2k/cp2k-release-v202\n   6.2-g67b5da876dd6-raed7aa53ff43/4V100/dependencies/spack/linux-zen5/\n   hdf5-1.14.6-veh6gg4r2kjguzn47akx3jrp3kumhq6r/include -I /opt/apps/cp\n   2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/4V100/dependenci\n   es/spack/linux-zen5/hdf5-1.14.6-veh6gg4r2kjguzn47akx3jrp3kumhq6r/mod\n   /static -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa\n   53ff43/4V100/dependencies/dbcsr/include -I /opt/apps/cp2k/cp2k-relea\n   se-v2026.2-g67b5da876dd6-raed7aa53ff43/4V100/dependencies/libxs/incl\n   ude -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff\n   43/4V100/dependencies/libxs/include/libxs -I /opt/apps/cp2k/cp2k-rel\n   ease-v2026.2-g67b5da876dd6-raed7aa53ff43/4V100/dependencies/spack/li\n   nux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/include -I /\n   opt/devtools/nvidia/mp_libs/include -I /opt/devtools/nvidia/nccl_2.2\n   9.3_cuda12.9_sai_v2.29.3-1-sai.2/include -imultiarch x86_64-linux-gn\n   u -D_REENTRANT -D COSMA_HAVE_GPU -D IK=i4 -D TILED_MM_CUDA -D USING_\n   Libxc -D _FILE_OFFSET_BITS=64 -D _GNU_SOURCE -D _LARGEFILE_SOURCE -D\n    _POSIX_C_SOURCE=200809L -D __BLAS -D __COMPILE_ARCH=\"x86_64\" -D __C\n   OMPILE_HOST=\"\" -D __COSMA -D __CUSOLVERMP -D __CUSOLVERMP_NCCL -D __\n   DATA_DIR=\"/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa5\n   3ff43/4V100/share/cp2k/data\" -D __DBCSR_ACC -D __DFTD4 -D __DFTD4_V4\n   _2 -D __ELPA -D __FFTW3 -D __HDF5 -D __LIBINT -D __LIBVORI -D __LIBX\n   C -D __LIBXS -D __LIBXSMM -D __MPI_F08 -D __OFFLOAD_CUDA -D __OFFLOA\n   D_GEMM -D __PLUMED2 -D __SPGLIB -D __SPLA -D __S_DFTD3 -D __TBLITE -\n   D __parallel -D __SHORT_FILE__=\"start/cp2k.F\" -march=znver5 -mmmx -m\n   popcnt -msse -msse2 -msse3 -mssse3 -msse4.1 -msse4.2 -mavx -mavx2 -m\n   sse4a -mno-fma4 -mno-xop -mfma -mavx512f -mbmi -mbmi2 -maes -mpclmul\n    -mavx512vl -mavx512bw -mavx512dq -mavx512cd -mavx512vbmi -mavx512if\n   ma -mavx512vpopcntdq -mavx512vbmi2 -mgfni -mvpclmulqdq -mavx512vnni \n   -mavx512bitalg -mavx512bf16 -mavx512vp2intersect -mno-3dnow -madx -m\n   abm -mno-cldemote -mclflushopt -mclwb -mclzero -mcx16 -mno-enqcmd -m\n   f16c -mfsgsbase -mfxsr -mno-hle -msahf -mno-lwp -mlzcnt -mmovbe -mmo\n   vdir64b -mmovdiri -mmwaitx -mno-pconfig -mpku -mprfchw -mno-ptwrite \n   -mrdpid -mrdrnd -mrdseed -mno-rtm -mno-serialize -mno-sgx -msha -msh\n   stk -mno-tbm -mno-tsxldtrk -mvaes -mno-waitpkg -mwbnoinvd -mxsave -m\n   xsavec -mxsaveopt -mxsaves -mno-amx-tile -mno-amx-int8 -mno-amx-bf16\n    -mno-uintr -mno-hreset -mno-kl -mno-widekl -mavxvnni -mno-avx512fp1\n   6 -mno-avxifma -mno-avxvnniint8 -mno-avxneconvert -mno-cmpccxadd -mn\n   o-amx-fp16 -mno-prefetchi -mno-raoint -mno-amx-complex -mno-avxvnnii\n   nt16 -mno-sm3 -mno-sha512 -mno-sm4 -mno-apxf -mno-usermsr --param=l1\n   -cache-size=48 --param=l1-cache-line-size=64 --param=l2-cache-size=1\n   024 -mtune=znver5 -g -O3 -O3 -O3 -Wno-deprecated-declarations -Wno-m\n   aybe-uninitialized -Wuninitialized -Wuse-without-only -std=f2008 -fP\n   IE -ffree-form -fimplicit-none -fno-omit-frame-pointer -fbacktrace -\n   fallow-argument-mismatch -funroll-loops -fopenmp -fpre-include=/usr/\n   include/finclude/x86_64-linux-gnu/math-vector-fortran.h\n"
+      },
+      "waters": 392
+    }
+  ],
+  "scope": "Three fresh repeated PBE water ENERGY_FORCE pairs per point; first warm-up pair excluded. GPU direct cuSOLVERMp versus CPU-only ScaLAPACK with identical four-core allocation."
+}
