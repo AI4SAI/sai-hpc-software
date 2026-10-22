@@ -1,5 +1,50 @@
 # CP2K water scaling: accepted results and remaining comparisons
 
+**2026-10-22 CPU baseline correction: the speedups below are historical
+measurements of the tested binaries, not accepted comparisons against a CPU
+baseline that uses every allocated core for diagonalization.** Numerical
+acceptance remains valid. Investigation of the long sixteen-GPU comparison
+found an upstream ScaLAPACK redistribution defect in the pinned CP2K 2026.2
+source. All performance conclusions against that CPU binary require review
+and a corrected baseline before being treated as final.
+
+The initialization in
+[`cp_fm_diag_utils.F`](https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/fm/cp_fm_diag_utils.F#L147)
+assigns `a`, `x` and the printing/ELPA settings, then overwrites the whole
+structure with its defaults, including `a=-1,x=-1`. Its optimal-rank formula
+therefore returns `-matrix_order`, rather than the intended positive value.
+The requested partition is invalid, so `mp_comm_split` silently retains its
+fallback of two balanced groups. Only group zero calls `cp_fm_syevd_base`;
+the other half of the MPI ranks wait for redistribution of the result. Cleanup
+also overwrites the persistent settings, so a repair must preserve them across
+successive diagonalizations, not merely fix the first initialization.
+
+This source file is byte-for-byte identical to the pinned upstream file
+(SHA-256 `e3edf28d199b4ba624bd94b0e3e73a8863f6db2a7ffc8e4d8e0017f32f7e8c83`).
+The local source repair only changed `cp_fm_elpa.F`. Raw timers independently
+support the unintended rank split: on the 1,452-water CPU trial, the
+`cp_fm_syevd_base` average/max times are **17,092.52 / 34,192.44 seconds**,
+while `cp_fm_redistribute_end` takes up to **34,250.02 seconds**. These timers
+overlap across ranks and must not be added: non-solving ranks wait while the
+solving ranks diagonalize. The complete eigensolver path takes **39,894.78 /
+43,506.55 seconds (91.7%)** of CP2K time. The 32 MPI × 2 thread trial shows
+the same half-average/max signature and about 92.1% in the eigensolver path.
+The recorded bindings cover all 64 physical cores. High process CPU usage
+can include MPI busy waiting and is not proof that all cores perform useful
+diagonalization work. Changing only the MPI/OpenMP layout cannot remove this
+source defect. The direct cuSOLVERMp path bypasses this ScaLAPACK routine.
+
+[cpu-scalapack-diagnosis-20261022.json](cpu-scalapack-diagnosis-20261022.json)
+records the exact source excerpts and hashes, raw timer rows, bindings,
+numerical results, scheduler state and campaign snapshot. Four-GPU 4V100 job
+**1888437** has meanwhile completed `0:0` and passed numerical verification;
+its historical medians are GPU 806.865 s and CPU 7,787.227 s. Its ratio is
+subject to the same CPU-baseline correction. The watcher's existing
+`accepted` flags indicate its numerical/schedule checks; it does not detect
+this solver-internal rank-use defect. A corrected CPU binary and repeated
+performance acceptance are still required. Earlier reports follow unchanged
+for traceability.
+
 **2026-10-22: three of five comparisons accepted.** Jobs **1884617**
 (16V100, one GPU), **1884985** (4V100, one GPU) and **1889092** (16V100,
 four GPUs) finished `COMPLETED 0:0`. Independent
