@@ -13,6 +13,10 @@ evaluates all ancestor/source/target POSIX ACLs for `saiuser01`, without
 impersonating the account. The current `stardust` connection cannot write
 these `/opt` parents; the administrator runs the installation below.
 
+[Pre-install qualification](../../docs/evidence/fuse2fs-public-20261022/README.md)
+passed all 13 driver/module checks in DSPRHBM job `1897998`. The actual public
+prefix still needs installation and post-install validation.
+
 ## Installation
 
 On the cluster, as `saiuser01`:
