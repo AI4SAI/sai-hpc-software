@@ -1,0 +1,210 @@
+{
+  "schema": 1,
+  "collected_at_utc": "2026-10-18T01:14:12.824557+00:00",
+  "scope": "Read-only mount-startup failure analysis; no failed-overlay mount, source mutation or new job.",
+  "run": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6",
+  "job_id": "1838161",
+  "slurm": "1838161|FAILED|255:0|00:22:15|d9470n02",
+  "controller": "/home/stardust/sai-hpc-software/controller/c3b65b97f9d95ecb29a453713dfe292af20f6d39/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6",
+  "identity": {
+    "build_id": "v2026.2-g67b5da876dd6-rb59c9f26a184",
+    "cpu_arch": "x86-64-v4",
+    "cuda_arch": "",
+    "dependency_isa": "avx512",
+    "gpus": 0,
+    "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/DSPRHBM",
+    "partition": "DSPRHBM",
+    "recipe_sha256": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+    "repository": "cp2k/cp2k",
+    "schema": 2,
+    "software": "cp2k",
+    "source_ref": "v2026.2",
+    "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+    "source_version": "v2026.2",
+    "stack_digest": null,
+    "stack_sources": {},
+    "target": "dsprhbm",
+    "track": "release",
+    "version_label": "v2026.2"
+  },
+  "failure_log": "BUILD_CAPACITY_POLICY filesystem-enforced 39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6\nCP2K_EXACT_DEPENDENCY_CHECKPOINT_CLONED\nCP2K_IMAGE_DRIVER sha256=46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10 config=/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/runtime/apptainer-fuse2fs.conf\nINFO:    User not listed in /etc/subuid, trying root-mapped namespace\nINFO:    Using fakeroot command combined with root-mapped namespace\nFATAL:   container creation failed: mount hook function failure: mount /proc/self/fd/9->/opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 error: while mounting image /proc/self/fd/9: fuse2fs failed to mount /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 in 10s\n",
+  "preparation": {
+    "cloned_overlay_sha256": "665b92e0bc3732acb8c8ec3d4a890bc625261cadd28a0d1da888a933843a6b2c",
+    "fsck_before_and_after": "passed",
+    "lock": "exclusive-F_OFD_SETLK",
+    "prepared_overlay_sha256": "d91d6394046c880b84b7e40bce70645d7cd5df008ba7117cb707d55ba3c4b9d5",
+    "remaining_entries": 0,
+    "schema": 1,
+    "scope": "/work/work",
+    "source": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies/work.ext3",
+    "source_overlay_sha256": "665b92e0bc3732acb8c8ec3d4a890bc625261cadd28a0d1da888a933843a6b2c",
+    "source_unchanged": true,
+    "status": "prepared",
+    "target": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/work.ext3",
+    "upper_directory_unchanged": true
+  },
+  "image_driver": {
+    "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+    "binary_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+    "config_sha256": "c23981456b0550c502eb7eb4e691abe605485c1469dfedc6ef54ac86dee73fb1",
+    "driver": "/home/stardust/sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs",
+    "patched_source_sha256": "c63d1fb25510d316836952953e9adddacd3214cd91d6002bf3b16aed350c4ddc",
+    "schema": 1,
+    "source_commit": "45651efd6db7da8738bc9d8d1f17e99259cabfe4"
+  },
+  "site_apptainer": {
+    "path": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+    "version": "apptainer version 1.4.4",
+    "config": {
+      "path": "/opt/devtools/apptainer/1.4.4/etc/apptainer/apptainer.conf",
+      "bytes": 18792,
+      "sha256": "20c9083879d32024107e11689d80d4fe62f06d70e827a870d1007710fad89625"
+    },
+    "config_noncomment_settings": [
+      "allow setuid = yes",
+      "max loop devices = 256",
+      "allow ipc ns = yes",
+      "allow pid ns = yes",
+      "allow user ns = yes",
+      "allow uts ns = yes",
+      "config passwd = yes",
+      "config group = yes",
+      "config resolv_conf = yes",
+      "mount proc = yes",
+      "mount sys = yes",
+      "mount dev = yes",
+      "mount devpts = yes",
+      "mount home = yes",
+      "mount tmp = yes",
+      "mount hostfs = no",
+      "bind path = /etc/localtime",
+      "bind path = /etc/hosts",
+      "user bind control = yes",
+      "enable fusemount = yes",
+      "enable overlay = yes",
+      "enable underlay = yes",
+      "mount slave = yes",
+      "sessiondir max size = 64",
+      "allow container sif = yes",
+      "allow container encrypted = yes",
+      "allow container squashfs = yes",
+      "allow container extfs = yes",
+      "allow container dir = yes",
+      "always use nv = no",
+      "use nvidia-container-cli = no",
+      "always use rocm = no",
+      "root default capabilities = full",
+      "memory fs type = tmpfs",
+      "mksquashfs procs = 0",
+      "shared loop devices = no",
+      "image driver = ",
+      "download concurrency = 3",
+      "download part size = 5242880",
+      "download buffer size = 32768",
+      "systemd cgroups = yes",
+      "apptheus socket path = /run/apptheus/gateway.sock",
+      "allow monitoring = no"
+    ]
+  },
+  "evidence_files": {
+    "request.json": {
+      "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/request.json",
+      "bytes": 1295,
+      "sha256": "ac4898f331ac88f8ae6adf226461efbbfe033559e4ddf92563e999eb0441f0b5"
+    },
+    "job.sbatch": {
+      "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/job.sbatch",
+      "bytes": 12450,
+      "sha256": "c04904ebfff1131afbbaaccaff6eeb154a6b8055f861a17ad3123caa812cfc0f"
+    },
+    "results/slurm-1838161.log": {
+      "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/results/slurm-1838161.log",
+      "bytes": 803,
+      "sha256": "c6f07467393e6552f317baf70cf78e75b9c9b5fff1fcb10ad6476c7012f3f1ef"
+    },
+    "results/overlay-workdir-preparation.json": {
+      "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/results/overlay-workdir-preparation.json",
+      "bytes": 109562,
+      "sha256": "7c9416e4035c5fa7e18fa7b97e0f50dbebbac7e82995eb89cd042a0014d77866"
+    },
+    "results/image-driver.json": {
+      "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/results/image-driver.json",
+      "bytes": 540,
+      "sha256": "24e8e2b9dd63dd8e99f5de73badb324019e813a2579bc1837fd9123d9f9404bf"
+    },
+    "results/status.json": {
+      "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/results/status.json",
+      "bytes": 79,
+      "sha256": "62b441cf423457a17078c21c11d1debc70775bbe6ac97f903d0be55aea07959b"
+    }
+  },
+  "upstream_source": {
+    "internal/pkg/image/driver/imagedriver.go": {
+      "url": "https://raw.githubusercontent.com/apptainer/apptainer/v1.4.4/internal/pkg/image/driver/imagedriver.go",
+      "sha256": "717c2bf14bf1ebf648da1775186e1a2e38765da16ad286c1810ed759d78bb2cf",
+      "excerpts": [
+        {
+          "start_line": 202,
+          "end_line": 216,
+          "text": "\twaitForMount := true\n\ttargetFd := -1\n\tif !d.unprivileged {\n\t\tif !strings.HasPrefix(params.Target, \"/dev/fd/\") {\n\t\t\treturn fmt.Errorf(\"program error: in privileged mode the image driver mount target must start with \\\"/dev/fd/\\\"\")\n\t\t}\n\t\t// drop privileges\n\t\tparams.DontElevatePrivs = true\n\t\t// get the target file descriptor\n\t\ttargetFd, _ = strconv.Atoi(path.Base(params.Target))\n\t\t// this becomes another of the ExtraFiles\n\t\tparams.Target = fmt.Sprintf(\"/dev/fd/%d\", 3+extraFiles)\n\t\textraFiles++\n\t\t// don't wait for the mountpoint, it's already mounted\n\t\twaitForMount = false"
+        },
+        {
+          "start_line": 262,
+          "end_line": 275,
+          "text": "\tcase \"ext3\":\n\t\tf = &d.ext3Feature\n\t\tif os.Getuid() != 0 {\n\t\t\t// Bypass permission checks so all can be read,\n\t\t\t//  especially overlay work dir\n\t\t\toptsStr += \",fakeroot\"\n\t\t}\n\t\tstdbuf, err := bin.FindBin(\"stdbuf\")\n\t\tif err == nil {\n\t\t\t// Run fuse2fs through stdbuf to be able to read the\n\t\t\t//  warnings sometimes sent through stdout\n\t\t\tcmdArgs = append(cmdArgs, stdbuf, \"-oL\")\n\t\t}\n\t\tcmdArgs = append(cmdArgs, f.cmdPath, \"-f\", \"-o\", optsStr, params.Source, params.Target)"
+        },
+        {
+          "start_line": 387,
+          "end_line": 417,
+          "text": "\tmaxTime := 10 * time.Second\n\tinfoTime := 2 * time.Second\n\ttotTime := 0 * time.Second\n\tfor totTime < maxTime {\n\t\tsleepTime := 25 * time.Millisecond\n\t\ttime.Sleep(sleepTime)\n\t\ttotTime += sleepTime\n\n\t\t// There is no need to check to see if the command exited\n\t\t// because the SIGCHLD signal handler will take care of it.\n\n\t\t// See if mount has succeeded\n\t\tentries, err := proc.GetMountInfoEntry(\"/proc/self/mountinfo\")\n\t\tif err != nil {\n\t\t\tf.stop(params.Target, true)\n\t\t\treturn fmt.Errorf(\"%v failure to get mount info: %v\", f.binName, err)\n\t\t}\n\t\tfor _, entry := range entries {\n\t\t\tif entry.Point != params.Target {\n\t\t\t\tcontinue\n\t\t\t}\n\t\t\tmsg := instance.filterMsg()\n\t\t\tif len(msg) > 0 {\n\t\t\t\t// Haven't seen this happen, but just in case\n\t\t\t\tsylog.Infof(\"%v\", msg)\n\t\t\t}\n\t\t\tif totTime > infoTime {\n\t\t\t\tsylog.Infof(\"%v mount took an unexpectedly long time: %v\", f.binName, totTime)\n\t\t\t} else {\n\t\t\t\tsylog.Debugf(\"%v mounted in %v\", params.Target, totTime)\n\t\t\t}"
+        },
+        {
+          "start_line": 448,
+          "end_line": 449,
+          "text": "\t_ = f.stop(params.Target, true)\n\treturn fmt.Errorf(\"%v failed to mount %v in %v\", f.binName, params.Target, maxTime)"
+        },
+        {
+          "start_line": 474,
+          "end_line": 531,
+          "text": "// Stop the process associated with the mount target, if there is one.\n// If kill is not true, an unmount should already have happened so at\n// first just wait for the process to exit.\nfunc (f *fuseappsFeature) stop(target string, kill bool) error {\n\tfor _, instance := range f.instances {\n\t\tif instance.params.Target != target || instance.cmd == nil {\n\t\t\tcontinue\n\t\t}\n\n\t\tprocess := instance.cmd.Process\n\n\t\tsylog.Debugf(\"Waiting for %v pid %v to exit\", f.binName, process.Pid)\n\n\t\twaitCh := make(chan struct{})\n\n\t\tgo func() {\n\t\t\tsiginfo := new(unix.Siginfo)\n\t\t\tfor {\n\t\t\t\terr := unix.Waitid(unix.P_PID, process.Pid, siginfo, unix.WNOWAIT|unix.WEXITED, nil)\n\t\t\t\tif err != syscall.EINTR {\n\t\t\t\t\twaitCh <- struct{}{}\n\t\t\t\t\treturn\n\t\t\t\t}\n\t\t\t}\n\t\t}()\n\n\t\tif kill {\n\t\t\tsylog.Debugf(\"Terminating pid %v\", process.Pid)\n\t\t\t_ = instance.cmd.Process.Signal(syscall.SIGTERM)\n\t\t}\n\n\t\t// waitTimeout is time to wait until terminate signal and\n\t\t//   again to wait until force kill signal\n\t\twaitTimeout := 1 * time.Second\n\t\ttimer := time.NewTimer(waitTimeout)\n\t\tdefer timer.Stop()\n\n\t\tfor {\n\t\t\tselect {\n\t\t\tcase <-timer.C:\n\t\t\t\tif !kill {\n\t\t\t\t\t// set it to true and reset timer for an additional\n\t\t\t\t\t// second timeout before force kill\n\t\t\t\t\tkill = true\n\t\t\t\t\ttimer.Reset(waitTimeout)\n\t\t\t\t\tsylog.Debugf(\"Terminating pid %v after wait timeout\", process.Pid)\n\t\t\t\t\tsylog.Infof(\"Terminating %v after timeout\", f.binName)\n\t\t\t\t\tsylog.Infof(\"Timeouts can be caused by a running background process\")\n\t\t\t\t\t_ = process.Signal(syscall.SIGTERM)\n\t\t\t\t} else {\n\t\t\t\t\tsylog.Debugf(\"Killing pid %v after wait timeout\", process.Pid)\n\t\t\t\t\t_ = process.Kill()\n\t\t\t\t}\n\t\t\tcase <-waitCh:\n\t\t\t\tclose(waitCh)\n\t\t\t\treturn f.waitInstance(instance)\n\t\t\t}\n\t\t}"
+        }
+      ]
+    },
+    "pkg/util/apptainerconf/config.go": {
+      "url": "https://raw.githubusercontent.com/apptainer/apptainer/v1.4.4/pkg/util/apptainerconf/config.go",
+      "sha256": "50573405b92d1e0739543eb21b3b47eb5afeab181a704c60d1a9272d0fa3b61b",
+      "excerpts": [
+        {
+          "start_line": 589,
+          "end_line": 600,
+          "text": "# IMAGE DRIVER: [STRING]\n# DEFAULT: Undefined\n# This option specifies the name of an image driver provided by a plugin that\n# will be used to handle image mounts. This will override the builtin image\n# driver which provides unprivileged image mounts for squashfs, extfs, \n# overlayfs, and gocryptfs.  The overlayfs image driver will only be used\n# if the kernel overlayfs is not usable, but if the 'enable overlay' option\n# above is set to 'driver', the image driver will always be used for overlay.\n# If the driver name specified has not been registered via a plugin installation\n# the run-time will abort.\nimage driver = {{ .ImageDriver }}\n"
+        }
+      ]
+    }
+  },
+  "mechanism": {
+    "owner": "Apptainer built-in fuseapps image driver; not fuse2fs itself or Slurm.",
+    "wait_limit": "Local variable maxTime := 10 * time.Second in v1.4.4 imagedriver.go:387.",
+    "poll": "Each iteration sleeps 25ms, then rereads /proc/self/mountinfo and matches entry.Point exactly to params.Target. The counter measures requested sleep intervals; mountinfo processing can add wall time.",
+    "two_second_threshold": "infoTime := 2 * time.Second only selects a slow-mount informational message after success.",
+    "override": "No per-process environment variable, CLI flag or apptainer.conf setting controls this local timeout in v1.4.4. Config binary path only selects a helper; image driver selects a registered replacement plugin, not a wait override.",
+    "ext3_helper_arguments": "The ext3 branch invokes fuse2fs with -f -o allow_other plus applicable ro/fakeroot options, source and target. It does not provide a timeout option to the helper.",
+    "timeout_cleanup": "At timeout, stop(target,true) sends SIGTERM, after a one-second wait sends SIGKILL if necessary, and waits/reaps the helper. Stopping a writable image helper does not prove no filesystem writes occurred.",
+    "what_the_log_proves": "The required target mountpoint was not observed within the fixed wait window. It does not identify whether helper startup, backing-file I/O, scheduling or another mount step caused the delay."
+  },
+  "minimal_next_step": {
+    "action": "One bounded fresh application retry from the same sealed dependency checkpoint using the frozen c3b65b9 controller and identical source/recipe/partition identity.",
+    "entry": "software_controller.py submit ... --dependencies-run 39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies with a fresh run_id and required staged inputs.",
+    "why_supported": "cp2k_dependency_stage.clone validates the completed sealed source, creates a new target, verifies hashes, performs clone-only workdir cleanup and fsck, and preserves dependency receipts; the application build then runs normally.",
+    "why_not_resume_run": "--resume-run selects metadata/repack, not compilation. This failure occurred before the build entrypoint, so there is no completed application installation to repack.",
+    "preservation": "Retain the failed application run and overlay unchanged. Do not mount it to retry or rewrite its request/job identifiers. Do not rerun or unseal successful dependencies.",
+    "reliability_boundary": "A fresh retry safely isolates state and avoids rebuilding dependencies; success is not guaranteed because the delay cause is unknown. Clone preparation already reads and hashes the full target, so an extra warm-up read has no established benefit.",
+    "repeat_failure": "If the same startup timeout recurs, stop repeated production retries and collect an independently recorded debug startup diagnosis under a fresh clone. Extending external timeouts or helper options does not change the fixed parent wait.",
+    "recipe_change_needed_for_longer_wait": "Changing Apptainer or replacing the image-driver implementation requires separately validated provenance; it is not a hidden environment-only workaround for this frozen workflow."
+  },
+  "historical_same_signature": {
+    "path": "docs/evidence/cp2k-cmake-hdf5-retry-20261017.json",
+    "example_job": "1828867",
+    "observation": "Earlier 4V100 preflight also recorded the exact fuse2fs failed to mount in 10s message; this is not a new scientific/CP2K compilation error."
+  }
+}

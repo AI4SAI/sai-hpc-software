@@ -1,0 +1,29 @@
+{
+  "observed_at": "2026-10-17T17:32:11.847283+00:00",
+  "job_id": "1833977",
+  "node": "4v100n04.mr-sai.ai",
+  "method": "SSH from login node; no diagnostic srun",
+  "raw_evidence": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/hdf5-static-fix/cpu-1833977.json",
+  "raw_sha256": "8a0ca9eac5dedcef2def81c957b2c2748593e9c92eb7ac80f625b02716570177",
+  "job_cgroup": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M55E608V00",
+  "sample_seconds": 10.02635618019849,
+  "allocated_logical_cpus": 8,
+  "cpuset": "0-3,16-19",
+  "used_logical_cpus": 7.1346481926581475,
+  "allocation_cpu_utilization_percent": 89.18310240822684,
+  "throttled_usec_delta": 0,
+  "cpu_max": "max 100000",
+  "initial": {
+    "cpu.max": "max 100000",
+    "cpu.stat": "usage_usec 4315476792\nuser_usec 4269037901\nsystem_usec 46438891\ncore_sched.force_idle_usec 0\nnr_periods 0\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0",
+    "cpuset.cpus": "0-3,16-19",
+    "cpuset.cpus.effective": "0-3,16-19"
+  },
+  "final": {
+    "cpu.max": "max 100000",
+    "cpu.stat": "usage_usec 4387011316\nuser_usec 4339960668\nsystem_usec 47050648\ncore_sched.force_idle_usec 0\nnr_periods 0\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0",
+    "cpuset.cpus": "0-3,16-19",
+    "cpuset.cpus.effective": "0-3,16-19"
+  },
+  "limitation": "Ten-second compile-stage sample; not whole-build efficiency or CP2K runtime performance. Process-only accounting omits short-lived compiler processes."
+}

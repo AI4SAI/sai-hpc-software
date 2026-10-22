@@ -1,0 +1,120 @@
+{
+  "collected_at": "2026-10-18T05:48:13.499306+00:00",
+  "scope": "fresh DSPRHBM recipe recovery after passed host HCOLL alias/MPI preflight; submission and running state only, not application/science acceptance",
+  "workflow_url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39101032802",
+  "controller_commit": "33e80c8f138ad6a7352d3ff36d0884beae51699b",
+  "request": {
+    "controller": "/home/stardust/sai-hpc-software/controller/33e80c8f138ad6a7352d3ff36d0884beae51699b/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6",
+    "identity": {
+      "build_id": "v2026.2-g67b5da876dd6-rfb4adb0598fc",
+      "cpu_arch": "x86-64-v4",
+      "cuda_arch": "",
+      "dependency_isa": "avx512",
+      "gpus": 0,
+      "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM",
+      "partition": "DSPRHBM",
+      "recipe_sha256": "fb4adb0598fca95c3146f9c9a8a2119febde29882594a832d13b5de4052bc35a",
+      "repository": "cp2k/cp2k",
+      "schema": 2,
+      "software": "cp2k",
+      "source_ref": "v2026.2",
+      "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+      "source_version": "v2026.2",
+      "stack_digest": null,
+      "stack_sources": {},
+      "target": "dsprhbm",
+      "track": "release",
+      "version_label": "v2026.2"
+    },
+    "job_id": "1841174",
+    "minutes": 720,
+    "overlay_mb": 16384,
+    "purpose": "cp2k-final-prefix-dependencies-not-application-acceptance",
+    "script_sha256": "1e736f4bc9b186d42ac91b07e79b39659b066520958a43cebbe67172741a98a1"
+  },
+  "job": "1841174",
+  "script": "#!/bin/bash\n#SBATCH --job-name=sai-cp2k-deps-dsprhbm-fb4adb0598fc\n#SBATCH --dependency=singleton\n#SBATCH --partition=DSPRHBM\n#SBATCH --qos=rush-cpu\n#SBATCH --nodes=1\n#SBATCH --ntasks=1\n#SBATCH --time=720\n#SBATCH --export=NIL\n#SBATCH --output=/home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies/results/slurm-%j.log\n#SBATCH --cpus-per-task=8\n#SBATCH --mem=28G\nset -eo pipefail\nexport PATH=/usr/bin:/bin LD_LIBRARY_PATH=\"\" LD_PRELOAD=\"\"\nsource /etc/profile.d/lmod.sh\nmodule load apptainer/1.4.4\nset -u\numask 077\nunset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH\nexport TMPDIR=/home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies/runtime\nexport APPTAINER_TMPDIR=\"$TMPDIR\"\nexport APPTAINER_CACHEDIR=/home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies/apptainer-cache\n/usr/bin/python3 /home/stardust/sai-hpc-software/controller/33e80c8f138ad6a7352d3ff36d0884beae51699b/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6/build_capacity.py /home/stardust/sai-hpc-software /home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies 16384 -- /bin/bash -seu -o pipefail <<'SAI_BUILD_BODY'\n/usr/bin/python3 -c 'import sys; sys.path.insert(0, '\"'\"'/home/stardust/sai-hpc-software/controller/33e80c8f138ad6a7352d3ff36d0884beae51699b/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6'\"'\"'); from remote_controller import require_capacity; require_capacity('\"'\"'/home/stardust/sai-hpc-software'\"'\"', 16384)'\ntest ! -e /home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies/work.ext3\ncp --sparse=always --reflink=auto -- /home/stardust/sai-hpc-software/cache/spack/bootstrap/spack-source-v2.ext3 /home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies/work.ext3\nchmod 600 /home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies/work.ext3\nprintf '%s  %s\n' 80497b787dc178876e71098840cf465deb63c6c9bec27c9dd5cc0bed3643c337 /home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies/work.ext3 | sha256sum --check --status\n/usr/sbin/e2fsck -pf /home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies/work.ext3 || test \"$?\" -eq 1\n/usr/sbin/resize2fs /home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies/work.ext3 16384M\n/usr/bin/python3 /home/stardust/sai-hpc-software/controller/33e80c8f138ad6a7352d3ff36d0884beae51699b/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6/cp2k_image_driver.py /home/stardust/sai-hpc-software /home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies exec --bind /home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies/results:/results:rw --fakeroot --cleanenv --containall --no-home --no-mount bind-paths,home,cwd,tmp,hostfs --pwd / --net --network none --bind /usr:/usr:ro --bind /sbin:/sbin:ro --bind /lib:/lib:ro --bind /lib64:/lib64:ro --bind /opt/devtools:/opt/devtools:ro --bind /opt/modules:/opt/modules:ro --bind /home/stardust/sai-hpc-software/cache/spack:/input/spack:ro --bind /var/lib/dpkg:/var/lib/dpkg:ro --bind /usr/lib/os-release:/etc/os-release:ro --bind /etc/alternatives:/etc/alternatives:ro --bind /usr/bin:/bin:ro --bind /etc/profile.d/lmod.sh:/etc/profile.d/lmod.sh:ro --bind /etc/lmod:/etc/lmod:ro --bind /home/stardust/sai-hpc-software/controller/33e80c8f138ad6a7352d3ff36d0884beae51699b/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6:/control:ro --overlay /home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies/work.ext3 --env BUILD_JOBS=8 --env TMPDIR=/workspace/tmp /home/stardust/sai-hpc-software/containers/base/minimal-v1.sif /usr/bin/env SAI_BUILD_PARTITION=DSPRHBM /bin/bash /control/cp2k_container_entry.sh dependencies cp2k 67b5da876dd6a76b8b021d5a04d1c81ba79a4c50 v2026.2 dsprhbm '{\"build_id\":\"v2026.2-g67b5da876dd6-rfb4adb0598fc\",\"cpu_arch\":\"x86-64-v4\",\"cuda_arch\":\"\",\"dependency_isa\":\"avx512\",\"gpus\":0,\"install_prefix\":\"/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM\",\"partition\":\"DSPRHBM\",\"recipe_sha256\":\"fb4adb0598fca95c3146f9c9a8a2119febde29882594a832d13b5de4052bc35a\",\"repository\":\"cp2k/cp2k\",\"schema\":2,\"software\":\"cp2k\",\"source_ref\":\"v2026.2\",\"source_sha\":\"67b5da876dd6a76b8b021d5a04d1c81ba79a4c50\",\"source_version\":\"v2026.2\",\"stack_digest\":null,\"stack_sources\":{},\"target\":\"dsprhbm\",\"track\":\"release\",\"version_label\":\"v2026.2\"}'\necho CP2K_DEPENDENCY_STAGE_COMPLETE_NOT_APPLICATION_ACCEPTANCE\nSAI_BUILD_BODY\n",
+  "ci_handoff": {
+    "controller_sha": "33e80c8f138ad6a7352d3ff36d0884beae51699b",
+    "identity": {
+      "build_id": "v2026.2-g67b5da876dd6-rfb4adb0598fc",
+      "cpu_arch": "x86-64-v4",
+      "cuda_arch": "",
+      "dependency_isa": "avx512",
+      "gpus": 0,
+      "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM",
+      "partition": "DSPRHBM",
+      "recipe_sha256": "fb4adb0598fca95c3146f9c9a8a2119febde29882594a832d13b5de4052bc35a",
+      "repository": "cp2k/cp2k",
+      "schema": 2,
+      "software": "cp2k",
+      "source_ref": "v2026.2",
+      "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+      "source_version": "v2026.2",
+      "stack_digest": null,
+      "stack_sources": {},
+      "target": "dsprhbm",
+      "track": "release",
+      "version_label": "v2026.2"
+    },
+    "run_id": "39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6",
+    "schema": 1,
+    "workflow_run_id": "39101032802"
+  },
+  "old_failed_application": "1839750",
+  "diagnostic_preflight": "1841002",
+  "accounting": "1841174|RUNNING|0:0|00:03:01|d9470n02|2026-10-18T13:45:12|Unknown\n",
+  "queue": "         JOBID    PARTITION                                             NAME      STATE         TIME         NODELIST(REASON)\n       1839913      8V100V0       sai-cp2k-build-8v100v0-avx512-4d454c740309    RUNNING        54:34               8v100v0n02\n       1841174      DSPRHBM               sai-cp2k-deps-dsprhbm-fb4adb0598fc    RUNNING         3:01                 d9470n02\n",
+  "logs": {
+    "slurm-1841174.log": {
+      "bytes": 1330,
+      "tail": [
+        "BUILD_CAPACITY_POLICY filesystem-enforced 39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies",
+        "/home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies/work.ext3: 23302/262144 files (0.0% non-contiguous), 66215/1048576 blocks",
+        "resize2fs 1.47.0 (5-Feb-2023)",
+        "Resizing the filesystem on /home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies/work.ext3 to 4194304 (4k) blocks.",
+        "The filesystem on /home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies/work.ext3 is now 4194304 (4k) blocks long.",
+        "",
+        "CP2K_IMAGE_DRIVER sha256=46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10 config=/home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies/runtime/apptainer-fuse2fs.conf",
+        "INFO:    User not listed in /etc/subuid, trying root-mapped namespace",
+        "INFO:    Using fakeroot command combined with root-mapped namespace",
+        "INFO:    Ignoring invalid max threads value 4294967295 > max (100000).",
+        "CP2K_SPACK_PROFILE_READY 2026-10-18T05:47:35Z",
+        "Using verified prepopulated source/solver overlay (no compiled dependencies)",
+        "CP2K_SPACK_BOOTSTRAP_READY 2026-10-18T05:47:35Z",
+        "Offline clingo 5.7.1",
+        "CP2K_SPACK_CONCRETIZE_START 2026-10-18T05:47:37Z"
+      ]
+    }
+  },
+  "other_partition": {
+    "partition": "8V100V0",
+    "job": "1839913",
+    "accounting": "1839913|RUNNING|0:0|00:54:34|8v100v0n02|2026-10-18T12:53:39|Unknown\n",
+    "log_tail": [
+      "BUILD_CAPACITY_POLICY filesystem-enforced 39094062144-1-release-8v100v0-avx512-2026-10-18-67b5da876dd6"
+    ],
+    "node_observation": {
+      "host": "8v100v0n02",
+      "method": "read-only SSH from login node; /proc sampling, no additional srun",
+      "process_id": "2498889",
+      "process": "cp2k_dependency_stage.py clone; original frozen controller 84027c97fe5bef6cade03406f27ee3de312b289c",
+      "samples": [
+        {
+          "node_local_time": "2026-10-18T13:47:42.885701",
+          "rchar": 87575528042,
+          "read_bytes": 11202764800,
+          "wchan": "0"
+        },
+        {
+          "node_local_time": "2026-10-18T13:47:45.885957",
+          "rchar": 87617471082,
+          "read_bytes": 11202764800,
+          "wchan": "cl_sync_io_wait"
+        }
+      ],
+      "rchar_delta_bytes": 41943040,
+      "interpretation": "clone preparation continued reading 40 MiB in approximately three seconds; not yet application compilation"
+    }
+  }
+}

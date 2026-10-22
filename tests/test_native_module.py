@@ -406,7 +406,7 @@ class NativeTclTests(unittest.TestCase):
             self.assertEqual(result.returncode, 0, result.stderr)
             self.assertNotIn("EFFECT", result.stdout)
         result = self.evaluate(selector, partition=None, job=None, mode="help", after="ModulesHelp")
-        self.assertIn("expected prefix /opt/software/", result.stderr)
+        self.assertIn("expected prefix /opt/apps/", result.stderr)
 
     def test_missing_canonical_prefix_and_symlink_fragment_or_parent_fail(self):
         selector, fragment, prefix = self.install(example())

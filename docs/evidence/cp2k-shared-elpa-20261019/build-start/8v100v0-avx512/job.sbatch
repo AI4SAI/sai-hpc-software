@@ -1,0 +1,33 @@
+#!/bin/bash
+#SBATCH --job-name=sai-cp2k-deps-8v100v0-avx512-46ac9460660f
+#SBATCH --dependency=singleton
+#SBATCH --partition=8V100V0
+#SBATCH --qos=flood-1o2gpu
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --time=240
+#SBATCH --export=NIL
+#SBATCH --output=/home/stardust/sai-hpc-software/runs/39262701906-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-dependencies/results/slurm-%j.log
+#SBATCH --gpus-per-node=2
+set -eo pipefail
+export PATH=/usr/bin:/bin LD_LIBRARY_PATH="" LD_PRELOAD=""
+source /etc/profile.d/lmod.sh
+module load apptainer/1.4.4
+set -u
+umask 077
+unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH
+export TMPDIR=/home/stardust/sai-hpc-software/runs/39262701906-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-dependencies/runtime
+export APPTAINER_TMPDIR="$TMPDIR"
+export APPTAINER_CACHEDIR=/home/stardust/sai-hpc-software/runs/39262701906-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-dependencies/apptainer-cache
+/usr/bin/python3 /home/stardust/sai-hpc-software/controller/797d6c3b45c3f847efa4d083f9998001816d826b/39262701906-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6/build_capacity.py /home/stardust/sai-hpc-software /home/stardust/sai-hpc-software/runs/39262701906-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-dependencies 16384 -- /bin/bash -seu -o pipefail <<'SAI_BUILD_BODY'
+/usr/bin/python3 -c 'import sys; sys.path.insert(0, '"'"'/home/stardust/sai-hpc-software/controller/797d6c3b45c3f847efa4d083f9998001816d826b/39262701906-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6'"'"'); from remote_controller import require_capacity; require_capacity('"'"'/home/stardust/sai-hpc-software'"'"', 16384)'
+test ! -e /home/stardust/sai-hpc-software/runs/39262701906-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-dependencies/work.ext3
+cp --sparse=always --reflink=auto -- /home/stardust/sai-hpc-software/cache/spack/bootstrap/spack-source-v2.ext3 /home/stardust/sai-hpc-software/runs/39262701906-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-dependencies/work.ext3
+chmod 600 /home/stardust/sai-hpc-software/runs/39262701906-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-dependencies/work.ext3
+printf '%s  %s
+' 80497b787dc178876e71098840cf465deb63c6c9bec27c9dd5cc0bed3643c337 /home/stardust/sai-hpc-software/runs/39262701906-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-dependencies/work.ext3 | sha256sum --check --status
+/usr/sbin/e2fsck -pf /home/stardust/sai-hpc-software/runs/39262701906-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-dependencies/work.ext3 || test "$?" -eq 1
+/usr/sbin/resize2fs /home/stardust/sai-hpc-software/runs/39262701906-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-dependencies/work.ext3 16384M
+/usr/bin/python3 /home/stardust/sai-hpc-software/controller/797d6c3b45c3f847efa4d083f9998001816d826b/39262701906-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6/cp2k_image_driver.py /home/stardust/sai-hpc-software /home/stardust/sai-hpc-software/runs/39262701906-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-dependencies exec --bind /home/stardust/sai-hpc-software/runs/39262701906-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-dependencies/results:/results:rw --fakeroot --cleanenv --containall --no-home --no-mount bind-paths,home,cwd,tmp,hostfs --pwd / --net --network none --nv --bind /usr:/usr:ro --bind /sbin:/sbin:ro --bind /lib:/lib:ro --bind /lib64:/lib64:ro --bind /opt/devtools:/opt/devtools:ro --bind /opt/modules:/opt/modules:ro --bind /home/stardust/sai-hpc-software/cache/spack:/input/spack:ro --bind /var/lib/dpkg:/var/lib/dpkg:ro --bind /usr/lib/os-release:/etc/os-release:ro --bind /etc/alternatives:/etc/alternatives:ro --bind /usr/bin:/bin:ro --bind /etc/profile.d/lmod.sh:/etc/profile.d/lmod.sh:ro --bind /etc/lmod:/etc/lmod:ro --bind /home/stardust/sai-hpc-software/controller/797d6c3b45c3f847efa4d083f9998001816d826b/39262701906-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6:/control:ro --overlay /home/stardust/sai-hpc-software/runs/39262701906-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-dependencies/work.ext3 --env BUILD_JOBS=12 --env TMPDIR=/workspace/tmp /home/stardust/sai-hpc-software/containers/base/minimal-v1.sif /usr/bin/env SAI_BUILD_PARTITION=8V100V0 /bin/bash /control/cp2k_container_entry.sh dependencies cp2k 67b5da876dd6a76b8b021d5a04d1c81ba79a4c50 v2026.2 8v100v0-avx512 '{"build_id":"v2026.2-g67b5da876dd6-r46ac9460660f","cpu_arch":"skylake-avx512","cuda_arch":"70","dependency_isa":"avx2","gpus":1,"install_prefix":"/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r46ac9460660f/8V100V0","partition":"8V100V0","recipe_sha256":"46ac9460660f9bf876ddfaacd2b0c5e38c8f2df161edff34035aa8335a1467be","repository":"cp2k/cp2k","schema":2,"software":"cp2k","source_ref":"v2026.2","source_sha":"67b5da876dd6a76b8b021d5a04d1c81ba79a4c50","source_version":"v2026.2","stack_digest":null,"stack_sources":{},"target":"8v100v0-avx512","track":"release","version_label":"v2026.2"}'
+echo CP2K_DEPENDENCY_STAGE_COMPLETE_NOT_APPLICATION_ACCEPTANCE
+SAI_BUILD_BODY

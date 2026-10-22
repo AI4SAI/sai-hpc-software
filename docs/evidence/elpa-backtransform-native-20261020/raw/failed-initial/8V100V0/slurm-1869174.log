@@ -1,0 +1,16 @@
+INFO: Will utilize CUDA MPS and run 2 Ranks-per-GPU.
+INFO: SLURM_NODELIST is 8v100v0n02
+INFO: Setting CUDA_MPS_PIPE_DIRECTORY and CUDA_MPS_LOG_DIRECTORY to /tmp/CUDA_MPS-Slurm_Job_1869174
+[8v100v0n02.mr-sai.ai:2820780] Error: Unable to get the user home directory
+[8v100v0n02.mr-sai.ai:2820780] Error: Unable to get the user home directory
+--------------------------------------------------------------------------
+It looks like opal_init failed for some reason; your parallel process is
+likely to abort.  There are many reasons that a parallel process can
+fail during opal_init; some of which are due to configuration or
+environment problems.  This failure appears to be an internal failure;
+here's some additional information (which may only be relevant to an
+Open MPI developer):
+
+  mca_base_var_init failed
+  --> Returned value -1 instead of OPAL_SUCCESS
+--------------------------------------------------------------------------

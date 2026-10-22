@@ -42,12 +42,12 @@ class WorkflowSourceTests(unittest.TestCase):
                                  original(name, selected, resolver)), redirect_stdout(io.StringIO()):
                 exec(compile(snippet, name, "exec"), {})
             self.resolver_calls = resolver.call_args_list
-            return json.loads(output.read_text().removeprefix("builds="))
+            return json.loads(dict(line.split("=", 1) for line in output.read_text().splitlines())["builds"])
 
     def test_abacus_schedule_resolves_all_three_tracks_and_four_registered_partitions(self):
         for software in ("abacus",):
             with self.subTest(software=software):
-                rows = self.execute(software, event="schedule", tracks="ignored", targets="a100")
+                rows = self.execute(software, event="schedule", tracks=",".join(contract.TRACKS), targets=",".join(contract.PARTITIONS))
                 self.assertEqual(len(rows), 12)
                 self.assertEqual({row["target"] for row in rows}, set(contract.SOFTWARE[software]["targets"]))
                 self.assertEqual([row["track"] for row in rows[::4]], list(contract.TRACKS))
@@ -79,7 +79,7 @@ class WorkflowSourceTests(unittest.TestCase):
     def test_both_triggers_skip_precisely_absent_release_channels(self):
         for software in ("abacus", "cp2k"):
             if software == "abacus":
-                rows = self.execute(software, event="schedule", missing=("latest-prerelease",))
+                rows = self.execute(software, event="schedule", tracks=",".join(contract.TRACKS), missing=("latest-prerelease",))
                 self.assertEqual({row["track"] for row in rows}, {"development", "release"})
             self.assertEqual(self.execute(software, tracks="prerelease", missing=("latest-prerelease",)), [])
             rows = self.execute(software, tracks="development,prerelease,release", missing=("latest-prerelease",))
@@ -87,14 +87,11 @@ class WorkflowSourceTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "network unavailable"):
                 self.execute(software, failure=ValueError("network unavailable"))
 
-    def test_cp2k_workflow_only_manual_candidates_and_schedule_is_absent(self):
+    def test_cp2k_reusable_workflow_accepts_schedule(self):
         text = (ROOT / ".github/workflows/cp2k.yml").read_text()
+        self.assertIn("workflow_call:", text)
         self.assertNotIn("schedule:", text)
-        self.assertNotIn("event_name == 'schedule'", text)
-        self.assertIn("needs.resolve-source.outputs.builds != '[]'", text)
-        for event in ("schedule", "push", "pull_request"):
-            with self.subTest(event=event), self.assertRaisesRegex(ValueError, "manual candidates"):
-                self.execute("cp2k", event=event)
+        self.assertEqual(len(self.execute("cp2k", event="schedule")), 1)
 
     def test_workflows_remove_free_ref_and_forward_every_resolved_field(self):
         for name in ("build.yml", "cp2k.yml"):
@@ -102,85 +99,47 @@ class WorkflowSourceTests(unittest.TestCase):
             self.assertNotIn("inputs.source_ref", text)
             self.assertNotIn("schedule:", text)
             self.assertIn("GH_TOKEN: ${{ github.token }}", text)
+            self.assertIn('uses: ./.github/workflows/software-pair.yml', text)
+            self.assertIn('build: ${{ toJSON(matrix.build) }}', text)
+            pair = (ROOT / '.github/workflows/software-pair.yml').read_text()
             for environment, field in (("SOURCE_REF", "source_ref"), ("RELEASE_TRACK", "track"),
                                        ("SOURCE_SHA", "source_sha"), ("SOFTWARE_VERSION", "source_version")):
-                self.assertIn(environment + ": ${{ matrix.build." + field + " }}", text)
+                self.assertIn(environment + ": ${{ fromJSON(inputs.build)." + field + " }}", pair)
 
 
 class DailyWorkflowTests(unittest.TestCase):
-    def execute(self, index=0, **environment):
-        workflow = (ROOT / '.github/workflows/daily.yml').read_text()
-        snippet = textwrap.dedent(workflow.split("python3 - <<'PY'\n")[index + 1].split('\n          PY', 1)[0])
-        with tempfile.TemporaryDirectory() as temporary:
-            output = Path(temporary) / 'output'
-            summary = Path(temporary) / 'summary'
-            env = dict(SOFTWARE='all', TRACKS=','.join(contract.TRACKS), TARGETS='all',
-                       RETRY_RELEASES='', GITHUB_EVENT_NAME='schedule', GITHUB_OUTPUT=str(output),
-                       GITHUB_STEP_SUMMARY=str(summary))
-            env.update(environment)
-            with patch.dict(os.environ, env, clear=True), patch('subprocess.run') as run, redirect_stdout(io.StringIO()):
-                exec(compile(snippet, 'daily.yml', 'exec'), {})
-            self.calls = run.call_args_list
-            self.summary = summary.read_text() if summary.exists() else ''
-            return json.loads(output.read_text().removeprefix('requests=')) if output.exists() else None
+    def test_software_partition_selection(self):
+        from daily_plan import plan
+        rows = plan()
+        self.assertEqual(set(rows['abacus'].split(',')), set(contract.PARTITIONS))
+        self.assertNotIn('dsprhbm', rows['deepmd_kit'])
+        self.assertEqual(plan('lammps', targets='16v100-avx2')['deepmd_kit'], '16v100-avx2')
+        for kwargs in ({'software': 'bad'}, {'software': 'gpumd', 'targets': 'dsprhbm'},
+                       {'targets': 'dsprhbm,dsprhbm'}, {'tracks': 'nightly'}):
+            with self.assertRaises(ValueError):
+                plan(**kwargs)
 
-    def test_daily_dispatches_five_programs_as_four_independent_workflows(self):
-        rows = self.execute()
-        self.assertEqual([row['workflow'] for row in rows], ['build.yml', 'cp2k.yml', 'deepmd-lammps.yml', 'gpumd.yml'])
-        self.assertEqual(len({row['ref'] for row in rows}), 4)
-        for row in rows:
-            self.assertEqual(row['inputs']['tracks'], ','.join(contract.TRACKS))
-            self.assertEqual(row['inputs']['retry_releases'], 'false')
-            expected = ['dsprhbm', '16v100-avx2'] if row['software'] in ('abacus', 'cp2k') else ['16v100-avx2']
-            self.assertEqual(row['inputs']['targets'].split(','), expected)
-        self.assertEqual(rows[2]['inputs']['software'], 'all')
-        self.assertEqual(rows[2]['inputs']['build_candidates'], 'true')
-        self.assertNotIn('build_candidates', rows[3]['inputs'])
-
-    def test_manual_single_software_and_retry_are_forwarded(self):
-        for software in contract.SOFTWARE:
-            with self.subTest(software=software):
-                rows = self.execute(SOFTWARE=software, TARGETS='16v100-avx2', TRACKS='release',
-                                    GITHUB_EVENT_NAME='workflow_dispatch', RETRY_RELEASES='true')
-                self.assertEqual(len(rows), 1)
-                self.assertEqual(rows[0]['inputs']['tracks'], 'release')
-                self.assertEqual(rows[0]['inputs']['targets'], '16v100-avx2')
-                self.assertEqual(rows[0]['inputs']['retry_releases'], 'true')
-                if software in ('deepmd-kit', 'lammps'):
-                    self.assertEqual(rows[0]['inputs']['software'], software)
-        self.assertTrue(all(row['inputs']['retry_releases'] == 'false' for row in self.execute(RETRY_RELEASES='true')))
-
-    def test_cpu_selection_omits_gpu_only_programs_and_invalid_inputs_fail(self):
-        self.assertEqual([row['software'] for row in self.execute(TARGETS='dsprhbm')], ['abacus', 'cp2k'])
-        for env in ({'SOFTWARE': 'other'}, {'SOFTWARE': 'lammps', 'TARGETS': 'dsprhbm'},
-                    {'TARGETS': '4V100'}, {'TARGETS': 'a100'}, {'TARGETS': 'dsprhbm,dsprhbm'},
-                    {'TARGETS': '4v100-avx512'}, {'TARGETS': '8v100v0-avx512'},
-                    {'TARGETS': 'dsprhbm,4v100-avx512'},
-                    {'TRACKS': 'release,release'}, {'TRACKS': ''}, {'TRACKS': 'main'}):
-            with self.subTest(env=env), self.assertRaises(ValueError):
-                self.execute(**env)
-
-    def test_schedule_and_manual_all_are_limited_to_validation_partitions(self):
-        for event in ('schedule', 'workflow_dispatch'):
-            with self.subTest(event=event):
-                rows = self.execute(GITHUB_EVENT_NAME=event)
-                self.assertEqual({target for row in rows for target in row['inputs']['targets'].split(',')},
-                                 {'dsprhbm', '16v100-avx2'})
-
-    def test_dispatch_uses_only_this_repo_and_reports_submission_not_completion(self):
-        request = self.execute(SOFTWARE='gpumd')[0]
-        self.execute(index=1, REQUEST=json.dumps(request))
-        call = self.calls[0]
-        self.assertEqual(call.args[0], ['gh', 'api', '--method', 'POST',
-            'repos/AI4SAI/sai-hpc-software/actions/workflows/gpumd.yml/dispatches', '--input', '-'])
-        self.assertEqual(json.loads(call.kwargs['input']), {'ref': request['ref'], 'inputs': request['inputs']})
-        self.assertTrue(call.kwargs['check'])
-        self.assertIn('Dispatch accepted only', self.summary)
-        workflow = (ROOT / '.github/workflows/daily.yml').read_text()
-        self.assertIn('actions: write', workflow)
-        self.assertNotIn('secrets.REMOTE_SSH', workflow)
-        self.assertNotIn('cancel-in-progress: true', workflow)
+    def test_reusable_workflows_and_result_propagation(self):
+        import yaml
+        data = yaml.safe_load((ROOT / '.github/workflows/daily.yml').read_text())
+        jobs = data['jobs']
+        self.assertEqual(set(jobs['result']['needs']), {'plan','abacus','cp2k','deepmd_kit','gpumd'})
+        self.assertEqual(jobs['result']['if'], 'always()')
+        for name in ('abacus', 'cp2k', 'deepmd_kit', 'gpumd'):
+            workflow = ROOT / jobs[name]['uses'].removeprefix('./')
+            called = yaml.safe_load(workflow.read_text())
+            self.assertIn('workflow_call', called[True])
+        self.assertNotIn('/dispatches', (ROOT / '.github/workflows/daily.yml').read_text())
+        snippet = jobs['result']['steps'][0]['run'].split("python3 - <<'PY'\n")[1].rsplit('\nPY',1)[0]
+        for outcome in ('success', 'failure', 'cancelled', 'skipped'):
+            results = {name: {'result': 'skipped'} for name in ('abacus','cp2k','deepmd_kit','gpumd')}
+            results.update(plan={'result': 'success', 'outputs': {'abacus':'dsprhbm'}}, abacus={'result':outcome})
+            with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, RESULTS=json.dumps(results), GITHUB_STEP_SUMMARY=tmp+'/summary'):
+                if outcome == 'success':
+                    exec(snippet, {})
+                else:
+                    with self.assertRaises(SystemExit): exec(snippet, {})
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     unittest.main()

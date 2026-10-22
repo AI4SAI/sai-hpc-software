@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "scope": "native-concretization-and-offline-source-fetch-only",
+  "spack_commit": "3e19345b6e12f5ff1b874f4059622fc6a1fd804a",
+  "packages_commit": "535022224b610cb07dcbf63cef5bd68c6a2aae24",
+  "bootstrap_overlay_sha256": "80497b787dc178876e71098840cf465deb63c6c9bec27c9dd5cc0bed3643c337",
+  "native_flags": "-O3 -march=native -mtune=native",
+  "compiler": "gcc@13.3.0",
+  "os": "ubuntu24.04",
+  "probes": [
+    {
+      "partition": "16V100",
+      "target": "zen3",
+      "job_id": "1381761",
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "elapsed": "00:01:41",
+      "nodes": 33,
+      "external_nodes": 17,
+      "fetched_source_archives": 14,
+      "mirror_only": true,
+      "lock_sha256": "71ee2b6aeef673d486cea5b4110bec85d47163474b23df93b6c151566786f081",
+      "validated_graph_sha256": "e16c1073082f39b45e201a4b2457059bcc0d9cbaeaa209c182807cbcbd476659",
+      "results": "/home/stardust/sai-hpc-software/runs/cp2k-spack-native-20260918-d-16V100/results"
+    },
+    {
+      "partition": "DSPRHBM",
+      "target": "sapphirerapids",
+      "job_id": "1381762",
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "elapsed": "00:02:39",
+      "nodes": 31,
+      "external_nodes": 16,
+      "fetched_source_archives": 13,
+      "mirror_only": true,
+      "lock_sha256": "516bbeed48edc9dfc33b15822385008b96ad45987927c3059cd5838aaf92c8a6",
+      "validated_graph_sha256": "b437e092d598167997e8e9468b771179f8f7077ca05e44d37745f2afbc9c116e",
+      "results": "/home/stardust/sai-hpc-software/runs/cp2k-spack-native-20260918-d-DSPRHBM/results"
+    }
+  ],
+  "dependencies_installed_by_probe": false,
+  "cp2k_built": false,
+  "scientific_verified": false,
+  "performance_verified": false,
+  "published": false
+}

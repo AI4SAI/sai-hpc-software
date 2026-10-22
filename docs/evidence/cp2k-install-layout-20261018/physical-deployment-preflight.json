@@ -1,0 +1,260 @@
+{
+  "additional_examples_or_benchmarks": false,
+  "checked_at": "2026-10-18T09:17:22.198019+00:00",
+  "local_focused_tests": {
+    "passed": 9,
+    "total": 9
+  },
+  "module_destination": "/opt/modules/modulefiles/apps/cp2k/2026.2-auto",
+  "package": "/home/stardust/sai-hpc-software/deployment/cp2k-2026.2",
+  "package_files": {
+    "2026.2-auto": {
+      "bytes": 1323,
+      "sha256": "817f032fe3434a8266a4df82f8b93583cae39437c9592bbf83ecc872d6764405"
+    },
+    "README.md": {
+      "bytes": 5482,
+      "sha256": "34e6f40c8117be313c39926b7a7ed60fefdadfd4e3f98cbaf2dfcdd271f4797c"
+    },
+    "install.py": {
+      "bytes": 19840,
+      "sha256": "374e4e4860337c13af040e6cf9ea93abbe1aef61bc7cae677b3bc0b605edfb91"
+    },
+    "install.sh": {
+      "bytes": 149,
+      "sha256": "53349dc147a11c6745c542c5dc9afcf8df9699cd6d1caf28b2a6cdbb3f766839"
+    },
+    "native-rank.sh": {
+      "bytes": 671,
+      "sha256": "bbdcffaad12755d64aee27b56250dc46f5fd5365f67dfe1266360f18018b7a44"
+    },
+    "release.json": {
+      "bytes": 1921,
+      "sha256": "81dce6a91b61d67245af1bfe61d4fe40efc73615a9e3ca81d4510777d9640e33"
+    },
+    "run-native-checks.py": {
+      "bytes": 7396,
+      "sha256": "eeb9d8faa4e317fd1680e26c9b50464040bed9fb7157a5564ebbda7c941df252"
+    },
+    "submit-native-checks.sh": {
+      "bytes": 1334,
+      "sha256": "8337c5447464ed89125c4770d9029d6cf5c310f037c673bd53a7ffecc2dcff60"
+    },
+    "verify-native.sbatch": {
+      "bytes": 1685,
+      "sha256": "3c76456d309228d3e49459f1002e62b0711a17ad8cbaf4398270516fe8a97289"
+    }
+  },
+  "partitions": [
+    {
+      "all_original_data_preserved": true,
+      "all_original_shared_library_files_and_links_preserved": true,
+      "bytes": 507163445,
+      "data_regular_files": 280,
+      "data_symlinks": 2,
+      "files": 447,
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r4d454c740309",
+        "cpu_arch": "znver4",
+        "cuda_arch": "70",
+        "dependency_isa": "avx512",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/4V100",
+        "partition": "4V100",
+        "recipe_sha256": "4d454c7403097d4a5cae4c37452ef15aff32d753f0e9076533433dc939535782",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "4v100-avx512",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "image_sha256": "f6cb5d5ab9d2aa928fb0cdb8e1ea42d697a149096a71e96aedaa1763ef171e44",
+      "native_manifest_sha256": "5f276b2a7c47e0a1412b788d9ea8030f5dd986bcff365e21c90449b48057233b",
+      "omission_reasons": {
+        "CMake or development metadata": 34,
+        "ELPA build diagnostic": 7,
+        "HDF5 build or release documentation": 3,
+        "LIBXS developer documentation": 21,
+        "PLUMED integration or editor helper": 3,
+        "PLUMED integration, editor or Fortran development file": 594,
+        "superseded by the four-partition site selector": 1,
+        "unit test or miniapp": 13
+      },
+      "partition": "4V100",
+      "physical_prefix_exists": false
+    },
+    {
+      "all_original_data_preserved": true,
+      "all_original_shared_library_files_and_links_preserved": true,
+      "bytes": 503840602,
+      "data_regular_files": 280,
+      "data_symlinks": 2,
+      "files": 447,
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r4d454c740309",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "4d454c7403097d4a5cae4c37452ef15aff32d753f0e9076533433dc939535782",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "image_sha256": "d83620878d735a4513e0d33e88515eeb488998b21f138f200478c9ad1b9ea45e",
+      "native_manifest_sha256": "934d1b162ab2dc1f98929b7a5e4370bd30df9344f073d1036d5c5e2a174727c8",
+      "omission_reasons": {
+        "CMake or development metadata": 34,
+        "ELPA build diagnostic": 7,
+        "HDF5 build or release documentation": 3,
+        "LIBXS developer documentation": 21,
+        "PLUMED integration or editor helper": 3,
+        "PLUMED integration, editor or Fortran development file": 594,
+        "superseded by the four-partition site selector": 1,
+        "unit test or miniapp": 13
+      },
+      "partition": "16V100",
+      "physical_prefix_exists": false
+    },
+    {
+      "all_original_data_preserved": true,
+      "all_original_shared_library_files_and_links_preserved": true,
+      "bytes": 504181123,
+      "data_regular_files": 280,
+      "data_symlinks": 2,
+      "files": 447,
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r4d454c740309",
+        "cpu_arch": "skylake-avx512",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/8V100V0",
+        "partition": "8V100V0",
+        "recipe_sha256": "4d454c7403097d4a5cae4c37452ef15aff32d753f0e9076533433dc939535782",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "8v100v0-avx512",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "image_sha256": "5a1b12cee097b79c333a9f955edd70cc5a5ee262ffe4b0a622c0f1a0ec0b2334",
+      "native_manifest_sha256": "33dc06cc942aecbb189e83ec75bda9aee18f5e0c437b88534b511c05490d2dbd",
+      "omission_reasons": {
+        "CMake or development metadata": 34,
+        "ELPA build diagnostic": 7,
+        "HDF5 build or release documentation": 3,
+        "LIBXS developer documentation": 21,
+        "PLUMED integration or editor helper": 3,
+        "PLUMED integration, editor or Fortran development file": 594,
+        "superseded by the four-partition site selector": 1,
+        "unit test or miniapp": 13
+      },
+      "partition": "8V100V0",
+      "physical_prefix_exists": false
+    },
+    {
+      "all_original_data_preserved": true,
+      "all_original_shared_library_files_and_links_preserved": true,
+      "bytes": 496150401,
+      "data_regular_files": 280,
+      "data_symlinks": 2,
+      "files": 446,
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-rfb4adb0598fc",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "fb4adb0598fca95c3146f9c9a8a2119febde29882594a832d13b5de4052bc35a",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "image_sha256": "c7157c5287694521a05b9ee7f3d4a33abc2da5031a5bc2b16800765e1332814a",
+      "native_manifest_sha256": "e951b00792193189959f040d2cc66005c22157d029d30156869d2295658e529e",
+      "omission_reasons": {
+        "CMake or development metadata": 34,
+        "ELPA build diagnostic": 7,
+        "HDF5 build or release documentation": 3,
+        "LIBXS developer documentation": 21,
+        "PLUMED integration or editor helper": 3,
+        "PLUMED integration, editor or Fortran development file": 594,
+        "superseded by the four-partition site selector": 1,
+        "unit test or miniapp": 13
+      },
+      "partition": "DSPRHBM",
+      "physical_prefix_exists": false
+    }
+  ],
+  "physical_deployment": "pending administrator execution",
+  "physical_native_science": "pending physical installation",
+  "plan_sha256": "ae30e9eb3ee11abd668e2343fed7a73df8c3b4f53106bdfb0f60a696a5169193",
+  "post_install_reference_preflight": [
+    {
+      "accepted_scientific_evidence_pinned": true,
+      "frozen_parser_and_helpers_pinned": true,
+      "installed_data_matches_accepted_fixture": true,
+      "original_inputs_checked": 14,
+      "partition": "4V100"
+    },
+    {
+      "accepted_scientific_evidence_pinned": true,
+      "frozen_parser_and_helpers_pinned": true,
+      "installed_data_matches_accepted_fixture": true,
+      "original_inputs_checked": 14,
+      "partition": "16V100"
+    },
+    {
+      "accepted_scientific_evidence_pinned": true,
+      "frozen_parser_and_helpers_pinned": true,
+      "installed_data_matches_accepted_fixture": true,
+      "original_inputs_checked": 14,
+      "partition": "8V100V0"
+    },
+    {
+      "accepted_scientific_evidence_pinned": true,
+      "frozen_parser_and_helpers_pinned": true,
+      "installed_data_matches_accepted_fixture": true,
+      "original_inputs_checked": 14,
+      "partition": "DSPRHBM"
+    }
+  ],
+  "real_site_lmod_show": "passed",
+  "schema": 1,
+  "scope": "Read-only preflight of all four accepted SIFs, pinned native manifests and selected payload bytes. No physical /opt installation or new Slurm allocation.",
+  "shell_syntax": "passed",
+  "source_project": "/home/stardust/sai-hpc-software"
+}

@@ -1,0 +1,1313 @@
+--------------------------------------------------------------------------
+PRTE has detected that the head of the session directory tree (where
+scratch files and shared memory backing storage will be placed)
+resides on a shared file system:
+
+   Directory: /home/stardust/sai-hpc-software/runtime/cs-2d1307456f51
+   File system type: lustre
+
+For performance reasons, it is strongly recommended that the session
+directory be located on a local file system. This can be controlled by
+setting the system temporary directory to be used by PRTE using either
+the TMPDIR envar or the "prte_tmpdir_base" MCA param.
+
+If you need the temporary directory to be different on remote nodes
+from the local one where prterun is running (e.g., when a login node is
+being employed), then you can set the local temporary directory using
+the "prte_local_tmpdir_base" MCA param and the one to be used on all
+other nodes using the "prte_remote_tmpdir_base" param.
+
+This is only a warning advisory and your job will continue. You can
+disable this warning in the future by setting the
+"prte_silence_shared_fs" MCA param to "1".
+--------------------------------------------------------------------------
+[16v100n73.mr-sai.ai:3845116] Rank 0 bound to package[0][core:L0-3]
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+ DBCSR| CPU Multiplication driver                                           XSMM (U)
+ DBCSR| Multrec recursion limit                                              512 (U)
+ DBCSR| Multiplication stack size                                          30000 (D)
+ DBCSR| Maximum elements for images                                    UNLIMITED (U)
+ DBCSR| Multiplicative factor virtual images                                   1 (U)
+ DBCSR| Use multiplication densification                                       F (D)
+ DBCSR| Multiplication size stacks                                             3 (U)
+ DBCSR| Use memory pool for CPU allocation                                     F (U)
+ DBCSR| Number of 3D layers                                               SINGLE (U)
+ DBCSR| Use MPI memory allocation                                              F (U)
+ DBCSR| Use RMA algorithm                                                      F (U)
+ DBCSR| Use Communication thread                                               T (U)
+ DBCSR| Communication thread load                                             87 (D)
+ DBCSR| MPI: My process id                                                     0
+ DBCSR| MPI: Number of processes                                               1
+ DBCSR| OMP: Current number of threads                                         1
+ DBCSR| OMP: Max number of threads                                             1
+ DBCSR| ACC: Number of devices/node                                            1
+ DBCSR| ACC: Number of stack-buffers per thread                                8 (U)
+ DBCSR| ACC: Avoid driver after busy                                           F (U)
+ DBCSR| ACC: Process inhomogeneous stacks                                      T (U)
+ DBCSR| ACC: Min. flop for processing                                          0 (U)
+ DBCSR| ACC: Use G2G algorithm                                                 F (D)
+ DBCSR| ACC: Min. flop for sorting                                          4000 (U)
+ DBCSR| ACC: Number of binning bins                                         4096 (U)
+ DBCSR| ACC: Size of binning bins                                             16 (U)
+ DBCSR| ACC: GPU backend is enabled                                            T (D)
+ DBCSR| Split modifier for TAS multiplication algorithm                  1.0E+00 (U)
+
+
+  **** **** ******  **  PROGRAM STARTED AT               2026-10-20 05:39:43.495
+ ***** ** ***  *** **   PROGRAM STARTED ON                   16v100n73.mr-sai.ai
+ **    ****   ******    PROGRAM STARTED BY                             <unknown>
+ ***** **    ** ** **   PROGRAM PROCESS ID                               3845174
+  **** **  *******  **  PROGRAM STARTED IN                                 /work
+
+ CP2K| version string:                                       CP2K version 2026.2
+ CP2K| source code revision number:                                   67b5da876d
+ CP2K| cp2kflags: omp libint fftw3 libxc elpa parallel scalapack mpi_f08 cosma l
+ CP2K|            ibxs libxsmm dbcsr_acc plumed2 spglib libdftd4 dftd4_v4_2 s_df
+ CP2K|            ftd3 mctc-lib tblite libvori libbqb offload_cuda spla_gemm_off
+ CP2K|            floading cusolvermp cusolvermp_nccl hdf5
+ CP2K| is freely available from                            https://www.cp2k.org/
+ CP2K| Program compiled at                                   2026-10-20 05:17:48
+ CP2K| Program compiled on                                                      
+ CP2K| Program compiled for                                               x86_64
+ CP2K| Data directory path    /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-
+ CP2K| Input file name                                                 input.inp
+
+ GLOBAL| Force Environment number                                              1
+ GLOBAL| Basis set file name                                           BASIS_SET
+ GLOBAL| Potential file name                                           POTENTIAL
+ GLOBAL| MM Potential file name                                     MM_POTENTIAL
+ GLOBAL| Coordinate file name                                      __STD_INPUT__
+ GLOBAL| Method name                                                        CP2K
+ GLOBAL| Project name                                                  benchmark
+ GLOBAL| Run type                                                   ENERGY_FORCE
+ GLOBAL| FFT library                                                       FFTW3
+ GLOBAL| Diagonalization library                                        cuSOLVER
+ GLOBAL| Cholesky decomposition library                                ScaLAPACK
+ GLOBAL| DGEMM library                                                      SPLA
+ GLOBAL| Direct generalized diagonalization requested                          F
+ GLOBAL| Minimum matrix size for cuSOLVER diagonalization                     64
+ GLOBAL| Orthonormality check for eigenvectors                          DISABLED
+ GLOBAL| Matrix multiplication library                                     COSMA
+ GLOBAL| All-to-all communication in single precision                          F
+ GLOBAL| FFTs using library dependent lengths                                  F
+ GLOBAL| Grid backend                                                       AUTO
+ GLOBAL| Global print level                                                 HIGH
+ GLOBAL| MPI I/O enabled                                                       T
+ GLOBAL| Total number of message passing processes                             1
+ GLOBAL| Number of distributed systems (nodes)                                 1
+ GLOBAL| Number of threads for this process                                    1
+ GLOBAL| This output is from process                                           0
+ GLOBAL| OpenMP stack size per thread (OMP_STACKSIZE)                    default
+ GLOBAL| CPU model name               AMD Ryzen Threadripper PRO 5995WX 64-Cores
+ GLOBAL| CPUID                                                              1002
+
+ MEMORY| system memory details [Kb]
+ MEMORY|                        rank 0           min           max       average
+ MEMORY| MemTotal            263883340     263883340     263883340     263883340
+ MEMORY| MemFree             224422144     224422144     224422144     224422144
+ MEMORY| Buffers                438716        438716        438716        438716
+ MEMORY| Cached                3596092       3596092       3596092       3596092
+ MEMORY| Slab                  8147108       8147108       8147108       8147108
+ MEMORY| SReclaimable           531992        531992        531992        531992
+ MEMORY| MemLikelyFree       228988944     228988944     228988944     228988944
+
+
+ *** Fundamental physical constants (SI units) ***
+
+ *** Literature: B. J. Mohr and B. N. Taylor,
+ ***             CODATA recommended values of the fundamental physical
+ ***             constants: 2006, Web Version 5.1
+ ***             http://physics.nist.gov/constants
+
+ Speed of light in vacuum [m/s]                             2.99792458000000E+08
+ Magnetic constant or permeability of vacuum [N/A**2]       1.25663706143592E-06
+ Electric constant or permittivity of vacuum [F/m]          8.85418781762039E-12
+ Planck constant (h) [J*s]                                  6.62606896000000E-34
+ Planck constant (h-bar) [J*s]                              1.05457162825177E-34
+ Elementary charge [C]                                      1.60217648700000E-19
+ Electron mass [kg]                                         9.10938215000000E-31
+ Electron g factor [ ]                                     -2.00231930436220E+00
+ Proton mass [kg]                                           1.67262163700000E-27
+ Fine-structure constant                                    7.29735253760000E-03
+ Rydberg constant [1/m]                                     1.09737315685270E+07
+ Avogadro constant [1/mol]                                  6.02214179000000E+23
+ Boltzmann constant [J/K]                                   1.38065040000000E-23
+ Atomic mass unit [kg]                                      1.66053878200000E-27
+ Bohr radius [m]                                            5.29177208590000E-11
+
+ *** Conversion factors ***
+
+ [u] -> [a.u.]                                              1.82288848426455E+03
+ [Angstrom] -> [Bohr] = [a.u.]                              1.88972613288564E+00
+ [a.u.] = [Bohr] -> [Angstrom]                              5.29177208590000E-01
+ [a.u.] -> [s]                                              2.41888432650478E-17
+ [a.u.] -> [fs]                                             2.41888432650478E-02
+ [a.u.] -> [J]                                              4.35974393937059E-18
+ [a.u.] -> [N]                                              8.23872205491840E-08
+ [a.u.] -> [K]                                              3.15774647902944E+05
+ [a.u.] -> [kJ/mol]                                         2.62549961709828E+03
+ [a.u.] -> [kcal/mol]                                       6.27509468713739E+02
+ [a.u.] -> [Pa]                                             2.94210107994716E+13
+ [a.u.] -> [bar]                                            2.94210107994716E+08
+ [a.u.] -> [atm]                                            2.90362800883016E+08
+ [a.u.] -> [eV]                                             2.72113838565563E+01
+ [a.u.] -> [Hz]                                             6.57968392072181E+15
+ [a.u.] -> [1/cm] (wave numbers)                            2.19474631370540E+05
+ [a.u./Bohr**2] -> [1/cm]                                   5.14048714338585E+03
+ 
+
+ CELL| Volume [angstrom^3]:                                          8000.000000
+ CELL| Vector a [angstrom]:      20.000     0.000     0.000   |a| =    20.000000
+ CELL| Vector b [angstrom]:       0.000    20.000     0.000   |b| =    20.000000
+ CELL| Vector c [angstrom]:       0.000     0.000    20.000   |c| =    20.000000
+ CELL| Angle (b,c), alpha [degree]:                                    90.000000
+ CELL| Angle (a,c), beta  [degree]:                                    90.000000
+ CELL| Angle (a,b), gamma [degree]:                                    90.000000
+ CELL| Numerically orthorhombic:                                             YES
+ CELL| Periodicity                                                          NONE
+
+ CELL_REF| Volume [angstrom^3]:                                      8000.000000
+ CELL_REF| Vector a [angstrom    20.000     0.000     0.000   |a| =    20.000000
+ CELL_REF| Vector b [angstrom     0.000    20.000     0.000   |b| =    20.000000
+ CELL_REF| Vector c [angstrom     0.000     0.000    20.000   |c| =    20.000000
+ CELL_REF| Angle (b,c), alpha [degree]:                                90.000000
+ CELL_REF| Angle (a,c), beta  [degree]:                                90.000000
+ CELL_REF| Angle (a,b), gamma [degree]:                                90.000000
+ CELL_REF| Numerically orthorhombic:                                         YES
+ CELL_REF| Periodicity                                                      NONE
+
+
+ SUBCELL GRID  INFO FOR THE NONBONDED NEIGHBOR LISTS
+
+    NUMBER OF SUBCELLS             ::                   7         7         7
+    NUMBER OF PERIODIC      IMAGES ::                   0         0         0
+    NUMBER OF INTERACTING SUBCELLS ::                   2         2         2
+
+ GENERATE|  Preliminary Number of Bonds generated:                             0
+ GENERATE|  Achieved consistency in connectivity generation.
+
+
+                  #####   #####        #     #   #     #       #          
+                 #     # #     #      #    ##### #     #   # #####  ####  
+                 #     # #           #       #   ###   #       #   #    # 
+                 #     #  #####     #        #   #  #  #   #   #   ###### 
+                 #   # #       #   #         #   #   # #   #   #   #      
+                 #    #  #     #  #          #   #  #  # # #   #    #   # 
+                  #### #  #####  #           #   ###   ##  #   #     ###  
+
+                                   GFN2-xTB  
+                                 Version 0.0                       
+                            Johann V. Pototschnig                  
+
+
+ RADII: ORBITAL BASIS in angstrom            Kind   Label     Radius  OCE Radius
+                                                1   O       3.183713    3.183713
+                                                2   C       3.732331    3.732331
+                                                3   H       3.898564    3.898564
+
+ RADII: SHELL SETS OF ORBITAL BASIS in angstrom   Kind  Label   Set       Radius
+                                                     1  O         1     2.726190
+                                                                  2     3.183713
+                                                     2  C         1     3.135117
+                                                                  2     3.732331
+                                                     3  H         1     3.898564
+
+ RADII: PRIMITIVE GAUSSIANS OF ORBITAL BASIS in anKindomLabel   Set       Radius
+                                                     1  O         1     0.200519
+                                                                        0.488029
+                                                                        1.761200
+                                                                        2.726190
+                                                     1  O         2     0.634830
+                                                                        1.279159
+                                                                        2.143189
+                                                                        3.183713
+                                                     2  C         1     0.230666
+                                                                        0.561533
+                                                                        2.027494
+                                                                        3.135117
+                                                     2  C         2     0.745068
+                                                                        1.502196
+                                                                        2.516578
+                                                                        3.732331
+                                                     3  H         1     0.921359
+                                                                        2.155272
+                                                                        3.898564
+
+ RADII: AUXILLIARY BASIS in angstrom         Kind   Label     Radius  OCE Radius
+                                                          1   O         no basis
+                                                          2   C         no basis
+                                                          3   H         no basis
+
+ RADII: SHELL SETS OF AUXILLIARY BASIS in angstromKind  Label   Set       Radius
+                                                     1   O              no basis
+                                                     2   C              no basis
+                                                     3   H              no basis
+
+ RADII: PRIMITIVE GAUSSIANS OF AUXILLIARY BASIS inKindstLabel   Set       Radius
+                                                     1   O              no basis
+                                                     2   C              no basis
+                                                     3   H              no basis
+
+ RADII: LOCAL RI BASIS in angstrom           Kind   Label     Radius  OCE Radius
+                                                          1   O         no basis
+                                                          2   C         no basis
+                                                          3   H         no basis
+
+ RADII: SHELL SETS OF LOCAL RI BASIS in angstrom  Kind  Label   Set       Radius
+                                                     1   O              no basis
+                                                     2   C              no basis
+                                                     3   H              no basis
+
+ RADII: PRIMITIVE GAUSSIANS OF LOCAL RI BASIS in aKindroLabel   Set       Radius
+                                                     1   O              no basis
+                                                     2   C              no basis
+                                                     3   H              no basis
+
+ RADII: NUCLEAR BASIS in angstrom            Kind   Label     Radius  OCE Radius
+                                                          1   O         no basis
+                                                          2   C         no basis
+                                                          3   H         no basis
+
+ RADII: SHELL SETS OF NUCLEAR BASIS in angstrom   Kind  Label   Set       Radius
+                                                     1   O              no basis
+                                                     2   C              no basis
+                                                     3   H              no basis
+
+ RADII: PRIMITIVE GAUSSIANS OF NUCLEAR BASIS in anKindomLabel   Set       Radius
+                                                     1   O              no basis
+                                                     2   C              no basis
+                                                     3   H              no basis
+
+ RADII: CORE CHARGE DISTRIBUTIONS in angstrom          Kind   Label       Radius
+                                                          1   O         1.495563
+                                                          2   C         1.565687
+                                                          3   H         0.815723
+
+ RADII: LOCAL PART OF GTH/ELP PP in angstrom           Kind   Label       Radius
+
+ RADII: NON-LOCAL PART OF GTH PP in angstrom           Kind   Label       Radius
+
+ RADII: ONE CENTER PROJECTORS in angstrom              Kind   Label       Radius
+
+ DISTRIBUTION OF THE MOLECULES                    Process    Number of molecules
+                                                        0                      4
+                                                      Sum                      4
+
+  Process   Kind   Local molecules (global indices)
+        0      1         1
+               2         2
+               3         3
+               4         4
+
+ DISTRIBUTION OF THE PARTICLES                    Process    Number of particles
+                                                        0                      4
+                                                      Sum                      4
+
+  Process   Kind   Local particles (global indices)
+        0      1        1
+               2        2
+               3        3     4
+
+ xTB| Parameter file                                             xTB1_parameters
+ xTB| Basis expansion STO-NG                                                   6
+ xTB| Basis expansion STO-NG for Hydrogen                                      4
+ xTB| Repulsive pair potential accuracy                               0.1000E-09
+ xTB| Repulsive enhancement factor                                      0.000000
+ xTB| Halogen interaction potential                                            T
+ xTB| Halogen interaction potential cutoff radius                         20.000
+ xTB| Nonbonded interactions                                                   F
+ xTB| vdW potential type:                                              DFTD3(BJ)
+ xTB| D3 Dispersion: Parameter                                         dftd3.dat
+ xTB| Huckel constants ks kp kd                        1.850     2.250     2.000
+ xTB| Huckel constants ksp k2sh                                  2.080     2.850
+ xTB| Mataga-Nishimoto exponent                                            2.000
+ xTB| Repulsion potential exponent                                         1.500
+ xTB| Coordination number scaling kcn(s) kcn(p) kc     0.006    -0.003    -0.005
+ xTB| Electronegativity scaling                                           -0.007
+ xTB| Halogen potential scaling kxr kx2                          1.300     0.440
+ xTB| SCC mixer:                                                       AUTO
+ xTB| tblite accuracy:                                                 1.000E+00
+ xTB| tblite SCC mixer damping:                                            0.400
+ xTB| tblite SCC mixer iterations:                                           250
+ xTB| tblite SCC mixer memory:                                               250
+ xTB| tblite SCC mixer solver:                                         GVD
+ xTB| tblite SCC mixer omega0:                                         1.000E-02
+ xTB| tblite SCC mixer min weight:                                     1.000E+00
+ xTB| tblite SCC mixer max weight:                                     1.000E+05
+ xTB| tblite SCC mixer weight factor:                                  1.000E-02
+
+
+
+
+ ATOMIC KIND INFORMATION
+
+  1. Atomic kind: O                                     Number of atoms:       1
+
+     Orbital Basis Set                                                 O _STO-4G
+
+       Number of orbital shell sets:                                           2
+       Number of orbital shells:                                               2
+       Number of primitive Cartesian functions:                                8
+       Number of Cartesian basis functions:                                    4
+       Number of spherical basis functions:                                    4
+       Norm type:                                                              3
+
+       Normalised Cartesian orbitals:
+
+                        Set   Shell   Orbital            Exponent    Coefficient
+
+                          1       1    1s               69.137962      -0.204788
+                                                        11.906129      -0.249970
+                                                         0.956708       0.400259
+                                                         0.364625       0.159522
+
+                          2       1    2px               8.212419       1.132156
+                                                         2.129358       1.047684
+                                                         0.750664       0.549565
+                                                         0.298852       0.082908
+                          2       1    2py               8.212419       1.132156
+                                                         2.129358       1.047684
+                                                         0.750664       0.549565
+                                                         0.298852       0.082908
+                          2       1    2pz               8.212419       1.132156
+                                                         2.129358       1.047684
+                                                         0.750664       0.549565
+                                                         0.298852       0.082908
+
+     AE Potential information for                                         Oxygen
+
+       Description:                                       Bare Coulomb Potential
+                                                             Valence charge only
+
+       Gaussian exponent of the core charge distribution:               3.753049
+       Electronic configuration (s p d ...):                       2   4   0   0
+
+  2. Atomic kind: C                                     Number of atoms:       1
+
+     Orbital Basis Set                                                 C _STO-4G
+
+       Number of orbital shell sets:                                           2
+       Number of orbital shells:                                               2
+       Number of primitive Cartesian functions:                                8
+       Number of Cartesian basis functions:                                    4
+       Number of spherical basis functions:                                    4
+       Norm type:                                                              3
+
+       Normalised Cartesian orbitals:
+
+                        Set   Shell   Orbital            Exponent    Coefficient
+
+                          1       1    1s               51.049363      -0.163121
+                                                         8.791123      -0.199110
+                                                         0.706404       0.318820
+                                                         0.269228       0.127065
+
+                          2       1    2px               5.826366       0.737165
+                                                         1.510690       0.682164
+                                                         0.532565       0.357831
+                                                         0.212023       0.053983
+                          2       1    2py               5.826366       0.737165
+                                                         1.510690       0.682164
+                                                         0.532565       0.357831
+                                                         0.212023       0.053983
+                          2       1    2pz               5.826366       0.737165
+                                                         1.510690       0.682164
+                                                         0.532565       0.357831
+                                                         0.212023       0.053983
+
+     AE Potential information for                                         Carbon
+
+       Description:                                       Bare Coulomb Potential
+                                                             Valence charge only
+
+       Gaussian exponent of the core charge distribution:               3.373250
+       Electronic configuration (s p d ...):                       2   2   0   0
+
+  3. Atomic kind: H                                     Number of atoms:       2
+
+     Orbital Basis Set                                                 H _STO-3G
+
+       Number of orbital shell sets:                                           1
+       Number of orbital shells:                                               1
+       Number of primitive Cartesian functions:                                3
+       Number of Cartesian basis functions:                                    1
+       Number of spherical basis functions:                                    1
+       Norm type:                                                              3
+
+       Normalised Cartesian orbitals:
+
+                        Set   Shell   Orbital            Exponent    Coefficient
+
+                          1       1    1s                3.370228       0.273591
+                                                         0.613891       0.264605
+                                                         0.166143       0.082466
+
+     AE Potential information for                                       Hydrogen
+
+       Description:                                       Bare Coulomb Potential
+                                                              Full atomic charge
+
+       Gaussian exponent of the core charge distribution:              12.500000
+       Electronic configuration (s p d ...):                       1   0   0   0
+
+
+ MOLECULE KIND INFORMATION
+
+
+ All atoms are their own molecule, skipping detailed information
+
+
+ TOTAL NUMBERS AND MAXIMUM NUMBERS
+
+  Total number of            - Atomic kinds:                                   3
+                             - Atoms:                                          4
+                             - Shell sets:                                     6
+                             - Shells:                                         6
+                             - Primitive Cartesian functions:                 22
+                             - Cartesian basis functions:                     10
+                             - Spherical basis functions:                     10
+
+  Maximum angular momentum of the orbital basis functions:                     1
+
+
+ MODULE QUICKSTEP: ATOMIC COORDINATES IN ANGSTROM
+
+   Atom Kind Element         X             Y             Z       Z(eff)     Mass
+      1    1 O     8      0.051368      0.000000      0.000000   6.0000  15.9994
+      2    2 C     6      1.278612      0.000000      0.000000   4.0000  12.0107
+      3    3 H     1      1.870460      0.939607      0.000000   1.0000   1.0079
+      4    3 H     1      1.870460     -0.939607      0.000000   1.0000   1.0079
+
+
+ REQUESTED STRUCTURE DATA
+
+
+ SCF PARAMETERS         Density guess:                                     MOPAC
+                        --------------------------------------------------------
+                        max_scf:                                             100
+                        max_scf_history:                                       0
+                        max_diis:                                              4
+                        --------------------------------------------------------
+                        eps_scf:                                        1.00E-08
+                        eps_scf_history:                                0.00E+00
+                        eps_diis:                                       1.00E-01
+                        eps_eigval:                                     1.00E-05
+                        --------------------------------------------------------
+                        level_shift [a.u.]:                             0.000000
+                        added MOs                                         4    0
+                        --------------------------------------------------------
+                        Mixing method:                           DIRECT_P_MIXING
+                        --------------------------------------------------------
+                        Smear method:                                FERMI_DIRAC
+                        Electronic temperature [K]:                        300.0
+                        Electronic temperature [a.u.]:                  9.50E-04
+                        Accuracy threshold:                             1.00E-06
+                        --------------------------------------------------------
+                        No outer SCF
+
+ PW_GRID| Information for grid number                                          1
+ PW_GRID| Cutoff [a.u.]                                                      1.0
+ PW_GRID| spherical cutoff:                                                   NO
+ PW_GRID|   Bounds   1             -9       8                Points:          18
+ PW_GRID|   Bounds   2             -9       8                Points:          18
+ PW_GRID|   Bounds   3             -9       8                Points:          18
+ PW_GRID| Volume element (a.u.^3)   9.257         Volume (a.u.^3)     53986.6767
+ PW_GRID| Grid span                                                    FULLSPACE
+
+ POISSON| Solver                                                        PERIODIC
+ POISSON| Periodicity                                                        XYZ
+
+ RS_GRID| Information for grid number                                          1
+ RS_GRID|   Bounds   1             -9       8                Points:          18
+ RS_GRID|   Bounds   2             -9       8                Points:          18
+ RS_GRID|   Bounds   3             -9       8                Points:          18
+
+ DISTRIBUTION OF THE PARTICLES (ROWS)
+              Process row      Number of particles         Number of matrix rows
+                        0                        4                            -1
+                      Sum                        4                            -1
+
+ DISTRIBUTION OF THE PARTICLES (COLUMNS)
+              Process col      Number of particles      Number of matrix columns
+                        0                        4                            -1
+                      Sum                        4                            -1
+
+ <distribution_2d> {      ref_count=         1,
+    n_row_distribution=              4,
+      row_distribution= (     0,     0,     0,     0,),
+    n_col_distribution=              4,
+      col_distribution= (     0,     0,     0,     0,),
+    n_local_rows= (     1,     1,     2,),
+      local_rows=(
+(      1 )
+(      2 )
+(      3,     4 )
+ ),
+    n_local_cols= (     1,     1,     2,),
+      local_cols=(
+(      1 )
+(      2 )
+(      3,     4 )
+ ),
+    blacs_env=  group=         0, ref_count=         5,
+  mepos=(       0,       0),
+  num_pe=(       1,       1),
+  blacs2mpi=      0
+  para_env=<cp_para_env id=     0>,
+  my_pid=         0, n_pid=         1 }
+ }
+
+ DISTRIBUTION OF THE NEIGHBOR LISTS
+              Total number of particle pairs:                                 10
+              Total number of matrix elements:                                67
+              Average number of particle pairs:                               10
+              Maximum number of particle pairs:                               10
+              Average number of matrix element:                               67
+              Maximum number of matrix elements:                              67
+
+ Extrapolation method: initial_guess
+
+ Number of electrons:                                                         12
+ Number of occupied orbitals:                                                  6
+ Number of molecular orbitals:                                                10
+
+ Number of orbital functions:                                                 10
+ Number of independent orbital functions:                                     10
+
+
+ SCF WAVEFUNCTION OPTIMIZATION
+
+  Step     Update method      Time    Convergence         Total energy    Change
+  ------------------------------------------------------------------------------
+        Maximum deviation from MO S-orthonormality                    0.1000E+01
+        Minimum/Maximum MO magnitude              0.0000E+00          0.0000E+00
+
+        Repulsive pair potential energy:                           0.0604176441
+        Zeroth order Hamiltonian energy:                          -7.3038219439
+        Electrostatic energy:                                      0.2195847828
+        Self-consistent dispersion energy:                        -0.0007585037
+        Non-self consistent dispersion energy:                     0.0000000043
+     1 TBLite/Diag 0.40E+00    0.6     0.77493816        -7.0245780163 -7.02E+00
+        Maximum deviation from MO S-orthonormality                    0.1110E-14
+        Minimum/Maximum MO magnitude              0.5400E+00          0.3035E+01
+
+        DIIS | The SCF DIIS buffer was allocated and initialized
+
+        DIIS | Current SCF DIIS buffer size:            1
+        DIIS | Maximum SCF DIIS error vector element:   2.740E-01
+        DIIS | Current SCF convergence:                 7.749E-01
+        DIIS | Threshold value for a DIIS step:         0.000E+00
+        DIIS | => No update of the SCF DIIS buffer
+        DIIS | => No SCF DIIS step will be performed
+
+
+        Repulsive pair potential energy:                           0.0604176441
+        Zeroth order Hamiltonian energy:                          -7.2187007152
+        Electrostatic energy:                                      0.0073927311
+        Self-consistent dispersion energy:                        -0.0006268117
+        Non-self consistent dispersion energy:                     0.0000000043
+     2 TBLite/Diag 0.40E+00    0.0     0.62378967        -7.1515171474 -1.27E-01
+        Maximum deviation from MO S-orthonormality                    0.6661E-15
+        Minimum/Maximum MO magnitude              0.5400E+00          0.3035E+01
+
+        DIIS | Current SCF DIIS buffer size:            2
+        DIIS | Maximum SCF DIIS error vector element:   1.178E-01
+        DIIS | Current SCF convergence:                 6.238E-01
+        DIIS | Threshold value for a DIIS step:         0.000E+00
+        DIIS | => No update of the SCF DIIS buffer
+        DIIS | => No SCF DIIS step will be performed
+
+
+        Repulsive pair potential energy:                           0.0604176441
+        Zeroth order Hamiltonian energy:                          -7.2713310711
+        Electrostatic energy:                                      0.0428519288
+        Self-consistent dispersion energy:                        -0.0006843017
+        Non-self consistent dispersion energy:                     0.0000000043
+     3 TBLite/Diag 0.40E+00    0.0     0.24970135        -7.1687457956 -1.72E-02
+        Maximum deviation from MO S-orthonormality                    0.1110E-14
+        Minimum/Maximum MO magnitude              0.5400E+00          0.3035E+01
+
+        DIIS | Current SCF DIIS buffer size:            3
+        DIIS | Maximum SCF DIIS error vector element:   6.339E-02
+        DIIS | Current SCF convergence:                 2.497E-01
+        DIIS | Threshold value for a DIIS step:         0.000E+00
+        DIIS | => No update of the SCF DIIS buffer
+        DIIS | => No SCF DIIS step will be performed
+
+
+        Repulsive pair potential energy:                           0.0604176441
+        Zeroth order Hamiltonian energy:                          -7.2461944457
+        Electrostatic energy:                                      0.0141354034
+        Self-consistent dispersion energy:                        -0.0006781014
+        Non-self consistent dispersion energy:                     0.0000000043
+     4 TBLite/Diag 0.40E+00    0.0     0.13903123        -7.1723194953 -3.57E-03
+        Maximum deviation from MO S-orthonormality                    0.1776E-14
+        Minimum/Maximum MO magnitude              0.5400E+00          0.3035E+01
+
+        DIIS | Current SCF DIIS buffer size:            4
+        DIIS | Maximum SCF DIIS error vector element:   3.592E-02
+        DIIS | Current SCF convergence:                 1.390E-01
+        DIIS | Threshold value for a DIIS step:         0.000E+00
+        DIIS | => No update of the SCF DIIS buffer
+        DIIS | => No SCF DIIS step will be performed
+
+
+        Repulsive pair potential energy:                           0.0604176441
+        Zeroth order Hamiltonian energy:                          -7.2605512739
+        Electrostatic energy:                                      0.0275587937
+        Self-consistent dispersion energy:                        -0.0006832375
+        Non-self consistent dispersion energy:                     0.0000000043
+     5 TBLite/Diag 0.40E+00    0.0     0.07741596        -7.1732580692 -9.39E-04
+        Maximum deviation from MO S-orthonormality                    0.1221E-14
+        Minimum/Maximum MO magnitude              0.5400E+00          0.3035E+01
+
+        DIIS | Current SCF DIIS buffer size:            4
+        DIIS | Maximum SCF DIIS error vector element:   9.700E-03
+        DIIS | Current SCF convergence:                 7.742E-02
+        DIIS | Threshold value for a DIIS step:         0.000E+00
+        DIIS | => No update of the SCF DIIS buffer
+        DIIS | => No SCF DIIS step will be performed
+
+
+        Repulsive pair potential energy:                           0.0604176441
+        Zeroth order Hamiltonian energy:                          -7.2566128523
+        Electrostatic energy:                                      0.0231607050
+        Self-consistent dispersion energy:                        -0.0006788173
+        Non-self consistent dispersion energy:                     0.0000000043
+     6 TBLite/Diag 0.40E+00    0.0     0.02099713        -7.1737133163 -4.55E-04
+        Maximum deviation from MO S-orthonormality                    0.1110E-14
+        Minimum/Maximum MO magnitude              0.5400E+00          0.3035E+01
+
+        DIIS | Current SCF DIIS buffer size:            4
+        DIIS | Maximum SCF DIIS error vector element:   1.725E-03
+        DIIS | Current SCF convergence:                 2.100E-02
+        DIIS | Threshold value for a DIIS step:         0.000E+00
+        DIIS | => No update of the SCF DIIS buffer
+        DIIS | => No SCF DIIS step will be performed
+
+
+        Repulsive pair potential energy:                           0.0604176441
+        Zeroth order Hamiltonian energy:                          -7.2558858713
+        Electrostatic energy:                                      0.0224179139
+        Self-consistent dispersion energy:                        -0.0006785727
+        Non-self consistent dispersion energy:                     0.0000000043
+     7 TBLite/Diag 0.40E+00    0.0     0.00373971        -7.1737288817 -1.56E-05
+        Maximum deviation from MO S-orthonormality                    0.1332E-14
+        Minimum/Maximum MO magnitude              0.5400E+00          0.3035E+01
+
+        DIIS | Current SCF DIIS buffer size:            4
+        DIIS | Maximum SCF DIIS error vector element:   6.700E-04
+        DIIS | Current SCF convergence:                 3.740E-03
+        DIIS | Threshold value for a DIIS step:         0.000E+00
+        DIIS | => No update of the SCF DIIS buffer
+        DIIS | => No SCF DIIS step will be performed
+
+
+        Repulsive pair potential energy:                           0.0604176441
+        Zeroth order Hamiltonian energy:                          -7.2556065819
+        Electrostatic energy:                                      0.0221373600
+        Self-consistent dispersion energy:                        -0.0006783938
+        Non-self consistent dispersion energy:                     0.0000000043
+     8 TBLite/Diag 0.40E+00    0.0     0.00145304        -7.1737299672 -1.09E-06
+        Maximum deviation from MO S-orthonormality                    0.1332E-14
+        Minimum/Maximum MO magnitude              0.5400E+00          0.3035E+01
+
+        DIIS | Current SCF DIIS buffer size:            4
+        DIIS | Maximum SCF DIIS error vector element:   9.052E-05
+        DIIS | Current SCF convergence:                 1.453E-03
+        DIIS | Threshold value for a DIIS step:         0.000E+00
+        DIIS | => No update of the SCF DIIS buffer
+        DIIS | => No SCF DIIS step will be performed
+
+
+        Repulsive pair potential energy:                           0.0604176441
+        Zeroth order Hamiltonian energy:                          -7.2556409614
+        Electrostatic energy:                                      0.0221717447
+        Self-consistent dispersion energy:                        -0.0006784162
+        Non-self consistent dispersion energy:                     0.0000000043
+     9 TBLite/Diag 0.40E+00    0.0     0.00019631        -7.1737299845 -1.73E-08
+        Maximum deviation from MO S-orthonormality                    0.8882E-15
+        Minimum/Maximum MO magnitude              0.5400E+00          0.3035E+01
+
+        DIIS | Current SCF DIIS buffer size:            4
+        DIIS | Maximum SCF DIIS error vector element:   8.989E-06
+        DIIS | Current SCF convergence:                 1.963E-04
+        DIIS | Threshold value for a DIIS step:         0.000E+00
+        DIIS | => No update of the SCF DIIS buffer
+        DIIS | => No SCF DIIS step will be performed
+
+
+        Repulsive pair potential energy:                           0.0604176441
+        Zeroth order Hamiltonian energy:                          -7.2556372345
+        Electrostatic energy:                                      0.0221680146
+        Self-consistent dispersion energy:                        -0.0006784133
+        Non-self consistent dispersion energy:                     0.0000000043
+    10 TBLite/Diag 0.40E+00    0.0     0.00001949        -7.1737299847 -2.31E-10
+        Maximum deviation from MO S-orthonormality                    0.1332E-14
+        Minimum/Maximum MO magnitude              0.5400E+00          0.3035E+01
+
+        DIIS | Current SCF DIIS buffer size:            4
+        DIIS | Maximum SCF DIIS error vector element:   4.587E-07
+        DIIS | Current SCF convergence:                 1.949E-05
+        DIIS | Threshold value for a DIIS step:         0.000E+00
+        DIIS | => No update of the SCF DIIS buffer
+        DIIS | => No SCF DIIS step will be performed
+
+
+        Repulsive pair potential energy:                           0.0604176441
+        Zeroth order Hamiltonian energy:                          -7.2556374164
+        Electrostatic energy:                                      0.0221681966
+        Self-consistent dispersion energy:                        -0.0006784133
+        Non-self consistent dispersion energy:                     0.0000000043
+    11 TBLite/Diag 0.40E+00    0.0     0.00000099        -7.1737299847 -5.28E-13
+        Maximum deviation from MO S-orthonormality                    0.1332E-14
+        Minimum/Maximum MO magnitude              0.5400E+00          0.3035E+01
+
+        DIIS | Current SCF DIIS buffer size:            4
+        DIIS | Maximum SCF DIIS error vector element:   1.942E-08
+        DIIS | Current SCF convergence:                 9.947E-07
+        DIIS | Threshold value for a DIIS step:         0.000E+00
+        DIIS | => No update of the SCF DIIS buffer
+        DIIS | => No SCF DIIS step will be performed
+
+
+        Repulsive pair potential energy:                           0.0604176441
+        Zeroth order Hamiltonian energy:                          -7.2556374083
+        Electrostatic energy:                                      0.0221681884
+        Self-consistent dispersion energy:                        -0.0006784133
+        Non-self consistent dispersion energy:                     0.0000000043
+    12 TBLite/Diag 0.40E+00    0.0     0.00000004        -7.1737299847  1.78E-15
+        Maximum deviation from MO S-orthonormality                    0.7772E-15
+        Minimum/Maximum MO magnitude              0.5400E+00          0.3035E+01
+
+        DIIS | Current SCF DIIS buffer size:            4
+        DIIS | Maximum SCF DIIS error vector element:   1.032E-08
+        DIIS | Current SCF convergence:                 4.210E-08
+        DIIS | Threshold value for a DIIS step:         0.000E+00
+        DIIS | => No update of the SCF DIIS buffer
+        DIIS | => No SCF DIIS step will be performed
+
+
+        Repulsive pair potential energy:                           0.0604176441
+        Zeroth order Hamiltonian energy:                          -7.2556374124
+        Electrostatic energy:                                      0.0221681925
+        Self-consistent dispersion energy:                        -0.0006784133
+        Non-self consistent dispersion energy:                     0.0000000043
+    13 TBLite/Diag 0.40E+00    0.0     0.00000002        -7.1737299847 -7.99E-15
+        Maximum deviation from MO S-orthonormality                    0.2220E-14
+        Minimum/Maximum MO magnitude              0.5400E+00          0.3035E+01
+
+        DIIS | Current SCF DIIS buffer size:            4
+        DIIS | Maximum SCF DIIS error vector element:   2.045E-10
+        DIIS | Current SCF convergence:                 2.238E-08
+        DIIS | Threshold value for a DIIS step:         0.000E+00
+        DIIS | => No update of the SCF DIIS buffer
+        DIIS | => No SCF DIIS step will be performed
+
+
+        Repulsive pair potential energy:                           0.0604176441
+        Zeroth order Hamiltonian energy:                          -7.2556374125
+        Electrostatic energy:                                      0.0221681926
+        Self-consistent dispersion energy:                        -0.0006784133
+        Non-self consistent dispersion energy:                     0.0000000043
+    14 TBLite/Diag 0.40E+00    0.0     4.4352E-10        -7.1737299847  8.88E-16
+
+  *** SCF run converged in    14 steps ***
+
+
+  Core Hamiltonian energy:                                     -7.25563741248166
+  Repulsive potential energy:                                   0.06041764408546
+  Electrostatic energy:                                         0.02216819259436
+  Self-consistent dispersion energy:                           -0.00067841327138
+  Non-self consistent dispersion energy:                        0.00000000434511
+  Correction for halogen bonding:                               0.00000000000000
+  Electronic entropic energy:                                  -0.00000000000000
+  Fermi energy:                                                -0.33539156661397
+
+  Total energy:                                                -7.17372998472811
+  Total energy (extrapolated to T->0):                         -7.17372998472811
+
+
+ MULLIKEN POPULATION ANALYSIS
+
+  # Atom   Element   Kind        Atomic population                    Net charge
+       1     O          1                 6.277599                     -0.277599
+       2     C          2                 3.826549                      0.173451
+       3     H          3                 0.947926                      0.052074
+       4     H          3                 0.947926                      0.052074
+ # Total charge                          12.000000                     -0.000000
+
+
+
+ LOWDIN POPULATION ANALYSIS
+
+ #  Atom  Element  Kind  Atomic population                           Net charge
+       1     O        1          6.233679                             -0.233679
+       2     C        2          3.823726                              0.176274
+       3     H        3          0.971298                              0.028702
+       4     H        3          0.971298                              0.028702
+ # Total charge                             12.000000                 -0.000000
+
+
+ TB_DIPOLE| Dipole type                                   periodic (Berry phase)
+ TB_DIPOLE| Ref. Point [Bohr]       0.00000000       0.00000000       0.00000000
+ TB_DIPOLE| Moment [a.u.]           0.76027778       0.00000000       0.00000000
+ TB_DIPOLE| Moment [Debye]          1.93243317       0.00000000       0.00000000
+ TB_DIPOLE| Derivative [a.u.]       0.00000000       0.00000000       0.00000000
+
+ -------------------------------------------------------------------------------
+ ----                             MULTIGRID INFO                            ----
+ -------------------------------------------------------------------------------
+ total grid count     :           380              cutoff [a.u.]            1.00
+
+ PW_GRID| Information for grid number                                          2
+ PW_GRID| Cutoff [a.u.]                                                      1.0
+ PW_GRID| spherical cutoff:                                                   NO
+ PW_GRID|   Bounds   1             -9       8                Points:          18
+ PW_GRID|   Bounds   2             -9       8                Points:          18
+ PW_GRID|   Bounds   3             -9       8                Points:          18
+ PW_GRID| Volume element (a.u.^3)   9.257         Volume (a.u.^3)     53986.6767
+ PW_GRID| Grid span                                                    FULLSPACE
+
+ POISSON| Solver                                                        PERIODIC
+ POISSON| Periodicity                                                        XYZ
+
+ RS_GRID| Information for grid number                                          2
+ RS_GRID|   Bounds   1             -9       8                Points:          18
+ RS_GRID|   Bounds   2             -9       8                Points:          18
+ RS_GRID|   Bounds   3             -9       8                Points:          18
+
+     Lanczos converged:  T threshold:   0.100E-02
+     Est. extremal eigenvalues:    0.185E+01   0.329E+00
+     Est. condition number :    0.562E+01
+
+ Order=           3
+     NS sqrt iter    1 1.00000000   0.473E+00       0.530        0.010
+     NS sqrt iter    2 1.00000000   0.161E+00       0.002        5.063
+     NS sqrt iter    3 1.00000000   0.808E-02       0.002        5.021
+     NS sqrt iter    4 1.00000000   0.194E-05       0.002        5.213
+     NS sqrt iter    5 1.00000000   0.178E-15       0.001        2.671
+     Symmetrizing Results
+     Final NS sqrt iter    5 1.00000000   0.106E-15
+
+  Creating energy windows. Fermi level:  -0.42657121084543614     
+  Printing Energy Levels from  -0.73128009561500518       to   0.46901715343853806     
+ Energy Level:    -0.7252786094 Number of states:     1 Occupation:     2.00000000000000
+ Energy Level:    -0.7132756369 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.7012726644 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.6892696919 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.6772667194 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.6652637469 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.6532607744 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.6412578019 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.6292548294 Number of states:     1 Occupation:     2.00000000000000
+ Energy Level:    -0.6172518570 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.6052488845 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.5932459120 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.5812429395 Number of states:     1 Occupation:     2.00000000000000
+ Energy Level:    -0.5692399670 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.5572369945 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.5452340220 Number of states:     2 Occupation:     4.00000000000000
+ Energy Level:    -0.5332310495 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.5212280770 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.5092251045 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.4972221320 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.4852191596 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.4732161871 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.4612132146 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.4492102421 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.4372072696 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.4252042971 Number of states:     1 Occupation:     2.00000000000000
+ Energy Level:    -0.4132013246 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.4011983521 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.3891953796 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.3771924071 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.3651894347 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.3531864622 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.3411834897 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.3291805172 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.3171775447 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.3051745722 Number of states:     1 Occupation:     0.00000000000000
+ Energy Level:    -0.2931715997 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.2811686272 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.2691656547 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.2571626822 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.2451597097 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.2331567373 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.2211537648 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.2091507923 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.1971478198 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.1851448473 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.1731418748 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.1611389023 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.1491359298 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.1371329573 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.1251299848 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.1131270124 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.1011240399 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.0891210674 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.0771180949 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.0651151224 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.0531121499 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.0411091774 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.0291062049 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.0171032324 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:    -0.0051002599 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.0069027126 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.0189056850 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.0309086575 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.0429116300 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.0549146025 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.0669175750 Number of states:     1 Occupation:     0.00000000000000
+ Energy Level:     0.0789205475 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.0909235200 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.1029264925 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.1149294650 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.1269324375 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.1389354099 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.1509383824 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.1629413549 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.1749443274 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.1869472999 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.1989502724 Number of states:     1 Occupation:     0.00000000000000
+ Energy Level:     0.2109532449 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.2229562174 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.2349591899 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.2469621624 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.2589651349 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.2709681073 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.2829710798 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.2949740523 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.3069770248 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.3189799973 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.3309829698 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.3429859423 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.3549889148 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.3669918873 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.3789948598 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.3909978323 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.4030008047 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.4150037772 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.4270067497 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.4390097222 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.4510126947 Number of states:     0 Occupation:     0.00000000000000
+ Energy Level:     0.4630156672 Number of states:     0 Occupation:     0.00000000000000
+
+ Integrated electronic density:                                        -8.677927
+ The electron density is written in cube file format to the file:
+                                             benchmark-ELECTRON_DENSITY-1_0.cube
+
+ Integrated electronic density:                                        -8.677927
+ Integrated core density:                                             137.570571
+ The total density is written in cube file format to the file:
+                                                benchmark-TOTAL_DENSITY-1_0.cube
+
+ Integrated electronic density:                                        -8.677927
+ Integrated core density:                                             137.570571
+ The Hartree potential is written in cube file format to the file:
+                                                    benchmark-V_HARTREE-1_0.cube
+
+ Integrated electronic density:                                        -8.677927
+ Integrated core density:                                             137.570571
+ The Efield is written in cube file format to the file:
+                                                     benchmark-EFIELD_x-1_0.cube
+ The Efield is written in cube file format to the file:
+                                                     benchmark-EFIELD_y-1_0.cube
+ The Efield is written in cube file format to the file:
+                                                     benchmark-EFIELD_z-1_0.cube
+
+ ELF is computed on the real space grid -----
+ ELF is written in cube file format to the file:
+                                                       benchmark-ELF_S1-1_0.cube
+  
+  Eigenvalues of the occupied subspace spin            1
+ ---------------------------------------------
+      -0.73128010      -0.63077847      -0.57912990      -0.54838966
+      -0.54299260      -0.42657121
+ Fermi Energy [eV] :   -9.126469
+
+
+ FORCES [a.u.]
+
+  Atom    Kind        Component        X           Y           Z
+
+     1       1     all_potential     0.000000    0.000000    0.000000
+     1       1           overlap    -0.179679    0.000000   -0.000000
+     1       1          rho_elec    -0.005979   -0.000000    0.000000
+     1       1         repulsive     0.133011    0.000000    0.000000
+     1       1        dispersion    -0.000005    0.000000    0.000000
+     1       1           efield      0.000000    0.000000    0.000000
+     1       1        ehrenfest      0.000000    0.000000    0.000000
+     1       1             total    -0.052653    0.000000   -0.000000
+
+     2       2     all_potential     0.000000    0.000000    0.000000
+     2       2           overlap     0.109840   -0.000000    0.000000
+     2       2          rho_elec     0.005894    0.000000   -0.000000
+     2       2         repulsive    -0.070894    0.000000    0.000000
+     2       2        dispersion     0.000001   -0.000000    0.000000
+     2       2           efield      0.000000    0.000000    0.000000
+     2       2        ehrenfest      0.000000    0.000000    0.000000
+     2       2             total     0.044841   -0.000000    0.000000
+
+     3       3     all_potential     0.000000    0.000000    0.000000
+     3       3           overlap     0.034920    0.056582   -0.000000
+     3       3          rho_elec     0.000043   -0.000921    0.000000
+     3       3         repulsive    -0.031058   -0.049638    0.000000
+     3       3        dispersion     0.000002    0.000002    0.000000
+     3       3           efield      0.000000    0.000000    0.000000
+     3       3        ehrenfest      0.000000    0.000000    0.000000
+     3       3             total     0.003906    0.006025   -0.000000
+
+     4       3     all_potential     0.000000    0.000000    0.000000
+     4       3           overlap     0.034920   -0.056582   -0.000000
+     4       3          rho_elec     0.000043    0.000921    0.000000
+     4       3         repulsive    -0.031058    0.049638    0.000000
+     4       3        dispersion     0.000002   -0.000002    0.000000
+     4       3           efield      0.000000    0.000000    0.000000
+     4       3        ehrenfest      0.000000    0.000000    0.000000
+     4       3             total     0.003906   -0.006025   -0.000000
+
+  Sum of total                       0.000000    0.000000   -0.000000
+
+ ENERGY| Total FORCE_EVAL ( QS ) energy [hartree]             -7.173729984728115
+
+ *** WARNING in force_env_methods.F:472 :: To print the stress tensor ***
+ *** switch on the virial evaluation with the keyword: STRESS_TENSOR  ***
+
+
+ -------------------------------------------------------------------------------
+ -                                                                             -
+ -                                DBCSR STATISTICS                             -
+ -                                                                             -
+ -------------------------------------------------------------------------------
+ COUNTER                                    TOTAL       BLAS       SMM       ACC
+ flops     1 x     1 x     1                  352       0.0%      0.0%    100.0% (*) 
+ flops     1 x     1 x    10                  900       0.0%      0.0%    100.0% (*) 
+ flops     1 x    10 x     1                 1200       0.0%      0.0%    100.0% (*) 
+ flops     1 x     1 x     4                 1280       0.0%      0.0%    100.0% (*) 
+ flops     1 x     4 x     1                 1344       0.0%      0.0%    100.0% (*) 
+ flops     4 x     1 x     1                 1344       0.0%      0.0%    100.0% (*) 
+ flops     4 x     1 x    10                 2400       0.0%      0.0%    100.0% (*) 
+ flops     1 x     4 x    10                 2400       0.0%      0.0%    100.0% (*) 
+ flops     4 x    10 x     1                 4800       0.0%      0.0%    100.0% (*) 
+ flops     1 x    10 x     4                 4800       0.0%      0.0%    100.0% (*) 
+ flops     4 x     4 x     1                 5120       0.0%      0.0%    100.0% (*) 
+ flops     4 x     1 x     4                 5376       0.0%      0.0%    100.0% (*) 
+ flops     1 x     4 x     4                 5376       0.0%      0.0%    100.0% (*) 
+ flops     4 x     4 x    10                14400       0.0%      0.0%    100.0%     
+ flops     4 x    10 x     4                19200       0.0%      0.0%    100.0%     
+ flops     4 x     4 x     4                22528       0.0%      0.0%    100.0%     
+
+ *** WARNING in dbcsr_mm_sched.F:613 :: (*) ACC Untuned kernels, consider ***
+ *** to run the ACC tuning procedure for them                             ***
+
+ flops inhomo. stacks                           0       0.0%      0.0%      0.0%
+ flops total                        92.820000E+03       0.0%      0.0%    100.0%
+ flops max/rank                     92.820000E+03       0.0%      0.0%    100.0%
+ matmuls inhomo. stacks                         0       0.0%      0.0%      0.0%
+ matmuls total                               1734       0.0%      0.0%    100.0%
+ number of processed stacks                   296       0.0%      0.0%    100.0%
+ average stack size                                     0.0       0.0       5.9
+ marketing flops                    98.000000E+03
+ -------------------------------------------------------------------------------
+ # multiplications                             55
+ max memory usage/rank               9.615344E+09
+ # max total images/rank                        1
+ # max 3D layers                                1
+ # MPI messages exchanged                       0
+ -------------------------------------------------------------------------------
+ -                                                                             -
+ -                      DBCSR MESSAGE PASSING PERFORMANCE                      -
+ -                                                                             -
+ -------------------------------------------------------------------------------
+ ROUTINE             CALLS      AVE VOLUME [Bytes]
+ MP_Bcast               17                     12.
+ MP_Allreduce          267                     12.
+ MP_Alltoall          1008                    580.
+ MP_ISend              220                    209.
+ MP_IRecv              220                    209.
+ -------------------------------------------------------------------------------
+
+ -------------------------------------------------------------------------------
+ -                                                                             -
+ -                                GRID STATISTICS                              -
+ -                                                                             -
+ -------------------------------------------------------------------------------
+ LP    KERNEL             BACKEND                              COUNT     PERCENT
+ 2     collocate ortho    GPU                                    696      25.39%
+ 1     collocate ortho    GPU                                    695      25.36%
+ 0     collocate ortho    GPU                                    570      20.80%
+ 3     collocate ortho    GPU                                    556      20.28%
+ 4     collocate ortho    GPU                                    192       7.00%
+ 0     collocate ortho    CPU                                     12       0.44%
+ 0     collocate general  CPU                                     12       0.44%
+ 1     collocate ortho    CPU                                      8       0.29%
+ -------------------------------------------------------------------------------
+
+ -------------------------------------------------------------------------------
+ -                                                                             -
+ -                          OFFLOAD MEMPOOL STATISTICS                         -
+ -                                                                             -
+ -------------------------------------------------------------------------------
+ Memory consumption                Number of allocations  Used [MiB]  Size [MiB]
+ Device                                                3           0           0
+ Host                                                  3           0    21977546
+ -------------------------------------------------------------------------------
+
+ MEMORY| Estimated peak process memory [MiB]                                1333
+
+ -------------------------------------------------------------------------------
+ ----                             MULTIGRID INFO                            ----
+ -------------------------------------------------------------------------------
+ total grid count     :           703              cutoff [a.u.]            1.00
+
+ -------------------------------------------------------------------------------
+ -                                                                             -
+ -                         MESSAGE PASSING PERFORMANCE                         -
+ -                                                                             -
+ -------------------------------------------------------------------------------
+
+ ROUTINE             CALLS      AVE VOLUME [Bytes]
+ MP_Group                2
+ MP_Bcast               65                    181.
+ MP_Allreduce         1013                     21.
+ MP_Sync               684
+ MP_comm_split          30
+ -------------------------------------------------------------------------------
+
+
+ -------------------------------------------------------------------------------
+ -                                                                             -
+ -                           R E F E R E N C E S                               -
+ -                                                                             -
+ -------------------------------------------------------------------------------
+ 
+ CP2K version 2026.2, the CP2K developers group (2026).
+ CP2K is freely available from https://www.cp2k.org/ .
+ 
+ M. Iannuzzi, J. Wilhelm, F. Stein, A. Bussy, H. Elgabarty, D. Golze, A. Hehn, 
+ M. Graml, S. Marek, B. Sertcan Gökmen, C. Schran, H. Forbert, R. Z. 
+ Khaliullin, A. Kozhevnikov, M. Taillefumier, R. Meli, V. V. Rybkin, M. Brehm, 
+ R. Schade, O. Schütt, J. V. Pototschnig, H. Mirhosseini, A. Knüpfer, D. Marx, 
+ M. Krack, J. Hutter, T. D. Kühne.
+ J. Phys. Chem. B 130, 1237-1310 (2026).
+ The CP2K Program Package Made Simple.
+ https://doi.org/10.1021/acs.jpcb.5c05851
+
+ A. Katbashev, M. Stahn, T. Rose, V. Alizadeh, M. Friede, C. Plett, P. 
+ Steinbach, S. Ehlert.
+ J. Phys. Chem. A 129, 2667-2682 (2025).
+ Overview on Building Blocks and Applications of Efficient and Robust Extended 
+ Tight Binding.
+ https://doi.org/10.1021/acs.jpca.4c08263
+
+ T. D. Kühne, M. Iannuzzi, M. Del Ben, V. V. Rybkin, P. Seewald, F. Stein, T. 
+ Laino, R. Z. Khaliullin, O. Schütt, F. Schiffmann, D. Golze, J. Wilhelm, S. 
+ Chulkov, M. H. Bani-Hashemian, V. Weber, U. Borstnik, M. Taillefumier, A. S. 
+ Jakobovits, A. Lazzaro, H. Pabst, T. Müller, R. Schade, M. Guidon, S. 
+ Andermatt, N. Holmberg, G. K. Schenter, A. Hehn, A. Bussy, F. Belleflamme, G. 
+ Tabacchi, A. Glöß, M. Lass, I. Bethune, C. J. Mundy, C. Plessl, M. Watkins, 
+ J. VandeVondele, M. Krack, J. Hutter.
+ J. Chem. Phys. 152, 194103 (2020).
+ CP2K: An electronic structure and molecular dynamics software package - 
+ Quickstep: Efficient and accurate electronic structure calculations.
+ https://doi.org/10.1063/5.0007045
+
+ P. Pracht, E. Caldeweyher, S. Ehlert, S. Grimme.
+ ChemRxiv, (2019).
+ A Robust Non-Self-Consistent Tight-Binding Quantum Chemistry Method for large 
+ Molecules.
+ https://doi.org/10.26434/chemrxiv.8326202.v1
+
+ S. Grimme, C. Bannwarth, P. Shushkov.
+ J. Chem. Theory Comput. 13, 1989 (2017).
+ A Robust and Accurate Tight-Binding Quantum Chemical Method for Structures, 
+ Vibrational Frequencies, and Noncovalent Interactions of Large Molecular 
+ Systems Parametrized for All spd-Block Elements (Z = 1-86).
+ https://doi.org/10.1021/acs.jctc.7b00118
+
+ O. Schuett, P. Messmer, J. Hutter, J. VandeVondele.
+ Electronic Structure Calculations on Graphics Processing Units, 173-190 (2016).
+ GPU-Accelerated Sparse Matrix-Matrix Multiplication for Linear Scaling Density 
+ Functional Theory.
+ https://doi.org/10.1002/9781118670712.ch8
+
+ A. Heinecke, G. Henry, M. Hutchinson, H. Pabst.
+ Proceedings of Intl. Supercomputing Conference, 981-991 (2016).
+ LIBXSMM: Accelerating Small Matrix Multiplications by Runtime Code Generation.
+ https://doi.org/10.1109/SC.2016.83
+
+ U. Borstnik, J. VandeVondele, V. Weber, J. Hutter.
+ Parallel Comput. 40, 47-58 (2014).
+ Sparse matrix multiplication: The distributed block-compressed sparse row 
+ library.
+ https://doi.org/10.1016/j.parco.2014.03.012
+
+ M. Frigo, S. G. Johnson.
+ Proc. IEEE 93, 216-231 (2005).
+ The design and implementation of FFTW3.
+ https://doi.org/10.1109/JPROC.2004.840301
+
+ N. D. Mermin.
+ Phys. Rev. 137, A1441-A1443 (1965).
+ Thermal Properties of the Inhomogeneous Electron Gas.
+ https://doi.org/10.1103/PhysRev.137.A1441
+
+
+ -------------------------------------------------------------------------------
+ -                                                                             -
+ -                                T I M I N G                                  -
+ -                                                                             -
+ -------------------------------------------------------------------------------
+ SUBROUTINE                       CALLS  ASD         SELF TIME        TOTAL TIME
+                                MAXIMUM       AVERAGE  MAXIMUM  AVERAGE  MAXIMUM
+ CP2K                                 1  1.0    0.054    0.054    1.447    1.447
+ qs_forces                            1  2.0    0.002    0.002    1.331    1.331
+ qs_energies                          1  3.0    0.006    0.006    1.329    1.329
+ dbcsr_multiply_generic              55  8.2    0.002    0.002    1.178    1.178
+ multiply_cannon                     55  9.2    0.002    0.002    1.166    1.166
+ multiply_cannon_loop                55 10.2    0.001    0.001    1.161    1.161
+ multiply_cannon_multrec             55 11.2    0.002    0.002    0.993    0.993
+ dbcsr_mm_accdrv_process            296 11.9    0.005    0.005    0.990    0.990
+ jit_kernel_multiply                 16 13.2    0.984    0.984    0.984    0.984
+ scf_env_do_scf                       1  4.0    0.001    0.001    0.675    0.675
+ scf_env_do_scf_inner_loop           14  5.0    0.002    0.002    0.674    0.674
+ scf_post_calculation_tb              1  4.0    0.017    0.017    0.628    0.628
+ energy_windows                       1  5.0    0.002    0.002    0.546    0.546
+ matrix_sqrt_Newton_Schulz            1  6.0    0.000    0.000    0.538    0.538
+ qs_scf_new_mos                      14  6.0    0.000    0.000    0.339    0.339
+ cp_dbcsr_plus_fm_fm_t               15  7.9    0.000    0.000    0.329    0.329
+ calculate_dm_sparse                 14  7.0    0.000    0.000    0.328    0.328
+ qs_scf_loop_print                   14  6.0    0.001    0.001    0.328    0.328
+ calculate_orthonormality            14  7.0    0.000    0.000    0.323    0.323
+ cp_dbcsr_sm_fm_multiply             15  7.9    0.000    0.000    0.317    0.317
+ cp_dbcsr_sm_fm_multiply_core        15  8.9    0.000    0.000    0.313    0.313
+ acc_transpose_blocks                55 11.2    0.000    0.000    0.167    0.167
+ acc_transpose_blocks_kernels        55 12.2    0.001    0.001    0.166    0.166
+ jit_kernel_transpose                 8 13.2    0.165    0.165    0.165    0.165
+ calculate_rho_elec                   9  5.4    0.000    0.000    0.050    0.050
+ fft_wrap_pw1pw2                     23  6.3    0.000    0.000    0.046    0.046
+ fft_wrap_pw1pw2_10                  23  7.3    0.000    0.000    0.046    0.046
+ pw_gpu_r3dc1d_3d                    15  8.8    0.046    0.046    0.046    0.046
+ density_rs2pw                        9  6.4    0.000    0.000    0.046    0.046
+ qs_init_subsys                       1  2.0    0.027    0.027    0.045    0.045
+ -------------------------------------------------------------------------------
+
+ The number of warnings for this run is : 2
+ 
+ -------------------------------------------------------------------------------
+  **** **** ******  **  PROGRAM ENDED AT                 2026-10-20 05:39:45.866
+ ***** ** ***  *** **   PROGRAM RAN ON                       16v100n73.mr-sai.ai
+ **    ****   ******    PROGRAM RAN BY                                 <unknown>
+ ***** **    ** ** **   PROGRAM PROCESS ID                               3845174
+  **** **  *******  **  PROGRAM STOPPED IN                                 /work

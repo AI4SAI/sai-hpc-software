@@ -1,0 +1,154 @@
+name: Build and validate DeePMD and LAMMPS
+
+on:
+  workflow_call:
+    inputs:
+      software:
+        type: string
+        required: false
+        default: all
+      tracks:
+        type: string
+        required: false
+        default: development,prerelease,release
+      targets:
+        type: string
+        required: false
+        default: 16v100-avx2
+      build_candidates:
+        type: boolean
+        required: false
+        default: false
+      retry_releases:
+        type: boolean
+        required: false
+        default: false
+  workflow_dispatch:
+    inputs:
+      software:
+        description: Independently triggered primary software (all, deepmd-kit, lammps)
+        default: all
+        required: true
+      tracks:
+        description: Independent upstream channels, comma separated
+        default: development,prerelease,release
+        required: true
+      targets:
+        description: Native GPU partitions; independent build for every target
+        default: 16v100-avx2
+        required: true
+      build_candidates:
+        description: Run paired builds, scientific acceptance and performance checks
+        type: boolean
+        default: false
+      retry_releases:
+        description: Explicitly retry the selected release/prerelease versions, including failed attempts
+        type: boolean
+        default: false
+  push:
+    paths: ['controller/md_*', 'controller/remote_controller.py', 'controller/source_cache.py', 'controller/create_rootfs.sh', 'controller/resolve_source.py', 'controller/release_contract.py', 'controller/native_module.py', 'controller/export_native.py', 'tests/test_md_*', 'tests/test_controller.py', 'docs/DEEPMD-LAMMPS.md', 'docs/evidence/deepmd-*', '.github/workflows/deepmd-lammps.yml', '.github/workflows/md-pair.yml']
+  pull_request:
+    paths: ['controller/md_*', 'controller/remote_controller.py', 'controller/source_cache.py', 'controller/create_rootfs.sh', 'controller/resolve_source.py', 'controller/release_contract.py', 'controller/native_module.py', 'controller/export_native.py', 'tests/test_md_*', 'tests/test_controller.py', 'docs/DEEPMD-LAMMPS.md', 'docs/evidence/deepmd-*', '.github/workflows/deepmd-lammps.yml', '.github/workflows/md-pair.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Install native delivery test tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y squashfs-tools tcl python3-yaml chrpath
+          command -v mksquashfs unsquashfs tclsh
+      - run: python3 -m unittest discover -s tests -v
+      - run: |
+          for script in controller/md_*.sh; do bash -n "$script"; done
+
+  resolve:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      builds: ${{ steps.pair.outputs.builds }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - id: pair
+        env:
+          GH_TOKEN: ${{ github.token }}
+          SOFTWARE: ${{ inputs.software || 'all' }}
+          TRACKS: ${{ inputs.tracks || 'development,prerelease,release' }}
+          TARGETS: ${{ inputs.targets || '4v100-avx512,16v100-avx2,8v100v0-avx512' }}
+        run: |
+          python3 - <<'PY'
+          import json, os, sys
+          sys.path.insert(0, 'controller')
+          from md_tracking import resolve_track_pairs, REPOSITORIES
+          software = os.environ['SOFTWARE']
+          if software != 'all' and software not in REPOSITORIES:
+              raise ValueError('unknown MD primary software')
+          result = resolve_track_pairs(os.environ['TRACKS'].split(','), os.environ['TARGETS'].split(','))
+          builds = []
+          for pair in result['pairs']:
+              pair['triggers'] = [trigger for trigger in pair['triggers']
+                                  if software == 'all' or trigger['software'] == software]
+              if pair['triggers']:
+                  builds.append(pair)
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as stream:
+              stream.write('builds=' + json.dumps(builds) + '\n')
+          print(json.dumps(dict(pairs=builds, skipped=result['skipped']), indent=2))
+          PY
+
+  candidate-build:
+    # The daily caller enables builds; manual tracking-only runs may leave them disabled.
+    if: (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && inputs.build_candidates && needs.resolve.outputs.builds != '[]'
+    needs: [validate, resolve]
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        build: ${{ fromJSON(needs.resolve.outputs.builds) }}
+    uses: ./.github/workflows/md-pair.yml
+    with:
+      pair: ${{ toJSON(matrix.build) }}
+      retry_releases: ${{ inputs.retry_releases || false }}
+    secrets: inherit
+
+  result:
+    if: always()
+    needs: [validate, resolve, candidate-build]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify every selected build completed
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+          BUILD_ENABLED: '${{ inputs.build_candidates }}'
+        run: |
+          python3 - <<'PY'
+          import json, os
+          results = json.loads(os.environ['RESULTS'])
+          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
+              out.write('| Task | Result |\n|---|---|\n')
+              for name, job in results.items():
+                  out.write(f"| {name} | {job['result']} |\n")
+          if results['validate']['result'] != 'success':
+              raise SystemExit('Local validation did not succeed')
+          if os.environ['GITHUB_EVENT_NAME'] in ('workflow_dispatch', 'schedule'):
+              if results['resolve']['result'] != 'success':
+                  raise SystemExit('Source resolution did not succeed')
+              builds = json.loads(results['resolve']['outputs']['builds'])
+              if builds and os.environ['BUILD_ENABLED'] == 'true':
+                  if results['candidate-build']['result'] != 'success':
+                      raise SystemExit('Selected builds did not complete')
+              elif results['candidate-build']['result'] not in ('success', 'skipped'):
+                  raise SystemExit('Build stage did not succeed')
+          PY

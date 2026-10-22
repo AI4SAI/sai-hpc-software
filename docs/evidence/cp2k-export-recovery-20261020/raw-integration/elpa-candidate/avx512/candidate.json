@@ -1,0 +1,23 @@
+{
+  "purpose": "diagnostic candidate; no public installation or CP2K acceptance claim",
+  "parent_git": "e06e7e5a5a4bf13e628f4ea99a0bd3a4c3f56ec8",
+  "final_prefix": "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/nvidia",
+  "change": "host-staged ELPA2 back-transformation; GPU compute and other CUDA-aware paths retained",
+  "inputs": {
+    "control/cuda-aware-cpu.patch": "aaa3f15cee9024a2e8b92be22c32da9eecd0ae2be2b475d9cd168707631041ae",
+    "control/container.sh": "7cc77212b26d5118505698039d2cd4a21e5d293b9917c89d9d5a686acdabe575",
+    "control/gpu-backtransform-host-staging.patch": "db6db5a63b6e00329d02d93738e19b99811170e06c4fee9d602d860548d6aa67",
+    "control/build.sh": "a4fa5e5735ba0ba0c4825ef2db9aff05e90d7a9eccdc7b8d0334d7cf647dfd67",
+    "control/verify.sh": "6930baa10cffe5e0f8960f45335f19b26fc10f2f13074f74b1765f6e4a7a07fa",
+    "control/build.sbatch": "4859d2b69277f7c6e19da298af922d114eea8ce5bf4011122aedd38be1dee668",
+    "control/verify-lifecycle.py": "08768df38fd2d88b5451552d70a81555b3b7a263d9104a9353f622f078697a27",
+    "control/create_rootfs.sh": "ae0818e8bb485222605290fd3f3c410c40354aa518c8f613ac26236b3e382852",
+    "control/comm-trace.c": "9ce354c8e01568645a302fd65917b3060281ece6fe7f25a93d5145b839a9ee6a",
+    "control/mpi-communicator.patch": "fd4cca359af5bb559b2dc2ab29bd272919c8fd2f7873b2072c65f9dd26536bac",
+    "control/environment.sh": "fe51f1ce9f4a07f387d437155e56f87d7c2af61aa5fd2c439a9550be039250b1",
+    "control/smoke.c": "8486ee890a98ec0225c4c3144ba8d4c458e7f9460775f2d629b41092378e311a",
+    "input/elpa-2026.02.001.tar.gz": "a379f27f4dbd27b2ee45017afec656d064301e97150c874649bdfd64957b75ed",
+    "input/reference/original-module.tcl": "e70d78203c41a4022b3e41e85b44cfc6d3cf1fec4dcc0d257a6b8d22a09b03bf",
+    "input/reference/install_elpa.sh": "7f99b3d863ccd9a61c41f566424e3d47129cfff6b49eeb92c4fc1ae4d0bf61db"
+  }
+}

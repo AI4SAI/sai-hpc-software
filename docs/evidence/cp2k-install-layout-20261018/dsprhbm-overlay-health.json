@@ -1,0 +1,162 @@
+{
+  "schema": 1,
+  "observed_at": "2026-10-18T09:11:21.609986+08:00",
+  "run_id": "39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6",
+  "mutations_performed": false,
+  "fsck_or_mount_performed": false,
+  "scope": "Read-only superblock and existing clone-preparation receipt; not full filesystem integrity validation",
+  "application_superblock": {
+    "command": [
+      "/usr/sbin/dumpe2fs",
+      "-h",
+      "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/work.ext3"
+    ],
+    "exit_code": 0,
+    "stdout": "Filesystem volume name:   <none>\nLast mounted on:          <not available>\nFilesystem UUID:          fd5a7508-1046-4d7c-940f-dd698c9cc17b\nFilesystem magic number:  0xEF53\nFilesystem revision #:    1 (dynamic)\nFilesystem features:      has_journal ext_attr resize_inode dir_index filetype sparse_super large_file\nFilesystem flags:         signed_directory_hash \nDefault mount options:    user_xattr acl\nFilesystem state:         clean\nErrors behavior:          Continue\nFilesystem OS type:       Linux\nInode count:              1048576\nBlock count:              4194304\nReserved block count:     0\nFree blocks:              3242825\nFree inodes:              945831\nFirst block:              0\nBlock size:               4096\nFragment size:            4096\nReserved GDT blocks:      255\nBlocks per group:         32768\nFragments per group:      32768\nInodes per group:         8192\nInode blocks per group:   512\nFilesystem created:       Fri Sep 18 15:31:11 2026\nLast mount time:          Sun Oct 18 07:31:09 2026\nLast write time:          Sun Oct 18 08:56:58 2026\nMount count:              1\nMaximum mount count:      -1\nLast checked:             Sun Oct 18 07:30:54 2026\nCheck interval:           0 (<none>)\nReserved blocks uid:      0 (user root)\nReserved blocks gid:      0 (group root)\nFirst inode:              11\nInode size:\t          256\nRequired extra isize:     32\nDesired extra isize:      32\nJournal inode:            8\nDefault directory hash:   half_md4\nDirectory Hash Seed:      e4b7b0e8-fdf1-444d-966e-0c12d43fbe5e\nJournal backup:           inode blocks\nJournal features:         (none)\nTotal journal size:       64M\nTotal journal blocks:     16384\nMax transaction length:   16384\nFast commit length:       0\nJournal sequence:         0x00000001\nJournal start:            0\n\n",
+    "stderr": "dumpe2fs 1.47.0 (5-Feb-2023)\n"
+  },
+  "dependency_superblock": {
+    "command": [
+      "/usr/sbin/dumpe2fs",
+      "-h",
+      "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies/work.ext3"
+    ],
+    "exit_code": 0,
+    "stdout": "Filesystem volume name:   <none>\nLast mounted on:          <not available>\nFilesystem UUID:          fd5a7508-1046-4d7c-940f-dd698c9cc17b\nFilesystem magic number:  0xEF53\nFilesystem revision #:    1 (dynamic)\nFilesystem features:      has_journal ext_attr resize_inode dir_index filetype sparse_super large_file\nFilesystem flags:         signed_directory_hash \nDefault mount options:    user_xattr acl\nFilesystem state:         clean\nErrors behavior:          Continue\nFilesystem OS type:       Linux\nInode count:              1048576\nBlock count:              4194304\nReserved block count:     0\nFree blocks:              3242416\nFree inodes:              945351\nFirst block:              0\nBlock size:               4096\nFragment size:            4096\nReserved GDT blocks:      255\nBlocks per group:         32768\nFragments per group:      32768\nInodes per group:         8192\nInode blocks per group:   512\nFilesystem created:       Fri Sep 18 15:31:11 2026\nLast mount time:          Sun Oct 18 07:31:09 2026\nLast write time:          Sun Oct 18 08:40:39 2026\nMount count:              1\nMaximum mount count:      -1\nLast checked:             Sun Oct 18 07:30:54 2026\nCheck interval:           0 (<none>)\nReserved blocks uid:      0 (user root)\nReserved blocks gid:      0 (group root)\nFirst inode:              11\nInode size:\t          256\nRequired extra isize:     32\nDesired extra isize:      32\nJournal inode:            8\nDefault directory hash:   half_md4\nDirectory Hash Seed:      e4b7b0e8-fdf1-444d-966e-0c12d43fbe5e\nJournal backup:           inode blocks\nJournal features:         (none)\nTotal journal size:       64M\nTotal journal blocks:     16384\nMax transaction length:   16384\nFast commit length:       0\nJournal sequence:         0x00000001\nJournal start:            0\n\n",
+    "stderr": "dumpe2fs 1.47.0 (5-Feb-2023)\n"
+  },
+  "workdir_preparation": {
+    "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/results/overlay-workdir-preparation.json",
+    "sha256": "7c9416e4035c5fa7e18fa7b97e0f50dbebbac7e82995eb89cd042a0014d77866",
+    "summary": {
+      "cleanup_commands": {
+        "count": 480,
+        "first": [
+          "rm /work/work/.fuse_hidden00016e140000000f",
+          "rm /work/work/.fuse_hidden000061ab00000001"
+        ],
+        "last": [
+          "rmdir /work/work/16555",
+          "rmdir /work/work/27468"
+        ]
+      },
+      "cloned_overlay_sha256": "665b92e0bc3732acb8c8ec3d4a890bc625261cadd28a0d1da888a933843a6b2c",
+      "commands": {
+        "count": 9,
+        "first": [
+          {
+            "argv": [
+              "/usr/sbin/e2fsck",
+              "-fn",
+              "/proc/self/fd/5"
+            ],
+            "returncode": 0,
+            "stderr": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/results/overlay-workdir-preparation/001.stderr",
+            "stderr_sha256": "f074aa9872d23bd7876c68381422f0b17c739d7dbd64d41e99dfd1398653a818",
+            "stdin": null,
+            "stdout": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/results/overlay-workdir-preparation/001.stdout",
+            "stdout_sha256": "e2a87fd39b852048d955d0456de6f87c3ea788466e20a41b5cfab441225a19fa"
+          },
+          {
+            "argv": [
+              "/usr/sbin/debugfs",
+              "-f",
+              "-",
+              "/proc/self/fd/5"
+            ],
+            "returncode": 0,
+            "stderr": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/results/overlay-workdir-preparation/002.stderr",
+            "stderr_sha256": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+            "stdin": "ls -p /\nls -p /upper\nls -p /work\n",
+            "stdout": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/results/overlay-workdir-preparation/002.stdout",
+            "stdout_sha256": "10c480e32dc9b24d3a242f91f17e6e21a00640ffc6ff7502cd33d2437c747854"
+          }
+        ],
+        "last": [
+          {
+            "argv": [
+              "/usr/sbin/debugfs",
+              "-f",
+              "-",
+              "/proc/self/fd/5"
+            ],
+            "returncode": 0,
+            "stderr": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/results/overlay-workdir-preparation/008.stderr",
+            "stderr_sha256": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+            "stdin": "ls -p /work/work\n",
+            "stdout": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/results/overlay-workdir-preparation/008.stdout",
+            "stdout_sha256": "2a6f2fb2dc229bad04155d0feef27cd30f572804b56046d4d6105ae8429e8e93"
+          },
+          {
+            "argv": [
+              "/usr/sbin/e2fsck",
+              "-fn",
+              "/proc/self/fd/5"
+            ],
+            "returncode": 0,
+            "stderr": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/results/overlay-workdir-preparation/009.stderr",
+            "stderr_sha256": "f074aa9872d23bd7876c68381422f0b17c739d7dbd64d41e99dfd1398653a818",
+            "stdin": null,
+            "stdout": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/results/overlay-workdir-preparation/009.stdout",
+            "stdout_sha256": "71dc2740f490d259a64bddcdc2653019bb870822c9856db39ef64fa62be49f1a"
+          }
+        ]
+      },
+      "fsck_before_and_after": "passed",
+      "lock": "exclusive-F_OFD_SETLK",
+      "prepared_overlay_sha256": "d91d6394046c880b84b7e40bce70645d7cd5df008ba7117cb707d55ba3c4b9d5",
+      "remaining_entries": 0,
+      "removed_entries": {
+        "count": 480,
+        "first": [
+          {
+            "gid": 0,
+            "inode": 34140,
+            "links": 2,
+            "mode": 16877,
+            "path": "/work/work/16210",
+            "size": null,
+            "uid": 0
+          },
+          {
+            "gid": 0,
+            "inode": 39238,
+            "links": 2,
+            "mode": 16877,
+            "path": "/work/work/27918",
+            "size": null,
+            "uid": 0
+          }
+        ],
+        "last": [
+          {
+            "gid": 0,
+            "inode": 34232,
+            "links": 1,
+            "mode": 33216,
+            "path": "/work/work/16555/.wh..wh..opq",
+            "size": 0,
+            "uid": 0
+          },
+          {
+            "gid": 0,
+            "inode": 39218,
+            "links": 1,
+            "mode": 33216,
+            "path": "/work/work/27468/.wh..wh..opq",
+            "size": 0,
+            "uid": 0
+          }
+        ]
+      },
+      "schema": 1,
+      "scope": "/work/work",
+      "source": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies/work.ext3",
+      "source_overlay_sha256": "665b92e0bc3732acb8c8ec3d4a890bc625261cadd28a0d1da888a933843a6b2c",
+      "source_unchanged": true,
+      "status": "prepared",
+      "target": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/work.ext3",
+      "upper_directory_unchanged": true
+    }
+  }
+}

@@ -1,0 +1,142 @@
+{
+  "collected_at": "2026-10-18T06:06:20.034760+00:00",
+  "scope": "live progress only for unfinished partitions; intentionally deduplicated credential-scope probe does not claim new application or acceptance success",
+  "partitions": {
+    "DSPRHBM": {
+      "run_id": "39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies",
+      "job": "1841174",
+      "accounting": "1841174|RUNNING|0:0|00:21:08|d9470n02|2026-10-18T13:45:12|Unknown\n",
+      "logs": {
+        "slurm-1841174.log": {
+          "bytes": 14535,
+          "tail": [
+            "[ ] m4bapxa py-setuptools@83.0.0 staging (1s)",
+            "[ ] zcbxz64 py-wheel@0.45.1 staging (1s)",
+            "[ ] goq7bml cosma@2.7.0 staging (1s)",
+            "[ ] m4bapxa py-setuptools@83.0.0 install (1s)",
+            "[ ] zcbxz64 py-wheel@0.45.1 install (1s)",
+            "[ ] goq7bml cosma@2.7.0 cmake (1s)",
+            "[+] zcbxz64 py-wheel@0.45.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM/dependencies/spack/linux-sapphirerapids/py-wheel-0.45.1-zcbxz64qkyaygudpa5zwxzuddbk5aecg (4s)",
+            "[ ] l5muhjn libxsmm@2.0.0 install (54s)",
+            "[+] m4bapxa py-setuptools@83.0.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM/dependencies/spack/linux-sapphirerapids/py-setuptools-83.0.0-m4bapxahgcxscgbsaf6omxhczg7twb2n (7s)",
+            "[ ] 4f4yyk5 py-cython@3.2.4 staging (0s)",
+            "[+] l5muhjn libxsmm@2.0.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM/dependencies/spack/linux-sapphirerapids/libxsmm-2.0.0-l5muhjnzczl5peiem2fwiixbqjnzm33l (59s)",
+            "[ ] goq7bml cosma@2.7.0 build (9s)",
+            "[ ] 4f4yyk5 py-cython@3.2.4 install (3s)",
+            "[ ] goq7bml cosma@2.7.0 install (18s)",
+            "[+] goq7bml cosma@2.7.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM/dependencies/spack/linux-sapphirerapids/cosma-2.7.0-goq7bmlsruxt5lhhemq4ytm366mnfw5l (19s)",
+            "[ ] nzurbzn hdf5@1.14.6 build (1m18s)",
+            "[ ] nzurbzn hdf5@1.14.6 install (2m01s)",
+            "[+] nzurbzn hdf5@1.14.6 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM/dependencies/spack/linux-sapphirerapids/hdf5-1.14.6-nzurbzn7nvb3lu6p33d5wu7aq5ezqydb (3m10s)",
+            "[+] 4f4yyk5 py-cython@3.2.4 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM/dependencies/spack/linux-sapphirerapids/py-cython-3.2.4-4f4yyk5mmtxyuwkiag2wgpbtvn4ea5xp (3m32s)",
+            "[ ] qwwau7j plumed@2.10.1 staging (1s)",
+            "[ ] qwwau7j plumed@2.10.1 autoreconf (23s)",
+            "[ ] qwwau7j plumed@2.10.1 configure (25s)",
+            "[ ] qwwau7j plumed@2.10.1 build (35s)",
+            "[ ] qwwau7j plumed@2.10.1 install (6m00s)",
+            "[+] qwwau7j plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM/dependencies/spack/linux-sapphirerapids/plumed-2.10.1-qwwau7jv5yf5i3ok3c24ysm4ibpxpllg (8m47s)"
+          ],
+          "latest_markers": [
+            "BUILD_CAPACITY_POLICY filesystem-enforced 39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies",
+            "CP2K_IMAGE_DRIVER sha256=46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10 config=/home/stardust/sai-hpc-software/runs/39101032802-1-release-dsprhbm-2026-10-18-67b5da876dd6-dependencies/runtime/apptainer-fuse2fs.conf",
+            "CP2K_SPACK_PROFILE_READY 2026-10-18T05:47:35Z",
+            "CP2K_SPACK_BOOTSTRAP_READY 2026-10-18T05:47:35Z",
+            "CP2K_SPACK_CONCRETIZE_START 2026-10-18T05:47:37Z",
+            "CP2K_SPACK_NATIVE_PROBE_COMPLETE DSPRHBM",
+            "CP2K_FINAL_PREFIX_DEPENDENCIES_START 2026-10-18T05:48:46Z"
+          ]
+        }
+      }
+    },
+    "8V100V0": {
+      "run_id": "39094062144-1-release-8v100v0-avx512-2026-10-18-67b5da876dd6",
+      "job": "1839913",
+      "accounting": "1839913|RUNNING|0:0|01:12:41|8v100v0n02|2026-10-18T12:53:39|Unknown\n",
+      "logs": {
+        "slurm-1839913.log": {
+          "bytes": 308207,
+          "tail": [
+            "[ 81%] Building Fortran object src/CMakeFiles/cp2k.dir/kpoint_io.F.o",
+            "[ 81%] Building Fortran object src/CMakeFiles/cp2k.dir/kg_environment.F.o",
+            "[ 81%] Building Fortran object src/CMakeFiles/cp2k.dir/qmmmx_types.F.o",
+            "[ 81%] Building Fortran object src/CMakeFiles/cp2k.dir/qs_dispersion_d3.F.o",
+            "[ 81%] Building Fortran object src/CMakeFiles/cp2k.dir/xtb_eeq.F.o",
+            "[ 81%] Building Fortran object src/CMakeFiles/cp2k.dir/input_cp2k_print_dft.F.o",
+            "[ 81%] Building Fortran object src/CMakeFiles/cp2k.dir/mao_optimizer.F.o",
+            "[ 81%] Building Fortran object src/CMakeFiles/cp2k.dir/qs_commutators.F.o",
+            "[ 81%] Building Fortran object src/CMakeFiles/cp2k.dir/qs_scf_wfn_mix.F.o",
+            "[ 81%] Building Fortran object src/CMakeFiles/cp2k.dir/ec_external.F.o",
+            "[ 81%] Building Fortran object src/CMakeFiles/cp2k.dir/qs_kernel_types.F.o",
+            "[ 81%] Building Fortran object src/CMakeFiles/cp2k.dir/emd/rt_projection_mo_utils.F.o",
+            "[ 81%] Building Fortran object src/CMakeFiles/cp2k.dir/qs_cneo_methods.F.o",
+            "[ 81%] Building Fortran object src/CMakeFiles/cp2k.dir/qmmm_image_charge.F.o",
+            "[ 82%] Building Fortran object src/CMakeFiles/cp2k.dir/qs_moments.F.o",
+            "[ 82%] Building Fortran object src/CMakeFiles/cp2k.dir/tblite_ks_matrix.F.o",
+            "[ 82%] Building Fortran object src/CMakeFiles/cp2k.dir/qs_dispersion_d4.F.o",
+            "[ 83%] Building Fortran object src/CMakeFiles/cp2k.dir/xc_write_output.F.o",
+            "[ 83%] Building Fortran object src/CMakeFiles/cp2k.dir/lri_optimize_ri_basis.F.o",
+            "[ 83%] Building Fortran object src/CMakeFiles/cp2k.dir/xtb_qresp.F.o",
+            "[ 83%] Building Fortran object src/CMakeFiles/cp2k.dir/xtb_ehess.F.o",
+            "[ 83%] Building Fortran object src/CMakeFiles/cp2k.dir/xtb_ehess_force.F.o",
+            "[ 83%] Building Fortran object src/CMakeFiles/cp2k.dir/mp2_ri_libint.F.o",
+            "[ 83%] Building Fortran object src/CMakeFiles/cp2k.dir/mp2_eri_gpw.F.o",
+            "[ 83%] Building Fortran object src/CMakeFiles/cp2k.dir/fist_force.F.o"
+          ],
+          "latest_markers": [
+            "BUILD_CAPACITY_POLICY filesystem-enforced 39094062144-1-release-8v100v0-avx512-2026-10-18-67b5da876dd6",
+            "CP2K_EXACT_DEPENDENCY_CHECKPOINT_CLONED",
+            "CP2K_IMAGE_DRIVER sha256=46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10 config=/home/stardust/sai-hpc-software/runs/39094062144-1-release-8v100v0-avx512-2026-10-18-67b5da876dd6/runtime/apptainer-fuse2fs.conf",
+            "CP2K_APPLICATION_COMPILER /opt/devtools/gcc/14.3.0/bin/gcc 14.3.0",
+            "CP2K_APPLICATION_COMPILER /opt/devtools/gcc/14.3.0/bin/g++ 14.3.0",
+            "CP2K_APPLICATION_COMPILER /opt/devtools/gcc/14.3.0/bin/gfortran 14.3.0",
+            "CP2K_PARALLEL_HDF5_VERIFIED /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/8V100V0/dependencies/spack/linux-skylake_avx512/hdf5-1.14.6-c762spr46tnwvmbfpx6o2723tufh4jlt/lib/libhdf5.settings",
+            "CP2K_NATIVE_ELPA version=2026.02.002 target=8v100v0-avx512 avx512=yes gpu=yes prefix=/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/8V100V0/dependencies/elpa",
+            "CP2K_NATIVE_ELPA_INSTALLED",
+            "CP2K_TBLITE_VERSION 0.6.0"
+          ]
+        }
+      },
+      "latest_compile_progress_percent": 83
+    }
+  },
+  "credential_probe": {
+    "run_id": "39102356436-1-release-dsprhbm-2026-10-18-67b5da876dd6",
+    "build_claim": {
+      "build": false,
+      "identities": [],
+      "meaning": "build attempt only; no artifact or acceptance claim",
+      "retry": false,
+      "run_id": "39102356436-1-release-dsprhbm-2026-10-18-67b5da876dd6",
+      "schema": 1,
+      "skipped": [
+        {
+          "identity": {
+            "build_id": "v2026.2-g67b5da876dd6-rfb4adb0598fc",
+            "cpu_arch": "x86-64-v4",
+            "cuda_arch": "",
+            "dependency_isa": "avx512",
+            "gpus": 0,
+            "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM",
+            "partition": "DSPRHBM",
+            "recipe_sha256": "fb4adb0598fca95c3146f9c9a8a2119febde29882594a832d13b5de4052bc35a",
+            "repository": "cp2k/cp2k",
+            "schema": 2,
+            "software": "cp2k",
+            "source_ref": "v2026.2",
+            "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+            "source_version": "v2026.2",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "dsprhbm",
+            "track": "release",
+            "version_label": "v2026.2"
+          },
+          "previous_run": "cp2k-v2026-2-dsprhbm-retry-20261018-a"
+        }
+      ]
+    },
+    "application_job_absent": true,
+    "dependency_job_absent": true
+  },
+  "queue": "         JOBID    PARTITION                                             NAME      STATE         TIME         NODELIST(REASON)\n       1839913      8V100V0       sai-cp2k-build-8v100v0-avx512-4d454c740309    RUNNING      1:12:41               8v100v0n02\n       1841174      DSPRHBM               sai-cp2k-deps-dsprhbm-fb4adb0598fc    RUNNING        21:08                 d9470n02\n"
+}

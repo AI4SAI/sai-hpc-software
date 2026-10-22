@@ -1,0 +1,14 @@
+{
+  "enabled": false,
+  "ml_root": "/opt/apps/conda_env/deepmd-kit-3.1.2",
+  "scope": "All compatible optional scientific backends on x86 NVIDIA; excludes mutually exclusive ROCm/DCU/DSP/SW/KML and developer/debug instrumentation. No scientific certification implied.",
+  "required_options": ["ENABLE_DFTD4", "ENABLE_PEXSI", "ENABLE_CNPY", "ENABLE_FLOAT_FFTW", "ENABLE_FFT_TWO_CENTER"],
+  "required_info": ["DeePMD-kit Support", "TensorFlow Support", "PEXSI Support", "cnpy Support", "DFT-D4 Support"],
+  "archives": [
+    {"name": "DFT-D4", "version": "4.2.0", "file": "dftd4-4.2.0.tar.xz", "root": "dftd4-4.2.0", "sha256": "467e024071510ad82b862c66c383c2ebc164fc1140e15dfc79f48d2f999fd184", "url": "https://github.com/dftd4/dftd4/releases/download/v4.2.0/dftd4-4.2.0.tar.xz", "required_files": ["CMakeLists.txt", "config/template.cmake", "subprojects/test-drive/CMakeLists.txt", "subprojects/toml-f/CMakeLists.txt", "subprojects/jonquil/CMakeLists.txt", "subprojects/mctc-lib/CMakeLists.txt", "subprojects/mctc-lib/config/template.cmake", "subprojects/mstore/CMakeLists.txt", "subprojects/multicharge/CMakeLists.txt", "subprojects/multicharge/config/template.cmake", "subprojects/multicharge/config/cmake/Findcustom-lapack.cmake"]},
+    {"name": "ParMETIS", "version": "4.0.3", "file": "parmetis-4.0.3.tar.gz", "root": "parmetis-4.0.3", "sha256": "f2d9a231b7cf97f1fee6e8c9663113ebf6c240d407d3c118c55b3633d6be6e5f", "url": "https://mirror.spack.io/_source-cache/archive/f2/f2d9a231b7cf97f1fee6e8c9663113ebf6c240d407d3c118c55b3633d6be6e5f.tar.gz", "required_files": ["CMakeLists.txt", "metis/GKlib/GKlibSystem.cmake", "metis/include/metis.h"]},
+    {"name": "SuperLU_DIST", "version": "7.2.0", "file": "superlu_dist-7.2.0.tar.gz", "root": "superlu_dist-7.2.0", "sha256": "20b60bd8a3d88031c9ce6511ae9700b7a8dcf12e2fd704e74b1af762b3468b8c", "url": "https://codeload.github.com/xiaoyeli/superlu_dist/tar.gz/refs/tags/v7.2.0", "required_files": ["CMakeLists.txt", "SRC/superlu_ddefs.h"]},
+    {"name": "PEXSI", "version": "2.0.0", "file": "pexsi-mirror-2.0.0.tar.gz", "root": "pexsi_v2.0.0", "sha256": "c5c83c2931b2bd0c68a462a49eeec983e78b5aaa1f17dd0454de4e27b91ca11f", "url": "https://mirror.spack.io/_source-cache/archive/c5/c5c83c2931b2bd0c68a462a49eeec983e78b5aaa1f17dd0454de4e27b91ca11f.tar.gz", "required_files": ["CMakeLists.txt", "cmake/PEXSIConfig.cmake.in"]},
+    {"name": "cnpy", "version": "4e8810b1a8637695171ed346ce68f6984e585ef4", "file": "cnpy-4e8810b.tar.gz", "root": "cnpy-4e8810b1a8637695171ed346ce68f6984e585ef4", "sha256": "5120abc54a564efa92c642cc0199cc4fd3f345901157de9fbbdcedbb34d28d8a", "url": "https://codeload.github.com/rogersce/cnpy/tar.gz/4e8810b1a8637695171ed346ce68f6984e585ef4", "required_files": ["CMakeLists.txt", "cnpy.h", "cnpy.cpp"]}
+  ]
+}

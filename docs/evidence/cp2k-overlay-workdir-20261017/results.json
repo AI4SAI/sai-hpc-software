@@ -1,0 +1,298 @@
+{
+  "schema": 1,
+  "job_id": "1831861",
+  "node": "d9470n02.mr-sai.ai",
+  "driver": "/home/stardust/sai-hpc-software/cache/tools/fuse2fs-0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9/bin/fuse2fs",
+  "driver_sha256": "0680f553de17cba684a6f5ea265c9d80bd6d576d68aebc4e788e2609a66ad5e9",
+  "cases": [
+    {
+      "label": "clean",
+      "initial_numeric_directories": 0,
+      "returncode": 0,
+      "wall_seconds": 11.3388482471928,
+      "image": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-repro-20261017-b/clean/fresh.ext3",
+      "image_sha256": "cb0eeda7dc44deb8bb5db5c2b81d8f9e8a73c525b49d9868ddc6f99a9cea103d",
+      "argv": [
+        "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+        "--debug",
+        "--config",
+        "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-repro-20261017-b/clean/apptainer.conf",
+        "exec",
+        "--fakeroot",
+        "--cleanenv",
+        "--containall",
+        "--no-home",
+        "--no-mount",
+        "bind-paths,home,cwd,tmp,hostfs",
+        "--pwd",
+        "/",
+        "--net",
+        "--network",
+        "none",
+        "--bind",
+        "/usr:/usr:ro",
+        "--bind",
+        "/sbin:/sbin:ro",
+        "--bind",
+        "/lib:/lib:ro",
+        "--bind",
+        "/lib64:/lib64:ro",
+        "--bind",
+        "/opt/devtools:/opt/devtools:ro",
+        "--bind",
+        "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-repro-20261017-b/input:/probe:ro",
+        "--bind",
+        "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-repro-20261017-b/clean/results:/results:rw",
+        "--env",
+        "PYTHONDONTWRITEBYTECODE=1,TMPDIR=/workspace",
+        "--overlay",
+        "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-repro-20261017-b/clean/fresh.ext3",
+        "/home/stardust/sai-hpc-software/containers/base/minimal-v1.sif",
+        "/usr/bin/python3",
+        "-B",
+        "/probe/repro.py",
+        "--workload"
+      ],
+      "rename_eisdir_lines": [],
+      "workload": {
+        "failures": [],
+        "last_iteration": 8191,
+        "eisdir_count": 0
+      },
+      "numeric_workdir_entries_after": 0,
+      "numeric_workdir_first_after": [],
+      "first_failure_trace_context": ""
+    },
+    {
+      "label": "leftovers",
+      "initial_numeric_directories": 4096,
+      "returncode": 0,
+      "wall_seconds": 2.4782295539043844,
+      "image": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-repro-20261017-b/leftovers/fresh.ext3",
+      "image_sha256": "df721987639771b271c07623b00440bb4796ecd76f653318fe3579a1c4f6f206",
+      "argv": [
+        "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+        "--debug",
+        "--config",
+        "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-repro-20261017-b/leftovers/apptainer.conf",
+        "exec",
+        "--fakeroot",
+        "--cleanenv",
+        "--containall",
+        "--no-home",
+        "--no-mount",
+        "bind-paths,home,cwd,tmp,hostfs",
+        "--pwd",
+        "/",
+        "--net",
+        "--network",
+        "none",
+        "--bind",
+        "/usr:/usr:ro",
+        "--bind",
+        "/sbin:/sbin:ro",
+        "--bind",
+        "/lib:/lib:ro",
+        "--bind",
+        "/lib64:/lib64:ro",
+        "--bind",
+        "/opt/devtools:/opt/devtools:ro",
+        "--bind",
+        "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-repro-20261017-b/input:/probe:ro",
+        "--bind",
+        "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-repro-20261017-b/leftovers/results:/results:rw",
+        "--env",
+        "PYTHONDONTWRITEBYTECODE=1,TMPDIR=/workspace",
+        "--overlay",
+        "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-repro-20261017-b/leftovers/fresh.ext3",
+        "/home/stardust/sai-hpc-software/containers/base/minimal-v1.sif",
+        "/usr/bin/python3",
+        "-B",
+        "/probe/repro.py",
+        "--workload"
+      ],
+      "rename_eisdir_lines": [
+        "265392 22:09:08.011133 renameat(5, \"workspace/rm-probe/file-00098\", 6, \"204\") = -1 EISDIR (Is a directory)",
+        "265392 22:09:08.012247 renameat(5, \"workspace/rm-probe/file-00099\", 6, \"206\") = -1 EISDIR (Is a directory)",
+        "265392 22:09:08.013445 renameat(5, \"workspace/rm-probe/file-00100\", 6, \"208\") = -1 EISDIR (Is a directory)",
+        "265392 22:09:08.014725 renameat(5, \"workspace/rm-probe/file-00101\", 6, \"210\") = -1 EISDIR (Is a directory)",
+        "265392 22:09:08.015890 renameat(5, \"workspace/rm-probe/file-00102\", 6, \"212\") = -1 EISDIR (Is a directory)",
+        "265392 22:09:08.016934 renameat(5, \"workspace/rm-probe/file-00103\", 6, \"214\") = -1 EISDIR (Is a directory)",
+        "265392 22:09:08.018065 renameat(5, \"workspace/rm-probe/file-00104\", 6, \"216\") = -1 EISDIR (Is a directory)",
+        "265392 22:09:08.019101 renameat(5, \"workspace/rm-probe/file-00105\", 6, \"218\") = -1 EISDIR (Is a directory)",
+        "265392 22:09:08.020251 renameat(5, \"workspace/rm-probe/file-00106\", 6, \"220\") = -1 EISDIR (Is a directory)",
+        "265392 22:09:08.021391 renameat(5, \"workspace/rm-probe/file-00107\", 6, \"222\") = -1 EISDIR (Is a directory)",
+        "265392 22:09:08.022629 renameat(5, \"workspace/rm-probe/file-00108\", 6, \"224\") = -1 EISDIR (Is a directory)",
+        "265392 22:09:08.023748 renameat(5, \"workspace/rm-probe/file-00109\", 6, \"226\") = -1 EISDIR (Is a directory)",
+        "265392 22:09:08.024926 renameat(5, \"workspace/rm-probe/file-00110\", 6, \"228\") = -1 EISDIR (Is a directory)",
+        "265392 22:09:08.026043 renameat(5, \"workspace/rm-probe/file-00111\", 6, \"230\") = -1 EISDIR (Is a directory)",
+        "265392 22:09:08.027134 renameat(5, \"workspace/rm-probe/file-00112\", 6, \"232\") = -1 EISDIR (Is a directory)",
+        "265392 22:09:08.028274 renameat(5, \"workspace/rm-probe/file-00113\", 6, \"234\") = -1 EISDIR (Is a directory)"
+      ],
+      "workload": {
+        "failures": [
+          {
+            "iteration": 98,
+            "errno": 21,
+            "error": "[Errno 21] Is a directory: '/workspace/rm-probe/file-00098'"
+          },
+          {
+            "iteration": 99,
+            "errno": 21,
+            "error": "[Errno 21] Is a directory: '/workspace/rm-probe/file-00099'"
+          },
+          {
+            "iteration": 100,
+            "errno": 21,
+            "error": "[Errno 21] Is a directory: '/workspace/rm-probe/file-00100'"
+          },
+          {
+            "iteration": 101,
+            "errno": 21,
+            "error": "[Errno 21] Is a directory: '/workspace/rm-probe/file-00101'"
+          },
+          {
+            "iteration": 102,
+            "errno": 21,
+            "error": "[Errno 21] Is a directory: '/workspace/rm-probe/file-00102'"
+          },
+          {
+            "iteration": 103,
+            "errno": 21,
+            "error": "[Errno 21] Is a directory: '/workspace/rm-probe/file-00103'"
+          },
+          {
+            "iteration": 104,
+            "errno": 21,
+            "error": "[Errno 21] Is a directory: '/workspace/rm-probe/file-00104'"
+          },
+          {
+            "iteration": 105,
+            "errno": 21,
+            "error": "[Errno 21] Is a directory: '/workspace/rm-probe/file-00105'"
+          },
+          {
+            "iteration": 106,
+            "errno": 21,
+            "error": "[Errno 21] Is a directory: '/workspace/rm-probe/file-00106'"
+          },
+          {
+            "iteration": 107,
+            "errno": 21,
+            "error": "[Errno 21] Is a directory: '/workspace/rm-probe/file-00107'"
+          },
+          {
+            "iteration": 108,
+            "errno": 21,
+            "error": "[Errno 21] Is a directory: '/workspace/rm-probe/file-00108'"
+          },
+          {
+            "iteration": 109,
+            "errno": 21,
+            "error": "[Errno 21] Is a directory: '/workspace/rm-probe/file-00109'"
+          },
+          {
+            "iteration": 110,
+            "errno": 21,
+            "error": "[Errno 21] Is a directory: '/workspace/rm-probe/file-00110'"
+          },
+          {
+            "iteration": 111,
+            "errno": 21,
+            "error": "[Errno 21] Is a directory: '/workspace/rm-probe/file-00111'"
+          },
+          {
+            "iteration": 112,
+            "errno": 21,
+            "error": "[Errno 21] Is a directory: '/workspace/rm-probe/file-00112'"
+          },
+          {
+            "iteration": 113,
+            "errno": 21,
+            "error": "[Errno 21] Is a directory: '/workspace/rm-probe/file-00113'"
+          }
+        ],
+        "last_iteration": 113,
+        "eisdir_count": 16
+      },
+      "numeric_workdir_entries_after": 2044,
+      "numeric_workdir_first_after": [
+        203,
+        204,
+        205,
+        206,
+        207,
+        208,
+        209,
+        210,
+        211,
+        212,
+        213,
+        214,
+        215,
+        216,
+        217,
+        218,
+        219,
+        220,
+        221,
+        222,
+        223,
+        224,
+        225,
+        226,
+        227,
+        228,
+        229,
+        230,
+        231,
+        232
+      ],
+      "first_failure_trace_context": "265392 22:09:08.007495 unlinkat(6, \"198\", 0) = 0\n265392 22:09:08.007982 unlinkat(5, \"workspace/rm-probe/.wh.file-00096\", 0) = -1 ENOENT (No such file or directory)\n265392 22:09:08.008335 renameat(5, \"workspace/rm-probe/file-00096\", 6, \"200\") = 0\n265392 22:09:08.008834 unlinkat(6, \"200\", 0) = 0\n265392 22:09:08.009338 unlinkat(5, \"workspace/rm-probe/.wh.file-00097\", 0) = -1 ENOENT (No such file or directory)\n265392 22:09:08.009663 renameat(5, \"workspace/rm-probe/file-00097\", 6, \"202\") = 0\n265392 22:09:08.010170 unlinkat(6, \"202\", 0) = 0\n265392 22:09:08.010761 unlinkat(5, \"workspace/rm-probe/.wh.file-00098\", 0) = -1 ENOENT (No such file or directory)\n265392 22:09:08.011133 renameat(5, \"workspace/rm-probe/file-00098\", 6, \"204\") = -1 EISDIR (Is a directory)\n265392 22:09:08.011884 unlinkat(5, \"workspace/rm-probe/.wh.file-00099\", 0) = -1 ENOENT (No such file or directory)\n265392 22:09:08.012247 renameat(5, \"workspace/rm-probe/file-00099\", 6, \"206\") = -1 EISDIR (Is a directory)\n265392 22:09:08.013087 unlinkat(5, \"workspace/rm-probe/.wh.file-00100\", 0) = -1 ENOENT (No such file or directory)\n265392 22:09:08.013445 renameat(5, \"workspace/rm-probe/file-00100\", 6, \"208\") = -1 EISDIR (Is a directory)"
+    }
+  ],
+  "historical_images_modified": false,
+  "accounting": "1831861|COMPLETED|00:00:34|0:0|d9470n02",
+  "artifacts": {
+    "result.json": {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-repro-20261017-b/result.json",
+      "sha256": "3659b3aca0662d808e4f5836fef493713cc5b916575df63d589095cf681b0371",
+      "size": 191234
+    },
+    "slurm-1831861.log": {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-repro-20261017-b/slurm-1831861.log",
+      "sha256": "5674cac4557a5240d90c87024b5b2111888dff48ed023e9bf58f37b4179481fd",
+      "size": 146
+    },
+    "clean/fuse-overlayfs.trace": {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-repro-20261017-b/clean/fuse-overlayfs.trace",
+      "sha256": "5dbb236fa50fb7b62375353434ade64ae68f5def51a58abe76b82f5bff892c4e",
+      "size": 2041490
+    },
+    "leftovers/fuse-overlayfs.trace": {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-repro-20261017-b/leftovers/fuse-overlayfs.trace",
+      "sha256": "8b717aa5db356411cca0f8c8c1eed39b0c03f4f1581bab7cfbdb7d3808eed739",
+      "size": 955076
+    },
+    "clean/workdir-after.txt": {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-repro-20261017-b/clean/workdir-after.txt",
+      "sha256": "6fe39ad29fb861a1516b76c626180f1622843be9ce5961e174cf3a6273dfa2f1",
+      "size": 154
+    },
+    "leftovers/workdir-after.txt": {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-repro-20261017-b/leftovers/workdir-after.txt",
+      "sha256": "3802941782c9cb29dc012c063320672299aefca96e36edca782136199cc73725",
+      "size": 132608
+    },
+    "clean/seed.log": {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-repro-20261017-b/clean/seed.log",
+      "sha256": "6f2601666d4b32c83e6afc2f09d88b3a1134e562e2f6e6ca36ff0e3188c0aa14",
+      "size": 127
+    },
+    "leftovers/seed.log": {
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/overlay-workdir-repro-20261017-b/leftovers/seed.log",
+      "sha256": "7633d5cf8566b56f8600af873794ea516bad0083efa340bfb27a1ab21062d7a0",
+      "size": 865733
+    }
+  }
+}

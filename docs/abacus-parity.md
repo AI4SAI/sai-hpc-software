@@ -1,0 +1,376 @@
+# ABACUS feature parity, native builds and scientific benchmarks
+
+This is an implementation/validation contract, not a claim that the new full-feature
+recipe has already compiled or won a benchmark. Its initial baseline was inspected
+read-only on `SAI-stardust` on 2026-09-11. No system installation was modified.
+
+## Observed baseline
+
+The default `abacus/v3.9.0.26-sm70-auto` has more optional CPU functionality than
+`abacus/develop-git-079fd0c-260724-sm70-auto` (3.11.0-beta6). The required feature
+set is their union, not whichever binary is easiest to match. This is the first
+parity stage, not the end of the user's "enable other feasible capabilities"
+request. Additional methods remain subject to dependency/ABI and reference-case
+evaluation; `not_in_observed_baseline` is an observation, never a permanent waiver.
+
+| Capability | Default 3.9.0.26 | Develop beta6 | New recipe requirement |
+| --- | --- | --- | --- |
+| MPI, OpenMP, LCAO, LibXC, FFTW, ELPA | yes | yes | all targets |
+| Cereal, LibRI 2.1.1, LibComm | yes | no | all targets |
+| LibTorch 2.1.2, libnpy 1.0.1, NEP, RapidJSON | yes | no | all targets |
+| CUDA-aware MPI, cuSOLVERMp | yes | yes | GPU targets |
+| New Mp libraries and NCCL-backed collectives | old SDK Mp library | new Mp libraries linked | GPU targets, plus actual feature cases |
+
+The LTS module does not support `--info`; no available CMake cache was found below
+the inspected installations. Neither inspected `--info` baseline enabled DeePMD,
+TensorFlow, PEXSI or cnpy. Those are **not claimed enabled** by this parity recipe.
+DeePMD modules exist on SAI, but compatibility and additional scientific tests
+would need separate validation. Presence checks do not prove hybrid-functional,
+ML model or NEP numerical behavior; those methods need suitable reference cases.
+An opt-in, experimental full profile is now available in
+`controller/abacus_full_profile.json` (disabled by default). Its first beta9
+16V100 attempt is separate from the established parity recipe. See below;
+neither the profile nor a successful compilation certifies all scientific methods.
+
+## JSON API and experimental full profile
+
+The builder inspects the upstream declared CMake option: beta9 uses
+`ENABLE_RAPIDJSON`, while modern develop uses `ENABLE_JSON` with pinned
+nlohmann-json 3.12.0. It never passes both flags: upstream rejects the deprecated
+cache key even if set to OFF. Verification requires the selected option ON and
+the corresponding `--info` feature present.
+
+For a **new frozen controller only**, enabling the full profile adds DFT-D4 4.2.0,
+PEXSI 2.0.0 (SuperLU_DIST 7.2.0, bundled ParMETIS 4.0.3/METIS/GKlib), cnpy,
+single-precision FFTW and two-center FFT. All downloaded archives are locked by
+SHA-256, extracted and compiled inside the overlay at the final `/opt/apps`
+prefix. DFT-D4's official release includes its offline subproject sources.
+
+The 2026-09-21 full-profile recovery fixes the pinned DFT-D4 package exports:
+quoted variable names in `mctc-lib`, `multicharge` and DFT-D4 OpenMP/JSON
+conditions are literals under CMP0054 NEW, so their dependency lookups were
+skipped. The overlay applies an exact, fail-closed template repair without
+disabling OpenMP. `multicharge`'s custom LAPACK finder also needs to report
+`custom-lapack_FOUND` based on the actual `LAPACK::LAPACK` target. DFT-D4
+dependency methods are explicitly pinned to installed local CMake packages.
+`test-drive` is installed from the same archive before the other subprojects;
+jonquil uses `ENABLE_TESTING`, not `BUILD_TESTING`, to disable its tests.
+
+Local preflight with CMake 3.31.6/GNU Fortran 13.3 reproduced the unpatched
+`mstore` OpenMP-target failure. The repaired chain built and passed all six
+DFT-D4 tests; a separate C/Fortran CMake consumer restored OpenMP from the
+installed packages, linked and ran the DFT-D4 C API (version 40200). This is
+dependency validation, **not** proof that the full ABACUS GPU/ML candidate
+has built or passed scientific acceptance. Recovery jobs 1424390 (cancelled
+after an attached diagnostic step violated site GPU/CPU resource rules) and
+1424486 (failed at unpatched mstore configuration) both consume attempts,
+bringing the ABACUS total to five of the six authorized recovery submissions.
+The missing shared receipts for those two direct submissions were reconciled
+against their request files and Slurm accounting without changing the old
+requests. The sixth submission was job `1431569`, run
+`abacus-beta9-full-20260921-06-16v100`, using frozen controller
+`abacus-beta9-full-20260921-r6/controller` and recipe
+`36830fb8ee6a1cb7fdb1f83263dd87d5be38e02774d47c2627eeb0a65f70280f`.
+It uses four compiler workers and a 32 GiB sparse overlay within the unchanged
+one-GPU/four-hour allocation. It failed after 51m21s at the main ABACUS MPI
+configuration, after PEXSI and the repaired DFT-D4 chain installed successfully.
+Read-only inspection of its inactive overlay showed Conda `MPI_*_LIBRARY`,
+headers and wrappers in `CMakeCache.txt`, mixed with the site's Open MPI link
+paths; `CMakeConfigureLog.yaml` reported unresolved `opal_common_ofi_*` symbols.
+The cause was the ML prefix preceding site dependencies in `CMAKE_PREFIX_PATH`,
+whose discovery priority is higher than PATH and FindMPI's MPI_HOME hints.
+`abacus_site_mpi.sh` now puts site dependencies first, pins C/C++/Fortran MPI
+wrappers, headers, libraries and mpiexec to the module-resolved MPI_HOME, and
+checks the cache and real FindMPI probe results before compilation. It does not
+force a successful probe. A local CMake 3.31.6 discovery regression reproduces
+the old precedence problem and verifies the corrected site selection while
+keeping ML-specific packages discoverable; this is not cluster MPI acceptance.
+
+The user explicitly granted **six more ABACUS attempts**, for a total of 12.
+The additive authorization is
+`diagnostics/recovery-20260920/authorizations/abacus-20260921-extra6.json`;
+the original grant and six old receipts remain unchanged. Other software limits
+are unchanged. Every new build, probe or acceptance job consumes the same budget.
+`recovery_budget.py status AUTHORITY` reports the shared count. Future diagnosed
+beta9 retries use `submit_abacus_recovery.py NEW_RUN --previous-run FAILED_RUN
+--reason REASON` from a new frozen controller. It checks the predecessor and
+local inputs, runs scheduler syntax/resource preflight, reserves a ledger slot,
+submits held, records the job ID, then releases it. An ambiguous submission blocks
+further claims until reconciled; never blindly repeat a submission. No automatic
+publication is authorized. Inspect only scheduler accounting and existing logs
+for active builds; do not attach extra Slurm diagnostic steps.
+
+Attempt 7 was submitted as job `1436709`, run
+`abacus-beta9-full-20260921-07-16v100`, from frozen
+`abacus-beta9-full-20260921-r7/controller`. Recipe SHA-256 is
+`52b6f941c42643a0822f526f4482a426ec1a3a108c669e2389787a13cd39f7a2`;
+the final install prefix is
+`/opt/apps/abacus/abacus-release-v3.11.0-beta9-g149723287702-r52b6f941c426/16V100`.
+The held-job receipt was saved before release; Slurm then reported RUNNING on
+`16v100n74`. Five authorized attempts remain. The frozen `preflight/` contains
+the prior CMake logs, diagnosis, and 73 passing local regression tests. Submission
+and a running job do not establish build or scientific acceptance.
+
+Attempt 7 subsequently failed after 1h09m49s at the final executable link.
+It passed `SITE_MPI_CONFIG_VERIFIED` and compiled all ABACUS objects. Its
+NCCL cache/library instead came from DeepMD's Conda NCCL 2.28.9; that DSO
+lacks `ncclPutSignal`, `ncclWaitSignal` and `ncclCommQueryProperties` required
+by site cuBLASMp. Read-only `nm` inspection confirmed the module-selected
+NCCL-SAI 2.29.3 exports all three. CUDA compiler/toolkit discovery was also
+contaminated by the broad Conda prefix. A new `abacus_site_gpu.sh` explicitly
+selects module NCCL headers/library and CUDA compiler/root, prioritizes their
+prefixes, checks the real NCCL symbols before dependency builds and verifies
+the main cache before compilation. No feature or link error is waived.
+
+Attempt 8 is job `1438340`, run `abacus-beta9-full-20260921-08-16v100`, frozen
+`abacus-beta9-full-20260921-r8/controller`, recipe
+`3b1bdfaad56ebd3a47b186d221cd04f910a2282775656f28e90f174104a5f34a`.
+It started on `16v100n79` with the unchanged 1-GPU/4-worker/4-hour profile;
+four authorized submissions remain. The final prefix is
+`/opt/apps/abacus/abacus-release-v3.11.0-beta9-g149723287702-r3b1bdfaad56e/16V100`.
+Its `preflight/` retains the old CMake cache/link command, diagnosis and 110
+passing focused regressions, including local real CMake discovery and small
+ELF missing-symbol/link fixtures. These are not real NCCL GPU or scientific
+acceptance. The preceding r7 controller also passed all 283 local tests.
+
+The full profile reuses the exact read-only site root
+`/opt/apps/conda_env/deepmd-kit-3.1.2` for DeePMD, its matching LibTorch 2.8.0,
+and TensorFlow 2.19.1; it does not mix these with bundled LibTorch 2.1.2.
+The legacy DeepMD module activates Conda and prepends its own MPI, so this
+profile does not load that module. Site auto modules still select the partition
+MPI; the runtime explicitly keeps that MPI first and checks its actual loader
+path. The native manifest declares the exact external ML root, not all `/opt/apps`.
+
+"Full" means the compatible scientific backends on x86/NVIDIA. Mutually exclusive
+ROCm/DCU/DSP/SW/KML backends, debug/testing instrumentation and the alternative
+libm optimization are not enabled. No PLUMED interface exists in these ABACUS
+sources. The existing `/opt/apps/plumed/plumed-2.10.1` is an independent site
+installation, not an ABACUS dependency.
+
+Keep this profile experimental until its build, real model execution, MPI/GPU,
+scientific and native-copy checks pass. Never modify a submitted controller or
+replace an installed beta9 version with an unvalidated candidate.
+
+## Dependencies and containment
+
+`controller/abacus_dependency_lock.json` records exact archive SHA-256 values and
+the observed module baseline. The builder reuses the site's existing
+`/opt/apps/abacus/abacus-develop-3.9.0.26_nvhpc263gnu/toolchain/build` archive directory,
+read-only at `/input/abacus-dependencies`, for six dependencies. LibRI uses the
+`b0eff7a` archive and SHA-256 specified by ABACUS commit `42f8ad905d56` itself.
+The old site archive and this archive both report version 2.1.1, but only the
+latter contains the required BSE `RI/physics/LR.h` interface.
+
+Before Slurm submission, the Actions runner downloads and verifies only locked
+updates with `abacus_dependencies.cache_archives()` and the existing upload path.
+The remote controller reuses that function to verify and atomically import the
+uploaded archives into the project's `cache/abacus-dependencies`, without network
+access. SAI's login node could not reach codeload during the 2026-09-13 probe.
+That compressed cache is bound read-only at `/input/abacus-updates`; existing
+site archives are neither copied nor changed. Concurrent submissions share a
+lock, and a corrupt cached file is rejected rather than silently overwritten.
+Every archive is checked again before extraction; required LibRI headers must
+be nonempty regular members before any dependency configuration or compilation.
+There is no dependency download during the network-isolated build, and no source,
+dependency build, or installation tree is expanded on the host.
+
+`abacus_dependencies.sh` is the reusable overlay recipe. It installs cereal and
+RapidJSON's proper CMake CONFIG targets, supplies LibRI/LibComm/libnpy headers,
+and includes the site-pinned CPU LibTorch 2.1.2 distribution with C++11 ABI=1.
+These dependency versions are content-pinned inputs; successful compilation
+against each tracked ABACUS source is still required, not assumed.
+Cereal's GNUInstallDirs layout is explicitly pinned to `lib`, matching
+`cereal_DIR`; successful installation of the actual CONFIG/targets files is
+checked before configuring ABACUS. Site distribution defaults may use `lib64`.
+
+The system NEP DSO has no SONAME and contains another ABACUS installation's
+RUNPATH. It is therefore **not copied as the new runtime library**: its locked
+source is compiled inside the overlay with `-march=native -mtune=native`, a
+`libnep.so` SONAME and an `$ORIGIN` RUNPATH. ABACUS itself is built natively on
+each target partition, with GCC's selected flags and node hardware recorded.
+
+System ELPA is required from `elpa/2026.02.001-2603-gnu`; no older bundled ELPA
+is built. CUDA 12.9.1, NVHPC 26.3, the matching Open MPI, and
+`nvmplibs/26.7-tmp` remain the GPU dependency family.
+
+The four independent targets are DSPRHBM, 4V100, 16V100 and 8V100V0. In particular,
+8V100V0's Gold 6146 supports AVX-512 but lacks VNNI; the site's auto MPI/BLAS
+correctly select their **AVX2** builds. Runtime dependency ISA comes from the
+target's `dependency_isa`, not from the target name's suffix.
+
+## Feature and exported-tree gates
+
+The installed tree is `/opt/apps/abacus/abacus-<track>-<build_id>/<PARTITION>`.
+The shared release identity includes the upstream commit date before its SHA
+for development builds; CPU ISA and dependency ISA remain separate fields.
+Optional runtime libraries reside under that same prefix's `dependencies/` directory. ABACUS uses
+`$ORIGIN`-relative paths for them; `share/sai/runtime-env.sh` derives its own prefix
+from its location and can be sourced for either a SIF or the corresponding
+administrator-exported installation at the same physical `/opt` path.
+
+The final read-only SIF verification checks all required CMake flags and `--info`
+features, minimum LibRI/Torch versions, actual `ldd` resolution, and every packaged
+ELF's NEEDED/RPATH/RUNPATH tags. Build-only `/workspace`, `/control`, `/input`, and
+controller-snapshot loader paths are rejected. CMake caches and compiler source
+paths remain legitimate provenance and are not mistaken for runtime dependencies.
+The archive directory is not bound during final ABACUS verification.
+The host task retains private permissions, while container-created package files
+use umask 022. Only the packaged software subtree has its permissions normalized;
+rootfs temporary-directory modes remain unchanged. The verifier checks ordinary
+users' read/execute permission bits explicitly, since a fakeroot `access()` check
+would not detect root-only installed directories and files.
+
+The existing `abacus_features.py` also constructs native dependency metadata;
+it delegates module generation and the final inventory to the shared
+`write_manifests()` implementation. `share/sai/manifest.json`, native module
+fragments and the partition-selecting `modulefiles/` all stay inside this one
+installation folder. There is no `/opt/sai-delivery` tree or ABACUS-specific
+exporter. `controller/export_native.py` extracts the folder to a chosen staging
+directory and records its expected physical `/opt` prefix.
+
+The native module loads exact site modules (including system ELPA and, on GPU
+partitions, `nvmplibs/26.7-tmp`); its dependency evidence records module hashes,
+resolved ISA roots and actual `ldd` paths. External system libraries remain
+required, so this is not a promise of portability to an unrelated Linux system.
+After an administrator deploys the folder at its expected prefix, use its
+`modulefiles/` directory and load `abacus/<track>/<build_id>` inside a Slurm
+allocation. The native module includes the same prefix-local `lib`, `lib64`
+and optional dependency library directories as the SIF runtime. Full-profile
+modules keep the site MPI directory before the external Conda libraries.
+The default runtime export omits build diagnostics, feature-checker scripts and
+scientific fixtures. Use `export_native.py export --include-diagnostics` when
+preparing an archival tree for post-deployment feature/scientific checks; then
+`python3 share/sai/abacus_features.py PREFIX TARGET` has its required metadata.
+The SIF still uses the recorded runtime shell environment; native module
+load/unload, physical deployment and native speed remain separate, pending
+acceptance checks. Administrator installation is outside this workflow.
+
+## Benchmark interpretation
+
+`abacus_benchmark.py` prepares a job separately from submitting it. A precise
+system module and a checksum-pinned candidate SIF/launcher run the same input on
+the same allocation, nodes, ranks, threads and GPUs. Warmups precede repeated,
+alternating system/candidate runs; each run starts in a new input-only directory.
+The result must include SCF convergence, finite matching energies and all requested
+runs before timing statistics are accepted.
+Requests and proofs carry the same canonical release identity as the candidate;
+artifact validation and catalog paths reuse `delivery_layout`, and packaged
+inputs are read from that identity's partitioned prefix. Old-layout requests
+cannot be relabelled as accepted new-layout candidates.
+The full-feature CI now runs PW, HSE and DeePKS paired benchmarks after ordinary
+multi-node and GPU-feature acceptance. Each case requires one warmup pair and at
+least three measured pairs against the full-feature system default. Publication
+and subsequent cache hits revalidate all three raw benchmark proofs; merely
+having a feature-enabled binary is insufficient. Publication compares each
+case's median summed SCF iteration time with its baseline. A slowdown greater
+than 10% triggers one repeat of the paired measurements on the same SIF;
+a repeated regression blocks publication. A repeat must retain the original
+image, baseline executable path and SHA-256, input hashes, partition, MPI/OpenMP
+resources and sampling counts. The verifier recomputes the initial raw evidence
+and requires its successful completion record; replacing the original report
+or changing the workload cannot clear the regression. New nodes within the same
+partition are allowed for the repeated allocation.
+
+Each MPI rank runs the same inline affinity probe before entering either launch
+path. Evidence records logical CPU IDs, their socket/core topology, local rank,
+mapping and OpenMP environment. `--bind-to core`, `OMP_PROC_BIND=true` and
+`OMP_PLACES=cores` are common to both arms. Verification requires the actual
+physical-core count to equal the mapping's PE, rejects overlapping physical
+cores (including different SMT threads of one core), and compares every
+`(hostname, local_rank)` CPU set across warmups and measured runs. The GPU mapping
+may provide more physical cores than the one requested OpenMP thread; that is
+recorded and allowed. ABACUS's printed OpenMP thread count must match the request.
+This is inherited launch-time binding evidence, not sampled per-worker-thread
+affinity or a claim of an already completed on-cluster affinity benchmark.
+
+Each new SIF includes self-contained `share/sai/benchmark-cases/pw`, `hse`, and
+`deepks` inputs. HSE includes the matching pseudopotentials/orbitals; DeePKS also
+includes its Torch model and descriptor orbital. The two optional cases retain
+their upstream CPU execution mode even when the containing binary supports GPUs.
+Their packaged presence is preparation, not evidence that they have run. NEP's
+MD/force path needs a separate validator and is not covered by the SCF analyzer.
+
+Report both process wall time and ABACUS's summed printed SCF iteration times,
+including warmup policy, repeat count, median, range and candidate/system ratio.
+Printed iteration timing has limited precision and is not a GPU kernel profiler.
+An `--info` invocation, a single tiny-case run, or timings from different partitions
+do not establish a performance improvement. PW smoke and cuSOLVERMp/NCCL feature
+cases also do not establish full hybrid-functional or ML performance parity.
+
+## Initial system-case probe (not a performance comparison)
+
+Slurm `1271264` ran the three small cases once with the system default on
+`4V100`, two nodes × one GPU/rank, one thread/rank, after two retained environment
+diagnostic attempts (`1271192`, `1271222`). All three SCFs converged and their real
+stdout was successfully parsed by the benchmark analyzer:
+
+| Case | Energy / eV | Printed iteration seconds | Process wall seconds |
+| --- | --- | --- | --- |
+| PW | -4869.7470519499775 | 1.05 (10 iterations) | 2.30 |
+| HSE | -428.99428271100163 | 0.54 (49 iterations across loops) | 1.89 |
+| DeePKS | -71.32204093440238 | 1.07 (24 iterations) | 2.14 |
+
+Raw inputs/logs remain in
+`runtime-tests/baseline-parity-536dfc2-nss-4v100` on SAI. This proves the baseline
+case/format compatibility, **not** a candidate speedup or repeatability result.
+The working environment uses `--export=NIL` and restores the actual account's
+HOME (not a scratch-home reassignment); Open MPI fails to initialize if HOME is
+missing. A selective `--export=HOME` attempt was cancelled by UID 0 before logging;
+its cause is not established and it is not used by the benchmark driver.
+
+## Native-layout canaries (2026-09-13–14)
+
+[Actions 34739709778](https://github.com/AI4SAI/sai-hpc-software/actions/runs/34739709778)
+passed 224 controller tests, then Slurm job `1295392` failed compilation on
+`4v100n01` after 26m20s (exit `2:0`). Controller `88abc6a` built upstream
+`42f8ad905d567e965ae53fc554498bdc7e9ccbcc`; BSE's `molecular_lri.h` could not
+include `RI/physics/LR.h`. Check the locked LibRI archive/API and include layout
+against this upstream before retrying; do not disable BSE to bypass the error.
+The SAI task `runs/34739709778-1-development-4v100-avx512-2026-09-13-42f8ad905d56`
+retains its overlay and failure log, and Actions retains the results artifact.
+No new SIF, native-module runtime, scientific or speed acceptance is claimed.
+
+After the pinned LibRI archive update, controller `ad52014` retried the same
+upstream in [Actions 34742883026](https://github.com/AI4SAI/sai-hpc-software/actions/runs/34742883026).
+Slurm `1296370` on `4v100n18` compiled and installed `abacus_max_gpu`, with BSE,
+LibRI and cuSOLVERMp enabled, then failed inventory generation: the shared
+validator wrongly required `bin/abacus` itself to be a regular file. Read-only
+inspection of the retained overlay confirmed `bin/abacus -> abacus_max_gpu`.
+No final SIF or scientific/performance acceptance was produced.
+
+[PR #4](https://github.com/AI4SAI/sai-hpc-software/pull/4) fixes this shared check
+without flattening links or copying binaries; it is merged into main and included
+in this branch at `44784cc`. Real SquashFS round-trip tests preserve the command
+link, target hash/mode and packaged module; all 236 branch tests passed in CI.
+On September 14, [Actions 34844632469](https://github.com/AI4SAI/sai-hpc-software/actions/runs/34844632469)
+was submitted for `4V100` only, locking upstream
+`5da5f2f771b6e5ae88dca06ff59838fc895d3116` (`develop-2026-09-14`). This is a fresh
+build, not a relabelling of either failed overlay. Slurm `1322022` completed the
+build and final-SIF inventory verification; two-node MPI and GPU-feature checks
+also passed (`1322703`, `verified=true` for the latter). Scientific/performance
+acceptance is still incomplete: PW benchmark `1322719` failed before execution
+with `case references must remain inside the materialized directory`.
+
+On September 15 the parent agent reread the retained PW input and log: valid
+`//` comments in `STRU` were interpreted as absolute paths. Commit `6550d23`
+teaches the existing path check to ignore ABACUS comments, without changing the
+hashed input or allowing actual absolute/parent-directory references. All 25
+benchmark tests and the commit's GitHub CI passed. A new allocated benchmark is
+still required; neither this parser fix nor the older build proves a speedup.
+
+## Workflow closure preflight (2026-10-15)
+
+Inspection of the cached upstream `f264b4022fd477734de0f3ace723f6da9e306943`
+found that the HSE fixture moved from `tests/08_EXX/01_GO_S1_HSE` to
+`tests/08_RI/scf_hse_gamma`. The builder now recognizes either reviewed layout
+before dependency compilation and validates its spin-unpolarized Gamma HSE SCF
+settings plus every required input and pseudopotential/orbital. An unknown,
+ambiguous or incomplete fixture fails before spending the build allocation.
+The actual current upstream files passed this preflight locally.
+
+All 74 focused ABACUS tests pass, including original/repeat raw evidence binding,
+native module library paths and both source layouts. These checks establish
+controller behavior only. The new development SIF still requires real builds,
+two-node MPI, cuSOLVERMp/NCCL checks on GPU targets, all three paired scientific
+benchmarks, the 10% performance gate and an integrity-checked export roundtrip.
+No new ABACUS cluster job or administrator installation is claimed here.

@@ -1,0 +1,1760 @@
+{
+  "artifact": "/home/stardust/sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6.sif",
+  "artifact_sha256": "1ec8fdf693f4273f7fa1c52fcc27b4aba858d6077a45ff569f2b421677aa3b00",
+  "attribution": {
+    "baseline_elpa_calls": 112,
+    "baseline_elpa_seconds": 1.523,
+    "candidate_cusolver_calls": 112,
+    "candidate_cusolver_seconds": 116.866,
+    "eigensolver_timer_difference_seconds": 115.343,
+    "generic_mpi_communication": "mp_alltoall_z22v total maximum is 4.146s candidate versus 4.149s baseline; neither this nor identical resource mapping supports a broad MPI/CPU restriction explanation. NCCL inside cuSOLVER is a separate unresolved component.",
+    "interpretation": "The default eigensolver-path timer accounts for essentially all observed warmup slowdown. The candidate selected cuSOLVER; baseline selected ELPA. Both converged in 107 SCF steps over 2 outer iterations. Shared PBE, FFT and MPI all-to-all timers are nearly identical. This supports a same-SIF ELPA comparison, not a claim that all internal cuSOLVER time is compute or NCCL initialization.",
+    "nested_timers_not_additive": true,
+    "observed_total_internal_difference_seconds": 115.335,
+    "rest_of_cp2k_after_subtracting_eigensolver_seconds": {
+      "baseline": 61.419,
+      "candidate": 61.411
+    },
+    "spla_offload": "Enabled candidate SPLA DGEMM remains independent from the default eigensolver choice. No evidence here identifies SPLA as the cause; retain it in the proposed comparison.",
+    "startup": "Outside-CP2K time is 1.403s candidate and 1.078s baseline, including all launch/finalization work; this cannot explain 115.335s internal difference."
+  },
+  "baseline_module": "cp2k/2026.1-cuda12.9-sm70-auto",
+  "case": "water64-gpw",
+  "cluster_alias": "SAI-stardust",
+  "controller_sha": "c3b65b97f9d95ecb29a453713dfe292af20f6d39",
+  "hostname_evidence_issue": {
+    "actual_allocation": "Two distinct allocated nodes, one MPI rank and one visible GPU per node; same CPU affinity and topology in candidate and baseline.",
+    "raw_candidate_rank_hosts": [
+      "4v100n01.mr-sai.ai",
+      "4v100n03.mr-sai.ai"
+    ],
+    "raw_resource_and_scheduler_hosts": [
+      "4v100n01",
+      "4v100n03"
+    ],
+    "risk": "Frozen benchmark strict host comparison may reject rank evidence because the launcher uses hostname while rank-exec and Slurm use short names. Preserve all raw evidence; canonicalization requires an explicit verifier correction/review, not editing the evidence."
+  },
+  "identical_fixture_sha256": {
+    "BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+    "GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+    "input.inp": "567175e994a44502c8afe54c98ec31cb12853f0cba114477596174950974834f"
+  },
+  "job": "1838283",
+  "live_candidate_process": {
+    "hostname": "4v100n01.mr-sai.ai",
+    "observed_at": "2026-10-18T09:17:17.464983+08:00",
+    "processes": [
+      {
+        "cwd": "/work",
+        "env": {
+          "CUDA_VISIBLE_DEVICES": "0",
+          "NCCL_IB_HCA": "mlx5_0:1,mlx5_1:1",
+          "NCCL_TOPO_FILE": "/home/stardust/sai-hpc-software/runtime-tests/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6-benchmark/.nccl_topo_1838283.xml",
+          "OMP_NUM_THREADS": "1",
+          "OMP_PLACES": "cores",
+          "OMP_PROC_BIND": "close",
+          "SLURM_JOB_ID": "1838283"
+        },
+        "exe": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/bin/cp2k.psmp",
+        "libraries": [
+          "/lib/x86_64-linux-gnu/libibverbs.so.1.14.54.0",
+          "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/cosma-2.7.0-nxkgtx7kzj7x2fhs74xieconnpza7qsf/lib64/libcosma.so",
+          "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/cosma-2.7.0-nxkgtx7kzj7x2fhs74xieconnpza7qsf/lib64/libcosma_prefixed_pxgemm.so",
+          "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libgfortran.so.5",
+          "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libgomp.so.1",
+          "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libstdc++.so.6",
+          "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/spla-1.6.1-uc273bzgwxxngrexd366xlfvkfmeuvgm/lib64/libspla.so.1.6.1",
+          "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia/lib/libelpa_openmp.so.19.5.1",
+          "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libcublas.so.12.9.1.4",
+          "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libcublasLt.so.12.9.1.4",
+          "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libcudart.so.12.9.79",
+          "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libcufft.so.11.4.1.4",
+          "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libcufftw.so.11.4.1.4",
+          "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libcusolver.so.11.7.5.82",
+          "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libnvJitLink.so.12.9.86",
+          "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libnvrtc-builtins.so.12.9.86",
+          "/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib/libnvrtc.so.12.9.86",
+          "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/compat/libcuda.so.575.57.08",
+          "/opt/devtools/nvidia/mp_libs/lib/libcublasmp.so.0.9.1",
+          "/opt/devtools/nvidia/mp_libs/lib/libcusolverMp.so.0.9.0.0",
+          "/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/lib/libnccl.so.2.29.3",
+          "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libmpi.so.40.40.7",
+          "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libmpi_mpifh.so.40.40.1",
+          "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libmpi_usempi_ignore_tkr.so.40.40.1",
+          "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libmpi_usempif08.so.40.40.3",
+          "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libucp.so.0.0.0",
+          "/opt/devtools/saiblas/2603-gnu-avx512/lib/libopenblas_cooperlakep-r0.3.32.so"
+        ],
+        "pid": "2660552",
+        "status": "Name:\tcp2k.psmp\nState:\tS (sleeping)\nThreads:\t9\nCpus_allowed_list:\t12,28",
+        "topology_exists_from_process_root": false,
+        "work_mount": [
+          "1208 926 3863:1033110 /home/stardust/sai-hpc-software/runtime-tests/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6-benchmark/cases/water64-gpw/2-candidate /work rw,nosuid,nodev master:756 - lustre 10.100.0.212@o2ib:10.100.0.213@o2ib:/saiorg rw,flock,checksum,encrypt,lazystatfs,lruresize,nolock,statfs_project,nouser_fid2path,nouser_xattr,verbose"
+        ]
+      }
+    ]
+  },
+  "live_process_scope": "Read-only /proc sample of the same artifact during water64-gpw/2-candidate; not the original warmup process. No process signals, tracing, new Slurm steps or container invocations were used.",
+  "nccl_topology": {
+    "do_not_change_frozen_runtime": true,
+    "evidence": "NCCL_TOPO_FILE points to the parent benchmark directory while /work binds only the case directory; /proc/PID/root/<NCCL_TOPO_FILE> was absent.",
+    "inaccessible_in_live_container": true,
+    "possible_relevance": "The missing site GDR topology patch can affect NCCL within cuSOLVER, but current evidence does not establish it as the cause or quantify its cost. Existing read-only NCCL analysis says the missing XML is nonfatal.",
+    "prior_evidence": "post-sif-readiness.json"
+  },
+  "next_diagnostic": {
+    "artifact_unchanged": true,
+    "case": "same pinned periodic 64-water OT ENERGY_FORCE",
+    "direct_generalized_diagonalization_unchanged": true,
+    "estimated_elapsed_minutes": "16-20 based on present warmup; 30-minute diagnostic time limit",
+    "launcher_unchanged": true,
+    "next_if_elpa_does_not_recover": "Inspect same-SIF per-kernel timing and actual libraries before considering any new build. If the default path remains isolated, separately profile communicator setup vs solve and assess the missing topology binding; do not silently change production identity.",
+    "only_physical_input_difference": "Add GLOBAL PREFERRED_DIAG_LIBRARY ELPA in the ELPA variant; default variant is byte-identical to the formal fixture.",
+    "resources": "same 2-node/2-rank/2-GPU mapping, OMP_NUM_THREADS=1, four physical cores per rank",
+    "samples": "1 warmup + 3 alternating measured repetitions per variant, in the same allocation; numerical tolerances unchanged, no performance gate relaxed",
+    "spla_offload_unchanged": true,
+    "status": "prepare-only-not-submitted"
+  },
+  "observed_at": "2026-10-18T09:13:51.276757+08:00",
+  "raw_file_hashes": {
+    ".nccl_topo_1838283.xml": {
+      "bytes": 1684,
+      "sha256": "80c7a0b795392ae5c13072e23be39318f40f579ff42e3546b15a1a7b79491171"
+    },
+    "cases/water64-gpw/0-baseline/BASIS_MOLOPT": {
+      "bytes": 127679,
+      "sha256": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61"
+    },
+    "cases/water64-gpw/0-baseline/GTH_POTENTIALS": {
+      "bytes": 168128,
+      "sha256": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+    },
+    "cases/water64-gpw/0-baseline/binary.sha256": {
+      "bytes": 111,
+      "sha256": "6ff9ac3b87e0634abd67cc7470e3e25284ad16a43757b2bba56c91393fcf4929"
+    },
+    "cases/water64-gpw/0-baseline/binary.txt": {
+      "bytes": 45,
+      "sha256": "34aa4b1e1ccf0fac29bec0fd6979b19f3d788e80d0a3e6ec27d4696378576f24"
+    },
+    "cases/water64-gpw/0-baseline/cp2k.log": {
+      "bytes": 120660,
+      "sha256": "a5d563f9f2de59c58a87ad22f7ff1d27208989e5a48ce1ee58838cc7da817b7a"
+    },
+    "cases/water64-gpw/0-baseline/elapsed.txt": {
+      "bytes": 6,
+      "sha256": "dfb78d0eac9b884b6ef8a3069b7b750facb2e3c23c0c136414d17ee91c66c2ec"
+    },
+    "cases/water64-gpw/0-baseline/forces.xyz": {
+      "bytes": 16525,
+      "sha256": "27d8c7bdb80fcbed4511faffd81dae85e5f286cbbd3297621b3f1c6ef2477399"
+    },
+    "cases/water64-gpw/0-baseline/input.inp": {
+      "bytes": 7979,
+      "sha256": "567175e994a44502c8afe54c98ec31cb12853f0cba114477596174950974834f"
+    },
+    "cases/water64-gpw/0-baseline/map.txt": {
+      "bytes": 16,
+      "sha256": "ca735f4c6a6cac6457abc602f0e549f2914ce869b55aab305fd14a834567b9fd"
+    },
+    "cases/water64-gpw/0-baseline/mpirun.txt": {
+      "bytes": 75,
+      "sha256": "25c80c91443a570f981101dc6b49e827a5ff947f142b0b0d8d26e0b6fba2c31c"
+    },
+    "cases/water64-gpw/0-baseline/ranks/rank-0.tsv": {
+      "bytes": 142,
+      "sha256": "e22a0a408a3e7aa220721d1330be35f339e081053179b9d61cae65a392c25239"
+    },
+    "cases/water64-gpw/0-baseline/ranks/rank-1.tsv": {
+      "bytes": 142,
+      "sha256": "24e6a91c037eb0fe77ae558a0b6d2a568030e871f66bf196bf4509f4ff580669"
+    },
+    "cases/water64-gpw/0-baseline/resources/rank-0.tsv": {
+      "bytes": 37,
+      "sha256": "dae6e12fd65724387095e209fa53deea413265d021f27652395aa622d75c8bc7"
+    },
+    "cases/water64-gpw/0-baseline/resources/rank-1.tsv": {
+      "bytes": 37,
+      "sha256": "54311905e6689d1820f89861ad367d8fa7dfe732352cb2068516bf9b6287d044"
+    },
+    "cases/water64-gpw/0-baseline/resources/topology-0.tsv": {
+      "bytes": 112,
+      "sha256": "222d48050c86bcdde6aa269b70be0fd6163ec51e80c251f6d675ee38607ecdbe"
+    },
+    "cases/water64-gpw/0-baseline/resources/topology-1.tsv": {
+      "bytes": 112,
+      "sha256": "222d48050c86bcdde6aa269b70be0fd6163ec51e80c251f6d675ee38607ecdbe"
+    },
+    "cases/water64-gpw/0-candidate/BASIS_MOLOPT": {
+      "bytes": 127679,
+      "sha256": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61"
+    },
+    "cases/water64-gpw/0-candidate/GTH_POTENTIALS": {
+      "bytes": 168128,
+      "sha256": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+    },
+    "cases/water64-gpw/0-candidate/binary.sha256": {
+      "bytes": 214,
+      "sha256": "bcd90bd2ba4a161f9a7381396ce430066d169ba7b735aba1b253fbe3a32a18f9"
+    },
+    "cases/water64-gpw/0-candidate/binary.txt": {
+      "bytes": 148,
+      "sha256": "b9b7d97b6f59931f6acba78541d4461d326623b602870366d585432e177086fd"
+    },
+    "cases/water64-gpw/0-candidate/cp2k.log": {
+      "bytes": 122255,
+      "sha256": "386e36733432b441d7875bf11174aeb1ac637cb7afdd0a4800f9697a30b573fe"
+    },
+    "cases/water64-gpw/0-candidate/elapsed.txt": {
+      "bytes": 7,
+      "sha256": "52e04a843e3fdeba3987a94106fb22efaea7711fef1daa026615ffae1d4a8be3"
+    },
+    "cases/water64-gpw/0-candidate/forces.xyz": {
+      "bytes": 16525,
+      "sha256": "78d6f6f1cb3f940c56afec360860bd74a9d62758beb6c53b3a13dac6972e3e2b"
+    },
+    "cases/water64-gpw/0-candidate/input.inp": {
+      "bytes": 7979,
+      "sha256": "567175e994a44502c8afe54c98ec31cb12853f0cba114477596174950974834f"
+    },
+    "cases/water64-gpw/0-candidate/map.txt": {
+      "bytes": 16,
+      "sha256": "ca735f4c6a6cac6457abc602f0e549f2914ce869b55aab305fd14a834567b9fd"
+    },
+    "cases/water64-gpw/0-candidate/mpirun.txt": {
+      "bytes": 75,
+      "sha256": "25c80c91443a570f981101dc6b49e827a5ff947f142b0b0d8d26e0b6fba2c31c"
+    },
+    "cases/water64-gpw/0-candidate/ranks/rank-0.tsv": {
+      "bytes": 270,
+      "sha256": "f165df5c1ebc573899331fe16b190cf0eed9d42c0519073188bc2c4303f5b70d"
+    },
+    "cases/water64-gpw/0-candidate/ranks/rank-1.tsv": {
+      "bytes": 270,
+      "sha256": "852f011c431339f561e48434b511fd308f31021eec460a8f71e8782d0a7d8c0b"
+    },
+    "cases/water64-gpw/0-candidate/resources/rank-0.tsv": {
+      "bytes": 37,
+      "sha256": "dae6e12fd65724387095e209fa53deea413265d021f27652395aa622d75c8bc7"
+    },
+    "cases/water64-gpw/0-candidate/resources/rank-1.tsv": {
+      "bytes": 37,
+      "sha256": "54311905e6689d1820f89861ad367d8fa7dfe732352cb2068516bf9b6287d044"
+    },
+    "cases/water64-gpw/0-candidate/resources/topology-0.tsv": {
+      "bytes": 112,
+      "sha256": "222d48050c86bcdde6aa269b70be0fd6163ec51e80c251f6d675ee38607ecdbe"
+    },
+    "cases/water64-gpw/0-candidate/resources/topology-1.tsv": {
+      "bytes": 112,
+      "sha256": "222d48050c86bcdde6aa269b70be0fd6163ec51e80c251f6d675ee38607ecdbe"
+    },
+    "cases/water64-gpw/1-baseline/BASIS_MOLOPT": {
+      "bytes": 127679,
+      "sha256": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61"
+    },
+    "cases/water64-gpw/1-baseline/GTH_POTENTIALS": {
+      "bytes": 168128,
+      "sha256": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+    },
+    "cases/water64-gpw/1-baseline/binary.sha256": {
+      "bytes": 111,
+      "sha256": "6ff9ac3b87e0634abd67cc7470e3e25284ad16a43757b2bba56c91393fcf4929"
+    },
+    "cases/water64-gpw/1-baseline/binary.txt": {
+      "bytes": 45,
+      "sha256": "34aa4b1e1ccf0fac29bec0fd6979b19f3d788e80d0a3e6ec27d4696378576f24"
+    },
+    "cases/water64-gpw/1-baseline/cp2k.log": {
+      "bytes": 120660,
+      "sha256": "7cb05fe3e6b1d00d7fce1a9e09be22df6315c2d82977b773f1bcac893041d6f4"
+    },
+    "cases/water64-gpw/1-baseline/elapsed.txt": {
+      "bytes": 6,
+      "sha256": "88401faeae85f75ecf48764f5813d049e4e36f80310464fd7846b3e43c9e6552"
+    },
+    "cases/water64-gpw/1-baseline/forces.xyz": {
+      "bytes": 16525,
+      "sha256": "05d311c65479d246728140dfe096897624bfb08cb9b7400d96a6e2992c9d2e02"
+    },
+    "cases/water64-gpw/1-baseline/input.inp": {
+      "bytes": 7979,
+      "sha256": "567175e994a44502c8afe54c98ec31cb12853f0cba114477596174950974834f"
+    },
+    "cases/water64-gpw/1-baseline/map.txt": {
+      "bytes": 16,
+      "sha256": "ca735f4c6a6cac6457abc602f0e549f2914ce869b55aab305fd14a834567b9fd"
+    },
+    "cases/water64-gpw/1-baseline/mpirun.txt": {
+      "bytes": 75,
+      "sha256": "25c80c91443a570f981101dc6b49e827a5ff947f142b0b0d8d26e0b6fba2c31c"
+    },
+    "cases/water64-gpw/1-baseline/ranks/rank-0.tsv": {
+      "bytes": 142,
+      "sha256": "e22a0a408a3e7aa220721d1330be35f339e081053179b9d61cae65a392c25239"
+    },
+    "cases/water64-gpw/1-baseline/ranks/rank-1.tsv": {
+      "bytes": 142,
+      "sha256": "24e6a91c037eb0fe77ae558a0b6d2a568030e871f66bf196bf4509f4ff580669"
+    },
+    "cases/water64-gpw/1-baseline/resources/rank-0.tsv": {
+      "bytes": 37,
+      "sha256": "dae6e12fd65724387095e209fa53deea413265d021f27652395aa622d75c8bc7"
+    },
+    "cases/water64-gpw/1-baseline/resources/rank-1.tsv": {
+      "bytes": 37,
+      "sha256": "54311905e6689d1820f89861ad367d8fa7dfe732352cb2068516bf9b6287d044"
+    },
+    "cases/water64-gpw/1-baseline/resources/topology-0.tsv": {
+      "bytes": 112,
+      "sha256": "222d48050c86bcdde6aa269b70be0fd6163ec51e80c251f6d675ee38607ecdbe"
+    },
+    "cases/water64-gpw/1-baseline/resources/topology-1.tsv": {
+      "bytes": 112,
+      "sha256": "222d48050c86bcdde6aa269b70be0fd6163ec51e80c251f6d675ee38607ecdbe"
+    },
+    "job.sbatch": {
+      "bytes": 6281,
+      "sha256": "d7c52802eac7da141162423c677ca2e03c81c068dbb4733f8bb50ba0e5b613f9"
+    },
+    "rank-exec.sh": {
+      "bytes": 1237,
+      "sha256": "243f8e35620faf45b5451e4b57729c3fd17e51c61ff13c8f98dbfa6f47080126"
+    },
+    "request.json": {
+      "bytes": 2178,
+      "sha256": "adfd95175d170ecffae42950d152af2a46fea7616ae56b680ebcb7ea6a5924ca"
+    },
+    "results/allocation.txt": {
+      "bytes": 1718,
+      "sha256": "d22327fd63994c5c698e8a15d62d621d1a0672a5ecfc4d1aa4801a6540628072"
+    },
+    "results/baseline-version/binary.sha256": {
+      "bytes": 111,
+      "sha256": "6ff9ac3b87e0634abd67cc7470e3e25284ad16a43757b2bba56c91393fcf4929"
+    },
+    "results/baseline-version/binary.txt": {
+      "bytes": 45,
+      "sha256": "34aa4b1e1ccf0fac29bec0fd6979b19f3d788e80d0a3e6ec27d4696378576f24"
+    },
+    "results/baseline-version/modules.txt": {
+      "bytes": 205,
+      "sha256": "4650965a375be613596683b8b02a5224c1a4029fc6183e8ba28c3e18818a2164"
+    },
+    "results/baseline-version/mpi-version.txt": {
+      "bytes": 83,
+      "sha256": "dbefbbfa3051a687ec6d12c60decfadc9e432e1e88b88e634e861777f1367714"
+    },
+    "results/baseline-version/mpirun.txt": {
+      "bytes": 75,
+      "sha256": "25c80c91443a570f981101dc6b49e827a5ff947f142b0b0d8d26e0b6fba2c31c"
+    },
+    "results/baseline-version/ranks/rank-0.tsv": {
+      "bytes": 142,
+      "sha256": "e22a0a408a3e7aa220721d1330be35f339e081053179b9d61cae65a392c25239"
+    },
+    "results/baseline-version/ranks/rank-1.tsv": {
+      "bytes": 142,
+      "sha256": "24e6a91c037eb0fe77ae558a0b6d2a568030e871f66bf196bf4509f4ff580669"
+    },
+    "results/baseline-version/resources/rank-0.tsv": {
+      "bytes": 37,
+      "sha256": "dae6e12fd65724387095e209fa53deea413265d021f27652395aa622d75c8bc7"
+    },
+    "results/baseline-version/resources/rank-1.tsv": {
+      "bytes": 37,
+      "sha256": "54311905e6689d1820f89861ad367d8fa7dfe732352cb2068516bf9b6287d044"
+    },
+    "results/baseline-version/resources/topology-0.tsv": {
+      "bytes": 112,
+      "sha256": "222d48050c86bcdde6aa269b70be0fd6163ec51e80c251f6d675ee38607ecdbe"
+    },
+    "results/baseline-version/resources/topology-1.tsv": {
+      "bytes": 112,
+      "sha256": "222d48050c86bcdde6aa269b70be0fd6163ec51e80c251f6d675ee38607ecdbe"
+    },
+    "results/baseline-version/version.log": {
+      "bytes": 7215,
+      "sha256": "48ca46e335a814ccfd692f06f65749e52bc0de67fd7edf209dd35649e85c19aa"
+    },
+    "results/candidate-version/binary.sha256": {
+      "bytes": 214,
+      "sha256": "bcd90bd2ba4a161f9a7381396ce430066d169ba7b735aba1b253fbe3a32a18f9"
+    },
+    "results/candidate-version/binary.txt": {
+      "bytes": 148,
+      "sha256": "b9b7d97b6f59931f6acba78541d4461d326623b602870366d585432e177086fd"
+    },
+    "results/candidate-version/modules.txt": {
+      "bytes": 97,
+      "sha256": "0ddca348c0c9b1170b3f2ecd75343c2222eb1bfd5a2ef8eb5c6ad346a9f90400"
+    },
+    "results/candidate-version/mpi-version.txt": {
+      "bytes": 83,
+      "sha256": "dbefbbfa3051a687ec6d12c60decfadc9e432e1e88b88e634e861777f1367714"
+    },
+    "results/candidate-version/mpirun.txt": {
+      "bytes": 75,
+      "sha256": "25c80c91443a570f981101dc6b49e827a5ff947f142b0b0d8d26e0b6fba2c31c"
+    },
+    "results/candidate-version/ranks/rank-0.tsv": {
+      "bytes": 270,
+      "sha256": "f165df5c1ebc573899331fe16b190cf0eed9d42c0519073188bc2c4303f5b70d"
+    },
+    "results/candidate-version/ranks/rank-1.tsv": {
+      "bytes": 270,
+      "sha256": "852f011c431339f561e48434b511fd308f31021eec460a8f71e8782d0a7d8c0b"
+    },
+    "results/candidate-version/resources/rank-0.tsv": {
+      "bytes": 37,
+      "sha256": "dae6e12fd65724387095e209fa53deea413265d021f27652395aa622d75c8bc7"
+    },
+    "results/candidate-version/resources/rank-1.tsv": {
+      "bytes": 37,
+      "sha256": "54311905e6689d1820f89861ad367d8fa7dfe732352cb2068516bf9b6287d044"
+    },
+    "results/candidate-version/resources/topology-0.tsv": {
+      "bytes": 112,
+      "sha256": "222d48050c86bcdde6aa269b70be0fd6163ec51e80c251f6d675ee38607ecdbe"
+    },
+    "results/candidate-version/resources/topology-1.tsv": {
+      "bytes": 112,
+      "sha256": "222d48050c86bcdde6aa269b70be0fd6163ec51e80c251f6d675ee38607ecdbe"
+    },
+    "results/candidate-version/version.log": {
+      "bytes": 10998,
+      "sha256": "81fc6f066d1edfe7fa3ca9130d63a1b2873e41d6e7b6227392bc3facaad9115b"
+    },
+    "results/nodes.txt": {
+      "bytes": 18,
+      "sha256": "361760c84a9314ca2b289ba8d68909c684de7fead26c1e5d2f1eab9e98543cd8"
+    },
+    "results/run-order.tsv": {
+      "bytes": 822,
+      "sha256": "4f3d0080598a15a4395f1c4911dd26984e70a1fefc95a22fe2b429a47f263d4d"
+    }
+  },
+  "resource_evidence": {
+    "cases/water64-gpw/0-baseline/map.txt": {
+      "sha256": "ca735f4c6a6cac6457abc602f0e549f2914ce869b55aab305fd14a834567b9fd",
+      "text": "ppr:1:node:pe=4\n"
+    },
+    "cases/water64-gpw/0-baseline/mpirun.txt": {
+      "sha256": "25c80c91443a570f981101dc6b49e827a5ff947f142b0b0d8d26e0b6fba2c31c",
+      "text": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/bin/mpirun\n"
+    },
+    "cases/water64-gpw/0-baseline/ranks/rank-0.tsv": {
+      "sha256": "e22a0a408a3e7aa220721d1330be35f339e081053179b9d61cae65a392c25239",
+      "text": "4v100n01\t0\t4v100-avx512\tsystem:/opt/apps/cp2k/cp2k-2026.1/exe/bin/cp2k.psmp\t0\t/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512\n"
+    },
+    "cases/water64-gpw/0-baseline/ranks/rank-1.tsv": {
+      "sha256": "24e6a91c037eb0fe77ae558a0b6d2a568030e871f66bf196bf4509f4ff580669",
+      "text": "4v100n03\t1\t4v100-avx512\tsystem:/opt/apps/cp2k/cp2k-2026.1/exe/bin/cp2k.psmp\t0\t/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512\n"
+    },
+    "cases/water64-gpw/0-baseline/resources/rank-0.tsv": {
+      "sha256": "dae6e12fd65724387095e209fa53deea413265d021f27652395aa622d75c8bc7",
+      "text": "4v100n01\t0\t0\t1\t12-15,28-31\t0\t1838283\n"
+    },
+    "cases/water64-gpw/0-baseline/resources/rank-1.tsv": {
+      "sha256": "54311905e6689d1820f89861ad367d8fa7dfe732352cb2068516bf9b6287d044",
+      "text": "4v100n03\t1\t0\t1\t12-15,28-31\t0\t1838283\n"
+    },
+    "cases/water64-gpw/0-baseline/resources/topology-0.tsv": {
+      "sha256": "222d48050c86bcdde6aa269b70be0fd6163ec51e80c251f6d675ee38607ecdbe",
+      "text": "12\t0\t12\t12,28\n13\t0\t13\t13,29\n14\t0\t14\t14,30\n15\t0\t15\t15,31\n28\t0\t12\t12,28\n29\t0\t13\t13,29\n30\t0\t14\t14,30\n31\t0\t15\t15,31\n"
+    },
+    "cases/water64-gpw/0-baseline/resources/topology-1.tsv": {
+      "sha256": "222d48050c86bcdde6aa269b70be0fd6163ec51e80c251f6d675ee38607ecdbe",
+      "text": "12\t0\t12\t12,28\n13\t0\t13\t13,29\n14\t0\t14\t14,30\n15\t0\t15\t15,31\n28\t0\t12\t12,28\n29\t0\t13\t13,29\n30\t0\t14\t14,30\n31\t0\t15\t15,31\n"
+    },
+    "cases/water64-gpw/0-candidate/map.txt": {
+      "sha256": "ca735f4c6a6cac6457abc602f0e549f2914ce869b55aab305fd14a834567b9fd",
+      "text": "ppr:1:node:pe=4\n"
+    },
+    "cases/water64-gpw/0-candidate/mpirun.txt": {
+      "sha256": "25c80c91443a570f981101dc6b49e827a5ff947f142b0b0d8d26e0b6fba2c31c",
+      "text": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/bin/mpirun\n"
+    },
+    "cases/water64-gpw/0-candidate/ranks/rank-0.tsv": {
+      "sha256": "f165df5c1ebc573899331fe16b190cf0eed9d42c0519073188bc2c4303f5b70d",
+      "text": "4v100n01.mr-sai.ai\t0\t4v100-avx512\t/home/stardust/sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6.sif\t0\t/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512\n"
+    },
+    "cases/water64-gpw/0-candidate/ranks/rank-1.tsv": {
+      "sha256": "852f011c431339f561e48434b511fd308f31021eec460a8f71e8782d0a7d8c0b",
+      "text": "4v100n03.mr-sai.ai\t1\t4v100-avx512\t/home/stardust/sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6.sif\t0\t/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512\n"
+    },
+    "cases/water64-gpw/0-candidate/resources/rank-0.tsv": {
+      "sha256": "dae6e12fd65724387095e209fa53deea413265d021f27652395aa622d75c8bc7",
+      "text": "4v100n01\t0\t0\t1\t12-15,28-31\t0\t1838283\n"
+    },
+    "cases/water64-gpw/0-candidate/resources/rank-1.tsv": {
+      "sha256": "54311905e6689d1820f89861ad367d8fa7dfe732352cb2068516bf9b6287d044",
+      "text": "4v100n03\t1\t0\t1\t12-15,28-31\t0\t1838283\n"
+    },
+    "cases/water64-gpw/0-candidate/resources/topology-0.tsv": {
+      "sha256": "222d48050c86bcdde6aa269b70be0fd6163ec51e80c251f6d675ee38607ecdbe",
+      "text": "12\t0\t12\t12,28\n13\t0\t13\t13,29\n14\t0\t14\t14,30\n15\t0\t15\t15,31\n28\t0\t12\t12,28\n29\t0\t13\t13,29\n30\t0\t14\t14,30\n31\t0\t15\t15,31\n"
+    },
+    "cases/water64-gpw/0-candidate/resources/topology-1.tsv": {
+      "sha256": "222d48050c86bcdde6aa269b70be0fd6163ec51e80c251f6d675ee38607ecdbe",
+      "text": "12\t0\t12\t12,28\n13\t0\t13\t13,29\n14\t0\t14\t14,30\n15\t0\t15\t15,31\n28\t0\t12\t12,28\n29\t0\t13\t13,29\n30\t0\t14\t14,30\n31\t0\t15\t15,31\n"
+    },
+    "results/allocation.txt": {
+      "sha256": "d22327fd63994c5c698e8a15d62d621d1a0672a5ecfc4d1aa4801a6540628072",
+      "text": "JobId=1838283 JobName=cp2k-benchmark-39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6-benchmark UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A Priority=6079 Nice=0 Account=private-stardust QOS=flood-1o2gpu WCKey=* JobState=RUNNING Reason=None Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:01 TimeLimit=01:00:00 TimeMin=N/A SubmitTime=2026-10-18T08:59:58 EligibleTime=2026-10-18T08:59:58 AccrueTime=2026-10-18T08:59:58 StartTime=2026-10-18T08:59:58 EndTime=2026-10-18T09:59:58 Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-18T08:59:58 Scheduler=Main Partition=4V100 AllocNode:Sid=login-01:957393 ReqNodeList=(null) ExcNodeList=(null) NodeList=4v100n[01,03] BatchHost=4v100n01 NumNodes=2 NumCPUs=16 NumTasks=2 CPUs/Task=1 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=2,mem=44G,node=2,billing=388,gres/gpu=2 AllocTRES=cpu=16,mem=44G,node=2,billing=388,gres/gpu=2 Socks/Node=* NtasksPerN:B:S:C=1:0:*:* CoreSpec=* MinCPUsNode=1 MinMemoryTRES=22G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null) Command=/home/stardust/sai-hpc-software/runtime-tests/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6-benchmark/job.sbatch SubmitLine=sbatch --parsable /home/stardust/sai-hpc-software/runtime-tests/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6-benchmark/job.sbatch WorkDir=/home/stardust StdErr= StdIn=/dev/null StdOut=/home/stardust/sai-hpc-software/runtime-tests/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6-benchmark/results/slurm-1838283.log CpusPerTres=gpu:8 MemPerTres=gpu:22528 TresPerNode=gres/gpu:1\n"
+    },
+    "results/nodes.txt": {
+      "sha256": "361760c84a9314ca2b289ba8d68909c684de7fead26c1e5d2f1eab9e98543cd8",
+      "text": "4v100n01\n4v100n03\n"
+    }
+  },
+  "run": "/home/stardust/sai-hpc-software/runtime-tests/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6-benchmark",
+  "sample_scope": {
+    "compared_repetition": 0,
+    "completed_measured_baseline_repetition": 1,
+    "formal_measured_three_repetition_comparison_complete_at_snapshot": false,
+    "warmup_excluded_from_formal_medians": true
+  },
+  "samples": {
+    "0-baseline": {
+      "cp2k_seconds": 62.942,
+      "elapsed_seconds": 64.02,
+      "energy_ha": -1102.5771871497636,
+      "global_library_lines": [
+        " GLOBAL| FFT library                                                       FFTW3",
+        " GLOBAL| Diagonalization library                                            ELPA",
+        " GLOBAL| Cholesky decomposition library                                ScaLAPACK",
+        " GLOBAL| DGEMM library                                                      BLAS",
+        " GLOBAL| Matrix multiplication library                                     COSMA",
+        " GLOBAL| FFTs using library dependent lengths                                  F",
+        " GLOBAL| Total number of message passing processes                             2",
+        " GLOBAL| Number of distributed systems (nodes)                                 2",
+        " GLOBAL| Number of threads for this process                                    1"
+      ],
+      "normal_termination": true,
+      "outer_scf_summary": "outer SCF loop converged in   2 iterations or  107 steps",
+      "outside_cp2k_timer_seconds": 1.078,
+      "scf_converged": true,
+      "timing_table": {
+        "CP2K": {
+          "calls": 1,
+          "self_average_seconds": 0.016,
+          "self_maximum_seconds": 0.018,
+          "total_average_seconds": 62.941,
+          "total_maximum_seconds": 62.942
+        },
+        "apply_all": {
+          "calls": 109,
+          "self_average_seconds": 0.013,
+          "self_maximum_seconds": 0.013,
+          "total_average_seconds": 2.136,
+          "total_maximum_seconds": 2.139
+        },
+        "apply_preconditioner_dbcsr": {
+          "calls": 109,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 2.136,
+          "total_maximum_seconds": 2.139
+        },
+        "build_core_hamiltonian_matrix_": {
+          "calls": 1,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 1.525,
+          "total_maximum_seconds": 1.533
+        },
+        "calculate_rho_elec": {
+          "calls": 108,
+          "self_average_seconds": 0.244,
+          "self_maximum_seconds": 0.248,
+          "total_average_seconds": 12.705,
+          "total_maximum_seconds": 12.707
+        },
+        "cp_fm_diag_elpa": {
+          "calls": 112,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 1.523,
+          "total_maximum_seconds": 1.523
+        },
+        "cp_fm_diag_elpa_base": {
+          "calls": 112,
+          "self_average_seconds": 1.482,
+          "self_maximum_seconds": 1.489,
+          "total_average_seconds": 1.521,
+          "total_maximum_seconds": 1.521
+        },
+        "dbcsr_multiply_generic": {
+          "calls": 2432,
+          "self_average_seconds": 0.044,
+          "self_maximum_seconds": 0.046,
+          "total_average_seconds": 8.023,
+          "total_maximum_seconds": 8.032
+        },
+        "density_rs2pw": {
+          "calls": 108,
+          "self_average_seconds": 0.002,
+          "self_maximum_seconds": 0.002,
+          "total_average_seconds": 3.992,
+          "total_maximum_seconds": 3.996
+        },
+        "fft_wrap_pw1pw2": {
+          "calls": 1837,
+          "self_average_seconds": 0.011,
+          "self_maximum_seconds": 0.012,
+          "total_average_seconds": 16.454,
+          "total_maximum_seconds": 16.911
+        },
+        "fft_wrap_pw1pw2_150": {
+          "calls": 1189,
+          "self_average_seconds": 0.003,
+          "self_maximum_seconds": 0.003,
+          "total_average_seconds": 15.743,
+          "total_maximum_seconds": 16.132
+        },
+        "grid_collocate_task_list": {
+          "calls": 108,
+          "self_average_seconds": 8.425,
+          "self_maximum_seconds": 8.457,
+          "total_average_seconds": 8.425,
+          "total_maximum_seconds": 8.457
+        },
+        "grid_integrate_task_list": {
+          "calls": 108,
+          "self_average_seconds": 5.97,
+          "self_maximum_seconds": 5.992,
+          "total_average_seconds": 5.97,
+          "total_maximum_seconds": 5.992
+        },
+        "init_scf_loop": {
+          "calls": 2,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 1.621,
+          "total_maximum_seconds": 1.622
+        },
+        "integrate_v_rspace": {
+          "calls": 108,
+          "self_average_seconds": 0.096,
+          "self_maximum_seconds": 0.099,
+          "total_average_seconds": 8.387,
+          "total_maximum_seconds": 8.394
+        },
+        "make_images": {
+          "calls": 4864,
+          "self_average_seconds": 0.263,
+          "self_maximum_seconds": 0.264,
+          "total_average_seconds": 1.782,
+          "total_maximum_seconds": 1.806
+        },
+        "make_m2s": {
+          "calls": 4864,
+          "self_average_seconds": 0.019,
+          "self_maximum_seconds": 0.02,
+          "total_average_seconds": 2.551,
+          "total_maximum_seconds": 2.572
+        },
+        "mp_alltoall_z22v": {
+          "calls": 1837,
+          "self_average_seconds": 2.89,
+          "self_maximum_seconds": 4.149,
+          "total_average_seconds": 2.89,
+          "total_maximum_seconds": 4.149
+        },
+        "multiply_cannon": {
+          "calls": 2432,
+          "self_average_seconds": 0.064,
+          "self_maximum_seconds": 0.07,
+          "total_average_seconds": 4.729,
+          "total_maximum_seconds": 4.75
+        },
+        "multiply_cannon_loop": {
+          "calls": 2432,
+          "self_average_seconds": 0.008,
+          "self_maximum_seconds": 0.009,
+          "total_average_seconds": 4.398,
+          "total_maximum_seconds": 4.432
+        },
+        "multiply_cannon_multrec": {
+          "calls": 4864,
+          "self_average_seconds": 4.175,
+          "self_maximum_seconds": 4.257,
+          "total_average_seconds": 4.18,
+          "total_maximum_seconds": 4.263
+        },
+        "ot_diis_step": {
+          "calls": 107,
+          "self_average_seconds": 0.002,
+          "self_maximum_seconds": 0.003,
+          "total_average_seconds": 2.348,
+          "total_maximum_seconds": 2.349
+        },
+        "ot_mini": {
+          "calls": 107,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 3.891,
+          "total_maximum_seconds": 3.904
+        },
+        "ot_scf_mini": {
+          "calls": 107,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 7.268,
+          "total_maximum_seconds": 7.28
+        },
+        "pbe_lda_eval": {
+          "calls": 108,
+          "self_average_seconds": 12.076,
+          "self_maximum_seconds": 12.158,
+          "total_average_seconds": 12.076,
+          "total_maximum_seconds": 12.158
+        },
+        "potential_pw2rs": {
+          "calls": 108,
+          "self_average_seconds": 0.009,
+          "self_maximum_seconds": 0.01,
+          "total_average_seconds": 2.32,
+          "total_maximum_seconds": 2.337
+        },
+        "pw_copy": {
+          "calls": 1620,
+          "self_average_seconds": 1.275,
+          "self_maximum_seconds": 1.408,
+          "total_average_seconds": 1.275,
+          "total_maximum_seconds": 1.408
+        },
+        "pw_derive": {
+          "calls": 972,
+          "self_average_seconds": 1.636,
+          "self_maximum_seconds": 1.814,
+          "total_average_seconds": 1.636,
+          "total_maximum_seconds": 1.814
+        },
+        "pw_gpu_c1dr3d_3d_ps": {
+          "calls": 972,
+          "self_average_seconds": 2.142,
+          "self_maximum_seconds": 2.41,
+          "total_average_seconds": 8.692,
+          "total_maximum_seconds": 8.856
+        },
+        "pw_gpu_cff": {
+          "calls": 865,
+          "self_average_seconds": 1.518,
+          "self_maximum_seconds": 1.539,
+          "total_average_seconds": 1.518,
+          "total_maximum_seconds": 1.539
+        },
+        "pw_gpu_ffc": {
+          "calls": 972,
+          "self_average_seconds": 1.687,
+          "self_maximum_seconds": 1.714,
+          "total_average_seconds": 1.687,
+          "total_maximum_seconds": 1.714
+        },
+        "pw_gpu_fg": {
+          "calls": 865,
+          "self_average_seconds": 2.087,
+          "self_maximum_seconds": 2.112,
+          "total_average_seconds": 2.087,
+          "total_maximum_seconds": 2.112
+        },
+        "pw_gpu_r3dc1d_3d_ps": {
+          "calls": 865,
+          "self_average_seconds": 1.862,
+          "self_maximum_seconds": 2.084,
+          "total_average_seconds": 7.746,
+          "total_maximum_seconds": 8.04
+        },
+        "pw_gpu_sf": {
+          "calls": 972,
+          "self_average_seconds": 2.541,
+          "self_maximum_seconds": 2.557,
+          "total_average_seconds": 2.541,
+          "total_maximum_seconds": 2.557
+        },
+        "pw_poisson_solve": {
+          "calls": 108,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 1.565,
+          "total_maximum_seconds": 1.638
+        },
+        "qs_energies": {
+          "calls": 1,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 60.792,
+          "total_maximum_seconds": 60.793
+        },
+        "qs_forces": {
+          "calls": 1,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 62.776,
+          "total_maximum_seconds": 62.777
+        },
+        "qs_ks_build_kohn_sham_matrix": {
+          "calls": 108,
+          "self_average_seconds": 0.01,
+          "self_maximum_seconds": 0.01,
+          "total_average_seconds": 38.302,
+          "total_maximum_seconds": 38.315
+        },
+        "qs_ks_update_qs_env": {
+          "calls": 109,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 38.003,
+          "total_maximum_seconds": 38.015
+        },
+        "qs_ot_get_derivative": {
+          "calls": 107,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 1.538,
+          "total_maximum_seconds": 1.551
+        },
+        "qs_ot_get_p": {
+          "calls": 109,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 1.647,
+          "total_maximum_seconds": 1.657
+        },
+        "qs_ot_p2m_diag": {
+          "calls": 100,
+          "self_average_seconds": 0.062,
+          "self_maximum_seconds": 0.064,
+          "total_average_seconds": 1.303,
+          "total_maximum_seconds": 1.305
+        },
+        "qs_rho_update_rho_low": {
+          "calls": 108,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 12.706,
+          "total_maximum_seconds": 12.707
+        },
+        "qs_scf_loop_do_ot": {
+          "calls": 107,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 7.969,
+          "total_maximum_seconds": 7.971
+        },
+        "qs_scf_new_mos": {
+          "calls": 107,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 7.969,
+          "total_maximum_seconds": 7.972
+        },
+        "qs_vxc_create": {
+          "calls": 108,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 25.132,
+          "total_maximum_seconds": 25.176
+        },
+        "rebuild_ks_matrix": {
+          "calls": 108,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 38.303,
+          "total_maximum_seconds": 38.315
+        },
+        "scf_env_do_scf": {
+          "calls": 1,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 59.652,
+          "total_maximum_seconds": 59.653
+        },
+        "scf_env_do_scf_inner_loop": {
+          "calls": 107,
+          "self_average_seconds": 0.003,
+          "self_maximum_seconds": 0.005,
+          "total_average_seconds": 58.029,
+          "total_maximum_seconds": 58.03
+        },
+        "sum_up_and_integrate": {
+          "calls": 108,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 8.461,
+          "total_maximum_seconds": 8.481
+        },
+        "x_to_yz": {
+          "calls": 972,
+          "self_average_seconds": 0.837,
+          "self_maximum_seconds": 0.952,
+          "total_average_seconds": 2.317,
+          "total_maximum_seconds": 2.793
+        },
+        "xc_functional_eval": {
+          "calls": 108,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 12.077,
+          "total_maximum_seconds": 12.158
+        },
+        "xc_pw_derive": {
+          "calls": 648,
+          "self_average_seconds": 0.002,
+          "self_maximum_seconds": 0.002,
+          "total_average_seconds": 10.25,
+          "total_maximum_seconds": 10.467
+        },
+        "xc_pw_divergence": {
+          "calls": 108,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 6.917,
+          "total_maximum_seconds": 7.06
+        },
+        "xc_rho_set_and_dset_create": {
+          "calls": 108,
+          "self_average_seconds": 0.253,
+          "self_maximum_seconds": 0.286,
+          "total_average_seconds": 17.671,
+          "total_maximum_seconds": 17.778
+        },
+        "xc_vxc_pw_create": {
+          "calls": 108,
+          "self_average_seconds": 0.329,
+          "self_maximum_seconds": 0.351,
+          "total_average_seconds": 25.131,
+          "total_maximum_seconds": 25.175
+        },
+        "yz_to_x": {
+          "calls": 865,
+          "self_average_seconds": 0.853,
+          "self_maximum_seconds": 0.96,
+          "total_average_seconds": 2.263,
+          "total_maximum_seconds": 2.826
+        }
+      }
+    },
+    "0-candidate": {
+      "cp2k_seconds": 178.277,
+      "elapsed_seconds": 179.68,
+      "energy_ha": -1102.5771871497925,
+      "global_library_lines": [
+        " GLOBAL| FFT library                                                       FFTW3",
+        " GLOBAL| Diagonalization library                                        cuSOLVER",
+        " GLOBAL| Cholesky decomposition library                                ScaLAPACK",
+        " GLOBAL| DGEMM library                                                      SPLA",
+        " GLOBAL| Direct generalized diagonalization requested                          F",
+        " GLOBAL| Minimum matrix size for cuSOLVER diagonalization                     64",
+        " GLOBAL| Matrix multiplication library                                     COSMA",
+        " GLOBAL| FFTs using library dependent lengths                                  F",
+        " GLOBAL| Total number of message passing processes                             2",
+        " GLOBAL| Number of distributed systems (nodes)                                 2",
+        " GLOBAL| Number of threads for this process                                    1"
+      ],
+      "normal_termination": true,
+      "outer_scf_summary": "outer SCF loop converged in   2 iterations or  107 steps",
+      "outside_cp2k_timer_seconds": 1.403,
+      "scf_converged": true,
+      "timing_table": {
+        "CP2K": {
+          "calls": 1,
+          "self_average_seconds": 0.036,
+          "self_maximum_seconds": 0.036,
+          "total_average_seconds": 178.277,
+          "total_maximum_seconds": 178.277
+        },
+        "calculate_rho_elec": {
+          "calls": 108,
+          "self_average_seconds": 0.246,
+          "self_maximum_seconds": 0.247,
+          "total_average_seconds": 13.291,
+          "total_maximum_seconds": 13.299
+        },
+        "cp_dbcsr_syevd": {
+          "calls": 104,
+          "self_average_seconds": 0.005,
+          "self_maximum_seconds": 0.005,
+          "total_average_seconds": 108.436,
+          "total_maximum_seconds": 108.437
+        },
+        "cp_fm_diag_cusolver": {
+          "calls": 112,
+          "self_average_seconds": 116.865,
+          "self_maximum_seconds": 116.866,
+          "total_average_seconds": 116.865,
+          "total_maximum_seconds": 116.866
+        },
+        "dbcsr_multiply_generic": {
+          "calls": 2432,
+          "self_average_seconds": 0.049,
+          "self_maximum_seconds": 0.051,
+          "total_average_seconds": 6.498,
+          "total_maximum_seconds": 6.541
+        },
+        "density_rs2pw": {
+          "calls": 108,
+          "self_average_seconds": 0.002,
+          "self_maximum_seconds": 0.003,
+          "total_average_seconds": 4.246,
+          "total_maximum_seconds": 4.254
+        },
+        "fft_wrap_pw1pw2": {
+          "calls": 1837,
+          "self_average_seconds": 0.012,
+          "self_maximum_seconds": 0.013,
+          "total_average_seconds": 16.628,
+          "total_maximum_seconds": 17.083
+        },
+        "fft_wrap_pw1pw2_150": {
+          "calls": 1189,
+          "self_average_seconds": 0.003,
+          "self_maximum_seconds": 0.004,
+          "total_average_seconds": 15.841,
+          "total_maximum_seconds": 16.233
+        },
+        "grid_collocate_task_list": {
+          "calls": 108,
+          "self_average_seconds": 8.755,
+          "self_maximum_seconds": 8.782,
+          "total_average_seconds": 8.755,
+          "total_maximum_seconds": 8.782
+        },
+        "grid_integrate_task_list": {
+          "calls": 108,
+          "self_average_seconds": 6.827,
+          "self_maximum_seconds": 6.864,
+          "total_average_seconds": 6.827,
+          "total_maximum_seconds": 6.864
+        },
+        "init_scf_loop": {
+          "calls": 2,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 7.988,
+          "total_maximum_seconds": 7.988
+        },
+        "integrate_v_rspace": {
+          "calls": 108,
+          "self_average_seconds": 0.097,
+          "self_maximum_seconds": 0.102,
+          "total_average_seconds": 9.201,
+          "total_maximum_seconds": 9.233
+        },
+        "make_preconditioner": {
+          "calls": 2,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 4.854,
+          "total_maximum_seconds": 4.854
+        },
+        "mp_alltoall_z22v": {
+          "calls": 1837,
+          "self_average_seconds": 2.907,
+          "self_maximum_seconds": 4.146,
+          "total_average_seconds": 2.907,
+          "total_maximum_seconds": 4.146
+        },
+        "multiply_cannon": {
+          "calls": 2432,
+          "self_average_seconds": 0.081,
+          "self_maximum_seconds": 0.088,
+          "total_average_seconds": 3.935,
+          "total_maximum_seconds": 3.98
+        },
+        "ot_scf_mini": {
+          "calls": 107,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 108.6,
+          "total_maximum_seconds": 108.605
+        },
+        "pbe_lda_eval": {
+          "calls": 108,
+          "self_average_seconds": 12.078,
+          "self_maximum_seconds": 12.151,
+          "total_average_seconds": 12.078,
+          "total_maximum_seconds": 12.151
+        },
+        "prepare_preconditioner": {
+          "calls": 2,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 7.15,
+          "total_maximum_seconds": 7.15
+        },
+        "pw_gpu_c1dr3d_3d_ps": {
+          "calls": 972,
+          "self_average_seconds": 2.145,
+          "self_maximum_seconds": 2.417,
+          "total_average_seconds": 8.828,
+          "total_maximum_seconds": 9.045
+        },
+        "pw_gpu_r3dc1d_3d_ps": {
+          "calls": 865,
+          "self_average_seconds": 1.93,
+          "self_maximum_seconds": 2.147,
+          "total_average_seconds": 7.784,
+          "total_maximum_seconds": 8.022
+        },
+        "qs_energies": {
+          "calls": 1,
+          "self_average_seconds": 0.003,
+          "self_maximum_seconds": 0.003,
+          "total_average_seconds": 176.104,
+          "total_maximum_seconds": 176.104
+        },
+        "qs_forces": {
+          "calls": 1,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 178.055,
+          "total_maximum_seconds": 178.055
+        },
+        "qs_ks_build_kohn_sham_matrix": {
+          "calls": 108,
+          "self_average_seconds": 0.012,
+          "self_maximum_seconds": 0.013,
+          "total_average_seconds": 38.552,
+          "total_maximum_seconds": 38.555
+        },
+        "qs_ks_update_qs_env": {
+          "calls": 109,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 38.27,
+          "total_maximum_seconds": 38.273
+        },
+        "qs_ot_get_p": {
+          "calls": 109,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 104.387,
+          "total_maximum_seconds": 104.388
+        },
+        "qs_ot_p2m_diag": {
+          "calls": 100,
+          "self_average_seconds": 0.063,
+          "self_maximum_seconds": 0.064,
+          "total_average_seconds": 104.044,
+          "total_maximum_seconds": 104.046
+        },
+        "qs_rho_update_rho_low": {
+          "calls": 108,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 13.292,
+          "total_maximum_seconds": 13.299
+        },
+        "qs_scf_loop_do_ot": {
+          "calls": 107,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 109.172,
+          "total_maximum_seconds": 109.172
+        },
+        "qs_scf_new_mos": {
+          "calls": 107,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 109.172,
+          "total_maximum_seconds": 109.173
+        },
+        "qs_vxc_create": {
+          "calls": 108,
+          "self_average_seconds": 0.003,
+          "self_maximum_seconds": 0.003,
+          "total_average_seconds": 25.077,
+          "total_maximum_seconds": 25.127
+        },
+        "rebuild_ks_matrix": {
+          "calls": 108,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 38.552,
+          "total_maximum_seconds": 38.555
+        },
+        "scf_env_do_scf": {
+          "calls": 1,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 174.393,
+          "total_maximum_seconds": 174.393
+        },
+        "scf_env_do_scf_inner_loop": {
+          "calls": 107,
+          "self_average_seconds": 0.004,
+          "self_maximum_seconds": 0.005,
+          "total_average_seconds": 166.404,
+          "total_maximum_seconds": 166.404
+        },
+        "subspace_eigenvalues_ks_dbcsr": {
+          "calls": 4,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 4.832,
+          "total_maximum_seconds": 4.832
+        },
+        "subspace_eigenvalues_ks_fm": {
+          "calls": 6,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 6.615,
+          "total_maximum_seconds": 6.62
+        },
+        "sum_up_and_integrate": {
+          "calls": 108,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 9.272,
+          "total_maximum_seconds": 9.312
+        },
+        "write_mo_set_low": {
+          "calls": 6,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 6.628,
+          "total_maximum_seconds": 6.632
+        },
+        "write_mo_set_to_restart": {
+          "calls": 107,
+          "self_average_seconds": 0.006,
+          "self_maximum_seconds": 0.012,
+          "total_average_seconds": 6.641,
+          "total_maximum_seconds": 6.643
+        },
+        "xc_functional_eval": {
+          "calls": 108,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 12.078,
+          "total_maximum_seconds": 12.151
+        },
+        "xc_pw_derive": {
+          "calls": 648,
+          "self_average_seconds": 0.002,
+          "self_maximum_seconds": 0.002,
+          "total_average_seconds": 10.161,
+          "total_maximum_seconds": 10.343
+        },
+        "xc_pw_divergence": {
+          "calls": 108,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 6.882,
+          "total_maximum_seconds": 6.998
+        },
+        "xc_rho_set_and_dset_create": {
+          "calls": 108,
+          "self_average_seconds": 0.248,
+          "self_maximum_seconds": 0.279,
+          "total_average_seconds": 17.643,
+          "total_maximum_seconds": 17.726
+        },
+        "xc_vxc_pw_create": {
+          "calls": 108,
+          "self_average_seconds": 0.331,
+          "self_maximum_seconds": 0.352,
+          "total_average_seconds": 25.074,
+          "total_maximum_seconds": 25.125
+        }
+      }
+    },
+    "1-baseline": {
+      "cp2k_seconds": 62.528,
+      "elapsed_seconds": 63.64,
+      "energy_ha": -1102.5771871497627,
+      "global_library_lines": [
+        " GLOBAL| FFT library                                                       FFTW3",
+        " GLOBAL| Diagonalization library                                            ELPA",
+        " GLOBAL| Cholesky decomposition library                                ScaLAPACK",
+        " GLOBAL| DGEMM library                                                      BLAS",
+        " GLOBAL| Matrix multiplication library                                     COSMA",
+        " GLOBAL| FFTs using library dependent lengths                                  F",
+        " GLOBAL| Total number of message passing processes                             2",
+        " GLOBAL| Number of distributed systems (nodes)                                 2",
+        " GLOBAL| Number of threads for this process                                    1"
+      ],
+      "normal_termination": true,
+      "outer_scf_summary": "outer SCF loop converged in   2 iterations or  107 steps",
+      "outside_cp2k_timer_seconds": 1.112,
+      "scf_converged": true,
+      "timing_table": {
+        "CP2K": {
+          "calls": 1,
+          "self_average_seconds": 0.015,
+          "self_maximum_seconds": 0.016,
+          "total_average_seconds": 62.528,
+          "total_maximum_seconds": 62.528
+        },
+        "apply_all": {
+          "calls": 109,
+          "self_average_seconds": 0.013,
+          "self_maximum_seconds": 0.013,
+          "total_average_seconds": 2.182,
+          "total_maximum_seconds": 2.183
+        },
+        "apply_preconditioner_dbcsr": {
+          "calls": 109,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 2.182,
+          "total_maximum_seconds": 2.183
+        },
+        "build_core_hamiltonian_matrix_": {
+          "calls": 1,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 1.529,
+          "total_maximum_seconds": 1.534
+        },
+        "calculate_rho_elec": {
+          "calls": 108,
+          "self_average_seconds": 0.245,
+          "self_maximum_seconds": 0.248,
+          "total_average_seconds": 12.686,
+          "total_maximum_seconds": 12.687
+        },
+        "cp_fm_diag_elpa": {
+          "calls": 112,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 1.538,
+          "total_maximum_seconds": 1.539
+        },
+        "cp_fm_diag_elpa_base": {
+          "calls": 112,
+          "self_average_seconds": 1.497,
+          "self_maximum_seconds": 1.504,
+          "total_average_seconds": 1.536,
+          "total_maximum_seconds": 1.537
+        },
+        "dbcsr_multiply_generic": {
+          "calls": 2432,
+          "self_average_seconds": 0.045,
+          "self_maximum_seconds": 0.048,
+          "total_average_seconds": 8.163,
+          "total_maximum_seconds": 8.174
+        },
+        "density_rs2pw": {
+          "calls": 108,
+          "self_average_seconds": 0.002,
+          "self_maximum_seconds": 0.002,
+          "total_average_seconds": 3.973,
+          "total_maximum_seconds": 3.996
+        },
+        "fft_wrap_pw1pw2": {
+          "calls": 1837,
+          "self_average_seconds": 0.011,
+          "self_maximum_seconds": 0.012,
+          "total_average_seconds": 15.92,
+          "total_maximum_seconds": 16.29
+        },
+        "fft_wrap_pw1pw2_150": {
+          "calls": 1189,
+          "self_average_seconds": 0.003,
+          "self_maximum_seconds": 0.003,
+          "total_average_seconds": 15.225,
+          "total_maximum_seconds": 15.54
+        },
+        "grid_collocate_task_list": {
+          "calls": 108,
+          "self_average_seconds": 8.435,
+          "self_maximum_seconds": 8.481,
+          "total_average_seconds": 8.435,
+          "total_maximum_seconds": 8.481
+        },
+        "grid_integrate_task_list": {
+          "calls": 108,
+          "self_average_seconds": 5.972,
+          "self_maximum_seconds": 5.993,
+          "total_average_seconds": 5.972,
+          "total_maximum_seconds": 5.993
+        },
+        "init_scf_loop": {
+          "calls": 2,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 1.615,
+          "total_maximum_seconds": 1.615
+        },
+        "integrate_v_rspace": {
+          "calls": 108,
+          "self_average_seconds": 0.099,
+          "self_maximum_seconds": 0.103,
+          "total_average_seconds": 8.369,
+          "total_maximum_seconds": 8.381
+        },
+        "make_images": {
+          "calls": 4864,
+          "self_average_seconds": 0.265,
+          "self_maximum_seconds": 0.266,
+          "total_average_seconds": 1.848,
+          "total_maximum_seconds": 1.875
+        },
+        "make_m2s": {
+          "calls": 4864,
+          "self_average_seconds": 0.02,
+          "self_maximum_seconds": 0.021,
+          "total_average_seconds": 2.627,
+          "total_maximum_seconds": 2.658
+        },
+        "mp_alltoall_z22v": {
+          "calls": 1837,
+          "self_average_seconds": 2.589,
+          "self_maximum_seconds": 3.566,
+          "total_average_seconds": 2.589,
+          "total_maximum_seconds": 3.566
+        },
+        "multiply_cannon": {
+          "calls": 2432,
+          "self_average_seconds": 0.066,
+          "self_maximum_seconds": 0.074,
+          "total_average_seconds": 4.776,
+          "total_maximum_seconds": 4.78
+        },
+        "multiply_cannon_loop": {
+          "calls": 2432,
+          "self_average_seconds": 0.009,
+          "self_maximum_seconds": 0.009,
+          "total_average_seconds": 4.431,
+          "total_maximum_seconds": 4.471
+        },
+        "multiply_cannon_multrec": {
+          "calls": 4864,
+          "self_average_seconds": 4.192,
+          "self_maximum_seconds": 4.285,
+          "total_average_seconds": 4.197,
+          "total_maximum_seconds": 4.29
+        },
+        "ot_diis_step": {
+          "calls": 107,
+          "self_average_seconds": 0.002,
+          "self_maximum_seconds": 0.003,
+          "total_average_seconds": 2.394,
+          "total_maximum_seconds": 2.394
+        },
+        "ot_mini": {
+          "calls": 107,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 3.993,
+          "total_maximum_seconds": 4.004
+        },
+        "ot_scf_mini": {
+          "calls": 107,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 7.401,
+          "total_maximum_seconds": 7.41
+        },
+        "pbe_lda_eval": {
+          "calls": 108,
+          "self_average_seconds": 12.083,
+          "self_maximum_seconds": 12.172,
+          "total_average_seconds": 12.083,
+          "total_maximum_seconds": 12.172
+        },
+        "potential_pw2rs": {
+          "calls": 108,
+          "self_average_seconds": 0.009,
+          "self_maximum_seconds": 0.01,
+          "total_average_seconds": 2.299,
+          "total_maximum_seconds": 2.313
+        },
+        "pw_copy": {
+          "calls": 1620,
+          "self_average_seconds": 1.216,
+          "self_maximum_seconds": 1.302,
+          "total_average_seconds": 1.216,
+          "total_maximum_seconds": 1.302
+        },
+        "pw_derive": {
+          "calls": 972,
+          "self_average_seconds": 1.592,
+          "self_maximum_seconds": 1.728,
+          "total_average_seconds": 1.592,
+          "total_maximum_seconds": 1.728
+        },
+        "pw_gpu_c1dr3d_3d_ps": {
+          "calls": 972,
+          "self_average_seconds": 2.058,
+          "self_maximum_seconds": 2.234,
+          "total_average_seconds": 8.347,
+          "total_maximum_seconds": 8.464
+        },
+        "pw_gpu_cff": {
+          "calls": 865,
+          "self_average_seconds": 1.47,
+          "self_maximum_seconds": 1.49,
+          "total_average_seconds": 1.47,
+          "total_maximum_seconds": 1.49
+        },
+        "pw_gpu_ffc": {
+          "calls": 972,
+          "self_average_seconds": 1.68,
+          "self_maximum_seconds": 1.699,
+          "total_average_seconds": 1.68,
+          "total_maximum_seconds": 1.699
+        },
+        "pw_gpu_fg": {
+          "calls": 865,
+          "self_average_seconds": 2.079,
+          "self_maximum_seconds": 2.098,
+          "total_average_seconds": 2.079,
+          "total_maximum_seconds": 2.098
+        },
+        "pw_gpu_r3dc1d_3d_ps": {
+          "calls": 865,
+          "self_average_seconds": 1.833,
+          "self_maximum_seconds": 2.027,
+          "total_average_seconds": 7.558,
+          "total_maximum_seconds": 7.811
+        },
+        "pw_gpu_sf": {
+          "calls": 972,
+          "self_average_seconds": 2.54,
+          "self_maximum_seconds": 2.554,
+          "total_average_seconds": 2.54,
+          "total_maximum_seconds": 2.554
+        },
+        "pw_poisson_solve": {
+          "calls": 108,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 1.487,
+          "total_maximum_seconds": 1.532
+        },
+        "qs_energies": {
+          "calls": 1,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 60.387,
+          "total_maximum_seconds": 60.387
+        },
+        "qs_forces": {
+          "calls": 1,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 62.362,
+          "total_maximum_seconds": 62.363
+        },
+        "qs_ks_build_kohn_sham_matrix": {
+          "calls": 108,
+          "self_average_seconds": 0.01,
+          "self_maximum_seconds": 0.01,
+          "total_average_seconds": 37.721,
+          "total_maximum_seconds": 37.731
+        },
+        "qs_ks_update_qs_env": {
+          "calls": 109,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 37.427,
+          "total_maximum_seconds": 37.437
+        },
+        "qs_ot_get_derivative": {
+          "calls": 107,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 1.593,
+          "total_maximum_seconds": 1.603
+        },
+        "qs_ot_get_p": {
+          "calls": 109,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 1.668,
+          "total_maximum_seconds": 1.674
+        },
+        "qs_ot_p2m_diag": {
+          "calls": 100,
+          "self_average_seconds": 0.062,
+          "self_maximum_seconds": 0.064,
+          "total_average_seconds": 1.322,
+          "total_maximum_seconds": 1.324
+        },
+        "qs_rho_update_rho_low": {
+          "calls": 108,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 12.686,
+          "total_maximum_seconds": 12.687
+        },
+        "qs_scf_loop_do_ot": {
+          "calls": 107,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 8.118,
+          "total_maximum_seconds": 8.125
+        },
+        "qs_scf_new_mos": {
+          "calls": 107,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 8.119,
+          "total_maximum_seconds": 8.126
+        },
+        "qs_vxc_create": {
+          "calls": 108,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 24.741,
+          "total_maximum_seconds": 24.757
+        },
+        "rebuild_ks_matrix": {
+          "calls": 108,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 37.722,
+          "total_maximum_seconds": 37.732
+        },
+        "scf_env_do_scf": {
+          "calls": 1,
+          "self_average_seconds": 0.0,
+          "self_maximum_seconds": 0.0,
+          "total_average_seconds": 59.275,
+          "total_maximum_seconds": 59.276
+        },
+        "scf_env_do_scf_inner_loop": {
+          "calls": 107,
+          "self_average_seconds": 0.003,
+          "self_maximum_seconds": 0.005,
+          "total_average_seconds": 57.657,
+          "total_maximum_seconds": 57.658
+        },
+        "sum_up_and_integrate": {
+          "calls": 108,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 8.442,
+          "total_maximum_seconds": 8.465
+        },
+        "x_to_yz": {
+          "calls": 972,
+          "self_average_seconds": 0.794,
+          "self_maximum_seconds": 0.859,
+          "total_average_seconds": 2.064,
+          "total_maximum_seconds": 2.392
+        },
+        "xc_functional_eval": {
+          "calls": 108,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 12.084,
+          "total_maximum_seconds": 12.173
+        },
+        "xc_pw_derive": {
+          "calls": 648,
+          "self_average_seconds": 0.002,
+          "self_maximum_seconds": 0.002,
+          "total_average_seconds": 9.889,
+          "total_maximum_seconds": 10.06
+        },
+        "xc_pw_divergence": {
+          "calls": 108,
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 6.825,
+          "total_maximum_seconds": 6.94
+        },
+        "xc_rho_set_and_dset_create": {
+          "calls": 108,
+          "self_average_seconds": 0.243,
+          "self_maximum_seconds": 0.268,
+          "total_average_seconds": 17.379,
+          "total_maximum_seconds": 17.495
+        },
+        "xc_vxc_pw_create": {
+          "calls": 108,
+          "self_average_seconds": 0.325,
+          "self_maximum_seconds": 0.34,
+          "total_average_seconds": 24.74,
+          "total_maximum_seconds": 24.756
+        },
+        "yz_to_x": {
+          "calls": 865,
+          "self_average_seconds": 0.842,
+          "self_maximum_seconds": 0.938,
+          "total_average_seconds": 2.161,
+          "total_maximum_seconds": 2.649
+        }
+      }
+    }
+  },
+  "schema": 1,
+  "scope": "preliminary-read-only-warmup-comparison-not-formal-performance-or-publication-acceptance",
+  "source_evidence": {
+    "src/fm/cp_fm_cusolver.c": {
+      "excerpts": [
+        {
+          "end_line": 269,
+          "start_line": 243,
+          "text": "void cp_fm_diag_cusolver(const int fortran_comm, const int matrix_desc[9],\n                         const int nprow, const int npcol, const int myprow,\n                         const int mypcol, const int n, const double *matrix,\n                         double *eigenvectors, double *eigenvalues) {\n\n  const int local_device = offload_get_chosen_device();\n\n  MPI_Comm comm = MPI_Comm_f2c(fortran_comm);\n  int rank, nranks;\n  MPI_Comm_rank(comm, &rank);\n  MPI_Comm_size(comm, &nranks);\n\n#if defined(__CUSOLVERMP_NCCL)\n  check_nccl_device_visibility(comm, local_device);\n#endif\n  offload_activate_chosen_device();\n\n#if defined(__CUSOLVERMP_NCCL)\n  // Create NCCL communicator.\n  ncclUniqueId nccl_id;\n  if (rank == 0) {\n    NCCL_CHECK(ncclGetUniqueId(&nccl_id));\n  }\n  MPI_Bcast(&nccl_id, sizeof(nccl_id), MPI_BYTE, 0, comm);\n\n  ncclComm_t nccl_comm;\n  NCCL_CHECK(ncclCommInitRank(&nccl_comm, nranks, nccl_id, rank));"
+        },
+        {
+          "end_line": 299,
+          "start_line": 284,
+          "text": "  // Create various handles.\n  cudaStream_t stream = NULL;\n  CUDA_CHECK(cudaStreamCreate(&stream));\n\n  cusolverMpHandle_t cusolvermp_handle = NULL;\n  CUSOLVER_CHECK(cusolverMpCreate(&cusolvermp_handle, local_device, stream));\n\n  cusolverMpGrid_t grid = NULL;\n#if defined(__CUSOLVERMP_NCCL)\n  CUSOLVER_CHECK(cusolverMpCreateDeviceGrid(cusolvermp_handle, &grid, nccl_comm,\n                                            nprow, npcol,\n                                            CUSOLVERMP_GRID_MAPPING_ROW_MAJOR));\n#else\n  CUSOLVER_CHECK(cusolverMpCreateDeviceGrid(cusolvermp_handle, &grid, cal_comm,\n                                            nprow, npcol,\n                                            CUSOLVERMP_GRID_MAPPING_ROW_MAJOR));"
+        },
+        {
+          "end_line": 356,
+          "start_line": 320,
+          "text": "  // Allocate workspaces.\n  size_t work_dev_size, work_host_size;\n  void *DUMMY = (void *)1; // Workaround to avoid crash when passing NULL.\n  CUSOLVER_CHECK(cusolverMpSyevd_bufferSize(\n      cusolvermp_handle, \"V\", fill_mode, n, DUMMY, 1, 1, cusolvermp_matrix_desc,\n      NULL, NULL, 1, 1, cusolvermp_matrix_desc, data_type, &work_dev_size,\n      &work_host_size));\n\n  double *work_dev = NULL;\n  CUDA_CHECK(cudaMalloc((void **)&work_dev, work_dev_size));\n\n  double *work_host = NULL;\n  CUDA_CHECK(cudaMallocHost((void **)&work_host, work_host_size));\n\n  // Upload input matrix.\n  const size_t matrix_local_size = ldA * nq * sizeof(double);\n  double *matrix_dev = NULL;\n  CUDA_CHECK(cudaMalloc((void **)&matrix_dev, matrix_local_size));\n  CUDA_CHECK(cudaMemcpyAsync(matrix_dev, matrix, matrix_local_size,\n                             cudaMemcpyHostToDevice, stream));\n\n  // Allocate result buffers.\n  int *info_dev = NULL;\n  CUDA_CHECK(cudaMalloc((void **)&info_dev, sizeof(int)));\n\n  double *eigenvectors_dev = NULL;\n  CUDA_CHECK(cudaMalloc((void **)&eigenvectors_dev, matrix_local_size));\n\n  double *eigenvalues_dev = NULL;\n  CUDA_CHECK(cudaMalloc((void **)&eigenvalues_dev, n * sizeof(double)));\n\n  // Call solver.\n  CUSOLVER_CHECK(\n      cusolverMpSyevd(cusolvermp_handle, \"V\", fill_mode, n, matrix_dev, 1, 1,\n                      cusolvermp_matrix_desc, eigenvalues_dev, eigenvectors_dev,\n                      1, 1, cusolvermp_matrix_desc, data_type, work_dev,\n                      work_dev_size, work_host, work_host_size, info_dev));"
+        },
+        {
+          "end_line": 398,
+          "start_line": 358,
+          "text": "  // Wait for solver to finish.\n  CUDA_CHECK(cudaStreamSynchronize(stream));\n#if !defined(__CUSOLVERMP_NCCL)\n  CAL_CHECK(cal_stream_sync(cal_comm, stream));\n#endif\n\n  // Check info.\n  int info = -1;\n  CUDA_CHECK(cudaMemcpy(&info, info_dev, sizeof(int), cudaMemcpyDeviceToHost));\n  assert(info == 0);\n\n  // Download results.\n  CUDA_CHECK(cudaMemcpyAsync(eigenvectors, eigenvectors_dev, matrix_local_size,\n                             cudaMemcpyDeviceToHost, stream));\n  CUDA_CHECK(cudaMemcpyAsync(eigenvalues, eigenvalues_dev, n * sizeof(double),\n                             cudaMemcpyDeviceToHost, stream));\n\n  // Wait for download to finish.\n  CUDA_CHECK(cudaStreamSynchronize(stream));\n\n  // Free buffers.\n  CUDA_CHECK(cudaFree(matrix_dev));\n  CUDA_CHECK(cudaFree(info_dev));\n  CUDA_CHECK(cudaFree(eigenvectors_dev));\n  CUDA_CHECK(cudaFree(eigenvalues_dev));\n  CUDA_CHECK(cudaFree(work_dev));\n  CUDA_CHECK(cudaFreeHost(work_host));\n\n  // Destroy handles.\n  CUSOLVER_CHECK(cusolverMpDestroyMatrixDesc(cusolvermp_matrix_desc));\n  CUSOLVER_CHECK(cusolverMpDestroyGrid(grid));\n  CUSOLVER_CHECK(cusolverMpDestroy(cusolvermp_handle));\n  CUDA_CHECK(cudaStreamDestroy(stream));\n#if defined(__CUSOLVERMP_NCCL)\n  NCCL_CHECK(ncclCommDestroy(nccl_comm));\n#else\n  CAL_CHECK(cal_comm_destroy(cal_comm));\n#endif\n\n  // Sync MPI ranks to include load imbalance in total timings.\n  MPI_Barrier(comm);"
+        }
+      ],
+      "sha256": "379cda72ac8c18e18f30ffd019b37ae0e8216572c40f5e6ad2fbceb6decd4ad8",
+      "url": "https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/fm/cp_fm_cusolver.c"
+    },
+    "src/fm/cp_fm_cusolver_api.F": {
+      "excerpts": [
+        {
+          "end_line": 43,
+          "start_line": 39,
+          "text": "   SUBROUTINE cp_fm_diag_cusolver(matrix, eigenvectors, eigenvalues)\n      TYPE(cp_fm_type), INTENT(IN)                       :: matrix, eigenvectors\n      REAL(KIND=dp), DIMENSION(:), INTENT(OUT)           :: eigenvalues\n\n      CHARACTER(len=*), PARAMETER :: routineN = 'cp_fm_diag_cusolver'"
+        },
+        {
+          "end_line": 87,
+          "start_line": 67,
+          "text": "      CALL timeset(routineN, handle)\n\n#if defined(__CUSOLVERMP)\n      n = matrix%matrix_struct%nrow_global\n      context => matrix%matrix_struct%context\n\n      ! The passed eigenvalues array might be smaller than n.\n      ALLOCATE (eigenvalues_buffer(n))\n\n      CALL cp_fm_diag_cusolver_c( &\n         fortran_comm=matrix%matrix_struct%para_env%get_handle(), &\n         matrix_desc=matrix%matrix_struct%descriptor, &\n         nprow=context%num_pe(1), &\n         npcol=context%num_pe(2), &\n         myprow=context%mepos(1), &\n         mypcol=context%mepos(2), &\n         n=matrix%matrix_struct%nrow_global, &\n         matrix=matrix%local_data, &\n         eigenvectors=eigenvectors%local_data, &\n         eigenvalues=eigenvalues_buffer)\n"
+        }
+      ],
+      "sha256": "7ab7561f0cede64d3a2a458323d7b1bfadaaaf7ace5c03623326095b56714517",
+      "url": "https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/fm/cp_fm_cusolver_api.F"
+    },
+    "src/fm/cp_fm_diag.F": {
+      "excerpts": [
+        {
+          "end_line": 115,
+          "start_line": 86,
+          "text": "   ! The following saved variables are diagonalization global\n   ! Stores the default library for diagonalization\n   INTEGER, SAVE, PUBLIC    :: diag_type = 0\n   ! Minimum number of eigenvectors for the use of the ELPA eigensolver.\n   ! The ScaLAPACK eigensolver is used as fallback for all smaller cases.\n   INTEGER, SAVE            :: elpa_neigvec_min = 0\n   ! Minimum matrix size for the use of the cuSOLVERMp eigensolver.\n   ! Smaller matrices use the ScaLAPACK fallback to avoid GPU launch overheads.\n   INTEGER, PARAMETER, PUBLIC :: cusolver_n_min = 64\n#if defined(__DLAF)\n   ! Minimum number of eigenvectors for the use of the DLAF eigensolver.\n   ! The ScaLAPACK eigensolver is used as fallback for all smaller cases.\n   INTEGER, SAVE, PUBLIC    :: dlaf_neigvec_min = 0\n#endif\n   LOGICAL, SAVE, PUBLIC :: direct_generalized_diagonalization = .FALSE.\n   ! Threshold value for the orthonormality check of the eigenvectors obtained\n   ! after a diagonalization. A negative value disables the check.\n   REAL(KIND=dp), SAVE :: eps_check_diag = -1.0_dp\n\n   ! Constants for the diag_type above\n   INTEGER, PARAMETER, PUBLIC  :: FM_DIAG_TYPE_SCALAPACK = 101, &\n                                  FM_DIAG_TYPE_ELPA = 102, &\n                                  FM_DIAG_TYPE_CUSOLVER = 103, &\n                                  FM_DIAG_TYPE_DLAF = 104\n#if defined(__CUSOLVERMP)\n   INTEGER, PARAMETER, PUBLIC :: FM_DIAG_TYPE_DEFAULT = FM_DIAG_TYPE_CUSOLVER\n#elif defined(__ELPA)\n   INTEGER, PARAMETER, PUBLIC :: FM_DIAG_TYPE_DEFAULT = FM_DIAG_TYPE_ELPA\n#else\n   INTEGER, PARAMETER, PUBLIC :: FM_DIAG_TYPE_DEFAULT = FM_DIAG_TYPE_SCALAPACK"
+        },
+        {
+          "end_line": 274,
+          "start_line": 257,
+          "text": "      IF (diag_type == FM_DIAG_TYPE_SCALAPACK) THEN\n         CALL cp_fm_syevd(matrix, eigenvectors, eigenvalues, info)\n\n      ELSE IF (diag_type == FM_DIAG_TYPE_ELPA) THEN\n         IF (matrix%matrix_struct%nrow_global < elpa_neigvec_min) THEN\n            ! We don't trust ELPA with very small matrices.\n            CALL cp_fm_syevd(matrix, eigenvectors, eigenvalues, info)\n         ELSE\n            CALL cp_fm_diag_elpa(matrix, eigenvectors, eigenvalues)\n         END IF\n\n      ELSE IF (diag_type == FM_DIAG_TYPE_CUSOLVER) THEN\n         IF (matrix%matrix_struct%nrow_global < cusolver_n_min) THEN\n            ! We don't trust cuSolver with very small matrices.\n            CALL cp_fm_syevd(matrix, eigenvectors, eigenvalues, info)\n         ELSE\n            CALL cp_fm_diag_cusolver(matrix, eigenvectors, eigenvalues)\n         END IF"
+        }
+      ],
+      "sha256": "9f75b30ed618fca87fcf3e70d07838c54a156157d1c4041ab9d033c1049f36b2",
+      "url": "https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/fm/cp_fm_diag.F"
+    }
+  },
+  "source_findings": {
+    "default": "__CUSOLVERMP makes FM_DIAG_TYPE_DEFAULT CUSOLVER; cusolver_n_min is 64.",
+    "direct_generalized_diagonalization": "Remains false; issue #9 optimization is out of scope.",
+    "per_call": "Every cp_fm_diag_cusolver creates and destroys a NCCL communicator, CUDA stream, cuSOLVERMp handle/grid/descriptors and host/device buffers around cusolverMpSyevd. The Fortran timer brackets this whole routine, including MPI_Barrier at the end.",
+    "remaining_uncertainty": "No nested timing or NCCL DEBUG was collected by this benchmark, so solver arithmetic, NCCL communicator setup, transport and allocation costs cannot be separated from existing evidence."
+  },
+  "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+  "warmup_science_comparison": {
+    "energy_delta_ha": 2.887645678129047e-11,
+    "max_force_delta_ha_bohr": 1.1000001257088776e-11
+  }
+}

@@ -1,0 +1,1153 @@
+{
+  "cases_passed": 56,
+  "checked_at": "2026-10-18T12:27:54.966796+00:00",
+  "execution_account": "stardust",
+  "installed_module": "/opt/modules/modulefiles/apps/cp2k/2026.2-auto",
+  "partitions": [
+    {
+      "artifact_sha256": "f6cb5d5ab9d2aa928fb0cdb8e1ea42d697a149096a71e96aedaa1763ef171e44",
+      "elapsed": "00:08:02",
+      "end": "2026-10-18T19:49:28",
+      "energy_tolerance_ha": 1e-06,
+      "exit_code": "0:0",
+      "force_tolerance_ha_bohr": 1e-05,
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r4d454c740309",
+        "cpu_arch": "znver4",
+        "cuda_arch": "70",
+        "dependency_isa": "avx512",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/4V100",
+        "partition": "4V100",
+        "recipe_sha256": "4d454c7403097d4a5cae4c37452ef15aff32d753f0e9076533433dc939535782",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "4v100-avx512",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "independent_raw_revalidation": true,
+      "installed_data_files": 280,
+      "installed_data_links": 2,
+      "job": "1844993",
+      "loaded_libraries": [
+        {
+          "elpa": [
+            "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/4V100/dependencies/elpa/lib/libelpa_openmp.so.19"
+          ],
+          "hcoll": [
+            "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libhcoll.so.1"
+          ],
+          "host": "4v100n08",
+          "loaded_legacy_hcoll_alias": false,
+          "missing_libraries": false,
+          "rank": 0
+        },
+        {
+          "elpa": [
+            "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/4V100/dependencies/elpa/lib/libelpa_openmp.so.19"
+          ],
+          "hcoll": [
+            "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libhcoll.so.1"
+          ],
+          "host": "4v100n17",
+          "loaded_legacy_hcoll_alias": false,
+          "missing_libraries": false,
+          "rank": 1
+        }
+      ],
+      "manifest_sha256": "5f276b2a7c47e0a1412b788d9ea8030f5dd986bcff365e21c90449b48057233b",
+      "max_energy_difference_to_sif_ha": 1.77351466845721e-11,
+      "max_force_difference_to_sif_ha_bohr": 1.3000000381735433e-11,
+      "max_single_multi_energy_difference_ha": 1.000444171950221e-11,
+      "max_single_multi_force_difference_ha_bohr": 9.999999092680234e-12,
+      "mpi_binary": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/bin/mpirun",
+      "mpi_version": "mpirun (Open MPI) 5.0.10\n\nReport bugs to https://www.open-mpi.org/community/help/",
+      "native_version": {
+        "flags": [
+          "cosma",
+          "cusolvermp",
+          "cusolvermp_nccl",
+          "dbcsr_acc",
+          "dftd4_v4_2",
+          "elpa",
+          "fftw3",
+          "hdf5",
+          "libbqb",
+          "libdftd4",
+          "libint",
+          "libvori",
+          "libxc",
+          "libxs",
+          "libxsmm",
+          "mctc-lib",
+          "mpi_f08",
+          "offload_cuda",
+          "omp",
+          "parallel",
+          "plumed2",
+          "s_dftd3",
+          "scalapack",
+          "spglib",
+          "spla_gemm_offloading",
+          "tblite"
+        ],
+        "revision": "67b5da876d",
+        "version": "2026.2"
+      },
+      "node_list": "4v100n[08,17]",
+      "partition": "4V100",
+      "raw_evidence_root": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-2026.2-physical-20261018-193800-3592647/4V100",
+      "raw_file_sha256": {
+        "allocation.txt": "ced87413541c5a0d2b70c0171ca7bbacb9b726c6ba51dd487e8ac49e08fbd149",
+        "binary.txt": "f8c48b9ef8e93c428de36cfe22f117a5468f98b574159c445ea3489e771889d1",
+        "cases/ch2o-tblite/multi/cp2k.log": "2fe5b4731d9a2e20b5d0c0ccd57a18912ee04b9ea9ca536bb52bc912f704a78a",
+        "cases/ch2o-tblite/multi/elapsed.txt": "c1bc6aae4438a9076f33757f4fab3b74f564f4a864c4978b275e9ec8f4f91817",
+        "cases/ch2o-tblite/multi/forces.xyz": "93da785a52406f7ba96f58134bb9921f26b1ed7e0df2604dfe6f7dbc8c6cd46a",
+        "cases/ch2o-tblite/multi/input.inp": "cc95e7175fc46ac119a0b6e237711673717a0d859b96e884a1519a3e59e580fa",
+        "cases/ch2o-tblite/multi/ranks/rank-0.tsv": "b391206d3ddde2ac41974b833919fcf7248a6ca84ac05fb2f45e34669ae6feff",
+        "cases/ch2o-tblite/multi/ranks/rank-1.tsv": "3003f3fb9165ebeab2c3882fe0d602c502fdf3570ec1bf8d5be61e6fb2184297",
+        "cases/ch2o-tblite/single/cp2k.log": "b718135e2262d37194734772480b7d0cddaba58bcd0a76128e5c2c61dfa45c1c",
+        "cases/ch2o-tblite/single/elapsed.txt": "7ab8455cfdd0472cea1619647b2cc211f09419021347946955ec5cf5160b3e49",
+        "cases/ch2o-tblite/single/forces.xyz": "744bee345859dfe7496e9b48eaf85aea36ae5e1b2e65a9e7b1f5bb385ddac418",
+        "cases/ch2o-tblite/single/input.inp": "cc95e7175fc46ac119a0b6e237711673717a0d859b96e884a1519a3e59e580fa",
+        "cases/ch2o-tblite/single/ranks/rank-0.tsv": "b391206d3ddde2ac41974b833919fcf7248a6ca84ac05fb2f45e34669ae6feff",
+        "cases/water-dftd4/multi/cp2k.log": "9eec424db10f84ba829bc2b49a204d1c7ac4bddd920bdc356909a6dc14250665",
+        "cases/water-dftd4/multi/elapsed.txt": "adde47391af71ae4c155306aa61dd1762c20f36f56ba03c3aff126fe794f17d2",
+        "cases/water-dftd4/multi/forces.xyz": "5ec7b112a48d4c6f8f4e5ab0aa662f6313a48d8a14d12008517de49bc08f06e3",
+        "cases/water-dftd4/multi/input.inp": "39579aec1d120e74fb052414d56af74fa9466f792f87085ef0a1ebbe7b4508a5",
+        "cases/water-dftd4/multi/ranks/rank-0.tsv": "b391206d3ddde2ac41974b833919fcf7248a6ca84ac05fb2f45e34669ae6feff",
+        "cases/water-dftd4/multi/ranks/rank-1.tsv": "3003f3fb9165ebeab2c3882fe0d602c502fdf3570ec1bf8d5be61e6fb2184297",
+        "cases/water-dftd4/single/cp2k.log": "2500b17cb49d7ac215c32b07530b72da798a627bee4e6db9787064cd2659b8ff",
+        "cases/water-dftd4/single/elapsed.txt": "1ab93b8fe830afe49f038c6f85c0005b061f4976ed29a43966d4cdd73702db3d",
+        "cases/water-dftd4/single/forces.xyz": "6b4e14fd85561185f73783f2f90df12fafbfb4b347f648940e23cb56842f7e95",
+        "cases/water-dftd4/single/input.inp": "39579aec1d120e74fb052414d56af74fa9466f792f87085ef0a1ebbe7b4508a5",
+        "cases/water-dftd4/single/ranks/rank-0.tsv": "b391206d3ddde2ac41974b833919fcf7248a6ca84ac05fb2f45e34669ae6feff",
+        "cases/water-diag/multi/cp2k.log": "c678f298f47bda4c39ced4ec0d1e64633edd07311ae300a1fecc890c448764d7",
+        "cases/water-diag/multi/elapsed.txt": "d48c03eba8d24fcdc49b7ee6ef88c251e79c965df2f216e3658cc446ce2949bb",
+        "cases/water-diag/multi/forces.xyz": "3cad992a555302cb0947a63c6b06bf2d2336f21e6f69a9a9b7df4c7bf3dd3919",
+        "cases/water-diag/multi/input.inp": "2cc489d6bf60203348d7d86d1bb1be3381e2d9eb49d691086d0ebc06c28688ce",
+        "cases/water-diag/multi/ranks/rank-0.tsv": "b391206d3ddde2ac41974b833919fcf7248a6ca84ac05fb2f45e34669ae6feff",
+        "cases/water-diag/multi/ranks/rank-1.tsv": "3003f3fb9165ebeab2c3882fe0d602c502fdf3570ec1bf8d5be61e6fb2184297",
+        "cases/water-diag/single/cp2k.log": "74fc62bd00b2bcf8b9f5ff1fcda2a1168255ef7ce9dc57959d2f940da3879be5",
+        "cases/water-diag/single/elapsed.txt": "f10b530fd2cf9013cf0a18f7ca6cd580d032ea90564ec0135f4c8a7058804830",
+        "cases/water-diag/single/forces.xyz": "3cad992a555302cb0947a63c6b06bf2d2336f21e6f69a9a9b7df4c7bf3dd3919",
+        "cases/water-diag/single/input.inp": "2cc489d6bf60203348d7d86d1bb1be3381e2d9eb49d691086d0ebc06c28688ce",
+        "cases/water-diag/single/ranks/rank-0.tsv": "b391206d3ddde2ac41974b833919fcf7248a6ca84ac05fb2f45e34669ae6feff",
+        "cases/water-elpa/multi/cp2k.log": "56139ee80f00b3def7ad99ee3f4dd93821f5ff6d24c2a926d63a8f41c4b5dc6a",
+        "cases/water-elpa/multi/elapsed.txt": "f893a90611537995e621cf5c7fa4fdef8de92057f51be9af4c67d5cc1ac86c96",
+        "cases/water-elpa/multi/forces.xyz": "3cad992a555302cb0947a63c6b06bf2d2336f21e6f69a9a9b7df4c7bf3dd3919",
+        "cases/water-elpa/multi/input.inp": "572d320d3c4f63b84e53948edfb1939acc47c03f970539901890a242b584116d",
+        "cases/water-elpa/multi/ranks/rank-0.tsv": "b391206d3ddde2ac41974b833919fcf7248a6ca84ac05fb2f45e34669ae6feff",
+        "cases/water-elpa/multi/ranks/rank-1.tsv": "3003f3fb9165ebeab2c3882fe0d602c502fdf3570ec1bf8d5be61e6fb2184297",
+        "cases/water-elpa/single/cp2k.log": "2b847c67331352955157096234b1f20fac8727907e2de11cf7d44e6fe8669751",
+        "cases/water-elpa/single/elapsed.txt": "de1cc4f73ca9121785f6b1a8035388644ebab2ec22c88e55e4063260a6ed8eb6",
+        "cases/water-elpa/single/forces.xyz": "3cad992a555302cb0947a63c6b06bf2d2336f21e6f69a9a9b7df4c7bf3dd3919",
+        "cases/water-elpa/single/input.inp": "572d320d3c4f63b84e53948edfb1939acc47c03f970539901890a242b584116d",
+        "cases/water-elpa/single/ranks/rank-0.tsv": "b391206d3ddde2ac41974b833919fcf7248a6ca84ac05fb2f45e34669ae6feff",
+        "cases/water-gpw/multi/cp2k.log": "0992752737f16f866bb77f2ff830a5e83588b0c306d968345141f4e719e31fb7",
+        "cases/water-gpw/multi/elapsed.txt": "ddc7ec2469182c395176749a83357fb91b4f5fc7f595b04a7783d78adaae1ed8",
+        "cases/water-gpw/multi/forces.xyz": "eebfc50ca76342bc5ab55a589c0d55766ee69ba5826b27a0d7851b8c3e6d1788",
+        "cases/water-gpw/multi/input.inp": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0",
+        "cases/water-gpw/multi/ranks/rank-0.tsv": "b391206d3ddde2ac41974b833919fcf7248a6ca84ac05fb2f45e34669ae6feff",
+        "cases/water-gpw/multi/ranks/rank-1.tsv": "3003f3fb9165ebeab2c3882fe0d602c502fdf3570ec1bf8d5be61e6fb2184297",
+        "cases/water-gpw/single/cp2k.log": "37f1cbbcc0af46aafdc6ac0f71ee672d7252c0a7e436db228bb2ceea4bc63afd",
+        "cases/water-gpw/single/elapsed.txt": "125fd087deda32c1edd67bf3f9ff0d6ecdc44ecf6be0e26c61abae18bb2579d4",
+        "cases/water-gpw/single/forces.xyz": "54fa9218acbbd9efd6f0129912297eff3add13d80d755c2eb1ec4d3651a9c829",
+        "cases/water-gpw/single/input.inp": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0",
+        "cases/water-gpw/single/ranks/rank-0.tsv": "b391206d3ddde2ac41974b833919fcf7248a6ca84ac05fb2f45e34669ae6feff",
+        "cases/water64-elpa/multi/cp2k.log": "e5beb701a0489ae4f2e6465a107f98d0b3a1adfa8d36e38b6522334214b5ddf3",
+        "cases/water64-elpa/multi/elapsed.txt": "2479a4e5530c71f767a0bdb646d4bcf8b197820539ad8f2c11b4f96133cb43ab",
+        "cases/water64-elpa/multi/forces.xyz": "ad5431bc3ea9687cfcbdb7bf3e20580cd4dcff0531c6832779caa213359ceaf2",
+        "cases/water64-elpa/multi/input.inp": "c1425a1376ef7b15fa97b65008c3f4a4882a75dc96088c058aeb1371af36343b",
+        "cases/water64-elpa/multi/ranks/rank-0.tsv": "b391206d3ddde2ac41974b833919fcf7248a6ca84ac05fb2f45e34669ae6feff",
+        "cases/water64-elpa/multi/ranks/rank-1.tsv": "3003f3fb9165ebeab2c3882fe0d602c502fdf3570ec1bf8d5be61e6fb2184297",
+        "cases/water64-elpa/single/cp2k.log": "1cba64f3f721d2865d849e51724480797fd3aabd0cbe91b36d2427e777544a61",
+        "cases/water64-elpa/single/elapsed.txt": "14fdb9fd62c44b2fb73052bac0febfe1e4746c8ea50588824255c95ed1ef93e6",
+        "cases/water64-elpa/single/forces.xyz": "01ff4a6021feec977349ed21b5629a8541408e9e0dc63d14408214c8f0c3b21e",
+        "cases/water64-elpa/single/input.inp": "c1425a1376ef7b15fa97b65008c3f4a4882a75dc96088c058aeb1371af36343b",
+        "cases/water64-elpa/single/ranks/rank-0.tsv": "b391206d3ddde2ac41974b833919fcf7248a6ca84ac05fb2f45e34669ae6feff",
+        "cases/water64-gpw/multi/cp2k.log": "c565cecfcc8ddccf0f174a51183f8619e7afcabd776bcd6f4f9be908978636ed",
+        "cases/water64-gpw/multi/elapsed.txt": "c4cba5b7883e2909b292ac87bc7d3d0af18a17e8d5ff85b627f3bd96f41711b4",
+        "cases/water64-gpw/multi/forces.xyz": "7fed5446ec0d96c24bb026b246eca09f239db2bad86c00bc9a01f4f3a91ef47f",
+        "cases/water64-gpw/multi/input.inp": "567175e994a44502c8afe54c98ec31cb12853f0cba114477596174950974834f",
+        "cases/water64-gpw/multi/ranks/rank-0.tsv": "b391206d3ddde2ac41974b833919fcf7248a6ca84ac05fb2f45e34669ae6feff",
+        "cases/water64-gpw/multi/ranks/rank-1.tsv": "3003f3fb9165ebeab2c3882fe0d602c502fdf3570ec1bf8d5be61e6fb2184297",
+        "cases/water64-gpw/single/cp2k.log": "3b1eff741abfb36066b0389c927a068fb435e06b91c5d229001c7b7c6de36253",
+        "cases/water64-gpw/single/elapsed.txt": "fb53c638f8662fb6a38b8433fd69e57da9ee8e999b766cdbe3fac147bcb82a67",
+        "cases/water64-gpw/single/forces.xyz": "1a2ff824f00a314cb35a886f7eb264d7a301c68cd9d63de3ec2642815f216535",
+        "cases/water64-gpw/single/input.inp": "567175e994a44502c8afe54c98ec31cb12853f0cba114477596174950974834f",
+        "cases/water64-gpw/single/ranks/rank-0.tsv": "b391206d3ddde2ac41974b833919fcf7248a6ca84ac05fb2f45e34669ae6feff",
+        "job.id": "c0ebaad946740f4378119f4b888f7a47d56b55ecb3498f4b88473c4e78a82b2d",
+        "modules.txt": "6057b203159ae7f51ba5d5a20445426d2c3bed351e5206623e5d6f9b687df22e",
+        "mpi-version.txt": "dbefbbfa3051a687ec6d12c60decfadc9e432e1e88b88e634e861777f1367714",
+        "mpirun.txt": "25c80c91443a570f981101dc6b49e827a5ff947f142b0b0d8d26e0b6fba2c31c",
+        "native-acceptance.json": "f21a6a634fcd6b95b1442679beb9f006bf72bc8861229777d7cd71ba28fc67e2",
+        "nodes.txt": "092fe54719a25ec5c8fd372bf2ebc09c3a43e2cda55cb976d75af22a52dfaa70",
+        "slurm-1844993.log": "7eb2beb634a96ba963feff27afecc6be5d5cdd9c55917c3c780688b54bae6d73",
+        "version/cp2k.log": "5026b13bdf029dbf347e0223ceda8cf88b03f885bcfd38f849b366fc8bad1052",
+        "version/elapsed.txt": "7827398aea62c5ce10a1afc82c258f6ea33701c9742559827754c831fdf22a9c",
+        "version/ranks/ldd-0.txt": "0bd8f1f2cd3f9d828f3c17befae470dfc8fb37a5b65f3f883cea13864c5d1665",
+        "version/ranks/ldd-1.txt": "035f054c5297c45f97817808f40f4cc94462fbb7d346a757729a90982100ff95",
+        "version/ranks/loader-0.2577825": "270502de3c5392a66c8b8dde3045d1a550dc927a436f4da44da3126d5bfc74a1",
+        "version/ranks/loader-1.3760652": "b2f30fd221b398c80a01f825925489314eeca3b9c1e2a14ceff3f45d2fb3cf4e",
+        "version/ranks/rank-0.tsv": "b391206d3ddde2ac41974b833919fcf7248a6ca84ac05fb2f45e34669ae6feff",
+        "version/ranks/rank-1.tsv": "3003f3fb9165ebeab2c3882fe0d602c502fdf3570ec1bf8d5be61e6fb2184297"
+      },
+      "receipt_sha256": "80462a50e6eb7f592399f6a8942152a2e468072fcb0d3a9b517e037de882dd71",
+      "reference_evidence_sha256": "7c303e82c60fd4a2c734b1e56c00cb8f426ff11a30632d5e9b12ccfaa125a613",
+      "science_passed": 14,
+      "start": "2026-10-18T19:41:26",
+      "state": "COMPLETED",
+      "timings_descriptive_only": {
+        "ch2o-tblite/multi": {
+          "accepted_sif_cp2k_seconds": 1.273,
+          "physical_cp2k_seconds": 0.941,
+          "physical_wall_seconds": 1.9420796185731888
+        },
+        "ch2o-tblite/single": {
+          "accepted_sif_cp2k_seconds": 1.019,
+          "physical_cp2k_seconds": 1.012,
+          "physical_wall_seconds": 1.819785913452506
+        },
+        "water-dftd4/multi": {
+          "accepted_sif_cp2k_seconds": 10.054,
+          "physical_cp2k_seconds": 11.869,
+          "physical_wall_seconds": 12.897842247970402
+        },
+        "water-dftd4/single": {
+          "accepted_sif_cp2k_seconds": 12.458,
+          "physical_cp2k_seconds": 13.773,
+          "physical_wall_seconds": 14.565609253942966
+        },
+        "water-diag/multi": {
+          "accepted_sif_cp2k_seconds": 6.551,
+          "physical_cp2k_seconds": 7.479,
+          "physical_wall_seconds": 8.476588815450668
+        },
+        "water-diag/single": {
+          "accepted_sif_cp2k_seconds": 8.274,
+          "physical_cp2k_seconds": 9.112,
+          "physical_wall_seconds": 9.921693262644112
+        },
+        "water-elpa/multi": {
+          "accepted_sif_cp2k_seconds": 6.649,
+          "physical_cp2k_seconds": 7.707,
+          "physical_wall_seconds": 8.703776521608233
+        },
+        "water-elpa/single": {
+          "accepted_sif_cp2k_seconds": 8.37,
+          "physical_cp2k_seconds": 9.151,
+          "physical_wall_seconds": 9.939088040031493
+        },
+        "water-gpw/multi": {
+          "accepted_sif_cp2k_seconds": 10.074,
+          "physical_cp2k_seconds": 11.603,
+          "physical_wall_seconds": 12.626143483445048
+        },
+        "water-gpw/single": {
+          "accepted_sif_cp2k_seconds": 12.442,
+          "physical_cp2k_seconds": 14.068,
+          "physical_wall_seconds": 14.867708237841725
+        },
+        "water64-elpa/multi": {
+          "accepted_sif_cp2k_seconds": 19.659,
+          "physical_cp2k_seconds": 19.737,
+          "physical_wall_seconds": 20.750738906674087
+        },
+        "water64-elpa/single": {
+          "accepted_sif_cp2k_seconds": 31.905,
+          "physical_cp2k_seconds": 32.139,
+          "physical_wall_seconds": 32.91624318994582
+        },
+        "water64-gpw/multi": {
+          "accepted_sif_cp2k_seconds": 172.596,
+          "physical_cp2k_seconds": 177.739,
+          "physical_wall_seconds": 178.85410064831376
+        },
+        "water64-gpw/single": {
+          "accepted_sif_cp2k_seconds": 143.648,
+          "physical_cp2k_seconds": 150.129,
+          "physical_wall_seconds": 150.94635622855276
+        }
+      }
+    },
+    {
+      "artifact_sha256": "d83620878d735a4513e0d33e88515eeb488998b21f138f200478c9ad1b9ea45e",
+      "elapsed": "00:14:38",
+      "end": "2026-10-18T19:52:53",
+      "energy_tolerance_ha": 1e-06,
+      "exit_code": "0:0",
+      "force_tolerance_ha_bohr": 1e-05,
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r4d454c740309",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "4d454c7403097d4a5cae4c37452ef15aff32d753f0e9076533433dc939535782",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "independent_raw_revalidation": true,
+      "installed_data_files": 280,
+      "installed_data_links": 2,
+      "job": "1844994",
+      "loaded_libraries": [
+        {
+          "elpa": [
+            "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/16V100/dependencies/elpa/lib/libelpa_openmp.so.19"
+          ],
+          "hcoll": [
+            "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libhcoll.so.1"
+          ],
+          "host": "16v100n49",
+          "loaded_legacy_hcoll_alias": false,
+          "missing_libraries": false,
+          "rank": 0
+        },
+        {
+          "elpa": [
+            "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/16V100/dependencies/elpa/lib/libelpa_openmp.so.19"
+          ],
+          "hcoll": [
+            "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libhcoll.so.1"
+          ],
+          "host": "16v100n50",
+          "loaded_legacy_hcoll_alias": false,
+          "missing_libraries": false,
+          "rank": 1
+        }
+      ],
+      "manifest_sha256": "934d1b162ab2dc1f98929b7a5e4370bd30df9344f073d1036d5c5e2a174727c8",
+      "max_energy_difference_to_sif_ha": 1.3642420526593924e-11,
+      "max_force_difference_to_sif_ha_bohr": 1.3000000381735433e-11,
+      "max_single_multi_energy_difference_ha": 1.1596057447604835e-11,
+      "max_single_multi_force_difference_ha_bohr": 1.5000001241105565e-11,
+      "mpi_binary": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/bin/mpirun",
+      "mpi_version": "mpirun (Open MPI) 5.0.10\n\nReport bugs to https://www.open-mpi.org/community/help/",
+      "native_version": {
+        "flags": [
+          "cosma",
+          "cusolvermp",
+          "cusolvermp_nccl",
+          "dbcsr_acc",
+          "dftd4_v4_2",
+          "elpa",
+          "fftw3",
+          "hdf5",
+          "libbqb",
+          "libdftd4",
+          "libint",
+          "libvori",
+          "libxc",
+          "libxs",
+          "libxsmm",
+          "mctc-lib",
+          "mpi_f08",
+          "offload_cuda",
+          "omp",
+          "parallel",
+          "plumed2",
+          "s_dftd3",
+          "scalapack",
+          "spglib",
+          "spla_gemm_offloading",
+          "tblite"
+        ],
+        "revision": "67b5da876d",
+        "version": "2026.2"
+      },
+      "node_list": "16v100n[49-50]",
+      "partition": "16V100",
+      "raw_evidence_root": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-2026.2-physical-20261018-193800-3592647/16V100",
+      "raw_file_sha256": {
+        "allocation.txt": "81faf78287376481fb2543edbf06198c316c4783505e4a6cc70ec2fc1265a25b",
+        "binary.txt": "47a68b766dd1a2223a2082edfa5ae6dd9e562bb890bfe1a6d531d11b95b324a1",
+        "cases/ch2o-tblite/multi/cp2k.log": "8ecf459c81bd8732f9af0f5acaf5327ad35b44024ad65f437e25a4dfc95098f3",
+        "cases/ch2o-tblite/multi/elapsed.txt": "2c8b85ee7d0e4972b91d02b9241c977d28d3d57098991345c8df00469134ddaa",
+        "cases/ch2o-tblite/multi/forces.xyz": "3dc7e7afb69ac3ef0345bfb050ac39af4e1d00588ceedd4246009a46027755c5",
+        "cases/ch2o-tblite/multi/input.inp": "cc95e7175fc46ac119a0b6e237711673717a0d859b96e884a1519a3e59e580fa",
+        "cases/ch2o-tblite/multi/ranks/rank-0.tsv": "f8e4f4feabdfda101b9ef99af41215f0d910f66bf8cb233d1ef9b08aefd7a4ab",
+        "cases/ch2o-tblite/multi/ranks/rank-1.tsv": "6c40f69aa34fbfe5b83db58e113a411b5f59eea21abdc0fea07938a42699ae91",
+        "cases/ch2o-tblite/single/cp2k.log": "11bcb13b99b44770987df5fa655b0e1f6cbea2ad9ce4cbe73df14bc28001f394",
+        "cases/ch2o-tblite/single/elapsed.txt": "ccfba4b9859fb8e5121e41c074d7f9dd76085e1292390397b0ac90d0c1a5efb6",
+        "cases/ch2o-tblite/single/forces.xyz": "a840900ebfe5e6afc96fcf7ec56e30a7dce7cd28c99e93fc699006bffc06d435",
+        "cases/ch2o-tblite/single/input.inp": "cc95e7175fc46ac119a0b6e237711673717a0d859b96e884a1519a3e59e580fa",
+        "cases/ch2o-tblite/single/ranks/rank-0.tsv": "f8e4f4feabdfda101b9ef99af41215f0d910f66bf8cb233d1ef9b08aefd7a4ab",
+        "cases/water-dftd4/multi/cp2k.log": "697ab34b3ac6fea359f7cc8821a910d90364c4db3f007ff6df90973172e7e910",
+        "cases/water-dftd4/multi/elapsed.txt": "2a070dc7ca3a82df09f0166272f1402b3a7d475229e9f6380de61909d3e8fd8c",
+        "cases/water-dftd4/multi/forces.xyz": "d8d9df8493cc406318fdd52d7b9ec7ba8f866b03078cdc057df81e447a892172",
+        "cases/water-dftd4/multi/input.inp": "39579aec1d120e74fb052414d56af74fa9466f792f87085ef0a1ebbe7b4508a5",
+        "cases/water-dftd4/multi/ranks/rank-0.tsv": "f8e4f4feabdfda101b9ef99af41215f0d910f66bf8cb233d1ef9b08aefd7a4ab",
+        "cases/water-dftd4/multi/ranks/rank-1.tsv": "6c40f69aa34fbfe5b83db58e113a411b5f59eea21abdc0fea07938a42699ae91",
+        "cases/water-dftd4/single/cp2k.log": "ca632baac2df09b1a352738e4668379880ef57c9c018e647e3bad7bd2a5744da",
+        "cases/water-dftd4/single/elapsed.txt": "bdb6db8b974f17d47ee2c6e20a5d9d892a788a4d63bd3550afb8c3f54c488401",
+        "cases/water-dftd4/single/forces.xyz": "2adafa5c667470e54e6be8dce9ef04f2389b70b09f52a1c49bf35ccca443ebff",
+        "cases/water-dftd4/single/input.inp": "39579aec1d120e74fb052414d56af74fa9466f792f87085ef0a1ebbe7b4508a5",
+        "cases/water-dftd4/single/ranks/rank-0.tsv": "f8e4f4feabdfda101b9ef99af41215f0d910f66bf8cb233d1ef9b08aefd7a4ab",
+        "cases/water-diag/multi/cp2k.log": "256f05e976174ef1caf37def25e26b2c9627291248001776a26bd73ab586b365",
+        "cases/water-diag/multi/elapsed.txt": "9337b9bb4589ff3b3c890cf6ddcdd5de2828e747e5513ef01e22ce33f13e610f",
+        "cases/water-diag/multi/forces.xyz": "3cad992a555302cb0947a63c6b06bf2d2336f21e6f69a9a9b7df4c7bf3dd3919",
+        "cases/water-diag/multi/input.inp": "2cc489d6bf60203348d7d86d1bb1be3381e2d9eb49d691086d0ebc06c28688ce",
+        "cases/water-diag/multi/ranks/rank-0.tsv": "f8e4f4feabdfda101b9ef99af41215f0d910f66bf8cb233d1ef9b08aefd7a4ab",
+        "cases/water-diag/multi/ranks/rank-1.tsv": "6c40f69aa34fbfe5b83db58e113a411b5f59eea21abdc0fea07938a42699ae91",
+        "cases/water-diag/single/cp2k.log": "3f005c13276936e444c4e7c3b5d01f1fd9b32c8f944d1a950230f39e519790d8",
+        "cases/water-diag/single/elapsed.txt": "9d18125a95325a33a067bf1c04c116ad91a13d860d40cec73468bc08095a395b",
+        "cases/water-diag/single/forces.xyz": "3cad992a555302cb0947a63c6b06bf2d2336f21e6f69a9a9b7df4c7bf3dd3919",
+        "cases/water-diag/single/input.inp": "2cc489d6bf60203348d7d86d1bb1be3381e2d9eb49d691086d0ebc06c28688ce",
+        "cases/water-diag/single/ranks/rank-0.tsv": "f8e4f4feabdfda101b9ef99af41215f0d910f66bf8cb233d1ef9b08aefd7a4ab",
+        "cases/water-elpa/multi/cp2k.log": "7cd41902bb1ff7f64b30b8c2c8c0867cb75b7103cfb7b63b4532307f98a94b45",
+        "cases/water-elpa/multi/elapsed.txt": "a76a5408612cddd48205e6f5ccbd96db69abfd7396922613184d0fa7fa1efe00",
+        "cases/water-elpa/multi/forces.xyz": "3cad992a555302cb0947a63c6b06bf2d2336f21e6f69a9a9b7df4c7bf3dd3919",
+        "cases/water-elpa/multi/input.inp": "572d320d3c4f63b84e53948edfb1939acc47c03f970539901890a242b584116d",
+        "cases/water-elpa/multi/ranks/rank-0.tsv": "f8e4f4feabdfda101b9ef99af41215f0d910f66bf8cb233d1ef9b08aefd7a4ab",
+        "cases/water-elpa/multi/ranks/rank-1.tsv": "6c40f69aa34fbfe5b83db58e113a411b5f59eea21abdc0fea07938a42699ae91",
+        "cases/water-elpa/single/cp2k.log": "dc48c11ab6ec84d5570ea015ffa17d87306a180bd4f5a5ac1b2f7164554db3e9",
+        "cases/water-elpa/single/elapsed.txt": "6aa4d5418773ccf221cfa3611c202514e9c2dd5d96f6adb461f944ff2df62f92",
+        "cases/water-elpa/single/forces.xyz": "3cad992a555302cb0947a63c6b06bf2d2336f21e6f69a9a9b7df4c7bf3dd3919",
+        "cases/water-elpa/single/input.inp": "572d320d3c4f63b84e53948edfb1939acc47c03f970539901890a242b584116d",
+        "cases/water-elpa/single/ranks/rank-0.tsv": "f8e4f4feabdfda101b9ef99af41215f0d910f66bf8cb233d1ef9b08aefd7a4ab",
+        "cases/water-gpw/multi/cp2k.log": "b0a8c0263ce926b480abf9c7d09dcc6f6f9c1bf251a24ec234e27d9f16f57a76",
+        "cases/water-gpw/multi/elapsed.txt": "66da340f7b16085c252a4e9bcc37e1dbd686a67f592ef832f9aa661816a64824",
+        "cases/water-gpw/multi/forces.xyz": "54fa9218acbbd9efd6f0129912297eff3add13d80d755c2eb1ec4d3651a9c829",
+        "cases/water-gpw/multi/input.inp": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0",
+        "cases/water-gpw/multi/ranks/rank-0.tsv": "f8e4f4feabdfda101b9ef99af41215f0d910f66bf8cb233d1ef9b08aefd7a4ab",
+        "cases/water-gpw/multi/ranks/rank-1.tsv": "6c40f69aa34fbfe5b83db58e113a411b5f59eea21abdc0fea07938a42699ae91",
+        "cases/water-gpw/single/cp2k.log": "3d51823bc08db95d2ebed317be4a66690c4ba59f651064ca06107912eb37df5b",
+        "cases/water-gpw/single/elapsed.txt": "38a3b587360a5f4980b3fe2df8a4b74088c25f47f426254fc05729e6e846a470",
+        "cases/water-gpw/single/forces.xyz": "eebfc50ca76342bc5ab55a589c0d55766ee69ba5826b27a0d7851b8c3e6d1788",
+        "cases/water-gpw/single/input.inp": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0",
+        "cases/water-gpw/single/ranks/rank-0.tsv": "f8e4f4feabdfda101b9ef99af41215f0d910f66bf8cb233d1ef9b08aefd7a4ab",
+        "cases/water64-elpa/multi/cp2k.log": "74fdb7a2d6968798cb22b62765dabd4e4d805769f7ea6b09cd730a6ff0f580bd",
+        "cases/water64-elpa/multi/elapsed.txt": "cffef8a712c5f382e3d806e59b8990885c41ae39ef0944f81dc8b835f2e6eb75",
+        "cases/water64-elpa/multi/forces.xyz": "01ff4a6021feec977349ed21b5629a8541408e9e0dc63d14408214c8f0c3b21e",
+        "cases/water64-elpa/multi/input.inp": "c1425a1376ef7b15fa97b65008c3f4a4882a75dc96088c058aeb1371af36343b",
+        "cases/water64-elpa/multi/ranks/rank-0.tsv": "f8e4f4feabdfda101b9ef99af41215f0d910f66bf8cb233d1ef9b08aefd7a4ab",
+        "cases/water64-elpa/multi/ranks/rank-1.tsv": "6c40f69aa34fbfe5b83db58e113a411b5f59eea21abdc0fea07938a42699ae91",
+        "cases/water64-elpa/single/cp2k.log": "620bc3e51c55b5b121c8f6f96753754864a46f361c6e3cb48ea4887e2e53479c",
+        "cases/water64-elpa/single/elapsed.txt": "babe90b45559f508d84aac7e9b3af7f255587b300b527e950e30379030c6ec98",
+        "cases/water64-elpa/single/forces.xyz": "01ff4a6021feec977349ed21b5629a8541408e9e0dc63d14408214c8f0c3b21e",
+        "cases/water64-elpa/single/input.inp": "c1425a1376ef7b15fa97b65008c3f4a4882a75dc96088c058aeb1371af36343b",
+        "cases/water64-elpa/single/ranks/rank-0.tsv": "f8e4f4feabdfda101b9ef99af41215f0d910f66bf8cb233d1ef9b08aefd7a4ab",
+        "cases/water64-gpw/multi/cp2k.log": "e565b468242d6649ddbf9e6283d6da56af803f28f8c00da762375011ae4217ea",
+        "cases/water64-gpw/multi/elapsed.txt": "0b58112bfb065710cd98b0e19bd0cd99c80ecb8b09921dfd10831ef4c6bb2e6c",
+        "cases/water64-gpw/multi/forces.xyz": "4fd0515723963439530a9aa5928c7ea7c0cdd288d00dba492105cd6a7dd5eded",
+        "cases/water64-gpw/multi/input.inp": "567175e994a44502c8afe54c98ec31cb12853f0cba114477596174950974834f",
+        "cases/water64-gpw/multi/ranks/rank-0.tsv": "f8e4f4feabdfda101b9ef99af41215f0d910f66bf8cb233d1ef9b08aefd7a4ab",
+        "cases/water64-gpw/multi/ranks/rank-1.tsv": "6c40f69aa34fbfe5b83db58e113a411b5f59eea21abdc0fea07938a42699ae91",
+        "cases/water64-gpw/single/cp2k.log": "374e82dd08fa9f705bce33fd142aa9b96896d42b63b4a74ed1d08a3c61dad7d9",
+        "cases/water64-gpw/single/elapsed.txt": "4bb9f8897cb3ba6c6a0218b8234a0783ddd2f492829f817951c2b3518f249845",
+        "cases/water64-gpw/single/forces.xyz": "469a89ca9cc5a485f73c0575bcd3d7c235495bf2c9fe68407a6b375cb8ddceb7",
+        "cases/water64-gpw/single/input.inp": "567175e994a44502c8afe54c98ec31cb12853f0cba114477596174950974834f",
+        "cases/water64-gpw/single/ranks/rank-0.tsv": "f8e4f4feabdfda101b9ef99af41215f0d910f66bf8cb233d1ef9b08aefd7a4ab",
+        "job.id": "6670e82a6f9810b28ce9fa39b9e68b4e184ee37d6e1c1d4f8d5e2a56cf78dcb2",
+        "modules.txt": "6057b203159ae7f51ba5d5a20445426d2c3bed351e5206623e5d6f9b687df22e",
+        "mpi-version.txt": "dbefbbfa3051a687ec6d12c60decfadc9e432e1e88b88e634e861777f1367714",
+        "mpirun.txt": "0d0f01600bd10b9f9789d180bacc0bbfc3855116dd4ec61e642d45862e4848ca",
+        "native-acceptance.json": "d5ae27da70a5aefdfa9426f5885c6fe354f593c39b29c32ede5ecc71c92aa1f1",
+        "nodes.txt": "56d09bce49efb7152817d48fa5828144faefff7e8fe2c9b3b52fa586c9374c8a",
+        "slurm-1844994.log": "e9c535e28b1281e17c96225682cc5c7eea9aa602bfe1b1d7da7465c167731d7e",
+        "version/cp2k.log": "7a5fb1e97b3acf697b7d917312aaaa25570e7471eb4052a81fd839ad563f417e",
+        "version/elapsed.txt": "1cee42a5adf609683c29ee90bf8481ef2e24ca0474b23eb5115eaf4d7b2f54b4",
+        "version/ranks/ldd-0.txt": "dfd02161be8a3d021590a59c31756c0977457ca02c19012021a8d585bf7a2b17",
+        "version/ranks/ldd-1.txt": "723ba02f63d91d36db82f0f60a2846e21e8245f65b8f59a598017749a8e049b0",
+        "version/ranks/loader-0.1519973": "c9d8167002bb7ec336d78222d1ce6a46037c7baef91662e7698209bb145e720b",
+        "version/ranks/loader-1.1722433": "9e69471060ffe9e258c0ff6ef48981cc58661c3cb8e51d609f0285c4bc2e2b51",
+        "version/ranks/rank-0.tsv": "f8e4f4feabdfda101b9ef99af41215f0d910f66bf8cb233d1ef9b08aefd7a4ab",
+        "version/ranks/rank-1.tsv": "6c40f69aa34fbfe5b83db58e113a411b5f59eea21abdc0fea07938a42699ae91"
+      },
+      "receipt_sha256": "ca9bec9c920cc7883b296d3641d39728b488b874261f4d46b702c4a524c698f1",
+      "reference_evidence_sha256": "764a55d89b0f5f5b27a557a21a97f80d87f8fdc7c1401561efd731886d8c8d32",
+      "science_passed": 14,
+      "start": "2026-10-18T19:38:15",
+      "state": "COMPLETED",
+      "timings_descriptive_only": {
+        "ch2o-tblite/multi": {
+          "accepted_sif_cp2k_seconds": 2.261,
+          "physical_cp2k_seconds": 1.997,
+          "physical_wall_seconds": 5.418078413233161
+        },
+        "ch2o-tblite/single": {
+          "accepted_sif_cp2k_seconds": 1.946,
+          "physical_cp2k_seconds": 1.585,
+          "physical_wall_seconds": 4.952338365837932
+        },
+        "water-dftd4/multi": {
+          "accepted_sif_cp2k_seconds": 26.116,
+          "physical_cp2k_seconds": 18.33,
+          "physical_wall_seconds": 21.56352296192199
+        },
+        "water-dftd4/single": {
+          "accepted_sif_cp2k_seconds": 27.771,
+          "physical_cp2k_seconds": 22.372,
+          "physical_wall_seconds": 25.84487233310938
+        },
+        "water-diag/multi": {
+          "accepted_sif_cp2k_seconds": 20.28,
+          "physical_cp2k_seconds": 12.793,
+          "physical_wall_seconds": 17.15977880731225
+        },
+        "water-diag/single": {
+          "accepted_sif_cp2k_seconds": 19.221,
+          "physical_cp2k_seconds": 14.923,
+          "physical_wall_seconds": 18.42037457227707
+        },
+        "water-elpa/multi": {
+          "accepted_sif_cp2k_seconds": 22.208,
+          "physical_cp2k_seconds": 14.605,
+          "physical_wall_seconds": 18.09488287381828
+        },
+        "water-elpa/single": {
+          "accepted_sif_cp2k_seconds": 18.328,
+          "physical_cp2k_seconds": 16.091,
+          "physical_wall_seconds": 18.128350041806698
+        },
+        "water-gpw/multi": {
+          "accepted_sif_cp2k_seconds": 33.512,
+          "physical_cp2k_seconds": 18.607,
+          "physical_wall_seconds": 22.146766788326204
+        },
+        "water-gpw/single": {
+          "accepted_sif_cp2k_seconds": 26.859,
+          "physical_cp2k_seconds": 22.795,
+          "physical_wall_seconds": 25.546338497661054
+        },
+        "water64-elpa/multi": {
+          "accepted_sif_cp2k_seconds": 34.773,
+          "physical_cp2k_seconds": 43.086,
+          "physical_wall_seconds": 47.10400831513107
+        },
+        "water64-elpa/single": {
+          "accepted_sif_cp2k_seconds": 56.067,
+          "physical_cp2k_seconds": 55.999,
+          "physical_wall_seconds": 58.426026687026024
+        },
+        "water64-gpw/multi": {
+          "accepted_sif_cp2k_seconds": 225.22,
+          "physical_cp2k_seconds": 338.96,
+          "physical_wall_seconds": 344.0522803934291
+        },
+        "water64-gpw/single": {
+          "accepted_sif_cp2k_seconds": 233.236,
+          "physical_cp2k_seconds": 236.631,
+          "physical_wall_seconds": 239.53357665333897
+        }
+      }
+    },
+    {
+      "artifact_sha256": "5a1b12cee097b79c333a9f955edd70cc5a5ee262ffe4b0a622c0f1a0ec0b2334",
+      "elapsed": "00:16:11",
+      "end": "2026-10-18T19:54:26",
+      "energy_tolerance_ha": 1e-06,
+      "exit_code": "0:0",
+      "force_tolerance_ha_bohr": 1e-05,
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r4d454c740309",
+        "cpu_arch": "skylake-avx512",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/8V100V0",
+        "partition": "8V100V0",
+        "recipe_sha256": "4d454c7403097d4a5cae4c37452ef15aff32d753f0e9076533433dc939535782",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "8v100v0-avx512",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "independent_raw_revalidation": true,
+      "installed_data_files": 280,
+      "installed_data_links": 2,
+      "job": "1844995",
+      "loaded_libraries": [
+        {
+          "elpa": [
+            "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/8V100V0/dependencies/elpa/lib/libelpa_openmp.so.19"
+          ],
+          "hcoll": [
+            "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libhcoll.so.1"
+          ],
+          "host": "8v100v0n02",
+          "loaded_legacy_hcoll_alias": false,
+          "missing_libraries": false,
+          "rank": 0
+        },
+        {
+          "elpa": [
+            "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4d454c740309/8V100V0/dependencies/elpa/lib/libelpa_openmp.so.19"
+          ],
+          "hcoll": [
+            "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libhcoll.so.1"
+          ],
+          "host": "8v100v0n04",
+          "loaded_legacy_hcoll_alias": false,
+          "missing_libraries": false,
+          "rank": 1
+        }
+      ],
+      "manifest_sha256": "33dc06cc942aecbb189e83ec75bda9aee18f5e0c437b88534b511c05490d2dbd",
+      "max_energy_difference_to_sif_ha": 2.114575181622058e-11,
+      "max_force_difference_to_sif_ha_bohr": 1.5999999936067155e-11,
+      "max_single_multi_energy_difference_ha": 1.1823431123048067e-11,
+      "max_single_multi_force_difference_ha_bohr": 1.700000036575222e-11,
+      "mpi_binary": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/bin/mpirun",
+      "mpi_version": "mpirun (Open MPI) 5.0.10\n\nReport bugs to https://www.open-mpi.org/community/help/",
+      "native_version": {
+        "flags": [
+          "cosma",
+          "cusolvermp",
+          "cusolvermp_nccl",
+          "dbcsr_acc",
+          "dftd4_v4_2",
+          "elpa",
+          "fftw3",
+          "hdf5",
+          "libbqb",
+          "libdftd4",
+          "libint",
+          "libvori",
+          "libxc",
+          "libxs",
+          "libxsmm",
+          "mctc-lib",
+          "mpi_f08",
+          "offload_cuda",
+          "omp",
+          "parallel",
+          "plumed2",
+          "s_dftd3",
+          "scalapack",
+          "spglib",
+          "spla_gemm_offloading",
+          "tblite"
+        ],
+        "revision": "67b5da876d",
+        "version": "2026.2"
+      },
+      "node_list": "8v100v0n[02,04]",
+      "partition": "8V100V0",
+      "raw_evidence_root": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-2026.2-physical-20261018-193800-3592647/8V100V0",
+      "raw_file_sha256": {
+        "allocation.txt": "649b7ae34972a4011376e3b83a77e6565d63f65594b3828d5150010a276df149",
+        "binary.txt": "097cea42d402b841558fe745409dc90e425800e536d17cb3c3a19f2e57233cc8",
+        "cases/ch2o-tblite/multi/cp2k.log": "b1f0f86b52df0620cd4375452b45720b38b2017846f0c098c31a7890644a78b8",
+        "cases/ch2o-tblite/multi/elapsed.txt": "6bb0d76796d6a335b49326936c0e1303fda35d0c5f3c16c68dce786ada61a887",
+        "cases/ch2o-tblite/multi/forces.xyz": "a5f8449f25f6992d9eac179593c1ea204895a8d005165b9295011b229e970bc6",
+        "cases/ch2o-tblite/multi/input.inp": "cc95e7175fc46ac119a0b6e237711673717a0d859b96e884a1519a3e59e580fa",
+        "cases/ch2o-tblite/multi/ranks/rank-0.tsv": "e1e98eca6c5c7f77ab63cf5a4d394aaad7939bf723d6cf04ce517411cdbb9de0",
+        "cases/ch2o-tblite/multi/ranks/rank-1.tsv": "9b528ceda4aff05accf90c92fe5f12f43c2f81d38af4fa9b0b2deae5690a21c3",
+        "cases/ch2o-tblite/single/cp2k.log": "d01298348af050e0fe2d109e9f39a5be408feff9bf773dd83d0c2f4cd621f189",
+        "cases/ch2o-tblite/single/elapsed.txt": "6b71b4923d7b1f0459b8cfd3b2822dc666ef4a08c83c4ffdcbcbe3178f5dcc6d",
+        "cases/ch2o-tblite/single/forces.xyz": "e86106dbc9a243dbdd69a87964b547bb05fb66c86d64f90eb168704d0469b526",
+        "cases/ch2o-tblite/single/input.inp": "cc95e7175fc46ac119a0b6e237711673717a0d859b96e884a1519a3e59e580fa",
+        "cases/ch2o-tblite/single/ranks/rank-0.tsv": "e1e98eca6c5c7f77ab63cf5a4d394aaad7939bf723d6cf04ce517411cdbb9de0",
+        "cases/water-dftd4/multi/cp2k.log": "4f2d527dd33c580dd1a1585f7300e4fa4d935a0c43afcdf2a9aeaa229f57bbf0",
+        "cases/water-dftd4/multi/elapsed.txt": "cc040ec2043f5e9f257d34a4781432fda4d577a8a4aad33155bd36255cac464b",
+        "cases/water-dftd4/multi/forces.xyz": "c03c73df28b1bb234481a43311135a725b2e0f31ad3ae0c2d6a57487130594f8",
+        "cases/water-dftd4/multi/input.inp": "39579aec1d120e74fb052414d56af74fa9466f792f87085ef0a1ebbe7b4508a5",
+        "cases/water-dftd4/multi/ranks/rank-0.tsv": "e1e98eca6c5c7f77ab63cf5a4d394aaad7939bf723d6cf04ce517411cdbb9de0",
+        "cases/water-dftd4/multi/ranks/rank-1.tsv": "9b528ceda4aff05accf90c92fe5f12f43c2f81d38af4fa9b0b2deae5690a21c3",
+        "cases/water-dftd4/single/cp2k.log": "6f0562ca38ebc11dcc520bab54cb6336ec99e782b70b053601070de142a77ff7",
+        "cases/water-dftd4/single/elapsed.txt": "2ebf6f409e41786122692927c92ed88333a593d0001b4fed63005fb0f05b23d6",
+        "cases/water-dftd4/single/forces.xyz": "1dfe21e9327a0d761b3fb2cd5ada7599ba28b1b6383008579b6fdff1ccef5b03",
+        "cases/water-dftd4/single/input.inp": "39579aec1d120e74fb052414d56af74fa9466f792f87085ef0a1ebbe7b4508a5",
+        "cases/water-dftd4/single/ranks/rank-0.tsv": "e1e98eca6c5c7f77ab63cf5a4d394aaad7939bf723d6cf04ce517411cdbb9de0",
+        "cases/water-diag/multi/cp2k.log": "4181b0abfe5c8b1b513db8bab3d5c972e2dc0df331e08a7e61a3bc7418fccb04",
+        "cases/water-diag/multi/elapsed.txt": "b392f28691debfe18522e6ac6cdec7cb6421039ebe1222e11b936a3769971f86",
+        "cases/water-diag/multi/forces.xyz": "3cad992a555302cb0947a63c6b06bf2d2336f21e6f69a9a9b7df4c7bf3dd3919",
+        "cases/water-diag/multi/input.inp": "2cc489d6bf60203348d7d86d1bb1be3381e2d9eb49d691086d0ebc06c28688ce",
+        "cases/water-diag/multi/ranks/rank-0.tsv": "e1e98eca6c5c7f77ab63cf5a4d394aaad7939bf723d6cf04ce517411cdbb9de0",
+        "cases/water-diag/multi/ranks/rank-1.tsv": "9b528ceda4aff05accf90c92fe5f12f43c2f81d38af4fa9b0b2deae5690a21c3",
+        "cases/water-diag/single/cp2k.log": "1fd59f88fbabf80f11eeb4d020bce5bc73c1dc23eb2ae1bf2bde1a22ffe609e0",
+        "cases/water-diag/single/elapsed.txt": "b9b2c561c4573d75b908b1cdc97b27c7359d0c833487c8cd8ff5f0ab3347e6e7",
+        "cases/water-diag/single/forces.xyz": "3cad992a555302cb0947a63c6b06bf2d2336f21e6f69a9a9b7df4c7bf3dd3919",
+        "cases/water-diag/single/input.inp": "2cc489d6bf60203348d7d86d1bb1be3381e2d9eb49d691086d0ebc06c28688ce",
+        "cases/water-diag/single/ranks/rank-0.tsv": "e1e98eca6c5c7f77ab63cf5a4d394aaad7939bf723d6cf04ce517411cdbb9de0",
+        "cases/water-elpa/multi/cp2k.log": "8d06cfadd7252d5eb905acdb73f0868073e97743e5c634408246875382701193",
+        "cases/water-elpa/multi/elapsed.txt": "39d6b856472bfa5d6d0a566ece47bb167f4e7135c7b4410b0fda0e00f67340bf",
+        "cases/water-elpa/multi/forces.xyz": "3cad992a555302cb0947a63c6b06bf2d2336f21e6f69a9a9b7df4c7bf3dd3919",
+        "cases/water-elpa/multi/input.inp": "572d320d3c4f63b84e53948edfb1939acc47c03f970539901890a242b584116d",
+        "cases/water-elpa/multi/ranks/rank-0.tsv": "e1e98eca6c5c7f77ab63cf5a4d394aaad7939bf723d6cf04ce517411cdbb9de0",
+        "cases/water-elpa/multi/ranks/rank-1.tsv": "9b528ceda4aff05accf90c92fe5f12f43c2f81d38af4fa9b0b2deae5690a21c3",
+        "cases/water-elpa/single/cp2k.log": "3547603f1e29f25abe9a2e4b4b703bb08c4311bd69325dd9f8e749cd35ec89ec",
+        "cases/water-elpa/single/elapsed.txt": "f43d3bf4376e0bb7756220869429c8ae531264a27485986054f13c9051dc0ca9",
+        "cases/water-elpa/single/forces.xyz": "3cad992a555302cb0947a63c6b06bf2d2336f21e6f69a9a9b7df4c7bf3dd3919",
+        "cases/water-elpa/single/input.inp": "572d320d3c4f63b84e53948edfb1939acc47c03f970539901890a242b584116d",
+        "cases/water-elpa/single/ranks/rank-0.tsv": "e1e98eca6c5c7f77ab63cf5a4d394aaad7939bf723d6cf04ce517411cdbb9de0",
+        "cases/water-gpw/multi/cp2k.log": "effa441e5cc23523091fb4863f33060887e6730ff6430d72e13f1034cebca2d8",
+        "cases/water-gpw/multi/elapsed.txt": "3fcf658f14fd0fba67c4ca2ee650d838a21d707bead7f30f07611cafe336fde5",
+        "cases/water-gpw/multi/forces.xyz": "019d6b2808a9935f291eda29805ef945b730c2c0458dde5d2121aaecf0cdc65e",
+        "cases/water-gpw/multi/input.inp": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0",
+        "cases/water-gpw/multi/ranks/rank-0.tsv": "e1e98eca6c5c7f77ab63cf5a4d394aaad7939bf723d6cf04ce517411cdbb9de0",
+        "cases/water-gpw/multi/ranks/rank-1.tsv": "9b528ceda4aff05accf90c92fe5f12f43c2f81d38af4fa9b0b2deae5690a21c3",
+        "cases/water-gpw/single/cp2k.log": "1395dafe58214d7f8e39ec018058532365dffecb06e2db7873ba9be92f93a54e",
+        "cases/water-gpw/single/elapsed.txt": "85da04a14f6a122af294cfd57c28e6cef20e81bbb41cc0462b421ae07cb8285d",
+        "cases/water-gpw/single/forces.xyz": "eebfc50ca76342bc5ab55a589c0d55766ee69ba5826b27a0d7851b8c3e6d1788",
+        "cases/water-gpw/single/input.inp": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0",
+        "cases/water-gpw/single/ranks/rank-0.tsv": "e1e98eca6c5c7f77ab63cf5a4d394aaad7939bf723d6cf04ce517411cdbb9de0",
+        "cases/water64-elpa/multi/cp2k.log": "ee4c26bd6a0ce5245f6201ee93864eac2065df6c8d97c4133f12d9626500d00b",
+        "cases/water64-elpa/multi/elapsed.txt": "cdea4748adda73fca930322a8cb58ccb9e2b581efd36756d8bb68f59ab4fd608",
+        "cases/water64-elpa/multi/forces.xyz": "ad5431bc3ea9687cfcbdb7bf3e20580cd4dcff0531c6832779caa213359ceaf2",
+        "cases/water64-elpa/multi/input.inp": "c1425a1376ef7b15fa97b65008c3f4a4882a75dc96088c058aeb1371af36343b",
+        "cases/water64-elpa/multi/ranks/rank-0.tsv": "e1e98eca6c5c7f77ab63cf5a4d394aaad7939bf723d6cf04ce517411cdbb9de0",
+        "cases/water64-elpa/multi/ranks/rank-1.tsv": "9b528ceda4aff05accf90c92fe5f12f43c2f81d38af4fa9b0b2deae5690a21c3",
+        "cases/water64-elpa/single/cp2k.log": "31783a88c8829f6f567f5b4aee712f250394216ef2481e4eb56d21912a2ccfff",
+        "cases/water64-elpa/single/elapsed.txt": "0e9396abc1b597fb3325e56937694ac0b403c51c6325e1c5b157d4f92c54e7be",
+        "cases/water64-elpa/single/forces.xyz": "ad5431bc3ea9687cfcbdb7bf3e20580cd4dcff0531c6832779caa213359ceaf2",
+        "cases/water64-elpa/single/input.inp": "c1425a1376ef7b15fa97b65008c3f4a4882a75dc96088c058aeb1371af36343b",
+        "cases/water64-elpa/single/ranks/rank-0.tsv": "e1e98eca6c5c7f77ab63cf5a4d394aaad7939bf723d6cf04ce517411cdbb9de0",
+        "cases/water64-gpw/multi/cp2k.log": "499d4328bf54d04bf2831049738ec3a6eee4388c0cd1bbcdd4903f43ed4429de",
+        "cases/water64-gpw/multi/elapsed.txt": "fb8862fe48036cc667cc737c611befda302330b0413e947ec61e9de0af98d21d",
+        "cases/water64-gpw/multi/forces.xyz": "99d431cd1b1a9d86c4ead74c6facd9583c8c371607448641e3bf4cf0a0e5fcd4",
+        "cases/water64-gpw/multi/input.inp": "567175e994a44502c8afe54c98ec31cb12853f0cba114477596174950974834f",
+        "cases/water64-gpw/multi/ranks/rank-0.tsv": "e1e98eca6c5c7f77ab63cf5a4d394aaad7939bf723d6cf04ce517411cdbb9de0",
+        "cases/water64-gpw/multi/ranks/rank-1.tsv": "9b528ceda4aff05accf90c92fe5f12f43c2f81d38af4fa9b0b2deae5690a21c3",
+        "cases/water64-gpw/single/cp2k.log": "67c49fdd602539a0465861eb3664819557cc8395f5992dc8fefe127b4550cd0f",
+        "cases/water64-gpw/single/elapsed.txt": "d3775265b467ce77e1fe8f49f97b32f1d5be717aa90654c83d03c51835faab64",
+        "cases/water64-gpw/single/forces.xyz": "4d5c761ee499c83ec652c8ce9361df9ec518a12254c4454a77d15ac186df30a4",
+        "cases/water64-gpw/single/input.inp": "567175e994a44502c8afe54c98ec31cb12853f0cba114477596174950974834f",
+        "cases/water64-gpw/single/ranks/rank-0.tsv": "e1e98eca6c5c7f77ab63cf5a4d394aaad7939bf723d6cf04ce517411cdbb9de0",
+        "job.id": "5fd492082522262a8b2783ba712489577f0b0cf71916982f4116a146705f55e5",
+        "modules.txt": "6057b203159ae7f51ba5d5a20445426d2c3bed351e5206623e5d6f9b687df22e",
+        "mpi-version.txt": "dbefbbfa3051a687ec6d12c60decfadc9e432e1e88b88e634e861777f1367714",
+        "mpirun.txt": "0d0f01600bd10b9f9789d180bacc0bbfc3855116dd4ec61e642d45862e4848ca",
+        "native-acceptance.json": "94a4cabbea7ed40f78a5645b56783a5049f0f83f2590fa0e5e8033b2d98c7e9e",
+        "nodes.txt": "f209f7fc00e90606a13b05f57b842504e6adceb193f0c11e46e93eecdd4017e3",
+        "slurm-1844995.log": "d329d36c8d7b7275fdea4ba07abbad4ef0fed32dfd7e799ace1f12944a01149d",
+        "version/cp2k.log": "0fb6f83ca89275544a542e78e3d240487c6d432ec1a3382147257be21b6a8a13",
+        "version/elapsed.txt": "517cc067114d8dbe83e6d7b461d4ace36766a472fbf26ba2b1840ba7ba0fc98a",
+        "version/ranks/ldd-0.txt": "0335d30a7ad3f3d42ee610e3a237b000bb86f99db52a38b68cfcb41390015728",
+        "version/ranks/ldd-1.txt": "f6b79aeb6290400da00e311acc7bfc167aa120be16839ac02aa3b3cfc2b5a4a1",
+        "version/ranks/loader-0.2577867": "ffd544dfac3ef798188a0a8ea6d751a2507cb7e55f1344f0d3cce33eb6fef21e",
+        "version/ranks/loader-1.2109837": "d684ca30a8b9b8763e65113562d5757d520e95b489251eba32cd49fde2a0b990",
+        "version/ranks/rank-0.tsv": "e1e98eca6c5c7f77ab63cf5a4d394aaad7939bf723d6cf04ce517411cdbb9de0",
+        "version/ranks/rank-1.tsv": "9b528ceda4aff05accf90c92fe5f12f43c2f81d38af4fa9b0b2deae5690a21c3"
+      },
+      "receipt_sha256": "a446b63d543103f0c012e008622f8438fcbfe2e88ecae88b6289e036a944c4ff",
+      "reference_evidence_sha256": "7789b556db9d1078e32e3de66ae5d05254ffa19594990b383ca22a97a2b06ee0",
+      "science_passed": 14,
+      "start": "2026-10-18T19:38:15",
+      "state": "COMPLETED",
+      "timings_descriptive_only": {
+        "ch2o-tblite/multi": {
+          "accepted_sif_cp2k_seconds": 2.285,
+          "physical_cp2k_seconds": 2.441,
+          "physical_wall_seconds": 11.220429919660091
+        },
+        "ch2o-tblite/single": {
+          "accepted_sif_cp2k_seconds": 1.946,
+          "physical_cp2k_seconds": 2.501,
+          "physical_wall_seconds": 4.975894158706069
+        },
+        "water-dftd4/multi": {
+          "accepted_sif_cp2k_seconds": 27.742,
+          "physical_cp2k_seconds": 28.157,
+          "physical_wall_seconds": 31.096989556215703
+        },
+        "water-dftd4/single": {
+          "accepted_sif_cp2k_seconds": 33.276,
+          "physical_cp2k_seconds": 33.944,
+          "physical_wall_seconds": 36.273689998313785
+        },
+        "water-diag/multi": {
+          "accepted_sif_cp2k_seconds": 18.418,
+          "physical_cp2k_seconds": 18.461,
+          "physical_wall_seconds": 21.404775274917483
+        },
+        "water-diag/single": {
+          "accepted_sif_cp2k_seconds": 22.504,
+          "physical_cp2k_seconds": 22.582,
+          "physical_wall_seconds": 25.026249821297824
+        },
+        "water-elpa/multi": {
+          "accepted_sif_cp2k_seconds": 18.844,
+          "physical_cp2k_seconds": 19.69,
+          "physical_wall_seconds": 22.436797538772225
+        },
+        "water-elpa/single": {
+          "accepted_sif_cp2k_seconds": 22.955,
+          "physical_cp2k_seconds": 23.451,
+          "physical_wall_seconds": 25.685428904369473
+        },
+        "water-gpw/multi": {
+          "accepted_sif_cp2k_seconds": 27.658,
+          "physical_cp2k_seconds": 28.28,
+          "physical_wall_seconds": 31.126086564734578
+        },
+        "water-gpw/single": {
+          "accepted_sif_cp2k_seconds": 33.149,
+          "physical_cp2k_seconds": 34.676,
+          "physical_wall_seconds": 36.99256189819425
+        },
+        "water64-elpa/multi": {
+          "accepted_sif_cp2k_seconds": 44.894,
+          "physical_cp2k_seconds": 47.95,
+          "physical_wall_seconds": 50.713621243834496
+        },
+        "water64-elpa/single": {
+          "accepted_sif_cp2k_seconds": 72.776,
+          "physical_cp2k_seconds": 77.29,
+          "physical_wall_seconds": 79.82320412155241
+        },
+        "water64-gpw/multi": {
+          "accepted_sif_cp2k_seconds": 296.361,
+          "physical_cp2k_seconds": 330.239,
+          "physical_wall_seconds": 333.21696615125984
+        },
+        "water64-gpw/single": {
+          "accepted_sif_cp2k_seconds": 238.245,
+          "physical_cp2k_seconds": 248.172,
+          "physical_wall_seconds": 250.5310206208378
+        }
+      }
+    },
+    {
+      "artifact_sha256": "c7157c5287694521a05b9ee7f3d4a33abc2da5031a5bc2b16800765e1332814a",
+      "elapsed": "00:17:09",
+      "end": "2026-10-18T19:55:09",
+      "energy_tolerance_ha": 1e-06,
+      "exit_code": "0:0",
+      "force_tolerance_ha_bohr": 1e-05,
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-rfb4adb0598fc",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "fb4adb0598fca95c3146f9c9a8a2119febde29882594a832d13b5de4052bc35a",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "independent_raw_revalidation": true,
+      "installed_data_files": 280,
+      "installed_data_links": 2,
+      "job": "1844996",
+      "loaded_libraries": [
+        {
+          "elpa": [
+            "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM/dependencies/elpa/lib/libelpa_openmp.so.19"
+          ],
+          "hcoll": [
+            "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libhcoll.so.1"
+          ],
+          "host": "d9470n02",
+          "loaded_legacy_hcoll_alias": false,
+          "missing_libraries": false,
+          "rank": 0
+        },
+        {
+          "elpa": [
+            "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rfb4adb0598fc/DSPRHBM/dependencies/elpa/lib/libelpa_openmp.so.19"
+          ],
+          "hcoll": [
+            "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libhcoll.so.1"
+          ],
+          "host": "d9470n04",
+          "loaded_legacy_hcoll_alias": false,
+          "missing_libraries": false,
+          "rank": 1
+        }
+      ],
+      "manifest_sha256": "e951b00792193189959f040d2cc66005c22157d029d30156869d2295658e529e",
+      "max_energy_difference_to_sif_ha": 2.0463630789890885e-11,
+      "max_force_difference_to_sif_ha_bohr": 1.000000082740371e-11,
+      "max_single_multi_energy_difference_ha": 1.3642420526593924e-11,
+      "max_single_multi_force_difference_ha_bohr": 1.2999998647011957e-11,
+      "mpi_binary": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/bin/mpirun",
+      "mpi_version": "mpirun (Open MPI) 5.0.10\n\nReport bugs to https://www.open-mpi.org/community/help/",
+      "native_version": {
+        "flags": [
+          "cosma",
+          "dftd4_v4_2",
+          "elpa",
+          "fftw3",
+          "hdf5",
+          "libbqb",
+          "libdftd4",
+          "libint",
+          "libvori",
+          "libxc",
+          "libxs",
+          "libxsmm",
+          "mctc-lib",
+          "mpi_f08",
+          "omp",
+          "parallel",
+          "plumed2",
+          "s_dftd3",
+          "scalapack",
+          "spglib",
+          "tblite"
+        ],
+        "revision": "67b5da876d",
+        "version": "2026.2"
+      },
+      "node_list": "d9470n[02,04]",
+      "partition": "DSPRHBM",
+      "raw_evidence_root": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-2026.2-physical-20261018-193800-3592647/DSPRHBM",
+      "raw_file_sha256": {
+        "allocation.txt": "25b4e7316567bc003de9fcf903afab7c273d62ccf3c6ec21cc6d7f6a7f2a61cb",
+        "binary.txt": "8c4675b93841e8a1c463eddf038cc667edb00d0f5e7e409b7e51029127714fbc",
+        "cases/ch2o-tblite/multi/cp2k.log": "72c94b4050432254ccb7005f6ee790c4a53df7949d56c6d1ad6b0d715562fcd5",
+        "cases/ch2o-tblite/multi/elapsed.txt": "840486833f50e018ae139c62edf7ae266c55d9badfce43bf4322bc7245f51528",
+        "cases/ch2o-tblite/multi/forces.xyz": "65d76ded5dc1b1e9f36d397c67a5f4b282bbf41934975a94e1d24504cdccd402",
+        "cases/ch2o-tblite/multi/input.inp": "cc95e7175fc46ac119a0b6e237711673717a0d859b96e884a1519a3e59e580fa",
+        "cases/ch2o-tblite/multi/ranks/rank-0.tsv": "3574da7cda747be95d7469769957bc81cdf36408ef78562a677c4cc0e34fcaaa",
+        "cases/ch2o-tblite/multi/ranks/rank-1.tsv": "8394b4e27589dcc9b51bf91fef593250210a9d907a578cd0e4fb8a98e350dbc0",
+        "cases/ch2o-tblite/single/cp2k.log": "d9f41bc69292c843b379143e6cae336db4c6c0cf78de2b3f362e1e0d12d664c3",
+        "cases/ch2o-tblite/single/elapsed.txt": "47f17916c7f94a870e7305aa4d6c7567b51343112d526bde495c87b89411de5c",
+        "cases/ch2o-tblite/single/forces.xyz": "1f3c00b5f3b69e3069c2476a7b95a64b19952b8445e78f47c02100388c9e4ff5",
+        "cases/ch2o-tblite/single/input.inp": "cc95e7175fc46ac119a0b6e237711673717a0d859b96e884a1519a3e59e580fa",
+        "cases/ch2o-tblite/single/ranks/rank-0.tsv": "3574da7cda747be95d7469769957bc81cdf36408ef78562a677c4cc0e34fcaaa",
+        "cases/water-dftd4/multi/cp2k.log": "32d2ab68cf395e3dbdd26e5103eadbae921c2ad06f79d4a7e67548f98c4f8fdc",
+        "cases/water-dftd4/multi/elapsed.txt": "d24af29996f4d30970158263968f7bd13b38c533cc80638033cbc948658bb669",
+        "cases/water-dftd4/multi/forces.xyz": "6278bd7cb34e930d36c0b42a13de3c3f28f9ea090a3df129c1a3cef2c01fd768",
+        "cases/water-dftd4/multi/input.inp": "39579aec1d120e74fb052414d56af74fa9466f792f87085ef0a1ebbe7b4508a5",
+        "cases/water-dftd4/multi/ranks/rank-0.tsv": "3574da7cda747be95d7469769957bc81cdf36408ef78562a677c4cc0e34fcaaa",
+        "cases/water-dftd4/multi/ranks/rank-1.tsv": "8394b4e27589dcc9b51bf91fef593250210a9d907a578cd0e4fb8a98e350dbc0",
+        "cases/water-dftd4/single/cp2k.log": "4312b8c880da422a6de8234d3dd015ad102753dfb7c43de773ca5326a8e5657f",
+        "cases/water-dftd4/single/elapsed.txt": "c7d5b66be91064a8f90354860859d5e785d849bb6ddac861edb5dd3ffcd5e7a1",
+        "cases/water-dftd4/single/forces.xyz": "1dfe21e9327a0d761b3fb2cd5ada7599ba28b1b6383008579b6fdff1ccef5b03",
+        "cases/water-dftd4/single/input.inp": "39579aec1d120e74fb052414d56af74fa9466f792f87085ef0a1ebbe7b4508a5",
+        "cases/water-dftd4/single/ranks/rank-0.tsv": "3574da7cda747be95d7469769957bc81cdf36408ef78562a677c4cc0e34fcaaa",
+        "cases/water-diag/multi/cp2k.log": "1a7884ade9d7245407bc1b8e2c704642ef574f1e883fcda723282885641de5c7",
+        "cases/water-diag/multi/elapsed.txt": "842daab6025feddfd559683e806f881055c5d22c70ed40a327b4ee282c532aba",
+        "cases/water-diag/multi/forces.xyz": "5b1789337954ff20a87c4a206ef77d51af34dcc552e99a689702354acc6ac7b0",
+        "cases/water-diag/multi/input.inp": "2cc489d6bf60203348d7d86d1bb1be3381e2d9eb49d691086d0ebc06c28688ce",
+        "cases/water-diag/multi/ranks/rank-0.tsv": "3574da7cda747be95d7469769957bc81cdf36408ef78562a677c4cc0e34fcaaa",
+        "cases/water-diag/multi/ranks/rank-1.tsv": "8394b4e27589dcc9b51bf91fef593250210a9d907a578cd0e4fb8a98e350dbc0",
+        "cases/water-diag/single/cp2k.log": "3dfe366c4a8028f0d09d347efc03c492d88edc418588aaa58ac605e8a54f3e55",
+        "cases/water-diag/single/elapsed.txt": "f158e7a5079514d03fcc5795feaf3ac2218036066d068df6a618a8ebe21dea3f",
+        "cases/water-diag/single/forces.xyz": "3cad992a555302cb0947a63c6b06bf2d2336f21e6f69a9a9b7df4c7bf3dd3919",
+        "cases/water-diag/single/input.inp": "2cc489d6bf60203348d7d86d1bb1be3381e2d9eb49d691086d0ebc06c28688ce",
+        "cases/water-diag/single/ranks/rank-0.tsv": "3574da7cda747be95d7469769957bc81cdf36408ef78562a677c4cc0e34fcaaa",
+        "cases/water-elpa/multi/cp2k.log": "366c83c4d74d2f07314795f64c48eede2b802ebe54d5ec40f579a4c711ffd6f0",
+        "cases/water-elpa/multi/elapsed.txt": "3ba0ddb219d2e6119b44c234eb1befa1fc83db5bff1cde5ebb2b427a4c839a9c",
+        "cases/water-elpa/multi/forces.xyz": "3cad992a555302cb0947a63c6b06bf2d2336f21e6f69a9a9b7df4c7bf3dd3919",
+        "cases/water-elpa/multi/input.inp": "572d320d3c4f63b84e53948edfb1939acc47c03f970539901890a242b584116d",
+        "cases/water-elpa/multi/ranks/rank-0.tsv": "3574da7cda747be95d7469769957bc81cdf36408ef78562a677c4cc0e34fcaaa",
+        "cases/water-elpa/multi/ranks/rank-1.tsv": "8394b4e27589dcc9b51bf91fef593250210a9d907a578cd0e4fb8a98e350dbc0",
+        "cases/water-elpa/single/cp2k.log": "8152f46722490720c9bbe7b0fec13b7d25faa85105be2633d1b6b33a2e2ddf6c",
+        "cases/water-elpa/single/elapsed.txt": "a5730045073531be9d70aab79056cec73547538042ac19ac96e53f7ee59a1581",
+        "cases/water-elpa/single/forces.xyz": "3cad992a555302cb0947a63c6b06bf2d2336f21e6f69a9a9b7df4c7bf3dd3919",
+        "cases/water-elpa/single/input.inp": "572d320d3c4f63b84e53948edfb1939acc47c03f970539901890a242b584116d",
+        "cases/water-elpa/single/ranks/rank-0.tsv": "3574da7cda747be95d7469769957bc81cdf36408ef78562a677c4cc0e34fcaaa",
+        "cases/water-gpw/multi/cp2k.log": "fa8ee50f17b64ceb261bca7ff8bf9935bff9d6aa8b64adf70c9286ad490870c0",
+        "cases/water-gpw/multi/elapsed.txt": "a090a9d4e88b4ed8427303c8d5eba2309480e1250dabfa1579621eb03bb8b980",
+        "cases/water-gpw/multi/forces.xyz": "eebfc50ca76342bc5ab55a589c0d55766ee69ba5826b27a0d7851b8c3e6d1788",
+        "cases/water-gpw/multi/input.inp": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0",
+        "cases/water-gpw/multi/ranks/rank-0.tsv": "3574da7cda747be95d7469769957bc81cdf36408ef78562a677c4cc0e34fcaaa",
+        "cases/water-gpw/multi/ranks/rank-1.tsv": "8394b4e27589dcc9b51bf91fef593250210a9d907a578cd0e4fb8a98e350dbc0",
+        "cases/water-gpw/single/cp2k.log": "82ee866702dde3ecd8092fbdadd8130766ceff576f7cff47f0d7aef009266279",
+        "cases/water-gpw/single/elapsed.txt": "9f3f4de69850551fdd8523ed8696712196087650bdb2c1249d0c63688519c55e",
+        "cases/water-gpw/single/forces.xyz": "54fa9218acbbd9efd6f0129912297eff3add13d80d755c2eb1ec4d3651a9c829",
+        "cases/water-gpw/single/input.inp": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0",
+        "cases/water-gpw/single/ranks/rank-0.tsv": "3574da7cda747be95d7469769957bc81cdf36408ef78562a677c4cc0e34fcaaa",
+        "cases/water64-elpa/multi/cp2k.log": "354046e48da03395f0b9e3de07f60cabfad5284a7866256203772a512722d053",
+        "cases/water64-elpa/multi/elapsed.txt": "3fa0e5cab6b155b15bef7dcd7f6475ab9897c38657cee6ebd37cb0096ff9d492",
+        "cases/water64-elpa/multi/forces.xyz": "bb7869e45ef257c312d133e322850e3a1591df1a263abfe7fa08b0b62e7de823",
+        "cases/water64-elpa/multi/input.inp": "c1425a1376ef7b15fa97b65008c3f4a4882a75dc96088c058aeb1371af36343b",
+        "cases/water64-elpa/multi/ranks/rank-0.tsv": "3574da7cda747be95d7469769957bc81cdf36408ef78562a677c4cc0e34fcaaa",
+        "cases/water64-elpa/multi/ranks/rank-1.tsv": "8394b4e27589dcc9b51bf91fef593250210a9d907a578cd0e4fb8a98e350dbc0",
+        "cases/water64-elpa/single/cp2k.log": "b2cd377019026e9642d88568ac5469e8e31dd6d03abda9f1922e2a47dd4dd85d",
+        "cases/water64-elpa/single/elapsed.txt": "31ccf7c3249a864cbc963f68ee3dea4593547a3272f1da9d322d7e788a32b1ca",
+        "cases/water64-elpa/single/forces.xyz": "4f3090395f574522066defdda6c56e99eed8cc7df2a9afa970bf9bcbe2be1c29",
+        "cases/water64-elpa/single/input.inp": "c1425a1376ef7b15fa97b65008c3f4a4882a75dc96088c058aeb1371af36343b",
+        "cases/water64-elpa/single/ranks/rank-0.tsv": "3574da7cda747be95d7469769957bc81cdf36408ef78562a677c4cc0e34fcaaa",
+        "cases/water64-gpw/multi/cp2k.log": "b1f7c5a047100905b7c529f6ad076176291d17a97dc88a38902c985ff54ff8c9",
+        "cases/water64-gpw/multi/elapsed.txt": "e3979f00e4f70b8970466d2baf64855a4e37581ee70f2182c2fc0340db048d63",
+        "cases/water64-gpw/multi/forces.xyz": "3c828e3daf2f14e50ae1f38a4b5f47956c6d6e1d4703d60686ffaa4dc554bc72",
+        "cases/water64-gpw/multi/input.inp": "567175e994a44502c8afe54c98ec31cb12853f0cba114477596174950974834f",
+        "cases/water64-gpw/multi/ranks/rank-0.tsv": "3574da7cda747be95d7469769957bc81cdf36408ef78562a677c4cc0e34fcaaa",
+        "cases/water64-gpw/multi/ranks/rank-1.tsv": "8394b4e27589dcc9b51bf91fef593250210a9d907a578cd0e4fb8a98e350dbc0",
+        "cases/water64-gpw/single/cp2k.log": "f9565828dddaba2741cb8290114b03aca34d9e938dcc119d2b96a7a5b034eb55",
+        "cases/water64-gpw/single/elapsed.txt": "db81ba3f6551ccd5506048694e65b55c67144f8a8dc5d3d09abcd6aed95e4adb",
+        "cases/water64-gpw/single/forces.xyz": "dba926fa9779f3c94da0cfc8620037374dfe0f35177a25b0d522cfd1323bf145",
+        "cases/water64-gpw/single/input.inp": "567175e994a44502c8afe54c98ec31cb12853f0cba114477596174950974834f",
+        "cases/water64-gpw/single/ranks/rank-0.tsv": "3574da7cda747be95d7469769957bc81cdf36408ef78562a677c4cc0e34fcaaa",
+        "job.id": "fcf0d0488c650e9445cbeffcd8a5d2a921d32721fc86d987f809b96d91ae8a5d",
+        "modules.txt": "a0e0698bef3494b1817055ee7eb994759e023bcd366912fa1fc1334b0c5e92d7",
+        "mpi-version.txt": "dbefbbfa3051a687ec6d12c60decfadc9e432e1e88b88e634e861777f1367714",
+        "mpirun.txt": "25c80c91443a570f981101dc6b49e827a5ff947f142b0b0d8d26e0b6fba2c31c",
+        "native-acceptance.json": "92e9fda19275860776181a92818f2c2b70ae7e7783b60032838026e073e733dc",
+        "nodes.txt": "9878ce63c2fd15c1711a4c6bfd9e865af91db8fca3d3eda7a9274c24852116ac",
+        "slurm-1844996.log": "db6ba903e635c6ce38d6931a4d746f711f651bf182b9ecf28a9949cd9cbab95e",
+        "version/cp2k.log": "2118ec6ceb90c5503c60c23ac58d2bd628262f1598e0b25d6271af82da724243",
+        "version/elapsed.txt": "42944d5193ebfbaffe7eb55559aff5896b8bac46454cc640f51647fd8f60cc77",
+        "version/ranks/ldd-0.txt": "5c0c4b4956a06ba82ca80a4ca3d602e03eab095c6f2c0d77852a5150aadad315",
+        "version/ranks/ldd-1.txt": "cbf606b9b4d46a8bae9abb1d21efb7d9b710a5fef0c06fce36d7b0ebe6265c1e",
+        "version/ranks/loader-0.132495": "05c1e5a6bbea9fb6090600ae134c41957f901794eeabe19ef8a53bcf3633470f",
+        "version/ranks/loader-1.4189948": "a747c910a9668fc476f71669aea6489a7b4535de099c012c96112ae3c227e1aa",
+        "version/ranks/rank-0.tsv": "3574da7cda747be95d7469769957bc81cdf36408ef78562a677c4cc0e34fcaaa",
+        "version/ranks/rank-1.tsv": "8394b4e27589dcc9b51bf91fef593250210a9d907a578cd0e4fb8a98e350dbc0"
+      },
+      "receipt_sha256": "edb2527f9cc2ce9f21499ab1ed0d84c31c8e2eb7979b6653c867828a98af46d6",
+      "reference_evidence_sha256": "62c6569c6d30e647a540a7de8211667a6d5425024ad846ce9f8611104fbc558d",
+      "science_passed": 14,
+      "start": "2026-10-18T19:38:00",
+      "state": "COMPLETED",
+      "timings_descriptive_only": {
+        "ch2o-tblite/multi": {
+          "accepted_sif_cp2k_seconds": 0.426,
+          "physical_cp2k_seconds": 0.151,
+          "physical_wall_seconds": 1.246679109055549
+        },
+        "ch2o-tblite/single": {
+          "accepted_sif_cp2k_seconds": 0.308,
+          "physical_cp2k_seconds": 0.073,
+          "physical_wall_seconds": 0.8965290207415819
+        },
+        "water-dftd4/multi": {
+          "accepted_sif_cp2k_seconds": 18.825,
+          "physical_cp2k_seconds": 18.875,
+          "physical_wall_seconds": 20.145895306952298
+        },
+        "water-dftd4/single": {
+          "accepted_sif_cp2k_seconds": 38.588,
+          "physical_cp2k_seconds": 36.995,
+          "physical_wall_seconds": 37.88669728906825
+        },
+        "water-diag/multi": {
+          "accepted_sif_cp2k_seconds": 12.759,
+          "physical_cp2k_seconds": 12.42,
+          "physical_wall_seconds": 13.572541160043329
+        },
+        "water-diag/single": {
+          "accepted_sif_cp2k_seconds": 21.049,
+          "physical_cp2k_seconds": 20.841,
+          "physical_wall_seconds": 21.823272762354463
+        },
+        "water-elpa/multi": {
+          "accepted_sif_cp2k_seconds": 12.707,
+          "physical_cp2k_seconds": 12.447,
+          "physical_wall_seconds": 13.585625196807086
+        },
+        "water-elpa/single": {
+          "accepted_sif_cp2k_seconds": 21.207,
+          "physical_cp2k_seconds": 21.48,
+          "physical_wall_seconds": 22.375930250622332
+        },
+        "water-gpw/multi": {
+          "accepted_sif_cp2k_seconds": 18.982,
+          "physical_cp2k_seconds": 18.605,
+          "physical_wall_seconds": 19.759198907762766
+        },
+        "water-gpw/single": {
+          "accepted_sif_cp2k_seconds": 33.194,
+          "physical_cp2k_seconds": 30.131,
+          "physical_wall_seconds": 31.039983419235796
+        },
+        "water64-elpa/multi": {
+          "accepted_sif_cp2k_seconds": 59.536,
+          "physical_cp2k_seconds": 58.384,
+          "physical_wall_seconds": 59.59421270387247
+        },
+        "water64-elpa/single": {
+          "accepted_sif_cp2k_seconds": 112.888,
+          "physical_cp2k_seconds": 113.698,
+          "physical_wall_seconds": 114.62269184319302
+        },
+        "water64-gpw/multi": {
+          "accepted_sif_cp2k_seconds": 226.903,
+          "physical_cp2k_seconds": 222.122,
+          "physical_wall_seconds": 223.42362198000774
+        },
+        "water64-gpw/single": {
+          "accepted_sif_cp2k_seconds": 460.887,
+          "physical_cp2k_seconds": 444.723,
+          "physical_wall_seconds": 445.6696014297195
+        }
+      }
+    }
+  ],
+  "passed": true,
+  "revalidator_sha256": "e9f929ed1099949cc4a49739937270c01d505cb697de6fec59311846c38d39ed",
+  "scheduling_adjustment": {
+    "actual_start": "2026-10-18T19:41:26+08:00",
+    "checked_at": "2026-10-18T11:41:39.054854+00:00",
+    "job": "1844993",
+    "new_qos": "rush-1o2gpu",
+    "new_time_limit": "00:25:00",
+    "old_qos": "flood-1o2gpu",
+    "old_time_limit": "00:40:00",
+    "partition": "4V100",
+    "reason": "Use account-authorized short-task QoS for the same pending job; two nodes and one GPU per node retained.",
+    "same_inputs_and_resources": true
+  },
+  "scope": "physical /opt native CP2K 2026.2, four partitions, single/two-node science",
+  "submission": {
+    "deployment_commit": "71bc3793fc81b09703702cb03b4e9b13cd1bef6e",
+    "execution_account": "stardust",
+    "jobs": [
+      {
+        "job": "1844993",
+        "output": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-2026.2-physical-20261018-193800-3592647/4V100",
+        "partition": "4V100"
+      },
+      {
+        "job": "1844994",
+        "output": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-2026.2-physical-20261018-193800-3592647/16V100",
+        "partition": "16V100"
+      },
+      {
+        "job": "1844995",
+        "output": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-2026.2-physical-20261018-193800-3592647/8V100V0",
+        "partition": "8V100V0"
+      },
+      {
+        "job": "1844996",
+        "output": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-2026.2-physical-20261018-193800-3592647/DSPRHBM",
+        "partition": "DSPRHBM"
+      }
+    ],
+    "package_sha256": {
+      "2026.2-auto": "817f032fe3434a8266a4df82f8b93583cae39437c9592bbf83ecc872d6764405",
+      "README.md": "9795fb72227bb8d8380681a19d7f5e8371af23213e9250c6e4a3ee86aaf0eb70",
+      "install.py": "ce54c8d410e955b6238d285727e10bb7a6f9782e4f6f925523429ca607988ba4",
+      "install.sh": "53349dc147a11c6745c542c5dc9afcf8df9699cd6d1caf28b2a6cdbb3f766839",
+      "native-rank.sh": "bbdcffaad12755d64aee27b56250dc46f5fd5365f67dfe1266360f18018b7a44",
+      "release.json": "81dce6a91b61d67245af1bfe61d4fe40efc73615a9e3ca81d4510777d9640e33",
+      "run-native-checks.py": "3e8b5244fa6dc9b12bcd01d0da146e3f91aa5cf628dc910b4ee6a3fdb1161e61",
+      "submit-native-checks.sh": "730b7fb4d7ddd22b53cdf772bc76330e7d94e1060bb52789a5dff5b1e412c926",
+      "verify-native.sbatch": "59b3125d2b10a68752cd4d0a656b651ac2e5a7046f02cbc56c5a31d5d535d8df"
+    },
+    "schema": 1
+  },
+  "uses_apptainer": false
+}

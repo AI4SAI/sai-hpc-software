@@ -1,0 +1,46 @@
+SOURCE https://raw.githubusercontent.com/Kitware/CMake/v3.31.6/Source/kwsys/SystemTools.cxx
+SHA256 a13638704b09f2710ae06313b4b63ff9d6600825402567f192a6bab4dc313e56
+2822: Status SystemTools::RemoveFile(std::string const& source)
+2823: {
+2824: #ifdef _WIN32
+2825:   std::wstring const& ws = Encoding::ToWindowsExtendedPath(source);
+2826:   if (DeleteFileW(ws.c_str())) {
+2827:     return Status::Success();
+2828:   }
+2829:   DWORD err = GetLastError();
+2830:   if (err == ERROR_FILE_NOT_FOUND || err == ERROR_PATH_NOT_FOUND) {
+2831:     return Status::Success();
+2832:   }
+2833:   if (err != ERROR_ACCESS_DENIED) {
+2834:     return Status::Windows(err);
+2835:   }
+2836:   /* The file may be read-only.  Try adding write permission.  */
+2837:   mode_t mode;
+2838:   if (!SystemTools::GetPermissions(source, mode) ||
+2839:       !SystemTools::SetPermissions(source, S_IWRITE)) {
+2840:     SetLastError(err);
+2841:     return Status::Windows(err);
+2842:   }
+2843: 
+2844:   const DWORD DIRECTORY_SOFT_LINK_ATTRS =
+2845:     FILE_ATTRIBUTE_DIRECTORY | FILE_ATTRIBUTE_REPARSE_POINT;
+2846:   DWORD attrs = GetFileAttributesW(ws.c_str());
+2847:   if (attrs != INVALID_FILE_ATTRIBUTES &&
+2848:       (attrs & DIRECTORY_SOFT_LINK_ATTRS) == DIRECTORY_SOFT_LINK_ATTRS &&
+2849:       RemoveDirectoryW(ws.c_str())) {
+2850:     return Status::Success();
+2851:   }
+2852:   if (DeleteFileW(ws.c_str()) || GetLastError() == ERROR_FILE_NOT_FOUND ||
+2853:       GetLastError() == ERROR_PATH_NOT_FOUND) {
+2854:     return Status::Success();
+2855:   }
+2856:   /* Try to restore the original permissions.  */
+2857:   SystemTools::SetPermissions(source, mode);
+2858:   SetLastError(err);
+2859:   return Status::Windows(err);
+2860: #else
+2861:   if (unlink(source.c_str()) != 0 && errno != ENOENT) {
+2862:     return Status::POSIX_errno();
+2863:   }
+2864:   return Status::Success();
+2865: #endif

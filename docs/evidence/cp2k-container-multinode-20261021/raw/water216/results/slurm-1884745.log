@@ -1,0 +1,52 @@
+[INFO] NCCL Topology dumped via C-API and successfully patched to force GDR=1.
+--------------------------------------------------------------------------
+PRTE has detected that the head of the session directory tree (where
+scratch files and shared memory backing storage will be placed)
+resides on a shared file system:
+
+   Directory: /home/stardust/sai-hpc-software/runtime/com-1884745
+   File system type: lustre
+
+For performance reasons, it is strongly recommended that the session
+directory be located on a local file system. This can be controlled by
+setting the system temporary directory to be used by PRTE using either
+the TMPDIR envar or the "prte_tmpdir_base" MCA param.
+
+If you need the temporary directory to be different on remote nodes
+from the local one where prterun is running (e.g., when a login node is
+being employed), then you can set the local temporary directory using
+the "prte_local_tmpdir_base" MCA param and the one to be used on all
+other nodes using the "prte_remote_tmpdir_base" param.
+
+This is only a warning advisory and your job will continue. You can
+disable this warning in the future by setting the
+"prte_silence_shared_fs" MCA param to "1".
+--------------------------------------------------------------------------
+START probes/native
+START probes/sif
+MATCHED_TWO_NODES_EIGHT_GPUS_EXECUTABLE_LIBRARIES_AND_HOST_FILESYSTEM
+START cases/water216-ot/warmup/native
+DONE water216-ot/warmup/native wall= 228.6120960516855 cp2k= 222.202
+START cases/water216-ot/warmup/sif
+DONE water216-ot/warmup/sif wall= 255.77363963704556 cp2k= 248.821
+START cases/water216-ot/0/native
+DONE water216-ot/0/native wall= 238.299362834543 cp2k= 232.032
+START cases/water216-ot/0/sif
+DONE water216-ot/0/sif wall= 225.514075900428 cp2k= 217.606
+START cases/water216-ot/1/sif
+DONE water216-ot/1/sif wall= 226.32897568587214 cp2k= 216.18
+START cases/water216-ot/1/native
+DONE water216-ot/1/native wall= 222.42882471717894 cp2k= 216.01
+START cases/water216-ot/2/native
+DONE water216-ot/2/native wall= 226.01787225343287 cp2k= 219.708
+START cases/water216-ot/2/sif
+DONE water216-ot/2/sif wall= 223.76960885431617 cp2k= 217.249
+START cases/water216-ot/3/sif
+DONE water216-ot/3/sif wall= 224.63302562199533 cp2k= 216.614
+START cases/water216-ot/3/native
+DONE water216-ot/3/native wall= 223.8735528588295 cp2k= 208.355
+START cases/water216-ot/4/native
+DONE water216-ot/4/native wall= 220.38784151058644 cp2k= 215.125
+START cases/water216-ot/4/sif
+DONE water216-ot/4/sif wall= 212.8578467015177 cp2k= 206.683
+CP2K_MULTINODE_CONTAINER_OVERHEAD_PASSED

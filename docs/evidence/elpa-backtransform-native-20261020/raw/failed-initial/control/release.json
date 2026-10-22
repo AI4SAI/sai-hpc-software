@@ -1,0 +1,178 @@
+{
+  "backtransform_patch_sha256": "db6db5a63b6e00329d02d93738e19b99811170e06c4fee9d602d860548d6aa67",
+  "base_installer_sha256": "7cb278f615619e2a0d3c6e31ec374fc4cc8242f554ba5c7c8d02e58e26fd21ea",
+  "builds": {
+    "avx2": {
+      "job_id": "1868591",
+      "lifecycle": [
+        {
+          "created_per_rank": 0,
+          "freed_per_rank": 0,
+          "gpu": 0,
+          "live_per_rank": 0,
+          "max_errors": {
+            "orthogonality": 9.992e-16,
+            "residual": 4.233e-16,
+            "spectrum": 1.332e-15
+          },
+          "numerical_solves": 64,
+          "objects_per_rank": 32,
+          "ranks": 1
+        },
+        {
+          "created_per_rank": 32,
+          "freed_per_rank": 32,
+          "gpu": 1,
+          "live_per_rank": 0,
+          "max_errors": {
+            "orthogonality": 1.443e-15,
+            "residual": 4.788e-16,
+            "spectrum": 1.332e-15
+          },
+          "numerical_solves": 64,
+          "objects_per_rank": 32,
+          "ranks": 1
+        },
+        {
+          "created_per_rank": 0,
+          "freed_per_rank": 0,
+          "gpu": 0,
+          "live_per_rank": 0,
+          "max_errors": {
+            "orthogonality": 1.665e-15,
+            "residual": 4.718e-16,
+            "spectrum": 8.882e-16
+          },
+          "numerical_solves": 64,
+          "objects_per_rank": 32,
+          "ranks": 2
+        },
+        {
+          "created_per_rank": 32,
+          "freed_per_rank": 32,
+          "gpu": 1,
+          "live_per_rank": 0,
+          "max_errors": {
+            "orthogonality": 1.443e-15,
+            "residual": 2.845e-16,
+            "spectrum": 8.882e-16
+          },
+          "numerical_solves": 64,
+          "objects_per_rank": 32,
+          "ranks": 2
+        }
+      ],
+      "manifest_sha256": "1afedc3af84758570e1015616bb80e8aaaf58412992fc2ed2bd1997b48c36b37",
+      "max_errors": {
+        "orthogonality": 1.665e-15,
+        "residual": 6.46e-16,
+        "spectrum": 2.22e-15
+      },
+      "numerical_solves": 48,
+      "prefix": "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx2/nvidia",
+      "previous_manifest_sha256": "77a5b8df32f0724b492ce8555fb62cef1264864b3a77c11bf46914e26c875bfe",
+      "sif": "/home/stardust/sai-hpc-software/runs/elpa-2026.02.001-backtransform-20261020-avx2/elpa-avx2.sif",
+      "sif_sha256": "60c3723b15bb31962a19d0e78e82568890ddace4100064ecf98b4373bb7efe1d"
+    },
+    "avx512": {
+      "job_id": "1868554",
+      "lifecycle": [
+        {
+          "created_per_rank": 0,
+          "freed_per_rank": 0,
+          "gpu": 0,
+          "live_per_rank": 0,
+          "max_errors": {
+            "orthogonality": 1.332e-15,
+            "residual": 4.927e-16,
+            "spectrum": 1.332e-15
+          },
+          "numerical_solves": 64,
+          "objects_per_rank": 32,
+          "ranks": 1
+        },
+        {
+          "created_per_rank": 32,
+          "freed_per_rank": 32,
+          "gpu": 1,
+          "live_per_rank": 0,
+          "max_errors": {
+            "orthogonality": 1.443e-15,
+            "residual": 4.788e-16,
+            "spectrum": 1.332e-15
+          },
+          "numerical_solves": 64,
+          "objects_per_rank": 32,
+          "ranks": 1
+        },
+        {
+          "created_per_rank": 0,
+          "freed_per_rank": 0,
+          "gpu": 0,
+          "live_per_rank": 0,
+          "max_errors": {
+            "orthogonality": 1.332e-15,
+            "residual": 4.718e-16,
+            "spectrum": 8.882e-16
+          },
+          "numerical_solves": 64,
+          "objects_per_rank": 32,
+          "ranks": 2
+        },
+        {
+          "created_per_rank": 32,
+          "freed_per_rank": 32,
+          "gpu": 1,
+          "live_per_rank": 0,
+          "max_errors": {
+            "orthogonality": 1.443e-15,
+            "residual": 2.845e-16,
+            "spectrum": 8.882e-16
+          },
+          "numerical_solves": 64,
+          "objects_per_rank": 32,
+          "ranks": 2
+        }
+      ],
+      "manifest_sha256": "2b87aff43e337077994a3ffeab67fed87125cf528ac293d6bc87090a1061a03a",
+      "max_errors": {
+        "orthogonality": 1.665e-15,
+        "residual": 5.905e-16,
+        "spectrum": 2.22e-15
+      },
+      "numerical_solves": 48,
+      "prefix": "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/nvidia",
+      "previous_manifest_sha256": "b0696b457a9cf58e463cd68caf0753f97eba29a6f9a995844ea556becbe679a2",
+      "sif": "/home/stardust/sai-hpc-software/runs/elpa-2026.02.001-backtransform-20261020-avx512/elpa-avx512.sif",
+      "sif_sha256": "18b569eda9620d5e069060fbde2d9310fa5a2a9c68ba12007a6a3d3496b13950"
+    }
+  },
+  "cp2k_diagnostics": {
+    "16v100-avx2": {
+      "artifact_sha256": "7c98ec5f982037c9c1bf8bdb2016e397ae678797c36ee18172caf8d49e74946c",
+      "elpa_library_sha256": "d73ed2ae2a03919e494a7f4a9ccf07ee8d81c9c45d78a29b0b0eb137410f4a17",
+      "evidence": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-elpa-host-staging-20261020-16v100-avx2/results/diagnostic-evidence.json",
+      "evidence_sha256": "b59467f0a0a72ebbe1fa206751652116da9724c8238523d0bc4b07232016808f",
+      "job_id": "1868645"
+    },
+    "4v100-avx512": {
+      "artifact_sha256": "2e4beba48d3dcce7d58922c64b88808f5402011114a83abc6d6a1153b5f4d696",
+      "elpa_library_sha256": "d33fa13b91e7ef666805eca995086407b9eaba3997c5ff2bbeaf40a0dbce293b",
+      "evidence": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-elpa-host-staging-20261020-4v100-avx512/results/diagnostic-evidence.json",
+      "evidence_sha256": "c6033c7e50b88b9196589e126f20f7ff1303a908c5279a5b261bc1dfaf043b51",
+      "job_id": "1868636"
+    },
+    "8v100v0-avx512": {
+      "artifact_sha256": "db156600fe6f2e4c7d279d8d8d1a9f757dfa11a8e69e5685095005bdc314835a",
+      "elpa_library_sha256": "d73ed2ae2a03919e494a7f4a9ccf07ee8d81c9c45d78a29b0b0eb137410f4a17",
+      "evidence": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-elpa-host-staging-20261020-8v100v0-avx512/results/diagnostic-evidence.json",
+      "evidence_sha256": "5f0db2e36738ad5de31b41acdb0ac7b3cd2d06c85a6d645d6bc271fdd2ae81b2",
+      "job_id": "1868647"
+    }
+  },
+  "module_sha256": "47bb8458ee6b288302fc201cde68b816052801952d1c39090cac17b5b63146bd",
+  "revision": "backtransform-host-staging-1",
+  "scope": "ELPA replacement candidate; physical acceptance and a new CP2K dependency lock remain required",
+  "source_sha256": "a379f27f4dbd27b2ee45017afec656d064301e97150c874649bdfd64957b75ed",
+  "version": "2026.02.001"
+}

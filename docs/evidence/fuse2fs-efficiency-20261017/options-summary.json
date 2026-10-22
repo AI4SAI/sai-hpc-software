@@ -1,0 +1,199 @@
+{
+  "schema": 1,
+  "diagnostic_root": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/fuse2fs-efficiency-20261017-a",
+  "cases": [
+    {
+      "label": "cache256",
+      "driver": "/opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/fuse2fs",
+      "options": "cache_size=256M",
+      "start_epoch": 1792236708.8511217,
+      "workload": {
+        "returncode": 0,
+        "wall_seconds": 80.4001469691284
+      },
+      "fsck": {
+        "returncode": 0,
+        "wall_seconds": 3.4185164677910507
+      },
+      "remount": {
+        "returncode": 0,
+        "wall_seconds": 1.922052956186235
+      },
+      "phases": [
+        {
+          "phase": "create_64",
+          "wall_seconds": 0.1074836547486484,
+          "client_cpu_seconds": 0.01146599999999999,
+          "client_average_cores": 0.10667668518355973,
+          "finished_epoch": 1792236712.205249,
+          "fsync_calls": 0,
+          "fsync_seconds": 0
+        },
+        {
+          "phase": "rename_64",
+          "wall_seconds": 32.62255225516856,
+          "client_cpu_seconds": 0.011804999999999996,
+          "client_average_cores": 0.0003618662300749222,
+          "finished_epoch": 1792236744.851939,
+          "fsync_calls": 128,
+          "fsync_seconds": 32.504287
+        },
+        {
+          "phase": "compile_32_j8",
+          "wall_seconds": 42.79862489597872,
+          "client_cpu_seconds": 5.769535000000001,
+          "client_average_cores": 0.13480655077173043,
+          "finished_epoch": 1792236787.7229786,
+          "fsync_calls": 128,
+          "fsync_seconds": 42.137926
+        },
+        {
+          "phase": "explicit_fsync",
+          "wall_seconds": 1.2743470249697566,
+          "client_cpu_seconds": 0.00017099999999992122,
+          "client_average_cores": 0.00013418636890055868,
+          "finished_epoch": 1792236789.0007265,
+          "fsync_calls": 2,
+          "fsync_seconds": 1.27196
+        }
+      ],
+      "fsync": {
+        "calls": 275,
+        "total_seconds": 78.908148,
+        "errors": 0
+      },
+      "hashes": {
+        "run.log": "926c031bd975051154bfd0747af22309e92ba34e96b4ce2d9845319aff988d31",
+        "fsck.log": "877171b1ee2771559b54840e731f017589743978baa1806378e6334b7309e9d1",
+        "verify.log": "965fbe1bfbfe92abd7eb086de51d096b2ede48619508e23dbcdf4da8ed81f010",
+        "results/manifest.json": "602b0ce998825fa2cf0b3975d2652a668b2f0c697b4ae267a79fe4cecd95b1c0",
+        "results/remount-verified.json": "ae5c940104470fa35aa937806a40c00b1d42e57032946f5775abd88fcba57e9e",
+        "results/phases.jsonl": "d02e89c2a8d18b93941d0e190894dfd0ff16e4c0730c794faccb7dc464a731dc",
+        "workload-fsync.trace": "2147937fbec32170d7ad7f3fb3467bf01afc882f0d0a795d07bb1d25944b4d54"
+      }
+    },
+    {
+      "label": "directio",
+      "driver": "/opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/fuse2fs",
+      "options": "directio",
+      "start_epoch": 1792236797.34449,
+      "error": "Command '['/opt/devtools/apptainer/1.4.4/bin/apptainer', '--debug', '--config', '/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/fuse2fs-efficiency-20261017-a/directio/apptainer.conf', 'exec', '--fakeroot', '--cleanenv', '--containall', '--no-home', '--no-mount', 'bind-paths,home,cwd,tmp,hostfs', '--pwd', '/', '--net', '--network', 'none', '--bind', '/usr:/usr:ro', '--bind', '/sbin:/sbin:ro', '--bind', '/lib:/lib:ro', '--bind', '/lib64:/lib64:ro', '--bind', '/opt/devtools:/opt/devtools:ro', '--bind', '/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/fuse2fs-efficiency-20261017-a/input:/bench:ro', '--bind', '/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/fuse2fs-efficiency-20261017-a/directio/results:/results:rw', '--env', 'TMPDIR=/workspace/tmp', '--overlay', '/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/fuse2fs-efficiency-20261017-a/directio/work.ext3', '/home/stardust/sai-hpc-software/containers/base/minimal-v1.sif', '/usr/bin/python3', '/bench/fuse2fs-workload.py', 'run']' timed out after 239.99998696474358 seconds",
+      "phases": [
+        {
+          "phase": "create_64",
+          "wall_seconds": 147.15538444090635,
+          "client_cpu_seconds": 0.020583999999999998,
+          "client_average_cores": 0.00013987935323063886,
+          "finished_epoch": 1792236978.6066694
+        }
+      ],
+      "hashes": {
+        "run.log": "5b7077495456b6ee0b7aedbd92b7a6a241fad25e28e03f34b3a39a5e7330bae8",
+        "results/phases.jsonl": "31d35a0b5c29a86a2105da58ad09728e8d25517c460d04eec6c979ab5be6b9d3"
+      }
+    },
+    {
+      "label": "stock-1",
+      "driver": "/opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/fuse2fs",
+      "options": "",
+      "start_epoch": 1792236649.8662298,
+      "workload": {
+        "returncode": 0,
+        "wall_seconds": 49.89814155269414
+      },
+      "fsck": {
+        "returncode": 0,
+        "wall_seconds": 1.5677768308669329
+      },
+      "remount": {
+        "returncode": 0,
+        "wall_seconds": 1.8677763533778489
+      },
+      "phases": [
+        {
+          "phase": "create_64",
+          "wall_seconds": 0.050017334055155516,
+          "client_cpu_seconds": 0.010267000000000005,
+          "client_average_cores": 0.20526883717309477,
+          "finished_epoch": 1792236652.0377026,
+          "fsync_calls": 0,
+          "fsync_seconds": 0
+        },
+        {
+          "phase": "rename_64",
+          "wall_seconds": 22.004869314376265,
+          "client_cpu_seconds": 0.012064000000000005,
+          "client_average_cores": 0.0005482422925419661,
+          "finished_epoch": 1792236674.0439367,
+          "fsync_calls": 128,
+          "fsync_seconds": 21.924052
+        },
+        {
+          "phase": "compile_32_j8",
+          "wall_seconds": 24.795638356823474,
+          "client_cpu_seconds": 5.984899,
+          "client_average_cores": 0.24136902280448952,
+          "finished_epoch": 1792236698.875367,
+          "fsync_calls": 130,
+          "fsync_seconds": 24.287132
+        },
+        {
+          "phase": "explicit_fsync",
+          "wall_seconds": 0.2761837621219456,
+          "client_cpu_seconds": 0.00017899999999926308,
+          "client_average_cores": 0.0006481192037648752,
+          "finished_epoch": 1792236699.1523166,
+          "fsync_calls": 2,
+          "fsync_seconds": 0.27433
+        }
+      ],
+      "fsync": {
+        "calls": 277,
+        "total_seconds": 48.839435,
+        "errors": 0
+      },
+      "hashes": {
+        "run.log": "40c34300f84603d7ceb938ad2a5c7b961f4de8b9a6468894fd8137331445de06",
+        "fsck.log": "a2d27eee07ebbfea70789aae31af85c33d710903fca2793ca23f29213fdcc0a6",
+        "verify.log": "6b70ff0e1bc4a952109b116fefc227f534fc802a119fbd7e5c817703a8673c15",
+        "results/manifest.json": "602b0ce998825fa2cf0b3975d2652a668b2f0c697b4ae267a79fe4cecd95b1c0",
+        "results/remount-verified.json": "ae5c940104470fa35aa937806a40c00b1d42e57032946f5775abd88fcba57e9e",
+        "results/phases.jsonl": "e76c9fa8eebd06876015d0331627f5f37f8e37bb386aae255fa9c486b4804a92",
+        "workload-fsync.trace": "21caf25dace12b19b2ccba90be646532a3cf5be132b0f39dd58d74672d2ad652"
+      }
+    }
+  ],
+  "candidate_source_sha": "45651efd6db7da8738bc9d8d1f17e99259cabfe4",
+  "baseline_version": "1.47.3",
+  "all_build_storage_in_home": true,
+  "job_id": "1830278",
+  "all_completed_case_manifests_identical": true,
+  "comparisons": {
+    "create_64": {
+      "median_seconds": {
+        "cache256": 0.1074836547486484,
+        "directio": 147.15538444090635,
+        "stock": 0.050017334055155516
+      }
+    },
+    "rename_64": {
+      "median_seconds": {
+        "cache256": 32.62255225516856,
+        "stock": 22.004869314376265
+      }
+    },
+    "compile_32_j8": {
+      "median_seconds": {
+        "cache256": 42.79862489597872,
+        "stock": 24.795638356823474
+      }
+    },
+    "explicit_fsync": {
+      "median_seconds": {
+        "cache256": 1.2743470249697566,
+        "stock": 0.2761837621219456
+      }
+    }
+  },
+  "candidate_binary_sha256": "8bd09de37f50d759ef039675c2ee5a1d7a16f857774dd19af385039c45173162"
+}

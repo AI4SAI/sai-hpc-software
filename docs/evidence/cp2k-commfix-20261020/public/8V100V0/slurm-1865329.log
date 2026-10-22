@@ -1,0 +1,8 @@
+INFO: Will utilize CUDA MPS and run 2 Ranks-per-GPU.
+INFO: SLURM_NODELIST is 8v100v0n14
+INFO: Setting CUDA_MPS_PIPE_DIRECTORY and CUDA_MPS_LOG_DIRECTORY to /tmp/CUDA_MPS-Slurm_Job_1865329
+ELPA_REPAIRED_PHYSICAL_FILES_PASS
+	libelpa_openmp.so.19 => /opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx2/nvidia/lib/libelpa_openmp.so.19 (0x000014871f766000)
+{"created_per_rank": 0, "freed_per_rank": 0, "gpu": 0, "live_per_rank": 0, "max_errors": {"orthogonality": 1.665e-15, "residual": 4.718e-16, "spectrum": 8.882e-16}, "numerical_solves": 64, "objects_per_rank": 32, "ranks": 2}
+{"created_per_rank": 32, "freed_per_rank": 32, "gpu": 1, "live_per_rank": 0, "max_errors": {"orthogonality": 1.443e-15, "residual": 2.845e-16, "spectrum": 8.882e-16}, "numerical_solves": 64, "objects_per_rank": 32, "ranks": 2}
+ELPA_PARTITION_MODULE_PASS 8V100V0 avx2 nvidia

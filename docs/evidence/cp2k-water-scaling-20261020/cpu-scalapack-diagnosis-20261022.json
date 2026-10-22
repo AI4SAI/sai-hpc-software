@@ -1,0 +1,1795 @@
+{
+  "accounting": "1887923|RUNNING|0:0|1-02:24:08|16v100n27\n1888437|COMPLETED|0:0|18:16:16|4v100n16\n",
+  "campaign": {
+    "complete": false,
+    "controller_revision": "control-v5",
+    "cpu": {
+      "16V100": {
+        "accepted": true,
+        "build": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-16v100-a",
+        "build_state": "COMPLETED",
+        "smoke": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-smoke-b",
+        "smoke_state": "COMPLETED"
+      },
+      "4V100": {
+        "accepted": true,
+        "build": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-4v100-a",
+        "build_state": "COMPLETED",
+        "smoke": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-smoke",
+        "smoke_state": "COMPLETED"
+      }
+    },
+    "errors": [],
+    "memory_followup": "4V100 has 22 GiB host RAM per 32 GiB GPU; require complete ENERGY_FORCE memory validation and retain earlier failures.",
+    "name": "20261020-large-water",
+    "points": [
+      {
+        "accepted": true,
+        "attempt": 2,
+        "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g1-d",
+        "calibration_state": "COMPLETED",
+        "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g1-compare-r2",
+        "comparison_state": "COMPLETED",
+        "gpus": 1,
+        "partition": "16V100",
+        "previous_comparisons": [
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g1-compare"
+        ],
+        "replacement_reason": "Last CPU pair stopped at the 92% RAM guard; use 95% with the same 15 GiB quota. Revalidate and reuse nine tuning cases, then run all warm-up/measured pairs afresh.",
+        "shape": [
+          6,
+          6,
+          8
+        ]
+      },
+      {
+        "accepted": true,
+        "attempt": 2,
+        "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g4-e",
+        "calibration_state": "COMPLETED",
+        "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261021-large-water-16v100-g4-compare-r2",
+        "comparison_state": "COMPLETED",
+        "gpus": 4,
+        "partition": "16V100",
+        "previous_comparisons": [
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g4-compare"
+        ],
+        "replacement_reason": "The second measured CPU case crossed the original two-hour case ceiling. Revalidate all nine tuning cases; keep 648 waters and the same resource quota, then run every warm-up and measured pair afresh with the current six-hour case ceiling.",
+        "shape": [
+          8,
+          9,
+          9
+        ]
+      },
+      {
+        "attempt": 3,
+        "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g16-e",
+        "calibration_state": "COMPLETED",
+        "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261021-large-water-16v100-g16-compare-r3",
+        "comparison_state": "RUNNING",
+        "gpus": 16,
+        "host_memory_limited": false,
+        "partition": "16V100",
+        "previous_comparisons": [
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare",
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare-r2"
+        ],
+        "replacement_reason": "The first CPU tuning case reached SCF step 13 at the six-hour case ceiling. Revalidate six GPU tuning cases; run remaining CPU tuning and every timing pair afresh, with 18 hours per case and seven days for the allocation.",
+        "shape": [
+          11,
+          11,
+          12
+        ]
+      },
+      {
+        "accepted": true,
+        "allow_host_limited": true,
+        "attempt": 3,
+        "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g1-full-a",
+        "calibration_state": "COMPLETED",
+        "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r3",
+        "comparison_state": "COMPLETED",
+        "gpus": 1,
+        "host_memory_limited": true,
+        "partition": "4V100",
+        "previous_calibrations": [
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g1-f"
+        ],
+        "previous_comparisons": [
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare",
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g1-compare-r2"
+        ],
+        "replacement_reason": "Second CPU measured pair stopped at 20.28/22 GiB under the 92% RAM guard. Keep the same allocation and 392 waters; use 95%, revalidate nine original tuning cases, and run all warm-up/measured pairs afresh.",
+        "shape": [
+          7,
+          7,
+          8
+        ]
+      },
+      {
+        "accepted": true,
+        "allow_host_limited": true,
+        "attempt": 2,
+        "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261021-4v100-g4-full-b",
+        "calibration_state": "COMPLETED",
+        "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g4-compare-r2",
+        "comparison_state": "COMPLETED",
+        "gpus": 4,
+        "host_memory_limited": true,
+        "partition": "4V100",
+        "previous_calibrations": [
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-e",
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g4-full-a"
+        ],
+        "replacement_reason": "The 900-water full calculation hit the 92% host-memory guard at 81.26/88 GiB. Start complete calibration from 864 waters with six probes, retaining the larger-size RAM evidence.",
+        "shape": [
+          9,
+          10,
+          10
+        ]
+      }
+    ],
+    "scheduler": {
+      "1882046": {
+        "elapsed": "00:06:40",
+        "exit_code": "0:0",
+        "nodes": "16v100n67",
+        "state": "COMPLETED"
+      },
+      "1882047": {
+        "elapsed": "00:22:31",
+        "exit_code": "0:0",
+        "nodes": "4v100n10",
+        "state": "COMPLETED"
+      },
+      "1882071": {
+        "elapsed": "00:01:59",
+        "exit_code": "0:0",
+        "nodes": "16v100n02",
+        "state": "COMPLETED"
+      },
+      "1882180": {
+        "elapsed": "00:05:44",
+        "exit_code": "0:0",
+        "nodes": "16v100n07",
+        "state": "COMPLETED"
+      },
+      "1882207": {
+        "elapsed": "00:11:59",
+        "exit_code": "0:0",
+        "nodes": "16v100n60",
+        "state": "COMPLETED"
+      },
+      "1882209": {
+        "elapsed": "00:01:54",
+        "exit_code": "0:0",
+        "nodes": "16v100n07",
+        "state": "COMPLETED"
+      },
+      "1882304": {
+        "elapsed": "00:02:26",
+        "exit_code": "0:0",
+        "nodes": "4v100n04",
+        "state": "COMPLETED"
+      },
+      "1882535": {
+        "elapsed": "00:07:42",
+        "exit_code": "0:0",
+        "nodes": "4v100n09",
+        "state": "COMPLETED"
+      },
+      "1884617": {
+        "elapsed": "01:42:35",
+        "exit_code": "0:0",
+        "nodes": "16v100n01",
+        "state": "COMPLETED"
+      },
+      "1884985": {
+        "elapsed": "01:37:37",
+        "exit_code": "0:0",
+        "nodes": "4v100n02",
+        "state": "COMPLETED"
+      },
+      "1887901": {
+        "elapsed": "00:32:11",
+        "exit_code": "0:0",
+        "nodes": "4v100n16",
+        "state": "COMPLETED"
+      },
+      "1887923": {
+        "elapsed": "1-02:23:26",
+        "exit_code": "0:0",
+        "nodes": "16v100n27",
+        "state": "RUNNING"
+      },
+      "1888437": {
+        "elapsed": "18:16:16",
+        "exit_code": "0:0",
+        "nodes": "4v100n16",
+        "state": "COMPLETED"
+      },
+      "1889092": {
+        "elapsed": "08:55:08",
+        "exit_code": "0:0",
+        "nodes": "16v100n01",
+        "state": "COMPLETED"
+      }
+    },
+    "updated_utc": "2026-10-22T04:16:14.047790+00:00"
+  },
+  "captured_utc": "2026-10-22T04:16:56.670274+00:00",
+  "cases": [
+    {
+      "launch": {
+        "argv": [
+          "mpirun",
+          "-np",
+          "16",
+          "--map-by",
+          "ppr:16:node:pe=4",
+          "--bind-to",
+          "core",
+          "--report-bindings",
+          "python3",
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261021-large-water-16v100-g16-compare-r3/control/deployment/cp2k-water-scaling/rank.py",
+          "-i",
+          "input.inp"
+        ],
+        "block": 32,
+        "calibration": false,
+        "mode": "cpu",
+        "physical_cores": 64,
+        "ranks": 16,
+        "shape": [
+          11,
+          11,
+          12
+        ],
+        "threads": 4
+      },
+      "log_sha256": "37ece01adfa9e3ad79b2ab63f16811386e54bf2c4a0d38571746757e44adfd96",
+      "observed_rank_records": 16,
+      "root": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261021-large-water-16v100-g16-compare-r3/cases/tune-6-cpu",
+      "sample": {
+        "average_physical_core_utilization": 0.4443480854146737,
+        "basis_functions": 33396,
+        "block": 32,
+        "calibration": false,
+        "cp2k_seconds": 43506.55,
+        "dispersion_ha": null,
+        "elapsed_seconds": 47616.62486742716,
+        "energy_ha": -25014.78235485969,
+        "host_memory": {
+          "limit": 257698037760,
+          "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E2KFND00",
+          "used": 203176624128
+        },
+        "host_memory_fraction": 0.92,
+        "mode": "cpu",
+        "name": "tune-6-cpu",
+        "no_gpu_compute_process_verified": true,
+        "ranks": 16,
+        "returncode": 0,
+        "sampled_cpu_seconds": 1354134.79,
+        "scf_steps": [
+          22
+        ],
+        "science_accepted": true,
+        "shape": [
+          11,
+          11,
+          12
+        ],
+        "stop": null,
+        "threads": 4,
+        "waters": 1452
+      },
+      "sample_sha256": "44117d0cbbaf7a5ca96f19e7e37980a6af8ff3caafb88bbecd43cf9a8ac8e2d7",
+      "threads_per_rank": [
+        4
+      ],
+      "timer_rows": [
+        {
+          "calls": 1,
+          "name": "CP2K",
+          "self_average_seconds": 0.62,
+          "self_maximum_seconds": 1.2,
+          "total_average_seconds": 43504.14,
+          "total_maximum_seconds": 43506.55
+        },
+        {
+          "calls": 22,
+          "name": "eigensolver",
+          "self_average_seconds": 0.02,
+          "self_maximum_seconds": 0.03,
+          "total_average_seconds": 39891.71,
+          "total_maximum_seconds": 39894.78
+        },
+        {
+          "calls": 22,
+          "name": "cp_fm_syevd",
+          "self_average_seconds": 0.01,
+          "self_maximum_seconds": 0.03,
+          "total_average_seconds": 34252.2,
+          "total_maximum_seconds": 34262.52
+        },
+        {
+          "calls": 22,
+          "name": "cp_fm_redistribute_end",
+          "self_average_seconds": 17129.39,
+          "self_maximum_seconds": 34237.53,
+          "total_average_seconds": 17137.93,
+          "total_maximum_seconds": 34250.02
+        },
+        {
+          "calls": 22,
+          "name": "cp_fm_syevd_base",
+          "self_average_seconds": 17092.52,
+          "self_maximum_seconds": 34192.44,
+          "total_average_seconds": 17092.52,
+          "total_maximum_seconds": 34192.44
+        },
+        {
+          "calls": 66,
+          "name": "cp_fm_cholesky_restore",
+          "self_average_seconds": 5621.51,
+          "self_maximum_seconds": 5631.42,
+          "total_average_seconds": 5621.51,
+          "total_maximum_seconds": 5631.42
+        },
+        {
+          "calls": 42,
+          "name": "cp_fm_gemm",
+          "self_average_seconds": 1597.12,
+          "self_maximum_seconds": 1597.57,
+          "total_average_seconds": 1597.12,
+          "total_maximum_seconds": 1597.57
+        },
+        {
+          "calls": 23,
+          "name": "qs_ks_build_kohn_sham_matrix",
+          "self_average_seconds": 0.08,
+          "self_maximum_seconds": 0.11,
+          "total_average_seconds": 157.49,
+          "total_maximum_seconds": 157.67
+        },
+        {
+          "calls": 22,
+          "name": "cp_fm_redistribute_start",
+          "self_average_seconds": 17.63,
+          "self_maximum_seconds": 32.75,
+          "total_average_seconds": 21.74,
+          "total_maximum_seconds": 38.43
+        }
+      ],
+      "unique_bound_physical_cores": 64
+    },
+    {
+      "launch": {
+        "argv": [
+          "mpirun",
+          "-np",
+          "32",
+          "--map-by",
+          "ppr:32:node:pe=2",
+          "--bind-to",
+          "core",
+          "--report-bindings",
+          "python3",
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261021-large-water-16v100-g16-compare-r3/control/deployment/cp2k-water-scaling/rank.py",
+          "-i",
+          "input.inp"
+        ],
+        "block": 32,
+        "calibration": false,
+        "mode": "cpu",
+        "physical_cores": 64,
+        "ranks": 32,
+        "shape": [
+          11,
+          11,
+          12
+        ],
+        "threads": 2
+      },
+      "log_sha256": "3a6b799c5b944f12873b089d6ad0e0180dabdbd822de7e50ae247c0362bdbacf",
+      "observed_rank_records": 32,
+      "root": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261021-large-water-16v100-g16-compare-r3/cases/tune-7-cpu",
+      "sample": {
+        "average_physical_core_utilization": 0.5510255544455298,
+        "basis_functions": 33396,
+        "block": 32,
+        "calibration": false,
+        "cp2k_seconds": 41678.55,
+        "dispersion_ha": null,
+        "elapsed_seconds": 47269.50633661542,
+        "energy_ha": -25014.78235486019,
+        "host_memory": {
+          "limit": 257698037760,
+          "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E2KFND00",
+          "used": 214718984192
+        },
+        "host_memory_fraction": 0.92,
+        "mode": "cpu",
+        "name": "tune-7-cpu",
+        "no_gpu_compute_process_verified": true,
+        "ranks": 32,
+        "returncode": 0,
+        "sampled_cpu_seconds": 1666989.18,
+        "scf_steps": [
+          22
+        ],
+        "science_accepted": true,
+        "shape": [
+          11,
+          11,
+          12
+        ],
+        "stop": null,
+        "threads": 2,
+        "waters": 1452
+      },
+      "sample_sha256": "200a139b52d1011fbe364bfc847f036f21f7c5e409b0984b212f3512c0500639",
+      "threads_per_rank": [
+        2
+      ],
+      "timer_rows": [
+        {
+          "calls": 1,
+          "name": "CP2K",
+          "self_average_seconds": 0.36,
+          "self_maximum_seconds": 0.76,
+          "total_average_seconds": 41676.62,
+          "total_maximum_seconds": 41678.55
+        },
+        {
+          "calls": 22,
+          "name": "eigensolver",
+          "self_average_seconds": 0.02,
+          "self_maximum_seconds": 0.04,
+          "total_average_seconds": 38378.76,
+          "total_maximum_seconds": 38381.18
+        },
+        {
+          "calls": 22,
+          "name": "cp_fm_syevd",
+          "self_average_seconds": 0.01,
+          "self_maximum_seconds": 0.02,
+          "total_average_seconds": 33004.3,
+          "total_maximum_seconds": 33012.31
+        },
+        {
+          "calls": 22,
+          "name": "cp_fm_redistribute_end",
+          "self_average_seconds": 16508.79,
+          "self_maximum_seconds": 32999.43,
+          "total_average_seconds": 16513.53,
+          "total_maximum_seconds": 33000.13
+        },
+        {
+          "calls": 22,
+          "name": "cp_fm_syevd_base",
+          "self_average_seconds": 16468.23,
+          "self_maximum_seconds": 32948.08,
+          "total_average_seconds": 16468.23,
+          "total_maximum_seconds": 32948.08
+        },
+        {
+          "calls": 66,
+          "name": "cp_fm_cholesky_restore",
+          "self_average_seconds": 5359.54,
+          "self_maximum_seconds": 5368.45,
+          "total_average_seconds": 5359.54,
+          "total_maximum_seconds": 5368.45
+        },
+        {
+          "calls": 42,
+          "name": "cp_fm_gemm",
+          "self_average_seconds": 1536.79,
+          "self_maximum_seconds": 1538.25,
+          "total_average_seconds": 1536.79,
+          "total_maximum_seconds": 1538.25
+        },
+        {
+          "calls": 23,
+          "name": "qs_ks_build_kohn_sham_matrix",
+          "self_average_seconds": 0.1,
+          "self_maximum_seconds": 0.12,
+          "total_average_seconds": 243.01,
+          "total_maximum_seconds": 244.17
+        },
+        {
+          "calls": 22,
+          "name": "cp_fm_redistribute_start",
+          "self_average_seconds": 21.28,
+          "self_maximum_seconds": 47.34,
+          "total_average_seconds": 22.53,
+          "total_maximum_seconds": 51.41
+        }
+      ],
+      "unique_bound_physical_cores": 64
+    },
+    {
+      "launch": {
+        "argv": [
+          "mpirun",
+          "-np",
+          "16",
+          "--map-by",
+          "ppr:16:node:pe=4",
+          "--bind-to",
+          "core",
+          "--report-bindings",
+          "python3",
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare-r2/control/deployment/cp2k-water-scaling/rank.py",
+          "-i",
+          "input.inp"
+        ],
+        "block": 32,
+        "calibration": false,
+        "mode": "gpu",
+        "physical_cores": 64,
+        "ranks": 16,
+        "shape": [
+          11,
+          11,
+          12
+        ],
+        "threads": 4
+      },
+      "log_sha256": "68bd6a227da6719ec1aa508d96f037c799833893fb63f2696bd49583c2cbd3ad",
+      "observed_rank_records": 16,
+      "root": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-16v100-g16-compare-r2/cases/tune-0-gpu",
+      "sample": {
+        "average_physical_core_utilization": 0.564224600286456,
+        "basis_functions": 33396,
+        "block": 32,
+        "calibration": false,
+        "cp2k_seconds": 1876.547,
+        "dispersion_ha": null,
+        "elapsed_seconds": 1885.7253932384774,
+        "energy_ha": -25014.782354859686,
+        "host_memory": {
+          "limit": 257698037760,
+          "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5D09X0800",
+          "used": 226653720576
+        },
+        "mode": "gpu",
+        "name": "tune-0-gpu",
+        "ranks": 16,
+        "returncode": 0,
+        "sampled_cpu_seconds": 68094.25,
+        "scf_steps": [
+          22
+        ],
+        "science_accepted": true,
+        "shape": [
+          11,
+          11,
+          12
+        ],
+        "stop": null,
+        "threads": 4,
+        "waters": 1452
+      },
+      "sample_sha256": "3ee91aaac8563ba050e4b85e2dd90409a0075c2b35df74fd6efaf52477f5c47e",
+      "threads_per_rank": [
+        4
+      ],
+      "timer_rows": [
+        {
+          "calls": 1,
+          "name": "CP2K",
+          "self_average_seconds": 0.117,
+          "self_maximum_seconds": 0.135,
+          "total_average_seconds": 1876.16,
+          "total_maximum_seconds": 1876.547
+        },
+        {
+          "calls": 22,
+          "name": "eigensolver_generalized",
+          "self_average_seconds": 0.548,
+          "self_maximum_seconds": 0.601,
+          "total_average_seconds": 1111.703,
+          "total_maximum_seconds": 1112.966
+        },
+        {
+          "calls": 22,
+          "name": "cp_fm_general_cusolver",
+          "self_average_seconds": 1090.883,
+          "self_maximum_seconds": 1092.082,
+          "total_average_seconds": 1090.883,
+          "total_maximum_seconds": 1092.082
+        },
+        {
+          "calls": 23,
+          "name": "qs_ks_build_kohn_sham_matrix",
+          "self_average_seconds": 0.005,
+          "self_maximum_seconds": 0.006,
+          "total_average_seconds": 56.636,
+          "total_maximum_seconds": 56.733
+        }
+      ],
+      "unique_bound_physical_cores": 64
+    },
+    {
+      "launch": {
+        "argv": [
+          "mpirun",
+          "-np",
+          "16",
+          "--map-by",
+          "ppr:16:node:pe=1",
+          "--bind-to",
+          "core",
+          "--report-bindings",
+          "python3",
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261021-large-water-16v100-g4-compare-r2/control/deployment/cp2k-water-scaling/rank.py",
+          "-i",
+          "input.inp"
+        ],
+        "block": 32,
+        "calibration": false,
+        "mode": "cpu",
+        "physical_cores": 16,
+        "ranks": 16,
+        "shape": [
+          8,
+          9,
+          9
+        ],
+        "threads": 1
+      },
+      "log_sha256": "2f116ed5c2446e6e897a1542109993d60143c45731e8678b5ef2c916c5018dd4",
+      "observed_rank_records": 16,
+      "root": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261021-large-water-16v100-g4-compare-r2/cases/pair-1-cpu",
+      "sample": {
+        "average_physical_core_utilization": 0.9384803219708617,
+        "basis_functions": 14904,
+        "block": 32,
+        "calibration": false,
+        "cp2k_seconds": 6804.804,
+        "dispersion_ha": null,
+        "elapsed_seconds": 7582.152186267078,
+        "energy_ha": -11163.623558327208,
+        "host_memory": {
+          "limit": 64424509440,
+          "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5EEDJNS00",
+          "used": 55816441856
+        },
+        "host_memory_fraction": 0.92,
+        "mode": "cpu",
+        "name": "pair-1-cpu",
+        "no_gpu_compute_process_verified": true,
+        "ranks": 16,
+        "returncode": 0,
+        "sampled_cpu_seconds": 113851.21,
+        "scf_steps": [
+          20
+        ],
+        "science_accepted": true,
+        "shape": [
+          8,
+          9,
+          9
+        ],
+        "stop": null,
+        "threads": 1,
+        "waters": 648
+      },
+      "sample_sha256": "7a31687490ae5278d567d81b05a739fa33ceeb780b47827533d29ae0fe38e24c",
+      "threads_per_rank": [
+        1
+      ],
+      "timer_rows": [
+        {
+          "calls": 1,
+          "name": "CP2K",
+          "self_average_seconds": 0.218,
+          "self_maximum_seconds": 0.334,
+          "total_average_seconds": 6804.318,
+          "total_maximum_seconds": 6804.804
+        },
+        {
+          "calls": 20,
+          "name": "eigensolver",
+          "self_average_seconds": 0.004,
+          "self_maximum_seconds": 0.006,
+          "total_average_seconds": 6120.918,
+          "total_maximum_seconds": 6121.803
+        },
+        {
+          "calls": 20,
+          "name": "cp_fm_syevd",
+          "self_average_seconds": 0.002,
+          "self_maximum_seconds": 0.011,
+          "total_average_seconds": 5441.289,
+          "total_maximum_seconds": 5442.162
+        },
+        {
+          "calls": 20,
+          "name": "cp_fm_redistribute_end",
+          "self_average_seconds": 2722.802,
+          "self_maximum_seconds": 5438.268,
+          "total_average_seconds": 2724.556,
+          "total_maximum_seconds": 5439.416
+        },
+        {
+          "calls": 20,
+          "name": "cp_fm_syevd_base",
+          "self_average_seconds": 2710.727,
+          "self_maximum_seconds": 5422.924,
+          "total_average_seconds": 2710.727,
+          "total_maximum_seconds": 5422.924
+        },
+        {
+          "calls": 60,
+          "name": "cp_fm_cholesky_restore",
+          "self_average_seconds": 674.031,
+          "self_maximum_seconds": 677.49,
+          "total_average_seconds": 674.031,
+          "total_maximum_seconds": 677.49
+        },
+        {
+          "calls": 38,
+          "name": "cp_fm_gemm",
+          "self_average_seconds": 232.087,
+          "self_maximum_seconds": 232.321,
+          "total_average_seconds": 232.087,
+          "total_maximum_seconds": 232.321
+        },
+        {
+          "calls": 21,
+          "name": "qs_ks_build_kohn_sham_matrix",
+          "self_average_seconds": 0.027,
+          "self_maximum_seconds": 0.032,
+          "total_average_seconds": 144.233,
+          "total_maximum_seconds": 144.286
+        },
+        {
+          "calls": 20,
+          "name": "cp_fm_redistribute_start",
+          "self_average_seconds": 5.87,
+          "self_maximum_seconds": 9.789,
+          "total_average_seconds": 6.003,
+          "total_maximum_seconds": 9.967
+        }
+      ],
+      "unique_bound_physical_cores": 16
+    },
+    {
+      "launch": {
+        "argv": [
+          "mpirun",
+          "-np",
+          "8",
+          "--map-by",
+          "ppr:8:node:pe=2",
+          "--bind-to",
+          "core",
+          "--report-bindings",
+          "python3",
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g4-compare-r2/control/deployment/cp2k-water-scaling/rank.py",
+          "-i",
+          "input.inp"
+        ],
+        "block": 32,
+        "calibration": false,
+        "mode": "cpu",
+        "physical_cores": 16,
+        "ranks": 8,
+        "shape": [
+          9,
+          10,
+          10
+        ],
+        "threads": 2
+      },
+      "log_sha256": "b936a4d82f50c73a128b33d21195c031733980d73973d5c28188aa4e54483877",
+      "observed_rank_records": 8,
+      "root": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g4-compare-r2/cases/tune-7-cpu",
+      "sample": {
+        "average_physical_core_utilization": 0.7089180737826956,
+        "basis_functions": 20700,
+        "block": 32,
+        "calibration": false,
+        "cp2k_seconds": 7809.608,
+        "dispersion_ha": null,
+        "elapsed_seconds": 7859.250005111098,
+        "energy_ha": -15505.028040459849,
+        "host_memory": {
+          "limit": 94489280512,
+          "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+          "used": 81898237952
+        },
+        "host_memory_fraction": 0.92,
+        "mode": "cpu",
+        "name": "tune-7-cpu",
+        "no_gpu_compute_process_verified": true,
+        "ranks": 8,
+        "returncode": 0,
+        "sampled_cpu_seconds": 89145.03,
+        "scf_steps": [
+          20
+        ],
+        "science_accepted": true,
+        "shape": [
+          9,
+          10,
+          10
+        ],
+        "stop": null,
+        "threads": 2,
+        "waters": 900
+      },
+      "sample_sha256": "47cc2a003d76a92f849887bc1b0ce860814604917ce6b34aec54cdc5bfe32366",
+      "threads_per_rank": [
+        2
+      ],
+      "timer_rows": [
+        {
+          "calls": 1,
+          "name": "CP2K",
+          "self_average_seconds": 0.111,
+          "self_maximum_seconds": 0.132,
+          "total_average_seconds": 7808.686,
+          "total_maximum_seconds": 7809.608
+        },
+        {
+          "calls": 20,
+          "name": "eigensolver",
+          "self_average_seconds": 0.002,
+          "self_maximum_seconds": 0.002,
+          "total_average_seconds": 6920.088,
+          "total_maximum_seconds": 6921.361
+        },
+        {
+          "calls": 20,
+          "name": "cp_fm_syevd",
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 5532.887,
+          "total_maximum_seconds": 5535.552
+        },
+        {
+          "calls": 20,
+          "name": "cp_fm_redistribute_end",
+          "self_average_seconds": 2769.085,
+          "self_maximum_seconds": 5531.221,
+          "total_average_seconds": 2770.323,
+          "total_maximum_seconds": 5531.222
+        },
+        {
+          "calls": 20,
+          "name": "cp_fm_syevd_base",
+          "self_average_seconds": 2754.704,
+          "self_maximum_seconds": 5510.909,
+          "total_average_seconds": 2754.704,
+          "total_maximum_seconds": 5510.909
+        },
+        {
+          "calls": 60,
+          "name": "cp_fm_cholesky_restore",
+          "self_average_seconds": 1378.265,
+          "self_maximum_seconds": 1381.689,
+          "total_average_seconds": 1378.265,
+          "total_maximum_seconds": 1381.689
+        },
+        {
+          "calls": 38,
+          "name": "cp_fm_gemm",
+          "self_average_seconds": 444.652,
+          "self_maximum_seconds": 444.769,
+          "total_average_seconds": 444.652,
+          "total_maximum_seconds": 444.769
+        },
+        {
+          "calls": 21,
+          "name": "qs_ks_build_kohn_sham_matrix",
+          "self_average_seconds": 0.006,
+          "self_maximum_seconds": 0.006,
+          "total_average_seconds": 107.79,
+          "total_maximum_seconds": 107.885
+        },
+        {
+          "calls": 20,
+          "name": "cp_fm_redistribute_start",
+          "self_average_seconds": 7.818,
+          "self_maximum_seconds": 14.954,
+          "total_average_seconds": 7.859,
+          "total_maximum_seconds": 15.013
+        }
+      ],
+      "unique_bound_physical_cores": 16
+    },
+    {
+      "launch": {
+        "argv": [
+          "mpirun",
+          "-np",
+          "16",
+          "--map-by",
+          "ppr:16:node:pe=1",
+          "--bind-to",
+          "core",
+          "--report-bindings",
+          "python3",
+          "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g4-compare-r2/control/deployment/cp2k-water-scaling/rank.py",
+          "-i",
+          "input.inp"
+        ],
+        "block": 32,
+        "calibration": false,
+        "mode": "cpu",
+        "physical_cores": 16,
+        "ranks": 16,
+        "shape": [
+          9,
+          10,
+          10
+        ],
+        "threads": 1
+      },
+      "log_sha256": "c936223ce0c54861541e19d716f0c906b7c38e751d563cb11376d27108e15624",
+      "observed_rank_records": 16,
+      "root": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g4-compare-r2/cases/tune-8-cpu",
+      "sample": {
+        "average_physical_core_utilization": 0.9474045778399988,
+        "basis_functions": 20700,
+        "block": 32,
+        "calibration": false,
+        "cp2k_seconds": 8531.274,
+        "dispersion_ha": null,
+        "elapsed_seconds": 9306.282216940075,
+        "energy_ha": -15505.028040460402,
+        "host_memory": {
+          "limit": 94489280512,
+          "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+          "used": 85207728128
+        },
+        "host_memory_fraction": 0.92,
+        "mode": "cpu",
+        "name": "tune-8-cpu",
+        "no_gpu_compute_process_verified": true,
+        "ranks": 16,
+        "returncode": 0,
+        "sampled_cpu_seconds": 141069.03,
+        "scf_steps": [
+          22
+        ],
+        "science_accepted": true,
+        "shape": [
+          9,
+          10,
+          10
+        ],
+        "stop": null,
+        "threads": 1,
+        "waters": 900
+      },
+      "sample_sha256": "3d07816e55b9e7010087917395873b1a3151586c0ce05d7698b9d9401ee1031a",
+      "threads_per_rank": [
+        1
+      ],
+      "timer_rows": [
+        {
+          "calls": 1,
+          "name": "CP2K",
+          "self_average_seconds": 0.193,
+          "self_maximum_seconds": 0.403,
+          "total_average_seconds": 8530.181,
+          "total_maximum_seconds": 8531.274
+        },
+        {
+          "calls": 22,
+          "name": "eigensolver",
+          "self_average_seconds": 0.002,
+          "self_maximum_seconds": 0.003,
+          "total_average_seconds": 7491.364,
+          "total_maximum_seconds": 7492.64
+        },
+        {
+          "calls": 22,
+          "name": "cp_fm_syevd",
+          "self_average_seconds": 0.001,
+          "self_maximum_seconds": 0.001,
+          "total_average_seconds": 6263.998,
+          "total_maximum_seconds": 6264.795
+        },
+        {
+          "calls": 22,
+          "name": "cp_fm_redistribute_end",
+          "self_average_seconds": 3133.729,
+          "self_maximum_seconds": 6257.985,
+          "total_average_seconds": 3135.891,
+          "total_maximum_seconds": 6259.287
+        },
+        {
+          "calls": 22,
+          "name": "cp_fm_syevd_base",
+          "self_average_seconds": 3119.675,
+          "self_maximum_seconds": 6241.397,
+          "total_average_seconds": 3119.675,
+          "total_maximum_seconds": 6241.397
+        },
+        {
+          "calls": 66,
+          "name": "cp_fm_cholesky_restore",
+          "self_average_seconds": 1217.654,
+          "self_maximum_seconds": 1222.243,
+          "total_average_seconds": 1217.654,
+          "total_maximum_seconds": 1222.243
+        },
+        {
+          "calls": 42,
+          "name": "cp_fm_gemm",
+          "self_average_seconds": 487.122,
+          "self_maximum_seconds": 487.751,
+          "total_average_seconds": 487.122,
+          "total_maximum_seconds": 487.751
+        },
+        {
+          "calls": 23,
+          "name": "qs_ks_build_kohn_sham_matrix",
+          "self_average_seconds": 0.007,
+          "self_maximum_seconds": 0.008,
+          "total_average_seconds": 120.368,
+          "total_maximum_seconds": 120.45
+        },
+        {
+          "calls": 22,
+          "name": "cp_fm_redistribute_start",
+          "self_average_seconds": 8.408,
+          "self_maximum_seconds": 12.683,
+          "total_average_seconds": 8.432,
+          "total_maximum_seconds": 12.71
+        }
+      ],
+      "unique_bound_physical_cores": 16
+    }
+  ],
+  "finding": "Initialization overwrites the configured redistribution parameters with a=-1,x=-1. For a positive matrix order, the optimum becomes negative. The invalid requested group partition falls back to two balanced groups, and only group 0 calls ScaLAPACK. Cleanup also resets persistent settings. CPU busy-wait time does not establish productive use of every bound core.",
+  "four_gpu_4v100": {
+    "cpu_over_gpu": 9.651214267566445,
+    "job": "1888437",
+    "median_seconds": {
+      "cpu": 7787.227,
+      "gpu": 806.865
+    },
+    "run": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-large-water-4v100-g4-compare-r2",
+    "samples": [
+      {
+        "average_physical_core_utilization": 0.45240698582621525,
+        "basis_functions": 20700,
+        "block": 32,
+        "calibration": false,
+        "comparison": {
+          "energy_delta_ha": 0.0,
+          "max_force_delta_ha_bohr": 1.0000004296850662e-12
+        },
+        "cp2k_seconds": 807.137,
+        "dispersion_ha": null,
+        "elapsed_seconds": 809.7810963969678,
+        "energy_ha": -15505.02804045874,
+        "host_memory": {
+          "limit": 94489280512,
+          "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+          "used": 86198231040
+        },
+        "host_memory_fraction": 0.92,
+        "mode": "gpu",
+        "name": "pair-0-gpu",
+        "peak_gpu_fraction": {
+          "GPU-009255e3-b22e-2c47-e081-93fc14348db7": 0.530029296875,
+          "GPU-9bffe31c-b0aa-d4b8-5189-2a1031522b74": 0.5655517578125,
+          "GPU-c31654e6-976c-a704-ae80-47f578d48385": 0.55633544921875,
+          "GPU-db7f15c1-1862-fadd-49fa-5fdc10423e77": 0.52508544921875
+        },
+        "peak_gpu_mib": {
+          "GPU-009255e3-b22e-2c47-e081-93fc14348db7": 17368.0,
+          "GPU-9bffe31c-b0aa-d4b8-5189-2a1031522b74": 18532.0,
+          "GPU-c31654e6-976c-a704-ae80-47f578d48385": 18230.0,
+          "GPU-db7f15c1-1862-fadd-49fa-5fdc10423e77": 17206.0
+        },
+        "ranks": 4,
+        "returncode": 0,
+        "sampled_cpu_seconds": 5861.610000000001,
+        "scf_steps": [
+          20
+        ],
+        "science_accepted": true,
+        "shape": [
+          9,
+          10,
+          10
+        ],
+        "stop": null,
+        "threads": 4,
+        "warmup": true,
+        "waters": 900
+      },
+      {
+        "average_physical_core_utilization": 0.7081696820503881,
+        "basis_functions": 20700,
+        "block": 32,
+        "calibration": false,
+        "comparison": {
+          "energy_delta_ha": 1.1095835361629725e-09,
+          "max_force_delta_ha_bohr": 1.0000021644085422e-12
+        },
+        "cp2k_seconds": 7822.327,
+        "dispersion_ha": null,
+        "elapsed_seconds": 7876.542714805342,
+        "energy_ha": -15505.028040459849,
+        "host_memory": {
+          "limit": 94489280512,
+          "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+          "used": 82164977664
+        },
+        "host_memory_fraction": 0.92,
+        "mode": "cpu",
+        "name": "pair-0-cpu",
+        "no_gpu_compute_process_verified": true,
+        "peak_gpu_fraction": {
+          "GPU-009255e3-b22e-2c47-e081-93fc14348db7": 0.0001220703125,
+          "GPU-9bffe31c-b0aa-d4b8-5189-2a1031522b74": 0.0001220703125,
+          "GPU-c31654e6-976c-a704-ae80-47f578d48385": 0.0001220703125,
+          "GPU-db7f15c1-1862-fadd-49fa-5fdc10423e77": 0.0001220703125
+        },
+        "peak_gpu_mib": {
+          "GPU-009255e3-b22e-2c47-e081-93fc14348db7": 4.0,
+          "GPU-9bffe31c-b0aa-d4b8-5189-2a1031522b74": 4.0,
+          "GPU-c31654e6-976c-a704-ae80-47f578d48385": 4.0,
+          "GPU-db7f15c1-1862-fadd-49fa-5fdc10423e77": 4.0
+        },
+        "ranks": 8,
+        "returncode": 0,
+        "sampled_cpu_seconds": 89246.86,
+        "scf_steps": [
+          20
+        ],
+        "science_accepted": true,
+        "shape": [
+          9,
+          10,
+          10
+        ],
+        "stop": null,
+        "threads": 2,
+        "warmup": true,
+        "waters": 900
+      },
+      {
+        "average_physical_core_utilization": 0.7070220691504564,
+        "basis_functions": 20700,
+        "block": 32,
+        "calibration": false,
+        "comparison": {
+          "energy_delta_ha": 1.0913936421275139e-09,
+          "max_force_delta_ha_bohr": 1.0000021644085422e-12
+        },
+        "cp2k_seconds": 7883.406,
+        "dispersion_ha": null,
+        "elapsed_seconds": 7928.36107186228,
+        "energy_ha": -15505.02804045983,
+        "host_memory": {
+          "limit": 94489280512,
+          "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+          "used": 82017787904
+        },
+        "host_memory_fraction": 0.92,
+        "mode": "cpu",
+        "name": "pair-1-cpu",
+        "no_gpu_compute_process_verified": true,
+        "peak_gpu_fraction": {
+          "GPU-009255e3-b22e-2c47-e081-93fc14348db7": 0.0001220703125,
+          "GPU-9bffe31c-b0aa-d4b8-5189-2a1031522b74": 0.0001220703125,
+          "GPU-c31654e6-976c-a704-ae80-47f578d48385": 0.0001220703125,
+          "GPU-db7f15c1-1862-fadd-49fa-5fdc10423e77": 0.0001220703125
+        },
+        "peak_gpu_mib": {
+          "GPU-009255e3-b22e-2c47-e081-93fc14348db7": 4.0,
+          "GPU-9bffe31c-b0aa-d4b8-5189-2a1031522b74": 4.0,
+          "GPU-c31654e6-976c-a704-ae80-47f578d48385": 4.0,
+          "GPU-db7f15c1-1862-fadd-49fa-5fdc10423e77": 4.0
+        },
+        "ranks": 8,
+        "returncode": 0,
+        "sampled_cpu_seconds": 89688.42,
+        "scf_steps": [
+          20
+        ],
+        "science_accepted": true,
+        "shape": [
+          9,
+          10,
+          10
+        ],
+        "stop": null,
+        "threads": 2,
+        "warmup": false,
+        "waters": 900
+      },
+      {
+        "average_physical_core_utilization": 0.45149848606919546,
+        "basis_functions": 20700,
+        "block": 32,
+        "calibration": false,
+        "comparison": {
+          "energy_delta_ha": 0.0,
+          "max_force_delta_ha_bohr": 1.0000004296850662e-12
+        },
+        "cp2k_seconds": 806.865,
+        "dispersion_ha": null,
+        "elapsed_seconds": 809.5085283275694,
+        "energy_ha": -15505.02804045874,
+        "host_memory": {
+          "limit": 94489280512,
+          "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+          "used": 86189277184
+        },
+        "host_memory_fraction": 0.92,
+        "mode": "gpu",
+        "name": "pair-1-gpu",
+        "peak_gpu_fraction": {
+          "GPU-009255e3-b22e-2c47-e081-93fc14348db7": 0.530029296875,
+          "GPU-9bffe31c-b0aa-d4b8-5189-2a1031522b74": 0.5655517578125,
+          "GPU-c31654e6-976c-a704-ae80-47f578d48385": 0.55633544921875,
+          "GPU-db7f15c1-1862-fadd-49fa-5fdc10423e77": 0.52508544921875
+        },
+        "peak_gpu_mib": {
+          "GPU-009255e3-b22e-2c47-e081-93fc14348db7": 17368.0,
+          "GPU-9bffe31c-b0aa-d4b8-5189-2a1031522b74": 18532.0,
+          "GPU-c31654e6-976c-a704-ae80-47f578d48385": 18230.0,
+          "GPU-db7f15c1-1862-fadd-49fa-5fdc10423e77": 17206.0
+        },
+        "ranks": 4,
+        "returncode": 0,
+        "sampled_cpu_seconds": 5847.87,
+        "scf_steps": [
+          20
+        ],
+        "science_accepted": true,
+        "shape": [
+          9,
+          10,
+          10
+        ],
+        "stop": null,
+        "threads": 4,
+        "warmup": false,
+        "waters": 900
+      },
+      {
+        "average_physical_core_utilization": 0.4528978146425654,
+        "basis_functions": 20700,
+        "block": 32,
+        "calibration": false,
+        "comparison": {
+          "energy_delta_ha": 0.0,
+          "max_force_delta_ha_bohr": 1.0000004296850662e-12
+        },
+        "cp2k_seconds": 806.609,
+        "dispersion_ha": null,
+        "elapsed_seconds": 808.231433593668,
+        "energy_ha": -15505.02804045874,
+        "host_memory": {
+          "limit": 94489280512,
+          "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+          "used": 86526074880
+        },
+        "host_memory_fraction": 0.92,
+        "mode": "gpu",
+        "name": "pair-2-gpu",
+        "peak_gpu_fraction": {
+          "GPU-009255e3-b22e-2c47-e081-93fc14348db7": 0.530029296875,
+          "GPU-9bffe31c-b0aa-d4b8-5189-2a1031522b74": 0.5655517578125,
+          "GPU-c31654e6-976c-a704-ae80-47f578d48385": 0.55633544921875,
+          "GPU-db7f15c1-1862-fadd-49fa-5fdc10423e77": 0.52508544921875
+        },
+        "peak_gpu_mib": {
+          "GPU-009255e3-b22e-2c47-e081-93fc14348db7": 17368.0,
+          "GPU-9bffe31c-b0aa-d4b8-5189-2a1031522b74": 18532.0,
+          "GPU-c31654e6-976c-a704-ae80-47f578d48385": 18230.0,
+          "GPU-db7f15c1-1862-fadd-49fa-5fdc10423e77": 17206.0
+        },
+        "ranks": 4,
+        "returncode": 0,
+        "sampled_cpu_seconds": 5856.74,
+        "scf_steps": [
+          20
+        ],
+        "science_accepted": true,
+        "shape": [
+          9,
+          10,
+          10
+        ],
+        "stop": null,
+        "threads": 4,
+        "warmup": false,
+        "waters": 900
+      },
+      {
+        "average_physical_core_utilization": 0.70931755528207,
+        "basis_functions": 20700,
+        "block": 32,
+        "calibration": false,
+        "comparison": {
+          "energy_delta_ha": 1.1095835361629725e-09,
+          "max_force_delta_ha_bohr": 1.0000021644085422e-12
+        },
+        "cp2k_seconds": 7787.227,
+        "dispersion_ha": null,
+        "elapsed_seconds": 7845.605375982821,
+        "energy_ha": -15505.028040459849,
+        "host_memory": {
+          "limit": 94489280512,
+          "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+          "used": 82001379328
+        },
+        "host_memory_fraction": 0.92,
+        "mode": "cpu",
+        "name": "pair-2-cpu",
+        "no_gpu_compute_process_verified": true,
+        "peak_gpu_fraction": {
+          "GPU-009255e3-b22e-2c47-e081-93fc14348db7": 0.0001220703125,
+          "GPU-9bffe31c-b0aa-d4b8-5189-2a1031522b74": 0.0001220703125,
+          "GPU-c31654e6-976c-a704-ae80-47f578d48385": 0.0001220703125,
+          "GPU-db7f15c1-1862-fadd-49fa-5fdc10423e77": 0.0001220703125
+        },
+        "peak_gpu_mib": {
+          "GPU-009255e3-b22e-2c47-e081-93fc14348db7": 4.0,
+          "GPU-9bffe31c-b0aa-d4b8-5189-2a1031522b74": 4.0,
+          "GPU-c31654e6-976c-a704-ae80-47f578d48385": 4.0,
+          "GPU-db7f15c1-1862-fadd-49fa-5fdc10423e77": 4.0
+        },
+        "ranks": 8,
+        "returncode": 0,
+        "sampled_cpu_seconds": 89040.41,
+        "scf_steps": [
+          20
+        ],
+        "science_accepted": true,
+        "shape": [
+          9,
+          10,
+          10
+        ],
+        "stop": null,
+        "threads": 2,
+        "warmup": false,
+        "waters": 900
+      },
+      {
+        "average_physical_core_utilization": 0.7093147309568731,
+        "basis_functions": 20700,
+        "block": 32,
+        "calibration": false,
+        "comparison": {
+          "energy_delta_ha": 1.1095835361629725e-09,
+          "max_force_delta_ha_bohr": 1.0000021644085422e-12
+        },
+        "cp2k_seconds": 7786.474,
+        "dispersion_ha": null,
+        "elapsed_seconds": 7844.762532273307,
+        "energy_ha": -15505.028040459849,
+        "host_memory": {
+          "limit": 94489280512,
+          "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+          "used": 81958531072
+        },
+        "host_memory_fraction": 0.92,
+        "mode": "cpu",
+        "name": "pair-3-cpu",
+        "no_gpu_compute_process_verified": true,
+        "peak_gpu_fraction": {
+          "GPU-009255e3-b22e-2c47-e081-93fc14348db7": 0.0001220703125,
+          "GPU-9bffe31c-b0aa-d4b8-5189-2a1031522b74": 0.0001220703125,
+          "GPU-c31654e6-976c-a704-ae80-47f578d48385": 0.0001220703125,
+          "GPU-db7f15c1-1862-fadd-49fa-5fdc10423e77": 0.0001220703125
+        },
+        "peak_gpu_mib": {
+          "GPU-009255e3-b22e-2c47-e081-93fc14348db7": 4.0,
+          "GPU-9bffe31c-b0aa-d4b8-5189-2a1031522b74": 4.0,
+          "GPU-c31654e6-976c-a704-ae80-47f578d48385": 4.0,
+          "GPU-db7f15c1-1862-fadd-49fa-5fdc10423e77": 4.0
+        },
+        "ranks": 8,
+        "returncode": 0,
+        "sampled_cpu_seconds": 89030.49,
+        "scf_steps": [
+          20
+        ],
+        "science_accepted": true,
+        "shape": [
+          9,
+          10,
+          10
+        ],
+        "stop": null,
+        "threads": 2,
+        "warmup": false,
+        "waters": 900
+      },
+      {
+        "average_physical_core_utilization": 0.4521411685767609,
+        "basis_functions": 20700,
+        "block": 32,
+        "calibration": false,
+        "comparison": {
+          "energy_delta_ha": 0.0,
+          "max_force_delta_ha_bohr": 9.99999999392329e-13
+        },
+        "cp2k_seconds": 807.466,
+        "dispersion_ha": null,
+        "elapsed_seconds": 810.1590287676081,
+        "energy_ha": -15505.02804045874,
+        "host_memory": {
+          "limit": 94489280512,
+          "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5E4999700",
+          "used": 86560804864
+        },
+        "host_memory_fraction": 0.92,
+        "mode": "gpu",
+        "name": "pair-3-gpu",
+        "peak_gpu_fraction": {
+          "GPU-009255e3-b22e-2c47-e081-93fc14348db7": 0.530029296875,
+          "GPU-9bffe31c-b0aa-d4b8-5189-2a1031522b74": 0.5655517578125,
+          "GPU-c31654e6-976c-a704-ae80-47f578d48385": 0.55633544921875,
+          "GPU-db7f15c1-1862-fadd-49fa-5fdc10423e77": 0.52508544921875
+        },
+        "peak_gpu_mib": {
+          "GPU-009255e3-b22e-2c47-e081-93fc14348db7": 17368.0,
+          "GPU-9bffe31c-b0aa-d4b8-5189-2a1031522b74": 18532.0,
+          "GPU-c31654e6-976c-a704-ae80-47f578d48385": 18230.0,
+          "GPU-db7f15c1-1862-fadd-49fa-5fdc10423e77": 17206.0
+        },
+        "ranks": 4,
+        "returncode": 0,
+        "sampled_cpu_seconds": 5860.9,
+        "scf_steps": [
+          20
+        ],
+        "science_accepted": true,
+        "shape": [
+          9,
+          10,
+          10
+        ],
+        "stop": null,
+        "threads": 4,
+        "warmup": false,
+        "waters": 900
+      }
+    ],
+    "valid_for_fully_used_cpu_baseline": false,
+    "verification": {
+      "completed_cases": 17,
+      "files": {
+        "cases/pair-0-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/pair-0-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/pair-0-cpu/cp2k.log": "09345e819a7c2031518a9cf250d92f996e6dc938930365c1973469571daa1188",
+        "cases/pair-0-cpu/elapsed.txt": "1e6ecaba27b8279dcc22757c09ac7a161f56082b753fb449c9bdcd122f526592",
+        "cases/pair-0-cpu/forces.xyz": "da1dbd1e8fcb3e43e4182ae034f06652323c9d39e213ec14f63c5c7f87790b2c",
+        "cases/pair-0-cpu/input.inp": "0f8c9fd407ea69ad23f12acceca84ff1481f5fb76fe59808bd5dd5789d4c5c00",
+        "cases/pair-0-cpu/launch.json": "7dfcab4c2a129b05ae210bbe9394b7250218fbd60677258d1f9911a4824dd8e7",
+        "cases/pair-0-cpu/rank-0.json": "028592aef03519d566ed9ec768cbb27b3657eba33b4a1669d5c07fa8d3bace51",
+        "cases/pair-0-cpu/rank-1.json": "7389d09446e35df039e23414cb5aaafa95a555680c50f5ea90a89341dc425dff",
+        "cases/pair-0-cpu/rank-2.json": "e479fe093dd34fa110109bd02562b1f7933b95002b7371a4e18663787f55a4dc",
+        "cases/pair-0-cpu/rank-3.json": "fca21b1842417444836c0d2e18d4985c59352528020d6042ce1151d88e76b5d2",
+        "cases/pair-0-cpu/rank-4.json": "efaa8cd6605152e7ad8c75c93d3428263b1e7f5a16d1e3e60f5f18b9bcadc62a",
+        "cases/pair-0-cpu/rank-5.json": "5983fd5ab506b11902519c24659a4ce2617d892fba1c31966ec9de817ad44c3d",
+        "cases/pair-0-cpu/rank-6.json": "74cbfa001db9318363efe9bf06b74cdd1541b466acf1b89bbb8e6db83a0072ad",
+        "cases/pair-0-cpu/rank-7.json": "2e14eea6cd768c33123ac234ad8ad19b9e4f6d58994ef81abb02cdc013ee51d5",
+        "cases/pair-0-cpu/resources.jsonl": "0856dbd4a4f7db853932bd91e84a0dbd5298924241fd3fb46874915ad36ec010",
+        "cases/pair-0-cpu/sample.json": "4f8e2aa535d157581046b27b17574c3a50188f5144854486cd985ad5952a4c68",
+        "cases/pair-0-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/pair-0-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/pair-0-gpu/cp2k.log": "a39558b2976516b8bc890d2832764d3aacf1c99c9cb03d34cd4249b938e206a6",
+        "cases/pair-0-gpu/elapsed.txt": "c346db64273838970ccfa3251bf0790c4b85ff7d4a0e90ea3645068567c15d4a",
+        "cases/pair-0-gpu/forces.xyz": "cec3f69dd41f76672a2ab9798ba473c164d6bad7c2aac5a7983210fc6b1306c5",
+        "cases/pair-0-gpu/input.inp": "0d8017106502c99c02fa77e964942fa42cdfa05146b3271c85a6d676e48721b8",
+        "cases/pair-0-gpu/launch.json": "3ddaef9fa33b87679a7ff91989e813e7951615513e7f5945ff3b7f94060740bf",
+        "cases/pair-0-gpu/rank-0.json": "be8e1bd5b492d5871fa36f22e9d21ab16e3348b1dc3e78c0cde41f3b2b2d3fff",
+        "cases/pair-0-gpu/rank-1.json": "5b729e3fbed135c14740d5f78ce386f204c4f08c7ffccc123210accbcab09899",
+        "cases/pair-0-gpu/rank-2.json": "82f8077e7c01fb51e110a281a2013b9b469d9429189c26a8de8dad125d04b0a6",
+        "cases/pair-0-gpu/rank-3.json": "224b42da71f54c706128150232abfd9c917424c6d151263548cc605018f4d812",
+        "cases/pair-0-gpu/resources.jsonl": "3cdc860b2215bf8864d5e9abb17a93306f354e2c85e73930a73ad09256496aa4",
+        "cases/pair-0-gpu/sample.json": "58239138561c396cdd06159f740ab420191c47c381066ca50ed156438e3027da",
+        "cases/pair-1-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/pair-1-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/pair-1-cpu/cp2k.log": "610af41ec08f8bbe11328ea374826c1bfbf20cd3a15f1f233bbf085f2690cff2",
+        "cases/pair-1-cpu/elapsed.txt": "9353adcd71d81ba12c0adac035e0ee595c9868e65e6606053a7feb3c6ed4d749",
+        "cases/pair-1-cpu/forces.xyz": "df39683c0b668d61b7eb6aaf7289350556e17ae173904ca50c5813537579bcc9",
+        "cases/pair-1-cpu/input.inp": "0f8c9fd407ea69ad23f12acceca84ff1481f5fb76fe59808bd5dd5789d4c5c00",
+        "cases/pair-1-cpu/launch.json": "7dfcab4c2a129b05ae210bbe9394b7250218fbd60677258d1f9911a4824dd8e7",
+        "cases/pair-1-cpu/rank-0.json": "679c9b080686585e8226290405e9d5d2f602bdab156ee3545f4ed044e52770e2",
+        "cases/pair-1-cpu/rank-1.json": "6ce959138ca502bb86c2bfab08c8648a1b617c2a9fd10df5ebf87777397a238d",
+        "cases/pair-1-cpu/rank-2.json": "5d14c4da0a90f0b9db4b2e9ed6b51f113f2de6f004f2da9326b463a1dc3b1efc",
+        "cases/pair-1-cpu/rank-3.json": "d4646a9b97c36395914529b884cdd8179389235974603fabccb9c16109f6d846",
+        "cases/pair-1-cpu/rank-4.json": "434c38cd6f15c6aa2212c75011df197d9457245f59fd0c689ce6f7d1bdb3e659",
+        "cases/pair-1-cpu/rank-5.json": "7c9dcec0f1ad59a93eb0f1465f32f579ff9be747296bd2522368166384acc5f7",
+        "cases/pair-1-cpu/rank-6.json": "1c7c9b51fdc9e13a8a8bf3e1576541b85ad6e3b2323eb56304617a9d5cf962a2",
+        "cases/pair-1-cpu/rank-7.json": "f262d5191f8803beda9e897610bd3b081275d580a9596041bb08a2b97b96dcfe",
+        "cases/pair-1-cpu/resources.jsonl": "44658433314e6dae30ccea4c5578f96eb5fc29a73b0f58cf9f05bf83a634792a",
+        "cases/pair-1-cpu/sample.json": "6c2dc5f48b3eb90459a3054c2f7c313694a2301d9a61f93f92f3367106bd334a",
+        "cases/pair-1-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/pair-1-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/pair-1-gpu/cp2k.log": "f98af8bb7707b45c7c2e189901e497723065920c5d4d50a4b39f0943e836193a",
+        "cases/pair-1-gpu/elapsed.txt": "6d9c5d74e386174ed9fdd956c3057eb9abe94d5894dbcd59636e2927ffcdfade",
+        "cases/pair-1-gpu/forces.xyz": "7eae43ccbc421f152c6c9b6da0a0701cd0d8c90172970c8d88bdb8eb16cbcf14",
+        "cases/pair-1-gpu/input.inp": "0d8017106502c99c02fa77e964942fa42cdfa05146b3271c85a6d676e48721b8",
+        "cases/pair-1-gpu/launch.json": "3ddaef9fa33b87679a7ff91989e813e7951615513e7f5945ff3b7f94060740bf",
+        "cases/pair-1-gpu/rank-0.json": "e8fb30679d88ae8f712a69fb9300991678c2c8aaf20771c87753c4b0ce7dffc3",
+        "cases/pair-1-gpu/rank-1.json": "2f1707fe871b25539fa4e9df48a8d45afe7d7299832465fee077e5e6b659bc8e",
+        "cases/pair-1-gpu/rank-2.json": "ea98c451cdfdad10c18746755aa9706df67f57283a12b441af5887e98fbd1770",
+        "cases/pair-1-gpu/rank-3.json": "45b7ff1130a536853a3aa74b5e54b802a3bec4186b25869b2f966c4414ad3fba",
+        "cases/pair-1-gpu/resources.jsonl": "18c67caf5779242408a28bc0ce11cfb5adb838a8866f8490fe9ba44eacc20611",
+        "cases/pair-1-gpu/sample.json": "6ba528942a752735344073687ef904fa3eb4f7e79b8734f8122964a9b4a11f88",
+        "cases/pair-2-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/pair-2-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/pair-2-cpu/cp2k.log": "aedd3c2d79f45c4bfa93c32ef10da0fc7ee8e6d5454e9af1d776768be49495bb",
+        "cases/pair-2-cpu/elapsed.txt": "765e0a3081b76b600b99b7bf34477b76f27b80ab09466e706b44a00948675528",
+        "cases/pair-2-cpu/forces.xyz": "09cabc8e2288547f77c7d2aa59ef21f88b662e9e674b91100bcec2d4a23d76b3",
+        "cases/pair-2-cpu/input.inp": "0f8c9fd407ea69ad23f12acceca84ff1481f5fb76fe59808bd5dd5789d4c5c00",
+        "cases/pair-2-cpu/launch.json": "7dfcab4c2a129b05ae210bbe9394b7250218fbd60677258d1f9911a4824dd8e7",
+        "cases/pair-2-cpu/rank-0.json": "2e9d6657b6af53eefee0011a6b79169381febba03611cc3fb5b8643fa5c42c32",
+        "cases/pair-2-cpu/rank-1.json": "daf2c3d154a8edcb773410dfee1d15bc8c566e817a7346d13a54cc3743f2a5f6",
+        "cases/pair-2-cpu/rank-2.json": "9d19b997e9a51f8ca2f9a82cd1a83f89e30ff74b71d1da5be7a2d532c51dd2f7",
+        "cases/pair-2-cpu/rank-3.json": "161fa8652e5889657eafff748613826e3c59722fee54954bb65bc87205940fa5",
+        "cases/pair-2-cpu/rank-4.json": "e3ea03b3eb72fc5f28009105c6878a4d8b9d5a54fc912d32f1a8db2f1ff9f7ad",
+        "cases/pair-2-cpu/rank-5.json": "8be0a7969b9b91affed1aa64ddec4e452db79a32e3a4d108974ada356954c498",
+        "cases/pair-2-cpu/rank-6.json": "55d837e1c7c5ff709cacc6ef5270459ae4fac034c7880a2349e452a6cadc346c",
+        "cases/pair-2-cpu/rank-7.json": "0e12c531aeb2873efa24948a360e188f0c135fe085016c3bc9b343e48a8a8291",
+        "cases/pair-2-cpu/resources.jsonl": "c2e0e479d17fd0fc12c93ae64f7b91dd4677275db54d10ec71627b849d3cb048",
+        "cases/pair-2-cpu/sample.json": "73eccb5507e640a09c75dfb9745c5d8b7187c43f9641a83ba4d0deaa8b8569a0",
+        "cases/pair-2-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/pair-2-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/pair-2-gpu/cp2k.log": "e3f31967db185463d1911e057e39f0ebe3184f1d9a8563a0821b317b19a58040",
+        "cases/pair-2-gpu/elapsed.txt": "c75eaf7eba7c0d57ba6ecd42b23e88eafc246ab01a62c84610a632ff0986b02a",
+        "cases/pair-2-gpu/forces.xyz": "31d3239ea04fb74ac365a22cbf54ceaf8389d996ad9848b80e420fcca6aa74fe",
+        "cases/pair-2-gpu/input.inp": "0d8017106502c99c02fa77e964942fa42cdfa05146b3271c85a6d676e48721b8",
+        "cases/pair-2-gpu/launch.json": "3ddaef9fa33b87679a7ff91989e813e7951615513e7f5945ff3b7f94060740bf",
+        "cases/pair-2-gpu/rank-0.json": "8024933d708feb1510c13a8389f0dbb18cbe437f9f3e9592adccd8637adff6cb",
+        "cases/pair-2-gpu/rank-1.json": "4d41b14bcd499e2b1503e7aabd7a2296315ad524396f82cb2635b59ae1239a98",
+        "cases/pair-2-gpu/rank-2.json": "6d67865df234cd7c1490c06f05b5628ac138024698d040efa5693c1360a5f28c",
+        "cases/pair-2-gpu/rank-3.json": "7dc1be13c1fb41b532c15fa9a145037b58c76ec1490cf800300dcf7623ddbd45",
+        "cases/pair-2-gpu/resources.jsonl": "7916fb6c4d36b1391cedf6766b7ebb1831f85bf753b9e72a6166d11934f00827",
+        "cases/pair-2-gpu/sample.json": "398c116b813aaec3c8146c3d7125377dc351dde4f20bb836e1e09b7886b7a936",
+        "cases/pair-3-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/pair-3-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/pair-3-cpu/cp2k.log": "df6e92f5424616774cf75c9b6d1c8761a20ed3ac06287dd7262348205327ef74",
+        "cases/pair-3-cpu/elapsed.txt": "f26e5476addc5d47b0d3a45e3aedaa2a40332e3222b4ec5c295e353e4c7315f0",
+        "cases/pair-3-cpu/forces.xyz": "cedc5e759d5c6683210c3ff822a0d593847cf8a51a9786286da2b5129d7af391",
+        "cases/pair-3-cpu/input.inp": "0f8c9fd407ea69ad23f12acceca84ff1481f5fb76fe59808bd5dd5789d4c5c00",
+        "cases/pair-3-cpu/launch.json": "7dfcab4c2a129b05ae210bbe9394b7250218fbd60677258d1f9911a4824dd8e7",
+        "cases/pair-3-cpu/rank-0.json": "94d58b5a1d278588fb45780acb7aebe65b1038cabe9fa0b3dd6c47f4261c93db",
+        "cases/pair-3-cpu/rank-1.json": "68b9ee8568ec3eec3aa6fc9c251d9553c39f9bd116c11fb9a10ecde01de0ed79",
+        "cases/pair-3-cpu/rank-2.json": "658c93de4f0cf183324f4adc264bb8c261b6ae18bd3d39741fd93e91edc3b6bd",
+        "cases/pair-3-cpu/rank-3.json": "221361c99454ca78f61acbcf68095b97a929327eced651c56ec26b11ff6e597e",
+        "cases/pair-3-cpu/rank-4.json": "ce9b91cc2a1dca212fd2297c6bc91f9320e6701026647e146ab8ab9101420c8d",
+        "cases/pair-3-cpu/rank-5.json": "95e16a45bf4b5aa94d664711cfc74edcdfe99d4665acf25d53a5bbeac923ed16",
+        "cases/pair-3-cpu/rank-6.json": "3f50992d2253fb458be851b1770f62dbd1edf24aa03fdd97111165b9ed17819f",
+        "cases/pair-3-cpu/rank-7.json": "2ff515ccd457724ce57d27bf489c7ffc3b40840d68b9694850c4751691b53478",
+        "cases/pair-3-cpu/resources.jsonl": "0cbac09da0e5d3018358c53c1cb24f9e5ef6711661948e780c4c8f1479d5ac60",
+        "cases/pair-3-cpu/sample.json": "2df1f48a1b1c879fc24d061f4c19e8a56ed4a830223256b34eb02d14da118399",
+        "cases/pair-3-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/pair-3-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/pair-3-gpu/cp2k.log": "83de053f3634b72f9a240d54e7307e65ba38c39125b60e726f88d90cf2159568",
+        "cases/pair-3-gpu/elapsed.txt": "141510d3c81d2413af71973b65a5ed4d4ebb29eb1f8ea435226aa3885b85924f",
+        "cases/pair-3-gpu/forces.xyz": "28ead22d5e95f3adece3a07b7f6379a3c5e8e9e2602993ca86174681bfe1dcb1",
+        "cases/pair-3-gpu/input.inp": "0d8017106502c99c02fa77e964942fa42cdfa05146b3271c85a6d676e48721b8",
+        "cases/pair-3-gpu/launch.json": "3ddaef9fa33b87679a7ff91989e813e7951615513e7f5945ff3b7f94060740bf",
+        "cases/pair-3-gpu/rank-0.json": "83ccc2d7c96b4b666a8a4fc3fb05abe184c2e0c1241eead148c03f4f0a0b8726",
+        "cases/pair-3-gpu/rank-1.json": "d2a0547a71cb38a624c22f3c2f22c75f4b280bcb25ec4b245fb43ebd112cffc7",
+        "cases/pair-3-gpu/rank-2.json": "96b308b703e62bc1e57a210e64aabf8206d9632e554c950a92ba26b555ec6150",
+        "cases/pair-3-gpu/rank-3.json": "02935e5e5631f66bb34be6ca3fcac8082e621b006c4a59f9a3b5a1d1ae5fb94c",
+        "cases/pair-3-gpu/resources.jsonl": "911a43897132f32f119f91d4bff114a3b9d219c6124639e29beabd1171cb5646",
+        "cases/pair-3-gpu/sample.json": "62d79e0488c810fa15791b5c2facc5421dccd4eab2dcdf26c77bf90b6eb9bc1c",
+        "cases/tune-0-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/tune-0-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/tune-0-gpu/cp2k.log": "255fac395721e1af6a1416b23c93297d8f96bd4a778cc1c44afcb694739c765e",
+        "cases/tune-0-gpu/elapsed.txt": "ab2d7922d223ce7ea32135c5f2e3212614cb9327d2790ccb82b759b6c9635af6",
+        "cases/tune-0-gpu/forces.xyz": "b909a9f5a9d2603012174c4b2486ce6956bc2c551f2a0344e54c025c10309f7d",
+        "cases/tune-0-gpu/input.inp": "0d8017106502c99c02fa77e964942fa42cdfa05146b3271c85a6d676e48721b8",
+        "cases/tune-0-gpu/launch.json": "3ddaef9fa33b87679a7ff91989e813e7951615513e7f5945ff3b7f94060740bf",
+        "cases/tune-0-gpu/rank-0.json": "61b77ef43573be0c480ee95dfa4688b28da21ee6bbb4083f3ac0466060a3573c",
+        "cases/tune-0-gpu/rank-1.json": "b6e11bf9a119ca10adf5befa0e51043220aa8a2218dcd16ca640aac2a9bebc8e",
+        "cases/tune-0-gpu/rank-2.json": "99cfc45b8410bb1c3c3572861ed6d5f74373fb9a6cc9daed650c8a00855696d4",
+        "cases/tune-0-gpu/rank-3.json": "58393bb5bdd1750cd8df8e693a6c97ff211c05ce7f03b5533cb7d784a3c0617b",
+        "cases/tune-0-gpu/resources.jsonl": "35d2fa42bf0afaa6eb279704c1fdd3b5a9fd2b35b973c79eb014377522853f52",
+        "cases/tune-0-gpu/sample.json": "630ca477b6eb21dbfcdb69e9fa1ef2b7217b8568ed128c05e3dbd05297b71de0",
+        "cases/tune-1-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/tune-1-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/tune-1-gpu/cp2k.log": "557d0ce0edf61ba2d725cd1eb5d30ca2d03689e09d99409a2620488bfeb08513",
+        "cases/tune-1-gpu/elapsed.txt": "5d2e4db5cd9e73469e5f6fe820c9cc61c43e1a7ff0bda9892cecc1ce793611ab",
+        "cases/tune-1-gpu/forces.xyz": "0f802a612ae603a962bf50776511314bac6efb13c79485e70653c453dd4846bc",
+        "cases/tune-1-gpu/input.inp": "0d8017106502c99c02fa77e964942fa42cdfa05146b3271c85a6d676e48721b8",
+        "cases/tune-1-gpu/launch.json": "763972bf5697b13bf9bb86f76f68ef4bd6a35af5289dd8866fe05cc79f644d26",
+        "cases/tune-1-gpu/rank-0.json": "a86f5b28c2726ba32e67aa51338640d1371d269dc1d7c5070cc9a5aeaae0ff51",
+        "cases/tune-1-gpu/rank-1.json": "6eadd0f81129ee133e1c99741fce7ffb460110051b735252af5146d9e02343fe",
+        "cases/tune-1-gpu/rank-2.json": "bb11088c66c738eefe5e3387b7610594353eb236742d3f5c5d6510bca2ef9107",
+        "cases/tune-1-gpu/rank-3.json": "91fe8300fe81c5a37cfdf2534febb7b80a03afaa814b55416b63f615fffb8042",
+        "cases/tune-1-gpu/resources.jsonl": "23293bc0214f10dbd7361a507fc82fb83cbc264f57e2e6c494e4f4062ab3215f",
+        "cases/tune-1-gpu/sample.json": "fafd4a262a088885426f11f64ce015948f2fa84afb0c8f011b8d95dbdc83f667",
+        "cases/tune-2-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/tune-2-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/tune-2-gpu/cp2k.log": "ab0b5377929abf5c253599c7d3bd88ed0b983ace9f166feb3ada8e5101ad2a65",
+        "cases/tune-2-gpu/elapsed.txt": "700405ae10da324823ce8945c8967b8946d36ffa74924048906c3b1c6c770945",
+        "cases/tune-2-gpu/forces.xyz": "e9cac1c726f92cb1bfa5373e25e80544062b23d9454d16f23e4cb92a76c6e155",
+        "cases/tune-2-gpu/input.inp": "0d8017106502c99c02fa77e964942fa42cdfa05146b3271c85a6d676e48721b8",
+        "cases/tune-2-gpu/launch.json": "4b0743f56b8d29302bfe8e5b7df78b1960f7e04c324f0536dd26401ec2f6f481",
+        "cases/tune-2-gpu/rank-0.json": "f4ec3b1ae6130d63bf8fac9df49ab2f4c69bd6f03bb6f82c988c77cb6d859498",
+        "cases/tune-2-gpu/rank-1.json": "47f9da80f60b865375475908d43ef9c357440341784fe635e5454862f936801b",
+        "cases/tune-2-gpu/rank-2.json": "1ec05ac86256cd9cfaea5e67b2a1c449bedca91cd721c1c807bb5d93c004a373",
+        "cases/tune-2-gpu/rank-3.json": "3a2cab73649fb40a4c8195449f5b782d013ea12b16404eda48aef0c4dfddd722",
+        "cases/tune-2-gpu/resources.jsonl": "449b2ecebdfb425ce86dec6cdb8a3451e1949b2ff4d1ba08d526e832c27a97f6",
+        "cases/tune-2-gpu/sample.json": "78c6be25ac0398165d31adf4e21ddb49bbafc5e9317ea5a5d94ac3658fe7f6cf",
+        "cases/tune-3-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/tune-3-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/tune-3-gpu/cp2k.log": "6ecee614965e6b4c331cfd083a92c61cb6a1c4dcf7375a25c429b5622740cdb4",
+        "cases/tune-3-gpu/elapsed.txt": "b5193bdb88ab135a4d07b07eba86051bf9a8024a405527a1f3f09b2dcbd7fe89",
+        "cases/tune-3-gpu/forces.xyz": "ce793849d9b98fdc00aff1b067ae7d8fd691f514b720b261b36d341ea534b2c4",
+        "cases/tune-3-gpu/input.inp": "83ae746c11eecac9bac3417e8d91c46c7f11056ac7ef55035d756fb54e62240a",
+        "cases/tune-3-gpu/launch.json": "dd2405db395930b56857382583b46cbb60a603f6a66b8f997e80f5a27eeefbf7",
+        "cases/tune-3-gpu/rank-0.json": "c0a1cacb0fff9c9431f634b2ace5deec53ff589caac6ad0823687a4e1b4ad8c8",
+        "cases/tune-3-gpu/rank-1.json": "744944e6f726121cf424263722013480a0564eb64635b859a511dfbc4d56a7e5",
+        "cases/tune-3-gpu/rank-2.json": "265f122eb387af76a7834bf35c5701f96e534b6542a9a9290562833c8fa54168",
+        "cases/tune-3-gpu/rank-3.json": "10370fa6f9171f8d0bf4a7522c5e90eb7480f7f4dbb1c535f2e1c935ed84c361",
+        "cases/tune-3-gpu/resources.jsonl": "da438198a6610ed6f0971db3bdd3e4b19edae66ee9d393283ae685f56bce4ba5",
+        "cases/tune-3-gpu/sample.json": "3a677b39228694848b24ac583571694cb9c27a3831bbd5a340666a9bd3192b0a",
+        "cases/tune-4-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/tune-4-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/tune-4-gpu/cp2k.log": "3a011dd1411f3ff8096da5f0d662c612ee64e44dde458c7ecf641a8ff3391386",
+        "cases/tune-4-gpu/elapsed.txt": "2d1f384d907538fc63613b9a63e10aff99f56864892ebe4de3a6fcb8c4e71f12",
+        "cases/tune-4-gpu/forces.xyz": "6b98155e0aafeab39251da7aded969b13bd0d898e53a6d15a4079769d53bf434",
+        "cases/tune-4-gpu/input.inp": "83ae746c11eecac9bac3417e8d91c46c7f11056ac7ef55035d756fb54e62240a",
+        "cases/tune-4-gpu/launch.json": "be9101746d09e10170dd16d6f35a5106743f3effda79de0c096fbbb4f9e10bb9",
+        "cases/tune-4-gpu/rank-0.json": "b5f73fc80af9e6851dcbdbf087f767bba2555bd3ff308473e7105b77c4ddb1dc",
+        "cases/tune-4-gpu/rank-1.json": "c4926cb350b0eb6a929d6bba7e26cd445241d13d2b38652010e58b0286288c9b",
+        "cases/tune-4-gpu/rank-2.json": "905b2b27c64396480eca6f3d6bee59a25e9c9e41f6a5016d9b7a0802dfd9e561",
+        "cases/tune-4-gpu/rank-3.json": "71925d02cf970a36e66c26d519f76e365bef2d087931d14d14d8f9ecb8e2b6e7",
+        "cases/tune-4-gpu/resources.jsonl": "30d719f4feeeac7fb275e8ac29da899ca4c649c47613a752710ac81b117acb94",
+        "cases/tune-4-gpu/sample.json": "629edda3aec444d652d72431d85be4f138dc72df4b6111b6392b8e718240727e",
+        "cases/tune-5-gpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/tune-5-gpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/tune-5-gpu/cp2k.log": "7698a037ae9c775e2cf558695289ed134e3efc77f0fa630baaa57be2842199f4",
+        "cases/tune-5-gpu/elapsed.txt": "75fd09653d951ccdaf9aa2dfbeba127787a560f88cac91c68d588d666fb6d1ef",
+        "cases/tune-5-gpu/forces.xyz": "00448778410c463b79eac9a826da8f1fda3bf0cf1f0522a70840e0e3042b5f79",
+        "cases/tune-5-gpu/input.inp": "83ae746c11eecac9bac3417e8d91c46c7f11056ac7ef55035d756fb54e62240a",
+        "cases/tune-5-gpu/launch.json": "3c0eb086faa5dcfb421730f43c6038f518bebecee3eec14f361f3eccba7d007d",
+        "cases/tune-5-gpu/rank-0.json": "17408a40d0cb54eca9a7a496b6b336c531b2d2b52c10320dc1e2391f29b3def1",
+        "cases/tune-5-gpu/rank-1.json": "3b2486ed968263288d699e4a1bff52739102a82dbe6798685a95575bdab7c444",
+        "cases/tune-5-gpu/rank-2.json": "fe4b6efdce837f33a024c9dc85194134efa365c75b84d8ba97d304988dce629e",
+        "cases/tune-5-gpu/rank-3.json": "e0a0ae5a4562824dd8ad85b85345a6c324dcdef48fc20838d102be3e4aa7e0bc",
+        "cases/tune-5-gpu/resources.jsonl": "755ab335d16a7256c06d040e4f357d03923917f54efabd77c88f0baae1225c96",
+        "cases/tune-5-gpu/sample.json": "911c89860fda4ee9ed1a256d522a4f4e31934bde586823443f153898f17b9e6c",
+        "cases/tune-6-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/tune-6-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/tune-6-cpu/cp2k.log": "1ef8869b6bdf12fa2408961898288a6c3498061a55025a1432c9830ac969a215",
+        "cases/tune-6-cpu/elapsed.txt": "4b670121e5b220efaa769df4849bcf092e966efbb3a0888112e9d0fc56de9825",
+        "cases/tune-6-cpu/forces.xyz": "8e311f29552d55a8b66daa00c83b572860a5087fcb687581160eeabab10e869b",
+        "cases/tune-6-cpu/input.inp": "0f8c9fd407ea69ad23f12acceca84ff1481f5fb76fe59808bd5dd5789d4c5c00",
+        "cases/tune-6-cpu/launch.json": "16f629cf9585f76370dd33545ac384e9185a36d3f4982e813951e2b030150dac",
+        "cases/tune-6-cpu/rank-0.json": "aa3fe6090c3e5014217aa572b8655f03d93984982534a6e2b6ac4fd03862674c",
+        "cases/tune-6-cpu/rank-1.json": "9f5ffdbcf6c734b42de7229e4aec9510413e824ec9e9f9718c7edfabf651d1e0",
+        "cases/tune-6-cpu/rank-2.json": "298068b9fc94e8d80b4035a69ada2e7c573eeda8e66ef087ed121745f8deb44f",
+        "cases/tune-6-cpu/rank-3.json": "7525de3ef2310c19f9f43889b3a3ec2da80851ca9e84d32747f64f542c444c40",
+        "cases/tune-6-cpu/resources.jsonl": "b40995eac28e8d88354054726073630a4565e5edc63c5de32f264d785cb5fde7",
+        "cases/tune-6-cpu/sample.json": "4e6e08c5ff0a6a0517c6f3993d41abcabe4c4ce06ea99de39ff93224c0213555",
+        "cases/tune-7-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/tune-7-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/tune-7-cpu/cp2k.log": "b936a4d82f50c73a128b33d21195c031733980d73973d5c28188aa4e54483877",
+        "cases/tune-7-cpu/elapsed.txt": "daa2629a2cf7c5888759610b790317e91ab30c91a109414ae22bf0962afd8a6c",
+        "cases/tune-7-cpu/forces.xyz": "8fa13b4c0b8f27d7fb6bef43ba9ece27945f5c16482e1fddcfae23a20d4e8663",
+        "cases/tune-7-cpu/input.inp": "0f8c9fd407ea69ad23f12acceca84ff1481f5fb76fe59808bd5dd5789d4c5c00",
+        "cases/tune-7-cpu/launch.json": "7dfcab4c2a129b05ae210bbe9394b7250218fbd60677258d1f9911a4824dd8e7",
+        "cases/tune-7-cpu/rank-0.json": "72894275303dd8fc43fd7e174d3ab17c0ac12e4852ba95549816916245132a11",
+        "cases/tune-7-cpu/rank-1.json": "8c80c05b0bc5f4548be842fe12dbae9ec29c59b64f6e0b1bc2e88e2deed9f848",
+        "cases/tune-7-cpu/rank-2.json": "ed3dfabfe16c94dfb506f8af7d7cd9169024484435eb0de196133298a2741c75",
+        "cases/tune-7-cpu/rank-3.json": "e7ae0fa4318981fc5a2d6b3f9eb2e3381676c3e1b572836d2c0b71c9415eae2c",
+        "cases/tune-7-cpu/rank-4.json": "835085cfa8d4ded745eeea6b441a4ef2f6fb973cf9345ed52b74f8f37033370e",
+        "cases/tune-7-cpu/rank-5.json": "b5ccc20f08d4a0d77bb1447bd2fa0e96fe544a19512fb825f65a74530e7e89d8",
+        "cases/tune-7-cpu/rank-6.json": "6b923eb801f1bf8d2ad7b8be3978b20506b7b17bf995fbc8183c1f42df941978",
+        "cases/tune-7-cpu/rank-7.json": "7d4fbb834845e8333e89079c4794c4fac5c96b3ae1fc8dbaaeab62e2c426e8e7",
+        "cases/tune-7-cpu/resources.jsonl": "45b8c1882c0aac25e29a537b5c7cfe7425081d3fe345139cf27a1b5b724cac4d",
+        "cases/tune-7-cpu/sample.json": "47cc2a003d76a92f849887bc1b0ce860814604917ce6b34aec54cdc5bfe32366",
+        "cases/tune-8-cpu/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "cases/tune-8-cpu/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "cases/tune-8-cpu/cp2k.log": "c936223ce0c54861541e19d716f0c906b7c38e751d563cb11376d27108e15624",
+        "cases/tune-8-cpu/elapsed.txt": "43eb759c89802e513ea3125c11acd8bf0e3455250c7983504775d8d465f75bb0",
+        "cases/tune-8-cpu/forces.xyz": "0e08476b20e87c11b73044b1b4bc1c4831d9ee69dfa31ce6303e883f600bd778",
+        "cases/tune-8-cpu/input.inp": "0f8c9fd407ea69ad23f12acceca84ff1481f5fb76fe59808bd5dd5789d4c5c00",
+        "cases/tune-8-cpu/launch.json": "9199733ddea753c2f69b38df91b409a1a27b80c855d19d92b89bd8a486331e5c",
+        "cases/tune-8-cpu/rank-0.json": "7586654a8832c52a81708918021a559efe77b13d445134ed6e71b6a4910e3993",
+        "cases/tune-8-cpu/rank-1.json": "f7be619c9a73624a260f9b713202e3f1d0d62984218da1f8629c8e1ef66ddfa2",
+        "cases/tune-8-cpu/rank-10.json": "318bee6174efd2e3d99f9b048f38bfa7b128a7f9adfee40dfcc4ec92dea15ed5",
+        "cases/tune-8-cpu/rank-11.json": "1cc23b3b8158b39a3c363ab1b2c3f05ab646f21c5b12efb961fbdf45618f4f6a",
+        "cases/tune-8-cpu/rank-12.json": "ef66e904f7bbfbde4d720f0f57f1376f970fec4c0d9508f78723e45e5f069076",
+        "cases/tune-8-cpu/rank-13.json": "48d6da348fd4b58e19bc199e82ddea53e2e28818e3d3c72f854bc85aad11ba75",
+        "cases/tune-8-cpu/rank-14.json": "1bc353cacfc3aef83bda370eb9a27956876a581ef05f2b36f1bcab809a82a347",
+        "cases/tune-8-cpu/rank-15.json": "127bdab7fbe1412a1dfeb4c249c419bbede5b9e5f1f81d27dc612e31e27c6545",
+        "cases/tune-8-cpu/rank-2.json": "c53269134f1f73328a8722aa3fcc63bfea5fd04bcb1f551334b9e85d6442cdf5",
+        "cases/tune-8-cpu/rank-3.json": "eeeba2e9d14e9b83deda73eb5c1da9cb771b03647d59ec69c0d7ae9c31718443",
+        "cases/tune-8-cpu/rank-4.json": "287d79b0126b47f2037fa1cbdd0efb14b263a09cb3c6a6036b7c8680d8e431cc",
+        "cases/tune-8-cpu/rank-5.json": "34809919e0dd1f419722282c14e44fe67ef84eefdd8df0703d81bff6b296b94a",
+        "cases/tune-8-cpu/rank-6.json": "69e066a54d302bc6c16de6f02f08f3f8fde9030f7e2dfc3a4cf5ace4b3360050",
+        "cases/tune-8-cpu/rank-7.json": "b5f6d99b1d635c6c4a1aef98f3f2712cb7e4aa4ee6febc50be4e85c5dd1b88e6",
+        "cases/tune-8-cpu/rank-8.json": "2aede7ca6b0a67010febe519886b263000c016b36c657686405a96f7913c0745",
+        "cases/tune-8-cpu/rank-9.json": "a14c3b0e20a99c4af4b97e4abeb95050cad84ff9e2027aa6ed0d0c1764dc55c5",
+        "cases/tune-8-cpu/resources.jsonl": "a1e0fd195eb9aaf3e329f8ccd7160ab435d618af6aad7af2d607cddb206ea837",
+        "cases/tune-8-cpu/sample.json": "3d07816e55b9e7010087917395873b1a3151586c0ce05d7698b9d9401ee1031a",
+        "fixtures/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+        "fixtures/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+        "results/accounting.txt": "53677818f7703f40961f4ad44946873ec78d10a47112438d1d99ac5964fbdd8d",
+        "results/allocation.txt": "f8aa4bc300b026fd8ec78eaf205dff92beb3d188022930320de2dcc3f217f7ec",
+        "results/comparison.json": "b789943f76dd957ba9c5cc46699f70bd1fe03d663f824cc8e34d34c4d90abc3f",
+        "results/cpu-ldd.txt": "fa77bc4b5c82747d3194ace2916e571459e3fce4b7b8065db914f6640f61a455",
+        "results/cpu-version.txt": "9fcb5e2c116e0dcb782e053939313683756a38cb8677748b8f300d5f824e7a69",
+        "results/devices.json": "a89c5e1dde5e65878c2e8c4c7dc0e21f87835c632cfff467b6aa2bb8e7d698ec",
+        "results/environment.json": "fc74529bc2d7d4e27acd5d706c39039c945ee48e7848510dc10e62d621c41927",
+        "results/gpu-ldd.txt": "a18ac440ecb25c41945293daf2bb6a3fb5d6930f90391baaee641312d8e322d7",
+        "results/gpu-topology.txt": "04d1729518cd62e3eccf703ae532fb9858d2f5a64d38f58da711b86cef809bf8",
+        "results/gpu-version.txt": "99c918c1a212847fd69421bb1ae89682344c6ca40c5f10627a4de415d87eb6af",
+        "results/lscpu.txt": "6a4fabd309345da61961f5b3519e770315413a8e6442fda678835b43ca7c9bf3",
+        "results/modules.txt": "6057b203159ae7f51ba5d5a20445426d2c3bed351e5206623e5d6f9b687df22e",
+        "results/pairs.json": "63dd0d60dd26385b0185125d83192a1aa86bdc36a6e1f9d1bed60d692ac2b2b0",
+        "results/tuning.json": "52b68e6f22a1eaf0230704164ef88312bff5df3d712b701e33e3ab348aa89c5e"
+      },
+      "job": "1888437",
+      "request_sha256": "855e503443acbdc94763e6c510d9128e5afde1ab74893c1a548cd184e018cb6d",
+      "stage": "compare",
+      "verified": true
+    }
+  },
+  "numerical_acceptance_unchanged": true,
+  "source_excerpts": [
+    {
+      "file": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-16v100-a/work/source/src/fm/cp_fm_diag_utils.F",
+      "first_line": 53,
+      "last_line": 68,
+      "sha256": "e3edf28d199b4ba624bd94b0e3e73a8863f6db2a7ffc8e4d8e0017f32f7e8c83",
+      "text": "   ! Container for redistribution settings and temporary work structs\n   TYPE cp_fm_redistribute_type\n      ! Settings\n      INTEGER                                  :: a = -1, x = -1\n      LOGICAL                                  :: should_print = .FALSE.\n      LOGICAL                                  :: elpa_force_redistribute = .FALSE.\n      ! Temporaries\n      INTEGER, DIMENSION(:), POINTER           :: group_distribution => NULL(), &\n                                                  group_partition => NULL()\n      TYPE(cp_blacs_env_type), POINTER         :: blacs_env_new => NULL()\n      TYPE(mp_para_env_type), POINTER          :: para_env_new => NULL()\n   END TYPE cp_fm_redistribute_type\n\n   ! Permanent instance of the redistribute type\n   TYPE(cp_fm_redistribute_type), PRIVATE, &\n      SAVE                                     :: work_redistribute"
+    },
+    {
+      "file": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-16v100-a/work/source/src/fm/cp_fm_diag_utils.F",
+      "first_line": 117,
+      "last_line": 173,
+      "sha256": "e3edf28d199b4ba624bd94b0e3e73a8863f6db2a7ffc8e4d8e0017f32f7e8c83",
+      "text": "   SUBROUTINE cp_fm_redistribute_work_finalize(has_redistributed)\n      LOGICAL, INTENT(IN)                                :: has_redistributed\n\n      IF (ASSOCIATED(work_redistribute%group_distribution)) THEN\n         IF (has_redistributed) THEN\n            CALL cp_blacs_env_release(work_redistribute%blacs_env_new)\n         END IF\n         CALL work_redistribute%para_env_new%free()\n         DEALLOCATE (work_redistribute%para_env_new)\n         DEALLOCATE (work_redistribute%group_distribution)\n         DEALLOCATE (work_redistribute%group_partition)\n      END IF\n      ! Return work to its initial state\n      work_redistribute = cp_fm_redistribute_type()\n\n   END SUBROUTINE cp_fm_redistribute_work_finalize\n\n! **************************************************************************************************\n!> \\brief  Initializes the parameters that determine how to calculate the optimal number of CPUs\n!>         for diagonalizing a matrix. The parameters are read from the GLOBAL input section.\n!> \\param a                integer parameter used to define the rule for determining the optimal\n!>                         number of CPUs for diagonalization\n!> \\param x                integer parameter used to define the rule for determining the optimal\n!>                         number of CPUs for diagonalization\n!> \\param should_print     flag that determines if information about the redistribution process\n!>                         should be printed\n!> \\param elpa_force_redistribute  flag that if redistribution should always be performed when\n!>                                 the ELPA diagonalization library is in use\n!> \\author Nico Holmberg [01.2018]\n! **************************************************************************************************\n   SUBROUTINE cp_fm_redistribute_init(a, x, should_print, elpa_force_redistribute)\n      INTEGER, INTENT(IN)                                :: a, x\n      LOGICAL, INTENT(IN)                                :: should_print, elpa_force_redistribute\n\n      work_redistribute%a = a\n      work_redistribute%x = x\n      work_redistribute%should_print = should_print\n      work_redistribute%elpa_force_redistribute = elpa_force_redistribute\n      ! Init work\n      work_redistribute = cp_fm_redistribute_type()\n\n   END SUBROUTINE cp_fm_redistribute_init\n\n! **************************************************************************************************\n!> \\brief  Calculates the optimal number of CPUs for diagonalizing a matrix.\n!> \\param  size  the size of the diagonalized matrix\n!> \\return the optimal number of CPUs\n!> \\author Nico Holmberg [01.2018]\n! **************************************************************************************************\n   PURE FUNCTION cp_fm_diag_get_optimal_ncpu(size) RESULT(ncpu)\n      INTEGER, INTENT(IN)                                :: size\n      INTEGER                                            :: ncpu\n\n      ncpu = ((size + work_redistribute%a*work_redistribute%x - 1)/ &\n              (work_redistribute%a*work_redistribute%x))*work_redistribute%a\n\n   END FUNCTION cp_fm_diag_get_optimal_ncpu"
+    },
+    {
+      "file": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-16v100-a/work/source/src/fm/cp_fm_diag_utils.F",
+      "first_line": 300,
+      "last_line": 315,
+      "sha256": "e3edf28d199b4ba624bd94b0e3e73a8863f6db2a7ffc8e4d8e0017f32f7e8c83",
+      "text": "      ! first figure out the optimal number of cpus\n      ! this is pure heuristics, the defaults are based on rosa timings\n      ! that demonstrate that timings go up sharply if too many tasks are used\n      ! we take a multiple of 4, and approximately n/60\n      para_env => matrix%matrix_struct%para_env\n      mepos_old = para_env%mepos\n      ncol_block = -1 ! normally we also want to adjust the block size according to the optimal # of CPUs\n      nrow_block = -1\n      blksize = -1\n\n      rdinfo%matrix_order = matrix%matrix_struct%nrow_global\n      rdinfo%num_pe_old = para_env%num_pe\n      rdinfo%num_pe_opt = cp_fm_diag_get_optimal_ncpu(rdinfo%matrix_order)\n      rdinfo%num_pe_new = rdinfo%num_pe_opt\n      rdinfo%num_pe_max_nz_col = -1\n      rdinfo%redistribute = .FALSE."
+    },
+    {
+      "file": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-16v100-a/work/source/src/fm/cp_fm_diag_utils.F",
+      "first_line": 351,
+      "last_line": 384,
+      "sha256": "e3edf28d199b4ba624bd94b0e3e73a8863f6db2a7ffc8e4d8e0017f32f7e8c83",
+      "text": "      ! finally, only redistribute if we're going to use less CPUs than before or changed the block size\n      rdinfo%redistribute = (rdinfo%num_pe_old > rdinfo%num_pe_new) .OR. (blksize >= 0 .AND. &\n                                   ((blksize /= matrix%matrix_struct%ncol_block) .OR. (blksize /= matrix%matrix_struct%nrow_block)))\n\n      IF (work_redistribute%should_print .AND. io_unit > 0) THEN\n         IF (is_elpa) THEN\n            IF (work_redistribute%elpa_force_redistribute) THEN\n               WRITE (UNIT=io_unit, FMT=\"(T2,A,T78,A3)\") &\n                  \"CP_FM_DIAG| Force redistribute (ELPA):\", \"YES\"\n            ELSE\n               WRITE (UNIT=io_unit, FMT=\"(T2,A,T79,A2)\") &\n                  \"CP_FM_DIAG| Force redistribute (ELPA):\", \"NO\"\n            END IF\n         END IF\n         CALL rdinfo%write(io_unit)\n      END IF\n      CALL para_env%sync()\n\n      ! if the optimal is smaller than num_pe, we will redistribute the input matrix\n      IF (rdinfo%redistribute) THEN\n         ! split comm, the first num_pe_new tasks will do the work\n         ALLOCATE (work_redistribute%group_distribution(0:rdinfo%num_pe_old - 1))\n         ALLOCATE (work_redistribute%group_partition(0:1))\n         work_redistribute%group_partition = [rdinfo%num_pe_new, rdinfo%num_pe_old - rdinfo%num_pe_new]\n         ALLOCATE (work_redistribute%para_env_new)\n         CALL work_redistribute%para_env_new%from_split( &\n            comm=para_env, ngroups=ngroups, group_distribution=work_redistribute%group_distribution, &\n            n_subgroups=2, group_partition=work_redistribute%group_partition)\n\n         IF (work_redistribute%group_distribution(mepos_old) == 0) THEN\n\n            ! create blacs, should inherit the preferences for the layout and so on, from the higher level\n            NULLIFY (work_redistribute%blacs_env_new)\n            CALL cp_blacs_env_create(blacs_env=work_redistribute%blacs_env_new, para_env=work_redistribute%para_env_new)"
+    },
+    {
+      "file": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-16v100-a/work/source/src/fm/cp_fm_diag.F",
+      "first_line": 600,
+      "last_line": 617,
+      "sha256": "9f75b30ed618fca87fcf3e70d07838c54a156157d1c4041ab9d033c1049f36b2",
+      "text": "#if defined(__parallel)\n      ! Determine if the input matrix needs to be redistributed before diagonalization.\n      ! Heuristics are used to determine the optimal number of CPUs for diagonalization.\n      ! The redistributed matrix is stored in matrix_new, which is just a pointer\n      ! to the original matrix if no redistribution is required\n      CALL cp_fm_redistribute_start(matrix, eigenvectors, matrix_new, eigenvectors_new)\n\n      ! Call scalapack on CPUs that hold the new matrix\n      IF (ASSOCIATED(matrix_new%matrix_struct)) THEN\n         IF (PRESENT(info)) THEN\n            CALL cp_fm_syevd_base(matrix_new, eigenvectors_new, eig, myinfo)\n         ELSE\n            CALL cp_fm_syevd_base(matrix_new, eigenvectors_new, eig)\n         END IF\n      END IF\n      ! Redistribute results and clean up\n      CALL cp_fm_redistribute_end(matrix, eigenvectors, eig, matrix_new, eigenvectors_new)\n#else"
+    },
+    {
+      "file": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-16v100-a/work/source/src/mpiwrap/message_passing.F",
+      "first_line": 2437,
+      "last_line": 2482,
+      "sha256": "d332f39cbf43d243a3dcd3a5a0913162129e1db67946dd86e4fae2569c9dc178",
+      "text": "         ELSE ! n_subgroups\n            IF (n_subgroups <= 0) THEN\n               CPABORT(routineP//\" n_subgroups too small\")\n            END IF\n            IF (nnodes/n_subgroups > 0) THEN ! we have a least one cpu per group\n               ngroups = n_subgroups\n            ELSE ! well, only one group then\n               ngroups = 1\n            END IF\n            my_subgroup_min_size = nnodes/ngroups\n         END IF\n\n         ! rank_permutation: is a permutation of ranks, so that groups are not necessarily continuous in rank of the master group\n         ! while the order is not critical (we only color ranks), it can e.g. be used to make groups that have just 1 rank per node\n         ! (by setting stride equal to the number of mpi ranks per node), or by sharing  a node between two groups (stride 2).\n         ALLOCATE (rank_permutation(0:nnodes - 1))\n         local_stride = 1\n         IF (PRESENT(stride)) local_stride = stride\n         k = 0\n         DO istride = 1, local_stride\n            DO irank = istride - 1, nnodes - 1, local_stride\n               rank_permutation(k) = irank\n               k = k + 1\n            END DO\n         END DO\n\n         DO i = 0, nnodes - 1\n            group_distribution(rank_permutation(i)) = MIN(i/my_subgroup_min_size, ngroups - 1)\n         END DO\n         ! even the user gave a partition, see if we can use it to overwrite this choice\n         IF (PRESENT(group_partition)) THEN\n            IF (ALL(group_partition > 0) .AND. (SUM(group_partition) == nnodes) .AND. (ngroups == SIZE(group_partition))) THEN\n               k = 0\n               DO i = 0, SIZE(group_partition) - 1\n                  DO j = 1, group_partition(i)\n                     group_distribution(rank_permutation(k)) = i\n                     k = k + 1\n                  END DO\n               END DO\n            ELSE\n               ! just ignore silently as we have reasonable defaults. Probably a warning would not be to bad\n            END IF\n         END IF\n         DEALLOCATE (rank_permutation)\n         color = group_distribution(mepos)\n         CALL mpi_comm_split(comm%handle, color, 0, sub_comm%handle, ierr)"
+    }
+  ],
+  "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+  "source_status": " M src/fm/cp_fm_elpa.F\n",
+  "source_url": "https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/fm/cp_fm_diag_utils.F",
+  "valid_for_fully_used_cpu_baseline": false
+}

@@ -1,0 +1,449 @@
+{
+  "schema": 1,
+  "purpose": "Formal workflow stage evidence; artifact presence is not acceptance",
+  "workflow": "39078998459",
+  "controller_sha": "c3b65b97f9d95ecb29a453713dfe292af20f6d39",
+  "recipe_sha256": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+  "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+  "observed_at": "2026-10-18T00:11:13.991683+00:00",
+  "observer_status": "monitoring",
+  "observer_last_checked_at": "2026-10-18T00:11:04.818977+00:00",
+  "observer_report": {
+    "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/install-layout-fix/formal-progress.json",
+    "sha256": "7fb91322527b861839e67b1f369cb94b3ececb4e7317e59fbc3ab307f3a5c57c"
+  },
+  "events": [
+    {
+      "at": "2026-10-17T23:32:31.875832+00:00",
+      "event": "dependency_submission_verified",
+      "target": "4v100-avx512",
+      "job": "1837488",
+      "accounting": {
+        "job_id": "1837488",
+        "partition": "4V100",
+        "state": "RUNNING",
+        "exit_code": "0:0",
+        "elapsed": "00:03:28",
+        "allocated_cpus": "8",
+        "node_list": "4v100n12"
+      }
+    },
+    {
+      "at": "2026-10-17T23:32:31.897966+00:00",
+      "event": "dependency_submission_verified",
+      "target": "16v100-avx2",
+      "job": "1837489",
+      "accounting": {
+        "job_id": "1837489",
+        "partition": "16V100",
+        "state": "RUNNING",
+        "exit_code": "0:0",
+        "elapsed": "00:03:10",
+        "allocated_cpus": "8",
+        "node_list": "16v100n02"
+      }
+    },
+    {
+      "at": "2026-10-17T23:32:31.916094+00:00",
+      "event": "dependency_submission_verified",
+      "target": "8v100v0-avx512",
+      "job": "1837487",
+      "accounting": {
+        "job_id": "1837487",
+        "partition": "8V100V0",
+        "state": "PENDING",
+        "exit_code": "0:0",
+        "elapsed": "00:00:00",
+        "allocated_cpus": "0",
+        "node_list": "None assigned"
+      }
+    },
+    {
+      "at": "2026-10-17T23:32:31.937821+00:00",
+      "event": "dependency_submission_verified",
+      "target": "dsprhbm",
+      "job": "1837486",
+      "accounting": {
+        "job_id": "1837486",
+        "partition": "DSPRHBM",
+        "state": "RUNNING",
+        "exit_code": "0:0",
+        "elapsed": "00:03:42",
+        "allocated_cpus": "8",
+        "node_list": "d9470n02"
+      }
+    },
+    {
+      "at": "2026-10-17T23:32:31.944767+00:00",
+      "event": "formal_start_recorded",
+      "path": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/install-layout-fix/formal-start.json",
+      "sha256": "314056668499dccab8c8da7e3ed8b5ae5526711febb12f511681e73170b82fb0"
+    },
+    {
+      "at": "2026-10-17T23:33:01.965096+00:00",
+      "event": "dependency_state",
+      "target": "8v100v0-avx512",
+      "accounting": {
+        "job_id": "1837487",
+        "partition": "8V100V0",
+        "state": "RUNNING",
+        "exit_code": "0:0",
+        "elapsed": "00:00:10",
+        "allocated_cpus": "12",
+        "node_list": "8v100v0n03"
+      }
+    },
+    {
+      "at": "2026-10-18T00:06:33.964651+00:00",
+      "event": "dependency_state",
+      "target": "4v100-avx512",
+      "accounting": {
+        "job_id": "1837488",
+        "partition": "4V100",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "elapsed": "00:37:21",
+        "allocated_cpus": "8",
+        "node_list": "4v100n12"
+      }
+    },
+    {
+      "at": "2026-10-18T00:07:34.015887+00:00",
+      "event": "dependency_sealed",
+      "target": "4v100-avx512",
+      "seal": {
+        "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6-dependencies/results/dependency-stage.json",
+        "sha256": "118e2dc42a0a055f2ee8c43a0e863269d1a83d041c12bcc01ac21e4e33a77eaf",
+        "overlay_sha256": "3ac2af1da5f192a1b6f35613bcad9174dcc0b3f7b6c928d23462d5c8320f5575"
+      }
+    },
+    {
+      "at": "2026-10-18T00:10:04.737535+00:00",
+      "event": "application_submission_verified",
+      "target": "4v100-avx512",
+      "job": "1837815",
+      "accounting": {
+        "job_id": "1837815",
+        "partition": "4V100",
+        "state": "RUNNING",
+        "exit_code": "0:0",
+        "elapsed": "00:00:27",
+        "allocated_cpus": "8",
+        "node_list": "4v100n01"
+      }
+    }
+  ],
+  "targets": {
+    "4v100-avx512": {
+      "dependency": {
+        "run": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6-dependencies",
+        "job": "1837488",
+        "identity": {
+          "build_id": "v2026.2-g67b5da876dd6-rb59c9f26a184",
+          "cpu_arch": "znver4",
+          "cuda_arch": "70",
+          "dependency_isa": "avx512",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100",
+          "partition": "4V100",
+          "recipe_sha256": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "v2026.2",
+          "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+          "source_version": "v2026.2",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "4v100-avx512",
+          "track": "release",
+          "version_label": "v2026.2"
+        },
+        "controller": "/home/stardust/sai-hpc-software/controller/c3b65b97f9d95ecb29a453713dfe292af20f6d39/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6",
+        "request_sha256": "c8a2d40ea42255790b405cad08b7f343f5aed7c0cd2259783647a407085978d4",
+        "script_sha256": "8476a7135ec9aa0e55df1f98a96ff62d782094b3d35303855a27da1f64ed081a",
+        "host_tmpdir": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6-dependencies/runtime",
+        "host_apptainer_cachedir": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6-dependencies/apptainer-cache",
+        "container_tmpdir": "/workspace/tmp",
+        "submission_verified_at": "2026-10-17T23:32:31.868252+00:00",
+        "scheduler_command": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6-dependencies/job.sbatch",
+        "scheduler_owner": "stardust(1478400690)",
+        "accounting": {
+          "job_id": "1837488",
+          "partition": "4V100",
+          "state": "COMPLETED",
+          "exit_code": "0:0",
+          "elapsed": "00:37:21",
+          "allocated_cpus": "8",
+          "node_list": "4v100n12"
+        },
+        "controller_hashes_still_match_initial_git_verification": true,
+        "verified_controller_script_count": 10,
+        "latest_log_tail": [
+          "[ ] tuc2skr plumed@2.10.1 configure (27s)",
+          "[ ] tuc2skr plumed@2.10.1 build (34s)",
+          "[ ] tuc2skr plumed@2.10.1 install (4m11s)",
+          "[+] tuc2skr plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg (5m42s)",
+          "[ ] vyzopke libint@2.6.0 install (34m17s)",
+          "[+] vyzopke libint@2.6.0 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz (34m58s)",
+          "CP2K_FINAL_PREFIX_DEPENDENCIES_COMPLETE 2026-10-18T00:06:23Z",
+          "CP2K_DEPENDENCY_STAGE_COMPLETE_NOT_APPLICATION_ACCEPTANCE"
+        ]
+      },
+      "application": {
+        "run": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6",
+        "job": "1837815",
+        "identity": {
+          "build_id": "v2026.2-g67b5da876dd6-rb59c9f26a184",
+          "cpu_arch": "znver4",
+          "cuda_arch": "70",
+          "dependency_isa": "avx512",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100",
+          "partition": "4V100",
+          "recipe_sha256": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "v2026.2",
+          "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+          "source_version": "v2026.2",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "4v100-avx512",
+          "track": "release",
+          "version_label": "v2026.2"
+        },
+        "controller": "/home/stardust/sai-hpc-software/controller/c3b65b97f9d95ecb29a453713dfe292af20f6d39/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6",
+        "request_sha256": "c48055585a439d0a978607a3abba47a9ff431c3ab51798e18090aa0da4641798",
+        "script_sha256": "e55d3fea59f2fa39ac17726dbb3a42a90f2f25f4dfdc2f6d380ce85bce013ddf",
+        "host_tmpdir": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6/runtime",
+        "host_apptainer_cachedir": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6/apptainer-cache",
+        "container_tmpdir": "/workspace/tmp",
+        "submission_verified_at": "2026-10-18T00:10:04.148853+00:00",
+        "scheduler_command": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6/job.sbatch",
+        "scheduler_owner": "stardust(1478400690)",
+        "accounting": {
+          "job_id": "1837815",
+          "partition": "4V100",
+          "state": "RUNNING",
+          "exit_code": "0:0",
+          "elapsed": "00:01:27",
+          "allocated_cpus": "8",
+          "node_list": "4v100n01"
+        },
+        "controller_hashes_still_match_initial_git_verification": true,
+        "verified_controller_script_count": 10,
+        "latest_log_tail": [
+          "BUILD_CAPACITY_POLICY filesystem-enforced 39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6"
+        ]
+      },
+      "dependency_seal": {
+        "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6-dependencies/results/dependency-stage.json",
+        "sha256": "118e2dc42a0a055f2ee8c43a0e863269d1a83d041c12bcc01ac21e4e33a77eaf",
+        "overlay_sha256": "3ac2af1da5f192a1b6f35613bcad9174dcc0b3f7b6c928d23462d5c8320f5575"
+      },
+      "artifact_observation": {
+        "run_result_sif_present": false,
+        "artifact_pointer_present": false,
+        "artifact_sha256_record_present": false,
+        "large_file_content_hashed": false
+      }
+    },
+    "16v100-avx2": {
+      "dependency": {
+        "run": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-16v100-avx2-2026-10-17-67b5da876dd6-dependencies",
+        "job": "1837489",
+        "identity": {
+          "build_id": "v2026.2-g67b5da876dd6-rb59c9f26a184",
+          "cpu_arch": "znver3",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/16V100",
+          "partition": "16V100",
+          "recipe_sha256": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "v2026.2",
+          "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+          "source_version": "v2026.2",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "16v100-avx2",
+          "track": "release",
+          "version_label": "v2026.2"
+        },
+        "controller": "/home/stardust/sai-hpc-software/controller/c3b65b97f9d95ecb29a453713dfe292af20f6d39/39078998459-1-release-16v100-avx2-2026-10-17-67b5da876dd6",
+        "request_sha256": "7d74fea4f7869a43732b88dda25e493202a7cdcf3e86b52591651b5522d30f93",
+        "script_sha256": "91e8c3dfd31a8ba10750a6760935520f610389cf36fde22720fa4792c200e5a4",
+        "host_tmpdir": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-16v100-avx2-2026-10-17-67b5da876dd6-dependencies/runtime",
+        "host_apptainer_cachedir": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-16v100-avx2-2026-10-17-67b5da876dd6-dependencies/apptainer-cache",
+        "container_tmpdir": "/workspace/tmp",
+        "submission_verified_at": "2026-10-17T23:32:31.890919+00:00",
+        "scheduler_command": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-16v100-avx2-2026-10-17-67b5da876dd6-dependencies/job.sbatch",
+        "scheduler_owner": "stardust(1478400690)",
+        "accounting": {
+          "job_id": "1837489",
+          "partition": "16V100",
+          "state": "RUNNING",
+          "exit_code": "0:0",
+          "elapsed": "00:41:43",
+          "allocated_cpus": "8",
+          "node_list": "16v100n02"
+        },
+        "controller_hashes_still_match_initial_git_verification": true,
+        "verified_controller_script_count": 10,
+        "latest_log_tail": [
+          "[+] oatczg6 hdf5@1.14.6 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/16V100/dependencies/spack/linux-zen3/hdf5-1.14.6-oatczg6z5jwpt7tsfkayczc5vkcqm7oi (2m36s)",
+          "[+] g3wuvrh py-cython@3.2.4 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/16V100/dependencies/spack/linux-zen3/py-cython-3.2.4-g3wuvrhq2zrntkba4z5kghfwlwecx4ce (3m20s)",
+          "[ ] np37xjh plumed@2.10.1 staging (5s)",
+          "[ ] np37xjh plumed@2.10.1 autoreconf (29s)",
+          "[ ] np37xjh plumed@2.10.1 configure (31s)",
+          "[ ] np37xjh plumed@2.10.1 build (43s)",
+          "[ ] np37xjh plumed@2.10.1 install (6m51s)",
+          "[+] np37xjh plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/16V100/dependencies/spack/linux-zen3/plumed-2.10.1-np37xjhlxj3qmkfebxzpsypu734ersmo (9m05s)"
+        ]
+      },
+      "artifact_observation": {
+        "run_result_sif_present": false,
+        "artifact_pointer_present": false,
+        "artifact_sha256_record_present": false,
+        "large_file_content_hashed": false
+      }
+    },
+    "8v100v0-avx512": {
+      "dependency": {
+        "run": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6-dependencies",
+        "job": "1837487",
+        "identity": {
+          "build_id": "v2026.2-g67b5da876dd6-rb59c9f26a184",
+          "cpu_arch": "skylake-avx512",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/8V100V0",
+          "partition": "8V100V0",
+          "recipe_sha256": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "v2026.2",
+          "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+          "source_version": "v2026.2",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "8v100v0-avx512",
+          "track": "release",
+          "version_label": "v2026.2"
+        },
+        "controller": "/home/stardust/sai-hpc-software/controller/c3b65b97f9d95ecb29a453713dfe292af20f6d39/39078998459-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6",
+        "request_sha256": "b663bf9f15519ae1bdf1531b1d75c04801fdae1b05f07c7fe99a41790944f1b4",
+        "script_sha256": "d599531a6faf25682575e8d137409c9e0e3d90e6fdc6eb468a8c9b2cf8fa8bf7",
+        "host_tmpdir": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6-dependencies/runtime",
+        "host_apptainer_cachedir": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6-dependencies/apptainer-cache",
+        "container_tmpdir": "/workspace/tmp",
+        "submission_verified_at": "2026-10-17T23:32:31.911252+00:00",
+        "scheduler_command": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6-dependencies/job.sbatch",
+        "scheduler_owner": "stardust(1478400690)",
+        "accounting": {
+          "job_id": "1837487",
+          "partition": "8V100V0",
+          "state": "RUNNING",
+          "exit_code": "0:0",
+          "elapsed": "00:38:13",
+          "allocated_cpus": "12",
+          "node_list": "8v100v0n03"
+        },
+        "controller_hashes_still_match_initial_git_verification": true,
+        "verified_controller_script_count": 10,
+        "latest_log_tail": [
+          "[+] c762spr hdf5@1.14.6 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/8V100V0/dependencies/spack/linux-skylake_avx512/hdf5-1.14.6-c762spr46tnwvmbfpx6o2723tufh4jlt (2m41s)",
+          "[+] xlhkvaq py-cython@3.2.4 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/8V100V0/dependencies/spack/linux-skylake_avx512/py-cython-3.2.4-xlhkvaqhtzwp47bq5j36nggv6ndnxx3u (4m28s)",
+          "[ ] e3rybix plumed@2.10.1 staging (1s)",
+          "[ ] e3rybix plumed@2.10.1 autoreconf (25s)",
+          "[ ] e3rybix plumed@2.10.1 configure (27s)",
+          "[ ] e3rybix plumed@2.10.1 build (38s)",
+          "[ ] e3rybix plumed@2.10.1 install (5m03s)",
+          "[+] e3rybix plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/8V100V0/dependencies/spack/linux-skylake_avx512/plumed-2.10.1-e3rybix5hx3xnaywsnjne37of7mtn4sq (6m37s)"
+        ]
+      },
+      "artifact_observation": {
+        "run_result_sif_present": false,
+        "artifact_pointer_present": false,
+        "artifact_sha256_record_present": false,
+        "large_file_content_hashed": false
+      }
+    },
+    "dsprhbm": {
+      "dependency": {
+        "run": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies",
+        "job": "1837486",
+        "identity": {
+          "build_id": "v2026.2-g67b5da876dd6-rb59c9f26a184",
+          "cpu_arch": "x86-64-v4",
+          "cuda_arch": "",
+          "dependency_isa": "avx512",
+          "gpus": 0,
+          "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/DSPRHBM",
+          "partition": "DSPRHBM",
+          "recipe_sha256": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "v2026.2",
+          "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+          "source_version": "v2026.2",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "dsprhbm",
+          "track": "release",
+          "version_label": "v2026.2"
+        },
+        "controller": "/home/stardust/sai-hpc-software/controller/c3b65b97f9d95ecb29a453713dfe292af20f6d39/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6",
+        "request_sha256": "a5100f059cdfeec264be7df9b53b27d9deeb2ef21c5e45521dd1fcd94f31b6b9",
+        "script_sha256": "a4c5be3e7e72fe373d6fefee3985019173d76914496b266f292ef9ab037cdf71",
+        "host_tmpdir": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies/runtime",
+        "host_apptainer_cachedir": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies/apptainer-cache",
+        "container_tmpdir": "/workspace/tmp",
+        "submission_verified_at": "2026-10-17T23:32:31.930514+00:00",
+        "scheduler_command": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies/job.sbatch",
+        "scheduler_owner": "stardust(1478400690)",
+        "accounting": {
+          "job_id": "1837486",
+          "partition": "DSPRHBM",
+          "state": "RUNNING",
+          "exit_code": "0:0",
+          "elapsed": "00:42:15",
+          "allocated_cpus": "8",
+          "node_list": "d9470n02"
+        },
+        "controller_hashes_still_match_initial_git_verification": true,
+        "verified_controller_script_count": 10,
+        "latest_log_tail": [
+          "[+] nzurbzn hdf5@1.14.6 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/DSPRHBM/dependencies/spack/linux-sapphirerapids/hdf5-1.14.6-nzurbzn7nvb3lu6p33d5wu7aq5ezqydb (3m26s)",
+          "[+] 4f4yyk5 py-cython@3.2.4 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/DSPRHBM/dependencies/spack/linux-sapphirerapids/py-cython-3.2.4-4f4yyk5mmtxyuwkiag2wgpbtvn4ea5xp (4m40s)",
+          "[ ] qwwau7j plumed@2.10.1 staging (7s)",
+          "[ ] qwwau7j plumed@2.10.1 autoreconf (44s)",
+          "[ ] qwwau7j plumed@2.10.1 configure (48s)",
+          "[ ] qwwau7j plumed@2.10.1 build (1m39s)",
+          "[ ] qwwau7j plumed@2.10.1 install (20m06s)",
+          "[+] qwwau7j plumed@2.10.1 /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/DSPRHBM/dependencies/spack/linux-sapphirerapids/plumed-2.10.1-qwwau7jv5yf5i3ok3c24ysm4ibpxpllg (22m37s)"
+        ]
+      },
+      "artifact_observation": {
+        "run_result_sif_present": false,
+        "artifact_pointer_present": false,
+        "artifact_sha256_record_present": false,
+        "large_file_content_hashed": false
+      }
+    }
+  },
+  "previous_8v100_application": {
+    "workflow": "39056762371",
+    "job_id": "1837029",
+    "sacct": "1837029|8V100V0|RUNNING|0:0|00:59:13|8v100v0n11",
+    "known_recipe_limitation": "Frozen recipe predates install LIBDIR correction; no mutation or cancellation performed."
+  }
+}

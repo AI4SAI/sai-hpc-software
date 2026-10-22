@@ -1,0 +1,65 @@
+#!/usr/bin/env bash
+set -euo pipefail
+umask 022
+op=$1; software=$2; sha=$3; version=$4; target=$5; delivery=${6:?canonical identity required}
+[[ "$software" == gpumd && "$sha" =~ ^[0-9a-f]{40}$ ]]
+export PATH=/usr/bin:/bin TMPDIR=/workspace/tmp
+INSTALL_PREFIX=$(python3 /control/delivery_layout.py prefix "$delivery" "$software" "$sha" "$version" "$target")
+export INSTALL_PREFIX
+case "$op" in
+build)
+  mkdir -p /workspace/tmp
+  test ! -w /control
+  test ! -w /input/repository
+  test ! -w /opt/apps/conda_env/deepmd-kit-3.2.0
+  test ! -w /opt/apps/plumed/plumed-2.10.1
+  git init /workspace/source
+  git -C /workspace/source -c core.hooksPath=/dev/null fetch --depth=1 --no-tags /input/repository "$sha"
+  git -C /workspace/source -c core.hooksPath=/dev/null checkout --detach "$sha"
+  test "$(git -C /workspace/source rev-parse HEAD)" = "$sha"
+  source /control/gpumd_environment.sh "$target"
+  bash /control/gpumd_build.sh
+  printf '%s\n' "$sha" > "$INSTALL_PREFIX/share/sai/source-sha"
+  printf '%s\n' "$target" > "$INSTALL_PREFIX/share/sai/target"
+  module -t list > "$INSTALL_PREFIX/share/sai/modules.txt" 2>&1
+  nvcc --version > "$INSTALL_PREFIX/share/sai/compiler.txt"
+  gcc -march=native -Q --help=target > "$INSTALL_PREFIX/share/sai/native-cpu-flags.txt"
+  lscpu > "$INSTALL_PREFIX/share/sai/hardware.txt"
+  for key in PATH LD_LIBRARY_PATH CUDA_HOME CUDA_PATH DEEPMD_ROOT DEEPMD_PYTHON PLUMED_KERNEL \
+             DP_CUDA_INFER OMP_NUM_THREADS DP_INTRA_OP_PARALLELISM_THREADS DP_INTER_OP_PARALLELISM_THREADS; do
+    if [[ -v "$key" ]]; then printf 'export %s=%q\n' "$key" "${!key}"; fi
+  done > "$INSTALL_PREFIX/share/sai/runtime-env.sh"
+  # bash resolves this path relative to the installed script, including after
+  # copying the prefix to physical /opt or to another validation mount point.
+  printf '%s\n' 'gpumd_installed_prefix=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/../.." && pwd -P)' \
+    'export GPUMD_SRC="$gpumd_installed_prefix/share/gpumd/src" PATH="$gpumd_installed_prefix/bin:$PATH"' \
+    'export CUDACXX="$CUDA_HOME/bin/nvcc"' \
+    >> "$INSTALL_PREFIX/share/sai/runtime-env.sh"
+  # Installation metadata and the native inventory must never inherit a
+  # group/other-writable mode from the overlay. Keep owner writes for the
+  # remaining build evidence, while making every installed path readable and
+  # traversable before portability and final inspection.
+  chmod -R a+rX,go-w "$INSTALL_PREFIX"
+  python3 /control/gpumd_science.py portable "$INSTALL_PREFIX" /workspace/gpumd-portability
+  # Generate shared native modules and the per-prefix inventory last, after
+  # the installation and its portability evidence are complete.
+  python3 /control/gpumd_science.py inspect "$INSTALL_PREFIX" --identity "$delivery"
+  ;;
+export)
+  test ! -e /workspace/export
+  bash /control/create_rootfs.sh /workspace/export
+  mkdir -p "/workspace/export$(dirname -- "$INSTALL_PREFIX")"
+  cp -a "$INSTALL_PREFIX" "/workspace/export$INSTALL_PREFIX"
+  mksquashfs /workspace/export /workspace/final.squashfs -noappend -all-root -no-xattrs -processors "$BUILD_JOBS"
+  ;;
+verify)
+  python3 /control/delivery_layout.py prefix "$delivery" "$software" "$sha" "$version" "$target" \
+    --installed "$INSTALL_PREFIX/share/sai/release-identity.json"
+  source "$INSTALL_PREFIX/share/sai/runtime-env.sh"
+  test "$(cat "$INSTALL_PREFIX/share/sai/source-sha")" = "$sha"
+  test -s "$GPUMD_SRC/main_nep/nep_specialized.cu"
+  python3 /control/gpumd_science.py inspect "$INSTALL_PREFIX"
+  if touch "$INSTALL_PREFIX/.write-test" 2>/dev/null; then exit 1; fi
+  ;;
+*) exit 2 ;;
+esac

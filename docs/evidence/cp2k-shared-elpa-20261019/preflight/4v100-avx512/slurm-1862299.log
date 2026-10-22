@@ -1,0 +1,82 @@
+PREFLIGHT_JOB 1862299 4V100 4v100n01.mr-sai.ai
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+
+Note: the module "gcc" cannot be unloaded because it was not loaded.
+
+	linux-vdso.so.1 (0x00007ffdcf399000)
+	libelpa_openmp.so.19 => /opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/nvidia/lib/libelpa_openmp.so.19 (0x0000153d571c0000)
+	libcusolver.so.11 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libcusolver.so.11 (0x0000153d45000000)
+	libcudart.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libcudart.so.12 (0x0000153d44c00000)
+	libcublasLt.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libcublasLt.so.12 (0x0000153d12800000)
+	libcublas.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libcublas.so.12 (0x0000153d0c000000)
+	libscalapack.so.2.2 => /opt/devtools/saiblas/2603-gnu-avx512/lib/libscalapack.so.2.2 (0x0000153d0ba2a000)
+	libopenblas.so.0 => /opt/devtools/saiblas/2603-gnu-avx512/lib/libopenblas.so.0 (0x0000153d0abeb000)
+	libmpi_usempif08.so.40 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libmpi_usempif08.so.40 (0x0000153d5717c000)
+	libmpi_usempi_ignore_tkr.so.40 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libmpi_usempi_ignore_tkr.so.40 (0x0000153d57168000)
+	libmpi_mpifh.so.40 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libmpi_mpifh.so.40 (0x0000153d44f92000)
+	libmpi.so.40 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libmpi.so.40 (0x0000153d0a820000)
+	libgfortran.so.5 => /opt/devtools/gcc/14.3.0/lib64/libgfortran.so.5 (0x0000153d0a519000)
+	libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x0000153d44b17000)
+	libgomp.so.1 => /opt/devtools/gcc/14.3.0/lib64/libgomp.so.1 (0x0000153d44f40000)
+	libgcc_s.so.1 => /opt/devtools/gcc/14.3.0/lib64/libgcc_s.so.1 (0x0000153d44f12000)
+	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x0000153d0a200000)
+	libstdc++.so.6 => /opt/devtools/gcc/14.3.0/lib64/libstdc++.so.6 (0x0000153d09f8e000)
+	libdl.so.2 => /lib/x86_64-linux-gnu/libdl.so.2 (0x0000153d57161000)
+	libnvJitLink.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libnvJitLink.so.12 (0x0000153d04308000)
+	libcusparse.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libcusparse.so.12 (0x0000153ce7200000)
+	librt.so.1 => /lib/x86_64-linux-gnu/librt.so.1 (0x0000153d5715a000)
+	libpthread.so.0 => /lib/x86_64-linux-gnu/libpthread.so.0 (0x0000153d44f0d000)
+	/lib64/ld-linux-x86-64.so.2 (0x0000153d57c0a000)
+	libopen-pal.so.80 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libopen-pal.so.80 (0x0000153d126e2000)
+	libucc.so.1 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libucc.so.1 (0x0000153d44ec5000)
+	libhcoll.so.1 => /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libhcoll.so.1 (0x0000153ce6e00000)
+	libucp.so.0 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libucp.so.0 (0x0000153d0a41b000)
+	libucs.so.0 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libucs.so.0 (0x0000153d44aa0000)
+	libpmix.so.2 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libpmix.so.2 (0x0000153ce6bbc000)
+	libevent_core-2.1.so.7 => /lib/x86_64-linux-gnu/libevent_core-2.1.so.7 (0x0000153d126ad000)
+	libevent_pthreads-2.1.so.7 => /lib/x86_64-linux-gnu/libevent_pthreads-2.1.so.7 (0x0000153d44ebe000)
+	libhwloc.so.15 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libhwloc.so.15 (0x0000153ce71a2000)
+	libucm.so.0 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libucm.so.0 (0x0000153d44a82000)
+	libocoms.so.0 => /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libocoms.so.0 (0x0000153ce6800000)
+	libutil.so.1 => /lib/x86_64-linux-gnu/libutil.so.1 (0x0000153d44eb7000)
+	librdmacm.so.1 => /lib/x86_64-linux-gnu/librdmacm.so.1 (0x0000153d1268d000)
+	libibverbs.so.1 => /lib/x86_64-linux-gnu/libibverbs.so.1 (0x0000153d12669000)
+	libuct.so.0 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libuct.so.0 (0x0000153ce7161000)
+	libmunge.so.2 => /lib/x86_64-linux-gnu/libmunge.so.2 (0x0000153d12661000)
+	libnl-3.so.200 => /lib/x86_64-linux-gnu/libnl-3.so.200 (0x0000153ce713f000)
+	libnl-route-3.so.200 => /lib/x86_64-linux-gnu/libnl-route-3.so.200 (0x0000153ce6b2d000)
+--------------------------------------------------------------------------
+PRTE has detected that the head of the session directory tree (where
+scratch files and shared memory backing storage will be placed)
+resides on a shared file system:
+
+   Directory: /workspace/tmp
+   File system type: lustre
+
+For performance reasons, it is strongly recommended that the session
+directory be located on a local file system. This can be controlled by
+setting the system temporary directory to be used by PRTE using either
+the TMPDIR envar or the "prte_tmpdir_base" MCA param.
+
+If you need the temporary directory to be different on remote nodes
+from the local one where prterun is running (e.g., when a login node is
+being employed), then you can set the local temporary directory using
+the "prte_local_tmpdir_base" MCA param and the one to be used on all
+other nodes using the "prte_remote_tmpdir_base" param.
+
+This is only a warning advisory and your job will continue. You can
+disable this warning in the future by setting the
+"prte_silence_shared_fs" MCA param to "1".
+--------------------------------------------------------------------------
+ CP2K_SITE_ELPA_GCC14_PASS   8.8817841970012523E-016   8.3266726846886741E-016
+CP2K_SITE_ELPA_PREFLIGHT_PASS 4v100-avx512

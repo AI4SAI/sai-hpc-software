@@ -1,0 +1,218 @@
+SOURCE https://raw.githubusercontent.com/containers/fuse-overlayfs/v1.15/main.c
+SHA256 e6ea59c4b781ce67e43caa489a2e66f871134319d4bd907e500da553896fd227
+271: static unsigned long
+272: get_next_wd_counter ()
+273: {
+274:   static unsigned long counter = 1;
+275:   return counter++;
+276: }
+1014: node_free (void *p)
+1015: {
+1016:   struct ovl_node *n = (struct ovl_node *) p;
+1017: 
+1018:   if (n->parent)
+1019:     {
+1020:       if (n->parent->children && hash_lookup (n->parent->children, n) == n)
+1021:         hash_remove (n->parent->children, n);
+1022:       n->parent->loaded = 0;
+1023:       n->parent = NULL;
+1024:     }
+1025: 
+1026:   if ((n->ino && n->ino != &dummy_ino) || n->node_lookups > 0)
+1027:     return;
+1028: 
+1029:   if (n->children)
+1030:     {
+1031:       struct ovl_node *it;
+1032: 
+1033:       for (it = hash_get_first (n->children); it; it = hash_get_next (n->children, it))
+1034:         it->parent = NULL;
+1035: 
+1036:       hash_free (n->children);
+1037:       n->children = NULL;
+1038:     }
+1039: 
+1040:   if (n->do_unlink)
+1041:     unlinkat (n->hidden_dirfd, n->path, 0);
+1042:   if (n->do_rmdir)
+1043:     unlinkat (n->hidden_dirfd, n->path, AT_REMOVEDIR);
+1044: 
+1045:   stats.nodes--;
+1046:   free (n->name);
+1047:   free (n->path);
+1048:   free (n);
+1114: hide_node (struct ovl_data *lo, struct ovl_node *node, bool unlink_src)
+1115: {
+1116:   cleanup_free char *newpath = NULL;
+1117:   int ret;
+1118: 
+1119:   ret = asprintf (&newpath, "%lu", get_next_wd_counter ());
+1120:   if (ret < 0)
+1121:     return ret;
+1122: 
+1123:   assert (node->layer == get_upper_layer (lo));
+1124: 
+1125:   if (unlink_src)
+1126:     {
+1127:       bool moved = false;
+1128:       bool whiteout_created = false;
+1129:       bool needs_whiteout;
+1130: 
+1131:       needs_whiteout = (node->last_layer != get_upper_layer (lo)) && (node->parent && node->parent->last_layer != get_upper_layer (lo));
+1132:       if (! needs_whiteout && node_dirp (node))
+1133:         {
+1134:           ret = is_directory_opaque (get_upper_layer (lo), node->path);
+1135:           if (ret < 0)
+1136:             return ret;
+1137:           if (ret)
+1138:             needs_whiteout = true;
+1139:         }
+1140: 
+1141:       // if the parent directory is opaque, there's no need to put a whiteout in it.
+1142:       if (node->parent != NULL)
+1143:         needs_whiteout = needs_whiteout && (is_directory_opaque (get_upper_layer (lo), node->parent->path) < 1);
+1144: 
+1145:       if (needs_whiteout)
+1146:         {
+1147:           /* If the atomic rename+mknod failed, then fallback into doing it in two steps.  */
+1148:           if (can_mknod && syscall (SYS_renameat2, node_dirfd (node), node->path, lo->workdir_fd, newpath, RENAME_WHITEOUT) == 0)
+1149:             {
+1150:               whiteout_created = true;
+1151:               moved = true;
+1152:             }
+1153: 
+1154:           if (! whiteout_created)
+1155:             {
+1156:               if (node->parent)
+1157:                 {
+1158:                   /* If we are here, it means we have no permissions to use mknod.  Also
+1159:                      since the file is not yet moved, creating a whiteout would fail on
+1160:                      the mknodat call.  */
+1161:                   if (create_whiteout (lo, node->parent, node->name, true, false) < 0)
+1162:                     return -1;
+1163:                 }
+1164:             }
+1165:         }
+1166: 
+1167:       if (! moved)
+1168:         {
+1169:           if (renameat (node_dirfd (node), node->path, lo->workdir_fd, newpath) < 0)
+1170:             return -1;
+1171:         }
+1172:     }
+1173:   else
+1174:     {
+1175:       if (node_dirp (node))
+1176:         {
+1177:           if (mkdirat (lo->workdir_fd, newpath, 0700) < 0)
+1178:             return -1;
+1179:         }
+1180:       else
+1181:         {
+1182:           if (linkat (node_dirfd (node), node->path, lo->workdir_fd, newpath, 0) < 0)
+1183:             return -1;
+1184:         }
+1185:     }
+1186:   drop_node_from_ino (lo->inodes, node);
+1187: 
+1188:   node->hidden_dirfd = lo->workdir_fd;
+1189:   free (node->path);
+1190:   node->path = newpath;
+1191:   newpath = NULL; /* Do not auto cleanup.  */
+1192: 
+1193:   node->hidden = 1;
+1194:   if (node->parent)
+1195:     node->parent->loaded = 0;
+1196:   node->parent = NULL;
+1197: 
+1198:   if (node_dirp (node))
+1199:     node->do_rmdir = 1;
+1200:   else
+1201:     node->do_unlink = 1;
+1202:   return 0;
+2883: static int
+2884: empty_dirfd (int fd)
+2885: {
+2886:   cleanup_dir DIR *dp = NULL;
+2887:   struct dirent *dent;
+2888: 
+2889:   dp = fdopendir (fd);
+2890:   if (dp == NULL)
+2891:     {
+2892:       close (fd);
+2893:       return -1;
+2894:     }
+2895: 
+2896:   for (;;)
+2897:     {
+2898:       int ret;
+2899: 
+2900:       errno = 0;
+2901:       dent = readdir (dp);
+2902:       if (dent == NULL)
+2903:         {
+2904:           if (errno)
+2905:             return -1;
+2906: 
+2907:           break;
+2908:         }
+2909:       if (strcmp (dent->d_name, ".") == 0)
+2910:         continue;
+2911:       if (strcmp (dent->d_name, "..") == 0)
+2912:         continue;
+2913: 
+2914:       ret = unlinkat (dirfd (dp), dent->d_name, 0);
+2915:       if (ret < 0 && errno == EISDIR)
+2916:         {
+2917:           ret = unlinkat (dirfd (dp), dent->d_name, AT_REMOVEDIR);
+2918:           if (ret < 0 && errno == ENOTEMPTY)
+2919:             {
+2920:               int dfd;
+2921: 
+2922:               dfd = safe_openat (dirfd (dp), dent->d_name, O_DIRECTORY, 0);
+2923:               if (dfd < 0)
+2924:                 return -1;
+2925: 
+2926:               ret = empty_dirfd (dfd);
+2927:               if (ret < 0)
+2928:                 return -1;
+2929: 
+2930:               ret = unlinkat (dirfd (dp), dent->d_name, AT_REMOVEDIR);
+2931:               if (ret < 0)
+2932:                 return -1;
+2933: 
+2934:               continue;
+2935:             }
+2936:         }
+2937:       if (ret < 0)
+2938:         return ret;
+2939:     }
+2940: 
+2941:   return 0;
+2942: }
+5910:       int dfd;
+5911:       cleanup_free char *path = NULL;
+5912: 
+5913:       path = realpath (lo.workdir, NULL);
+5914:       if (path == NULL)
+5915:         goto err_out1;
+5916:       mkdir (path, 0700);
+5917:       path = realloc (path, strlen (path) + strlen ("/work") + 1);
+5918:       if (! path)
+5919:         error (EXIT_FAILURE, errno, "allocating workdir path");
+5920:       strcat (path, "/work");
+5921:       mkdir (path, 0700);
+5922:       free (lo.workdir);
+5923:       lo.workdir = strdup (path);
+5924:       if (lo.workdir == NULL)
+5925:         error (EXIT_FAILURE, errno, "allocating workdir path");
+5926: 
+5927:       lo.workdir_fd = open (lo.workdir, O_DIRECTORY);
+5928:       if (lo.workdir_fd < 0)
+5929:         error (EXIT_FAILURE, errno, "cannot open workdir");
+5930: 
+5931:       dfd = dup (lo.workdir_fd);
+5932:       if (dfd < 0)
+5933:         error (EXIT_FAILURE, errno, "dup workdir file descriptor");
+5934:       empty_dirfd (dfd);
+5935:     }

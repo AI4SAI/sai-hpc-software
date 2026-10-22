@@ -1,0 +1,7 @@
+hwloc/linux: Ignoring PCI device with non-16bit domain.
+Pass --enable-32bits-pci-domain to configure to support such devices
+(warning: it would break the library ABI, don't enable unless really needed).
+[d9470n02.mr-sai.ai:00140] mca_base_component_repository_open: unable to open mca_accelerator_cuda: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n02.mr-sai.ai:00140] mca_base_component_repository_open: unable to open mca_rcache_rgpusm: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n02.mr-sai.ai:00140] mca_base_component_repository_open: unable to open mca_rcache_gpusm: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+ CP2K_SITE_ELPA_GCC14_PASS   8.8817841970012523E-016   8.3266726846886741E-016

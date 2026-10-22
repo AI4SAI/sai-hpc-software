@@ -1,0 +1,40 @@
+{
+  "collected_at": "2026-10-18T03:30:40.181285+00:00",
+  "scope": "read-only site module inspection; no software or module deployment",
+  "files": {
+    "/opt/modules/modulefiles/apps/abacus/develop-git-079fd0c-260724-sm70-auto": {
+      "sha256": "9f8df532ec162bc4451fc833f415cc24a8de65b23004485bc1d844f76506ae67",
+      "text": "#%Module1.0\nset abacus_ver \"develop-git-079fd0c-260724\"\nset gpu_flag \"sm70\"\n\nmodule-whatis \"ABACUS $abacus_ver (commit 079fd0cff4e91abc25b6e2809114cfbeac94720e) built with NVHPC 26.3 (GNU branch, CUDA Toolkit 12.9.1), OpenMPI 5.0.10, ELPA 2026.02.001, cuSOLVERMp 0.9.0, and cuBLASMp 0.9.1\nCPU SIMD - x86-64-v3, GPU $gpu_flag\"\n\nmodule load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto fftw/3.3.10 libxc/7.0.0-auto saiblas/2603-gnu-auto elpa/2026.02.001-2603-gnu\nmodule load nvmplibs/26.7-tmp\n\nset app_home /opt/apps/abacus/abacus-develop-git-079fd0c-260724\n\nsetenv ABACUS_HOME $app_home\nsetenv ABACUS_COMMIT 079fd0cff4e91abc25b6e2809114cfbeac94720e\nprepend-path PATH $app_home/bin\n"
+    },
+    "/opt/modules/modulefiles/devtools/openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto": {
+      "sha256": "9a2bbbc000d5ccc23b7cdf9a3e95587ab4089d723455f3e814fcc6d92212baa1",
+      "text": "#%Module\n# Determin CPU SIMD\nset cpu_flags [exec lscpu | grep \"avx\"]\nif {[regexp \"avx512_vnni\" $cpu_flags]} {\n    set avx_flag avx512\n    system echo \"AVX512 detected, utilizing the corresponding version...\"\n} elseif {[regexp \"avx2\" $cpu_flags]} {\n    set avx_flag avx2\n    system echo \"No AVX512, but AVX2 detected, utilizing the corresponding version...\"\n} else {\n    system echo \"CAN NOT determin CPU SIMD, please contact the HPC Admin for help, Nya~~\"\n}\n\nset ompi_ver \"5.0.10\"\nset nvhpc_ver \"26.3\"\nset ompi_cc \"gnu\"\nset cudaver \"12\"\nmodule-whatis \"OpenMPI $ompi_ver build with NVHPC $nvhpc_ver ($ompi_cc & CUDA $cudaver) & UCC 1.7.0 & GDRCopy 2.5.0 & UCX 1.20.0, CPU SIMD - Auto Detect\"\n\nconflict openmpi\n\nmodule load nvhpc/${nvhpc_ver}-${ompi_cc}-cuda${cudaver}-tuned\n\nset mpi_dir /opt/devtools/openmpi/openmpi-${ompi_ver}-nvhpc263-${ompi_cc}-cuda${cudaver}-${avx_flag}\n\nsetenv OPAL_PREFIX          $mpi_dir\nsetenv PMIX_INSTALL_PREFIX  $mpi_dir\nsetenv OMPI_HOME            $mpi_dir\nsetenv MPI_HOME             $mpi_dir\nsetenv OSHMEM_HOME          $mpi_dir\nsetenv SHMEM_HOME           $\n\nprepend-path PATH           $mpi_dir/bin\nprepend-path LD_LIBRARY_PATH $mpi_dir/lib\nprepend-path LIBRARY_PATH   $mpi_dir/lib\nprepend-path CPATH          $mpi_dir/include\nprepend-path C_INCLUDE_PATH $mpi_dir/include\nprepend-path CPLUS_INCLUDE_PATH $mpi_dir/include\n\nsetenv NO_STOP_MESSAGE 1\n"
+    },
+    "/opt/modules/modulefiles/devtools/libxc/7.0.0-auto": {
+      "sha256": "c560822fc68949ea1f45df9eb2ee46a7dfe5e5ab5659c8073f108d7488e9e1c0",
+      "text": "#%Module1.0\n# Determin CPU SIMD\nset cpu_flags [exec lscpu | grep \"avx\"]\nif {[regexp \"avx512_vnni\" $cpu_flags]} {\n    set avx_flag avx512\n    system echo \"AVX512 detected, utilizing the corresponding version...\"\n} elseif {[regexp \"avx2\" $cpu_flags]} {\n    set avx_flag avx2\n    system echo \"No AVX512, but AVX2 detected, utilizing the corresponding version...\"\n} else {\n    system echo \"CAN NOT determin CPU SIMD, please contact the HPC Admin for help, Nya~~\"\n}\n\nset libxc_ver \"7.0.0\"\n\nmodule-whatis \"LIBXC $libxc_ver optimized for Zen5, by yulintao@westlake.edu.cn, CPU SIMD - $avx_flag\"\n\nset libxc_home /opt/devtools/libxc/libxc-${libxc_ver}-${avx_flag}\nsetenv  LIBXC_ROOT  $libxc_home\n\nprepend-path LD_LIBRARY_PATH    $libxc_home/lib\nprepend-path LD_RUN_PATH        $libxc_home/lib\nprepend-path LIBRARY_PATH       $libxc_home/lib\nprepend-path PKG_CONFIG_PATH    $libxc_home/lib/pkgconfig\nprepend-path CMAKE_PREFIX_PATH  $libxc_home\nprepend-path CPATH              $libxc_home/include\nprepend-path C_INCLUDE_PATH              $libxc_home/include\n"
+    },
+    "/opt/modules/modulefiles/devtools/saiblas/2603-gnu-auto": {
+      "sha256": "c218a69ee7759da5863873f9089a3da881e827cc99baa080e71ad8d85a977b2e",
+      "text": "#%Module1.0\n# Determin CPU SIMD\nset cpu_flags [exec lscpu | grep \"avx\"]\nif {[regexp \"avx512_vnni\" $cpu_flags]} {\n    set avx_flag avx512\n    system echo \"AVX512 detected, utilizing the corresponding version...\"\n} elseif {[regexp \"avx2\" $cpu_flags]} {\n    set avx_flag avx2\n    system echo \"No AVX512, but AVX2 detected, utilizing the corresponding version...\"\n} else {\n    system echo \"CAN NOT determin CPU SIMD, please contact the HPC Admin for help, Nya~~\"\n}\n\nset openblas_ver \"0.3.32\"\nset scalapack_ver \"2.2.3\"\nset saiblas_ver \"2603-gnu\"\nmodule-whatis \"SAI bundled BLAS Library $saiblas_ver (OpenBLAS $openblas_ver & ScaLAPACK $scalapack_ver)\nOptimized for Zen5 build with GCC 13.3.0 & OpenMPI 5.0.10, by yulintao@westlake.edu.cn\nCPU SIMD - $avx_flag\"\n\nset app_home /opt/devtools/saiblas/${saiblas_ver}-${avx_flag}\n\nsetenv      OPENBLAS_ROOT       $app_home\nsetenv      ScaLAPACK_ROOT      $app_home\n\nprepend-path LD_LIBRARY_PATH    $app_home/lib\nprepend-path LD_RUN_PATH        $app_home/lib\nprepend-path LIBRARY_PATH       $app_home/lib\nprepend-path PKG_CONFIG_PATH    $app_home/lib/pkgconfig\nprepend-path CMAKE_PREFIX_PATH  $app_home\nprepend-path CPATH              $app_home/include\n"
+    }
+  },
+  "abacus_command": {
+    "path": "/opt/apps/abacus/abacus-develop-git-079fd0c-260724/bin/abacus",
+    "symlink": true,
+    "target": "abacus_basic_gpu",
+    "resolved": "/opt/apps/abacus/abacus-develop-git-079fd0c-260724/bin/abacus_basic_gpu",
+    "elf_magic_hex": "7f454c46"
+  },
+  "conclusions": {
+    "application_partition_selection": false,
+    "dependency_selection": "current-node lscpu AVX512_VNNI else AVX2",
+    "cp2k_recommendation": "one native selector using SLURM_JOB_PARTITION and packaged per-partition runtime fragments"
+  },
+  "tests": {
+    "exit": "0",
+    "log_sha256": "a094c721f9a3df4c06d4f4b4b9c649992d6f917056d7df29bf9bce78a7103194",
+    "tail": "\n----------------------------------------------------------------------\nRan 772 tests in 154.178s\n\nOK (skipped=2)",
+    "snapshot_sha256": "f9f7ed029d35581abe032ee7dd39a2991409b34cc4163c81a6c40258c6b71793"
+  }
+}

@@ -1,0 +1,902 @@
+{
+  "schema": 1,
+  "collected_at_utc": "2026-10-17T23:53:26.378191+00:00",
+  "status": "passed",
+  "scope": "Diagnostic recovery of one terminal 4V100 application image through install, native metadata, export, final SIF verification and single-rank PBE OT smoke. Not a new-recipe formal artifact, deployment, scientific baseline or performance acceptance.",
+  "cluster_alias": "SAI-stardust",
+  "run": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a",
+  "request": {
+    "schema": 1,
+    "purpose": "diagnostic-recovery-of-terminal-full-build-install-export-sif-not-formal-delivery",
+    "source_run": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-4v100-avx512-2026-10-17-67b5da876dd6",
+    "source_job": "1835128",
+    "source_image": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-4v100-avx512-2026-10-17-67b5da876dd6/work.ext3",
+    "source_controller": "/home/stardust/sai-hpc-software/controller/9352d6dabca0a28e7ea81b2acec8977e7ca9ec06/39056762371-1-release-4v100-avx512-2026-10-17-67b5da876dd6",
+    "source_identity": {
+      "build_id": "v2026.2-g67b5da876dd6-r4b6cb146fa98",
+      "cpu_arch": "znver4",
+      "cuda_arch": "70",
+      "dependency_isa": "avx512",
+      "gpus": 1,
+      "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4b6cb146fa98/4V100",
+      "partition": "4V100",
+      "recipe_sha256": "4b6cb146fa983f69d82e5f7a990eba00b879a1c1e7464e317cc4740dbb41793b",
+      "repository": "cp2k/cp2k",
+      "schema": 2,
+      "software": "cp2k",
+      "source_ref": "v2026.2",
+      "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+      "source_version": "v2026.2",
+      "stack_digest": null,
+      "stack_sources": {},
+      "target": "4v100-avx512",
+      "track": "release",
+      "version_label": "v2026.2"
+    },
+    "source_build_script_sha256": "5c7f4800c4cb73dffeb2846553871a95e9ea31ce563d5cff854d255dcc532552",
+    "single_configuration_override": "-DCMAKE_INSTALL_LIBDIR:STRING=lib64",
+    "diagnostic_artifact": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/diagnostic.sif",
+    "artifact_publication": false,
+    "source_mode_change": false,
+    "source_access": "O_RDONLY under shared OFD lock with pre/post full checksums",
+    "resources": {
+      "partition": "4V100",
+      "qos": "flood-1o2gpu",
+      "nodes": 1,
+      "tasks": 1,
+      "gpus_per_node": 1,
+      "minutes": 90
+    },
+    "input_manifest_sha256": "aeda570f63a7ec3512fa764d2ac80d10f94007983fa83d579ea44c37b38ac196",
+    "job_id": "1837454"
+  },
+  "slurm": {
+    "job_id": "1837454",
+    "state": "COMPLETED",
+    "exit_code": "0:0",
+    "elapsed": "00:18:52",
+    "node_list": "4v100n09",
+    "alloc_tres": "billing=194,cpu=8,gres/gpu=1,mem=22G,node=1"
+  },
+  "configuration": {
+    "explicit_override": "-DCMAKE_INSTALL_LIBDIR:STRING=lib64",
+    "cache_delta": {
+      "CMAKE_INSTALL_LIBDIR:PATH": {
+        "before": "/lib64",
+        "after": null
+      },
+      "CMAKE_INSTALL_LIBDIR:STRING": {
+        "before": null,
+        "after": "lib64"
+      }
+    },
+    "install_prefix_before_and_after": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4b6cb146fa98/4V100",
+    "old_shared_library_install_destination": "/lib64",
+    "recovered_shared_library_install_destination": "${CMAKE_INSTALL_PREFIX}/lib64",
+    "cmake_install_manifest_entries": 1643,
+    "cmake_install_manifest_all_entries_under_prefix": true,
+    "installed_shared_library": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4b6cb146fa98/4V100/lib64/libcp2k.so.2026.2",
+    "feature_cache_check_passed": true,
+    "feature_disabling_or_direct_generalized_override": false
+  },
+  "build_reuse": {
+    "inventory_before_entries": 1489,
+    "inventory_after_entries": 1489,
+    "object_count": 1487,
+    "objects_with_identical_sha256_mtime_ns_and_bytes": 1486,
+    "recompiled_objects": [
+      "src/CMakeFiles/cp2k.dir/cp2k_info.F.o"
+    ],
+    "changed_inventory_entries": {
+      "bin/cp2k.psmp": {
+        "before": {
+          "sha256": "8a557f42e79b4076a393a860d2ad6f2e2718b6bac1325264a7805394a9b2e4f7",
+          "mtime_ns": 1792265815680827206,
+          "bytes": 63416
+        },
+        "after": {
+          "sha256": "8a557f42e79b4076a393a860d2ad6f2e2718b6bac1325264a7805394a9b2e4f7",
+          "mtime_ns": 1792280522082490341,
+          "bytes": 63416
+        }
+      },
+      "src/CMakeFiles/cp2k.dir/cp2k_info.F.o": {
+        "before": {
+          "sha256": "c8e3073ec8de33b084ab746c0e7532a27b7cdec35c14f1105a0f425d472ad97d",
+          "mtime_ns": 1792264867256751585,
+          "bytes": 44960
+        },
+        "after": {
+          "sha256": "e3e1d650ecbeb4bd501fe4caa8bacbbb26ef28e1a0dc7dc06b9a54a71cb1eb96",
+          "mtime_ns": 1792280513196509298,
+          "bytes": 44960
+        }
+      },
+      "src/libcp2k.so.2026.2": {
+        "before": {
+          "sha256": "db925ff35b3e8300d03a08ad547f51d5be6e10bbddc736a829e3899313249821",
+          "mtime_ns": 1792265814124830465,
+          "bytes": 258739272
+        },
+        "after": {
+          "sha256": "10bb280ad04bcb317b84719d5a7766b80abf9aef8403ce779e07759583b6598d",
+          "mtime_ns": 1792280521196492232,
+          "bytes": 258739272
+        }
+      }
+    },
+    "build_log_actions": [
+      "[  4%] Building Fortran object src/CMakeFiles/cp2k.dir/cp2k_info.F.o",
+      "[  4%] Linking CXX shared library libcp2k.so",
+      "[ 99%] Linking Fortran executable ../bin/orbital_transformation_matrices_unittest.psmp",
+      "[ 99%] Linking Fortran executable ../bin/memory_utilities_unittest.psmp",
+      "[ 99%] Linking Fortran executable ../bin/gemm_square_unittest.psmp",
+      "[ 99%] Linking Fortran executable ../bin/graph.psmp",
+      "[ 99%] Linking Fortran executable ../bin/dumpdcd.psmp",
+      "[ 99%] Linking Fortran executable ../bin/parallel_rng_types_unittest.psmp",
+      "[ 99%] Linking Fortran executable ../bin/cp2k.psmp",
+      "[ 99%] Linking Fortran executable ../bin/realspace_grid_cube_unittest.psmp",
+      "[100%] Linking Fortran executable ../bin/dbt_tas_unittest.psmp",
+      "[100%] Linking Fortran executable ../bin/gx_ac_unittest.psmp",
+      "[100%] Linking Fortran executable ../bin/dbt_unittest.psmp",
+      "[100%] Linking Fortran executable ../bin/xyz2dcd.psmp",
+      "[100%] Linking Fortran executable ../bin/nequip_unittest.psmp",
+      "[100%] Linking CXX executable ../bin/libcp2k_unittest.psmp"
+    ],
+    "interpretation": "Only cp2k_info.F.o was rebuilt; libcp2k and dependent executables were relinked. The build-tree cp2k.psmp hash stayed identical despite a new mtime. Final installed ELF hashes differ after the existing packaging/RPATH steps; those are recorded separately."
+  },
+  "source_integrity": {
+    "image": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-4v100-avx512-2026-10-17-67b5da876dd6/work.ext3",
+    "before_sha256": "7c8dca7c8a025390205183eef1db23032ace0e90e6c28eaa9c75248368ab6ed2",
+    "copied_sha256": "7c8dca7c8a025390205183eef1db23032ace0e90e6c28eaa9c75248368ab6ed2",
+    "after_sha256": "7c8dca7c8a025390205183eef1db23032ace0e90e6c28eaa9c75248368ab6ed2",
+    "full_image_unchanged": true,
+    "source_stat_after_job": {
+      "bytes": 17179869184,
+      "mode": "0o600",
+      "inode": 144115785713903416,
+      "device": 4231993238
+    },
+    "source_mode_retained": "0o600",
+    "source_access": "O_RDONLY, shared OFD lock during cloning; no source chmod or cleanup",
+    "clone_preparation": {
+      "status": "prepared",
+      "source_unchanged": true,
+      "upper_directory_unchanged": true,
+      "source_lock": "shared-OFD",
+      "target_lock": "exclusive-OFD",
+      "fsck_before_and_after": "passed"
+    },
+    "clone_only_workdir_cleanup_entries": 251,
+    "input_manifest_sha256": "aeda570f63a7ec3512fa764d2ac80d10f94007983fa83d579ea44c37b38ac196",
+    "frozen_input_manifest_mismatches": []
+  },
+  "diagnostic_sif": {
+    "path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/diagnostic.sif",
+    "bytes": 187449344,
+    "mode": "0o444",
+    "sha256": "4ab1a5c534879236a45345c607addc48b901aedb030aa001ebf7186b6765bead",
+    "sha256_recorded_before_smoke": "4ab1a5c534879236a45345c607addc48b901aedb030aa001ebf7186b6765bead",
+    "sha256_check_after_smoke_passed": true,
+    "sha256_independently_recomputed_after_job": "4ab1a5c534879236a45345c607addc48b901aedb030aa001ebf7186b6765bead",
+    "squashfs": {
+      "bytes": 187416576,
+      "mode": "0o644",
+      "sha256": "ea06137ee293d7613a42d6af15c42965e87a2d78f34b6e0957f4558165a6c7f3"
+    },
+    "retains_source_identity": true,
+    "formal_new_recipe_artifact": false,
+    "artifact_publication": false,
+    "artifact_path_files_in_diagnostic_run": [],
+    "source_artifact_path_exists": false
+  },
+  "final_sif_verification": {
+    "without_build_overlay": true,
+    "release_identity_validation_passed": true,
+    "native_entry_and_installed_manifest_inventory_validation_passed": true,
+    "manifest_evidence": "Frozen cp2k_container_entry.sh verify runs native-verify under set -e before invoking the installed feature verifier; successful final JSON therefore follows exact packaged-inventory comparison.",
+    "installed_feature_verifier_used": true,
+    "version": "CP2K version 2026.2",
+    "source_code_revision": "Source code revision 67b5da876d",
+    "compiler": "compiler: GCC version 14.3.0",
+    "artifact_checks": true,
+    "deployment_scope": "loader contract checked; no claim of physical deployment",
+    "external_runtime_roots": [
+      "/opt/devtools",
+      "/usr",
+      "/bin",
+      "/lib",
+      "/lib64"
+    ],
+    "flags": [
+      "cosma",
+      "cusolvermp",
+      "cusolvermp_nccl",
+      "dbcsr_acc",
+      "dftd4_v4_2",
+      "elpa",
+      "fftw3",
+      "hdf5",
+      "libbqb",
+      "libdftd4",
+      "libint",
+      "libvori",
+      "libxc",
+      "libxs",
+      "libxsmm",
+      "mctc-lib",
+      "mpi_f08",
+      "offload_cuda",
+      "omp",
+      "parallel",
+      "plumed2",
+      "s_dftd3",
+      "scalapack",
+      "spglib",
+      "spla_gemm_offloading",
+      "tblite"
+    ],
+    "prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4b6cb146fa98/4V100",
+    "scientific_acceptance": false,
+    "target": "4v100-avx512",
+    "elf_count": 47,
+    "elf_sha256": {
+      "bin/cp2k.psmp": "f3b9367f133d26b462dbe575454f7b57c6cecafbbcf8da1834ceb1aa9ae8bf1f",
+      "bin/dbm_miniapp.psmp": "74414eadc13ca6280f33763fe0ecae0cb0d53f03f86c176c1cee73cec19f790a",
+      "bin/dbt_tas_unittest.psmp": "727570ad098b3f0c8dce32a9c71e10c6b1a4a275c7196a12c1074bc7816ca4ae",
+      "bin/dbt_unittest.psmp": "9f62cb89def11293484614a4682a03d5abd1d21b4ba146944b2e636b65e92819",
+      "bin/dumpdcd.psmp": "055c8bd1d325df9f613894e812f3d609ca80cf67f4b91112133c9be9479c2682",
+      "bin/gemm_square_unittest.psmp": "b81d281aadf506ee4c33b83d605eb712e94eb9e403f9dc687574c51bf038fa96",
+      "bin/graph.psmp": "828694ce3ecc3875f429e11c617c771a95e0fa6c61682e4205e43fbf6ffb0660",
+      "bin/grid_miniapp.psmp": "6bc8f41ad2125e8c988f5f60fd26ffc59219e12e2c122011f5f4e7a8826c98b4",
+      "bin/grid_unittest.psmp": "ffd8548a19421a12502f5f20b0e438dc6c574ade783f3694eecfdd2526f1a43f",
+      "bin/gx_ac_unittest.psmp": "004db484b3a25a74d0786fe03e22f3f1d2f4427e74cce4017aa2f2e1d678fe2b",
+      "bin/libcp2k_unittest.psmp": "4b70550d611b847f5713675c7eab0cbe4dc55fb9965cb49a0156176bce8ca869",
+      "bin/memory_utilities_unittest.psmp": "6e3332ea0c79d9c2e5a993ec0ccb8aa725c2b34caf4c55ab87b12e878c75f02e",
+      "bin/nequip_unittest.psmp": "361a8ae7c5e0bc47be36c3669d6903aa2d65fbd810acc195134521ac020d13b0",
+      "bin/orbital_transformation_matrices_unittest.psmp": "9b6c21d73667978aaf898f61d7b78d6d8b27b10a37f6496c3937e06d9c52d2cc",
+      "bin/parallel_rng_types_unittest.psmp": "1583f2011d89a289cf023926506ed2bc30ca6809ed7b74d0622a78901e33bd82",
+      "bin/realspace_grid_cube_unittest.psmp": "ee617e063709fe654a6e49cde4ca238be0640719ba38881333be7c2500a3429c",
+      "bin/xyz2dcd.psmp": "4a9b32e29d07392eebd4a4a4b81b8f1def967942722629d1422463e563b0908b",
+      "dependencies/spack/linux-zen5/cosma-2.7.0-nxkgtx7kzj7x2fhs74xieconnpza7qsf/lib64/libcosma.so": "2ee28e7cb433b0ffb2b35d81e562a4871ee7b7e736d5244f046419b3d26b8811",
+      "dependencies/spack/linux-zen5/cosma-2.7.0-nxkgtx7kzj7x2fhs74xieconnpza7qsf/lib64/libcosma_prefixed_pxgemm.so": "b10e304cb67222f8ddc8adb702cec13b77e529bc4f605357f0a8363d308c5790",
+      "dependencies/spack/linux-zen5/cosma-2.7.0-nxkgtx7kzj7x2fhs74xieconnpza7qsf/lib64/libcosma_pxgemm.so": "0ed6cb5c648007508b701bc97d46eaa87530cd2910b930c7247c735f6add39f6",
+      "dependencies/spack/linux-zen5/cosma-2.7.0-nxkgtx7kzj7x2fhs74xieconnpza7qsf/lib64/libcosma_pxgemm_cpp.so": "0d5bcd1e62b6bd32950c6422ef8abb7bfa48bfe60904c647ef2542a3225a8475",
+      "dependencies/spack/linux-zen5/costa-2.3.3-zlqyozosmfk6c6v2pjhdc3d6xchzenfd/lib64/libcosta.so": "d5006978d79274974890e9de967d5ea708c01ad66e1647d754f1c3f77f23097e",
+      "dependencies/spack/linux-zen5/costa-2.3.3-zlqyozosmfk6c6v2pjhdc3d6xchzenfd/lib64/libcosta_prefixed_scalapack.so": "63d29171ae42dd965970998a5e24b3354af6427dc58ee5376b95e66e49e04219",
+      "dependencies/spack/linux-zen5/costa-2.3.3-zlqyozosmfk6c6v2pjhdc3d6xchzenfd/lib64/libcosta_scalapack.so": "7f27884b7d034a3efbb4a69989ede98db4eb0d9fa748ec8780b725fa76cf8132",
+      "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libasan.so.8": "1210b58bb6d8e93f251d50cddc2e0f8cec357837ac1b0b0af6d8b5e3a39ac9e5",
+      "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libatomic.so.1": "8e65b1074800f0d2eb84e838036e148f768e8ac521cf2fd2f49b1ce3fd19825e",
+      "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libgcc_s.so.1": "264e0f33085d0508606f0cf2a1c727a3ac828e86fdd7fe40a9f461cb92e8bc80",
+      "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libgfortran.so.5": "7d8bc2ccca9e0cfc2a2e3a7c4e0f3cae80c0656af2992be94fcf24c27421f408",
+      "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libgomp.so.1": "b88c7b8861f1dd1c0c577aa6f52dfec1fff82a9cc9afdbf508617c17f3906ad0",
+      "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libhwasan.so.0": "94ad8ba491c282be488275fecdb06290941cec687acff44d9ed77efeed1a07bc",
+      "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libitm.so.1": "5b9eb7d94642853187937989de2adf58ea7bfd5366e8305f7c8b59228a708632",
+      "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/liblsan.so.0": "fb21708601186b74745d4dfdd46d64d2f332e49cb0c3582487f544b838ef112d",
+      "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libquadmath.so.0": "2a86aaedb01e94e5c882f76ae5c57b349283853801cb88f39755f9bb6bf966cf",
+      "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libssp.so.0": "165dc11c7befda19285e8b3da5ad2bfc7c668a633112d1f38a10de6e5ee4ed15",
+      "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libstdc++.so.6": "a9e25404c726ee7201e66e3253113599dd1980db9380ebed7ba2ad747f3c42a0",
+      "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libtsan.so.2": "47cc604d1a0dcc8ba282d37cbd2c068da496ce6544d12d5147949f524c0cf487",
+      "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libubsan.so.1": "998f75e4fd782ac8ad698019378801d91403317186a794a3e542a07092e9abc2",
+      "dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz/lib/libint2.so.2.0.3": "16f92fd2dd6beacd55b442cf67e67640ff8cfbc2d6751ef45ea1229e4ae55bf8",
+      "dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/lib64/libxsmm.so.2.0.0": "16e5b5b13e262a38d30b949f50b99dd95a38a0fb97df0974967e0b3768386bfe",
+      "dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/lib64/libxsmmf.so.2.0.0": "29e536a9a35502cd6363fd96192ca2dda1b1d1991febe1a4ed35aef97bbafb56",
+      "dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg/lib/libplumed.so": "38a3d8b84e8a50750d4bd98fe20efc3247a3a33b7acf8bf576278bc468cdacf0",
+      "dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg/lib/libplumedKernel.so": "98fdd0f169e785c1f7ca0d29ef6e8076042cd58b557bf777c3137467a78918bc",
+      "dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg/lib/plumed/plumed-runtime": "df70147c81f81f8caee45fb96a9bbc989a88026767d169fda91c08a08590c77e",
+      "dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg/lib/plumed/python/plumed.cpython-312-x86_64-linux-gnu.so": "46f29e921e292fdd7a149bb7789816e95a007dd7399bc7f0ebae494ba799c5db",
+      "dependencies/spack/linux-zen5/spla-1.6.1-uc273bzgwxxngrexd366xlfvkfmeuvgm/lib64/libspla.so.1.6.1": "4d4e0ababa720c9f0bcfa5dc4fa08fc6b131b86b08b3a5039e02ccad8a0a31b8",
+      "dependencies/spack/linux-zen5/tiled-mm-2.3.2-joxrwvs52itwvriwz6urraxcs3kgwuds/lib64/libTiled-MM.so": "e0304a8253e72eef1657c8a40bc302ff83703a2c751bee0ce775b528796d7590",
+      "lib64/libcp2k.so.2026.2": "1ea0bb0b6831a351fa422cc1b01cd88dfb62e1cb0486298532511f8f571b0149"
+    },
+    "main_elf_dynamic": {
+      "bin/cp2k.psmp": [
+        {
+          "tag": "NEEDED",
+          "value": "libstdc++.so.6"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcp2k.so.2026.2"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libsymspg.so.2"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libxcf03.so.15"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libxc.so.15"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libelpa_openmp.so.19"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcusolver.so.11"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcudart.so.12"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcublasLt.so.12"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcublas.so.12"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libplumed.so"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libfftw3.so.3"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libfftw3_omp.so.3"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libspla.so.1"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libint2.so.2"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcosma_prefixed_pxgemm.so"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcosma.so"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcosta.so"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libTiled-MM.so"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libz.so.1"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libgfortran.so.5"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libm.so.6"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libnvrtc.so.12"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libscalapack.so.2.2"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libmpi_usempif08.so.40"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libmpi_usempi_ignore_tkr.so.40"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libmpi_mpifh.so.40"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libmpi.so.40"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libxsmm.so.2"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libgomp.so.1"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libopenblas.so.0"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcuda.so.1"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcusolverMp.so.0"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libnccl.so.2"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libucc.so.1"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libucs.so.0"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcufftw.so.11"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcufft.so.11"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libgcc_s.so.1"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libc.so.6"
+        },
+        {
+          "tag": "RUNPATH",
+          "value": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:$ORIGIN:$ORIGIN/../lib64:$ORIGIN/../lib"
+        },
+        {
+          "tag": "INTERP",
+          "value": "/lib64/ld-linux-x86-64.so.2"
+        }
+      ],
+      "lib64/libcp2k.so.2026.2": [
+        {
+          "tag": "NEEDED",
+          "value": "libsymspg.so.2"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libxcf03.so.15"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libxc.so.15"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libelpa_openmp.so.19"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcusolver.so.11"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcudart.so.12"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcublasLt.so.12"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcublas.so.12"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libplumed.so"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libfftw3.so.3"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libfftw3_omp.so.3"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libspla.so.1"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libint2.so.2"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libstdc++.so.6"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcosma_prefixed_pxgemm.so"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcosma.so"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcosta.so"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libTiled-MM.so"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libz.so.1"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libnvrtc.so.12"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libscalapack.so.2.2"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libmpi_usempif08.so.40"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libmpi_usempi_ignore_tkr.so.40"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libmpi_mpifh.so.40"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libmpi.so.40"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libxsmm.so.2"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libm.so.6"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libmvec.so.1"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libgomp.so.1"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libopenblas.so.0"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcuda.so.1"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcusolverMp.so.0"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libnccl.so.2"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libucc.so.1"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libucs.so.0"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcufftw.so.11"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libcufft.so.11"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libgfortran.so.5"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libquadmath.so.0"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libgcc_s.so.1"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "libc.so.6"
+        },
+        {
+          "tag": "NEEDED",
+          "value": "ld-linux-x86-64.so.2"
+        },
+        {
+          "tag": "RUNPATH",
+          "value": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:$ORIGIN:$ORIGIN/../lib64:$ORIGIN/../lib"
+        }
+      ]
+    },
+    "ldd_missing_dependencies": [],
+    "selected_ldd_lines": [
+      "libcp2k.so.2026.2 => /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4b6cb146fa98/4V100/lib64/libcp2k.so.2026.2 (0x00001295c3190000)",
+      "libscalapack.so.2.2 => /opt/devtools/saiblas/2603-gnu-avx512/lib/libscalapack.so.2.2 (0x000012956b546000)",
+      "libmpi.so.40 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libmpi.so.40 (0x000012956b17b000)",
+      "libcuda.so.1 => /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/compat/libcuda.so.1 (0x0000129564899000)",
+      "libcusolverMp.so.0 => /opt/devtools/nvidia/mp_libs/lib/libcusolverMp.so.0 (0x0000129563000000)"
+    ]
+  },
+  "final_sif_pbe_ot_smoke": {
+    "exit_code": 0,
+    "scope": "Diagnostic SIF PBE OT smoke; no formal publication or performance claim",
+    "science": {
+      "energy_ha": -34.44682129478872,
+      "forces_ha_bohr": [
+        [
+          -0.00945233354,
+          -0.010457489817,
+          -2.87128e-07
+        ],
+        [
+          -0.009818693543,
+          0.01569111124,
+          -1.41928e-07
+        ],
+        [
+          0.010457918678,
+          0.004642532798,
+          5.8306e-08
+        ],
+        [
+          -0.003014175638,
+          0.009256006937,
+          -5.6023e-08
+        ],
+        [
+          0.004272731236,
+          -0.008357649189,
+          -0.007545513107
+        ],
+        [
+          0.004272706358,
+          -0.008357781986,
+          0.007545680456
+        ]
+      ],
+      "elapsed_seconds": 13.132202627137303,
+      "cp2k_seconds": 12.497,
+      "dispersion_ha": null
+    },
+    "passed": true,
+    "without_build_overlay": true,
+    "mpi_ranks": 1,
+    "omp_threads": 1,
+    "atom_count": 6,
+    "scf_convergence_steps": 46,
+    "normal_program_end": true,
+    "gpu_log_lines": [
+      "DBCSR| ACC: Number of devices/node                                            1",
+      "DBCSR| ACC: GPU backend is enabled                                            T (D)",
+      "2     collocate ortho    GPU                                  10622      24.03%",
+      "2     integrate ortho    GPU                                  10396      23.52%",
+      "3     integrate ortho    GPU                                   8276      18.72%",
+      "3     collocate ortho    GPU                                   8225      18.61%",
+      "4     integrate ortho    GPU                                   3349       7.58%",
+      "4     collocate ortho    GPU                                   3243       7.34%",
+      "5     integrate ortho    GPU                                     69       0.16%"
+    ],
+    "data_source": "Pinned BASIS_MOLOPT and GTH_POTENTIALS copied from /verification/input into the smoke working directory; not read from the installed SIF data directory.",
+    "gpu_visibility_evidence": "DBCSR reports one device/node and enabled GPU backend, with nonzero GPU collocate/integrate work. The job did not explicitly forward CUDA_VISIBLE_DEVICES across --cleanenv or record GPU UUIDs, so allocation-to-device identity is not established by this evidence.",
+    "baseline_or_performance_comparison": false
+  },
+  "evidence_files": {
+    "results/CMakeCache-after.txt": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/CMakeCache-after.txt",
+      "bytes": 88827,
+      "sha256": "1c4d8ab3ea0374884eaa57ed5fa8051aaff78444787e6713beabbc3d3356b497"
+    },
+    "results/CMakeCache-before.txt": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/CMakeCache-before.txt",
+      "bytes": 88822,
+      "sha256": "d9175979a5f513228cb1d3de69ea551beab09abb69f025b3ab52c097ce8883af"
+    },
+    "results/build-after.json": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/build-after.json",
+      "bytes": 294842,
+      "sha256": "95bb8e9666bd647710343a34f14bd80dee3f3dad77fb0dca43b47fe257c288a0"
+    },
+    "results/build-before.json": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/build-before.json",
+      "bytes": 294842,
+      "sha256": "7969b607a84edd10579806d4122a240b2a57228014c0c42730af7106e7b139ad"
+    },
+    "results/cmake_install-after.txt": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/cmake_install-after.txt",
+      "bytes": 41772,
+      "sha256": "8a2ccc33fcb2849e849f055f6eb2815468f05c3ed6dfab41f70216a078f35d35"
+    },
+    "results/cmake_install-before.txt": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/cmake_install-before.txt",
+      "bytes": 43114,
+      "sha256": "30fd31c0184a84b463037d5fb9f8e8dd167e38edf3805979bd30a8acae2d5d3c"
+    },
+    "results/diagnostic-clone.json": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/diagnostic-clone.json",
+      "bytes": 75310,
+      "sha256": "dbdfe6a5cc46cff2fdbe65f4d842be95211c7c872d9db15f74ebdee8685bb12b"
+    },
+    "results/diagnostic-sif.sha256": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/diagnostic-sif.sha256",
+      "bytes": 81,
+      "sha256": "ad1c90c31e2e42a83774b9789f88cee651a6ab635794de041a12a3f7bc2798dc"
+    },
+    "results/diagnostic.exit": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/diagnostic.exit",
+      "bytes": 2,
+      "sha256": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa"
+    },
+    "results/export.log": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/export.log",
+      "bytes": 3059,
+      "sha256": "349fc8ef9e794fd419c68a739360363c264b09be66407e54a3d8af63c3f20d54"
+    },
+    "results/final-sif-pbe/BASIS_MOLOPT": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/final-sif-pbe/BASIS_MOLOPT",
+      "bytes": 127679,
+      "sha256": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61"
+    },
+    "results/final-sif-pbe/GTH_POTENTIALS": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/final-sif-pbe/GTH_POTENTIALS",
+      "bytes": 168128,
+      "sha256": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+    },
+    "results/final-sif-pbe/benchmark-RESTART.wfn": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/final-sif-pbe/benchmark-RESTART.wfn",
+      "bytes": 3388,
+      "sha256": "9ab9c14c997b078c6822fc7214645c607b9a13052756aa34307e11639f76d38f"
+    },
+    "results/final-sif-pbe/benchmark-RESTART.wfn.bak-1": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/final-sif-pbe/benchmark-RESTART.wfn.bak-1",
+      "bytes": 3388,
+      "sha256": "c943d5907c1bf1b55cd2d08a48c90c55caaf953031e6237335efd8621b0a7077"
+    },
+    "results/final-sif-pbe/cp2k.log": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/final-sif-pbe/cp2k.log",
+      "bytes": 64088,
+      "sha256": "60861cd777d968e0a1d4ea623be66ef408509750344aa8c122191481b6031704"
+    },
+    "results/final-sif-pbe/elapsed.txt": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/final-sif-pbe/elapsed.txt",
+      "bytes": 19,
+      "sha256": "a90ccc5b6055134819b68c9da6d53e40903404a043edce70cabc98153989093e"
+    },
+    "results/final-sif-pbe/forces.xyz": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/final-sif-pbe/forces.xyz",
+      "bytes": 715,
+      "sha256": "54fa9218acbbd9efd6f0129912297eff3add13d80d755c2eb1ec4d3651a9c829"
+    },
+    "results/final-sif-pbe/input.inp": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/final-sif-pbe/input.inp",
+      "bytes": 1506,
+      "sha256": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0"
+    },
+    "results/final-sif-pbe/result.json": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/final-sif-pbe/result.json",
+      "bytes": 831,
+      "sha256": "c14a3ad265c600307ed212ba319fe323960c288318d66b20f39ad7a28feb98cf"
+    },
+    "results/final-sif-pbe.log": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/final-sif-pbe.log",
+      "bytes": 2219,
+      "sha256": "5d55ac47707addb541d1f5001a62ff84340ee8fa81c41162a1f96e11b7a48d44"
+    },
+    "results/final-sif-verify.log": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/final-sif-verify.log",
+      "bytes": 78608,
+      "sha256": "d9515935e33f87a7be2debe8b9912e7274772752be95c6f22bf906e7d529c000"
+    },
+    "results/image-driver.json": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/image-driver.json",
+      "bytes": 540,
+      "sha256": "24e8e2b9dd63dd8e99f5de73badb324019e813a2579bc1837fd9123d9f9404bf"
+    },
+    "results/install-success.json": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/install-success.json",
+      "bytes": 12229,
+      "sha256": "abb8d5ea10d851f1de9017616ddb959b61ec10b9d6b4ea0c08388541eaabf324"
+    },
+    "results/install_manifest.txt": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/install_manifest.txt",
+      "bytes": 198531,
+      "sha256": "e69f36bbadee63c552bad8a851c506a6b8173ac3d2081e7a190ca6be96b864a0"
+    },
+    "results/libint-export-repair.json": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/libint-export-repair.json",
+      "bytes": 965,
+      "sha256": "d70e63170aab0d0c4c80c8847ff44522a5cfdb4cd9a12416893ee5f667708f94"
+    },
+    "results/recovery.log": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/recovery.log",
+      "bytes": 250582,
+      "sha256": "069b9755356f481275b13fa32b45afb8ad98093660af395029cdfb895afd9e90"
+    },
+    "results/slurm-1837454.log": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/slurm-1837454.log",
+      "bytes": 613,
+      "sha256": "a3d046e5ca1e01de5e1c8db545302b7e2750174f6ae54785b2888efaf35eb052"
+    },
+    "results/slurm-job.txt": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/slurm-job.txt",
+      "bytes": 1642,
+      "sha256": "57711a2eda67a48a09654790f8775b10419226d01f5d7b06f7abb2fc3fbb9586"
+    },
+    "results/source-image-after.sha256": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/source-image-after.sha256",
+      "bytes": 172,
+      "sha256": "7fac58bbac794c70a88a4155a792e0708d278155be76e4e1324627a0523770c9"
+    },
+    "results/source-image-before.sha256": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/source-image-before.sha256",
+      "bytes": 172,
+      "sha256": "7fac58bbac794c70a88a4155a792e0708d278155be76e4e1324627a0523770c9"
+    },
+    "results/stage-identity.json": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/stage-identity.json",
+      "bytes": 582,
+      "sha256": "0b6c79878357c221c81b1e1d7675d044f44d767936b96dfe70a9af3c994988f7"
+    },
+    "request.json": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/request.json",
+      "bytes": 1982,
+      "sha256": "25da22021d0f43da19f773a0c4147bfa5a7f7993ae7bf97653828174437e0ea8"
+    },
+    "input.sha256": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/input.sha256",
+      "bytes": 4485,
+      "sha256": "aeda570f63a7ec3512fa764d2ac80d10f94007983fa83d579ea44c37b38ac196"
+    },
+    "input/job.sbatch": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/input/job.sbatch",
+      "bytes": 10566,
+      "sha256": "8d9ef7e79bbd274356be82ada4a742ec4308a55ae618f1a29851c85cd6041562"
+    },
+    "input/recovery.sh": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/input/recovery.sh",
+      "bytes": 8931,
+      "sha256": "2207e74ceb36590ddaaf63c9d7f51b17346453ad5f3c604ee8f1da7fe79b2c41"
+    },
+    "input/final-pbe.py": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/input/final-pbe.py",
+      "bytes": 1190,
+      "sha256": "48cafd8bdcc6dc65dc304af47cffb398be7d9a41dc1c48a69edaae69641e2c2c"
+    },
+    "input/controller/cp2k_container_entry.sh": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/input/controller/cp2k_container_entry.sh",
+      "bytes": 3635,
+      "sha256": "2f53b0af453a22fa505d28c2c595f53dc0708fca1ec943af4d13ee3c271b28f0"
+    },
+    "input/controller/cp2k_feature_contract.py": {
+      "remote_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/input/controller/cp2k_feature_contract.py",
+      "bytes": 16819,
+      "sha256": "455ebfce47a34c580dc426cc2ebe738e7f8335691f0b30570cd37f323b0b907c"
+    }
+  }
+}

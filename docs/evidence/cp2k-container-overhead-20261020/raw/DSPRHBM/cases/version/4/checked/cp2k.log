@@ -1,0 +1,115 @@
+--------------------------------------------------------------------------
+PRTE has detected that the head of the session directory tree (where
+scratch files and shared memory backing storage will be placed)
+resides on a shared file system:
+
+   Directory: /home/stardust/sai-hpc-software/runtime/co-1882051
+   File system type: lustre
+
+For performance reasons, it is strongly recommended that the session
+directory be located on a local file system. This can be controlled by
+setting the system temporary directory to be used by PRTE using either
+the TMPDIR envar or the "prte_tmpdir_base" MCA param.
+
+If you need the temporary directory to be different on remote nodes
+from the local one where prterun is running (e.g., when a login node is
+being employed), then you can set the local temporary directory using
+the "prte_local_tmpdir_base" MCA param and the one to be used on all
+other nodes using the "prte_remote_tmpdir_base" param.
+
+This is only a warning advisory and your job will continue. You can
+disable this warning in the future by setting the
+"prte_silence_shared_fs" MCA param to "1".
+--------------------------------------------------------------------------
+hwloc/linux: Ignoring PCI device with non-16bit domain.
+Pass --enable-32bits-pci-domain to configure to support such devices
+(warning: it would break the library ABI, don't enable unless really needed).
+[d9470n02.mr-sai.ai:1211376] Rank 0 bound to package[1][core:L69-70]
+[d9470n02.mr-sai.ai:1211426] mca_base_component_repository_open: unable to open mca_accelerator_cuda: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n02.mr-sai.ai:1211426] mca_base_component_repository_open: unable to open mca_rcache_rgpusm: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n02.mr-sai.ai:1211426] mca_base_component_repository_open: unable to open mca_rcache_gpusm: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+ CP2K version 2026.2
+ Source code revision 67b5da876d
+ cp2kflags: omp libint fftw3 libxc elpa parallel scalapack mpi_f08 cosma libxs libxsmm plumed2 spglib libdftd4 dftd4_v4_2 s_dftd3 mctc-lib tblite libvori libbqb hdf5
+ compiler: GCC version 14.3.0
+ compiler options:
+   -cpp -I /workspace/source/src -I /workspace/build/src -I /workspace/
+   source/src/base -I /workspace/source/src/common -I /workspace/source
+   /src/motion -I /workspace/source/src/dbm -I /workspace/build/src/mod
+   _files -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa5
+   3ff43/DSPRHBM/dependencies/spack/linux-sapphirerapids/libint-2.6.0-4
+   dtgfsz4ycma7uwhbp5mbe6g3aqsqwmb/include -I /opt/apps/cp2k/cp2k-relea
+   se-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/dependencies/tblite/i
+   nclude -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa5
+   3ff43/DSPRHBM/dependencies/tblite/include/mctc-lib/modules -I /opt/a
+   pps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/de
+   pendencies/tblite/include/dftd4/GNU-14.3.0 -I /opt/apps/cp2k/cp2k-re
+   lease-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/dependencies/tblit
+   e/include/multicharge/GNU-14.3.0 -I /opt/devtools/saiblas/2603-gnu-a
+   vx512/include -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r
+   aed7aa53ff43/DSPRHBM/dependencies/tblite/include/tblite/GNU-14.3.0 -
+   I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DS
+   PRHBM/dependencies/tblite/include/toml-f/modules -I /opt/apps/cp2k/c
+   p2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/dependencies
+   /tblite/include/s-dftd3/GNU-14.3.0 -I /opt/devtools/spglib/spglib-2.
+   7.0/include -I /opt/devtools/libxc/libxc-7.0.0-avx512/include -I /op
+   t/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/cpu/include/elpa_op
+   enmp-2026.02.001 -I /opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx
+   512/cpu/include/elpa_openmp-2026.02.001/modules -I /opt/apps/cp2k/cp
+   2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/dependencies/
+   spack/linux-sapphirerapids/plumed-2.10.1-qwwau7jv5yf5i3ok3c24ysm4ibp
+   xpllg/include -I /opt/devtools/fftw/fftw-3.3.10/include -I /opt/apps
+   /cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/depen
+   dencies/spack/linux-sapphirerapids/spla-1.6.1-uxed4dw7umencfxxq4gyza
+   cu6r65lbkz/include -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876
+   dd6-raed7aa53ff43/DSPRHBM/dependencies/spack/linux-sapphirerapids/sp
+   la-1.6.1-uxed4dw7umencfxxq4gyzacu6r65lbkz/include/spla -I /opt/devto
+   ols/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/include -I /op
+   t/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib -I 
+   /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPR
+   HBM/dependencies/spack/linux-sapphirerapids/cosma-2.7.0-goq7bmlsruxt
+   5lhhemq4ytm366mnfw5l/include -I /opt/apps/cp2k/cp2k-release-v2026.2-
+   g67b5da876dd6-raed7aa53ff43/DSPRHBM/dependencies/spack/linux-sapphir
+   erapids/costa-2.3.3-atwoealp6a2oujemkdh23i7qgfho3l7x/include -I /opt
+   /apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/
+   dependencies/spack/linux-sapphirerapids/hdf5-1.14.6-nzurbzn7nvb3lu6p
+   33d5wu7aq5ezqydb/include -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b
+   5da876dd6-raed7aa53ff43/DSPRHBM/dependencies/spack/linux-sapphirerap
+   ids/hdf5-1.14.6-nzurbzn7nvb3lu6p33d5wu7aq5ezqydb/mod/static -I /opt/
+   apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/d
+   ependencies/dbcsr/include -I /opt/apps/cp2k/cp2k-release-v2026.2-g67
+   b5da876dd6-raed7aa53ff43/DSPRHBM/dependencies/libxs/include -I /opt/
+   apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/d
+   ependencies/libxs/include/libxs -I /opt/apps/cp2k/cp2k-release-v2026
+   .2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/dependencies/spack/linux-sapp
+   hirerapids/libxsmm-2.0.0-l5muhjnzczl5peiem2fwiixbqjnzm33l/include -i
+   multiarch x86_64-linux-gnu -D_REENTRANT -D COSMA_WITH_BLAS -D IK=i4 
+   -D USING_Libxc -D _FILE_OFFSET_BITS=64 -D _GNU_SOURCE -D _LARGEFILE_
+   SOURCE -D _POSIX_C_SOURCE=200809L -D __BLAS -D __COMPILE_ARCH="x86_6
+   4" -D __COMPILE_HOST="" -D __COSMA -D __DATA_DIR="/opt/apps/cp2k/cp2
+   k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM/share/cp2k/dat
+   a" -D __DFTD4 -D __DFTD4_V4_2 -D __ELPA -D __FFTW3 -D __HDF5 -D __LI
+   BINT -D __LIBVORI -D __LIBXC -D __LIBXS -D __LIBXSMM -D __MPI_F08 -D
+    __PLUMED2 -D __SPGLIB -D __SPLA -D __S_DFTD3 -D __TBLITE -D __paral
+   lel -D __SHORT_FILE__="start/cp2k.F" -march=sapphirerapids -mmmx -mp
+   opcnt -msse -msse2 -msse3 -mssse3 -msse4.1 -msse4.2 -mavx -mavx2 -mn
+   o-sse4a -mno-fma4 -mno-xop -mfma -mavx512f -mbmi -mbmi2 -maes -mpclm
+   ul -mavx512vl -mavx512bw -mavx512dq -mavx512cd -mavx512vbmi -mavx512
+   ifma -mavx512vpopcntdq -mavx512vbmi2 -mgfni -mvpclmulqdq -mavx512vnn
+   i -mavx512bitalg -mavx512bf16 -mno-avx512vp2intersect -mno-3dnow -ma
+   dx -mabm -mcldemote -mclflushopt -mclwb -mno-clzero -mcx16 -menqcmd 
+   -mf16c -mfsgsbase -mfxsr -mno-hle -msahf -mno-lwp -mlzcnt -mmovbe -m
+   movdir64b -mmovdiri -mno-mwaitx -mpconfig -mpku -mprfchw -mptwrite -
+   mrdpid -mrdrnd -mrdseed -mno-rtm -mserialize -msgx -msha -mshstk -mn
+   o-tbm -mtsxldtrk -mvaes -mwaitpkg -mwbnoinvd -mxsave -mxsavec -mxsav
+   eopt -mxsaves -mamx-tile -mamx-int8 -mamx-bf16 -muintr -mno-hreset -
+   mno-kl -mno-widekl -mavxvnni -mavx512fp16 -mno-avxifma -mno-avxvnnii
+   nt8 -mno-avxneconvert -mno-cmpccxadd -mno-amx-fp16 -mno-prefetchi -m
+   no-raoint -mno-amx-complex -mno-avxvnniint16 -mno-sm3 -mno-sha512 -m
+   no-sm4 -mno-apxf -mno-usermsr --param=l1-cache-size=48 --param=l1-ca
+   che-line-size=64 --param=l2-cache-size=107520 -mtune=sapphirerapids 
+   -g -O3 -O3 -O3 -Wno-deprecated-declarations -Wno-maybe-uninitialized
+    -Wuninitialized -Wuse-without-only -std=f2008 -fPIE -ffree-form -fi
+   mplicit-none -fno-omit-frame-pointer -fbacktrace -fallow-argument-mi
+   smatch -funroll-loops -fopenmp -fpre-include=/usr/include/finclude/x
+   86_64-linux-gnu/math-vector-fortran.h

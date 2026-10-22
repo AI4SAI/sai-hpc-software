@@ -1,0 +1,5 @@
+BUILD_CAPACITY_POLICY filesystem-enforced 39293908513-1-release-dsprhbm-2026-10-19-67b5da876dd6-export
+CP2K_IMAGE_DRIVER sha256=46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10 config=/home/stardust/sai-hpc-software/runs/39293908513-1-release-dsprhbm-2026-10-19-67b5da876dd6-export/runtime/apptainer-fuse2fs.conf
+INFO:    User not listed in /etc/subuid, trying root-mapped namespace
+INFO:    Using fakeroot command combined with root-mapped namespace
+FATAL:   container creation failed: mount hook function failure: mount /proc/self/fd/9->/opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 error: while mounting image /proc/self/fd/9: fuse2fs failed to mount /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 in 10s

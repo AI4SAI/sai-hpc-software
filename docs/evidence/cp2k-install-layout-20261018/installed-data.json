@@ -1,0 +1,155 @@
+{
+  "schema": 1,
+  "recorded_at_utc": "2026-10-18T00:10:29.378552+00:00",
+  "status": "static-installed-data-check-passed",
+  "scope": "Read-only inspection of the recovered diagnostic SIF, its installed manifest and pinned CP2K source. Confirms packaged data and automatic-lookup configuration; does not claim a new dynamic installed-data calculation, formal artifact acceptance, publication or performance acceptance.",
+  "cluster_alias": "SAI-stardust",
+  "related_evidence": "recovery-sif.json",
+  "recovery_job_id": "1837454",
+  "artifact": {
+    "path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/diagnostic.sif",
+    "bytes": 187449344,
+    "mode_from_recovery_evidence": "0o444",
+    "sha256_recomputed_during_this_readback": "4ab1a5c534879236a45345c607addc48b901aedb030aa001ebf7186b6765bead",
+    "matches_recovery_evidence": true,
+    "squashfs_offset_bytes": 32768,
+    "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4b6cb146fa98/4V100",
+    "formal_new_recipe_artifact": false
+  },
+  "readback_method": {
+    "transport": "ssh SAI-stardust",
+    "reader": "/usr/bin/unsquashfs",
+    "argv_pattern": [
+      "/usr/bin/unsquashfs",
+      "-cat",
+      "-o",
+      "32768",
+      "<artifact.path>",
+      "<install_prefix without leading slash>/<relative file>"
+    ],
+    "details": "Located the hsqs SquashFS header in the first 65536 SIF bytes; read the named files directly from diagnostic.sif using unsquashfs -cat and hashed stdout bytes. Independently streamed the complete SIF through SHA-256. No image extraction directory, container execution or new Slurm job was used.",
+    "remote_mutations": false
+  },
+  "installed_manifest": {
+    "relative_path": "share/sai/manifest.json",
+    "sha256": "962166e44c20a5dd91e3e07784140b6e616171c67fadca8fa44e1ea3d5fa2489",
+    "schema": 2,
+    "inventory_entries": 1267,
+    "regular_files_under_share_cp2k_data": 280,
+    "runtime_set_cp2k_data_dir": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4b6cb146fa98/4V100/share/cp2k/data",
+    "selected_records_match_direct_sif_reads": true,
+    "inventory_validation_boundary": "The selected file records were compared directly with this readback. Complete installed-inventory validation was already performed by the successful final-SIF native-verify step recorded in recovery-sif.json; this check did not rehash all 1267 entries."
+  },
+  "directly_read_files": [
+    {
+      "relative_path": "share/sai/runtime-env.sh",
+      "bytes": 8433,
+      "mode_from_installed_manifest": "0644",
+      "sha256": "8e5d9b35ebd325a5890c10adbda48ea270f5df5e7cc5ac50bd8c01dd7d325fdb",
+      "selected_line": "export CP2K_DATA_DIR=/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4b6cb146fa98/4V100/share/cp2k/data",
+      "matches_installed_manifest": true
+    },
+    {
+      "relative_path": "share/cp2k/data/BASIS_MOLOPT",
+      "bytes": 127679,
+      "mode_from_installed_manifest": "0644",
+      "sha256": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+      "matches_installed_manifest": true,
+      "matches_successful_pbe_fixture_bytes": true
+    },
+    {
+      "relative_path": "share/cp2k/data/GTH_POTENTIALS",
+      "bytes": 168128,
+      "mode_from_installed_manifest": "0644",
+      "sha256": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+      "matches_installed_manifest": true,
+      "matches_successful_pbe_fixture_bytes": true
+    }
+  ],
+  "additional_manifest_records_not_individually_rehashed": [
+    {
+      "relative_path": "share/cp2k/data/BASIS_SET",
+      "bytes": 195109,
+      "mode": "0644",
+      "sha256": "1d60d67ad5f22253185fda9d27b23558521e04a2b0c5efabaf44a33fe2208182"
+    },
+    {
+      "relative_path": "share/cp2k/data/POTENTIAL",
+      "bytes": 178449,
+      "mode": "0644",
+      "sha256": "b0e5adf52fc7b7dcf3f2d156ae3f1327780f6f4d11973db329545e5c73bdc361"
+    }
+  ],
+  "existing_runtime_evidence": {
+    "cmake_install_manifest_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/install_manifest.txt",
+    "cmake_manifest_contains_both_pbe_data_files": true,
+    "installed_feature_verifier_requires_cp2k_data_dir_equals_install_prefix": true,
+    "installed_feature_verifier_requires_both_pbe_data_files_exist": true,
+    "final_sif_verification_passed": true,
+    "pbe_log_path": "/home/stardust/sai-hpc-software/runs/cp2k-install-libdir-recovery-20261018-a/results/final-sif-pbe/cp2k.log",
+    "pbe_log_data_directory_line": " CP2K| Data directory path    /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-",
+    "log_line_boundary": "CP2K's formatted log line truncates the long directory; exact directory evidence comes from the SIF runtime-env and installed manifest, not this line alone.",
+    "pbe_working_directory_had_external_fixture_copies": true
+  },
+  "pinned_source_analysis": {
+    "repository": "cp2k/cp2k",
+    "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+    "lookup_order": [
+      "The original requested filename, including a relative filename in the current working directory",
+      "get_data_dir() joined with the requested filename"
+    ],
+    "data_directory_selection": "CP2K_DATA_DIR from the environment takes precedence over compiled __DATA_DIR. An empty environment value also overrides the compiled value; it is not a request to fall back to the compiled directory.",
+    "references": [
+      {
+        "path": "src/common/cp_files.F",
+        "lines": [383, 520, 550],
+        "role": "open_file calls discover_file; discover_file checks the original filename before the data-directory candidate.",
+        "url": "https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/common/cp_files.F#L520"
+      },
+      {
+        "path": "src/common/cp_data_dir.c",
+        "lines": [18, 24],
+        "role": "Environment CP2K_DATA_DIR overrides compiled __DATA_DIR.",
+        "url": "https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/common/cp_data_dir.c#L18"
+      },
+      {
+        "path": "src/input/cp_parser_types.F",
+        "lines": [201],
+        "role": "parser_create opens the requested file through open_file.",
+        "url": "https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/input/cp_parser_types.F#L201"
+      },
+      {
+        "path": "src/aobasis/basis_set_types.F",
+        "lines": [1250, 1254, 1269],
+        "role": "read_gto_basis_set1 reads BASIS_SET_FILE_NAME and passes it to parser_create.",
+        "url": "https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/aobasis/basis_set_types.F#L1269"
+      },
+      {
+        "path": "src/qs_kind_types.F",
+        "lines": [2471, 2492],
+        "role": "POTENTIAL_FILE_NAME is taken from DFT, with a KIND-level override possible, and passed to read_potential.",
+        "url": "https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/qs_kind_types.F#L2471"
+      },
+      {
+        "path": "src/subsys/external_potential_types.F",
+        "lines": [292, 1675, 1725],
+        "role": "The read_potential generic selects read_gth_potential, which calls parser_create.",
+        "url": "https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/subsys/external_potential_types.F#L1725"
+      },
+      {
+        "path": "src/CMakeLists.txt",
+        "lines": [1825, 1826, 1836, 2095],
+        "role": "The default data directory is CMAKE_INSTALL_FULL_DATAROOTDIR/cp2k/data, compiled into __DATA_DIR; data are installed by the source build rules.",
+        "url": "https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/CMakeLists.txt#L1825"
+      }
+    ]
+  },
+  "conclusion": {
+    "installed_data_configuration_satisfied": true,
+    "packaged_pbe_data_match_successful_fixture": true,
+    "new_delivery_defect_found": false,
+    "dynamic_fallback_exercised_by_existing_pbe_smoke": false,
+    "remaining_boundary": "The completed PBE smoke copied BASIS_MOLOPT and GTH_POTENTIALS into its working directory. Those files take precedence, so successful SCF does not dynamically prove the installed-data fallback branch.",
+    "minimal_followup": "Add an ot-installed-data case to the next already-planned single-GPU SIF smoke job. Use identical OT input, a fresh working directory without either data file or corresponding symlink, and the saved runtime environment. Compare energy and forces against that job's original OT case at the existing tolerances. Record the missing local copies, exact CP2K_DATA_DIR and installed data hashes. No separate Slurm job or recipe change is required."
+  }
+}

@@ -1,0 +1,136 @@
+{
+  "run": {
+    "conclusion": "success",
+    "headSha": "b9ee5fadd0de708a7fa528f4a3a3f0786532ac8c",
+    "jobs": [
+      {
+        "completedAt": "2026-10-17T16:52:39Z",
+        "conclusion": "success",
+        "databaseId": 117450163819,
+        "name": "validate",
+        "startedAt": "2026-10-17T16:51:59Z",
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Install native delivery test tools",
+            "number": 3,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run python3 -m unittest discover -s tests -v",
+            "number": 4,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run for script in controller/*.sh controller/*.sbatch; do",
+            "number": 5,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 10,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 11,
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39051265416/job/117450163819"
+      },
+      {
+        "completedAt": "2026-10-17T16:52:43Z",
+        "conclusion": "success",
+        "databaseId": 117450304076,
+        "name": "result",
+        "startedAt": "2026-10-17T16:52:41Z",
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Verify selected GPU and CPU deliveries completed",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 3,
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39051265416/job/117450304076"
+      },
+      {
+        "completedAt": "2026-10-17T16:52:39Z",
+        "conclusion": "skipped",
+        "databaseId": 117450304622,
+        "name": "build-cpu",
+        "startedAt": "2026-10-17T16:52:39Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39051265416/job/117450304622"
+      },
+      {
+        "completedAt": "2026-10-17T16:52:39Z",
+        "conclusion": "skipped",
+        "databaseId": 117450304735,
+        "name": "resolve-source",
+        "startedAt": "2026-10-17T16:52:39Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39051265416/job/117450304735"
+      },
+      {
+        "completedAt": "2026-10-17T16:52:39Z",
+        "conclusion": "skipped",
+        "databaseId": 117450305006,
+        "name": "build",
+        "startedAt": "2026-10-17T16:52:40Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39051265416/job/117450305006"
+      }
+    ],
+    "status": "completed",
+    "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39051265416"
+  },
+  "test_summary": [
+    "validate\tRun python3 -m unittest discover -s tests -v\t2026-10-17T16:52:37.0899859Z Ran 725 tests in 28.142s",
+    "validate\tRun python3 -m unittest discover -s tests -v\t2026-10-17T16:52:37.0900153Z OK (skipped=2)"
+  ],
+  "log_sha256": "b360c3c5971be26f15f703f54eee2295f86382f71885726d1e41b1b57843fe79",
+  "local_cp2k_tests": {
+    "total": 113,
+    "passed": 111,
+    "environment_errors": [
+      "two existing CMake adapter tests: cmake executable unavailable locally"
+    ]
+  },
+  "focused_dependency_and_lifecycle_tests": 24,
+  "closure_gate_tests": 9
+}

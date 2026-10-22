@@ -2,20 +2,23 @@
 
 Independent GitHub Actions → SSH → Slurm → Apptainer builds on SAI.
 ABACUS has automated build and scientific acceptance. CP2K has a separate manually dispatched
-candidate recipe; automatic builds and publication remain disabled until its scientific
-acceptance is integrated. Its historical hand-built SIF is not a validated catalog release.
+build, science and publication workflow. CP2K 2026.2 with repaired shared ELPA is installed
+under physical `/opt` and has passed all 56 single/two-node scientific calculations on
+the four partitions. The public entry is `cp2k/2026.2-auto`; development acceptance remains separate.
+See [current delivery status](docs/WORKFLOW-CLOSURE.md).
 
 ## Container contract
 
-Host source/build/install trees are **not** mounted writable. A build uses the pre-provisioned
+The application controller does **not** mount host source/build/install trees writable. A build uses the pre-provisioned
 ~1.9 MB base SIF plus one sparse ext3 image. Git checkout, CMake, compiler temporary files,
 installation and final filesystem assembly all happen inside that image.
 
 The successful artifact is one read-only SquashFS-backed SIF. It contains
-`/opt/software/<software>/<track>/<build_id>/<PARTITION>` at exactly that path. The installed
+`/opt/apps/<software>/<stem>-<track>-<build_id>/<PARTITION>` at exactly that path. The installed
 administrator dependencies are reused read-only at their original paths:
 `/opt/devtools`, `/opt/modules`, `/usr`, `/lib`, `/lib64`.
-The entire `/opt` is never bound over the installation.
+Neither `/opt` nor `/opt/apps` is bound over the installation. Site application dependencies
+are mounted read-only at their exact existing version directories. See [copy-only deployment](docs/site-apps-layout.md).
 
 The trusted entrypoint and bare repository are mounted read-only. Host home, working directory,
 site-wide bind paths and host temporary directories are disabled; the build also has a private
@@ -45,6 +48,14 @@ does not silently create an on-host sandbox.
 ## Storage on SAI
 
 All project files live below `/home/stardust/sai-hpc-software`:
+
+Builds use the home filesystem, including source caches, overlays, compiler
+temporary files and Apptainer temporary/cache directories. Container
+`/workspace/tmp` is backed by the per-run `work.ext3` file in home; host `/tmp`
+and `/var/tmp` are not mounted into builds. Shared-filesystem free-space reports
+are not treated as a user storage limit: submissions and running builds do not
+reserve estimated disk growth or wait for a free-space threshold. Actual write
+failures remain build failures with their logs and checkpoints retained.
 
 ```text
 containers/base/minimal-v1.sif
@@ -85,8 +96,8 @@ Build verification creates a **candidate**, with `build_verified: true` but
 `verified: false, published: false`. It does not update `current.sif` or the module.
 Only `software_controller.py publish RUN_ID`, after all required acceptance has passed,
 exposes the image. A failed acceptance leaves the previous published image unchanged.
-CP2K currently stops at the candidate stage; direct publication and accepted-cache lookup
-cannot treat its missing scientific acceptance as success.
+CP2K publication requires all seven candidate scientific cases on one and two nodes,
+followed by native export readback. An untested candidate cannot become an accepted cache hit.
 The gate binds the build, image, launcher, verifier, job, raw rank traces and scientific
 outputs by checksums; an exit code of zero without those results does not pass.
 
@@ -116,6 +127,9 @@ No source checkout or build/install directory is created by the receiver.
 The public host key is versioned in `.ci/slurm/known_hosts`.
 `REMOTE_SSH_PRIVATE_KEY` and `REMOTE_USER` are Actions secrets
 (current deployment: the repository's `hpc` Environment).
+Reusable workflows resolve these credentials inside their `hpc` jobs; caller
+secrets are optional. Missing credentials stop the SSH preparation step before
+any remote action. Result jobs require no environment credentials.
 No private key is committed. Only scheduled and manually dispatched trusted runs access the SSH key;
 push and PR runs only validate. Keep the `hpc` Environment limited to trusted branches.
 
@@ -201,14 +215,19 @@ apptainer exec --cleanenv --containall --no-home \
 The shared exporter packages each install as one complete folder, including
 `share/sai/manifest.json` and `modulefiles/`. It does not create `/opt/sai-delivery`.
 An arbitrary export destination is staging, not a claim that compiled-in paths are relocatable.
-See [native delivery](docs/native-delivery.md) for usage and tested limits: shared tooling has
-passed real SIF/Tcl checks, while per-software native inventories and full-feature science/speed
-acceptance remain on independent experimental branches.
+See [native delivery](docs/native-delivery.md) for usage and tested limits and
+[workflow status](docs/WORKFLOW-CLOSURE.md) for per-software evidence. CP2K 2026.2 has passed
+physical native science; timings are descriptive, with no retired 2026.1 baseline required.
 
 The SIF records the upstream SHA, module list and CMake cache below the installation's
 `share/sai/` directory. Loading its recorded modules is required to run software
 that dynamically links to the cluster environment. Administrative deployment into the host
-`/opt` is out of scope.
+`/opt` is performed separately by an administrator using the inventoried deployment package.
+The accepted four-partition CP2K 2026.2 release using repaired shared ELPA was
+installed with the [administrator upgrade package](deployment/cp2k-2026.2-shared-elpa/README.md).
+It preserves exact build prefixes, and `cp2k/2026.2-auto` selects the new installation
+inside Slurm allocations. File readback and all 56 physical native calculations passed;
+see the [independently revalidated evidence](docs/evidence/cp2k-shared-elpa-native-20261020/README.md).
 
 For a read-only runtime, source `share/sai/runtime-env.sh` inside the container
 instead of initializing Lmod there; it records the original absolute dependency
@@ -216,6 +235,36 @@ paths without needing writable temporary files. Packaging/verification failures
 can be retried using the workflow's `resume_run` input: this moves the old run's
 single ext3 image into the new run and repacks the existing installation. The
 source SHA, version, target and recipe fingerprint must match, and active jobs cannot be resumed.
+
+## Shared ELPA
+
+Start with the [ELPA reproduction and integration guide](docs/ELPA.md) for the
+partition map, pinned source, build commands, current acceptance and CP2K usage.
+
+[ELPA 2026.02.001 deployment](deployment/elpa-2026.02.001/README.md) provides separate
+AVX2 and AVX512 builds of the site's GNU/CUDA configuration. This standalone dependency
+recipe runs inside Apptainer with task-owned home directories bound for build storage and
+the exact future `/opt/devtools/elpa/.../nvidia` prefix. Site dependencies are read-only.
+Final SIFs are checked with CPU/GPU, real/complex, MPI/OpenMP numerical solves before
+preparing an inventoried administrator handoff and an automatic ISA module selector.
+The installed physical libraries passed 144 CPU/GPU solves across the three V100
+partitions. The NVIDIA library's explicit C pointer-detection API requires a CUDA
+driver on DSPRHBM. A [CPU-only supplement](deployment/elpa-2026.02.001-cpu/README.md)
+now passes all 24 explicit-API CPU solves without that dependency; it upgrades the
+existing `elpa/2026.02.001-2603-gnu-auto` module to select CPU on DSPRHBM and the
+accepted GPU libraries on V100. Administrator installation is complete. Physical
+jobs `1861947`–`1861950` passed all 168 CPU/GPU solves across the four partitions,
+including the original explicit C APIs on DSPRHBM, fresh Fortran consumers and
+actual ELPA/MPI/BLAS/HCOLL loader evidence. See the
+[native acceptance report](docs/evidence/elpa-auto-native-20261019/README.md).
+The subsequent [GPU lifecycle audit](docs/ELPA.md#gpu-求解器生命周期限制) found
+a missing upstream MPI communicator free. The small numerical results stand;
+repeated long-running GPU diagonalization needs the archived repair and renewed qualification.
+The [repair replacement package](deployment/elpa-2026.02.001-commfix/README.md)
+now contains three rebuilt variants with upstream PR #85. All four partition
+checks passed, including 32 communicator creations and 32 frees per GPU rank.
+The administrator preflight passed; physical replacement and subsequent native
+acceptance are still pending. [Repair evidence](docs/evidence/elpa-commfix-20261019/README.md).
 
 ## Local checks
 

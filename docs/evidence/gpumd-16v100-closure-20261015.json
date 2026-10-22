@@ -1,0 +1,326 @@
+{
+  "scope": "Real GPUMD development 16V100 delivery; exported native execution still pending",
+  "identity": {
+    "build_id": "master-2026-10-14-ga0e55bc87390-r55e0810f9d7e",
+    "cpu_arch": "znver3",
+    "cuda_arch": "70",
+    "dependency_isa": "avx2",
+    "gpus": 1,
+    "install_prefix": "/opt/apps/gpumd/GPUMD-development-master-2026-10-14-ga0e55bc87390-r55e0810f9d7e/16V100",
+    "partition": "16V100",
+    "recipe_sha256": "55e0810f9d7e1e27955d572b6ec1c693883fbbed9ee43923dcccc640337ab2ab",
+    "repository": "brucefan1983/GPUMD",
+    "schema": 2,
+    "software": "gpumd",
+    "source_ref": "master",
+    "source_sha": "a0e55bc87390b93d009da37c798616982573bab2",
+    "source_version": "master-2026-10-14",
+    "stack_digest": null,
+    "stack_sources": {},
+    "target": "16v100-avx2",
+    "track": "development",
+    "version_label": "master-2026-10-14"
+  },
+  "artifact": "/home/stardust/sai-hpc-software/containers/software/gpumd/development/master-2026-10-14-ga0e55bc87390-r55e0810f9d7e/16V100/gpumd-canary-20261015-02.sif",
+  "artifact_sha256": "2f1cec97e249643f3cbacd02ee27304d8148533babc70025ea69df3162bb7efa",
+  "build": {
+    "run_id": "gpumd-canary-20261015-02",
+    "job_id": "1790933",
+    "state": "COMPLETED",
+    "exit_code": "0:0",
+    "elapsed": "00:20:07"
+  },
+  "acceptance": {
+    "run_id": "gpumd-canary-20261015-02-science",
+    "job": "1792098",
+    "state": "COMPLETED",
+    "exit_code": "0:0",
+    "verified": true,
+    "elapsed": "00:02:33",
+    "raw_science_files_copied_and_hashed": 475,
+    "science_sha256": "fd996d63fbe1299b822a6ce00d498dd7eb9a49aa088c6e34075a781532aa57f3",
+    "checks": {
+      "deepmd-baseline": {
+        "energy_error_ev": 0.0,
+        "force_error": 1.991137289769629e-15
+      },
+      "deepmd-candidate": {
+        "energy_error_ev": 0.0,
+        "force_error": 1.9914083403127503e-15
+      },
+      "gnep-finite-difference-forces": {
+        "components": 12,
+        "displacement_angstrom": 0.025,
+        "frames": 4,
+        "max_force_error_ev_per_angstrom": 0.0031400000000005868,
+        "max_output_rounding_ev_per_angstrom": 0.0007999999999999999
+      },
+      "gnep-training-and-prediction": {
+        "max_abs_energy": 0.492356,
+        "max_abs_force": 3.25107,
+        "model_format": "nep5",
+        "prediction_atoms": 40,
+        "prediction_frames": 4
+      },
+      "installed-jit-resources-from-unrelated-cwd": true,
+      "nep-jit-vs-generic-loss": 0.0,
+      "plumed-force-feedback": 2.9317484688817785e-06,
+      "prediction-baseline-energy_train.out": 0.0,
+      "prediction-baseline-force_train.out": 1.0000000000065512e-05,
+      "prediction-baseline-virial_train.out": 1.0000000000287557e-06,
+      "prediction-candidate-energy_train.out": 0.0,
+      "prediction-candidate-force_train.out": 1.0000000000065512e-05,
+      "prediction-candidate-virial_train.out": 1.0000000000287557e-06,
+      "static-baseline": {
+        "energy_error_ev": 0.0,
+        "force_max_error_ev_per_a": 0.0
+      },
+      "static-candidate": {
+        "energy_error_ev": 0.0,
+        "force_max_error_ev_per_a": 0.0
+      }
+    },
+    "benchmark": {
+      "md-throughput-baseline": {
+        "input_sha256": "91e7f76760deab2e10fe39440fec3934886425fcec26e1f34fb01625b5b3fa81",
+        "median_atom_steps_per_second": 2408080.0,
+        "median_wall_seconds": 9.94153717160225,
+        "model_sha256": "87e81ed268e478873f335302e9b4dd4d06dc057d9a6b2dcd379c4396eb2a228b",
+        "n_atoms": 2000,
+        "n_steps": 10000,
+        "samples": [
+          {
+            "atom_steps_per_second": 2402220.0,
+            "engine_seconds": 8.32563,
+            "steps_per_second": 1201.11,
+            "wall_seconds": 9.989477410912514
+          },
+          {
+            "atom_steps_per_second": 2410670.0,
+            "engine_seconds": 8.29644,
+            "steps_per_second": 1205.335,
+            "wall_seconds": 9.94153717160225
+          },
+          {
+            "atom_steps_per_second": 2408080.0,
+            "engine_seconds": 8.30536,
+            "steps_per_second": 1204.04,
+            "wall_seconds": 9.73847471550107
+          }
+        ],
+        "warmup": 1
+      },
+      "md-throughput-candidate": {
+        "input_sha256": "91e7f76760deab2e10fe39440fec3934886425fcec26e1f34fb01625b5b3fa81",
+        "median_atom_steps_per_second": 2396010.0,
+        "median_wall_seconds": 9.494109796360135,
+        "model_sha256": "87e81ed268e478873f335302e9b4dd4d06dc057d9a6b2dcd379c4396eb2a228b",
+        "n_atoms": 2000,
+        "n_steps": 10000,
+        "samples": [
+          {
+            "atom_steps_per_second": 2398140.0,
+            "engine_seconds": 8.33979,
+            "steps_per_second": 1199.07,
+            "wall_seconds": 9.494109796360135
+          },
+          {
+            "atom_steps_per_second": 2396010.0,
+            "engine_seconds": 8.3472,
+            "steps_per_second": 1198.005,
+            "wall_seconds": 9.788797030225396
+          },
+          {
+            "atom_steps_per_second": 2395240.0,
+            "engine_seconds": 8.34988,
+            "steps_per_second": 1197.62,
+            "wall_seconds": 9.085472472012043
+          }
+        ],
+        "warmup": 1
+      },
+      "prediction-baseline": {
+        "median_seconds": 0.665759239345789,
+        "min_seconds": 0.47581097297370434,
+        "seconds": [
+          0.47581097297370434,
+          0.665759239345789,
+          1.017164085060358
+        ],
+        "warmup": 1
+      },
+      "prediction-candidate": {
+        "median_seconds": 0.9175070263445377,
+        "min_seconds": 0.8665785323828459,
+        "seconds": [
+          0.9175070263445377,
+          1.318608658388257,
+          0.8665785323828459
+        ],
+        "warmup": 1
+      },
+      "static-baseline": {
+        "median_seconds": 0.977054063230753,
+        "min_seconds": 0.7663214523345232,
+        "seconds": [
+          0.7663214523345232,
+          1.3201454654335976,
+          0.977054063230753
+        ],
+        "warmup": 1
+      },
+      "static-candidate": {
+        "median_seconds": 0.7156583424657583,
+        "min_seconds": 0.626096811145544,
+        "seconds": [
+          0.7156583424657583,
+          0.7667244002223015,
+          0.626096811145544
+        ],
+        "warmup": 1
+      }
+    }
+  },
+  "published": true,
+  "native_export": {
+    "directory": "/home/stardust/sai-hpc-software/containers/software/gpumd/development/master-2026-10-14-ga0e55bc87390-r55e0810f9d7e/16V100/gpumd-canary-20261015-02.native",
+    "identities": [
+      {
+        "build_id": "master-2026-10-14-ga0e55bc87390-r55e0810f9d7e",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/gpumd/GPUMD-development-master-2026-10-14-ga0e55bc87390-r55e0810f9d7e/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "55e0810f9d7e1e27955d572b6ec1c693883fbbed9ee43923dcccc640337ab2ab",
+        "repository": "brucefan1983/GPUMD",
+        "schema": 2,
+        "software": "gpumd",
+        "source_ref": "master",
+        "source_sha": "a0e55bc87390b93d009da37c798616982573bab2",
+        "source_version": "master-2026-10-14",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "development",
+        "version_label": "master-2026-10-14"
+      }
+    ],
+    "image_sha256": "2f1cec97e249643f3cbacd02ee27304d8148533babc70025ea69df3162bb7efa",
+    "receipt": {
+      "expected_install_prefixes": [
+        "/opt/apps/gpumd/GPUMD-development-master-2026-10-14-ga0e55bc87390-r55e0810f9d7e/16V100"
+      ],
+      "image_sha256": "2f1cec97e249643f3cbacd02ee27304d8148533babc70025ea69df3162bb7efa",
+      "installations": [
+        {
+          "bundle_install_prefixes": [
+            "/opt/apps/gpumd/GPUMD-development-master-2026-10-14-ga0e55bc87390-r55e0810f9d7e/16V100"
+          ],
+          "dependency_modules": [
+            "cuda/12.9.1",
+            "nvhpc/26.3-gnu-cuda12-tuned",
+            "openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto",
+            "gcc/13.3.0"
+          ],
+          "expected_install_prefix": "/opt/apps/gpumd/GPUMD-development-master-2026-10-14-ga0e55bc87390-r55e0810f9d7e/16V100",
+          "external_roots": [
+            "/opt/devtools/nvidia/cuda-12.9.1",
+            "/opt/devtools/gcc/13.3.0",
+            "/opt/apps/conda_env/deepmd-kit-3.2.0",
+            "/opt/apps/plumed/plumed-2.10.1",
+            "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+            "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3",
+            "/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2",
+            "/opt/modules/modulefiles/devtools",
+            "/usr/lib/x86_64-linux-gnu/blas",
+            "/usr/lib/x86_64-linux-gnu/lapack"
+          ],
+          "image_sha256": "2f1cec97e249643f3cbacd02ee27304d8148533babc70025ea69df3162bb7efa",
+          "manifest_origin": "derived-runtime-subset",
+          "manifest_sha256": "a18514b9db8a630812c1b3d58584de1e80fa17eb60c61af1ee705c2a1449eb70",
+          "module_load": "gpumd/development/master-2026-10-14-ga0e55bc87390-r55e0810f9d7e",
+          "module_use": "/opt/apps/gpumd/GPUMD-development-master-2026-10-14-ga0e55bc87390-r55e0810f9d7e/16V100/modulefiles",
+          "omitted_nonruntime_paths": [
+            "share/sai/build-options.txt",
+            "share/sai/cases",
+            "share/sai/compiler.txt",
+            "share/sai/hardware.txt",
+            "share/sai/modules.txt",
+            "share/sai/native-cpu-flags.txt",
+            "share/sai/runtime-env.sh"
+          ],
+          "other_bundle_install_prefixes": [],
+          "path": ".",
+          "payload_profile": "runtime",
+          "readme_sha256": "625de54e599c0171f4537f77a85d3f2c069cac5afcca4402846e10e081dcac6d",
+          "relocation": "staging only; install at expected /opt prefixes or separately validate relocation",
+          "required_install_prefixes": [],
+          "schema": 2,
+          "source_manifest_sha256": "48b25c0f9efa8749e22a57277fc56314912edf3f42f0eca4fc64b7b681967a64",
+          "validation": "integrity-checked; native science and performance acceptance still required"
+        }
+      ],
+      "schema": 2,
+      "validation": "integrity-checked; native science and performance acceptance still required"
+    },
+    "roundtrip_verified": true,
+    "schema": 1,
+    "verified_files": 404
+  },
+  "readback": {
+    "artifact": "/home/stardust/sai-hpc-software/containers/software/gpumd/development/master-2026-10-14-ga0e55bc87390-r55e0810f9d7e/16V100/gpumd-canary-20261015-02.sif",
+    "native_export": {
+      "directory": "/home/stardust/sai-hpc-software/containers/software/gpumd/development/master-2026-10-14-ga0e55bc87390-r55e0810f9d7e/16V100/gpumd-canary-20261015-02.native"
+    },
+    "published_record_revalidated": true,
+    "sha256": "2f1cec97e249643f3cbacd02ee27304d8148533babc70025ea69df3162bb7efa",
+    "sif_module_result": {
+      "dump_sha256": "16c0b790c861837fc94a15e7dea71d604c40b616d244c0f55375bb5cff9e54aa",
+      "energy_error_ev": 0.0,
+      "force_error_ev_per_a": 0.0
+    }
+  },
+  "recovery_preflight": {
+    "existing_job_verified": true,
+    "job_id": "1792098",
+    "operation": "read-only current CI recovery preflight against frozen real GPUMD snapshot",
+    "submitted_new_job": false,
+    "control": "/home/stardust/sai-hpc-software/controller/b9cbf83/gpumd-canary-20261015-02",
+    "identity": {
+      "build_id": "master-2026-10-14-ga0e55bc87390-r55e0810f9d7e",
+      "cpu_arch": "znver3",
+      "cuda_arch": "70",
+      "dependency_isa": "avx2",
+      "gpus": 1,
+      "install_prefix": "/opt/apps/gpumd/GPUMD-development-master-2026-10-14-ga0e55bc87390-r55e0810f9d7e/16V100",
+      "partition": "16V100",
+      "recipe_sha256": "55e0810f9d7e1e27955d572b6ec1c693883fbbed9ee43923dcccc640337ab2ab",
+      "repository": "brucefan1983/GPUMD",
+      "schema": 2,
+      "software": "gpumd",
+      "source_ref": "master",
+      "source_sha": "a0e55bc87390b93d009da37c798616982573bab2",
+      "source_version": "master-2026-10-14",
+      "stack_digest": null,
+      "stack_sources": {},
+      "target": "16v100-avx2",
+      "track": "development",
+      "version_label": "master-2026-10-14"
+    }
+  },
+  "native_module_execution": {
+    "passed": false,
+    "job_id": "1803862",
+    "state": "FAILED",
+    "exit_code": "127:0",
+    "failure": "Probe invoked apptainer after unloading GPUMD transitively unloaded it",
+    "local_corrected_probe": "/tmp/sai-gpumd-module-probe-v2.py",
+    "corrected_probe_sha256": "6e36ac8129a14b25cfac39a90fb3aab0ad557f38b47637a31058d09167254d5a",
+    "resubmitted": false,
+    "reason": "0 bytes available; additional JIT probe requires capacity"
+  },
+  "physical_opt_installation": false,
+  "local_raw_evidence": "/tmp/sai-gpumd-canary-20261015-evidence"
+}

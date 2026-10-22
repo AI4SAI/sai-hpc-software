@@ -1,0 +1,21 @@
+{
+  "source_commit": "f35bf8508836fffadb5b9cef95e8ee124c3d0326",
+  "ci": {
+    "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39038871333",
+    "conclusion": "success",
+    "total": 712,
+    "passed": 710,
+    "skipped": 2
+  },
+  "sai_focused": {
+    "contract": 17,
+    "final_prefix": 9,
+    "passed": 26,
+    "log": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/spla-tests-20261017/focused-fixed.log"
+  },
+  "notes": [
+    "Workstation DrvFS mode semantics and unavailable CMake made it unsuitable for the complete suite.",
+    "First SAI archive-only full run had fixture search-path, omitted-doc and umask failures; fixed the fixture and verified the full commit in Linux GitHub CI.",
+    "No CP2K scientific or whole-application performance acceptance is claimed."
+  ]
+}

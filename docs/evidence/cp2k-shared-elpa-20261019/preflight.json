@@ -1,0 +1,105 @@
+{
+  "purpose": "GCC14 Fortran consumer compatibility with accepted shared ELPA; not CP2K application acceptance",
+  "partitions": [
+    {
+      "target": "16v100-avx2",
+      "partition": "16V100",
+      "job_id": "1862298",
+      "run": "/home/stardust/sai-hpc-software/runs/cp2k-site-elpa-gcc14-preflight-20261019-16v100-avx2",
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "elapsed": "00:00:03",
+      "node": "16v100n04",
+      "numerical_result": "CP2K_SITE_ELPA_GCC14_PASS   1.3322676295501878E-015   8.8817841970012523E-016",
+      "files_sha256": {
+        "16v100-avx2/slurm-1862298.log": "c9da8c6bf885742b625804bdd90f3521cf946d3d41109810fb054e5b616eb87f",
+        "16v100-avx2/job.id": "15c9027349f156138830864c791ed7782fb47f7768ade9c0d0f3ff06a8dbce2a",
+        "16v100-avx2/work/consumer.log": "a006c56bb8ec7457e4e2f12eb60471b85df76e3bae538c2e0e40dc35f32d65f5",
+        "16v100-avx2/work/consumer-ldd.txt": "13fd8cc777e4370e7d2231110dbe0c6b6ccb9c379b8c64317032c7534e733111",
+        "16v100-avx2/work/compiler.txt": "dc4217d44172a237a08667d59d6bf4213c05d1ad7ce21d25c11f0d5cd3a1ab3e",
+        "16v100-avx2/work/candidate/share/sai/site-elpa.json": "3218e64f23fc3a4125f5e7b7fc88acb396e6a126e40f16e45afb817ac0339c27",
+        "16v100-avx2/control/cp2k_elpa_abi.f90": "95c2ef65486385219c646424c2d8724574b8dabaa0fc4ce89c2e78bae43478a5",
+        "16v100-avx2/control/cp2k_feature_contract.py": "10759af683e70712b877cbd65f32058d4bffd6e3bf9c93edf6febcc5ad0bb50e",
+        "16v100-avx2/control/cp2k_site_elpa.json": "d69861199a9f1a525582590b963155253034b185eb64f4ad400771ad45e330dd",
+        "16v100-avx2/control/environment.sh": "68bfc2f69c1df2f9b35fdf9d273dbf35e377c44b490ff19ebc6c41ac7dad58d0",
+        "16v100-avx2/control/inside.sh": "39edc3bd382a407aa505e160df7ba20c0ff9cd0eb0680e131a9485a817ef859f",
+        "16v100-avx2/control/probe.sbatch": "2740bb5bd82cd9a108d0c752db39aa35adf613fdb3634668daa2029b9e4c2f4f"
+      }
+    },
+    {
+      "target": "4v100-avx512",
+      "partition": "4V100",
+      "job_id": "1862299",
+      "run": "/home/stardust/sai-hpc-software/runs/cp2k-site-elpa-gcc14-preflight-20261019-4v100-avx512",
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "elapsed": "00:00:01",
+      "node": "4v100n01",
+      "numerical_result": "CP2K_SITE_ELPA_GCC14_PASS   8.8817841970012523E-016   8.3266726846886741E-016",
+      "files_sha256": {
+        "4v100-avx512/slurm-1862299.log": "80a7fd8f99098978a289aca30b110835b220b779758b72dbb607747fa2df06e5",
+        "4v100-avx512/job.id": "8804eff3a64ece3f4d98a60a05bf1247247aa07bb60fcbd52f4c042e9daf89d1",
+        "4v100-avx512/work/consumer.log": "686052b7e4449c7efbd774cfc8e39853574fd5f8d5be47e280d4df362215b7d5",
+        "4v100-avx512/work/consumer-ldd.txt": "1eb0ce108ee5a035a228927aad10647b80a3481ca8b6a2318c66bbbd44b2de82",
+        "4v100-avx512/work/compiler.txt": "dc4217d44172a237a08667d59d6bf4213c05d1ad7ce21d25c11f0d5cd3a1ab3e",
+        "4v100-avx512/work/candidate/share/sai/site-elpa.json": "c1e9332175d276ef12d2fd631c68f9fa60b166bd18d73f3e08880ebe969af1fb",
+        "4v100-avx512/control/cp2k_elpa_abi.f90": "95c2ef65486385219c646424c2d8724574b8dabaa0fc4ce89c2e78bae43478a5",
+        "4v100-avx512/control/cp2k_feature_contract.py": "10759af683e70712b877cbd65f32058d4bffd6e3bf9c93edf6febcc5ad0bb50e",
+        "4v100-avx512/control/cp2k_site_elpa.json": "d69861199a9f1a525582590b963155253034b185eb64f4ad400771ad45e330dd",
+        "4v100-avx512/control/environment.sh": "68bfc2f69c1df2f9b35fdf9d273dbf35e377c44b490ff19ebc6c41ac7dad58d0",
+        "4v100-avx512/control/inside.sh": "39edc3bd382a407aa505e160df7ba20c0ff9cd0eb0680e131a9485a817ef859f",
+        "4v100-avx512/control/probe.sbatch": "2740bb5bd82cd9a108d0c752db39aa35adf613fdb3634668daa2029b9e4c2f4f"
+      }
+    },
+    {
+      "target": "8v100v0-avx512",
+      "partition": "8V100V0",
+      "job_id": "1862300",
+      "run": "/home/stardust/sai-hpc-software/runs/cp2k-site-elpa-gcc14-preflight-20261019-8v100v0-avx512",
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "elapsed": "00:00:02",
+      "node": "8v100v0n02",
+      "numerical_result": "CP2K_SITE_ELPA_GCC14_PASS   1.3322676295501878E-015   8.8817841970012523E-016",
+      "files_sha256": {
+        "8v100v0-avx512/slurm-1862300.log": "7710264b8a6d4acd1b0d39c2f999f7d735bd591ccde4745b15234d5628321b56",
+        "8v100v0-avx512/job.id": "bff6a06c7fb758b2b5b2277a147b42f07b80f92fc46eb66ddfb3859a01916cb5",
+        "8v100v0-avx512/work/consumer.log": "a006c56bb8ec7457e4e2f12eb60471b85df76e3bae538c2e0e40dc35f32d65f5",
+        "8v100v0-avx512/work/consumer-ldd.txt": "b77dabc8a0f205f6551c7acead8c8dd3c3a22b39cd88af0d187c6d8d936ea6c8",
+        "8v100v0-avx512/work/compiler.txt": "dc4217d44172a237a08667d59d6bf4213c05d1ad7ce21d25c11f0d5cd3a1ab3e",
+        "8v100v0-avx512/work/candidate/share/sai/site-elpa.json": "2d4ae992c6689f94d4f5b3d3cef38252ec7d8b042a4ee89cdcbc6e1183ca367f",
+        "8v100v0-avx512/control/cp2k_elpa_abi.f90": "95c2ef65486385219c646424c2d8724574b8dabaa0fc4ce89c2e78bae43478a5",
+        "8v100v0-avx512/control/cp2k_feature_contract.py": "10759af683e70712b877cbd65f32058d4bffd6e3bf9c93edf6febcc5ad0bb50e",
+        "8v100v0-avx512/control/cp2k_site_elpa.json": "d69861199a9f1a525582590b963155253034b185eb64f4ad400771ad45e330dd",
+        "8v100v0-avx512/control/environment.sh": "68bfc2f69c1df2f9b35fdf9d273dbf35e377c44b490ff19ebc6c41ac7dad58d0",
+        "8v100v0-avx512/control/inside.sh": "39edc3bd382a407aa505e160df7ba20c0ff9cd0eb0680e131a9485a817ef859f",
+        "8v100v0-avx512/control/probe.sbatch": "2740bb5bd82cd9a108d0c752db39aa35adf613fdb3634668daa2029b9e4c2f4f"
+      }
+    },
+    {
+      "target": "dsprhbm",
+      "partition": "DSPRHBM",
+      "job_id": "1862301",
+      "run": "/home/stardust/sai-hpc-software/runs/cp2k-site-elpa-gcc14-preflight-20261019-dsprhbm",
+      "state": "COMPLETED",
+      "exit_code": "0:0",
+      "elapsed": "00:00:01",
+      "node": "d9470n02",
+      "numerical_result": "CP2K_SITE_ELPA_GCC14_PASS   8.8817841970012523E-016   8.3266726846886741E-016",
+      "files_sha256": {
+        "dsprhbm/slurm-1862301.log": "91b606ef6e4e30c75be58f2c0bedbd425ed2aa0ed38e1d1e40f5338778d50c00",
+        "dsprhbm/job.id": "ab10378424839cc0f46d3ba2034a2cce3518e746af298a77b87e85248db572ab",
+        "dsprhbm/work/consumer.log": "686052b7e4449c7efbd774cfc8e39853574fd5f8d5be47e280d4df362215b7d5",
+        "dsprhbm/work/consumer-ldd.txt": "34e6d57bf9bbb5995d2848340524ee5bc6ca53a44ffa98b097d8e9afa1745663",
+        "dsprhbm/work/compiler.txt": "dc4217d44172a237a08667d59d6bf4213c05d1ad7ce21d25c11f0d5cd3a1ab3e",
+        "dsprhbm/work/candidate/share/sai/site-elpa.json": "29b974dc0a210b8e3314dd1d103b595b53d09ca34d060e23b30c4b1f418b3a48",
+        "dsprhbm/control/cp2k_elpa_abi.f90": "95c2ef65486385219c646424c2d8724574b8dabaa0fc4ce89c2e78bae43478a5",
+        "dsprhbm/control/cp2k_feature_contract.py": "10759af683e70712b877cbd65f32058d4bffd6e3bf9c93edf6febcc5ad0bb50e",
+        "dsprhbm/control/cp2k_site_elpa.json": "d69861199a9f1a525582590b963155253034b185eb64f4ad400771ad45e330dd",
+        "dsprhbm/control/environment.sh": "68bfc2f69c1df2f9b35fdf9d273dbf35e377c44b490ff19ebc6c41ac7dad58d0",
+        "dsprhbm/control/inside.sh": "39edc3bd382a407aa505e160df7ba20c0ff9cd0eb0680e131a9485a817ef859f",
+        "dsprhbm/control/probe.sbatch": "2740bb5bd82cd9a108d0c752db39aa35adf613fdb3634668daa2029b9e4c2f4f"
+      }
+    }
+  ]
+}

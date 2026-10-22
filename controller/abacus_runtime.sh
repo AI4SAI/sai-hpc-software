@@ -75,6 +75,12 @@ args=(apptainer exec --cleanenv --no-home
       --no-mount bind-paths,home,cwd,tmp,hostfs --pwd /work)
 if [[ "$gpu" == true ]]; then args+=(--nv); fi
 for path in /usr /lib /lib64 /opt/devtools; do args+=(--bind "$path:$path:ro"); done
+ml_runtime_roots=$(python3 "$launcher_control/abacus_dependencies.py" runtime-roots)
+while IFS= read -r path; do
+  [[ -n "$path" ]] || continue
+  [[ "$path" == /opt/apps/conda_env/deepmd-kit-3.1.2 && -d "$path" ]] || exit 2
+  args+=(--bind "$path:$path:ro")
+done <<< "$ml_runtime_roots"
 args+=(--bind "$workdir:/work:rw" --bind "$rank_runtime:/runtime:rw"
       --bind "$host_tmp:$host_tmp:rw" --env "TMPDIR=$host_tmp"
       --env "OMP_NUM_THREADS=${OMP_NUM_THREADS:-1}")
@@ -94,6 +100,9 @@ while IFS= read -r name; do
   case "$name" in
     SLURM_*|OMPI_*|OPAL_*|PMIX_*|PMI_*|PRTE_*|UCX_*|NCCL_*|CUSOLVERMP_*|CUDA_*|NVIDIA_VISIBLE_DEVICES|FI_*|OMP_*)
       [[ "$name" != NCCL_TOPO_FILE ]] || continue
+      # Open MPI uses these two variables for its own argv/command metadata;
+      # they contain commas/newlines and are not valid Apptainer --env maps.
+      [[ "$name" != OMPI_ARGV && "$name" != OMPI_COMMAND ]] || continue
       [[ "$name" =~ ^[A-Za-z_][A-Za-z0-9_]*$ ]] || exit 2
       args+=(--env "$name=${!name}")
       ;;

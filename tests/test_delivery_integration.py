@@ -1,6 +1,9 @@
 """Identity continuity is mandatory from the first compile prefix to runtime."""
 import argparse
+from contextlib import redirect_stdout
+import io
 import json
+import os
 from pathlib import Path
 import subprocess
 import sys
@@ -11,9 +14,11 @@ from unittest.mock import patch
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / "controller"))
 import delivery_layout as layout
+import abacus_dependencies as dependencies
 import software_controller as controller
 from release_contract import make_identity
 from source_cache import checksum
+from remote_controller import HPCX_ROOT
 
 
 class DeliveryIntegrationTests(unittest.TestCase):
@@ -100,7 +105,8 @@ class DeliveryIntegrationTests(unittest.TestCase):
             self.assertIn('share/sai/release-identity.json', script)
             self.assertIn('umask 022', script)
         cp2k = (REPO / "controller/cp2k_container_entry.sh").read_text()
-        self.assertLess(cp2k.index("mkdir -p /workspace/export/opt/software"), cp2k.index("cp -a /opt/software/cp2k"))
+        self.assertLess(cp2k.index('cp2k_payload.py "$INSTALL_PREFIX" /workspace/export'),
+                        cp2k.index('cp2k_feature_contract.py native-package'))
 
     def test_launcher_uses_validated_manifest_prefix_and_rejects_wrong_partition(self):
         identity = self.identity()
@@ -123,6 +129,84 @@ class DeliveryIntegrationTests(unittest.TestCase):
         self.assertIn("Gold 6146", recipe)
         self.assertIn('[[ "${OPAL_PREFIX:?}" == *-avx2 ]]', recipe)
         self.assertIn('[[ "${OPENBLAS_ROOT:?}" == *-avx2 ]]', recipe)
+
+    def test_cp2k_build_rebuilds_parallel_hdf5_inside_delivery_prefix(self):
+        recipe = (REPO / "controller/cp2k_build.sh").read_text()
+        from cp2k_spack_environment import environment
+        env = environment('16V100', '/opt/apps/cp2k/cp2k-development-test/16V100', 'zen3', 'ubuntu24.04')['spack']
+        self.assertIn('hdf5@1.14.6 +mpi +fortran ~hl ~cxx ~shared', env['specs'])
+        self.assertEqual(env['config']['install_tree']['root'],
+                         '/opt/apps/cp2k/cp2k-development-test/16V100/dependencies/spack')
+        self.assertIn('hdf5_root="$CP2K_HDF5_ROOT"', recipe)
+        self.assertIn('check_parallel_hdf5(path.read_text())', recipe)
+        self.assertLess(recipe.index('check_parallel_hdf5(path.read_text())'),
+                        recipe.index('bash /control/cp2k_dependencies.sh'))
+        self.assertIn('-DHDF5_ROOT="$hdf5_root" -DHDF5_PREFER_PARALLEL=ON', recipe)
+        self.assertNotIn('$site', recipe)
+        self.assertIn('/usr/lib/x86_64-linux-gnu/blas:/usr/lib/x86_64-linux-gnu/lapack', recipe)
+
+    def test_cp2k_spack_gets_real_system_alternatives_and_bin_tools(self):
+        args = argparse.Namespace(run_id='cp2k-binds', software='cp2k', sha='a' * 40,
+                                  version='2026.2', target='16v100-avx2', jobs=8, minutes=240,
+                                  overlay_mb=32768, track='development', source_ref='master')
+        script = controller.render_job(args)
+        build = next(line for line in script.splitlines() if 'cp2k_container_entry.sh build' in line)
+        for bind in ('/etc/alternatives:/etc/alternatives:ro', '/usr/bin:/bin:ro',
+                     '/var/lib/dpkg:/var/lib/dpkg:ro', HPCX_ROOT + '/hcoll:/opt/mellanox/hcoll:ro',
+                     '/input/spack:ro', '/results:rw'):
+            self.assertIn(bind, build)
+        self.assertNotIn('/opt/apps/cp2k/cp2k-2026.1', build)
+
+    def test_cp2k_hcoll_alias_is_available_only_while_building(self):
+        for target in ('dsprhbm', '4v100-avx512', '16v100-avx2', '8v100v0-avx512'):
+            args = argparse.Namespace(run_id='cp2k-hcoll', software='cp2k', sha='a' * 40,
+                                      version='2026.2', target=target, jobs=8, minutes=240,
+                                      overlay_mb=16384, track='release', source_ref='v2026.2')
+            script = controller.render_job(args)
+            for phase in ('build', 'export', 'verify'):
+                with self.subTest(target=target, phase=phase):
+                    line = next(line for line in script.splitlines()
+                                if 'cp2k_container_entry.sh ' + phase in line)
+                    if phase == 'build':
+                        self.assertIn(HPCX_ROOT + '/hcoll:/opt/mellanox/hcoll:ro', line)
+                    else:
+                        self.assertNotIn('/opt/mellanox', line)
+                    self.assertNotIn('--bind /opt/mellanox/hcoll:', line)
+
+    def test_actual_cp2k_launcher_never_mounts_build_only_hcoll_alias(self):
+        commands = self.root / 'commands'
+        commands.mkdir()
+        apptainer = commands / 'apptainer'
+        apptainer.write_text('#!/usr/bin/env python3\nimport json,os,sys\n'
+                            'with open(os.environ["CP2K_TEST_ARGV"], "w") as f: '
+                            'json.dump(sys.argv[1:], f)\n')
+        apptainer.chmod(0o755)
+        temporary = self.root / 'runtime/mpi'
+        temporary.mkdir(parents=True)
+        for target in ('dsprhbm', '16v100-avx2'):
+            identity = self.identity(software='cp2k', target=target)
+            artifact, _ = self.candidate(identity)
+            captured = self.root / (target + '.argv.json')
+            environment = dict(os.environ, PATH=f'{commands}:{os.environ["PATH"]}',
+                               SAI_SOFTWARE_ROOT=str(self.root), SAI_CP2K_IMAGE=str(artifact),
+                               SLURM_JOB_PARTITION=identity['partition'], TMPDIR=str(temporary),
+                               CP2K_TEST_ARGV=str(captured), PYTHONDONTWRITEBYTECODE='1')
+            for name in ('SAI_CP2K_TRACE_DIR', 'SLURM_JOB_ID'):
+                environment.pop(name, None)
+            subprocess.run(['bash', str(REPO / 'controller/cp2k_runtime.sh'), '--version'],
+                           cwd=self.root, env=environment, check=True, capture_output=True, text=True)
+            argv = json.loads(captured.read_text())
+            binds = [argv[i + 1] for i, word in enumerate(argv) if word == '--bind']
+            with self.subTest(target=target):
+                self.assertFalse(any('/opt/mellanox' in bind for bind in binds))
+                self.assertIn('/opt/devtools:/opt/devtools:ro', binds)
+                self.assertFalse(any('cp2k-2026.1' in bind or bind == '::ro' for bind in binds))
+                self.assertEqual('--nv' in argv, target != 'dsprhbm')
+
+    def test_build_submit_allows_long_cp2k_compile_with_safe_default(self):
+        recipe = (REPO / "controller/software_controller.py").read_text()
+        self.assertIn("not 1 <= args.minutes <= 360", recipe)
+        self.assertIn('a.add_argument("--minutes", type=int, default=240)', recipe)
 
     def test_ci_installs_real_native_validation_tools_before_tests(self):
         for workflow in ("build.yml", "cp2k.yml"):
@@ -150,6 +234,39 @@ class DeliveryIntegrationTests(unittest.TestCase):
                     controller.submit(args)
             self.assertEqual([str(item.args[0][0]) for item in call.call_args_list], ["git"])
             self.assertFalse((self.root / "runs/new/job.sbatch").exists())
+
+    def test_dependency_cache_is_verified_before_sbatch_and_failure_cannot_submit(self):
+        args = argparse.Namespace(software="abacus", run_id="new", sha="a" * 40, version="v1",
+                                  target="4v100-avx512", track="development", source_ref="develop",
+                                  jobs=8, minutes=30, overlay_mb=8192, resume_run=None)
+        for failed in (True, False):
+            with self.subTest(failed=failed):
+                operations = []
+
+                def cache(path, *, source):
+                    self.assertEqual(path, self.root / dependencies.ARCHIVE_CACHE)
+                    self.assertEqual(source, self.root / "runs/new/input/abacus-updates")
+                    operations.append("dependencies")
+                    if failed:
+                        raise ValueError("pinned archive mismatch")
+
+                def call(argv, **kwargs):
+                    operations.append(str(argv[0]))
+                    return subprocess.CompletedProcess(argv, 0, stdout="12345\n")
+
+                with patch.object(controller, "ROOT", self.root), \
+                        patch.object(controller, "recipe_fingerprint", return_value="b" * 64), \
+                        patch.object(controller, "render_job", return_value="#!/bin/bash\ntrue\n"), \
+                        patch.object(controller, "call", side_effect=call), \
+                        patch.object(dependencies, "cache_archives", side_effect=cache), \
+                        redirect_stdout(io.StringIO()):
+                    if failed:
+                        with self.assertRaisesRegex(ValueError, "pinned archive mismatch"):
+                            controller.submit(args)
+                    else:
+                        controller.submit(args)
+                self.assertEqual(operations, ["git", "dependencies"] + ([] if failed else ["bash", "sbatch"]))
+                self.assertEqual((self.root / "runs/new/job.id").exists(), not failed)
 
 
 if __name__ == "__main__":

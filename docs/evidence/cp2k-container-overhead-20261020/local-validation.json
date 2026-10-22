@@ -1,0 +1,4719 @@
+{
+  "files_hashed": 2251,
+  "passed": true,
+  "runs": {
+    "16V100": {
+      "cache_scope": "First observed invocation plus warmed repetitions; no cache flush, no cold-cache claim",
+      "elapsed": "00:34:37",
+      "exit_code": "0:0",
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-raed7aa53ff43",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "aed7aa53ff436310f28e5fdc21e1c3ca211f2422c5dd6abe44b19aa1d3ae9277",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "image_sha256": "adf6e250bd43050e6d6ce589ffceae8d8c818e0202a5e27b9cd6b43476172fe5",
+      "job": "1881686",
+      "max_energy_delta_ha": 4.979483492206782e-11,
+      "max_force_delta_ha_bohr": 1.1999999952050366e-11,
+      "node": "16v100n02",
+      "partition": "16V100",
+      "passed": true,
+      "routine_timings": {
+        "water-gpw/0/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.037,
+            "total_max_seconds": 17.801
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 3.421,
+            "total_max_seconds": 3.421
+          }
+        },
+        "water-gpw/0/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.069,
+            "total_max_seconds": 18.078
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 3.423,
+            "total_max_seconds": 3.423
+          }
+        },
+        "water-gpw/1/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.035,
+            "total_max_seconds": 17.622
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 3.336,
+            "total_max_seconds": 3.336
+          }
+        },
+        "water-gpw/1/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.066,
+            "total_max_seconds": 18.094
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 3.328,
+            "total_max_seconds": 3.328
+          }
+        },
+        "water-gpw/2/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.035,
+            "total_max_seconds": 17.831
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 3.435,
+            "total_max_seconds": 3.435
+          }
+        },
+        "water-gpw/2/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.072,
+            "total_max_seconds": 17.706
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 3.552,
+            "total_max_seconds": 3.552
+          }
+        },
+        "water-gpw/3/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.046,
+            "total_max_seconds": 17.655
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 3.344,
+            "total_max_seconds": 3.344
+          }
+        },
+        "water-gpw/3/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.073,
+            "total_max_seconds": 18.238
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 3.495,
+            "total_max_seconds": 3.495
+          }
+        },
+        "water-gpw/4/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.041,
+            "total_max_seconds": 17.768
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 3.39,
+            "total_max_seconds": 3.39
+          }
+        },
+        "water-gpw/4/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.255,
+            "total_max_seconds": 19.264
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 3.445,
+            "total_max_seconds": 3.445
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 46,
+            "self_max_seconds": 1.119,
+            "total_max_seconds": 1.125
+          }
+        },
+        "water-gpw/warmup/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.038,
+            "total_max_seconds": 18.269
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 3.327,
+            "total_max_seconds": 3.327
+          }
+        },
+        "water-gpw/warmup/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.071,
+            "total_max_seconds": 17.586
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 3.449,
+            "total_max_seconds": 3.449
+          }
+        },
+        "water64-elpa/0/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.061,
+            "total_max_seconds": 35.64
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 8.324
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 8.102,
+            "total_max_seconds": 8.324
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.021,
+            "total_max_seconds": 4.021
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.231,
+            "total_max_seconds": 3.231
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 4,
+            "self_max_seconds": 0.375,
+            "total_max_seconds": 0.375
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 0.044,
+            "total_max_seconds": 0.044
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 2.799,
+            "total_max_seconds": 2.799
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 0.003,
+            "total_max_seconds": 0.011
+          }
+        },
+        "water64-elpa/0/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.07,
+            "total_max_seconds": 35.499
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 7.848
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 7.627,
+            "total_max_seconds": 7.848
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.022,
+            "total_max_seconds": 4.022
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.229,
+            "total_max_seconds": 3.229
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 4,
+            "self_max_seconds": 0.387,
+            "total_max_seconds": 0.387
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 0.046,
+            "total_max_seconds": 0.046
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 2.826,
+            "total_max_seconds": 2.826
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 0.003,
+            "total_max_seconds": 0.012
+          }
+        },
+        "water64-elpa/1/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.058,
+            "total_max_seconds": 37.059
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 9.544
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 9.325,
+            "total_max_seconds": 9.544
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.019,
+            "total_max_seconds": 4.019
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.239,
+            "total_max_seconds": 3.239
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 4,
+            "self_max_seconds": 0.395,
+            "total_max_seconds": 0.395
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 0.044,
+            "total_max_seconds": 0.044
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 2.848,
+            "total_max_seconds": 2.848
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 0.003,
+            "total_max_seconds": 0.012
+          }
+        },
+        "water64-elpa/1/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.071,
+            "total_max_seconds": 37.369
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 9.608
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 9.388,
+            "total_max_seconds": 9.608
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.019,
+            "total_max_seconds": 4.019
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.237,
+            "total_max_seconds": 3.237
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 4,
+            "self_max_seconds": 0.383,
+            "total_max_seconds": 0.383
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 0.043,
+            "total_max_seconds": 0.043
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 2.849,
+            "total_max_seconds": 2.849
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 0.003,
+            "total_max_seconds": 0.011
+          }
+        },
+        "water64-elpa/2/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.061,
+            "total_max_seconds": 37.143
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 9.141
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 8.91,
+            "total_max_seconds": 9.14
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.023,
+            "total_max_seconds": 4.023
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.241,
+            "total_max_seconds": 3.241
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 4,
+            "self_max_seconds": 0.39,
+            "total_max_seconds": 0.39
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 0.045,
+            "total_max_seconds": 0.045
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 2.921,
+            "total_max_seconds": 2.921
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 0.003,
+            "total_max_seconds": 0.011
+          }
+        },
+        "water64-elpa/2/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.097,
+            "total_max_seconds": 36.747
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 8.875
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 8.653,
+            "total_max_seconds": 8.875
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.02,
+            "total_max_seconds": 4.02
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.243,
+            "total_max_seconds": 3.243
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 4,
+            "self_max_seconds": 0.374,
+            "total_max_seconds": 0.374
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 0.042,
+            "total_max_seconds": 0.042
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 2.837,
+            "total_max_seconds": 2.837
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 0.003,
+            "total_max_seconds": 0.011
+          }
+        },
+        "water64-elpa/warmup/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.04,
+            "total_max_seconds": 35.083
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 7.697
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 7.479,
+            "total_max_seconds": 7.697
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.021,
+            "total_max_seconds": 4.021
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.225,
+            "total_max_seconds": 3.225
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 4,
+            "self_max_seconds": 0.373,
+            "total_max_seconds": 0.373
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 0.042,
+            "total_max_seconds": 0.042
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 2.857,
+            "total_max_seconds": 2.857
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 0.003,
+            "total_max_seconds": 0.011
+          }
+        },
+        "water64-elpa/warmup/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.074,
+            "total_max_seconds": 36.341
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 8.631
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 8.406,
+            "total_max_seconds": 8.631
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.02,
+            "total_max_seconds": 4.02
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.229,
+            "total_max_seconds": 3.229
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 4,
+            "self_max_seconds": 0.373,
+            "total_max_seconds": 0.373
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 0.042,
+            "total_max_seconds": 0.042
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 2.872,
+            "total_max_seconds": 2.872
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 0.003,
+            "total_max_seconds": 0.01
+          }
+        },
+        "water64-gpw/0/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.06,
+            "total_max_seconds": 173.839
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.382,
+            "total_max_seconds": 17.382
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.541,
+            "total_max_seconds": 13.541
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 12.343,
+            "total_max_seconds": 12.343
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 0.033,
+            "total_max_seconds": 4.363
+          }
+        },
+        "water64-gpw/0/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.074,
+            "total_max_seconds": 170.883
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.398,
+            "total_max_seconds": 17.398
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.534,
+            "total_max_seconds": 13.534
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 12.194,
+            "total_max_seconds": 12.194
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 0.013,
+            "total_max_seconds": 4.203
+          }
+        },
+        "water64-gpw/1/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.042,
+            "total_max_seconds": 169.109
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.4,
+            "total_max_seconds": 17.4
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.516,
+            "total_max_seconds": 13.516
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 12.15,
+            "total_max_seconds": 12.15
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 0.013,
+            "total_max_seconds": 4.277
+          }
+        },
+        "water64-gpw/1/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.092,
+            "total_max_seconds": 170.026
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.39,
+            "total_max_seconds": 17.39
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.527,
+            "total_max_seconds": 13.527
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 12.517,
+            "total_max_seconds": 12.517
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 0.014,
+            "total_max_seconds": 4.043
+          }
+        },
+        "water64-gpw/2/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.041,
+            "total_max_seconds": 167.059
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.392,
+            "total_max_seconds": 17.392
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.482,
+            "total_max_seconds": 13.482
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 12.311,
+            "total_max_seconds": 12.311
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 0.014,
+            "total_max_seconds": 4.142
+          }
+        },
+        "water64-gpw/2/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.07,
+            "total_max_seconds": 161.65
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.394,
+            "total_max_seconds": 17.394
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.5,
+            "total_max_seconds": 13.5
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 12.1,
+            "total_max_seconds": 12.1
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 0.013,
+            "total_max_seconds": 4.16
+          }
+        },
+        "water64-gpw/warmup/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.043,
+            "total_max_seconds": 192.979
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.393,
+            "total_max_seconds": 17.393
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.513,
+            "total_max_seconds": 13.513
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 9,
+            "self_max_seconds": 4.588,
+            "total_max_seconds": 4.588
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 12.344,
+            "total_max_seconds": 12.344
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 0.393,
+            "total_max_seconds": 6.326
+          }
+        },
+        "water64-gpw/warmup/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.072,
+            "total_max_seconds": 187.458
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.394,
+            "total_max_seconds": 17.394
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.524,
+            "total_max_seconds": 13.524
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 12.409,
+            "total_max_seconds": 12.409
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 0.058,
+            "total_max_seconds": 5.754
+          }
+        }
+      },
+      "science_calculations": 28,
+      "scope": "One rank on one node; native versus Apptainer SIF; same physical host work filesystem",
+      "state": "COMPLETED",
+      "summary": {
+        "version": {
+          "measured_repetitions": 7,
+          "modes": {
+            "checked": {
+              "paired_wall_delta_median_seconds": 0.7019591247662902,
+              "paired_wall_delta_seconds": [
+                0.7019591247662902,
+                0.7517192102968693,
+                0.05049514677375555,
+                0.8015676634386182,
+                0.049967546947300434,
+                0.3525163708254695,
+                1.3520982414484024
+              ],
+              "wall_max_seconds": 4.022578033618629,
+              "wall_median_ratio_to_native": 1.1874341720102297,
+              "wall_median_seconds": 3.1710189608857036,
+              "wall_min_seconds": 3.0228103194385767,
+              "wall_seconds": [
+                3.0711293164640665,
+                3.622264524921775,
+                3.071214498952031,
+                3.4213605662807822,
+                3.1710189608857036,
+                3.0228103194385767,
+                4.022578033618629
+              ]
+            },
+            "native": {
+              "wall_max_seconds": 3.121051413938403,
+              "wall_median_seconds": 2.6704797921702266,
+              "wall_min_seconds": 2.3691701916977763,
+              "wall_seconds": [
+                2.3691701916977763,
+                2.8705453146249056,
+                3.0207193521782756,
+                2.619792902842164,
+                3.121051413938403,
+                2.670293948613107,
+                2.6704797921702266
+              ]
+            },
+            "sif": {
+              "paired_wall_delta_median_seconds": 0.3004223247990012,
+              "paired_wall_delta_seconds": [
+                1.1521801305934787,
+                -0.0002634134143590927,
+                0.20032530650496483,
+                0.7013160539790988,
+                -0.49647733848541975,
+                1.0515052638947964,
+                0.3004223247990012
+              ],
+              "wall_max_seconds": 3.7217992125079036,
+              "wall_median_ratio_to_native": 1.2061670221685463,
+              "wall_median_seconds": 3.2210446586832404,
+              "wall_min_seconds": 2.6245740754529834,
+              "wall_seconds": [
+                3.521350322291255,
+                2.8702819012105465,
+                3.2210446586832404,
+                3.321108956821263,
+                2.6245740754529834,
+                3.7217992125079036,
+                2.970902116969228
+              ]
+            }
+          }
+        },
+        "water-gpw": {
+          "measured_repetitions": 5,
+          "modes": {
+            "native": {
+              "cp2k_median_seconds": 17.768,
+              "cp2k_seconds": [
+                17.801,
+                17.622,
+                17.831,
+                17.655,
+                17.768
+              ],
+              "outside_cp2k_timer_median_seconds": 2.6068264883682133,
+              "wall_max_seconds": 20.521570538170636,
+              "wall_median_seconds": 20.423589197918773,
+              "wall_min_seconds": 20.12454597838223,
+              "wall_seconds": [
+                20.12454597838223,
+                20.228826488368213,
+                20.423589197918773,
+                20.521570538170636,
+                20.473082217387855
+              ]
+            },
+            "sif": {
+              "cp2k_median_seconds": 18.094,
+              "cp2k_seconds": [
+                18.078,
+                18.094,
+                17.706,
+                18.238,
+                19.264
+              ],
+              "outside_cp2k_timer_median_seconds": 2.863532650522888,
+              "paired_cp2k_delta_median_seconds": 0.4720000000000013,
+              "paired_scf_steps_equal": true,
+              "paired_wall_delta_median_seconds": 0.6967783849686384,
+              "paired_wall_delta_seconds": [
+                0.9503674563020468,
+                0.6967783849686384,
+                0.145943452604115,
+                0.4013148667290807,
+                1.749868556857109
+              ],
+              "wall_max_seconds": 22.222950774244964,
+              "wall_median_ratio_to_native": 1.0245801886511328,
+              "wall_median_seconds": 20.92560487333685,
+              "wall_min_seconds": 20.569532650522888,
+              "wall_seconds": [
+                21.074913434684277,
+                20.92560487333685,
+                20.569532650522888,
+                20.922885404899716,
+                22.222950774244964
+              ]
+            }
+          }
+        },
+        "water64-elpa": {
+          "measured_repetitions": 3,
+          "modes": {
+            "native": {
+              "cp2k_median_seconds": 37.059,
+              "cp2k_seconds": [
+                35.64,
+                37.059,
+                37.143
+              ],
+              "outside_cp2k_timer_median_seconds": 2.254768357768654,
+              "wall_max_seconds": 39.4444291125983,
+              "wall_median_seconds": 39.397768357768655,
+              "wall_min_seconds": 37.89368493761867,
+              "wall_seconds": [
+                37.89368493761867,
+                39.4444291125983,
+                39.397768357768655
+              ]
+            },
+            "sif": {
+              "cp2k_median_seconds": 36.747,
+              "cp2k_seconds": [
+                35.499,
+                37.369,
+                36.747
+              ],
+              "outside_cp2k_timer_median_seconds": 2.7928480066582537,
+              "paired_cp2k_delta_median_seconds": -0.14099999999999824,
+              "paired_scf_steps_equal": true,
+              "paired_wall_delta_median_seconds": 0.3981630690395832,
+              "paired_wall_delta_seconds": [
+                0.3981630690395832,
+                0.6526727601885796,
+                0.3980319732800126
+              ],
+              "wall_max_seconds": 40.09710187278688,
+              "wall_median_ratio_to_native": 1.0101029065825635,
+              "wall_median_seconds": 39.79580033104867,
+              "wall_min_seconds": 38.291848006658256,
+              "wall_seconds": [
+                38.291848006658256,
+                40.09710187278688,
+                39.79580033104867
+              ]
+            }
+          }
+        },
+        "water64-gpw": {
+          "measured_repetitions": 3,
+          "modes": {
+            "native": {
+              "cp2k_median_seconds": 169.109,
+              "cp2k_seconds": [
+                173.839,
+                169.109,
+                167.059
+              ],
+              "outside_cp2k_timer_median_seconds": 2.5079101458042885,
+              "wall_max_seconds": 176.63496788032353,
+              "wall_median_seconds": 171.52752410061657,
+              "wall_min_seconds": 169.5669101458043,
+              "wall_seconds": [
+                176.63496788032353,
+                171.52752410061657,
+                169.5669101458043
+              ]
+            },
+            "sif": {
+              "cp2k_median_seconds": 170.026,
+              "cp2k_seconds": [
+                170.883,
+                170.026,
+                161.65
+              ],
+              "outside_cp2k_timer_median_seconds": 3.057608354277903,
+              "paired_cp2k_delta_median_seconds": -2.955999999999989,
+              "paired_scf_steps_equal": true,
+              "paired_wall_delta_median_seconds": -2.4599456721916795,
+              "paired_wall_delta_seconds": [
+                -2.4599456721916795,
+                1.402637372724712,
+                -4.859301791526377
+              ],
+              "wall_max_seconds": 174.17502220813185,
+              "wall_median_ratio_to_native": 1.0081773311897275,
+              "wall_median_seconds": 172.9301614733413,
+              "wall_min_seconds": 164.7076083542779,
+              "wall_seconds": [
+                174.17502220813185,
+                172.9301614733413,
+                164.7076083542779
+              ]
+            }
+          }
+        }
+      },
+      "threads": 4,
+      "uid": 1478400690,
+      "user": "stardust",
+      "version_invocations": 24
+    },
+    "4V100": {
+      "cache_scope": "First observed invocation plus warmed repetitions; no cache flush, no cold-cache claim",
+      "elapsed": "00:46:08",
+      "exit_code": "0:0",
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-raed7aa53ff43",
+        "cpu_arch": "znver4",
+        "cuda_arch": "70",
+        "dependency_isa": "avx512",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/4V100",
+        "partition": "4V100",
+        "recipe_sha256": "aed7aa53ff436310f28e5fdc21e1c3ca211f2422c5dd6abe44b19aa1d3ae9277",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "4v100-avx512",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "image_sha256": "7ebe3fd7e9561379276cdab392854c00f4528de468d46b1ca5a66ab438e63098",
+      "job": "1882248",
+      "max_energy_delta_ha": 2.6147972675971687e-11,
+      "max_force_delta_ha_bohr": 1.5999999936067155e-11,
+      "node": "4v100n33",
+      "partition": "4V100",
+      "passed": true,
+      "routine_timings": {
+        "water-gpw/0/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.021,
+            "total_max_seconds": 8.666
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 47,
+            "self_max_seconds": 0.187,
+            "total_max_seconds": 0.187
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 1.719,
+            "total_max_seconds": 1.719
+          }
+        },
+        "water-gpw/0/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.041,
+            "total_max_seconds": 8.769
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 47,
+            "self_max_seconds": 0.189,
+            "total_max_seconds": 0.189
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 1.72,
+            "total_max_seconds": 1.72
+          }
+        },
+        "water-gpw/1/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.021,
+            "total_max_seconds": 8.667
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 47,
+            "self_max_seconds": 0.188,
+            "total_max_seconds": 0.188
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 1.72,
+            "total_max_seconds": 1.72
+          }
+        },
+        "water-gpw/1/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.041,
+            "total_max_seconds": 8.76
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 47,
+            "self_max_seconds": 0.187,
+            "total_max_seconds": 0.187
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 1.72,
+            "total_max_seconds": 1.72
+          }
+        },
+        "water-gpw/2/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.021,
+            "total_max_seconds": 8.75
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 47,
+            "self_max_seconds": 0.187,
+            "total_max_seconds": 0.187
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 1.73,
+            "total_max_seconds": 1.73
+          }
+        },
+        "water-gpw/2/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.042,
+            "total_max_seconds": 8.953
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 47,
+            "self_max_seconds": 0.188,
+            "total_max_seconds": 0.188
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 1.743,
+            "total_max_seconds": 1.743
+          }
+        },
+        "water-gpw/3/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.021,
+            "total_max_seconds": 8.696
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 47,
+            "self_max_seconds": 0.187,
+            "total_max_seconds": 0.187
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 1.721,
+            "total_max_seconds": 1.721
+          }
+        },
+        "water-gpw/3/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.041,
+            "total_max_seconds": 8.953
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 47,
+            "self_max_seconds": 0.187,
+            "total_max_seconds": 0.187
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 1.743,
+            "total_max_seconds": 1.743
+          }
+        },
+        "water-gpw/4/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.02,
+            "total_max_seconds": 8.688
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 47,
+            "self_max_seconds": 0.186,
+            "total_max_seconds": 0.186
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 1.718,
+            "total_max_seconds": 1.718
+          }
+        },
+        "water-gpw/4/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.04,
+            "total_max_seconds": 8.762
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 47,
+            "self_max_seconds": 0.188,
+            "total_max_seconds": 0.188
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 1.718,
+            "total_max_seconds": 1.718
+          }
+        },
+        "water-gpw/warmup/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.023,
+            "total_max_seconds": 8.964
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 47,
+            "self_max_seconds": 0.187,
+            "total_max_seconds": 0.187
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 1.72,
+            "total_max_seconds": 1.72
+          }
+        },
+        "water-gpw/warmup/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.041,
+            "total_max_seconds": 8.77
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 47,
+            "self_max_seconds": 0.189,
+            "total_max_seconds": 0.189
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 1.72,
+            "total_max_seconds": 1.72
+          }
+        },
+        "water64-elpa/0/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.026,
+            "total_max_seconds": 20.78
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 3.644
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 3.527,
+            "total_max_seconds": 3.644
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.022,
+            "total_max_seconds": 4.022
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.171,
+            "total_max_seconds": 3.171
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 4,
+            "self_max_seconds": 0.225,
+            "total_max_seconds": 0.225
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 0.027,
+            "total_max_seconds": 0.027
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 1.467,
+            "total_max_seconds": 1.467
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 0.002,
+            "total_max_seconds": 0.005
+          }
+        },
+        "water64-elpa/0/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.048,
+            "total_max_seconds": 20.904
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 3.581
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 3.46,
+            "total_max_seconds": 3.58
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.022,
+            "total_max_seconds": 4.022
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.174,
+            "total_max_seconds": 3.174
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 4,
+            "self_max_seconds": 0.225,
+            "total_max_seconds": 0.225
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 0.027,
+            "total_max_seconds": 0.027
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 1.471,
+            "total_max_seconds": 1.471
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 0.002,
+            "total_max_seconds": 0.005
+          }
+        },
+        "water64-elpa/1/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.026,
+            "total_max_seconds": 20.81
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 3.628
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 3.504,
+            "total_max_seconds": 3.627
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.03,
+            "total_max_seconds": 4.03
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.175,
+            "total_max_seconds": 3.175
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 4,
+            "self_max_seconds": 0.225,
+            "total_max_seconds": 0.225
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 0.028,
+            "total_max_seconds": 0.028
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 1.468,
+            "total_max_seconds": 1.468
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 0.002,
+            "total_max_seconds": 0.005
+          }
+        },
+        "water64-elpa/1/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.046,
+            "total_max_seconds": 45.731
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 3.58
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 3.461,
+            "total_max_seconds": 3.579
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.025,
+            "total_max_seconds": 4.025
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.171,
+            "total_max_seconds": 3.171
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 4,
+            "self_max_seconds": 19.924,
+            "total_max_seconds": 19.924
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 5.222,
+            "total_max_seconds": 5.222
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 1.47,
+            "total_max_seconds": 1.47
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 0.002,
+            "total_max_seconds": 0.005
+          }
+        },
+        "water64-elpa/2/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.026,
+            "total_max_seconds": 20.765
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 3.603
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 3.493,
+            "total_max_seconds": 3.603
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.028,
+            "total_max_seconds": 4.028
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.172,
+            "total_max_seconds": 3.172
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 4,
+            "self_max_seconds": 0.225,
+            "total_max_seconds": 0.225
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 0.027,
+            "total_max_seconds": 0.027
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 1.466,
+            "total_max_seconds": 1.466
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 0.002,
+            "total_max_seconds": 0.005
+          }
+        },
+        "water64-elpa/2/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.617,
+            "total_max_seconds": 22.314
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 3.622
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 3.509,
+            "total_max_seconds": 3.622
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.03,
+            "total_max_seconds": 4.03
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.174,
+            "total_max_seconds": 3.174
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 4,
+            "self_max_seconds": 0.223,
+            "total_max_seconds": 0.223
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 0.026,
+            "total_max_seconds": 0.026
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 1.463,
+            "total_max_seconds": 1.463
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 0.236,
+            "total_max_seconds": 0.906
+          }
+        },
+        "water64-elpa/warmup/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.026,
+            "total_max_seconds": 20.756
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 3.613
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 3.497,
+            "total_max_seconds": 3.612
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.033,
+            "total_max_seconds": 4.033
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.162,
+            "total_max_seconds": 3.162
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 4,
+            "self_max_seconds": 0.229,
+            "total_max_seconds": 0.229
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 0.028,
+            "total_max_seconds": 0.028
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 1.466,
+            "total_max_seconds": 1.466
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 0.002,
+            "total_max_seconds": 0.005
+          }
+        },
+        "water64-elpa/warmup/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.049,
+            "total_max_seconds": 20.851
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 3.566
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 3.45,
+            "total_max_seconds": 3.566
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.025,
+            "total_max_seconds": 4.025
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.17,
+            "total_max_seconds": 3.17
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 4,
+            "self_max_seconds": 0.226,
+            "total_max_seconds": 0.226
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 0.027,
+            "total_max_seconds": 0.027
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 1.469,
+            "total_max_seconds": 1.469
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 0.002,
+            "total_max_seconds": 0.005
+          }
+        },
+        "water64-gpw/0/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 2.716,
+            "total_max_seconds": 362.514
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.39,
+            "total_max_seconds": 17.39
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.192,
+            "total_max_seconds": 13.192
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 10,
+            "self_max_seconds": 37.86,
+            "total_max_seconds": 37.86
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 76.945,
+            "total_max_seconds": 207.493
+          }
+        },
+        "water64-gpw/0/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 8.268,
+            "total_max_seconds": 218.329
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.417,
+            "total_max_seconds": 17.417
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.215,
+            "total_max_seconds": 13.215
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 6.217,
+            "total_max_seconds": 6.217
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 50.895,
+            "total_max_seconds": 91.5
+          }
+        },
+        "water64-gpw/1/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 5.456,
+            "total_max_seconds": 312.7
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.382,
+            "total_max_seconds": 17.382
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.181,
+            "total_max_seconds": 13.181
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 5,
+            "self_max_seconds": 12.682,
+            "total_max_seconds": 12.682
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 54.156,
+            "total_max_seconds": 125.017
+          }
+        },
+        "water64-gpw/1/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 10.263,
+            "total_max_seconds": 259.3
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.435,
+            "total_max_seconds": 17.435
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.221,
+            "total_max_seconds": 13.221
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 9,
+            "self_max_seconds": 22.758,
+            "total_max_seconds": 22.758
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 6.219,
+            "total_max_seconds": 6.219
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 69.457,
+            "total_max_seconds": 110.628
+          }
+        },
+        "water64-gpw/2/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 14.89,
+            "total_max_seconds": 350.145
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.386,
+            "total_max_seconds": 17.386
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.184,
+            "total_max_seconds": 13.184
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 88.198,
+            "total_max_seconds": 156.754
+          }
+        },
+        "water64-gpw/2/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.047,
+            "total_max_seconds": 279.865
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.423,
+            "total_max_seconds": 17.423
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.223,
+            "total_max_seconds": 13.223
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 6.273,
+            "total_max_seconds": 6.273
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 70.097,
+            "total_max_seconds": 113.899
+          }
+        },
+        "water64-gpw/warmup/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.024,
+            "total_max_seconds": 118.483
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.436,
+            "total_max_seconds": 17.436
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.219,
+            "total_max_seconds": 13.219
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 6.233,
+            "total_max_seconds": 6.233
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 0.01,
+            "total_max_seconds": 3.181
+          }
+        },
+        "water64-gpw/warmup/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 28.258,
+            "total_max_seconds": 162.26
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.437,
+            "total_max_seconds": 17.437
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.227,
+            "total_max_seconds": 13.227
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 6.22,
+            "total_max_seconds": 6.22
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 14.916,
+            "total_max_seconds": 18.943
+          }
+        }
+      },
+      "science_calculations": 28,
+      "scope": "One rank on one node; native versus Apptainer SIF; same physical host work filesystem",
+      "state": "COMPLETED",
+      "summary": {
+        "version": {
+          "measured_repetitions": 7,
+          "modes": {
+            "checked": {
+              "paired_wall_delta_median_seconds": 0.300443846732378,
+              "paired_wall_delta_seconds": [
+                0.300443846732378,
+                0.30037755612283945,
+                0.3503799233585596,
+                0.30042854603379965,
+                0.3005194356665015,
+                0.3004699442535639,
+                0.25034479703754187
+              ],
+              "wall_max_seconds": 1.0155833419412374,
+              "wall_median_ratio_to_native": 1.4201550898193096,
+              "wall_median_seconds": 1.0154972430318594,
+              "wall_min_seconds": 0.9654990639537573,
+              "wall_seconds": [
+                1.0154972430318594,
+                1.015426971949637,
+                1.0154559724032879,
+                1.015523332171142,
+                1.0155802415683866,
+                1.0155833419412374,
+                0.9654990639537573
+              ]
+            },
+            "native": {
+              "wall_max_seconds": 0.7151542669162154,
+              "wall_median_seconds": 0.715060805901885,
+              "wall_min_seconds": 0.6650760490447283,
+              "wall_seconds": [
+                0.7150533962994814,
+                0.7150494158267975,
+                0.6650760490447283,
+                0.7150947861373425,
+                0.715060805901885,
+                0.7151133976876736,
+                0.7151542669162154
+              ]
+            },
+            "sif": {
+              "paired_wall_delta_median_seconds": 0.20032867137342691,
+              "paired_wall_delta_seconds": [
+                0.20034031104296446,
+                0.20040646102279425,
+                0.2503019170835614,
+                0.20019883010536432,
+                0.20032867137342691,
+                0.20024153962731361,
+                0.20006698090583086
+              ],
+              "wall_max_seconds": 0.9154558768495917,
+              "wall_median_ratio_to_native": 1.2801400364459223,
+              "wall_median_seconds": 0.9153779661282897,
+              "wall_min_seconds": 0.9152212478220463,
+              "wall_seconds": [
+                0.9153937073424459,
+                0.9154558768495917,
+                0.9153779661282897,
+                0.9152936162427068,
+                0.915389477275312,
+                0.9153549373149872,
+                0.9152212478220463
+              ]
+            }
+          }
+        },
+        "water-gpw": {
+          "measured_repetitions": 5,
+          "modes": {
+            "native": {
+              "cp2k_median_seconds": 8.688,
+              "cp2k_seconds": [
+                8.666,
+                8.667,
+                8.75,
+                8.696,
+                8.688
+              ],
+              "outside_cp2k_timer_median_seconds": 0.7627801869213577,
+              "wall_max_seconds": 9.528671053238213,
+              "wall_median_seconds": 9.429598934017122,
+              "wall_min_seconds": 9.428352548740804,
+              "wall_seconds": [
+                9.428780186921358,
+                9.428352548740804,
+                9.528671053238213,
+                9.481642846949399,
+                9.429598934017122
+              ]
+            },
+            "sif": {
+              "cp2k_median_seconds": 8.769,
+              "cp2k_seconds": [
+                8.769,
+                8.76,
+                8.953,
+                8.953,
+                8.762
+              ],
+              "outside_cp2k_timer_median_seconds": 0.9692220620438459,
+              "paired_cp2k_delta_median_seconds": 0.10299999999999976,
+              "paired_scf_steps_equal": true,
+              "paired_wall_delta_median_seconds": 0.3014332829043269,
+              "paired_wall_delta_seconds": [
+                0.3014332829043269,
+                0.30086951330304146,
+                0.40115282870829105,
+                0.4477880261838436,
+                0.29979820642620325
+              ],
+              "wall_max_seconds": 9.929823881946504,
+              "wall_median_ratio_to_native": 1.0318798856570772,
+              "wall_median_seconds": 9.730213469825685,
+              "wall_min_seconds": 9.729222062043846,
+              "wall_seconds": [
+                9.730213469825685,
+                9.729222062043846,
+                9.929823881946504,
+                9.929430873133242,
+                9.729397140443325
+              ]
+            }
+          }
+        },
+        "water64-elpa": {
+          "measured_repetitions": 3,
+          "modes": {
+            "native": {
+              "cp2k_median_seconds": 20.78,
+              "cp2k_seconds": [
+                20.78,
+                20.81,
+                20.765
+              ],
+              "outside_cp2k_timer_median_seconds": 1.0653875243291253,
+              "wall_max_seconds": 53.32402451522648,
+              "wall_median_seconds": 21.830387524329126,
+              "wall_min_seconds": 21.541654935106635,
+              "wall_seconds": [
+                21.541654935106635,
+                53.32402451522648,
+                21.830387524329126
+              ]
+            },
+            "sif": {
+              "cp2k_median_seconds": 22.314,
+              "cp2k_seconds": [
+                20.904,
+                45.731,
+                22.314
+              ],
+              "outside_cp2k_timer_median_seconds": 1.0301523211076855,
+              "paired_cp2k_delta_median_seconds": 1.5489999999999995,
+              "paired_scf_steps_equal": true,
+              "paired_wall_delta_median_seconds": 0.40098465234041214,
+              "paired_wall_delta_seconds": [
+                0.40098465234041214,
+                -6.607539128512144,
+                1.5137647967785597
+              ],
+              "wall_max_seconds": 46.71648538671434,
+              "wall_median_ratio_to_native": 1.0693420945959629,
+              "wall_median_seconds": 23.344152321107686,
+              "wall_min_seconds": 21.942639587447047,
+              "wall_seconds": [
+                21.942639587447047,
+                46.71648538671434,
+                23.344152321107686
+              ]
+            }
+          }
+        },
+        "water64-gpw": {
+          "measured_repetitions": 3,
+          "modes": {
+            "native": {
+              "cp2k_median_seconds": 350.145,
+              "cp2k_seconds": [
+                362.514,
+                312.7,
+                350.145
+              ],
+              "outside_cp2k_timer_median_seconds": 34.204182485304784,
+              "wall_max_seconds": 403.6827997341752,
+              "wall_median_seconds": 376.7149910014123,
+              "wall_min_seconds": 346.9041824853048,
+              "wall_seconds": [
+                376.7149910014123,
+                346.9041824853048,
+                403.6827997341752
+              ]
+            },
+            "sif": {
+              "cp2k_median_seconds": 259.3,
+              "cp2k_seconds": [
+                218.329,
+                259.3,
+                279.865
+              ],
+              "outside_cp2k_timer_median_seconds": 2.27630256200581,
+              "paired_cp2k_delta_median_seconds": -70.27999999999997,
+              "paired_scf_steps_equal": true,
+              "paired_wall_delta_median_seconds": -116.7614832483232,
+              "paired_wall_delta_seconds": [
+                -156.10968843940645,
+                -85.38894965872169,
+                -116.7614832483232
+              ],
+              "wall_max_seconds": 286.921316485852,
+              "wall_median_ratio_to_native": 0.6941991666734671,
+              "wall_median_seconds": 261.5152328265831,
+              "wall_min_seconds": 220.60530256200582,
+              "wall_seconds": [
+                220.60530256200582,
+                261.5152328265831,
+                286.921316485852
+              ]
+            }
+          }
+        }
+      },
+      "threads": 4,
+      "uid": 1478400690,
+      "user": "stardust",
+      "version_invocations": 24
+    },
+    "4V100-diagnostic": {
+      "exit_code": "0:0",
+      "job": "1882162",
+      "node": "4v100n31",
+      "partition": "4V100",
+      "samples": [
+        {
+          "elapsed_seconds": 10.682799515023362,
+          "exit_code": 0,
+          "label": "omp4-stackdefault-native",
+          "mode": "native",
+          "science": {
+            "comparison_to_accepted": {
+              "energy_delta_ha": 1.4210854715202004e-14,
+              "max_force_delta_ha_bohr": 0.0
+            },
+            "cp2k_seconds": 9.871,
+            "dispersion_ha": null,
+            "elapsed_seconds": 10.682799515023362,
+            "energy_ha": -34.446821294788855,
+            "forces_ha_bohr": [
+              [
+                -0.00945233354,
+                -0.010457489817,
+                -2.87128e-07
+              ],
+              [
+                -0.009818693543,
+                0.01569111124,
+                -1.41928e-07
+              ],
+              [
+                0.010457918678,
+                0.004642532798,
+                5.8306e-08
+              ],
+              [
+                -0.003014175638,
+                0.009256006937,
+                -5.6023e-08
+              ],
+              [
+                0.004272731236,
+                -0.008357649189,
+                -0.007545513107
+              ],
+              [
+                0.004272706358,
+                -0.008357781986,
+                0.007545680456
+              ]
+            ],
+            "scf_steps": [
+              46
+            ]
+          },
+          "stack": null,
+          "threads": 4
+        },
+        {
+          "elapsed_seconds": 12.737512034014799,
+          "exit_code": 0,
+          "label": "omp4-stackdefault-sif",
+          "mode": "sif",
+          "science": {
+            "comparison_to_accepted": {
+              "energy_delta_ha": 1.5631940186722204e-13,
+              "max_force_delta_ha_bohr": 1.0000004296850662e-12
+            },
+            "cp2k_seconds": 10.464,
+            "dispersion_ha": null,
+            "elapsed_seconds": 12.737512034014799,
+            "energy_ha": -34.446821294788684,
+            "forces_ha_bohr": [
+              [
+                -0.00945233354,
+                -0.010457489817,
+                -2.87128e-07
+              ],
+              [
+                -0.009818693543,
+                0.01569111124,
+                -1.41928e-07
+              ],
+              [
+                0.010457918678,
+                0.004642532798,
+                5.8306e-08
+              ],
+              [
+                -0.003014175638,
+                0.009256006937,
+                -5.6023e-08
+              ],
+              [
+                0.004272731236,
+                -0.008357649189,
+                -0.007545513107
+              ],
+              [
+                0.004272706359,
+                -0.008357781986,
+                0.007545680456
+              ]
+            ],
+            "scf_steps": [
+              46
+            ]
+          },
+          "stack": null,
+          "threads": 4
+        },
+        {
+          "elapsed_seconds": 10.331027403997723,
+          "exit_code": 0,
+          "label": "omp4-stack256M-native",
+          "mode": "native",
+          "science": {
+            "comparison_to_accepted": {
+              "energy_delta_ha": 1.2079226507921703e-13,
+              "max_force_delta_ha_bohr": 0.0
+            },
+            "cp2k_seconds": 9.589,
+            "dispersion_ha": null,
+            "elapsed_seconds": 10.331027403997723,
+            "energy_ha": -34.44682129478872,
+            "forces_ha_bohr": [
+              [
+                -0.00945233354,
+                -0.010457489817,
+                -2.87128e-07
+              ],
+              [
+                -0.009818693543,
+                0.01569111124,
+                -1.41928e-07
+              ],
+              [
+                0.010457918678,
+                0.004642532798,
+                5.8306e-08
+              ],
+              [
+                -0.003014175638,
+                0.009256006937,
+                -5.6023e-08
+              ],
+              [
+                0.004272731236,
+                -0.008357649189,
+                -0.007545513107
+              ],
+              [
+                0.004272706358,
+                -0.008357781986,
+                0.007545680456
+              ]
+            ],
+            "scf_steps": [
+              46
+            ]
+          },
+          "stack": "256M",
+          "threads": 4
+        },
+        {
+          "elapsed_seconds": 10.582860333961435,
+          "exit_code": 0,
+          "label": "omp4-stack256M-sif",
+          "mode": "sif",
+          "science": {
+            "comparison_to_accepted": {
+              "energy_delta_ha": 3.126388037344441e-13,
+              "max_force_delta_ha_bohr": 0.0
+            },
+            "cp2k_seconds": 9.628,
+            "dispersion_ha": null,
+            "elapsed_seconds": 10.582860333961435,
+            "energy_ha": -34.44682129478853,
+            "forces_ha_bohr": [
+              [
+                -0.00945233354,
+                -0.010457489817,
+                -2.87128e-07
+              ],
+              [
+                -0.009818693543,
+                0.01569111124,
+                -1.41928e-07
+              ],
+              [
+                0.010457918678,
+                0.004642532798,
+                5.8306e-08
+              ],
+              [
+                -0.003014175638,
+                0.009256006937,
+                -5.6023e-08
+              ],
+              [
+                0.004272731236,
+                -0.008357649189,
+                -0.007545513107
+              ],
+              [
+                0.004272706358,
+                -0.008357781986,
+                0.007545680456
+              ]
+            ],
+            "scf_steps": [
+              46
+            ]
+          },
+          "stack": "256M",
+          "threads": 4
+        },
+        {
+          "elapsed_seconds": 14.036441795004066,
+          "exit_code": 0,
+          "label": "omp1-stackdefault-native",
+          "mode": "native",
+          "science": {
+            "comparison_to_accepted": {
+              "energy_delta_ha": 9.947598300641403e-14,
+              "max_force_delta_ha_bohr": 0.0
+            },
+            "cp2k_seconds": 13.297,
+            "dispersion_ha": null,
+            "elapsed_seconds": 14.036441795004066,
+            "energy_ha": -34.44682129478874,
+            "forces_ha_bohr": [
+              [
+                -0.00945233354,
+                -0.010457489817,
+                -2.87128e-07
+              ],
+              [
+                -0.009818693543,
+                0.01569111124,
+                -1.41928e-07
+              ],
+              [
+                0.010457918678,
+                0.004642532798,
+                5.8306e-08
+              ],
+              [
+                -0.003014175638,
+                0.009256006937,
+                -5.6023e-08
+              ],
+              [
+                0.004272731236,
+                -0.008357649189,
+                -0.007545513107
+              ],
+              [
+                0.004272706358,
+                -0.008357781986,
+                0.007545680456
+              ]
+            ],
+            "scf_steps": [
+              46
+            ]
+          },
+          "stack": null,
+          "threads": 1
+        },
+        {
+          "elapsed_seconds": 14.086954740982037,
+          "exit_code": 0,
+          "label": "omp1-stackdefault-sif",
+          "mode": "sif",
+          "science": {
+            "comparison_to_accepted": {
+              "energy_delta_ha": 9.947598300641403e-14,
+              "max_force_delta_ha_bohr": 0.0
+            },
+            "cp2k_seconds": 13.123,
+            "dispersion_ha": null,
+            "elapsed_seconds": 14.086954740982037,
+            "energy_ha": -34.44682129478894,
+            "forces_ha_bohr": [
+              [
+                -0.00945233354,
+                -0.010457489817,
+                -2.87128e-07
+              ],
+              [
+                -0.009818693543,
+                0.01569111124,
+                -1.41928e-07
+              ],
+              [
+                0.010457918678,
+                0.004642532798,
+                5.8306e-08
+              ],
+              [
+                -0.003014175638,
+                0.009256006937,
+                -5.6023e-08
+              ],
+              [
+                0.004272731236,
+                -0.008357649189,
+                -0.007545513107
+              ],
+              [
+                0.004272706358,
+                -0.008357781986,
+                0.007545680456
+              ]
+            ],
+            "scf_steps": [
+              46
+            ]
+          },
+          "stack": null,
+          "threads": 1
+        }
+      ],
+      "state": "COMPLETED"
+    },
+    "4V100-original": {
+      "completed_version_calls": 24,
+      "exit_code": "1:0",
+      "failed_route": "native",
+      "failure": "SIGSEGV in DBCSR transpose JIT; no SIF science was run",
+      "job": "1882052",
+      "node": "4v100n06",
+      "partition": "4V100",
+      "provenance_passed": true,
+      "state": "FAILED"
+    },
+    "8V100V0": {
+      "cache_scope": "First observed invocation plus warmed repetitions; no cache flush, no cold-cache claim",
+      "elapsed": "00:51:38",
+      "exit_code": "0:0",
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-raed7aa53ff43",
+        "cpu_arch": "skylake-avx512",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/8V100V0",
+        "partition": "8V100V0",
+        "recipe_sha256": "aed7aa53ff436310f28e5fdc21e1c3ca211f2422c5dd6abe44b19aa1d3ae9277",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "8v100v0-avx512",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "image_sha256": "601b10438d54008f25b74fc7e40e2d71d3ee36f6c4d9efb7d1d6a5daa0abd138",
+      "job": "1882053",
+      "max_energy_delta_ha": 5.184119800105691e-11,
+      "max_force_delta_ha_bohr": 1.3999999076697023e-11,
+      "node": "8v100v0n03",
+      "partition": "8V100V0",
+      "passed": true,
+      "routine_timings": {
+        "water-gpw/0/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.043,
+            "total_max_seconds": 21.125
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 5,
+            "self_max_seconds": 0.481,
+            "total_max_seconds": 0.481
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 4.427,
+            "total_max_seconds": 4.427
+          }
+        },
+        "water-gpw/0/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.078,
+            "total_max_seconds": 21.634
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 5,
+            "self_max_seconds": 0.509,
+            "total_max_seconds": 0.509
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 4.637,
+            "total_max_seconds": 4.637
+          }
+        },
+        "water-gpw/1/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.043,
+            "total_max_seconds": 21.338
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 5,
+            "self_max_seconds": 0.477,
+            "total_max_seconds": 0.477
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 4.552,
+            "total_max_seconds": 4.552
+          }
+        },
+        "water-gpw/1/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.078,
+            "total_max_seconds": 21.494
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 5,
+            "self_max_seconds": 0.491,
+            "total_max_seconds": 0.491
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 4.584,
+            "total_max_seconds": 4.584
+          }
+        },
+        "water-gpw/2/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.043,
+            "total_max_seconds": 21.297
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 5,
+            "self_max_seconds": 0.486,
+            "total_max_seconds": 0.486
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 4.545,
+            "total_max_seconds": 4.545
+          }
+        },
+        "water-gpw/2/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.077,
+            "total_max_seconds": 21.43
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 5,
+            "self_max_seconds": 0.506,
+            "total_max_seconds": 0.506
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 4.548,
+            "total_max_seconds": 4.548
+          }
+        },
+        "water-gpw/3/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.044,
+            "total_max_seconds": 21.427
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 5,
+            "self_max_seconds": 0.509,
+            "total_max_seconds": 0.509
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 4.653,
+            "total_max_seconds": 4.653
+          }
+        },
+        "water-gpw/3/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.079,
+            "total_max_seconds": 21.509
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 5,
+            "self_max_seconds": 0.493,
+            "total_max_seconds": 0.493
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 4.565,
+            "total_max_seconds": 4.565
+          }
+        },
+        "water-gpw/4/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.044,
+            "total_max_seconds": 21.242
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 5,
+            "self_max_seconds": 0.478,
+            "total_max_seconds": 0.478
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 4.504,
+            "total_max_seconds": 4.504
+          }
+        },
+        "water-gpw/4/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.077,
+            "total_max_seconds": 21.432
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 5,
+            "self_max_seconds": 0.494,
+            "total_max_seconds": 0.494
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 4.509,
+            "total_max_seconds": 4.509
+          }
+        },
+        "water-gpw/warmup/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.068,
+            "total_max_seconds": 22.181
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 5,
+            "self_max_seconds": 0.687,
+            "total_max_seconds": 0.687
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 4.486,
+            "total_max_seconds": 4.486
+          }
+        },
+        "water-gpw/warmup/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.088,
+            "total_max_seconds": 21.318
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 5,
+            "self_max_seconds": 0.493,
+            "total_max_seconds": 0.493
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 4.438,
+            "total_max_seconds": 4.438
+          }
+        },
+        "water64-elpa/0/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 4.72,
+            "total_max_seconds": 128.065
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 7.518
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 7.29,
+            "total_max_seconds": 7.517
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.026,
+            "total_max_seconds": 4.026
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.189,
+            "total_max_seconds": 3.189
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 1,
+            "self_max_seconds": 0.431,
+            "total_max_seconds": 0.431
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 36.359,
+            "total_max_seconds": 36.359
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 4.1,
+            "total_max_seconds": 4.1
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 38.172,
+            "total_max_seconds": 38.69
+          }
+        },
+        "water64-elpa/0/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 53.168,
+            "total_max_seconds": 125.609
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 7.476
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 7.249,
+            "total_max_seconds": 7.475
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.027,
+            "total_max_seconds": 4.027
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.192,
+            "total_max_seconds": 3.192
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 4,
+            "self_max_seconds": 0.548,
+            "total_max_seconds": 0.548
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 0.068,
+            "total_max_seconds": 0.068
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 4.095,
+            "total_max_seconds": 4.095
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 26.85,
+            "total_max_seconds": 27.755
+          }
+        },
+        "water64-elpa/1/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 38.407,
+            "total_max_seconds": 83.161
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 7.625
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 7.39,
+            "total_max_seconds": 7.624
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.026,
+            "total_max_seconds": 4.026
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.194,
+            "total_max_seconds": 3.194
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 4,
+            "self_max_seconds": 0.571,
+            "total_max_seconds": 0.571
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 0.068,
+            "total_max_seconds": 0.068
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 4.049,
+            "total_max_seconds": 4.049
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 0.003,
+            "total_max_seconds": 0.013
+          }
+        },
+        "water64-elpa/1/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.102,
+            "total_max_seconds": 134.864
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 7.576
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 7.352,
+            "total_max_seconds": 7.576
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.032,
+            "total_max_seconds": 4.032
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.19,
+            "total_max_seconds": 3.19
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 3,
+            "self_max_seconds": 28.705,
+            "total_max_seconds": 28.705
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 57.193,
+            "total_max_seconds": 57.193
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 4.214,
+            "total_max_seconds": 4.214
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 0.003,
+            "total_max_seconds": 0.013
+          }
+        },
+        "water64-elpa/2/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 19.341,
+            "total_max_seconds": 157.285
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 7.663
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 7.44,
+            "total_max_seconds": 7.662
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.022,
+            "total_max_seconds": 4.022
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.193,
+            "total_max_seconds": 3.193
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 3,
+            "self_max_seconds": 10.305,
+            "total_max_seconds": 10.305
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 54.137,
+            "total_max_seconds": 54.137
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 4.12,
+            "total_max_seconds": 4.12
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 28.736,
+            "total_max_seconds": 28.889
+          }
+        },
+        "water64-elpa/2/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 24.648,
+            "total_max_seconds": 124.739
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 7.483
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 7.262,
+            "total_max_seconds": 7.483
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.036,
+            "total_max_seconds": 4.036
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.191,
+            "total_max_seconds": 3.191
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 3,
+            "self_max_seconds": 1.685,
+            "total_max_seconds": 1.685
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 22.162,
+            "total_max_seconds": 22.162
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 3.995,
+            "total_max_seconds": 3.995
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 2.578,
+            "total_max_seconds": 4.294
+          }
+        },
+        "water64-elpa/warmup/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.068,
+            "total_max_seconds": 44.485
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 7.551
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 7.323,
+            "total_max_seconds": 7.55
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.029,
+            "total_max_seconds": 4.029
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.201,
+            "total_max_seconds": 3.201
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 4,
+            "self_max_seconds": 0.586,
+            "total_max_seconds": 0.586
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 0.068,
+            "total_max_seconds": 0.068
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 4.044,
+            "total_max_seconds": 4.044
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 0.003,
+            "total_max_seconds": 0.013
+          }
+        },
+        "water64-elpa/warmup/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 27.307,
+            "total_max_seconds": 94.28
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 7.554
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 7.328,
+            "total_max_seconds": 7.553
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 4.026,
+            "total_max_seconds": 4.026
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 3.201,
+            "total_max_seconds": 3.201
+          },
+          "jit_kernel_multiply": {
+            "calls_max": 4,
+            "self_max_seconds": 0.537,
+            "total_max_seconds": 0.537
+          },
+          "jit_kernel_transpose": {
+            "calls_max": 2,
+            "self_max_seconds": 0.069,
+            "total_max_seconds": 0.069
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 4.064,
+            "total_max_seconds": 4.064
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 22.687,
+            "total_max_seconds": 22.717
+          }
+        },
+        "water64-gpw/0/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.066,
+            "total_max_seconds": 171.07
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.42,
+            "total_max_seconds": 17.42
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.363,
+            "total_max_seconds": 13.363
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 17.515,
+            "total_max_seconds": 17.515
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 0.014,
+            "total_max_seconds": 3.602
+          }
+        },
+        "water64-gpw/0/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.101,
+            "total_max_seconds": 171.591
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.429,
+            "total_max_seconds": 17.429
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.366,
+            "total_max_seconds": 13.366
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 17.36,
+            "total_max_seconds": 17.36
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 0.015,
+            "total_max_seconds": 3.597
+          }
+        },
+        "water64-gpw/1/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.067,
+            "total_max_seconds": 171.19
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.395,
+            "total_max_seconds": 17.395
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.434,
+            "total_max_seconds": 13.434
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 17.562,
+            "total_max_seconds": 17.562
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 0.014,
+            "total_max_seconds": 3.627
+          }
+        },
+        "water64-gpw/1/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.103,
+            "total_max_seconds": 171.692
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.386,
+            "total_max_seconds": 17.386
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.403,
+            "total_max_seconds": 13.403
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 17.638,
+            "total_max_seconds": 17.638
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 0.014,
+            "total_max_seconds": 3.597
+          }
+        },
+        "water64-gpw/2/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.068,
+            "total_max_seconds": 171.275
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.392,
+            "total_max_seconds": 17.392
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.436,
+            "total_max_seconds": 13.436
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 17.571,
+            "total_max_seconds": 17.571
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 0.014,
+            "total_max_seconds": 3.594
+          }
+        },
+        "water64-gpw/2/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.103,
+            "total_max_seconds": 171.121
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.393,
+            "total_max_seconds": 17.393
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.437,
+            "total_max_seconds": 13.437
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 17.549,
+            "total_max_seconds": 17.549
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 0.015,
+            "total_max_seconds": 3.602
+          }
+        },
+        "water64-gpw/warmup/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.067,
+            "total_max_seconds": 171.559
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.4,
+            "total_max_seconds": 17.4
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.406,
+            "total_max_seconds": 13.406
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 17.444,
+            "total_max_seconds": 17.444
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 0.016,
+            "total_max_seconds": 3.604
+          }
+        },
+        "water64-gpw/warmup/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.1,
+            "total_max_seconds": 171.393
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 17.392,
+            "total_max_seconds": 17.392
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 13.383,
+            "total_max_seconds": 13.383
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 17.472,
+            "total_max_seconds": 17.472
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 0.014,
+            "total_max_seconds": 3.589
+          }
+        }
+      },
+      "science_calculations": 28,
+      "scope": "One rank on one node; native versus Apptainer SIF; same physical host work filesystem",
+      "state": "COMPLETED",
+      "summary": {
+        "version": {
+          "measured_repetitions": 7,
+          "modes": {
+            "checked": {
+              "paired_wall_delta_median_seconds": 0.6508919452317059,
+              "paired_wall_delta_seconds": [
+                0.6006531240418553,
+                0.651624551974237,
+                0.6508919452317059,
+                0.5007926542311907,
+                0.6514625761192292,
+                0.7015110140200704,
+                0.6003221981227398
+              ],
+              "wall_max_seconds": 2.7202061431016773,
+              "wall_median_ratio_to_native": 1.3227708645475886,
+              "wall_median_seconds": 2.6704701900016516,
+              "wall_min_seconds": 2.5219862221274525,
+              "wall_seconds": [
+                2.6705582400318235,
+                2.6704701900016516,
+                2.7202061431016773,
+                2.670491976197809,
+                2.5721693481318653,
+                2.6218530528713018,
+                2.5219862221274525
+              ]
+            },
+            "native": {
+              "wall_max_seconds": 2.1696993219666183,
+              "wall_median_seconds": 2.0188456380274147,
+              "wall_min_seconds": 1.9203420388512313,
+              "wall_seconds": [
+                2.069905115989968,
+                2.0188456380274147,
+                2.0693141978699714,
+                2.1696993219666183,
+                1.920706772012636,
+                1.9203420388512313,
+                1.9216640240047127
+              ]
+            },
+            "sif": {
+              "paired_wall_delta_median_seconds": 0.4511329769156873,
+              "paired_wall_delta_seconds": [
+                0.4511329769156873,
+                0.501447238959372,
+                0.4006299111060798,
+                0.30047182412818074,
+                0.7508176090195775,
+                0.5512512191198766,
+                0.44998970115557313
+              ],
+              "wall_max_seconds": 2.6715243810322136,
+              "wall_median_ratio_to_native": 1.2242606425254319,
+              "wall_median_seconds": 2.471593257971108,
+              "wall_min_seconds": 2.371653725160286,
+              "wall_seconds": [
+                2.5210380929056555,
+                2.5202928769867867,
+                2.469944108976051,
+                2.470171146094799,
+                2.6715243810322136,
+                2.471593257971108,
+                2.371653725160286
+              ]
+            }
+          }
+        },
+        "water-gpw": {
+          "measured_repetitions": 5,
+          "modes": {
+            "native": {
+              "cp2k_median_seconds": 21.297,
+              "cp2k_seconds": [
+                21.125,
+                21.338,
+                21.297,
+                21.427,
+                21.242
+              ],
+              "outside_cp2k_timer_median_seconds": 1.9844273149389764,
+              "wall_max_seconds": 23.52156313089654,
+              "wall_median_seconds": 23.271121205063537,
+              "wall_min_seconds": 23.171706767054275,
+              "wall_seconds": [
+                23.171706767054275,
+                23.322427314938977,
+                23.271121205063537,
+                23.52156313089654,
+                23.221585860010237
+              ]
+            },
+            "sif": {
+              "cp2k_median_seconds": 21.494,
+              "cp2k_seconds": [
+                21.634,
+                21.494,
+                21.43,
+                21.509,
+                21.432
+              ],
+              "outside_cp2k_timer_median_seconds": 2.54214971203357,
+              "paired_cp2k_delta_median_seconds": 0.1559999999999988,
+              "paired_scf_steps_equal": true,
+              "paired_wall_delta_median_seconds": 0.701028506970033,
+              "paired_wall_delta_seconds": [
+                1.0483333561569452,
+                0.650863632094115,
+                0.701028506970033,
+                0.45120597002096474,
+                0.7532208969350904
+              ],
+              "wall_max_seconds": 24.22004012321122,
+              "wall_median_ratio_to_native": 1.0301734383909604,
+              "wall_median_seconds": 23.973290947033092,
+              "wall_min_seconds": 23.97214971203357,
+              "wall_seconds": [
+                24.22004012321122,
+                23.973290947033092,
+                23.97214971203357,
+                23.972769100917503,
+                23.974806756945327
+              ]
+            }
+          }
+        },
+        "water64-elpa": {
+          "measured_repetitions": 3,
+          "modes": {
+            "native": {
+              "cp2k_median_seconds": 128.065,
+              "cp2k_seconds": [
+                128.065,
+                83.161,
+                157.285
+              ],
+              "outside_cp2k_timer_median_seconds": 4.889184798058125,
+              "wall_max_seconds": 198.83188599394634,
+              "wall_median_seconds": 132.95418479805812,
+              "wall_min_seconds": 85.21687219804153,
+              "wall_seconds": [
+                132.95418479805812,
+                85.21687219804153,
+                198.83188599394634
+              ]
+            },
+            "sif": {
+              "cp2k_median_seconds": 125.609,
+              "cp2k_seconds": [
+                125.609,
+                134.864,
+                124.739
+              ],
+              "outside_cp2k_timer_median_seconds": 2.7596033568810725,
+              "paired_cp2k_delta_median_seconds": -2.456000000000003,
+              "paired_scf_steps_equal": true,
+              "paired_wall_delta_median_seconds": -4.585581441177055,
+              "paired_wall_delta_seconds": [
+                -4.585581441177055,
+                58.53414143691771,
+                -71.40763391088694
+              ],
+              "wall_max_seconds": 143.75101363495924,
+              "wall_median_ratio_to_native": 0.9655100631233081,
+              "wall_median_seconds": 128.36860335688107,
+              "wall_min_seconds": 127.4242520830594,
+              "wall_seconds": [
+                128.36860335688107,
+                143.75101363495924,
+                127.4242520830594
+              ]
+            }
+          }
+        },
+        "water64-gpw": {
+          "measured_repetitions": 3,
+          "modes": {
+            "native": {
+              "cp2k_median_seconds": 171.19,
+              "cp2k_seconds": [
+                171.07,
+                171.19,
+                171.275
+              ],
+              "outside_cp2k_timer_median_seconds": 2.0961179951205793,
+              "wall_max_seconds": 173.37111799512058,
+              "wall_median_seconds": 173.3198081110604,
+              "wall_min_seconds": 173.11392239807174,
+              "wall_seconds": [
+                173.11392239807174,
+                173.3198081110604,
+                173.37111799512058
+              ]
+            },
+            "sif": {
+              "cp2k_median_seconds": 171.591,
+              "cp2k_seconds": [
+                171.591,
+                171.692,
+                171.121
+              ],
+              "outside_cp2k_timer_median_seconds": 2.4754530620220976,
+              "paired_cp2k_delta_median_seconds": 0.5020000000000095,
+              "paired_scf_steps_equal": true,
+              "paired_wall_delta_median_seconds": 0.8476449509616941,
+              "paired_wall_delta_seconds": [
+                0.9519670489244163,
+                0.8476449509616941,
+                0.3036202120129019
+              ],
+              "wall_max_seconds": 174.1674530620221,
+              "wall_median_ratio_to_native": 1.0043046512921228,
+              "wall_median_seconds": 174.06588944699615,
+              "wall_min_seconds": 173.6747382071335,
+              "wall_seconds": [
+                174.06588944699615,
+                174.1674530620221,
+                173.6747382071335
+              ]
+            }
+          }
+        }
+      },
+      "threads": 3,
+      "uid": 1478400690,
+      "user": "stardust",
+      "version_invocations": 24
+    },
+    "DSPRHBM": {
+      "cache_scope": "First observed invocation plus warmed repetitions; no cache flush, no cold-cache claim",
+      "elapsed": "01:46:10",
+      "exit_code": "0:0",
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-raed7aa53ff43",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "aed7aa53ff436310f28e5fdc21e1c3ca211f2422c5dd6abe44b19aa1d3ae9277",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "image_sha256": "ffa8f9fae69c5a45ade6cdcae8a71391c2c222a31ec438e1e7eb025c2d4338b0",
+      "job": "1882051",
+      "max_energy_delta_ha": 2.4783730623312294e-11,
+      "max_force_delta_ha_bohr": 1.499999950638209e-11,
+      "node": "d9470n02",
+      "partition": "DSPRHBM",
+      "passed": true,
+      "routine_timings": {
+        "water-gpw/0/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.029,
+            "total_max_seconds": 34.377
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 5.74,
+            "total_max_seconds": 5.74
+          }
+        },
+        "water-gpw/0/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.112,
+            "total_max_seconds": 43.788
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 5.664,
+            "total_max_seconds": 5.664
+          }
+        },
+        "water-gpw/1/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.029,
+            "total_max_seconds": 34.218
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 5.719,
+            "total_max_seconds": 5.719
+          }
+        },
+        "water-gpw/1/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.096,
+            "total_max_seconds": 34.769
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 5.729,
+            "total_max_seconds": 5.729
+          }
+        },
+        "water-gpw/2/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.046,
+            "total_max_seconds": 42.997
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 5.711,
+            "total_max_seconds": 5.711
+          }
+        },
+        "water-gpw/2/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.106,
+            "total_max_seconds": 42.586
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 4.932,
+            "total_max_seconds": 4.932
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 46,
+            "self_max_seconds": 3.357,
+            "total_max_seconds": 3.362
+          }
+        },
+        "water-gpw/3/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.029,
+            "total_max_seconds": 32.682
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 5.366,
+            "total_max_seconds": 5.366
+          }
+        },
+        "water-gpw/3/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.093,
+            "total_max_seconds": 33.559
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 5.193,
+            "total_max_seconds": 5.193
+          }
+        },
+        "water-gpw/4/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.046,
+            "total_max_seconds": 40.194
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 5.172,
+            "total_max_seconds": 5.172
+          }
+        },
+        "water-gpw/4/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.09,
+            "total_max_seconds": 32.232
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 5.058,
+            "total_max_seconds": 5.058
+          }
+        },
+        "water-gpw/warmup/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.031,
+            "total_max_seconds": 33.738
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 5.552,
+            "total_max_seconds": 5.552
+          }
+        },
+        "water-gpw/warmup/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.093,
+            "total_max_seconds": 34.65
+          },
+          "pbe_lda_eval": {
+            "calls_max": 47,
+            "self_max_seconds": 5.62,
+            "total_max_seconds": 5.62
+          }
+        },
+        "water64-elpa/0/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.072,
+            "total_max_seconds": 111.695
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 5.835
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 5.613,
+            "total_max_seconds": 5.835
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 32.877,
+            "total_max_seconds": 32.877
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 36.937,
+            "total_max_seconds": 36.937
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 4.559,
+            "total_max_seconds": 4.559
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 0.004,
+            "total_max_seconds": 0.012
+          }
+        },
+        "water64-elpa/0/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 40.283,
+            "total_max_seconds": 180.27
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 5.831
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 5.608,
+            "total_max_seconds": 5.83
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 32.574,
+            "total_max_seconds": 32.574
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 36.967,
+            "total_max_seconds": 36.967
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 4.541,
+            "total_max_seconds": 4.541
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 26.976,
+            "total_max_seconds": 28.531
+          }
+        },
+        "water64-elpa/1/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 4.36,
+            "total_max_seconds": 137.786
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 5.831
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 5.606,
+            "total_max_seconds": 5.831
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 33.052,
+            "total_max_seconds": 33.052
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 37.526,
+            "total_max_seconds": 37.526
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 4.573,
+            "total_max_seconds": 4.573
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 11.542,
+            "total_max_seconds": 20.847
+          }
+        },
+        "water64-elpa/1/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.221,
+            "total_max_seconds": 169.721
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 5.829
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 5.609,
+            "total_max_seconds": 5.829
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 32.796,
+            "total_max_seconds": 32.796
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 37.409,
+            "total_max_seconds": 37.409
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 4.564,
+            "total_max_seconds": 4.564
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 47.184,
+            "total_max_seconds": 57.015
+          }
+        },
+        "water64-elpa/2/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 47.037,
+            "total_max_seconds": 233.851
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 5.999
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 5.773,
+            "total_max_seconds": 5.998
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 33.091,
+            "total_max_seconds": 33.091
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 37.571,
+            "total_max_seconds": 37.571
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 4.532,
+            "total_max_seconds": 4.532
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 38.628,
+            "total_max_seconds": 73.639
+          }
+        },
+        "water64-elpa/2/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 2.564,
+            "total_max_seconds": 123.706
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 5.888
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 5.661,
+            "total_max_seconds": 5.887
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 33.002,
+            "total_max_seconds": 33.002
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 37.512,
+            "total_max_seconds": 37.512
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 4.56,
+            "total_max_seconds": 4.56
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 3.553,
+            "total_max_seconds": 3.559
+          }
+        },
+        "water64-elpa/warmup/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.071,
+            "total_max_seconds": 117.658
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 5.847
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 5.621,
+            "total_max_seconds": 5.846
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 32.556,
+            "total_max_seconds": 32.556
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 37.013,
+            "total_max_seconds": 37.013
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 4.558,
+            "total_max_seconds": 4.558
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 1.425,
+            "total_max_seconds": 6.006
+          }
+        },
+        "water64-elpa/warmup/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.118,
+            "total_max_seconds": 117.349
+          },
+          "cp_fm_diag_elpa": {
+            "calls_max": 24,
+            "self_max_seconds": 0.0,
+            "total_max_seconds": 5.825
+          },
+          "cp_fm_diag_elpa_base": {
+            "calls_max": 24,
+            "self_max_seconds": 5.603,
+            "total_max_seconds": 5.825
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 32.83,
+            "total_max_seconds": 32.83
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 25,
+            "self_max_seconds": 36.981,
+            "total_max_seconds": 36.981
+          },
+          "pbe_lda_eval": {
+            "calls_max": 25,
+            "self_max_seconds": 4.556,
+            "total_max_seconds": 4.556
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 24,
+            "self_max_seconds": 5.279,
+            "total_max_seconds": 5.295
+          }
+        },
+        "water64-gpw/0/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 12.505,
+            "total_max_seconds": 507.998
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 142.291,
+            "total_max_seconds": 142.291
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 158.895,
+            "total_max_seconds": 158.895
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 19.557,
+            "total_max_seconds": 19.557
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 57.983,
+            "total_max_seconds": 61.29
+          }
+        },
+        "water64-gpw/0/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.115,
+            "total_max_seconds": 560.97
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 142.014,
+            "total_max_seconds": 142.014
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 159.311,
+            "total_max_seconds": 159.311
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 19.47,
+            "total_max_seconds": 19.47
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 79.07,
+            "total_max_seconds": 124.458
+          }
+        },
+        "water64-gpw/1/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 20.517,
+            "total_max_seconds": 573.517
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 142.074,
+            "total_max_seconds": 142.074
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 161.647,
+            "total_max_seconds": 161.647
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 19.442,
+            "total_max_seconds": 19.442
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 71.269,
+            "total_max_seconds": 116.067
+          }
+        },
+        "water64-gpw/1/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 23.835,
+            "total_max_seconds": 556.777
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 142.233,
+            "total_max_seconds": 142.233
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 159.875,
+            "total_max_seconds": 159.875
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 19.561,
+            "total_max_seconds": 19.561
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 81.9,
+            "total_max_seconds": 99.371
+          }
+        },
+        "water64-gpw/2/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.068,
+            "total_max_seconds": 478.139
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 142.784,
+            "total_max_seconds": 142.784
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 158.592,
+            "total_max_seconds": 158.592
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 19.55,
+            "total_max_seconds": 19.55
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 41.552,
+            "total_max_seconds": 43.218
+          }
+        },
+        "water64-gpw/2/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.116,
+            "total_max_seconds": 471.119
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 141.949,
+            "total_max_seconds": 141.949
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 158.968,
+            "total_max_seconds": 158.968
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 19.599,
+            "total_max_seconds": 19.599
+          },
+          "write_mo_set_to_restart": {
+            "calls_max": 107,
+            "self_max_seconds": 26.263,
+            "total_max_seconds": 35.94
+          }
+        },
+        "water64-gpw/warmup/native": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.063,
+            "total_max_seconds": 559.949
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 195.924,
+            "total_max_seconds": 195.924
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 203.351,
+            "total_max_seconds": 203.351
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 25.641,
+            "total_max_seconds": 25.641
+          }
+        },
+        "water64-gpw/warmup/sif": {
+          "CP2K": {
+            "calls_max": 1,
+            "self_max_seconds": 0.122,
+            "total_max_seconds": 520.22
+          },
+          "grid_collocate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 175.248,
+            "total_max_seconds": 175.248
+          },
+          "grid_integrate_task_list": {
+            "calls_max": 108,
+            "self_max_seconds": 193.002,
+            "total_max_seconds": 193.002
+          },
+          "pbe_lda_eval": {
+            "calls_max": 108,
+            "self_max_seconds": 22.955,
+            "total_max_seconds": 22.955
+          }
+        }
+      },
+      "science_calculations": 28,
+      "scope": "One rank on one node; native versus Apptainer SIF; same physical host work filesystem",
+      "state": "COMPLETED",
+      "summary": {
+        "version": {
+          "measured_repetitions": 7,
+          "modes": {
+            "checked": {
+              "paired_wall_delta_median_seconds": 0.703130935318768,
+              "paired_wall_delta_seconds": [
+                1.404165388084948,
+                0.6517320740967989,
+                0.703130935318768,
+                2.705045511946082,
+                0.6460115583613515,
+                0.6513423919677734,
+                0.7540829563513398
+              ],
+              "wall_max_seconds": 3.674100740812719,
+              "wall_median_ratio_to_native": 1.7233040105331792,
+              "wall_median_seconds": 1.6699480898678303,
+              "wall_min_seconds": 1.618051123805344,
+              "wall_seconds": [
+                2.3732039788737893,
+                1.620842069387436,
+                1.6699480898678303,
+                3.674100740812719,
+                1.622841320000589,
+                1.618051123805344,
+                1.7210051156580448
+              ]
+            },
+            "native": {
+              "wall_max_seconds": 0.9768297616392374,
+              "wall_median_seconds": 0.9690385907888412,
+              "wall_min_seconds": 0.9667087318375707,
+              "wall_seconds": [
+                0.9690385907888412,
+                0.969109995290637,
+                0.9668171545490623,
+                0.9690552288666368,
+                0.9768297616392374,
+                0.9667087318375707,
+                0.966922159306705
+              ]
+            },
+            "sif": {
+              "paired_wall_delta_median_seconds": 0.5026785898953676,
+              "paired_wall_delta_seconds": [
+                0.6060414034873247,
+                0.5025291182100773,
+                0.5010994272306561,
+                0.5034006237983704,
+                0.4927422245964408,
+                0.5053722634911537,
+                0.5026785898953676
+              ],
+              "wall_max_seconds": 1.575079994276166,
+              "wall_median_ratio_to_native": 1.518658934215131,
+              "wall_median_seconds": 1.4716391135007143,
+              "wall_min_seconds": 1.4679165817797184,
+              "wall_seconds": [
+                1.575079994276166,
+                1.4716391135007143,
+                1.4679165817797184,
+                1.4724558526650071,
+                1.4695719862356782,
+                1.4720809953287244,
+                1.4696007492020726
+              ]
+            }
+          }
+        },
+        "water-gpw": {
+          "measured_repetitions": 5,
+          "modes": {
+            "native": {
+              "cp2k_median_seconds": 34.377,
+              "cp2k_seconds": [
+                34.377,
+                34.218,
+                42.997,
+                32.682,
+                40.194
+              ],
+              "outside_cp2k_timer_median_seconds": 1.0705112948715652,
+              "wall_max_seconds": 44.06132023409009,
+              "wall_median_seconds": 35.499937208369374,
+              "wall_min_seconds": 34.03937380667776,
+              "wall_seconds": [
+                35.499937208369374,
+                35.28851129487157,
+                44.06132023409009,
+                34.03937380667776,
+                41.24639039486647
+              ]
+            },
+            "sif": {
+              "cp2k_median_seconds": 34.769,
+              "cp2k_seconds": [
+                43.788,
+                34.769,
+                42.586,
+                33.559,
+                32.232
+              ],
+              "outside_cp2k_timer_median_seconds": 1.577108263678852,
+              "paired_cp2k_delta_median_seconds": 0.5509999999999948,
+              "paired_scf_steps_equal": true,
+              "paired_wall_delta_median_seconds": 1.059130486100912,
+              "paired_wall_delta_seconds": [
+                9.865171055309474,
+                1.059130486100912,
+                0.09162122290581465,
+                1.0608394537121058,
+                -6.042375652119517
+              ],
+              "wall_max_seconds": 45.36510826367885,
+              "wall_median_ratio_to_native": 1.023879044281894,
+              "wall_median_seconds": 36.34764178097248,
+              "wall_min_seconds": 35.100213260389864,
+              "wall_seconds": [
+                45.36510826367885,
+                36.34764178097248,
+                44.152941456995904,
+                35.100213260389864,
+                35.20401474274695
+              ]
+            }
+          }
+        },
+        "water64-elpa": {
+          "measured_repetitions": 3,
+          "modes": {
+            "native": {
+              "cp2k_median_seconds": 137.786,
+              "cp2k_seconds": [
+                111.695,
+                137.786,
+                233.851
+              ],
+              "outside_cp2k_timer_median_seconds": 0.9778900727033601,
+              "wall_max_seconds": 237.27640925906599,
+              "wall_median_seconds": 138.76389007270336,
+              "wall_min_seconds": 112.65338581427932,
+              "wall_seconds": [
+                112.65338581427932,
+                138.76389007270336,
+                237.27640925906599
+              ]
+            },
+            "sif": {
+              "cp2k_median_seconds": 169.721,
+              "cp2k_seconds": [
+                180.27,
+                169.721,
+                123.706
+              ],
+              "outside_cp2k_timer_median_seconds": 1.417317229226228,
+              "paired_cp2k_delta_median_seconds": 31.935000000000002,
+              "paired_scf_steps_equal": true,
+              "paired_wall_delta_median_seconds": 32.37442715652287,
+              "paired_wall_delta_seconds": [
+                68.95563022140414,
+                32.37442715652287,
+                -91.23864328674972
+              ],
+              "wall_max_seconds": 181.60901603568345,
+              "wall_median_ratio_to_native": 1.2333058488023128,
+              "wall_median_seconds": 171.13831722922623,
+              "wall_min_seconds": 146.03776597231627,
+              "wall_seconds": [
+                181.60901603568345,
+                171.13831722922623,
+                146.03776597231627
+              ]
+            }
+          }
+        },
+        "water64-gpw": {
+          "measured_repetitions": 3,
+          "modes": {
+            "native": {
+              "cp2k_median_seconds": 507.998,
+              "cp2k_seconds": [
+                507.998,
+                573.517,
+                478.139
+              ],
+              "outside_cp2k_timer_median_seconds": 43.629314451910545,
+              "wall_max_seconds": 621.7484543155879,
+              "wall_median_seconds": 521.7683144519106,
+              "wall_min_seconds": 508.9568747058511,
+              "wall_seconds": [
+                508.9568747058511,
+                621.7484543155879,
+                521.7683144519106
+              ]
+            },
+            "sif": {
+              "cp2k_median_seconds": 556.777,
+              "cp2k_seconds": [
+                560.97,
+                556.777,
+                471.119
+              ],
+              "outside_cp2k_timer_median_seconds": 2.6158206385746325,
+              "paired_cp2k_delta_median_seconds": -7.019999999999982,
+              "paired_scf_steps_equal": true,
+              "paired_wall_delta_median_seconds": -48.286537882871926,
+              "paired_wall_delta_seconds": [
+                54.62894593272358,
+                -56.9045483218506,
+                -48.286537882871926
+              ],
+              "wall_max_seconds": 564.8439059937373,
+              "wall_median_ratio_to_native": 1.0801457371565215,
+              "wall_median_seconds": 563.5858206385747,
+              "wall_min_seconds": 473.48177656903863,
+              "wall_seconds": [
+                563.5858206385747,
+                564.8439059937373,
+                473.48177656903863
+              ]
+            }
+          }
+        }
+      },
+      "threads": 2,
+      "uid": 1478400690,
+      "user": "stardust",
+      "version_invocations": 24
+    },
+    "startup-16V100": {
+      "exit_code": "0:0",
+      "job": "1882107",
+      "node": "16v100n08",
+      "partition": "16V100",
+      "passed": true,
+      "repetitions": 20,
+      "state": "COMPLETED",
+      "summary": {
+        "elapsed_seconds": {
+          "native_median": 2.3698250176385045,
+          "paired_delta_max": 0.9016673304140568,
+          "paired_delta_mean": 0.43299269061535595,
+          "paired_delta_median": 0.4510416863486171,
+          "paired_delta_min": -0.10053454525768757,
+          "paired_deltas": [
+            0.19967259839177132,
+            0.700977336615324,
+            0.7508143540471792,
+            0.6507115755230188,
+            0.3505193814635277,
+            0.20002415403723717,
+            0.29989215172827244,
+            0.8518720082938671,
+            0.5006597246974707,
+            0.4492176566272974,
+            0.45091838389635086,
+            0.3000075500458479,
+            -0.10053454525768757,
+            -0.049705829471349716,
+            0.10001866519451141,
+            0.5503946952521801,
+            0.5007948186248541,
+            0.6007668133825064,
+            0.9016673304140568,
+            0.4511649888008833
+          ],
+          "sif_median": 2.820214639417827,
+          "values": {
+            "native": [
+              2.620680198073387,
+              2.220072839409113,
+              2.520548839122057,
+              2.0197178814560175,
+              2.519908620044589,
+              2.420033313333988,
+              2.4705756548792124,
+              2.1694043781608343,
+              2.319774564355612,
+              2.271128121763468,
+              2.5700983963906765,
+              2.220023712143302,
+              2.870945770293474,
+              2.669706417247653,
+              2.3696377463638783,
+              2.3700122889131308,
+              2.5698018819093704,
+              2.2193096689879894,
+              2.0692695677280426,
+              2.118870275095105
+            ],
+            "sif": [
+              2.8203527964651585,
+              2.921050176024437,
+              3.271363193169236,
+              2.6704294569790363,
+              2.8704280015081167,
+              2.6200574673712254,
+              2.770467806607485,
+              3.0212763864547014,
+              2.8204342890530825,
+              2.720345778390765,
+              3.0210167802870274,
+              2.52003126218915,
+              2.7704112250357866,
+              2.6200005877763033,
+              2.4696564115583897,
+              2.920406984165311,
+              3.0705967005342245,
+              2.820076482370496,
+              2.9709368981420994,
+              2.5700352638959885
+            ]
+          }
+        },
+        "rank_system_seconds": {
+          "native_median": 0.62,
+          "paired_delta_max": 0.20999999999999996,
+          "paired_delta_mean": 0.038500000000000006,
+          "paired_delta_median": 0.025000000000000022,
+          "paired_delta_min": -0.050000000000000044,
+          "paired_deltas": [
+            0.030000000000000027,
+            0.07000000000000006,
+            0.09999999999999998,
+            0.06999999999999995,
+            -0.040000000000000036,
+            -0.050000000000000044,
+            0.06000000000000005,
+            0.010000000000000009,
+            0.020000000000000018,
+            -0.010000000000000009,
+            0.010000000000000009,
+            -0.04999999999999993,
+            0.0,
+            0.08999999999999997,
+            0.07000000000000006,
+            0.12,
+            0.010000000000000009,
+            0.010000000000000009,
+            0.20999999999999996,
+            0.040000000000000036
+          ],
+          "sif_median": 0.65,
+          "values": {
+            "native": [
+              0.6,
+              0.61,
+              0.63,
+              0.63,
+              0.68,
+              0.68,
+              0.59,
+              0.69,
+              0.66,
+              0.67,
+              0.64,
+              0.71,
+              0.64,
+              0.52,
+              0.57,
+              0.55,
+              0.58,
+              0.59,
+              0.53,
+              0.57
+            ],
+            "sif": [
+              0.63,
+              0.68,
+              0.73,
+              0.7,
+              0.64,
+              0.63,
+              0.65,
+              0.7,
+              0.68,
+              0.66,
+              0.65,
+              0.66,
+              0.64,
+              0.61,
+              0.64,
+              0.67,
+              0.59,
+              0.6,
+              0.74,
+              0.61
+            ]
+          }
+        },
+        "rank_user_seconds": {
+          "native_median": 0.46,
+          "paired_delta_max": 0.38,
+          "paired_delta_mean": 0.2835,
+          "paired_delta_median": 0.27999999999999997,
+          "paired_delta_min": 0.16000000000000003,
+          "paired_deltas": [
+            0.31999999999999995,
+            0.25,
+            0.21999999999999997,
+            0.34,
+            0.26,
+            0.35000000000000003,
+            0.29000000000000004,
+            0.38,
+            0.27999999999999997,
+            0.22999999999999998,
+            0.22999999999999998,
+            0.24999999999999994,
+            0.16000000000000003,
+            0.29,
+            0.24000000000000005,
+            0.37999999999999995,
+            0.34,
+            0.27999999999999997,
+            0.31,
+            0.26999999999999996
+          ],
+          "sif_median": 0.74,
+          "values": {
+            "native": [
+              0.5,
+              0.48,
+              0.51,
+              0.41,
+              0.52,
+              0.46,
+              0.47,
+              0.37,
+              0.46,
+              0.49,
+              0.47,
+              0.45,
+              0.51,
+              0.45,
+              0.41,
+              0.45,
+              0.44,
+              0.46,
+              0.45,
+              0.44
+            ],
+            "sif": [
+              0.82,
+              0.73,
+              0.73,
+              0.75,
+              0.78,
+              0.81,
+              0.76,
+              0.75,
+              0.74,
+              0.72,
+              0.7,
+              0.7,
+              0.67,
+              0.74,
+              0.65,
+              0.83,
+              0.78,
+              0.74,
+              0.76,
+              0.71
+            ]
+          }
+        },
+        "rank_wall_seconds": {
+          "native_median": 1.5750000000000002,
+          "paired_delta_max": 0.8599999999999999,
+          "paired_delta_mean": 0.40599999999999997,
+          "paired_delta_median": 0.3999999999999999,
+          "paired_delta_min": -0.010000000000000009,
+          "paired_deltas": [
+            0.21999999999999997,
+            0.3999999999999999,
+            0.48,
+            0.56,
+            0.1499999999999999,
+            0.18999999999999995,
+            0.53,
+            0.7800000000000002,
+            0.4399999999999997,
+            0.43999999999999995,
+            0.3999999999999999,
+            0.31000000000000005,
+            -0.010000000000000009,
+            0.16999999999999993,
+            0.31000000000000005,
+            0.8400000000000001,
+            0.33999999999999986,
+            0.42000000000000015,
+            0.8599999999999999,
+            0.29000000000000004
+          ],
+          "sif_median": 1.9849999999999999,
+          "values": {
+            "native": [
+              1.8,
+              1.56,
+              1.67,
+              1.4,
+              1.76,
+              1.76,
+              1.59,
+              1.44,
+              1.61,
+              1.56,
+              1.73,
+              1.54,
+              1.93,
+              1.8,
+              1.5,
+              1.45,
+              1.75,
+              1.43,
+              1.33,
+              1.47
+            ],
+            "sif": [
+              2.02,
+              1.96,
+              2.15,
+              1.96,
+              1.91,
+              1.95,
+              2.12,
+              2.22,
+              2.05,
+              2.0,
+              2.13,
+              1.85,
+              1.92,
+              1.97,
+              1.81,
+              2.29,
+              2.09,
+              1.85,
+              2.19,
+              1.76
+            ]
+          }
+        }
+      },
+      "uid": 1478400690,
+      "user": "stardust"
+    }
+  },
+  "scope": "Raw-log numerical and provenance revalidation; timings retain observed variability"
+}

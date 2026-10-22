@@ -1,0 +1,1623 @@
+{
+  "schema": 1,
+  "purpose": "Independent evidence for CP2K install-layout failures; not application acceptance",
+  "observed_at": "2026-10-17T23:26:00.222859+00:00",
+  "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+  "failure_summary": "Affected application logs reach 100% build progress, then CMake install tries /lib64/libcp2k.so.2026.2 and fails with Read-only file system. All eight dependency jobs completed successfully.",
+  "failed_application_count": 7,
+  "nonfailed_application_count": 1,
+  "overlay_check_scope": "Only stat was collected for existing application and dependency overlays. No overlay was mounted, copied, deleted or hashed; dependency image digests are quoted only from pre-existing seals.",
+  "collector": "/home/stardust/sai-hpc-software/diagnostics/cp2k-release-20261016/install-layout-fix/record-failed-builds.py",
+  "collector_sha256": "74af184c4578cc90f355e17609ace19daa84e256774ed7fc66950ed7c78f8a06",
+  "sacct": {
+    "argv": [
+      "sacct",
+      "-X",
+      "-nP",
+      "-j",
+      "1834216,1835091,1834214,1834792,1834213,1835182,1834205,1835046,1834668,1835636,1834662,1835128,1834667,1837029,1834666,1835454",
+      "-o",
+      "JobIDRaw,Partition,State,ExitCode,Elapsed,NodeList,Start,End"
+    ],
+    "returncode": 0,
+    "stdout": "1834205|DSPRHBM|COMPLETED|0:0|00:58:16|d9470n02|2026-10-18T01:42:35|2026-10-18T02:40:51\n1834213|8V100V0|COMPLETED|0:0|01:12:36|8v100v0n03|2026-10-18T01:43:02|2026-10-18T02:55:38\n1834214|4V100|COMPLETED|0:0|00:36:14|4v100n09|2026-10-18T01:42:58|2026-10-18T02:19:12\n1834216|16V100|COMPLETED|0:0|01:01:49|16v100n80|2026-10-18T01:43:13|2026-10-18T02:45:02\n1834662|4V100|COMPLETED|0:0|00:36:41|4v100n10|2026-10-18T02:11:33|2026-10-18T02:48:14\n1834666|DSPRHBM|COMPLETED|0:0|01:11:31|d9470n02|2026-10-18T02:11:39|2026-10-18T03:23:10\n1834667|8V100V0|COMPLETED|0:0|01:11:11|8v100v0n03|2026-10-18T05:14:13|2026-10-18T06:25:24\n1834668|16V100|COMPLETED|0:0|01:31:17|16v100n05|2026-10-18T02:11:52|2026-10-18T03:43:09\n1834792|4V100|FAILED|1:0|00:53:03|4v100n03|2026-10-18T02:22:14|2026-10-18T03:15:17\n1835046|DSPRHBM|FAILED|1:0|00:55:48|d9470n02|2026-10-18T02:43:51|2026-10-18T03:39:39\n1835091|16V100|FAILED|1:0|00:24:13|16v100n05|2026-10-18T02:48:14|2026-10-18T03:12:27\n1835128|4V100|FAILED|1:0|00:45:44|4v100n01|2026-10-18T02:51:22|2026-10-18T03:37:06\n1835182|8V100V0|FAILED|1:0|01:30:48|8v100v0n02|2026-10-18T02:59:24|2026-10-18T04:30:12\n1835454|DSPRHBM|FAILED|1:0|00:42:54|d9470n02|2026-10-18T03:26:07|2026-10-18T04:09:01\n1835636|16V100|FAILED|1:0|00:18:38|16v100n02|2026-10-18T03:46:01|2026-10-18T04:04:39\n1837029|8V100V0|RUNNING|0:0|00:13:59|8v100v0n11|2026-10-18T07:12:01|Unknown\n",
+    "stderr": ""
+  },
+  "builds": [
+    {
+      "workflow": "39054631316",
+      "run_id": "39054631316-1-release-16v100-avx2-2026-10-17-67b5da876dd6",
+      "run_directory": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-16v100-avx2-2026-10-17-67b5da876dd6",
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-re139a320651c",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-re139a320651c/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "e139a320651ce69c11cdbd1763ae875f98992de261a465e9e19a24849086bf40",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "controller": "/home/stardust/sai-hpc-software/controller/9f17f715263016c4e063580b4e97c1ea2f6df2c9/39054631316-1-release-16v100-avx2-2026-10-17-67b5da876dd6",
+      "controller_git_sha": "9f17f715263016c4e063580b4e97c1ea2f6df2c9",
+      "controller_scripts_match_git": true,
+      "controller_script_sha256": {
+        "cp2k_build.sh": "f6ce7693a0cc890008de5589d628b892c1d2d0f006d7c1f8b6642b14d680be18",
+        "cp2k_dependencies.sh": "99d5bbcf9dda385257c0088fe9a12a1f6eea86364e2dc8bef46a17d1af822562",
+        "cp2k_cmake_prerequisites.cmake": "8c923f94b76475eba88e14280b05e37ddb8f491a03821193253e49e4af519a0d",
+        "software_controller.py": "0ca83428f8633af7f1e2de3d88fadb3ed8251180ea08cb32b37a851cf50a53db"
+      },
+      "request_sha256": "17c233a407fae631b2977721326693d4094508918980f7b924c8e0745863df00",
+      "job_script_sha256": "d14d6b9f8fee2d303f7cab60e7f3489d1a5c6eb278dde6b183eb7ec145668964",
+      "host_tmpdir": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-16v100-avx2-2026-10-17-67b5da876dd6/runtime",
+      "host_apptainer_tmpdir": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-16v100-avx2-2026-10-17-67b5da876dd6/runtime",
+      "application_job_id": "1835091",
+      "dependency": {
+        "job_id": "1834216",
+        "run_directory": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-16v100-avx2-2026-10-17-67b5da876dd6-dependencies",
+        "request_sha256": "29760ac81966d3afefebe2743f5c4e6961292d6230d991e6c117bdc739a8006d",
+        "seal_path": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-16v100-avx2-2026-10-17-67b5da876dd6-dependencies/results/dependency-stage.json",
+        "seal_sha256": "8e39ae7b297ad1b5dad50d01b3f906a6f61f63714aaf9b7a32900c95ea69afd0",
+        "overlay_sha256_from_seal": "e9c905aeaee14f62c00e2fa01f142ed1b1315de6423d0141e186e9d4aa718ed8",
+        "overlay_stat": {
+          "path": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-16v100-avx2-2026-10-17-67b5da876dd6-dependencies/work.ext3",
+          "exists": true,
+          "content_hashed": false,
+          "regular_file": true,
+          "size_bytes": 17179869184,
+          "allocated_bytes": 1398038016,
+          "mode": "0o400",
+          "inode": 144115783985852448,
+          "device": 4231993238,
+          "mtime": "2026-10-17T18:45:02+00:00"
+        },
+        "accounting": {
+          "job_id": "1834216",
+          "partition": "16V100",
+          "state": "COMPLETED",
+          "exit_code": "0:0",
+          "elapsed": "01:01:49",
+          "node_list": "16v100n80",
+          "start": "2026-10-18T01:43:13",
+          "end": "2026-10-18T02:45:02"
+        }
+      },
+      "log": {
+        "path": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-16v100-avx2-2026-10-17-67b5da876dd6/results/slurm-1835091.log",
+        "sha256": "f6a7adf54522f8b88e67b86a8b96a440911af8f8e3c261bd8d6ba0a716a7b6dd",
+        "bytes_read": 381340,
+        "stable_during_read": true,
+        "line_count": 5116,
+        "compile_100_percent_excerpt": [
+          {
+            "line": 1646,
+            "text": "[100%] Linking Fortran static library libdbcsr_c.a"
+          },
+          {
+            "line": 1647,
+            "text": "[100%] Built target dbcsr_c"
+          },
+          {
+            "line": 4762,
+            "text": "[100%] Linking Fortran executable ../bin/xyz2dcd.psmp"
+          },
+          {
+            "line": 4763,
+            "text": "[100%] Built target dumpdcd"
+          },
+          {
+            "line": 4764,
+            "text": "[100%] Built target graph"
+          },
+          {
+            "line": 4765,
+            "text": "[100%] Linking Fortran executable ../bin/dbt_unittest.psmp"
+          },
+          {
+            "line": 4766,
+            "text": "[100%] Built target xyz2dcd"
+          },
+          {
+            "line": 4767,
+            "text": "[100%] Built target dbt_unittest"
+          }
+        ],
+        "install_failure_excerpt": [
+          {
+            "line": 5109,
+            "text": "-- Installing: /lib64/libcp2k.so.2026.2"
+          },
+          {
+            "line": 5110,
+            "text": "CMake Error at orkspace/build/src/cmake_install.cmake:412 (file):"
+          },
+          {
+            "line": 5111,
+            "text": "  file INSTALL cannot copy file \"/workspace/build/src/libcp2k.so.2026.2\" to"
+          },
+          {
+            "line": 5112,
+            "text": "  \"/lib64/libcp2k.so.2026.2\": Read-only file system."
+          },
+          {
+            "line": 5113,
+            "text": "Call Stack (most recent call first):"
+          },
+          {
+            "line": 5114,
+            "text": "  orkspace/build/cmake_install.cmake:47 (include)"
+          },
+          {
+            "line": 5115,
+            "text": ""
+          },
+          {
+            "line": 5116,
+            "text": ""
+          }
+        ],
+        "tail": [
+          {
+            "line": 5107,
+            "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-re139a320651c/16V100/share/cp2k/data/ri_rs_grid/Se_def2-tzvp-rs.ion"
+          },
+          {
+            "line": 5108,
+            "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-re139a320651c/16V100/share/cp2k/data/ri_rs_grid/K_def2-tzvp-rs.ion"
+          },
+          {
+            "line": 5109,
+            "text": "-- Installing: /lib64/libcp2k.so.2026.2"
+          },
+          {
+            "line": 5110,
+            "text": "CMake Error at orkspace/build/src/cmake_install.cmake:412 (file):"
+          },
+          {
+            "line": 5111,
+            "text": "  file INSTALL cannot copy file \"/workspace/build/src/libcp2k.so.2026.2\" to"
+          },
+          {
+            "line": 5112,
+            "text": "  \"/lib64/libcp2k.so.2026.2\": Read-only file system."
+          },
+          {
+            "line": 5113,
+            "text": "Call Stack (most recent call first):"
+          },
+          {
+            "line": 5114,
+            "text": "  orkspace/build/cmake_install.cmake:47 (include)"
+          },
+          {
+            "line": 5115,
+            "text": ""
+          },
+          {
+            "line": 5116,
+            "text": ""
+          }
+        ]
+      },
+      "install_layout_failure_observed": true,
+      "application_overlay_stat": {
+        "path": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-16v100-avx2-2026-10-17-67b5da876dd6/work.ext3",
+        "exists": true,
+        "content_hashed": false,
+        "regular_file": true,
+        "size_bytes": 17179869184,
+        "allocated_bytes": 2653990912,
+        "mode": "0o600",
+        "inode": 144115785160214339,
+        "device": 4231993238,
+        "mtime": "2026-10-17T19:12:27+00:00"
+      },
+      "artifact_pointer_present": false,
+      "result_sif_present": false,
+      "application_accounting": {
+        "job_id": "1835091",
+        "partition": "16V100",
+        "state": "FAILED",
+        "exit_code": "1:0",
+        "elapsed": "00:24:13",
+        "node_list": "16v100n05",
+        "start": "2026-10-18T02:48:14",
+        "end": "2026-10-18T03:12:27"
+      },
+      "classification": "compiled_to_100_percent_then_install_failed_at_root_lib64"
+    },
+    {
+      "workflow": "39054631316",
+      "run_id": "39054631316-1-release-4v100-avx512-2026-10-17-67b5da876dd6",
+      "run_directory": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-4v100-avx512-2026-10-17-67b5da876dd6",
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-re139a320651c",
+        "cpu_arch": "znver4",
+        "cuda_arch": "70",
+        "dependency_isa": "avx512",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-re139a320651c/4V100",
+        "partition": "4V100",
+        "recipe_sha256": "e139a320651ce69c11cdbd1763ae875f98992de261a465e9e19a24849086bf40",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "4v100-avx512",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "controller": "/home/stardust/sai-hpc-software/controller/9f17f715263016c4e063580b4e97c1ea2f6df2c9/39054631316-1-release-4v100-avx512-2026-10-17-67b5da876dd6",
+      "controller_git_sha": "9f17f715263016c4e063580b4e97c1ea2f6df2c9",
+      "controller_scripts_match_git": true,
+      "controller_script_sha256": {
+        "cp2k_build.sh": "f6ce7693a0cc890008de5589d628b892c1d2d0f006d7c1f8b6642b14d680be18",
+        "cp2k_dependencies.sh": "99d5bbcf9dda385257c0088fe9a12a1f6eea86364e2dc8bef46a17d1af822562",
+        "cp2k_cmake_prerequisites.cmake": "8c923f94b76475eba88e14280b05e37ddb8f491a03821193253e49e4af519a0d",
+        "software_controller.py": "0ca83428f8633af7f1e2de3d88fadb3ed8251180ea08cb32b37a851cf50a53db"
+      },
+      "request_sha256": "fd9956db67244191971c1b5462b3f53a108a85f853b663fc03210db7161154d0",
+      "job_script_sha256": "21914604146b5df15a36204864a8870805bd0410a6ef6de4cccb6848cbbeccf1",
+      "host_tmpdir": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-4v100-avx512-2026-10-17-67b5da876dd6/runtime",
+      "host_apptainer_tmpdir": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-4v100-avx512-2026-10-17-67b5da876dd6/runtime",
+      "application_job_id": "1834792",
+      "dependency": {
+        "job_id": "1834214",
+        "run_directory": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-4v100-avx512-2026-10-17-67b5da876dd6-dependencies",
+        "request_sha256": "128bd791fd7bb9aa7bb0c1a3ba17e88dc3ee5cedec9027cd0062ef4b4bce5967",
+        "seal_path": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-4v100-avx512-2026-10-17-67b5da876dd6-dependencies/results/dependency-stage.json",
+        "seal_sha256": "d50d1b4c47a7d7eb17e14dc7f252d90c17cef3c45a0497420b18607895d19d47",
+        "overlay_sha256_from_seal": "cc23ed0aac3192ea06d8bd0a527e0695db0f98379be70fb8f7a7b192e1bbfa6d",
+        "overlay_stat": {
+          "path": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-4v100-avx512-2026-10-17-67b5da876dd6-dependencies/work.ext3",
+          "exists": true,
+          "content_hashed": false,
+          "regular_file": true,
+          "size_bytes": 17179869184,
+          "allocated_bytes": 1396250624,
+          "mode": "0o400",
+          "inode": 144115784958917381,
+          "device": 4231993238,
+          "mtime": "2026-10-17T18:19:11+00:00"
+        },
+        "accounting": {
+          "job_id": "1834214",
+          "partition": "4V100",
+          "state": "COMPLETED",
+          "exit_code": "0:0",
+          "elapsed": "00:36:14",
+          "node_list": "4v100n09",
+          "start": "2026-10-18T01:42:58",
+          "end": "2026-10-18T02:19:12"
+        }
+      },
+      "log": {
+        "path": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-4v100-avx512-2026-10-17-67b5da876dd6/results/slurm-1834792.log",
+        "sha256": "9fc94cf0a30433582657b964897488c074688d8d5171e7c81f85a12612392618",
+        "bytes_read": 380560,
+        "stable_during_read": true,
+        "line_count": 5117,
+        "compile_100_percent_excerpt": [
+          {
+            "line": 4761,
+            "text": "[100%] Linking Fortran executable ../bin/xyz2dcd.psmp"
+          },
+          {
+            "line": 4762,
+            "text": "[100%] Built target xyz2dcd"
+          },
+          {
+            "line": 4763,
+            "text": "[100%] Linking Fortran executable ../bin/dumpdcd.psmp"
+          },
+          {
+            "line": 4764,
+            "text": "[100%] Linking Fortran executable ../bin/dbt_tas_unittest.psmp"
+          },
+          {
+            "line": 4765,
+            "text": "[100%] Built target dumpdcd"
+          },
+          {
+            "line": 4766,
+            "text": "[100%] Built target dbt_tas_unittest"
+          },
+          {
+            "line": 4767,
+            "text": "[100%] Linking Fortran executable ../bin/dbt_unittest.psmp"
+          },
+          {
+            "line": 4768,
+            "text": "[100%] Built target dbt_unittest"
+          }
+        ],
+        "install_failure_excerpt": [
+          {
+            "line": 5110,
+            "text": "-- Installing: /lib64/libcp2k.so.2026.2"
+          },
+          {
+            "line": 5111,
+            "text": "CMake Error at orkspace/build/src/cmake_install.cmake:412 (file):"
+          },
+          {
+            "line": 5112,
+            "text": "  file INSTALL cannot copy file \"/workspace/build/src/libcp2k.so.2026.2\" to"
+          },
+          {
+            "line": 5113,
+            "text": "  \"/lib64/libcp2k.so.2026.2\": Read-only file system."
+          },
+          {
+            "line": 5114,
+            "text": "Call Stack (most recent call first):"
+          },
+          {
+            "line": 5115,
+            "text": "  orkspace/build/cmake_install.cmake:47 (include)"
+          },
+          {
+            "line": 5116,
+            "text": ""
+          },
+          {
+            "line": 5117,
+            "text": ""
+          }
+        ],
+        "tail": [
+          {
+            "line": 5108,
+            "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-re139a320651c/4V100/share/cp2k/data/ri_rs_grid/Se_def2-tzvp-rs.ion"
+          },
+          {
+            "line": 5109,
+            "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-re139a320651c/4V100/share/cp2k/data/ri_rs_grid/K_def2-tzvp-rs.ion"
+          },
+          {
+            "line": 5110,
+            "text": "-- Installing: /lib64/libcp2k.so.2026.2"
+          },
+          {
+            "line": 5111,
+            "text": "CMake Error at orkspace/build/src/cmake_install.cmake:412 (file):"
+          },
+          {
+            "line": 5112,
+            "text": "  file INSTALL cannot copy file \"/workspace/build/src/libcp2k.so.2026.2\" to"
+          },
+          {
+            "line": 5113,
+            "text": "  \"/lib64/libcp2k.so.2026.2\": Read-only file system."
+          },
+          {
+            "line": 5114,
+            "text": "Call Stack (most recent call first):"
+          },
+          {
+            "line": 5115,
+            "text": "  orkspace/build/cmake_install.cmake:47 (include)"
+          },
+          {
+            "line": 5116,
+            "text": ""
+          },
+          {
+            "line": 5117,
+            "text": ""
+          }
+        ]
+      },
+      "install_layout_failure_observed": true,
+      "application_overlay_stat": {
+        "path": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-4v100-avx512-2026-10-17-67b5da876dd6/work.ext3",
+        "exists": true,
+        "content_hashed": false,
+        "regular_file": true,
+        "size_bytes": 17179869184,
+        "allocated_bytes": 2656377856,
+        "mode": "0o600",
+        "inode": 144115783767718904,
+        "device": 4231993238,
+        "mtime": "2026-10-17T19:15:17+00:00"
+      },
+      "artifact_pointer_present": false,
+      "result_sif_present": false,
+      "application_accounting": {
+        "job_id": "1834792",
+        "partition": "4V100",
+        "state": "FAILED",
+        "exit_code": "1:0",
+        "elapsed": "00:53:03",
+        "node_list": "4v100n03",
+        "start": "2026-10-18T02:22:14",
+        "end": "2026-10-18T03:15:17"
+      },
+      "classification": "compiled_to_100_percent_then_install_failed_at_root_lib64"
+    },
+    {
+      "workflow": "39054631316",
+      "run_id": "39054631316-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6",
+      "run_directory": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6",
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-re139a320651c",
+        "cpu_arch": "skylake-avx512",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-re139a320651c/8V100V0",
+        "partition": "8V100V0",
+        "recipe_sha256": "e139a320651ce69c11cdbd1763ae875f98992de261a465e9e19a24849086bf40",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "8v100v0-avx512",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "controller": "/home/stardust/sai-hpc-software/controller/9f17f715263016c4e063580b4e97c1ea2f6df2c9/39054631316-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6",
+      "controller_git_sha": "9f17f715263016c4e063580b4e97c1ea2f6df2c9",
+      "controller_scripts_match_git": true,
+      "controller_script_sha256": {
+        "cp2k_build.sh": "f6ce7693a0cc890008de5589d628b892c1d2d0f006d7c1f8b6642b14d680be18",
+        "cp2k_dependencies.sh": "99d5bbcf9dda385257c0088fe9a12a1f6eea86364e2dc8bef46a17d1af822562",
+        "cp2k_cmake_prerequisites.cmake": "8c923f94b76475eba88e14280b05e37ddb8f491a03821193253e49e4af519a0d",
+        "software_controller.py": "0ca83428f8633af7f1e2de3d88fadb3ed8251180ea08cb32b37a851cf50a53db"
+      },
+      "request_sha256": "50a40c66513a8a4c56ed38b827c32b6ab9d24ef21e5e892ba46e62dc36a42946",
+      "job_script_sha256": "10cf7b13a5681475050784b69d3beac82ef2ed0962da133cb829a7c0920edde8",
+      "host_tmpdir": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6/runtime",
+      "host_apptainer_tmpdir": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6/runtime",
+      "application_job_id": "1835182",
+      "dependency": {
+        "job_id": "1834213",
+        "run_directory": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6-dependencies",
+        "request_sha256": "a639880b00f25721ce87c4265d88f2b0bb766a8c0f3944e4832c3b6df2a3a2da",
+        "seal_path": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6-dependencies/results/dependency-stage.json",
+        "seal_sha256": "5b18278c2a5001b1d8f423b6a00c4b2e510b6c04d0870ff8f6b0536566cd3950",
+        "overlay_sha256_from_seal": "9e973329c27a5fbd45be0c031976e98db0272a219794a913093ca1d68583ec3f",
+        "overlay_stat": {
+          "path": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6-dependencies/work.ext3",
+          "exists": true,
+          "content_hashed": false,
+          "regular_file": true,
+          "size_bytes": 17179869184,
+          "allocated_bytes": 1398347264,
+          "mode": "0o400",
+          "inode": 144115774674508682,
+          "device": 4231993238,
+          "mtime": "2026-10-17T18:55:37+00:00"
+        },
+        "accounting": {
+          "job_id": "1834213",
+          "partition": "8V100V0",
+          "state": "COMPLETED",
+          "exit_code": "0:0",
+          "elapsed": "01:12:36",
+          "node_list": "8v100v0n03",
+          "start": "2026-10-18T01:43:02",
+          "end": "2026-10-18T02:55:38"
+        }
+      },
+      "log": {
+        "path": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6/results/slurm-1835182.log",
+        "sha256": "3cebafc97c34a82495b81e46b433b828bd3b692bd24e54e583666d988f870112",
+        "bytes_read": 382433,
+        "stable_during_read": true,
+        "line_count": 5117,
+        "compile_100_percent_excerpt": [
+          {
+            "line": 4761,
+            "text": "[100%] Built target xyz2dcd"
+          },
+          {
+            "line": 4762,
+            "text": "[100%] Built target dbt_tas_unittest"
+          },
+          {
+            "line": 4763,
+            "text": "[100%] Linking Fortran executable ../bin/graph.psmp"
+          },
+          {
+            "line": 4764,
+            "text": "[100%] Linking Fortran executable ../bin/dumpdcd.psmp"
+          },
+          {
+            "line": 4765,
+            "text": "[100%] Linking Fortran executable ../bin/dbt_unittest.psmp"
+          },
+          {
+            "line": 4766,
+            "text": "[100%] Built target graph"
+          },
+          {
+            "line": 4767,
+            "text": "[100%] Built target dumpdcd"
+          },
+          {
+            "line": 4768,
+            "text": "[100%] Built target dbt_unittest"
+          }
+        ],
+        "install_failure_excerpt": [
+          {
+            "line": 5110,
+            "text": "-- Installing: /lib64/libcp2k.so.2026.2"
+          },
+          {
+            "line": 5111,
+            "text": "CMake Error at orkspace/build/src/cmake_install.cmake:412 (file):"
+          },
+          {
+            "line": 5112,
+            "text": "  file INSTALL cannot copy file \"/workspace/build/src/libcp2k.so.2026.2\" to"
+          },
+          {
+            "line": 5113,
+            "text": "  \"/lib64/libcp2k.so.2026.2\": Read-only file system."
+          },
+          {
+            "line": 5114,
+            "text": "Call Stack (most recent call first):"
+          },
+          {
+            "line": 5115,
+            "text": "  orkspace/build/cmake_install.cmake:47 (include)"
+          },
+          {
+            "line": 5116,
+            "text": ""
+          },
+          {
+            "line": 5117,
+            "text": ""
+          }
+        ],
+        "tail": [
+          {
+            "line": 5108,
+            "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-re139a320651c/8V100V0/share/cp2k/data/ri_rs_grid/Se_def2-tzvp-rs.ion"
+          },
+          {
+            "line": 5109,
+            "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-re139a320651c/8V100V0/share/cp2k/data/ri_rs_grid/K_def2-tzvp-rs.ion"
+          },
+          {
+            "line": 5110,
+            "text": "-- Installing: /lib64/libcp2k.so.2026.2"
+          },
+          {
+            "line": 5111,
+            "text": "CMake Error at orkspace/build/src/cmake_install.cmake:412 (file):"
+          },
+          {
+            "line": 5112,
+            "text": "  file INSTALL cannot copy file \"/workspace/build/src/libcp2k.so.2026.2\" to"
+          },
+          {
+            "line": 5113,
+            "text": "  \"/lib64/libcp2k.so.2026.2\": Read-only file system."
+          },
+          {
+            "line": 5114,
+            "text": "Call Stack (most recent call first):"
+          },
+          {
+            "line": 5115,
+            "text": "  orkspace/build/cmake_install.cmake:47 (include)"
+          },
+          {
+            "line": 5116,
+            "text": ""
+          },
+          {
+            "line": 5117,
+            "text": ""
+          }
+        ]
+      },
+      "install_layout_failure_observed": true,
+      "application_overlay_stat": {
+        "path": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6/work.ext3",
+        "exists": true,
+        "content_hashed": false,
+        "regular_file": true,
+        "size_bytes": 17179869184,
+        "allocated_bytes": 2753113600,
+        "mode": "0o600",
+        "inode": 144115782811491811,
+        "device": 4231993238,
+        "mtime": "2026-10-17T20:30:11+00:00"
+      },
+      "artifact_pointer_present": false,
+      "result_sif_present": false,
+      "application_accounting": {
+        "job_id": "1835182",
+        "partition": "8V100V0",
+        "state": "FAILED",
+        "exit_code": "1:0",
+        "elapsed": "01:30:48",
+        "node_list": "8v100v0n02",
+        "start": "2026-10-18T02:59:24",
+        "end": "2026-10-18T04:30:12"
+      },
+      "classification": "compiled_to_100_percent_then_install_failed_at_root_lib64"
+    },
+    {
+      "workflow": "39054631316",
+      "run_id": "39054631316-1-release-dsprhbm-2026-10-17-67b5da876dd6",
+      "run_directory": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-dsprhbm-2026-10-17-67b5da876dd6",
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-re139a320651c",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-re139a320651c/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "e139a320651ce69c11cdbd1763ae875f98992de261a465e9e19a24849086bf40",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "controller": "/home/stardust/sai-hpc-software/controller/9f17f715263016c4e063580b4e97c1ea2f6df2c9/39054631316-1-release-dsprhbm-2026-10-17-67b5da876dd6",
+      "controller_git_sha": "9f17f715263016c4e063580b4e97c1ea2f6df2c9",
+      "controller_scripts_match_git": true,
+      "controller_script_sha256": {
+        "cp2k_build.sh": "f6ce7693a0cc890008de5589d628b892c1d2d0f006d7c1f8b6642b14d680be18",
+        "cp2k_dependencies.sh": "99d5bbcf9dda385257c0088fe9a12a1f6eea86364e2dc8bef46a17d1af822562",
+        "cp2k_cmake_prerequisites.cmake": "8c923f94b76475eba88e14280b05e37ddb8f491a03821193253e49e4af519a0d",
+        "software_controller.py": "0ca83428f8633af7f1e2de3d88fadb3ed8251180ea08cb32b37a851cf50a53db"
+      },
+      "request_sha256": "e380bb7a92f615ee7ffd702fc8f07538061108497f09e5645eb09acce2ac4fd4",
+      "job_script_sha256": "97af64098af9039bff34691d0fbd9861c4727bccdbd1a62bd8ce0eae1b7e621e",
+      "host_tmpdir": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-dsprhbm-2026-10-17-67b5da876dd6/runtime",
+      "host_apptainer_tmpdir": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-dsprhbm-2026-10-17-67b5da876dd6/runtime",
+      "application_job_id": "1835046",
+      "dependency": {
+        "job_id": "1834205",
+        "run_directory": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies",
+        "request_sha256": "3b46d6a14bfa6f06b1d4ec1a40df9109cf907c653643290bb61190ad22ea9258",
+        "seal_path": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies/results/dependency-stage.json",
+        "seal_sha256": "fa0708c9f920da5058dcd2fa8e54795fc161d4059f11aa62e35475158170cb98",
+        "overlay_sha256_from_seal": "bfe5a2d36773be9795201e979ccb0cff23a6bba3b29fc64a15a9564ff7e7d84d",
+        "overlay_stat": {
+          "path": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies/work.ext3",
+          "exists": true,
+          "content_hashed": false,
+          "regular_file": true,
+          "size_bytes": 17179869184,
+          "allocated_bytes": 1394650112,
+          "mode": "0o400",
+          "inode": 144115783851700369,
+          "device": 4231993238,
+          "mtime": "2026-10-17T18:40:51+00:00"
+        },
+        "accounting": {
+          "job_id": "1834205",
+          "partition": "DSPRHBM",
+          "state": "COMPLETED",
+          "exit_code": "0:0",
+          "elapsed": "00:58:16",
+          "node_list": "d9470n02",
+          "start": "2026-10-18T01:42:35",
+          "end": "2026-10-18T02:40:51"
+        }
+      },
+      "log": {
+        "path": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-dsprhbm-2026-10-17-67b5da876dd6/results/slurm-1835046.log",
+        "sha256": "d13ebf47a6ed6b66d5a230da4ebff9cd197556d588133a36284974ec435e2c3a",
+        "bytes_read": 370350,
+        "stable_during_read": true,
+        "line_count": 4969,
+        "compile_100_percent_excerpt": [
+          {
+            "line": 1219,
+            "text": "[100%] Built target libxs"
+          },
+          {
+            "line": 1564,
+            "text": "[100%] Building Fortran object src/CMakeFiles/dbcsr_c.dir/tensors/dbcsr_tensor_api_c.F.o"
+          },
+          {
+            "line": 1565,
+            "text": "[100%] Linking Fortran static library libdbcsr_c.a"
+          },
+          {
+            "line": 1566,
+            "text": "[100%] Built target dbcsr_c"
+          },
+          {
+            "line": 4617,
+            "text": "[100%] Linking Fortran executable ../bin/xyz2dcd.psmp"
+          },
+          {
+            "line": 4618,
+            "text": "[100%] Built target xyz2dcd"
+          },
+          {
+            "line": 4619,
+            "text": "[100%] Linking Fortran executable ../bin/dbt_unittest.psmp"
+          },
+          {
+            "line": 4620,
+            "text": "[100%] Built target dbt_unittest"
+          }
+        ],
+        "install_failure_excerpt": [
+          {
+            "line": 4962,
+            "text": "-- Installing: /lib64/libcp2k.so.2026.2"
+          },
+          {
+            "line": 4963,
+            "text": "CMake Error at orkspace/build/src/cmake_install.cmake:412 (file):"
+          },
+          {
+            "line": 4964,
+            "text": "  file INSTALL cannot copy file \"/workspace/build/src/libcp2k.so.2026.2\" to"
+          },
+          {
+            "line": 4965,
+            "text": "  \"/lib64/libcp2k.so.2026.2\": Read-only file system."
+          },
+          {
+            "line": 4966,
+            "text": "Call Stack (most recent call first):"
+          },
+          {
+            "line": 4967,
+            "text": "  orkspace/build/cmake_install.cmake:47 (include)"
+          },
+          {
+            "line": 4968,
+            "text": ""
+          },
+          {
+            "line": 4969,
+            "text": ""
+          }
+        ],
+        "tail": [
+          {
+            "line": 4960,
+            "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-re139a320651c/DSPRHBM/share/cp2k/data/ri_rs_grid/Se_def2-tzvp-rs.ion"
+          },
+          {
+            "line": 4961,
+            "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-re139a320651c/DSPRHBM/share/cp2k/data/ri_rs_grid/K_def2-tzvp-rs.ion"
+          },
+          {
+            "line": 4962,
+            "text": "-- Installing: /lib64/libcp2k.so.2026.2"
+          },
+          {
+            "line": 4963,
+            "text": "CMake Error at orkspace/build/src/cmake_install.cmake:412 (file):"
+          },
+          {
+            "line": 4964,
+            "text": "  file INSTALL cannot copy file \"/workspace/build/src/libcp2k.so.2026.2\" to"
+          },
+          {
+            "line": 4965,
+            "text": "  \"/lib64/libcp2k.so.2026.2\": Read-only file system."
+          },
+          {
+            "line": 4966,
+            "text": "Call Stack (most recent call first):"
+          },
+          {
+            "line": 4967,
+            "text": "  orkspace/build/cmake_install.cmake:47 (include)"
+          },
+          {
+            "line": 4968,
+            "text": ""
+          },
+          {
+            "line": 4969,
+            "text": ""
+          }
+        ]
+      },
+      "install_layout_failure_observed": true,
+      "application_overlay_stat": {
+        "path": "/home/stardust/sai-hpc-software/runs/39054631316-1-release-dsprhbm-2026-10-17-67b5da876dd6/work.ext3",
+        "exists": true,
+        "content_hashed": false,
+        "regular_file": true,
+        "size_bytes": 17179869184,
+        "allocated_bytes": 2635196416,
+        "mode": "0o600",
+        "inode": 144115783851703463,
+        "device": 4231993238,
+        "mtime": "2026-10-17T19:39:39+00:00"
+      },
+      "artifact_pointer_present": false,
+      "result_sif_present": false,
+      "application_accounting": {
+        "job_id": "1835046",
+        "partition": "DSPRHBM",
+        "state": "FAILED",
+        "exit_code": "1:0",
+        "elapsed": "00:55:48",
+        "node_list": "d9470n02",
+        "start": "2026-10-18T02:43:51",
+        "end": "2026-10-18T03:39:39"
+      },
+      "classification": "compiled_to_100_percent_then_install_failed_at_root_lib64"
+    },
+    {
+      "workflow": "39056762371",
+      "run_id": "39056762371-1-release-16v100-avx2-2026-10-17-67b5da876dd6",
+      "run_directory": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-16v100-avx2-2026-10-17-67b5da876dd6",
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r4b6cb146fa98",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4b6cb146fa98/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "4b6cb146fa983f69d82e5f7a990eba00b879a1c1e7464e317cc4740dbb41793b",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "controller": "/home/stardust/sai-hpc-software/controller/9352d6dabca0a28e7ea81b2acec8977e7ca9ec06/39056762371-1-release-16v100-avx2-2026-10-17-67b5da876dd6",
+      "controller_git_sha": "9352d6dabca0a28e7ea81b2acec8977e7ca9ec06",
+      "controller_scripts_match_git": true,
+      "controller_script_sha256": {
+        "cp2k_build.sh": "5c7f4800c4cb73dffeb2846553871a95e9ea31ce563d5cff854d255dcc532552",
+        "cp2k_dependencies.sh": "99d5bbcf9dda385257c0088fe9a12a1f6eea86364e2dc8bef46a17d1af822562",
+        "cp2k_cmake_prerequisites.cmake": "8c923f94b76475eba88e14280b05e37ddb8f491a03821193253e49e4af519a0d",
+        "software_controller.py": "0ca83428f8633af7f1e2de3d88fadb3ed8251180ea08cb32b37a851cf50a53db"
+      },
+      "request_sha256": "38e19fe73a6daf53ff4dc14a73b04d011c5fb4f2f5f001b1341f21465fcec097",
+      "job_script_sha256": "5117c24a604dbc8976dcfd16d1651afc3bb33bf3751923960028e4ced3aa04a5",
+      "host_tmpdir": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-16v100-avx2-2026-10-17-67b5da876dd6/runtime",
+      "host_apptainer_tmpdir": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-16v100-avx2-2026-10-17-67b5da876dd6/runtime",
+      "application_job_id": "1835636",
+      "dependency": {
+        "job_id": "1834668",
+        "run_directory": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-16v100-avx2-2026-10-17-67b5da876dd6-dependencies",
+        "request_sha256": "c99e543da4a6dab28c15c5b8d9a93346973326d2d725ac93f547d44d9d0d248a",
+        "seal_path": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-16v100-avx2-2026-10-17-67b5da876dd6-dependencies/results/dependency-stage.json",
+        "seal_sha256": "fa576354160bb780903b504a54536ad1e51e7823ef5fb7d69291d7831ec8fd8c",
+        "overlay_sha256_from_seal": "b96ec1e29a5fc668f6e15fe78470153222951c807df52db3bebec0cdb08ef1f5",
+        "overlay_stat": {
+          "path": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-16v100-avx2-2026-10-17-67b5da876dd6-dependencies/work.ext3",
+          "exists": true,
+          "content_hashed": false,
+          "regular_file": true,
+          "size_bytes": 17179869184,
+          "allocated_bytes": 1396821504,
+          "mode": "0o400",
+          "inode": 144115785160213258,
+          "device": 4231993238,
+          "mtime": "2026-10-17T19:43:09+00:00"
+        },
+        "accounting": {
+          "job_id": "1834668",
+          "partition": "16V100",
+          "state": "COMPLETED",
+          "exit_code": "0:0",
+          "elapsed": "01:31:17",
+          "node_list": "16v100n05",
+          "start": "2026-10-18T02:11:52",
+          "end": "2026-10-18T03:43:09"
+        }
+      },
+      "log": {
+        "path": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-16v100-avx2-2026-10-17-67b5da876dd6/results/slurm-1835636.log",
+        "sha256": "bb3ee4228a6d34d7014fa24274773a32f927e3efe6014188fd66de0dbd6f05e2",
+        "bytes_read": 381340,
+        "stable_during_read": true,
+        "line_count": 5116,
+        "compile_100_percent_excerpt": [
+          {
+            "line": 4760,
+            "text": "[100%] Linking Fortran executable ../bin/xyz2dcd.psmp"
+          },
+          {
+            "line": 4761,
+            "text": "[100%] Built target dbt_tas_unittest"
+          },
+          {
+            "line": 4762,
+            "text": "[100%] Linking Fortran executable ../bin/graph.psmp"
+          },
+          {
+            "line": 4763,
+            "text": "[100%] Built target dumpdcd"
+          },
+          {
+            "line": 4764,
+            "text": "[100%] Built target xyz2dcd"
+          },
+          {
+            "line": 4765,
+            "text": "[100%] Built target graph"
+          },
+          {
+            "line": 4766,
+            "text": "[100%] Linking Fortran executable ../bin/dbt_unittest.psmp"
+          },
+          {
+            "line": 4767,
+            "text": "[100%] Built target dbt_unittest"
+          }
+        ],
+        "install_failure_excerpt": [
+          {
+            "line": 5109,
+            "text": "-- Installing: /lib64/libcp2k.so.2026.2"
+          },
+          {
+            "line": 5110,
+            "text": "CMake Error at orkspace/build/src/cmake_install.cmake:412 (file):"
+          },
+          {
+            "line": 5111,
+            "text": "  file INSTALL cannot copy file \"/workspace/build/src/libcp2k.so.2026.2\" to"
+          },
+          {
+            "line": 5112,
+            "text": "  \"/lib64/libcp2k.so.2026.2\": Read-only file system."
+          },
+          {
+            "line": 5113,
+            "text": "Call Stack (most recent call first):"
+          },
+          {
+            "line": 5114,
+            "text": "  orkspace/build/cmake_install.cmake:47 (include)"
+          },
+          {
+            "line": 5115,
+            "text": ""
+          },
+          {
+            "line": 5116,
+            "text": ""
+          }
+        ],
+        "tail": [
+          {
+            "line": 5107,
+            "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4b6cb146fa98/16V100/share/cp2k/data/ri_rs_grid/Se_def2-tzvp-rs.ion"
+          },
+          {
+            "line": 5108,
+            "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4b6cb146fa98/16V100/share/cp2k/data/ri_rs_grid/K_def2-tzvp-rs.ion"
+          },
+          {
+            "line": 5109,
+            "text": "-- Installing: /lib64/libcp2k.so.2026.2"
+          },
+          {
+            "line": 5110,
+            "text": "CMake Error at orkspace/build/src/cmake_install.cmake:412 (file):"
+          },
+          {
+            "line": 5111,
+            "text": "  file INSTALL cannot copy file \"/workspace/build/src/libcp2k.so.2026.2\" to"
+          },
+          {
+            "line": 5112,
+            "text": "  \"/lib64/libcp2k.so.2026.2\": Read-only file system."
+          },
+          {
+            "line": 5113,
+            "text": "Call Stack (most recent call first):"
+          },
+          {
+            "line": 5114,
+            "text": "  orkspace/build/cmake_install.cmake:47 (include)"
+          },
+          {
+            "line": 5115,
+            "text": ""
+          },
+          {
+            "line": 5116,
+            "text": ""
+          }
+        ]
+      },
+      "install_layout_failure_observed": true,
+      "application_overlay_stat": {
+        "path": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-16v100-avx2-2026-10-17-67b5da876dd6/work.ext3",
+        "exists": true,
+        "content_hashed": false,
+        "regular_file": true,
+        "size_bytes": 17179869184,
+        "allocated_bytes": 2675350528,
+        "mode": "0o600",
+        "inode": 144115784992451823,
+        "device": 4231993238,
+        "mtime": "2026-10-17T20:04:39+00:00"
+      },
+      "artifact_pointer_present": false,
+      "result_sif_present": false,
+      "application_accounting": {
+        "job_id": "1835636",
+        "partition": "16V100",
+        "state": "FAILED",
+        "exit_code": "1:0",
+        "elapsed": "00:18:38",
+        "node_list": "16v100n02",
+        "start": "2026-10-18T03:46:01",
+        "end": "2026-10-18T04:04:39"
+      },
+      "classification": "compiled_to_100_percent_then_install_failed_at_root_lib64"
+    },
+    {
+      "workflow": "39056762371",
+      "run_id": "39056762371-1-release-4v100-avx512-2026-10-17-67b5da876dd6",
+      "run_directory": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-4v100-avx512-2026-10-17-67b5da876dd6",
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r4b6cb146fa98",
+        "cpu_arch": "znver4",
+        "cuda_arch": "70",
+        "dependency_isa": "avx512",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4b6cb146fa98/4V100",
+        "partition": "4V100",
+        "recipe_sha256": "4b6cb146fa983f69d82e5f7a990eba00b879a1c1e7464e317cc4740dbb41793b",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "4v100-avx512",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "controller": "/home/stardust/sai-hpc-software/controller/9352d6dabca0a28e7ea81b2acec8977e7ca9ec06/39056762371-1-release-4v100-avx512-2026-10-17-67b5da876dd6",
+      "controller_git_sha": "9352d6dabca0a28e7ea81b2acec8977e7ca9ec06",
+      "controller_scripts_match_git": true,
+      "controller_script_sha256": {
+        "cp2k_build.sh": "5c7f4800c4cb73dffeb2846553871a95e9ea31ce563d5cff854d255dcc532552",
+        "cp2k_dependencies.sh": "99d5bbcf9dda385257c0088fe9a12a1f6eea86364e2dc8bef46a17d1af822562",
+        "cp2k_cmake_prerequisites.cmake": "8c923f94b76475eba88e14280b05e37ddb8f491a03821193253e49e4af519a0d",
+        "software_controller.py": "0ca83428f8633af7f1e2de3d88fadb3ed8251180ea08cb32b37a851cf50a53db"
+      },
+      "request_sha256": "1f5736ae3d35c663f77a61b7c1e18edc3018e1b7121d0f3799715e9d034b62a9",
+      "job_script_sha256": "2d55d010b5db4a62ad61fc7301f21a908a69a21786a7348ebf8055cd153c0b6f",
+      "host_tmpdir": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-4v100-avx512-2026-10-17-67b5da876dd6/runtime",
+      "host_apptainer_tmpdir": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-4v100-avx512-2026-10-17-67b5da876dd6/runtime",
+      "application_job_id": "1835128",
+      "dependency": {
+        "job_id": "1834662",
+        "run_directory": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-4v100-avx512-2026-10-17-67b5da876dd6-dependencies",
+        "request_sha256": "3265dc38b3276c1dbd82718a95288218b510d0fb21b30706fbf117dd9e9b9c80",
+        "seal_path": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-4v100-avx512-2026-10-17-67b5da876dd6-dependencies/results/dependency-stage.json",
+        "seal_sha256": "dd08cb5a8970f78e5b101fe75b8c3102a655e0c9b9f71873d5b560c397861f40",
+        "overlay_sha256_from_seal": "05785ead9dcbb6e81b4cc7adc1e5d77e869f6c8bf3db379972a6193400872e4d",
+        "overlay_stat": {
+          "path": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-4v100-avx512-2026-10-17-67b5da876dd6-dependencies/work.ext3",
+          "exists": true,
+          "content_hashed": false,
+          "regular_file": true,
+          "size_bytes": 17179869184,
+          "allocated_bytes": 1396905472,
+          "mode": "0o400",
+          "inode": 144115785210537657,
+          "device": 4231993238,
+          "mtime": "2026-10-17T18:48:13+00:00"
+        },
+        "accounting": {
+          "job_id": "1834662",
+          "partition": "4V100",
+          "state": "COMPLETED",
+          "exit_code": "0:0",
+          "elapsed": "00:36:41",
+          "node_list": "4v100n10",
+          "start": "2026-10-18T02:11:33",
+          "end": "2026-10-18T02:48:14"
+        }
+      },
+      "log": {
+        "path": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-4v100-avx512-2026-10-17-67b5da876dd6/results/slurm-1835128.log",
+        "sha256": "e6c9a5f67aa860f5b863dc745ef3830cda1dc4ec3ec32aa4c9750fe3a402d433",
+        "bytes_read": 380498,
+        "stable_during_read": true,
+        "line_count": 5116,
+        "compile_100_percent_excerpt": [
+          {
+            "line": 1647,
+            "text": "[100%] Built target dbcsr_c"
+          },
+          {
+            "line": 4761,
+            "text": "[100%] Linking Fortran executable ../bin/xyz2dcd.psmp"
+          },
+          {
+            "line": 4762,
+            "text": "[100%] Linking Fortran executable ../bin/dumpdcd.psmp"
+          },
+          {
+            "line": 4763,
+            "text": "[100%] Built target dbt_tas_unittest"
+          },
+          {
+            "line": 4764,
+            "text": "[100%] Built target xyz2dcd"
+          },
+          {
+            "line": 4765,
+            "text": "[100%] Built target dumpdcd"
+          },
+          {
+            "line": 4766,
+            "text": "[100%] Linking Fortran executable ../bin/dbt_unittest.psmp"
+          },
+          {
+            "line": 4767,
+            "text": "[100%] Built target dbt_unittest"
+          }
+        ],
+        "install_failure_excerpt": [
+          {
+            "line": 5109,
+            "text": "-- Installing: /lib64/libcp2k.so.2026.2"
+          },
+          {
+            "line": 5110,
+            "text": "CMake Error at orkspace/build/src/cmake_install.cmake:412 (file):"
+          },
+          {
+            "line": 5111,
+            "text": "  file INSTALL cannot copy file \"/workspace/build/src/libcp2k.so.2026.2\" to"
+          },
+          {
+            "line": 5112,
+            "text": "  \"/lib64/libcp2k.so.2026.2\": Read-only file system."
+          },
+          {
+            "line": 5113,
+            "text": "Call Stack (most recent call first):"
+          },
+          {
+            "line": 5114,
+            "text": "  orkspace/build/cmake_install.cmake:47 (include)"
+          },
+          {
+            "line": 5115,
+            "text": ""
+          },
+          {
+            "line": 5116,
+            "text": ""
+          }
+        ],
+        "tail": [
+          {
+            "line": 5107,
+            "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4b6cb146fa98/4V100/share/cp2k/data/ri_rs_grid/Se_def2-tzvp-rs.ion"
+          },
+          {
+            "line": 5108,
+            "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4b6cb146fa98/4V100/share/cp2k/data/ri_rs_grid/K_def2-tzvp-rs.ion"
+          },
+          {
+            "line": 5109,
+            "text": "-- Installing: /lib64/libcp2k.so.2026.2"
+          },
+          {
+            "line": 5110,
+            "text": "CMake Error at orkspace/build/src/cmake_install.cmake:412 (file):"
+          },
+          {
+            "line": 5111,
+            "text": "  file INSTALL cannot copy file \"/workspace/build/src/libcp2k.so.2026.2\" to"
+          },
+          {
+            "line": 5112,
+            "text": "  \"/lib64/libcp2k.so.2026.2\": Read-only file system."
+          },
+          {
+            "line": 5113,
+            "text": "Call Stack (most recent call first):"
+          },
+          {
+            "line": 5114,
+            "text": "  orkspace/build/cmake_install.cmake:47 (include)"
+          },
+          {
+            "line": 5115,
+            "text": ""
+          },
+          {
+            "line": 5116,
+            "text": ""
+          }
+        ]
+      },
+      "install_layout_failure_observed": true,
+      "application_overlay_stat": {
+        "path": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-4v100-avx512-2026-10-17-67b5da876dd6/work.ext3",
+        "exists": true,
+        "content_hashed": false,
+        "regular_file": true,
+        "size_bytes": 17179869184,
+        "allocated_bytes": 2656377856,
+        "mode": "0o600",
+        "inode": 144115785713903416,
+        "device": 4231993238,
+        "mtime": "2026-10-17T19:37:05+00:00"
+      },
+      "artifact_pointer_present": false,
+      "result_sif_present": false,
+      "application_accounting": {
+        "job_id": "1835128",
+        "partition": "4V100",
+        "state": "FAILED",
+        "exit_code": "1:0",
+        "elapsed": "00:45:44",
+        "node_list": "4v100n01",
+        "start": "2026-10-18T02:51:22",
+        "end": "2026-10-18T03:37:06"
+      },
+      "classification": "compiled_to_100_percent_then_install_failed_at_root_lib64"
+    },
+    {
+      "workflow": "39056762371",
+      "run_id": "39056762371-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6",
+      "run_directory": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6",
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r4b6cb146fa98",
+        "cpu_arch": "skylake-avx512",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4b6cb146fa98/8V100V0",
+        "partition": "8V100V0",
+        "recipe_sha256": "4b6cb146fa983f69d82e5f7a990eba00b879a1c1e7464e317cc4740dbb41793b",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "8v100v0-avx512",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "controller": "/home/stardust/sai-hpc-software/controller/9352d6dabca0a28e7ea81b2acec8977e7ca9ec06/39056762371-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6",
+      "controller_git_sha": "9352d6dabca0a28e7ea81b2acec8977e7ca9ec06",
+      "controller_scripts_match_git": true,
+      "controller_script_sha256": {
+        "cp2k_build.sh": "5c7f4800c4cb73dffeb2846553871a95e9ea31ce563d5cff854d255dcc532552",
+        "cp2k_dependencies.sh": "99d5bbcf9dda385257c0088fe9a12a1f6eea86364e2dc8bef46a17d1af822562",
+        "cp2k_cmake_prerequisites.cmake": "8c923f94b76475eba88e14280b05e37ddb8f491a03821193253e49e4af519a0d",
+        "software_controller.py": "0ca83428f8633af7f1e2de3d88fadb3ed8251180ea08cb32b37a851cf50a53db"
+      },
+      "request_sha256": "7da70454aa77e14e5c546bb9ab6939fad5fd4d8ac442e3a5932acf5efe8830bf",
+      "job_script_sha256": "073dd1f78ab215d1add7d474f5381533f0ddf2962134dafd0f55bcc2bfe5aed7",
+      "host_tmpdir": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6/runtime",
+      "host_apptainer_tmpdir": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6/runtime",
+      "application_job_id": "1837029",
+      "dependency": {
+        "job_id": "1834667",
+        "run_directory": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6-dependencies",
+        "request_sha256": "ad60ad8d36e1c233d2bb9b6c9b8d195116a6cae8c9b64223e914464a75ef0243",
+        "seal_path": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6-dependencies/results/dependency-stage.json",
+        "seal_sha256": "e4cd0ec3a71a24364fbbd6fa6c0cefec803e5dd1ccf4191304f91e09af71d931",
+        "overlay_sha256_from_seal": "0dbdc3f3dd09180092e76971b9c61a3e3def3037c4fd7d4d283c8eec33ace51d",
+        "overlay_stat": {
+          "path": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6-dependencies/work.ext3",
+          "exists": true,
+          "content_hashed": false,
+          "regular_file": true,
+          "size_bytes": 17179869184,
+          "allocated_bytes": 1397504512,
+          "mode": "0o400",
+          "inode": 144115774674515350,
+          "device": 4231993238,
+          "mtime": "2026-10-17T22:25:23+00:00"
+        },
+        "accounting": {
+          "job_id": "1834667",
+          "partition": "8V100V0",
+          "state": "COMPLETED",
+          "exit_code": "0:0",
+          "elapsed": "01:11:11",
+          "node_list": "8v100v0n03",
+          "start": "2026-10-18T05:14:13",
+          "end": "2026-10-18T06:25:24"
+        }
+      },
+      "log": {
+        "path": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6/results/slurm-1837029.log",
+        "sha256": "b991ae83f68b9807c61ad3e6a1d65f1322738e431efbc9aead9d8c61d9bd898a",
+        "bytes_read": 103,
+        "stable_during_read": true,
+        "line_count": 1,
+        "compile_100_percent_excerpt": [],
+        "install_failure_excerpt": [],
+        "tail": [
+          {
+            "line": 1,
+            "text": "BUILD_CAPACITY_POLICY filesystem-enforced 39056762371-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6"
+          }
+        ]
+      },
+      "install_layout_failure_observed": false,
+      "application_overlay_stat": {
+        "path": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6/work.ext3",
+        "exists": false,
+        "content_hashed": false
+      },
+      "artifact_pointer_present": false,
+      "result_sif_present": false,
+      "application_accounting": {
+        "job_id": "1837029",
+        "partition": "8V100V0",
+        "state": "RUNNING",
+        "exit_code": "0:0",
+        "elapsed": "00:13:59",
+        "node_list": "8v100v0n11",
+        "start": "2026-10-18T07:12:01",
+        "end": "Unknown"
+      },
+      "classification": "not_a_failed_build_at_observation_time"
+    },
+    {
+      "workflow": "39056762371",
+      "run_id": "39056762371-1-release-dsprhbm-2026-10-17-67b5da876dd6",
+      "run_directory": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-dsprhbm-2026-10-17-67b5da876dd6",
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r4b6cb146fa98",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4b6cb146fa98/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "4b6cb146fa983f69d82e5f7a990eba00b879a1c1e7464e317cc4740dbb41793b",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "controller": "/home/stardust/sai-hpc-software/controller/9352d6dabca0a28e7ea81b2acec8977e7ca9ec06/39056762371-1-release-dsprhbm-2026-10-17-67b5da876dd6",
+      "controller_git_sha": "9352d6dabca0a28e7ea81b2acec8977e7ca9ec06",
+      "controller_scripts_match_git": true,
+      "controller_script_sha256": {
+        "cp2k_build.sh": "5c7f4800c4cb73dffeb2846553871a95e9ea31ce563d5cff854d255dcc532552",
+        "cp2k_dependencies.sh": "99d5bbcf9dda385257c0088fe9a12a1f6eea86364e2dc8bef46a17d1af822562",
+        "cp2k_cmake_prerequisites.cmake": "8c923f94b76475eba88e14280b05e37ddb8f491a03821193253e49e4af519a0d",
+        "software_controller.py": "0ca83428f8633af7f1e2de3d88fadb3ed8251180ea08cb32b37a851cf50a53db"
+      },
+      "request_sha256": "7d31b502ab812485e2c4eb03e24cf413160b3b4f50504f1870152c61b01e2f4d",
+      "job_script_sha256": "87e2a2e68d209b3502ea194e804bf64160a4c20af9dc227749e87319415af158",
+      "host_tmpdir": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-dsprhbm-2026-10-17-67b5da876dd6/runtime",
+      "host_apptainer_tmpdir": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-dsprhbm-2026-10-17-67b5da876dd6/runtime",
+      "application_job_id": "1835454",
+      "dependency": {
+        "job_id": "1834666",
+        "run_directory": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies",
+        "request_sha256": "face12d7862f4fc5bcc12287684d0f1fc6bea307062a5a2bdd5cc1ba2949e322",
+        "seal_path": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies/results/dependency-stage.json",
+        "seal_sha256": "ea166baf7fb8338b0c10a98568b2c6ede3ffbf13e425799f1df8aa5e9696f582",
+        "overlay_sha256_from_seal": "7349b5d8fad49530c9d8c5b75436dd25b77617c8d90173f5d41ebaf1af4dbdcd",
+        "overlay_stat": {
+          "path": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies/work.ext3",
+          "exists": true,
+          "content_hashed": false,
+          "regular_file": true,
+          "size_bytes": 17179869184,
+          "allocated_bytes": 1395295744,
+          "mode": "0o400",
+          "inode": 144115783851701999,
+          "device": 4231993238,
+          "mtime": "2026-10-17T19:23:10+00:00"
+        },
+        "accounting": {
+          "job_id": "1834666",
+          "partition": "DSPRHBM",
+          "state": "COMPLETED",
+          "exit_code": "0:0",
+          "elapsed": "01:11:31",
+          "node_list": "d9470n02",
+          "start": "2026-10-18T02:11:39",
+          "end": "2026-10-18T03:23:10"
+        }
+      },
+      "log": {
+        "path": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-dsprhbm-2026-10-17-67b5da876dd6/results/slurm-1835454.log",
+        "sha256": "3e138097aa71939b3374a6929257ea728291e74d77327bff1c0bb192517dd6a5",
+        "bytes_read": 370289,
+        "stable_during_read": true,
+        "line_count": 4968,
+        "compile_100_percent_excerpt": [
+          {
+            "line": 1565,
+            "text": "[100%] Built target dbcsr_c"
+          },
+          {
+            "line": 4613,
+            "text": "[100%] Built target graph"
+          },
+          {
+            "line": 4614,
+            "text": "[100%] Linking Fortran executable ../bin/xyz2dcd.psmp"
+          },
+          {
+            "line": 4615,
+            "text": "[100%] Linking Fortran executable ../bin/dumpdcd.psmp"
+          },
+          {
+            "line": 4616,
+            "text": "[100%] Built target xyz2dcd"
+          },
+          {
+            "line": 4617,
+            "text": "[100%] Linking Fortran executable ../bin/dbt_unittest.psmp"
+          },
+          {
+            "line": 4618,
+            "text": "[100%] Built target dumpdcd"
+          },
+          {
+            "line": 4619,
+            "text": "[100%] Built target dbt_unittest"
+          }
+        ],
+        "install_failure_excerpt": [
+          {
+            "line": 4961,
+            "text": "-- Installing: /lib64/libcp2k.so.2026.2"
+          },
+          {
+            "line": 4962,
+            "text": "CMake Error at orkspace/build/src/cmake_install.cmake:412 (file):"
+          },
+          {
+            "line": 4963,
+            "text": "  file INSTALL cannot copy file \"/workspace/build/src/libcp2k.so.2026.2\" to"
+          },
+          {
+            "line": 4964,
+            "text": "  \"/lib64/libcp2k.so.2026.2\": Read-only file system."
+          },
+          {
+            "line": 4965,
+            "text": "Call Stack (most recent call first):"
+          },
+          {
+            "line": 4966,
+            "text": "  orkspace/build/cmake_install.cmake:47 (include)"
+          },
+          {
+            "line": 4967,
+            "text": ""
+          },
+          {
+            "line": 4968,
+            "text": ""
+          }
+        ],
+        "tail": [
+          {
+            "line": 4959,
+            "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4b6cb146fa98/DSPRHBM/share/cp2k/data/ri_rs_grid/Se_def2-tzvp-rs.ion"
+          },
+          {
+            "line": 4960,
+            "text": "-- Installing: /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4b6cb146fa98/DSPRHBM/share/cp2k/data/ri_rs_grid/K_def2-tzvp-rs.ion"
+          },
+          {
+            "line": 4961,
+            "text": "-- Installing: /lib64/libcp2k.so.2026.2"
+          },
+          {
+            "line": 4962,
+            "text": "CMake Error at orkspace/build/src/cmake_install.cmake:412 (file):"
+          },
+          {
+            "line": 4963,
+            "text": "  file INSTALL cannot copy file \"/workspace/build/src/libcp2k.so.2026.2\" to"
+          },
+          {
+            "line": 4964,
+            "text": "  \"/lib64/libcp2k.so.2026.2\": Read-only file system."
+          },
+          {
+            "line": 4965,
+            "text": "Call Stack (most recent call first):"
+          },
+          {
+            "line": 4966,
+            "text": "  orkspace/build/cmake_install.cmake:47 (include)"
+          },
+          {
+            "line": 4967,
+            "text": ""
+          },
+          {
+            "line": 4968,
+            "text": ""
+          }
+        ]
+      },
+      "install_layout_failure_observed": true,
+      "application_overlay_stat": {
+        "path": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-dsprhbm-2026-10-17-67b5da876dd6/work.ext3",
+        "exists": true,
+        "content_hashed": false,
+        "regular_file": true,
+        "size_bytes": 17179869184,
+        "allocated_bytes": 2637330432,
+        "mode": "0o600",
+        "inode": 144115786418488200,
+        "device": 4231993238,
+        "mtime": "2026-10-17T20:09:01+00:00"
+      },
+      "artifact_pointer_present": false,
+      "result_sif_present": false,
+      "application_accounting": {
+        "job_id": "1835454",
+        "partition": "DSPRHBM",
+        "state": "FAILED",
+        "exit_code": "1:0",
+        "elapsed": "00:42:54",
+        "node_list": "d9470n02",
+        "start": "2026-10-18T03:26:07",
+        "end": "2026-10-18T04:09:01"
+      },
+      "classification": "compiled_to_100_percent_then_install_failed_at_root_lib64"
+    }
+  ]
+}

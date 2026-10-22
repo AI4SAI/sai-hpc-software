@@ -1,0 +1,132 @@
+--- a/src/elpa2/elpa2_trans_ev_band_to_full_template.F90
++++ b/src/elpa2/elpa2_trans_ev_band_to_full_template.F90
+@@ -707,6 +707,19 @@
+ 
+ 
+ #ifdef WITH_MPI
++        ! CPU calls have no device buffers even in a CUDA-aware MPI build.
++        if (.not. useGPU) then
++          call obj%timer%start("mpi_communication")
++          if (useNonBlockingCollectivesRows) then
++            call mpi_iallreduce(t_tmp, t_tmp2, int(cwy_blocking*nbw,kind=MPI_KIND), MPI_MATH_DATATYPE_PRECISION, &
++                                MPI_SUM, int(mpi_comm_rows,kind=MPI_KIND), allreduce_request1, mpierr)
++            call mpi_wait(allreduce_request1, MPI_STATUS_IGNORE, mpierr)
++          else
++            call mpi_allreduce(t_tmp, t_tmp2, int(cwy_blocking*nbw,kind=MPI_KIND), MPI_MATH_DATATYPE_PRECISION, &
++                               MPI_SUM, int(mpi_comm_rows,kind=MPI_KIND), mpierr)
++          endif
++          call obj%timer%stop("mpi_communication")
++        else
+         if (useNonBlockingCollectivesRows) then
+ #ifndef CUDA_AWARE_MPI_BAND_TO_FULL
+ 
+@@ -761,9 +774,10 @@
+ 
+ #else /* CUDA_AWARE_MPI_BAND_TO_FULL */
+           call obj%timer%start("cuda_mpi_nbc_communication")
+-          call mpi_iallreduce(t_tmp_gpu_deviceptr, t_tmp2_gpu_deviceptr, int(cwy_blocking*nbw,kind=MPI_KIND), MPI_MATH_DATATYPE_PRECISION, &
+-                           MPI_SUM, int(mpi_comm_rows,kind=MPI_KIND), allreduce_request1, mpierr)
+-          call mpi_wait(allreduce_request1, MPI_STATUS_IGNORE, mpierr)
++          ! Site libnbc cannot handle device buffers. This path already waits
++          ! immediately; keep device MPI with an equivalent blocking call.
++          call mpi_allreduce(t_tmp_gpu_deviceptr, t_tmp2_gpu_deviceptr, int(cwy_blocking*nbw,kind=MPI_KIND), MPI_MATH_DATATYPE_PRECISION, &
++                           MPI_SUM, int(mpi_comm_rows,kind=MPI_KIND), mpierr)
+           call obj%timer%stop("cuda_mpi_nbc_communication")
+ #ifdef WITH_GPU_STREAMS
+           my_stream = obj%gpu_setup%my_stream
+@@ -862,6 +876,7 @@
+ #endif
+ #endif /* CUDA_AWARE_MPI_BAND_TO_FULL */
+         endif ! useNonBlockingCollectivesRows
++        endif ! CPU/GPU communication selection
+ 
+         if (useGPU) then
+ #ifdef MORE_GPUBLAS
+@@ -1177,6 +1192,19 @@
+ #endif /* WITH_MPI */
+ 
+ #ifdef WITH_MPI
++    ! CPU calls have no device buffers even in a CUDA-aware MPI build.
++    if (.not. useGPU) then
++      call obj%timer%start("mpi_communication")
++      if (useNonBlockingCollectivesRows) then
++        call mpi_iallreduce(tmp1, tmp2, int(n_cols*l_cols,kind=MPI_KIND), MPI_MATH_DATATYPE_PRECISION, &
++                            MPI_SUM, int(mpi_comm_rows,kind=MPI_KIND), allreduce_request1, mpierr)
++        call mpi_wait(allreduce_request1, MPI_STATUS_IGNORE, mpierr)
++      else
++        call mpi_allreduce(tmp1, tmp2, int(n_cols*l_cols,kind=MPI_KIND), MPI_MATH_DATATYPE_PRECISION, &
++                           MPI_SUM, int(mpi_comm_rows,kind=MPI_KIND), mpierr)
++      endif
++      call obj%timer%stop("mpi_communication")
++    else
+     if (useNonBlockingCollectivesRows) then
+ #ifndef CUDA_AWARE_MPI_BAND_TO_FULL
+ 
+@@ -1232,9 +1260,10 @@
+ 
+ #else /* CUDA_AWARE_MPI_BAND_TO_FULL */
+       call obj%timer%start("cuda_mpi_nbc_communication")
+-      call mpi_iallreduce(tmp1_mpi_deviceptr, tmp2_mpi_deviceptr, int(n_cols*l_cols,kind=MPI_KIND), MPI_MATH_DATATYPE_PRECISION, &
+-                          MPI_SUM, int(mpi_comm_rows,kind=MPI_KIND), allreduce_request2, mpierr)
+-      call mpi_wait(allreduce_request2, MPI_STATUS_IGNORE, mpierr)
++      ! Site libnbc cannot handle device buffers. This path already waits
++      ! immediately; keep device MPI with an equivalent blocking call.
++      call mpi_allreduce(tmp1_mpi_deviceptr, tmp2_mpi_deviceptr, int(n_cols*l_cols,kind=MPI_KIND), MPI_MATH_DATATYPE_PRECISION, &
++                          MPI_SUM, int(mpi_comm_rows,kind=MPI_KIND), mpierr)
+       call obj%timer%stop("cuda_mpi_nbc_communication")
+ #ifdef WITH_GPU_STREAMS
+       my_stream = obj%gpu_setup%my_stream
+@@ -1335,6 +1364,7 @@
+ #endif
+ #endif /* CUDA_AWARE_MPI_BAND_TO_FULL */
+     endif
++    endif ! CPU/GPU communication selection
+ 
+     if (l_rows>0) then
+       if (useGPU) then
+--- a/src/elpa2/elpa2_trans_ev_tridi_to_band_template.F90
++++ b/src/elpa2/elpa2_trans_ev_tridi_to_band_template.F90
+@@ -2046,6 +2046,21 @@
+       endif ! useGPU
+ 
+ #ifdef WITH_MPI
++      ! A CPU solve must broadcast host Householder vectors.
++      if (.not. useGPU) then
++        if (useNonBlockingCollectivesCols) then
++          if (wantDebug) call obj%timer%start("mpi_nbc_communication")
++          call mpi_ibcast(bcast_buffer, int(nbw*current_local_n,kind=MPI_KIND), MPI_MATH_DATATYPE_PRECISION_EXPL, &
++                         int(mod(sweep,np_cols),kind=MPI_KIND), int(mpi_comm_cols,kind=MPI_KIND), bcast_request1, mpierr)
++          call mpi_wait(bcast_request1, MPI_STATUS_IGNORE, mpierr)
++          if (wantDebug) call obj%timer%stop("mpi_nbc_communication")
++        else
++          if (wantDebug) call obj%timer%start("mpi_communication")
++          call mpi_bcast(bcast_buffer, int(nbw*current_local_n,kind=MPI_KIND), MPI_MATH_DATATYPE_PRECISION_EXPL, &
++                         int(mod(sweep,np_cols),kind=MPI_KIND), int(mpi_comm_cols,kind=MPI_KIND), mpierr)
++          if (wantDebug) call obj%timer%stop("mpi_communication")
++        endif
++      else
+ #ifdef WITH_CUDA_AWARE_MPI_TRANS_TRIDI_TO_BAND
+       if (.not.(allComputeOnGPU)) then
+         if (wantDebug) call obj%timer%start("cuda_memcpy")
+@@ -2076,9 +2091,10 @@
+ 
+       if (useNonBlockingCollectivesCols) then
+         if (wantDebug) call obj%timer%start("cuda_mpi_nbc_communication")
+-        call mpi_ibcast(bcast_buffer_mpi_fortran_ptr, int(nbw*current_local_n,kind=MPI_KIND), MPI_MATH_DATATYPE_PRECISION_EXPL, &
+-                       int(mod(sweep,np_cols),kind=MPI_KIND), int(mpi_comm_cols,kind=MPI_KIND), bcast_request1, mpierr)
+-        call mpi_wait(bcast_request1, MPI_STATUS_IGNORE, mpierr)
++        ! Site libnbc cannot handle device buffers. This path already waits
++        ! immediately; keep device MPI with an equivalent blocking call.
++        call mpi_bcast(bcast_buffer_mpi_fortran_ptr, int(nbw*current_local_n,kind=MPI_KIND), MPI_MATH_DATATYPE_PRECISION_EXPL, &
++                       int(mod(sweep,np_cols),kind=MPI_KIND), int(mpi_comm_cols,kind=MPI_KIND), mpierr)
+         if (wantDebug) call obj%timer%stop("cuda_mpi_nbc_communication")
+       else
+         if (wantDebug) call obj%timer%start("cuda_mpi_communication")
+@@ -2127,6 +2143,7 @@
+         if (wantDebug) call obj%timer%stop("memcpy")
+       endif ! useGPU
+ #endif /* WITH_CUDA_AWARE_MPI_TRANS_TRIDI_TO_BAND */
++      endif ! CPU/GPU communication selection
+ #else /* WITH_MPI */
+       if (useGPU .and. .not.(allComputeOnGPU)) then
+         if (wantDebug) call obj%timer%start("memcpy")

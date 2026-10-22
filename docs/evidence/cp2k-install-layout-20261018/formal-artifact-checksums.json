@@ -1,0 +1,3925 @@
+{
+  "observed_at": "2026-10-18T01:05:42.044416+00:00",
+  "workflow": "39078998459",
+  "artifacts": [
+    {
+      "run": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6",
+      "job_id": "1837815",
+      "accounting": "1837815|4V100|COMPLETED|0:0|00:47:17|4v100n01",
+      "artifact": "/home/stardust/sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6.sif",
+      "artifact_bytes": 187445248,
+      "sha256": "1ec8fdf693f4273f7fa1c52fcc27b4aba858d6077a45ff569f2b421677aa3b00",
+      "manifest": {
+        "artifact": "/home/stardust/sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6.sif",
+        "build_verified": true,
+        "contract_schema": 3,
+        "controller": "/home/stardust/sai-hpc-software/controller/c3b65b97f9d95ecb29a453713dfe292af20f6d39/39078998459-1-release-4v100-avx512-2026-10-17-67b5da876dd6",
+        "identity": {
+          "build_id": "v2026.2-g67b5da876dd6-rb59c9f26a184",
+          "cpu_arch": "znver4",
+          "cuda_arch": "70",
+          "dependency_isa": "avx512",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100",
+          "partition": "4V100",
+          "recipe_sha256": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "v2026.2",
+          "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+          "source_version": "v2026.2",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "4v100-avx512",
+          "track": "release",
+          "version_label": "v2026.2"
+        },
+        "published": false,
+        "recipe_sha256": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+        "sha256": "1ec8fdf693f4273f7fa1c52fcc27b4aba858d6077a45ff569f2b421677aa3b00",
+        "software": "cp2k",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "target": "4v100-avx512",
+        "verified": false,
+        "version": "v2026.2"
+      },
+      "final_sif_contract": {
+        "artifact_checks": true,
+        "deployment_scope": "loader contract checked; no claim of physical deployment",
+        "elf": {
+          "bin/cp2k.psmp": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcp2k.so.2026.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libsymspg.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxcf03.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxc.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libelpa_openmp.so.19"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolver.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libplumed.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3_omp.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libspla.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libint2.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma_prefixed_pxgemm.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosta.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libTiled-MM.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libz.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgfortran.so.5"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnvrtc.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libscalapack.so.2.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempif08.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempi_ignore_tkr.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_mpifh.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxsmm.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcuda.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolverMp.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnccl.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucc.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucs.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufftw.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufft.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:$ORIGIN:$ORIGIN/../lib64:$ORIGIN/../lib"
+              },
+              {
+                "tag": "INTERP",
+                "value": "/lib64/ld-linux-x86-64.so.2"
+              }
+            ],
+            "sha256": "79d18c43771bec2cba85718f87d4542917385224c0c1cd0324684b8c86d067cd"
+          },
+          "bin/dbm_miniapp.psmp": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libxsmm.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolverMp.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnccl.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucc.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucs.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufftw.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufft.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcuda.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempif08.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempi_ignore_tkr.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_mpifh.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgfortran.so.5"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libquadmath.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "ld-linux-x86-64.so.2"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:$ORIGIN:$ORIGIN/../lib64:$ORIGIN/../lib"
+              },
+              {
+                "tag": "INTERP",
+                "value": "/lib64/ld-linux-x86-64.so.2"
+              }
+            ],
+            "sha256": "5ae961d2cbc4e39c612dc5403941cab9e0b13772d5708731fe811386c91c6511"
+          },
+          "bin/dbt_tas_unittest.psmp": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcp2k.so.2026.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libsymspg.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxcf03.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxc.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libelpa_openmp.so.19"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolver.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libplumed.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3_omp.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libspla.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libint2.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma_prefixed_pxgemm.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosta.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libTiled-MM.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libz.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgfortran.so.5"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnvrtc.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libscalapack.so.2.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempif08.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempi_ignore_tkr.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_mpifh.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxsmm.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcuda.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolverMp.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnccl.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucc.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucs.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufftw.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufft.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:$ORIGIN:$ORIGIN/../lib64:$ORIGIN/../lib"
+              },
+              {
+                "tag": "INTERP",
+                "value": "/lib64/ld-linux-x86-64.so.2"
+              }
+            ],
+            "sha256": "727570ad098b3f0c8dce32a9c71e10c6b1a4a275c7196a12c1074bc7816ca4ae"
+          },
+          "bin/dbt_unittest.psmp": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcp2k.so.2026.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libsymspg.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxcf03.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxc.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libelpa_openmp.so.19"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolver.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libplumed.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3_omp.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libspla.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libint2.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma_prefixed_pxgemm.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosta.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libTiled-MM.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libz.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgfortran.so.5"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnvrtc.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libscalapack.so.2.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempif08.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempi_ignore_tkr.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_mpifh.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxsmm.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcuda.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolverMp.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnccl.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucc.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucs.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufftw.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufft.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:$ORIGIN:$ORIGIN/../lib64:$ORIGIN/../lib"
+              },
+              {
+                "tag": "INTERP",
+                "value": "/lib64/ld-linux-x86-64.so.2"
+              }
+            ],
+            "sha256": "9f62cb89def11293484614a4682a03d5abd1d21b4ba146944b2e636b65e92819"
+          },
+          "bin/dumpdcd.psmp": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcp2k.so.2026.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libsymspg.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxcf03.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxc.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libelpa_openmp.so.19"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolver.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libplumed.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3_omp.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libspla.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libint2.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma_prefixed_pxgemm.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosta.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libTiled-MM.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libz.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgfortran.so.5"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnvrtc.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libscalapack.so.2.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempif08.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempi_ignore_tkr.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_mpifh.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxsmm.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcuda.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolverMp.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnccl.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucc.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucs.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufftw.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufft.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:$ORIGIN:$ORIGIN/../lib64:$ORIGIN/../lib"
+              },
+              {
+                "tag": "INTERP",
+                "value": "/lib64/ld-linux-x86-64.so.2"
+              }
+            ],
+            "sha256": "055c8bd1d325df9f613894e812f3d609ca80cf67f4b91112133c9be9479c2682"
+          },
+          "bin/gemm_square_unittest.psmp": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcp2k.so.2026.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libsymspg.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxcf03.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxc.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libelpa_openmp.so.19"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolver.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libplumed.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3_omp.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libspla.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libint2.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma_prefixed_pxgemm.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosta.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libTiled-MM.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libz.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgfortran.so.5"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnvrtc.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libscalapack.so.2.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempif08.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempi_ignore_tkr.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_mpifh.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxsmm.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcuda.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolverMp.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnccl.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucc.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucs.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufftw.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufft.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:$ORIGIN:$ORIGIN/../lib64:$ORIGIN/../lib"
+              },
+              {
+                "tag": "INTERP",
+                "value": "/lib64/ld-linux-x86-64.so.2"
+              }
+            ],
+            "sha256": "b81d281aadf506ee4c33b83d605eb712e94eb9e403f9dc687574c51bf038fa96"
+          },
+          "bin/graph.psmp": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcp2k.so.2026.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libsymspg.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxcf03.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxc.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libelpa_openmp.so.19"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolver.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libplumed.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3_omp.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libspla.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libint2.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma_prefixed_pxgemm.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosta.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libTiled-MM.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libz.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgfortran.so.5"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnvrtc.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libscalapack.so.2.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempif08.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempi_ignore_tkr.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_mpifh.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxsmm.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcuda.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolverMp.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnccl.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucc.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucs.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufftw.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufft.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:$ORIGIN:$ORIGIN/../lib64:$ORIGIN/../lib"
+              },
+              {
+                "tag": "INTERP",
+                "value": "/lib64/ld-linux-x86-64.so.2"
+              }
+            ],
+            "sha256": "828694ce3ecc3875f429e11c617c771a95e0fa6c61682e4205e43fbf6ffb0660"
+          },
+          "bin/grid_miniapp.psmp": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libxsmm.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolverMp.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnccl.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucc.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucs.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufftw.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufft.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcuda.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempif08.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempi_ignore_tkr.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_mpifh.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgfortran.so.5"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libquadmath.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "ld-linux-x86-64.so.2"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:$ORIGIN:$ORIGIN/../lib64:$ORIGIN/../lib"
+              },
+              {
+                "tag": "INTERP",
+                "value": "/lib64/ld-linux-x86-64.so.2"
+              }
+            ],
+            "sha256": "1f795621c2ef7c77462d8e92b86a3a0e263ac05861529177ea3b3b58233d4cf4"
+          },
+          "bin/grid_unittest.psmp": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libxsmm.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolverMp.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnccl.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucc.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucs.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufftw.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufft.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcuda.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempif08.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempi_ignore_tkr.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_mpifh.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgfortran.so.5"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libquadmath.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "ld-linux-x86-64.so.2"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:$ORIGIN:$ORIGIN/../lib64:$ORIGIN/../lib"
+              },
+              {
+                "tag": "INTERP",
+                "value": "/lib64/ld-linux-x86-64.so.2"
+              }
+            ],
+            "sha256": "fc25b210c59741d268230795bc81b90f9ccea1e39c486127a858b8e9c8a16714"
+          },
+          "bin/gx_ac_unittest.psmp": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcp2k.so.2026.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libsymspg.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxcf03.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxc.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libelpa_openmp.so.19"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolver.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libplumed.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3_omp.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libspla.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libint2.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma_prefixed_pxgemm.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosta.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libTiled-MM.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libz.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgfortran.so.5"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnvrtc.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libscalapack.so.2.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempif08.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempi_ignore_tkr.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_mpifh.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxsmm.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcuda.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolverMp.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnccl.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucc.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucs.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufftw.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufft.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:$ORIGIN:$ORIGIN/../lib64:$ORIGIN/../lib"
+              },
+              {
+                "tag": "INTERP",
+                "value": "/lib64/ld-linux-x86-64.so.2"
+              }
+            ],
+            "sha256": "004db484b3a25a74d0786fe03e22f3f1d2f4427e74cce4017aa2f2e1d678fe2b"
+          },
+          "bin/libcp2k_unittest.psmp": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libcp2k.so.2026.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libsymspg.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxcf03.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxc.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libelpa_openmp.so.19"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolver.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libplumed.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3_omp.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libspla.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libint2.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma_prefixed_pxgemm.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosta.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libTiled-MM.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libz.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnvrtc.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libscalapack.so.2.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempif08.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempi_ignore_tkr.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_mpifh.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxsmm.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcuda.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolverMp.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnccl.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucc.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucs.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufftw.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufft.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgfortran.so.5"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libquadmath.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:$ORIGIN:$ORIGIN/../lib64:$ORIGIN/../lib"
+              },
+              {
+                "tag": "INTERP",
+                "value": "/lib64/ld-linux-x86-64.so.2"
+              }
+            ],
+            "sha256": "4b70550d611b847f5713675c7eab0cbe4dc55fb9965cb49a0156176bce8ca869"
+          },
+          "bin/memory_utilities_unittest.psmp": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcp2k.so.2026.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libsymspg.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxcf03.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxc.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libelpa_openmp.so.19"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolver.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libplumed.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3_omp.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libspla.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libint2.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma_prefixed_pxgemm.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosta.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libTiled-MM.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libz.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgfortran.so.5"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnvrtc.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libscalapack.so.2.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempif08.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempi_ignore_tkr.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_mpifh.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxsmm.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcuda.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolverMp.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnccl.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucc.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucs.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufftw.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufft.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:$ORIGIN:$ORIGIN/../lib64:$ORIGIN/../lib"
+              },
+              {
+                "tag": "INTERP",
+                "value": "/lib64/ld-linux-x86-64.so.2"
+              }
+            ],
+            "sha256": "6e3332ea0c79d9c2e5a993ec0ccb8aa725c2b34caf4c55ab87b12e878c75f02e"
+          },
+          "bin/nequip_unittest.psmp": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcp2k.so.2026.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libsymspg.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxcf03.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxc.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libelpa_openmp.so.19"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolver.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libplumed.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3_omp.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libspla.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libint2.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma_prefixed_pxgemm.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosta.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libTiled-MM.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libz.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgfortran.so.5"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnvrtc.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libscalapack.so.2.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempif08.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempi_ignore_tkr.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_mpifh.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxsmm.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcuda.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolverMp.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnccl.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucc.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucs.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufftw.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufft.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:$ORIGIN:$ORIGIN/../lib64:$ORIGIN/../lib"
+              },
+              {
+                "tag": "INTERP",
+                "value": "/lib64/ld-linux-x86-64.so.2"
+              }
+            ],
+            "sha256": "361a8ae7c5e0bc47be36c3669d6903aa2d65fbd810acc195134521ac020d13b0"
+          },
+          "bin/orbital_transformation_matrices_unittest.psmp": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcp2k.so.2026.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libsymspg.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxcf03.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxc.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libelpa_openmp.so.19"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolver.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libplumed.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3_omp.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libspla.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libint2.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma_prefixed_pxgemm.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosta.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libTiled-MM.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libz.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgfortran.so.5"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnvrtc.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libscalapack.so.2.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempif08.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempi_ignore_tkr.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_mpifh.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxsmm.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcuda.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolverMp.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnccl.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucc.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucs.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufftw.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufft.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:$ORIGIN:$ORIGIN/../lib64:$ORIGIN/../lib"
+              },
+              {
+                "tag": "INTERP",
+                "value": "/lib64/ld-linux-x86-64.so.2"
+              }
+            ],
+            "sha256": "9b6c21d73667978aaf898f61d7b78d6d8b27b10a37f6496c3937e06d9c52d2cc"
+          },
+          "bin/parallel_rng_types_unittest.psmp": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcp2k.so.2026.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libsymspg.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxcf03.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxc.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libelpa_openmp.so.19"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolver.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libplumed.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3_omp.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libspla.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libint2.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma_prefixed_pxgemm.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosta.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libTiled-MM.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libz.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgfortran.so.5"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnvrtc.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libscalapack.so.2.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempif08.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempi_ignore_tkr.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_mpifh.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxsmm.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcuda.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolverMp.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnccl.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucc.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucs.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufftw.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufft.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:$ORIGIN:$ORIGIN/../lib64:$ORIGIN/../lib"
+              },
+              {
+                "tag": "INTERP",
+                "value": "/lib64/ld-linux-x86-64.so.2"
+              }
+            ],
+            "sha256": "1583f2011d89a289cf023926506ed2bc30ca6809ed7b74d0622a78901e33bd82"
+          },
+          "bin/realspace_grid_cube_unittest.psmp": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcp2k.so.2026.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libsymspg.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxcf03.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxc.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libelpa_openmp.so.19"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolver.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libplumed.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3_omp.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libspla.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libint2.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma_prefixed_pxgemm.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosta.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libTiled-MM.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libz.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgfortran.so.5"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnvrtc.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libscalapack.so.2.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempif08.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempi_ignore_tkr.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_mpifh.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxsmm.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcuda.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolverMp.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnccl.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucc.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucs.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufftw.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufft.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:$ORIGIN:$ORIGIN/../lib64:$ORIGIN/../lib"
+              },
+              {
+                "tag": "INTERP",
+                "value": "/lib64/ld-linux-x86-64.so.2"
+              }
+            ],
+            "sha256": "ee617e063709fe654a6e49cde4ca238be0640719ba38881333be7c2500a3429c"
+          },
+          "bin/xyz2dcd.psmp": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcp2k.so.2026.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libsymspg.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxcf03.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxc.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libelpa_openmp.so.19"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolver.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libplumed.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3_omp.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libspla.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libint2.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma_prefixed_pxgemm.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosta.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libTiled-MM.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libz.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgfortran.so.5"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnvrtc.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libscalapack.so.2.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempif08.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempi_ignore_tkr.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_mpifh.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxsmm.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcuda.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolverMp.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnccl.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucc.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucs.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufftw.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufft.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:$ORIGIN:$ORIGIN/../lib64:$ORIGIN/../lib"
+              },
+              {
+                "tag": "INTERP",
+                "value": "/lib64/ld-linux-x86-64.so.2"
+              }
+            ],
+            "sha256": "4a9b32e29d07392eebd4a4a4b81b8f1def967942722629d1422463e563b0908b"
+          },
+          "dependencies/spack/linux-zen5/cosma-2.7.0-nxkgtx7kzj7x2fhs74xieconnpza7qsf/lib64/libcosma.so": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libcosta.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libTiled-MM.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libscalapack.so.2.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RPATH",
+                "value": "$ORIGIN:$ORIGIN/:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/costa-2.3.3-zlqyozosmfk6c6v2pjhdc3d6xchzenfd/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/tiled-mm-2.3.2-joxrwvs52itwvriwz6urraxcs3kgwuds/lib64:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/devtools/saiblas/2603-gnu-avx512/lib:/opt/devtools/nvidia/cuda-12.9.1/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/cosma-2.7.0-nxkgtx7kzj7x2fhs74xieconnpza7qsf/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib:/opt/devtools/gcc/14.3.0/lib/gcc/x86_64-pc-linux-gnu/14.3.0:/opt/devtools/gcc/14.3.0/lib64"
+              }
+            ],
+            "sha256": "9656f0c7a999b55531ede8d0da537cf1a024522b6a9f5b630da41cce51253703"
+          },
+          "dependencies/spack/linux-zen5/cosma-2.7.0-nxkgtx7kzj7x2fhs74xieconnpza7qsf/lib64/libcosma_prefixed_pxgemm.so": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libcosma.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosta.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libTiled-MM.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libscalapack.so.2.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RPATH",
+                "value": "$ORIGIN:$ORIGIN/:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/costa-2.3.3-zlqyozosmfk6c6v2pjhdc3d6xchzenfd/lib64:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/devtools/saiblas/2603-gnu-avx512/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/tiled-mm-2.3.2-joxrwvs52itwvriwz6urraxcs3kgwuds/lib64:/opt/devtools/nvidia/cuda-12.9.1/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/cosma-2.7.0-nxkgtx7kzj7x2fhs74xieconnpza7qsf/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib:/opt/devtools/gcc/14.3.0/lib/gcc/x86_64-pc-linux-gnu/14.3.0:/opt/devtools/gcc/14.3.0/lib64"
+              }
+            ],
+            "sha256": "c8dc22faddee12596afd72f691e48f07e598b0ddb9e33ee4f85f5920d2308564"
+          },
+          "dependencies/spack/linux-zen5/cosma-2.7.0-nxkgtx7kzj7x2fhs74xieconnpza7qsf/lib64/libcosma_pxgemm.so": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libcosma.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosta.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libTiled-MM.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libscalapack.so.2.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RPATH",
+                "value": "$ORIGIN:$ORIGIN/:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/costa-2.3.3-zlqyozosmfk6c6v2pjhdc3d6xchzenfd/lib64:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/devtools/saiblas/2603-gnu-avx512/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/tiled-mm-2.3.2-joxrwvs52itwvriwz6urraxcs3kgwuds/lib64:/opt/devtools/nvidia/cuda-12.9.1/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/cosma-2.7.0-nxkgtx7kzj7x2fhs74xieconnpza7qsf/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib:/opt/devtools/gcc/14.3.0/lib/gcc/x86_64-pc-linux-gnu/14.3.0:/opt/devtools/gcc/14.3.0/lib64"
+              }
+            ],
+            "sha256": "20287a6e2b663ed8ae4bf1855caaf16821fa3c65569d7ce3fa9f5fac5280f836"
+          },
+          "dependencies/spack/linux-zen5/cosma-2.7.0-nxkgtx7kzj7x2fhs74xieconnpza7qsf/lib64/libcosma_pxgemm_cpp.so": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libcosma.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosta.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libTiled-MM.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libscalapack.so.2.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RPATH",
+                "value": "$ORIGIN:$ORIGIN/:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/costa-2.3.3-zlqyozosmfk6c6v2pjhdc3d6xchzenfd/lib64:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/devtools/saiblas/2603-gnu-avx512/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/tiled-mm-2.3.2-joxrwvs52itwvriwz6urraxcs3kgwuds/lib64:/opt/devtools/nvidia/cuda-12.9.1/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/cosma-2.7.0-nxkgtx7kzj7x2fhs74xieconnpza7qsf/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib:/opt/devtools/gcc/14.3.0/lib/gcc/x86_64-pc-linux-gnu/14.3.0:/opt/devtools/gcc/14.3.0/lib64"
+              }
+            ],
+            "sha256": "73cc847b35b6ee5fc3a16ca1d482552891257ede406b8a7176460566cc6e731a"
+          },
+          "dependencies/spack/linux-zen5/costa-2.3.3-zlqyozosmfk6c6v2pjhdc3d6xchzenfd/lib64/libcosta.so": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RPATH",
+                "value": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/costa-2.3.3-zlqyozosmfk6c6v2pjhdc3d6xchzenfd/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:$ORIGIN:$ORIGIN/:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/devtools/saiblas/2603-gnu-avx512/lib:/opt/devtools/gcc/14.3.0/lib/gcc/x86_64-pc-linux-gnu/14.3.0:/opt/devtools/gcc/14.3.0/lib64"
+              }
+            ],
+            "sha256": "63677810951bcc3104374e5e7cbb8f13c713dc3949923f5fcd5ff105d5243331"
+          },
+          "dependencies/spack/linux-zen5/costa-2.3.3-zlqyozosmfk6c6v2pjhdc3d6xchzenfd/lib64/libcosta_prefixed_scalapack.so": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libcosta.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libscalapack.so.2.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RPATH",
+                "value": "$ORIGIN:$ORIGIN/:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/devtools/saiblas/2603-gnu-avx512/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/costa-2.3.3-zlqyozosmfk6c6v2pjhdc3d6xchzenfd/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib:/opt/devtools/gcc/14.3.0/lib/gcc/x86_64-pc-linux-gnu/14.3.0:/opt/devtools/gcc/14.3.0/lib64"
+              }
+            ],
+            "sha256": "bb4de6e2bd417add13b1175c56a3347c20f736c4a8f3eaa3c31b849a72a3aca0"
+          },
+          "dependencies/spack/linux-zen5/costa-2.3.3-zlqyozosmfk6c6v2pjhdc3d6xchzenfd/lib64/libcosta_scalapack.so": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libcosta.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libscalapack.so.2.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RPATH",
+                "value": "$ORIGIN:$ORIGIN/:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/devtools/saiblas/2603-gnu-avx512/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/costa-2.3.3-zlqyozosmfk6c6v2pjhdc3d6xchzenfd/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib:/opt/devtools/gcc/14.3.0/lib/gcc/x86_64-pc-linux-gnu/14.3.0:/opt/devtools/gcc/14.3.0/lib64"
+              }
+            ],
+            "sha256": "2fb737e09d7eb4d3f1da79720bf06cef66d88d024fa8b379243855b621584e09"
+          },
+          "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libasan.so.8": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/gcc/14.3.0/lib/../lib64"
+              }
+            ],
+            "sha256": "1210b58bb6d8e93f251d50cddc2e0f8cec357837ac1b0b0af6d8b5e3a39ac9e5"
+          },
+          "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libatomic.so.1": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              }
+            ],
+            "sha256": "8e65b1074800f0d2eb84e838036e148f768e8ac521cf2fd2f49b1ce3fd19825e"
+          },
+          "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libgcc_s.so.1": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "ld-linux-x86-64.so.2"
+              }
+            ],
+            "sha256": "264e0f33085d0508606f0cf2a1c727a3ac828e86fdd7fe40a9f461cb92e8bc80"
+          },
+          "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libgfortran.so.5": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "ld-linux-x86-64.so.2"
+              }
+            ],
+            "sha256": "7d8bc2ccca9e0cfc2a2e3a7c4e0f3cae80c0656af2992be94fcf24c27421f408"
+          },
+          "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libgomp.so.1": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              }
+            ],
+            "sha256": "b88c7b8861f1dd1c0c577aa6f52dfec1fff82a9cc9afdbf508617c17f3906ad0"
+          },
+          "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libhwasan.so.0": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "ld-linux-x86-64.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/gcc/14.3.0/lib/../lib64"
+              }
+            ],
+            "sha256": "94ad8ba491c282be488275fecdb06290941cec687acff44d9ed77efeed1a07bc"
+          },
+          "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libitm.so.1": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              }
+            ],
+            "sha256": "5b9eb7d94642853187937989de2adf58ea7bfd5366e8305f7c8b59228a708632"
+          },
+          "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/liblsan.so.0": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "ld-linux-x86-64.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/gcc/14.3.0/lib/../lib64"
+              }
+            ],
+            "sha256": "fb21708601186b74745d4dfdd46d64d2f332e49cb0c3582487f544b838ef112d"
+          },
+          "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libquadmath.so.0": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              }
+            ],
+            "sha256": "2a86aaedb01e94e5c882f76ae5c57b349283853801cb88f39755f9bb6bf966cf"
+          },
+          "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libssp.so.0": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              }
+            ],
+            "sha256": "165dc11c7befda19285e8b3da5ad2bfc7c668a633112d1f38a10de6e5ee4ed15"
+          },
+          "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libstdc++.so.6": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "ld-linux-x86-64.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              }
+            ],
+            "sha256": "a9e25404c726ee7201e66e3253113599dd1980db9380ebed7ba2ad747f3c42a0"
+          },
+          "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libtsan.so.2": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/gcc/14.3.0/lib/../lib64"
+              }
+            ],
+            "sha256": "47cc604d1a0dcc8ba282d37cbd2c068da496ce6544d12d5147949f524c0cf487"
+          },
+          "dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib/libubsan.so.1": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/gcc/14.3.0/lib/../lib64"
+              }
+            ],
+            "sha256": "998f75e4fd782ac8ad698019378801d91403317186a794a3e542a07092e9abc2"
+          },
+          "dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz/lib/libint2.so.2.0.3": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "RPATH",
+                "value": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib:/opt/devtools/gcc/14.3.0/lib/../lib64:/opt/devtools/gcc/14.3.0/lib/gcc/x86_64-pc-linux-gnu/14.3.0:/opt/devtools/gcc/14.3.0/lib64"
+              }
+            ],
+            "sha256": "0ee884cc774e6be4d370960c52dc6c631422ce69cbfb7570aa11806d2ed3e3df"
+          },
+          "dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/lib64/libxsmm.so.2.0.0": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "ld-linux-x86-64.so.2"
+              },
+              {
+                "tag": "RPATH",
+                "value": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib:/opt/devtools/gcc/14.3.0/lib/gcc/x86_64-pc-linux-gnu/14.3.0:/opt/devtools/gcc/14.3.0/lib64"
+              }
+            ],
+            "sha256": "aed7c0eb5ecf58dd77bac6b0d410ebf7f4916fa963082bd02a6377530eaae413"
+          },
+          "dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/lib64/libxsmmf.so.2.0.0": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libxsmm.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgfortran.so.5"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RPATH",
+                "value": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib:/opt/devtools/gcc/14.3.0/lib/gcc/x86_64-pc-linux-gnu/14.3.0:/opt/devtools/gcc/14.3.0/lib64"
+              }
+            ],
+            "sha256": "88874e2268eb291ef100b9e848daa256b761d5160143b72666ada4fa650cfc22"
+          },
+          "dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg/lib/libplumed.so": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libplumedKernel.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RPATH",
+                "value": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/devtools/saiblas/2603-gnu-avx512/lib:/opt/devtools/gcc/14.3.0/lib/gcc/x86_64-pc-linux-gnu/14.3.0:/opt/devtools/gcc/14.3.0/lib64"
+              }
+            ],
+            "sha256": "73c32f475927377949ff480999cd01e8659e7a3c8ef4a445d41cbdd475f90e7d"
+          },
+          "dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg/lib/libplumedKernel.so": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libz.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgsl.so.27"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "ld-linux-x86-64.so.2"
+              },
+              {
+                "tag": "RPATH",
+                "value": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/devtools/saiblas/2603-gnu-avx512/lib:/opt/devtools/gcc/14.3.0/lib/gcc/x86_64-pc-linux-gnu/14.3.0:/opt/devtools/gcc/14.3.0/lib64"
+              }
+            ],
+            "sha256": "33dbc673d61958141ecb4a394c10181291f5d53db68acedd9043e0bde8ba0bf5"
+          },
+          "dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg/lib/plumed/plumed-runtime": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RPATH",
+                "value": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/devtools/saiblas/2603-gnu-avx512/lib:/opt/devtools/gcc/14.3.0/lib/gcc/x86_64-pc-linux-gnu/14.3.0:/opt/devtools/gcc/14.3.0/lib64"
+              },
+              {
+                "tag": "INTERP",
+                "value": "/lib64/ld-linux-x86-64.so.2"
+              }
+            ],
+            "sha256": "e6b545f40548e768cba7fb19119321331ee1c4ab3abd3f7cf2b2ddbe281cd230"
+          },
+          "dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg/lib/plumed/python/plumed.cpython-312-x86_64-linux-gnu.so": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RPATH",
+                "value": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6cmuw6yumexlghhmtuuy4ruzg/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/devtools/saiblas/2603-gnu-avx512/lib:/opt/devtools/gcc/14.3.0/lib/gcc/x86_64-pc-linux-gnu/14.3.0:/opt/devtools/gcc/14.3.0/lib64"
+              }
+            ],
+            "sha256": "d9ba3d682d12c0473948ce4ae13f60fe242af425c0e2c1e795cbbdfc8de1a8ed"
+          },
+          "dependencies/spack/linux-zen5/spla-1.6.1-uc273bzgwxxngrexd366xlfvkfmeuvgm/lib64/libspla.so.1.6.1": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RPATH",
+                "value": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/spla-1.6.1-uc273bzgwxxngrexd366xlfvkfmeuvgm/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/spla-1.6.1-uc273bzgwxxngrexd366xlfvkfmeuvgm/lib64:/opt/devtools/nvidia/cuda-12.9.1/lib64:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/devtools/saiblas/2603-gnu-avx512/lib:/opt/devtools/gcc/14.3.0/lib/gcc/x86_64-pc-linux-gnu/14.3.0:/opt/devtools/gcc/14.3.0/lib64"
+              }
+            ],
+            "sha256": "fa2fae7add66a875007f9cc13eaff98d2eb04fd013f6af4fe083b092918c5894"
+          },
+          "dependencies/spack/linux-zen5/tiled-mm-2.3.2-joxrwvs52itwvriwz6urraxcs3kgwuds/lib64/libTiled-MM.so": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "RPATH",
+                "value": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/tiled-mm-2.3.2-joxrwvs52itwvriwz6urraxcs3kgwuds/lib64:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/gcc-runtime-14.3.0-77qhgzuzdemuui24pq4mbvevxv5xvock/lib:/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100/dependencies/spack/linux-zen5/tiled-mm-2.3.2-joxrwvs52itwvriwz6urraxcs3kgwuds/lib64:/opt/devtools/nvidia/cuda-12.9.1/lib64:/opt/devtools/gcc/14.3.0/lib/gcc/x86_64-pc-linux-gnu/14.3.0:/opt/devtools/gcc/14.3.0/lib64"
+              }
+            ],
+            "sha256": "6e90586f0b15db6f1ef5d1209987fb94c2415cba7c28136de1916766f0bf95b1"
+          },
+          "lib64/libcp2k.so.2026.2": {
+            "dynamic": [
+              {
+                "tag": "NEEDED",
+                "value": "libsymspg.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxcf03.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxc.so.15"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libelpa_openmp.so.19"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolver.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcudart.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublasLt.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcublas.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libplumed.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libfftw3_omp.so.3"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libspla.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libint2.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libstdc++.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma_prefixed_pxgemm.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosma.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcosta.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libTiled-MM.so"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libz.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnvrtc.so.12"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libscalapack.so.2.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempif08.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_usempi_ignore_tkr.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi_mpifh.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmpi.so.40"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libxsmm.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libm.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libmvec.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgomp.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libopenblas.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcuda.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcusolverMp.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libnccl.so.2"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucc.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libucs.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufftw.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libcufft.so.11"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgfortran.so.5"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libquadmath.so.0"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libgcc_s.so.1"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "libc.so.6"
+              },
+              {
+                "tag": "NEEDED",
+                "value": "ld-linux-x86-64.so.2"
+              },
+              {
+                "tag": "RUNPATH",
+                "value": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:$ORIGIN:$ORIGIN/../lib64:$ORIGIN/../lib"
+              }
+            ],
+            "sha256": "beb468fbe06c97c7701b13148c99e61f57a948deadf47196a96a47b4be8852af"
+          }
+        },
+        "external_runtime_roots": [
+          "/opt/devtools",
+          "/usr",
+          "/bin",
+          "/lib",
+          "/lib64"
+        ],
+        "flags": [
+          "cosma",
+          "cusolvermp",
+          "cusolvermp_nccl",
+          "dbcsr_acc",
+          "dftd4_v4_2",
+          "elpa",
+          "fftw3",
+          "hdf5",
+          "libbqb",
+          "libdftd4",
+          "libint",
+          "libvori",
+          "libxc",
+          "libxs",
+          "libxsmm",
+          "mctc-lib",
+          "mpi_f08",
+          "offload_cuda",
+          "omp",
+          "parallel",
+          "plumed2",
+          "s_dftd3",
+          "scalapack",
+          "spglib",
+          "spla_gemm_offloading",
+          "tblite"
+        ],
+        "prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/4V100",
+        "scientific_acceptance": false,
+        "target": "4v100-avx512"
+      },
+      "version_lines": [
+        " CP2K version 2026.2",
+        " Source code revision 67b5da876d",
+        " cp2kflags: omp libint fftw3 libxc elpa parallel scalapack mpi_f08 cosma libxs libxsmm dbcsr_acc plumed2 spglib libdftd4 dftd4_v4_2 s_dftd3 mctc-lib tblite libvori libbqb offload_cuda spla_gemm_offloading cusolvermp cusolvermp_nccl hdf5",
+        " compiler: GCC version 14.3.0"
+      ],
+      "job_script_sha256": "e55d3fea59f2fa39ac17726dbb3a42a90f2f25f4dfdc2f6d380ce85bce013ddf",
+      "log_sha256": "383ea2ab9f94366f198f918addd655369c5d80d1fd168d2a0a2757a2dabcf470",
+      "scientific_acceptance_note": "Read exact workflow acceptance state separately; build validation is not full scientific/performance acceptance."
+    }
+  ]
+}

@@ -1,0 +1,113 @@
+name: Build one locked MD pair
+
+on:
+  workflow_call:
+    inputs:
+      pair:
+        type: string
+        required: true
+      retry_releases:
+        type: boolean
+        default: false
+    secrets:
+      REMOTE_SSH_PRIVATE_KEY:
+        description: May be supplied by the caller or the hpc Environment
+        required: false
+      REMOTE_USER:
+        description: May be supplied by the caller or the hpc Environment
+        required: false
+
+permissions:
+  contents: read
+
+env:
+  MD_PAIR: ${{ inputs.pair }}
+  REMOTE_USER: ${{ secrets.REMOTE_USER }}
+  RETRY_RELEASES: ${{ inputs.retry_releases }}
+
+jobs:
+  deepmd:
+    runs-on: ubuntu-latest
+    environment: hpc
+    timeout-minutes: 270
+    outputs:
+      run_id: ${{ steps.build.outputs.run_id }}
+    env:
+      MD_PHASE: deepmd
+    steps: &md_steps
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Prepare HPC SSH credentials
+        env:
+          KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          : "${REMOTE_USER:?Configure REMOTE_USER in the hpc Environment or caller secrets}"
+          : "${KEY:?Configure REMOTE_SSH_PRIVATE_KEY in the hpc Environment or caller secrets}"
+          mkdir -m 700 "$RUNNER_TEMP/ssh"
+          printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
+          chmod 600 "$RUNNER_TEMP/ssh/key"
+      - name: Run isolated MD stage
+        id: build
+        run: python3 -u controller/md_ci.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: md-${{ env.MD_PHASE }}-${{ fromJSON(inputs.pair).selection_sha256 }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/results/
+          if-no-files-found: warn
+      - name: Remove temporary SSH key
+        if: always()
+        run: rm -f -- "$RUNNER_TEMP/ssh/key"
+
+  lammps:
+    needs: deepmd
+    if: needs.deepmd.outputs.run_id != ''
+    runs-on: ubuntu-latest
+    environment: hpc
+    # A 330-minute rush allocation fits in its own hosted-runner job.
+    timeout-minutes: 360
+    env:
+      MD_PHASE: lammps
+      MD_RUN_ID: ${{ needs.deepmd.outputs.run_id }}
+    steps: *md_steps
+
+  acceptance:
+    needs: [deepmd, lammps]
+    runs-on: ubuntu-latest
+    environment: hpc
+    # Two-node science plus up to two 120-minute performance allocations.
+    timeout-minutes: 360
+    env:
+      MD_PHASE: acceptance
+      MD_RUN_ID: ${{ needs.deepmd.outputs.run_id }}
+    steps: *md_steps
+
+  result:
+    if: always()
+    needs: [deepmd, lammps, acceptance]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require complete paired delivery or intentional release deduplication
+        env:
+          PAIR: ${{ inputs.pair }}
+          BUILD_RUN: ${{ needs.deepmd.outputs.run_id }}
+          DEEPMD_RESULT: ${{ needs.deepmd.result }}
+          LAMMPS_RESULT: ${{ needs.lammps.result }}
+          ACCEPTANCE_RESULT: ${{ needs.acceptance.result }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          if os.environ['DEEPMD_RESULT'] != 'success':
+              raise SystemExit('DeepMD build stage did not succeed')
+          downstream = [os.environ['LAMMPS_RESULT'], os.environ['ACCEPTANCE_RESULT']]
+          if os.environ['BUILD_RUN']:
+              if downstream != ['success', 'success']:
+                  raise SystemExit('paired delivery requires LAMMPS and publication acceptance success')
+          else:
+              triggers = json.loads(os.environ['PAIR'])['triggers']
+              if any(item['track'] == 'development' for item in triggers) or downstream != ['skipped', 'skipped']:
+                  raise SystemExit('only unchanged release attempts may skip the paired delivery')
+          PY

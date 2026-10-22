@@ -1,0 +1,17 @@
+[
+  "mpirun",
+  "-np",
+  "8",
+  "--map-by",
+  "ppr:4:node:pe=4",
+  "--bind-to",
+  "core",
+  "--report-bindings",
+  "/usr/bin/python3",
+  "/home/stardust/sai-hpc-software/runtime-tests/cp2k-container-multinode-20261021-16V100-2n8g-water64-r2/cases/water64-gpw/2/sif/entry.py",
+  "host",
+  "sif",
+  "cp2k",
+  "-i",
+  "input.inp"
+]

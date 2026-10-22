@@ -1,0 +1,26 @@
+--- a/src/elpa2/elpa2_trans_ev_tridi_to_band_template.F90
++++ b/src/elpa2/elpa2_trans_ev_tridi_to_band_template.F90
+@@ -59,6 +59,10 @@
+ #else
+ #undef WITH_CUDA_AWARE_MPI_TRANS_TRIDI_TO_BAND
+ #endif
++! SAI diagnostic: keep GPU kernels, but use the upstream host-staged
++! communication/back-transformation path for CP2K's partial eigenspaces.
++! This is a candidate workaround, not an upstream correctness repair.
++#undef WITH_CUDA_AWARE_MPI_TRANS_TRIDI_TO_BAND
+ !#endif
+ 
+ !#if COMPLEXCASE == 1
+--- a/src/elpa2/elpa2_trans_ev_band_to_full_template.F90
++++ b/src/elpa2/elpa2_trans_ev_band_to_full_template.F90
+@@ -57,6 +57,10 @@
+ #undef CUDA_AWARE_MPI_BAND_TO_FULL
+ #endif
+ 
++! SAI diagnostic: retain the upstream host-staged path while keeping GPU
++! matrix operations enabled. Other CUDA-aware ELPA routines are unchanged.
++! This is a candidate workaround, not an upstream correctness repair.
++#undef CUDA_AWARE_MPI_BAND_TO_FULL
+ #ifdef CUDA_AWARE_MPI_BAND_TO_FULL
+ #define MORE_GPUBLAS
+ #else

@@ -1,0 +1,243 @@
+{
+  "job": "1838654",
+  "state": "1838654|COMPLETED|0:0|00:03:28|16v100n57",
+  "scope": "existing formal SIF with a new private ELPA overlay; independent diagnostic, not publication",
+  "base_sif_unchanged": true,
+  "input_request": {
+    "prepared_at": "2026-10-18T01:57:35.235297+00:00",
+    "scope": "Native ELPA ABI/ISA/runtime diagnostic only; original formal SIF unchanged; no original identity acceptance/publication",
+    "run": "/home/stardust/sai-hpc-software/runs/cp2k-elpa-native-20261018-d",
+    "artifact": "/home/stardust/sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-rb59c9f26a184/16V100/39078998459-1-release-16v100-avx2-2026-10-17-67b5da876dd6.sif",
+    "artifact_sha256": "c746fed344d9e909332e7fc40ead03bcc155458c02787cd1eac710ae87bfc355",
+    "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/16V100/dependencies/elpa",
+    "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+    "locked_files": {
+      "input/cp2k_elpa.sh": "7b4c4a6c54af2544a5f62be22bf1915261cc35c6d88bb30d05a58b342f2b5b94",
+      "input/environment.sh": "68bfc2f69c1df2f9b35fdf9d273dbf35e377c44b490ff19ebc6c41ac7dad58d0",
+      "input/elpa-2026.02.002.tar.gz": "02e3c59fec53cd8eb66a4cc15fa4fbf190cf9654227223fb8ad55713e9427932",
+      "input/elpa-allocate-probe.c": "90512bf60dab603f526bfee65b934db86248e6df9b7463a57cb210379d6b7218",
+      "input/inner.sh": "9afa268ec4dbac70f809b0298d472181a613b4113a32ab26127cb1394d71931d",
+      "input/water-gpw/input.inp": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0",
+      "input/water-elpa/input.inp": "ccca4c8555ad9fd7574457e21065110b4aebbeeae3fc9486e740c081607d36b3",
+      "input/ch2o-tblite/input.inp": "cc95e7175fc46ac119a0b6e237711673717a0d859b96e884a1519a3e59e580fa",
+      "input/water-dftd4/input.inp": "39579aec1d120e74fb052414d56af74fa9466f792f87085ef0a1ebbe7b4508a5",
+      "input/source/tools/toolchain/scripts/stage5/elpa-2026.02.002-library-only.patch": "62d8b68b37ad206384bd9306fcd0448c09005a2585c2f46b35104ae94c2bf9b5",
+      "input/source/tools/toolchain/scripts/stage5/install_elpa.sh": "e5503af97bda6b31278ff54a7f3e6aeabfcddf33b616fc2d3cbd042b600a4b15",
+      "job.sbatch": "532ed1fac853ec62b6d0dd3880e8aff8a4412c3f187daf3c89c75739bf47e135"
+    },
+    "submitted": false
+  },
+  "samples": {
+    "water-gpw": {
+      "energy_ha": -34.44682129478832,
+      "forces_ha_bohr": [
+        [
+          -0.00945233354,
+          -0.010457489817,
+          -2.87128e-07
+        ],
+        [
+          -0.009818693543,
+          0.01569111124,
+          -1.41928e-07
+        ],
+        [
+          0.010457918678,
+          0.004642532798,
+          5.8306e-08
+        ],
+        [
+          -0.003014175638,
+          0.009256006937,
+          -5.6023e-08
+        ],
+        [
+          0.004272731236,
+          -0.008357649189,
+          -0.007545513107
+        ],
+        [
+          0.004272706358,
+          -0.008357781986,
+          0.007545680456
+        ]
+      ],
+      "elapsed_seconds": 25.97,
+      "cp2k_seconds": 24.475,
+      "dispersion_ha": null
+    },
+    "water-elpa": {
+      "energy_ha": -34.44682129478892,
+      "forces_ha_bohr": [
+        [
+          -0.009452333431,
+          -0.010457489975,
+          -2.87209e-07
+        ],
+        [
+          -0.009818693497,
+          0.015691111057,
+          -1.41949e-07
+        ],
+        [
+          0.010457918407,
+          0.004642532856,
+          5.8339e-08
+        ],
+        [
+          -0.003014175516,
+          0.009256007037,
+          -5.5964e-08
+        ],
+        [
+          0.004272731225,
+          -0.00835764914,
+          -0.007545512985
+        ],
+        [
+          0.004272706362,
+          -0.008357781857,
+          0.007545680344
+        ]
+      ],
+      "elapsed_seconds": 17.69,
+      "cp2k_seconds": 15.745,
+      "dispersion_ha": null
+    },
+    "water-dftd4": {
+      "energy_ha": -34.447829646264495,
+      "forces_ha_bohr": [
+        [
+          -0.009332376592,
+          -0.010474968682,
+          -2.8691e-07
+        ],
+        [
+          -0.009950935873,
+          0.015706895657,
+          -1.4178e-07
+        ],
+        [
+          0.010491939313,
+          0.004650465238,
+          5.8064e-08
+        ],
+        [
+          -0.002987464195,
+          0.009263641148,
+          -5.6103e-08
+        ],
+        [
+          0.004248507873,
+          -0.008364585295,
+          -0.007548547535
+        ],
+        [
+          0.004248483027,
+          -0.008364718083,
+          0.007548714839
+        ]
+      ],
+      "elapsed_seconds": 25.31,
+      "cp2k_seconds": 24.031,
+      "dispersion_ha": -0.00100835147581
+    },
+    "ch2o-tblite": {
+      "energy_ha": -7.173729984728115,
+      "forces_ha_bohr": [
+        [
+          0.052653244496,
+          -0.0,
+          0.0
+        ],
+        [
+          -0.04484095753,
+          0.0,
+          -0.0
+        ],
+        [
+          -0.003906143483,
+          -0.006024706892,
+          0.0
+        ],
+        [
+          -0.003906143483,
+          0.006024706892,
+          0.0
+        ]
+      ],
+      "elapsed_seconds": 2.87,
+      "cp2k_seconds": 1.617,
+      "dispersion_ha": null
+    }
+  },
+  "ot_versus_standard_diag": {
+    "energy_delta_ha": 5.968558980384842e-13,
+    "max_force_delta_ha_bohr": 2.7100000021818005e-10
+  },
+  "elpa_solve_verified": false,
+  "elpa_limitation": "The water-elpa fixture has a 46x46 matrix below default ELPA_NEIGVEC_MIN=64. It used cp_fm_syevd; library loading and diagonalization passed, but ELPA numerical execution is not verified.",
+  "file_sha256": {
+    "request.json": "3ef00f269be087c37e3ea414bb58dbf2d963eeb48508e2a21a50fca3b76c84a2",
+    "job.sbatch": "532ed1fac853ec62b6d0dd3880e8aff8a4412c3f187daf3c89c75739bf47e135",
+    "results/build-hostname.txt": "556700d931f7d99629164f35d7478eabf2203a8203c1069d59b70aa540286b46",
+    "results/build-lscpu.txt": "b13ca4afdf0592be1287457a49d130c0265782577e30ece1a35eb3776e0120f9",
+    "results/cases/ch2o-tblite/benchmark-EFIELD_x-1_0.cube": "774510555d704410a891cb0686d8b5fcb866f8f476503c91f987e33172454460",
+    "results/cases/ch2o-tblite/benchmark-EFIELD_y-1_0.cube": "aae7c00366656faaf38c289c0f1838324752b6336b5884c4a52dda3e35787bad",
+    "results/cases/ch2o-tblite/benchmark-EFIELD_z-1_0.cube": "dd84b3a7f5c113d970dcc608f537d145e18f8b394de99d70baf938d249b54f15",
+    "results/cases/ch2o-tblite/benchmark-ELECTRON_DENSITY-1_0.cube": "6b6c535368f336f2123d0438f0163a2c77d91aa95f602f1cf2ae7aae0e9b5506",
+    "results/cases/ch2o-tblite/benchmark-ELF_S1-1_0.cube": "3ed56f49ddfd2d588f79d2f38c29dfde05c5b7c546b60f3b684f1df540d5413c",
+    "results/cases/ch2o-tblite/benchmark-RESTART.wfn": "a61d5f1c3bb164af5765fcbfdf13a222667b42d32ef6eda1ca66ed5b065fb2bf",
+    "results/cases/ch2o-tblite/benchmark-TOTAL_DENSITY-1_0.cube": "057619c8811922e1d303bff0543f5a85df9cecd976a0ba2cc7aa4ec316fcd87e",
+    "results/cases/ch2o-tblite/benchmark-V_HARTREE-1_0.cube": "c36b122294e86469333c3adc7431f676a5729bb1697a7ed123a567c9a78cf3a6",
+    "results/cases/ch2o-tblite/benchmark-WFN_00006_1-1_0.cube": "9b002d1fd5b01661f488c574102f30d60a82c5ad22862c175053d9b12f8c9011",
+    "results/cases/ch2o-tblite/benchmark-nonbonded_nl_p0-1.out": "a5750d43309892115cd8cae2aa927e749e23a1a7e77d2a1ba1f39e8c105ef7fe",
+    "results/cases/ch2o-tblite/cp2k.log": "7dccc313a9099a427904bd0b6801bfa97bf54bd92587b1f38a63acc8132d7440",
+    "results/cases/ch2o-tblite/elapsed.txt": "a10d2486c3687dd89e421bca51daab9e7ed3e277110387f3a840c4ca2fdb699b",
+    "results/cases/ch2o-tblite/forces.xyz": "a840900ebfe5e6afc96fcf7ec56e30a7dce7cd28c99e93fc699006bffc06d435",
+    "results/cases/ch2o-tblite/input.inp": "cc95e7175fc46ac119a0b6e237711673717a0d859b96e884a1519a3e59e580fa",
+    "results/cases/water-dftd4/benchmark-1_0.dftd": "38f61f7fb11a130071e62590c0b3ca8cf77554c4ee76095c280b07c2192fd750",
+    "results/cases/water-dftd4/benchmark-RESTART.wfn": "f767e667cc4a17c313c23d67a8f6c940ceba9f38832f70dd883a3fcee5660276",
+    "results/cases/water-dftd4/benchmark-RESTART.wfn.bak-1": "19a4bea8e3c32e8e9e941e18769e102748238308896f3df2df176a52a1d2032f",
+    "results/cases/water-dftd4/cp2k.log": "a95f1083d02e1776c68d4123a0eef6271ec4a6bef37a4319af2dfa22900c97d2",
+    "results/cases/water-dftd4/elapsed.txt": "4abbe54c91a2d2efa7f2071a7b44600e56d09fd1a6988dc73be387b33295a2f9",
+    "results/cases/water-dftd4/forces.xyz": "2adafa5c667470e54e6be8dce9ef04f2389b70b09f52a1c49bf35ccca443ebff",
+    "results/cases/water-dftd4/input.inp": "39579aec1d120e74fb052414d56af74fa9466f792f87085ef0a1ebbe7b4508a5",
+    "results/cases/water-elpa/benchmark-RESTART.wfn": "a1ac604eaa2b9ab1371cbca37357094809fdc08ab751c897f2ef5d43eaca672b",
+    "results/cases/water-elpa/benchmark-RESTART.wfn.bak-1": "65a2393144a2e6d6c5be4b1946931daabd89d1e18b0d1b37f5c749959f9a5571",
+    "results/cases/water-elpa/cp2k.log": "9e9edbc73ca1937252da657f459a29dbb857256fc105e860201d512f2509a857",
+    "results/cases/water-elpa/elapsed.txt": "e255a5870bb02845616bdc302f82ef1ef6645ddc7225f352dd0fcf13fb6bb679",
+    "results/cases/water-elpa/forces.xyz": "3cad992a555302cb0947a63c6b06bf2d2336f21e6f69a9a9b7df4c7bf3dd3919",
+    "results/cases/water-elpa/input.inp": "ccca4c8555ad9fd7574457e21065110b4aebbeeae3fc9486e740c081607d36b3",
+    "results/cases/water-gpw/benchmark-RESTART.wfn": "06477737fe097c1bd134bf421f75d929625f4a7f4824806a9ac333950e2624cb",
+    "results/cases/water-gpw/benchmark-RESTART.wfn.bak-1": "982979e2d69f651273f1efc20c87586c76958385679ad149dc3c65a24fdda7d0",
+    "results/cases/water-gpw/cp2k.log": "e3c95ab6317cccf4bac9e3e8cec8b54939608175af38c59064518a538c5e01a5",
+    "results/cases/water-gpw/elapsed.txt": "785bcf1e895d7bdfdf3be68fd06f814523fcccc3a0a3d26f99a19063d4e1564f",
+    "results/cases/water-gpw/forces.xyz": "54fa9218acbbd9efd6f0129912297eff3add13d80d755c2eb1ec4d3651a9c829",
+    "results/cases/water-gpw/input.inp": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0",
+    "results/configure.log": "4d16e6a7d7f5350f7fdb856e099aee5987703fbce5a08143c23150f7bb0cad6e",
+    "results/elpa-metadata/awk-build-tool.sha256": "ddc097f7a7c970d419a75b9c72892789905b0661a77aac2c5d85909e619e5630",
+    "results/elpa-metadata/build-lscpu.txt": "3146ee1152ffbbafd443152f0ec2ccf810838b622229c1c0ce2e1881f3e81d3c",
+    "results/elpa-metadata/compiler-flags": "d385ebb86d3df07727b882943f5ecd62bb5491fe943c33b5a8e6580435720bdd",
+    "results/elpa-metadata/config.h": "9fc36aa57c6e2ecdd2ab1184bc47b927c46c883d90e39279e6511419716c557d",
+    "results/elpa-metadata/config.log": "69eb3af57c7bc68a0d3534bc11899ffbae4b64e3682cad4d8d81b446ae4eac58",
+    "results/elpa-metadata/configure-command.txt": "914abcc25bdd2b379bb7e8699c8e39061a26826073add984573fd519f9684702",
+    "results/elpa-metadata/ldd.txt": "6c85f9bf6edfc93b1e40bce4519f1f450629f60231938b8272bf949f4b416e69",
+    "results/elpa-metadata/libraries.sha256": "65aaa500968df87d96d62fa1b32c6aa98605d9a256eb0ec607e89a7cc784e80e",
+    "results/elpa-metadata/mpi-communicator-fix.json": "b5bd14229aae976920ca64a289cbdf422aff7063e3b0c32c9361d8024d1cf22d",
+    "results/elpa-metadata/source-archives.sha256": "e9da28e6d5c5cc768e156c9b63741245dae142fe31210b13fa144a5db2f792b1",
+    "results/elpa-metadata/target": "bb6868f8ae49f0214776e08fbf4090b7461a99e6aeec00a766929781edb7c22f",
+    "results/elpa-metadata/version": "388f31e1817cb4f21368afd6d449857e721fa555f0be510cf865e4de85d8d493",
+    "results/image-driver.json": "24e8e2b9dd63dd8e99f5de73badb324019e813a2579bc1837fd9123d9f9404bf",
+    "results/install.log": "6d3f43af976eb428a0e51b742c8aac7c54b205920402c9ddf2125803eb5ec9c8",
+    "results/ldd-with-native-elpa.txt": "36cdc29169851e4f99210b1bcdca7565d76aa254ae22c03bd02f5583ac36810c",
+    "results/make.log": "c0b47d70400cedb4ea70f8726ded6f34b92e26f5e4780e973c44a0bbc955988f",
+    "results/original-sif-after.sha256": "d8c487c52dc2911480cf1f7a5ba9eb3db0a7da9e59c6a56bebf12bb3abe11688",
+    "results/original-sif-before.sha256": "d8c487c52dc2911480cf1f7a5ba9eb3db0a7da9e59c6a56bebf12bb3abe11688",
+    "results/slurm-1838654.log": "4b3ede8927eb71ba33964207e2198a6f0a24ba67352a0d18a961e8b53f99de4e",
+    "results/system-elpa-probe/exit-code.txt": "586900065999e00dfd03caec2bd5eb43dd939f082db4718edecd72fabfdcdbec",
+    "results/system-elpa-probe/gdb.log": "584f6f9d0378c09cf3e65313710dd5d06edbbcda697545bea83fc210a2674635",
+    "results/system-elpa-probe/library.sha256": "2b69c28391e62b1c0c9baf503e3fa0a55d9e14a116350f374d657c7a42f1ccec",
+    "results/system-elpa-probe/probe.log": "848b34eacb8672d5e032759121e322093f5d4d8e3a346be8e4dea8be83af10b1"
+  }
+}

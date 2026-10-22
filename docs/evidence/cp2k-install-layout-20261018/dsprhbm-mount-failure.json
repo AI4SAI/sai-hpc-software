@@ -1,0 +1,232 @@
+{
+  "application_files": [
+    "capacity.json",
+    "input/build-attempt.json",
+    "input/ci-handoff.json",
+    "job.id",
+    "job.sbatch",
+    "request.json",
+    "results/dependency-stage.json",
+    "results/image-driver.json",
+    "results/install-success.json",
+    "results/libint-export-repair.json",
+    "results/native-profile.json",
+    "results/overlay-workdir-preparation.json",
+    "results/probe-success.json",
+    "results/slurm-1838161.log",
+    "results/spack.lock",
+    "results/spack.yaml",
+    "results/stage-identity.json",
+    "results/status.json",
+    "results/validated-graph.json",
+    "runtime/apptainer-fuse2fs.conf",
+    "work.ext3"
+  ],
+  "application_overlay": {
+    "exists": true,
+    "inode": 144115786418498700,
+    "mode": "0o600",
+    "mtime_ns": 1792285019000000000,
+    "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/work.ext3",
+    "size": 17179869184
+  },
+  "conclusion": "Apptainer image-driver startup exceeded its 10-second fuse2fs mount deadline after exact dependency checkpoint clone; application compilation never began. Captured stderr contains no checksum, fsck, or corruption diagnostic. Overlay integrity has not been revalidated by mount or fsck.",
+  "config": {
+    "active_lines": [
+      "allow setuid = yes",
+      "max loop devices = 256",
+      "allow ipc ns = yes",
+      "allow pid ns = yes",
+      "allow user ns = yes",
+      "allow uts ns = yes",
+      "config passwd = yes",
+      "config group = yes",
+      "config resolv_conf = yes",
+      "mount proc = yes",
+      "mount sys = yes",
+      "mount dev = yes",
+      "mount devpts = yes",
+      "mount home = yes",
+      "mount tmp = yes",
+      "mount hostfs = no",
+      "bind path = /etc/localtime",
+      "bind path = /etc/hosts",
+      "user bind control = yes",
+      "enable fusemount = yes",
+      "enable overlay = yes",
+      "enable underlay = yes",
+      "mount slave = yes",
+      "sessiondir max size = 64",
+      "allow container sif = yes",
+      "allow container encrypted = yes",
+      "allow container squashfs = yes",
+      "allow container extfs = yes",
+      "allow container dir = yes",
+      "always use nv = no",
+      "use nvidia-container-cli = no",
+      "always use rocm = no",
+      "root default capabilities = full",
+      "memory fs type = tmpfs",
+      "mksquashfs procs = 0",
+      "shared loop devices = no",
+      "image driver = ",
+      "download concurrency = 3",
+      "download part size = 5242880",
+      "download buffer size = 32768",
+      "systemd cgroups = yes",
+      "apptheus socket path = /run/apptheus/gateway.sock",
+      "allow monitoring = no",
+      "binary path = /home/stardust/sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin:$PATH:/usr/bin:/bin:/usr/sbin:/sbin"
+    ],
+    "exists": true,
+    "inode": 144115786418499500,
+    "mode": "0o400",
+    "mtime_ns": 1792285549000000000,
+    "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/runtime/apptainer-fuse2fs.conf",
+    "sha256": "c23981456b0550c502eb7eb4e691abe605485c1469dfedc6ef54ac86dee73fb1",
+    "size": 18964
+  },
+  "dependency_files": [
+    "capacity.json",
+    "job.id",
+    "job.sbatch",
+    "request.json",
+    "results/dependency-stage.json",
+    "results/image-driver.json",
+    "results/install-success.json",
+    "results/libint-export-repair.json",
+    "results/native-profile.json",
+    "results/probe-success.json",
+    "results/slurm-1837486.log",
+    "results/spack.lock",
+    "results/spack.yaml",
+    "results/stage-identity.json",
+    "results/validated-graph.json",
+    "runtime/apptainer-fuse2fs.conf",
+    "work.ext3"
+  ],
+  "dependency_overlay": {
+    "exists": true,
+    "inode": 144115786418497300,
+    "mode": "0o400",
+    "mtime_ns": 1792284040000000000,
+    "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies/work.ext3",
+    "size": 17179869184
+  },
+  "driver": {
+    "exists": true,
+    "file": "/home/stardust/sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs: ELF 64-bit LSB executable, x86-64, version 1 (SYSV), dynamically linked, interpreter /lib64/ld-linux-x86-64.so.2, for GNU/Linux 3.2.0, with debug_info, not stripped",
+    "inode": 144115785831319420,
+    "mode": "0o555",
+    "mtime_ns": 1792246306000000000,
+    "path": "/home/stardust/sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs",
+    "sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+    "size": 1700024
+  },
+  "driver_record": {
+    "content": {
+      "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+      "binary_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+      "config_sha256": "c23981456b0550c502eb7eb4e691abe605485c1469dfedc6ef54ac86dee73fb1",
+      "driver": "/home/stardust/sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs",
+      "patched_source_sha256": "c63d1fb25510d316836952953e9adddacd3214cd91d6002bf3b16aed350c4ddc",
+      "schema": 1,
+      "source_commit": "45651efd6db7da8738bc9d8d1f17e99259cabfe4"
+    },
+    "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/results/image-driver.json",
+    "sha256": "24e8e2b9dd63dd8e99f5de73badb324019e813a2579bc1837fd9123d9f9404bf"
+  },
+  "error_scan": [
+    {
+      "line": 6,
+      "text": "FATAL:   container creation failed: mount hook function failure: mount /proc/self/fd/9->/opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 error: while mounting image /proc/self/fd/9: fuse2fs failed to mount /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 in 10s"
+    }
+  ],
+  "job_id": {
+    "content": "1838161\n",
+    "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/job.id",
+    "sha256": "45b8d0acb454a81348fb6debbf7aa9cf8cf7458cccfbf1e81b1c0e8f8094c4fc"
+  },
+  "job_script": {
+    "exists": true,
+    "inode": 144115786703792600,
+    "mode": "0o700",
+    "mtime_ns": 1792284224000000000,
+    "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/job.sbatch",
+    "sha256": "c04904ebfff1131afbbaaccaff6eeb154a6b8055f861a17ad3123caa812cfc0f",
+    "size": 12450
+  },
+  "kind": "application-container-mount-failure",
+  "log": {
+    "content": "BUILD_CAPACITY_POLICY filesystem-enforced 39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6\nCP2K_EXACT_DEPENDENCY_CHECKPOINT_CLONED\nCP2K_IMAGE_DRIVER sha256=46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10 config=/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/runtime/apptainer-fuse2fs.conf\nINFO:    User not listed in /etc/subuid, trying root-mapped namespace\nINFO:    Using fakeroot command combined with root-mapped namespace\nFATAL:   container creation failed: mount hook function failure: mount /proc/self/fd/9->/opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 error: while mounting image /proc/self/fd/9: fuse2fs failed to mount /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 in 10s\n",
+    "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/results/slurm-1838161.log",
+    "sha256": "c6f07467393e6552f317baf70cf78e75b9c9b5fff1fcb10ad6476c7012f3f1ef"
+  },
+  "mutations_performed": false,
+  "observed_at": "2026-10-18T09:09:41.103176+08:00",
+  "request": {
+    "content": {
+      "contract_schema": 3,
+      "controller": "/home/stardust/sai-hpc-software/controller/c3b65b97f9d95ecb29a453713dfe292af20f6d39/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6",
+      "dependencies_run": "39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6-dependencies",
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-rb59c9f26a184",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rb59c9f26a184/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "jobs": 8,
+      "minutes": 240,
+      "op": "submit",
+      "overlay_mb": 16384,
+      "recipe_sha256": "b59c9f26a1846d5a3863c04cefc0f7b746b3078bc48cb0a8138d67084d28e150",
+      "resume_run": null,
+      "run_id": "39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6",
+      "sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+      "software": "cp2k",
+      "source_ref": "v2026.2",
+      "target": "dsprhbm",
+      "track": "release",
+      "version": "v2026.2"
+    },
+    "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/request.json",
+    "sha256": "ac4898f331ac88f8ae6adf226461efbbfe033559e4ddf92563e999eb0441f0b5"
+  },
+  "root": "/home/stardust/sai-hpc-software",
+  "run_id": "39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6",
+  "sacct": [
+    "1837486|DSPRHBM|COMPLETED|0:0|01:11:51|d9470n02|2026-10-18T07:28:49|2026-10-18T08:40:40",
+    "1838161|DSPRHBM|FAILED|255:0|00:22:15|d9470n02|2026-10-18T08:43:44|2026-10-18T09:05:59"
+  ],
+  "status": {
+    "content": {
+      "exit_code": "255:0",
+      "job": "1838161",
+      "state": "FAILED",
+      "verified": false
+    },
+    "path": "/home/stardust/sai-hpc-software/runs/39078998459-1-release-dsprhbm-2026-10-17-67b5da876dd6/results/status.json",
+    "sha256": "62b441cf423457a17078c21c11d1debc70775bbe6ac97f903d0be55aea07959b"
+  },
+  "identity_assertions": {
+    "run_id_matches": true,
+    "job_matches": true,
+    "driver_matches": true,
+    "config_matches": true
+  }
+}

@@ -1,0 +1,229 @@
+# ELPA 2026.02.001：构建、部署和复现
+
+当前公共入口是 `elpa/2026.02.001-2603-gnu-auto`。管理员已经安装三个库，
+`stardust` 已在四个分区完成物理环境验收。源码、补丁、构建/部署脚本、安装文件清单
+和原始验收日志均在本仓库；大体积源码压缩包、SIF 和构建缓存保留在集群家目录。
+
+2026-10-20：管理员已安装包含上游 MPI communicator 回收修复的三套库，
+物理文件清单核对通过。36 行的简化 module 也已在四分区通过原生 C/Fortran、数值、
+资源释放及卸载兼容测试。管理员已替换公共入口，物理文件和 module 哈希核对通过；
+公共 module 原生复验 `1865327`–`1865330` 四分区均 `COMPLETED 0:0`。
+[更新包和操作](../deployment/elpa-2026.02.001-commfix/README.md)、
+[此次原生验收](evidence/elpa-simple-module-20261020/README.md)。下述较早记录保留为历史。
+
+同日新增的 CP2K 2026.2 集成验收发现：共享 NVIDIA 库的 ELPA2 路径在
+64 水分子对角化中发散，小矩阵双节点测试还会触发 `cudaHostRegister` 错误。
+这些情况不在先前 128 阶解析矩阵测试的覆盖范围内。相同 CP2K 输入改用
+cuSOLVERMp、ELPA CPU kernel 或 ELPA 单阶段 GPU 路径可正常收敛；不能据此
+宣称公共 ELPA2 集成已通过。保留 GPU 计算、使用主机缓冲回变换的两套隔离候选库
+已通过独立数值、Fortran 和 communicator 生命周期检查，并在 16V100、4V100、
+8V100V0 通过全部 **42 项 CP2K 单/双节点测试**，包括此前失败的输入。
+约 39.8 MiB 的 [GPU 替换包](../deployment/elpa-2026.02.001-backtransform/README.md)
+已由管理员安装。公共 module 物理复验 `1869223`–`1869226` 四分区均通过，
+共 460 次数值求解；GPU 每 rank 的 32 个临时 communicator 全部释放，
+GCC 14.3 Fortran 数值消费者也通过。CP2K 依赖锁已固定新 GPU 库和回变换补丁，
+新身份 CP2K 2026.2 的四分区构建、全部 **56 项单/双节点科学测试**、SIF 验证和
+物理部署导出包回读也已通过；[正式发布验收](evidence/cp2k-shared-elpa-release-20261020/README.md)。
+管理员已将新 CP2K 安装到物理 `/opt`，公共 `cp2k/2026.2-auto` 已切换。
+`stardust` 完成四分区全部 **56 项物理环境测试**，原始日志独立复核通过；
+[安装后验收](evidence/cp2k-shared-elpa-native-20261020/README.md)。
+此本地兼容方案的通过范围是记录中的算例，性能按独立测量报告。
+[最新 ELPA 物理验收](evidence/elpa-backtransform-native-20261020/README.md)；详见
+[集成失败、控制实验及候选修复](evidence/cp2k-export-recovery-20261020/README.md)。
+
+## 分区选择和固定路径
+
+| 分区 | ISA / 后端 | 容器内和物理机上的相同安装前缀 |
+|---|---|---|
+| 16V100、8V100V0 | AVX2 / NVIDIA | `/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx2/nvidia` |
+| 4V100 | AVX512 / NVIDIA | `/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/nvidia` |
+| DSPRHBM | AVX512 / CPU | `/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/cpu` |
+
+8V100V0 的 Gold 6146 有 AVX512，但没有站点 AVX512 MPI/BLAS 所需的 VNNI，
+所以选 AVX2 依赖。DSPRHBM 的 CPU 库在编译时完全移除 CUDA，原始显式 C 接口
+不会为了判断指针类型而初始化 CUDA 驱动。
+
+请在实际 Slurm 分配的计算节点加载 module。该 module 按 `SLURM_JOB_PARTITION`
+选择；简化版把重复的 ISA 探测移到验收中，按表选择 ELPA 后继续加载站点 MPI/BLAS。
+实际库路径一致性在四分区验收中检查。未设置作业分区时加载会明确报错，查看不需要分配：
+
+```bash
+module show elpa/2026.02.001-2603-gnu-auto
+# 以下在 Slurm 分配内执行
+module load elpa/2026.02.001-2603-gnu-auto
+printf '%s\n' "$ELPA_ROOT"
+pkg-config --modversion elpa_openmp
+```
+
+## 保留的站点方案与修改
+
+源码 `elpa-2026.02.001.tar.gz` 的 SHA256 为
+`a379f27f4dbd27b2ee45017afec656d064301e97150c874649bdfd64957b75ed`。
+参考站点 ABACUS toolchain 的 `scripts/stage3/install_elpa.sh`；提交脚本将参考脚本、
+原始 module 和源码归档到每次 run 的 `input/`，并保存哈希。
+
+沿用 GCC/GFortran 13.3.0、OpenMPI 5.0.10、OpenBLAS 0.3.32、ScaLAPACK 2.2.3、
+OpenMP 和共享库。GPU 版沿用 CUDA 12.9.1 / NVHPC 26.3、cuSOLVER、CUB、
+CUDA-aware MPI、SM80 专用内核以及 `sm_70,sm_75,sm_80,sm_86,sm_89`。
+完整 configure 参数和编译器选项随每套安装保存在 `share/sai/`。
+
+- AVX2：`-march=x86-64-v3 -mtune=znver3 -mno-avx512f`，关闭 AVX512 内核。
+- AVX512 GPU：`-march=x86-64-v4 -mtune=znver4`。
+- AVX512 CPU：`-march=x86-64-v4 -mtune=sapphirerapids`，禁用 GPU、cuSOLVER、CUB 和 CUDA-aware MPI。
+- [兼容补丁](../deployment/elpa-2026.02.001/cuda-aware-cpu.patch) 修复 CPU 求解误用设备缓冲区，
+  并将三个 GPU collective 的“非阻塞后立即等待”改成阻塞调用，绕开站点 OpenMPI libnbc 崩溃。
+- [communicator 补丁](../deployment/elpa-2026.02.001/mpi-communicator.patch) 回补上游
+  PR #85，读取每节点 rank 数后立即释放临时 communicator。构建核对修复前后的源码哈希，
+  并将补丁及上游提交写入 `share/sai/mpi-communicator-fix.json`。
+- [回变换补丁](evidence/cp2k-export-recovery-20261020/gpu-backtransform-host-staging.patch)
+  将 ELPA2 的 tridi→band、band→full 两段通信改用主机缓冲，保留 GPU 计算。
+  这是针对数值发散和 `cudaHostRegister` 错误的兼容修复，会改变这两段的通信成本。
+- 交付库保留实际 HPCX HCOLL 路径；`/opt/mellanox/hcoll` 只用于编译兼容。
+  pkg-config 补齐 CUDA 的链接路径，便于下游直接编译。
+
+## 与 CP2K toolchain 的配置差异
+
+对照对象为 CP2K v2026.2 固定提交的
+[install_elpa.sh](https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/tools/toolchain/scripts/stage5/install_elpa.sh)，
+以及本仓库先前的 [私有 ELPA 配方](../controller/cp2k_elpa.sh)。
+2026-10-20 在物理安装的 `share/sai/configure-command.txt` 和 `config.h` 中核实：
+
+| 功能 | toolchain / 先前私有配方 | 当前共享 NVIDIA ELPA |
+|---|---|---|
+| ELPA 内部 cuSOLVER | 显式 `--without-cusolver` | `--with-cusolver`，`WITH_NVIDIA_CUSOLVER=1` |
+| NVIDIA CUB 归约内核 | 未显式启用 | `--enable-nvidia-cub`，`WITH_CUCUB=1` |
+| CUDA-aware MPI | 未显式启用 | `--enable-cuda-aware-mpi`，保留上述两段主机缓冲例外 |
+| GPU streams | 不应算作本次新增；ELPA 默认开启 | `WITH_GPU_STREAMS=1`，继续保留 |
+| CUDA 架构 | toolchain 按目标架构；先前私有配方仅 SM70 | SM70/75/80/86/89 和 SM80 专用内核 |
+
+上述源码归档的 `configure.ac` 中，CUB 和 CUDA-aware MPI 默认关闭，GPU streams
+默认开启；因此不能把 streams、已有的 OpenMP 或 SIMD 支持都称为新增调优。
+SM80 专用内核适用于较新 GPU，V100 使用 SM70，它不会因编入 SM80 而自动提速。
+ELPA 内部 cuSOLVER 与 CP2K 的 `PREFERRED_DIAG_LIBRARY CUSOLVER` 所选
+cuSOLVERMp 是两条不同的求解器路径。编译支持不等于每次求解均会调用，
+也不能据此宣称共享 ELPA 一定比 toolchain 版本快；应比较相同输入和资源下的完整计时。
+
+## 从仓库重新构建
+
+在集群 checkout `/home/stardust/sai-hpc-software/development/workflow-closure` 执行：
+
+```bash
+bash deployment/elpa-2026.02.001/submit.sh
+bash deployment/elpa-2026.02.001/submit-cpu.sh
+```
+
+前者提交 16V100/4V100 两套 GPU 构建，后者提交 DSPRHBM CPU 构建。
+每次提交冻结控制脚本、源码和参考输入，输出作业号和独立 run 路径。
+依赖的预置源码位置是：
+
+```text
+/opt/apps/abacus/abacus-develop-3.9.0.26_nvhpc263gnu/toolchain/build/elpa-2026.02.001.tar.gz
+```
+
+构建需要已有站点 MPI/BLAS/CUDA、Apptainer 1.4.4 和项目的 `minimal-v1.sif`。
+脚本核对源码 SHA256；若预置归档已被清理，先恢复相同哈希的上游归档。
+所有可写数据落在 `/home/stardust/sai-hpc-software/runs/elpa-*`；容器 `/tmp` 和
+`/var/tmp` 也绑定到这些 run 的家目录存储。依赖只读，安装直接使用表中的最终前缀。
+
+GPU 脚本和最初发布清单见 [GPU 部署包](../deployment/elpa-2026.02.001/README.md)，
+最初 CPU 版的安装流程见 [CPU 补充包](../deployment/elpa-2026.02.001-cpu/README.md)；
+communicator 修复和简化 module 使用
+[已安装的更新包](../deployment/elpa-2026.02.001-commfix/README.md)。
+本次 GPU 回变换更新使用 [NVIDIA 替换包](../deployment/elpa-2026.02.001-backtransform/README.md)，
+其独立构建脚本保留前述配方并加入经 CP2K 集成验证的补丁。
+构建后通过最终 SIF 编译独立 C/Fortran 消费程序并运行数值验收，再由 `prepare-release.py`
+生成给管理员的部署包。安装器只搬库、头文件、Fortran module、pkg-config、必要工具和来源记录；
+不搬源码树、对象和缓存。重新编译的字节哈希可能变化，应生成新的发布清单并重新验收。
+
+## 已完成的验收和复验入口
+
+旧库的物理验收作业 `1861947`–`1861950` 全部 `COMPLETED 0:0`，共 **168 次求解**：
+GPU 分区各 48 次，DSPRHBM 24 次。覆盖原始显式 C 接口、实数/复数、ELPA1/2、
+1/2 MPI rank、重复求解及非阻塞选项，并验证 Fortran 消费程序、文件清单、module
+加载/卸载以及实际 ELPA/MPI/BLAS/HCOLL 库路径。
+最大特征值、残差、正交性误差为 `2.22e-15`、`6.46e-16`、`1.665e-15`。
+这些结果不代表大体系或跨节点性能测试。
+
+```bash
+bash deployment/elpa-2026.02.001-commfix/submit-module-checks.sh public
+```
+
+[旧库物理验收报告与 205 份原始记录](evidence/elpa-auto-native-20261019/README.md)；
+[最初 GPU 构建记录](evidence/elpa-site-20261018/README.md)、
+[CPU 补充记录](evidence/elpa-cpu-20261019/README.md) 和
+[module 升级记录](evidence/elpa-auto-20261019/README.md) 保留完整历史。
+
+## CP2K 使用此库
+
+已经部署的 CP2K 2026.2 使用表中的共享 ELPA 2026.02.001，
+继续使用 **GCC 14.3.0** 编译 CP2K。原先的私有 ELPA 安装保留供回退。
+新配方 `aed7aa53ff43` 已在
+[工作流 39365139034](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39365139034)
+完成四分区正式验收。新 SIF 和 `.native` 导出位于
+`containers/software/cp2k/release/v2026.2-g67b5da876dd6-raed7aa53ff43/<分区>/`。
+这是独立的发布身份；管理员已使用
+[上线包](../deployment/cp2k-2026.2-shared-elpa/README.md) 完成物理安装和公共 module 更新。
+作业 `1879431`–`1879434` 均 `COMPLETED 0:0`，全部 56 项物理计算通过，
+并核实实际加载共享 ELPA 和真实 HPCX HCOLL 路径。
+[完整验收](evidence/cp2k-shared-elpa-native-20261020/README.md)。
+仍使用 `cp2k/2026.2-auto`，由 Slurm 分区选择新前缀。
+
+[依赖锁](../controller/cp2k_site_elpa.json) 固定每套库、头文件、Fortran module、
+pkg-config、补丁和构建参数的哈希，来源与上述发布清单逐项对应。
+构建容器按冻结 target 选择同一分区映射，不依赖容器外继承的 module 状态；
+先编译运行 [GCC 14 Fortran 数值探针](../controller/cp2k_elpa_abi.f90)，再配置 CP2K。
+最终 CMake、`ldd` 和安装验证均要求选中同一套库。共享 ELPA 保留在原 `/opt/devtools`
+路径，不复制到 CP2K 安装树。原始 CP2K data 和其他必要运行依赖按现有规则打包。
+
+四分区跨编译器探针 `1862298`–`1862301` 已通过：使用 GCC 14.3 编译 Fortran 消费程序，
+读取 ELPA 13.3 的 `.mod`，调用 type-bound API 求解 32 阶矩阵，并核对解析特征值和残差。
+最大误差分别为 `1.33e-15`、`8.88e-16`。
+[原始日志和哈希](evidence/cp2k-shared-elpa-20261019/preflight.json) 只证明这个接口兼容性，
+完整 CP2K 应用现已另行通过上述正式发布的科学验收。
+另有 `1862389`、`1862390` 验证正式构建使用的 fakeroot/隔离网络和 CMake 查找，
+分别在 16V100、DSPRHBM 通过；[完整证据](evidence/cp2k-shared-elpa-20261019/cmake-preflight.json)。
+
+新配方需要新的 recipe 身份、容器内/外相同的 `/opt/apps/cp2k/<构建名>/<分区>`
+前缀，以及独立科学验收。手动触发四分区 release 构建：
+
+```bash
+gh workflow run cp2k.yml --repo AI4SAI/sai-hpc-software --ref fix/workflow-closure \
+  -f tracks=release -f targets=16v100-avx2,4v100-avx512,8v100v0-avx512,dsprhbm \
+  -F retry_releases=true
+```
+
+release 与 development 各自解析源码并保持独立记录；`tracks=development` 可构建最新分支。
+使用共享 ELPA 的正式候选已通过 PBE OT、普通对角化、强制 ELPA、DFT-D4、TBLITE、
+较大水体系及单/双节点测试。后续候选仍需重复这些验收。
+issue #9 的 direct generalized diagonalization 是另行测量的
+运行时选项，详见 [V100 调优记录](CP2K-V100-TUNING.md#shared-elpa-rebuild-and-issue-9)。
+
+## GPU 求解器生命周期限制
+
+作业 `1862456` 在 16V100 对同一物理 GPU 库分别执行 CPU/GPU 求解。
+每个进程创建和销毁 8 个 ELPA 对象，每对象求解两次，32 次数值结果全部通过。
+跟踪 ELPA 调用的 Fortran `MPI_Comm_split_type` / `MPI_Comm_free` 后，CPU 路径
+未创建这类临时 communicator；GPU 路径创建 8 个、显式释放 0 个，进程退出前仍有 8 个。
+
+源码 `src/GPU/check_for_gpu_template.F90` 创建局部 communicator 读取每节点 rank 数，
+随后没有释放。CP2K 2026.2 在每次 ELPA 对角化中创建/销毁对象，长时间反复调用
+会积累这种资源。[上游 PR #85](https://github.com/marekandreas/elpa/pull/85)
+已提供回收修复；旧 CP2K 私有 ELPA 配方包含该修复，此次沿用站点方案的共享库未包含。
+
+[复现代码、原始日志及适用于 2026.02.001 的补丁](evidence/cp2k-shared-elpa-20261019/communicator-audit.json)
+已存档。补丁已加入新构建配方，并于 10 月 20 日核对管理员安装的共享库已更新。
+
+10 月 19 日修复构建 `1862858`（AVX2 GPU）、`1862859`（AVX512 GPU）、
+`1862898`（AVX512 CPU）全部成功。四分区独立复验 `1862899`、`1862929`、
+`1862930`、`1862931` 也全部 `COMPLETED 0:0`。每个 GPU MPI rank 反复创建/销毁
+32 个 ELPA 对象，两次求解每对象，跟踪到的 communicator 创建/释放均为 32，剩余为 0。
+CPU 路径为 0/0/0。原有实数/复数、ELPA1/2、非阻塞选项、C/Fortran、module 和库加载检查均通过。
+[完整原始记录](evidence/elpa-commfix-20261019/README.md)。
+
+管理员包在 `/home/stardust/sai-hpc-software/deployment/elpa-2026.02.001-commfix`，
+约 52.83 MiB，保留三个原安装前缀和现有 `-auto` 名称。安装器先校验、暂存、备份旧树，
+再逐个切换；管理员执行 `bash install.sh --check`、`--install`、`--verify`。
+三套库和简化 module 均已安装并通过公共入口复验；重复安装会跳过内容一致的文件。
+CP2K 依赖锁已更新至三套修复清单，并加入 communicator 补丁与修复来源文件的哈希。
+新 release 构建使用新的 recipe 身份，保留 GCC 14.3、SM70 和现有科学功能。
+当前旧哈希下的 CP2K 集成构建不能直接作为修复后的验收。

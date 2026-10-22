@@ -1,0 +1,117 @@
+{
+  "schema": 1,
+  "scope": "/work/work",
+  "commands": [
+    {
+      "argv": [
+        "/usr/sbin/debugfs",
+        "-f",
+        "-",
+        "/proc/self/fd/4"
+      ],
+      "returncode": 0,
+      "stdin": "ls -p /\nls -p /upper\nls -p /work\n",
+      "stdout": "/home/stardust/sai-hpc-software/runs/39293908513-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-export/results/overlay-workdir-continuation/001.stdout",
+      "stderr": "/home/stardust/sai-hpc-software/runs/39293908513-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-export/results/overlay-workdir-continuation/001.stderr",
+      "stdout_sha256": "ddd7b1236ba8b8d560375de3c1f1cbc637ef93681a51504d34cdccb26f0e52ce",
+      "stderr_sha256": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7"
+    },
+    {
+      "argv": [
+        "/usr/sbin/debugfs",
+        "-f",
+        "-",
+        "/proc/self/fd/4"
+      ],
+      "returncode": 0,
+      "stdin": "ls -p /work/work\n",
+      "stdout": "/home/stardust/sai-hpc-software/runs/39293908513-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-export/results/overlay-workdir-continuation/002.stdout",
+      "stderr": "/home/stardust/sai-hpc-software/runs/39293908513-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-export/results/overlay-workdir-continuation/002.stderr",
+      "stdout_sha256": "c93e4bfbe6e7908c971a4ff7791e8be4f763a2c57c4f5e5fee6296f74df62e7d",
+      "stderr_sha256": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7"
+    },
+    {
+      "argv": [
+        "/usr/sbin/e2fsck",
+        "-pf",
+        "/proc/self/fd/4"
+      ],
+      "returncode": 1,
+      "stdin": null,
+      "stdout": "/home/stardust/sai-hpc-software/runs/39293908513-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-export/results/overlay-workdir-continuation/003.stdout",
+      "stderr": "/home/stardust/sai-hpc-software/runs/39293908513-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-export/results/overlay-workdir-continuation/003.stderr",
+      "stdout_sha256": "9f2f7b96ee2a34623ef2d7414ebc37876cf8996dad1a39c5294f33ec0c4ec375",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "argv": [
+        "/usr/sbin/e2fsck",
+        "-fn",
+        "/proc/self/fd/4"
+      ],
+      "returncode": 0,
+      "stdin": null,
+      "stdout": "/home/stardust/sai-hpc-software/runs/39293908513-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-export/results/overlay-workdir-continuation/004.stdout",
+      "stderr": "/home/stardust/sai-hpc-software/runs/39293908513-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-export/results/overlay-workdir-continuation/004.stderr",
+      "stdout_sha256": "25fa0dd8d1713d59de1078d68d35cee907c03c58e983369a3cb716dcbc4e613b",
+      "stderr_sha256": "f074aa9872d23bd7876c68381422f0b17c739d7dbd64d41e99dfd1398653a818"
+    },
+    {
+      "argv": [
+        "/usr/sbin/debugfs",
+        "-f",
+        "-",
+        "/proc/self/fd/4"
+      ],
+      "returncode": 0,
+      "stdin": "ls -p /\nls -p /upper\nls -p /work\n",
+      "stdout": "/home/stardust/sai-hpc-software/runs/39293908513-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-export/results/overlay-workdir-continuation/005.stdout",
+      "stderr": "/home/stardust/sai-hpc-software/runs/39293908513-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-export/results/overlay-workdir-continuation/005.stderr",
+      "stdout_sha256": "ddd7b1236ba8b8d560375de3c1f1cbc637ef93681a51504d34cdccb26f0e52ce",
+      "stderr_sha256": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7"
+    },
+    {
+      "argv": [
+        "/usr/sbin/debugfs",
+        "-f",
+        "-",
+        "/proc/self/fd/4"
+      ],
+      "returncode": 0,
+      "stdin": "ls -p /work/work\n",
+      "stdout": "/home/stardust/sai-hpc-software/runs/39293908513-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-export/results/overlay-workdir-continuation/006.stdout",
+      "stderr": "/home/stardust/sai-hpc-software/runs/39293908513-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-export/results/overlay-workdir-continuation/006.stderr",
+      "stdout_sha256": "c93e4bfbe6e7908c971a4ff7791e8be4f763a2c57c4f5e5fee6296f74df62e7d",
+      "stderr_sha256": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7"
+    }
+  ],
+  "source": "/home/stardust/sai-hpc-software/runs/39293908513-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6/work.ext3",
+  "target": "/home/stardust/sai-hpc-software/runs/39293908513-1-release-8v100v0-avx512-2026-10-19-67b5da876dd6-export/work.ext3",
+  "previous_job": "1867805",
+  "interrupted_after": "cleanup and second read-only fsck; final checksums incomplete",
+  "previous_logs": {
+    "007.stdout": "ddd7b1236ba8b8d560375de3c1f1cbc637ef93681a51504d34cdccb26f0e52ce",
+    "008.stdout": "c93e4bfbe6e7908c971a4ff7791e8be4f763a2c57c4f5e5fee6296f74df62e7d",
+    "005.stdout": "9b4f90f32f30bbec2ff39d5b43b7002e16425fc29ff2ac79ac23ac639f7113dd",
+    "002.stderr": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+    "003.stdout": "d5928ebd564a8a9ca4193b4b1e9e60aa552310813094e215edfb341ebbf19b2c",
+    "004.stderr": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+    "009.stderr": "f074aa9872d23bd7876c68381422f0b17c739d7dbd64d41e99dfd1398653a818",
+    "001.stdout": "c502bd25610b0714637ae5ebee003aaa7069d70d91d9d78e0d3a96daa0be863f",
+    "006.stderr": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+    "008.stderr": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+    "005.stderr": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+    "002.stdout": "ddd7b1236ba8b8d560375de3c1f1cbc637ef93681a51504d34cdccb26f0e52ce",
+    "007.stderr": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+    "001.stderr": "f074aa9872d23bd7876c68381422f0b17c739d7dbd64d41e99dfd1398653a818",
+    "006.stdout": "4cbf4254a80da30f797c47205d397129ad4f8de7aa2d23b36bc1972256d7c6b8",
+    "003.stderr": "600dc7f6657b8e8c2436ed3a67e6e8f6a58c906bc4f51012e0796673278b74c7",
+    "004.stdout": "c7ba653deb8f67f792083645ed1caeae2129f7d961d08ceb6b915ef8abe9602d",
+    "009.stdout": "62c59608749db5633b194fe90790db67ab2e52d17cee7aad9d47ffff7ef81d4f"
+  },
+  "status": "prepared",
+  "source_overlay_sha256": "b1cd0b2b87d99b585d7262a496b3ac3383aa395e40ec660fd3a203caefbf89c7",
+  "source_unchanged": true,
+  "prepared_overlay_sha256": "ae29ab6790f1cb9abc1500b1ae8a96755432183e246959e669d25bc6969c4a41",
+  "upper_directory_unchanged": true
+}

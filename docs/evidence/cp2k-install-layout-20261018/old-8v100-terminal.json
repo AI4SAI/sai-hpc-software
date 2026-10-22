@@ -1,0 +1,119 @@
+{
+  "schema": 1,
+  "purpose": "Supplement to failed-builds.json: final state of previously running old 8V100V0 application",
+  "observed_at": "2026-10-18T00:36:42.027647+00:00",
+  "workflow": "39056762371",
+  "run": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6",
+  "job": "1837029",
+  "identity": {
+    "build_id": "v2026.2-g67b5da876dd6-r4b6cb146fa98",
+    "cpu_arch": "skylake-avx512",
+    "cuda_arch": "70",
+    "dependency_isa": "avx2",
+    "gpus": 1,
+    "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r4b6cb146fa98/8V100V0",
+    "partition": "8V100V0",
+    "recipe_sha256": "4b6cb146fa983f69d82e5f7a990eba00b879a1c1e7464e317cc4740dbb41793b",
+    "repository": "cp2k/cp2k",
+    "schema": 2,
+    "software": "cp2k",
+    "source_ref": "v2026.2",
+    "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+    "source_version": "v2026.2",
+    "stack_digest": null,
+    "stack_sources": {},
+    "target": "8v100v0-avx512",
+    "track": "release",
+    "version_label": "v2026.2"
+  },
+  "controller": "/home/stardust/sai-hpc-software/controller/9352d6dabca0a28e7ea81b2acec8977e7ca9ec06/39056762371-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6",
+  "request_sha256": "7da70454aa77e14e5c546bb9ab6939fad5fd4d8ac442e3a5932acf5efe8830bf",
+  "job_script_sha256": "073dd1f78ab215d1add7d474f5381533f0ddf2962134dafd0f55bcc2bfe5aed7",
+  "sacct": "1837029|8V100V0|FAILED|1:0|01:23:01|8v100v0n11|2026-10-18T07:12:01|2026-10-18T08:35:02",
+  "failure_classification": "compiled_to_100_percent_then_install_failed_at_root_lib64",
+  "log": {
+    "path": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6/results/slurm-1837029.log",
+    "sha256": "bbfeae33dadb186a9bee5e0933ba679d02b6dc7ea141b42ca060ffc6a78cefd2",
+    "size_bytes": 382431,
+    "stable_during_read": true,
+    "compile_100_percent_excerpt": [
+      {
+        "line": 4761,
+        "text": "[100%] Built target dbt_tas_unittest"
+      },
+      {
+        "line": 4762,
+        "text": "[100%] Built target xyz2dcd"
+      },
+      {
+        "line": 4763,
+        "text": "[100%] Linking Fortran executable ../bin/dumpdcd.psmp"
+      },
+      {
+        "line": 4764,
+        "text": "[100%] Linking Fortran executable ../bin/graph.psmp"
+      },
+      {
+        "line": 4765,
+        "text": "[100%] Linking Fortran executable ../bin/dbt_unittest.psmp"
+      },
+      {
+        "line": 4766,
+        "text": "[100%] Built target dumpdcd"
+      },
+      {
+        "line": 4767,
+        "text": "[100%] Built target graph"
+      },
+      {
+        "line": 4768,
+        "text": "[100%] Built target dbt_unittest"
+      }
+    ],
+    "install_failure_excerpt": [
+      {
+        "line": 5110,
+        "text": "-- Installing: /lib64/libcp2k.so.2026.2"
+      },
+      {
+        "line": 5111,
+        "text": "CMake Error at orkspace/build/src/cmake_install.cmake:412 (file):"
+      },
+      {
+        "line": 5112,
+        "text": "  file INSTALL cannot copy file \"/workspace/build/src/libcp2k.so.2026.2\" to"
+      },
+      {
+        "line": 5113,
+        "text": "  \"/lib64/libcp2k.so.2026.2\": Read-only file system."
+      },
+      {
+        "line": 5114,
+        "text": "Call Stack (most recent call first):"
+      },
+      {
+        "line": 5115,
+        "text": "  orkspace/build/cmake_install.cmake:47 (include)"
+      },
+      {
+        "line": 5116,
+        "text": ""
+      },
+      {
+        "line": 5117,
+        "text": ""
+      }
+    ]
+  },
+  "overlay": {
+    "path": "/home/stardust/sai-hpc-software/runs/39056762371-1-release-8v100v0-avx512-2026-10-17-67b5da876dd6/work.ext3",
+    "retained": true,
+    "size_bytes": 17179869184,
+    "allocated_bytes": 2714718720,
+    "inode": 144115744861437360,
+    "mtime": "2026-10-18T00:35:02+00:00",
+    "content_hashed": false
+  },
+  "artifact_pointer_present": false,
+  "mutations": "No job cancellation, overlay access or production mutation."
+}

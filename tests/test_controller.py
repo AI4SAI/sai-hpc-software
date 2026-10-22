@@ -2,6 +2,7 @@ import argparse
 from contextlib import redirect_stdout
 import io
 import json
+import os
 import importlib.util
 from pathlib import Path
 import subprocess
@@ -33,6 +34,7 @@ class PolicyTests(unittest.TestCase):
         binds = [argv[i + 1] for i, x in enumerate(argv) if x == "--bind"]
         self.assertTrue(all(x.endswith(":ro") for x in binds))
         self.assertIn("/opt/devtools:/opt/devtools:ro", binds)
+        self.assertIn("/sbin:/sbin:ro", binds)
         self.assertFalse(any(x.startswith("/opt:") for x in binds))
         self.assertIn("none", argv)
         self.assertNotIn("--writable", argv)
@@ -70,7 +72,7 @@ class PolicyTests(unittest.TestCase):
             script = controller.render_job(args)
         self.assertNotIn("--sandbox", script)
         self.assertNotIn("rm -rf", script)
-        self.assertNotRegex(script, r"(?:^|[= :])/tmp(?:/|$)")
+        self.assertNotRegex(script.replace(str(ROOT), "/home/test/repository"), r"(?:^|[= :])/tmp(?:/|$)")
         self.assertNotIn("--gpus-per-node=0", script)
         self.assertIn("--fakeroot --sparse", script)
         self.assertIn("--cpus-per-task=8", script)
@@ -83,11 +85,15 @@ class PolicyTests(unittest.TestCase):
         self.assertNotIn("#SBATCH --mem", gpu_script)
         self.assertIn("#SBATCH --gpus-per-node=1", gpu_script)
         args.resume_run = "old-run"
+        args.resume_overlay_sha256 = "c" * 64
         with patch.object(controller, "ROOT", Path("/home/test/sai-hpc-software")):
             repack = controller.render_job(args)
         self.assertNotIn("overlay create", repack)
         self.assertNotIn("container_entry.sh build", repack)
         self.assertIn("container_entry.sh metadata", repack)
+        self.assertIn("cp --sparse=always --reflink=auto", repack)
+        self.assertIn("sha256sum --check --status", repack)
+        self.assertNotIn("mv --", repack)
 
     def test_multinode_runtime_uses_host_mpi_and_runtime_network(self):
         args = argparse.Namespace(run_id="runtime-test", version="develop-aaaa",
@@ -112,7 +118,7 @@ class PolicyTests(unittest.TestCase):
         self.assertNotIn("--network none", script)
         self.assertNotIn("--containall", script)
         self.assertNotRegex(script, r"--bind /opt:/opt")
-        self.assertNotRegex(script, r"(?:^|[= :])/tmp(?:/|$)")
+        self.assertNotRegex(script.replace(str(ROOT), "/home/test/repository"), r"(?:^|[= :])/tmp(?:/|$)")
         subprocess.run(["bash", "-n"], input=script, text=True, check=True)
 
         args.nodes = 3
@@ -132,6 +138,7 @@ class PolicyTests(unittest.TestCase):
         self.assertNotRegex(launcher, r"--bind [\"']?/opt:/opt")
         self.assertIn("4V100) target=4v100-avx512", launcher)
         self.assertIn("16V100) target=16v100-avx2", launcher)
+        self.assertIn('[[ "$name" != OMPI_ARGV && "$name" != OMPI_COMMAND ]] || continue', launcher)
 
     def test_multinode_runtime_accepts_cpu_partition(self):
         args = argparse.Namespace(run_id="runtime-test", version="develop-aaaa",
@@ -153,7 +160,7 @@ class PolicyTests(unittest.TestCase):
         self.assertIn("$6 !~ /-avx512$/", script)
         self.assertIn("MULTINODE_CONTAINER_MPI_VERIFIED", script)
         self.assertNotRegex(script, r"--bind /opt:/opt")
-        self.assertNotRegex(script, r"(?:^|[= :])/tmp(?:/|$)")
+        self.assertNotRegex(script.replace(str(ROOT), "/home/test/repository"), r"(?:^|[= :])/tmp(?:/|$)")
         subprocess.run(["bash", "-n"], input=script, text=True, check=True)
 
         args.cpus_per_task = 16
@@ -214,11 +221,12 @@ class PolicyTests(unittest.TestCase):
             artifact.write_bytes(b"sif")
             request = {"controller": str(control), "version": "v1", "target": "4v100-avx512",
                        "software": "abacus", "sha": "a" * 40, "recipe_sha256": "b" * 64, "identity": identity}
-            manifest = dict(request)
+            manifest = dict(request, sha256=cache.checksum(artifact), contract_schema=controller.CONTRACT_SCHEMA)
             # Publication mechanics are separate from the fail-closed gate,
             # exercised with complete evidence in test_publication.py.
             with patch.object(controller, "ROOT", root), patch.object(controller, "CONTROL", control), \
                     patch.object(controller, "validate_candidate"), \
+                    patch("export_native.export_delivery", return_value={"fixture": "export gate"}), \
                     patch.object(controller, "recipe_fingerprint", return_value="b" * 64), \
                     patch.object(controller, "required_acceptance", return_value=()):
                 controller.publish_runtime_entry(request, artifact, manifest)
@@ -291,6 +299,31 @@ class CacheTests(unittest.TestCase):
         self.assertTrue(cache.complete(store, second))
         self.assertIn(second, cache.inventory(store)["cache_shas"])
         self.assertFalse((store / "code").exists())
+
+    def test_requested_release_remains_visible_after_newer_branch_tips(self):
+        cache.git(self.repo, "update-ref", "refs/cache/" + self.first, self.first)
+        for index in range(13):
+            date = "2030-01-%02dT12:00:00+00:00" % (index + 1)
+            subprocess.run(["git", "-C", str(self.repo), "commit", "--allow-empty", "-m", str(index)],
+                           env=dict(os.environ, GIT_AUTHOR_DATE=date, GIT_COMMITTER_DATE=date),
+                           check=True, capture_output=True)
+            tip = cache.git(self.repo, "rev-parse", "HEAD")
+            cache.git(self.repo, "update-ref", "refs/cache/" + tip, tip)
+        self.assertNotIn(self.first, cache.inventory(self.repo)["cache_shas"])
+        requested = cache.inventory(self.repo, self.first)["cache_shas"]
+        self.assertIn(self.first, requested)
+        self.assertEqual(len(requested), len(set(requested)))
+
+    def test_requested_source_must_be_valid_present_and_complete(self):
+        self.assertEqual(cache.inventory(self.root / "absent", self.first), {"cache_shas": []})
+        self.assertNotIn("a" * 40, cache.inventory(self.repo, "a" * 40)["cache_shas"])
+        invalid = self.root / "broken-commit"
+        invalid.write_text("tree " + "b" * 40 + "\nauthor Test <test@example.invalid> 0 +0000\n"
+                           "committer Test <test@example.invalid> 0 +0000\n\nincomplete tree\n")
+        broken = cache.git(self.repo, "hash-object", "-t", "commit", "-w", str(invalid))
+        self.assertNotIn(broken, cache.inventory(self.repo, broken)["cache_shas"])
+        with self.assertRaises(ValueError):
+            cache.inventory(self.repo, "../not-a-sha")
 
     def test_corruption_and_path_injection(self):
         import json
