@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 spec = importlib.util.spec_from_file_location('fuse2fs_public_install',
-    ROOT / 'deployment/fuse2fs-45651efd/install.py')
+    ROOT / 'deployment/fuse2fs-1.47.4-sai1/install.py')
 deploy = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(deploy)
 

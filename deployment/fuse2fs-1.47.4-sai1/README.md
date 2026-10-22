@@ -1,4 +1,16 @@
-# Optional public fuse2fs for Apptainer 1.4.4
+# Optional public fuse2fs 1.47.4-sai1 for Apptainer 1.4.4
+
+SAI already provides Apptainer 1.4.4, including its private `fuse2fs 1.47.3`
+executable at `/opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/fuse2fs`.
+fuse2fs mounts ext filesystem images for Apptainer; it is an executable helper,
+not a scientific library. This package adds a separately selectable helper for
+the existing Apptainer installation.
+
+The public version is **1.47.4-sai1**. The `sai1` suffix identifies our first
+site package: upstream commit `45651efd6db7da8738bc9d8d1f17e99259cabfe4`
+includes I/O fixes after v1.47.4, plus our OFD/read-only patches. It is not the
+unmodified v1.47.4 release. The binary still reports `1.47.4`; `release.json`
+records the package version, exact source revision and binary checksum.
 
 This package publishes the exact driver already used by accepted CP2K and
 LAMMPS builds. It avoids unnecessary ext-image synchronization on Lustre,
@@ -13,23 +25,26 @@ evaluates all ancestor/source/target POSIX ACLs for `saiuser01`, without
 impersonating the account. The current `stardust` connection cannot write
 these `/opt` parents; the administrator runs the installation below.
 
-[Pre-install qualification](../../docs/evidence/fuse2fs-public-20261022/README.md)
-passed all 13 driver/module checks in DSPRHBM job `1897998`. The actual public
-prefix still needs installation and post-install validation.
+[Pre-install qualification under this version name](../../docs/evidence/fuse2fs-versioned-20261022/README.md)
+passed all 13 driver/module checks in DSPRHBM job `1899786`, and all seven
+installer tests passed on the site's home filesystem. The actual public prefix
+still needs installation and post-install validation. The earlier
+[commit-named package qualification](../../docs/evidence/fuse2fs-public-20261022/README.md)
+remains archived with its original paths.
 
 ## Installation
 
 On the cluster, as `saiuser01`:
 
 ```bash
-cd /home/stardust/sai-hpc-software/deployment/fuse2fs-45651efd
+cd /home/stardust/sai-hpc-software/deployment/fuse2fs-1.47.4-sai1
 bash install.sh --check
 bash install.sh --install
 bash install.sh --verify
 ```
 
-The new prefix is `/opt/devtools/fuse2fs/45651efd-sai-ofd-ro/`, containing
-only four files (1,765,892 bytes total):
+The new prefix is `/opt/devtools/fuse2fs/1.47.4-sai1/`, containing
+only four files (about 1.7 MiB total):
 
 ```text
 bin/fuse2fs
@@ -39,7 +54,7 @@ share/licenses/e2fsprogs/NOTICE
 ```
 
 The module is
-`/opt/modules/modulefiles/devtools/fuse2fs/45651efd-sai-ofd-ro`.
+`/opt/modules/modulefiles/devtools/fuse2fs/1.47.4-sai1`.
 No runtime libraries need copying: this binary links the site OS's libfuse3,
 libblkid, libuuid and libc. It requires neither GCC nor CUDA at runtime.
 The installer checks exact contents/modes, stages in the destination parent
@@ -53,7 +68,7 @@ as installed. Tests, source code, receipts and logs stay in the home project.
 ```bash
 module use /opt/modules/modulefiles/devtools
 module load apptainer/1.4.4
-module --ignore_cache load fuse2fs/45651efd-sai-ofd-ro
+module --ignore_cache load fuse2fs/1.47.4-sai1
 fuse2fs -V
 # Keep host build, cache and scratch storage in home:
 export TMPDIR="$HOME/.cache/apptainer/tmp"
@@ -78,7 +93,7 @@ Loading verifies the binary, selected config and original site config hashes.
 If the site config changes, the module fails with a request to regenerate and
 revalidate this version. The checksum and source commit identify the build;
 its upstream version banner still says `1.47.4`, although the two performance
-fixes are later commits. `module unload fuse2fs/45651efd-sai-ofd-ro` restores
+fixes are later commits. `module unload fuse2fs/1.47.4-sai1` restores
 the previous config environment. The original Apptainer installation and
 site defaults are untouched. Native CP2K/LAMMPS and final read-only SIF
 execution do not require this module.
@@ -97,7 +112,7 @@ for pre-install qualification and never claims the public prefix is installed.
 After installation, from the `stardust` account:
 
 ```bash
-package=/home/stardust/sai-hpc-software/deployment/fuse2fs-45651efd
+package=/home/stardust/sai-hpc-software/deployment/fuse2fs-1.47.4-sai1
 result="$HOME/sai-hpc-software/diagnostics/fuse2fs-public-installed-$(date +%Y%m%dT%H%M%S)"
 sbatch --partition=DSPRHBM --qos=rush-cpu --cpus-per-task=8 --mem=8G \
   --output="$HOME/sai-hpc-software/diagnostics/fuse2fs-public-%j.log" \

@@ -1,0 +1,23 @@
+{
+  "apptainer": {
+    "argv": [
+      "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+      "--version"
+    ],
+    "output": "apptainer version 1.4.4\n"
+  },
+  "bundled_fuse2fs": {
+    "argv": [
+      "/opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/fuse2fs",
+      "-V"
+    ],
+    "output": "fuse2fs 1.47.3 (8-Jul-2025)\nfusermount3 version: 3.14.0\nFUSE library version 3.14.0\nusing FUSE kernel interface version 7.31\n"
+  },
+  "candidate_fuse2fs": {
+    "argv": [
+      "/home/stardust/sai-hpc-software/deployment/fuse2fs-1.47.4-sai1/payload/bin/fuse2fs",
+      "-V"
+    ],
+    "output": "fuse2fs 1.47.4 (6-Mar-2025)\nfusermount3 version: 3.14.0\nFUSE library version 3.14.0\nusing FUSE kernel interface version 7.31\n"
+  }
+}

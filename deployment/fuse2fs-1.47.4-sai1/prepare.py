@@ -24,7 +24,7 @@ def configuration(site, prefix):
 
 def module_text(prefix, site_sha, config_sha):
     text = (deploy.PACKAGE / 'modulefile.in').read_text()
-    for key, value in dict(PREFIX=str(prefix), BINARY_SHA256=deploy.BINARY_SHA256,
+    for key, value in dict(VERSION=deploy.VERSION, PREFIX=str(prefix), BINARY_SHA256=deploy.BINARY_SHA256,
                            SITE_SHA256=site_sha, CONFIG_SHA256=config_sha).items():
         text = text.replace('@' + key + '@', value)
     return text.encode()
@@ -57,7 +57,8 @@ def main():
     with (deploy.PACKAGE / 'modulefile').open('xb') as stream:
         stream.write(module)
     (deploy.PACKAGE / 'modulefile').chmod(0o644)
-    release = dict(schema=1, prefix=str(deploy.PREFIX), module=str(deploy.MODULE),
+    release = dict(schema=1, version=deploy.VERSION, upstream_version='1.47.4',
+                   prefix=str(deploy.PREFIX), module=str(deploy.MODULE),
                    source_commit='45651efd6db7da8738bc9d8d1f17e99259cabfe4',
                    patched_source_sha256='c63d1fb25510d316836952953e9adddacd3214cd91d6002bf3b16aed350c4ddc',
                    source_archive_sha256=ARCHIVE_SHA256, binary_source=str(SOURCE),

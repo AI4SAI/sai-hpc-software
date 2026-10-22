@@ -61,13 +61,14 @@ module purge
 module use /opt/modules/modulefiles/devtools "$1"
 module load apptainer/1.4.4
 export APPTAINER_CONFIG_FILE=previous-configuration
-module --ignore_cache load fuse2fs/45651efd-sai-ofd-ro
+module --ignore_cache load "$2"
 /usr/bin/python3 -c 'import json,os,shutil; print(json.dumps(dict(config=os.environ["APPTAINER_CONFIG_FILE"],root=os.environ["FUSE2FS_ROOT"],path=os.environ["PATH"],driver=shutil.which("fuse2fs"))))'
-module unload fuse2fs/45651efd-sai-ofd-ro
+module unload "$2"
 [[ "$APPTAINER_CONFIG_FILE" == previous-configuration ]]
 [[ -z ${FUSE2FS_ROOT+x} ]]
 '''
-    loaded = json.loads(subprocess.check_output(['/bin/bash', '-c', shell, 'module-check', str(module_root)], text=True))
+    loaded = json.loads(subprocess.check_output(
+        ['/bin/bash', '-c', shell, 'module-check', str(module_root), 'fuse2fs/' + deploy.VERSION], text=True))
     deploy.require(loaded['config'] == str(prefix / 'etc/apptainer.conf')
                    and loaded['driver'] == str(prefix / 'bin/fuse2fs'), 'Wrong module selection')
     (output / 'module.json').write_text(json.dumps(dict(**loaded, unload_restored=True), indent=2) + '\n')
