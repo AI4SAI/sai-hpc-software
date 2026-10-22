@@ -1,0 +1,72 @@
+name: Build LAMMPS with installed DeePMD
+
+on:
+  workflow_dispatch:
+    inputs:
+      track:
+        description: LAMMPS upstream channel; DeePMD remains the accepted installed dependency
+        type: choice
+        options: [development, release, prerelease]
+        default: development
+      target:
+        description: Native GPU partition
+        type: choice
+        options: [16v100-avx2, 4v100-avx512, 8v100v0-avx512]
+        default: 16v100-avx2
+  push:
+    paths: ['controller/md_*', 'tests/test_md_*', '.github/workflows/lammps.yml']
+  pull_request:
+    paths: ['controller/md_*', 'tests/test_md_*', '.github/workflows/lammps.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y squashfs-tools tcl python3-yaml chrpath
+          python3 -m unittest discover -s tests -v
+          for script in controller/md_*.sh; do bash -n "$script"; done
+  candidate:
+    if: github.event_name == 'workflow_dispatch'
+    needs: validate
+    runs-on: ubuntu-latest
+    environment: hpc
+    timeout-minutes: 360
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REMOTE_USER: ${{ secrets.REMOTE_USER }}
+      LAMMPS_TRACK: ${{ inputs.track }}
+      LAMMPS_TARGET: ${{ inputs.target }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Prepare HPC SSH credentials
+        env:
+          KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          : "${REMOTE_USER:?Configure REMOTE_USER in the hpc Environment}"
+          : "${KEY:?Configure REMOTE_SSH_PRIVATE_KEY in the hpc Environment}"
+          mkdir -m 700 "$RUNNER_TEMP/ssh"
+          printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
+          chmod 600 "$RUNNER_TEMP/ssh/key"
+      - name: Build and verify LAMMPS candidate using installed DeePMD
+        run: python3 -u controller/md_lammps_ci.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lammps-${{ inputs.target }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/results/
+          if-no-files-found: warn
+      - name: Remove temporary SSH key
+        if: always()
+        run: rm -f -- "$RUNNER_TEMP/ssh/key"

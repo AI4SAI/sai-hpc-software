@@ -3,7 +3,7 @@
 set -euo pipefail
 target=$1
 phase=${2:-all}
-[[ "$phase" == all || "$phase" == deepmd || "$phase" == lammps ]]
+[[ "$phase" == all || "$phase" == deepmd || "$phase" == lammps || "$phase" == lammps-installed ]]
 source /control/md_environment.sh "$target"
 # Prove native replacements on this node before costly compilation. Temporary
 # --nv injection paths must not enter the exported module or saved runtime env.
@@ -11,7 +11,8 @@ md_native_ld=$("$MD_SYSTEM_DEEPMD/bin/python" /control/md_driver_paths.py)
 export LD_LIBRARY_PATH="$md_native_ld"
 unset md_native_ld
 [[ "$DEEPMD_PREFIX" == /opt/apps/deepmd-kit/deepmd-kit-*/* && "$LAMMPS_PREFIX" == /opt/apps/lammps/lammps-*/* ]]
-mkdir -p "$DEEPMD_PREFIX/share/sai" "$LAMMPS_PREFIX/share/sai"
+mkdir -p "$LAMMPS_PREFIX/share/sai"
+if [[ "$phase" != lammps-installed ]]; then mkdir -p "$DEEPMD_PREFIX/share/sai"; fi
 site=$MD_SYSTEM_DEEPMD/lib/python3.13/site-packages
 # The site's old DeepMD backend RUNPATH contains a stale .new prefix. Resolve
 # backend dependencies from the current immutable system environment explicitly.
@@ -37,6 +38,7 @@ for dependency in ('scikit-build-core', 'packaging', 'dependency_groups'):
 PY
 # System site-packages are read-only dependencies; only this new package is
 # installed into its final canonical prefix, never a temporary staging prefix.
+if [[ "$phase" != lammps-installed ]]; then
 "$MD_SYSTEM_DEEPMD/bin/python" -m venv --system-site-packages "$DEEPMD_PREFIX"
 export DP_VARIANT=cuda DP_ENABLE_TENSORFLOW=1 DP_ENABLE_PYTORCH=1 DP_ENABLE_IPI=1
 export DP_ENABLE_NATIVE_OPTIMIZATION=1 CMAKE_BUILD_PARALLEL_LEVEL="$BUILD_JOBS"
@@ -54,12 +56,13 @@ cmake -S /workspace/deepmd-kit/source -B /workspace/deepmd-cpp \
   -DPython_EXECUTABLE="$DEEPMD_PREFIX/bin/python" -DBUILD_CPP_IF=ON -DBUILD_PY_IF=OFF
 cmake --build /workspace/deepmd-cpp -j "$BUILD_JOBS"
 cmake --install /workspace/deepmd-cpp
+fi
 if [[ "$phase" == deepmd ]]; then
   echo MD_DEEPMD_STAGE_COMPLETE
   exit 0
 fi
 fi
-# Official built-in integration, from the SAME source revision as the new C API.
+# Official built-in integration, from the same source revision as the selected C API.
 # New LAMMPS releases emit name-keyed style sources before end-of-file includes.
 # Keep the integration patch inside the recipe fingerprint, not a recovery-only script.
 "$MD_SYSTEM_DEEPMD/bin/python" /control/md_registration.py integrate \
@@ -75,20 +78,22 @@ for package in json.load(open('/workspace/baseline.json'))['lammps']['packages']
     print('-DPKG_' + package + '=ON')
 PY
 )
+cuda_options=$("$MD_SYSTEM_DEEPMD/bin/python" /control/md_lammps_cuda.py options \
+  /workspace/lammps/cmake/Modules/Packages/GPU.cmake "$CXX")
+mapfile -t cuda_options <<< "$cuda_options"
 cmake -S /workspace/lammps/cmake -B /workspace/lammps-build \
   -DCMAKE_INSTALL_PREFIX="$LAMMPS_PREFIX" -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_INSTALL_LIBDIR:PATH=lib \
   -DCMAKE_INSTALL_RPATH='$ORIGIN;$ORIGIN/../lib' -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=OFF \
   -DCMAKE_PREFIX_PATH="$DEEPMD_PREFIX;$MD_SYSTEM_PLUMED;$MD_SYSTEM_DEEPMD" \
+  -DDeePMD_DIR="$DEEPMD_PREFIX/lib/cmake/DeePMD" \
   -DCMAKE_CXX_FLAGS='-march=native -mtune=native' \
   -DBUILD_SHARED_LIBS=ON -DBUILD_MPI=ON -DBUILD_OMP=ON \
   -DPKG_KOKKOS=ON -DKokkos_ENABLE_CUDA=ON -DKokkos_ENABLE_OPENMP=ON \
   -DKokkos_ARCH_VOLTA70=ON -DCMAKE_CXX_COMPILER=/workspace/lammps/lib/kokkos/bin/nvcc_wrapper \
   '-DCMAKE_CXX_LINKER_LAUNCHER=/usr/bin/python3;/control/md_link_launcher.py' \
   -DFFT_KOKKOS=CUFFT \
-  -DPKG_GPU=ON -DGPU_API=cuda -DGPU_ARCH=sm_70 -DCUDA_BUILD_MULTIARCH=OFF \
-  -DCUDA_HOST_COMPILER="$CXX" \
-  -DCUDA_MPS_SUPPORT=ON -DCUDPP_OPT=OFF \
+  -DPKG_GPU=ON -DGPU_API=cuda -DCUDA_MPS_SUPPORT=ON "${cuda_options[@]}" \
   -DDOWNLOAD_POTENTIALS=ON \
   -DDOWNLOAD_VORO=OFF -DVORO_INCLUDE_DIR="$MD_SYSTEM_VORO/include/voro++" \
   -DVORO_LIBRARY="$MD_SYSTEM_VORO/lib/libvoro++.a" \
@@ -99,20 +104,17 @@ cmake -S /workspace/lammps/cmake -B /workspace/lammps-build \
 "$MD_SYSTEM_DEEPMD/bin/python" /control/md_registration.py verify /workspace/lammps-build/styles
 # Require recognized, typed options and generated definitions, not unused -D
 # cache entries. These settings were adapted from SAI-autocompile-kit.
-for setting in FFT_KOKKOS:STRING=CUFFT CUDA_MPS_SUPPORT:BOOL=ON \
-               CUDA_BUILD_MULTIARCH:BOOL=OFF CUDPP_OPT:BOOL=OFF GPU_ARCH:STRING=sm_70 \
-               CMAKE_INSTALL_LIBDIR:PATH=lib; do
-  grep -Fxq "$setting" /workspace/lammps-build/CMakeCache.txt
-done
-grep -q -- '-DFFT_KOKKOS_CUFFT' /workspace/lammps-build/CMakeFiles/lammps.dir/flags.make
-grep -q -- '-DCUDA_MPS_SUPPORT' /workspace/lammps-build/CMakeFiles/gpu.dir/flags.make
+"$MD_SYSTEM_DEEPMD/bin/python" /control/md_lammps_cuda.py verify \
+  /workspace/lammps/cmake/Modules/Packages/GPU.cmake /workspace/lammps-build
 cmake --build /workspace/lammps-build -j "$BUILD_JOBS"
 cmake --install /workspace/lammps-build
 test -s "$LAMMPS_PREFIX/lib/liblammps.so"
-cp /workspace/deepmd-cpp/CMakeCache.txt "$DEEPMD_PREFIX/share/sai/"
+if [[ "$phase" != lammps-installed ]]; then
+  cp /workspace/deepmd-cpp/CMakeCache.txt "$DEEPMD_PREFIX/share/sai/"
+fi
 cp /workspace/lammps-build/CMakeCache.txt "$LAMMPS_PREFIX/share/sai/"
-# Runtime needs the new C/C++ implementation and backend operators, not the
-# installed old deepmd package. The backend framework libraries remain shared.
+# Runtime selects the pinned C/C++ implementation and backend operators.
+# The backend framework libraries remain shared with the system environment.
 export PATH="$LAMMPS_PREFIX/bin:$DEEPMD_PREFIX/bin:$PATH"
 export LD_LIBRARY_PATH="$LAMMPS_PREFIX/lib:$DEEPMD_PREFIX/lib:$DEEPMD_PREFIX/lib/python3.13/site-packages/deepmd/lib:$LD_LIBRARY_PATH"
 export LAMMPS_POTENTIALS="$LAMMPS_PREFIX/share/lammps/potentials"
@@ -158,15 +160,21 @@ cp -a /workspace/deepmd-kit/source/tests/infer "$LAMMPS_PREFIX/share/sai/upstrea
 # Package the observed runtime directly with the shared native delivery writer.
 # This stays after all fixture preparation: conversion failure cannot produce a
 # native manifest or imply scientific/native runtime acceptance.
-chmod -R a+rX,go-w "$DEEPMD_PREFIX" "$LAMMPS_PREFIX"
+chmod -R a+rX,go-w "$LAMMPS_PREFIX"
+if [[ "$phase" != lammps-installed ]]; then chmod -R a+rX,go-w "$DEEPMD_PREFIX"; fi
 "$DEEPMD_PREFIX/bin/python" - <<'PY'
 import json, os, pathlib, sys
 sys.path.insert(0, '/control')
 from md_controller import validate_pair
 from export_native import write_manifests
 from release_contract import SOFTWARE
-delivery = validate_pair(json.loads(os.environ['SAI_MD_DELIVERY']))
-identities = delivery['identities']
+if os.environ.get('SAI_LAMMPS_DELIVERY'):
+    from md_lammps_standalone import validate_delivery
+    delivery = validate_delivery(json.loads(os.environ['SAI_LAMMPS_DELIVERY']))
+    identities = {'lammps': delivery['identity']}
+else:
+    delivery = validate_pair(json.loads(os.environ['SAI_MD_DELIVERY']))
+    identities = delivery['identities']
 prefixes = [item['install_prefix'] for item in identities.values()]
 runtime = {'modules': [name for name in os.environ['LOADEDMODULES'].split(':')
                        if name.split('/')[0] not in {*SOFTWARE, 'apptainer', 'cmake'}],
@@ -175,6 +183,8 @@ runtime = {'modules': [name for name in os.environ['LOADEDMODULES'].split(':')
                        for name in ('PATH', 'LD_LIBRARY_PATH', 'PYTHONPATH', 'MODULEPATH')},
            'set': {name: os.environ[name] for name in ('PLUMED_KERNEL', 'LAMMPS_POTENTIALS')}}
 external = {'/usr', '/lib', '/lib64', os.environ['MD_SYSTEM_DEEPMD'], os.environ['MD_SYSTEM_PLUMED']}
+if 'deepmd_dependency' in delivery:
+    external.add(delivery['deepmd_dependency']['identity']['install_prefix'])
 for values in runtime['prepend'].values():
     for value in values:
         if not any(pathlib.PurePosixPath(value).is_relative_to(prefix) for prefix in prefixes):
@@ -185,7 +195,9 @@ for values in runtime['prepend'].values():
             external.add(value)
 entries = [{'identity': identities[software], 'commands': {command: 'bin/' + command},
             'runtime': runtime, 'external_roots': sorted(external)}
-           for software, command in (('deepmd-kit', 'dp'), ('lammps', 'lmp'))]
+           for software, command in (('deepmd-kit', 'dp'), ('lammps', 'lmp')) if software in identities]
+if 'deepmd_dependency' in delivery:
+    entries[0]['site_dependencies'] = [delivery['deepmd_dependency']]
 write_manifests(entries)
 PY
 echo MD_NATIVE_BUILD_FEATURE_PARITY_PASSED

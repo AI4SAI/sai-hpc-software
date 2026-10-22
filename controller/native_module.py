@@ -120,7 +120,8 @@ def _sequence(value, field):
 
 def validate_native_entry(entry, *, allowed_prefixes=()):
     """Return a fresh validated entry; never read or execute its shell metadata."""
-    if not isinstance(entry, dict) or set(entry) != {"identity", "commands", "runtime", "external_roots"}:
+    fields = {"identity", "commands", "runtime", "external_roots"}
+    if not isinstance(entry, dict) or set(entry) not in (fields, fields | {"site_dependencies"}):
         raise ValueError("native entry requires identity, commands, runtime and external_roots")
     identity = validate_identity(entry["identity"])
     prefix = _install_prefix(identity["install_prefix"])
@@ -128,13 +129,30 @@ def validate_native_entry(entry, *, allowed_prefixes=()):
     other_prefixes = [path for path in other_prefixes if path.name == identity["partition"]]
     external = _sequence(entry["external_roots"], "external_roots")
     external_paths = [_external_root(value) for value in external]
+    site_dependencies = entry.get("site_dependencies", [])
+    managed_dependencies = []
+    if "site_dependencies" in entry:
+        if (identity["software"] != "lammps" or identity["schema"] != 2 or identity["stack_digest"]
+                or not isinstance(site_dependencies, list) or len(site_dependencies) != 1):
+            raise ValueError("only standalone LAMMPS may declare an installed DeePMD dependency")
+        dependency = site_dependencies[0]
+        if not isinstance(dependency, dict) or set(dependency) != {"identity", "runtime_plan_sha256"}:
+            raise ValueError("site dependency requires its identity and runtime inventory digest")
+        dep_identity = validate_identity(dependency["identity"])
+        dep_prefix = _install_prefix(dep_identity["install_prefix"])
+        if (dep_identity["software"] != "deepmd-kit" or dep_identity["schema"] != 2
+                or dep_identity["target"] != identity["target"] or str(dep_prefix) not in external
+                or not isinstance(dependency["runtime_plan_sha256"], str)
+                or not re.fullmatch(r"[0-9a-f]{64}", dependency["runtime_plan_sha256"])):
+            raise ValueError("installed DeePMD dependency differs from the target or pinned inventory")
+        managed_dependencies.append(dep_prefix)
     if identity["schema"] == 2:
         for root in external_paths:
             for software in SOFTWARE:
                 family = PurePosixPath("/opt/apps") / software
                 stem = APP_STEMS.get(software, software)
                 managed = any(str(root).startswith(f"{family}/{stem}-{track}-") for track in TRACKS)
-                if root == family or managed:
+                if (root == family or managed) and not any(root.is_relative_to(dep) for dep in managed_dependencies):
                     raise ValueError("managed application prefixes are not external site dependencies")
     roots = [prefix, *other_prefixes, *external_paths,
              PurePosixPath("/usr"), PurePosixPath("/lib"), PurePosixPath("/lib64")]
@@ -200,8 +218,11 @@ def validate_native_entry(entry, *, allowed_prefixes=()):
         else:
             raise ValueError("unapproved runtime set variable")
         clean_settings[name] = value
-    return {"identity": identity, "commands": clean_commands, "external_roots": external,
-            "runtime": {"modules": modules, "prepend": clean_prepend, "set": clean_settings}}
+    result = {"identity": identity, "commands": clean_commands, "external_roots": external,
+              "runtime": {"modules": modules, "prepend": clean_prepend, "set": clean_settings}}
+    if site_dependencies:
+        result["site_dependencies"] = site_dependencies
+    return result
 
 
 def _stem(software):

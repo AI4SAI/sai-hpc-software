@@ -695,6 +695,8 @@ def export_image(image, expected_sha256, destination, *, prefixes=None, include_
                 "validation": "integrity-checked; native science and performance acceptance still required",
                 "relocation": "staging only; install at expected /opt prefixes or separately validate relocation",
             }
+            if "site_dependencies" in entry:
+                receipt["site_dependencies"] = entry["site_dependencies"]
             readme = (
                 "This complete installation folder is a staging export, not a privileged installer.\n"
                 "Copy this WHOLE folder to the expected absolute prefix:\n  " + prefix + "\n"
@@ -857,6 +859,8 @@ def verify_export(destination, receipt, expected_sha256, identities):
             "module_use": prefix + "/modulefiles",
             "module_load": f'{identity["software"]}/{identity["track"]}/{identity["build_id"]}',
         }
+        if "site_dependencies" in entry:
+            fields["site_dependencies"] = entry["site_dependencies"]
         if any(installation.get(key) != value for key, value in fields.items()):
             raise ValueError("export dependency/module receipt differs from payload")
         for key in ("manifest_sha256", "source_manifest_sha256", "readme_sha256"):
