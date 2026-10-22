@@ -26,8 +26,13 @@ partition-specific ELPA inside the build container, enabled concurrent
 partition builds and corrected GPU affinity and upstream energy references.
 See the
 [release build and acceptance record](evidence/abacus-beta11-20261022/README.md).
-The physical beta11 `/opt` deployment package, administrator installation and
-post-install native runtime checks remain outstanding.
+The [beta11 administrator deployment package](../deployment/abacus-3.11.0-beta11/README.md)
+is ready: four-partition source/reference preflight, a real copy/readback
+rehearsal under home storage and `saiuser01` source/target access checks passed.
+It installs about 1.83 GiB of standard runtime files and a standalone public
+partition selector. Workflow metadata, test inputs and private dependency
+development files stay outside `/opt`. Administrator installation and the
+prepared 30 single/two-node native scientific calculations remain outstanding.
 Optional public deployment of the container image driver is tracked in
 [issue #12](https://github.com/AI4SAI/sai-hpc-software/issues/12).
 

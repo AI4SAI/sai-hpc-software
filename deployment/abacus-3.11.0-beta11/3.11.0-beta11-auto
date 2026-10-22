@@ -1,0 +1,40 @@
+#%Module1.0
+module-whatis "ABACUS 3.11.0-beta11; native CPU/V100 partition selection"
+conflict abacus
+if {[module-info mode load]} {
+    if {![info exists env(SLURM_JOB_ID)] || ![regexp {^[1-9][0-9]*$} $env(SLURM_JOB_ID)] || ![info exists env(SLURM_JOB_PARTITION)]} {
+        error "Load this module inside a Slurm allocation"
+    }
+    set partition $env(SLURM_JOB_PARTITION)
+} elseif {[module-info mode remove]} {
+    if {![info exists env(SAI_ABACUS_NATIVE_PARTITION)]} {error "Missing loaded ABACUS partition"}
+    set partition $env(SAI_ABACUS_NATIVE_PARTITION)
+} else {return}
+if {$partition ni {DSPRHBM 4V100 16V100 8V100V0}} {error "Unsupported ABACUS partition: $partition"}
+set prefix /opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/$partition
+if {[info exists env(SAI_ABACUS_NATIVE_PARTITION)] && $env(SAI_ABACUS_NATIVE_PARTITION) ne $partition} {error "Another native partition is loaded"}
+if {[info exists env(SAI_ABACUS_PREFIX)] && $env(SAI_ABACUS_PREFIX) ne $prefix} {error "Another native build is loaded"}
+if {[module-info mode remove] && ![info exists env(SAI_ABACUS_PREFIX)]} {error "Missing loaded ABACUS prefix"}
+if {![file executable $prefix/bin/abacus]} {error "Missing ABACUS installation: $prefix"}
+for {set path $prefix} {$path ne "/"} {set path [file dirname $path]} {
+    if {[file type $path] eq "link"} {error "Native installation path must not contain symlinks"}
+}
+prepend-path MODULEPATH /opt/modules/modulefiles/devtools
+set dependencies {openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto fftw/3.3.10 libxc/7.0.0-auto saiblas/2603-gnu-auto elpa/2026.02.001-2603-gnu-auto cuda/12.9.1}
+if {$partition eq "DSPRHBM"} {
+    lappend dependencies gcc/13.3.0
+} else {
+    lappend dependencies nvmplibs/26.7-tmp
+}
+foreach dependency $dependencies {
+    if {[llength [info commands depends-on]]} {depends-on $dependency} else {module load $dependency}
+}
+# Preserve the accepted dependency precedence. Private headers/static archives
+# and workflow metadata are not needed by this executable.
+foreach relative {dependencies/nep/lib dependencies/libtorch/lib} {
+    prepend-path LD_LIBRARY_PATH $prefix/$relative
+}
+prepend-path PATH $prefix/bin
+setenv ABACUS_ROOT $prefix
+setenv SAI_ABACUS_PREFIX $prefix
+setenv SAI_ABACUS_NATIVE_PARTITION $partition

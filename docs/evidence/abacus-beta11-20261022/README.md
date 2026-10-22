@@ -52,10 +52,18 @@ The SIFs and sibling `.native` export directories are below
 `/home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/<PARTITION>/`.
 All four partitions are accepted home module targets and ready for physical
 deployment. No physical beta11 `/opt` installation or post-install native
-runtime acceptance has been performed. The physical deployment package still
-needs to select standard executables, libraries and required data from these
-exports, provide the public partition-selecting module and retain custom
-verification files in the home tree, following the CP2K/LAMMPS deployments.
+runtime acceptance has been performed. The
+[administrator deployment package](../../../deployment/abacus-3.11.0-beta11/README.md)
+now follows the CP2K/LAMMPS `--check`/`--install`/`--verify` interface and
+includes the public partition selector and post-install native checks.
+Source/reference preflight and a real four-partition copy/readback rehearsal
+in home storage passed. Effective POSIX ACL checks confirmed `saiuser01` can
+read the sources and write the two `/opt` target parents after seven targeted
+source read/traverse grants. The package installs about 1.83 GiB of standard
+runtime files; metadata, custom tests and private dependency development
+materials stay outside `/opt`.
+[Deployment preflight and permission evidence](physical-deployment-preflight.json)
+records the checks without claiming physical installation or native execution.
 
 ### CPU reference-library recovery
 
