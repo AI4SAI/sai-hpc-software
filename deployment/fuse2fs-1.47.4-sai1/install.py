@@ -13,8 +13,9 @@ import sys
 import tempfile
 
 PACKAGE = Path(__file__).resolve().parent
-PREFIX = Path('/opt/devtools/fuse2fs/45651efd-sai-ofd-ro')
-MODULE = Path('/opt/modules/modulefiles/devtools/fuse2fs/45651efd-sai-ofd-ro')
+VERSION = '1.47.4-sai1'
+PREFIX = Path('/opt/devtools/fuse2fs') / VERSION
+MODULE = Path('/opt/modules/modulefiles/devtools/fuse2fs') / VERSION
 SITE_CONFIG = Path('/opt/devtools/apptainer/1.4.4/etc/apptainer/apptainer.conf')
 BINARY_SHA256 = '46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10'
 MODES = {'bin/fuse2fs': 0o555, 'etc/apptainer.conf': 0o444,
@@ -239,7 +240,7 @@ def main():
             return
     verify_installed(release)
     print('Public files verified: ' + str(PREFIX))
-    print('Module: fuse2fs/45651efd-sai-ofd-ro (load apptainer/1.4.4 first)')
+    print(f'Module: fuse2fs/{VERSION} (load apptainer/1.4.4 first)')
 
 
 if __name__ == '__main__':

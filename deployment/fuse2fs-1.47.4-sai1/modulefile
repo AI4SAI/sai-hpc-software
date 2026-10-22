@@ -4,14 +4,14 @@ proc ModulesHelp {} {
     puts stderr "Preserves inherited OFD locks and explicit read-only backing files."
     puts stderr "Load apptainer/1.4.4 first; keep build/cache/scratch under your home."
 }
-module-whatis "fuse2fs 45651efd with SAI OFD/read-only fixes for Apptainer 1.4.4"
+module-whatis "fuse2fs 1.47.4-sai1: post-1.47.4 upstream I/O fixes plus SAI OFD/read-only fixes for Apptainer 1.4.4"
 conflict fuse2fs
 prereq apptainer/1.4.4
-set prefix {@PREFIX@}
+set prefix {/opt/devtools/fuse2fs/1.47.4-sai1}
 if {[module-info mode load]} {
-    foreach {path expected} [list "$prefix/bin/fuse2fs" {@BINARY_SHA256@} \
-        /opt/devtools/apptainer/1.4.4/etc/apptainer/apptainer.conf {@SITE_SHA256@} \
-        "$prefix/etc/apptainer.conf" {@CONFIG_SHA256@}] {
+    foreach {path expected} [list "$prefix/bin/fuse2fs" {46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10} \
+        /opt/devtools/apptainer/1.4.4/etc/apptainer/apptainer.conf {20c9083879d32024107e11689d80d4fe62f06d70e827a870d1007710fad89625} \
+        "$prefix/etc/apptainer.conf" {855b18a88f8b7bc95bfd83a051a9167901f784df22cfd66e8acd821c6b362ad0}] {
         if {![file isfile $path] || [lindex [exec /usr/bin/sha256sum -- $path] 0] ne $expected} {
             error "fuse2fs payload or site configuration changed: $path; revalidate this module"
         }
