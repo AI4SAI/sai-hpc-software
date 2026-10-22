@@ -20,7 +20,7 @@ compilation inside writable containers. The public optimized
 | DSPRHBM | 1901140 | 22m31s | Passed after CPU reference ELPA recovery; published |
 | 4V100 | 1901178 | 11m10s | Automatic acceptance and publication passed |
 | 16V100 | 1901186 | 17m01s | Automatic acceptance and publication passed |
-| 8V100V0 | 1901180 | 25m15s | Built; two-node runtime job 1901416 queued for resources |
+| 8V100V0 | 1901180 | 25m15s | Automatic acceptance and publication passed |
 
 The accepted partitions passed two-node SCF and paired PW, HSE and DeePKS
 calculations, including one warmup and three measured pairs per case. The
@@ -30,10 +30,16 @@ the packaged HSE/DeePKS comparisons use CPU kernels in those GPU-enabled
 binaries. Native exports were checked against their
 inventories, and publication was independently revalidated from raw science
 outputs, SIF checksums, exported file bytes and module metadata.
-[corrected-delivery.json](corrected-delivery.json) records these results,
-exact artifacts, hashes, job accounting and the outstanding 8V100V0 job.
-The existing GitHub acceptance job continues to own the queued GPU test and
-its following acceptance/publication stages. No duplicate build is needed.
+[corrected-delivery.json](corrected-delivery.json) preserves the earlier
+snapshot with three accepted partitions and 8V100V0 still queued.
+[final-8v100v0.json](final-8v100v0.json) completes the record with the last
+partition's exact artifact, hashes, job accounting and independent raw-output,
+native-file and module revalidation. Its two-node SCF (`1901416`), distributed
+GPU features (`1901616`), PW (`1901623`), HSE (`1901688`) and DeePKS (`1901712`)
+jobs all completed with `0:0`. The existing GitHub acceptance job finished
+successfully; no duplicate build or acceptance submission was needed.
+All four SIFs are now verified and published, and each native export passed
+readback of 8,713 files.
 
 The home module selects an accepted partition in a Slurm allocation:
 
@@ -44,8 +50,12 @@ module load abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a
 
 The SIFs and sibling `.native` export directories are below
 `/home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/<PARTITION>/`.
-These are home publications. No physical beta11 `/opt` installation has been
-performed, and 8V100V0 is not yet an accepted module target.
+All four partitions are accepted home module targets and ready for physical
+deployment. No physical beta11 `/opt` installation or post-install native
+runtime acceptance has been performed. The physical deployment package still
+needs to select standard executables, libraries and required data from these
+exports, provide the public partition-selecting module and retain custom
+verification files in the home tree, following the CP2K/LAMMPS deployments.
 
 ### CPU reference-library recovery
 

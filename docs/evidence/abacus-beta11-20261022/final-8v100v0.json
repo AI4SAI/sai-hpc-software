@@ -1,0 +1,436 @@
+{
+  "accounting": [
+    "1901180|8V100V0|COMPLETED|00:25:15|0:0|8v100v0n06",
+    "1901416|8V100V0|COMPLETED|00:00:23|0:0|8v100v0n[02,06]",
+    "1901616|8V100V0|COMPLETED|00:00:46|0:0|8v100v0n[02,06]",
+    "1901623|8V100V0|COMPLETED|00:02:57|0:0|8v100v0n[02,06]",
+    "1901688|8V100V0|COMPLETED|00:03:41|0:0|8v100v0n[02,06]",
+    "1901712|8V100V0|COMPLETED|00:02:44|0:0|8v100v0n[02,04]"
+  ],
+  "deliveries": [
+    {
+      "acceptance": {
+        "benchmark_deepks": {
+          "evidence_file": "/home/stardust/sai-hpc-software/runtime-tests/benchmark-39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360-deepks/results/evidence.json",
+          "evidence_sha256": "8c4fae17b6fbc91034fec6faaf64797a22cb650684f50d5a2df6ae027ee9feed",
+          "proof": {
+            "artifact_sha256": "7ec3ffa4a8e4191dd6e03084b7a0a0b25d38dcdcc67767d83d3080ac3c7a1e60",
+            "benchmark_case": "deepks",
+            "case_device": "cpu",
+            "controller_sha256": "f3aba80ff73572ba0c79e61e766f6ae96cdfd5b4eac3bee7bdd8432a9054200b",
+            "evidence_sha256": "8c4fae17b6fbc91034fec6faaf64797a22cb650684f50d5a2df6ae027ee9feed",
+            "job": "1901712",
+            "job_script_sha256": "70c566150a67c9e267a2a24a85ad06b73eb2d69a62977570dc13e22b8f0c51fa",
+            "launcher": "/home/stardust/sai-hpc-software/controller/9e08533ddbe308f45dc1f1189225bfb1cc1a8444/39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360/abacus",
+            "launcher_sha256": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+            "nodes": 2,
+            "ranks": 2,
+            "run_id": "benchmark-39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360-deepks",
+            "system_module": "abacus/v3.9.0.26-sm70-auto",
+            "verified": true
+          },
+          "resources": {
+            "nodes": 2,
+            "ranks": 2,
+            "ranks_per_node": 1,
+            "threads": 1
+          },
+          "science": {
+            "affinity_note": "Physical/logical CPU sets and OpenMP environment match for every host/local rank; binding is recorded before exec, not sampled per OpenMP worker thread.",
+            "case_device": "cpu",
+            "energy_reference": {
+              "candidate_max_error_ev": 5.002220859751105e-12,
+              "energy_ev": -71.32203132091935,
+              "source": "pinned upstream result.ref",
+              "tolerance_ev": 1e-05
+            },
+            "energy_spread_ev": 9.613487250703656e-06,
+            "statistics": {
+              "rounded_iteration_seconds": {
+                "candidate": {
+                  "max": 1.69,
+                  "median": 1.69,
+                  "min": 1.69
+                },
+                "candidate_system_ratio": 0.7412280701754387,
+                "system": {
+                  "max": 2.32,
+                  "median": 2.28,
+                  "min": 2.17
+                }
+              },
+              "wall_seconds": {
+                "candidate": {
+                  "max": 5.08,
+                  "median": 5.02,
+                  "min": 5.02
+                },
+                "candidate_system_ratio": 0.994059405940594,
+                "system": {
+                  "max": 5.06,
+                  "median": 5.05,
+                  "min": 5.04
+                }
+              }
+            },
+            "timing_note": "Iteration times sum the rounded SCF TIME/s column; wall measures mpirun only."
+          },
+          "status": {
+            "exit_code": "0:0",
+            "job": "1901712",
+            "state": "COMPLETED",
+            "verified": true
+          }
+        },
+        "benchmark_hse": {
+          "evidence_file": "/home/stardust/sai-hpc-software/runtime-tests/benchmark-39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360-hse/results/evidence.json",
+          "evidence_sha256": "e5d01c5dd270221af9513dbefc2f8526d2b03f1657f7785783f2fd953806564e",
+          "proof": {
+            "artifact_sha256": "7ec3ffa4a8e4191dd6e03084b7a0a0b25d38dcdcc67767d83d3080ac3c7a1e60",
+            "benchmark_case": "hse",
+            "case_device": "cpu",
+            "controller_sha256": "f3aba80ff73572ba0c79e61e766f6ae96cdfd5b4eac3bee7bdd8432a9054200b",
+            "evidence_sha256": "e5d01c5dd270221af9513dbefc2f8526d2b03f1657f7785783f2fd953806564e",
+            "job": "1901688",
+            "job_script_sha256": "e9fc82394752e8de4c0002e4459deed50528f4411b1dd8f1e566488c3ae9b936",
+            "launcher": "/home/stardust/sai-hpc-software/controller/9e08533ddbe308f45dc1f1189225bfb1cc1a8444/39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360/abacus",
+            "launcher_sha256": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+            "nodes": 2,
+            "ranks": 2,
+            "run_id": "benchmark-39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360-hse",
+            "system_module": "abacus/v3.9.0.26-sm70-auto",
+            "verified": true
+          },
+          "resources": {
+            "nodes": 2,
+            "ranks": 2,
+            "ranks_per_node": 1,
+            "threads": 1
+          },
+          "science": {
+            "affinity_note": "Physical/logical CPU sets and OpenMP environment match for every host/local rank; binding is recorded before exec, not sampled per OpenMP worker thread.",
+            "case_device": "cpu",
+            "energy_reference": {
+              "candidate_max_error_ev": 1.1368683772161603e-13,
+              "energy_ev": -428.9943139416827,
+              "source": "pinned upstream result.ref",
+              "tolerance_ev": 1e-05
+            },
+            "energy_spread_ev": 3.123068114518901e-05,
+            "statistics": {
+              "rounded_iteration_seconds": {
+                "candidate": {
+                  "max": 4.45,
+                  "median": 3.42,
+                  "min": 2.38
+                },
+                "candidate_system_ratio": 0.6705882352941177,
+                "system": {
+                  "max": 6.69,
+                  "median": 5.1,
+                  "min": 1.77
+                }
+              },
+              "wall_seconds": {
+                "candidate": {
+                  "max": 13.1,
+                  "median": 12.93,
+                  "min": 9.29
+                },
+                "candidate_system_ratio": 0.9692653673163418,
+                "system": {
+                  "max": 17.23,
+                  "median": 13.34,
+                  "min": 10.24
+                }
+              }
+            },
+            "timing_note": "Iteration times sum the rounded SCF TIME/s column; wall measures mpirun only."
+          },
+          "status": {
+            "exit_code": "0:0",
+            "job": "1901688",
+            "state": "COMPLETED",
+            "verified": true
+          }
+        },
+        "benchmark_pw": {
+          "evidence_file": "/home/stardust/sai-hpc-software/runtime-tests/benchmark-39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360-pw/results/evidence.json",
+          "evidence_sha256": "b5c5e6d23f8c29f647f0094d654835f8201b0508ae72ace91cbdd3b741e5020a",
+          "proof": {
+            "artifact_sha256": "7ec3ffa4a8e4191dd6e03084b7a0a0b25d38dcdcc67767d83d3080ac3c7a1e60",
+            "benchmark_case": "pw",
+            "case_device": "gpu",
+            "controller_sha256": "f3aba80ff73572ba0c79e61e766f6ae96cdfd5b4eac3bee7bdd8432a9054200b",
+            "evidence_sha256": "b5c5e6d23f8c29f647f0094d654835f8201b0508ae72ace91cbdd3b741e5020a",
+            "job": "1901623",
+            "job_script_sha256": "6fb706b2c68331c932eaf350974e843fd27409054938a63f5cde720435fa62d9",
+            "launcher": "/home/stardust/sai-hpc-software/controller/9e08533ddbe308f45dc1f1189225bfb1cc1a8444/39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360/abacus",
+            "launcher_sha256": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+            "nodes": 2,
+            "ranks": 2,
+            "run_id": "benchmark-39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360-pw",
+            "system_module": "abacus/v3.9.0.26-sm70-auto",
+            "verified": true
+          },
+          "resources": {
+            "nodes": 2,
+            "ranks": 2,
+            "ranks_per_node": 1,
+            "threads": 1
+          },
+          "science": {
+            "affinity_note": "Physical/logical CPU sets and OpenMP environment match for every host/local rank; binding is recorded before exec, not sampled per OpenMP worker thread.",
+            "case_device": "gpu",
+            "energy_reference": null,
+            "energy_spread_ev": 2.0463630789890885e-10,
+            "statistics": {
+              "rounded_iteration_seconds": {
+                "candidate": {
+                  "max": 2.88,
+                  "median": 1.3,
+                  "min": 1.21
+                },
+                "candidate_system_ratio": 0.9558823529411764,
+                "system": {
+                  "max": 2.57,
+                  "median": 1.36,
+                  "min": 1.32
+                }
+              },
+              "wall_seconds": {
+                "candidate": {
+                  "max": 8.62,
+                  "median": 6.82,
+                  "min": 6.51
+                },
+                "candidate_system_ratio": 0.9869753979739508,
+                "system": {
+                  "max": 6.99,
+                  "median": 6.91,
+                  "min": 4.23
+                }
+              }
+            },
+            "timing_note": "Iteration times sum the rounded SCF TIME/s column; wall measures mpirun only."
+          },
+          "status": {
+            "exit_code": "0:0",
+            "job": "1901623",
+            "state": "COMPLETED",
+            "verified": true
+          }
+        },
+        "gpu_features": {
+          "evidence_file": "/home/stardust/sai-hpc-software/runtime-tests/39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360-gpu-features/results/evidence.json",
+          "evidence_sha256": "369364eb7330bee1660002578f14d809f02e06f4da9e860fba9a9a2e9f13b3dd",
+          "proof": {
+            "artifact_sha256": "7ec3ffa4a8e4191dd6e03084b7a0a0b25d38dcdcc67767d83d3080ac3c7a1e60",
+            "controller_sha256": "67e0711ccd8d39d1d6fc999baa35a9b6fe32fbe2c9392db5bb8e7cdc09f60eb0",
+            "cusolvermp_eigensolve": true,
+            "evidence_sha256": "369364eb7330bee1660002578f14d809f02e06f4da9e860fba9a9a2e9f13b3dd",
+            "execution_evidence": {
+              "cusolvermp": [
+                "[2026-10-22 16:59:03][cusolverMp][642508][Api][cusolverMpSygvd] handle=0x558c3597ca90, ibtype=1, jobz=1, uplo=0, N=26, d_A=0x14b63ddf9000, IA=1, JA=1, descA=0x558c3598bbd0, d_B=0x14b63ddf9c00, IB=1, JB=1, descB=0x558c3598bbd0, d_W=0x14b63ddfa800, d_Z=0x14b63ddfaa00, IZ=1, JZ=1, descZ=0x558c3598bbd0, computeType=1, d_work=0x14b651d83400, workspaceInBytesOnDevice=42496 h_work=0x558c2a869a20, workspaceInBytesOnHost=708 info=0x14b63ddfb600 ",
+                "[2026-10-22 16:59:03][cusolverMp][642508][Trace][cusolverMpSygvd] handle=0x558c3597ca90 ibtype=1 jobz=1 uplo=0 m=26a=0x14b63ddf9000 ia=1 ja=1 descA=0x558c3598bbd0 b=0x14b63ddf9c00 ib=1 jb=1 descB=0x558c3598bbd0 w=0x14b63ddfa800 z=0x14b63ddfaa00 iz=1 jz=1 descZ=0x558c3598bbd0 computeType=1 workspaceInBytesOnDevice=0xa600 workspaceInBytesOnHost=0x2c4 ",
+                "[2026-10-22 16:59:03][cusolverMp][3918232][Api][cusolverMpSygvd] handle=0x55f19cafd080, ibtype=1, jobz=1, uplo=0, N=26, d_A=0x1463eddf9000, IA=1, JA=1, descA=0x55f19cb0bd60, d_B=0x1463eddf9c00, IB=1, JB=1, descB=0x55f19cb0bd60, d_W=0x1463eddfa800, d_Z=0x1463eddfaa00, IZ=1, JZ=1, descZ=0x55f19cb0bd60, computeType=1, d_work=0x146401d83400, workspaceInBytesOnDevice=42496 h_work=0x55f1915d39a0, workspaceInBytesOnHost=708 info=0x1463eddfb600 ",
+                "[2026-10-22 16:59:03][cusolverMp][3918232][Trace][cusolverMpSygvd] handle=0x55f19cafd080 ibtype=1 jobz=1 uplo=0 m=26a=0x1463eddf9000 ia=1 ja=1 descA=0x55f19cb0bd60 b=0x1463eddf9c00 ib=1 jb=1 descB=0x55f19cb0bd60 w=0x1463eddfa800 z=0x1463eddfaa00 iz=1 jz=1 descZ=0x55f19cb0bd60 computeType=1 workspaceInBytesOnDevice=0xa600 workspaceInBytesOnHost=0x2c4 "
+              ],
+              "nccl": [
+                "8v100v0n02:3918642:3918642 [0] NCCL INFO AllGather: opCount 0 sendbuff 0x151305ffe800 recvbuff 0x1512f3ff0400 count 4608 datatype 1 op 0 root 0 comm 0x5584ecff19a0 [nranks=2] stream (nil)",
+                "8v100v0n06:642976:642976 [0] NCCL INFO AllGather: opCount 0 sendbuff 0x146dedffe800 recvbuff 0x146ddbff0400 count 4608 datatype 1 op 0 root 0 comm 0x56434c8b4590 [nranks=2] stream (nil)",
+                "8v100v0n02:3918642:3918642 [0] NCCL INFO AllGather: opCount 1 sendbuff 0x151305ffe800 recvbuff 0x1512f3ff0400 count 4608 datatype 1 op 0 root 0 comm 0x5584ecff19a0 [nranks=2] stream (nil)",
+                "8v100v0n06:642976:642976 [0] NCCL INFO AllGather: opCount 1 sendbuff 0x146dedffe800 recvbuff 0x146ddbff0400 count 4608 datatype 1 op 0 root 0 comm 0x56434c8b4590 [nranks=2] stream (nil)"
+              ]
+            },
+            "files": {
+              "cases/cusolvermp/OUT.autotest/running_scf.log": "cad088a91a2f1cb1191948b8b4a9bc9fcb0741d3b2a7e4ca081261ed335460c0",
+              "cases/nccl/OUT.autotest/running_scf.log": "89c29986998594e213c8f9f45fb759e08d01a3e9d7c462d38a4444adc6a69daf",
+              "job.id": "c0357985953add59d7698723c50ad77d274a8c025e67a56630aeb4555657beb9",
+              "job.sbatch": "7bac4e87b11cbdd283b89c7007e5bc67c8fcc224e0eff67255484e0bab3681a3",
+              "results/cusolvermp/abacus.log": "dcb0d4a9e5192caa2857a5b3438330abb2d71cb3859f93f0ca13dafa03d1f71e",
+              "results/cusolvermp/ranks/rank-0.tsv": "d01f773b177ba7bda05fbd882f491e8261dea9707914aa78204a4e94dc80c3b9",
+              "results/cusolvermp/ranks/rank-1.tsv": "7b7c993b1c72544907b9ba6a34cd5b4a543f3ec02bf2a439c8a38b7d61e7c5ae",
+              "results/nccl/abacus.log": "c89d5852ee584bbf896553eab6f5ee1e9b840595f2b37616b4eb9709d1e683a4",
+              "results/nccl/ranks/rank-0.tsv": "d01f773b177ba7bda05fbd882f491e8261dea9707914aa78204a4e94dc80c3b9",
+              "results/nccl/ranks/rank-1.tsv": "7b7c993b1c72544907b9ba6a34cd5b4a543f3ec02bf2a439c8a38b7d61e7c5ae"
+            },
+            "final_energy_ev": {
+              "cusolvermp": -196.62217499802028,
+              "nccl": -4869.747051979829
+            },
+            "job": "1901616",
+            "job_script_sha256": "7bac4e87b11cbdd283b89c7007e5bc67c8fcc224e0eff67255484e0bab3681a3",
+            "launcher": "/home/stardust/sai-hpc-software/controller/9e08533ddbe308f45dc1f1189225bfb1cc1a8444/39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360/abacus",
+            "launcher_sha256": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+            "nccl_collective": true,
+            "nccl_collectives": [
+              "AllGather"
+            ],
+            "nodes": 2,
+            "partition": "8V100V0",
+            "ranks": 2,
+            "run_id": "39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360-gpu-features",
+            "runtime_sha256": "b499d0fe6bd1ad4623ece45ea6663702bf8e54d95ae1a0679b87f34ce81a0734",
+            "verified": true
+          },
+          "resources": {
+            "gpus_per_node": 1,
+            "nodes": 2,
+            "ranks": 2,
+            "ranks_per_node": 1
+          },
+          "science": {
+            "cusolvermp_eigensolve": true,
+            "nccl_collective": true
+          },
+          "status": {
+            "exit_code": "0:0",
+            "job": "1901616",
+            "state": "COMPLETED",
+            "verified": true
+          }
+        },
+        "multinode_runtime": {
+          "evidence_file": "/home/stardust/sai-hpc-software/runtime-tests/39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360-multinode/results/evidence.json",
+          "evidence_sha256": "28bcb040c1f6f5eaceedc479e6b8ff942d004922a505a39cf6b45babe92c0bfd",
+          "proof": {
+            "artifact_sha256": "7ec3ffa4a8e4191dd6e03084b7a0a0b25d38dcdcc67767d83d3080ac3c7a1e60",
+            "controller_sha256": "8ca55a24c8e8ebd296fdf24689a42b3799c06d6073becc5c127c62419f340166",
+            "cpus_per_task": 1,
+            "evidence_sha256": "28bcb040c1f6f5eaceedc479e6b8ff942d004922a505a39cf6b45babe92c0bfd",
+            "gpus_per_node": 1,
+            "job": "1901416",
+            "job_script_sha256": "0b55b715b0f4fd114daec31302975d369bba9af354fa9d97e062c1a0f21d7db2",
+            "launcher": "/home/stardust/sai-hpc-software/controller/9e08533ddbe308f45dc1f1189225bfb1cc1a8444/39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360/abacus",
+            "launcher_sha256": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+            "nodes": 2,
+            "partition": "8V100V0",
+            "ranks": 2,
+            "ranks_per_node": 1,
+            "run_id": "39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360-multinode",
+            "verified": true
+          },
+          "resources": {
+            "gpus_per_node": 1,
+            "nodes": 2,
+            "ranks": 2,
+            "ranks_per_node": 1
+          },
+          "science": {},
+          "status": {
+            "exit_code": "0:0",
+            "job": "1901416",
+            "state": "COMPLETED",
+            "verified": true
+          }
+        }
+      },
+      "artifact": "/home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/8V100V0/39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360.sif",
+      "artifact_bytes": 184393728,
+      "build_log": "/home/stardust/sai-hpc-software/runs/39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360/results/slurm-1901180.log",
+      "build_log_sha256": "336f6a660836cc8bf3811c0f56dfce7b72cdc3d785fff6b34f0035079b3571bb",
+      "build_run_id": "39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360",
+      "build_status": {
+        "exit_code": "0:0",
+        "job": "1901180",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "build_verified": true,
+      "controller": "/home/stardust/sai-hpc-software/controller/9e08533ddbe308f45dc1f1189225bfb1cc1a8444/39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360",
+      "current_image": "/home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/8V100V0/39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360.sif",
+      "features": {
+        "baseline_modules": [
+          "abacus/v3.9.0.26-sm70-auto",
+          "abacus/develop-git-079fd0c-260724-sm70-auto"
+        ],
+        "checked_libraries": {
+          "libcublasmp.so": "/opt/devtools/nvidia/mp_libs/lib/",
+          "libcusolverMp.so": "/opt/devtools/nvidia/mp_libs/lib/",
+          "libelpa": "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx2/nvidia/lib/",
+          "libnccl.so": "/opt/devtools/nvidia/nccl_",
+          "libnep.so": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/8V100V0/dependencies/nep/lib/",
+          "libtorch_cpu.so": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/8V100V0/dependencies/libtorch/lib/"
+        },
+        "required_info": [
+          "OpenMP Support",
+          "LCAO Algorithm",
+          "ELPA Support",
+          "LibXC Support",
+          "FFTW Support",
+          "Cereal Serialization",
+          "LibRI Support",
+          "LibComm Support",
+          "LibTorch Support",
+          "Libnpy Support",
+          "NEP Support",
+          "CUDA-aware MPI",
+          "NVIDIA CUDA Support",
+          "CUSOLVERMP Support",
+          "JSON Support"
+        ],
+        "required_options": [
+          "ENABLE_MPI",
+          "ENABLE_OPENMP",
+          "ENABLE_LCAO",
+          "ENABLE_ELPA",
+          "ENABLE_LIBXC",
+          "ENABLE_LIBRI",
+          "ENABLE_MLALGO",
+          "USE_CUDA",
+          "USE_CUDA_MPI",
+          "ENABLE_CUSOLVERMP",
+          "ENABLE_CUBLASMP",
+          "ENABLE_NCCL_PARALLEL_DEVICE",
+          "ENABLE_JSON"
+        ],
+        "scope": "compile/link presence; not a scientific validation of every optional method"
+      },
+      "identity": {
+        "build_id": "v3.11.0-beta11-gb0411118d360-r92ecfac1f62a",
+        "cpu_arch": "skylake-avx512",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/8V100V0",
+        "partition": "8V100V0",
+        "recipe_sha256": "92ecfac1f62a48bd94b0ec779ff75774bb6f9b3dd489815bab0eb9b9133b91d7",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "v3.11.0-beta11",
+        "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+        "source_version": "v3.11.0-beta11",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "8v100v0-avx512",
+        "track": "release",
+        "version_label": "v3.11.0-beta11"
+      },
+      "independent_revalidation": "publication, raw science, native export and module",
+      "info": "\n----------------- ABACUS Core & Platform -----------------\nABACUS Version:                v3.11.0-beta11\nGit Commit:                    b041111 (Sun Oct 18 21:15:08 2026 +0800)\nTarget Platform:               CPU + NVIDIA CUDA\nBuild Type:                    Release\n\n----------------- Build Environment -----------------\nBuilt By:                      root\nBuilt On:                      8v100v0n06.mr-sai.ai\nBuilt At:                      Oct 22 2026 16:23:29\n\n----------------- Compiler & Flags -----------------\nC++ Compiler:                  GNU (/usr/bin/g++)\nC++ Compiler Ver:              13.3.0\nC++ Flags:                     -march=native -mtune=native\nLinker Flags:                  \nCUDA Flags:                    \n\n----------------- Sanitizers & Debugging -----------------\nAddressSanitizer:              no\nDebug Symbols:                 no\n\n----------------- CMake Configuration Summary -----------------\nBuild Options:  ENABLE_MPI=ON  ENABLE_OPENMP=ON  USE_CUDA=ON  USE_ROCM=OFF  ENABLE_LCAO=ON  ENABLE_ELPA=ON  ENABLE_LIBXC=ON  ENABLE_MLALGO=ON  ENABLE_ASAN=OFF  BUILD_TESTING=OFF\n\nFindPackage Results:  MPI Found=TRUE  OpenMP Found=TRUE  CUDA Found=  ROCm Found=  ELPA Found=TRUE  Libxc Found=1  PEXSI Found=  LibRI Found=TRUE\n\n----------------- Parallelism & Communication -----------------\nMPI Implementation:            OpenMPI\nMPI Version:                   (MPI standard: 3.1)\nCUDA-aware MPI:                yes\nOpenMP Support:                yes (v4.5)\n\n----------------- Core Math Libraries -----------------\nLCAO Algorithm:                yes\nELPA Support:                  yes (v)\nMKL Support:                   no\nLibXC Support:                 yes (v7.0.0)\nFFTW Support:                  yes (v3.3.10)\n\n----------------- Accelerators & Hardware -----------------\nNVIDIA CUDA Support:           yes (v12.9.86)\nAMD ROCm Support:              no\nCUSOLVERMP Support:            yes (version unknown)\n\n----------------- Hybrid Functional Libraries -----------------\nCereal Serialization:          yes (version unknown)\nLibRI Support:                 yes (v2.1.1)\nLibComm Support:               yes (path: /opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/8V100V0/dependencies/LibComm-master)\n\n----------------- AI & Machine Learning -----------------\nLibTorch Support:              yes (v2.1.2)\nLibnpy Support:                yes (path: /opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/8V100V0/dependencies/libnpy-1.0.1/include)\nDeePMD-kit Support:            no\nNEP Support:                   yes (path: /opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/8V100V0/dependencies/nep)\nTensorFlow Support:            no\n\n----------------- Other Libraries -----------------\nDFT-D4 Support:                no\nJSON Support:                  yes (nlohmann-json v3.12.0)\nPEXSI Support:                 no\ncnpy Support:                  no\n\n----------------- Testing -----------------\nGTest Support:                 no\nGoogle Benchmark:              Disabled\n\n",
+      "manifest_sha256": "a14c91122462fb0741aa6f2b40960267c46b163e580cbc35161823b19cd93509",
+      "missing_libraries": [],
+      "module_fragment": "/home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/8V100V0/39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360.module",
+      "module_fragment_sha256": "4b66da08864fcae56045051c9038aab103ba567122152c533cb6baf805214d9a",
+      "modulefile": "/home/stardust/sai-hpc-software/modulefiles/apps/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a",
+      "native_export": {
+        "directory": "/home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/8V100V0/39808766467-1-release-8v100v0-avx512-2026-10-22-b0411118d360.native",
+        "image_sha256": "7ec3ffa4a8e4191dd6e03084b7a0a0b25d38dcdcc67767d83d3080ac3c7a1e60",
+        "roundtrip_verified": true,
+        "schema": 1,
+        "verified_files": 8713
+      },
+      "native_export_record_sha256": "9d7e7687fc0c1ea777dc16f74796e1bf842b0905fb7b84301be59e5f458c523c",
+      "pending_acceptance": [],
+      "physical_opt_installed": false,
+      "published": true,
+      "sha256": "7ec3ffa4a8e4191dd6e03084b7a0a0b25d38dcdcc67767d83d3080ac3c7a1e60",
+      "verified": true
+    }
+  ],
+  "observed_at": "2026-10-22T17:30:44.556931+00:00",
+  "workflow_run_id": "39808766467",
+  "workflow_url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39808766467"
+}

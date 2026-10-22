@@ -7,16 +7,18 @@ for their results. The old feature-branch dispatch failures described below
 are historical. ABACUS's latest GitHub release, `v3.11.0-beta11`
 (`b0411118d360`), now has corrected SIFs on all four partitions from
 [run 39808766467](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39808766467).
-All passed version, library, feature and packaged-file checks. 4V100 and
-16V100 passed automatic two-node SCF, distributed cuSOLVERMp/NCCL, PW, HSE
-and DeePKS acceptance and were published with reverified native exports.
+All passed version, library, feature and packaged-file checks. 4V100,
+16V100 and 8V100V0 passed automatic two-node SCF, distributed cuSOLVERMp/NCCL,
+PW, HSE and DeePKS acceptance and were published with reverified native exports.
 DSPRHBM also passed and was published after a diagnosed CPU reference-library
 recovery using the same SIF. The old reference loaded unified NVIDIA ELPA;
 selecting the installed AVX512 CPU ELPA fixed its HSE failure. Future CPU
 benchmarks select and verify that library without changing ranks, scientific
-tolerances or timing thresholds. 8V100V0's two-node runtime job `1901416`
-is queued for resources; its SIF is build-verified, not yet accepted/published.
-Its existing workflow owns the remaining acceptance and publication steps.
+tolerances or timing thresholds. The final 8V100V0 acceptance jobs
+`1901416`, `1901616`, `1901623`, `1901688` and `1901712` completed with `0:0`;
+independent revalidation of raw science, SIF checksum, native file bytes and
+module metadata passed. All four partitions are now accepted and published
+in the home tree, ready for physical deployment.
 The original CPU acceptance job remains failed in GitHub's audit history;
 this run is not claimed as an entirely successful automatic workflow.
 PR #17 repaired acceptance after skipped CP2K dependencies, selected
@@ -24,7 +26,8 @@ partition-specific ELPA inside the build container, enabled concurrent
 partition builds and corrected GPU affinity and upstream energy references.
 See the
 [release build and acceptance record](evidence/abacus-beta11-20261022/README.md).
-No physical beta11 `/opt` installation is claimed.
+The physical beta11 `/opt` deployment package, administrator installation and
+post-install native runtime checks remain outstanding.
 Optional public deployment of the container image driver is tracked in
 [issue #12](https://github.com/AI4SAI/sai-hpc-software/issues/12).
 
