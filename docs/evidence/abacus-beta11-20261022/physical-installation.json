@@ -1,0 +1,1586 @@
+{
+  "account": "stardust",
+  "deployment_package_revision": "86611aaf127434f5d96c394467d946c0db3e1067",
+  "installations": [
+    {
+      "executable": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/4V100/bin/abacus_max_gpu",
+      "executable_accessible": true,
+      "files": [
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": ".",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "bin",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "symlink",
+          "mode": 493,
+          "observed_target": "abacus_max_gpu",
+          "path": "bin/abacus",
+          "target": "abacus_max_gpu",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "0722026d8d87883ab6fb6c26cc3c9f0a2a7150aeff10ff3fb007751e29bc07e5",
+          "path": "bin/abacus_max_gpu",
+          "readable": true,
+          "sha256": "0722026d8d87883ab6fb6c26cc3c9f0a2a7150aeff10ff3fb007751e29bc07e5",
+          "size": 32292992,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "dependencies",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "dependencies/libtorch",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "927ffac075b09f9ac1e737d3ca6e385ee5a4b8e1b3f2f7b062859be8173f9480",
+          "path": "dependencies/libtorch/build-hash",
+          "readable": true,
+          "sha256": "927ffac075b09f9ac1e737d3ca6e385ee5a4b8e1b3f2f7b062859be8173f9480",
+          "size": 61,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "611ac33c8024854512e03438e22c2735ff368e276f0267b4b2090e588445b004",
+          "path": "dependencies/libtorch/build-version",
+          "readable": true,
+          "sha256": "611ac33c8024854512e03438e22c2735ff368e276f0267b4b2090e588445b004",
+          "size": 10,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "dependencies/libtorch/lib",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "4a34a05ccf2ddd1d060c546b6a233155d24c48a2eb1a6cc774d14d8b757d534d",
+          "path": "dependencies/libtorch/lib/libbackend_with_compiler.so",
+          "readable": true,
+          "sha256": "4a34a05ccf2ddd1d060c546b6a233155d24c48a2eb1a6cc774d14d8b757d534d",
+          "size": 285056,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "8bdce7684ef76f4cba493998b02d6b9a46dda1e562f0e645bfd77ece7ce4192e",
+          "path": "dependencies/libtorch/lib/libc10.so",
+          "readable": true,
+          "sha256": "8bdce7684ef76f4cba493998b02d6b9a46dda1e562f0e645bfd77ece7ce4192e",
+          "size": 969448,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "7397469cccbd98fed838e101e71bbadd0bfa9b26a658ab93cefd20ffe0937631",
+          "path": "dependencies/libtorch/lib/libgomp-52f2fd74.so.1",
+          "readable": true,
+          "sha256": "7397469cccbd98fed838e101e71bbadd0bfa9b26a658ab93cefd20ffe0937631",
+          "size": 205801,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "eef83453d11348a63a1f9f65de4c01029c244fb6c0b7b066ae34af84042050fe",
+          "path": "dependencies/libtorch/lib/libnnapi_backend.so",
+          "readable": true,
+          "sha256": "eef83453d11348a63a1f9f65de4c01029c244fb6c0b7b066ae34af84042050fe",
+          "size": 366432,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "d2933ea6c63e75799c6b7dd9013b866499982dc532a6137ff900a2978289d2c6",
+          "path": "dependencies/libtorch/lib/libshm.so",
+          "readable": true,
+          "sha256": "d2933ea6c63e75799c6b7dd9013b866499982dc532a6137ff900a2978289d2c6",
+          "size": 40584,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "74093fd59b9956bb672a39a8f6d9ae05a1b47d84546cbac54eb1a7b274c25321",
+          "path": "dependencies/libtorch/lib/libtorch.so",
+          "readable": true,
+          "sha256": "74093fd59b9956bb672a39a8f6d9ae05a1b47d84546cbac54eb1a7b274c25321",
+          "size": 7504,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "55e2b893a2e86bb28de74e9f1585177b472bbac2d2ba3055a77f50e83c62d4cd",
+          "path": "dependencies/libtorch/lib/libtorch_cpu.so",
+          "readable": true,
+          "sha256": "55e2b893a2e86bb28de74e9f1585177b472bbac2d2ba3055a77f50e83c62d4cd",
+          "size": 438488217,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "9a2e309ea77bd110ce99498b97febd50717a6f8143fc2d3ae90386835227bad8",
+          "path": "dependencies/libtorch/lib/libtorch_global_deps.so",
+          "readable": true,
+          "sha256": "9a2e309ea77bd110ce99498b97febd50717a6f8143fc2d3ae90386835227bad8",
+          "size": 8721,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "359d94aa7cbd8ec73ec5cc5fff6139612b99d50d8bf6c7189b9bef48788e4354",
+          "path": "dependencies/libtorch/lib/libtorch_python.so",
+          "readable": true,
+          "sha256": "359d94aa7cbd8ec73ec5cc5fff6139612b99d50d8bf6c7189b9bef48788e4354",
+          "size": 20617840,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "dependencies/nep",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "dependencies/nep/lib",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "0f7eaf0302bc977647e3ae1d9f59a0af169f7a36af82b7e9b78ed6176d93b5f4",
+          "path": "dependencies/nep/lib/libnep.so",
+          "readable": true,
+          "sha256": "0f7eaf0302bc977647e3ae1d9f59a0af169f7a36af82b7e9b78ed6176d93b5f4",
+          "size": 1099200,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/LibComm-master",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "path": "share/licenses/LibComm-master/LICENSE",
+          "readable": true,
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "size": 35149,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/LibRI-b0eff7a",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118",
+          "path": "share/licenses/LibRI-b0eff7a/LICENSE",
+          "readable": true,
+          "sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118",
+          "size": 7652,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/NEP_CPU-main",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "path": "share/licenses/NEP_CPU-main/LICENSE",
+          "readable": true,
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "size": 35149,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/cereal-master",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "58604a126af6a671ea390ee3d5b3e42228aa59b2858fb7af1d5b20b31739ccbb",
+          "path": "share/licenses/cereal-master/LICENSE",
+          "readable": true,
+          "sha256": "58604a126af6a671ea390ee3d5b3e42228aa59b2858fb7af1d5b20b31739ccbb",
+          "size": 1542,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/json-3.12.0",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+          "path": "share/licenses/json-3.12.0/LICENSE.MIT",
+          "readable": true,
+          "sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+          "size": 1076,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/libnpy-1.0.1",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "4e1557fab51c823b98223c1401ceaa185cd26c33d2e0b6c0ca65a309077b6837",
+          "path": "share/licenses/libnpy-1.0.1/LICENSE",
+          "readable": true,
+          "sha256": "4e1557fab51c823b98223c1401ceaa185cd26c33d2e0b6c0ca65a309077b6837",
+          "size": 1074,
+          "uid": 1478400146
+        }
+      ],
+      "identity": {
+        "build_id": "v3.11.0-beta11-gb0411118d360-r92ecfac1f62a",
+        "cpu_arch": "znver4",
+        "cuda_arch": "70",
+        "dependency_isa": "avx512",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/4V100",
+        "partition": "4V100",
+        "recipe_sha256": "92ecfac1f62a48bd94b0ec779ff75774bb6f9b3dd489815bab0eb9b9133b91d7",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "v3.11.0-beta11",
+        "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+        "source_version": "v3.11.0-beta11",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "4v100-avx512",
+        "track": "release",
+        "version_label": "v3.11.0-beta11"
+      },
+      "partition": "4V100",
+      "prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/4V100"
+    },
+    {
+      "executable": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/16V100/bin/abacus_max_gpu",
+      "executable_accessible": true,
+      "files": [
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": ".",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "bin",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "symlink",
+          "mode": 493,
+          "observed_target": "abacus_max_gpu",
+          "path": "bin/abacus",
+          "target": "abacus_max_gpu",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "0535ff36924c92907a2cf08009060805ffa82e0c28580adcb6ec93e1d29abf20",
+          "path": "bin/abacus_max_gpu",
+          "readable": true,
+          "sha256": "0535ff36924c92907a2cf08009060805ffa82e0c28580adcb6ec93e1d29abf20",
+          "size": 31683496,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "dependencies",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "dependencies/libtorch",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "927ffac075b09f9ac1e737d3ca6e385ee5a4b8e1b3f2f7b062859be8173f9480",
+          "path": "dependencies/libtorch/build-hash",
+          "readable": true,
+          "sha256": "927ffac075b09f9ac1e737d3ca6e385ee5a4b8e1b3f2f7b062859be8173f9480",
+          "size": 61,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "611ac33c8024854512e03438e22c2735ff368e276f0267b4b2090e588445b004",
+          "path": "dependencies/libtorch/build-version",
+          "readable": true,
+          "sha256": "611ac33c8024854512e03438e22c2735ff368e276f0267b4b2090e588445b004",
+          "size": 10,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "dependencies/libtorch/lib",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "4a34a05ccf2ddd1d060c546b6a233155d24c48a2eb1a6cc774d14d8b757d534d",
+          "path": "dependencies/libtorch/lib/libbackend_with_compiler.so",
+          "readable": true,
+          "sha256": "4a34a05ccf2ddd1d060c546b6a233155d24c48a2eb1a6cc774d14d8b757d534d",
+          "size": 285056,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "8bdce7684ef76f4cba493998b02d6b9a46dda1e562f0e645bfd77ece7ce4192e",
+          "path": "dependencies/libtorch/lib/libc10.so",
+          "readable": true,
+          "sha256": "8bdce7684ef76f4cba493998b02d6b9a46dda1e562f0e645bfd77ece7ce4192e",
+          "size": 969448,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "7397469cccbd98fed838e101e71bbadd0bfa9b26a658ab93cefd20ffe0937631",
+          "path": "dependencies/libtorch/lib/libgomp-52f2fd74.so.1",
+          "readable": true,
+          "sha256": "7397469cccbd98fed838e101e71bbadd0bfa9b26a658ab93cefd20ffe0937631",
+          "size": 205801,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "eef83453d11348a63a1f9f65de4c01029c244fb6c0b7b066ae34af84042050fe",
+          "path": "dependencies/libtorch/lib/libnnapi_backend.so",
+          "readable": true,
+          "sha256": "eef83453d11348a63a1f9f65de4c01029c244fb6c0b7b066ae34af84042050fe",
+          "size": 366432,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "d2933ea6c63e75799c6b7dd9013b866499982dc532a6137ff900a2978289d2c6",
+          "path": "dependencies/libtorch/lib/libshm.so",
+          "readable": true,
+          "sha256": "d2933ea6c63e75799c6b7dd9013b866499982dc532a6137ff900a2978289d2c6",
+          "size": 40584,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "74093fd59b9956bb672a39a8f6d9ae05a1b47d84546cbac54eb1a7b274c25321",
+          "path": "dependencies/libtorch/lib/libtorch.so",
+          "readable": true,
+          "sha256": "74093fd59b9956bb672a39a8f6d9ae05a1b47d84546cbac54eb1a7b274c25321",
+          "size": 7504,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "55e2b893a2e86bb28de74e9f1585177b472bbac2d2ba3055a77f50e83c62d4cd",
+          "path": "dependencies/libtorch/lib/libtorch_cpu.so",
+          "readable": true,
+          "sha256": "55e2b893a2e86bb28de74e9f1585177b472bbac2d2ba3055a77f50e83c62d4cd",
+          "size": 438488217,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "9a2e309ea77bd110ce99498b97febd50717a6f8143fc2d3ae90386835227bad8",
+          "path": "dependencies/libtorch/lib/libtorch_global_deps.so",
+          "readable": true,
+          "sha256": "9a2e309ea77bd110ce99498b97febd50717a6f8143fc2d3ae90386835227bad8",
+          "size": 8721,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "359d94aa7cbd8ec73ec5cc5fff6139612b99d50d8bf6c7189b9bef48788e4354",
+          "path": "dependencies/libtorch/lib/libtorch_python.so",
+          "readable": true,
+          "sha256": "359d94aa7cbd8ec73ec5cc5fff6139612b99d50d8bf6c7189b9bef48788e4354",
+          "size": 20617840,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "dependencies/nep",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "dependencies/nep/lib",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "30952443833ee2f3eb9366a57e043fb5c757fca7cc37794c4bce902f7269a004",
+          "path": "dependencies/nep/lib/libnep.so",
+          "readable": true,
+          "sha256": "30952443833ee2f3eb9366a57e043fb5c757fca7cc37794c4bce902f7269a004",
+          "size": 1091008,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/LibComm-master",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "path": "share/licenses/LibComm-master/LICENSE",
+          "readable": true,
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "size": 35149,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/LibRI-b0eff7a",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118",
+          "path": "share/licenses/LibRI-b0eff7a/LICENSE",
+          "readable": true,
+          "sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118",
+          "size": 7652,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/NEP_CPU-main",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "path": "share/licenses/NEP_CPU-main/LICENSE",
+          "readable": true,
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "size": 35149,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/cereal-master",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "58604a126af6a671ea390ee3d5b3e42228aa59b2858fb7af1d5b20b31739ccbb",
+          "path": "share/licenses/cereal-master/LICENSE",
+          "readable": true,
+          "sha256": "58604a126af6a671ea390ee3d5b3e42228aa59b2858fb7af1d5b20b31739ccbb",
+          "size": 1542,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/json-3.12.0",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+          "path": "share/licenses/json-3.12.0/LICENSE.MIT",
+          "readable": true,
+          "sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+          "size": 1076,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/libnpy-1.0.1",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "4e1557fab51c823b98223c1401ceaa185cd26c33d2e0b6c0ca65a309077b6837",
+          "path": "share/licenses/libnpy-1.0.1/LICENSE",
+          "readable": true,
+          "sha256": "4e1557fab51c823b98223c1401ceaa185cd26c33d2e0b6c0ca65a309077b6837",
+          "size": 1074,
+          "uid": 1478400146
+        }
+      ],
+      "identity": {
+        "build_id": "v3.11.0-beta11-gb0411118d360-r92ecfac1f62a",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "92ecfac1f62a48bd94b0ec779ff75774bb6f9b3dd489815bab0eb9b9133b91d7",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "v3.11.0-beta11",
+        "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+        "source_version": "v3.11.0-beta11",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "release",
+        "version_label": "v3.11.0-beta11"
+      },
+      "partition": "16V100",
+      "prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/16V100"
+    },
+    {
+      "executable": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/8V100V0/bin/abacus_max_gpu",
+      "executable_accessible": true,
+      "files": [
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": ".",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "bin",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "symlink",
+          "mode": 493,
+          "observed_target": "abacus_max_gpu",
+          "path": "bin/abacus",
+          "target": "abacus_max_gpu",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "db0857a9499c42336f5409ccb275c5895558df033f9532db2b06a61cc4aa5ba6",
+          "path": "bin/abacus_max_gpu",
+          "readable": true,
+          "sha256": "db0857a9499c42336f5409ccb275c5895558df033f9532db2b06a61cc4aa5ba6",
+          "size": 31564472,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "dependencies",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "dependencies/libtorch",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "927ffac075b09f9ac1e737d3ca6e385ee5a4b8e1b3f2f7b062859be8173f9480",
+          "path": "dependencies/libtorch/build-hash",
+          "readable": true,
+          "sha256": "927ffac075b09f9ac1e737d3ca6e385ee5a4b8e1b3f2f7b062859be8173f9480",
+          "size": 61,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "611ac33c8024854512e03438e22c2735ff368e276f0267b4b2090e588445b004",
+          "path": "dependencies/libtorch/build-version",
+          "readable": true,
+          "sha256": "611ac33c8024854512e03438e22c2735ff368e276f0267b4b2090e588445b004",
+          "size": 10,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "dependencies/libtorch/lib",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "4a34a05ccf2ddd1d060c546b6a233155d24c48a2eb1a6cc774d14d8b757d534d",
+          "path": "dependencies/libtorch/lib/libbackend_with_compiler.so",
+          "readable": true,
+          "sha256": "4a34a05ccf2ddd1d060c546b6a233155d24c48a2eb1a6cc774d14d8b757d534d",
+          "size": 285056,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "8bdce7684ef76f4cba493998b02d6b9a46dda1e562f0e645bfd77ece7ce4192e",
+          "path": "dependencies/libtorch/lib/libc10.so",
+          "readable": true,
+          "sha256": "8bdce7684ef76f4cba493998b02d6b9a46dda1e562f0e645bfd77ece7ce4192e",
+          "size": 969448,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "7397469cccbd98fed838e101e71bbadd0bfa9b26a658ab93cefd20ffe0937631",
+          "path": "dependencies/libtorch/lib/libgomp-52f2fd74.so.1",
+          "readable": true,
+          "sha256": "7397469cccbd98fed838e101e71bbadd0bfa9b26a658ab93cefd20ffe0937631",
+          "size": 205801,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "eef83453d11348a63a1f9f65de4c01029c244fb6c0b7b066ae34af84042050fe",
+          "path": "dependencies/libtorch/lib/libnnapi_backend.so",
+          "readable": true,
+          "sha256": "eef83453d11348a63a1f9f65de4c01029c244fb6c0b7b066ae34af84042050fe",
+          "size": 366432,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "d2933ea6c63e75799c6b7dd9013b866499982dc532a6137ff900a2978289d2c6",
+          "path": "dependencies/libtorch/lib/libshm.so",
+          "readable": true,
+          "sha256": "d2933ea6c63e75799c6b7dd9013b866499982dc532a6137ff900a2978289d2c6",
+          "size": 40584,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "74093fd59b9956bb672a39a8f6d9ae05a1b47d84546cbac54eb1a7b274c25321",
+          "path": "dependencies/libtorch/lib/libtorch.so",
+          "readable": true,
+          "sha256": "74093fd59b9956bb672a39a8f6d9ae05a1b47d84546cbac54eb1a7b274c25321",
+          "size": 7504,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "55e2b893a2e86bb28de74e9f1585177b472bbac2d2ba3055a77f50e83c62d4cd",
+          "path": "dependencies/libtorch/lib/libtorch_cpu.so",
+          "readable": true,
+          "sha256": "55e2b893a2e86bb28de74e9f1585177b472bbac2d2ba3055a77f50e83c62d4cd",
+          "size": 438488217,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "9a2e309ea77bd110ce99498b97febd50717a6f8143fc2d3ae90386835227bad8",
+          "path": "dependencies/libtorch/lib/libtorch_global_deps.so",
+          "readable": true,
+          "sha256": "9a2e309ea77bd110ce99498b97febd50717a6f8143fc2d3ae90386835227bad8",
+          "size": 8721,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "359d94aa7cbd8ec73ec5cc5fff6139612b99d50d8bf6c7189b9bef48788e4354",
+          "path": "dependencies/libtorch/lib/libtorch_python.so",
+          "readable": true,
+          "sha256": "359d94aa7cbd8ec73ec5cc5fff6139612b99d50d8bf6c7189b9bef48788e4354",
+          "size": 20617840,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "dependencies/nep",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "dependencies/nep/lib",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "40fbadbfad41e83dc169fc4a03d43bfb9ff1df5c208a2a64bc23da5033b37f34",
+          "path": "dependencies/nep/lib/libnep.so",
+          "readable": true,
+          "sha256": "40fbadbfad41e83dc169fc4a03d43bfb9ff1df5c208a2a64bc23da5033b37f34",
+          "size": 1091008,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/LibComm-master",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "path": "share/licenses/LibComm-master/LICENSE",
+          "readable": true,
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "size": 35149,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/LibRI-b0eff7a",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118",
+          "path": "share/licenses/LibRI-b0eff7a/LICENSE",
+          "readable": true,
+          "sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118",
+          "size": 7652,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/NEP_CPU-main",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "path": "share/licenses/NEP_CPU-main/LICENSE",
+          "readable": true,
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "size": 35149,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/cereal-master",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "58604a126af6a671ea390ee3d5b3e42228aa59b2858fb7af1d5b20b31739ccbb",
+          "path": "share/licenses/cereal-master/LICENSE",
+          "readable": true,
+          "sha256": "58604a126af6a671ea390ee3d5b3e42228aa59b2858fb7af1d5b20b31739ccbb",
+          "size": 1542,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/json-3.12.0",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+          "path": "share/licenses/json-3.12.0/LICENSE.MIT",
+          "readable": true,
+          "sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+          "size": 1076,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/libnpy-1.0.1",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "4e1557fab51c823b98223c1401ceaa185cd26c33d2e0b6c0ca65a309077b6837",
+          "path": "share/licenses/libnpy-1.0.1/LICENSE",
+          "readable": true,
+          "sha256": "4e1557fab51c823b98223c1401ceaa185cd26c33d2e0b6c0ca65a309077b6837",
+          "size": 1074,
+          "uid": 1478400146
+        }
+      ],
+      "identity": {
+        "build_id": "v3.11.0-beta11-gb0411118d360-r92ecfac1f62a",
+        "cpu_arch": "skylake-avx512",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/8V100V0",
+        "partition": "8V100V0",
+        "recipe_sha256": "92ecfac1f62a48bd94b0ec779ff75774bb6f9b3dd489815bab0eb9b9133b91d7",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "v3.11.0-beta11",
+        "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+        "source_version": "v3.11.0-beta11",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "8v100v0-avx512",
+        "track": "release",
+        "version_label": "v3.11.0-beta11"
+      },
+      "partition": "8V100V0",
+      "prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/8V100V0"
+    },
+    {
+      "executable": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/DSPRHBM/bin/abacus_max_para",
+      "executable_accessible": true,
+      "files": [
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": ".",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "bin",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "symlink",
+          "mode": 493,
+          "observed_target": "abacus_max_para",
+          "path": "bin/abacus",
+          "target": "abacus_max_para",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "b8fb94c3b59032dda65909a98c8c3eeabc46e78a895ac03067b4af9f9d8158d0",
+          "path": "bin/abacus_max_para",
+          "readable": true,
+          "sha256": "b8fb94c3b59032dda65909a98c8c3eeabc46e78a895ac03067b4af9f9d8158d0",
+          "size": 22457032,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "dependencies",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "dependencies/libtorch",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "927ffac075b09f9ac1e737d3ca6e385ee5a4b8e1b3f2f7b062859be8173f9480",
+          "path": "dependencies/libtorch/build-hash",
+          "readable": true,
+          "sha256": "927ffac075b09f9ac1e737d3ca6e385ee5a4b8e1b3f2f7b062859be8173f9480",
+          "size": 61,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "611ac33c8024854512e03438e22c2735ff368e276f0267b4b2090e588445b004",
+          "path": "dependencies/libtorch/build-version",
+          "readable": true,
+          "sha256": "611ac33c8024854512e03438e22c2735ff368e276f0267b4b2090e588445b004",
+          "size": 10,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "dependencies/libtorch/lib",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "4a34a05ccf2ddd1d060c546b6a233155d24c48a2eb1a6cc774d14d8b757d534d",
+          "path": "dependencies/libtorch/lib/libbackend_with_compiler.so",
+          "readable": true,
+          "sha256": "4a34a05ccf2ddd1d060c546b6a233155d24c48a2eb1a6cc774d14d8b757d534d",
+          "size": 285056,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "8bdce7684ef76f4cba493998b02d6b9a46dda1e562f0e645bfd77ece7ce4192e",
+          "path": "dependencies/libtorch/lib/libc10.so",
+          "readable": true,
+          "sha256": "8bdce7684ef76f4cba493998b02d6b9a46dda1e562f0e645bfd77ece7ce4192e",
+          "size": 969448,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "7397469cccbd98fed838e101e71bbadd0bfa9b26a658ab93cefd20ffe0937631",
+          "path": "dependencies/libtorch/lib/libgomp-52f2fd74.so.1",
+          "readable": true,
+          "sha256": "7397469cccbd98fed838e101e71bbadd0bfa9b26a658ab93cefd20ffe0937631",
+          "size": 205801,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "eef83453d11348a63a1f9f65de4c01029c244fb6c0b7b066ae34af84042050fe",
+          "path": "dependencies/libtorch/lib/libnnapi_backend.so",
+          "readable": true,
+          "sha256": "eef83453d11348a63a1f9f65de4c01029c244fb6c0b7b066ae34af84042050fe",
+          "size": 366432,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "d2933ea6c63e75799c6b7dd9013b866499982dc532a6137ff900a2978289d2c6",
+          "path": "dependencies/libtorch/lib/libshm.so",
+          "readable": true,
+          "sha256": "d2933ea6c63e75799c6b7dd9013b866499982dc532a6137ff900a2978289d2c6",
+          "size": 40584,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "74093fd59b9956bb672a39a8f6d9ae05a1b47d84546cbac54eb1a7b274c25321",
+          "path": "dependencies/libtorch/lib/libtorch.so",
+          "readable": true,
+          "sha256": "74093fd59b9956bb672a39a8f6d9ae05a1b47d84546cbac54eb1a7b274c25321",
+          "size": 7504,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "55e2b893a2e86bb28de74e9f1585177b472bbac2d2ba3055a77f50e83c62d4cd",
+          "path": "dependencies/libtorch/lib/libtorch_cpu.so",
+          "readable": true,
+          "sha256": "55e2b893a2e86bb28de74e9f1585177b472bbac2d2ba3055a77f50e83c62d4cd",
+          "size": 438488217,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "9a2e309ea77bd110ce99498b97febd50717a6f8143fc2d3ae90386835227bad8",
+          "path": "dependencies/libtorch/lib/libtorch_global_deps.so",
+          "readable": true,
+          "sha256": "9a2e309ea77bd110ce99498b97febd50717a6f8143fc2d3ae90386835227bad8",
+          "size": 8721,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "359d94aa7cbd8ec73ec5cc5fff6139612b99d50d8bf6c7189b9bef48788e4354",
+          "path": "dependencies/libtorch/lib/libtorch_python.so",
+          "readable": true,
+          "sha256": "359d94aa7cbd8ec73ec5cc5fff6139612b99d50d8bf6c7189b9bef48788e4354",
+          "size": 20617840,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "dependencies/nep",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "dependencies/nep/lib",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 493,
+          "observed_sha256": "98e0137594b98738fbdea9098998a088e3432f9c3f67308be4366d329cfea1eb",
+          "path": "dependencies/nep/lib/libnep.so",
+          "readable": true,
+          "sha256": "98e0137594b98738fbdea9098998a088e3432f9c3f67308be4366d329cfea1eb",
+          "size": 1086656,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/LibComm-master",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "path": "share/licenses/LibComm-master/LICENSE",
+          "readable": true,
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "size": 35149,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/LibRI-b0eff7a",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118",
+          "path": "share/licenses/LibRI-b0eff7a/LICENSE",
+          "readable": true,
+          "sha256": "e3a994d82e644b03a792a930f574002658412f62407f5fee083f2555c5f23118",
+          "size": 7652,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/NEP_CPU-main",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "path": "share/licenses/NEP_CPU-main/LICENSE",
+          "readable": true,
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "size": 35149,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/cereal-master",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "58604a126af6a671ea390ee3d5b3e42228aa59b2858fb7af1d5b20b31739ccbb",
+          "path": "share/licenses/cereal-master/LICENSE",
+          "readable": true,
+          "sha256": "58604a126af6a671ea390ee3d5b3e42228aa59b2858fb7af1d5b20b31739ccbb",
+          "size": 1542,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/json-3.12.0",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+          "path": "share/licenses/json-3.12.0/LICENSE.MIT",
+          "readable": true,
+          "sha256": "46a65cffd1ea955132d95a8dd921640714a8d6b537d2e4e482d31145ae95b603",
+          "size": 1076,
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "directory",
+          "mode": 493,
+          "path": "share/licenses/libnpy-1.0.1",
+          "uid": 1478400146
+        },
+        {
+          "gid": 1478400145,
+          "kind": "file",
+          "mode": 420,
+          "observed_sha256": "4e1557fab51c823b98223c1401ceaa185cd26c33d2e0b6c0ca65a309077b6837",
+          "path": "share/licenses/libnpy-1.0.1/LICENSE",
+          "readable": true,
+          "sha256": "4e1557fab51c823b98223c1401ceaa185cd26c33d2e0b6c0ca65a309077b6837",
+          "size": 1074,
+          "uid": 1478400146
+        }
+      ],
+      "identity": {
+        "build_id": "v3.11.0-beta11-gb0411118d360-r92ecfac1f62a",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "92ecfac1f62a48bd94b0ec779ff75774bb6f9b3dd489815bab0eb9b9133b91d7",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "v3.11.0-beta11",
+        "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+        "source_version": "v3.11.0-beta11",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "release",
+        "version_label": "v3.11.0-beta11"
+      },
+      "partition": "DSPRHBM",
+      "prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/DSPRHBM"
+    }
+  ],
+  "module": {
+    "mode": 420,
+    "owner": "saiuser01",
+    "path": "/opt/modules/modulefiles/apps/abacus/3.11.0-beta11-auto",
+    "sha256": "74d00d70d824420d0ae03dc672ac2dee3298cb69093d375b4a1028e265d1c497"
+  },
+  "native_acceptance_status": {
+    "allocation_balance_independently_verified": false,
+    "jobs_preserved": true,
+    "notes": [
+      "PENDING exit-code fields of 0:0 do not establish successful execution.",
+      "Accepted container science and native export readback are recorded separately; physical native science remains unaccepted.",
+      "Both observations are snapshots at the embedded UTC timestamps; Slurm submission times are Asia/Shanghai."
+    ],
+    "observed_queue_reason": "AssocGrpJobsLimit",
+    "scientific_cases_executed": 0,
+    "scientific_cases_required": 30,
+    "state": "pending_account_resources",
+    "user_report": "The current account allocation is exhausted."
+  },
+  "native_runtime_accepted": false,
+  "observed_at": "2026-10-22T23:50:28.976471+00:00",
+  "package_files": {
+    "3.11.0-beta11-auto": "74d00d70d824420d0ae03dc672ac2dee3298cb69093d375b4a1028e265d1c497",
+    "README.md": "cb501982d5c407fc377e825879e9e45292f676680726f1516249911bd6d5281d",
+    "install.py": "08bbe0b442c84de6897e8116be700ccfbd95f3de44aeef0a42e48f0c563e94ba",
+    "install.sh": "745a0bfc036eba3ad2f390bc34e269540590cd292bbe8ea307c72c4d1316e52f",
+    "native-rank.sh": "646edda5643df0f8c2e03a575fb4f7427ae63710633ae285115e1e2f73374ab3",
+    "native-reference.json": "5c4bcbe916aa08bdd3705d335df3500ae31720c07658d1dbeb77e4992d466e04",
+    "native_checks.py": "84cc8d2cbfddd95ce7059acb1049ba7ce2168fce08230b6e246a20fb9602241b",
+    "prepare-native-reference.py": "637549178fbfa4d55a6c28907cae2abaa33b7a508b47f8453e04e456d55f5cd2",
+    "prepare-release.py": "fc2b0cc7a92e0440a71bdeaffe5381e3100687064a1d3043e7572271429929e6",
+    "prepare-runtime.py": "eed7545c8b6f253d6bcb3b96df1481c4b9c2afe0382441fb0897cadccb2fa024",
+    "release.json": "326fe112cb9a9ed5af86d551efab073a8aacd154153c2d6fffaf713f118f7bae",
+    "runtime-plan.json": "a87c7cd9f6551c9aeba1061cc5d8aacee699d29fdcdecb6d5c4dc052163c047d",
+    "source-access.py": "59e46b156faa0f57e08cd23d0fbd5493c839126e4da448f5c98556bb3903e370",
+    "submit-native-checks.sh": "4ec61bfa91d03f05b754c0b3090d71eea334a04ab2af8778f92596947d12d713",
+    "verify-native.sbatch": "24d330308030393ef1ef19e2b0b3ba26fa364921b5f64b77253f1c90e6c3c953"
+  },
+  "package_files_note": "Hashes describe the deployed package at the recorded revision, before this documentation update.",
+  "physical_files_verified": true,
+  "physical_opt_installed": true,
+  "schema": 1,
+  "submission_snapshot": {
+    "jobs": [
+      {
+        "directory": "/home/stardust/sai-hpc-software/runtime-tests/abacus-beta11-physical-20261023-074725-2961798/4V100",
+        "directory_entries": [
+          "control",
+          "inputs",
+          "job.id",
+          "request.json"
+        ],
+        "frozen_files_verified": 41,
+        "job_id": "1903636",
+        "partition": "4V100",
+        "request_sha256": "6dbc073d41b2e12a3fbcf57d67fb71e0433b86a7c6bd51fd57984cd82d1219d5",
+        "results_present": false
+      },
+      {
+        "directory": "/home/stardust/sai-hpc-software/runtime-tests/abacus-beta11-physical-20261023-074725-2961798/16V100",
+        "directory_entries": [
+          "control",
+          "inputs",
+          "job.id",
+          "request.json"
+        ],
+        "frozen_files_verified": 41,
+        "job_id": "1903637",
+        "partition": "16V100",
+        "request_sha256": "9ffe6ddaf98517dc40bac1b7c41f99a7384b917b073e43949b33b241631933f8",
+        "results_present": false
+      },
+      {
+        "directory": "/home/stardust/sai-hpc-software/runtime-tests/abacus-beta11-physical-20261023-074725-2961798/8V100V0",
+        "directory_entries": [
+          "control",
+          "inputs",
+          "job.id",
+          "request.json"
+        ],
+        "frozen_files_verified": 41,
+        "job_id": "1903638",
+        "partition": "8V100V0",
+        "request_sha256": "da38e12448d8a4d2a1d95cc956dd9500d8f2210982d7798eb26d42cd81073106",
+        "results_present": false
+      },
+      {
+        "directory": "/home/stardust/sai-hpc-software/runtime-tests/abacus-beta11-physical-20261023-074725-2961798/DSPRHBM",
+        "directory_entries": [
+          "control",
+          "inputs",
+          "job.id",
+          "request.json"
+        ],
+        "frozen_files_verified": 31,
+        "job_id": "1903639",
+        "partition": "DSPRHBM",
+        "request_sha256": "8ac6de009a767ceee800ddb0a30aa55eca790c902c757d21fceedfc16e823736",
+        "results_present": false
+      }
+    ],
+    "jobs_tsv_sha256": "0de079fa196500385ce4aaec95f6a52f1020a2ebd7c7cbb70b1ade82e5bdb610",
+    "module_visibility": {
+      "ignore_cache": {
+        "argv": [
+          "bash",
+          "-lc",
+          "module use /opt/modules/modulefiles/apps\nmodule --ignore_cache -t avail abacus"
+        ],
+        "returncode": 0,
+        "stderr": "/opt/modules/modulefiles/apps:\nabacus/develop-git-079fd0c-260724-sm70-auto\nabacus/LTSv3.10.1-sm70-auto\nabacus/v3.9.0.17-sm70-auto\nabacus/v3.9.0.26-sm70-auto\nabacus/v3.11.0-beta9-auto\nabacus/3.11.0-beta11-auto\n",
+        "stdout": "",
+        "visible": true
+      },
+      "normal": {
+        "argv": [
+          "bash",
+          "-lc",
+          "module use /opt/modules/modulefiles/apps\nmodule -t avail abacus"
+        ],
+        "returncode": 0,
+        "stderr": "/opt/modules/modulefiles/apps:\nabacus/develop-git-079fd0c-260724-sm70-auto\nabacus/LTSv3.10.1-sm70-auto\nabacus/v3.9.0.17-sm70-auto\nabacus/v3.9.0.26-sm70-auto\nabacus/v3.11.0-beta9-auto\nabacus/3.11.0-beta11-auto\n",
+        "stdout": "",
+        "visible": true
+      }
+    },
+    "observed_at": "2026-10-22T23:54:53.577830+00:00",
+    "result_root": "/home/stardust/sai-hpc-software/runtime-tests/abacus-beta11-physical-20261023-074725-2961798",
+    "slurm_accounting": {
+      "argv": [
+        "sacct",
+        "-n",
+        "-P",
+        "-j",
+        "1903636,1903637,1903638,1903639",
+        "--format=JobIDRaw,JobName,Partition,Account,State,Reason,Submit,Start,End,Elapsed,ExitCode,NodeList"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "1903636|abacus-native-4V100|4V100|private-stardust|PENDING|None|2026-10-23T07:47:25|Unknown|Unknown|00:00:00|0:0|None assigned\n1903637|abacus-native-16V100|16V100|private-stardust|PENDING|None|2026-10-23T07:47:25|Unknown|Unknown|00:00:00|0:0|None assigned\n1903638|abacus-native-8V100V0|8V100V0|private-stardust|PENDING|None|2026-10-23T07:47:25|Unknown|Unknown|00:00:00|0:0|None assigned\n1903639|abacus-native-DSPRHBM|DSPRHBM|private-stardust|PENDING|None|2026-10-23T07:47:25|Unknown|Unknown|00:00:00|0:0|None assigned\n"
+    },
+    "slurm_queue": {
+      "argv": [
+        "squeue",
+        "-h",
+        "-j",
+        "1903636,1903637,1903638,1903639",
+        "-o",
+        "%i|%P|%T|%r|%S|%N|%a"
+      ],
+      "returncode": 0,
+      "stderr": "",
+      "stdout": "1903637|16V100|PENDING|AssocGrpJobsLimit|N/A||private-stardust\n1903636|4V100|PENDING|AssocGrpJobsLimit|N/A||private-stardust\n1903638|8V100V0|PENDING|AssocGrpJobsLimit|N/A||private-stardust\n1903639|DSPRHBM|PENDING|AssocGrpJobsLimit|N/A||private-stardust\n"
+    },
+    "submission": {
+      "partitions": [
+        "4V100",
+        "16V100",
+        "8V100V0",
+        "DSPRHBM"
+      ],
+      "requests": {
+        "16V100": "9ffe6ddaf98517dc40bac1b7c41f99a7384b917b073e43949b33b241631933f8",
+        "4V100": "6dbc073d41b2e12a3fbcf57d67fb71e0433b86a7c6bd51fd57984cd82d1219d5",
+        "8V100V0": "da38e12448d8a4d2a1d95cc956dd9500d8f2210982d7798eb26d42cd81073106",
+        "DSPRHBM": "8ac6de009a767ceee800ddb0a30aa55eca790c902c757d21fceedfc16e823736"
+      }
+    },
+    "submission_sha256": "2c29eaafc772ce02654333ed6b7aa74aa37c721534554333109d1739426ee34a"
+  },
+  "validation_log": "4V100: checking installed files\n  abacus: 19 files, 471.56 MiB\n16V100: checking installed files\n  abacus: 19 files, 470.97 MiB\n8V100V0: checking installed files\n  abacus: 19 files, 470.85 MiB\nDSPRHBM: checking installed files\n  abacus: 19 files, 462.16 MiB\n"
+}
