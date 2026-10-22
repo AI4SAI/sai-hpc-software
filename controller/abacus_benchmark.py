@@ -20,12 +20,14 @@ from remote_controller import TARGETS, safe_name
 from source_cache import checksum
 from delivery_layout import artifact_path, load_artifact
 from release_contract import validate_identity
+from abacus_features import elpa_root
 
 ROOT = Path(os.environ.get("SAI_SOFTWARE_ROOT", Path.home() / "sai-hpc-software")).resolve()
 CONTROL = Path(__file__).resolve()
 SYSTEM_MODULE = "abacus/v3.9.0.26-sm70-auto"
 SYSTEM_MODULES = (SYSTEM_MODULE, "abacus/develop-git-079fd0c-260724-sm70-auto")
 MPI_MODULE = "openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto"
+CPU_ELPA_MODULE = "elpa/2026.02.001-2603-gnu-auto"
 
 # This identical host-MPI wrapper precedes both launch paths. The binding is
 # inherited across exec/container entry; it is launch-time evidence, not an
@@ -126,6 +128,11 @@ def render_job(r, task):
     # The affinity audit still requires the site-prescribed physical core count.
     placement = ('--map-by "$MAP_OPT" --bind-to core' if cpu else
                  '--map-by ppr:1:node --bind-to none')
+    # The old CPU reference module loads the unified NVIDIA ELPA. Its HSE
+    # eigensolve fails on DSPRHBM; use the same qualified CPU library as the
+    # candidate and retain the reference executable and comparison resources.
+    reference_elpa = (["  module unload elpa/2026.02.001-2603-gnu",
+                       f"  module load {CPU_ELPA_MODULE}"] if cpu else [])
     trace = ('printf "%s\\t%s\\t%s\\t%s\\t%s\\t%s\\n" "$(hostname)" '
              '"$OMPI_COMM_WORLD_RANK" "$BENCH_TARGET" "$1" "${CUDA_VISIBLE_DEVICES:-}" '
              '"${OPAL_PREFIX:-}" > "$SAI_ABACUS_TRACE_DIR/rank-$OMPI_COMM_WORLD_RANK.tsv"; exec "$@"')
@@ -161,7 +168,8 @@ def render_job(r, task):
              "source /etc/profile.d/lmod.sh", "module purge",
              "module use /opt/modules/modulefiles/apps",
              "module use /opt/modules/modulefiles/devtools",
-             f'if [[ "$arm" == system ]]; then module load {q(r["system_module"])}; fi',
+             'if [[ "$arm" == system ]]; then',
+             f'  module load {q(r["system_module"])}', *reference_elpa, 'fi',
              f"module load apptainer/1.4.4 {MPI_MODULE}", mapping,
              f"export OMP_NUM_THREADS={r['threads']}",
              "export OMP_PROC_BIND=true OMP_PLACES=cores",
@@ -445,6 +453,10 @@ def verify_evidence(task, request):
             loader = read(base / "ldd.log")
             if not info.strip() or not loader.strip() or re.search(r"\bnot found\b", loader):
                 raise ValueError("system version/loader evidence is missing")
+            if r['target'] == 'dsprhbm' and (
+                    CPU_ELPA_MODULE not in modules or not re.search(
+                        rf'libelpa\S*\s+=>\s+{re.escape(elpa_root(r["target"]) + "/lib/")}', loader)):
+                raise ValueError("CPU reference must load the partition-qualified CPU ELPA")
         hosts, rank_hosts, affinities = Counter(), [], []
         rank_dir = task / base / "ranks"
         expected_traces = ({f"rank-{i}.tsv" for i in range(r["ranks"])} |
