@@ -135,6 +135,8 @@ class PublicationTests(unittest.TestCase):
         source = "INPUT_PARAMETERS\ncalculation scf\ndevice cpu\nsuffix autotest\n"
         (task / "input/INPUT").write_text(benchmark.transformed_input(source, request))
         (task / "input/STRU").write_text("ATOMIC_SPECIES\nSi 28 Si.upf\n")
+        if case in ('hse', 'deepks'):
+            (task / 'input/result.ref').write_text('etotref -1\n')
         files = benchmark.case_files(task / "input")
         source_files = dict(files, INPUT=hashlib.sha256(source.encode()).hexdigest())
         benchmark.dump(task / "results/input.json", dict(request_sha256=checksum(task / "request.json"),
@@ -157,17 +159,18 @@ class PublicationTests(unittest.TestCase):
                 (work / "executable.path").write_text(native + "\n")
                 (work / "executable.sha256").write_text("a" * 64 + "\n")
                 (work / "ldd.log").write_text("libmpi.so => /opt/devtools/mpi/lib/libmpi.so\n")
-            for rank in range(16):
+            ranks_per_node = request['ranks_per_node']
+            for rank in range(request['ranks']):
                 image = native if spec["arm"] == "system" else str(self.image)
                 (work / f"ranks/rank-{rank}.tsv").write_text(
-                    f"node-{rank // 8}\t{rank}\tdsprhbm\t{image}\t\t/opt/openmpi-avx512\n")
-                local = rank % 8
+                    f"node-{rank // ranks_per_node}\t{rank}\tdsprhbm\t{image}\t\t/opt/openmpi-avx512\n")
+                local = rank % ranks_per_node
                 cpus = [local * 2, local * 2 + 1]
                 benchmark.dump(work / f"ranks/affinity-{rank}.json",
-                    dict(schema=1, rank=rank, hostname=f"node-{rank // 8}", local_rank=local,
+                    dict(schema=1, rank=rank, hostname=f"node-{rank // ranks_per_node}", local_rank=local,
                          cpus=cpus, topology=[[cpu, 0, cpu] for cpu in cpus],
                          environment=dict(OMP_NUM_THREADS="2", OMP_PROC_BIND="true",
-                                          OMP_PLACES="cores", MAP_OPT="ppr:8:node:pe=2")))
+                                          OMP_PLACES="cores", MAP_OPT=f"ppr:{ranks_per_node}:node:pe=2")))
             (work / "stdout.log").write_text("OpenMP thread number: 2\nITER ETOT/eV EDIFF/eV DRHO TIME/s\nCG1 -1 0 0 0.1\n")
             (work / "wall-seconds.txt").write_text("1.0\n")
             (work / "OUT.autotest/running_scf.log").write_text("#SCF IS CONVERGED#\n!FINAL_ETOT_IS -1 eV\n")
