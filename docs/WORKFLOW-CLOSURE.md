@@ -11,6 +11,15 @@ and force differences were `2.87e-11 Ha` and `1.30e-11 Ha/Bohr`. Original data
 remain complete; runtime uses the physical installation without Apptainer.
 [Current physical acceptance and raw evidence](evidence/cp2k-shared-elpa-native-20261020/README.md).
 
+The large-water CPU/GPU benchmark is being repeated after confirming upstream
+CP2K issue #6074: the original CPU baseline unintentionally diagonalized on
+half its MPI ranks. The CPU-only repair changes two lifecycle blocks in one
+source file; container relinks preserve the original control bytes and reuse
+all other 1,389 objects. Real MPI traces already show 2→4, 4→8 and 8→16
+solving ranks with repeated numerical agreement. Timing acceptance and the
+larger resource-point repetitions remain pending. Public installs are unchanged.
+[Repair and verification protocol](../deployment/cp2k-water-scaling/README-mpi-repair.md).
+
 The original private-ELPA CP2K 2026.2 on all four partitions (4V100, 16V100,
 8V100V0 and DSPRHBM) has passed candidate science, native export readback,
 publication, physical `/opt` installation and native single/two-node science.
