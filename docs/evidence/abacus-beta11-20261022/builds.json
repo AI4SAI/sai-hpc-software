@@ -1,0 +1,339 @@
+{
+  "observed_at": "2026-10-22T15:21:52.510168+00:00",
+  "workflow_run_id": "39742021186",
+  "deliveries": [
+    {
+      "build_run_id": "39742021186-1-release-16v100-avx2-2026-10-22-b0411118d360",
+      "identity": {
+        "build_id": "v3.11.0-beta11-gb0411118d360-r851137534055",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "8511375340556e9e44c0935b36d7421cb7d7cb5b66380f731708bdc2105f606f",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "v3.11.0-beta11",
+        "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+        "source_version": "v3.11.0-beta11",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "release",
+        "version_label": "v3.11.0-beta11"
+      },
+      "controller": "/home/stardust/sai-hpc-software/controller/f1f19288b87512b4a17da7ebb619250f5a1233d6/39742021186-1-release-16v100-avx2-2026-10-22-b0411118d360",
+      "job": "1900076",
+      "accounting": "1900076|COMPLETED|0:0|00:29:58|16v100n01",
+      "build_status": {
+        "job": "1900076",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "verified": true
+      },
+      "artifact": "/home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r851137534055/16V100/39742021186-1-release-16v100-avx2-2026-10-22-b0411118d360.sif",
+      "artifact_bytes": 184369152,
+      "sha256": "ba4d4b9c28c48451064279ebc3dc558d625b0096be8752c8bcaf4d3a0aef1dea",
+      "build_verified": true,
+      "info": "\n----------------- ABACUS Core & Platform -----------------\nABACUS Version:                v3.11.0-beta11\nGit Commit:                    b041111 (Sun Oct 18 21:15:08 2026 +0800)\nTarget Platform:               CPU + NVIDIA CUDA\nBuild Type:                    Release\n\n----------------- Build Environment -----------------\nBuilt By:                      root\nBuilt On:                      16v100n01.mr-sai.ai\nBuilt At:                      Oct 22 2026 13:29:42\n\n----------------- Compiler & Flags -----------------\nC++ Compiler:                  GNU (/usr/bin/g++)\nC++ Compiler Ver:              13.3.0\nC++ Flags:                     -march=native -mtune=native\nLinker Flags:                  \nCUDA Flags:                    \n\n----------------- Sanitizers & Debugging -----------------\nAddressSanitizer:              no\nDebug Symbols:                 no\n\n----------------- CMake Configuration Summary -----------------\nBuild Options:  ENABLE_MPI=ON  ENABLE_OPENMP=ON  USE_CUDA=ON  USE_ROCM=OFF  ENABLE_LCAO=ON  ENABLE_ELPA=ON  ENABLE_LIBXC=ON  ENABLE_MLALGO=ON  ENABLE_ASAN=OFF  BUILD_TESTING=OFF\n\nFindPackage Results:  MPI Found=TRUE  OpenMP Found=TRUE  CUDA Found=  ROCm Found=  ELPA Found=TRUE  Libxc Found=1  PEXSI Found=  LibRI Found=TRUE\n\n----------------- Parallelism & Communication -----------------\nMPI Implementation:            OpenMPI\nMPI Version:                   (MPI standard: 3.1)\nCUDA-aware MPI:                yes\nOpenMP Support:                yes (v4.5)\n\n----------------- Core Math Libraries -----------------\nLCAO Algorithm:                yes\nELPA Support:                  yes (v)\nMKL Support:                   no\nLibXC Support:                 yes (v7.0.0)\nFFTW Support:                  yes (v3.3.10)\n\n----------------- Accelerators & Hardware -----------------\nNVIDIA CUDA Support:           yes (v12.9.86)\nAMD ROCm Support:              no\nCUSOLVERMP Support:            yes (version unknown)\n\n----------------- Hybrid Functional Libraries -----------------\nCereal Serialization:          yes (version unknown)\nLibRI Support:                 yes (v2.1.1)\nLibComm Support:               yes (path: /opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/16V100/dependencies/LibComm-master)\n\n----------------- AI & Machine Learning -----------------\nLibTorch Support:              yes (v2.1.2)\nLibnpy Support:                yes (path: /opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/16V100/dependencies/libnpy-1.0.1/include)\nDeePMD-kit Support:            no\nNEP Support:                   yes (path: /opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/16V100/dependencies/nep)\nTensorFlow Support:            no\n\n----------------- Other Libraries -----------------\nDFT-D4 Support:                no\nJSON Support:                  yes (nlohmann-json v3.12.0)\nPEXSI Support:                 no\ncnpy Support:                  no\n\n----------------- Testing -----------------\nGTest Support:                 no\nGoogle Benchmark:              Disabled\n\n",
+      "features": {
+        "baseline_modules": [
+          "abacus/v3.9.0.26-sm70-auto",
+          "abacus/develop-git-079fd0c-260724-sm70-auto"
+        ],
+        "checked_libraries": {
+          "libcublasmp.so": "/opt/devtools/nvidia/mp_libs/lib/",
+          "libcusolverMp.so": "/opt/devtools/nvidia/mp_libs/lib/",
+          "libelpa": "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu/",
+          "libnccl.so": "/opt/devtools/nvidia/nccl_",
+          "libnep.so": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/16V100/dependencies/nep/lib/",
+          "libtorch_cpu.so": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/16V100/dependencies/libtorch/lib/"
+        },
+        "required_info": [
+          "OpenMP Support",
+          "LCAO Algorithm",
+          "ELPA Support",
+          "LibXC Support",
+          "FFTW Support",
+          "Cereal Serialization",
+          "LibRI Support",
+          "LibComm Support",
+          "LibTorch Support",
+          "Libnpy Support",
+          "NEP Support",
+          "CUDA-aware MPI",
+          "NVIDIA CUDA Support",
+          "CUSOLVERMP Support",
+          "JSON Support"
+        ],
+        "required_options": [
+          "ENABLE_MPI",
+          "ENABLE_OPENMP",
+          "ENABLE_LCAO",
+          "ENABLE_ELPA",
+          "ENABLE_LIBXC",
+          "ENABLE_LIBRI",
+          "ENABLE_MLALGO",
+          "USE_CUDA",
+          "USE_CUDA_MPI",
+          "ENABLE_CUSOLVERMP",
+          "ENABLE_CUBLASMP",
+          "ENABLE_NCCL_PARALLEL_DEVICE",
+          "ENABLE_JSON"
+        ],
+        "scope": "compile/link presence; not a scientific validation of every optional method"
+      },
+      "missing_libraries": []
+    },
+    {
+      "build_run_id": "39742021186-1-release-4v100-avx512-2026-10-22-b0411118d360",
+      "identity": {
+        "build_id": "v3.11.0-beta11-gb0411118d360-r851137534055",
+        "cpu_arch": "znver4",
+        "cuda_arch": "70",
+        "dependency_isa": "avx512",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/4V100",
+        "partition": "4V100",
+        "recipe_sha256": "8511375340556e9e44c0935b36d7421cb7d7cb5b66380f731708bdc2105f606f",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "v3.11.0-beta11",
+        "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+        "source_version": "v3.11.0-beta11",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "4v100-avx512",
+        "track": "release",
+        "version_label": "v3.11.0-beta11"
+      },
+      "controller": "/home/stardust/sai-hpc-software/controller/f1f19288b87512b4a17da7ebb619250f5a1233d6/39742021186-1-release-4v100-avx512-2026-10-22-b0411118d360",
+      "job": "1899855",
+      "accounting": "1899855|COMPLETED|0:0|00:23:10|4v100n04",
+      "build_status": {
+        "job": "1899855",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "verified": true
+      },
+      "artifact": "/home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r851137534055/4V100/39742021186-1-release-4v100-avx512-2026-10-22-b0411118d360.sif",
+      "artifact_bytes": 184528896,
+      "sha256": "72ad4ce357494606f3043b5a19a8021a0d121cce8d8adc7f3da1b3f47f9e88a9",
+      "build_verified": true,
+      "info": "\n----------------- ABACUS Core & Platform -----------------\nABACUS Version:                v3.11.0-beta11\nGit Commit:                    b041111 (Sun Oct 18 21:15:08 2026 +0800)\nTarget Platform:               CPU + NVIDIA CUDA\nBuild Type:                    Release\n\n----------------- Build Environment -----------------\nBuilt By:                      root\nBuilt On:                      4v100n04.mr-sai.ai\nBuilt At:                      Oct 22 2026 12:42:18\n\n----------------- Compiler & Flags -----------------\nC++ Compiler:                  GNU (/usr/bin/g++)\nC++ Compiler Ver:              13.3.0\nC++ Flags:                     -march=native -mtune=native\nLinker Flags:                  \nCUDA Flags:                    \n\n----------------- Sanitizers & Debugging -----------------\nAddressSanitizer:              no\nDebug Symbols:                 no\n\n----------------- CMake Configuration Summary -----------------\nBuild Options:  ENABLE_MPI=ON  ENABLE_OPENMP=ON  USE_CUDA=ON  USE_ROCM=OFF  ENABLE_LCAO=ON  ENABLE_ELPA=ON  ENABLE_LIBXC=ON  ENABLE_MLALGO=ON  ENABLE_ASAN=OFF  BUILD_TESTING=OFF\n\nFindPackage Results:  MPI Found=TRUE  OpenMP Found=TRUE  CUDA Found=  ROCm Found=  ELPA Found=TRUE  Libxc Found=1  PEXSI Found=  LibRI Found=TRUE\n\n----------------- Parallelism & Communication -----------------\nMPI Implementation:            OpenMPI\nMPI Version:                   (MPI standard: 3.1)\nCUDA-aware MPI:                yes\nOpenMP Support:                yes (v4.5)\n\n----------------- Core Math Libraries -----------------\nLCAO Algorithm:                yes\nELPA Support:                  yes (v)\nMKL Support:                   no\nLibXC Support:                 yes (v7.0.0)\nFFTW Support:                  yes (v3.3.10)\n\n----------------- Accelerators & Hardware -----------------\nNVIDIA CUDA Support:           yes (v12.9.86)\nAMD ROCm Support:              no\nCUSOLVERMP Support:            yes (version unknown)\n\n----------------- Hybrid Functional Libraries -----------------\nCereal Serialization:          yes (version unknown)\nLibRI Support:                 yes (v2.1.1)\nLibComm Support:               yes (path: /opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/4V100/dependencies/LibComm-master)\n\n----------------- AI & Machine Learning -----------------\nLibTorch Support:              yes (v2.1.2)\nLibnpy Support:                yes (path: /opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/4V100/dependencies/libnpy-1.0.1/include)\nDeePMD-kit Support:            no\nNEP Support:                   yes (path: /opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/4V100/dependencies/nep)\nTensorFlow Support:            no\n\n----------------- Other Libraries -----------------\nDFT-D4 Support:                no\nJSON Support:                  yes (nlohmann-json v3.12.0)\nPEXSI Support:                 no\ncnpy Support:                  no\n\n----------------- Testing -----------------\nGTest Support:                 no\nGoogle Benchmark:              Disabled\n\n",
+      "features": {
+        "baseline_modules": [
+          "abacus/v3.9.0.26-sm70-auto",
+          "abacus/develop-git-079fd0c-260724-sm70-auto"
+        ],
+        "checked_libraries": {
+          "libcublasmp.so": "/opt/devtools/nvidia/mp_libs/lib/",
+          "libcusolverMp.so": "/opt/devtools/nvidia/mp_libs/lib/",
+          "libelpa": "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu/",
+          "libnccl.so": "/opt/devtools/nvidia/nccl_",
+          "libnep.so": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/4V100/dependencies/nep/lib/",
+          "libtorch_cpu.so": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/4V100/dependencies/libtorch/lib/"
+        },
+        "required_info": [
+          "OpenMP Support",
+          "LCAO Algorithm",
+          "ELPA Support",
+          "LibXC Support",
+          "FFTW Support",
+          "Cereal Serialization",
+          "LibRI Support",
+          "LibComm Support",
+          "LibTorch Support",
+          "Libnpy Support",
+          "NEP Support",
+          "CUDA-aware MPI",
+          "NVIDIA CUDA Support",
+          "CUSOLVERMP Support",
+          "JSON Support"
+        ],
+        "required_options": [
+          "ENABLE_MPI",
+          "ENABLE_OPENMP",
+          "ENABLE_LCAO",
+          "ENABLE_ELPA",
+          "ENABLE_LIBXC",
+          "ENABLE_LIBRI",
+          "ENABLE_MLALGO",
+          "USE_CUDA",
+          "USE_CUDA_MPI",
+          "ENABLE_CUSOLVERMP",
+          "ENABLE_CUBLASMP",
+          "ENABLE_NCCL_PARALLEL_DEVICE",
+          "ENABLE_JSON"
+        ],
+        "scope": "compile/link presence; not a scientific validation of every optional method"
+      },
+      "missing_libraries": []
+    },
+    {
+      "build_run_id": "39742021186-1-release-8v100v0-avx512-2026-10-22-b0411118d360",
+      "identity": {
+        "build_id": "v3.11.0-beta11-gb0411118d360-r851137534055",
+        "cpu_arch": "skylake-avx512",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/8V100V0",
+        "partition": "8V100V0",
+        "recipe_sha256": "8511375340556e9e44c0935b36d7421cb7d7cb5b66380f731708bdc2105f606f",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "v3.11.0-beta11",
+        "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+        "source_version": "v3.11.0-beta11",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "8v100v0-avx512",
+        "track": "release",
+        "version_label": "v3.11.0-beta11"
+      },
+      "controller": "/home/stardust/sai-hpc-software/controller/f1f19288b87512b4a17da7ebb619250f5a1233d6/39742021186-1-release-8v100v0-avx512-2026-10-22-b0411118d360",
+      "job": "1900302",
+      "accounting": "1900302|COMPLETED|0:0|00:37:27|8v100v0n02",
+      "build_status": {
+        "job": "1900302",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "verified": true
+      },
+      "artifact": "/home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r851137534055/8V100V0/39742021186-1-release-8v100v0-avx512-2026-10-22-b0411118d360.sif",
+      "artifact_bytes": 184393728,
+      "sha256": "4a7e25960393bb4bf986528237afba6cbe120efbdd3f7b865f50724fdb013346",
+      "build_verified": true,
+      "info": "\n----------------- ABACUS Core & Platform -----------------\nABACUS Version:                v3.11.0-beta11\nGit Commit:                    b041111 (Sun Oct 18 21:15:08 2026 +0800)\nTarget Platform:               CPU + NVIDIA CUDA\nBuild Type:                    Release\n\n----------------- Build Environment -----------------\nBuilt By:                      root\nBuilt On:                      8v100v0n02.mr-sai.ai\nBuilt At:                      Oct 22 2026 14:21:30\n\n----------------- Compiler & Flags -----------------\nC++ Compiler:                  GNU (/usr/bin/g++)\nC++ Compiler Ver:              13.3.0\nC++ Flags:                     -march=native -mtune=native\nLinker Flags:                  \nCUDA Flags:                    \n\n----------------- Sanitizers & Debugging -----------------\nAddressSanitizer:              no\nDebug Symbols:                 no\n\n----------------- CMake Configuration Summary -----------------\nBuild Options:  ENABLE_MPI=ON  ENABLE_OPENMP=ON  USE_CUDA=ON  USE_ROCM=OFF  ENABLE_LCAO=ON  ENABLE_ELPA=ON  ENABLE_LIBXC=ON  ENABLE_MLALGO=ON  ENABLE_ASAN=OFF  BUILD_TESTING=OFF\n\nFindPackage Results:  MPI Found=TRUE  OpenMP Found=TRUE  CUDA Found=  ROCm Found=  ELPA Found=TRUE  Libxc Found=1  PEXSI Found=  LibRI Found=TRUE\n\n----------------- Parallelism & Communication -----------------\nMPI Implementation:            OpenMPI\nMPI Version:                   (MPI standard: 3.1)\nCUDA-aware MPI:                yes\nOpenMP Support:                yes (v4.5)\n\n----------------- Core Math Libraries -----------------\nLCAO Algorithm:                yes\nELPA Support:                  yes (v)\nMKL Support:                   no\nLibXC Support:                 yes (v7.0.0)\nFFTW Support:                  yes (v3.3.10)\n\n----------------- Accelerators & Hardware -----------------\nNVIDIA CUDA Support:           yes (v12.9.86)\nAMD ROCm Support:              no\nCUSOLVERMP Support:            yes (version unknown)\n\n----------------- Hybrid Functional Libraries -----------------\nCereal Serialization:          yes (version unknown)\nLibRI Support:                 yes (v2.1.1)\nLibComm Support:               yes (path: /opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/8V100V0/dependencies/LibComm-master)\n\n----------------- AI & Machine Learning -----------------\nLibTorch Support:              yes (v2.1.2)\nLibnpy Support:                yes (path: /opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/8V100V0/dependencies/libnpy-1.0.1/include)\nDeePMD-kit Support:            no\nNEP Support:                   yes (path: /opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/8V100V0/dependencies/nep)\nTensorFlow Support:            no\n\n----------------- Other Libraries -----------------\nDFT-D4 Support:                no\nJSON Support:                  yes (nlohmann-json v3.12.0)\nPEXSI Support:                 no\ncnpy Support:                  no\n\n----------------- Testing -----------------\nGTest Support:                 no\nGoogle Benchmark:              Disabled\n\n",
+      "features": {
+        "baseline_modules": [
+          "abacus/v3.9.0.26-sm70-auto",
+          "abacus/develop-git-079fd0c-260724-sm70-auto"
+        ],
+        "checked_libraries": {
+          "libcublasmp.so": "/opt/devtools/nvidia/mp_libs/lib/",
+          "libcusolverMp.so": "/opt/devtools/nvidia/mp_libs/lib/",
+          "libelpa": "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu/",
+          "libnccl.so": "/opt/devtools/nvidia/nccl_",
+          "libnep.so": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/8V100V0/dependencies/nep/lib/",
+          "libtorch_cpu.so": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/8V100V0/dependencies/libtorch/lib/"
+        },
+        "required_info": [
+          "OpenMP Support",
+          "LCAO Algorithm",
+          "ELPA Support",
+          "LibXC Support",
+          "FFTW Support",
+          "Cereal Serialization",
+          "LibRI Support",
+          "LibComm Support",
+          "LibTorch Support",
+          "Libnpy Support",
+          "NEP Support",
+          "CUDA-aware MPI",
+          "NVIDIA CUDA Support",
+          "CUSOLVERMP Support",
+          "JSON Support"
+        ],
+        "required_options": [
+          "ENABLE_MPI",
+          "ENABLE_OPENMP",
+          "ENABLE_LCAO",
+          "ENABLE_ELPA",
+          "ENABLE_LIBXC",
+          "ENABLE_LIBRI",
+          "ENABLE_MLALGO",
+          "USE_CUDA",
+          "USE_CUDA_MPI",
+          "ENABLE_CUSOLVERMP",
+          "ENABLE_CUBLASMP",
+          "ENABLE_NCCL_PARALLEL_DEVICE",
+          "ENABLE_JSON"
+        ],
+        "scope": "compile/link presence; not a scientific validation of every optional method"
+      },
+      "missing_libraries": []
+    },
+    {
+      "build_run_id": "39742021186-1-release-dsprhbm-2026-10-22-b0411118d360",
+      "identity": {
+        "build_id": "v3.11.0-beta11-gb0411118d360-r851137534055",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "8511375340556e9e44c0935b36d7421cb7d7cb5b66380f731708bdc2105f606f",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "v3.11.0-beta11",
+        "source_sha": "b0411118d360eebe3563f28aeb502ae9d5a9d200",
+        "source_version": "v3.11.0-beta11",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "release",
+        "version_label": "v3.11.0-beta11"
+      },
+      "controller": "/home/stardust/sai-hpc-software/controller/f1f19288b87512b4a17da7ebb619250f5a1233d6/39742021186-1-release-dsprhbm-2026-10-22-b0411118d360",
+      "job": "1899611",
+      "accounting": "1899611|COMPLETED|0:0|00:38:42|d9470n03",
+      "build_status": {
+        "job": "1899611",
+        "state": "COMPLETED",
+        "exit_code": "0:0",
+        "verified": true
+      },
+      "artifact": "/home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r851137534055/DSPRHBM/39742021186-1-release-dsprhbm-2026-10-22-b0411118d360.sif",
+      "artifact_bytes": 181465088,
+      "sha256": "369db4de858f13cf9a7ce720761c9172d74131214e8c53866cf28eb507252491",
+      "build_verified": true,
+      "info": "\n----------------- ABACUS Core & Platform -----------------\nABACUS Version:                v3.11.0-beta11\nGit Commit:                    b041111 (Sun Oct 18 21:15:08 2026 +0800)\nTarget Platform:               CPU\nBuild Type:                    Release\n\n----------------- Build Environment -----------------\nBuilt By:                      root\nBuilt On:                      d9470n03.mr-sai.ai\nBuilt At:                      Oct 22 2026 12:01:20\n\n----------------- Compiler & Flags -----------------\nC++ Compiler:                  GNU (/opt/devtools/gcc/13.3.0/bin/c++)\nC++ Compiler Ver:              13.3.0\nC++ Flags:                     -march=native -mtune=native\nLinker Flags:                  \nCUDA Flags:                    \n\n----------------- Sanitizers & Debugging -----------------\nAddressSanitizer:              no\nDebug Symbols:                 no\n\n----------------- CMake Configuration Summary -----------------\nBuild Options:  ENABLE_MPI=ON  ENABLE_OPENMP=ON  USE_CUDA=OFF  USE_ROCM=OFF  ENABLE_LCAO=ON  ENABLE_ELPA=ON  ENABLE_LIBXC=ON  ENABLE_MLALGO=ON  ENABLE_ASAN=OFF  BUILD_TESTING=OFF\n\nFindPackage Results:  MPI Found=TRUE  OpenMP Found=TRUE  CUDA Found=  ROCm Found=  ELPA Found=TRUE  Libxc Found=1  PEXSI Found=  LibRI Found=TRUE\n\n----------------- Parallelism & Communication -----------------\nMPI Implementation:            OpenMPI\nMPI Version:                   (MPI standard: 3.1)\nCUDA-aware MPI:                no (CUDA not enabled)\nOpenMP Support:                yes (v4.5)\n\n----------------- Core Math Libraries -----------------\nLCAO Algorithm:                yes\nELPA Support:                  yes (v)\nMKL Support:                   no\nLibXC Support:                 yes (v7.0.0)\nFFTW Support:                  yes (v3.3.10)\n\n----------------- Accelerators & Hardware -----------------\nNVIDIA CUDA Support:           no\nAMD ROCm Support:              no\nCUSOLVERMP Support:            no\n\n----------------- Hybrid Functional Libraries -----------------\nCereal Serialization:          yes (version unknown)\nLibRI Support:                 yes (v2.1.1)\nLibComm Support:               yes (path: /opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/DSPRHBM/dependencies/LibComm-master)\n\n----------------- AI & Machine Learning -----------------\nLibTorch Support:              yes (v2.1.2)\nLibnpy Support:                yes (path: /opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/DSPRHBM/dependencies/libnpy-1.0.1/include)\nDeePMD-kit Support:            no\nNEP Support:                   yes (path: /opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/DSPRHBM/dependencies/nep)\nTensorFlow Support:            no\n\n----------------- Other Libraries -----------------\nDFT-D4 Support:                no\nJSON Support:                  yes (nlohmann-json v3.12.0)\nPEXSI Support:                 no\ncnpy Support:                  no\n\n----------------- Testing -----------------\nGTest Support:                 no\nGoogle Benchmark:              Disabled\n\n",
+      "features": {
+        "baseline_modules": [
+          "abacus/v3.9.0.26-sm70-auto",
+          "abacus/develop-git-079fd0c-260724-sm70-auto"
+        ],
+        "checked_libraries": {
+          "libelpa": "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu/",
+          "libnep.so": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/DSPRHBM/dependencies/nep/lib/",
+          "libtorch_cpu.so": "/opt/apps/abacus/abacus-release-v3.11.0-beta11-gb0411118d360-r851137534055/DSPRHBM/dependencies/libtorch/lib/"
+        },
+        "required_info": [
+          "OpenMP Support",
+          "LCAO Algorithm",
+          "ELPA Support",
+          "LibXC Support",
+          "FFTW Support",
+          "Cereal Serialization",
+          "LibRI Support",
+          "LibComm Support",
+          "LibTorch Support",
+          "Libnpy Support",
+          "NEP Support",
+          "JSON Support"
+        ],
+        "required_options": [
+          "ENABLE_MPI",
+          "ENABLE_OPENMP",
+          "ENABLE_LCAO",
+          "ENABLE_ELPA",
+          "ENABLE_LIBXC",
+          "ENABLE_LIBRI",
+          "ENABLE_MLALGO",
+          "ENABLE_JSON"
+        ],
+        "scope": "compile/link presence; not a scientific validation of every optional method"
+      },
+      "missing_libraries": []
+    }
+  ]
+}

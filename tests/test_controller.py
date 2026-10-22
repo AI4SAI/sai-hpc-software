@@ -77,6 +77,7 @@ class PolicyTests(unittest.TestCase):
         self.assertIn("--fakeroot --sparse", script)
         self.assertIn("--cpus-per-task=8", script)
         self.assertIn("container_entry.sh verify", script)
+        self.assertIn("--env SLURM_JOB_PARTITION=DSPRHBM", script)
         subprocess.run(["bash", "-n"], input=script, text=True, check=True)
         args.target = "16v100-avx2"
         with patch.object(controller, "ROOT", Path("/home/test/sai-hpc-software")):
@@ -84,6 +85,10 @@ class PolicyTests(unittest.TestCase):
         self.assertNotIn("#SBATCH --cpus-per-task", gpu_script)
         self.assertNotIn("#SBATCH --mem", gpu_script)
         self.assertIn("#SBATCH --gpus-per-node=1", gpu_script)
+        self.assertIn("--env SLURM_JOB_PARTITION=16V100", gpu_script)
+        job_name = lambda text: next(line for line in text.splitlines() if line.startswith('#SBATCH --job-name='))
+        self.assertNotEqual(job_name(script), job_name(gpu_script))
+        self.assertIn('#SBATCH --dependency=singleton', gpu_script)
         args.resume_run = "old-run"
         args.resume_overlay_sha256 = "c" * 64
         with patch.object(controller, "ROOT", Path("/home/test/sai-hpc-software")):

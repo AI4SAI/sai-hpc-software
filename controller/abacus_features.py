@@ -21,6 +21,12 @@ def ml_roots(lock):
     return [root]
 
 
+def elpa_root(target):
+    variants = {"dsprhbm": "avx512/cpu", "4v100-avx512": "avx512/nvidia",
+                "16v100-avx2": "avx2/nvidia", "8v100v0-avx512": "avx2/nvidia"}
+    return "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu-" + variants[target]
+
+
 def check_features(info, cache, dependencies, target, prefix, lock):
     """The observed union baseline is mandatory; missing optional libs are errors."""
     gpu = target != "dsprhbm"
@@ -42,7 +48,7 @@ def check_features(info, cache, dependencies, target, prefix, lock):
     if "not found" in dependencies:
         missing.append("unresolved dynamic library")
     expected_libraries = {
-        "libelpa": "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu/",
+        "libelpa": elpa_root(target) + "/lib/",
         "libtorch_cpu.so": str(prefix / "dependencies/libtorch/lib") + "/",
         "libnep.so": str(prefix / "dependencies/nep/lib") + "/",
     }
@@ -147,7 +153,7 @@ def verify(prefix, target, lock):
 
 MODULE_ROOT = Path("/opt/modules/modulefiles/devtools")
 MODULES = ["openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto", "fftw/3.3.10",
-           "libxc/7.0.0-auto", "saiblas/2603-gnu-auto", "elpa/2026.02.001-2603-gnu",
+           "libxc/7.0.0-auto", "saiblas/2603-gnu-auto", "elpa/2026.02.001-2603-gnu-auto",
            "cuda/12.9.1"]
 SDK = "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3"
 NCCL = "/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2"
@@ -160,7 +166,7 @@ def expected_roots(identity):
             "OPENBLAS_ROOT": f"/opt/devtools/saiblas/2603-gnu-{isa}",
             "LIBXC_ROOT": f"/opt/devtools/libxc/libxc-7.0.0-{isa}",
             "FFTW_ROOT": "/opt/devtools/fftw/fftw-3.3.10",
-            "ELPA_ROOT": "/opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia",
+            "ELPA_ROOT": elpa_root(identity["target"]),
             "CUDA_HOME": "/opt/devtools/nvidia/cuda-12.9.1",
             "NVHPC_ROOT": SDK, "NCCL_ROOT": NCCL}
 

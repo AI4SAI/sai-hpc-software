@@ -164,7 +164,9 @@ class BenchmarkTests(unittest.TestCase):
                 self.assertIn(benchmark.SYSTEM_MODULE, script)
                 self.assertIn(benchmark.MPI_MODULE, script)
                 self.assertIn("/usr/bin/time -f %e", script)
-                self.assertIn('--map-by "$MAP_OPT" --bind-to core --report-bindings', script)
+                placement = ('--map-by "$MAP_OPT" --bind-to core' if target == 'dsprhbm'
+                             else '--map-by ppr:1:node --bind-to none')
+                self.assertIn(placement + ' --report-bindings', script)
                 self.assertIn("export OMP_PROC_BIND=true OMP_PLACES=cores", script)
                 self.assertIn("affinity-", script)
                 self.assertIn("os.sched_getaffinity(0)", script)
@@ -176,8 +178,8 @@ class BenchmarkTests(unittest.TestCase):
                 self.assertEqual([s["arm"] for s in request["runs"]],
                                  ["system", "candidate", "candidate", "system"] * 2)
                 if target == "dsprhbm":
-                    self.assertEqual((request["ranks"], request["threads"]), (16, 2))
-                    self.assertIn("#SBATCH --ntasks-per-node=8", script)
+                    self.assertEqual((request["ranks"], request["threads"]), (8, 2))
+                    self.assertIn("#SBATCH --ntasks-per-node=4", script)
                     self.assertNotIn("#SBATCH --gpus-per-node", script)
                 else:
                     self.assertEqual(request["dependency_isa"], "avx2")
@@ -202,6 +204,37 @@ class BenchmarkTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             benchmark.analyze(task)
         self.assertFalse((task / "results/evidence.json").exists())
+
+    def test_packaged_science_uses_pinned_upstream_energy_across_versions(self):
+        for case in ('hse', 'deepks'):
+            with self.subTest(case=case):
+                (self.case / 'INPUT').write_text('INPUT_PARAMETERS\ncalculation scf\ndevice cpu\nsuffix autotest\n')
+                (self.case / 'result.ref').write_text('etotref -4871.55886\n')
+                task = benchmark.prepare(self.args(run_id=case, case=None, packaged_case=case))
+                request = self.results(task)
+                for spec in request['runs']:
+                    if spec['arm'] == 'system':
+                        (task / 'runs' / spec['id'] / request['scf_log']).write_text(
+                            '#SCF IS CONVERGED#\n!FINAL_ETOT_IS -4871.55882 eV\n')
+                evidence = benchmark.analyze(task)
+                self.assertGreater(evidence['energy_spread_ev'], 1e-5)
+                self.assertEqual(evidence['energy_reference']['candidate_max_error_ev'], 0)
+                self.assertIn('input/result.ref', evidence['files'])
+                # Agreement with the old binary cannot excuse a wrong candidate.
+                (task / 'runs/m000-candidate' / request['scf_log']).write_text(
+                    '#SCF IS CONVERGED#\n!FINAL_ETOT_IS -4871.55882 eV\n')
+                with self.assertRaisesRegex(ValueError, 'differs from upstream reference'):
+                    benchmark.analyze(task)
+
+    def test_packaged_science_rejects_missing_nonfinite_duplicate_or_wrong_reference(self):
+        (self.case / 'INPUT').write_text('INPUT_PARAMETERS\ncalculation scf\ndevice cpu\nsuffix autotest\n')
+        for index, value in enumerate(('', 'etotref nan\n', 'etotref -1\netotref -2\n', 'etotref -1\n')):
+            with self.subTest(value=value):
+                (self.case / 'result.ref').write_text(value)
+                task = benchmark.prepare(self.args(run_id='reference-' + str(index), case=None, packaged_case='hse'))
+                self.results(task)
+                with self.assertRaises(ValueError):
+                    benchmark.analyze(task)
 
     def test_analysis_rejects_incomplete_nonfinite_and_mismatched_evidence(self):
         cases = {
@@ -543,6 +576,7 @@ class BenchmarkTests(unittest.TestCase):
             benchmark.prepare(args)
 
     def test_packaged_cases_are_deferred_and_preserve_request_and_transform_hashes(self):
+        (self.case / 'result.ref').write_text('etotref -4871.55886\n')
         for target, case, device in (("dsprhbm", "pw", "cpu"), ("8v100v0-avx512", "pw", "gpu"),
                                      ("8v100v0-avx512", "hse", "cpu"), ("8v100v0-avx512", "deepks", "cpu")):
             with self.subTest(target=target, case=case):

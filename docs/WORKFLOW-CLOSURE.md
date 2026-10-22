@@ -4,10 +4,22 @@ PRs [#8](https://github.com/AI4SAI/sai-hpc-software/pull/8) and
 [#10](https://github.com/AI4SAI/sai-hpc-software/pull/10) are merged into `main`.
 Daily delivery now uses reusable workflows from its own revision and waits
 for their results. The old feature-branch dispatch failures described below
-are historical; no new scheduled production matrix is claimed yet. ABACUS's
-latest GitHub release is `v3.11.0-beta11` (`b0411118d360`), but it has no accepted
-artifact or physical installation from this workflow. The integrated JSON/HSE
-source fixes still need a new release build and scientific acceptance.
+are historical. The October 22 daily run built ABACUS's latest GitHub release,
+`v3.11.0-beta11` (`b0411118d360`), on all four partitions. Each SIF passed
+version, library and feature checks with the integrated JSON/HSE fixes.
+The acceptance jobs were incorrectly skipped because their CP2K-only ancestor
+was skipped; the final result gate correctly reported failure. The shared
+workflow now explicitly handles that ancestor while requiring a successful
+build, its run ID and no cancellation. Acceptance of the existing SIFs exposed
+an ELPA instruction-set failure in HSE, now reproduced with GDB and resolved
+in a diagnostic run using the public partition-specific ELPA. The recipe now
+selects that module, carries the partition through the clean container
+environment, and allows independent partitions to build concurrently. GPU
+benchmarks inherit Slurm's CPU affinity; packaged HSE/DeePKS science uses the
+candidate source's reference energy at the unchanged tolerance. Corrected
+release builds and full acceptance are still required. See the
+[release build and acceptance record](evidence/abacus-beta11-20261022/README.md).
+No physical beta11 `/opt` installation is claimed.
 Optional public deployment of the container image driver is tracked in
 [issue #12](https://github.com/AI4SAI/sai-hpc-software/issues/12).
 

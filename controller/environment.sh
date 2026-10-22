@@ -14,9 +14,15 @@ module use /opt/modules/modulefiles/devtools
 module load cmake/3.31.6 openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto
 module load fftw/3.3.10 libxc/7.0.0-auto saiblas/2603-gnu-auto
 if [[ "$software" != cp2k ]]; then
-module load elpa/2026.02.001-2603-gnu
-[[ "${ELPA_ROOT:-}" == /opt/devtools/elpa/elpa-2026.02.001-2603-gnu/nvidia ]] || {
-    echo "required system ELPA 2026.02.001 module did not resolve" >&2
+module --ignore_cache load elpa/2026.02.001-2603-gnu-auto
+case "$target" in
+    dsprhbm) abacus_elpa_variant=avx512/cpu ;;
+    4v100-avx512) abacus_elpa_variant=avx512/nvidia ;;
+    16v100-avx2|8v100v0-avx512) abacus_elpa_variant=avx2/nvidia ;;
+    *) echo "unsupported ABACUS ELPA target: $target" >&2; return 2 ;;
+esac
+[[ "${ELPA_ROOT:-}" == /opt/devtools/elpa/elpa-2026.02.001-2603-gnu-$abacus_elpa_variant ]] || {
+    echo "required partition-specific ELPA 2026.02.001 module did not resolve" >&2
     return 2
 }
 fi

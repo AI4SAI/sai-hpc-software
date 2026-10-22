@@ -26,7 +26,7 @@ class NativeLayoutTests(unittest.TestCase):
                 ldd = "libmpi.so.40 => " + environment["MPI_HOME"] + "/lib/libmpi.so.40 (0x1234)"
                 entry = features.make_entry(identity, environment, modules, ldd)
                 self.assertEqual(entry["identity"], identity)
-                self.assertIn("elpa/2026.02.001-2603-gnu", entry["runtime"]["modules"])
+                self.assertIn("elpa/2026.02.001-2603-gnu-auto", entry["runtime"]["modules"])
                 self.assertEqual("nvmplibs/26.7-tmp" in entry["runtime"]["modules"], target != "dsprhbm")
                 self.assertTrue({identity["install_prefix"] + "/" + suffix for suffix in
                                  ("lib", "lib64", "dependencies/nep/lib", "dependencies/full/lib",

@@ -2,8 +2,10 @@
 import json
 import os
 from pathlib import Path
+import re
 import subprocess
 import tempfile
+from types import SimpleNamespace
 import unittest
 from unittest.mock import patch
 
@@ -132,6 +134,41 @@ class DeliveryPhaseOutcomeTests(unittest.TestCase):
                 results['acceptance']['result'] = outcome
                 with self.subTest(software=software, outcome=outcome), self.assertRaises(SystemExit):
                     gate('software-pair', results, SOFTWARE=software)
+
+    def test_acceptance_runs_after_skipped_dependency_ancestor(self):
+        # Replay the scheduler state from daily run 39742021186: successful
+        # ABACUS builds with run_id outputs never reached acceptance because
+        # the CP2K-only dependency ancestor was skipped. GitHub applies an
+        # implicit success() unless the job expression uses a status function.
+        expression = workflow('software-pair')['jobs']['acceptance']['if']
+        expression = expression.removeprefix('${{').removesuffix('}}').strip()
+        explicit_status = re.search(r'\b(?:success|failure|cancelled|always)\s*\(', expression)
+        code = expression.replace('&&', ' and ').replace('||', ' or ')
+        code = re.sub(r'!(?!=)', 'not ', code)
+        for software in ('abacus', 'gpumd', 'cp2k'):
+            for outcome, run_id, cancelled, expected in (
+                ('success', 'existing-build', False, True),
+                ('success', '', False, False),
+                ('success', 'existing-build', True, False),
+                ('failure', 'existing-build', False, False),
+                ('cancelled', 'existing-build', False, False),
+                ('skipped', '', False, False),
+            ):
+                with self.subTest(software=software, build=outcome, run_id=run_id, cancelled=cancelled):
+                    results = self.delivery(software, run_id)
+                    results['build']['result'] = outcome
+                    ancestors_succeeded = not cancelled and all(
+                        results[phase]['result'] == 'success' for phase in ('dependencies', 'build'))
+                    context = dict(
+                        needs=SimpleNamespace(build=SimpleNamespace(
+                            result=outcome, outputs=SimpleNamespace(run_id=run_id))),
+                        success=lambda: ancestors_succeeded,
+                        failure=lambda: outcome == 'failure',
+                        cancelled=lambda: cancelled, always=lambda: True,
+                    )
+                    enabled = bool((explicit_status or ancestors_succeeded)
+                                   and eval(code, {'__builtins__': {}}, context))
+                    self.assertEqual(enabled, expected)
 
     def test_release_deduplication_is_allowed_but_development_must_rebuild(self):
         for software in ('abacus', 'cp2k', 'gpumd'):
