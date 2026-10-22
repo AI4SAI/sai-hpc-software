@@ -24,7 +24,7 @@ client page-cache read, as detailed below.
 
 ## Follow-up: buffered reads disagree with direct reads on the same client
 
-At **15:17:35 China time**, read-only Slurm job **1890009** on `4v100n06`
+At **2026-10-21 15:17:35 China time**, read-only Slurm job **1890009** on `4v100n06`
 completed `0:0` and read the toolkit file three times:
 
 | Read | SHA-256 | Result |
@@ -56,7 +56,7 @@ Only `4v100n06` has shown this anomaly among the inspected clients. This is
 **not a full-cluster scan** and does not certify other files or unchecked nodes.
 Direct server-side SSH inspection was unavailable to the `stardust` account;
 the server data conclusion is based on the successful NFS direct reads from
-all five checked clients, including `4v100n06` itself.
+the inspected clients, including `4v100n06` itself.
 
 The [storage-followup/](storage-followup/) JSON records retain mounts, file
 identity, timestamps, all hashes and read exit statuses. The read-only helper
@@ -68,11 +68,35 @@ On **2026-10-22 at 00:32 China time**, additional checks on **d9470n02**
 for both files. The export, toolkit inode **1738756**, size and timestamps
 still match. These records are in
 [recheck-20261022/](storage-followup/recheck-20261022/).
-The repeat on `4v100n06` (**1893770**) and the additional 8V100V0 check
-(**1893771**) are pending resources in the archived scheduler snapshot;
-neither is counted as healthy or as a completed repeat. The previous
-`4v100n06` failure remains unresolved until a new read and runtime acceptance
-demonstrate recovery.
+The two jobs pending in the original scheduler snapshot have now completed.
+Their final JSON records establish the following results, with times in China
+standard time on **2026-10-22**:
+
+| Job | Node | Test start | Toolkit buffered / direct / buffered | SDK reads |
+| --- | --- | --- | --- | --- |
+| 1893772 | d9470n02 (DSPRHBM) | 00:32:02 | Expected / expected / expected | All expected |
+| 1893771 | 8v100v0n08 (8V100V0) | 00:43:17 | Expected / expected / expected | All expected |
+| 1893770 | 4v100n06 (4V100) | 01:36:24 | Abnormal / expected / abnormal | All expected |
+
+Every read returned the full **106,237,008 bytes** with exit status zero.
+The export, toolkit inode **1738756**, size and timestamps remain unchanged.
+On `4v100n06`, both buffered reads still produce the exact abnormal hash
+recorded the previous afternoon, over ten hours earlier. Its direct read and
+all SDK reads still produce the expected hash. The repeat therefore confirms
+that the inconsistent cached-read state persisted; it is **not evidence of
+recovery**. All three jobs show `COMPLETED 0:0` because the storage probe records
+read results without failing on a hash mismatch. Scheduler success is not an
+integrity pass.
+
+The original pending [scheduler snapshot](storage-followup/recheck-20261022/scheduler.txt)
+is preserved alongside the [final scheduler record](storage-followup/recheck-20261022/scheduler-final.txt)
+and both newly completed JSON records. These are historical test results at
+the stated times, not a fresh check at the later time of result collection.
+No new CP2K runtime test or maintenance action was performed for this update.
+Six other clients have passed the buffered/direct/buffered checks, with earlier
+buffered-read and runtime controls also passing on `4v100n35`; this remains a
+sample across four partitions, not an exhaustive scan. `4v100n06` remains
+unaccepted until matching reads and a new runtime acceptance demonstrate recovery.
 
 The [administrator guide](../../../deployment/cp2k-nvrtc-diagnostic/ADMIN-RECOVERY.md)
 contains commands to collect the same read-only evidence across all four

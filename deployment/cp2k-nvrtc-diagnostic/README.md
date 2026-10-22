@@ -12,7 +12,9 @@ bytes. `/opt/devtools` is shared NFS, so this observation must not be labelled a
 damaged node-local installation or used alone to justify replacing a shared file.
 The follow-up on `4v100n06` reads abnormal bytes through the ordinary path,
 expected bytes with `O_DIRECT`, and abnormal bytes again on a second ordinary
-read. Four additional clients return the expected bytes by both methods.
+read. The repeat on **2026-10-22 at 01:36 China time** (job **1893770**) still
+shows the identical mismatch. Six other clients, including the completed
+8V100V0 and DSPRHBM probes, return the expected bytes by both methods.
 This isolates inconsistent client-cache reads, without establishing what
 originally corrupted the cache or certifying every node in the cluster.
 
@@ -23,6 +25,8 @@ without writing them or dropping caches. An unsupported/failed direct read is
 recorded as an error, not as a valid checksum. Run it on allocated compute nodes
 or another host where normal account access is available; retain its JSON output
 under the home-backed diagnostic directory.
+Its zero exit status means collection completed, not that the hashes match;
+job **1893770** completed successfully while recording abnormal buffered bytes.
 
 The [administrator guide](ADMIN-RECOVERY.md) provides read-only node collection
 commands and the maintenance/retest sequence. It includes a cluster-wide
