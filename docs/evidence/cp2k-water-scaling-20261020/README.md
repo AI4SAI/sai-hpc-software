@@ -8,6 +8,13 @@ found an upstream ScaLAPACK redistribution defect in the pinned CP2K 2026.2
 source. All performance conclusions against that CPU binary require review
 and a corrected baseline before being treated as final.
 
+The follow-up [source confirmation](scalapack-source-check/README.md) finds
+the same defect in both official v2026.2 and the inspected current master,
+traces it to a 2023 refactor, and links the existing upstream issue #6074.
+A compiled reproducer using the actual source routines confirms the half-rank
+selection with GCC 14.3.0 at both `-O0` and `-O3`, and checks why both the
+initialization and cleanup paths need repair. No public install was changed.
+
 The initialization in
 [`cp_fm_diag_utils.F`](https://github.com/cp2k/cp2k/blob/67b5da876dd6a76b8b021d5a04d1c81ba79a4c50/src/fm/cp_fm_diag_utils.F#L147)
 assigns `a`, `x` and the printing/ELPA settings, then overwrites the whole
