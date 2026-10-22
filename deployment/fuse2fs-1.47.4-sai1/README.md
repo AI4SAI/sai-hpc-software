@@ -68,10 +68,13 @@ as installed. Tests, source code, receipts and logs stay in the home project.
 
 ## Use
 
+Load both modules in one command to enable the optimized helper. Loading only
+`apptainer/1.4.4` selects its bundled fuse2fs 1.47.3. The same Apptainer binary
+is used in both cases.
+
 ```bash
 module use /opt/modules/modulefiles/devtools
-module load apptainer/1.4.4
-module --ignore_cache load fuse2fs/1.47.4-sai
+module --ignore_cache load apptainer/1.4.4 fuse2fs/1.47.4-sai
 fuse2fs -V
 # Keep host build, cache and scratch storage in home:
 export TMPDIR="$HOME/.cache/apptainer/tmp"
@@ -91,6 +94,14 @@ needed. The config is administrator-owned, shared and read-only; it contains
 no user-specific paths, scratch or mutable state, so a per-user generated
 copy is unnecessary for this public entry. Existing workflow controllers
 with an explicit `--config` continue to use their own pinned configuration.
+
+New ABACUS and GPUMD build jobs load both modules inside their batch scripts,
+including the writable build/export and read-only overlay extraction phases.
+The jobs use `--export=NIL`, so loading a module only in the submission shell
+would not select it inside the allocation. CP2K and the DeePMD/LAMMPS workflows
+already select the same qualified driver bytes through their pinned per-run
+configuration. New controller revisions receive new recipe identities;
+existing frozen controllers retain their recorded configuration.
 
 Loading verifies the binary, selected config and original site config hashes.
 If the site config changes, the module fails with a request to regenerate and
@@ -128,11 +139,15 @@ build evidence and pre-install tests do not replace that check. Broader
 cross-account/partition and abrupt-termination recovery qualification remains
 tracked in [issue #12](https://github.com/AI4SAI/sai-hpc-software/issues/12).
 
-Two independent fixes have also been prepared against current upstream master
-in the user's fork for human review. Their [candidate validation record](../../docs/evidence/fuse2fs-upstream-review-20261022/README.md)
+Two independent fixes have also been submitted upstream after review:
+[norecovery read-only handling](https://github.com/tytso/e2fsprogs/pull/296) and
+[inherited image locks](https://github.com/tytso/e2fsprogs/pull/297). Their
+[candidate validation record](../../docs/evidence/fuse2fs-upstream-review-20261022/README.md)
 includes independent/combined regression tests and unpatched negative controls
 on Lustre and private tmpfs. These candidates have not replaced this installed
-package, and upstream submission awaits review.
+package. The current package is qualified for the workflow's home-backed
+Lustre images; making it the site-wide default should separately account for
+the candidates' broader inherited-lock compatibility and journal semantics.
 
 `prepare.py` is a maintainer-only packaging step. It verifies the pinned source
 archive, extracts only its NOTICE/man text, copies the already qualified binary
