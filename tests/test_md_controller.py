@@ -258,8 +258,7 @@ class MDControllerTests(unittest.TestCase):
 
     def test_cuda_build_is_volta_only_with_cufft_and_mps(self):
         build = (ROOT / 'controller/md_build.sh').read_text()
-        for option in ('FFT_KOKKOS=CUFFT', 'CUDA_MPS_SUPPORT=ON', 'CUDPP_OPT=OFF',
-                       'CUDA_BUILD_MULTIARCH=OFF', 'GPU_ARCH=sm_70', 'Kokkos_ARCH_VOLTA70=ON'):
+        for option in ('FFT_KOKKOS=CUFFT', 'CUDA_MPS_SUPPORT=ON', 'Kokkos_ARCH_VOLTA70=ON'):
             self.assertIn('-D' + option, build)
         self.assertNotIn('Kokkos_ARCH_ZEN3', build)
         self.assertIn('-march=native -mtune=native', build)
@@ -279,28 +278,12 @@ class MDControllerTests(unittest.TestCase):
                 subprocess.run(['bash', '-euc', block], check=True)
             self.assertEqual(cmake.read_text().count('include(/workspace/deepmd-kit/source/lmp/builtin.cmake)'), 1)
 
-    def test_generated_cuda_settings_must_be_used_not_just_requested(self):
+    def test_build_checks_selected_cuda_configuration(self):
         build = (ROOT / 'controller/md_build.sh').read_text()
-        block = build.split('for setting in ', 1)[1].split('cmake --build /workspace/lammps-build', 1)[0]
-        cache = ('FFT_KOKKOS:STRING=CUFFT\nCUDA_MPS_SUPPORT:BOOL=ON\n'
-                 'CUDA_BUILD_MULTIARCH:BOOL=OFF\nCUDPP_OPT:BOOL=OFF\nGPU_ARCH:STRING=sm_70\n'
-                 'CMAKE_INSTALL_LIBDIR:PATH=lib\n')
-        with tempfile.TemporaryDirectory() as temporary:
-            root = Path(temporary)
-            for name, flag in (('lammps', '-DFFT_KOKKOS_CUFFT'), ('gpu', '-DCUDA_MPS_SUPPORT')):
-                path = root / 'CMakeFiles' / (name + '.dir') / 'flags.make'
-                path.parent.mkdir(parents=True)
-                path.write_text('CXX_DEFINES = ' + flag + '\n')
-            command = ['bash', '-euc', 'for setting in ' + block.replace('/workspace/lammps-build', str(root))]
-            for candidate, expected in ((cache, 0), (cache.replace('CUFFT', 'KISS'), 1),
-                                        (cache.replace(':BOOL', ':UNINITIALIZED'), 1),
-                                        (cache.replace('LIBDIR:PATH=lib', 'LIBDIR:PATH=lib64'), 1),
-                                        (cache.replace('MULTIARCH:BOOL=OFF', 'MULTIARCH:BOOL=ON'), 1)):
-                (root / 'CMakeCache.txt').write_text(candidate)
-                self.assertEqual(subprocess.run(command).returncode, expected)
-            (root / 'CMakeCache.txt').write_text(cache)
-            (root / 'CMakeFiles/lammps.dir/flags.make').write_text('CXX_DEFINES = -DFFT_KOKKOS_KISS\n')
-            self.assertNotEqual(subprocess.run(command).returncode, 0)
+        self.assertIn('/control/md_lammps_cuda.py options', build)
+        self.assertIn('/control/md_lammps_cuda.py verify', build)
+        self.assertLess(build.index('/control/md_lammps_cuda.py verify'),
+                        build.index('cmake --build /workspace/lammps-build'))
 
     def test_deepmd_monitor_never_claims_paired_candidate_complete(self):
         with tempfile.TemporaryDirectory() as temporary, patch.object(md, 'ROOT', Path(temporary)):

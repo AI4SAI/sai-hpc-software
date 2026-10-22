@@ -290,6 +290,16 @@ and final-SIF qualification remain pending.
 
 ## Shared /opt recommendation
 
+October 22 update: the repaired driver has now supported the completed
+[four-partition CP2K release and physical acceptance](evidence/cp2k-shared-elpa-native-20261020/README.md)
+and [three-partition LAMMPS release and physical acceptance](evidence/lammps-release-20261020/physical-native-acceptance.json).
+The earlier application/export qualification gap described below is closed.
+[Issue #12](https://github.com/AI4SAI/sai-hpc-software/issues/12) tracks an
+optional, versioned, administrator-owned `/opt/devtools` installation and
+per-user configuration. Multiuser access and abrupt-termination recovery
+still require qualification. Native applications and final read-only SIFs
+do not require this helper; the existing home installation remains sufficient.
+
 Further October 17 qualification found a read-only gap: private-driver probe
 `1831524` failed on an inherited read-only image descriptor (`EBADF`). Stock
 probe `1831559` mounted successfully, but the image hash then differed from

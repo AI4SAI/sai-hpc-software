@@ -378,6 +378,25 @@ class RealSquashfsTests(unittest.TestCase):
             self.assertEqual(len(installation["required_install_prefixes"]),
                              1 if identity["software"] in ("deepmd-kit", "lammps") else 0)
 
+    def test_standalone_lammps_exports_only_itself_and_retains_installed_deepmd_lock(self):
+        identity = make_identity('lammps', 'development', 'develop', 'a' * 40,
+                                 'develop', 'b' * 64, '16v100-avx2')
+        dep = make_identity('deepmd-kit', 'release', 'v3.2.0', 'c' * 40,
+                            'v3.2.0', 'd' * 64, '16v100-avx2')
+        item = dict(identity=identity, commands={'lmp': 'bin/lmp'},
+                    external_roots=[dep['install_prefix']],
+                    site_dependencies=[dict(identity=dep, runtime_plan_sha256='e' * 64)],
+                    runtime=dict(modules=[], prepend={'LD_LIBRARY_PATH': [dep['install_prefix'] + '/lib']}, set={}))
+        self.make_paired_source([item])
+        image = self.pack()
+        record = self.publish_export(image, [item])
+        self.assertTrue(record['roundtrip_verified'])
+        self.assertEqual(record['receipt']['expected_install_prefixes'], [identity['install_prefix']])
+        receipt = record['receipt']['installations'][0]
+        self.assertEqual(receipt['site_dependencies'], item['site_dependencies'])
+        self.assertEqual(receipt['required_install_prefixes'], [])
+        self.assertEqual(self.publish_export(image, [item]), record)
+
     def test_real_export_multiple_partitions_modules_hashes_and_no_unselected_files(self):
         image, manifest = self.build_image(("4v100-avx512", "16v100-avx2"))
         old_umask = os.umask(0o077)

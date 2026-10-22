@@ -1,0 +1,95 @@
+{
+  "allocation": "16V100|RUNNING|3:15|16v100n02",
+  "build_complete": false,
+  "ci_validation": {
+    "passed": 893,
+    "skipped": 2,
+    "tests": 895,
+    "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39723942695"
+  },
+  "compilation": [
+    "[ 14%] Building CXX object CMakeFiles/colvars.dir/workspace/lammps/lib/colvars/colvardeps.cpp.o",
+    "[ 14%] Building CXX object CMakeFiles/gpu.dir/workspace/lammps/lib/gpu/lal_coul_long_cs.cpp.o",
+    "[ 14%] Building CXX object CMakeFiles/gpu.dir/workspace/lammps/lib/gpu/lal_coul_long_cs_ext.cpp.o",
+    "[ 14%] Building CXX object CMakeFiles/colvars.dir/workspace/lammps/lib/colvars/colvargrid.cpp.o",
+    "[ 14%] Building CXX object CMakeFiles/colvars.dir/workspace/lammps/lib/colvars/colvargrid_integrate.cpp.o",
+    "[ 14%] Building CXX object CMakeFiles/colvars.dir/workspace/lammps/lib/colvars/colvarmodule.cpp.o"
+  ],
+  "job": "1896356",
+  "markers": [
+    "LAMMPS_BUILD_AFFINITY 32 [20, 21, 22, 23, 24, 25, 26, 27, 32, 33, 34, 35, 36, 37, 38, 39, 84, 85, 86, 87, 88, 89, 90, 91, 96, 97, 98, 99, 100, 101, 102, 103]",
+    "MD_COMPILER CC=/opt/devtools/gcc/14.3.0/bin/gcc version=14.3.0",
+    "MD_COMPILER CXX=/opt/devtools/gcc/14.3.0/bin/g++ version=14.3.0",
+    "MD_COMPILER FC=/opt/devtools/gcc/14.3.0/bin/gfortran version=14.3.0",
+    "-- The CUDA compiler identification is NVIDIA 12.9.86 with host compiler GNU 14.3.0",
+    "-- Configuring done (27.8s)",
+    "-- Generating done (1.8s)",
+    "MD_DEEPMD_REGISTRATION_VERIFIED {\"registered_styles\": 13, \"registry\": \"source\"}",
+    "LAMMPS_CUDA_VERIFIED native-cuda"
+  ],
+  "observed_at": "2026-10-22T04:55:05.617239+00:00",
+  "published": false,
+  "request": {
+    "controller": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/controller/3546d33e2f041ab4e2d331dc5eb79622c6213412/lmp-39724118766-1-16v100-avx2-20261022",
+    "delivery": {
+      "deepmd_dependency": {
+        "identity": {
+          "build_id": "v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102",
+          "cpu_arch": "znver3",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100",
+          "partition": "16V100",
+          "recipe_sha256": "296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097",
+          "repository": "deepmodeling/deepmd-kit",
+          "schema": 2,
+          "software": "deepmd-kit",
+          "source_ref": "v3.2.0",
+          "source_sha": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+          "source_version": "v3.2.0",
+          "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+          "stack_sources": {
+            "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+            "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+          },
+          "target": "16v100-avx2",
+          "track": "release",
+          "version_label": "v3.2.0"
+        },
+        "runtime_plan_sha256": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e"
+      },
+      "identity": {
+        "build_id": "develop-2026-10-15-ga0e2bd6efb3d-r79751e306767",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/lammps/lammps-development-develop-2026-10-15-ga0e2bd6efb3d-r79751e306767/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "79751e30676778c69e5234d34052f0a36eefe0d92674bc91b2e215f8193c8f2a",
+        "repository": "lammps/lammps",
+        "schema": 2,
+        "software": "lammps",
+        "source_ref": "develop",
+        "source_sha": "a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b",
+        "source_version": "develop-2026-10-15",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "development",
+        "version_label": "develop-2026-10-15"
+      },
+      "schema": 1
+    },
+    "dependency_verification": {
+      "paths": 1165,
+      "prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100",
+      "verified": true
+    },
+    "job_script_sha256": "47b0270c8314e576a307fd37f739a1bb3f63ddc9799a31c9ca7659a47eb96133"
+  },
+  "run_id": "lmp-39724118766-1-16v100-avx2-20261022",
+  "scientific_verified": false,
+  "workflow_url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39724118766"
+}

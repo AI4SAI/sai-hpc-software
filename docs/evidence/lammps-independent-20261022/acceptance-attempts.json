@@ -1,0 +1,33 @@
+{
+  "artifact_unchanged": true,
+  "retained_attempts": [
+    {
+      "accepted": false,
+      "accounting": "1896777|FAILED|1:0|00:00:09|16v100n[13-14]",
+      "job": "1896777",
+      "log_sha256": "71df481db47ba23067abbf79f8ee9488507e94560fee52ee6b884faa35c576d2",
+      "output": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/runtime-tests/lmp-39724118766-1-16v100-avx2-20261022-science-20261022T060637Z",
+      "reason": "Acceptance launcher omitted the parent home-backed MPI session bind; PMIx initialization failed.",
+      "request_sha256": "d4cbbbcc10e7b19f4e164e91c6f4d66a8da281d574452a29e5765bd286d79117"
+    },
+    {
+      "accepted": false,
+      "accounting": "1896792|FAILED|1:0|00:01:28|16v100n[13-14]",
+      "job": "1896792",
+      "log_sha256": "37a12e2a5326393d63e1e5a3e9ae0fa15adaf5fb1a323b034ea7caa4fae2fb57",
+      "output": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/runtime-tests/lmp-39724118766-1-16v100-avx2-20261022-science-20261022T060922Z",
+      "reason": "All 14 numerical cases passed; report generation expected the calculation banner in lmp -h output.",
+      "request_sha256": "356258f8a3da44a41a15b08e87cede8194ceeba9693930929246f2d56ce3aaba"
+    },
+    {
+      "accepted": false,
+      "accounting": "1896805|FAILED|1:0|00:01:27|16v100n[13-14]",
+      "job": "1896805",
+      "log_sha256": "30092fb1c17eaf2a84bee95a626e9765130083d5b14fe377e956b26e29bd6c00",
+      "output": "/home/stardust/sai-hpc-software/experimental/deepmd-lammps/runtime-tests/lmp-39724118766-1-16v100-avx2-20261022-science-20261022T061247Z",
+      "reason": "All 14 numerical cases passed; report generation had not applied upstream Development/Maintenance C API version increment.",
+      "request_sha256": "bdbb97a6b4715c6a8638e65fa5975117bc843dac015f523b989a3a2db9e2fef0"
+    }
+  ],
+  "schema": 1
+}
