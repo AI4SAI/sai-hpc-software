@@ -66,25 +66,29 @@ class CP2KDependencyArchiveTests(unittest.TestCase):
             "tblite-0.6.0.tar.xz": b"verified tblite release fixture",
             "elpa-2026.02.002.tar.gz": b"verified ELPA toolchain fixture",
             "libxc-7.1.2.tar.bz2": b"verified LibXC toolchain fixture",
+            "libxs-930a2c4.tar.gz": b"verified LibXS toolchain fixture",
         }
         for constant, name in (("WIGNERNJ_SHA256", "libwignernj-0.8.0.tar.gz"),
                                ("TBLITE_RELEASE_SHA256", "tblite-0.6.0.tar.xz"),
                                ("ELPA_SHA256", "elpa-2026.02.002.tar.gz"),
-                               ("LIBXC_SHA256", "libxc-7.1.2.tar.bz2")):
+                               ("LIBXC_SHA256", "libxc-7.1.2.tar.bz2"),
+                               ("LIBXS_SHA256", "libxs-930a2c4.tar.gz")):
             digest = patch.object(cp2k_spack, constant,
                                   hashlib.sha256(self.contents[name]).hexdigest())
             digest.start()
             self.addCleanup(digest.stop)
 
     def download(self, url, **kwargs):
-        name = url.removeprefix("https://www.cp2k.org/static/downloads/")
+        name = (cp2k_spack.LIBXS_ARCHIVE if url == cp2k_spack.LIBXS_URL else
+                url.removeprefix("https://www.cp2k.org/static/downloads/"))
         return io.BytesIO(self.contents[name])
 
     def test_downloads_archives_and_only_refetches_damaged_cache_entries(self):
         expected = [self.cache / name for name in self.contents]
         with patch("urllib.request.urlopen", side_effect=self.download) as download:
             self.assertEqual(cp2k_spack.cache_source_updates(self.cache), expected)
-            self.assertEqual(download.call_count, 4)
+            self.assertEqual(download.call_count, 5)
+            self.assertEqual(download.call_args.args[0], cp2k_spack.LIBXS_URL)
             for archive in expected:
                 self.assertEqual(archive.read_bytes(), self.contents[archive.name])
             download.reset_mock()
@@ -117,6 +121,62 @@ class CP2KDependencyArchiveTests(unittest.TestCase):
                 else:
                     self.assertEqual(tblite.read_bytes(), previous)
                 self.assertEqual(wignernj.read_bytes(), self.contents[wignernj.name])
+
+
+class CP2KLibxsSelectionTests(unittest.TestCase):
+    def setUp(self):
+        parent = ROOT / ".test-work"
+        parent.mkdir(exist_ok=True)
+        temporary = tempfile.TemporaryDirectory(dir=parent)
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name)
+        self.source = self.root / "source"
+        self.toolchain = self.source / "tools/toolchain/scripts/stage4/install_libxs.sh"
+        self.toolchain.parent.mkdir(parents=True)
+
+    def run_helper(self, version, checksum, declaration=""):
+        self.toolchain.write_text(
+            f'libxs_ver="{version}"\nlibxs_sha256="{checksum}"\n{declaration}')
+        return subprocess.run(
+            ["bash", str(ROOT / "controller/cp2k_libxs.sh"), str(self.source),
+             str(self.root / "cache"), str(self.root / "updates"),
+             str(self.root / "work"), str(self.root / "prefix")],
+            capture_output=True, text=True, timeout=10)
+
+    def test_source_declaration_selects_release_or_updated_archive_without_fallback(self):
+        for version, checksum, directory in (
+                ("1.0.0", "de26f50cb986a2f0e4f92c0eb489d40a44f7e4c5acd22751a6cfa2829dabd04d", "cache"),
+                ("930a2c4", cp2k_spack.LIBXS_SHA256, "updates")):
+            with self.subTest(version=version):
+                result = self.run_helper(version, checksum)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn(str(self.root / directory / f"libxs-{version}.tar.gz"), result.stderr)
+                self.assertFalse((self.root / "work").exists())
+
+    def test_changed_version_or_checksum_is_rejected(self):
+        for version, checksum in (("1.1.0", cp2k_spack.LIBXS_SHA256),
+                                  ("930a2c4", "0" * 64), ("", "")):
+            with self.subTest(version=version):
+                result = self.run_helper(version, checksum)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("unsupported or missing CP2K LibXS", result.stderr)
+                self.assertFalse((self.root / "work").exists())
+
+    def test_intermediate_development_cannot_drop_declared_jit_repair(self):
+        result = self.run_helper(
+            "1.0.0", "de26f50cb986a2f0e4f92c0eb489d40a44f7e4c5acd22751a6cfa2829dabd04d",
+            'patch -p1 < "libxs-${libxs_ver}-jit-handle.patch"\n')
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("missing LIBXS patch", result.stderr)
+        self.assertFalse((self.root / "work").exists())
+
+    def test_development_rejects_damaged_archive_before_extraction(self):
+        updates = self.root / "updates"
+        updates.mkdir()
+        (updates / cp2k_spack.LIBXS_ARCHIVE).write_bytes(b"damaged archive")
+        result = self.run_helper("930a2c4", cp2k_spack.LIBXS_SHA256)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertFalse((self.root / "work").exists())
 
 
 class CP2KLibxcSelectionTests(unittest.TestCase):

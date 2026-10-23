@@ -40,6 +40,9 @@ ELPA_ARCHIVE = 'elpa-2026.02.002.tar.gz'
 ELPA_SHA256 = '02e3c59fec53cd8eb66a4cc15fa4fbf190cf9654227223fb8ad55713e9427932'
 LIBXC_ARCHIVE = 'libxc-7.1.2.tar.bz2'
 LIBXC_SHA256 = '3915fac94416e4c415534223ea492ad2663f928acf27e98662c861b094a6c306'
+LIBXS_ARCHIVE = 'libxs-930a2c4.tar.gz'
+LIBXS_SHA256 = '552f9dd5af66b593d81aeb5aeb8acedba01943ae8d0c1bc036ea79f5fa591e88'
+LIBXS_URL = 'https://codeload.github.com/hfp/libxs/tar.gz/930a2c4'
 
 
 def cache_source_updates(destination):
@@ -51,11 +54,12 @@ def cache_source_updates(destination):
     for name, digest in ((WIGNERNJ_ARCHIVE, WIGNERNJ_SHA256),
                          (TBLITE_RELEASE_ARCHIVE, TBLITE_RELEASE_SHA256),
                          (ELPA_ARCHIVE, ELPA_SHA256),
-                         (LIBXC_ARCHIVE, LIBXC_SHA256)):
+                         (LIBXC_ARCHIVE, LIBXC_SHA256),
+                         (LIBXS_ARCHIVE, LIBXS_SHA256)):
         archive = destination / name
         if not archive.is_file() or hashlib.sha256(archive.read_bytes()).hexdigest() != digest:
-            with urllib.request.urlopen('https://www.cp2k.org/static/downloads/' + name,
-                                        timeout=60) as response:
+            url = LIBXS_URL if name == LIBXS_ARCHIVE else 'https://www.cp2k.org/static/downloads/' + name
+            with urllib.request.urlopen(url, timeout=60) as response:
                 data = response.read()
             if hashlib.sha256(data).hexdigest() != digest:
                 raise ValueError('CP2K source checksum mismatch: ' + name)
