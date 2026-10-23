@@ -1,0 +1,31 @@
+{
+  "argv": [
+    "/usr/bin/python3",
+    "-B",
+    "-s",
+    "/org/org-open-sai/proj-sai-hpc-software/controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf/software_controller.py",
+    "submit",
+    "cp2k",
+    "39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf-node-retry1",
+    "cfe5e5d87aaf302953f14eb43587bef2411a8fb2",
+    "master-2026-10-23",
+    "4v100-avx512",
+    "--track",
+    "development",
+    "--source-ref",
+    "master",
+    "--dependencies-run",
+    "39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf-dependencies",
+    "--overlay-mb",
+    "16384",
+    "--jobs",
+    "8",
+    "--minutes",
+    "240"
+  ],
+  "rule": "one submission only; inspect retained run on any interruption",
+  "started_at": "2026-10-23T18:14:36.651783+00:00",
+  "submission_environment_overrides": {
+    "SBATCH_EXCLUDE": "4v100n01"
+  }
+}

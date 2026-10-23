@@ -1,0 +1,6 @@
+BUILD_CAPACITY_POLICY filesystem-enforced 39983165813-1-development-8v100v0-avx512-2026-10-23-cfe5e5d87aaf
+CP2K_EXACT_DEPENDENCY_CHECKPOINT_CLONED
+CP2K_IMAGE_DRIVER sha256=46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10 config=/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-8v100v0-avx512-2026-10-23-cfe5e5d87aaf/runtime/apptainer-fuse2fs.conf
+INFO:    User not listed in /etc/subuid, trying root-mapped namespace
+INFO:    Using fakeroot command combined with root-mapped namespace
+FATAL:   container creation failed: mount hook function failure: mount /proc/self/fd/8->/opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 error: while mounting image /proc/self/fd/8: fuse2fs failed to mount /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 in 10s

@@ -1,0 +1,61 @@
+{
+  "scope": "Read-only upstream head check during the frozen development build campaign; newer commits do not relabel or mutate running candidates.",
+  "next_update_policy": "Complete the selected source/partition matrices; subsequent daily runs resolve upstream branches once per channel and record new identities.",
+  "sources": [
+    {
+      "software": "abacus",
+      "repository": "deepmodeling/abacus-develop",
+      "branch": "develop",
+      "date": "2026-10-23T15:09:20Z",
+      "sha": "89595dd29a26aec34d623518cadf736c17345f69",
+      "subject": "test: consolidate NAO GPU integration cases into 02 and 03 (#8198)",
+      "campaign_source_sha": "370ba685e6707b3625c5580ff9d02ef0afb248e8",
+      "same_as_campaign": false
+    },
+    {
+      "software": "cp2k",
+      "repository": "cp2k/cp2k",
+      "branch": "master",
+      "date": "2026-10-23T18:00:00Z",
+      "sha": "62906da87cd0e92000c341d4500e1ed4a5a6af9c",
+      "subject": "Compress HFX caches at a width per group (#6352)",
+      "campaign_source_sha": "cfe5e5d87aaf302953f14eb43587bef2411a8fb2",
+      "same_as_campaign": false
+    },
+    {
+      "software": "lammps",
+      "repository": "lammps/lammps",
+      "branch": "develop",
+      "date": "2026-10-15T19:18:40Z",
+      "sha": "a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b",
+      "subject": "Merge pull request #5244 from russellkajouri/fix-gcmc-atom-charge",
+      "campaign_source_sha": "a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b",
+      "same_as_campaign": true
+    },
+    {
+      "software": "deepmd-kit",
+      "repository": "deepmodeling/deepmd-kit",
+      "branch": "master",
+      "date": "2026-10-23T02:31:46Z",
+      "sha": "558f56962775098b8b554e341c3b37d2f86e6aeb",
+      "subject": "fix(cli): fit downstream bias without reapplying checkpoint presets (#6074)",
+      "campaign_source_sha": "558f56962775098b8b554e341c3b37d2f86e6aeb",
+      "same_as_campaign": true
+    },
+    {
+      "software": "gpumd",
+      "repository": "brucefan1983/GPUMD",
+      "branch": "master",
+      "date": "2026-10-21T19:50:44Z",
+      "sha": "2c93346fce4461de1c42c77e7fe74cdb6b0e3df6",
+      "subject": "Merge pull request #1843 from brucefan1983/shift_energy_and_extend_model_files",
+      "campaign_source_sha": "2c93346fce4461de1c42c77e7fe74cdb6b0e3df6",
+      "same_as_campaign": true
+    }
+  ],
+  "observed_interval_utc": [
+    "2026-10-23T18:20:00Z",
+    "2026-10-23T18:31:03Z"
+  ],
+  "observation_time_precision": "API requests occurred within this recorded interval; their exact timestamp was not captured."
+}

@@ -1,0 +1,26 @@
+{
+  "allocation": "JobId=1915264 JobName=cp2k-libxc-ref-dsprhbm UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A Priority=0 Nice=0 Account=proj-sai-hpc-software QOS=rush-cpu WCKey=* JobState=PENDING Reason=JobHeldUser Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=00:15:00 TimeMin=N/A SubmitTime=2026-10-24T02:40:43 EligibleTime=Unknown AccrueTime=Unknown StartTime=Unknown EndTime=Unknown Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-24T02:40:43 Scheduler=Main Partition=DSPRHBM AllocNode:Sid=login-01:1451784 ReqNodeList=(null) ExcNodeList=(null) NodeList= NumNodes=1-1 NumCPUs=2 NumTasks=1 CPUs/Task=2 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=2,mem=2362M,node=1,billing=16 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=2 MinMemoryCPU=1181M MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null) Command=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/job.sbatch SubmitLine=sbatch --hold --parsable /org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/job.sbatch WorkDir=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm StdErr=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/results/slurm-1915264.stderr StdIn=/dev/null StdOut=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/results/slurm-1915264.stdout TresPerTask=cpu=2\n",
+  "argv": [
+    "sbatch",
+    "--hold",
+    "--parsable",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/job.sbatch"
+  ],
+  "job_id": "1915264",
+  "one_submission_only": true,
+  "release": {
+    "argv": [
+      "scontrol",
+      "release",
+      "1915264"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": ""
+  },
+  "request_sha256": "235d88cc6bf438a8cef8324aa51ec4bd5d33875f7af4416d7d4ef4caa02ee4da",
+  "returncode": 0,
+  "started_at": "2026-10-23T18:40:43.339833+00:00",
+  "stderr": "",
+  "stdout": "1915264\n"
+}

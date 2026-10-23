@@ -1,0 +1,15 @@
+{
+  "allocation": "JobId=1915249 JobName=sai-cp2k-build-4v100-avx512-ae6467ac2934 UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A Priority=6003 Nice=0 Account=proj-sai-hpc-software QOS=flood-1o2gpu WCKey=* JobState=RUNNING Reason=None Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:02:15 TimeLimit=04:00:00 TimeMin=N/A SubmitTime=2026-10-24T02:37:31 EligibleTime=2026-10-24T02:37:31 AccrueTime=2026-10-24T02:37:31 StartTime=2026-10-24T02:37:54 EndTime=2026-10-24T06:37:54 Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-24T02:37:54 Scheduler=Backfill Partition=4V100 AllocNode:Sid=login-01:1366884 ReqNodeList=(null) ExcNodeList=4v100n01 NodeList=4v100n04 BatchHost=4v100n04 NumNodes=1 NumCPUs=8 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=1,mem=22G,node=1,billing=194,gres/gpu=1 AllocTRES=cpu=8,mem=22G,node=1,billing=194,gres/gpu=1 Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=1 MinMemoryTRES=22G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null) Command=/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf-node-retry4/job.sbatch SubmitLine=/usr/bin/sbatch --hold --exclude=4v100n01 --parsable /org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf-node-retry4/job.sbatch WorkDir=/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf-node-retry4 StdErr= StdIn=/dev/null StdOut=/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf-node-retry4/results/slurm-1915249.log CpusPerTres=gpu:8 MemPerTres=gpu:22528 TresPerNode=gres/gpu:1\n",
+  "excluded_node": "4v100n01",
+  "expected_cpus": 8,
+  "job_id": "1915249",
+  "observed_at": "2026-10-23T18:40:09.253420+00:00",
+  "running_allocation_checks": {
+    "account": true,
+    "cpus": true,
+    "exclusion": true,
+    "gpu": true,
+    "node": true,
+    "workdir": true
+  }
+}

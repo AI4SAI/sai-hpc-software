@@ -1,0 +1,31 @@
+#!/usr/bin/python3 -I
+import hashlib
+import json
+from pathlib import Path
+import subprocess
+import sys
+TASK = Path('/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-8v100v0-avx512-2026-10-23-cfe5e5d87aaf-node-retry1')
+
+expected = ['--parsable', str(TASK / 'job.sbatch')]
+received = sys.argv[1:]
+if received != expected:
+    raise ValueError('restricted sbatch wrapper received unexpected arguments')
+executed = ['/usr/bin/sbatch', '--hold', '--exclude=8v100v0n02', *received]
+record = dict(received_argv=received, executed_argv=executed,
+    wrapper_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+    job_script_sha256=hashlib.sha256((TASK / 'job.sbatch').read_bytes()).hexdigest(),
+    sbatch_binary_sha256=hashlib.sha256(Path('/usr/bin/sbatch').read_bytes()).hexdigest())
+with (TASK / 'results/sbatch-wrapper-call.json').open('x') as stream:
+    json.dump(record, stream, sort_keys=True, indent=2)
+    stream.write('\n')
+result = subprocess.run(executed, cwd=TASK, capture_output=True, text=True)
+job = result.stdout.strip().split(';')[0]
+with (TASK / 'results/sbatch-wrapper-result.json').open('x') as stream:
+    json.dump(dict(returncode=result.returncode, job_id=job,
+        stdout=result.stdout, stderr=result.stderr), stream, sort_keys=True, indent=2)
+    stream.write('\n')
+sys.stdout.write(result.stdout)
+sys.stderr.write(result.stderr)
+if result.returncode == 0 and not job.isdigit():
+    raise ValueError('ambiguous held submission; inspect allocation, do not resubmit')
+raise SystemExit(result.returncode)

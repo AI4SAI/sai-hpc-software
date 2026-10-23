@@ -1,4 +1,4 @@
-# CP2K development LibXC supplementary acceptance
+# CP2K development builds and LibXC supplementary acceptance
 
 The standard seven-case CP2K science gate uses built-in PBE and does not exercise
 the private LibXC 7.1.2 library added for current development. This independent
@@ -65,7 +65,7 @@ project maintenance directory and run (substitute the target in both run IDs):
 ```bash
 python3 libxc_smoke.py prepare \
   --controller /org/org-open-sai/proj-sai-hpc-software/controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf \
-  --build-run-id 39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf-mount-retry2 \
+  --build-run-id 39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf-node-retry4 \
   --run-id cp2k-libxc-39983165813-4v100-avx512
 sbatch /org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-39983165813-4v100-avx512/job.sbatch
 ```
@@ -87,7 +87,44 @@ raw seven-case single/two-node science, native export, module and all three
 dependency/build/science allocations. Invoke it on the login node with
 `python3 -I -B - <target> < audit.py`. This audit does not submit jobs or change
 acceptance records; it also does not assert physical `/opt` installation or
-replace the LibXC supplement. Its result is pending publication of each target.
+replace the LibXC supplement. The 16V100 final artifact and seven-case science
+gate have passed this independent audit; see [16V100-validation.json](16V100-validation.json).
+The DSPRHBM seven-case science job `1915020` also completed successfully;
+publication is still in progress and its final audit is recorded separately
+when available.
+
+## Initial LibXC numerical results
+
+The first supplementary jobs, `1915015` on 16V100 and `1915017` on DSPRHBM,
+executed all requested calculations, but **failed the original built-in PBE
+versus LibXC energy gate**. Their energy differences were respectively
+`4.163449169425348e-6` and `4.163449183636203e-6` Ha, above the predeclared
+`1e-6` Ha tolerance. Both maximum force differences were
+`1.353720000003139e-7` Ha Bohr⁻¹. The failed records and original tolerances
+remain unchanged. Raw requests, inputs, outputs, loader logs and allocations are
+archived in [16v100-libxc-1915015](16v100-libxc-1915015/collection.json) and
+[dsprhbm-libxc-1915017](dsprhbm-libxc-1915017/collection.json).
+
+Independent parsing of the same raw calculations shows that the 16V100 LibXC
+HOST and DEVICE energies differ by `2.3447910280083306e-13` Ha and the recorded
+forces are identical. Its profiler records 94 invocations of the LibXC
+`work_gga_gpu_vxc_unpol` kernel, totaling `30711322` ns. LibXC HOST results on
+16V100 and DSPRHBM differ by `1.3571366253017914e-12` Ha in energy and about
+`1e-12` Ha Bohr⁻¹ in force. These observations are preserved in
+[libxc-initial-comparison-analysis.json](libxc-initial-comparison-analysis.json);
+they do not replace the failed gate or grant supplementary acceptance.
+
+Source review found different default PBE constants: CP2K's built-in
+implementation uses beta `0.066725` and PW92 A1 `0.031091`; LibXC uses beta
+`0.06672455060314922` and the modified PW92 A1 `0.0310907`. LibXC's exposed PBE
+parameters do not include that PW92 A1, so changing beta alone cannot align
+the complete functionals. An independently reviewed reference protocol uses
+the upstream, pre-existing Density Functional Repository fixtures with the
+matching LibXC defaults; see the frozen
+[v1 protocol](libxc-reference/reference-v1/protocol.json). It is a separate verification of the same final SIF,
+not a relaxation of the failed comparison. The DSPRHBM SIF's static LibXC API
+is exported by `lib64/libcp2k.so.2026.2`; its byte hash and symbol inspection are
+recorded in [libxc-static-symbols-dsprhbm.json](libxc-static-symbols-dsprhbm.json).
 
 ## 4V100 mount failure and fresh application attempt
 
@@ -162,3 +199,71 @@ confirms all tracked original, first-retry and diagnostic files stayed unchanged
 The [collection manifest](4v100-retry-after-diagnostic-1914931/collection.json)
 records the raw submission file hashes. All normal acceptance requirements still
 apply to this new attempt.
+
+That second application recovery, `1914931`, subsequently failed with the same
+10-second `fuse2fs` timeout on `4v100n01`. The checkpoint clone completed and
+the original source remained unchanged, but no application compiler ran.
+[Its raw failure evidence](4v100-mount-failure-1914931/collection.json) is
+retained independently of the earlier diagnostic cancellation.
+
+Subsequent submission attempts are also retained:
+
+| Job | Fresh suffix | Outcome |
+|---|---|---|
+| `1915039` | `-node-retry1` | The installed `sbatch` does not support `SBATCH_EXCLUDE`; the postcheck found no exclusion and allocation on `4v100n01`. Only this newly submitted job was explicitly cancelled. |
+| `1915163` | `-node-retry2` | Explicit `--hold --exclude=4v100n01` worked. A guard incorrectly required `CpusPerTres` before scheduling had expanded GPU CPU resources, so it cancelled the held job. Elapsed time was zero and no node was assigned. |
+| No allocation | `-node-retry3` | An explicit `--cpus-per-task=8` request was rejected by SAI's submission policy: CPUs must follow GPU count. No job ID or successful request record was created. |
+
+Their full commands, receipts, original input hashes and accounting are in
+[4v100-exclusion-cancelled-1915039](4v100-exclusion-cancelled-1915039/collection.json)
+and [4v100-held-cancelled-1915163](4v100-held-cancelled-1915163/collection.json).
+These are submission/recovery errors, not additional compiler failures.
+The [CPU-policy rejection](4v100-cpu-policy-rejected-node-retry3/collection.json)
+preserves the exact rejected wrapper command and site error. The site's CPU
+policy contradicts the resource override attempted by
+[prepare_4v100_node_retry_resources.py](prepare_4v100_node_retry_resources.py).
+
+The [GPU-only recovery](prepare_4v100_node_retry_gpu_only.py) uses fresh suffix
+`-node-retry4` and a restricted external `sbatch` wrapper with only
+`--hold --exclude=4v100n01`. It checks account, partition, command, work directory,
+GPU request, task count, QOS, time limit, exclusion and held status before
+release. Pre-scheduling CPU fields are recorded without imposing a value;
+the running allocation must then be observed read-only for the expected eight
+logical CPUs per GPU. A mismatch preserves the new held job for review.
+The original controller, generated job script, recipe, dependency checkpoint
+and old application overlays are not edited.
+
+This recovery submitted `1915249`, which ran on `4v100n04` with eight allocated
+logical CPUs and one GPU. `ExcNodeList=4v100n01` remained effective. All held
+allocation checks, controller/input hashes and the later running resource
+checks passed. The exact
+[submission and running-allocation records](4v100-node-retry-1915249/collection.json)
+preserve this transition; application completion and science acceptance are
+still pending.
+
+## 8V100V0 application mount failure
+
+Job `1914617` completed its exact dependency clone on `8v100v0n02`, then failed
+with exit `255:0` at the same pre-container 10-second `fuse2fs` mount deadline.
+Its elapsed time was `01:01:06`; the long preparation included continuing image
+reads and did not enter application compilation. The preparation report records
+`status=prepared`, `source_unchanged=true` and `upper_directory_unchanged=true`.
+The source checkpoint and failed clone remain intact. See the original
+[logs, request, preparation report and accounting](8v100-mount-failure-1914617/collection.json).
+
+The separately reviewed [8V100V0 recovery](prepare_8v100_node_retry.py) prepares
+a fresh `-node-retry1` using the same sealed dependency checkpoint, frozen
+controller and source/recipe identity. Its external wrapper requests only
+`--hold --exclude=8v100v0n02`. An earlier staged helper that explicitly requested
+six CPUs was never executed after the 4V100 policy rejection was observed.
+The revised helper leaves CPU derivation to the site and expects six logical
+CPUs per GPU in the running allocation. All other held allocation and
+original-input checks must pass before release; an unexpected field leaves
+the new allocation held for review. The cause of either partition's mount
+timeout has not been established.
+
+The revised GPU-only recovery submitted `1915260`, which ran on `8v100v0n03`
+with six allocated logical CPUs and one GPU, excluding `8v100v0n02` as requested.
+The held and running checks passed; see its
+[submission evidence](8v100-node-retry-1915260/collection.json).
+Application completion and normal science acceptance remain pending.
