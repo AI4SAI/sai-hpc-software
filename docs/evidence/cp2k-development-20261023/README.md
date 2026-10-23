@@ -50,6 +50,15 @@ file is modified. Nsight runs **inside** the SIF, avoiding loss of injection
 through Apptainer's `--cleanenv`. All new files live in the project directory;
 neither `/opt` nor the old home-directory runs receive writes.
 
+The frozen controller stores its launcher as `cp2k`; the source checkout calls
+the same file `cp2k_runtime.sh`. The first 16V100 supplementary preparation used
+the checkout filename and stopped before any Slurm submission. Its incomplete
+`runtime-tests/cp2k-libxc-39983165813-16v100-avx2` directory is retained. The
+corrected helper reads and validates the frozen `cp2k` launcher before creating
+a task, and uses fresh run `cp2k-libxc-39983165813-16v100-avx2-prep2` for the next
+attempt. This preparation error did not change the SIF, controller or normal
+science acceptance.
+
 After the ordinary build produces `artifact.path`, stage this script under the
 project maintenance directory and run (substitute the target in both run IDs):
 

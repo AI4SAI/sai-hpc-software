@@ -96,7 +96,10 @@ def replace_once(text, before, after):
 
 
 def instrument_launcher(control):
-    text = (control / 'cp2k_runtime.sh').read_text()
+    launcher = control / 'cp2k'
+    if not launcher.is_file() or launcher.is_symlink() or launcher.resolve() != launcher:
+        raise ValueError('original frozen CP2K launcher must be a canonical regular file')
+    text = launcher.read_text()
     text = replace_once(text,
         'launcher_control=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)',
         'launcher_control=' + shlex.quote(str(control)))
@@ -149,6 +152,7 @@ def prepare(args):
         raise ValueError('this supplementary evidence is pinned to the reviewed development source')
     if image != delivery.artifact_path(ROOT, identity, args.build_run_id):
         raise ValueError('build run/artifact mismatch')
+    launcher_text = instrument_launcher(control)
     task = ROOT / 'runtime-tests' / remote.safe_name(args.run_id)
     if task.resolve() != task:
         raise ValueError('supplementary task directory must be canonical')
@@ -172,7 +176,7 @@ def prepare(args):
                     raise ValueError('pinned fixture data differs: ' + name)
         for path in work.iterdir():
             hashes[str(path.relative_to(task))] = sha(path)
-    (task / 'runtime.sh').write_text(instrument_launcher(control))
+    (task / 'runtime.sh').write_text(launcher_text)
     (task / 'runtime.sh').chmod(0o700)
     shutil.copyfile(__file__, task / 'libxc_smoke.py')
     hashes['runtime.sh'] = sha(task / 'runtime.sh')
@@ -180,7 +184,7 @@ def prepare(args):
     request = dict(schema=1, purpose='cp2k-development-libxc-supplement',
         identity=identity, build_run_id=args.build_run_id, artifact=str(image),
         artifact_sha256=manifest['sha256'], controller=str(control),
-        original_launcher_sha256=sha(control / 'cp2k_runtime.sh'),
+        original_launcher_sha256=sha(control / 'cp2k'),
         controller_hashes={str(p.relative_to(control)): sha(p) for p in control.rglob('*')
                            if p.is_file() and '__pycache__' not in p.parts},
         script_hashes=hashes, modes=modes, tolerances=TOLERANCES,
