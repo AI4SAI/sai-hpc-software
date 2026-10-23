@@ -35,12 +35,22 @@ all 76 regular files, four symlinks and the public module. Both ordinary and
 cache-bypassing module queries list `abacus/3.11.0-beta11-auto`.
 The install contains about 1.83 GiB of standard runtime files and a standalone public
 partition selector. Workflow metadata, test inputs and private dependency
-development files stay outside `/opt`. Native jobs `1903636`–`1903639` are
-submitted and preserved with frozen inputs, but remain `PENDING` with
-`AssocGrpJobsLimit`; the user also reports an exhausted account allocation.
-All 30 single/two-node native scientific calculations remain outstanding.
-[Physical installation and pending acceptance evidence](evidence/abacus-beta11-20261022/physical-installation.json)
-records this distinction; physical runtime acceptance is not yet claimed.
+development files stay outside `/opt`. All 30 single/two-node native scientific
+calculations now pass in jobs `1905277`, `1905278`, `1905279` and `1905309`,
+each `COMPLETED / 0:0`. Raw-result revalidation, exact loader/feature/placement
+checks, real cuSOLVERMp/NCCL execution, module unload and post-run installation
+readback also pass; maximum reference energy error is `2.046e-8 eV`.
+The new work and scratch directory is `/org/org-open-sai/proj-sai-hpc-software`,
+and Slurm accounting confirms `proj-sai-hpc-software` on every accepted job.
+Existing build artifacts and reference data remain under home storage.
+The first CPU job `1905280` failed before application execution because the
+explicit MPI host list provided one slot per node; specifying four CPU slots
+per node fixed it without changing resources or scientific criteria.
+The superseded private-account jobs `1903636`–`1903639` were cancelled while
+pending; their files and the failed CPU attempt are preserved.
+[Physical native acceptance and project-account evidence](evidence/abacus-beta11-20261022/physical-native-acceptance.json).
+This validates the new directory for native acceptance; automatic build CI
+still constructs its existing home project path and has not been migrated.
 Optional public deployment of the container image driver is tracked in
 [issue #12](https://github.com/AI4SAI/sai-hpc-software/issues/12).
 

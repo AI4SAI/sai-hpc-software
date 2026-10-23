@@ -94,20 +94,95 @@ class AbacusNativeChecksTests(unittest.TestCase):
         with patch.object(native.shutil, 'which', return_value='/mpi/mpirun'):
             gpu = native.command_for(self.root, ['node-a', 'node-b'], False, [])
             cpu = native.command_for(self.root, ['node-a', 'node-b'], True, [])
+            single_cpu = native.command_for(self.root, ['node-a'], True, [])
         self.assertEqual(gpu[gpu.index('--bind-to')+1], 'none')
         self.assertEqual(gpu[gpu.index('-np')+1], '2')
+        self.assertEqual(gpu[gpu.index('--host')+1], 'node-a,node-b')
         self.assertEqual(cpu[cpu.index('-np')+1], '8')
         self.assertEqual(cpu[cpu.index('--map-by')+1], 'ppr:4:node:PE=2')
+        self.assertEqual(cpu[cpu.index('--host')+1], 'node-a:4,node-b:4')
+        self.assertEqual(single_cpu[single_cpu.index('--host')+1], 'node-a:4')
+        self.assertEqual(single_cpu[single_cpu.index('-np')+1], '4')
 
     def test_missing_installation_never_submits_compute_job(self):
         with patch.object(native, 'preflight', return_value=(self.release, self.reference)), \
-                patch.object(native, 'home_work_root', return_value=self.root), \
+                patch.object(native, 'native_work_root', return_value=self.root), \
                 patch.object(native.Path, 'resolve', return_value=self.root), \
                 patch.object(native.deployment, 'preflight', side_effect=ValueError('missing installed files')), \
                 patch.object(native.subprocess, 'check_output') as submit, \
                 self.assertRaisesRegex(ValueError, 'missing installed files'):
             native.submit(['4V100'])
         submit.assert_not_called()
+
+    def test_work_root_allows_home_and_authorized_project_but_rejects_symlink_escape(self):
+        project = self.root / 'project'
+        home = self.root / 'home'
+        other = self.root / 'other'
+        for path in (project, home, other):
+            path.mkdir()
+        (project / 'escape').symlink_to(other, target_is_directory=True)
+        with patch.object(native, 'PROJECT_WORK_ROOT', project), patch.object(native.Path, 'home', return_value=home):
+            for path in (project, project / 'new-run', home / 'new-run'):
+                self.assertEqual(native.native_work_root(str(path)), path)
+            for path in (other, project / 'escape' / 'new-run', self.root / 'project-other'):
+                with self.subTest(path=path), self.assertRaisesRegex(ValueError, 'work directory must be'):
+                    native.native_work_root(str(path))
+
+    def test_project_billing_and_work_directory_checked_before_releasing_job(self):
+        project = self.root / 'project'
+        project.mkdir()
+        outputs = []
+        def freeze(output, source, work_root, partition, reference, account=None):
+            output.mkdir()
+            (output / 'request.json').write_text('{}')
+            self.assertEqual(source, PACKAGE)
+            self.assertEqual(work_root, project)
+            self.assertEqual(account, native.PROJECT_ACCOUNT)
+            outputs.append(output)
+
+        def slurm(command, **kwargs):
+            if command[0] == 'sbatch':
+                self.assertIn('--hold', command)
+                self.assertIn('--account=' + native.PROJECT_ACCOUNT, command)
+                self.assertIn('--chdir=' + str(outputs[-1]), command)
+                self.assertEqual(kwargs['cwd'], outputs[-1])
+                return '123\n'
+            return f'JobId=123 Partition=4V100 Account={native.PROJECT_ACCOUNT} WorkDir={outputs[-1]}\n'
+
+        with patch.dict(os.environ, SAI_SOFTWARE_ROOT=str(PACKAGE), SAI_ABACUS_NATIVE_WORK_ROOT=str(project)), \
+                patch.object(native, 'PROJECT_WORK_ROOT', project), \
+                patch.object(native, 'preflight', return_value=(self.release, self.reference)), \
+                patch.object(native.deployment, 'preflight'), patch.object(native, 'freeze', side_effect=freeze), \
+                patch.object(native.subprocess, 'check_output', side_effect=slurm), \
+                patch.object(native.subprocess, 'run') as release, contextlib.redirect_stdout(io.StringIO()):
+            native.submit(['4V100'])
+        release.assert_called_once_with(['scontrol', 'release', '123'], check=True)
+        self.assertTrue((outputs[0] / 'submission-allocation.txt').is_file())
+
+    def test_wrong_project_billing_never_releases_held_job(self):
+        project = self.root / 'project'
+        project.mkdir()
+        def freeze(output, *args):
+            output.mkdir()
+            (output / 'request.json').write_text('{}')
+        with patch.dict(os.environ, SAI_SOFTWARE_ROOT=str(PACKAGE), SAI_ABACUS_NATIVE_WORK_ROOT=str(project)), \
+                patch.object(native, 'PROJECT_WORK_ROOT', project), \
+                patch.object(native, 'preflight', return_value=(self.release, self.reference)), \
+                patch.object(native.deployment, 'preflight'), patch.object(native, 'freeze', side_effect=freeze), \
+                patch.object(native.subprocess, 'check_output', side_effect=[
+                    '123\n', 'JobId=123 Partition=4V100 Account=private-stardust WorkDir=/home/stardust\n']), \
+                patch.object(native.subprocess, 'run') as release, contextlib.redirect_stdout(io.StringIO()), \
+                self.assertRaisesRegex(ValueError, 'Slurm allocation differs'):
+            native.submit(['4V100'])
+        release.assert_not_called()
+
+    def test_allocation_rejects_other_account_directory_job_and_partition(self):
+        text = 'JobId=123 Partition=4V100 Account=proj-sai-hpc-software WorkDir=/org/project/run\n'
+        native.check_allocation(text, '123', '4V100', Path('/org/project/run'), native.PROJECT_ACCOUNT)
+        for old, new in [('123', '124'), ('4V100', '16V100'), ('proj-sai-hpc-software', 'private-stardust'),
+                         ('/org/project/run', '/home/stardust')]:
+            with self.subTest(old=old), self.assertRaisesRegex(ValueError, 'Slurm allocation differs'):
+                native.check_allocation(text.replace(old, new), '123', '4V100', Path('/org/project/run'), native.PROJECT_ACCOUNT)
 
     def test_slurm_requires_job_partition_and_exit_status(self):
         with patch.object(native.subprocess, 'check_output', return_value='123|COMPLETED|0:0|4V100|\n'):

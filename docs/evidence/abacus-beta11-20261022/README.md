@@ -71,7 +71,7 @@ Read-only `install.sh --verify` passed as the ordinary `stardust` account.
 An independent inventory confirmed all 76 regular-file hashes, four symlink
 targets, executable access and the installed module hash against the committed
 deployment package. Both ordinary and `--ignore_cache` module queries list
-the new version. No native calculation has run in this post-install suite.
+the new version. The initial post-install submission was blocked:
 
 | Partition | Native acceptance job | Recorded status |
 | --- | --- | --- |
@@ -83,15 +83,65 @@ the new version. No native calculation has run in this post-install suite.
 The jobs use `private-stardust`; the recorded queue reason is
 `AssocGrpJobsLimit`. The user separately reported that the account's allocation
 is exhausted; the scheduler reason alone does not establish its balance.
-Jobs and checksum-verified frozen inputs are preserved under
+The initial jobs and checksum-verified frozen inputs were recorded under
 `/home/stardust/sai-hpc-software/runtime-tests/abacus-beta11-physical-20261023-074725-2961798`.
-There are no calculation results or native acceptance reports at this snapshot.
-All 30 physical single/two-node scientific cases remain outstanding.
+There were no calculation results or native acceptance reports at that snapshot.
+All 30 physical single/two-node scientific cases were then outstanding.
 The pending accounting rows' `0:0` exit fields are not successful completion.
 [physical-installation.json](physical-installation.json) records the physical
 inventory, module queries, submission hashes and timestamped Slurm evidence.
-An ordinary account with allocation and source read access can use the existing
-submission script; check the retained jobs before resubmitting on this account.
+
+### Accepted native execution in the project directory — October 23
+
+The user authorized `/org/org-open-sai/proj-sai-hpc-software` as the new work
+directory. The directory is writable by `stardust`, and Slurm associates the
+user with account `proj-sai-hpc-software`. The updated native submission script
+supports this exact project tree, submits from each frozen result directory,
+sets `--chdir` and explicitly requests the project account. It verifies the
+recorded account, directory, partition and job ID before releasing each hold,
+and rechecks allocation information during execution and raw-result validation.
+All new output and MPI/CUDA scratch use the project tree. Existing SIFs,
+exports and numerical references remain in `/home/stardust/sai-hpc-software`.
+
+| Partition | Accepted job | Elapsed | Scientific cases | Result |
+| --- | --- | --- | ---: | --- |
+| 4V100 | 1905277 | 35 s | 8 | COMPLETED / 0:0 |
+| 16V100 | 1905278 | 67 s | 8 | COMPLETED / 0:0 |
+| 8V100V0 | 1905279 | 53 s | 8 | COMPLETED / 0:0 |
+| DSPRHBM | 1905309 | 53 s | 6 | COMPLETED / 0:0 |
+
+Independent raw revalidation passed all 30 scientific cases, version/features,
+exact executable and dependency loading, MPI placement, module unload and real
+distributed cuSOLVERMp/NCCL calls. Every accepted accounting row names
+`proj-sai-hpc-software` and its exact `/org/...` result directory. The maximum
+reference energy error is `2.0453626348171383e-8 eV`, below `1e-5 eV`.
+Post-run physical file, link and public module readback also passed. Local
+validation matched the frozen controller hashes to their Git revisions and
+all 30 energy values to the committed scientific references.
+
+The initial CPU job `1905280` failed during MPI startup: the explicit `--host`
+list defaulted to one slot per host, insufficient for the eight requested
+ranks. Adding `:4` to each CPU host preserves the allocated four ranks per
+node and two threads per rank. The CPU-only retry passed without changing
+the binary, inputs, resource request or tolerances. The failure remains in
+the initial four-partition submission; it is not an all-successful first run.
+GPU evidence uses its original frozen controller revision; CPU evidence uses
+the subsequent slot correction. Revalidation uses each job's exact pinned
+controller. No completed GPU calculation was rerun.
+
+The three GPU jobs are below
+`/org/org-open-sai/proj-sai-hpc-software/runtime-tests/abacus-beta11-physical-20261023-110843-1765150/`;
+the accepted CPU job is below
+`/org/org-open-sai/proj-sai-hpc-software/runtime-tests/abacus-beta11-physical-20261023-111141-1795364/`.
+The old private-account jobs `1903636`–`1903639` were cancelled while still
+pending after the new jobs were admitted. Their files remain intact.
+[physical-native-acceptance.json](physical-native-acceptance.json) pins accepted
+requests, controller revisions, raw inventories, numerical samples, accounting,
+the retained failure and post-run installed bytes.
+All 25 focused deployment tests passed, including wrong-account/work-directory
+hold protection, path escape rejection and CPU single/two-node slot coverage.
+This directory/account change applies to the native acceptance package;
+automatic build CI still uses its existing home root.
 
 ### CPU reference-library recovery
 

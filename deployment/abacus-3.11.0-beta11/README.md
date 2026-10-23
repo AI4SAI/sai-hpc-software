@@ -10,6 +10,10 @@
 /home/stardust/sai-hpc-software/deployment/abacus-3.11.0-beta11
 ```
 
+新的原生验收工作目录使用 `/org/org-open-sai/proj-sai-hpc-software`，
+该目录的 `deployment/abacus-3.11.0-beta11` 保存更新后的验收脚本。
+已有 SIF、原生导出和参考结果仍从上述家目录读取，无需移动。
+
 ## 管理员执行
 
 以有目标目录写权限的 `saiuser01` 执行：
@@ -100,8 +104,27 @@ HSE/DeePKS 沿用已验收输入的 CPU 算法，GPU 始终可见；PW 在 GPU �
 
 所有运行直接执行物理 `/opt` 的 ABACUS，不启动容器。
 提交时将控制脚本和输入固定到新结果目录，避免排队期间修改影响作业。
-输出及 MPI/CUDA 临时文件均在执行账号自己的家目录，不使用节点 `/tmp`；
-可用 `SAI_ABACUS_NATIVE_WORK_ROOT` 指定该账号家目录内的工作根。
+输出及 MPI/CUDA 临时文件写入执行账号的家目录或项目目录
+`/org/org-open-sai/proj-sai-hpc-software`，不使用节点 `/tmp`。
+可用 `SAI_ABACUS_NATIVE_WORK_ROOT` 指定家目录或该项目目录内的工作根。
+从项目目录中的部署包运行时，默认选用该项目工作根；从原家目录部署包运行时，
+默认仍为执行账号的家目录。符号链接解析后落到其他位置的工作根会被拒绝。
+
+使用项目计费执行四分区验收：
+
+```bash
+cd /org/org-open-sai/proj-sai-hpc-software/deployment/abacus-3.11.0-beta11
+SAI_SOFTWARE_ROOT=/home/stardust/sai-hpc-software \
+SAI_ABACUS_NATIVE_WORK_ROOT=/org/org-open-sai/proj-sai-hpc-software \
+bash submit-native-checks.sh all
+```
+
+`SAI_SOFTWARE_ROOT` 在这里仅指定已有验收参考材料的位置。
+新结果、冻结输入及 MPI/CUDA 临时文件写入项目目录。
+脚本从新结果目录调用 `sbatch`，显式传入 `--chdir`，并选择
+`--account=proj-sai-hpc-software`。提交时先保留 hold，记录作业号并核对
+Slurm 的实际 `Account`、`WorkDir`、分区和作业号后才释放；核对失败时保留 hold。
+运行和复验还会再次核对这些分配信息。
 
 提交脚本会打印结果目录和完成后的复验命令：
 
@@ -133,20 +156,33 @@ module 只负责分区和依赖选择，计算所需 rank、线程及 GPU 设置
 1 个符号链接及可执行权限均符合安装清单。公共 module 内容与发布包一致，
 普通查询及 `--ignore_cache` 查询均可见。
 
-原生运行验收已提交：4V100 `1903636`、16V100 `1903637`、
-8V100V0 `1903638`、DSPRHBM `1903639`。截至记录时四项均为 `PENDING`，
-调度器显示 `AssocGrpJobsLimit`；用户另反馈当前账号额度已用完。
-任务及冻结输入保留，30 项原生科学计算尚未执行，不能据此宣称原生运行验收通过。
-后续有额度且可读参考材料的普通账号可直接使用上述提交命令；
-同一账号恢复后先检查已有任务，避免重复提交。
+原生运行验收已在项目账户 `proj-sai-hpc-software` 下完成，30 项科学计算全部通过。
+独立复验重新检查原始计算输出、版本/功能、MPI/ELPA/LibTorch/NEP 加载路径、
+MPI 分布、实际 cuSOLVERMp/NCCL 执行和 module 卸载，并再次回读全部物理安装文件。
+最大参考能量误差为 `2.046e-8 eV`，低于 `1e-5 eV` 容差。
 
-已提交任务的结果目录：
+| 分区 | 通过验收的作业 | 科学计算数 | Slurm 状态 |
+| --- | --- | ---: | --- |
+| 4V100 | 1905277 | 8 | COMPLETED / 0:0 |
+| 16V100 | 1905278 | 8 | COMPLETED / 0:0 |
+| 8V100V0 | 1905279 | 8 | COMPLETED / 0:0 |
+| DSPRHBM | 1905309 | 6 | COMPLETED / 0:0 |
+
+GPU 结果目录及 CPU 重试结果目录分别为：
 
 ```text
-/home/stardust/sai-hpc-software/runtime-tests/abacus-beta11-physical-20261023-074725-2961798
+/org/org-open-sai/proj-sai-hpc-software/runtime-tests/abacus-beta11-physical-20261023-110843-1765150
+/org/org-open-sai/proj-sai-hpc-software/runtime-tests/abacus-beta11-physical-20261023-111141-1795364
 ```
 
-[物理安装与待运行验收记录](../../docs/evidence/abacus-beta11-20261022/physical-installation.json)
-包含实际文件、公共 module、冻结输入校验和及提交时的 Slurm 状态。
+首个 CPU 作业 `1905280` 在 MPI 启动时因显式主机列表默认每节点仅 1 个 slot 而失败，
+尚未执行 ABACUS。修复明确指定每节点 4 个 slot，保持 8 个 rank、每 rank 2 线程及
+原输入和容差；重试通过。GPU 使用首次提交时冻结的控制脚本，CPU 使用修复后的版本，
+各自均按冻结版本独立复验；首轮整体记录仍包含失败的 CPU 尝试。
+
+原私人账户下排队的 `1903636`–`1903639` 已被新任务替代，并在未运行时取消，
+旧数据及冻结输入完整保留。[早期安装快照](../../docs/evidence/abacus-beta11-20261022/physical-installation.json)
+保留当时的等待状态；[最终原生验收记录](../../docs/evidence/abacus-beta11-20261022/physical-native-acceptance.json)
+记录四分区原始结果校验和、计费账户、工作目录、失败尝试和最终验收。
 
 原构建和数值验收见 [release 交付记录](../../docs/evidence/abacus-beta11-20261022/README.md)。

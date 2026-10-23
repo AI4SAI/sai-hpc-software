@@ -5,7 +5,7 @@
 # Per-partition CPU/GPU requests are supplied by the submission script.
 set -eo pipefail
 output=${1:?native result directory required}
-work_root=${2:?writable home work root required}
+work_root=${2:?writable home or SAI project work root required}
 export PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 export LD_LIBRARY_PATH="" LD_PRELOAD="" PYTHONPATH=""
 unset PYTHONHOME
