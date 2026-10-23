@@ -56,7 +56,7 @@ project maintenance directory and run (substitute the target in both run IDs):
 ```bash
 python3 libxc_smoke.py prepare \
   --controller /org/org-open-sai/proj-sai-hpc-software/controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf \
-  --build-run-id 39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf-mount-retry1 \
+  --build-run-id 39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf-mount-retry2 \
   --run-id cp2k-libxc-39983165813-4v100-avx512
 sbatch /org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-39983165813-4v100-avx512/job.sbatch
 ```
@@ -118,3 +118,38 @@ The [retry plan](4v100-mount-retry-1914645/input/retry-plan.json),
 [collection manifest](4v100-mount-retry-1914645/collection.json) bind that recovery
 to its inputs. Its application build, normal science acceptance and independent
 LibXC supplement remain required before declaring this target accepted.
+
+The fresh job passed the mount step (2.125 seconds), but was cancelled at
+2026-10-23 17:46:24 UTC by an **agent diagnostic resource mistake**. A read-only
+`srun --overlap` observation requested one CPU per task inside its GPU allocation.
+The SAI site hook printed that 4V100 requires eight logical CPU cores per GPU,
+then cancelled the allocation three seconds after the diagnostic step started.
+The diagnostic's outer 30-second timeout had not expired; no `scancel` command
+was issued. This cancellation is not attributed to CP2K, LibXC or the image
+driver. The script did not reach its `/proc` observation. Other active builds
+were not probed with `srun` and remain independent.
+
+[The exact diagnostic command and times](4v100-readonly-step-1914645/diagnostic.json),
+[SAI policy output](4v100-readonly-step-1914645/stdout.txt),
+[step errors](4v100-readonly-step-1914645/stderr.txt) and
+[Slurm cancellation evidence](4v100-readonly-step-1914645/cancellation.json)
+preserve the failed diagnostic. Its [script](observe_processes.py) is retained
+as incident evidence, not recommended as an active-job diagnostic procedure.
+Both application attempts and their overlays remain intact. A subsequent fresh
+application attempt must use the same original controller and sealed dependency
+checkpoint, and must still pass the complete application and science gates.
+
+The independently reviewed
+[recovery script](prepare_4v100_retry_after_diagnostic.py), SHA256
+`3e8715e5fb83f1430a07ef90d9f5a5f7a08d2061f7da9ea6cbd1082f531838f3`,
+submitted job `1914931` with fresh run suffix `-mount-retry2`. Despite the suffix,
+this second recovery addresses the diagnostic cancellation, not a second mount
+failure. It uses the original sealed dependency checkpoint, controller and
+identity, and does not reuse either prior application's overlay. The exact
+[plan](4v100-retry-after-diagnostic-1914931/input/retry-plan.json) records both
+prior attempts and the SAI policy output; the
+[submission receipt](4v100-retry-after-diagnostic-1914931/results/retry-submitted.json)
+confirms all tracked original, first-retry and diagnostic files stayed unchanged.
+The [collection manifest](4v100-retry-after-diagnostic-1914931/collection.json)
+records the raw submission file hashes. All normal acceptance requirements still
+apply to this new attempt.

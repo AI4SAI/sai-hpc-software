@@ -11,7 +11,7 @@ installation are separate acceptance states.
 | Program | Selected development commit | Current evidence |
 | --- | --- | --- |
 | ABACUS `develop` | `370ba685e6707b3625c5580ff9d02ef0afb248e8` | All four targets built, scientifically accepted and published with reverified native staging exports; workflow [39971072923](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971072923) succeeded. Physical `/opt` installation pending. |
-| CP2K `master` | `cfe5e5d87aaf302953f14eb43587bef2411a8fb2` | All four dependency stages completed and sealed in [39983165813](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39983165813), with source-pinned LibXC 7.1.2 and LibXS `930a2c4` selected for the application. Original 4V100 application job `1914241` failed at container mount before compilation; fresh job `1914645` uses its original sealed dependencies. Application build and science remain pending. |
+| CP2K `master` | `cfe5e5d87aaf302953f14eb43587bef2411a8fb2` | All four dependency stages completed and sealed in [39983165813](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39983165813), with source-pinned LibXC 7.1.2 and LibXS `930a2c4` selected for the application. 4V100 now uses fresh job `1914931`, after mount failure `1914241` and an agent diagnostic that cancelled `1914645`. Both earlier attempts remain preserved. Final application and science results remain pending. |
 | DeePMD-kit `master` | `558f56962775098b8b554e341c3b37d2f86e6aeb` | All three V100 candidates build-verified and scientifically accepted: TF/PT/JAX Python/C-API checks plus 1,486 measured CUDA kernel events per target. Not yet published or installed natively. |
 | LAMMPS `develop` | `a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b` | All three V100 candidates build-verified and scientifically accepted: 14 cases, 71 packages, 2,497 styles per target. Not yet published or installed natively. |
 | GPUMD `master` | `2c93346fce4461de1c42c77e7fe74cdb6b0e3df6` | All three V100 targets scientifically accepted, published with native staging exports; physical `/opt` installation pending. |
@@ -79,10 +79,15 @@ application allocation `1914241` then failed at Apptainer 1.4.4's fixed
 10-second fuse2fs mount deadline, before any application compilation. Its
 dependency clone had passed both filesystem checks. A later read-only probe
 on the same node completed both attempts, but does not identify the cause of
-the original writable mount timeout. Fresh application `1914645` retains
-the same source/recipe, frozen controller and sealed dependency input under
-a new run ID ending in `-mount-retry1`; the failed allocation and overlay
-remain preserved. This recovery does not turn the original workflow green.
+the original writable mount timeout. Fresh application `1914645` passed the
+mount, but an agent's `srun` diagnostic requested one CPU per task, violating
+4V100's eight-logical-CPU-per-GPU rule; the site hook cancelled that allocation.
+This is an operational mistake, not a CP2K or container failure. Its command,
+site error and accounting remain in the [incident evidence](evidence/cp2k-development-20261023/README.md#4v100-mount-failure-and-fresh-application-attempt).
+Job `1914931`, under a new run ID ending in `-mount-retry2`, uses the same
+source/recipe, original frozen controller and original sealed dependency input.
+Neither previous application overlay is reused. Both prior allocations remain
+preserved. This recovery does not turn the original workflow green.
 An independently reviewed
 [LibXC supplement](evidence/cp2k-development-20261023/README.md) fixes its
 numerical thresholds before execution. It will compare built-in PBE with

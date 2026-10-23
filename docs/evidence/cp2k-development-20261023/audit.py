@@ -20,7 +20,7 @@ WORKFLOW = '39983165813'
 TARGETS = ('dsprhbm', '4v100-avx512', '16v100-avx2', '8v100v0-avx512')
 # Keep the failed workflow allocation separate from its fresh application retry.
 # The retry consumes the original sealed dependencies and frozen controller.
-RECOVERIES = {'4v100-avx512': ('-mount-retry1', '1914241')}
+RECOVERIES = {'4v100-avx512': ('-mount-retry2', '1914241')}
 
 
 def require(condition, message):
@@ -102,7 +102,27 @@ def audit(target):
         recovery = dict(original_run=base_run_id, original_job=old_job,
                         retry_plan=plan, retry_receipt=retry,
                         original_workflow_success_claimed=False)
-    requested_jobs = list(jobs) + ([recovery['original_job']] if recovery else [])
+        prior_run_id = base_run_id + '-mount-retry1'
+        prior = ROOT / 'runs' / prior_run_id
+        prior_request = read(prior / 'request.json')
+        require(plan['prior_retry_run'] == prior_run_id and plan['prior_retry_job'] == '1914645'
+                and plan['prior_retry_accounting'] == '1914645|CANCELLED by 1478400690|0:0'
+                and plan['prior_retry_overlay_reused'] is False
+                and plan['diagnostic_reason'].startswith('agent diagnostic requested one CPU per task')
+                and (prior / 'job.id').read_text().strip() == '1914645'
+                and prior_request['identity'] == identity
+                and prior_request['controller'] == str(control)
+                and prior_request['dependencies_run'] == request['dependencies_run'],
+                'cancelled retry or diagnostic incident changed')
+        require(plan['diagnostic_record']['returncode'] == 143
+                and '--jobid=1914645' in plan['diagnostic_record']['argv']
+                and '--cpus-per-task=1' in plan['diagnostic_record']['argv']
+                and 'Make sure per-GPU CPU logical core number is 8 for 4V100 partition'
+                    in plan['diagnostic_policy_stdout'],
+                'agent diagnostic cancellation evidence changed')
+        recovery.update(prior_retry_run=prior_run_id, prior_retry_job='1914645')
+    requested_jobs = list(jobs) + ([recovery['original_job'], recovery['prior_retry_job']]
+                                   if recovery else [])
     accounting = subprocess.check_output(['sacct', '-X', '-n', '-P', '-j', ','.join(requested_jobs),
         '--format=JobIDRaw,State,ExitCode,Partition,Account,WorkDir,Elapsed,NodeList'], text=True)
     rows = [line.split('|') for line in accounting.splitlines() if line.split('|')[0] in jobs]
@@ -120,6 +140,13 @@ def audit(target):
                  str(ROOT / 'runs' / base_run_id)],
                 'original failed allocation was not preserved')
         recovery['original_accounting'] = failed_rows[0]
+        cancelled_rows = [line.split('|') for line in accounting.splitlines()
+                          if line.split('|')[0] == recovery['prior_retry_job']]
+        require(len(cancelled_rows) == 1 and cancelled_rows[0][1:6] ==
+                ['CANCELLED by 1478400690', '0:0', identity['partition'],
+                 'proj-sai-hpc-software', str(ROOT / 'runs' / recovery['prior_retry_run'])],
+                'agent-triggered allocation cancellation was not preserved')
+        recovery['prior_retry_accounting'] = cancelled_rows[0]
     return dict(schema=1, audited_at=datetime.now(timezone.utc).isoformat(),
         workflow='https://github.com/AI4SAI/sai-hpc-software/actions/runs/' + WORKFLOW,
         run_id=run_id, identity=identity, frozen_controller=str(control),

@@ -1,0 +1,27 @@
+{
+  "argv": [
+    "timeout",
+    "30s",
+    "srun",
+    "--jobid=1914645",
+    "--overlap",
+    "--nodes=1",
+    "--ntasks=1",
+    "--cpus-per-task=1",
+    "--cpu-bind=none",
+    "--nodelist=4v100n01",
+    "--chdir=/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf-mount-retry1",
+    "/usr/bin/python3",
+    "-B",
+    "-s",
+    "/org/org-open-sai/proj-sai-hpc-software/maintenance/cp2k-readonly-step-1914645-20261024/observe_processes.py",
+    "1914645"
+  ],
+  "finished_at": "2026-10-23T17:46:34.925267+00:00",
+  "purpose": "Read-only /proc observation of own running batch; original build remains active",
+  "returncode": 143,
+  "script_sha256": "7688433c2dba0a2e1f92a86c43b3c217a3a4ec7a67a41d67bd6ae35edafb7de9",
+  "started_at": "2026-10-23T17:46:21.528981+00:00",
+  "stderr_sha256": "0791a926b0d551c4cc440d5d90d710e5de28eb948c250cb9a9494c53919336c6",
+  "stdout_sha256": "909d43865584f4b30964515144da4ec472ead082ba0a43cda797506b8d3b0356"
+}
