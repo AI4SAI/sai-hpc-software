@@ -1,5 +1,38 @@
 # Workflow closure — 2026-10-23
 
+## Current development deliveries
+
+The current development work uses the funded project directory
+`/org/org-open-sai/proj-sai-hpc-software` and explicit Slurm account
+`proj-sai-hpc-software`. Frozen historical controllers and existing home
+artifacts remain unchanged. Build, science, publication and native `/opt`
+installation are separate acceptance states.
+
+| Program | Selected development commit | Current evidence |
+| --- | --- | --- |
+| ABACUS `develop` | `370ba685e6707b3625c5580ff9d02ef0afb248e8` | Four-partition build/acceptance workflow [39971072923](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971072923) in progress. |
+| CP2K `master` | `04b255137f7b472b07f09bec26e7bbf81c366a3a` | Four-partition dependency/application/science workflow [39971078915](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971078915) in progress; source-pinned LibXC 7.1.2 added for current master. |
+| DeePMD-kit `master` | `558f56962775098b8b554e341c3b37d2f86e6aeb` | Independent three-partition container builds in progress; TF/PT/JAX Python/C-API and measured GPU execution required before acceptance. |
+| LAMMPS `develop` | `a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b` | All three V100 candidates build-verified and scientifically accepted: 14 cases, 71 packages, 2,497 styles per target. Not yet published or installed natively. |
+| GPUMD `master` | `2c93346fce4461de1c42c77e7fe74cdb6b0e3df6` | All three V100 targets scientifically accepted, published with native staging exports; physical `/opt` installation pending. |
+
+[LAMMPS development evidence](evidence/lammps-project-20261023/README.md)
+records recovery of the already compiled 8V100V0 overlay in export job
+`1912932` and science job `1912959`; the old build `1896876` remains failed.
+4V100 and 16V100 reused their unchanged-source SIFs after independent rereading
+of all raw acceptance evidence. No new DeePMD build was needed for LAMMPS.
+
+[Branch integration audit](evidence/development-project-20261023/branch-audit.md)
+identifies two old branches already merged through equivalent patches. The
+remaining CP2K MPI experiment tools/evidence were independently verified and
+merged in [PR #24](https://github.com/AI4SAI/sai-hpc-software/pull/24). Current
+CP2K master already contains the upstream repair in cp2k/cp2k#6338; its
+2026.2-only experiment patch is not applied to master.
+
+The older release and development matrices below are historical checkpoints;
+they do not override the current source-specific results above.
+
+
 PRs [#8](https://github.com/AI4SAI/sai-hpc-software/pull/8) and
 [#10](https://github.com/AI4SAI/sai-hpc-software/pull/10) are merged into `main`.
 Daily delivery now uses reusable workflows from its own revision and waits
@@ -49,9 +82,9 @@ per node fixed it without changing resources or scientific criteria.
 The superseded private-account jobs `1903636`–`1903639` were cancelled while
 pending; their files and the failed CPU attempt are preserved.
 [Physical native acceptance and project-account evidence](evidence/abacus-beta11-20261022/physical-native-acceptance.json).
-ABACUS automatic build CI still uses its existing home project path; its
-frozen continuations have not been migrated. New GPUMD automatic builds and
-acceptance now use the funded project directory/account described below.
+This controller revision routes all new automatic builds and acceptance to
+the funded project directory/account. Frozen home-based continuations retain
+their original controller revision and root policy.
 Optional public deployment of the container image driver is tracked in
 [issue #12](https://github.com/AI4SAI/sai-hpc-software/issues/12).
 

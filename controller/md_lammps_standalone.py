@@ -135,11 +135,27 @@ def render(delivery, run_id):
     return '\n'.join(lines) + '\n'
 
 
+def validate_claim_directory(directory, run_id, delivery):
+    """Only a matching attempt receipt may precede a fresh standalone build."""
+    input_dir = directory / 'input'
+    receipt = input_dir / 'build-attempt.json'
+    if (directory.resolve() != directory or input_dir.resolve() != input_dir or
+            receipt.resolve() != receipt or not receipt.is_file() or
+            set(directory.iterdir()) != {input_dir} or set(input_dir.iterdir()) != {receipt}):
+        raise ValueError('standalone run already exists; inspect its job instead of resubmitting')
+    record = json.loads(receipt.read_text())
+    expected = dict(schema=1, run_id=run_id, retry=record.get('retry'), build=True,
+                    identities=[delivery['identity']], skipped=[],
+                    meaning='build attempt only; no artifact or acceptance claim')
+    if type(record.get('retry')) is not bool or record != expected:
+        raise ValueError('standalone attempt receipt differs from the requested delivery')
+
+
 def submit(run_id, delivery):
     delivery = validate_delivery(delivery)
     directory = task(run_id)
     if directory.exists():
-        raise ValueError('standalone run already exists; inspect its job instead of resubmitting')
+        validate_claim_directory(directory, run_id, delivery)
     dep, files = dependency(delivery['identity']['target'])
     observed = verify_dependency(dep, files)
     for name, sha in (('lammps', delivery['identity']['source_sha']),

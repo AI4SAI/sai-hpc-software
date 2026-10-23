@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       software:
-        description: Software to build (all includes the paired MD stack once)
+        description: Software to build independently
         type: choice
         options: [all, abacus, cp2k, deepmd-kit, lammps, gpumd]
         default: all
@@ -37,6 +37,7 @@ jobs:
       abacus: ${{ steps.plan.outputs.abacus }}
       cp2k: ${{ steps.plan.outputs.cp2k }}
       deepmd_kit: ${{ steps.plan.outputs.deepmd_kit }}
+      lammps: ${{ steps.plan.outputs.lammps }}
       gpumd: ${{ steps.plan.outputs.gpumd }}
     steps:
       - uses: actions/checkout@v4
@@ -60,7 +61,7 @@ jobs:
     secrets: inherit
 
   cp2k:
-    needs: [plan, abacus]
+    needs: [plan]
     if: ${{ !cancelled() && needs.plan.result == 'success' && needs.plan.outputs.cp2k != '' }}
     uses: ./.github/workflows/cp2k.yml
     with:
@@ -70,19 +71,27 @@ jobs:
     secrets: inherit
 
   deepmd_kit:
-    needs: [plan, cp2k]
+    needs: [plan]
     if: ${{ !cancelled() && needs.plan.result == 'success' && needs.plan.outputs.deepmd_kit != '' }}
-    uses: ./.github/workflows/deepmd-lammps.yml
+    uses: ./.github/workflows/deepmd.yml
     with:
       targets: ${{ needs.plan.outputs.deepmd_kit }}
       tracks: ${{ inputs.tracks || 'development,prerelease,release' }}
       retry_releases: ${{ inputs.retry_releases || false }}
-      software: ${{ inputs.software == 'lammps' && 'lammps' || inputs.software == 'deepmd-kit' && 'deepmd-kit' || 'all' }}
-      build_candidates: true
+    secrets: inherit
+
+  lammps:
+    needs: [plan]
+    if: ${{ !cancelled() && needs.plan.result == 'success' && needs.plan.outputs.lammps != '' }}
+    uses: ./.github/workflows/lammps.yml
+    with:
+      targets: ${{ needs.plan.outputs.lammps }}
+      tracks: ${{ inputs.tracks || 'development,prerelease,release' }}
+      retry_releases: ${{ inputs.retry_releases || false }}
     secrets: inherit
 
   gpumd:
-    needs: [plan, deepmd_kit]
+    needs: [plan]
     if: ${{ !cancelled() && needs.plan.result == 'success' && needs.plan.outputs.gpumd != '' }}
     uses: ./.github/workflows/gpumd.yml
     with:
@@ -93,7 +102,7 @@ jobs:
 
   result:
     if: always()
-    needs: [plan, abacus, cp2k, deepmd_kit, gpumd]
+    needs: [plan, abacus, cp2k, deepmd_kit, lammps, gpumd]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
