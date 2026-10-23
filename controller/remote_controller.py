@@ -49,9 +49,10 @@ def project_batch_directives(root, workdir):
 
 
 def gpumd_qos(root, target):
-    # This account authorizes rush-1o2gpu (UsageFactor=1, no preemption targets).
-    # Short build/science jobs otherwise wait behind the flood backlog on 4V100.
+    # Both the project account and the partition must allow this one-GPU QoS.
+    # 16V100 disallows rush-1o2gpu; rush-gpu requires four GPUs, so keep flood.
     return ('rush-1o2gpu' if Path(root).is_relative_to(SAI_PROJECT_ROOT)
+            and target in ('4v100-avx512', '8v100v0-avx512')
             else TARGETS[target]['qos'])
 
 

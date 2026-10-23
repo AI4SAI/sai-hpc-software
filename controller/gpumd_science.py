@@ -247,6 +247,18 @@ def prepare(source, destination):
     (throughput / "run.in").write_text("potential nep.txt\nvelocity 300\nensemble nve\ntime_step 0.5\ndump_thermo 100\nrun 1000\n")
 
 
+def jit_sources(prefix):
+    """Check both upstream layouts; execution still must prove JIT, without fallback."""
+    source = prefix / "share/gpumd/src"
+    kernels = [source / relative for relative in
+               ("main_nep/nep_specialized.cu", "main_nep/nep/nep_specialized.cu")
+               if (source / relative).exists()]
+    if not kernels:
+        raise ValueError("missing installed NEP runtime specialization source")
+    for path in [source / "utilities/nep_utilities.cuh", *kernels]:
+        _regular(path)
+
+
 def inspect(prefix, identity=None, environment=None):
     """ldd is supplemented with ELF NEEDED and real JIT-resource checks."""
     expected = {path.name for path in (BASELINE / "bin").iterdir() if path.is_file() and os.access(path, os.X_OK)}
@@ -272,9 +284,7 @@ def inspect(prefix, identity=None, environment=None):
         if name == "gpumd" and not {"libdeepmd_cc.so", "libcublas.so.12", "libcusolver.so.11", "libcufft.so.11"} <= needed:
             raise ValueError("GPUMD baseline CUDA/DeepMD features missing")
         report[name] = {"sha256": sha(binary), "needed": sorted(needed), "readelf": dynamic, "ldd": dependencies}
-    for relative in ("main_nep/nep_specialized.cu", "utilities/nep_utilities.cuh"):
-        if not (prefix / "share/gpumd/src" / relative).is_file():
-            raise ValueError("missing installed NEP runtime specialization source")
+    jit_sources(prefix)
     copied = prefix / "share/sai/portability"
     energy, force = xyz(copied / "dump.xyz")
     gold_e, gold_f = xyz(copied / "gold.xyz")
@@ -304,8 +314,6 @@ def inspect(prefix, identity=None, environment=None):
                 stderr=subprocess.STDOUT)
         for name in COMMANDS:
             _regular(prefix / "bin" / name, executable=True)
-        for relative in ("main_nep/nep_specialized.cu", "utilities/nep_utilities.cuh"):
-            _regular(prefix / "share/gpumd/src" / relative)
         entry = build_native_entry(identity, prefix, environment, ldd_reports,
                                    _regular(prefix / "share/sai/executables.txt").read_text().split())
         for path in [*entry["external_roots"], *entry["runtime"]["prepend"]["LD_LIBRARY_PATH"]]:

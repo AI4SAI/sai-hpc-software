@@ -118,7 +118,8 @@ class GpumdContractTests(unittest.TestCase):
                 subprocess.run(['bash', '-n'], input=script, text=True, check=True)
                 self.assertIn('#SBATCH --account=proj-sai-hpc-software\n', script)
                 self.assertIn('#SBATCH --chdir=' + str(directory) + '\n', script)
-                self.assertIn('#SBATCH --qos=rush-1o2gpu\n', script)
+                expected_qos = 'flood-1o2gpu' if target == '16v100-avx2' else 'rush-1o2gpu'
+                self.assertIn('#SBATCH --qos=' + expected_qos + '\n', script)
             names.add(next(line for line in compiled.splitlines() if line.startswith('#SBATCH --job-name=')))
         self.assertEqual(len(names), 3)
         with self.assertRaisesRegex(ValueError, 'escapes'):
@@ -193,6 +194,8 @@ class GpumdContractTests(unittest.TestCase):
             prefix = Path(temporary) / "prefix"
             files = {"makefile": "# unchanged upstream Makefile\n",
                      "main_nep/nep_specialized.cu": "// JIT kernel\n",
+                     "main_nep/nep/nep_specialized.cu": "// reorganized upstream JIT kernel\n",
+                     "main_nep/nep/nep.cuh": "// retain the directory named nep\n",
                      "utilities/nep_utilities.cuh": "// JIT utilities\n",
                      "nested/extra header.cuh": "// retain every source/header\n"}
             for name, value in files.items():
@@ -233,6 +236,23 @@ class GpumdContractTests(unittest.TestCase):
             (source / "src/makefile").write_text("# unexpected configured Makefile\n")
             self.assertNotEqual(run().returncode, 0)
 
+
+    def test_jit_source_validation_accepts_both_layouts_and_requires_sources(self):
+        for kernel in ('main_nep/nep_specialized.cu', 'main_nep/nep/nep_specialized.cu'):
+            with self.subTest(kernel=kernel), tempfile.TemporaryDirectory() as temporary:
+                prefix = Path(temporary)
+                source = prefix / 'share/gpumd/src'
+                for relative in (kernel, 'utilities/nep_utilities.cuh'):
+                    path = source / relative
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text('// pinned source\n')
+                science.jit_sources(prefix)
+                (source / kernel).unlink()
+                with self.assertRaisesRegex(ValueError, 'specialization source'):
+                    science.jit_sources(prefix)
+                (source / kernel).symlink_to(source / 'utilities/nep_utilities.cuh')
+                with self.assertRaises(ValueError):
+                    science.jit_sources(prefix)
 
     def test_packaging_preserves_legacy_and_new_pinned_upstream_licenses(self):
         recipe = (ROOT / "controller/gpumd_build.sh").read_text()
