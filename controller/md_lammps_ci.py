@@ -10,7 +10,7 @@ import subprocess
 
 from md_lammps_standalone import CONTROL, make_delivery, runtime_plan
 from release_contract import resolve_tracks
-from remote_controller import safe_name, safe_sha
+from remote_controller import SAI_PROJECT_ROOT, safe_name, safe_sha
 from source_cache import pack
 
 
@@ -30,7 +30,7 @@ def main():
     temporary = Path(os.environ['RUNNER_TEMP'])
     results = temporary / 'results'
     results.mkdir(exist_ok=True)
-    project = '/home/' + user + '/sai-hpc-software'
+    project = str(SAI_PROJECT_ROOT)
     root = project + '/experimental/deepmd-lammps'
     snapshot = root + '/controller/' + commit + '/' + run_id
     remote = user + '@c0.sai.ai-4s.com'
@@ -45,7 +45,8 @@ def main():
         run(['scp', '-q', *options, '-P', '12022', path, remote + ':' + destination], timeout=1800)
 
     def python(name, *args, **kwargs):
-        return ssh(['python3', snapshot + '/' + name, *args], **kwargs)
+        return ssh(['env', 'SAI_SOFTWARE_ROOT=' + project,
+                    'python3', snapshot + '/' + name, *args], **kwargs)
 
     ssh(['mkdir', '-p', snapshot])
     files = [p for p in CONTROL.glob('md_*.*') if p.suffix in ('.py', '.sh', '.json')]

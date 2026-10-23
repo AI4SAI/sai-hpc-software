@@ -37,6 +37,12 @@ def stage(prefix, root, partition):
             shutil.copytree(source, destination / name, symlinks=True)
     provider = read_elpa_provider(prefix, PARTITION_TARGETS[partition])
     dependencies = ['dbcsr', 'libxs', 'tblite']
+    # Development builds own their LibXC >=7.1 (shared on CUDA); releases keep
+    # the accepted external site library. Preserve the private runtime at the
+    # same absolute prefix while excluding headers and static build archives.
+    libxc = prefix / 'dependencies/libxc'
+    if libxc.exists() or libxc.is_symlink():
+        dependencies.append('libxc')
     if provider is None:
         dependencies.append('elpa')
     elif (prefix / 'dependencies/elpa').exists():

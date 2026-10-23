@@ -10,7 +10,7 @@ import shlex
 import subprocess
 import time
 
-from remote_controller import TARGETS, safe_name
+from remote_controller import TARGETS, safe_name, project_batch_directives, private_scratch
 from runtime_controller import build_artifact
 from source_cache import checksum
 from release_contract import validate_identity
@@ -62,6 +62,7 @@ def render_job(args):
         "#SBATCH --ntasks-per-node=1", "#SBATCH --gpus-per-node=1",
         f"#SBATCH --time={args.minutes}",
         f"#SBATCH --output={task}/results/slurm-%j.log", "#SBATCH --export=NIL",
+        *project_batch_directives(ROOT, task),
         "set -euo pipefail",
         f"export HOME={q(str(Path.home()))}",
         "export USER=${SLURM_JOB_USER:?}", "export LOGNAME=$USER",
@@ -102,6 +103,8 @@ def submit(args):
         raise ValueError("trusted ABACUS launcher is not executable")
     for name in ("results", "apptainer-runtime", "apptainer-cache", "mpi-runtime"):
         (task / name).mkdir(parents=True)
+    for name in ("apptainer-runtime", "apptainer-cache", "mpi-runtime"):
+        private_scratch(task / name)
     args.artifact, args.launcher = str(artifact), str(launcher)
     args.identity = load_artifact(ROOT, artifact, software="abacus", target=args.target)["identity"]
     request = dict(vars(args), **{k: v for k, v in allocation.items() if k not in vars(args)})
@@ -114,7 +117,7 @@ def submit(args):
     call(["bash", "-n", script])
     request["job_script_sha256"] = checksum(script)
     (task / "request.json").write_text(json.dumps(request, sort_keys=True) + "\n")
-    result = call(["sbatch", "--parsable", script], capture_output=True)
+    result = call(["sbatch", "--parsable", script], capture_output=True, cwd=task)
     job = result.stdout.strip().split(";")[0]
     if not job.isdigit():
         raise ValueError("invalid sbatch response")

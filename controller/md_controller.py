@@ -13,7 +13,7 @@ import shlex
 import subprocess
 import time
 from md_tracking import fingerprint, identify_track_pair, TARGETS as MD_TARGETS
-from remote_controller import TARGETS, container_command, safe_name, safe_sha, site_app_binds
+from remote_controller import TARGETS, container_command, safe_name, safe_sha, site_app_binds, project_batch_directives, private_scratch
 from source_cache import checksum
 from cp2k_image_driver import wrap_command as image_driver_command
 
@@ -138,7 +138,8 @@ def render(request, run_id, jobs=None, minutes=None, overlay_mb=32768,
              f'#SBATCH --partition={target["partition"]}', f'#SBATCH --qos={resources["qos"]}',
              '#SBATCH --nodes=1', '#SBATCH --ntasks=1', f'#SBATCH --gpus-per-node={resources["gpus"]}',
              f'#SBATCH --time={minutes}', f'#SBATCH --output={r}/results/slurm-%j.log',
-             '#SBATCH --export=NIL', 'set -eo pipefail', 'export PATH=/usr/bin:/bin',
+             '#SBATCH --export=NIL', *project_batch_directives(PROJECT, r),
+             'set -eo pipefail', 'export PATH=/usr/bin:/bin',
              'export LD_LIBRARY_PATH="" LD_PRELOAD=""', 'source /etc/profile.d/lmod.sh',
              'module load apptainer/1.4.4', 'set -u', 'umask 077',
              f'export TMPDIR={shlex.quote(str(r / "runtime"))}',
@@ -190,6 +191,8 @@ def submit_probe(args):
         raise ValueError('probe already submitted')
     for part in ('results', 'runtime', 'apptainer-cache'):
         (r / part).mkdir(parents=True, exist_ok=True)
+    for part in ('runtime', 'apptainer-cache'):
+        private_scratch(r / part)
     target = TARGETS[args.target]
     baseline = args.op == 'baseline'
     probe_script = {'baseline': 'md_baseline.sh', 'probe': 'md_native_probe.sh',
@@ -207,6 +210,7 @@ def submit_probe(args):
              f'#SBATCH --partition={target["partition"]}', f'#SBATCH --qos={target["qos"]}',
              '#SBATCH --nodes=1', '#SBATCH --ntasks=1', '#SBATCH --gpus-per-node=1', '#SBATCH --time=' + ('10' if baseline else '5'),
              f'#SBATCH --output={r}/results/slurm-%j.log', '#SBATCH --export=NIL',
+             *project_batch_directives(PROJECT, r),
              'set -eo pipefail', 'export PATH=/usr/bin:/bin LD_LIBRARY_PATH="" LD_PRELOAD=""',
              'source /etc/profile.d/lmod.sh', 'module load apptainer/1.4.4', 'set -u',
              f'export TMPDIR={shlex.quote(str(r / "runtime"))} APPTAINER_TMPDIR={shlex.quote(str(r / "runtime"))}',
@@ -221,7 +225,7 @@ def submit_probe(args):
     script.write_text('\n'.join(lines) + '\n')
     run(['bash', '-n', script])
     try:
-        submitted = run(['sbatch', '--parsable', script], capture_output=True)
+        submitted = run(['sbatch', '--parsable', script], capture_output=True, cwd=r)
     except subprocess.CalledProcessError as exc:
         detail = (exc.stderr or exc.stdout or '').strip()
         raise RuntimeError('MD Slurm submission failed' + (': ' + detail if detail else '')) from exc
@@ -254,6 +258,8 @@ def submit(args):
     require_capacity(ROOT, args.overlay_mb)
     for part in ('input', 'results', 'runtime', 'apptainer-cache'):
         (r / part).mkdir(parents=True, exist_ok=True)
+    for part in ('runtime', 'apptainer-cache'):
+        private_scratch(r / part)
     for name, source in request['plan']['sources'].items():
         run(['git', '--git-dir', ROOT / 'cache/repositories' / name, 'cat-file', '-e', source['sha'] + '^{commit}'])
     record = dict(delivery=request, run_id=args.run_id, controller=str(CONTROL))
@@ -268,18 +274,18 @@ def submit(args):
         # Validate GPU minima, account/QoS permissions and walltime without
         # allocating either stage. No dependency job exists during this check.
         try:
-            run(['sbatch', '--test-only', path], capture_output=True)
+            run(['sbatch', '--test-only', path], capture_output=True, cwd=r)
         except subprocess.CalledProcessError as exc:
             detail = (exc.stderr or exc.stdout or '').strip()
             raise RuntimeError(f'{stage} Slurm resource preflight failed: {detail}') from exc
-    deepmd_job = run(['sbatch', '--parsable', deepmd_script], capture_output=True).stdout.strip().split(';')[0]
+    deepmd_job = run(['sbatch', '--parsable', deepmd_script], capture_output=True, cwd=r).stdout.strip().split(';')[0]
     if not deepmd_job.isdigit():
         raise ValueError('invalid DeepMD Slurm job handle')
     script.write_text(render(request, args.run_id, args.jobs, args.minutes,
                              args.overlay_mb, stage='lammps', dependency=deepmd_job))
     run(['bash', '-n', script])
     try:
-        lammps_job = run(['sbatch', '--parsable', script], capture_output=True).stdout.strip().split(';')[0]
+        lammps_job = run(['sbatch', '--parsable', script], capture_output=True, cwd=r).stdout.strip().split(';')[0]
     except subprocess.CalledProcessError as exc:
         record['stage_job_script_sha256'] = {'deepmd': checksum(deepmd_script),
                                              'lammps': checksum(script)}

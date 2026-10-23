@@ -182,6 +182,11 @@ class FinalPrefixTests(unittest.TestCase):
                         'dependencies/libxs/lib/libxs.so', 'dependencies/tblite/lib/libtblite.a',
                         'dependencies/elpa/lib/libelpa_openmp.so.19',
                         'dependencies/elpa/share/sai/version',
+                        'dependencies/libxc/lib/libxc.so.15',
+                        'dependencies/libxc/lib/libxcf03.so.15',
+                        'dependencies/libxc/lib/libxc.a',
+                        'dependencies/libxc/lib/cmake/Libxc/LibxcConfig.cmake',
+                        'dependencies/libxc/include/xc.h',
                         'dependencies/spack/linux-zen3/python-venv-hash/bin/python',
                         'dependencies/spack/linux-zen3/plumed-hash/lib/libplumed.so',
                         'dependencies/spack/linux-zen3/plumed-hash/lib/libplumedKernel.so.1',
@@ -195,6 +200,7 @@ class FinalPrefixTests(unittest.TestCase):
                 path.parent.mkdir(parents=True, exist_ok=True)
                 path.write_text('{}')
             (package / 'lib/libplumedKernel.so').symlink_to('libplumedKernel.so.1')
+            (prefix / 'dependencies/libxc/lib/libxc.so').symlink_to('libxc.so.15')
             with patch.object(payload, 'validate_receipt', return_value=({}, [str(package)])):
                 result = payload.stage(prefix, export, '16V100')
                 with self.assertRaisesRegex(ValueError, 'already exists'):
@@ -205,6 +211,11 @@ class FinalPrefixTests(unittest.TestCase):
             self.assertTrue((result / 'share/cp2k/data/BASIS_MOLOPT').is_file())
             self.assertTrue((result / 'dependencies/elpa/lib/libelpa_openmp.so.19').is_file())
             self.assertTrue((result / 'dependencies/elpa/share/sai/version').is_file())
+            self.assertEqual((result / 'dependencies/libxc/lib/libxc.so').read_bytes(), b'{}')
+            self.assertTrue((result / 'dependencies/libxc/lib/libxcf03.so.15').is_file())
+            self.assertTrue((result / 'dependencies/libxc/lib/libxc.so').is_symlink())
+            for omitted in ('include', 'lib/cmake', 'lib/libxc.a'):
+                self.assertFalse((result / 'dependencies/libxc' / omitted).exists())
             for omitted in ('include', '.spack', 'share/doc', 'lib/libplumed.a'):
                 self.assertFalse((result / relative_package / omitted).exists())
             self.assertFalse((result / 'dependencies/spack/linux-zen3/python-venv-hash').exists())

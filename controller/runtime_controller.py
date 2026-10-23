@@ -11,7 +11,7 @@ import shlex
 import subprocess
 import time
 
-from remote_controller import TARGETS, safe_name
+from remote_controller import TARGETS, safe_name, project_batch_directives, private_scratch
 from source_cache import checksum
 from release_contract import validate_identity
 from delivery_layout import CONTRACT_SCHEMA, artifact_path, load_artifact, validate_record, validate_runtime_identity
@@ -136,6 +136,7 @@ def render_job(args):
         f"#SBATCH --time={args.minutes}",
         f"#SBATCH --output={results}/slurm-%j.log",
         "#SBATCH --export=NIL",
+        *project_batch_directives(ROOT, task),
         "set -euo pipefail",
         f"export HOME={q(str(Path.home()))}",
         "export USER=${SLURM_JOB_USER:?}",
@@ -202,6 +203,8 @@ def submit(args):
         raise ValueError("runtime test already exists; choose a fresh run id")
     for name in ("results", "apptainer-runtime", "apptainer-cache", "mpi-runtime"):
         (task / name).mkdir(parents=True, exist_ok=True)
+    for name in ("apptainer-runtime", "apptainer-cache", "mpi-runtime"):
+        private_scratch(task / name)
     artifact = build_artifact(args.build_run_id, args.version, args.target)
     launcher = CONTROL / "abacus"
     if not launcher.is_file() or launcher.is_symlink() or not os.access(launcher, os.X_OK):
@@ -214,7 +217,7 @@ def submit(args):
     script.chmod(0o700)
     call(["bash", "-n", script])
     script_sha256 = checksum(script)
-    result = call(["sbatch", "--parsable", script], capture_output=True)
+    result = call(["sbatch", "--parsable", script], capture_output=True, cwd=task)
     job = result.stdout.strip().split(";")[0]
     if not job.isdigit():
         raise ValueError("invalid sbatch response")

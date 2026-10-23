@@ -23,11 +23,11 @@ import test_build_lifecycle as lifecycle
 
 
 class ProjectRootTests(unittest.TestCase):
-    def test_gpumd_uses_project_and_other_software_preserves_home(self):
-        self.assertEqual(ci.remote_project_root('gpumd', 'stardust'),
-                         '/org/org-open-sai/proj-sai-hpc-software')
-        for software in ('abacus', 'cp2k'):
-            self.assertEqual(ci.remote_project_root(software, 'stardust'), '/home/stardust/sai-hpc-software')
+    def test_all_new_software_runs_use_the_funded_project(self):
+        for software in ('abacus', 'cp2k', 'deepmd-kit', 'lammps', 'gpumd'):
+            with self.subTest(software=software):
+                self.assertEqual(ci.remote_project_root(software, 'stardust'),
+                                 '/org/org-open-sai/proj-sai-hpc-software')
 
     def test_remote_controller_receives_selected_root_before_import(self):
         # Execute the same argv used over SSH. The script observes the chosen
@@ -35,9 +35,11 @@ class ProjectRootTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             script = Path(tmp) / 'root.py'
             script.write_text('import os; print(os.environ["SAI_SOFTWARE_ROOT"])\n')
-            project = '/org/org-open-sai/proj-sai-hpc-software'
-            command = ci.remote_controller_command(project, tmp, 'root.py')
-            self.assertEqual(subprocess.check_output(command, text=True).strip(), project)
+            for root in ('/org/org-open-sai/proj-sai-hpc-software',
+                         '/home/stardust/sai-hpc-software'):
+                with self.subTest(root=root):
+                    command = ci.remote_controller_command(root, tmp, 'root.py')
+                    self.assertEqual(subprocess.check_output(command, text=True).strip(), root)
 
 
 class ContinuationPreflightTests(unittest.TestCase):

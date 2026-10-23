@@ -18,7 +18,8 @@ from cp2k_image_driver import wrap_command
 from md_controller import PROJECT, ROOT, task
 from md_tracking import TARGETS, fingerprint
 from release_contract import make_identity, validate_identity
-from remote_controller import container_command, safe_name, site_app_binds
+from remote_controller import (container_command, private_scratch, project_batch_directives,
+                               safe_name, site_app_binds)
 from source_cache import checksum
 
 CONTROL = Path(__file__).resolve().parent
@@ -111,6 +112,7 @@ def render(delivery, run_id):
         base, ['/usr/bin/cat', '/workspace/final.squashfs'], overlay=str(overlay) + ':ro', jobs=24))
     lines = ['#!/usr/bin/env bash', '#SBATCH --job-name=lammps-' + safe_name(run_id),
              '#SBATCH --partition=' + identity['partition'], '#SBATCH --qos=rush-gpu',
+             *project_batch_directives(PROJECT, directory),
              '#SBATCH --nodes=1', '#SBATCH --ntasks=1', '#SBATCH --gpus-per-node=4', '#SBATCH --time=330',
              '#SBATCH --output=' + str(directory / 'results/slurm-%j.log'), '#SBATCH --export=NIL',
              'set -eo pipefail', 'export PATH=/usr/bin:/bin LD_LIBRARY_PATH="" LD_PRELOAD=""',
@@ -144,16 +146,18 @@ def submit(run_id, delivery):
                       ('deepmd-kit', dep['identity']['source_sha'])):
         subprocess.run(['git', '--git-dir', str(ROOT / 'cache/repositories' / name),
                         'cat-file', '-e', sha + '^{commit}'], check=True)
-    for name in ('results', 'runtime', 'apptainer-cache'):
-        (directory / name).mkdir(parents=True)
+    (directory / 'results').mkdir(parents=True)
+    for name in ('runtime', 'apptainer-cache'):
+        private_scratch(directory / name)
     script = directory / 'job.sbatch'
     script.write_text(render(delivery, run_id))
     subprocess.run(['bash', '-n', str(script)], check=True)
-    subprocess.run(['sbatch', '--test-only', str(script)], check=True)
+    subprocess.run(['sbatch', '--test-only', str(script)], cwd=directory, check=True)
     record = dict(delivery=delivery, controller=str(CONTROL), job_script_sha256=checksum(script),
                   dependency_verification=observed)
     (directory / 'request.json').write_text(json.dumps(record, sort_keys=True) + '\n')
-    job = subprocess.check_output(['sbatch', '--parsable', str(script)], text=True).strip().split(';')[0]
+    job = subprocess.check_output(['sbatch', '--parsable', str(script)], cwd=directory,
+                                  text=True).strip().split(';')[0]
     if not job.isdigit():
         raise ValueError('invalid standalone Slurm job handle')
     (directory / 'job.id').write_text(job + '\n')

@@ -38,9 +38,12 @@ def runtime_launchers(software):
 
 
 def remote_project_root(software, user):
-    # GPUMD is the first automatic build migrated to the funded project tree.
-    # Other workflows and their frozen continuation paths keep their home root.
-    return str(SAI_PROJECT_ROOT) if software == 'gpumd' else f'/home/{safe_name(user)}/sai-hpc-software'
+    # New runs use the funded project. Existing home-backed continuations keep
+    # their original controller snapshot, including its original root policy.
+    if software not in SOFTWARE:
+        raise ValueError('unknown software project')
+    safe_name(user)
+    return str(SAI_PROJECT_ROOT)
 
 
 def remote_controller_command(root, control, script, *args):
@@ -214,7 +217,7 @@ def main():
                    "abacus_dependency_lock.json", "abacus_features.py", "abacus_benchmark.py",
                    "native_module.py", "export_native.py"]
                   if software == "abacus" else
-                  ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_elpa.sh", "cp2k_elpa_runtime.py", "cp2k_feature_contract.py", "cp2k_site_elpa.json", "cp2k_elpa_abi.f90",
+                  ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_libxc.sh", "cp2k_elpa.sh", "cp2k_elpa_runtime.py", "cp2k_feature_contract.py", "cp2k_site_elpa.json", "cp2k_elpa_abi.f90",
                    "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_cmake_prerequisites.cmake", "cp2k_benchmark.py", "cp2k_acceptance.py", "cp2k_source_fixes.py",
                    "cp2k_spack.py", "cp2k_spack_environment.py", "cp2k_spack_native.py",
                    "cp2k_spack_seed.py", "cp2k_spack_probe.sh", "cp2k_spack_dependencies.sh",

@@ -47,6 +47,9 @@ def ci_fixture(plan, runner, history, *, run_id='123', attempt='1', retry='',
     def remote_run(argv, **kwargs):
         if argv[0] == 'ssh':
             command = shlex.split(argv[-1])
+            if command[0] == 'env':
+                assert command[1] == 'SAI_SOFTWARE_ROOT=/org/org-open-sai/proj-sai-hpc-software'
+                command = command[2:]
             if command[0] == 'cat':
                 return subprocess.CompletedProcess(argv, 0, (runner / 'pair.json').read_text())
             if command[0] == 'python3':
@@ -76,6 +79,7 @@ def ci_fixture(plan, runner, history, *, run_id='123', attempt='1', retry='',
 def remote_python_calls(fixture, name, action=None):
     commands = [shlex.split(call.args[0][-1]) for call in fixture.run.call_args_list
                 if call.args[0][0] == 'ssh']
+    commands = [command[2:] if command[0] == 'env' else command for command in commands]
     return [command for command in commands if command[0] == 'python3'
             and Path(command[1]).name == name and (action is None or command[2] == action)]
 
