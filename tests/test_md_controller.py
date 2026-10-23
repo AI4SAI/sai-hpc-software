@@ -405,6 +405,7 @@ class MDControllerTests(unittest.TestCase):
                 software = Path(command[3]).name
                 self.assertEqual(command[4:], ['--commit', uploaded['plan']['sources'][software]['sha']])
             remote = [shlex.split(argv[-1]) for argv in commands if argv[0] == 'ssh']
+            remote = [command[2:] if command[0] == 'env' else command for command in remote]
             self.assertLess(remote.index(claim), remote.index(inventory))
             self.assertEqual(json.loads(claim[4]), list(uploaded['identities'].values()))
             snapshot = Path(temporary) / 'snapshot'
