@@ -388,6 +388,12 @@ class WorkflowPhaseTests(unittest.TestCase):
         self.assertNotIn('github.run_attempt', upload['with']['name'])
         self.assertTrue(upload['with']['overwrite'])
         self.assertEqual(upload['with']['if-no-files-found'], 'error')
+        # GitHub exposes runner.temp to step env, not job-level env.
+        self.assertNotIn('LAMMPS_HANDOFF', jobs['science']['env'])
+        science_step = next(step for step in jobs['science']['steps']
+                            if step.get('run') == 'python3 -u controller/md_lammps_ci.py')
+        self.assertEqual(science_step['env']['LAMMPS_HANDOFF'],
+                         download['with']['path'] + 'ci-handoff.json')
         self.assertIn('!cancelled()', jobs['science']['if'])
         self.assertNotIn('needs.candidate.result', jobs['science']['if'])
 

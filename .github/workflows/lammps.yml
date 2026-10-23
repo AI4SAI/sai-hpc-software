@@ -145,7 +145,6 @@ jobs:
       LAMMPS_SOURCE: ${{ toJSON(matrix.build) }}
       LAMMPS_TARGET: ${{ matrix.build.target }}
       LAMMPS_PHASE: science
-      LAMMPS_HANDOFF: ${{ runner.temp }}/handoff/ci-handoff.json
     steps:
       - uses: actions/checkout@v4
         with:
@@ -165,6 +164,8 @@ jobs:
           printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
           chmod 600 "$RUNNER_TEMP/ssh/key"
       - name: Accept the original LAMMPS build with all fourteen GPU scientific cases
+        env:
+          LAMMPS_HANDOFF: ${{ runner.temp }}/handoff/ci-handoff.json
         run: python3 -u controller/md_lammps_ci.py
       - uses: actions/upload-artifact@v4
         if: always()
