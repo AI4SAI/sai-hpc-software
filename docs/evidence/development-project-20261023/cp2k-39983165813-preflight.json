@@ -1,0 +1,243 @@
+{
+  "controller_sha": "10992f818af71543bb39cb81e0f60c9f7ede9535",
+  "observed_at": "2026-10-23T16:08:43.192933+00:00",
+  "previous_source_sha": "04b255137f7b472b07f09bec26e7bbf81c366a3a",
+  "source_sha": "cfe5e5d87aaf302953f14eb43587bef2411a8fb2",
+  "source_stat": " src/input/cp_output_handling.F         |  33 ----------\n src/motion/averages_types.F            |  46 +++++---------\n src/motion/md_environment_types.F      |   8 +--\n src/motion/thermostat/barostat_types.F |  17 ++----\n src/qs_cdft_types.F                    |   1 -\n src/qs_environment_types.F             |   4 +-\n src/qs_fb_buffer_types.F               | 106 ++++-----------------------------\n src/qs_fb_env_methods.F                |   2 -\n src/qs_fb_env_types.F                  |  51 ++++------------\n src/qs_fb_trial_fns_types.F            |  43 +++----------\n src/qs_matrix_pools.F                  |  42 ++++---------\n src/subsys/subsys_list.fypp            |   2 +-\n 12 files changed, 65 insertions(+), 290 deletions(-)\n",
+  "target_identities": {
+    "16v100-avx2": {
+      "controller_sha": "10992f818af71543bb39cb81e0f60c9f7ede9535",
+      "identity": {
+        "build_id": "master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "ae6467ac2934deecf1d610c9d60cb8c5100cf931d2c27aaa66819ba85ca76a79",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "cfe5e5d87aaf302953f14eb43587bef2411a8fb2",
+        "source_version": "master-2026-10-23",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "development",
+        "version_label": "master-2026-10-23"
+      },
+      "run_id": "39983165813-1-development-16v100-avx2-2026-10-23-cfe5e5d87aaf",
+      "schema": 1,
+      "workflow_run_id": "39983165813"
+    },
+    "4v100-avx512": {
+      "controller_sha": "10992f818af71543bb39cb81e0f60c9f7ede9535",
+      "identity": {
+        "build_id": "master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934",
+        "cpu_arch": "znver4",
+        "cuda_arch": "70",
+        "dependency_isa": "avx512",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/4V100",
+        "partition": "4V100",
+        "recipe_sha256": "ae6467ac2934deecf1d610c9d60cb8c5100cf931d2c27aaa66819ba85ca76a79",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "cfe5e5d87aaf302953f14eb43587bef2411a8fb2",
+        "source_version": "master-2026-10-23",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "4v100-avx512",
+        "track": "development",
+        "version_label": "master-2026-10-23"
+      },
+      "run_id": "39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf",
+      "schema": 1,
+      "workflow_run_id": "39983165813"
+    },
+    "8v100v0-avx512": {
+      "controller_sha": "10992f818af71543bb39cb81e0f60c9f7ede9535",
+      "identity": {
+        "build_id": "master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934",
+        "cpu_arch": "skylake-avx512",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/8V100V0",
+        "partition": "8V100V0",
+        "recipe_sha256": "ae6467ac2934deecf1d610c9d60cb8c5100cf931d2c27aaa66819ba85ca76a79",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "cfe5e5d87aaf302953f14eb43587bef2411a8fb2",
+        "source_version": "master-2026-10-23",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "8v100v0-avx512",
+        "track": "development",
+        "version_label": "master-2026-10-23"
+      },
+      "run_id": "39983165813-1-development-8v100v0-avx512-2026-10-23-cfe5e5d87aaf",
+      "schema": 1,
+      "workflow_run_id": "39983165813"
+    },
+    "dsprhbm": {
+      "controller_sha": "10992f818af71543bb39cb81e0f60c9f7ede9535",
+      "identity": {
+        "build_id": "master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "ae6467ac2934deecf1d610c9d60cb8c5100cf931d2c27aaa66819ba85ca76a79",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "cfe5e5d87aaf302953f14eb43587bef2411a8fb2",
+        "source_version": "master-2026-10-23",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "development",
+        "version_label": "master-2026-10-23"
+      },
+      "run_id": "39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf",
+      "schema": 1,
+      "workflow_run_id": "39983165813"
+    }
+  },
+  "toolchain_version_declarations": {
+    "tools/toolchain/scripts/stage0/install_gcc.sh": [
+      "gcc_ver=\"14.3.0\""
+    ],
+    "tools/toolchain/scripts/stage1/install_mpich.sh": [
+      "mpich_ver=\"5.0.2\""
+    ],
+    "tools/toolchain/scripts/stage1/install_openmpi.sh": [
+      "openmpi_ver=\"5.0.10\""
+    ],
+    "tools/toolchain/scripts/stage2/install_gmp.sh": [
+      "gmp_ver=\"6.3.0\""
+    ],
+    "tools/toolchain/scripts/stage2/install_openblas.sh": [
+      "openblas_ver=\"0.3.34\""
+    ],
+    "tools/toolchain/scripts/stage3/install_eigen.sh": [
+      "eigen_ver=\"5.0.1\""
+    ],
+    "tools/toolchain/scripts/stage3/install_fftw.sh": [
+      "fftw_ver=\"3.3.11\""
+    ],
+    "tools/toolchain/scripts/stage3/install_greenx.sh": [
+      "greenx_ver=\"2.2\""
+    ],
+    "tools/toolchain/scripts/stage3/install_libint.sh": [
+      "libint_ver=\"2.13.1\""
+    ],
+    "tools/toolchain/scripts/stage4/install_cosma.sh": [
+      "cosma_ver=\"2.8.4\"",
+      "costa_ver=\"2.3.2\"",
+      "tiled_mm_ver=\"2.3.2\""
+    ],
+    "tools/toolchain/scripts/stage4/install_libGint.sh": [
+      "libgint_ver=\"v1\""
+    ],
+    "tools/toolchain/scripts/stage4/install_libxsmm.sh": [
+      "libxsmm_ver=\"3057b23\""
+    ],
+    "tools/toolchain/scripts/stage4/install_libxstream.sh": [
+      "libxstream_ver=\"f4511a4\""
+    ],
+    "tools/toolchain/scripts/stage4/install_scalapack.sh": [
+      "scalapack_ver=\"2.2.3\""
+    ],
+    "tools/toolchain/scripts/stage5/install_elpa.sh": [
+      "elpa_ver=\"2026.02.002\""
+    ],
+    "tools/toolchain/scripts/stage5/install_skala.sh": [
+      "skala_model_ver=\"1.1\""
+    ],
+    "tools/toolchain/scripts/stage6/install_ace.sh": [
+      "ace_ver=\"2025.12.4.p1\""
+    ],
+    "tools/toolchain/scripts/stage6/install_deepmd.sh": [
+      "deepmd_ver=\"3.1.0\""
+    ],
+    "tools/toolchain/scripts/stage6/install_gauxc.sh": [
+      "gauxc_ver=\"1.1-skala-cp2k-fixes\""
+    ],
+    "tools/toolchain/scripts/stage6/install_gsl.sh": [
+      "gsl_ver=\"2.8\""
+    ],
+    "tools/toolchain/scripts/stage6/install_libtorch.sh": [
+      "libtorch_ver=\"2.7.1\""
+    ],
+    "tools/toolchain/scripts/stage6/install_plumed.sh": [
+      "plumed_ver=\"2.10.1\""
+    ],
+    "tools/toolchain/scripts/stage6/install_skala_ftorch.sh": [
+      "ftorch_ver=\"1.0.0\""
+    ],
+    "tools/toolchain/scripts/stage7/install_fmt.sh": [
+      "fmt_ver=\"12.1.0\""
+    ],
+    "tools/toolchain/scripts/stage7/install_hdf5.sh": [
+      "hdf5_ver=\"2.2.0\""
+    ],
+    "tools/toolchain/scripts/stage7/install_libfci.sh": [
+      "libfci_ver=\"0.1.0\""
+    ],
+    "tools/toolchain/scripts/stage7/install_libsmeagol.sh": [
+      "libsmeagol_ver=\"1.2\""
+    ],
+    "tools/toolchain/scripts/stage7/install_libvdwxc.sh": [
+      "libvdwxc_ver=\"0.5.0\""
+    ],
+    "tools/toolchain/scripts/stage7/install_libvori.sh": [
+      "libvori_ver=\"220621\""
+    ],
+    "tools/toolchain/scripts/stage7/install_libwignernj.sh": [
+      "libwignernj_ver=\"0.8.0\""
+    ],
+    "tools/toolchain/scripts/stage7/install_spglib.sh": [
+      "spglib_ver=\"2.8.0\""
+    ],
+    "tools/toolchain/scripts/stage8/install_dftd4.sh": [
+      "dftd4_ver=\"4.2.0\""
+    ],
+    "tools/toolchain/scripts/stage8/install_mcl.sh": [
+      "mcl_ver=\"3.0.0\""
+    ],
+    "tools/toolchain/scripts/stage8/install_pugixml.sh": [
+      "pugixml_ver=\"1.15\""
+    ],
+    "tools/toolchain/scripts/stage8/install_sirius.sh": [
+      "sirius_ver=\"7.12.0\""
+    ],
+    "tools/toolchain/scripts/stage8/install_spfft.sh": [
+      "spfft_ver=\"1.1.1\""
+    ],
+    "tools/toolchain/scripts/stage8/install_spla.sh": [
+      "spla_ver=\"1.6.1\""
+    ],
+    "tools/toolchain/scripts/stage8/install_tblite.sh": [
+      "tblite_ver=\"0.7.0\""
+    ],
+    "tools/toolchain/scripts/stage8/install_trexio.sh": [
+      "trexio_ver=\"2.6.1\""
+    ],
+    "tools/toolchain/scripts/stage9/install_dbcsr.sh": [
+      "dbcsr_ver=\"97a623c\"",
+      "fypp_ver=\"b8dd58b\""
+    ]
+  },
+  "workflow_run_id": "39983165813"
+}

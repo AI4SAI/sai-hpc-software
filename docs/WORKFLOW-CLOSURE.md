@@ -11,7 +11,7 @@ installation are separate acceptance states.
 | Program | Selected development commit | Current evidence |
 | --- | --- | --- |
 | ABACUS `develop` | `370ba685e6707b3625c5580ff9d02ef0afb248e8` | All four targets built, scientifically accepted and published with reverified native staging exports; workflow [39971072923](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971072923) succeeded. Physical `/opt` installation pending. |
-| CP2K `master` | `04b255137f7b472b07f09bec26e7bbf81c366a3a` | Four-partition retry [39983165813](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39983165813) started with source-pinned LibXC 7.1.2 and LibXS `930a2c4`. Application build and science remain pending. |
+| CP2K `master` | `cfe5e5d87aaf302953f14eb43587bef2411a8fb2` | Four-partition retry [39983165813](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39983165813) started with source-pinned LibXC 7.1.2 and LibXS `930a2c4`. Application build and science remain pending. |
 | DeePMD-kit `master` | `558f56962775098b8b554e341c3b37d2f86e6aeb` | All three V100 candidates build-verified and scientifically accepted: TF/PT/JAX Python/C-API checks plus 1,486 measured CUDA kernel events per target. Not yet published or installed natively. |
 | LAMMPS `develop` | `a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b` | All three V100 candidates build-verified and scientifically accepted: 14 cases, 71 packages, 2,497 styles per target. Not yet published or installed natively. |
 | GPUMD `master` | `2c93346fce4461de1c42c77e7fe74cdb6b0e3df6` | All three V100 targets scientifically accepted, published with native staging exports; physical `/opt` installation pending. |
@@ -44,6 +44,11 @@ single/two-node GPU acceptance. A new DeePMD failure does not prevent LAMMPS fro
 building, and a successful build without scientific acceptance is not reported
 as accepted. Slurm accounting visibility delays remain pending; a terminated
 job missing its required acceptance markers fails immediately.
+New DeePMD jobs seal the verified SIF before science and then bind the numerical
+results, model inputs and GPU trace to that exact image and allocation. LAMMPS
+build and science now have separate Actions time budgets; the science job uses
+the original frozen handoff and resumes an existing acceptance allocation
+without submitting it again.
 
 The project archive cache avoids repeating slow GitHub-to-cluster uploads for
 identical dependency inputs. Its six initial archives total 25.14 MB; a real
@@ -63,6 +68,9 @@ The [LibXS preflight](evidence/development-project-20261023/cp2k-libxs-preflight
 records the source evidence, verified archive, cancellation and binary-cache
 assessment. The corrected workflow follows each source's declared dependency
 version without changing the installation identity contract.
+The retry resolved the newer master commit `cfe5e5d87aaf` once for all four
+targets. It directly follows `04b255137f7b` and changes Fortran reference
+counting without changing the dependency or toolchain declarations.
 
 [Branch integration audit](evidence/development-project-20261023/branch-audit.md)
 identifies two old branches already merged through equivalent patches. The
