@@ -317,6 +317,10 @@ def main():
                 stream.write(f'run_id={run_id}\n')
     resume = os.environ.get("RESUME_RUN", "")
     extras = ["--resume-run", safe_name(resume)] if resume else []
+    if software == 'gpumd':
+        # Project builds take 2-3 minutes with the qualified image driver.
+        # A four-hour request prevented backfill on the busy 4V100 partition.
+        extras += ['--minutes', '30']
     dependency_run = safe_name(run_id + '-dependencies')
     try:
         if software == 'cp2k' and phase != 'acceptance' and not resume:

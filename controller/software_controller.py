@@ -9,7 +9,7 @@ from pathlib import Path
 import shlex
 import subprocess
 import time
-from remote_controller import TARGETS, safe_name, safe_sha, container_command, site_app_binds, cp2k_mpi_build_binds, project_batch_directives, private_scratch
+from remote_controller import TARGETS, safe_name, safe_sha, container_command, site_app_binds, cp2k_mpi_build_binds, project_batch_directives, private_scratch, gpumd_qos
 from source_cache import checksum
 from module_publication import publish_module, validate_module
 from release_contract import make_identity, TRACKS
@@ -378,7 +378,7 @@ def render_job(args):
                                 if args.software in ('abacus', 'cp2k', 'gpumd') else 'sai-software-build'),
         "#SBATCH --dependency=singleton",
         f"#SBATCH --partition={target['partition']}",
-        f"#SBATCH --qos={target['qos']}",
+        f"#SBATCH --qos={gpumd_qos(ROOT, args.target) if args.software == 'gpumd' else target['qos']}",
         "#SBATCH --nodes=1", "#SBATCH --ntasks=1",
         f"#SBATCH --time={args.minutes}",
         f"#SBATCH --output={r}/results/slurm-%j.log",

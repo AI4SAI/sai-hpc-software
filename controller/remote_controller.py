@@ -48,6 +48,13 @@ def project_batch_directives(root, workdir):
     return ['#SBATCH --account=' + SAI_PROJECT_ACCOUNT, '#SBATCH --chdir=' + str(workdir)]
 
 
+def gpumd_qos(root, target):
+    # This account authorizes rush-1o2gpu (UsageFactor=1, no preemption targets).
+    # Short build/science jobs otherwise wait behind the flood backlog on 4V100.
+    return ('rush-1o2gpu' if Path(root).is_relative_to(SAI_PROJECT_ROOT)
+            else TARGETS[target]['qos'])
+
+
 def private_scratch(path):
     """Keep project ACLs out of Apptainer's root-mapped overlay seed."""
     path = Path(path)

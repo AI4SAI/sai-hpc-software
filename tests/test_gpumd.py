@@ -88,6 +88,7 @@ class GpumdContractTests(unittest.TestCase):
         script = acceptance.render_job(request, Path("/home/test/sai-hpc-software/runtime-tests/gpumd-test-science"))
         subprocess.run(["bash", "-n"], input=script, text=True, check=True)
         self.assertIn("#SBATCH --partition=8V100V0", script)
+        self.assertIn("#SBATCH --qos=flood-1o2gpu", script)
         self.assertIn("#SBATCH --gpus-per-node=1", script)
         self.assertIn("gpumd_science.py run", script)
         self.assertIn('"CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES}"', script)
@@ -117,6 +118,7 @@ class GpumdContractTests(unittest.TestCase):
                 subprocess.run(['bash', '-n'], input=script, text=True, check=True)
                 self.assertIn('#SBATCH --account=proj-sai-hpc-software\n', script)
                 self.assertIn('#SBATCH --chdir=' + str(directory) + '\n', script)
+                self.assertIn('#SBATCH --qos=rush-1o2gpu\n', script)
             names.add(next(line for line in compiled.splitlines() if line.startswith('#SBATCH --job-name=')))
         self.assertEqual(len(names), 3)
         with self.assertRaisesRegex(ValueError, 'escapes'):
