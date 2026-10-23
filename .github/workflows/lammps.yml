@@ -91,6 +91,7 @@ jobs:
       REMOTE_USER: ${{ secrets.REMOTE_USER }}
       LAMMPS_SOURCE: ${{ toJSON(matrix.build) }}
       LAMMPS_TARGET: ${{ matrix.build.target }}
+      LAMMPS_PHASE: build
       RETRY_RELEASES: ${{ inputs.retry_releases }}
     steps:
       - uses: actions/checkout@v4
@@ -106,12 +107,69 @@ jobs:
           mkdir -m 700 "$RUNNER_TEMP/ssh"
           printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
           chmod 600 "$RUNNER_TEMP/ssh/key"
-      - name: Build and scientifically accept LAMMPS using installed DeePMD
+      - name: Build LAMMPS using installed DeePMD
+        run: python3 -u controller/md_lammps_ci.py
+      - name: Preserve immutable build handoff
+        uses: actions/upload-artifact@v4
+        with:
+          # A science-only rerun has a new run_attempt but consumes the same
+          # original build. A full build rerun replaces only this Actions copy.
+          name: lammps-handoff-${{ matrix.build.track }}-${{ matrix.build.target }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/results/ci-handoff.json
+          if-no-files-found: error
+          overwrite: true
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lammps-build-${{ matrix.build.track }}-${{ matrix.build.target }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/results/
+          if-no-files-found: warn
+      - name: Remove temporary SSH key
+        if: always()
+        run: rm -f -- "$RUNNER_TEMP/ssh/key"
+  science:
+    # Successful matrix entries can still be accepted if another build fails;
+    # a missing handoff fails its own entry, and result requires both matrices.
+    if: ${{ !cancelled() && needs.resolve-source.result == 'success' && needs.resolve-source.outputs.builds != '[]' }}
+    needs: [resolve-source, candidate]
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        build: ${{ fromJSON(needs.resolve-source.outputs.builds) }}
+    runs-on: ubuntu-latest
+    environment: hpc
+    timeout-minutes: 360
+    env:
+      REMOTE_USER: ${{ secrets.REMOTE_USER }}
+      LAMMPS_SOURCE: ${{ toJSON(matrix.build) }}
+      LAMMPS_TARGET: ${{ matrix.build.target }}
+      LAMMPS_PHASE: science
+      LAMMPS_HANDOFF: ${{ runner.temp }}/handoff/ci-handoff.json
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: lammps-handoff-${{ matrix.build.track }}-${{ matrix.build.target }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/handoff/
+      - name: Prepare HPC SSH credentials
+        env:
+          KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          : "${REMOTE_USER:?Configure REMOTE_USER in the hpc Environment}"
+          : "${KEY:?Configure REMOTE_SSH_PRIVATE_KEY in the hpc Environment}"
+          mkdir -m 700 "$RUNNER_TEMP/ssh"
+          printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
+          chmod 600 "$RUNNER_TEMP/ssh/key"
+      - name: Accept the original LAMMPS build with all fourteen GPU scientific cases
         run: python3 -u controller/md_lammps_ci.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: lammps-${{ matrix.build.track }}-${{ matrix.build.target }}-${{ github.run_id }}-${{ github.run_attempt }}
+          name: lammps-science-${{ matrix.build.track }}-${{ matrix.build.target }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/results/
           if-no-files-found: warn
       - name: Remove temporary SSH key
@@ -119,7 +177,7 @@ jobs:
         run: rm -f -- "$RUNNER_TEMP/ssh/key"
   result:
     if: always()
-    needs: [validate, resolve-source, candidate]
+    needs: [validate, resolve-source, candidate, science]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -136,6 +194,7 @@ jobs:
               if jobs['resolve-source']['result'] != 'success':
                   raise SystemExit('LAMMPS source resolution failed')
               builds = json.loads(jobs['resolve-source']['outputs']['builds'])
-              if jobs['candidate']['result'] != ('success' if builds else 'skipped'):
-                  raise SystemExit('Selected LAMMPS candidates did not complete scientific acceptance')
+              for phase in ('candidate', 'science'):
+                  if jobs[phase]['result'] != ('success' if builds else 'skipped'):
+                      raise SystemExit('Selected LAMMPS candidates did not complete build and scientific acceptance')
           PYTHON
