@@ -1,0 +1,74 @@
+{
+  "attempt": 1,
+  "diagnostic_deadline_exceeded": false,
+  "elapsed": 2.0081368051469326,
+  "helpers": [
+    {
+      "elapsed": 0.504794966429472,
+      "helpers": [
+        {
+          "backing_descriptors": [
+            {
+              "fdinfo": "pos:\t2048\nflags:\t0100000\nmnt_id:\t58\nino:\t144115800108695738\nlock:\t1: OFDLCK ADVISORY  READ -1 f17:fc396:144115800108695738 0 17179869183\n",
+              "path": "/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf/work.ext3"
+            },
+            {
+              "fdinfo": "pos:\t0\nflags:\t0100000\nmnt_id:\t58\nino:\t144115800108695738\n",
+              "path": "/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf/work.ext3"
+            }
+          ],
+          "command": "/org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs -f -o allow_other,ro /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 ",
+          "io": "rchar: 12592\nwchar: 0\nsyscr: 21\nsyscw: 0\nread_bytes: 67104768\nwrite_bytes: 0\ncancelled_write_bytes: 0\n",
+          "pid": 4012872,
+          "wchan": "cl_sync_io_wait"
+        }
+      ]
+    },
+    {
+      "elapsed": 1.0063597597181797,
+      "helpers": [
+        {
+          "backing_descriptors": [
+            {
+              "fdinfo": "pos:\t2048\nflags:\t0100000\nmnt_id:\t58\nino:\t144115800108695738\nlock:\t1: OFDLCK ADVISORY  READ -1 f17:fc396:144115800108695738 0 17179869183\n",
+              "path": "/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf/work.ext3"
+            },
+            {
+              "fdinfo": "pos:\t0\nflags:\t0100000\nmnt_id:\t58\nino:\t144115800108695738\n",
+              "path": "/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf/work.ext3"
+            }
+          ],
+          "command": "/org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs -f -o allow_other,ro /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 ",
+          "io": "rchar: 12592\nwchar: 0\nsyscr: 21\nsyscw: 0\nread_bytes: 67104768\nwrite_bytes: 0\ncancelled_write_bytes: 0\n",
+          "pid": 4012872,
+          "wchan": "cl_sync_io_wait"
+        }
+      ]
+    },
+    {
+      "elapsed": 1.5079469121992588,
+      "helpers": [
+        {
+          "backing_descriptors": [
+            {
+              "fdinfo": "pos:\t2048\nflags:\t0100000\nmnt_id:\t58\nino:\t144115800108695738\nlock:\t1: OFDLCK ADVISORY  READ -1 f17:fc396:144115800108695738 0 17179869183\n",
+              "path": "/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf/work.ext3"
+            },
+            {
+              "fdinfo": "pos:\t0\nflags:\t0100000\nmnt_id:\t58\nino:\t144115800108695738\n",
+              "path": "/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf/work.ext3"
+            }
+          ],
+          "command": "/org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs -f -o allow_other,ro /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 ",
+          "io": "rchar: 12592\nwchar: 0\nsyscr: 21\nsyscw: 0\nread_bytes: 67104768\nwrite_bytes: 0\ncancelled_write_bytes: 0\n",
+          "pid": 4012872,
+          "wchan": "cl_sync_io_wait"
+        }
+      ]
+    }
+  ],
+  "log": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-mount-ro-1914241-20261024/results/attempt-1.log",
+  "log_sha256": "55b44f6e8889a23ac7d9f108c97b4a226d4754a7ccf003026c30941e5f9c1143",
+  "observed_at": "2026-10-23T17:21:31.710741+00:00",
+  "returncode": 0
+}

@@ -1,0 +1,469 @@
+DEBUG   [U=1478400690,P=4012799]setValue()                    Updated flag 'tmpdir' value to: /org/org-open-sai/proj-sai-hpc-software/runs/cp2k-mount-ro-1914241-20261024/runtime
+DEBUG   [U=1478400690,P=4012799]persistentPreRun()            Apptainer version: 1.4.4
+DEBUG   [U=1478400690,P=4012799]persistentPreRun()            Parsing configuration file /org/org-open-sai/proj-sai-hpc-software/runs/cp2k-mount-ro-1914241-20261024/runtime/apptainer-fuse2fs.conf
+DEBUG   [U=1478400690,P=4012799]SetBinaryPath()               Setting binary path to /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin:/opt/devtools/apptainer/1.4.4/libexec/apptainer/bin:/opt/devtools/apptainer/1.4.4/bin:/usr/bin:/bin:/usr/bin:/bin:/usr/sbin:/sbin
+DEBUG   [U=1478400690,P=4012799]SetBinaryPath()               Using that path for all binaries
+DEBUG   [U=1478400690,P=4012799]handleConfDir()               Created /org/org-open-sai/proj-sai-hpc-software/runs/cp2k-mount-ro-1914241-20261024/runtime/.apptainer
+INFO    [U=1478400690,P=4012799]Exec()                        User not listed in /etc/subuid, trying root-mapped namespace
+DEBUG   [U=1478400690,P=4012799]UnshareRootMapped()           Executing /opt/devtools/apptainer/1.4.4/bin/apptainer in root-mapped unprivileged user namespace
+DEBUG   [U=0,P=4012811]    setValue()                    Updated flag 'tmpdir' value to: /org/org-open-sai/proj-sai-hpc-software/runs/cp2k-mount-ro-1914241-20261024/runtime
+DEBUG   [U=0,P=4012811]    persistentPreRun()            Apptainer version: 1.4.4
+DEBUG   [U=0,P=4012811]    persistentPreRun()            Parsing configuration file /org/org-open-sai/proj-sai-hpc-software/runs/cp2k-mount-ro-1914241-20261024/runtime/apptainer-fuse2fs.conf
+DEBUG   [U=0,P=4012811]    SetBinaryPath()               Setting binary path to /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin:/opt/devtools/apptainer/1.4.4/libexec/apptainer/bin:/opt/devtools/apptainer/1.4.4/bin:/usr/bin:/bin:/usr/bin:/bin:/usr/sbin:/sbin
+DEBUG   [U=0,P=4012811]    SetBinaryPath()               Using that path for all binaries
+DEBUG   [U=0,P=4012811]    handleConfDir()               /org/org-open-sai/proj-sai-hpc-software/runs/cp2k-mount-ro-1914241-20261024/runtime/.apptainer already exists. Not creating.
+DEBUG   [U=0,P=4012811]    Exec()                        running root-mapped unprivileged
+DEBUG   [U=0,P=4012811]    FindFake()                    looking for the fakeroot-sysv command
+DEBUG   [U=0,P=4012811]    findOnPath()                  Found "fakeroot-sysv" at "/usr/bin/fakeroot-sysv"
+DEBUG   [U=0,P=4012811]    FindFake()                    fakeroot-sysv found at /usr/bin/fakeroot-sysv
+INFO    [U=0,P=4012811]    Exec()                        Using fakeroot command combined with root-mapped namespace
+DEBUG   [U=0,P=4012811]    setUmask()                    Saving umask 0077 for propagation into container
+DEBUG   [U=0,P=4012811]    checkEncryptionKey()          Checking for encrypted system partition
+DEBUG   [U=0,P=4012811]    Init()                        Image format detection
+DEBUG   [U=0,P=4012811]    Init()                        Check for sandbox image format
+DEBUG   [U=0,P=4012811]    Init()                        sandbox format initializer returned: not a directory image
+DEBUG   [U=0,P=4012811]    Init()                        Check for sif image format
+DEBUG   [U=0,P=4012811]    Init()                        sif image format detected
+DEBUG   [U=0,P=4012811]    setNVLegacyConfig()           Using legacy binds for nv GPU setup
+DEBUG   [U=0,P=4012811]    findOnPath()                  Found "ldconfig.real" at "/usr/sbin/ldconfig.real"
+VERBOSE [U=0,P=4012811]    setKeyIfNotAlreadyOverridden()Forwarding APPTAINERENV_TMPDIR as TMPDIR environment variable
+WARNING [U=0,P=4012811]    overridesForContainerEnv()    Overriding HOME environment variable with APPTAINERENV_HOME is not permitted
+VERBOSE [U=0,P=4012811]    SetContainerEnv()             Not forwarding APPTAINER_CACHEDIR environment variable
+VERBOSE [U=0,P=4012811]    SetContainerEnv()             Not forwarding APPTAINER_TMPDIR environment variable
+VERBOSE [U=0,P=4012811]    SetContainerEnv()             Not forwarding APPTAINER_DEBUG environment variable
+VERBOSE [U=0,P=4012811]    SetContainerEnv()             Setting HOME=/root
+VERBOSE [U=0,P=4012811]    SetContainerEnv()             Setting PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+DEBUG   [U=0,P=4012811]    findOnPath()                  Found "squashfuse_ll" at "/opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/squashfuse_ll"
+DEBUG   [U=0,P=4012811]    findOnPath()                  Found "fuse2fs" at "/org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs"
+DEBUG   [U=0,P=4012811]    findOnPath()                  Found "fuse-overlayfs" at "/opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/fuse-overlayfs"
+DEBUG   [U=0,P=4012811]    findOnPath()                  Found "gocryptfs" at "/opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/gocryptfs"
+DEBUG   [U=0,P=4012811]    InitImageDrivers()            squashfuse_ll supports -o uid
+DEBUG   [U=0,P=4012811]    InitImageDrivers()            Setting ImageDriver to fuseapps
+DEBUG   [U=0,P=4012811]    init()                        Use starter binary /opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/starter
+VERBOSE [U=0,P=4012811]    print()                       Set messagelevel to: 5
+VERBOSE [U=0,P=4012811]    init()                        Starter initialization
+VERBOSE [U=0,P=4012811]    is_suid()                     Check if we are running as setuid: 0
+DEBUG   [U=0,P=4012811]    read_engine_config()          Read engine configuration
+DEBUG   [U=0,P=4012811]    init()                        Wait completion of stage1
+DEBUG   [U=0,P=4012842]    set_parent_death_signal()     Set parent death signal to 9
+VERBOSE [U=0,P=4012842]    init()                        Spawn stage 1
+DEBUG   [U=0,P=4012842]    func1()                       executablePath is /opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/starter
+DEBUG   [U=0,P=4012842]    func1()                       starter was not relocated from /opt/devtools/apptainer/1.4.4/libexec
+DEBUG   [U=0,P=4012842]    func1()                       Install prefix is /opt/devtools/apptainer/1.4.4
+DEBUG   [U=0,P=4012842]    startup()                     apptainer runtime engine selected
+VERBOSE [U=0,P=4012842]    startup()                     Execute stage 1
+DEBUG   [U=0,P=4012842]    StageOne()                    Entering stage 1
+DEBUG   [U=0,P=4012842]    findOnPath()                  Found "squashfuse_ll" at "/opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/squashfuse_ll"
+DEBUG   [U=0,P=4012842]    findOnPath()                  Found "fuse2fs" at "/org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs"
+DEBUG   [U=0,P=4012842]    findOnPath()                  Found "fuse-overlayfs" at "/opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/fuse-overlayfs"
+DEBUG   [U=0,P=4012842]    findOnPath()                  Found "gocryptfs" at "/opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/gocryptfs"
+DEBUG   [U=0,P=4012842]    InitImageDrivers()            squashfuse_ll supports -o uid
+DEBUG   [U=0,P=4012842]    InitImageDrivers()            Setting ImageDriver to fuseapps
+DEBUG   [U=0,P=4012842]    prepareRootCaps()             Root full capabilities
+DEBUG   [U=0,P=4012842]    prepareAutofs()               Found "/proc/sys/fs/binfmt_misc" as autofs mount point
+DEBUG   [U=0,P=4012842]    prepareAutofs()               Could not keep file descriptor for user bind path /usr: no mount point
+DEBUG   [U=0,P=4012842]    prepareAutofs()               Could not keep file descriptor for user bind path /sbin: no mount point
+DEBUG   [U=0,P=4012842]    prepareAutofs()               Could not keep file descriptor for user bind path /lib: no mount point
+DEBUG   [U=0,P=4012842]    prepareAutofs()               Could not keep file descriptor for user bind path /lib64: no mount point
+DEBUG   [U=0,P=4012842]    prepareAutofs()               Could not keep file descriptor for user bind path /opt/devtools: no mount point
+DEBUG   [U=0,P=4012842]    prepareAutofs()               Could not keep file descriptor for user bind path /opt/modules: no mount point
+DEBUG   [U=0,P=4012842]    prepareAutofs()               Could not keep file descriptor for user bind path /org/org-open-sai/proj-sai-hpc-software/runs/cp2k-mount-ro-1914241-20261024/runtime: no mount point
+DEBUG   [U=0,P=4012842]    prepareAutofs()               Could not keep file descriptor for user bind path /org/org-open-sai/proj-sai-hpc-software/runs/cp2k-mount-ro-1914241-20261024/runtime: no mount point
+DEBUG   [U=0,P=4012842]    prepareAutofs()               Could not keep file descriptor for user bind path /usr/bin/fakeroot-sysv: no mount point
+DEBUG   [U=0,P=4012842]    prepareAutofs()               Could not keep file descriptor for user bind path /usr/bin/faked-sysv: no mount point
+DEBUG   [U=0,P=4012842]    prepareAutofs()               Could not keep file descriptor for user bind path /usr/lib/x86_64-linux-gnu/libfakeroot/libfakeroot-sysv.so: no mount point
+DEBUG   [U=0,P=4012842]    prepareAutofs()               Could not keep file descriptor for workdir : no mount point
+DEBUG   [U=0,P=4012842]    Init()                        Image format detection
+DEBUG   [U=0,P=4012842]    Init()                        Check for sandbox image format
+DEBUG   [U=0,P=4012842]    Init()                        sandbox format initializer returned: not a directory image
+DEBUG   [U=0,P=4012842]    Init()                        Check for sif image format
+DEBUG   [U=0,P=4012842]    Init()                        sif image format detected
+DEBUG   [U=0,P=4012842]    setSessionLayer()             Overlay requested by user
+DEBUG   [U=0,P=4012842]    Init()                        Image format detection
+DEBUG   [U=0,P=4012842]    Init()                        Check for sandbox image format
+DEBUG   [U=0,P=4012842]    Init()                        sandbox format initializer returned: not a directory image
+DEBUG   [U=0,P=4012842]    Init()                        Check for sif image format
+DEBUG   [U=0,P=4012842]    Init()                        sif format initializer returned: SIF magic not found
+DEBUG   [U=0,P=4012842]    Init()                        Check for squashfs image format
+DEBUG   [U=0,P=4012842]    Init()                        squashfs format initializer returned: while parsing squashfs super block: not a valid squashfs image
+DEBUG   [U=0,P=4012842]    Init()                        Check for ext3 image format
+DEBUG   [U=0,P=4012842]    Init()                        ext3 image format detected
+DEBUG   [U=0,P=4012842]    PrepareConfig()               image driver is fuseapps
+VERBOSE [U=0,P=4012811]    wait_child()                  stage 1 exited with status 0
+DEBUG   [U=0,P=4012811]    cleanup_fd()                  Close file descriptor 3
+DEBUG   [U=0,P=4012811]    cleanup_fd()                  Close file descriptor 4
+DEBUG   [U=0,P=4012811]    cleanup_fd()                  Close file descriptor 5
+DEBUG   [U=0,P=4012811]    cleanup_fd()                  Close file descriptor 6
+DEBUG   [U=0,P=4012811]    init()                        Set child signal mask
+DEBUG   [U=0,P=4012811]    init()                        Create socketpair for master communication channel
+DEBUG   [U=0,P=4012811]    init()                        Create RPC socketpair for communication between stage 2 and RPC server
+VERBOSE [U=0,P=4012811]    pid_namespace_init()          Create pid namespace
+VERBOSE [U=0,P=4012811]    init()                        Spawn master process
+DEBUG   [U=0,P=1]          set_parent_death_signal()     Set parent death signal to 9
+VERBOSE [U=0,P=1]          create_namespace()            Create network namespace
+DEBUG   [U=0,P=1]          network_namespace_init()      Bringing up network loopback interface
+VERBOSE [U=0,P=1]          create_namespace()            Create ipc namespace
+VERBOSE [U=0,P=1]          create_namespace()            Create mount namespace
+VERBOSE [U=0,P=4012811]    enter_namespace()             Entering in mount namespace
+DEBUG   [U=0,P=4012811]    enter_namespace()             Opening namespace file ns/mnt
+VERBOSE [U=0,P=1]          create_namespace()            Create mount namespace
+VERBOSE [U=0,P=2]          init()                        Spawn RPC server
+DEBUG   [U=0,P=4012811]    func1()                       executablePath is /opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/starter
+DEBUG   [U=0,P=4012811]    func1()                       starter was not relocated from /opt/devtools/apptainer/1.4.4/libexec
+DEBUG   [U=0,P=4012811]    func1()                       Install prefix is /opt/devtools/apptainer/1.4.4
+DEBUG   [U=0,P=2]          func1()                       executablePath is /opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/starter
+DEBUG   [U=0,P=2]          func1()                       starter was not relocated from /opt/devtools/apptainer/1.4.4/libexec
+DEBUG   [U=0,P=2]          func1()                       Install prefix is /opt/devtools/apptainer/1.4.4
+DEBUG   [U=0,P=2]          startup()                     apptainer runtime engine selected
+VERBOSE [U=0,P=2]          startup()                     Serve RPC requests
+DEBUG   [U=0,P=4012811]    startup()                     apptainer runtime engine selected
+VERBOSE [U=0,P=4012811]    startup()                     Execute master process
+DEBUG   [U=0,P=4012811]    findOnPath()                  Found "squashfuse_ll" at "/opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/squashfuse_ll"
+DEBUG   [U=0,P=4012811]    findOnPath()                  Found "fuse2fs" at "/org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs"
+DEBUG   [U=0,P=4012811]    findOnPath()                  Found "fuse-overlayfs" at "/opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/fuse-overlayfs"
+DEBUG   [U=0,P=4012811]    findOnPath()                  Found "gocryptfs" at "/opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/gocryptfs"
+DEBUG   [U=0,P=4012811]    InitImageDrivers()            squashfuse_ll supports -o uid
+DEBUG   [U=0,P=4012811]    InitImageDrivers()            Setting ImageDriver to fuseapps
+DEBUG   [U=0,P=4012811]    setupSessionLayout()          Using Layer system: overlay
+DEBUG   [U=0,P=4012811]    setupOverlayLayout()          Creating overlay SESSIONDIR layout
+DEBUG   [U=0,P=4012811]    addOverlayMount()             Using overlay partition in image /org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf/work.ext3
+DEBUG   [U=0,P=4012811]    addRootfsMount()              Mount rootfs in read-only mode
+DEBUG   [U=0,P=4012811]    addRootfsMount()              Image type is 4096
+DEBUG   [U=0,P=4012811]    addRootfsMount()              Mounting block [squashfs] image: /org/org-open-sai/proj-sai-hpc-software/containers/base/minimal-v1.sif
+DEBUG   [U=0,P=4012811]    addKernelMount()              Checking configuration file for 'mount proc'
+DEBUG   [U=0,P=4012811]    addKernelMount()              Adding proc to mount list
+VERBOSE [U=0,P=4012811]    addKernelMount()              Default mount: /proc:/proc
+DEBUG   [U=0,P=4012811]    addKernelMount()              Checking configuration file for 'mount sys'
+DEBUG   [U=0,P=4012811]    addKernelMount()              Adding sysfs to mount list
+VERBOSE [U=0,P=4012811]    addKernelMount()              Default mount: /sys:/sys
+DEBUG   [U=0,P=4012811]    addDevMount()                 Checking configuration file for 'mount dev'
+DEBUG   [U=0,P=4012811]    addDevMount()                 Creating temporary staged /dev
+DEBUG   [U=0,P=4012811]    addDevMount()                 Creating temporary staged /dev/shm
+DEBUG   [U=0,P=4012811]    addDevMount()                 Creating temporary staged /dev/mqueue
+DEBUG   [U=0,P=4012811]    addDevMount()                 Creating temporary staged /dev/pts
+DEBUG   [U=0,P=4012811]    addDevMount()                 Not setting /dev/pts filesystem gid: user namespace enabled
+DEBUG   [U=0,P=4012811]    addDevMount()                 Mounting devpts for staged /dev/pts
+DEBUG   [U=0,P=4012811]    addSessionDevAt()             Mounting device /dev/tty at /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/tty
+DEBUG   [U=0,P=4012811]    addSessionDevAt()             Mounting device /dev/null at /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/null
+DEBUG   [U=0,P=4012811]    addSessionDevAt()             Mounting device /dev/zero at /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/zero
+DEBUG   [U=0,P=4012811]    addSessionDevAt()             Mounting device /dev/random at /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/random
+DEBUG   [U=0,P=4012811]    addSessionDevAt()             Mounting device /dev/urandom at /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/urandom
+DEBUG   [U=0,P=4012811]    addSessionDevAt()             Mounting device /dev/nvidia-caps at /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/nvidia-caps
+DEBUG   [U=0,P=4012811]    addSessionDevAt()             Mounting device /dev/nvidia-modeset at /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/nvidia-modeset
+DEBUG   [U=0,P=4012811]    addSessionDevAt()             Mounting device /dev/nvidia-uvm at /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/nvidia-uvm
+DEBUG   [U=0,P=4012811]    addSessionDevAt()             Mounting device /dev/nvidia-uvm-tools at /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/nvidia-uvm-tools
+DEBUG   [U=0,P=4012811]    addSessionDevAt()             Mounting device /dev/nvidia0 at /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/nvidia0
+DEBUG   [U=0,P=4012811]    addSessionDevAt()             Mounting device /dev/nvidia1 at /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/nvidia1
+DEBUG   [U=0,P=4012811]    addSessionDevAt()             Mounting device /dev/nvidia2 at /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/nvidia2
+DEBUG   [U=0,P=4012811]    addSessionDevAt()             Mounting device /dev/nvidia3 at /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/nvidia3
+DEBUG   [U=0,P=4012811]    addSessionDevAt()             Mounting device /dev/nvidiactl at /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/nvidiactl
+DEBUG   [U=0,P=4012811]    addSessionDevAt()             Adding symlink device /dev/fd to /proc/self/fd at /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/fd
+DEBUG   [U=0,P=4012811]    addSessionDevAt()             Adding symlink device /dev/stdin to /proc/self/fd/0 at /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/stdin
+DEBUG   [U=0,P=4012811]    addSessionDevAt()             Adding symlink device /dev/stdout to /proc/self/fd/1 at /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/stdout
+DEBUG   [U=0,P=4012811]    addSessionDevAt()             Adding symlink device /dev/stderr to /proc/self/fd/2 at /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/stderr
+DEBUG   [U=0,P=4012811]    addHostMount()                Not mounting host file systems per configuration
+DEBUG   [U=0,P=4012811]    addBindsMount()               Skipping bind mounts as contain was requested
+VERBOSE [U=0,P=4012811]    addBindsMount()               Binding staging /etc/hosts as contain is set
+DEBUG   [U=0,P=4012811]    addHomeMount()                Skipping home directory mount by user request.
+DEBUG   [U=0,P=4012811]    addUserbindsMount()           Adding /usr to mount list
+DEBUG   [U=0,P=4012811]    addUserbindsMount()           Adding /sbin to mount list
+DEBUG   [U=0,P=4012811]    addUserbindsMount()           Adding /lib to mount list
+DEBUG   [U=0,P=4012811]    addUserbindsMount()           Adding /lib64 to mount list
+DEBUG   [U=0,P=4012811]    addUserbindsMount()           Adding /opt/devtools to mount list
+DEBUG   [U=0,P=4012811]    addUserbindsMount()           Adding /opt/modules to mount list
+DEBUG   [U=0,P=4012811]    addUserbindsMount()           Adding /org/org-open-sai/proj-sai-hpc-software/runs/cp2k-mount-ro-1914241-20261024/runtime to mount list
+DEBUG   [U=0,P=4012811]    addUserbindsMount()           Adding /org/org-open-sai/proj-sai-hpc-software/runs/cp2k-mount-ro-1914241-20261024/runtime to mount list
+DEBUG   [U=0,P=4012811]    addTmpMount()                 Checking for 'mount tmp' in configuration file
+VERBOSE [U=0,P=4012811]    addTmpMount()                 Skipping tmp dir mounting (per config)
+DEBUG   [U=0,P=4012811]    addScratchMount()             Not mounting scratch directory: Not requested
+DEBUG   [U=0,P=4012811]    addLibsMount()                Checking for 'user bind control' in configuration file
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libEGL.so.1 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-glcore.so.550.163.01 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libcuda.so.1 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libGLX.so.0 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-cfg.so.1 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-opticalflow.so.1 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libGL.so.1 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-nvvm.so.4 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libGLX_nvidia.so.0 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libGLESv1_CM_nvidia.so.1 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvcuvid.so.1 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-ml.so to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-opencl.so.1 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libGLESv2_nvidia.so.2 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-encode.so to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libGLESv2.so.2 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libGLdispatch.so.0 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-fbc.so to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-gpucomp.so.550.163.01 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-rtcore.so.550.163.01 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libcuda.so to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvcuvid.so to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libOpenGL.so.0 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/libnvidia-gtk2.so.510.47.03 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-fbc.so.1 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-encode.so.1 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libOpenCL.so.1 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libGL.so to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-eglcore.so.550.163.01 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libEGL_nvidia.so.0 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-cfg.so to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-glvkspirv.so.550.163.01 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-egl-wayland.so.1 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-nvvm.so to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-glsi.so.550.163.01 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libcudadebugger.so.1 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/libnvidia-gtk3.so.510.47.03 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-ml.so.1 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-ptxjitcompiler.so to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvoptix.so.1 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-opticalflow.so to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-ptxjitcompiler.so.1 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libnvidia-tls.so.550.163.01 to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /lib/x86_64-linux-gnu/libGLX.so to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /usr/bin/fakeroot-sysv to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /usr/bin/faked-sysv to mount list
+DEBUG   [U=0,P=4012811]    addLibsMount()                Add library /usr/lib/x86_64-linux-gnu/libfakeroot/libfakeroot-sysv.so to mount list
+DEBUG   [U=0,P=4012811]    addFilesMount()               Checking for 'user bind control' in configuration file
+DEBUG   [U=0,P=4012811]    addFilesMount()               Adding file /usr/share/vulkan/implicit_layer.d/nvidia_layers.json to mount list
+DEBUG   [U=0,P=4012811]    addFilesMount()               Adding file /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json to mount list
+DEBUG   [U=0,P=4012811]    addFilesMount()               Adding file /usr/bin/nvidia-cuda-mps-control:/usr/bin/nvidia-cuda-mps-control to mount list
+DEBUG   [U=0,P=4012811]    addFilesMount()               Adding file /usr/share/vulkan/icd.d/nvidia_icd.json to mount list
+DEBUG   [U=0,P=4012811]    addFilesMount()               Adding file /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json to mount list
+DEBUG   [U=0,P=4012811]    addFilesMount()               Adding file /usr/share/nvidia/nvoptix.bin to mount list
+DEBUG   [U=0,P=4012811]    addFilesMount()               Adding file /usr/bin/nvidia-smi:/usr/bin/nvidia-smi to mount list
+DEBUG   [U=0,P=4012811]    addFilesMount()               Adding file /usr/bin/nvidia-debugdump:/usr/bin/nvidia-debugdump to mount list
+DEBUG   [U=0,P=4012811]    addFilesMount()               Adding file /usr/bin/nvidia-persistenced:/usr/bin/nvidia-persistenced to mount list
+DEBUG   [U=0,P=4012811]    addFilesMount()               Adding file /usr/bin/nvidia-cuda-mps-server:/usr/bin/nvidia-cuda-mps-server to mount list
+DEBUG   [U=0,P=4012811]    addFilesMount()               Adding file /var/run/nvidia-persistenced/socket to mount list
+DEBUG   [U=0,P=4012811]    addFilesMount()               Adding file /usr/share/glvnd/egl_vendor.d/10_nvidia.json to mount list
+DEBUG   [U=0,P=4012811]    addResolvConfMount()          Adding /etc/resolv.conf to mount list
+VERBOSE [U=0,P=4012811]    addResolvConfMount()          Default mount: /etc/resolv.conf:/etc/resolv.conf
+DEBUG   [U=0,P=4012811]    addHostnameMount()            Skipping hostname mount, not virtualizing UTS namespace on user request
+DEBUG   [U=0,P=4012811]    create()                      Mount all
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting tmpfs to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session
+DEBUG   [U=0,P=4012811]    func2()                       Starting image driver fuseapps
+DEBUG   [U=0,P=4012811]    Mount()                       Executing /opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/squashfuse_ll -f -o allow_other,ro,uid=0,gid=0,offset=36864 /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/rootfs
+DEBUG   [U=0,P=4012811]    Mount()                       /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/rootfs mounted in 25ms
+DEBUG   [U=0,P=4012811]    findOnPath()                  Searching for "stdbuf" in SuidBinaryPath
+DEBUG   [U=0,P=4012811]    findOnPath()                  Found "stdbuf" at "/usr/bin/stdbuf"
+DEBUG   [U=0,P=4012811]    Mount()                       Executing /usr/bin/stdbuf -oL /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs -f -o allow_other,ro /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0
+INFO    [U=0,P=4012811]    Mount()                       Ignoring invalid max threads value 4294967295 > max (100000).
+DEBUG   [U=0,P=4012811]    Mount()                       /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 mounted in 1.625s
+VERBOSE [U=0,P=4012811]    createCwdDir()                Not mounting current directory: contain was requested
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting overlay to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final
+DEBUG   [U=0,P=4012811]    mountGeneric()                Unmounting and remounting overlay
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final
+DEBUG   [U=0,P=4012811]    setPropagationMount()         Set RPC mount propagation flag to SLAVE
+VERBOSE [U=0,P=4012811]    Passwd()                      Checking for template passwd file: /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/rootfs/etc/passwd
+VERBOSE [U=0,P=4012811]    Passwd()                      Creating passwd content
+VERBOSE [U=0,P=4012811]    Passwd()                      Creating template passwd file and injecting user data: /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/rootfs/etc/passwd
+DEBUG   [U=0,P=4012811]    addIdentityMount()            Adding /etc/passwd to mount list
+VERBOSE [U=0,P=4012811]    addIdentityMount()            Default mount: /etc/passwd:/etc/passwd
+VERBOSE [U=0,P=4012811]    Group()                       Checking for template group file: /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/rootfs/etc/group
+VERBOSE [U=0,P=4012811]    Group()                       Creating group content
+DEBUG   [U=0,P=4012811]    addIdentityMount()            Adding /etc/group to mount list
+VERBOSE [U=0,P=4012811]    addIdentityMount()            Default mount: /etc/group:/etc/group
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting tmpfs to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/shm
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting mqueue to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/mqueue
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting devpts to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/pts
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /dev/tty to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/tty
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /dev/null to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/null
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /dev/zero to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/zero
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /dev/random to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/random
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /dev/urandom to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/urandom
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /dev/nvidia-caps to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/nvidia-caps
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /dev/nvidia-modeset to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/nvidia-modeset
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /dev/nvidia-uvm to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/nvidia-uvm
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /dev/nvidia-uvm-tools to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/nvidia-uvm-tools
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /dev/nvidia0 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/nvidia0
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /dev/nvidia1 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/nvidia1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /dev/nvidia2 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/nvidia2
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /dev/nvidia3 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/nvidia3
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /dev/nvidiactl to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev/nvidiactl
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/dev to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/dev
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting proc to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/proc
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /sys to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/sys
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libEGL.so.1 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libEGL.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libEGL.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-glcore.so.550.163.01 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-glcore.so.550.163.01
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-glcore.so.550.163.01
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libcuda.so.1 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libcuda.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libcuda.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libGLX.so.0 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libGLX.so.0
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libGLX.so.0
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-cfg.so.1 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-cfg.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-cfg.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-opticalflow.so.1 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-opticalflow.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-opticalflow.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libGL.so.1 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libGL.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libGL.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-nvvm.so.4 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-nvvm.so.4
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-nvvm.so.4
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libGLX_nvidia.so.0 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libGLX_nvidia.so.0
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libGLX_nvidia.so.0
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libGLESv1_CM_nvidia.so.1 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libGLESv1_CM_nvidia.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libGLESv1_CM_nvidia.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvcuvid.so.1 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvcuvid.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvcuvid.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-ml.so to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-ml.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-ml.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-opencl.so.1 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-opencl.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-opencl.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libGLESv2_nvidia.so.2 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libGLESv2_nvidia.so.2
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libGLESv2_nvidia.so.2
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-encode.so to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-encode.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-encode.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libGLESv2.so.2 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libGLESv2.so.2
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libGLESv2.so.2
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libGLdispatch.so.0 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libGLdispatch.so.0
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libGLdispatch.so.0
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-fbc.so to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-fbc.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-fbc.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-gpucomp.so.550.163.01 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-gpucomp.so.550.163.01
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-gpucomp.so.550.163.01
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-rtcore.so.550.163.01 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-rtcore.so.550.163.01
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-rtcore.so.550.163.01
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libcuda.so to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libcuda.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libcuda.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvcuvid.so to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvcuvid.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvcuvid.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libOpenGL.so.0 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libOpenGL.so.0
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libOpenGL.so.0
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/libnvidia-gtk2.so.510.47.03 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-gtk2.so.510.47.03
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-gtk2.so.510.47.03
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-fbc.so.1 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-fbc.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-fbc.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-encode.so.1 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-encode.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-encode.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libOpenCL.so.1 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libOpenCL.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libOpenCL.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libGL.so to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libGL.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libGL.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-eglcore.so.550.163.01 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-eglcore.so.550.163.01
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-eglcore.so.550.163.01
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libEGL_nvidia.so.0 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libEGL_nvidia.so.0
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libEGL_nvidia.so.0
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-cfg.so to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-cfg.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-cfg.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-glvkspirv.so.550.163.01 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-glvkspirv.so.550.163.01
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-glvkspirv.so.550.163.01
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-egl-wayland.so.1 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-egl-wayland.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-egl-wayland.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-nvvm.so to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-nvvm.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-nvvm.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-glsi.so.550.163.01 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-glsi.so.550.163.01
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-glsi.so.550.163.01
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libcudadebugger.so.1 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libcudadebugger.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libcudadebugger.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/libnvidia-gtk3.so.510.47.03 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-gtk3.so.510.47.03
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-gtk3.so.510.47.03
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-ml.so.1 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-ml.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-ml.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-ptxjitcompiler.so to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-ptxjitcompiler.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-ptxjitcompiler.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvoptix.so.1 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvoptix.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvoptix.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-opticalflow.so to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-opticalflow.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-opticalflow.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-ptxjitcompiler.so.1 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-ptxjitcompiler.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-ptxjitcompiler.so.1
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libnvidia-tls.so.550.163.01 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-tls.so.550.163.01
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libnvidia-tls.so.550.163.01
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib/x86_64-linux-gnu/libGLX.so to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libGLX.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libGLX.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /usr/bin/fakeroot-sysv to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/fakeroot
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/fakeroot
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /usr/bin/faked-sysv to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/faked
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/faked
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /usr/lib/x86_64-linux-gnu/libfakeroot/libfakeroot-sysv.so to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libfakeroot.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs/libfakeroot.so
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/libs to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/.singularity.d/libs
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/.singularity.d/libs
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /usr/share/vulkan/implicit_layer.d/nvidia_layers.json to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/usr/share/vulkan/implicit_layer.d/nvidia_layers.json
+WARNING [U=0,P=4012811]    mountGeneric()                Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json
+WARNING [U=0,P=4012811]    mountGeneric()                Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /usr/bin/nvidia-cuda-mps-control to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/usr/bin/nvidia-cuda-mps-control
+WARNING [U=0,P=4012811]    mountGeneric()                Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /usr/share/vulkan/icd.d/nvidia_icd.json to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/usr/share/vulkan/icd.d/nvidia_icd.json
+WARNING [U=0,P=4012811]    mountGeneric()                Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json
+WARNING [U=0,P=4012811]    mountGeneric()                Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /usr/share/nvidia/nvoptix.bin to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/usr/share/nvidia/nvoptix.bin
+WARNING [U=0,P=4012811]    mountGeneric()                Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /usr/bin/nvidia-smi to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/usr/bin/nvidia-smi
+WARNING [U=0,P=4012811]    mountGeneric()                Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /usr/bin/nvidia-debugdump to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/usr/bin/nvidia-debugdump
+WARNING [U=0,P=4012811]    mountGeneric()                Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /usr/bin/nvidia-persistenced to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/usr/bin/nvidia-persistenced
+WARNING [U=0,P=4012811]    mountGeneric()                Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /usr/bin/nvidia-cuda-mps-server to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/usr/bin/nvidia-cuda-mps-server
+WARNING [U=0,P=4012811]    mountGeneric()                Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /var/run/nvidia-persistenced/socket to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/var/run/nvidia-persistenced/socket
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/var/run/nvidia-persistenced/socket
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /usr/share/glvnd/egl_vendor.d/10_nvidia.json to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/usr/share/glvnd/egl_vendor.d/10_nvidia.json
+WARNING [U=0,P=4012811]    mountGeneric()                Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/etc/resolv.conf to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/etc/resolv.conf
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/etc/passwd to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/etc/passwd
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/etc/group to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/etc/group
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /usr to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/usr
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/usr
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/lib
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/lib
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /org/org-open-sai/proj-sai-hpc-software/runs/cp2k-mount-ro-1914241-20261024/runtime to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/tmp
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/tmp
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /sbin to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/sbin
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/sbin
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /lib64 to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/lib64
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/lib64
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /org/org-open-sai/proj-sai-hpc-software/runs/cp2k-mount-ro-1914241-20261024/runtime to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/runtime
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/runtime
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /opt/modules to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/opt/modules
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/opt/modules
+DEBUG   [U=0,P=4012811]    mountGeneric()                Mounting /opt/devtools to /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/opt/devtools
+DEBUG   [U=0,P=4012811]    mountGeneric()                Remounting /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final/opt/devtools
+DEBUG   [U=0,P=4012811]    create()                      Chroot into /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final
+DEBUG   [U=0,P=2]          Chroot()                      Hold reference to host / directory
+DEBUG   [U=0,P=2]          Chroot()                      Called pivot_root on /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final
+DEBUG   [U=0,P=2]          Chroot()                      Change current directory to host / directory
+DEBUG   [U=0,P=2]          Chroot()                      Apply slave mount propagation for host / directory
+DEBUG   [U=0,P=2]          Chroot()                      Called unmount(/, syscall.MNT_DETACH)
+DEBUG   [U=0,P=2]          Chroot()                      Changing directory to / to avoid getpwd issues
+DEBUG   [U=0,P=4012811]    create()                      Chdir into / to avoid errors
+VERBOSE [U=0,P=1]          wait_child()                  rpc server exited with status 0
+DEBUG   [U=0,P=1]          init()                        Set container privileges
+DEBUG   [U=0,P=1]          apply_privileges()            Effective capabilities:   0x000001ffffffffff
+DEBUG   [U=0,P=1]          apply_privileges()            Permitted capabilities:   0x000001ffffffffff
+DEBUG   [U=0,P=1]          apply_privileges()            Bounding capabilities:    0x000001ffffffffff
+DEBUG   [U=0,P=1]          apply_privileges()            Inheritable capabilities: 0x000001ffffffffff
+DEBUG   [U=0,P=1]          apply_privileges()            Ambient capabilities:     0x000001ffffffffff
+DEBUG   [U=0,P=1]          apply_privileges()            Set user ID to 0
+DEBUG   [U=0,P=1]          set_parent_death_signal()     Set parent death signal to 9
+DEBUG   [U=0,P=1]          func1()                       executablePath is /opt/devtools/apptainer/1.4.4/libexec/apptainer/bin/starter
+DEBUG   [U=0,P=1]          func1()                       starter was not relocated from /opt/devtools/apptainer/1.4.4/libexec
+DEBUG   [U=0,P=1]          func1()                       Install prefix is /opt/devtools/apptainer/1.4.4
+DEBUG   [U=0,P=1]          startup()                     apptainer runtime engine selected
+VERBOSE [U=0,P=1]          startup()                     Execute stage 2
+DEBUG   [U=0,P=1]          StageTwo()                    Entering stage 2
+DEBUG   [U=0,P=1]          StartProcess()                Setting umask in container to 0077
+DEBUG   [U=0,P=1]          sylogBuiltin()                Sourcing /.singularity.d/env/01-base.sh
+DEBUG   [U=0,P=1]          sylogBuiltin()                Sourcing /.singularity.d/env/90-environment.sh
+DEBUG   [U=0,P=1]          sylogBuiltin()                Sourcing /.singularity.d/env/94-appsbase.sh
+DEBUG   [U=0,P=1]          sylogBuiltin()                Sourcing /.singularity.d/env/95-apps.sh
+DEBUG   [U=0,P=1]          sylogBuiltin()                Sourcing /.singularity.d/env/99-base.sh
+DEBUG   [U=0,P=1]          sylogBuiltin()                Sourcing /.singularity.d/env/99-runtimevars.sh
+DEBUG   [U=0,P=1]          sylogBuiltin()                Running action command exec
+VERBOSE [U=0,P=1]          runActionScript()             Running command with fakeroot
+DEBUG   [U=0,P=4012811]    PostStartProcess()            Post start process
+FUSE_RO_OVERLAY_PRESENT
+DEBUG   [U=0,P=1]          StartProcess()                Received signal child exited
+DEBUG   [U=0,P=1]          StartProcess()                Received signal child exited
+DEBUG   [U=0,P=4012811]    CleanupContainer()            Cleanup container
+DEBUG   [U=0,P=4012811]    umount()                      Umount /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/final
+DEBUG   [U=0,P=4012811]    umount()                      Umount /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/rootfs
+DEBUG   [U=0,P=4012811]    stop()                        Waiting for squashfuse_ll pid 4012867 to exit
+DEBUG   [U=0,P=4012811]    umount()                      Umount /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0
+DEBUG   [U=0,P=4012811]    stop()                        Waiting for fuse2fs pid 4012872 to exit
+DEBUG   [U=0,P=4012811]    Master()                      Child exited with exit status 0

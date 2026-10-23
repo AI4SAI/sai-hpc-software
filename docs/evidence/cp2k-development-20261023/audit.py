@@ -18,6 +18,9 @@ SOURCE = 'cfe5e5d87aaf302953f14eb43587bef2411a8fb2'
 CONTROL_SHA = '10992f818af71543bb39cb81e0f60c9f7ede9535'
 WORKFLOW = '39983165813'
 TARGETS = ('dsprhbm', '4v100-avx512', '16v100-avx2', '8v100v0-avx512')
+# Keep the failed workflow allocation separate from its fresh application retry.
+# The retry consumes the original sealed dependencies and frozen controller.
+RECOVERIES = {'4v100-avx512': ('-mount-retry1', '1914241')}
 
 
 def require(condition, message):
@@ -33,10 +36,11 @@ def read(path):
 
 def audit(target):
     require(target in TARGETS, 'unsupported CP2K target')
-    run_id = WORKFLOW + '-1-development-' + target + '-2026-10-23-' + SOURCE[:12]
+    base_run_id = WORKFLOW + '-1-development-' + target + '-2026-10-23-' + SOURCE[:12]
+    run_id = base_run_id + RECOVERIES.get(target, ('', ''))[0]
     build = ROOT / 'runs' / run_id
     request = read(build / 'request.json')
-    control = ROOT / 'controller' / CONTROL_SHA / run_id
+    control = ROOT / 'controller' / CONTROL_SHA / base_run_id
     require(request['controller'] == str(control) and control.resolve() == control,
             'wrong frozen controller')
     os.environ['SAI_SOFTWARE_ROOT'] = str(ROOT)
@@ -56,7 +60,7 @@ def audit(target):
     original.validate_candidate(manifest, artifact, published=True)
 
     dependency = ROOT / 'runs' / request['dependencies_run']
-    require(dependency == ROOT / 'runs' / (run_id + '-dependencies'),
+    require(dependency == ROOT / 'runs' / (base_run_id + '-dependencies'),
             'build used a different dependency run')
     dependency_receipt = read(dependency / 'results/dependency-stage.json')
     require(dependency_receipt['identity'] == identity, 'dependency identity differs')
@@ -66,7 +70,40 @@ def audit(target):
     stage = ROOT / 'runtime-tests' / proof['run_id']
     jobs[proof['job']] = stage
     report = read(stage / 'results/evidence.json')
-    accounting = subprocess.check_output(['sacct', '-X', '-n', '-P', '-j', ','.join(jobs),
+    recovery = None
+    if target in RECOVERIES:
+        old = ROOT / 'runs' / base_run_id
+        old_job = RECOVERIES[target][1]
+        old_request = read(old / 'request.json')
+        retry = read(build / 'results/retry-submitted.json')
+        plan = read(build / 'input/retry-plan.json')
+        require((old / 'job.id').read_text().strip() == old_job
+                and old_request['identity'] == identity
+                and old_request['controller'] == str(control)
+                and old_request['dependencies_run'] == request['dependencies_run'],
+                'original failed application identity changed')
+        require(retry['job_id'] == (build / 'job.id').read_text().strip()
+                and retry['returncode'] == 0 and retry['original_small_files_unchanged']
+                and retry['request_sha256'] == checksum(build / 'request.json')
+                and retry['job_script_sha256'] == checksum(build / 'job.sbatch'),
+                'retry receipt does not describe the final application')
+        require(plan['original_run'] == base_run_id and plan['new_run'] == run_id
+                and plan['original_job'] == old_job and plan['identity'] == identity
+                and plan['dependencies_run'] == request['dependencies_run']
+                and plan['controller'] == str(control)
+                and plan['original_failed_overlay_reused'] is False
+                and plan['mount_timeout_changed'] is False
+                and plan['original_workflow_success_claimed'] is False,
+                'retry plan differs from the reviewed recovery')
+        for name, expected in plan['original_small_file_sha256'].items():
+            path = Path(name)
+            require(path.is_relative_to(ROOT) and path.is_file() and path.resolve() == path
+                    and checksum(path) == expected, 'original recovery input changed: ' + name)
+        recovery = dict(original_run=base_run_id, original_job=old_job,
+                        retry_plan=plan, retry_receipt=retry,
+                        original_workflow_success_claimed=False)
+    requested_jobs = list(jobs) + ([recovery['original_job']] if recovery else [])
+    accounting = subprocess.check_output(['sacct', '-X', '-n', '-P', '-j', ','.join(requested_jobs),
         '--format=JobIDRaw,State,ExitCode,Partition,Account,WorkDir,Elapsed,NodeList'], text=True)
     rows = [line.split('|') for line in accounting.splitlines() if line.split('|')[0] in jobs]
     require(len(rows) == 3 and len({row[0] for row in rows}) == 3,
@@ -75,6 +112,14 @@ def audit(target):
         require(row[1:6] == ['COMPLETED', '0:0', identity['partition'],
                             'proj-sai-hpc-software', str(jobs[row[0]])],
                 'allocation differs from accepted job/project/partition: ' + row[0])
+    if recovery:
+        failed_rows = [line.split('|') for line in accounting.splitlines()
+                       if line.split('|')[0] == recovery['original_job']]
+        require(len(failed_rows) == 1 and failed_rows[0][1:6] ==
+                ['FAILED', '255:0', identity['partition'], 'proj-sai-hpc-software',
+                 str(ROOT / 'runs' / base_run_id)],
+                'original failed allocation was not preserved')
+        recovery['original_accounting'] = failed_rows[0]
     return dict(schema=1, audited_at=datetime.now(timezone.utc).isoformat(),
         workflow='https://github.com/AI4SAI/sai-hpc-software/actions/runs/' + WORKFLOW,
         run_id=run_id, identity=identity, frozen_controller=str(control),
@@ -84,7 +129,8 @@ def audit(target):
         manifest_sha256=checksum(artifact.with_suffix('.json')), manifest=manifest,
         dependency_receipt=dependency_receipt,
         dependency_receipt_sha256=checksum(dependency / 'results/dependency-stage.json'),
-        accounting=rows, science_request=read(stage / 'request.json'), science=report,
+        accounting=rows, recovery=recovery,
+        science_request=read(stage / 'request.json'), science=report,
         science_evidence_sha256=checksum(stage / 'results/evidence.json'),
         verified=True, scientific_verified=True, project_catalog_published=True,
         native_export_verified=True, native_runtime_verified=False, installed_to_opt=False,

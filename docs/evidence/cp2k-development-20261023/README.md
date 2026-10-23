@@ -56,7 +56,7 @@ project maintenance directory and run (substitute the target in both run IDs):
 ```bash
 python3 libxc_smoke.py prepare \
   --controller /org/org-open-sai/proj-sai-hpc-software/controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf \
-  --build-run-id 39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf \
+  --build-run-id 39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf-mount-retry1 \
   --run-id cp2k-libxc-39983165813-4v100-avx512
 sbatch /org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-39983165813-4v100-avx512/job.sbatch
 ```
@@ -79,3 +79,42 @@ dependency/build/science allocations. Invoke it on the login node with
 `python3 -I -B - <target> < audit.py`. This audit does not submit jobs or change
 acceptance records; it also does not assert physical `/opt` installation or
 replace the LibXC supplement. Its result is pending publication of each target.
+
+## 4V100 mount failure and fresh application attempt
+
+The original application job `1914241` failed with exit `255:0` before entering
+the container. Dependency cloning finished and both filesystem checks returned
+zero; Apptainer 1.4.4 then reported that `fuse2fs` had not mounted the cloned
+overlay within its 10-second deadline. No application or LibXC compilation ran
+in that attempt. The original workflow failure remains part of the evidence;
+this recovery does not turn the original GitHub job into a successful job.
+See [the failure record](4v100-mount-failure-1914241.json).
+
+The independent diagnostic job `1914582` ran on the same `4v100n01` node and
+mounted that failed attempt's overlay **read-only** twice, in 2.008 and 0.502
+seconds; both commands returned zero. The captured helper used `-o allow_other,ro`,
+its backing descriptors had access mode `O_RDONLY`, and its observed
+`write_bytes` was zero. Overlay size, inode, ownership, mode, block count and
+mtime remained identical before and after the probe. No full-image checksum
+was recomputed for this diagnostic. This establishes subsequent read-only
+mountability; it neither reproduces the original read-write startup nor proves
+the cause of its timeout. Raw
+[probe results](mount-probe-1914582/results/probe.json),
+[allocation](mount-probe-1914582/results/allocation.txt), logs and the
+[collection manifest](mount-probe-1914582/collection.json) preserve that boundary.
+The executed [probe source](mount-probe-1914582/mount_probe.py) has SHA256
+`e5e9b879395b8bbdb6d2fc4145b89047c64f560aa353d6f614b35460b8646aa7`
+and is byte-identical to the top-level `mount_probe.py`.
+
+The reviewed [recovery script](prepare_4v100_retry.py) submitted job `1914645`
+using the original frozen controller, exact source/recipe identity and the same
+sealed dependency checkpoint. Its new run is
+`39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf-mount-retry1`.
+It creates a fresh clone through the original controller and does not reuse or
+modify the failed overlay. Required archives are copied and verified;
+original small-file and controller hashes were unchanged across submission.
+The [retry plan](4v100-mount-retry-1914645/input/retry-plan.json),
+[submission receipt](4v100-mount-retry-1914645/results/retry-submitted.json) and
+[collection manifest](4v100-mount-retry-1914645/collection.json) bind that recovery
+to its inputs. Its application build, normal science acceptance and independent
+LibXC supplement remain required before declaring this target accepted.
