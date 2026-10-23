@@ -1,5 +1,10 @@
 # CP2K 2026.2 large-water GPU/CPU comparison
 
+The CPU companion now includes the two-hunk redistribution repair described
+in the [MPI repair and controlled retest](README-mpi-repair.md). Original
+performance ratios must be repeated with the corrected CPU library. New run
+requests pin the library hash as well as the executable hash.
+
 This experiment uses the accepted physical shared-ELPA release at
 `/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/<partition>`.
 It does not modify the public installation or its defaults.

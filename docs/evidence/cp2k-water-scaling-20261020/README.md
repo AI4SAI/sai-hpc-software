@@ -8,6 +8,17 @@ found an upstream ScaLAPACK redistribution defect in the pinned CP2K 2026.2
 source. All performance conclusions against that CPU binary require review
 and a corrected baseline before being treated as final.
 
+The [minimal repair and MPI retest](../../../deployment/cp2k-water-scaling/README-mpi-repair.md)
+is now implemented for the CPU companion. Both ISA builds have passed a
+byte-identical original-library relink and a one-object repaired relink.
+Actual ScaLAPACK tracing has confirmed the predicted participation change on
+both partitions, through 64 MPI ranks and 22–24 consecutive diagonalizations.
+All three controlled A/B jobs completed `0:0`. For the 216-water causal test,
+median total times fall by 5.79% on 4V100/16 cores, 38.30% on 16V100/16 cores
+and 16.24% on 16V100/64 cores. These measure the source repair's effect;
+the original larger-water CPU/GPU ratios below still require fresh repeats.
+[Build controls and real MPI/timing evidence](../cp2k-scalapack-mpi-repair-20261022/README.md).
+
 The follow-up [source confirmation](scalapack-source-check/README.md) finds
 the same defect in both official v2026.2 and the inspected current master,
 traces it to a 2023 refactor, and links the existing upstream issue #6074.
@@ -28,7 +39,7 @@ successive diagonalizations, not merely fix the first initialization.
 
 This source file is byte-for-byte identical to the pinned upstream file
 (SHA-256 `e3edf28d199b4ba624bd94b0e3e73a8863f6db2a7ffc8e4d8e0017f32f7e8c83`).
-The local source repair only changed `cp_fm_elpa.F`. Raw timers independently
+The original CPU build's source repair only changed `cp_fm_elpa.F`. Raw timers independently
 support the unintended rank split: on the 1,452-water CPU trial, the
 `cp_fm_syevd_base` average/max times are **17,092.52 / 34,192.44 seconds**,
 while `cp_fm_redistribute_end` takes up to **34,250.02 seconds**. These timers

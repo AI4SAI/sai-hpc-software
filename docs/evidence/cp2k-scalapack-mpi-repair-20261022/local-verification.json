@@ -1,0 +1,582 @@
+{
+  "runs": [
+    {
+      "archive": "cp2k-mpi-retest-20261022-16v100-g16-a.tar.gz",
+      "archive_sha256": "7f3d01b33788a4034a804ea0a83233dfaed4853f62e0f1b8937df8c236871bfa",
+      "before_over_after": 1.193874571634933,
+      "cases_verified": 14,
+      "job": "1897997",
+      "measured_scf_steps": {
+        "after": [
+          [
+            22
+          ],
+          [
+            22
+          ],
+          [
+            22
+          ]
+        ],
+        "before": [
+          [
+            22
+          ],
+          [
+            22
+          ],
+          [
+            22
+          ]
+        ]
+      },
+      "measured_seconds": {
+        "after": [
+          64.947,
+          65.073,
+          65.149
+        ],
+        "before": [
+          77.433,
+          77.689,
+          77.851
+        ]
+      },
+      "median_seconds": {
+        "after": 65.073,
+        "before": 77.689
+      },
+      "mpi": {
+        "trace-1-after": {
+          "matrix_order": 4968,
+          "repeated_solve_count": 22,
+          "solving_count": 16,
+          "solving_ranks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "world_ranks": 16
+        },
+        "trace-1-before": {
+          "matrix_order": 4968,
+          "repeated_solve_count": 22,
+          "solving_count": 8,
+          "solving_ranks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "world_ranks": 16
+        },
+        "trace-2-after": {
+          "matrix_order": 4968,
+          "repeated_solve_count": 22,
+          "solving_count": 32,
+          "solving_ranks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+          ],
+          "world_ranks": 32
+        },
+        "trace-2-before": {
+          "matrix_order": 4968,
+          "repeated_solve_count": 22,
+          "solving_count": 16,
+          "solving_ranks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "world_ranks": 32
+        },
+        "trace-4-after": {
+          "matrix_order": 4968,
+          "repeated_solve_count": 22,
+          "solving_count": 64,
+          "solving_ranks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31,
+            32,
+            33,
+            34,
+            35,
+            36,
+            37,
+            38,
+            39,
+            40,
+            41,
+            42,
+            43,
+            44,
+            45,
+            46,
+            47,
+            48,
+            49,
+            50,
+            51,
+            52,
+            53,
+            54,
+            55,
+            56,
+            57,
+            58,
+            59,
+            60,
+            61,
+            62,
+            63
+          ],
+          "world_ranks": 64
+        },
+        "trace-4-before": {
+          "matrix_order": 4968,
+          "repeated_solve_count": 22,
+          "solving_count": 32,
+          "solving_ranks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16,
+            17,
+            18,
+            19,
+            20,
+            21,
+            22,
+            23,
+            24,
+            25,
+            26,
+            27,
+            28,
+            29,
+            30,
+            31
+          ],
+          "world_ranks": 64
+        }
+      },
+      "partition": "16V100",
+      "physical_cores": 64,
+      "same_size_max_energy_delta_ha": 1.8189894035458565e-12,
+      "same_size_max_force_delta_ha_bohr": 1.0000004296850662e-12,
+      "syevd_median_seconds": {
+        "after": 26.248,
+        "before": 39.441
+      },
+      "syevd_time_reduction_percent": 33.44996323622627,
+      "timing_waters": 216,
+      "total_time_reduction_percent": 16.23910720951486
+    },
+    {
+      "archive": "cp2k-mpi-retest-20261022-16v100-g4-a.tar.gz",
+      "archive_sha256": "c22d943a8a621ad41f1124b88c4675d534d457c985dbeaa540a90989e58cefa3",
+      "before_over_after": 1.6207499525455706,
+      "cases_verified": 14,
+      "job": "1897952",
+      "measured_scf_steps": {
+        "after": [
+          [
+            22
+          ],
+          [
+            22
+          ],
+          [
+            22
+          ]
+        ],
+        "before": [
+          [
+            22
+          ],
+          [
+            22
+          ],
+          [
+            22
+          ]
+        ]
+      },
+      "measured_seconds": {
+        "after": [
+          168.389,
+          173.851,
+          176.304
+        ],
+        "before": [
+          277.506,
+          283.384,
+          281.769
+        ]
+      },
+      "median_seconds": {
+        "after": 173.851,
+        "before": 281.769
+      },
+      "mpi": {
+        "trace-1-after": {
+          "matrix_order": 1472,
+          "repeated_solve_count": 24,
+          "solving_count": 4,
+          "solving_ranks": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "world_ranks": 4
+        },
+        "trace-1-before": {
+          "matrix_order": 1472,
+          "repeated_solve_count": 24,
+          "solving_count": 2,
+          "solving_ranks": [
+            0,
+            1
+          ],
+          "world_ranks": 4
+        },
+        "trace-2-after": {
+          "matrix_order": 1472,
+          "repeated_solve_count": 24,
+          "solving_count": 8,
+          "solving_ranks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "world_ranks": 8
+        },
+        "trace-2-before": {
+          "matrix_order": 1472,
+          "repeated_solve_count": 24,
+          "solving_count": 4,
+          "solving_ranks": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "world_ranks": 8
+        },
+        "trace-4-after": {
+          "matrix_order": 1472,
+          "repeated_solve_count": 24,
+          "solving_count": 16,
+          "solving_ranks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "world_ranks": 16
+        },
+        "trace-4-before": {
+          "matrix_order": 1472,
+          "repeated_solve_count": 24,
+          "solving_count": 8,
+          "solving_ranks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "world_ranks": 16
+        }
+      },
+      "partition": "16V100",
+      "physical_cores": 16,
+      "same_size_max_energy_delta_ha": 9.094947017729282e-13,
+      "same_size_max_force_delta_ha_bohr": 1.0000004296850662e-12,
+      "syevd_median_seconds": {
+        "after": 67.631,
+        "before": 177.412
+      },
+      "syevd_time_reduction_percent": 61.879128807521475,
+      "timing_waters": 216,
+      "total_time_reduction_percent": 38.30016786800535
+    },
+    {
+      "archive": "cp2k-mpi-retest-20261022-4v100-g4-a.tar.gz",
+      "archive_sha256": "dd89f2a073514279e5c54e40a06c4679981d31058415a9bd665b80f77ea2b4d1",
+      "before_over_after": 1.0614693141970013,
+      "cases_verified": 14,
+      "job": "1897953",
+      "measured_scf_steps": {
+        "after": [
+          [
+            22
+          ],
+          [
+            22
+          ],
+          [
+            22
+          ]
+        ],
+        "before": [
+          [
+            22
+          ],
+          [
+            22
+          ],
+          [
+            22
+          ]
+        ]
+      },
+      "measured_seconds": {
+        "after": [
+          91.93,
+          92.306,
+          92.111
+        ],
+        "before": [
+          97.302,
+          97.773,
+          97.94
+        ]
+      },
+      "median_seconds": {
+        "after": 92.111,
+        "before": 97.773
+      },
+      "mpi": {
+        "trace-1-after": {
+          "matrix_order": 1472,
+          "repeated_solve_count": 24,
+          "solving_count": 4,
+          "solving_ranks": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "world_ranks": 4
+        },
+        "trace-1-before": {
+          "matrix_order": 1472,
+          "repeated_solve_count": 24,
+          "solving_count": 2,
+          "solving_ranks": [
+            0,
+            1
+          ],
+          "world_ranks": 4
+        },
+        "trace-2-after": {
+          "matrix_order": 1472,
+          "repeated_solve_count": 24,
+          "solving_count": 8,
+          "solving_ranks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "world_ranks": 8
+        },
+        "trace-2-before": {
+          "matrix_order": 1472,
+          "repeated_solve_count": 24,
+          "solving_count": 4,
+          "solving_ranks": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "world_ranks": 8
+        },
+        "trace-4-after": {
+          "matrix_order": 1472,
+          "repeated_solve_count": 24,
+          "solving_count": 16,
+          "solving_ranks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15
+          ],
+          "world_ranks": 16
+        },
+        "trace-4-before": {
+          "matrix_order": 1472,
+          "repeated_solve_count": 24,
+          "solving_count": 8,
+          "solving_ranks": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7
+          ],
+          "world_ranks": 16
+        }
+      },
+      "partition": "4V100",
+      "physical_cores": 16,
+      "same_size_max_energy_delta_ha": 1.3642420526593924e-12,
+      "same_size_max_force_delta_ha_bohr": 1.0000004296850662e-12,
+      "syevd_median_seconds": {
+        "after": 26.441,
+        "before": 35.696
+      },
+      "syevd_time_reduction_percent": 25.92727476467952,
+      "timing_waters": 216,
+      "total_time_reduction_percent": 5.790964785779296
+    }
+  ],
+  "scope": "archived execution evidence",
+  "verified": true
+}
