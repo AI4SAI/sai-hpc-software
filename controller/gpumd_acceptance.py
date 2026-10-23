@@ -60,7 +60,7 @@ def render_job(request, task):
     lines = ["#!/usr/bin/env bash", f"#SBATCH --job-name=gpumd-science-{request['run_id']}",
         f"#SBATCH --partition={target['partition']}", f"#SBATCH --qos={gpumd_qos(ROOT, request['target'])}",
         "#SBATCH --nodes=1", "#SBATCH --ntasks=1", "#SBATCH --gpus-per-node=1",
-        "#SBATCH --time=40", f"#SBATCH --output={task}/results/slurm-%j.log", "#SBATCH --export=NIL",
+        "#SBATCH --time=15", f"#SBATCH --output={task}/results/slurm-%j.log", "#SBATCH --export=NIL",
         *project_batch_directives(ROOT, task),
         "set -eo pipefail", "export PATH=/usr/bin:/bin LD_LIBRARY_PATH= LD_PRELOAD=",
         "source /etc/profile.d/lmod.sh", "module load apptainer/1.4.4", "set -u",
