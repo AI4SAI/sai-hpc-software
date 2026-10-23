@@ -18,7 +18,8 @@ tolerances or timing thresholds. The final 8V100V0 acceptance jobs
 `1901416`, `1901616`, `1901623`, `1901688` and `1901712` completed with `0:0`;
 independent revalidation of raw science, SIF checksum, native file bytes and
 module metadata passed. All four partitions are now accepted and published
-in the home tree, ready for physical deployment.
+in the home tree; the administrator has also installed their physical runtime
+files and public module under `/opt`.
 The original CPU acceptance job remains failed in GitHub's audit history;
 this run is not claimed as an entirely successful automatic workflow.
 PR #17 repaired acceptance after skipped CP2K dependencies, selected
@@ -27,12 +28,19 @@ partition builds and corrected GPU affinity and upstream energy references.
 See the
 [release build and acceptance record](evidence/abacus-beta11-20261022/README.md).
 The [beta11 administrator deployment package](../deployment/abacus-3.11.0-beta11/README.md)
-is ready: four-partition source/reference preflight, a real copy/readback
-rehearsal under home storage and `saiuser01` source/target access checks passed.
-It installs about 1.83 GiB of standard runtime files and a standalone public
+passed four-partition source/reference preflight, a real copy/readback
+rehearsal under home storage and `saiuser01` source/target access checks.
+The physical installation now passes `--verify` and independent readback of
+all 76 regular files, four symlinks and the public module. Both ordinary and
+cache-bypassing module queries list `abacus/3.11.0-beta11-auto`.
+The install contains about 1.83 GiB of standard runtime files and a standalone public
 partition selector. Workflow metadata, test inputs and private dependency
-development files stay outside `/opt`. Administrator installation and the
-prepared 30 single/two-node native scientific calculations remain outstanding.
+development files stay outside `/opt`. Native jobs `1903636`–`1903639` are
+submitted and preserved with frozen inputs, but remain `PENDING` with
+`AssocGrpJobsLimit`; the user also reports an exhausted account allocation.
+All 30 single/two-node native scientific calculations remain outstanding.
+[Physical installation and pending acceptance evidence](evidence/abacus-beta11-20261022/physical-installation.json)
+records this distinction; physical runtime acceptance is not yet claimed.
 Optional public deployment of the container image driver is tracked in
 [issue #12](https://github.com/AI4SAI/sai-hpc-software/issues/12).
 

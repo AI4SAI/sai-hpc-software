@@ -50,9 +50,7 @@ module load abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a
 
 The SIFs and sibling `.native` export directories are below
 `/home/stardust/sai-hpc-software/containers/software/abacus/release/v3.11.0-beta11-gb0411118d360-r92ecfac1f62a/<PARTITION>/`.
-All four partitions are accepted home module targets and ready for physical
-deployment. No physical beta11 `/opt` installation or post-install native
-runtime acceptance has been performed. The
+All four partitions are accepted home module targets. The
 [administrator deployment package](../../../deployment/abacus-3.11.0-beta11/README.md)
 now follows the CP2K/LAMMPS `--check`/`--install`/`--verify` interface and
 includes the public partition selector and post-install native checks.
@@ -63,7 +61,37 @@ source read/traverse grants. The package installs about 1.83 GiB of standard
 runtime files; metadata, custom tests and private dependency development
 materials stay outside `/opt`.
 [Deployment preflight and permission evidence](physical-deployment-preflight.json)
-records the checks without claiming physical installation or native execution.
+preserves the historical pre-install checks.
+
+### Physical installation — October 23
+
+The administrator installed all four partition trees and the public module
+`/opt/modules/modulefiles/apps/abacus/3.11.0-beta11-auto`.
+Read-only `install.sh --verify` passed as the ordinary `stardust` account.
+An independent inventory confirmed all 76 regular-file hashes, four symlink
+targets, executable access and the installed module hash against the committed
+deployment package. Both ordinary and `--ignore_cache` module queries list
+the new version. No native calculation has run in this post-install suite.
+
+| Partition | Native acceptance job | Recorded status |
+| --- | --- | --- |
+| 4V100 | 1903636 | PENDING |
+| 16V100 | 1903637 | PENDING |
+| 8V100V0 | 1903638 | PENDING |
+| DSPRHBM | 1903639 | PENDING |
+
+The jobs use `private-stardust`; the recorded queue reason is
+`AssocGrpJobsLimit`. The user separately reported that the account's allocation
+is exhausted; the scheduler reason alone does not establish its balance.
+Jobs and checksum-verified frozen inputs are preserved under
+`/home/stardust/sai-hpc-software/runtime-tests/abacus-beta11-physical-20261023-074725-2961798`.
+There are no calculation results or native acceptance reports at this snapshot.
+All 30 physical single/two-node scientific cases remain outstanding.
+The pending accounting rows' `0:0` exit fields are not successful completion.
+[physical-installation.json](physical-installation.json) records the physical
+inventory, module queries, submission hashes and timestamped Slurm evidence.
+An ordinary account with allocation and source read access can use the existing
+submission script; check the retained jobs before resubmitting on this account.
 
 ### CPU reference-library recovery
 
