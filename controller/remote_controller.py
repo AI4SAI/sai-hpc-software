@@ -1,4 +1,5 @@
 """Trusted, allowlisted container policy; no writable host work/install trees."""
+import os
 import re
 from pathlib import Path
 
@@ -45,6 +46,21 @@ def project_batch_directives(root, workdir):
     if '..' in root.parts or '..' in workdir.parts or not workdir.is_relative_to(root):
         raise ValueError('Slurm work directory escapes the project root')
     return ['#SBATCH --account=' + SAI_PROJECT_ACCOUNT, '#SBATCH --chdir=' + str(workdir)]
+
+
+def private_scratch(path):
+    """Keep project ACLs out of Apptainer's root-mapped overlay seed."""
+    path = Path(path)
+    if not path.is_absolute() or path.resolve() != path or path.is_symlink():
+        raise ValueError('untrusted scratch directory')
+    path.mkdir(parents=True, exist_ok=True)
+    # mke2fs copies the seed's ACLs verbatim. Named project users/groups are
+    # unmapped in fakeroot and can make overlay upper/work unwritable. Only
+    # these private scratch directories lose inherited ACLs; results keep them.
+    for name in os.listxattr(path):
+        if name in ('system.posix_acl_access', 'system.posix_acl_default'):
+            os.removexattr(path, name)
+    path.chmod(0o700)
 
 # Observed on SAI 2026-09-20. Never bind all of /opt/apps: it would hide
 # the candidate installed at its final prefix in the overlay / SIF.

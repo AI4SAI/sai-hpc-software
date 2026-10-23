@@ -17,6 +17,15 @@ The base SIF and self-contained bare source cache were copied into the new
 tree; original home data and frozen controllers stay in place. This change
 does not move existing CP2K, ABACUS or MD automatic-build continuations.
 
+The first project-account attempt (`39953638995`, jobs `1911630`, `1911632`,
+`1911636`) stopped before compilation: the project's inherited POSIX ACLs
+were copied into the fakeroot overlay's `upper` and `work` directories,
+which Apptainer could not write. Build/acceptance scratch directories now
+discard inherited access/default ACLs and set mode 0700 before Apptainer
+creates temporary files; project/input/result permissions remain intact.
+A small container write probe in the project tree passed with this fix.
+The failed attempts and their overlays are retained.
+
 The integrated workflow builds upstream
 `development`, `prerelease`, and `release` through the shared source resolver.
 Development uses `master`; release channels resolve their live upstream tags.

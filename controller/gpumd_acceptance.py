@@ -8,7 +8,7 @@ import shlex
 import subprocess
 import time
 
-from remote_controller import site_app_binds, TARGETS, safe_name, container_command, project_batch_directives
+from remote_controller import site_app_binds, TARGETS, safe_name, container_command, project_batch_directives, private_scratch
 from source_cache import checksum
 from delivery_layout import artifact_path, load_artifact, validate_record
 from release_contract import GPU_TARGETS, validate_identity
@@ -103,8 +103,9 @@ def submit(args):
         require_original_regression(original_evidence)
         check_repeat_request(request, original)
         request["repeat_of"] = repeat_binding(original_id, original_evidence)
-    for name in ("results", "runtime", "cache"):
-        (task / name).mkdir(parents=True)
+    (task / 'results').mkdir(parents=True)
+    for name in ("runtime", "cache"):
+        private_scratch(task / name)
     script = task / "job.sbatch"
     script.write_text(render_job(request, task))
     request["job_script_sha256"] = checksum(script)

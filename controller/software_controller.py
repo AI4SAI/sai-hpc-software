@@ -9,7 +9,7 @@ from pathlib import Path
 import shlex
 import subprocess
 import time
-from remote_controller import TARGETS, safe_name, safe_sha, container_command, site_app_binds, cp2k_mpi_build_binds, project_batch_directives
+from remote_controller import TARGETS, safe_name, safe_sha, container_command, site_app_binds, cp2k_mpi_build_binds, project_batch_directives, private_scratch
 from source_cache import checksum
 from module_publication import publish_module, validate_module
 from release_contract import make_identity, TRACKS
@@ -214,8 +214,10 @@ def task_dir(run_id):
 def init(args):
     safe_name(args.software)
     r = task_dir(args.run_id)
-    for part in ("input", "results", "runtime", "apptainer-cache"):
+    for part in ("input", "results"):
         (r / part).mkdir(parents=True, exist_ok=True)
+    for part in ("runtime", "apptainer-cache"):
+        private_scratch(r / part)
     return r
 
 

@@ -1,11 +1,13 @@
 import argparse
 from contextlib import redirect_stdout
+import errno
 import io
 import json
 import os
 import importlib.util
 from pathlib import Path
 import subprocess
+import struct
 import sys
 import tempfile
 import unittest
@@ -27,6 +29,34 @@ def runtime_identity(args, root):
     return args
 
 class PolicyTests(unittest.TestCase):
+    def test_build_scratch_does_not_inherit_project_acl_or_setgid(self):
+        # Real Linux default ACL. Use the current UID so the fixture also works
+        # when the test runner itself has only one mapped UID.
+        acl = struct.pack('<I', 2) + b''.join(struct.pack('<HHI', *entry) for entry in (
+            (1, 7, 0xffffffff), (2, 7, os.getuid()), (4, 5, 0xffffffff),
+            (16, 7, 0xffffffff), (32, 0, 0xffffffff)))
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary).resolve()
+            try:
+                os.setxattr(root, 'system.posix_acl_default', acl)
+            except OSError as error:
+                if error.errno in (errno.ENOTSUP, errno.EOPNOTSUPP):
+                    self.skipTest('test filesystem does not support POSIX ACLs')
+                raise
+            root.chmod(0o2770)
+            with patch.object(controller, 'ROOT', root):
+                task = controller.init(argparse.Namespace(software='gpumd', run_id='acl-build'))
+            for name in ('runtime', 'apptainer-cache'):
+                scratch = task / name
+                self.assertEqual(scratch.stat().st_mode & 0o7777, 0o700)
+                self.assertFalse(any(x.startswith('system.posix_acl_') for x in os.listxattr(scratch)))
+                seed = scratch / 'overlay-seed'
+                seed.mkdir()
+                self.assertFalse(seed.stat().st_mode & 0o2000)
+                self.assertFalse(any(x.startswith('system.posix_acl_') for x in os.listxattr(seed)))
+            for shared in (root, task / 'input', task / 'results'):
+                self.assertEqual(os.getxattr(shared, 'system.posix_acl_default'), acl)
+
     def test_no_writable_host_binds_or_whole_opt(self):
         argv = policy.container_command("/home/u/base.sif", ["/bin/bash"],
                                         overlay="/home/u/work.ext3", control="/home/u/control",
