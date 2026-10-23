@@ -93,6 +93,19 @@ class BuildAttemptTests(unittest.TestCase):
                                     range(6)))
         self.assertEqual(sum(result["build"] for result in results), 1)
 
+    def test_standalone_md_requests_deduplicate_only_the_built_software(self):
+        for software, dependency in (("lammps", "deepmd-kit"), ("deepmd-kit", "lammps")):
+            with self.subTest(software=software), tempfile.TemporaryDirectory() as temporary:
+                root = Path(temporary)
+                primary, companion = self.identity(software), self.identity(dependency)
+                task = root / "runs/standalone"
+                task.mkdir(parents=True)
+                (task / "request.json").write_text(json.dumps({"delivery": {
+                    "identity": primary, "deepmd_dependency": {"identity": companion}}}))
+                result = contract.claim_build(root, [primary, companion], "next")
+                self.assertEqual(result["identities"], [companion])
+                self.assertEqual(result["skipped"][0]["previous_run"], "standalone")
+
     def test_corrupt_or_symlinked_history_is_not_treated_as_a_new_version(self):
         identity = self.identity()
         contract.claim_build(self.root, [identity], "first")

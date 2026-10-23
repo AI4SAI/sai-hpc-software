@@ -33,7 +33,8 @@ def inventory(prefix):
     if not (prefix / 'lib/libdeepmd_c.so').is_file():
         raise ValueError('standalone DeePMD needs its installed C API')
     return dict(version=importlib.metadata.version('deepmd-kit'), backends=backends,
-                libraries={str(path): dict(sha256=file_digest(path), ldd=libraries(path)) for path in paths})
+                libraries={str(path): dict(sha256=file_digest(path.resolve(strict=True)),
+                    resolved=str(path.resolve(strict=True)), ldd=libraries(path)) for path in paths})
 
 
 def selected_identity():

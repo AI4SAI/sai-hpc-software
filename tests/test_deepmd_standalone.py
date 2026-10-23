@@ -9,7 +9,7 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'controller'))
 import deepmd_standalone as standalone
-from deepmd_standalone_check import verify_science_files
+from deepmd_standalone_check import inventory, verify_science_files
 
 
 class IndependentDeePMDTests(unittest.TestCase):
@@ -54,6 +54,21 @@ class IndependentDeePMDTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             with self.assertRaises(FileNotFoundError):
                 verify_science_files(temporary)
+
+    def test_native_library_soname_symlinks_hash_the_actual_library(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            prefix = Path(temporary)
+            site = prefix / 'lib/python3.13/site-packages/deepmd/lib'
+            site.mkdir(parents=True)
+            library = prefix / 'lib/libdeepmd_c.so.3'
+            library.write_bytes(b'native-library')
+            (prefix / 'lib/libdeepmd_c.so').symlink_to(library.name)
+            for name in ('tf', 'pt', 'jax'):
+                (site / ('libdeepmd_backend_' + name + '.so')).write_bytes(name.encode())
+            with patch('deepmd_standalone_check.libraries', return_value='resolved dependencies'), \
+                    patch('deepmd_standalone_check.importlib.metadata.version', return_value='3.2.0'):
+                observed = inventory(prefix)
+            self.assertEqual(observed['libraries'][str(prefix / 'lib/libdeepmd_c.so')]['resolved'], str(library))
 
     def test_fingerprint_covers_every_executed_source_and_detects_mutation(self):
         with tempfile.TemporaryDirectory() as temporary:

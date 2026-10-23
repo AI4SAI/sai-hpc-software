@@ -9,7 +9,7 @@ import shlex
 import subprocess
 
 from cp2k_image_driver import wrap_command
-from release_contract import GPU_TARGETS, make_identity, validate_identity
+from release_contract import GPU_TARGETS, claim_build, make_identity, validate_identity
 from remote_controller import (container_command, gpumd_qos, private_scratch,
                                project_batch_directives, safe_name, site_app_binds, SAI_PROJECT_ROOT)
 from source_cache import checksum
@@ -106,12 +106,17 @@ def render(delivery, run_id):
     return '\n'.join(lines) + '\n'
 
 
-def submit(run_id, delivery):
+def submit(run_id, delivery, *, retry_releases=False):
     if not PROJECT.is_relative_to(SAI_PROJECT_ROOT):
         raise ValueError('new DeePMD work requires the authorized project tree')
     delivery = validate_delivery(delivery)
     directory = task(run_id)
-    directory.mkdir(parents=True, exist_ok=False)
+    if directory.exists():
+        raise ValueError('DeePMD task already exists; use a new run id')
+    claim = claim_build(ROOT, [delivery['identity']], run_id, retry=retry_releases)
+    if not claim['build']:
+        print(json.dumps(claim, sort_keys=True))
+        return
     (directory / 'results').mkdir()
     for name in ('runtime', 'apptainer-cache'):
         private_scratch(directory / name)
@@ -170,11 +175,13 @@ def main():
     start.add_argument('run_id')
     start.add_argument('--source', required=True, help='resolved release-contract source JSON')
     start.add_argument('--target', choices=GPU_TARGETS, required=True)
+    start.add_argument('--retry-releases', action='store_true')
     query = sub.add_parser('status')
     query.add_argument('run_id')
     args = parser.parse_args()
     if args.command == 'submit':
-        submit(args.run_id, make_delivery(json.loads(args.source), args.target))
+        submit(args.run_id, make_delivery(json.loads(args.source), args.target),
+               retry_releases=args.retry_releases)
         return 0
     return status(args.run_id)
 
