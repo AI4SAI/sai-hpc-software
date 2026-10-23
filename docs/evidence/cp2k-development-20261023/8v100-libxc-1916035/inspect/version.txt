@@ -1,0 +1,105 @@
+ CP2K version 2026.2 (Development Version)
+ Source code revision cfe5e5d87a
+ cp2kflags: omp libint fftw3 libxc libxc_gpu elpa parallel scalapack mpi_f08 cosma libxs libxsmm dbcsr_acc plumed2 spglib openblas libdftd4 s_dftd3 mctc-lib tblite libvori libbqb offload_cuda spla_gemm_offloading cusolvermp cusolvermp_nccl hdf5 libwignernj
+ compiler: GCC version 14.3.0
+ compiler target: cpuid   1003 (x86_avx512)
+ current: cpuid   1002 (x86_avx2)
+ compiler options:
+   -cpp -I /workspace/source/src -I /workspace/build/src -I /workspace/
+   source/src/base -I /workspace/source/src/common -I /workspace/source
+   /src/motion -I /workspace/source/src/dbm -I /workspace/build/src/mod
+   _files -I /opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d
+   87aaf-rae6467ac2934/8V100V0/dependencies/spack/linux-skylake_avx512/
+   libint-2.6.0-r2f3aov4745lee7lpixxbdoynxahf4lc/include -I /opt/devtoo
+   ls/nvidia/cuda-12.9.1/targets/x86_64-linux/include -I /opt/apps/cp2k
+   /cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/8V10
+   0V0/dependencies/tblite/include -I /opt/apps/cp2k/cp2k-development-m
+   aster-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/8V100V0/dependencies/tb
+   lite/include/mctc-lib/modules -I /opt/apps/cp2k/cp2k-development-mas
+   ter-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/8V100V0/dependencies/tbli
+   te/include/dftd4/GNU-14.3.0 -I /opt/apps/cp2k/cp2k-development-maste
+   r-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/8V100V0/dependencies/tblite
+   /include/multicharge/GNU-14.3.0 -I /opt/devtools/saiblas/2603-gnu-av
+   x2/include -I /opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe
+   5e5d87aaf-rae6467ac2934/8V100V0/dependencies/tblite/include/tblite/G
+   NU-14.3.0 -I /opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5
+   e5d87aaf-rae6467ac2934/8V100V0/dependencies/tblite/include/toml-f/mo
+   dules -I /opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d8
+   7aaf-rae6467ac2934/8V100V0/dependencies/tblite/include/s-dftd3/GNU-1
+   4.3.0 -I /opt/devtools/spglib/spglib-2.7.0/include -I /opt/apps/cp2k
+   /cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/8V10
+   0V0/dependencies/libxc/include -I /opt/devtools/elpa/elpa-2026.02.00
+   1-2603-gnu-avx2/nvidia/include/elpa_openmp-2026.02.001 -I /opt/devto
+   ols/elpa/elpa-2026.02.001-2603-gnu-avx2/nvidia/include/elpa_openmp-2
+   026.02.001/modules -I /opt/apps/cp2k/cp2k-development-master-2026-10
+   -23-gcfe5e5d87aaf-rae6467ac2934/8V100V0/dependencies/spack/linux-sky
+   lake_avx512/plumed-2.10.1-e3rybix5hx3xnaywsnjne37of7mtn4sq/include -
+   I /opt/devtools/fftw/fftw-3.3.10/include -I /opt/apps/cp2k/cp2k-deve
+   lopment-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/8V100V0/depend
+   encies/spack/linux-skylake_avx512/spla-1.6.1-z2yhipmv5ulbdeesmn7ayga
+   sjeatoju5/include -I /opt/apps/cp2k/cp2k-development-master-2026-10-
+   23-gcfe5e5d87aaf-rae6467ac2934/8V100V0/dependencies/spack/linux-skyl
+   ake_avx512/spla-1.6.1-z2yhipmv5ulbdeesmn7aygasjeatoju5/include/spla 
+   -I /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/inc
+   lude -I /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx
+   2/lib -I /opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d8
+   7aaf-rae6467ac2934/8V100V0/dependencies/spack/linux-skylake_avx512/c
+   osma-2.7.0-qx7o5v367h6uydkiiypuva4ly7u3pysc/include -I /opt/apps/cp2
+   k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/8V1
+   00V0/dependencies/spack/linux-skylake_avx512/costa-2.3.3-znkbigfp5cb
+   bwu5zn55ptti2nhiynsr3/include -I /opt/apps/cp2k/cp2k-development-mas
+   ter-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/8V100V0/dependencies/spac
+   k/linux-skylake_avx512/tiled-mm-2.3.2-f7gzndzouxxc2uvmwgzfa4f3dypvcz
+   zz/include -I /opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe
+   5e5d87aaf-rae6467ac2934/8V100V0/dependencies/spack/linux-skylake_avx
+   512/tiled-mm-2.3.2-f7gzndzouxxc2uvmwgzfa4f3dypvczzz/include/Tiled-MM
+    -I /opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-
+   rae6467ac2934/8V100V0/dependencies/spack/linux-skylake_avx512/hdf5-1
+   .14.6-c762spr46tnwvmbfpx6o2723tufh4jlt/include -I /opt/apps/cp2k/cp2
+   k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/8V100V0/
+   dependencies/spack/linux-skylake_avx512/hdf5-1.14.6-c762spr46tnwvmbf
+   px6o2723tufh4jlt/mod/static -I /opt/apps/cp2k/cp2k-development-maste
+   r-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/8V100V0/dependencies/wigner
+   nj/include -I /opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe
+   5e5d87aaf-rae6467ac2934/8V100V0/dependencies/dbcsr/include -I /opt/a
+   pps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2
+   934/8V100V0/dependencies/libxs/include -I /opt/apps/cp2k/cp2k-develo
+   pment-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/8V100V0/dependen
+   cies/libxs/include/libxs -I /opt/apps/cp2k/cp2k-development-master-2
+   026-10-23-gcfe5e5d87aaf-rae6467ac2934/8V100V0/dependencies/spack/lin
+   ux-skylake_avx512/libxsmm-2.0.0-irxk7rpz4roscuefcqo3rddeycnj25b6/inc
+   lude -I /opt/devtools/nvidia/mp_libs/include -I /opt/devtools/nvidia
+   /nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/include -imultiarch x86_64
+   -linux-gnu -D_REENTRANT -D COSMA_HAVE_GPU -D IK=i4 -D TILED_MM_CUDA 
+   -D USING_Libxc -D _FILE_OFFSET_BITS=64 -D _GNU_SOURCE -D _LARGEFILE_
+   SOURCE -D _POSIX_C_SOURCE=200809L -D __BLAS -D __COMPILE_ARCH="x86_6
+   4" -D __COMPILE_DIR="/workspace/build" -D __COMPILE_HOST="" -D __COS
+   MA -D __CUSOLVERMP -D __CUSOLVERMP_NCCL -D __DATA_DIR="/opt/apps/cp2
+   k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/8V1
+   00V0/share/cp2k/data" -D __DBCSR_ACC -D __DFTD4 -D __ELPA -D __FFTW3
+    -D __HDF5 -D __LIBINT -D __LIBVORI -D __LIBXC -D __LIBXS -D __LIBXS
+   MM -D __MPI_F08 -D __OFFLOAD_CUDA -D __OFFLOAD_GEMM -D __OPENBLAS -D
+    __PLUMED2 -D __SPGLIB -D __SPLA -D __S_DFTD3 -D __TBLITE -D __paral
+   lel -D __SHORT_FILE__="start/cp2k.F" -march=skylake-avx512 -mmmx -mp
+   opcnt -msse -msse2 -msse3 -mssse3 -msse4.1 -msse4.2 -mavx -mavx2 -mn
+   o-sse4a -mno-fma4 -mno-xop -mfma -mavx512f -mbmi -mbmi2 -maes -mpclm
+   ul -mavx512vl -mavx512bw -mavx512dq -mavx512cd -mno-avx512vbmi -mno-
+   avx512ifma -mno-avx512vpopcntdq -mno-avx512vbmi2 -mno-gfni -mno-vpcl
+   mulqdq -mno-avx512vnni -mno-avx512bitalg -mno-avx512bf16 -mno-avx512
+   vp2intersect -mno-3dnow -madx -mabm -mno-cldemote -mclflushopt -mclw
+   b -mno-clzero -mcx16 -mno-enqcmd -mf16c -mfsgsbase -mfxsr -mhle -msa
+   hf -mno-lwp -mlzcnt -mmovbe -mno-movdir64b -mno-movdiri -mno-mwaitx 
+   -mno-pconfig -mpku -mprfchw -mno-ptwrite -mno-rdpid -mrdrnd -mrdseed
+    -mrtm -mno-serialize -mno-sgx -mno-sha -mno-shstk -mno-tbm -mno-tsx
+   ldtrk -mno-vaes -mno-waitpkg -mno-wbnoinvd -mxsave -mxsavec -mxsaveo
+   pt -mxsaves -mno-amx-tile -mno-amx-int8 -mno-amx-bf16 -mno-uintr -mn
+   o-hreset -mno-kl -mno-widekl -mno-avxvnni -mno-avx512fp16 -mno-avxif
+   ma -mno-avxvnniint8 -mno-avxneconvert -mno-cmpccxadd -mno-amx-fp16 -
+   mno-prefetchi -mno-raoint -mno-amx-complex -mno-avxvnniint16 -mno-sm
+   3 -mno-sha512 -mno-sm4 -mno-apxf -mno-usermsr --param=l1-cache-size=
+   32 --param=l1-cache-line-size=64 --param=l2-cache-size=25344 -mtune=
+   skylake-avx512 -g -O3 -O3 -O3 -Wno-deprecated-declarations -Wno-mayb
+   e-uninitialized -Wuninitialized -Wuse-without-only -std=f2008 -fPIE 
+   -ffree-form -fimplicit-none -fno-omit-frame-pointer -fbacktrace -fal
+   low-argument-mismatch -funroll-loops -fopenmp -fpre-include=/usr/inc
+   lude/finclude/x86_64-linux-gnu/math-vector-fortran.h

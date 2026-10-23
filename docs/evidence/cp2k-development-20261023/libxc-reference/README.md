@@ -7,6 +7,54 @@ built-in-PBE/LibXC comparison or its thresholds, and it does not confer normal
 CP2K science, publication or installation acceptance. The original CP2K
 HOST/DEVICE comparison and its CUDA execution evidence remain separate checks.
 
+## Completed results
+
+All four development SIFs at CP2K source
+`cfe5e5d87aaf302953f14eb43587bef2411a8fb2` passed the same frozen v1 reference
+protocol. Each partition ran 54 evaluations and passed all 258 scalar
+comparisons for PBE exchange/correlation energies and first derivatives.
+Each independent reference job was submitted once and completed with `0:0`.
+The linked run directories retain the frozen inputs, raw results, library
+hashes, execution receipts and scheduler accounting.
+
+| Partition | Independent reference run | Comparisons | Read-only combined summary |
+|---|---|---|---|
+| DSPRHBM | [1915264](runs/dsprhbm-1915264/) | 258/258 | [HOST only](summaries/dsprhbm.json) |
+| 16V100 | [1915263](runs/16v100-1915263/) | 258/258 | [HOST and DEVICE](summaries/16v100.json) |
+| 4V100 | [1915750](runs/4v100-1915750/) | 258/258 | [HOST and DEVICE](summaries/4v100.json) |
+| 8V100V0 | [1916042](runs/8v100v0-1916042/) | 258/258 | [HOST and DEVICE](summaries/8v100v0.json) |
+
+The [summary validator](summarize.py) recomputes the mathematical comparisons
+from the frozen raw references and recorded actual values. It also reparses
+the original CP2K energy/force outputs, verifies the same final SIF hash and
+actual private library provider across both runs, checks scheduler records,
+and reads the original Nsight SQLite database with `mode=ro`. Its outputs grant
+only `libxc_math_verified` and `libxc_backend_verified`; they grant no CP2K
+science, publication or installation status. Summary execution receipts and
+stderr are retained beside each JSON file.
+
+All three GPU partitions satisfy the unchanged HOST/DEVICE limits of
+`1e-8 Ha` for energy and `1e-7 Ha/Bohr` for force components. Each profile
+contains positive-duration `work_gga_gpu_vxc_unpol` kernels:
+
+| Partition | HOST/DEVICE energy difference (Ha) | Largest force difference (Ha/Bohr) | LibXC kernel calls | Total kernel duration (ns) |
+|---|---|---|---|---|
+| 16V100 | `2.3447910280083306e-13` | `0` | 94 | 30,711,322 |
+| 4V100 | `9.947598300641403e-14` | `0` | 94 | 25,657,844 |
+| 8V100V0 | `3.268496584496461e-13` | `1.0000004296850662e-12` | 94 | 37,788,796 |
+
+The original default built-in-PBE/LibXC smoke allocations remain
+**FAILED `1:0`**: [DSPRHBM 1915017](../dsprhbm-libxc-1915017/results/failed.json),
+[16V100 1915015](../16v100-libxc-1915015/results/failed.json),
+[4V100 1915736](../4v100-libxc-1915736/results/failed.json), and
+[8V100V0 1916035](../8v100-libxc-1916035/results/failed.json).
+Their energy differences are approximately `4.163449e-6 Ha`, exceeding the
+original `1e-6 Ha` limit. The unchanged raw failures are retained in each
+summary as default-parameterization characterization; the independent
+reference and HOST/DEVICE successes do not relabel those allocations.
+
+## Reference provenance
+
 The source archive SHA256 is
 `3915fac94416e4c415534223ea492ad2663f928acf27e98662c861b094a6c306`.
 The two raw files are extracted byte-for-byte, including their attribution to
@@ -119,7 +167,8 @@ python3 -B /work/libxc_reference.py verify \
 Use the CPU `libcp2k.so.2026.2` path instead for DSPRHBM. Results are written
 exclusively; an existing result is not overwritten. A failed numerical check
 still records all completed comparisons and returns a nonzero exit status.
-No candidate library has been run as part of preparing this protocol.
+The protocol was prepared before any candidate library execution. The completed
+runs above use its unchanged reference files, selections and precision rule.
 
 ## Why the original default PBE comparison differs
 

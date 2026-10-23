@@ -11,12 +11,14 @@ installation are separate acceptance states.
 | Program | Selected development commit | Current evidence |
 | --- | --- | --- |
 | ABACUS `develop` | `370ba685e6707b3625c5580ff9d02ef0afb248e8` | All four targets built, scientifically accepted and published with reverified native staging exports; workflow [39971072923](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971072923) succeeded. Physical `/opt` installation pending. |
-| CP2K `master` | `cfe5e5d87aaf302953f14eb43587bef2411a8fb2` | All four dependency stages completed and sealed in [39983165813](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39983165813), with source-pinned LibXC 7.1.2 and LibXS `930a2c4`. 4V100, 16V100 and DSPRHBM are scientifically accepted and project-published, with independent final-delivery audits. The 8V100V0 application recovery remains in progress after a pre-entry mount timeout. |
+| CP2K `master` | `cfe5e5d87aaf302953f14eb43587bef2411a8fb2` | All four targets built, scientifically accepted and project-published, with independent SIF, raw science, native export and module audits. Source-pinned LibXC 7.1.2 and LibXS `930a2c4` are verified. 4V100/8V100V0 completed through documented recoveries; the original [workflow 39983165813](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39983165813) retains its failed status. Physical `/opt` installation pending. |
 | DeePMD-kit `master` | `558f56962775098b8b554e341c3b37d2f86e6aeb` | All three V100 candidates build-verified and scientifically accepted: TF/PT/JAX Python/C-API checks plus 1,486 measured CUDA kernel events per target. Not yet published or installed natively. |
 | LAMMPS `develop` | `a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b` | All three V100 candidates build-verified and scientifically accepted: 14 cases, 71 packages, 2,497 styles per target. Not yet published or installed natively. |
 | GPUMD `master` | `2c93346fce4461de1c42c77e7fe74cdb6b0e3df6` | All three V100 targets scientifically accepted, published with native staging exports; physical `/opt` installation pending. |
 
-The table records the source snapshots selected for this campaign. A later
+All five selected development snapshots have completed their required build
+and scientific acceptance gates. The table records the source snapshots
+selected for this campaign. A later
 [read-only upstream check](evidence/development-project-20261023/upstream-recheck-20261024.json)
 found newer ABACUS and CP2K commits while these jobs were running; the other
 three branch heads were unchanged. New commits are resolved in subsequent
@@ -110,13 +112,21 @@ The [independent delivery audit](evidence/cp2k-development-20261023/4V100-valida
 revalidated the SIF, raw science, native export, module, successful allocations
 and all preserved recovery attempts. Physical `/opt` installation is separate.
 8V100V0 job `1914617` also failed at the same pre-entry mount deadline after
-finishing its clone checks. Fresh job `1915260` (`-node-retry1`) now runs on
-`8v100v0n03`, excluding `8v100v0n02`, with six scheduler-assigned logical CPUs.
+finishing its clone checks. Fresh job `1915260` (`-node-retry1`) completed in
+1h54m52s on `8v100v0n03`, excluding `8v100v0n02`, with six scheduler-assigned
+logical CPUs. Its mount took 2.125 seconds after the original clone checks.
+Science job `1916019` passed all seven single/two-node cases in 13m29s on
+`8v100v0n03` and `8v100v0n04`; project publication completed at 20:48:40 UTC.
+The [8V100V0 delivery audit](evidence/cp2k-development-20261023/8V100V0-validation.json)
+independently verified the final SIF, raw science, native export, module and
+the original failed allocation plus the successful recovery.
 Both new jobs passed held-allocation and immutable-input checks before release;
 a separate read-only revalidation checked their running allocations and recovery
 provenance. They retain the original controller, recipe and sealed dependency
-checkpoint. The 8V100V0 application/science/publication acceptance remains
-pending, and the original workflow failures are preserved.
+checkpoint. Both recoveries completed their application, science and project
+publication gates; the original workflow failures are preserved. Changing
+nodes succeeded in this campaign, but does not establish the mount timeout's
+root cause or remove Apptainer's fixed 10-second startup deadline.
 
 The [16V100 delivery audit](evidence/cp2k-development-20261023/16V100-validation.json)
 independently revalidated the final SIF, seven single/two-node scientific cases,
@@ -125,9 +135,9 @@ native export, module and successful dependency/build/science allocations
 installation remains separate. The [DSPRHBM audit](evidence/cp2k-development-20261023/DSPRHBM-validation.json) likewise passed after science job `1915020` and project publication.
 
 The [LibXC supplement](evidence/cp2k-development-20261023/README.md) ran on the
-final 4V100, 16V100 and DSPRHBM SIFs with thresholds fixed before execution. Its
+four final SIFs with thresholds fixed before execution. Its
 built-in-PBE versus LibXC HOST energy comparison failed the original `1e-6` Ha
-gate on all three targets (difference approximately `4.16e-6` Ha); the failure records
+gate on all four targets (difference approximately `4.16e-6` Ha); the failure records
 and original thresholds remain intact. Source inspection shows different default
 PBE/PW92 constants in these implementations, including an explicit CP2K comment
 recommending LibXC for higher-precision program comparisons. The 16V100 LibXC
@@ -136,6 +146,10 @@ kernel invocations and the actual private 7.1.2 loader path. The independent
 pre-existing DFT-reference protocol subsequently passed all 258 scalar
 comparisons on each final LibXC HOST provider. The 4V100 HOST/DEVICE difference
 was `9.95e-14` Ha with identical forces and 94 LibXC CUDA kernel invocations.
+The 8V100V0 difference was `3.27e-13` Ha and at most `1.01e-12` Ha Bohr⁻¹
+in force, also with 94 LibXC CUDA kernel invocations. All three GPU targets
+pass the original HOST/DEVICE thresholds. The source-default mismatch in the
+built-in/LibXC comparison remains a separately documented failed comparison.
 The [read-only combined summaries](evidence/cp2k-development-20261023/libxc-reference/summaries/)
 recompute the raw mathematical and CP2K comparisons and preserve the original
 built-in comparison failures unchanged.
