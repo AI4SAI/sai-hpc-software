@@ -1,0 +1,55 @@
+{
+  "name": "20261022-mpi-fixed-water",
+  "controller_revision": "c2183b3e3cb6905f4984022a18e6228aa3c62615",
+  "cpu": {
+    "16V100": {
+      "build": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261022-mpi-fix-16v100-a",
+      "mpi_retests": [
+        "/home/stardust/sai-hpc-software/runtime-tests/cp2k-mpi-retest-20261022-16v100-g4-a",
+        "/home/stardust/sai-hpc-software/runtime-tests/cp2k-mpi-retest-20261022-16v100-g16-a"
+      ]
+    },
+    "4V100": {
+      "build": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261022-mpi-fix-4v100-a",
+      "mpi_retests": [
+        "/home/stardust/sai-hpc-software/runtime-tests/cp2k-mpi-retest-20261022-4v100-g4-a"
+      ]
+    }
+  },
+  "points": [
+    {
+      "partition": "16V100",
+      "gpus": 1,
+      "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g1-d",
+      "host_memory_fraction": 0.95
+    },
+    {
+      "partition": "16V100",
+      "gpus": 4,
+      "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g4-e",
+      "host_memory_fraction": 0.95
+    },
+    {
+      "partition": "16V100",
+      "gpus": 16,
+      "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g16-e",
+      "host_memory_fraction": 0.95
+    },
+    {
+      "partition": "4V100",
+      "gpus": 1,
+      "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g1-full-a",
+      "allow_host_limited": true,
+      "host_memory_fraction": 0.95
+    },
+    {
+      "partition": "4V100",
+      "gpus": 4,
+      "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261021-4v100-g4-full-b",
+      "allow_host_limited": true,
+      "host_memory_fraction": 0.95
+    }
+  ],
+  "replaces": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-campaign-20261020",
+  "reason": "Repeat all five points after minimal CPU ScaLAPACK MPI repair; require causal A/B acceptance first; no old CPU tuning or timing pairs imported."
+}

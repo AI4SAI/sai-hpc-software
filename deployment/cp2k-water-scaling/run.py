@@ -194,6 +194,11 @@ def cpu_environment(binary):
             ('lib64', 'dependencies/dbcsr/lib64', 'dependencies/libxs/lib'))+':'+os.environ.get('LD_LIBRARY_PATH', ''))
 
 
+def cpu_library_digest(binary):
+    # cp2k.psmp is a small launcher: a source repair changes libcp2k, not necessarily the executable.
+    return digest(Path(binary).parents[1]/'lib64/libcp2k.so.2026.2')
+
+
 def verify_ranks(case, mode, gpus, ranks, pe):
     records = [json.loads(p.read_text()) for p in sorted(case.glob('rank-*.json'))]
     require(len(records) == ranks and {r['rank'] for r in records} == set(range(ranks)), 'Missing rank trace')
@@ -365,6 +370,7 @@ def read_tuning(root, request, expected=None):
     identity = ('partition', 'gpus', 'physical_cores', 'shape', 'source_sha',
                 'gpu_binary_sha256', 'cpu_binary_sha256', 'install_receipt_sha256')
     require(all(source[k] == request[k] for k in identity), 'Tuning identity differs')
+    require(source.get('cpu_library_sha256') == request.get('cpu_library_sha256'), 'Tuning CPU library differs')
     job = (root/'job.id').read_text().strip()
     accounting = subprocess.check_output(['sacct', '-X', '-j', job, '-n', '-P',
         '-o', 'JobID,State,ExitCode,Elapsed,NodeList'], text=True, timeout=30)
@@ -527,6 +533,8 @@ def describe_cpu(root, request):
 def verify(root):
     """Reparse raw science/resource evidence only after successful scheduler completion."""
     request = json.loads((root/'request.json').read_text())
+    if request.get('cpu_library_sha256'):
+        require(cpu_library_digest(request['cpu_binary']) == request['cpu_library_sha256'], 'CPU library changed')
     job = (root/'job.id').read_text().strip()
     accounting = subprocess.check_output(['sacct', '-X', '-j', job, '-n', '-P',
         '-o', 'JobID,State,ExitCode,Elapsed,NodeList'], text=True)
@@ -643,6 +651,7 @@ def submit(args):
         require(args.cpu_binary, 'Native CPU binary is required')
         require((Path(args.cpu_binary).parents[2]/'results/build-complete').is_file(), 'CPU build is incomplete')
         request['cpu_binary_sha256'] = digest(args.cpu_binary)
+        request['cpu_library_sha256'] = cpu_library_digest(args.cpu_binary)
     if args.stage == 'compare':
         require(args.calibration_run and args.cpu_smoke_run, 'Comparison needs calibration and CPU numerical acceptance')
         calibration = Path(args.calibration_run)
@@ -655,6 +664,7 @@ def submit(args):
         accepted = json.loads(smoke_path.read_text())
         require(accepted['accepted'] and all(accepted['request'][k] == request[k] for k in
                 ('partition', 'cpu_binary_sha256', 'gpu_binary_sha256')), 'CPU acceptance differs')
+        require(accepted['request'].get('cpu_library_sha256') == request['cpu_library_sha256'], 'CPU acceptance library differs')
         request['calibration'] = dict(path=str(calibration), sha256=digest(calibration/'results/calibration.json'), reason=proof['reason'])
         request['cpu_acceptance'] = dict(path=str(smoke_path), sha256=digest(smoke_path))
         if args.tuning_run:
@@ -685,6 +695,8 @@ def execute(root):
     require(digest(request['gpu_binary']) == request['gpu_binary_sha256'], 'Installed GPU binary changed')
     if request['stage'] != 'calibrate':
         require(digest(request['cpu_binary']) == request['cpu_binary_sha256'], 'CPU binary changed')
+        if request.get('cpu_library_sha256'):
+            require(cpu_library_digest(request['cpu_binary']) == request['cpu_library_sha256'], 'CPU library changed')
         describe_cpu(root, request)
     devices = gpu_inventory()
     require(len(devices) == request['gpus'], 'Wrong GPU allocation')

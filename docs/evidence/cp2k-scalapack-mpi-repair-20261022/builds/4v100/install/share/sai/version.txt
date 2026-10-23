@@ -1,0 +1,56 @@
+ CP2K version 2026.2
+ Source code revision 67b5da876d
+ cp2kflags: omp libint fftw3 libxc parallel scalapack mpi_f08 libxs libxsmm spglib
+ compiler: GCC version 14.3.0
+ compiler options:
+   -cpp -I /home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020
+   -4v100-a/work/source/src -I /home/stardust/sai-hpc-software/runs/cp2
+   k-water-cpu-20261020-4v100-a/work/cp2k-build/src -I /home/stardust/s
+   ai-hpc-software/runs/cp2k-water-cpu-20261020-4v100-a/work/source/src
+   /base -I /home/stardust/sai-hpc-software/runs/cp2k-water-cpu-2026102
+   0-4v100-a/work/source/src/common -I /home/stardust/sai-hpc-software/
+   runs/cp2k-water-cpu-20261020-4v100-a/work/source/src/motion -I /home
+   /stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-4v100-a/work
+   /source/src/dbm -I /home/stardust/sai-hpc-software/runs/cp2k-water-c
+   pu-20261020-4v100-a/work/cp2k-build/src/mod_files -I /opt/apps/cp2k/
+   cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/4V100/dependencies/
+   spack/linux-zen5/libint-2.6.0-vyzopke2j5qqavmw4kzsza7osl5co4hz/inclu
+   de -I /opt/devtools/spglib/spglib-2.7.0/include -I /opt/devtools/lib
+   xc/libxc-7.0.0-avx512/include -I /opt/devtools/fftw/fftw-3.3.10/incl
+   ude -I /home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-
+   4v100-a/install/dependencies/dbcsr/include -I /opt/devtools/openmpi/
+   openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/include -I /opt/devtools/o
+   penmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib -I /home/stardu
+   st/sai-hpc-software/runs/cp2k-water-cpu-20261020-4v100-a/install/dep
+   endencies/libxs/include -I /home/stardust/sai-hpc-software/runs/cp2k
+   -water-cpu-20261020-4v100-a/install/dependencies/libxs/include/libxs
+    -I /opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/
+   4V100/dependencies/spack/linux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7q
+   xubasr24vwogpk/include -I /opt/devtools/saiblas/2603-gnu-avx512/incl
+   ude -imultiarch x86_64-linux-gnu -D_REENTRANT -D USING_Libxc -D __BL
+   AS -D __COMPILE_ARCH="x86_64" -D __COMPILE_HOST="" -D __DATA_DIR="/h
+   ome/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261020-4v100-a/i
+   nstall/share/cp2k/data" -D __FFTW3 -D __LIBINT -D __LIBXC -D __LIBXS
+    -D __LIBXSMM -D __MPI_F08 -D __SPGLIB -D __parallel -D __SHORT_FILE
+   __="start/cp2k.F" -march=znver5 -mmmx -mpopcnt -msse -msse2 -msse3 -
+   mssse3 -msse4.1 -msse4.2 -mavx -mavx2 -msse4a -mno-fma4 -mno-xop -mf
+   ma -mavx512f -mbmi -mbmi2 -maes -mpclmul -mavx512vl -mavx512bw -mavx
+   512dq -mavx512cd -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mavx51
+   2vbmi2 -mgfni -mvpclmulqdq -mavx512vnni -mavx512bitalg -mavx512bf16 
+   -mavx512vp2intersect -mno-3dnow -madx -mabm -mno-cldemote -mclflusho
+   pt -mclwb -mclzero -mcx16 -mno-enqcmd -mf16c -mfsgsbase -mfxsr -mno-
+   hle -msahf -mno-lwp -mlzcnt -mmovbe -mmovdir64b -mmovdiri -mmwaitx -
+   mno-pconfig -mpku -mprfchw -mno-ptwrite -mrdpid -mrdrnd -mrdseed -mn
+   o-rtm -mno-serialize -mno-sgx -msha -mshstk -mno-tbm -mno-tsxldtrk -
+   mvaes -mno-waitpkg -mwbnoinvd -mxsave -mxsavec -mxsaveopt -mxsaves -
+   mno-amx-tile -mno-amx-int8 -mno-amx-bf16 -mno-uintr -mno-hreset -mno
+   -kl -mno-widekl -mavxvnni -mno-avx512fp16 -mno-avxifma -mno-avxvnnii
+   nt8 -mno-avxneconvert -mno-cmpccxadd -mno-amx-fp16 -mno-prefetchi -m
+   no-raoint -mno-amx-complex -mno-avxvnniint16 -mno-sm3 -mno-sha512 -m
+   no-sm4 -mno-apxf -mno-usermsr --param=l1-cache-size=48 --param=l1-ca
+   che-line-size=64 --param=l2-cache-size=1024 -mtune=znver5 -g -O3 -O3
+    -O3 -Wno-deprecated-declarations -Wno-maybe-uninitialized -Wuniniti
+   alized -Wuse-without-only -std=f2008 -fPIE -ffree-form -fimplicit-no
+   ne -fno-omit-frame-pointer -fbacktrace -fallow-argument-mismatch -fu
+   nroll-loops -fopenmp -fpre-include=/usr/include/finclude/x86_64-linu
+   x-gnu/math-vector-fortran.h

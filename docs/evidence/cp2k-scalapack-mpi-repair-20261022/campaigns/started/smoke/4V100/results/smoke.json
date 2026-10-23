@@ -1,0 +1,6775 @@
+{
+  "accepted": true,
+  "performance_result": false,
+  "request": {
+    "case_seconds": 7200,
+    "cpu_binary": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261022-mpi-fix-4v100-a/install/bin/cp2k.psmp",
+    "cpu_binary_sha256": "1c7b9a8fe59a3b4015dfa571b519cd5a9b1f451d1c65a30b35b8ce6aad85225c",
+    "cpu_library_sha256": "dd296e373d8c57ab290f44812a606d420e862e6d09166feb5d3487bcb175e503",
+    "full_calibration": false,
+    "gpu_binary": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/4V100/bin/cp2k.psmp",
+    "gpu_binary_sha256": "68ef030537fdadd18347252e2c3770d17df6f20606ec1ef9e6dfbf02fcf5c4f9",
+    "gpus": 1,
+    "host_memory_fraction": 0.92,
+    "inputs": {
+      "control/controller/abacus_baseline_probe.sbatch": "ee77ca5738eb3e0e0aa0bd4136071d5444ba6f08d394be640dd7092f3bb86914",
+      "control/controller/abacus_benchmark.py": "852c7701aaea3f8d36e2365a09637e91f12612e9284063a7236d70d3e832705b",
+      "control/controller/abacus_build.sh": "cf67a38908fdbc1145aa515011478e59dcac92ec40bebbdb691cb1c024a16a80",
+      "control/controller/abacus_cache_runner_reference.py": "ee275b407a58e1ea3bc835e034ad86eee5a218d0134b8a3f8e3af3c277e10ff3",
+      "control/controller/abacus_dependencies.py": "47c5d90a1c75dd8da1ff085735a26e4cb584aae2a122661c1448fb7cff33afd6",
+      "control/controller/abacus_dependencies.sh": "905eb88d0ca0dc2f3e011874fbe28b7a95cb8a1a1db526ddc4e5fc4661e20cde",
+      "control/controller/abacus_dependency_lock.json": "ce7a95f5e0776eb1ff694e76a88cd4389ee617906071502d79ef5727e5a66d6c",
+      "control/controller/abacus_features.py": "e1b9d5ae501a6f43053c15f5fccabbc224e0278a324b0e2ce628d1324525d64a",
+      "control/controller/abacus_full_dependencies.sh": "0aefb9b7a59f66a0776a70d914dd4ba34d281022856dd91b9fb1864355419d4c",
+      "control/controller/abacus_full_profile.json": "d93fbde64a6898e12c0e61cdced1c2ca7d25925611f3d0bfc3ac1b30576bd469",
+      "control/controller/abacus_runtime.sh": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+      "control/controller/abacus_site_gpu.sh": "1a8631ca91a9969f56115425ef13489144fa28d292609d96292fc8ce9b898b29",
+      "control/controller/abacus_site_mpi.sh": "199aeb495069f0812214c8bd944b229799b8d54b9a908667ef8f1d5b2cbc54d1",
+      "control/controller/build.sbatch.in": "5e0e74a118add2aa80f181dda6bc4bee1bcdb3e241df9c592f8632fbacb21a98",
+      "control/controller/build_capacity.py": "bff0a1cbf9acedb858c9776efd73a9c98737787e1bb439e0965048f47e0ee66c",
+      "control/controller/case.sbatch.in": "d849dca06d71f2ccb3d5e52a5f7a8ea07803a63894bb42aea6385604b5d98698",
+      "control/controller/ci.py": "1b713224de667d460744548c0c6dd965dfeb9c01aef54cc64de80bcd3fefde4b",
+      "control/controller/config.ini": "8dc7eee2853aaa96979a8f55e2f1dea0ceb8c7cb0045e19695837b10d99c575c",
+      "control/controller/container_entry.sh": "618042bbd5fe909dbe0ea2c47f786791d7bb451dc1da841cb2dea83eb72803ef",
+      "control/controller/cp2k_Libint2Config.cmake": "223aac33a7743bc46a25738cb75b4a4bd1100571b1ea13fe4c19dff7c4019de9",
+      "control/controller/cp2k_acceptance.py": "84db91909883510765fa87c03f2816f1af9ac0271f85f95f03c62371dcd098eb",
+      "control/controller/cp2k_baseline_probe.sbatch": "6462e789df12424f89c9595ff62146f1e51933136b2d6306e5845755b4c5cd52",
+      "control/controller/cp2k_benchmark.py": "aefd8b234b1b43f2815a6af5f3502204319a490f4919ad417421d920034a10e3",
+      "control/controller/cp2k_build.sh": "74461284a5b63385f9a75c679f4502d2f21d72f6d317ab06dcc3a33af4975f23",
+      "control/controller/cp2k_cmake_prerequisites.cmake": "8c923f94b76475eba88e14280b05e37ddb8f491a03821193253e49e4af519a0d",
+      "control/controller/cp2k_container_entry.sh": "05f7c0036558ded066641499209d70744519c8d4dbc23bb35f727c06ede2955d",
+      "control/controller/cp2k_dependencies.sbatch": "d1fbdbb7f8553b0b912a08d73bc8f85ac376b9bf0e854c79298a03a4718b3197",
+      "control/controller/cp2k_dependencies.sh": "99d5bbcf9dda385257c0088fe9a12a1f6eea86364e2dc8bef46a17d1af822562",
+      "control/controller/cp2k_dependency_stage.py": "babdea468491a5f809d7c86a1f170d48b9c55d8c6d5abae954ff1d969c5d9a9e",
+      "control/controller/cp2k_elpa.sh": "508b4887216c5ac57bf6777dee83d70b0bf655a3335a26647b7291a1b3ac4ea0",
+      "control/controller/cp2k_elpa_abi.f90": "95c2ef65486385219c646424c2d8724574b8dabaa0fc4ce89c2e78bae43478a5",
+      "control/controller/cp2k_elpa_runtime.py": "0ceaf73725599632c002e5b6588d855c08e1d9a3798cba3bab9a5bf9b048fcc2",
+      "control/controller/cp2k_feature_contract.py": "2d2ea42d9e74d5ecbe8278bebd8b23c81d1bcfe86c35b0d303cf3f7b09e93917",
+      "control/controller/cp2k_image_driver.py": "e0ea6a2b7ce25189b3eb9b7749392b0416894f9d365e1f3c31c577546a8df049",
+      "control/controller/cp2k_libxsmmConfig.cmake": "734aa00bd820e244cde406866c1c6065f8a2f85571dde413f7c2bf058b1fb038",
+      "control/controller/cp2k_overlay_probe.sbatch": "69c6044258e990bd6dbf5ccce76b5b6bb0545d118b000587c720975ec9757e1c",
+      "control/controller/cp2k_overlay_workdir.py": "f22d281427ede157c03c7fc20a8b625e9c5a511e023a6c358de93040589fe468",
+      "control/controller/cp2k_payload.py": "8e71ae39fa9f82c9033107dc00c37f780b06a4b032c5de78190336509c120d83",
+      "control/controller/cp2k_probe.sbatch": "3927f4ece5c157504bc3b0b70e70f603c9319e2709ae36db2a7ce8cbcdc5fa0d",
+      "control/controller/cp2k_repack.sbatch": "004ede58b234b49dc0297ea437d9a3e1e23ff450f7ea8b3bc65222711ee78c7f",
+      "control/controller/cp2k_runtime.sh": "210ddd657ec01da4c1bd13294f95ee51991f24219c3b1965c52874c6270b4540",
+      "control/controller/cp2k_site_elpa.json": "9b3253261d2cee47df156136c575c6fc7748f30344b029b4bc56fd83bed4fea0",
+      "control/controller/cp2k_source_fixes.py": "9ea20a68ddbeaf7184f8968e5a966eef3ee2b84f9ba8cffc56f71c1496563ad9",
+      "control/controller/cp2k_spack.py": "0235341aed673e851a375457076a220d644d178332d577f8a661712c5d7775ad",
+      "control/controller/cp2k_spack_dependencies.sh": "62977f63321a57a3c7d66f15e20f82cebc2ddf3987f1faa0e6719f7e6a640985",
+      "control/controller/cp2k_spack_environment.py": "70603447fee7d634fe939a2a11faca829407eceacd21090812705bd373c0d1ba",
+      "control/controller/cp2k_spack_install.sh": "320f8e5f58ba986a5a37c19223183b3826d932ed680173e4cce2ab034f4e37a7",
+      "control/controller/cp2k_spack_install_evidence.py": "391ad327602cabf1e49db806a6d82c1887669f40da097ba2dfdf3ed193d481cc",
+      "control/controller/cp2k_spack_install_submit.py": "49a15275a73f7d8ed08566f9b82b3576489f8dd74790b336287e97719d685447",
+      "control/controller/cp2k_spack_libint_repair.py": "b38fd9292b264bc83c308ca8c4ce4b42a1b2beb3367713de3f7308106b2cd014",
+      "control/controller/cp2k_spack_link.py": "52efab5e2c77f195e1dd380911a1d7617f2d1f632c3a808dfe5d4e61e3ab88f8",
+      "control/controller/cp2k_spack_mpi_repair.py": "7036b4f1c89b54d0f25e6bf6c87e79f07306a55cd8a10f4e2c93edfcb8c732e8",
+      "control/controller/cp2k_spack_native.py": "bdfadff1c81c8cc0bf03d80f950e4dd3f3176496f02febcb9ae102cd847abb04",
+      "control/controller/cp2k_spack_probe.sh": "4c266c5704f1cf96f4aad3da70030fe7c4f5ea8eb9eae5bb3e409f601cf3723e",
+      "control/controller/cp2k_spack_probe_submit.py": "e878b1bb56ef2bdf8c4afc133d92cbb18ff63198afbc30f9d892f505c1cc08c4",
+      "control/controller/cp2k_spack_seed.py": "9c41a9fc602f2f5e351eb845785a0b86882268b58b53573b3972a85b2fa35dfe",
+      "control/controller/create_rootfs.sh": "ae0818e8bb485222605290fd3f3c410c40354aa518c8f613ac26236b3e382852",
+      "control/controller/daily_plan.py": "8dcc9907d201caab77f421adc7d77a3471881b6caba475ad2474270ae91b2024",
+      "control/controller/delivery_layout.py": "268a18bfe45b1f8cca9d955d5b34215392ee74d734dcf4358c5da66728f6d7f2",
+      "control/controller/environment.sh": "68bfc2f69c1df2f9b35fdf9d273dbf35e377c44b490ff19ebc6c41ac7dad58d0",
+      "control/controller/export_native.py": "cf5709c9037af843e360b2ad1b73b2d50dcdc1525940db9350df5783d9e8c619",
+      "control/controller/finalize_lammps_sif.py": "430113a1b0d271e5d3241460e46166206443dbd92812113f66228dac9ad7fd2f",
+      "control/controller/gpu_feature_controller.py": "67e0711ccd8d39d1d6fc999baa35a9b6fe32fbe2c9392db5bb8e7cdc09f60eb0",
+      "control/controller/gpu_feature_runtime.sh": "b499d0fe6bd1ad4623ece45ea6663702bf8e54d95ae1a0679b87f34ce81a0734",
+      "control/controller/gpumd_acceptance.py": "35080b2962f1cd435ceabfa2ba52b502735ff3c32fcdc9cd560a6e926e7e85bc",
+      "control/controller/gpumd_build.sh": "4739c263643a94b428fdb28e4ca25de93224106fca8ce193d48bf3c2b997a7fa",
+      "control/controller/gpumd_container_entry.sh": "2fd02f0abd7736865eda94204f28d7ca0a536a8eb2029d3b9cb0b435034bdb7f",
+      "control/controller/gpumd_deepmd_probe.py": "78d3e11ad614aed6b092f5fcb3cdf24e9f0dd91fb9adf73c263da2e9ed761319",
+      "control/controller/gpumd_environment.sh": "6bb0cc52a65b83add6cfc6a7375459f61e82ff822aed2d1e1718faf92f935370",
+      "control/controller/gpumd_relink_probe.sbatch": "4d1f7b8858f3c9c1f2beb36393b008f52f7d49cf3f696f2d58c39359bdb31997",
+      "control/controller/gpumd_runtime.sh": "442c2dce979960cfebc58226357ae5374db9e9881649a1f458f78387936b568d",
+      "control/controller/gpumd_science.py": "ee1328905abaca2ffd2630d6d3dcad7a52af110ddf25d4d594485841144f5e1e",
+      "control/controller/gpumd_site_probe.py": "3501fc12f9b648a50127a246ff8232af20f288e4d704b9319b5091417c60d5bf",
+      "control/controller/gpumd_site_probe.sbatch": "b04fba2267207a966b4de8b1660ca2d52d62e94c231627c35107e93c5e4280a7",
+      "control/controller/lammps_manifest_diagnose.sh": "8bd4b84fb66ecfd424c88963cf24cba3dbdb67b2c1ee420e902f61a23dc53dc2",
+      "control/controller/lammps_packaging_debug.sbatch": "6b70c42acb0176aa5fa4938726d8d7c72c4323fb0daf0329b860718279cdfaa1",
+      "control/controller/lammps_packaging_probe.sbatch": "6df4ad1d86c294af6578b0821242030bbc762b974a8be81eb0a84d69f8e6f3e6",
+      "control/controller/md_acceptance.sh": "fbbd8dc86108044c5efa2b00ca4377ab5d4219a18f4ea91d1ad3336ac2dd05bd",
+      "control/controller/md_acceptance_controller.py": "88db1b11a2c81b9687b0ba173bb060c7d9eba0873ea22190601981f54f5faa0b",
+      "control/controller/md_baseline.sh": "e59ca2d8efb63e06ed36caad0c3612a5436191b78ab7b750a8a1c96092cb2621",
+      "control/controller/md_build.sh": "e2587d64983ec05f41aacdd5dc3a56c3c293b98630b0351a3b66898cfa4f1f4e",
+      "control/controller/md_ci.py": "c862b2e08f7a9fe8043daa70b4aa08e18d519e23b94dcec6925f3409d3a3bfcc",
+      "control/controller/md_container_entry.sh": "f1a58ca5f505d4bcefdbb4ab64afa24408b1d4074929fc4e6618b1d9b990a83c",
+      "control/controller/md_container_entry_verify_patched.sh": "eeb20f2b25a146ae12ea7e8634559b2d7dddacb7f96cde002c567aec85504c68",
+      "control/controller/md_controller.py": "5073d3fa7bedbe41cd39b3ff41b31d75f6f66cf9e99fda3b68cd7722744839fe",
+      "control/controller/md_driver_paths.py": "bce00df699cc432d8b7b5d4a8723564498603843639693e640916ab7ed8944a8",
+      "control/controller/md_environment.sh": "034b390c322dabd790f9f66d48b07c9e24b17c65f32f73ce904c8a4f24dec800",
+      "control/controller/md_evidence.py": "2d29110ba27718f7d6a43f93fbe7579dd6e0d76249e5a5de3056d73129687772",
+      "control/controller/md_import_probe.sh": "bddc7bdb3a7b3523531b93ecf51eb2958f6e151c36b4d5a0e93231c8e4dc7806",
+      "control/controller/md_link_launcher.py": "66b989e7807dd94fc425dbfae36900a5e471b98a94c4043f13738b16fd3527f6",
+      "control/controller/md_native_probe.sh": "8d8ccc5229f404c931b312743de5a2e705b3973e30593facd6403141436c27ac",
+      "control/controller/md_packaging_recovery.sh": "d45c0378195e98d1ffeb4452e258e9a0115bd11db053e57124fe4b963056831a",
+      "control/controller/md_performance.py": "a07d3662f5543f347fa584e942dbac7fc6eaf22377c33a0895ec5e07dce8f73e",
+      "control/controller/md_performance.sh": "43d4500f7533427e9e52d6f3de19047b37abd70dafa29f3ae94727fe720bbee9",
+      "control/controller/md_performance_controller.py": "02e24cc2e58b1d88b983b865a4e55c61a2b584bea01f642b54497b2131dc4b62",
+      "control/controller/md_performance_evidence.py": "e810fdc70801fa99fa033c92f96dfd03e2dbcf938eda7487e12ff46d9cae8ead",
+      "control/controller/md_performance_exec.py": "95d573f9edae5e4037e252d690f4adcc4bca04d6cdea59109ffb54686a7ff227",
+      "control/controller/md_performance_run.py": "24f13228ee7333dae8aaf9f8fa57c8f63a5110b93c85ff8ddcb31433e85ef585",
+      "control/controller/md_probe.py": "ac6be1c22cbac809892d62eff53d1e2dd83ee8d50f7cd752f375fcb1e78f8725",
+      "control/controller/md_publication.py": "79d4cb06f6b28756d795f762d3268f5e75bd3c5e9664e25302a470133fe4be26",
+      "control/controller/md_registration.py": "4f4e4db5bb2e7f9c55985d408dcfbf3f6acddbbab1ff8ca327fad0408cec6bb9",
+      "control/controller/md_relocate_audit.py": "21fe48bf420130c74ca5eebebd8d113fc219009700f970907bea1c7e72ed16b3",
+      "control/controller/md_runtime.sh": "cd11020142359a4a83313f97dfb6ef7aaa356a5d5c5a92a4f8d5da12b25543fe",
+      "control/controller/md_science.py": "55d4ee142d65cd7b327dbdca223f0b4b69c8185729b85d991da2652f7979f788",
+      "control/controller/md_tracking.py": "16f6fa69ebfce0ceb97bc7e3deb527e376423f38346b1312a9d02ad369791ef1",
+      "control/controller/module_publication.py": "dfb74bdc51f9eeff6931c66458f80bd571b2ba587368c50ee0a752abe6f6d06f",
+      "control/controller/modules.sh": "c3cba3ad99f373978ad806f61231fc20e9d254e06d5eccdece54629c259cea58",
+      "control/controller/native_module.py": "feb0065834df656ab4de54df86ffaa650ded3ed030fab4190b2d5df8cd3e4421",
+      "control/controller/probe_container.sh": "fb680791228f1b6fac07a038e5964be7399a485b86b81be8a383e51234770d78",
+      "control/controller/probe_module_publication.py": "3d9e4cf82ad5fdf4744a4eceb18d2e7d4d775e6771ee1b9c993aaff4f344d80e",
+      "control/controller/probe_module_publication.sbatch": "c854cb55c67dbac8b599a8bbc2b802d2e882cd7d9305773ebf723f16554255ba",
+      "control/controller/probe_native_export.py": "8203e115ae2123c9cff34d37c95d2939712c6e893a5c4ec7b242c199511a07c5",
+      "control/controller/probe_native_target.sbatch": "ec5cc83d030387d752006ec4d045b15c9b6e191b4916c098a6e400ed0334b1de",
+      "control/controller/recovery_budget.py": "edd5032692d5dd1f4491ec56f5a873ea61cb659651d558188ad2045683b76e27",
+      "control/controller/release_contract.py": "5054afa813bece49e24841f83b33c47993ff84391859fad15a8ddd373ede3b02",
+      "control/controller/remote_controller.py": "2c7df9d4c2f812b9f0a27b4aee8097609addd75ef6c6951605fed8920cd7f2ef",
+      "control/controller/resolve_source.py": "2d26c1217d70cec680bbbbe81a9b6806030641edb06636262405bb7b7761fa19",
+      "control/controller/resume_cp2k_export.py": "549a0dff5240aae4e3fcc8e8a02652f2007a3ca5586ed7d656dee85620969d8d",
+      "control/controller/resume_lammps_extract.py": "ff359df79536ce76217b6ff0cfb62184c48103d766ae9148e2098a88c4b51793",
+      "control/controller/resume_lammps_packaging.py": "fc6fd576fe5ecca5609d0c771509ffc1ce8bc94a88f7711a83173fd704b52f07",
+      "control/controller/resume_lammps_recovery.py": "323d9667dc9780e3e6b4303562fda7bf37d22ed149a00583306ecafba6420e6a",
+      "control/controller/runtime_controller.py": "5d2c1fa434c9d70506976df08fcbd015dcf7592afbd04df24691bbcb85ee8214",
+      "control/controller/slurm.py": "705bea32222d5964dd20ad589abe61322106518af61c0a645a42983970d7b220",
+      "control/controller/software_controller.py": "658d3ab105eddaf1804924724a97d1b6c064cfb9f8c1f76073a7c76cdaa0e215",
+      "control/controller/source_cache.py": "1c6ee2a243509f0fdf74e32736bea562e2777569c4c22480b2accdb78334f52b",
+      "control/controller/submit_abacus_recovery.py": "24e393dfe97e2a5a3cddbd0f0d338e4cae597aa7ccd8a0c4fe2da4526aad060d",
+      "control/controller/validate_plan.py": "2f9601f5f5e3e64828b5180a36766dbca4c6ffd651ecd3507723fcc3a1cfd0e3",
+      "control/deployment/cp2k-water-scaling/README-mpi-repair.md": "62f46575ec7c6b148a2053f5e45dd5098551351006facbaecbb52f6c2edcab02",
+      "control/deployment/cp2k-water-scaling/README.md": "ea06770320ed3ab8b6f1c5c14df38681355121629254507b568c67ede2da9931",
+      "control/deployment/cp2k-water-scaling/build-cpu.sbatch": "6d98ee945a6d816144c872ddb1250293f1b4d15177b4e8c8cb66368bc42969d3",
+      "control/deployment/cp2k-water-scaling/build-cpu.sh": "f0710f6e4ed32c0e4dff62b8d260f12d99f0f638e2bfbe75552aa04cbb5446e6",
+      "control/deployment/cp2k-water-scaling/campaign.py": "85900f090f1e0d5654d8fb2674ccb9543e9c6deb63440f083093b88d4792a14e",
+      "control/deployment/cp2k-water-scaling/fix-redistribution.py": "badac4ed4f81523d7b0c18895b94f00594afcaec42ad4e37100244b6a8dfe9cc",
+      "control/deployment/cp2k-water-scaling/job.sbatch": "07be8871cae5070c672a4fc3aa0d78da7085f06b688853ef1adf5cde9d7e77bc",
+      "control/deployment/cp2k-water-scaling/rank.py": "9db06188cc27c310f10b9ffef3587a901748f9c3669913a9096a275afe79f746",
+      "control/deployment/cp2k-water-scaling/relink-cpu.py": "ea2d9d5f226f1bc4f35ed3cc47061af2345f67a8c2285e53d81198cfa4952879",
+      "control/deployment/cp2k-water-scaling/relink-cpu.sbatch": "6207a85b0d3fd91448be7279b9ac721d48787bb38f4f4c865a563d7024c3bf78",
+      "control/deployment/cp2k-water-scaling/relink-env.sh": "048b94c0fbc0c56b51337c0f7ba1258f2e2b10025c7707ac531e9c2ca7571b7e",
+      "control/deployment/cp2k-water-scaling/retest-mpi.py": "77bbafcf88914826b69b558cf4f0a1a7b145212baa98ae02788f84d396d5bcbc",
+      "control/deployment/cp2k-water-scaling/retest-mpi.sbatch": "f4c04b92f3ff978d7fe017a4e08ccf832850b6f1bb3dcda365f7361b4edbd690",
+      "control/deployment/cp2k-water-scaling/run.py": "ae1f05fde411025b745c867b13083c3a4fe8ee5f24332451d4dacd68fd9ce41d",
+      "control/deployment/cp2k-water-scaling/submit-cpu.py": "946a0eba95402b61d03d03b2585e58224788ea64402b0fcb81360477b894182a",
+      "control/deployment/cp2k-water-scaling/submit-relink.py": "7715a17e3f133b525bc4472b8f6dbe947bed4b0caff2f467d6cfc53cd75058d9",
+      "control/deployment/cp2k-water-scaling/trace-scalapack.c": "710b7f39582b26820f2389999ac85691482e349da8e61f3bc9ce939bdcbf870a",
+      "fixtures/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+      "fixtures/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2"
+    },
+    "install_receipt_sha256": "7b2779db91a33b338c6f9c0aa1c3ec78ac9a0c706bfe2362528ffcaaed18850e",
+    "partition": "4V100",
+    "physical_cores": 4,
+    "probes": 6,
+    "shape": [
+      4,
+      4,
+      4
+    ],
+    "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+    "stage": "smoke"
+  },
+  "samples": [
+    {
+      "average_physical_core_utilization": 0.31036071395366677,
+      "basis_functions": 1472,
+      "bindings": [
+        {
+          "affinity": [
+            0,
+            1,
+            2,
+            3,
+            16,
+            17,
+            18,
+            19
+          ],
+          "binary": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-raed7aa53ff43/4V100/bin/cp2k.psmp",
+          "cores": {
+            "0": [
+              0,
+              0
+            ],
+            "1": [
+              0,
+              1
+            ],
+            "16": [
+              0,
+              0
+            ],
+            "17": [
+              0,
+              1
+            ],
+            "18": [
+              0,
+              2
+            ],
+            "19": [
+              0,
+              3
+            ],
+            "2": [
+              0,
+              2
+            ],
+            "3": [
+              0,
+              3
+            ]
+          },
+          "gpu": "GPU-58423c96-717f-a3f2-018b-8f19d072bf04",
+          "host": "4v100n18.mr-sai.ai",
+          "local_rank": 0,
+          "omp_threads": 4,
+          "pid": 1086308,
+          "rank": 0,
+          "start_ticks": 834918563
+        }
+      ],
+      "block": 32,
+      "calibration": false,
+      "cp2k_seconds": 29.815,
+      "dispersion_ha": null,
+      "elapsed_seconds": 30.665930229239166,
+      "energy_ha": -1102.577187149756,
+      "forces_ha_bohr": [
+        [
+          -0.013761952894,
+          -0.014675399507,
+          0.002431724299
+        ],
+        [
+          0.015525745834,
+          -0.002976453706,
+          1.0018465e-05
+        ],
+        [
+          -0.000938061408,
+          0.018572617515,
+          6.672318e-06
+        ],
+        [
+          -0.014718739505,
+          -0.015712077202,
+          -0.00059929639
+        ],
+        [
+          0.015516221967,
+          -0.00298090624,
+          -2.955398e-06
+        ],
+        [
+          -0.0009390263,
+          0.01856496197,
+          -2.039218e-06
+        ],
+        [
+          -0.013087276518,
+          -0.01394388572,
+          -0.002639295499
+        ],
+        [
+          0.015533017697,
+          -0.002973297816,
+          -9.461538e-06
+        ],
+        [
+          -0.000937449826,
+          0.018578537878,
+          -6.120196e-06
+        ],
+        [
+          -0.012089742688,
+          -0.012864168313,
+          0.000888852853
+        ],
+        [
+          0.0155415952,
+          -0.002968870263,
+          1.943022e-06
+        ],
+        [
+          -0.000936329461,
+          0.018585025239,
+          1.084927e-06
+        ],
+        [
+          -0.014482415527,
+          -0.016185400786,
+          0.001354943614
+        ],
+        [
+          0.015516863482,
+          -0.002976552791,
+          1.1112054e-05
+        ],
+        [
+          -0.000937232917,
+          0.018593510558,
+          -1.3613246e-05
+        ],
+        [
+          -0.015393334116,
+          -0.015910747774,
+          -0.000329372027
+        ],
+        [
+          0.015509232489,
+          -0.002978863614,
+          -3.371197e-06
+        ],
+        [
+          -0.000936902112,
+          0.018574671733,
+          3.466356e-06
+        ],
+        [
+          -0.013851732883,
+          -0.016378534654,
+          -0.001577350685
+        ],
+        [
+          0.015522794978,
+          -0.002975009433,
+          -1.0278726e-05
+        ],
+        [
+          -0.000937556871,
+          0.018607190718,
+          1.4294389e-05
+        ],
+        [
+          -0.01294023667,
+          -0.01666069997,
+          0.000606764803
+        ],
+        [
+          0.01552930542,
+          -0.002973038381,
+          2.080931e-06
+        ],
+        [
+          -0.000937936363,
+          0.018624804974,
+          -4.249953e-06
+        ],
+        [
+          -0.013224065248,
+          -0.016636437342,
+          0.003210746122
+        ],
+        [
+          0.015522271347,
+          -0.002974512816,
+          1.4355115e-05
+        ],
+        [
+          -0.000941017538,
+          0.018599701428,
+          -2.8797362e-05
+        ],
+        [
+          -0.014254241206,
+          -0.015573961131,
+          -0.000776461968
+        ],
+        [
+          0.015512706091,
+          -0.002976915988,
+          -3.977114e-06
+        ],
+        [
+          -0.000937584806,
+          0.018589278819,
+          7.356622e-06
+        ],
+        [
+          -0.012485522106,
+          -0.017392681211,
+          -0.003400931997
+        ],
+        [
+          0.015529590714,
+          -0.002972975456,
+          -1.4118666e-05
+        ],
+        [
+          -0.000943636463,
+          0.018607552801,
+          2.9471683e-05
+        ],
+        [
+          -0.01136843162,
+          -0.018522251263,
+          0.001100093121
+        ],
+        [
+          0.015538419873,
+          -0.002971126297,
+          3.263527e-06
+        ],
+        [
+          -0.000947497171,
+          0.018617161704,
+          -8.301148e-06
+        ],
+        [
+          -0.012487265529,
+          -0.014963329655,
+          0.004311858235
+        ],
+        [
+          0.015530746671,
+          -0.002975274161,
+          1.3448114e-05
+        ],
+        [
+          -0.000943971465,
+          0.018576006104,
+          -8.422286e-06
+        ],
+        [
+          -0.013584812669,
+          -0.015223087967,
+          -0.001044176615
+        ],
+        [
+          0.015519175526,
+          -0.002980017184,
+          -3.578519e-06
+        ],
+        [
+          -0.000942080475,
+          0.018575663403,
+          1.827487e-06
+        ],
+        [
+          -0.01167288553,
+          -0.014775459391,
+          -0.004505743132
+        ],
+        [
+          0.015539533314,
+          -0.002971892145,
+          -1.364675e-05
+        ],
+        [
+          -0.000945454122,
+          0.018576695476,
+          8.915709e-06
+        ],
+        [
+          -0.010372630318,
+          -0.014479521806,
+          0.001407453388
+        ],
+        [
+          0.015550854732,
+          -0.002967039645,
+          3.331093e-06
+        ],
+        [
+          -0.000947362731,
+          0.018575734122,
+          -2.895266e-06
+        ],
+        [
+          -0.015059699359,
+          -0.015397142514,
+          0.001436919063
+        ],
+        [
+          0.015498725105,
+          -0.002986413022,
+          -1.0138403e-05
+        ],
+        [
+          -0.000955477316,
+          0.018569506016,
+          1.2963376e-05
+        ],
+        [
+          -0.014800445032,
+          -0.016390625338,
+          -0.000351626702
+        ],
+        [
+          0.015480133337,
+          -0.002989502791,
+          2.499357e-06
+        ],
+        [
+          -0.000953390457,
+          0.018564219297,
+          -3.863409e-06
+        ],
+        [
+          -0.01524192057,
+          -0.014707849844,
+          -0.001662285215
+        ],
+        [
+          0.015512251647,
+          -0.002984249933,
+          1.0854491e-05
+        ],
+        [
+          -0.000957110436,
+          0.018573771131,
+          -1.2145005e-05
+        ],
+        [
+          -0.01550891418,
+          -0.013711637648,
+          0.000628704263
+        ],
+        [
+          0.015529752596,
+          -0.00298145101,
+          -3.387554e-06
+        ],
+        [
+          -0.000959311283,
+          0.018577791542,
+          2.588694e-06
+        ],
+        [
+          -0.014668833887,
+          -0.015793169834,
+          0.000330761215
+        ],
+        [
+          0.015485245092,
+          -0.002977460307,
+          -5.980397e-06
+        ],
+        [
+          -0.000945451864,
+          0.018582376483,
+          -5.149153e-06
+        ],
+        [
+          -0.014469527635,
+          -0.015577576638,
+          -7.3199121e-05
+        ],
+        [
+          0.015469066822,
+          -0.002980194206,
+          1.454649e-06
+        ],
+        [
+          -0.000943855751,
+          0.018566685674,
+          1.211733e-06
+        ],
+        [
+          -0.014807413341,
+          -0.015943501295,
+          -0.000589103945
+        ],
+        [
+          0.015497031562,
+          -0.002975581004,
+          6.844117e-06
+        ],
+        [
+          -0.00094669999,
+          0.018593802883,
+          6.00915e-06
+        ],
+        [
+          -0.015006781814,
+          -0.016159773589,
+          0.000349399836
+        ],
+        [
+          0.015511936806,
+          -0.002973138335,
+          -2.34904e-06
+        ],
+        [
+          -0.000948325195,
+          0.01860809603,
+          -2.111538e-06
+        ],
+        [
+          -0.014797576766,
+          -0.015906210781,
+          0.002047481959
+        ],
+        [
+          0.015502847228,
+          -0.002966574166,
+          -6.490133e-06
+        ],
+        [
+          -0.000942836051,
+          0.018592763613,
+          -1.8378925e-05
+        ],
+        [
+          -0.014600820839,
+          -0.014901386189,
+          -0.000497765315
+        ],
+        [
+          0.015482044266,
+          -0.002971323496,
+          1.503639e-06
+        ],
+        [
+          -0.000939554492,
+          0.018583820364,
+          4.841066e-06
+        ],
+        [
+          -0.014935534826,
+          -0.016603386091,
+          -0.002227272679
+        ],
+        [
+          0.01551794619,
+          -0.002963304048,
+          7.020335e-06
+        ],
+        [
+          -0.000945271395,
+          0.018599434396,
+          1.8826195e-05
+        ],
+        [
+          -0.015135444912,
+          -0.017608760102,
+          0.000776715933
+        ],
+        [
+          0.015537816255,
+          -0.002958792849,
+          -2.3693e-06
+        ],
+        [
+          -0.000948622,
+          0.018607044478,
+          -5.383524e-06
+        ],
+        [
+          -0.015182922417,
+          -0.015344682896,
+          0.003153868996
+        ],
+        [
+          0.015515727393,
+          -0.002976522413,
+          -1.068844e-05
+        ],
+        [
+          -0.000955220072,
+          0.018574999819,
+          -3.58073e-07
+        ],
+        [
+          -0.014922111323,
+          -0.015535489741,
+          -0.000769534628
+        ],
+        [
+          0.015492394279,
+          -0.002981743465,
+          2.517822e-06
+        ],
+        [
+          -0.000951666794,
+          0.018574764044,
+          -2.66085e-07
+        ],
+        [
+          -0.015369730688,
+          -0.015213594684,
+          -0.003302348085
+        ],
+        [
+          0.015532703571,
+          -0.002972865566,
+          1.109818e-05
+        ],
+        [
+          -0.000957894713,
+          0.018575670909,
+          7.89415e-07
+        ],
+        [
+          -0.015648964644,
+          -0.015020898002,
+          0.001057917887
+        ],
+        [
+          0.01555550674,
+          -0.002967827265,
+          -3.429197e-06
+        ],
+        [
+          -0.000961636847,
+          0.018574634484,
+          -7.06634e-07
+        ],
+        [
+          -0.015445266327,
+          -0.01414052336,
+          0.003171667321
+        ],
+        [
+          0.015498867602,
+          -0.002996143676,
+          -2.3627688e-05
+        ],
+        [
+          -0.000951468314,
+          0.018575210179,
+          1.8866395e-05
+        ],
+        [
+          -0.014463162768,
+          -0.015251513889,
+          -0.000767465196
+        ],
+        [
+          0.015489469137,
+          -0.002996461331,
+          6.034285e-06
+        ],
+        [
+          -0.000951602325,
+          0.018567427619,
+          -5.205124e-06
+        ],
+        [
+          -0.016143718998,
+          -0.013343867512,
+          -0.00336469478
+        ],
+        [
+          0.015505967444,
+          -0.002996022223,
+          2.4235399e-05
+        ],
+        [
+          -0.000951625427,
+          0.018581269799,
+          -1.8657197e-05
+        ],
+        [
+          -0.017188824959,
+          -0.012140776342,
+          0.001090524613
+        ],
+        [
+          0.015514472794,
+          -0.002996239892,
+          -6.929045e-06
+        ],
+        [
+          -0.000951839739,
+          0.018588237279,
+          4.486846e-06
+        ],
+        [
+          -0.01471374261,
+          -0.01593141745,
+          0.001924784348
+        ],
+        [
+          0.015494240125,
+          -0.002977610858,
+          -1.8637164e-05
+        ],
+        [
+          -0.000935668588,
+          0.018598630673,
+          -2.878225e-06
+        ],
+        [
+          -0.013788541825,
+          -0.015718175368,
+          -0.000465915527
+        ],
+        [
+          0.015485029465,
+          -0.002979684686,
+          4.923282e-06
+        ],
+        [
+          -0.000937440009,
+          0.018578457797,
+          4.87759e-07
+        ],
+        [
+          -0.015354222102,
+          -0.016081094055,
+          -0.002105687261
+        ],
+        [
+          0.015501107481,
+          -0.002976202752,
+          1.9078193e-05
+        ],
+        [
+          -0.000934594978,
+          0.018613263949,
+          3.430824e-06
+        ],
+        [
+          -0.016277813426,
+          -0.016297490267,
+          0.000744974471
+        ],
+        [
+          0.01550908881,
+          -0.00297440233,
+          -5.469234e-06
+        ],
+        [
+          -0.000932842611,
+          0.018632366668,
+          -1.413117e-06
+        ],
+        [
+          -0.015949474271,
+          -0.017161926211,
+          0.003755338485
+        ],
+        [
+          0.015505358426,
+          -0.002965825155,
+          -2.2219985e-05
+        ],
+        [
+          -0.000929842956,
+          0.018602002703,
+          -1.8297554e-05
+        ],
+        [
+          -0.014898685918,
+          -0.016031764529,
+          -0.000903141938
+        ],
+        [
+          0.015493316217,
+          -0.002970222562,
+          5.462247e-06
+        ],
+        [
+          -0.000930815687,
+          0.018590937786,
+          4.460431e-06
+        ],
+        [
+          -0.016706718784,
+          -0.017976640061,
+          -0.003932367553
+        ],
+        [
+          0.015514398392,
+          -0.002962675114,
+          2.2802979e-05
+        ],
+        [
+          -0.000929238039,
+          0.018610312519,
+          1.8823428e-05
+        ],
+        [
+          -0.017859184665,
+          -0.019214693,
+          0.001246364742
+        ],
+        [
+          0.015525973349,
+          -0.002958078471,
+          -6.582533e-06
+        ],
+        [
+          -0.000928056583,
+          0.018620663329,
+          -5.483351e-06
+        ],
+        [
+          -0.016688996987,
+          -0.015212548,
+          0.00505291356
+        ],
+        [
+          0.01550952022,
+          -0.002985256889,
+          -2.7499325e-05
+        ],
+        [
+          -0.000947938731,
+          0.018575175964,
+          3.608473e-06
+        ],
+        [
+          -0.015550906886,
+          -0.015405619632,
+          -0.001203146806
+        ],
+        [
+          0.015497119295,
+          -0.002987892098,
+          6.544766e-06
+        ],
+        [
+          -0.000947311631,
+          0.018575249919,
+          -1.237816e-06
+        ],
+        [
+          -0.017553584626,
+          -0.015073930075,
+          -0.005287616311
+        ],
+        [
+          0.015519078644,
+          -0.002983406835,
+          2.8548251e-05
+        ],
+        [
+          -0.000948623652,
+          0.018575523877,
+          -3.570815e-06
+        ],
+        [
+          -0.019012710515,
+          -0.014857135256,
+          0.001657062581
+        ],
+        [
+          0.015532169934,
+          -0.002980902104,
+          -8.42814e-06
+        ],
+        [
+          -0.000949831662,
+          0.018574128096,
+          6.31359e-07
+        ],
+        [
+          -0.014060980647,
+          -0.01341196555,
+          0.004193341302
+        ],
+        [
+          0.015534755261,
+          -0.002987228858,
+          -3.303028e-06
+        ],
+        [
+          -0.000933901079,
+          0.018578477919,
+          1.2646053e-05
+        ],
+        [
+          -0.014310517255,
+          -0.014585807508,
+          -0.001013543851
+        ],
+        [
+          0.015534121822,
+          -0.002989055683,
+          5.49229e-07
+        ],
+        [
+          -0.000937169174,
+          0.018568286766,
+          -3.384771e-06
+        ],
+        [
+          -0.013880613139,
+          -0.012544033614,
+          -0.004384314349
+        ],
+        [
+          0.015535664474,
+          -0.00298596827,
+          3.65809e-06
+        ],
+        [
+          -0.000931650163,
+          0.018586249179,
+          -1.2813652e-05
+        ],
+        [
+          -0.013596926481,
+          -0.011169064063,
+          0.001374010601
+        ],
+        [
+          0.01553509542,
+          -0.002984149717,
+          -1.465959e-06
+        ],
+        [
+          -0.000928093026,
+          0.018595953591,
+          3.115712e-06
+        ],
+        [
+          -0.014448703079,
+          -0.016330272605,
+          0.002954345071
+        ],
+        [
+          0.015534015463,
+          -0.002977779375,
+          -1.624938e-06
+        ],
+        [
+          -0.000927374641,
+          0.018609861101,
+          -1.1407987e-05
+        ],
+        [
+          -0.014629630572,
+          -0.016054943797,
+          -0.000716287545
+        ],
+        [
+          0.015532949923,
+          -0.002979474585,
+          6.2689e-08
+        ],
+        [
+          -0.000930384642,
+          0.018586484752,
+          2.724509e-06
+        ],
+        [
+          -0.014324538233,
+          -0.016526835665,
+          -0.003100069345
+        ],
+        [
+          0.015535290323,
+          -0.002976675873,
+          2.06896e-06
+        ],
+        [
+          -0.000925375206,
+          0.018626830035,
+          1.1796981e-05
+        ],
+        [
+          -0.014142593547,
+          -0.01681838472,
+          0.001004900261
+        ],
+        [
+          0.015535240631,
+          -0.002975306067,
+          -1.066157e-06
+        ],
+        [
+          -0.000922361969,
+          0.018649501408,
+          -3.571499e-06
+        ],
+        [
+          -0.014299023256,
+          -0.017916072813,
+          0.004968048289
+        ],
+        [
+          0.015533378696,
+          -0.002974918831,
+          -1.279211e-06
+        ],
+        [
+          -0.000928017826,
+          0.018609165827,
+          -2.902402e-05
+        ],
+        [
+          -0.014482145763,
+          -0.016700650895,
+          -0.001181044088
+        ],
+        [
+          0.015532484189,
+          -0.002976835619,
+          -2.1875e-08
+        ],
+        [
+          -0.000928792782,
+          0.018596448815,
+          6.949902e-06
+        ],
+        [
+          -0.014167588987,
+          -0.018835208473,
+          -0.005195178249
+        ],
+        [
+          0.015534454041,
+          -0.002973683604,
+          1.485742e-06
+        ],
+        [
+          -0.00092759526,
+          0.018618959335,
+          3.0054698e-05
+        ],
+        [
+          -0.013962337212,
+          -0.020367060655,
+          0.001627962034
+        ],
+        [
+          0.015534293037,
+          -0.002972310842,
+          -8.23974e-07
+        ],
+        [
+          -0.000926967695,
+          0.018632377762,
+          -8.764113e-06
+        ],
+        [
+          -0.013889958898,
+          -0.014823882495,
+          0.006315718995
+        ],
+        [
+          0.015533645359,
+          -0.002985192962,
+          -2.759894e-06
+        ],
+        [
+          -0.000936610755,
+          0.018576304721,
+          -4.431605e-06
+        ],
+        [
+          -0.014154000447,
+          -0.015097535526,
+          -0.001480453373
+        ],
+        [
+          0.015533192363,
+          -0.002987274291,
+          4.28241e-07
+        ],
+        [
+          -0.000937711519,
+          0.018576270638,
+          8.26922e-07
+        ],
+        [
+          -0.013677878648,
+          -0.01460521944,
+          -0.006720308203
+        ],
+        [
+          0.01553418862,
+          -0.002983727807,
+          2.800163e-06
+        ],
+        [
+          -0.000935877311,
+          0.018576547213,
+          4.567463e-06
+        ],
+        [
+          -0.013170086177,
+          -0.014090602344,
+          0.002347372979
+        ],
+        [
+          0.01553307017,
+          -0.002981548492,
+          -7.04815e-07
+        ],
+        [
+          -0.000934405054,
+          0.018574931513,
+          -1.247998e-06
+        ]
+      ],
+      "host_memory": {
+        "limit": 23622320128,
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5HF030A00",
+        "used": 2194763776
+      },
+      "host_memory_fraction": 0.92,
+      "mode": "gpu",
+      "name": "smoke-gpu",
+      "peak_gpu_fraction": {
+        "GPU-58423c96-717f-a3f2-018b-8f19d072bf04": 0.0650634765625
+      },
+      "peak_gpu_mib": {
+        "GPU-58423c96-717f-a3f2-018b-8f19d072bf04": 2132.0
+      },
+      "ranks": 1,
+      "returncode": 0,
+      "sampled_cpu_seconds": 38.07,
+      "scf_steps": [
+        24
+      ],
+      "science_accepted": true,
+      "shape": [
+        4,
+        4,
+        4
+      ],
+      "stop": null,
+      "threads": 4,
+      "timers": {
+        "CP2K": {
+          "calls": 1,
+          "seconds": 29.815
+        },
+        "cp_fm_create": {
+          "calls": 38,
+          "seconds": 0.0
+        },
+        "cp_fm_general_cusolver": {
+          "calls": 24,
+          "seconds": 12.5
+        },
+        "cp_fm_maxabsval": {
+          "calls": 23,
+          "seconds": 0.018
+        },
+        "cp_fm_scale_and_add": {
+          "calls": 76,
+          "seconds": 0.023
+        },
+        "cp_fm_set_all": {
+          "calls": 20,
+          "seconds": 0.008
+        },
+        "cp_fm_symm": {
+          "calls": 46,
+          "seconds": 0.157
+        },
+        "cp_fm_to_fm_columns": {
+          "calls": 24,
+          "seconds": 0.003
+        },
+        "cp_fm_to_fm_matrix": {
+          "calls": 29,
+          "seconds": 0.02
+        },
+        "cp_fm_trace_a0b0t0": {
+          "calls": 85,
+          "seconds": 0.368
+        },
+        "dbcsr_add_wm_from_matrix": {
+          "calls": 25,
+          "seconds": 0.008
+        },
+        "dbcsr_complete_redistribute": {
+          "calls": 97,
+          "seconds": 1.042
+        },
+        "dbcsr_copy": {
+          "calls": 103,
+          "seconds": 0.031
+        },
+        "dbcsr_copy_into_existing": {
+          "calls": 2,
+          "seconds": 0.017
+        },
+        "dbcsr_create_new": {
+          "calls": 501,
+          "seconds": 0.006
+        },
+        "dbcsr_data_copy_aa2": {
+          "calls": 122,
+          "seconds": 0.156
+        },
+        "dbcsr_data_new": {
+          "calls": 2043,
+          "seconds": 0.007
+        },
+        "dbcsr_data_release": {
+          "calls": 3100,
+          "seconds": 0.098
+        },
+        "dbcsr_destroy": {
+          "calls": 452,
+          "seconds": 0.098
+        },
+        "dbcsr_desymmetrize_deep": {
+          "calls": 71,
+          "seconds": 0.34
+        },
+        "dbcsr_distribution_new": {
+          "calls": 199,
+          "seconds": 0.0
+        },
+        "dbcsr_dot": {
+          "calls": 51,
+          "seconds": 0.073
+        },
+        "dbcsr_fill_wm_from_matrix": {
+          "calls": 25,
+          "seconds": 0.006
+        },
+        "dbcsr_filter_anytype": {
+          "calls": 29,
+          "seconds": 0.0
+        },
+        "dbcsr_finalize": {
+          "calls": 215,
+          "seconds": 0.433
+        },
+        "dbcsr_get_data_size_used": {
+          "calls": 193,
+          "seconds": 0.0
+        },
+        "dbcsr_get_global_col_map": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_get_global_row_map": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_get_local_cols": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_get_local_rows": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_iterator_seek": {
+          "calls": 690,
+          "seconds": 0.0
+        },
+        "dbcsr_iterator_start": {
+          "calls": 690,
+          "seconds": 0.001
+        },
+        "dbcsr_iterator_stop": {
+          "calls": 690,
+          "seconds": 0.0
+        },
+        "dbcsr_make_dbcsr_index": {
+          "calls": 353,
+          "seconds": 0.001
+        },
+        "dbcsr_make_index_exist": {
+          "calls": 501,
+          "seconds": 0.0
+        },
+        "dbcsr_make_index_list": {
+          "calls": 50,
+          "seconds": 0.0
+        },
+        "dbcsr_make_index_local_row": {
+          "calls": 50,
+          "seconds": 0.0
+        },
+        "dbcsr_make_untransposed_blocks": {
+          "calls": 50,
+          "seconds": 0.012
+        },
+        "dbcsr_mempool_clear": {
+          "calls": 24,
+          "seconds": 0.0
+        },
+        "dbcsr_merge_all": {
+          "calls": 122,
+          "seconds": 0.4
+        },
+        "dbcsr_mm_accdrv_init": {
+          "calls": 25,
+          "seconds": 0.003
+        },
+        "dbcsr_mm_accdrv_process": {
+          "calls": 100,
+          "seconds": 0.297
+        },
+        "dbcsr_mm_accdrv_process_sort": {
+          "calls": 100,
+          "seconds": 0.004
+        },
+        "dbcsr_mm_csr_init": {
+          "calls": 25,
+          "seconds": 0.005
+        },
+        "dbcsr_mm_hostdrv_init": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_mm_multrec_finalize": {
+          "calls": 25,
+          "seconds": 0.009
+        },
+        "dbcsr_mm_multrec_init": {
+          "calls": 25,
+          "seconds": 0.005
+        },
+        "dbcsr_mm_sched_finalize": {
+          "calls": 25,
+          "seconds": 0.009
+        },
+        "dbcsr_mm_sched_init": {
+          "calls": 25,
+          "seconds": 0.003
+        },
+        "dbcsr_multiply_generic": {
+          "calls": 25,
+          "seconds": 0.445
+        },
+        "dbcsr_new_transposed": {
+          "calls": 25,
+          "seconds": 0.001
+        },
+        "dbcsr_reserve_all_blocks": {
+          "calls": 26,
+          "seconds": 0.002
+        },
+        "dbcsr_reserve_blocks": {
+          "calls": 35,
+          "seconds": 0.011
+        },
+        "dbcsr_scale_anytype": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "dbcsr_scale_d": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "dbcsr_set": {
+          "calls": 130,
+          "seconds": 0.007
+        },
+        "dbcsr_sort_indices": {
+          "calls": 353,
+          "seconds": 0.041
+        },
+        "dbcsr_special_finalize": {
+          "calls": 50,
+          "seconds": 0.001
+        },
+        "dbcsr_switch_data_area": {
+          "calls": 196,
+          "seconds": 0.0
+        },
+        "dbcsr_verify_matrix": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_work_create": {
+          "calls": 243,
+          "seconds": 0.002
+        },
+        "dbcsr_work_destroy_all": {
+          "calls": 243,
+          "seconds": 0.0
+        },
+        "dbcsr_zero": {
+          "calls": 130,
+          "seconds": 0.007
+        },
+        "eigensolver_generalized": {
+          "calls": 24,
+          "seconds": 13.057
+        },
+        "grid_collocate_task_list": {
+          "calls": 25,
+          "seconds": 4.018
+        },
+        "grid_create_basis_set": {
+          "calls": 2,
+          "seconds": 0.0
+        },
+        "grid_create_task_list": {
+          "calls": 1,
+          "seconds": 0.06
+        },
+        "grid_free_basis_set": {
+          "calls": 2,
+          "seconds": 0.0
+        },
+        "grid_free_task_list": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "grid_integrate_task_list": {
+          "calls": 25,
+          "seconds": 3.251
+        },
+        "pw_axpy": {
+          "calls": 250,
+          "seconds": 0.146
+        },
+        "pw_copy": {
+          "calls": 375,
+          "seconds": 0.322
+        },
+        "pw_create_c1d": {
+          "calls": 428,
+          "seconds": 0.0
+        },
+        "pw_create_r3d": {
+          "calls": 455,
+          "seconds": 0.0
+        },
+        "pw_derive": {
+          "calls": 225,
+          "seconds": 0.391
+        },
+        "pw_env_create": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "pw_env_rebuild": {
+          "calls": 1,
+          "seconds": 0.245
+        },
+        "pw_gpu_c1dr3d_3d": {
+          "calls": 225,
+          "seconds": 1.026
+        },
+        "pw_gpu_r3dc1d_3d": {
+          "calls": 201,
+          "seconds": 0.943
+        },
+        "pw_grid_allocate": {
+          "calls": 4,
+          "seconds": 0.003
+        },
+        "pw_grid_assign": {
+          "calls": 4,
+          "seconds": 0.022
+        },
+        "pw_grid_create_ghatmap": {
+          "calls": 4,
+          "seconds": 0.003
+        },
+        "pw_grid_distribute": {
+          "calls": 4,
+          "seconds": 0.0
+        },
+        "pw_grid_setup": {
+          "calls": 4,
+          "seconds": 0.238
+        },
+        "pw_grid_setup_internal": {
+          "calls": 4,
+          "seconds": 0.235
+        },
+        "pw_grid_sort": {
+          "calls": 4,
+          "seconds": 0.206
+        },
+        "pw_integral_ab_c1d_c1d_gs": {
+          "calls": 25,
+          "seconds": 0.138
+        },
+        "pw_multiply_with": {
+          "calls": 25,
+          "seconds": 0.031
+        },
+        "pw_poisson_rebuild": {
+          "calls": 25,
+          "seconds": 0.006
+        },
+        "pw_poisson_set": {
+          "calls": 26,
+          "seconds": 0.238
+        },
+        "pw_poisson_solve": {
+          "calls": 25,
+          "seconds": 0.462
+        },
+        "pw_pool_create_pw": {
+          "calls": 758,
+          "seconds": 0.001
+        },
+        "pw_pool_give_back_pw": {
+          "calls": 852,
+          "seconds": 0.0
+        },
+        "pw_scale": {
+          "calls": 100,
+          "seconds": 0.033
+        },
+        "pw_zero": {
+          "calls": 125,
+          "seconds": 0.075
+        },
+        "qs_create_task_list": {
+          "calls": 1,
+          "seconds": 0.204
+        },
+        "qs_diis_b_check_i_alloc": {
+          "calls": 23,
+          "seconds": 0.0
+        },
+        "qs_diis_b_create": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_diis_b_step": {
+          "calls": 23,
+          "seconds": 1.221
+        },
+        "qs_efield_berry_phase": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "qs_efield_local_operator": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "qs_energies": {
+          "calls": 1,
+          "seconds": 27.952
+        },
+        "qs_energies_init_hamiltonians": {
+          "calls": 1,
+          "seconds": 0.793
+        },
+        "qs_energies_properties": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_env_rebuild_pw_env": {
+          "calls": 3,
+          "seconds": 0.245
+        },
+        "qs_env_rebuild_rho": {
+          "calls": 1,
+          "seconds": 0.003
+        },
+        "qs_env_setup": {
+          "calls": 1,
+          "seconds": 0.246
+        },
+        "qs_env_update_s_mstruct": {
+          "calls": 1,
+          "seconds": 0.277
+        },
+        "qs_forces": {
+          "calls": 1,
+          "seconds": 29.514
+        },
+        "qs_init_subsys": {
+          "calls": 1,
+          "seconds": 0.254
+        },
+        "qs_ks_build_kohn_sham_matrix": {
+          "calls": 25,
+          "seconds": 7.537
+        },
+        "qs_ks_did_change": {
+          "calls": 26,
+          "seconds": 0.0
+        },
+        "qs_ks_update_qs_env": {
+          "calls": 24,
+          "seconds": 7.185
+        },
+        "qs_ks_update_qs_env_forces": {
+          "calls": 1,
+          "seconds": 0.424
+        },
+        "qs_rho_rebuild": {
+          "calls": 1,
+          "seconds": 0.003
+        },
+        "qs_rho_update_rho_low": {
+          "calls": 25,
+          "seconds": 4.634
+        },
+        "qs_scf_ensure_mos": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_ensure_work_matrices": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_initial_info": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_loop_print": {
+          "calls": 24,
+          "seconds": 0.0
+        },
+        "qs_scf_new_mos": {
+          "calls": 24,
+          "seconds": 15.245
+        },
+        "qs_scf_post_charges": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_efg": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_elf": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_epr": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_et": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_kubo_transport": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_local_energy": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_local_stress": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_molopt": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_moments": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_ps_implicit": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_transport": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_xray": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_print_scf_summary": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_write_mos": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "qs_vxc_create": {
+          "calls": 25,
+          "seconds": 3.305
+        }
+      },
+      "waters": 64
+    },
+    {
+      "average_physical_core_utilization": 0.89063192597881,
+      "basis_functions": 1472,
+      "bindings": [
+        {
+          "affinity": [
+            0,
+            1,
+            2,
+            3,
+            16,
+            17,
+            18,
+            19
+          ],
+          "binary": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261022-mpi-fix-4v100-a/install/bin/cp2k.psmp",
+          "cores": {
+            "0": [
+              0,
+              0
+            ],
+            "1": [
+              0,
+              1
+            ],
+            "16": [
+              0,
+              0
+            ],
+            "17": [
+              0,
+              1
+            ],
+            "18": [
+              0,
+              2
+            ],
+            "19": [
+              0,
+              3
+            ],
+            "2": [
+              0,
+              2
+            ],
+            "3": [
+              0,
+              3
+            ]
+          },
+          "gpu": "",
+          "host": "4v100n18.mr-sai.ai",
+          "local_rank": 0,
+          "omp_threads": 4,
+          "pid": 1086470,
+          "rank": 0,
+          "start_ticks": 834921632
+        }
+      ],
+      "block": 32,
+      "calibration": false,
+      "comparison": {
+        "energy_delta_ha": 4.547473508864641e-13,
+        "max_force_delta_ha_bohr": 9.999999960041972e-13
+      },
+      "cp2k_seconds": 35.757,
+      "dispersion_ha": null,
+      "elapsed_seconds": 36.872695714235306,
+      "energy_ha": -1102.5771871497564,
+      "forces_ha_bohr": [
+        [
+          -0.013761952894,
+          -0.014675399507,
+          0.002431724299
+        ],
+        [
+          0.015525745834,
+          -0.002976453706,
+          1.0018465e-05
+        ],
+        [
+          -0.000938061408,
+          0.018572617515,
+          6.672318e-06
+        ],
+        [
+          -0.014718739505,
+          -0.015712077202,
+          -0.00059929639
+        ],
+        [
+          0.015516221967,
+          -0.00298090624,
+          -2.955398e-06
+        ],
+        [
+          -0.0009390263,
+          0.01856496197,
+          -2.039218e-06
+        ],
+        [
+          -0.013087276518,
+          -0.01394388572,
+          -0.002639295499
+        ],
+        [
+          0.015533017697,
+          -0.002973297816,
+          -9.461538e-06
+        ],
+        [
+          -0.000937449826,
+          0.018578537878,
+          -6.120196e-06
+        ],
+        [
+          -0.012089742688,
+          -0.012864168313,
+          0.000888852853
+        ],
+        [
+          0.0155415952,
+          -0.002968870263,
+          1.943022e-06
+        ],
+        [
+          -0.000936329461,
+          0.018585025239,
+          1.084927e-06
+        ],
+        [
+          -0.014482415527,
+          -0.016185400786,
+          0.001354943614
+        ],
+        [
+          0.015516863482,
+          -0.002976552791,
+          1.1112054e-05
+        ],
+        [
+          -0.000937232917,
+          0.018593510558,
+          -1.3613246e-05
+        ],
+        [
+          -0.015393334116,
+          -0.015910747774,
+          -0.000329372027
+        ],
+        [
+          0.015509232489,
+          -0.002978863614,
+          -3.371197e-06
+        ],
+        [
+          -0.000936902112,
+          0.018574671733,
+          3.466356e-06
+        ],
+        [
+          -0.013851732883,
+          -0.016378534654,
+          -0.001577350685
+        ],
+        [
+          0.015522794978,
+          -0.002975009433,
+          -1.0278726e-05
+        ],
+        [
+          -0.000937556871,
+          0.018607190718,
+          1.4294389e-05
+        ],
+        [
+          -0.01294023667,
+          -0.01666069997,
+          0.000606764803
+        ],
+        [
+          0.01552930542,
+          -0.002973038381,
+          2.080931e-06
+        ],
+        [
+          -0.000937936363,
+          0.018624804974,
+          -4.249953e-06
+        ],
+        [
+          -0.013224065248,
+          -0.016636437342,
+          0.003210746122
+        ],
+        [
+          0.015522271347,
+          -0.002974512816,
+          1.4355115e-05
+        ],
+        [
+          -0.000941017538,
+          0.018599701428,
+          -2.8797362e-05
+        ],
+        [
+          -0.014254241206,
+          -0.015573961131,
+          -0.000776461968
+        ],
+        [
+          0.015512706091,
+          -0.002976915988,
+          -3.977114e-06
+        ],
+        [
+          -0.000937584806,
+          0.018589278819,
+          7.356622e-06
+        ],
+        [
+          -0.012485522106,
+          -0.017392681211,
+          -0.003400931997
+        ],
+        [
+          0.015529590714,
+          -0.002972975456,
+          -1.4118666e-05
+        ],
+        [
+          -0.000943636463,
+          0.018607552801,
+          2.9471683e-05
+        ],
+        [
+          -0.01136843162,
+          -0.018522251263,
+          0.001100093121
+        ],
+        [
+          0.015538419873,
+          -0.002971126297,
+          3.263527e-06
+        ],
+        [
+          -0.000947497171,
+          0.018617161704,
+          -8.301148e-06
+        ],
+        [
+          -0.012487265529,
+          -0.014963329655,
+          0.004311858235
+        ],
+        [
+          0.015530746671,
+          -0.002975274161,
+          1.3448114e-05
+        ],
+        [
+          -0.000943971465,
+          0.018576006104,
+          -8.422286e-06
+        ],
+        [
+          -0.013584812669,
+          -0.015223087967,
+          -0.001044176615
+        ],
+        [
+          0.015519175526,
+          -0.002980017184,
+          -3.578519e-06
+        ],
+        [
+          -0.000942080475,
+          0.018575663403,
+          1.827487e-06
+        ],
+        [
+          -0.01167288553,
+          -0.014775459391,
+          -0.004505743132
+        ],
+        [
+          0.015539533314,
+          -0.002971892145,
+          -1.364675e-05
+        ],
+        [
+          -0.000945454122,
+          0.018576695476,
+          8.915709e-06
+        ],
+        [
+          -0.010372630318,
+          -0.014479521806,
+          0.001407453388
+        ],
+        [
+          0.015550854732,
+          -0.002967039645,
+          3.331093e-06
+        ],
+        [
+          -0.000947362731,
+          0.018575734122,
+          -2.895266e-06
+        ],
+        [
+          -0.015059699359,
+          -0.015397142514,
+          0.001436919063
+        ],
+        [
+          0.015498725105,
+          -0.002986413022,
+          -1.0138403e-05
+        ],
+        [
+          -0.000955477316,
+          0.018569506016,
+          1.2963376e-05
+        ],
+        [
+          -0.014800445032,
+          -0.016390625338,
+          -0.000351626702
+        ],
+        [
+          0.015480133337,
+          -0.002989502791,
+          2.499357e-06
+        ],
+        [
+          -0.000953390457,
+          0.018564219297,
+          -3.863409e-06
+        ],
+        [
+          -0.01524192057,
+          -0.014707849844,
+          -0.001662285215
+        ],
+        [
+          0.015512251647,
+          -0.002984249933,
+          1.0854491e-05
+        ],
+        [
+          -0.000957110436,
+          0.018573771131,
+          -1.2145005e-05
+        ],
+        [
+          -0.01550891418,
+          -0.013711637648,
+          0.000628704263
+        ],
+        [
+          0.015529752596,
+          -0.00298145101,
+          -3.387554e-06
+        ],
+        [
+          -0.000959311283,
+          0.018577791542,
+          2.588694e-06
+        ],
+        [
+          -0.014668833887,
+          -0.015793169834,
+          0.000330761215
+        ],
+        [
+          0.015485245092,
+          -0.002977460307,
+          -5.980397e-06
+        ],
+        [
+          -0.000945451864,
+          0.018582376483,
+          -5.149153e-06
+        ],
+        [
+          -0.014469527635,
+          -0.015577576638,
+          -7.3199121e-05
+        ],
+        [
+          0.015469066822,
+          -0.002980194206,
+          1.454649e-06
+        ],
+        [
+          -0.000943855751,
+          0.018566685674,
+          1.211733e-06
+        ],
+        [
+          -0.014807413341,
+          -0.015943501295,
+          -0.000589103945
+        ],
+        [
+          0.015497031562,
+          -0.002975581004,
+          6.844117e-06
+        ],
+        [
+          -0.00094669999,
+          0.018593802883,
+          6.00915e-06
+        ],
+        [
+          -0.015006781814,
+          -0.016159773589,
+          0.000349399836
+        ],
+        [
+          0.015511936806,
+          -0.002973138335,
+          -2.34904e-06
+        ],
+        [
+          -0.000948325195,
+          0.01860809603,
+          -2.111538e-06
+        ],
+        [
+          -0.014797576766,
+          -0.015906210781,
+          0.002047481959
+        ],
+        [
+          0.015502847228,
+          -0.002966574166,
+          -6.490133e-06
+        ],
+        [
+          -0.000942836051,
+          0.018592763613,
+          -1.8378925e-05
+        ],
+        [
+          -0.014600820839,
+          -0.014901386189,
+          -0.000497765315
+        ],
+        [
+          0.015482044266,
+          -0.002971323496,
+          1.503639e-06
+        ],
+        [
+          -0.000939554492,
+          0.018583820364,
+          4.841066e-06
+        ],
+        [
+          -0.014935534826,
+          -0.016603386091,
+          -0.002227272679
+        ],
+        [
+          0.01551794619,
+          -0.002963304048,
+          7.020335e-06
+        ],
+        [
+          -0.000945271395,
+          0.018599434396,
+          1.8826195e-05
+        ],
+        [
+          -0.015135444912,
+          -0.017608760102,
+          0.000776715933
+        ],
+        [
+          0.015537816255,
+          -0.002958792849,
+          -2.3693e-06
+        ],
+        [
+          -0.000948622,
+          0.018607044478,
+          -5.383524e-06
+        ],
+        [
+          -0.015182922417,
+          -0.015344682896,
+          0.003153868996
+        ],
+        [
+          0.015515727393,
+          -0.002976522413,
+          -1.068844e-05
+        ],
+        [
+          -0.000955220072,
+          0.018574999819,
+          -3.58073e-07
+        ],
+        [
+          -0.014922111323,
+          -0.015535489741,
+          -0.000769534628
+        ],
+        [
+          0.015492394279,
+          -0.002981743465,
+          2.517822e-06
+        ],
+        [
+          -0.000951666794,
+          0.018574764044,
+          -2.66085e-07
+        ],
+        [
+          -0.015369730688,
+          -0.015213594684,
+          -0.003302348085
+        ],
+        [
+          0.015532703571,
+          -0.002972865566,
+          1.109818e-05
+        ],
+        [
+          -0.000957894713,
+          0.018575670909,
+          7.89415e-07
+        ],
+        [
+          -0.015648964644,
+          -0.015020898002,
+          0.001057917887
+        ],
+        [
+          0.01555550674,
+          -0.002967827265,
+          -3.429197e-06
+        ],
+        [
+          -0.000961636847,
+          0.018574634484,
+          -7.06634e-07
+        ],
+        [
+          -0.015445266327,
+          -0.01414052336,
+          0.003171667321
+        ],
+        [
+          0.015498867602,
+          -0.002996143676,
+          -2.3627688e-05
+        ],
+        [
+          -0.000951468314,
+          0.018575210179,
+          1.8866395e-05
+        ],
+        [
+          -0.014463162768,
+          -0.015251513889,
+          -0.000767465196
+        ],
+        [
+          0.015489469137,
+          -0.002996461331,
+          6.034285e-06
+        ],
+        [
+          -0.000951602325,
+          0.018567427619,
+          -5.205124e-06
+        ],
+        [
+          -0.016143718998,
+          -0.013343867512,
+          -0.00336469478
+        ],
+        [
+          0.015505967444,
+          -0.002996022223,
+          2.4235399e-05
+        ],
+        [
+          -0.000951625427,
+          0.018581269799,
+          -1.8657197e-05
+        ],
+        [
+          -0.017188824959,
+          -0.012140776342,
+          0.001090524613
+        ],
+        [
+          0.015514472794,
+          -0.002996239892,
+          -6.929045e-06
+        ],
+        [
+          -0.000951839739,
+          0.018588237279,
+          4.486846e-06
+        ],
+        [
+          -0.01471374261,
+          -0.01593141745,
+          0.001924784348
+        ],
+        [
+          0.015494240125,
+          -0.002977610858,
+          -1.8637164e-05
+        ],
+        [
+          -0.000935668588,
+          0.018598630673,
+          -2.878225e-06
+        ],
+        [
+          -0.013788541825,
+          -0.015718175368,
+          -0.000465915527
+        ],
+        [
+          0.015485029465,
+          -0.002979684686,
+          4.923282e-06
+        ],
+        [
+          -0.000937440009,
+          0.018578457797,
+          4.87759e-07
+        ],
+        [
+          -0.015354222102,
+          -0.016081094055,
+          -0.002105687261
+        ],
+        [
+          0.015501107481,
+          -0.002976202752,
+          1.9078193e-05
+        ],
+        [
+          -0.000934594978,
+          0.018613263949,
+          3.430824e-06
+        ],
+        [
+          -0.016277813426,
+          -0.016297490267,
+          0.000744974471
+        ],
+        [
+          0.01550908881,
+          -0.00297440233,
+          -5.469234e-06
+        ],
+        [
+          -0.000932842611,
+          0.018632366668,
+          -1.413117e-06
+        ],
+        [
+          -0.015949474271,
+          -0.017161926211,
+          0.003755338485
+        ],
+        [
+          0.015505358426,
+          -0.002965825155,
+          -2.2219985e-05
+        ],
+        [
+          -0.000929842956,
+          0.018602002703,
+          -1.8297554e-05
+        ],
+        [
+          -0.014898685918,
+          -0.016031764529,
+          -0.000903141938
+        ],
+        [
+          0.015493316217,
+          -0.002970222562,
+          5.462247e-06
+        ],
+        [
+          -0.000930815687,
+          0.018590937786,
+          4.460431e-06
+        ],
+        [
+          -0.016706718784,
+          -0.017976640061,
+          -0.003932367553
+        ],
+        [
+          0.015514398392,
+          -0.002962675114,
+          2.2802979e-05
+        ],
+        [
+          -0.000929238039,
+          0.018610312519,
+          1.8823428e-05
+        ],
+        [
+          -0.017859184665,
+          -0.019214693,
+          0.001246364742
+        ],
+        [
+          0.015525973349,
+          -0.002958078471,
+          -6.582533e-06
+        ],
+        [
+          -0.000928056583,
+          0.018620663329,
+          -5.483351e-06
+        ],
+        [
+          -0.016688996987,
+          -0.015212548,
+          0.00505291356
+        ],
+        [
+          0.01550952022,
+          -0.002985256889,
+          -2.7499325e-05
+        ],
+        [
+          -0.000947938731,
+          0.018575175964,
+          3.608473e-06
+        ],
+        [
+          -0.015550906886,
+          -0.015405619632,
+          -0.001203146806
+        ],
+        [
+          0.015497119295,
+          -0.002987892098,
+          6.544766e-06
+        ],
+        [
+          -0.000947311631,
+          0.018575249919,
+          -1.237816e-06
+        ],
+        [
+          -0.017553584626,
+          -0.015073930075,
+          -0.005287616311
+        ],
+        [
+          0.015519078644,
+          -0.002983406835,
+          2.8548251e-05
+        ],
+        [
+          -0.000948623652,
+          0.018575523877,
+          -3.570815e-06
+        ],
+        [
+          -0.019012710515,
+          -0.014857135256,
+          0.001657062581
+        ],
+        [
+          0.015532169934,
+          -0.002980902104,
+          -8.42814e-06
+        ],
+        [
+          -0.000949831662,
+          0.018574128096,
+          6.31359e-07
+        ],
+        [
+          -0.014060980647,
+          -0.01341196555,
+          0.004193341302
+        ],
+        [
+          0.015534755261,
+          -0.002987228858,
+          -3.303028e-06
+        ],
+        [
+          -0.000933901079,
+          0.018578477919,
+          1.2646053e-05
+        ],
+        [
+          -0.014310517255,
+          -0.014585807508,
+          -0.001013543851
+        ],
+        [
+          0.015534121822,
+          -0.002989055683,
+          5.49229e-07
+        ],
+        [
+          -0.000937169174,
+          0.018568286766,
+          -3.384771e-06
+        ],
+        [
+          -0.013880613139,
+          -0.012544033614,
+          -0.004384314349
+        ],
+        [
+          0.015535664474,
+          -0.00298596827,
+          3.65809e-06
+        ],
+        [
+          -0.000931650163,
+          0.018586249179,
+          -1.2813652e-05
+        ],
+        [
+          -0.013596926481,
+          -0.011169064063,
+          0.001374010601
+        ],
+        [
+          0.01553509542,
+          -0.002984149717,
+          -1.465959e-06
+        ],
+        [
+          -0.000928093026,
+          0.018595953591,
+          3.115712e-06
+        ],
+        [
+          -0.014448703079,
+          -0.016330272605,
+          0.002954345071
+        ],
+        [
+          0.015534015463,
+          -0.002977779375,
+          -1.624938e-06
+        ],
+        [
+          -0.000927374641,
+          0.018609861101,
+          -1.1407987e-05
+        ],
+        [
+          -0.014629630572,
+          -0.016054943797,
+          -0.000716287545
+        ],
+        [
+          0.015532949923,
+          -0.002979474585,
+          6.2689e-08
+        ],
+        [
+          -0.000930384642,
+          0.018586484752,
+          2.724509e-06
+        ],
+        [
+          -0.014324538233,
+          -0.016526835665,
+          -0.003100069345
+        ],
+        [
+          0.015535290323,
+          -0.002976675873,
+          2.06896e-06
+        ],
+        [
+          -0.000925375206,
+          0.018626830035,
+          1.1796981e-05
+        ],
+        [
+          -0.014142593547,
+          -0.01681838472,
+          0.001004900261
+        ],
+        [
+          0.015535240631,
+          -0.002975306067,
+          -1.066157e-06
+        ],
+        [
+          -0.000922361969,
+          0.018649501408,
+          -3.571499e-06
+        ],
+        [
+          -0.014299023256,
+          -0.017916072813,
+          0.004968048289
+        ],
+        [
+          0.015533378696,
+          -0.002974918831,
+          -1.279211e-06
+        ],
+        [
+          -0.000928017826,
+          0.018609165827,
+          -2.902402e-05
+        ],
+        [
+          -0.014482145763,
+          -0.016700650895,
+          -0.001181044088
+        ],
+        [
+          0.015532484189,
+          -0.002976835619,
+          -2.1875e-08
+        ],
+        [
+          -0.000928792782,
+          0.018596448815,
+          6.949902e-06
+        ],
+        [
+          -0.014167588987,
+          -0.018835208473,
+          -0.005195178249
+        ],
+        [
+          0.015534454041,
+          -0.002973683604,
+          1.485742e-06
+        ],
+        [
+          -0.000927595259,
+          0.018618959335,
+          3.0054698e-05
+        ],
+        [
+          -0.013962337212,
+          -0.020367060655,
+          0.001627962034
+        ],
+        [
+          0.015534293037,
+          -0.002972310842,
+          -8.23974e-07
+        ],
+        [
+          -0.000926967695,
+          0.018632377762,
+          -8.764113e-06
+        ],
+        [
+          -0.013889958898,
+          -0.014823882495,
+          0.006315718995
+        ],
+        [
+          0.015533645359,
+          -0.002985192962,
+          -2.759894e-06
+        ],
+        [
+          -0.000936610755,
+          0.018576304721,
+          -4.431605e-06
+        ],
+        [
+          -0.014154000447,
+          -0.015097535526,
+          -0.001480453373
+        ],
+        [
+          0.015533192363,
+          -0.002987274291,
+          4.28241e-07
+        ],
+        [
+          -0.000937711519,
+          0.018576270638,
+          8.26922e-07
+        ],
+        [
+          -0.013677878648,
+          -0.01460521944,
+          -0.006720308203
+        ],
+        [
+          0.01553418862,
+          -0.002983727807,
+          2.800163e-06
+        ],
+        [
+          -0.000935877311,
+          0.018576547213,
+          4.567463e-06
+        ],
+        [
+          -0.013170086177,
+          -0.014090602344,
+          0.002347372979
+        ],
+        [
+          0.01553307017,
+          -0.002981548492,
+          -7.04815e-07
+        ],
+        [
+          -0.000934405054,
+          0.018574931513,
+          -1.247998e-06
+        ]
+      ],
+      "host_memory": {
+        "limit": 23622320128,
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5HF030A00",
+        "used": 2032148480
+      },
+      "host_memory_fraction": 0.92,
+      "mode": "cpu",
+      "name": "smoke-cpu-1",
+      "no_gpu_compute_process_verified": true,
+      "peak_gpu_fraction": {
+        "GPU-58423c96-717f-a3f2-018b-8f19d072bf04": 0.0001220703125
+      },
+      "peak_gpu_mib": {
+        "GPU-58423c96-717f-a3f2-018b-8f19d072bf04": 4.0
+      },
+      "ranks": 1,
+      "returncode": 0,
+      "sampled_cpu_seconds": 131.36,
+      "scf_steps": [
+        24
+      ],
+      "science_accepted": true,
+      "shape": [
+        4,
+        4,
+        4
+      ],
+      "stop": null,
+      "threads": 4,
+      "timers": {
+        "CP2K": {
+          "calls": 1,
+          "seconds": 35.757
+        },
+        "cp_fm_cholesky_decompose": {
+          "calls": 1,
+          "seconds": 0.008
+        },
+        "cp_fm_cholesky_restore": {
+          "calls": 72,
+          "seconds": 0.457
+        },
+        "cp_fm_create": {
+          "calls": 14,
+          "seconds": 0.0
+        },
+        "cp_fm_gemm": {
+          "calls": 46,
+          "seconds": 0.183
+        },
+        "cp_fm_maxabsval": {
+          "calls": 23,
+          "seconds": 0.019
+        },
+        "cp_fm_redistribute_end": {
+          "calls": 24,
+          "seconds": 0.0
+        },
+        "cp_fm_redistribute_start": {
+          "calls": 24,
+          "seconds": 0.0
+        },
+        "cp_fm_scale_and_add": {
+          "calls": 76,
+          "seconds": 0.025
+        },
+        "cp_fm_set_all": {
+          "calls": 20,
+          "seconds": 0.008
+        },
+        "cp_fm_syevd": {
+          "calls": 24,
+          "seconds": 3.629
+        },
+        "cp_fm_syevd_base": {
+          "calls": 24,
+          "seconds": 3.629
+        },
+        "cp_fm_symm": {
+          "calls": 46,
+          "seconds": 0.155
+        },
+        "cp_fm_to_fm_matrix": {
+          "calls": 29,
+          "seconds": 0.018
+        },
+        "cp_fm_trace_a0b0t0": {
+          "calls": 85,
+          "seconds": 0.372
+        },
+        "cp_fm_uplo_to_full": {
+          "calls": 24,
+          "seconds": 0.127
+        },
+        "dbcsr_add_wm_from_matrix": {
+          "calls": 25,
+          "seconds": 0.009
+        },
+        "dbcsr_complete_redistribute": {
+          "calls": 74,
+          "seconds": 0.472
+        },
+        "dbcsr_copy": {
+          "calls": 103,
+          "seconds": 0.03
+        },
+        "dbcsr_copy_into_existing": {
+          "calls": 2,
+          "seconds": 0.014
+        },
+        "dbcsr_create_new": {
+          "calls": 532,
+          "seconds": 0.002
+        },
+        "dbcsr_data_copy_aa2": {
+          "calls": 99,
+          "seconds": 0.034
+        },
+        "dbcsr_data_new": {
+          "calls": 1823,
+          "seconds": 0.001
+        },
+        "dbcsr_data_release": {
+          "calls": 2869,
+          "seconds": 0.003
+        },
+        "dbcsr_destroy": {
+          "calls": 483,
+          "seconds": 0.004
+        },
+        "dbcsr_desymmetrize_deep": {
+          "calls": 48,
+          "seconds": 0.131
+        },
+        "dbcsr_distribution_new": {
+          "calls": 226,
+          "seconds": 0.0
+        },
+        "dbcsr_dot": {
+          "calls": 51,
+          "seconds": 0.081
+        },
+        "dbcsr_fill_wm_from_matrix": {
+          "calls": 25,
+          "seconds": 0.004
+        },
+        "dbcsr_filter_anytype": {
+          "calls": 29,
+          "seconds": 0.0
+        },
+        "dbcsr_finalize": {
+          "calls": 169,
+          "seconds": 0.134
+        },
+        "dbcsr_get_data_size_used": {
+          "calls": 147,
+          "seconds": 0.0
+        },
+        "dbcsr_get_global_col_map": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_get_global_row_map": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_get_local_cols": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_get_local_rows": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_index_prune_deleted": {
+          "calls": 50,
+          "seconds": 0.0
+        },
+        "dbcsr_iterator_seek": {
+          "calls": 625,
+          "seconds": 0.0
+        },
+        "dbcsr_iterator_start": {
+          "calls": 625,
+          "seconds": 0.001
+        },
+        "dbcsr_iterator_stop": {
+          "calls": 625,
+          "seconds": 0.001
+        },
+        "dbcsr_make_dbcsr_index": {
+          "calls": 307,
+          "seconds": 0.001
+        },
+        "dbcsr_make_dense_low": {
+          "calls": 50,
+          "seconds": 0.006
+        },
+        "dbcsr_make_dists_dense": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_make_images_dense": {
+          "calls": 50,
+          "seconds": 0.006
+        },
+        "dbcsr_make_index_exist": {
+          "calls": 532,
+          "seconds": 0.0
+        },
+        "dbcsr_make_index_list": {
+          "calls": 50,
+          "seconds": 0.0
+        },
+        "dbcsr_make_index_local_row": {
+          "calls": 50,
+          "seconds": 0.0
+        },
+        "dbcsr_make_untransposed_blocks": {
+          "calls": 50,
+          "seconds": 0.013
+        },
+        "dbcsr_merge_all": {
+          "calls": 99,
+          "seconds": 0.11
+        },
+        "dbcsr_mm_csr_init": {
+          "calls": 25,
+          "seconds": 0.002
+        },
+        "dbcsr_mm_hostdrv_init": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_mm_multrec_finalize": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_mm_multrec_init": {
+          "calls": 25,
+          "seconds": 0.002
+        },
+        "dbcsr_mm_sched_finalize": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_mm_sched_init": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_multiply_generic": {
+          "calls": 25,
+          "seconds": 0.111
+        },
+        "dbcsr_new_transposed": {
+          "calls": 25,
+          "seconds": 0.001
+        },
+        "dbcsr_reserve_all_blocks": {
+          "calls": 26,
+          "seconds": 0.002
+        },
+        "dbcsr_reserve_blocks": {
+          "calls": 35,
+          "seconds": 0.011
+        },
+        "dbcsr_scale_anytype": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "dbcsr_scale_d": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "dbcsr_set": {
+          "calls": 107,
+          "seconds": 0.007
+        },
+        "dbcsr_sort_indices": {
+          "calls": 307,
+          "seconds": 0.033
+        },
+        "dbcsr_special_finalize": {
+          "calls": 50,
+          "seconds": 0.001
+        },
+        "dbcsr_switch_data_area": {
+          "calls": 223,
+          "seconds": 0.0
+        },
+        "dbcsr_verify_matrix": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_work_create": {
+          "calls": 197,
+          "seconds": 0.001
+        },
+        "dbcsr_work_destroy_all": {
+          "calls": 197,
+          "seconds": 0.0
+        },
+        "dbcsr_zero": {
+          "calls": 107,
+          "seconds": 0.007
+        },
+        "eigensolver": {
+          "calls": 24,
+          "seconds": 4.214
+        },
+        "grid_collocate_task_list": {
+          "calls": 25,
+          "seconds": 8.942
+        },
+        "grid_create_basis_set": {
+          "calls": 2,
+          "seconds": 0.0
+        },
+        "grid_create_task_list": {
+          "calls": 1,
+          "seconds": 0.027
+        },
+        "grid_free_basis_set": {
+          "calls": 2,
+          "seconds": 0.0
+        },
+        "grid_free_task_list": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "grid_integrate_task_list": {
+          "calls": 25,
+          "seconds": 11.169
+        },
+        "pw_axpy": {
+          "calls": 250,
+          "seconds": 0.184
+        },
+        "pw_copy": {
+          "calls": 375,
+          "seconds": 0.412
+        },
+        "pw_copy_from_array": {
+          "calls": 225,
+          "seconds": 0.081
+        },
+        "pw_copy_to_array": {
+          "calls": 201,
+          "seconds": 0.077
+        },
+        "pw_create_c1d": {
+          "calls": 428,
+          "seconds": 0.0
+        },
+        "pw_create_r3d": {
+          "calls": 455,
+          "seconds": 0.0
+        },
+        "pw_derive": {
+          "calls": 225,
+          "seconds": 0.436
+        },
+        "pw_env_create": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "pw_env_rebuild": {
+          "calls": 1,
+          "seconds": 0.234
+        },
+        "pw_gather_s": {
+          "calls": 201,
+          "seconds": 0.405
+        },
+        "pw_grid_allocate": {
+          "calls": 4,
+          "seconds": 0.0
+        },
+        "pw_grid_assign": {
+          "calls": 4,
+          "seconds": 0.024
+        },
+        "pw_grid_distribute": {
+          "calls": 4,
+          "seconds": 0.0
+        },
+        "pw_grid_setup": {
+          "calls": 4,
+          "seconds": 0.233
+        },
+        "pw_grid_setup_internal": {
+          "calls": 4,
+          "seconds": 0.233
+        },
+        "pw_grid_sort": {
+          "calls": 4,
+          "seconds": 0.206
+        },
+        "pw_integral_ab_c1d_c1d_gs": {
+          "calls": 25,
+          "seconds": 0.137
+        },
+        "pw_multiply_with": {
+          "calls": 25,
+          "seconds": 0.028
+        },
+        "pw_poisson_rebuild": {
+          "calls": 25,
+          "seconds": 0.006
+        },
+        "pw_poisson_set": {
+          "calls": 26,
+          "seconds": 0.239
+        },
+        "pw_poisson_solve": {
+          "calls": 25,
+          "seconds": 0.46
+        },
+        "pw_pool_create_pw": {
+          "calls": 758,
+          "seconds": 0.001
+        },
+        "pw_pool_give_back_pw": {
+          "calls": 852,
+          "seconds": 0.0
+        },
+        "pw_scale": {
+          "calls": 100,
+          "seconds": 0.025
+        },
+        "pw_scatter_s": {
+          "calls": 225,
+          "seconds": 0.949
+        },
+        "pw_zero": {
+          "calls": 125,
+          "seconds": 0.085
+        },
+        "qs_create_task_list": {
+          "calls": 1,
+          "seconds": 0.167
+        },
+        "qs_diis_b_check_i_alloc": {
+          "calls": 23,
+          "seconds": 0.0
+        },
+        "qs_diis_b_create": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_diis_b_step": {
+          "calls": 23,
+          "seconds": 1.062
+        },
+        "qs_efield_berry_phase": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "qs_efield_local_operator": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "qs_energies": {
+          "calls": 1,
+          "seconds": 33.438
+        },
+        "qs_energies_init_hamiltonians": {
+          "calls": 1,
+          "seconds": 0.728
+        },
+        "qs_energies_properties": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_env_rebuild_pw_env": {
+          "calls": 3,
+          "seconds": 0.234
+        },
+        "qs_env_rebuild_rho": {
+          "calls": 1,
+          "seconds": 0.003
+        },
+        "qs_env_setup": {
+          "calls": 1,
+          "seconds": 0.234
+        },
+        "qs_env_update_s_mstruct": {
+          "calls": 1,
+          "seconds": 0.197
+        },
+        "qs_forces": {
+          "calls": 1,
+          "seconds": 35.481
+        },
+        "qs_init_subsys": {
+          "calls": 1,
+          "seconds": 0.238
+        },
+        "qs_ks_build_kohn_sham_matrix": {
+          "calls": 25,
+          "seconds": 17.675
+        },
+        "qs_ks_did_change": {
+          "calls": 26,
+          "seconds": 0.0
+        },
+        "qs_ks_update_qs_env": {
+          "calls": 24,
+          "seconds": 16.887
+        },
+        "qs_ks_update_qs_env_forces": {
+          "calls": 1,
+          "seconds": 0.868
+        },
+        "qs_rho_rebuild": {
+          "calls": 1,
+          "seconds": 0.003
+        },
+        "qs_rho_update_rho_low": {
+          "calls": 25,
+          "seconds": 9.962
+        },
+        "qs_scf_ensure_mos": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_ensure_work_matrices": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_initial_info": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_loop_print": {
+          "calls": 24,
+          "seconds": 0.0
+        },
+        "qs_scf_new_mos": {
+          "calls": 24,
+          "seconds": 5.734
+        },
+        "qs_scf_post_charges": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_efg": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_elf": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_epr": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_et": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_kubo_transport": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_local_energy": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_local_stress": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_molopt": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_moments": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_ps_implicit": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_transport": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_xray": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_print_scf_summary": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_write_mos": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "qs_vxc_create": {
+          "calls": 25,
+          "seconds": 5.037
+        }
+      },
+      "waters": 64
+    },
+    {
+      "average_physical_core_utilization": 0.9221758053687413,
+      "basis_functions": 1472,
+      "bindings": [
+        {
+          "affinity": [
+            0,
+            1,
+            16,
+            17
+          ],
+          "binary": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261022-mpi-fix-4v100-a/install/bin/cp2k.psmp",
+          "cores": {
+            "0": [
+              0,
+              0
+            ],
+            "1": [
+              0,
+              1
+            ],
+            "16": [
+              0,
+              0
+            ],
+            "17": [
+              0,
+              1
+            ]
+          },
+          "gpu": "",
+          "host": "4v100n18.mr-sai.ai",
+          "local_rank": 0,
+          "omp_threads": 2,
+          "pid": 1086577,
+          "rank": 0,
+          "start_ticks": 834925321
+        },
+        {
+          "affinity": [
+            2,
+            3,
+            18,
+            19
+          ],
+          "binary": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261022-mpi-fix-4v100-a/install/bin/cp2k.psmp",
+          "cores": {
+            "18": [
+              0,
+              2
+            ],
+            "19": [
+              0,
+              3
+            ],
+            "2": [
+              0,
+              2
+            ],
+            "3": [
+              0,
+              3
+            ]
+          },
+          "gpu": "",
+          "host": "4v100n18.mr-sai.ai",
+          "local_rank": 1,
+          "omp_threads": 2,
+          "pid": 1086578,
+          "rank": 1,
+          "start_ticks": 834925321
+        }
+      ],
+      "block": 32,
+      "calibration": false,
+      "comparison": {
+        "energy_delta_ha": 4.774847184307873e-12,
+        "max_force_delta_ha_bohr": 9.999999960041972e-13
+      },
+      "cp2k_seconds": 34.73,
+      "dispersion_ha": null,
+      "elapsed_seconds": 35.863552055321634,
+      "energy_ha": -1102.5771871497607,
+      "forces_ha_bohr": [
+        [
+          -0.013761952894,
+          -0.014675399507,
+          0.002431724299
+        ],
+        [
+          0.015525745834,
+          -0.002976453706,
+          1.0018465e-05
+        ],
+        [
+          -0.000938061408,
+          0.018572617515,
+          6.672318e-06
+        ],
+        [
+          -0.014718739505,
+          -0.015712077202,
+          -0.00059929639
+        ],
+        [
+          0.015516221967,
+          -0.00298090624,
+          -2.955398e-06
+        ],
+        [
+          -0.0009390263,
+          0.01856496197,
+          -2.039218e-06
+        ],
+        [
+          -0.013087276518,
+          -0.01394388572,
+          -0.002639295499
+        ],
+        [
+          0.015533017697,
+          -0.002973297816,
+          -9.461538e-06
+        ],
+        [
+          -0.000937449826,
+          0.018578537878,
+          -6.120196e-06
+        ],
+        [
+          -0.012089742688,
+          -0.012864168313,
+          0.000888852853
+        ],
+        [
+          0.0155415952,
+          -0.002968870263,
+          1.943022e-06
+        ],
+        [
+          -0.000936329461,
+          0.018585025239,
+          1.084927e-06
+        ],
+        [
+          -0.014482415527,
+          -0.016185400786,
+          0.001354943614
+        ],
+        [
+          0.015516863482,
+          -0.002976552791,
+          1.1112054e-05
+        ],
+        [
+          -0.000937232917,
+          0.018593510558,
+          -1.3613246e-05
+        ],
+        [
+          -0.015393334116,
+          -0.015910747774,
+          -0.000329372027
+        ],
+        [
+          0.015509232489,
+          -0.002978863614,
+          -3.371197e-06
+        ],
+        [
+          -0.000936902112,
+          0.018574671733,
+          3.466356e-06
+        ],
+        [
+          -0.013851732883,
+          -0.016378534654,
+          -0.001577350685
+        ],
+        [
+          0.015522794978,
+          -0.002975009433,
+          -1.0278726e-05
+        ],
+        [
+          -0.000937556871,
+          0.018607190718,
+          1.4294389e-05
+        ],
+        [
+          -0.01294023667,
+          -0.01666069997,
+          0.000606764803
+        ],
+        [
+          0.01552930542,
+          -0.002973038381,
+          2.080931e-06
+        ],
+        [
+          -0.000937936363,
+          0.018624804974,
+          -4.249953e-06
+        ],
+        [
+          -0.013224065248,
+          -0.016636437342,
+          0.003210746122
+        ],
+        [
+          0.015522271347,
+          -0.002974512816,
+          1.4355115e-05
+        ],
+        [
+          -0.000941017538,
+          0.018599701428,
+          -2.8797362e-05
+        ],
+        [
+          -0.014254241206,
+          -0.015573961131,
+          -0.000776461968
+        ],
+        [
+          0.015512706091,
+          -0.002976915988,
+          -3.977114e-06
+        ],
+        [
+          -0.000937584806,
+          0.018589278819,
+          7.356622e-06
+        ],
+        [
+          -0.012485522106,
+          -0.017392681211,
+          -0.003400931997
+        ],
+        [
+          0.015529590714,
+          -0.002972975456,
+          -1.4118666e-05
+        ],
+        [
+          -0.000943636463,
+          0.018607552801,
+          2.9471683e-05
+        ],
+        [
+          -0.01136843162,
+          -0.018522251263,
+          0.001100093121
+        ],
+        [
+          0.015538419873,
+          -0.002971126297,
+          3.263527e-06
+        ],
+        [
+          -0.000947497171,
+          0.018617161704,
+          -8.301148e-06
+        ],
+        [
+          -0.012487265529,
+          -0.014963329655,
+          0.004311858235
+        ],
+        [
+          0.015530746671,
+          -0.002975274161,
+          1.3448114e-05
+        ],
+        [
+          -0.000943971465,
+          0.018576006104,
+          -8.422286e-06
+        ],
+        [
+          -0.013584812669,
+          -0.015223087967,
+          -0.001044176615
+        ],
+        [
+          0.015519175526,
+          -0.002980017184,
+          -3.578519e-06
+        ],
+        [
+          -0.000942080475,
+          0.018575663403,
+          1.827487e-06
+        ],
+        [
+          -0.01167288553,
+          -0.014775459391,
+          -0.004505743132
+        ],
+        [
+          0.015539533314,
+          -0.002971892145,
+          -1.364675e-05
+        ],
+        [
+          -0.000945454122,
+          0.018576695476,
+          8.915709e-06
+        ],
+        [
+          -0.010372630318,
+          -0.014479521806,
+          0.001407453388
+        ],
+        [
+          0.015550854732,
+          -0.002967039645,
+          3.331093e-06
+        ],
+        [
+          -0.000947362731,
+          0.018575734122,
+          -2.895266e-06
+        ],
+        [
+          -0.015059699359,
+          -0.015397142514,
+          0.001436919063
+        ],
+        [
+          0.015498725105,
+          -0.002986413022,
+          -1.0138403e-05
+        ],
+        [
+          -0.000955477316,
+          0.018569506016,
+          1.2963376e-05
+        ],
+        [
+          -0.014800445032,
+          -0.016390625338,
+          -0.000351626702
+        ],
+        [
+          0.015480133337,
+          -0.002989502791,
+          2.499357e-06
+        ],
+        [
+          -0.000953390457,
+          0.018564219297,
+          -3.863409e-06
+        ],
+        [
+          -0.01524192057,
+          -0.014707849844,
+          -0.001662285215
+        ],
+        [
+          0.015512251647,
+          -0.002984249933,
+          1.0854491e-05
+        ],
+        [
+          -0.000957110436,
+          0.018573771131,
+          -1.2145005e-05
+        ],
+        [
+          -0.01550891418,
+          -0.013711637648,
+          0.000628704263
+        ],
+        [
+          0.015529752596,
+          -0.00298145101,
+          -3.387554e-06
+        ],
+        [
+          -0.000959311283,
+          0.018577791542,
+          2.588694e-06
+        ],
+        [
+          -0.014668833887,
+          -0.015793169834,
+          0.000330761215
+        ],
+        [
+          0.015485245092,
+          -0.002977460307,
+          -5.980397e-06
+        ],
+        [
+          -0.000945451864,
+          0.018582376483,
+          -5.149153e-06
+        ],
+        [
+          -0.014469527635,
+          -0.015577576638,
+          -7.3199121e-05
+        ],
+        [
+          0.015469066822,
+          -0.002980194206,
+          1.454649e-06
+        ],
+        [
+          -0.000943855751,
+          0.018566685674,
+          1.211733e-06
+        ],
+        [
+          -0.014807413341,
+          -0.015943501295,
+          -0.000589103945
+        ],
+        [
+          0.015497031562,
+          -0.002975581004,
+          6.844117e-06
+        ],
+        [
+          -0.00094669999,
+          0.018593802883,
+          6.00915e-06
+        ],
+        [
+          -0.015006781814,
+          -0.016159773589,
+          0.000349399836
+        ],
+        [
+          0.015511936806,
+          -0.002973138335,
+          -2.34904e-06
+        ],
+        [
+          -0.000948325195,
+          0.01860809603,
+          -2.111538e-06
+        ],
+        [
+          -0.014797576766,
+          -0.015906210781,
+          0.002047481959
+        ],
+        [
+          0.015502847228,
+          -0.002966574166,
+          -6.490133e-06
+        ],
+        [
+          -0.000942836051,
+          0.018592763613,
+          -1.8378925e-05
+        ],
+        [
+          -0.014600820839,
+          -0.014901386189,
+          -0.000497765315
+        ],
+        [
+          0.015482044266,
+          -0.002971323496,
+          1.503639e-06
+        ],
+        [
+          -0.000939554492,
+          0.018583820364,
+          4.841066e-06
+        ],
+        [
+          -0.014935534826,
+          -0.016603386091,
+          -0.002227272679
+        ],
+        [
+          0.01551794619,
+          -0.002963304048,
+          7.020335e-06
+        ],
+        [
+          -0.000945271395,
+          0.018599434396,
+          1.8826195e-05
+        ],
+        [
+          -0.015135444912,
+          -0.017608760102,
+          0.000776715933
+        ],
+        [
+          0.015537816255,
+          -0.002958792849,
+          -2.3693e-06
+        ],
+        [
+          -0.000948622,
+          0.018607044478,
+          -5.383524e-06
+        ],
+        [
+          -0.015182922417,
+          -0.015344682896,
+          0.003153868996
+        ],
+        [
+          0.015515727393,
+          -0.002976522413,
+          -1.068844e-05
+        ],
+        [
+          -0.000955220072,
+          0.018574999819,
+          -3.58073e-07
+        ],
+        [
+          -0.014922111323,
+          -0.015535489741,
+          -0.000769534628
+        ],
+        [
+          0.015492394279,
+          -0.002981743465,
+          2.517822e-06
+        ],
+        [
+          -0.000951666794,
+          0.018574764044,
+          -2.66085e-07
+        ],
+        [
+          -0.015369730688,
+          -0.015213594684,
+          -0.003302348085
+        ],
+        [
+          0.015532703571,
+          -0.002972865566,
+          1.109818e-05
+        ],
+        [
+          -0.000957894713,
+          0.018575670909,
+          7.89415e-07
+        ],
+        [
+          -0.015648964644,
+          -0.015020898002,
+          0.001057917887
+        ],
+        [
+          0.01555550674,
+          -0.002967827265,
+          -3.429197e-06
+        ],
+        [
+          -0.000961636847,
+          0.018574634484,
+          -7.06634e-07
+        ],
+        [
+          -0.015445266327,
+          -0.01414052336,
+          0.003171667321
+        ],
+        [
+          0.015498867602,
+          -0.002996143676,
+          -2.3627688e-05
+        ],
+        [
+          -0.000951468314,
+          0.018575210179,
+          1.8866395e-05
+        ],
+        [
+          -0.014463162768,
+          -0.015251513889,
+          -0.000767465196
+        ],
+        [
+          0.015489469137,
+          -0.002996461331,
+          6.034285e-06
+        ],
+        [
+          -0.000951602325,
+          0.018567427619,
+          -5.205124e-06
+        ],
+        [
+          -0.016143718998,
+          -0.013343867512,
+          -0.00336469478
+        ],
+        [
+          0.015505967444,
+          -0.002996022223,
+          2.4235399e-05
+        ],
+        [
+          -0.000951625427,
+          0.018581269799,
+          -1.8657197e-05
+        ],
+        [
+          -0.017188824959,
+          -0.012140776342,
+          0.001090524613
+        ],
+        [
+          0.015514472794,
+          -0.002996239892,
+          -6.929045e-06
+        ],
+        [
+          -0.000951839739,
+          0.018588237279,
+          4.486846e-06
+        ],
+        [
+          -0.01471374261,
+          -0.01593141745,
+          0.001924784348
+        ],
+        [
+          0.015494240125,
+          -0.002977610858,
+          -1.8637164e-05
+        ],
+        [
+          -0.000935668588,
+          0.018598630673,
+          -2.878225e-06
+        ],
+        [
+          -0.013788541825,
+          -0.015718175368,
+          -0.000465915527
+        ],
+        [
+          0.015485029465,
+          -0.002979684686,
+          4.923282e-06
+        ],
+        [
+          -0.000937440009,
+          0.018578457797,
+          4.87759e-07
+        ],
+        [
+          -0.015354222102,
+          -0.016081094055,
+          -0.002105687261
+        ],
+        [
+          0.015501107481,
+          -0.002976202752,
+          1.9078193e-05
+        ],
+        [
+          -0.000934594978,
+          0.018613263949,
+          3.430824e-06
+        ],
+        [
+          -0.016277813426,
+          -0.016297490267,
+          0.000744974471
+        ],
+        [
+          0.01550908881,
+          -0.00297440233,
+          -5.469234e-06
+        ],
+        [
+          -0.000932842611,
+          0.018632366668,
+          -1.413117e-06
+        ],
+        [
+          -0.015949474271,
+          -0.017161926211,
+          0.003755338485
+        ],
+        [
+          0.015505358426,
+          -0.002965825155,
+          -2.2219985e-05
+        ],
+        [
+          -0.000929842956,
+          0.018602002703,
+          -1.8297554e-05
+        ],
+        [
+          -0.014898685918,
+          -0.016031764529,
+          -0.000903141938
+        ],
+        [
+          0.015493316217,
+          -0.002970222562,
+          5.462247e-06
+        ],
+        [
+          -0.000930815687,
+          0.018590937786,
+          4.460431e-06
+        ],
+        [
+          -0.016706718784,
+          -0.017976640061,
+          -0.003932367553
+        ],
+        [
+          0.015514398392,
+          -0.002962675114,
+          2.2802979e-05
+        ],
+        [
+          -0.000929238039,
+          0.018610312519,
+          1.8823428e-05
+        ],
+        [
+          -0.017859184665,
+          -0.019214693,
+          0.001246364742
+        ],
+        [
+          0.015525973349,
+          -0.002958078471,
+          -6.582533e-06
+        ],
+        [
+          -0.000928056583,
+          0.018620663329,
+          -5.483351e-06
+        ],
+        [
+          -0.016688996987,
+          -0.015212548,
+          0.00505291356
+        ],
+        [
+          0.01550952022,
+          -0.002985256889,
+          -2.7499325e-05
+        ],
+        [
+          -0.000947938731,
+          0.018575175964,
+          3.608473e-06
+        ],
+        [
+          -0.015550906886,
+          -0.015405619632,
+          -0.001203146806
+        ],
+        [
+          0.015497119295,
+          -0.002987892098,
+          6.544766e-06
+        ],
+        [
+          -0.000947311631,
+          0.018575249919,
+          -1.237816e-06
+        ],
+        [
+          -0.017553584626,
+          -0.015073930075,
+          -0.005287616311
+        ],
+        [
+          0.015519078644,
+          -0.002983406835,
+          2.8548251e-05
+        ],
+        [
+          -0.000948623652,
+          0.018575523877,
+          -3.570815e-06
+        ],
+        [
+          -0.019012710515,
+          -0.014857135256,
+          0.001657062581
+        ],
+        [
+          0.015532169934,
+          -0.002980902104,
+          -8.42814e-06
+        ],
+        [
+          -0.000949831662,
+          0.018574128096,
+          6.31359e-07
+        ],
+        [
+          -0.014060980647,
+          -0.01341196555,
+          0.004193341302
+        ],
+        [
+          0.015534755261,
+          -0.002987228858,
+          -3.303028e-06
+        ],
+        [
+          -0.000933901079,
+          0.018578477919,
+          1.2646053e-05
+        ],
+        [
+          -0.014310517255,
+          -0.014585807508,
+          -0.001013543851
+        ],
+        [
+          0.015534121822,
+          -0.002989055683,
+          5.49229e-07
+        ],
+        [
+          -0.000937169174,
+          0.018568286766,
+          -3.384771e-06
+        ],
+        [
+          -0.013880613139,
+          -0.012544033614,
+          -0.004384314349
+        ],
+        [
+          0.015535664474,
+          -0.00298596827,
+          3.65809e-06
+        ],
+        [
+          -0.000931650163,
+          0.018586249179,
+          -1.2813652e-05
+        ],
+        [
+          -0.013596926481,
+          -0.011169064063,
+          0.001374010601
+        ],
+        [
+          0.01553509542,
+          -0.002984149717,
+          -1.465959e-06
+        ],
+        [
+          -0.000928093026,
+          0.018595953591,
+          3.115712e-06
+        ],
+        [
+          -0.014448703079,
+          -0.016330272605,
+          0.002954345071
+        ],
+        [
+          0.015534015463,
+          -0.002977779375,
+          -1.624938e-06
+        ],
+        [
+          -0.000927374641,
+          0.018609861101,
+          -1.1407987e-05
+        ],
+        [
+          -0.014629630572,
+          -0.016054943797,
+          -0.000716287545
+        ],
+        [
+          0.015532949923,
+          -0.002979474585,
+          6.2689e-08
+        ],
+        [
+          -0.000930384642,
+          0.018586484752,
+          2.724509e-06
+        ],
+        [
+          -0.014324538233,
+          -0.016526835665,
+          -0.003100069345
+        ],
+        [
+          0.015535290323,
+          -0.002976675873,
+          2.06896e-06
+        ],
+        [
+          -0.000925375206,
+          0.018626830035,
+          1.1796981e-05
+        ],
+        [
+          -0.014142593547,
+          -0.01681838472,
+          0.001004900261
+        ],
+        [
+          0.015535240631,
+          -0.002975306067,
+          -1.066157e-06
+        ],
+        [
+          -0.000922361969,
+          0.018649501408,
+          -3.571499e-06
+        ],
+        [
+          -0.014299023256,
+          -0.017916072813,
+          0.004968048289
+        ],
+        [
+          0.015533378696,
+          -0.002974918831,
+          -1.279211e-06
+        ],
+        [
+          -0.000928017826,
+          0.018609165827,
+          -2.902402e-05
+        ],
+        [
+          -0.014482145763,
+          -0.016700650895,
+          -0.001181044088
+        ],
+        [
+          0.015532484189,
+          -0.002976835619,
+          -2.1875e-08
+        ],
+        [
+          -0.000928792782,
+          0.018596448815,
+          6.949902e-06
+        ],
+        [
+          -0.014167588987,
+          -0.018835208473,
+          -0.005195178249
+        ],
+        [
+          0.015534454041,
+          -0.002973683604,
+          1.485742e-06
+        ],
+        [
+          -0.000927595259,
+          0.018618959335,
+          3.0054698e-05
+        ],
+        [
+          -0.013962337212,
+          -0.020367060655,
+          0.001627962034
+        ],
+        [
+          0.015534293037,
+          -0.002972310842,
+          -8.23974e-07
+        ],
+        [
+          -0.000926967695,
+          0.018632377762,
+          -8.764113e-06
+        ],
+        [
+          -0.013889958898,
+          -0.014823882495,
+          0.006315718995
+        ],
+        [
+          0.015533645359,
+          -0.002985192962,
+          -2.759894e-06
+        ],
+        [
+          -0.000936610755,
+          0.018576304721,
+          -4.431605e-06
+        ],
+        [
+          -0.014154000447,
+          -0.015097535526,
+          -0.001480453373
+        ],
+        [
+          0.015533192363,
+          -0.002987274291,
+          4.28241e-07
+        ],
+        [
+          -0.000937711519,
+          0.018576270638,
+          8.26922e-07
+        ],
+        [
+          -0.013677878648,
+          -0.01460521944,
+          -0.006720308203
+        ],
+        [
+          0.01553418862,
+          -0.002983727807,
+          2.800163e-06
+        ],
+        [
+          -0.000935877311,
+          0.018576547213,
+          4.567463e-06
+        ],
+        [
+          -0.013170086177,
+          -0.014090602344,
+          0.002347372979
+        ],
+        [
+          0.01553307017,
+          -0.002981548492,
+          -7.04815e-07
+        ],
+        [
+          -0.000934405054,
+          0.018574931513,
+          -1.247998e-06
+        ]
+      ],
+      "host_memory": {
+        "limit": 23622320128,
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5HF030A00",
+        "used": 2500419584
+      },
+      "host_memory_fraction": 0.92,
+      "mode": "cpu",
+      "name": "smoke-cpu-2",
+      "no_gpu_compute_process_verified": true,
+      "peak_gpu_fraction": {
+        "GPU-58423c96-717f-a3f2-018b-8f19d072bf04": 0.0001220703125
+      },
+      "peak_gpu_mib": {
+        "GPU-58423c96-717f-a3f2-018b-8f19d072bf04": 4.0
+      },
+      "ranks": 2,
+      "returncode": 0,
+      "sampled_cpu_seconds": 132.29000000000002,
+      "scf_steps": [
+        24
+      ],
+      "science_accepted": true,
+      "shape": [
+        4,
+        4,
+        4
+      ],
+      "stop": null,
+      "threads": 2,
+      "timers": {
+        "CP2K": {
+          "calls": 1,
+          "seconds": 34.73
+        },
+        "cp_fm_cholesky_decompose": {
+          "calls": 1,
+          "seconds": 0.009
+        },
+        "cp_fm_cholesky_restore": {
+          "calls": 72,
+          "seconds": 0.561
+        },
+        "cp_fm_create": {
+          "calls": 14,
+          "seconds": 0.0
+        },
+        "cp_fm_gemm": {
+          "calls": 46,
+          "seconds": 0.155
+        },
+        "cp_fm_maxabsval": {
+          "calls": 23,
+          "seconds": 0.012
+        },
+        "cp_fm_redistribute_end": {
+          "calls": 24,
+          "seconds": 0.0
+        },
+        "cp_fm_redistribute_start": {
+          "calls": 24,
+          "seconds": 0.002
+        },
+        "cp_fm_scale_and_add": {
+          "calls": 76,
+          "seconds": 0.025
+        },
+        "cp_fm_set_all": {
+          "calls": 20,
+          "seconds": 0.007
+        },
+        "cp_fm_syevd": {
+          "calls": 24,
+          "seconds": 3.295
+        },
+        "cp_fm_syevd_base": {
+          "calls": 24,
+          "seconds": 3.293
+        },
+        "cp_fm_symm": {
+          "calls": 46,
+          "seconds": 0.174
+        },
+        "cp_fm_to_fm_matrix": {
+          "calls": 29,
+          "seconds": 0.01
+        },
+        "cp_fm_trace_a0b0t0": {
+          "calls": 85,
+          "seconds": 0.196
+        },
+        "cp_fm_uplo_to_full": {
+          "calls": 24,
+          "seconds": 0.199
+        },
+        "dbcsr_add_wm_from_matrix": {
+          "calls": 25,
+          "seconds": 0.008
+        },
+        "dbcsr_complete_redistribute": {
+          "calls": 74,
+          "seconds": 0.295
+        },
+        "dbcsr_copy": {
+          "calls": 103,
+          "seconds": 0.02
+        },
+        "dbcsr_copy_into_existing": {
+          "calls": 2,
+          "seconds": 0.006
+        },
+        "dbcsr_create_new": {
+          "calls": 607,
+          "seconds": 0.002
+        },
+        "dbcsr_data_copy_aa2": {
+          "calls": 99,
+          "seconds": 0.025
+        },
+        "dbcsr_data_new": {
+          "calls": 1775,
+          "seconds": 0.0
+        },
+        "dbcsr_data_release": {
+          "calls": 2896,
+          "seconds": 0.002
+        },
+        "dbcsr_destroy": {
+          "calls": 558,
+          "seconds": 0.002
+        },
+        "dbcsr_desymmetrize_deep": {
+          "calls": 48,
+          "seconds": 0.137
+        },
+        "dbcsr_distribution_new": {
+          "calls": 226,
+          "seconds": 0.0
+        },
+        "dbcsr_dot": {
+          "calls": 51,
+          "seconds": 0.038
+        },
+        "dbcsr_fill_wm_from_matrix": {
+          "calls": 25,
+          "seconds": 0.007
+        },
+        "dbcsr_filter_anytype": {
+          "calls": 29,
+          "seconds": 0.0
+        },
+        "dbcsr_finalize": {
+          "calls": 169,
+          "seconds": 0.088
+        },
+        "dbcsr_get_data_size_used": {
+          "calls": 147,
+          "seconds": 0.0
+        },
+        "dbcsr_get_global_col_map": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_get_global_row_map": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_get_local_cols": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_get_local_rows": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_index_prune_deleted": {
+          "calls": 75,
+          "seconds": 0.0
+        },
+        "dbcsr_iterator_seek": {
+          "calls": 650,
+          "seconds": 0.0
+        },
+        "dbcsr_iterator_start": {
+          "calls": 650,
+          "seconds": 0.001
+        },
+        "dbcsr_iterator_stop": {
+          "calls": 650,
+          "seconds": 0.0
+        },
+        "dbcsr_make_dbcsr_index": {
+          "calls": 332,
+          "seconds": 0.001
+        },
+        "dbcsr_make_dense_low": {
+          "calls": 75,
+          "seconds": 0.004
+        },
+        "dbcsr_make_dists_dense": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_make_images_dense": {
+          "calls": 50,
+          "seconds": 0.004
+        },
+        "dbcsr_make_index_exist": {
+          "calls": 607,
+          "seconds": 0.0
+        },
+        "dbcsr_make_index_list": {
+          "calls": 75,
+          "seconds": 0.0
+        },
+        "dbcsr_make_index_local_row": {
+          "calls": 75,
+          "seconds": 0.0
+        },
+        "dbcsr_make_untransposed_blocks": {
+          "calls": 50,
+          "seconds": 0.011
+        },
+        "dbcsr_merge_all": {
+          "calls": 99,
+          "seconds": 0.074
+        },
+        "dbcsr_merge_single_wm": {
+          "calls": 50,
+          "seconds": 0.001
+        },
+        "dbcsr_mm_csr_init": {
+          "calls": 25,
+          "seconds": 0.002
+        },
+        "dbcsr_mm_hostdrv_init": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_mm_multrec_finalize": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_mm_multrec_init": {
+          "calls": 25,
+          "seconds": 0.002
+        },
+        "dbcsr_mm_sched_finalize": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_mm_sched_init": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_multiply_generic": {
+          "calls": 25,
+          "seconds": 0.098
+        },
+        "dbcsr_new_transposed": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_reserve_all_blocks": {
+          "calls": 26,
+          "seconds": 0.002
+        },
+        "dbcsr_reserve_blocks": {
+          "calls": 35,
+          "seconds": 0.007
+        },
+        "dbcsr_scale_anytype": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "dbcsr_scale_d": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "dbcsr_set": {
+          "calls": 107,
+          "seconds": 0.005
+        },
+        "dbcsr_sort_data": {
+          "calls": 50,
+          "seconds": 0.001
+        },
+        "dbcsr_sort_indices": {
+          "calls": 332,
+          "seconds": 0.019
+        },
+        "dbcsr_special_finalize": {
+          "calls": 75,
+          "seconds": 0.002
+        },
+        "dbcsr_switch_data_area": {
+          "calls": 223,
+          "seconds": 0.0
+        },
+        "dbcsr_verify_matrix": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_work_create": {
+          "calls": 222,
+          "seconds": 0.001
+        },
+        "dbcsr_work_destroy_all": {
+          "calls": 222,
+          "seconds": 0.0
+        },
+        "dbcsr_zero": {
+          "calls": 107,
+          "seconds": 0.005
+        },
+        "eigensolver": {
+          "calls": 24,
+          "seconds": 4.031
+        },
+        "grid_collocate_task_list": {
+          "calls": 25,
+          "seconds": 9.009
+        },
+        "grid_create_basis_set": {
+          "calls": 2,
+          "seconds": 0.0
+        },
+        "grid_create_task_list": {
+          "calls": 1,
+          "seconds": 0.012
+        },
+        "grid_free_basis_set": {
+          "calls": 2,
+          "seconds": 0.0
+        },
+        "grid_free_task_list": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "grid_integrate_task_list": {
+          "calls": 25,
+          "seconds": 11.189
+        },
+        "pw_axpy": {
+          "calls": 250,
+          "seconds": 0.144
+        },
+        "pw_copy": {
+          "calls": 375,
+          "seconds": 0.339
+        },
+        "pw_copy_from_array": {
+          "calls": 225,
+          "seconds": 0.122
+        },
+        "pw_copy_to_array": {
+          "calls": 201,
+          "seconds": 0.135
+        },
+        "pw_create_c1d": {
+          "calls": 428,
+          "seconds": 0.0
+        },
+        "pw_create_r3d": {
+          "calls": 455,
+          "seconds": 0.0
+        },
+        "pw_derive": {
+          "calls": 225,
+          "seconds": 0.408
+        },
+        "pw_env_create": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "pw_env_rebuild": {
+          "calls": 1,
+          "seconds": 0.119
+        },
+        "pw_gather_p": {
+          "calls": 201,
+          "seconds": 0.516
+        },
+        "pw_grid_allocate": {
+          "calls": 4,
+          "seconds": 0.0
+        },
+        "pw_grid_assign": {
+          "calls": 4,
+          "seconds": 0.013
+        },
+        "pw_grid_distribute": {
+          "calls": 4,
+          "seconds": 0.0
+        },
+        "pw_grid_remap": {
+          "calls": 4,
+          "seconds": 0.003
+        },
+        "pw_grid_setup": {
+          "calls": 4,
+          "seconds": 0.118
+        },
+        "pw_grid_setup_internal": {
+          "calls": 4,
+          "seconds": 0.118
+        },
+        "pw_grid_sort": {
+          "calls": 4,
+          "seconds": 0.101
+        },
+        "pw_integral_ab_c1d_c1d_gs": {
+          "calls": 25,
+          "seconds": 0.085
+        },
+        "pw_multiply_with": {
+          "calls": 25,
+          "seconds": 0.028
+        },
+        "pw_poisson_rebuild": {
+          "calls": 25,
+          "seconds": 0.003
+        },
+        "pw_poisson_set": {
+          "calls": 26,
+          "seconds": 0.242
+        },
+        "pw_poisson_solve": {
+          "calls": 25,
+          "seconds": 0.406
+        },
+        "pw_pool_create_pw": {
+          "calls": 758,
+          "seconds": 0.001
+        },
+        "pw_pool_give_back_pw": {
+          "calls": 852,
+          "seconds": 0.0
+        },
+        "pw_scale": {
+          "calls": 100,
+          "seconds": 0.022
+        },
+        "pw_scatter_p": {
+          "calls": 225,
+          "seconds": 0.34
+        },
+        "pw_zero": {
+          "calls": 125,
+          "seconds": 0.069
+        },
+        "qs_create_task_list": {
+          "calls": 1,
+          "seconds": 0.079
+        },
+        "qs_diis_b_check_i_alloc": {
+          "calls": 23,
+          "seconds": 0.0
+        },
+        "qs_diis_b_create": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_diis_b_step": {
+          "calls": 23,
+          "seconds": 0.759
+        },
+        "qs_efield_berry_phase": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "qs_efield_local_operator": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "qs_energies": {
+          "calls": 1,
+          "seconds": 32.689
+        },
+        "qs_energies_init_hamiltonians": {
+          "calls": 1,
+          "seconds": 0.534
+        },
+        "qs_energies_properties": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_env_rebuild_pw_env": {
+          "calls": 3,
+          "seconds": 0.119
+        },
+        "qs_env_rebuild_rho": {
+          "calls": 1,
+          "seconds": 0.002
+        },
+        "qs_env_setup": {
+          "calls": 1,
+          "seconds": 0.119
+        },
+        "qs_env_update_s_mstruct": {
+          "calls": 1,
+          "seconds": 0.116
+        },
+        "qs_forces": {
+          "calls": 1,
+          "seconds": 34.584
+        },
+        "qs_init_subsys": {
+          "calls": 1,
+          "seconds": 0.122
+        },
+        "qs_ks_build_kohn_sham_matrix": {
+          "calls": 25,
+          "seconds": 17.699
+        },
+        "qs_ks_did_change": {
+          "calls": 26,
+          "seconds": 0.0
+        },
+        "qs_ks_update_qs_env": {
+          "calls": 24,
+          "seconds": 16.821
+        },
+        "qs_ks_update_qs_env_forces": {
+          "calls": 1,
+          "seconds": 0.915
+        },
+        "qs_rho_rebuild": {
+          "calls": 1,
+          "seconds": 0.002
+        },
+        "qs_rho_update_rho_low": {
+          "calls": 25,
+          "seconds": 10.138
+        },
+        "qs_scf_ensure_mos": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_ensure_work_matrices": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_initial_info": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_loop_print": {
+          "calls": 24,
+          "seconds": 0.0
+        },
+        "qs_scf_new_mos": {
+          "calls": 24,
+          "seconds": 5.145
+        },
+        "qs_scf_post_charges": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_efg": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_elf": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_epr": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_et": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_kubo_transport": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_local_energy": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_local_stress": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_molopt": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_moments": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_ps_implicit": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_transport": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_xray": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_print_scf_summary": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_write_mos": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "qs_vxc_create": {
+          "calls": 25,
+          "seconds": 4.996
+        }
+      },
+      "waters": 64
+    },
+    {
+      "average_physical_core_utilization": 0.9634152213397226,
+      "basis_functions": 1472,
+      "bindings": [
+        {
+          "affinity": [
+            0,
+            16
+          ],
+          "binary": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261022-mpi-fix-4v100-a/install/bin/cp2k.psmp",
+          "cores": {
+            "0": [
+              0,
+              0
+            ],
+            "16": [
+              0,
+              0
+            ]
+          },
+          "gpu": "",
+          "host": "4v100n18.mr-sai.ai",
+          "local_rank": 0,
+          "omp_threads": 1,
+          "pid": 1087256,
+          "rank": 0,
+          "start_ticks": 834928910
+        },
+        {
+          "affinity": [
+            1,
+            17
+          ],
+          "binary": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261022-mpi-fix-4v100-a/install/bin/cp2k.psmp",
+          "cores": {
+            "1": [
+              0,
+              1
+            ],
+            "17": [
+              0,
+              1
+            ]
+          },
+          "gpu": "",
+          "host": "4v100n18.mr-sai.ai",
+          "local_rank": 1,
+          "omp_threads": 1,
+          "pid": 1087257,
+          "rank": 1,
+          "start_ticks": 834928910
+        },
+        {
+          "affinity": [
+            2,
+            18
+          ],
+          "binary": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261022-mpi-fix-4v100-a/install/bin/cp2k.psmp",
+          "cores": {
+            "18": [
+              0,
+              2
+            ],
+            "2": [
+              0,
+              2
+            ]
+          },
+          "gpu": "",
+          "host": "4v100n18.mr-sai.ai",
+          "local_rank": 2,
+          "omp_threads": 1,
+          "pid": 1087258,
+          "rank": 2,
+          "start_ticks": 834928910
+        },
+        {
+          "affinity": [
+            3,
+            19
+          ],
+          "binary": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261022-mpi-fix-4v100-a/install/bin/cp2k.psmp",
+          "cores": {
+            "19": [
+              0,
+              3
+            ],
+            "3": [
+              0,
+              3
+            ]
+          },
+          "gpu": "",
+          "host": "4v100n18.mr-sai.ai",
+          "local_rank": 3,
+          "omp_threads": 1,
+          "pid": 1087259,
+          "rank": 3,
+          "start_ticks": 834928910
+        }
+      ],
+      "block": 32,
+      "calibration": false,
+      "comparison": {
+        "energy_delta_ha": 3.410605131648481e-12,
+        "max_force_delta_ha_bohr": 9.999999960041972e-13
+      },
+      "cp2k_seconds": 33.887,
+      "dispersion_ha": null,
+      "elapsed_seconds": 34.79289018642157,
+      "energy_ha": -1102.5771871497593,
+      "forces_ha_bohr": [
+        [
+          -0.013761952894,
+          -0.014675399507,
+          0.002431724299
+        ],
+        [
+          0.015525745834,
+          -0.002976453706,
+          1.0018465e-05
+        ],
+        [
+          -0.000938061408,
+          0.018572617515,
+          6.672318e-06
+        ],
+        [
+          -0.014718739505,
+          -0.015712077202,
+          -0.00059929639
+        ],
+        [
+          0.015516221967,
+          -0.00298090624,
+          -2.955398e-06
+        ],
+        [
+          -0.0009390263,
+          0.01856496197,
+          -2.039218e-06
+        ],
+        [
+          -0.013087276518,
+          -0.01394388572,
+          -0.002639295499
+        ],
+        [
+          0.015533017697,
+          -0.002973297816,
+          -9.461538e-06
+        ],
+        [
+          -0.000937449826,
+          0.018578537878,
+          -6.120196e-06
+        ],
+        [
+          -0.012089742688,
+          -0.012864168313,
+          0.000888852853
+        ],
+        [
+          0.0155415952,
+          -0.002968870263,
+          1.943022e-06
+        ],
+        [
+          -0.000936329461,
+          0.018585025239,
+          1.084927e-06
+        ],
+        [
+          -0.014482415527,
+          -0.016185400786,
+          0.001354943614
+        ],
+        [
+          0.015516863482,
+          -0.002976552791,
+          1.1112054e-05
+        ],
+        [
+          -0.000937232917,
+          0.018593510558,
+          -1.3613246e-05
+        ],
+        [
+          -0.015393334116,
+          -0.015910747774,
+          -0.000329372027
+        ],
+        [
+          0.015509232489,
+          -0.002978863614,
+          -3.371197e-06
+        ],
+        [
+          -0.000936902112,
+          0.018574671733,
+          3.466356e-06
+        ],
+        [
+          -0.013851732883,
+          -0.016378534654,
+          -0.001577350685
+        ],
+        [
+          0.015522794978,
+          -0.002975009433,
+          -1.0278726e-05
+        ],
+        [
+          -0.000937556871,
+          0.018607190718,
+          1.4294389e-05
+        ],
+        [
+          -0.01294023667,
+          -0.01666069997,
+          0.000606764803
+        ],
+        [
+          0.01552930542,
+          -0.002973038381,
+          2.080931e-06
+        ],
+        [
+          -0.000937936363,
+          0.018624804974,
+          -4.249953e-06
+        ],
+        [
+          -0.013224065248,
+          -0.016636437342,
+          0.003210746122
+        ],
+        [
+          0.015522271347,
+          -0.002974512816,
+          1.4355115e-05
+        ],
+        [
+          -0.000941017538,
+          0.018599701428,
+          -2.8797362e-05
+        ],
+        [
+          -0.014254241206,
+          -0.015573961131,
+          -0.000776461968
+        ],
+        [
+          0.015512706091,
+          -0.002976915988,
+          -3.977114e-06
+        ],
+        [
+          -0.000937584806,
+          0.018589278819,
+          7.356622e-06
+        ],
+        [
+          -0.012485522106,
+          -0.017392681211,
+          -0.003400931997
+        ],
+        [
+          0.015529590714,
+          -0.002972975456,
+          -1.4118666e-05
+        ],
+        [
+          -0.000943636463,
+          0.018607552801,
+          2.9471683e-05
+        ],
+        [
+          -0.01136843162,
+          -0.018522251263,
+          0.001100093121
+        ],
+        [
+          0.015538419873,
+          -0.002971126297,
+          3.263527e-06
+        ],
+        [
+          -0.000947497171,
+          0.018617161704,
+          -8.301148e-06
+        ],
+        [
+          -0.012487265529,
+          -0.014963329655,
+          0.004311858235
+        ],
+        [
+          0.015530746671,
+          -0.002975274161,
+          1.3448114e-05
+        ],
+        [
+          -0.000943971465,
+          0.018576006104,
+          -8.422286e-06
+        ],
+        [
+          -0.013584812669,
+          -0.015223087967,
+          -0.001044176615
+        ],
+        [
+          0.015519175526,
+          -0.002980017184,
+          -3.578519e-06
+        ],
+        [
+          -0.000942080475,
+          0.018575663403,
+          1.827487e-06
+        ],
+        [
+          -0.01167288553,
+          -0.014775459391,
+          -0.004505743132
+        ],
+        [
+          0.015539533314,
+          -0.002971892145,
+          -1.364675e-05
+        ],
+        [
+          -0.000945454122,
+          0.018576695476,
+          8.915709e-06
+        ],
+        [
+          -0.010372630318,
+          -0.014479521806,
+          0.001407453388
+        ],
+        [
+          0.015550854732,
+          -0.002967039645,
+          3.331093e-06
+        ],
+        [
+          -0.000947362731,
+          0.018575734122,
+          -2.895266e-06
+        ],
+        [
+          -0.015059699359,
+          -0.015397142514,
+          0.001436919063
+        ],
+        [
+          0.015498725105,
+          -0.002986413022,
+          -1.0138403e-05
+        ],
+        [
+          -0.000955477316,
+          0.018569506016,
+          1.2963376e-05
+        ],
+        [
+          -0.014800445032,
+          -0.016390625338,
+          -0.000351626702
+        ],
+        [
+          0.015480133337,
+          -0.002989502791,
+          2.499357e-06
+        ],
+        [
+          -0.000953390457,
+          0.018564219297,
+          -3.863409e-06
+        ],
+        [
+          -0.01524192057,
+          -0.014707849844,
+          -0.001662285215
+        ],
+        [
+          0.015512251647,
+          -0.002984249933,
+          1.0854491e-05
+        ],
+        [
+          -0.000957110436,
+          0.018573771131,
+          -1.2145005e-05
+        ],
+        [
+          -0.01550891418,
+          -0.013711637648,
+          0.000628704263
+        ],
+        [
+          0.015529752596,
+          -0.00298145101,
+          -3.387554e-06
+        ],
+        [
+          -0.000959311283,
+          0.018577791542,
+          2.588694e-06
+        ],
+        [
+          -0.014668833887,
+          -0.015793169834,
+          0.000330761215
+        ],
+        [
+          0.015485245092,
+          -0.002977460307,
+          -5.980397e-06
+        ],
+        [
+          -0.000945451864,
+          0.018582376483,
+          -5.149153e-06
+        ],
+        [
+          -0.014469527635,
+          -0.015577576638,
+          -7.3199121e-05
+        ],
+        [
+          0.015469066822,
+          -0.002980194206,
+          1.454649e-06
+        ],
+        [
+          -0.000943855751,
+          0.018566685674,
+          1.211733e-06
+        ],
+        [
+          -0.014807413341,
+          -0.015943501295,
+          -0.000589103945
+        ],
+        [
+          0.015497031562,
+          -0.002975581004,
+          6.844117e-06
+        ],
+        [
+          -0.00094669999,
+          0.018593802883,
+          6.00915e-06
+        ],
+        [
+          -0.015006781814,
+          -0.016159773589,
+          0.000349399836
+        ],
+        [
+          0.015511936806,
+          -0.002973138335,
+          -2.34904e-06
+        ],
+        [
+          -0.000948325195,
+          0.01860809603,
+          -2.111538e-06
+        ],
+        [
+          -0.014797576766,
+          -0.015906210781,
+          0.002047481959
+        ],
+        [
+          0.015502847228,
+          -0.002966574166,
+          -6.490133e-06
+        ],
+        [
+          -0.000942836051,
+          0.018592763613,
+          -1.8378925e-05
+        ],
+        [
+          -0.014600820839,
+          -0.014901386189,
+          -0.000497765315
+        ],
+        [
+          0.015482044266,
+          -0.002971323496,
+          1.503639e-06
+        ],
+        [
+          -0.000939554492,
+          0.018583820364,
+          4.841066e-06
+        ],
+        [
+          -0.014935534826,
+          -0.016603386091,
+          -0.002227272679
+        ],
+        [
+          0.01551794619,
+          -0.002963304048,
+          7.020335e-06
+        ],
+        [
+          -0.000945271395,
+          0.018599434396,
+          1.8826195e-05
+        ],
+        [
+          -0.015135444912,
+          -0.017608760102,
+          0.000776715933
+        ],
+        [
+          0.015537816255,
+          -0.002958792849,
+          -2.3693e-06
+        ],
+        [
+          -0.000948622,
+          0.018607044478,
+          -5.383524e-06
+        ],
+        [
+          -0.015182922417,
+          -0.015344682896,
+          0.003153868996
+        ],
+        [
+          0.015515727393,
+          -0.002976522413,
+          -1.068844e-05
+        ],
+        [
+          -0.000955220072,
+          0.018574999819,
+          -3.58073e-07
+        ],
+        [
+          -0.014922111323,
+          -0.015535489741,
+          -0.000769534628
+        ],
+        [
+          0.015492394279,
+          -0.002981743465,
+          2.517822e-06
+        ],
+        [
+          -0.000951666794,
+          0.018574764044,
+          -2.66085e-07
+        ],
+        [
+          -0.015369730688,
+          -0.015213594684,
+          -0.003302348085
+        ],
+        [
+          0.015532703571,
+          -0.002972865566,
+          1.109818e-05
+        ],
+        [
+          -0.000957894713,
+          0.018575670909,
+          7.89415e-07
+        ],
+        [
+          -0.015648964644,
+          -0.015020898002,
+          0.001057917887
+        ],
+        [
+          0.01555550674,
+          -0.002967827265,
+          -3.429197e-06
+        ],
+        [
+          -0.000961636847,
+          0.018574634484,
+          -7.06634e-07
+        ],
+        [
+          -0.015445266327,
+          -0.01414052336,
+          0.003171667321
+        ],
+        [
+          0.015498867602,
+          -0.002996143676,
+          -2.3627688e-05
+        ],
+        [
+          -0.000951468314,
+          0.018575210179,
+          1.8866395e-05
+        ],
+        [
+          -0.014463162768,
+          -0.015251513889,
+          -0.000767465196
+        ],
+        [
+          0.015489469137,
+          -0.002996461331,
+          6.034285e-06
+        ],
+        [
+          -0.000951602325,
+          0.018567427619,
+          -5.205124e-06
+        ],
+        [
+          -0.016143718998,
+          -0.013343867512,
+          -0.00336469478
+        ],
+        [
+          0.015505967444,
+          -0.002996022223,
+          2.4235399e-05
+        ],
+        [
+          -0.000951625427,
+          0.018581269799,
+          -1.8657197e-05
+        ],
+        [
+          -0.017188824959,
+          -0.012140776342,
+          0.001090524613
+        ],
+        [
+          0.015514472794,
+          -0.002996239892,
+          -6.929045e-06
+        ],
+        [
+          -0.000951839739,
+          0.018588237279,
+          4.486846e-06
+        ],
+        [
+          -0.01471374261,
+          -0.01593141745,
+          0.001924784348
+        ],
+        [
+          0.015494240125,
+          -0.002977610858,
+          -1.8637164e-05
+        ],
+        [
+          -0.000935668588,
+          0.018598630673,
+          -2.878225e-06
+        ],
+        [
+          -0.013788541825,
+          -0.015718175368,
+          -0.000465915527
+        ],
+        [
+          0.015485029465,
+          -0.002979684686,
+          4.923282e-06
+        ],
+        [
+          -0.000937440009,
+          0.018578457797,
+          4.87759e-07
+        ],
+        [
+          -0.015354222102,
+          -0.016081094055,
+          -0.002105687261
+        ],
+        [
+          0.015501107481,
+          -0.002976202752,
+          1.9078193e-05
+        ],
+        [
+          -0.000934594978,
+          0.018613263949,
+          3.430824e-06
+        ],
+        [
+          -0.016277813426,
+          -0.016297490267,
+          0.000744974471
+        ],
+        [
+          0.01550908881,
+          -0.00297440233,
+          -5.469234e-06
+        ],
+        [
+          -0.000932842611,
+          0.018632366668,
+          -1.413117e-06
+        ],
+        [
+          -0.015949474271,
+          -0.017161926211,
+          0.003755338485
+        ],
+        [
+          0.015505358426,
+          -0.002965825155,
+          -2.2219985e-05
+        ],
+        [
+          -0.000929842956,
+          0.018602002703,
+          -1.8297554e-05
+        ],
+        [
+          -0.014898685918,
+          -0.016031764529,
+          -0.000903141938
+        ],
+        [
+          0.015493316217,
+          -0.002970222562,
+          5.462247e-06
+        ],
+        [
+          -0.000930815687,
+          0.018590937786,
+          4.460431e-06
+        ],
+        [
+          -0.016706718784,
+          -0.017976640061,
+          -0.003932367553
+        ],
+        [
+          0.015514398392,
+          -0.002962675114,
+          2.2802979e-05
+        ],
+        [
+          -0.000929238039,
+          0.018610312519,
+          1.8823428e-05
+        ],
+        [
+          -0.017859184665,
+          -0.019214693,
+          0.001246364742
+        ],
+        [
+          0.015525973349,
+          -0.002958078471,
+          -6.582533e-06
+        ],
+        [
+          -0.000928056583,
+          0.018620663329,
+          -5.483351e-06
+        ],
+        [
+          -0.016688996987,
+          -0.015212548,
+          0.00505291356
+        ],
+        [
+          0.01550952022,
+          -0.002985256889,
+          -2.7499325e-05
+        ],
+        [
+          -0.000947938731,
+          0.018575175964,
+          3.608473e-06
+        ],
+        [
+          -0.015550906886,
+          -0.015405619632,
+          -0.001203146806
+        ],
+        [
+          0.015497119295,
+          -0.002987892098,
+          6.544766e-06
+        ],
+        [
+          -0.000947311631,
+          0.018575249919,
+          -1.237816e-06
+        ],
+        [
+          -0.017553584626,
+          -0.015073930075,
+          -0.005287616311
+        ],
+        [
+          0.015519078644,
+          -0.002983406835,
+          2.8548251e-05
+        ],
+        [
+          -0.000948623652,
+          0.018575523877,
+          -3.570815e-06
+        ],
+        [
+          -0.019012710515,
+          -0.014857135256,
+          0.001657062581
+        ],
+        [
+          0.015532169934,
+          -0.002980902104,
+          -8.42814e-06
+        ],
+        [
+          -0.000949831662,
+          0.018574128096,
+          6.31359e-07
+        ],
+        [
+          -0.014060980647,
+          -0.01341196555,
+          0.004193341302
+        ],
+        [
+          0.015534755261,
+          -0.002987228858,
+          -3.303028e-06
+        ],
+        [
+          -0.000933901079,
+          0.018578477919,
+          1.2646053e-05
+        ],
+        [
+          -0.014310517255,
+          -0.014585807508,
+          -0.001013543851
+        ],
+        [
+          0.015534121822,
+          -0.002989055683,
+          5.49229e-07
+        ],
+        [
+          -0.000937169174,
+          0.018568286766,
+          -3.384771e-06
+        ],
+        [
+          -0.013880613139,
+          -0.012544033614,
+          -0.004384314349
+        ],
+        [
+          0.015535664474,
+          -0.00298596827,
+          3.65809e-06
+        ],
+        [
+          -0.000931650163,
+          0.018586249179,
+          -1.2813652e-05
+        ],
+        [
+          -0.013596926481,
+          -0.011169064063,
+          0.001374010601
+        ],
+        [
+          0.01553509542,
+          -0.002984149717,
+          -1.465959e-06
+        ],
+        [
+          -0.000928093026,
+          0.018595953591,
+          3.115712e-06
+        ],
+        [
+          -0.014448703079,
+          -0.016330272605,
+          0.002954345071
+        ],
+        [
+          0.015534015463,
+          -0.002977779375,
+          -1.624938e-06
+        ],
+        [
+          -0.000927374641,
+          0.018609861101,
+          -1.1407987e-05
+        ],
+        [
+          -0.014629630572,
+          -0.016054943797,
+          -0.000716287545
+        ],
+        [
+          0.015532949923,
+          -0.002979474585,
+          6.2689e-08
+        ],
+        [
+          -0.000930384642,
+          0.018586484752,
+          2.724509e-06
+        ],
+        [
+          -0.014324538233,
+          -0.016526835665,
+          -0.003100069345
+        ],
+        [
+          0.015535290323,
+          -0.002976675873,
+          2.06896e-06
+        ],
+        [
+          -0.000925375206,
+          0.018626830035,
+          1.1796981e-05
+        ],
+        [
+          -0.014142593547,
+          -0.01681838472,
+          0.001004900261
+        ],
+        [
+          0.015535240631,
+          -0.002975306067,
+          -1.066157e-06
+        ],
+        [
+          -0.000922361969,
+          0.018649501408,
+          -3.571499e-06
+        ],
+        [
+          -0.014299023256,
+          -0.017916072813,
+          0.004968048289
+        ],
+        [
+          0.015533378696,
+          -0.002974918831,
+          -1.279211e-06
+        ],
+        [
+          -0.000928017826,
+          0.018609165827,
+          -2.902402e-05
+        ],
+        [
+          -0.014482145763,
+          -0.016700650895,
+          -0.001181044088
+        ],
+        [
+          0.015532484189,
+          -0.002976835619,
+          -2.1875e-08
+        ],
+        [
+          -0.000928792782,
+          0.018596448815,
+          6.949902e-06
+        ],
+        [
+          -0.014167588987,
+          -0.018835208473,
+          -0.005195178249
+        ],
+        [
+          0.015534454041,
+          -0.002973683604,
+          1.485742e-06
+        ],
+        [
+          -0.000927595259,
+          0.018618959335,
+          3.0054698e-05
+        ],
+        [
+          -0.013962337212,
+          -0.020367060655,
+          0.001627962034
+        ],
+        [
+          0.015534293037,
+          -0.002972310842,
+          -8.23974e-07
+        ],
+        [
+          -0.000926967695,
+          0.018632377762,
+          -8.764113e-06
+        ],
+        [
+          -0.013889958898,
+          -0.014823882495,
+          0.006315718995
+        ],
+        [
+          0.015533645359,
+          -0.002985192962,
+          -2.759894e-06
+        ],
+        [
+          -0.000936610755,
+          0.018576304721,
+          -4.431605e-06
+        ],
+        [
+          -0.014154000447,
+          -0.015097535526,
+          -0.001480453373
+        ],
+        [
+          0.015533192363,
+          -0.002987274291,
+          4.28241e-07
+        ],
+        [
+          -0.000937711519,
+          0.018576270638,
+          8.26922e-07
+        ],
+        [
+          -0.013677878648,
+          -0.01460521944,
+          -0.006720308203
+        ],
+        [
+          0.01553418862,
+          -0.002983727807,
+          2.800163e-06
+        ],
+        [
+          -0.000935877311,
+          0.018576547213,
+          4.567463e-06
+        ],
+        [
+          -0.013170086177,
+          -0.014090602344,
+          0.002347372979
+        ],
+        [
+          0.01553307017,
+          -0.002981548492,
+          -7.04815e-07
+        ],
+        [
+          -0.000934405054,
+          0.018574931513,
+          -1.247998e-06
+        ]
+      ],
+      "host_memory": {
+        "limit": 23622320128,
+        "path": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5HF030A00",
+        "used": 2652434432
+      },
+      "host_memory_fraction": 0.92,
+      "mode": "cpu",
+      "name": "smoke-cpu-4",
+      "no_gpu_compute_process_verified": true,
+      "peak_gpu_fraction": {
+        "GPU-58423c96-717f-a3f2-018b-8f19d072bf04": 0.0001220703125
+      },
+      "peak_gpu_mib": {
+        "GPU-58423c96-717f-a3f2-018b-8f19d072bf04": 4.0
+      },
+      "ranks": 4,
+      "returncode": 0,
+      "sampled_cpu_seconds": 134.08,
+      "scf_steps": [
+        24
+      ],
+      "science_accepted": true,
+      "shape": [
+        4,
+        4,
+        4
+      ],
+      "stop": null,
+      "threads": 1,
+      "timers": {
+        "CP2K": {
+          "calls": 1,
+          "seconds": 33.887
+        },
+        "cp_fm_cholesky_decompose": {
+          "calls": 1,
+          "seconds": 0.008
+        },
+        "cp_fm_cholesky_restore": {
+          "calls": 72,
+          "seconds": 0.615
+        },
+        "cp_fm_create": {
+          "calls": 14,
+          "seconds": 0.0
+        },
+        "cp_fm_gemm": {
+          "calls": 46,
+          "seconds": 0.124
+        },
+        "cp_fm_maxabsval": {
+          "calls": 23,
+          "seconds": 0.008
+        },
+        "cp_fm_redistribute_end": {
+          "calls": 24,
+          "seconds": 0.0
+        },
+        "cp_fm_redistribute_start": {
+          "calls": 24,
+          "seconds": 0.005
+        },
+        "cp_fm_scale_and_add": {
+          "calls": 76,
+          "seconds": 0.026
+        },
+        "cp_fm_set_all": {
+          "calls": 20,
+          "seconds": 0.006
+        },
+        "cp_fm_syevd": {
+          "calls": 24,
+          "seconds": 2.434
+        },
+        "cp_fm_syevd_base": {
+          "calls": 24,
+          "seconds": 2.431
+        },
+        "cp_fm_symm": {
+          "calls": 46,
+          "seconds": 0.199
+        },
+        "cp_fm_to_fm_matrix": {
+          "calls": 29,
+          "seconds": 0.011
+        },
+        "cp_fm_trace_a0b0t0": {
+          "calls": 85,
+          "seconds": 0.105
+        },
+        "cp_fm_uplo_to_full": {
+          "calls": 24,
+          "seconds": 0.108
+        },
+        "dbcsr_add_wm_from_matrix": {
+          "calls": 25,
+          "seconds": 0.005
+        },
+        "dbcsr_complete_redistribute": {
+          "calls": 74,
+          "seconds": 0.196
+        },
+        "dbcsr_copy": {
+          "calls": 103,
+          "seconds": 0.015
+        },
+        "dbcsr_copy_into_existing": {
+          "calls": 2,
+          "seconds": 0.001
+        },
+        "dbcsr_create_new": {
+          "calls": 532,
+          "seconds": 0.002
+        },
+        "dbcsr_data_copy_aa2": {
+          "calls": 99,
+          "seconds": 0.022
+        },
+        "dbcsr_data_new": {
+          "calls": 1526,
+          "seconds": 0.0
+        },
+        "dbcsr_data_release": {
+          "calls": 2572,
+          "seconds": 0.0
+        },
+        "dbcsr_destroy": {
+          "calls": 483,
+          "seconds": 0.001
+        },
+        "dbcsr_desymmetrize_deep": {
+          "calls": 48,
+          "seconds": 0.648
+        },
+        "dbcsr_distribution_new": {
+          "calls": 226,
+          "seconds": 0.0
+        },
+        "dbcsr_dot": {
+          "calls": 51,
+          "seconds": 0.019
+        },
+        "dbcsr_fill_wm_from_matrix": {
+          "calls": 25,
+          "seconds": 0.004
+        },
+        "dbcsr_filter_anytype": {
+          "calls": 29,
+          "seconds": 0.0
+        },
+        "dbcsr_finalize": {
+          "calls": 169,
+          "seconds": 0.079
+        },
+        "dbcsr_get_data_size_used": {
+          "calls": 147,
+          "seconds": 0.0
+        },
+        "dbcsr_get_global_col_map": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_get_global_row_map": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_get_local_cols": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_get_local_rows": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_index_prune_deleted": {
+          "calls": 50,
+          "seconds": 0.0
+        },
+        "dbcsr_iterator_seek": {
+          "calls": 625,
+          "seconds": 0.0
+        },
+        "dbcsr_iterator_start": {
+          "calls": 625,
+          "seconds": 0.001
+        },
+        "dbcsr_iterator_stop": {
+          "calls": 625,
+          "seconds": 0.0
+        },
+        "dbcsr_make_dbcsr_index": {
+          "calls": 307,
+          "seconds": 0.0
+        },
+        "dbcsr_make_dense_low": {
+          "calls": 50,
+          "seconds": 0.003
+        },
+        "dbcsr_make_dists_dense": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_make_images_dense": {
+          "calls": 50,
+          "seconds": 0.003
+        },
+        "dbcsr_make_index_exist": {
+          "calls": 532,
+          "seconds": 0.0
+        },
+        "dbcsr_make_index_list": {
+          "calls": 50,
+          "seconds": 0.0
+        },
+        "dbcsr_make_index_local_row": {
+          "calls": 50,
+          "seconds": 0.0
+        },
+        "dbcsr_make_untransposed_blocks": {
+          "calls": 50,
+          "seconds": 0.009
+        },
+        "dbcsr_merge_all": {
+          "calls": 99,
+          "seconds": 0.072
+        },
+        "dbcsr_mm_csr_init": {
+          "calls": 25,
+          "seconds": 0.002
+        },
+        "dbcsr_mm_hostdrv_init": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_mm_multrec_finalize": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_mm_multrec_init": {
+          "calls": 25,
+          "seconds": 0.002
+        },
+        "dbcsr_mm_sched_finalize": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_mm_sched_init": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_multiply_generic": {
+          "calls": 25,
+          "seconds": 0.085
+        },
+        "dbcsr_new_transposed": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_reserve_all_blocks": {
+          "calls": 26,
+          "seconds": 0.001
+        },
+        "dbcsr_reserve_blocks": {
+          "calls": 35,
+          "seconds": 0.004
+        },
+        "dbcsr_scale_anytype": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "dbcsr_scale_d": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "dbcsr_set": {
+          "calls": 107,
+          "seconds": 0.004
+        },
+        "dbcsr_sort_indices": {
+          "calls": 307,
+          "seconds": 0.009
+        },
+        "dbcsr_special_finalize": {
+          "calls": 50,
+          "seconds": 0.0
+        },
+        "dbcsr_switch_data_area": {
+          "calls": 223,
+          "seconds": 0.0
+        },
+        "dbcsr_verify_matrix": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "dbcsr_work_create": {
+          "calls": 197,
+          "seconds": 0.0
+        },
+        "dbcsr_work_destroy_all": {
+          "calls": 197,
+          "seconds": 0.0
+        },
+        "dbcsr_zero": {
+          "calls": 107,
+          "seconds": 0.004
+        },
+        "eigensolver": {
+          "calls": 24,
+          "seconds": 3.073
+        },
+        "grid_collocate_task_list": {
+          "calls": 25,
+          "seconds": 9.306
+        },
+        "grid_create_basis_set": {
+          "calls": 2,
+          "seconds": 0.0
+        },
+        "grid_create_task_list": {
+          "calls": 1,
+          "seconds": 0.006
+        },
+        "grid_free_basis_set": {
+          "calls": 2,
+          "seconds": 0.0
+        },
+        "grid_free_task_list": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "grid_integrate_task_list": {
+          "calls": 25,
+          "seconds": 11.719
+        },
+        "pw_axpy": {
+          "calls": 250,
+          "seconds": 0.157
+        },
+        "pw_copy": {
+          "calls": 375,
+          "seconds": 0.391
+        },
+        "pw_copy_from_array": {
+          "calls": 225,
+          "seconds": 0.134
+        },
+        "pw_copy_to_array": {
+          "calls": 201,
+          "seconds": 0.148
+        },
+        "pw_create_c1d": {
+          "calls": 428,
+          "seconds": 0.0
+        },
+        "pw_create_r3d": {
+          "calls": 455,
+          "seconds": 0.0
+        },
+        "pw_derive": {
+          "calls": 225,
+          "seconds": 0.458
+        },
+        "pw_env_create": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "pw_env_rebuild": {
+          "calls": 1,
+          "seconds": 0.062
+        },
+        "pw_gather_p": {
+          "calls": 201,
+          "seconds": 0.494
+        },
+        "pw_grid_allocate": {
+          "calls": 4,
+          "seconds": 0.0
+        },
+        "pw_grid_assign": {
+          "calls": 4,
+          "seconds": 0.007
+        },
+        "pw_grid_distribute": {
+          "calls": 4,
+          "seconds": 0.0
+        },
+        "pw_grid_remap": {
+          "calls": 4,
+          "seconds": 0.001
+        },
+        "pw_grid_setup": {
+          "calls": 4,
+          "seconds": 0.061
+        },
+        "pw_grid_setup_internal": {
+          "calls": 4,
+          "seconds": 0.061
+        },
+        "pw_grid_sort": {
+          "calls": 4,
+          "seconds": 0.05
+        },
+        "pw_integral_ab_c1d_c1d_gs": {
+          "calls": 25,
+          "seconds": 0.065
+        },
+        "pw_multiply_with": {
+          "calls": 25,
+          "seconds": 0.03
+        },
+        "pw_poisson_rebuild": {
+          "calls": 25,
+          "seconds": 0.002
+        },
+        "pw_poisson_set": {
+          "calls": 26,
+          "seconds": 0.259
+        },
+        "pw_poisson_solve": {
+          "calls": 25,
+          "seconds": 0.405
+        },
+        "pw_pool_create_pw": {
+          "calls": 758,
+          "seconds": 0.001
+        },
+        "pw_pool_give_back_pw": {
+          "calls": 852,
+          "seconds": 0.001
+        },
+        "pw_scale": {
+          "calls": 100,
+          "seconds": 0.027
+        },
+        "pw_scatter_p": {
+          "calls": 225,
+          "seconds": 0.319
+        },
+        "pw_zero": {
+          "calls": 125,
+          "seconds": 0.077
+        },
+        "qs_create_task_list": {
+          "calls": 1,
+          "seconds": 0.041
+        },
+        "qs_diis_b_check_i_alloc": {
+          "calls": 23,
+          "seconds": 0.0
+        },
+        "qs_diis_b_create": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_diis_b_step": {
+          "calls": 23,
+          "seconds": 0.591
+        },
+        "qs_efield_berry_phase": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "qs_efield_local_operator": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "qs_energies": {
+          "calls": 1,
+          "seconds": 32.029
+        },
+        "qs_energies_init_hamiltonians": {
+          "calls": 1,
+          "seconds": 0.419
+        },
+        "qs_energies_properties": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_env_rebuild_pw_env": {
+          "calls": 3,
+          "seconds": 0.062
+        },
+        "qs_env_rebuild_rho": {
+          "calls": 1,
+          "seconds": 0.001
+        },
+        "qs_env_setup": {
+          "calls": 1,
+          "seconds": 0.062
+        },
+        "qs_env_update_s_mstruct": {
+          "calls": 1,
+          "seconds": 0.074
+        },
+        "qs_forces": {
+          "calls": 1,
+          "seconds": 33.8
+        },
+        "qs_init_subsys": {
+          "calls": 1,
+          "seconds": 0.065
+        },
+        "qs_ks_build_kohn_sham_matrix": {
+          "calls": 25,
+          "seconds": 18.235
+        },
+        "qs_ks_did_change": {
+          "calls": 26,
+          "seconds": 0.0
+        },
+        "qs_ks_update_qs_env": {
+          "calls": 24,
+          "seconds": 17.288
+        },
+        "qs_ks_update_qs_env_forces": {
+          "calls": 1,
+          "seconds": 0.966
+        },
+        "qs_rho_rebuild": {
+          "calls": 1,
+          "seconds": 0.001
+        },
+        "qs_rho_update_rho_low": {
+          "calls": 25,
+          "seconds": 10.39
+        },
+        "qs_scf_ensure_mos": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_ensure_work_matrices": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_initial_info": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_loop_print": {
+          "calls": 24,
+          "seconds": 0.0
+        },
+        "qs_scf_new_mos": {
+          "calls": 24,
+          "seconds": 4.46
+        },
+        "qs_scf_post_charges": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_efg": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_elf": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_epr": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_et": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_kubo_transport": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_local_energy": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_local_stress": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_molopt": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_moments": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_ps_implicit": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_transport": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_post_xray": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_print_scf_summary": {
+          "calls": 1,
+          "seconds": 0.0
+        },
+        "qs_scf_write_mos": {
+          "calls": 25,
+          "seconds": 0.0
+        },
+        "qs_vxc_create": {
+          "calls": 25,
+          "seconds": 4.961
+        }
+      },
+      "waters": 64
+    }
+  ]
+}

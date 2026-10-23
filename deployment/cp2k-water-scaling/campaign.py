@@ -48,7 +48,7 @@ def ensure_verified(path):
                          'Verification belongs to a different request')
 
 
-def submit(name, partition, gpus, stage, binary, *, shape=None, calibration=None, smoke=None):
+def submit(name, partition, gpus, stage, binary, *, shape=None, calibration=None, smoke=None, host_memory_fraction=.92):
     root = protocol.ROOT/'runtime-tests'/('cp2k-water-'+name)
     if root.exists():
         # Recover only a submission already recorded before a daemon restart.
@@ -64,7 +64,8 @@ def submit(name, partition, gpus, stage, binary, *, shape=None, calibration=None
     case_seconds = (64800 if gpus == 16 else 21600) if stage == 'compare' and gpus >= 4 else 7200
     argv = [sys.executable, '-B', str(Path(__file__).with_name('run.py')), 'submit', '--name', name,
             '--partition', partition, '--gpus', str(gpus), '--stage', stage, '--cpu-binary', binary,
-            '--minutes', str(minutes), '--case-seconds', str(case_seconds)]
+            '--minutes', str(minutes), '--case-seconds', str(case_seconds),
+            '--host-memory-fraction', str(host_memory_fraction)]
     if shape:
         argv += ['--shape', *map(str, shape), '--calibration-run', calibration, '--cpu-smoke-run', smoke]
     subprocess.run(argv, check=True, timeout=300)
@@ -74,6 +75,7 @@ def submit(name, partition, gpus, stage, binary, *, shape=None, calibration=None
 def tick(path):
     campaign = json.loads(path.read_text())
     runs = [row['build'] for row in campaign['cpu'].values()]
+    runs += [test for row in campaign['cpu'].values() for test in row.get('mpi_retests', [])]
     runs += [row['smoke'] for row in campaign['cpu'].values() if row.get('smoke')]
     runs += [row[key] for row in campaign['points'] for key in ('calibration', 'comparison') if row.get(key)]
     states = scheduler(runs)
@@ -81,6 +83,22 @@ def tick(path):
     for partition, row in campaign['cpu'].items():
         try:
             row['build_state'] = state(row['build'], states)
+            if row.get('mpi_retests'):
+                row['mpi_retest_states'] = {test: state(test, states) for test in row['mpi_retests']}
+                if not all(value == 'COMPLETED' for value in row['mpi_retest_states'].values()):
+                    continue
+                for test in row['mpi_retests']:
+                    test_root = Path(test)
+                    request = json.loads((test_root/'request.json').read_text())
+                    protocol.require(request['build'] == row['build'] and request['partition'] == partition,
+                                     'MPI retest is for another CPU build')
+                    if not (test_root/'results/verified.json').is_file():
+                        subprocess.run([sys.executable, '-B', str(Path(__file__).with_name('retest-mpi.py')),
+                                        'verify', test], check=True, timeout=600)
+                    verified = json.loads((test_root/'results/verified.json').read_text())
+                    protocol.require(verified['accepted'] and verified['request_sha256'] == protocol.digest(test_root/'request.json'),
+                                     'MPI retest has not passed independent verification')
+                row['mpi_retests_accepted'] = True
             if not row.get('smoke') and row['build_state'] == 'COMPLETED':
                 row['smoke'] = submit(campaign['name']+'-'+partition.lower()+'-smoke', partition, 1, 'smoke',
                                       row['build']+'/install/bin/cp2k.psmp')
@@ -106,7 +124,8 @@ def tick(path):
                 suffix = ('-r'+str(row['attempt'])) if row.get('attempt') else ''
                 row['comparison'] = submit(campaign['name']+'-'+row['partition'].lower()+'-g'+str(row['gpus'])+'-compare'+suffix,
                     row['partition'], row['gpus'], 'compare', cpu['build']+'/install/bin/cp2k.psmp',
-                    shape=row['shape'], calibration=row['calibration'], smoke=cpu['smoke'])
+                    shape=row['shape'], calibration=row['calibration'], smoke=cpu['smoke'],
+                    host_memory_fraction=row.get('host_memory_fraction', .92))
             if row.get('comparison'):
                 row['comparison_state'] = state(row['comparison'], states)
                 if row['comparison_state'] == 'COMPLETED':

@@ -32,6 +32,9 @@ printf '%s\n' "$source_sha" > "$work/source/.git/shallow"
 git -C "$work/source" -c core.hooksPath=/dev/null checkout --detach "$source_sha"
 [[ "$(git -C "$work/source" rev-parse HEAD)" == "$source_sha" ]]
 python3 "$control/cp2k_source_fixes.py" "$work/source" "$prefix/share/sai"
+python3 "$run/control/deployment/cp2k-water-scaling/fix-redistribution.py" \
+  "$work/source/src/fm/cp_fm_diag_utils.F" "$work/source/src/fm/cp_fm_diag_utils.F" \
+  > "$prefix/share/sai/redistribution-repair.json"
 python3 "$control/cp2k_spack_link.py" "$run/input/dependencies.json" "$partition" "$original" > "$work/spack-env.sh"
 source "$work/spack-env.sh"
 cp "$control/cp2k_Libint2Config.cmake" "$work/adapters/Libint2Config.cmake"

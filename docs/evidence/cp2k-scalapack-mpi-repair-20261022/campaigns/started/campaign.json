@@ -1,0 +1,206 @@
+{
+  "complete": false,
+  "controller_revision": "c2183b3e3cb6905f4984022a18e6228aa3c62615",
+  "cpu": {
+    "16V100": {
+      "accepted": true,
+      "build": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261022-mpi-fix-16v100-a",
+      "build_state": "COMPLETED",
+      "mpi_retest_states": {
+        "/home/stardust/sai-hpc-software/runtime-tests/cp2k-mpi-retest-20261022-16v100-g16-a": "COMPLETED",
+        "/home/stardust/sai-hpc-software/runtime-tests/cp2k-mpi-retest-20261022-16v100-g4-a": "COMPLETED"
+      },
+      "mpi_retests": [
+        "/home/stardust/sai-hpc-software/runtime-tests/cp2k-mpi-retest-20261022-16v100-g4-a",
+        "/home/stardust/sai-hpc-software/runtime-tests/cp2k-mpi-retest-20261022-16v100-g16-a"
+      ],
+      "mpi_retests_accepted": true,
+      "smoke": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261022-mpi-fixed-water-16v100-smoke",
+      "smoke_state": "COMPLETED"
+    },
+    "4V100": {
+      "accepted": true,
+      "build": "/home/stardust/sai-hpc-software/runs/cp2k-water-cpu-20261022-mpi-fix-4v100-a",
+      "build_state": "COMPLETED",
+      "mpi_retest_states": {
+        "/home/stardust/sai-hpc-software/runtime-tests/cp2k-mpi-retest-20261022-4v100-g4-a": "COMPLETED"
+      },
+      "mpi_retests": [
+        "/home/stardust/sai-hpc-software/runtime-tests/cp2k-mpi-retest-20261022-4v100-g4-a"
+      ],
+      "mpi_retests_accepted": true,
+      "smoke": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261022-mpi-fixed-water-4v100-smoke",
+      "smoke_state": "COMPLETED"
+    }
+  },
+  "errors": [],
+  "name": "20261022-mpi-fixed-water",
+  "points": [
+    {
+      "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g1-d",
+      "calibration_state": "COMPLETED",
+      "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261022-mpi-fixed-water-16v100-g1-compare",
+      "comparison_state": "UNKNOWN",
+      "gpus": 1,
+      "host_memory_fraction": 0.95,
+      "host_memory_limited": false,
+      "partition": "16V100",
+      "shape": [
+        6,
+        6,
+        8
+      ]
+    },
+    {
+      "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g4-e",
+      "calibration_state": "COMPLETED",
+      "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261022-mpi-fixed-water-16v100-g4-compare",
+      "comparison_state": "UNKNOWN",
+      "gpus": 4,
+      "host_memory_fraction": 0.95,
+      "host_memory_limited": false,
+      "partition": "16V100",
+      "shape": [
+        8,
+        9,
+        9
+      ]
+    },
+    {
+      "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-16v100-g16-e",
+      "calibration_state": "COMPLETED",
+      "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261022-mpi-fixed-water-16v100-g16-compare",
+      "comparison_state": "UNKNOWN",
+      "gpus": 16,
+      "host_memory_fraction": 0.95,
+      "host_memory_limited": false,
+      "partition": "16V100",
+      "shape": [
+        11,
+        11,
+        12
+      ]
+    },
+    {
+      "allow_host_limited": true,
+      "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261020-4v100-g1-full-a",
+      "calibration_state": "COMPLETED",
+      "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261022-mpi-fixed-water-4v100-g1-compare",
+      "comparison_state": "RUNNING",
+      "gpus": 1,
+      "host_memory_fraction": 0.95,
+      "host_memory_limited": true,
+      "partition": "4V100",
+      "shape": [
+        7,
+        7,
+        8
+      ]
+    },
+    {
+      "allow_host_limited": true,
+      "calibration": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261021-4v100-g4-full-b",
+      "calibration_state": "COMPLETED",
+      "comparison": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-20261022-mpi-fixed-water-4v100-g4-compare",
+      "comparison_state": "PENDING",
+      "gpus": 4,
+      "host_memory_fraction": 0.95,
+      "host_memory_limited": true,
+      "partition": "4V100",
+      "shape": [
+        9,
+        10,
+        10
+      ]
+    }
+  ],
+  "reason": "Repeat all five points after minimal CPU ScaLAPACK MPI repair; require causal A/B acceptance first; no old CPU tuning or timing pairs imported.",
+  "replaces": "/home/stardust/sai-hpc-software/runtime-tests/cp2k-water-campaign-20261020",
+  "scheduler": {
+    "1882071": {
+      "elapsed": "00:01:59",
+      "exit_code": "0:0",
+      "nodes": "16v100n02",
+      "state": "COMPLETED"
+    },
+    "1882207": {
+      "elapsed": "00:11:59",
+      "exit_code": "0:0",
+      "nodes": "16v100n60",
+      "state": "COMPLETED"
+    },
+    "1882209": {
+      "elapsed": "00:01:54",
+      "exit_code": "0:0",
+      "nodes": "16v100n07",
+      "state": "COMPLETED"
+    },
+    "1882535": {
+      "elapsed": "00:07:42",
+      "exit_code": "0:0",
+      "nodes": "4v100n09",
+      "state": "COMPLETED"
+    },
+    "1887901": {
+      "elapsed": "00:32:11",
+      "exit_code": "0:0",
+      "nodes": "4v100n16",
+      "state": "COMPLETED"
+    },
+    "1897876": {
+      "elapsed": "00:00:45",
+      "exit_code": "0:0",
+      "nodes": "16v100n08",
+      "state": "COMPLETED"
+    },
+    "1897877": {
+      "elapsed": "00:00:57",
+      "exit_code": "0:0",
+      "nodes": "4v100n08",
+      "state": "COMPLETED"
+    },
+    "1897952": {
+      "elapsed": "00:33:23",
+      "exit_code": "0:0",
+      "nodes": "16v100n09",
+      "state": "COMPLETED"
+    },
+    "1897953": {
+      "elapsed": "00:14:41",
+      "exit_code": "0:0",
+      "nodes": "4v100n18",
+      "state": "COMPLETED"
+    },
+    "1897997": {
+      "elapsed": "00:18:52",
+      "exit_code": "0:0",
+      "nodes": "16v100n36",
+      "state": "COMPLETED"
+    },
+    "1898135": {
+      "elapsed": "00:02:21",
+      "exit_code": "0:0",
+      "nodes": "4v100n18",
+      "state": "COMPLETED"
+    },
+    "1898166": {
+      "elapsed": "00:13:03",
+      "exit_code": "0:0",
+      "nodes": "4v100n18",
+      "state": "RUNNING"
+    },
+    "1898169": {
+      "elapsed": "00:00:00",
+      "exit_code": "0:0",
+      "nodes": "None assigned",
+      "state": "PENDING"
+    },
+    "1898234": {
+      "elapsed": "00:05:24",
+      "exit_code": "0:0",
+      "nodes": "16v100n01",
+      "state": "COMPLETED"
+    }
+  },
+  "updated_utc": "2026-10-22T09:43:11.894672+00:00"
+}
