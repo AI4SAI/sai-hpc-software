@@ -63,9 +63,19 @@ sbatch /org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-39983165
 
 The generated job requests `proj-sai-hpc-software`, sets its working directory
 inside the project, uses one MPI rank and one GPU on V100 partitions, and runs the
-normal matching host OpenMPI module. `results/accepted.json` contains numerical
+normal matching host OpenMPI module. Host MPI scratch uses a short
+`runtime/lx-<12 hex digits>` path derived from the task directory, leaving room
+for PRTE's Unix socket names. `results/accepted.json` contains numerical
 deltas, final artifact identity/hash, actual loader messages and LibXC kernel
 counts/time. Any failure writes `results/failed.json` and leaves raw evidence
 intact. Reruns use a fresh supplementary run ID; existing evidence is never
 overwritten. Main single/multinode OT, diagonalization and ELPA acceptance remains
 required independently.
+
+After the ordinary workflow publishes a target, `audit.py` performs a separate
+read-only revalidation through its original frozen controller: final SIF bytes,
+raw seven-case single/two-node science, native export, module and all three
+dependency/build/science allocations. Invoke it on the login node with
+`python3 -I -B - <target> < audit.py`. This audit does not submit jobs or change
+acceptance records; it also does not assert physical `/opt` installation or
+replace the LibXC supplement. Its result is pending publication of each target.

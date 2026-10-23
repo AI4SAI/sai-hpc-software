@@ -200,7 +200,7 @@ def prepare(args):
         'export LD_LIBRARY_PATH="" LD_PRELOAD="" PYTHONDONTWRITEBYTECODE=1',
         'unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH',
         'export SAI_SOFTWARE_ROOT=' + q(str(ROOT)), 'export SAI_CP2K_IMAGE=' + q(str(image)),
-        'export TMPDIR=' + q(str(ROOT / 'runtime' / args.run_id)),
+        'export TMPDIR=' + q(str(ROOT / 'runtime' / ('lx-' + hashlib.sha256(str(task).encode()).hexdigest()[:12]))),
         'mkdir -p "$TMPDIR"', 'source /etc/profile.d/lmod.sh', 'module purge',
         'module use /opt/modules/modulefiles/devtools /opt/modules/modulefiles/apps',
         'module load apptainer/1.4.4 openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto']
