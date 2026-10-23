@@ -62,8 +62,11 @@ The next attempt passed the corrected CP2K environment selection and began
 dependency compilation. A read-only source preflight then found that current
 master had upgraded LibXS and removed its old JIT repair patch. The previous
 recipe would silently build unpatched 1.0.0. That Actions run was stopped
-before any application submission; its four dependency allocations continue
-under their original controller and keep their original prefixes and receipts.
+before any application submission; its four dependency allocations completed
+successfully and were sealed by their original controller. Their original
+prefixes and receipts are preserved in the
+[checkpoint record](evidence/development-project-20261023/cp2k-39976482528-dependency-checkpoints.json);
+they are not application acceptance or inputs relabeled for the corrected recipe.
 The [LibXS preflight](evidence/development-project-20261023/cp2k-libxs-preflight.md)
 records the source evidence, verified archive, cancellation and binary-cache
 assessment. The corrected workflow follows each source's declared dependency
@@ -71,6 +74,12 @@ version without changing the installation identity contract.
 The retry resolved the newer master commit `cfe5e5d87aaf` once for all four
 targets. It directly follows `04b255137f7b` and changes Fortran reference
 counting without changing the dependency or toolchain declarations.
+An independently reviewed
+[LibXC supplement](evidence/cp2k-development-20261023/README.md) fixes its
+numerical thresholds before execution. It will compare built-in PBE with
+LibXC HOST on all targets and LibXC DEVICE on GPU targets using each final
+sealed SIF, with actual runtime-version, loader and LibXC CUDA-kernel evidence.
+These supplementary calculations are pending the final artifacts.
 
 [Branch integration audit](evidence/development-project-20261023/branch-audit.md)
 identifies two old branches already merged through equivalent patches. The
