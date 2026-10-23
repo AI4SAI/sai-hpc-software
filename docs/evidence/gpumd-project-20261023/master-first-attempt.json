@@ -1,0 +1,37 @@
+{
+  "observed_at": "2026-10-23T13:38:24.397995+00:00",
+  "workflow_run": 39961430052,
+  "reason": "master moves JIT kernels into main_nep/nep; unanchored tar exclude removed that directory",
+  "targets": [
+    {
+      "run": "gpumd-39961430052-1-development-16v100-avx2-2026-10-23-2c93346fce44",
+      "job": "1912383",
+      "accounting": "1912383|16V100|proj-sai-hpc-software|PENDING|0:0|00:00:00|rush-1o2gpu\n",
+      "before": "JobId=1912383 JobName=sai-gpumd-build-16v100-avx2-d208b4d6f676\n   UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A\n   Priority=10006 Nice=0 Account=proj-sai-hpc-software QOS=rush-1o2gpu WCKey=*\n   JobState=PENDING Reason=Job's_QOS_not_permitted_to_use_this_partition_(16V100_allows_huge-gpu,flood-gpu,rush-gpu,ultimate-gpu,flood-1o2gpu_not_rush-1o2gpu) Dependency=(null)\n   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0\n   RunTime=00:00:00 TimeLimit=00:30:00 TimeMin=N/A\n   SubmitTime=2026-10-23T21:31:26 EligibleTime=2026-10-23T21:31:26\n   AccrueTime=2026-10-23T21:31:26\n   StartTime=Unknown EndTime=Unknown Deadline=N/A\n   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-23T21:38:14 Scheduler=Main\n   Partition=16V100 AllocNode:Sid=login-01:1447749\n   ReqNodeList=(null) ExcNodeList=(null)\n   NodeList=\n   NumNodes=1-1 NumCPUs=1 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:*\n   ReqTRES=cpu=1,mem=15G,node=1,billing=150,gres/gpu=1\n   AllocTRES=(null)\n   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*\n   MinCPUsNode=1 MinMemoryNode=0 MinTmpDiskNode=0\n   Features=(null) DelayBoot=00:00:00\n   OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null)\n   Command=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39961430052-1-development-16v100-avx2-2026-10-23-2c93346fce44/job.sbatch\n   SubmitLine=sbatch --parsable /org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39961430052-1-development-16v100-avx2-2026-10-23-2c93346fce44/job.sbatch\n   WorkDir=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39961430052-1-development-16v100-avx2-2026-10-23-2c93346fce44\n   StdErr=\n   StdIn=/dev/null\n   StdOut=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39961430052-1-development-16v100-avx2-2026-10-23-2c93346fce44/results/slurm-1912383.log\n   TresPerNode=gres/gpu:1\n\n",
+      "action": "Cancelled this pending attempt; superseded by source-packaging and partition-QoS fix. No overlay existed."
+    },
+    {
+      "run": "gpumd-39961430052-1-development-4v100-avx512-2026-10-23-2c93346fce44",
+      "job": "1912378",
+      "accounting": "1912378|4V100|proj-sai-hpc-software|FAILED|1:0|00:01:09|rush-1o2gpu\n1912378.batch||proj-sai-hpc-software|FAILED|1:0|00:01:09|\n1912378.extern||proj-sai-hpc-software|COMPLETED|0:0|00:01:09|\n",
+      "jit_failure": [
+        "Warning: NEP training specialization disabled: GPUMD_SRC does not point to a valid GPUMD src directory."
+      ],
+      "jit_log": "/org/org-open-sai/proj-sai-hpc-software/diagnostics/gpumd-master-layout-39961430052/gpumd-39961430052-1-development-4v100-avx512-2026-10-23-2c93346fce44-jit.log"
+    },
+    {
+      "run": "gpumd-39961430052-1-development-8v100v0-avx512-2026-10-23-2c93346fce44",
+      "job": "1912380",
+      "accounting": "1912380|8V100V0|proj-sai-hpc-software|FAILED|1:0|00:03:05|rush-1o2gpu\n1912380.batch||proj-sai-hpc-software|FAILED|1:0|00:03:05|\n1912380.extern||proj-sai-hpc-software|COMPLETED|0:0|00:03:05|\n",
+      "jit_failure": [
+        "Warning: NEP training specialization disabled: GPUMD_SRC does not point to a valid GPUMD src directory."
+      ],
+      "jit_log": "/org/org-open-sai/proj-sai-hpc-software/diagnostics/gpumd-master-layout-39961430052/gpumd-39961430052-1-development-8v100v0-avx512-2026-10-23-2c93346fce44-jit.log"
+    }
+  ],
+  "partition_policies": {
+    "4V100": "PartitionName=4V100\n   AllowGroups=ALL AllowAccounts=ALL AllowQos=huge-gpu,flood-gpu,rush-gpu,rush-1o2gpu,flood-1o2gpu,improper-gpu,reserved-capacity\n   AllocNodes=ALL Default=YES QoS=N/A\n   DefaultTime=NONE DisableRootJobs=NO Exclusive=NO GraceTime=0 Hidden=NO\n   MaxNodes=UNLIMITED MaxTime=30-00:00:00 MinNodes=0 LLN=NO MaxCPUsPerNode=UNLIMITED MaxCPUsPerSocket=UNLIMITED\n   Nodes=4v100n[01-06,08-36]\n   PriorityJobFactor=1 PriorityTier=1 RootOnly=NO ReqResv=NO OverSubscribe=NO\n   OverTimeLimit=NONE PreemptMode=OFF\n   State=UP TotalCPUs=1120 TotalNodes=35 SelectTypeParameters=NONE\n   JobDefaults=DefCpuPerGPU=8,DefMemPerGPU=22528\n   DefMemPerNode=UNLIMITED MaxMemPerNode=UNLIMITED\n   TRES=cpu=1120,mem=3080G,node=35,billing=27160,gres/gpu=140\n   TRESBillingWeights=gres/gpu=180,CPU=22.5,Mem=8.8182G\n\n",
+    "16V100": "PartitionName=16V100\n   AllowGroups=ALL AllowAccounts=ALL AllowQos=huge-gpu,flood-gpu,rush-gpu,ultimate-gpu,flood-1o2gpu\n   AllocNodes=ALL Default=NO QoS=N/A\n   DefaultTime=NONE DisableRootJobs=NO Exclusive=NO GraceTime=0 Hidden=NO\n   MaxNodes=UNLIMITED MaxTime=UNLIMITED MinNodes=0 LLN=NO MaxCPUsPerNode=UNLIMITED MaxCPUsPerSocket=UNLIMITED\n   Nodes=16v100n[01-02,04-27,29,32-62,64-84]\n   PriorityJobFactor=1 PriorityTier=1 RootOnly=NO ReqResv=NO OverSubscribe=NO\n   OverTimeLimit=NONE PreemptMode=OFF\n   State=UP TotalCPUs=10112 TotalNodes=79 SelectTypeParameters=NONE\n   JobDefaults=DefCpuPerGPU=8,DefMemPerGPU=15360\n   DefMemPerNode=UNLIMITED MaxMemPerNode=UNLIMITED\n   TRES=cpu=10112,mem=18960G,node=79,billing=189600,gres/gpu=1264\n   TRESBillingWeights=gres/gpu=150,CPU=18.75,Mem=10G\n\n",
+    "8V100V0": "PartitionName=8V100V0\n   AllowGroups=ALL AllowAccounts=ALL AllowQos=huge-gpu,flood-gpu,rush-gpu,rush-1o2gpu,flood-1o2gpu,improper-gpu,ultimate-gpu\n   AllocNodes=ALL Default=NO QoS=N/A\n   DefaultTime=NONE DisableRootJobs=NO Exclusive=NO GraceTime=0 Hidden=NO\n   MaxNodes=UNLIMITED MaxTime=UNLIMITED MinNodes=0 LLN=NO MaxCPUsPerNode=UNLIMITED MaxCPUsPerSocket=UNLIMITED\n   Nodes=8v100v0n[02-14]\n   PriorityJobFactor=1 PriorityTier=1 RootOnly=NO ReqResv=NO OverSubscribe=NO\n   OverTimeLimit=NONE PreemptMode=OFF\n   State=UP TotalCPUs=624 TotalNodes=13 SelectTypeParameters=NONE\n   JobDefaults=DefCpuPerGPU=6,DefMemPerGPU=47104\n   DefMemPerNode=UNLIMITED MaxMemPerNode=UNLIMITED\n   TRES=cpu=624,mem=4784G,node=13,billing=18720,gres/gpu=104\n   TRESBillingWeights=gres/gpu=180,CPU=30,Mem=3.913G\n\n"
+  }
+}

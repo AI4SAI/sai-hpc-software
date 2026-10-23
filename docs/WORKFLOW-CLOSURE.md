@@ -49,8 +49,9 @@ per node fixed it without changing resources or scientific criteria.
 The superseded private-account jobs `1903636`–`1903639` were cancelled while
 pending; their files and the failed CPU attempt are preserved.
 [Physical native acceptance and project-account evidence](evidence/abacus-beta11-20261022/physical-native-acceptance.json).
-This validates the new directory for native acceptance; automatic build CI
-still constructs its existing home project path and has not been migrated.
+ABACUS automatic build CI still uses its existing home project path; its
+frozen continuations have not been migrated. New GPUMD automatic builds and
+acceptance now use the funded project directory/account described below.
 Optional public deployment of the container image driver is tracked in
 [issue #12](https://github.com/AI4SAI/sai-hpc-software/issues/12).
 
@@ -62,6 +63,34 @@ Loading only `apptainer/1.4.4` still uses its bundled helper; see the
 [single-command opt-in and workflow behavior](../deployment/fuse2fs-1.47.4-sai1/README.md#use).
 This enables the measured I/O optimization for future builds; scientific
 acceptance of new ABACUS/GPUMD deliveries remains part of their own workflows.
+
+October 23: GPUMD `v5.9.1` (`11ba6fbdb4d7`) now has verified SIFs on all three
+V100 partitions from [run 39955137406](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39955137406).
+Builds `1911768` (4V100), `1911773` (16V100) and `1911767` (8V100V0) completed
+in 80, 119 and 176 seconds. All three passed GPU science/performance,
+host launcher execution, native export readback and publication. Independent
+raw-result and export revalidation passed on every target; NEP throughput differs
+from the site baseline by less than 0.5%. Science jobs `1912292`, `1911814`
+and `1911819` completed in 94, 129 and 128 seconds respectively.
+All new work uses `/org/org-open-sai/proj-sai-hpc-software` and account
+`proj-sai-hpc-software`. Project-inherited ACLs initially prevented writable
+overlay startup; clearing ACLs only on private scratch fixed it. New GPUMD
+jobs use partition-authorized one-GPU QoS (rush on 4V100/8V100V0, flood
+on 16V100) and shorter time requests for backfill. Original attempts, scheduling adjustments and frozen controllers
+are preserved. Physical `/opt` installation and its native execution are
+still pending.
+Current GPUMD `master` (`2c93346fce44`, October 21) also passes all three
+partitions in [run 39963334471](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39963334471).
+Builds `1912478`/`1912477`/`1912479` completed in 73/129/194 seconds, and
+science jobs `1912533`/`1912536`/`1912539` in 94/122/125 seconds. All are
+`COMPLETED / 0:0`. Raw numerical outputs, all 457 native export files per target
+and published modules passed independent revalidation; benchmark differences
+are below 0.3%. The first attempt exposed a source-packaging exclusion that
+removed upstream's new `main_nep/nep/` runtime directory, plus an unsupported
+16V100 QoS. Both are fixed without relaxing JIT, scientific or performance
+checks. This closes GPUMD release/master container delivery on three V100
+partitions; it does not assert closure of other applications' development tracks.
+[GPUMD project delivery record](evidence/gpumd-project-20261023/README.md).
 
 October 22: [independent LAMMPS candidates](LAMMPS-INDEPENDENT.md) reuse the
 accepted physical DeePMD 3.2.0 dependency. The first 16V100 develop build
@@ -123,9 +152,9 @@ remain complete; runtime uses the physical installation without Apptainer.
 The original private-ELPA CP2K 2026.2 on all four partitions (4V100, 16V100,
 8V100V0 and DSPRHBM) has passed candidate science, native export readback,
 publication, physical `/opt` installation and native single/two-node science.
-Development is not yet accepted. GPUMD on 16V100 has passed science, performance and
-publication; its additional exported-native module execution check remains
-pending. Production acceptance is incomplete across the full site matrix. Original dirty
+Development is not yet accepted. GPUMD's latest release status is recorded
+above; its additional physical native execution check remains pending.
+Production acceptance is incomplete across the full site matrix. Original dirty
 worktrees and recovery checkpoints remain preserved. At the user's request,
 the ready-to-run [CP2K physical deployment package](../deployment/cp2k-2026.2/README.md)
 now includes the four-partition module, selective installer and post-install
