@@ -10,11 +10,18 @@ installation are separate acceptance states.
 
 | Program | Selected development commit | Current evidence |
 | --- | --- | --- |
-| ABACUS `develop` | `370ba685e6707b3625c5580ff9d02ef0afb248e8` | Four-partition build/acceptance workflow [39971072923](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971072923) in progress. |
+| ABACUS `develop` | `370ba685e6707b3625c5580ff9d02ef0afb248e8` | All four targets built, scientifically accepted and published with reverified native staging exports; workflow [39971072923](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971072923) succeeded. Physical `/opt` installation pending. |
 | CP2K `master` | `04b255137f7b472b07f09bec26e7bbf81c366a3a` | Four-partition retry [39976482528](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39976482528) in progress; source-pinned LibXC 7.1.2 added for current master. The first attempt failed before dependency compilation because its environment selector omitted `cp2k`; the corrected probe uses the existing CP2K environment. |
 | DeePMD-kit `master` | `558f56962775098b8b554e341c3b37d2f86e6aeb` | All three V100 candidates build-verified and scientifically accepted: TF/PT/JAX Python/C-API checks plus 1,486 measured CUDA kernel events per target. Not yet published or installed natively. |
 | LAMMPS `develop` | `a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b` | All three V100 candidates build-verified and scientifically accepted: 14 cases, 71 packages, 2,497 styles per target. Not yet published or installed natively. |
 | GPUMD `master` | `2c93346fce4461de1c42c77e7fe74cdb6b0e3df6` | All three V100 targets scientifically accepted, published with native staging exports; physical `/opt` installation pending. |
+
+[ABACUS development evidence](evidence/abacus-development-20261023/README.md)
+records 23 successful build/acceptance jobs and independent checks of all four
+SIFs, raw scientific results, modules and 8,713 native export entries per target.
+The three GPU targets passed actual two-node cuSOLVERMp/NCCL execution. All
+declared PW/HSE/DeePKS SCF iteration-time gates pass; total wall times for these
+small cases are recorded separately and do not establish a general speedup.
 
 [LAMMPS development evidence](evidence/lammps-project-20261023/README.md)
 records recovery of the already compiled 8V100V0 overlay in export job

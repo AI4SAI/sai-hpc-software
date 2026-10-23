@@ -1,0 +1,35 @@
+{
+  "command": [
+    "sacct",
+    "-X",
+    "-n",
+    "-P",
+    "-j",
+    "1913403,1913546",
+    "--format=JobIDRaw,State,ExitCode,Partition,QOS,Timelimit,Elapsed,ReqTRES,AllocTRES,Account,WorkDir,Start,End"
+  ],
+  "jobs": {
+    "1913403": {
+      "hashes": {
+        "job.id": "f29245649c720007dd7c1a91a086652f64a5aa9080467fc22c32d33e10271b63",
+        "job.sbatch": "3d02f973dd06128a45569518be1a3d70aebd137115918af6adc738a47cbb3ef5",
+        "request.json": "e0088e4725aaa2b1f6ef7ff305db3c91172f05598b54f0e29e5e57a26a22c301"
+      },
+      "stage": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/39971072923-1-development-4v100-avx512-2026-10-23-370ba685e670-multinode"
+    },
+    "1913546": {
+      "hashes": {
+        "job.id": "022a955f0ef637706e4d0407b878b53cb4f1ec0aaea48acd9a31b98bfee1aff5",
+        "job.sbatch": "3f7001c859afb87ab17cb3b558891cb7f5a5d5024803260ab4bb266d170f82e3",
+        "request.json": "195fd8b22e74a9d4ecb6356538ddc2b15b3be59ae056cbd5e0f98128fda93a21"
+      },
+      "stage": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/39971072923-1-development-4v100-avx512-2026-10-23-370ba685e670-gpu-features"
+    }
+  },
+  "recorded_at": "2026-10-23T15:37:50.680322+00:00",
+  "returncode": 0,
+  "schema": 1,
+  "stderr": "",
+  "stdout": "1913403|COMPLETED|0:0|4V100|rush-1o2gpu|00:10:00|00:00:12|billing=388,cpu=2,gres/gpu=2,mem=44G,node=2|billing=388,cpu=16,gres/gpu=2,mem=44G,node=2|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/39971072923-1-development-4v100-avx512-2026-10-23-370ba685e670-multinode|2026-10-23T23:25:47|2026-10-23T23:25:59\n1913546|COMPLETED|0:0|4V100|rush-1o2gpu|00:30:00|00:00:33|billing=388,cpu=2,gres/gpu=2,mem=44G,node=2|billing=388,cpu=16,gres/gpu=2,mem=44G,node=2|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/39971072923-1-development-4v100-avx512-2026-10-23-370ba685e670-gpu-features|2026-10-23T23:33:48|2026-10-23T23:34:21\n",
+  "verified": true
+}
