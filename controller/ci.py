@@ -13,6 +13,7 @@ import subprocess
 import sys
 import tempfile
 import time
+import uuid
 from remote_controller import safe_name, safe_sha, SAI_PROJECT_ROOT
 from delivery_layout import artifact_path
 from release_contract import SOFTWARE, TRACKS, validate_identity
@@ -48,6 +49,26 @@ def remote_project_root(software, user):
 
 def remote_controller_command(root, control, script, *args):
     return ['env', 'SAI_SOFTWARE_ROOT=' + root, 'python3', f'{control}/{script}', *args]
+
+
+def stage_archives(python, upload, root, directory, archives):
+    """Cache lookup is remote; only verified cache misses cross the SSH link."""
+    for archive, digest in archives:
+        name = Path(archive).name
+        arguments = [root, directory, name, digest]
+        hit = json.loads(python('input_archive_cache.py', 'stage', *arguments,
+                                capture_output=True).stdout)
+        if type(hit) is not bool:
+            raise ValueError('invalid dependency archive cache response')
+        if hit:
+            print(f'ARCHIVE_CACHE_HIT {name} {digest}: zero archive upload', flush=True)
+            continue
+        temporary = f'{directory}/.upload-{uuid.uuid4().hex}-{name}'
+        upload(archive, temporary)
+        committed = json.loads(python('input_archive_cache.py', 'commit', *arguments,
+                                      '--upload', temporary, capture_output=True).stdout)
+        if committed is not True:
+            raise ValueError('dependency archive upload was not committed')
 
 
 def inspect_existing_job(root, control, directory, expected, script):
@@ -209,7 +230,7 @@ def main():
         parent = Path(__file__).resolve().parent
         common = ["software_controller.py", "remote_controller.py", "source_cache.py", "module_publication.py",
                   "runtime_controller.py", "create_rootfs.sh", "release_contract.py", "resolve_source.py",
-                  "delivery_layout.py"]
+                  "delivery_layout.py", "input_archive_cache.py"]
         recipe = (["container_entry.sh", "environment.sh", "abacus_build.sh",
                    "gpu_feature_controller.py", "gpu_feature_runtime.sh",
                    "abacus_dependencies.py", "abacus_dependencies.sh",
@@ -304,16 +325,16 @@ def main():
             from abacus_dependencies import cache_archives, load_lock
             updates = temporary / "abacus-updates"
             cache_archives(updates)
-            ssh(["mkdir", "-p", f"{task}/input/abacus-updates"])
-            for item in load_lock()["archives"]:
-                if "url" in item:
-                    upload(updates / item["file"], f"{task}/input/abacus-updates/{item['file']}")
+            stage_archives(python, upload, root, f'{task}/input/abacus-updates',
+                           [(updates / item['file'], item['sha256'])
+                            for item in load_lock()['archives'] if 'url' in item])
         if software == "cp2k":
-            from cp2k_spack import cache_source_updates
-            archives = cache_source_updates(temporary / 'cp2k-updates')
-            ssh(['mkdir', '-p', f'{task}/input/cp2k-updates'])
-            for archive in archives:
-                upload(archive, f'{task}/input/cp2k-updates/{archive.name}')
+            import cp2k_spack
+            archives = cp2k_spack.cache_source_updates(temporary / 'cp2k-updates')
+            pins = {getattr(cp2k_spack, item + '_ARCHIVE'): getattr(cp2k_spack, item + '_SHA256')
+                    for item in ('WIGNERNJ', 'TBLITE_RELEASE', 'ELPA', 'LIBXC')}
+            stage_archives(python, upload, root, f'{task}/input/cp2k-updates',
+                           [(archive, pins[archive.name]) for archive in archives])
     def emit_run_id():
         if os.environ.get('GITHUB_OUTPUT'):
             with open(os.environ['GITHUB_OUTPUT'], 'a') as stream:

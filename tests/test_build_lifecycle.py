@@ -162,7 +162,7 @@ class CiLifecycleTests(unittest.TestCase):
 
     def execute(self, *, software="abacus", target="4v100-avx512", fail_monitor=None,
                 event="workflow_dispatch", version="v1", track="development",
-                prior=None, alter_identity=None, published_path=None, resume="", retry="false", phase="all", handoff=None, publish_failures=0, persisted_jobs=None):
+                prior=None, alter_identity=None, published_path=None, resume="", retry="false", phase="all", handoff=None, publish_failures=0, persisted_jobs=None, archive_hit=False):
         commands = []
         publish_remaining = publish_failures
         preflights = {}
@@ -235,6 +235,8 @@ class CiLifecycleTests(unittest.TestCase):
                         stdout = json.dumps(identity if alter_identity is None else alter_identity(identity))
                     elif script == "release_contract.py":
                         stdout = json.dumps({"build": not bool(prior), "skipped": prior or []})
+                    elif script == 'input_archive_cache.py':
+                        stdout = json.dumps(archive_hit if operation == 'stage' else True)
             elif argv[0] == "scp" and argv[-2].endswith("/artifact.path"):
                 Path(argv[-1]).write_text(str(published_path or expected_artifact) + "\n")
             elif argv[0] == "scp":
@@ -261,7 +263,7 @@ class CiLifecycleTests(unittest.TestCase):
                 ci.main()
             clock.now.assert_called_once_with(timezone.utc)
             self.archive_calls = archives.call_args_list
-        return [command for command in commands if command[0] != "source_cache.py"]
+        return [command for command in commands if command[0] not in ('source_cache.py', 'input_archive_cache.py')]
 
     def test_stage_handoff_never_reuploads_or_reclaims_release(self):
         calls = self.execute(software='cp2k', phase='dependencies', track='release')
@@ -324,7 +326,9 @@ class CiLifecycleTests(unittest.TestCase):
                        if argv[0] == "scp" and argv[-2] == str(self.root / "abacus-updates" / name)]
             self.assertEqual(len(uploads), 1)
             self.assertLess(uploads[0], submitted)
-            self.assertTrue(self.transport[uploads[0]][-1].endswith("/input/abacus-updates/" + name))
+            destination = self.transport[uploads[0]][-1]
+            self.assertIn('/input/abacus-updates/.upload-', destination)
+            self.assertTrue(destination.endswith('-' + name))
         self.execute(software="cp2k")
         self.assertEqual(self.archive_calls, [])
         self.assertTrue(set(updated).isdisjoint(self.uploads))
@@ -335,11 +339,21 @@ class CiLifecycleTests(unittest.TestCase):
                        if argv[0] == "scp" and argv[-2] == str(self.root / "cp2k-updates" / name)]
             self.assertEqual(len(uploads), 1)
             self.assertLess(uploads[0], submitted)
-            self.assertTrue(self.transport[uploads[0]][-1].endswith("/input/cp2k-updates/" + name))
+            destination = self.transport[uploads[0]][-1]
+            self.assertIn('/input/cp2k-updates/.upload-', destination)
+            self.assertTrue(destination.endswith('-' + name))
         self.execute(event="schedule", track="release", prior=[{"previous_run": "failed"}])
         self.assertEqual(self.archive_calls, [])
         self.execute(event="schedule", prior=[{"previous_run": "development"}])
         self.assertEqual([call.args for call in self.archive_calls], [(self.root / "abacus-updates",)])
+
+    def test_dependency_cache_hit_skips_archive_transport_for_both_programs(self):
+        for software in ('abacus', 'cp2k'):
+            with self.subTest(software=software):
+                self.execute(software=software, archive_hit=True)
+                transferred_archives = [name for name in self.uploads if name.endswith(('.tar.gz', '.tar.xz', '.tar.bz2'))]
+                self.assertEqual(transferred_archives, [])
+                self.assertIn('input_archive_cache.py', self.uploads)
 
     def test_gpu_publish_occurs_after_both_acceptance_monitors(self):
         self.assertEqual(self.execute(), [
