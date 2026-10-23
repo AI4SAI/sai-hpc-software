@@ -2,8 +2,10 @@ import contextlib
 import hashlib
 import io
 import json
+import os
 from pathlib import Path
 import sys
+import subprocess
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -15,6 +17,31 @@ import cp2k_spack_seed as seed
 
 
 class SpackProbeTests(unittest.TestCase):
+    def test_probe_selects_cp2k_environment_without_slurm_variables(self):
+        script = Path(__file__).resolve().parents[1] / 'controller/cp2k_spack_probe.sh'
+        # Stop at the environment handoff; no /workspace writes, module loads
+        # or compiler execution are needed to check this dispatch contract.
+        shell = '''
+python3() { :; }
+mkdir() { :; }
+source() {
+    [[ "$1" == /control/environment.sh && "$2" == "$EXPECTED_TARGET" && "$3" == cp2k ]] || exit 91
+    printf 'CP2K_ENVIRONMENT_SELECTED\\n'
+    exit 0
+}
+export -f python3 mkdir source
+bash "$1" "$2"
+'''
+        for partition, target in (('DSPRHBM', 'dsprhbm'), ('4V100', '4v100-avx512'),
+                                  ('16V100', '16v100-avx2'), ('8V100V0', '8v100v0-avx512')):
+            with self.subTest(partition=partition):
+                environment = {key: value for key, value in os.environ.items() if not key.startswith('SLURM_')}
+                environment['EXPECTED_TARGET'] = target
+                result = subprocess.run(['bash', '-c', shell, 'probe-test', str(script), partition],
+                                        env=environment, capture_output=True, text=True, timeout=10)
+                self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertEqual(result.stdout.strip(), 'CP2K_ENVIRONMENT_SELECTED')
+
     def test_debian_repack_suffix_is_not_a_different_upstream_version(self):
         cases = {'1:1.3.dfsg-3.1ubuntu2.1': '1.3', '2:6.3.0+dfsg-2ubuntu6.1': '6.3.0',
                  '2.7.1+dfsg-6ubuntu2': '2.7.1', '1:1.16.5-1.3ubuntu1': '1.16.5',

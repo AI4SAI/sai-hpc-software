@@ -1,0 +1,665 @@
+{
+  "observed_at": "2026-10-23T15:11:15.903687+00:00",
+  "workflow_url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971078915",
+  "workflow": {
+    "conclusion": "",
+    "jobs": [
+      {
+        "completedAt": "2026-10-23T14:37:37Z",
+        "conclusion": "success",
+        "databaseId": 120473608546,
+        "name": "validate",
+        "startedAt": "2026-10-23T14:36:33Z",
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Install native delivery test tools",
+            "number": 3,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run python3 -m unittest discover -s tests -v",
+            "number": 4,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run for script in controller/*.sh controller/*.sbatch deployment/*/*.sh deployment/*/*.sbatch; do",
+            "number": 5,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 10,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 11,
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971078915/job/120473608546"
+      },
+      {
+        "completedAt": "2026-10-23T14:37:46Z",
+        "conclusion": "success",
+        "databaseId": 120474156822,
+        "name": "resolve-source",
+        "startedAt": "2026-10-23T14:37:40Z",
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run python3 - <<'PY'",
+            "number": 3,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 6,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 7,
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971078915/job/120474156822"
+      },
+      {
+        "completedAt": "2026-10-23T15:08:26Z",
+        "conclusion": "failure",
+        "databaseId": 120474226978,
+        "name": "build-cpu (cp2k, development, cp2k/cp2k, master, resolved, master, 04b255137f7b472b07f09bec26e7bb... / dependencies",
+        "startedAt": "2026-10-23T14:37:49Z",
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Prepare HPC SSH credentials",
+            "number": 3,
+            "status": "completed"
+          },
+          {
+            "conclusion": "failure",
+            "name": "Run delivery phase",
+            "number": 4,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Preserve phase logs and evidence",
+            "number": 5,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Remove temporary SSH key",
+            "number": 6,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 12,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 13,
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971078915/job/120474226978"
+      },
+      {
+        "completedAt": "2026-10-23T15:07:44Z",
+        "conclusion": "failure",
+        "databaseId": 120474226986,
+        "name": "build (cp2k, development, cp2k/cp2k, master, resolved, master, 04b255137f7b472b07f09bec26e7bbf81c... / dependencies",
+        "startedAt": "2026-10-23T14:37:49Z",
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Prepare HPC SSH credentials",
+            "number": 3,
+            "status": "completed"
+          },
+          {
+            "conclusion": "failure",
+            "name": "Run delivery phase",
+            "number": 4,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Preserve phase logs and evidence",
+            "number": 5,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Remove temporary SSH key",
+            "number": 6,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 12,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 13,
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971078915/job/120474226986"
+      },
+      {
+        "completedAt": "2026-10-23T15:11:11Z",
+        "conclusion": "failure",
+        "databaseId": 120474227082,
+        "name": "build (cp2k, development, cp2k/cp2k, master, resolved, master, 04b255137f7b472b07f09bec26e7bbf81c... / dependencies",
+        "startedAt": "2026-10-23T14:37:49Z",
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Prepare HPC SSH credentials",
+            "number": 3,
+            "status": "completed"
+          },
+          {
+            "conclusion": "failure",
+            "name": "Run delivery phase",
+            "number": 4,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Preserve phase logs and evidence",
+            "number": 5,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Remove temporary SSH key",
+            "number": 6,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 12,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 13,
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971078915/job/120474227082"
+      },
+      {
+        "completedAt": "2026-10-23T15:08:43Z",
+        "conclusion": "failure",
+        "databaseId": 120474227480,
+        "name": "build (cp2k, development, cp2k/cp2k, master, resolved, master, 04b255137f7b472b07f09bec26e7bbf81c... / dependencies",
+        "startedAt": "2026-10-23T14:37:49Z",
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Run actions/checkout@v4",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Prepare HPC SSH credentials",
+            "number": 3,
+            "status": "completed"
+          },
+          {
+            "conclusion": "failure",
+            "name": "Run delivery phase",
+            "number": 4,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Preserve phase logs and evidence",
+            "number": 5,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Remove temporary SSH key",
+            "number": 6,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Post Run actions/checkout@v4",
+            "number": 12,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 13,
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971078915/job/120474227480"
+      },
+      {
+        "completedAt": "2026-10-23T15:07:49Z",
+        "conclusion": "failure",
+        "databaseId": 120489188949,
+        "name": "build (cp2k, development, cp2k/cp2k, master, resolved, master, 04b255137f7b472b07f09bec26e7bbf81c... / result",
+        "startedAt": "2026-10-23T15:07:47Z",
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "failure",
+            "name": "Require acceptance or a recorded unchanged-release skip",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 3,
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971078915/job/120489188949"
+      },
+      {
+        "completedAt": "2026-10-23T15:07:45Z",
+        "conclusion": "skipped",
+        "databaseId": 120489189576,
+        "name": "build (cp2k, development, cp2k/cp2k, master, resolved, master, 04b255137f7b472b07f09bec26e7bbf81c... / build",
+        "startedAt": "2026-10-23T15:07:45Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971078915/job/120489189576"
+      },
+      {
+        "completedAt": "2026-10-23T15:07:45Z",
+        "conclusion": "skipped",
+        "databaseId": 120489189894,
+        "name": "build (cp2k, development, cp2k/cp2k, master, resolved, master, 04b255137f7b472b07f09bec26e7bbf81c... / acceptance",
+        "startedAt": "2026-10-23T15:07:45Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971078915/job/120489189894"
+      },
+      {
+        "completedAt": "2026-10-23T15:08:26Z",
+        "conclusion": "skipped",
+        "databaseId": 120489542585,
+        "name": "build-cpu (cp2k, development, cp2k/cp2k, master, resolved, master, 04b255137f7b472b07f09bec26e7bb... / build",
+        "startedAt": "2026-10-23T15:08:26Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971078915/job/120489542585"
+      },
+      {
+        "completedAt": "2026-10-23T15:08:31Z",
+        "conclusion": "failure",
+        "databaseId": 120489542937,
+        "name": "build-cpu (cp2k, development, cp2k/cp2k, master, resolved, master, 04b255137f7b472b07f09bec26e7bb... / result",
+        "startedAt": "2026-10-23T15:08:29Z",
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "failure",
+            "name": "Require acceptance or a recorded unchanged-release skip",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 3,
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971078915/job/120489542937"
+      },
+      {
+        "completedAt": "2026-10-23T15:08:26Z",
+        "conclusion": "skipped",
+        "databaseId": 120489544088,
+        "name": "build-cpu (cp2k, development, cp2k/cp2k, master, resolved, master, 04b255137f7b472b07f09bec26e7bb... / acceptance",
+        "startedAt": "2026-10-23T15:08:26Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971078915/job/120489544088"
+      },
+      {
+        "completedAt": "2026-10-23T15:08:47Z",
+        "conclusion": "failure",
+        "databaseId": 120489689624,
+        "name": "build (cp2k, development, cp2k/cp2k, master, resolved, master, 04b255137f7b472b07f09bec26e7bbf81c... / result",
+        "startedAt": "2026-10-23T15:08:45Z",
+        "status": "completed",
+        "steps": [
+          {
+            "conclusion": "success",
+            "name": "Set up job",
+            "number": 1,
+            "status": "completed"
+          },
+          {
+            "conclusion": "failure",
+            "name": "Require acceptance or a recorded unchanged-release skip",
+            "number": 2,
+            "status": "completed"
+          },
+          {
+            "conclusion": "success",
+            "name": "Complete job",
+            "number": 3,
+            "status": "completed"
+          }
+        ],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971078915/job/120489689624"
+      },
+      {
+        "completedAt": "2026-10-23T15:08:43Z",
+        "conclusion": "skipped",
+        "databaseId": 120489690274,
+        "name": "build (cp2k, development, cp2k/cp2k, master, resolved, master, 04b255137f7b472b07f09bec26e7bbf81c... / build",
+        "startedAt": "2026-10-23T15:08:43Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971078915/job/120489690274"
+      },
+      {
+        "completedAt": "2026-10-23T15:08:43Z",
+        "conclusion": "skipped",
+        "databaseId": 120489691889,
+        "name": "build (cp2k, development, cp2k/cp2k, master, resolved, master, 04b255137f7b472b07f09bec26e7bbf81c... / acceptance",
+        "startedAt": "2026-10-23T15:08:43Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971078915/job/120489691889"
+      },
+      {
+        "completedAt": "0001-01-01T00:00:00Z",
+        "conclusion": "",
+        "databaseId": 120490927882,
+        "name": "build (cp2k, development, cp2k/cp2k, master, resolved, master, 04b255137f7b472b07f09bec26e7bbf81c... / result",
+        "startedAt": "2026-10-23T15:11:14Z",
+        "status": "in_progress",
+        "steps": [],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971078915/job/120490927882"
+      },
+      {
+        "completedAt": "2026-10-23T15:11:11Z",
+        "conclusion": "skipped",
+        "databaseId": 120490929395,
+        "name": "build (cp2k, development, cp2k/cp2k, master, resolved, master, 04b255137f7b472b07f09bec26e7bbf81c... / build",
+        "startedAt": "2026-10-23T15:11:11Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971078915/job/120490929395"
+      },
+      {
+        "completedAt": "2026-10-23T15:11:11Z",
+        "conclusion": "skipped",
+        "databaseId": 120490930321,
+        "name": "build (cp2k, development, cp2k/cp2k, master, resolved, master, 04b255137f7b472b07f09bec26e7bbf81c... / acceptance",
+        "startedAt": "2026-10-23T15:11:11Z",
+        "status": "completed",
+        "steps": [],
+        "url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971078915/job/120490930321"
+      }
+    ],
+    "status": "queued"
+  },
+  "diagnosis": "The dependency probe omitted the cp2k environment selector and loaded the ABACUS-only ELPA auto module in a clean container without SLURM_JOB_PARTITION. No dependency compilation occurred.",
+  "fix": "Pass cp2k to environment.sh, matching the existing application stage and its accepted site-ELPA provider selection.",
+  "allocations": [
+    {
+      "run": "/org/org-open-sai/proj-sai-hpc-software/runs/39971078915-1-development-16v100-avx2-2026-10-23-04b255137f7b-dependencies",
+      "request": {
+        "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/23bb4c1f13e02a87f010db74189341d8fc60f058/39971078915-1-development-16v100-avx2-2026-10-23-04b255137f7b",
+        "identity": {
+          "build_id": "master-2026-10-23-g04b255137f7b-r859dce3ad483",
+          "cpu_arch": "znver3",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-g04b255137f7b-r859dce3ad483/16V100",
+          "partition": "16V100",
+          "recipe_sha256": "859dce3ad483926198a83a245b1afadcffd221b8ad5445f5c53ae52f8084e213",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "master",
+          "source_sha": "04b255137f7b472b07f09bec26e7bbf81c366a3a",
+          "source_version": "master-2026-10-23",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "16v100-avx2",
+          "track": "development",
+          "version_label": "master-2026-10-23"
+        },
+        "job_id": "1913322",
+        "minutes": 240,
+        "overlay_mb": 16384,
+        "purpose": "cp2k-final-prefix-dependencies-not-application-acceptance",
+        "script_sha256": "0b53af6f4640cb2e9eb750f6207b4476569c86498a5592edcd4d32f947c0588b"
+      },
+      "accounting": "1913322|16V100|FAILED|1:0|00:00:40|16v100n12|8|proj-sai-hpc-software",
+      "job_script_sha256": "0b53af6f4640cb2e9eb750f6207b4476569c86498a5592edcd4d32f947c0588b",
+      "log_file": "16v100-avx2-slurm.log",
+      "log_sha256": "bf85baedb07b66bcc02eacacfdbf554b46fe0e506a861656776bc745e6d199ce"
+    },
+    {
+      "run": "/org/org-open-sai/proj-sai-hpc-software/runs/39971078915-1-development-4v100-avx512-2026-10-23-04b255137f7b-dependencies",
+      "request": {
+        "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/23bb4c1f13e02a87f010db74189341d8fc60f058/39971078915-1-development-4v100-avx512-2026-10-23-04b255137f7b",
+        "identity": {
+          "build_id": "master-2026-10-23-g04b255137f7b-r859dce3ad483",
+          "cpu_arch": "znver4",
+          "cuda_arch": "70",
+          "dependency_isa": "avx512",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-g04b255137f7b-r859dce3ad483/4V100",
+          "partition": "4V100",
+          "recipe_sha256": "859dce3ad483926198a83a245b1afadcffd221b8ad5445f5c53ae52f8084e213",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "master",
+          "source_sha": "04b255137f7b472b07f09bec26e7bbf81c366a3a",
+          "source_version": "master-2026-10-23",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "4v100-avx512",
+          "track": "development",
+          "version_label": "master-2026-10-23"
+        },
+        "job_id": "1913311",
+        "minutes": 240,
+        "overlay_mb": 16384,
+        "purpose": "cp2k-final-prefix-dependencies-not-application-acceptance",
+        "script_sha256": "32bacd4d3458f49016531c1df21c8198ad2afc4609514d4e82fe1513539a38bb"
+      },
+      "accounting": "1913311|4V100|FAILED|1:0|00:02:02|4v100n19|8|proj-sai-hpc-software",
+      "job_script_sha256": "32bacd4d3458f49016531c1df21c8198ad2afc4609514d4e82fe1513539a38bb",
+      "log_file": "4v100-avx512-slurm.log",
+      "log_sha256": "c900fb8aa42b814cd53fbacd34a9327ef3ce1a1371359c77d5f8c89bec0f11dc"
+    },
+    {
+      "run": "/org/org-open-sai/proj-sai-hpc-software/runs/39971078915-1-development-8v100v0-avx512-2026-10-23-04b255137f7b-dependencies",
+      "request": {
+        "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/23bb4c1f13e02a87f010db74189341d8fc60f058/39971078915-1-development-8v100v0-avx512-2026-10-23-04b255137f7b",
+        "identity": {
+          "build_id": "master-2026-10-23-g04b255137f7b-r859dce3ad483",
+          "cpu_arch": "skylake-avx512",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-g04b255137f7b-r859dce3ad483/8V100V0",
+          "partition": "8V100V0",
+          "recipe_sha256": "859dce3ad483926198a83a245b1afadcffd221b8ad5445f5c53ae52f8084e213",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "master",
+          "source_sha": "04b255137f7b472b07f09bec26e7bbf81c366a3a",
+          "source_version": "master-2026-10-23",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "8v100v0-avx512",
+          "track": "development",
+          "version_label": "master-2026-10-23"
+        },
+        "job_id": "1913310",
+        "minutes": 240,
+        "overlay_mb": 16384,
+        "purpose": "cp2k-final-prefix-dependencies-not-application-acceptance",
+        "script_sha256": "f15b47a616d8be2dc4c00e187f79c5b163ccca29d2709f939c0485cbc4cd8f78"
+      },
+      "accounting": "1913310|8V100V0|FAILED|1:0|00:04:37|8v100v0n02|12|proj-sai-hpc-software",
+      "job_script_sha256": "f15b47a616d8be2dc4c00e187f79c5b163ccca29d2709f939c0485cbc4cd8f78",
+      "log_file": "8v100v0-avx512-slurm.log",
+      "log_sha256": "2811ecd00c9ea955214d9da99d52594dc3edec8a42856fb98a2dcc0bb8613736"
+    },
+    {
+      "run": "/org/org-open-sai/proj-sai-hpc-software/runs/39971078915-1-development-dsprhbm-2026-10-23-04b255137f7b-dependencies",
+      "request": {
+        "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/23bb4c1f13e02a87f010db74189341d8fc60f058/39971078915-1-development-dsprhbm-2026-10-23-04b255137f7b",
+        "identity": {
+          "build_id": "master-2026-10-23-g04b255137f7b-r859dce3ad483",
+          "cpu_arch": "x86-64-v4",
+          "cuda_arch": "",
+          "dependency_isa": "avx512",
+          "gpus": 0,
+          "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-g04b255137f7b-r859dce3ad483/DSPRHBM",
+          "partition": "DSPRHBM",
+          "recipe_sha256": "859dce3ad483926198a83a245b1afadcffd221b8ad5445f5c53ae52f8084e213",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "master",
+          "source_sha": "04b255137f7b472b07f09bec26e7bbf81c366a3a",
+          "source_version": "master-2026-10-23",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "dsprhbm",
+          "track": "development",
+          "version_label": "master-2026-10-23"
+        },
+        "job_id": "1913304",
+        "minutes": 720,
+        "overlay_mb": 16384,
+        "purpose": "cp2k-final-prefix-dependencies-not-application-acceptance",
+        "script_sha256": "87a4f5e7156b5979849fa7517fd61a642634ffe55a070cfc4469974aa70e1f13"
+      },
+      "accounting": "1913304|DSPRHBM|FAILED|1:0|00:03:07|d9470n02|8|proj-sai-hpc-software",
+      "job_script_sha256": "87a4f5e7156b5979849fa7517fd61a642634ffe55a070cfc4469974aa70e1f13",
+      "log_file": "dsprhbm-slurm.log",
+      "log_sha256": "edaca6bdadf76186485a003cc38169963b1b79830925d0d6de14f93042f5e689"
+    }
+  ]
+}

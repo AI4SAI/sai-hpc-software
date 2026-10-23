@@ -18,7 +18,10 @@ case "$partition" in
 esac
 mkdir -p /workspace/tmp /workspace/spack /workspace/spack-packages /workspace/solver /workspace/env
 export TMPDIR=/workspace/tmp
-source /control/environment.sh "$target"
+# Select the same CP2K environment as the application stage. The default is
+# ABACUS, whose automatic ELPA module requires Slurm variables stripped by the
+# container. CP2K verifies its own partition-specific ELPA provider later.
+source /control/environment.sh "$target" cp2k
 set +u
 module unload gcc
 module load gcc/14.3.0

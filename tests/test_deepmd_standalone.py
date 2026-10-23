@@ -1,4 +1,7 @@
 import copy
+from contextlib import ExitStack, redirect_stdout
+import io
+import json
 from pathlib import Path
 import subprocess
 import sys
@@ -124,6 +127,91 @@ class IndependentDeePMDTests(unittest.TestCase):
             self.assertEqual(len(profiles), 1)
             self.assertEqual(profiles[0].kwargs['env']['DP_BACKEND_PLUGIN_PATH'],
                              prefix + '/lib/python3.13/site-packages/deepmd/lib')
+
+
+class DeePMDStatusTests(unittest.TestCase):
+    def setUp(self):
+        self.stack = ExitStack()
+        self.addCleanup(self.stack.close)
+        self.root = Path(self.stack.enter_context(tempfile.TemporaryDirectory()))
+        self.stack.enter_context(patch.object(standalone, 'ROOT', self.root))
+        self.stack.enter_context(patch.object(standalone, 'PROJECT', self.root))
+        self.stack.enter_context(patch('remote_controller.SAI_PROJECT_ROOT', self.root))
+        self.directory = self.root / 'runs/status-test'
+        (self.directory / 'results').mkdir(parents=True)
+        self.delivery = standalone.make_delivery(dict(track='development', source_ref='master',
+            source_sha='5' * 40, source_version='master-2026-10-23'), '16v100-avx2')
+        script = self.directory / 'job.sbatch'
+        script.write_text(standalone.render(self.delivery, self.directory.name))
+        request = dict(delivery=self.delivery, controller=str(standalone.CONTROL),
+                       controller_sha256=standalone.fingerprint(),
+                       job_script_sha256=standalone.checksum(script), job_id='123')
+        (self.directory / 'request.json').write_text(json.dumps(request))
+        self.science = self.stack.enter_context(patch('deepmd_standalone_check.verify_science_files',
+                                                     return_value={'passed': True}))
+
+    def row(self, state='COMPLETED', code='0:0', account='proj-sai-hpc-software', directory=None):
+        return '|'.join(['123', state, code, '00:05:00', 'node', account, str(directory or self.directory)]) + '\n'
+
+    def query(self, accounting):
+        output = io.StringIO()
+        with patch.object(standalone.subprocess, 'check_output', return_value=accounting), redirect_stdout(output):
+            code = standalone.status(self.directory.name)
+        record = json.loads(output.getvalue())
+        self.assertEqual(record, json.loads((self.directory / 'results/status.json').read_text()))
+        return code, record
+
+    def successful_files(self):
+        (self.directory / 'candidate.sif').write_bytes(b'candidate image')
+        (self.directory / 'results/slurm-123.log').write_text(
+            'DEEPMD_STANDALONE_BUILD_VERIFIED\nDEEPMD_STANDALONE_SCIENCE_VERIFIED_NOT_PUBLISHED\n')
+
+    def test_accounting_visibility_delay_is_pending_and_later_completion_still_verifies_science(self):
+        self.successful_files()
+        code, record = self.query('\n')
+        self.assertEqual(code, 3)
+        self.assertEqual(record['state'], 'PENDING_ACCOUNTING')
+        self.assertFalse(record['build_verified'])
+        self.assertFalse(record['scientific_verified'])
+        self.science.assert_not_called()
+        for account, directory in (('personal', self.directory), ('proj-sai-hpc-software', '/home/stardust')):
+            with self.subTest(account=account, directory=directory), self.assertRaisesRegex(ValueError, 'account or directory'):
+                self.query(self.row(account=account, directory=directory))
+        self.science.assert_not_called()
+        code, record = self.query(self.row())
+        self.assertEqual(code, 0)
+        self.assertTrue(record['scientific_verified'])
+        self.science.assert_called_once_with(self.directory / 'runtime')
+
+    def test_nonempty_invalid_accounting_and_command_failure_are_not_pending(self):
+        for accounting in ('unexpected row\n', self.row() + self.row()):
+            with self.subTest(accounting=accounting), self.assertRaisesRegex(ValueError, 'missing or ambiguous'):
+                self.query(accounting)
+        with patch.object(standalone.subprocess, 'check_output', side_effect=subprocess.CalledProcessError(1, ['sacct'])), \
+                self.assertRaises(subprocess.CalledProcessError):
+            standalone.status(self.directory.name)
+        self.science.assert_not_called()
+
+    def test_terminal_job_without_all_acceptance_gates_fails_instead_of_waiting(self):
+        for marker in ('', 'DEEPMD_STANDALONE_BUILD_VERIFIED\n'):
+            (self.directory / 'candidate.sif').write_bytes(b'candidate image')
+            (self.directory / 'results/slurm-123.log').write_text(marker)
+            with self.subTest(marker=marker):
+                code, record = self.query(self.row())
+                self.assertEqual(code, 1)
+                self.assertFalse(record['scientific_verified'])
+        self.science.assert_not_called()
+        self.successful_files()
+        for state, code, expected in (('RUNNING', '0:0', 3), ('PENDING', '0:0', 3),
+                                      ('FAILED', '1:0', 1), ('COMPLETED', '1:0', 1)):
+            with self.subTest(state=state, exit_code=code):
+                result, record = self.query(self.row(state, code))
+                self.assertEqual(result, expected)
+                self.assertFalse(record['scientific_verified'])
+        self.science.assert_not_called()
+        self.science.side_effect = ValueError('raw science evidence failed')
+        with self.assertRaisesRegex(ValueError, 'raw science evidence'):
+            self.query(self.row())
 
 
 if __name__ == '__main__':

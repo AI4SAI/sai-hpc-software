@@ -151,6 +151,15 @@ def status(run_id):
         raise ValueError('DeePMD controller or submission changed')
     accounting = subprocess.check_output(['sacct', '-X', '-j', request['job_id'], '--noheader', '--parsable2',
         '--format=JobIDRaw,State,ExitCode,Elapsed,NodeList,Account,WorkDir'], text=True).strip()
+    if not accounting:
+        # slurmdbd can lag behind sbatch/squeue, especially on the first poll.
+        # This is an observation gap, never a build or acceptance claim.
+        result = dict(run_id=run_id, delivery=request['delivery'], job_id=request['job_id'], accounting='',
+                      state='PENDING_ACCOUNTING', build_verified=False, scientific_verified=False,
+                      native_runtime_verified=False, published=False)
+        (directory / 'results/status.json').write_text(json.dumps(result, sort_keys=True, indent=2) + '\n')
+        print(json.dumps(result, sort_keys=True))
+        return 3
     rows = [line.split('|') for line in accounting.splitlines() if line.split('|')[0] == request['job_id']]
     if len(rows) != 1:
         raise ValueError('missing or ambiguous DeePMD allocation')
@@ -170,7 +179,9 @@ def status(run_id):
         result['science'] = verify_science_files(directory / 'runtime')
     (directory / 'results/status.json').write_text(json.dumps(result, sort_keys=True, indent=2) + '\n')
     print(json.dumps(result, sort_keys=True))
-    return 0 if accepted else 1 if row[1].split('+')[0] in ('FAILED', 'CANCELLED', 'TIMEOUT', 'OUT_OF_MEMORY') else 3
+    active = ('PENDING', 'RUNNING', 'CONFIGURING', 'COMPLETING', 'SUSPENDED',
+              'REQUEUED', 'REQUEUE_FED', 'REQUEUE_HOLD', 'RESIZING', 'SIGNALING', 'STAGE_OUT')
+    return 0 if accepted else 3 if row[1].split('+')[0] in active else 1
 
 
 def main():
