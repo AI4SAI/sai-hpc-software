@@ -196,7 +196,10 @@ def case_input(data, name, nodes, partition):
 
 def command_for(output, hosts, cpu, arguments):
     ranks_per_node = 4 if cpu else 1
-    return [shutil.which('mpirun'), '-np', str(len(hosts) * ranks_per_node), '--host', ','.join(hosts),
+    # An explicit --host list defaults to one slot per host in site PRTE.
+    # Preserve the allocated four CPU ranks per node for both case topologies.
+    host_list = ','.join(host + (':' + str(ranks_per_node) if cpu else '') for host in hosts)
+    return [shutil.which('mpirun'), '-np', str(len(hosts) * ranks_per_node), '--host', host_list,
             '--map-by', 'ppr:4:node:PE=2' if cpu else 'ppr:1:node', '--bind-to', 'core' if cpu else 'none',
             '--report-bindings', 'bash', str(output / 'control/native-rank.sh'), *arguments]
 

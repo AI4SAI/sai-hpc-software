@@ -94,10 +94,15 @@ class AbacusNativeChecksTests(unittest.TestCase):
         with patch.object(native.shutil, 'which', return_value='/mpi/mpirun'):
             gpu = native.command_for(self.root, ['node-a', 'node-b'], False, [])
             cpu = native.command_for(self.root, ['node-a', 'node-b'], True, [])
+            single_cpu = native.command_for(self.root, ['node-a'], True, [])
         self.assertEqual(gpu[gpu.index('--bind-to')+1], 'none')
         self.assertEqual(gpu[gpu.index('-np')+1], '2')
+        self.assertEqual(gpu[gpu.index('--host')+1], 'node-a,node-b')
         self.assertEqual(cpu[cpu.index('-np')+1], '8')
         self.assertEqual(cpu[cpu.index('--map-by')+1], 'ppr:4:node:PE=2')
+        self.assertEqual(cpu[cpu.index('--host')+1], 'node-a:4,node-b:4')
+        self.assertEqual(single_cpu[single_cpu.index('--host')+1], 'node-a:4')
+        self.assertEqual(single_cpu[single_cpu.index('-np')+1], '4')
 
     def test_missing_installation_never_submits_compute_job(self):
         with patch.object(native, 'preflight', return_value=(self.release, self.reference)), \
