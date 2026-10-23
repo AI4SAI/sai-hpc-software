@@ -73,6 +73,7 @@ PY
     export PATH="$DEEPMD_PREFIX/bin:$PATH"
     export LD_LIBRARY_PATH="$DEEPMD_PREFIX/lib:$DEEPMD_PREFIX/lib/python3.13/site-packages/deepmd/lib:$LD_LIBRARY_PATH"
     export PYTHONPATH="$DEEPMD_PREFIX/lib/python3.13/site-packages"
+    export DP_BACKEND_PLUGIN_PATH="$DEEPMD_PREFIX/lib/python3.13/site-packages/deepmd/lib"
     # Remove application modules used to discover the site's shared frameworks.
     # The new package's runtime has no dependency on an MD engine executable.
     for name in PATH LD_LIBRARY_PATH; do
@@ -89,7 +90,7 @@ PY
       printf -v "$name" '%s' "$(IFS=:; printf '%s' "${cleaned[*]}")"
       export "$name"
     done
-    for name in PATH LD_LIBRARY_PATH PYTHONPATH; do
+    for name in PATH LD_LIBRARY_PATH PYTHONPATH DP_BACKEND_PLUGIN_PATH; do
       printf 'export %s=%q\n' "$name" "${!name}"
     done > /runtime/runtime-env.sh
     "$DEEPMD_PREFIX/bin/python" /control/deepmd_standalone_check.py inventory "$DEEPMD_PREFIX" > /runtime/candidate-inventory.json

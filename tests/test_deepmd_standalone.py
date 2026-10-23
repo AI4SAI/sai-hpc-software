@@ -9,6 +9,7 @@ from unittest.mock import patch
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'controller'))
 import deepmd_standalone as standalone
+import deepmd_acceptance as acceptance
 from deepmd_standalone_check import inventory, verify_science_files
 
 
@@ -49,6 +50,7 @@ class IndependentDeePMDTests(unittest.TestCase):
                 self.assertNotIn('--fakeroot', final[0])
                 self.assertNotIn('--overlay', final[0])
                 self.assertIn('--nv', final[0])
+                self.assertIn(str(standalone.task('independent-test') / 'runtime') + ':/tmp:rw', final[0])
 
     def test_missing_backend_or_gpu_evidence_cannot_be_scientific_success(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -82,6 +84,46 @@ class IndependentDeePMDTests(unittest.TestCase):
                 path.write_bytes(original + b'\n# changed\n')
                 self.assertNotEqual(before, standalone.fingerprint(control))
                 path.write_bytes(original)
+
+    def test_acceptance_continuation_uses_original_sif_and_controller_with_project_tmp(self):
+        source = dict(build_request=dict(delivery=self.delivery(),
+                     controller=str(standalone.ROOT / 'controller/original/controller')),
+                      artifact=str(standalone.task('original') / 'candidate.sif'))
+        script = acceptance.render('science-continuation', source)
+        subprocess.run(['bash', '-n'], input=script, text=True, check=True)
+        self.assertIn(source['artifact'], script)
+        self.assertIn(source['build_request']['controller'] + ':/control:ro', script)
+        self.assertIn(':/acceptance:ro', script)
+        self.assertIn('/runtime:/tmp:rw', script)
+        self.assertIn('#SBATCH --account=proj-sai-hpc-software', script)
+        self.assertNotIn('--overlay', script)
+        self.assertNotIn('--fakeroot', script)
+        self.assertNotIn('--bind /tmp:', script)
+
+    def test_gpu_trace_and_baseline_use_explicit_backend_plugins(self):
+        import deepmd_standalone_check as check
+        prefix = '/opt/apps/deepmd-kit/independent/16V100'
+        with tempfile.TemporaryDirectory() as temporary:
+            def path(value):
+                return Path(temporary) if str(value) == '/runtime' else Path(value)
+            with patch.object(check, 'Path', side_effect=path), \
+                    patch.object(check, 'require_execution_context'), \
+                    patch.object(check, 'selected_identity', return_value={'install_prefix': prefix}), \
+                    patch.object(check, 'verify_science_files', return_value={'passed': True}), \
+                    patch.object(check.subprocess, 'run') as execute, \
+                    patch.dict(check.os.environ, {'LD_LIBRARY_PATH': prefix + '/lib:/usr/lib', 'CUDA_VISIBLE_DEVICES': '0'}):
+                check.science()
+            evaluations = [call for call in execute.call_args_list if call.args[0][0].endswith('/bin/python')]
+            self.assertEqual(len(evaluations), 12)
+            for call in evaluations:
+                installation = str(Path(call.args[0][0]).parent.parent)
+                self.assertEqual(call.kwargs['env']['DP_BACKEND_PLUGIN_PATH'],
+                                 installation + '/lib/python3.13/site-packages/deepmd/lib')
+                self.assertEqual(call.kwargs['env']['CUDA_VISIBLE_DEVICES'], '0')
+            profiles = [call for call in execute.call_args_list if call.args[0][1] == 'profile']
+            self.assertEqual(len(profiles), 1)
+            self.assertEqual(profiles[0].kwargs['env']['DP_BACKEND_PLUGIN_PATH'],
+                             prefix + '/lib/python3.13/site-packages/deepmd/lib')
 
 
 if __name__ == '__main__':

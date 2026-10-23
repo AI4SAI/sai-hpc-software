@@ -29,6 +29,17 @@ def example(software="abacus", target="4v100-avx512", track="development"):
 
 
 class NativeValidationTests(unittest.TestCase):
+    def test_deepmd_backend_plugins_use_one_validated_installed_directory(self):
+        entry = example('deepmd-kit')
+        prefix = entry['identity']['install_prefix']
+        value = prefix + '/lib/python3.13/site-packages/deepmd/lib'
+        entry['runtime']['set']['DP_BACKEND_PLUGIN_PATH'] = value
+        self.assertIn(value, render_native_fragment(entry))
+        for value in ('/workspace/deepmd/lib', '/tmp/plugins', prefix + '/lib:/workspace/lib'):
+            entry['runtime']['set']['DP_BACKEND_PLUGIN_PATH'] = value
+            with self.assertRaises(ValueError):
+                validate_native_entry(entry)
+
     def test_native_module_is_stable_after_canonical_manifest_serialization(self):
         entry = example("gpumd")
         entry["commands"].update(nep="bin/nep", gnep="bin/gnep")

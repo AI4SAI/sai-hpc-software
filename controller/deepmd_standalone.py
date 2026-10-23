@@ -74,6 +74,11 @@ def render(delivery, run_id):
             overlay=None if final else overlay, control=CONTROL, jobs=12, gpu=True,
             runtime=directory / 'runtime', extra_binds=[*site_app_binds('deepmd-kit'),
                 *([] if final else [(ROOT / 'cache/repositories/deepmd-kit', '/input/deepmd-kit')])])
+        if phase == 'science':
+            # Nsight also writes literal /tmp paths. The backing directory is
+            # this project's private scratch; physical host /tmp stays unbound.
+            position = argv.index(str(image))
+            argv[position:position] = ['--bind', str(directory / 'runtime') + ':/tmp:rw']
         return ([arg for arg in argv if arg != '--fakeroot'] if final
                 else wrap_command(ROOT, directory, CONTROL, argv))
 

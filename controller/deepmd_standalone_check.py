@@ -11,6 +11,12 @@ import subprocess
 import sys
 import time
 
+# An independent acceptance continuation mounts the original frozen build
+# controller here and this newer scientific runner at /acceptance. Source and
+# SIF validation must keep using the original controller's recipe identity.
+if Path('/control/deepmd_standalone.py').is_file() and Path(__file__).resolve().parent != Path('/control'):
+    sys.path.insert(0, '/control')
+
 from md_evidence import verify_benchmark
 from md_probe import libraries
 from md_science import (_load_fixture, _record, file_digest, require_execution_context,
@@ -51,7 +57,8 @@ def manifest():
                            if name.split('/')[0] not in {*SOFTWARE, 'apptainer', 'cmake'}],
                    prepend={name: list(dict.fromkeys(str(Path(value).resolve(strict=True))
                                                     for value in os.environ.get(name, '').split(':') if value))
-                            for name in ('PATH', 'LD_LIBRARY_PATH', 'PYTHONPATH', 'MODULEPATH')}, set={})
+                            for name in ('PATH', 'LD_LIBRARY_PATH', 'PYTHONPATH', 'MODULEPATH')},
+                   set={'DP_BACKEND_PLUGIN_PATH': os.environ['DP_BACKEND_PLUGIN_PATH']})
     external = {'/usr', '/lib', '/lib64', str(BASELINE), '/opt/apps/plumed/plumed-2.10.1'}
     for values in runtime['prepend'].values():
         for value in values:
@@ -164,6 +171,7 @@ def science():
         # Reset package/library priority for the baseline. Both implementations
         # use the same assigned GPU; no CUDA device is hidden during inference.
         env['PYTHONPATH'] = str(Path(installation) / 'lib/python3.13/site-packages')
+        env['DP_BACKEND_PLUGIN_PATH'] = str(Path(installation) / 'lib/python3.13/site-packages/deepmd/lib')
         env['LD_LIBRARY_PATH'] = ':'.join([installation + '/lib',
             installation + '/lib/python3.13/site-packages/deepmd/lib',
             *[part for part in os.environ['LD_LIBRARY_PATH'].split(':')
@@ -171,7 +179,7 @@ def science():
         for backend in ('tf', 'pt', 'jax'):
             for engine in ('python', 'c-api'):
                 name = '-'.join((side, backend, engine))
-                command = [installation + '/bin/python', '/control/deepmd_standalone_check.py', 'evaluate',
+                command = [installation + '/bin/python', str(Path(__file__).resolve()), 'evaluate',
                            '--backend', backend, '--engine', engine, '--implementation', side,
                            '--prefix', installation, '--output', str(runtime / (name + '.json'))]
                 with (runtime / (name + '.log')).open('x') as log:
@@ -180,11 +188,11 @@ def science():
     # kept separate from the unprofiled numeric measurements above.
     profile = [NSYS, 'profile', '--trace=cuda', '--sample=none', '--cpuctxsw=none',
                '--force-overwrite=false', '--output', '/runtime/pt-cuda-trace',
-               prefix + '/bin/python', '/control/deepmd_standalone_check.py', 'evaluate',
+               prefix + '/bin/python', str(Path(__file__).resolve()), 'evaluate',
                '--backend', 'pt', '--engine', 'c-api', '--implementation', 'candidate',
                '--prefix', prefix, '--output', '/runtime/pt-profiled.json']
     with (runtime / 'pt-profiled.log').open('x') as log:
-        subprocess.run(profile, cwd=runtime, stdout=log, stderr=subprocess.STDOUT, check=True)
+        subprocess.run(profile, env=env, cwd=runtime, stdout=log, stderr=subprocess.STDOUT, check=True)
     with (runtime / 'pt-cuda-kernels.csv').open('x') as output, (runtime / 'pt-nsys-stats.log').open('x') as log:
         subprocess.run([NSYS, 'stats', '--report', 'cuda_gpu_trace', '--format', 'csv',
                         '--force-export=true', '/runtime/pt-cuda-trace.nsys-rep'],
