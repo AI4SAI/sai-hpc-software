@@ -391,7 +391,8 @@ class MDControllerTests(unittest.TestCase):
             self.assertEqual(md.validate_pair(uploaded), uploaded)
             self.assertEqual(uploaded['recipe_sha256'], tracking.fingerprint(ROOT / 'controller'))
             commands = [list(map(str, call.args[0])) for call in fixture.run.call_args_list]
-            uploads = [argv[-2] for argv in commands if argv[0] == 'scp']
+            uploads = [source for argv in commands if argv[0] == 'scp'
+                       for source in argv[1:-1] if Path(source).parent == ROOT / 'controller']
             for name in ('release_contract.py', 'native_module.py', 'export_native.py', 'resolve_source.py',
                          'md_registration.py', 'md_driver_paths.py', 'cp2k_image_driver.py'):
                 self.assertIn(str(ROOT / 'controller' / name), uploads)
