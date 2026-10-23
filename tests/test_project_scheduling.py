@@ -36,6 +36,16 @@ def identity(software, target):
 
 
 class ProjectSchedulingTests(unittest.TestCase):
+    def check_science_qos(self, script, root, target):
+        if target == 'dsprhbm':
+            expected = 'rush-cpu'
+        elif root == SAI_PROJECT_ROOT and target in ('4v100-avx512', '8v100v0-avx512'):
+            expected = 'rush-1o2gpu'
+        else:
+            expected = 'flood-1o2gpu'
+        self.assertEqual([line for line in script.splitlines() if line.startswith('#SBATCH --qos=')],
+                         ['#SBATCH --qos=' + expected])
+
     def check_script(self, script, root, task, target):
         directives = [line for line in script.splitlines() if line.startswith('#SBATCH ')]
         self.assertIn('#SBATCH --partition=' + TARGETS[target]['partition'], directives)
@@ -79,10 +89,12 @@ class ProjectSchedulingTests(unittest.TestCase):
                     with self.subTest(root=root, target=target, stage='runtime'):
                         script = runtime_controller.render_job(Namespace(**common))
                         self.check_script(script, root, root / 'runtime-tests/science', target)
+                        self.check_science_qos(script, root, target)
                     if target in GPU_TARGETS:
                         with self.subTest(root=root, target=target, stage='GPU features'):
                             script = gpu_feature_controller.render_job(Namespace(**common, gpus_per_node=1))
                             self.check_script(script, root, root / 'runtime-tests/science', target)
+                            self.check_science_qos(script, root, target)
                     cpu = target == 'dsprhbm'
                     request = dict(common, ranks=8 if cpu else 2, ranks_per_node=4 if cpu else 1,
                                    threads=2 if cpu else 1, dependency_isa=TARGETS[target]['dependency_isa'],
@@ -91,7 +103,9 @@ class ProjectSchedulingTests(unittest.TestCase):
                                    runs=[dict(arm='candidate', id='m000-candidate')])
                     task = root / 'runtime-tests/benchmark-science'
                     with self.subTest(root=root, target=target, stage='benchmark'):
-                        self.check_script(abacus_benchmark.render_job(request, task), root, task, target)
+                        script = abacus_benchmark.render_job(request, task)
+                        self.check_script(script, root, task, target)
+                        self.check_science_qos(script, root, target)
 
     def test_cp2k_dependencies_and_science(self):
         for root in (SAI_PROJECT_ROOT, HOME_ROOT):
@@ -111,6 +125,7 @@ class ProjectSchedulingTests(unittest.TestCase):
                     with self.subTest(root=root, target=target, stage='science'):
                         script = cp2k_acceptance.render_job(Namespace(**request))
                         self.check_script(script, root, root / 'runtime-tests/science', target)
+                        self.check_science_qos(script, root, target)
 
     def test_md_build_stages_and_scientific_performance_acceptance(self):
         for root in (SAI_PROJECT_ROOT, HOME_ROOT):

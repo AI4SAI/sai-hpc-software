@@ -10,7 +10,7 @@ import shlex
 import subprocess
 import time
 
-from remote_controller import TARGETS, safe_name, project_batch_directives, private_scratch
+from remote_controller import TARGETS, safe_name, project_batch_directives, private_scratch, project_qos
 from runtime_controller import build_artifact
 from source_cache import checksum
 from release_contract import validate_identity
@@ -57,7 +57,7 @@ def render_job(args):
         "#!/usr/bin/env bash",
         f"#SBATCH --job-name=gpu-features-abacus-{safe_name(args.run_id)}",
         f"#SBATCH --partition={target['partition']}",
-        f"#SBATCH --qos={target['qos']}",
+        f"#SBATCH --qos={project_qos(ROOT, args.target)}",
         "#SBATCH --nodes=2", "#SBATCH --ntasks=2",
         "#SBATCH --ntasks-per-node=1", "#SBATCH --gpus-per-node=1",
         f"#SBATCH --time={args.minutes}",

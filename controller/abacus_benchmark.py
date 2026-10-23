@@ -16,7 +16,7 @@ import statistics
 import subprocess
 import time
 
-from remote_controller import TARGETS, safe_name, project_batch_directives, private_scratch
+from remote_controller import TARGETS, safe_name, project_batch_directives, private_scratch, project_qos
 from source_cache import checksum
 from delivery_layout import artifact_path, load_artifact
 from release_contract import validate_identity
@@ -137,7 +137,7 @@ def render_job(r, task):
              '"$OMPI_COMM_WORLD_RANK" "$BENCH_TARGET" "$1" "${CUDA_VISIBLE_DEVICES:-}" '
              '"${OPAL_PREFIX:-}" > "$SAI_ABACUS_TRACE_DIR/rank-$OMPI_COMM_WORLD_RANK.tsv"; exec "$@"')
     lines = ["#!/usr/bin/env bash", f"#SBATCH --job-name=bench-abacus-{r['run_id']}",
-             f"#SBATCH --partition={target['partition']}", f"#SBATCH --qos={target['qos']}",
+             f"#SBATCH --partition={target['partition']}", f"#SBATCH --qos={project_qos(ROOT, r['target'])}",
              "#SBATCH --nodes=2", f"#SBATCH --ntasks={r['ranks']}",
              f"#SBATCH --ntasks-per-node={r['ranks_per_node']}", *resource,
              f"#SBATCH --time={r['minutes']}", f"#SBATCH --output={task}/slurm-%j.log",

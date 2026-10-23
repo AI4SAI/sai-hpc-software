@@ -11,7 +11,7 @@ import shlex
 import subprocess
 import time
 
-from remote_controller import TARGETS, safe_name, project_batch_directives, private_scratch
+from remote_controller import TARGETS, safe_name, project_batch_directives, private_scratch, project_qos
 from source_cache import checksum
 from release_contract import validate_identity
 from delivery_layout import CONTRACT_SCHEMA, artifact_path, load_artifact, validate_record, validate_runtime_identity
@@ -129,7 +129,7 @@ def render_job(args):
         "#!/usr/bin/env bash",
         f"#SBATCH --job-name=runtime-abacus-{args.run_id}",
         f"#SBATCH --partition={target['partition']}",
-        f"#SBATCH --qos={target['qos']}",
+        f"#SBATCH --qos={project_qos(ROOT, args.target)}",
         f"#SBATCH --nodes={args.nodes}",
         f"#SBATCH --ntasks={ranks}",
         *resource_lines,

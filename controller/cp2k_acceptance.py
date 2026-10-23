@@ -18,7 +18,7 @@ import time
 
 import cp2k_benchmark as fixtures
 from delivery_layout import artifact_path, load_artifact, validate_record
-from remote_controller import TARGETS, safe_name, project_batch_directives, private_scratch
+from remote_controller import TARGETS, safe_name, project_batch_directives, private_scratch, project_qos
 from source_cache import checksum
 
 ROOT = Path(os.environ.get('SAI_SOFTWARE_ROOT', Path.home() / 'sai-hpc-software')).resolve()
@@ -163,7 +163,7 @@ def render_job(args):
     task, target, q = run_dir(args.run_id), TARGETS[args.target], shlex.quote
     runtime = ROOT / 'runtime' / ('cs-' + hashlib.sha256(str(task).encode()).hexdigest()[:12])
     lines = ['#!/usr/bin/env bash', '#SBATCH --job-name=cp2k-science-' + safe_name(args.run_id),
-             '#SBATCH --partition=' + target['partition'], '#SBATCH --qos=' + target['qos'],
+             '#SBATCH --partition=' + target['partition'], '#SBATCH --qos=' + project_qos(ROOT, args.target),
              '#SBATCH --nodes=2', '#SBATCH --ntasks=2', '#SBATCH --ntasks-per-node=1',
              '#SBATCH --time=' + str(args.minutes), '#SBATCH --export=NIL',
              '#SBATCH --output=' + str(task / 'results/slurm-%j.log'),
