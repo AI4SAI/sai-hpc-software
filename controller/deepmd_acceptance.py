@@ -32,6 +32,7 @@ def origin(source_run):
 from pathlib import Path
 sys.path.insert(0, sys.argv[1])
 from deepmd_standalone import CONTROL, fingerprint, render, validate_delivery
+import deepmd_standalone as build
 from source_cache import checksum
 directory = Path(sys.argv[2])
 request = json.loads((directory / 'request.json').read_text())
@@ -40,13 +41,18 @@ if (request['controller'] != str(CONTROL) or request['controller_sha256'] != fin
     or request['job_script_sha256'] != checksum(directory / 'job.sbatch')
     or (directory / 'job.sbatch').read_text() != render(request['delivery'], directory.name)):
     raise ValueError('original frozen build provenance changed')
+if hasattr(build, 'verify_build_receipt'):
+    # New recipes seal the image at build completion. Historical frozen
+    # recipes retain their own original provenance rules.
+    build.verify_build_receipt(directory, request)
 '''
     subprocess.run(['python3', '-c', validate, str(control), str(directory)], check=True,
                    env=dict(os.environ, SAI_SOFTWARE_ROOT=str(PROJECT), PYTHONDONTWRITEBYTECODE='1'))
     accounting = subprocess.check_output(['sacct', '-X', '-j', request['job_id'], '--noheader', '--parsable2',
         '--format=JobIDRaw,State,ExitCode,Elapsed,NodeList,Account,WorkDir'], text=True).strip()
     rows = [line.split('|') for line in accounting.splitlines() if line.split('|')[0] == request['job_id']]
-    if len(rows) != 1 or rows[0][1].split('+')[0] not in ('COMPLETED', 'FAILED', 'CANCELLED', 'TIMEOUT'):
+    if (len(rows) != 1 or len(rows[0]) != 7
+            or rows[0][1].split('+')[0].split(' ', 1)[0] not in ('COMPLETED', 'FAILED', 'CANCELLED', 'TIMEOUT')):
         raise ValueError('independent acceptance requires a terminated original allocation')
     if rows[0][5:7] != ['proj-sai-hpc-software', str(directory)]:
         raise ValueError('original build used a different project account or work directory')
@@ -126,17 +132,28 @@ def status(run_id):
         raise ValueError('independent acceptance or original build provenance changed')
     accounting = subprocess.check_output(['sacct', '-X', '-j', request['job_id'], '--noheader', '--parsable2',
         '--format=JobIDRaw,State,ExitCode,Elapsed,NodeList,Account,WorkDir'], text=True).strip()
-    rows = [line.split('|') for line in accounting.splitlines() if line.split('|')[0] == request['job_id']]
-    if len(rows) != 1 or rows[0][5:7] != ['proj-sai-hpc-software', str(directory)]:
-        raise ValueError('acceptance allocation is not in its project account/work directory')
     result = dict(schema=1, source=request['source'], job_id=request['job_id'], accounting=accounting,
                   scientific_verified=False, native_runtime_verified=False, published=False)
-    if rows[0][1:3] == ['COMPLETED', '0:0']:
+    if not accounting:
+        result['state'] = 'PENDING_ACCOUNTING'
+        (directory / 'results/status.json').write_text(json.dumps(result, sort_keys=True, indent=2) + '\n')
+        print(json.dumps(result, sort_keys=True))
+        return 3
+    rows = [line.split('|') for line in accounting.splitlines() if line.split('|')[0] == request['job_id']]
+    if len(rows) != 1:
+        raise ValueError('missing or ambiguous acceptance allocation')
+    if rows[0][5:7] != ['proj-sai-hpc-software', str(directory)]:
+        raise ValueError('acceptance allocation is not in its project account/work directory')
+    log = directory / 'results' / ('slurm-' + request['job_id'] + '.log')
+    text = log.read_text(errors='replace') if log.exists() else ''
+    if rows[0][1:3] == ['COMPLETED', '0:0'] and 'DEEPMD_INDEPENDENT_ACCEPTANCE_VERIFIED_NOT_PUBLISHED' in text:
         result['science'] = verify_science_files(directory / 'runtime')
         result['scientific_verified'] = True
     (directory / 'results/status.json').write_text(json.dumps(result, sort_keys=True, indent=2) + '\n')
     print(json.dumps(result, sort_keys=True))
-    return 0 if result['scientific_verified'] else 3 if rows[0][1] in ('RUNNING', 'PENDING', 'COMPLETING') else 1
+    active = ('PENDING', 'RUNNING', 'CONFIGURING', 'COMPLETING', 'SUSPENDED',
+              'REQUEUED', 'REQUEUE_FED', 'REQUEUE_HOLD', 'RESIZING', 'SIGNALING', 'STAGE_OUT')
+    return 0 if result['scientific_verified'] else 3 if rows[0][1].split('+')[0] in active else 1
 
 
 def main():

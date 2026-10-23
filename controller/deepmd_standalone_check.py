@@ -162,6 +162,28 @@ def verify_science_files(runtime):
                 scope='independent Python/C-API inference; TF/JAX use the existing site CPU frameworks')
 
 
+def science_evidence_hashes(runtime, job_id):
+    """Bind all new-workflow science inputs/outputs to its actual allocation."""
+    runtime = Path(runtime)
+    names = [side + '-' + backend + '-' + engine + '.json'
+             for side in ('baseline', 'candidate') for backend in ('tf', 'pt', 'jax')
+             for engine in ('python', 'c-api')]
+    required = [*names, 'pt-profiled.json', 'pt-cuda-kernels.csv', 'pt-cuda-trace.nsys-rep',
+                'science.json', 'case', 'runtime-env.sh',
+                'baseline-inventory.json', 'candidate-inventory.json']
+    for name in required:
+        path = runtime / name
+        if (path.is_symlink() or path.resolve() != path
+                or not (path.is_dir() if name == 'case' else path.is_file())):
+            raise ValueError('missing, redirected or invalid DeePMD science evidence: ' + name)
+    for name in [*names, 'pt-profiled.json']:
+        records = json.loads((runtime / name).read_text())
+        if (not isinstance(records, list) or not records
+                or any(not isinstance(row, dict) or row.get('slurm_job') != job_id for row in records)):
+            raise ValueError('DeePMD science came from a different allocation: ' + name)
+    return {name: file_digest(runtime / name) for name in required}
+
+
 def science():
     require_execution_context()
     prefix = selected_identity()['install_prefix']

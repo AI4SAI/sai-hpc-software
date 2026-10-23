@@ -1,6 +1,7 @@
 import copy
 from contextlib import ExitStack, redirect_stdout
 import io
+import hashlib
 import json
 from pathlib import Path
 import subprocess
@@ -161,10 +162,42 @@ class DeePMDStatusTests(unittest.TestCase):
         self.assertEqual(record, json.loads((self.directory / 'results/status.json').read_text()))
         return code, record
 
-    def successful_files(self):
-        (self.directory / 'candidate.sif').write_bytes(b'candidate image')
+    def build_files(self):
+        image = self.directory / 'candidate.sif'
+        if image.exists():
+            image.chmod(0o644)
+        image.write_bytes(b'candidate image')
+        image.chmod(0o444)
+        for name in ('build-receipt.json', 'science-receipt.json'):
+            path = self.directory / 'results' / name
+            if path.exists():
+                path.unlink()
+        with patch.dict(standalone.os.environ, {'SLURM_JOB_ID': '123'}):
+            standalone.seal(self.directory.name, 'build')
+
+    def successful_files(self, seal_science=True):
+        self.build_files()
+        runtime = self.directory / 'runtime'
+        runtime.mkdir(exist_ok=True)
+        for side in ('baseline', 'candidate'):
+            for backend in ('tf', 'pt', 'jax'):
+                for engine in ('python', 'c-api'):
+                    (runtime / f'{side}-{backend}-{engine}.json').write_text(
+                        json.dumps([{'slurm_job': '123'}] * 4))
+        (runtime / 'pt-profiled.json').write_text(json.dumps([{'slurm_job': '123'}] * 4))
+        for name in ('pt-cuda-kernels.csv', 'pt-cuda-trace.nsys-rep', 'runtime-env.sh',
+                     'baseline-inventory.json', 'candidate-inventory.json'):
+            (runtime / name).write_text('fixed science evidence\n')
+        (runtime / 'case').mkdir(exist_ok=True)
+        (runtime / 'case/fixture.json').write_text('{"fixed": "input"}\n')
+        (runtime / 'science.json').write_text(json.dumps(self.science.return_value))
+        if seal_science:
+            with patch.dict(standalone.os.environ, {'SLURM_JOB_ID': '123'}):
+                standalone.seal(self.directory.name, 'science')
+        self.science.reset_mock()
         (self.directory / 'results/slurm-123.log').write_text(
-            'DEEPMD_STANDALONE_BUILD_VERIFIED\nDEEPMD_STANDALONE_SCIENCE_VERIFIED_NOT_PUBLISHED\n')
+            'DEEPMD_STANDALONE_BUILD_VERIFIED\n' +
+            ('DEEPMD_STANDALONE_SCIENCE_VERIFIED_NOT_PUBLISHED\n' if seal_science else ''))
 
     def test_accounting_visibility_delay_is_pending_and_later_completion_still_verifies_science(self):
         self.successful_files()
@@ -194,7 +227,7 @@ class DeePMDStatusTests(unittest.TestCase):
 
     def test_terminal_job_without_all_acceptance_gates_fails_instead_of_waiting(self):
         for marker in ('', 'DEEPMD_STANDALONE_BUILD_VERIFIED\n'):
-            (self.directory / 'candidate.sif').write_bytes(b'candidate image')
+            self.build_files()
             (self.directory / 'results/slurm-123.log').write_text(marker)
             with self.subTest(marker=marker):
                 code, record = self.query(self.row())
@@ -212,6 +245,183 @@ class DeePMDStatusTests(unittest.TestCase):
         self.science.side_effect = ValueError('raw science evidence failed')
         with self.assertRaisesRegex(ValueError, 'raw science evidence'):
             self.query(self.row())
+
+
+    def test_changed_sif_and_replaced_status_cannot_update_the_fixed_build_hash(self):
+        self.successful_files()
+        self.assertEqual(self.query(self.row())[0], 0)
+        image = self.directory / 'candidate.sif'
+        image.chmod(0o644)
+        image.write_bytes(b'replaced candidate')
+        image.chmod(0o444)
+        (self.directory / 'results/status.json').write_text(json.dumps(dict(
+            scientific_verified=True, artifact_sha256=hashlib.sha256(image.read_bytes()).hexdigest())))
+        with self.assertRaisesRegex(ValueError, 'fixed build receipt'):
+            self.query(self.row())
+
+    def test_writable_artifact_and_missing_receipt_fail_closed(self):
+        self.successful_files()
+        image = self.directory / 'candidate.sif'
+        image.chmod(0o644)
+        with self.assertRaisesRegex(ValueError, 'immutable file'):
+            self.query(self.row())
+        image.chmod(0o444)
+        (self.directory / 'results/build-receipt.json').unlink()
+        with self.assertRaisesRegex(ValueError, 'immutable file'):
+            self.query(self.row())
+
+    def test_completion_receipts_cannot_be_overwritten_or_written_by_another_job(self):
+        self.successful_files()
+        for phase in ('build', 'science'):
+            path = self.directory / 'results' / (phase + '-receipt.json')
+            before = path.read_bytes()
+            with patch.dict(standalone.os.environ, {'SLURM_JOB_ID': '123'}):
+                with self.assertRaises(FileExistsError):
+                    standalone.seal(self.directory.name, phase)
+            self.assertEqual(path.read_bytes(), before)
+            self.assertEqual(path.stat().st_mode & 0o777, 0o444)
+            with patch.dict(standalone.os.environ, {'SLURM_JOB_ID': '456'}):
+                with self.assertRaisesRegex(ValueError, 'inside its build allocation'):
+                    standalone.seal(self.directory.name, phase)
+
+    def test_science_remains_bound_to_the_original_sif_when_build_receipt_is_replaced(self):
+        self.successful_files()
+        image = self.directory / 'candidate.sif'
+        image.chmod(0o644)
+        image.write_bytes(b'another candidate with unrelated science')
+        image.chmod(0o444)
+        path = self.directory / 'results/build-receipt.json'
+        path.chmod(0o644)
+        path.write_text(json.dumps(standalone.build_receipt(self.directory,
+                                    standalone.read_request(self.directory))))
+        path.chmod(0o444)
+        with self.assertRaisesRegex(ValueError, 'fixed SIF/evidence receipt'):
+            self.query(self.row())
+
+    def test_mutated_science_and_foreign_allocation_cannot_reuse_acceptance(self):
+        self.successful_files()
+        (self.directory / 'runtime/pt-cuda-trace.nsys-rep').write_bytes(b'another trace')
+        with self.assertRaisesRegex(ValueError, 'fixed SIF/evidence receipt'):
+            self.query(self.row())
+        path = self.directory / 'runtime/candidate-pt-c-api.json'
+        path.write_text(json.dumps([{'slurm_job': '456'}] * 4))
+        with self.assertRaisesRegex(ValueError, 'different allocation'):
+            self.query(self.row())
+
+    def test_missing_or_redirected_inputs_cannot_be_sealed_for_the_first_time(self):
+        self.successful_files(seal_science=False)
+        receipt = self.directory / 'results/science-receipt.json'
+        for name in ('case', 'runtime-env.sh', 'baseline-inventory.json', 'candidate-inventory.json'):
+            path = self.directory / 'runtime' / name
+            saved = path.with_name(path.name + '.saved')
+            path.rename(saved)
+            try:
+                for redirected in (False, True):
+                    if redirected:
+                        path.symlink_to(saved)
+                    with self.subTest(name=name, redirected=redirected), \
+                            patch.dict(standalone.os.environ, {'SLURM_JOB_ID': '123'}):
+                        with self.assertRaisesRegex(ValueError, 'missing, redirected or invalid'):
+                            standalone.seal(self.directory.name, 'science')
+                    self.assertFalse(receipt.exists())
+            finally:
+                if path.is_symlink():
+                    path.unlink()
+                saved.rename(path)
+
+
+class DeePMDAcceptanceStatusTests(unittest.TestCase):
+    def setUp(self):
+        self.stack = ExitStack()
+        self.addCleanup(self.stack.close)
+        self.root = Path(self.stack.enter_context(tempfile.TemporaryDirectory()))
+        self.stack.enter_context(patch.object(standalone, 'ROOT', self.root))
+        self.stack.enter_context(patch.object(acceptance, 'ROOT', self.root))
+        self.stack.enter_context(patch.object(acceptance, 'PROJECT', self.root))
+        self.stack.enter_context(patch('remote_controller.SAI_PROJECT_ROOT', self.root))
+        self.directory = self.root / 'runs/acceptance-status'
+        (self.directory / 'results').mkdir(parents=True)
+        delivery = standalone.make_delivery(dict(track='development', source_ref='master',
+            source_sha='5' * 40, source_version='master-2026-10-23'), '16v100-avx2')
+        source = dict(source_run='original', build_request=dict(delivery=delivery,
+            controller=str(self.root / 'controller/original')), artifact=str(self.root / 'runs/original/candidate.sif'))
+        self.original_origin = acceptance.origin
+        self.stack.enter_context(patch.object(acceptance, 'origin', return_value=source))
+        script = self.directory / 'job.sbatch'
+        script.write_text(acceptance.render(self.directory.name, source))
+        request = dict(source=source, controller=str(acceptance.CONTROL),
+            controller_sha256=acceptance.acceptance_fingerprint(), job_script_sha256=standalone.checksum(script), job_id='456')
+        (self.directory / 'request.json').write_text(json.dumps(request))
+        self.science = self.stack.enter_context(patch('deepmd_standalone_check.verify_science_files',
+            return_value={'passed': True}))
+
+    def row(self, state='COMPLETED', code='0:0', account='proj-sai-hpc-software', directory=None):
+        return '|'.join(['456', state, code, '00:00:30', 'node', account, str(directory or self.directory)]) + '\n'
+
+    def query(self, accounting):
+        output = io.StringIO()
+        with patch.object(acceptance.subprocess, 'check_output', return_value=accounting), redirect_stdout(output):
+            code = acceptance.status(self.directory.name)
+        record = json.loads(output.getvalue())
+        self.assertEqual(record, json.loads((self.directory / 'results/status.json').read_text()))
+        return code, record
+
+    def test_delayed_accounting_and_all_active_states_remain_pending_until_verified_completion(self):
+        code, result = self.query('\n')
+        self.assertEqual(code, 3)
+        self.assertEqual(result['state'], 'PENDING_ACCOUNTING')
+        self.assertFalse(result['scientific_verified'])
+        for state in ('PENDING', 'RUNNING', 'CONFIGURING', 'COMPLETING', 'SUSPENDED',
+                      'REQUEUED', 'REQUEUE_FED', 'REQUEUE_HOLD', 'RESIZING', 'SIGNALING', 'STAGE_OUT', 'RUNNING+'):
+            with self.subTest(state=state):
+                code, result = self.query(self.row(state))
+                self.assertEqual(code, 3)
+                self.assertFalse(result['scientific_verified'])
+        self.science.assert_not_called()
+        (self.directory / 'results/slurm-456.log').write_text(
+            'DEEPMD_INDEPENDENT_ACCEPTANCE_VERIFIED_NOT_PUBLISHED\n')
+        code, result = self.query(self.row())
+        self.assertEqual(code, 0)
+        self.assertTrue(result['scientific_verified'])
+        self.science.assert_called_once_with(self.directory / 'runtime')
+
+    def test_terminal_missing_marker_and_failed_jobs_do_not_wait_or_claim_science(self):
+        for state, code in (('COMPLETED', '0:0'), ('COMPLETED', '1:0'), ('FAILED', '1:0'), ('CANCELLED by 123', '0:0')):
+            with self.subTest(state=state, code=code):
+                outcome, result = self.query(self.row(state, code))
+                self.assertEqual(outcome, 1)
+                self.assertFalse(result['scientific_verified'])
+        self.science.assert_not_called()
+
+    def test_nonempty_invalid_or_wrong_project_accounting_is_not_a_visibility_delay(self):
+        for accounting in ('unexpected row\n', self.row() + self.row()):
+            with self.subTest(accounting=accounting), self.assertRaisesRegex(ValueError, 'missing or ambiguous'):
+                self.query(accounting)
+        for accounting in (self.row(account='personal'), self.row(directory='/home/stardust')):
+            with self.subTest(accounting=accounting), self.assertRaisesRegex(ValueError, 'project account/work directory'):
+                self.query(accounting)
+        with patch.object(acceptance.subprocess, 'check_output', side_effect=subprocess.CalledProcessError(1, ['sacct'])):
+            with self.assertRaises(subprocess.CalledProcessError):
+                acceptance.status(self.directory.name)
+        self.science.assert_not_called()
+
+    def test_cancelled_by_user_can_continue_an_immutable_verified_image(self):
+        directory = self.root / 'runs/cancelled-original'
+        (directory / 'results').mkdir(parents=True)
+        control = self.root / 'controller/frozen'
+        control.mkdir(parents=True)
+        (directory / 'request.json').write_text(json.dumps(dict(controller=str(control), job_id='789')))
+        (directory / 'results/slurm-789.log').write_text('DEEPMD_STANDALONE_BUILD_VERIFIED\n')
+        image = directory / 'candidate.sif'
+        image.write_bytes(b'verified original candidate')
+        image.chmod(0o444)
+        with patch.object(acceptance.subprocess, 'run'):
+            for state in ('CANCELLED', 'CANCELLED by 1234', 'CANCELLED+'):
+                row = '|'.join(['789', state, '0:0', '00:04:00', 'node', 'proj-sai-hpc-software', str(directory)])
+                with self.subTest(state=state), patch.object(acceptance.subprocess, 'check_output', return_value=row):
+                    result = self.original_origin(directory.name)
+                    self.assertEqual(result['build_accounting'], row)
+                    self.assertEqual(result['artifact_sha256'], standalone.checksum(image))
 
 
 if __name__ == '__main__':

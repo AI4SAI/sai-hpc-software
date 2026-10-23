@@ -84,6 +84,10 @@ def render(delivery, run_id):
 
     emit = wrap_command(ROOT, directory, CONTROL, container_command(base,
         ['/usr/bin/cat', '/workspace/final.squashfs'], overlay=str(overlay) + ':ro', jobs=12))
+    def seal(phase):
+        return shlex.join(['env', 'SAI_SOFTWARE_ROOT=' + str(PROJECT), 'PYTHONDONTWRITEBYTECODE=1',
+            '/usr/bin/python3', str(CONTROL / 'deepmd_standalone.py'), 'seal-' + phase, run_id])
+
     lines = ['#!/usr/bin/env bash', '#SBATCH --job-name=deepmd-' + safe_name(run_id),
              '#SBATCH --partition=' + identity['partition'],
              '#SBATCH --qos=' + gpumd_qos(PROJECT, identity['target']),
@@ -106,7 +110,9 @@ def render(delivery, run_id):
              shlex.join(['apptainer', 'sif', 'add', '--datatype', '4', '--partfs', '1', '--parttype', '2',
                          '--partarch', '2', '--groupid', '1', str(image), str(directory / 'final.squashfs')]),
              shlex.join(command('verify')), shlex.join(['chmod', '0444', str(image)]),
+             seal('build'),
              'echo DEEPMD_STANDALONE_BUILD_VERIFIED', shlex.join(command('science')),
+             seal('science'),
              'echo DEEPMD_STANDALONE_SCIENCE_VERIFIED_NOT_PUBLISHED']
     return '\n'.join(lines) + '\n'
 
@@ -141,14 +147,86 @@ def submit(run_id, delivery, *, retry_releases=False):
     print(json.dumps(record, sort_keys=True))
 
 
-def status(run_id):
-    directory = task(run_id)
+def read_request(directory):
     request = json.loads((directory / 'request.json').read_text())
     validate_delivery(request['delivery'])
     if (request['controller'] != str(CONTROL) or request['controller_sha256'] != fingerprint()
             or request['job_script_sha256'] != checksum(directory / 'job.sbatch')
-            or (directory / 'job.sbatch').read_text() != render(request['delivery'], run_id)):
+            or (directory / 'job.sbatch').read_text() != render(request['delivery'], directory.name)):
         raise ValueError('DeePMD controller or submission changed')
+    return request
+
+
+def immutable_file(path):
+    if path.resolve() != path or not path.is_file() or path.stat().st_mode & 0o222:
+        raise ValueError('DeePMD completion requires a regular immutable file: ' + str(path))
+    return dict(sha256=checksum(path), bytes=path.stat().st_size)
+
+
+def build_receipt(directory, request):
+    image = directory / 'candidate.sif'
+    return dict(schema=1, kind='deepmd-build', run_id=directory.name, job_id=request['job_id'],
+        delivery=request['delivery'], controller_sha256=request['controller_sha256'],
+        request_sha256=checksum(directory / 'request.json'), job_script_sha256=request['job_script_sha256'],
+        artifact=dict(path=str(image), **immutable_file(image)))
+
+
+def verify_build_receipt(directory, request):
+    path = directory / 'results/build-receipt.json'
+    immutable_file(path)
+    expected = build_receipt(directory, request)
+    if json.loads(path.read_text()) != expected:
+        raise ValueError('DeePMD artifact differs from its fixed build receipt')
+    return expected
+
+
+def write_receipt(path, record):
+    # A rerun cannot replace the accepted hash with newly observed bytes.
+    with path.open('x') as stream:
+        stream.write(json.dumps(record, sort_keys=True, indent=2) + '\n')
+    path.chmod(0o444)
+
+
+def science_receipt(directory, request, built):
+    from deepmd_standalone_check import science_evidence_hashes, verify_science_files
+    runtime = directory / 'runtime'
+    science = verify_science_files(runtime)
+    if science != json.loads((runtime / 'science.json').read_text()):
+        raise ValueError('DeePMD scientific report differs from its raw evidence')
+    record = dict(schema=1, kind='deepmd-science', run_id=directory.name, job_id=request['job_id'],
+        build_receipt_sha256=checksum(directory / 'results/build-receipt.json'),
+        artifact_sha256=built['artifact']['sha256'],
+        evidence_sha256=science_evidence_hashes(runtime, request['job_id']))
+    return record, science
+
+
+def verify_science_receipt(directory, request, built):
+    path = directory / 'results/science-receipt.json'
+    immutable_file(path)
+    expected, science = science_receipt(directory, request, built)
+    if json.loads(path.read_text()) != expected:
+        raise ValueError('DeePMD science differs from its fixed SIF/evidence receipt')
+    return science
+
+
+def seal(run_id, phase):
+    directory = task(run_id)
+    request = read_request(directory)
+    if os.environ.get('SLURM_JOB_ID') != request['job_id']:
+        raise ValueError('DeePMD completion must be recorded inside its build allocation')
+    if phase == 'build':
+        write_receipt(directory / 'results/build-receipt.json', build_receipt(directory, request))
+    elif phase == 'science':
+        built = verify_build_receipt(directory, request)
+        record, _ = science_receipt(directory, request, built)
+        write_receipt(directory / 'results/science-receipt.json', record)
+    else:
+        raise ValueError('unknown DeePMD completion phase')
+
+
+def status(run_id):
+    directory = task(run_id)
+    request = read_request(directory)
     accounting = subprocess.check_output(['sacct', '-X', '-j', request['job_id'], '--noheader', '--parsable2',
         '--format=JobIDRaw,State,ExitCode,Elapsed,NodeList,Account,WorkDir'], text=True).strip()
     if not accounting:
@@ -173,10 +251,12 @@ def status(run_id):
     result = dict(run_id=run_id, delivery=request['delivery'], job_id=request['job_id'], accounting=accounting,
                   build_verified=built, scientific_verified=accepted, native_runtime_verified=False, published=False)
     if built:
-        result['artifact_sha256'] = checksum(directory / 'candidate.sif')
+        receipt = verify_build_receipt(directory, request)
+        result['artifact_sha256'] = receipt['artifact']['sha256']
+        result['build_receipt_sha256'] = checksum(directory / 'results/build-receipt.json')
     if accepted:
-        from deepmd_standalone_check import verify_science_files
-        result['science'] = verify_science_files(directory / 'runtime')
+        result['science'] = verify_science_receipt(directory, request, receipt)
+        result['science_receipt_sha256'] = checksum(directory / 'results/science-receipt.json')
     (directory / 'results/status.json').write_text(json.dumps(result, sort_keys=True, indent=2) + '\n')
     print(json.dumps(result, sort_keys=True))
     active = ('PENDING', 'RUNNING', 'CONFIGURING', 'COMPLETING', 'SUSPENDED',
@@ -194,10 +274,16 @@ def main():
     start.add_argument('--retry-releases', action='store_true')
     query = sub.add_parser('status')
     query.add_argument('run_id')
+    for phase in ('build', 'science'):
+        completion = sub.add_parser('seal-' + phase)
+        completion.add_argument('run_id')
     args = parser.parse_args()
     if args.command == 'submit':
         submit(args.run_id, make_delivery(json.loads(args.source), args.target),
                retry_releases=args.retry_releases)
+        return 0
+    if args.command.startswith('seal-'):
+        seal(args.run_id, args.command.removeprefix('seal-'))
         return 0
     return status(args.run_id)
 
