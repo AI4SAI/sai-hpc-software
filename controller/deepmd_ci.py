@@ -37,6 +37,17 @@ def locked_source(value):
     return value
 
 
+def query_status(python, run_id):
+    """Retry a dropped SSH status query without repeating job submission."""
+    for attempt in range(3):
+        response = python('deepmd_standalone.py', 'status', run_id,
+                          capture_output=True, check=False)
+        if response.returncode != 255 or attempt == 2:
+            return response
+        print(f'DEEPMD_STATUS_TRANSPORT_RETRY attempt={attempt + 1}', flush=True)
+        time.sleep(5 * (attempt + 1))
+
+
 def main():
     source = locked_source(json.loads(os.environ['DEEP_SOFTWARE_SOURCE']))
     delivery = make_delivery(source, source['target'])
@@ -140,7 +151,7 @@ if destination.is_symlink() or checksum(destination) != DRIVER_SHA256 or destina
             raise ValueError('submitted DeePMD job differs from the locked source and recipe')
         deadline = time.monotonic() + 21000
         while time.monotonic() < deadline:
-            response = python('deepmd_standalone.py', 'status', run_id, capture_output=True, check=False)
+            response = query_status(python, run_id)
             if response.returncode not in (0, 1, 3):
                 raise RuntimeError('DeePMD provenance/status check failed: ' + response.stderr)
             status = json.loads(response.stdout)

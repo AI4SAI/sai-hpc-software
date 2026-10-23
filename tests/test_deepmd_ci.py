@@ -1,11 +1,13 @@
 import copy
 from pathlib import Path
+import subprocess
 import sys
 import unittest
+from unittest.mock import Mock, patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'controller'))
-from deepmd_ci import locked_source, resolve_builds
+from deepmd_ci import locked_source, query_status, resolve_builds
 
 
 class IndependentDeePMDCITests(unittest.TestCase):
@@ -52,6 +54,32 @@ class IndependentDeePMDCITests(unittest.TestCase):
         for targets in ('', 'dsprhbm', '16v100-avx2,16v100-avx2'):
             with self.subTest(targets=targets), self.assertRaises(ValueError):
                 resolve_builds('development', targets, lambda *_: self.fail('network called'))
+
+    def test_dropped_status_query_retries_same_run_without_submission(self):
+        unavailable = subprocess.CompletedProcess([], 255, '', 'connection reset')
+        completed = subprocess.CompletedProcess([], 0, '{"scientific_verified":true}', '')
+        remote = Mock(side_effect=[unavailable, unavailable, completed])
+        with patch('deepmd_ci.time.sleep') as sleep:
+            self.assertIs(query_status(remote, 'dp-existing'), completed)
+        self.assertEqual(remote.call_count, 3)
+        for call in remote.call_args_list:
+            self.assertEqual(call.args, ('deepmd_standalone.py', 'status', 'dp-existing'))
+            self.assertEqual(call.kwargs, dict(capture_output=True, check=False))
+        self.assertEqual([call.args[0] for call in sleep.call_args_list], [5, 10])
+
+    def test_status_retries_are_bounded_and_preserve_controller_results(self):
+        unavailable = subprocess.CompletedProcess([], 255, '', 'connection reset')
+        remote = Mock(return_value=unavailable)
+        with patch('deepmd_ci.time.sleep'):
+            self.assertIs(query_status(remote, 'dp-existing'), unavailable)
+        self.assertEqual(remote.call_count, 3)
+        for code in (0, 1, 2, 3):
+            response = subprocess.CompletedProcess([], code, '{}', 'controller diagnostic')
+            remote = Mock(return_value=response)
+            with self.subTest(code=code), patch('deepmd_ci.time.sleep') as sleep:
+                self.assertIs(query_status(remote, 'dp-existing'), response)
+                remote.assert_called_once()
+                sleep.assert_not_called()
 
 
 if __name__ == '__main__':
