@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "ssh",
+    "-o",
+    "BatchMode=yes",
+    "-o",
+    "ControlMaster=no",
+    "-o",
+    "ControlPath=none",
+    "SAI-stardust",
+    "python3 -B /org/org-open-sai/proj-sai-hpc-software/maintenance/cp2k-libxc-summary-v1-20261024/summarize.py --reference-task /org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-reference-v1-39983165813-4v100-avx512 --smoke-task /org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-39983165813-4v100-avx512"
+  ],
+  "finished_at": "2026-10-23T19:44:10.228546+00:00",
+  "returncode": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stdout_sha256": "7455bef101bc4ae2197fd122ec247e9672beee8bd8f45ae33206d5946c4d72e0"
+}

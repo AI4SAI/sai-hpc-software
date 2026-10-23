@@ -68,3 +68,30 @@ energies, forces and timing medians all passed. No new cluster job was run.
 
 These checks validate the retained CPU experiment and its provenance. They do
 not establish successful builds of the five current development branches.
+
+## Development workflow integration
+
+PR #24 subsequently merged the experiment at
+`36cc2ff780c17c27ff4a2976a7ac1aa8d06aab7a`. The remaining development workflow
+changes are in [PR #25](https://github.com/AI4SAI/sai-hpc-software/pull/25).
+
+A separate read-only review at `f9011b77b0f2fd403b9811a5e5091c7b83b1c946`
+checked the daily, DeePMD and LAMMPS workflow entry points and their completion
+and recovery controllers. No path was found that reports a development
+candidate as successful before its required scientific acceptance:
+
+- Daily completion requires success from every selected software workflow.
+- LAMMPS requires both build and science matrices to succeed. Continuation
+  validates the original source, controller, SIF and science allocation before
+  reparsing the raw fourteen-case results.
+- DeePMD retries interrupted read-only status queries on the same task. Normal
+  completion requires successful accounting, both completion markers and
+  immutable build/science receipts. Recovery from a failed original build
+  additionally requires a separately successful acceptance allocation and
+  revalidation of its raw scientific evidence.
+
+Previously attempted unchanged releases may intentionally skip, with no claim
+of a new successful build; development candidates cannot use that skip path.
+All six GitHub validation workflows passed at the reviewed commit. This code
+review is separate from the per-source cluster acceptance evidence linked in
+the current workflow closure matrix.

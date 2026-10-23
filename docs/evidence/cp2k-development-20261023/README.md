@@ -89,9 +89,12 @@ dependency/build/science allocations. Invoke it on the login node with
 acceptance records; it also does not assert physical `/opt` installation or
 replace the LibXC supplement. The 16V100 final artifact and seven-case science
 gate have passed this independent audit; see [16V100-validation.json](16V100-validation.json).
-The DSPRHBM seven-case science job `1915020` also completed successfully;
-publication is still in progress and its final audit is recorded separately
-when available.
+The DSPRHBM seven-case science job `1915020` also completed successfully, and
+its final SIF, project-native export and module passed the same audit; see
+[DSPRHBM-validation.json](DSPRHBM-validation.json). The recovered 4V100 build's
+science job `1915730` and final audit also passed; see
+[4V100-validation.json](4V100-validation.json). These project publication records
+do not assert installation in physical `/opt`.
 
 ## Initial LibXC numerical results
 
@@ -125,6 +128,26 @@ matching LibXC defaults; see the frozen
 not a relaxation of the failed comparison. The DSPRHBM SIF's static LibXC API
 is exported by `lib64/libcp2k.so.2026.2`; its byte hash and symbol inspection are
 recorded in [libxc-static-symbols-dsprhbm.json](libxc-static-symbols-dsprhbm.json).
+
+The frozen independent reference has now passed all 258 mathematical comparisons
+against each of the 16V100, DSPRHBM and 4V100 final SIFs. Their combined summaries
+retain the original failed built-in-PBE comparison and separately verify the
+actual library provider, independent reference, and applicable HOST/DEVICE
+agreement and LibXC CUDA kernel execution:
+
+| Target | Independent reference job | Combined summary |
+|---|---|---|
+| 16V100 | `1915263` | [16v100.json](libxc-reference/summaries/16v100.json) |
+| DSPRHBM | `1915264` | [dsprhbm.json](libxc-reference/summaries/dsprhbm.json) |
+| 4V100 | `1915750` | [4v100.json](libxc-reference/summaries/4v100.json) |
+
+The 4V100 original smoke `1915736` completed all calculations and failed the
+unchanged built-in-PBE energy gate with delta `4.1634492120579125e-6` Ha.
+Its LibXC HOST/DEVICE energy delta is `9.947598300641403e-14` Ha, its forces
+are identical, and profiling records 94 LibXC CUDA kernel calls totaling
+`25657844` ns. The raw [smoke collection](4v100-libxc-1915736/collection.json)
+and [profiler summary](4v100-libxc-1915736/profiler-kernels.json) preserve the
+failed gate and the GPU evidence independently.
 
 ## 4V100 mount failure and fresh application attempt
 
@@ -238,8 +261,17 @@ logical CPUs and one GPU. `ExcNodeList=4v100n01` remained effective. All held
 allocation checks, controller/input hashes and the later running resource
 checks passed. The exact
 [submission and running-allocation records](4v100-node-retry-1915249/collection.json)
-preserve this transition; application completion and science acceptance are
-still pending.
+preserve this transition. The application job completed successfully in
+`00:55:25` and produced a final SIF with SHA256
+`5e3a5960828febf6f98301fd0736a4d36850dddc4fa6238172fdb92e294e53c0`.
+Supplementary LibXC job `1915736` uses this same final SIF; its original thresholds remain
+unchanged. Science job `1915730` completed successfully in `00:07:49` on
+`4v100n[04,08]`, and publication completed at `2026-10-23T19:42:38Z`.
+The [completed follow-up collection](recovery-followup-completed/4v100-avx512/collection.json)
+contains the original stage commands, outputs and receipts. The separate
+[final audit](4V100-validation.json) verifies the SIF, science, project-native
+export and module. The independent LibXC summary above also passed; the original
+smoke comparison remains failed and preserved.
 
 ## 8V100V0 application mount failure
 

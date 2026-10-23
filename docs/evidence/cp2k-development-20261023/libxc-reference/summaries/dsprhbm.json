@@ -1,0 +1,318 @@
+{
+  "accounting": {
+    "argv": [
+      "sacct",
+      "-X",
+      "-nP",
+      "-j",
+      "1915264,1915017",
+      "-o",
+      "JobIDRaw,State,ExitCode,Partition,Account,WorkDir,Elapsed,NodeList,AllocCPUS,AllocTRES"
+    ],
+    "records": {
+      "1915017": {
+        "Account": "proj-sai-hpc-software",
+        "AllocCPUS": "2",
+        "AllocTRES": "billing=16,cpu=2,mem=2362M,node=1",
+        "Elapsed": "00:02:12",
+        "ExitCode": "1:0",
+        "JobIDRaw": "1915017",
+        "NodeList": "d9470n01",
+        "Partition": "DSPRHBM",
+        "State": "FAILED",
+        "WorkDir": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-39983165813-dsprhbm"
+      },
+      "1915264": {
+        "Account": "proj-sai-hpc-software",
+        "AllocCPUS": "2",
+        "AllocTRES": "billing=16,cpu=2,mem=2362M,node=1",
+        "Elapsed": "00:00:58",
+        "ExitCode": "0:0",
+        "JobIDRaw": "1915264",
+        "NodeList": "d9470n01",
+        "Partition": "DSPRHBM",
+        "State": "COMPLETED",
+        "WorkDir": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm"
+      }
+    },
+    "stderr": "",
+    "stdout": "1915017|FAILED|1:0|DSPRHBM|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-39983165813-dsprhbm|00:02:12|d9470n01|2|billing=16,cpu=2,mem=2362M,node=1\n1915264|COMPLETED|0:0|DSPRHBM|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm|00:00:58|d9470n01|2|billing=16,cpu=2,mem=2362M,node=1\n"
+  },
+  "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf.sif",
+  "artifact_sha256": "b2cecb3af1ef0ab2dc623ea95f89b4bb41df73d6e99ab6d85a6525d0ced72cd0",
+  "backend_scope": "HOST only; no GPU claim",
+  "cp2k_libxc": {
+    "builtin_host_default_parameterization": {
+      "comparison": {
+        "energy_delta_ha": 4.163449183636203e-06,
+        "max_force_delta_ha_bohr": 1.353720000003139e-07,
+        "tolerances": {
+          "energy_ha": 1e-06,
+          "force_ha_bohr": 1e-05
+        },
+        "within_original_tolerances": false
+      },
+      "explanation": "CP2K built-in PBE and LibXC 7.1.2 use different default PBE/PW92 constants; this remains a failed original comparison, characterized separately.",
+      "original_failure": {
+        "error": "LibXC energy/force tolerance exceeded: (4.163449183636203e-06, 1.353720000003139e-07)",
+        "job_id": "1915017",
+        "status": "failed"
+      },
+      "original_failure_json": "{\n  \"error\": \"LibXC energy/force tolerance exceeded: (4.163449183636203e-06, 1.353720000003139e-07)\",\n  \"job_id\": \"1915017\",\n  \"status\": \"failed\"\n}\n",
+      "original_failure_preserved": true
+    },
+    "host_device": null,
+    "libxc_cuda_kernels": [],
+    "private_loader": {
+      "builtin": [
+        "562055:\tcalling init: /opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/lib64/libcp2k.so.2026.2"
+      ],
+      "host": [
+        "562143:\tcalling init: /opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/lib64/libcp2k.so.2026.2"
+      ]
+    },
+    "science": {
+      "builtin": {
+        "cp2k_seconds": 52.122,
+        "dispersion_ha": null,
+        "elapsed_seconds": 54.95963644402218,
+        "energy_ha": -34.44682129478986,
+        "forces_ha_bohr": [
+          [
+            -0.00945233354,
+            -0.010457489817,
+            -2.87128e-07
+          ],
+          [
+            -0.009818693543,
+            0.01569111124,
+            -1.41928e-07
+          ],
+          [
+            0.010457918678,
+            0.004642532798,
+            5.8306e-08
+          ],
+          [
+            -0.003014175638,
+            0.009256006937,
+            -5.6023e-08
+          ],
+          [
+            0.004272731236,
+            -0.008357649189,
+            -0.007545513107
+          ],
+          [
+            0.004272706358,
+            -0.008357781986,
+            0.007545680456
+          ]
+        ]
+      },
+      "host": {
+        "cp2k_seconds": 59.938,
+        "dispersion_ha": null,
+        "elapsed_seconds": 64.74966456502443,
+        "energy_ha": -34.44681713134068,
+        "forces_ha_bohr": [
+          [
+            -0.009452363097,
+            -0.010457625189,
+            -2.87118e-07
+          ],
+          [
+            -0.009818712081,
+            0.015691246334,
+            -1.41926e-07
+          ],
+          [
+            0.010458033525,
+            0.004642550258,
+            5.8305e-08
+          ],
+          [
+            -0.003014224169,
+            0.009256102124,
+            -5.6024e-08
+          ],
+          [
+            0.004272754389,
+            -0.008357706301,
+            -0.007545601413
+          ],
+          [
+            0.004272729512,
+            -0.008357839098,
+            0.007545768762
+          ]
+        ]
+      }
+    }
+  },
+  "cp2k_science_publication_or_installation_status_granted": false,
+  "evidence_sha256": {
+    "containers/software/cp2k/development/master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf.json": "10d8c199005944a4488dcb3d35e059e2088317ccbb7fd44b5c099359c130450c",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/build_capacity.py": "bff0a1cbf9acedb858c9776efd73a9c98737787e1bb439e0965048f47e0ee66c",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k": "210ddd657ec01da4c1bd13294f95ee51991f24219c3b1965c52874c6270b4540",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_Libint2Config.cmake": "223aac33a7743bc46a25738cb75b4a4bd1100571b1ea13fe4c19dff7c4019de9",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_acceptance.py": "31cdfc7219bb1be28f7997c11fbe2b934214448901c8b769416f1e3e28ae9a3d",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_benchmark.py": "aefd8b234b1b43f2815a6af5f3502204319a490f4919ad417421d920034a10e3",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_build.sh": "9ba69aa905a71a23b1442bfb579c8972a998be8abd0d38a21ef589372288f3c1",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_cmake_prerequisites.cmake": "8c923f94b76475eba88e14280b05e37ddb8f491a03821193253e49e4af519a0d",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_container_entry.sh": "05f7c0036558ded066641499209d70744519c8d4dbc23bb35f727c06ede2955d",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_dependencies.sh": "99d5bbcf9dda385257c0088fe9a12a1f6eea86364e2dc8bef46a17d1af822562",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_dependency_stage.py": "a045422bd7eaa44b101990dcb08486584dd8282ad26fcd3da798d4186c6986c1",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_elpa.sh": "508b4887216c5ac57bf6777dee83d70b0bf655a3335a26647b7291a1b3ac4ea0",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_elpa_abi.f90": "95c2ef65486385219c646424c2d8724574b8dabaa0fc4ce89c2e78bae43478a5",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_elpa_runtime.py": "0ceaf73725599632c002e5b6588d855c08e1d9a3798cba3bab9a5bf9b048fcc2",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_feature_contract.py": "2d2ea42d9e74d5ecbe8278bebd8b23c81d1bcfe86c35b0d303cf3f7b09e93917",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_image_driver.py": "e0ea6a2b7ce25189b3eb9b7749392b0416894f9d365e1f3c31c577546a8df049",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_libxc.sh": "2db58792e236e05793d0f7df5473db4b5311aa80c9327879d2a690f1f8aa6646",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_libxs.sh": "65f4fde4c607c9aa5758f8d2841e52c45e3773e52e6f99a79330176406c872fd",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_libxsmmConfig.cmake": "734aa00bd820e244cde406866c1c6065f8a2f85571dde413f7c2bf058b1fb038",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_overlay_workdir.py": "f22d281427ede157c03c7fc20a8b625e9c5a511e023a6c358de93040589fe468",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_payload.py": "05b8bcc1c548f4800f2dd343bea3927078afb552a19d2241cc94799c80256d22",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_site_elpa.json": "9b3253261d2cee47df156136c575c6fc7748f30344b029b4bc56fd83bed4fea0",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_source_fixes.py": "9ea20a68ddbeaf7184f8968e5a966eef3ee2b84f9ba8cffc56f71c1496563ad9",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_spack.py": "5fce481f00057817e47972e938d7d7a83b9eeca1bc1d87b82f047438d9c81e0d",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_spack_dependencies.sh": "62977f63321a57a3c7d66f15e20f82cebc2ddf3987f1faa0e6719f7e6a640985",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_spack_environment.py": "70603447fee7d634fe939a2a11faca829407eceacd21090812705bd373c0d1ba",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_spack_install_evidence.py": "391ad327602cabf1e49db806a6d82c1887669f40da097ba2dfdf3ed193d481cc",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_spack_libint_repair.py": "b38fd9292b264bc83c308ca8c4ce4b42a1b2beb3367713de3f7308106b2cd014",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_spack_link.py": "52efab5e2c77f195e1dd380911a1d7617f2d1f632c3a808dfe5d4e61e3ab88f8",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_spack_native.py": "bdfadff1c81c8cc0bf03d80f950e4dd3f3176496f02febcb9ae102cd847abb04",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_spack_probe.sh": "5ef1c0526ece38c9917060b3e569236881ea618e9f9bd603931eeac2b2901c2c",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/cp2k_spack_seed.py": "9c41a9fc602f2f5e351eb845785a0b86882268b58b53573b3972a85b2fa35dfe",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/create_rootfs.sh": "ae0818e8bb485222605290fd3f3c410c40354aa518c8f613ac26236b3e382852",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/delivery_layout.py": "268a18bfe45b1f8cca9d955d5b34215392ee74d734dcf4358c5da66728f6d7f2",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/environment.sh": "d9876b00e6ceba41c450d5dcf5829c59d3e35afced769b196ee378971a63bb35",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/export_native.py": "25c91c4608c10df2314f2e377fe652b53951f85bcc68a541f268f3e0a652917a",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/input_archive_cache.py": "927ef5aa854e0c4eb2ea09fcb24f52394a6486b40f08d7bc343c84d534569b56",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/module_publication.py": "dfb74bdc51f9eeff6931c66458f80bd571b2ba587368c50ee0a752abe6f6d06f",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/native_module.py": "c3e0a9eb5a194218431c102e499e4f156b356c0f17fc028b44d56433b5550bb1",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/release_contract.py": "c90a9988b7ecbdd98d91e61f24c0659be5530bacd02e733a92fc4b937ab9cb94",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/remote_controller.py": "5928c9eb07e5749a6ffc5e4704cf6a340f30dc707d904760f2b6cb08b82c037a",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/resolve_source.py": "2d26c1217d70cec680bbbbe81a9b6806030641edb06636262405bb7b7761fa19",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/runtime_controller.py": "857348af9fe6db4201aea24778007e03ccc0234b651a5f2f9d09ce7d5e79520f",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/software_controller.py": "317cf32b4a1d656ad399cc4e77c4f348959b2247db6a4ab56f8152337fcf3df7",
+    "controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/source_cache.py": "1c6ee2a243509f0fdf74e32736bea562e2777569c4c22480b2accdb78334f52b",
+    "maintenance/cp2k-libxc-summary-v1-20261024/summarize.py": "3de6c3646770dbd508ce569e7b563ab60ef417005f64249c9ad422f9f1c78391",
+    "runs/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/artifact.path": "5084b67b1fedc0783a6ff4378dd108199c9934b20fc562b82dd27d3af380053d",
+    "runs/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf/request.json": "3dae35ad8c22d2ff639bd7abe93de9cdee38eb6d3a87853085fd7c3ee40d544a",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/builtin/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/builtin/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/builtin/container-exec.sh": "8f80bab63258a6817b81d26fc3419632b47707fdaa6122ed671f3b29101169a1",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/builtin/cp2k-exec.sh": "53d2a939d8c5f9de26c63e38888563679c30be9b1aedec9593954033a80bf4c5",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/builtin/cp2k.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/builtin/cp2k.log": "2e75a9f9e76d6833e956523fd27a3dd23316421d7d84bb684384474201a1b8f5",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/builtin/elapsed.txt": "eaf85830ab69a34a71bb774214e21f21d3180c15552fa68eb8b90ac3bb9f6b1e",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/builtin/forces.xyz": "54fa9218acbbd9efd6f0129912297eff3add13d80d755c2eb1ec4d3651a9c829",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/builtin/input.inp": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/builtin/loader.562055": "93803d96e913b9162524a948e5c0f9af7655d9a7ae2e62a957b777f754db828a",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/host/BASIS_MOLOPT": "686dd72e7601ee41d4a173e4c7c3946f1e750f03095090f44d3821c180a81a61",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/host/GTH_POTENTIALS": "5a9bfbc3b37a55917ade4fb704b80546d210d843759b94e3915e74acfc3fafb2",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/host/container-exec.sh": "8f80bab63258a6817b81d26fc3419632b47707fdaa6122ed671f3b29101169a1",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/host/cp2k-exec.sh": "53d2a939d8c5f9de26c63e38888563679c30be9b1aedec9593954033a80bf4c5",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/host/cp2k.exit": "9a271f2a916b0b6ee6cecb2426f0b3206ef074578be55d9bc94f6f3fe3ab86aa",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/host/cp2k.log": "de87901f21a9f7a0ea27b60a65af4a97f2f5c2facc483ffe61aaaa435b4f1658",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/host/elapsed.txt": "55aa13e5fd390fb28176756abe7f4641cdafc048006d1943f962feba215470b8",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/host/forces.xyz": "7825cdbdef5bf21bedb87fa06d32de9baff33958996d3bad7ebd007323800a8d",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/host/input.inp": "556073cbd7d6b6736d4314e7b36a75dc9aabe61d234f1b752b29bd96ec52f69f",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/host/loader.562143": "246c2817e402d0c8b0b29ab08f821d24b2e20682a52142a4a81b5f798739e46b",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/inspect/CMakeCache.txt": "a4559919b6ff65a06638dd0fe0eb5152a1661b93cc6359062396d0300555f023",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/inspect/container-exec.sh": "8f80bab63258a6817b81d26fc3419632b47707fdaa6122ed671f3b29101169a1",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/inspect/cp2k-exec.sh": "53d2a939d8c5f9de26c63e38888563679c30be9b1aedec9593954033a80bf4c5",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/inspect/ldd.txt": "161a5dc11db90299c16191d6a3a0c9b103c343b35495a2d7649423a4ac55aabc",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/inspect/libxc-libraries.sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/inspect/libxc-source-archives.sha256": "18adc188bc19c522915626b6b833234ad2745e5293cfc54ff79e1560ef4eb915",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/inspect/version.txt": "3afa1d5469a9b3bea3833bf29845beffaeacc9472aaffdece596f56a2a9b6397",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/job.id": "5e1b0d53af42ab17de3f9afe27242a61f50c05d526addb24d6175ccec570107d",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/job.sbatch": "6679e9baecd49d7b0ef031afa251417556fee8f6cf947d0dafbea0c597dc95ba",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/libxc_smoke.py": "87b3ad84ffd18254a60cd2ba737f0a7ba39f5f11f50cec9e21f6c3eeb9913703",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/request.json": "7d3ae67e5d06c556d0c71f808bab4c9f700539b167d807ad89e88b58cf25dc0b",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/results/failed.json": "a3e186e97b9247c2f4d5e1a9e2aeabe21db6d8a7c90394c63263a09ee3df7cb6",
+    "runtime-tests/cp2k-libxc-39983165813-dsprhbm/runtime.sh": "d8c63b74464d342e064103ea7d3b6433ec875732330c9ed3ae2c6a234d177608",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/container-exec.sh": "f49ea3187661107126d71bfc370a69a8a727ee5d445d53a08415d1f0f78571f6",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/job.id": "6629b951888d33f929ba7335ba8aa19b618006f9a9ae0733ce581fe1ba4979c3",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/job.sbatch": "3a9fe85e05d1b3bc4b9fb4ae7ab8b83ce0ceacefde4ee8f366926e0765f4a727",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/libxc_reference.py": "7a5b39e9edd03a4f053f4389a3481dbaae3cf76e7b5c0a305c4b55b4bc33585a",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/reference-v1/gga_c_pbe.data": "75193580a06223c04acfc3080171c5880ecf485230295e458463fb80b70eb6c8",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/reference-v1/gga_x_pbe.data": "25136ea8b025c51c1ea818b040503e2cb0717b41d1ca72311fab42dd1e59da5e",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/reference-v1/protocol.json": "270b59212095643bccf398b2cf74e5a09996222d64f830e7ce6f29800adaecf9",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/request.json": "235d88cc6bf438a8cef8324aa51ec4bd5d33875f7af4416d7d4ef4caa02ee4da",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/results/allocation.txt": "0097ca05a083c5af1a7364d26bd0783adb9e51b5070bb02ea17591fd3974f244",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/results/candidate.stderr": "1df648b07f298e3ee83589ddd506dc351dba41af63f28e3d615c9b2495ded2a2",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/results/candidate.stdout": "e83d621f8656a133c1424f46a220004b43081cbb61635845d361d1db6bbafce0",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/results/execution-started.json": "eaf89fe60c4cd3bac80deda9e061970d2f9d599ee9c58a4b38e4b7be61612065",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/results/execution.json": "936035c3a25d9f55837d8aec8bfa9ccea510a72330e541ed25b350e7ee6a48c0",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/results/modules.txt": "0ddca348c0c9b1170b3f2ecd75343c2222eb1bfd5a2ef8eb5c6ad346a9f90400",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/results/node.txt": "1b328d1001e1180b43c3fe81dd1d5565c121da9f75e8fc86f1076adcfdcb883f",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/results/reference-result.json": "0e45696430871b34ba1fd2c1038388370fc7ad0cc07007dd6e70fc68ce4bf452",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/results/sbatch.stderr": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/results/sbatch.stdout": "6629b951888d33f929ba7335ba8aa19b618006f9a9ae0733ce581fe1ba4979c3",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/results/submission-allocation.txt": "35ed7103a900c1786e6e00d13913b808da92ef897f17f43acef9c2acb6423dec",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/results/submission-attempt.json": "63051cbfeae76eef0570b173fa65a7e1e58584ffe7743a91c35c0aecc23628b8",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/results/submission.json": "9eb4d60c6a9d5c368faa8a61c41983ce56e7ac488b9f66966e95e841a8c2cb65",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/run_reference.py": "046a3f534b5e10f1cd4e97d3e9617c143265d38a50c03b432e1f775fdd4e97fa",
+    "runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm/runtime.sh": "2d77fafb42ebdb27f9edd535ab642848104c36e9963018b7d3054eb601ade33d"
+  },
+  "identity": {
+    "build_id": "master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934",
+    "cpu_arch": "x86-64-v4",
+    "cuda_arch": "",
+    "dependency_isa": "avx512",
+    "gpus": 0,
+    "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM",
+    "partition": "DSPRHBM",
+    "recipe_sha256": "ae6467ac2934deecf1d610c9d60cb8c5100cf931d2c27aaa66819ba85ca76a79",
+    "repository": "cp2k/cp2k",
+    "schema": 2,
+    "software": "cp2k",
+    "source_ref": "master",
+    "source_sha": "cfe5e5d87aaf302953f14eb43587bef2411a8fb2",
+    "source_version": "master-2026-10-23",
+    "stack_digest": null,
+    "stack_sources": {},
+    "target": "dsprhbm",
+    "track": "development",
+    "version_label": "master-2026-10-23"
+  },
+  "libxc_backend_verified": true,
+  "libxc_math_verified": true,
+  "mathematics": {
+    "evaluations": 54,
+    "library": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/lib64/libcp2k.so.2026.2",
+    "library_sha256": "7907da4005c694c73db761351d342dc78102968f2bddf2f5b0ba6abcce145516",
+    "max_error_over_bound": "0.04953857277183303471058116726",
+    "protocol_sha256": "270b59212095643bccf398b2cf74e5a09996222d64f830e7ce6f29800adaecf9",
+    "scalar_comparisons": 258,
+    "symbol_providers": {
+      "xc_func_alloc": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/lib64/libcp2k.so.2026.2",
+      "xc_func_end": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/lib64/libcp2k.so.2026.2",
+      "xc_func_free": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/lib64/libcp2k.so.2026.2",
+      "xc_func_get_ext_params": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/lib64/libcp2k.so.2026.2",
+      "xc_func_get_info": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/lib64/libcp2k.so.2026.2",
+      "xc_func_info_get_ext_params_name": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/lib64/libcp2k.so.2026.2",
+      "xc_func_info_get_flags": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/lib64/libcp2k.so.2026.2",
+      "xc_func_info_get_n_ext_params": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/lib64/libcp2k.so.2026.2",
+      "xc_func_info_get_number": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/lib64/libcp2k.so.2026.2",
+      "xc_func_init_flags": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/lib64/libcp2k.so.2026.2",
+      "xc_gga_exc_vxc": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/lib64/libcp2k.so.2026.2",
+      "xc_version": "/opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/lib64/libcp2k.so.2026.2"
+    },
+    "version": [
+      7,
+      1,
+      2
+    ]
+  },
+  "original_receipts_modified": false,
+  "original_supplement_status": "failed",
+  "purpose": "read-only-libxc-mathematics-and-backend-summary",
+  "reference_task": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-reference-v1-39983165813-dsprhbm",
+  "schema": 1,
+  "smoke_task": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-39983165813-dsprhbm",
+  "summarized_at": "2026-10-23T18:58:08.822780+00:00",
+  "summary_script_sha256": "3de6c3646770dbd508ce569e7b563ab60ef417005f64249c9ad422f9f1c78391"
+}

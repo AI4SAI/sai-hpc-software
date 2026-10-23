@@ -11,7 +11,7 @@ installation are separate acceptance states.
 | Program | Selected development commit | Current evidence |
 | --- | --- | --- |
 | ABACUS `develop` | `370ba685e6707b3625c5580ff9d02ef0afb248e8` | All four targets built, scientifically accepted and published with reverified native staging exports; workflow [39971072923](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971072923) succeeded. Physical `/opt` installation pending. |
-| CP2K `master` | `cfe5e5d87aaf302953f14eb43587bef2411a8fb2` | All four dependency stages completed and sealed in [39983165813](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39983165813), with source-pinned LibXC 7.1.2 and LibXS `930a2c4`. 16V100 and DSPRHBM are scientifically accepted and project-published, with independent final-delivery audits. 4V100 and 8V100V0 require application recovery after pre-entry mount timeouts. |
+| CP2K `master` | `cfe5e5d87aaf302953f14eb43587bef2411a8fb2` | All four dependency stages completed and sealed in [39983165813](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39983165813), with source-pinned LibXC 7.1.2 and LibXS `930a2c4`. 4V100, 16V100 and DSPRHBM are scientifically accepted and project-published, with independent final-delivery audits. The 8V100V0 application recovery remains in progress after a pre-entry mount timeout. |
 | DeePMD-kit `master` | `558f56962775098b8b554e341c3b37d2f86e6aeb` | All three V100 candidates build-verified and scientifically accepted: TF/PT/JAX Python/C-API checks plus 1,486 measured CUDA kernel events per target. Not yet published or installed natively. |
 | LAMMPS `develop` | `a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b` | All three V100 candidates build-verified and scientifically accepted: 14 cases, 71 packages, 2,497 styles per target. Not yet published or installed natively. |
 | GPUMD `master` | `2c93346fce4461de1c42c77e7fe74cdb6b0e3df6` | All three V100 targets scientifically accepted, published with native staging exports; physical `/opt` installation pending. |
@@ -102,16 +102,21 @@ A subsequent attempt with explicit CPU resources was rejected before allocation:
 SAI requires GPU-only requests and derives the CPU count itself. These operational
 errors and their original records remain separate from the real mount failures.
 
-Fresh 4V100 job `1915249` (`-node-retry4`) now runs on `4v100n04`, with the
-explicit `4v100n01` exclusion and eight scheduler-assigned logical CPUs.
+Fresh 4V100 job `1915249` (`-node-retry4`) completed on `4v100n04` in 55m25s,
+with the explicit `4v100n01` exclusion and eight scheduler-assigned logical CPUs.
+Its final SIF passed seven-case single/two-node science in job `1915730`
+(7m49s), and project publication completed at 19:42:38 UTC on October 23.
+The [independent delivery audit](evidence/cp2k-development-20261023/4V100-validation.json)
+revalidated the SIF, raw science, native export, module, successful allocations
+and all preserved recovery attempts. Physical `/opt` installation is separate.
 8V100V0 job `1914617` also failed at the same pre-entry mount deadline after
 finishing its clone checks. Fresh job `1915260` (`-node-retry1`) now runs on
 `8v100v0n03`, excluding `8v100v0n02`, with six scheduler-assigned logical CPUs.
 Both new jobs passed held-allocation and immutable-input checks before release;
 a separate read-only revalidation checked their running allocations and recovery
 provenance. They retain the original controller, recipe and sealed dependency
-checkpoint. Application/science/publication acceptance remains pending, and the
-original workflow failures are preserved.
+checkpoint. The 8V100V0 application/science/publication acceptance remains
+pending, and the original workflow failures are preserved.
 
 The [16V100 delivery audit](evidence/cp2k-development-20261023/16V100-validation.json)
 independently revalidated the final SIF, seven single/two-node scientific cases,
@@ -120,16 +125,20 @@ native export, module and successful dependency/build/science allocations
 installation remains separate. The [DSPRHBM audit](evidence/cp2k-development-20261023/DSPRHBM-validation.json) likewise passed after science job `1915020` and project publication.
 
 The [LibXC supplement](evidence/cp2k-development-20261023/README.md) ran on the
-final 16V100 and DSPRHBM SIFs with thresholds fixed before execution. Its
+final 4V100, 16V100 and DSPRHBM SIFs with thresholds fixed before execution. Its
 built-in-PBE versus LibXC HOST energy comparison failed the original `1e-6` Ha
-gate on both targets (difference approximately `4.16e-6` Ha); the failure records
+gate on all three targets (difference approximately `4.16e-6` Ha); the failure records
 and original thresholds remain intact. Source inspection shows different default
 PBE/PW92 constants in these implementations, including an explicit CP2K comment
 recommending LibXC for higher-precision program comparisons. The 16V100 LibXC
 HOST/DEVICE energy difference was `2.34e-13` Ha, with 94 measured LibXC CUDA
-kernel invocations and the actual private 7.1.2 loader path. The independent pre-existing DFT-reference protocol subsequently passed all
-258 scalar comparisons on both final LibXC HOST providers (16V100 and DSPRHBM);
-the original built-in comparison failures remain unchanged.
+kernel invocations and the actual private 7.1.2 loader path. The independent
+pre-existing DFT-reference protocol subsequently passed all 258 scalar
+comparisons on each final LibXC HOST provider. The 4V100 HOST/DEVICE difference
+was `9.95e-14` Ha with identical forces and 94 LibXC CUDA kernel invocations.
+The [read-only combined summaries](evidence/cp2k-development-20261023/libxc-reference/summaries/)
+recompute the raw mathematical and CP2K comparisons and preserve the original
+built-in comparison failures unchanged.
 
 [Branch integration audit](evidence/development-project-20261023/branch-audit.md)
 identifies two old branches already merged through equivalent patches. The
