@@ -1,0 +1,1594 @@
+{
+  "observed_at": "2026-10-23T13:27:39.533161+00:00",
+  "workflow_run": 39955137406,
+  "workflow_url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/39955137406",
+  "project_root": "/org/org-open-sai/proj-sai-hpc-software",
+  "rows": [
+    {
+      "run": "gpumd-39955137406-1-release-16v100-avx2-2026-10-23-11ba6fbdb4d7",
+      "build_job": "1911773",
+      "build_request": {
+        "contract_schema": 3,
+        "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/87a77ddf1bf3448abf9aef5cc8e8a2db0233d791/gpumd-39955137406-1-release-16v100-avx2-2026-10-23-11ba6fbdb4d7",
+        "dependencies_run": null,
+        "identity": {
+          "build_id": "v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+          "cpu_arch": "znver3",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/16V100",
+          "partition": "16V100",
+          "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+          "repository": "brucefan1983/GPUMD",
+          "schema": 2,
+          "software": "gpumd",
+          "source_ref": "v5.9.1",
+          "source_sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+          "source_version": "v5.9.1",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "16v100-avx2",
+          "track": "release",
+          "version_label": "v5.9.1"
+        },
+        "jobs": 8,
+        "minutes": 240,
+        "op": "submit",
+        "overlay_mb": 8192,
+        "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+        "resume_run": null,
+        "run_id": "gpumd-39955137406-1-release-16v100-avx2-2026-10-23-11ba6fbdb4d7",
+        "sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+        "software": "gpumd",
+        "source_ref": "v5.9.1",
+        "target": "16v100-avx2",
+        "track": "release",
+        "version": "v5.9.1"
+      },
+      "build_accounting": "1911773|16V100|proj-sai-hpc-software|COMPLETED|0:0|00:01:59|10:35.739|8|16v100n02|04:00:00|flood-1o2gpu\n1911773.batch||proj-sai-hpc-software|COMPLETED|0:0|00:01:59|10:35.739|8|16v100n02||\n1911773.extern||proj-sai-hpc-software|COMPLETED|0:0|00:01:59|00:00:00|8|16v100n02||\n",
+      "manifest": {
+        "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/gpumd/release/v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/16V100/gpumd-39955137406-1-release-16v100-avx2-2026-10-23-11ba6fbdb4d7.sif",
+        "build_verified": true,
+        "contract_schema": 3,
+        "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/87a77ddf1bf3448abf9aef5cc8e8a2db0233d791/gpumd-39955137406-1-release-16v100-avx2-2026-10-23-11ba6fbdb4d7",
+        "gpumd_science": {
+          "artifact_sha256": "e658eb160e27974dc313498b1c15dbdf2908cc6943050b78b3f3b871c91ef166",
+          "benchmark": {
+            "md-throughput-baseline": {
+              "input_sha256": "91e7f76760deab2e10fe39440fec3934886425fcec26e1f34fb01625b5b3fa81",
+              "median_atom_steps_per_second": 2399540.0,
+              "median_wall_seconds": 8.89014914445579,
+              "model_sha256": "87e81ed268e478873f335302e9b4dd4d06dc057d9a6b2dcd379c4396eb2a228b",
+              "n_atoms": 2000,
+              "n_steps": 10000,
+              "samples": [
+                {
+                  "atom_steps_per_second": 2399540.0,
+                  "engine_seconds": 8.33494,
+                  "steps_per_second": 1199.77,
+                  "wall_seconds": 8.927592607215047
+                },
+                {
+                  "atom_steps_per_second": 2402770.0,
+                  "engine_seconds": 8.32373,
+                  "steps_per_second": 1201.385,
+                  "wall_seconds": 8.779664477333426
+                },
+                {
+                  "atom_steps_per_second": 2392120.0,
+                  "engine_seconds": 8.36077,
+                  "steps_per_second": 1196.06,
+                  "wall_seconds": 8.89014914445579
+                }
+              ],
+              "warmup": 1
+            },
+            "md-throughput-candidate": {
+              "input_sha256": "91e7f76760deab2e10fe39440fec3934886425fcec26e1f34fb01625b5b3fa81",
+              "median_atom_steps_per_second": 2398600.0,
+              "median_wall_seconds": 9.036826292052865,
+              "model_sha256": "87e81ed268e478873f335302e9b4dd4d06dc057d9a6b2dcd379c4396eb2a228b",
+              "n_atoms": 2000,
+              "n_steps": 10000,
+              "samples": [
+                {
+                  "atom_steps_per_second": 2382780.0,
+                  "engine_seconds": 8.39357,
+                  "steps_per_second": 1191.39,
+                  "wall_seconds": 9.036826292052865
+                },
+                {
+                  "atom_steps_per_second": 2402270.0,
+                  "engine_seconds": 8.32547,
+                  "steps_per_second": 1201.135,
+                  "wall_seconds": 8.879981705918908
+                },
+                {
+                  "atom_steps_per_second": 2398600.0,
+                  "engine_seconds": 8.3382,
+                  "steps_per_second": 1199.3,
+                  "wall_seconds": 9.18732826039195
+                }
+              ],
+              "warmup": 1
+            },
+            "prediction-baseline": {
+              "median_seconds": 0.5154115501791239,
+              "min_seconds": 0.4654149655252695,
+              "seconds": [
+                0.6655275411903858,
+                0.4654149655252695,
+                0.5154115501791239
+              ],
+              "warmup": 1
+            },
+            "prediction-candidate": {
+              "median_seconds": 0.5335863642394543,
+              "min_seconds": 0.5154962502419949,
+              "seconds": [
+                0.5154962502419949,
+                0.5827350355684757,
+                0.5335863642394543
+              ],
+              "warmup": 1
+            },
+            "static-baseline": {
+              "median_seconds": 0.6245551500469446,
+              "min_seconds": 0.46721130795776844,
+              "seconds": [
+                0.6752684600651264,
+                0.6245551500469446,
+                0.46721130795776844
+              ],
+              "warmup": 1
+            },
+            "static-candidate": {
+              "median_seconds": 0.531215351074934,
+              "min_seconds": 0.46521358005702496,
+              "seconds": [
+                0.46521358005702496,
+                0.531215351074934,
+                0.5431035440415144
+              ],
+              "warmup": 1
+            }
+          },
+          "checks": {
+            "deepmd-baseline": {
+              "energy_error_ev": 0.0,
+              "force_error": 1.9890773056419064e-15
+            },
+            "deepmd-candidate": {
+              "energy_error_ev": 0.0,
+              "force_error": 1.9890773056419064e-15
+            },
+            "gnep-finite-difference-forces": {
+              "components": 12,
+              "displacement_angstrom": 0.025,
+              "frames": 4,
+              "max_force_error_ev_per_angstrom": 0.0031400000000005868,
+              "max_output_rounding_ev_per_angstrom": 0.0007999999999999999
+            },
+            "gnep-training-and-prediction": {
+              "max_abs_energy": 0.492356,
+              "max_abs_force": 3.25107,
+              "model_format": "nep5",
+              "prediction_atoms": 40,
+              "prediction_frames": 4
+            },
+            "installed-jit-resources-from-unrelated-cwd": true,
+            "nep-jit-vs-generic-loss": 0.0,
+            "plumed-force-feedback": 2.9317484688817785e-06,
+            "prediction-baseline-energy_train.out": 0.0,
+            "prediction-baseline-force_train.out": 1.0000000000065512e-05,
+            "prediction-baseline-virial_train.out": 1.0000000000287557e-06,
+            "prediction-candidate-energy_train.out": 0.0,
+            "prediction-candidate-force_train.out": 1.0000000000065512e-05,
+            "prediction-candidate-virial_train.out": 1.0000000000287557e-06,
+            "static-baseline": {
+              "energy_error_ev": 0.0,
+              "force_max_error_ev_per_a": 0.0
+            },
+            "static-candidate": {
+              "energy_error_ev": 0.0,
+              "force_max_error_ev_per_a": 0.0
+            }
+          },
+          "identity": {
+            "build_id": "v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+            "cpu_arch": "znver3",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/16V100",
+            "partition": "16V100",
+            "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+            "repository": "brucefan1983/GPUMD",
+            "schema": 2,
+            "software": "gpumd",
+            "source_ref": "v5.9.1",
+            "source_sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+            "source_version": "v5.9.1",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "16v100-avx2",
+            "track": "release",
+            "version_label": "v5.9.1"
+          },
+          "job": "1911814",
+          "launcher_result_sha256": "3ac0db40b9de3a6a93d163194dcef7e72d24f74969c38e2601a4cadb5622626b",
+          "launcher_sha256": "442c2dce979960cfebc58226357ae5374db9e9881649a1f458f78387936b568d",
+          "run_id": "gpumd-39955137406-1-release-16v100-avx2-2026-10-23-11ba6fbdb4d7-science",
+          "science_sha256": "d33726b38f044242af2a9fa765ccb59ae01e38ca095eb54b21db2b0fdcc51de8",
+          "verified": true
+        },
+        "identity": {
+          "build_id": "v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+          "cpu_arch": "znver3",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/16V100",
+          "partition": "16V100",
+          "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+          "repository": "brucefan1983/GPUMD",
+          "schema": 2,
+          "software": "gpumd",
+          "source_ref": "v5.9.1",
+          "source_sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+          "source_version": "v5.9.1",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "16v100-avx2",
+          "track": "release",
+          "version_label": "v5.9.1"
+        },
+        "module_fragment": "/org/org-open-sai/proj-sai-hpc-software/containers/software/gpumd/release/v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/16V100/gpumd-39955137406-1-release-16v100-avx2-2026-10-23-11ba6fbdb4d7.module",
+        "module_fragment_sha256": "7099fe484801e92b9d775a682086409332735fedca10cb7fc0702dd727db160d",
+        "modulefile": "/org/org-open-sai/proj-sai-hpc-software/modulefiles/apps/gpumd/release/v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+        "native_export": {
+          "directory": "/org/org-open-sai/proj-sai-hpc-software/containers/software/gpumd/release/v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/16V100/gpumd-39955137406-1-release-16v100-avx2-2026-10-23-11ba6fbdb4d7.native",
+          "identities": [
+            {
+              "build_id": "v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+              "cpu_arch": "znver3",
+              "cuda_arch": "70",
+              "dependency_isa": "avx2",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/16V100",
+              "partition": "16V100",
+              "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+              "repository": "brucefan1983/GPUMD",
+              "schema": 2,
+              "software": "gpumd",
+              "source_ref": "v5.9.1",
+              "source_sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+              "source_version": "v5.9.1",
+              "stack_digest": null,
+              "stack_sources": {},
+              "target": "16v100-avx2",
+              "track": "release",
+              "version_label": "v5.9.1"
+            }
+          ],
+          "image_sha256": "e658eb160e27974dc313498b1c15dbdf2908cc6943050b78b3f3b871c91ef166",
+          "receipt": {
+            "expected_install_prefixes": [
+              "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/16V100"
+            ],
+            "image_sha256": "e658eb160e27974dc313498b1c15dbdf2908cc6943050b78b3f3b871c91ef166",
+            "installations": [
+              {
+                "bundle_install_prefixes": [
+                  "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/16V100"
+                ],
+                "dependency_modules": [
+                  "cuda/12.9.1",
+                  "nvhpc/26.3-gnu-cuda12-tuned",
+                  "openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto",
+                  "gcc/13.3.0"
+                ],
+                "expected_install_prefix": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/16V100",
+                "external_roots": [
+                  "/opt/devtools/nvidia/cuda-12.9.1",
+                  "/opt/devtools/gcc/13.3.0",
+                  "/opt/apps/conda_env/deepmd-kit-3.2.0",
+                  "/opt/apps/plumed/plumed-2.10.1",
+                  "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+                  "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3",
+                  "/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2",
+                  "/opt/modules/modulefiles/devtools",
+                  "/usr/lib/x86_64-linux-gnu/blas",
+                  "/usr/lib/x86_64-linux-gnu/lapack"
+                ],
+                "image_sha256": "e658eb160e27974dc313498b1c15dbdf2908cc6943050b78b3f3b871c91ef166",
+                "manifest_origin": "derived-runtime-subset",
+                "manifest_sha256": "4516f2a5527ac56060ddf5a754e49343f924ad82451fc994f9dbf30d09413181",
+                "module_load": "gpumd/release/v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+                "module_use": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/16V100/modulefiles",
+                "omitted_nonruntime_paths": [
+                  "share/sai/build-options.txt",
+                  "share/sai/cases",
+                  "share/sai/compiler.txt",
+                  "share/sai/hardware.txt",
+                  "share/sai/modules.txt",
+                  "share/sai/native-cpu-flags.txt",
+                  "share/sai/runtime-env.sh"
+                ],
+                "other_bundle_install_prefixes": [],
+                "path": ".",
+                "payload_profile": "runtime",
+                "readme_sha256": "3895040f22f14b08d522617c1da6952ea271792357785f66d183be3b4bf491ce",
+                "relocation": "staging only; install at expected /opt prefixes or separately validate relocation",
+                "required_install_prefixes": [],
+                "schema": 2,
+                "source_manifest_sha256": "d976c2a8b8b72b60b962420317a0fd48548aefd04ecb42500db3709bf7b189f3",
+                "validation": "integrity-checked; native science and performance acceptance still required"
+              }
+            ],
+            "schema": 2,
+            "validation": "integrity-checked; native science and performance acceptance still required"
+          },
+          "roundtrip_verified": true,
+          "schema": 1,
+          "verified_files": 402
+        },
+        "published": true,
+        "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+        "runtime_launcher": "/org/org-open-sai/proj-sai-hpc-software/controller/87a77ddf1bf3448abf9aef5cc8e8a2db0233d791/gpumd-39955137406-1-release-16v100-avx2-2026-10-23-11ba6fbdb4d7/gpumd",
+        "runtime_launcher_sha256": "442c2dce979960cfebc58226357ae5374db9e9881649a1f458f78387936b568d",
+        "sha256": "e658eb160e27974dc313498b1c15dbdf2908cc6943050b78b3f3b871c91ef166",
+        "software": "gpumd",
+        "source_sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+        "target": "16v100-avx2",
+        "verified": true,
+        "version": "v5.9.1"
+      },
+      "artifact_bytes": 17653760,
+      "physical_opt_installed": false,
+      "independent_revalidation": "ACCEPTANCE_AND_NATIVE_EXPORT_REVERIFIED",
+      "science_evidence": {
+        "artifact_sha256": "e658eb160e27974dc313498b1c15dbdf2908cc6943050b78b3f3b871c91ef166",
+        "benchmark": {
+          "md-throughput-baseline": {
+            "input_sha256": "91e7f76760deab2e10fe39440fec3934886425fcec26e1f34fb01625b5b3fa81",
+            "median_atom_steps_per_second": 2399540.0,
+            "median_wall_seconds": 8.89014914445579,
+            "model_sha256": "87e81ed268e478873f335302e9b4dd4d06dc057d9a6b2dcd379c4396eb2a228b",
+            "n_atoms": 2000,
+            "n_steps": 10000,
+            "samples": [
+              {
+                "atom_steps_per_second": 2399540.0,
+                "engine_seconds": 8.33494,
+                "steps_per_second": 1199.77,
+                "wall_seconds": 8.927592607215047
+              },
+              {
+                "atom_steps_per_second": 2402770.0,
+                "engine_seconds": 8.32373,
+                "steps_per_second": 1201.385,
+                "wall_seconds": 8.779664477333426
+              },
+              {
+                "atom_steps_per_second": 2392120.0,
+                "engine_seconds": 8.36077,
+                "steps_per_second": 1196.06,
+                "wall_seconds": 8.89014914445579
+              }
+            ],
+            "warmup": 1
+          },
+          "md-throughput-candidate": {
+            "input_sha256": "91e7f76760deab2e10fe39440fec3934886425fcec26e1f34fb01625b5b3fa81",
+            "median_atom_steps_per_second": 2398600.0,
+            "median_wall_seconds": 9.036826292052865,
+            "model_sha256": "87e81ed268e478873f335302e9b4dd4d06dc057d9a6b2dcd379c4396eb2a228b",
+            "n_atoms": 2000,
+            "n_steps": 10000,
+            "samples": [
+              {
+                "atom_steps_per_second": 2382780.0,
+                "engine_seconds": 8.39357,
+                "steps_per_second": 1191.39,
+                "wall_seconds": 9.036826292052865
+              },
+              {
+                "atom_steps_per_second": 2402270.0,
+                "engine_seconds": 8.32547,
+                "steps_per_second": 1201.135,
+                "wall_seconds": 8.879981705918908
+              },
+              {
+                "atom_steps_per_second": 2398600.0,
+                "engine_seconds": 8.3382,
+                "steps_per_second": 1199.3,
+                "wall_seconds": 9.18732826039195
+              }
+            ],
+            "warmup": 1
+          },
+          "prediction-baseline": {
+            "median_seconds": 0.5154115501791239,
+            "min_seconds": 0.4654149655252695,
+            "seconds": [
+              0.6655275411903858,
+              0.4654149655252695,
+              0.5154115501791239
+            ],
+            "warmup": 1
+          },
+          "prediction-candidate": {
+            "median_seconds": 0.5335863642394543,
+            "min_seconds": 0.5154962502419949,
+            "seconds": [
+              0.5154962502419949,
+              0.5827350355684757,
+              0.5335863642394543
+            ],
+            "warmup": 1
+          },
+          "static-baseline": {
+            "median_seconds": 0.6245551500469446,
+            "min_seconds": 0.46721130795776844,
+            "seconds": [
+              0.6752684600651264,
+              0.6245551500469446,
+              0.46721130795776844
+            ],
+            "warmup": 1
+          },
+          "static-candidate": {
+            "median_seconds": 0.531215351074934,
+            "min_seconds": 0.46521358005702496,
+            "seconds": [
+              0.46521358005702496,
+              0.531215351074934,
+              0.5431035440415144
+            ],
+            "warmup": 1
+          }
+        },
+        "checks": {
+          "deepmd-baseline": {
+            "energy_error_ev": 0.0,
+            "force_error": 1.9890773056419064e-15
+          },
+          "deepmd-candidate": {
+            "energy_error_ev": 0.0,
+            "force_error": 1.9890773056419064e-15
+          },
+          "gnep-finite-difference-forces": {
+            "components": 12,
+            "displacement_angstrom": 0.025,
+            "frames": 4,
+            "max_force_error_ev_per_angstrom": 0.0031400000000005868,
+            "max_output_rounding_ev_per_angstrom": 0.0007999999999999999
+          },
+          "gnep-training-and-prediction": {
+            "max_abs_energy": 0.492356,
+            "max_abs_force": 3.25107,
+            "model_format": "nep5",
+            "prediction_atoms": 40,
+            "prediction_frames": 4
+          },
+          "installed-jit-resources-from-unrelated-cwd": true,
+          "nep-jit-vs-generic-loss": 0.0,
+          "plumed-force-feedback": 2.9317484688817785e-06,
+          "prediction-baseline-energy_train.out": 0.0,
+          "prediction-baseline-force_train.out": 1.0000000000065512e-05,
+          "prediction-baseline-virial_train.out": 1.0000000000287557e-06,
+          "prediction-candidate-energy_train.out": 0.0,
+          "prediction-candidate-force_train.out": 1.0000000000065512e-05,
+          "prediction-candidate-virial_train.out": 1.0000000000287557e-06,
+          "static-baseline": {
+            "energy_error_ev": 0.0,
+            "force_max_error_ev_per_a": 0.0
+          },
+          "static-candidate": {
+            "energy_error_ev": 0.0,
+            "force_max_error_ev_per_a": 0.0
+          }
+        },
+        "identity": {
+          "build_id": "v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+          "cpu_arch": "znver3",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/16V100",
+          "partition": "16V100",
+          "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+          "repository": "brucefan1983/GPUMD",
+          "schema": 2,
+          "software": "gpumd",
+          "source_ref": "v5.9.1",
+          "source_sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+          "source_version": "v5.9.1",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "16v100-avx2",
+          "track": "release",
+          "version_label": "v5.9.1"
+        },
+        "job": "1911814",
+        "launcher_result_sha256": "3ac0db40b9de3a6a93d163194dcef7e72d24f74969c38e2601a4cadb5622626b",
+        "science_sha256": "d33726b38f044242af2a9fa765ccb59ae01e38ca095eb54b21db2b0fdcc51de8",
+        "verified": true
+      },
+      "science_accounting": "1911814|16V100|proj-sai-hpc-software|COMPLETED|0:0|00:02:09|16v100n06|00:40:00|flood-1o2gpu\n1911814.batch||proj-sai-hpc-software|COMPLETED|0:0|00:02:09|16v100n06||\n1911814.extern||proj-sai-hpc-software|COMPLETED|0:0|00:02:09|16v100n06||\n",
+      "throughput_ratio": 0.9996082582494978
+    },
+    {
+      "run": "gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7",
+      "build_job": "1911768",
+      "build_request": {
+        "contract_schema": 3,
+        "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/87a77ddf1bf3448abf9aef5cc8e8a2db0233d791/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7",
+        "dependencies_run": null,
+        "identity": {
+          "build_id": "v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+          "cpu_arch": "znver4",
+          "cuda_arch": "70",
+          "dependency_isa": "avx512",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/4V100",
+          "partition": "4V100",
+          "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+          "repository": "brucefan1983/GPUMD",
+          "schema": 2,
+          "software": "gpumd",
+          "source_ref": "v5.9.1",
+          "source_sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+          "source_version": "v5.9.1",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "4v100-avx512",
+          "track": "release",
+          "version_label": "v5.9.1"
+        },
+        "jobs": 8,
+        "minutes": 240,
+        "op": "submit",
+        "overlay_mb": 8192,
+        "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+        "resume_run": null,
+        "run_id": "gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7",
+        "sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+        "software": "gpumd",
+        "source_ref": "v5.9.1",
+        "target": "4v100-avx512",
+        "track": "release",
+        "version": "v5.9.1"
+      },
+      "build_accounting": "1911768|4V100|proj-sai-hpc-software|COMPLETED|0:0|00:01:20|05:03.649|8|4v100n23|00:30:00|rush-1o2gpu\n1911768.batch||proj-sai-hpc-software|COMPLETED|0:0|00:01:20|05:03.649|8|4v100n23||\n1911768.extern||proj-sai-hpc-software|COMPLETED|0:0|00:01:20|00:00:00|8|4v100n23||\n",
+      "scheduling-adjustment": {
+        "observed_at": "2026-10-23T12:50:43.112848+00:00",
+        "job": "1911768",
+        "reason": "Enable backfill: requested four-hour slot was forecast for October 27; two peer builds completed in 119 and 176 seconds.",
+        "original_minutes": 240,
+        "updated_minutes": 30,
+        "original_job": "JobId=1911768 JobName=sai-gpumd-build-4v100-avx512-f9c263cf362c UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A Priority=6009 Nice=0 Account=proj-sai-hpc-software QOS=flood-1o2gpu WCKey=* JobState=PENDING Reason=Priority Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=04:00:00 TimeMin=N/A SubmitTime=2026-10-23T20:43:35 EligibleTime=2026-10-23T20:43:35 AccrueTime=2026-10-23T20:43:35 StartTime=2026-10-27T13:56:52 EndTime=2026-10-27T17:56:52 Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-23T20:50:41 Scheduler=Backfill:* Partition=4V100 AllocNode:Sid=login-01:581767 ReqNodeList=(null) ExcNodeList=(null) NodeList= NumNodes=1-1 NumCPUs=1 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=1,mem=22G,node=1,billing=194,gres/gpu=1 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=1 MinMemoryTRES=22G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null) Command=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7/job.sbatch SubmitLine=sbatch --parsable /org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7/job.sbatch WorkDir=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7 StdErr= StdIn=/dev/null StdOut=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7/results/slurm-1911768.log CpusPerTres=gpu:8 MemPerTres=gpu:22528 TresPerNode=gres/gpu:1\n",
+        "updated_job": "JobId=1911768 JobName=sai-gpumd-build-4v100-avx512-f9c263cf362c UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A Priority=6009 Nice=0 Account=proj-sai-hpc-software QOS=flood-1o2gpu WCKey=* JobState=PENDING Reason=None Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=00:30:00 TimeMin=N/A SubmitTime=2026-10-23T20:43:35 EligibleTime=2026-10-23T20:43:35 AccrueTime=2026-10-23T20:43:35 StartTime=2026-10-27T13:56:52 EndTime=2026-10-27T14:26:52 Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-23T20:50:41 Scheduler=Backfill:* Partition=4V100 AllocNode:Sid=login-01:581767 ReqNodeList=(null) ExcNodeList=(null) NodeList= NumNodes=1-1 NumCPUs=1 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=1,mem=22G,node=1,billing=194,gres/gpu=1 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=1 MinMemoryTRES=22G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null) Command=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7/job.sbatch SubmitLine=sbatch --parsable /org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7/job.sbatch WorkDir=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7 StdErr= StdIn=/dev/null StdOut=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7/results/slurm-1911768.log CpusPerTres=gpu:8 MemPerTres=gpu:22528 TresPerNode=gres/gpu:1\n"
+      },
+      "qos-adjustment": {
+        "observed_at": "2026-10-23T13:14:31.441908+00:00",
+        "job": "1911768",
+        "reason": "Use the project-authorized normal rush QoS; same one GPU allocation and UsageFactor=1.0; neither selected QoS defines preemption targets.",
+        "original_qos": "flood-1o2gpu",
+        "updated_qos": "rush-1o2gpu",
+        "original_job": "JobId=1911768 JobName=sai-gpumd-build-4v100-avx512-f9c263cf362c UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A Priority=6006 Nice=0 Account=proj-sai-hpc-software QOS=flood-1o2gpu WCKey=* JobState=PENDING Reason=Priority Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=00:30:00 TimeMin=N/A SubmitTime=2026-10-23T20:43:35 EligibleTime=2026-10-23T20:43:35 AccrueTime=2026-10-23T20:43:35 StartTime=2026-10-24T08:32:10 EndTime=2026-10-24T09:02:10 Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-23T21:14:31 Scheduler=Main Partition=4V100 AllocNode:Sid=login-01:581767 ReqNodeList=(null) ExcNodeList=(null) NodeList= SchedNodeList=4v100n20 NumNodes=1-1 NumCPUs=1 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=1,mem=22G,node=1,billing=194,gres/gpu=1 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=1 MinMemoryTRES=22G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null) Command=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7/job.sbatch SubmitLine=sbatch --parsable /org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7/job.sbatch WorkDir=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7 StdErr= StdIn=/dev/null StdOut=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7/results/slurm-1911768.log CpusPerTres=gpu:8 MemPerTres=gpu:22528 TresPerNode=gres/gpu:1\n",
+        "updated_job": "JobId=1911768 JobName=sai-gpumd-build-4v100-avx512-f9c263cf362c UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A Priority=10005 Nice=0 Account=proj-sai-hpc-software QOS=rush-1o2gpu WCKey=* JobState=PENDING Reason=None Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=00:30:00 TimeMin=N/A SubmitTime=2026-10-23T20:43:35 EligibleTime=2026-10-23T20:43:35 AccrueTime=Unknown StartTime=2026-10-24T08:32:10 EndTime=2026-10-24T09:02:10 Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-23T21:14:31 Scheduler=Main Partition=4V100 AllocNode:Sid=login-01:581767 ReqNodeList=(null) ExcNodeList=(null) NodeList= SchedNodeList=4v100n20 NumNodes=1-1 NumCPUs=1 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=1,mem=22G,node=1,billing=194,gres/gpu=1 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=1 MinMemoryTRES=22G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null) Command=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7/job.sbatch SubmitLine=sbatch --parsable /org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7/job.sbatch WorkDir=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7 StdErr= StdIn=/dev/null StdOut=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7/results/slurm-1911768.log CpusPerTres=gpu:8 MemPerTres=gpu:22528 TresPerNode=gres/gpu:1\n"
+      },
+      "manifest": {
+        "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/gpumd/release/v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/4V100/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7.sif",
+        "build_verified": true,
+        "contract_schema": 3,
+        "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/87a77ddf1bf3448abf9aef5cc8e8a2db0233d791/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7",
+        "gpumd_science": {
+          "artifact_sha256": "d8fbd2397ad8c44b675cdf91c3774253af97f202721915bafaddc07959553760",
+          "benchmark": {
+            "md-throughput-baseline": {
+              "input_sha256": "91e7f76760deab2e10fe39440fec3934886425fcec26e1f34fb01625b5b3fa81",
+              "median_atom_steps_per_second": 2393990.0,
+              "median_wall_seconds": 8.523253284394741,
+              "model_sha256": "87e81ed268e478873f335302e9b4dd4d06dc057d9a6b2dcd379c4396eb2a228b",
+              "n_atoms": 2000,
+              "n_steps": 10000,
+              "samples": [
+                {
+                  "atom_steps_per_second": 2393990.0,
+                  "engine_seconds": 8.35424,
+                  "steps_per_second": 1196.995,
+                  "wall_seconds": 8.523253284394741
+                },
+                {
+                  "atom_steps_per_second": 2395370.0,
+                  "engine_seconds": 8.34945,
+                  "steps_per_second": 1197.685,
+                  "wall_seconds": 8.524100333452225
+                },
+                {
+                  "atom_steps_per_second": 2388810.0,
+                  "engine_seconds": 8.37236,
+                  "steps_per_second": 1194.405,
+                  "wall_seconds": 8.523122364655137
+                }
+              ],
+              "warmup": 1
+            },
+            "md-throughput-candidate": {
+              "input_sha256": "91e7f76760deab2e10fe39440fec3934886425fcec26e1f34fb01625b5b3fa81",
+              "median_atom_steps_per_second": 2389770.0,
+              "median_wall_seconds": 8.572359358891845,
+              "model_sha256": "87e81ed268e478873f335302e9b4dd4d06dc057d9a6b2dcd379c4396eb2a228b",
+              "n_atoms": 2000,
+              "n_steps": 10000,
+              "samples": [
+                {
+                  "atom_steps_per_second": 2392740.0,
+                  "engine_seconds": 8.35861,
+                  "steps_per_second": 1196.37,
+                  "wall_seconds": 8.572163820266724
+                },
+                {
+                  "atom_steps_per_second": 2389770.0,
+                  "engine_seconds": 8.36901,
+                  "steps_per_second": 1194.885,
+                  "wall_seconds": 8.572359358891845
+                },
+                {
+                  "atom_steps_per_second": 2388410.0,
+                  "engine_seconds": 8.37376,
+                  "steps_per_second": 1194.205,
+                  "wall_seconds": 8.573173498734832
+                }
+              ],
+              "warmup": 1
+            },
+            "prediction-baseline": {
+              "median_seconds": 0.16427499242126942,
+              "min_seconds": 0.1642123032361269,
+              "seconds": [
+                0.16447407379746437,
+                0.16427499242126942,
+                0.1642123032361269
+              ],
+              "warmup": 1
+            },
+            "prediction-candidate": {
+              "median_seconds": 0.21444107592105865,
+              "min_seconds": 0.21439353749155998,
+              "seconds": [
+                0.21447542682290077,
+                0.21439353749155998,
+                0.21444107592105865
+              ],
+              "warmup": 1
+            },
+            "static-baseline": {
+              "median_seconds": 0.16433091089129448,
+              "min_seconds": 0.16428447142243385,
+              "seconds": [
+                0.16433091089129448,
+                0.16454341262578964,
+                0.16428447142243385
+              ],
+              "warmup": 1
+            },
+            "static-candidate": {
+              "median_seconds": 0.21443864703178406,
+              "min_seconds": 0.21429812721908092,
+              "seconds": [
+                0.21451600641012192,
+                0.21443864703178406,
+                0.21429812721908092
+              ],
+              "warmup": 1
+            }
+          },
+          "checks": {
+            "deepmd-baseline": {
+              "energy_error_ev": 0.0,
+              "force_error": 1.9914625504213745e-15
+            },
+            "deepmd-candidate": {
+              "energy_error_ev": 0.0,
+              "force_error": 1.991733600964496e-15
+            },
+            "gnep-finite-difference-forces": {
+              "components": 12,
+              "displacement_angstrom": 0.025,
+              "frames": 4,
+              "max_force_error_ev_per_angstrom": 0.0031400000000005868,
+              "max_output_rounding_ev_per_angstrom": 0.0007999999999999999
+            },
+            "gnep-training-and-prediction": {
+              "max_abs_energy": 0.492356,
+              "max_abs_force": 3.25107,
+              "model_format": "nep5",
+              "prediction_atoms": 40,
+              "prediction_frames": 4
+            },
+            "installed-jit-resources-from-unrelated-cwd": true,
+            "nep-jit-vs-generic-loss": 0.0,
+            "plumed-force-feedback": 2.9317484688817785e-06,
+            "prediction-baseline-energy_train.out": 0.0,
+            "prediction-baseline-force_train.out": 1.0000000000065512e-05,
+            "prediction-baseline-virial_train.out": 1.0000000000287557e-06,
+            "prediction-candidate-energy_train.out": 0.0,
+            "prediction-candidate-force_train.out": 1.0000000000065512e-05,
+            "prediction-candidate-virial_train.out": 1.0000000000287557e-06,
+            "static-baseline": {
+              "energy_error_ev": 0.0,
+              "force_max_error_ev_per_a": 0.0
+            },
+            "static-candidate": {
+              "energy_error_ev": 0.0,
+              "force_max_error_ev_per_a": 0.0
+            }
+          },
+          "identity": {
+            "build_id": "v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+            "cpu_arch": "znver4",
+            "cuda_arch": "70",
+            "dependency_isa": "avx512",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/4V100",
+            "partition": "4V100",
+            "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+            "repository": "brucefan1983/GPUMD",
+            "schema": 2,
+            "software": "gpumd",
+            "source_ref": "v5.9.1",
+            "source_sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+            "source_version": "v5.9.1",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "4v100-avx512",
+            "track": "release",
+            "version_label": "v5.9.1"
+          },
+          "job": "1912292",
+          "launcher_result_sha256": "068623efd344918a51e56cd8546e8db11860b8273237ee6e57917341e5bc39cc",
+          "launcher_sha256": "442c2dce979960cfebc58226357ae5374db9e9881649a1f458f78387936b568d",
+          "run_id": "gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7-science",
+          "science_sha256": "0df28b82fa0ef52a9d4dc72d024d76eff6b911b9c2df15da3f3254b0e1e0e624",
+          "verified": true
+        },
+        "identity": {
+          "build_id": "v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+          "cpu_arch": "znver4",
+          "cuda_arch": "70",
+          "dependency_isa": "avx512",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/4V100",
+          "partition": "4V100",
+          "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+          "repository": "brucefan1983/GPUMD",
+          "schema": 2,
+          "software": "gpumd",
+          "source_ref": "v5.9.1",
+          "source_sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+          "source_version": "v5.9.1",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "4v100-avx512",
+          "track": "release",
+          "version_label": "v5.9.1"
+        },
+        "module_fragment": "/org/org-open-sai/proj-sai-hpc-software/containers/software/gpumd/release/v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/4V100/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7.module",
+        "module_fragment_sha256": "0827b8390c92dfee61294d77f667bcbecfcb8ae43683560905774971dd6ec306",
+        "modulefile": "/org/org-open-sai/proj-sai-hpc-software/modulefiles/apps/gpumd/release/v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+        "native_export": {
+          "directory": "/org/org-open-sai/proj-sai-hpc-software/containers/software/gpumd/release/v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/4V100/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7.native",
+          "identities": [
+            {
+              "build_id": "v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+              "cpu_arch": "znver4",
+              "cuda_arch": "70",
+              "dependency_isa": "avx512",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/4V100",
+              "partition": "4V100",
+              "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+              "repository": "brucefan1983/GPUMD",
+              "schema": 2,
+              "software": "gpumd",
+              "source_ref": "v5.9.1",
+              "source_sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+              "source_version": "v5.9.1",
+              "stack_digest": null,
+              "stack_sources": {},
+              "target": "4v100-avx512",
+              "track": "release",
+              "version_label": "v5.9.1"
+            }
+          ],
+          "image_sha256": "d8fbd2397ad8c44b675cdf91c3774253af97f202721915bafaddc07959553760",
+          "receipt": {
+            "expected_install_prefixes": [
+              "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/4V100"
+            ],
+            "image_sha256": "d8fbd2397ad8c44b675cdf91c3774253af97f202721915bafaddc07959553760",
+            "installations": [
+              {
+                "bundle_install_prefixes": [
+                  "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/4V100"
+                ],
+                "dependency_modules": [
+                  "cuda/12.9.1",
+                  "nvhpc/26.3-gnu-cuda12-tuned",
+                  "openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto",
+                  "gcc/13.3.0"
+                ],
+                "expected_install_prefix": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/4V100",
+                "external_roots": [
+                  "/opt/devtools/nvidia/cuda-12.9.1",
+                  "/opt/devtools/gcc/13.3.0",
+                  "/opt/apps/conda_env/deepmd-kit-3.2.0",
+                  "/opt/apps/plumed/plumed-2.10.1",
+                  "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512",
+                  "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3",
+                  "/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2",
+                  "/opt/modules/modulefiles/devtools",
+                  "/usr/lib/x86_64-linux-gnu/blas",
+                  "/usr/lib/x86_64-linux-gnu/lapack"
+                ],
+                "image_sha256": "d8fbd2397ad8c44b675cdf91c3774253af97f202721915bafaddc07959553760",
+                "manifest_origin": "derived-runtime-subset",
+                "manifest_sha256": "a8d1e02f1c88688a3c87a8ad58a5efef557d7f651701aae92336887962efb24a",
+                "module_load": "gpumd/release/v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+                "module_use": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/4V100/modulefiles",
+                "omitted_nonruntime_paths": [
+                  "share/sai/build-options.txt",
+                  "share/sai/cases",
+                  "share/sai/compiler.txt",
+                  "share/sai/hardware.txt",
+                  "share/sai/modules.txt",
+                  "share/sai/native-cpu-flags.txt",
+                  "share/sai/runtime-env.sh"
+                ],
+                "other_bundle_install_prefixes": [],
+                "path": ".",
+                "payload_profile": "runtime",
+                "readme_sha256": "73a55d744e9397051ee3c2a2687a24b1ea531dd96c19c0a380b4d8ead8f22d8e",
+                "relocation": "staging only; install at expected /opt prefixes or separately validate relocation",
+                "required_install_prefixes": [],
+                "schema": 2,
+                "source_manifest_sha256": "5d7ca756c0256bb2c33dacdbadece83b0cc93f8207844b36249ac75d9217b7e2",
+                "validation": "integrity-checked; native science and performance acceptance still required"
+              }
+            ],
+            "schema": 2,
+            "validation": "integrity-checked; native science and performance acceptance still required"
+          },
+          "roundtrip_verified": true,
+          "schema": 1,
+          "verified_files": 402
+        },
+        "published": true,
+        "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+        "runtime_launcher": "/org/org-open-sai/proj-sai-hpc-software/controller/87a77ddf1bf3448abf9aef5cc8e8a2db0233d791/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7/gpumd",
+        "runtime_launcher_sha256": "442c2dce979960cfebc58226357ae5374db9e9881649a1f458f78387936b568d",
+        "sha256": "d8fbd2397ad8c44b675cdf91c3774253af97f202721915bafaddc07959553760",
+        "software": "gpumd",
+        "source_sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+        "target": "4v100-avx512",
+        "verified": true,
+        "version": "v5.9.1"
+      },
+      "artifact_bytes": 17670144,
+      "physical_opt_installed": false,
+      "independent_revalidation": "ACCEPTANCE_AND_NATIVE_EXPORT_REVERIFIED",
+      "science_evidence": {
+        "artifact_sha256": "d8fbd2397ad8c44b675cdf91c3774253af97f202721915bafaddc07959553760",
+        "benchmark": {
+          "md-throughput-baseline": {
+            "input_sha256": "91e7f76760deab2e10fe39440fec3934886425fcec26e1f34fb01625b5b3fa81",
+            "median_atom_steps_per_second": 2393990.0,
+            "median_wall_seconds": 8.523253284394741,
+            "model_sha256": "87e81ed268e478873f335302e9b4dd4d06dc057d9a6b2dcd379c4396eb2a228b",
+            "n_atoms": 2000,
+            "n_steps": 10000,
+            "samples": [
+              {
+                "atom_steps_per_second": 2393990.0,
+                "engine_seconds": 8.35424,
+                "steps_per_second": 1196.995,
+                "wall_seconds": 8.523253284394741
+              },
+              {
+                "atom_steps_per_second": 2395370.0,
+                "engine_seconds": 8.34945,
+                "steps_per_second": 1197.685,
+                "wall_seconds": 8.524100333452225
+              },
+              {
+                "atom_steps_per_second": 2388810.0,
+                "engine_seconds": 8.37236,
+                "steps_per_second": 1194.405,
+                "wall_seconds": 8.523122364655137
+              }
+            ],
+            "warmup": 1
+          },
+          "md-throughput-candidate": {
+            "input_sha256": "91e7f76760deab2e10fe39440fec3934886425fcec26e1f34fb01625b5b3fa81",
+            "median_atom_steps_per_second": 2389770.0,
+            "median_wall_seconds": 8.572359358891845,
+            "model_sha256": "87e81ed268e478873f335302e9b4dd4d06dc057d9a6b2dcd379c4396eb2a228b",
+            "n_atoms": 2000,
+            "n_steps": 10000,
+            "samples": [
+              {
+                "atom_steps_per_second": 2392740.0,
+                "engine_seconds": 8.35861,
+                "steps_per_second": 1196.37,
+                "wall_seconds": 8.572163820266724
+              },
+              {
+                "atom_steps_per_second": 2389770.0,
+                "engine_seconds": 8.36901,
+                "steps_per_second": 1194.885,
+                "wall_seconds": 8.572359358891845
+              },
+              {
+                "atom_steps_per_second": 2388410.0,
+                "engine_seconds": 8.37376,
+                "steps_per_second": 1194.205,
+                "wall_seconds": 8.573173498734832
+              }
+            ],
+            "warmup": 1
+          },
+          "prediction-baseline": {
+            "median_seconds": 0.16427499242126942,
+            "min_seconds": 0.1642123032361269,
+            "seconds": [
+              0.16447407379746437,
+              0.16427499242126942,
+              0.1642123032361269
+            ],
+            "warmup": 1
+          },
+          "prediction-candidate": {
+            "median_seconds": 0.21444107592105865,
+            "min_seconds": 0.21439353749155998,
+            "seconds": [
+              0.21447542682290077,
+              0.21439353749155998,
+              0.21444107592105865
+            ],
+            "warmup": 1
+          },
+          "static-baseline": {
+            "median_seconds": 0.16433091089129448,
+            "min_seconds": 0.16428447142243385,
+            "seconds": [
+              0.16433091089129448,
+              0.16454341262578964,
+              0.16428447142243385
+            ],
+            "warmup": 1
+          },
+          "static-candidate": {
+            "median_seconds": 0.21443864703178406,
+            "min_seconds": 0.21429812721908092,
+            "seconds": [
+              0.21451600641012192,
+              0.21443864703178406,
+              0.21429812721908092
+            ],
+            "warmup": 1
+          }
+        },
+        "checks": {
+          "deepmd-baseline": {
+            "energy_error_ev": 0.0,
+            "force_error": 1.9914625504213745e-15
+          },
+          "deepmd-candidate": {
+            "energy_error_ev": 0.0,
+            "force_error": 1.991733600964496e-15
+          },
+          "gnep-finite-difference-forces": {
+            "components": 12,
+            "displacement_angstrom": 0.025,
+            "frames": 4,
+            "max_force_error_ev_per_angstrom": 0.0031400000000005868,
+            "max_output_rounding_ev_per_angstrom": 0.0007999999999999999
+          },
+          "gnep-training-and-prediction": {
+            "max_abs_energy": 0.492356,
+            "max_abs_force": 3.25107,
+            "model_format": "nep5",
+            "prediction_atoms": 40,
+            "prediction_frames": 4
+          },
+          "installed-jit-resources-from-unrelated-cwd": true,
+          "nep-jit-vs-generic-loss": 0.0,
+          "plumed-force-feedback": 2.9317484688817785e-06,
+          "prediction-baseline-energy_train.out": 0.0,
+          "prediction-baseline-force_train.out": 1.0000000000065512e-05,
+          "prediction-baseline-virial_train.out": 1.0000000000287557e-06,
+          "prediction-candidate-energy_train.out": 0.0,
+          "prediction-candidate-force_train.out": 1.0000000000065512e-05,
+          "prediction-candidate-virial_train.out": 1.0000000000287557e-06,
+          "static-baseline": {
+            "energy_error_ev": 0.0,
+            "force_max_error_ev_per_a": 0.0
+          },
+          "static-candidate": {
+            "energy_error_ev": 0.0,
+            "force_max_error_ev_per_a": 0.0
+          }
+        },
+        "identity": {
+          "build_id": "v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+          "cpu_arch": "znver4",
+          "cuda_arch": "70",
+          "dependency_isa": "avx512",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/4V100",
+          "partition": "4V100",
+          "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+          "repository": "brucefan1983/GPUMD",
+          "schema": 2,
+          "software": "gpumd",
+          "source_ref": "v5.9.1",
+          "source_sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+          "source_version": "v5.9.1",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "4v100-avx512",
+          "track": "release",
+          "version_label": "v5.9.1"
+        },
+        "job": "1912292",
+        "launcher_result_sha256": "068623efd344918a51e56cd8546e8db11860b8273237ee6e57917341e5bc39cc",
+        "science_sha256": "0df28b82fa0ef52a9d4dc72d024d76eff6b911b9c2df15da3f3254b0e1e0e624",
+        "verified": true
+      },
+      "science_accounting": "1912292|4V100|proj-sai-hpc-software|COMPLETED|0:0|00:01:34|4v100n10|00:15:00|rush-1o2gpu\n1912292.batch||proj-sai-hpc-software|COMPLETED|0:0|00:01:34|4v100n10||\n1912292.extern||proj-sai-hpc-software|COMPLETED|0:0|00:01:34|4v100n10||\n",
+      "science-scheduling-adjustment": {
+        "observed_at": "2026-10-23T13:22:04.204548+00:00",
+        "job": "1912292",
+        "reason": "Peer science suites completed in 128 and 129 seconds; use a fifteen-minute backfill slot.",
+        "original_minutes": 40,
+        "updated_minutes": 15,
+        "original_job": "JobId=1912292 JobName=gpumd-science-gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7-science UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A Priority=10006 Nice=0 Account=proj-sai-hpc-software QOS=rush-1o2gpu WCKey=* JobState=PENDING Reason=Priority Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=00:40:00 TimeMin=N/A SubmitTime=2026-10-23T21:18:23 EligibleTime=2026-10-23T21:18:23 AccrueTime=2026-10-23T21:18:23 StartTime=2026-10-23T21:22:02 EndTime=2026-10-23T22:02:02 Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-23T21:21:59 Scheduler=Main Partition=4V100 AllocNode:Sid=login-01:1049990 ReqNodeList=(null) ExcNodeList=(null) NodeList= SchedNodeList=4v100n02 NumNodes=1-1 NumCPUs=1 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=1,mem=22G,node=1,billing=194,gres/gpu=1 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=1 MinMemoryTRES=22G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null) Command=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7-science/job.sbatch SubmitLine=sbatch --parsable /org/org-open-sai/proj-sai-hpc-software/runtime-tests/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7-science/job.sbatch WorkDir=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7-science StdErr= StdIn=/dev/null StdOut=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7-science/results/slurm-1912292.log CpusPerTres=gpu:8 MemPerTres=gpu:22528 TresPerNode=gres/gpu:1\n",
+        "updated_job": "JobId=1912292 JobName=gpumd-science-gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7-science UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A Priority=10006 Nice=0 Account=proj-sai-hpc-software QOS=rush-1o2gpu WCKey=* JobState=PENDING Reason=None Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=00:15:00 TimeMin=N/A SubmitTime=2026-10-23T21:18:23 EligibleTime=2026-10-23T21:18:23 AccrueTime=2026-10-23T21:18:23 StartTime=2026-10-23T21:22:04 EndTime=2026-10-23T22:01:43 Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-23T21:21:59 Scheduler=Main Partition=4V100 AllocNode:Sid=login-01:1049990 ReqNodeList=(null) ExcNodeList=(null) NodeList= SchedNodeList=4v100n02 NumNodes=1-1 NumCPUs=1 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=1,mem=22G,node=1,billing=194,gres/gpu=1 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=1 MinMemoryTRES=22G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null) Command=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7-science/job.sbatch SubmitLine=sbatch --parsable /org/org-open-sai/proj-sai-hpc-software/runtime-tests/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7-science/job.sbatch WorkDir=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7-science StdErr= StdIn=/dev/null StdOut=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7-science/results/slurm-1912292.log CpusPerTres=gpu:8 MemPerTres=gpu:22528 TresPerNode=gres/gpu:1\n"
+      },
+      "science-qos-adjustment": {
+        "observed_at": "2026-10-23T13:19:33.896944+00:00",
+        "job": "1912292",
+        "reason": "Continue the accepted project rush QoS used by the short 4V100 build; one GPU unchanged.",
+        "original_qos": "flood-1o2gpu",
+        "updated_qos": "rush-1o2gpu",
+        "original_job": "JobId=1912292 JobName=gpumd-science-gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7-science UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A Priority=6005 Nice=0 Account=proj-sai-hpc-software QOS=flood-1o2gpu WCKey=* JobState=PENDING Reason=Priority Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=00:40:00 TimeMin=N/A SubmitTime=2026-10-23T21:18:23 EligibleTime=2026-10-23T21:18:23 AccrueTime=2026-10-23T21:18:23 StartTime=2026-10-24T08:32:10 EndTime=2026-10-24T09:12:10 Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-23T21:19:26 Scheduler=Main Partition=4V100 AllocNode:Sid=login-01:1049990 ReqNodeList=(null) ExcNodeList=(null) NodeList= SchedNodeList=4v100n19 NumNodes=1-1 NumCPUs=1 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=1,mem=22G,node=1,billing=194,gres/gpu=1 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=1 MinMemoryTRES=22G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null) Command=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7-science/job.sbatch SubmitLine=sbatch --parsable /org/org-open-sai/proj-sai-hpc-software/runtime-tests/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7-science/job.sbatch WorkDir=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7-science StdErr= StdIn=/dev/null StdOut=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7-science/results/slurm-1912292.log CpusPerTres=gpu:8 MemPerTres=gpu:22528 TresPerNode=gres/gpu:1\n",
+        "updated_job": "JobId=1912292 JobName=gpumd-science-gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7-science UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A Priority=10005 Nice=0 Account=proj-sai-hpc-software QOS=rush-1o2gpu WCKey=* JobState=PENDING Reason=None Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=00:40:00 TimeMin=N/A SubmitTime=2026-10-23T21:18:23 EligibleTime=2026-10-23T21:18:23 AccrueTime=Unknown StartTime=2026-10-24T08:32:10 EndTime=2026-10-24T09:12:10 Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-23T21:19:26 Scheduler=Main Partition=4V100 AllocNode:Sid=login-01:1049990 ReqNodeList=(null) ExcNodeList=(null) NodeList= SchedNodeList=4v100n19 NumNodes=1-1 NumCPUs=1 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=1,mem=22G,node=1,billing=194,gres/gpu=1 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=1 MinMemoryTRES=22G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null) Command=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7-science/job.sbatch SubmitLine=sbatch --parsable /org/org-open-sai/proj-sai-hpc-software/runtime-tests/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7-science/job.sbatch WorkDir=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7-science StdErr= StdIn=/dev/null StdOut=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/gpumd-39955137406-1-release-4v100-avx512-2026-10-23-11ba6fbdb4d7-science/results/slurm-1912292.log CpusPerTres=gpu:8 MemPerTres=gpu:22528 TresPerNode=gres/gpu:1\n"
+      },
+      "throughput_ratio": 0.9982372524530178
+    },
+    {
+      "run": "gpumd-39955137406-1-release-8v100v0-avx512-2026-10-23-11ba6fbdb4d7",
+      "build_job": "1911767",
+      "build_request": {
+        "contract_schema": 3,
+        "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/87a77ddf1bf3448abf9aef5cc8e8a2db0233d791/gpumd-39955137406-1-release-8v100v0-avx512-2026-10-23-11ba6fbdb4d7",
+        "dependencies_run": null,
+        "identity": {
+          "build_id": "v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+          "cpu_arch": "skylake-avx512",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/8V100V0",
+          "partition": "8V100V0",
+          "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+          "repository": "brucefan1983/GPUMD",
+          "schema": 2,
+          "software": "gpumd",
+          "source_ref": "v5.9.1",
+          "source_sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+          "source_version": "v5.9.1",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "8v100v0-avx512",
+          "track": "release",
+          "version_label": "v5.9.1"
+        },
+        "jobs": 6,
+        "minutes": 240,
+        "op": "submit",
+        "overlay_mb": 8192,
+        "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+        "resume_run": null,
+        "run_id": "gpumd-39955137406-1-release-8v100v0-avx512-2026-10-23-11ba6fbdb4d7",
+        "sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+        "software": "gpumd",
+        "source_ref": "v5.9.1",
+        "target": "8v100v0-avx512",
+        "track": "release",
+        "version": "v5.9.1"
+      },
+      "build_accounting": "1911767|8V100V0|proj-sai-hpc-software|COMPLETED|0:0|00:02:56|12:14.147|6|8v100v0n09|04:00:00|flood-1o2gpu\n1911767.batch||proj-sai-hpc-software|COMPLETED|0:0|00:02:56|12:14.147|6|8v100v0n09||\n1911767.extern||proj-sai-hpc-software|COMPLETED|0:0|00:02:56|00:00:00|6|8v100v0n09||\n",
+      "manifest": {
+        "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/gpumd/release/v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/8V100V0/gpumd-39955137406-1-release-8v100v0-avx512-2026-10-23-11ba6fbdb4d7.sif",
+        "build_verified": true,
+        "contract_schema": 3,
+        "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/87a77ddf1bf3448abf9aef5cc8e8a2db0233d791/gpumd-39955137406-1-release-8v100v0-avx512-2026-10-23-11ba6fbdb4d7",
+        "gpumd_science": {
+          "artifact_sha256": "3d8a5e34e766225d454c8523b2a74bf5708942efea95f92735dbf9f1c4666675",
+          "benchmark": {
+            "md-throughput-baseline": {
+              "input_sha256": "91e7f76760deab2e10fe39440fec3934886425fcec26e1f34fb01625b5b3fa81",
+              "median_atom_steps_per_second": 2414070.0,
+              "median_wall_seconds": 8.64376357709989,
+              "model_sha256": "87e81ed268e478873f335302e9b4dd4d06dc057d9a6b2dcd379c4396eb2a228b",
+              "n_atoms": 2000,
+              "n_steps": 10000,
+              "samples": [
+                {
+                  "atom_steps_per_second": 2410930.0,
+                  "engine_seconds": 8.29554,
+                  "steps_per_second": 1205.465,
+                  "wall_seconds": 8.685185210313648
+                },
+                {
+                  "atom_steps_per_second": 2416480.0,
+                  "engine_seconds": 8.2765,
+                  "steps_per_second": 1208.24,
+                  "wall_seconds": 8.64376357709989
+                },
+                {
+                  "atom_steps_per_second": 2414070.0,
+                  "engine_seconds": 8.28477,
+                  "steps_per_second": 1207.035,
+                  "wall_seconds": 8.632326268125325
+                }
+              ],
+              "warmup": 1
+            },
+            "md-throughput-candidate": {
+              "input_sha256": "91e7f76760deab2e10fe39440fec3934886425fcec26e1f34fb01625b5b3fa81",
+              "median_atom_steps_per_second": 2402570.0,
+              "median_wall_seconds": 8.783210598863661,
+              "model_sha256": "87e81ed268e478873f335302e9b4dd4d06dc057d9a6b2dcd379c4396eb2a228b",
+              "n_atoms": 2000,
+              "n_steps": 10000,
+              "samples": [
+                {
+                  "atom_steps_per_second": 2400030.0,
+                  "engine_seconds": 8.33324,
+                  "steps_per_second": 1200.015,
+                  "wall_seconds": 8.844171023927629
+                },
+                {
+                  "atom_steps_per_second": 2406490.0,
+                  "engine_seconds": 8.31087,
+                  "steps_per_second": 1203.245,
+                  "wall_seconds": 8.742090899962932
+                },
+                {
+                  "atom_steps_per_second": 2402570.0,
+                  "engine_seconds": 8.32443,
+                  "steps_per_second": 1201.285,
+                  "wall_seconds": 8.783210598863661
+                }
+              ],
+              "warmup": 1
+            },
+            "prediction-baseline": {
+              "median_seconds": 0.416088649071753,
+              "min_seconds": 0.41551560116931796,
+              "seconds": [
+                0.46613589208573103,
+                0.41551560116931796,
+                0.416088649071753
+              ],
+              "warmup": 1
+            },
+            "prediction-candidate": {
+              "median_seconds": 0.46614614501595497,
+              "min_seconds": 0.4660548116080463,
+              "seconds": [
+                0.4660548116080463,
+                0.46614614501595497,
+                0.46646536607295275
+              ],
+              "warmup": 1
+            },
+            "static-baseline": {
+              "median_seconds": 0.376126857008785,
+              "min_seconds": 0.366335759870708,
+              "seconds": [
+                0.376126857008785,
+                0.46600820403546095,
+                0.366335759870708
+              ],
+              "warmup": 1
+            },
+            "static-candidate": {
+              "median_seconds": 0.4264221200719476,
+              "min_seconds": 0.4248351128771901,
+              "seconds": [
+                0.4264221200719476,
+                0.4660120280459523,
+                0.4248351128771901
+              ],
+              "warmup": 1
+            }
+          },
+          "checks": {
+            "deepmd-baseline": {
+              "energy_error_ev": 0.0,
+              "force_error": 1.9897278269453977e-15
+            },
+            "deepmd-candidate": {
+              "energy_error_ev": 0.0,
+              "force_error": 1.9897278269453977e-15
+            },
+            "gnep-finite-difference-forces": {
+              "components": 12,
+              "displacement_angstrom": 0.025,
+              "frames": 4,
+              "max_force_error_ev_per_angstrom": 0.0031400000000005868,
+              "max_output_rounding_ev_per_angstrom": 0.0007999999999999999
+            },
+            "gnep-training-and-prediction": {
+              "max_abs_energy": 0.492356,
+              "max_abs_force": 3.25107,
+              "model_format": "nep5",
+              "prediction_atoms": 40,
+              "prediction_frames": 4
+            },
+            "installed-jit-resources-from-unrelated-cwd": true,
+            "nep-jit-vs-generic-loss": 0.0,
+            "plumed-force-feedback": 2.9317484688817785e-06,
+            "prediction-baseline-energy_train.out": 0.0,
+            "prediction-baseline-force_train.out": 1.0000000000065512e-05,
+            "prediction-baseline-virial_train.out": 1.0000000000287557e-06,
+            "prediction-candidate-energy_train.out": 0.0,
+            "prediction-candidate-force_train.out": 1.0000000000065512e-05,
+            "prediction-candidate-virial_train.out": 1.0000000000287557e-06,
+            "static-baseline": {
+              "energy_error_ev": 0.0,
+              "force_max_error_ev_per_a": 0.0
+            },
+            "static-candidate": {
+              "energy_error_ev": 0.0,
+              "force_max_error_ev_per_a": 0.0
+            }
+          },
+          "identity": {
+            "build_id": "v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+            "cpu_arch": "skylake-avx512",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/8V100V0",
+            "partition": "8V100V0",
+            "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+            "repository": "brucefan1983/GPUMD",
+            "schema": 2,
+            "software": "gpumd",
+            "source_ref": "v5.9.1",
+            "source_sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+            "source_version": "v5.9.1",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "8v100v0-avx512",
+            "track": "release",
+            "version_label": "v5.9.1"
+          },
+          "job": "1911819",
+          "launcher_result_sha256": "36d03a4e335fe25511465ccfd3b6cf80494c3db9b4b3d3f102e750c6cf1ba4ee",
+          "launcher_sha256": "442c2dce979960cfebc58226357ae5374db9e9881649a1f458f78387936b568d",
+          "run_id": "gpumd-39955137406-1-release-8v100v0-avx512-2026-10-23-11ba6fbdb4d7-science",
+          "science_sha256": "f1a115d1d7a1f02cadaaa9d5f0b428bed45d7e53e061edca284ffbb9fc6971f9",
+          "verified": true
+        },
+        "identity": {
+          "build_id": "v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+          "cpu_arch": "skylake-avx512",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/8V100V0",
+          "partition": "8V100V0",
+          "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+          "repository": "brucefan1983/GPUMD",
+          "schema": 2,
+          "software": "gpumd",
+          "source_ref": "v5.9.1",
+          "source_sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+          "source_version": "v5.9.1",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "8v100v0-avx512",
+          "track": "release",
+          "version_label": "v5.9.1"
+        },
+        "module_fragment": "/org/org-open-sai/proj-sai-hpc-software/containers/software/gpumd/release/v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/8V100V0/gpumd-39955137406-1-release-8v100v0-avx512-2026-10-23-11ba6fbdb4d7.module",
+        "module_fragment_sha256": "6dc218a5f4633e482ad0d8b4b0f328b5f1f3465a81823fd83244293305401917",
+        "modulefile": "/org/org-open-sai/proj-sai-hpc-software/modulefiles/apps/gpumd/release/v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+        "native_export": {
+          "directory": "/org/org-open-sai/proj-sai-hpc-software/containers/software/gpumd/release/v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/8V100V0/gpumd-39955137406-1-release-8v100v0-avx512-2026-10-23-11ba6fbdb4d7.native",
+          "identities": [
+            {
+              "build_id": "v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+              "cpu_arch": "skylake-avx512",
+              "cuda_arch": "70",
+              "dependency_isa": "avx2",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/8V100V0",
+              "partition": "8V100V0",
+              "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+              "repository": "brucefan1983/GPUMD",
+              "schema": 2,
+              "software": "gpumd",
+              "source_ref": "v5.9.1",
+              "source_sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+              "source_version": "v5.9.1",
+              "stack_digest": null,
+              "stack_sources": {},
+              "target": "8v100v0-avx512",
+              "track": "release",
+              "version_label": "v5.9.1"
+            }
+          ],
+          "image_sha256": "3d8a5e34e766225d454c8523b2a74bf5708942efea95f92735dbf9f1c4666675",
+          "receipt": {
+            "expected_install_prefixes": [
+              "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/8V100V0"
+            ],
+            "image_sha256": "3d8a5e34e766225d454c8523b2a74bf5708942efea95f92735dbf9f1c4666675",
+            "installations": [
+              {
+                "bundle_install_prefixes": [
+                  "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/8V100V0"
+                ],
+                "dependency_modules": [
+                  "cuda/12.9.1",
+                  "nvhpc/26.3-gnu-cuda12-tuned",
+                  "openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto",
+                  "gcc/13.3.0"
+                ],
+                "expected_install_prefix": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/8V100V0",
+                "external_roots": [
+                  "/opt/devtools/nvidia/cuda-12.9.1",
+                  "/opt/devtools/gcc/13.3.0",
+                  "/opt/apps/conda_env/deepmd-kit-3.2.0",
+                  "/opt/apps/plumed/plumed-2.10.1",
+                  "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+                  "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3",
+                  "/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2",
+                  "/opt/modules/modulefiles/devtools",
+                  "/usr/lib/x86_64-linux-gnu/blas",
+                  "/usr/lib/x86_64-linux-gnu/lapack"
+                ],
+                "image_sha256": "3d8a5e34e766225d454c8523b2a74bf5708942efea95f92735dbf9f1c4666675",
+                "manifest_origin": "derived-runtime-subset",
+                "manifest_sha256": "b1fc01af9e5be5359f8d1a955d31ef5da5be12403d33dfe80089c158443eac87",
+                "module_load": "gpumd/release/v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+                "module_use": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/8V100V0/modulefiles",
+                "omitted_nonruntime_paths": [
+                  "share/sai/build-options.txt",
+                  "share/sai/cases",
+                  "share/sai/compiler.txt",
+                  "share/sai/hardware.txt",
+                  "share/sai/modules.txt",
+                  "share/sai/native-cpu-flags.txt",
+                  "share/sai/runtime-env.sh"
+                ],
+                "other_bundle_install_prefixes": [],
+                "path": ".",
+                "payload_profile": "runtime",
+                "readme_sha256": "1ba6cdc38e850681ee652b30078c2ef40fba467e56cfbc587b18530a06b41a84",
+                "relocation": "staging only; install at expected /opt prefixes or separately validate relocation",
+                "required_install_prefixes": [],
+                "schema": 2,
+                "source_manifest_sha256": "9de87d5944a7c3327c2a04bea2ba1dac9ea94af5b31c34f7fee370b4dfda2bc0",
+                "validation": "integrity-checked; native science and performance acceptance still required"
+              }
+            ],
+            "schema": 2,
+            "validation": "integrity-checked; native science and performance acceptance still required"
+          },
+          "roundtrip_verified": true,
+          "schema": 1,
+          "verified_files": 402
+        },
+        "published": true,
+        "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+        "runtime_launcher": "/org/org-open-sai/proj-sai-hpc-software/controller/87a77ddf1bf3448abf9aef5cc8e8a2db0233d791/gpumd-39955137406-1-release-8v100v0-avx512-2026-10-23-11ba6fbdb4d7/gpumd",
+        "runtime_launcher_sha256": "442c2dce979960cfebc58226357ae5374db9e9881649a1f458f78387936b568d",
+        "sha256": "3d8a5e34e766225d454c8523b2a74bf5708942efea95f92735dbf9f1c4666675",
+        "software": "gpumd",
+        "source_sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+        "target": "8v100v0-avx512",
+        "verified": true,
+        "version": "v5.9.1"
+      },
+      "artifact_bytes": 17649664,
+      "physical_opt_installed": false,
+      "independent_revalidation": "ACCEPTANCE_AND_NATIVE_EXPORT_REVERIFIED",
+      "science_evidence": {
+        "artifact_sha256": "3d8a5e34e766225d454c8523b2a74bf5708942efea95f92735dbf9f1c4666675",
+        "benchmark": {
+          "md-throughput-baseline": {
+            "input_sha256": "91e7f76760deab2e10fe39440fec3934886425fcec26e1f34fb01625b5b3fa81",
+            "median_atom_steps_per_second": 2414070.0,
+            "median_wall_seconds": 8.64376357709989,
+            "model_sha256": "87e81ed268e478873f335302e9b4dd4d06dc057d9a6b2dcd379c4396eb2a228b",
+            "n_atoms": 2000,
+            "n_steps": 10000,
+            "samples": [
+              {
+                "atom_steps_per_second": 2410930.0,
+                "engine_seconds": 8.29554,
+                "steps_per_second": 1205.465,
+                "wall_seconds": 8.685185210313648
+              },
+              {
+                "atom_steps_per_second": 2416480.0,
+                "engine_seconds": 8.2765,
+                "steps_per_second": 1208.24,
+                "wall_seconds": 8.64376357709989
+              },
+              {
+                "atom_steps_per_second": 2414070.0,
+                "engine_seconds": 8.28477,
+                "steps_per_second": 1207.035,
+                "wall_seconds": 8.632326268125325
+              }
+            ],
+            "warmup": 1
+          },
+          "md-throughput-candidate": {
+            "input_sha256": "91e7f76760deab2e10fe39440fec3934886425fcec26e1f34fb01625b5b3fa81",
+            "median_atom_steps_per_second": 2402570.0,
+            "median_wall_seconds": 8.783210598863661,
+            "model_sha256": "87e81ed268e478873f335302e9b4dd4d06dc057d9a6b2dcd379c4396eb2a228b",
+            "n_atoms": 2000,
+            "n_steps": 10000,
+            "samples": [
+              {
+                "atom_steps_per_second": 2400030.0,
+                "engine_seconds": 8.33324,
+                "steps_per_second": 1200.015,
+                "wall_seconds": 8.844171023927629
+              },
+              {
+                "atom_steps_per_second": 2406490.0,
+                "engine_seconds": 8.31087,
+                "steps_per_second": 1203.245,
+                "wall_seconds": 8.742090899962932
+              },
+              {
+                "atom_steps_per_second": 2402570.0,
+                "engine_seconds": 8.32443,
+                "steps_per_second": 1201.285,
+                "wall_seconds": 8.783210598863661
+              }
+            ],
+            "warmup": 1
+          },
+          "prediction-baseline": {
+            "median_seconds": 0.416088649071753,
+            "min_seconds": 0.41551560116931796,
+            "seconds": [
+              0.46613589208573103,
+              0.41551560116931796,
+              0.416088649071753
+            ],
+            "warmup": 1
+          },
+          "prediction-candidate": {
+            "median_seconds": 0.46614614501595497,
+            "min_seconds": 0.4660548116080463,
+            "seconds": [
+              0.4660548116080463,
+              0.46614614501595497,
+              0.46646536607295275
+            ],
+            "warmup": 1
+          },
+          "static-baseline": {
+            "median_seconds": 0.376126857008785,
+            "min_seconds": 0.366335759870708,
+            "seconds": [
+              0.376126857008785,
+              0.46600820403546095,
+              0.366335759870708
+            ],
+            "warmup": 1
+          },
+          "static-candidate": {
+            "median_seconds": 0.4264221200719476,
+            "min_seconds": 0.4248351128771901,
+            "seconds": [
+              0.4264221200719476,
+              0.4660120280459523,
+              0.4248351128771901
+            ],
+            "warmup": 1
+          }
+        },
+        "checks": {
+          "deepmd-baseline": {
+            "energy_error_ev": 0.0,
+            "force_error": 1.9897278269453977e-15
+          },
+          "deepmd-candidate": {
+            "energy_error_ev": 0.0,
+            "force_error": 1.9897278269453977e-15
+          },
+          "gnep-finite-difference-forces": {
+            "components": 12,
+            "displacement_angstrom": 0.025,
+            "frames": 4,
+            "max_force_error_ev_per_angstrom": 0.0031400000000005868,
+            "max_output_rounding_ev_per_angstrom": 0.0007999999999999999
+          },
+          "gnep-training-and-prediction": {
+            "max_abs_energy": 0.492356,
+            "max_abs_force": 3.25107,
+            "model_format": "nep5",
+            "prediction_atoms": 40,
+            "prediction_frames": 4
+          },
+          "installed-jit-resources-from-unrelated-cwd": true,
+          "nep-jit-vs-generic-loss": 0.0,
+          "plumed-force-feedback": 2.9317484688817785e-06,
+          "prediction-baseline-energy_train.out": 0.0,
+          "prediction-baseline-force_train.out": 1.0000000000065512e-05,
+          "prediction-baseline-virial_train.out": 1.0000000000287557e-06,
+          "prediction-candidate-energy_train.out": 0.0,
+          "prediction-candidate-force_train.out": 1.0000000000065512e-05,
+          "prediction-candidate-virial_train.out": 1.0000000000287557e-06,
+          "static-baseline": {
+            "energy_error_ev": 0.0,
+            "force_max_error_ev_per_a": 0.0
+          },
+          "static-candidate": {
+            "energy_error_ev": 0.0,
+            "force_max_error_ev_per_a": 0.0
+          }
+        },
+        "identity": {
+          "build_id": "v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+          "cpu_arch": "skylake-avx512",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/8V100V0",
+          "partition": "8V100V0",
+          "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+          "repository": "brucefan1983/GPUMD",
+          "schema": 2,
+          "software": "gpumd",
+          "source_ref": "v5.9.1",
+          "source_sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+          "source_version": "v5.9.1",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "8v100v0-avx512",
+          "track": "release",
+          "version_label": "v5.9.1"
+        },
+        "job": "1911819",
+        "launcher_result_sha256": "36d03a4e335fe25511465ccfd3b6cf80494c3db9b4b3d3f102e750c6cf1ba4ee",
+        "science_sha256": "f1a115d1d7a1f02cadaaa9d5f0b428bed45d7e53e061edca284ffbb9fc6971f9",
+        "verified": true
+      },
+      "science_accounting": "1911819|8V100V0|proj-sai-hpc-software|COMPLETED|0:0|00:02:08|8v100v0n09|00:40:00|flood-1o2gpu\n1911819.batch||proj-sai-hpc-software|COMPLETED|0:0|00:02:08|8v100v0n09||\n1911819.extern||proj-sai-hpc-software|COMPLETED|0:0|00:02:08|8v100v0n09||\n",
+      "throughput_ratio": 0.9952362607546591
+    }
+  ],
+  "workflow_status": "completed",
+  "workflow_conclusion": "success"
+}

@@ -1,4 +1,5 @@
 """Trusted, allowlisted container policy; no writable host work/install trees."""
+import os
 import re
 from pathlib import Path
 
@@ -33,6 +34,41 @@ TARGETS = {
 DEPENDENCIES = ("/usr", "/sbin", "/lib", "/lib64", "/opt/devtools", "/opt/modules")
 HPCX_ROOT = "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1"
 HCOLL_BUILD_PREFIX = "/opt/mellanox/hcoll"
+SAI_PROJECT_ROOT = Path('/org/org-open-sai/proj-sai-hpc-software')
+SAI_PROJECT_ACCOUNT = 'proj-sai-hpc-software'
+
+
+def project_batch_directives(root, workdir):
+    """Select the authorized project account for work physically in its tree."""
+    root, workdir = Path(root), Path(workdir)
+    if not root.is_relative_to(SAI_PROJECT_ROOT):
+        return []
+    if '..' in root.parts or '..' in workdir.parts or not workdir.is_relative_to(root):
+        raise ValueError('Slurm work directory escapes the project root')
+    return ['#SBATCH --account=' + SAI_PROJECT_ACCOUNT, '#SBATCH --chdir=' + str(workdir)]
+
+
+def gpumd_qos(root, target):
+    # Both the project account and the partition must allow this one-GPU QoS.
+    # 16V100 disallows rush-1o2gpu; rush-gpu requires four GPUs, so keep flood.
+    return ('rush-1o2gpu' if Path(root).is_relative_to(SAI_PROJECT_ROOT)
+            and target in ('4v100-avx512', '8v100v0-avx512')
+            else TARGETS[target]['qos'])
+
+
+def private_scratch(path):
+    """Keep project ACLs out of Apptainer's root-mapped overlay seed."""
+    path = Path(path)
+    if not path.is_absolute() or path.resolve() != path or path.is_symlink():
+        raise ValueError('untrusted scratch directory')
+    path.mkdir(parents=True, exist_ok=True)
+    # mke2fs copies the seed's ACLs verbatim. Named project users/groups are
+    # unmapped in fakeroot and can make overlay upper/work unwritable. Only
+    # these private scratch directories lose inherited ACLs; results keep them.
+    for name in os.listxattr(path):
+        if name in ('system.posix_acl_access', 'system.posix_acl_default'):
+            os.removexattr(path, name)
+    path.chmod(0o700)
 
 # Observed on SAI 2026-09-20. Never bind all of /opt/apps: it would hide
 # the candidate installed at its final prefix in the overlay / SIF.

@@ -88,6 +88,7 @@ class GpumdContractTests(unittest.TestCase):
         script = acceptance.render_job(request, Path("/home/test/sai-hpc-software/runtime-tests/gpumd-test-science"))
         subprocess.run(["bash", "-n"], input=script, text=True, check=True)
         self.assertIn("#SBATCH --partition=8V100V0", script)
+        self.assertIn("#SBATCH --qos=flood-1o2gpu", script)
         self.assertIn("#SBATCH --gpus-per-node=1", script)
         self.assertIn("gpumd_science.py run", script)
         self.assertIn('"CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES}"', script)
@@ -95,6 +96,35 @@ class GpumdContractTests(unittest.TestCase):
         self.assertIn("/results:/work:rw", script)
         self.assertIn(request["identity"]["install_prefix"], script)
         self.assertNotIn("/gpumd/master-a/", script)
+
+    def test_project_builds_and_science_select_account_workdir_and_parallel_partitions(self):
+        from remote_controller import SAI_PROJECT_ROOT, project_batch_directives
+        names = set()
+        for target in acceptance.GPU_TARGETS:
+            run_id = 'gpumd-project-' + target
+            args = argparse.Namespace(software='gpumd', target=target, run_id=run_id, sha='a' * 40,
+                version='v5.9.1', track='release', source_ref='v5.9.1', jobs=6,
+                minutes=120, overlay_mb=8192, resume_run=None)
+            with patch.object(build, 'ROOT', SAI_PROJECT_ROOT), patch.object(acceptance, 'ROOT', SAI_PROJECT_ROOT):
+                compiled = build.render_job(args)
+                identity = build.request_identity(args)
+                request = dict(target=target, version='v5.9.1', run_id=run_id + '-science',
+                               build_run_id=run_id, identity=identity,
+                               artifact=str(layout.artifact_path(SAI_PROJECT_ROOT, identity, run_id)),
+                               launcher=str(SAI_PROJECT_ROOT / 'controller/revision/gpumd'))
+                task = acceptance.run_dir(request['run_id'])
+                science_script = acceptance.render_job(request, task)
+            for script, directory in [(compiled, SAI_PROJECT_ROOT / 'runs' / run_id), (science_script, task)]:
+                subprocess.run(['bash', '-n'], input=script, text=True, check=True)
+                self.assertIn('#SBATCH --account=proj-sai-hpc-software\n', script)
+                self.assertIn('#SBATCH --chdir=' + str(directory) + '\n', script)
+                expected_qos = 'flood-1o2gpu' if target == '16v100-avx2' else 'rush-1o2gpu'
+                self.assertIn('#SBATCH --qos=' + expected_qos + '\n', script)
+            names.add(next(line for line in compiled.splitlines() if line.startswith('#SBATCH --job-name=')))
+        self.assertEqual(len(names), 3)
+        with self.assertRaisesRegex(ValueError, 'escapes'):
+            project_batch_directives(SAI_PROJECT_ROOT, Path('/home/stardust'))
+        self.assertEqual(project_batch_directives(Path('/home/stardust'), Path('/home/stardust/run')), [])
 
     def test_repeat_job_binds_original_science_read_only(self):
         identity = make_identity("gpumd", "development", "master", "a" * 40,
@@ -164,6 +194,8 @@ class GpumdContractTests(unittest.TestCase):
             prefix = Path(temporary) / "prefix"
             files = {"makefile": "# unchanged upstream Makefile\n",
                      "main_nep/nep_specialized.cu": "// JIT kernel\n",
+                     "main_nep/nep/nep_specialized.cu": "// reorganized upstream JIT kernel\n",
+                     "main_nep/nep/nep.cuh": "// retain the directory named nep\n",
                      "utilities/nep_utilities.cuh": "// JIT utilities\n",
                      "nested/extra header.cuh": "// retain every source/header\n"}
             for name, value in files.items():
@@ -204,6 +236,23 @@ class GpumdContractTests(unittest.TestCase):
             (source / "src/makefile").write_text("# unexpected configured Makefile\n")
             self.assertNotEqual(run().returncode, 0)
 
+
+    def test_jit_source_validation_accepts_both_layouts_and_requires_sources(self):
+        for kernel in ('main_nep/nep_specialized.cu', 'main_nep/nep/nep_specialized.cu'):
+            with self.subTest(kernel=kernel), tempfile.TemporaryDirectory() as temporary:
+                prefix = Path(temporary)
+                source = prefix / 'share/gpumd/src'
+                for relative in (kernel, 'utilities/nep_utilities.cuh'):
+                    path = source / relative
+                    path.parent.mkdir(parents=True, exist_ok=True)
+                    path.write_text('// pinned source\n')
+                science.jit_sources(prefix)
+                (source / kernel).unlink()
+                with self.assertRaisesRegex(ValueError, 'specialization source'):
+                    science.jit_sources(prefix)
+                (source / kernel).symlink_to(source / 'utilities/nep_utilities.cuh')
+                with self.assertRaises(ValueError):
+                    science.jit_sources(prefix)
 
     def test_packaging_preserves_legacy_and_new_pinned_upstream_licenses(self):
         recipe = (ROOT / "controller/gpumd_build.sh").read_text()

@@ -1,12 +1,72 @@
 # GPUMD native GPU tracking and acceptance
 
+October 23: the latest release is `v5.9.1` at
+`11ba6fbdb4d71b2cdb351b39972fa057521585b3`; current `master` resolves to
+`2c93346fce4461de1c42c77e7fe74cdb6b0e3df6` (October 21).
+The latest release now has fresh native builds on all three V100 partitions
+from [run 39955137406](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39955137406).
+All three passed science, performance, native export readback and
+publication; the full release workflow concluded successfully.
+Current `master` now also passes on all three targets in
+[run 39963334471](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39963334471).
+Builds `1912478` (4V100), `1912477` (16V100) and `1912479` (8V100V0) completed
+in 73, 129 and 194 seconds. Science jobs `1912533`, `1912536` and `1912539`
+completed in 94, 122 and 125 seconds, all `COMPLETED / 0:0`.
+Independent revalidation reparsed raw numerical outputs, verified SIF and
+controller hashes, re-read 457 exported files per master target, and checked
+the published module. All six release/master candidates are accepted;
+physical `/opt` installation and native execution remain pending.
+See the [project delivery evidence](evidence/gpumd-project-20261023/README.md).
+
+The first master attempt (`39961430052`) exposed a packaging bug: unanchored
+`tar` exclusions for the `nep` executable also removed the new `main_nep/nep/`
+source directory, so relocated NEP JIT fell back and failed acceptance.
+Binary exclusions now apply only at the source root; inspection recognizes
+both upstream layouts while actual JIT execution remains mandatory.
+The corrected master passes relocated JIT and JIT/generic loss comparison
+with zero difference. Its NEP MD throughput differs from the site baseline
+by less than 0.3% on each target; release differences are below 0.5%.
+Neither track needed a performance retest. These are the fixed 2000-atom
+NEP acceptance cases, not a general production performance claim.
+The original failed builds and their overlays are preserved.
+
+New GPUMD CI builds and acceptance use
+`/org/org-open-sai/proj-sai-hpc-software` with Slurm account
+`proj-sai-hpc-software`. The controller receives this root explicitly,
+including when continuing an existing build. Both build and science job
+scripts pin the account and working directory. Three targets can run in
+parallel, with singleton build names separated by partition and recipe.
+New project jobs use `rush-1o2gpu` on 4V100/8V100V0 and `flood-1o2gpu` on
+16V100, with 30 minutes for builds and 15 minutes for science. The account
+and the individual partition must both allow the selected QoS. 16V100
+does not permit `rush-1o2gpu`, and its `rush-gpu` requires at least four GPUs;
+its one-GPU jobs retain flood. Both selected QoS entries have `UsageFactor=1`
+and no configured preemption targets. The original pending master job
+`1912383` was cancelled and replaced by the corrected workflow. The frozen release run
+began with the old flood QoS; its queued 4V100 build and science jobs were
+updated in Slurm, with original/updated accounting records retained. All
+three builds finished in 80–176 seconds. The longer flood requests had
+forecast starts one to four days away on the busy 4V100 partition.
+The base SIF and self-contained bare source cache were copied into the new
+tree; original home data and frozen controllers stay in place. This change
+does not move existing CP2K, ABACUS or MD automatic-build continuations.
+
+The first project-account attempt (`39953638995`, jobs `1911630`, `1911632`,
+`1911636`) stopped before compilation: the project's inherited POSIX ACLs
+were copied into the fakeroot overlay's `upper` and `work` directories,
+which Apptainer could not write. Build/acceptance scratch directories now
+discard inherited access/default ACLs and set mode 0700 before Apptainer
+creates temporary files; project/input/result permissions remain intact.
+A small container write probe in the project tree passed with this fix.
+The failed attempts and their overlays are retained.
+
 The integrated workflow builds upstream
 `development`, `prerelease`, and `release` through the shared source resolver.
 Development uses `master`; release channels resolve their live upstream tags.
 Every poll resolves a full current Git SHA; it is
 not a webhook or a zero-delay mirror. Daily polling calls `gpumd.yml` as a reusable workflow from the shared
 `daily.yml`; the parent checks its result. `gpumd.yml` has no independent cron trigger.
-On the experimental branch, push/PR run static tests; workflow dispatch starts
+Push/PR run static tests; workflow dispatch starts
 a cluster build. Explicitly absent release/prerelease channels are reported as
 skipped for every dispatch; an entirely empty result skips the build job.
 
@@ -132,10 +192,11 @@ prefix and JIT source path relative to its location; JIT writes into the job's
 managed `TMPDIR`, never the installed source tree. ELF loader paths may refer to
 documented system dependencies but must not refer to `/workspace`, `/control`,
 or the remote controller snapshot. Build-info/`__FILE__` strings are not confused
-with runtime dependencies. This branch does not itself copy an install tree out
-onto the host.
+with runtime dependencies. The relocation probe stays inside the build overlay;
+publication separately exports a verified native tree into project staging.
+It does not install that tree into physical `/opt`.
 
-## Evidence so far
+## Historical preflight evidence
 
 On 2026-09-11, site-only 4V100 preflight job `1271028` completed `0:0` in five
 seconds inside the minimal SIF. Static energy was `-930.8630471229553 eV` with
@@ -147,8 +208,9 @@ pilot, not a candidate-versus-baseline speedup result.
 
 The first preflight (`1271011`) failed because the minimal rootfs has no usable
 `awk` alternative; the environment now parses native GCC flags using Bash.
-New package compilation, GNEP/PLUMED/DeepMD acceptance, copied-prefix runtime and
-three-target performance results remain unverified until their real jobs pass.
+At that point, new package compilation, GNEP/PLUMED/DeepMD acceptance,
+copied-prefix runtime and three-target performance were still unverified.
+The October 23 release/master evidence above now covers those checks.
 
 ## 2026-10-15 gate audit
 
@@ -157,6 +219,6 @@ complete native payload inventories, launcher checksum invalidation, raw
 scientific-output tampering, GNEP force derivatives, inherited-output removal,
 calibrated alternating performance trials and the publication slowdown boundary.
 These fixture tests establish gate behavior; no new cluster scientific or
-performance result is asserted by this audit. The initial development canary
-must pass on 16V100 before expansion to 4V100 and 8V100V0. Real export roundtrip
-and publication evidence are coordinated by the shared delivery workflow.
+performance result was asserted by this audit. The initial development canary
+had to pass on 16V100 before expansion to 4V100 and 8V100V0. All three targets
+have since passed through the shared delivery workflow as recorded above.

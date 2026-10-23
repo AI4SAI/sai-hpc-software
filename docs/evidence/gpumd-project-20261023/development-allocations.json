@@ -1,0 +1,56 @@
+{
+  "observed_at": "2026-10-23T13:45:56.874533+00:00",
+  "rows": [
+    {
+      "target": "16v100-avx2",
+      "job": "1912477",
+      "allocation": "JobId=1912477 JobName=sai-gpumd-build-16v100-avx2-59fe63bf80c8\n   UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A\n   Priority=6005 Nice=0 Account=proj-sai-hpc-software QOS=flood-1o2gpu WCKey=*\n   JobState=RUNNING Reason=None Dependency=(null)\n   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0\n   RunTime=00:01:13 TimeLimit=00:30:00 TimeMin=N/A\n   SubmitTime=2026-10-23T21:44:40 EligibleTime=2026-10-23T21:44:40\n   AccrueTime=2026-10-23T21:44:40\n   StartTime=2026-10-23T21:44:43 EndTime=2026-10-23T22:14:43 Deadline=N/A\n   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-23T21:44:43 Scheduler=Backfill\n   Partition=16V100 AllocNode:Sid=login-01:1618596\n   ReqNodeList=(null) ExcNodeList=(null)\n   NodeList=16v100n04\n   BatchHost=16v100n04\n   NumNodes=1 NumCPUs=8 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:*\n   ReqTRES=cpu=1,mem=15G,node=1,billing=150,gres/gpu=1\n   AllocTRES=cpu=8,mem=15G,node=1,billing=150,gres/gpu=1\n   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*\n   MinCPUsNode=1 MinMemoryTRES=15G MinTmpDiskNode=0\n   Features=(null) DelayBoot=00:00:00\n   OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null)\n   Command=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39963334471-1-development-16v100-avx2-2026-10-23-2c93346fce44/job.sbatch\n   SubmitLine=sbatch --parsable /org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39963334471-1-development-16v100-avx2-2026-10-23-2c93346fce44/job.sbatch\n   WorkDir=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39963334471-1-development-16v100-avx2-2026-10-23-2c93346fce44\n   StdErr=\n   StdIn=/dev/null\n   StdOut=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39963334471-1-development-16v100-avx2-2026-10-23-2c93346fce44/results/slurm-1912477.log\n   CpusPerTres=gpu:8\n   MemPerTres=gpu:15360\n   TresPerNode=gres/gpu:1\n\n",
+      "scratch": {
+        "runtime": {
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39963334471-1-development-16v100-avx2-2026-10-23-2c93346fce44/runtime",
+          "mode": "0o700",
+          "xattrs": []
+        },
+        "apptainer-cache": {
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39963334471-1-development-16v100-avx2-2026-10-23-2c93346fce44/apptainer-cache",
+          "mode": "0o700",
+          "xattrs": []
+        }
+      }
+    },
+    {
+      "target": "4v100-avx512",
+      "job": "1912478",
+      "allocation": "JobId=1912478 JobName=sai-gpumd-build-4v100-avx512-59fe63bf80c8\n   UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A\n   Priority=10005 Nice=0 Account=proj-sai-hpc-software QOS=rush-1o2gpu WCKey=*\n   JobState=RUNNING Reason=None Dependency=(null)\n   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0\n   RunTime=00:00:43 TimeLimit=00:30:00 TimeMin=N/A\n   SubmitTime=2026-10-23T21:44:45 EligibleTime=2026-10-23T21:44:45\n   AccrueTime=2026-10-23T21:44:45\n   StartTime=2026-10-23T21:45:13 EndTime=2026-10-23T22:15:13 Deadline=N/A\n   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-23T21:45:13 Scheduler=Backfill\n   Partition=4V100 AllocNode:Sid=login-01:1619569\n   ReqNodeList=(null) ExcNodeList=(null)\n   NodeList=4v100n11\n   BatchHost=4v100n11\n   NumNodes=1 NumCPUs=8 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:*\n   ReqTRES=cpu=1,mem=22G,node=1,billing=194,gres/gpu=1\n   AllocTRES=cpu=8,mem=22G,node=1,billing=194,gres/gpu=1\n   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*\n   MinCPUsNode=1 MinMemoryTRES=22G MinTmpDiskNode=0\n   Features=(null) DelayBoot=00:00:00\n   OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null)\n   Command=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39963334471-1-development-4v100-avx512-2026-10-23-2c93346fce44/job.sbatch\n   SubmitLine=sbatch --parsable /org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39963334471-1-development-4v100-avx512-2026-10-23-2c93346fce44/job.sbatch\n   WorkDir=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39963334471-1-development-4v100-avx512-2026-10-23-2c93346fce44\n   StdErr=\n   StdIn=/dev/null\n   StdOut=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39963334471-1-development-4v100-avx512-2026-10-23-2c93346fce44/results/slurm-1912478.log\n   CpusPerTres=gpu:8\n   MemPerTres=gpu:22528\n   TresPerNode=gres/gpu:1\n\n",
+      "scratch": {
+        "runtime": {
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39963334471-1-development-4v100-avx512-2026-10-23-2c93346fce44/runtime",
+          "mode": "0o700",
+          "xattrs": []
+        },
+        "apptainer-cache": {
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39963334471-1-development-4v100-avx512-2026-10-23-2c93346fce44/apptainer-cache",
+          "mode": "0o700",
+          "xattrs": []
+        }
+      }
+    },
+    {
+      "target": "8v100v0-avx512",
+      "job": "1912479",
+      "allocation": "JobId=1912479 JobName=sai-gpumd-build-8v100v0-avx512-59fe63bf80c8\n   UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A\n   Priority=10005 Nice=0 Account=proj-sai-hpc-software QOS=rush-1o2gpu WCKey=*\n   JobState=RUNNING Reason=None Dependency=(null)\n   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0\n   RunTime=00:01:00 TimeLimit=00:30:00 TimeMin=N/A\n   SubmitTime=2026-10-23T21:44:53 EligibleTime=2026-10-23T21:44:53\n   AccrueTime=2026-10-23T21:44:53\n   StartTime=2026-10-23T21:44:56 EndTime=2026-10-23T22:14:56 Deadline=N/A\n   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-23T21:44:56 Scheduler=Main\n   Partition=8V100V0 AllocNode:Sid=login-01:1621248\n   ReqNodeList=(null) ExcNodeList=(null)\n   NodeList=8v100v0n02\n   BatchHost=8v100v0n02\n   NumNodes=1 NumCPUs=6 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:*\n   ReqTRES=cpu=1,mem=46G,node=1,billing=180,gres/gpu=1\n   AllocTRES=cpu=6,mem=46G,node=1,billing=180,gres/gpu=1\n   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*\n   MinCPUsNode=1 MinMemoryTRES=46G MinTmpDiskNode=0\n   Features=(null) DelayBoot=00:00:00\n   OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null)\n   Command=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39963334471-1-development-8v100v0-avx512-2026-10-23-2c93346fce44/job.sbatch\n   SubmitLine=sbatch --parsable /org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39963334471-1-development-8v100v0-avx512-2026-10-23-2c93346fce44/job.sbatch\n   WorkDir=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39963334471-1-development-8v100v0-avx512-2026-10-23-2c93346fce44\n   StdErr=\n   StdIn=/dev/null\n   StdOut=/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39963334471-1-development-8v100v0-avx512-2026-10-23-2c93346fce44/results/slurm-1912479.log\n   CpusPerTres=gpu:6\n   MemPerTres=gpu:47104\n   TresPerNode=gres/gpu:1\n\n",
+      "scratch": {
+        "runtime": {
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39963334471-1-development-8v100v0-avx512-2026-10-23-2c93346fce44/runtime",
+          "mode": "0o700",
+          "xattrs": []
+        },
+        "apptainer-cache": {
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/gpumd-39963334471-1-development-8v100v0-avx512-2026-10-23-2c93346fce44/apptainer-cache",
+          "mode": "0o700",
+          "xattrs": []
+        }
+      }
+    }
+  ]
+}

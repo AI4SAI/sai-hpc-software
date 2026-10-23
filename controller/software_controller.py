@@ -9,7 +9,7 @@ from pathlib import Path
 import shlex
 import subprocess
 import time
-from remote_controller import TARGETS, safe_name, safe_sha, container_command, site_app_binds, cp2k_mpi_build_binds
+from remote_controller import TARGETS, safe_name, safe_sha, container_command, site_app_binds, cp2k_mpi_build_binds, project_batch_directives, private_scratch, gpumd_qos
 from source_cache import checksum
 from module_publication import publish_module, validate_module
 from release_contract import make_identity, TRACKS
@@ -214,8 +214,10 @@ def task_dir(run_id):
 def init(args):
     safe_name(args.software)
     r = task_dir(args.run_id)
-    for part in ("input", "results", "runtime", "apptainer-cache"):
+    for part in ("input", "results"):
         (r / part).mkdir(parents=True, exist_ok=True)
+    for part in ("runtime", "apptainer-cache"):
+        private_scratch(r / part)
     return r
 
 
@@ -373,14 +375,15 @@ def render_job(args):
     lines = [
         "#!/bin/bash",
         "#SBATCH --job-name=" + ('sai-' + args.software + '-build-' + args.target + '-' + delivery['recipe_sha256'][:12]
-                                if args.software in ('abacus', 'cp2k') else 'sai-software-build'),
+                                if args.software in ('abacus', 'cp2k', 'gpumd') else 'sai-software-build'),
         "#SBATCH --dependency=singleton",
         f"#SBATCH --partition={target['partition']}",
-        f"#SBATCH --qos={target['qos']}",
+        f"#SBATCH --qos={gpumd_qos(ROOT, args.target) if args.software == 'gpumd' else target['qos']}",
         "#SBATCH --nodes=1", "#SBATCH --ntasks=1",
         f"#SBATCH --time={args.minutes}",
         f"#SBATCH --output={r}/results/slurm-%j.log",
         "#SBATCH --export=NIL",
+        *project_batch_directives(ROOT, r),
     ]
     if target["gpus"]:
         lines += [f"#SBATCH --gpus-per-node={target['gpus']}"]
@@ -493,7 +496,7 @@ def submit(args):
     script.write_text(render_job(args))
     script.chmod(0o700)
     call(["bash", "-n", script])
-    result = call(["sbatch", "--parsable", script], capture_output=True)
+    result = call(["sbatch", "--parsable", script], capture_output=True, cwd=r)
     job = result.stdout.strip().split(";")[0]
     if not job.isdigit():
         raise ValueError("invalid sbatch response")

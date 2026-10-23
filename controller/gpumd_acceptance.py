@@ -8,7 +8,7 @@ import shlex
 import subprocess
 import time
 
-from remote_controller import site_app_binds, TARGETS, safe_name, container_command
+from remote_controller import site_app_binds, TARGETS, safe_name, container_command, project_batch_directives, private_scratch, gpumd_qos
 from source_cache import checksum
 from delivery_layout import artifact_path, load_artifact, validate_record
 from release_contract import GPU_TARGETS, validate_identity
@@ -58,9 +58,10 @@ def render_job(request, task):
     command = shlex.join(argv).replace("'SLURM_JOB_ID=${SLURM_JOB_ID}'", '"SLURM_JOB_ID=${SLURM_JOB_ID}"').replace(
         "'CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES}'", '"CUDA_VISIBLE_DEVICES=${CUDA_VISIBLE_DEVICES}"')
     lines = ["#!/usr/bin/env bash", f"#SBATCH --job-name=gpumd-science-{request['run_id']}",
-        f"#SBATCH --partition={target['partition']}", f"#SBATCH --qos={target['qos']}",
+        f"#SBATCH --partition={target['partition']}", f"#SBATCH --qos={gpumd_qos(ROOT, request['target'])}",
         "#SBATCH --nodes=1", "#SBATCH --ntasks=1", "#SBATCH --gpus-per-node=1",
-        "#SBATCH --time=40", f"#SBATCH --output={task}/results/slurm-%j.log", "#SBATCH --export=NIL",
+        "#SBATCH --time=15", f"#SBATCH --output={task}/results/slurm-%j.log", "#SBATCH --export=NIL",
+        *project_batch_directives(ROOT, task),
         "set -eo pipefail", "export PATH=/usr/bin:/bin LD_LIBRARY_PATH= LD_PRELOAD=",
         "source /etc/profile.d/lmod.sh", "module load apptainer/1.4.4", "set -u",
         f"source /opt/sai_config/mps_mapping.d/{target['partition']}.bash",
@@ -102,14 +103,15 @@ def submit(args):
         require_original_regression(original_evidence)
         check_repeat_request(request, original)
         request["repeat_of"] = repeat_binding(original_id, original_evidence)
-    for name in ("results", "runtime", "cache"):
-        (task / name).mkdir(parents=True)
+    (task / 'results').mkdir(parents=True)
+    for name in ("runtime", "cache"):
+        private_scratch(task / name)
     script = task / "job.sbatch"
     script.write_text(render_job(request, task))
     request["job_script_sha256"] = checksum(script)
     (task / "request.json").write_text(json.dumps(request, sort_keys=True) + "\n")
     subprocess.run(["bash", "-n", script], check=True)
-    job = subprocess.check_output(["sbatch", "--parsable", script], text=True).strip().split(";")[0]
+    job = subprocess.check_output(["sbatch", "--parsable", script], text=True, cwd=task).strip().split(";")[0]
     if not job.isdigit():
         raise ValueError("invalid Slurm job id")
     (task / "job.id").write_text(job + "\n")

@@ -57,7 +57,6 @@ verify)
     --installed "$INSTALL_PREFIX/share/sai/release-identity.json"
   source "$INSTALL_PREFIX/share/sai/runtime-env.sh"
   test "$(cat "$INSTALL_PREFIX/share/sai/source-sha")" = "$sha"
-  test -s "$GPUMD_SRC/main_nep/nep_specialized.cu"
   python3 /control/gpumd_science.py inspect "$INSTALL_PREFIX"
   if touch "$INSTALL_PREFIX/.write-test" 2>/dev/null; then exit 1; fi
   ;;

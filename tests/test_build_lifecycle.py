@@ -174,7 +174,9 @@ class CiLifecycleTests(unittest.TestCase):
         source_ref = "develop" if software == "abacus" else "master"
         identity = make_identity(software, track, source_ref, upstream, version, "c" * 64, target)
         run_id = ("gpumd-" if software == "gpumd" else "") + f"123-1-{track}-{target}-2026-09-13-" + upstream[:12]
-        expected_artifact = artifact_path(Path("/home/testuser/sai-hpc-software"), identity, run_id)
+        selected_root = Path('/org/org-open-sai/proj-sai-hpc-software' if software == 'gpumd'
+                             else '/home/testuser/sai-hpc-software')
+        expected_artifact = artifact_path(selected_root, identity, run_id)
         environment = {"SOFTWARE": software, "TARGET": target, "SOURCE_SHA": upstream,
                        "GITHUB_SHA": "b" * 40, "SOFTWARE_VERSION": version,
                        "SOURCE_REF": source_ref, "RELEASE_TRACK": track,
@@ -192,6 +194,9 @@ class CiLifecycleTests(unittest.TestCase):
             stdout = ""
             if argv[0] == "ssh":
                 remote = shlex.split(argv[-1])
+                if remote[0] == 'env':
+                    self.assertEqual(remote[1], 'SAI_SOFTWARE_ROOT=' + str(selected_root))
+                    remote = remote[2:]
                 if remote[0] == 'cat' and remote[1].endswith('/input/ci-handoff.json'):
                     stdout = json.dumps(dict(schema=1, run_id=run_id, workflow_run_id='123',
                                              controller_sha='b' * 40, identity=identity))

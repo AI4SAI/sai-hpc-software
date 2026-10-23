@@ -42,8 +42,9 @@ printf '%s\n' "${executables[@]}" > "$INSTALL_PREFIX/share/sai/executables.txt"
 # during the real build). Both archive and extraction failures remain fatal.
 git -C /workspace/source diff --quiet HEAD -- src
 source_tree=$(git -C /workspace/source rev-parse HEAD:src)
+# Binary names match only the src root: newer upstream uses main_nep/nep/.
 git -C /workspace/source archive --format=tar "$source_tree" | \
-  tar --exclude='*.o' --exclude='*.obj' --exclude=gpumd --exclude=nep --exclude=gnep \
+  tar --exclude='*.o' --exclude='*.obj' --anchored --exclude=gpumd --exclude=nep --exclude=gnep \
       -xf - -C "$INSTALL_PREFIX/share/gpumd/src"
 printf '%s\n' "$source_tree" > "$INSTALL_PREFIX/share/sai/jit-source-tree"
 # Package the upstream license paths validated before compilation.

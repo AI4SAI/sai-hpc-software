@@ -112,7 +112,7 @@ jobs:
     needs: [validate, resolve-source]
     strategy:
       fail-fast: false
-      max-parallel: 1
+      max-parallel: 3
       matrix:
         build: ${{ fromJSON(needs.resolve-source.outputs.builds) }}
     uses: ./.github/workflows/software-pair.yml
