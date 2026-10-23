@@ -1,0 +1,702 @@
+{
+  "artifact_bytes": 193609728,
+  "artifact_mode": "0o444",
+  "build_affinity": [
+    "DEEPMD_BUILD_AFFINITY 16 [4, 5, 6, 7, 12, 13, 14, 15, 20, 21, 22, 23, 28, 29, 30, 31]"
+  ],
+  "build_verification": {
+    "elf_files": 27,
+    "inventory": {
+      "backends": [
+        "jax",
+        "pt",
+        "ptexpt",
+        "tf"
+      ],
+      "libraries": {
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007ffff89dc000)\n\tlibdeepmd_dyn_cudart.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so (0x000010e2bf282000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x000010e2befcb000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x000010e2beee0000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x000010e2bec00000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x000010e2beeb2000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x000010e2be800000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x000010e2beead000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000010e2bf301000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x000010e2beea6000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd.so",
+          "sha256": "e624eaef54a367988c1a6836467470ead3362be75497734d2bfe821ce6133909"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_backend_jax.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007ffeddbd7000)\n\tlibdeepmd_cc.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_cc.so (0x00001055b9dde000)\n\tlibtensorflow_cc.so.2 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/tensorflow/libtensorflow_cc.so.2 (0x0000105597107000)\n\tlibdeepmd.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd.so (0x00001055970a2000)\n\tlibdeepmd_op_cuda.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op_cuda.so (0x0000105596f64000)\n\tlibdeepmd_dyn_cudart.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so (0x0000105596f4a000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x0000105596c93000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x0000105596baa000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x0000105596800000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x0000105596b7a000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x0000105596400000)\n\tlibtensorflow_framework.so.2 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/tensorflow/libtensorflow_framework.so.2 (0x00001055932eb000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x0000105596b75000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x0000105596b6e000)\n\tlibrt.so.1 => /usr/lib/x86_64-linux-gnu/librt.so.1 (0x0000105596b69000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00001055b9e47000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_backend_jax.so",
+          "sha256": "fe1cef80ba0c4aeb424446cc5da8f08ecbef006bedd37d6dda0f80701719f922"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_backend_pt.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007fffdcdef000)\n\tlibdeepmd_cc.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_cc.so (0x000011682f5de000)\n\tlibtorch.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch.so (0x000011682f5c9000)\n\tlibc10.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10.so (0x000011682f483000)\n\tlibnvrtc.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libnvrtc.so.12 (0x0000116828bb9000)\n\tlibc10_cuda.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10_cuda.so (0x0000116828b19000)\n\tlibdeepmd.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd.so (0x0000116828ab6000)\n\tlibdeepmd_op_cuda.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op_cuda.so (0x0000116828976000)\n\tlibdeepmd_dyn_cudart.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so (0x000011682895c000)\n\tlibtorch_cpu.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_cpu.so (0x0000116813b53000)\n\tlibtorch_cuda.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_cuda.so (0x00001167d8b64000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x00001167d88ad000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x00001167d887d000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x00001167d8600000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x00001167d8517000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x00001167d8200000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x00001167d8876000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x00001167d8871000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000011682f67e000)\n\tlibrt.so.1 => /usr/lib/x86_64-linux-gnu/librt.so.1 (0x00001167d886c000)\n\tlibcudart.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cuda_runtime/lib/libcudart.so.12 (0x00001167d7e00000)\n\tlibcupti.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cuda_cupti/lib/libcupti.so.12 (0x00001167d760c000)\n\tlibtorch_nvshmem.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_nvshmem.so (0x00001167d6e23000)\n\tlibcusparse.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cusparse/lib/libcusparse.so.12 (0x00001167c5400000)\n\tlibcufft.so.11 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cufft/lib/libcufft.so.11 (0x00001167b4200000)\n\tlibcufile.so.0 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cufile/lib/libcufile.so.0 (0x00001167b3f28000)\n\tlibcusparseLt.so.0 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cusparselt/lib/libcusparseLt.so.0 (0x0000116798db8000)\n\tlibnccl.so.2 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/nccl/lib/libnccl.so.2 (0x0000116782e00000)\n\tlibcurand.so.10 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/curand/lib/libcurand.so.10 (0x000011677c800000)\n\tlibcublas.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cublas/lib/libcublas.so.12 (0x0000116775e00000)\n\tlibcublasLt.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cublas/lib/libcublasLt.so.12 (0x0000116754400000)\n\tlibcudnn.so.9 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cudnn/lib/libcudnn.so.9 (0x0000116754000000)\n\tlibutil.so.1 => /usr/lib/x86_64-linux-gnu/libutil.so.1 (0x00001167d885f000)\n\tlibnvshmem_host.so.3 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/nvshmem/lib/libnvshmem_host.so.3 (0x000011674a600000)\n\tlibnvJitLink.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libnvJitLink.so.12 (0x000011674497a000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_backend_pt.so",
+          "sha256": "e4dfa269b53387c01b2a93e14236bd255161e2a5b4d8bb52afe69f48098c578f"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_backend_ptexpt.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007ffcd879d000)\n\tlibdeepmd_cc.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_cc.so (0x00000aca2f66e000)\n\tlibtorch.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch.so (0x00000aca2f659000)\n\tlibc10.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10.so (0x00000aca2f513000)\n\tlibnvrtc.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libnvrtc.so.12 (0x00000aca28c49000)\n\tlibc10_cuda.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10_cuda.so (0x00000aca28ba9000)\n\tlibdeepmd.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd.so (0x00000aca28b46000)\n\tlibdeepmd_op_cuda.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op_cuda.so (0x00000aca28a06000)\n\tlibdeepmd_dyn_cudart.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so (0x00000aca289ec000)\n\tlibtorch_cpu.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_cpu.so (0x00000aca13be3000)\n\tlibtorch_cuda.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_cuda.so (0x00000ac9d8bf4000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x00000ac9d893d000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x00000ac9d8600000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x00000ac9d890d000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x00000ac9d8200000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00000aca2f775000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x00000ac9d8517000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x00000ac9d8906000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x00000ac9d8901000)\n\tlibrt.so.1 => /usr/lib/x86_64-linux-gnu/librt.so.1 (0x00000ac9d88fc000)\n\tlibcudart.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cuda_runtime/lib/libcudart.so.12 (0x00000ac9d7e00000)\n\tlibcupti.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cuda_cupti/lib/libcupti.so.12 (0x00000ac9d760c000)\n\tlibtorch_nvshmem.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_nvshmem.so (0x00000ac9d6e23000)\n\tlibcusparse.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cusparse/lib/libcusparse.so.12 (0x00000ac9c5400000)\n\tlibcufft.so.11 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cufft/lib/libcufft.so.11 (0x00000ac9b4200000)\n\tlibcufile.so.0 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cufile/lib/libcufile.so.0 (0x00000ac9b3f28000)\n\tlibcusparseLt.so.0 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cusparselt/lib/libcusparseLt.so.0 (0x00000ac998db8000)\n\tlibnccl.so.2 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/nccl/lib/libnccl.so.2 (0x00000ac982e00000)\n\tlibcurand.so.10 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/curand/lib/libcurand.so.10 (0x00000ac97c800000)\n\tlibcublas.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cublas/lib/libcublas.so.12 (0x00000ac975e00000)\n\tlibcublasLt.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cublas/lib/libcublasLt.so.12 (0x00000ac954400000)\n\tlibcudnn.so.9 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cudnn/lib/libcudnn.so.9 (0x00000ac954000000)\n\tlibutil.so.1 => /usr/lib/x86_64-linux-gnu/libutil.so.1 (0x00000ac9d88ef000)\n\tlibnvshmem_host.so.3 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/nvshmem/lib/libnvshmem_host.so.3 (0x00000ac94a600000)\n\tlibnvJitLink.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libnvJitLink.so.12 (0x00000ac94497a000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_backend_ptexpt.so",
+          "sha256": "7785b34dc82c1c3cb56dabc6dfb8a307dd80353598c6ac5842cf0f59002c8d67"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_backend_tf.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007ffd579fe000)\n\tlibdeepmd_cc.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_cc.so (0x000011c625f7a000)\n\tlibtensorflow_cc.so.2 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/tensorflow/libtensorflow_cc.so.2 (0x000011c6032a3000)\n\tlibtensorflow_framework.so.2 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/tensorflow/libtensorflow_framework.so.2 (0x000011c60018c000)\n\tlibdeepmd_dyn_cudart.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so (0x000011c600172000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x000011c5ffebb000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x000011c5ffe8d000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x000011c5ffc00000)\n\tlibdeepmd.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd.so (0x000011c5ffe28000)\n\tlibdeepmd_op_cuda.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op_cuda.so (0x000011c5ffac2000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x000011c5ff9d9000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x000011c5ff600000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x000011c5ffe23000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x000011c5ffe1c000)\n\tlibrt.so.1 => /usr/lib/x86_64-linux-gnu/librt.so.1 (0x000011c5ffe17000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000011c626054000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_backend_tf.so",
+          "sha256": "19f36d52254aa8f10fa37b1c945b0cd541b31e8b6997c02a4769dca7a23b500d"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_c.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007fff0ed8d000)\n\tlibdeepmd_cc.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_cc.so (0x00000d218c31a000)\n\tlibdeepmd.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd.so (0x00000d218c2b7000)\n\tlibdeepmd_op_cuda.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op_cuda.so (0x00000d218c177000)\n\tlibdeepmd_dyn_cudart.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so (0x00000d218c15d000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x00000d218bea6000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x00000d218bdbd000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x00000d218ba00000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x00000d218bd8d000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x00000d218b600000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x00000d218bd88000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00000d218c390000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x00000d218bd81000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_c.so",
+          "sha256": "c0b0abfbc5a95b2dfd159550aeb349572f604424ead513166009b78a251776d2"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_cc.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007fff9d2f3000)\n\tlibdeepmd.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd.so (0x000011614ffad000)\n\tlibdeepmd_op_cuda.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op_cuda.so (0x000011614fe6f000)\n\tlibdeepmd_dyn_cudart.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so (0x000011614fe53000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x000011614fb9c000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x000011614fab3000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x000011614f800000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x000011614fa85000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x000011614f400000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x000011614fa7e000)\n\t/lib64/ld-linux-x86-64.so.2 (0x0000116150051000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x000011614fa77000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_cc.so",
+          "sha256": "097f50f18052e11f50059123d847645ef8588f90eb65a5f4baa54d357896ebba"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_cc_low.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007ffce73db000)\n\tlibdeepmd.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd.so (0x000011b6c9c5d000)\n\tlibdeepmd_op_cuda.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op_cuda.so (0x000011b6c9b1f000)\n\tlibdeepmd_dyn_cudart.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so (0x000011b6c9b03000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x000011b6c984c000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x000011b6c9763000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x000011b6c9400000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x000011b6c9735000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x000011b6c9000000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x000011b6c972e000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000011b6c9d01000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x000011b6c9727000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_cc.so",
+          "sha256": "097f50f18052e11f50059123d847645ef8588f90eb65a5f4baa54d357896ebba"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007ffe72dbe000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x00000d0a65c2b000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x00000d0a65b42000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x00000d0a65800000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x00000d0a65b12000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x00000d0a65400000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x00000d0a65b0d000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00000d0a65efe000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x00000d0a65b06000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so",
+          "sha256": "bba391f6b87006d31fd5d428c6209077e8fe632b3fa68d3c3dba6b32380e56b5"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_ipi.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007ffe18520000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x000013089677f000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x0000130896696000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x0000130896400000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x0000130896666000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x0000130896000000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x0000130896661000)\n\t/lib64/ld-linux-x86-64.so.2 (0x0000130896a43000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x000013089665a000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_ipi.so",
+          "sha256": "d2a2b49ee697962a90dce7c9eb31165f6935ea7a093320a32469f55d177e23fd"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007ffef1d61000)\n\tlibtensorflow_framework.so.2 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/tensorflow/libtensorflow_framework.so.2 (0x00000da2c14a7000)\n\tlibdeepmd.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd.so (0x00000da2c1444000)\n\tlibdeepmd_op_cuda.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op_cuda.so (0x00000da2c1304000)\n\tlibdeepmd_dyn_cudart.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so (0x00000da2c12ea000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x00000da2c1033000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x00000da2c0f4a000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x00000da2c0c00000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x00000da2c0f1a000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x00000da2c0800000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00000da2c4770000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x00000da2c0f15000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x00000da2c0f10000)\n\tlibrt.so.1 => /usr/lib/x86_64-linux-gnu/librt.so.1 (0x00000da2c0f0b000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op.so",
+          "sha256": "0e554a09d34f310b47632146a320258dcce1612204b0826047dce69f460f59fa"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op_cuda.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007ffd0abe2000)\n\tlibdeepmd_dyn_cudart.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so (0x00000b4d9d572000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x00000b4d9d2bb000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x00000b4d9d1d0000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x00000b4d9d1a2000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x00000b4d9ce00000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x00000b4d9ca00000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x00000b4d9d19d000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00000b4d9d6cc000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x00000b4d9d196000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op_cuda.so",
+          "sha256": "207bbbf5b5b7693bb8956d23cdbf8803446c90be8cb811734febf244b1fb16f1"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op_pt.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007ffddffa6000)\n\tlibtorch.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch.so (0x00000b9faf452000)\n\tlibc10.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10.so (0x00000b9faf30c000)\n\tlibnvrtc.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libnvrtc.so.12 (0x00000b9fa8a40000)\n\tlibc10_cuda.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10_cuda.so (0x00000b9fa89a0000)\n\tlibcublas.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libcublas.so.12 (0x00000b9fa2200000)\n\tlibcublasLt.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libcublasLt.so.12 (0x00000b9f6fe00000)\n\tlibdeepmd.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd.so (0x00000b9fa893d000)\n\tlibtorch_cpu.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_cpu.so (0x00000b9f5aff7000)\n\tlibtorch_cuda.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_cuda.so (0x00000b9f20008000)\n\tlibcudart.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libcudart.so.12 (0x00000b9f1fc00000)\n\tlibdeepmd_op_cuda.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op_cuda.so (0x00000b9fa20c2000)\n\tlibmpi.so.40 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libmpi.so.40 (0x00000b9f1f835000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x00000b9f1f57e000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x00000b9f1ff1f000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x00000b9f1f200000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x00000b9fa890b000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x00000b9f1ee00000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00000b9fbaa29000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x00000b9fa8904000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x00000b9fa88ff000)\n\tlibrt.so.1 => /usr/lib/x86_64-linux-gnu/librt.so.1 (0x00000b9fa88f8000)\n\tlibdeepmd_dyn_cudart.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so (0x00000b9fa88de000)\n\tlibcupti.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cuda_cupti/lib/libcupti.so.12 (0x00000b9f1e60c000)\n\tlibtorch_nvshmem.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_nvshmem.so (0x00000b9f1de23000)\n\tlibcusparse.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cusparse/lib/libcusparse.so.12 (0x00000b9f0c400000)\n\tlibcufft.so.11 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cufft/lib/libcufft.so.11 (0x00000b9efb200000)\n\tlibcufile.so.0 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cufile/lib/libcufile.so.0 (0x00000b9efaf28000)\n\tlibcusparseLt.so.0 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cusparselt/lib/libcusparseLt.so.0 (0x00000b9edfdb8000)\n\tlibnccl.so.2 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/nccl/lib/libnccl.so.2 (0x00000b9ec9e00000)\n\tlibcurand.so.10 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/curand/lib/libcurand.so.10 (0x00000b9ec3800000)\n\tlibcudnn.so.9 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cudnn/lib/libcudnn.so.9 (0x00000b9ec3400000)\n\tlibucc.so.1 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libucc.so.1 (0x00000b9fa8894000)\n\tlibhcoll.so.1 => /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libhcoll.so.1 (0x00000b9ec3000000)\n\tlibopen-pal.so.80 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libopen-pal.so.80 (0x00000b9f1f460000)\n\tlibucp.so.0 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libucp.so.0 (0x00000b9f1f102000)\n\tlibucs.so.0 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libucs.so.0 (0x00000b9f1f08b000)\n\tlibpmix.so.2 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libpmix.so.2 (0x00000b9ec2dbc000)\n\tlibevent_core-2.1.so.7 => /usr/lib/x86_64-linux-gnu/libevent_core-2.1.so.7 (0x00000b9fa885d000)\n\tlibevent_pthreads-2.1.so.7 => /usr/lib/x86_64-linux-gnu/libevent_pthreads-2.1.so.7 (0x00000b9fa8858000)\n\tlibhwloc.so.15 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libhwloc.so.15 (0x00000b9f1fec1000)\n\tlibutil.so.1 => /usr/lib/x86_64-linux-gnu/libutil.so.1 (0x00000b9fa8851000)\n\tlibnvshmem_host.so.3 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/nvshmem/lib/libnvshmem_host.so.3 (0x00000b9eb9200000)\n\tlibnvJitLink.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libnvJitLink.so.12 (0x00000b9eb357a000)\n\tlibocoms.so.0 => /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libocoms.so.0 (0x00000b9eb3200000)\n\tlibrdmacm.so.1 => /usr/lib/x86_64-linux-gnu/librdmacm.so.1 (0x00000b9fa20a0000)\n\tlibibverbs.so.1 => /usr/lib/x86_64-linux-gnu/libibverbs.so.1 (0x00000b9f1f067000)\n\tlibucm.so.0 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libucm.so.0 (0x00000b9fa2082000)\n\tlibuct.so.0 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libuct.so.0 (0x00000b9f1f026000)\n\tlibmunge.so.2 => /usr/lib/x86_64-linux-gnu/libmunge.so.2 (0x00000b9f1feb9000)\n\tlibnl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-3.so.200 (0x00000b9f1f43e000)\n\tlibnl-route-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-route-3.so.200 (0x00000b9f0c371000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op_pt.so",
+          "sha256": "225fff34d31e044690e5616d270e5d10c2817c528870e696c684f2f30323ff25"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007ffd772e5000)\n\tlibdeepmd_dyn_cudart.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so (0x000009be0643a000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x000009be06183000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x000009be06098000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x000009be05e00000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x000009be0606a000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x000009be05a00000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x000009be06065000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000009be064b9000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x000009be0605e000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd.so",
+          "sha256": "ab3b4ea9a48b193f668ed51aec5969979adc601d6b16ce9dc1e6f26e87bb446f"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_backend_jax.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007ffda148b000)\n\tlibdeepmd_cc.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_cc.so (0x00000d97fac0d000)\n\tlibtensorflow_cc.so.2 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/tensorflow/libtensorflow_cc.so.2 (0x00000d97d7f36000)\n\tlibdeepmd.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd.so (0x00000d97d7ed1000)\n\tlibdeepmd_op_cuda.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op_cuda.so (0x00000d97d7d93000)\n\tlibdeepmd_dyn_cudart.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so (0x00000d97d7d79000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x00000d97d7ac2000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x00000d97d79d9000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x00000d97d7600000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x00000d97d79a9000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x00000d97d7200000)\n\tlibtensorflow_framework.so.2 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/tensorflow/libtensorflow_framework.so.2 (0x00000d97d40eb000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x00000d97d79a4000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x00000d97d799d000)\n\tlibrt.so.1 => /usr/lib/x86_64-linux-gnu/librt.so.1 (0x00000d97d7998000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00000d97fac76000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_backend_jax.so",
+          "sha256": "155e9677341e482e18cde50c7d4137d968a5af312fa67e353e707f94dd174f77"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_backend_pt.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007ffc21126000)\n\tlibdeepmd_cc.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_cc.so (0x0000152996bba000)\n\tlibtorch.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch.so (0x0000152996ba5000)\n\tlibc10.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10.so (0x0000152996a5f000)\n\tlibnvrtc.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libnvrtc.so.12 (0x0000152990195000)\n\tlibc10_cuda.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10_cuda.so (0x00001529900f5000)\n\tlibdeepmd.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd.so (0x0000152990092000)\n\tlibdeepmd_op_cuda.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op_cuda.so (0x000015298ff52000)\n\tlibdeepmd_dyn_cudart.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so (0x000015298ff38000)\n\tlibtorch_cpu.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_cpu.so (0x000015297b12f000)\n\tlibtorch_cuda.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_cuda.so (0x0000152940140000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x000015293fe89000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x000015293fe59000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x000015293fc00000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x000015293fb17000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x000015293f800000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x000015293fe52000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x000015293fe4d000)\n\t/lib64/ld-linux-x86-64.so.2 (0x0000152996c5a000)\n\tlibrt.so.1 => /usr/lib/x86_64-linux-gnu/librt.so.1 (0x000015293fe48000)\n\tlibcudart.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cuda_runtime/lib/libcudart.so.12 (0x000015293f400000)\n\tlibcupti.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cuda_cupti/lib/libcupti.so.12 (0x000015293ec0c000)\n\tlibtorch_nvshmem.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_nvshmem.so (0x000015293e423000)\n\tlibcusparse.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cusparse/lib/libcusparse.so.12 (0x000015292ca00000)\n\tlibcufft.so.11 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cufft/lib/libcufft.so.11 (0x000015291b800000)\n\tlibcufile.so.0 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cufile/lib/libcufile.so.0 (0x000015291b528000)\n\tlibcusparseLt.so.0 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cusparselt/lib/libcusparseLt.so.0 (0x00001529003b8000)\n\tlibnccl.so.2 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/nccl/lib/libnccl.so.2 (0x00001528ea400000)\n\tlibcurand.so.10 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/curand/lib/libcurand.so.10 (0x00001528e3e00000)\n\tlibcublas.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cublas/lib/libcublas.so.12 (0x00001528dd400000)\n\tlibcublasLt.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cublas/lib/libcublasLt.so.12 (0x00001528bba00000)\n\tlibcudnn.so.9 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cudnn/lib/libcudnn.so.9 (0x00001528bb600000)\n\tlibutil.so.1 => /usr/lib/x86_64-linux-gnu/libutil.so.1 (0x000015293fe3b000)\n\tlibnvshmem_host.so.3 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/nvshmem/lib/libnvshmem_host.so.3 (0x00001528b1c00000)\n\tlibnvJitLink.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libnvJitLink.so.12 (0x00001528abf7a000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_backend_pt.so",
+          "sha256": "2543f8f2bc59419d76c2e7915abd8d49328b6b3b208407a0dc79f06607829552"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_backend_ptexpt.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x000011644de6c000)\n\tlibdeepmd_cc.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_cc.so (0x000011644dd61000)\n\tlibtorch.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch.so (0x000011644dd4c000)\n\tlibc10.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10.so (0x000011644dc06000)\n\tlibnvrtc.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libnvrtc.so.12 (0x000011644733c000)\n\tlibc10_cuda.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10_cuda.so (0x000011644729c000)\n\tlibdeepmd.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd.so (0x0000116447239000)\n\tlibdeepmd_op_cuda.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op_cuda.so (0x00001164470f9000)\n\tlibdeepmd_dyn_cudart.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so (0x00001164470df000)\n\tlibtorch_cpu.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_cpu.so (0x00001164322d6000)\n\tlibtorch_cuda.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_cuda.so (0x00001163f72e7000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x00001163f7030000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x00001163f6c00000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x00001163f7000000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x00001163f6800000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000011644de6e000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x00001163f6f17000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x00001163f6f10000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x00001163f6f0b000)\n\tlibrt.so.1 => /usr/lib/x86_64-linux-gnu/librt.so.1 (0x00001163f6f06000)\n\tlibcudart.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cuda_runtime/lib/libcudart.so.12 (0x00001163f6400000)\n\tlibcupti.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cuda_cupti/lib/libcupti.so.12 (0x00001163f5c0c000)\n\tlibtorch_nvshmem.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_nvshmem.so (0x00001163f5423000)\n\tlibcusparse.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cusparse/lib/libcusparse.so.12 (0x00001163e3a00000)\n\tlibcufft.so.11 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cufft/lib/libcufft.so.11 (0x00001163d2800000)\n\tlibcufile.so.0 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cufile/lib/libcufile.so.0 (0x00001163d2528000)\n\tlibcusparseLt.so.0 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cusparselt/lib/libcusparseLt.so.0 (0x00001163b73b8000)\n\tlibnccl.so.2 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/nccl/lib/libnccl.so.2 (0x00001163a1400000)\n\tlibcurand.so.10 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/curand/lib/libcurand.so.10 (0x000011639ae00000)\n\tlibcublas.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cublas/lib/libcublas.so.12 (0x0000116394400000)\n\tlibcublasLt.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cublas/lib/libcublasLt.so.12 (0x0000116372a00000)\n\tlibcudnn.so.9 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cudnn/lib/libcudnn.so.9 (0x0000116372600000)\n\tlibutil.so.1 => /usr/lib/x86_64-linux-gnu/libutil.so.1 (0x00001163f6ef9000)\n\tlibnvshmem_host.so.3 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/nvshmem/lib/libnvshmem_host.so.3 (0x0000116368c00000)\n\tlibnvJitLink.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libnvJitLink.so.12 (0x0000116362f7a000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_backend_ptexpt.so",
+          "sha256": "b6b0f6d2736720ba2688b021d38cb2974a5853149e2b28377b749ccb2cc39576"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_backend_tf.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007ffd98792000)\n\tlibdeepmd_cc.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_cc.so (0x000013a781dbe000)\n\tlibtensorflow_cc.so.2 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/tensorflow/libtensorflow_cc.so.2 (0x000013a75f0e7000)\n\tlibtensorflow_framework.so.2 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/tensorflow/libtensorflow_framework.so.2 (0x000013a75bfd0000)\n\tlibdeepmd_dyn_cudart.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so (0x000013a75bfb6000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x000013a75bcff000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x000013a75bcd1000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x000013a75ba00000)\n\tlibdeepmd.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd.so (0x000013a75bc6c000)\n\tlibdeepmd_op_cuda.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op_cuda.so (0x000013a75b8c2000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x000013a75b7d9000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x000013a75b400000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x000013a75bc67000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x000013a75bc60000)\n\tlibrt.so.1 => /usr/lib/x86_64-linux-gnu/librt.so.1 (0x000013a75bc5b000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000013a781e98000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_backend_tf.so",
+          "sha256": "99885e862acb921153e771fa4bd8628ad3ed0ec4ce969d093043dbd4ff1082bf"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_c.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007ffe34b5a000)\n\tlibdeepmd_cc.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_cc.so (0x000008256de57000)\n\tlibdeepmd.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd.so (0x000008256ddf4000)\n\tlibdeepmd_op_cuda.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op_cuda.so (0x000008256dcb4000)\n\tlibdeepmd_dyn_cudart.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so (0x000008256dc9a000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x000008256d9e3000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x000008256d8fa000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x000008256d600000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x000008256d8ca000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x000008256d200000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x000008256d8c5000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000008256decd000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x000008256d8be000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_c.so",
+          "sha256": "f20b3dedd37cdec496fa48d2d734b914ab462d97f56162a2238080dbc7fe1595"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_cc.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007fff9976f000)\n\tlibdeepmd.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd.so (0x000008d6b211c000)\n\tlibdeepmd_op_cuda.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op_cuda.so (0x000008d6b1fde000)\n\tlibdeepmd_dyn_cudart.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so (0x000008d6b1fc2000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x000008d6b1d0b000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x000008d6b1c22000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x000008d6b1800000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x000008d6b1bf4000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x000008d6b1400000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x000008d6b1bed000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000008d6b21c0000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x000008d6b1be6000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_cc.so",
+          "sha256": "e4611b941f1f284d190519f0d8bf862d64b0f0b90274ebb8bf7e3c8b8e8684b9"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_dyn_cudart.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007ffda2698000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x000011435ec37000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x000011435eb4e000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x000011435e800000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x000011435eb1e000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x000011435e400000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x000011435eb19000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000011435ef0a000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x000011435eb12000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_dyn_cudart.so",
+          "sha256": "f1ed344b8d6de9b80a8689d968dc1a1ef30d9a0d4cbb48e579e50ad9c2099022"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_ipi.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007ffc74d91000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x000011cd6e5a2000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x000011cd6e4b9000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x000011cd6e200000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x000011cd6e489000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x000011cd6de00000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x000011cd6e484000)\n\t/lib64/ld-linux-x86-64.so.2 (0x000011cd6e866000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x000011cd6e47d000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_ipi.so",
+          "sha256": "e592c3fd67cf5a7d0792b93d525e45b6732446b97253107d62d3e3bb3d51e636"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_op.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007ffe63332000)\n\tlibtensorflow_framework.so.2 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/tensorflow/libtensorflow_framework.so.2 (0x0000100a3bad1000)\n\tlibdeepmd.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd.so (0x0000100a3ba6e000)\n\tlibdeepmd_op_cuda.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op_cuda.so (0x0000100a3b92e000)\n\tlibdeepmd_dyn_cudart.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so (0x0000100a3b914000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x0000100a3b65d000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x0000100a3b574000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x0000100a3b200000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x0000100a3b544000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x0000100a3ae00000)\n\t/lib64/ld-linux-x86-64.so.2 (0x0000100a3ed9a000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x0000100a3b53f000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x0000100a3b53a000)\n\tlibrt.so.1 => /usr/lib/x86_64-linux-gnu/librt.so.1 (0x0000100a3b535000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_op.so",
+          "sha256": "8d68a485ad9e231e8678763c841286c9b4e947d33843d3d4217085d0fe3b1439"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_op_cuda.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007ffd3935c000)\n\tlibdeepmd_dyn_cudart.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so (0x00000606f3495000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x00000606f31de000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x00000606f30f3000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x00000606f30c5000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x00000606f2e00000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x00000606f2a00000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x00000606f30c0000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00000606f35ef000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x00000606f30b9000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_op_cuda.so",
+          "sha256": "8ffccc9c24c2971ab4c6ffe378a84300942b01dabb772b5a2c992fbc1115fb05"
+        },
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_op_pt.so": {
+          "ldd": "\tlinux-vdso.so.1 (0x00007ffcebdec000)\n\tlibtorch.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch.so (0x00000c0645ed4000)\n\tlibc10.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10.so (0x00000c0645d8e000)\n\tlibnvrtc.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libnvrtc.so.12 (0x00000c063f4c2000)\n\tlibc10_cuda.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10_cuda.so (0x00000c063f422000)\n\tlibcublas.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libcublas.so.12 (0x00000c0638c00000)\n\tlibcublasLt.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libcublasLt.so.12 (0x00000c0606800000)\n\tlibdeepmd.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd.so (0x00000c063f3bf000)\n\tlibtorch_cpu.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_cpu.so (0x00000c05f19f7000)\n\tlibtorch_cuda.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_cuda.so (0x00000c05b6a08000)\n\tlibcudart.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libcudart.so.12 (0x00000c05b6600000)\n\tlibdeepmd_op_cuda.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_op_cuda.so (0x00000c063f27f000)\n\tlibmpi.so.40 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libmpi.so.40 (0x00000c05b6235000)\n\tlibstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x00000c05b5f7e000)\n\tlibm.so.6 => /usr/lib/x86_64-linux-gnu/libm.so.6 (0x00000c0638b17000)\n\tlibgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x00000c05b5c00000)\n\tlibgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x00000c0638ae9000)\n\tlibc.so.6 => /usr/lib/x86_64-linux-gnu/libc.so.6 (0x00000c05b5800000)\n\t/lib64/ld-linux-x86-64.so.2 (0x00000c06514ab000)\n\tlibdl.so.2 => /usr/lib/x86_64-linux-gnu/libdl.so.2 (0x00000c063f276000)\n\tlibpthread.so.0 => /usr/lib/x86_64-linux-gnu/libpthread.so.0 (0x00000c063f271000)\n\tlibrt.so.1 => /usr/lib/x86_64-linux-gnu/librt.so.1 (0x00000c063f26a000)\n\tlibdeepmd_dyn_cudart.so => /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/libdeepmd_dyn_cudart.so (0x00000c0638acf000)\n\tlibcupti.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cuda_cupti/lib/libcupti.so.12 (0x00000c05b500c000)\n\tlibtorch_nvshmem.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_nvshmem.so (0x00000c05b4823000)\n\tlibcusparse.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cusparse/lib/libcusparse.so.12 (0x00000c05a2e00000)\n\tlibcufft.so.11 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cufft/lib/libcufft.so.11 (0x00000c0591c00000)\n\tlibcufile.so.0 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cufile/lib/libcufile.so.0 (0x00000c0591928000)\n\tlibcusparseLt.so.0 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cusparselt/lib/libcusparseLt.so.0 (0x00000c05767b8000)\n\tlibnccl.so.2 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/nccl/lib/libnccl.so.2 (0x00000c0560800000)\n\tlibcurand.so.10 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/curand/lib/libcurand.so.10 (0x00000c055a200000)\n\tlibcudnn.so.9 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cudnn/lib/libcudnn.so.9 (0x00000c0559e00000)\n\tlibucc.so.1 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libucc.so.1 (0x00000c0638a89000)\n\tlibhcoll.so.1 => /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libhcoll.so.1 (0x00000c0559a00000)\n\tlibopen-pal.so.80 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libopen-pal.so.80 (0x00000c05b68ea000)\n\tlibucp.so.0 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libucp.so.0 (0x00000c05b5e80000)\n\tlibucs.so.0 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libucs.so.0 (0x00000c05b5b89000)\n\tlibpmix.so.2 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libpmix.so.2 (0x00000c05597bc000)\n\tlibevent_core-2.1.so.7 => /usr/lib/x86_64-linux-gnu/libevent_core-2.1.so.7 (0x00000c05b5e4b000)\n\tlibevent_pthreads-2.1.so.7 => /usr/lib/x86_64-linux-gnu/libevent_pthreads-2.1.so.7 (0x00000c063f25f000)\n\tlibhwloc.so.15 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libhwloc.so.15 (0x00000c05b5b2b000)\n\tlibutil.so.1 => /usr/lib/x86_64-linux-gnu/libutil.so.1 (0x00000c063f258000)\n\tlibnvshmem_host.so.3 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/nvshmem/lib/libnvshmem_host.so.3 (0x00000c054fc00000)\n\tlibnvJitLink.so.12 => /opt/devtools/nvidia/cuda-12.9.1/lib64/libnvJitLink.so.12 (0x00000c0549f7a000)\n\tlibocoms.so.0 => /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib/libocoms.so.0 (0x00000c0549c00000)\n\tlibrdmacm.so.1 => /usr/lib/x86_64-linux-gnu/librdmacm.so.1 (0x00000c05b68ca000)\n\tlibibverbs.so.1 => /usr/lib/x86_64-linux-gnu/libibverbs.so.1 (0x00000c05b5b07000)\n\tlibucm.so.0 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libucm.so.0 (0x00000c05b5ae9000)\n\tlibuct.so.0 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/libuct.so.0 (0x00000c05b5aa8000)\n\tlibmunge.so.2 => /usr/lib/x86_64-linux-gnu/libmunge.so.2 (0x00000c0638a81000)\n\tlibnl-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-3.so.200 (0x00000c05b5a86000)\n\tlibnl-route-3.so.200 => /usr/lib/x86_64-linux-gnu/libnl-route-3.so.200 (0x00000c05a2d71000)\n",
+          "resolved": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/lib/libdeepmd_op_pt.so",
+          "sha256": "9540442cdab954c3736f9a444bdbb4a618588098a875f1445886a51ef8e65537"
+        }
+      },
+      "version": "0.1.dev1+g558f56962"
+    },
+    "verified": true,
+    "version": {
+      "observed": "0.1.dev1+g558f56962",
+      "track": "development"
+    }
+  },
+  "raw_files": {
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-independent-20261023-4v100-avx512-558f569-b/job.sbatch": {
+      "bytes": 13507,
+      "sha256": "4eeae6e9b736e8c2f710b787ebb387a47699e89b74858b9496cf4690e183da1b"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-independent-20261023-4v100-avx512-558f569-b/request.json": {
+      "bytes": 1248,
+      "sha256": "468ade6faab5e6d24cf5cd5d73bf0225abf0b81857b6232cbc960f47ff73eec5"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-independent-20261023-4v100-avx512-558f569-b/results/image-driver.json": {
+      "bytes": 579,
+      "sha256": "44a95b5a3447502e593f3d91e1a9eb16f11d6d5c221c227b0e06137d0db30201"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-independent-20261023-4v100-avx512-558f569-b/results/slurm-1912999.log": {
+      "bytes": 389781,
+      "sha256": "63c77b10f5cb6ba1401c04c20790c0f08645e05ceed2bb79ce753fa21e3cdac1"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-independent-20261023-4v100-avx512-558f569-b/runtime/CMakeCache.txt": {
+      "bytes": 58524,
+      "sha256": "8c84013e3d1eec71c4d7d6e6d0888e86e3171e24a10067fb72e868b1e5691fec"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-independent-20261023-4v100-avx512-558f569-b/runtime/baseline-inventory.json": {
+      "bytes": 47230,
+      "sha256": "92463b681bb97dacd670c864d6d36c2f1a0f51d7ea03032717d84c3002aa7476"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-independent-20261023-4v100-avx512-558f569-b/runtime/candidate-inventory.json": {
+      "bytes": 64100,
+      "sha256": "64a19e7be207623d38a27781f66b84208bb7102313c0ded9831f956f2ee69e52"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/job.sbatch": {
+      "bytes": 4149,
+      "sha256": "a09a87490f93a60c3ae868af67de5dff8b2950ed35ab159838ec96078f13d906"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/request.json": {
+      "bytes": 2496,
+      "sha256": "d555123d035e76831778494b0801fbfab8084c5f63e7eee9c52ed39ba3a69b95"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/results/slurm-1913313.log": {
+      "bytes": 29101,
+      "sha256": "196f33712b7d222fb06f9b6c3cba618ee75717d156f286752178eb3ea86ddefd"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/results/status.json": {
+      "bytes": 31898,
+      "sha256": "58874ad806278175b7196695deca189476191504f01acc09027aac69b7162bf0"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/baseline-inventory.json": {
+      "bytes": 47230,
+      "sha256": "92463b681bb97dacd670c864d6d36c2f1a0f51d7ea03032717d84c3002aa7476"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/baseline-jax-c-api.json": {
+      "bytes": 7565,
+      "sha256": "53e1a3751e43ab04dab35b48c1998e34a8745003861dcf8e75be19de30596c85"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/baseline-jax-c-api.log": {
+      "bytes": 9602,
+      "sha256": "72453083eb006d54e03f9971aacbc7ce2e72c1fb9f5b45d9bdc5b1cbd7afa0a7"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/baseline-jax-python.json": {
+      "bytes": 7574,
+      "sha256": "17eb24fd7bb9f805dcc6c9d18c32cbb2d0511f583107db660ba0f06a34b1962e"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/baseline-jax-python.log": {
+      "bytes": 9240,
+      "sha256": "0ae6fcaec1ddd0d723bfdbd51d72ffe63fdcd70246bc8474f554dbd35706a9f4"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/baseline-pt-c-api.json": {
+      "bytes": 7548,
+      "sha256": "7caa3ac5978daaa8426839d5103c8a053d36b76d189f85b02c6a2e837d880bfe"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/baseline-pt-c-api.log": {
+      "bytes": 7914,
+      "sha256": "5ac63278e8e626ca833ad16811f2cf215de4fdc5e0429416d611d3417d2c224f"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/baseline-pt-python.json": {
+      "bytes": 7557,
+      "sha256": "5bcd03c0e36a904e944a088d22f0fcf351edb384a67090fd404e5ca424a49358"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/baseline-pt-python.log": {
+      "bytes": 7557,
+      "sha256": "5bcd03c0e36a904e944a088d22f0fcf351edb384a67090fd404e5ca424a49358"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/baseline-tf-c-api.json": {
+      "bytes": 7556,
+      "sha256": "628ab33cde86f98c1bb39e665ce9676733b2372ccfc9103e0bf95403291968eb"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/baseline-tf-c-api.log": {
+      "bytes": 12214,
+      "sha256": "714505433707335df9494185b31a60c9e1f90badb37e4f7ea07e3fd76e182328"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/baseline-tf-python.json": {
+      "bytes": 7550,
+      "sha256": "9357b7b03eef52a0efb13b1e6897f8ff8203c4dc8a8b8ed768634ae140869d85"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/baseline-tf-python.log": {
+      "bytes": 12715,
+      "sha256": "48971430b864d9c41b5ad9144b159d34d53418dd6ac701eb1fb207d5ebfcf9be"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/candidate-jax-c-api.json": {
+      "bytes": 7570,
+      "sha256": "f9ddef3c11afea39954281fd19d38e59bb8a5cc007a0aa1c6cf640d30fcc06f9"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/candidate-jax-c-api.log": {
+      "bytes": 9607,
+      "sha256": "86ac7ce8365c0a6acd00c8ce55b743019b00bf075908f1f53dc1bf6f199f9d51"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/candidate-jax-python.json": {
+      "bytes": 7578,
+      "sha256": "2d4378d7b73c4f3abe98407c0b8363d5c3a55cf4b4079aca62a99a019cddd3d0"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/candidate-jax-python.log": {
+      "bytes": 9244,
+      "sha256": "1d80da1267627fbdc6ff895a30fd335c1c9161276b8fd53bf9f6349a3140fc87"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/candidate-pt-c-api.json": {
+      "bytes": 7552,
+      "sha256": "08ba6b8836d8572a5e2ce204f8d3b4f7ffcd3b850a66c69134305bd3a5135e91"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/candidate-pt-c-api.log": {
+      "bytes": 7918,
+      "sha256": "08bb9e2ba822a061cdb39c9aeca3894bbc1366b5e1585756e4fdf7ec265f1666"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/candidate-pt-python.json": {
+      "bytes": 7560,
+      "sha256": "fcf39cecc202746385ff2af45680d7fbb9012430c095dde63cd0772654bcda8d"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/candidate-pt-python.log": {
+      "bytes": 7560,
+      "sha256": "fcf39cecc202746385ff2af45680d7fbb9012430c095dde63cd0772654bcda8d"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/candidate-tf-c-api.json": {
+      "bytes": 7575,
+      "sha256": "355f8bc4a58f515a4e8e8c2119439448a35b9c370e49f7f13c7b7030029f5724"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/candidate-tf-c-api.log": {
+      "bytes": 12233,
+      "sha256": "bf12d6ba157d75c4644445a50080c272601424b24b5ea7ad01f78abff02bc85d"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/candidate-tf-python.json": {
+      "bytes": 7587,
+      "sha256": "2d9fbef6134b2b3249aba593753bfba3c31834b2f97aae76ce905ff77d7a2c90"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/candidate-tf-python.log": {
+      "bytes": 12752,
+      "sha256": "64ab78afc2944e9aad4b49c27a155382f36fe2c9350ad1e87df83d1ecb40eaaa"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/case/data.lmp": {
+      "bytes": 416,
+      "sha256": "9d722a90f50ec91c3e08a1a993b3e149c52b8222b05460d7fbe33ac001e96d7d"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/case/fixture.json": {
+      "bytes": 2905,
+      "sha256": "8189b4b581a6476d884dfe42a661924d3804e86691a5af4bad3ce5c92fe6aa5b"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/case/in.jax": {
+      "bytes": 681,
+      "sha256": "5d106e78d1baa9f0b04cc28a99580f1730476f934e3802ec2a4a781bbcf06a0e"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/case/in.pt": {
+      "bytes": 674,
+      "sha256": "5c2822b6a26dedfa4f51633fa16b66947940e4264752ce456893b31f61791ece"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/case/in.tf": {
+      "bytes": 673,
+      "sha256": "330baf6f2d4004ef40cac144935d812cae4766c8aa78d2f467f47ddae6923488"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/case/model.pb": {
+      "bytes": 130311,
+      "sha256": "486d47a793d1778dde592c154ddc914e93369ea2f26f9f73e04dc6dddff4e3cd"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/case/model.pth": {
+      "bytes": 160719,
+      "sha256": "b75429a658d9059ec1fa9379ed2f2f612fe69eb5ed0c2ee2b89ee3e8c0c21f6b"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/case/model.savedmodel/fingerprint.pb": {
+      "bytes": 99,
+      "sha256": "7a2b7028a3cf79dfe50e0c58f076fdd1a63f22559cc7a90734e145d3dd807a82"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/case/model.savedmodel/saved_model.pb": {
+      "bytes": 1357281,
+      "sha256": "36542141741994cc7eeca09df40df463f6d5b9d0699bbddf0d870502cc1e3887"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/case/model.savedmodel/variables/variables.data-00000-of-00001": {
+      "bytes": 983,
+      "sha256": "cdf249628199e22fd94e3591b50c01ddf8c7eddd399275f96222e30d03c0cd9a"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/case/model.savedmodel/variables/variables.index": {
+      "bytes": 145,
+      "sha256": "3a9cc0c417043f16c0c5f496dbb18acd761275783fbc48887c4a6fdaebd3f859"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/case/plumed.dat": {
+      "bytes": 102,
+      "sha256": "bef9785b760c8b90f653b3ac8077054a750ec84a71287f33aa73cec1ee5ce664"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/pt-cuda-kernels.csv": {
+      "bytes": 496806,
+      "sha256": "610ff346f8f00068d6816a3d8fdb4a977d522a2481158c0a220048fbeb1c0407"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/pt-cuda-trace.nsys-rep": {
+      "bytes": 176086,
+      "sha256": "8e462739773ad63e5d5a79c52d487e7113b7cc059938888398b8c23bc46b40a0"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/pt-cuda-trace.sqlite": {
+      "bytes": 782336,
+      "sha256": "8884241c85e35e4e85bcc982eb17664a4b15452eb619fa6c001787db700d8045"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/pt-nsys-stats.log": {
+      "bytes": 257,
+      "sha256": "30f817846734885f7e1782b6932a5079d63cac2723d09a216544844696ee00f2"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/pt-profiled.json": {
+      "bytes": 7552,
+      "sha256": "2b68abc43d6f27e54fe60fd9fc8b1cb2fb6ec1e5dec36c63aa9166b2ea368de5"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/pt-profiled.log": {
+      "bytes": 8865,
+      "sha256": "ac33e102a6a9535cc1dc5b3265cd9b411f2283d198b6b2b6c36efc54af16a879"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/runtime-env.sh": {
+      "bytes": 1908,
+      "sha256": "87f8f0df7a11b8d0561df9537a4ec8c934d97948f73261581248df7fcbeaf162"
+    },
+    "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c/runtime/science.json": {
+      "bytes": 28972,
+      "sha256": "1f78de4b4a1fc73439836cdebccfce9caffed3b59478b3fe2b8c50209e85a7cf"
+    }
+  },
+  "request": {
+    "controller": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/controller/d8b4c2fe338dbc8626bb78ffbebbf69bda572029/controller",
+    "controller_sha256": "d02fe0936aba91b2af81e17ba5c842546416c8052290f7a04098230a6718a298",
+    "job_id": "1913313",
+    "job_script_sha256": "a09a87490f93a60c3ae868af67de5dff8b2950ed35ab159838ec96078f13d906",
+    "schema": 1,
+    "source": {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-independent-20261023-4v100-avx512-558f569-b/candidate.sif",
+      "artifact_sha256": "0f33c1e2ac6576490a9a5bef9082e5a8ed592103c87d8b6edd3017abd24bd172",
+      "build_accounting": "1912999|FAILED|1:0|00:09:13|4v100n08|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-independent-20261023-4v100-avx512-558f569-b",
+      "build_log_sha256": "63c77b10f5cb6ba1401c04c20790c0f08645e05ceed2bb79ce753fa21e3cdac1",
+      "build_request": {
+        "controller": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/controller/76869d13905944871c98c24860471883e4ed9aa2/controller",
+        "controller_sha256": "e04065e624bdf113dbcc32e713510472a1416bec81e664571ce84121024d54ea",
+        "delivery": {
+          "identity": {
+            "build_id": "master-2026-10-23-g558f56962775-re04065e624bd",
+            "cpu_arch": "znver4",
+            "cuda_arch": "70",
+            "dependency_isa": "avx512",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100",
+            "partition": "4V100",
+            "recipe_sha256": "e04065e624bdf113dbcc32e713510472a1416bec81e664571ce84121024d54ea",
+            "repository": "deepmodeling/deepmd-kit",
+            "schema": 2,
+            "software": "deepmd-kit",
+            "source_ref": "master",
+            "source_sha": "558f56962775098b8b554e341c3b37d2f86e6aeb",
+            "source_version": "master-2026-10-23",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "4v100-avx512",
+            "track": "development",
+            "version_label": "master-2026-10-23"
+          },
+          "schema": 1
+        },
+        "job_id": "1912999",
+        "job_script_sha256": "4eeae6e9b736e8c2f710b787ebb387a47699e89b74858b9496cf4690e183da1b",
+        "schema": 1
+      },
+      "build_request_sha256": "468ade6faab5e6d24cf5cd5d73bf0225abf0b81857b6232cbc960f47ff73eec5",
+      "source_run": "dp-independent-20261023-4v100-avx512-558f569-b"
+    }
+  },
+  "status": {
+    "accounting": "1913313|COMPLETED|0:0|00:00:28|4v100n34|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c",
+    "job_id": "1913313",
+    "native_runtime_verified": false,
+    "published": false,
+    "schema": 1,
+    "science": {
+      "cases": {
+        "jax/c-api": {
+          "measurements": {
+            "baseline": 3,
+            "candidate": 3
+          },
+          "median_seconds": {
+            "baseline": 0.0005023684352636337,
+            "candidate": 0.0004732497036457062
+          },
+          "passed": true,
+          "performance_threshold_applied": false,
+          "speedup": 1.061529318230122,
+          "warmups": {
+            "baseline": 1,
+            "candidate": 1
+          }
+        },
+        "jax/python": {
+          "measurements": {
+            "baseline": 3,
+            "candidate": 3
+          },
+          "median_seconds": {
+            "baseline": 0.0016009826213121414,
+            "candidate": 0.0015929210931062698
+          },
+          "passed": true,
+          "performance_threshold_applied": false,
+          "speedup": 1.005060845914314,
+          "warmups": {
+            "baseline": 1,
+            "candidate": 1
+          }
+        },
+        "pt/c-api": {
+          "measurements": {
+            "baseline": 3,
+            "candidate": 3
+          },
+          "median_seconds": {
+            "baseline": 0.22380661591887474,
+            "candidate": 0.2241798061877489
+          },
+          "passed": true,
+          "performance_threshold_applied": false,
+          "speedup": 0.9983353082723176,
+          "warmups": {
+            "baseline": 1,
+            "candidate": 1
+          }
+        },
+        "pt/python": {
+          "measurements": {
+            "baseline": 3,
+            "candidate": 3
+          },
+          "median_seconds": {
+            "baseline": 0.17371614277362823,
+            "candidate": 0.17242738232016563
+          },
+          "passed": true,
+          "performance_threshold_applied": false,
+          "speedup": 1.0074742215309493,
+          "warmups": {
+            "baseline": 1,
+            "candidate": 1
+          }
+        },
+        "tf/c-api": {
+          "measurements": {
+            "baseline": 3,
+            "candidate": 3
+          },
+          "median_seconds": {
+            "baseline": 0.00023028068244457245,
+            "candidate": 0.00026502087712287903
+          },
+          "passed": true,
+          "performance_threshold_applied": false,
+          "speedup": 0.8689152528078042,
+          "warmups": {
+            "baseline": 1,
+            "candidate": 1
+          }
+        },
+        "tf/python": {
+          "measurements": {
+            "baseline": 3,
+            "candidate": 3
+          },
+          "median_seconds": {
+            "baseline": 0.0005362890660762787,
+            "candidate": 0.0004883799701929092
+          },
+          "passed": true,
+          "performance_threshold_applied": false,
+          "speedup": 1.0980979950190124,
+          "warmups": {
+            "baseline": 1,
+            "candidate": 1
+          }
+        }
+      },
+      "gpu": {
+        "backend": "pt",
+        "csv_sha256": "610ff346f8f00068d6816a3d8fdb4a977d522a2481158c0a220048fbeb1c0407",
+        "devices": [
+          "Tesla V100-SXM2-32GB (0)"
+        ],
+        "engine": "c-api",
+        "kernel_events": 1486,
+        "kernel_names": [
+          "fused_add_add",
+          "fused_add_add_reciprocal_pow_div",
+          "fused_clamp_sub_div__6412312278190731083",
+          "fused_div_mul_mul",
+          "fused_mul_mul_mul_mu_8606757649921672575",
+          "fused_neg_mul_mul_div",
+          "fused_neg_mul_mul_mul_pow_mul_add_add",
+          "fused_reciprocal_mul_ceil",
+          "fused_unsqueeze_unsqueeze_sub",
+          "fused_unsqueeze_where",
+          "reduction_prod_kernel",
+          "void <unnamed>::elementwise_kernel_with_index<int, at::native::arange_cuda_out(const c10::Scalar &, const c10::Scalar &, const c10::Scalar &, at::Tensor &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 3)]::operator ()() const::[lambda(long) (instance 1)]>(T1, T2, function_traits<T2>::result_type *)",
+          "void <unnamed>::elementwise_kernel_with_index<int, at::native::arange_cuda_out(const c10::Scalar &, const c10::Scalar &, const c10::Scalar &, at::Tensor &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 4)]::operator ()() const::[lambda(long) (instance 1)]>(T1, T2, function_traits<T2>::result_type *)",
+          "void at::native::<unnamed>::CatArrayBatchedCopy<at::native::<unnamed>::OpaqueType<(unsigned int)8>, unsigned int, (int)3, (int)64, (int)64>(T1 *, at::native::<unnamed>::CatArrInputTensorMetadata<T1, T2, T4, T5>, at::native::<unnamed>::TensorSizeStride<T2, (unsigned int)4>, int, T2)",
+          "void at::native::<unnamed>::CatArrayBatchedCopy_alignedK_contig<at::native::<unnamed>::OpaqueType<(unsigned int)8>, unsigned int, (int)2, (int)128, (int)1, (int)16>(T1 *, at::native::<unnamed>::CatArrInputTensorMetadata<T1, T2, T4, T5>, at::native::<unnamed>::TensorSizeStride<T2, (unsigned int)4>, int, T2)",
+          "void at::native::<unnamed>::CatArrayBatchedCopy_alignedK_contig<at::native::<unnamed>::OpaqueType<(unsigned int)8>, unsigned int, (int)3, (int)128, (int)1, (int)16>(T1 *, at::native::<unnamed>::CatArrInputTensorMetadata<T1, T2, T4, T5>, at::native::<unnamed>::TensorSizeStride<T2, (unsigned int)4>, int, T2)",
+          "void at::native::<unnamed>::CatArrayBatchedCopy_alignedK_contig<at::native::<unnamed>::OpaqueType<(unsigned int)8>, unsigned int, (int)4, (int)128, (int)1, (int)16>(T1 *, at::native::<unnamed>::CatArrInputTensorMetadata<T1, T2, T4, T5>, at::native::<unnamed>::TensorSizeStride<T2, (unsigned int)4>, int, T2)",
+          "void at::native::<unnamed>::CatArrayBatchedCopy_vectorized<at::native::<unnamed>::OpaqueType<(unsigned int)8>, unsigned int, (int)3, (int)128, (int)1, (int)16, (int)2>(char *, at::native::<unnamed>::CatArrInputTensorMetadata<T1, T2, T4, T5>, at::native::<unnamed>::TensorSizeStride<T2, (unsigned int)4>, int, T2)",
+          "void at::native::_scatter_gather_elementwise_kernel<(int)128, (int)8, void at::native::_cuda_scatter_gather_internal_kernel<(bool)0, at::native::OpaqueType<(int)8>, long>::operator ()<at::native::TensorAssign>(at::TensorIterator &, long, long, long, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+          "void at::native::_scatter_gather_elementwise_kernel<(int)128, (int)8, void at::native::_cuda_scatter_gather_internal_kernel<(bool)1, double, long>::operator ()<at::native::ReduceAdd>(at::TensorIterator &, long, long, long, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+          "void at::native::bitonicSortKVInPlace<(int)-2, (int)-1, (int)16, (int)16, double, long, at::native::LTOp<double, (bool)1>, unsigned int>(at::cuda::detail::TensorInfo<T5, T8>, T8, T8, T8, at::cuda::detail::TensorInfo<T6, T8>, T8, T7)",
+          "void at::native::cross_kernel<double, OffsetCalculator<(int)3, unsigned int, (bool)0>, int>(int, T1 *, const T1 *, const T1 *, T2, T3, T3, T3)",
+          "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::<unnamed>::masked_fill_kernel(at::TensorIterator &, const c10::Scalar &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 6)]::operator ()() const::[lambda(double, bool) (instance 1)]>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+          "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::<unnamed>::where_kernel_impl(at::TensorIterator &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 4)]::operator ()() const::[lambda(bool, unsigned long, unsigned long) (instance 1)]>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+          "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<double, double, double, at::native::binary_internal::DivFunctor<double>>>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+          "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<double, double, double, at::native::binary_internal::MulFunctor<double>>>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+          "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::CUDAFunctor_add<double>>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+          "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::FillFunctor<double>>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+          "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 3)]::operator ()() const::[lambda() (instance 4)]::operator ()() const::[lambda(long) (instance 1)]>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+          "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 3)]::operator ()() const::[lambda() (instance 6)]::operator ()() const::[lambda(double) (instance 1)]>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+          "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::neg_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 6)]::operator ()() const::[lambda(double) (instance 1)]>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+          "void at::native::elementwise_kernel<(int)128, (int)4, void at::native::gpu_kernel_impl<at::native::BinaryFunctor<double, double, double, at::native::binary_internal::MulFunctor<double>>>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+          "void at::native::elementwise_kernel<(int)128, (int)4, void at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<bool, bool, bool, at::native::logical_or_kernel_cuda(at::TensorIterator &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 9)]::operator ()() const::[lambda(bool, bool) (instance 1)]>>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+          "void at::native::elementwise_kernel<(int)128, (int)4, void at::native::gpu_kernel_impl_nocast<void at::native::compare_scalar_kernel<double>(at::TensorIteratorBase &, at::native::<unnamed>::OpType, T1)::[lambda(double) (instance 1)]>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+          "void at::native::index_elementwise_kernel<(int)128, (int)4, void at::native::gpu_index_kernel<void at::native::index_kernel_impl<at::native::OpaqueType<(int)4>>(at::TensorIteratorBase &, c10::ArrayRef<long>, c10::ArrayRef<long>)::[lambda(char *, const char *, long) (instance 1)]>(at::TensorIteratorBase &, c10::ArrayRef<long>, c10::ArrayRef<long>, const T1 &, bool)::[lambda(int) (instance 1)]>(long, T3)",
+          "void at::native::index_elementwise_kernel<(int)128, (int)4, void at::native::gpu_index_kernel<void at::native::index_kernel_impl<at::native::OpaqueType<(int)8>>(at::TensorIteratorBase &, c10::ArrayRef<long>, c10::ArrayRef<long>)::[lambda(char *, const char *, long) (instance 1)]>(at::TensorIteratorBase &, c10::ArrayRef<long>, c10::ArrayRef<long>, const T1 &, bool)::[lambda(int) (instance 1)]>(long, T3)",
+          "void at::native::index_elementwise_kernel<(int)128, (int)4, void at::native::gpu_index_kernel<void at::native::index_put_kernel_impl<at::native::OpaqueType<(int)8>>(at::TensorIterator &, c10::ArrayRef<long>, c10::ArrayRef<long>)::[lambda(char *, const char *, long) (instance 1)]>(at::TensorIteratorBase &, c10::ArrayRef<long>, c10::ArrayRef<long>, const T1 &, bool)::[lambda(int) (instance 1)]>(long, T3)",
+          "void at::native::radixSortKVInPlace<(int)2, (int)-1, (int)32, (int)32, double, long, unsigned int>(at::cuda::detail::TensorInfo<T5, T7>, T7, T7, T7, at::cuda::detail::TensorInfo<T6, T7>, T7, bool)",
+          "void at::native::radixSortKVInPlace<(int)2, (int)-1, (int)32, (int)32, int, long, unsigned int>(at::cuda::detail::TensorInfo<T5, T7>, T7, T7, T7, at::cuda::detail::TensorInfo<T6, T7>, T7, bool)",
+          "void at::native::reduce_kernel<(int)128, (int)4, at::native::ReduceOp<double, at::native::func_wrapper_t<double, at::native::sum_functor<double, double, double>::operator ()(at::TensorIterator &)::[lambda(double, double) (instance 1)]>, unsigned int, double, (int)4, (int)4>>(T3)",
+          "void at::native::reduce_kernel<(int)256, (int)2, at::native::ReduceOp<double, at::native::func_wrapper_t<double, at::native::sum_functor<double, double, double>::operator ()(at::TensorIterator &)::[lambda(double, double) (instance 1)]>, unsigned int, double, (int)4, (int)4>>(T3)",
+          "void at::native::reduce_kernel<(int)512, (int)1, at::native::ReduceOp<double, at::native::NormTwoOps<double, double, double, (bool)1>, unsigned int, double, (int)4, (int)4>>(T3)",
+          "void at::native::reduce_kernel<(int)512, (int)1, at::native::ReduceOp<double, at::native::func_wrapper_t<double, at::native::MaxNanFunctor<double>>, unsigned int, double, (int)4, (int)4>>(T3)",
+          "void at::native::reduce_kernel<(int)512, (int)1, at::native::ReduceOp<double, at::native::func_wrapper_t<double, at::native::sum_functor<double, double, double>::operator ()(at::TensorIterator &)::[lambda(double, double) (instance 1)]>, unsigned int, double, (int)4, (int)4>>(T3)",
+          "void at::native::reduce_kernel<(int)512, (int)1, at::native::ReduceOp<long, at::native::func_wrapper_t<long, at::native::MaxNanFunctor<long>>, unsigned int, long, (int)4, (int)4>>(T3)",
+          "void at::native::reduce_kernel<(int)512, (int)1, at::native::ReduceOp<long, at::native::func_wrapper_t<long, at::native::sum_functor<long, long, long>::operator ()(at::TensorIterator &)::[lambda(long, long) (instance 1)]>, unsigned int, long, (int)4, (int)4>>(T3)",
+          "void at::native::sbtopk::gatherTopK<double, unsigned int, (int)2, (bool)0>(at::cuda::detail::TensorInfo<const T1, T2>, T2, T2, bool, T2, T2, at::cuda::detail::TensorInfo<T1, T2>, T2, at::cuda::detail::TensorInfo<long, T2>, T2, T1 *)",
+          "void at::native::unrolled_elementwise_kernel<at::native::BinaryFunctor<double, double, double, at::native::binary_internal::MulFunctor<double>>, std::array<char *, (unsigned long)3>, (int)4, TrivialOffsetCalculator<(int)2, unsigned int>, TrivialOffsetCalculator<(int)1, unsigned int>, at::native::memory::LoadWithCast<(int)2>, at::native::memory::StoreWithCast<(int)1>>(int, T1, T2, T4, T5, T6, T7)",
+          "void at::native::unrolled_elementwise_kernel<at::native::CUDAFunctorOnSelf_add<double>, std::array<char *, (unsigned long)2>, (int)4, TrivialOffsetCalculator<(int)1, unsigned int>, TrivialOffsetCalculator<(int)1, unsigned int>, at::native::memory::LoadWithoutCast, at::native::memory::StoreWithoutCast>(int, T1, T2, T4, T5, T6, T7)",
+          "void at::native::unrolled_elementwise_kernel<at::native::CUDAFunctor_add<double>, std::array<char *, (unsigned long)3>, (int)4, TrivialOffsetCalculator<(int)2, unsigned int>, TrivialOffsetCalculator<(int)1, unsigned int>, at::native::memory::LoadWithCast<(int)2>, at::native::memory::StoreWithCast<(int)1>>(int, T1, T2, T4, T5, T6, T7)",
+          "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 3)]::operator ()() const::[lambda() (instance 11)]::operator ()() const::[lambda(bool) (instance 1)], std::array<char *, (unsigned long)2>, (int)4, TrivialOffsetCalculator<(int)1, unsigned int>, TrivialOffsetCalculator<(int)1, unsigned int>, at::native::memory::LoadWithCast<(int)1>, at::native::memory::StoreWithCast<(int)1>>(int, T1, T2, T4, T5, T6, T7)",
+          "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 3)]::operator ()() const::[lambda() (instance 3)]::operator ()() const::[lambda(int) (instance 1)], std::array<char *, (unsigned long)2>, (int)4, TrivialOffsetCalculator<(int)1, unsigned int>, TrivialOffsetCalculator<(int)1, unsigned int>, at::native::memory::LoadWithCast<(int)1>, at::native::memory::StoreWithCast<(int)1>>(int, T1, T2, T4, T5, T6, T7)",
+          "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 3)]::operator ()() const::[lambda() (instance 4)]::operator ()() const::[lambda(long) (instance 1)], std::array<char *, (unsigned long)2>, (int)4, TrivialOffsetCalculator<(int)1, unsigned int>, TrivialOffsetCalculator<(int)1, unsigned int>, at::native::memory::LoadWithCast<(int)1>, at::native::memory::StoreWithCast<(int)1>>(int, T1, T2, T4, T5, T6, T7)",
+          "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 3)]::operator ()() const::[lambda() (instance 6)]::operator ()() const::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>, (int)4, TrivialOffsetCalculator<(int)1, unsigned int>, TrivialOffsetCalculator<(int)1, unsigned int>, at::native::memory::LoadWithCast<(int)1>, at::native::memory::StoreWithCast<(int)1>>(int, T1, T2, T4, T5, T6, T7)",
+          "void at::native::vectorized_elementwise_kernel<(int)2, at::native::<unnamed>::launch_clamp_scalar(at::TensorIteratorBase &, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 6)]::operator ()() const::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)2, at::native::<unnamed>::masked_fill_kernel(at::TensorIterator &, const c10::Scalar &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 4)]::operator ()() const::[lambda(long, bool) (instance 1)], std::array<char *, (unsigned long)3>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)2, at::native::AUnaryFunctor<double, double, double, at::native::binary_internal::MulFunctor<double>>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)2, at::native::AUnaryFunctor<long, long, long, at::native::binary_internal::MulFunctor<long>>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)2, at::native::BUnaryFunctor<double, double, double, at::native::binary_internal::MulFunctor<double>>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)2, at::native::BUnaryFunctor<double, double, double, at::native::remainder_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 1)]::operator ()() const::[lambda(double, double) (instance 1)]>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)2, at::native::BUnaryFunctor<long, long, long, at::native::fmod_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 4)]::operator ()() const::[lambda(long, long) (instance 1)]>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)2, at::native::BinaryFunctor<double, double, double, at::native::binary_internal::DivFunctor<double>>, std::array<char *, (unsigned long)3>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)2, at::native::BinaryFunctor<double, double, double, at::native::binary_internal::MulFunctor<double>>, std::array<char *, (unsigned long)3>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)2, at::native::CUDAFunctorOnSelf_add<double>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)2, at::native::CUDAFunctorOnSelf_add<long>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)2, at::native::CUDAFunctor_add<double>, std::array<char *, (unsigned long)3>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)2, at::native::FillFunctor<double>, std::array<char *, (unsigned long)1>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)2, at::native::FillFunctor<long>, std::array<char *, (unsigned long)1>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)2, at::native::ceil_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 1)]::operator ()() const::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)2, at::native::neg_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 6)]::operator ()() const::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)2, at::native::reciprocal_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 1)]::operator ()() const::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)2, at::native::tanh_backward_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 1)]::operator ()() const::[lambda(double, double) (instance 1)], std::array<char *, (unsigned long)3>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)2, at::native::tanh_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 1)]::operator ()() const::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)2, void at::native::<unnamed>::pow_tensor_scalar_kernel_impl<double, double>(at::TensorIteratorBase &, T2)::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)4, at::native::AUnaryFunctor<double, double, bool, at::native::<unnamed>::CompareEqFunctor<double>>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)4, at::native::AUnaryFunctor<long, long, bool, at::native::<unnamed>::CompareEqFunctor<long>>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)4, at::native::BinaryFunctor<bool, bool, bool, at::native::BitwiseAndFunctor<bool>>, std::array<char *, (unsigned long)3>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)4, at::native::BinaryFunctor<bool, bool, bool, at::native::binary_internal::MulFunctor<bool>>, std::array<char *, (unsigned long)3>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)4, at::native::BinaryFunctor<bool, bool, bool, at::native::logical_and_kernel_cuda(at::TensorIterator &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 9)]::operator ()() const::[lambda(bool, bool) (instance 1)]>, std::array<char *, (unsigned long)3>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)4, at::native::BinaryFunctor<int, int, bool, at::native::<unnamed>::CompareEqFunctor<int>>, std::array<char *, (unsigned long)3>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)4, at::native::FillFunctor<int>, std::array<char *, (unsigned long)1>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)4, at::native::bitwise_not_kernel_cuda(at::TensorIteratorBase &)::[lambda(bool) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)4, void at::native::compare_scalar_kernel<double>(at::TensorIteratorBase &, at::native::<unnamed>::OpType, T1)::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+          "void at::native::vectorized_elementwise_kernel<(int)4, void at::native::compare_scalar_kernel<long>(at::TensorIteratorBase &, at::native::<unnamed>::OpType, T1)::[lambda(long) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+          "void at::native::vectorized_gather_kernel<(int)16, long>(char *, char *, T2 *, int, long, long, long, long, bool)",
+          "void create_pivot_v2<(int)32>(int, int *, long *, int)",
+          "void dgemm_largek<(bool)0, (bool)1, (int)4, (int)4, (int)4, (int)3, (int)3, (int)16>(double *, const double *, const double *, int, int, int, int, int, int, const double *, const double *, double, double, int, int, int *, int *)",
+          "void gemmSN_NN_kernel<double, (int)128, (int)2, (int)4, (int)8, (int)3, (int)4, (bool)1, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<T9, T10, T11, T1>)",
+          "void gemmSN_NN_kernel<double, (int)128, (int)2, (int)4, (int)8, (int)4, (int)4, (bool)0, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<T9, T10, T11, T1>)",
+          "void gemmSN_NN_kernel<double, (int)256, (int)4, (int)2, (int)8, (int)3, (int)4, (bool)0, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<T9, T10, T11, T1>)",
+          "void gemmSN_NN_kernel<double, (int)256, (int)4, (int)2, (int)8, (int)3, (int)4, (bool)1, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<T9, T10, T11, T1>)",
+          "void gemmSN_TN_kernel<double, (int)128, (int)16, (int)2, (int)4, (int)4, (int)4, (bool)1, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<T9, T10, T11, T1>)",
+          "void gemmSN_TN_kernel<double, (int)128, (int)16, (int)2, (int)4, (int)6, (int)7, (bool)0, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<T9, T10, T11, T1>)",
+          "void gemmk1_kernel<int, double, (int)256, (int)5, (bool)0, (bool)0, (bool)0, (bool)0, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>, double, (int)0>(cublasGemmk1Params<T2, T9, T10, T11, T12, biasType<T11::value_type, T12>::type>)",
+          "void gemv2T_kernel_val<int, int, double, double, double, double, (int)128, (int)16, (int)2, (int)2, (bool)0, (bool)0, cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>, double>>(T13, T6, T6)",
+          "void gemv2T_kernel_val<int, int, double, double, double, double, (int)128, (int)16, (int)4, (int)4, (bool)0, (bool)0, cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>, double>>(T13, T6, T6)",
+          "void gemvNSP_kernel<double, double, double, double, (int)1, (int)32, (int)4, (int)1024, (bool)0, cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>, double>>(T10)",
+          "void gemvNSP_kernel<double, double, double, double, (int)11, (int)32, (int)4, (int)1024, (bool)0, cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>, double>>(T10)",
+          "void getrf_pivot<getrf_params_<double, (int)32, (int)1, (int)32, (int)32, (int)1>>(int, int, int, void *, int, long *, int, T1::data_type *, unsigned int *, unsigned int *, T1::data_type *, unsigned int, unsigned int, unsigned int, int *)",
+          "void ipiv_64_to_32_ker<(int)128>(long, const long *, int *)",
+          "void ipiv_lower_diag<double, (int)32>(int, void *, int, int *, int)",
+          "void ipiv_lower_small<double, (int)32>(int, void *, int, long *, int, int)",
+          "void laswp_kernel<double, (bool)0>(int, T1 *const *, int, int, int, const int *, int, int, int)",
+          "void scal_kernel<double, double, (int)1, (bool)1, (int)6, (int)4, (int)4, (int)4>(cublasTransposeParams<T2>, const T1 *, T1 *, const T2 *)",
+          "void trsm_batch_left_lower_kernel<double>(cublasTrsmBatchParams<T1>, const T1 *const *, T1 *const *, const T1 *, T1)",
+          "void trsm_batch_left_upper_kernel<double>(cublasTrsmBatchParams<T1>, const T1 *const *, T1 *const *, const T1 *, T1)",
+          "volta_dgemm_64x64_nn",
+          "volta_dgemm_64x64_nt",
+          "volta_dgemm_64x64_tn",
+          "volta_dgemm_64x64_tt",
+          "xxtrf4_set_info_ker(int, int *)"
+        ],
+        "report_sha256": "8e462739773ad63e5d5a79c52d487e7113b7cc059938888398b8c23bc46b40a0",
+        "total_kernel_ns": 4626167.0
+      },
+      "passed": true,
+      "scope": "independent Python/C-API inference; TF/JAX use the existing site CPU frameworks"
+    },
+    "scientific_verified": true,
+    "source": {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-independent-20261023-4v100-avx512-558f569-b/candidate.sif",
+      "artifact_sha256": "0f33c1e2ac6576490a9a5bef9082e5a8ed592103c87d8b6edd3017abd24bd172",
+      "build_accounting": "1912999|FAILED|1:0|00:09:13|4v100n08|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-independent-20261023-4v100-avx512-558f569-b",
+      "build_log_sha256": "63c77b10f5cb6ba1401c04c20790c0f08645e05ceed2bb79ce753fa21e3cdac1",
+      "build_request": {
+        "controller": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/controller/76869d13905944871c98c24860471883e4ed9aa2/controller",
+        "controller_sha256": "e04065e624bdf113dbcc32e713510472a1416bec81e664571ce84121024d54ea",
+        "delivery": {
+          "identity": {
+            "build_id": "master-2026-10-23-g558f56962775-re04065e624bd",
+            "cpu_arch": "znver4",
+            "cuda_arch": "70",
+            "dependency_isa": "avx512",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100",
+            "partition": "4V100",
+            "recipe_sha256": "e04065e624bdf113dbcc32e713510472a1416bec81e664571ce84121024d54ea",
+            "repository": "deepmodeling/deepmd-kit",
+            "schema": 2,
+            "software": "deepmd-kit",
+            "source_ref": "master",
+            "source_sha": "558f56962775098b8b554e341c3b37d2f86e6aeb",
+            "source_version": "master-2026-10-23",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "4v100-avx512",
+            "track": "development",
+            "version_label": "master-2026-10-23"
+          },
+          "schema": 1
+        },
+        "job_id": "1912999",
+        "job_script_sha256": "4eeae6e9b736e8c2f710b787ebb387a47699e89b74858b9496cf4690e183da1b",
+        "schema": 1
+      },
+      "build_request_sha256": "468ade6faab5e6d24cf5cd5d73bf0225abf0b81857b6232cbc960f47ff73eec5",
+      "source_run": "dp-independent-20261023-4v100-avx512-558f569-b"
+    }
+  }
+}

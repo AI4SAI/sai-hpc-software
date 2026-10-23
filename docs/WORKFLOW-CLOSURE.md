@@ -11,8 +11,8 @@ installation are separate acceptance states.
 | Program | Selected development commit | Current evidence |
 | --- | --- | --- |
 | ABACUS `develop` | `370ba685e6707b3625c5580ff9d02ef0afb248e8` | Four-partition build/acceptance workflow [39971072923](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971072923) in progress. |
-| CP2K `master` | `04b255137f7b472b07f09bec26e7bbf81c366a3a` | Four-partition dependency/application/science workflow [39971078915](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971078915) in progress; source-pinned LibXC 7.1.2 added for current master. |
-| DeePMD-kit `master` | `558f56962775098b8b554e341c3b37d2f86e6aeb` | Independent three-partition container builds in progress; TF/PT/JAX Python/C-API and measured GPU execution required before acceptance. |
+| CP2K `master` | `04b255137f7b472b07f09bec26e7bbf81c366a3a` | Four-partition retry [39976482528](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39976482528) in progress; source-pinned LibXC 7.1.2 added for current master. The first attempt failed before dependency compilation because its environment selector omitted `cp2k`; the corrected probe uses the existing CP2K environment. |
+| DeePMD-kit `master` | `558f56962775098b8b554e341c3b37d2f86e6aeb` | All three V100 candidates build-verified and scientifically accepted: TF/PT/JAX Python/C-API checks plus 1,486 measured CUDA kernel events per target. Not yet published or installed natively. |
 | LAMMPS `develop` | `a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b` | All three V100 candidates build-verified and scientifically accepted: 14 cases, 71 packages, 2,497 styles per target. Not yet published or installed natively. |
 | GPUMD `master` | `2c93346fce4461de1c42c77e7fe74cdb6b0e3df6` | All three V100 targets scientifically accepted, published with native staging exports; physical `/opt` installation pending. |
 
@@ -21,6 +21,31 @@ records recovery of the already compiled 8V100V0 overlay in export job
 `1912932` and science job `1912959`; the old build `1896876` remains failed.
 4V100 and 16V100 reused their unchanged-source SIFs after independent rereading
 of all raw acceptance evidence. No new DeePMD build was needed for LAMMPS.
+
+[DeePMD development evidence](evidence/deepmd-project-20261023/README.md)
+records separate scientific jobs `1913313` and `1913315` on the unchanged
+4V100/16V100 SIFs. The 8V100V0 export/science recovery `1913472` completed in
+3m31s using an independently copied overlay; its original full 32 GiB hash
+was checked again after recovery. All three original build allocations keep
+their failed status and original recipe. Every accepted target passes 48
+numerical records, the six backend/API groups and actual PyTorch CUDA execution.
+
+Daily planning now selects all five applications independently. The standalone
+DeePMD workflow requires its own numerical and measured GPU execution checks;
+LAMMPS reuses the pinned installed DeePMD dependency and requires its own 14-case
+single/two-node GPU acceptance. A new DeePMD failure does not prevent LAMMPS from
+building, and a successful build without scientific acceptance is not reported
+as accepted. Slurm accounting visibility delays remain pending; a terminated
+job missing its required acceptance markers fails immediately.
+
+The project archive cache avoids repeating slow GitHub-to-cluster uploads for
+identical dependency inputs. Its six initial archives total 25.14 MB; a real
+checksum-and-copy cache-hit probe took 0.751 seconds with zero archive upload.
+Each run gets independent file contents. See the
+[cache probe](evidence/development-project-20261023/cache-hit-probe.json) and
+[CP2K project input prerequisites](evidence/development-project-20261023/cp2k-project-inputs.md).
+The [first CP2K attempt](evidence/development-project-20261023/cp2k-first-attempt/summary.json)
+retains all four failed allocations and original logs.
 
 [Branch integration audit](evidence/development-project-20261023/branch-audit.md)
 identifies two old branches already merged through equivalent patches. The

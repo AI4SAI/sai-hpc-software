@@ -1,0 +1,180 @@
+{
+  "account": "proj-sai-hpc-software",
+  "all_selected_targets_scientifically_verified": true,
+  "native_runtime_verified": false,
+  "project_root": "/org/org-open-sai/proj-sai-hpc-software",
+  "published": false,
+  "schema": 1,
+  "software": "deepmd-kit",
+  "source_ref": "master",
+  "source_sha": "558f56962775098b8b554e341c3b37d2f86e6aeb",
+  "source_tree": "933e8d47c1666867f7754b9e3a0f8e19bbe609a1",
+  "targets": {
+    "16V100": {
+      "acceptance_accounting": "1913315|COMPLETED|0:0|00:00:50|16v100n09|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-16v100-avx2-558f569-c",
+      "acceptance_job_id": "1913315",
+      "acceptance_request": "docs/evidence/deepmd-project-20261023/16V100-request.json",
+      "acceptance_status": "docs/evidence/deepmd-project-20261023/16V100-scientific-acceptance.json",
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-independent-20261023-16v100-avx2-558f569-b/candidate.sif",
+      "artifact_bytes": 193601536,
+      "artifact_mode": "0o444",
+      "artifact_sha256": "886a99b71c8b66b8fceb5c706ee6c6de6afbadb686676dea01f975aa3745c3bf",
+      "build_accounting": "1913001|FAILED|1:0|00:15:09|16v100n01|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-independent-20261023-16v100-avx2-558f569-b",
+      "build_job_id": "1913001",
+      "build_verified": true,
+      "gpu": {
+        "backend": "pt",
+        "csv_sha256": "b19b2d49a4c569eeb70c5670083338a5f2646dbf1e9f598be4315290b6d55b93",
+        "devices": [
+          "Tesla V100-SXM2-16GB (0)"
+        ],
+        "engine": "c-api",
+        "kernel_events": 1486,
+        "report_sha256": "659e4e34abc49fbe42f3ba82c6f359bd84d2f0a267ce814e11260c04c9259ed6",
+        "total_kernel_ns": 4645854.0
+      },
+      "identity": {
+        "build_id": "master-2026-10-23-g558f56962775-re04065e624bd",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "e04065e624bdf113dbcc32e713510472a1416bec81e664571ce84121024d54ea",
+        "repository": "deepmodeling/deepmd-kit",
+        "schema": 2,
+        "software": "deepmd-kit",
+        "source_ref": "master",
+        "source_sha": "558f56962775098b8b554e341c3b37d2f86e6aeb",
+        "source_version": "master-2026-10-23",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "development",
+        "version_label": "master-2026-10-23"
+      },
+      "native_runtime_verified": false,
+      "numeric_records": 48,
+      "published": false,
+      "scientific_groups": 6,
+      "scientific_verified": true,
+      "version": {
+        "observed": "0.1.dev1+g558f56962",
+        "track": "development"
+      }
+    },
+    "4V100": {
+      "acceptance_accounting": "1913313|COMPLETED|0:0|00:00:28|4v100n34|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-science-20261023-4v100-avx512-558f569-c",
+      "acceptance_job_id": "1913313",
+      "acceptance_request": "docs/evidence/deepmd-project-20261023/4V100-request.json",
+      "acceptance_status": "docs/evidence/deepmd-project-20261023/4V100-scientific-acceptance.json",
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-independent-20261023-4v100-avx512-558f569-b/candidate.sif",
+      "artifact_bytes": 193609728,
+      "artifact_mode": "0o444",
+      "artifact_sha256": "0f33c1e2ac6576490a9a5bef9082e5a8ed592103c87d8b6edd3017abd24bd172",
+      "build_accounting": "1912999|FAILED|1:0|00:09:13|4v100n08|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-independent-20261023-4v100-avx512-558f569-b",
+      "build_job_id": "1912999",
+      "build_verified": true,
+      "gpu": {
+        "backend": "pt",
+        "csv_sha256": "610ff346f8f00068d6816a3d8fdb4a977d522a2481158c0a220048fbeb1c0407",
+        "devices": [
+          "Tesla V100-SXM2-32GB (0)"
+        ],
+        "engine": "c-api",
+        "kernel_events": 1486,
+        "report_sha256": "8e462739773ad63e5d5a79c52d487e7113b7cc059938888398b8c23bc46b40a0",
+        "total_kernel_ns": 4626167.0
+      },
+      "identity": {
+        "build_id": "master-2026-10-23-g558f56962775-re04065e624bd",
+        "cpu_arch": "znver4",
+        "cuda_arch": "70",
+        "dependency_isa": "avx512",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100",
+        "partition": "4V100",
+        "recipe_sha256": "e04065e624bdf113dbcc32e713510472a1416bec81e664571ce84121024d54ea",
+        "repository": "deepmodeling/deepmd-kit",
+        "schema": 2,
+        "software": "deepmd-kit",
+        "source_ref": "master",
+        "source_sha": "558f56962775098b8b554e341c3b37d2f86e6aeb",
+        "source_version": "master-2026-10-23",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "4v100-avx512",
+        "track": "development",
+        "version_label": "master-2026-10-23"
+      },
+      "native_runtime_verified": false,
+      "numeric_records": 48,
+      "published": false,
+      "scientific_groups": 6,
+      "scientific_verified": true,
+      "version": {
+        "observed": "0.1.dev1+g558f56962",
+        "track": "development"
+      }
+    },
+    "8V100V0": {
+      "acceptance_accounting": "1913472|COMPLETED|0:0|00:03:31|8v100v0n04|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-recover-8v100v0-20261023-r1",
+      "acceptance_job_id": "1913472",
+      "acceptance_request": "docs/evidence/deepmd-project-20261023/8V100V0-recovery-request.json",
+      "acceptance_status": "docs/evidence/deepmd-project-20261023/8V100V0-status.json",
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-recover-8v100v0-20261023-r1/candidate.sif",
+      "artifact_bytes": 193781760,
+      "artifact_mode": "0o444",
+      "artifact_sha256": "2fa0de48cc6716ec7431cd94fe891817cec33ea400b39e7ce6d575477c5b15d8",
+      "build_accounting": "1913003|FAILED|255:0|00:18:52|8v100v0n02|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-independent-20261023-8v100v0-avx512-558f569-b",
+      "build_job_id": "1913003",
+      "build_verified": true,
+      "export_job_id": "1913472",
+      "gpu": {
+        "backend": "pt",
+        "csv_sha256": "2479f0554903894d63d6e2887b943c465d1d8c0f3d2e309a0ddfbbf7efd9479d",
+        "devices": [
+          "Tesla V100-SXM2-32GB (0)"
+        ],
+        "engine": "c-api",
+        "kernel_events": 1486,
+        "report_sha256": "70f123332912945ee73b1e20c809fe3e1739f0d218b93e64ed48e547ed85a44e",
+        "total_kernel_ns": 4631405.0
+      },
+      "identity": {
+        "build_id": "master-2026-10-23-g558f56962775-re04065e624bd",
+        "cpu_arch": "skylake-avx512",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0",
+        "partition": "8V100V0",
+        "recipe_sha256": "e04065e624bdf113dbcc32e713510472a1416bec81e664571ce84121024d54ea",
+        "repository": "deepmodeling/deepmd-kit",
+        "schema": 2,
+        "software": "deepmd-kit",
+        "source_ref": "master",
+        "source_sha": "558f56962775098b8b554e341c3b37d2f86e6aeb",
+        "source_version": "master-2026-10-23",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "8v100v0-avx512",
+        "track": "development",
+        "version_label": "master-2026-10-23"
+      },
+      "native_runtime_verified": false,
+      "numeric_records": 48,
+      "published": false,
+      "recovery_tools_commit": "e29f05a67f890b612f7035120d0cd0abf503afc2",
+      "scientific_groups": 6,
+      "scientific_verified": true,
+      "source_overlay_sha256": "166a3b361b39a302905d245b39a7ed458ea3958079736a067aa97be4f2860ece",
+      "version": {
+        "observed": "0.1.dev1+g558f56962",
+        "track": "development"
+      }
+    }
+  },
+  "track": "development"
+}
