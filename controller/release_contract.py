@@ -95,8 +95,13 @@ def claim_build(root, identities, run_id, *, retry=False):
                     sources = [data["identity"]]
                 elif "delivery" in data:
                     delivery = data["delivery"]
-                    sources = [delivery["identities"][trigger["software"]]
-                               for trigger in delivery["plan"]["triggers"]]
+                    if "identity" in delivery:
+                        # Independent MD builds own one primary identity. The
+                        # installed companion is a dependency, not a new build.
+                        sources = [delivery["identity"]]
+                    else:
+                        sources = [delivery["identities"][trigger["software"]]
+                                   for trigger in delivery["plan"]["triggers"]]
                 else:
                     continue  # Pre-identity requests cannot identify a release.
                 for source in sources:

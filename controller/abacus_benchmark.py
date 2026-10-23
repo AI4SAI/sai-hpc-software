@@ -16,7 +16,7 @@ import statistics
 import subprocess
 import time
 
-from remote_controller import TARGETS, safe_name
+from remote_controller import TARGETS, safe_name, project_batch_directives, private_scratch, project_qos
 from source_cache import checksum
 from delivery_layout import artifact_path, load_artifact
 from release_contract import validate_identity
@@ -137,11 +137,11 @@ def render_job(r, task):
              '"$OMPI_COMM_WORLD_RANK" "$BENCH_TARGET" "$1" "${CUDA_VISIBLE_DEVICES:-}" '
              '"${OPAL_PREFIX:-}" > "$SAI_ABACUS_TRACE_DIR/rank-$OMPI_COMM_WORLD_RANK.tsv"; exec "$@"')
     lines = ["#!/usr/bin/env bash", f"#SBATCH --job-name=bench-abacus-{r['run_id']}",
-             f"#SBATCH --partition={target['partition']}", f"#SBATCH --qos={target['qos']}",
+             f"#SBATCH --partition={target['partition']}", f"#SBATCH --qos={project_qos(ROOT, r['target'])}",
              "#SBATCH --nodes=2", f"#SBATCH --ntasks={r['ranks']}",
              f"#SBATCH --ntasks-per-node={r['ranks_per_node']}", *resource,
              f"#SBATCH --time={r['minutes']}", f"#SBATCH --output={task}/slurm-%j.log",
-             "#SBATCH --export=NIL", "set -euo pipefail",
+             "#SBATCH --export=NIL", *project_batch_directives(ROOT, task), "set -euo pipefail",
              "# NIL removes HOME; restore the real account home required by Open MPI, never a scratch home.",
              f"export HOME={q(Path.home())}",
              "export USER=${SLURM_JOB_USER:?} LOGNAME=${SLURM_JOB_USER:?}",
@@ -252,6 +252,8 @@ def prepare(args):
              runs=sequence(args.warmup, args.repeats), schema=2)
     task.mkdir(parents=True)
     (task / "results").mkdir()
+    for name in ("mpi-runtime", "apptainer-runtime", "apptainer-cache"):
+        private_scratch(task / name)
     if not packaged:
         shutil.copytree(Path(args.case), task / "input")
         if case_files(task / "input") != files:
@@ -679,7 +681,7 @@ def main():
                 if (task / "job.id").exists() or (task / "execution.id").exists():
                     raise ValueError("benchmark already submitted")
                 result = subprocess.run(["sbatch", "--parsable", str(task / "job.sbatch")],
-                                        check=True, capture_output=True, text=True)
+                                        check=True, capture_output=True, text=True, cwd=task)
                 job = result.stdout.strip().split(";")[0]
                 if not job.isdigit():
                     raise ValueError("invalid sbatch response")

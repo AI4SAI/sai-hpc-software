@@ -1,0 +1,19 @@
+BUILD_CAPACITY_POLICY filesystem-enforced 39971078915-1-development-dsprhbm-2026-10-23-04b255137f7b-dependencies
+/org/org-open-sai/proj-sai-hpc-software/runs/39971078915-1-development-dsprhbm-2026-10-23-04b255137f7b-dependencies/work.ext3: 23302/262144 files (0.0% non-contiguous), 66215/1048576 blocks
+resize2fs 1.47.0 (5-Feb-2023)
+Resizing the filesystem on /org/org-open-sai/proj-sai-hpc-software/runs/39971078915-1-development-dsprhbm-2026-10-23-04b255137f7b-dependencies/work.ext3 to 4194304 (4k) blocks.
+The filesystem on /org/org-open-sai/proj-sai-hpc-software/runs/39971078915-1-development-dsprhbm-2026-10-23-04b255137f7b-dependencies/work.ext3 is now 4194304 (4k) blocks long.
+
+CP2K_IMAGE_DRIVER sha256=46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10 config=/org/org-open-sai/proj-sai-hpc-software/runs/39971078915-1-development-dsprhbm-2026-10-23-04b255137f7b-dependencies/runtime/apptainer-fuse2fs.conf
+INFO:    User not listed in /etc/subuid, trying root-mapped namespace
+INFO:    Using fakeroot command combined with root-mapped namespace
+INFO:    Ignoring invalid max threads value 4294967295 > max (100000).
+Lmod has detected the following error:
+/opt/modules/modulefiles/devtools/elpa/2026.02.001-2603-gnu-auto:
+(elpa/2026.02.001-2603-gnu-auto): Load elpa/2026.02.001-2603-gnu-auto inside a
+Slurm job or allocation 
+While processing the following module(s):
+    Module fullname                 Module Filename
+    ---------------                 ---------------
+    elpa/2026.02.001-2603-gnu-auto  /opt/modules/modulefiles/devtools/elpa/2026.02.001-2603-gnu-auto
+

@@ -98,6 +98,21 @@ class StandaloneTests(unittest.TestCase):
         self.assertNotIn('--bind /tmp', script)
         self.assertIn('TMPDIR=/workspace/tmp', script)  # Inside the home-backed overlay.
 
+    def test_project_build_bills_project_and_keeps_all_scratch_under_project(self):
+        from remote_controller import SAI_PROJECT_ROOT
+        root = SAI_PROJECT_ROOT / 'experimental/deepmd-lammps'
+        directory = root / 'runs/standalone-project-test'
+        with patch.object(standalone, 'PROJECT', SAI_PROJECT_ROOT), \
+                patch.object(standalone, 'ROOT', root), \
+                patch.object(standalone, 'task', return_value=directory):
+            script = standalone.render(self.delivery('8v100v0-avx512'), directory.name)
+        subprocess.run(['bash', '-n'], input=script, text=True, check=True)
+        self.assertIn('#SBATCH --account=proj-sai-hpc-software\n', script)
+        self.assertIn('#SBATCH --chdir=' + str(directory) + '\n', script)
+        self.assertIn('export TMPDIR=' + str(directory / 'runtime'), script)
+        self.assertIn(str(root / 'cache/repositories/lammps') + ':/input/lammps:ro', script)
+        self.assertNotIn('/home/stardust/sai-hpc-software', script)
+
     def test_installed_dependency_verifier_detects_changed_bytes_and_links(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)

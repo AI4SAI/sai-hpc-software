@@ -1,0 +1,88 @@
+{
+  "node": "16v100n07.mr-sai.ai",
+  "cgroup": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5MNH1J900/step_batch/user/task_0",
+  "cpu_max": "max 100000",
+  "sample_seconds": 5.000101300000097,
+  "cgroup_cpu_percent": 191.4158419150391,
+  "processes": [
+    {
+      "pid": 805043,
+      "command": "fuse2fs",
+      "lifetime_cpu_percent": 50.3,
+      "allowed_cpus": [
+        0,
+        1,
+        2,
+        3,
+        64,
+        65,
+        66,
+        67
+      ]
+    },
+    {
+      "pid": 805319,
+      "command": "fuse-overlayfs",
+      "lifetime_cpu_percent": 5.6,
+      "allowed_cpus": [
+        0,
+        1,
+        2,
+        3,
+        64,
+        65,
+        66,
+        67
+      ]
+    },
+    {
+      "pid": 819985,
+      "command": "python3",
+      "lifetime_cpu_percent": 4.5,
+      "allowed_cpus": [
+        0,
+        1,
+        2,
+        3,
+        64,
+        65,
+        66,
+        67
+      ]
+    },
+    {
+      "pid": 821995,
+      "command": "build_libint",
+      "lifetime_cpu_percent": 41.9,
+      "allowed_cpus": [
+        0,
+        1,
+        2,
+        3,
+        64,
+        65,
+        66,
+        67
+      ]
+    },
+    {
+      "pid": 825860,
+      "command": "cc1",
+      "lifetime_cpu_percent": 112.0,
+      "allowed_cpus": [
+        0,
+        1,
+        2,
+        3,
+        64,
+        65,
+        66,
+        67
+      ]
+    }
+  ],
+  "job": "1913475",
+  "workflow": "39976482528",
+  "observed_at": "2026-10-23T15:26:18.546163+00:00",
+  "interpretation": "The container and image helpers share the Slurm step cgroup; its usage includes completed compiler processes during this interval."
+}

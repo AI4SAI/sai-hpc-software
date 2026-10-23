@@ -1,0 +1,171 @@
+{
+  "argv": [
+    "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+    "--debug",
+    "--config",
+    "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-mount-ro-1914241-20261024/runtime/apptainer-fuse2fs.conf",
+    "exec",
+    "--fakeroot",
+    "--cleanenv",
+    "--containall",
+    "--no-home",
+    "--no-mount",
+    "bind-paths,home,cwd,tmp,hostfs",
+    "--pwd",
+    "/",
+    "--net",
+    "--network",
+    "none",
+    "--nv",
+    "--bind",
+    "/usr:/usr:ro",
+    "--bind",
+    "/sbin:/sbin:ro",
+    "--bind",
+    "/lib:/lib:ro",
+    "--bind",
+    "/lib64:/lib64:ro",
+    "--bind",
+    "/opt/devtools:/opt/devtools:ro",
+    "--bind",
+    "/opt/modules:/opt/modules:ro",
+    "--bind",
+    "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-mount-ro-1914241-20261024/runtime:/runtime:rw",
+    "--bind",
+    "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-mount-ro-1914241-20261024/runtime:/tmp:rw",
+    "--env",
+    "TMPDIR=/runtime",
+    "--env",
+    "HOME=/runtime",
+    "--overlay",
+    "/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf/work.ext3:ro",
+    "/org/org-open-sai/proj-sai-hpc-software/containers/base/minimal-v1.sif",
+    "/usr/bin/bash",
+    "-c",
+    "test -d \"$1/dependencies/spack\" && printf \"FUSE_RO_OVERLAY_PRESENT\\n\"",
+    "bash",
+    "/opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/4V100"
+  ],
+  "attempts": [
+    {
+      "attempt": 1,
+      "diagnostic_deadline_exceeded": false,
+      "elapsed": 2.0081368051469326,
+      "helpers": [
+        {
+          "elapsed": 0.504794966429472,
+          "helpers": [
+            {
+              "backing_descriptors": [
+                {
+                  "fdinfo": "pos:\t2048\nflags:\t0100000\nmnt_id:\t58\nino:\t144115800108695738\nlock:\t1: OFDLCK ADVISORY  READ -1 f17:fc396:144115800108695738 0 17179869183\n",
+                  "path": "/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf/work.ext3"
+                },
+                {
+                  "fdinfo": "pos:\t0\nflags:\t0100000\nmnt_id:\t58\nino:\t144115800108695738\n",
+                  "path": "/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf/work.ext3"
+                }
+              ],
+              "command": "/org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs -f -o allow_other,ro /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 ",
+              "io": "rchar: 12592\nwchar: 0\nsyscr: 21\nsyscw: 0\nread_bytes: 67104768\nwrite_bytes: 0\ncancelled_write_bytes: 0\n",
+              "pid": 4012872,
+              "wchan": "cl_sync_io_wait"
+            }
+          ]
+        },
+        {
+          "elapsed": 1.0063597597181797,
+          "helpers": [
+            {
+              "backing_descriptors": [
+                {
+                  "fdinfo": "pos:\t2048\nflags:\t0100000\nmnt_id:\t58\nino:\t144115800108695738\nlock:\t1: OFDLCK ADVISORY  READ -1 f17:fc396:144115800108695738 0 17179869183\n",
+                  "path": "/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf/work.ext3"
+                },
+                {
+                  "fdinfo": "pos:\t0\nflags:\t0100000\nmnt_id:\t58\nino:\t144115800108695738\n",
+                  "path": "/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf/work.ext3"
+                }
+              ],
+              "command": "/org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs -f -o allow_other,ro /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 ",
+              "io": "rchar: 12592\nwchar: 0\nsyscr: 21\nsyscw: 0\nread_bytes: 67104768\nwrite_bytes: 0\ncancelled_write_bytes: 0\n",
+              "pid": 4012872,
+              "wchan": "cl_sync_io_wait"
+            }
+          ]
+        },
+        {
+          "elapsed": 1.5079469121992588,
+          "helpers": [
+            {
+              "backing_descriptors": [
+                {
+                  "fdinfo": "pos:\t2048\nflags:\t0100000\nmnt_id:\t58\nino:\t144115800108695738\nlock:\t1: OFDLCK ADVISORY  READ -1 f17:fc396:144115800108695738 0 17179869183\n",
+                  "path": "/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf/work.ext3"
+                },
+                {
+                  "fdinfo": "pos:\t0\nflags:\t0100000\nmnt_id:\t58\nino:\t144115800108695738\n",
+                  "path": "/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf/work.ext3"
+                }
+              ],
+              "command": "/org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs -f -o allow_other,ro /proc/self/fd/3 /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 ",
+              "io": "rchar: 12592\nwchar: 0\nsyscr: 21\nsyscw: 0\nread_bytes: 67104768\nwrite_bytes: 0\ncancelled_write_bytes: 0\n",
+              "pid": 4012872,
+              "wchan": "cl_sync_io_wait"
+            }
+          ]
+        }
+      ],
+      "log": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-mount-ro-1914241-20261024/results/attempt-1.log",
+      "log_sha256": "55b44f6e8889a23ac7d9f108c97b4a226d4754a7ccf003026c30941e5f9c1143",
+      "observed_at": "2026-10-23T17:21:31.710741+00:00",
+      "returncode": 0
+    },
+    {
+      "attempt": 2,
+      "diagnostic_deadline_exceeded": false,
+      "elapsed": 0.5023201126605272,
+      "helpers": [],
+      "log": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-mount-ro-1914241-20261024/results/attempt-2.log",
+      "log_sha256": "88dc42dc8b95598e4947233b3bc478e672fd036b7bdc9ae20fde8db615885f38",
+      "observed_at": "2026-10-23T17:21:33.720005+00:00",
+      "returncode": 0
+    }
+  ],
+  "content_sha256_recomputed": false,
+  "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf",
+  "driver": {
+    "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+    "binary_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+    "config_sha256": "810fa844bd7314bfe5cc1e07352b14046528713a85c297d3155974abadc50263",
+    "driver": "/org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs",
+    "patched_source_sha256": "c63d1fb25510d316836952953e9adddacd3214cd91d6002bf3b16aed350c4ddc",
+    "schema": 1,
+    "source_commit": "45651efd6db7da8738bc9d8d1f17e99259cabfe4"
+  },
+  "job_id": "1914582",
+  "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf/work.ext3",
+  "overlay_metadata_unchanged": true,
+  "overlay_stat_after": {
+    "blocks": 2728386,
+    "device": 4231993238,
+    "gid": 1478400611,
+    "inode": 144115800108695738,
+    "mode": 33152,
+    "mtime_ns": 1792775032000000000,
+    "size": 17179869184,
+    "uid": 1478400690
+  },
+  "overlay_stat_before": {
+    "blocks": 2728386,
+    "device": 4231993238,
+    "gid": 1478400611,
+    "inode": 144115800108695738,
+    "mode": 33152,
+    "mtime_ns": 1792775032000000000,
+    "size": 17179869184,
+    "uid": 1478400690
+  },
+  "purpose": "Two read-only attempts after CP2K job 1914241's actual mount timeout.",
+  "read_only_mount": true
+}

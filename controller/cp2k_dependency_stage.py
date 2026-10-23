@@ -15,7 +15,7 @@ from cp2k_spack_link import validate_receipt
 from cp2k_image_driver import wrap_command, validate_receipt as validate_driver_receipt
 from cp2k_overlay_workdir import prepare_clone, RECEIPT as WORKDIR_RECEIPT
 from release_contract import validate_identity
-from remote_controller import TARGETS, container_command, require_capacity, safe_name
+from remote_controller import TARGETS, container_command, require_capacity, safe_name, project_batch_directives, private_scratch
 from source_cache import checksum
 
 SEED_SHA256 = '80497b787dc178876e71098840cf465deb63c6c9bec27c9dd5cc0bed3643c337'
@@ -75,7 +75,8 @@ def render(project, controller, run, identity, *, minutes=240, jobs=None, overla
              '#SBATCH --dependency=singleton', '#SBATCH --partition=' + target['partition'],
              '#SBATCH --qos=' + target['qos'], '#SBATCH --nodes=1', '#SBATCH --ntasks=1',
              '#SBATCH --time=' + str(minutes), '#SBATCH --export=NIL',
-             '#SBATCH --output=' + str(run / 'results/slurm-%j.log')]
+             '#SBATCH --output=' + str(run / 'results/slurm-%j.log'),
+             *project_batch_directives(project, run)]
     lines += (['#SBATCH --gpus-per-node=' + str(build_gpus)] if target['gpus'] else
               ['#SBATCH --cpus-per-task=' + str(jobs), '#SBATCH --mem=28G'])
     lines += ['set -eo pipefail', 'export PATH=/usr/bin:/bin LD_LIBRARY_PATH="" LD_PRELOAD=""',
@@ -183,6 +184,8 @@ def submit(project, controller, run_id, identity, *, minutes=240, jobs=None, ove
     run.mkdir()
     for name in ('results', 'runtime', 'apptainer-cache'):
         (run / name).mkdir()
+    for name in ('runtime', 'apptainer-cache'):
+        private_scratch(run / name)
     script = run / 'job.sbatch'
     script.write_text(script_text)
     script.chmod(0o700)
@@ -191,7 +194,7 @@ def submit(project, controller, run_id, identity, *, minutes=240, jobs=None, ove
                'script_sha256': checksum(script), 'minutes': minutes, 'overlay_mb': overlay_mb}
     request_file = run / 'request.json'
     request_file.write_text(json.dumps(request, sort_keys=True) + '\n')
-    result = subprocess.run(['sbatch', '--hold', '--parsable', str(script)], check=True, capture_output=True, text=True)
+    result = subprocess.run(['sbatch', '--hold', '--parsable', str(script)], check=True, capture_output=True, text=True, cwd=run)
     job = result.stdout.strip().split(';')[0]
     if not job.isdigit():
         raise ValueError('invalid dependency sbatch response')

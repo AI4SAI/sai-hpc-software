@@ -1,0 +1,16 @@
+Traceback (most recent call last):
+  File "/org/org-open-sai/proj-sai-hpc-software/controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf/software_controller.py", line 629, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "/org/org-open-sai/proj-sai-hpc-software/controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf/software_controller.py", line 623, in main
+    result = {"init": init, "submit": submit, "monitor": monitor, "lookup": lookup, "publish": publish, "identity": identity}[args.op](args)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/org/org-open-sai/proj-sai-hpc-software/controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf/software_controller.py", line 499, in submit
+    result = call(["sbatch", "--parsable", script], capture_output=True, cwd=r)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/org/org-open-sai/proj-sai-hpc-software/controller/10992f818af71543bb39cb81e0f60c9f7ede9535/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf/software_controller.py", line 205, in call
+    return subprocess.run([str(x) for x in argv], check=True, text=True, **kw)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/subprocess.py", line 571, in run
+    raise CalledProcessError(retcode, process.args,
+subprocess.CalledProcessError: Command '['sbatch', '--parsable', '/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf-node-retry3/job.sbatch']' returned non-zero exit status 1.

@@ -1,0 +1,27 @@
+{
+  "all_required_found": true,
+  "extracted": "/org/org-open-sai/proj-sai-hpc-software/maintenance/cp2k-libxc-static-symbols-20261024/libcp2k.so.2026.2",
+  "extraction_command": [
+    "unsquashfs",
+    "-o",
+    "32768",
+    "-cat",
+    "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf.sif",
+    "opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/lib64/libcp2k.so.2026.2"
+  ],
+  "library_loaded_or_executed": false,
+  "library_sha256": "7907da4005c694c73db761351d342dc78102968f2bddf2f5b0ba6abcce145516",
+  "observed_at": "2026-10-23T18:14:53.468131+00:00",
+  "read_only_static_inspection": true,
+  "source_manifest": "b2cecb3af1ef0ab2dc623ea95f89b4bb41df73d6e99ab6d85a6525d0ced72cd0",
+  "source_sif": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf.sif",
+  "symbols": [
+    "00000000041c1d20 T xc_func_alloc",
+    "00000000041c1d70 T xc_func_end",
+    "00000000041c1e30 T xc_func_free",
+    "00000000041c1e40 T xc_func_get_info",
+    "00000000041c3130 T xc_func_init_flags",
+    "00000000041c3fb0 T xc_gga_exc_vxc",
+    "0000000005755350 T xc_version"
+  ]
+}

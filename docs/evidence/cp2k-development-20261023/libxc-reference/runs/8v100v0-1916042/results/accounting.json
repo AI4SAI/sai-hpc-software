@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "sacct",
+    "-X",
+    "-nP",
+    "-j",
+    "1916042",
+    "-o",
+    "JobIDRaw,State,ExitCode,Partition,Account,WorkDir,Elapsed,NodeList,AllocCPUS,AllocTRES"
+  ],
+  "returncode": 0,
+  "stderr": "",
+  "stdout": "1916042|COMPLETED|0:0|8V100V0|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-reference-v1-39983165813-8v100v0-avx512|00:00:09|8v100v0n03|6|billing=180,cpu=6,gres/gpu=1,mem=46G,node=1\n"
+}

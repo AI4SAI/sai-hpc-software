@@ -1,22 +1,33 @@
 name: Build LAMMPS with installed DeePMD
 
 on:
+  workflow_call:
+    inputs:
+      tracks:
+        type: string
+        default: development
+      targets:
+        type: string
+        default: 16v100-avx2,4v100-avx512,8v100v0-avx512
+      retry_releases:
+        type: boolean
+        default: false
   workflow_dispatch:
     inputs:
-      track:
-        description: LAMMPS upstream channel; DeePMD remains the accepted installed dependency
-        type: choice
-        options: [development, release, prerelease]
+      tracks:
+        description: Comma-separated LAMMPS channels; installed DeePMD is reused
         default: development
-      target:
-        description: Native GPU partition
-        type: choice
-        options: [16v100-avx2, 4v100-avx512, 8v100v0-avx512]
-        default: 16v100-avx2
+      targets:
+        description: Comma-separated GPU targets
+        default: 16v100-avx2,4v100-avx512,8v100v0-avx512
+      retry_releases:
+        description: Explicitly retry a previously attempted release
+        type: boolean
+        default: false
   push:
-    paths: ['controller/md_*', 'tests/test_md_*', '.github/workflows/lammps.yml']
+    paths: ['controller/md_*', 'controller/lammps_*', 'tests/test_md_*', 'tests/test_lammps_*', '.github/workflows/lammps.yml']
   pull_request:
-    paths: ['controller/md_*', 'tests/test_md_*', '.github/workflows/lammps.yml']
+    paths: ['controller/md_*', 'controller/lammps_*', 'tests/test_md_*', 'tests/test_lammps_*', '.github/workflows/lammps.yml']
 
 permissions:
   contents: read
@@ -33,18 +44,55 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y squashfs-tools tcl python3-yaml chrpath
           python3 -m unittest discover -s tests -v
-          for script in controller/md_*.sh; do bash -n "$script"; done
-  candidate:
-    if: github.event_name == 'workflow_dispatch'
+          for script in controller/md_*.sh controller/lammps_*.sh controller/lammps_*.sbatch; do bash -n "$script"; done
+  resolve-source:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
     needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      builds: ${{ steps.resolve.outputs.builds }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - id: resolve
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TRACKS: ${{ inputs.tracks }}
+          TARGETS: ${{ inputs.targets }}
+        run: |
+          python3 - <<'PYTHON'
+          import json, os, sys
+          sys.path.insert(0, 'controller')
+          from release_contract import GPU_TARGETS, resolve_tracks
+          targets = [t.strip() for t in os.environ['TARGETS'].split(',')]
+          if not targets or len(set(targets)) != len(targets) or any(t not in GPU_TARGETS for t in targets):
+              raise ValueError('invalid or duplicate LAMMPS target')
+          sources = resolve_tracks('lammps', [t.strip() for t in os.environ['TRACKS'].split(',')])
+          builds = [dict(source, target=target) for source in sources if source['status'] == 'resolved' for target in targets]
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write('builds=' + json.dumps(builds) + '\n')
+          print(json.dumps(dict(sources=sources, builds=builds), indent=2))
+          PYTHON
+  candidate:
+    if: (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && needs.resolve-source.outputs.builds != '[]'
+    needs: [validate, resolve-source]
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        build: ${{ fromJSON(needs.resolve-source.outputs.builds) }}
     runs-on: ubuntu-latest
     environment: hpc
     timeout-minutes: 360
     env:
       GH_TOKEN: ${{ github.token }}
       REMOTE_USER: ${{ secrets.REMOTE_USER }}
-      LAMMPS_TRACK: ${{ inputs.track }}
-      LAMMPS_TARGET: ${{ inputs.target }}
+      LAMMPS_SOURCE: ${{ toJSON(matrix.build) }}
+      LAMMPS_TARGET: ${{ matrix.build.target }}
+      LAMMPS_PHASE: build
+      RETRY_RELEASES: ${{ inputs.retry_releases }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -59,14 +107,95 @@ jobs:
           mkdir -m 700 "$RUNNER_TEMP/ssh"
           printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
           chmod 600 "$RUNNER_TEMP/ssh/key"
-      - name: Build and verify LAMMPS candidate using installed DeePMD
+      - name: Build LAMMPS using installed DeePMD
         run: python3 -u controller/md_lammps_ci.py
+      - name: Preserve immutable build handoff
+        uses: actions/upload-artifact@v4
+        with:
+          # A science-only rerun has a new run_attempt but consumes the same
+          # original build. A full build rerun replaces only this Actions copy.
+          name: lammps-handoff-${{ matrix.build.track }}-${{ matrix.build.target }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/results/ci-handoff.json
+          if-no-files-found: error
+          overwrite: true
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: lammps-${{ inputs.target }}-${{ github.run_id }}-${{ github.run_attempt }}
+          name: lammps-build-${{ matrix.build.track }}-${{ matrix.build.target }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/results/
           if-no-files-found: warn
       - name: Remove temporary SSH key
         if: always()
         run: rm -f -- "$RUNNER_TEMP/ssh/key"
+  science:
+    # Successful matrix entries can still be accepted if another build fails;
+    # a missing handoff fails its own entry, and result requires both matrices.
+    if: ${{ !cancelled() && needs.resolve-source.result == 'success' && needs.resolve-source.outputs.builds != '[]' }}
+    needs: [resolve-source, candidate]
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        build: ${{ fromJSON(needs.resolve-source.outputs.builds) }}
+    runs-on: ubuntu-latest
+    environment: hpc
+    timeout-minutes: 360
+    env:
+      REMOTE_USER: ${{ secrets.REMOTE_USER }}
+      LAMMPS_SOURCE: ${{ toJSON(matrix.build) }}
+      LAMMPS_TARGET: ${{ matrix.build.target }}
+      LAMMPS_PHASE: science
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: lammps-handoff-${{ matrix.build.track }}-${{ matrix.build.target }}-${{ github.run_id }}
+          path: ${{ runner.temp }}/handoff/
+      - name: Prepare HPC SSH credentials
+        env:
+          KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          : "${REMOTE_USER:?Configure REMOTE_USER in the hpc Environment}"
+          : "${KEY:?Configure REMOTE_SSH_PRIVATE_KEY in the hpc Environment}"
+          mkdir -m 700 "$RUNNER_TEMP/ssh"
+          printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
+          chmod 600 "$RUNNER_TEMP/ssh/key"
+      - name: Accept the original LAMMPS build with all fourteen GPU scientific cases
+        env:
+          LAMMPS_HANDOFF: ${{ runner.temp }}/handoff/ci-handoff.json
+        run: python3 -u controller/md_lammps_ci.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: lammps-science-${{ matrix.build.track }}-${{ matrix.build.target }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/results/
+          if-no-files-found: warn
+      - name: Remove temporary SSH key
+        if: always()
+        run: rm -f -- "$RUNNER_TEMP/ssh/key"
+  result:
+    if: always()
+    needs: [validate, resolve-source, candidate, science]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Require every selected LAMMPS candidate to pass science
+        env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          python3 - <<'PYTHON'
+          import json, os
+          jobs = json.loads(os.environ['RESULTS'])
+          if jobs['validate']['result'] != 'success':
+              raise SystemExit('Local validation failed')
+          if os.environ['GITHUB_EVENT_NAME'] in ('workflow_dispatch', 'schedule'):
+              if jobs['resolve-source']['result'] != 'success':
+                  raise SystemExit('LAMMPS source resolution failed')
+              builds = json.loads(jobs['resolve-source']['outputs']['builds'])
+              for phase in ('candidate', 'science'):
+                  if jobs[phase]['result'] != ('success' if builds else 'skipped'):
+                      raise SystemExit('Selected LAMMPS candidates did not complete build and scientific acceptance')
+          PYTHON

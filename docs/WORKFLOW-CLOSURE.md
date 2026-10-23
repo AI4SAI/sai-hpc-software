@@ -1,5 +1,170 @@
 # Workflow closure — 2026-10-23
 
+## Current development deliveries
+
+The current development work uses the funded project directory
+`/org/org-open-sai/proj-sai-hpc-software` and explicit Slurm account
+`proj-sai-hpc-software`. Frozen historical controllers and existing home
+artifacts remain unchanged. Build, science, publication and native `/opt`
+installation are separate acceptance states.
+
+| Program | Selected development commit | Current evidence |
+| --- | --- | --- |
+| ABACUS `develop` | `370ba685e6707b3625c5580ff9d02ef0afb248e8` | All four targets built, scientifically accepted and published with reverified native staging exports; workflow [39971072923](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971072923) succeeded. Physical `/opt` installation pending. |
+| CP2K `master` | `cfe5e5d87aaf302953f14eb43587bef2411a8fb2` | All four targets built, scientifically accepted and project-published, with independent SIF, raw science, native export and module audits. Source-pinned LibXC 7.1.2 and LibXS `930a2c4` are verified. 4V100/8V100V0 completed through documented recoveries; the original [workflow 39983165813](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39983165813) retains its failed status. Physical `/opt` installation pending. |
+| DeePMD-kit `master` | `558f56962775098b8b554e341c3b37d2f86e6aeb` | All three V100 candidates build-verified and scientifically accepted: TF/PT/JAX Python/C-API checks plus 1,486 measured CUDA kernel events per target. Not yet published or installed natively. |
+| LAMMPS `develop` | `a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b` | All three V100 candidates build-verified and scientifically accepted: 14 cases, 71 packages, 2,497 styles per target. Not yet published or installed natively. |
+| GPUMD `master` | `2c93346fce4461de1c42c77e7fe74cdb6b0e3df6` | All three V100 targets scientifically accepted, published with native staging exports; physical `/opt` installation pending. |
+
+All five selected development snapshots have completed their required build
+and scientific acceptance gates. The table records the source snapshots
+selected for this campaign. A later
+[read-only upstream check](evidence/development-project-20261023/upstream-recheck-20261024.json)
+found newer ABACUS and CP2K commits while these jobs were running; the other
+three branch heads were unchanged. New commits are resolved in subsequent
+daily runs and do not replace the identities of running or accepted artifacts.
+
+[ABACUS development evidence](evidence/abacus-development-20261023/README.md)
+records 23 successful build/acceptance jobs and independent checks of all four
+SIFs, raw scientific results, modules and 8,713 native export entries per target.
+The three GPU targets passed actual two-node cuSOLVERMp/NCCL execution. All
+declared PW/HSE/DeePKS SCF iteration-time gates pass; total wall times for these
+small cases are recorded separately and do not establish a general speedup.
+
+[LAMMPS development evidence](evidence/lammps-project-20261023/README.md)
+records recovery of the already compiled 8V100V0 overlay in export job
+`1912932` and science job `1912959`; the old build `1896876` remains failed.
+4V100 and 16V100 reused their unchanged-source SIFs after independent rereading
+of all raw acceptance evidence. No new DeePMD build was needed for LAMMPS.
+
+[DeePMD development evidence](evidence/deepmd-project-20261023/README.md)
+records separate scientific jobs `1913313` and `1913315` on the unchanged
+4V100/16V100 SIFs. The 8V100V0 export/science recovery `1913472` completed in
+3m31s using an independently copied overlay; its original full 32 GiB hash
+was checked again after recovery. All three original build allocations keep
+their failed status and original recipe. Every accepted target passes 48
+numerical records, the six backend/API groups and actual PyTorch CUDA execution.
+
+Daily planning now selects all five applications independently. The standalone
+DeePMD workflow requires its own numerical and measured GPU execution checks;
+LAMMPS reuses the pinned installed DeePMD dependency and requires its own 14-case
+single/two-node GPU acceptance. A new DeePMD failure does not prevent LAMMPS from
+building, and a successful build without scientific acceptance is not reported
+as accepted. Slurm accounting visibility delays remain pending; a terminated
+job missing its required acceptance markers fails immediately.
+New DeePMD jobs seal the verified SIF before science and then bind the numerical
+results, model inputs and GPU trace to that exact image and allocation. LAMMPS
+build and science now have separate Actions time budgets; the science job uses
+the original frozen handoff and resumes an existing acceptance allocation
+without submitting it again.
+
+The project archive cache avoids repeating slow GitHub-to-cluster uploads for
+identical dependency inputs. Its six initial archives total 25.14 MB; a real
+checksum-and-copy cache-hit probe took 0.751 seconds with zero archive upload.
+Each run gets independent file contents. See the
+[cache probe](evidence/development-project-20261023/cache-hit-probe.json) and
+[CP2K project input prerequisites](evidence/development-project-20261023/cp2k-project-inputs.md).
+The [first CP2K attempt](evidence/development-project-20261023/cp2k-first-attempt/summary.json)
+retains all four failed allocations and original logs.
+The next attempt passed the corrected CP2K environment selection and began
+dependency compilation. A read-only source preflight then found that current
+master had upgraded LibXS and removed its old JIT repair patch. The previous
+recipe would silently build unpatched 1.0.0. That Actions run was stopped
+before any application submission; its four dependency allocations completed
+successfully and were sealed by their original controller. Their original
+prefixes and receipts are preserved in the
+[checkpoint record](evidence/development-project-20261023/cp2k-39976482528-dependency-checkpoints.json);
+they are not application acceptance or inputs relabeled for the corrected recipe.
+The [LibXS preflight](evidence/development-project-20261023/cp2k-libxs-preflight.md)
+records the source evidence, verified archive, cancellation and binary-cache
+assessment. The corrected workflow follows each source's declared dependency
+version without changing the installation identity contract.
+The retry resolved the newer master commit `cfe5e5d87aaf` once for all four
+targets. It directly follows `04b255137f7b` and changes Fortran reference
+counting without changing the dependency or toolchain declarations.
+All four dependency allocations completed successfully. The first 4V100
+application allocation `1914241` then failed at Apptainer 1.4.4's fixed
+10-second fuse2fs mount deadline, before any application compilation. Its
+dependency clone had passed both filesystem checks. A later read-only probe
+on the same node completed both attempts, but does not identify the cause of
+the original writable mount timeout. Fresh application `1914645` passed the
+mount, but an agent's `srun` diagnostic requested one CPU per task, violating
+4V100's eight-logical-CPU-per-GPU rule; the site hook cancelled that allocation.
+This is an operational mistake, not a CP2K or container failure. Its command,
+site error and accounting remain in the [incident evidence](evidence/cp2k-development-20261023/README.md#4v100-mount-failure-and-fresh-application-attempt).
+Job `1914931`, under a new run ID ending in `-mount-retry2`, used the same
+source/recipe, original frozen controller and original sealed dependency input.
+It encountered a second genuine pre-entry mount timeout on `4v100n01`.
+The next submission, `1915039`, tried to exclude that node using an environment
+variable unsupported by the installed Slurm. The submission postcheck caught
+the missing exclusion; only that new allocation was deliberately cancelled.
+Job `1915163` was then cancelled while held because a check incorrectly expected
+the scheduler-derived CPU field before scheduling; it consumed no compute time.
+A subsequent attempt with explicit CPU resources was rejected before allocation:
+SAI requires GPU-only requests and derives the CPU count itself. These operational
+errors and their original records remain separate from the real mount failures.
+
+Fresh 4V100 job `1915249` (`-node-retry4`) completed on `4v100n04` in 55m25s,
+with the explicit `4v100n01` exclusion and eight scheduler-assigned logical CPUs.
+Its final SIF passed seven-case single/two-node science in job `1915730`
+(7m49s), and project publication completed at 19:42:38 UTC on October 23.
+The [independent delivery audit](evidence/cp2k-development-20261023/4V100-validation.json)
+revalidated the SIF, raw science, native export, module, successful allocations
+and all preserved recovery attempts. Physical `/opt` installation is separate.
+8V100V0 job `1914617` also failed at the same pre-entry mount deadline after
+finishing its clone checks. Fresh job `1915260` (`-node-retry1`) completed in
+1h54m52s on `8v100v0n03`, excluding `8v100v0n02`, with six scheduler-assigned
+logical CPUs. Its mount took 2.125 seconds after the original clone checks.
+Science job `1916019` passed all seven single/two-node cases in 13m29s on
+`8v100v0n03` and `8v100v0n04`; project publication completed at 20:48:40 UTC.
+The [8V100V0 delivery audit](evidence/cp2k-development-20261023/8V100V0-validation.json)
+independently verified the final SIF, raw science, native export, module and
+the original failed allocation plus the successful recovery.
+Both new jobs passed held-allocation and immutable-input checks before release;
+a separate read-only revalidation checked their running allocations and recovery
+provenance. They retain the original controller, recipe and sealed dependency
+checkpoint. Both recoveries completed their application, science and project
+publication gates; the original workflow failures are preserved. Changing
+nodes succeeded in this campaign, but does not establish the mount timeout's
+root cause or remove Apptainer's fixed 10-second startup deadline.
+
+The [16V100 delivery audit](evidence/cp2k-development-20261023/16V100-validation.json)
+independently revalidated the final SIF, seven single/two-node scientific cases,
+native export, module and successful dependency/build/science allocations
+`1913830`, `1914677` and `1915010`. This is project publication; physical `/opt`
+installation remains separate. The [DSPRHBM audit](evidence/cp2k-development-20261023/DSPRHBM-validation.json) likewise passed after science job `1915020` and project publication.
+
+The [LibXC supplement](evidence/cp2k-development-20261023/README.md) ran on the
+four final SIFs with thresholds fixed before execution. Its
+built-in-PBE versus LibXC HOST energy comparison failed the original `1e-6` Ha
+gate on all four targets (difference approximately `4.16e-6` Ha); the failure records
+and original thresholds remain intact. Source inspection shows different default
+PBE/PW92 constants in these implementations, including an explicit CP2K comment
+recommending LibXC for higher-precision program comparisons. The 16V100 LibXC
+HOST/DEVICE energy difference was `2.34e-13` Ha, with 94 measured LibXC CUDA
+kernel invocations and the actual private 7.1.2 loader path. The independent
+pre-existing DFT-reference protocol subsequently passed all 258 scalar
+comparisons on each final LibXC HOST provider. The 4V100 HOST/DEVICE difference
+was `9.95e-14` Ha with identical forces and 94 LibXC CUDA kernel invocations.
+The 8V100V0 difference was `3.27e-13` Ha and at most `1.01e-12` Ha Bohr⁻¹
+in force, also with 94 LibXC CUDA kernel invocations. All three GPU targets
+pass the original HOST/DEVICE thresholds. The source-default mismatch in the
+built-in/LibXC comparison remains a separately documented failed comparison.
+The [read-only combined summaries](evidence/cp2k-development-20261023/libxc-reference/summaries/)
+recompute the raw mathematical and CP2K comparisons and preserve the original
+built-in comparison failures unchanged.
+
+[Branch integration audit](evidence/development-project-20261023/branch-audit.md)
+identifies two old branches already merged through equivalent patches. The
+remaining CP2K MPI experiment tools/evidence were independently verified and
+merged in [PR #24](https://github.com/AI4SAI/sai-hpc-software/pull/24). Current
+CP2K master already contains the upstream repair in cp2k/cp2k#6338; its
+2026.2-only experiment patch is not applied to master.
+
+The older release and development matrices below are historical checkpoints;
+they do not override the current source-specific results above.
+
+
 PRs [#8](https://github.com/AI4SAI/sai-hpc-software/pull/8) and
 [#10](https://github.com/AI4SAI/sai-hpc-software/pull/10) are merged into `main`.
 Daily delivery now uses reusable workflows from its own revision and waits
@@ -49,9 +214,9 @@ per node fixed it without changing resources or scientific criteria.
 The superseded private-account jobs `1903636`–`1903639` were cancelled while
 pending; their files and the failed CPU attempt are preserved.
 [Physical native acceptance and project-account evidence](evidence/abacus-beta11-20261022/physical-native-acceptance.json).
-ABACUS automatic build CI still uses its existing home project path; its
-frozen continuations have not been migrated. New GPUMD automatic builds and
-acceptance now use the funded project directory/account described below.
+This controller revision routes all new automatic builds and acceptance to
+the funded project directory/account. Frozen home-based continuations retain
+their original controller revision and root policy.
 Optional public deployment of the container image driver is tracked in
 [issue #12](https://github.com/AI4SAI/sai-hpc-software/issues/12).
 

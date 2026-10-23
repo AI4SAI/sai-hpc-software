@@ -120,6 +120,19 @@ tblite_root="$prefix/dependencies/tblite"
 # Match the pinned CP2K source's TBLITE API and gradient patches. Rebuild its
 # dependencies natively inside each target's overlay.
 export CP2K_NATIVE_FLAGS="-O3 $cpu_flags"
+site_libxc_root="$LIBXC_ROOT"
+bash /control/cp2k_libxc.sh /workspace/source /input/updates /workspace/libxc-build \
+  "$prefix/dependencies/libxc" "$accel" "$gpu_arch"
+source /workspace/libxc-build/environment.sh
+if [[ "$LIBXC_ROOT" != "$site_libxc_root" ]]; then
+  # Remove the site module's old include/library search paths as well as its
+  # environment variable; both versions may have the same library SONAME.
+  private_libxc_root="$LIBXC_ROOT"
+  module unload libxc
+  export LIBXC_ROOT="$private_libxc_root"
+fi
+export LD_LIBRARY_PATH="$LIBXC_ROOT/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export PKG_CONFIG_PATH="$LIBXC_ROOT/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
 bash /control/cp2k_dependencies.sh /input/probe /workspace/tblite-build "$tblite_root" \
   /workspace/source /input/updates
 
@@ -137,28 +150,10 @@ mkdir -p "$prefix/share/sai/cmake"
 cp /control/cp2k_Libint2Config.cmake "$prefix/share/sai/cmake/Libint2Config.cmake"
 cp /control/cp2k_libxsmmConfig.cmake "$prefix/share/sai/cmake/libxsmmConfig.cmake"
 
-# CP2K 2026.2 needs LIBXS in addition to LIBXSMM. Build the upstream-pinned
-# dependency inside this target's overlay, with the same native compiler flags.
-libxs_archive=/input/dependencies/libxs-1.0.0.tar.gz
-printf '%s  %s\n' de26f50cb986a2f0e4f92c0eb489d40a44f7e4c5acd22751a6cfa2829dabd04d "$libxs_archive" | sha256sum --check --status
-mkdir -p /workspace/libxs-source
-tar --no-same-owner --strip-components=1 -xzf "$libxs_archive" -C /workspace/libxs-source
-# Follow the pinned CP2K source toolchain: v2026.2 uses pristine LIBXS,
-# while later development commits carry the upstream JIT-handle repair.
-libxs_patch=/workspace/source/tools/toolchain/scripts/stage4/libxs-1.0.0-jit-handle.patch
-if [[ -f "$libxs_patch" ]]; then
-  patch -d /workspace/libxs-source -p1 < "$libxs_patch"
-elif grep -Fq 'jit-handle.patch' /workspace/source/tools/toolchain/scripts/stage4/install_libxs.sh; then
-  echo "CP2K toolchain declares a missing LIBXS patch: $libxs_patch" >&2
-  exit 1
-fi
-cmake -S /workspace/libxs-source -B /workspace/libxs-build \
-  "${cmake_compilers[@]}" \
-  -DCMAKE_INSTALL_PREFIX="$prefix/dependencies/libxs" -DCMAKE_INSTALL_LIBDIR=lib \
-  -DCMAKE_BUILD_TYPE=Release -DLIBXS_FORTRAN=ON -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
-  -DCMAKE_C_FLAGS="-O3 $cpu_flags" -DCMAKE_Fortran_FLAGS="-O3 $cpu_flags"
-cmake --build /workspace/libxs-build --parallel "$jobs"
-cmake --install /workspace/libxs-build
+# Release, intermediate development, and current master declare different
+# LibXS inputs. Preserve each source's version and JIT repair inside its prefix.
+bash /control/cp2k_libxs.sh /workspace/source /input/dependencies /input/updates \
+  /workspace/libxs-build "$prefix/dependencies/libxs"
 prefixes+=("$prefix/dependencies/libxs")
 # Current development requires wignernj; older releases do not. The source
 # archive is fetched and hashed on the runner, never on an offline compute node.
@@ -219,6 +214,7 @@ cmake_args=(
   -DCMAKE_PROJECT_cp2k_INCLUDE=/control/cp2k_cmake_prerequisites.cmake
   -DZLIB_ROOT=/usr
   -DLibint2_DIR="$prefix/share/sai/cmake" -Dlibxsmm_DIR="$prefix/share/sai/cmake"
+  -DLibxc_DIR="$LIBXC_ROOT/lib/cmake/Libxc"
   -DCP2K_ELPA_ROOT="$ELPA_ROOT" -DCP2K_ENABLE_ELPA_OPENMP_SUPPORT=ON
   -DCP2K_FFTW3_ROOT="$FFTW_ROOT" -DCP2K_BLAS_VENDOR=OpenBLAS
   -DCMAKE_INSTALL_RPATH='$ORIGIN;$ORIGIN/../lib64;$ORIGIN/../lib'
@@ -279,9 +275,10 @@ printf '%s\n' "$SAI_BUILD_PARTITION" > "$prefix/share/sai/build-partition"
 hostname > "$prefix/share/sai/build-hostname"
 lscpu > "$prefix/share/sai/build-lscpu.txt"
 gcc -Q -march=native -mtune=native --help=target > "$prefix/share/sai/native-compiler-target.txt"
-sha256sum "$libxs_archive" > "$prefix/share/sai/dependency-archives.sha256"
+cp /workspace/libxs-build/source-archives.sha256 "$prefix/share/sai/dependency-archives.sha256"
 sha256sum "$dbcsr_archive" "$fypp_archive" >> "$prefix/share/sai/dependency-archives.sha256"
 cp /workspace/tblite-build/source-archives.sha256 "$prefix/share/sai/tblite-source-archives.sha256"
+cp /workspace/libxc-build/source-archives.sha256 "$prefix/share/sai/libxc-source-archives.sha256"
 python3 /control/cp2k_feature_contract.py source-changes "$prefix" "$target" "$source_sha"
 chmod 0555 "$prefix/bin/cp2k.psmp"
 export LD_LIBRARY_PATH="$runtime_ld"

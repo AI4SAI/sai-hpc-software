@@ -12,7 +12,7 @@ from md_controller import PROJECT, ROOT, CONTROL, task as build_task, join, vali
 from md_science import (verify_science, parse_serialized_reference, parse_lammps_output,
                         verify_plumed_output, _load_fixture, TOLERANCES, SOURCE_MODEL, SOURCE_REFERENCE)
 from md_tracking import TARGETS as MD_TARGETS, fingerprint
-from remote_controller import TARGETS, safe_name
+from remote_controller import TARGETS, safe_name, project_batch_directives, private_scratch
 from source_cache import checksum
 from md_acceptance_recovery import capture as capture_recovery, validate as validate_recovery
 
@@ -38,6 +38,7 @@ def render(request, directory):
              '#SBATCH --partition=' + target['partition'], '#SBATCH --qos=' + target['qos'],
              f'#SBATCH --nodes={nodes}', '#SBATCH --ntasks-per-node=2', '#SBATCH --gpus-per-node=1',
              '#SBATCH --time=30', f'#SBATCH --output={directory}/results/slurm-%j.log',
+             *project_batch_directives(PROJECT, directory),
              'set -eo pipefail', 'export PATH=/usr/bin:/bin LD_LIBRARY_PATH="" LD_PRELOAD=""',
              'export HOME=' + shlex.quote(str(Path.home())),
              'export USER=stardust LOGNAME=stardust',
@@ -77,6 +78,7 @@ def submit(args):
         raise ValueError('acceptance was already submitted')
     for part in ('case', 'results', 'runtime'):
         (r / part).mkdir(parents=True, exist_ok=True)
+    private_scratch(r / 'runtime')
     request = dict(run_id=args.run_id, build_run=args.build_run, delivery=delivery, version=source_request['version'],
                    target=source_request['target'], sources=source_request['sources'],
                    artifact=str(artifact), artifact_sha256=checksum(artifact), nodes=args.nodes, ranks=args.nodes * 2,
@@ -88,7 +90,7 @@ def submit(args):
     subprocess.run(['bash', '-n', str(script)], check=True)
     request['job_script_sha256'] = checksum(script)
     (r / 'request.json').write_text(json.dumps(request, sort_keys=True) + '\n')
-    job = subprocess.check_output(['sbatch', '--parsable', str(script)], text=True).strip().split(';')[0]
+    job = subprocess.check_output(['sbatch', '--parsable', str(script)], text=True, cwd=r).strip().split(';')[0]
     if not job.isdigit():
         raise ValueError('invalid job handle')
     (r / 'job.id').write_text(job + '\n')

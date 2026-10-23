@@ -1,0 +1,34 @@
+{
+  "excluded_node_recorded": true,
+  "held_allocation_checks": {
+    "Account": true,
+    "Command": true,
+    "ExcNodeList": true,
+    "JobId": true,
+    "JobState": true,
+    "NumTasks": true,
+    "Partition": true,
+    "QOS": true,
+    "Reason": true,
+    "TimeLimit": true,
+    "TresPerNode": true,
+    "WorkDir": true
+  },
+  "job_id": "1915249",
+  "job_script_sha256": "a59d29ea97929e7c932ad91cbce791c5820934a4cd626b9eae5f728f61b34533",
+  "original_small_files_unchanged": true,
+  "release": {
+    "argv": [
+      "scontrol",
+      "release",
+      "1915249"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": ""
+  },
+  "request_sha256": "cfe3c4bb61d3aad60c18e3b3e73931266d8551d5e7e1ef10e6f4d2cf3db2c7a7",
+  "returncode": 0,
+  "run_id": "39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf-node-retry4",
+  "submission_allocation": "JobId=1915249 JobName=sai-cp2k-build-4v100-avx512-ae6467ac2934 UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A Priority=0 Nice=0 Account=proj-sai-hpc-software QOS=flood-1o2gpu WCKey=* JobState=PENDING Reason=JobHeldUser Dependency=singleton(unfulfilled) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=04:00:00 TimeMin=N/A SubmitTime=2026-10-24T02:37:31 EligibleTime=Unknown AccrueTime=Unknown StartTime=Unknown EndTime=Unknown Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-24T02:37:31 Scheduler=Main Partition=4V100 AllocNode:Sid=login-01:1366884 ReqNodeList=(null) ExcNodeList=4v100n01 NodeList= NumNodes=1-1 NumCPUs=1 NumTasks=1 CPUs/Task=1 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=1,mem=22G,node=1,billing=194,gres/gpu=1 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=* MinCPUsNode=1 MinMemoryNode=0 MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null) Command=/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf-node-retry4/job.sbatch SubmitLine=/usr/bin/sbatch --hold --exclude=4v100n01 --parsable /org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf-node-retry4/job.sbatch WorkDir=/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf-node-retry4 StdErr= StdIn=/dev/null StdOut=/org/org-open-sai/proj-sai-hpc-software/runs/39983165813-1-development-4v100-avx512-2026-10-23-cfe5e5d87aaf-node-retry4/results/slurm-1915249.log TresPerNode=gres/gpu:1\n"
+}

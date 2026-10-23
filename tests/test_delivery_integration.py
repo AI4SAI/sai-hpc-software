@@ -142,7 +142,9 @@ class DeliveryIntegrationTests(unittest.TestCase):
         self.assertLess(recipe.index('check_parallel_hdf5(path.read_text())'),
                         recipe.index('bash /control/cp2k_dependencies.sh'))
         self.assertIn('-DHDF5_ROOT="$hdf5_root" -DHDF5_PREFER_PARALLEL=ON', recipe)
-        self.assertNotIn('$site', recipe)
+        # Reject the former HDF5 site-prefix variable, not unrelated names
+        # such as site_libxc_root used to select a different dependency.
+        self.assertNotRegex(recipe, r'\$(?:site\b|\{site\})')
         self.assertIn('/usr/lib/x86_64-linux-gnu/blas:/usr/lib/x86_64-linux-gnu/lapack', recipe)
 
     def test_cp2k_spack_gets_real_system_alternatives_and_bin_tools(self):

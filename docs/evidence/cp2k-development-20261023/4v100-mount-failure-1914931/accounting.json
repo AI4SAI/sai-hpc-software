@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "sacct",
+    "-X",
+    "-nP",
+    "-j",
+    "1914931",
+    "-o",
+    "JobID,State,ExitCode,Start,End,Elapsed,NodeList"
+  ],
+  "stdout": "1914931|FAILED|255:0|2026-10-24T01:50:53|2026-10-24T02:07:41|00:16:48|4v100n01\n"
+}

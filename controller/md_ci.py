@@ -10,7 +10,7 @@ import re
 import shlex
 import subprocess
 from md_tracking import REPOSITORIES, fingerprint, identify_track_pair
-from remote_controller import safe_name, safe_sha
+from remote_controller import safe_name, safe_sha, SAI_PROJECT_ROOT
 from source_cache import pack
 
 
@@ -196,7 +196,7 @@ def main():
             raise ValueError('MD handoff does not belong to this workflow and source pair')
     safe_name(run_id + '-science')
     temporary = Path(os.environ['RUNNER_TEMP'])
-    project = f'/home/{user}/sai-hpc-software'
+    project = str(SAI_PROJECT_ROOT)
     root = project + '/experimental/deepmd-lammps'
     snapshot = root + f'/controller/{sha}/{run_id}'
     remote_task = root + '/runs/' + run_id
@@ -209,9 +209,10 @@ def main():
     def ssh(argv, **kwargs):
         return run(['ssh', *options, '-p', '12022', remote, shlex.join(list(map(str, argv)))], **kwargs)
     def upload(source, destination):
-        return run(['scp', '-q', *options, '-P', '12022', source, remote + ':' + destination], timeout=1800)
+        sources = list(source) if isinstance(source, (list, tuple)) else [source]
+        return run(['scp', '-q', *options, '-P', '12022', *sources, remote + ':' + destination], timeout=1800)
     def python(name, *args, **kwargs):
-        return ssh(['python3', snapshot + '/' + name, *args], **kwargs)
+        return ssh(['env', 'SAI_SOFTWARE_ROOT=' + project, 'python3', snapshot + '/' + name, *args], **kwargs)
     def collect(stage=None):
         source = root + '/runtime-tests/' + run_id + '-' + stage if stage else remote_task
         destination = results / stage if stage else results
@@ -253,8 +254,7 @@ def main():
     files += [control / name for name in ('remote_controller.py', 'source_cache.py', 'resolve_source.py',
                                           'create_rootfs.sh', 'release_contract.py', 'native_module.py', 'export_native.py',
                                           'module_publication.py', 'delivery_layout.py', 'cp2k_image_driver.py')]
-    for path in files:
-        upload(path, snapshot + '/' + path.name)
+    upload(files, snapshot + '/')
     primaries = [request['identities'][trigger['software']] for trigger in plan['triggers']]
     decision = json.loads(python('release_contract.py', root, run_id, json.dumps(primaries, sort_keys=True),
                                  *(['--retry'] if retry else []), capture_output=True).stdout)

@@ -1,0 +1,116 @@
+name: Build DeePMD-kit independently
+
+on:
+  workflow_call:
+    inputs:
+      tracks:
+        type: string
+        default: development
+      targets:
+        type: string
+        default: 4v100-avx512,16v100-avx2,8v100v0-avx512
+      retry_releases:
+        type: boolean
+        default: false
+  workflow_dispatch:
+    inputs:
+      tracks:
+        description: Comma-separated release tracks (development,prerelease,release)
+        required: true
+        default: development
+      targets:
+        description: Comma-separated native GPU targets
+        required: true
+        default: 4v100-avx512,16v100-avx2,8v100v0-avx512
+      retry_releases:
+        description: Explicitly retry release/prerelease versions already attempted
+        type: boolean
+        default: false
+  push:
+    paths: ['controller/deepmd_*', 'tests/test_deepmd_*', '.github/workflows/deepmd.yml']
+  pull_request:
+    paths: ['controller/deepmd_*', 'tests/test_deepmd_*', '.github/workflows/deepmd.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: |
+          python3 -m unittest discover -s tests -p 'test_deepmd_*.py' -v
+          bash -n controller/deepmd_standalone_entry.sh
+  resolve-source:
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    outputs:
+      builds: ${{ steps.resolve.outputs.builds }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - id: resolve
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TRACKS: ${{ inputs.tracks }}
+          TARGETS: ${{ inputs.targets }}
+        run: |
+          python3 - <<'PY'
+          import json, os, sys
+          sys.path.insert(0, 'controller')
+          from deepmd_ci import resolve_builds
+          result = resolve_builds(os.environ['RELEASE_TRACKS'], os.environ['TARGETS'])
+          for skipped in result['skipped']:
+              print('DEEPMD_CHANNEL_ABSENT ' + json.dumps(skipped, sort_keys=True))
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as out:
+              out.write('builds=' + json.dumps(result['builds']) + '\n')
+          print(json.dumps(result, sort_keys=True))
+          PY
+  build:
+    if: (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') && needs.resolve-source.outputs.builds != '[]'
+    needs: [validate, resolve-source]
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        build: ${{ fromJSON(needs.resolve-source.outputs.builds) }}
+    runs-on: ubuntu-latest
+    environment: hpc
+    timeout-minutes: 360
+    env:
+      GH_TOKEN: ${{ github.token }}
+      REMOTE_USER: ${{ secrets.REMOTE_USER }}
+      DEEP_SOFTWARE_SOURCE: ${{ toJSON(matrix.build) }}
+      RETRY_RELEASES: ${{ inputs.retry_releases && 'true' || 'false' }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Prepare HPC SSH credentials
+        env:
+          KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          : "${REMOTE_USER:?Configure REMOTE_USER in the hpc Environment}"
+          : "${KEY:?Configure REMOTE_SSH_PRIVATE_KEY in the hpc Environment}"
+          mkdir -m 700 "$RUNNER_TEMP/ssh"
+          printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
+          chmod 600 "$RUNNER_TEMP/ssh/key"
+      - name: Build final SIF and verify TF/PT/JAX Python and C APIs plus GPU execution
+        run: python3 -u controller/deepmd_ci.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: deepmd-${{ matrix.build.track }}-${{ matrix.build.target }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/results/
+          if-no-files-found: warn
+      - name: Remove temporary SSH key
+        if: always()
+        run: rm -f -- "$RUNNER_TEMP/ssh/key"

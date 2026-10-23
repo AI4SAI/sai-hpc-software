@@ -11,7 +11,7 @@ import md_acceptance_controller as science
 from md_controller import ROOT, PROJECT, CONTROL, artifact_path, join, validate_pair, validate_runtime_image
 from md_tracking import fingerprint
 from md_science import BACKENDS, file_digest
-from remote_controller import TARGETS, safe_name
+from remote_controller import TARGETS, safe_name, project_batch_directives, private_scratch
 from source_cache import checksum
 from delivery_layout import PerformanceRegression, check_performance
 from md_acceptance_recovery import validate as validate_recovery
@@ -64,6 +64,7 @@ def render(request, directory):
              '#SBATCH --partition=' + target['partition'], '#SBATCH --qos=' + target['qos'],
              '#SBATCH --nodes=1', '#SBATCH --ntasks=1', '#SBATCH --gpus-per-node=1',
              '#SBATCH --time=120', f'#SBATCH --output={directory}/results/slurm-%j.log',
+             *project_batch_directives(PROJECT, directory),
              'set -eo pipefail', 'export PATH=/usr/bin:/bin LD_LIBRARY_PATH="" LD_PRELOAD=""',
              'export HOME=' + shlex.quote(str(Path.home())),
              'export USER=stardust LOGNAME=stardust',
@@ -201,12 +202,13 @@ def submit(args):
         raise ValueError('performance was already submitted; use a new explicit repeat run')
     for name in ('case', 'runtime', 'results'):
         (directory / name).mkdir(parents=True, exist_ok=True)
+    private_scratch(directory / 'runtime')
     script = directory / 'job.sbatch'
     script.write_text(render(request, directory))
     subprocess.run(['bash', '-n', str(script)], check=True)
     request['job_script_sha256'] = checksum(script)
     (directory / 'request.json').write_text(json.dumps(request, sort_keys=True) + '\n')
-    job = subprocess.check_output(['sbatch', '--parsable', str(script)], text=True).strip().split(';')[0]
+    job = subprocess.check_output(['sbatch', '--parsable', str(script)], text=True, cwd=directory).strip().split(';')[0]
     if not job.isdigit():
         raise ValueError('invalid performance job handle')
     (directory / 'job.id').write_text(job + '\n')

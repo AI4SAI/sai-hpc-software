@@ -113,7 +113,9 @@ class DailyWorkflowTests(unittest.TestCase):
         rows = plan()
         self.assertEqual(set(rows['abacus'].split(',')), set(contract.PARTITIONS))
         self.assertNotIn('dsprhbm', rows['deepmd_kit'])
-        self.assertEqual(plan('lammps', targets='16v100-avx2')['deepmd_kit'], '16v100-avx2')
+        self.assertEqual(plan('lammps', targets='16v100-avx2')['lammps'], '16v100-avx2')
+        self.assertEqual(plan('lammps', targets='16v100-avx2')['deepmd_kit'], '')
+        self.assertEqual(plan('deepmd-kit', targets='16v100-avx2')['lammps'], '')
         for kwargs in ({'software': 'bad'}, {'software': 'gpumd', 'targets': 'dsprhbm'},
                        {'targets': 'dsprhbm,dsprhbm'}, {'tracks': 'nightly'}):
             with self.assertRaises(ValueError):
@@ -123,16 +125,17 @@ class DailyWorkflowTests(unittest.TestCase):
         import yaml
         data = yaml.safe_load((ROOT / '.github/workflows/daily.yml').read_text())
         jobs = data['jobs']
-        self.assertEqual(set(jobs['result']['needs']), {'plan','abacus','cp2k','deepmd_kit','gpumd'})
+        self.assertEqual(set(jobs['result']['needs']), {'plan','abacus','cp2k','deepmd_kit','lammps','gpumd'})
         self.assertEqual(jobs['result']['if'], 'always()')
-        for name in ('abacus', 'cp2k', 'deepmd_kit', 'gpumd'):
+        for name in ('abacus', 'cp2k', 'deepmd_kit', 'lammps', 'gpumd'):
+            self.assertEqual(jobs[name]['needs'], ['plan'])
             workflow = ROOT / jobs[name]['uses'].removeprefix('./')
             called = yaml.safe_load(workflow.read_text())
             self.assertIn('workflow_call', called[True])
         self.assertNotIn('/dispatches', (ROOT / '.github/workflows/daily.yml').read_text())
         snippet = jobs['result']['steps'][0]['run'].split("python3 - <<'PY'\n")[1].rsplit('\nPY',1)[0]
         for outcome in ('success', 'failure', 'cancelled', 'skipped'):
-            results = {name: {'result': 'skipped'} for name in ('abacus','cp2k','deepmd_kit','gpumd')}
+            results = {name: {'result': 'skipped'} for name in ('abacus','cp2k','deepmd_kit','lammps','gpumd')}
             results.update(plan={'result': 'success', 'outputs': {'abacus':'dsprhbm'}}, abacus={'result':outcome})
             with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, RESULTS=json.dumps(results), GITHUB_STEP_SUMMARY=tmp+'/summary'):
                 if outcome == 'success':

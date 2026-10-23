@@ -2,8 +2,9 @@
 
 LAMMPS can use the accepted DeePMD 3.2.0 installations already in `/opt`.
 Updating LAMMPS does not require rebuilding DeePMD or waiting for its moving
-`master` branch. The new `lammps.yml` workflow resolves only LAMMPS's selected
-channel and builds one native GPU partition per dispatch.
+`master` branch. The `lammps.yml` workflow resolves only LAMMPS's selected
+channels and runs an independent job per selected track and GPU partition.
+The daily scheduler invokes this reusable workflow separately from DeePMD.
 
 The installed dependency is selected from the reviewed
 [`runtime-plan.json`](../deployment/lammps-30Sep2026/runtime-plan.json).
@@ -20,16 +21,17 @@ PLUMED, package/style parity and runtime-path checks. Native-CUDA upstreams use
 `sm_70` and their supported options. The generated build is checked, including
 Volta-only fatbinary flags. The container must see at least the 24 requested
 compilation CPUs. Builds reuse the qualified file-backed overlay driver; all
-host scratch, logs and images stay under the home project.
+host scratch, logs and images for new runs stay under the funded project
+`/org/org-open-sai/proj-sai-hpc-software`, with Slurm account
+`proj-sai-hpc-software`. Historical home-based runs retain their frozen paths.
 
 Run **Build LAMMPS with installed DeePMD** (`lammps.yml`) on the reviewed branch,
-selecting `development` and a GPU target. This workflow currently produces a
-**build-verified candidate**, not a scientific acceptance or `/opt` publication.
-The build status record keeps `scientific_verified`, `native_runtime_verified`
-and `published` false. GPU scientific acceptance is recorded separately; the
-first 16V100 develop candidate passed it on October 22, as detailed below.
-Native export/install remain separate follow-up stages. The existing paired
-workflow remains available for testing simultaneous upstream changes.
+selecting `development` and GPU targets. It builds a verified candidate SIF,
+then requires the same 14 single/two-node GPU scientific cases used for the
+accepted development candidates. Build and science retain separate records;
+the workflow succeeds only after both pass. Native export, publication and
+physical installation remain separate stages. The existing paired workflow
+remains available for testing simultaneous upstream changes.
 
 The cluster controller can also be used with a frozen copy of `controller/`
 and the runtime plan at `controller/runtime-plan.json`:
@@ -45,8 +47,19 @@ fills missing commits through the existing source-transfer mechanism. A run
 directory is never silently reused; its recorded Slurm job is monitored rather
 than resubmitted. No public module or installed dependency is modified.
 
-DeePMD's independent build/acceptance entry and the default daily scheduler
-have not yet been switched to this model. CP2K is already a separate workflow.
+DeePMD has its own `deepmd.yml` build/acceptance workflow. The daily scheduler
+calls the two workflows independently; neither waits for the other's moving
+development branch. See the
+[current DeePMD evidence](evidence/deepmd-project-20261023/README.md).
+CP2K is also a separate workflow.
+
+As of October 23, all three LAMMPS V100 targets are scientifically accepted
+for develop commit `a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b`. The previously
+compiled 8V100V0 overlay was recovered without changing its original recipe,
+then passed all 14 cases. The accepted 4V100/16V100 SIFs and raw results were
+independently reread. See the
+[three-partition evidence](evidence/lammps-project-20261023/README.md).
+The October 22 entries below preserve the earlier build and acceptance history.
 
 ## October 22 first live build
 
@@ -127,7 +140,8 @@ passed **898 tests (896 passed, 2 optional skips)** in
 The additional development builds use the same implementation:
 [4V100 workflow 39733175749](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39733175749)
 and [8V100V0 workflow 39733178970](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39733178970).
-The 4V100 build and science are now accepted; 8V100V0 remains pending.
+At that October 22 checkpoint, the 4V100 build and science were accepted;
+8V100V0 still awaited export recovery, completed on October 23 as linked above.
 
 4V100 build job **1896871** completed `0:0` in **41m08s**, producing a
 264,884,224-byte SIF. Job **1897165** then passed all **14 scientific cases**
@@ -149,6 +163,8 @@ and SIF bytes are unchanged; timings are not a performance comparison.
 remain archived. The earlier 16V100 run retains its original frozen launcher
 and verifier in its recorded home directory.
 
-The workflow remains a manual build entry plus separate scientific acceptance.
-The daily scheduler, independent DeePMD entry and automatic deployment are
-not complete. 16V100 and 4V100 are scientifically accepted for this develop SHA.
+At this October 22 checkpoint, the workflow was a manual build entry plus
+separate scientific acceptance, with 16V100 and 4V100 accepted for this develop
+SHA. The October 23 workflow now requires that scientific acceptance and is
+connected to the daily scheduler. Native publication and deployment remain
+separate stages.

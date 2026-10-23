@@ -1,0 +1,151 @@
+{
+  "adjustment": {
+    "command": [
+      "scontrol",
+      "update",
+      "JobId=1913403",
+      "QOS=rush-1o2gpu",
+      "TimeLimit=00:10:00"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": ""
+  },
+  "after_sacct": {
+    "command": [
+      "sacct",
+      "-X",
+      "-n",
+      "-P",
+      "-j",
+      "1913403",
+      "--format=JobIDRaw,State,ExitCode,Partition,QOS,Timelimit,Elapsed,ReqTRES,AllocTRES,Account,WorkDir,Start,End"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "1913403|PENDING|0:0|4V100|rush-1o2gpu|00:10:00|00:00:00|billing=388,cpu=2,gres/gpu=2,mem=44G,node=2||proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/39971072923-1-development-4v100-avx512-2026-10-23-370ba685e670-multinode|Unknown|Unknown\n"
+  },
+  "after_scontrol": {
+    "command": [
+      "scontrol",
+      "show",
+      "job",
+      "-o",
+      "1913403"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "JobId=1913403 JobName=runtime-abacus-39971072923-1-development-4v100-avx512-2026-10-23-370ba685e670-multinode UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A Priority=10003 Nice=0 Account=proj-sai-hpc-software QOS=rush-1o2gpu WCKey=* JobState=PENDING Reason=None Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=00:10:00 TimeMin=N/A SubmitTime=2026-10-23T23:12:05 EligibleTime=2026-10-23T23:12:05 AccrueTime=Unknown StartTime=2026-10-24T08:32:10 EndTime=2026-10-24T08:42:10 Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-23T23:24:53 Scheduler=Main Partition=4V100 AllocNode:Sid=login-01:3104311 ReqNodeList=(null) ExcNodeList=(null) NodeList= SchedNodeList=4v100n[12,20] NumNodes=2-2 NumCPUs=2 NumTasks=2 CPUs/Task=1 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=2,mem=44G,node=2,billing=388,gres/gpu=2 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=1:0:*:* CoreSpec=* MinCPUsNode=1 MinMemoryTRES=22G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null) Command=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/39971072923-1-development-4v100-avx512-2026-10-23-370ba685e670-multinode/job.sbatch SubmitLine=sbatch --parsable /org/org-open-sai/proj-sai-hpc-software/runtime-tests/39971072923-1-development-4v100-avx512-2026-10-23-370ba685e670-multinode/job.sbatch WorkDir=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/39971072923-1-development-4v100-avx512-2026-10-23-370ba685e670-multinode StdErr= StdIn=/dev/null StdOut=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/39971072923-1-development-4v100-avx512-2026-10-23-370ba685e670-multinode/results/slurm-1913403.log CpusPerTres=gpu:8 MemPerTres=gpu:22528 TresPerNode=gres/gpu:1\n"
+  },
+  "association": {
+    "command": [
+      "sacctmgr",
+      "-n",
+      "-P",
+      "show",
+      "assoc",
+      "where",
+      "user=stardust",
+      "account=proj-sai-hpc-software",
+      "format=User,Account,Partition,QOS,DefaultQOS"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "stardust|proj-sai-hpc-software||flood-1o2gpu,flood-gpu,huge-cpu,huge-gpu,improper-gpu,rush-1o2gpu,rush-cpu,rush-gpu,ultimate-gpu|rush-gpu\n"
+  },
+  "before_sacct": {
+    "command": [
+      "sacct",
+      "-X",
+      "-n",
+      "-P",
+      "-j",
+      "1913403",
+      "--format=JobIDRaw,State,ExitCode,Partition,QOS,Timelimit,Elapsed,ReqTRES,AllocTRES,Account,WorkDir,Start,End"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "1913403|PENDING|0:0|4V100|flood-1o2gpu|00:30:00|00:00:00|billing=388,cpu=2,gres/gpu=2,mem=44G,node=2||proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/39971072923-1-development-4v100-avx512-2026-10-23-370ba685e670-multinode|Unknown|Unknown\n"
+  },
+  "before_scontrol": {
+    "command": [
+      "scontrol",
+      "show",
+      "job",
+      "-o",
+      "1913403"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "JobId=1913403 JobName=runtime-abacus-39971072923-1-development-4v100-avx512-2026-10-23-370ba685e670-multinode UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A Priority=6004 Nice=0 Account=proj-sai-hpc-software QOS=flood-1o2gpu WCKey=* JobState=PENDING Reason=Priority Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=00:30:00 TimeMin=N/A SubmitTime=2026-10-23T23:12:05 EligibleTime=2026-10-23T23:12:05 AccrueTime=2026-10-23T23:12:05 StartTime=2026-10-24T08:32:10 EndTime=2026-10-24T09:02:10 Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-23T23:24:53 Scheduler=Main Partition=4V100 AllocNode:Sid=login-01:3104311 ReqNodeList=(null) ExcNodeList=(null) NodeList= SchedNodeList=4v100n[12,20] NumNodes=2-2 NumCPUs=2 NumTasks=2 CPUs/Task=1 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=2,mem=44G,node=2,billing=388,gres/gpu=2 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=1:0:*:* CoreSpec=* MinCPUsNode=1 MinMemoryTRES=22G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null) Command=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/39971072923-1-development-4v100-avx512-2026-10-23-370ba685e670-multinode/job.sbatch SubmitLine=sbatch --parsable /org/org-open-sai/proj-sai-hpc-software/runtime-tests/39971072923-1-development-4v100-avx512-2026-10-23-370ba685e670-multinode/job.sbatch WorkDir=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/39971072923-1-development-4v100-avx512-2026-10-23-370ba685e670-multinode StdErr= StdIn=/dev/null StdOut=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/39971072923-1-development-4v100-avx512-2026-10-23-370ba685e670-multinode/results/slurm-1913403.log CpusPerTres=gpu:8 MemPerTres=gpu:22528 TresPerNode=gres/gpu:1\n"
+  },
+  "frozen_inputs_after": {
+    "job.id": "f29245649c720007dd7c1a91a086652f64a5aa9080467fc22c32d33e10271b63",
+    "job.sbatch": "3d02f973dd06128a45569518be1a3d70aebd137115918af6adc738a47cbb3ef5",
+    "request.json": "e0088e4725aaa2b1f6ef7ff305db3c91172f05598b54f0e29e5e57a26a22c301"
+  },
+  "frozen_inputs_before": {
+    "job.id": "f29245649c720007dd7c1a91a086652f64a5aa9080467fc22c32d33e10271b63",
+    "job.sbatch": "3d02f973dd06128a45569518be1a3d70aebd137115918af6adc738a47cbb3ef5",
+    "request.json": "e0088e4725aaa2b1f6ef7ff305db3c91172f05598b54f0e29e5e57a26a22c301"
+  },
+  "historical_accounting": {
+    "command": [
+      "sacct",
+      "-X",
+      "-n",
+      "-P",
+      "-j",
+      "1270826,1286261,1297621,1322693,1900863,1901275",
+      "--format=JobIDRaw,State,ExitCode,Partition,QOS,Timelimit,Elapsed,AllocTRES,Account,WorkDir"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "1270826|COMPLETED|0:0|4V100|flood-1o2gpu|00:30:00|00:00:04|billing=388,cpu=16,gres/gpu=2,mem=44G,node=2|private-stardust|/home/stardust\n1286261|COMPLETED|0:0|4V100|flood-1o2gpu|00:30:00|00:00:05|billing=388,cpu=16,gres/gpu=2,mem=44G,node=2|private-stardust|/home/stardust\n1297621|COMPLETED|0:0|4V100|flood-1o2gpu|00:30:00|00:00:05|billing=388,cpu=16,gres/gpu=2,mem=44G,node=2|private-stardust|/home/stardust\n1322693|COMPLETED|0:0|4V100|flood-1o2gpu|00:30:00|00:00:15|billing=388,cpu=16,gres/gpu=2,mem=44G,node=2|private-stardust|/home/stardust\n1900863|COMPLETED|0:0|4V100|flood-1o2gpu|00:30:00|00:00:09|billing=388,cpu=16,gres/gpu=2,mem=44G,node=2|private-stardust|/home/stardust\n1901275|COMPLETED|0:0|4V100|flood-1o2gpu|00:30:00|00:00:10|billing=388,cpu=16,gres/gpu=2,mem=44G,node=2|private-stardust|/home/stardust\n"
+  },
+  "job": "1913403",
+  "observed_at": "2026-10-23T15:24:55.144166+00:00",
+  "partition": {
+    "command": [
+      "scontrol",
+      "show",
+      "partition",
+      "4V100"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "PartitionName=4V100\n   AllowGroups=ALL AllowAccounts=ALL AllowQos=huge-gpu,flood-gpu,rush-gpu,rush-1o2gpu,flood-1o2gpu,improper-gpu,reserved-capacity\n   AllocNodes=ALL Default=YES QoS=N/A\n   DefaultTime=NONE DisableRootJobs=NO Exclusive=NO GraceTime=0 Hidden=NO\n   MaxNodes=UNLIMITED MaxTime=30-00:00:00 MinNodes=0 LLN=NO MaxCPUsPerNode=UNLIMITED MaxCPUsPerSocket=UNLIMITED\n   Nodes=4v100n[01-06,08-36]\n   PriorityJobFactor=1 PriorityTier=1 RootOnly=NO ReqResv=NO OverSubscribe=NO\n   OverTimeLimit=NONE PreemptMode=OFF\n   State=UP TotalCPUs=1120 TotalNodes=35 SelectTypeParameters=NONE\n   JobDefaults=DefCpuPerGPU=8,DefMemPerGPU=22528\n   DefMemPerNode=UNLIMITED MaxMemPerNode=UNLIMITED\n   TRES=cpu=1120,mem=3080G,node=35,billing=27160,gres/gpu=140\n   TRESBillingWeights=gres/gpu=180,CPU=22.5,Mem=8.8182G\n\n"
+  },
+  "preflight": {
+    "command": [
+      "sbatch",
+      "--test-only",
+      "--qos=rush-1o2gpu",
+      "--time=10",
+      "--chdir=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/39971072923-1-development-4v100-avx512-2026-10-23-370ba685e670-multinode",
+      "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/39971072923-1-development-4v100-avx512-2026-10-23-370ba685e670-multinode/job.sbatch"
+    ],
+    "returncode": 0,
+    "stderr": "sbatch: Job 1913530 to start at 2026-10-24T01:27:57 a using 16 processors on nodes 4v100n[02,06] in partition 4V100\n",
+    "stdout": ""
+  },
+  "purpose": "Keep the existing queued scientific job; select an allowed priority and a time limit with at least 40x historical runtime margin",
+  "qos_policy": {
+    "command": [
+      "sacctmgr",
+      "-n",
+      "-P",
+      "show",
+      "qos",
+      "where",
+      "name=flood-1o2gpu,rush-1o2gpu",
+      "format=Name,Priority,MaxWall,MinTRES,MaxTRES,Flags"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "flood-1o2gpu|90|04:00:00|gres/gpu=1|gres/gpu=2|DenyOnLimit\nrush-1o2gpu|150|1-00:00:00|gres/gpu=1|gres/gpu=2|DenyOnLimit\n"
+  },
+  "schema": 1,
+  "submitted_new_job": false,
+  "verified": true
+}

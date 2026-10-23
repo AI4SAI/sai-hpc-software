@@ -1,0 +1,430 @@
+{
+  "comparisons": {
+    "16v100-avx2": {
+      "energy_ha": 4.163449169425348e-06,
+      "max_force_ha_bohr": 1.353720000003139e-07
+    },
+    "dsprhbm": {
+      "energy_ha": 4.163449183636203e-06,
+      "max_force_ha_bohr": 1.353720000003139e-07
+    }
+  },
+  "cross_partition_host": {
+    "energy_ha": 1.3571366253017914e-12,
+    "max_force_ha_bohr": 1.0000004296850662e-12
+  },
+  "host_device": {
+    "energy_ha": 2.3447910280083306e-13,
+    "max_force_ha_bohr": 0.0
+  },
+  "observed_at": "2026-10-23T18:11:53.069509+00:00",
+  "profile": {
+    "path": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-39983165813-16v100-avx2-prep2/device/libxc-device.sqlite",
+    "query": "SELECT s.value, COUNT(*), SUM(k.end-k.start) FROM CUPTI_ACTIVITY_KIND_KERNEL k JOIN StringIds s ON s.id=k.demangledName GROUP BY s.value",
+    "rows": [
+      [
+        "pw_complex_to_real(const double *, double *, int)",
+        423,
+        17186769
+      ],
+      [
+        "pw_gather(double *, const double *, double, int, const int *)",
+        378,
+        44092576
+      ],
+      [
+        "pw_real_to_complex(const double *, double *, int)",
+        378,
+        26431148
+      ],
+      [
+        "pw_scatter(double *, const double *, double, int, int, const int *)",
+        423,
+        125325698
+      ],
+      [
+        "void gemmSN_NN_kernel<double, (int)256, (int)4, (int)2, (int)8, (int)4, (int)4, (bool)0, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<T9, T10, T11, T1>)",
+        10,
+        35392
+      ],
+      [
+        "void regular_fft<(unsigned int)125, EPT<(unsigned int)5>, (unsigned int)8, (unsigned int)5, (padding_t)6, (twiddle_t)0, (loadstore_modifier_t)2, (layout_t)1, unsigned int, double, HostConfigPlaceholder>(kernel_arguments_t<T9>)",
+        1036,
+        106525680
+      ],
+      [
+        "void regular_fft<(unsigned int)180, EPT<(unsigned int)4, (unsigned int)5, (unsigned int)9>, (unsigned int)2, (unsigned int)7, (padding_t)14, (twiddle_t)0, (loadstore_modifier_t)2, (layout_t)0, unsigned int, double, HostConfigPlaceholder>(kernel_arguments_t<T9>)",
+        1,
+        244671
+      ],
+      [
+        "void regular_fft<(unsigned int)180, EPT<(unsigned int)4, (unsigned int)5, (unsigned int)9>, (unsigned int)8, (unsigned int)2, (padding_t)14, (twiddle_t)0, (loadstore_modifier_t)2, (layout_t)1, unsigned int, double, HostConfigPlaceholder>(kernel_arguments_t<T9>)",
+        2,
+        549950
+      ],
+      [
+        "void regular_fft<(unsigned int)25, EPT<(unsigned int)5>, (unsigned int)32, (unsigned int)7, (padding_t)6, (twiddle_t)0, (loadstore_modifier_t)2, (layout_t)1, unsigned int, double, HostConfigPlaceholder>(kernel_arguments_t<T9>)",
+        188,
+        937020
+      ],
+      [
+        "void regular_fft<(unsigned int)45, EPT<(unsigned int)5, (unsigned int)9>, (unsigned int)16, (unsigned int)4, (padding_t)14, (twiddle_t)0, (loadstore_modifier_t)2, (layout_t)0, unsigned int, double, HostConfigPlaceholder>(kernel_arguments_t<T9>)",
+        94,
+        635102
+      ],
+      [
+        "void regular_fft<(unsigned int)45, EPT<(unsigned int)5, (unsigned int)9>, (unsigned int)32, (unsigned int)2, (padding_t)14, (twiddle_t)0, (loadstore_modifier_t)2, (layout_t)1, unsigned int, double, HostConfigPlaceholder>(kernel_arguments_t<T9>)",
+        188,
+        1242908
+      ],
+      [
+        "void regular_fft_factor<(unsigned int)25, EPT<(unsigned int)5>, (unsigned int)32, (unsigned int)9, (padding_t)6, (twiddle_t)0, (loadstore_modifier_t)2, (layout_t)1, unsigned int, double, HostConfigPlaceholder>(kernel_arguments_t<T9>)",
+        188,
+        3077143
+      ],
+      [
+        "void regular_fft_factor<(unsigned int)3, EPT<(unsigned int)3>, (unsigned int)256, (unsigned int)8, (padding_t)6, (twiddle_t)0, (loadstore_modifier_t)2, (layout_t)1, unsigned int, double, HostConfigPlaceholder>(kernel_arguments_t<T9>)",
+        188,
+        2917841
+      ],
+      [
+        "void rocm_backend::calculate_coefficients<double, (bool)1>(rocm_backend::kernel_params)",
+        47,
+        32060372
+      ],
+      [
+        "void rocm_backend::collocate_kernel<double, double3, (bool)0, (bool)1>(rocm_backend::kernel_params)",
+        188,
+        144294705
+      ],
+      [
+        "void rocm_backend::compute_hab<double, (bool)0>(rocm_backend::kernel_params)",
+        46,
+        63591533
+      ],
+      [
+        "void rocm_backend::compute_hab_forces<double, double3, (bool)0>(rocm_backend::kernel_params)",
+        1,
+        6079494
+      ],
+      [
+        "void rocm_backend::integrate_kernel<double, double3, (bool)0, (bool)1, (int)20>(rocm_backend::kernel_params)",
+        188,
+        140837693
+      ],
+      [
+        "void smm_acc_dnt_medium<(int)13, (int)8, (int)5, (int)5, (int)1, (int)64, (int)10, (int)20>(const int *, int, const double *, const double *, double *)",
+        199,
+        1487196
+      ],
+      [
+        "void smm_acc_dnt_medium<(int)5, (int)5, (int)8, (int)1, (int)1, (int)32, (int)5, (int)1>(const int *, int, const double *, const double *, double *)",
+        49,
+        405342
+      ],
+      [
+        "void smm_acc_dnt_medium<(int)5, (int)8, (int)5, (int)3, (int)1, (int)32, (int)10, (int)13>(const int *, int, const double *, const double *, double *)",
+        199,
+        1443805
+      ],
+      [
+        "void smm_acc_dnt_medium<(int)5, (int)8, (int)8, (int)3, (int)1, (int)64, (int)10, (int)25>(const int *, int, const double *, const double *, double *)",
+        232,
+        1412345
+      ],
+      [
+        "void smm_acc_dnt_medium<(int)8, (int)8, (int)8, (int)1, (int)2, (int)32, (int)4, (int)13>(const int *, int, const double *, const double *, double *)",
+        409,
+        1112543
+      ],
+      [
+        "void smm_acc_dnt_tiny<(int)13, (int)13, (int)8, (int)192, (int)2, (int)1>(const int *, int, const double *, const double *, double *)",
+        49,
+        159648
+      ],
+      [
+        "void smm_acc_dnt_tiny<(int)13, (int)5, (int)8, (int)96, (int)2, (int)1>(const int *, int, const double *, const double *, double *)",
+        49,
+        200256
+      ],
+      [
+        "void smm_acc_dnt_tiny<(int)13, (int)8, (int)13, (int)128, (int)2, (int)1>(const int *, int, const double *, const double *, double *)",
+        199,
+        725500
+      ],
+      [
+        "void smm_acc_dnt_tiny<(int)13, (int)8, (int)8, (int)128, (int)2, (int)1>(const int *, int, const double *, const double *, double *)",
+        232,
+        652542
+      ],
+      [
+        "void smm_acc_dnt_tiny<(int)5, (int)13, (int)8, (int)96, (int)2, (int)1>(const int *, int, const double *, const double *, double *)",
+        49,
+        183168
+      ],
+      [
+        "void smm_acc_dnt_tiny<(int)5, (int)8, (int)13, (int)64, (int)2, (int)1>(const int *, int, const double *, const double *, double *)",
+        199,
+        716568
+      ],
+      [
+        "void smm_acc_dnt_tiny<(int)8, (int)8, (int)13, (int)64, (int)2, (int)1>(const int *, int, const double *, const double *, double *)",
+        187,
+        567229
+      ],
+      [
+        "void smm_acc_dnt_tiny<(int)8, (int)8, (int)5, (int)64, (int)2, (int)1>(const int *, int, const double *, const double *, double *)",
+        187,
+        484671
+      ],
+      [
+        "void transpose_d<(int)13, (int)8>(int *, double *)",
+        385,
+        615998
+      ],
+      [
+        "void transpose_d<(int)5, (int)8>(int *, double *)",
+        385,
+        617727
+      ],
+      [
+        "void transpose_d<(int)8, (int)13>(int *, double *)",
+        49,
+        87456
+      ],
+      [
+        "void transpose_d<(int)8, (int)5>(int *, double *)",
+        49,
+        84736
+      ],
+      [
+        "void transpose_d<(int)8, (int)8>(int *, double *)",
+        641,
+        968700
+      ],
+      [
+        "void vector_fft<(unsigned int)125, EPT<(unsigned int)5>, (unsigned int)8, (unsigned int)4, (padding_t)14, (twiddle_t)0, (loadstore_modifier_t)2, (layout_t)0, unsigned int, double, HostConfigPlaceholder>(kernel_arguments_t<T9>)",
+        518,
+        43892586
+      ],
+      [
+        "void vector_fft<(unsigned int)25, EPT<(unsigned int)5>, (unsigned int)16, (unsigned int)10, (padding_t)14, (twiddle_t)0, (loadstore_modifier_t)2, (layout_t)0, unsigned int, double, HostConfigPlaceholder>(kernel_arguments_t<T9>)",
+        94,
+        346366
+      ],
+      [
+        "void vector_fft<(unsigned int)75, EPT<(unsigned int)15>, (unsigned int)16, (unsigned int)0, (padding_t)14, (twiddle_t)0, (loadstore_modifier_t)2, (layout_t)0, unsigned int, double, HostConfigPlaceholder>(kernel_arguments_t<T9>)",
+        94,
+        2008857
+      ],
+      [
+        "volta_dgemm_64x64_nn",
+        4,
+        34624
+      ],
+      [
+        "work_gga_gpu_vxc_unpol(const xc_func_type *, unsigned long, const double *, const double *, xc_gga_out_params *)",
+        94,
+        30711322
+      ]
+    ],
+    "sha256": "d1d4cfe7cc6f2ba7ca0645e144370097d67af867c82652ebbff1107f1e5b340d"
+  },
+  "samples": {
+    "16v100-avx2": {
+      "builtin": {
+        "cp2k_seconds": 21.899,
+        "dispersion_ha": null,
+        "elapsed_seconds": 25.081606632098556,
+        "energy_ha": -34.44682129478849,
+        "forces_ha_bohr": [
+          [
+            -0.00945233354,
+            -0.010457489817,
+            -2.87128e-07
+          ],
+          [
+            -0.009818693543,
+            0.01569111124,
+            -1.41928e-07
+          ],
+          [
+            0.010457918678,
+            0.004642532798,
+            5.8306e-08
+          ],
+          [
+            -0.003014175638,
+            0.009256006937,
+            -5.6023e-08
+          ],
+          [
+            0.004272731236,
+            -0.008357649189,
+            -0.007545513107
+          ],
+          [
+            0.004272706358,
+            -0.008357781986,
+            0.007545680456
+          ]
+        ]
+      },
+      "device": {
+        "cp2k_seconds": 19.41,
+        "dispersion_ha": null,
+        "elapsed_seconds": 25.96618538349867,
+        "energy_ha": -34.44681713133956,
+        "forces_ha_bohr": [
+          [
+            -0.009452363097,
+            -0.010457625189,
+            -2.87118e-07
+          ],
+          [
+            -0.009818712081,
+            0.015691246334,
+            -1.41926e-07
+          ],
+          [
+            0.010458033526,
+            0.004642550258,
+            5.8305e-08
+          ],
+          [
+            -0.003014224169,
+            0.009256102124,
+            -5.6024e-08
+          ],
+          [
+            0.004272754389,
+            -0.008357706301,
+            -0.007545601413
+          ],
+          [
+            0.004272729512,
+            -0.008357839098,
+            0.007545768762
+          ]
+        ]
+      },
+      "host": {
+        "cp2k_seconds": 27.803,
+        "dispersion_ha": null,
+        "elapsed_seconds": 31.129287434741855,
+        "energy_ha": -34.44681713133932,
+        "forces_ha_bohr": [
+          [
+            -0.009452363097,
+            -0.010457625189,
+            -2.87118e-07
+          ],
+          [
+            -0.009818712081,
+            0.015691246334,
+            -1.41926e-07
+          ],
+          [
+            0.010458033526,
+            0.004642550258,
+            5.8305e-08
+          ],
+          [
+            -0.003014224169,
+            0.009256102124,
+            -5.6024e-08
+          ],
+          [
+            0.004272754389,
+            -0.008357706301,
+            -0.007545601413
+          ],
+          [
+            0.004272729512,
+            -0.008357839098,
+            0.007545768762
+          ]
+        ]
+      }
+    },
+    "dsprhbm": {
+      "builtin": {
+        "cp2k_seconds": 52.122,
+        "dispersion_ha": null,
+        "elapsed_seconds": 54.95963644402218,
+        "energy_ha": -34.44682129478986,
+        "forces_ha_bohr": [
+          [
+            -0.00945233354,
+            -0.010457489817,
+            -2.87128e-07
+          ],
+          [
+            -0.009818693543,
+            0.01569111124,
+            -1.41928e-07
+          ],
+          [
+            0.010457918678,
+            0.004642532798,
+            5.8306e-08
+          ],
+          [
+            -0.003014175638,
+            0.009256006937,
+            -5.6023e-08
+          ],
+          [
+            0.004272731236,
+            -0.008357649189,
+            -0.007545513107
+          ],
+          [
+            0.004272706358,
+            -0.008357781986,
+            0.007545680456
+          ]
+        ]
+      },
+      "host": {
+        "cp2k_seconds": 59.938,
+        "dispersion_ha": null,
+        "elapsed_seconds": 64.74966456502443,
+        "energy_ha": -34.44681713134068,
+        "forces_ha_bohr": [
+          [
+            -0.009452363097,
+            -0.010457625189,
+            -2.87118e-07
+          ],
+          [
+            -0.009818712081,
+            0.015691246334,
+            -1.41926e-07
+          ],
+          [
+            0.010458033525,
+            0.004642550258,
+            5.8305e-08
+          ],
+          [
+            -0.003014224169,
+            0.009256102124,
+            -5.6024e-08
+          ],
+          [
+            0.004272754389,
+            -0.008357706301,
+            -0.007545601413
+          ],
+          [
+            0.004272729512,
+            -0.008357839098,
+            0.007545768762
+          ]
+        ]
+      }
+    }
+  },
+  "status": "original supplementary gates failed; analysis only, no replacement acceptance"
+}

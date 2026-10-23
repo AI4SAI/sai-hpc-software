@@ -1,0 +1,13 @@
+Traceback (most recent call last):
+  File "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-39983165813-8v100v0-avx512/libxc_smoke.py", line 365, in <module>
+    main()
+  File "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-39983165813-8v100v0-avx512/libxc_smoke.py", line 356, in main
+    execute(args.task)
+  File "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-39983165813-8v100v0-avx512/libxc_smoke.py", line 339, in execute
+    verify(task, request, fixtures, delivery)
+  File "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-39983165813-8v100v0-avx512/libxc_smoke.py", line 292, in verify
+    comparisons = {'builtin_host': numerical(science['host'], science['builtin'], TOLERANCES['builtin_host'])}
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-libxc-39983165813-8v100v0-avx512/libxc_smoke.py", line 245, in numerical
+    raise ValueError('LibXC energy/force tolerance exceeded: ' + str((energy, force)))
+ValueError: LibXC energy/force tolerance exceeded: (4.163448870997399e-06, 1.353720000003139e-07)

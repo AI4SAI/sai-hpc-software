@@ -1,0 +1,46 @@
+{
+  "controller": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/controller/d8b4c2fe338dbc8626bb78ffbebbf69bda572029/controller",
+  "controller_sha256": "d02fe0936aba91b2af81e17ba5c842546416c8052290f7a04098230a6718a298",
+  "job_id": "1913313",
+  "job_script_sha256": "a09a87490f93a60c3ae868af67de5dff8b2950ed35ab159838ec96078f13d906",
+  "schema": 1,
+  "source": {
+    "artifact": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-independent-20261023-4v100-avx512-558f569-b/candidate.sif",
+    "artifact_sha256": "0f33c1e2ac6576490a9a5bef9082e5a8ed592103c87d8b6edd3017abd24bd172",
+    "build_accounting": "1912999|FAILED|1:0|00:09:13|4v100n08|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-independent-20261023-4v100-avx512-558f569-b",
+    "build_log_sha256": "63c77b10f5cb6ba1401c04c20790c0f08645e05ceed2bb79ce753fa21e3cdac1",
+    "build_request": {
+      "controller": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/controller/76869d13905944871c98c24860471883e4ed9aa2/controller",
+      "controller_sha256": "e04065e624bdf113dbcc32e713510472a1416bec81e664571ce84121024d54ea",
+      "delivery": {
+        "identity": {
+          "build_id": "master-2026-10-23-g558f56962775-re04065e624bd",
+          "cpu_arch": "znver4",
+          "cuda_arch": "70",
+          "dependency_isa": "avx512",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100",
+          "partition": "4V100",
+          "recipe_sha256": "e04065e624bdf113dbcc32e713510472a1416bec81e664571ce84121024d54ea",
+          "repository": "deepmodeling/deepmd-kit",
+          "schema": 2,
+          "software": "deepmd-kit",
+          "source_ref": "master",
+          "source_sha": "558f56962775098b8b554e341c3b37d2f86e6aeb",
+          "source_version": "master-2026-10-23",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "4v100-avx512",
+          "track": "development",
+          "version_label": "master-2026-10-23"
+        },
+        "schema": 1
+      },
+      "job_id": "1912999",
+      "job_script_sha256": "4eeae6e9b736e8c2f710b787ebb387a47699e89b74858b9496cf4690e183da1b",
+      "schema": 1
+    },
+    "build_request_sha256": "468ade6faab5e6d24cf5cd5d73bf0225abf0b81857b6232cbc960f47ff73eec5",
+    "source_run": "dp-independent-20261023-4v100-avx512-558f569-b"
+  }
+}

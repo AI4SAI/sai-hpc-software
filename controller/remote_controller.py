@@ -48,12 +48,16 @@ def project_batch_directives(root, workdir):
     return ['#SBATCH --account=' + SAI_PROJECT_ACCOUNT, '#SBATCH --chdir=' + str(workdir)]
 
 
-def gpumd_qos(root, target):
-    # Both the project account and the partition must allow this one-GPU QoS.
+def project_qos(root, target):
+    # Both the project account and partition allow this small-GPU QoS.
     # 16V100 disallows rush-1o2gpu; rush-gpu requires four GPUs, so keep flood.
     return ('rush-1o2gpu' if Path(root).is_relative_to(SAI_PROJECT_ROOT)
             and target in ('4v100-avx512', '8v100v0-avx512')
             else TARGETS[target]['qos'])
+
+
+# Preserve the entry point used by the existing GPUMD/DeePMD controllers.
+gpumd_qos = project_qos
 
 
 def private_scratch(path):

@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "sacct",
+    "-X",
+    "-nP",
+    "-j",
+    "1915249",
+    "-o",
+    "JobID,State,ExitCode,Start,End,Elapsed,NodeList"
+  ],
+  "stdout": "1915249|COMPLETED|0:0|2026-10-24T02:37:54|2026-10-24T03:33:19|00:55:25|4v100n04\n"
+}

@@ -47,6 +47,9 @@ def ci_fixture(plan, runner, history, *, run_id='123', attempt='1', retry='',
     def remote_run(argv, **kwargs):
         if argv[0] == 'ssh':
             command = shlex.split(argv[-1])
+            if command[0] == 'env':
+                assert command[1] == 'SAI_SOFTWARE_ROOT=/org/org-open-sai/proj-sai-hpc-software'
+                command = command[2:]
             if command[0] == 'cat':
                 return subprocess.CompletedProcess(argv, 0, (runner / 'pair.json').read_text())
             if command[0] == 'python3':
@@ -76,6 +79,7 @@ def ci_fixture(plan, runner, history, *, run_id='123', attempt='1', retry='',
 def remote_python_calls(fixture, name, action=None):
     commands = [shlex.split(call.args[0][-1]) for call in fixture.run.call_args_list
                 if call.args[0][0] == 'ssh']
+    commands = [command[2:] if command[0] == 'env' else command for command in commands]
     return [command for command in commands if command[0] == 'python3'
             and Path(command[1]).name == name and (action is None or command[2] == action)]
 
@@ -387,7 +391,8 @@ class MDControllerTests(unittest.TestCase):
             self.assertEqual(md.validate_pair(uploaded), uploaded)
             self.assertEqual(uploaded['recipe_sha256'], tracking.fingerprint(ROOT / 'controller'))
             commands = [list(map(str, call.args[0])) for call in fixture.run.call_args_list]
-            uploads = [argv[-2] for argv in commands if argv[0] == 'scp']
+            uploads = [source for argv in commands if argv[0] == 'scp'
+                       for source in argv[1:-1] if Path(source).parent == ROOT / 'controller']
             for name in ('release_contract.py', 'native_module.py', 'export_native.py', 'resolve_source.py',
                          'md_registration.py', 'md_driver_paths.py', 'cp2k_image_driver.py'):
                 self.assertIn(str(ROOT / 'controller' / name), uploads)
@@ -401,6 +406,7 @@ class MDControllerTests(unittest.TestCase):
                 software = Path(command[3]).name
                 self.assertEqual(command[4:], ['--commit', uploaded['plan']['sources'][software]['sha']])
             remote = [shlex.split(argv[-1]) for argv in commands if argv[0] == 'ssh']
+            remote = [command[2:] if command[0] == 'env' else command for command in remote]
             self.assertLess(remote.index(claim), remote.index(inventory))
             self.assertEqual(json.loads(claim[4]), list(uploaded['identities'].values()))
             snapshot = Path(temporary) / 'snapshot'
