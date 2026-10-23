@@ -10,6 +10,10 @@
 /home/stardust/sai-hpc-software/deployment/abacus-3.11.0-beta11
 ```
 
+新的原生验收工作目录使用 `/org/org-open-sai/proj-sai-hpc-software`，
+该目录的 `deployment/abacus-3.11.0-beta11` 保存更新后的验收脚本。
+已有 SIF、原生导出和参考结果仍从上述家目录读取，无需移动。
+
 ## 管理员执行
 
 以有目标目录写权限的 `saiuser01` 执行：
@@ -101,7 +105,26 @@ HSE/DeePKS 沿用已验收输入的 CPU 算法，GPU 始终可见；PW 在 GPU �
 所有运行直接执行物理 `/opt` 的 ABACUS，不启动容器。
 提交时将控制脚本和输入固定到新结果目录，避免排队期间修改影响作业。
 输出及 MPI/CUDA 临时文件均在执行账号自己的家目录，不使用节点 `/tmp`；
-可用 `SAI_ABACUS_NATIVE_WORK_ROOT` 指定该账号家目录内的工作根。
+也支持项目目录 `/org/org-open-sai/proj-sai-hpc-software`。
+可用 `SAI_ABACUS_NATIVE_WORK_ROOT` 指定家目录或该项目目录内的工作根。
+从项目目录中的部署包运行时，默认选用该项目工作根；从原家目录部署包运行时，
+默认仍为执行账号的家目录。符号链接解析后落到其他位置的工作根会被拒绝。
+
+使用项目计费执行四分区验收：
+
+```bash
+cd /org/org-open-sai/proj-sai-hpc-software/deployment/abacus-3.11.0-beta11
+SAI_SOFTWARE_ROOT=/home/stardust/sai-hpc-software \
+SAI_ABACUS_NATIVE_WORK_ROOT=/org/org-open-sai/proj-sai-hpc-software \
+bash submit-native-checks.sh all
+```
+
+`SAI_SOFTWARE_ROOT` 在这里仅指定已有验收参考材料的位置。
+新结果、冻结输入及 MPI/CUDA 临时文件写入项目目录。
+脚本从新结果目录调用 `sbatch`，显式传入 `--chdir`，并选择
+`--account=proj-sai-hpc-software`。提交时先保留 hold，记录作业号并核对
+Slurm 的实际 `Account`、`WorkDir`、分区和作业号后才释放；核对失败时保留 hold。
+运行和复验还会再次核对这些分配信息。
 
 提交脚本会打印结果目录和完成后的复验命令：
 

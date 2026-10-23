@@ -2,7 +2,8 @@
 """Submit and reverify physical ABACUS calculations against accepted SIF results.
 
 Preflight/verify are read-only; submit schedules jobs. All results and scratch
-stay in the executing account's home. No command installs or uses a container.
+stay in the executing account's home or the SAI project directory.
+No command installs or uses a container.
 """
 import argparse
 from collections import Counter
@@ -23,6 +24,8 @@ import install as deployment
 require, digest = deployment.require, deployment.digest
 PACKAGE = Path(__file__).resolve().parent
 PARTITIONS = deployment.PARTITIONS
+PROJECT_WORK_ROOT = Path('/org/org-open-sai/proj-sai-hpc-software')
+PROJECT_ACCOUNT = 'proj-sai-hpc-software'
 CONTROLS = ('native_checks.py', 'native-rank.sh', 'verify-native.sbatch', 'install.py',
             'release.json', 'runtime-plan.json', 'native-reference.json', deployment.MODULE.name)
 
@@ -85,13 +88,23 @@ def input_sources(ref):
             for name, case in ref['cases'].items() for relative, row in case['inputs'].items()}
 
 
-def home_work_root(value):
+def native_work_root(value):
     path = Path(value).expanduser().resolve()
-    require(path.is_relative_to(Path.home().resolve()), 'work directory must be in the executing account home')
+    require(path.is_relative_to(Path.home().resolve()) or path.is_relative_to(PROJECT_WORK_ROOT),
+            'work directory must be in the executing account home or the SAI project directory')
     return path
 
 
-def freeze(output, project, work_root, partition, reference):
+def check_allocation(text, job, partition, work_dir, account=None):
+    for key, value in [('JobId', job), ('Partition', partition), ('WorkDir', str(work_dir))]:
+        require(re.search(r'(?:^|\s)' + key + '=' + re.escape(value) + r'(?=\s|$)', text),
+                'Slurm allocation differs: ' + key)
+    if account:
+        require(re.search(r'(?:^|\s)Account=' + re.escape(account) + r'(?=\s|$)', text),
+                'Slurm allocation differs: Account')
+
+
+def freeze(output, project, work_root, partition, reference, account=None):
     output.mkdir()
     pins = {}
     for name in CONTROLS:
@@ -109,20 +122,22 @@ def freeze(output, project, work_root, partition, reference):
     check_files(output, pins)
     write(output / 'request.json', dict(schema=1, partition=partition, project=str(project), work_root=str(work_root),
           release_sha256=reference['release_sha256'], native_reference_sha256=digest(PACKAGE / 'native-reference.json'),
-          files=pins))
+          files=pins, slurm_account=account, slurm_work_dir=str(output)))
     (output / 'request.json').chmod(0o444)
 
 
 def submit(selection):
     project = Path(os.environ.get('SAI_SOFTWARE_ROOT', str(deployment.PROJECT))).resolve(strict=True)
-    work_root = home_work_root(os.environ.get('SAI_ABACUS_NATIVE_WORK_ROOT', str(Path.home() / 'sai-hpc-software')))
+    default_root = PROJECT_WORK_ROOT if PACKAGE.is_relative_to(PROJECT_WORK_ROOT) else Path.home() / 'sai-hpc-software'
+    work_root = native_work_root(os.environ.get('SAI_ABACUS_NATIVE_WORK_ROOT', str(default_root)))
+    account = PROJECT_ACCOUNT if work_root.is_relative_to(PROJECT_WORK_ROOT) else None
     release, reference = preflight(project, selection)
     selected = dict(release, deliveries=[d for d in release['deliveries'] if d['partition'] in selection])
     deployment.preflight(selected, project, installed=True)
     root = work_root / 'runtime-tests' / ('abacus-beta11-physical-' + datetime.now().strftime('%Y%m%d-%H%M%S') + '-' + str(os.getpid()))
     root.mkdir(parents=True)
     for partition in selection:
-        freeze(root / partition, project, work_root, partition, reference)
+        freeze(root / partition, project, work_root, partition, reference, account)
     write(root / 'submission.json', dict(partitions=selection, requests={p: digest(root / p / 'request.json') for p in selection}))
     print('Results directory: ' + str(root), flush=True)
     for partition in selection:
@@ -131,14 +146,18 @@ def submit(selection):
         resources = (['--ntasks=8', '--ntasks-per-node=4', '--cpus-per-task=2', '--qos=rush-cpu'] if cpu else
                      ['--ntasks=2', '--ntasks-per-node=1', '--gpus-per-node=1', '--qos=flood-1o2gpu'])
         command = ['sbatch', '--hold', '--parsable', '--partition=' + partition, *resources,
+                   '--chdir=' + str(output), *(['--account=' + account] if account else []),
                    '--job-name=abacus-native-' + partition, '--output=' + str(output / 'slurm-%j.log'),
                    str(output / 'control/verify-native.sbatch'), str(output), str(work_root)]
-        job = subprocess.check_output(command, text=True).strip().split(';')[0]
+        job = subprocess.check_output(command, text=True, cwd=output).strip().split(';')[0]
         require(re.fullmatch(r'[1-9][0-9]*', job), 'invalid Slurm job handle')
         (output / 'job.id').write_text(job + '\n')
         with (root / 'jobs.tsv').open('a') as stream:
             stream.write(f'{partition}\t{job}\t{output}\n')
-        print(partition + ': job ' + job + ' recorded; releasing hold', flush=True)
+        allocation = subprocess.check_output(['scontrol', 'show', 'job', '-o', job], text=True)
+        (output / 'submission-allocation.txt').write_text(allocation)
+        check_allocation(allocation, job, partition, output, account)
+        print(partition + ': job ' + job + ' recorded; account/work directory checked; releasing hold', flush=True)
         subprocess.run(['scontrol', 'release', job], check=True)
     print('Verify when complete:\npython3 ' + str(PACKAGE / 'native_checks.py') + ' verify ' + str(root))
 
@@ -206,9 +225,13 @@ def run(output):
     isa = spec['identity']['dependency_isa']
     require(shutil.which('mpirun') == '/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-' + isa + '/bin/mpirun',
             'MPI path/ISA changed')
-    work_root = home_work_root(request['work_root'])
-    require(output.is_relative_to(work_root / 'runtime-tests'), 'result path outside home work tree')
+    work_root = native_work_root(request['work_root'])
+    require(output.is_relative_to(work_root / 'runtime-tests'), 'result path outside selected work tree')
     require((output / 'job.id').read_text().strip() == os.environ['SLURM_JOB_ID'], 'wrong allocation')
+    if 'slurm_work_dir' in request:
+        require(request['slurm_work_dir'] == str(output), 'requested Slurm work directory differs')
+        check_allocation((output / 'allocation.txt').read_text(), os.environ['SLURM_JOB_ID'], partition,
+                         output, request['slurm_account'])
     hosts = (output / 'nodes.txt').read_text().split()
     require(len(hosts) == len(set(hosts)) == 2, 'two nodes required')
     for key, name, nodes in [('version', None, 2), *cases(ref)]:
@@ -251,6 +274,10 @@ def verify_raw(output):
     cpu = request['partition'] == 'DSPRHBM'
     prefix, job = spec['prefix'], (output / 'job.id').read_text().strip()
     require(re.fullmatch(r'[1-9][0-9]*', job), 'invalid native job id')
+    if 'slurm_work_dir' in request:
+        require(request['slurm_work_dir'] == str(output), 'requested Slurm work directory differs')
+        check_allocation((output / 'allocation.txt').read_text(), job, request['partition'],
+                         output, request['slurm_account'])
     plan = deployment.runtime_plan(dict(deliveries=[delivery]))[prefix]
     executable = 'bin/abacus'
     indexed = {row['path']: row for row in plan['files']}
