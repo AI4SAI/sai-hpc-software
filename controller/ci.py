@@ -13,7 +13,7 @@ import subprocess
 import sys
 import tempfile
 import time
-from remote_controller import safe_name, safe_sha
+from remote_controller import safe_name, safe_sha, SAI_PROJECT_ROOT
 from delivery_layout import artifact_path
 from release_contract import SOFTWARE, TRACKS, validate_identity
 from source_cache import pack
@@ -35,6 +35,16 @@ def run(argv, **kwargs):
 
 def runtime_launchers(software):
     return ("gpumd", "nep", "gnep") if software == "gpumd" else (software,)
+
+
+def remote_project_root(software, user):
+    # GPUMD is the first automatic build migrated to the funded project tree.
+    # Other workflows and their frozen continuation paths keep their home root.
+    return str(SAI_PROJECT_ROOT) if software == 'gpumd' else f'/home/{safe_name(user)}/sai-hpc-software'
+
+
+def remote_controller_command(root, control, script, *args):
+    return ['env', 'SAI_SOFTWARE_ROOT=' + root, 'python3', f'{control}/{script}', *args]
 
 
 def inspect_existing_job(root, control, directory, expected, script):
@@ -170,7 +180,7 @@ def main():
                "-o", f"UserKnownHostsFile={known_hosts}", "-o", "ConnectTimeout=20",
                "-o", "ServerAliveInterval=20", "-o", "ServerAliveCountMax=6"]
     remote = f"{user}@c0.sai.ai-4s.com"
-    root = f"/home/{user}/sai-hpc-software"
+    root = remote_project_root(software, user)
     # One deployment per run: concurrent matrix uploads cannot truncate code
     # already being read by another running container.
     control = f"{root}/controller/{control_sha}/{run_id}"
@@ -179,7 +189,7 @@ def main():
     def ssh(argv, **kw):
         return run(["ssh", *options, "-p", "12022", remote, shlex.join(argv)], **kw)
     def python(script, *args, **kw):
-        return ssh(["python3", f"{control}/{script}", *args], **kw)
+        return ssh(remote_controller_command(root, control, script, *args), **kw)
     def upload(source, destination):
         sources = list(source) if isinstance(source, (list, tuple)) else [source]
         for attempt in range(3):

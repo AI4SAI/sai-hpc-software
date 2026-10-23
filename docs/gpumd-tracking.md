@@ -1,12 +1,29 @@
 # GPUMD native GPU tracking and acceptance
 
+October 23: the latest release is `v5.9.1` at
+`11ba6fbdb4d71b2cdb351b39972fa057521585b3`; current `master` resolves to
+`2c93346fce4461de1c42c77e7fe74cdb6b0e3df6` (October 21).
+The previously accepted 16V100 release is v5.8.1; its latest accepted
+development candidate is the October 14 commit `a0e55bc87390`.
+Neither establishes acceptance for v5.9.1 or the other GPU partitions.
+
+New GPUMD CI builds and acceptance use
+`/org/org-open-sai/proj-sai-hpc-software` with Slurm account
+`proj-sai-hpc-software`. The controller receives this root explicitly,
+including when continuing an existing build. Both build and science job
+scripts pin the account and working directory. Three targets can run in
+parallel, with singleton build names separated by partition and recipe.
+The base SIF and self-contained bare source cache were copied into the new
+tree; original home data and frozen controllers stay in place. This change
+does not move existing CP2K, ABACUS or MD automatic-build continuations.
+
 The integrated workflow builds upstream
 `development`, `prerelease`, and `release` through the shared source resolver.
 Development uses `master`; release channels resolve their live upstream tags.
 Every poll resolves a full current Git SHA; it is
 not a webhook or a zero-delay mirror. Daily polling calls `gpumd.yml` as a reusable workflow from the shared
 `daily.yml`; the parent checks its result. `gpumd.yml` has no independent cron trigger.
-On the experimental branch, push/PR run static tests; workflow dispatch starts
+Push/PR run static tests; workflow dispatch starts
 a cluster build. Explicitly absent release/prerelease channels are reported as
 skipped for every dispatch; an entirely empty result skips the build job.
 

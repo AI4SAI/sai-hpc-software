@@ -33,6 +33,18 @@ TARGETS = {
 DEPENDENCIES = ("/usr", "/sbin", "/lib", "/lib64", "/opt/devtools", "/opt/modules")
 HPCX_ROOT = "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1"
 HCOLL_BUILD_PREFIX = "/opt/mellanox/hcoll"
+SAI_PROJECT_ROOT = Path('/org/org-open-sai/proj-sai-hpc-software')
+SAI_PROJECT_ACCOUNT = 'proj-sai-hpc-software'
+
+
+def project_batch_directives(root, workdir):
+    """Select the authorized project account for work physically in its tree."""
+    root, workdir = Path(root), Path(workdir)
+    if not root.is_relative_to(SAI_PROJECT_ROOT):
+        return []
+    if '..' in root.parts or '..' in workdir.parts or not workdir.is_relative_to(root):
+        raise ValueError('Slurm work directory escapes the project root')
+    return ['#SBATCH --account=' + SAI_PROJECT_ACCOUNT, '#SBATCH --chdir=' + str(workdir)]
 
 # Observed on SAI 2026-09-20. Never bind all of /opt/apps: it would hide
 # the candidate installed at its final prefix in the overlay / SIF.

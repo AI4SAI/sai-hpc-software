@@ -96,6 +96,33 @@ class GpumdContractTests(unittest.TestCase):
         self.assertIn(request["identity"]["install_prefix"], script)
         self.assertNotIn("/gpumd/master-a/", script)
 
+    def test_project_builds_and_science_select_account_workdir_and_parallel_partitions(self):
+        from remote_controller import SAI_PROJECT_ROOT, project_batch_directives
+        names = set()
+        for target in acceptance.GPU_TARGETS:
+            run_id = 'gpumd-project-' + target
+            args = argparse.Namespace(software='gpumd', target=target, run_id=run_id, sha='a' * 40,
+                version='v5.9.1', track='release', source_ref='v5.9.1', jobs=6,
+                minutes=120, overlay_mb=8192, resume_run=None)
+            with patch.object(build, 'ROOT', SAI_PROJECT_ROOT), patch.object(acceptance, 'ROOT', SAI_PROJECT_ROOT):
+                compiled = build.render_job(args)
+                identity = build.request_identity(args)
+                request = dict(target=target, version='v5.9.1', run_id=run_id + '-science',
+                               build_run_id=run_id, identity=identity,
+                               artifact=str(layout.artifact_path(SAI_PROJECT_ROOT, identity, run_id)),
+                               launcher=str(SAI_PROJECT_ROOT / 'controller/revision/gpumd'))
+                task = acceptance.run_dir(request['run_id'])
+                science_script = acceptance.render_job(request, task)
+            for script, directory in [(compiled, SAI_PROJECT_ROOT / 'runs' / run_id), (science_script, task)]:
+                subprocess.run(['bash', '-n'], input=script, text=True, check=True)
+                self.assertIn('#SBATCH --account=proj-sai-hpc-software\n', script)
+                self.assertIn('#SBATCH --chdir=' + str(directory) + '\n', script)
+            names.add(next(line for line in compiled.splitlines() if line.startswith('#SBATCH --job-name=')))
+        self.assertEqual(len(names), 3)
+        with self.assertRaisesRegex(ValueError, 'escapes'):
+            project_batch_directives(SAI_PROJECT_ROOT, Path('/home/stardust'))
+        self.assertEqual(project_batch_directives(Path('/home/stardust'), Path('/home/stardust/run')), [])
+
     def test_repeat_job_binds_original_science_read_only(self):
         identity = make_identity("gpumd", "development", "master", "a" * 40,
                                  "master-2026-09-13", "b" * 64, "16v100-avx2")
