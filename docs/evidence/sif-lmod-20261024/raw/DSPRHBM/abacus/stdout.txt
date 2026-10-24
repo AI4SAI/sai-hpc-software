@@ -1,0 +1,154 @@
+--------------------------------------------------------------------------
+PRTE has detected that the head of the session directory tree (where
+scratch files and shared memory backing storage will be placed)
+resides on a shared file system:
+
+   Directory: /org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-lmod-20261024-DSPRHBM-r4/tmp
+   File system type: lustre
+
+For performance reasons, it is strongly recommended that the session
+directory be located on a local file system. This can be controlled by
+setting the system temporary directory to be used by PRTE using either
+the TMPDIR envar or the "prte_tmpdir_base" MCA param.
+
+If you need the temporary directory to be different on remote nodes
+from the local one where prterun is running (e.g., when a login node is
+being employed), then you can set the local temporary directory using
+the "prte_local_tmpdir_base" MCA param and the one to be used on all
+other nodes using the "prte_remote_tmpdir_base" param.
+
+This is only a warning advisory and your job will continue. You can
+disable this warning in the future by setting the
+"prte_silence_shared_fs" MCA param to "1".
+--------------------------------------------------------------------------
+hwloc/linux: Ignoring PCI device with non-16bit domain.
+Pass --enable-32bits-pci-domain to configure to support such devices
+(warning: it would break the library ABI, don't enable unless really needed).
+[d9470n02.mr-sai.ai:1793928] mca_base_component_repository_open: unable to open mca_accelerator_cuda: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n02.mr-sai.ai:1793911] mca_base_component_repository_open: unable to open mca_accelerator_cuda: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n02.mr-sai.ai:1793928] mca_base_component_repository_open: unable to open mca_rcache_rgpusm: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n02.mr-sai.ai:1793911] mca_base_component_repository_open: unable to open mca_rcache_rgpusm: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n02.mr-sai.ai:1793911] mca_base_component_repository_open: unable to open mca_rcache_gpusm: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n02.mr-sai.ai:1793928] mca_base_component_repository_open: unable to open mca_rcache_gpusm: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+Info: Local MPI proc number: 2,OpenMP thread number: 1,Total thread number: 2,Local thread limit: 104
+
+                     ▄████▄ █████▄ ▄████▄ ▄█████ ██  ██ ▄█████ 
+                     ██▄▄██ ██▄▄██ ██▄▄██ ██     ██  ██ ▀▀▀▄▄▄ 
+                     ██  ██ ██▄▄█▀ ██  ██ ▀█████ ▀████▀ █████▀ 
+
+                                                                                     
+                                v3.11.0-beta11
+
+               Atomic-orbital Based Ab-initio Computation at UStc                    
+
+                     Website: http://abacus.ustc.edu.cn/                             
+               Documentation: https://abacus.deepmodeling.com/                       
+                  Repository: https://github.com/abacusmodeling/abacus-develop       
+                              https://github.com/deepmodeling/abacus-develop         
+                      Commit: 370ba68 (Fri Oct 23 10:57:42 2026 +0800)
+
+ Sat Oct 24 06:27:09 2026
+ MAKE THE DIR         : OUT.autotest/
+ RUNNING WITH DEVICE  : CPU / Intel(R) Xeon(R) CPU Max 9470C (x2)
+ WARNING: some of potential function is set to zero cause of less than 1e-30.
+ WARNING: some of potential function is set to zero cause of less than 1e-30.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ Warning: the number of valence electrons in pseudopotential > 5 for As: [Ar] 3d10 4s2 4p3
+ Warning: the number of valence electrons in pseudopotential > 3 for Ga: [Ar] 3d10 4s2 4p1
+ Pseudopotentials with additional electrons can yield (more) accurate outcomes, but may be less efficient.
+ If you're confident that your chosen pseudopotential is appropriate, you can safely ignore this warning.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ UNIFORM GRID DIM          : 32 * 32 * 32
+ UNIFORM GRID DIM (BIG)    : 32 * 32 * 32
+ DONE(0.123039   SEC) : SYMMETRY
+ DONE(0.123056   SEC) : SETUP UNITCELL
+ DONE(0.198613   SEC) : INIT K-POINTS
+ ----------------------------------------------------------------
+ Self-consistent calculations for electrons
+ ----------------------------------------------------------------
+ SPIN    KPOINTS         PROCESSES   THREADS/PROC  THREADS/TOTAL 
+ 1       8               2           1             2             
+ ----------------------------------------------------------------
+ Use plane wave basis
+ ----------------------------------------------------------------
+ ELEMENT NATOM       
+ As      1           
+ Ga      1           
+ ----------------------------------------------------------------
+ Initial plane wave basis and FFT box
+ ----------------------------------------------------------------
+ DONE(0.201538   SEC) : INIT PLANEWAVE
+ START CHARGE         : ATOMIC
+ DONE(0.216865   SEC) : LOCAL POTENTIAL
+ DONE(0.242763   SEC) : NON-LOCAL POTENTIAL
+ MEMORY FOR PSI (MB)  : 1.91602
+ DONE(0.348514   SEC) : INIT BASIS
+
+ ================================================================
+ SELF-CONSISTENT: 
+ ================================================================
+ DONE(0.416182   SEC) : INIT SCF
+ ITER     ETOT/eV          EDIFF/eV         DRHO     TIME/s
+ CG1   -4.87155886e+03   0.00000000e+00   1.5575e+00   0.59
+ CG2   -4.86818430e+03   3.37456005e+00   4.5255e-01   0.16
+ CG3   -4.86968323e+03  -1.49893080e+00   2.2817e-02   0.17
+ CG4   -4.86974142e+03  -5.81879465e-02   3.6961e-03   0.18
+ CG5   -4.86974538e+03  -3.96218415e-03   2.0748e-04   0.17
+ CG6   -4.86974664e+03  -1.26332599e-03   1.0543e-04   0.22
+ CG7   -4.86974703e+03  -3.89885941e-04   2.6607e-05   0.20
+ CG8   -4.86974703e+03   3.35110629e-06   5.2115e-06   0.19
+ CG9   -4.86974705e+03  -1.96670876e-05   1.8818e-07   0.19
+ CG10  -4.86974705e+03  -1.41262728e-06   1.7771e-08   0.23
+ ----------------------------------------------------------------
+              Stress_x             Stress_y             Stress_z 
+ ----------------------------------------------------------------
+     -12196.0610609719       -99.1596951259      -142.3866317150 
+        -99.1596951260    -12240.9536453384       -52.1802972050 
+       -142.3866317150       -52.1802972050    -12217.4693486382 
+ ----------------------------------------------------------------
+ TOTAL-PRESSURE (EXCLUDE KINETIC PART OF IONS): -12218.161352 kbar
+
+ TIME STATISTICS
+---------------------------------------------------------------------
+    CLASS_NAME            NAME         TIME/s  CALLS   AVG/s  PER/%  
+---------------------------------------------------------------------
+                   total               2.84   17       0.17   100.00 
+ Driver            atomic_world        2.84   1        2.84   100.00 
+ Driver            reading             0.03   1        0.03   1.03   
+ PSIPrepare        prepare_init        0.10   1        0.10   3.66   
+ psi_init_atomic   tabulate            0.10   1        0.10   3.66   
+ Relax_Driver      relax_driver        2.49   1        2.49   87.68  
+ ESolver_KS        runner              2.39   1        2.39   84.05  
+ ESolver_KS_PW     before_scf          0.07   1        0.07   2.38   
+ Potential         cal_veff            0.13   11       0.01   4.45   
+ PotXC             cal_veff            0.12   11       0.01   4.14   
+ XC_Functional     v_xc                0.14   13       0.01   4.85   
+ module_charge     cal_rhog_symm       0.03   11       0.00   1.15   
+ PSIPrepare        initialize_psi      0.05   1        0.05   1.60   
+ Nonlocal          init                0.03   44       0.00   1.08   
+ pp_cell_vnl       getvnl              0.03   44       0.00   1.08   
+ DiagoIterAssist   diag_subspace       0.35   40       0.01   12.17  
+ Operator          hPsi                1.68   3664     0.00   59.06  
+ Operator          veff_pw             1.48   3664     0.00   52.21  
+ PW_Basis_K        recip2real          0.87   5544     0.00   30.77  
+ PW_Basis_K        gathers_zero_serial 0.11   5544     0.00   3.92   
+ PW_Basis_K        gathers_copy_serial 0.03   5544     0.00   1.06   
+ PW_Basis_K        real2recip          0.64   4584     0.00   22.37  
+ PW_Basis_K        gatherp_copy_serial 0.04   4584     0.00   1.51   
+ NonlocalWorkspace apply               0.18   3664     0.00   6.47   
+ ESolver_KS_PW     hamilt2rho_single   2.17   10       0.22   76.34  
+ HSolverPW         solve               2.14   10       0.21   75.30  
+ HSolverPW         solve_psik          1.84   40       0.05   64.83  
+ DiagoCG           diag_once           1.52   40       0.04   53.60  
+ ElecStatePW       psiToRho            0.16   10       0.02   5.59   
+ Forces            cal_force           0.03   1        0.03   1.15   
+ Stress_PW         cal_stress          0.07   1        0.07   2.43   
+---------------------------------------------------------------------
+
+
+ START  Time  : Sat Oct 24 06:27:09 2026
+ FINISH Time  : Sat Oct 24 06:27:12 2026
+ TOTAL  Time  : 3
+ SEE INFORMATION IN : OUT.autotest/

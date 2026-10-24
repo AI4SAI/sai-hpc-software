@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "/org/org-open-sai/proj-sai-hpc-software/deployment/sif-lmod-20261024-r3/deployment/sif-development-20261024/check.py", line 125, in <module>
+    verify(args.output)
+  File "/org/org-open-sai/proj-sai-hpc-software/deployment/sif-lmod-20261024-r3/deployment/sif-development-20261024/check.py", line 62, in verify
+    require(not re.search(r'UCX\s+ERROR|unable to create shared memory|performance degradation',
+  File "/org/org-open-sai/proj-sai-hpc-software/deployment/sif-lmod-20261024-r3/controller/sif_runtime.py", line 30, in require
+    raise ValueError(message)
+ValueError: MPI shared-memory transport failed: cp2k

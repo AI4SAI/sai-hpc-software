@@ -1,0 +1,125 @@
+--------------------------------------------------------------------------
+PRTE has detected that the head of the session directory tree (where
+scratch files and shared memory backing storage will be placed)
+resides on a shared file system:
+
+   Directory: /org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-lmod-20261024-DSPRHBM-r4/tmp
+   File system type: lustre
+
+For performance reasons, it is strongly recommended that the session
+directory be located on a local file system. This can be controlled by
+setting the system temporary directory to be used by PRTE using either
+the TMPDIR envar or the "prte_tmpdir_base" MCA param.
+
+If you need the temporary directory to be different on remote nodes
+from the local one where prterun is running (e.g., when a login node is
+being employed), then you can set the local temporary directory using
+the "prte_local_tmpdir_base" MCA param and the one to be used on all
+other nodes using the "prte_remote_tmpdir_base" param.
+
+This is only a warning advisory and your job will continue. You can
+disable this warning in the future by setting the
+"prte_silence_shared_fs" MCA param to "1".
+--------------------------------------------------------------------------
+hwloc/linux: Ignoring PCI device with non-16bit domain.
+Pass --enable-32bits-pci-domain to configure to support such devices
+(warning: it would break the library ABI, don't enable unless really needed).
+[d9470n02.mr-sai.ai:1793766] mca_base_component_repository_open: unable to open mca_accelerator_cuda: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n02.mr-sai.ai:1793766] mca_base_component_repository_open: unable to open mca_rcache_rgpusm: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n02.mr-sai.ai:1793766] mca_base_component_repository_open: unable to open mca_rcache_gpusm: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n02.mr-sai.ai:1793785] mca_base_component_repository_open: unable to open mca_accelerator_cuda: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n02.mr-sai.ai:1793785] mca_base_component_repository_open: unable to open mca_rcache_rgpusm: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n02.mr-sai.ai:1793785] mca_base_component_repository_open: unable to open mca_rcache_gpusm: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+ CP2K version 2026.2 (Development Version)
+ Source code revision cfe5e5d87a
+ cp2kflags: omp libint fftw3 libxc libxc_gpu elpa parallel scalapack mpi_f08 cosma libxs libxsmm plumed2 spglib openblas libdftd4 s_dftd3 mctc-lib tblite libvori libbqb hdf5 libwignernj
+ compiler: GCC version 14.3.0
+ compiler target: cpuid   1003 (x86_avx512)
+ compiler options:
+   -cpp -I /workspace/source/src -I /workspace/build/src -I /workspace/
+   source/src/base -I /workspace/source/src/common -I /workspace/source
+   /src/motion -I /workspace/source/src/dbm -I /workspace/build/src/mod
+   _files -I /opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d
+   87aaf-rae6467ac2934/DSPRHBM/dependencies/spack/linux-sapphirerapids/
+   libint-2.6.0-4dtgfsz4ycma7uwhbp5mbe6g3aqsqwmb/include -I /opt/apps/c
+   p2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/D
+   SPRHBM/dependencies/tblite/include -I /opt/apps/cp2k/cp2k-developmen
+   t-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/dependencies
+   /tblite/include/mctc-lib/modules -I /opt/apps/cp2k/cp2k-development-
+   master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/dependencies/t
+   blite/include/dftd4/GNU-14.3.0 -I /opt/apps/cp2k/cp2k-development-ma
+   ster-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/dependencies/tbl
+   ite/include/multicharge/GNU-14.3.0 -I /opt/devtools/saiblas/2603-gnu
+   -avx512/include -I /opt/apps/cp2k/cp2k-development-master-2026-10-23
+   -gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/dependencies/tblite/include/tbl
+   ite/GNU-14.3.0 -I /opt/apps/cp2k/cp2k-development-master-2026-10-23-
+   gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/dependencies/tblite/include/toml
+   -f/modules -I /opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe
+   5e5d87aaf-rae6467ac2934/DSPRHBM/dependencies/tblite/include/s-dftd3/
+   GNU-14.3.0 -I /opt/devtools/spglib/spglib-2.7.0/include -I /opt/apps
+   /cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934
+   /DSPRHBM/dependencies/libxc/include -I /opt/devtools/elpa/elpa-2026.
+   02.001-2603-gnu-avx512/cpu/include/elpa_openmp-2026.02.001 -I /opt/d
+   evtools/elpa/elpa-2026.02.001-2603-gnu-avx512/cpu/include/elpa_openm
+   p-2026.02.001/modules -I /opt/apps/cp2k/cp2k-development-master-2026
+   -10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/dependencies/spack/linux-
+   sapphirerapids/plumed-2.10.1-qwwau7jv5yf5i3ok3c24ysm4ibpxpllg/includ
+   e -I /opt/devtools/fftw/fftw-3.3.10/include -I /opt/apps/cp2k/cp2k-d
+   evelopment-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/dep
+   endencies/spack/linux-sapphirerapids/spla-1.6.1-uxed4dw7umencfxxq4gy
+   zacu6r65lbkz/include -I /opt/apps/cp2k/cp2k-development-master-2026-
+   10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/dependencies/spack/linux-s
+   apphirerapids/spla-1.6.1-uxed4dw7umencfxxq4gyzacu6r65lbkz/include/sp
+   la -I /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx51
+   2/include -I /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda1
+   2-avx512/lib -I /opt/apps/cp2k/cp2k-development-master-2026-10-23-gc
+   fe5e5d87aaf-rae6467ac2934/DSPRHBM/dependencies/spack/linux-sapphirer
+   apids/cosma-2.7.0-goq7bmlsruxt5lhhemq4ytm366mnfw5l/include -I /opt/a
+   pps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2
+   934/DSPRHBM/dependencies/spack/linux-sapphirerapids/costa-2.3.3-atwo
+   ealp6a2oujemkdh23i7qgfho3l7x/include -I /opt/apps/cp2k/cp2k-developm
+   ent-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/dependenci
+   es/spack/linux-sapphirerapids/hdf5-1.14.6-nzurbzn7nvb3lu6p33d5wu7aq5
+   ezqydb/include -I /opt/apps/cp2k/cp2k-development-master-2026-10-23-
+   gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/dependencies/spack/linux-sapphir
+   erapids/hdf5-1.14.6-nzurbzn7nvb3lu6p33d5wu7aq5ezqydb/mod/static -I /
+   opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae64
+   67ac2934/DSPRHBM/dependencies/wignernj/include -I /opt/apps/cp2k/cp2
+   k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/
+   dependencies/dbcsr/include -I /opt/apps/cp2k/cp2k-development-master
+   -2026-10-23-gcfe5e5d87aaf-rae6467ac2934/DSPRHBM/dependencies/libxs/i
+   nclude -I /opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d
+   87aaf-rae6467ac2934/DSPRHBM/dependencies/libxs/include/libxs -I /opt
+   /apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467a
+   c2934/DSPRHBM/dependencies/spack/linux-sapphirerapids/libxsmm-2.0.0-
+   l5muhjnzczl5peiem2fwiixbqjnzm33l/include -imultiarch x86_64-linux-gn
+   u -D_REENTRANT -D COSMA_WITH_BLAS -D IK=i4 -D USING_Libxc -D _FILE_O
+   FFSET_BITS=64 -D _GNU_SOURCE -D _LARGEFILE_SOURCE -D _POSIX_C_SOURCE
+   =200809L -D __BLAS -D __COMPILE_ARCH="x86_64" -D __COMPILE_DIR="/wor
+   kspace/build" -D __COMPILE_HOST="" -D __COSMA -D __DATA_DIR="/opt/ap
+   ps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac29
+   34/DSPRHBM/share/cp2k/data" -D __DFTD4 -D __ELPA -D __FFTW3 -D __HDF
+   5 -D __LIBINT -D __LIBVORI -D __LIBXC -D __LIBXS -D __LIBXSMM -D __M
+   PI_F08 -D __OPENBLAS -D __PLUMED2 -D __SPGLIB -D __SPLA -D __S_DFTD3
+    -D __TBLITE -D __parallel -D __SHORT_FILE__="start/cp2k.F" -march=s
+   apphirerapids -mmmx -mpopcnt -msse -msse2 -msse3 -mssse3 -msse4.1 -m
+   sse4.2 -mavx -mavx2 -mno-sse4a -mno-fma4 -mno-xop -mfma -mavx512f -m
+   bmi -mbmi2 -maes -mpclmul -mavx512vl -mavx512bw -mavx512dq -mavx512c
+   d -mavx512vbmi -mavx512ifma -mavx512vpopcntdq -mavx512vbmi2 -mgfni -
+   mvpclmulqdq -mavx512vnni -mavx512bitalg -mavx512bf16 -mno-avx512vp2i
+   ntersect -mno-3dnow -madx -mabm -mcldemote -mclflushopt -mclwb -mno-
+   clzero -mcx16 -menqcmd -mf16c -mfsgsbase -mfxsr -mno-hle -msahf -mno
+   -lwp -mlzcnt -mmovbe -mmovdir64b -mmovdiri -mno-mwaitx -mpconfig -mp
+   ku -mprfchw -mptwrite -mrdpid -mrdrnd -mrdseed -mno-rtm -mserialize 
+   -msgx -msha -mshstk -mno-tbm -mtsxldtrk -mvaes -mwaitpkg -mwbnoinvd 
+   -mxsave -mxsavec -mxsaveopt -mxsaves -mamx-tile -mamx-int8 -mamx-bf1
+   6 -muintr -mno-hreset -mno-kl -mno-widekl -mavxvnni -mavx512fp16 -mn
+   o-avxifma -mno-avxvnniint8 -mno-avxneconvert -mno-cmpccxadd -mno-amx
+   -fp16 -mno-prefetchi -mno-raoint -mno-amx-complex -mno-avxvnniint16 
+   -mno-sm3 -mno-sha512 -mno-sm4 -mno-apxf -mno-usermsr --param=l1-cach
+   e-size=48 --param=l1-cache-line-size=64 --param=l2-cache-size=107520
+    -mtune=sapphirerapids -g -O3 -O3 -O3 -Wno-deprecated-declarations -
+   Wno-maybe-uninitialized -Wuninitialized -Wuse-without-only -std=f200
+   8 -fPIE -ffree-form -fimplicit-none -fno-omit-frame-pointer -fbacktr
+   ace -fallow-argument-mismatch -funroll-loops -fopenmp -fpre-include=
+   /usr/include/finclude/x86_64-linux-gnu/math-vector-fortran.h
