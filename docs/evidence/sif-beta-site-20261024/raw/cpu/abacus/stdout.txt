@@ -1,0 +1,63 @@
++ '[' -z '' ']'
++ case "$-" in
++ __lmod_vx=x
++ '[' -n x ']'
++ set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for this output (/opt/modules/lmod/9.2.4/init/bash)
+Shell debugging restarted
++ unset __lmod_vx
++ export OMP_NUM_THREADS=2
++ OMP_NUM_THREADS=2
++ export OMP_PLACES=cores
++ OMP_PLACES=cores
++ export OMP_PROC_BIND=close
++ OMP_PROC_BIND=close
++ export TMPDIR=/home/stardust/.sai-sif-1922061
++ TMPDIR=/home/stardust/.sai-sif-1922061
++ mkdir -p /home/stardust/.sai-sif-1922061
++ module load abacus/develop-beta-later
++ '[' -z '' ']'
++ case "$-" in
++ __lmod_sh_dbg=x
++ '[' -n x ']'
++ set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for Lmod's output
+[SAI beta] abacus/develop; commit=370ba685e670; snapshot=20261024; templates=/home/stardust/sai-hpc-software/development/sif-beta-site-20261024-r1/preview-v3/generations/20261024-r2/templates/abacus; partition=DSPRHBM
+Shell debugging restarted
++ unset __lmod_sh_dbg
++ return 0
++ mpirun -np 2 --map-by slot:pe=2 abacus
+--------------------------------------------------------------------------
+PRTE has detected that the head of the session directory tree (where
+scratch files and shared memory backing storage will be placed)
+resides on a shared file system:
+
+   Directory: /home/stardust/.sai-sif-1922061
+   File system type: lustre
+
+For performance reasons, it is strongly recommended that the session
+directory be located on a local file system. This can be controlled by
+setting the system temporary directory to be used by PRTE using either
+the TMPDIR envar or the "prte_tmpdir_base" MCA param.
+
+If you need the temporary directory to be different on remote nodes
+from the local one where prterun is running (e.g., when a login node is
+being employed), then you can set the local temporary directory using
+the "prte_local_tmpdir_base" MCA param and the one to be used on all
+other nodes using the "prte_remote_tmpdir_base" param.
+
+This is only a warning advisory and your job will continue. You can
+disable this warning in the future by setting the
+"prte_silence_shared_fs" MCA param to "1".
+--------------------------------------------------------------------------
+hwloc/linux: Ignoring PCI device with non-16bit domain.
+Pass --enable-32bits-pci-domain to configure to support such devices
+(warning: it would break the library ABI, don't enable unless really needed).
+[d9470n01.mr-sai.ai:984077] mca_base_component_repository_open: unable to open mca_accelerator_cuda: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n01.mr-sai.ai:984062] mca_base_component_repository_open: unable to open mca_accelerator_cuda: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n01.mr-sai.ai:984077] mca_base_component_repository_open: unable to open mca_rcache_rgpusm: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n01.mr-sai.ai:984062] mca_base_component_repository_open: unable to open mca_rcache_rgpusm: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n01.mr-sai.ai:984077] mca_base_component_repository_open: unable to open mca_rcache_gpusm: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n01.mr-sai.ai:984062] mca_base_component_repository_open: unable to open mca_rcache_gpusm: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+Info: Local MPI proc number: 2,OpenMP thread number: 2,Total thread number: 4,Local thread limit: 104
++ exit

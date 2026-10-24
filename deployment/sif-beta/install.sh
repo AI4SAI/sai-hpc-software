@@ -11,7 +11,7 @@ destination=${2:-/opt/modules/modulefiles/apps}
 for name in abacus cp2k lammps deepmd-kit gpumd; do
   branch=master
   [[ $name != abacus && $name != lammps ]] || branch=develop
-  relative=$name/$branch-beta
+  relative=$name/$branch-beta-later
   source=$package/modulefiles/$relative
   home_module=/home/stardust/sai-hpc-software/modulefiles/apps/$relative
   [[ -r $source && -r $home_module ]] || { echo "Missing readable module: $relative" >&2; exit 1; }
@@ -26,7 +26,7 @@ done
 for name in abacus cp2k lammps deepmd-kit gpumd; do
   branch=master
   [[ $name != abacus && $name != lammps ]] || branch=develop
-  relative=$name/$branch-beta
+  relative=$name/$branch-beta-later
   if [[ ! -e $destination/$relative ]]; then
     [[ -d $destination/$name ]] || install -d -m 0755 -- "$destination/$name"
     # No clobber: a concurrently installed module must not be overwritten.

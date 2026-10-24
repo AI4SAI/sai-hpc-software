@@ -1,0 +1,115 @@
+
+                     ▄████▄ █████▄ ▄████▄ ▄█████ ██  ██ ▄█████ 
+                     ██▄▄██ ██▄▄██ ██▄▄██ ██     ██  ██ ▀▀▀▄▄▄ 
+                     ██  ██ ██▄▄█▀ ██  ██ ▀█████ ▀████▀ █████▀ 
+
+                                                                                     
+                                v3.11.0-beta11
+
+               Atomic-orbital Based Ab-initio Computation at UStc                    
+
+                     Website: http://abacus.ustc.edu.cn/                             
+               Documentation: https://abacus.deepmodeling.com/                       
+                  Repository: https://github.com/abacusmodeling/abacus-develop       
+                              https://github.com/deepmodeling/abacus-develop         
+                      Commit: 370ba68 (Fri Oct 23 10:57:42 2026 +0800)
+
+ Sat Oct 24 12:12:12 2026
+ MAKE THE DIR         : OUT.autotest/
+ RUNNING WITH DEVICE  : CPU / AMD Ryzen Threadripper PRO 5995WX 64-Cores (x1)
+                        GPU / Tesla V100-SXM2-16GB (x2)
+ WARNING: some of potential function is set to zero cause of less than 1e-30.
+ WARNING: some of potential function is set to zero cause of less than 1e-30.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ Warning: the number of valence electrons in pseudopotential > 5 for As: [Ar] 3d10 4s2 4p3
+ Warning: the number of valence electrons in pseudopotential > 3 for Ga: [Ar] 3d10 4s2 4p1
+ Pseudopotentials with additional electrons can yield (more) accurate outcomes, but may be less efficient.
+ If you're confident that your chosen pseudopotential is appropriate, you can safely ignore this warning.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ UNIFORM GRID DIM          : 32 * 32 * 32
+ UNIFORM GRID DIM (BIG)    : 32 * 32 * 32
+ DONE(1.55159    SEC) : SYMMETRY
+ DONE(1.5516     SEC) : SETUP UNITCELL
+ DONE(1.62734    SEC) : INIT K-POINTS
+ ----------------------------------------------------------------
+ Self-consistent calculations for electrons
+ ----------------------------------------------------------------
+ SPIN    KPOINTS         PROCESSES   THREADS/PROC  THREADS/TOTAL 
+ 1       8               2           8             16            
+ ----------------------------------------------------------------
+ Use plane wave basis
+ ----------------------------------------------------------------
+ ELEMENT NATOM       
+ As      1           
+ Ga      1           
+ ----------------------------------------------------------------
+ Initial plane wave basis and FFT box
+ ----------------------------------------------------------------
+ DONE(1.67188    SEC) : INIT PLANEWAVE
+ START CHARGE         : ATOMIC
+ DONE(1.67693    SEC) : LOCAL POTENTIAL
+ DONE(1.70127    SEC) : NON-LOCAL POTENTIAL
+ MEMORY FOR PSI (MB)  : 1.91602
+ DONE(1.79481    SEC) : INIT BASIS
+
+ ================================================================
+ SELF-CONSISTENT: 
+ ================================================================
+ DONE(1.84103    SEC) : INIT SCF
+ ITER     ETOT/eV          EDIFF/eV         DRHO     TIME/s
+ CG1   -4.87155886e+03   0.00000000e+00   1.5575e+00   0.32
+ CG2   -4.86818430e+03   3.37456005e+00   4.5255e-01   0.06
+ CG3   -4.86968323e+03  -1.49893080e+00   2.2817e-02   0.07
+ CG4   -4.86974142e+03  -5.81879465e-02   3.6961e-03   0.07
+ CG5   -4.86974538e+03  -3.96218414e-03   2.0748e-04   0.07
+ CG6   -4.86974664e+03  -1.26332600e-03   1.0543e-04   0.09
+ CG7   -4.86974703e+03  -3.89885930e-04   2.6607e-05   0.08
+ CG8   -4.86974703e+03   3.35109933e-06   5.2115e-06   0.08
+ CG9   -4.86974705e+03  -1.96670651e-05   1.8818e-07   0.08
+ CG10  -4.86974705e+03  -1.41264971e-06   1.7771e-08   0.10
+ ----------------------------------------------------------------
+              Stress_x             Stress_y             Stress_z 
+ ----------------------------------------------------------------
+     -12196.0610609692       -99.1596951243      -142.3866317101 
+        -99.1596951242    -12240.9536453280       -52.1802972054 
+       -142.3866317101       -52.1802972054    -12217.4693486365 
+ ----------------------------------------------------------------
+ TOTAL-PRESSURE (EXCLUDE KINETIC PART OF IONS): -12218.161352 kbar
+
+ TIME STATISTICS
+-------------------------------------------------------------------
+    CLASS_NAME           NAME        TIME/s  CALLS   AVG/s  PER/%  
+-------------------------------------------------------------------
+                   total             2.91   17       0.17   100.00 
+ Driver            atomic_world      2.91   1        2.91   100.00 
+ Driver            reading           1.43   1        1.43   49.32  
+ PW_Basis_K        setuptransform    0.04   1        0.04   1.41   
+ PSIPrepare        prepare_init      0.09   1        0.09   3.13   
+ psi_init_atomic   tabulate          0.09   1        0.09   3.13   
+ Relax_Driver      relax_driver      1.11   1        1.11   38.02  
+ ESolver_KS        runner            1.07   1        1.07   36.84  
+ ESolver_KS_PW     before_scf        0.05   1        0.05   1.59   
+ Potential         cal_veff          0.04   11       0.00   1.35   
+ PotXC             cal_veff          0.03   11       0.00   1.19   
+ XC_Functional     v_xc              0.04   13       0.00   1.39   
+ PSIPrepare        initialize_psi    0.04   1        0.04   1.29   
+ DiagoIterAssist   diag_subspace     0.11   40       0.00   3.70   
+ Operator          hPsi              0.21   3664     0.00   7.35   
+ Operator          veff_pw           0.12   3664     0.00   3.99   
+ PW_Basis_K        recip_to_real gpu 0.07   5544     0.00   2.42   
+ PW_Basis_K        real_to_recip gpu 0.05   4584     0.00   1.63   
+ NonlocalWorkspace apply             0.09   3664     0.00   2.96   
+ DiagoIterAssist   diag_hegvd        0.07   40       0.00   2.24   
+ ESolver_KS_PW     hamilt2rho_single 0.97   10       0.10   33.36  
+ HSolverPW         solve             0.95   10       0.10   32.79  
+ HSolverPW         solve_psik        0.88   40       0.02   30.34  
+ DiagoCG           diag_once         0.79   40       0.02   27.32  
+-------------------------------------------------------------------
+
+
+ START  Time  : Sat Oct 24 12:12:12 2026
+ FINISH Time  : Sat Oct 24 12:12:14 2026
+ TOTAL  Time  : 2
+ SEE INFORMATION IN : OUT.autotest/

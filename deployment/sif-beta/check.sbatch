@@ -23,7 +23,7 @@ for name in cp2k abacus lammps deepmd-kit gpumd; do
   module use "$module_root"
   branch=master
   [[ $name != abacus && $name != lammps ]] || branch=develop
-  module load "$name/$branch-beta"
+  module load "$name/$branch-beta-later"
   key=SAI_SIF_${name^^}
   key=${key//-/_}
   image_key=${key}_IMAGE
@@ -39,7 +39,7 @@ for name in cp2k abacus lammps deepmd-kit gpumd; do
     deepmd-kit) dp --version > deepmd-kit-version.txt 2>&1 ;;
     gpumd) command -v gpumd nep gnep > gpumd-commands.txt ;;
   esac
-  module unload "$name/$branch-beta"
+  module unload "$name/$branch-beta-later"
   [[ -z ${!generation_key} && -z ${!image_key} && -z ${!templates_key} ]]
 done
 module purge

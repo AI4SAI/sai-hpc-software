@@ -1,0 +1,15 @@
+units lj
+atom_style charge
+boundary p p p
+read_data data.lmp
+pair_style lj/cut/gpu 2.5
+pair_coeff * * 1.0 1.0
+neighbor 0.3 bin
+neigh_modify every 1 delay 0 check no
+timestep 0.0001
+fix integrate all nve
+thermo 5
+thermo_modify norm no
+run 5
+print "SAI_GPU_OBS $(pe:%.17g) $(pxx:%.17g) $(pyy:%.17g) $(pzz:%.17g) $(pxy:%.17g) $(pxz:%.17g) $(pyz:%.17g)"
+write_dump all custom result.dump id fx fy fz modify sort id format float %.17g

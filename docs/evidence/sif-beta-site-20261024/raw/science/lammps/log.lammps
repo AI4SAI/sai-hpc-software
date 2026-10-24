@@ -1,0 +1,127 @@
+LAMMPS (30 Sep 2026 - Development - a0e2bd6-modified)
+  using 2 OpenMP thread(s) per MPI task
+package gpu 2 split 1.0
+WARNING: The 'split' keyword is deprecated. Host/device particle splitting is no longer supported. The value is ignored. (src/GPU/fix_gpu.cpp:159)
+units lj
+atom_style charge
+boundary p p p
+read_data data.lmp
+Reading data file ...
+  orthogonal box = (0 0 0) to (7.1512283 7.1512283 7.1512283)
+  1 by 1 by 2 MPI processor grid
+  reading atoms ...
+  256 atoms
+  read_data CPU = 0.002 seconds
+pair_style lj/cut/gpu 2.5
+pair_coeff * * 1.0 1.0
+neighbor 0.3 bin
+neigh_modify every 1 delay 0 check no
+timestep 0.0001
+fix integrate all nve
+thermo 5
+thermo_modify norm no
+run 5
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+
+- GPU package (short-range, long-range and three-body potentials): https://doi.org/10.1016/j.cpc.2010.12.021, https://doi.org/10.1016/j.cpc.2011.10.012, https://doi.org/10.1016/j.cpc.2013.08.002, https://doi.org/10.1016/j.commatsci.2014.10.068, https://doi.org/10.1016/j.cpc.2016.10.020, https://doi.org/10.3233/APC200086
+
+@Article{Brown11,
+ author = {W. M. Brown and P. Wang and S. J. Plimpton and A. N. Tharrington},
+ title = {Implementing Molecular Dynamics on Hybrid High Performance Computers---Short Range Forces},
+ journal = {Comput.\ Phys.\ Commun.},
+ year =    2011,
+ volume =  182,
+ pages =   {898--911},
+ doi =     {10.1016/j.cpc.2010.12.021}
+}
+
+@Article{Brown12,
+ author = {W. M. Brown and A. Kohlmeyer and S. J. Plimpton and A. N. Tharrington},
+ title = {Implementing Molecular Dynamics on Hybrid High Performance Computers - Particle-Particle Particle-Mesh},
+ journal = {Comput.\ Phys.\ Commun.},
+ year =    2012,
+ volume =  183,
+ doi =     {10.1016/j.cpc.2011.10.012},
+ pages =   {449--459}
+}
+
+@Article{Brown13,
+ author = {W. M. Brown and Y. Masako},
+ title = {Implementing Molecular Dynamics on Hybrid High Performance Computers---Three-Body Potentials},
+ journal = {Comput.\ Phys.\ Commun.},
+ year =    2013,
+ volume =  184,
+ pages =   {2785--2793},
+ doi =     {10.1016/j.cpc.2013.08.002},
+}
+
+@Article{Trung15,
+ author = {T. D. Nguyen and S. J. Plimpton},
+ title = {Accelerating Dissipative Particle Dynamics Simulations for Soft Matter Systems},
+ journal = {Comput.\ Mater.\ Sci.},
+ year =    2015,
+ doi =     {10.1016/j.commatsci.2014.10.068},
+ volume =  100,
+ pages =   {173--180}
+}
+
+@Article{Trung17,
+ author = {T. D. Nguyen},
+ title = {{GPU}-Accelerated {T}ersoff Potentials for Massively Parallel
+    Molecular Dynamics Simulations},
+ journal = {Comput.\ Phys.\ Commun.},
+ year =    2017,
+ doi =     {10.1016/j.cpc.2016.10.020},
+ volume =  212,
+ pages =   {113--122}
+}
+
+@inproceedings{Nikolskiy19,
+ author = {V. Nikolskiy and V. Stegailov},
+ title = {{GPU} Acceleration of Four-Site Water Models in {LAMMPS}},
+ booktitle = {Proceedings of the International Conference on Parallel
+    Computing (ParCo 2019), Prague, Czech Republic},
+ doi =     {10.3233/APC200086},
+ year =    2019
+}
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Per MPI rank memory allocation (min/avg/max) = 2.629 | 2.629 | 2.629 Mbytes
+   Step          Temp          E_pair         E_mol          TotEng         Press     
+         0   0             -1340.5523      0             -1340.5523     -5.2608508    
+         5   3.9593106e-09 -1340.5523      0             -1340.5523     -5.2608508    
+Loop time of 0.00118603 on 4 procs for 5 steps with 256 atoms
+
+Performance: 36424.006 tau/day, 4215.741 timesteps/s, 1.079 Matom-step/s
+437.1% CPU use with 2 MPI tasks x 2 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.00072356 | 0.00078959 | 0.00085563 |   0.0 | 66.57
+Neigh   | 4.4e-07    | 5.105e-07  | 5.81e-07   |   0.0 |  0.04
+Comm    | 0.00029365 | 0.00034423 | 0.0003948  |   0.0 | 29.02
+Output  | 1.67e-05   | 3.0896e-05 | 4.5091e-05 |   0.0 |  2.60
+Modify  | 5.16e-06   | 5.18e-06   | 5.2e-06    |   0.0 |  0.44
+Other   |            | 1.562e-05  |            |       |  1.32
+
+Nlocal:            128 ave         134 max         122 min
+Histogram: 1 0 0 0 0 0 0 0 0 1
+Nghost:           1109 ave        1115 max        1103 min
+Histogram: 1 0 0 0 0 0 0 0 0 1
+Neighs:              0 ave           0 max           0 min
+Histogram: 2 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 0
+Ave neighs/atom = 0
+Neighbor list builds = 5
+Dangerous builds not checked
+print "SAI_GPU_OBS $(pe:%.17g) $(pxx:%.17g) $(pyy:%.17g) $(pzz:%.17g) $(pxy:%.17g) $(pxz:%.17g) $(pyz:%.17g)"
+SAI_GPU_OBS -1340.5522622810677 -5.2594537450842855 -5.2613189599062871 -5.2617795869642441 -0.002273023662511686 0.0037787890721590832 -0.00012815477129893087
+write_dump all custom result.dump id fx fy fz modify sort id format float %.17g
+Total wall time: 0:00:00

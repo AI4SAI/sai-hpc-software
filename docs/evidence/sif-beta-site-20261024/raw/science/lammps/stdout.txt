@@ -1,0 +1,240 @@
++ '[' -z '' ']'
++ case "$-" in
++ __lmod_vx=x
++ '[' -n x ']'
++ set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for this output (/opt/modules/lmod/9.2.4/init/bash)
+Shell debugging restarted
++ unset __lmod_vx
++ source /opt/sai/runtime/mps_mapping.d/16V100.bash
+++ export GPUS_PER_SOCKET=2
+++ GPUS_PER_SOCKET=2
+++ export CORES_PER_SOCKET=8
+++ CORES_PER_SOCKET=8
++++ dirname /opt/sai/runtime/mps_mapping.d/16V100.bash
+++ source /opt/sai/runtime/mps_mapping.d/_common.bash
++++ trap _sai_cleanup EXIT
++++ : 2
++++ : 8
++++ : 1922027
++++ : 2
++++ : 1
++++ : 2
++++ _sai_is_uint 2
++++ [[ 2 =~ ^[0-9]+$ ]]
++++ _sai_is_uint 8
++++ [[ 8 =~ ^[0-9]+$ ]]
++++ _sai_is_uint 2
++++ [[ 2 =~ ^[0-9]+$ ]]
++++ _sai_is_uint 1
++++ [[ 1 =~ ^[0-9]+$ ]]
++++ _sai_is_uint 2
++++ [[ 2 =~ ^[0-9]+$ ]]
++++ export THREADS_PER_CORE=2
++++ THREADS_PER_CORE=2
++++ _sai_is_uint 2
++++ [[ 2 =~ ^[0-9]+$ ]]
++++ ((  GPUS_PER_SOCKET > 0  ))
++++ ((  CORES_PER_SOCKET > 0  ))
++++ ((  THREADS_PER_CORE > 0  ))
++++ ((  SLURM_NTASKS > 0  ))
++++ ((  SLURM_NNODES > 0  ))
++++ ((  SLURM_GPUS_ON_NODE > 0  ))
++++ ((  CORES_PER_SOCKET % GPUS_PER_SOCKET == 0  ))
++++ export CORES_PER_GPU=4
++++ CORES_PER_GPU=4
++++ _SAI_TOTAL_GPUS=2
++++ ((  SLURM_NTASKS % _SAI_TOTAL_GPUS == 0  ))
++++ export RANKS_PER_GPU=1
++++ RANKS_PER_GPU=1
++++ export RANKS_PER_NODE=2
++++ RANKS_PER_NODE=2
++++ ((  RANKS_PER_GPU >= 1  ))
++++ ((  RANKS_PER_GPU <= CORES_PER_GPU  ))
++++ _SAI_THREADS_PER_GPU=8
++++ ((  CORES_PER_GPU % RANKS_PER_GPU == 0  ))
++++ _SAI_PE=4
++++ export OMP_NUM_THREADS=8
++++ OMP_NUM_THREADS=8
++++ export MAP_OPT=ppr:2:node:pe=4
++++ MAP_OPT=ppr:2:node:pe=4
++++ _SAI_EXPECTED_CPUS=16
+++++ _sai_cpu_count
+++++ local spec item start end count=0
++++++ awk '/^Cpus_allowed_list:/ {print $2}' /proc/self/status
+++++ spec=48-55,112-119
+++++ [[ -n 48-55,112-119 ]]
+++++ IFS=,
+++++ read -r -a _sai_cpu_items
+++++ for item in "${_sai_cpu_items[@]}"
+++++ [[ 48-55 =~ ^([0-9]+)$ ]]
+++++ [[ 48-55 =~ ^([0-9]+)-([0-9]+)$ ]]
+++++ start=48
+++++ end=55
+++++ ((  start <= end  ))
+++++ count=8
+++++ for item in "${_sai_cpu_items[@]}"
+++++ [[ 112-119 =~ ^([0-9]+)$ ]]
+++++ [[ 112-119 =~ ^([0-9]+)-([0-9]+)$ ]]
+++++ start=112
+++++ end=119
+++++ ((  start <= end  ))
+++++ count=16
+++++ printf '%s\n' 16
++++ _SAI_VISIBLE_CPUS=16
++++ ((  _SAI_VISIBLE_CPUS == _SAI_EXPECTED_CPUS  ))
++++ ((  RANKS_PER_GPU > 1  ))
++++ ((  SLURM_NNODES > 1  ))
++ export OMP_NUM_THREADS=2
++ OMP_NUM_THREADS=2
++ export TMPDIR=/home/stardust/.sai-sif-1922027
++ TMPDIR=/home/stardust/.sai-sif-1922027
++ mkdir -p /home/stardust/.sai-sif-1922027
++ module load lammps/develop-beta-later
++ '[' -z '' ']'
++ case "$-" in
++ __lmod_sh_dbg=x
++ '[' -n x ']'
++ set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for Lmod's output
+[SAI beta] lammps/develop; commit=a0e2bd6efb3d; snapshot=20261024; templates=/home/stardust/sai-hpc-software/development/sif-beta-site-20261024-r1/preview-v3/generations/20261024-r2/templates/lammps; partition=16V100
+Shell debugging restarted
++ unset __lmod_sh_dbg
++ return 0
++ mpirun -np 2 --map-by ppr:2:node:pe=4 lmp -pk gpu 2 split 1.0 -in in.lmp -log log.lammps
+--------------------------------------------------------------------------
+PRTE has detected that the head of the session directory tree (where
+scratch files and shared memory backing storage will be placed)
+resides on a shared file system:
+
+   Directory: /home/stardust/.sai-sif-1922027
+   File system type: lustre
+
+For performance reasons, it is strongly recommended that the session
+directory be located on a local file system. This can be controlled by
+setting the system temporary directory to be used by PRTE using either
+the TMPDIR envar or the "prte_tmpdir_base" MCA param.
+
+If you need the temporary directory to be different on remote nodes
+from the local one where prterun is running (e.g., when a login node is
+being employed), then you can set the local temporary directory using
+the "prte_local_tmpdir_base" MCA param and the one to be used on all
+other nodes using the "prte_remote_tmpdir_base" param.
+
+This is only a warning advisory and your job will continue. You can
+disable this warning in the future by setting the
+"prte_silence_shared_fs" MCA param to "1".
+--------------------------------------------------------------------------
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+DeePMD-kit: Successfully load libcudart.so.12
+DeePMD-kit: Successfully load libcudart.so.12
+LAMMPS (30 Sep 2026 - Development - a0e2bd6-modified)
+  using 2 OpenMP thread(s) per MPI task
+WARNING: The 'split' keyword is deprecated. Host/device particle splitting is no longer supported. The value is ignored. (src/GPU/fix_gpu.cpp:159)
+Reading data file ...
+  orthogonal box = (0 0 0) to (7.1512283 7.1512283 7.1512283)
+  1 by 1 by 2 MPI processor grid
+  reading atoms ...
+  256 atoms
+  read_data CPU = 0.002 seconds
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+- GPU package (short-range, long-range and three-body potentials): https://doi.org/10.1016/j.cpc.2010.12.021, https://doi.org/10.1016/j.cpc.2011.10.012, https://doi.org/10.1016/j.cpc.2013.08.002, https://doi.org/10.1016/j.commatsci.2014.10.068, https://doi.org/10.1016/j.cpc.2016.10.020, https://doi.org/10.3233/APC200086
+The log file lists these citations in BibTeX format.
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+
+--------------------------------------------------------------------------
+- Using acceleration for lj/cut:
+-  with 1 proc(s) per device.
+-  with 2 thread(s) per proc.
+-  Horizontal vector operations: ENABLED
+-  Shared memory system: No
+--------------------------------------------------------------------------
+Device 0: Tesla V100-SXM2-16GB, 80 CUs, 15/16 GB, 1.5 GHZ (Mixed Precision)
+Device 1: Tesla V100-SXM2-16GB, 80 CUs, 1.5 GHZ (Mixed Precision)
+--------------------------------------------------------------------------
+
+Initializing Device and compiling on process 0...Done.
+Initializing Devices 0-1 on core 0...Done.
+
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Setting up Verlet run ...
+  Unit style    : lj
+  Current step  : 0
+  Time step     : 1e-04
+Per MPI rank memory allocation (min/avg/max) = 2.629 | 2.629 | 2.629 Mbytes
+   Step          Temp          E_pair         E_mol          TotEng         Press     
+         0   0             -1340.5523      0             -1340.5523     -5.2608508    
+         5   3.9593106e-09 -1340.5523      0             -1340.5523     -5.2608508    
+Loop time of 0.00118603 on 4 procs for 5 steps with 256 atoms
+
+Performance: 36424.006 tau/day, 4215.741 timesteps/s, 1.079 Matom-step/s
+437.1% CPU use with 2 MPI tasks x 2 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.00072356 | 0.00078959 | 0.00085563 |   0.0 | 66.57
+Neigh   | 4.4e-07    | 5.105e-07  | 5.81e-07   |   0.0 |  0.04
+Comm    | 0.00029365 | 0.00034423 | 0.0003948  |   0.0 | 29.02
+Output  | 1.67e-05   | 3.0896e-05 | 4.5091e-05 |   0.0 |  2.60
+Modify  | 5.16e-06   | 5.18e-06   | 5.2e-06    |   0.0 |  0.44
+Other   |            | 1.562e-05  |            |       |  1.32
+
+Nlocal:            128 ave         134 max         122 min
+Histogram: 1 0 0 0 0 0 0 0 0 1
+Nghost:           1109 ave        1115 max        1103 min
+Histogram: 1 0 0 0 0 0 0 0 0 1
+Neighs:              0 ave           0 max           0 min
+Histogram: 2 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 0
+Ave neighs/atom = 0
+Neighbor list builds = 5
+Dangerous builds not checked
+SAI_GPU_OBS -1340.5522622810677 -5.2594537450842855 -5.2613189599062871 -5.2617795869642441 -0.002273023662511686 0.0037787890721590832 -0.00012815477129893087
+
+
+---------------------------------------------------------------------
+      Device Time Info (average): 
+---------------------------------------------------------------------
+Data Transfer:   0.0001 s.
+Neighbor copy:   0.0001 s.
+Neighbor build:  0.0005 s.
+Force calc:      0.0001 s.
+Device Overhead: 0.0002 s.
+CPU Neighbor:    0.0001 s.
+CPU Cast/Pack:   0.0000 s.
+CPU Driver_Time: 0.0001 s.
+CPU Idle_Time:   0.0005 s.
+Max Mem / Proc:  0.12 MB.
+Prefetch mode:   None.
+Vector width:    32.
+Lanes / atom:    4.
+Pair block:      256.
+Neigh block:     128.
+Neigh mode:      Hybrid (binning on host) with subgroup support.
+---------------------------------------------------------------------
+
+Total wall time: 0:00:00
++ exit
++ _sai_cleanup
++ local status=0
++ trap - EXIT
++ [[ -n '' ]]
++ [[ -n '' ]]
++ exit 0

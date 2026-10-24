@@ -1,0 +1,217 @@
+[
+  {
+    "name": "deepmd-parallel",
+    "url": "https://raw.githubusercontent.com/deepmodeling/deepmd-kit/558f56962775098b8b554e341c3b37d2f86e6aeb/doc/train/parallel-training.md",
+    "sha256": "85481844342d2ac985a78581d8bd6bfbdbd9749d6cc2714ab0f84b7b6177eb5d",
+    "excerpts": [
+      {
+        "line": 8,
+        "text": "## TensorFlow Implementation {{ tensorflow_icon }}\n\nCurrently, parallel training in tensorflow version is enabled in a synchronized way with help of [Horovod](https://github.com/horovod/horovod).\nDepending on the number of training processes (according to MPI context) and the number of GPU cards available, DeePMD-kit will decide whether to launch the training in parallel (distributed) mode or in serial mode. Therefore, no additional options are specified in your JSON/YAML input file.\n\n### Tuning learning rate"
+      },
+      {
+        "line": 13,
+        "text": "### Tuning learning rate\n\nHorovod works in the data-parallel mode, resulting in a larger global batch size. For example, the real batch size is 8 when {ref}`batch_size <training/training_data/batch_size>` is set to 2 in the input file and you launch 4 workers. Thus, {ref}`learning_rate <learning_rate>` is automatically scaled by the number of workers for better convergence. Technical details of such heuristic rule are discussed at [Accurate, Large Minibatch SGD: Training ImageNet in 1 Hour](https://arxiv.org/abs/1706.02677).\n\nThe number of decay steps required to achieve the same accuracy can decrease by the number of cards (e.g., 1/2 of steps in the above case), but needs to be scaled manually in the input file.\n"
+      },
+      {
+        "line": 51,
+        "text": "To maximize the performance, one should follow [FAQ: How to control the parallelism of a job](../troubleshooting/howtoset_num_nodes.md) to control the number of threads.\n\nWhen using MPI with Horovod, `horovodrun` is a simple wrapper around `mpirun`. In the case where fine-grained control over options is passed to `mpirun`, [`mpirun` can be invoked directly](https://horovod.readthedocs.io/en/stable/mpi_include.html), and it will be detected automatically by Horovod, e.g.,\n\n```bash\nCUDA_VISIBLE_DEVICES=4,5,6,7 mpirun -l -launcher=fork -hosts=localhost -np 4 \\"
+      },
+      {
+        "line": 54,
+        "text": "\n```bash\nCUDA_VISIBLE_DEVICES=4,5,6,7 mpirun -l -launcher=fork -hosts=localhost -np 4 \\\n    dp train --mpi-log=workers input.json\n```\n"
+      },
+      {
+        "line": 144,
+        "text": "\n- Works in the PyTorch-TorchScript and PyTorch Exportable backends.\n- Requires distributed launch with `torchrun`.\n- Currently single-task only.\n- Not supported with `LKF` optimizer.\n- `training.change_bias_after_training` must be `false`."
+      },
+      {
+        "line": 164,
+        "text": "\n> [!NOTE]\n> The underlying dataloader will use a distributed sampler to ensure that each GPU receives batches with different content in parallel mode, which will use sequential sampler in serial mode. In the TensorFlow version, Horovod shuffles the dataset using different random seeds for the same purpose..\n\n```mermaid\nflowchart LR"
+      },
+      {
+        "line": 220,
+        "text": "### How to use\n\nWe use [`torchrun`](https://pytorch.org/docs/stable/elastic/run.html#usage) to launch a DDP training session.\n\nTo start training with multiple GPUs in one node, set parameter `nproc_per_node` as the number of it:\n"
+      },
+      {
+        "line": 225,
+        "text": "\n```bash\ntorchrun --nproc_per_node=4 --no-python dp --pt train input.json\n# Not setting `nproc_per_node` uses only 1 GPU\ntorchrun --no-python dp --pt train input.json\n```"
+      },
+      {
+        "line": 227,
+        "text": "torchrun --nproc_per_node=4 --no-python dp --pt train input.json\n# Not setting `nproc_per_node` uses only 1 GPU\ntorchrun --no-python dp --pt train input.json\n```\n\nTo train a model with a cluster, one can manually launch the task using the commands below (usually this should be done by your job management system). Set `nnodes` as the number of available nodes, `node_rank` as the rank of the current node among all nodes (not the rank of processes!), and `nproc_per_node` as the number of available GPUs in one node. Please make sure that every node can access the rendezvous address and port (`rdzv_endpoint` in the command), and has a same amount of GPUs."
+      },
+      {
+        "line": 235,
+        "text": "# Running DDP on 2 nodes with 4 GPUs each\n# On node 0:\ntorchrun --rdzv_endpoint=node0:12321 --nnodes=2 --nproc_per_node=4 --node_rank=0 --no_python dp --pt train tests/water/se_e2_a.json\n# On node 1:\ntorchrun --rdzv_endpoint=node0:12321 --nnodes=2 --nproc_per_node=4 --node_rank=1 --no_python dp --pt train tests/water/se_e2_a.json\n```"
+      },
+      {
+        "line": 237,
+        "text": "torchrun --rdzv_endpoint=node0:12321 --nnodes=2 --nproc_per_node=4 --node_rank=0 --no_python dp --pt train tests/water/se_e2_a.json\n# On node 1:\ntorchrun --rdzv_endpoint=node0:12321 --nnodes=2 --nproc_per_node=4 --node_rank=1 --no_python dp --pt train tests/water/se_e2_a.json\n```\n\n> [!NOTE]"
+      },
+      {
+        "line": 244,
+        "text": "\n> [!NOTE]\n> for developers: `torchrun` by default passes settings as environment variables [(list here)](https://pytorch.org/docs/stable/elastic/run.html#environment-variables).\n\n> To check forward, backward, and communication time, please set env var `TORCH_CPP_LOG_LEVEL=INFO TORCH_DISTRIBUTED_DEBUG=DETAIL`. More details can be found [here](https://pytorch.org/docs/stable/distributed.html#logging).\n"
+      },
+      {
+        "line": 253,
+        "text": "Distributed Data Parallelism [DDP](https://pytorch.org/docs/stable/generated/torch.nn.parallel.DistributedDataParallel.html).\nIt initializes the process group automatically when launched with\n[`torchrun`](https://pytorch.org/docs/stable/elastic/run.html#usage) (which\nexports the `LOCAL_RANK` environment variable), and wraps both single-task and\nmulti-task models in `DistributedDataParallel`.\n"
+      },
+      {
+        "line": 259,
+        "text": "### How to use\n\nLaunch a DDP training session with `torchrun`, the same as for the\nPyTorch-TorchScript backend:\n\n```bash"
+      },
+      {
+        "line": 263,
+        "text": "\n```bash\ntorchrun --nproc_per_node=4 --no-python dp --pt-expt train input.json\n```\n\nUnlike the PyTorch-TorchScript backend, the ZeRO/FSDP2 memory-optimization"
+      },
+      {
+        "line": 299,
+        "text": "```\n\nor you can wrapper the training script with `mpirun`:\n\n```bash\n# ----- train_pp.sh -------"
+      },
+      {
+        "line": 311,
+        "text": "\n```bash\nmpirun run_pp.sh\n```\n\n> [!NOTE]"
+      }
+    ]
+  },
+  {
+    "name": "deepmd-pt",
+    "url": "https://raw.githubusercontent.com/deepmodeling/deepmd-kit/558f56962775098b8b554e341c3b37d2f86e6aeb/deepmd/pt/entrypoints/main.py",
+    "sha256": "114be535ca2d632b799ac7f23d0a211a4fb465c1c552aa4ba9ce9962a4232561",
+    "excerpts": [
+      {
+        "line": 454,
+        "text": "\n    # Initialize DDP\n    if os.environ.get(\"LOCAL_RANK\") is not None:\n        dist.init_process_group(backend=\"cuda:nccl,cpu:gloo\")\n\n    trainer = get_trainer("
+      },
+      {
+        "line": 455,
+        "text": "    # Initialize DDP\n    if os.environ.get(\"LOCAL_RANK\") is not None:\n        dist.init_process_group(backend=\"cuda:nccl,cpu:gloo\")\n\n    trainer = get_trainer(\n        config,"
+      }
+    ]
+  },
+  {
+    "name": "deepmd-tf",
+    "url": "https://raw.githubusercontent.com/deepmodeling/deepmd-kit/558f56962775098b8b554e341c3b37d2f86e6aeb/deepmd/tf/train/run_options.py",
+    "sha256": "637827720ee1a8411dbf93b51144fc7037308b7cbda9095d64109da5060d232d",
+    "excerpts": [
+      {
+        "line": 32,
+        "text": "\nif TYPE_CHECKING:\n    import horovod.tensorflow as HVD\n\n\n__all__ = ["
+      },
+      {
+        "line": 206,
+        "text": "    def _try_init_distrib(self) -> None:\n        try:\n            import horovod.tensorflow as HVD\n\n            HVD.init()\n            self.is_distrib = HVD.size() > 1"
+      },
+      {
+        "line": 209,
+        "text": "\n            HVD.init()\n            self.is_distrib = HVD.size() > 1\n        except ImportError:\n            log.warning(\"Switch to serial execution due to lack of horovod module.\")\n            self.is_distrib = False"
+      },
+      {
+        "line": 210,
+        "text": "            HVD.init()\n            self.is_distrib = HVD.size() > 1\n        except ImportError:\n            log.warning(\"Switch to serial execution due to lack of horovod module.\")\n            self.is_distrib = False\n"
+      },
+      {
+        "line": 211,
+        "text": "            self.is_distrib = HVD.size() > 1\n        except ImportError:\n            log.warning(\"Switch to serial execution due to lack of horovod module.\")\n            self.is_distrib = False\n\n        # Do real initialization"
+      },
+      {
+        "line": 212,
+        "text": "        except ImportError:\n            log.warning(\"Switch to serial execution due to lack of horovod module.\")\n            self.is_distrib = False\n\n        # Do real initialization\n        if self.is_distrib:"
+      },
+      {
+        "line": 215,
+        "text": "\n        # Do real initialization\n        if self.is_distrib:\n            self._init_distributed(HVD)\n            self._HVD = HVD\n        else:"
+      },
+      {
+        "line": 228,
+        "text": "        ----------\n        HVD : HVD\n            horovod object\n        \"\"\"\n        nodename, nodelist, gpus = get_resource()\n        self.nodename = nodename"
+      }
+    ]
+  },
+  {
+    "name": "gpumd-main",
+    "url": "https://raw.githubusercontent.com/brucefan1983/GPUMD/2c93346fce4461de1c42c77e7fe74cdb6b0e3df6/src/main_gpumd/main.cu",
+    "sha256": "6c95657a9135099d76a67b5afab63f50f31b8ce0509b7abd77d1429a102c609b",
+    "excerpts": [
+      {
+        "line": 2,
+        "text": "/*\n    Copyright 2017 Zheyong Fan and GPUMD development team\n    This file is part of GPUMD.\n    GPUMD is free software: you can redistribute it and/or modify\n    it under the terms of the GNU Lesser General Public License as published by"
+      },
+      {
+        "line": 3,
+        "text": "/*\n    Copyright 2017 Zheyong Fan and GPUMD development team\n    This file is part of GPUMD.\n    GPUMD is free software: you can redistribute it and/or modify\n    it under the terms of the GNU Lesser General Public License as published by\n    the Free Software Foundation, either version 3 of the License, or"
+      },
+      {
+        "line": 4,
+        "text": "    Copyright 2017 Zheyong Fan and GPUMD development team\n    This file is part of GPUMD.\n    GPUMD is free software: you can redistribute it and/or modify\n    it under the terms of the GNU Lesser General Public License as published by\n    the Free Software Foundation, either version 3 of the License, or\n    (at your option) any later version."
+      },
+      {
+        "line": 8,
+        "text": "    the Free Software Foundation, either version 3 of the License, or\n    (at your option) any later version.\n    GPUMD is distributed in the hope that it will be useful,\n    but WITHOUT ANY WARRANTY; without even the implied warranty of\n    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the\n    GNU Lesser General Public License for more details."
+      },
+      {
+        "line": 13,
+        "text": "    GNU Lesser General Public License for more details.\n    You should have received a copy of the GNU Lesser General Public License\n    along with GPUMD.  If not, see <https://www.gnu.org/licenses/>.\n*/\n\n#include \"deposition.cuh\""
+      },
+      {
+        "line": 30,
+        "text": "void print_welcome_information();\n\nint main(int argc, char* argv[])\n{\n  print_welcome_information();\n  print_compile_information();"
+      },
+      {
+        "line": 37,
+        "text": "\n  print_line_1();\n  printf(\"Started running GPUMD.\\n\");\n  print_line_2();\n\n  CHECK(gpuDeviceSynchronize());"
+      },
+      {
+        "line": 64,
+        "text": "\n  print_line_1();\n  printf(\"Finished running GPUMD.\\n\");\n  print_line_2();\n\n  return EXIT_SUCCESS;"
+      },
+      {
+        "line": 74,
+        "text": "  printf(\"\\n\");\n  printf(\"***************************************************************\\n\");\n  printf(\"*                 Welcome to use GPUMD                        *\\n\");\n  printf(\"*     (Graphics Processing Units Molecular Dynamics)          *\\n\");\n  printf(\"*                   version 5.9.1                             *\\n\");\n  printf(\"*              This is the gpumd executable                   *\\n\");"
+      }
+    ]
+  },
+  {
+    "name": "gpumd-build",
+    "url": "https://raw.githubusercontent.com/brucefan1983/GPUMD/2c93346fce4461de1c42c77e7fe74cdb6b0e3df6/src/makefile",
+    "sha256": "00f10e5f221664a2071ea5047261d781e4e8d9bce50b0b6fc74c7012b4ea1530",
+    "excerpts": [
+      {
+        "line": 8,
+        "text": "# 2) For Windows systems, if you get errors like \n#    c1xx : fatal error C1083: Cannot open source file: ...\n#    You can consider removing -Xcompiler \"/wd 4819\"\n# 3) Add -DUSE_PLUMED to CFLAGS when use the PLUMED plugin\n#    and remove it otherwise.\n###########################################################"
+      },
+      {
+        "line": 17,
+        "text": "# some flags\n###########################################################\nCC = nvcc\nCUDA_ARCH=-arch=sm_60\nWARN_FLAGS = -Wall -Wextra\nWARN_FLAGS += -Wno-sign-compare -Wno-unused-parameter"
+      },
+      {
+        "line": 26,
+        "text": "WARN_FLAGS += -Wcast-align -Wcast-qual -Wvla\nWARN_FLAGS += -Wformat -Wformat-security -Wformat-overflow -Wformat-truncation\nifdef OS # For Windows with the cl.exe compiler\nCFLAGS = -O3 $(CUDA_ARCH)\nelse # For linux\nCFLAGS = -std=c++14 -O3 $(CUDA_ARCH) -Xcompiler=\"$(WARN_FLAGS)\" "
+      },
+      {
+        "line": 29,
+        "text": "CFLAGS = -O3 $(CUDA_ARCH)\nelse # For linux\nCFLAGS = -std=c++14 -O3 $(CUDA_ARCH) -Xcompiler=\"$(WARN_FLAGS)\" \nendif\nifeq ($(GNEP_TEST_DIAGNOSTICS),1)\nCFLAGS += -DGNEP_TEST_DIAGNOSTICS"
+      },
+      {
+        "line": 73,
+        "text": "# object files\n###########################################################\nifdef OS # For Windows with the cl.exe compiler\nOBJ_GPUMD = $(SOURCES_GPUMD:.cu=.obj)\nOBJ_NEP = $(SOURCES_NEP:.cu=.obj)\nOBJ_GNEP = $(SOURCES_GNEP:.cu=.obj)"
+      },
+      {
+        "line": 109,
+        "text": ".PHONY: all gpumd_replica clean_replica clean\n\n# Keep replica objects separate and share the selected compiler and architecture.\ngpumd_replica:\n\t$(MAKE) -C main_replica CC=\"$(CC)\" CUDA_ARCH=\"$(CUDA_ARCH)\"\n"
+      },
+      {
+        "line": 116,
+        "text": "\t$(CC) $(LDFLAGS) $^ -o $@ $(LIBS)\n\t@echo =================================================\n\t@echo The gpumd executable is successfully compiled!\n\t@echo =================================================\nnep: $(OBJ_NEP)\n\t$(CC) $(LDFLAGS) $^ -o $@ $(LIBS) $(NEP_LIBS)"
+      },
+      {
+        "line": 121,
+        "text": "\t$(CC) $(LDFLAGS) $^ -o $@ $(LIBS) $(NEP_LIBS)\n\t@echo =================================================\n\t@echo The nep executable is successfully compiled!\n\t@echo =================================================\ngnep: $(OBJ_GNEP)\n\t$(CC) $(LDFLAGS) $^ -o $@ $(LIBS) $(GNEP_LIBS)"
+      },
+      {
+        "line": 126,
+        "text": "\t$(CC) $(LDFLAGS) $^ -o $@ $(LIBS) $(GNEP_LIBS)\n\t@echo =================================================\n\t@echo The gnep executable is successfully compiled!\n\t@echo =================================================\n\n"
+      }
+    ]
+  }
+]

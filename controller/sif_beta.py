@@ -4,10 +4,11 @@ import argparse
 import copy
 import fcntl
 import json
+import os
 from pathlib import Path
 import re
 
-from module_publication import atomic_text, tcl
+from module_publication import tcl
 from release_contract import PARTITIONS, SOFTWARE
 from sif_modules import load_snapshot, render_module, verify_sources, write
 from sif_runtime import PROGRAMS, digest, require
@@ -20,7 +21,12 @@ def token(value):
 
 
 def channel(software):
-    return SOFTWARE[software]['development_ref'] + '-beta'
+    return SOFTWARE[software]['development_ref'] + '-beta-later'
+
+
+def version_name(software, snapshot):
+    identity = next(iter(snapshot['applications'][software]['partitions'].values()))['identity']
+    return f"{SOFTWARE[software]['development_ref']}-beta-{snapshot['snapshot']}-{identity['source_sha'][:12]}"
 
 
 def stem(software):
@@ -32,54 +38,51 @@ def render_gateway(home_module):
     return '#%Module1.0\n# Maintained by stardust; this gateway does not rotate.\nsource ' + tcl(home_module) + '\n'
 
 
-def render_channel(root, software):
+def render_version(root, software, generation):
     key = stem(software) + '_BETA_GENERATION'
     return '\n'.join([
-        '#%Module1.0', '# Select once at load; retain that generation through unload.',
+        '#%Module1.0', '# Keep the loaded generation when the later symlink changes.',
         f'set sai_beta_root {tcl(root)}',
+        f'set sai_beta_generation {tcl(token(generation))}',
         f'if {{[info exists env({key})]}} {{',
         f'    set sai_beta_generation $env({key})',
         '} elseif {[module-info mode remove]} {',
         '    error "missing saved beta generation; refusing to unload a different snapshot"',
-        '} else {',
-        f'    set sai_beta_file [open [file join $sai_beta_root channels {software}] r]',
-        '    set sai_beta_generation [string trim [read $sai_beta_file]]',
-        '    close $sai_beta_file', '}',
+        '}',
         'if {![regexp {^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$} $sai_beta_generation]} {error "invalid beta generation"}',
         f'source [file join $sai_beta_root generations $sai_beta_generation modules {software}]',
         f'setenv {key} $sai_beta_generation', ''])
 
 
-def render_template(software, module_root, *, cpu=False):
+def render_template(software, *, cpu=False):
     mpi = software in ('cp2k', 'abacus', 'lammps')
     partition, qos = ('DSPRHBM', 'rush-cpu') if cpu else ('16V100', 'flood-1o2gpu')
-    lines = ['#!/usr/bin/env bash', '# Copy to your case directory; edit account and resources before sbatch.',
-             '#SBATCH --account=YOUR_ACCOUNT', f'#SBATCH --partition={partition}', f'#SBATCH --qos={qos}',
-             '#SBATCH --nodes=1', f'#SBATCH --ntasks-per-node={2 if mpi else 1}',
-             '#SBATCH --time=01:00:00', '#SBATCH --export=ALL', '#SBATCH --output=slurm-%j.out']
-    lines += ['#SBATCH --cpus-per-task=2'] if cpu else ['#SBATCH --gpus-per-node=1']
-    lines += ['', 'set -eo pipefail', 'source /etc/profile.d/lmod.sh', 'module purge',
-              'module use ' + str(module_root), f'module load {software}/{channel(software)}',
-              '', '# Run from a case directory under /home or /org. Inputs must be here or below.',
-              'cd "${SLURM_SUBMIT_DIR:?}"', 'umask 077', 'export TMPDIR="$PWD/.sai-sif-$SLURM_JOB_ID"',
-              'mkdir -p "$TMPDIR"', 'export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1',
-              'export SLURM_EXPORT_ENV=ALL',
-              'export OMPI_MCA_plm_slurm_args=--external-launcher',
-              'export PRTE_MCA_plm_slurm_args=--external-launcher',
-              f'printf "source=%s\\nimage=%s\\ntemplates=%s\\n" "${stem(software)}_SOURCE" "${stem(software)}_IMAGE" "${stem(software)}_TEMPLATES"', '']
+    lines = ['#!/bin/bash', f'#SBATCH --job-name={software}', f'#SBATCH --partition={partition}',
+             '#SBATCH --nodes=1', f'#SBATCH --ntasks={2 if cpu else 1}',
+             '#SBATCH --cpus-per-task=2' if cpu else '#SBATCH --gpus-per-node=1',
+             f'#SBATCH --qos={qos}', '']
+    if mpi and not cpu:
+        lines += ['source /opt/sai/runtime/mps_mapping.d/${SLURM_JOB_PARTITION}.bash', '']
+    if cpu or software == 'cp2k':
+        threads = '$SLURM_CPUS_PER_TASK' if cpu else '$((CORES_PER_GPU/RANKS_PER_GPU))'
+        lines += [f'export OMP_NUM_THREADS={threads}', 'export OMP_PLACES=cores',
+                  'export OMP_PROC_BIND=close', '']
+    elif software in ('lammps', 'deepmd-kit'):
+        lines += ['export OMP_NUM_THREADS=2', '']
+    lines += ['# Short home path for SIF scratch and Unix sockets.',
+              'export TMPDIR="$HOME/.sai-sif-$SLURM_JOB_ID"', 'mkdir -p "$TMPDIR"',
+              f'module load {software}/{channel(software)}', '']
     if mpi:
         command = {'cp2k': 'cp2k.psmp -i input.inp -o output.out',
                    'abacus': 'abacus > abacus.out',
-                   'lammps': 'lmp -pk gpu 1 split 1.0 -in in.lmp -log log.lammps'}[software]
-        lines += ['# The host mpirun starts the SIF command once per rank.',
-                  'mpirun -np "${SLURM_NTASKS:?}" --map-by ppr:2:node:PE=1 --bind-to core ' + command]
+                   'lammps': 'lmp -pk gpu $SLURM_GPUS_ON_NODE split 1.0 -in in.lmp -log log.lammps'}[software]
+        mapping = 'slot:pe=$OMP_NUM_THREADS' if cpu else '$MAP_OPT'
+        lines += ['mpirun -np $SLURM_NTASKS --map-by ' + mapping + ' ' + command]
     elif software == 'deepmd-kit':
-        lines += ['# Direct GPU command; use deepmd-python for a Python script in this SIF.',
-                  'dp --pt train input.json']
+        lines += ['dp --pt train input.json']
     else:
-        lines += ['# GPUMD reads run.in, model.xyz and any referenced potential from this directory.',
-                  'gpumd > gpumd.out']
-    return '\n'.join(lines) + '\n'
+        lines += ['gpumd > gpumd.out']
+    return '\n'.join(lines) + '\nexit\n'
 
 
 def verified_bundle(bundle, validated_catalog, checks, software):
@@ -134,14 +137,14 @@ def prepare(root, module_root, generation, bundle, validated_catalog, checks, so
     require(not destination.exists(), 'generation already exists; select it for rollback instead')
     # Preflight all immutable names before creating or selecting anything.
     for name in software:
-        require(not (module_root / (name + '-sif') / snapshot['applications'][name]['version']).exists(),
+        require(not (module_root / name / version_name(name, snapshot)).exists(),
                 'fixed module name already exists; preserve its generation')
     for name in software:
         app = snapshot['applications'][name]
         identity = next(iter(app['partitions'].values()))['identity']
         branch = SOFTWARE[name]['development_ref']
         templates = destination / 'templates' / name
-        fixed = name + '-sif/' + app['version']
+        fixed = name + '/' + version_name(name, snapshot)
         description = (f"[SAI beta] {name} / {branch}\n"
                        f"Source version: {identity['source_version']}\n"
                        f"Commit: {identity['source_sha']}\n"
@@ -149,40 +152,46 @@ def prepare(root, module_root, generation, bundle, validated_catalog, checks, so
                        f"Partitions: {', '.join(app['partitions'])}\n"
                        f"Fixed module: {fixed}\n"
                        f"Templates: {templates}\n\n"
-                       "Copy gpu.sbatch into your case directory and edit YOUR_ACCOUNT and resources.\n"
+                       "Copy gpu.sbatch into your case directory and adjust partition/resources.\n"
                        + ("For DSPRHBM use cpu.sbatch.\n" if 'DSPRHBM' in app['partitions'] else '') +
                        f"On the login node: cp {templates}/gpu.sbatch ./run.sbatch; edit it, then sbatch run.sbatch.\n"
                        "Load on a compute node inside sbatch or an srun shell.\n"
                        "Set TMPDIR in /home or /org before host mpirun; keep inputs under the case directory.\n"
                        "SIF commands are wrappers: do not replace them with native /opt executable paths.\n"
-                       "ABACUS/CP2K/LAMMPS use host mpirun; GPUMD and dp run directly.\n"
+                       "ABACUS/CP2K/LAMMPS use host mpirun and the site GPU mapping script.\n"
+                       "GPUMD runs directly. DeePMD single-GPU runs dp; PyTorch multi-GPU uses torchrun.\n"
+                       + ("This snapshot has no accepted multi-GPU training template.\n"
+                          "PyTorch se_e2_a DDP fails on unused compression parameters; DPA2 hits missing Triton tooling.\n"
+                          "TensorFlow MPI training requires Horovod; it is not provided by this snapshot.\n"
+                          if name == 'deepmd-kit' else '') +
                        "Use deepmd-python for the SIF Python environment.\n"
                        f"For a fixed version: module use {module_root}; module load {fixed}\n")
-        extra = {stem(name) + '_VERSION': app['version'], stem(name) + '_BRANCH': branch,
+        extra = {stem(name) + '_VERSION': version_name(name, snapshot), stem(name) + '_BRANCH': branch,
                  stem(name) + '_TEMPLATES': str(templates), stem(name) + '_SNAPSHOT': snapshot['snapshot']}
         notice = (f"[SAI beta] {name}/{branch}; commit={identity['source_sha'][:12]}; "
                   f"snapshot={snapshot['snapshot']}; templates={templates}")
         write(destination / 'modules' / name,
-              render_module(bundle, name, app, help_text=description, notice=notice,
+              render_module(bundle, name, dict(app, version=version_name(name, snapshot)), help_text=description, notice=notice,
                             extra_environment=extra, compute_only=True))
-        write(templates / 'gpu.sbatch', render_template(name, module_root))
+        write(templates / 'gpu.sbatch', render_template(name))
         if 'DSPRHBM' in app['partitions']:
-            write(templates / 'cpu.sbatch', render_template(name, module_root, cpu=True))
+            write(templates / 'cpu.sbatch', render_template(name, cpu=True))
+    versions = {}
+    for name in software:
+        version = version_name(name, snapshot)
+        module = module_root / name / version
+        write(module, render_version(root, name, generation))
+        versions[name] = {'name': version, 'sha256': digest(module)}
     files = {str(path.relative_to(destination)): digest(path)
              for path in destination.rglob('*') if path.is_file()}
     write(destination / 'manifest.json', json.dumps({
-        'schema': 1, 'generation': generation, 'bundle': str(bundle),
+        'schema': 2, 'generation': generation, 'bundle': str(bundle),
+        'module_root': str(module_root), 'versions': versions,
         'catalog_sha256': digest(bundle / 'catalog.json'), 'runtime_sha256': snapshot['runtime_sha256'],
         'validated_catalog': str(validated_catalog), 'validated_catalog_sha256': digest(validated_catalog),
         'checks_sha256': digest(checks), 'software': software,
         'jobs': {part: report['job'] for part, report in reports.items()}, 'files': files,
     }, indent=2, sort_keys=True) + '\n')
-    for name in software:
-        home_module = module_root / name / channel(name)
-        home_module.parent.mkdir(parents=True, exist_ok=True, mode=0o755)
-        atomic_text(home_module, render_channel(root, name), immutable=True)
-        fixed = module_root / (name + '-sif') / snapshot['applications'][name]['version']
-        write(fixed, render_gateway(destination / 'modules' / name))
     for path in destination.rglob('*'):
         if path.is_dir():
             path.chmod(0o755)
@@ -200,11 +209,25 @@ def select(root, generation, software):
     for path, expected in manifest['files'].items():
         require((destination / path).resolve().is_relative_to(destination)
                 and digest(destination / path) == expected, 'changed generation file')
-    directory = root / 'channels'
-    directory.mkdir(parents=True, exist_ok=True, mode=0o755)
+    require(manifest.get('schema') == 2, 'generation predates the versioned beta symlink layout')
+    module_root = Path(manifest['module_root'])
+    require(module_root.is_absolute() and module_root.resolve() == module_root, 'redirected module root')
+    # Preflight every application before switching any link.
     for name in software:
-        atomic_text(directory / name, generation + '\n')
-        print(f'{name}/{channel(name)} -> {generation}', flush=True)
+        version = token(manifest['versions'][name]['name'])
+        module = module_root / name / version
+        require(module.resolve() == module and digest(module) == manifest['versions'][name]['sha256'],
+                'changed fixed version module')
+        link = module.parent / channel(name)
+        require(link.parent.resolve() == link.parent and (not link.exists() or link.is_symlink()),
+                'later entry must be a symlink, not a regular module')
+    for name in software:
+        version = manifest['versions'][name]['name']
+        link = module_root / name / channel(name)
+        temporary = link.with_name(f'.{link.name}-{os.getpid()}')
+        temporary.symlink_to(version)
+        os.replace(temporary, link)
+        print(f'{name}/{channel(name)} -> {version}', flush=True)
 
 
 def main():
