@@ -10,12 +10,18 @@ import shutil
 
 from module_publication import tcl
 from release_contract import validate_identity
-from sif_runtime import PROGRAMS, bind_path, digest, file_identity, require
+from sif_runtime import MPI_LAUNCHERS, MPI_PROGRAMS, PROGRAMS, bind_path, digest, file_identity, require
 
 
 def validate_snapshot(snapshot):
     require(snapshot.get('schema') == 1 and re.fullmatch('[0-9]{8}', snapshot.get('snapshot', '')),
             'invalid snapshot date/schema')
+    if 'runtime_sha256' in snapshot:
+        require(re.fullmatch('[0-9a-f]{64}', snapshot['runtime_sha256']), 'invalid runtime SHA256')
+    if 'memory_bootstrap' in snapshot:
+        bind_path(snapshot['memory_bootstrap']['image'])
+        require(re.fullmatch('[0-9a-f]{64}', snapshot['memory_bootstrap']['sha256']),
+                'invalid memory bootstrap SHA256')
     require(bool(snapshot.get('applications')) and not set(snapshot['applications']) - set(PROGRAMS),
             'unknown or empty SIF application catalog')
     for name, app in snapshot['applications'].items():
@@ -55,7 +61,7 @@ def render_module(root, software, app, *, help_text=None, notice=None,
                    f"source: {identity['source_sha']}")
     lines = ['#%Module1.0', 'module-whatis ' + tcl(description),
              'proc ModulesHelp {} {',
-             '    puts stderr ' + tcl(help_text or description + '\nLoad inside the allocation. Set TMPDIR to a home/project job directory before host mpirun. '
+             '    puts stderr ' + tcl(help_text or description + '\nLoad inside the allocation. Runtime temporary files use private node memory automatically. '
                                       'GPUMD and dp are direct commands; deepmd-python selects this Python package.'),
              '}', f'conflict {software}', f'conflict {software}-sif',
              'set sai_partition ""',
@@ -87,8 +93,10 @@ def render_module(root, software, app, *, help_text=None, notice=None,
         lines += [f'        {partition} {{',
                   f'            setenv {stem}_IMAGE {tcl(row["image"])}',
                   f'            setenv {stem}_PREFIX {tcl(row["identity"]["install_prefix"])}', '        }']
-    lines += ['    }', '}', f'setenv {stem}_SOURCE {tcl(identity["source_sha"])}',
-              f'prepend-path PATH {tcl(root / "bin" / software)}', '']
+    lines += ['    }', '}', f'setenv {stem}_SOURCE {tcl(identity["source_sha"])}']
+    if software in MPI_PROGRAMS:
+        lines.append(f'prepend-path PATH {tcl(root / "bin/mpi")}')
+    lines += [f'prepend-path PATH {tcl(root / "bin" / software)}', '']
     for name, value in (extra_environment or {}).items():
         require(re.fullmatch('[A-Z][A-Z0-9_]*', name), 'invalid module environment key')
         lines.append(f'setenv {name} {tcl(value)}')
@@ -107,6 +115,12 @@ def write(path, content, mode=0o444):
 
 def verify_sources(snapshot):
     """Full hash at publication; runtime only needs the per-job image cache."""
+    if 'memory_bootstrap' in snapshot:
+        row = snapshot['memory_bootstrap']
+        image = Path(row['image'])
+        before = file_identity(image)
+        require(digest(image) == row['sha256'] and file_identity(image) == before,
+                'memory bootstrap changed')
     for name, app in snapshot['applications'].items():
         for partition, row in app['partitions'].items():
             image = Path(row['image'])
@@ -116,7 +130,7 @@ def verify_sources(snapshot):
             print(f'{name}/{partition}: verified {before[2]} bytes', flush=True)
 
 
-def install(snapshot, destination, *, copy_images=False, module_root=None):
+def install(snapshot, destination, *, copy_images=False, module_root=None, memory_bootstrap=None):
     snapshot = copy.deepcopy(validate_snapshot(snapshot))
     destination = bind_path(destination)
     require(str(destination).startswith(('/home/', '/org/', '/opt/'))
@@ -129,6 +143,9 @@ def install(snapshot, destination, *, copy_images=False, module_root=None):
     require(snapshot.get('runtime_sha256', runtime_sha256) == runtime_sha256,
             'installer runtime differs from the prepared/tested bundle')
     snapshot['runtime_sha256'] = runtime_sha256
+    if memory_bootstrap is not None:
+        memory_bootstrap = bind_path(memory_bootstrap)
+        snapshot['memory_bootstrap'] = dict(image=str(memory_bootstrap), sha256=digest(memory_bootstrap))
     if module_root is not None:
         module_root = bind_path(module_root)
         require(module_root.resolve() == module_root, 'redirected public module root')
@@ -139,6 +156,18 @@ def install(snapshot, destination, *, copy_images=False, module_root=None):
     destination.mkdir(parents=True, mode=0o755)
     runtime = destination / 'libexec/sif_runtime.py'
     write(runtime, runtime_source.read_text(), 0o555)
+    if 'memory_bootstrap' in snapshot:
+        row = snapshot['memory_bootstrap']
+        image = destination / 'libexec/memory-bootstrap.sif'
+        shutil.copyfile(row['image'], image)
+        image.chmod(0o444)
+        require(digest(image) == row['sha256'], 'copied memory bootstrap changed')
+        row['source_image'] = row['image']
+        row['image'] = str(image)
+    for program in MPI_LAUNCHERS:
+        argv = ['/usr/bin/python3', '-I', '-B', str(runtime), str(destination / 'catalog.json'), '_mpi', program]
+        write(destination / 'bin/mpi' / program,
+              '#!/usr/bin/env bash\nexec ' + shlex.join(argv) + ' "$@"\n', 0o555)
     for name, app in snapshot['applications'].items():
         for partition, row in app['partitions'].items():
             if copy_images:
@@ -196,13 +225,15 @@ def main():
     parser.add_argument('snapshot', type=Path)
     parser.add_argument('--destination', type=Path)
     parser.add_argument('--copy-images', action='store_true')
+    parser.add_argument('--memory-bootstrap', type=Path, help='mountpoint-only SIF for AppArmor compatibility')
     parser.add_argument('--module-root', type=Path, help='also install the five public Lmod entries here')
     args = parser.parse_args()
     snapshot = load_snapshot(args.snapshot)
     if args.destination is None:
         verify_sources(snapshot)
     else:
-        install(snapshot, args.destination, copy_images=args.copy_images, module_root=args.module_root)
+        install(snapshot, args.destination, copy_images=args.copy_images, module_root=args.module_root,
+                memory_bootstrap=args.memory_bootstrap)
 
 
 if __name__ == '__main__':

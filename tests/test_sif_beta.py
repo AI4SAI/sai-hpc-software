@@ -13,7 +13,7 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO / 'controller'))
 import sif_beta as beta
 from sif_modules import render_module
-from sif_runtime import digest, PROGRAMS
+from sif_runtime import digest, MPI_LAUNCHERS, PROGRAMS
 
 
 class SifBetaTests(unittest.TestCase):
@@ -127,6 +127,10 @@ proc setenv {name value} {puts "ENV $name=$value"}
             for program in PROGRAMS[name]:
                 argv = ['/usr/bin/python3', '-I', '-B', str(runtime), str(bundle / 'catalog.json'), name, program]
                 (bundle / 'bin' / name / program).write_text('#!/usr/bin/env bash\nexec ' + shlex.join(argv) + ' "$@"\n')
+        (bundle / 'bin/mpi').mkdir()
+        for program in MPI_LAUNCHERS:
+            argv = ['/usr/bin/python3', '-I', '-B', str(runtime), str(bundle / 'catalog.json'), '_mpi', program]
+            (bundle / 'bin/mpi' / program).write_text('#!/usr/bin/env bash\nexec ' + shlex.join(argv) + ' "$@"\n')
         catalog = bundle / 'catalog.json'
         catalog.write_text(json.dumps(snapshot))
         reports = []
@@ -166,13 +170,18 @@ proc setenv {name value} {puts "ENV $name=$value"}
     def test_prepare_select_without_separate_templates(self):
         bundle, catalog, checks = self.fake_bundle()
         root, modules = self.root / 'beta', self.root / 'modulefiles'
+        legacy = modules / 'cp2k/master-beta-20261024-cfe5e5d87aaf'
+        legacy.parent.mkdir(parents=True)
+        legacy.write_text('frozen previous runtime')
         destination = beta.prepare(root, modules, 'one', bundle, catalog, checks, list(PROGRAMS))
         self.assertFalse((destination / 'templates').exists())
         pointer = modules / 'cp2k/master-beta-later'
         self.assertFalse(pointer.exists())
         beta.select(root, 'one', ['cp2k'])
         self.assertTrue(pointer.is_symlink())
-        self.assertEqual(pointer.readlink(), Path('master-beta-20261024-cfe5e5d87aaf'))
+        self.assertEqual(pointer.readlink(), Path('master-beta-20261024-cfe5e5d87aaf-r'
+                                                + digest(bundle / 'libexec/sif_runtime.py')[:12]))
+        self.assertEqual(legacy.read_text(), 'frozen previous runtime')
         for software in PROGRAMS:
             content = (destination / 'modules' / software).read_text()
             self.assertIn('System sbatch examples: /opt/sbatch_examples', content)
