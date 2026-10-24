@@ -15,7 +15,8 @@
 登录节点可浏览、查看帮助；在实际 Slurm allocation 内加载，自动按
 `SLURM_JOB_PARTITION` 选择镜像和匹配的 MPI。未知分区会明确报错。
 卸载使用加载时保存的分区，退出 allocation 后也能正确卸载。
-`*-sif` 与已有物理安装模块分开命名，同一个程序的两个入口互斥。
+`*-sif` 与已有物理安装模块分开命名。加载 SIF 模块会检查已加载的同程序物理
+模块；切换入口时先卸载前一模块，或执行 `module purge`。
 
 项目内已验证的入口：
 
@@ -49,6 +50,7 @@ module help cp2k-sif/master-20261024-gcfe5e5d87aaf
 
 set -eo pipefail
 source /etc/profile.d/lmod.sh
+module purge
 module use /org/org-open-sai/proj-sai-hpc-software/sif/20261024-r4/modulefiles
 module load cp2k-sif/master-20261024-gcfe5e5d87aaf
 
