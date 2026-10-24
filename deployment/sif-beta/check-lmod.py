@@ -43,8 +43,11 @@ for software in PROGRAMS:
         '[[ -z ${' + stem(software) + '_SOURCE+x} ]]',
         'module help ' + shlex.quote(name), 'module show ' + shlex.quote(name),
     ]))
-    require(all(word in result.stderr for word in ('Commit:', 'Templates:', 'Fixed module:', 'Not loaded:')),
+    require(all(word in result.stderr for word in ('Commit:', 'System sbatch examples: /opt/sbatch_examples',
+                                                  'Command:', 'Fixed module:', 'Not loaded:')),
             'login rejection must include complete dynamic help')
+    require('Templates:' not in result.stderr and '_TEMPLATES' not in result.stderr,
+            'beta modules must not advertise separate SIF templates')
     checks[software + '_login'] = True
 
 # A private synthetic module exercises Lmod's environment bookkeeping. It does

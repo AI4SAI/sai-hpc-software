@@ -54,35 +54,37 @@ def render_version(root, software, generation):
         f'setenv {key} $sai_beta_generation', ''])
 
 
-def render_template(software, *, cpu=False):
-    mpi = software in ('cp2k', 'abacus', 'lammps')
-    partition, qos = ('DSPRHBM', 'rush-cpu') if cpu else ('16V100', 'flood-1o2gpu')
-    lines = ['#!/bin/bash', f'#SBATCH --job-name={software}', f'#SBATCH --partition={partition}',
-             '#SBATCH --nodes=1', f'#SBATCH --ntasks={2 if cpu else 1}',
-             '#SBATCH --cpus-per-task=2' if cpu else '#SBATCH --gpus-per-node=1',
-             f'#SBATCH --qos={qos}', '']
-    if mpi and not cpu:
-        lines += ['source /opt/sai/runtime/mps_mapping.d/${SLURM_JOB_PARTITION}.bash', '']
-    if cpu or software == 'cp2k':
-        threads = '$SLURM_CPUS_PER_TASK' if cpu else '$((CORES_PER_GPU/RANKS_PER_GPU))'
-        lines += [f'export OMP_NUM_THREADS={threads}', 'export OMP_PLACES=cores',
-                  'export OMP_PROC_BIND=close', '']
-    elif software in ('lammps', 'deepmd-kit'):
-        lines += ['export OMP_NUM_THREADS=2', '']
-    lines += ['# Short home path for SIF scratch and Unix sockets.',
-              'export TMPDIR="$HOME/.sai-sif-$SLURM_JOB_ID"', 'mkdir -p "$TMPDIR"',
-              f'module load {software}/{channel(software)}', '']
-    if mpi:
-        command = {'cp2k': 'cp2k.psmp -i input.inp -o output.out',
-                   'abacus': 'abacus > abacus.out',
-                   'lammps': 'lmp -pk gpu $SLURM_GPUS_ON_NODE split 1.0 -in in.lmp -log log.lammps'}[software]
-        mapping = 'slot:pe=$OMP_NUM_THREADS' if cpu else '$MAP_OPT'
-        lines += ['mpirun -np $SLURM_NTASKS --map-by ' + mapping + ' ' + command]
+def render_help(software, snapshot, module_root):
+    app = snapshot['applications'][software]
+    identity = next(iter(app['partitions'].values()))['identity']
+    fixed = software + '/' + version_name(software, snapshot)
+    command = {
+        'cp2k': 'cp2k.psmp -i input.inp -o output.out',
+        'abacus': 'abacus > abacus.out',
+        'lammps': 'lmp -pk gpu $SLURM_GPUS_ON_NODE split 1.0 -in in.lmp -log log.lammps',
+        'deepmd-kit': 'dp --pt train input.json',
+        'gpumd': 'gpumd > gpumd.out',
+    }[software]
+    launch = ('Use host mpirun with the resource and mapping settings in your existing job script.\n'
+              if software in ('cp2k', 'abacus', 'lammps') else 'Run directly in the case directory.\n')
+    if software == 'lammps':
+        launch += 'The input must select GPU styles, such as lj/cut/gpu.\n'
     elif software == 'deepmd-kit':
-        lines += ['dp --pt train input.json']
-    else:
-        lines += ['gpumd > gpumd.out']
-    return '\n'.join(lines) + '\nexit\n'
+        launch += ('Single-GPU PyTorch training was checked on 16V100; multi-GPU training is not accepted for this snapshot.\n'
+                   'Use deepmd-python for the SIF Python environment.\n')
+    return (f"[SAI beta] {software} / {SOFTWARE[software]['development_ref']}\n"
+            f"Source version: {identity['source_version']}\n"
+            f"Commit: {identity['source_sha']}\n"
+            f"Accepted snapshot: {snapshot['snapshot']} (latest accepted, not necessarily upstream HEAD)\n"
+            f"Partitions: {', '.join(app['partitions'])}\n"
+            f"Fixed module: {fixed}\n"
+            "System sbatch examples: /opt/sbatch_examples\n\n"
+            "Load on a compute node inside your existing sbatch job or srun shell:\n"
+            f"  module load {software}/{channel(software)}\n"
+            f"Command: {command}\n" + launch +
+            "Commands enter the read-only SIF automatically; no extraction is needed.\n"
+            "Current runtime: set TMPDIR to an existing project directory under /org before launching MPI or the program.\n"
+            f"For a fixed version: module use {module_root}; module load {fixed}\n")
 
 
 def verified_bundle(bundle, validated_catalog, checks, software):
@@ -143,39 +145,14 @@ def prepare(root, module_root, generation, bundle, validated_catalog, checks, so
         app = snapshot['applications'][name]
         identity = next(iter(app['partitions'].values()))['identity']
         branch = SOFTWARE[name]['development_ref']
-        templates = destination / 'templates' / name
-        fixed = name + '/' + version_name(name, snapshot)
-        description = (f"[SAI beta] {name} / {branch}\n"
-                       f"Source version: {identity['source_version']}\n"
-                       f"Commit: {identity['source_sha']}\n"
-                       f"Accepted snapshot: {snapshot['snapshot']} (latest accepted, not necessarily upstream HEAD)\n"
-                       f"Partitions: {', '.join(app['partitions'])}\n"
-                       f"Fixed module: {fixed}\n"
-                       f"Templates: {templates}\n\n"
-                       "Copy gpu.sbatch into your case directory and adjust partition/resources.\n"
-                       + ("For DSPRHBM use cpu.sbatch.\n" if 'DSPRHBM' in app['partitions'] else '') +
-                       f"On the login node: cp {templates}/gpu.sbatch ./run.sbatch; edit it, then sbatch run.sbatch.\n"
-                       "Load on a compute node inside sbatch or an srun shell.\n"
-                       "Set TMPDIR in /home or /org before host mpirun; keep inputs under the case directory.\n"
-                       "SIF commands are wrappers: do not replace them with native /opt executable paths.\n"
-                       "ABACUS/CP2K/LAMMPS use host mpirun and the site GPU mapping script.\n"
-                       "GPUMD runs directly. DeePMD single-GPU runs dp; PyTorch multi-GPU uses torchrun.\n"
-                       + ("This snapshot has no accepted multi-GPU training template.\n"
-                          "PyTorch se_e2_a DDP fails on unused compression parameters; DPA2 hits missing Triton tooling.\n"
-                          "TensorFlow MPI training requires Horovod; it is not provided by this snapshot.\n"
-                          if name == 'deepmd-kit' else '') +
-                       "Use deepmd-python for the SIF Python environment.\n"
-                       f"For a fixed version: module use {module_root}; module load {fixed}\n")
+        description = render_help(name, snapshot, module_root)
         extra = {stem(name) + '_VERSION': version_name(name, snapshot), stem(name) + '_BRANCH': branch,
-                 stem(name) + '_TEMPLATES': str(templates), stem(name) + '_SNAPSHOT': snapshot['snapshot']}
+                 stem(name) + '_SNAPSHOT': snapshot['snapshot']}
         notice = (f"[SAI beta] {name}/{branch}; commit={identity['source_sha'][:12]}; "
-                  f"snapshot={snapshot['snapshot']}; templates={templates}")
+                  f"snapshot={snapshot['snapshot']}")
         write(destination / 'modules' / name,
               render_module(bundle, name, dict(app, version=version_name(name, snapshot)), help_text=description, notice=notice,
                             extra_environment=extra, compute_only=True))
-        write(templates / 'gpu.sbatch', render_template(name))
-        if 'DSPRHBM' in app['partitions']:
-            write(templates / 'cpu.sbatch', render_template(name, cpu=True))
     versions = {}
     for name in software:
         version = version_name(name, snapshot)

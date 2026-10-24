@@ -65,7 +65,7 @@ def render_module(root, software, app, *, help_text=None, notice=None,
     if compute_only:
         lines += ['    if {![info exists env(SLURM_JOB_ID)] || ![info exists env(SLURMD_NODENAME)] || ![info exists env(SLURM_JOB_PARTITION)]} {',
                   '        ModulesHelp',
-                  '        error "Not loaded: load this module on a compute node inside an sbatch job or srun shell; see the templates above."',
+                  '        error "Not loaded: load this module on a compute node inside an sbatch job or srun shell; see the help above."',
                   '    }']
     lines += [
              '    if {![info exists env(SLURM_JOB_PARTITION)]} {error "load the SIF module inside the Slurm allocation"}',
