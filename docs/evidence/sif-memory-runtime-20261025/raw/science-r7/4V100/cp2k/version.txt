@@ -1,0 +1,123 @@
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+ CP2K version 2026.2 (Development Version)
+ Source code revision cfe5e5d87a
+ cp2kflags: omp libint fftw3 libxc libxc_gpu elpa parallel scalapack mpi_f08 cosma libxs libxsmm dbcsr_acc plumed2 spglib openblas libdftd4 s_dftd3 mctc-lib tblite libvori libbqb offload_cuda spla_gemm_offloading cusolvermp cusolvermp_nccl hdf5 libwignernj
+ compiler: GCC version 14.3.0
+ compiler target: cpuid   1003 (x86_avx512)
+ compiler options:
+   -cpp -I /workspace/source/src -I /workspace/build/src -I /workspace/
+   source/src/base -I /workspace/source/src/common -I /workspace/source
+   /src/motion -I /workspace/source/src/dbm -I /workspace/build/src/mod
+   _files -I /opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d
+   87aaf-rae6467ac2934/4V100/dependencies/spack/linux-zen5/libint-2.6.0
+   -vyzopke2j5qqavmw4kzsza7osl5co4hz/include -I /opt/devtools/nvidia/cu
+   da-12.9.1/targets/x86_64-linux/include -I /opt/apps/cp2k/cp2k-develo
+   pment-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/4V100/dependenci
+   es/tblite/include -I /opt/apps/cp2k/cp2k-development-master-2026-10-
+   23-gcfe5e5d87aaf-rae6467ac2934/4V100/dependencies/tblite/include/mct
+   c-lib/modules -I /opt/apps/cp2k/cp2k-development-master-2026-10-23-g
+   cfe5e5d87aaf-rae6467ac2934/4V100/dependencies/tblite/include/dftd4/G
+   NU-14.3.0 -I /opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5
+   e5d87aaf-rae6467ac2934/4V100/dependencies/tblite/include/multicharge
+   /GNU-14.3.0 -I /opt/devtools/saiblas/2603-gnu-avx512/include -I /opt
+   /apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467a
+   c2934/4V100/dependencies/tblite/include/tblite/GNU-14.3.0 -I /opt/ap
+   ps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac29
+   34/4V100/dependencies/tblite/include/toml-f/modules -I /opt/apps/cp2
+   k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/4V1
+   00/dependencies/tblite/include/s-dftd3/GNU-14.3.0 -I /opt/devtools/s
+   pglib/spglib-2.7.0/include -I /opt/apps/cp2k/cp2k-development-master
+   -2026-10-23-gcfe5e5d87aaf-rae6467ac2934/4V100/dependencies/libxc/inc
+   lude -I /opt/devtools/elpa/elpa-2026.02.001-2603-gnu-avx512/nvidia/i
+   nclude/elpa_openmp-2026.02.001 -I /opt/devtools/elpa/elpa-2026.02.00
+   1-2603-gnu-avx512/nvidia/include/elpa_openmp-2026.02.001/modules -I 
+   /opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6
+   467ac2934/4V100/dependencies/spack/linux-zen5/plumed-2.10.1-tuc2skr6
+   cmuw6yumexlghhmtuuy4ruzg/include -I /opt/devtools/fftw/fftw-3.3.10/i
+   nclude -I /opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d
+   87aaf-rae6467ac2934/4V100/dependencies/spack/linux-zen5/spla-1.6.1-u
+   c273bzgwxxngrexd366xlfvkfmeuvgm/include -I /opt/apps/cp2k/cp2k-devel
+   opment-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/4V100/dependenc
+   ies/spack/linux-zen5/spla-1.6.1-uc273bzgwxxngrexd366xlfvkfmeuvgm/inc
+   lude/spla -I /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda1
+   2-avx512/include -I /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gn
+   u-cuda12-avx512/lib -I /opt/apps/cp2k/cp2k-development-master-2026-1
+   0-23-gcfe5e5d87aaf-rae6467ac2934/4V100/dependencies/spack/linux-zen5
+   /cosma-2.7.0-nxkgtx7kzj7x2fhs74xieconnpza7qsf/include -I /opt/apps/c
+   p2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/4
+   V100/dependencies/spack/linux-zen5/costa-2.3.3-zlqyozosmfk6c6v2pjhdc
+   3d6xchzenfd/include -I /opt/apps/cp2k/cp2k-development-master-2026-1
+   0-23-gcfe5e5d87aaf-rae6467ac2934/4V100/dependencies/spack/linux-zen5
+   /tiled-mm-2.3.2-joxrwvs52itwvriwz6urraxcs3kgwuds/include -I /opt/app
+   s/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6467ac293
+   4/4V100/dependencies/spack/linux-zen5/tiled-mm-2.3.2-joxrwvs52itwvri
+   wz6urraxcs3kgwuds/include/Tiled-MM -I /opt/apps/cp2k/cp2k-developmen
+   t-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/4V100/dependencies/s
+   pack/linux-zen5/hdf5-1.14.6-veh6gg4r2kjguzn47akx3jrp3kumhq6r/include
+    -I /opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-
+   rae6467ac2934/4V100/dependencies/spack/linux-zen5/hdf5-1.14.6-veh6gg
+   4r2kjguzn47akx3jrp3kumhq6r/mod/static -I /opt/apps/cp2k/cp2k-develop
+   ment-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/4V100/dependencie
+   s/wignernj/include -I /opt/apps/cp2k/cp2k-development-master-2026-10
+   -23-gcfe5e5d87aaf-rae6467ac2934/4V100/dependencies/dbcsr/include -I 
+   /opt/apps/cp2k/cp2k-development-master-2026-10-23-gcfe5e5d87aaf-rae6
+   467ac2934/4V100/dependencies/libxs/include -I /opt/apps/cp2k/cp2k-de
+   velopment-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/4V100/depend
+   encies/libxs/include/libxs -I /opt/apps/cp2k/cp2k-development-master
+   -2026-10-23-gcfe5e5d87aaf-rae6467ac2934/4V100/dependencies/spack/lin
+   ux-zen5/libxsmm-2.0.0-5rlaklbfvxdqoorp7qxubasr24vwogpk/include -I /o
+   pt/devtools/nvidia/mp_libs/include -I /opt/devtools/nvidia/nccl_2.29
+   .3_cuda12.9_sai_v2.29.3-1-sai.2/include -imultiarch x86_64-linux-gnu
+    -D_REENTRANT -D COSMA_HAVE_GPU -D IK=i4 -D TILED_MM_CUDA -D USING_L
+   ibxc -D _FILE_OFFSET_BITS=64 -D _GNU_SOURCE -D _LARGEFILE_SOURCE -D 
+   _POSIX_C_SOURCE=200809L -D __BLAS -D __COMPILE_ARCH="x86_64" -D __CO
+   MPILE_DIR="/workspace/build" -D __COMPILE_HOST="" -D __COSMA -D __CU
+   SOLVERMP -D __CUSOLVERMP_NCCL -D __DATA_DIR="/opt/apps/cp2k/cp2k-dev
+   elopment-master-2026-10-23-gcfe5e5d87aaf-rae6467ac2934/4V100/share/c
+   p2k/data" -D __DBCSR_ACC -D __DFTD4 -D __ELPA -D __FFTW3 -D __HDF5 -
+   D __LIBINT -D __LIBVORI -D __LIBXC -D __LIBXS -D __LIBXSMM -D __MPI_
+   F08 -D __OFFLOAD_CUDA -D __OFFLOAD_GEMM -D __OPENBLAS -D __PLUMED2 -
+   D __SPGLIB -D __SPLA -D __S_DFTD3 -D __TBLITE -D __parallel -D __SHO
+   RT_FILE__="start/cp2k.F" -march=znver5 -mmmx -mpopcnt -msse -msse2 -
+   msse3 -mssse3 -msse4.1 -msse4.2 -mavx -mavx2 -msse4a -mno-fma4 -mno-
+   xop -mfma -mavx512f -mbmi -mbmi2 -maes -mpclmul -mavx512vl -mavx512b
+   w -mavx512dq -mavx512cd -mavx512vbmi -mavx512ifma -mavx512vpopcntdq 
+   -mavx512vbmi2 -mgfni -mvpclmulqdq -mavx512vnni -mavx512bitalg -mavx5
+   12bf16 -mavx512vp2intersect -mno-3dnow -madx -mabm -mno-cldemote -mc
+   lflushopt -mclwb -mclzero -mcx16 -mno-enqcmd -mf16c -mfsgsbase -mfxs
+   r -mno-hle -msahf -mno-lwp -mlzcnt -mmovbe -mmovdir64b -mmovdiri -mm
+   waitx -mno-pconfig -mpku -mprfchw -mno-ptwrite -mrdpid -mrdrnd -mrds
+   eed -mno-rtm -mno-serialize -mno-sgx -msha -mshstk -mno-tbm -mno-tsx
+   ldtrk -mvaes -mno-waitpkg -mwbnoinvd -mxsave -mxsavec -mxsaveopt -mx
+   saves -mno-amx-tile -mno-amx-int8 -mno-amx-bf16 -mno-uintr -mno-hres
+   et -mno-kl -mno-widekl -mavxvnni -mno-avx512fp16 -mno-avxifma -mno-a
+   vxvnniint8 -mno-avxneconvert -mno-cmpccxadd -mno-amx-fp16 -mno-prefe
+   tchi -mno-raoint -mno-amx-complex -mno-avxvnniint16 -mno-sm3 -mno-sh
+   a512 -mno-sm4 -mno-apxf -mno-usermsr --param=l1-cache-size=48 --para
+   m=l1-cache-line-size=64 --param=l2-cache-size=1024 -mtune=znver5 -g 
+   -O3 -O3 -O3 -Wno-deprecated-declarations -Wno-maybe-uninitialized -W
+   uninitialized -Wuse-without-only -std=f2008 -fPIE -ffree-form -fimpl
+   icit-none -fno-omit-frame-pointer -fbacktrace -fallow-argument-misma
+   tch -funroll-loops -fopenmp -fpre-include=/usr/include/finclude/x86_
+   64-linux-gnu/math-vector-fortran.h

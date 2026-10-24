@@ -1,0 +1,23 @@
+{
+  "partition": "4V100",
+  "job": "1924553",
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--account=proj-sai-hpc-software",
+    "--partition=4V100",
+    "--nodes=1",
+    "--ntasks=2",
+    "--ntasks-per-node=2",
+    "--job-name=sif-memory-4V100",
+    "--chdir=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/science-r5/4V100",
+    "--output=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/science-r5/4V100/slurm-%j.log",
+    "--gpus-per-node=2",
+    "--qos=flood-1o2gpu",
+    "--exclude=4v100n35",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/source-r1/deployment/sif-beta/check-memory.sbatch",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/source-r1/deployment/sif-development-20261024",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/bundle-r5",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/science-r5/4V100"
+  ]
+}

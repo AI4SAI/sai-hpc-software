@@ -1,0 +1,21 @@
+{
+  "job": "1924750",
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--time=00:02:00",
+    "--account=proj-sai-hpc-software",
+    "--partition=DSPRHBM",
+    "--nodes=1",
+    "--ntasks=1",
+    "--nodelist=d9470n01",
+    "--chdir=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/concurrent-r7b/DSPRHBM",
+    "--dependency=afterok:1924725",
+    "--job-name=sif-memory-teardown",
+    "--output=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/concurrent-r7b/DSPRHBM/observer-%j.log",
+    "--cpus-per-task=1",
+    "--qos=rush-cpu",
+    "--wrap",
+    "python3 -B /org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/concurrent-r7b/DSPRHBM/observe-teardown.py"
+  ]
+}

@@ -1,0 +1,42 @@
+#%Module1.0
+module-whatis "abacus develop-20261024-g370ba685e670; accepted SIF; partitions: 16V100 4V100 8V100V0 DSPRHBM; source: 370ba685e6707b3625c5580ff9d02ef0afb248e8"
+proc ModulesHelp {} {
+    puts stderr "abacus develop-20261024-g370ba685e670; accepted SIF; partitions: 16V100 4V100 8V100V0 DSPRHBM; source: 370ba685e6707b3625c5580ff9d02ef0afb248e8\nLoad inside the allocation. Runtime temporary files use private node memory automatically. GPUMD and dp are direct commands; deepmd-python selects this Python package."
+}
+conflict abacus
+conflict abacus-sif
+set sai_partition ""
+if {[module-info mode remove]} {
+    if {[info exists env(SAI_SIF_ABACUS_PARTITION)]} {set sai_partition $env(SAI_SIF_ABACUS_PARTITION)}
+} elseif {[module-info mode load]} {
+    if {![info exists env(SLURM_JOB_PARTITION)]} {error "load the SIF module inside the Slurm allocation"}
+    set sai_partition $env(SLURM_JOB_PARTITION)
+    if {[lsearch -exact {16V100 4V100 8V100V0 DSPRHBM} $sai_partition] < 0} {error "no accepted SIF for this partition"}
+}
+if {$sai_partition ne ""} {
+    prepend-path MODULEPATH /opt/modules/modulefiles/devtools
+    module load apptainer/1.4.4
+    module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto
+    setenv SAI_SIF_ABACUS_PARTITION $sai_partition
+    switch -- $sai_partition {
+        16V100 {
+            setenv SAI_SIF_ABACUS_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/abacus/16V100.sif"
+            setenv SAI_SIF_ABACUS_PREFIX "/opt/apps/abacus/abacus-development-develop-2026-10-23-g370ba685e670-re5ab58f508b4/16V100"
+        }
+        4V100 {
+            setenv SAI_SIF_ABACUS_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/abacus/4V100.sif"
+            setenv SAI_SIF_ABACUS_PREFIX "/opt/apps/abacus/abacus-development-develop-2026-10-23-g370ba685e670-re5ab58f508b4/4V100"
+        }
+        8V100V0 {
+            setenv SAI_SIF_ABACUS_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/abacus/8V100V0.sif"
+            setenv SAI_SIF_ABACUS_PREFIX "/opt/apps/abacus/abacus-development-develop-2026-10-23-g370ba685e670-re5ab58f508b4/8V100V0"
+        }
+        DSPRHBM {
+            setenv SAI_SIF_ABACUS_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/abacus/DSPRHBM.sif"
+            setenv SAI_SIF_ABACUS_PREFIX "/opt/apps/abacus/abacus-development-develop-2026-10-23-g370ba685e670-re5ab58f508b4/DSPRHBM"
+        }
+    }
+}
+setenv SAI_SIF_ABACUS_SOURCE "370ba685e6707b3625c5580ff9d02ef0afb248e8"
+prepend-path PATH "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f/bin/mpi"
+prepend-path PATH "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f/bin/abacus"

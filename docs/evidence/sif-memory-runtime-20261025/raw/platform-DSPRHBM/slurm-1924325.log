@@ -1,0 +1,17 @@
+node d9470n01.mr-sai.ai kernel 7.0.0-14-generic uid 1478400690
+/proc/self/uid_map          0          0 4294967295
+
+/proc/self/gid_map          0          0 4294967295
+
+/proc/self/attr/current unconfined
+
+/proc/sys/kernel/apparmor_restrict_unprivileged_userns 1
+
+/proc/sys/kernel/unprivileged_userns_clone 1
+
+unshare from util-linux 2.39.3
+
+{"args": ["unshare", "--user", "--map-current-user", "--keep-caps", "--mount", "--propagation", "private", "id"], "code": 1, "stdout": "", "stderr": "unshare: write failed /proc/self/uid_map: Operation not permitted\n"}
+{"args": ["unshare", "--user", "--map-root-user", "--mount", "--propagation", "private", "id"], "code": 1, "stdout": "", "stderr": "unshare: write failed /proc/self/uid_map: Operation not permitted\n"}
+{"args": ["unshare", "--user", "--map-users=1478400690,1478400690,1", "--map-groups=1478400690,1478400690,1", "--keep-caps", "--mount", "--propagation", "private", "id"], "code": 1, "stdout": "", "stderr": "unshare: cannot change root filesystem propagation: Permission denied\n"}
+{"args": ["apptainer", "exec", "--userns", "--no-home", "/", "/usr/bin/id"], "code": 255, "stdout": "", "stderr": "INFO:    Detected Singularity user configuration directory\nFATAL:   / as sandbox is not authorized\n"}

@@ -1,0 +1,54 @@
+{
+  "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f",
+  "catalog_sha256": "2aa23091ecb2097ffc09dcaca876251ce689a45215320327032d97f2e831ce6f",
+  "checks_sha256": "e1333c5ea206d71f52f65f9dfe31695e9ef727083a0e0b2ac03e6dcf30e5c1d0",
+  "files": {
+    "acceptance.json": "e1333c5ea206d71f52f65f9dfe31695e9ef727083a0e0b2ac03e6dcf30e5c1d0",
+    "modules/abacus": "81e58cd73adceb383fc0bdaadf39e892f6739397e2a4788d9bf484a44914a86b",
+    "modules/cp2k": "d7121918e6eaafb048bb408b09e67ae17825cb15db6cf06ee7d477fe1da930d1",
+    "modules/deepmd-kit": "f7675c5705b42cd86d8d269c6f63e8a800a53c0d0d93448856df20b9eafa85f6",
+    "modules/gpumd": "1144796b846699eb231e4218185c280f47b718201f09225d99504373f119db84",
+    "modules/lammps": "76900720c68c41e7c985b8b95fbc21a0e2470d401b845da3c1acc40f6210e308"
+  },
+  "generation": "20261025-memory-r1",
+  "jobs": {
+    "16V100": "1924611",
+    "4V100": "1924610",
+    "8V100V0": "1924612",
+    "DSPRHBM": "1924601"
+  },
+  "module_root": "/home/stardust/sai-hpc-software/modulefiles/apps",
+  "runtime_sha256": "a4c6a24c229f7a696b202fb1bfc4b18045a60e93f7bc7477cb7d1d911100c611",
+  "schema": 2,
+  "software": [
+    "abacus",
+    "cp2k",
+    "lammps",
+    "deepmd-kit",
+    "gpumd"
+  ],
+  "validated_catalog": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/bundle-r7/catalog.json",
+  "validated_catalog_sha256": "55c54d87653e79cbaec6d6f1dda2a3867776d9029c05666ce2f8734c15391454",
+  "versions": {
+    "abacus": {
+      "name": "develop-beta-20261024-370ba685e670-ra4c6a24c229f",
+      "sha256": "a7c6599ddd9e96b5bdde3e9685c41809f984c4b3f3ed7d5c0defb2839624248c"
+    },
+    "cp2k": {
+      "name": "master-beta-20261024-cfe5e5d87aaf-ra4c6a24c229f",
+      "sha256": "20b8a33b244310b76919797adb579a2ac682a19b14c8afe92806540f2c1acfd1"
+    },
+    "deepmd-kit": {
+      "name": "master-beta-20261024-558f56962775-ra4c6a24c229f",
+      "sha256": "4df9105f36ca1072f53bb457146342f87233b8af59beab0439e3998f95a1a29d"
+    },
+    "gpumd": {
+      "name": "master-beta-20261024-2c93346fce44-ra4c6a24c229f",
+      "sha256": "a3089824491aebb854d1bfce093e6ce954c9c598337a589bdd54127a86e3e0d3"
+    },
+    "lammps": {
+      "name": "develop-beta-20261024-a0e2bd6efb3d-ra4c6a24c229f",
+      "sha256": "550c76dd98b27cc58126f1189dd1ce6d384d3659868ddb7bbc2e256fd3c34d5a"
+    }
+  }
+}

@@ -1,0 +1,49 @@
+#%Module1.0
+module-whatis "deepmd-kit master-beta-20261024-558f56962775-ra4c6a24c229f; accepted SIF; partitions: 16V100 4V100 8V100V0; source: 558f56962775098b8b554e341c3b37d2f86e6aeb"
+proc ModulesHelp {} {
+    puts stderr "\[SAI beta\] deepmd-kit / master\nSource version: master-2026-10-23\nCommit: 558f56962775098b8b554e341c3b37d2f86e6aeb\nAccepted snapshot: 20261024 (latest accepted, not necessarily upstream HEAD)\nPartitions: 16V100, 4V100, 8V100V0\nFixed module: deepmd-kit/master-beta-20261024-558f56962775-ra4c6a24c229f\nSystem sbatch examples: /opt/sbatch_examples\n\nLoad on a compute node inside your existing sbatch job or srun shell:\n  module load deepmd-kit/master-beta-later\nCommand: dp --pt train input.json\nRun directly in the case directory.\nSingle-GPU PyTorch training was checked on 16V100; multi-GPU training is not accepted for this snapshot.\nUse deepmd-python for the SIF Python environment.\nCommands enter the read-only SIF automatically; no extraction is needed.\nRuntime temporary files use private node memory automatically; no TMPDIR setup is needed.\nFor a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load deepmd-kit/master-beta-20261024-558f56962775-ra4c6a24c229f\n"
+}
+conflict deepmd-kit
+conflict deepmd-kit-sif
+set sai_partition ""
+if {[module-info mode remove]} {
+    if {[info exists env(SAI_SIF_DEEPMD_KIT_PARTITION)]} {set sai_partition $env(SAI_SIF_DEEPMD_KIT_PARTITION)}
+} elseif {[module-info mode load]} {
+    if {![info exists env(SLURM_JOB_ID)] || ![info exists env(SLURMD_NODENAME)] || ![info exists env(SLURM_JOB_PARTITION)]} {
+        ModulesHelp
+        error "Not loaded: load this module on a compute node inside an sbatch job or srun shell; see the help above."
+    }
+    if {![info exists env(SLURM_JOB_PARTITION)]} {error "load the SIF module inside the Slurm allocation"}
+    set sai_partition $env(SLURM_JOB_PARTITION)
+    if {[lsearch -exact {16V100 4V100 8V100V0} $sai_partition] < 0} {ModulesHelp; error "no accepted SIF for this partition"}
+}
+if {$sai_partition ne ""} {
+    prepend-path MODULEPATH /opt/modules/modulefiles/devtools
+    module load apptainer/1.4.4
+    module load cuda/12.9.1
+    module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto
+    setenv SAI_SIF_DEEPMD_KIT_PARTITION $sai_partition
+    switch -- $sai_partition {
+        16V100 {
+            setenv SAI_SIF_DEEPMD_KIT_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/deepmd-kit/16V100.sif"
+            setenv SAI_SIF_DEEPMD_KIT_PREFIX "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100"
+        }
+        4V100 {
+            setenv SAI_SIF_DEEPMD_KIT_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/deepmd-kit/4V100.sif"
+            setenv SAI_SIF_DEEPMD_KIT_PREFIX "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100"
+        }
+        8V100V0 {
+            setenv SAI_SIF_DEEPMD_KIT_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/deepmd-kit/8V100V0.sif"
+            setenv SAI_SIF_DEEPMD_KIT_PREFIX "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0"
+        }
+    }
+}
+setenv SAI_SIF_DEEPMD_KIT_SOURCE "558f56962775098b8b554e341c3b37d2f86e6aeb"
+prepend-path PATH "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f/bin/deepmd-kit"
+
+setenv SAI_SIF_DEEPMD_KIT_VERSION "master-beta-20261024-558f56962775-ra4c6a24c229f"
+setenv SAI_SIF_DEEPMD_KIT_BRANCH "master"
+setenv SAI_SIF_DEEPMD_KIT_SNAPSHOT "20261024"
+if {[module-info mode load]} {
+    puts stderr [format "%s; partition=%s" "\[SAI beta\] deepmd-kit/master; commit=558f56962775; snapshot=20261024" $sai_partition]
+}

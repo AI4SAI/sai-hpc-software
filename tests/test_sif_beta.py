@@ -167,6 +167,21 @@ proc setenv {name value} {puts "ENV $name=$value"}
         with self.assertRaisesRegex(ValueError, 'relocated bundle differs'):
             beta.verified_bundle(bundle, original, checks, ['cp2k'])
 
+    def test_memory_runtime_cannot_publish_using_only_old_tmpdir_acceptance(self):
+        bundle, catalog, checks = self.fake_bundle()
+        image = bundle / 'bootstrap.sif'
+        image.write_bytes(b'mountpoints')
+        image.chmod(0o444)
+        snapshot = json.loads(catalog.read_text())
+        snapshot['memory_bootstrap'] = dict(image=str(image), sha256=digest(image))
+        catalog.write_text(json.dumps(snapshot))
+        reports = json.loads(checks.read_text())
+        for report in reports:
+            report['catalog_sha256'] = digest(catalog)
+        checks.write_text(json.dumps(reports))
+        with self.assertRaisesRegex(ValueError, 'automatic memory runtime was not accepted'):
+            beta.verified_bundle(bundle, catalog, checks, ['cp2k'])
+
     def test_prepare_select_without_separate_templates(self):
         bundle, catalog, checks = self.fake_bundle()
         root, modules = self.root / 'beta', self.root / 'modulefiles'

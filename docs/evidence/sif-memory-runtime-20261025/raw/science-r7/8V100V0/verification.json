@@ -1,0 +1,47 @@
+{
+  "abacus": {
+    "energy_error_ev": 3.9108272176235914e-11,
+    "energy_ev": -4869.747051950218,
+    "iterations": 10,
+    "rounded_iteration_seconds": 1.39,
+    "wall_seconds": 14.47
+  },
+  "automatic_memory": true,
+  "caller_tmpdir_unchanged": true,
+  "catalog_sha256": "55c54d87653e79cbaec6d6f1dda2a3867776d9029c05666ce2f8734c15391454",
+  "cp2k": {
+    "energy_delta_ha": 1.4210854715202004e-13,
+    "max_force_delta_ha_bohr": 0.0
+  },
+  "deepmd-kit": {
+    "cuda_bytes": 17083392,
+    "device": "cuda:0",
+    "errors": {
+      "energy": 0.0,
+      "forces": 1.734723475976807e-17,
+      "virial": 5.551115123125783e-17
+    },
+    "package": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/__init__.py",
+    "passed": true
+  },
+  "gpumd": {
+    "energy_error": 0.0,
+    "force_error": 0.0
+  },
+  "image_reads": {
+    "abacus": 1,
+    "cp2k": 1,
+    "deepmd-kit": 1,
+    "gpumd": 1,
+    "lammps": 1
+  },
+  "job": "1924612",
+  "lammps": {
+    "max_error": 0.0,
+    "values": 775
+  },
+  "partition": "8V100V0",
+  "passed": true,
+  "runtime_sha256": "a4c6a24c229f7a696b202fb1bfc4b18045a60e93f7bc7477cb7d1d911100c611",
+  "traces": 13
+}

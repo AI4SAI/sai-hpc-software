@@ -1,0 +1,39 @@
+#%Module1.0
+module-whatis "lammps develop-20261024-ga0e2bd6efb3d; accepted SIF; partitions: 16V100 4V100 8V100V0; source: a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b"
+proc ModulesHelp {} {
+    puts stderr "lammps develop-20261024-ga0e2bd6efb3d; accepted SIF; partitions: 16V100 4V100 8V100V0; source: a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b\nLoad inside the allocation. Runtime temporary files use private node memory automatically. GPUMD and dp are direct commands; deepmd-python selects this Python package."
+}
+conflict lammps
+conflict lammps-sif
+set sai_partition ""
+if {[module-info mode remove]} {
+    if {[info exists env(SAI_SIF_LAMMPS_PARTITION)]} {set sai_partition $env(SAI_SIF_LAMMPS_PARTITION)}
+} elseif {[module-info mode load]} {
+    if {![info exists env(SLURM_JOB_PARTITION)]} {error "load the SIF module inside the Slurm allocation"}
+    set sai_partition $env(SLURM_JOB_PARTITION)
+    if {[lsearch -exact {16V100 4V100 8V100V0} $sai_partition] < 0} {error "no accepted SIF for this partition"}
+}
+if {$sai_partition ne ""} {
+    prepend-path MODULEPATH /opt/modules/modulefiles/devtools
+    module load apptainer/1.4.4
+    module load cuda/12.9.1
+    module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto
+    setenv SAI_SIF_LAMMPS_PARTITION $sai_partition
+    switch -- $sai_partition {
+        16V100 {
+            setenv SAI_SIF_LAMMPS_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/lammps/16V100.sif"
+            setenv SAI_SIF_LAMMPS_PREFIX "/opt/apps/lammps/lammps-development-develop-2026-10-15-ga0e2bd6efb3d-r79751e306767/16V100"
+        }
+        4V100 {
+            setenv SAI_SIF_LAMMPS_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/lammps/4V100.sif"
+            setenv SAI_SIF_LAMMPS_PREFIX "/opt/apps/lammps/lammps-development-develop-2026-10-15-ga0e2bd6efb3d-rc01d748b9e7b/4V100"
+        }
+        8V100V0 {
+            setenv SAI_SIF_LAMMPS_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/lammps/8V100V0.sif"
+            setenv SAI_SIF_LAMMPS_PREFIX "/opt/apps/lammps/lammps-development-develop-2026-10-15-ga0e2bd6efb3d-rc01d748b9e7b/8V100V0"
+        }
+    }
+}
+setenv SAI_SIF_LAMMPS_SOURCE "a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b"
+prepend-path PATH "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f/bin/mpi"
+prepend-path PATH "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f/bin/lammps"

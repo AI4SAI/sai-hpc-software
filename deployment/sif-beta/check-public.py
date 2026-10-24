@@ -55,9 +55,16 @@ def main():
         verify(bundle / 'catalog.json', manifest['catalog_sha256'])
         verify(bundle / 'libexec/sif_runtime.py', manifest['runtime_sha256'], executable=True)
         catalog = json.loads((bundle / 'catalog.json').read_text())
+        require('memory_bootstrap' in catalog, 'automatic memory runtime has not been published')
         bootstrap = catalog['memory_bootstrap']
         verify(Path(bootstrap['image']), bootstrap['sha256'])
-        for row in catalog['applications'][name]['partitions'].values():
+        reports = {r['partition']: r for r in json.loads((generation / 'acceptance.json').read_text())}
+        for partition, row in catalog['applications'][name]['partitions'].items():
+            report = reports[partition]
+            require(report.get('passed') is True and report.get('automatic_memory') is True
+                    and name in report and report['runtime_sha256'] == manifest['runtime_sha256']
+                    and report['catalog_sha256'] == manifest['validated_catalog_sha256'],
+                    'missing matching private-memory execution acceptance')
             image = Path(row['image'])
             if image not in checked:
                 verify(image, row['sha256'])

@@ -1,0 +1,141 @@
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+Info: Local MPI proc number: 2,OpenMP thread number: 4,Total thread number: 8,Local thread limit: 32
+
+                     ▄████▄ █████▄ ▄████▄ ▄█████ ██  ██ ▄█████ 
+                     ██▄▄██ ██▄▄██ ██▄▄██ ██     ██  ██ ▀▀▀▄▄▄ 
+                     ██  ██ ██▄▄█▀ ██  ██ ▀█████ ▀████▀ █████▀ 
+
+                                                                                     
+                                v3.11.0-beta11
+
+               Atomic-orbital Based Ab-initio Computation at UStc                    
+
+                     Website: http://abacus.ustc.edu.cn/                             
+               Documentation: https://abacus.deepmodeling.com/                       
+                  Repository: https://github.com/abacusmodeling/abacus-develop       
+                              https://github.com/deepmodeling/abacus-develop         
+                      Commit: 370ba68 (Fri Oct 23 10:57:42 2026 +0800)
+
+ Sat Oct 24 16:26:17 2026
+ MAKE THE DIR         : OUT.autotest/
+ RUNNING WITH DEVICE  : CPU / AMD Ryzen 9 9950X3D 16-Core Processor (x1)
+                        GPU / Tesla V100-SXM2-32GB (x2)
+ WARNING: some of potential function is set to zero cause of less than 1e-30.
+ WARNING: some of potential function is set to zero cause of less than 1e-30.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ Warning: the number of valence electrons in pseudopotential > 5 for As: [Ar] 3d10 4s2 4p3
+ Warning: the number of valence electrons in pseudopotential > 3 for Ga: [Ar] 3d10 4s2 4p1
+ Pseudopotentials with additional electrons can yield (more) accurate outcomes, but may be less efficient.
+ If you're confident that your chosen pseudopotential is appropriate, you can safely ignore this warning.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ UNIFORM GRID DIM          : 32 * 32 * 32
+ UNIFORM GRID DIM (BIG)    : 32 * 32 * 32
+ DONE(0.195467   SEC) : SYMMETRY
+ DONE(0.19547    SEC) : SETUP UNITCELL
+ DONE(0.233807   SEC) : INIT K-POINTS
+ ----------------------------------------------------------------
+ Self-consistent calculations for electrons
+ ----------------------------------------------------------------
+ SPIN    KPOINTS         PROCESSES   THREADS/PROC  THREADS/TOTAL 
+ 1       8               2           4             8             
+ ----------------------------------------------------------------
+ Use plane wave basis
+ ----------------------------------------------------------------
+ ELEMENT NATOM       
+ As      1           
+ Ga      1           
+ ----------------------------------------------------------------
+ Initial plane wave basis and FFT box
+ ----------------------------------------------------------------
+ DONE(0.255467   SEC) : INIT PLANEWAVE
+ START CHARGE         : ATOMIC
+ DONE(0.258529   SEC) : LOCAL POTENTIAL
+ DONE(0.271869   SEC) : NON-LOCAL POTENTIAL
+ MEMORY FOR PSI (MB)  : 1.91602
+ DONE(0.325587   SEC) : INIT BASIS
+
+ ================================================================
+ SELF-CONSISTENT: 
+ ================================================================
+ DONE(0.352504   SEC) : INIT SCF
+ ITER     ETOT/eV          EDIFF/eV         DRHO     TIME/s
+ CG1   -4.87155886e+03   0.00000000e+00   1.5575e+00   0.30
+ CG2   -4.86818430e+03   3.37456005e+00   4.5255e-01   0.05
+ CG3   -4.86968323e+03  -1.49893080e+00   2.2817e-02   0.06
+ CG4   -4.86974142e+03  -5.81879465e-02   3.6961e-03   0.06
+ CG5   -4.86974538e+03  -3.96218414e-03   2.0748e-04   0.06
+ CG6   -4.86974664e+03  -1.26332600e-03   1.0543e-04   0.08
+ CG7   -4.86974703e+03  -3.89885930e-04   2.6607e-05   0.07
+ CG8   -4.86974703e+03   3.35110475e-06   5.2115e-06   0.07
+ CG9   -4.86974705e+03  -1.96670559e-05   1.8818e-07   0.07
+ CG10  -4.86974705e+03  -1.41267678e-06   1.7771e-08   0.09
+ ----------------------------------------------------------------
+              Stress_x             Stress_y             Stress_z 
+ ----------------------------------------------------------------
+     -12196.0610609724       -99.1596951254      -142.3866317164 
+        -99.1596951254    -12240.9536453393       -52.1802972029 
+       -142.3866317164       -52.1802972029    -12217.4693486404 
+ ----------------------------------------------------------------
+ TOTAL-PRESSURE (EXCLUDE KINETIC PART OF IONS): -12218.161352 kbar
+
+ TIME STATISTICS
+-------------------------------------------------------------------
+    CLASS_NAME           NAME        TIME/s  CALLS   AVG/s  PER/%  
+-------------------------------------------------------------------
+                   total             1.30   17       0.08   100.00 
+ Driver            atomic_world      1.30   1        1.30   100.00 
+ Driver            reading           0.10   1        0.10   7.41   
+ PW_Basis_K        setuptransform    0.02   1        0.02   1.59   
+ ppcell_vnl        init_vnl          0.01   1        0.01   1.02   
+ PSIPrepare        prepare_init      0.05   1        0.05   4.10   
+ psi_init_atomic   tabulate          0.05   1        0.05   4.10   
+ Relax_Driver      relax_driver      0.97   1        0.97   74.73  
+ ESolver_KS        runner            0.94   1        0.94   72.72  
+ ESolver_KS_PW     before_scf        0.03   1        0.03   2.07   
+ Potential         cal_veff          0.02   11       0.00   1.37   
+ PotXC             cal_veff          0.02   11       0.00   1.25   
+ XC_Functional     v_xc              0.02   13       0.00   1.46   
+ PSIPrepare        initialize_psi    0.02   1        0.02   1.69   
+ DiagoIterAssist   diag_subspace     0.07   40       0.00   5.57   
+ Operator          hPsi              0.11   3664     0.00   8.79   
+ Operator          veff_pw           0.06   3664     0.00   4.94   
+ PW_Basis_K        recip_to_real gpu 0.04   5544     0.00   2.90   
+ PW_Basis_K        real_to_recip gpu 0.03   4584     0.00   2.06   
+ NonlocalWorkspace apply             0.04   3664     0.00   3.39   
+ DiagoIterAssist   diag_hegvd        0.05   40       0.00   4.00   
+ ESolver_KS_PW     hamilt2rho_single 0.89   10       0.09   68.76  
+ HSolverPW         solve             0.89   10       0.09   68.29  
+ HSolverPW         solve_psik        0.83   40       0.02   63.99  
+ DiagoCG           diag_once         0.77   40       0.02   59.27  
+ ElecStatePW       psiToRho          0.02   10       0.00   1.56   
+ Stress_PW         cal_stress        0.02   1        0.02   1.40   
+-------------------------------------------------------------------
+
+
+ START  Time  : Sat Oct 24 16:26:17 2026
+ FINISH Time  : Sat Oct 24 16:26:18 2026
+ TOTAL  Time  : 1
+ SEE INFORMATION IN : OUT.autotest/

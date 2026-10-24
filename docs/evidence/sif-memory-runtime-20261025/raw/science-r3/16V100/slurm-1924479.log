@@ -1,0 +1,10 @@
+[INFO] NCCL Topology dumped via C-API and successfully patched to force GDR=1.
+Traceback (most recent call last):
+  File "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/source-r1/deployment/sif-development-20261024/check.py", line 126, in <module>
+    print(json.dumps(verify(args.output), sort_keys=True))
+                     ^^^^^^^^^^^^^^^^^^^
+  File "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/source-r1/deployment/sif-development-20261024/check.py", line 100, in verify
+    require({t['rank'] for t in rows} == {str(i) for i in range(request['ranks'])}, 'missing host MPI rank')
+  File "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/source-r1/controller/sif_runtime.py", line 32, in require
+    raise ValueError(message)
+ValueError: missing host MPI rank

@@ -113,6 +113,9 @@ def verified_bundle(bundle, validated_catalog, checks, software):
                     and report.get('catalog_sha256') == digest(validated_catalog)
                     and report.get('runtime_sha256') == snapshot['runtime_sha256'],
                     f'{name}/{partition}: missing matching SIF execution acceptance')
+            if 'memory_bootstrap' in snapshot:
+                require(report.get('automatic_memory') is True,
+                        f'{name}/{partition}: automatic memory runtime was not accepted')
     normalized = copy.deepcopy(snapshot)
     # Normalize relocation only against the exact accepted path, preserving
     # any earlier provenance already present in the validated catalog.
@@ -175,6 +178,7 @@ def prepare(root, module_root, generation, bundle, validated_catalog, checks, so
         module = module_root / name / version
         write(module, render_version(root, name, generation))
         versions[name] = {'name': version, 'sha256': digest(module)}
+    write(destination / 'acceptance.json', json.dumps(list(reports.values()), indent=2, sort_keys=True) + '\n')
     files = {str(path.relative_to(destination)): digest(path)
              for path in destination.rglob('*') if path.is_file()}
     write(destination / 'manifest.json', json.dumps({

@@ -1,0 +1,23 @@
+{
+  "partition": "8V100V0",
+  "job": "1924508",
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--account=proj-sai-hpc-software",
+    "--partition=8V100V0",
+    "--nodes=1",
+    "--ntasks=2",
+    "--ntasks-per-node=2",
+    "--job-name=sif-memory-8V100V0",
+    "--chdir=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/science-r4/8V100V0",
+    "--output=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/science-r4/8V100V0/slurm-%j.log",
+    "--gpus-per-node=2",
+    "--qos=flood-1o2gpu",
+    "--exclude=8v100v0n09",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/source-r1/deployment/sif-beta/check-memory.sbatch",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/source-r1/deployment/sif-development-20261024",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/bundle-r4",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/science-r4/8V100V0"
+  ]
+}
