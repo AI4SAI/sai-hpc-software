@@ -1,0 +1,5 @@
+#%Module1.0
+conflict cp2k
+proc ModulesHelp {} {puts stderr "selected second"}
+setenv SAI_TEST_BETA_VERSION second
+prepend-path PATH /home/stardust/sai-hpc-software/development/sif-beta-20261024-r1/lmod-check/rotation/generations/second/bin

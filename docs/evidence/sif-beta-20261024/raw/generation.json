@@ -1,0 +1,37 @@
+{
+  "bundle": "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload",
+  "catalog_sha256": "d68e7a78fe3878426a8f1e958c20edd9bed8e87bbbfa41d3827b5332380551b0",
+  "checks_sha256": "0ac296b877aad653a5937f1ff0b8810a5b2217ee7ac57b8e99252526276bf5b7",
+  "files": {
+    "modules/abacus": "a3790ef86f479878c13b653c0cce5d3446ce8dd0373f6e8337d02313a98ca622",
+    "modules/cp2k": "dcfc52588bcb06b438ff2926c8ef71c9e7a3d47152abc19a25c62ba512ffe253",
+    "modules/deepmd-kit": "a7c4beafd11104f7bf289b23cb25e5aa1892bc94608a7bc84cffbe71e0843adb",
+    "modules/gpumd": "710bb4011c2c9fef395872ebbfcfb8f85c0c5bbf5d06eb58b23da266122ceb2b",
+    "modules/lammps": "1fa2cc4f170652f71219cd6bfa7e1ca704d09c0841fedd64fe824392fba8b109",
+    "templates/abacus/cpu.sbatch": "0f57195131cd32d4930bdf3db0f250c93966836b3de6e9bf2a0b3df699e874a9",
+    "templates/abacus/gpu.sbatch": "47e712dd684948ba7fd4afafc0f84cf0649a75b430d7c9f9946c59647b1b27ab",
+    "templates/cp2k/cpu.sbatch": "9bbf7db52a346df9d6eeaf4299a6007fabd26e016c6d9ab7443e9670eb1449d6",
+    "templates/cp2k/gpu.sbatch": "2368cb8ab6ec67683f4237532bdb01a5997d81c235f7f23a16c48c56d8767773",
+    "templates/deepmd-kit/gpu.sbatch": "a01d7977b839f864eb3c5166402a0049faad217f21e317368edaa120b371eb0f",
+    "templates/gpumd/gpu.sbatch": "d55233af54a00580ce7da519b098ef58e03320b10185ad249b1af40dc6252436",
+    "templates/lammps/gpu.sbatch": "5ad5a127ed248c082ad327047c0611411db504a125cf8b614183ff9b70fa9118"
+  },
+  "generation": "20261024-r1",
+  "jobs": {
+    "16V100": "1919704",
+    "4V100": "1919706",
+    "8V100V0": "1919705",
+    "DSPRHBM": "1919703"
+  },
+  "runtime_sha256": "49c575bd293fddf094e4f736fb33c3d0a0522b174e53554e43c89999deaa1759",
+  "schema": 1,
+  "software": [
+    "abacus",
+    "cp2k",
+    "gpumd",
+    "deepmd-kit",
+    "lammps"
+  ],
+  "validated_catalog": "/org/org-open-sai/proj-sai-hpc-software/sif/20261024-r4/catalog.json",
+  "validated_catalog_sha256": "e4f09d656668fd547856819f60fb8a30d2d519db5033f945d71f3b4e11ca6671"
+}

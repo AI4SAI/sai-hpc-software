@@ -13,6 +13,22 @@ private project tree; public `/opt` installation is still administrator-driven.
 These SIF entries do not relabel the original acceptance records or install
 the native staging exports.
 
+The [branch-beta entries](../deployment/sif-beta/README.md) now select those
+accepted snapshots from stardust's home directory: `abacus/develop-beta`,
+`cp2k/master-beta`, `lammps/develop-beta`, `deepmd-kit/master-beta`, and
+`gpumd/master-beta`. Login-node loads print the actual commit, fixed version,
+supported partitions and SIF job-template directory, then fail without loading
+dependencies. The five `/opt` forwarding files are installed once by the
+administrator; all later metadata and pointer changes stay in home. Existing
+loaded environments retain their generation through rotation and unload.
+Real Lmod login/rotation checks passed, followed by 16V100 startup job `1921631`
+(`COMPLETED 0:0`, 30 seconds). This checks the new module route; the 17 scientific
+acceptances above remain the evidence for the unchanged SIF/runtime bytes.
+The [beta evidence](evidence/sif-beta-20261024/README.md) includes the first
+check-script failure and its corrected retry. The administrator handoff is
+`/home/stardust/sai-hpc-software/deployment/sif-beta/install.sh`; the new `/opt`
+gateways have not been installed by this work.
+
 ## Current development deliveries
 
 The current development work uses the funded project directory

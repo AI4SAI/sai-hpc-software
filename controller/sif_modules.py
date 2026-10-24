@@ -46,7 +46,8 @@ def validate_snapshot(snapshot):
     return snapshot
 
 
-def render_module(root, software, app):
+def render_module(root, software, app, *, help_text=None, notice=None,
+                  extra_environment=None, compute_only=False):
     stem = 'SAI_SIF_' + software.upper().replace('-', '_')
     partitions = ' '.join(app['partitions'])
     identity = next(iter(app['partitions'].values()))['identity']
@@ -54,16 +55,23 @@ def render_module(root, software, app):
                    f"source: {identity['source_sha']}")
     lines = ['#%Module1.0', 'module-whatis ' + tcl(description),
              'proc ModulesHelp {} {',
-             '    puts stderr ' + tcl(description + '\nLoad inside the allocation. Set TMPDIR to a home/project job directory before host mpirun. '
+             '    puts stderr ' + tcl(help_text or description + '\nLoad inside the allocation. Set TMPDIR to a home/project job directory before host mpirun. '
                                       'GPUMD and dp are direct commands; deepmd-python selects this Python package.'),
              '}', f'conflict {software}', f'conflict {software}-sif',
              'set sai_partition ""',
              'if {[module-info mode remove]} {',
              f'    if {{[info exists env({stem}_PARTITION)]}} {{set sai_partition $env({stem}_PARTITION)}}',
-             '} elseif {[module-info mode load]} {',
+             '} elseif {[module-info mode load]} {']
+    if compute_only:
+        lines += ['    if {![info exists env(SLURM_JOB_ID)] || ![info exists env(SLURMD_NODENAME)] || ![info exists env(SLURM_JOB_PARTITION)]} {',
+                  '        ModulesHelp',
+                  '        error "Not loaded: load this module on a compute node inside an sbatch job or srun shell; see the templates above."',
+                  '    }']
+    lines += [
              '    if {![info exists env(SLURM_JOB_PARTITION)]} {error "load the SIF module inside the Slurm allocation"}',
              '    set sai_partition $env(SLURM_JOB_PARTITION)',
-             f'    if {{[lsearch -exact {{{partitions}}} $sai_partition] < 0}} {{error "no accepted SIF for this partition"}}',
+             f'    if {{[lsearch -exact {{{partitions}}} $sai_partition] < 0}} {{' +
+             ('ModulesHelp; ' if compute_only else '') + 'error "no accepted SIF for this partition"}',
              '}', 'if {$sai_partition ne ""} {',
              '    prepend-path MODULEPATH /opt/modules/modulefiles/devtools',
              '    module load apptainer/1.4.4']
@@ -81,6 +89,12 @@ def render_module(root, software, app):
                   f'            setenv {stem}_PREFIX {tcl(row["identity"]["install_prefix"])}', '        }']
     lines += ['    }', '}', f'setenv {stem}_SOURCE {tcl(identity["source_sha"])}',
               f'prepend-path PATH {tcl(root / "bin" / software)}', '']
+    for name, value in (extra_environment or {}).items():
+        require(re.fullmatch('[A-Z][A-Z0-9_]*', name), 'invalid module environment key')
+        lines.append(f'setenv {name} {tcl(value)}')
+    if notice:
+        lines += ['if {[module-info mode load]} {',
+                  '    puts stderr [format "%s; partition=%s" ' + tcl(notice) + ' $sai_partition]', '}']
     return '\n'.join(lines)
 
 
