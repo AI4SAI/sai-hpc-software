@@ -37,6 +37,16 @@ acceptances remain valid for their unchanged image/runtime bytes. The administra
 `/home/stardust/sai-hpc-software/deployment/sif-beta/install.sh`; the new `/opt`
 gateways have not been installed by this work.
 
+The updated publisher no longer generates separate SIF sbatch templates or
+exports `SAI_SIF_*_TEMPLATES`. New module help points to the existing
+`/opt/sbatch_examples` and gives only the selected application's launch command;
+load notices retain branch, source SHA, snapshot date and partition. Historical
+generation `20261024-r2`, its templates and its acceptance records remain frozen.
+This is a publication/help change, not new runtime acceptance: the current
+runtime still needs an existing project `TMPDIR` before host MPI or program
+startup. Automatic job-isolated memory scratch remains follow-up work; the
+site epilog cleans `/dev/shm` by UID and the inspected node has swap enabled.
+
 ## Current development deliveries
 
 The current development work uses the funded project directory
@@ -61,14 +71,14 @@ found newer ABACUS and CP2K commits while these jobs were running; the other
 three branch heads were unchanged. New commits are resolved in subsequent
 daily runs and do not replace the identities of running or accepted artifacts.
 
-DeePMD training needs additional acceptance before publishing a multi-GPU
-template. In the unchanged snapshot, `se_e2_a` DDP leaves trainable empty
+DeePMD training needs additional acceptance before recommending multi-GPU
+training. In the unchanged snapshot, `se_e2_a` DDP leaves trainable empty
 compression placeholders unused and fails on step two; DPA2 reaches a Triton
 path that requires `/sbin/ldconfig`, which the slim SIF lacks. NCCL all-reduce
 passing does not satisfy that training gate. Follow-up work must address those
 source/runtime requirements, run multi-step training on every supported target,
-and explicitly decide whether TensorFlow/Horovod is included. Current public
-templates expose the tested single-GPU mode only; see the
+and explicitly decide whether TensorFlow/Horovod is included. Current launch
+guidance covers the tested single-GPU mode only; see the
 [raw failures and follow-up requirements](evidence/sif-beta-site-20261024/README.md).
 
 [ABACUS development evidence](evidence/abacus-development-20261023/README.md)

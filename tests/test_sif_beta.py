@@ -27,11 +27,9 @@ class SifBetaTests(unittest.TestCase):
         path = self.root / 'generations' / generation / 'modules' / software
         path.parent.mkdir(parents=True, exist_ok=True)
         app = self.snapshot['applications'][software]
-        templates = self.root / generation / 'templates' / software
-        info = f"Commit: {next(iter(app['partitions'].values()))['identity']['source_sha']}\nTemplates: {templates}"
+        info = beta.render_help(software, self.snapshot, self.root / 'modulefiles')
         path.write_text(render_module(self.root / generation, software, app,
-            help_text=info, notice='loaded ' + generation,
-            extra_environment={beta.stem(software) + '_TEMPLATES': str(templates)}, compute_only=True))
+            help_text=info, notice='loaded ' + generation, compute_only=True))
         return path
 
     def evaluate(self, source, *, mode='load', partition=None, saved=None, compute=True):
@@ -62,7 +60,9 @@ proc setenv {name value} {puts "ENV $name=$value"}
             result = self.evaluate(fragment, partition=partition, compute=False)
             self.assertEqual(result.returncode, 1)
             self.assertIn('cfe5e5d87aaf302953f14eb43587bef2411a8fb2', result.stderr)
-            self.assertIn('Templates:', result.stderr)
+            self.assertIn('System sbatch examples: /opt/sbatch_examples', result.stderr)
+            self.assertIn('Command: cp2k.psmp -i input.inp -o output.out', result.stderr)
+            self.assertNotIn('Templates:', result.stderr)
             self.assertIn('compute node', result.stderr)
             self.assertNotIn('MODULE load', result.stdout)
             self.assertNotIn('ENV ', result.stdout)
@@ -81,7 +81,7 @@ proc setenv {name value} {puts "ENV $name=$value"}
                     self.assertIn('partition=' + partition, result.stderr)
         bad = self.evaluate(self.fragment('gpumd', 'first').read_text(), partition='DSPRHBM')
         self.assertEqual(bad.returncode, 1)
-        self.assertIn('Templates:', bad.stderr)
+        self.assertIn('System sbatch examples: /opt/sbatch_examples', bad.stderr)
         self.assertNotIn('MODULE load', bad.stdout)
 
     def test_fixed_gateway_observes_rotation_but_unload_uses_saved_generation(self):
@@ -163,29 +163,27 @@ proc setenv {name value} {puts "ENV $name=$value"}
         with self.assertRaisesRegex(ValueError, 'relocated bundle differs'):
             beta.verified_bundle(bundle, original, checks, ['cp2k'])
 
-    def test_prepare_select_and_template_shell_syntax(self):
+    def test_prepare_select_without_separate_templates(self):
         bundle, catalog, checks = self.fake_bundle()
         root, modules = self.root / 'beta', self.root / 'modulefiles'
         destination = beta.prepare(root, modules, 'one', bundle, catalog, checks, list(PROGRAMS))
-        self.assertFalse((destination / 'templates/deepmd-kit/gpu-pt-multigpu.sbatch').exists())
+        self.assertFalse((destination / 'templates').exists())
         pointer = modules / 'cp2k/master-beta-later'
         self.assertFalse(pointer.exists())
         beta.select(root, 'one', ['cp2k'])
         self.assertTrue(pointer.is_symlink())
         self.assertEqual(pointer.readlink(), Path('master-beta-20261024-cfe5e5d87aaf'))
-        for template in destination.glob('templates/*/*.sbatch'):
-            result = subprocess.run(['bash', '-n', str(template)], capture_output=True, text=True)
+        for software in PROGRAMS:
+            content = (destination / 'modules' / software).read_text()
+            self.assertIn('System sbatch examples: /opt/sbatch_examples', content)
+            self.assertIn(f'module load {software}/{beta.channel(software)}', content)
+            self.assertNotIn('_TEMPLATES', content)
+            self.assertNotIn('/templates/', content)
+            self.assertNotIn('$HOME/.sai-sif', content)
+            result = self.evaluate(content, partition='16V100')
             self.assertEqual(result.returncode, 0, result.stderr)
-            content = template.read_text()
-            self.assertIn('TMPDIR="$HOME/', content)
-            for redundant in ('--export=ALL', 'set -eo pipefail', 'SLURM_EXPORT_ENV',
-                              '--external-launcher', 'module purge', '--bind-to core'):
-                self.assertNotIn(redundant, content)
-            if template.name == 'gpu.sbatch':
-                self.assertNotIn('--cpus-per-task', content)
-                if template.parent.name in ('cp2k', 'abacus', 'lammps'):
-                    self.assertIn('/opt/sai/runtime/mps_mapping.d/${SLURM_JOB_PARTITION}.bash', content)
-                    self.assertIn('--map-by $MAP_OPT', content)
+            self.assertNotIn('templates=', result.stderr)
+            self.assertIn('snapshot=20261024; partition=16V100', result.stderr)
         fragment = destination / 'modules/cp2k'
         fragment.chmod(0o644)
         fragment.write_text('changed')

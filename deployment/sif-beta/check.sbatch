@@ -29,7 +29,7 @@ for name in cp2k abacus lammps deepmd-kit gpumd; do
   image_key=${key}_IMAGE
   templates_key=${key}_TEMPLATES
   generation_key=${key}_BETA_GENERATION
-  [[ -r ${!image_key} && -r ${!templates_key}/gpu.sbatch && -n ${!generation_key} ]]
+  [[ -r ${!image_key} && -z ${!templates_key} && -n ${!generation_key} ]]
   env | sort | awk '/^SAI_SIF_/' > "$name-environment.txt"
   module -t list > "$name-modules.txt" 2>&1
   case $name in
