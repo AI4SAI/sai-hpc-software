@@ -8,8 +8,7 @@ output=${2:?new project check directory}
 [[ $SLURM_JOB_ACCOUNT == proj-sai-hpc-software && $output == /org/org-open-sai/proj-sai-hpc-software/* ]]
 source /etc/profile.d/lmod.sh
 umask 077
-export TMPDIR="$output/tmp"
-mkdir -p "$TMPDIR"
+unset TMPDIR TMP TEMP APPTAINER_TMPDIR APPTAINER_CACHEDIR APPTAINER_CONFIGDIR
 export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1
 export SLURM_EXPORT_ENV=ALL
 export OMPI_MCA_plm_slurm_args=--external-launcher PRTE_MCA_plm_slurm_args=--external-launcher

@@ -1,0 +1,18 @@
+{
+  "job": "1924922",
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--account=proj-sai-hpc-software",
+    "--partition=16V100",
+    "--nodes=1",
+    "--ntasks=2",
+    "--gpus-per-node=2",
+    "--qos=flood-1o2gpu",
+    "--exclude=16v100n06,16v100n18,16v100n70",
+    "--job-name=sif-beta-publication",
+    "--chdir=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024",
+    "--output=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/publish-%j.log",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/publish-r2.sbatch"
+  ]
+}

@@ -1,0 +1,65 @@
+{
+  "catalog": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/bundle-r4/catalog.json",
+  "catalog_sha256": "4408d1c71cb2886e0319ba185e51b602fcc56f93c74a58e2601011386f948ecd",
+  "files": {
+    "abacus/INPUT": "d3822ff21b440779e0302e7b5d5cf58f18043ff23a0f340f5232111993de99e8",
+    "abacus/KPT": "f8ee7838f629845394566cd82436c8469e81e74e56e086dbe05b16e9f9119f6a",
+    "abacus/PP_ORB/As_dojo.upf": "39d557b0496b28f758c2e3e5c0bafa35c8095b7fd72ec30cb3f912c3f0c0f68f",
+    "abacus/PP_ORB/Ga_dojo.upf": "e890f0d10ab5554c3c6440f8a617507740e625ca5a28f266d6fec4260a9d0723",
+    "abacus/STRU": "33605c73619aa164414c62deeb7c03238f01ccc542549e49fc17baa7fa473369",
+    "cp2k/input.inp": "580c31859e98eb4524c978fb0c556f3179b26d3203cba398b35654eaf78b93f0"
+  },
+  "partition": "DSPRHBM",
+  "plan": {
+    "abacus_energy_ev": -4869.747051943179,
+    "abacus_files": {
+      "INPUT": "d3822ff21b440779e0302e7b5d5cf58f18043ff23a0f340f5232111993de99e8",
+      "KPT": "f8ee7838f629845394566cd82436c8469e81e74e56e086dbe05b16e9f9119f6a",
+      "PP_ORB/As_dojo.upf": "39d557b0496b28f758c2e3e5c0bafa35c8095b7fd72ec30cb3f912c3f0c0f68f",
+      "PP_ORB/Ga_dojo.upf": "e890f0d10ab5554c3c6440f8a617507740e625ca5a28f266d6fec4260a9d0723",
+      "STRU": "33605c73619aa164414c62deeb7c03238f01ccc542549e49fc17baa7fa473369"
+    },
+    "abacus_input": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/benchmark-39971072923-1-development-dsprhbm-2026-10-23-370ba685e670-pw/input",
+    "cp2k_input": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/39983165813-1-development-dsprhbm-2026-10-23-cfe5e5d87aaf-science/fixtures/water-gpw/input.inp",
+    "cp2k_reference": {
+      "cp2k_seconds": 20.659,
+      "dispersion_ha": null,
+      "elapsed_seconds": 23.2,
+      "energy_ha": -34.4468212947893,
+      "forces_ha_bohr": [
+        [
+          -0.00945233354,
+          -0.010457489817,
+          -2.87128e-07
+        ],
+        [
+          -0.009818693543,
+          0.01569111124,
+          -1.41928e-07
+        ],
+        [
+          0.010457918678,
+          0.004642532797,
+          5.8306e-08
+        ],
+        [
+          -0.003014175638,
+          0.009256006937,
+          -5.6023e-08
+        ],
+        [
+          0.004272731236,
+          -0.008357649189,
+          -0.007545513107
+        ],
+        [
+          0.004272706358,
+          -0.008357781986,
+          0.007545680456
+        ]
+      ]
+    }
+  },
+  "ranks": 2,
+  "runtime_sha256": "db1fa74275f8afeeb5a104748ec3e6507c360b6ee23b945a853474bf5f4f83a4"
+}

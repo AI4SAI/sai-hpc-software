@@ -1,0 +1,135 @@
+hwloc/linux: Ignoring PCI device with non-16bit domain.
+Pass --enable-32bits-pci-domain to configure to support such devices
+(warning: it would break the library ABI, don't enable unless really needed).
+[d9470n01.mr-sai.ai:1028576] mca_base_component_repository_open: unable to open mca_accelerator_cuda: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n01.mr-sai.ai:1028590] mca_base_component_repository_open: unable to open mca_accelerator_cuda: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n01.mr-sai.ai:1028576] mca_base_component_repository_open: unable to open mca_rcache_rgpusm: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n01.mr-sai.ai:1028590] mca_base_component_repository_open: unable to open mca_rcache_rgpusm: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n01.mr-sai.ai:1028576] mca_base_component_repository_open: unable to open mca_rcache_gpusm: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+[d9470n01.mr-sai.ai:1028590] mca_base_component_repository_open: unable to open mca_rcache_gpusm: libcuda.so.1: cannot open shared object file: No such file or directory (ignored)
+Info: Local MPI proc number: 2,OpenMP thread number: 2,Total thread number: 4,Local thread limit: 104
+
+                     ▄████▄ █████▄ ▄████▄ ▄█████ ██  ██ ▄█████ 
+                     ██▄▄██ ██▄▄██ ██▄▄██ ██     ██  ██ ▀▀▀▄▄▄ 
+                     ██  ██ ██▄▄█▀ ██  ██ ▀█████ ▀████▀ █████▀ 
+
+                                                                                     
+                                v3.11.0-beta11
+
+               Atomic-orbital Based Ab-initio Computation at UStc                    
+
+                     Website: http://abacus.ustc.edu.cn/                             
+               Documentation: https://abacus.deepmodeling.com/                       
+                  Repository: https://github.com/abacusmodeling/abacus-develop       
+                              https://github.com/deepmodeling/abacus-develop         
+                      Commit: 370ba68 (Fri Oct 23 10:57:42 2026 +0800)
+
+ Sat Oct 24 16:09:37 2026
+ MAKE THE DIR         : OUT.autotest/
+ RUNNING WITH DEVICE  : CPU / Intel(R) Xeon(R) CPU Max 9470C (x2)
+ WARNING: some of potential function is set to zero cause of less than 1e-30.
+ WARNING: some of potential function is set to zero cause of less than 1e-30.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+ Warning: the number of valence electrons in pseudopotential > 5 for As: [Ar] 3d10 4s2 4p3
+ Warning: the number of valence electrons in pseudopotential > 3 for Ga: [Ar] 3d10 4s2 4p1
+ Pseudopotentials with additional electrons can yield (more) accurate outcomes, but may be less efficient.
+ If you're confident that your chosen pseudopotential is appropriate, you can safely ignore this warning.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+ UNIFORM GRID DIM          : 32 * 32 * 32
+ UNIFORM GRID DIM (BIG)    : 32 * 32 * 32
+ DONE(0.0806251  SEC) : SYMMETRY
+ DONE(0.0806418  SEC) : SETUP UNITCELL
+ DONE(0.130954   SEC) : INIT K-POINTS
+ ----------------------------------------------------------------
+ Self-consistent calculations for electrons
+ ----------------------------------------------------------------
+ SPIN    KPOINTS         PROCESSES   THREADS/PROC  THREADS/TOTAL 
+ 1       8               2           2             4             
+ ----------------------------------------------------------------
+ Use plane wave basis
+ ----------------------------------------------------------------
+ ELEMENT NATOM       
+ As      1           
+ Ga      1           
+ ----------------------------------------------------------------
+ Initial plane wave basis and FFT box
+ ----------------------------------------------------------------
+ DONE(0.133354   SEC) : INIT PLANEWAVE
+ START CHARGE         : ATOMIC
+ DONE(0.142195   SEC) : LOCAL POTENTIAL
+ DONE(0.159578   SEC) : NON-LOCAL POTENTIAL
+ MEMORY FOR PSI (MB)  : 1.91602
+ DONE(0.232573   SEC) : INIT BASIS
+
+ ================================================================
+ SELF-CONSISTENT: 
+ ================================================================
+ DONE(0.27385    SEC) : INIT SCF
+ ITER     ETOT/eV          EDIFF/eV         DRHO     TIME/s
+ CG1   -4.87155886e+03   0.00000000e+00   1.5575e+00   0.29
+ CG2   -4.86818430e+03   3.37456005e+00   4.5255e-01   0.07
+ CG3   -4.86968323e+03  -1.49893080e+00   2.2817e-02   0.08
+ CG4   -4.86974142e+03  -5.81879465e-02   3.6961e-03   0.09
+ CG5   -4.86974538e+03  -3.96218414e-03   2.0748e-04   0.08
+ CG6   -4.86974664e+03  -1.26332600e-03   1.0543e-04   0.10
+ CG7   -4.86974703e+03  -3.89885939e-04   2.6607e-05   0.09
+ CG8   -4.86974703e+03   3.35110939e-06   5.2115e-06   0.09
+ CG9   -4.86974705e+03  -1.96670713e-05   1.8818e-07   0.10
+ CG10  -4.86974705e+03  -1.41265899e-06   1.7771e-08   0.12
+ ----------------------------------------------------------------
+              Stress_x             Stress_y             Stress_z 
+ ----------------------------------------------------------------
+     -12196.0610609721       -99.1596951253      -142.3866317140 
+        -99.1596951253    -12240.9536453398       -52.1802972066 
+       -142.3866317140       -52.1802972066    -12217.4693486419 
+ ----------------------------------------------------------------
+ TOTAL-PRESSURE (EXCLUDE KINETIC PART OF IONS): -12218.161352 kbar
+
+ TIME STATISTICS
+---------------------------------------------------------------------
+    CLASS_NAME            NAME         TIME/s  CALLS   AVG/s  PER/%  
+---------------------------------------------------------------------
+                   total               1.44   17       0.08   100.00 
+ Driver            atomic_world        1.44   1        1.44   100.00 
+ Driver            reading             0.02   1        0.02   1.26   
+ Symmetry          analy_sys           0.02   1        0.02   1.27   
+ ppcell_vnl        init_vnl            0.02   1        0.02   1.13   
+ PSIPrepare        prepare_init        0.07   1        0.07   4.96   
+ psi_init_atomic   tabulate            0.07   1        0.07   4.96   
+ Relax_Driver      relax_driver        1.20   1        1.20   83.71  
+ ESolver_KS        runner              1.16   1        1.16   80.40  
+ ESolver_KS_PW     before_scf          0.04   1        0.04   2.86   
+ Potential         cal_veff            0.05   11       0.00   3.67   
+ PotXC             cal_veff            0.05   11       0.00   3.31   
+ XC_Functional     v_xc                0.06   13       0.00   3.84   
+ module_charge     cal_rhog_symm       0.02   11       0.00   1.27   
+ Symmetry          rhog_symmetry       0.01   11       0.00   1.01   
+ PSIPrepare        initialize_psi      0.03   1        0.03   2.18   
+ Nonlocal          init                0.02   44       0.00   1.25   
+ pp_cell_vnl       getvnl              0.02   44       0.00   1.25   
+ DiagoIterAssist   diag_subspace       0.17   40       0.00   12.07  
+ Operator          hPsi                0.78   3664     0.00   54.07  
+ Operator          veff_pw             0.68   3664     0.00   47.02  
+ PW_Basis_K        recip2real          0.45   5544     0.00   31.24  
+ PW_Basis_K        gathers_zero_serial 0.07   5544     0.00   4.85   
+ PW_Basis_K        gathers_copy_serial 0.02   5544     0.00   1.07   
+ PW_Basis_K        real2recip          0.26   4584     0.00   18.19  
+ PW_Basis_K        gatherp_copy_serial 0.02   4584     0.00   1.10   
+ NonlocalWorkspace apply               0.09   3664     0.00   6.08   
+ ESolver_KS_PW     hamilt2rho_single   1.05   10       0.10   72.77  
+ HSolverPW         solve               1.03   10       0.10   71.64  
+ HSolverPW         solve_psik          0.91   40       0.02   63.38  
+ DiagoCG           diag_once           0.75   40       0.02   52.10  
+ ElecStatePW       psiToRho            0.08   10       0.01   5.22   
+ Forces            cal_force           0.01   1        0.01   1.02   
+ Stress_PW         cal_stress          0.03   1        0.03   2.21   
+ Stress            stress_nl           0.02   1        0.02   1.05   
+---------------------------------------------------------------------
+
+
+ START  Time  : Sat Oct 24 16:09:37 2026
+ FINISH Time  : Sat Oct 24 16:09:39 2026
+ TOTAL  Time  : 2
+ SEE INFORMATION IN : OUT.autotest/

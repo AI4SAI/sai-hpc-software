@@ -1,0 +1,15 @@
+hwloc/linux: Ignoring PCI device with non-16bit domain.
+Pass --enable-32bits-pci-domain to configure to support such devices
+(warning: it would break the library ABI, don't enable unless really needed).
+--------------------------------------------------------------------------
+prterun was unable to find the specified executable file, and therefore did
+not launch the job.  This error was first reported for process rank
+0; it may have occurred for other processes as well.
+
+NOTE: A common cause for this error is misspelling a prterun command
+   line parameter option (remember that prterun interprets the first
+   unrecognized command line token as the executable).
+
+   Node:       d9470n01
+   Executable: cp2k.psmp
+--------------------------------------------------------------------------

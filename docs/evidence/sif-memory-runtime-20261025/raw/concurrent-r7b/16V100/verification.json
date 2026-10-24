@@ -1,0 +1,34 @@
+{
+  "job": "1924723",
+  "node": "16v100n84.mr-sai.ai",
+  "uid": 1478400690,
+  "memory_scope": {
+    "schema": 1,
+    "job": "1924723",
+    "mount": "mnt:[4026539480]",
+    "user": "user:[4026539479]"
+  },
+  "sentinels": [
+    "/dev/shm/sai-1478400690-1924723-0/survivor",
+    "/dev/shm/survivor-1924723",
+    "/tmp/survivor-1924723"
+  ],
+  "catalog_sha256": "55c54d87653e79cbaec6d6f1dda2a3867776d9029c05666ce2f8734c15391454",
+  "runtime_sha256": "a4c6a24c229f7a696b202fb1bfc4b18045a60e93f7bc7477cb7d1d911100c611",
+  "before": {
+    "energy_delta_ha": 5.826450433232822e-13,
+    "max_force_delta_ha_bohr": 0.0
+  },
+  "after": {
+    "energy_delta_ha": 2.984279490192421e-13,
+    "max_force_delta_ha_bohr": 0.0
+  },
+  "passed": true,
+  "sentinels_survived": true,
+  "peer": {
+    "job": "1924724",
+    "accounting": "1924724|COMPLETED|0:0|16v100n84|2026-10-25T00:16:52|2026-10-25T00:17:14|stardust|proj-sai-hpc-software",
+    "confirmed_absent_from_squeue": true,
+    "node": "16v100n84"
+  }
+}

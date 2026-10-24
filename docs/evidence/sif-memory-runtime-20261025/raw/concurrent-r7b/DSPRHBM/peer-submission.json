@@ -1,0 +1,25 @@
+{
+  "job": "1924726",
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--account=proj-sai-hpc-software",
+    "--partition=DSPRHBM",
+    "--nodes=1",
+    "--ntasks=1",
+    "--nodelist=d9470n01",
+    "--chdir=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/concurrent-r7b/DSPRHBM",
+    "--cpus-per-task=2",
+    "--qos=rush-cpu",
+    "--time=00:04:00",
+    "--job-name=sif-memory-peer",
+    "--output=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/concurrent-r7b/DSPRHBM/peer-%j.log",
+    "--dependency=after:1924725",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/source-r1/deployment/sif-beta/check-concurrent.sbatch",
+    "peer",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/bundle-r7",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/concurrent-r7b/DSPRHBM",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/source-r1/deployment/sif-development-20261024",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/source-r1/deployment/sif-beta/check-concurrent.py"
+  ]
+}

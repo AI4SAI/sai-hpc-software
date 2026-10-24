@@ -11,7 +11,7 @@ import re
 from module_publication import tcl
 from release_contract import PARTITIONS, SOFTWARE
 from sif_modules import load_snapshot, render_module, verify_sources, write
-from sif_runtime import PROGRAMS, digest, require
+from sif_runtime import MPI_LAUNCHERS, PROGRAMS, digest, require
 
 
 def token(value):
@@ -26,7 +26,10 @@ def channel(software):
 
 def version_name(software, snapshot):
     identity = next(iter(snapshot['applications'][software]['partitions'].values()))['identity']
-    return f"{SOFTWARE[software]['development_ref']}-beta-{snapshot['snapshot']}-{identity['source_sha'][:12]}"
+    version = f"{SOFTWARE[software]['development_ref']}-beta-{snapshot['snapshot']}-{identity['source_sha'][:12]}"
+    if snapshot.get('runtime_sha256'):
+        version += '-r' + snapshot['runtime_sha256'][:12]
+    return version
 
 
 def stem(software):
@@ -83,7 +86,7 @@ def render_help(software, snapshot, module_root):
             f"  module load {software}/{channel(software)}\n"
             f"Command: {command}\n" + launch +
             "Commands enter the read-only SIF automatically; no extraction is needed.\n"
-            "Current runtime: set TMPDIR to an existing project directory under /org before launching MPI or the program.\n"
+            "Runtime temporary files use private node memory automatically; no TMPDIR setup is needed.\n"
             f"For a fixed version: module use {module_root}; module load {fixed}\n")
 
 
@@ -110,20 +113,36 @@ def verified_bundle(bundle, validated_catalog, checks, software):
                     and report.get('catalog_sha256') == digest(validated_catalog)
                     and report.get('runtime_sha256') == snapshot['runtime_sha256'],
                     f'{name}/{partition}: missing matching SIF execution acceptance')
+            if 'memory_bootstrap' in snapshot:
+                require(report.get('automatic_memory') is True,
+                        f'{name}/{partition}: automatic memory runtime was not accepted')
     normalized = copy.deepcopy(snapshot)
-    for app in normalized['applications'].values():
-        for row in app['partitions'].values():
-            if 'source_image' in row:
+    # Normalize relocation only against the exact accepted path, preserving
+    # any earlier provenance already present in the validated catalog.
+    if 'memory_bootstrap' in normalized:
+        row = normalized['memory_bootstrap']
+        if row.get('source_image') == accepted['memory_bootstrap']['image']:
+            row['image'] = row.pop('source_image')
+            if 'source_image' in accepted['memory_bootstrap']:
+                row['source_image'] = accepted['memory_bootstrap']['source_image']
+    for name, app in normalized['applications'].items():
+        for partition, row in app['partitions'].items():
+            original = accepted['applications'][name]['partitions'][partition]
+            if row.get('source_image') == original['image']:
                 row['image'] = row.pop('source_image')
+                if 'source_image' in original:
+                    row['source_image'] = original['source_image']
     require(normalized == accepted, 'relocated bundle differs from the accepted catalog')
     selected = dict(snapshot, applications={name: snapshot['applications'][name] for name in software})
     verify_sources(selected)
     # Launcher paths are part of the fixed runtime, not the rotating module.
     import shlex
-    for name in software:
-        for program in PROGRAMS[name]:
+    launchers = {name: PROGRAMS[name] for name in software}
+    launchers['mpi'] = MPI_LAUNCHERS
+    for name, programs in launchers.items():
+        for program in programs:
             argv = ['/usr/bin/python3', '-I', '-B', str(bundle / 'libexec/sif_runtime.py'),
-                    str(bundle / 'catalog.json'), name, program]
+                    str(bundle / 'catalog.json'), '_mpi' if name == 'mpi' else name, program]
             expected = '#!/usr/bin/env bash\nexec ' + shlex.join(argv) + ' "$@"\n'
             require((bundle / 'bin' / name / program).read_text() == expected,
                     'launcher differs from the fixed bundle')
@@ -159,6 +178,7 @@ def prepare(root, module_root, generation, bundle, validated_catalog, checks, so
         module = module_root / name / version
         write(module, render_version(root, name, generation))
         versions[name] = {'name': version, 'sha256': digest(module)}
+    write(destination / 'acceptance.json', json.dumps(list(reports.values()), indent=2, sort_keys=True) + '\n')
     files = {str(path.relative_to(destination)): digest(path)
              for path in destination.rglob('*') if path.is_file()}
     write(destination / 'manifest.json', json.dumps({

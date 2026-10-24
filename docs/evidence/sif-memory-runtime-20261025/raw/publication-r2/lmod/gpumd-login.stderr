@@ -1,0 +1,75 @@
+[SAI beta] gpumd / master
+Source version: master-2026-10-21
+Commit: 2c93346fce4461de1c42c77e7fe74cdb6b0e3df6
+Accepted snapshot: 20261024 (latest accepted, not necessarily upstream HEAD)
+Partitions: 16V100, 4V100, 8V100V0
+Fixed module: gpumd/master-beta-20261024-2c93346fce44-ra4c6a24c229f
+System sbatch examples: /opt/sbatch_examples
+
+Load on a compute node inside your existing sbatch job or srun shell:
+  module load gpumd/master-beta-later
+Command: gpumd > gpumd.out
+Run directly in the case directory.
+Commands enter the read-only SIF automatically; no extraction is needed.
+Runtime temporary files use private node memory automatically; no TMPDIR setup is needed.
+For a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load gpumd/master-beta-20261024-2c93346fce44-ra4c6a24c229f
+
+Lmod has detected the following error:
+/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/publication-r2/gateways/gpumd/master-beta-later:
+(gpumd/master-beta-later): Not loaded: load this module on a compute node
+inside an sbatch job or srun shell; see the help above. 
+While processing the following module(s):
+    Module fullname          Module Filename
+    ---------------          ---------------
+    gpumd/master-beta-later  /org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/publication-r2/gateways/gpumd/master-beta-later
+
+
+------------- Module Specific Help for "gpumd/master-beta-later" --------------
+[SAI beta] gpumd / master
+Source version: master-2026-10-21
+Commit: 2c93346fce4461de1c42c77e7fe74cdb6b0e3df6
+Accepted snapshot: 20261024 (latest accepted, not necessarily upstream HEAD)
+Partitions: 16V100, 4V100, 8V100V0
+Fixed module: gpumd/master-beta-20261024-2c93346fce44-ra4c6a24c229f
+System sbatch examples: /opt/sbatch_examples
+
+Load on a compute node inside your existing sbatch job or srun shell:
+  module load gpumd/master-beta-later
+Command: gpumd > gpumd.out
+Run directly in the case directory.
+Commands enter the read-only SIF automatically; no extraction is needed.
+Runtime temporary files use private node memory automatically; no TMPDIR setup is needed.
+For a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load gpumd/master-beta-20261024-2c93346fce44-ra4c6a24c229f
+
+
+
+----------------------------------------------------------------------------
+   /org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/publication-r2/gateways/gpumd/master-beta-later:
+----------------------------------------------------------------------------
+whatis("gpumd master-beta-20261024-2c93346fce44-ra4c6a24c229f; accepted SIF; partitions: 16V100 4V100 8V100V0; source: 2c93346fce4461de1c42c77e7fe74cdb6b0e3df6")
+conflict("gpumd")
+conflict("gpumd-sif")
+setenv("SAI_SIF_GPUMD_SOURCE","2c93346fce4461de1c42c77e7fe74cdb6b0e3df6")
+prepend_path{"PATH","/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f/bin/gpumd",delim=":",priority="0"}
+setenv("SAI_SIF_GPUMD_VERSION","master-beta-20261024-2c93346fce44-ra4c6a24c229f")
+setenv("SAI_SIF_GPUMD_BRANCH","master")
+setenv("SAI_SIF_GPUMD_SNAPSHOT","20261024")
+setenv("SAI_SIF_GPUMD_BETA_GENERATION","20261025-memory-r1")
+help([[[SAI beta] gpumd / master
+Source version: master-2026-10-21
+Commit: 2c93346fce4461de1c42c77e7fe74cdb6b0e3df6
+Accepted snapshot: 20261024 (latest accepted, not necessarily upstream HEAD)
+Partitions: 16V100, 4V100, 8V100V0
+Fixed module: gpumd/master-beta-20261024-2c93346fce44-ra4c6a24c229f
+System sbatch examples: /opt/sbatch_examples
+
+Load on a compute node inside your existing sbatch job or srun shell:
+  module load gpumd/master-beta-later
+Command: gpumd > gpumd.out
+Run directly in the case directory.
+Commands enter the read-only SIF automatically; no extraction is needed.
+Runtime temporary files use private node memory automatically; no TMPDIR setup is needed.
+For a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load gpumd/master-beta-20261024-2c93346fce44-ra4c6a24c229f
+
+]])
+

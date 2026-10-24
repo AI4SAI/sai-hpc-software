@@ -13,39 +13,33 @@ private project tree; public `/opt` installation is still administrator-driven.
 These SIF entries do not relabel the original acceptance records or install
 the native staging exports.
 
-The [branch-beta entries](../deployment/sif-beta/README.md) now select those
-accepted snapshots from stardust's home directory: `abacus/develop-beta-later`,
-`cp2k/master-beta-later`, `lammps/develop-beta-later`, `deepmd-kit/master-beta-later`,
-and `gpumd/master-beta-later`. These are real relative symlinks to
-`<branch>-beta-20261024-<12-character source SHA>` in the same application family.
-Login-node loads print the actual commit, fixed version,
-supported partitions and SIF job-template directory, then fail without loading
-dependencies. The five `/opt` forwarding files are installed once by the
-administrator; all later metadata and pointer changes stay in home. Existing
-loaded environments retain their generation through rotation and unload.
-Generation `20261024-r2` uses the real `/opt/sbatch_examples` conventions and
-the site's `mps_mapping.d`/`MAP_OPT`, without explicit export-all, strict-shell
-boilerplate or handwritten GPU affinity. SIF scratch uses a short home path,
-which also avoids Unix-socket path limits. Fresh GPU numerical checks passed in
-jobs `1922027`/`1922029`, CPU checks in `1922061`, and two steps of single-GPU
-DeePMD `se_e2_a` training in `1922119`. Actual Lmod checks cover login rejection,
-real symlink rotation and unload/rollback through both home and fixed gateways.
-The [site-template evidence](evidence/sif-beta-site-20261024/README.md) preserves
-the templates, results and failed attempts. The original
-[beta startup evidence](evidence/sif-beta-20261024/README.md) and 17 full SIF
-acceptances remain valid for their unchanged image/runtime bytes. The administrator handoff is
-`/home/stardust/sai-hpc-software/deployment/sif-beta/install.sh`; the new `/opt`
-gateways have not been installed by this work.
+The [branch-beta entries](../deployment/sif-beta/README.md) use static `/opt`
+gateways and home-maintained `*-beta-later` symlinks. Runtime changes receive a
+new fixed name `<branch>-beta-20261024-<source SHA>-r<runtime SHA>`, preserving
+previous fixed modules and loaded environments through rotation. Login-node
+loads print the actual version, commit, supported partitions, ordinary launch
+command and `/opt/sbatch_examples`, then fail without partially loading modules.
+There are no new user sbatch templates.
 
-The updated publisher no longer generates separate SIF sbatch templates or
-exports `SAI_SIF_*_TEMPLATES`. New module help points to the existing
-`/opt/sbatch_examples` and gives only the selected application's launch command;
-load notices retain branch, source SHA, snapshot date and partition. Historical
-generation `20261024-r2`, its templates and its acceptance records remain frozen.
-This is a publication/help change, not new runtime acceptance: the current
-runtime still needs an existing project `TMPDIR` before host MPI or program
-startup. Automatic job-isolated memory scratch remains follow-up work; the
-site epilog cleans `/dev/shm` by UID and the inspected node has swap enabled.
+The private-memory runtime `a4c6a24c229f` passed all 17 application/partition
+combinations on the unchanged accepted SIFs. Host MPI starts through thin
+wrappers that establish private mount namespaces; scratch uses tmpfs and is
+invisible to another same-user job's epilog. Restricted nodes use the installed
+Apptainer profile and an independent 36 KiB mountpoint-only bootstrap SIF.
+No application tree or whole image is extracted/copied into RAM. The maintained
+home runtime is 112,992 bytes; existing application SIFs are reused in place.
+
+Acceptance includes two-node 16V100 host MPI, one-rank-per-GPU site mapping,
+actual concurrent same-user jobs on 16V100 and DSPRHBM, namespace teardown, and
+another two-step single-GPU DeePMD training run. The evidence records startup
+costs and tmpfs/swap limitations; it does not claim a new performance speedup.
+See [memory runtime acceptance](evidence/sif-memory-runtime-20261025/README.md).
+Generation `20261025-memory-r1` passed the final module checks and was
+promoted in job `1924922`. The administrator handoff remains
+`/home/stardust/sai-hpc-software/deployment/sif-beta/install.sh`; its preflight
+checks the selected immutable payload and acceptance before writing the five
+static gateways. `/opt` installation is still administrator-operated.
+Historical generations, templates and acceptance records remain unchanged.
 
 ## Current development deliveries
 

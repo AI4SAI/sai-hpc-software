@@ -1,0 +1,18 @@
+{
+  "job": "1924667",
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--account=proj-sai-hpc-software",
+    "--partition=16V100",
+    "--nodes=1",
+    "--ntasks=1",
+    "--gpus-per-node=1",
+    "--qos=flood-1o2gpu",
+    "--exclude=16v100n06,16v100n18,16v100n70",
+    "--job-name=sif-memory-deepmd-train",
+    "--chdir=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/deepmd-training-r7",
+    "--output=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/deepmd-training-r7/slurm-%j.log",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/deepmd-training-r7/run.sbatch"
+  ]
+}

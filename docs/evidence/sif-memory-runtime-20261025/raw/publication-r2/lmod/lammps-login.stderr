@@ -1,0 +1,79 @@
+[SAI beta] lammps / develop
+Source version: develop-2026-10-15
+Commit: a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b
+Accepted snapshot: 20261024 (latest accepted, not necessarily upstream HEAD)
+Partitions: 16V100, 4V100, 8V100V0
+Fixed module: lammps/develop-beta-20261024-a0e2bd6efb3d-ra4c6a24c229f
+System sbatch examples: /opt/sbatch_examples
+
+Load on a compute node inside your existing sbatch job or srun shell:
+  module load lammps/develop-beta-later
+Command: lmp -pk gpu $SLURM_GPUS_ON_NODE split 1.0 -in in.lmp -log log.lammps
+Use host mpirun with the resource and mapping settings in your existing job script.
+The input must select GPU styles, such as lj/cut/gpu.
+Commands enter the read-only SIF automatically; no extraction is needed.
+Runtime temporary files use private node memory automatically; no TMPDIR setup is needed.
+For a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load lammps/develop-beta-20261024-a0e2bd6efb3d-ra4c6a24c229f
+
+Lmod has detected the following error:
+/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/publication-r2/gateways/lammps/develop-beta-later:
+(lammps/develop-beta-later): Not loaded: load this module on a compute node
+inside an sbatch job or srun shell; see the help above. 
+While processing the following module(s):
+    Module fullname            Module Filename
+    ---------------            ---------------
+    lammps/develop-beta-later  /org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/publication-r2/gateways/lammps/develop-beta-later
+
+
+------------ Module Specific Help for "lammps/develop-beta-later" -------------
+[SAI beta] lammps / develop
+Source version: develop-2026-10-15
+Commit: a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b
+Accepted snapshot: 20261024 (latest accepted, not necessarily upstream HEAD)
+Partitions: 16V100, 4V100, 8V100V0
+Fixed module: lammps/develop-beta-20261024-a0e2bd6efb3d-ra4c6a24c229f
+System sbatch examples: /opt/sbatch_examples
+
+Load on a compute node inside your existing sbatch job or srun shell:
+  module load lammps/develop-beta-later
+Command: lmp -pk gpu $SLURM_GPUS_ON_NODE split 1.0 -in in.lmp -log log.lammps
+Use host mpirun with the resource and mapping settings in your existing job script.
+The input must select GPU styles, such as lj/cut/gpu.
+Commands enter the read-only SIF automatically; no extraction is needed.
+Runtime temporary files use private node memory automatically; no TMPDIR setup is needed.
+For a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load lammps/develop-beta-20261024-a0e2bd6efb3d-ra4c6a24c229f
+
+
+
+----------------------------------------------------------------------------
+   /org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/publication-r2/gateways/lammps/develop-beta-later:
+----------------------------------------------------------------------------
+whatis("lammps develop-beta-20261024-a0e2bd6efb3d-ra4c6a24c229f; accepted SIF; partitions: 16V100 4V100 8V100V0; source: a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b")
+conflict("lammps")
+conflict("lammps-sif")
+setenv("SAI_SIF_LAMMPS_SOURCE","a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b")
+prepend_path{"PATH","/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f/bin/mpi",delim=":",priority="0"}
+prepend_path{"PATH","/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f/bin/lammps",delim=":",priority="0"}
+setenv("SAI_SIF_LAMMPS_VERSION","develop-beta-20261024-a0e2bd6efb3d-ra4c6a24c229f")
+setenv("SAI_SIF_LAMMPS_BRANCH","develop")
+setenv("SAI_SIF_LAMMPS_SNAPSHOT","20261024")
+setenv("SAI_SIF_LAMMPS_BETA_GENERATION","20261025-memory-r1")
+help([[[SAI beta] lammps / develop
+Source version: develop-2026-10-15
+Commit: a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b
+Accepted snapshot: 20261024 (latest accepted, not necessarily upstream HEAD)
+Partitions: 16V100, 4V100, 8V100V0
+Fixed module: lammps/develop-beta-20261024-a0e2bd6efb3d-ra4c6a24c229f
+System sbatch examples: /opt/sbatch_examples
+
+Load on a compute node inside your existing sbatch job or srun shell:
+  module load lammps/develop-beta-later
+Command: lmp -pk gpu $SLURM_GPUS_ON_NODE split 1.0 -in in.lmp -log log.lammps
+Use host mpirun with the resource and mapping settings in your existing job script.
+The input must select GPU styles, such as lj/cut/gpu.
+Commands enter the read-only SIF automatically; no extraction is needed.
+Runtime temporary files use private node memory automatically; no TMPDIR setup is needed.
+For a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load lammps/develop-beta-20261024-a0e2bd6efb3d-ra4c6a24c229f
+
+]])
+

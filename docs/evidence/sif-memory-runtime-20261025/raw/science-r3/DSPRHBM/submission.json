@@ -1,0 +1,22 @@
+{
+  "partition": "DSPRHBM",
+  "job": "1924478",
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--account=proj-sai-hpc-software",
+    "--partition=DSPRHBM",
+    "--nodes=1",
+    "--ntasks=2",
+    "--ntasks-per-node=2",
+    "--job-name=sif-memory-DSPRHBM",
+    "--chdir=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/science-r3/DSPRHBM",
+    "--output=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/science-r3/DSPRHBM/slurm-%j.log",
+    "--cpus-per-task=2",
+    "--qos=rush-cpu",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/source-r1/deployment/sif-beta/check-memory.sbatch",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/source-r1/deployment/sif-development-20261024",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/bundle-r3",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/science-r3/DSPRHBM"
+  ]
+}

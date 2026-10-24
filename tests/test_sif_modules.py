@@ -85,14 +85,16 @@ proc setenv {name value} {puts "ENV $name=$value"}
 
     def test_mpi_arguments_and_comma_environment_survive_without_nested_launcher(self):
         row = self.snapshot['applications']['lammps']['partitions']['16V100']
-        environment = dict(SLURM_JOB_PARTITION='16V100', MPI_HOME=row['mpi_prefix'],
-                           TMPDIR='/org/example/job/tmp', PATH='/usr/bin', CUDA_VISIBLE_DEVICES='0,1',
+        memory = runtime.memory_root({'SLURM_JOB_ID': '123'})
+        scratch = memory / 'runtime/rank1'
+        environment = dict(SLURM_JOB_PARTITION='16V100', SLURM_JOB_ID='123', MPI_HOME=row['mpi_prefix'],
+                           TMPDIR=str(memory), PATH='/usr/bin', CUDA_VISIBLE_DEVICES='0,1',
                            OMPI_ARGV='x,y $(touch /bad)', OMPI_COMM_WORLD_RANK='1',
                            OMP_NUM_THREADS='4', APPTAINER_BIND='/opt/apps:/opt/apps')
         with patch.object(runtime.shutil, 'which', return_value='/opt/devtools/apptainer/1.4.4/bin/apptainer'):
             args, child = runtime.command(self.snapshot, Path('/org/example/catalog.json'), 'lammps',
                 'lmp', ['-in', 'input with spaces', '-var', 'value', 'a,b'], environment,
-                Path('/org/example/work'), Path('/org/example/job/tmp/rank1'))
+                Path('/org/example/work'), scratch)
         self.assertEqual(args[-5:], ['-in', 'input with spaces', '-var', 'value', 'a,b'])
         self.assertEqual(child['APPTAINERENV_CUDA_VISIBLE_DEVICES'], '0,1')
         self.assertEqual(child['APPTAINERENV_OMPI_ARGV'], 'x,y $(touch /bad)')
@@ -104,11 +106,64 @@ proc setenv {name value} {puts "ENV $name=$value"}
         self.assertIn('--sharens', args)
         self.assertEqual(child['APPTAINERENV_OMPI_MCA_shmem_mmap_backing_file_base_dir'], '/dev/shm')
         self.assertEqual(child['APPTAINERENV_OMPI_MCA_shmem_mmap_relocate_backing_file'], '1')
-        self.assertEqual(child['APPTAINER_CONFIGDIR'], '/org/example/job/tmp/config')
+        self.assertEqual(child['APPTAINER_CONFIGDIR'], str(memory / 'runtime/config'))
         self.assertIn(row['installed_deepmd_dependency']['identity']['install_prefix'] + ':' +
                       row['installed_deepmd_dependency']['identity']['install_prefix'] + ':ro', args)
         self.assertNotIn('/opt/apps:/opt/apps:ro', args)
-        self.assertIn('/org/example/job/tmp/rank1:/tmp:rw', args)
+        self.assertIn(str(scratch) + ':/tmp:rw', args)
+
+    def test_memory_bootstrap_is_private_and_does_not_change_the_callers_environment(self):
+        environment = dict(SLURM_JOB_ID='123', TMPDIR='/home/example/old-scratch')
+        original = dict(environment)
+        argv = ['/org/example/catalog.json', '_mpi', 'mpirun', '-np', '2', 'cp2k.psmp']
+        with patch.object(runtime, 'memory_scope', return_value=None), \
+                patch.object(runtime, 'apparmor_restricts_userns', return_value=False), \
+                patch.object(runtime.os, 'execve', side_effect=RuntimeError('exec intercepted')) as execute:
+            with self.assertRaisesRegex(RuntimeError, 'exec intercepted'):
+                runtime.ensure_memory(argv, environment)
+        command = execute.call_args.args[1]
+        self.assertEqual(command[0], '/usr/bin/unshare')
+        for flag in ('--user', '--map-current-user', '--mount', '--keep-caps', '--memory'):
+            self.assertIn(flag, command)
+        self.assertEqual(command[-len(argv):], argv)
+        self.assertEqual(environment, original)
+
+    def test_restricted_node_uses_the_apptainer_profile_before_mpi(self):
+        environment = dict(SLURM_JOB_ID='123')
+        argv = ['/org/example/catalog.json', '_mpi', 'mpirun']
+        with patch.object(runtime, 'memory_scope', return_value=None), \
+                patch.object(runtime, 'apparmor_restricts_userns', return_value=True), \
+                patch.object(runtime, 'bootstrap_memory', side_effect=RuntimeError('bootstrap')) as bootstrap:
+            with self.assertRaisesRegex(RuntimeError, 'bootstrap'):
+                runtime.ensure_memory(argv, environment)
+        bootstrap.assert_called_once_with(argv, environment)
+
+    def test_bootstrap_cannot_skip_private_namespace_setup(self):
+        with self.assertRaisesRegex(ValueError, 'did not create private namespaces'):
+            runtime.main(['--bootstrap', os.readlink('/proc/self/ns/mnt'),
+                          os.readlink('/proc/self/ns/user'), '{}', 'unused'])
+
+    def test_mpi_rank_cannot_create_an_isolated_namespace_separate_from_its_peers(self):
+        environment = dict(SLURM_JOB_ID='123', OMPI_COMM_WORLD_RANK='0')
+        with patch.object(runtime, 'memory_scope', return_value=None), patch.object(runtime.os, 'execve') as execute:
+            with self.assertRaisesRegex(ValueError, 'mpirun/mpiexec entry'):
+                runtime.ensure_memory([], environment)
+            execute.assert_not_called()
+
+    def test_memory_environment_avoids_conflicting_prrte_tmpdir_options(self):
+        environment = dict(SLURM_JOB_ID='123', TMPDIR='/home/example/old-scratch',
+                           PRTE_MCA_prte_local_tmpdir_base='/tmp/local',
+                           PRTE_MCA_prte_remote_tmpdir_base='/tmp/remote')
+        with patch.object(runtime, 'private_directory'):
+            result = runtime.memory_environment(environment)
+        self.assertNotIn('PRTE_MCA_prte_local_tmpdir_base', result)
+        self.assertNotIn('PRTE_MCA_prte_remote_tmpdir_base', result)
+        self.assertEqual(result['PRTE_MCA_prte_tmpdir_base'], str(runtime.memory_root(environment) / 'mpi'))
+        self.assertEqual(environment['TMPDIR'], '/home/example/old-scratch')
+
+    def test_setup_refuses_mounting_in_the_existing_namespace(self):
+        with self.assertRaisesRegex(ValueError, 'new mount and user namespaces'):
+            runtime.enter_memory([os.readlink('/proc/self/ns/mnt'), os.readlink('/proc/self/ns/user'), 'unused'])
 
     def test_checksum_cache_reuses_read_then_detects_changed_image(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -155,6 +210,22 @@ proc setenv {name value} {puts "ENV $name=$value"}
                 results = list(pool.map(lambda _: runtime.verify_image(image, expected, cache), range(8)))
             self.assertEqual(results.count('hashed'), 1)
             self.assertEqual(results.count('cached'), 7)
+
+    def test_memory_checksum_index_is_job_scoped_and_bounded(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            image = root / 'image.sif'
+            image.write_bytes(b'accepted image')
+            image.chmod(0o444)
+            expected = runtime.digest(image)
+            cache = runtime.private_directory(root / 'cache')
+            self.assertEqual(runtime.verify_image(image, expected, cache, job='1'), 'hashed')
+            self.assertEqual(runtime.verify_image(image, expected, cache, job='1'), 'cached')
+            for job in range(2, 70):
+                self.assertEqual(runtime.verify_image(image, expected, cache, job=str(job)), 'hashed')
+            self.assertEqual(len(list(cache.iterdir())), 1)
+            self.assertLessEqual(len(json.loads((cache / 'images.json').read_text())), 64)
+            self.assertEqual(runtime.verify_image(image, expected, cache, job='69'), 'cached')
 
     def test_admin_handoff_uses_copied_environment_and_checks_its_bytes(self):
         with tempfile.TemporaryDirectory() as directory:

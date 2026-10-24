@@ -6,6 +6,7 @@ action=${1:---check}
 destination=${2:-/opt/modules/modulefiles/apps}
 [[ $action == --check || $action == --install ]] || { echo 'usage: bash install.sh [--check|--install [module-root]]' >&2; exit 2; }
 [[ $destination == /* && $(realpath -m -- "$destination") == "$destination" ]] || { echo 'module-root must be absolute and canonical' >&2; exit 1; }
+python3 -B "$package/check-public.py"
 
 # Preflight all five entries before writing any public module.
 for name in abacus cp2k lammps deepmd-kit gpumd; do

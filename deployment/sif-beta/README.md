@@ -13,8 +13,8 @@
 
 ```text
 /home/stardust/sai-hpc-software/modulefiles/apps/cp2k/
-  master-beta-later -> master-beta-20261024-cfe5e5d87aaf
-  master-beta-20261024-cfe5e5d87aaf
+  master-beta-later -> master-beta-20261024-cfe5e5d87aaf-ra4c6a24c229f
+  master-beta-20261024-cfe5e5d87aaf-ra4c6a24c229f
 ```
 
 日期是交付快照日期，SHA 是源码提交；不承诺等于此刻上游 HEAD。
@@ -50,11 +50,23 @@ module load cp2k/master-beta-later
 mpirun -np $SLURM_NTASKS --map-by $MAP_OPT cp2k.psmp -i input.inp -o output.out
 ```
 
-输入、模型和输出保留在 `/org` 下自己的算例目录。当前冻结 runtime 仍要求在启动
-宿主 MPI 或程序前设置已有的项目 `TMPDIR`；上述命令不代表已实现自动内存临时区。
-将 MPI socket、容器配置和少量缓存自动放入节点内存的改造尚未验收。计算节点
-`/dev/shm` 为 tmpfs，但现有 epilog 按用户清理；需要先解决并发作业隔离，且启用
-swap 的节点不能保证 tmpfs 绝不写入物理盘。移除独立模板不会改变已验收 runtime。
+输入、模型和输出保留在 `/org` 下自己的算例目录。启动器自动为宿主 MPI 和
+容器创建私有的内存临时区，不要求用户设置 `TMPDIR`，也不在家目录或项目目录
+创建运行时缓存。作业自己的 `/dev/shm`、`/tmp` 和 `/var/tmp` 属于独立挂载命名空间，
+同一用户的另一个作业结束时，系统 epilog 看不到这些文件。进程退出后由内核回收。
+模块加载和卸载不改变调用者的 `TMPDIR`。
+
+`mpirun`/`mpiexec` 的薄入口准备内存环境后执行已验收的**物理机 MPI**；远端 `prted`
+同样自动准备。受 AppArmor 限制的节点通过系统 Apptainer 的受支持配置启动，一个
+36 KiB、只含挂载目录的独立 SIF 提供兼容入口。它不依赖任何应用程序的 SIF。
+少量启动配置和有界校验索引放在节点 `/run/lock` 的 tmpfs；程序数据不放在那里。
+整个公共 runtime 约 110 KiB，原有程序 SIF 直接复用，不另复制到家目录或内存。
+
+每作业、每节点、每镜像进行一次完整 SHA256 校验，其余 rank 复用内存索引。
+启动仍有容器挂载和校验成本；这里没有宣称容器启动零开销或新的性能加速。
+节点的 swap 策略保持原样，tmpfs 不能等同于绝不发生交换 I/O。
+四分区共 17 个组合、双节点宿主 MPI、实际同用户并发 epilog 和退出回收均有
+[本轮验收记录](../../docs/evidence/sif-memory-runtime-20261025/README.md)。
 
 GPU MPI 路径按每张 GPU 一个 rank 验收。若改成每张 GPU 多个 rank，系统脚本
 会启动 MPS，现有
@@ -90,11 +102,12 @@ NEP 计算可以在单进程内自动使用多张可见 GPU；这仍然直接运
 
 ## 轮换与复现
 
-固定文件命名为 `<branch>-beta-<YYYYMMDD>-<12位SHA>`。每个文件绑定不可变
+固定文件命名为 `<branch>-beta-<YYYYMMDD>-<12位源码SHA>-r<12位runtime SHA>`。
+运行时修复也得到新的固定名称，旧版本不会被覆盖。每个文件绑定不可变
 快照配置和启动器；加载时保存 generation，软链接轮换后，旧环境的执行与卸载
 继续使用旧配置。保留旧模块、SIF 和依赖，不自动清理历史产物。
 历史 generation 和验收记录中的模板保持原样；后续 generation 只发布模块与清单。
-需要复现时直接加载固定名称，例如 `cp2k/master-beta-20261024-cfe5e5d87aaf`；
+需要复现时直接加载固定名称，例如 `cp2k/master-beta-20261024-cfe5e5d87aaf-ra4c6a24c229f`；
 可先 `module use /home/stardust/sai-hpc-software/modulefiles/apps` 查看固定版本。
 
 stardust 在验收后发布（同名固定版本不覆盖）：
@@ -103,13 +116,14 @@ stardust 在验收后发布（同名固定版本不覆盖）：
 python3 -B controller/sif_beta.py promote \
   --root /home/stardust/sai-hpc-software/sif-beta \
   --module-root /home/stardust/sai-hpc-software/modulefiles/apps \
-  --generation 20261024-r2 \
-  --bundle /home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload \
-  --validated-catalog /org/org-open-sai/proj-sai-hpc-software/sif/20261024-r4/catalog.json \
-  --checks /home/stardust/sai-hpc-software/deployment/sif-development-20261024/validation.json
+  --generation "$GENERATION" \
+  --bundle "$BUNDLE" \
+  --validated-catalog "$CATALOG" \
+  --checks "$CHECKS"
 ```
 
-它核对完整分区验收、catalog/runtime 绑定、镜像 SHA256 和启动器，准备固定文件后
+变量分别指向新的 generation、公共 runtime、实际验收的 catalog 和完整验收报告。
+它核对完整分区验收、自动内存临时区、catalog/runtime 绑定、镜像 SHA256 和启动器，准备固定文件后
 原子替换软链接。`--software cp2k` 可只更新一个程序。旧的 `master-beta`/
 `develop-beta` 入口与历史记录保留，新版维护工具只更新 `*-beta-later` 链接。
 回滚到采用新布局的已保留 generation：
@@ -117,7 +131,7 @@ python3 -B controller/sif_beta.py promote \
 ```bash
 python3 -B controller/sif_beta.py select \
   --root /home/stardust/sai-hpc-software/sif-beta \
-  --generation 20261024-r2 --software cp2k
+  --generation 20261025-memory-r1 --software cp2k
 ```
 
 ## 管理员安装
@@ -128,5 +142,7 @@ bash install.sh --check
 bash install.sh --install
 ```
 
-只安装五个固定转发模块。首次可用 `module --ignore_cache avail beta-later` 发现
+`--check` 复核家目录当前 generation 的验收报告、启动器、runtime、bootstrap 和
+17 份 SIF 的完整校验和，也能发现管理员账号的读取权限问题。`--install` 先做相同检查，
+只安装五个固定转发模块，不向 `/opt` 放测试、模板或软件副本。首次可用 `module --ignore_cache avail beta-later` 发现
 新名称；`module help/load` 直接读取家目录当前选择，日常轮换不用刷新静态入口。
