@@ -1,0 +1,48 @@
+#%Module1.0
+module-whatis "gpumd master-beta-20261024-2c93346fce44; accepted SIF; partitions: 16V100 4V100 8V100V0; source: 2c93346fce4461de1c42c77e7fe74cdb6b0e3df6"
+proc ModulesHelp {} {
+    puts stderr "\[SAI beta\] gpumd / master\nSource version: master-2026-10-21\nCommit: 2c93346fce4461de1c42c77e7fe74cdb6b0e3df6\nAccepted snapshot: 20261024 (latest accepted, not necessarily upstream HEAD)\nPartitions: 16V100, 4V100, 8V100V0\nFixed module: gpumd/master-beta-20261024-2c93346fce44\nTemplates: /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r2/templates/gpumd\n\nCopy gpu.sbatch into your case directory and adjust partition/resources.\nOn the login node: cp /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r2/templates/gpumd/gpu.sbatch ./run.sbatch; edit it, then sbatch run.sbatch.\nLoad on a compute node inside sbatch or an srun shell.\nSet TMPDIR in /home or /org before host mpirun; keep inputs under the case directory.\nSIF commands are wrappers: do not replace them with native /opt executable paths.\nABACUS/CP2K/LAMMPS use host mpirun and the site GPU mapping script.\nGPUMD runs directly. DeePMD single-GPU runs dp; PyTorch multi-GPU uses torchrun.\nUse deepmd-python for the SIF Python environment.\nFor a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load gpumd/master-beta-20261024-2c93346fce44\n"
+}
+conflict gpumd
+conflict gpumd-sif
+set sai_partition ""
+if {[module-info mode remove]} {
+    if {[info exists env(SAI_SIF_GPUMD_PARTITION)]} {set sai_partition $env(SAI_SIF_GPUMD_PARTITION)}
+} elseif {[module-info mode load]} {
+    if {![info exists env(SLURM_JOB_ID)] || ![info exists env(SLURMD_NODENAME)] || ![info exists env(SLURM_JOB_PARTITION)]} {
+        ModulesHelp
+        error "Not loaded: load this module on a compute node inside an sbatch job or srun shell; see the templates above."
+    }
+    if {![info exists env(SLURM_JOB_PARTITION)]} {error "load the SIF module inside the Slurm allocation"}
+    set sai_partition $env(SLURM_JOB_PARTITION)
+    if {[lsearch -exact {16V100 4V100 8V100V0} $sai_partition] < 0} {ModulesHelp; error "no accepted SIF for this partition"}
+}
+if {$sai_partition ne ""} {
+    prepend-path MODULEPATH /opt/modules/modulefiles/devtools
+    module load apptainer/1.4.4
+    setenv SAI_SIF_GPUMD_PARTITION $sai_partition
+    switch -- $sai_partition {
+        16V100 {
+            setenv SAI_SIF_GPUMD_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/gpumd/16V100.sif"
+            setenv SAI_SIF_GPUMD_PREFIX "/opt/apps/gpumd/GPUMD-development-master-2026-10-21-g2c93346fce44-r59fe63bf80c8/16V100"
+        }
+        4V100 {
+            setenv SAI_SIF_GPUMD_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/gpumd/4V100.sif"
+            setenv SAI_SIF_GPUMD_PREFIX "/opt/apps/gpumd/GPUMD-development-master-2026-10-21-g2c93346fce44-r59fe63bf80c8/4V100"
+        }
+        8V100V0 {
+            setenv SAI_SIF_GPUMD_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/gpumd/8V100V0.sif"
+            setenv SAI_SIF_GPUMD_PREFIX "/opt/apps/gpumd/GPUMD-development-master-2026-10-21-g2c93346fce44-r59fe63bf80c8/8V100V0"
+        }
+    }
+}
+setenv SAI_SIF_GPUMD_SOURCE "2c93346fce4461de1c42c77e7fe74cdb6b0e3df6"
+prepend-path PATH "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/bin/gpumd"
+
+setenv SAI_SIF_GPUMD_VERSION "master-beta-20261024-2c93346fce44"
+setenv SAI_SIF_GPUMD_BRANCH "master"
+setenv SAI_SIF_GPUMD_TEMPLATES "/home/stardust/sai-hpc-software/sif-beta/generations/20261024-r2/templates/gpumd"
+setenv SAI_SIF_GPUMD_SNAPSHOT "20261024"
+if {[module-info mode load]} {
+    puts stderr [format "%s; partition=%s" "\[SAI beta\] gpumd/master; commit=2c93346fce44; snapshot=20261024; templates=/home/stardust/sai-hpc-software/sif-beta/generations/20261024-r2/templates/gpumd" $sai_partition]
+}

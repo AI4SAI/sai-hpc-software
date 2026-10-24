@@ -1,0 +1,50 @@
+#%Module1.0
+module-whatis "lammps develop-beta-20261024-a0e2bd6efb3d; accepted SIF; partitions: 16V100 4V100 8V100V0; source: a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b"
+proc ModulesHelp {} {
+    puts stderr "\[SAI beta\] lammps / develop\nSource version: develop-2026-10-15\nCommit: a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b\nAccepted snapshot: 20261024 (latest accepted, not necessarily upstream HEAD)\nPartitions: 16V100, 4V100, 8V100V0\nFixed module: lammps/develop-beta-20261024-a0e2bd6efb3d\nTemplates: /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r2/templates/lammps\n\nCopy gpu.sbatch into your case directory and adjust partition/resources.\nOn the login node: cp /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r2/templates/lammps/gpu.sbatch ./run.sbatch; edit it, then sbatch run.sbatch.\nLoad on a compute node inside sbatch or an srun shell.\nSet TMPDIR in /home or /org before host mpirun; keep inputs under the case directory.\nSIF commands are wrappers: do not replace them with native /opt executable paths.\nABACUS/CP2K/LAMMPS use host mpirun and the site GPU mapping script.\nGPUMD runs directly. DeePMD single-GPU runs dp; PyTorch multi-GPU uses torchrun.\nUse deepmd-python for the SIF Python environment.\nFor a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load lammps/develop-beta-20261024-a0e2bd6efb3d\n"
+}
+conflict lammps
+conflict lammps-sif
+set sai_partition ""
+if {[module-info mode remove]} {
+    if {[info exists env(SAI_SIF_LAMMPS_PARTITION)]} {set sai_partition $env(SAI_SIF_LAMMPS_PARTITION)}
+} elseif {[module-info mode load]} {
+    if {![info exists env(SLURM_JOB_ID)] || ![info exists env(SLURMD_NODENAME)] || ![info exists env(SLURM_JOB_PARTITION)]} {
+        ModulesHelp
+        error "Not loaded: load this module on a compute node inside an sbatch job or srun shell; see the templates above."
+    }
+    if {![info exists env(SLURM_JOB_PARTITION)]} {error "load the SIF module inside the Slurm allocation"}
+    set sai_partition $env(SLURM_JOB_PARTITION)
+    if {[lsearch -exact {16V100 4V100 8V100V0} $sai_partition] < 0} {ModulesHelp; error "no accepted SIF for this partition"}
+}
+if {$sai_partition ne ""} {
+    prepend-path MODULEPATH /opt/modules/modulefiles/devtools
+    module load apptainer/1.4.4
+    module load cuda/12.9.1
+    module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto
+    setenv SAI_SIF_LAMMPS_PARTITION $sai_partition
+    switch -- $sai_partition {
+        16V100 {
+            setenv SAI_SIF_LAMMPS_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/lammps/16V100.sif"
+            setenv SAI_SIF_LAMMPS_PREFIX "/opt/apps/lammps/lammps-development-develop-2026-10-15-ga0e2bd6efb3d-r79751e306767/16V100"
+        }
+        4V100 {
+            setenv SAI_SIF_LAMMPS_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/lammps/4V100.sif"
+            setenv SAI_SIF_LAMMPS_PREFIX "/opt/apps/lammps/lammps-development-develop-2026-10-15-ga0e2bd6efb3d-rc01d748b9e7b/4V100"
+        }
+        8V100V0 {
+            setenv SAI_SIF_LAMMPS_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/lammps/8V100V0.sif"
+            setenv SAI_SIF_LAMMPS_PREFIX "/opt/apps/lammps/lammps-development-develop-2026-10-15-ga0e2bd6efb3d-rc01d748b9e7b/8V100V0"
+        }
+    }
+}
+setenv SAI_SIF_LAMMPS_SOURCE "a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b"
+prepend-path PATH "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/bin/lammps"
+
+setenv SAI_SIF_LAMMPS_VERSION "develop-beta-20261024-a0e2bd6efb3d"
+setenv SAI_SIF_LAMMPS_BRANCH "develop"
+setenv SAI_SIF_LAMMPS_TEMPLATES "/home/stardust/sai-hpc-software/sif-beta/generations/20261024-r2/templates/lammps"
+setenv SAI_SIF_LAMMPS_SNAPSHOT "20261024"
+if {[module-info mode load]} {
+    puts stderr [format "%s; partition=%s" "\[SAI beta\] lammps/develop; commit=a0e2bd6efb3d; snapshot=20261024; templates=/home/stardust/sai-hpc-software/sif-beta/generations/20261024-r2/templates/lammps" $sai_partition]
+}

@@ -14,18 +14,26 @@ These SIF entries do not relabel the original acceptance records or install
 the native staging exports.
 
 The [branch-beta entries](../deployment/sif-beta/README.md) now select those
-accepted snapshots from stardust's home directory: `abacus/develop-beta`,
-`cp2k/master-beta`, `lammps/develop-beta`, `deepmd-kit/master-beta`, and
-`gpumd/master-beta`. Login-node loads print the actual commit, fixed version,
+accepted snapshots from stardust's home directory: `abacus/develop-beta-later`,
+`cp2k/master-beta-later`, `lammps/develop-beta-later`, `deepmd-kit/master-beta-later`,
+and `gpumd/master-beta-later`. These are real relative symlinks to
+`<branch>-beta-20261024-<12-character source SHA>` in the same application family.
+Login-node loads print the actual commit, fixed version,
 supported partitions and SIF job-template directory, then fail without loading
 dependencies. The five `/opt` forwarding files are installed once by the
 administrator; all later metadata and pointer changes stay in home. Existing
 loaded environments retain their generation through rotation and unload.
-Real Lmod login/rotation checks passed, followed by 16V100 startup job `1921631`
-(`COMPLETED 0:0`, 30 seconds). This checks the new module route; the 17 scientific
-acceptances above remain the evidence for the unchanged SIF/runtime bytes.
-The [beta evidence](evidence/sif-beta-20261024/README.md) includes the first
-check-script failure and its corrected retry. The administrator handoff is
+Generation `20261024-r2` uses the real `/opt/sbatch_examples` conventions and
+the site's `mps_mapping.d`/`MAP_OPT`, without explicit export-all, strict-shell
+boilerplate or handwritten GPU affinity. SIF scratch uses a short home path,
+which also avoids Unix-socket path limits. Fresh GPU numerical checks passed in
+jobs `1922027`/`1922029`, CPU checks in `1922061`, and two steps of single-GPU
+DeePMD `se_e2_a` training in `1922119`. Actual Lmod checks cover login rejection,
+real symlink rotation and unload/rollback through both home and fixed gateways.
+The [site-template evidence](evidence/sif-beta-site-20261024/README.md) preserves
+the templates, results and failed attempts. The original
+[beta startup evidence](evidence/sif-beta-20261024/README.md) and 17 full SIF
+acceptances remain valid for their unchanged image/runtime bytes. The administrator handoff is
 `/home/stardust/sai-hpc-software/deployment/sif-beta/install.sh`; the new `/opt`
 gateways have not been installed by this work.
 
@@ -41,7 +49,7 @@ installation are separate acceptance states.
 | --- | --- | --- |
 | ABACUS `develop` | `370ba685e6707b3625c5580ff9d02ef0afb248e8` | All four targets built, scientifically accepted and published with reverified native staging exports; workflow [39971072923](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971072923) succeeded. Physical `/opt` installation pending. |
 | CP2K `master` | `cfe5e5d87aaf302953f14eb43587bef2411a8fb2` | All four targets built, scientifically accepted and project-published, with independent SIF, raw science, native export and module audits. Source-pinned LibXC 7.1.2 and LibXS `930a2c4` are verified. 4V100/8V100V0 completed through documented recoveries; the original [workflow 39983165813](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39983165813) retains its failed status. Physical `/opt` installation pending. |
-| DeePMD-kit `master` | `558f56962775098b8b554e341c3b37d2f86e6aeb` | All three V100 candidates build-verified and scientifically accepted: TF/PT/JAX Python/C-API checks plus 1,486 measured CUDA kernel events per target. Available through the 20261024 SIF modules; legacy catalog publication and native installation remain pending. |
+| DeePMD-kit `master` | `558f56962775098b8b554e341c3b37d2f86e6aeb` | All three V100 candidates pass the configured TF/PT/JAX inference/API and measured CUDA gates. Single-GPU `se_e2_a` training also passed on 16V100. Multi-GPU training is not accepted: Horovod is absent; PT `se_e2_a` DDP and DPA2/Triton exposed the failures recorded below. Available through the 20261024 SIF modules; legacy catalog publication and native installation remain pending. |
 | LAMMPS `develop` | `a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b` | All three V100 candidates build-verified and scientifically accepted: 14 cases, 71 packages, 2,497 styles per target. Available through the 20261024 SIF modules; legacy catalog publication and native installation remain pending. |
 | GPUMD `master` | `2c93346fce4461de1c42c77e7fe74cdb6b0e3df6` | All three V100 targets scientifically accepted, published with native staging exports; physical `/opt` installation pending. |
 
@@ -52,6 +60,16 @@ selected for this campaign. A later
 found newer ABACUS and CP2K commits while these jobs were running; the other
 three branch heads were unchanged. New commits are resolved in subsequent
 daily runs and do not replace the identities of running or accepted artifacts.
+
+DeePMD training needs additional acceptance before publishing a multi-GPU
+template. In the unchanged snapshot, `se_e2_a` DDP leaves trainable empty
+compression placeholders unused and fails on step two; DPA2 reaches a Triton
+path that requires `/sbin/ldconfig`, which the slim SIF lacks. NCCL all-reduce
+passing does not satisfy that training gate. Follow-up work must address those
+source/runtime requirements, run multi-step training on every supported target,
+and explicitly decide whether TensorFlow/Horovod is included. Current public
+templates expose the tested single-GPU mode only; see the
+[raw failures and follow-up requirements](evidence/sif-beta-site-20261024/README.md).
 
 [ABACUS development evidence](evidence/abacus-development-20261023/README.md)
 records 23 successful build/acceptance jobs and independent checks of all four

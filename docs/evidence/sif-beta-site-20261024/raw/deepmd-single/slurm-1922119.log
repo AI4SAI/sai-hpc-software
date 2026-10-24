@@ -1,0 +1,81 @@
+[SAI beta] deepmd-kit/master; commit=558f56962775; snapshot=20261024; templates=/home/stardust/sai-hpc-software/development/sif-beta-site-20261024-r1/preview-v3/generations/20261024-r2/templates/deepmd-kit; partition=16V100
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+To get the best performance, it is recommended to adjust the number of threads by setting the environment variables OMP_NUM_THREADS, DP_INTRA_OP_PARALLELISM_THREADS, and DP_INTER_OP_PARALLELISM_THREADS. See https://deepmd.rtfd.io/parallelism/ for more information.
+[2026-10-24 12:18:49,334] DEEPMD INFO    DeePMD version: 0.1.dev1+g558f56962
+[2026-10-24 12:18:49,334] DEEPMD INFO    Configuration path: input.json
+[2026-10-24 12:18:50,563] DEEPMD INFO     _____               _____   __  __  _____           _     _  _   
+[2026-10-24 12:18:50,563] DEEPMD INFO    |  __ \             |  __ \ |  \/  ||  __ \         | |   (_)| |  
+[2026-10-24 12:18:50,563] DEEPMD INFO    | |  | |  ___   ___ | |__) || \  / || |  | | ______ | | __ _ | |_ 
+[2026-10-24 12:18:50,563] DEEPMD INFO    | |  | | / _ \ / _ \|  ___/ | |\/| || |  | ||______|| |/ /| || __|
+[2026-10-24 12:18:50,563] DEEPMD INFO    | |__| ||  __/|  __/| |     | |  | || |__| |        |   < | || |_ 
+[2026-10-24 12:18:50,563] DEEPMD INFO    |_____/  \___| \___||_|     |_|  |_||_____/         |_|\_\|_| \__|
+[2026-10-24 12:18:50,563] DEEPMD INFO    Please read and cite:
+[2026-10-24 12:18:50,563] DEEPMD INFO    Wang, Zhang, Han and E, Comput.Phys.Comm. 228, 178-184 (2018)
+[2026-10-24 12:18:50,563] DEEPMD INFO    Zeng et al, J. Chem. Phys., 159, 054801 (2023)
+[2026-10-24 12:18:50,563] DEEPMD INFO    Zeng et al, J. Chem. Theory Comput., 21, 4375-4385 (2025)
+[2026-10-24 12:18:50,563] DEEPMD INFO    See https://deepmd.rtfd.io/credits/ for details.
+[2026-10-24 12:18:50,563] DEEPMD INFO    ----------------------------------------------------------------------------------------------------------------------------------------------------------
+[2026-10-24 12:18:50,563] DEEPMD INFO    Installed to:         /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd
+[2026-10-24 12:18:50,563] DEEPMD INFO    Source:               
+[2026-10-24 12:18:50,563] DEEPMD INFO    Source Branch:        HEAD
+[2026-10-24 12:18:50,563] DEEPMD INFO    Source Commit:        558f569
+[2026-10-24 12:18:50,563] DEEPMD INFO    Source Commit at:     2026-10-23 02:31:46 +0000
+[2026-10-24 12:18:50,563] DEEPMD INFO    Float Precision:      Double
+[2026-10-24 12:18:50,563] DEEPMD INFO    Build Variant:        CUDA
+[2026-10-24 12:18:50,564] DEEPMD INFO    Backend:              PyTorch
+[2026-10-24 12:18:50,564] DEEPMD INFO    PT Ver:               v2.13.0+cu126-gcf30153c4c1
+[2026-10-24 12:18:50,564] DEEPMD INFO    Custom OP Enabled:    True
+[2026-10-24 12:18:50,564] DEEPMD INFO    Built with PT Ver:    2.13.0
+[2026-10-24 12:18:50,564] DEEPMD INFO    Built with PT Inc:    /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/include
+[2026-10-24 12:18:50,564] DEEPMD INFO                          /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/include/torch/csrc/api/include
+[2026-10-24 12:18:50,564] DEEPMD INFO    Built with PT Lib:    /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib
+[2026-10-24 12:18:50,564] DEEPMD INFO    Running on:           16v100n02.mr-sai.ai
+[2026-10-24 12:18:50,564] DEEPMD INFO    Computing Device:     CUDA:0
+[2026-10-24 12:18:50,564] DEEPMD INFO    Device Name:          Tesla V100-SXM2-16GB
+[2026-10-24 12:18:50,564] DEEPMD INFO    CUDA_VISIBLE_DEVICES: 0
+[2026-10-24 12:18:50,564] DEEPMD INFO    Visible GPU Count:    1
+[2026-10-24 12:18:50,564] DEEPMD INFO    Num Intra Threads:    0
+[2026-10-24 12:18:50,564] DEEPMD INFO    Num Inter Threads:    0
+[2026-10-24 12:18:50,564] DEEPMD INFO    ----------------------------------------------------------------------------------------------------------------------------------------------------------
+[2026-10-24 12:18:51,788] DEEPMD INFO    Calculate neighbor statistics... (add --skip-neighbor-stat to skip this step)
+[2026-10-24 12:18:51,799] DEEPMD INFO    Adjust batch size from 1024 to 6
+[2026-10-24 12:18:52,562] DEEPMD INFO    Adjust batch size from 6 to 1024
+[2026-10-24 12:18:52,571] DEEPMD INFO    Neighbor statistics: training data with minimal neighbor distance: 0.941647
+[2026-10-24 12:18:52,571] DEEPMD INFO    Neighbor statistics: training data with maximum neighbor size: [2 3] (cutoff radius: 4.000000)
+[2026-10-24 12:18:52,577] DEEPMD INFO    Constructing DataLoaders from 1 systems
+[2026-10-24 12:18:52,583] DEEPMD INFO    Constructing DataLoaders from 1 systems
+[2026-10-24 12:18:52,593] DEEPMD INFO    Packing data for statistics from 1 systems
+[2026-10-24 12:18:52,914] DEEPMD INFO    RMSE of energy per atom after linear regression is: 1.8947806286936004e-14 in the unit of energy.
+[2026-10-24 12:18:52,915] DEEPMD INFO    ---Summary of DataSystem: Training     -----------------------------------------------
+[2026-10-24 12:18:52,915] DEEPMD INFO    Found 1 System(s):
+[2026-10-24 12:18:52,915] DEEPMD INFO                                        system  natoms  bch_sz  n_bch   prob       pbc
+[2026-10-24 12:18:52,915] DEEPMD INFO                                          data       6       1       4  1.000e+00    T
+[2026-10-24 12:18:52,915] DEEPMD INFO    --------------------------------------------------------------------------------------
+[2026-10-24 12:18:52,915] DEEPMD INFO    ---Summary of DataSystem: Validation   -----------------------------------------------
+[2026-10-24 12:18:52,915] DEEPMD INFO    Found 1 System(s):
+[2026-10-24 12:18:52,915] DEEPMD INFO                                        system  natoms  bch_sz  n_bch   prob       pbc
+[2026-10-24 12:18:52,915] DEEPMD INFO                                          data       6       1       4  1.000e+00    T
+[2026-10-24 12:18:52,915] DEEPMD INFO    --------------------------------------------------------------------------------------
+[2026-10-24 12:18:52,917] DEEPMD INFO    Model Params:  0.001 M   (Trainable: 0.001 M)
+[2026-10-24 12:18:52,917] DEEPMD INFO    Start to train 2 steps.
+[2026-10-24 12:18:54,289] DEEPMD INFO    Batch       1: trn: rmse = 1.12e+00, rmse_e = 4.50e-01, rmse_f = 1.74e-01, lr = 1.00e-03
+[2026-10-24 12:18:54,290] DEEPMD INFO    Batch       1: val: rmse = 1.08e+00, rmse_e = 4.37e-01, rmse_f = 1.59e-01
+[2026-10-24 12:18:54,290] DEEPMD INFO    Batch       1: total wall time = 1.37 s
+[2026-10-24 12:18:54,315] DEEPMD INFO    Batch       2: trn: rmse = 1.08e+00, rmse_e = 4.37e-01, rmse_f = 1.59e-01, lr = 3.16e-04
+[2026-10-24 12:18:54,315] DEEPMD INFO    Batch       2: val: rmse = 1.07e+00, rmse_e = 4.33e-01, rmse_f = 1.54e-01
+[2026-10-24 12:18:54,315] DEEPMD INFO    Batch       2: total wall time = 0.03 s, eta = 0:00:00 at 2026-10-24 12:18
+[2026-10-24 12:18:54,326] DEEPMD INFO    Saved model to model.ckpt-2.pt
+[2026-10-24 12:18:54,327] DEEPMD INFO    average training time: 0.6989 s/batch
+[2026-10-24 12:18:54,327] DEEPMD INFO    Trained model has been saved to: model.ckpt
+INFO:    Terminating squashfuse_ll after timeout
+INFO:    Timeouts can be caused by a running background process

@@ -87,21 +87,21 @@ proc setenv {name value} {puts "ENV $name=$value"}
     def test_fixed_gateway_observes_rotation_but_unload_uses_saved_generation(self):
         for generation in ('first', 'second'):
             self.fragment('cp2k', generation)
-        (self.root / 'channels').mkdir()
-        pointer = self.root / 'channels/cp2k'
-        pointer.write_text('first\n')
+            (self.root / generation).write_text(beta.render_version(self.root, 'cp2k', generation))
         home_module = self.root / 'home-module'
-        home_module.write_text(beta.render_channel(self.root, 'cp2k'))
+        home_module.symlink_to('first')
         gateway = beta.render_gateway(home_module)
         first = self.evaluate(gateway, partition='16V100')
         self.assertEqual(first.returncode, 0, first.stderr)
-        pointer.write_text('second\n')
+        replacement = self.root / 'replacement'
+        replacement.symlink_to('second')
+        replacement.replace(home_module)
         second = self.evaluate(gateway, partition='16V100')
         self.assertEqual(second.returncode, 0, second.stderr)
         self.assertIn('/second/bin/cp2k', second.stdout)
         saved = {'SAI_SIF_CP2K_BETA_GENERATION': 'first', 'SAI_SIF_CP2K_PARTITION': '16V100'}
-        # Current pointer may even be missing; unloading must still work.
-        pointer.unlink()
+        # The gateway now reads the newer module through the real symlink;
+        # that module must still unload the saved first generation.
         unload = self.evaluate(gateway, mode='remove', saved=saved, compute=False)
         self.assertEqual(unload.returncode, 0, unload.stderr)
         self.assertIn('/first/bin/cp2k', unload.stdout)
@@ -167,16 +167,25 @@ proc setenv {name value} {puts "ENV $name=$value"}
         bundle, catalog, checks = self.fake_bundle()
         root, modules = self.root / 'beta', self.root / 'modulefiles'
         destination = beta.prepare(root, modules, 'one', bundle, catalog, checks, list(PROGRAMS))
-        self.assertFalse((root / 'channels').exists())
+        self.assertFalse((destination / 'templates/deepmd-kit/gpu-pt-multigpu.sbatch').exists())
+        pointer = modules / 'cp2k/master-beta-later'
+        self.assertFalse(pointer.exists())
         beta.select(root, 'one', ['cp2k'])
-        self.assertEqual((root / 'channels/cp2k').read_text(), 'one\n')
+        self.assertTrue(pointer.is_symlink())
+        self.assertEqual(pointer.readlink(), Path('master-beta-20261024-cfe5e5d87aaf'))
         for template in destination.glob('templates/*/*.sbatch'):
             result = subprocess.run(['bash', '-n', str(template)], capture_output=True, text=True)
             self.assertEqual(result.returncode, 0, result.stderr)
             content = template.read_text()
-            self.assertIn('TMPDIR="$PWD/', content)
+            self.assertIn('TMPDIR="$HOME/', content)
+            for redundant in ('--export=ALL', 'set -eo pipefail', 'SLURM_EXPORT_ENV',
+                              '--external-launcher', 'module purge', '--bind-to core'):
+                self.assertNotIn(redundant, content)
             if template.name == 'gpu.sbatch':
                 self.assertNotIn('--cpus-per-task', content)
+                if template.parent.name in ('cp2k', 'abacus', 'lammps'):
+                    self.assertIn('/opt/sai/runtime/mps_mapping.d/${SLURM_JOB_PARTITION}.bash', content)
+                    self.assertIn('--map-by $MAP_OPT', content)
         fragment = destination / 'modules/cp2k'
         fragment.chmod(0o644)
         fragment.write_text('changed')

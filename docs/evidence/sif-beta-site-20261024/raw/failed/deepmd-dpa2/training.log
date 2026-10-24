@@ -1,0 +1,967 @@
++ '[' -z '' ']'
++ case "$-" in
++ __lmod_vx=x
++ '[' -n x ']'
++ set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for this output (/opt/modules/lmod/9.2.4/init/bash)
+Shell debugging restarted
++ unset __lmod_vx
++ export OMP_NUM_THREADS=2
++ OMP_NUM_THREADS=2
++ export TMPDIR=/home/stardust/.sai-sif-1922090
++ TMPDIR=/home/stardust/.sai-sif-1922090
++ mkdir -p /home/stardust/.sai-sif-1922090
++ module load deepmd-kit/master-beta-later
++ '[' -z '' ']'
++ case "$-" in
++ __lmod_sh_dbg=x
++ '[' -n x ']'
++ set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for Lmod's output
+[SAI beta] deepmd-kit/master; commit=558f56962775; snapshot=20261024; templates=/home/stardust/sai-hpc-software/development/sif-beta-site-20261024-r1/preview-v3/generations/20261024-r2/templates/deepmd-kit; partition=16V100
+Shell debugging restarted
++ unset __lmod_sh_dbg
++ return 0
++ deepmd-python -m torch.distributed.run --standalone --nproc_per_node=2 -m deepmd --pt train input.json
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+To get the best performance, it is recommended to adjust the number of threads by setting the environment variables OMP_NUM_THREADS, DP_INTRA_OP_PARALLELISM_THREADS, and DP_INTER_OP_PARALLELISM_THREADS. See https://deepmd.rtfd.io/parallelism/ for more information.
+To get the best performance, it is recommended to adjust the number of threads by setting the environment variables OMP_NUM_THREADS, DP_INTRA_OP_PARALLELISM_THREADS, and DP_INTER_OP_PARALLELISM_THREADS. See https://deepmd.rtfd.io/parallelism/ for more information.
+[2026-10-24 12:16:42,320] DEEPMD INFO    DeePMD version: 0.1.dev1+g558f56962
+[2026-10-24 12:16:42,320] DEEPMD INFO    Configuration path: input.json
+[2026-10-24 12:16:43,670] DEEPMD INFO     _____               _____   __  __  _____           _     _  _   
+[2026-10-24 12:16:43,670] DEEPMD INFO    |  __ \             |  __ \ |  \/  ||  __ \         | |   (_)| |  
+[2026-10-24 12:16:43,670] DEEPMD INFO    | |  | |  ___   ___ | |__) || \  / || |  | | ______ | | __ _ | |_ 
+[2026-10-24 12:16:43,670] DEEPMD INFO    | |  | | / _ \ / _ \|  ___/ | |\/| || |  | ||______|| |/ /| || __|
+[2026-10-24 12:16:43,670] DEEPMD INFO    | |__| ||  __/|  __/| |     | |  | || |__| |        |   < | || |_ 
+[2026-10-24 12:16:43,670] DEEPMD INFO    |_____/  \___| \___||_|     |_|  |_||_____/         |_|\_\|_| \__|
+[2026-10-24 12:16:43,670] DEEPMD INFO    Please read and cite:
+[2026-10-24 12:16:43,670] DEEPMD INFO    Wang, Zhang, Han and E, Comput.Phys.Comm. 228, 178-184 (2018)
+[2026-10-24 12:16:43,670] DEEPMD INFO    Zeng et al, J. Chem. Phys., 159, 054801 (2023)
+[2026-10-24 12:16:43,670] DEEPMD INFO    Zeng et al, J. Chem. Theory Comput., 21, 4375-4385 (2025)
+[2026-10-24 12:16:43,670] DEEPMD INFO    See https://deepmd.rtfd.io/credits/ for details.
+[2026-10-24 12:16:43,670] DEEPMD INFO    -----------------------------------------------------------------------------------------------------------------------------------------------------------
+[2026-10-24 12:16:43,670] DEEPMD INFO    Installed to:          /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd
+[2026-10-24 12:16:43,670] DEEPMD INFO    Source:                
+[2026-10-24 12:16:43,670] DEEPMD INFO    Source Branch:         HEAD
+[2026-10-24 12:16:43,670] DEEPMD INFO    Source Commit:         558f569
+[2026-10-24 12:16:43,670] DEEPMD INFO    Source Commit at:      2026-10-23 02:31:46 +0000
+[2026-10-24 12:16:43,670] DEEPMD INFO    Float Precision:       Double
+[2026-10-24 12:16:43,670] DEEPMD INFO    Build Variant:         CUDA
+[2026-10-24 12:16:43,670] DEEPMD INFO    Backend:               PyTorch
+[2026-10-24 12:16:43,670] DEEPMD INFO    PT Ver:                v2.13.0+cu126-gcf30153c4c1
+[2026-10-24 12:16:43,670] DEEPMD INFO    Custom OP Enabled:     True
+[2026-10-24 12:16:43,670] DEEPMD INFO    Built with PT Ver:     2.13.0
+[2026-10-24 12:16:43,670] DEEPMD INFO    Built with PT Inc:     /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/include
+[2026-10-24 12:16:43,670] DEEPMD INFO                           /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/include/torch/csrc/api/include
+[2026-10-24 12:16:43,670] DEEPMD INFO    Built with PT Lib:     /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib
+[2026-10-24 12:16:43,670] DEEPMD INFO    Running on:            16v100n06.mr-sai.ai
+[2026-10-24 12:16:43,670] DEEPMD INFO    Computing Device:      CUDA:0
+[2026-10-24 12:16:43,670] DEEPMD INFO    Device Name:           Tesla V100-SXM2-16GB
+[2026-10-24 12:16:43,670] DEEPMD INFO    CUDA_VISIBLE_DEVICES:  0,1
+[2026-10-24 12:16:43,670] DEEPMD INFO    Visible GPU Count:     2
+[2026-10-24 12:16:43,670] DEEPMD INFO    Distributed Processes: 2 total, 2 on this node
+[2026-10-24 12:16:43,670] DEEPMD INFO    Num Intra Threads:     0
+[2026-10-24 12:16:43,670] DEEPMD INFO    Num Inter Threads:     0
+[2026-10-24 12:16:43,670] DEEPMD INFO    -----------------------------------------------------------------------------------------------------------------------------------------------------------
+[2026-10-24 12:16:43,726] DEEPMD INFO    Calculate neighbor statistics... (add --skip-neighbor-stat to skip this step)
+[2026-10-24 12:16:43,730] DEEPMD INFO    Adjust batch size from 1024 to 6
+[2026-10-24 12:16:44,022] DEEPMD INFO    Adjust batch size from 6 to 1024
+[2026-10-24 12:16:44,030] DEEPMD INFO    Neighbor statistics: training data with minimal neighbor distance: 0.941647
+[2026-10-24 12:16:44,030] DEEPMD INFO    Neighbor statistics: training data with maximum neighbor size: [5] (cutoff radius: 6.000000)
+[2026-10-24 12:16:44,032] DEEPMD INFO    Adjust batch size from 1024 to 6
+[2026-10-24 12:16:44,035] DEEPMD INFO    Adjust batch size from 6 to 1024
+[2026-10-24 12:16:44,036] DEEPMD INFO    Neighbor statistics: training data with minimal neighbor distance: 0.941647
+[2026-10-24 12:16:44,036] DEEPMD INFO    Neighbor statistics: training data with maximum neighbor size: [4] (cutoff radius: 4.000000)
+[2026-10-24 12:16:44,038] DEEPMD INFO    Adjust batch size from 1024 to 6
+[2026-10-24 12:16:44,041] DEEPMD INFO    Adjust batch size from 6 to 1024
+[2026-10-24 12:16:44,043] DEEPMD INFO    Neighbor statistics: training data with minimal neighbor distance: 0.941647
+[2026-10-24 12:16:44,043] DEEPMD INFO    Neighbor statistics: training data with maximum neighbor size: [4] (cutoff radius: 4.000000)
+[2026-10-24 12:16:44,053] DEEPMD INFO    Constructing DataLoaders from 1 systems
+[2026-10-24 12:16:44,059] DEEPMD INFO    Constructing DataLoaders from 1 systems
+[2026-10-24 12:16:44,081] DEEPMD INFO    Packing data for statistics from 1 systems
+[2026-10-24 12:16:44,388] DEEPMD INFO    RMSE of energy per atom after linear regression is: 1.8947806286936004e-14 in the unit of energy.
+[2026-10-24 12:16:44,647] DEEPMD INFO    ---Summary of DataSystem: Training     -----------------------------------------------
+[2026-10-24 12:16:44,647] DEEPMD INFO    Found 1 System(s):
+[2026-10-24 12:16:44,647] DEEPMD INFO                                        system  natoms  bch_sz  n_bch   prob       pbc
+[2026-10-24 12:16:44,648] DEEPMD INFO                                          data       6       1       4  1.000e+00    T
+[2026-10-24 12:16:44,648] DEEPMD INFO    --------------------------------------------------------------------------------------
+[2026-10-24 12:16:44,648] DEEPMD INFO    ---Summary of DataSystem: Validation   -----------------------------------------------
+[2026-10-24 12:16:44,648] DEEPMD INFO    Found 1 System(s):
+[2026-10-24 12:16:44,648] DEEPMD INFO                                        system  natoms  bch_sz  n_bch   prob       pbc
+[2026-10-24 12:16:44,648] DEEPMD INFO                                          data       6       1       4  1.000e+00    T
+[2026-10-24 12:16:44,648] DEEPMD INFO    --------------------------------------------------------------------------------------
+[2026-10-24 12:16:44,652] DEEPMD INFO    Model Params:  0.474 M   (Trainable: 0.474 M)
+[2026-10-24 12:16:44,653] DEEPMD INFO    Start to train 2 steps.
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "<frozen runpy>", line 203, in _run_module_as_main
+[rank0]:   File "<frozen runpy>", line 88, in _run_code
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/__main__.py", line 9, in <module>
+[rank0]:     main()
+[rank0]:     ~~~~^^
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/main.py", line 1158, in main
+[rank0]:     deepmd_main(args)
+[rank0]:     ~~~~~~~~~~~^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 367, in wrapper
+[rank0]:     return f(*args, **kwargs)
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 693, in main
+[rank0]:     train(
+[rank0]:     ~~~~~^
+[rank0]:         input_file=FLAGS.INPUT,
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:     ...<8 lines>...
+[rank0]:         output=FLAGS.output,
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^
+[rank0]:     )
+[rank0]:     ^
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 478, in train
+[rank0]:     trainer.run()
+[rank0]:     ~~~~~~~~~~~^^
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1410, in run
+[rank0]:     self._run()
+[rank0]:     ~~~~~~~~~^^
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1836, in _run
+[rank0]:     step(step_id)
+[rank0]:     ~~~~^^^^^^^^^
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1483, in step
+[rank0]:     model_pred, loss, more_loss = self.wrapper(
+[rank0]:                                   ~~~~~~~~~~~~^
+[rank0]:         **input_dict, cur_lr=pref_lr, label=label_dict, task_key=task_key
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:     )
+[rank0]:     ^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/parallel/distributed.py", line 1890, in forward
+[rank0]:     else self._run_ddp_forward(*inputs, **kwargs)
+[rank0]:          ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/parallel/distributed.py", line 1715, in _run_ddp_forward
+[rank0]:     return self.module(*inputs, **kwargs)  # type: ignore[index]
+[rank0]:            ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/wrapper.py", line 211, in forward
+[rank0]:     model_pred, loss, more_loss = self.loss[task_key](
+[rank0]:                                   ~~~~~~~~~~~~~~~~~~~^
+[rank0]:         input_dict,
+[rank0]:         ^^^^^^^^^^^
+[rank0]:     ...<3 lines>...
+[rank0]:         learning_rate=cur_lr,
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^^
+[rank0]:     )
+[rank0]:     ^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/loss/ener.py", line 250, in forward
+[rank0]:     model_pred = self._inject_atom_mask(model(**input_dict), input_dict)
+[rank0]:                                         ~~~~~^^^^^^^^^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank0]:     return forward_call(*args, **kwargs)
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/ener_model.py", line 80, in forward
+[rank0]:     model_ret = self.forward_common(
+[rank0]:         coord,
+[rank0]:     ...<5 lines>...
+[rank0]:         charge_spin=charge_spin,
+[rank0]:     )
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/make_model.py", line 205, in forward_common
+[rank0]:     model_predict_lower = self.forward_common_lower(
+[rank0]:         extended_coord,
+[rank0]:     ...<7 lines>...
+[rank0]:         charge_spin=charge_spin,
+[rank0]:     )
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/make_model.py", line 443, in forward_common_lower
+[rank0]:     model_predict = fit_output_to_model_output(
+[rank0]:         atomic_ret,
+[rank0]:     ...<5 lines>...
+[rank0]:         extended_coord_corr=extended_coord_corr,
+[rank0]:     )
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/transform_output.py", line 189, in fit_output_to_model_output
+[rank0]:     dr, dc = take_deriv(
+[rank0]:              ~~~~~~~~~~^
+[rank0]:         vv,
+[rank0]:         ^^^
+[rank0]:     ...<5 lines>...
+[rank0]:         create_graph=create_graph,
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:     )
+[rank0]:     ^
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/transform_output.py", line 132, in take_deriv
+[rank0]:     ffi, aviri = task_deriv_one(
+[rank0]:                  ~~~~~~~~~~~~~~^
+[rank0]:         vvi,
+[rank0]:         ^^^^
+[rank0]:     ...<4 lines>...
+[rank0]:         create_graph=create_graph,
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:     )
+[rank0]:     ^
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/transform_output.py", line 80, in task_deriv_one
+[rank0]:     extended_force = torch.autograd.grad(
+[rank0]:                      ~~~~~~~~~~~~~~~~~~~^
+[rank0]:         [energy],
+[rank0]:         ^^^^^^^^^
+[rank0]:     ...<3 lines>...
+[rank0]:         retain_graph=True,
+[rank0]:         ^^^^^^^^^^^^^^^^^^
+[rank0]:     )[0]
+[rank0]:     ^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/autograd/__init__.py", line 594, in grad
+[rank0]:     result = _engine_run_backward(
+[rank0]:         outputs,
+[rank0]:     ...<5 lines>...
+[rank0]:         accumulate_grad=False,
+[rank0]:     )
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/autograd/graph.py", line 979, in _engine_run_backward
+[rank0]:     return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+[rank0]:            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:         t_outputs, *args, **kwargs
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:     )  # Calls into the C++ engine to run the backward pass
+[rank0]:     ^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_native/registry.py", line 923, in eager_router
+[rank0]:     result = _dispatch(args, kwargs, swallow_cond_exceptions=False)
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_native/registry.py", line 919, in _dispatch
+[rank0]:     return getattr(torch.ops._native, impl_name)(*args, **kwargs)
+[rank0]:            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_ops.py", line 1279, in __call__
+[rank0]:     return self._op(*args, **kwargs)
+[rank0]:            ~~~~~~~~^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_native/ops/bmm_outer_product/triton_impl.py", line 28, in _bmm_outer_product_impl
+[rank0]:     return bmm_outer_product(a, b)
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_native/ops/bmm_outer_product/triton_kernels.py", line 76, in bmm_outer_product
+[rank0]:     _bmm_outer_product_kernel[(B * triton.cdiv(M, BLOCK_M) * triton.cdiv(N, BLOCK_N),)](
+[rank0]:     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+[rank0]:         a,
+[rank0]:         ^^
+[rank0]:     ...<13 lines>...
+[rank0]:         BLOCK_N=BLOCK_N,
+[rank0]:         ^^^^^^^^^^^^^^^^
+[rank0]:     )
+[rank0]:     ^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/runtime/jit.py", line 370, in <lambda>
+[rank0]:     return lambda *args, **kwargs: self.run(grid=grid, warmup=False, *args, **kwargs)
+[rank0]:                                    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/runtime/jit.py", line 713, in run
+[rank0]:     device = driver.active.get_current_device()
+[rank0]:              ^^^^^^^^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/runtime/driver.py", line 39, in active
+[rank0]:     self._active = self.default
+[rank0]:                    ^^^^^^^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/runtime/driver.py", line 33, in default
+[rank0]:     self._default = _create_driver()
+[rank0]:                     ~~~~~~~~~~~~~~^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/runtime/driver.py", line 21, in _create_driver
+[rank0]:     return active_drivers[0]()
+[rank0]:            ~~~~~~~~~~~~~~~~~^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/backends/nvidia/driver.py", line 336, in __init__
+[rank0]:     self.utils = CudaUtils()  # TODO: make static
+[rank0]:                  ~~~~~~~~~^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/backends/nvidia/driver.py", line 69, in __init__
+[rank0]:     library_dirs=library_dirs(),
+[rank0]:                  ~~~~~~~~~~~~^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/backends/nvidia/driver.py", line 50, in library_dirs
+[rank0]:     return [libdevice_dir, *libcuda_dirs()]
+[rank0]:                             ~~~~~~~~~~~~^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/backends/nvidia/driver.py", line 29, in libcuda_dirs
+[rank0]:     libs = subprocess.check_output(["/sbin/ldconfig", "-p"]).decode(errors="ignore")
+[rank0]:            ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/subprocess.py", line 472, in check_output
+[rank0]:     return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+[rank0]:            ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:                **kwargs).stdout
+[rank0]:                ^^^^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/subprocess.py", line 554, in run
+[rank0]:     with Popen(*popenargs, **kwargs) as process:
+[rank0]:          ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/subprocess.py", line 1039, in __init__
+[rank0]:     self._execute_child(args, executable, preexec_fn, close_fds,
+[rank0]:     ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:                         pass_fds, cwd, env,
+[rank0]:                         ^^^^^^^^^^^^^^^^^^^
+[rank0]:     ...<5 lines>...
+[rank0]:                         gid, gids, uid, umask,
+[rank0]:                         ^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:                         start_new_session, process_group)
+[rank0]:                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/subprocess.py", line 1991, in _execute_child
+[rank0]:     raise child_exception_type(errno_num, err_msg, err_filename)
+[rank0]: FileNotFoundError: [Errno 2] No such file or directory: '/sbin/ldconfig'
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "<frozen runpy>", line 203, in _run_module_as_main
+[rank1]:   File "<frozen runpy>", line 88, in _run_code
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/__main__.py", line 9, in <module>
+[rank1]:     main()
+[rank1]:     ~~~~^^
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/main.py", line 1158, in main
+[rank1]:     deepmd_main(args)
+[rank1]:     ~~~~~~~~~~~^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 367, in wrapper
+[rank1]:     return f(*args, **kwargs)
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 693, in main
+[rank1]:     train(
+[rank1]:     ~~~~~^
+[rank1]:         input_file=FLAGS.INPUT,
+[rank1]:         ^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:     ...<8 lines>...
+[rank1]:         output=FLAGS.output,
+[rank1]:         ^^^^^^^^^^^^^^^^^^^^
+[rank1]:     )
+[rank1]:     ^
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 478, in train
+[rank1]:     trainer.run()
+[rank1]:     ~~~~~~~~~~~^^
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1410, in run
+[rank1]:     self._run()
+[rank1]:     ~~~~~~~~~^^
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1836, in _run
+[rank1]:     step(step_id)
+[rank1]:     ~~~~^^^^^^^^^
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1483, in step
+[rank1]:     model_pred, loss, more_loss = self.wrapper(
+[rank1]:                                   ~~~~~~~~~~~~^
+[rank1]:         **input_dict, cur_lr=pref_lr, label=label_dict, task_key=task_key
+[rank1]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:     )
+[rank1]:     ^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/parallel/distributed.py", line 1890, in forward
+[rank1]:     else self._run_ddp_forward(*inputs, **kwargs)
+[rank1]:          ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/parallel/distributed.py", line 1715, in _run_ddp_forward
+[rank1]:     return self.module(*inputs, **kwargs)  # type: ignore[index]
+[rank1]:            ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/wrapper.py", line 211, in forward
+[rank1]:     model_pred, loss, more_loss = self.loss[task_key](
+[rank1]:                                   ~~~~~~~~~~~~~~~~~~~^
+[rank1]:         input_dict,
+[rank1]:         ^^^^^^^^^^^
+[rank1]:     ...<3 lines>...
+[rank1]:         learning_rate=cur_lr,
+[rank1]:         ^^^^^^^^^^^^^^^^^^^^^
+[rank1]:     )
+[rank1]:     ^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/loss/ener.py", line 250, in forward
+[rank1]:     model_pred = self._inject_atom_mask(model(**input_dict), input_dict)
+[rank1]:                                         ~~~~~^^^^^^^^^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+[rank1]:     return forward_call(*args, **kwargs)
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/ener_model.py", line 80, in forward
+[rank1]:     model_ret = self.forward_common(
+[rank1]:         coord,
+[rank1]:     ...<5 lines>...
+[rank1]:         charge_spin=charge_spin,
+[rank1]:     )
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/make_model.py", line 205, in forward_common
+[rank1]:     model_predict_lower = self.forward_common_lower(
+[rank1]:         extended_coord,
+[rank1]:     ...<7 lines>...
+[rank1]:         charge_spin=charge_spin,
+[rank1]:     )
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/make_model.py", line 443, in forward_common_lower
+[rank1]:     model_predict = fit_output_to_model_output(
+[rank1]:         atomic_ret,
+[rank1]:     ...<5 lines>...
+[rank1]:         extended_coord_corr=extended_coord_corr,
+[rank1]:     )
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/transform_output.py", line 189, in fit_output_to_model_output
+[rank1]:     dr, dc = take_deriv(
+[rank1]:              ~~~~~~~~~~^
+[rank1]:         vv,
+[rank1]:         ^^^
+[rank1]:     ...<5 lines>...
+[rank1]:         create_graph=create_graph,
+[rank1]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:     )
+[rank1]:     ^
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/transform_output.py", line 132, in take_deriv
+[rank1]:     ffi, aviri = task_deriv_one(
+[rank1]:                  ~~~~~~~~~~~~~~^
+[rank1]:         vvi,
+[rank1]:         ^^^^
+[rank1]:     ...<4 lines>...
+[rank1]:         create_graph=create_graph,
+[rank1]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:     )
+[rank1]:     ^
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/transform_output.py", line 80, in task_deriv_one
+[rank1]:     extended_force = torch.autograd.grad(
+[rank1]:                      ~~~~~~~~~~~~~~~~~~~^
+[rank1]:         [energy],
+[rank1]:         ^^^^^^^^^
+[rank1]:     ...<3 lines>...
+[rank1]:         retain_graph=True,
+[rank1]:         ^^^^^^^^^^^^^^^^^^
+[rank1]:     )[0]
+[rank1]:     ^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/autograd/__init__.py", line 594, in grad
+[rank1]:     result = _engine_run_backward(
+[rank1]:         outputs,
+[rank1]:     ...<5 lines>...
+[rank1]:         accumulate_grad=False,
+[rank1]:     )
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/autograd/graph.py", line 979, in _engine_run_backward
+[rank1]:     return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+[rank1]:            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:         t_outputs, *args, **kwargs
+[rank1]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:     )  # Calls into the C++ engine to run the backward pass
+[rank1]:     ^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_native/registry.py", line 923, in eager_router
+[rank1]:     result = _dispatch(args, kwargs, swallow_cond_exceptions=False)
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_native/registry.py", line 919, in _dispatch
+[rank1]:     return getattr(torch.ops._native, impl_name)(*args, **kwargs)
+[rank1]:            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_ops.py", line 1279, in __call__
+[rank1]:     return self._op(*args, **kwargs)
+[rank1]:            ~~~~~~~~^^^^^^^^^^^^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_native/ops/bmm_outer_product/triton_impl.py", line 28, in _bmm_outer_product_impl
+[rank1]:     return bmm_outer_product(a, b)
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_native/ops/bmm_outer_product/triton_kernels.py", line 76, in bmm_outer_product
+[rank1]:     _bmm_outer_product_kernel[(B * triton.cdiv(M, BLOCK_M) * triton.cdiv(N, BLOCK_N),)](
+[rank1]:     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+[rank1]:         a,
+[rank1]:         ^^
+[rank1]:     ...<13 lines>...
+[rank1]:         BLOCK_N=BLOCK_N,
+[rank1]:         ^^^^^^^^^^^^^^^^
+[rank1]:     )
+[rank1]:     ^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/runtime/jit.py", line 370, in <lambda>
+[rank1]:     return lambda *args, **kwargs: self.run(grid=grid, warmup=False, *args, **kwargs)
+[rank1]:                                    ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/runtime/jit.py", line 713, in run
+[rank1]:     device = driver.active.get_current_device()
+[rank1]:              ^^^^^^^^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/runtime/driver.py", line 39, in active
+[rank1]:     self._active = self.default
+[rank1]:                    ^^^^^^^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/runtime/driver.py", line 33, in default
+[rank1]:     self._default = _create_driver()
+[rank1]:                     ~~~~~~~~~~~~~~^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/runtime/driver.py", line 21, in _create_driver
+[rank1]:     return active_drivers[0]()
+[rank1]:            ~~~~~~~~~~~~~~~~~^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/backends/nvidia/driver.py", line 336, in __init__
+[rank1]:     self.utils = CudaUtils()  # TODO: make static
+[rank1]:                  ~~~~~~~~~^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/backends/nvidia/driver.py", line 69, in __init__
+[rank1]:     library_dirs=library_dirs(),
+[rank1]:                  ~~~~~~~~~~~~^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/backends/nvidia/driver.py", line 50, in library_dirs
+[rank1]:     return [libdevice_dir, *libcuda_dirs()]
+[rank1]:                             ~~~~~~~~~~~~^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/backends/nvidia/driver.py", line 29, in libcuda_dirs
+[rank1]:     libs = subprocess.check_output(["/sbin/ldconfig", "-p"]).decode(errors="ignore")
+[rank1]:            ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/subprocess.py", line 472, in check_output
+[rank1]:     return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+[rank1]:            ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:                **kwargs).stdout
+[rank1]:                ^^^^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/subprocess.py", line 554, in run
+[rank1]:     with Popen(*popenargs, **kwargs) as process:
+[rank1]:          ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/subprocess.py", line 1039, in __init__
+[rank1]:     self._execute_child(args, executable, preexec_fn, close_fds,
+[rank1]:     ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:                         pass_fds, cwd, env,
+[rank1]:                         ^^^^^^^^^^^^^^^^^^^
+[rank1]:     ...<5 lines>...
+[rank1]:                         gid, gids, uid, umask,
+[rank1]:                         ^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:                         start_new_session, process_group)
+[rank1]:                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/subprocess.py", line 1991, in _execute_child
+[rank1]:     raise child_exception_type(errno_num, err_msg, err_filename)
+[rank1]: FileNotFoundError: [Errno 2] No such file or directory: '/sbin/ldconfig'
+[rank0]:[W1024 12:16:45.071579418 ProcessGroupNCCL.cpp:1624] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+W1024 12:16:46.688000 525885 site-packages/torch/distributed/elastic/multiprocessing/api.py:1028] Sending process 525935 closing signal SIGTERM
+E1024 12:16:46.903000 525885 site-packages/torch/distributed/elastic/multiprocessing/api.py:1002] failed (exitcode: 1) local_rank: 1 (pid: 525936) of binary: /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python
+E1024 12:16:46.921000 525885 site-packages/torch/distributed/elastic/multiprocessing/errors/error_handler.py:145] no error file defined for parent, to copy child error file (/home/stardust/.sai-sif-1922090/torchelastic_6jfkkfw8/d3ace4ea-bd35-44cf-a2ad-8dc193536ef0__1454zuj/attempt_0/1/error.json)
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/run.py", line 1032, in <module>
+    main()
+    ~~~~^^
+  File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 367, in wrapper
+    return f(*args, **kwargs)
+  File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/run.py", line 1028, in main
+    run(args)
+    ~~~^^^^^^
+  File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/run.py", line 1019, in run
+    elastic_launch(
+    ~~~~~~~~~~~~~~~
+        config=config,
+        ~~~~~~~~~~~~~~
+        entrypoint=cmd,
+        ~~~~~~~~~~~~~~~
+    )(*cmd_args)
+    ~^^^^^^^^^^^
+  File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/launcher/api.py", line 194, in __call__
+    return launch_agent(
+        self._config,
+    ...<2 lines>...
+        health_check_server=self._health_check_server,
+    )
+  File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/launcher/api.py", line 383, in launch_agent
+    raise ChildFailedError(
+    ...<2 lines>...
+    )
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+deepmd FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2026-10-24_12:16:45
+  host      : 16v100n06
+  rank      : 0 (local_rank: 0)
+  exitcode  : -15 (pid: 525935)  (SIGTERM)
+  error_file: /home/stardust/.sai-sif-1922090/torchelastic_6jfkkfw8/d3ace4ea-bd35-44cf-a2ad-8dc193536ef0__1454zuj/attempt_0/0/error.json
+  traceback : Traceback (most recent call last):
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 367, in wrapper
+      return f(*args, **kwargs)
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 693, in main
+      train(
+      ~~~~~^
+          input_file=FLAGS.INPUT,
+          ^^^^^^^^^^^^^^^^^^^^^^^
+      ...<8 lines>...
+          output=FLAGS.output,
+          ^^^^^^^^^^^^^^^^^^^^
+      )
+      ^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 478, in train
+      trainer.run()
+      ~~~~~~~~~~~^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1410, in run
+      self._run()
+      ~~~~~~~~~^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1836, in _run
+      step(step_id)
+      ~~~~^^^^^^^^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1483, in step
+      model_pred, loss, more_loss = self.wrapper(
+                                    ~~~~~~~~~~~~^
+          **input_dict, cur_lr=pref_lr, label=label_dict, task_key=task_key
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      )
+      ^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+      return self._call_impl(*args, **kwargs)
+             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+      return forward_call(*args, **kwargs)
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/parallel/distributed.py", line 1890, in forward
+      else self._run_ddp_forward(*inputs, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/parallel/distributed.py", line 1715, in _run_ddp_forward
+      return self.module(*inputs, **kwargs)  # type: ignore[index]
+             ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+      return self._call_impl(*args, **kwargs)
+             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+      return forward_call(*args, **kwargs)
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/wrapper.py", line 211, in forward
+      model_pred, loss, more_loss = self.loss[task_key](
+                                    ~~~~~~~~~~~~~~~~~~~^
+          input_dict,
+          ^^^^^^^^^^^
+      ...<3 lines>...
+          learning_rate=cur_lr,
+          ^^^^^^^^^^^^^^^^^^^^^
+      )
+      ^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+      return self._call_impl(*args, **kwargs)
+             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+      return forward_call(*args, **kwargs)
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/loss/ener.py", line 250, in forward
+      model_pred = self._inject_atom_mask(model(**input_dict), input_dict)
+                                          ~~~~~^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+      return self._call_impl(*args, **kwargs)
+             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+      return forward_call(*args, **kwargs)
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/ener_model.py", line 80, in forward
+      model_ret = self.forward_common(
+          coord,
+      ...<5 lines>...
+          charge_spin=charge_spin,
+      )
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/make_model.py", line 205, in forward_common
+      model_predict_lower = self.forward_common_lower(
+          extended_coord,
+      ...<7 lines>...
+          charge_spin=charge_spin,
+      )
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/make_model.py", line 443, in forward_common_lower
+      model_predict = fit_output_to_model_output(
+          atomic_ret,
+      ...<5 lines>...
+          extended_coord_corr=extended_coord_corr,
+      )
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/transform_output.py", line 189, in fit_output_to_model_output
+      dr, dc = take_deriv(
+               ~~~~~~~~~~^
+          vv,
+          ^^^
+      ...<5 lines>...
+          create_graph=create_graph,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+      )
+      ^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/transform_output.py", line 132, in take_deriv
+      ffi, aviri = task_deriv_one(
+                   ~~~~~~~~~~~~~~^
+          vvi,
+          ^^^^
+      ...<4 lines>...
+          create_graph=create_graph,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+      )
+      ^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/transform_output.py", line 80, in task_deriv_one
+      extended_force = torch.autograd.grad(
+                       ~~~~~~~~~~~~~~~~~~~^
+          [energy],
+          ^^^^^^^^^
+      ...<3 lines>...
+          retain_graph=True,
+          ^^^^^^^^^^^^^^^^^^
+      )[0]
+      ^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/autograd/__init__.py", line 594, in grad
+      result = _engine_run_backward(
+          outputs,
+      ...<5 lines>...
+          accumulate_grad=False,
+      )
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/autograd/graph.py", line 979, in _engine_run_backward
+      return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          t_outputs, *args, **kwargs
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+      )  # Calls into the C++ engine to run the backward pass
+      ^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_native/registry.py", line 923, in eager_router
+      result = _dispatch(args, kwargs, swallow_cond_exceptions=False)
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_native/registry.py", line 919, in _dispatch
+      return getattr(torch.ops._native, impl_name)(*args, **kwargs)
+             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_ops.py", line 1279, in __call__
+      return self._op(*args, **kwargs)
+             ~~~~~~~~^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_native/ops/bmm_outer_product/triton_impl.py", line 28, in _bmm_outer_product_impl
+      return bmm_outer_product(a, b)
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_native/ops/bmm_outer_product/triton_kernels.py", line 76, in bmm_outer_product
+      _bmm_outer_product_kernel[(B * triton.cdiv(M, BLOCK_M) * triton.cdiv(N, BLOCK_N),)](
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+          a,
+          ^^
+      ...<13 lines>...
+          BLOCK_N=BLOCK_N,
+          ^^^^^^^^^^^^^^^^
+      )
+      ^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/runtime/jit.py", line 370, in <lambda>
+      return lambda *args, **kwargs: self.run(grid=grid, warmup=False, *args, **kwargs)
+                                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/runtime/jit.py", line 713, in run
+      device = driver.active.get_current_device()
+               ^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/runtime/driver.py", line 39, in active
+      self._active = self.default
+                     ^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/runtime/driver.py", line 33, in default
+      self._default = _create_driver()
+                      ~~~~~~~~~~~~~~^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/runtime/driver.py", line 21, in _create_driver
+      return active_drivers[0]()
+             ~~~~~~~~~~~~~~~~~^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/backends/nvidia/driver.py", line 336, in __init__
+      self.utils = CudaUtils()  # TODO: make static
+                   ~~~~~~~~~^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/backends/nvidia/driver.py", line 69, in __init__
+      library_dirs=library_dirs(),
+                   ~~~~~~~~~~~~^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/backends/nvidia/driver.py", line 50, in library_dirs
+      return [libdevice_dir, *libcuda_dirs()]
+                              ~~~~~~~~~~~~^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/backends/nvidia/driver.py", line 29, in libcuda_dirs
+      libs = subprocess.check_output(["/sbin/ldconfig", "-p"]).decode(errors="ignore")
+             ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/subprocess.py", line 472, in check_output
+      return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+             ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                 **kwargs).stdout
+                 ^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/subprocess.py", line 554, in run
+      with Popen(*popenargs, **kwargs) as process:
+           ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/subprocess.py", line 1039, in __init__
+      self._execute_child(args, executable, preexec_fn, close_fds,
+      ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                          pass_fds, cwd, env,
+                          ^^^^^^^^^^^^^^^^^^^
+      ...<5 lines>...
+                          gid, gids, uid, umask,
+                          ^^^^^^^^^^^^^^^^^^^^^^
+                          start_new_session, process_group)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/subprocess.py", line 1991, in _execute_child
+      raise child_exception_type(errno_num, err_msg, err_filename)
+  FileNotFoundError: [Errno 2] No such file or directory: '/sbin/ldconfig'
+  
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-10-24_12:16:45
+  host      : 16v100n06
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 525936) 
+  error_file: /home/stardust/.sai-sif-1922090/torchelastic_6jfkkfw8/d3ace4ea-bd35-44cf-a2ad-8dc193536ef0__1454zuj/attempt_0/1/error.json
+  traceback : Traceback (most recent call last):
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 367, in wrapper
+      return f(*args, **kwargs)
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 693, in main
+      train(
+      ~~~~~^
+          input_file=FLAGS.INPUT,
+          ^^^^^^^^^^^^^^^^^^^^^^^
+      ...<8 lines>...
+          output=FLAGS.output,
+          ^^^^^^^^^^^^^^^^^^^^
+      )
+      ^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 478, in train
+      trainer.run()
+      ~~~~~~~~~~~^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1410, in run
+      self._run()
+      ~~~~~~~~~^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1836, in _run
+      step(step_id)
+      ~~~~^^^^^^^^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1483, in step
+      model_pred, loss, more_loss = self.wrapper(
+                                    ~~~~~~~~~~~~^
+          **input_dict, cur_lr=pref_lr, label=label_dict, task_key=task_key
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      )
+      ^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+      return self._call_impl(*args, **kwargs)
+             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+      return forward_call(*args, **kwargs)
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/parallel/distributed.py", line 1890, in forward
+      else self._run_ddp_forward(*inputs, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/parallel/distributed.py", line 1715, in _run_ddp_forward
+      return self.module(*inputs, **kwargs)  # type: ignore[index]
+             ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+      return self._call_impl(*args, **kwargs)
+             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+      return forward_call(*args, **kwargs)
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/wrapper.py", line 211, in forward
+      model_pred, loss, more_loss = self.loss[task_key](
+                                    ~~~~~~~~~~~~~~~~~~~^
+          input_dict,
+          ^^^^^^^^^^^
+      ...<3 lines>...
+          learning_rate=cur_lr,
+          ^^^^^^^^^^^^^^^^^^^^^
+      )
+      ^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+      return self._call_impl(*args, **kwargs)
+             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+      return forward_call(*args, **kwargs)
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/loss/ener.py", line 250, in forward
+      model_pred = self._inject_atom_mask(model(**input_dict), input_dict)
+                                          ~~~~~^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+      return self._call_impl(*args, **kwargs)
+             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1789, in _call_impl
+      return forward_call(*args, **kwargs)
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/ener_model.py", line 80, in forward
+      model_ret = self.forward_common(
+          coord,
+      ...<5 lines>...
+          charge_spin=charge_spin,
+      )
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/make_model.py", line 205, in forward_common
+      model_predict_lower = self.forward_common_lower(
+          extended_coord,
+      ...<7 lines>...
+          charge_spin=charge_spin,
+      )
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/make_model.py", line 443, in forward_common_lower
+      model_predict = fit_output_to_model_output(
+          atomic_ret,
+      ...<5 lines>...
+          extended_coord_corr=extended_coord_corr,
+      )
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/transform_output.py", line 189, in fit_output_to_model_output
+      dr, dc = take_deriv(
+               ~~~~~~~~~~^
+          vv,
+          ^^^
+      ...<5 lines>...
+          create_graph=create_graph,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+      )
+      ^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/transform_output.py", line 132, in take_deriv
+      ffi, aviri = task_deriv_one(
+                   ~~~~~~~~~~~~~~^
+          vvi,
+          ^^^^
+      ...<4 lines>...
+          create_graph=create_graph,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+      )
+      ^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/model/model/transform_output.py", line 80, in task_deriv_one
+      extended_force = torch.autograd.grad(
+                       ~~~~~~~~~~~~~~~~~~~^
+          [energy],
+          ^^^^^^^^^
+      ...<3 lines>...
+          retain_graph=True,
+          ^^^^^^^^^^^^^^^^^^
+      )[0]
+      ^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/autograd/__init__.py", line 594, in grad
+      result = _engine_run_backward(
+          outputs,
+      ...<5 lines>...
+          accumulate_grad=False,
+      )
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/autograd/graph.py", line 979, in _engine_run_backward
+      return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+          t_outputs, *args, **kwargs
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^
+      )  # Calls into the C++ engine to run the backward pass
+      ^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_native/registry.py", line 923, in eager_router
+      result = _dispatch(args, kwargs, swallow_cond_exceptions=False)
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_native/registry.py", line 919, in _dispatch
+      return getattr(torch.ops._native, impl_name)(*args, **kwargs)
+             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_ops.py", line 1279, in __call__
+      return self._op(*args, **kwargs)
+             ~~~~~~~~^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_native/ops/bmm_outer_product/triton_impl.py", line 28, in _bmm_outer_product_impl
+      return bmm_outer_product(a, b)
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_native/ops/bmm_outer_product/triton_kernels.py", line 76, in bmm_outer_product
+      _bmm_outer_product_kernel[(B * triton.cdiv(M, BLOCK_M) * triton.cdiv(N, BLOCK_N),)](
+      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+          a,
+          ^^
+      ...<13 lines>...
+          BLOCK_N=BLOCK_N,
+          ^^^^^^^^^^^^^^^^
+      )
+      ^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/runtime/jit.py", line 370, in <lambda>
+      return lambda *args, **kwargs: self.run(grid=grid, warmup=False, *args, **kwargs)
+                                     ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/runtime/jit.py", line 713, in run
+      device = driver.active.get_current_device()
+               ^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/runtime/driver.py", line 39, in active
+      self._active = self.default
+                     ^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/runtime/driver.py", line 33, in default
+      self._default = _create_driver()
+                      ~~~~~~~~~~~~~~^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/runtime/driver.py", line 21, in _create_driver
+      return active_drivers[0]()
+             ~~~~~~~~~~~~~~~~~^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/backends/nvidia/driver.py", line 336, in __init__
+      self.utils = CudaUtils()  # TODO: make static
+                   ~~~~~~~~~^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/backends/nvidia/driver.py", line 69, in __init__
+      library_dirs=library_dirs(),
+                   ~~~~~~~~~~~~^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/backends/nvidia/driver.py", line 50, in library_dirs
+      return [libdevice_dir, *libcuda_dirs()]
+                              ~~~~~~~~~~~~^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/triton/backends/nvidia/driver.py", line 29, in libcuda_dirs
+      libs = subprocess.check_output(["/sbin/ldconfig", "-p"]).decode(errors="ignore")
+             ~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/subprocess.py", line 472, in check_output
+      return run(*popenargs, stdout=PIPE, timeout=timeout, check=True,
+             ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                 **kwargs).stdout
+                 ^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/subprocess.py", line 554, in run
+      with Popen(*popenargs, **kwargs) as process:
+           ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/subprocess.py", line 1039, in __init__
+      self._execute_child(args, executable, preexec_fn, close_fds,
+      ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                          pass_fds, cwd, env,
+                          ^^^^^^^^^^^^^^^^^^^
+      ...<5 lines>...
+                          gid, gids, uid, umask,
+                          ^^^^^^^^^^^^^^^^^^^^^^
+                          start_new_session, process_group)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/subprocess.py", line 1991, in _execute_child
+      raise child_exception_type(errno_num, err_msg, err_filename)
+  FileNotFoundError: [Errno 2] No such file or directory: '/sbin/ldconfig'
+  
+============================================================
+INFO:    Terminating squashfuse_ll after timeout
+INFO:    Timeouts can be caused by a running background process
++ exit

@@ -1,0 +1,673 @@
++ '[' -z '' ']'
++ case "$-" in
++ __lmod_vx=x
++ '[' -n x ']'
++ set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for this output (/opt/modules/lmod/9.2.4/init/bash)
+Shell debugging restarted
++ unset __lmod_vx
++ export OMP_NUM_THREADS=2
++ OMP_NUM_THREADS=2
++ export TMPDIR=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-beta-site-20261024-deepmd/.sai-sif-1922012
++ TMPDIR=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-beta-site-20261024-deepmd/.sai-sif-1922012
++ mkdir -p /org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-beta-site-20261024-deepmd/.sai-sif-1922012
++ module load deepmd-kit/master-beta-later
++ '[' -z '' ']'
++ case "$-" in
++ __lmod_sh_dbg=x
++ '[' -n x ']'
++ set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for Lmod's output
+[SAI beta] deepmd-kit/master; commit=558f56962775; snapshot=20261024; templates=/home/stardust/sai-hpc-software/development/sif-beta-site-20261024-r1/preview-v2/generations/20261024-r2/templates/deepmd-kit; partition=16V100
+Shell debugging restarted
++ unset __lmod_sh_dbg
++ return 0
++ deepmd-python -m torch.distributed.run --standalone --nproc_per_node=2 -m deepmd --pt train input.json
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+To get the best performance, it is recommended to adjust the number of threads by setting the environment variables OMP_NUM_THREADS, DP_INTRA_OP_PARALLELISM_THREADS, and DP_INTER_OP_PARALLELISM_THREADS. See https://deepmd.rtfd.io/parallelism/ for more information.
+To get the best performance, it is recommended to adjust the number of threads by setting the environment variables OMP_NUM_THREADS, DP_INTRA_OP_PARALLELISM_THREADS, and DP_INTER_OP_PARALLELISM_THREADS. See https://deepmd.rtfd.io/parallelism/ for more information.
+[2026-10-24 12:08:35,256] DEEPMD INFO    DeePMD version: 0.1.dev1+g558f56962
+[2026-10-24 12:08:35,256] DEEPMD INFO    Configuration path: input.json
+[2026-10-24 12:08:36,397] DEEPMD INFO     _____               _____   __  __  _____           _     _  _   
+[2026-10-24 12:08:36,397] DEEPMD INFO    |  __ \             |  __ \ |  \/  ||  __ \         | |   (_)| |  
+[2026-10-24 12:08:36,397] DEEPMD INFO    | |  | |  ___   ___ | |__) || \  / || |  | | ______ | | __ _ | |_ 
+[2026-10-24 12:08:36,397] DEEPMD INFO    | |  | | / _ \ / _ \|  ___/ | |\/| || |  | ||______|| |/ /| || __|
+[2026-10-24 12:08:36,397] DEEPMD INFO    | |__| ||  __/|  __/| |     | |  | || |__| |        |   < | || |_ 
+[2026-10-24 12:08:36,397] DEEPMD INFO    |_____/  \___| \___||_|     |_|  |_||_____/         |_|\_\|_| \__|
+[2026-10-24 12:08:36,397] DEEPMD INFO    Please read and cite:
+[2026-10-24 12:08:36,397] DEEPMD INFO    Wang, Zhang, Han and E, Comput.Phys.Comm. 228, 178-184 (2018)
+[2026-10-24 12:08:36,397] DEEPMD INFO    Zeng et al, J. Chem. Phys., 159, 054801 (2023)
+[2026-10-24 12:08:36,397] DEEPMD INFO    Zeng et al, J. Chem. Theory Comput., 21, 4375-4385 (2025)
+[2026-10-24 12:08:36,397] DEEPMD INFO    See https://deepmd.rtfd.io/credits/ for details.
+[2026-10-24 12:08:36,397] DEEPMD INFO    -----------------------------------------------------------------------------------------------------------------------------------------------------------
+[2026-10-24 12:08:36,397] DEEPMD INFO    Installed to:          /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd
+[2026-10-24 12:08:36,397] DEEPMD INFO    Source:                
+[2026-10-24 12:08:36,397] DEEPMD INFO    Source Branch:         HEAD
+[2026-10-24 12:08:36,397] DEEPMD INFO    Source Commit:         558f569
+[2026-10-24 12:08:36,397] DEEPMD INFO    Source Commit at:      2026-10-23 02:31:46 +0000
+[2026-10-24 12:08:36,397] DEEPMD INFO    Float Precision:       Double
+[2026-10-24 12:08:36,397] DEEPMD INFO    Build Variant:         CUDA
+[2026-10-24 12:08:36,397] DEEPMD INFO    Backend:               PyTorch
+[2026-10-24 12:08:36,397] DEEPMD INFO    PT Ver:                v2.13.0+cu126-gcf30153c4c1
+[2026-10-24 12:08:36,397] DEEPMD INFO    Custom OP Enabled:     True
+[2026-10-24 12:08:36,397] DEEPMD INFO    Built with PT Ver:     2.13.0
+[2026-10-24 12:08:36,397] DEEPMD INFO    Built with PT Inc:     /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/include
+[2026-10-24 12:08:36,397] DEEPMD INFO                           /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/include/torch/csrc/api/include
+[2026-10-24 12:08:36,397] DEEPMD INFO    Built with PT Lib:     /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib
+[2026-10-24 12:08:36,397] DEEPMD INFO    Running on:            16v100n07.mr-sai.ai
+[2026-10-24 12:08:36,397] DEEPMD INFO    Computing Device:      CUDA:0
+[2026-10-24 12:08:36,397] DEEPMD INFO    Device Name:           Tesla V100-SXM2-16GB
+[2026-10-24 12:08:36,397] DEEPMD INFO    CUDA_VISIBLE_DEVICES:  0,1
+[2026-10-24 12:08:36,397] DEEPMD INFO    Visible GPU Count:     2
+[2026-10-24 12:08:36,397] DEEPMD INFO    Distributed Processes: 2 total, 2 on this node
+[2026-10-24 12:08:36,397] DEEPMD INFO    Num Intra Threads:     0
+[2026-10-24 12:08:36,397] DEEPMD INFO    Num Inter Threads:     0
+[2026-10-24 12:08:36,397] DEEPMD INFO    -----------------------------------------------------------------------------------------------------------------------------------------------------------
+[2026-10-24 12:08:36,450] DEEPMD INFO    Calculate neighbor statistics... (add --skip-neighbor-stat to skip this step)
+[2026-10-24 12:08:36,454] DEEPMD INFO    Adjust batch size from 1024 to 6
+[2026-10-24 12:08:36,711] DEEPMD INFO    Adjust batch size from 6 to 1024
+[2026-10-24 12:08:36,718] DEEPMD INFO    Neighbor statistics: training data with minimal neighbor distance: 0.941647
+[2026-10-24 12:08:36,718] DEEPMD INFO    Neighbor statistics: training data with maximum neighbor size: [2 3] (cutoff radius: 4.000000)
+[2026-10-24 12:08:36,728] DEEPMD INFO    Constructing DataLoaders from 1 systems
+[2026-10-24 12:08:36,734] DEEPMD INFO    Constructing DataLoaders from 1 systems
+[2026-10-24 12:08:36,745] DEEPMD INFO    Packing data for statistics from 1 systems
+[2026-10-24 12:08:37,054] DEEPMD INFO    RMSE of energy per atom after linear regression is: 1.8947806286936004e-14 in the unit of energy.
+[2026-10-24 12:08:37,334] DEEPMD INFO    ---Summary of DataSystem: Training     -----------------------------------------------
+[2026-10-24 12:08:37,334] DEEPMD INFO    Found 1 System(s):
+[2026-10-24 12:08:37,334] DEEPMD INFO                                        system  natoms  bch_sz  n_bch   prob       pbc
+[2026-10-24 12:08:37,334] DEEPMD INFO                                          data       6       1       4  1.000e+00    T
+[2026-10-24 12:08:37,334] DEEPMD INFO    --------------------------------------------------------------------------------------
+[2026-10-24 12:08:37,334] DEEPMD INFO    ---Summary of DataSystem: Validation   -----------------------------------------------
+[2026-10-24 12:08:37,334] DEEPMD INFO    Found 1 System(s):
+[2026-10-24 12:08:37,334] DEEPMD INFO                                        system  natoms  bch_sz  n_bch   prob       pbc
+[2026-10-24 12:08:37,334] DEEPMD INFO                                          data       6       1       4  1.000e+00    T
+[2026-10-24 12:08:37,334] DEEPMD INFO    --------------------------------------------------------------------------------------
+[2026-10-24 12:08:37,338] DEEPMD INFO    Model Params:  0.001 M   (Trainable: 0.001 M)
+[2026-10-24 12:08:37,339] DEEPMD INFO    Start to train 2 steps.
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "<frozen runpy>", line 203, in _run_module_as_main
+[rank1]:   File "<frozen runpy>", line 88, in _run_code
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/__main__.py", line 9, in <module>
+[rank1]:     main()
+[rank1]:     ~~~~^^
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/main.py", line 1158, in main
+[rank1]:     deepmd_main(args)
+[rank1]:     ~~~~~~~~~~~^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 367, in wrapper
+[rank1]:     return f(*args, **kwargs)
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 693, in main
+[rank1]:     train(
+[rank1]:     ~~~~~^
+[rank1]:         input_file=FLAGS.INPUT,
+[rank1]:         ^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:     ...<8 lines>...
+[rank1]:         output=FLAGS.output,
+[rank1]:         ^^^^^^^^^^^^^^^^^^^^
+[rank1]:     )
+[rank1]:     ^
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 478, in train
+[rank1]:     trainer.run()
+[rank1]:     ~~~~~~~~~~~^^
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1410, in run
+[rank1]:     self._run()
+[rank1]:     ~~~~~~~~~^^
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1836, in _run
+[rank1]:     step(step_id)
+[rank1]:     ~~~~^^^^^^^^^
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1475, in step
+[rank1]:     input_dict, label_dict, log_dict = self._next_training_batch(task_key)
+[rank1]:                                        ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 2176, in _next_training_batch
+[rank1]:     batch = self.get_data(is_train=True, task_key=task_key)
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 2206, in get_data
+[rank1]:     batch_data = next(iterator)
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 289, in cycle_iterator
+[rank1]:     yield from it
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 725, in __next__
+[rank1]:     data = self._next_data()
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 1529, in _next_data
+[rank1]:     return self._process_data(data, worker_id)
+[rank1]:            ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 1567, in _process_data
+[rank1]:     data.reraise()
+[rank1]:     ~~~~~~~~~~~~^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_utils.py", line 794, in reraise
+[rank1]:     raise exception
+[rank1]: RuntimeError: Caught RuntimeError in DataLoader worker process 0.
+[rank1]: Original Traceback (most recent call last):
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/_utils/worker.py", line 374, in _worker_loop
+[rank1]:     data = fetcher.fetch(index)  # type: ignore[possibly-undefined]
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/_utils/fetch.py", line 56, in fetch
+[rank1]:     data = self.dataset[possibly_batched_index]
+[rank1]:            ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/utils/dataloader.py", line 198, in __getitem__
+[rank1]:     batch = next(self.iters[idx])
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 725, in __next__
+[rank1]:     data = self._next_data()
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 785, in _next_data
+[rank1]:     data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/_utils/fetch.py", line 57, in fetch
+[rank1]:     return self.collate_fn(data)
+[rank1]:            ~~~~~~~~~~~~~~~^^^^^^
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/utils/dataloader.py", line 250, in collate_batch
+[rank1]:     result[key] = collate_tensor_fn(
+[rank1]:                   ~~~~~~~~~~~~~~~~~^
+[rank1]:         [torch.as_tensor(d[key]) for d in batch]
+[rank1]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:     )
+[rank1]:     ^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/_utils/collate.py", line 273, in collate_tensor_fn
+[rank1]:     storage = elem._typed_storage()._new_shared(numel, device=elem.device)
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/storage.py", line 1210, in _new_shared
+[rank1]:     untyped_storage = torch.UntypedStorage._new_shared(
+[rank1]:         size * self._element_size(), device=device
+[rank1]:     )
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/storage.py", line 412, in _new_shared
+[rank1]:     return cls._new_using_filename_cpu(size)
+[rank1]:            ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+[rank1]: RuntimeError: torch_shm_manager at "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/bin/torch_shm_manager": Invalid argument
+[rank1]: Exception raised from start_manager at /__w/pytorch/pytorch/torch/lib/libshm/core.cpp:62 (most recent call first):
+[rank1]: frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x9d (0x14716a563bfd in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10.so)
+[rank1]: frame #1: c10::detail::torchCheckFail(char const*, char const*, unsigned int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0xca (0x14716a4f0739 in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10.so)
+[rank1]: frame #2: <unknown function> + 0x50d6 (0x14716aa280d6 in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libshm.so)
+[rank1]: frame #3: THManagedMapAllocatorInit::THManagedMapAllocatorInit(char const*, char const*) + 0x77 (0x14716aa28dd7 in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libshm.so)
+[rank1]: frame #4: THManagedMapAllocator::THManagedMapAllocator(char const*, char const*, int, unsigned long) + 0x20 (0x14716aa29260 in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libshm.so)
+[rank1]: frame #5: THManagedMapAllocator::makeDataPtr(char const*, char const*, int, unsigned long) + 0x3e (0x14716aa292ce in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libshm.so)
+[rank1]: frame #6: <unknown function> + 0x78917c (0x1470c90ce17c in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_python.so)
+[rank1]: frame #7: <unknown function> + 0x1dd680 (0x5572b77dd680 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #8: _PyObject_MakeTpCall + 0x27c (0x5572b77ad67c in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #9: _PyEval_EvalFrameDefault + 0x3722 (0x5572b77c02d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #10: <unknown function> + 0x2312aa (0x5572b78312aa in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #11: <unknown function> + 0x26028c (0x5572b786028c in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #12: <unknown function> + 0x230985 (0x5572b7830985 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #13: <unknown function> + 0x1df17b (0x5572b77df17b in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #14: PyObject_Vectorcall + 0x2e (0x5572b77af8be in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #15: _PyEval_EvalFrameDefault + 0x3722 (0x5572b77c02d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #16: <unknown function> + 0x230cf7 (0x5572b7830cf7 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #17: _PyEval_EvalFrameDefault + 0x2a69 (0x5572b77bf619 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #18: <unknown function> + 0x1ef84f (0x5572b77ef84f in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #19: _PyObject_MakeTpCall + 0x1c7 (0x5572b77ad5c7 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #20: _PyEval_EvalFrameDefault + 0x3722 (0x5572b77c02d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #21: <unknown function> + 0x1ef84f (0x5572b77ef84f in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #22: _PyObject_MakeTpCall + 0x1c7 (0x5572b77ad5c7 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #23: _PyEval_EvalFrameDefault + 0x3722 (0x5572b77c02d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #24: PyObject_CallOneArg + 0x55 (0x5572b77ed385 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #25: <unknown function> + 0x2c7358 (0x5572b78c7358 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #26: PyObject_GetIter + 0x13 (0x5572b77aaea3 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #27: <unknown function> + 0x1df17b (0x5572b77df17b in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #28: PyObject_Vectorcall + 0x2e (0x5572b77af8be in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #29: _PyEval_EvalFrameDefault + 0x3722 (0x5572b77c02d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #30: <unknown function> + 0x23095e (0x5572b783095e in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #31: <unknown function> + 0x1df17b (0x5572b77df17b in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #32: PyObject_Vectorcall + 0x2e (0x5572b77af8be in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #33: _PyEval_EvalFrameDefault + 0x3722 (0x5572b77c02d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #34: PyEval_EvalCode + 0x9f (0x5572b78815ff in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #35: <unknown function> + 0x29f8ae (0x5572b789f8ae in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #36: <unknown function> + 0x1d62c1 (0x5572b77d62c1 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #37: PyObject_Vectorcall + 0x2e (0x5572b77af8be in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #38: _PyEval_EvalFrameDefault + 0x3722 (0x5572b77c02d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #39: <unknown function> + 0x2b9f03 (0x5572b78b9f03 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #40: Py_RunMain + 0x1f4 (0x5572b78b8c94 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #41: Py_BytesMain + 0x37 (0x5572b786d307 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank1]: frame #42: <unknown function> + 0x2a1ca (0x14716baf81ca in /usr/lib/x86_64-linux-gnu/libc.so.6)
+[rank1]: frame #43: __libc_start_main + 0x8b (0x14716baf828b in /usr/lib/x86_64-linux-gnu/libc.so.6)
+[rank1]: frame #44: <unknown function> + 0x26c68f (0x5572b786c68f in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+
+
+terminate called after throwing an instance of 'std::system_error'
+  what():  Broken pipe
+terminate called after throwing an instance of 'std::system_error'
+  what():  Broken pipe
+terminate called after throwing an instance of 'std::system_error'
+  what():  Broken pipe
+terminate called after throwing an instance of 'std::system_error'
+  what():  Broken pipe
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "<frozen runpy>", line 203, in _run_module_as_main
+[rank0]:   File "<frozen runpy>", line 88, in _run_code
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/__main__.py", line 9, in <module>
+[rank0]:     main()
+[rank0]:     ~~~~^^
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/main.py", line 1158, in main
+[rank0]:     deepmd_main(args)
+[rank0]:     ~~~~~~~~~~~^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 367, in wrapper
+[rank0]:     return f(*args, **kwargs)
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 693, in main
+[rank0]:     train(
+[rank0]:     ~~~~~^
+[rank0]:         input_file=FLAGS.INPUT,
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:     ...<8 lines>...
+[rank0]:         output=FLAGS.output,
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^
+[rank0]:     )
+[rank0]:     ^
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 478, in train
+[rank0]:     trainer.run()
+[rank0]:     ~~~~~~~~~~~^^
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1410, in run
+[rank0]:     self._run()
+[rank0]:     ~~~~~~~~~^^
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1836, in _run
+[rank0]:     step(step_id)
+[rank0]:     ~~~~^^^^^^^^^
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1475, in step
+[rank0]:     input_dict, label_dict, log_dict = self._next_training_batch(task_key)
+[rank0]:                                        ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 2176, in _next_training_batch
+[rank0]:     batch = self.get_data(is_train=True, task_key=task_key)
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 2206, in get_data
+[rank0]:     batch_data = next(iterator)
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 289, in cycle_iterator
+[rank0]:     yield from it
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 725, in __next__
+[rank0]:     data = self._next_data()
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 1529, in _next_data
+[rank0]:     return self._process_data(data, worker_id)
+[rank0]:            ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 1567, in _process_data
+[rank0]:     data.reraise()
+[rank0]:     ~~~~~~~~~~~~^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_utils.py", line 794, in reraise
+[rank0]:     raise exception
+[rank0]: RuntimeError: Caught RuntimeError in DataLoader worker process 0.
+[rank0]: Original Traceback (most recent call last):
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/_utils/worker.py", line 374, in _worker_loop
+[rank0]:     data = fetcher.fetch(index)  # type: ignore[possibly-undefined]
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/_utils/fetch.py", line 56, in fetch
+[rank0]:     data = self.dataset[possibly_batched_index]
+[rank0]:            ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/utils/dataloader.py", line 198, in __getitem__
+[rank0]:     batch = next(self.iters[idx])
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 725, in __next__
+[rank0]:     data = self._next_data()
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 785, in _next_data
+[rank0]:     data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/_utils/fetch.py", line 57, in fetch
+[rank0]:     return self.collate_fn(data)
+[rank0]:            ~~~~~~~~~~~~~~~^^^^^^
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/utils/dataloader.py", line 250, in collate_batch
+[rank0]:     result[key] = collate_tensor_fn(
+[rank0]:                   ~~~~~~~~~~~~~~~~~^
+[rank0]:         [torch.as_tensor(d[key]) for d in batch]
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:     )
+[rank0]:     ^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/_utils/collate.py", line 273, in collate_tensor_fn
+[rank0]:     storage = elem._typed_storage()._new_shared(numel, device=elem.device)
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/storage.py", line 1210, in _new_shared
+[rank0]:     untyped_storage = torch.UntypedStorage._new_shared(
+[rank0]:         size * self._element_size(), device=device
+[rank0]:     )
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/storage.py", line 412, in _new_shared
+[rank0]:     return cls._new_using_filename_cpu(size)
+[rank0]:            ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+[rank0]: RuntimeError: torch_shm_manager at "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/bin/torch_shm_manager": Invalid argument
+[rank0]: Exception raised from start_manager at /__w/pytorch/pytorch/torch/lib/libshm/core.cpp:62 (most recent call first):
+[rank0]: frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x9d (0x148af0163bfd in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10.so)
+[rank0]: frame #1: c10::detail::torchCheckFail(char const*, char const*, unsigned int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0xca (0x148af00f0739 in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10.so)
+[rank0]: frame #2: <unknown function> + 0x50d6 (0x148af06160d6 in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libshm.so)
+[rank0]: frame #3: THManagedMapAllocatorInit::THManagedMapAllocatorInit(char const*, char const*) + 0x77 (0x148af0616dd7 in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libshm.so)
+[rank0]: frame #4: THManagedMapAllocator::THManagedMapAllocator(char const*, char const*, int, unsigned long) + 0x20 (0x148af0617260 in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libshm.so)
+[rank0]: frame #5: THManagedMapAllocator::makeDataPtr(char const*, char const*, int, unsigned long) + 0x3e (0x148af06172ce in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libshm.so)
+[rank0]: frame #6: <unknown function> + 0x78917c (0x148a4ecce17c in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_python.so)
+[rank0]: frame #7: <unknown function> + 0x1dd680 (0x55e3e8b2b680 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #8: _PyObject_MakeTpCall + 0x27c (0x55e3e8afb67c in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #9: _PyEval_EvalFrameDefault + 0x3722 (0x55e3e8b0e2d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #10: <unknown function> + 0x2312aa (0x55e3e8b7f2aa in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #11: <unknown function> + 0x26028c (0x55e3e8bae28c in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #12: <unknown function> + 0x230985 (0x55e3e8b7e985 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #13: <unknown function> + 0x1df17b (0x55e3e8b2d17b in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #14: PyObject_Vectorcall + 0x2e (0x55e3e8afd8be in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #15: _PyEval_EvalFrameDefault + 0x3722 (0x55e3e8b0e2d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #16: <unknown function> + 0x230cf7 (0x55e3e8b7ecf7 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #17: _PyEval_EvalFrameDefault + 0x2a69 (0x55e3e8b0d619 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #18: <unknown function> + 0x1ef84f (0x55e3e8b3d84f in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #19: _PyObject_MakeTpCall + 0x1c7 (0x55e3e8afb5c7 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #20: _PyEval_EvalFrameDefault + 0x3722 (0x55e3e8b0e2d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #21: <unknown function> + 0x1ef84f (0x55e3e8b3d84f in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #22: _PyObject_MakeTpCall + 0x1c7 (0x55e3e8afb5c7 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #23: _PyEval_EvalFrameDefault + 0x3722 (0x55e3e8b0e2d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #24: PyObject_CallOneArg + 0x55 (0x55e3e8b3b385 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #25: <unknown function> + 0x2c7358 (0x55e3e8c15358 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #26: PyObject_GetIter + 0x13 (0x55e3e8af8ea3 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #27: <unknown function> + 0x1df17b (0x55e3e8b2d17b in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #28: PyObject_Vectorcall + 0x2e (0x55e3e8afd8be in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #29: _PyEval_EvalFrameDefault + 0x3722 (0x55e3e8b0e2d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #30: <unknown function> + 0x23095e (0x55e3e8b7e95e in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #31: <unknown function> + 0x1df17b (0x55e3e8b2d17b in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #32: PyObject_Vectorcall + 0x2e (0x55e3e8afd8be in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #33: _PyEval_EvalFrameDefault + 0x3722 (0x55e3e8b0e2d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #34: PyEval_EvalCode + 0x9f (0x55e3e8bcf5ff in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #35: <unknown function> + 0x29f8ae (0x55e3e8bed8ae in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #36: <unknown function> + 0x1d62c1 (0x55e3e8b242c1 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #37: PyObject_Vectorcall + 0x2e (0x55e3e8afd8be in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #38: _PyEval_EvalFrameDefault + 0x3722 (0x55e3e8b0e2d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #39: <unknown function> + 0x2b9f03 (0x55e3e8c07f03 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #40: Py_RunMain + 0x1f4 (0x55e3e8c06c94 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #41: Py_BytesMain + 0x37 (0x55e3e8bbb307 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+[rank0]: frame #42: <unknown function> + 0x2a1ca (0x148af16e61ca in /usr/lib/x86_64-linux-gnu/libc.so.6)
+[rank0]: frame #43: __libc_start_main + 0x8b (0x148af16e628b in /usr/lib/x86_64-linux-gnu/libc.so.6)
+[rank0]: frame #44: <unknown function> + 0x26c68f (0x55e3e8bba68f in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+
+
+terminate called after throwing an instance of 'std::system_error'
+  what():  Broken pipe
+terminate called after throwing an instance of 'std::system_error'
+  what():  Broken pipe
+terminate called after throwing an instance of 'std::system_error'
+  what():  Broken pipe
+terminate called after throwing an instance of 'std::system_error'
+  what():  Broken pipe
+[rank0]:[W1024 12:08:38.672439472 ProcessGroupNCCL.cpp:1624] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+W1024 12:08:39.215000 2395887 site-packages/torch/distributed/elastic/multiprocessing/api.py:1028] Sending process 2395930 closing signal SIGTERM
+E1024 12:08:39.480000 2395887 site-packages/torch/distributed/elastic/multiprocessing/api.py:1002] failed (exitcode: 1) local_rank: 1 (pid: 2395931) of binary: /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python
+E1024 12:08:39.500000 2395887 site-packages/torch/distributed/elastic/multiprocessing/errors/error_handler.py:145] no error file defined for parent, to copy child error file (/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-beta-site-20261024-deepmd/.sai-sif-1922012/torchelastic_6kzfgd0k/958cd13f-e4db-4317-ada3-167fd3e9a8b1_meczetr1/attempt_0/1/error.json)
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/run.py", line 1032, in <module>
+    main()
+    ~~~~^^
+  File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 367, in wrapper
+    return f(*args, **kwargs)
+  File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/run.py", line 1028, in main
+    run(args)
+    ~~~^^^^^^
+  File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/run.py", line 1019, in run
+    elastic_launch(
+    ~~~~~~~~~~~~~~~
+        config=config,
+        ~~~~~~~~~~~~~~
+        entrypoint=cmd,
+        ~~~~~~~~~~~~~~~
+    )(*cmd_args)
+    ~^^^^^^^^^^^
+  File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/launcher/api.py", line 194, in __call__
+    return launch_agent(
+        self._config,
+    ...<2 lines>...
+        health_check_server=self._health_check_server,
+    )
+  File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/launcher/api.py", line 383, in launch_agent
+    raise ChildFailedError(
+    ...<2 lines>...
+    )
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+deepmd FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2026-10-24_12:08:38
+  host      : 16v100n07
+  rank      : 0 (local_rank: 0)
+  exitcode  : -15 (pid: 2395930)  (SIGTERM)
+  error_file: /org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-beta-site-20261024-deepmd/.sai-sif-1922012/torchelastic_6kzfgd0k/958cd13f-e4db-4317-ada3-167fd3e9a8b1_meczetr1/attempt_0/0/error.json
+  traceback : Traceback (most recent call last):
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 367, in wrapper
+      return f(*args, **kwargs)
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 693, in main
+      train(
+      ~~~~~^
+          input_file=FLAGS.INPUT,
+          ^^^^^^^^^^^^^^^^^^^^^^^
+      ...<8 lines>...
+          output=FLAGS.output,
+          ^^^^^^^^^^^^^^^^^^^^
+      )
+      ^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 478, in train
+      trainer.run()
+      ~~~~~~~~~~~^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1410, in run
+      self._run()
+      ~~~~~~~~~^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1836, in _run
+      step(step_id)
+      ~~~~^^^^^^^^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1475, in step
+      input_dict, label_dict, log_dict = self._next_training_batch(task_key)
+                                         ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 2176, in _next_training_batch
+      batch = self.get_data(is_train=True, task_key=task_key)
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 2206, in get_data
+      batch_data = next(iterator)
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 289, in cycle_iterator
+      yield from it
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 725, in __next__
+      data = self._next_data()
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 1529, in _next_data
+      return self._process_data(data, worker_id)
+             ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 1567, in _process_data
+      data.reraise()
+      ~~~~~~~~~~~~^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_utils.py", line 794, in reraise
+      raise exception
+  RuntimeError: Caught RuntimeError in DataLoader worker process 0.
+  Original Traceback (most recent call last):
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/_utils/worker.py", line 374, in _worker_loop
+      data = fetcher.fetch(index)  # type: ignore[possibly-undefined]
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/_utils/fetch.py", line 56, in fetch
+      data = self.dataset[possibly_batched_index]
+             ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/utils/dataloader.py", line 198, in __getitem__
+      batch = next(self.iters[idx])
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 725, in __next__
+      data = self._next_data()
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 785, in _next_data
+      data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/_utils/fetch.py", line 57, in fetch
+      return self.collate_fn(data)
+             ~~~~~~~~~~~~~~~^^^^^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/utils/dataloader.py", line 250, in collate_batch
+      result[key] = collate_tensor_fn(
+                    ~~~~~~~~~~~~~~~~~^
+          [torch.as_tensor(d[key]) for d in batch]
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      )
+      ^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/_utils/collate.py", line 273, in collate_tensor_fn
+      storage = elem._typed_storage()._new_shared(numel, device=elem.device)
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/storage.py", line 1210, in _new_shared
+      untyped_storage = torch.UntypedStorage._new_shared(
+          size * self._element_size(), device=device
+      )
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/storage.py", line 412, in _new_shared
+      return cls._new_using_filename_cpu(size)
+             ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  RuntimeError: torch_shm_manager at "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/bin/torch_shm_manager": Invalid argument
+  Exception raised from start_manager at /__w/pytorch/pytorch/torch/lib/libshm/core.cpp:62 (most recent call first):
+  frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x9d (0x148af0163bfd in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10.so)
+  frame #1: c10::detail::torchCheckFail(char const*, char const*, unsigned int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0xca (0x148af00f0739 in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10.so)
+  frame #2: <unknown function> + 0x50d6 (0x148af06160d6 in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libshm.so)
+  frame #3: THManagedMapAllocatorInit::THManagedMapAllocatorInit(char const*, char const*) + 0x77 (0x148af0616dd7 in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libshm.so)
+  frame #4: THManagedMapAllocator::THManagedMapAllocator(char const*, char const*, int, unsigned long) + 0x20 (0x148af0617260 in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libshm.so)
+  frame #5: THManagedMapAllocator::makeDataPtr(char const*, char const*, int, unsigned long) + 0x3e (0x148af06172ce in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libshm.so)
+  frame #6: <unknown function> + 0x78917c (0x148a4ecce17c in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_python.so)
+  frame #7: <unknown function> + 0x1dd680 (0x55e3e8b2b680 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #8: _PyObject_MakeTpCall + 0x27c (0x55e3e8afb67c in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #9: _PyEval_EvalFrameDefault + 0x3722 (0x55e3e8b0e2d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #10: <unknown function> + 0x2312aa (0x55e3e8b7f2aa in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #11: <unknown function> + 0x26028c (0x55e3e8bae28c in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #12: <unknown function> + 0x230985 (0x55e3e8b7e985 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #13: <unknown function> + 0x1df17b (0x55e3e8b2d17b in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #14: PyObject_Vectorcall + 0x2e (0x55e3e8afd8be in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #15: _PyEval_EvalFrameDefault + 0x3722 (0x55e3e8b0e2d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #16: <unknown function> + 0x230cf7 (0x55e3e8b7ecf7 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #17: _PyEval_EvalFrameDefault + 0x2a69 (0x55e3e8b0d619 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #18: <unknown function> + 0x1ef84f (0x55e3e8b3d84f in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #19: _PyObject_MakeTpCall + 0x1c7 (0x55e3e8afb5c7 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #20: _PyEval_EvalFrameDefault + 0x3722 (0x55e3e8b0e2d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #21: <unknown function> + 0x1ef84f (0x55e3e8b3d84f in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #22: _PyObject_MakeTpCall + 0x1c7 (0x55e3e8afb5c7 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #23: _PyEval_EvalFrameDefault + 0x3722 (0x55e3e8b0e2d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #24: PyObject_CallOneArg + 0x55 (0x55e3e8b3b385 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #25: <unknown function> + 0x2c7358 (0x55e3e8c15358 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #26: PyObject_GetIter + 0x13 (0x55e3e8af8ea3 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #27: <unknown function> + 0x1df17b (0x55e3e8b2d17b in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #28: PyObject_Vectorcall + 0x2e (0x55e3e8afd8be in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #29: _PyEval_EvalFrameDefault + 0x3722 (0x55e3e8b0e2d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #30: <unknown function> + 0x23095e (0x55e3e8b7e95e in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #31: <unknown function> + 0x1df17b (0x55e3e8b2d17b in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #32: PyObject_Vectorcall + 0x2e (0x55e3e8afd8be in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #33: _PyEval_EvalFrameDefault + 0x3722 (0x55e3e8b0e2d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #34: PyEval_EvalCode + 0x9f (0x55e3e8bcf5ff in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #35: <unknown function> + 0x29f8ae (0x55e3e8bed8ae in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #36: <unknown function> + 0x1d62c1 (0x55e3e8b242c1 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #37: PyObject_Vectorcall + 0x2e (0x55e3e8afd8be in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #38: _PyEval_EvalFrameDefault + 0x3722 (0x55e3e8b0e2d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #39: <unknown function> + 0x2b9f03 (0x55e3e8c07f03 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #40: Py_RunMain + 0x1f4 (0x55e3e8c06c94 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #41: Py_BytesMain + 0x37 (0x55e3e8bbb307 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #42: <unknown function> + 0x2a1ca (0x148af16e61ca in /usr/lib/x86_64-linux-gnu/libc.so.6)
+  frame #43: __libc_start_main + 0x8b (0x148af16e628b in /usr/lib/x86_64-linux-gnu/libc.so.6)
+  frame #44: <unknown function> + 0x26c68f (0x55e3e8bba68f in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  
+  
+  
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-10-24_12:08:37
+  host      : 16v100n07
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 2395931) 
+  error_file: /org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-beta-site-20261024-deepmd/.sai-sif-1922012/torchelastic_6kzfgd0k/958cd13f-e4db-4317-ada3-167fd3e9a8b1_meczetr1/attempt_0/1/error.json
+  traceback : Traceback (most recent call last):
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 367, in wrapper
+      return f(*args, **kwargs)
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 693, in main
+      train(
+      ~~~~~^
+          input_file=FLAGS.INPUT,
+          ^^^^^^^^^^^^^^^^^^^^^^^
+      ...<8 lines>...
+          output=FLAGS.output,
+          ^^^^^^^^^^^^^^^^^^^^
+      )
+      ^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 478, in train
+      trainer.run()
+      ~~~~~~~~~~~^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1410, in run
+      self._run()
+      ~~~~~~~~~^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1836, in _run
+      step(step_id)
+      ~~~~^^^^^^^^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1475, in step
+      input_dict, label_dict, log_dict = self._next_training_batch(task_key)
+                                         ~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 2176, in _next_training_batch
+      batch = self.get_data(is_train=True, task_key=task_key)
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 2206, in get_data
+      batch_data = next(iterator)
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 289, in cycle_iterator
+      yield from it
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 725, in __next__
+      data = self._next_data()
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 1529, in _next_data
+      return self._process_data(data, worker_id)
+             ~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 1567, in _process_data
+      data.reraise()
+      ~~~~~~~~~~~~^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/_utils.py", line 794, in reraise
+      raise exception
+  RuntimeError: Caught RuntimeError in DataLoader worker process 0.
+  Original Traceback (most recent call last):
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/_utils/worker.py", line 374, in _worker_loop
+      data = fetcher.fetch(index)  # type: ignore[possibly-undefined]
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/_utils/fetch.py", line 56, in fetch
+      data = self.dataset[possibly_batched_index]
+             ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/utils/dataloader.py", line 198, in __getitem__
+      batch = next(self.iters[idx])
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 725, in __next__
+      data = self._next_data()
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/dataloader.py", line 785, in _next_data
+      data = self._dataset_fetcher.fetch(index)  # may raise StopIteration
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/_utils/fetch.py", line 57, in fetch
+      return self.collate_fn(data)
+             ~~~~~~~~~~~~~~~^^^^^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/pt/utils/dataloader.py", line 250, in collate_batch
+      result[key] = collate_tensor_fn(
+                    ~~~~~~~~~~~~~~~~~^
+          [torch.as_tensor(d[key]) for d in batch]
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      )
+      ^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/utils/data/_utils/collate.py", line 273, in collate_tensor_fn
+      storage = elem._typed_storage()._new_shared(numel, device=elem.device)
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/storage.py", line 1210, in _new_shared
+      untyped_storage = torch.UntypedStorage._new_shared(
+          size * self._element_size(), device=device
+      )
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/storage.py", line 412, in _new_shared
+      return cls._new_using_filename_cpu(size)
+             ~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^
+  RuntimeError: torch_shm_manager at "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/bin/torch_shm_manager": Invalid argument
+  Exception raised from start_manager at /__w/pytorch/pytorch/torch/lib/libshm/core.cpp:62 (most recent call first):
+  frame #0: c10::Error::Error(c10::SourceLocation, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> >) + 0x9d (0x14716a563bfd in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10.so)
+  frame #1: c10::detail::torchCheckFail(char const*, char const*, unsigned int, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&) + 0xca (0x14716a4f0739 in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10.so)
+  frame #2: <unknown function> + 0x50d6 (0x14716aa280d6 in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libshm.so)
+  frame #3: THManagedMapAllocatorInit::THManagedMapAllocatorInit(char const*, char const*) + 0x77 (0x14716aa28dd7 in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libshm.so)
+  frame #4: THManagedMapAllocator::THManagedMapAllocator(char const*, char const*, int, unsigned long) + 0x20 (0x14716aa29260 in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libshm.so)
+  frame #5: THManagedMapAllocator::makeDataPtr(char const*, char const*, int, unsigned long) + 0x3e (0x14716aa292ce in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libshm.so)
+  frame #6: <unknown function> + 0x78917c (0x1470c90ce17c in /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_python.so)
+  frame #7: <unknown function> + 0x1dd680 (0x5572b77dd680 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #8: _PyObject_MakeTpCall + 0x27c (0x5572b77ad67c in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #9: _PyEval_EvalFrameDefault + 0x3722 (0x5572b77c02d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #10: <unknown function> + 0x2312aa (0x5572b78312aa in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #11: <unknown function> + 0x26028c (0x5572b786028c in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #12: <unknown function> + 0x230985 (0x5572b7830985 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #13: <unknown function> + 0x1df17b (0x5572b77df17b in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #14: PyObject_Vectorcall + 0x2e (0x5572b77af8be in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #15: _PyEval_EvalFrameDefault + 0x3722 (0x5572b77c02d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #16: <unknown function> + 0x230cf7 (0x5572b7830cf7 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #17: _PyEval_EvalFrameDefault + 0x2a69 (0x5572b77bf619 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #18: <unknown function> + 0x1ef84f (0x5572b77ef84f in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #19: _PyObject_MakeTpCall + 0x1c7 (0x5572b77ad5c7 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #20: _PyEval_EvalFrameDefault + 0x3722 (0x5572b77c02d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #21: <unknown function> + 0x1ef84f (0x5572b77ef84f in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #22: _PyObject_MakeTpCall + 0x1c7 (0x5572b77ad5c7 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #23: _PyEval_EvalFrameDefault + 0x3722 (0x5572b77c02d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #24: PyObject_CallOneArg + 0x55 (0x5572b77ed385 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #25: <unknown function> + 0x2c7358 (0x5572b78c7358 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #26: PyObject_GetIter + 0x13 (0x5572b77aaea3 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #27: <unknown function> + 0x1df17b (0x5572b77df17b in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #28: PyObject_Vectorcall + 0x2e (0x5572b77af8be in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #29: _PyEval_EvalFrameDefault + 0x3722 (0x5572b77c02d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #30: <unknown function> + 0x23095e (0x5572b783095e in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #31: <unknown function> + 0x1df17b (0x5572b77df17b in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #32: PyObject_Vectorcall + 0x2e (0x5572b77af8be in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #33: _PyEval_EvalFrameDefault + 0x3722 (0x5572b77c02d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #34: PyEval_EvalCode + 0x9f (0x5572b78815ff in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #35: <unknown function> + 0x29f8ae (0x5572b789f8ae in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #36: <unknown function> + 0x1d62c1 (0x5572b77d62c1 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #37: PyObject_Vectorcall + 0x2e (0x5572b77af8be in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #38: _PyEval_EvalFrameDefault + 0x3722 (0x5572b77c02d2 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #39: <unknown function> + 0x2b9f03 (0x5572b78b9f03 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #40: Py_RunMain + 0x1f4 (0x5572b78b8c94 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #41: Py_BytesMain + 0x37 (0x5572b786d307 in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  frame #42: <unknown function> + 0x2a1ca (0x14716baf81ca in /usr/lib/x86_64-linux-gnu/libc.so.6)
+  frame #43: __libc_start_main + 0x8b (0x14716baf828b in /usr/lib/x86_64-linux-gnu/libc.so.6)
+  frame #44: <unknown function> + 0x26c68f (0x5572b786c68f in /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python)
+  
+  
+  
+============================================================
++ exit

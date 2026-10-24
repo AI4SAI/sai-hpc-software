@@ -1,0 +1,60 @@
+{
+  "bundle": "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload",
+  "catalog_sha256": "d68e7a78fe3878426a8f1e958c20edd9bed8e87bbbfa41d3827b5332380551b0",
+  "checks_sha256": "0ac296b877aad653a5937f1ff0b8810a5b2217ee7ac57b8e99252526276bf5b7",
+  "files": {
+    "modules/abacus": "7f2a40c897f960545f3566e3d97b5ce58874585ea6cddeec459afde0e44419e6",
+    "modules/cp2k": "c95f456fb4277bac3b7b84668a485c4248c46fbf42b40d75e771934e90a4427f",
+    "modules/deepmd-kit": "80f10ff7c0e2489fa499b5a5b48996dc83893d6c6f557c95c55c3031982c24f6",
+    "modules/gpumd": "f7a691c518b9984c0179733bdda73d9c9310a971b90e8aa8913f8a9da9c5846f",
+    "modules/lammps": "38ea61071d0e7aed384b001db6001da885aa2b149407de04d46d9a68061d03d7",
+    "templates/abacus/cpu.sbatch": "1e7afd901a52562f5340937a9e17ef401b22c7e79ff10c2c6bf3ac0dd102611f",
+    "templates/abacus/gpu.sbatch": "0b91fdcd6f4cab629d3b4f54149721dd56929ad267f8878c38cde93e25cb92e1",
+    "templates/cp2k/cpu.sbatch": "4824013fb9dc8549f4ed53e97d83ff54c91f49694bea1eb43edd8770204d0f36",
+    "templates/cp2k/gpu.sbatch": "1844e808e020e81bd30edaaedc7d2e4fae9420e687cc400a31a06db15d088fc2",
+    "templates/deepmd-kit/gpu.sbatch": "d6c5a1751a535076f9a7a2cdcfd817a874b80b184450b920613bc7a76d912649",
+    "templates/gpumd/gpu.sbatch": "cc55dbaa56abb69e57147c1e1078fdfe1c37921f11deb1fdb774c6ff823ae89b",
+    "templates/lammps/gpu.sbatch": "8ca964eff802588737ab848700f6153cc931b949172ed26849b405adf10af4e7"
+  },
+  "generation": "20261024-r2",
+  "jobs": {
+    "16V100": "1919704",
+    "4V100": "1919706",
+    "8V100V0": "1919705",
+    "DSPRHBM": "1919703"
+  },
+  "module_root": "/home/stardust/sai-hpc-software/modulefiles/apps",
+  "runtime_sha256": "49c575bd293fddf094e4f736fb33c3d0a0522b174e53554e43c89999deaa1759",
+  "schema": 2,
+  "software": [
+    "abacus",
+    "cp2k",
+    "gpumd",
+    "deepmd-kit",
+    "lammps"
+  ],
+  "validated_catalog": "/org/org-open-sai/proj-sai-hpc-software/sif/20261024-r4/catalog.json",
+  "validated_catalog_sha256": "e4f09d656668fd547856819f60fb8a30d2d519db5033f945d71f3b4e11ca6671",
+  "versions": {
+    "abacus": {
+      "name": "develop-beta-20261024-370ba685e670",
+      "sha256": "c9d3b6f7aede8b54caddd532d5800830495aea52ceffc07489960ac84cb9a4e0"
+    },
+    "cp2k": {
+      "name": "master-beta-20261024-cfe5e5d87aaf",
+      "sha256": "83040bb21b2df5bf498b797c6a3c43968b1c7c24fc90c4fe26b208e3c4cbfd4b"
+    },
+    "deepmd-kit": {
+      "name": "master-beta-20261024-558f56962775",
+      "sha256": "4d600cd176d78cd61e0fe47a537bcb544f27029b1bc3e6be1b2af6d89fd87c3c"
+    },
+    "gpumd": {
+      "name": "master-beta-20261024-2c93346fce44",
+      "sha256": "ea8e2f10ca51a4f30db51895a9793a46d10d839e647336070d31ed0d41faa7b9"
+    },
+    "lammps": {
+      "name": "develop-beta-20261024-a0e2bd6efb3d",
+      "sha256": "2abcdc21d0b539f91fa8e0f36a49b4c40c52a8412215ceb165a66ded2b8ee1ca"
+    }
+  }
+}

@@ -1,0 +1,53 @@
+#%Module1.0
+module-whatis "abacus develop-beta-20261024-370ba685e670; accepted SIF; partitions: 16V100 4V100 8V100V0 DSPRHBM; source: 370ba685e6707b3625c5580ff9d02ef0afb248e8"
+proc ModulesHelp {} {
+    puts stderr "\[SAI beta\] abacus / develop\nSource version: develop-2026-10-23\nCommit: 370ba685e6707b3625c5580ff9d02ef0afb248e8\nAccepted snapshot: 20261024 (latest accepted, not necessarily upstream HEAD)\nPartitions: 16V100, 4V100, 8V100V0, DSPRHBM\nFixed module: abacus/develop-beta-20261024-370ba685e670\nTemplates: /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r2/templates/abacus\n\nCopy gpu.sbatch into your case directory and adjust partition/resources.\nFor DSPRHBM use cpu.sbatch.\nOn the login node: cp /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r2/templates/abacus/gpu.sbatch ./run.sbatch; edit it, then sbatch run.sbatch.\nLoad on a compute node inside sbatch or an srun shell.\nSet TMPDIR in /home or /org before host mpirun; keep inputs under the case directory.\nSIF commands are wrappers: do not replace them with native /opt executable paths.\nABACUS/CP2K/LAMMPS use host mpirun and the site GPU mapping script.\nGPUMD runs directly. DeePMD single-GPU runs dp; PyTorch multi-GPU uses torchrun.\nUse deepmd-python for the SIF Python environment.\nFor a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load abacus/develop-beta-20261024-370ba685e670\n"
+}
+conflict abacus
+conflict abacus-sif
+set sai_partition ""
+if {[module-info mode remove]} {
+    if {[info exists env(SAI_SIF_ABACUS_PARTITION)]} {set sai_partition $env(SAI_SIF_ABACUS_PARTITION)}
+} elseif {[module-info mode load]} {
+    if {![info exists env(SLURM_JOB_ID)] || ![info exists env(SLURMD_NODENAME)] || ![info exists env(SLURM_JOB_PARTITION)]} {
+        ModulesHelp
+        error "Not loaded: load this module on a compute node inside an sbatch job or srun shell; see the templates above."
+    }
+    if {![info exists env(SLURM_JOB_PARTITION)]} {error "load the SIF module inside the Slurm allocation"}
+    set sai_partition $env(SLURM_JOB_PARTITION)
+    if {[lsearch -exact {16V100 4V100 8V100V0 DSPRHBM} $sai_partition] < 0} {ModulesHelp; error "no accepted SIF for this partition"}
+}
+if {$sai_partition ne ""} {
+    prepend-path MODULEPATH /opt/modules/modulefiles/devtools
+    module load apptainer/1.4.4
+    module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto
+    setenv SAI_SIF_ABACUS_PARTITION $sai_partition
+    switch -- $sai_partition {
+        16V100 {
+            setenv SAI_SIF_ABACUS_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/abacus/16V100.sif"
+            setenv SAI_SIF_ABACUS_PREFIX "/opt/apps/abacus/abacus-development-develop-2026-10-23-g370ba685e670-re5ab58f508b4/16V100"
+        }
+        4V100 {
+            setenv SAI_SIF_ABACUS_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/abacus/4V100.sif"
+            setenv SAI_SIF_ABACUS_PREFIX "/opt/apps/abacus/abacus-development-develop-2026-10-23-g370ba685e670-re5ab58f508b4/4V100"
+        }
+        8V100V0 {
+            setenv SAI_SIF_ABACUS_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/abacus/8V100V0.sif"
+            setenv SAI_SIF_ABACUS_PREFIX "/opt/apps/abacus/abacus-development-develop-2026-10-23-g370ba685e670-re5ab58f508b4/8V100V0"
+        }
+        DSPRHBM {
+            setenv SAI_SIF_ABACUS_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/abacus/DSPRHBM.sif"
+            setenv SAI_SIF_ABACUS_PREFIX "/opt/apps/abacus/abacus-development-develop-2026-10-23-g370ba685e670-re5ab58f508b4/DSPRHBM"
+        }
+    }
+}
+setenv SAI_SIF_ABACUS_SOURCE "370ba685e6707b3625c5580ff9d02ef0afb248e8"
+prepend-path PATH "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/bin/abacus"
+
+setenv SAI_SIF_ABACUS_VERSION "develop-beta-20261024-370ba685e670"
+setenv SAI_SIF_ABACUS_BRANCH "develop"
+setenv SAI_SIF_ABACUS_TEMPLATES "/home/stardust/sai-hpc-software/sif-beta/generations/20261024-r2/templates/abacus"
+setenv SAI_SIF_ABACUS_SNAPSHOT "20261024"
+if {[module-info mode load]} {
+    puts stderr [format "%s; partition=%s" "\[SAI beta\] abacus/develop; commit=370ba685e670; snapshot=20261024; templates=/home/stardust/sai-hpc-software/sif-beta/generations/20261024-r2/templates/abacus" $sai_partition]
+}

@@ -1,0 +1,144 @@
++ '[' -z '' ']'
++ case "$-" in
++ __lmod_vx=x
++ '[' -n x ']'
++ set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for this output (/opt/modules/lmod/9.2.4/init/bash)
+Shell debugging restarted
++ unset __lmod_vx
++ source /opt/sai/runtime/mps_mapping.d/16V100.bash
+++ export GPUS_PER_SOCKET=2
+++ GPUS_PER_SOCKET=2
+++ export CORES_PER_SOCKET=8
+++ CORES_PER_SOCKET=8
++++ dirname /opt/sai/runtime/mps_mapping.d/16V100.bash
+++ source /opt/sai/runtime/mps_mapping.d/_common.bash
++++ trap _sai_cleanup EXIT
++++ : 2
++++ : 8
++++ : 1922011
++++ : 2
++++ : 1
++++ : 2
++++ _sai_is_uint 2
++++ [[ 2 =~ ^[0-9]+$ ]]
++++ _sai_is_uint 8
++++ [[ 8 =~ ^[0-9]+$ ]]
++++ _sai_is_uint 2
++++ [[ 2 =~ ^[0-9]+$ ]]
++++ _sai_is_uint 1
++++ [[ 1 =~ ^[0-9]+$ ]]
++++ _sai_is_uint 2
++++ [[ 2 =~ ^[0-9]+$ ]]
++++ export THREADS_PER_CORE=2
++++ THREADS_PER_CORE=2
++++ _sai_is_uint 2
++++ [[ 2 =~ ^[0-9]+$ ]]
++++ ((  GPUS_PER_SOCKET > 0  ))
++++ ((  CORES_PER_SOCKET > 0  ))
++++ ((  THREADS_PER_CORE > 0  ))
++++ ((  SLURM_NTASKS > 0  ))
++++ ((  SLURM_NNODES > 0  ))
++++ ((  SLURM_GPUS_ON_NODE > 0  ))
++++ ((  CORES_PER_SOCKET % GPUS_PER_SOCKET == 0  ))
++++ export CORES_PER_GPU=4
++++ CORES_PER_GPU=4
++++ _SAI_TOTAL_GPUS=2
++++ ((  SLURM_NTASKS % _SAI_TOTAL_GPUS == 0  ))
++++ export RANKS_PER_GPU=1
++++ RANKS_PER_GPU=1
++++ export RANKS_PER_NODE=2
++++ RANKS_PER_NODE=2
++++ ((  RANKS_PER_GPU >= 1  ))
++++ ((  RANKS_PER_GPU <= CORES_PER_GPU  ))
++++ _SAI_THREADS_PER_GPU=8
++++ ((  CORES_PER_GPU % RANKS_PER_GPU == 0  ))
++++ _SAI_PE=4
++++ export OMP_NUM_THREADS=8
++++ OMP_NUM_THREADS=8
++++ export MAP_OPT=ppr:2:node:pe=4
++++ MAP_OPT=ppr:2:node:pe=4
++++ _SAI_EXPECTED_CPUS=16
+++++ _sai_cpu_count
+++++ local spec item start end count=0
++++++ awk '/^Cpus_allowed_list:/ {print $2}' /proc/self/status
+++++ spec=0-7,64-71
+++++ [[ -n 0-7,64-71 ]]
+++++ IFS=,
+++++ read -r -a _sai_cpu_items
+++++ for item in "${_sai_cpu_items[@]}"
+++++ [[ 0-7 =~ ^([0-9]+)$ ]]
+++++ [[ 0-7 =~ ^([0-9]+)-([0-9]+)$ ]]
+++++ start=0
+++++ end=7
+++++ ((  start <= end  ))
+++++ count=8
+++++ for item in "${_sai_cpu_items[@]}"
+++++ [[ 64-71 =~ ^([0-9]+)$ ]]
+++++ [[ 64-71 =~ ^([0-9]+)-([0-9]+)$ ]]
+++++ start=64
+++++ end=71
+++++ ((  start <= end  ))
+++++ count=16
+++++ printf '%s\n' 16
++++ _SAI_VISIBLE_CPUS=16
++++ ((  _SAI_VISIBLE_CPUS == _SAI_EXPECTED_CPUS  ))
++++ ((  RANKS_PER_GPU > 1  ))
++++ ((  SLURM_NNODES > 1  ))
++ export TMPDIR=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-beta-site-20261024-science/abacus/.sai-sif-1922011
++ TMPDIR=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-beta-site-20261024-science/abacus/.sai-sif-1922011
++ mkdir -p /org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-beta-site-20261024-science/abacus/.sai-sif-1922011
++ module load abacus/develop-beta-later
++ '[' -z '' ']'
++ case "$-" in
++ __lmod_sh_dbg=x
++ '[' -n x ']'
++ set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for Lmod's output
+[SAI beta] abacus/develop; commit=370ba685e670; snapshot=20261024; templates=/home/stardust/sai-hpc-software/development/sif-beta-site-20261024-r1/preview-v2/generations/20261024-r2/templates/abacus; partition=16V100
+Shell debugging restarted
++ unset __lmod_sh_dbg
++ return 0
++ mpirun -np 2 --map-by ppr:2:node:pe=4 abacus
+--------------------------------------------------------------------------
+PRTE has detected that the head of the session directory tree (where
+scratch files and shared memory backing storage will be placed)
+resides on a shared file system:
+
+   Directory: /org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-beta-site-20261024-science/abacus/.sai-sif-1922011
+   File system type: lustre
+
+For performance reasons, it is strongly recommended that the session
+directory be located on a local file system. This can be controlled by
+setting the system temporary directory to be used by PRTE using either
+the TMPDIR envar or the "prte_tmpdir_base" MCA param.
+
+If you need the temporary directory to be different on remote nodes
+from the local one where prterun is running (e.g., when a login node is
+being employed), then you can set the local temporary directory using
+the "prte_local_tmpdir_base" MCA param and the one to be used on all
+other nodes using the "prte_remote_tmpdir_base" param.
+
+This is only a warning advisory and your job will continue. You can
+disable this warning in the future by setting the
+"prte_silence_shared_fs" MCA param to "1".
+--------------------------------------------------------------------------
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+Info: Local MPI proc number: 2,OpenMP thread number: 8,Total thread number: 16,Local thread limit: 128
++ exit
++ _sai_cleanup
++ local status=0
++ trap - EXIT
++ [[ -n '' ]]
++ [[ -n '' ]]
++ exit 0

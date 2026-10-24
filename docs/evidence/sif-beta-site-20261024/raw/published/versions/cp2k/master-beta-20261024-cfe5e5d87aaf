@@ -1,0 +1,12 @@
+#%Module1.0
+# Keep the loaded generation when the later symlink changes.
+set sai_beta_root "/home/stardust/sai-hpc-software/sif-beta"
+set sai_beta_generation "20261024-r2"
+if {[info exists env(SAI_SIF_CP2K_BETA_GENERATION)]} {
+    set sai_beta_generation $env(SAI_SIF_CP2K_BETA_GENERATION)
+} elseif {[module-info mode remove]} {
+    error "missing saved beta generation; refusing to unload a different snapshot"
+}
+if {![regexp {^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$} $sai_beta_generation]} {error "invalid beta generation"}
+source [file join $sai_beta_root generations $sai_beta_generation modules cp2k]
+setenv SAI_SIF_CP2K_BETA_GENERATION $sai_beta_generation

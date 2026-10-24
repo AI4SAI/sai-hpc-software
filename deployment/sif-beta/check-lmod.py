@@ -9,7 +9,7 @@ import subprocess
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'controller'))
-from sif_beta import channel, render_channel, render_gateway, stem
+from sif_beta import channel, render_version, render_gateway, stem
 from sif_runtime import PROGRAMS, digest, require
 
 parser = argparse.ArgumentParser(description=__doc__)
@@ -59,31 +59,40 @@ for generation in ('first', 'second'):
         'proc ModulesHelp {} {puts stderr "selected ' + generation + '"}',
         'setenv SAI_TEST_BETA_VERSION ' + generation,
         'prepend-path PATH ' + str(directory / 'bin'), '']))
-(fixture / 'channels').mkdir()
-pointer = fixture / 'channels/cp2k'
-pointer.write_text('first\n')
-home_module = fixture / 'home-module'
-home_module.write_text(render_channel(fixture, 'cp2k'))
-gateway = fixture / 'public/cp2k/master-beta'
+home_modules = fixture / 'home/cp2k'
+home_modules.mkdir(parents=True)
+versions = {'first': 'master-beta-20261024-aaaaaaaaaaaa', 'second': 'master-beta-20261025-bbbbbbbbbbbb'}
+for generation, version in versions.items():
+    (home_modules / version).write_text(render_version(fixture, 'cp2k', generation))
+pointer = home_modules / 'master-beta-later'
+pointer.symlink_to(versions['first'])
+gateway = fixture / 'public/cp2k/master-beta-later'
 gateway.parent.mkdir(parents=True)
-gateway.write_text(render_gateway(home_module))
+gateway.write_text(render_gateway(pointer))
 before = digest(gateway)
-run('rotation', '\n'.join([
-    'module use ' + shlex.quote(str(fixture / 'public')),
-    'original=$PATH', 'module load cp2k/master-beta',
+
+def switch_command(generation):
+    return 'ln -sfn ' + shlex.quote(versions[generation]) + ' ' + shlex.quote(str(pointer))
+
+for entry in ('public', 'home'):
+    pointer.unlink()
+    pointer.symlink_to(versions['first'])
+    run('rotation-' + entry, '\n'.join([
+    'module use ' + shlex.quote(str(fixture / entry)),
+    'original=$PATH', 'module load cp2k/master-beta-later',
     '[[ $SAI_TEST_BETA_VERSION == first && $SAI_SIF_CP2K_BETA_GENERATION == first ]]',
-    'selected=$PATH', 'printf "second\\n" > ' + shlex.quote(str(pointer)),
-    '[[ $PATH == "$selected" ]]', 'module help cp2k/master-beta',
-    'module unload cp2k/master-beta',
+    'selected=$PATH', switch_command('second'),
+    '[[ $PATH == "$selected" ]]', 'module help cp2k/master-beta-later',
+    'module unload cp2k/master-beta-later',
     '[[ $PATH == "$original" && -z ${SAI_TEST_BETA_VERSION+x} && -z ${SAI_SIF_CP2K_BETA_GENERATION+x} ]]',
-    'module load cp2k/master-beta',
+    'module load cp2k/master-beta-later',
     '[[ $SAI_TEST_BETA_VERSION == second && $SAI_SIF_CP2K_BETA_GENERATION == second ]]',
-    'printf "first\\n" > ' + shlex.quote(str(pointer)),
-    'module unload cp2k/master-beta', '[[ $PATH == "$original" ]]',
-    'module load cp2k/master-beta', '[[ $SAI_TEST_BETA_VERSION == first ]]',
+    switch_command('first'),
+    'module unload cp2k/master-beta-later', '[[ $PATH == "$original" ]]',
+    'module load cp2k/master-beta-later', '[[ $SAI_TEST_BETA_VERSION == first ]]',
     'module purge', '[[ $PATH == "$original" ]]',
-]))
+    ]))
 require(digest(gateway) == before, 'rotation must not change the public gateway')
-checks['rotation_unload_rollback'] = True
+checks['public_and_home_symlink_rotation_unload_rollback'] = True
 (args.output / 'verification.json').write_text(json.dumps({'passed': True, 'checks': checks}, indent=2) + '\n')
 print(json.dumps(checks, sort_keys=True))

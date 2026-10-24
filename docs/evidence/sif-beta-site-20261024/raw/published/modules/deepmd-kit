@@ -1,0 +1,50 @@
+#%Module1.0
+module-whatis "deepmd-kit master-beta-20261024-558f56962775; accepted SIF; partitions: 16V100 4V100 8V100V0; source: 558f56962775098b8b554e341c3b37d2f86e6aeb"
+proc ModulesHelp {} {
+    puts stderr "\[SAI beta\] deepmd-kit / master\nSource version: master-2026-10-23\nCommit: 558f56962775098b8b554e341c3b37d2f86e6aeb\nAccepted snapshot: 20261024 (latest accepted, not necessarily upstream HEAD)\nPartitions: 16V100, 4V100, 8V100V0\nFixed module: deepmd-kit/master-beta-20261024-558f56962775\nTemplates: /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r2/templates/deepmd-kit\n\nCopy gpu.sbatch into your case directory and adjust partition/resources.\nOn the login node: cp /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r2/templates/deepmd-kit/gpu.sbatch ./run.sbatch; edit it, then sbatch run.sbatch.\nLoad on a compute node inside sbatch or an srun shell.\nSet TMPDIR in /home or /org before host mpirun; keep inputs under the case directory.\nSIF commands are wrappers: do not replace them with native /opt executable paths.\nABACUS/CP2K/LAMMPS use host mpirun and the site GPU mapping script.\nGPUMD runs directly. DeePMD single-GPU runs dp; PyTorch multi-GPU uses torchrun.\nThis snapshot has no accepted multi-GPU training template.\nPyTorch se_e2_a DDP fails on unused compression parameters; DPA2 hits missing Triton tooling.\nTensorFlow MPI training requires Horovod; it is not provided by this snapshot.\nUse deepmd-python for the SIF Python environment.\nFor a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load deepmd-kit/master-beta-20261024-558f56962775\n"
+}
+conflict deepmd-kit
+conflict deepmd-kit-sif
+set sai_partition ""
+if {[module-info mode remove]} {
+    if {[info exists env(SAI_SIF_DEEPMD_KIT_PARTITION)]} {set sai_partition $env(SAI_SIF_DEEPMD_KIT_PARTITION)}
+} elseif {[module-info mode load]} {
+    if {![info exists env(SLURM_JOB_ID)] || ![info exists env(SLURMD_NODENAME)] || ![info exists env(SLURM_JOB_PARTITION)]} {
+        ModulesHelp
+        error "Not loaded: load this module on a compute node inside an sbatch job or srun shell; see the templates above."
+    }
+    if {![info exists env(SLURM_JOB_PARTITION)]} {error "load the SIF module inside the Slurm allocation"}
+    set sai_partition $env(SLURM_JOB_PARTITION)
+    if {[lsearch -exact {16V100 4V100 8V100V0} $sai_partition] < 0} {ModulesHelp; error "no accepted SIF for this partition"}
+}
+if {$sai_partition ne ""} {
+    prepend-path MODULEPATH /opt/modules/modulefiles/devtools
+    module load apptainer/1.4.4
+    module load cuda/12.9.1
+    module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto
+    setenv SAI_SIF_DEEPMD_KIT_PARTITION $sai_partition
+    switch -- $sai_partition {
+        16V100 {
+            setenv SAI_SIF_DEEPMD_KIT_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/deepmd-kit/16V100.sif"
+            setenv SAI_SIF_DEEPMD_KIT_PREFIX "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100"
+        }
+        4V100 {
+            setenv SAI_SIF_DEEPMD_KIT_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/deepmd-kit/4V100.sif"
+            setenv SAI_SIF_DEEPMD_KIT_PREFIX "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100"
+        }
+        8V100V0 {
+            setenv SAI_SIF_DEEPMD_KIT_IMAGE "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/deepmd-kit/8V100V0.sif"
+            setenv SAI_SIF_DEEPMD_KIT_PREFIX "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0"
+        }
+    }
+}
+setenv SAI_SIF_DEEPMD_KIT_SOURCE "558f56962775098b8b554e341c3b37d2f86e6aeb"
+prepend-path PATH "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/bin/deepmd-kit"
+
+setenv SAI_SIF_DEEPMD_KIT_VERSION "master-beta-20261024-558f56962775"
+setenv SAI_SIF_DEEPMD_KIT_BRANCH "master"
+setenv SAI_SIF_DEEPMD_KIT_TEMPLATES "/home/stardust/sai-hpc-software/sif-beta/generations/20261024-r2/templates/deepmd-kit"
+setenv SAI_SIF_DEEPMD_KIT_SNAPSHOT "20261024"
+if {[module-info mode load]} {
+    puts stderr [format "%s; partition=%s" "\[SAI beta\] deepmd-kit/master; commit=558f56962775; snapshot=20261024; templates=/home/stardust/sai-hpc-software/sif-beta/generations/20261024-r2/templates/deepmd-kit" $sai_partition]
+}
