@@ -1,0 +1,21 @@
+{
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--job-name=sif-lmod-8V100V0",
+    "--account=proj-sai-hpc-software",
+    "--partition=8V100V0",
+    "--qos=rush-1o2gpu",
+    "--nodes=1",
+    "--ntasks=2",
+    "--ntasks-per-node=2",
+    "--gpus-per-node=1",
+    "--chdir=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-lmod-20261024-8V100V0-r4",
+    "--output=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-lmod-20261024-8V100V0-r4/slurm-%j.log",
+    "/org/org-open-sai/proj-sai-hpc-software/deployment/sif-lmod-20261024-r4/deployment/sif-development-20261024/check.sbatch",
+    "/org/org-open-sai/proj-sai-hpc-software/deployment/sif-lmod-20261024-r4/deployment/sif-development-20261024",
+    "/org/org-open-sai/proj-sai-hpc-software/sif/20261024-r4",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-lmod-20261024-8V100V0-r4"
+  ],
+  "job": "1919705"
+}

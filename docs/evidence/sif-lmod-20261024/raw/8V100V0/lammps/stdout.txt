@@ -1,0 +1,124 @@
+--------------------------------------------------------------------------
+PRTE has detected that the head of the session directory tree (where
+scratch files and shared memory backing storage will be placed)
+resides on a shared file system:
+
+   Directory: /org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-lmod-20261024-8V100V0-r4/tmp
+   File system type: lustre
+
+For performance reasons, it is strongly recommended that the session
+directory be located on a local file system. This can be controlled by
+setting the system temporary directory to be used by PRTE using either
+the TMPDIR envar or the "prte_tmpdir_base" MCA param.
+
+If you need the temporary directory to be different on remote nodes
+from the local one where prterun is running (e.g., when a login node is
+being employed), then you can set the local temporary directory using
+the "prte_local_tmpdir_base" MCA param and the one to be used on all
+other nodes using the "prte_remote_tmpdir_base" param.
+
+This is only a warning advisory and your job will continue. You can
+disable this warning in the future by setting the
+"prte_silence_shared_fs" MCA param to "1".
+--------------------------------------------------------------------------
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+DeePMD-kit: Successfully load libcudart.so.12
+DeePMD-kit: Successfully load libcudart.so.12
+LAMMPS (30 Sep 2026 - Development - a0e2bd6-modified)
+  using 1 OpenMP thread(s) per MPI task
+WARNING: The 'split' keyword is deprecated. Host/device particle splitting is no longer supported. The value is ignored. (src/GPU/fix_gpu.cpp:159)
+Reading data file ...
+  orthogonal box = (0 0 0) to (7.1512283 7.1512283 7.1512283)
+  1 by 1 by 2 MPI processor grid
+  reading atoms ...
+  256 atoms
+  read_data CPU = 0.005 seconds
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+Your simulation uses code contributions which should be cited:
+- GPU package (short-range, long-range and three-body potentials): https://doi.org/10.1016/j.cpc.2010.12.021, https://doi.org/10.1016/j.cpc.2011.10.012, https://doi.org/10.1016/j.cpc.2013.08.002, https://doi.org/10.1016/j.commatsci.2014.10.068, https://doi.org/10.1016/j.cpc.2016.10.020, https://doi.org/10.3233/APC200086
+The log file lists these citations in BibTeX format.
+
+CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE-CITE
+
+
+--------------------------------------------------------------------------
+- Using acceleration for lj/cut:
+-  with 2 proc(s) per device.
+-  with 1 thread(s) per proc.
+-  Horizontal vector operations: ENABLED
+-  Shared memory system: No
+--------------------------------------------------------------------------
+Device 0: Tesla V100-SXM2-32GB, 80 CUs, 31/32 GB, 1.5 GHZ (Mixed Precision)
+--------------------------------------------------------------------------
+
+Initializing Device and compiling on process 0...Done.
+Initializing Device 0 on core 0...Done.
+Initializing Device 0 on core 1...Done.
+
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Setting up Verlet run ...
+  Unit style    : lj
+  Current step  : 0
+  Time step     : 1e-04
+Per MPI rank memory allocation (min/avg/max) = 2.129 | 2.129 | 2.129 Mbytes
+   Step          Temp          E_pair         E_mol          TotEng         Press     
+         0   0             -1340.5523      0             -1340.5523     -5.2608508    
+         5   3.9593106e-09 -1340.5523      0             -1340.5523     -5.2608508    
+Loop time of 0.00311204 on 2 procs for 5 steps with 256 atoms
+
+Performance: 13881.567 tau/day, 1606.663 timesteps/s, 411.306 katom-step/s
+100.0% CPU use with 2 MPI tasks x 1 OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0020453  | 0.0022817  | 0.002518   |   0.5 | 73.32
+Neigh   | 5.09e-07   | 5.755e-07  | 6.42e-07   |   0.0 |  0.02
+Comm    | 0.00052198 | 0.00071206 | 0.00090215 |   0.0 | 22.88
+Output  | 2.3894e-05 | 7.2151e-05 | 0.00012041 |   0.0 |  2.32
+Modify  | 7.917e-06  | 1.3081e-05 | 1.8245e-05 |   0.0 |  0.42
+Other   |            | 3.25e-05   |            |       |  1.04
+
+Nlocal:            128 ave         134 max         122 min
+Histogram: 1 0 0 0 0 0 0 0 0 1
+Nghost:           1109 ave        1115 max        1103 min
+Histogram: 1 0 0 0 0 0 0 0 0 1
+Neighs:              0 ave           0 max           0 min
+Histogram: 2 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 0
+Ave neighs/atom = 0
+Neighbor list builds = 5
+Dangerous builds not checked
+SAI_GPU_OBS -1340.5522622810677 -5.2594537450842855 -5.2613189599062871 -5.2617795869642441 -0.002273023662511686 0.0037787890721590832 -0.00012815477129893087
+
+
+---------------------------------------------------------------------
+      Device Time Info (average): 
+---------------------------------------------------------------------
+CPU Neighbor:    0.0002 s.
+CPU Cast/Pack:   0.0001 s.
+CPU Driver_Time: 0.0001 s.
+CPU Idle_Time:   0.0022 s.
+Max Mem / Proc:  0.12 MB.
+Prefetch mode:   None.
+Vector width:    32.
+Lanes / atom:    4.
+Pair block:      256.
+Neigh block:     128.
+Neigh mode:      Hybrid (binning on host) with subgroup support.
+---------------------------------------------------------------------
+
+Total wall time: 0:00:00

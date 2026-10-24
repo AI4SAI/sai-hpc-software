@@ -1,0 +1,164 @@
+{
+  "checked_files": 272,
+  "partitions": {
+    "16V100": {
+      "abacus": {
+        "energy_error_ev": 1.6093508747871965e-08,
+        "energy_ev": -4869.747051966279,
+        "iterations": 10,
+        "rounded_iteration_seconds": 3.0,
+        "wall_seconds": 7.39
+      },
+      "catalog_sha256": "e4f09d656668fd547856819f60fb8a30d2d519db5033f945d71f3b4e11ca6671",
+      "cp2k": {
+        "energy_delta_ha": 5.400124791776761e-13,
+        "max_force_delta_ha_bohr": 1.0000004296850662e-12
+      },
+      "deepmd-kit": {
+        "cuda_bytes": 17083392,
+        "device": "cuda:0",
+        "errors": {
+          "energy": 0.0,
+          "forces": 1.734723475976807e-17,
+          "virial": 5.551115123125783e-17
+        },
+        "package": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/__init__.py",
+        "passed": true
+      },
+      "gpumd": {
+        "energy_error": 0.0,
+        "force_error": 0.0
+      },
+      "image_reads": {
+        "abacus": 2,
+        "cp2k": 2,
+        "deepmd-kit": 1,
+        "gpumd": 1,
+        "lammps": 2
+      },
+      "job": "1919704",
+      "lammps": {
+        "max_error": 8.881784197001252e-16,
+        "values": 775
+      },
+      "partition": "16V100",
+      "passed": true,
+      "runtime_sha256": "49c575bd293fddf094e4f736fb33c3d0a0522b174e53554e43c89999deaa1759",
+      "traces": 23
+    },
+    "4V100": {
+      "abacus": {
+        "energy_error_ev": 0.0,
+        "energy_ev": -4869.747051950185,
+        "iterations": 10,
+        "rounded_iteration_seconds": 5.77,
+        "wall_seconds": 8.67
+      },
+      "catalog_sha256": "e4f09d656668fd547856819f60fb8a30d2d519db5033f945d71f3b4e11ca6671",
+      "cp2k": {
+        "energy_delta_ha": 2.7711166694643907e-13,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "deepmd-kit": {
+        "cuda_bytes": 17083392,
+        "device": "cuda:0",
+        "errors": {
+          "energy": 0.0,
+          "forces": 1.734723475976807e-17,
+          "virial": 5.551115123125783e-17
+        },
+        "package": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100/lib/python3.13/site-packages/deepmd/__init__.py",
+        "passed": true
+      },
+      "gpumd": {
+        "energy_error": 0.0,
+        "force_error": 0.0
+      },
+      "image_reads": {
+        "abacus": 1,
+        "cp2k": 1,
+        "deepmd-kit": 1,
+        "gpumd": 1,
+        "lammps": 1
+      },
+      "job": "1919706",
+      "lammps": {
+        "max_error": 0.0,
+        "values": 775
+      },
+      "partition": "4V100",
+      "passed": true,
+      "runtime_sha256": "49c575bd293fddf094e4f736fb33c3d0a0522b174e53554e43c89999deaa1759",
+      "traces": 13
+    },
+    "8V100V0": {
+      "abacus": {
+        "energy_error_ev": 0.0,
+        "energy_ev": -4869.7470519501785,
+        "iterations": 10,
+        "rounded_iteration_seconds": 5.88,
+        "wall_seconds": 28.33
+      },
+      "catalog_sha256": "e4f09d656668fd547856819f60fb8a30d2d519db5033f945d71f3b4e11ca6671",
+      "cp2k": {
+        "energy_delta_ha": 1.1368683772161603e-13,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "deepmd-kit": {
+        "cuda_bytes": 17083392,
+        "device": "cuda:0",
+        "errors": {
+          "energy": 0.0,
+          "forces": 1.734723475976807e-17,
+          "virial": 5.551115123125783e-17
+        },
+        "package": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/__init__.py",
+        "passed": true
+      },
+      "gpumd": {
+        "energy_error": 0.0,
+        "force_error": 0.0
+      },
+      "image_reads": {
+        "abacus": 1,
+        "cp2k": 1,
+        "deepmd-kit": 1,
+        "gpumd": 1,
+        "lammps": 1
+      },
+      "job": "1919705",
+      "lammps": {
+        "max_error": 0.0,
+        "values": 775
+      },
+      "partition": "8V100V0",
+      "passed": true,
+      "runtime_sha256": "49c575bd293fddf094e4f736fb33c3d0a0522b174e53554e43c89999deaa1759",
+      "traces": 13
+    },
+    "DSPRHBM": {
+      "abacus": {
+        "energy_error_ev": 7.0031092036515474e-09,
+        "energy_ev": -4869.747051950182,
+        "iterations": 10,
+        "rounded_iteration_seconds": 2.3,
+        "wall_seconds": 6.16
+      },
+      "catalog_sha256": "e4f09d656668fd547856819f60fb8a30d2d519db5033f945d71f3b4e11ca6671",
+      "cp2k": {
+        "energy_delta_ha": 2.0605739337042905e-13,
+        "max_force_delta_ha_bohr": 9.999995623233282e-13
+      },
+      "image_reads": {
+        "abacus": 1,
+        "cp2k": 1
+      },
+      "job": "1919703",
+      "partition": "DSPRHBM",
+      "passed": true,
+      "runtime_sha256": "49c575bd293fddf094e4f736fb33c3d0a0522b174e53554e43c89999deaa1759",
+      "traces": 6
+    }
+  },
+  "passed": true
+}

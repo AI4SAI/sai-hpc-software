@@ -1,4 +1,17 @@
-# Workflow closure — 2026-10-23
+# Workflow closure — 2026-10-24
+
+The [20261024 SIF module snapshot](../deployment/sif-development-20261024/README.md)
+now exposes all five accepted development sources through independent `*-sif`
+Lmod modules, selecting the image by Slurm partition. All 17 application/target
+entries passed fresh numerical checks of this launch route in jobs
+`1919703`–`1919706`, including two-node/four-rank host MPI on 16V100. Apptainer
+shared user namespaces remove the observed UCX permission failures; MPI shared
+memory pools use RAM while disk scratch stays in the project/home directory.
+The fixed runtime requires neither a writable artifact tree nor per-rank SIF
+rehashing. An administrator-readable handoff is prepared separately from the
+private project tree; public `/opt` installation is still administrator-driven.
+These SIF entries do not relabel the original acceptance records or install
+the native staging exports.
 
 ## Current development deliveries
 
@@ -12,8 +25,8 @@ installation are separate acceptance states.
 | --- | --- | --- |
 | ABACUS `develop` | `370ba685e6707b3625c5580ff9d02ef0afb248e8` | All four targets built, scientifically accepted and published with reverified native staging exports; workflow [39971072923](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971072923) succeeded. Physical `/opt` installation pending. |
 | CP2K `master` | `cfe5e5d87aaf302953f14eb43587bef2411a8fb2` | All four targets built, scientifically accepted and project-published, with independent SIF, raw science, native export and module audits. Source-pinned LibXC 7.1.2 and LibXS `930a2c4` are verified. 4V100/8V100V0 completed through documented recoveries; the original [workflow 39983165813](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39983165813) retains its failed status. Physical `/opt` installation pending. |
-| DeePMD-kit `master` | `558f56962775098b8b554e341c3b37d2f86e6aeb` | All three V100 candidates build-verified and scientifically accepted: TF/PT/JAX Python/C-API checks plus 1,486 measured CUDA kernel events per target. Not yet published or installed natively. |
-| LAMMPS `develop` | `a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b` | All three V100 candidates build-verified and scientifically accepted: 14 cases, 71 packages, 2,497 styles per target. Not yet published or installed natively. |
+| DeePMD-kit `master` | `558f56962775098b8b554e341c3b37d2f86e6aeb` | All three V100 candidates build-verified and scientifically accepted: TF/PT/JAX Python/C-API checks plus 1,486 measured CUDA kernel events per target. Available through the 20261024 SIF modules; legacy catalog publication and native installation remain pending. |
+| LAMMPS `develop` | `a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b` | All three V100 candidates build-verified and scientifically accepted: 14 cases, 71 packages, 2,497 styles per target. Available through the 20261024 SIF modules; legacy catalog publication and native installation remain pending. |
 | GPUMD `master` | `2c93346fce4461de1c42c77e7fe74cdb6b0e3df6` | All three V100 targets scientifically accepted, published with native staging exports; physical `/opt` installation pending. |
 
 All five selected development snapshots have completed their required build

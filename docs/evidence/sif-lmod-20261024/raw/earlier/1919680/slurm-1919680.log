@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/org/org-open-sai/proj-sai-hpc-software/deployment/sif-lmod-20261024-check-r2/deployment/sif-development-20261024/check.py", line 119, in <module>
+    verify(args.output)
+  File "/org/org-open-sai/proj-sai-hpc-software/deployment/sif-lmod-20261024-check-r2/deployment/sif-development-20261024/check.py", line 59, in verify
+    science = parse_science((cp2k / 'stdout.txt').read_text(), (cp2k / 'forces.xyz').read_text(),
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/org/org-open-sai/proj-sai-hpc-software/deployment/sif-lmod-20261024-check-r2/controller/cp2k_benchmark.py", line 289, in parse_science
+    raise ValueError("CP2K calculation did not finish with converged SCF")
+ValueError: CP2K calculation did not finish with converged SCF

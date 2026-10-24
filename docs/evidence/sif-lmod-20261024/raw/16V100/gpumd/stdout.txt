@@ -1,0 +1,129 @@
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+
+***************************************************************
+*                 Welcome to use GPUMD                        *
+*     (Graphics Processing Units Molecular Dynamics)          *
+*                   version 5.9.1                             *
+*              This is the gpumd executable                   *
+***************************************************************
+
+
+---------------------------------------------------------------
+Compiling options:
+---------------------------------------------------------------
+
+DEBUG is off: Use different PRNG seeds for different runs.
+
+---------------------------------------------------------------
+GPU information:
+---------------------------------------------------------------
+
+number of GPUs = 1
+Device id:                   0
+    Device name:             Tesla V100-SXM2-16GB
+    Compute capability:      7.0
+    Amount of global memory: 15.7657 GB
+    Number of SMs:           80
+
+---------------------------------------------------------------
+Started running GPUMD.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Started initializing positions and related parameters.
+---------------------------------------------------------------
+
+Number of atoms is 250.
+Use periodic boundary conditions along x.
+Use periodic boundary conditions along y.
+Use periodic boundary conditions along z.
+Box matrix h = [a, b, c] is
+    0.0000000000e+00    1.6425980000e+01    1.6425980000e+01
+    1.6425980000e+01    0.0000000000e+00    1.6425980000e+01
+    1.6425980000e+01    1.6425980000e+01    0.0000000000e+00
+Inverse box matrix g = inv(h) is
+   -3.0439584122e-02    3.0439584122e-02    3.0439584122e-02
+    3.0439584122e-02   -3.0439584122e-02    3.0439584122e-02
+    3.0439584122e-02    3.0439584122e-02   -3.0439584122e-02
+Do not specify initial velocities here.
+Have no grouping method.
+There are 2 atom types.
+    125 atoms of type 0.
+    125 atoms of type 1.
+Initialized velocities with default T = 300 K.
+
+---------------------------------------------------------------
+Finished initializing positions and related parameters.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Started executing the commands in run.in.
+---------------------------------------------------------------
+
+Use the NEP4 potential with 2 atom types.
+    type 0 (Te with Z = 52).
+    type 1 (Pb with Z = 82).
+    radial cutoff = 8 A.
+    angular cutoff = 4 A.
+    MN_radial = 73.
+    enlarged MN_radial = 92.
+    enlarged MN_angular = 10.
+    n_max_radial = 6.
+    n_max_angular = 6.
+    basis_size_radial = 6.
+    basis_size_angular = 6.
+    l_max_3body = 4.
+    has_q_222 = 2.
+    has_q_1111 = 0.
+    has_q_112 = 0.
+    has_q_123 = 0.
+    has_q_233 = 0.
+    has_q_134 = 0.
+    ANN = 42-30-1.
+    number of neural network parameters = 2641.
+    number of descriptor parameters = 392.
+    total number of parameters = 3033.
+Initialized velocities with input T = 1 K.
+Use NVE ensemble for this run.
+Time step for this run is 0 fs.
+Dump extended XYZ.
+    every 1 steps.
+    into file dump.xyz.
+    has force.
+    with double precision.
+    for the whole system.
+Run 1 steps.
+    1 steps completed.
+
+---------------------------------------------------------------
+Time used for this run = 0.00477717 second.
+Speed of this run = 52332.3 atom*step/second.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Finished executing the commands in run.in.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Time used = 0.038787 s.
+---------------------------------------------------------------
+
+
+---------------------------------------------------------------
+Finished running GPUMD.
+---------------------------------------------------------------
+
