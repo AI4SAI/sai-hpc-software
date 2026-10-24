@@ -1,0 +1,79 @@
+[SAI beta] gpumd / master
+Source version: master-2026-10-21
+Commit: 2c93346fce4461de1c42c77e7fe74cdb6b0e3df6
+Accepted snapshot: 20261024 (latest accepted, not necessarily upstream HEAD)
+Partitions: 16V100, 4V100, 8V100V0
+Fixed module: gpumd-sif/master-20261024-g2c93346fce44
+Templates: /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r1/templates/gpumd
+
+Copy gpu.sbatch into your case directory and edit YOUR_ACCOUNT and resources.
+On the login node: cp /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r1/templates/gpumd/gpu.sbatch ./run.sbatch; edit it, then sbatch run.sbatch.
+Load on a compute node inside sbatch or an srun shell.
+Set TMPDIR in /home or /org before host mpirun; keep inputs under the case directory.
+SIF commands are wrappers: do not replace them with native /opt executable paths.
+ABACUS/CP2K/LAMMPS use host mpirun; GPUMD and dp run directly.
+Use deepmd-python for the SIF Python environment.
+For a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load gpumd-sif/master-20261024-g2c93346fce44
+
+Lmod has detected the following error:
+/home/stardust/sai-hpc-software/development/sif-beta-20261024-r1/deployment/sif-beta/modulefiles/gpumd/master-beta:
+(gpumd/master-beta): Not loaded: load this module on a compute node inside an
+sbatch job or srun shell; see the templates above. 
+While processing the following module(s):
+    Module fullname    Module Filename
+    ---------------    ---------------
+    gpumd/master-beta  /home/stardust/sai-hpc-software/development/sif-beta-20261024-r1/deployment/sif-beta/modulefiles/gpumd/master-beta
+
+
+---------------- Module Specific Help for "gpumd/master-beta" -----------------
+[SAI beta] gpumd / master
+Source version: master-2026-10-21
+Commit: 2c93346fce4461de1c42c77e7fe74cdb6b0e3df6
+Accepted snapshot: 20261024 (latest accepted, not necessarily upstream HEAD)
+Partitions: 16V100, 4V100, 8V100V0
+Fixed module: gpumd-sif/master-20261024-g2c93346fce44
+Templates: /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r1/templates/gpumd
+
+Copy gpu.sbatch into your case directory and edit YOUR_ACCOUNT and resources.
+On the login node: cp /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r1/templates/gpumd/gpu.sbatch ./run.sbatch; edit it, then sbatch run.sbatch.
+Load on a compute node inside sbatch or an srun shell.
+Set TMPDIR in /home or /org before host mpirun; keep inputs under the case directory.
+SIF commands are wrappers: do not replace them with native /opt executable paths.
+ABACUS/CP2K/LAMMPS use host mpirun; GPUMD and dp run directly.
+Use deepmd-python for the SIF Python environment.
+For a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load gpumd-sif/master-20261024-g2c93346fce44
+
+
+
+----------------------------------------------------------------------------
+   /home/stardust/sai-hpc-software/development/sif-beta-20261024-r1/deployment/sif-beta/modulefiles/gpumd/master-beta:
+----------------------------------------------------------------------------
+whatis("gpumd master-20261024-g2c93346fce44; accepted SIF; partitions: 16V100 4V100 8V100V0; source: 2c93346fce4461de1c42c77e7fe74cdb6b0e3df6")
+conflict("gpumd")
+conflict("gpumd-sif")
+setenv("SAI_SIF_GPUMD_SOURCE","2c93346fce4461de1c42c77e7fe74cdb6b0e3df6")
+prepend_path{"PATH","/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/bin/gpumd",delim=":",priority="0"}
+setenv("SAI_SIF_GPUMD_VERSION","master-20261024-g2c93346fce44")
+setenv("SAI_SIF_GPUMD_BRANCH","master")
+setenv("SAI_SIF_GPUMD_TEMPLATES","/home/stardust/sai-hpc-software/sif-beta/generations/20261024-r1/templates/gpumd")
+setenv("SAI_SIF_GPUMD_SNAPSHOT","20261024")
+setenv("SAI_SIF_GPUMD_BETA_GENERATION","20261024-r1")
+help([[[SAI beta] gpumd / master
+Source version: master-2026-10-21
+Commit: 2c93346fce4461de1c42c77e7fe74cdb6b0e3df6
+Accepted snapshot: 20261024 (latest accepted, not necessarily upstream HEAD)
+Partitions: 16V100, 4V100, 8V100V0
+Fixed module: gpumd-sif/master-20261024-g2c93346fce44
+Templates: /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r1/templates/gpumd
+
+Copy gpu.sbatch into your case directory and edit YOUR_ACCOUNT and resources.
+On the login node: cp /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r1/templates/gpumd/gpu.sbatch ./run.sbatch; edit it, then sbatch run.sbatch.
+Load on a compute node inside sbatch or an srun shell.
+Set TMPDIR in /home or /org before host mpirun; keep inputs under the case directory.
+SIF commands are wrappers: do not replace them with native /opt executable paths.
+ABACUS/CP2K/LAMMPS use host mpirun; GPUMD and dp run directly.
+Use deepmd-python for the SIF Python environment.
+For a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load gpumd-sif/master-20261024-g2c93346fce44
+
+]])
+

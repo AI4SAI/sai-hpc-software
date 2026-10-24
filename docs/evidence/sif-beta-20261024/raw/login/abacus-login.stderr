@@ -1,0 +1,82 @@
+[SAI beta] abacus / develop
+Source version: develop-2026-10-23
+Commit: 370ba685e6707b3625c5580ff9d02ef0afb248e8
+Accepted snapshot: 20261024 (latest accepted, not necessarily upstream HEAD)
+Partitions: 16V100, 4V100, 8V100V0, DSPRHBM
+Fixed module: abacus-sif/develop-20261024-g370ba685e670
+Templates: /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r1/templates/abacus
+
+Copy gpu.sbatch into your case directory and edit YOUR_ACCOUNT and resources.
+For DSPRHBM use cpu.sbatch.
+On the login node: cp /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r1/templates/abacus/gpu.sbatch ./run.sbatch; edit it, then sbatch run.sbatch.
+Load on a compute node inside sbatch or an srun shell.
+Set TMPDIR in /home or /org before host mpirun; keep inputs under the case directory.
+SIF commands are wrappers: do not replace them with native /opt executable paths.
+ABACUS/CP2K/LAMMPS use host mpirun; GPUMD and dp run directly.
+Use deepmd-python for the SIF Python environment.
+For a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load abacus-sif/develop-20261024-g370ba685e670
+
+Lmod has detected the following error:
+/home/stardust/sai-hpc-software/development/sif-beta-20261024-r1/deployment/sif-beta/modulefiles/abacus/develop-beta:
+(abacus/develop-beta): Not loaded: load this module on a compute node inside an
+sbatch job or srun shell; see the templates above. 
+While processing the following module(s):
+    Module fullname      Module Filename
+    ---------------      ---------------
+    abacus/develop-beta  /home/stardust/sai-hpc-software/development/sif-beta-20261024-r1/deployment/sif-beta/modulefiles/abacus/develop-beta
+
+
+--------------- Module Specific Help for "abacus/develop-beta" ----------------
+[SAI beta] abacus / develop
+Source version: develop-2026-10-23
+Commit: 370ba685e6707b3625c5580ff9d02ef0afb248e8
+Accepted snapshot: 20261024 (latest accepted, not necessarily upstream HEAD)
+Partitions: 16V100, 4V100, 8V100V0, DSPRHBM
+Fixed module: abacus-sif/develop-20261024-g370ba685e670
+Templates: /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r1/templates/abacus
+
+Copy gpu.sbatch into your case directory and edit YOUR_ACCOUNT and resources.
+For DSPRHBM use cpu.sbatch.
+On the login node: cp /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r1/templates/abacus/gpu.sbatch ./run.sbatch; edit it, then sbatch run.sbatch.
+Load on a compute node inside sbatch or an srun shell.
+Set TMPDIR in /home or /org before host mpirun; keep inputs under the case directory.
+SIF commands are wrappers: do not replace them with native /opt executable paths.
+ABACUS/CP2K/LAMMPS use host mpirun; GPUMD and dp run directly.
+Use deepmd-python for the SIF Python environment.
+For a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load abacus-sif/develop-20261024-g370ba685e670
+
+
+
+----------------------------------------------------------------------------
+   /home/stardust/sai-hpc-software/development/sif-beta-20261024-r1/deployment/sif-beta/modulefiles/abacus/develop-beta:
+----------------------------------------------------------------------------
+whatis("abacus develop-20261024-g370ba685e670; accepted SIF; partitions: 16V100 4V100 8V100V0 DSPRHBM; source: 370ba685e6707b3625c5580ff9d02ef0afb248e8")
+conflict("abacus")
+conflict("abacus-sif")
+setenv("SAI_SIF_ABACUS_SOURCE","370ba685e6707b3625c5580ff9d02ef0afb248e8")
+prepend_path{"PATH","/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/bin/abacus",delim=":",priority="0"}
+setenv("SAI_SIF_ABACUS_VERSION","develop-20261024-g370ba685e670")
+setenv("SAI_SIF_ABACUS_BRANCH","develop")
+setenv("SAI_SIF_ABACUS_TEMPLATES","/home/stardust/sai-hpc-software/sif-beta/generations/20261024-r1/templates/abacus")
+setenv("SAI_SIF_ABACUS_SNAPSHOT","20261024")
+setenv("SAI_SIF_ABACUS_BETA_GENERATION","20261024-r1")
+help([[[SAI beta] abacus / develop
+Source version: develop-2026-10-23
+Commit: 370ba685e6707b3625c5580ff9d02ef0afb248e8
+Accepted snapshot: 20261024 (latest accepted, not necessarily upstream HEAD)
+Partitions: 16V100, 4V100, 8V100V0, DSPRHBM
+Fixed module: abacus-sif/develop-20261024-g370ba685e670
+Templates: /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r1/templates/abacus
+
+Copy gpu.sbatch into your case directory and edit YOUR_ACCOUNT and resources.
+For DSPRHBM use cpu.sbatch.
+On the login node: cp /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r1/templates/abacus/gpu.sbatch ./run.sbatch; edit it, then sbatch run.sbatch.
+Load on a compute node inside sbatch or an srun shell.
+Set TMPDIR in /home or /org before host mpirun; keep inputs under the case directory.
+SIF commands are wrappers: do not replace them with native /opt executable paths.
+ABACUS/CP2K/LAMMPS use host mpirun; GPUMD and dp run directly.
+Use deepmd-python for the SIF Python environment.
+For a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load abacus-sif/develop-20261024-g370ba685e670
+
+]])
+

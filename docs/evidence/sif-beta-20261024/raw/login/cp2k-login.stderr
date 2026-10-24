@@ -1,0 +1,82 @@
+[SAI beta] cp2k / master
+Source version: master-2026-10-23
+Commit: cfe5e5d87aaf302953f14eb43587bef2411a8fb2
+Accepted snapshot: 20261024 (latest accepted, not necessarily upstream HEAD)
+Partitions: 16V100, 4V100, 8V100V0, DSPRHBM
+Fixed module: cp2k-sif/master-20261024-gcfe5e5d87aaf
+Templates: /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r1/templates/cp2k
+
+Copy gpu.sbatch into your case directory and edit YOUR_ACCOUNT and resources.
+For DSPRHBM use cpu.sbatch.
+On the login node: cp /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r1/templates/cp2k/gpu.sbatch ./run.sbatch; edit it, then sbatch run.sbatch.
+Load on a compute node inside sbatch or an srun shell.
+Set TMPDIR in /home or /org before host mpirun; keep inputs under the case directory.
+SIF commands are wrappers: do not replace them with native /opt executable paths.
+ABACUS/CP2K/LAMMPS use host mpirun; GPUMD and dp run directly.
+Use deepmd-python for the SIF Python environment.
+For a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load cp2k-sif/master-20261024-gcfe5e5d87aaf
+
+Lmod has detected the following error:
+/home/stardust/sai-hpc-software/development/sif-beta-20261024-r1/deployment/sif-beta/modulefiles/cp2k/master-beta:
+(cp2k/master-beta): Not loaded: load this module on a compute node inside an
+sbatch job or srun shell; see the templates above. 
+While processing the following module(s):
+    Module fullname   Module Filename
+    ---------------   ---------------
+    cp2k/master-beta  /home/stardust/sai-hpc-software/development/sif-beta-20261024-r1/deployment/sif-beta/modulefiles/cp2k/master-beta
+
+
+----------------- Module Specific Help for "cp2k/master-beta" -----------------
+[SAI beta] cp2k / master
+Source version: master-2026-10-23
+Commit: cfe5e5d87aaf302953f14eb43587bef2411a8fb2
+Accepted snapshot: 20261024 (latest accepted, not necessarily upstream HEAD)
+Partitions: 16V100, 4V100, 8V100V0, DSPRHBM
+Fixed module: cp2k-sif/master-20261024-gcfe5e5d87aaf
+Templates: /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r1/templates/cp2k
+
+Copy gpu.sbatch into your case directory and edit YOUR_ACCOUNT and resources.
+For DSPRHBM use cpu.sbatch.
+On the login node: cp /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r1/templates/cp2k/gpu.sbatch ./run.sbatch; edit it, then sbatch run.sbatch.
+Load on a compute node inside sbatch or an srun shell.
+Set TMPDIR in /home or /org before host mpirun; keep inputs under the case directory.
+SIF commands are wrappers: do not replace them with native /opt executable paths.
+ABACUS/CP2K/LAMMPS use host mpirun; GPUMD and dp run directly.
+Use deepmd-python for the SIF Python environment.
+For a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load cp2k-sif/master-20261024-gcfe5e5d87aaf
+
+
+
+----------------------------------------------------------------------------
+   /home/stardust/sai-hpc-software/development/sif-beta-20261024-r1/deployment/sif-beta/modulefiles/cp2k/master-beta:
+----------------------------------------------------------------------------
+whatis("cp2k master-20261024-gcfe5e5d87aaf; accepted SIF; partitions: 16V100 4V100 8V100V0 DSPRHBM; source: cfe5e5d87aaf302953f14eb43587bef2411a8fb2")
+conflict("cp2k")
+conflict("cp2k-sif")
+setenv("SAI_SIF_CP2K_SOURCE","cfe5e5d87aaf302953f14eb43587bef2411a8fb2")
+prepend_path{"PATH","/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/bin/cp2k",delim=":",priority="0"}
+setenv("SAI_SIF_CP2K_VERSION","master-20261024-gcfe5e5d87aaf")
+setenv("SAI_SIF_CP2K_BRANCH","master")
+setenv("SAI_SIF_CP2K_TEMPLATES","/home/stardust/sai-hpc-software/sif-beta/generations/20261024-r1/templates/cp2k")
+setenv("SAI_SIF_CP2K_SNAPSHOT","20261024")
+setenv("SAI_SIF_CP2K_BETA_GENERATION","20261024-r1")
+help([[[SAI beta] cp2k / master
+Source version: master-2026-10-23
+Commit: cfe5e5d87aaf302953f14eb43587bef2411a8fb2
+Accepted snapshot: 20261024 (latest accepted, not necessarily upstream HEAD)
+Partitions: 16V100, 4V100, 8V100V0, DSPRHBM
+Fixed module: cp2k-sif/master-20261024-gcfe5e5d87aaf
+Templates: /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r1/templates/cp2k
+
+Copy gpu.sbatch into your case directory and edit YOUR_ACCOUNT and resources.
+For DSPRHBM use cpu.sbatch.
+On the login node: cp /home/stardust/sai-hpc-software/sif-beta/generations/20261024-r1/templates/cp2k/gpu.sbatch ./run.sbatch; edit it, then sbatch run.sbatch.
+Load on a compute node inside sbatch or an srun shell.
+Set TMPDIR in /home or /org before host mpirun; keep inputs under the case directory.
+SIF commands are wrappers: do not replace them with native /opt executable paths.
+ABACUS/CP2K/LAMMPS use host mpirun; GPUMD and dp run directly.
+Use deepmd-python for the SIF Python environment.
+For a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load cp2k-sif/master-20261024-gcfe5e5d87aaf
+
+]])
+
