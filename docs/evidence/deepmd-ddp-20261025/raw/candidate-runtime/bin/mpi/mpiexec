@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+exec /usr/bin/python3 -I -B /org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-ddp-20261025/bundle/libexec/sif_runtime.py /org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-ddp-20261025/bundle/catalog.json _mpi mpiexec "$@"

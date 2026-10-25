@@ -1,0 +1,126 @@
+{"rounded_iteration_seconds": {"candidate": {"max": 2.0, "median": 2.0, "min": 2.0}, "candidate_system_ratio": 0.5, "system": {"max": 4.0, "median": 4.0, "min": 4.0}}, "wall_seconds": {"candidate": {"max": 3.0, "median": 3.0, "min": 3.0}, "candidate_system_ratio": 0.6, "system": {"max": 5.0, "median": 5.0, "min": 5.0}}}
+ABACUS_NATIVE_INVENTORY_VERIFIED
+123|COMPLETED|0:0|
+123
+CP2K_EXACT_DEPENDENCY_CHECKPOINT_CLONED
+43
+{"complete": false, "errors": [], "points": [{"accepted": null, "calibration_state": "COMPLETED", "comparison_state": null, "gpus": 1, "partition": "16V100"}], "updated": "2026-10-25T05:52:48.197316+00:00"}
+{"complete": false, "errors": [], "points": [{"accepted": null, "calibration_state": "COMPLETED", "comparison_state": null, "gpus": 1, "partition": "16V100"}], "updated": "2026-10-25T05:52:48.197888+00:00"}
+{"complete": false, "errors": [], "points": [{"accepted": null, "calibration_state": "COMPLETED", "comparison_state": null, "gpus": 1, "partition": "16V100"}], "updated": "2026-10-25T05:52:48.198737+00:00"}
+Reused 6 validated tuning cases; all warm-up and measured pairs are new
+Reused 9 validated tuning cases; all warm-up and measured pairs are new
+DEEPMD_STATUS_TRANSPORT_RETRY attempt=1
+DEEPMD_STATUS_TRANSPORT_RETRY attempt=2
+DEEPMD_STATUS_TRANSPORT_RETRY attempt=1
+DEEPMD_STATUS_TRANSPORT_RETRY attempt=2
+avx2: 0.00 MiB; current=previous; /tmp/tmp7dln_idn/opt/avx2
+avx2: 0.00 MiB; current=previous; /tmp/tmputwoa__h/opt/avx2
+avx512: 0.00 MiB; current=previous; /tmp/tmputwoa__h/opt/avx512
+Previous installation preserved: /tmp/tmputwoa__h/opt/.avx2.before-cef4debc9fbfff4f
+Previous installation preserved: /tmp/tmputwoa__h/opt/.avx512.before-a5f2cad86bb245a8
+Installed both NVIDIA variants; run --verify, then compute-node acceptance.
+avx2: 0.00 MiB; current=repaired; /tmp/tmputwoa__h/opt/avx2
+avx512: 0.00 MiB; current=repaired; /tmp/tmputwoa__h/opt/avx512
+Physical NVIDIA inventories and public module verified; runtime acceptance is separate.
+avx2: 0.00 MiB; current=repaired; /tmp/tmputwoa__h/opt/avx2
+avx512: 0.00 MiB; current=repaired; /tmp/tmputwoa__h/opt/avx512
+Installed both NVIDIA variants; run --verify, then compute-node acceptance.
+Previous auto module preserved: /tmp/tmp398q4wyv/.2026.02.001-2603-gnu-auto.before-683031acacdf0c2d5ec9525e54cb95b58b48dd565762516cc968311da5d5f15d
+Previous auto module preserved: /tmp/tmpte_n7uc8/.2026.02.001-2603-gnu-auto.before-683031acacdf0c2d5ec9525e54cb95b58b48dd565762516cc968311da5d5f15d
+Previous installation preserved: /tmp/tmplk6l8l2o/opt/.nvidia.before-aaaaaaaaaaaaaaaa
+Previous auto module preserved: /tmp/tmpi7wptdr8/modules/.2026.02.001-2603-gnu-auto.before-c935d42a83ec8dbf78cb15ca2ccbf059c5c05a33af5f2203041bf428f06b418d
+Previous auto module preserved: /tmp/tmp6ne98703/modules/.2026.02.001-2603-gnu-auto.before-c935d42a83ec8dbf78cb15ca2ccbf059c5c05a33af5f2203041bf428f06b418d
+cat: /opt/apps/abacus/abacus-development-v3.11.0-gaaaaaaaaaaaa-rbbbbbbbbbbbb/4V100/share/sai/manifest.json failed to resolve symbolic link
+ARCHIVE_CACHE_HIT libxc.tar.bz2 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa: zero archive upload
+Traceback (most recent call last):
+  File "<string>", line 8, in <module>
+  File "/tmp/tmpjj1ux9k4/experimental/deepmd-lammps/controller/frozen/md_lammps_standalone.py", line 15, in verify_dependency
+    raise ValueError('original dependency changed')
+ValueError: original dependency changed
+MD_PERFORMANCE_RETEST: raw-verified slowdown exceeds 10%; repeating identical candidate
+MD_PERFORMANCE_RETEST: raw-verified slowdown exceeds 10%; repeating identical candidate
+MD_PERFORMANCE_RETEST: raw-verified slowdown exceeds 10%; repeating identical candidate
+MD_PERFORMANCE_RETEST: raw-verified slowdown exceeds 10%; repeating identical candidate
+MD_DEEPMD_REGISTRATION_ORDER {"after_sha256": "ab4fd30ecce7877a9f2e76370760fec9c119a5d439fae6dbdc3ef5fc371438f5", "before_sha256": "2db781bb0103f647cd4a0ff660373c35c978b5c293bd48147eda4bc726071719", "changed": true, "local_integration_patch": true, "path": "/tmp/tmph8n3nori/CMakeLists.txt"}
+MD_DEEPMD_REGISTRATION_ORDER {"after_sha256": "ab4fd30ecce7877a9f2e76370760fec9c119a5d439fae6dbdc3ef5fc371438f5", "before_sha256": "ab4fd30ecce7877a9f2e76370760fec9c119a5d439fae6dbdc3ef5fc371438f5", "changed": false, "local_integration_patch": true, "path": "/tmp/tmph8n3nori/CMakeLists.txt"}
+DEEPMD_STAGE_COMPLETE: paired candidate still requires LAMMPS
+123
+CANDIDATE_ONLY: scientific/performance acceptance still required
+222
+MD_PERFORMANCE_RETEST: raw-verified slowdown exceeds 10%; repeating identical candidate
+MD_PERFORMANCE_RETEST: raw-verified slowdown exceeds 10%; repeating identical candidate
+MD_PERFORMANCE_RETEST: raw-verified slowdown exceeds 10%; repeating identical candidate
+MD_PERFORMANCE_RETEST: raw-verified slowdown exceeds 10%; repeating identical candidate
+ACCEPTED_ARTIFACT_PUBLISHED /mnt/g/work/agent/sai-hpc-software/.work/md-independent-20261022/.test-work/tmp_etr2ksq/containers/software/abacus/development/v1-gaaaaaaaaaaaa-r00271ed3b466/DSPRHBM/build.sif
+abacus/16V100: verified 12 bytes
+abacus/4V100: verified 11 bytes
+abacus/8V100V0: verified 13 bytes
+abacus/DSPRHBM: verified 13 bytes
+cp2k/16V100: verified 10 bytes
+cp2k/4V100: verified 9 bytes
+cp2k/8V100V0: verified 11 bytes
+cp2k/DSPRHBM: verified 11 bytes
+lammps/16V100: verified 12 bytes
+lammps/4V100: verified 11 bytes
+lammps/8V100V0: verified 13 bytes
+deepmd-kit/16V100: verified 16 bytes
+deepmd-kit/4V100: verified 15 bytes
+deepmd-kit/8V100V0: verified 17 bytes
+gpumd/16V100: verified 11 bytes
+gpumd/4V100: verified 10 bytes
+gpumd/8V100V0: verified 12 bytes
+cp2k/master-beta-later -> master-beta-20261024-cfe5e5d87aaf-r75ef5179f1e8
+======================================================================
+ERROR: test_cmake_adapters_resolve_exact_private_lib64_roots (test_cp2k_spack_final_prefix.FinalPrefixTests.test_cmake_adapters_resolve_exact_private_lib64_roots)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/g/work/agent/sai-hpc-software/.work/md-independent-20261022/tests/test_cp2k_spack_final_prefix.py", line 166, in test_cmake_adapters_resolve_exact_private_lib64_roots
+    subprocess.run(['cmake', '-S', str(root), '-B', str(root / 'build')],
+    ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                   env=env, capture_output=True, text=True, check=True)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/stardust/miniconda3/envs/plot/lib/python3.14/subprocess.py", line 554, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/stardust/miniconda3/envs/plot/lib/python3.14/subprocess.py", line 1038, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/stardust/miniconda3/envs/plot/lib/python3.14/subprocess.py", line 1989, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'cmake'
+
+======================================================================
+ERROR: test_cmake_finds_verified_transitive_cosma_dependencies (test_cp2k_spack_final_prefix.FinalPrefixTests.test_cmake_finds_verified_transitive_cosma_dependencies)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/g/work/agent/sai-hpc-software/.work/md-independent-20261022/tests/test_cp2k_spack_final_prefix.py", line 87, in test_cmake_finds_verified_transitive_cosma_dependencies
+    missing = subprocess.run(['cmake', '-S', str(base), '-B', str(base / 'old'),
+        '-DCMAKE_PREFIX_PATH=' + ';'.join(data['roots'].values())], capture_output=True, text=True)
+  File "/home/stardust/miniconda3/envs/plot/lib/python3.14/subprocess.py", line 554, in run
+    with Popen(*popenargs, **kwargs) as process:
+         ~~~~~^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/stardust/miniconda3/envs/plot/lib/python3.14/subprocess.py", line 1038, in __init__
+    self._execute_child(args, executable, preexec_fn, close_fds,
+    ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                        pass_fds, cwd, env,
+                        ^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+                        gid, gids, uid, umask,
+                        ^^^^^^^^^^^^^^^^^^^^^^
+                        start_new_session, process_group)
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/stardust/miniconda3/envs/plot/lib/python3.14/subprocess.py", line 1989, in _execute_child
+    raise child_exception_type(errno_num, err_msg, err_filename)
+FileNotFoundError: [Errno 2] No such file or directory: 'cmake'
+
+----------------------------------------------------------------------
+Ran 1087 tests in 1549.359s
+
+FAILED (errors=2, skipped=14)

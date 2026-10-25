@@ -84,6 +84,18 @@ proc setenv {name value} {puts "ENV $name=$value"}
         self.assertIn('System sbatch examples: /opt/sbatch_examples', bad.stderr)
         self.assertNotIn('MODULE load', bad.stdout)
 
+    def test_ddp_help_requires_both_descriptors_on_every_partition(self):
+        reports = {partition: {'deepmd-kit': {'pytorch_ddp': {'passed': True,
+                   'cases': {name: {'passed': True} for name in ('se_e2_a', 'dpa2')}}}}
+                   for partition in self.snapshot['applications']['deepmd-kit']['partitions']}
+        def help_text():
+            return beta.render_help('deepmd-kit', self.snapshot, self.root, reports)
+        self.assertIn('--nproc_per_node=2 -m deepmd --pt train input.json', help_text())
+        self.assertIn('Multi-node training and more than two GPUs have not been accepted', help_text())
+        reports['4V100']['deepmd-kit']['pytorch_ddp']['cases']['dpa2']['passed'] = False
+        self.assertNotIn('--nproc_per_node=2', help_text())
+        self.assertIn('multi-GPU training is not accepted', help_text())
+
     def test_fixed_gateway_observes_rotation_but_unload_uses_saved_generation(self):
         for generation in ('first', 'second'):
             self.fragment('cp2k', generation)

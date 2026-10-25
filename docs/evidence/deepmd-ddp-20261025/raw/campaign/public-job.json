@@ -1,0 +1,17 @@
+{
+  "job": "1930769",
+  "command": [
+    "sbatch",
+    "--parsable",
+    "--account=proj-sai-hpc-software",
+    "--chdir=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-ddp-20261025/public-check",
+    "--nodes=1",
+    "--ntasks=1",
+    "--gpus-per-node=2",
+    "--partition=4V100",
+    "--qos=rush-1o2gpu",
+    "--job-name=deepmd-ddp-public",
+    "--output=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-ddp-20261025/public-check/slurm-%j.log",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-ddp-20261025/control/public.sbatch"
+  ]
+}

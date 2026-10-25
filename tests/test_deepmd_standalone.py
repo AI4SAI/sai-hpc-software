@@ -61,6 +61,33 @@ class IndependentDeePMDTests(unittest.TestCase):
             with self.assertRaises(FileNotFoundError):
                 verify_science_files(temporary)
 
+    def test_empty_parameters_require_upstream_unused_parameter_handling(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            runtime = Path(temporary)
+            for side in ('baseline', 'candidate'):
+                for backend in ('tf', 'pt', 'jax'):
+                    for engine in ('python', 'c-api'):
+                        (runtime / f'{side}-{backend}-{engine}.json').write_text('[]')
+            (runtime / 'pt-cuda-kernels.csv').write_text('observed CUDA trace')
+            (runtime / 'pt-cuda-trace.nsys-rep').write_bytes(b'profile')
+            (runtime / 'training').mkdir()
+            ranks = [dict(rank=rank, world_size=2, cuda_current_device=rank,
+                          backend='cuda:nccl,cpu:gloo', empty_trainable_parameters=['compress_info.0'],
+                          find_unused_parameters=True, gradients_finite=True, gradient_calls=8,
+                          initial_parameters_sha256='a' * 64, final_parameters_sha256='b' * 64)
+                     for rank in range(2)]
+            stage = dict(passed=True, returncode=0, ranks=ranks)
+            summary = dict(passed=True, cases={name: dict(training=stage, restart=stage)
+                                               for name in ('se_e2_a', 'dpa2')})
+            with patch('deepmd_standalone_check.verify_benchmark', return_value={'passed': True}), \
+                    patch('md_performance_run.parse_nsight_kernel_trace', return_value={}):
+                (runtime / 'training/summary.json').write_text(json.dumps(summary))
+                self.assertTrue(verify_science_files(runtime)['passed'])
+                ranks[0]['find_unused_parameters'] = False
+                (runtime / 'training/summary.json').write_text(json.dumps(summary))
+                with self.assertRaisesRegex(ValueError, 'invalid DeePMD training'):
+                    verify_science_files(runtime)
+
     def test_native_library_soname_symlinks_hash_the_actual_library(self):
         with tempfile.TemporaryDirectory() as temporary:
             prefix = Path(temporary)
@@ -117,7 +144,8 @@ class IndependentDeePMDTests(unittest.TestCase):
                     patch.object(check.subprocess, 'run') as execute, \
                     patch.dict(check.os.environ, {'LD_LIBRARY_PATH': prefix + '/lib:/usr/lib', 'CUDA_VISIBLE_DEVICES': '0'}):
                 check.science()
-            evaluations = [call for call in execute.call_args_list if call.args[0][0].endswith('/bin/python')]
+            evaluations = [call for call in execute.call_args_list
+                           if call.args[0][0].endswith('/bin/python') and 'evaluate' in call.args[0]]
             self.assertEqual(len(evaluations), 12)
             for call in evaluations:
                 installation = str(Path(call.args[0][0]).parent.parent)
@@ -186,10 +214,12 @@ class DeePMDStatusTests(unittest.TestCase):
                         json.dumps([{'slurm_job': '123'}] * 4))
         (runtime / 'pt-profiled.json').write_text(json.dumps([{'slurm_job': '123'}] * 4))
         for name in ('pt-cuda-kernels.csv', 'pt-cuda-trace.nsys-rep', 'runtime-env.sh',
-                     'baseline-inventory.json', 'candidate-inventory.json'):
+                     'baseline-inventory.json', 'candidate-inventory.json', 'ddp-source-patch.json'):
             (runtime / name).write_text('fixed science evidence\n')
         (runtime / 'case').mkdir(exist_ok=True)
         (runtime / 'case/fixture.json').write_text('{"fixed": "input"}\n')
+        (runtime / 'training').mkdir(exist_ok=True)
+        (runtime / 'training/summary.json').write_text('{"job": "123"}\n')
         (runtime / 'science.json').write_text(json.dumps(self.science.return_value))
         if seal_science:
             with patch.dict(standalone.os.environ, {'SLURM_JOB_ID': '123'}):
@@ -308,6 +338,24 @@ class DeePMDStatusTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, 'different allocation'):
             self.query(self.row())
 
+    def test_training_checkpoint_link_is_bound_without_following_external_links(self):
+        from deepmd_standalone_check import science_evidence_hashes
+        self.successful_files(seal_science=False)
+        runtime = self.directory / 'runtime'
+        case = runtime / 'training/se_e2_a'
+        case.mkdir()
+        checkpoint = case / 'model.ckpt-12.pt'
+        checkpoint.write_bytes(b'weights')
+        alias = case / 'model.ckpt.pt'
+        alias.symlink_to(checkpoint.name)
+        first = science_evidence_hashes(runtime, '123')['training']
+        checkpoint.write_bytes(b'changed weights')
+        self.assertNotEqual(first, science_evidence_hashes(runtime, '123')['training'])
+        alias.unlink()
+        alias.symlink_to('../../science.json')
+        with self.assertRaisesRegex(ValueError, 'redirected DeePMD training'):
+            science_evidence_hashes(runtime, '123')
+
     def test_missing_or_redirected_inputs_cannot_be_sealed_for_the_first_time(self):
         self.successful_files(seal_science=False)
         receipt = self.directory / 'results/science-receipt.json'
@@ -354,6 +402,8 @@ class DeePMDAcceptanceStatusTests(unittest.TestCase):
         (self.directory / 'request.json').write_text(json.dumps(request))
         self.science = self.stack.enter_context(patch('deepmd_standalone_check.verify_science_files',
             return_value={'passed': True}))
+        self.hashes = self.stack.enter_context(patch('deepmd_standalone_check.science_evidence_hashes',
+            return_value={'training': 'b' * 64}))
 
     def row(self, state='COMPLETED', code='0:0', account='proj-sai-hpc-software', directory=None):
         return '|'.join(['456', state, code, '00:00:30', 'node', account, str(directory or self.directory)]) + '\n'
@@ -384,6 +434,8 @@ class DeePMDAcceptanceStatusTests(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertTrue(result['scientific_verified'])
         self.science.assert_called_once_with(self.directory / 'runtime')
+        self.hashes.assert_called_once_with(self.directory / 'runtime', '456')
+        self.assertEqual(result['evidence_sha256'], {'training': 'b' * 64})
 
     def test_terminal_missing_marker_and_failed_jobs_do_not_wait_or_claim_science(self):
         for state, code in (('COMPLETED', '0:0'), ('COMPLETED', '1:0'), ('FAILED', '1:0'), ('CANCELLED by 123', '0:0')):

@@ -1,0 +1,19 @@
+Traceback (most recent call last):
+  File "/acceptance/deepmd_training_check.py", line 211, in <module>
+    main()
+    ~~~~^^
+  File "/acceptance/deepmd_training_check.py", line 196, in main
+    report = dict(training=train(directory))
+                           ~~~~~^^^^^^^^^^^
+  File "/acceptance/deepmd_training_check.py", line 156, in train
+    assert all(rank['world_size'] == 2 and rank['backend'] == 'nccl'
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               and not rank['empty_trainable_parameters'] and rank['gradients_finite'] and rank['gradient_calls'] > 0
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               and rank['forward_calls'] >= len(expected_steps)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               and rank['gradient_devices'] == [f"cuda:{rank['local_rank']}"]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               and rank['initial_parameters_sha256'] != rank['final_parameters_sha256'] for rank in ranks), ranks
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [{'rank': 0, 'world_size': 2, 'local_rank': 0, 'pid': 628, 'backend': 'cuda:nccl,cpu:gloo', 'device_ids': [0], 'cuda_current_device': 0, 'find_unused_parameters': False, 'initial_parameters_sha256': 'af50ae37d0e6bc6c6774523d032a4d14c8e7c7d23e61f7694c271a063494c331', 'forward_calls': 8, 'gradient_devices': ['cuda:0'], 'gradients_finite': True, 'gradient_calls': 176, 'empty_trainable_parameters': [], 'final_parameters_sha256': 'e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428'}, {'rank': 1, 'world_size': 2, 'local_rank': 1, 'pid': 629, 'backend': 'cuda:nccl,cpu:gloo', 'device_ids': [1], 'cuda_current_device': 1, 'find_unused_parameters': False, 'initial_parameters_sha256': 'af50ae37d0e6bc6c6774523d032a4d14c8e7c7d23e61f7694c271a063494c331', 'forward_calls': 8, 'gradient_devices': ['cuda:1'], 'gradients_finite': True, 'gradient_calls': 176, 'empty_trainable_parameters': [], 'final_parameters_sha256': 'e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428'}]
