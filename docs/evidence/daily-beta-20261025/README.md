@@ -143,6 +143,14 @@ because the payload returned zero. The original controller and damaged image
 remain unchanged. Fresh CPU recovery `1937947` uses controller `9654ff1`, the
 same selected CP2K source, 16 workers, and new recipe `e943569fcfff`.
 
+The [actual overlay probe](cp2k-overlay-sync-probe.json), job `1938021`,
+completed in 21 seconds on DSPRHBM: 2,730 retained files matched after read-only
+remount, the filesystem check passed, and the complete image hash was unchanged.
+The explicit sync took 0.404 seconds. Its first test harness failed before the
+payload because the overlay seed inherited project ACLs; the successful fresh
+run uses the controller's existing `private_scratch()` preparation. Both test
+allocations and the failed harness output are retained.
+
 The publisher supports a single recorded CP2K rebuild that binds both requests,
 retains the original source/target, and reruns the recovered controller's build
 and scientific verification. It does not convert the original failed job to
@@ -191,9 +199,9 @@ success or accept an unverified replacement.
 
 ## Verification
 
-GitHub's full regression suite passes on commit `90ab486`: 1,106 tests, with two
-skips, in [run 40200809882](https://github.com/AI4SAI/sai-hpc-software/actions/runs/40200809882).
-[All six PR validation workflows](ci-90ab486.json) pass. Coverage includes interrupted image
+GitHub's full regression suite passes on commit `f4a8cf2`: 1,111 tests, with two
+skips, in [run 40208928983](https://github.com/AI4SAI/sai-hpc-software/actions/runs/40208928983).
+[All six PR validation workflows](ci-f4a8cf2.json) pass. Coverage includes interrupted image
 copying, complete/mixed partition matrices, changed images, retaining the old
 alias after failure, held-job reattachment, same-artifact repeated publication,
 and bounded infrastructure recovery. The local full-suite run began before the

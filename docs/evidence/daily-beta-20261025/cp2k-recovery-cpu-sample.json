@@ -1,0 +1,30 @@
+{
+  "job": "1937947",
+  "node": "d9470n01.mr-sai.ai",
+  "checked_at": "2026-10-25T16:03:36.160672+00:00",
+  "sample_seconds": 10.132913829002064,
+  "allocated_cpus": 16,
+  "groups": [
+    {
+      "cgroup": "/sys/fs/cgroup/system.slice/slurmstepd.scope/s391M5SVX7SQ00",
+      "average_cores": 13.307500120454497,
+      "cpu_max": "max 100000",
+      "throttled_periods": 0,
+      "initial": {
+        "cpu.max": "max 100000",
+        "cpu.stat": "usage_usec 3413541833\nuser_usec 3070109086\nsystem_usec 343432746\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 0\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0",
+        "cpuset.cpus": "52-67",
+        "cpuset.cpus.effective": "52-67"
+      },
+      "final": {
+        "cpu.max": "max 100000",
+        "cpu.stat": "usage_usec 3548385585\nuser_usec 3193301462\nsystem_usec 355084123\nnice_usec 0\ncore_sched.force_idle_usec 0\nnr_periods 0\nnr_throttled 0\nthrottled_usec 0\nnr_bursts 0\nburst_usec 0",
+        "cpuset.cpus": "52-67",
+        "cpuset.cpus.effective": "52-67"
+      }
+    }
+  ],
+  "raw_path": "/org/org-open-sai/proj-sai-hpc-software/operations/cp2k-dsprhbm-sync-recovery-20261025-1db19ea511d1/cpu-sample-1937947.json",
+  "raw_sha256": "bbe131629e23296ca2cf0292e4ff7ae30f81406434160fc5039f519e971ab352",
+  "scope": "Whole Slurm job cgroup; includes short-lived compilers, one ten-second observation, not a complete-build average"
+}
