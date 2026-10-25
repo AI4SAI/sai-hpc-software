@@ -1,0 +1,20 @@
+
+------------- Module Specific Help for "gpumd/master-beta-later" --------------
+[SAI beta] gpumd / master
+Source version: master-2026-10-24
+Commit: 30a6db02e36494b8bba71c9fa1d1a68627604961
+Accepted snapshot: 20261025 (latest accepted, not necessarily upstream HEAD)
+Partitions: 16V100, 4V100, 8V100V0
+Fixed module: gpumd/master-beta-20261025-30a6db02e364-r75ef5179f1e8-b5ed2841f9ae7
+System sbatch examples: /opt/sbatch_examples
+
+Load on a compute node inside your existing sbatch job or srun shell:
+  module load gpumd/master-beta-later
+Command: gpumd > gpumd.out
+Run directly in the case directory.
+Commands enter the read-only SIF automatically; no extraction is needed.
+Runtime temporary files use private node memory automatically; no TMPDIR setup is needed.
+For a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load gpumd/master-beta-20261025-30a6db02e364-r75ef5179f1e8-b5ed2841f9ae7
+
+
+
