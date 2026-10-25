@@ -94,7 +94,10 @@ def submit(directory, software, partition, bundle, fixtures, exclude=''):
 
 
 def retry_node(directory, accounting_row):
-    text = '\n'.join(p.read_text(errors='replace')[-65536:] for p in directory.rglob('*.log'))
+    # The primary application redirects both streams to case/stdout.txt;
+    # training and Slurm diagnostics use *.log.
+    text = '\n'.join(p.read_text(errors='replace')[-65536:]
+                     for pattern in ('*.log', 'stdout.txt') for p in directory.rglob(pattern))
     if 'uncorrectable ECC error' in text or ('container creation failed: mount hook function failure:' in text
                                             and 'fuse2fs failed to mount' in text):
         node = accounting_row[6]

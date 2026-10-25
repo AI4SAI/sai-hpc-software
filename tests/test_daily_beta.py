@@ -176,11 +176,19 @@ class RuntimeTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             directory = Path(tmp)
             row = ['123', 'FAILED', '1:0', '8V100V0', 'proj-sai-hpc-software', tmp, '8v100v0n09']
-            log = directory / 'training.log'
-            log.write_text('loss is NaN')
-            self.assertIsNone(daily.retry_node(directory, row))
-            log.write_text('RuntimeError: CUDA error: uncorrectable ECC error encountered')
-            self.assertEqual(daily.retry_node(directory, row), '8v100v0n09')
+            for output in ('training/training.log', 'case/stdout.txt'):
+                log = directory / output
+                log.parent.mkdir()
+                for error in ('loss is NaN', 'Error: Unable to get the user home directory'):
+                    with self.subTest(output=output, error=error):
+                        log.write_text(error)
+                        self.assertIsNone(daily.retry_node(directory, row))
+                for error in ('RuntimeError: CUDA error: uncorrectable ECC error encountered',
+                              'container creation failed: mount hook function failure: fuse2fs failed to mount'):
+                    with self.subTest(output=output, error=error):
+                        log.write_text(error)
+                        self.assertEqual(daily.retry_node(directory, row), '8v100v0n09')
+                log.unlink()
 
     def test_transport_archive_has_every_fixture_and_rendered_jobs_are_valid(self):
         with tempfile.TemporaryDirectory() as tmp:

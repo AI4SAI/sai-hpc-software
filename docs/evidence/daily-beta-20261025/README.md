@@ -138,6 +138,11 @@ full-history transfer. The pinned DeePMD dependency source was also a cache hit.
   accepted development matrix. Durable Slurm receipts, bounded infrastructure
   retry, immutable fixed modules, atomic symlinks, and generation comparisons
   preserve prior and newer selections during failure/reconnection.
+- Infrastructure classification reads the application's actual `case/stdout.txt`
+  as well as Slurm/training logs. The rendered launchers redirect both streams
+  there, so ignoring that file would miss ECC and explicit pre-payload mount
+  failures. Targeted tests cover both output locations and confirm that NaN
+  results and the observed HOME/MPI environment failure are not auto-retried.
 - ABACUS's small DSPRHBM paired cases requested 100 GiB per node and a
   one-hour allocation on 120 GiB nodes. Historical step MaxRSS was below 3 GiB.
   The current pending jobs were adjusted to 32 GiB per node and 20 minutes,
