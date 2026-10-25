@@ -108,8 +108,9 @@ class LifecycleTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             commands, uploads, output = self.exercise(root, root / 'history')
-            self.assertEqual([name for name, args in commands[:3]], ['release_contract.py', 'source_cache.py', 'source_cache.py'])
-            actions = [(name, args[0]) for name, args in commands[3:]]
+            self.assertEqual([(name, args[0]) for name, args in commands[1:5]],
+                             [('source_cache.py', action) for action in ('seed', 'inventory', 'seed', 'inventory')])
+            actions = [(name, args[0]) for name, args in commands[5:]]
             self.assertEqual(actions, [('md_lammps_standalone.py', 'submit'), ('md_lammps_standalone.py', 'monitor'),
                 ('lammps_acceptance.py', 'submit'), ('lammps_acceptance.py', 'monitor'), ('lammps_acceptance.py', 'verify')])
             run_id = commands[0][1][1]
@@ -399,16 +400,16 @@ class WorkflowPhaseTests(unittest.TestCase):
 
     def test_result_requires_both_matrices_and_allows_empty_channel_or_validation_only(self):
         jobs = self.jobs()
-        self.assertEqual(set(jobs['result']['needs']), {'validate', 'resolve-source', 'candidate', 'science'})
+        self.assertEqual(set(jobs['result']['needs']), {'validate', 'resolve-source', 'candidate', 'science', 'beta'})
         code = jobs['result']['steps'][0]['run'].split("python3 - <<'PYTHON'\n", 1)[1].rsplit('\nPYTHON', 1)[0]
         def gate(results, event='schedule'):
             with patch.dict(os.environ, RESULTS=json.dumps(results), GITHUB_EVENT_NAME=event):
                 exec(compile(code, 'lammps.yml', 'exec'), {})
-        selected = {'validate': {'result': 'success'},
+        selected = {'validate': {'result': 'success'}, 'beta': {'result': 'success'},
                     'resolve-source': {'result': 'success', 'outputs': {'builds': '[{}]'}},
                     'candidate': {'result': 'success'}, 'science': {'result': 'success'}}
         gate(selected)
-        for phase in ('candidate', 'science'):
+        for phase in ('candidate', 'science', 'beta'):
             for result in ('failure', 'cancelled', 'skipped'):
                 changed = copy.deepcopy(selected)
                 changed[phase]['result'] = result

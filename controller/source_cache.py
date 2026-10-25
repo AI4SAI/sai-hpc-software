@@ -168,6 +168,40 @@ def inventory(repo, commit=None):
             result.append(commit)
     return {"cache_shas": result}
 
+def seed(repo, source):
+    """Copy verified legacy cache refs locally; never use writable alternates.
+
+    This lets a new project reuse older home data without moving it or sending
+    another full repository through the Actions-to-cluster SSH connection.
+    """
+    repo, source = Path(repo), Path(source)
+    if repo.resolve() != repo or source.resolve() != source or repo == source:
+        raise ValueError('source caches must be distinct canonical directories')
+    if not source.exists():
+        return {'seeded': []}
+    if git(source, 'rev-parse', '--is-bare-repository') != 'true':
+        raise ValueError('legacy source cache must be bare')
+    tips = inventory(source)['cache_shas']
+    repo.parent.mkdir(parents=True, exist_ok=True)
+    with (repo.parent / (repo.name + '.lock')).open('a') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        if not repo.exists():
+            subprocess.run(['git', 'init', '--bare', str(repo)], check=True, capture_output=True)
+        if git(repo, 'rev-parse', '--is-bare-repository') != 'true':
+            raise ValueError('project source cache must be bare')
+        missing = [tip for tip in tips if not complete(repo, tip)]
+        if missing:
+            git(repo, 'config', 'gc.auto', '0')
+            git(repo, 'config', 'fetch.fsckObjects', 'true')
+            git(repo, '-c', 'protocol.file.allow=always', 'fetch', '--no-tags', str(source),
+                *(f'{tip}:refs/cache/{tip}' for tip in missing))
+            if any(not complete(repo, tip) for tip in missing):
+                raise ValueError('legacy source cache copy is incomplete')
+        if (repo / 'objects/info/alternates').exists():
+            raise ValueError('project cache must not depend on legacy object storage')
+    return {'seeded': missing}
+
+
 def main():
     p = argparse.ArgumentParser()
     sub = p.add_subparsers(dest="op", required=True)
@@ -175,6 +209,7 @@ def main():
     a.add_argument("repo"); a.add_argument("commit"); a.add_argument("output"); a.add_argument("--base")
     a = sub.add_parser("assemble"); a.add_argument("directory")
     a = sub.add_parser("receive"); a.add_argument("repo"); a.add_argument("directory")
+    a = sub.add_parser("seed"); a.add_argument("repo"); a.add_argument("source")
     a = sub.add_parser("inventory"); a.add_argument("repo"); a.add_argument("--commit")
     args = p.parse_args()
     if args.op == "pack":
@@ -183,6 +218,8 @@ def main():
         print(assemble(args.directory)[1])
     elif args.op == "receive":
         print(receive(args.repo, args.directory))
+    elif args.op == "seed":
+        print(json.dumps(seed(args.repo, args.source)))
     else:
         print(json.dumps(inventory(args.repo, args.commit)))
 

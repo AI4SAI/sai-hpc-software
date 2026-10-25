@@ -16,6 +16,7 @@ import shutil
 import stat
 import statistics
 import subprocess
+import sys
 import time
 
 from export_native import (canonical, inventory, read_installed_manifests, write_manifests)
@@ -222,6 +223,15 @@ def prepare(source, destination):
         if hashlib.sha256(data).hexdigest() != row['sha256']:
             raise ValueError('changed GPUMD parity fixture: ' + name)
         (destination / name).write_bytes(data)
+    # New NEP training/prediction intentionally rejects the legacy model
+    # syntax still accepted by MD. Convert this same fixed potential with
+    # the pinned upstream converter inside the build container. Both forms
+    # must reproduce the identical recorded energy/force/virial arrays.
+    if (source / "examples/nep_train/nep.txt").read_text().split()[0] == 'nep':
+        modern = destination / 'prediction-modern'
+        shutil.copytree(prediction, modern, ignore=shutil.ignore_patterns('nep.txt'))
+        subprocess.run([sys.executable, str(source / 'potentials/nep/nep_model_converter.py'),
+                        str(prediction / 'nep.txt'), str(modern / 'nep.txt')], check=True)
     training = destination / "training"
     training.mkdir()
     for name in ("nep.txt", "nep.restart"):
@@ -800,6 +810,8 @@ def run(prefix, task, repeat_source=None):
         nonlocal sequence
         sequence += 1
         dest = task / f"{kind}-{mode}{suffix}"
+        if kind == "prediction" and mode == "candidate" and (inputs / "prediction-modern").is_dir():
+            case = inputs / "prediction-modern"
         shutil.copytree(case, dest)
         # A frozen model may come from a previous calculation. Its numerical
         # outputs must never survive as evidence for a new invocation.

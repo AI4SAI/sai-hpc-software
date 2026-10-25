@@ -77,7 +77,7 @@ class EnvironmentCredentialTests(unittest.TestCase):
 class SelectedBuildOutcomeTests(unittest.TestCase):
     def selected(self, name, builds='[{}]'):
         resolve, build = ('resolve', 'candidate-build') if name == 'deepmd-lammps' else ('resolve-source', 'build')
-        return {'validate': {'result': 'success'},
+        return {'validate': {'result': 'success'}, 'beta': {'result': 'success'},
                 resolve: {'result': 'success', 'outputs': {'builds': builds}},
                 build: {'result': 'success' if builds != '[]' else 'skipped'}}, resolve, build
 
@@ -93,6 +93,14 @@ class SelectedBuildOutcomeTests(unittest.TestCase):
             results[resolve]['result'] = 'failure'
             with self.assertRaises(SystemExit):
                 gate(name, results)
+
+    def test_beta_failure_prevents_daily_success(self):
+        for name in ('build', 'gpumd'):
+            results, _, _ = self.selected(name)
+            for outcome in ('failure', 'cancelled', 'skipped'):
+                results['beta']['result'] = outcome
+                with self.subTest(workflow=name, outcome=outcome), self.assertRaises(SystemExit):
+                    gate(name, results)
 
     def test_missing_upstream_release_is_a_successful_skip_but_validation_is_required(self):
         for name in ('build', 'gpumd', 'deepmd-lammps'):
@@ -202,7 +210,7 @@ class DeliveryPhaseOutcomeTests(unittest.TestCase):
 
 class Cp2kReferenceOrderingTests(unittest.TestCase):
     def results(self, gpu='[]', cpu='[]'):
-        return {'validate': {'result': 'success'},
+        return {'validate': {'result': 'success'}, 'beta': {'result': 'success'},
                 'resolve-source': {'result': 'success', 'outputs': {'gpu_builds': gpu, 'cpu_builds': cpu}},
                 'build': {'result': 'success' if gpu != '[]' else 'skipped'},
                 'build-cpu': {'result': 'success' if cpu != '[]' else 'skipped'}}

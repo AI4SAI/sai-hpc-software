@@ -335,6 +335,22 @@ class CacheTests(unittest.TestCase):
         self.assertIn(second, cache.inventory(store)["cache_shas"])
         self.assertFalse((store / "code").exists())
 
+    def test_new_project_cache_reuses_legacy_history_without_alternates(self):
+        legacy, project = self.root / 'legacy.git', self.root / 'project.git'
+        cache.pack(self.repo, self.first, self.root / 'legacy-upload')
+        cache.receive(legacy, self.root / 'legacy-upload')
+        refs = cache.git(legacy, 'show-ref')
+        self.assertEqual(cache.seed(project, legacy), {'seeded': [self.first]})
+        self.assertEqual(cache.seed(project, legacy), {'seeded': []})
+        self.assertEqual(cache.git(legacy, 'show-ref'), refs)
+        legacy.rename(self.root / 'legacy-unavailable.git')
+        self.assertFalse((project / 'objects/info/alternates').exists())
+        self.assertTrue(cache.complete(project, self.first))
+        second = self.commit('new daily source')
+        cache.pack(self.repo, second, self.root / 'daily-delta', self.first)
+        self.assertEqual(cache.receive(project, self.root / 'daily-delta'), second)
+        self.assertEqual(cache.git(project, 'show', second + ':code'), 'new daily source')
+
     def test_requested_release_remains_visible_after_newer_branch_tips(self):
         cache.git(self.repo, "update-ref", "refs/cache/" + self.first, self.first)
         for index in range(13):

@@ -266,6 +266,8 @@ def main():
             for name, identity in (('lammps', delivery['identity']), ('deepmd-kit', delivery['deepmd_dependency']['identity'])):
                 sha = identity['source_sha']
                 cache = root + '/cache/repositories/' + name
+                legacy = '/home/stardust/sai-hpc-software/experimental/deepmd-lammps/cache/repositories/' + name
+                python('source_cache.py', 'seed', cache, legacy, capture_output=True)
                 inventory = json.loads(python('source_cache.py', 'inventory', cache, '--commit', sha, capture_output=True).stdout)
                 if sha in inventory['cache_shas']:
                     print('SOURCE_CACHE_HIT', name, sha, flush=True)
