@@ -1,0 +1,67 @@
+{
+  "model": {
+    "type_map": [
+      "O",
+      "H"
+    ],
+    "descriptor": {
+      "type": "se_e2_a",
+      "sel": [
+        4,
+        8
+      ],
+      "rcut_smth": 3.5,
+      "rcut": 4.0,
+      "neuron": [
+        8,
+        8
+      ],
+      "resnet_dt": false,
+      "axis_neuron": 4,
+      "type_one_side": true,
+      "seed": 1
+    },
+    "fitting_net": {
+      "neuron": [
+        8,
+        8
+      ],
+      "resnet_dt": true,
+      "seed": 1
+    },
+    "data_stat_nbatch": 1
+  },
+  "learning_rate": {
+    "type": "exp",
+    "decay_steps": 4,
+    "start_lr": 0.001,
+    "stop_lr": 0.0001
+  },
+  "loss": {
+    "type": "ener",
+    "start_pref_e": 1,
+    "limit_pref_e": 1,
+    "start_pref_f": 1,
+    "limit_pref_f": 1
+  },
+  "training": {
+    "training_data": {
+      "systems": [
+        "./data"
+      ],
+      "batch_size": 1
+    },
+    "validation_data": {
+      "systems": [
+        "./data"
+      ],
+      "batch_size": 1,
+      "numb_btch": 1
+    },
+    "numb_steps": 12,
+    "seed": 10,
+    "disp_file": "restart-lcurve.out",
+    "disp_freq": 1,
+    "save_freq": 4
+  }
+}

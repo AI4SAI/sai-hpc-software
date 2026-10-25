@@ -1,0 +1,347 @@
+[2026-10-25 04:41:08,733] DEEPMD INFO    DeePMD version: 0.1.dev1+g558f56962
+[2026-10-25 04:41:08,734] DEEPMD INFO    Configuration path: input.json
+[2026-10-25 04:41:09,530] DEEPMD INFO     _____               _____   __  __  _____           _     _  _   
+[2026-10-25 04:41:09,530] DEEPMD INFO    |  __ \             |  __ \ |  \/  ||  __ \         | |   (_)| |  
+[2026-10-25 04:41:09,530] DEEPMD INFO    | |  | |  ___   ___ | |__) || \  / || |  | | ______ | | __ _ | |_ 
+[2026-10-25 04:41:09,530] DEEPMD INFO    | |  | | / _ \ / _ \|  ___/ | |\/| || |  | ||______|| |/ /| || __|
+[2026-10-25 04:41:09,530] DEEPMD INFO    | |__| ||  __/|  __/| |     | |  | || |__| |        |   < | || |_ 
+[2026-10-25 04:41:09,530] DEEPMD INFO    |_____/  \___| \___||_|     |_|  |_||_____/         |_|\_\|_| \__|
+[2026-10-25 04:41:09,530] DEEPMD INFO    Please read and cite:
+[2026-10-25 04:41:09,530] DEEPMD INFO    Wang, Zhang, Han and E, Comput.Phys.Comm. 228, 178-184 (2018)
+[2026-10-25 04:41:09,530] DEEPMD INFO    Zeng et al, J. Chem. Phys., 159, 054801 (2023)
+[2026-10-25 04:41:09,530] DEEPMD INFO    Zeng et al, J. Chem. Theory Comput., 21, 4375-4385 (2025)
+[2026-10-25 04:41:09,530] DEEPMD INFO    See https://deepmd.rtfd.io/credits/ for details.
+[2026-10-25 04:41:09,530] DEEPMD INFO    ------------------------------------------------------------------------------------------------------------------------------------------------------------
+[2026-10-25 04:41:09,530] DEEPMD INFO    Installed to:          /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd
+[2026-10-25 04:41:09,530] DEEPMD INFO    Source:                
+[2026-10-25 04:41:09,530] DEEPMD INFO    Source Branch:         HEAD
+[2026-10-25 04:41:09,530] DEEPMD INFO    Source Commit:         558f569
+[2026-10-25 04:41:09,530] DEEPMD INFO    Source Commit at:      2026-10-23 02:31:46 +0000
+[2026-10-25 04:41:09,530] DEEPMD INFO    Float Precision:       Double
+[2026-10-25 04:41:09,530] DEEPMD INFO    Build Variant:         CUDA
+[2026-10-25 04:41:09,530] DEEPMD INFO    Backend:               PyTorch
+[2026-10-25 04:41:09,530] DEEPMD INFO    PT Ver:                v2.13.0+cu126-gcf30153c4c1
+[2026-10-25 04:41:09,530] DEEPMD INFO    Custom OP Enabled:     True
+[2026-10-25 04:41:09,530] DEEPMD INFO    Built with PT Ver:     2.13.0
+[2026-10-25 04:41:09,530] DEEPMD INFO    Built with PT Inc:     /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/include
+[2026-10-25 04:41:09,530] DEEPMD INFO                           /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/include/torch/csrc/api/include
+[2026-10-25 04:41:09,530] DEEPMD INFO    Built with PT Lib:     /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib
+[2026-10-25 04:41:09,530] DEEPMD INFO    Running on:            8v100v0n02.mr-sai.ai
+[2026-10-25 04:41:09,530] DEEPMD INFO    Computing Device:      CUDA:0
+[2026-10-25 04:41:09,530] DEEPMD INFO    Device Name:           Tesla V100-SXM2-32GB
+[2026-10-25 04:41:09,530] DEEPMD INFO    CUDA_VISIBLE_DEVICES:  0,1
+[2026-10-25 04:41:09,530] DEEPMD INFO    Visible GPU Count:     2
+[2026-10-25 04:41:09,531] DEEPMD INFO    Distributed Processes: 2 total, 2 on this node
+[2026-10-25 04:41:09,531] DEEPMD INFO    Num Intra Threads:     1
+[2026-10-25 04:41:09,531] DEEPMD INFO    Num Inter Threads:     1
+[2026-10-25 04:41:09,531] DEEPMD INFO    ------------------------------------------------------------------------------------------------------------------------------------------------------------
+[2026-10-25 04:41:09,590] DEEPMD INFO    Calculate neighbor statistics... (add --skip-neighbor-stat to skip this step)
+[2026-10-25 04:41:09,595] DEEPMD INFO    Adjust batch size from 1024 to 6
+[2026-10-25 04:41:10,012] DEEPMD INFO    Adjust batch size from 6 to 1024
+[2026-10-25 04:41:10,020] DEEPMD INFO    Neighbor statistics: training data with minimal neighbor distance: 0.941647
+[2026-10-25 04:41:10,020] DEEPMD INFO    Neighbor statistics: training data with maximum neighbor size: [5] (cutoff radius: 6.000000)
+[2026-10-25 04:41:10,022] DEEPMD INFO    Adjust batch size from 1024 to 6
+[2026-10-25 04:41:10,025] DEEPMD INFO    Adjust batch size from 6 to 1024
+[2026-10-25 04:41:10,027] DEEPMD INFO    Neighbor statistics: training data with minimal neighbor distance: 0.941647
+[2026-10-25 04:41:10,027] DEEPMD INFO    Neighbor statistics: training data with maximum neighbor size: [4] (cutoff radius: 4.000000)
+[2026-10-25 04:41:10,028] DEEPMD INFO    Adjust batch size from 1024 to 6
+[2026-10-25 04:41:10,031] DEEPMD INFO    Adjust batch size from 6 to 1024
+[2026-10-25 04:41:10,033] DEEPMD INFO    Neighbor statistics: training data with minimal neighbor distance: 0.941647
+[2026-10-25 04:41:10,033] DEEPMD INFO    Neighbor statistics: training data with maximum neighbor size: [4] (cutoff radius: 4.000000)
+[2026-10-25 04:41:10,107] DEEPMD INFO    Constructing DataLoaders from 1 systems
+[2026-10-25 04:41:10,114] DEEPMD INFO    Constructing DataLoaders from 1 systems
+[2026-10-25 04:41:10,134] DEEPMD INFO    Packing data for statistics from 1 systems
+[2026-10-25 04:41:10,564] DEEPMD INFO    RMSE of energy per atom after linear regression is: 1.8947806286936004e-14 in the unit of energy.
+[2026-10-25 04:41:10,802] DEEPMD INFO    ---Summary of DataSystem: Training     -----------------------------------------------
+[2026-10-25 04:41:10,802] DEEPMD INFO    Found 1 System(s):
+[2026-10-25 04:41:10,802] DEEPMD INFO                                        system  natoms  bch_sz  n_bch   prob       pbc
+[2026-10-25 04:41:10,802] DEEPMD INFO                                          data       6       1       8  1.000e+00    T
+[2026-10-25 04:41:10,802] DEEPMD INFO    --------------------------------------------------------------------------------------
+[2026-10-25 04:41:10,802] DEEPMD INFO    ---Summary of DataSystem: Validation   -----------------------------------------------
+[2026-10-25 04:41:10,802] DEEPMD INFO    Found 1 System(s):
+[2026-10-25 04:41:10,802] DEEPMD INFO                                        system  natoms  bch_sz  n_bch   prob       pbc
+[2026-10-25 04:41:10,802] DEEPMD INFO                                          data       6       1       8  1.000e+00    T
+[2026-10-25 04:41:10,802] DEEPMD INFO    --------------------------------------------------------------------------------------
+[2026-10-25 04:41:10,823] DEEPMD INFO    Model Params:  0.474 M   (Trainable: 0.474 M)
+[2026-10-25 04:41:10,823] DEEPMD INFO    Start to train 8 steps.
+[rank1]: Traceback (most recent call last):
+[rank1]:   File "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-ldconfig-20261025/8V100V0/control/training_audit.py", line 198, in <module>
+[rank1]:     main()
+[rank1]:     ~~~~^^
+[rank1]:   File "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-ldconfig-20261025/8V100V0/control/training_audit.py", line 167, in main
+[rank1]:     worker()
+[rank1]:     ~~~~~~^^
+[rank1]:   File "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-ldconfig-20261025/8V100V0/control/training_audit.py", line 72, in worker
+[rank1]:     runpy.run_module('deepmd', run_name='__main__')
+[rank1]:     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "<frozen runpy>", line 234, in run_module
+[rank1]:   File "<frozen runpy>", line 88, in _run_code
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/__main__.py", line 9, in <module>
+[rank1]:     main()
+[rank1]:     ~~~~^^
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/main.py", line 1158, in main
+[rank1]:     deepmd_main(args)
+[rank1]:     ~~~~~~~~~~~^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 367, in wrapper
+[rank1]:     return f(*args, **kwargs)
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 693, in main
+[rank1]:     train(
+[rank1]:     ~~~~~^
+[rank1]:         input_file=FLAGS.INPUT,
+[rank1]:         ^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:     ...<8 lines>...
+[rank1]:         output=FLAGS.output,
+[rank1]:         ^^^^^^^^^^^^^^^^^^^^
+[rank1]:     )
+[rank1]:     ^
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 478, in train
+[rank1]:     trainer.run()
+[rank1]:     ~~~~~~~~~~~^^
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1410, in run
+[rank1]:     self._run()
+[rank1]:     ~~~~~~~~~^^
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1836, in _run
+[rank1]:     step(step_id)
+[rank1]:     ~~~~^^^^^^^^^
+[rank1]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1483, in step
+[rank1]:     model_pred, loss, more_loss = self.wrapper(
+[rank1]:                                   ~~~~~~~~~~~~^
+[rank1]:         **input_dict, cur_lr=pref_lr, label=label_dict, task_key=task_key
+[rank1]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank1]:     )
+[rank1]:     ^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank1]:     return self._call_impl(*args, **kwargs)
+[rank1]:            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1884, in _call_impl
+[rank1]:     return inner()
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1832, in inner
+[rank1]:     result = forward_call(*args, **kwargs)
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/parallel/distributed.py", line 1886, in forward
+[rank1]:     inputs, kwargs = self._pre_forward(*inputs, **kwargs)
+[rank1]:                      ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+[rank1]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/parallel/distributed.py", line 1775, in _pre_forward
+[rank1]:     if torch.is_grad_enabled() and self.reducer._rebuild_buckets():
+[rank1]:                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+[rank1]: RuntimeError: Expected to have finished reduction in the prior iteration before starting a new one. This error indicates that your module has parameters that were not used in producing loss. You can enable unused parameter detection by passing the keyword argument `find_unused_parameters=True` to `torch.nn.parallel.DistributedDataParallel`, and by 
+[rank1]: making sure all `forward` function outputs participate in calculating loss. 
+[rank1]: If you already have done the above, then the distributed data parallel module wasn't able to locate the output tensors in the return value of your module's `forward` function. Please include the loss function and the structure of the return value of `forward` of your module when reporting this issue (e.g. list, dict, iterable).
+[rank1]: Parameters which did not receive grad for rank 1: model.Default.atomic_model.descriptor.repinit_three_body.compress_data.0, model.Default.atomic_model.descriptor.repinit_three_body.compress_info.0, model.Default.atomic_model.descriptor.repinit.compress_data.0, model.Default.atomic_model.descriptor.repinit.compress_info.0
+[rank1]: Parameter indices which did not receive grad for rank 1: 6 7 14 15
+[2026-10-25 04:41:13,618] DEEPMD INFO    Batch       1: trn: rmse = 4.00e-01, rmse_e = 1.63e-01, rmse_f = 3.07e-02, lr = 1.00e-03
+[2026-10-25 04:41:13,619] DEEPMD INFO    Batch       1: val: rmse = 2.13e-01, rmse_e = 5.38e-02, rmse_f = 1.68e-01
+[2026-10-25 04:41:13,620] DEEPMD INFO    Batch       1: total wall time = 2.80 s
+[rank0]: Traceback (most recent call last):
+[rank0]:   File "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-ldconfig-20261025/8V100V0/control/training_audit.py", line 198, in <module>
+[rank0]:     main()
+[rank0]:     ~~~~^^
+[rank0]:   File "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-ldconfig-20261025/8V100V0/control/training_audit.py", line 167, in main
+[rank0]:     worker()
+[rank0]:     ~~~~~~^^
+[rank0]:   File "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-ldconfig-20261025/8V100V0/control/training_audit.py", line 72, in worker
+[rank0]:     runpy.run_module('deepmd', run_name='__main__')
+[rank0]:     ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "<frozen runpy>", line 234, in run_module
+[rank0]:   File "<frozen runpy>", line 88, in _run_code
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/__main__.py", line 9, in <module>
+[rank0]:     main()
+[rank0]:     ~~~~^^
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/main.py", line 1158, in main
+[rank0]:     deepmd_main(args)
+[rank0]:     ~~~~~~~~~~~^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 367, in wrapper
+[rank0]:     return f(*args, **kwargs)
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 693, in main
+[rank0]:     train(
+[rank0]:     ~~~~~^
+[rank0]:         input_file=FLAGS.INPUT,
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:     ...<8 lines>...
+[rank0]:         output=FLAGS.output,
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^
+[rank0]:     )
+[rank0]:     ^
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 478, in train
+[rank0]:     trainer.run()
+[rank0]:     ~~~~~~~~~~~^^
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1410, in run
+[rank0]:     self._run()
+[rank0]:     ~~~~~~~~~^^
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1836, in _run
+[rank0]:     step(step_id)
+[rank0]:     ~~~~^^^^^^^^^
+[rank0]:   File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1483, in step
+[rank0]:     model_pred, loss, more_loss = self.wrapper(
+[rank0]:                                   ~~~~~~~~~~~~^
+[rank0]:         **input_dict, cur_lr=pref_lr, label=label_dict, task_key=task_key
+[rank0]:         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+[rank0]:     )
+[rank0]:     ^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+[rank0]:     return self._call_impl(*args, **kwargs)
+[rank0]:            ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1884, in _call_impl
+[rank0]:     return inner()
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1832, in inner
+[rank0]:     result = forward_call(*args, **kwargs)
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/parallel/distributed.py", line 1886, in forward
+[rank0]:     inputs, kwargs = self._pre_forward(*inputs, **kwargs)
+[rank0]:                      ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+[rank0]:   File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/parallel/distributed.py", line 1775, in _pre_forward
+[rank0]:     if torch.is_grad_enabled() and self.reducer._rebuild_buckets():
+[rank0]:                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+[rank0]: RuntimeError: Expected to have finished reduction in the prior iteration before starting a new one. This error indicates that your module has parameters that were not used in producing loss. You can enable unused parameter detection by passing the keyword argument `find_unused_parameters=True` to `torch.nn.parallel.DistributedDataParallel`, and by 
+[rank0]: making sure all `forward` function outputs participate in calculating loss. 
+[rank0]: If you already have done the above, then the distributed data parallel module wasn't able to locate the output tensors in the return value of your module's `forward` function. Please include the loss function and the structure of the return value of `forward` of your module when reporting this issue (e.g. list, dict, iterable).
+[rank0]: Parameters which did not receive grad for rank 0: model.Default.atomic_model.descriptor.repinit_three_body.compress_data.0, model.Default.atomic_model.descriptor.repinit_three_body.compress_info.0, model.Default.atomic_model.descriptor.repinit.compress_data.0, model.Default.atomic_model.descriptor.repinit.compress_info.0
+[rank0]: Parameter indices which did not receive grad for rank 0: 6 7 14 15
+[rank0]:[W1025 04:41:14.103168297 ProcessGroupNCCL.cpp:1624] Warning: WARNING: destroy_process_group() was not called before program exit, which can leak resources. For more info, please see https://pytorch.org/docs/stable/distributed.html#shutdown (function operator())
+W1025 04:41:15.183000 422438 site-packages/torch/distributed/elastic/multiprocessing/api.py:1028] Sending process 422454 closing signal SIGTERM
+E1025 04:41:15.651000 422438 site-packages/torch/distributed/elastic/multiprocessing/api.py:1002] failed (exitcode: 1) local_rank: 1 (pid: 422455) of binary: /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/bin/python
+E1025 04:41:15.677000 422438 site-packages/torch/distributed/elastic/multiprocessing/errors/error_handler.py:145] no error file defined for parent, to copy child error file (/dev/shm/sai-1478400690-1930070-0/torchelastic_azaqktrc/efdd7196-4d53-407e-a99b-07f105b7e179_5vvxa7up/attempt_0/1/error.json)
+Traceback (most recent call last):
+  File "<frozen runpy>", line 203, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/run.py", line 1032, in <module>
+    main()
+    ~~~~^^
+  File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 367, in wrapper
+    return f(*args, **kwargs)
+  File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/run.py", line 1028, in main
+    run(args)
+    ~~~^^^^^^
+  File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/run.py", line 1019, in run
+    elastic_launch(
+    ~~~~~~~~~~~~~~~
+        config=config,
+        ~~~~~~~~~~~~~~
+        entrypoint=cmd,
+        ~~~~~~~~~~~~~~~
+    )(*cmd_args)
+    ~^^^^^^^^^^^
+  File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/launcher/api.py", line 194, in __call__
+    return launch_agent(
+        self._config,
+    ...<2 lines>...
+        health_check_server=self._health_check_server,
+    )
+  File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/launcher/api.py", line 383, in launch_agent
+    raise ChildFailedError(
+    ...<2 lines>...
+    )
+torch.distributed.elastic.multiprocessing.errors.ChildFailedError: 
+============================================================
+/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-ldconfig-20261025/8V100V0/control/training_audit.py FAILED
+------------------------------------------------------------
+Failures:
+[1]:
+  time      : 2026-10-25_04:41:13
+  host      : 8v100v0n02
+  rank      : 0 (local_rank: 0)
+  exitcode  : -15 (pid: 422454)  (SIGTERM)
+  error_file: /dev/shm/sai-1478400690-1930070-0/torchelastic_azaqktrc/efdd7196-4d53-407e-a99b-07f105b7e179_5vvxa7up/attempt_0/0/error.json
+  traceback : Traceback (most recent call last):
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 367, in wrapper
+      return f(*args, **kwargs)
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 693, in main
+      train(
+      ~~~~~^
+          input_file=FLAGS.INPUT,
+          ^^^^^^^^^^^^^^^^^^^^^^^
+      ...<8 lines>...
+          output=FLAGS.output,
+          ^^^^^^^^^^^^^^^^^^^^
+      )
+      ^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 478, in train
+      trainer.run()
+      ~~~~~~~~~~~^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1410, in run
+      self._run()
+      ~~~~~~~~~^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1836, in _run
+      step(step_id)
+      ~~~~^^^^^^^^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1483, in step
+      model_pred, loss, more_loss = self.wrapper(
+                                    ~~~~~~~~~~~~^
+          **input_dict, cur_lr=pref_lr, label=label_dict, task_key=task_key
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      )
+      ^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+      return self._call_impl(*args, **kwargs)
+             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1884, in _call_impl
+      return inner()
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1832, in inner
+      result = forward_call(*args, **kwargs)
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/parallel/distributed.py", line 1886, in forward
+      inputs, kwargs = self._pre_forward(*inputs, **kwargs)
+                       ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/parallel/distributed.py", line 1775, in _pre_forward
+      if torch.is_grad_enabled() and self.reducer._rebuild_buckets():
+                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  RuntimeError: Expected to have finished reduction in the prior iteration before starting a new one. This error indicates that your module has parameters that were not used in producing loss. You can enable unused parameter detection by passing the keyword argument `find_unused_parameters=True` to `torch.nn.parallel.DistributedDataParallel`, and by 
+  making sure all `forward` function outputs participate in calculating loss. 
+  If you already have done the above, then the distributed data parallel module wasn't able to locate the output tensors in the return value of your module's `forward` function. Please include the loss function and the structure of the return value of `forward` of your module when reporting this issue (e.g. list, dict, iterable).
+  Parameters which did not receive grad for rank 0: model.Default.atomic_model.descriptor.repinit_three_body.compress_data.0, model.Default.atomic_model.descriptor.repinit_three_body.compress_info.0, model.Default.atomic_model.descriptor.repinit.compress_data.0, model.Default.atomic_model.descriptor.repinit.compress_info.0
+  Parameter indices which did not receive grad for rank 0: 6 7 14 15
+  
+------------------------------------------------------------
+Root Cause (first observed failure):
+[0]:
+  time      : 2026-10-25_04:41:13
+  host      : 8v100v0n02
+  rank      : 1 (local_rank: 1)
+  exitcode  : 1 (pid: 422455) 
+  error_file: /dev/shm/sai-1478400690-1930070-0/torchelastic_azaqktrc/efdd7196-4d53-407e-a99b-07f105b7e179_5vvxa7up/attempt_0/1/error.json
+  traceback : Traceback (most recent call last):
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/distributed/elastic/multiprocessing/errors/__init__.py", line 367, in wrapper
+      return f(*args, **kwargs)
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 693, in main
+      train(
+      ~~~~~^
+          input_file=FLAGS.INPUT,
+          ^^^^^^^^^^^^^^^^^^^^^^^
+      ...<8 lines>...
+          output=FLAGS.output,
+          ^^^^^^^^^^^^^^^^^^^^
+      )
+      ^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/pt/entrypoints/main.py", line 478, in train
+      trainer.run()
+      ~~~~~~~~~~~^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1410, in run
+      self._run()
+      ~~~~~~~~~^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1836, in _run
+      step(step_id)
+      ~~~~^^^^^^^^^
+    File "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/lib/python3.13/site-packages/deepmd/pt/train/training.py", line 1483, in step
+      model_pred, loss, more_loss = self.wrapper(
+                                    ~~~~~~~~~~~~^
+          **input_dict, cur_lr=pref_lr, label=label_dict, task_key=task_key
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+      )
+      ^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1778, in _wrapped_call_impl
+      return self._call_impl(*args, **kwargs)
+             ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1884, in _call_impl
+      return inner()
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/modules/module.py", line 1832, in inner
+      result = forward_call(*args, **kwargs)
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/parallel/distributed.py", line 1886, in forward
+      inputs, kwargs = self._pre_forward(*inputs, **kwargs)
+                       ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^
+    File "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/nn/parallel/distributed.py", line 1775, in _pre_forward
+      if torch.is_grad_enabled() and self.reducer._rebuild_buckets():
+                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^
+  RuntimeError: Expected to have finished reduction in the prior iteration before starting a new one. This error indicates that your module has parameters that were not used in producing loss. You can enable unused parameter detection by passing the keyword argument `find_unused_parameters=True` to `torch.nn.parallel.DistributedDataParallel`, and by 
+  making sure all `forward` function outputs participate in calculating loss. 
+  If you already have done the above, then the distributed data parallel module wasn't able to locate the output tensors in the return value of your module's `forward` function. Please include the loss function and the structure of the return value of `forward` of your module when reporting this issue (e.g. list, dict, iterable).
+  Parameters which did not receive grad for rank 1: model.Default.atomic_model.descriptor.repinit_three_body.compress_data.0, model.Default.atomic_model.descriptor.repinit_three_body.compress_info.0, model.Default.atomic_model.descriptor.repinit.compress_data.0, model.Default.atomic_model.descriptor.repinit.compress_info.0
+  Parameter indices which did not receive grad for rank 1: 6 7 14 15
+  
+============================================================

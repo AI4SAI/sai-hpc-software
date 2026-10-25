@@ -6,6 +6,12 @@ V100 partitions. The published development SIF at `558f56962775` fails the same
 training cases on all three partitions. Inference acceptance does not imply
 multi-GPU training acceptance.
 
+Subsequent [runtime `75ef5179f1e8`](../deepmd-ldconfig-20261025/README.md) fixes
+ldconfig discovery and automatic Triton cache placement. DPA2 single-GPU
+training/restart now passes on all targets; DPA2 DDP reaches the same independent
+unused-parameter defect as `se_e2_a`. The table and raw records below describe
+the earlier runtime `a4c6a24c229f`; multi-GPU SIF training remains unaccepted.
+
 | Installation | 16V100 | 4V100 | 8V100V0 |
 | --- | --- | --- | --- |
 | Workflow native release, `8cfd46e37448`, `se_e2_a` + DPA2 | Pass, 1929966 | Pass, 1929967 | Pass, 1929968 |

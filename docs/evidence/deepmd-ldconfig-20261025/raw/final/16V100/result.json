@@ -1,0 +1,394 @@
+{
+  "ldconfig": {
+    "passed": true,
+    "libcuda_dirs": [
+      "/lib/x86_64-linux-gnu"
+    ]
+  },
+  "se_e2_a_single_gpu": {
+    "training": {
+      "command": [
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python",
+        "-m",
+        "deepmd",
+        "--pt",
+        "train",
+        "input.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 12.354497042484581,
+      "passed": true,
+      "learning_curve": [
+        [
+          1.0,
+          1.08,
+          1.12,
+          0.437,
+          0.45,
+          0.159,
+          0.174,
+          0.001
+        ],
+        [
+          2.0,
+          1.05,
+          1.08,
+          0.424,
+          0.437,
+          0.145,
+          0.159,
+          0.001
+        ],
+        [
+          3.0,
+          1.02,
+          1.05,
+          0.411,
+          0.424,
+          0.131,
+          0.145,
+          0.001
+        ],
+        [
+          4.0,
+          0.983,
+          1.02,
+          0.398,
+          0.411,
+          0.118,
+          0.131,
+          0.001
+        ],
+        [
+          5.0,
+          0.972,
+          0.983,
+          0.394,
+          0.398,
+          0.114,
+          0.118,
+          0.00032
+        ],
+        [
+          6.0,
+          0.962,
+          0.972,
+          0.39,
+          0.394,
+          0.11,
+          0.114,
+          0.00032
+        ],
+        [
+          7.0,
+          0.952,
+          0.962,
+          0.386,
+          0.39,
+          0.107,
+          0.11,
+          0.00032
+        ],
+        [
+          8.0,
+          0.942,
+          0.952,
+          0.382,
+          0.386,
+          0.103,
+          0.107,
+          0.00032
+        ]
+      ],
+      "checkpoint": {
+        "name": "model.ckpt-8.pt",
+        "bytes": 65669,
+        "sha256": "3c6f0d92349cefd08bc21114d628d8d2cefcda275983facb8252a7888096ecb1"
+      }
+    },
+    "restart": {
+      "command": [
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python",
+        "-m",
+        "deepmd",
+        "--pt",
+        "train",
+        "restart.json",
+        "--restart",
+        "model.ckpt-8.pt"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 8.545056026428938,
+      "passed": true,
+      "learning_curve": [
+        [
+          8.0,
+          0.927,
+          0.942,
+          0.376,
+          0.382,
+          0.0973,
+          0.103,
+          0.00046
+        ],
+        [
+          9.0,
+          0.921,
+          0.927,
+          0.374,
+          0.376,
+          0.0949,
+          0.0973,
+          0.00022
+        ],
+        [
+          10.0,
+          0.914,
+          0.921,
+          0.371,
+          0.374,
+          0.0924,
+          0.0949,
+          0.00022
+        ],
+        [
+          11.0,
+          0.907,
+          0.914,
+          0.369,
+          0.371,
+          0.09,
+          0.0924,
+          0.00022
+        ],
+        [
+          12.0,
+          0.9,
+          0.907,
+          0.366,
+          0.369,
+          0.0876,
+          0.09,
+          0.00022
+        ]
+      ],
+      "checkpoint": {
+        "name": "model.ckpt-12.pt",
+        "bytes": 65837,
+        "sha256": "42511b37ae5101982b72b36f9db06125fe1117d43dedb023ef507e9b86ac5a77"
+      }
+    },
+    "passed": true
+  },
+  "dpa2_single_gpu": {
+    "training": {
+      "command": [
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python",
+        "-m",
+        "deepmd",
+        "--pt",
+        "train",
+        "input.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 10.902738348580897,
+      "passed": true,
+      "learning_curve": [
+        [
+          1.0,
+          0.213,
+          0.4,
+          0.0538,
+          0.163,
+          0.168,
+          0.0307,
+          0.001
+        ],
+        [
+          2.0,
+          0.235,
+          0.213,
+          0.00334,
+          0.0538,
+          0.235,
+          0.168,
+          0.001
+        ],
+        [
+          3.0,
+          0.198,
+          0.235,
+          0.00712,
+          0.00334,
+          0.197,
+          0.235,
+          0.001
+        ],
+        [
+          4.0,
+          0.137,
+          0.198,
+          0.00721,
+          0.00712,
+          0.136,
+          0.197,
+          0.001
+        ],
+        [
+          5.0,
+          0.121,
+          0.137,
+          0.0128,
+          0.00721,
+          0.117,
+          0.136,
+          0.00032
+        ],
+        [
+          6.0,
+          0.108,
+          0.121,
+          0.0186,
+          0.0128,
+          0.098,
+          0.117,
+          0.00032
+        ],
+        [
+          7.0,
+          0.0995,
+          0.108,
+          0.0239,
+          0.0186,
+          0.0804,
+          0.098,
+          0.00032
+        ],
+        [
+          8.0,
+          0.0951,
+          0.0995,
+          0.0284,
+          0.0239,
+          0.065,
+          0.0804,
+          0.00032
+        ]
+      ],
+      "checkpoint": {
+        "name": "model.ckpt-8.pt",
+        "bytes": 11495241,
+        "sha256": "bd643a7475d53918b84361775214c471ff5f1a247f1879f9e7a8340e4fe13b1c"
+      }
+    },
+    "restart": {
+      "command": [
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python",
+        "-m",
+        "deepmd",
+        "--pt",
+        "train",
+        "restart.json",
+        "--restart",
+        "model.ckpt-8.pt"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 11.37842524331063,
+      "passed": true,
+      "learning_curve": [
+        [
+          8.0,
+          0.0933,
+          0.0951,
+          0.033,
+          0.0284,
+          0.0463,
+          0.065,
+          0.00046
+        ],
+        [
+          9.0,
+          0.0926,
+          0.0933,
+          0.0341,
+          0.033,
+          0.0399,
+          0.0463,
+          0.00022
+        ],
+        [
+          10.0,
+          0.0909,
+          0.0926,
+          0.0342,
+          0.0341,
+          0.0355,
+          0.0399,
+          0.00022
+        ],
+        [
+          11.0,
+          0.0879,
+          0.0909,
+          0.0333,
+          0.0342,
+          0.0329,
+          0.0355,
+          0.00022
+        ],
+        [
+          12.0,
+          0.0836,
+          0.0879,
+          0.0316,
+          0.0333,
+          0.0318,
+          0.0329,
+          0.00022
+        ]
+      ],
+      "checkpoint": {
+        "name": "model.ckpt-12.pt",
+        "bytes": 11495603,
+        "sha256": "99c4313319e0b7f12f3db74be28876be04a7a69e240fd4b277d487d36bab9eaf"
+      }
+    },
+    "passed": true
+  },
+  "dpa2_ddp": {
+    "command": [
+      "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/bin/python",
+      "-m",
+      "torch.distributed.run",
+      "--standalone",
+      "--nproc_per_node=2",
+      "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-ldconfig-20261025-r2/16V100/control/training_audit.py",
+      "worker",
+      "input.json"
+    ],
+    "returncode": 1,
+    "elapsed_seconds": 14.320452910847962
+  },
+  "inference": {
+    "passed": true,
+    "errors": {
+      "energy": 0.0,
+      "forces": 1.734723475976807e-17,
+      "virial": 5.551115123125783e-17
+    },
+    "package": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100/lib/python3.13/site-packages/deepmd/__init__.py",
+    "device": "cuda:0",
+    "cuda_bytes": 17083392
+  },
+  "jit_cache": {
+    "passed": true,
+    "paths": {
+      "cache": "/dev/shm/sai-1478400690-1930113-0/runtime/rank-serial-3031247/.triton/cache",
+      "dump": "/dev/shm/sai-1478400690-1930113-0/runtime/rank-serial-3031247/.triton/dump",
+      "override": "/dev/shm/sai-1478400690-1930113-0/runtime/rank-serial-3031247/.triton/override"
+    },
+    "files": 17,
+    "bytes": 233821
+  },
+  "passed": true
+}

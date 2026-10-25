@@ -53,7 +53,7 @@ installation are separate acceptance states.
 | --- | --- | --- |
 | ABACUS `develop` | `370ba685e6707b3625c5580ff9d02ef0afb248e8` | All four targets built, scientifically accepted and published with reverified native staging exports; workflow [39971072923](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971072923) succeeded. Physical `/opt` installation pending. |
 | CP2K `master` | `cfe5e5d87aaf302953f14eb43587bef2411a8fb2` | All four targets built, scientifically accepted and project-published, with independent SIF, raw science, native export and module audits. Source-pinned LibXC 7.1.2 and LibXS `930a2c4` are verified. 4V100/8V100V0 completed through documented recoveries; the original [workflow 39983165813](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39983165813) retains its failed status. Physical `/opt` installation pending. |
-| DeePMD-kit `master` | `558f56962775098b8b554e341c3b37d2f86e6aeb` | All three V100 candidates pass the configured TF/PT/JAX inference/API and measured CUDA gates. Single-GPU `se_e2_a` training also passed on 16V100. Multi-GPU training is not accepted: Horovod is absent; PT `se_e2_a` DDP and DPA2/Triton exposed the failures recorded below. Available through the 20261024 SIF modules; legacy catalog publication and native installation remain pending. |
+| DeePMD-kit `master` | `558f56962775098b8b554e341c3b37d2f86e6aeb` | All three V100 candidates pass the configured TF/PT/JAX inference/API and measured CUDA gates. Single-GPU `se_e2_a` and DPA2 training/restart pass on all three targets with runtime `75ef5179f1e8`. Multi-GPU training is not accepted: both descriptors expose unused compression parameters in DDP, and TensorFlow CUDA/Horovod are absent. Available through the SIF beta modules; legacy catalog publication and native installation remain pending. |
 | LAMMPS `develop` | `a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b` | All three V100 candidates build-verified and scientifically accepted: 14 cases, 71 packages, 2,497 styles per target. Available through the 20261024 SIF modules; legacy catalog publication and native installation remain pending. |
 | GPUMD `master` | `2c93346fce4461de1c42c77e7fe74cdb6b0e3df6` | All three V100 targets scientifically accepted, published with native staging exports; physical `/opt` installation pending. |
 
@@ -66,22 +66,26 @@ three branch heads were unchanged. New commits are resolved in subsequent
 daily runs and do not replace the identities of running or accepted artifacts.
 
 DeePMD training needs additional acceptance before recommending multi-GPU
-training. In the unchanged snapshot, `se_e2_a` DDP leaves trainable empty
-compression placeholders unused and fails on step two; DPA2 reaches a Triton
-path that requires `/sbin/ldconfig`, which the slim SIF lacks. NCCL all-reduce
-passing does not satisfy that training gate. Follow-up work must address those
-source/runtime requirements, run multi-step training on every supported target,
-and explicitly decide whether TensorFlow/Horovod is included. Current launch
-guidance covers the tested single-GPU mode only; see the
-[raw failures and follow-up requirements](evidence/sif-beta-site-20261024/README.md).
+training. The original runtime lacked `/sbin/ldconfig`; the
+[published ldconfig/JIT fix](evidence/deepmd-ldconfig-20261025/README.md) now
+exposes the host tool/cache read-only and keeps Triton caches in private memory.
+Generation `20261025-deepmd-ldconfig-r1` selects runtime `75ef5179f1e8` for DeePMD
+only, preserving the application images and the other four beta selections.
+Single-GPU `se_e2_a` and DPA2 training/restart pass on all three V100 targets.
+Both descriptors still leave trainable empty compression placeholders unused
+and fail at step two under DDP. NCCL all-reduce passing does not satisfy that
+training gate. Follow-up work must fix the source defect, run multi-step DDP
+training on every target, and explicitly decide whether TensorFlow CUDA/Horovod
+is included. Current SIF launch guidance covers the tested single-GPU mode.
 
 The [20261025 multi-GPU audit](evidence/deepmd-multigpu-20261025/README.md)
 confirms that the **installed native 3.2.0 release** and the site's existing
 3.2.0 Conda environment both pass two-GPU `se_e2_a` and DPA2 training on all
 three V100 partitions, including checkpoint save and restart from step 8 to 12.
 Both ranks perform CUDA backpropagation with finite gradients and identical
-final parameters. The published development SIF reproduces both failures above
-on all three partitions; it is still not accepted for multi-GPU training.
+final parameters. That audit used the earlier `a4c6a24c229f` SIF runtime. The
+subsequent ldconfig fix removes the Triton discovery failure, while the
+development SIF remains unaccepted for multi-GPU training due to DDP.
 The framework probe also confirms CPU-only TensorFlow 2.21.0 and JAX 0.11.1,
 with no Horovod. TensorFlow multi-GPU needs both a CUDA-enabled framework and
 Horovod; native PyTorch success does not establish those capabilities.
