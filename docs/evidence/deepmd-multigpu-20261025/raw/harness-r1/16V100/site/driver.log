@@ -1,0 +1,15 @@
+Traceback (most recent call last):
+  File "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-multigpu-20261025/control/check.py", line 186, in <module>
+    main()
+    ~~~~^^
+  File "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-multigpu-20261025/control/check.py", line 173, in main
+    report = dict(training=train(directory))
+                           ~~~~~^^^^^^^^^^^
+  File "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-multigpu-20261025/control/check.py", line 143, in train
+    assert all(rank['world_size'] == 2 and rank['gradients_finite'] and rank['forward_calls'] >= len(rows)
+           ~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               and rank['gradient_devices'] == [f"cuda:{rank['local_rank']}"]
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+               and rank['initial_parameters_sha256'] != rank['final_parameters_sha256'] for rank in ranks), ranks
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: [{'rank': 0, 'world_size': 2, 'local_rank': 0, 'pid': 400992, 'backend': 'cuda:nccl,cpu:gloo', 'device_ids': [0], 'cuda_current_device': 0, 'find_unused_parameters': True, 'initial_parameters_sha256': 'af50ae37d0e6bc6c6774523d032a4d14c8e7c7d23e61f7694c271a063494c331', 'forward_calls': 16, 'empty_trainable_parameters': ['model.Default.atomic_model.descriptor.sea.compress_info.0', 'model.Default.atomic_model.descriptor.sea.compress_info.1', 'model.Default.atomic_model.descriptor.sea.compress_data.0', 'model.Default.atomic_model.descriptor.sea.compress_data.1'], 'final_parameters_sha256': 'd409b6503721c876c632a4bc06a9751c33dd8f0394dc38e75461d88cb8ed3175', 'gradient_devices': [], 'gradients_finite': False}, {'rank': 1, 'world_size': 2, 'local_rank': 1, 'pid': 400993, 'backend': 'cuda:nccl,cpu:gloo', 'device_ids': [1], 'cuda_current_device': 1, 'find_unused_parameters': True, 'initial_parameters_sha256': 'af50ae37d0e6bc6c6774523d032a4d14c8e7c7d23e61f7694c271a063494c331', 'forward_calls': 16, 'empty_trainable_parameters': ['model.Default.atomic_model.descriptor.sea.compress_info.0', 'model.Default.atomic_model.descriptor.sea.compress_info.1', 'model.Default.atomic_model.descriptor.sea.compress_data.0', 'model.Default.atomic_model.descriptor.sea.compress_data.1'], 'final_parameters_sha256': 'd409b6503721c876c632a4bc06a9751c33dd8f0394dc38e75461d88cb8ed3175', 'gradient_devices': [], 'gradients_finite': False}]

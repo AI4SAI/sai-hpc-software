@@ -1,0 +1,158 @@
+{
+    "model": {
+        "type_map": [
+            "O",
+            "H"
+        ],
+        "descriptor": {
+            "type": "se_e2_a",
+            "sel": [
+                4,
+                8
+            ],
+            "rcut_smth": 3.5,
+            "rcut": 4.0,
+            "neuron": [
+                8,
+                8
+            ],
+            "resnet_dt": false,
+            "axis_neuron": 4,
+            "type_one_side": true,
+            "seed": 1,
+            "activation_function": "tanh",
+            "precision": "default",
+            "trainable": true,
+            "exclude_types": [],
+            "env_protection": 0.0,
+            "set_davg_zero": false
+        },
+        "fitting_net": {
+            "neuron": [
+                8,
+                8
+            ],
+            "resnet_dt": true,
+            "seed": 1,
+            "type": "ener",
+            "numb_fparam": 0,
+            "numb_aparam": 0,
+            "default_fparam": null,
+            "dim_case_embd": 0,
+            "activation_function": "tanh",
+            "precision": "default",
+            "trainable": true,
+            "rcond": null,
+            "atom_ener": [],
+            "use_aparam_as_mask": false
+        },
+        "data_stat_nbatch": 1,
+        "data_stat_protect": 0.01,
+        "data_bias_nsample": 10,
+        "pair_exclude_types": [],
+        "atom_exclude_types": [],
+        "preset_out_bias": null,
+        "srtab_add_bias": true,
+        "type": "standard",
+        "model_branch_alias": [],
+        "info": {},
+        "bridging_method": "None",
+        "bridging_r_inner": 0.5,
+        "bridging_r_outer": 0.8
+    },
+    "learning_rate": {
+        "type": "exp",
+        "decay_steps": 4,
+        "start_lr": 0.001,
+        "stop_lr": 0.0001,
+        "stop_lr_ratio": null,
+        "warmup_steps": 0,
+        "warmup_ratio": null,
+        "warmup_start_factor": 0.0,
+        "scale_by_worker": "linear",
+        "decay_rate": null,
+        "smooth": false
+    },
+    "loss": {
+        "type": "ener",
+        "start_pref_e": 1,
+        "limit_pref_e": 1,
+        "start_pref_f": 1,
+        "limit_pref_f": 1,
+        "start_pref_v": 0.0,
+        "limit_pref_v": 0.0,
+        "start_pref_h": 0.0,
+        "limit_pref_h": 0.0,
+        "start_pref_ae": 0.0,
+        "limit_pref_ae": 0.0,
+        "start_pref_pf": 0.0,
+        "limit_pref_pf": 0.0,
+        "use_default_pf": false,
+        "enable_atom_ener_coeff": false,
+        "start_pref_gf": 0.0,
+        "limit_pref_gf": 0.0,
+        "numb_generalized_coord": 0,
+        "use_huber": false,
+        "loss_func": "mse",
+        "f_use_norm": false,
+        "huber_delta": 0.01,
+        "intensive_ener_virial": false
+    },
+    "training": {
+        "training_data": {
+            "systems": [
+                "./data"
+            ],
+            "batch_size": 1,
+            "rglob_patterns": null,
+            "auto_prob": "prob_sys_size",
+            "sys_probs": null,
+            "min_pair_dist": 0.0
+        },
+        "validation_data": {
+            "systems": [
+                "./data"
+            ],
+            "batch_size": 1,
+            "numb_btch": 1,
+            "rglob_patterns": null,
+            "auto_prob": "prob_sys_size",
+            "sys_probs": null
+        },
+        "numb_steps": 12,
+        "seed": 10,
+        "disp_file": "restart-lcurve.out",
+        "disp_freq": 1,
+        "save_freq": 4,
+        "stat_file_mode": "update",
+        "save_dir": null,
+        "save_ckpt": "model.ckpt",
+        "max_ckpt_keep": 5,
+        "ckpt_keep_ratio": null,
+        "enable_ema": false,
+        "ema_decay": 0.999,
+        "ema_ckpt_keep": null,
+        "change_bias_after_training": false,
+        "disp_training": true,
+        "time_training": true,
+        "disp_avg": false,
+        "profiling": false,
+        "profiling_file": "timeline.json",
+        "enable_profiler": false,
+        "tensorboard": false,
+        "tensorboard_log_dir": "log",
+        "tensorboard_freq": 1,
+        "acc_freq": 1,
+        "zero_stage": 0,
+        "neighbor_graph_method": "auto",
+        "enable_compile": false,
+        "enable_tf32": false
+    },
+    "optimizer": {
+        "type": "Adam",
+        "adam_beta1": 0.9,
+        "adam_beta2": 0.999,
+        "weight_decay": 0.0
+    },
+    "validating": {}
+}

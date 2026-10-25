@@ -75,6 +75,17 @@ and explicitly decide whether TensorFlow/Horovod is included. Current launch
 guidance covers the tested single-GPU mode only; see the
 [raw failures and follow-up requirements](evidence/sif-beta-site-20261024/README.md).
 
+The [20261025 multi-GPU audit](evidence/deepmd-multigpu-20261025/README.md)
+confirms that the **installed native 3.2.0 release** and the site's existing
+3.2.0 Conda environment both pass two-GPU `se_e2_a` and DPA2 training on all
+three V100 partitions, including checkpoint save and restart from step 8 to 12.
+Both ranks perform CUDA backpropagation with finite gradients and identical
+final parameters. The published development SIF reproduces both failures above
+on all three partitions; it is still not accepted for multi-GPU training.
+The framework probe also confirms CPU-only TensorFlow 2.21.0 and JAX 0.11.1,
+with no Horovod. TensorFlow multi-GPU needs both a CUDA-enabled framework and
+Horovod; native PyTorch success does not establish those capabilities.
+
 [ABACUS development evidence](evidence/abacus-development-20261023/README.md)
 records 23 successful build/acceptance jobs and independent checks of all four
 SIFs, raw scientific results, modules and 8,713 native export entries per target.

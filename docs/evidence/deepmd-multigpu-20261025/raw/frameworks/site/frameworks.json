@@ -1,0 +1,31 @@
+{
+  "python": "/opt/apps/conda_env/deepmd-kit-3.2.0/bin/python",
+  "job": "1930009",
+  "partition": "16V100",
+  "cuda_visible_devices": "0,1",
+  "torch": {
+    "version": "2.13.0+cu126",
+    "cuda": "12.6",
+    "devices": [
+      "Tesla V100-SXM2-16GB",
+      "Tesla V100-SXM2-16GB"
+    ]
+  },
+  "tensorflow": {
+    "version": "2.21.0",
+    "build": {
+      "is_cuda_build": false,
+      "is_rocm_build": false,
+      "is_tensorrt_build": false
+    },
+    "built_with_cuda": false,
+    "gpu_devices": []
+  },
+  "jax": {
+    "version": "0.11.1",
+    "devices": [
+      "cpu:0"
+    ]
+  },
+  "horovod": false
+}

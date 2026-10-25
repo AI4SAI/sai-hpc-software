@@ -1,0 +1,42 @@
+{
+  "job": "1929950",
+  "partition": "8V100V0",
+  "installation": "sif",
+  "cases": {
+    "se_e2_a": {
+      "training": {
+        "command": [
+          "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/bin/python",
+          "-m",
+          "torch.distributed.run",
+          "--standalone",
+          "--nproc_per_node=2",
+          "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-multigpu-20261025-r3/8V100V0/sif/control/check.py",
+          "worker",
+          "input.json"
+        ],
+        "returncode": 1,
+        "elapsed_seconds": 12.921927213668823
+      },
+      "passed": false
+    },
+    "dpa2": {
+      "training": {
+        "command": [
+          "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0/bin/python",
+          "-m",
+          "torch.distributed.run",
+          "--standalone",
+          "--nproc_per_node=2",
+          "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-multigpu-20261025-r3/8V100V0/sif/control/check.py",
+          "worker",
+          "input.json"
+        ],
+        "returncode": 1,
+        "elapsed_seconds": 11.993469684384763
+      },
+      "passed": false
+    }
+  },
+  "passed": false
+}

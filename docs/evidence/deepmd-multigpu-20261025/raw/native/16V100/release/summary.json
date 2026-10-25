@@ -1,0 +1,582 @@
+{
+  "job": "1929966",
+  "partition": "16V100",
+  "installation": "release",
+  "cases": {
+    "se_e2_a": {
+      "training": {
+        "command": [
+          "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100/bin/python",
+          "-m",
+          "torch.distributed.run",
+          "--standalone",
+          "--nproc_per_node=2",
+          "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-multigpu-20261025-r4/16V100/release/control/check.py",
+          "worker",
+          "input.json"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 13.875722964294255,
+        "passed": true,
+        "learning_curve": [
+          [
+            1.0,
+            1.08,
+            1.12,
+            0.437,
+            0.45,
+            0.159,
+            0.174,
+            0.001
+          ],
+          [
+            2.0,
+            1.05,
+            1.08,
+            0.424,
+            0.437,
+            0.145,
+            0.159,
+            0.001
+          ],
+          [
+            3.0,
+            1.02,
+            1.05,
+            0.411,
+            0.424,
+            0.131,
+            0.145,
+            0.001
+          ],
+          [
+            4.0,
+            0.983,
+            1.02,
+            0.398,
+            0.411,
+            0.118,
+            0.131,
+            0.001
+          ],
+          [
+            5.0,
+            0.972,
+            0.983,
+            0.394,
+            0.398,
+            0.114,
+            0.118,
+            0.00032
+          ],
+          [
+            6.0,
+            0.962,
+            0.972,
+            0.39,
+            0.394,
+            0.11,
+            0.114,
+            0.00032
+          ],
+          [
+            7.0,
+            0.952,
+            0.962,
+            0.386,
+            0.39,
+            0.107,
+            0.11,
+            0.00032
+          ],
+          [
+            8.0,
+            0.942,
+            0.952,
+            0.382,
+            0.386,
+            0.103,
+            0.107,
+            0.00032
+          ]
+        ],
+        "ranks": [
+          {
+            "rank": 0,
+            "world_size": 2,
+            "local_rank": 0,
+            "pid": 3009510,
+            "backend": "cuda:nccl,cpu:gloo",
+            "device_ids": [
+              0
+            ],
+            "cuda_current_device": 0,
+            "find_unused_parameters": true,
+            "initial_parameters_sha256": "af50ae37d0e6bc6c6774523d032a4d14c8e7c7d23e61f7694c271a063494c331",
+            "forward_calls": 16,
+            "gradient_devices": [
+              "cuda:0"
+            ],
+            "gradients_finite": true,
+            "gradient_calls": 176,
+            "empty_trainable_parameters": [
+              "model.Default.atomic_model.descriptor.sea.compress_info.0",
+              "model.Default.atomic_model.descriptor.sea.compress_info.1",
+              "model.Default.atomic_model.descriptor.sea.compress_data.0",
+              "model.Default.atomic_model.descriptor.sea.compress_data.1"
+            ],
+            "final_parameters_sha256": "d409b6503721c876c632a4bc06a9751c33dd8f0394dc38e75461d88cb8ed3175"
+          },
+          {
+            "rank": 1,
+            "world_size": 2,
+            "local_rank": 1,
+            "pid": 3009511,
+            "backend": "cuda:nccl,cpu:gloo",
+            "device_ids": [
+              1
+            ],
+            "cuda_current_device": 1,
+            "find_unused_parameters": true,
+            "initial_parameters_sha256": "af50ae37d0e6bc6c6774523d032a4d14c8e7c7d23e61f7694c271a063494c331",
+            "forward_calls": 16,
+            "gradient_devices": [
+              "cuda:1"
+            ],
+            "gradients_finite": true,
+            "gradient_calls": 176,
+            "empty_trainable_parameters": [
+              "model.Default.atomic_model.descriptor.sea.compress_info.0",
+              "model.Default.atomic_model.descriptor.sea.compress_info.1",
+              "model.Default.atomic_model.descriptor.sea.compress_data.0",
+              "model.Default.atomic_model.descriptor.sea.compress_data.1"
+            ],
+            "final_parameters_sha256": "d409b6503721c876c632a4bc06a9751c33dd8f0394dc38e75461d88cb8ed3175"
+          }
+        ],
+        "checkpoint": {
+          "name": "model.ckpt-8.pt",
+          "bytes": 65605,
+          "sha256": "7f7cec4c23daae903724c0b6f8d190f3d646b9a79810c80e4c8ff44f7c8778c3"
+        }
+      },
+      "restart": {
+        "command": [
+          "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100/bin/python",
+          "-m",
+          "torch.distributed.run",
+          "--standalone",
+          "--nproc_per_node=2",
+          "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-multigpu-20261025-r4/16V100/release/control/check.py",
+          "worker",
+          "restart.json",
+          "--restart",
+          "model.ckpt-8.pt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 12.523931317962706,
+        "passed": true,
+        "learning_curve": [
+          [
+            8.0,
+            0.927,
+            0.942,
+            0.376,
+            0.382,
+            0.0973,
+            0.103,
+            0.00046
+          ],
+          [
+            9.0,
+            0.921,
+            0.927,
+            0.374,
+            0.376,
+            0.0949,
+            0.0973,
+            0.00022
+          ],
+          [
+            10.0,
+            0.914,
+            0.921,
+            0.371,
+            0.374,
+            0.0924,
+            0.0949,
+            0.00022
+          ],
+          [
+            11.0,
+            0.907,
+            0.914,
+            0.369,
+            0.371,
+            0.09,
+            0.0924,
+            0.00022
+          ],
+          [
+            12.0,
+            0.9,
+            0.907,
+            0.366,
+            0.369,
+            0.0876,
+            0.09,
+            0.00022
+          ]
+        ],
+        "ranks": [
+          {
+            "rank": 0,
+            "world_size": 2,
+            "local_rank": 0,
+            "pid": 3010142,
+            "backend": "cuda:nccl,cpu:gloo",
+            "device_ids": [
+              0
+            ],
+            "cuda_current_device": 0,
+            "find_unused_parameters": true,
+            "initial_parameters_sha256": "d409b6503721c876c632a4bc06a9751c33dd8f0394dc38e75461d88cb8ed3175",
+            "forward_calls": 10,
+            "gradient_devices": [
+              "cuda:0"
+            ],
+            "gradients_finite": true,
+            "gradient_calls": 110,
+            "empty_trainable_parameters": [
+              "model.Default.atomic_model.descriptor.sea.compress_info.0",
+              "model.Default.atomic_model.descriptor.sea.compress_info.1",
+              "model.Default.atomic_model.descriptor.sea.compress_data.0",
+              "model.Default.atomic_model.descriptor.sea.compress_data.1"
+            ],
+            "final_parameters_sha256": "c4f5b92253b5a9a94bb16b36619862142697a7a3608b90dfb4a4b0533bfd7222"
+          },
+          {
+            "rank": 1,
+            "world_size": 2,
+            "local_rank": 1,
+            "pid": 3010143,
+            "backend": "cuda:nccl,cpu:gloo",
+            "device_ids": [
+              1
+            ],
+            "cuda_current_device": 1,
+            "find_unused_parameters": true,
+            "initial_parameters_sha256": "d409b6503721c876c632a4bc06a9751c33dd8f0394dc38e75461d88cb8ed3175",
+            "forward_calls": 10,
+            "gradient_devices": [
+              "cuda:1"
+            ],
+            "gradients_finite": true,
+            "gradient_calls": 110,
+            "empty_trainable_parameters": [
+              "model.Default.atomic_model.descriptor.sea.compress_info.0",
+              "model.Default.atomic_model.descriptor.sea.compress_info.1",
+              "model.Default.atomic_model.descriptor.sea.compress_data.0",
+              "model.Default.atomic_model.descriptor.sea.compress_data.1"
+            ],
+            "final_parameters_sha256": "c4f5b92253b5a9a94bb16b36619862142697a7a3608b90dfb4a4b0533bfd7222"
+          }
+        ],
+        "checkpoint": {
+          "name": "model.ckpt-12.pt",
+          "bytes": 65709,
+          "sha256": "6651c88a086acd969fdc381fdd2c82a2bec709b25389b96d67c56b30b05bea69"
+        }
+      },
+      "passed": true
+    },
+    "dpa2": {
+      "training": {
+        "command": [
+          "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100/bin/python",
+          "-m",
+          "torch.distributed.run",
+          "--standalone",
+          "--nproc_per_node=2",
+          "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-multigpu-20261025-r4/16V100/release/control/check.py",
+          "worker",
+          "input.json"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 13.81864495947957,
+        "passed": true,
+        "learning_curve": [
+          [
+            1.0,
+            0.213,
+            0.4,
+            0.0538,
+            0.163,
+            0.168,
+            0.0307,
+            0.001
+          ],
+          [
+            2.0,
+            0.235,
+            0.213,
+            0.00334,
+            0.0538,
+            0.235,
+            0.168,
+            0.001
+          ],
+          [
+            3.0,
+            0.198,
+            0.235,
+            0.00712,
+            0.00334,
+            0.197,
+            0.235,
+            0.001
+          ],
+          [
+            4.0,
+            0.137,
+            0.198,
+            0.00721,
+            0.00712,
+            0.136,
+            0.197,
+            0.001
+          ],
+          [
+            5.0,
+            0.121,
+            0.137,
+            0.0128,
+            0.00721,
+            0.117,
+            0.136,
+            0.00032
+          ],
+          [
+            6.0,
+            0.108,
+            0.121,
+            0.0186,
+            0.0128,
+            0.098,
+            0.117,
+            0.00032
+          ],
+          [
+            7.0,
+            0.0995,
+            0.108,
+            0.0239,
+            0.0186,
+            0.0804,
+            0.098,
+            0.00032
+          ],
+          [
+            8.0,
+            0.0951,
+            0.0995,
+            0.0284,
+            0.0239,
+            0.065,
+            0.0804,
+            0.00032
+          ]
+        ],
+        "ranks": [
+          {
+            "rank": 0,
+            "world_size": 2,
+            "local_rank": 0,
+            "pid": 3010727,
+            "backend": "cuda:nccl,cpu:gloo",
+            "device_ids": [
+              0
+            ],
+            "cuda_current_device": 0,
+            "find_unused_parameters": true,
+            "initial_parameters_sha256": "50df515990aad8b164fb1363e7c6893767f1fd899346ee79f7d1ff2c9e8b2457",
+            "forward_calls": 16,
+            "gradient_devices": [
+              "cuda:0"
+            ],
+            "gradients_finite": true,
+            "gradient_calls": 424,
+            "empty_trainable_parameters": [
+              "model.Default.atomic_model.descriptor.repinit.compress_info.0",
+              "model.Default.atomic_model.descriptor.repinit.compress_data.0",
+              "model.Default.atomic_model.descriptor.repinit_three_body.compress_info.0",
+              "model.Default.atomic_model.descriptor.repinit_three_body.compress_data.0"
+            ],
+            "final_parameters_sha256": "8ae5b885bec5fe36b0132bbb548462637df14a66fdf92f467b98da447b04edbf"
+          },
+          {
+            "rank": 1,
+            "world_size": 2,
+            "local_rank": 1,
+            "pid": 3010728,
+            "backend": "cuda:nccl,cpu:gloo",
+            "device_ids": [
+              1
+            ],
+            "cuda_current_device": 1,
+            "find_unused_parameters": true,
+            "initial_parameters_sha256": "50df515990aad8b164fb1363e7c6893767f1fd899346ee79f7d1ff2c9e8b2457",
+            "forward_calls": 16,
+            "gradient_devices": [
+              "cuda:1"
+            ],
+            "gradients_finite": true,
+            "gradient_calls": 424,
+            "empty_trainable_parameters": [
+              "model.Default.atomic_model.descriptor.repinit.compress_info.0",
+              "model.Default.atomic_model.descriptor.repinit.compress_data.0",
+              "model.Default.atomic_model.descriptor.repinit_three_body.compress_info.0",
+              "model.Default.atomic_model.descriptor.repinit_three_body.compress_data.0"
+            ],
+            "final_parameters_sha256": "8ae5b885bec5fe36b0132bbb548462637df14a66fdf92f467b98da447b04edbf"
+          }
+        ],
+        "checkpoint": {
+          "name": "model.ckpt-8.pt",
+          "bytes": 11495113,
+          "sha256": "c889190ade7dca995d02f1dd802db6232c7c18e88e90a61bb960ce409a17ef0d"
+        }
+      },
+      "restart": {
+        "command": [
+          "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100/bin/python",
+          "-m",
+          "torch.distributed.run",
+          "--standalone",
+          "--nproc_per_node=2",
+          "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-multigpu-20261025-r4/16V100/release/control/check.py",
+          "worker",
+          "restart.json",
+          "--restart",
+          "model.ckpt-8.pt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 12.93744388781488,
+        "passed": true,
+        "learning_curve": [
+          [
+            8.0,
+            0.0933,
+            0.0951,
+            0.033,
+            0.0284,
+            0.0463,
+            0.065,
+            0.00046
+          ],
+          [
+            9.0,
+            0.0926,
+            0.0933,
+            0.0341,
+            0.033,
+            0.0399,
+            0.0463,
+            0.00022
+          ],
+          [
+            10.0,
+            0.0909,
+            0.0926,
+            0.0342,
+            0.0341,
+            0.0355,
+            0.0399,
+            0.00022
+          ],
+          [
+            11.0,
+            0.0879,
+            0.0909,
+            0.0333,
+            0.0342,
+            0.0329,
+            0.0355,
+            0.00022
+          ],
+          [
+            12.0,
+            0.0836,
+            0.0879,
+            0.0316,
+            0.0333,
+            0.0318,
+            0.0329,
+            0.00022
+          ]
+        ],
+        "ranks": [
+          {
+            "rank": 0,
+            "world_size": 2,
+            "local_rank": 0,
+            "pid": 3011388,
+            "backend": "cuda:nccl,cpu:gloo",
+            "device_ids": [
+              0
+            ],
+            "cuda_current_device": 0,
+            "find_unused_parameters": true,
+            "initial_parameters_sha256": "8ae5b885bec5fe36b0132bbb548462637df14a66fdf92f467b98da447b04edbf",
+            "forward_calls": 10,
+            "gradient_devices": [
+              "cuda:0"
+            ],
+            "gradients_finite": true,
+            "gradient_calls": 265,
+            "empty_trainable_parameters": [
+              "model.Default.atomic_model.descriptor.repinit.compress_info.0",
+              "model.Default.atomic_model.descriptor.repinit.compress_data.0",
+              "model.Default.atomic_model.descriptor.repinit_three_body.compress_info.0",
+              "model.Default.atomic_model.descriptor.repinit_three_body.compress_data.0"
+            ],
+            "final_parameters_sha256": "fd403849e9719883aa604a332d6a4289d4c42a88e772a7b9b86901bf315d262f"
+          },
+          {
+            "rank": 1,
+            "world_size": 2,
+            "local_rank": 1,
+            "pid": 3011389,
+            "backend": "cuda:nccl,cpu:gloo",
+            "device_ids": [
+              1
+            ],
+            "cuda_current_device": 1,
+            "find_unused_parameters": true,
+            "initial_parameters_sha256": "8ae5b885bec5fe36b0132bbb548462637df14a66fdf92f467b98da447b04edbf",
+            "forward_calls": 10,
+            "gradient_devices": [
+              "cuda:1"
+            ],
+            "gradients_finite": true,
+            "gradient_calls": 265,
+            "empty_trainable_parameters": [
+              "model.Default.atomic_model.descriptor.repinit.compress_info.0",
+              "model.Default.atomic_model.descriptor.repinit.compress_data.0",
+              "model.Default.atomic_model.descriptor.repinit_three_body.compress_info.0",
+              "model.Default.atomic_model.descriptor.repinit_three_body.compress_data.0"
+            ],
+            "final_parameters_sha256": "fd403849e9719883aa604a332d6a4289d4c42a88e772a7b9b86901bf315d262f"
+          }
+        ],
+        "checkpoint": {
+          "name": "model.ckpt-12.pt",
+          "bytes": 11495475,
+          "sha256": "92c5e33c3fc24693910f306bf091917123518331880afa6839f076048cf4c25b"
+        }
+      },
+      "passed": true
+    }
+  },
+  "passed": true
+}
