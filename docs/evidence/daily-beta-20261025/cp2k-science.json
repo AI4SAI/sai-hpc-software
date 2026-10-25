@@ -1,0 +1,1586 @@
+{
+  "partitions": {
+    "16V100": {
+      "comparisons": {
+        "ch2o-tblite": {
+          "energy_delta_ha": 8.881784197001252e-16,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-dftd4": {
+          "energy_delta_ha": 6.039613253960852e-13,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-diag": {
+          "energy_delta_ha": 1.4210854715202004e-14,
+          "max_force_delta_ha_bohr": 9.999999999746641e-13
+        },
+        "water-elpa": {
+          "energy_delta_ha": 0.0,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-gpw": {
+          "energy_delta_ha": 6.892264536872972e-13,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water64-elpa": {
+          "energy_delta_ha": 3.865352482534945e-12,
+          "max_force_delta_ha_bohr": 9.999999960041972e-13
+        },
+        "water64-gpw": {
+          "energy_delta_ha": 1.546140993013978e-11,
+          "max_force_delta_ha_bohr": 1.000000082740371e-11
+        }
+      },
+      "solver_comparisons": {
+        "multi": {
+          "water-diag": {
+            "energy_delta_ha": 1.2789769243681803e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water-elpa": {
+            "energy_delta_ha": 1.3500311979441904e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 2.432898327242583e-11,
+            "max_force_delta_ha_bohr": 1.5359999990666173e-09
+          }
+        },
+        "single": {
+          "water-diag": {
+            "energy_delta_ha": 8.313350008393172e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water-elpa": {
+            "energy_delta_ha": 8.242295734817162e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 5.002220859751105e-12,
+            "max_force_delta_ha_bohr": 1.5390000003556725e-09
+          }
+        }
+      },
+      "versions": {
+        "candidate": {
+          "flags": [
+            "cosma",
+            "cusolvermp",
+            "cusolvermp_nccl",
+            "dbcsr_acc",
+            "elpa",
+            "fftw3",
+            "hdf5",
+            "libbqb",
+            "libdftd4",
+            "libint",
+            "libvori",
+            "libwignernj",
+            "libxc",
+            "libxc_gpu",
+            "libxs",
+            "libxsmm",
+            "mctc-lib",
+            "mpi_f08",
+            "offload_cuda",
+            "omp",
+            "openblas",
+            "parallel",
+            "plumed2",
+            "s_dftd3",
+            "scalapack",
+            "spglib",
+            "spla_gemm_offloading",
+            "tblite"
+          ],
+          "revision": "1db19ea511",
+          "version": "2026.2 (Development Version)"
+        }
+      },
+      "timing_scope": "descriptive timings only; no historical ratio or performance gate",
+      "energy_tolerance_ha": 1e-06,
+      "force_tolerance_ha_bohr": 1e-05,
+      "timings": {
+        "ch2o-tblite/multi": {
+          "cp2k_seconds": 1.715,
+          "elapsed_seconds": 4.76
+        },
+        "ch2o-tblite/single": {
+          "cp2k_seconds": 1.458,
+          "elapsed_seconds": 3.8
+        },
+        "water-dftd4/multi": {
+          "cp2k_seconds": 15.559,
+          "elapsed_seconds": 18.65
+        },
+        "water-dftd4/single": {
+          "cp2k_seconds": 17.829,
+          "elapsed_seconds": 20.11
+        },
+        "water-diag/multi": {
+          "cp2k_seconds": 10.221,
+          "elapsed_seconds": 15.7
+        },
+        "water-diag/single": {
+          "cp2k_seconds": 12.176,
+          "elapsed_seconds": 14.54
+        },
+        "water-elpa/multi": {
+          "cp2k_seconds": 10.68,
+          "elapsed_seconds": 13.69
+        },
+        "water-elpa/single": {
+          "cp2k_seconds": 12.411,
+          "elapsed_seconds": 14.71
+        },
+        "water-gpw/multi": {
+          "cp2k_seconds": 15.584,
+          "elapsed_seconds": 18.59
+        },
+        "water-gpw/single": {
+          "cp2k_seconds": 17.734,
+          "elapsed_seconds": 20.0
+        },
+        "water64-elpa/multi": {
+          "cp2k_seconds": 30.59,
+          "elapsed_seconds": 33.97
+        },
+        "water64-elpa/single": {
+          "cp2k_seconds": 45.413,
+          "elapsed_seconds": 48.25
+        },
+        "water64-gpw/multi": {
+          "cp2k_seconds": 211.638,
+          "elapsed_seconds": 214.91
+        },
+        "water64-gpw/single": {
+          "cp2k_seconds": 174.396,
+          "elapsed_seconds": 176.76
+        }
+      },
+      "modes": {
+        "multi": 2,
+        "single": 1
+      },
+      "mpi": {
+        "bindings": {
+          "0": {
+            "cpus": [
+              0,
+              1,
+              2,
+              3,
+              64,
+              65,
+              66,
+              67
+            ],
+            "cuda_visible_devices": "0",
+            "host": "16v100n79",
+            "local_rank": 0,
+            "topology": {
+              "0": {
+                "core": 0,
+                "siblings": [
+                  0,
+                  64
+                ],
+                "socket": 0
+              },
+              "1": {
+                "core": 1,
+                "siblings": [
+                  1,
+                  65
+                ],
+                "socket": 0
+              },
+              "2": {
+                "core": 2,
+                "siblings": [
+                  2,
+                  66
+                ],
+                "socket": 0
+              },
+              "3": {
+                "core": 3,
+                "siblings": [
+                  3,
+                  67
+                ],
+                "socket": 0
+              },
+              "64": {
+                "core": 0,
+                "siblings": [
+                  0,
+                  64
+                ],
+                "socket": 0
+              },
+              "65": {
+                "core": 1,
+                "siblings": [
+                  1,
+                  65
+                ],
+                "socket": 0
+              },
+              "66": {
+                "core": 2,
+                "siblings": [
+                  2,
+                  66
+                ],
+                "socket": 0
+              },
+              "67": {
+                "core": 3,
+                "siblings": [
+                  3,
+                  67
+                ],
+                "socket": 0
+              }
+            }
+          },
+          "1": {
+            "cpus": [
+              0,
+              1,
+              2,
+              3,
+              64,
+              65,
+              66,
+              67
+            ],
+            "cuda_visible_devices": "0",
+            "host": "16v100n80",
+            "local_rank": 0,
+            "topology": {
+              "0": {
+                "core": 0,
+                "siblings": [
+                  0,
+                  64
+                ],
+                "socket": 0
+              },
+              "1": {
+                "core": 1,
+                "siblings": [
+                  1,
+                  65
+                ],
+                "socket": 0
+              },
+              "2": {
+                "core": 2,
+                "siblings": [
+                  2,
+                  66
+                ],
+                "socket": 0
+              },
+              "3": {
+                "core": 3,
+                "siblings": [
+                  3,
+                  67
+                ],
+                "socket": 0
+              },
+              "64": {
+                "core": 0,
+                "siblings": [
+                  0,
+                  64
+                ],
+                "socket": 0
+              },
+              "65": {
+                "core": 1,
+                "siblings": [
+                  1,
+                  65
+                ],
+                "socket": 0
+              },
+              "66": {
+                "core": 2,
+                "siblings": [
+                  2,
+                  66
+                ],
+                "socket": 0
+              },
+              "67": {
+                "core": 3,
+                "siblings": [
+                  3,
+                  67
+                ],
+                "socket": 0
+              }
+            }
+          }
+        },
+        "mpi_home": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+        "nodes": {
+          "16v100n79": 1,
+          "16v100n80": 1
+        },
+        "path": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/bin/mpirun",
+        "version": "mpirun (Open MPI) 5.0.10\n\nReport bugs to https://www.open-mpi.org/community/help/\n\n"
+      },
+      "requested_resources": {
+        "allocated_cpus": 16,
+        "cores_per_rank": 4,
+        "gpus_per_node": 1,
+        "nodes": 2,
+        "omp_threads": 1,
+        "ranks": 2,
+        "ranks_per_node": 1
+      },
+      "allocated_cpus": 16,
+      "original_run_id": "40189124444-1-development-16v100-avx2-2026-10-25-1db19ea511d1",
+      "build_run_id": "40189124444-1-development-16v100-avx2-2026-10-25-1db19ea511d1",
+      "build_recovery": null,
+      "manifest": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-10-25-g1db19ea511d1-r960c8ef8133d/16V100/40189124444-1-development-16v100-avx2-2026-10-25-1db19ea511d1.json",
+      "artifact_sha256": "8f951d7b21e119bfc9c2c8abd65f8958b652610fba092aa772ac420a494b1e48",
+      "status": {
+        "exit_code": "0:0",
+        "job": "1935544",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "original_proof": {
+        "actual_allocated_cpus": 16,
+        "allocated_cpus": 16,
+        "artifact_sha256": "8f951d7b21e119bfc9c2c8abd65f8958b652610fba092aa772ac420a494b1e48",
+        "controller_sha256": "31cdfc7219bb1be28f7997c11fbe2b934214448901c8b769416f1e3e28ae9a3d",
+        "cores_per_rank": 4,
+        "evidence_sha256": "fae901291c0692e52eb258e48d5092fdce925cba11cccd20bb6cbbbc7705689d",
+        "gpus_per_node": 1,
+        "helpers_sha256": "aefd8b234b1b43f2815a6af5f3502204319a490f4919ad417421d920034a10e3",
+        "identity": {
+          "build_id": "master-2026-10-25-g1db19ea511d1-r960c8ef8133d",
+          "cpu_arch": "znver3",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-25-g1db19ea511d1-r960c8ef8133d/16V100",
+          "partition": "16V100",
+          "recipe_sha256": "960c8ef8133d1d2ee04824e5476147522e5a15784aa813e002f883f0975578f5",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "master",
+          "source_sha": "1db19ea511d10fbf2eb75cec7c0d88b6635563e2",
+          "source_version": "master-2026-10-25",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "16v100-avx2",
+          "track": "development",
+          "version_label": "master-2026-10-25"
+        },
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-25-g1db19ea511d1-r960c8ef8133d/16V100",
+        "job": "1935544",
+        "job_script_sha256": "246fce2f48f87ec594ef5ec3697ad4fb1ab3be2a30650be05452303458cadca6",
+        "launcher": "/org/org-open-sai/proj-sai-hpc-software/controller/3d7abb34659f8cb4d081c9cc66ed6fb61b76c7a2/40189124444-1-development-16v100-avx2-2026-10-25-1db19ea511d1/cp2k",
+        "launcher_sha256": "210ddd657ec01da4c1bd13294f95ee51991f24219c3b1965c52874c6270b4540",
+        "nodes": 2,
+        "omp_threads": 1,
+        "partition": "16V100",
+        "rank_wrapper_sha256": "cd8a16306182ca597ffcb495ef0e14fa2d334d6c8d71c7f7f117d905afbeaa03",
+        "ranks": 2,
+        "ranks_per_node": 1,
+        "recipe_sha256": "960c8ef8133d1d2ee04824e5476147522e5a15784aa813e002f883f0975578f5",
+        "run_id": "40189124444-1-development-16v100-avx2-2026-10-25-1db19ea511d1-science",
+        "source_sha": "1db19ea511d10fbf2eb75cec7c0d88b6635563e2",
+        "verified": true
+      },
+      "evidence": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/40189124444-1-development-16v100-avx2-2026-10-25-1db19ea511d1-science/results/evidence.json",
+      "evidence_sha256": "fae901291c0692e52eb258e48d5092fdce925cba11cccd20bb6cbbbc7705689d",
+      "manifest_sha256": "b1f2782e9abb89bed17a6aa9358acf4c63a25f24371d8804bf28d9a0cfca2fa4",
+      "build_phases": {
+        "dependencies": {
+          "job": "1934168",
+          "run": "/org/org-open-sai/proj-sai-hpc-software/runs/40189124444-1-development-16v100-avx2-2026-10-25-1db19ea511d1-dependencies"
+        },
+        "application": {
+          "job": "1934987",
+          "run": "/org/org-open-sai/proj-sai-hpc-software/runs/40189124444-1-development-16v100-avx2-2026-10-25-1db19ea511d1"
+        }
+      },
+      "dependency_clone": {
+        "status": "prepared",
+        "source_unchanged": true,
+        "upper_directory_unchanged": true,
+        "fsck_before_and_after": "passed",
+        "remaining_entries": 0,
+        "source_overlay_sha256": "4327b7939161e7a7ef0e69ae326588216aec4556b8a6fb08c603673553c9b8d4",
+        "prepared_overlay_sha256": "d404d24ad42bdfbfb78c3108ed4c6e7193a73c7ebeab6064ee94fa1514d19f98"
+      },
+      "dependency_integrity": {}
+    },
+    "4V100": {
+      "comparisons": {
+        "ch2o-tblite": {
+          "energy_delta_ha": 8.881784197001252e-16,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-dftd4": {
+          "energy_delta_ha": 2.4868995751603507e-13,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-diag": {
+          "energy_delta_ha": 1.4210854715202004e-14,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-elpa": {
+          "energy_delta_ha": 1.4210854715202004e-14,
+          "max_force_delta_ha_bohr": 9.999999999746641e-13
+        },
+        "water-gpw": {
+          "energy_delta_ha": 1.9895196601282805e-13,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water64-elpa": {
+          "energy_delta_ha": 3.865352482534945e-12,
+          "max_force_delta_ha_bohr": 9.999999960041972e-13
+        },
+        "water64-gpw": {
+          "energy_delta_ha": 9.549694368615746e-12,
+          "max_force_delta_ha_bohr": 1.700000036575222e-11
+        }
+      },
+      "solver_comparisons": {
+        "multi": {
+          "water-diag": {
+            "energy_delta_ha": 5.684341886080802e-14,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water-elpa": {
+            "energy_delta_ha": 4.263256414560601e-14,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 1.1596057447604835e-11,
+            "max_force_delta_ha_bohr": 1.5350000003716557e-09
+          }
+        },
+        "single": {
+          "water-diag": {
+            "energy_delta_ha": 1.2789769243681803e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water-elpa": {
+            "energy_delta_ha": 1.4210854715202004e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 5.9117155615240335e-12,
+            "max_force_delta_ha_bohr": 1.5390000003556725e-09
+          }
+        }
+      },
+      "versions": {
+        "candidate": {
+          "flags": [
+            "cosma",
+            "cusolvermp",
+            "cusolvermp_nccl",
+            "dbcsr_acc",
+            "elpa",
+            "fftw3",
+            "hdf5",
+            "libbqb",
+            "libdftd4",
+            "libint",
+            "libvori",
+            "libwignernj",
+            "libxc",
+            "libxc_gpu",
+            "libxs",
+            "libxsmm",
+            "mctc-lib",
+            "mpi_f08",
+            "offload_cuda",
+            "omp",
+            "openblas",
+            "parallel",
+            "plumed2",
+            "s_dftd3",
+            "scalapack",
+            "spglib",
+            "spla_gemm_offloading",
+            "tblite"
+          ],
+          "revision": "1db19ea511",
+          "version": "2026.2 (Development Version)"
+        }
+      },
+      "timing_scope": "descriptive timings only; no historical ratio or performance gate",
+      "energy_tolerance_ha": 1e-06,
+      "force_tolerance_ha_bohr": 1e-05,
+      "timings": {
+        "ch2o-tblite/multi": {
+          "cp2k_seconds": 1.016,
+          "elapsed_seconds": 2.23
+        },
+        "ch2o-tblite/single": {
+          "cp2k_seconds": 0.949,
+          "elapsed_seconds": 1.98
+        },
+        "water-dftd4/multi": {
+          "cp2k_seconds": 9.223,
+          "elapsed_seconds": 10.5
+        },
+        "water-dftd4/single": {
+          "cp2k_seconds": 10.802,
+          "elapsed_seconds": 11.84
+        },
+        "water-diag/multi": {
+          "cp2k_seconds": 5.984,
+          "elapsed_seconds": 7.24
+        },
+        "water-diag/single": {
+          "cp2k_seconds": 7.219,
+          "elapsed_seconds": 8.26
+        },
+        "water-elpa/multi": {
+          "cp2k_seconds": 6.125,
+          "elapsed_seconds": 7.41
+        },
+        "water-elpa/single": {
+          "cp2k_seconds": 7.366,
+          "elapsed_seconds": 8.45
+        },
+        "water-gpw/multi": {
+          "cp2k_seconds": 9.222,
+          "elapsed_seconds": 10.47
+        },
+        "water-gpw/single": {
+          "cp2k_seconds": 10.793,
+          "elapsed_seconds": 11.83
+        },
+        "water64-elpa/multi": {
+          "cp2k_seconds": 18.123,
+          "elapsed_seconds": 19.42
+        },
+        "water64-elpa/single": {
+          "cp2k_seconds": 28.088,
+          "elapsed_seconds": 29.21
+        },
+        "water64-gpw/multi": {
+          "cp2k_seconds": 164.027,
+          "elapsed_seconds": 165.41
+        },
+        "water64-gpw/single": {
+          "cp2k_seconds": 135.43,
+          "elapsed_seconds": 136.49
+        }
+      },
+      "modes": {
+        "multi": 2,
+        "single": 1
+      },
+      "mpi": {
+        "bindings": {
+          "0": {
+            "cpus": [
+              0,
+              1,
+              2,
+              3,
+              16,
+              17,
+              18,
+              19
+            ],
+            "cuda_visible_devices": "0",
+            "host": "4v100n27",
+            "local_rank": 0,
+            "topology": {
+              "0": {
+                "core": 0,
+                "siblings": [
+                  0,
+                  16
+                ],
+                "socket": 0
+              },
+              "1": {
+                "core": 1,
+                "siblings": [
+                  1,
+                  17
+                ],
+                "socket": 0
+              },
+              "16": {
+                "core": 0,
+                "siblings": [
+                  0,
+                  16
+                ],
+                "socket": 0
+              },
+              "17": {
+                "core": 1,
+                "siblings": [
+                  1,
+                  17
+                ],
+                "socket": 0
+              },
+              "18": {
+                "core": 2,
+                "siblings": [
+                  2,
+                  18
+                ],
+                "socket": 0
+              },
+              "19": {
+                "core": 3,
+                "siblings": [
+                  3,
+                  19
+                ],
+                "socket": 0
+              },
+              "2": {
+                "core": 2,
+                "siblings": [
+                  2,
+                  18
+                ],
+                "socket": 0
+              },
+              "3": {
+                "core": 3,
+                "siblings": [
+                  3,
+                  19
+                ],
+                "socket": 0
+              }
+            }
+          },
+          "1": {
+            "cpus": [
+              0,
+              1,
+              2,
+              3,
+              16,
+              17,
+              18,
+              19
+            ],
+            "cuda_visible_devices": "0",
+            "host": "4v100n28",
+            "local_rank": 0,
+            "topology": {
+              "0": {
+                "core": 0,
+                "siblings": [
+                  0,
+                  16
+                ],
+                "socket": 0
+              },
+              "1": {
+                "core": 1,
+                "siblings": [
+                  1,
+                  17
+                ],
+                "socket": 0
+              },
+              "16": {
+                "core": 0,
+                "siblings": [
+                  0,
+                  16
+                ],
+                "socket": 0
+              },
+              "17": {
+                "core": 1,
+                "siblings": [
+                  1,
+                  17
+                ],
+                "socket": 0
+              },
+              "18": {
+                "core": 2,
+                "siblings": [
+                  2,
+                  18
+                ],
+                "socket": 0
+              },
+              "19": {
+                "core": 3,
+                "siblings": [
+                  3,
+                  19
+                ],
+                "socket": 0
+              },
+              "2": {
+                "core": 2,
+                "siblings": [
+                  2,
+                  18
+                ],
+                "socket": 0
+              },
+              "3": {
+                "core": 3,
+                "siblings": [
+                  3,
+                  19
+                ],
+                "socket": 0
+              }
+            }
+          }
+        },
+        "mpi_home": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512",
+        "nodes": {
+          "4v100n27": 1,
+          "4v100n28": 1
+        },
+        "path": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/bin/mpirun",
+        "version": "mpirun (Open MPI) 5.0.10\n\nReport bugs to https://www.open-mpi.org/community/help/\n\n"
+      },
+      "requested_resources": {
+        "allocated_cpus": 16,
+        "cores_per_rank": 4,
+        "gpus_per_node": 1,
+        "nodes": 2,
+        "omp_threads": 1,
+        "ranks": 2,
+        "ranks_per_node": 1
+      },
+      "allocated_cpus": 16,
+      "original_run_id": "40189124444-1-development-4v100-avx512-2026-10-25-1db19ea511d1",
+      "build_run_id": "40189124444-1-development-4v100-avx512-2026-10-25-1db19ea511d1",
+      "build_recovery": null,
+      "manifest": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-10-25-g1db19ea511d1-r960c8ef8133d/4V100/40189124444-1-development-4v100-avx512-2026-10-25-1db19ea511d1.json",
+      "artifact_sha256": "a2cdf2e6148171c5e5ac80f07c2638b46393935cc22d7416d627c70bdb7bbe62",
+      "status": {
+        "exit_code": "0:0",
+        "job": "1935251",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "original_proof": {
+        "actual_allocated_cpus": 16,
+        "allocated_cpus": 16,
+        "artifact_sha256": "a2cdf2e6148171c5e5ac80f07c2638b46393935cc22d7416d627c70bdb7bbe62",
+        "controller_sha256": "31cdfc7219bb1be28f7997c11fbe2b934214448901c8b769416f1e3e28ae9a3d",
+        "cores_per_rank": 4,
+        "evidence_sha256": "5f8e5b1a9fe177f9191a114458c5be841decf5286fe34f32d849b05c74864bae",
+        "gpus_per_node": 1,
+        "helpers_sha256": "aefd8b234b1b43f2815a6af5f3502204319a490f4919ad417421d920034a10e3",
+        "identity": {
+          "build_id": "master-2026-10-25-g1db19ea511d1-r960c8ef8133d",
+          "cpu_arch": "znver4",
+          "cuda_arch": "70",
+          "dependency_isa": "avx512",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-25-g1db19ea511d1-r960c8ef8133d/4V100",
+          "partition": "4V100",
+          "recipe_sha256": "960c8ef8133d1d2ee04824e5476147522e5a15784aa813e002f883f0975578f5",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "master",
+          "source_sha": "1db19ea511d10fbf2eb75cec7c0d88b6635563e2",
+          "source_version": "master-2026-10-25",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "4v100-avx512",
+          "track": "development",
+          "version_label": "master-2026-10-25"
+        },
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-25-g1db19ea511d1-r960c8ef8133d/4V100",
+        "job": "1935251",
+        "job_script_sha256": "4e20925c00857f4b97729c8998157d91683b7f8b3bc52f59caabe3df130c742a",
+        "launcher": "/org/org-open-sai/proj-sai-hpc-software/controller/3d7abb34659f8cb4d081c9cc66ed6fb61b76c7a2/40189124444-1-development-4v100-avx512-2026-10-25-1db19ea511d1/cp2k",
+        "launcher_sha256": "210ddd657ec01da4c1bd13294f95ee51991f24219c3b1965c52874c6270b4540",
+        "nodes": 2,
+        "omp_threads": 1,
+        "partition": "4V100",
+        "rank_wrapper_sha256": "cd8a16306182ca597ffcb495ef0e14fa2d334d6c8d71c7f7f117d905afbeaa03",
+        "ranks": 2,
+        "ranks_per_node": 1,
+        "recipe_sha256": "960c8ef8133d1d2ee04824e5476147522e5a15784aa813e002f883f0975578f5",
+        "run_id": "40189124444-1-development-4v100-avx512-2026-10-25-1db19ea511d1-science",
+        "source_sha": "1db19ea511d10fbf2eb75cec7c0d88b6635563e2",
+        "verified": true
+      },
+      "evidence": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/40189124444-1-development-4v100-avx512-2026-10-25-1db19ea511d1-science/results/evidence.json",
+      "evidence_sha256": "5f8e5b1a9fe177f9191a114458c5be841decf5286fe34f32d849b05c74864bae",
+      "manifest_sha256": "e2fb087eda8da5168cb182094ade0fdd3ec966bf718f77f446cb5818637a8c83",
+      "build_phases": {
+        "dependencies": {
+          "job": "1934164",
+          "run": "/org/org-open-sai/proj-sai-hpc-software/runs/40189124444-1-development-4v100-avx512-2026-10-25-1db19ea511d1-dependencies"
+        },
+        "application": {
+          "job": "1934643",
+          "run": "/org/org-open-sai/proj-sai-hpc-software/runs/40189124444-1-development-4v100-avx512-2026-10-25-1db19ea511d1"
+        }
+      },
+      "dependency_clone": {
+        "status": "prepared",
+        "source_unchanged": true,
+        "upper_directory_unchanged": true,
+        "fsck_before_and_after": "passed",
+        "remaining_entries": 0,
+        "source_overlay_sha256": "87e56b485e3db55ade5e47a976309567b50274bfe9c89874354ebb06e2ca82b3",
+        "prepared_overlay_sha256": "d6f18ba37a57f79f72dc17d7b9865b256ad8e6490f90ff6f51c41f2c534c4d9b"
+      },
+      "dependency_integrity": {}
+    },
+    "8V100V0": {
+      "comparisons": {
+        "ch2o-tblite": {
+          "energy_delta_ha": 5.329070518200751e-15,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-dftd4": {
+          "energy_delta_ha": 8.526512829121202e-14,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-diag": {
+          "energy_delta_ha": 7.105427357601002e-15,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-elpa": {
+          "energy_delta_ha": 1.4210854715202004e-14,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-gpw": {
+          "energy_delta_ha": 2.3447910280083306e-13,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water64-elpa": {
+          "energy_delta_ha": 4.092726157978177e-12,
+          "max_force_delta_ha_bohr": 1.0000000000276037e-12
+        },
+        "water64-gpw": {
+          "energy_delta_ha": 4.411049303598702e-11,
+          "max_force_delta_ha_bohr": 1.1999999952050366e-11
+        }
+      },
+      "solver_comparisons": {
+        "multi": {
+          "water-diag": {
+            "energy_delta_ha": 7.105427357601002e-14,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water-elpa": {
+            "energy_delta_ha": 5.684341886080802e-14,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 2.2509993868879974e-11,
+            "max_force_delta_ha_bohr": 1.5359999990666173e-09
+          }
+        },
+        "single": {
+          "water-diag": {
+            "energy_delta_ha": 2.984279490192421e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water-elpa": {
+            "energy_delta_ha": 3.055333763768431e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 2.5693225325085223e-11,
+            "max_force_delta_ha_bohr": 1.5390000003556725e-09
+          }
+        }
+      },
+      "versions": {
+        "candidate": {
+          "flags": [
+            "cosma",
+            "cusolvermp",
+            "cusolvermp_nccl",
+            "dbcsr_acc",
+            "elpa",
+            "fftw3",
+            "hdf5",
+            "libbqb",
+            "libdftd4",
+            "libint",
+            "libvori",
+            "libwignernj",
+            "libxc",
+            "libxc_gpu",
+            "libxs",
+            "libxsmm",
+            "mctc-lib",
+            "mpi_f08",
+            "offload_cuda",
+            "omp",
+            "openblas",
+            "parallel",
+            "plumed2",
+            "s_dftd3",
+            "scalapack",
+            "spglib",
+            "spla_gemm_offloading",
+            "tblite"
+          ],
+          "revision": "1db19ea511",
+          "version": "2026.2 (Development Version)"
+        }
+      },
+      "timing_scope": "descriptive timings only; no historical ratio or performance gate",
+      "energy_tolerance_ha": 1e-06,
+      "force_tolerance_ha_bohr": 1e-05,
+      "timings": {
+        "ch2o-tblite/multi": {
+          "cp2k_seconds": 2.207,
+          "elapsed_seconds": 5.39
+        },
+        "ch2o-tblite/single": {
+          "cp2k_seconds": 1.982,
+          "elapsed_seconds": 4.59
+        },
+        "water-dftd4/multi": {
+          "cp2k_seconds": 26.643,
+          "elapsed_seconds": 29.92
+        },
+        "water-dftd4/single": {
+          "cp2k_seconds": 30.328,
+          "elapsed_seconds": 33.17
+        },
+        "water-diag/multi": {
+          "cp2k_seconds": 17.454,
+          "elapsed_seconds": 20.65
+        },
+        "water-diag/single": {
+          "cp2k_seconds": 20.373,
+          "elapsed_seconds": 23.08
+        },
+        "water-elpa/multi": {
+          "cp2k_seconds": 17.833,
+          "elapsed_seconds": 21.13
+        },
+        "water-elpa/single": {
+          "cp2k_seconds": 20.855,
+          "elapsed_seconds": 23.52
+        },
+        "water-gpw/multi": {
+          "cp2k_seconds": 26.478,
+          "elapsed_seconds": 29.75
+        },
+        "water-gpw/single": {
+          "cp2k_seconds": 30.429,
+          "elapsed_seconds": 33.14
+        },
+        "water64-elpa/multi": {
+          "cp2k_seconds": 42.095,
+          "elapsed_seconds": 49.19
+        },
+        "water64-elpa/single": {
+          "cp2k_seconds": 61.937,
+          "elapsed_seconds": 64.65
+        },
+        "water64-gpw/multi": {
+          "cp2k_seconds": 282.96,
+          "elapsed_seconds": 286.6
+        },
+        "water64-gpw/single": {
+          "cp2k_seconds": 219.817,
+          "elapsed_seconds": 222.83
+        }
+      },
+      "modes": {
+        "multi": 2,
+        "single": 1
+      },
+      "mpi": {
+        "bindings": {
+          "0": {
+            "cpus": [
+              3,
+              4,
+              5,
+              27,
+              28,
+              29
+            ],
+            "cuda_visible_devices": "0",
+            "host": "8v100v0n02",
+            "local_rank": 0,
+            "topology": {
+              "27": {
+                "core": 4,
+                "siblings": [
+                  3,
+                  27
+                ],
+                "socket": 0
+              },
+              "28": {
+                "core": 5,
+                "siblings": [
+                  4,
+                  28
+                ],
+                "socket": 0
+              },
+              "29": {
+                "core": 6,
+                "siblings": [
+                  5,
+                  29
+                ],
+                "socket": 0
+              },
+              "3": {
+                "core": 4,
+                "siblings": [
+                  3,
+                  27
+                ],
+                "socket": 0
+              },
+              "4": {
+                "core": 5,
+                "siblings": [
+                  4,
+                  28
+                ],
+                "socket": 0
+              },
+              "5": {
+                "core": 6,
+                "siblings": [
+                  5,
+                  29
+                ],
+                "socket": 0
+              }
+            }
+          },
+          "1": {
+            "cpus": [
+              0,
+              1,
+              2,
+              24,
+              25,
+              26
+            ],
+            "cuda_visible_devices": "0",
+            "host": "8v100v0n08",
+            "local_rank": 0,
+            "topology": {
+              "0": {
+                "core": 0,
+                "siblings": [
+                  0,
+                  24
+                ],
+                "socket": 0
+              },
+              "1": {
+                "core": 1,
+                "siblings": [
+                  1,
+                  25
+                ],
+                "socket": 0
+              },
+              "2": {
+                "core": 2,
+                "siblings": [
+                  2,
+                  26
+                ],
+                "socket": 0
+              },
+              "24": {
+                "core": 0,
+                "siblings": [
+                  0,
+                  24
+                ],
+                "socket": 0
+              },
+              "25": {
+                "core": 1,
+                "siblings": [
+                  1,
+                  25
+                ],
+                "socket": 0
+              },
+              "26": {
+                "core": 2,
+                "siblings": [
+                  2,
+                  26
+                ],
+                "socket": 0
+              }
+            }
+          }
+        },
+        "mpi_home": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+        "nodes": {
+          "8v100v0n02": 1,
+          "8v100v0n08": 1
+        },
+        "path": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/bin/mpirun",
+        "version": "mpirun (Open MPI) 5.0.10\n\nReport bugs to https://www.open-mpi.org/community/help/\n\n"
+      },
+      "requested_resources": {
+        "allocated_cpus": 12,
+        "cores_per_rank": 3,
+        "gpus_per_node": 1,
+        "nodes": 2,
+        "omp_threads": 1,
+        "ranks": 2,
+        "ranks_per_node": 1
+      },
+      "allocated_cpus": 12,
+      "original_run_id": "40189124444-1-development-8v100v0-avx512-2026-10-25-1db19ea511d1",
+      "build_run_id": "40189124444-1-development-8v100v0-avx512-2026-10-25-1db19ea511d1",
+      "build_recovery": null,
+      "manifest": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-10-25-g1db19ea511d1-r960c8ef8133d/8V100V0/40189124444-1-development-8v100v0-avx512-2026-10-25-1db19ea511d1.json",
+      "artifact_sha256": "38dee5dd6157ed81245dfffe58bff7bd59ad620737e21764e19dd5b3022a04e5",
+      "status": {
+        "exit_code": "0:0",
+        "job": "1936664",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "original_proof": {
+        "actual_allocated_cpus": 12,
+        "allocated_cpus": 12,
+        "artifact_sha256": "38dee5dd6157ed81245dfffe58bff7bd59ad620737e21764e19dd5b3022a04e5",
+        "controller_sha256": "31cdfc7219bb1be28f7997c11fbe2b934214448901c8b769416f1e3e28ae9a3d",
+        "cores_per_rank": 3,
+        "evidence_sha256": "8ac741f8bf142b9de4023d379bc7fbf530d7082e6da1da62c3ecca996b511359",
+        "gpus_per_node": 1,
+        "helpers_sha256": "aefd8b234b1b43f2815a6af5f3502204319a490f4919ad417421d920034a10e3",
+        "identity": {
+          "build_id": "master-2026-10-25-g1db19ea511d1-r960c8ef8133d",
+          "cpu_arch": "skylake-avx512",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-25-g1db19ea511d1-r960c8ef8133d/8V100V0",
+          "partition": "8V100V0",
+          "recipe_sha256": "960c8ef8133d1d2ee04824e5476147522e5a15784aa813e002f883f0975578f5",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "master",
+          "source_sha": "1db19ea511d10fbf2eb75cec7c0d88b6635563e2",
+          "source_version": "master-2026-10-25",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "8v100v0-avx512",
+          "track": "development",
+          "version_label": "master-2026-10-25"
+        },
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-25-g1db19ea511d1-r960c8ef8133d/8V100V0",
+        "job": "1936664",
+        "job_script_sha256": "945fd25edeeda542ac9427e6b85265365f3df01f7f29141856d3a61780927c5a",
+        "launcher": "/org/org-open-sai/proj-sai-hpc-software/controller/3d7abb34659f8cb4d081c9cc66ed6fb61b76c7a2/40189124444-1-development-8v100v0-avx512-2026-10-25-1db19ea511d1/cp2k",
+        "launcher_sha256": "210ddd657ec01da4c1bd13294f95ee51991f24219c3b1965c52874c6270b4540",
+        "nodes": 2,
+        "omp_threads": 1,
+        "partition": "8V100V0",
+        "rank_wrapper_sha256": "cd8a16306182ca597ffcb495ef0e14fa2d334d6c8d71c7f7f117d905afbeaa03",
+        "ranks": 2,
+        "ranks_per_node": 1,
+        "recipe_sha256": "960c8ef8133d1d2ee04824e5476147522e5a15784aa813e002f883f0975578f5",
+        "run_id": "40189124444-1-development-8v100v0-avx512-2026-10-25-1db19ea511d1-science",
+        "source_sha": "1db19ea511d10fbf2eb75cec7c0d88b6635563e2",
+        "verified": true
+      },
+      "evidence": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/40189124444-1-development-8v100v0-avx512-2026-10-25-1db19ea511d1-science/results/evidence.json",
+      "evidence_sha256": "8ac741f8bf142b9de4023d379bc7fbf530d7082e6da1da62c3ecca996b511359",
+      "manifest_sha256": "948ca56de8f85c57dec18a5f7c5d1ecbe54165319ca4c30b645aa3b399d9a069",
+      "build_phases": {
+        "dependencies": {
+          "job": "1934154",
+          "run": "/org/org-open-sai/proj-sai-hpc-software/runs/40189124444-1-development-8v100v0-avx512-2026-10-25-1db19ea511d1-dependencies"
+        },
+        "application": {
+          "job": "1934993",
+          "run": "/org/org-open-sai/proj-sai-hpc-software/runs/40189124444-1-development-8v100v0-avx512-2026-10-25-1db19ea511d1"
+        }
+      },
+      "dependency_clone": {
+        "status": "prepared",
+        "source_unchanged": true,
+        "upper_directory_unchanged": true,
+        "fsck_before_and_after": "passed",
+        "remaining_entries": 0,
+        "source_overlay_sha256": "63db55761698a4d9a040649dceb0b651081a5d9229f1170f79f0c600f5d28b94",
+        "prepared_overlay_sha256": "ec4ef7d3ca5366a589491dea459c63016de9da6b8e79a4f9c64290db1eafb3ef"
+      },
+      "dependency_integrity": {}
+    },
+    "DSPRHBM": {
+      "comparisons": {
+        "ch2o-tblite": {
+          "energy_delta_ha": 8.881784197001252e-16,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-dftd4": {
+          "energy_delta_ha": 1.5631940186722204e-13,
+          "max_force_delta_ha_bohr": 9.999986949615902e-13
+        },
+        "water-diag": {
+          "energy_delta_ha": 1.4210854715202004e-14,
+          "max_force_delta_ha_bohr": 9.999999999746641e-13
+        },
+        "water-elpa": {
+          "energy_delta_ha": 0.0,
+          "max_force_delta_ha_bohr": 9.999999999746641e-13
+        },
+        "water-gpw": {
+          "energy_delta_ha": 7.815970093361102e-13,
+          "max_force_delta_ha_bohr": 9.999995623233282e-13
+        },
+        "water64-elpa": {
+          "energy_delta_ha": 4.547473508864641e-13,
+          "max_force_delta_ha_bohr": 1.0000004296850662e-12
+        },
+        "water64-gpw": {
+          "energy_delta_ha": 3.660716174636036e-11,
+          "max_force_delta_ha_bohr": 1.3999999076697023e-11
+        }
+      },
+      "solver_comparisons": {
+        "multi": {
+          "water-diag": {
+            "energy_delta_ha": 5.115907697472721e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water-elpa": {
+            "energy_delta_ha": 4.902744876744691e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 4.092726157978177e-12,
+            "max_force_delta_ha_bohr": 1.5419999999100042e-09
+          }
+        },
+        "single": {
+          "water-diag": {
+            "energy_delta_ha": 1.2789769243681803e-12,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water-elpa": {
+            "energy_delta_ha": 1.2718714970105793e-12,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 3.205968823749572e-11,
+            "max_force_delta_ha_bohr": 1.5399999990506341e-09
+          }
+        }
+      },
+      "versions": {
+        "candidate": {
+          "flags": [
+            "cosma",
+            "elpa",
+            "fftw3",
+            "hdf5",
+            "libbqb",
+            "libdftd4",
+            "libint",
+            "libvori",
+            "libwignernj",
+            "libxc",
+            "libxc_gpu",
+            "libxs",
+            "libxsmm",
+            "mctc-lib",
+            "mpi_f08",
+            "omp",
+            "openblas",
+            "parallel",
+            "plumed2",
+            "s_dftd3",
+            "scalapack",
+            "spglib",
+            "tblite"
+          ],
+          "revision": "1db19ea511",
+          "version": "2026.2 (Development Version)"
+        }
+      },
+      "timing_scope": "descriptive timings only; no historical ratio or performance gate",
+      "energy_tolerance_ha": 1e-06,
+      "force_tolerance_ha_bohr": 1e-05,
+      "timings": {
+        "ch2o-tblite/multi": {
+          "cp2k_seconds": 99.14,
+          "elapsed_seconds": 152.85
+        },
+        "ch2o-tblite/single": {
+          "cp2k_seconds": 0.338,
+          "elapsed_seconds": 1.85
+        },
+        "water-dftd4/multi": {
+          "cp2k_seconds": 16.905,
+          "elapsed_seconds": 40.25
+        },
+        "water-dftd4/single": {
+          "cp2k_seconds": 25.631,
+          "elapsed_seconds": 27.2
+        },
+        "water-diag/multi": {
+          "cp2k_seconds": 11.485,
+          "elapsed_seconds": 13.34
+        },
+        "water-diag/single": {
+          "cp2k_seconds": 21.814,
+          "elapsed_seconds": 23.39
+        },
+        "water-elpa/multi": {
+          "cp2k_seconds": 12.199,
+          "elapsed_seconds": 18.75
+        },
+        "water-elpa/single": {
+          "cp2k_seconds": 17.901,
+          "elapsed_seconds": 19.51
+        },
+        "water-gpw/multi": {
+          "cp2k_seconds": 16.947,
+          "elapsed_seconds": 20.4
+        },
+        "water-gpw/single": {
+          "cp2k_seconds": 25.703,
+          "elapsed_seconds": 27.31
+        },
+        "water64-elpa/multi": {
+          "cp2k_seconds": 61.992,
+          "elapsed_seconds": 82.53
+        },
+        "water64-elpa/single": {
+          "cp2k_seconds": 106.264,
+          "elapsed_seconds": 107.91
+        },
+        "water64-gpw/multi": {
+          "cp2k_seconds": 217.966,
+          "elapsed_seconds": 222.23
+        },
+        "water64-gpw/single": {
+          "cp2k_seconds": 412.646,
+          "elapsed_seconds": 414.32
+        }
+      },
+      "modes": {
+        "multi": 2,
+        "single": 1
+      },
+      "mpi": {
+        "bindings": {
+          "0": {
+            "cpus": [
+              0,
+              1
+            ],
+            "cuda_visible_devices": "",
+            "host": "d9470n01",
+            "local_rank": 0,
+            "topology": {
+              "0": {
+                "core": 0,
+                "siblings": [
+                  0
+                ],
+                "socket": 0
+              },
+              "1": {
+                "core": 1,
+                "siblings": [
+                  1
+                ],
+                "socket": 0
+              }
+            }
+          },
+          "1": {
+            "cpus": [
+              0,
+              1
+            ],
+            "cuda_visible_devices": "",
+            "host": "d9470n02",
+            "local_rank": 0,
+            "topology": {
+              "0": {
+                "core": 0,
+                "siblings": [
+                  0
+                ],
+                "socket": 0
+              },
+              "1": {
+                "core": 1,
+                "siblings": [
+                  1
+                ],
+                "socket": 0
+              }
+            }
+          }
+        },
+        "mpi_home": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512",
+        "nodes": {
+          "d9470n01": 1,
+          "d9470n02": 1
+        },
+        "path": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/bin/mpirun",
+        "version": "mpirun (Open MPI) 5.0.10\n\nReport bugs to https://www.open-mpi.org/community/help/\n\n"
+      },
+      "requested_resources": {
+        "allocated_cpus": 4,
+        "cores_per_rank": 2,
+        "gpus_per_node": 0,
+        "nodes": 2,
+        "omp_threads": 2,
+        "ranks": 2,
+        "ranks_per_node": 1
+      },
+      "allocated_cpus": 4,
+      "original_run_id": "40189124444-1-development-dsprhbm-2026-10-25-1db19ea511d1",
+      "build_run_id": "cp2k-dsprhbm-sync-recovery-20261025-1db19ea511d1",
+      "build_recovery": {
+        "schema": 1,
+        "source_run": "40189124444-1-development-dsprhbm-2026-10-25-1db19ea511d1",
+        "source_request_sha256": "d9f48be06fea54640e03711e41f13400a515a06e3bf28881a9cb4ce281b59c14",
+        "run_id": "cp2k-dsprhbm-sync-recovery-20261025-1db19ea511d1",
+        "request_sha256": "8b57cebdf0985eda226210769ee39af1e5c8660eca2276c4b92d4bb83608c57f",
+        "original_job": "1936619",
+        "original_accounting": "1936619|FAILED|1:0|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/runs/40189124444-1-development-dsprhbm-2026-10-25-1db19ea511d1\n",
+        "recovery_controller": "/org/org-open-sai/proj-sai-hpc-software/controller/9654ff1f2187c1c2db3d9fcb37a860859ca13bdd/cp2k-dsprhbm-sync-recovery-20261025-1db19ea511d1",
+        "artifact_sha256": "e8f72f12bf884d78bad2b8123fc02868f25bad65dea79dc3da92c60fd162d048",
+        "scientific_evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-10-25-g1db19ea511d1-re943569fcfff/DSPRHBM/cp2k-dsprhbm-sync-recovery-20261025-1db19ea511d1.json",
+        "scientific_evidence_sha256": "e8e7411918a69ebeac09099948d62eba905da2861e587e66c0fe2c75fe85afec",
+        "reason": "fresh dependency rebuild after rejected corrupt checkpoint; explicit pre-teardown fsync and filesystem check"
+      },
+      "manifest": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-10-25-g1db19ea511d1-re943569fcfff/DSPRHBM/cp2k-dsprhbm-sync-recovery-20261025-1db19ea511d1.json",
+      "artifact_sha256": "e8f72f12bf884d78bad2b8123fc02868f25bad65dea79dc3da92c60fd162d048",
+      "status": {
+        "exit_code": "0:0",
+        "job": "1939349",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "original_proof": {
+        "actual_allocated_cpus": 4,
+        "allocated_cpus": 4,
+        "artifact_sha256": "e8f72f12bf884d78bad2b8123fc02868f25bad65dea79dc3da92c60fd162d048",
+        "controller_sha256": "31cdfc7219bb1be28f7997c11fbe2b934214448901c8b769416f1e3e28ae9a3d",
+        "cores_per_rank": 2,
+        "evidence_sha256": "31f6c941d2b63e8ed5b548454304463b931e2cf67dbed24f72ab3c786570a7b4",
+        "gpus_per_node": 0,
+        "helpers_sha256": "aefd8b234b1b43f2815a6af5f3502204319a490f4919ad417421d920034a10e3",
+        "identity": {
+          "build_id": "master-2026-10-25-g1db19ea511d1-re943569fcfff",
+          "cpu_arch": "x86-64-v4",
+          "cuda_arch": "",
+          "dependency_isa": "avx512",
+          "gpus": 0,
+          "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-25-g1db19ea511d1-re943569fcfff/DSPRHBM",
+          "partition": "DSPRHBM",
+          "recipe_sha256": "e943569fcfff4e45a09a4db7906522655c215b3b461e0e9bb219586d0ffa6b17",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "master",
+          "source_sha": "1db19ea511d10fbf2eb75cec7c0d88b6635563e2",
+          "source_version": "master-2026-10-25",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "dsprhbm",
+          "track": "development",
+          "version_label": "master-2026-10-25"
+        },
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-25-g1db19ea511d1-re943569fcfff/DSPRHBM",
+        "job": "1939349",
+        "job_script_sha256": "92a462db0a07d89ad66de04dd276d60fc099d691dbe8e9cf47629f4b2e03e8ee",
+        "launcher": "/org/org-open-sai/proj-sai-hpc-software/controller/9654ff1f2187c1c2db3d9fcb37a860859ca13bdd/cp2k-dsprhbm-sync-recovery-20261025-1db19ea511d1/cp2k",
+        "launcher_sha256": "210ddd657ec01da4c1bd13294f95ee51991f24219c3b1965c52874c6270b4540",
+        "nodes": 2,
+        "omp_threads": 2,
+        "partition": "DSPRHBM",
+        "rank_wrapper_sha256": "cd8a16306182ca597ffcb495ef0e14fa2d334d6c8d71c7f7f117d905afbeaa03",
+        "ranks": 2,
+        "ranks_per_node": 1,
+        "recipe_sha256": "e943569fcfff4e45a09a4db7906522655c215b3b461e0e9bb219586d0ffa6b17",
+        "run_id": "cp2k-dsprhbm-sync-recovery-20261025-1db19ea511d1-science",
+        "source_sha": "1db19ea511d10fbf2eb75cec7c0d88b6635563e2",
+        "verified": true
+      },
+      "evidence": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/cp2k-dsprhbm-sync-recovery-20261025-1db19ea511d1-science/results/evidence.json",
+      "evidence_sha256": "31f6c941d2b63e8ed5b548454304463b931e2cf67dbed24f72ab3c786570a7b4",
+      "manifest_sha256": "e8e7411918a69ebeac09099948d62eba905da2861e587e66c0fe2c75fe85afec",
+      "build_phases": {
+        "dependencies": {
+          "job": "1937947",
+          "run": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-dsprhbm-sync-recovery-20261025-1db19ea511d1-dependencies"
+        },
+        "application": {
+          "job": "1938812",
+          "run": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-dsprhbm-sync-recovery-20261025-1db19ea511d1"
+        }
+      },
+      "dependency_clone": {
+        "status": "prepared",
+        "source_unchanged": true,
+        "upper_directory_unchanged": true,
+        "fsck_before_and_after": "passed",
+        "remaining_entries": 0,
+        "source_overlay_sha256": "caa87d2fcd14f4f56a1cd4ab78f37b1583933e5e54454b191fdd9524ac63d448",
+        "prepared_overlay_sha256": "6e5f4888670d9dbe52e43b573627f907db11d9c708fda9963ad8f0163ba3de7e"
+      },
+      "dependency_integrity": {
+        "overlay-sync-dependencies.json": {
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-dsprhbm-sync-recovery-20261025-1db19ea511d1-dependencies/results/overlay-sync-dependencies.json",
+          "sha256": "157d960453a121195957c6885db8f17753cdafc2b60993e2531d8d462eff24dd",
+          "text": "{\"phase\": \"dependencies\", \"synchronized\": true, \"marker\": \"/workspace/.sai-overlay-sync\", \"elapsed_seconds\": 0.8190113239688799}\n"
+        },
+        "dependency-fsck.stdout": {
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-dsprhbm-sync-recovery-20261025-1db19ea511d1-dependencies/results/dependency-fsck.stdout",
+          "sha256": "7039469f524d70e8fee3065ebf9ae5b725997e9959326e37cb2f4af80e113eb4",
+          "text": "Pass 1: Checking inodes, blocks, and sizes\nPass 2: Checking directory structure\nPass 3: Checking directory connectivity\nPass 4: Checking reference counts\nPass 5: Checking group summary information\n/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-dsprhbm-sync-recovery-20261025-1db19ea511d1-dependencies/work.ext3: 103222/1048576 files (3.7% non-contiguous), 951929/4194304 blocks\n"
+        },
+        "dependency-fsck.stderr": {
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-dsprhbm-sync-recovery-20261025-1db19ea511d1-dependencies/results/dependency-fsck.stderr",
+          "sha256": "f074aa9872d23bd7876c68381422f0b17c739d7dbd64d41e99dfd1398653a818",
+          "text": "e2fsck 1.47.0 (5-Feb-2023)\n"
+        }
+      }
+    }
+  },
+  "accounting": "1935251|COMPLETED|0:0|00:07:27|4V100|proj-sai-hpc-software|4v100n[27-28]\n1935544|COMPLETED|0:0|00:10:32|16V100|proj-sai-hpc-software|16v100n[79-80]\n1936664|COMPLETED|0:0|00:14:30|8V100V0|proj-sai-hpc-software|8v100v0n[02,08]\n1939349|COMPLETED|0:0|00:19:44|DSPRHBM|proj-sai-hpc-software|d9470n[01-02]\n",
+  "build_accounting": "1934154|COMPLETED|0:0|01:09:58|8V100V0|proj-sai-hpc-software|8v100v0n08\n1934164|COMPLETED|0:0|00:36:58|4V100|proj-sai-hpc-software|4v100n15\n1934168|COMPLETED|0:0|01:06:58|16V100|proj-sai-hpc-software|16v100n65\n1934643|COMPLETED|0:0|00:46:44|4V100|proj-sai-hpc-software|4v100n13\n1934987|COMPLETED|0:0|00:30:15|16V100|proj-sai-hpc-software|16v100n02\n1934993|COMPLETED|0:0|01:45:58|8V100V0|proj-sai-hpc-software|8v100v0n02\n1937947|COMPLETED|0:0|00:46:48|DSPRHBM|proj-sai-hpc-software|d9470n01\n1938812|COMPLETED|0:0|00:38:13|DSPRHBM|proj-sai-hpc-software|d9470n01\n"
+}

@@ -11,16 +11,25 @@ The schedule remains 02:23 UTC / 10:23 Asia/Shanghai. Failed or partial matrices
 retain the previous accepted generation, and the five applications publish
 independently. See [daily closure evidence](evidence/daily-beta-20261025/README.md).
 
-The current campaign resolves each source once and retains that identity through
-recovery. Its state at 15:51 UTC is:
+The completed campaign resolves each source once and retains that identity
+through recovery. All 17 application/target entries are scientifically accepted
+and publicly selected as of October 25, 17:36 UTC (October 26, 01:36 Asia/Shanghai):
 
 | Program / public entry | Selected source | Current campaign |
 | --- | --- | --- |
 | `abacus/develop-beta-later` | `89595dd29a26aec34d623518cadf736c17345f69` | Four targets built, scientifically accepted and beta-published on October 25. |
-| `cp2k/master-beta-later` | `1db19ea511d10fbf2eb75cec7c0d88b6635563e2` | All three GPU SIFs passed scientific acceptance and project publication. DSPRHBM detected a corrupt dependency overlay after failed driver teardown; a fresh CPU recovery with explicit synchronization is running. Previous beta retained. |
+| `cp2k/master-beta-later` | `1db19ea511d10fbf2eb75cec7c0d88b6635563e2` | All four targets built, scientifically accepted and beta-published on October 25. DSPRHBM fresh recovery passed dependencies 1937947, application 1938812 and science 1939349; all four public module checks passed in 1939536–1939542. The original corrupt dependency checkpoint and failed workflow remain recorded. |
 | `deepmd-kit/master-beta-later` | `2ba617bc3db67adee2b8ba00c71e9fa1c2d2bb8c` | Three targets accepted and beta-published on October 25; actual two-GPU se_e2_a/DPA2 training and restart passed. |
 | `lammps/develop-beta-later` | `049f269111f42ac408f706e0cc94b37f50346baf` | Three targets built, scientifically accepted and beta-published on October 25; 14 scientific cases, 71 packages and 2,500 styles per target. |
 | `gpumd/master-beta-later` | `30a6db02e36494b8bba71c9fa1d1a68627604961` | Three targets accepted and beta-published automatically by successful Actions run 40190615647. |
+
+The [final public preflight](evidence/daily-beta-20261025/public-preflight.json)
+verified all selected SIF checksums, immutable payload permissions, runtime files
+and launchers. [Module checks](evidence/daily-beta-20261025/public-module-checks.json)
+confirm that ordinary cached help sees the new fixed versions; login-node loads
+print version/help and fail without leaving partially loaded modules or SIF
+environment variables. Source dates remain October 23/24/25, while every selected
+generation records acceptance on October 25 UTC.
 
 All computation, build scratch and raw evidence use
 `/org/org-open-sai/proj-sai-hpc-software` with account `proj-sai-hpc-software`.

@@ -1,0 +1,17 @@
+
+-------------- Module Specific Help for "cp2k/master-beta-later" --------------
+[SAI beta] cp2k / master
+Source version: master-2026-10-25
+Commit: 1db19ea511d10fbf2eb75cec7c0d88b6635563e2
+Accepted snapshot: 20261025 (latest accepted, not necessarily upstream HEAD)
+Partitions: 16V100, 4V100, 8V100V0, DSPRHBM
+Fixed module: cp2k/master-beta-20261025-1db19ea511d1-r75ef5179f1e8-b98b544f7973e
+System sbatch examples: /opt/sbatch_examples
+
+Load on a compute node inside your existing sbatch job or srun shell:
+  module load cp2k/master-beta-later
+Command: cp2k.psmp -i input.inp -o output.out
+Use host mpirun with the resource and mapping settings in your existing job script.
+Commands enter the read-only SIF automatically; no extraction is needed.
+Runtime temporary files use private node memory automatically; no TMPDIR setup is needed.
+For a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load cp2k/master-beta-20261025-1db19ea511d1-r75ef5179f1e8-b98b544f7973e

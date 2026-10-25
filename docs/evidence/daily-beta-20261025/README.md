@@ -116,14 +116,20 @@ The actual [source transport](lammps-source-transport.json) sent a 329,504-byte
 Git delta from the cached accepted ancestor, replacing an approximately 909 MB
 full-history transfer. The pinned DeePMD dependency source was also a cache hit.
 
-### CP2K: GPU acceptance complete, CPU recovery active
+### CP2K
 
 Source `1db19ea511d10fbf2eb75cec7c0d88b6635563e2` passed all three GPU
 builds and scientific acceptance jobs: `1935251` (4V100), `1935544` (16V100),
 and `1936664` (8V100V0). Each checks seven PBE/solver/library groups in
 single- and multi-node modes, including OT, diagonalization and ELPA.
 The original [workflow 40189124444](https://github.com/AI4SAI/sai-hpc-software/actions/runs/40189124444)
-retains its CPU failure; the public CP2K alias has not yet rotated.
+retains its CPU failure. Independently rebuilt DSPRHBM science job `1939349`
+completed successfully in 19m44s. All four targets now pass all 14 calculations,
+including the 64-water PBE OT and ELPA cases. The [science records](cp2k-science.json)
+bind each result to its immutable SIF and retain the original CPU run and its
+separate recovery. Across all single/multinode and solver comparisons, the
+largest energy difference is `4.4111e-11` Hartree and the largest force-component
+difference is `1.5420e-9` Hartree/Bohr, below the required `1e-6` and `1e-5` limits.
 
 DSPRHBM dependency job `1934169` returned zero after Apptainer reported
 `Terminating fuse2fs after timeout` and a driver cleanup error. Application
@@ -133,15 +139,23 @@ image matched the sealed source checksum; this was not a copy mismatch.
 [Original failure evidence](cp2k-dsprhbm-first-build-failure.json) retains both
 jobs, the driver warning, filesystem errors, requests and their hashes.
 
-The pinned fuse2fs implementation flushes all filesystem metadata from its
-writable-file `fsync` callback. CP2K now explicitly performs that operation
+The [pinned fuse2fs implementation](https://github.com/tytso/e2fsprogs/blob/45651efd6db7da8738bc9d8d1f17e99259cabfe4/misc/fuse2fs.c#L3086) flushes all filesystem metadata from its
+writable-file `fsync` callback. [Apptainer 1.4.4 teardown](https://github.com/apptainer/apptainer/blob/v1.4.4/internal/pkg/image/driver/imagedriver.go#L505) waits one second before SIGTERM and another before SIGKILL. CP2K now explicitly performs that operation
 before each writable container phase exits, while the payload is still alive.
 A host-side sync of the image alone would not flush metadata held inside the
 userspace driver. Dependency jobs also require a clean filesystem check before
 sealing, and driver cleanup errors can no longer become successful phases merely
 because the payload returned zero. The original controller and damaged image
-remain unchanged. Fresh CPU recovery `1937947` uses controller `9654ff1`, the
-same selected CP2K source, 16 workers, and new recipe `e943569fcfff`.
+remain unchanged. Fresh CPU dependency recovery `1937947` completed `0:0` in
+46m48s, including a 0.819-second explicit sync and a clean filesystem check.
+It uses controller `9654ff1`, the same selected CP2K source, 16 workers, and new
+recipe `e943569fcfff`. Application recovery `1938812` completed in 38m13s,
+including verified dependency cloning, compilation and final SIF checks. A
+[10.13-second whole-job cgroup observation](cp2k-recovery-cpu-sample.json) during
+Libint compilation measured 13.308 CPU cores of the 16 allocated, with no CPU
+quota or throttling. The following 19.3-minute interval averaged 9.064 cores,
+with no throttling or OOM events. These are interval measurements, not a
+full-build average.
 
 The [actual overlay probe](cp2k-overlay-sync-probe.json), job `1938021`,
 completed in 21 seconds on DSPRHBM: 2,730 retained files matched after read-only
@@ -155,6 +169,30 @@ The publisher supports a single recorded CP2K rebuild that binds both requests,
 retains the original source/target, and reruns the recovered controller's build
 and scientific verification. It does not convert the original failed job to
 success or accept an unverified replacement.
+
+All four public module/SIF routes then passed: `1939536` (16V100), `1939538`
+(4V100), `1939540` (8V100V0), and `1939542` (DSPRHBM). The publisher atomically
+selected `cp2k/master-beta-20261025-1db19ea511d1-r75ef5179f1e8-b98b544f7973e`
+through `master-beta-later`. The [publication record](cp2k-publication.json),
+[original workflow jobs](cp2k-workflow-jobs.json), and [live help](cp2k-public-help.txt)
+retain both the successful public selection and the original failed workflow.
+
+## Final public checks
+
+All five programs and all 17 application/target entries are accepted and publicly
+selected. The [final preflight](public-preflight.json) completed successfully on
+October 25 at 17:36 UTC (October 26 at 01:36 Asia/Shanghai), verifying the selected
+SIFs, runtime, fixed modules, bootstrap image and launchers against their hashes,
+as well as immutable/public payload permissions and matching acceptance records.
+
+The [five module checks](public-module-checks.json) verify both ordinary cached
+help and ignore-cache help. Each login-node load displays the real source and
+accepted version, ordinary command, and `/opt/sbatch_examples`, then returns a
+nonzero status with no application modules or SIF environment left loaded.
+The final checks reused the four already completed module observations and added
+CP2K after its rotation; the full payload preflight checks all five current
+selections together. No new templates or native `/opt` application installations
+are part of this beta rotation.
 
 ## Repairs exercised by this campaign
 

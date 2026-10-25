@@ -1,0 +1,426 @@
+{
+  "request": {
+    "attempt": "1",
+    "before": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f",
+      "fixed": "master-beta-20261024-cfe5e5d87aaf-ra4c6a24c229f",
+      "generation": "20261025-memory-r1"
+    },
+    "builds": [
+      {
+        "repository": "cp2k/cp2k",
+        "requested_ref": "master",
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "1db19ea511d10fbf2eb75cec7c0d88b6635563e2",
+        "source_version": "master-2026-10-25",
+        "status": "resolved",
+        "target": "16v100-avx2",
+        "track": "development"
+      },
+      {
+        "repository": "cp2k/cp2k",
+        "requested_ref": "master",
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "1db19ea511d10fbf2eb75cec7c0d88b6635563e2",
+        "source_version": "master-2026-10-25",
+        "status": "resolved",
+        "target": "4v100-avx512",
+        "track": "development"
+      },
+      {
+        "repository": "cp2k/cp2k",
+        "requested_ref": "master",
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "1db19ea511d10fbf2eb75cec7c0d88b6635563e2",
+        "source_version": "master-2026-10-25",
+        "status": "resolved",
+        "target": "8v100v0-avx512",
+        "track": "development"
+      },
+      {
+        "repository": "cp2k/cp2k",
+        "requested_ref": "master",
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "1db19ea511d10fbf2eb75cec7c0d88b6635563e2",
+        "source_version": "master-2026-10-25",
+        "status": "resolved",
+        "target": "dsprhbm",
+        "track": "development"
+      }
+    ],
+    "date": "20261025",
+    "software": "cp2k",
+    "workflow": "40189124444"
+  },
+  "status": {
+    "after": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261025-40189124444-1-cp2k",
+      "fixed": "master-beta-20261025-1db19ea511d1-r75ef5179f1e8-b98b544f7973e",
+      "generation": "daily-20261025-40189124444-1-cp2k"
+    },
+    "attempt": "1",
+    "before": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f",
+      "fixed": "master-beta-20261024-cfe5e5d87aaf-ra4c6a24c229f",
+      "generation": "20261025-memory-r1"
+    },
+    "catalog_sha256": "4b342668def2f1b6bc45c76febc3c091a1ff73c621c9c0af633a70ef2acdb559",
+    "checks": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189124444-1-cp2k-f4a8cf2dd14c/validation.json",
+    "fixed": "master-beta-20261025-1db19ea511d1-r75ef5179f1e8-b98b544f7973e",
+    "generation": "daily-20261025-40189124444-1-cp2k",
+    "software": "cp2k",
+    "source_sha": "1db19ea511d10fbf2eb75cec7c0d88b6635563e2",
+    "status": "published",
+    "workflow": "40189124444"
+  },
+  "publication": {
+    "after": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261025-40189124444-1-cp2k",
+      "fixed": "master-beta-20261025-1db19ea511d1-r75ef5179f1e8-b98b544f7973e",
+      "generation": "daily-20261025-40189124444-1-cp2k"
+    },
+    "attempt": "1",
+    "before": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f",
+      "fixed": "master-beta-20261024-cfe5e5d87aaf-ra4c6a24c229f",
+      "generation": "20261025-memory-r1"
+    },
+    "catalog_sha256": "4b342668def2f1b6bc45c76febc3c091a1ff73c621c9c0af633a70ef2acdb559",
+    "checks": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189124444-1-cp2k-f4a8cf2dd14c/validation.json",
+    "fixed": "master-beta-20261025-1db19ea511d1-r75ef5179f1e8-b98b544f7973e",
+    "generation": "daily-20261025-40189124444-1-cp2k",
+    "software": "cp2k",
+    "source_sha": "1db19ea511d10fbf2eb75cec7c0d88b6635563e2",
+    "status": "published",
+    "workflow": "40189124444"
+  },
+  "jobs": [
+    {
+      "exclude": "",
+      "job": "1939536",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189124444-1-cp2k-f4a8cf2dd14c/16V100",
+      "partition": "16V100",
+      "request_sha256": "0df1a19abf042d0ec5d1081ffabfb62eb2c231428d05f4cd42d55b40852f61f8",
+      "script_sha256": "4276899d3de4f6ea9fa81e7b50a90386f7a712deef559c5d4c65bdf26480a682"
+    },
+    {
+      "exclude": "",
+      "job": "1939538",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189124444-1-cp2k-f4a8cf2dd14c/4V100",
+      "partition": "4V100",
+      "request_sha256": "eff088199c90d7c7d6738ea8b1f5f8bbc949753557237ef43b8248ad44801719",
+      "script_sha256": "a8cdd77b24703a1b51ecf5483bbd059febfcfa81f0ca8e5211c5d23f2ffe18c1"
+    },
+    {
+      "exclude": "",
+      "job": "1939540",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189124444-1-cp2k-f4a8cf2dd14c/8V100V0",
+      "partition": "8V100V0",
+      "request_sha256": "576637d5dd73e173a62b12513a04dc3c9d1bc2a7c6f4b9cadb684ac26a2f3e31",
+      "script_sha256": "789a7554366e11a9790e49b4e76391b8090f5f9c444dbfd9acc73f6aff12a3e5"
+    },
+    {
+      "exclude": "",
+      "job": "1939542",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189124444-1-cp2k-f4a8cf2dd14c/DSPRHBM",
+      "partition": "DSPRHBM",
+      "request_sha256": "ed53ac3b68e6968761bd8a782ebee9964979331d00512bca848709f4445de3f6",
+      "script_sha256": "08daf42d7ff9064ac955cbaa8fc33687be95e69fcfd8c541df51b55bab4acacd"
+    }
+  ],
+  "runtime-status": {
+    "failed": {},
+    "jobs": [
+      {
+        "exclude": "",
+        "job": "1939536",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189124444-1-cp2k-f4a8cf2dd14c/16V100",
+        "partition": "16V100",
+        "request_sha256": "0df1a19abf042d0ec5d1081ffabfb62eb2c231428d05f4cd42d55b40852f61f8",
+        "script_sha256": "4276899d3de4f6ea9fa81e7b50a90386f7a712deef559c5d4c65bdf26480a682"
+      },
+      {
+        "exclude": "",
+        "job": "1939538",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189124444-1-cp2k-f4a8cf2dd14c/4V100",
+        "partition": "4V100",
+        "request_sha256": "eff088199c90d7c7d6738ea8b1f5f8bbc949753557237ef43b8248ad44801719",
+        "script_sha256": "a8cdd77b24703a1b51ecf5483bbd059febfcfa81f0ca8e5211c5d23f2ffe18c1"
+      },
+      {
+        "exclude": "",
+        "job": "1939540",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189124444-1-cp2k-f4a8cf2dd14c/8V100V0",
+        "partition": "8V100V0",
+        "request_sha256": "576637d5dd73e173a62b12513a04dc3c9d1bc2a7c6f4b9cadb684ac26a2f3e31",
+        "script_sha256": "789a7554366e11a9790e49b4e76391b8090f5f9c444dbfd9acc73f6aff12a3e5"
+      },
+      {
+        "exclude": "",
+        "job": "1939542",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189124444-1-cp2k-f4a8cf2dd14c/DSPRHBM",
+        "partition": "DSPRHBM",
+        "request_sha256": "ed53ac3b68e6968761bd8a782ebee9964979331d00512bca848709f4445de3f6",
+        "script_sha256": "08daf42d7ff9064ac955cbaa8fc33687be95e69fcfd8c541df51b55bab4acacd"
+      }
+    ],
+    "passed": {
+      "16V100": {
+        "automatic_memory": true,
+        "catalog_sha256": "1fec389afd29d365b50a3d1a1311576288e45795747e4f25bbefb55a681180f4",
+        "cp2k": {
+          "energy_delta_ha": 5.186961971048731e-13,
+          "max_force_delta_ha_bohr": 1.0000004296850662e-12
+        },
+        "job": "1939536",
+        "partition": "16V100",
+        "passed": true,
+        "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+      },
+      "4V100": {
+        "automatic_memory": true,
+        "catalog_sha256": "1fec389afd29d365b50a3d1a1311576288e45795747e4f25bbefb55a681180f4",
+        "cp2k": {
+          "energy_delta_ha": 3.126388037344441e-13,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "job": "1939538",
+        "partition": "4V100",
+        "passed": true,
+        "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+      },
+      "8V100V0": {
+        "automatic_memory": true,
+        "catalog_sha256": "1fec389afd29d365b50a3d1a1311576288e45795747e4f25bbefb55a681180f4",
+        "cp2k": {
+          "energy_delta_ha": 4.760636329592671e-13,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "job": "1939540",
+        "partition": "8V100V0",
+        "passed": true,
+        "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+      },
+      "DSPRHBM": {
+        "automatic_memory": true,
+        "catalog_sha256": "1fec389afd29d365b50a3d1a1311576288e45795747e4f25bbefb55a681180f4",
+        "cp2k": {
+          "energy_delta_ha": 1.1581846592889633e-12,
+          "max_force_delta_ha_bohr": 1.0000004296850662e-12
+        },
+        "job": "1939542",
+        "partition": "DSPRHBM",
+        "passed": true,
+        "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+      }
+    }
+  },
+  "validation": [
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "1fec389afd29d365b50a3d1a1311576288e45795747e4f25bbefb55a681180f4",
+      "cp2k": {
+        "energy_delta_ha": 5.186961971048731e-13,
+        "max_force_delta_ha_bohr": 1.0000004296850662e-12
+      },
+      "job": "1939536",
+      "partition": "16V100",
+      "passed": true,
+      "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+    },
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "1fec389afd29d365b50a3d1a1311576288e45795747e4f25bbefb55a681180f4",
+      "cp2k": {
+        "energy_delta_ha": 3.126388037344441e-13,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "job": "1939538",
+      "partition": "4V100",
+      "passed": true,
+      "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+    },
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "1fec389afd29d365b50a3d1a1311576288e45795747e4f25bbefb55a681180f4",
+      "cp2k": {
+        "energy_delta_ha": 1.1581846592889633e-12,
+        "max_force_delta_ha_bohr": 1.0000004296850662e-12
+      },
+      "job": "1939542",
+      "partition": "DSPRHBM",
+      "passed": true,
+      "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+    },
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "1fec389afd29d365b50a3d1a1311576288e45795747e4f25bbefb55a681180f4",
+      "cp2k": {
+        "energy_delta_ha": 4.760636329592671e-13,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "job": "1939540",
+      "partition": "8V100V0",
+      "passed": true,
+      "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+    }
+  ],
+  "candidates": {
+    "applications": {
+      "cp2k": {
+        "build_revision": "98b544f7973e",
+        "partitions": {
+          "16V100": {
+            "binds": [],
+            "build_verified": true,
+            "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-10-25-g1db19ea511d1-r960c8ef8133d/16V100/40189124444-1-development-16v100-avx2-2026-10-25-1db19ea511d1.json",
+            "evidence_sha256": "b1f2782e9abb89bed17a6aa9358acf4c63a25f24371d8804bf28d9a0cfca2fa4",
+            "identity": {
+              "build_id": "master-2026-10-25-g1db19ea511d1-r960c8ef8133d",
+              "cpu_arch": "znver3",
+              "cuda_arch": "70",
+              "dependency_isa": "avx2",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-25-g1db19ea511d1-r960c8ef8133d/16V100",
+              "partition": "16V100",
+              "recipe_sha256": "960c8ef8133d1d2ee04824e5476147522e5a15784aa813e002f883f0975578f5",
+              "repository": "cp2k/cp2k",
+              "schema": 2,
+              "software": "cp2k",
+              "source_ref": "master",
+              "source_sha": "1db19ea511d10fbf2eb75cec7c0d88b6635563e2",
+              "source_version": "master-2026-10-25",
+              "stack_digest": null,
+              "stack_sources": {},
+              "target": "16v100-avx2",
+              "track": "development",
+              "version_label": "master-2026-10-25"
+            },
+            "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-10-25-g1db19ea511d1-r960c8ef8133d/16V100/40189124444-1-development-16v100-avx2-2026-10-25-1db19ea511d1.sif",
+            "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+            "scientific_verified": true,
+            "sha256": "8f951d7b21e119bfc9c2c8abd65f8958b652610fba092aa772ac420a494b1e48"
+          },
+          "4V100": {
+            "binds": [],
+            "build_verified": true,
+            "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-10-25-g1db19ea511d1-r960c8ef8133d/4V100/40189124444-1-development-4v100-avx512-2026-10-25-1db19ea511d1.json",
+            "evidence_sha256": "e2fb087eda8da5168cb182094ade0fdd3ec966bf718f77f446cb5818637a8c83",
+            "identity": {
+              "build_id": "master-2026-10-25-g1db19ea511d1-r960c8ef8133d",
+              "cpu_arch": "znver4",
+              "cuda_arch": "70",
+              "dependency_isa": "avx512",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-25-g1db19ea511d1-r960c8ef8133d/4V100",
+              "partition": "4V100",
+              "recipe_sha256": "960c8ef8133d1d2ee04824e5476147522e5a15784aa813e002f883f0975578f5",
+              "repository": "cp2k/cp2k",
+              "schema": 2,
+              "software": "cp2k",
+              "source_ref": "master",
+              "source_sha": "1db19ea511d10fbf2eb75cec7c0d88b6635563e2",
+              "source_version": "master-2026-10-25",
+              "stack_digest": null,
+              "stack_sources": {},
+              "target": "4v100-avx512",
+              "track": "development",
+              "version_label": "master-2026-10-25"
+            },
+            "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-10-25-g1db19ea511d1-r960c8ef8133d/4V100/40189124444-1-development-4v100-avx512-2026-10-25-1db19ea511d1.sif",
+            "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512",
+            "scientific_verified": true,
+            "sha256": "a2cdf2e6148171c5e5ac80f07c2638b46393935cc22d7416d627c70bdb7bbe62"
+          },
+          "8V100V0": {
+            "binds": [],
+            "build_verified": true,
+            "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-10-25-g1db19ea511d1-r960c8ef8133d/8V100V0/40189124444-1-development-8v100v0-avx512-2026-10-25-1db19ea511d1.json",
+            "evidence_sha256": "948ca56de8f85c57dec18a5f7c5d1ecbe54165319ca4c30b645aa3b399d9a069",
+            "identity": {
+              "build_id": "master-2026-10-25-g1db19ea511d1-r960c8ef8133d",
+              "cpu_arch": "skylake-avx512",
+              "cuda_arch": "70",
+              "dependency_isa": "avx2",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-25-g1db19ea511d1-r960c8ef8133d/8V100V0",
+              "partition": "8V100V0",
+              "recipe_sha256": "960c8ef8133d1d2ee04824e5476147522e5a15784aa813e002f883f0975578f5",
+              "repository": "cp2k/cp2k",
+              "schema": 2,
+              "software": "cp2k",
+              "source_ref": "master",
+              "source_sha": "1db19ea511d10fbf2eb75cec7c0d88b6635563e2",
+              "source_version": "master-2026-10-25",
+              "stack_digest": null,
+              "stack_sources": {},
+              "target": "8v100v0-avx512",
+              "track": "development",
+              "version_label": "master-2026-10-25"
+            },
+            "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-10-25-g1db19ea511d1-r960c8ef8133d/8V100V0/40189124444-1-development-8v100v0-avx512-2026-10-25-1db19ea511d1.sif",
+            "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+            "scientific_verified": true,
+            "sha256": "38dee5dd6157ed81245dfffe58bff7bd59ad620737e21764e19dd5b3022a04e5"
+          },
+          "DSPRHBM": {
+            "binds": [],
+            "build_recovery": {
+              "evidence": "/org/org-open-sai/proj-sai-hpc-software/runs/40189124444-1-development-dsprhbm-2026-10-25-1db19ea511d1/results/build-recovery.json",
+              "evidence_sha256": "0bfcb566efbd51dad1b84425a65bc1b8bfa11e0ae1a2d5cf7f70f20235b392e5",
+              "run_id": "cp2k-dsprhbm-sync-recovery-20261025-1db19ea511d1",
+              "source_run": "40189124444-1-development-dsprhbm-2026-10-25-1db19ea511d1"
+            },
+            "build_verified": true,
+            "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-10-25-g1db19ea511d1-re943569fcfff/DSPRHBM/cp2k-dsprhbm-sync-recovery-20261025-1db19ea511d1.json",
+            "evidence_sha256": "e8e7411918a69ebeac09099948d62eba905da2861e587e66c0fe2c75fe85afec",
+            "identity": {
+              "build_id": "master-2026-10-25-g1db19ea511d1-re943569fcfff",
+              "cpu_arch": "x86-64-v4",
+              "cuda_arch": "",
+              "dependency_isa": "avx512",
+              "gpus": 0,
+              "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-25-g1db19ea511d1-re943569fcfff/DSPRHBM",
+              "partition": "DSPRHBM",
+              "recipe_sha256": "e943569fcfff4e45a09a4db7906522655c215b3b461e0e9bb219586d0ffa6b17",
+              "repository": "cp2k/cp2k",
+              "schema": 2,
+              "software": "cp2k",
+              "source_ref": "master",
+              "source_sha": "1db19ea511d10fbf2eb75cec7c0d88b6635563e2",
+              "source_version": "master-2026-10-25",
+              "stack_digest": null,
+              "stack_sources": {},
+              "target": "dsprhbm",
+              "track": "development",
+              "version_label": "master-2026-10-25"
+            },
+            "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-10-25-g1db19ea511d1-re943569fcfff/DSPRHBM/cp2k-dsprhbm-sync-recovery-20261025-1db19ea511d1.sif",
+            "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512",
+            "scientific_verified": true,
+            "sha256": "e8f72f12bf884d78bad2b8123fc02868f25bad65dea79dc3da92c60fd162d048"
+          }
+        },
+        "version": "master-20261025-g1db19ea511d1"
+      }
+    },
+    "daily_publication": {
+      "attempt": "1",
+      "workflow": "40189124444"
+    },
+    "memory_bootstrap": {
+      "image": "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f/libexec/memory-bootstrap.sif",
+      "sha256": "eb467d87aa7a41ab80f982929d23a1fff1d59e1625fae57e62fba03fc643c7e2",
+      "source_image": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/bundle-r7/libexec/memory-bootstrap.sif"
+    },
+    "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4",
+    "schema": 1,
+    "snapshot": "20261025"
+  },
+  "accounting": "1939536|COMPLETED|0:0|00:00:32|16V100|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189124444-1-cp2k-f4a8cf2dd14c/16V100|16v100n66\n1939538|COMPLETED|0:0|00:00:18|4V100|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189124444-1-cp2k-f4a8cf2dd14c/4V100|4v100n18\n1939540|COMPLETED|0:0|00:01:09|8V100V0|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189124444-1-cp2k-f4a8cf2dd14c/8V100V0|8v100v0n02\n1939542|COMPLETED|0:0|00:00:40|DSPRHBM|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189124444-1-cp2k-f4a8cf2dd14c/DSPRHBM|d9470n01\n",
+  "task": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189124444-1-cp2k-f4a8cf2dd14c"
+}
