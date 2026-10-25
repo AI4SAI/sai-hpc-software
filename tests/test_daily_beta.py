@@ -208,6 +208,14 @@ class RuntimeTests(unittest.TestCase):
                     if partition != 'DSPRHBM':
                         self.assertNotIn('--cpus-per-task', script)
                     self.assertIn('--account=proj-sai-hpc-software', script)
+                    if software == 'abacus' and partition == '16V100':
+                        # Exercise the pre-module environment with the same NIL
+                        # submission that exposed MPI's missing-home failure.
+                        prefix = script.split('source /etc/profile.d/lmod.sh')[0]
+                        environment = subprocess.check_output(['bash', '-c', prefix +
+                            'printf "%s\\n" "$HOME" "$USER" "$LOGNAME"'], text=True,
+                            env={'PATH': '/usr/bin:/bin', 'SLURM_JOB_USER': 'stardust'})
+                        self.assertEqual(environment.splitlines(), [str(Path.home()), 'stardust', 'stardust'])
                     if software == 'deepmd-kit':
                         self.assertIn("deepmd-python -c", script)
 

@@ -63,6 +63,10 @@ def render(software, partition, bundle, output):
                ['#SBATCH --gpus-per-node=' + ('1' if software == 'gpumd' else '2')]),
              '#SBATCH --time=30', '#SBATCH --output=' + str(output / 'slurm-%j.log'), '#SBATCH --export=NIL',
              'set -eo pipefail', 'export PATH=/usr/bin:/bin LD_LIBRARY_PATH="" LD_PRELOAD="" PYTHONPATH=""',
+             # NIL drops HOME; site AVX2 MPI needs the actual account home even
+             # though runtime scratch remains in private memory/project storage.
+             'export HOME=' + q(str(Path.home())),
+             'export USER=${SLURM_JOB_USER:?} LOGNAME=${SLURM_JOB_USER:?}',
              'source /etc/profile.d/lmod.sh', 'module purge', 'module use ' + q(str(bundle / 'modulefiles')),
              'module load ' + q(software + '-sif/' + app['version']),
              'export SLURM_EXPORT_ENV=ALL OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1',
