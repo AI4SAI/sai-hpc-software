@@ -65,3 +65,6 @@ verify)
   python3 "$INSTALL_PREFIX/share/sai/cp2k_feature_contract.py" verify \
     "$INSTALL_PREFIX" "$target" "$sha" ;;
 *) exit 2;; esac
+if [[ "$op" != verify ]]; then
+  python3 /control/cp2k_overlay_sync.py "$op"
+fi

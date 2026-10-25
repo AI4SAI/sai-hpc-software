@@ -134,6 +134,17 @@ class ImageDriverTests(unittest.TestCase):
         result = subprocess.run([sys.executable, str(program), str(self.run), sys.executable, str(payload)], capture_output=True)
         self.assertEqual(result.returncode, 255)
         self.assertNotIn(b'CONTAINER_MOUNT_RETRY', result.stderr)
+        # The observed Apptainer teardown error exits zero even though the
+        # writable driver was killed. Preserve the failure, with no retry.
+        message = ('INFO: Terminating fuse2fs after timeout\n'
+                   'INFO: Cleanup error: while stopping driver for overlay: fuse2fs exited: killed\n')
+        payload.write_text('import sys; sys.stderr.write(' + repr(message) + '); sys.exit(0)')
+        result = subprocess.run([sys.executable, str(program), str(self.run), sys.executable, str(payload)], capture_output=True)
+        self.assertEqual(result.returncode, 74)
+        self.assertNotIn(b'CONTAINER_MOUNT_RETRY', result.stderr)
+        failures = list((self.run / 'results').glob('driver-cleanup-failure-*.json'))
+        self.assertEqual(len(failures), 1)
+        self.assertEqual(json.loads(failures[0].read_text())['returncode'], 0)
 
 
 if __name__ == '__main__':
