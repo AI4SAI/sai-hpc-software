@@ -1,0 +1,1076 @@
+{
+  "ldconfig": {
+    "passed": true,
+    "libcuda_dirs": [
+      "/lib/x86_64-linux-gnu"
+    ]
+  },
+  "se_e2_a_single_gpu": {
+    "training": {
+      "command": [
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-r7d8ce7396215/8V100V0/bin/python",
+        "-m",
+        "deepmd",
+        "--pt",
+        "train",
+        "input.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 11.37670377921313,
+      "passed": true,
+      "learning_curve": [
+        [
+          1.0,
+          1.08,
+          1.12,
+          0.437,
+          0.45,
+          0.159,
+          0.174,
+          0.001
+        ],
+        [
+          2.0,
+          1.05,
+          1.08,
+          0.424,
+          0.437,
+          0.145,
+          0.159,
+          0.001
+        ],
+        [
+          3.0,
+          1.02,
+          1.05,
+          0.411,
+          0.424,
+          0.131,
+          0.145,
+          0.001
+        ],
+        [
+          4.0,
+          0.983,
+          1.02,
+          0.398,
+          0.411,
+          0.118,
+          0.131,
+          0.001
+        ],
+        [
+          5.0,
+          0.972,
+          0.983,
+          0.394,
+          0.398,
+          0.114,
+          0.118,
+          0.00032
+        ],
+        [
+          6.0,
+          0.962,
+          0.972,
+          0.39,
+          0.394,
+          0.11,
+          0.114,
+          0.00032
+        ],
+        [
+          7.0,
+          0.952,
+          0.962,
+          0.386,
+          0.39,
+          0.107,
+          0.11,
+          0.00032
+        ],
+        [
+          8.0,
+          0.942,
+          0.952,
+          0.382,
+          0.386,
+          0.103,
+          0.107,
+          0.00032
+        ]
+      ],
+      "checkpoint": {
+        "name": "model.ckpt-8.pt",
+        "bytes": 65669,
+        "sha256": "a4aa4f68f3ab4132f194c9bba33b52c1357e9a8687327434a21638b7615f304a"
+      }
+    },
+    "restart": {
+      "command": [
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-r7d8ce7396215/8V100V0/bin/python",
+        "-m",
+        "deepmd",
+        "--pt",
+        "train",
+        "restart.json",
+        "--restart",
+        "model.ckpt-8.pt"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 9.364729356020689,
+      "passed": true,
+      "learning_curve": [
+        [
+          8.0,
+          0.927,
+          0.942,
+          0.376,
+          0.382,
+          0.0973,
+          0.103,
+          0.00046
+        ],
+        [
+          9.0,
+          0.921,
+          0.927,
+          0.374,
+          0.376,
+          0.0949,
+          0.0973,
+          0.00022
+        ],
+        [
+          10.0,
+          0.914,
+          0.921,
+          0.371,
+          0.374,
+          0.0924,
+          0.0949,
+          0.00022
+        ],
+        [
+          11.0,
+          0.907,
+          0.914,
+          0.369,
+          0.371,
+          0.09,
+          0.0924,
+          0.00022
+        ],
+        [
+          12.0,
+          0.9,
+          0.907,
+          0.366,
+          0.369,
+          0.0876,
+          0.09,
+          0.00022
+        ]
+      ],
+      "checkpoint": {
+        "name": "model.ckpt-12.pt",
+        "bytes": 65837,
+        "sha256": "c5abe8fc2c63cfb8938b768862a1924f3554373e8e7d0adaafd3cc0bada5a6c4"
+      }
+    },
+    "passed": true
+  },
+  "dpa2_single_gpu": {
+    "training": {
+      "command": [
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-r7d8ce7396215/8V100V0/bin/python",
+        "-m",
+        "deepmd",
+        "--pt",
+        "train",
+        "input.json"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 11.453732297755778,
+      "passed": true,
+      "learning_curve": [
+        [
+          1.0,
+          0.213,
+          0.4,
+          0.0538,
+          0.163,
+          0.168,
+          0.0307,
+          0.001
+        ],
+        [
+          2.0,
+          0.235,
+          0.213,
+          0.00334,
+          0.0538,
+          0.235,
+          0.168,
+          0.001
+        ],
+        [
+          3.0,
+          0.198,
+          0.235,
+          0.00712,
+          0.00334,
+          0.197,
+          0.235,
+          0.001
+        ],
+        [
+          4.0,
+          0.137,
+          0.198,
+          0.00721,
+          0.00712,
+          0.136,
+          0.197,
+          0.001
+        ],
+        [
+          5.0,
+          0.121,
+          0.137,
+          0.0128,
+          0.00721,
+          0.117,
+          0.136,
+          0.00032
+        ],
+        [
+          6.0,
+          0.108,
+          0.121,
+          0.0186,
+          0.0128,
+          0.098,
+          0.117,
+          0.00032
+        ],
+        [
+          7.0,
+          0.0995,
+          0.108,
+          0.0239,
+          0.0186,
+          0.0804,
+          0.098,
+          0.00032
+        ],
+        [
+          8.0,
+          0.0951,
+          0.0995,
+          0.0284,
+          0.0239,
+          0.065,
+          0.0804,
+          0.00032
+        ]
+      ],
+      "checkpoint": {
+        "name": "model.ckpt-8.pt",
+        "bytes": 11495241,
+        "sha256": "042177458255eda8b5562657961d888b18d83018b946fe4514014d5689742d85"
+      }
+    },
+    "restart": {
+      "command": [
+        "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-r7d8ce7396215/8V100V0/bin/python",
+        "-m",
+        "deepmd",
+        "--pt",
+        "train",
+        "restart.json",
+        "--restart",
+        "model.ckpt-8.pt"
+      ],
+      "returncode": 0,
+      "elapsed_seconds": 10.791393892839551,
+      "passed": true,
+      "learning_curve": [
+        [
+          8.0,
+          0.0933,
+          0.0951,
+          0.033,
+          0.0284,
+          0.0463,
+          0.065,
+          0.00046
+        ],
+        [
+          9.0,
+          0.0926,
+          0.0933,
+          0.0341,
+          0.033,
+          0.0399,
+          0.0463,
+          0.00022
+        ],
+        [
+          10.0,
+          0.0909,
+          0.0926,
+          0.0342,
+          0.0341,
+          0.0355,
+          0.0399,
+          0.00022
+        ],
+        [
+          11.0,
+          0.0879,
+          0.0909,
+          0.0333,
+          0.0342,
+          0.0329,
+          0.0355,
+          0.00022
+        ],
+        [
+          12.0,
+          0.0836,
+          0.0879,
+          0.0316,
+          0.0333,
+          0.0318,
+          0.0329,
+          0.00022
+        ]
+      ],
+      "checkpoint": {
+        "name": "model.ckpt-12.pt",
+        "bytes": 11495603,
+        "sha256": "6158eb3f13981e9e13e534dbc2bf25085f2ecedbe140df8e7e03b74c6915761f"
+      }
+    },
+    "passed": true
+  },
+  "pytorch_ddp": {
+    "cases": {
+      "se_e2_a": {
+        "training": {
+          "command": [
+            "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-r7d8ce7396215/8V100V0/bin/python",
+            "-m",
+            "torch.distributed.run",
+            "--standalone",
+            "--nproc_per_node=2",
+            "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-ddp-20261025/8V100V0/control/training_audit.py",
+            "worker",
+            "input.json"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 12.652027990669012,
+          "passed": true,
+          "learning_curve": [
+            [
+              1.0,
+              1.08,
+              1.12,
+              0.437,
+              0.45,
+              0.159,
+              0.174,
+              0.001
+            ],
+            [
+              2.0,
+              1.05,
+              1.08,
+              0.424,
+              0.437,
+              0.145,
+              0.159,
+              0.001
+            ],
+            [
+              3.0,
+              1.02,
+              1.05,
+              0.411,
+              0.424,
+              0.131,
+              0.145,
+              0.001
+            ],
+            [
+              4.0,
+              0.983,
+              1.02,
+              0.398,
+              0.411,
+              0.118,
+              0.131,
+              0.001
+            ],
+            [
+              5.0,
+              0.972,
+              0.983,
+              0.394,
+              0.398,
+              0.114,
+              0.118,
+              0.00032
+            ],
+            [
+              6.0,
+              0.962,
+              0.972,
+              0.39,
+              0.394,
+              0.11,
+              0.114,
+              0.00032
+            ],
+            [
+              7.0,
+              0.952,
+              0.962,
+              0.386,
+              0.39,
+              0.107,
+              0.11,
+              0.00032
+            ],
+            [
+              8.0,
+              0.942,
+              0.952,
+              0.382,
+              0.386,
+              0.103,
+              0.107,
+              0.00032
+            ]
+          ],
+          "ranks": [
+            {
+              "rank": 0,
+              "world_size": 2,
+              "local_rank": 0,
+              "pid": 455464,
+              "backend": "cuda:nccl,cpu:gloo",
+              "device_ids": [
+                0
+              ],
+              "cuda_current_device": 0,
+              "find_unused_parameters": false,
+              "initial_parameters_sha256": "af50ae37d0e6bc6c6774523d032a4d14c8e7c7d23e61f7694c271a063494c331",
+              "forward_calls": 8,
+              "gradient_devices": [
+                "cuda:0"
+              ],
+              "gradients_finite": true,
+              "gradient_calls": 176,
+              "empty_trainable_parameters": [],
+              "final_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428"
+            },
+            {
+              "rank": 1,
+              "world_size": 2,
+              "local_rank": 1,
+              "pid": 455465,
+              "backend": "cuda:nccl,cpu:gloo",
+              "device_ids": [
+                1
+              ],
+              "cuda_current_device": 1,
+              "find_unused_parameters": false,
+              "initial_parameters_sha256": "af50ae37d0e6bc6c6774523d032a4d14c8e7c7d23e61f7694c271a063494c331",
+              "forward_calls": 8,
+              "gradient_devices": [
+                "cuda:1"
+              ],
+              "gradients_finite": true,
+              "gradient_calls": 176,
+              "empty_trainable_parameters": [],
+              "final_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428"
+            }
+          ],
+          "checkpoint": {
+            "name": "model.ckpt-8.pt",
+            "bytes": 65669,
+            "sha256": "9f823cbe6f80919d994757d66b3901ff017199fe5bcec037afe1b34759f2ce2b"
+          }
+        },
+        "restart": {
+          "command": [
+            "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-r7d8ce7396215/8V100V0/bin/python",
+            "-m",
+            "torch.distributed.run",
+            "--standalone",
+            "--nproc_per_node=2",
+            "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-ddp-20261025/8V100V0/control/training_audit.py",
+            "worker",
+            "restart.json",
+            "--restart",
+            "model.ckpt-8.pt"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 12.362041686661541,
+          "passed": true,
+          "learning_curve": [
+            [
+              8.0,
+              0.927,
+              0.942,
+              0.376,
+              0.382,
+              0.0973,
+              0.103,
+              0.00046
+            ],
+            [
+              9.0,
+              0.921,
+              0.927,
+              0.374,
+              0.376,
+              0.0949,
+              0.0973,
+              0.00022
+            ],
+            [
+              10.0,
+              0.914,
+              0.921,
+              0.371,
+              0.374,
+              0.0924,
+              0.0949,
+              0.00022
+            ],
+            [
+              11.0,
+              0.907,
+              0.914,
+              0.369,
+              0.371,
+              0.09,
+              0.0924,
+              0.00022
+            ],
+            [
+              12.0,
+              0.9,
+              0.907,
+              0.366,
+              0.369,
+              0.0876,
+              0.09,
+              0.00022
+            ]
+          ],
+          "ranks": [
+            {
+              "rank": 0,
+              "world_size": 2,
+              "local_rank": 0,
+              "pid": 455918,
+              "backend": "cuda:nccl,cpu:gloo",
+              "device_ids": [
+                0
+              ],
+              "cuda_current_device": 0,
+              "find_unused_parameters": false,
+              "initial_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+              "forward_calls": 5,
+              "gradient_devices": [
+                "cuda:0"
+              ],
+              "gradients_finite": true,
+              "gradient_calls": 110,
+              "empty_trainable_parameters": [],
+              "final_parameters_sha256": "3c2f23fddb2e1bb6ec96ac930b2456c901a9dd864c22220525652712b0ddd84d"
+            },
+            {
+              "rank": 1,
+              "world_size": 2,
+              "local_rank": 1,
+              "pid": 455919,
+              "backend": "cuda:nccl,cpu:gloo",
+              "device_ids": [
+                1
+              ],
+              "cuda_current_device": 1,
+              "find_unused_parameters": false,
+              "initial_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+              "forward_calls": 5,
+              "gradient_devices": [
+                "cuda:1"
+              ],
+              "gradients_finite": true,
+              "gradient_calls": 110,
+              "empty_trainable_parameters": [],
+              "final_parameters_sha256": "3c2f23fddb2e1bb6ec96ac930b2456c901a9dd864c22220525652712b0ddd84d"
+            }
+          ],
+          "checkpoint": {
+            "name": "model.ckpt-12.pt",
+            "bytes": 65837,
+            "sha256": "a523a55ff26fd35814f8b1efd9c323ef8c9905644ff8db452cb98caa5fb73589"
+          }
+        },
+        "passed": true
+      },
+      "dpa2": {
+        "training": {
+          "command": [
+            "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-r7d8ce7396215/8V100V0/bin/python",
+            "-m",
+            "torch.distributed.run",
+            "--standalone",
+            "--nproc_per_node=2",
+            "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-ddp-20261025/8V100V0/control/training_audit.py",
+            "worker",
+            "input.json"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 14.759028596803546,
+          "passed": true,
+          "learning_curve": [
+            [
+              1.0,
+              0.213,
+              0.4,
+              0.0538,
+              0.163,
+              0.168,
+              0.0307,
+              0.001
+            ],
+            [
+              2.0,
+              0.235,
+              0.213,
+              0.00334,
+              0.0538,
+              0.235,
+              0.168,
+              0.001
+            ],
+            [
+              3.0,
+              0.198,
+              0.235,
+              0.00712,
+              0.00334,
+              0.197,
+              0.235,
+              0.001
+            ],
+            [
+              4.0,
+              0.137,
+              0.198,
+              0.00721,
+              0.00712,
+              0.136,
+              0.197,
+              0.001
+            ],
+            [
+              5.0,
+              0.121,
+              0.137,
+              0.0128,
+              0.00721,
+              0.117,
+              0.136,
+              0.00032
+            ],
+            [
+              6.0,
+              0.108,
+              0.121,
+              0.0186,
+              0.0128,
+              0.098,
+              0.117,
+              0.00032
+            ],
+            [
+              7.0,
+              0.0995,
+              0.108,
+              0.0239,
+              0.0186,
+              0.0804,
+              0.098,
+              0.00032
+            ],
+            [
+              8.0,
+              0.0951,
+              0.0995,
+              0.0284,
+              0.0239,
+              0.065,
+              0.0804,
+              0.00032
+            ]
+          ],
+          "ranks": [
+            {
+              "rank": 0,
+              "world_size": 2,
+              "local_rank": 0,
+              "pid": 456349,
+              "backend": "cuda:nccl,cpu:gloo",
+              "device_ids": [
+                0
+              ],
+              "cuda_current_device": 0,
+              "find_unused_parameters": false,
+              "initial_parameters_sha256": "50df515990aad8b164fb1363e7c6893767f1fd899346ee79f7d1ff2c9e8b2457",
+              "forward_calls": 8,
+              "gradient_devices": [
+                "cuda:0"
+              ],
+              "gradients_finite": true,
+              "gradient_calls": 424,
+              "empty_trainable_parameters": [],
+              "final_parameters_sha256": "81053eff70822f8aacd3e64567d251767b3ccd6c54327e8e3f367fc21c6d6670"
+            },
+            {
+              "rank": 1,
+              "world_size": 2,
+              "local_rank": 1,
+              "pid": 456350,
+              "backend": "cuda:nccl,cpu:gloo",
+              "device_ids": [
+                1
+              ],
+              "cuda_current_device": 1,
+              "find_unused_parameters": false,
+              "initial_parameters_sha256": "50df515990aad8b164fb1363e7c6893767f1fd899346ee79f7d1ff2c9e8b2457",
+              "forward_calls": 8,
+              "gradient_devices": [
+                "cuda:1"
+              ],
+              "gradients_finite": true,
+              "gradient_calls": 424,
+              "empty_trainable_parameters": [],
+              "final_parameters_sha256": "81053eff70822f8aacd3e64567d251767b3ccd6c54327e8e3f367fc21c6d6670"
+            }
+          ],
+          "checkpoint": {
+            "name": "model.ckpt-8.pt",
+            "bytes": 11495241,
+            "sha256": "bcee901e19d7b2df7f255421b6350ff1c7b8bb60c3d381ea1de022f292e54783"
+          }
+        },
+        "restart": {
+          "command": [
+            "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-r7d8ce7396215/8V100V0/bin/python",
+            "-m",
+            "torch.distributed.run",
+            "--standalone",
+            "--nproc_per_node=2",
+            "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-ddp-20261025/8V100V0/control/training_audit.py",
+            "worker",
+            "restart.json",
+            "--restart",
+            "model.ckpt-8.pt"
+          ],
+          "returncode": 0,
+          "elapsed_seconds": 13.654631729237735,
+          "passed": true,
+          "learning_curve": [
+            [
+              8.0,
+              0.0933,
+              0.0951,
+              0.033,
+              0.0284,
+              0.0463,
+              0.065,
+              0.00046
+            ],
+            [
+              9.0,
+              0.0926,
+              0.0933,
+              0.0341,
+              0.033,
+              0.0399,
+              0.0463,
+              0.00022
+            ],
+            [
+              10.0,
+              0.0909,
+              0.0926,
+              0.0342,
+              0.0341,
+              0.0355,
+              0.0399,
+              0.00022
+            ],
+            [
+              11.0,
+              0.0879,
+              0.0909,
+              0.0333,
+              0.0342,
+              0.0329,
+              0.0355,
+              0.00022
+            ],
+            [
+              12.0,
+              0.0836,
+              0.0879,
+              0.0316,
+              0.0333,
+              0.0318,
+              0.0329,
+              0.00022
+            ]
+          ],
+          "ranks": [
+            {
+              "rank": 0,
+              "world_size": 2,
+              "local_rank": 0,
+              "pid": 456859,
+              "backend": "cuda:nccl,cpu:gloo",
+              "device_ids": [
+                0
+              ],
+              "cuda_current_device": 0,
+              "find_unused_parameters": false,
+              "initial_parameters_sha256": "81053eff70822f8aacd3e64567d251767b3ccd6c54327e8e3f367fc21c6d6670",
+              "forward_calls": 5,
+              "gradient_devices": [
+                "cuda:0"
+              ],
+              "gradients_finite": true,
+              "gradient_calls": 265,
+              "empty_trainable_parameters": [],
+              "final_parameters_sha256": "cb66775bdc32b9f96ef36fffa806fcda82a051a5edff01a263cca7ce1f252940"
+            },
+            {
+              "rank": 1,
+              "world_size": 2,
+              "local_rank": 1,
+              "pid": 456860,
+              "backend": "cuda:nccl,cpu:gloo",
+              "device_ids": [
+                1
+              ],
+              "cuda_current_device": 1,
+              "find_unused_parameters": false,
+              "initial_parameters_sha256": "81053eff70822f8aacd3e64567d251767b3ccd6c54327e8e3f367fc21c6d6670",
+              "forward_calls": 5,
+              "gradient_devices": [
+                "cuda:1"
+              ],
+              "gradients_finite": true,
+              "gradient_calls": 265,
+              "empty_trainable_parameters": [],
+              "final_parameters_sha256": "cb66775bdc32b9f96ef36fffa806fcda82a051a5edff01a263cca7ce1f252940"
+            }
+          ],
+          "checkpoint": {
+            "name": "model.ckpt-12.pt",
+            "bytes": 11495603,
+            "sha256": "116624d73370265830cf1124fda62a283c64530e5d330b476c5fdf236ffbc72d"
+          }
+        },
+        "passed": true
+      }
+    },
+    "passed": true
+  },
+  "old_checkpoint_restart": {
+    "passed": true,
+    "cases": {
+      "se_e2_a": {
+        "command": [
+          "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-r7d8ce7396215/8V100V0/bin/python",
+          "-m",
+          "deepmd",
+          "--pt",
+          "train",
+          "restart.json",
+          "--restart",
+          "model.ckpt-8.pt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 9.270875353366137,
+        "passed": true,
+        "learning_curve": [
+          [
+            8.0,
+            0.927,
+            0.942,
+            0.376,
+            0.382,
+            0.0973,
+            0.103,
+            0.00046
+          ],
+          [
+            9.0,
+            0.921,
+            0.927,
+            0.374,
+            0.376,
+            0.0949,
+            0.0973,
+            0.00022
+          ],
+          [
+            10.0,
+            0.914,
+            0.921,
+            0.371,
+            0.374,
+            0.0924,
+            0.0949,
+            0.00022
+          ],
+          [
+            11.0,
+            0.907,
+            0.914,
+            0.369,
+            0.371,
+            0.09,
+            0.0924,
+            0.00022
+          ],
+          [
+            12.0,
+            0.9,
+            0.907,
+            0.366,
+            0.369,
+            0.0876,
+            0.09,
+            0.00022
+          ]
+        ],
+        "checkpoint": {
+          "name": "model.ckpt-12.pt",
+          "bytes": 65837,
+          "sha256": "c5abe8fc2c63cfb8938b768862a1924f3554373e8e7d0adaafd3cc0bada5a6c4"
+        }
+      },
+      "dpa2": {
+        "command": [
+          "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-r7d8ce7396215/8V100V0/bin/python",
+          "-m",
+          "deepmd",
+          "--pt",
+          "train",
+          "restart.json",
+          "--restart",
+          "model.ckpt-8.pt"
+        ],
+        "returncode": 0,
+        "elapsed_seconds": 10.740503293462098,
+        "passed": true,
+        "learning_curve": [
+          [
+            8.0,
+            0.0933,
+            0.0951,
+            0.033,
+            0.0284,
+            0.0463,
+            0.065,
+            0.00046
+          ],
+          [
+            9.0,
+            0.0926,
+            0.0933,
+            0.0341,
+            0.033,
+            0.0399,
+            0.0463,
+            0.00022
+          ],
+          [
+            10.0,
+            0.0909,
+            0.0926,
+            0.0342,
+            0.0341,
+            0.0355,
+            0.0399,
+            0.00022
+          ],
+          [
+            11.0,
+            0.0879,
+            0.0909,
+            0.0333,
+            0.0342,
+            0.0329,
+            0.0355,
+            0.00022
+          ],
+          [
+            12.0,
+            0.0836,
+            0.0879,
+            0.0316,
+            0.0333,
+            0.0318,
+            0.0329,
+            0.00022
+          ]
+        ],
+        "checkpoint": {
+          "name": "model.ckpt-12.pt",
+          "bytes": 11495603,
+          "sha256": "aa937024f00d5a6df0f76bfc8fb3349db024b20001ce1624f6f6a097200d3cdb"
+        }
+      }
+    }
+  },
+  "compression": {
+    "passed": true,
+    "max_absolute_errors": {
+      "energy": 0.0,
+      "force": 1.0796918914479647e-14,
+      "virial": 8.826273045769994e-15
+    }
+  },
+  "inference": {
+    "passed": true,
+    "errors": {
+      "energy": 0.0,
+      "forces": 1.734723475976807e-17,
+      "virial": 5.551115123125783e-17
+    },
+    "package": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-r7d8ce7396215/8V100V0/lib/python3.13/site-packages/deepmd/__init__.py",
+    "device": "cuda:0",
+    "cuda_bytes": 17083392
+  },
+  "jit_cache": {
+    "passed": true,
+    "paths": {
+      "cache": "/dev/shm/sai-1478400690-1930731-0/runtime/rank-serial-454431/.triton/cache",
+      "dump": "/dev/shm/sai-1478400690-1930731-0/runtime/rank-serial-454431/.triton/dump",
+      "override": "/dev/shm/sai-1478400690-1930731-0/runtime/rank-serial-454431/.triton/override"
+    },
+    "files": 17,
+    "bytes": 233807
+  },
+  "passed": true
+}

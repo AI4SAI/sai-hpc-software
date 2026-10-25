@@ -1,0 +1,130 @@
+{
+  "python": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-r7d8ce7396215/8V100V0/bin/python",
+  "deepmd": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-r7d8ce7396215/8V100V0/lib/python3.13/site-packages/deepmd",
+  "versions": {
+    "deepmd-kit": "0.1.dev1+g558f56962.d20261025",
+    "torch": "2.13.0+cu126",
+    "tensorflow": null,
+    "jax": "0.11.1",
+    "triton": "3.7.1",
+    "horovod": null,
+    "numpy": "2.5.2"
+  },
+  "torch_cuda": "12.6",
+  "nccl": [
+    2,
+    29,
+    3
+  ],
+  "cuda_visible_devices": "0,1",
+  "devices": [
+    {
+      "index": 0,
+      "name": "Tesla V100-SXM2-32GB"
+    },
+    {
+      "index": 1,
+      "name": "Tesla V100-SXM2-32GB"
+    }
+  ],
+  "horovod": false,
+  "ldconfig": true,
+  "nvcc": "/opt/devtools/nvidia/cuda-12.9.1/bin/nvcc",
+  "affinity": [
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32
+  ],
+  "source": {
+    "pt/train/training.py": {
+      "sha256": "58d336517b6e9e217de9484ae5ab29aff836d97e78ec0376f3d812cfc44f5fa3",
+      "excerpts": [
+        "1070:                 # zero_stage=0 or 1: standard DDP (ZeRO-1 will wrap the optimizer)",
+        "1071:                 #",
+        "1072:                 # ``find_unused_parameters`` makes the reducer traverse the",
+        "1073:                 # autograd graph on every iteration to find parameters that",
+        "1074:                 # produced no gradient bucket, which it would otherwise wait",
+        "1075:                 # for forever. Multi-task needs it, because a step uses one",
+        "1076:                 # fitting net and leaves the others out of the graph. A",
+        "1077:                 # single-task step reaches every parameter (an all-zero",
+        "1078:                 # gradient still produces a bucket), so the traversal is pure",
+        "1079:                 # overhead there. A configuration that did leave a parameter",
+        "1080:                 # out of the graph would hang the reducer rather than fail, so",
+        "1084:                     self.wrapper,",
+        "1085:                     device_ids=[LOCAL_RANK],",
+        "1086:                     find_unused_parameters=self.multi_task,",
+        "1087:                     output_device=LOCAL_RANK,",
+        "1088:                 )",
+        "1089: ",
+        "1090:         # TODO add lr warmups for multitask",
+        "1091:         # author: iProzd",
+        "1092:         # TODO add optimizers for multitask",
+        "1093:         # author: iProzd",
+        "1094:         initial_lr = self.lr_schedule.value(self.start_step)"
+      ]
+    },
+    "pt/model/descriptor/se_a.py": {
+      "sha256": "2abb1644a14f15fcf9be59375ecc1455b0200531b9f3fc2e74eacdbbe1e9f0a3",
+      "excerpts": [
+        "563:         # add for compression",
+        "564:         self.compress = False",
+        "565:         self.compress_info = nn.ParameterList(",
+        "566:             [",
+        "567:                 nn.Parameter(torch.zeros(0, dtype=self.prec, device=\"cpu\"))",
+        "568:                 for _ in range(len(self.filter_layers.networks))",
+        "569:             ]",
+        "570:         )",
+        "571:         self.compress_data = nn.ParameterList(",
+        "572:             [",
+        "573:                 nn.Parameter(torch.zeros(0, dtype=self.prec, device=env.DEVICE))",
+        "574:                 for _ in range(len(self.filter_layers.networks))",
+        "575:             ]",
+        "576:         )",
+        "577: ",
+        "578:     def get_rcut(self) -> float:",
+        "579:         \"\"\"Returns the cut-off radius.\"\"\""
+      ]
+    },
+    "tf/train/run_options.py": {
+      "sha256": "637827720ee1a8411dbf93b51144fc7037308b7cbda9095d64109da5060d232d",
+      "excerpts": [
+        "30: ",
+        "31: if TYPE_CHECKING:",
+        "32:     import horovod.tensorflow as HVD",
+        "33: ",
+        "34: ",
+        "35: __all__ = [",
+        "36:     \"RunOptions\",",
+        "37: ]",
+        "38: ",
+        "39: log = logging.getLogger(__name__)",
+        "40: ",
+        "204:     def _try_init_distrib(self) -> None:",
+        "205:         try:",
+        "206:             import horovod.tensorflow as HVD",
+        "207: ",
+        "208:             HVD.init()",
+        "209:             self.is_distrib = HVD.size() > 1",
+        "210:         except ImportError:",
+        "211:             log.warning(\"Switch to serial execution due to lack of horovod module.\")",
+        "212:             self.is_distrib = False",
+        "213: ",
+        "214:         # Do real initialization",
+        "215:         if self.is_distrib:",
+        "216:             self._init_distributed(HVD)",
+        "217:             self._HVD = HVD",
+        "218:         else:",
+        "219:             self._init_serial()"
+      ]
+    }
+  }
+}

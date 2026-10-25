@@ -1,0 +1,9 @@
+Traceback (most recent call last):
+  File "/control/deepmd_training_check.py", line 201, in <module>
+    main()
+    ~~~~^^
+  File "/control/deepmd_training_check.py", line 181, in main
+    summary = dict(job=os.environ['SLURM_JOB_ID'], partition=os.environ['SLURM_JOB_PARTITION'],
+                       ~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "<frozen os>", line 717, in __getitem__
+KeyError: 'SLURM_JOB_ID'

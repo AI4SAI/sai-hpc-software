@@ -35,7 +35,17 @@ def apply(source):
     tree = ast.parse(original)
     ddp = [node for node in ast.walk(tree) if isinstance(node, ast.Call)
            and isinstance(node.func, ast.Name) and node.func.id == 'DDP']
-    if len(ddp) != 1 or original.count(ANCHOR) != 1:
+    if len(ddp) != 1:
+        raise ValueError('DeePMD trainer changed: review the compression patch before building')
+    sha = lambda value: hashlib.sha256(value.encode()).hexdigest()
+    # The accepted 3.2.0 release already handles unused parameters. Leave its
+    # tagged tree clean so setuptools-scm retains the exact release version.
+    if any(option.arg == 'find_unused_parameters' and isinstance(option.value, ast.Constant)
+           and option.value.value is True for option in ddp[0].keywords):
+        return dict(patch='not-required-upstream-handles-unused-parameters', changed=False,
+                    file='deepmd/pt/train/training.py',
+                    original_sha256=sha(original), patched_sha256=sha(original))
+    if original.count(ANCHOR) != 1:
         raise ValueError('DeePMD trainer changed: review the compression patch before building')
     position = original.index(ANCHOR)
     if original[:position].count('\n') >= ddp[0].lineno:
@@ -43,8 +53,7 @@ def apply(source):
     updated = original.replace(ANCHOR, PATCH + ANCHOR)
     ast.parse(updated)
     path.write_text(updated)
-    sha = lambda value: hashlib.sha256(value.encode()).hexdigest()
-    return dict(patch='freeze-inference-compression-tables-v1', file='deepmd/pt/train/training.py',
+    return dict(patch='freeze-inference-compression-tables-v1', changed=True, file='deepmd/pt/train/training.py',
                 original_sha256=sha(original), patched_sha256=sha(updated))
 
 

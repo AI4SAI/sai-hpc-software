@@ -1,0 +1,38 @@
+#%Module1.0
+module-whatis "deepmd-kit master-20261025-g558f56962775; accepted SIF; partitions: 16V100 4V100 8V100V0; source: 558f56962775098b8b554e341c3b37d2f86e6aeb"
+proc ModulesHelp {} {
+    puts stderr "deepmd-kit master-20261025-g558f56962775; accepted SIF; partitions: 16V100 4V100 8V100V0; source: 558f56962775098b8b554e341c3b37d2f86e6aeb\nLoad inside the allocation. Runtime temporary files use private node memory automatically. GPUMD and dp are direct commands; deepmd-python selects this Python package."
+}
+conflict deepmd-kit
+conflict deepmd-kit-sif
+set sai_partition ""
+if {[module-info mode remove]} {
+    if {[info exists env(SAI_SIF_DEEPMD_KIT_PARTITION)]} {set sai_partition $env(SAI_SIF_DEEPMD_KIT_PARTITION)}
+} elseif {[module-info mode load]} {
+    if {![info exists env(SLURM_JOB_PARTITION)]} {error "load the SIF module inside the Slurm allocation"}
+    set sai_partition $env(SLURM_JOB_PARTITION)
+    if {[lsearch -exact {16V100 4V100 8V100V0} $sai_partition] < 0} {error "no accepted SIF for this partition"}
+}
+if {$sai_partition ne ""} {
+    prepend-path MODULEPATH /opt/modules/modulefiles/devtools
+    module load apptainer/1.4.4
+    module load cuda/12.9.1
+    module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto
+    setenv SAI_SIF_DEEPMD_KIT_PARTITION $sai_partition
+    switch -- $sai_partition {
+        16V100 {
+            setenv SAI_SIF_DEEPMD_KIT_IMAGE "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-deepmd-ddp-7d8ce7396215/images/deepmd-kit/16V100.sif"
+            setenv SAI_SIF_DEEPMD_KIT_PREFIX "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-r7d8ce7396215/16V100"
+        }
+        4V100 {
+            setenv SAI_SIF_DEEPMD_KIT_IMAGE "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-deepmd-ddp-7d8ce7396215/images/deepmd-kit/4V100.sif"
+            setenv SAI_SIF_DEEPMD_KIT_PREFIX "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-r7d8ce7396215/4V100"
+        }
+        8V100V0 {
+            setenv SAI_SIF_DEEPMD_KIT_IMAGE "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-deepmd-ddp-7d8ce7396215/images/deepmd-kit/8V100V0.sif"
+            setenv SAI_SIF_DEEPMD_KIT_PREFIX "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-r7d8ce7396215/8V100V0"
+        }
+    }
+}
+setenv SAI_SIF_DEEPMD_KIT_SOURCE "558f56962775098b8b554e341c3b37d2f86e6aeb"
+prepend-path PATH "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-deepmd-ddp-7d8ce7396215/bin/deepmd-kit"

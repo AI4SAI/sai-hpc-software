@@ -10,6 +10,18 @@ from deepmd_ddp_patch import ANCHOR, PATCH, apply
 
 
 class CompressionPatchTests(unittest.TestCase):
+    def test_working_upstream_ddp_does_not_dirty_a_tagged_release(self):
+        source = ('class Trainer:\n    def __init__(self):\n' + ANCHOR
+                  + '            self.wrapper = DDP(self.wrapper, find_unused_parameters=True)\n')
+        with tempfile.TemporaryDirectory() as temporary:
+            path = Path(temporary) / 'deepmd/pt/train/training.py'
+            path.parent.mkdir(parents=True)
+            path.write_text(source)
+            result = apply(temporary)
+            self.assertFalse(result['changed'])
+            self.assertEqual(result['original_sha256'], result['patched_sha256'])
+            self.assertEqual(path.read_text(), source)
+
     def test_only_compression_parameter_lists_are_frozen(self):
         class Parameter:
             requires_grad = True

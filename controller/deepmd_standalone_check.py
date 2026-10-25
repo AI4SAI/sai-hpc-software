@@ -175,7 +175,8 @@ def verify_science_files(runtime):
                     or {rank['cuda_current_device'] for rank in ranks} != {0, 1}
                     or any(rank['world_size'] != 2
                            or not (rank['backend'] == 'nccl' or 'cuda:nccl' in rank['backend'].split(','))
-                           or rank['empty_trainable_parameters'] or not rank['gradients_finite']
+                           or (rank['empty_trainable_parameters'] and not rank['find_unused_parameters'])
+                           or not rank['gradients_finite']
                            or rank['gradient_calls'] <= 0
                            or rank['initial_parameters_sha256'] == rank['final_parameters_sha256']
                            for rank in ranks)

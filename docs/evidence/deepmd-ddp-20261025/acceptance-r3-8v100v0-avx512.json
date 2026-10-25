@@ -1,0 +1,46 @@
+{
+  "controller": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/controller/ddp-science-20261025-r3",
+  "controller_sha256": "434309550c834b7dce490b784ac0da35e79800165c2a7c87f39ec4c762176a4e",
+  "job_id": "1930702",
+  "job_script_sha256": "013e2c34a36cd88cc25551f52c082491a5ece293286ff0b7ab1d83037fb8029a",
+  "schema": 1,
+  "source": {
+    "artifact": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/ddp-20261025-r2-8v100v0-avx512/candidate.sif",
+    "artifact_sha256": "6e9d16ed49984a9802d5877afb46028bcc5f588d0b0fbd178744c03524f89630",
+    "build_accounting": "1930517|FAILED|1:0|00:20:21|8v100v0n08|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/ddp-20261025-r2-8v100v0-avx512",
+    "build_log_sha256": "5da0fd33ef48d7745ed64ac2fea8bd134a8bdd1fd4d8368c53279f8fc9e92abc",
+    "build_request": {
+      "controller": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/controller/ddp-20261025-r2",
+      "controller_sha256": "7d8ce739621511bc42402db94e6b04aceae5577800a34c27bee009e06dbc2568",
+      "delivery": {
+        "identity": {
+          "build_id": "master-2026-10-23-g558f56962775-r7d8ce7396215",
+          "cpu_arch": "skylake-avx512",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-r7d8ce7396215/8V100V0",
+          "partition": "8V100V0",
+          "recipe_sha256": "7d8ce739621511bc42402db94e6b04aceae5577800a34c27bee009e06dbc2568",
+          "repository": "deepmodeling/deepmd-kit",
+          "schema": 2,
+          "software": "deepmd-kit",
+          "source_ref": "master",
+          "source_sha": "558f56962775098b8b554e341c3b37d2f86e6aeb",
+          "source_version": "master-2026-10-23",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "8v100v0-avx512",
+          "track": "development",
+          "version_label": "master-2026-10-23"
+        },
+        "schema": 1
+      },
+      "job_id": "1930517",
+      "job_script_sha256": "ca35c8c9689b1bc7a057ed0f7fa36f57c74f681cd53229c06aa1ccdbe1ea098d",
+      "schema": 1
+    },
+    "build_request_sha256": "ce6f112b9caf62e56a6ba514f970b3e84777a2c102024b09ec0c754f63c4284f",
+    "source_run": "ddp-20261025-r2-8v100v0-avx512"
+  }
+}

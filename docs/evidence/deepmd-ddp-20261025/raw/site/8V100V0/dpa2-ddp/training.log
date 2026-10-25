@@ -1,0 +1,94 @@
+[2026-10-25 06:00:54,183] DEEPMD INFO    DeePMD version: 0.1.dev1+g558f56962.d20261025
+[2026-10-25 06:00:54,184] DEEPMD INFO    Configuration path: input.json
+[2026-10-25 06:00:55,029] DEEPMD INFO     _____               _____   __  __  _____           _     _  _   
+[2026-10-25 06:00:55,030] DEEPMD INFO    |  __ \             |  __ \ |  \/  ||  __ \         | |   (_)| |  
+[2026-10-25 06:00:55,030] DEEPMD INFO    | |  | |  ___   ___ | |__) || \  / || |  | | ______ | | __ _ | |_ 
+[2026-10-25 06:00:55,030] DEEPMD INFO    | |  | | / _ \ / _ \|  ___/ | |\/| || |  | ||______|| |/ /| || __|
+[2026-10-25 06:00:55,030] DEEPMD INFO    | |__| ||  __/|  __/| |     | |  | || |__| |        |   < | || |_ 
+[2026-10-25 06:00:55,030] DEEPMD INFO    |_____/  \___| \___||_|     |_|  |_||_____/         |_|\_\|_| \__|
+[2026-10-25 06:00:55,030] DEEPMD INFO    Please read and cite:
+[2026-10-25 06:00:55,030] DEEPMD INFO    Wang, Zhang, Han and E, Comput.Phys.Comm. 228, 178-184 (2018)
+[2026-10-25 06:00:55,030] DEEPMD INFO    Zeng et al, J. Chem. Phys., 159, 054801 (2023)
+[2026-10-25 06:00:55,030] DEEPMD INFO    Zeng et al, J. Chem. Theory Comput., 21, 4375-4385 (2025)
+[2026-10-25 06:00:55,030] DEEPMD INFO    See https://deepmd.rtfd.io/credits/ for details.
+[2026-10-25 06:00:55,030] DEEPMD INFO    ------------------------------------------------------------------------------------------------------------------------------------------------------------
+[2026-10-25 06:00:55,030] DEEPMD INFO    Installed to:          /opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-r7d8ce7396215/8V100V0/lib/python3.13/site-packages/deepmd
+[2026-10-25 06:00:55,030] DEEPMD INFO    Source:                
+[2026-10-25 06:00:55,030] DEEPMD INFO    Source Branch:         HEAD
+[2026-10-25 06:00:55,030] DEEPMD INFO    Source Commit:         558f569
+[2026-10-25 06:00:55,030] DEEPMD INFO    Source Commit at:      2026-10-23 02:31:46 +0000
+[2026-10-25 06:00:55,030] DEEPMD INFO    Float Precision:       Double
+[2026-10-25 06:00:55,030] DEEPMD INFO    Build Variant:         CUDA
+[2026-10-25 06:00:55,030] DEEPMD INFO    Backend:               PyTorch
+[2026-10-25 06:00:55,030] DEEPMD INFO    PT Ver:                v2.13.0+cu126-gcf30153c4c1
+[2026-10-25 06:00:55,030] DEEPMD INFO    Custom OP Enabled:     True
+[2026-10-25 06:00:55,030] DEEPMD INFO    Built with PT Ver:     2.13.0
+[2026-10-25 06:00:55,030] DEEPMD INFO    Built with PT Inc:     /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/include
+[2026-10-25 06:00:55,030] DEEPMD INFO                           /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/include/torch/csrc/api/include
+[2026-10-25 06:00:55,031] DEEPMD INFO    Built with PT Lib:     /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib
+[2026-10-25 06:00:55,031] DEEPMD INFO    Running on:            8v100v0n02.mr-sai.ai
+[2026-10-25 06:00:55,031] DEEPMD INFO    Computing Device:      CUDA:0
+[2026-10-25 06:00:55,031] DEEPMD INFO    Device Name:           Tesla V100-SXM2-32GB
+[2026-10-25 06:00:55,031] DEEPMD INFO    CUDA_VISIBLE_DEVICES:  0,1
+[2026-10-25 06:00:55,031] DEEPMD INFO    Visible GPU Count:     2
+[2026-10-25 06:00:55,031] DEEPMD INFO    Distributed Processes: 2 total, 2 on this node
+[2026-10-25 06:00:55,031] DEEPMD INFO    Num Intra Threads:     1
+[2026-10-25 06:00:55,031] DEEPMD INFO    Num Inter Threads:     1
+[2026-10-25 06:00:55,031] DEEPMD INFO    ------------------------------------------------------------------------------------------------------------------------------------------------------------
+[2026-10-25 06:00:55,104] DEEPMD INFO    Calculate neighbor statistics... (add --skip-neighbor-stat to skip this step)
+[2026-10-25 06:00:55,109] DEEPMD INFO    Adjust batch size from 1024 to 6
+[2026-10-25 06:00:55,534] DEEPMD INFO    Adjust batch size from 6 to 1024
+[2026-10-25 06:00:55,542] DEEPMD INFO    Neighbor statistics: training data with minimal neighbor distance: 0.941647
+[2026-10-25 06:00:55,542] DEEPMD INFO    Neighbor statistics: training data with maximum neighbor size: [5] (cutoff radius: 6.000000)
+[2026-10-25 06:00:55,544] DEEPMD INFO    Adjust batch size from 1024 to 6
+[2026-10-25 06:00:55,547] DEEPMD INFO    Adjust batch size from 6 to 1024
+[2026-10-25 06:00:55,549] DEEPMD INFO    Neighbor statistics: training data with minimal neighbor distance: 0.941647
+[2026-10-25 06:00:55,549] DEEPMD INFO    Neighbor statistics: training data with maximum neighbor size: [4] (cutoff radius: 4.000000)
+[2026-10-25 06:00:55,550] DEEPMD INFO    Adjust batch size from 1024 to 6
+[2026-10-25 06:00:55,553] DEEPMD INFO    Adjust batch size from 6 to 1024
+[2026-10-25 06:00:55,555] DEEPMD INFO    Neighbor statistics: training data with minimal neighbor distance: 0.941647
+[2026-10-25 06:00:55,555] DEEPMD INFO    Neighbor statistics: training data with maximum neighbor size: [4] (cutoff radius: 4.000000)
+[2026-10-25 06:00:55,627] DEEPMD INFO    Constructing DataLoaders from 1 systems
+[2026-10-25 06:00:55,635] DEEPMD INFO    Constructing DataLoaders from 1 systems
+[2026-10-25 06:00:55,654] DEEPMD INFO    Packing data for statistics from 1 systems
+[2026-10-25 06:00:56,078] DEEPMD INFO    RMSE of energy per atom after linear regression is: 1.8947806286936004e-14 in the unit of energy.
+[2026-10-25 06:00:56,315] DEEPMD INFO    ---Summary of DataSystem: Training     -----------------------------------------------
+[2026-10-25 06:00:56,315] DEEPMD INFO    Found 1 System(s):
+[2026-10-25 06:00:56,315] DEEPMD INFO                                        system  natoms  bch_sz  n_bch   prob       pbc
+[2026-10-25 06:00:56,315] DEEPMD INFO                                          data       6       1       8  1.000e+00    T
+[2026-10-25 06:00:56,315] DEEPMD INFO    --------------------------------------------------------------------------------------
+[2026-10-25 06:00:56,316] DEEPMD INFO    ---Summary of DataSystem: Validation   -----------------------------------------------
+[2026-10-25 06:00:56,316] DEEPMD INFO    Found 1 System(s):
+[2026-10-25 06:00:56,316] DEEPMD INFO                                        system  natoms  bch_sz  n_bch   prob       pbc
+[2026-10-25 06:00:56,316] DEEPMD INFO                                          data       6       1       8  1.000e+00    T
+[2026-10-25 06:00:56,316] DEEPMD INFO    --------------------------------------------------------------------------------------
+[2026-10-25 06:00:56,334] DEEPMD INFO    Model Params:  0.474 M   (Trainable: 0.474 M)
+[2026-10-25 06:00:56,335] DEEPMD INFO    Start to train 8 steps.
+[2026-10-25 06:00:59,233] DEEPMD INFO    Batch       1: trn: rmse = 4.00e-01, rmse_e = 1.63e-01, rmse_f = 3.07e-02, lr = 1.00e-03
+[2026-10-25 06:00:59,233] DEEPMD INFO    Batch       1: val: rmse = 2.13e-01, rmse_e = 5.38e-02, rmse_f = 1.68e-01
+[2026-10-25 06:00:59,234] DEEPMD INFO    Batch       1: total wall time = 2.90 s
+[2026-10-25 06:00:59,350] DEEPMD INFO    Batch       2: trn: rmse = 2.13e-01, rmse_e = 5.38e-02, rmse_f = 1.68e-01, lr = 1.00e-03
+[2026-10-25 06:00:59,350] DEEPMD INFO    Batch       2: val: rmse = 2.35e-01, rmse_e = 3.34e-03, rmse_f = 2.35e-01
+[2026-10-25 06:00:59,351] DEEPMD INFO    Batch       2: total wall time = 0.12 s, eta = 0:00:00 at 2026-10-25 06:00
+[2026-10-25 06:00:59,461] DEEPMD INFO    Batch       3: trn: rmse = 2.35e-01, rmse_e = 3.34e-03, rmse_f = 2.35e-01, lr = 1.00e-03
+[2026-10-25 06:00:59,461] DEEPMD INFO    Batch       3: val: rmse = 1.98e-01, rmse_e = 7.12e-03, rmse_f = 1.97e-01
+[2026-10-25 06:00:59,461] DEEPMD INFO    Batch       3: total wall time = 0.11 s, eta = 0:00:00 at 2026-10-25 06:00
+[2026-10-25 06:00:59,572] DEEPMD INFO    Batch       4: trn: rmse = 1.98e-01, rmse_e = 7.12e-03, rmse_f = 1.97e-01, lr = 1.00e-03
+[2026-10-25 06:00:59,572] DEEPMD INFO    Batch       4: val: rmse = 1.37e-01, rmse_e = 7.21e-03, rmse_f = 1.36e-01
+[2026-10-25 06:00:59,573] DEEPMD INFO    Batch       4: total wall time = 0.11 s, eta = 0:00:00 at 2026-10-25 06:00
+[2026-10-25 06:00:59,608] DEEPMD INFO    Saved model to model.ckpt-4.pt
+[2026-10-25 06:00:59,714] DEEPMD INFO    Batch       5: trn: rmse = 1.37e-01, rmse_e = 7.21e-03, rmse_f = 1.36e-01, lr = 3.16e-04
+[2026-10-25 06:00:59,714] DEEPMD INFO    Batch       5: val: rmse = 1.21e-01, rmse_e = 1.28e-02, rmse_f = 1.17e-01
+[2026-10-25 06:00:59,715] DEEPMD INFO    Batch       5: total wall time = 0.14 s, eta = 0:00:00 at 2026-10-25 06:00
+[2026-10-25 06:00:59,826] DEEPMD INFO    Batch       6: trn: rmse = 1.21e-01, rmse_e = 1.28e-02, rmse_f = 1.17e-01, lr = 3.16e-04
+[2026-10-25 06:00:59,827] DEEPMD INFO    Batch       6: val: rmse = 1.08e-01, rmse_e = 1.86e-02, rmse_f = 9.80e-02
+[2026-10-25 06:00:59,827] DEEPMD INFO    Batch       6: total wall time = 0.11 s, eta = 0:00:00 at 2026-10-25 06:00
+[2026-10-25 06:00:59,941] DEEPMD INFO    Batch       7: trn: rmse = 1.08e-01, rmse_e = 1.86e-02, rmse_f = 9.80e-02, lr = 3.16e-04
+[2026-10-25 06:00:59,941] DEEPMD INFO    Batch       7: val: rmse = 9.95e-02, rmse_e = 2.39e-02, rmse_f = 8.04e-02
+[2026-10-25 06:00:59,941] DEEPMD INFO    Batch       7: total wall time = 0.11 s, eta = 0:00:00 at 2026-10-25 06:00
+[2026-10-25 06:01:00,047] DEEPMD INFO    Batch       8: trn: rmse = 9.95e-02, rmse_e = 2.39e-02, rmse_f = 8.04e-02, lr = 3.16e-04
+[2026-10-25 06:01:00,047] DEEPMD INFO    Batch       8: val: rmse = 9.51e-02, rmse_e = 2.84e-02, rmse_f = 6.50e-02
+[2026-10-25 06:01:00,048] DEEPMD INFO    Batch       8: total wall time = 0.11 s, eta = 0:00:00 at 2026-10-25 06:01
+[2026-10-25 06:01:00,079] DEEPMD INFO    Saved model to model.ckpt-8.pt
+[2026-10-25 06:01:00,081] DEEPMD INFO    average training time: 0.1163 s/batch (1 batches excluded)
+[2026-10-25 06:01:00,081] DEEPMD INFO    Trained model has been saved to: model.ckpt

@@ -61,6 +61,33 @@ class IndependentDeePMDTests(unittest.TestCase):
             with self.assertRaises(FileNotFoundError):
                 verify_science_files(temporary)
 
+    def test_empty_parameters_require_upstream_unused_parameter_handling(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            runtime = Path(temporary)
+            for side in ('baseline', 'candidate'):
+                for backend in ('tf', 'pt', 'jax'):
+                    for engine in ('python', 'c-api'):
+                        (runtime / f'{side}-{backend}-{engine}.json').write_text('[]')
+            (runtime / 'pt-cuda-kernels.csv').write_text('observed CUDA trace')
+            (runtime / 'pt-cuda-trace.nsys-rep').write_bytes(b'profile')
+            (runtime / 'training').mkdir()
+            ranks = [dict(rank=rank, world_size=2, cuda_current_device=rank,
+                          backend='cuda:nccl,cpu:gloo', empty_trainable_parameters=['compress_info.0'],
+                          find_unused_parameters=True, gradients_finite=True, gradient_calls=8,
+                          initial_parameters_sha256='a' * 64, final_parameters_sha256='b' * 64)
+                     for rank in range(2)]
+            stage = dict(passed=True, returncode=0, ranks=ranks)
+            summary = dict(passed=True, cases={name: dict(training=stage, restart=stage)
+                                               for name in ('se_e2_a', 'dpa2')})
+            with patch('deepmd_standalone_check.verify_benchmark', return_value={'passed': True}), \
+                    patch('md_performance_run.parse_nsight_kernel_trace', return_value={}):
+                (runtime / 'training/summary.json').write_text(json.dumps(summary))
+                self.assertTrue(verify_science_files(runtime)['passed'])
+                ranks[0]['find_unused_parameters'] = False
+                (runtime / 'training/summary.json').write_text(json.dumps(summary))
+                with self.assertRaisesRegex(ValueError, 'invalid DeePMD training'):
+                    verify_science_files(runtime)
+
     def test_native_library_soname_symlinks_hash_the_actual_library(self):
         with tempfile.TemporaryDirectory() as temporary:
             prefix = Path(temporary)
