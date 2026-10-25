@@ -173,7 +173,8 @@ def verify_science_files(runtime):
             if (report.get('passed') is not True or report['returncode'] != 0
                     or {rank['rank'] for rank in ranks} != {0, 1}
                     or {rank['cuda_current_device'] for rank in ranks} != {0, 1}
-                    or any(rank['world_size'] != 2 or rank['backend'] != 'nccl'
+                    or any(rank['world_size'] != 2
+                           or not (rank['backend'] == 'nccl' or 'cuda:nccl' in rank['backend'].split(','))
                            or rank['empty_trainable_parameters'] or not rank['gradients_finite']
                            or rank['gradient_calls'] <= 0
                            or rank['initial_parameters_sha256'] == rank['final_parameters_sha256']

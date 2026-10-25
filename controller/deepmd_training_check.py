@@ -153,7 +153,8 @@ def train(directory, restart=False):
     assert all(math.isfinite(value) for row in rows for value in row), rows
     assert {rank['rank'] for rank in ranks} == {0, 1}
     assert {rank['cuda_current_device'] for rank in ranks} == {0, 1}
-    assert all(rank['world_size'] == 2 and rank['backend'] == 'nccl'
+    assert all(rank['world_size'] == 2
+               and (rank['backend'] == 'nccl' or 'cuda:nccl' in rank['backend'].split(','))
                and not rank['empty_trainable_parameters'] and rank['gradients_finite'] and rank['gradient_calls'] > 0
                and rank['forward_calls'] >= len(expected_steps)
                and rank['gradient_devices'] == [f"cuda:{rank['local_rank']}"]
