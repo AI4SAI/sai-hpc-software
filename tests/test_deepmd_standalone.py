@@ -375,6 +375,8 @@ class DeePMDAcceptanceStatusTests(unittest.TestCase):
         (self.directory / 'request.json').write_text(json.dumps(request))
         self.science = self.stack.enter_context(patch('deepmd_standalone_check.verify_science_files',
             return_value={'passed': True}))
+        self.hashes = self.stack.enter_context(patch('deepmd_standalone_check.science_evidence_hashes',
+            return_value={'training': 'b' * 64}))
 
     def row(self, state='COMPLETED', code='0:0', account='proj-sai-hpc-software', directory=None):
         return '|'.join(['456', state, code, '00:00:30', 'node', account, str(directory or self.directory)]) + '\n'
@@ -405,6 +407,8 @@ class DeePMDAcceptanceStatusTests(unittest.TestCase):
         self.assertEqual(code, 0)
         self.assertTrue(result['scientific_verified'])
         self.science.assert_called_once_with(self.directory / 'runtime')
+        self.hashes.assert_called_once_with(self.directory / 'runtime', '456')
+        self.assertEqual(result['evidence_sha256'], {'training': 'b' * 64})
 
     def test_terminal_missing_marker_and_failed_jobs_do_not_wait_or_claim_science(self):
         for state, code in (('COMPLETED', '0:0'), ('COMPLETED', '1:0'), ('FAILED', '1:0'), ('CANCELLED by 123', '0:0')):

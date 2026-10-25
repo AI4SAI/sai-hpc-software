@@ -127,7 +127,11 @@ def prepare(directory, descriptor):
 
 
 def train(directory, restart=False):
-    command = [sys.executable, '-m', 'torch.distributed.run', '--standalone', '--nproc_per_node=2',
+    # The build-science container has an isolated network with loopback only.
+    # Explicit local_addr prevents torchrun from advertising an unresolvable
+    # compute-node FQDN while retaining an automatically selected free port.
+    command = [sys.executable, '-m', 'torch.distributed.run', '--standalone',
+               '--local-addr=127.0.0.1', '--nproc_per_node=2',
                str(Path(__file__).resolve()), 'worker', 'restart.json' if restart else 'input.json']
     if restart:
         command += ['--restart', 'model.ckpt-8.pt']
@@ -175,10 +179,16 @@ def main():
                       TORCH_EXTENSIONS_DIR=str(scratch / 'extensions'),
                       XDG_CACHE_HOME=str(scratch / 'cache'), CUDA_CACHE_PATH=str(scratch / 'cuda'),
                       TORCH_DISTRIBUTED_DEBUG='DETAIL')
+    os.environ.update(NCCL_SOCKET_IFNAME='lo', GLOO_SOCKET_IFNAME='lo')
     for name in ('triton', 'inductor', 'extensions', 'cache/torch/kernels', 'cuda'):
         (scratch / name).mkdir(parents=True, exist_ok=True)
     write('inventory.json', inventory())
-    summary = dict(job=os.environ['SLURM_JOB_ID'], partition=os.environ['SLURM_JOB_PARTITION'],
+    identity = json.loads(os.environ.get('SAI_DEEPMD_DELIVERY', '{}')).get('identity', {})
+    job = os.environ.get('SAI_MD_ALLOCATED_JOB', os.environ.get('SLURM_JOB_ID'))
+    partition = os.environ.get('SLURM_JOB_PARTITION', identity.get('partition'))
+    if not job or not partition:
+        raise ValueError('training acceptance requires an identified allocation and partition')
+    summary = dict(job=job, partition=partition,
                    installation=sys.argv[1], cases={})
     for descriptor in ('se_e2_a', 'dpa2'):
         directory = Path.cwd() / descriptor

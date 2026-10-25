@@ -77,7 +77,8 @@ def render(run_id, source):
              'exec "$1/bin/python" /acceptance/deepmd_standalone_check.py science')
     argv = container_command(image, ['/usr/bin/bash', '-euo', 'pipefail', '-c', shell, 'bash', identity['install_prefix'], payload],
         control=Path(source['build_request']['controller']), jobs=1, gpu=True, runtime=directory / 'runtime',
-        extra_binds=[*site_app_binds('deepmd-kit'), (CONTROL, '/acceptance')])
+        extra_binds=[*site_app_binds('deepmd-kit'), (CONTROL, '/acceptance'),
+                     ('/usr/sbin', '/sbin'), ('/etc/ld.so.cache', '/etc/ld.so.cache')])
     argv = [arg for arg in argv if arg != '--fakeroot']
     position = argv.index(str(image))
     argv[position:position] = ['--bind', str(directory / 'runtime') + ':/tmp:rw']
@@ -103,7 +104,7 @@ def submit(run_id, source_run):
     (directory / 'results').mkdir()
     for name in ('runtime', 'apptainer-cache'):
         private_scratch(directory / name)
-    for name in ('runtime-env.sh', 'baseline-inventory.json'):
+    for name in ('runtime-env.sh', 'baseline-inventory.json', 'candidate-inventory.json', 'ddp-source-patch.json'):
         shutil.copy2(task(source_run) / 'runtime' / name, directory / 'runtime' / name)
     shutil.copytree(task(source_run) / 'runtime/case', directory / 'runtime/case')
     script = directory / 'job.sbatch'
@@ -122,7 +123,7 @@ def submit(run_id, source_run):
 
 
 def status(run_id):
-    from deepmd_standalone_check import verify_science_files
+    from deepmd_standalone_check import verify_science_files, science_evidence_hashes
     directory = task(run_id)
     request = json.loads((directory / 'request.json').read_text())
     if (request['controller'] != str(CONTROL) or request['controller_sha256'] != acceptance_fingerprint()
@@ -148,6 +149,7 @@ def status(run_id):
     text = log.read_text(errors='replace') if log.exists() else ''
     if rows[0][1:3] == ['COMPLETED', '0:0'] and 'DEEPMD_INDEPENDENT_ACCEPTANCE_VERIFIED_NOT_PUBLISHED' in text:
         result['science'] = verify_science_files(directory / 'runtime')
+        result['evidence_sha256'] = science_evidence_hashes(directory / 'runtime', request['job_id'])
         result['scientific_verified'] = True
     (directory / 'results/status.json').write_text(json.dumps(result, sort_keys=True, indent=2) + '\n')
     print(json.dumps(result, sort_keys=True))
