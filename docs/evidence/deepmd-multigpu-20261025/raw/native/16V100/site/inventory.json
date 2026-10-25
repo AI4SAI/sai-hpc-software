@@ -1,0 +1,123 @@
+{
+  "python": "/opt/apps/conda_env/deepmd-kit-3.2.0/bin/python",
+  "deepmd": "/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/deepmd",
+  "versions": {
+    "deepmd-kit": "3.2.0",
+    "torch": "2.13.0+cu126",
+    "tensorflow": null,
+    "jax": "0.11.1",
+    "triton": "3.7.1",
+    "horovod": null,
+    "numpy": "2.5.2"
+  },
+  "torch_cuda": "12.6",
+  "nccl": [
+    2,
+    29,
+    3
+  ],
+  "cuda_visible_devices": "0,1",
+  "devices": [
+    {
+      "index": 0,
+      "name": "Tesla V100-SXM2-16GB"
+    },
+    {
+      "index": 1,
+      "name": "Tesla V100-SXM2-16GB"
+    }
+  ],
+  "horovod": false,
+  "ldconfig": true,
+  "nvcc": "/opt/devtools/nvidia/cuda-12.9.1/bin/nvcc",
+  "affinity": [
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    88,
+    89,
+    90,
+    91,
+    92,
+    93,
+    94,
+    95
+  ],
+  "source": {
+    "pt/train/training.py": {
+      "sha256": "2ee355877da3ba10bf213b5653b3b858caa7795d846528c47ab1d7881dc3d090",
+      "excerpts": [
+        "1050:                     self.wrapper,",
+        "1051:                     device_ids=[LOCAL_RANK],",
+        "1052:                     find_unused_parameters=True,",
+        "1053:                     output_device=LOCAL_RANK,",
+        "1054:                 )",
+        "1055: ",
+        "1056:         # TODO add lr warmups for multitask",
+        "1057:         # author: iProzd",
+        "1058:         # TODO add optimizers for multitask",
+        "1059:         # author: iProzd",
+        "1060:         initial_lr = self.lr_schedule.value(self.start_step)"
+      ]
+    },
+    "pt/model/descriptor/se_a.py": {
+      "sha256": "95b7dd6366411f314a5bd630c106bb4baf1bbfe89737f095d79def3a55cff1ad",
+      "excerpts": [
+        "563:         # add for compression",
+        "564:         self.compress = False",
+        "565:         self.compress_info = nn.ParameterList(",
+        "566:             [",
+        "567:                 nn.Parameter(torch.zeros(0, dtype=self.prec, device=\"cpu\"))",
+        "568:                 for _ in range(len(self.filter_layers.networks))",
+        "569:             ]",
+        "570:         )",
+        "571:         self.compress_data = nn.ParameterList(",
+        "572:             [",
+        "573:                 nn.Parameter(torch.zeros(0, dtype=self.prec, device=env.DEVICE))",
+        "574:                 for _ in range(len(self.filter_layers.networks))",
+        "575:             ]",
+        "576:         )",
+        "577: ",
+        "578:     def get_rcut(self) -> float:",
+        "579:         \"\"\"Returns the cut-off radius.\"\"\""
+      ]
+    },
+    "tf/train/run_options.py": {
+      "sha256": "637827720ee1a8411dbf93b51144fc7037308b7cbda9095d64109da5060d232d",
+      "excerpts": [
+        "30: ",
+        "31: if TYPE_CHECKING:",
+        "32:     import horovod.tensorflow as HVD",
+        "33: ",
+        "34: ",
+        "35: __all__ = [",
+        "36:     \"RunOptions\",",
+        "37: ]",
+        "38: ",
+        "39: log = logging.getLogger(__name__)",
+        "40: ",
+        "204:     def _try_init_distrib(self) -> None:",
+        "205:         try:",
+        "206:             import horovod.tensorflow as HVD",
+        "207: ",
+        "208:             HVD.init()",
+        "209:             self.is_distrib = HVD.size() > 1",
+        "210:         except ImportError:",
+        "211:             log.warning(\"Switch to serial execution due to lack of horovod module.\")",
+        "212:             self.is_distrib = False",
+        "213: ",
+        "214:         # Do real initialization",
+        "215:         if self.is_distrib:",
+        "216:             self._init_distributed(HVD)",
+        "217:             self._HVD = HVD",
+        "218:         else:",
+        "219:             self._init_serial()"
+      ]
+    }
+  }
+}

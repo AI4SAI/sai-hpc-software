@@ -1,0 +1,26 @@
+{
+  "rank": 0,
+  "world_size": 2,
+  "local_rank": 0,
+  "pid": 1087462,
+  "backend": "cuda:nccl,cpu:gloo",
+  "device_ids": [
+    0
+  ],
+  "cuda_current_device": 0,
+  "find_unused_parameters": true,
+  "initial_parameters_sha256": "af50ae37d0e6bc6c6774523d032a4d14c8e7c7d23e61f7694c271a063494c331",
+  "forward_calls": 16,
+  "gradient_devices": [
+    "cuda:0"
+  ],
+  "gradients_finite": true,
+  "gradient_calls": 176,
+  "empty_trainable_parameters": [
+    "model.Default.atomic_model.descriptor.sea.compress_info.0",
+    "model.Default.atomic_model.descriptor.sea.compress_info.1",
+    "model.Default.atomic_model.descriptor.sea.compress_data.0",
+    "model.Default.atomic_model.descriptor.sea.compress_data.1"
+  ],
+  "final_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428"
+}

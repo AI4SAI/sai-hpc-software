@@ -91,6 +91,14 @@ DeePMD 并非一律不需要 MPI。上游同一源码提交的
 双卡训练没有通过验收；帮助中只推荐已验收的 `dp --pt train input.json` 单卡模式，
 旧的 GPU 推理数值验收保持其原有范围。
 
+2026-10-25 的[三分区双卡实测](../../docs/evidence/deepmd-multigpu-20261025/README.md)
+再次复现上述 SIF 失败。我们已经安装到 `/opt` 的 3.2.0 release，以及
+`deepmd-kit/3.2.0` 指向的原有 Conda 环境，都通过了三个 V100 分区的
+`se_e2_a`、DPA2 双卡训练和断点续训，可用于已验证的 PyTorch DDP 路径。
+这两份安装与当前 beta SIF 是不同的交付，具体路径、模块选择和命令见实测记录。
+当前 TensorFlow 实际是 CPU 构建，JAX 也只识别 CPU；TensorFlow 多卡还需要
+提供 CUDA 后端和 Horovod，不能仅根据模块描述判断支持情况。
+
 当前 GPUMD
 [main](https://github.com/brucefan1983/GPUMD/blob/2c93346fce4461de1c42c77e7fe74cdb6b0e3df6/src/main_gpumd/main.cu)
 没有 MPI 初始化；构建使用 nvcc，实际二进制没有 MPI/PMPI 导入。

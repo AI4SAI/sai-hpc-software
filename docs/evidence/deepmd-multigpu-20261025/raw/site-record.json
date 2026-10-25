@@ -1,0 +1,127 @@
+{
+  "runtime": "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f",
+  "runtime_sha256": "a4c6a24c229f7a696b202fb1bfc4b18045a60e93f7bc7477cb7d1d911100c611",
+  "catalog_sha256": "2aa23091ecb2097ffc09dcaca876251ce689a45215320327032d97f2e831ce6f",
+  "deepmd": {
+    "partitions": {
+      "16V100": {
+        "binds": [
+          "/opt/apps/conda_env/deepmd-kit-3.2.0",
+          "/opt/apps/conda_env/VeloxChem/gpu",
+          "/opt/apps/plumed/plumed-2.10.1"
+        ],
+        "build_verified": true,
+        "environment_file": "environments/deepmd-kit-16V100.sh",
+        "environment_sha256": "9cebe71d999db25bb435f4d0899303cfa99478ffe5980c63ce3febb48342e795",
+        "evidence": "docs/evidence/deepmd-project-20261023/delivery.json",
+        "evidence_sha256": "0cbad1d3fdc09fd446b87bc591e90cf1b1a389b4819f0dcc7bfe92489333d39d",
+        "identity": {
+          "build_id": "master-2026-10-23-g558f56962775-re04065e624bd",
+          "cpu_arch": "znver3",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100",
+          "partition": "16V100",
+          "recipe_sha256": "e04065e624bdf113dbcc32e713510472a1416bec81e664571ce84121024d54ea",
+          "repository": "deepmodeling/deepmd-kit",
+          "schema": 2,
+          "software": "deepmd-kit",
+          "source_ref": "master",
+          "source_sha": "558f56962775098b8b554e341c3b37d2f86e6aeb",
+          "source_version": "master-2026-10-23",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "16v100-avx2",
+          "track": "development",
+          "version_label": "master-2026-10-23"
+        },
+        "image": "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/deepmd-kit/16V100.sif",
+        "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+        "scientific_verified": true,
+        "sha256": "886a99b71c8b66b8fceb5c706ee6c6de6afbadb686676dea01f975aa3745c3bf"
+      },
+      "4V100": {
+        "binds": [
+          "/opt/apps/conda_env/deepmd-kit-3.2.0",
+          "/opt/apps/conda_env/VeloxChem/gpu",
+          "/opt/apps/plumed/plumed-2.10.1"
+        ],
+        "build_verified": true,
+        "environment_file": "environments/deepmd-kit-4V100.sh",
+        "environment_sha256": "87f8f0df7a11b8d0561df9537a4ec8c934d97948f73261581248df7fcbeaf162",
+        "evidence": "docs/evidence/deepmd-project-20261023/delivery.json",
+        "evidence_sha256": "0cbad1d3fdc09fd446b87bc591e90cf1b1a389b4819f0dcc7bfe92489333d39d",
+        "identity": {
+          "build_id": "master-2026-10-23-g558f56962775-re04065e624bd",
+          "cpu_arch": "znver4",
+          "cuda_arch": "70",
+          "dependency_isa": "avx512",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100",
+          "partition": "4V100",
+          "recipe_sha256": "e04065e624bdf113dbcc32e713510472a1416bec81e664571ce84121024d54ea",
+          "repository": "deepmodeling/deepmd-kit",
+          "schema": 2,
+          "software": "deepmd-kit",
+          "source_ref": "master",
+          "source_sha": "558f56962775098b8b554e341c3b37d2f86e6aeb",
+          "source_version": "master-2026-10-23",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "4v100-avx512",
+          "track": "development",
+          "version_label": "master-2026-10-23"
+        },
+        "image": "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/deepmd-kit/4V100.sif",
+        "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512",
+        "scientific_verified": true,
+        "sha256": "0f33c1e2ac6576490a9a5bef9082e5a8ed592103c87d8b6edd3017abd24bd172"
+      },
+      "8V100V0": {
+        "binds": [
+          "/opt/apps/conda_env/deepmd-kit-3.2.0",
+          "/opt/apps/conda_env/VeloxChem/gpu",
+          "/opt/apps/plumed/plumed-2.10.1"
+        ],
+        "build_verified": true,
+        "environment_file": "environments/deepmd-kit-8V100V0.sh",
+        "environment_sha256": "8d270159d1e3cdf45c6b79e7cb9abc00d5a677821bceb538abd258feac375563",
+        "evidence": "docs/evidence/deepmd-project-20261023/delivery.json",
+        "evidence_sha256": "0cbad1d3fdc09fd446b87bc591e90cf1b1a389b4819f0dcc7bfe92489333d39d",
+        "identity": {
+          "build_id": "master-2026-10-23-g558f56962775-re04065e624bd",
+          "cpu_arch": "skylake-avx512",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0",
+          "partition": "8V100V0",
+          "recipe_sha256": "e04065e624bdf113dbcc32e713510472a1416bec81e664571ce84121024d54ea",
+          "repository": "deepmodeling/deepmd-kit",
+          "schema": 2,
+          "software": "deepmd-kit",
+          "source_ref": "master",
+          "source_sha": "558f56962775098b8b554e341c3b37d2f86e6aeb",
+          "source_version": "master-2026-10-23",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "8v100v0-avx512",
+          "track": "development",
+          "version_label": "master-2026-10-23"
+        },
+        "image": "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/deepmd-kit/8V100V0.sif",
+        "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+        "scientific_verified": true,
+        "sha256": "2fa0de48cc6716ec7431cd94fe891817cec33ea400b39e7ce6d575477c5b15d8"
+      }
+    },
+    "version": "master-20261024-g558f56962775"
+  },
+  "modules": {
+    "/opt/modules/modulefiles/apps/deepmd-kit/3.2.0": "#%Module1.0\nmodule-whatis \"DeePMD-kit 3.2.0 complete TF/PT/JAX CUDA runtime, Supporting DPA4(C)\"\n\nmodule load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto\n\nset env_home /opt/apps/conda_env/deepmd-kit-3.2.0\nset lammps_home /opt/apps/lammps/lammps-4Jul2026-deepmd3.2.0-nvhpc263-ompi5010-sm70\n\nprepend-path PATH $env_home/bin\nprepend-path PATH $lammps_home/bin\nsetenv DEEPMD_ROOT $env_home\nsetenv DEEPMD_PYTHON $env_home/bin/python\nsetenv DP_CUDA_INFER 2\n#setenv PYTORCH_ALLOC_CONF expandable_segments:False\nsetenv OMP_NUM_THREADS 2\nsetenv DP_INTRA_OP_PARALLELISM_THREADS 1\nsetenv DP_INTER_OP_PARALLELISM_THREADS 1\n",
+    "/opt/modules/modulefiles/apps/deepmd-kit/master-beta-later": "#%Module1.0\n# Maintained by stardust; this gateway does not rotate.\nsource \"/home/stardust/sai-hpc-software/modulefiles/apps/deepmd-kit/master-beta-later\"\n",
+    "/opt/modules/modulefiles/apps/lammps/30Sep2026-deepmd320-auto": "#%Module1.0\nmodule-whatis \"LAMMPS 30 Sep 2026 / DeePMD 3.2.0; V100 partition selection\"\nconflict lammps\nif {[module-info mode load]} {\n    if {![info exists env(SLURM_JOB_ID)] || ![regexp {^[1-9][0-9]*$} $env(SLURM_JOB_ID)] || ![info exists env(SLURM_JOB_PARTITION)]} {\n        error \"Load this module inside a Slurm allocation\"\n    }\n    set partition $env(SLURM_JOB_PARTITION)\n} elseif {[module-info mode remove]} {\n    if {![info exists env(SAI_LAMMPS_NATIVE_PARTITION)]} {error \"Missing loaded LAMMPS partition\"}\n    set partition $env(SAI_LAMMPS_NATIVE_PARTITION)\n} else {return}\nset configurations [dict create 4V100 {296ed3baa11b avx512} 16V100 {296ed3baa11b avx2} 8V100V0 {795dbd80e2a4 avx2}]\nif {![dict exists $configurations $partition]} {error \"Unsupported LAMMPS GPU partition: $partition\"}\nlassign [dict get $configurations $partition] recipe isa\nset lammps /opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r${recipe}-s4abbad547102/$partition\nset deepmd /opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r${recipe}-s4abbad547102/$partition\nif {[info exists env(SAI_LAMMPS_NATIVE_PARTITION)] && $env(SAI_LAMMPS_NATIVE_PARTITION) ne $partition} {error \"Another native partition is loaded\"}\nif {[info exists env(SAI_LAMMPS_PREFIX)] && $env(SAI_LAMMPS_PREFIX) ne $lammps} {error \"Another native build is loaded\"}\nif {[module-info mode remove] && ![info exists env(SAI_LAMMPS_PREFIX)]} {error \"Missing loaded LAMMPS prefix\"}\nforeach prefix [list $lammps $deepmd] {\n    if {![file isdirectory $prefix]} {error \"Missing paired LAMMPS/DeePMD installation: $prefix\"}\n    for {set path $prefix} {$path ne \"/\"} {set path [file dirname $path]} {\n        if {[file type $path] eq \"link\"} {error \"Native installation path must not contain symlinks\"}\n    }\n}\nforeach category {mpi mathlib compiler devtools apps} {\n    prepend-path MODULEPATH /opt/modules/modulefiles/$category\n}\nforeach dependency {cuda/12.9.1 nvhpc/26.3-gnu-cuda12-tuned openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto gcc/14.3.0} {\n    if {[llength [info commands depends-on]]} {depends-on $dependency} else {module load $dependency}\n}\nset hpc /opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3\nset hpcx $hpc/comm_libs/12.9/hpcx/hpcx-2.25.1\nset cuda /opt/devtools/nvidia/cuda-12.9.1\nset mpi /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-$isa\nset gcc /opt/devtools/gcc/14.3.0\nset plumed /opt/apps/plumed/plumed-2.10.1\nset python /opt/apps/conda_env/deepmd-kit-3.2.0\nset python_site $python/lib/python3.13/site-packages\nset deepmd_site $deepmd/lib/python3.13/site-packages\n# Preserve the library precedence of the accepted container export.\nforeach path [list /usr/lib /usr/lib/x86_64-linux-gnu \\\n        $hpc/math_libs/12.9/targets/x86_64-linux/lib \\\n        /opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/lib \\\n        $hpc/comm_libs/12.9/nvshmem/lib $hpcx/hcoll/lib $hpcx/sharp/lib \\\n        $cuda/targets/x86_64-linux/lib $mpi/lib $plumed/lib $gcc/lib64 $gcc/lib $gcc/libexec \\\n        /lib/x86_64-linux-gnu/blas /lib/x86_64-linux-gnu/lapack $python/lib \\\n        $python_site/torch/lib $python_site/tensorflow $deepmd_site/deepmd/lib $deepmd/lib $lammps/lib] {\n    prepend-path LD_LIBRARY_PATH $path\n}\nforeach path [list /usr/bin /usr/sbin /usr/local/bin /usr/local/sbin /opt/devtools/cmake/3.31.6/bin \\\n        $hpcx/hcoll/bin $hpcx/sharp/bin $cuda/bin $mpi/bin $python/bin $plumed/bin $gcc/bin $deepmd/bin $lammps/bin] {\n    prepend-path PATH $path\n}\nprepend-path PYTHONPATH $deepmd_site\nsetenv PYTHONDONTWRITEBYTECODE 1\nsetenv LAMMPS_POTENTIALS $lammps/share/lammps/potentials\nsetenv PLUMED_KERNEL $plumed/lib/libplumedKernel.so\nforeach directory {lib64 lib} {\n    if {[file isdirectory $lammps/$directory]} {\n        prepend-path LD_LIBRARY_PATH $lammps/$directory\n        prepend-path LIBRARY_PATH $lammps/$directory\n    }\n}\nforeach {variable directory} {CPATH include PKG_CONFIG_PATH lib64/pkgconfig PKG_CONFIG_PATH lib/pkgconfig MANPATH share/man} {\n    if {[file isdirectory $lammps/$directory]} {prepend-path $variable $lammps/$directory}\n}\nprepend-path CMAKE_PREFIX_PATH $lammps\nsetenv SAI_LAMMPS_PREFIX $lammps\nsetenv SAI_LAMMPS_NATIVE_PARTITION $partition\n"
+  },
+  "accounting": "JobID|Partition|State|ExitCode|Elapsed|NodeList|AllocTRES\n1929932|16V100|COMPLETED|0:0|00:00:37|16v100n55|billing=300,cpu=16,gres/gpu=2,mem=30G,node=1\n1929939|16V100|COMPLETED|0:0|00:00:59|16v100n55|billing=300,cpu=16,gres/gpu=2,mem=30G,node=1\n1929948|16V100|COMPLETED|0:0|00:00:37|16v100n42|billing=300,cpu=16,gres/gpu=2,mem=30G,node=1\n1929949|4V100|COMPLETED|0:0|00:00:41|4v100n11|billing=388,cpu=16,gres/gpu=2,mem=44G,node=1\n1929950|8V100V0|COMPLETED|0:0|00:01:45|8v100v0n02|billing=360,cpu=12,gres/gpu=2,mem=92G,node=1\n1929966|16V100|COMPLETED|0:0|00:01:55|16v100n49|billing=300,cpu=16,gres/gpu=2,mem=30G,node=1\n1929967|4V100|COMPLETED|0:0|00:00:47|4v100n11|billing=388,cpu=16,gres/gpu=2,mem=44G,node=1\n1929968|8V100V0|COMPLETED|0:0|00:02:01|8v100v0n06|billing=360,cpu=12,gres/gpu=2,mem=92G,node=1\n1930009|16V100|COMPLETED|0:0|00:00:20|16v100n25|billing=300,cpu=16,gres/gpu=2,mem=30G,node=1\n"
+}
