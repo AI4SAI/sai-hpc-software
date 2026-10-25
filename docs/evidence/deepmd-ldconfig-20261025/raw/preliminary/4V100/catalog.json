@@ -1,0 +1,128 @@
+{
+  "applications": {
+    "deepmd-kit": {
+      "partitions": {
+        "16V100": {
+          "binds": [
+            "/opt/apps/conda_env/deepmd-kit-3.2.0",
+            "/opt/apps/conda_env/VeloxChem/gpu",
+            "/opt/apps/plumed/plumed-2.10.1"
+          ],
+          "build_verified": true,
+          "environment_file": "environments/deepmd-kit-16V100.sh",
+          "environment_sha256": "9cebe71d999db25bb435f4d0899303cfa99478ffe5980c63ce3febb48342e795",
+          "evidence": "docs/evidence/deepmd-project-20261023/delivery.json",
+          "evidence_sha256": "0cbad1d3fdc09fd446b87bc591e90cf1b1a389b4819f0dcc7bfe92489333d39d",
+          "identity": {
+            "build_id": "master-2026-10-23-g558f56962775-re04065e624bd",
+            "cpu_arch": "znver3",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/16V100",
+            "partition": "16V100",
+            "recipe_sha256": "e04065e624bdf113dbcc32e713510472a1416bec81e664571ce84121024d54ea",
+            "repository": "deepmodeling/deepmd-kit",
+            "schema": 2,
+            "software": "deepmd-kit",
+            "source_ref": "master",
+            "source_sha": "558f56962775098b8b554e341c3b37d2f86e6aeb",
+            "source_version": "master-2026-10-23",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "16v100-avx2",
+            "track": "development",
+            "version_label": "master-2026-10-23"
+          },
+          "image": "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/deepmd-kit/16V100.sif",
+          "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+          "scientific_verified": true,
+          "sha256": "886a99b71c8b66b8fceb5c706ee6c6de6afbadb686676dea01f975aa3745c3bf"
+        },
+        "4V100": {
+          "binds": [
+            "/opt/apps/conda_env/deepmd-kit-3.2.0",
+            "/opt/apps/conda_env/VeloxChem/gpu",
+            "/opt/apps/plumed/plumed-2.10.1"
+          ],
+          "build_verified": true,
+          "environment_file": "environments/deepmd-kit-4V100.sh",
+          "environment_sha256": "87f8f0df7a11b8d0561df9537a4ec8c934d97948f73261581248df7fcbeaf162",
+          "evidence": "docs/evidence/deepmd-project-20261023/delivery.json",
+          "evidence_sha256": "0cbad1d3fdc09fd446b87bc591e90cf1b1a389b4819f0dcc7bfe92489333d39d",
+          "identity": {
+            "build_id": "master-2026-10-23-g558f56962775-re04065e624bd",
+            "cpu_arch": "znver4",
+            "cuda_arch": "70",
+            "dependency_isa": "avx512",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/4V100",
+            "partition": "4V100",
+            "recipe_sha256": "e04065e624bdf113dbcc32e713510472a1416bec81e664571ce84121024d54ea",
+            "repository": "deepmodeling/deepmd-kit",
+            "schema": 2,
+            "software": "deepmd-kit",
+            "source_ref": "master",
+            "source_sha": "558f56962775098b8b554e341c3b37d2f86e6aeb",
+            "source_version": "master-2026-10-23",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "4v100-avx512",
+            "track": "development",
+            "version_label": "master-2026-10-23"
+          },
+          "image": "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/deepmd-kit/4V100.sif",
+          "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512",
+          "scientific_verified": true,
+          "sha256": "0f33c1e2ac6576490a9a5bef9082e5a8ed592103c87d8b6edd3017abd24bd172"
+        },
+        "8V100V0": {
+          "binds": [
+            "/opt/apps/conda_env/deepmd-kit-3.2.0",
+            "/opt/apps/conda_env/VeloxChem/gpu",
+            "/opt/apps/plumed/plumed-2.10.1"
+          ],
+          "build_verified": true,
+          "environment_file": "environments/deepmd-kit-8V100V0.sh",
+          "environment_sha256": "8d270159d1e3cdf45c6b79e7cb9abc00d5a677821bceb538abd258feac375563",
+          "evidence": "docs/evidence/deepmd-project-20261023/delivery.json",
+          "evidence_sha256": "0cbad1d3fdc09fd446b87bc591e90cf1b1a389b4819f0dcc7bfe92489333d39d",
+          "identity": {
+            "build_id": "master-2026-10-23-g558f56962775-re04065e624bd",
+            "cpu_arch": "skylake-avx512",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-23-g558f56962775-re04065e624bd/8V100V0",
+            "partition": "8V100V0",
+            "recipe_sha256": "e04065e624bdf113dbcc32e713510472a1416bec81e664571ce84121024d54ea",
+            "repository": "deepmodeling/deepmd-kit",
+            "schema": 2,
+            "software": "deepmd-kit",
+            "source_ref": "master",
+            "source_sha": "558f56962775098b8b554e341c3b37d2f86e6aeb",
+            "source_version": "master-2026-10-23",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "8v100v0-avx512",
+            "track": "development",
+            "version_label": "master-2026-10-23"
+          },
+          "image": "/home/stardust/sai-hpc-software/deployment/sif-development-20261024/payload/images/deepmd-kit/8V100V0.sif",
+          "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+          "scientific_verified": true,
+          "sha256": "2fa0de48cc6716ec7431cd94fe891817cec33ea400b39e7ce6d575477c5b15d8"
+        }
+      },
+      "version": "master-20261024-g558f56962775"
+    }
+  },
+  "memory_bootstrap": {
+    "image": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/deepmd-ldconfig-20261025/bundle/libexec/memory-bootstrap.sif",
+    "sha256": "eb467d87aa7a41ab80f982929d23a1fff1d59e1625fae57e62fba03fc643c7e2",
+    "source_image": "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f/libexec/memory-bootstrap.sif"
+  },
+  "runtime_sha256": "5621d8d6b04ffdd1ae269922ecd6a46e96b7b502ed105cd3efcbb49127d60c79",
+  "schema": 1,
+  "snapshot": "20261024"
+}

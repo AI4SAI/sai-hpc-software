@@ -300,6 +300,13 @@ def command(manifest, manifest_path, software, program, arguments, environment, 
     if row['identity']['gpus']:
         argv.append('--nv')
     binds = [(p, p, 'ro') for p in ('/usr', '/lib', '/lib64', '/opt/devtools', *row['binds'])]
+    if software == 'deepmd-kit':
+        # Triton calls /sbin/ldconfig -p before searching LD_LIBRARY_PATH.
+        # Use /usr/sbin as the source: the restricted-node bootstrap already
+        # mounts /usr, but its minimal root has no /sbin symlink. Keep the
+        # wrapper and ldconfig.real together, with the cache for the host
+        # libraries already exposed through /usr and /lib.
+        binds += [('/usr/sbin', '/sbin', 'ro'), ('/etc/ld.so.cache', '/etc/ld.so.cache', 'ro')]
     binds += [(str(work), str(work), 'rw'), (str(host_tmp), str(host_tmp), 'rw'),
               (str(scratch), '/tmp', 'rw'), (str(scratch), '/var/tmp', 'rw'),
               ('/dev/shm', '/dev/shm', 'rw')]
@@ -330,6 +337,10 @@ def command(manifest, manifest_path, software, program, arguments, environment, 
     forwarded.update(TMPDIR=str(host_tmp), TMP=str(scratch), TEMP=str(scratch),
                      XDG_CACHE_HOME=str(scratch / 'cache'), CUDA_CACHE_PATH=str(scratch / 'cuda'),
                      PYTHONNOUSERSITE='1', PYTHONDONTWRITEBYTECODE='1')
+    if software == 'deepmd-kit':
+        # Triton does not use XDG_CACHE_HOME. Its cache/dump/override defaults
+        # must also stay in this invocation's private memory namespace.
+        forwarded['TRITON_HOME'] = str(scratch)
     # Communication buffers belong in RAM, not in project Lustre files.
     # MPI session files and container scratch also live in private tmpfs.
     forwarded.setdefault('OMPI_MCA_shmem_mmap_backing_file_base_dir', '/dev/shm')
@@ -390,6 +401,9 @@ def main(argv=None):
     scratch = private_directory(cache / ('rank-' + rank + '-' + str(os.getpid())))
     for directory in ('cache', 'cuda'):
         private_directory(scratch / directory)
+    if software == 'deepmd-kit':
+        for directory in ('cache/torch', 'cache/torch/kernels'):
+            private_directory(scratch / directory)
     args, child = command(manifest, manifest_path, software, program, arguments,
                           environment, Path.cwd(), scratch)
     if environment.get('SAI_SIF_TRACE_DIR'):

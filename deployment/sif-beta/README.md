@@ -85,14 +85,16 @@ DeePMD 并非一律不需要 MPI。上游同一源码提交的
 实际双卡检查使用 SIF 内的 `deepmd-python -m torch.distributed.run`，让 launcher
 和 worker 使用同一份 Python。两张 V100 的 NCCL all-reduce 通过，但不能据此
 判定训练通过：当前提交的 `se_e2_a` 在第二步触发 DDP 未使用参数错误，参数
-8–11 是仍标记可训练的空 `compress_info`/`compress_data`。DPA2 训练则在 Triton
-查找 CUDA 库时遇到 SIF 缺少 `/sbin/ldconfig`。这些失败及后续修复要求记录在
-[实际检查记录](../../docs/evidence/sif-beta-site-20261024/README.md)。
+8–11 是仍标记可训练的空 `compress_info`/`compress_data`。DPA2 最初还遇到
+`/sbin/ldconfig` 缺失；[运行时修复](../../docs/evidence/deepmd-ldconfig-20261025/README.md)
+已只读挂载宿主工具和动态库缓存，并自动把 Triton JIT 缓存放在私有内存临时区。
+当前 DeePMD 入口使用 `r75ef5179f1e8`；三个 V100 分区的 `se_e2_a`、DPA2 单卡训练
+和续训都通过。双卡 DPA2 能完成第一步，随后仍触发独立的 DDP 空参数错误。
 双卡训练没有通过验收；帮助中只推荐已验收的 `dp --pt train input.json` 单卡模式，
 旧的 GPU 推理数值验收保持其原有范围。
 
 2026-10-25 的[三分区双卡实测](../../docs/evidence/deepmd-multigpu-20261025/README.md)
-再次复现上述 SIF 失败。我们已经安装到 `/opt` 的 3.2.0 release，以及
+记录了修复前的 SIF 失败。我们已经安装到 `/opt` 的 3.2.0 release，以及
 `deepmd-kit/3.2.0` 指向的原有 Conda 环境，都通过了三个 V100 分区的
 `se_e2_a`、DPA2 双卡训练和断点续训，可用于已验证的 PyTorch DDP 路径。
 这两份安装与当前 beta SIF 是不同的交付，具体路径、模块选择和命令见实测记录。
