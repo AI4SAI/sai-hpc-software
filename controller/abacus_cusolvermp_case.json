@@ -1,0 +1,20 @@
+{
+  "source_sha": "370ba685e6707b3625c5580ff9d02ef0afb248e8",
+  "files": {
+    "INPUT": {
+      "source": "tests/12_NAO_Gamma_GPU/009_NO_Si2_DZP_GPU/INPUT",
+      "sha256": "86ab14ded1eba02dc0c98bfd997a6d8dcb647840b8e9d3dd0fa2ea800038a6e9",
+      "text": "INPUT_PARAMETERS \n#Parameters (1.General)\nsuffix            autotest\ncalculation       scf\n                 \n#nbands\t\t\t 8\nsymmetry          1\n                 \n#Parameters (2.Iteration)\necutwfc           50\nscf_thr           1e-7\nscf_nmax          100\ncal_force         1\ncal_stress        1\n#Parameters (3.Basis)\nbasis_type        lcao\n                 \n#Parameters (4.Smearing)\nsmearing_method   gauss\nsmearing_sigma    0.002\n                 \n#Parameters (5.Mixing)\nmixing_type       broyden\nmixing_beta       0.3\ngamma_only        1\nks_solver         cusolver\ndevice            gpu\n"
+    },
+    "KPT": {
+      "source": "tests/12_NAO_Gamma_GPU/009_NO_Si2_DZP_GPU/KPT",
+      "sha256": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+      "text": "K_POINTS\n0\nGamma\n1 1 1 0 0 0\n"
+    },
+    "STRU": {
+      "source": "tests/12_NAO_Gamma_GPU/009_NO_Si2_DZP_GPU/STRU",
+      "sha256": "1eb4f0c1a3d31c5a4a67992d3d778fe9126f3f2f2435989660fe42f1ecf86080",
+      "text": "ATOMIC_SPECIES\nSi 14.000 ../../PP_ORB/Si_ONCV_PBE-1.0.upf\n\nNUMERICAL_ORBITAL\n../../PP_ORB/Si_gga_8au_100Ry_2s2p1d.orb\n\nLATTICE_CONSTANT\n10.2\n\nLATTICE_VECTORS\n0.0 0.5 0.5 \t\t#Lattice vector 1\n0.5 0.0 0.5 \t\t#Lattice vector 2\n0.5 0.5 0.0 \t\t#Lattice vector 3\n\nATOMIC_POSITIONS\nCartesian \t\t#Cartesian(Unit is LATTICE_CONSTANT)\nSi \t\t\t#Name of element\t\n0.0\t\t\t#Magnetic for this element.\n2\t\t\t#Number of atoms\n0.00 0.00 0.00 0 0 0\t#x,y,z, move_x, move_y, move_z\n0.25 0.25 0.25 1 1 1"
+    }
+  }
+}

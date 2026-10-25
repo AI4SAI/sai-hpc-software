@@ -235,7 +235,7 @@ def main():
                    "gpu_feature_controller.py", "gpu_feature_runtime.sh",
                    "abacus_dependencies.py", "abacus_dependencies.sh",
                    "abacus_full_profile.json", "abacus_full_dependencies.sh", "abacus_site_mpi.sh", "abacus_site_gpu.sh",
-                   "abacus_dependency_lock.json", "abacus_features.py", "abacus_benchmark.py",
+                   "abacus_dependency_lock.json", "abacus_cusolvermp_case.json", "abacus_features.py", "abacus_benchmark.py",
                    "native_module.py", "export_native.py"]
                   if software == "abacus" else
                   ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_libxc.sh", "cp2k_libxs.sh", "cp2k_elpa.sh", "cp2k_elpa_runtime.py", "cp2k_feature_contract.py", "cp2k_site_elpa.json", "cp2k_elpa_abi.f90",
@@ -247,7 +247,7 @@ def main():
                    "native_module.py", "export_native.py"])
         if software == "gpumd":
             recipe = ["gpumd_container_entry.sh", "gpumd_environment.sh", "gpumd_build.sh",
-                      "gpumd_science.py", "gpumd_deepmd_probe.py", "gpumd_acceptance.py",
+                      "gpumd_science.py", "gpumd_reference_cases.json", "gpumd_deepmd_probe.py", "gpumd_acceptance.py",
                       "export_native.py", "native_module.py"]
         # One SFTP connection avoids paying the site's SSH handshake latency
         # for every trusted file. All files still arrive before fingerprinting

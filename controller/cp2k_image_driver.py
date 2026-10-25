@@ -10,7 +10,10 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
+import subprocess
 import sys
+import time
 
 from source_cache import checksum
 
@@ -92,6 +95,31 @@ def prepare(project, run):
     return config
 
 
+def mount_timeout(returncode, stderr):
+    # Apptainer emits this before it starts the container payload. Compilation,
+    # scientific failures and arbitrary exit 255 are never retried here.
+    return returncode == 255 and bool(re.search(
+        rb'FATAL:[^\n]*container creation failed: mount hook function failure:[^\n]*fuse2fs failed to mount [^\n]* in 10s', stderr))
+
+
+def execute(argv, run):
+    for attempt in range(3):
+        tail = b''
+        with subprocess.Popen(argv, stderr=subprocess.PIPE) as process:
+            for block in iter(lambda: process.stderr.read1(65536), b''):
+                sys.stderr.buffer.write(block)
+                sys.stderr.buffer.flush()
+                tail = (tail + block)[-65536:]
+            code = process.wait()
+        if attempt == 2 or not mount_timeout(code, tail):
+            return code
+        record = dict(attempt=attempt + 1, reason='fuse2fs mount timeout before payload', argv=argv)
+        path = Path(run) / 'results' / f'mount-retry-{os.getpid()}-{attempt + 1}.json'
+        path.write_text(json.dumps(record, sort_keys=True) + '\n')
+        print('CONTAINER_MOUNT_RETRY ' + str(attempt + 1), file=sys.stderr, flush=True)
+        time.sleep(5 * (attempt + 1))
+
+
 def main():
     project, run, *argv = sys.argv[1:]
     if not argv or argv[0] != 'exec':
@@ -99,8 +127,8 @@ def main():
     config = prepare(project, run)
     print('CP2K_IMAGE_DRIVER sha256=' + DRIVER_SHA256 + ' config=' + str(config),
           file=sys.stderr, flush=True)
-    os.execv(str(APPTAINER), [str(APPTAINER), '--config', str(config), *argv])
+    return execute([str(APPTAINER), '--config', str(config), *argv], run)
 
 
 if __name__ == '__main__':
-    main()
+    raise SystemExit(main())

@@ -9,6 +9,7 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import shlex
 import shutil
 import subprocess
@@ -67,7 +68,13 @@ if hasattr(build, 'verify_build_receipt'):
                 artifact=str(image), artifact_sha256=checksum(image))
 
 
-def render(run_id, source):
+def excluded_nodes(value):
+    if not isinstance(value, str) or (value and not re.fullmatch(r'[A-Za-z0-9-]+(?:,[A-Za-z0-9-]+)*', value)):
+        raise ValueError('excluded nodes must be literal Slurm hostnames')
+    return value
+
+
+def render(run_id, source, exclude=''):
     directory = task(run_id)
     identity = source['build_request']['delivery']['identity']
     image = Path(source['artifact'])
@@ -85,6 +92,7 @@ def render(run_id, source):
     lines = ['#!/usr/bin/env bash', '#SBATCH --job-name=deepmd-science-' + run_id,
              '#SBATCH --partition=' + identity['partition'], '#SBATCH --qos=' + gpumd_qos(PROJECT, identity['target']),
              '#SBATCH --nodes=1', '#SBATCH --ntasks=1', '#SBATCH --gpus-per-node=2', '#SBATCH --time=30',
+             *(['#SBATCH --exclude=' + excluded_nodes(exclude)] if exclude else []),
              *project_batch_directives(PROJECT, directory), '#SBATCH --output=' + str(directory / 'results/slurm-%j.log'),
              '#SBATCH --export=NIL', 'set -eo pipefail', 'export PATH=/usr/bin:/bin LD_LIBRARY_PATH="" LD_PRELOAD=""',
              'source /etc/profile.d/lmod.sh', 'module load apptainer/1.4.4', 'set -u', 'umask 077',
@@ -97,7 +105,8 @@ def render(run_id, source):
     return '\n'.join(lines) + '\n'
 
 
-def submit(run_id, source_run):
+def submit(run_id, source_run, exclude=''):
+    exclude = excluded_nodes(exclude)
     source = origin(source_run)
     directory = task(run_id)
     directory.mkdir(parents=True, exist_ok=False)
@@ -108,18 +117,59 @@ def submit(run_id, source_run):
         shutil.copy2(task(source_run) / 'runtime' / name, directory / 'runtime' / name)
     shutil.copytree(task(source_run) / 'runtime/case', directory / 'runtime/case')
     script = directory / 'job.sbatch'
-    script.write_text(render(run_id, source))
+    script.write_text(render(run_id, source, exclude))
     subprocess.run(['sbatch', '--test-only', str(script)], check=True, capture_output=True, cwd=directory)
     job = subprocess.check_output(['sbatch', '--hold', '--parsable', str(script)], text=True, cwd=directory).strip().split(';')[0]
     if not job.isdigit():
         raise ValueError('invalid acceptance allocation')
     request = dict(schema=1, source=source, job_id=job, controller=str(CONTROL),
-                   controller_sha256=acceptance_fingerprint(), job_script_sha256=checksum(script))
+                   controller_sha256=acceptance_fingerprint(), job_script_sha256=checksum(script), exclude=exclude)
     (directory / 'request.json').write_text(json.dumps(request, sort_keys=True, indent=2) + '\n')
     (directory / 'request.json').chmod(0o444)
     script.chmod(0o444)
     subprocess.run(['scontrol', 'release', job], check=True)
     print(json.dumps(request, sort_keys=True))
+    return request
+
+
+def recover(source_run):
+    """One new science allocation for a recorded uncorrectable GPU ECC fault."""
+    source = origin(source_run)
+    original = task(source_run)
+    pointer = original / 'results/acceptance-recovery.json'
+    run_id = source_run + '-ecc-retry1'
+    if pointer.exists():
+        record = json.loads(pointer.read_text())
+        if record != dict(run_id=run_id, controller=str(CONTROL), source_run=source_run):
+            raise ValueError('recovery pointer differs from the original bounded retry')
+        print(json.dumps(record, sort_keys=True))
+        return
+    logs = list((original / 'runtime/training').glob('**/*.log'))
+    if not any('uncorrectable ECC error' in path.read_text(errors='replace') for path in logs):
+        raise ValueError('no recoverable GPU ECC fault; scientific failure remains blocking')
+    row = source['build_accounting'].split('|')
+    exclude = excluded_nodes(row[4])
+    if not exclude:
+        raise ValueError('ECC recovery requires the original failing node')
+    # Reattach after an interrupted SSH reply; never submit this retry twice.
+    if not (task(run_id) / 'request.json').exists():
+        from contextlib import redirect_stdout
+        import io
+        with redirect_stdout(io.StringIO()):
+            submit(run_id, source_run, exclude)
+    request = json.loads((task(run_id) / 'request.json').read_text())
+    if request['source'] != source or request['exclude'] != exclude or request['controller'] != str(CONTROL):
+        raise ValueError('existing recovery differs from the recorded ECC failure')
+    # A lost reply can leave the durable job held. Reattach and release only
+    # our own JobHeldUser allocation; never restart a completed allocation.
+    state = subprocess.check_output(['squeue', '-h', '-j', request['job_id'], '-o', '%T|%r'], text=True).strip()
+    if state == 'PENDING|JobHeldUser':
+        subprocess.run(['scontrol', 'release', request['job_id']], check=True)
+    record = dict(run_id=run_id, controller=str(CONTROL), source_run=source_run)
+    with pointer.open('x') as stream:
+        stream.write(json.dumps(record, sort_keys=True) + '\n')
+    pointer.chmod(0o444)
+    print(json.dumps(record, sort_keys=True))
 
 
 def status(run_id):
@@ -128,7 +178,7 @@ def status(run_id):
     request = json.loads((directory / 'request.json').read_text())
     if (request['controller'] != str(CONTROL) or request['controller_sha256'] != acceptance_fingerprint()
             or request['job_script_sha256'] != checksum(directory / 'job.sbatch')
-            or (directory / 'job.sbatch').read_text() != render(run_id, request['source'])
+            or (directory / 'job.sbatch').read_text() != render(run_id, request['source'], request.get('exclude', ''))
             or origin(request['source']['source_run']) != request['source']):
         raise ValueError('independent acceptance or original build provenance changed')
     accounting = subprocess.check_output(['sacct', '-X', '-j', request['job_id'], '--noheader', '--parsable2',
@@ -164,11 +214,17 @@ def main():
     start = sub.add_parser('submit')
     start.add_argument('run_id')
     start.add_argument('--source-run', required=True)
+    start.add_argument('--exclude', default='', help='literal nodes with a recorded infrastructure failure')
     query = sub.add_parser('status')
     query.add_argument('run_id')
+    retry = sub.add_parser('recover')
+    retry.add_argument('source_run')
     args = parser.parse_args()
     if args.command == 'submit':
-        submit(args.run_id, args.source_run)
+        submit(args.run_id, args.source_run, args.exclude)
+        return 0
+    if args.command == 'recover':
+        recover(args.source_run)
         return 0
     return status(args.run_id)
 

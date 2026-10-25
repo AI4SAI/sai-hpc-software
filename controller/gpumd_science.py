@@ -199,20 +199,29 @@ def first_frame(path):
 
 
 def prepare(source, destination):
-    """Package inputs and gold output from the exact resolved source revision."""
+    """Keep parity fixtures stable; train/JIT/GNEP use the resolved source.
+
+    The site's 5.7 baseline cannot read the newer q_222=2 NEP format. Both
+    programs must receive the same previously accepted potential and gold
+    arrays for a meaningful numerical and throughput comparison.
+    """
     destination.mkdir(parents=True)
     static = destination / "static"
     static.mkdir()
-    shutil.copyfile(source / "examples/gpumd_static/model.xyz", static / "model.xyz")
-    shutil.copyfile(source / "examples/gpumd_static/dump.xyz", static / "gold.xyz")
-    shutil.copyfile(source / "examples/nep_train/nep.txt", static / "nep.txt")
     (static / "run.in").write_text(STATIC_RUN)
     prediction = destination / "prediction"
     prediction.mkdir()
-    for name in ("nep.txt", "nep.in", "train.xyz"):
-        shutil.copyfile(source / "examples/nep_prediction" / name, prediction / name)
-    for name in ("energy_train.out", "force_train.out", "virial_train.out"):
-        shutil.copyfile(source / "examples/nep_prediction" / name, prediction / f"gold-{name}")
+    reference = json.loads(Path(__file__).with_name('gpumd_reference_cases.json').read_text())
+    expected = {'static/model.xyz', 'static/gold.xyz', 'static/nep.txt',
+                *('prediction/' + name for name in ('nep.txt', 'nep.in', 'train.xyz',
+                    'gold-energy_train.out', 'gold-force_train.out', 'gold-virial_train.out'))}
+    if set(reference['files']) != expected:
+        raise ValueError('incomplete GPUMD parity fixture')
+    for name, row in reference['files'].items():
+        data = row['text'].encode()
+        if hashlib.sha256(data).hexdigest() != row['sha256']:
+            raise ValueError('changed GPUMD parity fixture: ' + name)
+        (destination / name).write_bytes(data)
     training = destination / "training"
     training.mkdir()
     for name in ("nep.txt", "nep.restart"):
@@ -808,7 +817,7 @@ def run(prefix, task, repeat_source=None):
             "executable_sha256": sha(executable), "sequence": sequence}, sort_keys=True))
         return dest, elapsed
 
-    # Golden values track the resolved upstream, never an old hardcoded SHA.
+    # Candidate and baseline share the recorded, format-compatible gold data.
     reference_e, reference_f = xyz(inputs / "static/gold.xyz")
     candidate_static = None
     for mode in ("candidate", "baseline"):

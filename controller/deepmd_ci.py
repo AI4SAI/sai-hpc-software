@@ -37,10 +37,10 @@ def locked_source(value):
     return value
 
 
-def query_status(python, run_id):
+def query_status(python, run_id, controller="deepmd_standalone.py"):
     """Retry a dropped SSH status query without repeating job submission."""
     for attempt in range(3):
-        response = python('deepmd_standalone.py', 'status', run_id,
+        response = python(controller, 'status', run_id,
                           capture_output=True, check=False)
         if response.returncode != 255 or attempt == 2:
             return response
@@ -83,11 +83,11 @@ def main():
     ssh(['mkdir', '-p', snapshot])
     archive = temporary / 'deepmd-controller.tar'
     with tarfile.open(archive, 'w') as payload:
-        for name in FILES:
+        for name in (*FILES, 'deepmd_acceptance.py'):
             payload.add(CONTROL / name, arcname=name)
     upload(archive, snapshot + '/controller.tar')
     ssh(['tar', '-xf', snapshot + '/controller.tar', '-C', snapshot])
-    ssh(['chmod', '0444', *[snapshot + '/' + name for name in FILES]])
+    ssh(['chmod', '0444', *[snapshot + '/' + name for name in (*FILES, 'deepmd_acceptance.py')]])
     digest = ssh(['python3', '-c', 'import sys; sys.path.insert(0, sys.argv[1]); '
         'from deepmd_standalone import fingerprint; print(fingerprint())', snapshot], capture_output=True).stdout.strip()
     if digest != delivery['identity']['recipe_sha256']:
@@ -139,6 +139,7 @@ if destination.is_symlink() or checksum(destination) != DRIVER_SHA256 or destina
     if retry not in ('true', 'false'):
         raise ValueError('retry_releases must be an explicit boolean')
     request = None
+    recovery = None
     try:
         response = python('deepmd_standalone.py', 'submit', run_id, '--source', json.dumps(source),
             '--target', source['target'], *(['--retry-releases'] if retry == 'true' else []), capture_output=True)
@@ -151,12 +152,13 @@ if destination.is_symlink() or checksum(destination) != DRIVER_SHA256 or destina
             raise ValueError('submitted DeePMD job differs from the locked source and recipe')
         deadline = time.monotonic() + 21000
         while time.monotonic() < deadline:
-            response = query_status(python, run_id)
+            response = (query_status(python, recovery['run_id'], 'deepmd_acceptance.py')
+                        if recovery else query_status(python, run_id))
             if response.returncode not in (0, 1, 3):
                 raise RuntimeError('DeePMD provenance/status check failed: ' + response.stderr)
             status = json.loads(response.stdout)
             (results / 'status.json').write_text(json.dumps(status, sort_keys=True, indent=2) + '\n')
-            print(status['accounting'], 'build_verified=' + str(status['build_verified']),
+            print(status['accounting'], 'build_verified=' + str(status.get('build_verified', bool(recovery))),
                   'scientific_verified=' + str(status['scientific_verified']), flush=True)
             if response.returncode == 0:
                 if status['scientific_verified'] is not True:
@@ -164,6 +166,13 @@ if destination.is_symlink() or checksum(destination) != DRIVER_SHA256 or destina
                 print('DEEPMD_INDEPENDENT_SIF_ACCEPTED_NOT_INSTALLED', flush=True)
                 return
             if response.returncode == 1:
+                if not recovery and status.get('build_verified'):
+                    attempt = python('deepmd_acceptance.py', 'recover', run_id, capture_output=True, check=False)
+                    if attempt.returncode == 0:
+                        recovery = json.loads(attempt.stdout)
+                        (results / 'acceptance-recovery.json').write_text(json.dumps(recovery, indent=2) + '\n')
+                        print('DEEPMD_ECC_RECOVERY', recovery['run_id'], flush=True)
+                        continue
                 raise RuntimeError('DeePMD allocation failed; inspect the retained project run')
             time.sleep(30)
         raise TimeoutError('DeePMD observation deadline; retained Slurm job can still be monitored')
@@ -173,7 +182,7 @@ import sys, tarfile
 task = Path(sys.argv[1])
 if (task / 'results').is_dir():
     with tarfile.open(task / 'results/scientific-evidence.tar', 'w') as payload:
-        for path in (task / 'runtime').iterdir():
+        for path in (task / 'runtime').glob('*'):
             if path.is_file() and not path.is_symlink() and path.suffix in ('.json', '.csv', '.nsys-rep', '.log', '.txt'):
                 payload.add(path, arcname=path.name)
         for name in ('case', 'runtime-env.sh', 'training'):
@@ -185,6 +194,12 @@ if (task / 'results').is_dir():
             ssh(['python3', '-c', collect, root + '/runs/' + run_id], check=False)
             run(['scp', '-q', *options, '-P', '12022', '-r',
                  remote + ':' + root + '/runs/' + run_id + '/results/.', str(results)], check=False)
+        if recovery:
+            recovered = results / 'recovery'
+            recovered.mkdir(exist_ok=True)
+            ssh(['python3', '-c', collect, root + '/runs/' + recovery['run_id']], check=False)
+            run(['scp', '-q', *options, '-P', '12022', '-r',
+                 remote + ':' + root + '/runs/' + recovery['run_id'] + '/results/.', str(recovered)], check=False)
 
 
 if __name__ == '__main__':

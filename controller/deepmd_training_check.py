@@ -103,11 +103,11 @@ def inventory():
                 affinity=sorted(os.sched_getaffinity(0)), source=files)
 
 
-def prepare(directory, descriptor):
+def prepare(directory, descriptor, fixture_path=Path('/runtime/case/fixture.json')):
     import numpy as np
 
     control = Path(__file__).resolve().parent
-    fixture = json.loads((Path('/runtime/case') / 'fixture.json').read_text())
+    fixture = json.loads(Path(fixture_path).read_text())
     data = directory / 'data'
     (data / 'set.000').mkdir(parents=True)
     np.savetxt(data / 'type.raw', fixture['atom_types'], fmt='%d')
@@ -194,7 +194,7 @@ def main():
                    installation=sys.argv[1], cases={})
     for descriptor in ('se_e2_a', 'dpa2'):
         directory = Path.cwd() / descriptor
-        prepare(directory, descriptor)
+        prepare(directory, descriptor, sys.argv[2] if len(sys.argv) > 2 else Path('/runtime/case/fixture.json'))
         report = dict(training=train(directory))
         if report['training'].get('passed'):
             for rank in range(2):
