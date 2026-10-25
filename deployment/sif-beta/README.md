@@ -82,16 +82,17 @@ DeePMD 并非一律不需要 MPI。上游同一源码提交的
 因此不把 TensorFlow MPI 训练记作已验收能力。
 `mpirun dp --pt train` 不会自动把 PyTorch 训练变成 DDP。
 
-实际双卡检查使用 SIF 内的 `deepmd-python -m torch.distributed.run`，让 launcher
-和 worker 使用同一份 Python。两张 V100 的 NCCL all-reduce 通过，但不能据此
-判定训练通过：当前提交的 `se_e2_a` 在第二步触发 DDP 未使用参数错误，参数
-8–11 是仍标记可训练的空 `compress_info`/`compress_data`。DPA2 最初还遇到
-`/sbin/ldconfig` 缺失；[运行时修复](../../docs/evidence/deepmd-ldconfig-20261025/README.md)
-已只读挂载宿主工具和动态库缓存，并自动把 Triton JIT 缓存放在私有内存临时区。
-当前 DeePMD 入口使用 `r75ef5179f1e8`；三个 V100 分区的 `se_e2_a`、DPA2 单卡训练
-和续训都通过。双卡 DPA2 能完成第一步，随后仍触发独立的 DDP 空参数错误。
-双卡训练没有通过验收；帮助中只推荐已验收的 `dp --pt train input.json` 单卡模式，
-旧的 GPU 推理数值验收保持其原有范围。
+当前 beta SIF 已通过三个 V100 分区的 `se_e2_a`、DPA2 双卡训练和断点续训。
+[DDP 修复](../../docs/evidence/deepmd-ddp-20261025/README.md)将仅供推理使用的空压缩参数冻结，
+保留模型检查点格式；两个 rank 均执行 CUDA 反向传播，梯度有限且最终参数一致。
+`/sbin/ldconfig` 和动态库缓存通过只读挂载提供，Triton 缓存自动放在私有内存临时区。
+在已经申请两张 GPU 的作业内运行：
+
+```bash
+deepmd-python -m torch.distributed.run --standalone --nproc_per_node=2 -m deepmd --pt train input.json
+```
+
+当前验收范围是单节点两张 GPU；更多 GPU 和多节点训练尚未验收。
 
 2026-10-25 的[三分区双卡实测](../../docs/evidence/deepmd-multigpu-20261025/README.md)
 记录了修复前的 SIF 失败。我们已经安装到 `/opt` 的 3.2.0 release，以及
@@ -112,7 +113,8 @@ NEP 计算可以在单进程内自动使用多张可见 GPU；这仍然直接运
 
 ## 轮换与复现
 
-固定文件命名为 `<branch>-beta-<YYYYMMDD>-<12位源码SHA>-r<12位runtime SHA>`。
+每日构建的固定文件命名为 `<branch>-beta-<YYYYMMDD>-<12位源码SHA>-r<12位runtime SHA>-b<12位构建配方摘要>`。
+日期表示验收快照日期；源码版本日期可能更早，这不代表当日没有构建。历史固定名称保持原样。
 运行时修复也得到新的固定名称，旧版本不会被覆盖。每个文件绑定不可变
 快照配置和启动器；加载时保存 generation，软链接轮换后，旧环境的执行与卸载
 继续使用旧配置。保留旧模块、SIF 和依赖，不自动清理历史产物。
@@ -120,7 +122,23 @@ NEP 计算可以在单进程内自动使用多张可见 GPU；这仍然直接运
 需要复现时直接加载固定名称，例如 `cp2k/master-beta-20261024-cfe5e5d87aaf-ra4c6a24c229f`；
 可先 `module use /home/stardust/sai-hpc-software/modulefiles/apps` 查看固定版本。
 
-stardust 在验收后发布（同名固定版本不覆盖）：
+每日工作流在每个软件的构建和科学验收之后调用 `beta.yml`。它要求同一开发分支
+SHA 的完整分区矩阵，重新检查原始证据和 SIF 校验和，并通过真实 Lmod/SIF 命令
+验证数值结果、宿主 MPI、私有内存临时区以及 DeePMD 双卡训练。全部通过后，
+只轮换该软件的家目录链接。release-only 或只选部分分区的请求不轮换 beta；
+其他 release track 失败不会阻止已经完整通过的 development 发布。
+
+失败保留当前公开版本，并在 Actions 的 beta artifact 和
+`/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/` 保存状态和原始证据。
+GPU ECC 故障只允许一次排除坏节点的补验收；数值错误不自动放行。
+断线重连会重新附着已有作业，旧工作流不能覆盖更新的选择。
+`/opt` 入口无需每日改动；计算和验收文件全部留在项目目录，不放进公共软件目录。
+
+需要手动恢复已存在的完整每日产物时，可使用 `Validate and rotate development beta`
+的 workflow dispatch，提供原构建 run ID、attempt 和原始 resolved development matrix JSON。
+这条入口使用相同验收门槛，不重新解析移动中的上游分支。
+
+独立维护场景仍可由 stardust 在验收后发布（同名固定版本不覆盖）：
 
 ```bash
 python3 -B controller/sif_beta.py promote \

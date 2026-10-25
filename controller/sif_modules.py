@@ -3,6 +3,7 @@
 import argparse
 import copy
 import json
+import os
 from pathlib import Path
 import re
 import shlex
@@ -130,11 +131,12 @@ def verify_sources(snapshot):
             print(f'{name}/{partition}: verified {before[2]} bytes', flush=True)
 
 
-def install(snapshot, destination, *, copy_images=False, module_root=None, memory_bootstrap=None):
+def install(snapshot, destination, *, copy_images=False, module_root=None, memory_bootstrap=None, resume=False):
     snapshot = copy.deepcopy(validate_snapshot(snapshot))
     destination = bind_path(destination)
     require(str(destination).startswith(('/home/', '/org/', '/opt/'))
-            and destination.resolve() == destination and not destination.exists(),
+            and destination.resolve() == destination
+            and (not destination.exists() or (resume and not (destination / 'catalog.json').exists())),
             'destination must be a new real home/project/opt directory')
     require(copy_images or not str(destination).startswith('/opt/'),
             'public opt installation must copy images out of private build trees')
@@ -153,43 +155,69 @@ def install(snapshot, destination, *, copy_images=False, module_root=None, memor
             require(not (module_root / (name + '-sif') / app['version']).exists(),
                     'public module version already exists; do not overwrite it')
     verify_sources(snapshot)
-    destination.mkdir(parents=True, mode=0o755)
+    destination.mkdir(parents=True, mode=0o755, exist_ok=resume)
+
+    def sealed(path, content, mode=0o444):
+        require(path.resolve() == path, 'redirected incomplete bundle file')
+        if path.exists():
+            require(resume and path.read_text() == content, 'changed incomplete bundle file: ' + str(path))
+            path.chmod(mode)
+        else:
+            partial = path.with_name('.' + path.name + '.writing')
+            require(partial.resolve() == partial, 'redirected file transfer')
+            if partial.exists() and partial.read_text() == content:
+                partial.chmod(mode)
+            else:
+                write(partial, content, mode)
+            os.replace(partial, path)
+
+    def copy_image(source, image, expected):
+        require(image.resolve() == image, 'redirected incomplete image')
+        if image.exists():
+            require(resume and digest(image) == expected, 'changed incomplete bundle image')
+            image.chmod(0o444)
+            return
+        image.parent.mkdir(parents=True, exist_ok=True)
+        partial = image.with_name('.' + image.name + '.copying')
+        require(partial.resolve() == partial, 'redirected image transfer')
+        if not partial.exists() or digest(partial) != expected:
+            shutil.copyfile(source, partial)
+        require(digest(partial) == expected, 'copied SIF checksum changed')
+        partial.chmod(0o444)
+        os.replace(partial, image)
+
     runtime = destination / 'libexec/sif_runtime.py'
-    write(runtime, runtime_source.read_text(), 0o555)
+    sealed(runtime, runtime_source.read_text(), 0o555)
     if 'memory_bootstrap' in snapshot:
         row = snapshot['memory_bootstrap']
         image = destination / 'libexec/memory-bootstrap.sif'
-        shutil.copyfile(row['image'], image)
-        image.chmod(0o444)
-        require(digest(image) == row['sha256'], 'copied memory bootstrap changed')
+        copy_image(row['image'], image, row['sha256'])
         row['source_image'] = row['image']
         row['image'] = str(image)
     for program in MPI_LAUNCHERS:
         argv = ['/usr/bin/python3', '-I', '-B', str(runtime), str(destination / 'catalog.json'), '_mpi', program]
-        write(destination / 'bin/mpi' / program,
+        sealed(destination / 'bin/mpi' / program,
               '#!/usr/bin/env bash\nexec ' + shlex.join(argv) + ' "$@"\n', 0o555)
     for name, app in snapshot['applications'].items():
         for partition, row in app['partitions'].items():
             if copy_images:
                 image = destination / 'images' / name / (partition + '.sif')
                 image.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copyfile(row['image'], image)
-                image.chmod(0o444)
-                require(digest(image) == row['sha256'], 'copied SIF checksum changed')
+                copy_image(row['image'], image, row['sha256'])
                 row['source_image'] = row['image']
                 row['image'] = str(image)
             if 'environment' in row:
                 row['environment_file'] = f'environments/{name}-{partition}.sh'
-                write(destination / row['environment_file'], row.pop('environment'))
+                sealed(destination / row['environment_file'], row.pop('environment'))
         module = destination / 'modulefiles' / (name + '-sif') / app['version']
-        write(module, render_module(destination, name, app))
+        sealed(module, render_module(destination, name, app))
         # Each wrapper pins this catalog directly. Loading another application
         # cannot change its image/environment through a shared SAI_* variable.
         for program in PROGRAMS[name]:
             argv = ['/usr/bin/python3', '-I', '-B', str(runtime), str(destination / 'catalog.json'), name, program]
-            write(destination / 'bin' / name / program,
+            sealed(destination / 'bin' / name / program,
                   '#!/usr/bin/env bash\nexec ' + shlex.join(argv) + ' "$@"\n', 0o555)
-    write(destination / 'catalog.json', json.dumps(snapshot, indent=2, sort_keys=True) + '\n')
+    sealed(destination / 'catalog.json', json.dumps(snapshot, indent=2, sort_keys=True) + '\n')
     # Public deployment copies only runtime files. No build trees, science
     # fixtures or acceptance scripts are part of this payload.
     for path in destination.rglob('*'):

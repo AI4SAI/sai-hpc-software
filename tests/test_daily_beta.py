@@ -20,6 +20,7 @@ import beta_check
 import beta_ci
 import daily_beta as daily
 import sif_beta
+import sif_modules
 from release_contract import SOFTWARE, PARTITIONS, resolve_tracks
 from sif_runtime import digest
 import test_sif_beta as previous_tests
@@ -102,6 +103,33 @@ class PromotionTests(unittest.TestCase):
         module.write_text('changed')
         with self.assertRaisesRegex(ValueError, 'changed existing'):
             sif_beta.prepare(root, modules, 'one', bundle, catalog, checks, ['cp2k'], resume=True)
+
+    def test_interrupted_image_copy_resumes_without_overwriting_sealed_bundle(self):
+        bundle, catalog, _ = self.fake_bundle()
+        snapshot = sif_modules.load_snapshot(catalog)
+        snapshot['applications'] = {'gpumd': snapshot['applications']['gpumd']}
+        destination = self.root / 'public-bundle'
+        require = sif_modules.require
+        def test_path(condition, message):
+            if message == 'destination must be a new real home/project/opt directory':
+                # Only permit this test's workspace in place of /home or /org.
+                condition = destination.parent == self.root and not (destination / 'catalog.json').exists()
+            require(condition, message)
+        copyfile = sif_modules.shutil.copyfile
+        def interrupted(source, target):
+            Path(target).write_bytes(b'partial')
+            raise ConnectionError('lost copy')
+        with patch.object(sif_modules, 'require', side_effect=test_path):
+            with patch.object(sif_modules.shutil, 'copyfile', side_effect=interrupted), self.assertRaises(ConnectionError):
+                sif_modules.install(snapshot, destination, copy_images=True, resume=True)
+            self.assertFalse((destination / 'catalog.json').exists())
+            sif_modules.install(snapshot, destination, copy_images=True, resume=True)
+            published = sif_modules.load_snapshot(destination / 'catalog.json')
+            for row in published['applications']['gpumd']['partitions'].values():
+                self.assertEqual(digest(Path(row['image'])), row['sha256'])
+            self.assertFalse(list(destination.rglob('*.copying')))
+            with self.assertRaisesRegex(ValueError, 'destination must'):
+                sif_modules.install(snapshot, destination, copy_images=True, resume=True)
 
     def test_recipe_revision_keeps_same_day_versions_distinct(self):
         first = sif_beta.version_name('cp2k', self.snapshot)

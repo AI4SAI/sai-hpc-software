@@ -198,19 +198,21 @@ def execute(software, workflow, attempt, builds, task, fixtures):
     # A same-day rerun with the same source, build recipe and runtime is already
     # represented by its accepted fixed module. Do not overwrite that version.
     fixed = MODULES / software / sif_beta.version_name(software, snapshot)
-    if fixed.exists() and active['generation'] != generation and not (ROOT / 'generations' / generation).exists():
-        require(before['fixed'] == fixed.name, 'fixed version already exists but is not current; explicit rollback required')
+    if fixed.exists() and before['fixed'] == fixed.name:
         result = dict(status='unchanged', software=software, source_sha=sources[0]['source_sha'],
                       workflow=workflow, attempt=attempt, generation=before['generation'], fixed=before['fixed'])
         save(published, result)
         return result
+    if fixed.exists():
+        require((ROOT / 'generations' / generation).exists(),
+                'fixed version already exists but is not current; explicit rollback required')
     if (task / 'candidates.json').exists():
         require(read(task / 'candidates.json') == snapshot, 'candidate evidence changed since this request')
     else:
         save(task / 'candidates.json', snapshot)
     bundle = task / 'bundle'
-    if not bundle.exists():
-        install(snapshot, bundle)
+    if not (bundle / 'catalog.json').exists():
+        install(snapshot, bundle, resume=True)
     checked = load_snapshot(bundle / 'catalog.json')
     require(checked['applications'] == snapshot['applications'], 'existing bundle contains different candidates')
     checks = check_runtime(task, software, bundle, fixtures)
@@ -219,8 +221,8 @@ def execute(software, workflow, attempt, builds, task, fixtures):
         row = candidates.candidate(software, candidates.locate(software, workflow, attempt, source), source)
         require(row == rows[row['identity']['partition']], 'candidate evidence changed during runtime checks')
     public_bundle = ROOT / 'runtimes' / generation
-    if not public_bundle.exists():
-        install(checked, public_bundle, copy_images=True)
+    if not (public_bundle / 'catalog.json').exists():
+        install(checked, public_bundle, copy_images=True, resume=True)
     with (ROOT / '.publication.lock').open('a+') as stream:
         fcntl.flock(stream, fcntl.LOCK_EX)
         require(current(software) == before or current(software)['generation'] == generation, 'public beta changed while checks ran; refusing to replace a newer selection')
