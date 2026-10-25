@@ -60,7 +60,10 @@ mpirun -np $SLURM_NTASKS --map-by $MAP_OPT cp2k.psmp -i input.inp -o output.out
 同样自动准备。受 AppArmor 限制的节点通过系统 Apptainer 的受支持配置启动，一个
 36 KiB、只含挂载目录的独立 SIF 提供兼容入口。它不依赖任何应用程序的 SIF。
 少量启动配置和有界校验索引放在节点 `/run/lock` 的 tmpfs；程序数据不放在那里。
-整个公共 runtime 约 110 KiB，原有程序 SIF 直接复用，不另复制到家目录或内存。
+整个公共 runtime 约 110 KiB。运行时直接读取已发布的 SIF，不把镜像复制到内存，
+也不解包到家目录。每日新产物通过验收后，在
+`/home/stardust/sai-hpc-software/sif-beta/runtimes/` 保留只读公共 SIF；
+原始构建、scratch 和验收证据留在项目目录。只更新 runtime 时可以复用已有公共 SIF。
 
 每作业、每节点、每镜像进行一次完整 SHA256 校验，其余 rank 复用内存索引。
 启动仍有容器挂载和校验成本；这里没有宣称容器启动零开销或新的性能加速。

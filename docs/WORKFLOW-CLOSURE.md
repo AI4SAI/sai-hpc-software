@@ -12,14 +12,14 @@ retain the previous accepted generation, and the five applications publish
 independently. See [daily closure evidence](evidence/daily-beta-20261025/README.md).
 
 The current campaign resolves each source once and retains that identity through
-recovery. Its state at 12:58 UTC is:
+recovery. Its state at 13:39 UTC is:
 
 | Program / public entry | Selected source | Current campaign |
 | --- | --- | --- |
 | `abacus/develop-beta-later` | `89595dd29a26aec34d623518cadf736c17345f69` | Four targets built, scientifically accepted and beta-published on October 25. |
-| `cp2k/master-beta-later` | `1db19ea511d10fbf2eb75cec7c0d88b6635563e2` | Three GPU dependency stages passed; applications and DSPRHBM dependencies are building. Previous beta retained. |
+| `cp2k/master-beta-later` | `1db19ea511d10fbf2eb75cec7c0d88b6635563e2` | 4V100/16V100 SIFs passed scientific acceptance. 8V100V0 is preparing its application overlay; DSPRHBM dependencies are building. Previous beta retained. |
 | `deepmd-kit/master-beta-later` | `2ba617bc3db67adee2b8ba00c71e9fa1c2d2bb8c` | Three targets accepted and beta-published on October 25; actual two-GPU se_e2_a/DPA2 training and restart passed. |
-| `lammps/develop-beta-later` | `049f269111f42ac408f706e0cc94b37f50346baf` | 4V100 SIF verified; 16V100/8V100V0 compilation is finishing. Previous beta retained until the full science/launch matrix passes. |
+| `lammps/develop-beta-later` | `049f269111f42ac408f706e0cc94b37f50346baf` | Three targets built, scientifically accepted and beta-published on October 25; 14 scientific cases, 71 packages and 2,500 styles per target. |
 | `gpumd/master-beta-later` | `30a6db02e36494b8bba71c9fa1d1a68627604961` | Three targets accepted and beta-published automatically by successful Actions run 40190615647. |
 
 All computation, build scratch and raw evidence use

@@ -90,6 +90,32 @@ The automatic publisher then passed its actual SIF/module route in jobs
 record the evidence and public result. This validates the Actions path from
 source resolution through build, science and public beta rotation.
 
+### LAMMPS
+
+Source `049f269111f42ac408f706e0cc94b37f50346baf` (commit date October 24)
+passed all three candidate builds and all three scientific acceptance jobs in
+workflow [40190614608](https://github.com/AI4SAI/sai-hpc-software/actions/runs/40190614608).
+Science jobs `1935412` (16V100), `1935406` (4V100), and `1935408` (8V100V0)
+passed all 14 cases, including GPU execution, single/two-node calculations,
+and TF/PT/JAX models through the installed native DeePMD 3.2.0 dependency.
+Each candidate provides 71 packages and 2,500 styles. See the
+[science records](lammps-science.json) and [workflow jobs](lammps-workflow-jobs.json).
+
+The workflow started on controller `440de2c`, before the HOME repair. Its beta
+job reproduced the MPI initialization failure on 16V100/8V100V0 and retained
+the old public version. The [failed route receipt](lammps-first-route-failure.json)
+and original failed workflow remain unchanged. Publisher `9a3039b` revalidated
+the same SIFs with the corrected account environment; public-route jobs
+`1935854`, `1935856`, and `1935858` all passed. No application rebuild was needed.
+`lammps/develop-beta-later` now selects
+`develop-beta-20261025-049f269111f4-r75ef5179f1e8-bb0120cf26221`.
+The [publication record](lammps-publication.json) and [live help](lammps-public-help.txt)
+bind that selection to its accepted artifacts.
+
+The actual [source transport](lammps-source-transport.json) sent a 329,504-byte
+Git delta from the cached accepted ancestor, replacing an approximately 909 MB
+full-history transfer. The pinned DeePMD dependency source was also a cache hit.
+
 ## Repairs exercised by this campaign
 
 - ABACUS removed its old two-Si cuSOLVERMp test directory. The same reviewed

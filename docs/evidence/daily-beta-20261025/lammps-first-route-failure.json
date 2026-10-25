@@ -1,0 +1,146 @@
+{
+  "status": {
+    "attempt": "1",
+    "error": "SIF route failed; previous beta retained: {\"16V100\": {\"job\": \"1935795\", \"state\": \"FAILED\", \"exit_code\": \"1:0\", \"log\": \"/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-440de2cd8057/16V100\"}, \"8V100V0\": {\"job\": \"1935799\", \"state\": \"FAILED\", \"exit_code\": \"1:0\", \"log\": \"/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-440de2cd8057/8V100V0\"}}",
+    "retained": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f",
+      "fixed": "develop-beta-20261024-a0e2bd6efb3d-ra4c6a24c229f",
+      "generation": "20261025-memory-r1"
+    },
+    "software": "lammps",
+    "status": "failed",
+    "workflow": "40190614608"
+  },
+  "request": {
+    "attempt": "1",
+    "before": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f",
+      "fixed": "develop-beta-20261024-a0e2bd6efb3d-ra4c6a24c229f",
+      "generation": "20261025-memory-r1"
+    },
+    "builds": [
+      {
+        "repository": "lammps/lammps",
+        "requested_ref": "develop",
+        "software": "lammps",
+        "source_ref": "develop",
+        "source_sha": "049f269111f42ac408f706e0cc94b37f50346baf",
+        "source_version": "develop-2026-10-24",
+        "status": "resolved",
+        "target": "16v100-avx2",
+        "track": "development"
+      },
+      {
+        "repository": "lammps/lammps",
+        "requested_ref": "develop",
+        "software": "lammps",
+        "source_ref": "develop",
+        "source_sha": "049f269111f42ac408f706e0cc94b37f50346baf",
+        "source_version": "develop-2026-10-24",
+        "status": "resolved",
+        "target": "4v100-avx512",
+        "track": "development"
+      },
+      {
+        "repository": "lammps/lammps",
+        "requested_ref": "develop",
+        "software": "lammps",
+        "source_ref": "develop",
+        "source_sha": "049f269111f42ac408f706e0cc94b37f50346baf",
+        "source_version": "develop-2026-10-24",
+        "status": "resolved",
+        "target": "8v100v0-avx512",
+        "track": "development"
+      }
+    ],
+    "date": "20261025",
+    "software": "lammps",
+    "workflow": "40190614608"
+  },
+  "runtime-status": {
+    "failed": {
+      "16V100": {
+        "exit_code": "1:0",
+        "job": "1935795",
+        "log": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-440de2cd8057/16V100",
+        "state": "FAILED"
+      },
+      "8V100V0": {
+        "exit_code": "1:0",
+        "job": "1935799",
+        "log": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-440de2cd8057/8V100V0",
+        "state": "FAILED"
+      }
+    },
+    "jobs": [
+      {
+        "exclude": "",
+        "job": "1935795",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-440de2cd8057/16V100",
+        "partition": "16V100",
+        "request_sha256": "a238cea243603131d268e0488642cdd2bde5c1dd4d5b16af11eb8fa1b174d6c2",
+        "script_sha256": "6d3cdc7502dc08363417d7e6103fbc273796731306b637c6b438bcefc1647b87"
+      },
+      {
+        "exclude": "",
+        "job": "1935797",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-440de2cd8057/4V100",
+        "partition": "4V100",
+        "request_sha256": "981da9ef0b37fc02c5c1851eb8d08dd3f76da1e3163213915295a1a1409b7e87",
+        "script_sha256": "d755e47303de0907bcb4c19961a1429984cb5a5a69de87b59ada3a27048cb4d3"
+      },
+      {
+        "exclude": "",
+        "job": "1935799",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-440de2cd8057/8V100V0",
+        "partition": "8V100V0",
+        "request_sha256": "f7116aa467c7ba23349aa9671b072ed9d770c706f5ad5ec9f533dbd5c06106d0",
+        "script_sha256": "016ac82301061ec85fa2b02a830b7a4a144e4791d5a2cea98e0eed0131990cd2"
+      }
+    ],
+    "passed": {
+      "4V100": {
+        "automatic_memory": true,
+        "catalog_sha256": "31149d9e91b71652fcdec58d9fcef7a9aa3ff17a5b597575aa4dc868791842c8",
+        "job": "1935797",
+        "lammps": {
+          "max_error": 0.0
+        },
+        "partition": "4V100",
+        "passed": true,
+        "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+      }
+    }
+  },
+  "jobs": [
+    {
+      "exclude": "",
+      "job": "1935795",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-440de2cd8057/16V100",
+      "partition": "16V100",
+      "request_sha256": "a238cea243603131d268e0488642cdd2bde5c1dd4d5b16af11eb8fa1b174d6c2",
+      "script_sha256": "6d3cdc7502dc08363417d7e6103fbc273796731306b637c6b438bcefc1647b87"
+    },
+    {
+      "exclude": "",
+      "job": "1935797",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-440de2cd8057/4V100",
+      "partition": "4V100",
+      "request_sha256": "981da9ef0b37fc02c5c1851eb8d08dd3f76da1e3163213915295a1a1409b7e87",
+      "script_sha256": "d755e47303de0907bcb4c19961a1429984cb5a5a69de87b59ada3a27048cb4d3"
+    },
+    {
+      "exclude": "",
+      "job": "1935799",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-440de2cd8057/8V100V0",
+      "partition": "8V100V0",
+      "request_sha256": "f7116aa467c7ba23349aa9671b072ed9d770c706f5ad5ec9f533dbd5c06106d0",
+      "script_sha256": "016ac82301061ec85fa2b02a830b7a4a144e4791d5a2cea98e0eed0131990cd2"
+    }
+  ],
+  "task": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-440de2cd8057",
+  "stderr": {
+    "16V100": "[16v100n80.mr-sai.ai:3189860] Error: Unable to get the user home directory\n[16v100n80.mr-sai.ai:3189860] Error: Unable to get the user home directory\n--------------------------------------------------------------------------\nIt looks like opal_init failed for some reason; your parallel process is\nlikely to abort.  There are many reasons that a parallel process can\nfail during opal_init; some of which are due to configuration or\nenvironment problems.  This failure appears to be an internal failure;\nhere's some additional information (which may only be relevant to an\nOpen MPI developer):\n\n  mca_base_var_init failed\n  --> Returned value -1 instead of OPAL_SUCCESS\n--------------------------------------------------------------------------\nFailed initializing opal: -1\n",
+    "8V100V0": "[8v100v0n02.mr-sai.ai:946053] Error: Unable to get the user home directory\n[8v100v0n02.mr-sai.ai:946053] Error: Unable to get the user home directory\n--------------------------------------------------------------------------\nIt looks like opal_init failed for some reason; your parallel process is\nlikely to abort.  There are many reasons that a parallel process can\nfail during opal_init; some of which are due to configuration or\nenvironment problems.  This failure appears to be an internal failure;\nhere's some additional information (which may only be relevant to an\nOpen MPI developer):\n\n  mca_base_var_init failed\n  --> Returned value -1 instead of OPAL_SUCCESS\n--------------------------------------------------------------------------\nFailed initializing opal: -1\n"
+  }
+}
