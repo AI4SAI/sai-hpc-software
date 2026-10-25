@@ -57,7 +57,7 @@ def render_version(root, software, generation):
         f'setenv {key} $sai_beta_generation', ''])
 
 
-def render_help(software, snapshot, module_root):
+def render_help(software, snapshot, module_root, checks=None):
     app = snapshot['applications'][software]
     identity = next(iter(app['partitions'].values()))['identity']
     fixed = software + '/' + version_name(software, snapshot)
@@ -73,8 +73,18 @@ def render_help(software, snapshot, module_root):
     if software == 'lammps':
         launch += 'The input must select GPU styles, such as lj/cut/gpu.\n'
     elif software == 'deepmd-kit':
-        launch += ('Single-GPU PyTorch training was checked on 16V100; multi-GPU training is not accepted for this snapshot.\n'
-                   'Use deepmd-python for the SIF Python environment.\n')
+        ddp = [((checks or {}).get(partition, {}).get(software, {}).get('pytorch_ddp', {}))
+               for partition in app['partitions']]
+        if ddp and all(report.get('passed') is True
+                       and set(report.get('cases', {})) == {'se_e2_a', 'dpa2'}
+                       and all(case.get('passed') is True for case in report['cases'].values())
+                       for report in ddp):
+            launch += ('PyTorch training and restart accepted on one node with two GPUs for se_e2_a and DPA2 on all listed partitions.\n'
+                       'For two allocated GPUs: deepmd-python -m torch.distributed.run --standalone --nproc_per_node=2 -m deepmd --pt train input.json\n'
+                       'Multi-node training and more than two GPUs have not been accepted. TensorFlow/JAX are CPU-only.\n')
+        else:
+            launch += 'Single-GPU PyTorch training was checked on 16V100; multi-GPU training is not accepted for this snapshot.\n'
+        launch += 'Use deepmd-python for the SIF Python environment.\n'
     return (f"[SAI beta] {software} / {SOFTWARE[software]['development_ref']}\n"
             f"Source version: {identity['source_version']}\n"
             f"Commit: {identity['source_sha']}\n"
@@ -164,7 +174,7 @@ def prepare(root, module_root, generation, bundle, validated_catalog, checks, so
         app = snapshot['applications'][name]
         identity = next(iter(app['partitions'].values()))['identity']
         branch = SOFTWARE[name]['development_ref']
-        description = render_help(name, snapshot, module_root)
+        description = render_help(name, snapshot, module_root, reports)
         extra = {stem(name) + '_VERSION': version_name(name, snapshot), stem(name) + '_BRANCH': branch,
                  stem(name) + '_SNAPSHOT': snapshot['snapshot']}
         notice = (f"[SAI beta] {name}/{branch}; commit={identity['source_sha'][:12]}; "

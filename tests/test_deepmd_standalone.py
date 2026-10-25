@@ -117,7 +117,8 @@ class IndependentDeePMDTests(unittest.TestCase):
                     patch.object(check.subprocess, 'run') as execute, \
                     patch.dict(check.os.environ, {'LD_LIBRARY_PATH': prefix + '/lib:/usr/lib', 'CUDA_VISIBLE_DEVICES': '0'}):
                 check.science()
-            evaluations = [call for call in execute.call_args_list if call.args[0][0].endswith('/bin/python')]
+            evaluations = [call for call in execute.call_args_list
+                           if call.args[0][0].endswith('/bin/python') and 'evaluate' in call.args[0]]
             self.assertEqual(len(evaluations), 12)
             for call in evaluations:
                 installation = str(Path(call.args[0][0]).parent.parent)
@@ -186,10 +187,12 @@ class DeePMDStatusTests(unittest.TestCase):
                         json.dumps([{'slurm_job': '123'}] * 4))
         (runtime / 'pt-profiled.json').write_text(json.dumps([{'slurm_job': '123'}] * 4))
         for name in ('pt-cuda-kernels.csv', 'pt-cuda-trace.nsys-rep', 'runtime-env.sh',
-                     'baseline-inventory.json', 'candidate-inventory.json'):
+                     'baseline-inventory.json', 'candidate-inventory.json', 'ddp-source-patch.json'):
             (runtime / name).write_text('fixed science evidence\n')
         (runtime / 'case').mkdir(exist_ok=True)
         (runtime / 'case/fixture.json').write_text('{"fixed": "input"}\n')
+        (runtime / 'training').mkdir(exist_ok=True)
+        (runtime / 'training/summary.json').write_text('{"job": "123"}\n')
         (runtime / 'science.json').write_text(json.dumps(self.science.return_value))
         if seal_science:
             with patch.dict(standalone.os.environ, {'SLURM_JOB_ID': '123'}):
@@ -307,6 +310,24 @@ class DeePMDStatusTests(unittest.TestCase):
         path.write_text(json.dumps([{'slurm_job': '456'}] * 4))
         with self.assertRaisesRegex(ValueError, 'different allocation'):
             self.query(self.row())
+
+    def test_training_checkpoint_link_is_bound_without_following_external_links(self):
+        from deepmd_standalone_check import science_evidence_hashes
+        self.successful_files(seal_science=False)
+        runtime = self.directory / 'runtime'
+        case = runtime / 'training/se_e2_a'
+        case.mkdir()
+        checkpoint = case / 'model.ckpt-12.pt'
+        checkpoint.write_bytes(b'weights')
+        alias = case / 'model.ckpt.pt'
+        alias.symlink_to(checkpoint.name)
+        first = science_evidence_hashes(runtime, '123')['training']
+        checkpoint.write_bytes(b'changed weights')
+        self.assertNotEqual(first, science_evidence_hashes(runtime, '123')['training'])
+        alias.unlink()
+        alias.symlink_to('../../science.json')
+        with self.assertRaisesRegex(ValueError, 'redirected DeePMD training'):
+            science_evidence_hashes(runtime, '123')
 
     def test_missing_or_redirected_inputs_cannot_be_sealed_for_the_first_time(self):
         self.successful_files(seal_science=False)

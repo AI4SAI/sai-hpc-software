@@ -176,7 +176,7 @@ if (task / 'results').is_dir():
         for path in (task / 'runtime').iterdir():
             if path.is_file() and not path.is_symlink() and path.suffix in ('.json', '.csv', '.nsys-rep', '.log', '.txt'):
                 payload.add(path, arcname=path.name)
-        for name in ('case', 'runtime-env.sh'):
+        for name in ('case', 'runtime-env.sh', 'training'):
             path = task / 'runtime' / name
             if path.exists() and not path.is_symlink():
                 payload.add(path, arcname=name)

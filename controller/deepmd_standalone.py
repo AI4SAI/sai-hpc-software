@@ -18,6 +18,8 @@ PROJECT = Path(os.environ.get('SAI_SOFTWARE_ROOT', '/org/org-open-sai/proj-sai-h
 ROOT = PROJECT / 'experimental/deepmd-standalone'
 CONTROL = Path(__file__).resolve().parent
 FILES = ('deepmd_standalone.py', 'deepmd_standalone_entry.sh', 'deepmd_standalone_check.py',
+         'deepmd_ddp_patch.py', 'deepmd_training_check.py',
+         'deepmd_training_input.json', 'deepmd_training_dpa2.json',
          'md_environment.sh', 'md_driver_paths.py', 'md_source_version.py', 'md_probe.py',
          'md_science.py', 'md_evidence.py', 'md_performance.py', 'md_performance_run.py',
          'md_packaging.py', 'md_relocate_audit.py', 'remote_controller.py',
@@ -73,6 +75,7 @@ def render(delivery, run_id):
             ['/usr/bin/bash', '/control/deepmd_standalone_entry.sh', phase, payload],
             overlay=None if final else overlay, control=CONTROL, jobs=12, gpu=True,
             runtime=directory / 'runtime', extra_binds=[*site_app_binds('deepmd-kit'),
+                *([('/usr/sbin', '/sbin'), ('/etc/ld.so.cache', '/etc/ld.so.cache')] if final else []),
                 *([] if final else [(ROOT / 'cache/repositories/deepmd-kit', '/input/deepmd-kit')])])
         if phase == 'science':
             # Nsight also writes literal /tmp paths. The backing directory is

@@ -41,6 +41,7 @@ print(restore_release_tag('/workspace/deepmd-kit', dict(sha=identity['source_sha
       track=identity['track'], ref=identity['source_ref'])))
 PY
     source /control/md_environment.sh "$target"
+    /usr/bin/python3 /control/deepmd_ddp_patch.py /workspace/deepmd-kit > /runtime/ddp-source-patch.json
     export LD_LIBRARY_PATH="$("$MD_SYSTEM_DEEPMD/bin/python" /control/md_driver_paths.py)"
     site=$MD_SYSTEM_DEEPMD/lib/python3.13/site-packages
     export LD_LIBRARY_PATH="$site/tensorflow:$site/torch/lib:$MD_SYSTEM_DEEPMD/lib:$LD_LIBRARY_PATH"

@@ -2,6 +2,7 @@
 """Independent DeePMD ABI, Python/C-API science and measured GPU execution gates."""
 import argparse
 import ctypes
+import hashlib
 import importlib.metadata
 import json
 import os
@@ -80,6 +81,10 @@ def verify_installation():
     if entry['identity'] != identity or read_installed_manifests([entry]) != native_inventory([entry]):
         raise ValueError('standalone DeePMD SIF content/identity changed')
     observed = inventory(prefix)
+    patch = json.loads(Path('/runtime/ddp-source-patch.json').read_text())
+    trainer = prefix / 'lib/python3.13/site-packages' / patch['file']
+    if file_digest(trainer) != patch['patched_sha256']:
+        raise ValueError('installed DeePMD trainer differs from the recorded source patch')
     baseline = json.loads(Path('/runtime/baseline-inventory.json').read_text())
     if not set(baseline['backends']) <= set(observed['backends']):
         raise ValueError('standalone DeePMD dropped a baseline backend')
@@ -158,8 +163,26 @@ def verify_science_files(runtime):
         raise ValueError('missing independently collected Nsight report')
     gpu.update(report_sha256=file_digest(runtime / 'pt-cuda-trace.nsys-rep'),
                csv_sha256=file_digest(runtime / 'pt-cuda-kernels.csv'), backend='pt', engine='c-api')
-    return dict(passed=True, cases=reports, gpu=gpu,
-                scope='independent Python/C-API inference; TF/JAX use the existing site CPU frameworks')
+    training = json.loads((runtime / 'training/summary.json').read_text())
+    if training.get('passed') is not True or set(training['cases']) != {'se_e2_a', 'dpa2'}:
+        raise ValueError('missing two-GPU DeePMD training acceptance')
+    for case in training['cases'].values():
+        for stage in ('training', 'restart'):
+            report = case[stage]
+            ranks = report['ranks']
+            if (report.get('passed') is not True or report['returncode'] != 0
+                    or {rank['rank'] for rank in ranks} != {0, 1}
+                    or {rank['cuda_current_device'] for rank in ranks} != {0, 1}
+                    or any(rank['world_size'] != 2 or rank['backend'] != 'nccl'
+                           or rank['empty_trainable_parameters'] or not rank['gradients_finite']
+                           or rank['gradient_calls'] <= 0
+                           or rank['initial_parameters_sha256'] == rank['final_parameters_sha256']
+                           for rank in ranks)
+                    or ranks[0]['final_parameters_sha256'] != ranks[1]['final_parameters_sha256']):
+                raise ValueError('invalid DeePMD training/restart rank evidence')
+    return dict(passed=True, cases=reports, gpu=gpu, training=training,
+                scope='Python/C-API inference and single-node two-GPU PyTorch training/restart; '
+                      'TF/JAX use the existing site CPU frameworks')
 
 
 def science_evidence_hashes(runtime, job_id):
@@ -170,18 +193,35 @@ def science_evidence_hashes(runtime, job_id):
              for engine in ('python', 'c-api')]
     required = [*names, 'pt-profiled.json', 'pt-cuda-kernels.csv', 'pt-cuda-trace.nsys-rep',
                 'science.json', 'case', 'runtime-env.sh',
-                'baseline-inventory.json', 'candidate-inventory.json']
+                'baseline-inventory.json', 'candidate-inventory.json', 'ddp-source-patch.json', 'training']
     for name in required:
         path = runtime / name
         if (path.is_symlink() or path.resolve() != path
-                or not (path.is_dir() if name == 'case' else path.is_file())):
+                or not (path.is_dir() if name in ('case', 'training') else path.is_file())):
             raise ValueError('missing, redirected or invalid DeePMD science evidence: ' + name)
     for name in [*names, 'pt-profiled.json']:
         records = json.loads((runtime / name).read_text())
         if (not isinstance(records, list) or not records
                 or any(not isinstance(row, dict) or row.get('slurm_job') != job_id for row in records)):
             raise ValueError('DeePMD science came from a different allocation: ' + name)
-    return {name: file_digest(runtime / name) for name in required}
+    if json.loads((runtime / 'training/summary.json').read_text()).get('job') != job_id:
+        raise ValueError('DeePMD training came from a different allocation')
+    hashes = {name: file_digest(runtime / name) for name in required if name != 'training'}
+    # DeePMD intentionally writes model.ckpt.pt -> model.ckpt-12.pt. Preserve
+    # this normal output and bind its link text as well as the actual files.
+    training_files = {}
+    for path in sorted((runtime / 'training').rglob('*')):
+        name = path.relative_to(runtime / 'training').as_posix()
+        if path.is_symlink():
+            if (path.name != 'model.ckpt.pt' or str(path.readlink()) != 'model.ckpt-12.pt'
+                    or not path.resolve().is_relative_to(runtime / 'training')
+                    or not path.is_file()):
+                raise ValueError('unexpected redirected DeePMD training evidence')
+            training_files[name] = {'symlink': str(path.readlink())}
+        elif path.is_file():
+            training_files[name] = {'sha256': file_digest(path)}
+    hashes['training'] = hashlib.sha256(json.dumps(training_files, sort_keys=True).encode()).hexdigest()
+    return hashes
 
 
 def science():
@@ -219,6 +259,11 @@ def science():
         subprocess.run([NSYS, 'stats', '--report', 'cuda_gpu_trace', '--format', 'csv',
                         '--force-export=true', '/runtime/pt-cuda-trace.nsys-rep'],
                        cwd=runtime, stdout=output, stderr=log, check=True)
+    training = runtime / 'training'
+    training.mkdir()
+    with (runtime / 'training.log').open('x') as log:
+        subprocess.run([prefix + '/bin/python', str(Path(__file__).with_name('deepmd_training_check.py')),
+                        prefix], env=env, cwd=training, stdout=log, stderr=subprocess.STDOUT, check=True)
     result = verify_science_files(runtime)
     (runtime / 'science.json').write_text(json.dumps(result, sort_keys=True, indent=2) + '\n')
     return result
