@@ -116,6 +116,38 @@ The actual [source transport](lammps-source-transport.json) sent a 329,504-byte
 Git delta from the cached accepted ancestor, replacing an approximately 909 MB
 full-history transfer. The pinned DeePMD dependency source was also a cache hit.
 
+### CP2K: GPU acceptance complete, CPU recovery active
+
+Source `1db19ea511d10fbf2eb75cec7c0d88b6635563e2` passed all three GPU
+builds and scientific acceptance jobs: `1935251` (4V100), `1935544` (16V100),
+and `1936664` (8V100V0). Each checks seven PBE/solver/library groups in
+single- and multi-node modes, including OT, diagonalization and ELPA.
+The original [workflow 40189124444](https://github.com/AI4SAI/sai-hpc-software/actions/runs/40189124444)
+retains its CPU failure; the public CP2K alias has not yet rotated.
+
+DSPRHBM dependency job `1934169` returned zero after Apptainer reported
+`Terminating fuse2fs after timeout` and a driver cleanup error. Application
+job `1936619` copied that exact sealed image and rejected it at `e2fsck -fn`:
+the Libint directory and allocation bitmaps were inconsistent. The copied
+image matched the sealed source checksum; this was not a copy mismatch.
+[Original failure evidence](cp2k-dsprhbm-first-build-failure.json) retains both
+jobs, the driver warning, filesystem errors, requests and their hashes.
+
+The pinned fuse2fs implementation flushes all filesystem metadata from its
+writable-file `fsync` callback. CP2K now explicitly performs that operation
+before each writable container phase exits, while the payload is still alive.
+A host-side sync of the image alone would not flush metadata held inside the
+userspace driver. Dependency jobs also require a clean filesystem check before
+sealing, and driver cleanup errors can no longer become successful phases merely
+because the payload returned zero. The original controller and damaged image
+remain unchanged. Fresh CPU recovery `1937947` uses controller `9654ff1`, the
+same selected CP2K source, 16 workers, and new recipe `e943569fcfff`.
+
+The publisher supports a single recorded CP2K rebuild that binds both requests,
+retains the original source/target, and reruns the recovered controller's build
+and scientific verification. It does not convert the original failed job to
+success or accept an unverified replacement.
+
 ## Repairs exercised by this campaign
 
 - ABACUS removed its old two-Si cuSOLVERMp test directory. The same reviewed
@@ -159,9 +191,9 @@ full-history transfer. The pinned DeePMD dependency source was also a cache hit.
 
 ## Verification
 
-GitHub's full regression suite passes on commit `ca1bcd1`: 1,106 tests, with two
-skips, in [run 40194858365](https://github.com/AI4SAI/sai-hpc-software/actions/runs/40194858365).
-[All six PR validation workflows](ci-ca1bcd1.json) pass. Coverage includes interrupted image
+GitHub's full regression suite passes on commit `90ab486`: 1,106 tests, with two
+skips, in [run 40200809882](https://github.com/AI4SAI/sai-hpc-software/actions/runs/40200809882).
+[All six PR validation workflows](ci-90ab486.json) pass. Coverage includes interrupted image
 copying, complete/mixed partition matrices, changed images, retaining the old
 alias after failure, held-job reattachment, same-artifact repeated publication,
 and bounded infrastructure recovery. The local full-suite run began before the

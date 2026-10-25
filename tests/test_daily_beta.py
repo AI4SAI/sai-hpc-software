@@ -33,6 +33,39 @@ def builds(software):
 
 
 class CandidateTests(unittest.TestCase):
+    def test_rebuild_pointer_binds_both_requests_and_preserves_source_target(self):
+        from release_contract import make_identity
+        with tempfile.TemporaryDirectory() as temporary, patch.object(candidates, 'PROJECT', Path(temporary)):
+            root = Path(temporary)
+            original, recovered = root / 'runs/original', root / 'runs/recovered'
+            for directory in (original, recovered):
+                (directory / 'results').mkdir(parents=True)
+            before = make_identity('cp2k', 'development', 'master', 'a' * 40, 'master-2026-10-25', 'b' * 64, 'dsprhbm')
+            after = make_identity('cp2k', 'development', 'master', 'a' * 40, 'master-2026-10-25', 'c' * 64, 'dsprhbm')
+            (original / 'request.json').write_text(json.dumps(dict(identity=before)))
+            (recovered / 'request.json').write_text(json.dumps(dict(identity=after)))
+            proof = original / 'results/build-recovery.json'
+            record = dict(schema=1, source_run=original.name, run_id=recovered.name,
+                          source_request_sha256=digest(original / 'request.json'),
+                          request_sha256=digest(recovered / 'request.json'))
+            proof.write_text(json.dumps(record))
+            selected, extra = candidates.build_recovery('cp2k', original)
+            self.assertEqual(selected, recovered)
+            self.assertEqual(extra['build_recovery']['evidence_sha256'], digest(proof))
+            # Changed recovered bytes fail even with the same nominal source.
+            (recovered / 'request.json').write_text(json.dumps(dict(identity=before)))
+            with self.assertRaisesRegex(ValueError, 'changed recovery request'):
+                candidates.build_recovery('cp2k', original)
+            after = make_identity('cp2k', 'development', 'master', 'd' * 40, 'master-2026-10-25', 'c' * 64, 'dsprhbm')
+            (recovered / 'request.json').write_text(json.dumps(dict(identity=after)))
+            record['request_sha256'] = digest(recovered / 'request.json')
+            proof.write_text(json.dumps(record))
+            with self.assertRaisesRegex(ValueError, 'selected source'):
+                candidates.build_recovery('cp2k', original)
+            (recovered / 'results/build-recovery.json').write_text('{}')
+            with self.assertRaisesRegex(ValueError, 'chained'):
+                candidates.build_recovery('cp2k', original)
+
     def test_complete_matrix_and_identity_are_required(self):
         for software in SOFTWARE:
             rows = builds(software)

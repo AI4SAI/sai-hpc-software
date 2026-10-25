@@ -65,11 +65,37 @@ def locate(software, workflow, attempt, source):
     return matches[0]
 
 
+def build_recovery(software, directory):
+    """Follow one recorded, independently accepted rebuild of the same source."""
+    proof = directory / 'results/build-recovery.json'
+    if software != 'cp2k' or not proof.exists():
+        return directory, {}
+    record = read(proof)
+    original = read(directory / 'request.json')
+    require(record.get('schema') == 1 and record.get('source_run') == directory.name
+            and record.get('source_request_sha256') == digest(directory / 'request.json'),
+            'build recovery does not bind the original request')
+    recovered = PROJECT / 'runs' / safe_name(record['run_id'])
+    require(recovered != directory and recovered.resolve() == recovered
+            and not (recovered / 'results/build-recovery.json').exists(), 'invalid chained build recovery')
+    request = read(recovered / 'request.json')
+    require(record.get('request_sha256') == digest(recovered / 'request.json'), 'changed recovery request')
+    before, after = (validate_identity(value['identity']) for value in (original, request))
+    for key in ('software', 'track', 'source_sha', 'source_ref', 'source_version', 'repository',
+                'target', 'partition', 'cpu_arch', 'dependency_isa', 'cuda_arch', 'gpus',
+                'stack_digest', 'stack_sources'):
+        require(before[key] == after[key], 'build recovery changed the selected source or target: ' + key)
+    # candidate() still reruns the recovered controller's complete build and
+    # scientific verification. This pointer alone never constitutes acceptance.
+    return recovered, dict(build_recovery=dict(source_run=directory.name, run_id=recovered.name,
+                           evidence=str(proof), evidence_sha256=digest(proof)))
+
+
 def candidate(software, directory, source):
+    directory, extra = build_recovery(software, directory)
     request = read(directory / 'request.json')
     control = Path(request['controller'])
     require('/controller/' in str(control), 'build lacks a frozen controller')
-    extra = {}
     if software in ('abacus', 'cp2k', 'gpumd'):
         identity = validate_identity(request['identity'])
         from delivery_layout import artifact_path
