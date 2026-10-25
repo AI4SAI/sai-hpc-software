@@ -33,7 +33,7 @@ def package(path, builds):
     old = json.loads((REPO / 'deployment/sif-development-20261024/check-plan.json').read_text())['4V100']
     references = {'abacus': dict(energy_ev=old['abacus_energy_ev']), 'cp2k': old['cp2k_reference'],
                   'lammps': old['lammps_reference'], 'gpumd': {}, 'deepmd-kit': {}}
-    with tarfile.open(path, 'w') as archive:
+    with tarfile.open(path, 'w:gz') as archive:
         for source in sorted((REPO / 'controller').iterdir()):
             if source.is_file() and source.suffix in ('.py', '.sh', '.json', '.f90', '.cmake'):
                 archive.add(source, arcname='controller/' + source.name)
@@ -75,7 +75,7 @@ def main():
         return subprocess.run(['ssh', *options, '-p', '12022', remote, shlex.join(list(map(str, argv)))],
                               text=True, check=True, **kw)
 
-    archive = temporary / 'beta-controller.tar'
+    archive = temporary / 'beta-controller.tar.gz'
     package(archive, builds)
     ssh(['mkdir', '-p', snapshot])
     # Retry only the content transfer. Immutable controller comparison below

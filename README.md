@@ -1,11 +1,12 @@
 # sai-hpc-software
 
 Independent GitHub Actions → SSH → Slurm → Apptainer builds on SAI.
-ABACUS has automated build and scientific acceptance. CP2K has a separate manually dispatched
-build, science and publication workflow. CP2K 2026.2 with repaired shared ELPA is installed
-under physical `/opt` and has passed all 56 single/two-node scientific calculations on
-the four partitions. The public entry is `cp2k/2026.2-auto`; development acceptance remains separate.
-See [current delivery status](docs/WORKFLOW-CLOSURE.md).
+The daily workflow independently tracks ABACUS, CP2K, DeePMD-kit, LAMMPS and GPUMD,
+including their development branches and latest release/prerelease versions.
+Development SIFs pass build, scientific and real module-launch checks on every supported
+partition before their public `*-beta-later` module rotates. Failed or partial matrices
+retain the previous accepted version. Native `/opt` installation remains administrator-driven.
+See [current delivery status](docs/WORKFLOW-CLOSURE.md) and [using the beta modules](deployment/sif-beta/README.md).
 
 ## Container contract
 
@@ -47,11 +48,14 @@ does not silently create an on-host sandbox.
 
 ## Storage on SAI
 
-All project files live below `/home/stardust/sai-hpc-software`:
+Current builds and evidence live below `/org/org-open-sai/proj-sai-hpc-software`,
+using Slurm account `proj-sai-hpc-software`. Historical home data remains in place.
+Public beta modules, immutable SIF copies and their launchers are maintained under
+`/home/stardust/sai-hpc-software` for use through the static `/opt` gateways.
 
-Builds use the home filesystem, including source caches, overlays, compiler
+Builds use project storage, including source caches, overlays, compiler
 temporary files and Apptainer temporary/cache directories. Container
-`/workspace/tmp` is backed by the per-run `work.ext3` file in home; host `/tmp`
+`/workspace/tmp` is backed by the per-run `work.ext3` file in the project; host `/tmp`
 and `/var/tmp` are not mounted into builds. Shared-filesystem free-space reports
 are not treated as a user storage limit: submissions and running builds do not
 reserve estimated disk growth or wait for a free-space threshold. Actual write
@@ -84,13 +88,15 @@ No synthetic/orphan commits are substituted. Development install and module name
 build identity. SIF filenames also include the submission UTC date before the source SHA;
 the Actions run ID and attempt distinguish retries.
 
-The ABACUS daily tracker runs at 02:23 UTC. `profiles/software-tracking.json` documents
-the shared software/channel/partition contract. Scheduled runs skip an unchanged
-version only when the source SHA, deployed recipe fingerprint, SIF checksum, successful build
-status, and current scientific acceptance contract all match. Legacy `verified: true` alone is
-insufficient. A cache hit rechecks saved raw scientific evidence; it does not launch another job.
-Manual dispatch rebuilds deliberately. A100 is not registered for ABACUS publication acceptance
-and is rejected before scheduling until that acceptance is implemented.
+The five-software daily tracker runs at 02:23 UTC (10:23 Asia/Shanghai).
+`profiles/software-tracking.json` documents the shared software/channel/partition contract.
+Development rebuilds each day, even when the source commit has not changed. Release and
+prerelease versions are attempted once per upstream version, including unsuccessful attempts;
+select `retry_releases` to retry them explicitly. A skipped release is not relabeled as accepted.
+Artifact acceptance requires matching source, recipe, SIF checksum and original raw scientific
+evidence; legacy `verified: true` alone is insufficient. Each software promotes its complete
+accepted development matrix independently, so a failed release track does not block that beta.
+A100 is not registered for ABACUS publication acceptance and is rejected before scheduling.
 
 Build verification creates a **candidate**, with `build_verified: true` but
 `verified: false, published: false`. It does not update `current.sif` or the module.
@@ -115,8 +121,8 @@ python3 controller/source_cache.py pack /path/to/local/repository upstream-sha .
 # Upload manifest.json and source.part.00 through source.part.07 to an input directory.
 # On SAI, run the trusted controller already provisioned outside any build container:
 python3 controller/source_cache.py receive \
-  /home/stardust/sai-hpc-software/cache/repositories/abacus \
-  /home/stardust/sai-hpc-software/runs/manual-seed/input
+  /org/org-open-sai/proj-sai-hpc-software/cache/repositories/abacus \
+  /org/org-open-sai/proj-sai-hpc-software/runs/manual-seed/input
 ```
 
 Use `--base <cached-ancestor-sha>` when making an incremental seed.

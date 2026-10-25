@@ -410,7 +410,8 @@ def main():
                             python("abacus_benchmark.py", "prepare", benchmark_run, version, target,
                                    "--artifact", artifact, "--launcher", f"{control}/abacus",
                                    "--system-module", "abacus/v3.9.0.26-sm70-auto", "--packaged-case", case,
-                                   "--allow-cpu-case-on-gpu")
+                                   "--allow-cpu-case-on-gpu",
+                                   *(['--minutes', '20'] if target == 'dsprhbm' else []))
                             python("abacus_benchmark.py", "submit", benchmark_run)
                         python("abacus_benchmark.py", "monitor", benchmark_run)
                 if software == "cp2k":
