@@ -132,10 +132,11 @@ def inspect_existing_job(root, control, directory, expected, script):
         record = load_artifact(root, expected['artifact'], software=identity['software'], target=identity['target'])
         if record['identity'] != identity or request.get('artifact_sha256') != record['sha256']:
             raise ValueError('existing acceptance image changed')
+        launcher = control / ('cp2k_regtest_suite.py' if script == 'cp2k_regtest.py' else identity['software'])
         pins = [(directory / 'job.sbatch', 'job_script_sha256'),
-                (control / identity['software'], 'launcher_sha256'),
+                (launcher, 'launcher_sha256'),
                 (control / script, 'controller_sha256')]
-        if request.get('launcher') != str(control / identity['software']):
+        if request.get('launcher') != str(launcher):
             raise ValueError('existing acceptance launcher differs')
         if script == 'gpu_feature_controller.py':
             pins.append((control / 'gpu_feature_runtime.sh', 'runtime_sha256'))
@@ -145,6 +146,9 @@ def inspect_existing_job(root, control, directory, expected, script):
         elif script == 'cp2k_acceptance.py':
             pins += [(control / 'cp2k_benchmark.py', 'helpers_sha256'),
                      (directory / 'rank-exec.sh', 'rank_wrapper_sha256')]
+        elif script == 'cp2k_regtest.py':
+            pins += [(control / 'cp2k_feature_contract.py', 'helpers_sha256'),
+                     (directory / 'bin/cp2k.psmp', 'rank_wrapper_sha256')]
         for path, key in pins:
             if (not path.is_file() or path.is_symlink() or path.resolve() != path or
                     checksum(path) != request.get(key)):
@@ -240,6 +244,7 @@ def main():
                   if software == "abacus" else
                   ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_libxc.sh", "cp2k_libxs.sh", "cp2k_elpa.sh", "cp2k_elpa_runtime.py", "cp2k_feature_contract.py", "cp2k_site_elpa.json", "cp2k_elpa_abi.f90",
                    "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_cmake_prerequisites.cmake", "cp2k_benchmark.py", "cp2k_acceptance.py", "cp2k_source_fixes.py",
+                   "cp2k_regtest.py", "cp2k_regtest_suite.py",
                    "cp2k_spack.py", "cp2k_spack_environment.py", "cp2k_spack_native.py",
                    "cp2k_spack_seed.py", "cp2k_spack_probe.sh", "cp2k_spack_dependencies.sh",
                    "cp2k_spack_libint_repair.py", "cp2k_spack_install_evidence.py",
@@ -419,6 +424,13 @@ def main():
                         python("cp2k_acceptance.py", "submit", scientific_run, version, target,
                                "--build-run-id", run_id)
                     python("cp2k_acceptance.py", "monitor", scientific_run)
+                    from cp2k_regtest import eligible
+                    if eligible(track, target):
+                        regression_run = safe_name(run_id + "-cusolvermp")
+                        if not acceptance_exists('cp2k_regtest.py', regression_run):
+                            python("cp2k_regtest.py", "submit", regression_run, version, target,
+                                   "--build-run-id", run_id)
+                        python("cp2k_regtest.py", "monitor", regression_run)
                 if software == "gpumd":
                     scientific_run = safe_name(run_id + "-science" + repeat_suffix)
                     if not acceptance_exists('gpumd_acceptance.py', scientific_run):
@@ -445,6 +457,15 @@ def main():
             subprocess.run(['scp', '-q', *options, '-P', '12022', '-r',
                             f'{remote}:{root}/runs/{dependency_run}/results/.',
                             str(dependency_results)], check=False)
+            from cp2k_regtest import eligible
+            if eligible(track, target):
+                regression_results = results / 'cp2k-cusolvermp'
+                regression_results.mkdir(exist_ok=True)
+                regression_task = f'{root}/runtime-tests/{run_id}-cusolvermp'
+                for name in ('results/.', 'tests', 'upstream', 'adaptations.diff',
+                             'request.json', 'job.sbatch', 'job.id', 'bin'):
+                    subprocess.run(['scp', '-q', *options, '-P', '12022', '-r',
+                                    f'{remote}:{regression_task}/{name}', str(regression_results)], check=False)
         for suffix in ("", "-retest"):
             if software == "cp2k" and not suffix:
                 scientific_results = results / "cp2k-science"

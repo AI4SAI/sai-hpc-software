@@ -31,6 +31,7 @@ def contract_files(software):
     if software == "cp2k":
         return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_libxc.sh", "cp2k_libxs.sh", "cp2k_elpa.sh", "cp2k_elpa_runtime.py", "cp2k_feature_contract.py", "cp2k_site_elpa.json", "cp2k_elpa_abi.f90",
                          "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_cmake_prerequisites.cmake", "cp2k_benchmark.py", "cp2k_acceptance.py", "cp2k_source_fixes.py",
+                         "cp2k_regtest.py", "cp2k_regtest_suite.py",
                          "cp2k_spack.py", "cp2k_spack_environment.py", "cp2k_spack_native.py",
                          "cp2k_spack_seed.py", "cp2k_spack_probe.sh", "cp2k_spack_dependencies.sh",
                          "cp2k_spack_libint_repair.py", "cp2k_spack_install_evidence.py",
@@ -63,11 +64,12 @@ def request_identity(args):
 def identity(args):
     print(json.dumps(request_identity(args), sort_keys=True))
 
-def required_acceptance(software, target):
+def required_acceptance(software, target, track=None):
     if software == "cp2k":
         if target not in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             raise ValueError("CP2K native publication target is not registered")
-        return ("cp2k_science",)
+        from cp2k_regtest import eligible
+        return ("cp2k_science", "cp2k_regtest") if eligible(track, target) else ("cp2k_science",)
     if software == "gpumd":
         if target not in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             raise ValueError("GPUMD publication requires a natively built V100 target")
@@ -92,10 +94,11 @@ def validate_acceptance(manifest):
         from gpumd_acceptance import validate_manifest
         validate_manifest(manifest, ROOT, CONTROL)
         return
-    for name in required_acceptance(manifest["software"], manifest["target"]):
+    for name in required_acceptance(manifest["software"], manifest["target"], manifest["identity"]["track"]):
         proof = manifest.get(name, {})
         benchmark = name.startswith("benchmark_")
-        verifier = ("cp2k_acceptance.py" if name == "cp2k_science" else
+        verifier = ("cp2k_regtest.py" if name == "cp2k_regtest" else
+                    "cp2k_acceptance.py" if name == "cp2k_science" else
                     "abacus_benchmark.py" if benchmark else
                     "runtime_controller.py" if name == "multinode_runtime" else "gpu_feature_controller.py")
         if (proof.get("verified") is not True or
@@ -149,6 +152,8 @@ def validate_acceptance(manifest):
             from runtime_controller import verify_evidence
         elif name == "cp2k_science":
             from cp2k_acceptance import verify_evidence
+        elif name == "cp2k_regtest":
+            from cp2k_regtest import verify_evidence
         elif name == "gpu_features":
             from gpu_feature_controller import verify_evidence
         else:
@@ -270,7 +275,9 @@ def _publish_runtime_entry(request, artifact, manifest):
     if (checksum(launcher) != checksum(expected_launcher) or
             recipe_fingerprint(software, request["controller"]) != manifest["recipe_sha256"]):
         raise ValueError("publication launcher does not match the build contract")
-    for proof_name in required_acceptance(software, request["target"]):
+    for proof_name in required_acceptance(software, request["target"], manifest["identity"]["track"]):
+        if proof_name == 'cp2k_regtest':
+            continue  # The in-container harness has its own launcher; science tests the user launcher.
         if manifest[proof_name].get("launcher_sha256") != checksum(launcher):
             raise ValueError("publication launcher was not runtime-tested")
     from export_native import export_delivery

@@ -182,6 +182,33 @@ class ContinuationPreflightTests(unittest.TestCase):
             path.write_bytes(original)
 
 
+    def test_cp2k_regtest_continuation_pins_container_runner_and_rank_wrapper(self):
+        identity = self.identity('cp2k')
+        image = self.candidate(identity)
+        (self.task / 'bin').mkdir(parents=True)
+        (self.task / 'job.id').write_text('1004\n')
+        (self.task / 'job.sbatch').write_text('#!/bin/bash\n# container regression\n')
+        wrapper = self.task / 'bin/cp2k.psmp'
+        wrapper.write_text('#!/usr/bin/python3\n# rank trace\n')
+        launcher = self.control / 'cp2k_regtest_suite.py'
+        expected = dict(run_id='build-science', build_run_id='build', identity=identity,
+                        version='v1', target='16v100-avx2', artifact=str(image))
+        request = dict(expected, job='1004', launcher=str(launcher), artifact_sha256=checksum(image),
+                       job_script_sha256=checksum(self.task / 'job.sbatch'),
+                       launcher_sha256=checksum(launcher),
+                       controller_sha256=checksum(self.control / 'cp2k_regtest.py'),
+                       helpers_sha256=checksum(self.control / 'cp2k_feature_contract.py'),
+                       rank_wrapper_sha256=checksum(wrapper))
+        (self.task / 'request.json').write_text(json.dumps(request))
+        self.assertTrue(self.probe(expected, 'cp2k_regtest.py'))
+        for path in (wrapper, launcher, self.control / 'cp2k_feature_contract.py'):
+            original = path.read_bytes()
+            path.write_bytes(original + b'# changed\n')
+            with self.subTest(path=path), self.assertRaises(subprocess.CalledProcessError):
+                self.probe(expected, 'cp2k_regtest.py')
+            path.write_bytes(original)
+
+
 class StatefulContinuationTests(unittest.TestCase):
     setUp = lifecycle.CiLifecycleTests.setUp
     execute = lifecycle.CiLifecycleTests.execute

@@ -399,11 +399,22 @@ class CiLifecycleTests(unittest.TestCase):
                 ("cp2k_dependency_stage.py", "submit"), ("cp2k_dependency_stage.py", "monitor"),
                 ("software_controller.py", "submit"), ("software_controller.py", "monitor"),
                 ("cp2k_acceptance.py", "submit"), ("cp2k_acceptance.py", "monitor"),
+                *([("cp2k_regtest.py", "submit"), ("cp2k_regtest.py", "monitor")]
+                  if target == "16v100-avx2" else []),
                 ("software_controller.py", "publish"),
             ])
             self.assertTrue({'cp2k_acceptance.py', 'cp2k_source_fixes.py'} <= set(self.uploads))
         failed = self.execute(software="cp2k", fail_monitor="cp2k_acceptance.py")
         self.assertNotIn(("software_controller.py", "publish"), failed)
+
+    def test_cp2k_cusolvermp_failure_blocks_publication_without_resubmission(self):
+        failed = self.execute(software='cp2k', target='16v100-avx2', fail_monitor='cp2k_regtest.py')
+        self.assertEqual(failed.count(('cp2k_regtest.py', 'submit')), 1)
+        self.assertNotIn(('software_controller.py', 'publish'), failed)
+        self.assertTrue({'cp2k_regtest.py', 'cp2k_regtest_suite.py'} <= set(self.uploads))
+        for track in ('release', 'prerelease'):
+            calls = self.execute(software='cp2k', target='16v100-avx2', track=track)
+            self.assertFalse(any(script == 'cp2k_regtest.py' for script, op in calls))
 
     def test_cp2k_publication_failure_does_not_allocate_legacy_performance_retest(self):
         calls = self.execute(software='cp2k', publish_failures=1)

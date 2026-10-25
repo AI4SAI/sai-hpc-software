@@ -98,6 +98,9 @@ Only `software_controller.py publish RUN_ID`, after all required acceptance has 
 exposes the image. A failed acceptance leaves the previous published image unchanged.
 CP2K publication requires all seven candidate scientific cases on one and two nodes,
 followed by native export readback. An untested candidate cannot become an accepted cache hit.
+Development builds on 16V100 also require the [container cuSOLVERMp regression
+tester](docs/CP2K-CUSOLVERMP-TESTER.md), using the same full candidate image and
+upstream reference values.
 The gate binds the build, image, launcher, verifier, job, raw rank traces and scientific
 outputs by checksums; an exit code of zero without those results does not pass.
 
