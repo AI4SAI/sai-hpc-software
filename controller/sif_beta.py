@@ -29,6 +29,10 @@ def version_name(software, snapshot):
     version = f"{SOFTWARE[software]['development_ref']}-beta-{snapshot['snapshot']}-{identity['source_sha'][:12]}"
     if snapshot.get('runtime_sha256'):
         version += '-r' + snapshot['runtime_sha256'][:12]
+    revision = snapshot['applications'][software].get('build_revision')
+    if revision:
+        require(bool(re.fullmatch('[0-9a-f]{12}', revision)), 'invalid beta build revision')
+        version += '-b' + revision
     return version
 
 
@@ -159,16 +163,24 @@ def verified_bundle(bundle, validated_catalog, checks, software):
     return snapshot, by_partition
 
 
-def prepare(root, module_root, generation, bundle, validated_catalog, checks, software):
+def prepare(root, module_root, generation, bundle, validated_catalog, checks, software, *, resume=False):
     generation = token(generation)
     for path in (root, module_root, bundle, validated_catalog, checks):
         require(path.is_absolute() and path.resolve() == path, 'beta paths must be absolute and canonical')
     snapshot, reports = verified_bundle(bundle, validated_catalog, checks, software)
     destination = root / 'generations' / generation
-    require(not destination.exists(), 'generation already exists; select it for rollback instead')
+    require(resume or not destination.exists(), 'generation already exists; select it for rollback instead')
+
+    def sealed(path, content):
+        require(path.resolve() == path, 'redirected generation file')
+        if path.exists():
+            require(resume and path.read_text() == content, 'changed existing generation file: ' + str(path))
+        else:
+            write(path, content)
+
     # Preflight all immutable names before creating or selecting anything.
     for name in software:
-        require(not (module_root / name / version_name(name, snapshot)).exists(),
+        require(resume or not (module_root / name / version_name(name, snapshot)).exists(),
                 'fixed module name already exists; preserve its generation')
     for name in software:
         app = snapshot['applications'][name]
@@ -179,19 +191,21 @@ def prepare(root, module_root, generation, bundle, validated_catalog, checks, so
                  stem(name) + '_SNAPSHOT': snapshot['snapshot']}
         notice = (f"[SAI beta] {name}/{branch}; commit={identity['source_sha'][:12]}; "
                   f"snapshot={snapshot['snapshot']}")
-        write(destination / 'modules' / name,
+        sealed(destination / 'modules' / name,
               render_module(bundle, name, dict(app, version=version_name(name, snapshot)), help_text=description, notice=notice,
                             extra_environment=extra, compute_only=True))
     versions = {}
     for name in software:
         version = version_name(name, snapshot)
         module = module_root / name / version
-        write(module, render_version(root, name, generation))
+        sealed(module, render_version(root, name, generation))
         versions[name] = {'name': version, 'sha256': digest(module)}
-    write(destination / 'acceptance.json', json.dumps(list(reports.values()), indent=2, sort_keys=True) + '\n')
+    sealed(destination / 'acceptance.json', json.dumps(list(reports.values()), indent=2, sort_keys=True) + '\n')
     files = {str(path.relative_to(destination)): digest(path)
-             for path in destination.rglob('*') if path.is_file()}
-    write(destination / 'manifest.json', json.dumps({
+             for path in destination.rglob('*') if path.is_file() and path.name != 'manifest.json'}
+    require(set(files) == {'acceptance.json', *('modules/' + name for name in software)},
+            'unexpected generation files')
+    sealed(destination / 'manifest.json', json.dumps({
         'schema': 2, 'generation': generation, 'bundle': str(bundle),
         'module_root': str(module_root), 'versions': versions,
         'catalog_sha256': digest(bundle / 'catalog.json'), 'runtime_sha256': snapshot['runtime_sha256'],

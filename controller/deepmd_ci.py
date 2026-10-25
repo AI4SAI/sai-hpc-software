@@ -158,6 +158,7 @@ if destination.is_symlink() or checksum(destination) != DRIVER_SHA256 or destina
                 raise RuntimeError('DeePMD provenance/status check failed: ' + response.stderr)
             status = json.loads(response.stdout)
             (results / 'status.json').write_text(json.dumps(status, sort_keys=True, indent=2) + '\n')
+            (results / 'ci-status.json').write_text(json.dumps(status, sort_keys=True, indent=2) + '\n')
             print(status['accounting'], 'build_verified=' + str(status.get('build_verified', bool(recovery))),
                   'scientific_verified=' + str(status['scientific_verified']), flush=True)
             if response.returncode == 0:

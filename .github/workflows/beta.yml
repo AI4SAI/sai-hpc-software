@@ -1,0 +1,72 @@
+name: Validate and rotate development beta
+
+on:
+  workflow_call:
+    inputs:
+      software:
+        type: string
+        required: true
+      builds:
+        type: string
+        required: true
+
+  workflow_dispatch:
+    inputs:
+      software:
+        type: choice
+        options: [abacus, cp2k, deepmd-kit, lammps, gpumd]
+        required: true
+      builds:
+        description: Original resolved development matrix JSON (exact source SHA and all targets)
+        required: true
+      source_run:
+        description: Original build workflow run ID
+        required: true
+      source_attempt:
+        description: Highest original build attempt to inspect
+        default: '1'
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: sai-beta-${{ inputs.software }}
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    environment: hpc
+    timeout-minutes: 360
+    env:
+      REMOTE_USER: ${{ secrets.REMOTE_USER }}
+      BETA_SOFTWARE: ${{ inputs.software }}
+      BETA_BUILDS: ${{ inputs.builds }}
+      BETA_SOURCE_RUN: ${{ inputs.source_run }}
+      BETA_SOURCE_ATTEMPT: ${{ inputs.source_attempt }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Prepare HPC SSH credentials
+        env:
+          KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
+        run: |
+          set -euo pipefail
+          : "${REMOTE_USER:?Configure REMOTE_USER in the hpc Environment}"
+          : "${KEY:?Configure REMOTE_SSH_PRIVATE_KEY in the hpc Environment}"
+          mkdir -m 700 "$RUNNER_TEMP/ssh"
+          printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
+          chmod 600 "$RUNNER_TEMP/ssh/key"
+      - name: Revalidate artifacts, check SIF launch and rotate this beta
+        run: python3 -u controller/beta_ci.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: beta-${{ inputs.software }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/beta-results/
+          if-no-files-found: warn
+      - name: Remove temporary SSH key
+        if: always()
+        run: rm -f -- "$RUNNER_TEMP/ssh/key"

@@ -122,9 +122,19 @@ jobs:
       retry_releases: ${{ inputs.retry_releases }}
     secrets: inherit
 
+  beta:
+    # Revalidate development independently even if another release track failed.
+    if: ${{ !cancelled() && needs.resolve-source.result == 'success' && (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') }}
+    needs: [resolve-source, build]
+    uses: ./.github/workflows/beta.yml
+    with:
+      software: gpumd
+      builds: ${{ needs.resolve-source.outputs.builds }}
+    secrets: inherit
+
   result:
     if: always()
-    needs: [validate, resolve-source, build]
+    needs: [validate, resolve-source, build, beta]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -143,6 +153,8 @@ jobs:
           if results['validate']['result'] != 'success':
               raise SystemExit('Local validation did not succeed')
           if os.environ['GITHUB_EVENT_NAME'] in ('workflow_dispatch', 'schedule'):
+              if results['beta']['result'] != 'success':
+                  raise SystemExit('Beta verification/rotation did not complete')
               if results['resolve-source']['result'] != 'success':
                   raise SystemExit('Source resolution did not succeed')
               builds = json.loads(results['resolve-source']['outputs']['builds'])
