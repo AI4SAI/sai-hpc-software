@@ -176,9 +176,19 @@ jobs:
       - name: Remove temporary SSH key
         if: always()
         run: rm -f -- "$RUNNER_TEMP/ssh/key"
+  beta:
+    # Revalidate development independently even if another release track failed.
+    if: ${{ !cancelled() && needs.resolve-source.result == 'success' && (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') }}
+    needs: [resolve-source, science]
+    uses: ./.github/workflows/beta.yml
+    with:
+      software: lammps
+      builds: ${{ needs.resolve-source.outputs.builds }}
+    secrets: inherit
+
   result:
     if: always()
-    needs: [validate, resolve-source, candidate, science]
+    needs: [validate, resolve-source, candidate, science, beta]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -192,6 +202,8 @@ jobs:
           if jobs['validate']['result'] != 'success':
               raise SystemExit('Local validation failed')
           if os.environ['GITHUB_EVENT_NAME'] in ('workflow_dispatch', 'schedule'):
+              if jobs['beta']['result'] != 'success':
+                  raise SystemExit('Beta verification/rotation did not complete')
               if jobs['resolve-source']['result'] != 'success':
                   raise SystemExit('LAMMPS source resolution failed')
               builds = json.loads(jobs['resolve-source']['outputs']['builds'])

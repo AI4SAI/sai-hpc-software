@@ -22,7 +22,8 @@ SEED_SHA256 = '80497b787dc178876e71098840cf465deb63c6c9bec27c9dd5cc0bed3643c337'
 PURPOSE = 'cp2k-final-prefix-dependencies-not-application-acceptance'
 EVIDENCE = ('install-success.json', 'libint-export-repair.json', 'spack.yaml',
             'spack.lock', 'native-profile.json', 'validated-graph.json',
-            'probe-success.json', 'stage-identity.json', 'image-driver.json')
+            'probe-success.json', 'stage-identity.json', 'image-driver.json',
+            'overlay-sync-dependencies.json', 'dependency-fsck.stdout', 'dependency-fsck.stderr')
 
 
 def paths(project, controller, run):
@@ -95,7 +96,11 @@ def render(project, controller, run, identity, *, minutes=240, jobs=None, overla
              shlex.join(['printf', '%s  %s\n', SEED_SHA256, str(overlay)]) + ' | sha256sum --check --status',
              shlex.join(['/usr/sbin/e2fsck', '-pf', str(overlay)]) + ' || test "$?" -eq 1',
              shlex.join(['/usr/sbin/resize2fs', str(overlay), str(overlay_mb) + 'M']),
-             shlex.join(command), 'echo CP2K_DEPENDENCY_STAGE_COMPLETE_NOT_APPLICATION_ACCEPTANCE',
+             shlex.join(command),
+             shlex.join(['/usr/sbin/e2fsck', '-fn', str(overlay)])
+             + ' > ' + q(str(run / 'results/dependency-fsck.stdout'))
+             + ' 2> ' + q(str(run / 'results/dependency-fsck.stderr')),
+             'echo CP2K_DEPENDENCY_STAGE_COMPLETE_NOT_APPLICATION_ACCEPTANCE',
              'SAI_BUILD_BODY']
     return '\n'.join(lines) + '\n'
 
@@ -136,6 +141,9 @@ def validate_completed(project, run, identity, controller, *, seal=False):
     validate_driver_receipt(project, read_json(results / 'image-driver.json'))
     if read_json(results / 'stage-identity.json') != identity:
         raise ValueError('dependency container identity differs from request')
+    sync = read_json(results / 'overlay-sync-dependencies.json')
+    if sync.get('synchronized') is not True or sync.get('phase') != 'dependencies':
+        raise ValueError('dependency overlay was not explicitly synchronized')
     validate_receipt(read_json(results / 'install-success.json'), identity['partition'], identity['install_prefix'])
     graph = read_json(results / 'validated-graph.json')
     probe = read_json(results / 'probe-success.json')

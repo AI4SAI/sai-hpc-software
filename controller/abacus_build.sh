@@ -110,8 +110,18 @@ done
 if [[ "$target" != dsprhbm ]]; then
   fixtures="$INSTALL_PREFIX/share/sai/gpu-cases"
   mkdir -p "$fixtures/cusolvermp/PP_ORB" "$fixtures/nccl/PP_ORB"
-  cp -L /workspace/source/tests/12_NAO_Gamma_GPU/009_NO_Si2_DZP_GPU/{INPUT,KPT,STRU} \
-    "$fixtures/cusolvermp/"
+  # Upstream removed this directory while consolidating GPU tests. Keep the
+  # reviewed two-Si cuSOLVERMp regression independent of upstream test layout.
+  python3 - "$fixtures/cusolvermp" <<'PY'
+import hashlib, json, sys
+from pathlib import Path
+fixture = json.loads(Path('/control/abacus_cusolvermp_case.json').read_text())
+assert set(fixture['files']) == {'INPUT', 'KPT', 'STRU'}
+for name, row in fixture['files'].items():
+    data = row['text'].encode()
+    assert hashlib.sha256(data).hexdigest() == row['sha256']
+    (Path(sys.argv[1]) / name).write_bytes(data)
+PY
   cp -L /workspace/source/tests/PP_ORB/{Si_ONCV_PBE-1.0.upf,Si_gga_8au_100Ry_2s2p1d.orb} \
     "$fixtures/cusolvermp/PP_ORB/"
   cp -L /workspace/source/tests/11_PW_GPU/scf_bpcg/{INPUT,KPT,STRU} "$fixtures/nccl/"

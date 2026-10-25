@@ -72,6 +72,11 @@ class BenchmarkTests(unittest.TestCase):
             task = benchmark.prepare(args)
             request = benchmark.verify(task)
             identity = request["identity"]
+            script = (task / 'job.sbatch').read_text()
+            if target == 'dsprhbm':
+                self.assertIn('#SBATCH --mem=32G\n', script)
+            else:
+                self.assertNotIn('#SBATCH --mem=', script)
             self.assertEqual(Path(request["artifact"]), artifact_path(self.root, identity, "candidate"))
             self.assertEqual(identity["partition"], benchmark.TARGETS[target]["partition"])
             calls = []

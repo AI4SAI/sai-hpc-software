@@ -26,7 +26,7 @@ def contract_files(software):
                          "gpu_feature_controller.py", "gpu_feature_runtime.sh", "abacus",
                          "abacus_dependencies.py", "abacus_dependencies.sh",
                          "abacus_full_profile.json", "abacus_full_dependencies.sh", "abacus_site_mpi.sh", "abacus_site_gpu.sh",
-                         "abacus_dependency_lock.json", "abacus_features.py", "abacus_benchmark.py",
+                         "abacus_dependency_lock.json", "abacus_cusolvermp_case.json", "abacus_features.py", "abacus_benchmark.py",
                          "native_module.py", "export_native.py"]
     if software == "cp2k":
         return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_libxc.sh", "cp2k_libxs.sh", "cp2k_elpa.sh", "cp2k_elpa_runtime.py", "cp2k_feature_contract.py", "cp2k_site_elpa.json", "cp2k_elpa_abi.f90",
@@ -34,12 +34,12 @@ def contract_files(software):
                          "cp2k_spack.py", "cp2k_spack_environment.py", "cp2k_spack_native.py",
                          "cp2k_spack_seed.py", "cp2k_spack_probe.sh", "cp2k_spack_dependencies.sh",
                          "cp2k_spack_libint_repair.py", "cp2k_spack_install_evidence.py",
-                         "cp2k_spack_link.py", "cp2k_payload.py", "cp2k_dependency_stage.py", "cp2k_overlay_workdir.py", "cp2k_image_driver.py", "build_capacity.py",
+                         "cp2k_spack_link.py", "cp2k_payload.py", "cp2k_dependency_stage.py", "cp2k_overlay_workdir.py", "cp2k_overlay_sync.py", "cp2k_image_driver.py", "build_capacity.py",
                          "native_module.py", "export_native.py", "cp2k"]
     if software == "gpumd":
         return [name for name in common if name != "environment.sh"] + [
             "gpumd_environment.sh", "gpumd_container_entry.sh", "gpumd_build.sh",
-            "gpumd_science.py", "gpumd_deepmd_probe.py", "gpumd_acceptance.py",
+            "gpumd_science.py", "gpumd_reference_cases.json", "gpumd_deepmd_probe.py", "gpumd_acceptance.py",
             "export_native.py", "native_module.py", "gpumd", "nep", "gnep"]
     raise ValueError("unknown software contract")
 

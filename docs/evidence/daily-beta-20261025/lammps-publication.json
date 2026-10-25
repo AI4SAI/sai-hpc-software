@@ -1,0 +1,431 @@
+{
+  "request": {
+    "attempt": "1",
+    "before": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f",
+      "fixed": "develop-beta-20261024-a0e2bd6efb3d-ra4c6a24c229f",
+      "generation": "20261025-memory-r1"
+    },
+    "builds": [
+      {
+        "repository": "lammps/lammps",
+        "requested_ref": "develop",
+        "software": "lammps",
+        "source_ref": "develop",
+        "source_sha": "049f269111f42ac408f706e0cc94b37f50346baf",
+        "source_version": "develop-2026-10-24",
+        "status": "resolved",
+        "target": "16v100-avx2",
+        "track": "development"
+      },
+      {
+        "repository": "lammps/lammps",
+        "requested_ref": "develop",
+        "software": "lammps",
+        "source_ref": "develop",
+        "source_sha": "049f269111f42ac408f706e0cc94b37f50346baf",
+        "source_version": "develop-2026-10-24",
+        "status": "resolved",
+        "target": "4v100-avx512",
+        "track": "development"
+      },
+      {
+        "repository": "lammps/lammps",
+        "requested_ref": "develop",
+        "software": "lammps",
+        "source_ref": "develop",
+        "source_sha": "049f269111f42ac408f706e0cc94b37f50346baf",
+        "source_version": "develop-2026-10-24",
+        "status": "resolved",
+        "target": "8v100v0-avx512",
+        "track": "development"
+      }
+    ],
+    "date": "20261025",
+    "software": "lammps",
+    "workflow": "40190614608"
+  },
+  "status": {
+    "after": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261025-40190614608-1-lammps",
+      "fixed": "develop-beta-20261025-049f269111f4-r75ef5179f1e8-bb0120cf26221",
+      "generation": "daily-20261025-40190614608-1-lammps"
+    },
+    "attempt": "1",
+    "before": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f",
+      "fixed": "develop-beta-20261024-a0e2bd6efb3d-ra4c6a24c229f",
+      "generation": "20261025-memory-r1"
+    },
+    "catalog_sha256": "78886a1705a0085d91de06c87f83649d1ef6d9bfe80a689456ff429da44388bc",
+    "checks": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-9a3039b9622c/validation.json",
+    "fixed": "develop-beta-20261025-049f269111f4-r75ef5179f1e8-bb0120cf26221",
+    "generation": "daily-20261025-40190614608-1-lammps",
+    "software": "lammps",
+    "source_sha": "049f269111f42ac408f706e0cc94b37f50346baf",
+    "status": "published",
+    "workflow": "40190614608"
+  },
+  "publication": {
+    "after": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261025-40190614608-1-lammps",
+      "fixed": "develop-beta-20261025-049f269111f4-r75ef5179f1e8-bb0120cf26221",
+      "generation": "daily-20261025-40190614608-1-lammps"
+    },
+    "attempt": "1",
+    "before": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f",
+      "fixed": "develop-beta-20261024-a0e2bd6efb3d-ra4c6a24c229f",
+      "generation": "20261025-memory-r1"
+    },
+    "catalog_sha256": "78886a1705a0085d91de06c87f83649d1ef6d9bfe80a689456ff429da44388bc",
+    "checks": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-9a3039b9622c/validation.json",
+    "fixed": "develop-beta-20261025-049f269111f4-r75ef5179f1e8-bb0120cf26221",
+    "generation": "daily-20261025-40190614608-1-lammps",
+    "software": "lammps",
+    "source_sha": "049f269111f42ac408f706e0cc94b37f50346baf",
+    "status": "published",
+    "workflow": "40190614608"
+  },
+  "jobs": [
+    {
+      "exclude": "",
+      "job": "1935854",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-9a3039b9622c/16V100",
+      "partition": "16V100",
+      "request_sha256": "34639e9408ce7db4a3105e2281ec8ff6f7a34281150f569a7dceffac9d91dcf3",
+      "script_sha256": "406d60f8940f06be7de9e75c534d5bf079f060c2e969affdf0d50c0895a8d830"
+    },
+    {
+      "exclude": "",
+      "job": "1935856",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-9a3039b9622c/4V100",
+      "partition": "4V100",
+      "request_sha256": "b379272fedea173fb19131e3b53421b4ba262e1f41b805ce371cd25dd6754c25",
+      "script_sha256": "627a7841595a159d729f2ca3cbd0543e244dcc4c67615befd08bc0c671917fe2"
+    },
+    {
+      "exclude": "",
+      "job": "1935858",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-9a3039b9622c/8V100V0",
+      "partition": "8V100V0",
+      "request_sha256": "466de632490426687d0221dae1655b52a628d183d4a31d8d9a463fa1b9369fb0",
+      "script_sha256": "f2d1ff9fb9e8b5114bc576c8fd15fb43d2cdd8fac61afbf89ca47fa9d3c23c84"
+    }
+  ],
+  "runtime-status": {
+    "failed": {},
+    "jobs": [
+      {
+        "exclude": "",
+        "job": "1935854",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-9a3039b9622c/16V100",
+        "partition": "16V100",
+        "request_sha256": "34639e9408ce7db4a3105e2281ec8ff6f7a34281150f569a7dceffac9d91dcf3",
+        "script_sha256": "406d60f8940f06be7de9e75c534d5bf079f060c2e969affdf0d50c0895a8d830"
+      },
+      {
+        "exclude": "",
+        "job": "1935856",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-9a3039b9622c/4V100",
+        "partition": "4V100",
+        "request_sha256": "b379272fedea173fb19131e3b53421b4ba262e1f41b805ce371cd25dd6754c25",
+        "script_sha256": "627a7841595a159d729f2ca3cbd0543e244dcc4c67615befd08bc0c671917fe2"
+      },
+      {
+        "exclude": "",
+        "job": "1935858",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-9a3039b9622c/8V100V0",
+        "partition": "8V100V0",
+        "request_sha256": "466de632490426687d0221dae1655b52a628d183d4a31d8d9a463fa1b9369fb0",
+        "script_sha256": "f2d1ff9fb9e8b5114bc576c8fd15fb43d2cdd8fac61afbf89ca47fa9d3c23c84"
+      }
+    ],
+    "passed": {
+      "16V100": {
+        "automatic_memory": true,
+        "catalog_sha256": "010179c3d342a9fe861cc3ea9e0031c558a25ebb7c42fe8746cc4478fda2e302",
+        "job": "1935854",
+        "lammps": {
+          "max_error": 0.0
+        },
+        "partition": "16V100",
+        "passed": true,
+        "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+      },
+      "4V100": {
+        "automatic_memory": true,
+        "catalog_sha256": "010179c3d342a9fe861cc3ea9e0031c558a25ebb7c42fe8746cc4478fda2e302",
+        "job": "1935856",
+        "lammps": {
+          "max_error": 0.0
+        },
+        "partition": "4V100",
+        "passed": true,
+        "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+      },
+      "8V100V0": {
+        "automatic_memory": true,
+        "catalog_sha256": "010179c3d342a9fe861cc3ea9e0031c558a25ebb7c42fe8746cc4478fda2e302",
+        "job": "1935858",
+        "lammps": {
+          "max_error": 0.0
+        },
+        "partition": "8V100V0",
+        "passed": true,
+        "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+      }
+    }
+  },
+  "validation": [
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "010179c3d342a9fe861cc3ea9e0031c558a25ebb7c42fe8746cc4478fda2e302",
+      "job": "1935854",
+      "lammps": {
+        "max_error": 0.0
+      },
+      "partition": "16V100",
+      "passed": true,
+      "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+    },
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "010179c3d342a9fe861cc3ea9e0031c558a25ebb7c42fe8746cc4478fda2e302",
+      "job": "1935856",
+      "lammps": {
+        "max_error": 0.0
+      },
+      "partition": "4V100",
+      "passed": true,
+      "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+    },
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "010179c3d342a9fe861cc3ea9e0031c558a25ebb7c42fe8746cc4478fda2e302",
+      "job": "1935858",
+      "lammps": {
+        "max_error": 0.0
+      },
+      "partition": "8V100V0",
+      "passed": true,
+      "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+    }
+  ],
+  "candidates": {
+    "applications": {
+      "lammps": {
+        "build_revision": "b0120cf26221",
+        "partitions": {
+          "16V100": {
+            "binds": [
+              "/opt/apps/conda_env/deepmd-kit-3.2.0",
+              "/opt/apps/conda_env/deepmd-kit-3.1.2",
+              "/opt/apps/conda_env/VeloxChem/gpu",
+              "/opt/apps/plumed/plumed-2.10.1",
+              "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100"
+            ],
+            "build_verified": true,
+            "evidence": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runtime-tests/lmp-40190614608-1-development-16v100-avx2-20261025-049f269111f4-science/verification.json",
+            "evidence_sha256": "be551955738c958f19cb18e92ece8d5d9f5efb9ccab93c71a1887a882901fd3c",
+            "identity": {
+              "build_id": "develop-2026-10-24-g049f269111f4-r0cbdf8e50422",
+              "cpu_arch": "znver3",
+              "cuda_arch": "70",
+              "dependency_isa": "avx2",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/lammps/lammps-development-develop-2026-10-24-g049f269111f4-r0cbdf8e50422/16V100",
+              "partition": "16V100",
+              "recipe_sha256": "0cbdf8e504222820b0bd6897640aee2a4bd27725b37dd8d030082636d1055880",
+              "repository": "lammps/lammps",
+              "schema": 2,
+              "software": "lammps",
+              "source_ref": "develop",
+              "source_sha": "049f269111f42ac408f706e0cc94b37f50346baf",
+              "source_version": "develop-2026-10-24",
+              "stack_digest": null,
+              "stack_sources": {},
+              "target": "16v100-avx2",
+              "track": "development",
+              "version_label": "develop-2026-10-24"
+            },
+            "image": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-40190614608-1-development-16v100-avx2-20261025-049f269111f4/candidate.sif",
+            "installed_deepmd_dependency": {
+              "identity": {
+                "build_id": "v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102",
+                "cpu_arch": "znver3",
+                "cuda_arch": "70",
+                "dependency_isa": "avx2",
+                "gpus": 1,
+                "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100",
+                "partition": "16V100",
+                "recipe_sha256": "296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097",
+                "repository": "deepmodeling/deepmd-kit",
+                "schema": 2,
+                "software": "deepmd-kit",
+                "source_ref": "v3.2.0",
+                "source_sha": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+                "source_version": "v3.2.0",
+                "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+                "stack_sources": {
+                  "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+                  "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+                },
+                "target": "16v100-avx2",
+                "track": "release",
+                "version_label": "v3.2.0"
+              },
+              "runtime_plan_sha256": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e"
+            },
+            "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+            "scientific_verified": true,
+            "sha256": "ecafecc0191cc798dc2d7e4f2ed7432a99027db151436832a9e4699d2e22e25b"
+          },
+          "4V100": {
+            "binds": [
+              "/opt/apps/conda_env/deepmd-kit-3.2.0",
+              "/opt/apps/conda_env/deepmd-kit-3.1.2",
+              "/opt/apps/conda_env/VeloxChem/gpu",
+              "/opt/apps/plumed/plumed-2.10.1",
+              "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/4V100"
+            ],
+            "build_verified": true,
+            "evidence": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runtime-tests/lmp-40190614608-1-development-4v100-avx512-20261025-049f269111f4-science/verification.json",
+            "evidence_sha256": "441546dbc62e124f9e47105df13871e5b90f9bf14c2e4fe787eede5fa8b8fd46",
+            "identity": {
+              "build_id": "develop-2026-10-24-g049f269111f4-r0cbdf8e50422",
+              "cpu_arch": "znver4",
+              "cuda_arch": "70",
+              "dependency_isa": "avx512",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/lammps/lammps-development-develop-2026-10-24-g049f269111f4-r0cbdf8e50422/4V100",
+              "partition": "4V100",
+              "recipe_sha256": "0cbdf8e504222820b0bd6897640aee2a4bd27725b37dd8d030082636d1055880",
+              "repository": "lammps/lammps",
+              "schema": 2,
+              "software": "lammps",
+              "source_ref": "develop",
+              "source_sha": "049f269111f42ac408f706e0cc94b37f50346baf",
+              "source_version": "develop-2026-10-24",
+              "stack_digest": null,
+              "stack_sources": {},
+              "target": "4v100-avx512",
+              "track": "development",
+              "version_label": "develop-2026-10-24"
+            },
+            "image": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-40190614608-1-development-4v100-avx512-20261025-049f269111f4/candidate.sif",
+            "installed_deepmd_dependency": {
+              "identity": {
+                "build_id": "v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102",
+                "cpu_arch": "znver4",
+                "cuda_arch": "70",
+                "dependency_isa": "avx512",
+                "gpus": 1,
+                "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/4V100",
+                "partition": "4V100",
+                "recipe_sha256": "296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097",
+                "repository": "deepmodeling/deepmd-kit",
+                "schema": 2,
+                "software": "deepmd-kit",
+                "source_ref": "v3.2.0",
+                "source_sha": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+                "source_version": "v3.2.0",
+                "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+                "stack_sources": {
+                  "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+                  "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+                },
+                "target": "4v100-avx512",
+                "track": "release",
+                "version_label": "v3.2.0"
+              },
+              "runtime_plan_sha256": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e"
+            },
+            "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512",
+            "scientific_verified": true,
+            "sha256": "3daad9ad8c80ed1a60c1c1999e96802d93dff448752b4c704ae58f654732a5cf"
+          },
+          "8V100V0": {
+            "binds": [
+              "/opt/apps/conda_env/deepmd-kit-3.2.0",
+              "/opt/apps/conda_env/deepmd-kit-3.1.2",
+              "/opt/apps/conda_env/VeloxChem/gpu",
+              "/opt/apps/plumed/plumed-2.10.1",
+              "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0"
+            ],
+            "build_verified": true,
+            "evidence": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runtime-tests/lmp-40190614608-1-development-8v100v0-avx512-20261025-049f269111f4-science/verification.json",
+            "evidence_sha256": "4bda8a8638c51c043603490e66438181f70c97d3b499a9f624a8fb135365d889",
+            "identity": {
+              "build_id": "develop-2026-10-24-g049f269111f4-r0cbdf8e50422",
+              "cpu_arch": "skylake-avx512",
+              "cuda_arch": "70",
+              "dependency_isa": "avx2",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/lammps/lammps-development-develop-2026-10-24-g049f269111f4-r0cbdf8e50422/8V100V0",
+              "partition": "8V100V0",
+              "recipe_sha256": "0cbdf8e504222820b0bd6897640aee2a4bd27725b37dd8d030082636d1055880",
+              "repository": "lammps/lammps",
+              "schema": 2,
+              "software": "lammps",
+              "source_ref": "develop",
+              "source_sha": "049f269111f42ac408f706e0cc94b37f50346baf",
+              "source_version": "develop-2026-10-24",
+              "stack_digest": null,
+              "stack_sources": {},
+              "target": "8v100v0-avx512",
+              "track": "development",
+              "version_label": "develop-2026-10-24"
+            },
+            "image": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-40190614608-1-development-8v100v0-avx512-20261025-049f269111f4/candidate.sif",
+            "installed_deepmd_dependency": {
+              "identity": {
+                "build_id": "v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102",
+                "cpu_arch": "skylake-avx512",
+                "cuda_arch": "70",
+                "dependency_isa": "avx2",
+                "gpus": 1,
+                "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0",
+                "partition": "8V100V0",
+                "recipe_sha256": "795dbd80e2a43d3e7a32c1bc373d30b88476fcca8d63f26ccc6d42a84515707c",
+                "repository": "deepmodeling/deepmd-kit",
+                "schema": 2,
+                "software": "deepmd-kit",
+                "source_ref": "v3.2.0",
+                "source_sha": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+                "source_version": "v3.2.0",
+                "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+                "stack_sources": {
+                  "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+                  "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+                },
+                "target": "8v100v0-avx512",
+                "track": "release",
+                "version_label": "v3.2.0"
+              },
+              "runtime_plan_sha256": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e"
+            },
+            "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+            "scientific_verified": true,
+            "sha256": "67745bd43acb3f3d3ee08e3209be8dd82edda7dfc72e9ca70748a4a442db3843"
+          }
+        },
+        "version": "develop-20261025-g049f269111f4"
+      }
+    },
+    "daily_publication": {
+      "attempt": "1",
+      "workflow": "40190614608"
+    },
+    "memory_bootstrap": {
+      "image": "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f/libexec/memory-bootstrap.sif",
+      "sha256": "eb467d87aa7a41ab80f982929d23a1fff1d59e1625fae57e62fba03fc643c7e2",
+      "source_image": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/bundle-r7/libexec/memory-bootstrap.sif"
+    },
+    "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4",
+    "schema": 1,
+    "snapshot": "20261025"
+  },
+  "accounting": "1935854|COMPLETED|0:0|00:00:06|16V100|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-9a3039b9622c/16V100|16v100n80\n1935856|COMPLETED|0:0|00:00:03|4V100|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-9a3039b9622c/4V100|4v100n15\n1935858|COMPLETED|0:0|00:00:41|8V100V0|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-9a3039b9622c/8V100V0|8v100v0n02\n",
+  "task": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40190614608-1-lammps-9a3039b9622c"
+}

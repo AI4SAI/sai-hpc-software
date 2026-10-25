@@ -1,0 +1,24 @@
+
+----------- Module Specific Help for "deepmd-kit/master-beta-later" -----------
+[SAI beta] deepmd-kit / master
+Source version: master-2026-10-23
+Commit: 2ba617bc3db67adee2b8ba00c71e9fa1c2d2bb8c
+Accepted snapshot: 20261025 (latest accepted, not necessarily upstream HEAD)
+Partitions: 16V100, 4V100, 8V100V0
+Fixed module: deepmd-kit/master-beta-20261025-2ba617bc3db6-r75ef5179f1e8-b57696ab2c62a
+System sbatch examples: /opt/sbatch_examples
+
+Load on a compute node inside your existing sbatch job or srun shell:
+  module load deepmd-kit/master-beta-later
+Command: dp --pt train input.json
+Run directly in the case directory.
+PyTorch training and restart accepted on one node with two GPUs for se_e2_a and DPA2 on all listed partitions.
+For two allocated GPUs: deepmd-python -m torch.distributed.run --standalone --nproc_per_node=2 -m deepmd --pt train input.json
+Multi-node training and more than two GPUs have not been accepted. TensorFlow/JAX are CPU-only.
+Use deepmd-python for the SIF Python environment.
+Commands enter the read-only SIF automatically; no extraction is needed.
+Runtime temporary files use private node memory automatically; no TMPDIR setup is needed.
+For a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load deepmd-kit/master-beta-20261025-2ba617bc3db6-r75ef5179f1e8-b57696ab2c62a
+
+
+

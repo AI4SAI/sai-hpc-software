@@ -1,7 +1,47 @@
 # Workflow closure — 2026-10-25
 
+## Daily development beta closure
+
+The scheduled workflows did run on October 23–25, but failed/cancelled builds
+and the missing beta promotion stage left the public modules unchanged. Source
+dates in module help identify upstream commit dates, not the last build date.
+The daily workflow now connects each software's complete development matrix to
+scientific acceptance, real Lmod/SIF launch verification and atomic beta rotation.
+The schedule remains 02:23 UTC / 10:23 Asia/Shanghai. Failed or partial matrices
+retain the previous accepted generation, and the five applications publish
+independently. See [daily closure evidence](evidence/daily-beta-20261025/README.md).
+
+The completed campaign resolves each source once and retains that identity
+through recovery. All 17 application/target entries are scientifically accepted
+and publicly selected as of October 25, 17:36 UTC (October 26, 01:36 Asia/Shanghai):
+
+| Program / public entry | Selected source | Current campaign |
+| --- | --- | --- |
+| `abacus/develop-beta-later` | `89595dd29a26aec34d623518cadf736c17345f69` | Four targets built, scientifically accepted and beta-published on October 25. |
+| `cp2k/master-beta-later` | `1db19ea511d10fbf2eb75cec7c0d88b6635563e2` | All four targets built, scientifically accepted and beta-published on October 25. DSPRHBM fresh recovery passed dependencies 1937947, application 1938812 and science 1939349; all four public module checks passed in 1939536–1939542. The original corrupt dependency checkpoint and failed workflow remain recorded. |
+| `deepmd-kit/master-beta-later` | `2ba617bc3db67adee2b8ba00c71e9fa1c2d2bb8c` | Three targets accepted and beta-published on October 25; actual two-GPU se_e2_a/DPA2 training and restart passed. |
+| `lammps/develop-beta-later` | `049f269111f42ac408f706e0cc94b37f50346baf` | Three targets built, scientifically accepted and beta-published on October 25; 14 scientific cases, 71 packages and 2,500 styles per target. |
+| `gpumd/master-beta-later` | `30a6db02e36494b8bba71c9fa1d1a68627604961` | Three targets accepted and beta-published automatically by successful Actions run 40190615647. |
+
+The [final public preflight](evidence/daily-beta-20261025/public-preflight.json)
+verified all selected SIF checksums, immutable payload permissions, runtime files
+and launchers. [Module checks](evidence/daily-beta-20261025/public-module-checks.json)
+confirm that ordinary cached help sees the new fixed versions; login-node loads
+print version/help and fail without leaving partially loaded modules or SIF
+environment variables. Source dates remain October 23/24/25, while every selected
+generation records acceptance on October 25 UTC.
+
+All computation, build scratch and raw evidence use
+`/org/org-open-sai/proj-sai-hpc-software` with account `proj-sai-hpc-software`.
+Static `/opt` beta gateways read stardust's home-maintained immutable modules and
+SIFs. Normal execution reads directly from SIF; no application extraction or new
+user sbatch template is required. Native `/opt` software installation is a
+separate administrator action.
+
+## Earlier SIF and runtime acceptance
+
 The [20261024 SIF module snapshot](../deployment/sif-development-20261024/README.md)
-now exposes all five accepted development sources through independent `*-sif`
+exposed all five accepted development sources through independent `*-sif`
 Lmod modules, selecting the image by Slurm partition. All 17 application/target
 entries passed fresh numerical checks of this launch route in jobs
 `1919703`–`1919706`, including two-node/four-rank host MPI on 16V100. Apptainer
@@ -41,15 +81,15 @@ checks the selected immutable payload and acceptance before writing the five
 static gateways. `/opt` installation is still administrator-operated.
 Historical generations, templates and acceptance records remain unchanged.
 
-## Current development deliveries
+## Previous development deliveries
 
-The current development work uses the funded project directory
+The preceding development campaign used the funded project directory
 `/org/org-open-sai/proj-sai-hpc-software` and explicit Slurm account
 `proj-sai-hpc-software`. Frozen historical controllers and existing home
 artifacts remain unchanged. Build, science, publication and native `/opt`
 installation are separate acceptance states.
 
-| Program | Selected development commit | Current evidence |
+| Program | Selected development commit | Evidence from the preceding campaign |
 | --- | --- | --- |
 | ABACUS `develop` | `370ba685e6707b3625c5580ff9d02ef0afb248e8` | All four targets built, scientifically accepted and published with reverified native staging exports; workflow [39971072923](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39971072923) succeeded. Physical `/opt` installation pending. |
 | CP2K `master` | `cfe5e5d87aaf302953f14eb43587bef2411a8fb2` | All four targets built, scientifically accepted and project-published, with independent SIF, raw science, native export and module audits. Source-pinned LibXC 7.1.2 and LibXS `930a2c4` are verified. 4V100/8V100V0 completed through documented recoveries; the original [workflow 39983165813](https://github.com/AI4SAI/sai-hpc-software/actions/runs/39983165813) retains its failed status. Physical `/opt` installation pending. |
@@ -57,9 +97,9 @@ installation are separate acceptance states.
 | LAMMPS `develop` | `a0e2bd6efb3d67a29c0c4e4de3b19556ffdb9d5b` | All three V100 candidates build-verified and scientifically accepted: 14 cases, 71 packages, 2,497 styles per target. Available through the 20261024 SIF modules; legacy catalog publication and native installation remain pending. |
 | GPUMD `master` | `2c93346fce4461de1c42c77e7fe74cdb6b0e3df6` | All three V100 targets scientifically accepted, published with native staging exports; physical `/opt` installation pending. |
 
-All five selected development snapshots have completed their required build
-and scientific acceptance gates. The table records the source snapshots
-selected for this campaign. A later
+All five preceding development snapshots completed their required build
+and scientific acceptance gates. The table records those historical source
+snapshots. A later
 [read-only upstream check](evidence/development-project-20261023/upstream-recheck-20261024.json)
 found newer ABACUS and CP2K commits while these jobs were running; the other
 three branch heads were unchanged. New commits are resolved in subsequent
@@ -76,7 +116,7 @@ build jobs retain their failed acceptance-runner status; independent jobs
 
 Runtime jobs `1930729`–`1930731` additionally verify single-GPU training/restart,
 restart from pre-fix checkpoints, compressed-model consistency and GPU inference.
-Generation `20261025-deepmd-ddp-r2` selects these SIFs through the existing static
+Generation `20261025-deepmd-ddp-r2` initially selected these SIFs through the existing static
 `/opt` gateway and the home-maintained `deepmd-kit/master-beta-later` alias.
 Public job `1930769` passes ordinary `deepmd-python -m torch.distributed.run`
 DPA2 training with two GPUs. The earlier

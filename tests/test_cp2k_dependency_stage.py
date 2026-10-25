@@ -42,6 +42,7 @@ class DependencyStageTests(unittest.TestCase):
                    driver=str(driver.driver_path(self.root)), apptainer=str(driver.APPTAINER),
                    config_sha256='e' * 64))
         self.write('stage-identity.json', self.identity)
+        self.write('overlay-sync-dependencies.json', dict(phase='dependencies', synchronized=True))
         for name in ('validated-graph.json', 'probe-success.json'):
             self.write(name, dict(partition='16V100', install_prefix=self.identity['install_prefix'],
                                  mirror_only=True, installed=False))
@@ -107,6 +108,11 @@ class DependencyStageTests(unittest.TestCase):
         record['binary_sha256'] = 'f' * 64
         self.write('image-driver.json', record)
         with self.assertRaisesRegex(ValueError, 'image driver provenance'):
+            self.seal()
+
+    def test_dependency_seal_requires_successful_overlay_sync(self):
+        self.write('overlay-sync-dependencies.json', dict(phase='dependencies', synchronized=False))
+        with self.assertRaisesRegex(ValueError, 'explicitly synchronized'):
             self.seal()
 
     def test_clone_preserves_checkpoint_and_detects_later_mutation(self):
@@ -182,6 +188,9 @@ class DependencyStageTests(unittest.TestCase):
             self.assertIn('#SBATCH --job-name=sai-cp2k-deps-' + target + '-bbbbbbbbbbbb\n', script)
             self.assertIn('cp2k_image_driver.py', script)
             self.assertIn('build_capacity.py', script)
+            self.assertIn('/usr/sbin/e2fsck -fn ', script)
+            self.assertLess(script.index('dependency-fsck.stdout'),
+                            script.index('echo CP2K_DEPENDENCY_STAGE_COMPLETE'))
             self.assertIn('--shell-script-stdin', script)
             self.assertLess(script.index('require_capacity('), script.index('cp --sparse'))
             self.assertIn(identity['install_prefix'], script)

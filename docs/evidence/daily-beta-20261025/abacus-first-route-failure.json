@@ -1,0 +1,192 @@
+{
+  "status": {
+    "attempt": "1",
+    "error": "SIF route failed; previous beta retained: {\"16V100\": {\"job\": \"1934956\", \"state\": \"FAILED\", \"exit_code\": \"1:0\", \"log\": \"/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-70851b85b9c0/16V100\"}, \"8V100V0\": {\"job\": \"1934960\", \"state\": \"FAILED\", \"exit_code\": \"1:0\", \"log\": \"/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-70851b85b9c0/8V100V0\"}}",
+    "retained": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f",
+      "fixed": "develop-beta-20261024-370ba685e670-ra4c6a24c229f",
+      "generation": "20261025-memory-r1"
+    },
+    "software": "abacus",
+    "status": "failed",
+    "workflow": "40189122773"
+  },
+  "request": {
+    "attempt": "1",
+    "before": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f",
+      "fixed": "develop-beta-20261024-370ba685e670-ra4c6a24c229f",
+      "generation": "20261025-memory-r1"
+    },
+    "builds": [
+      {
+        "repository": "deepmodeling/abacus-develop",
+        "requested_ref": "develop",
+        "software": "abacus",
+        "source_ref": "develop",
+        "source_sha": "89595dd29a26aec34d623518cadf736c17345f69",
+        "source_version": "develop-2026-10-23",
+        "status": "resolved",
+        "target": "16v100-avx2",
+        "track": "development"
+      },
+      {
+        "repository": "deepmodeling/abacus-develop",
+        "requested_ref": "develop",
+        "software": "abacus",
+        "source_ref": "develop",
+        "source_sha": "89595dd29a26aec34d623518cadf736c17345f69",
+        "source_version": "develop-2026-10-23",
+        "status": "resolved",
+        "target": "4v100-avx512",
+        "track": "development"
+      },
+      {
+        "repository": "deepmodeling/abacus-develop",
+        "requested_ref": "develop",
+        "software": "abacus",
+        "source_ref": "develop",
+        "source_sha": "89595dd29a26aec34d623518cadf736c17345f69",
+        "source_version": "develop-2026-10-23",
+        "status": "resolved",
+        "target": "8v100v0-avx512",
+        "track": "development"
+      },
+      {
+        "repository": "deepmodeling/abacus-develop",
+        "requested_ref": "develop",
+        "software": "abacus",
+        "source_ref": "develop",
+        "source_sha": "89595dd29a26aec34d623518cadf736c17345f69",
+        "source_version": "develop-2026-10-23",
+        "status": "resolved",
+        "target": "dsprhbm",
+        "track": "development"
+      }
+    ],
+    "date": "20261025",
+    "software": "abacus",
+    "workflow": "40189122773"
+  },
+  "runtime-status": {
+    "failed": {
+      "16V100": {
+        "exit_code": "1:0",
+        "job": "1934956",
+        "log": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-70851b85b9c0/16V100",
+        "state": "FAILED"
+      },
+      "8V100V0": {
+        "exit_code": "1:0",
+        "job": "1934960",
+        "log": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-70851b85b9c0/8V100V0",
+        "state": "FAILED"
+      }
+    },
+    "jobs": [
+      {
+        "exclude": "",
+        "job": "1934956",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-70851b85b9c0/16V100",
+        "partition": "16V100",
+        "request_sha256": "1552965fa0134922b960f12da5ceda5dfd1612a3263609d5cec5195235394eab",
+        "script_sha256": "490d993de5aed6a24aa788c5d095b1170ba68467838194da9bbdf781390e519b"
+      },
+      {
+        "exclude": "",
+        "job": "1934958",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-70851b85b9c0/4V100",
+        "partition": "4V100",
+        "request_sha256": "d822880df5a33838a415ed99189dade0b518ab112c028d6bd278039fa9ef628f",
+        "script_sha256": "c6876b5e1868e32c8f23830579b5b040222b9b19e0324e88af4b58a9d5ed441e"
+      },
+      {
+        "exclude": "",
+        "job": "1934960",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-70851b85b9c0/8V100V0",
+        "partition": "8V100V0",
+        "request_sha256": "f5cee20709d3c902ddbbdca1a4939a57b330752fbbc2c37d1a23f712abf2175f",
+        "script_sha256": "1a1696af3a8cd4094afb5a3ba199c6740dbad61e06e64a843f66eed14af336de"
+      },
+      {
+        "exclude": "",
+        "job": "1934962",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-70851b85b9c0/DSPRHBM",
+        "partition": "DSPRHBM",
+        "request_sha256": "0333bf1edcd85880a4337f56c70f5d1eeadd9e7dd02e8dd193d8116d1723d998",
+        "script_sha256": "ccb6d9730ad15db7bae92cd8951f3933abb17bd9c7d8c6e36ac7cc185a436ab5"
+      }
+    ],
+    "passed": {
+      "4V100": {
+        "abacus": {
+          "energy_error_ev": 0.0,
+          "energy_ev": -4869.747051950185,
+          "iterations": 10,
+          "rounded_iteration_seconds": 0.95,
+          "wall_seconds": 8.08
+        },
+        "automatic_memory": true,
+        "catalog_sha256": "bc2d8b11a020277c229b08851209588f5f76cb508576b031607ed166199e01af",
+        "job": "1934958",
+        "partition": "4V100",
+        "passed": true,
+        "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+      },
+      "DSPRHBM": {
+        "abacus": {
+          "energy_error_ev": 2.7284841053187847e-12,
+          "energy_ev": -4869.747051950182,
+          "iterations": 10,
+          "rounded_iteration_seconds": 1.64,
+          "wall_seconds": 6.64
+        },
+        "automatic_memory": true,
+        "catalog_sha256": "bc2d8b11a020277c229b08851209588f5f76cb508576b031607ed166199e01af",
+        "job": "1934962",
+        "partition": "DSPRHBM",
+        "passed": true,
+        "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+      }
+    }
+  },
+  "jobs": [
+    {
+      "exclude": "",
+      "job": "1934956",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-70851b85b9c0/16V100",
+      "partition": "16V100",
+      "request_sha256": "1552965fa0134922b960f12da5ceda5dfd1612a3263609d5cec5195235394eab",
+      "script_sha256": "490d993de5aed6a24aa788c5d095b1170ba68467838194da9bbdf781390e519b"
+    },
+    {
+      "exclude": "",
+      "job": "1934958",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-70851b85b9c0/4V100",
+      "partition": "4V100",
+      "request_sha256": "d822880df5a33838a415ed99189dade0b518ab112c028d6bd278039fa9ef628f",
+      "script_sha256": "c6876b5e1868e32c8f23830579b5b040222b9b19e0324e88af4b58a9d5ed441e"
+    },
+    {
+      "exclude": "",
+      "job": "1934960",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-70851b85b9c0/8V100V0",
+      "partition": "8V100V0",
+      "request_sha256": "f5cee20709d3c902ddbbdca1a4939a57b330752fbbc2c37d1a23f712abf2175f",
+      "script_sha256": "1a1696af3a8cd4094afb5a3ba199c6740dbad61e06e64a843f66eed14af336de"
+    },
+    {
+      "exclude": "",
+      "job": "1934962",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-70851b85b9c0/DSPRHBM",
+      "partition": "DSPRHBM",
+      "request_sha256": "0333bf1edcd85880a4337f56c70f5d1eeadd9e7dd02e8dd193d8116d1723d998",
+      "script_sha256": "ccb6d9730ad15db7bae92cd8951f3933abb17bd9c7d8c6e36ac7cc185a436ab5"
+    }
+  ],
+  "task": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-70851b85b9c0",
+  "stderr": {
+    "16V100": "[16v100n70.mr-sai.ai:494691] Error: Unable to get the user home directory\n[16v100n70.mr-sai.ai:494691] Error: Unable to get the user home directory\n--------------------------------------------------------------------------\nIt looks like opal_init failed for some reason; your parallel process is\nlikely to abort.  There are many reasons that a parallel process can\nfail during opal_init; some of which are due to configuration or\nenvironment problems.  This failure appears to be an internal failure;\nhere's some additional information (which may only be relevant to an\nOpen MPI developer):\n\n  mca_base_var_init failed\n  --> Returned value -1 instead of OPAL_SUCCESS\n--------------------------------------------------------------------------\nFailed initializing opal: -1\n",
+    "8V100V0": "[8v100v0n02.mr-sai.ai:930175] Error: Unable to get the user home directory\n[8v100v0n02.mr-sai.ai:930175] Error: Unable to get the user home directory\n--------------------------------------------------------------------------\nIt looks like opal_init failed for some reason; your parallel process is\nlikely to abort.  There are many reasons that a parallel process can\nfail during opal_init; some of which are due to configuration or\nenvironment problems.  This failure appears to be an internal failure;\nhere's some additional information (which may only be relevant to an\nOpen MPI developer):\n\n  mca_base_var_init failed\n  --> Returned value -1 instead of OPAL_SUCCESS\n--------------------------------------------------------------------------\nFailed initializing opal: -1\n"
+  }
+}

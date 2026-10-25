@@ -9,6 +9,7 @@ from pathlib import Path
 import re
 import shlex
 import subprocess
+import time
 
 from md_lammps_standalone import CONTROL, make_delivery, runtime_plan
 from release_contract import resolve_tracks, validate_identity
@@ -221,7 +222,13 @@ def main():
 
     def upload(path, destination):
         sources = list(path) if isinstance(path, (list, tuple)) else [path]
-        run(['scp', '-q', *options, '-P', '12022', *sources, remote + ':' + destination], timeout=1800)
+        for attempt in range(3):
+            try:
+                return run(['scp', '-q', *options, '-P', '12022', *sources, remote + ':' + destination], timeout=1800)
+            except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
+                if attempt == 2:
+                    raise
+                time.sleep(5 * (attempt + 1))
 
     def python(name, *args, **kwargs):
         return ssh(['env', 'SAI_SOFTWARE_ROOT=' + project,
@@ -259,6 +266,8 @@ def main():
             for name, identity in (('lammps', delivery['identity']), ('deepmd-kit', delivery['deepmd_dependency']['identity'])):
                 sha = identity['source_sha']
                 cache = root + '/cache/repositories/' + name
+                legacy = '/home/stardust/sai-hpc-software/experimental/deepmd-lammps/cache/repositories/' + name
+                python('source_cache.py', 'seed', cache, legacy, capture_output=True)
                 inventory = json.loads(python('source_cache.py', 'inventory', cache, '--commit', sha, capture_output=True).stdout)
                 if sha in inventory['cache_shas']:
                     print('SOURCE_CACHE_HIT', name, sha, flush=True)
@@ -267,7 +276,16 @@ def main():
                 run(['git', 'clone', '--bare', 'https://github.com/' + identity['repository'] + '.git', repository])
                 run(['git', '--git-dir', repository, 'fetch', '--no-tags', 'origin', sha])
                 parts = temporary / ('parts-' + name)
-                pack(repository, sha, parts)
+                base = None
+                for candidate in inventory['cache_shas']:
+                    ancestor = subprocess.run(['git', '-C', str(repository), 'merge-base', '--is-ancestor', candidate, sha],
+                                              stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    if ancestor.returncode == 0 and candidate != sha:
+                        base = candidate
+                        break
+                manifest = pack(repository, sha, parts, base)
+                print('SOURCE_TRANSFER', name, 'base=' + str(base),
+                      'compressed_bytes=' + str(manifest['compressed_size']), flush=True)
                 destination = snapshot + '/input/' + name
                 ssh(['mkdir', '-p', destination])
                 upload(parts / 'manifest.json', destination + '/manifest.json')

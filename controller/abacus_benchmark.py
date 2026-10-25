@@ -117,9 +117,11 @@ def render_job(r, task):
     q = lambda value: shlex.quote(str(value))
     target = TARGETS[r["target"]]
     cpu = target["gpus"] == 0
-    # HSE/DeePKS LCAO pairs allocate sizeable per-rank workspaces on DSPRHBM;
-    # reserve enough node memory for the system and candidate arms alike.
-    resource = (["#SBATCH --cpus-per-task=2", "#SBATCH --mem=100G"] if cpu else
+    # The packaged two-node cases pass with 32 GiB/node (October 25 evidence).
+    # Reserving 100 GiB blocked backfill on the 120 GiB nodes. Custom cases
+    # retain the larger allowance because their workspace sizes are unknown.
+    memory = '32G' if r.get('packaged_case') in ('pw', 'hse', 'deepks') else '100G'
+    resource = (["#SBATCH --cpus-per-task=2", "#SBATCH --mem=" + memory] if cpu else
                 ["#SBATCH --gpus-per-node=1"])
     mapping = (f"export MAP_OPT=ppr:{r['ranks_per_node']}:node:pe={r['threads']}" if cpu else
                f"source /opt/sai_config/mps_mapping.d/{target['partition']}.bash")

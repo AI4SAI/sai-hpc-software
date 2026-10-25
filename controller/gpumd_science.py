@@ -16,6 +16,7 @@ import shutil
 import stat
 import statistics
 import subprocess
+import sys
 import time
 
 from export_native import (canonical, inventory, read_installed_manifests, write_manifests)
@@ -199,20 +200,38 @@ def first_frame(path):
 
 
 def prepare(source, destination):
-    """Package inputs and gold output from the exact resolved source revision."""
+    """Keep parity fixtures stable; train/JIT/GNEP use the resolved source.
+
+    The site's 5.7 baseline cannot read the newer q_222=2 NEP format. Both
+    programs must receive the same previously accepted potential and gold
+    arrays for a meaningful numerical and throughput comparison.
+    """
     destination.mkdir(parents=True)
     static = destination / "static"
     static.mkdir()
-    shutil.copyfile(source / "examples/gpumd_static/model.xyz", static / "model.xyz")
-    shutil.copyfile(source / "examples/gpumd_static/dump.xyz", static / "gold.xyz")
-    shutil.copyfile(source / "examples/nep_train/nep.txt", static / "nep.txt")
     (static / "run.in").write_text(STATIC_RUN)
     prediction = destination / "prediction"
     prediction.mkdir()
-    for name in ("nep.txt", "nep.in", "train.xyz"):
-        shutil.copyfile(source / "examples/nep_prediction" / name, prediction / name)
-    for name in ("energy_train.out", "force_train.out", "virial_train.out"):
-        shutil.copyfile(source / "examples/nep_prediction" / name, prediction / f"gold-{name}")
+    reference = json.loads(Path(__file__).with_name('gpumd_reference_cases.json').read_text())
+    expected = {'static/model.xyz', 'static/gold.xyz', 'static/nep.txt',
+                *('prediction/' + name for name in ('nep.txt', 'nep.in', 'train.xyz',
+                    'gold-energy_train.out', 'gold-force_train.out', 'gold-virial_train.out'))}
+    if set(reference['files']) != expected:
+        raise ValueError('incomplete GPUMD parity fixture')
+    for name, row in reference['files'].items():
+        data = row['text'].encode()
+        if hashlib.sha256(data).hexdigest() != row['sha256']:
+            raise ValueError('changed GPUMD parity fixture: ' + name)
+        (destination / name).write_bytes(data)
+    # New NEP training/prediction intentionally rejects the legacy model
+    # syntax still accepted by MD. Convert this same fixed potential with
+    # the pinned upstream converter inside the build container. Both forms
+    # must reproduce the identical recorded energy/force/virial arrays.
+    if (source / "examples/nep_train/nep.txt").read_text().split()[0] == 'nep':
+        modern = destination / 'prediction-modern'
+        shutil.copytree(prediction, modern, ignore=shutil.ignore_patterns('nep.txt'))
+        subprocess.run([sys.executable, str(source / 'potentials/nep/nep_model_converter.py'),
+                        str(prediction / 'nep.txt'), str(modern / 'nep.txt')], check=True)
     training = destination / "training"
     training.mkdir()
     for name in ("nep.txt", "nep.restart"):
@@ -791,6 +810,8 @@ def run(prefix, task, repeat_source=None):
         nonlocal sequence
         sequence += 1
         dest = task / f"{kind}-{mode}{suffix}"
+        if kind == "prediction" and mode == "candidate" and (inputs / "prediction-modern").is_dir():
+            case = inputs / "prediction-modern"
         shutil.copytree(case, dest)
         # A frozen model may come from a previous calculation. Its numerical
         # outputs must never survive as evidence for a new invocation.
@@ -808,7 +829,7 @@ def run(prefix, task, repeat_source=None):
             "executable_sha256": sha(executable), "sequence": sequence}, sort_keys=True))
         return dest, elapsed
 
-    # Golden values track the resolved upstream, never an old hardcoded SHA.
+    # Candidate and baseline share the recorded, format-compatible gold data.
     reference_e, reference_f = xyz(inputs / "static/gold.xyz")
     candidate_static = None
     for mode in ("candidate", "baseline"):

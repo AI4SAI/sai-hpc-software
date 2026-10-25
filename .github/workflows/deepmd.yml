@@ -114,3 +114,13 @@ jobs:
       - name: Remove temporary SSH key
         if: always()
         run: rm -f -- "$RUNNER_TEMP/ssh/key"
+
+  beta:
+    # Revalidate development independently even if another release track failed.
+    if: ${{ !cancelled() && needs.resolve-source.result == 'success' && (github.event_name == 'workflow_dispatch' || github.event_name == 'schedule') }}
+    needs: [resolve-source, build]
+    uses: ./.github/workflows/beta.yml
+    with:
+      software: deepmd-kit
+      builds: ${{ needs.resolve-source.outputs.builds }}
+    secrets: inherit

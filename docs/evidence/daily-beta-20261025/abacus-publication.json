@@ -1,0 +1,452 @@
+{
+  "request": {
+    "attempt": "1",
+    "before": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f",
+      "fixed": "develop-beta-20261024-370ba685e670-ra4c6a24c229f",
+      "generation": "20261025-memory-r1"
+    },
+    "builds": [
+      {
+        "repository": "deepmodeling/abacus-develop",
+        "requested_ref": "develop",
+        "software": "abacus",
+        "source_ref": "develop",
+        "source_sha": "89595dd29a26aec34d623518cadf736c17345f69",
+        "source_version": "develop-2026-10-23",
+        "status": "resolved",
+        "target": "16v100-avx2",
+        "track": "development"
+      },
+      {
+        "repository": "deepmodeling/abacus-develop",
+        "requested_ref": "develop",
+        "software": "abacus",
+        "source_ref": "develop",
+        "source_sha": "89595dd29a26aec34d623518cadf736c17345f69",
+        "source_version": "develop-2026-10-23",
+        "status": "resolved",
+        "target": "4v100-avx512",
+        "track": "development"
+      },
+      {
+        "repository": "deepmodeling/abacus-develop",
+        "requested_ref": "develop",
+        "software": "abacus",
+        "source_ref": "develop",
+        "source_sha": "89595dd29a26aec34d623518cadf736c17345f69",
+        "source_version": "develop-2026-10-23",
+        "status": "resolved",
+        "target": "8v100v0-avx512",
+        "track": "development"
+      },
+      {
+        "repository": "deepmodeling/abacus-develop",
+        "requested_ref": "develop",
+        "software": "abacus",
+        "source_ref": "develop",
+        "source_sha": "89595dd29a26aec34d623518cadf736c17345f69",
+        "source_version": "develop-2026-10-23",
+        "status": "resolved",
+        "target": "dsprhbm",
+        "track": "development"
+      }
+    ],
+    "date": "20261025",
+    "software": "abacus",
+    "workflow": "40189122773"
+  },
+  "status": {
+    "after": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261025-40189122773-1-abacus",
+      "fixed": "develop-beta-20261025-89595dd29a26-r75ef5179f1e8-b34568c7aa827",
+      "generation": "daily-20261025-40189122773-1-abacus"
+    },
+    "attempt": "1",
+    "before": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f",
+      "fixed": "develop-beta-20261024-370ba685e670-ra4c6a24c229f",
+      "generation": "20261025-memory-r1"
+    },
+    "catalog_sha256": "f321e4038f3205368d47b9df4a62998cf7d1479235063e044791be5096f7d8c5",
+    "checks": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-ca1bcd147caf/validation.json",
+    "fixed": "develop-beta-20261025-89595dd29a26-r75ef5179f1e8-b34568c7aa827",
+    "generation": "daily-20261025-40189122773-1-abacus",
+    "software": "abacus",
+    "source_sha": "89595dd29a26aec34d623518cadf736c17345f69",
+    "status": "published",
+    "workflow": "40189122773"
+  },
+  "publication": {
+    "after": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261025-40189122773-1-abacus",
+      "fixed": "develop-beta-20261025-89595dd29a26-r75ef5179f1e8-b34568c7aa827",
+      "generation": "daily-20261025-40189122773-1-abacus"
+    },
+    "attempt": "1",
+    "before": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f",
+      "fixed": "develop-beta-20261024-370ba685e670-ra4c6a24c229f",
+      "generation": "20261025-memory-r1"
+    },
+    "catalog_sha256": "f321e4038f3205368d47b9df4a62998cf7d1479235063e044791be5096f7d8c5",
+    "checks": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-ca1bcd147caf/validation.json",
+    "fixed": "develop-beta-20261025-89595dd29a26-r75ef5179f1e8-b34568c7aa827",
+    "generation": "daily-20261025-40189122773-1-abacus",
+    "software": "abacus",
+    "source_sha": "89595dd29a26aec34d623518cadf736c17345f69",
+    "status": "published",
+    "workflow": "40189122773"
+  },
+  "jobs": [
+    {
+      "exclude": "",
+      "job": "1934997",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-ca1bcd147caf/16V100",
+      "partition": "16V100",
+      "request_sha256": "dc3b6fd195e99b1196efe5560771b3376098ab6af944e952c8c0218b35c1724d",
+      "script_sha256": "dc82361b37f620d13cec09c4f200763af77f1ea799047dd19632c460698e33d9"
+    },
+    {
+      "exclude": "",
+      "job": "1934999",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-ca1bcd147caf/4V100",
+      "partition": "4V100",
+      "request_sha256": "38009dc42dc1437069ae78c515321a14dbc94db183d221ddac925caac674bc36",
+      "script_sha256": "7fccea4b4da3068ebfe07da6130e250ce7f9017ca6f250601dac452db12a3694"
+    },
+    {
+      "exclude": "",
+      "job": "1935001",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-ca1bcd147caf/8V100V0",
+      "partition": "8V100V0",
+      "request_sha256": "71be9c6a35adccd7064f2fd683371e833c24e40fb9dd31cfd3bc145c38bed930",
+      "script_sha256": "2cb80a626f2a8e987deb8c84a78e1ea063723d3d391a5e4463bbb5cf98e19079"
+    },
+    {
+      "exclude": "",
+      "job": "1935003",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-ca1bcd147caf/DSPRHBM",
+      "partition": "DSPRHBM",
+      "request_sha256": "d900433104c812286c088d4f6c2267a21835dc8038d2d5da20e3e16a225687c6",
+      "script_sha256": "991282ed7b153bdb99714cc77c4d1dfb4612ecf7a8a7a660e6b7e414db841612"
+    }
+  ],
+  "runtime-status": {
+    "failed": {},
+    "jobs": [
+      {
+        "exclude": "",
+        "job": "1934997",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-ca1bcd147caf/16V100",
+        "partition": "16V100",
+        "request_sha256": "dc3b6fd195e99b1196efe5560771b3376098ab6af944e952c8c0218b35c1724d",
+        "script_sha256": "dc82361b37f620d13cec09c4f200763af77f1ea799047dd19632c460698e33d9"
+      },
+      {
+        "exclude": "",
+        "job": "1934999",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-ca1bcd147caf/4V100",
+        "partition": "4V100",
+        "request_sha256": "38009dc42dc1437069ae78c515321a14dbc94db183d221ddac925caac674bc36",
+        "script_sha256": "7fccea4b4da3068ebfe07da6130e250ce7f9017ca6f250601dac452db12a3694"
+      },
+      {
+        "exclude": "",
+        "job": "1935001",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-ca1bcd147caf/8V100V0",
+        "partition": "8V100V0",
+        "request_sha256": "71be9c6a35adccd7064f2fd683371e833c24e40fb9dd31cfd3bc145c38bed930",
+        "script_sha256": "2cb80a626f2a8e987deb8c84a78e1ea063723d3d391a5e4463bbb5cf98e19079"
+      },
+      {
+        "exclude": "",
+        "job": "1935003",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-ca1bcd147caf/DSPRHBM",
+        "partition": "DSPRHBM",
+        "request_sha256": "d900433104c812286c088d4f6c2267a21835dc8038d2d5da20e3e16a225687c6",
+        "script_sha256": "991282ed7b153bdb99714cc77c4d1dfb4612ecf7a8a7a660e6b7e414db841612"
+      }
+    ],
+    "passed": {
+      "16V100": {
+        "abacus": {
+          "energy_error_ev": 9.094947017729282e-13,
+          "energy_ev": -4869.747051950186,
+          "iterations": 10,
+          "rounded_iteration_seconds": 1.26,
+          "wall_seconds": 6.15
+        },
+        "automatic_memory": true,
+        "catalog_sha256": "305fd930a098adf564e0399d4e4c03816fd1fe5d078c0a0a6d3dc4262e64f6cc",
+        "job": "1934997",
+        "partition": "16V100",
+        "passed": true,
+        "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+      },
+      "4V100": {
+        "abacus": {
+          "energy_error_ev": 0.0,
+          "energy_ev": -4869.747051950185,
+          "iterations": 10,
+          "rounded_iteration_seconds": 0.95,
+          "wall_seconds": 4.66
+        },
+        "automatic_memory": true,
+        "catalog_sha256": "305fd930a098adf564e0399d4e4c03816fd1fe5d078c0a0a6d3dc4262e64f6cc",
+        "job": "1934999",
+        "partition": "4V100",
+        "passed": true,
+        "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+      },
+      "8V100V0": {
+        "abacus": {
+          "energy_error_ev": 6.366462912410498e-12,
+          "energy_ev": -4869.7470519501785,
+          "iterations": 10,
+          "rounded_iteration_seconds": 1.16,
+          "wall_seconds": 273.25
+        },
+        "automatic_memory": true,
+        "catalog_sha256": "305fd930a098adf564e0399d4e4c03816fd1fe5d078c0a0a6d3dc4262e64f6cc",
+        "job": "1935001",
+        "partition": "8V100V0",
+        "passed": true,
+        "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+      },
+      "DSPRHBM": {
+        "abacus": {
+          "energy_error_ev": 2.7284841053187847e-12,
+          "energy_ev": -4869.747051950182,
+          "iterations": 10,
+          "rounded_iteration_seconds": 5.11,
+          "wall_seconds": 54.57
+        },
+        "automatic_memory": true,
+        "catalog_sha256": "305fd930a098adf564e0399d4e4c03816fd1fe5d078c0a0a6d3dc4262e64f6cc",
+        "job": "1935003",
+        "partition": "DSPRHBM",
+        "passed": true,
+        "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+      }
+    }
+  },
+  "validation": [
+    {
+      "abacus": {
+        "energy_error_ev": 9.094947017729282e-13,
+        "energy_ev": -4869.747051950186,
+        "iterations": 10,
+        "rounded_iteration_seconds": 1.26,
+        "wall_seconds": 6.15
+      },
+      "automatic_memory": true,
+      "catalog_sha256": "305fd930a098adf564e0399d4e4c03816fd1fe5d078c0a0a6d3dc4262e64f6cc",
+      "job": "1934997",
+      "partition": "16V100",
+      "passed": true,
+      "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+    },
+    {
+      "abacus": {
+        "energy_error_ev": 0.0,
+        "energy_ev": -4869.747051950185,
+        "iterations": 10,
+        "rounded_iteration_seconds": 0.95,
+        "wall_seconds": 4.66
+      },
+      "automatic_memory": true,
+      "catalog_sha256": "305fd930a098adf564e0399d4e4c03816fd1fe5d078c0a0a6d3dc4262e64f6cc",
+      "job": "1934999",
+      "partition": "4V100",
+      "passed": true,
+      "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+    },
+    {
+      "abacus": {
+        "energy_error_ev": 2.7284841053187847e-12,
+        "energy_ev": -4869.747051950182,
+        "iterations": 10,
+        "rounded_iteration_seconds": 5.11,
+        "wall_seconds": 54.57
+      },
+      "automatic_memory": true,
+      "catalog_sha256": "305fd930a098adf564e0399d4e4c03816fd1fe5d078c0a0a6d3dc4262e64f6cc",
+      "job": "1935003",
+      "partition": "DSPRHBM",
+      "passed": true,
+      "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+    },
+    {
+      "abacus": {
+        "energy_error_ev": 6.366462912410498e-12,
+        "energy_ev": -4869.7470519501785,
+        "iterations": 10,
+        "rounded_iteration_seconds": 1.16,
+        "wall_seconds": 273.25
+      },
+      "automatic_memory": true,
+      "catalog_sha256": "305fd930a098adf564e0399d4e4c03816fd1fe5d078c0a0a6d3dc4262e64f6cc",
+      "job": "1935001",
+      "partition": "8V100V0",
+      "passed": true,
+      "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4"
+    }
+  ],
+  "candidates": {
+    "applications": {
+      "abacus": {
+        "build_revision": "34568c7aa827",
+        "partitions": {
+          "16V100": {
+            "binds": [
+              "/opt/apps/conda_env/deepmd-kit-3.1.2"
+            ],
+            "build_verified": true,
+            "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/develop-2026-10-23-g89595dd29a26-r9ef3db16a8b2/16V100/40189122773-1-development-16v100-avx2-2026-10-25-89595dd29a26.json",
+            "evidence_sha256": "ca2d1791692d3732e22ea3dea0d6f94424f3950c5b9ff5959c529902576f814a",
+            "identity": {
+              "build_id": "develop-2026-10-23-g89595dd29a26-r9ef3db16a8b2",
+              "cpu_arch": "znver3",
+              "cuda_arch": "70",
+              "dependency_isa": "avx2",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/abacus/abacus-development-develop-2026-10-23-g89595dd29a26-r9ef3db16a8b2/16V100",
+              "partition": "16V100",
+              "recipe_sha256": "9ef3db16a8b26f11278d71d1853da15cd8530beb7191d9de3be60c99568232fe",
+              "repository": "deepmodeling/abacus-develop",
+              "schema": 2,
+              "software": "abacus",
+              "source_ref": "develop",
+              "source_sha": "89595dd29a26aec34d623518cadf736c17345f69",
+              "source_version": "develop-2026-10-23",
+              "stack_digest": null,
+              "stack_sources": {},
+              "target": "16v100-avx2",
+              "track": "development",
+              "version_label": "develop-2026-10-23"
+            },
+            "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/develop-2026-10-23-g89595dd29a26-r9ef3db16a8b2/16V100/40189122773-1-development-16v100-avx2-2026-10-25-89595dd29a26.sif",
+            "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+            "scientific_verified": true,
+            "sha256": "45a27394c701b2e89f7e5d48f93a01ccf195cdc7b882a6f157b1cb521b33ebaf"
+          },
+          "4V100": {
+            "binds": [
+              "/opt/apps/conda_env/deepmd-kit-3.1.2"
+            ],
+            "build_verified": true,
+            "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/develop-2026-10-23-g89595dd29a26-r9ef3db16a8b2/4V100/40189122773-1-development-4v100-avx512-2026-10-25-89595dd29a26.json",
+            "evidence_sha256": "4667f30aca1cbf20f8c9e844cabec58f90613fafad912a0401d8dc67c597a7fc",
+            "identity": {
+              "build_id": "develop-2026-10-23-g89595dd29a26-r9ef3db16a8b2",
+              "cpu_arch": "znver4",
+              "cuda_arch": "70",
+              "dependency_isa": "avx512",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/abacus/abacus-development-develop-2026-10-23-g89595dd29a26-r9ef3db16a8b2/4V100",
+              "partition": "4V100",
+              "recipe_sha256": "9ef3db16a8b26f11278d71d1853da15cd8530beb7191d9de3be60c99568232fe",
+              "repository": "deepmodeling/abacus-develop",
+              "schema": 2,
+              "software": "abacus",
+              "source_ref": "develop",
+              "source_sha": "89595dd29a26aec34d623518cadf736c17345f69",
+              "source_version": "develop-2026-10-23",
+              "stack_digest": null,
+              "stack_sources": {},
+              "target": "4v100-avx512",
+              "track": "development",
+              "version_label": "develop-2026-10-23"
+            },
+            "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/develop-2026-10-23-g89595dd29a26-r9ef3db16a8b2/4V100/40189122773-1-development-4v100-avx512-2026-10-25-89595dd29a26.sif",
+            "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512",
+            "scientific_verified": true,
+            "sha256": "5aabf66ad0b047f8cc5c16d7a3c7a4699839881f8d55355c26034917c4c5154b"
+          },
+          "8V100V0": {
+            "binds": [
+              "/opt/apps/conda_env/deepmd-kit-3.1.2"
+            ],
+            "build_verified": true,
+            "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/develop-2026-10-23-g89595dd29a26-r9ef3db16a8b2/8V100V0/40189122773-1-development-8v100v0-avx512-2026-10-25-89595dd29a26.json",
+            "evidence_sha256": "1a604d3243d1a97057c46551dffd12694410ee145b95a3666b541838816bec09",
+            "identity": {
+              "build_id": "develop-2026-10-23-g89595dd29a26-r9ef3db16a8b2",
+              "cpu_arch": "skylake-avx512",
+              "cuda_arch": "70",
+              "dependency_isa": "avx2",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/abacus/abacus-development-develop-2026-10-23-g89595dd29a26-r9ef3db16a8b2/8V100V0",
+              "partition": "8V100V0",
+              "recipe_sha256": "9ef3db16a8b26f11278d71d1853da15cd8530beb7191d9de3be60c99568232fe",
+              "repository": "deepmodeling/abacus-develop",
+              "schema": 2,
+              "software": "abacus",
+              "source_ref": "develop",
+              "source_sha": "89595dd29a26aec34d623518cadf736c17345f69",
+              "source_version": "develop-2026-10-23",
+              "stack_digest": null,
+              "stack_sources": {},
+              "target": "8v100v0-avx512",
+              "track": "development",
+              "version_label": "develop-2026-10-23"
+            },
+            "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/develop-2026-10-23-g89595dd29a26-r9ef3db16a8b2/8V100V0/40189122773-1-development-8v100v0-avx512-2026-10-25-89595dd29a26.sif",
+            "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+            "scientific_verified": true,
+            "sha256": "8313cb7139e208781b71625763b68a079cc7234787720b888532c5bb6d895bcc"
+          },
+          "DSPRHBM": {
+            "binds": [
+              "/opt/apps/conda_env/deepmd-kit-3.1.2"
+            ],
+            "build_verified": true,
+            "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/develop-2026-10-23-g89595dd29a26-r9ef3db16a8b2/DSPRHBM/40189122773-1-development-dsprhbm-2026-10-25-89595dd29a26.json",
+            "evidence_sha256": "e3bcd27633d00cecedd0e4a183fb3ece27eb221ac4530b0aec4ac080cdc7eb45",
+            "identity": {
+              "build_id": "develop-2026-10-23-g89595dd29a26-r9ef3db16a8b2",
+              "cpu_arch": "x86-64-v4",
+              "cuda_arch": "",
+              "dependency_isa": "avx512",
+              "gpus": 0,
+              "install_prefix": "/opt/apps/abacus/abacus-development-develop-2026-10-23-g89595dd29a26-r9ef3db16a8b2/DSPRHBM",
+              "partition": "DSPRHBM",
+              "recipe_sha256": "9ef3db16a8b26f11278d71d1853da15cd8530beb7191d9de3be60c99568232fe",
+              "repository": "deepmodeling/abacus-develop",
+              "schema": 2,
+              "software": "abacus",
+              "source_ref": "develop",
+              "source_sha": "89595dd29a26aec34d623518cadf736c17345f69",
+              "source_version": "develop-2026-10-23",
+              "stack_digest": null,
+              "stack_sources": {},
+              "target": "dsprhbm",
+              "track": "development",
+              "version_label": "develop-2026-10-23"
+            },
+            "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/develop-2026-10-23-g89595dd29a26-r9ef3db16a8b2/DSPRHBM/40189122773-1-development-dsprhbm-2026-10-25-89595dd29a26.sif",
+            "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512",
+            "scientific_verified": true,
+            "sha256": "cc7da6e65f954ab5788bf60cdc7a500219ccaf9947fc847c1d8e8c1e73fab24f"
+          }
+        },
+        "version": "develop-20261025-g89595dd29a26"
+      }
+    },
+    "daily_publication": {
+      "attempt": "1",
+      "workflow": "40189122773"
+    },
+    "memory_bootstrap": {
+      "image": "/home/stardust/sai-hpc-software/sif-beta/runtimes/20261025-a4c6a24c229f/libexec/memory-bootstrap.sif",
+      "sha256": "eb467d87aa7a41ab80f982929d23a1fff1d59e1625fae57e62fba03fc643c7e2",
+      "source_image": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/sif-memory-runtime-20261024/bundle-r7/libexec/memory-bootstrap.sif"
+    },
+    "runtime_sha256": "75ef5179f1e8d578a4507766dcb521cf7c1db7b889d413f63106462c327d1db4",
+    "schema": 1,
+    "snapshot": "20261025"
+  },
+  "task": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-ca1bcd147caf",
+  "accounting": "1934997|COMPLETED|0:0|00:00:13|16V100|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-ca1bcd147caf/16V100|16v100n02\n1934999|COMPLETED|0:0|00:00:09|4V100|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-ca1bcd147caf/4V100|4v100n23\n1935001|COMPLETED|0:0|00:04:41|8V100V0|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-ca1bcd147caf/8V100V0|8v100v0n02\n1935003|COMPLETED|0:0|00:01:12|DSPRHBM|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/40189122773-1-abacus-ca1bcd147caf/DSPRHBM|d9470n02\n"
+}
