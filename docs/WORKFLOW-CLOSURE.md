@@ -1,4 +1,31 @@
-# Workflow closure — 2026-10-25
+# Workflow closure — 2026-10-26
+
+## October 26 MD follow-up
+
+The scheduled daily run triggered at 07:51 UTC. GPUMD's complete development
+matrix was accepted and its beta rotated. DeePMD's three builds and LAMMPS's
+16V100 build instead hit fuse2fs teardown errors after compilation. The MD
+builders now explicitly synchronize both writable phases before teardown and
+check each unmounted overlay with `e2fsck -fn`. Original failed runs remain
+recorded. See [repair and acceptance evidence](evidence/md-overlay-sync-20261026/README.md).
+
+The fresh [DeePMD workflow](https://github.com/AI4SAI/sai-hpc-software/actions/runs/40316174805)
+has accepted final SIFs for source `4e1479d8a23f` on 16V100 (1955178) and
+8V100V0 (1955183). Both prove the installed compression-table DDP patch with
+actual two-GPU `se_e2_a`/DPA2 training, checkpoint restart, finite gradients
+and synchronized model updates. 4V100 job 1955181 remains queued; the public
+alias retains the preceding complete generation until the full matrix and
+module checks pass. This is not yet a completed October 26 beta publication.
+
+The corrected [LAMMPS workflow](https://github.com/AI4SAI/sai-hpc-software/actions/runs/40316850352)
+is compiling on 16V100/8V100V0 and queued on 4V100. ABACUS DSPRHBM passed
+numerical checks but its permitted performance retest exceeded the 1.10
+threshold (PW 1.10909, HSE 1.20), so its public beta also remains unchanged.
+CP2K's 8V100V0 application allocation is still preparing its dependency copy;
+the other three targets passed acceptance. The completed October 25 matrix
+below is retained as a historical acceptance record, not relabelled as today's
+result. Linux validation of the MD repair passes 1,112 tests with two optional
+skips.
 
 ## Daily development beta closure
 
