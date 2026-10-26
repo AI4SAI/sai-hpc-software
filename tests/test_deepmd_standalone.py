@@ -55,6 +55,17 @@ class IndependentDeePMDTests(unittest.TestCase):
                 self.assertNotIn('--overlay', final[0])
                 self.assertIn('--nv', final[0])
                 self.assertIn(str(standalone.task('independent-test') / 'runtime') + ':/tmp:rw', final[0])
+                phases = [line for line in script.splitlines()
+                          if 'deepmd_standalone_entry.sh build ' in line
+                          or 'deepmd_standalone_entry.sh export ' in line
+                          or '/usr/sbin/e2fsck -fn ' in line
+                          or '/usr/bin/cat /workspace/final.squashfs' in line]
+                self.assertEqual(len(phases), 5)
+                self.assertIn(' build ', phases[0])
+                self.assertIn('overlay-fsck-build.stdout', phases[1])
+                self.assertIn(' export ', phases[2])
+                self.assertIn('overlay-fsck-export.stdout', phases[3])
+                self.assertIn('/usr/bin/cat /workspace/final.squashfs', phases[4])
 
     def test_missing_backend_or_gpu_evidence_cannot_be_scientific_success(self):
         with tempfile.TemporaryDirectory() as temporary:
@@ -109,7 +120,8 @@ class IndependentDeePMDTests(unittest.TestCase):
             for name in standalone.FILES:
                 (control / name).write_bytes((ROOT / 'controller' / name).read_bytes())
             before = standalone.fingerprint(control)
-            for name in ('md_science.py', 'md_environment.sh', 'deepmd_standalone_entry.sh'):
+            for name in ('md_science.py', 'md_environment.sh', 'deepmd_standalone_entry.sh',
+                         'cp2k_overlay_sync.py'):
                 path = control / name
                 original = path.read_bytes()
                 path.write_bytes(original + b'\n# changed\n')
@@ -191,6 +203,12 @@ class DeePMDStatusTests(unittest.TestCase):
         return code, record
 
     def build_files(self):
+        (self.directory / 'runtime').mkdir(exist_ok=True)
+        for phase in ('build', 'export'):
+            (self.directory / f'runtime/overlay-sync-{phase}.json').write_text(
+                json.dumps(dict(phase=phase, synchronized=True)))
+            for stream in ('stdout', 'stderr'):
+                (self.directory / f'results/overlay-fsck-{phase}.{stream}').write_text('clean check\n')
         image = self.directory / 'candidate.sif'
         if image.exists():
             image.chmod(0o644)
@@ -288,6 +306,22 @@ class DeePMDStatusTests(unittest.TestCase):
             scientific_verified=True, artifact_sha256=hashlib.sha256(image.read_bytes()).hexdigest())))
         with self.assertRaisesRegex(ValueError, 'fixed build receipt'):
             self.query(self.row())
+
+    def test_missing_failed_or_changed_overlay_evidence_cannot_reuse_build_receipt(self):
+        for phase in ('build', 'export'):
+            with self.subTest(phase=phase):
+                self.successful_files()
+                sync = self.directory / f'runtime/overlay-sync-{phase}.json'
+                sync.write_text(json.dumps(dict(phase=phase, synchronized=False)))
+                with self.assertRaisesRegex(ValueError, 'not synchronized'):
+                    self.query(self.row())
+                sync.unlink()
+                with self.assertRaisesRegex(ValueError, 'overlay evidence'):
+                    self.query(self.row())
+                self.successful_files()
+                (self.directory / f'results/overlay-fsck-{phase}.stdout').write_text('changed')
+                with self.assertRaisesRegex(ValueError, 'fixed build receipt'):
+                    self.query(self.row())
 
     def test_writable_artifact_and_missing_receipt_fail_closed(self):
         self.successful_files()

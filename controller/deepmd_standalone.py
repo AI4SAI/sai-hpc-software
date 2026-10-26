@@ -25,7 +25,7 @@ FILES = ('deepmd_standalone.py', 'deepmd_standalone_entry.sh', 'deepmd_standalon
          'md_packaging.py', 'md_relocate_audit.py', 'remote_controller.py',
          'source_cache.py', 'create_rootfs.sh', 'resolve_source.py', 'release_contract.py',
          'native_module.py', 'export_native.py', 'module_publication.py',
-         'delivery_layout.py', 'cp2k_image_driver.py')
+         'delivery_layout.py', 'cp2k_image_driver.py', 'cp2k_overlay_sync.py')
 
 
 def fingerprint(control=CONTROL):
@@ -91,6 +91,12 @@ def render(delivery, run_id):
         return shlex.join(['env', 'SAI_SOFTWARE_ROOT=' + str(PROJECT), 'PYTHONDONTWRITEBYTECODE=1',
             '/usr/bin/python3', str(CONTROL / 'deepmd_standalone.py'), 'seal-' + phase, run_id])
 
+    def fsck(phase):
+        output = directory / 'results' / ('overlay-fsck-' + phase)
+        return (shlex.join(['/usr/sbin/e2fsck', '-fn', str(overlay)])
+                + ' > ' + shlex.quote(str(output) + '.stdout')
+                + ' 2> ' + shlex.quote(str(output) + '.stderr'))
+
     lines = ['#!/usr/bin/env bash', '#SBATCH --job-name=deepmd-' + safe_name(run_id),
              '#SBATCH --partition=' + identity['partition'],
              '#SBATCH --qos=' + gpumd_qos(PROJECT, identity['target']),
@@ -107,7 +113,8 @@ def render(delivery, run_id):
              'unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH',
              '[[ ${SLURM_CPUS_ON_NODE:?} -ge 12 ]]',
              shlex.join(['apptainer', 'overlay', 'create', '--fakeroot', '--sparse', '--size', '32768', str(overlay)]),
-             shlex.join(command('build')), shlex.join(command('export')),
+             shlex.join(command('build')), fsck('build'),
+             shlex.join(command('export')), fsck('export'),
              shlex.join(emit) + ' > ' + shlex.quote(str(directory / 'final.squashfs')),
              shlex.join(['apptainer', 'sif', 'new', str(image)]),
              shlex.join(['apptainer', 'sif', 'add', '--datatype', '4', '--partfs', '1', '--parttype', '2',
@@ -171,7 +178,25 @@ def build_receipt(directory, request):
     return dict(schema=1, kind='deepmd-build', run_id=directory.name, job_id=request['job_id'],
         delivery=request['delivery'], controller_sha256=request['controller_sha256'],
         request_sha256=checksum(directory / 'request.json'), job_script_sha256=request['job_script_sha256'],
+        overlay_evidence_sha256=overlay_evidence_hashes(directory),
         artifact=dict(path=str(image), **immutable_file(image)))
+
+
+def overlay_evidence_hashes(directory):
+    """Bind both writable phases' sync and filesystem checks to the sealed SIF."""
+    hashes = {}
+    for phase in ('build', 'export'):
+        names = [f'runtime/overlay-sync-{phase}.json',
+                 f'results/overlay-fsck-{phase}.stdout', f'results/overlay-fsck-{phase}.stderr']
+        for name in names:
+            path = directory / name
+            if path.resolve() != path or not path.is_file():
+                raise ValueError('missing or redirected DeePMD overlay evidence: ' + name)
+            hashes[name] = checksum(path)
+        sync = json.loads((directory / names[0]).read_text())
+        if sync.get('phase') != phase or sync.get('synchronized') is not True:
+            raise ValueError('DeePMD overlay phase was not synchronized: ' + phase)
+    return hashes
 
 
 def verify_build_receipt(directory, request):

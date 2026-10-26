@@ -250,7 +250,7 @@ def main():
         files = [p for p in CONTROL.glob('md_*.*') if p.suffix in ('.py', '.sh', '.json')]
         files += [CONTROL / name for name in ('remote_controller.py', 'source_cache.py', 'resolve_source.py',
                   'create_rootfs.sh', 'release_contract.py', 'native_module.py', 'export_native.py',
-                  'module_publication.py', 'delivery_layout.py', 'cp2k_image_driver.py',
+                  'module_publication.py', 'delivery_layout.py', 'cp2k_image_driver.py', 'cp2k_overlay_sync.py',
                   'lammps_acceptance.py', 'lammps_rank.sh', 'lammps_verify.sbatch')]
         files += [runtime_plan(), reference, request]
         upload(files, snapshot + '/')

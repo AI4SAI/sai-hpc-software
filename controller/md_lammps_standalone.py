@@ -103,13 +103,20 @@ def render(delivery, run_id):
         argv = container_command(image if final else base,
             ['/usr/bin/bash', '/control/md_lammps_standalone_entry.sh', phase, payload],
             overlay=None if final else overlay, control=CONTROL, jobs=24, gpu=True,
-            runtime=directory / 'runtime' if final else None,
+            runtime=directory / 'runtime',
             extra_binds=[*binds, *([] if final else sources)])
         return ([arg for arg in argv if arg != '--fakeroot'] if final
                 else wrap_command(ROOT, directory, CONTROL, argv))
 
     emit = wrap_command(ROOT, directory, CONTROL, container_command(
         base, ['/usr/bin/cat', '/workspace/final.squashfs'], overlay=str(overlay) + ':ro', jobs=24))
+
+    def fsck(phase):
+        output = directory / 'results' / ('overlay-fsck-' + phase)
+        return (shlex.join(['/usr/sbin/e2fsck', '-fn', str(overlay)])
+                + ' > ' + shlex.quote(str(output) + '.stdout')
+                + ' 2> ' + shlex.quote(str(output) + '.stderr'))
+
     lines = ['#!/usr/bin/env bash', '#SBATCH --job-name=lammps-' + safe_name(run_id),
              '#SBATCH --partition=' + identity['partition'], '#SBATCH --qos=rush-gpu',
              *project_batch_directives(PROJECT, directory),
@@ -125,7 +132,8 @@ def render(delivery, run_id):
              'unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH',
              '[[ ${SLURM_CPUS_ON_NODE:?} -ge 24 ]]',
              shlex.join(['apptainer', 'overlay', 'create', '--fakeroot', '--sparse', '--size', '32768', str(overlay)]),
-             shlex.join(command('build')), shlex.join(command('export')),
+             shlex.join(command('build')), fsck('build'),
+             shlex.join(command('export')), fsck('export'),
              shlex.join(emit) + ' > ' + shlex.quote(str(directory / 'final.squashfs')),
              shlex.join(['apptainer', 'sif', 'new', str(image)]),
              shlex.join(['apptainer', 'sif', 'add', '--datatype', '4', '--partfs', '1', '--parttype', '2',

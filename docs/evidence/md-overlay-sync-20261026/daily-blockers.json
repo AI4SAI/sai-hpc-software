@@ -1,0 +1,1211 @@
+{
+  "abacus_dsprhbm_benchmarks": [
+    {
+      "energy_reference": {
+        "candidate_max_error_ev": 1.9184653865522705e-12,
+        "energy_ev": -71.32203132091935,
+        "source": "pinned upstream result.ref",
+        "tolerance_ev": 1e-05
+      },
+      "energy_spread_ev": 9.613489964976907e-06,
+      "identity": {
+        "build_id": "develop-2026-10-25-g8e2017587f62-rd5a9282b7bc3",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/abacus/abacus-development-develop-2026-10-25-g8e2017587f62-rd5a9282b7bc3/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "d5a9282b7bc34e27c060fdd96016081292d1816b0ae15ef6ea785401807ff0cb",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "develop",
+        "source_sha": "8e2017587f625e522e1cf6a0276d1dcb9b74e530",
+        "source_version": "develop-2026-10-25",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "development",
+        "version_label": "develop-2026-10-25"
+      },
+      "job": "1952926",
+      "path": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/benchmark-40288381664-1-development-dsprhbm-2026-10-26-8e2017587f62-deepks/results/evidence.json",
+      "runs": [
+        {
+          "arm": "system",
+          "energy_ev": -71.3220409344074,
+          "iterations": 24,
+          "measured": false,
+          "nodes": {
+            "d9470n08.mr-sai.ai": 4,
+            "d9470n09.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.66,
+          "wall_seconds": 6.85
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -71.32203132091801,
+          "iterations": 24,
+          "measured": false,
+          "nodes": {
+            "d9470n08.mr-sai.ai": 4,
+            "d9470n09.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.8,
+          "wall_seconds": 8.24
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -71.32203132091792,
+          "iterations": 24,
+          "measured": true,
+          "nodes": {
+            "d9470n08.mr-sai.ai": 4,
+            "d9470n09.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.85,
+          "wall_seconds": 3.96
+        },
+        {
+          "arm": "system",
+          "energy_ev": -71.32204093440681,
+          "iterations": 24,
+          "measured": true,
+          "nodes": {
+            "d9470n08.mr-sai.ai": 4,
+            "d9470n09.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.93,
+          "wall_seconds": 3.1
+        },
+        {
+          "arm": "system",
+          "energy_ev": -71.3220409344073,
+          "iterations": 24,
+          "measured": true,
+          "nodes": {
+            "d9470n08.mr-sai.ai": 4,
+            "d9470n09.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.65,
+          "wall_seconds": 2.7
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -71.32203132091743,
+          "iterations": 24,
+          "measured": true,
+          "nodes": {
+            "d9470n08.mr-sai.ai": 4,
+            "d9470n09.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.62,
+          "wall_seconds": 5.55
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -71.32203132091782,
+          "iterations": 24,
+          "measured": true,
+          "nodes": {
+            "d9470n08.mr-sai.ai": 4,
+            "d9470n09.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.8,
+          "wall_seconds": 3.53
+        },
+        {
+          "arm": "system",
+          "energy_ev": -71.3220409344071,
+          "iterations": 24,
+          "measured": true,
+          "nodes": {
+            "d9470n08.mr-sai.ai": 4,
+            "d9470n09.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.97,
+          "wall_seconds": 3.15
+        }
+      ],
+      "sha256": "0cd56dd24f4ec71950c880a60b40b7599bb52bb5829f22b40e2e44fb9b0bc814",
+      "statistics": {
+        "rounded_iteration_seconds": {
+          "candidate": {
+            "max": 0.85,
+            "median": 0.8,
+            "min": 0.62
+          },
+          "candidate_system_ratio": 0.8602150537634409,
+          "system": {
+            "max": 0.97,
+            "median": 0.93,
+            "min": 0.65
+          }
+        },
+        "wall_seconds": {
+          "candidate": {
+            "max": 5.55,
+            "median": 3.96,
+            "min": 3.53
+          },
+          "candidate_system_ratio": 1.2774193548387096,
+          "system": {
+            "max": 3.15,
+            "median": 3.1,
+            "min": 2.7
+          }
+        }
+      }
+    },
+    {
+      "energy_reference": {
+        "candidate_max_error_ev": 1.9184653865522705e-12,
+        "energy_ev": -71.32203132091935,
+        "source": "pinned upstream result.ref",
+        "tolerance_ev": 1e-05
+      },
+      "energy_spread_ev": 9.61348976602494e-06,
+      "identity": {
+        "build_id": "develop-2026-10-25-g8e2017587f62-rd5a9282b7bc3",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/abacus/abacus-development-develop-2026-10-25-g8e2017587f62-rd5a9282b7bc3/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "d5a9282b7bc34e27c060fdd96016081292d1816b0ae15ef6ea785401807ff0cb",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "develop",
+        "source_sha": "8e2017587f625e522e1cf6a0276d1dcb9b74e530",
+        "source_version": "develop-2026-10-25",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "development",
+        "version_label": "develop-2026-10-25"
+      },
+      "job": "1953168",
+      "path": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/benchmark-40288381664-1-development-dsprhbm-2026-10-26-8e2017587f62-deepks-retest/results/evidence.json",
+      "runs": [
+        {
+          "arm": "system",
+          "energy_ev": -71.3220409344071,
+          "iterations": 24,
+          "measured": false,
+          "nodes": {
+            "d9470n01.mr-sai.ai": 4,
+            "d9470n02.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 2.04,
+          "wall_seconds": 8.61
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -71.32203132091792,
+          "iterations": 24,
+          "measured": false,
+          "nodes": {
+            "d9470n01.mr-sai.ai": 4,
+            "d9470n02.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.77,
+          "wall_seconds": 9.2
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -71.32203132091773,
+          "iterations": 24,
+          "measured": true,
+          "nodes": {
+            "d9470n01.mr-sai.ai": 4,
+            "d9470n02.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.54,
+          "wall_seconds": 5.25
+        },
+        {
+          "arm": "system",
+          "energy_ev": -71.32204093440681,
+          "iterations": 24,
+          "measured": true,
+          "nodes": {
+            "d9470n01.mr-sai.ai": 4,
+            "d9470n02.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 2.76,
+          "wall_seconds": 4.83
+        },
+        {
+          "arm": "system",
+          "energy_ev": -71.3220409344072,
+          "iterations": 24,
+          "measured": true,
+          "nodes": {
+            "d9470n01.mr-sai.ai": 4,
+            "d9470n02.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.64,
+          "wall_seconds": 2.58
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -71.32203132091763,
+          "iterations": 24,
+          "measured": true,
+          "nodes": {
+            "d9470n01.mr-sai.ai": 4,
+            "d9470n02.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.62,
+          "wall_seconds": 5.38
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -71.32203132091743,
+          "iterations": 24,
+          "measured": true,
+          "nodes": {
+            "d9470n01.mr-sai.ai": 4,
+            "d9470n02.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.96,
+          "wall_seconds": 11.58
+        },
+        {
+          "arm": "system",
+          "energy_ev": -71.32204093440701,
+          "iterations": 24,
+          "measured": true,
+          "nodes": {
+            "d9470n01.mr-sai.ai": 4,
+            "d9470n02.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.86,
+          "wall_seconds": 4.58
+        }
+      ],
+      "sha256": "4702231336bcab50edda4cf295f5ab055a1dfd79364ca5a4c129269426845945",
+      "statistics": {
+        "rounded_iteration_seconds": {
+          "candidate": {
+            "max": 0.96,
+            "median": 0.62,
+            "min": 0.54
+          },
+          "candidate_system_ratio": 0.7209302325581396,
+          "system": {
+            "max": 2.76,
+            "median": 0.86,
+            "min": 0.64
+          }
+        },
+        "wall_seconds": {
+          "candidate": {
+            "max": 11.58,
+            "median": 5.38,
+            "min": 5.25
+          },
+          "candidate_system_ratio": 1.1746724890829694,
+          "system": {
+            "max": 4.83,
+            "median": 4.58,
+            "min": 2.58
+          }
+        }
+      }
+    },
+    {
+      "energy_reference": {
+        "candidate_max_error_ev": 1.1937117960769683e-12,
+        "energy_ev": -428.9943139416827,
+        "source": "pinned upstream result.ref",
+        "tolerance_ev": 1e-05
+      },
+      "energy_spread_ev": 3.1230681429406104e-05,
+      "identity": {
+        "build_id": "develop-2026-10-25-g8e2017587f62-rd5a9282b7bc3",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/abacus/abacus-development-develop-2026-10-25-g8e2017587f62-rd5a9282b7bc3/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "d5a9282b7bc34e27c060fdd96016081292d1816b0ae15ef6ea785401807ff0cb",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "develop",
+        "source_sha": "8e2017587f625e522e1cf6a0276d1dcb9b74e530",
+        "source_version": "develop-2026-10-25",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "development",
+        "version_label": "develop-2026-10-25"
+      },
+      "job": "1952772",
+      "path": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/benchmark-40288381664-1-development-dsprhbm-2026-10-26-8e2017587f62-hse/results/evidence.json",
+      "runs": [
+        {
+          "arm": "system",
+          "energy_ev": -428.9942827110008,
+          "iterations": 49,
+          "measured": false,
+          "nodes": {
+            "d9470n16.mr-sai.ai": 4,
+            "d9470n17.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.58,
+          "wall_seconds": 18.78
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -428.9943139416815,
+          "iterations": 49,
+          "measured": false,
+          "nodes": {
+            "d9470n16.mr-sai.ai": 4,
+            "d9470n17.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.56,
+          "wall_seconds": 16.97
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -428.9943139416815,
+          "iterations": 49,
+          "measured": true,
+          "nodes": {
+            "d9470n16.mr-sai.ai": 4,
+            "d9470n17.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.57,
+          "wall_seconds": 17.16
+        },
+        {
+          "arm": "system",
+          "energy_ev": -428.9942827110005,
+          "iterations": 49,
+          "measured": true,
+          "nodes": {
+            "d9470n16.mr-sai.ai": 4,
+            "d9470n17.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.55,
+          "wall_seconds": 14.71
+        },
+        {
+          "arm": "system",
+          "energy_ev": -428.9942827110006,
+          "iterations": 49,
+          "measured": true,
+          "nodes": {
+            "d9470n16.mr-sai.ai": 4,
+            "d9470n17.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.62,
+          "wall_seconds": 15.21
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -428.9943139416819,
+          "iterations": 49,
+          "measured": true,
+          "nodes": {
+            "d9470n16.mr-sai.ai": 4,
+            "d9470n17.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.55,
+          "wall_seconds": 17.91
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -428.9943139416817,
+          "iterations": 49,
+          "measured": true,
+          "nodes": {
+            "d9470n16.mr-sai.ai": 4,
+            "d9470n17.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.57,
+          "wall_seconds": 17.28
+        },
+        {
+          "arm": "system",
+          "energy_ev": -428.99428271100084,
+          "iterations": 49,
+          "measured": true,
+          "nodes": {
+            "d9470n16.mr-sai.ai": 4,
+            "d9470n17.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.52,
+          "wall_seconds": 14.63
+        }
+      ],
+      "sha256": "ef27ab51d56e45f24d31cc591cdcdbb502bd84dfe89069e264409b0e523ec21e",
+      "statistics": {
+        "rounded_iteration_seconds": {
+          "candidate": {
+            "max": 0.57,
+            "median": 0.57,
+            "min": 0.55
+          },
+          "candidate_system_ratio": 1.0363636363636362,
+          "system": {
+            "max": 0.62,
+            "median": 0.55,
+            "min": 0.52
+          }
+        },
+        "wall_seconds": {
+          "candidate": {
+            "max": 17.91,
+            "median": 17.28,
+            "min": 17.16
+          },
+          "candidate_system_ratio": 1.1747110808973487,
+          "system": {
+            "max": 15.21,
+            "median": 14.71,
+            "min": 14.63
+          }
+        }
+      }
+    },
+    {
+      "energy_reference": {
+        "candidate_max_error_ev": 1.3073986337985843e-12,
+        "energy_ev": -428.9943139416827,
+        "source": "pinned upstream result.ref",
+        "tolerance_ev": 1e-05
+      },
+      "energy_spread_ev": 3.123068125887585e-05,
+      "identity": {
+        "build_id": "develop-2026-10-25-g8e2017587f62-rd5a9282b7bc3",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/abacus/abacus-development-develop-2026-10-25-g8e2017587f62-rd5a9282b7bc3/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "d5a9282b7bc34e27c060fdd96016081292d1816b0ae15ef6ea785401807ff0cb",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "develop",
+        "source_sha": "8e2017587f625e522e1cf6a0276d1dcb9b74e530",
+        "source_version": "develop-2026-10-25",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "development",
+        "version_label": "develop-2026-10-25"
+      },
+      "job": "1953094",
+      "path": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/benchmark-40288381664-1-development-dsprhbm-2026-10-26-8e2017587f62-hse-retest/results/evidence.json",
+      "runs": [
+        {
+          "arm": "system",
+          "energy_ev": -428.99428271100066,
+          "iterations": 49,
+          "measured": false,
+          "nodes": {
+            "d9470n02.mr-sai.ai": 4,
+            "d9470n03.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.71,
+          "wall_seconds": 15.78
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -428.9943139416814,
+          "iterations": 49,
+          "measured": false,
+          "nodes": {
+            "d9470n02.mr-sai.ai": 4,
+            "d9470n03.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.78,
+          "wall_seconds": 25.23
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -428.9943139416817,
+          "iterations": 49,
+          "measured": true,
+          "nodes": {
+            "d9470n02.mr-sai.ai": 4,
+            "d9470n03.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.66,
+          "wall_seconds": 19.45
+        },
+        {
+          "arm": "system",
+          "energy_ev": -428.9942827110007,
+          "iterations": 49,
+          "measured": true,
+          "nodes": {
+            "d9470n02.mr-sai.ai": 4,
+            "d9470n03.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.64,
+          "wall_seconds": 16.05
+        },
+        {
+          "arm": "system",
+          "energy_ev": -428.9942827110005,
+          "iterations": 49,
+          "measured": true,
+          "nodes": {
+            "d9470n02.mr-sai.ai": 4,
+            "d9470n03.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.6,
+          "wall_seconds": 13.89
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -428.99431394168164,
+          "iterations": 49,
+          "measured": true,
+          "nodes": {
+            "d9470n02.mr-sai.ai": 4,
+            "d9470n03.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.77,
+          "wall_seconds": 18.04
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -428.99431394168175,
+          "iterations": 49,
+          "measured": true,
+          "nodes": {
+            "d9470n02.mr-sai.ai": 4,
+            "d9470n03.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.72,
+          "wall_seconds": 20.13
+        },
+        {
+          "arm": "system",
+          "energy_ev": -428.9942827110005,
+          "iterations": 49,
+          "measured": true,
+          "nodes": {
+            "d9470n02.mr-sai.ai": 4,
+            "d9470n03.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 0.57,
+          "wall_seconds": 14.74
+        }
+      ],
+      "sha256": "0fb39c068ada1a4caa88f70d4536dada79bd378115f3d3d975da3a6e37903909",
+      "statistics": {
+        "rounded_iteration_seconds": {
+          "candidate": {
+            "max": 0.77,
+            "median": 0.72,
+            "min": 0.66
+          },
+          "candidate_system_ratio": 1.2,
+          "system": {
+            "max": 0.64,
+            "median": 0.6,
+            "min": 0.57
+          }
+        },
+        "wall_seconds": {
+          "candidate": {
+            "max": 20.13,
+            "median": 19.45,
+            "min": 18.04
+          },
+          "candidate_system_ratio": 1.3195386702849388,
+          "system": {
+            "max": 16.05,
+            "median": 14.74,
+            "min": 13.89
+          }
+        }
+      }
+    },
+    {
+      "energy_reference": null,
+      "energy_spread_ev": 5.775291356258094e-10,
+      "identity": {
+        "build_id": "develop-2026-10-25-g8e2017587f62-rd5a9282b7bc3",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/abacus/abacus-development-develop-2026-10-25-g8e2017587f62-rd5a9282b7bc3/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "d5a9282b7bc34e27c060fdd96016081292d1816b0ae15ef6ea785401807ff0cb",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "develop",
+        "source_sha": "8e2017587f625e522e1cf6a0276d1dcb9b74e530",
+        "source_version": "develop-2026-10-25",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "development",
+        "version_label": "develop-2026-10-25"
+      },
+      "job": "1952573",
+      "path": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/benchmark-40288381664-1-development-dsprhbm-2026-10-26-8e2017587f62-pw/results/evidence.json",
+      "runs": [
+        {
+          "arm": "system",
+          "energy_ev": -4869.7470519426015,
+          "iterations": 10,
+          "measured": false,
+          "nodes": {
+            "d9470n16.mr-sai.ai": 4,
+            "d9470n17.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 4.44,
+          "wall_seconds": 12.51
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -4869.747051943179,
+          "iterations": 10,
+          "measured": false,
+          "nodes": {
+            "d9470n16.mr-sai.ai": 4,
+            "d9470n17.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 4.8,
+          "wall_seconds": 29.11
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -4869.747051943179,
+          "iterations": 10,
+          "measured": true,
+          "nodes": {
+            "d9470n16.mr-sai.ai": 4,
+            "d9470n17.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 5.43,
+          "wall_seconds": 16.06
+        },
+        {
+          "arm": "system",
+          "energy_ev": -4869.7470519426015,
+          "iterations": 10,
+          "measured": true,
+          "nodes": {
+            "d9470n16.mr-sai.ai": 4,
+            "d9470n17.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 4.9,
+          "wall_seconds": 13.79
+        },
+        {
+          "arm": "system",
+          "energy_ev": -4869.7470519426015,
+          "iterations": 10,
+          "measured": true,
+          "nodes": {
+            "d9470n16.mr-sai.ai": 4,
+            "d9470n17.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 5.92,
+          "wall_seconds": 16.44
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -4869.747051943179,
+          "iterations": 10,
+          "measured": true,
+          "nodes": {
+            "d9470n16.mr-sai.ai": 4,
+            "d9470n17.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 5.81,
+          "wall_seconds": 16.43
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -4869.747051943179,
+          "iterations": 10,
+          "measured": true,
+          "nodes": {
+            "d9470n16.mr-sai.ai": 4,
+            "d9470n17.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 5.59,
+          "wall_seconds": 12.92
+        },
+        {
+          "arm": "system",
+          "energy_ev": -4869.7470519426015,
+          "iterations": 10,
+          "measured": true,
+          "nodes": {
+            "d9470n16.mr-sai.ai": 4,
+            "d9470n17.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 4.99,
+          "wall_seconds": 9.37
+        }
+      ],
+      "sha256": "026f5eabbbf3b65707a4bcaf3fded02f6f0d138af896959a9189deabf516abe2",
+      "statistics": {
+        "rounded_iteration_seconds": {
+          "candidate": {
+            "max": 5.81,
+            "median": 5.59,
+            "min": 5.43
+          },
+          "candidate_system_ratio": 1.1202404809619237,
+          "system": {
+            "max": 5.92,
+            "median": 4.99,
+            "min": 4.9
+          }
+        },
+        "wall_seconds": {
+          "candidate": {
+            "max": 16.43,
+            "median": 16.06,
+            "min": 12.92
+          },
+          "candidate_system_ratio": 1.1646120377084843,
+          "system": {
+            "max": 16.44,
+            "median": 13.79,
+            "min": 9.37
+          }
+        }
+      }
+    },
+    {
+      "energy_reference": null,
+      "energy_spread_ev": 5.775291356258094e-10,
+      "identity": {
+        "build_id": "develop-2026-10-25-g8e2017587f62-rd5a9282b7bc3",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/abacus/abacus-development-develop-2026-10-25-g8e2017587f62-rd5a9282b7bc3/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "d5a9282b7bc34e27c060fdd96016081292d1816b0ae15ef6ea785401807ff0cb",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "develop",
+        "source_sha": "8e2017587f625e522e1cf6a0276d1dcb9b74e530",
+        "source_version": "develop-2026-10-25",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "development",
+        "version_label": "develop-2026-10-25"
+      },
+      "job": "1952996",
+      "path": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/benchmark-40288381664-1-development-dsprhbm-2026-10-26-8e2017587f62-pw-retest/results/evidence.json",
+      "runs": [
+        {
+          "arm": "system",
+          "energy_ev": -4869.7470519426015,
+          "iterations": 10,
+          "measured": false,
+          "nodes": {
+            "d9470n02.mr-sai.ai": 4,
+            "d9470n03.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 5.29,
+          "wall_seconds": 9.26
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -4869.747051943179,
+          "iterations": 10,
+          "measured": false,
+          "nodes": {
+            "d9470n02.mr-sai.ai": 4,
+            "d9470n03.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 4.91,
+          "wall_seconds": 10.24
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -4869.747051943179,
+          "iterations": 10,
+          "measured": true,
+          "nodes": {
+            "d9470n02.mr-sai.ai": 4,
+            "d9470n03.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 4.75,
+          "wall_seconds": 9.86
+        },
+        {
+          "arm": "system",
+          "energy_ev": -4869.7470519426015,
+          "iterations": 10,
+          "measured": true,
+          "nodes": {
+            "d9470n02.mr-sai.ai": 4,
+            "d9470n03.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 4.33,
+          "wall_seconds": 7.23
+        },
+        {
+          "arm": "system",
+          "energy_ev": -4869.7470519426015,
+          "iterations": 10,
+          "measured": true,
+          "nodes": {
+            "d9470n02.mr-sai.ai": 4,
+            "d9470n03.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 4.4,
+          "wall_seconds": 7.58
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -4869.747051943179,
+          "iterations": 10,
+          "measured": true,
+          "nodes": {
+            "d9470n02.mr-sai.ai": 4,
+            "d9470n03.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 4.88,
+          "wall_seconds": 10.16
+        },
+        {
+          "arm": "candidate",
+          "energy_ev": -4869.747051943179,
+          "iterations": 10,
+          "measured": true,
+          "nodes": {
+            "d9470n02.mr-sai.ai": 4,
+            "d9470n03.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 6.15,
+          "wall_seconds": 15.71
+        },
+        {
+          "arm": "system",
+          "energy_ev": -4869.7470519426015,
+          "iterations": 10,
+          "measured": true,
+          "nodes": {
+            "d9470n02.mr-sai.ai": 4,
+            "d9470n03.mr-sai.ai": 4
+          },
+          "reported_threads": 2,
+          "rounded_iteration_seconds": 4.86,
+          "wall_seconds": 8.03
+        }
+      ],
+      "sha256": "1bfbd74d27eb2497ddadfd968e6e20675de8ab0b943172d489189724939583d9",
+      "statistics": {
+        "rounded_iteration_seconds": {
+          "candidate": {
+            "max": 6.15,
+            "median": 4.88,
+            "min": 4.75
+          },
+          "candidate_system_ratio": 1.109090909090909,
+          "system": {
+            "max": 4.86,
+            "median": 4.4,
+            "min": 4.33
+          }
+        },
+        "wall_seconds": {
+          "candidate": {
+            "max": 15.71,
+            "median": 10.16,
+            "min": 9.86
+          },
+          "candidate_system_ratio": 1.3403693931398417,
+          "system": {
+            "max": 8.03,
+            "median": 7.58,
+            "min": 7.23
+          }
+        }
+      }
+    }
+  ],
+  "lammps_16v100_failure": {
+    "accounting": "1951327|16V100|FAILED|74:0|01:06:55|16v100n62|proj-sai-hpc-software",
+    "cleanup_failures": [
+      {
+        "argv": [
+          "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "--config",
+          "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-40288381664-1-development-16v100-avx2-20261026-049f269111f4/runtime/apptainer-fuse2fs.conf",
+          "exec",
+          "--fakeroot",
+          "--cleanenv",
+          "--containall",
+          "--no-home",
+          "--no-mount",
+          "bind-paths,home,cwd,tmp,hostfs",
+          "--pwd",
+          "/",
+          "--net",
+          "--network",
+          "none",
+          "--nv",
+          "--bind",
+          "/usr:/usr:ro",
+          "--bind",
+          "/sbin:/sbin:ro",
+          "--bind",
+          "/lib:/lib:ro",
+          "--bind",
+          "/lib64:/lib64:ro",
+          "--bind",
+          "/opt/devtools:/opt/devtools:ro",
+          "--bind",
+          "/opt/modules:/opt/modules:ro",
+          "--bind",
+          "/opt/apps/conda_env/deepmd-kit-3.2.0:/opt/apps/conda_env/deepmd-kit-3.2.0:ro",
+          "--bind",
+          "/opt/apps/conda_env/deepmd-kit-3.1.2:/opt/apps/conda_env/deepmd-kit-3.1.2:ro",
+          "--bind",
+          "/opt/apps/conda_env/VeloxChem/gpu:/opt/apps/conda_env/VeloxChem/gpu:ro",
+          "--bind",
+          "/opt/apps/plumed/plumed-2.10.1:/opt/apps/plumed/plumed-2.10.1:ro",
+          "--bind",
+          "/opt/apps/lammps/lammps-4Jul2026-deepmd3.2.0-nvhpc263-ompi5010-sm70:/opt/apps/lammps/lammps-4Jul2026-deepmd3.2.0-nvhpc263-ompi5010-sm70:ro",
+          "--bind",
+          "/opt/apps/lammps/lammps-4Jul2026-deepmd3.2.0-plumed2.10.1-nvhpc263-ompi5010-sm70:/opt/apps/lammps/lammps-4Jul2026-deepmd3.2.0-plumed2.10.1-nvhpc263-ompi5010-sm70:ro",
+          "--bind",
+          "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100:/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100:ro",
+          "--bind",
+          "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/cache/repositories/lammps:/input/lammps:ro",
+          "--bind",
+          "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/cache/repositories/deepmd-kit:/input/deepmd-kit:ro",
+          "--bind",
+          "/etc/profile.d/lmod.sh:/etc/profile.d/lmod.sh:ro",
+          "--bind",
+          "/etc/lmod:/etc/lmod:ro",
+          "--bind",
+          "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/controller/b4916e0fe8e4f6c92b4557d609e5e19b0b201ee2/lmp-40288381664-1-development-16v100-avx2-20261026-049f269111f4:/control:ro",
+          "--overlay",
+          "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-40288381664-1-development-16v100-avx2-20261026-049f269111f4/work.ext3",
+          "--env",
+          "BUILD_JOBS=24",
+          "--env",
+          "TMPDIR=/workspace/tmp",
+          "/org/org-open-sai/proj-sai-hpc-software/containers/base/minimal-v1.sif",
+          "/usr/bin/bash",
+          "/control/md_lammps_standalone_entry.sh",
+          "export",
+          "{\"deepmd_dependency\":{\"identity\":{\"build_id\":\"v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102\",\"cpu_arch\":\"znver3\",\"cuda_arch\":\"70\",\"dependency_isa\":\"avx2\",\"gpus\":1,\"install_prefix\":\"/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100\",\"partition\":\"16V100\",\"recipe_sha256\":\"296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097\",\"repository\":\"deepmodeling/deepmd-kit\",\"schema\":2,\"software\":\"deepmd-kit\",\"source_ref\":\"v3.2.0\",\"source_sha\":\"8cfd46e37448feca361ff3427a6c2b514ce5a2bb\",\"source_version\":\"v3.2.0\",\"stack_digest\":\"4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e\",\"stack_sources\":{\"deepmd-kit\":\"8cfd46e37448feca361ff3427a6c2b514ce5a2bb\",\"lammps\":\"8de817dd79bfe4525d5d39246a212d833e6dee07\"},\"target\":\"16v100-avx2\",\"track\":\"release\",\"version_label\":\"v3.2.0\"},\"runtime_plan_sha256\":\"21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e\"},\"identity\":{\"build_id\":\"develop-2026-10-24-g049f269111f4-r542d5751e2dd\",\"cpu_arch\":\"znver3\",\"cuda_arch\":\"70\",\"dependency_isa\":\"avx2\",\"gpus\":1,\"install_prefix\":\"/opt/apps/lammps/lammps-development-develop-2026-10-24-g049f269111f4-r542d5751e2dd/16V100\",\"partition\":\"16V100\",\"recipe_sha256\":\"542d5751e2ddc3402c313afbaf2f16a349d68d036b9eca967ab0e5543f74f524\",\"repository\":\"lammps/lammps\",\"schema\":2,\"software\":\"lammps\",\"source_ref\":\"develop\",\"source_sha\":\"049f269111f42ac408f706e0cc94b37f50346baf\",\"source_version\":\"develop-2026-10-24\",\"stack_digest\":null,\"stack_sources\":{},\"target\":\"16v100-avx2\",\"track\":\"development\",\"version_label\":\"develop-2026-10-24\"},\"schema\":1}"
+        ],
+        "reason": "fuse2fs teardown failed after payload success",
+        "returncode": 0,
+        "stderr_tail": "INFO:    User not listed in /etc/subuid, trying root-mapped namespace\nINFO:    Using fakeroot command combined with root-mapped namespace\nINFO:    Ignoring invalid max threads value 4294967295 > max (100000).\nINFO:    fuse2fs mount took an unexpectedly long time: 9.175s\nWARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container\nWARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container\nWARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container\nWARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container\nWARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container\nWARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container\nWARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container\nWARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container\nWARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container\nWARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container\nWARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container\nINFO:    Terminating fuse2fs after timeout\nINFO:    Timeouts can be caused by a running background process\nINFO:    Cleanup error: while stopping driver for /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0: fuse2fs exited: Ignoring invalid max threads value 4294967295 > max (100000).\n"
+      }
+    ],
+    "directory": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-40288381664-1-development-16v100-avx2-20261026-049f269111f4",
+    "log": {
+      "bytes": 1198614,
+      "path": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-40288381664-1-development-16v100-avx2-20261026-049f269111f4/results/slurm-1951327.log",
+      "sha256": "72cae57f11d4ebb2929b0953b5041dae04ebe11a3bbb82a05ce4ea7d64005281",
+      "tail": [
+        "Number of directories 58",
+        "Number of hard-links 0",
+        "Number of ids (unique uids + gids) 1",
+        "Number of uids 1",
+        "\troot (0)",
+        "Number of gids 1",
+        "\troot (0)",
+        "INFO:    Terminating fuse2fs after timeout",
+        "INFO:    Timeouts can be caused by a running background process",
+        "INFO:    Cleanup error: while stopping driver for /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0: fuse2fs exited: Ignoring invalid max threads value 4294967295 > max (100000)."
+      ]
+    },
+    "request": {
+      "controller": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/controller/b4916e0fe8e4f6c92b4557d609e5e19b0b201ee2/lmp-40288381664-1-development-16v100-avx2-20261026-049f269111f4",
+      "delivery": {
+        "deepmd_dependency": {
+          "identity": {
+            "build_id": "v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102",
+            "cpu_arch": "znver3",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100",
+            "partition": "16V100",
+            "recipe_sha256": "296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097",
+            "repository": "deepmodeling/deepmd-kit",
+            "schema": 2,
+            "software": "deepmd-kit",
+            "source_ref": "v3.2.0",
+            "source_sha": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+            "source_version": "v3.2.0",
+            "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+            "stack_sources": {
+              "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+              "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+            },
+            "target": "16v100-avx2",
+            "track": "release",
+            "version_label": "v3.2.0"
+          },
+          "runtime_plan_sha256": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e"
+        },
+        "identity": {
+          "build_id": "develop-2026-10-24-g049f269111f4-r542d5751e2dd",
+          "cpu_arch": "znver3",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/lammps/lammps-development-develop-2026-10-24-g049f269111f4-r542d5751e2dd/16V100",
+          "partition": "16V100",
+          "recipe_sha256": "542d5751e2ddc3402c313afbaf2f16a349d68d036b9eca967ab0e5543f74f524",
+          "repository": "lammps/lammps",
+          "schema": 2,
+          "software": "lammps",
+          "source_ref": "develop",
+          "source_sha": "049f269111f42ac408f706e0cc94b37f50346baf",
+          "source_version": "develop-2026-10-24",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "16v100-avx2",
+          "track": "development",
+          "version_label": "develop-2026-10-24"
+        },
+        "schema": 1
+      },
+      "dependency_verification": {
+        "paths": 1165,
+        "prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100",
+        "verified": true
+      },
+      "job_script_sha256": "e88bbf850ac4b4f69f44427c2482d57847990febff0c918a9ea244d0e0057e47"
+    },
+    "status": {
+      "build_verified": false,
+      "delivery": {
+        "deepmd_dependency": {
+          "identity": {
+            "build_id": "v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102",
+            "cpu_arch": "znver3",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100",
+            "partition": "16V100",
+            "recipe_sha256": "296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097",
+            "repository": "deepmodeling/deepmd-kit",
+            "schema": 2,
+            "software": "deepmd-kit",
+            "source_ref": "v3.2.0",
+            "source_sha": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+            "source_version": "v3.2.0",
+            "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+            "stack_sources": {
+              "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+              "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+            },
+            "target": "16v100-avx2",
+            "track": "release",
+            "version_label": "v3.2.0"
+          },
+          "runtime_plan_sha256": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e"
+        },
+        "identity": {
+          "build_id": "develop-2026-10-24-g049f269111f4-r542d5751e2dd",
+          "cpu_arch": "znver3",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/lammps/lammps-development-develop-2026-10-24-g049f269111f4-r542d5751e2dd/16V100",
+          "partition": "16V100",
+          "recipe_sha256": "542d5751e2ddc3402c313afbaf2f16a349d68d036b9eca967ab0e5543f74f524",
+          "repository": "lammps/lammps",
+          "schema": 2,
+          "software": "lammps",
+          "source_ref": "develop",
+          "source_sha": "049f269111f42ac408f706e0cc94b37f50346baf",
+          "source_version": "develop-2026-10-24",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "16v100-avx2",
+          "track": "development",
+          "version_label": "develop-2026-10-24"
+        },
+        "schema": 1
+      },
+      "exit_code": "74:0",
+      "job": "1951327",
+      "native_runtime_verified": false,
+      "published": false,
+      "scientific_verified": false,
+      "state": "FAILED"
+    }
+  },
+  "observed_at": "2026-10-26T11:43:22.643656+00:00",
+  "workflow": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/40288381664"
+}

@@ -1,0 +1,371 @@
+{
+  "commits": [
+    {
+      "sha": "7a931a2045fcb94efbd91d75a63a07979d243390",
+      "subject": "Feature: periodic self-consistent continuum solvation (SCCS) Step2: SCCS with PCC 0D/2D (#8194)"
+    },
+    {
+      "sha": "8e2017587f625e522e1cf6a0276d1dcb9b74e530",
+      "subject": "test: add LibXC and noncollinear Gint CUDA regression cases (#8217)"
+    }
+  ],
+  "files": [
+    {
+      "changes": 2,
+      "filename": ".github/workflows/cuda.yml",
+      "status": "modified"
+    },
+    {
+      "changes": 6,
+      "filename": "source/Makefile.Objects",
+      "status": "modified"
+    },
+    {
+      "changes": 2,
+      "filename": "source/source_estate/CMakeLists.txt",
+      "status": "modified"
+    },
+    {
+      "changes": 54,
+      "filename": "source/source_estate/module_pot/pot_sccs.cpp",
+      "status": "modified"
+    },
+    {
+      "changes": 58,
+      "filename": "source/source_estate/module_pot/sccs_pcc_0d.cpp",
+      "status": "added"
+    },
+    {
+      "changes": 48,
+      "filename": "source/source_estate/module_pot/sccs_pcc_0d.h",
+      "status": "added"
+    },
+    {
+      "changes": 65,
+      "filename": "source/source_estate/module_pot/sccs_pcc_2d.cpp",
+      "status": "added"
+    },
+    {
+      "changes": 51,
+      "filename": "source/source_estate/module_pot/sccs_pcc_2d.h",
+      "status": "added"
+    },
+    {
+      "changes": 44,
+      "filename": "source/source_estate/test/sccs_cell_test.h",
+      "status": "added"
+    },
+    {
+      "changes": 15,
+      "filename": "source/source_estate/test/test_pot_sccs.cpp",
+      "status": "modified"
+    },
+    {
+      "changes": 88,
+      "filename": "source/source_estate/test/test_sccs_pcc_0d.cpp",
+      "status": "added"
+    },
+    {
+      "changes": 110,
+      "filename": "source/source_estate/test/test_sccs_pcc_2d.cpp",
+      "status": "added"
+    },
+    {
+      "changes": 4,
+      "filename": "source/source_hamilt/module_sccs/CMakeLists.txt",
+      "status": "modified"
+    },
+    {
+      "changes": 98,
+      "filename": "source/source_hamilt/module_sccs/sccs_cav_deriv.cpp",
+      "status": "added"
+    },
+    {
+      "changes": 27,
+      "filename": "source/source_hamilt/module_sccs/sccs_cav_deriv.h",
+      "status": "added"
+    },
+    {
+      "changes": 3,
+      "filename": "source/source_hamilt/module_sccs/sccs_cavity.cpp",
+      "status": "modified"
+    },
+    {
+      "changes": 1,
+      "filename": "source/source_hamilt/module_sccs/sccs_cavity.h",
+      "status": "modified"
+    },
+    {
+      "changes": 32,
+      "filename": "source/source_hamilt/module_sccs/sccs_coul_0d.cpp",
+      "status": "added"
+    },
+    {
+      "changes": 30,
+      "filename": "source/source_hamilt/module_sccs/sccs_coul_0d.h",
+      "status": "added"
+    },
+    {
+      "changes": 35,
+      "filename": "source/source_hamilt/module_sccs/sccs_coul_2d.cpp",
+      "status": "added"
+    },
+    {
+      "changes": 32,
+      "filename": "source/source_hamilt/module_sccs/sccs_coul_2d.h",
+      "status": "added"
+    },
+    {
+      "changes": 19,
+      "filename": "source/source_hamilt/module_sccs/sccs_coulomb.h",
+      "status": "added"
+    },
+    {
+      "changes": 13,
+      "filename": "source/source_hamilt/module_sccs/sccs_functional.cpp",
+      "status": "modified"
+    },
+    {
+      "changes": 11,
+      "filename": "source/source_hamilt/module_sccs/sccs_functional.h",
+      "status": "modified"
+    },
+    {
+      "changes": 25,
+      "filename": "source/source_hamilt/module_sccs/sccs_moments.cpp",
+      "status": "added"
+    },
+    {
+      "changes": 22,
+      "filename": "source/source_hamilt/module_sccs/sccs_moments.h",
+      "status": "added"
+    },
+    {
+      "changes": 4,
+      "filename": "source/source_hamilt/module_sccs/sccs_parameters.h",
+      "status": "modified"
+    },
+    {
+      "changes": 5,
+      "filename": "source/source_hamilt/module_sccs/sccs_pw_coulomb.cpp",
+      "status": "modified"
+    },
+    {
+      "changes": 7,
+      "filename": "source/source_hamilt/module_sccs/sccs_pw_coulomb.h",
+      "status": "modified"
+    },
+    {
+      "changes": 129,
+      "filename": "source/source_hamilt/module_sccs/sccs_response.cpp",
+      "status": "modified"
+    },
+    {
+      "changes": 16,
+      "filename": "source/source_hamilt/module_sccs/sccs_response.h",
+      "status": "modified"
+    },
+    {
+      "changes": 15,
+      "filename": "source/source_hamilt/module_sccs/test/CMakeLists.txt",
+      "status": "modified"
+    },
+    {
+      "changes": 27,
+      "filename": "source/source_hamilt/module_sccs/test/sccs_test.h",
+      "status": "modified"
+    },
+    {
+      "changes": 84,
+      "filename": "source/source_hamilt/module_sccs/test/test_sccs_cav_deriv.cpp",
+      "status": "added"
+    },
+    {
+      "changes": 7,
+      "filename": "source/source_hamilt/module_sccs/test/test_sccs_cavity.cpp",
+      "status": "modified"
+    },
+    {
+      "changes": 220,
+      "filename": "source/source_hamilt/module_sccs/test/test_sccs_coul_0d.cpp",
+      "status": "added"
+    },
+    {
+      "changes": 201,
+      "filename": "source/source_hamilt/module_sccs/test/test_sccs_coul_2d.cpp",
+      "status": "added"
+    },
+    {
+      "changes": 39,
+      "filename": "source/source_hamilt/module_sccs/test/test_sccs_functional.cpp",
+      "status": "modified"
+    },
+    {
+      "changes": 9,
+      "filename": "source/source_io/module_parameter/read_inp_model.cpp",
+      "status": "modified"
+    },
+    {
+      "changes": 33,
+      "filename": "source/source_io/module_parameter/read_inp_sccs.cpp",
+      "status": "modified"
+    },
+    {
+      "changes": 4,
+      "filename": "source/source_io/module_parameter/read_inp_sys.cpp",
+      "status": "modified"
+    },
+    {
+      "changes": 10,
+      "filename": "source/source_io/test_serial/read_input_item_test.cpp",
+      "status": "modified"
+    },
+    {
+      "changes": 11,
+      "filename": "source/source_io/test_serial/test_read_inp_sccs.cpp",
+      "status": "modified"
+    },
+    {
+      "changes": 2,
+      "filename": "tests/01_PW/CASES_CPU.txt",
+      "status": "modified"
+    },
+    {
+      "changes": 21,
+      "filename": "tests/01_PW/scf_sccs_pcc_0d/INPUT",
+      "status": "added"
+    },
+    {
+      "changes": 4,
+      "filename": "tests/01_PW/scf_sccs_pcc_0d/KPT",
+      "status": "added"
+    },
+    {
+      "changes": 1,
+      "filename": "tests/01_PW/scf_sccs_pcc_0d/README",
+      "status": "added"
+    },
+    {
+      "changes": 24,
+      "filename": "tests/01_PW/scf_sccs_pcc_0d/STRU",
+      "status": "added"
+    },
+    {
+      "changes": 7,
+      "filename": "tests/01_PW/scf_sccs_pcc_0d/result.ref",
+      "status": "added"
+    },
+    {
+      "changes": 3,
+      "filename": "tests/01_PW/scf_sccs_pcc_0d/threshold",
+      "status": "added"
+    },
+    {
+      "changes": 22,
+      "filename": "tests/01_PW/scf_sccs_pcc_2d/INPUT",
+      "status": "added"
+    },
+    {
+      "changes": 4,
+      "filename": "tests/01_PW/scf_sccs_pcc_2d/KPT",
+      "status": "added"
+    },
+    {
+      "changes": 1,
+      "filename": "tests/01_PW/scf_sccs_pcc_2d/README",
+      "status": "added"
+    },
+    {
+      "changes": 24,
+      "filename": "tests/01_PW/scf_sccs_pcc_2d/STRU",
+      "status": "added"
+    },
+    {
+      "changes": 7,
+      "filename": "tests/01_PW/scf_sccs_pcc_2d/result.ref",
+      "status": "added"
+    },
+    {
+      "changes": 3,
+      "filename": "tests/01_PW/scf_sccs_pcc_2d/threshold",
+      "status": "added"
+    },
+    {
+      "changes": 1,
+      "filename": "tests/02_NAO_Gamma/CASES_CPU.txt",
+      "status": "modified"
+    },
+    {
+      "changes": 1,
+      "filename": "tests/02_NAO_Gamma/CASES_GPU.txt",
+      "status": "modified"
+    },
+    {
+      "changes": 28,
+      "filename": "tests/02_NAO_Gamma/scf_sccs_pcc2d/INPUT",
+      "status": "added"
+    },
+    {
+      "changes": 4,
+      "filename": "tests/02_NAO_Gamma/scf_sccs_pcc2d/KPT",
+      "status": "added"
+    },
+    {
+      "changes": 1,
+      "filename": "tests/02_NAO_Gamma/scf_sccs_pcc2d/README",
+      "status": "added"
+    },
+    {
+      "changes": 29,
+      "filename": "tests/02_NAO_Gamma/scf_sccs_pcc2d/STRU",
+      "status": "added"
+    },
+    {
+      "changes": 7,
+      "filename": "tests/02_NAO_Gamma/scf_sccs_pcc2d/result.ref",
+      "status": "added"
+    },
+    {
+      "changes": 1,
+      "filename": "tests/03_NAO_multik/CASES_CPU.txt",
+      "status": "modified"
+    },
+    {
+      "changes": 3,
+      "filename": "tests/03_NAO_multik/CASES_GPU.txt",
+      "status": "modified"
+    },
+    {
+      "changes": 29,
+      "filename": "tests/03_NAO_multik/scf_sccs_pcc2d/INPUT",
+      "status": "added"
+    },
+    {
+      "changes": 4,
+      "filename": "tests/03_NAO_multik/scf_sccs_pcc2d/KPT",
+      "status": "added"
+    },
+    {
+      "changes": 1,
+      "filename": "tests/03_NAO_multik/scf_sccs_pcc2d/README",
+      "status": "added"
+    },
+    {
+      "changes": 29,
+      "filename": "tests/03_NAO_multik/scf_sccs_pcc2d/STRU",
+      "status": "added"
+    },
+    {
+      "changes": 7,
+      "filename": "tests/03_NAO_multik/scf_sccs_pcc2d/result.ref",
+      "status": "added"
+    },
+    {
+      "changes": 4,
+      "filename": "tests/integrate/validation_tools/props_basic.sh",
+      "status": "modified"
+    }
+  ],
+  "status": "ahead",
+  "total_commits": 2
+}

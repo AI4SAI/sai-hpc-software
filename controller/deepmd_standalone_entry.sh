@@ -127,3 +127,13 @@ PY
     ;;
   *) exit 2 ;;
 esac
+if [[ "$phase" == build || "$phase" == export ]]; then
+    # Flush fuse2fs metadata while the writable payload is still alive.
+    /usr/bin/python3 - "$phase" <<'PY'
+from pathlib import Path
+import sys
+sys.path.insert(0, '/control')
+from cp2k_overlay_sync import synchronize
+synchronize(sys.argv[1], results=Path('/runtime'))
+PY
+fi
