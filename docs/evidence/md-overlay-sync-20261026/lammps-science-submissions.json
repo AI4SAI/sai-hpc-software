@@ -1,0 +1,32 @@
+{
+  "observed_at": "2026-10-26T14:48:17.441757+00:00",
+  "purpose": "Accept completed partitions while the remaining 4V100 candidate waits; retain original Actions handoff and frozen controls so CI reuses these exact jobs",
+  "submissions": [
+    {
+      "build": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-40316850352-1-development-16v100-avx2-20261026-049f269111f4",
+      "controller": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/controller/33525c740bed2b384f6e4198c22511a2420796c0/lmp-40316850352-1-development-16v100-avx2-20261026-049f269111f4",
+      "excluded_nodes": "",
+      "handoff_sha256": "b8454d800dd69c15ceae9c0d38bc1c2b486e338ae1157d2e35530018cdd9f517",
+      "job": "1958567",
+      "request_sha256": "c8e0092b45c0383a56301353f68b1193ae03dce3b4cb3d195b266ec0aa953e0d",
+      "science": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runtime-tests/lmp-40316850352-1-development-16v100-avx2-20261026-049f269111f4-science",
+      "submit_returncode": 0,
+      "submit_stderr": "sbatch: Job 1958566 to start at 2026-10-27T06:21:39 a using 16 processors on nodes 16v100n[04,06] in partition 16V100\n",
+      "submit_stdout": "{\"job\": \"1958567\", \"partition\": \"16V100\", \"output\": \"/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runtime-tests/lmp-40316850352-1-development-16v100-avx2-20261026-049f269111f4-science\"}\n",
+      "target": "16v100-avx2"
+    },
+    {
+      "build": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-40316850352-1-development-8v100v0-avx512-20261026-049f269111f4",
+      "controller": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/controller/33525c740bed2b384f6e4198c22511a2420796c0/lmp-40316850352-1-development-8v100v0-avx512-20261026-049f269111f4",
+      "excluded_nodes": "8v100v0n09",
+      "handoff_sha256": "2bbe2bae774acdc82da830049aa85f45c8e263edeeb3160a22dc4a31a6974084",
+      "job": "1958570",
+      "request_sha256": "f55b0340d9aef4bc4f94a319bd3580644a6a10d638137cd8a67f69f052fe7dfc",
+      "science": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runtime-tests/lmp-40316850352-1-development-8v100v0-avx512-20261026-049f269111f4-science",
+      "submit_returncode": 0,
+      "submit_stderr": "sbatch: Job 1958569 to start at 2026-10-27T00:02:27 a using 12 processors on nodes 8v100v0n[04,08] in partition 8V100V0\n",
+      "submit_stdout": "{\"job\": \"1958570\", \"partition\": \"8V100V0\", \"output\": \"/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runtime-tests/lmp-40316850352-1-development-8v100v0-avx512-20261026-049f269111f4-science\"}\n",
+      "target": "8v100v0-avx512"
+    }
+  ]
+}

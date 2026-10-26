@@ -1,0 +1,48 @@
+{
+  "accounting": [
+    "1953607|8V100V0|COMPLETED|0:0|02:05:17|8v100v0n09|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/runs/40288381664-1-development-8v100v0-avx512-2026-10-26-d43cbde630af",
+    "1955178|16V100|COMPLETED|0:0|00:17:57|16v100n71|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-40316174805-1-development-16v100-avx2-4e1479d8a23f",
+    "1955181|4V100|COMPLETED|0:0|00:10:38|4v100n25|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-40316174805-1-development-4v100-avx512-4e1479d8a23f",
+    "1955183|8V100V0|COMPLETED|0:0|00:22:30|8v100v0n08|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-40316174805-1-development-8v100v0-avx512-4e1479d8a23f",
+    "1955376|4V100|PENDING|0:0|00:00:00|None assigned|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-40316850352-1-development-4v100-avx512-20261026-049f269111f4",
+    "1955489|8V100V0|COMPLETED|0:0|01:11:25|8v100v0n03|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-40316850352-1-development-8v100v0-avx512-20261026-049f269111f4",
+    "1955492|16V100|COMPLETED|0:0|00:53:25|16v100n61|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-40316850352-1-development-16v100-avx2-20261026-049f269111f4",
+    "1956309|8V100V0|FAILED|1:0|00:00:19|8v100v0n[06,09]|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/40288381664-1-development-8v100v0-avx512-2026-10-26-d43cbde630af-science",
+    "1958543|8V100V0|PENDING|0:0|00:00:00|None assigned|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/40288381664-1-development-8v100v0-avx512-2026-10-26-d43cbde630af-science-ecc-retry1",
+    "1958567|16V100|COMPLETED|0:0|00:01:42|16v100n[06,08]|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runtime-tests/lmp-40316850352-1-development-16v100-avx2-20261026-049f269111f4-science",
+    "1958570|8V100V0|PENDING|0:0|00:00:00|None assigned|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runtime-tests/lmp-40316850352-1-development-8v100v0-avx512-20261026-049f269111f4-science"
+  ],
+  "observed_at": "2026-10-26T14:52:54.344281+00:00",
+  "public_modules": [
+    {
+      "path": "/home/stardust/sai-hpc-software/modulefiles/apps/deepmd-kit/master-beta-later",
+      "software": "deepmd-kit",
+      "target": "master-beta-20261026-4e1479d8a23f-r75ef5179f1e8-b9fb80a6e4fee"
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/modulefiles/apps/lammps/develop-beta-later",
+      "software": "lammps",
+      "target": "develop-beta-20261025-049f269111f4-r75ef5179f1e8-bb0120cf26221"
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/modulefiles/apps/cp2k/master-beta-later",
+      "software": "cp2k",
+      "target": "master-beta-20261025-1db19ea511d1-r75ef5179f1e8-b98b544f7973e"
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/modulefiles/apps/abacus/develop-beta-later",
+      "software": "abacus",
+      "target": "develop-beta-20261025-89595dd29a26-r75ef5179f1e8-b34568c7aa827"
+    },
+    {
+      "path": "/home/stardust/sai-hpc-software/modulefiles/apps/gpumd/master-beta-later",
+      "software": "gpumd",
+      "target": "master-beta-20261026-c7e6340a0d1a-r75ef5179f1e8-b97198090ad28"
+    }
+  ],
+  "queue": [
+    "1955376|4V100|PENDING|0:00|2:30:00|(Priority)",
+    "1958570|8V100V0|PENDING|0:00|40:00|(Priority)",
+    "1958543|8V100V0|PENDING|0:00|1:00:00|(Resources)"
+  ]
+}

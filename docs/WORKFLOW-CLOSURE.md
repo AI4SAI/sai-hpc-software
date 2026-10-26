@@ -10,19 +10,32 @@ check each unmounted overlay with `e2fsck -fn`. Original failed runs remain
 recorded. See [repair and acceptance evidence](evidence/md-overlay-sync-20261026/README.md).
 
 The fresh [DeePMD workflow](https://github.com/AI4SAI/sai-hpc-software/actions/runs/40316174805)
-has accepted final SIFs for source `4e1479d8a23f` on 16V100 (1955178) and
-8V100V0 (1955183). Both prove the installed compression-table DDP patch with
+has accepted final SIFs for source `4e1479d8a23f` on 16V100 (1955178),
+4V100 (1955181) and 8V100V0 (1955183). All three prove the installed DDP patch with
 actual two-GPU `se_e2_a`/DPA2 training, checkpoint restart, finite gradients
-and synchronized model updates. 4V100 job 1955181 remains queued; the public
-alias retains the preceding complete generation until the full matrix and
-module checks pass. This is not yet a completed October 26 beta publication.
+and synchronized model updates. Public module checks 1956382/1956384/1956386
+repeated inference and both DDP cases successfully. The workflow succeeded and
+`deepmd-kit/master-beta-later` now selects
+`master-beta-20261026-4e1479d8a23f-r75ef5179f1e8-b9fb80a6e4fee`.
+This closes the October 26 DeePMD SIF publication; the evidence establishes
+single-node two-GPU PyTorch training and restart.
 
 The corrected [LAMMPS workflow](https://github.com/AI4SAI/sai-hpc-software/actions/runs/40316850352)
-is compiling on 16V100/8V100V0 and queued on 4V100. ABACUS DSPRHBM passed
+completed builds on 16V100/8V100V0 and remains queued on 4V100 (1955376).
+The completed builds were advanced to science using their original frozen
+controllers and Actions handoffs. 16V100 job 1958567 passed all 14 scientific
+cases, with 71 packages and 2,500 styles; 8V100V0 science job 1958570 is queued.
+ABACUS DSPRHBM passed
 numerical checks but its permitted performance retest exceeded the 1.10
 threshold (PW 1.10909, HSE 1.20), so its public beta also remains unchanged.
-CP2K's 8V100V0 application allocation is still preparing its dependency copy;
-the other three targets passed acceptance. The completed October 25 matrix
+CP2K's 8V100V0 build completed, but science job 1956309 failed during
+`--version` with `cudaErrorECCUncorrectable` on rank 1 / node `8v100v0n09`,
+before any scientific case. Retry 1958543 uses the identical SIF and frozen
+controller in a separate evidence directory, excluding that node. The other
+three CP2K targets passed acceptance; its public beta retains the prior
+generation until the remaining science and public launch checks pass.
+See the [dated status snapshot](evidence/md-overlay-sync-20261026/gap-status.json).
+The completed October 25 matrix
 below is retained as a historical acceptance record, not relabelled as today's
 result. Linux validation of the MD repair passes 1,112 tests with two optional
 skips.

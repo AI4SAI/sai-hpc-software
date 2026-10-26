@@ -1,0 +1,38 @@
+[
+  {
+    "command": [
+      "/usr/bin/python3",
+      "-u",
+      "-B",
+      "/org/org-open-sai/proj-sai-hpc-software/controller/b4916e0fe8e4f6c92b4557d609e5e19b0b201ee2/40288381664-1-development-8v100v0-avx512-2026-10-26-d43cbde630af/cp2k_acceptance.py",
+      "monitor",
+      "40288381664-1-development-8v100v0-avx512-2026-10-26-d43cbde630af-science-ecc-retry1",
+      "--timeout",
+      "21600",
+      "--interval",
+      "30"
+    ],
+    "job": "1958543",
+    "log": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-science-observers-20261026/cp2k-8v100v0.log",
+    "observed_at": "2026-10-26T14:52:07.886041+00:00",
+    "pid": 2780769,
+    "role": "Observe existing Slurm job and run original verifier; no new builds or automatic publication"
+  },
+  {
+    "command": [
+      "/usr/bin/python3",
+      "-u",
+      "-I",
+      "-B",
+      "-c",
+      "import sys; from pathlib import Path; sys.path.insert(0,sys.argv[1]); import lammps_acceptance as a; p=Path(sys.argv[2]); a.monitor(p,timeout=21600,interval=30); a.verify(p)",
+      "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/controller/33525c740bed2b384f6e4198c22511a2420796c0/lmp-40316850352-1-development-8v100v0-avx512-20261026-049f269111f4",
+      "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runtime-tests/lmp-40316850352-1-development-8v100v0-avx512-20261026-049f269111f4-science"
+    ],
+    "job": "1958570",
+    "log": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-science-observers-20261026/lammps-8v100v0.log",
+    "observed_at": "2026-10-26T14:52:07.887770+00:00",
+    "pid": 2780770,
+    "role": "Observe existing Slurm job and run original verifier; no new builds or automatic publication"
+  }
+]

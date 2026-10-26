@@ -2459,9 +2459,1617 @@
       }
     },
     {
-      "accounting": "1955181|4V100|PENDING|0:0|00:00:00|None assigned|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-40316174805-1-development-4v100-avx512-4e1479d8a23f",
+      "accounting": "1955181|4V100|COMPLETED|0:0|00:10:38|4v100n25|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-40316174805-1-development-4v100-avx512-4e1479d8a23f",
       "directory": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-40316174805-1-development-4v100-avx512-4e1479d8a23f",
-      "files": {},
+      "files": {
+        "results/build-receipt.json": {
+          "bytes": 2253,
+          "content": {
+            "artifact": {
+              "bytes": 193662976,
+              "path": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-40316174805-1-development-4v100-avx512-4e1479d8a23f/candidate.sif",
+              "sha256": "2acc7a7dc4c269457a25ed95b312c9cb6053bc10c04540c2eab14971d5d68d32"
+            },
+            "controller_sha256": "8a404f71ac4cbf385124391a54a0df0013ba206c9ab924d301d25587df03b2fb",
+            "delivery": {
+              "identity": {
+                "build_id": "master-2026-10-25-g4e1479d8a23f-r8a404f71ac4c",
+                "cpu_arch": "znver4",
+                "cuda_arch": "70",
+                "dependency_isa": "avx512",
+                "gpus": 1,
+                "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-25-g4e1479d8a23f-r8a404f71ac4c/4V100",
+                "partition": "4V100",
+                "recipe_sha256": "8a404f71ac4cbf385124391a54a0df0013ba206c9ab924d301d25587df03b2fb",
+                "repository": "deepmodeling/deepmd-kit",
+                "schema": 2,
+                "software": "deepmd-kit",
+                "source_ref": "master",
+                "source_sha": "4e1479d8a23fcc1c9baf36004d5685898ad421a8",
+                "source_version": "master-2026-10-25",
+                "stack_digest": null,
+                "stack_sources": {},
+                "target": "4v100-avx512",
+                "track": "development",
+                "version_label": "master-2026-10-25"
+              },
+              "schema": 1
+            },
+            "job_id": "1955181",
+            "job_script_sha256": "8fb47cb990353d062d6f00bc8e86714c7990be6b9d85733e5d985561efc9b9ca",
+            "kind": "deepmd-build",
+            "overlay_evidence_sha256": {
+              "results/overlay-fsck-build.stderr": "f074aa9872d23bd7876c68381422f0b17c739d7dbd64d41e99dfd1398653a818",
+              "results/overlay-fsck-build.stdout": "dcff28049f8bc667d3da4f1846491cd3e5279d366dfb59e132b898d0f99707e5",
+              "results/overlay-fsck-export.stderr": "f074aa9872d23bd7876c68381422f0b17c739d7dbd64d41e99dfd1398653a818",
+              "results/overlay-fsck-export.stdout": "87a460a6dc5225eeb0b7e6a452dcea3dd0668ffdf5c92fb4de844414f389ba8e",
+              "runtime/overlay-sync-build.json": "6ceee802178721c636504468e4cf375c191e641062c3d8daef356827c6de32bd",
+              "runtime/overlay-sync-export.json": "d32593f868d2cfe93597813c47f2128bb19d5b7e38067e0fb9d82f80136d22f2"
+            },
+            "request_sha256": "7a307f26515e7984659a67dd1b71efeb7b90f085fec01f707409aefae7f8937b",
+            "run_id": "dp-40316174805-1-development-4v100-avx512-4e1479d8a23f",
+            "schema": 1
+          },
+          "sha256": "a6f9b38256e4fd44d54e8dec2aa582668decf496204f0fdde026a85c97509536"
+        },
+        "results/overlay-fsck-build.stderr": {
+          "bytes": 27,
+          "content": "e2fsck 1.47.0 (5-Feb-2023)\n",
+          "sha256": "f074aa9872d23bd7876c68381422f0b17c739d7dbd64d41e99dfd1398653a818"
+        },
+        "results/overlay-fsck-build.stdout": {
+          "bytes": 405,
+          "content": "Pass 1: Checking inodes, blocks, and sizes\nPass 2: Checking directory structure\nPass 3: Checking directory connectivity\nPass 4: Checking reference counts\nPass 5: Checking group summary information\n/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-40316174805-1-development-4v100-avx512-4e1479d8a23f/work.ext3: 10417/2097152 files (2.5% non-contiguous), 1116019/8388608 blocks\n",
+          "sha256": "dcff28049f8bc667d3da4f1846491cd3e5279d366dfb59e132b898d0f99707e5"
+        },
+        "results/overlay-fsck-export.stderr": {
+          "bytes": 27,
+          "content": "e2fsck 1.47.0 (5-Feb-2023)\n",
+          "sha256": "f074aa9872d23bd7876c68381422f0b17c739d7dbd64d41e99dfd1398653a818"
+        },
+        "results/overlay-fsck-export.stdout": {
+          "bytes": 405,
+          "content": "Pass 1: Checking inodes, blocks, and sizes\nPass 2: Checking directory structure\nPass 3: Checking directory connectivity\nPass 4: Checking reference counts\nPass 5: Checking group summary information\n/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-40316174805-1-development-4v100-avx512-4e1479d8a23f/work.ext3: 14148/2097152 files (1.8% non-contiguous), 1273028/8388608 blocks\n",
+          "sha256": "87a460a6dc5225eeb0b7e6a452dcea3dd0668ffdf5c92fb4de844414f389ba8e"
+        },
+        "results/science-receipt.json": {
+          "bytes": 2464,
+          "content": {
+            "artifact_sha256": "2acc7a7dc4c269457a25ed95b312c9cb6053bc10c04540c2eab14971d5d68d32",
+            "build_receipt_sha256": "a6f9b38256e4fd44d54e8dec2aa582668decf496204f0fdde026a85c97509536",
+            "evidence_sha256": {
+              "baseline-inventory.json": "3d944ef3f38cace0dc4c0fa5f215225861d870f6936ec21a57bc8fd98b624e80",
+              "baseline-jax-c-api.json": "1c21941a4255c4beb327b005742f1e953d04912b65b0eada628c2e010a548fc4",
+              "baseline-jax-python.json": "ee8c9a35ff41144192b2ef8e7dbf492f9f0037aebdeaad6912f91c9308e1c222",
+              "baseline-pt-c-api.json": "4d1a926d8add10d98ca5a75168caa0ba00097b08a71afb572624cee78d09dab3",
+              "baseline-pt-python.json": "2a3b1edab987f225fdcc8d9388491d1bf1468c1bf0301a2e43767e08a0891d80",
+              "baseline-tf-c-api.json": "0c58dc1c208eaf0b8a550d869468b69a4d5fbb8256c6f8a13c7f0903ac4dc45d",
+              "baseline-tf-python.json": "4537d3668981502398d6cf824f8bb68da54a06b4d61abda939dd2b32f153eaf3",
+              "candidate-inventory.json": "aa37608c5d1c9cb2fba42e050b66bc04b2b91ed082395eb55aef597fde7bf3c7",
+              "candidate-jax-c-api.json": "7e586d4b76a7731b54d6fc958d49e825e33bfda4d54f255da37a9a7a3a7027d3",
+              "candidate-jax-python.json": "2e12075673225a3d1252087b31ce9b40f9dbc1d376ed7221a23664c3df498b79",
+              "candidate-pt-c-api.json": "47910ddffa04fd29f8b6f33a5eb9e5543214edd75479242fa2ed252b7e36f4c2",
+              "candidate-pt-python.json": "d49bd3fb240b425b037a604f614f2a7a853f8ded222ddbecb2692a5245b3e0b0",
+              "candidate-tf-c-api.json": "61d3ff12ab8bda58df89efbb1c6f126f35011249b6ba514c8e7475b7bd0fa982",
+              "candidate-tf-python.json": "e363d015e87641c71ba9ccf5f353301d5d93e7e0bb31e8da2bdf0b72355589fd",
+              "case": "e5e5729caf89b35891adb9d18205a5bb6e21bc67a1d8bfaf6cd4c253b29adb4e",
+              "ddp-source-patch.json": "631d967645da116950bd694b6333f3618ffa2025671c47d454af0b07b2154881",
+              "pt-cuda-kernels.csv": "50ac0550ed5dfd7175204f57dca2690befc5789037c77b1fdaa0900482968d43",
+              "pt-cuda-trace.nsys-rep": "ba56badd9131adfda003bcbf0c0d1557badcf292b2e6684509e3a3c3c1fd64b5",
+              "pt-profiled.json": "41e988b7685a3bd9e8545d3039f0783fae00e2990cd96b3f748ffc5e266a7571",
+              "runtime-env.sh": "ae8f68d08cca9c0b755c9178171dd7b48e5394d02a6119dabaf66862ad046052",
+              "science.json": "9807823e1211269f0e4c91ff16e2454a2a38c7e40280a348cb98c1cf39a7abef",
+              "training": "034a23e3296ff492b807d69357c00eef9302ea16e13e055aebeab46a06e04e3b"
+            },
+            "job_id": "1955181",
+            "kind": "deepmd-science",
+            "run_id": "dp-40316174805-1-development-4v100-avx512-4e1479d8a23f",
+            "schema": 1
+          },
+          "sha256": "b5afd3f4a38259d8ae4674b58f2e34e8d5ddd639f26e9fd13b15d9100fd4aa5d"
+        },
+        "runtime/ddp-source-patch.json": {
+          "bytes": 281,
+          "content": {
+            "changed": true,
+            "file": "deepmd/pt/train/training.py",
+            "original_sha256": "0e418bf1413f0c21b86cdfe21d2984f090d475d9e2594a90eecc0c090e1f9ea1",
+            "patch": "freeze-inference-compression-tables-v1",
+            "patched_sha256": "6299f10b2d134051c395c0a7bd77655043352ca3ba7c8b136605428f4b92a69e"
+          },
+          "sha256": "631d967645da116950bd694b6333f3618ffa2025671c47d454af0b07b2154881"
+        },
+        "runtime/overlay-sync-build.json": {
+          "bytes": 122,
+          "content": {
+            "elapsed_seconds": 0.6700209230184555,
+            "marker": "/workspace/.sai-overlay-sync",
+            "phase": "build",
+            "synchronized": true
+          },
+          "sha256": "6ceee802178721c636504468e4cf375c191e641062c3d8daef356827c6de32bd"
+        },
+        "runtime/overlay-sync-export.json": {
+          "bytes": 122,
+          "content": {
+            "elapsed_seconds": 0.933467285707593,
+            "marker": "/workspace/.sai-overlay-sync",
+            "phase": "export",
+            "synchronized": true
+          },
+          "sha256": "d32593f868d2cfe93597813c47f2128bb19d5b7e38067e0fb9d82f80136d22f2"
+        },
+        "runtime/science.json": {
+          "bytes": 44220,
+          "content": {
+            "cases": {
+              "jax/c-api": {
+                "measurements": {
+                  "baseline": 3,
+                  "candidate": 3
+                },
+                "median_seconds": {
+                  "baseline": 0.0005535539239645004,
+                  "candidate": 0.000541292130947113
+                },
+                "passed": true,
+                "performance_threshold_applied": false,
+                "speedup": 1.0226528196446023,
+                "warmups": {
+                  "baseline": 1,
+                  "candidate": 1
+                }
+              },
+              "jax/python": {
+                "measurements": {
+                  "baseline": 3,
+                  "candidate": 3
+                },
+                "median_seconds": {
+                  "baseline": 0.0016904063522815704,
+                  "candidate": 0.0016941465437412262
+                },
+                "passed": true,
+                "performance_threshold_applied": false,
+                "speedup": 0.9977922857538662,
+                "warmups": {
+                  "baseline": 1,
+                  "candidate": 1
+                }
+              },
+              "pt/c-api": {
+                "measurements": {
+                  "baseline": 3,
+                  "candidate": 3
+                },
+                "median_seconds": {
+                  "baseline": 0.21978537552058697,
+                  "candidate": 0.29456190951168537
+                },
+                "passed": true,
+                "performance_threshold_applied": false,
+                "speedup": 0.7461432331320083,
+                "warmups": {
+                  "baseline": 1,
+                  "candidate": 1
+                }
+              },
+              "pt/python": {
+                "measurements": {
+                  "baseline": 3,
+                  "candidate": 3
+                },
+                "median_seconds": {
+                  "baseline": 0.17150359600782394,
+                  "candidate": 0.16959179751574993
+                },
+                "passed": true,
+                "performance_threshold_applied": false,
+                "speedup": 1.0112729419705364,
+                "warmups": {
+                  "baseline": 1,
+                  "candidate": 1
+                }
+              },
+              "tf/c-api": {
+                "measurements": {
+                  "baseline": 3,
+                  "candidate": 3
+                },
+                "median_seconds": {
+                  "baseline": 0.00024780072271823883,
+                  "candidate": 0.00025751255452632904
+                },
+                "passed": true,
+                "performance_threshold_applied": false,
+                "speedup": 0.9622859870814677,
+                "warmups": {
+                  "baseline": 1,
+                  "candidate": 1
+                }
+              },
+              "tf/python": {
+                "measurements": {
+                  "baseline": 3,
+                  "candidate": 3
+                },
+                "median_seconds": {
+                  "baseline": 0.0005608107894659042,
+                  "candidate": 0.00048820115625858307
+                },
+                "passed": true,
+                "performance_threshold_applied": false,
+                "speedup": 1.148728925109023,
+                "warmups": {
+                  "baseline": 1,
+                  "candidate": 1
+                }
+              }
+            },
+            "gpu": {
+              "backend": "pt",
+              "csv_sha256": "50ac0550ed5dfd7175204f57dca2690befc5789037c77b1fdaa0900482968d43",
+              "devices": [
+                "Tesla V100-SXM2-32GB (0)"
+              ],
+              "engine": "c-api",
+              "kernel_events": 1486,
+              "kernel_names": [
+                "fused_add_add",
+                "fused_add_add_reciprocal_pow_div",
+                "fused_clamp_sub_div__6412312278190731083",
+                "fused_div_mul_mul",
+                "fused_mul_mul_mul_mu_8606757649921672575",
+                "fused_neg_mul_mul_div",
+                "fused_neg_mul_mul_mul_pow_mul_add_add",
+                "fused_reciprocal_mul_ceil",
+                "fused_unsqueeze_unsqueeze_sub",
+                "fused_unsqueeze_where",
+                "reduction_prod_kernel",
+                "void <unnamed>::elementwise_kernel_with_index<int, at::native::arange_cuda_out(const c10::Scalar &, const c10::Scalar &, const c10::Scalar &, at::Tensor &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 3)]::operator ()() const::[lambda(long) (instance 1)]>(T1, T2, function_traits<T2>::result_type *)",
+                "void <unnamed>::elementwise_kernel_with_index<int, at::native::arange_cuda_out(const c10::Scalar &, const c10::Scalar &, const c10::Scalar &, at::Tensor &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 4)]::operator ()() const::[lambda(long) (instance 1)]>(T1, T2, function_traits<T2>::result_type *)",
+                "void at::native::<unnamed>::CatArrayBatchedCopy<at::native::<unnamed>::OpaqueType<(unsigned int)8>, unsigned int, (int)3, (int)64, (int)64>(T1 *, at::native::<unnamed>::CatArrInputTensorMetadata<T1, T2, T4, T5>, at::native::<unnamed>::TensorSizeStride<T2, (unsigned int)4>, int, T2)",
+                "void at::native::<unnamed>::CatArrayBatchedCopy_alignedK_contig<at::native::<unnamed>::OpaqueType<(unsigned int)8>, unsigned int, (int)2, (int)128, (int)1, (int)16>(T1 *, at::native::<unnamed>::CatArrInputTensorMetadata<T1, T2, T4, T5>, at::native::<unnamed>::TensorSizeStride<T2, (unsigned int)4>, int, T2)",
+                "void at::native::<unnamed>::CatArrayBatchedCopy_alignedK_contig<at::native::<unnamed>::OpaqueType<(unsigned int)8>, unsigned int, (int)3, (int)128, (int)1, (int)16>(T1 *, at::native::<unnamed>::CatArrInputTensorMetadata<T1, T2, T4, T5>, at::native::<unnamed>::TensorSizeStride<T2, (unsigned int)4>, int, T2)",
+                "void at::native::<unnamed>::CatArrayBatchedCopy_alignedK_contig<at::native::<unnamed>::OpaqueType<(unsigned int)8>, unsigned int, (int)4, (int)128, (int)1, (int)16>(T1 *, at::native::<unnamed>::CatArrInputTensorMetadata<T1, T2, T4, T5>, at::native::<unnamed>::TensorSizeStride<T2, (unsigned int)4>, int, T2)",
+                "void at::native::<unnamed>::CatArrayBatchedCopy_vectorized<at::native::<unnamed>::OpaqueType<(unsigned int)8>, unsigned int, (int)3, (int)128, (int)1, (int)16, (int)2>(char *, at::native::<unnamed>::CatArrInputTensorMetadata<T1, T2, T4, T5>, at::native::<unnamed>::TensorSizeStride<T2, (unsigned int)4>, int, T2)",
+                "void at::native::_scatter_gather_elementwise_kernel<(int)128, (int)8, void at::native::_cuda_scatter_gather_internal_kernel<(bool)0, at::native::OpaqueType<(int)8>, long>::operator ()<at::native::TensorAssign>(at::TensorIterator &, long, long, long, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+                "void at::native::_scatter_gather_elementwise_kernel<(int)128, (int)8, void at::native::_cuda_scatter_gather_internal_kernel<(bool)1, double, long>::operator ()<at::native::ReduceAdd>(at::TensorIterator &, long, long, long, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+                "void at::native::bitonicSortKVInPlace<(int)-2, (int)-1, (int)16, (int)16, double, long, at::native::LTOp<double, (bool)1>, unsigned int>(at::cuda::detail::TensorInfo<T5, T8>, T8, T8, T8, at::cuda::detail::TensorInfo<T6, T8>, T8, T7)",
+                "void at::native::cross_kernel<double, OffsetCalculator<(int)3, unsigned int, (bool)0>, int>(int, T1 *, const T1 *, const T1 *, T2, T3, T3, T3)",
+                "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::<unnamed>::masked_fill_kernel(at::TensorIterator &, const c10::Scalar &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 6)]::operator ()() const::[lambda(double, bool) (instance 1)]>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+                "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::<unnamed>::where_kernel_impl(at::TensorIterator &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 4)]::operator ()() const::[lambda(bool, unsigned long, unsigned long) (instance 1)]>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+                "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<double, double, double, at::native::binary_internal::DivFunctor<double>>>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+                "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<double, double, double, at::native::binary_internal::MulFunctor<double>>>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+                "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::CUDAFunctor_add<double>>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+                "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::FillFunctor<double>>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+                "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 3)]::operator ()() const::[lambda() (instance 4)]::operator ()() const::[lambda(long) (instance 1)]>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+                "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 3)]::operator ()() const::[lambda() (instance 6)]::operator ()() const::[lambda(double) (instance 1)]>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+                "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::neg_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 6)]::operator ()() const::[lambda(double) (instance 1)]>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+                "void at::native::elementwise_kernel<(int)128, (int)4, void at::native::gpu_kernel_impl<at::native::BinaryFunctor<double, double, double, at::native::binary_internal::MulFunctor<double>>>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+                "void at::native::elementwise_kernel<(int)128, (int)4, void at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<bool, bool, bool, at::native::logical_or_kernel_cuda(at::TensorIterator &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 9)]::operator ()() const::[lambda(bool, bool) (instance 1)]>>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+                "void at::native::elementwise_kernel<(int)128, (int)4, void at::native::gpu_kernel_impl_nocast<void at::native::compare_scalar_kernel<double>(at::TensorIteratorBase &, at::native::<unnamed>::OpType, T1)::[lambda(double) (instance 1)]>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+                "void at::native::index_elementwise_kernel<(int)128, (int)4, void at::native::gpu_index_kernel<void at::native::index_kernel_impl<at::native::OpaqueType<(int)4>>(at::TensorIteratorBase &, c10::ArrayRef<long>, c10::ArrayRef<long>)::[lambda(char *, const char *, long) (instance 1)]>(at::TensorIteratorBase &, c10::ArrayRef<long>, c10::ArrayRef<long>, const T1 &, bool)::[lambda(int) (instance 1)]>(long, T3)",
+                "void at::native::index_elementwise_kernel<(int)128, (int)4, void at::native::gpu_index_kernel<void at::native::index_kernel_impl<at::native::OpaqueType<(int)8>>(at::TensorIteratorBase &, c10::ArrayRef<long>, c10::ArrayRef<long>)::[lambda(char *, const char *, long) (instance 1)]>(at::TensorIteratorBase &, c10::ArrayRef<long>, c10::ArrayRef<long>, const T1 &, bool)::[lambda(int) (instance 1)]>(long, T3)",
+                "void at::native::index_elementwise_kernel<(int)128, (int)4, void at::native::gpu_index_kernel<void at::native::index_put_kernel_impl<at::native::OpaqueType<(int)8>>(at::TensorIterator &, c10::ArrayRef<long>, c10::ArrayRef<long>)::[lambda(char *, const char *, long) (instance 1)]>(at::TensorIteratorBase &, c10::ArrayRef<long>, c10::ArrayRef<long>, const T1 &, bool)::[lambda(int) (instance 1)]>(long, T3)",
+                "void at::native::radixSortKVInPlace<(int)2, (int)-1, (int)32, (int)32, double, long, unsigned int>(at::cuda::detail::TensorInfo<T5, T7>, T7, T7, T7, at::cuda::detail::TensorInfo<T6, T7>, T7, bool)",
+                "void at::native::radixSortKVInPlace<(int)2, (int)-1, (int)32, (int)32, int, long, unsigned int>(at::cuda::detail::TensorInfo<T5, T7>, T7, T7, T7, at::cuda::detail::TensorInfo<T6, T7>, T7, bool)",
+                "void at::native::reduce_kernel<(int)128, (int)4, at::native::ReduceOp<double, at::native::func_wrapper_t<double, at::native::sum_functor<double, double, double>::operator ()(at::TensorIterator &)::[lambda(double, double) (instance 1)]>, unsigned int, double, (int)4, (int)4>>(T3)",
+                "void at::native::reduce_kernel<(int)256, (int)2, at::native::ReduceOp<double, at::native::func_wrapper_t<double, at::native::sum_functor<double, double, double>::operator ()(at::TensorIterator &)::[lambda(double, double) (instance 1)]>, unsigned int, double, (int)4, (int)4>>(T3)",
+                "void at::native::reduce_kernel<(int)512, (int)1, at::native::ReduceOp<double, at::native::NormTwoOps<double, double, double, (bool)1>, unsigned int, double, (int)4, (int)4>>(T3)",
+                "void at::native::reduce_kernel<(int)512, (int)1, at::native::ReduceOp<double, at::native::func_wrapper_t<double, at::native::MaxNanFunctor<double>>, unsigned int, double, (int)4, (int)4>>(T3)",
+                "void at::native::reduce_kernel<(int)512, (int)1, at::native::ReduceOp<double, at::native::func_wrapper_t<double, at::native::sum_functor<double, double, double>::operator ()(at::TensorIterator &)::[lambda(double, double) (instance 1)]>, unsigned int, double, (int)4, (int)4>>(T3)",
+                "void at::native::reduce_kernel<(int)512, (int)1, at::native::ReduceOp<long, at::native::func_wrapper_t<long, at::native::MaxNanFunctor<long>>, unsigned int, long, (int)4, (int)4>>(T3)",
+                "void at::native::reduce_kernel<(int)512, (int)1, at::native::ReduceOp<long, at::native::func_wrapper_t<long, at::native::sum_functor<long, long, long>::operator ()(at::TensorIterator &)::[lambda(long, long) (instance 1)]>, unsigned int, long, (int)4, (int)4>>(T3)",
+                "void at::native::sbtopk::gatherTopK<double, unsigned int, (int)2, (bool)0>(at::cuda::detail::TensorInfo<const T1, T2>, T2, T2, bool, T2, T2, at::cuda::detail::TensorInfo<T1, T2>, T2, at::cuda::detail::TensorInfo<long, T2>, T2, T1 *)",
+                "void at::native::unrolled_elementwise_kernel<at::native::BinaryFunctor<double, double, double, at::native::binary_internal::MulFunctor<double>>, std::array<char *, (unsigned long)3>, (int)4, TrivialOffsetCalculator<(int)2, unsigned int>, TrivialOffsetCalculator<(int)1, unsigned int>, at::native::memory::LoadWithCast<(int)2>, at::native::memory::StoreWithCast<(int)1>>(int, T1, T2, T4, T5, T6, T7)",
+                "void at::native::unrolled_elementwise_kernel<at::native::CUDAFunctorOnSelf_add<double>, std::array<char *, (unsigned long)2>, (int)4, TrivialOffsetCalculator<(int)1, unsigned int>, TrivialOffsetCalculator<(int)1, unsigned int>, at::native::memory::LoadWithoutCast, at::native::memory::StoreWithoutCast>(int, T1, T2, T4, T5, T6, T7)",
+                "void at::native::unrolled_elementwise_kernel<at::native::CUDAFunctor_add<double>, std::array<char *, (unsigned long)3>, (int)4, TrivialOffsetCalculator<(int)2, unsigned int>, TrivialOffsetCalculator<(int)1, unsigned int>, at::native::memory::LoadWithCast<(int)2>, at::native::memory::StoreWithCast<(int)1>>(int, T1, T2, T4, T5, T6, T7)",
+                "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 3)]::operator ()() const::[lambda() (instance 11)]::operator ()() const::[lambda(bool) (instance 1)], std::array<char *, (unsigned long)2>, (int)4, TrivialOffsetCalculator<(int)1, unsigned int>, TrivialOffsetCalculator<(int)1, unsigned int>, at::native::memory::LoadWithCast<(int)1>, at::native::memory::StoreWithCast<(int)1>>(int, T1, T2, T4, T5, T6, T7)",
+                "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 3)]::operator ()() const::[lambda() (instance 3)]::operator ()() const::[lambda(int) (instance 1)], std::array<char *, (unsigned long)2>, (int)4, TrivialOffsetCalculator<(int)1, unsigned int>, TrivialOffsetCalculator<(int)1, unsigned int>, at::native::memory::LoadWithCast<(int)1>, at::native::memory::StoreWithCast<(int)1>>(int, T1, T2, T4, T5, T6, T7)",
+                "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 3)]::operator ()() const::[lambda() (instance 4)]::operator ()() const::[lambda(long) (instance 1)], std::array<char *, (unsigned long)2>, (int)4, TrivialOffsetCalculator<(int)1, unsigned int>, TrivialOffsetCalculator<(int)1, unsigned int>, at::native::memory::LoadWithCast<(int)1>, at::native::memory::StoreWithCast<(int)1>>(int, T1, T2, T4, T5, T6, T7)",
+                "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 3)]::operator ()() const::[lambda() (instance 6)]::operator ()() const::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>, (int)4, TrivialOffsetCalculator<(int)1, unsigned int>, TrivialOffsetCalculator<(int)1, unsigned int>, at::native::memory::LoadWithCast<(int)1>, at::native::memory::StoreWithCast<(int)1>>(int, T1, T2, T4, T5, T6, T7)",
+                "void at::native::vectorized_elementwise_kernel<(int)2, at::native::<unnamed>::launch_clamp_scalar(at::TensorIteratorBase &, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 6)]::operator ()() const::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)2, at::native::<unnamed>::masked_fill_kernel(at::TensorIterator &, const c10::Scalar &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 4)]::operator ()() const::[lambda(long, bool) (instance 1)], std::array<char *, (unsigned long)3>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)2, at::native::AUnaryFunctor<double, double, double, at::native::binary_internal::MulFunctor<double>>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)2, at::native::AUnaryFunctor<long, long, long, at::native::binary_internal::MulFunctor<long>>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)2, at::native::BUnaryFunctor<double, double, double, at::native::binary_internal::MulFunctor<double>>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)2, at::native::BUnaryFunctor<double, double, double, at::native::remainder_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 1)]::operator ()() const::[lambda(double, double) (instance 1)]>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)2, at::native::BUnaryFunctor<long, long, long, at::native::fmod_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 4)]::operator ()() const::[lambda(long, long) (instance 1)]>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)2, at::native::BinaryFunctor<double, double, double, at::native::binary_internal::DivFunctor<double>>, std::array<char *, (unsigned long)3>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)2, at::native::BinaryFunctor<double, double, double, at::native::binary_internal::MulFunctor<double>>, std::array<char *, (unsigned long)3>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)2, at::native::CUDAFunctorOnSelf_add<double>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)2, at::native::CUDAFunctorOnSelf_add<long>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)2, at::native::CUDAFunctor_add<double>, std::array<char *, (unsigned long)3>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)2, at::native::FillFunctor<double>, std::array<char *, (unsigned long)1>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)2, at::native::FillFunctor<long>, std::array<char *, (unsigned long)1>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)2, at::native::ceil_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 1)]::operator ()() const::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)2, at::native::neg_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 6)]::operator ()() const::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)2, at::native::reciprocal_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 1)]::operator ()() const::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)2, at::native::tanh_backward_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 1)]::operator ()() const::[lambda(double, double) (instance 1)], std::array<char *, (unsigned long)3>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)2, at::native::tanh_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 1)]::operator ()() const::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)2, void at::native::<unnamed>::pow_tensor_scalar_kernel_impl<double, double>(at::TensorIteratorBase &, T2)::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)4, at::native::AUnaryFunctor<double, double, bool, at::native::<unnamed>::CompareEqFunctor<double>>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)4, at::native::AUnaryFunctor<long, long, bool, at::native::<unnamed>::CompareEqFunctor<long>>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)4, at::native::BinaryFunctor<bool, bool, bool, at::native::BitwiseAndFunctor<bool>>, std::array<char *, (unsigned long)3>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)4, at::native::BinaryFunctor<bool, bool, bool, at::native::binary_internal::MulFunctor<bool>>, std::array<char *, (unsigned long)3>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)4, at::native::BinaryFunctor<bool, bool, bool, at::native::logical_and_kernel_cuda(at::TensorIterator &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 9)]::operator ()() const::[lambda(bool, bool) (instance 1)]>, std::array<char *, (unsigned long)3>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)4, at::native::BinaryFunctor<int, int, bool, at::native::<unnamed>::CompareEqFunctor<int>>, std::array<char *, (unsigned long)3>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)4, at::native::FillFunctor<int>, std::array<char *, (unsigned long)1>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)4, at::native::bitwise_not_kernel_cuda(at::TensorIteratorBase &)::[lambda(bool) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)4, void at::native::compare_scalar_kernel<double>(at::TensorIteratorBase &, at::native::<unnamed>::OpType, T1)::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+                "void at::native::vectorized_elementwise_kernel<(int)4, void at::native::compare_scalar_kernel<long>(at::TensorIteratorBase &, at::native::<unnamed>::OpType, T1)::[lambda(long) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+                "void at::native::vectorized_gather_kernel<(int)16, long>(char *, char *, T2 *, int, long, long, long, long, bool)",
+                "void create_pivot_v2<(int)32>(int, int *, long *, int)",
+                "void dgemm_largek<(bool)0, (bool)1, (int)4, (int)4, (int)4, (int)3, (int)3, (int)16>(double *, const double *, const double *, int, int, int, int, int, int, const double *, const double *, double, double, int, int, int *, int *)",
+                "void gemmSN_NN_kernel<double, (int)128, (int)2, (int)4, (int)8, (int)3, (int)4, (bool)1, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<T9, T10, T11, T1>)",
+                "void gemmSN_NN_kernel<double, (int)128, (int)2, (int)4, (int)8, (int)4, (int)4, (bool)0, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<T9, T10, T11, T1>)",
+                "void gemmSN_NN_kernel<double, (int)256, (int)4, (int)2, (int)8, (int)3, (int)4, (bool)0, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<T9, T10, T11, T1>)",
+                "void gemmSN_NN_kernel<double, (int)256, (int)4, (int)2, (int)8, (int)3, (int)4, (bool)1, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<T9, T10, T11, T1>)",
+                "void gemmSN_TN_kernel<double, (int)128, (int)16, (int)2, (int)4, (int)4, (int)4, (bool)1, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<T9, T10, T11, T1>)",
+                "void gemmSN_TN_kernel<double, (int)128, (int)16, (int)2, (int)4, (int)6, (int)7, (bool)0, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<T9, T10, T11, T1>)",
+                "void gemmk1_kernel<int, double, (int)256, (int)5, (bool)0, (bool)0, (bool)0, (bool)0, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>, double, (int)0>(cublasGemmk1Params<T2, T9, T10, T11, T12, biasType<T11::value_type, T12>::type>)",
+                "void gemv2T_kernel_val<int, int, double, double, double, double, (int)128, (int)16, (int)2, (int)2, (bool)0, (bool)0, cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>, double>>(T13, T6, T6)",
+                "void gemv2T_kernel_val<int, int, double, double, double, double, (int)128, (int)16, (int)4, (int)4, (bool)0, (bool)0, cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>, double>>(T13, T6, T6)",
+                "void gemvNSP_kernel<double, double, double, double, (int)1, (int)32, (int)4, (int)1024, (bool)0, cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>, double>>(T10)",
+                "void gemvNSP_kernel<double, double, double, double, (int)11, (int)32, (int)4, (int)1024, (bool)0, cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>, double>>(T10)",
+                "void getrf_pivot<getrf_params_<double, (int)32, (int)1, (int)32, (int)32, (int)1>>(int, int, int, void *, int, long *, int, T1::data_type *, unsigned int *, unsigned int *, T1::data_type *, unsigned int, unsigned int, unsigned int, int *)",
+                "void ipiv_64_to_32_ker<(int)128>(long, const long *, int *)",
+                "void ipiv_lower_diag<double, (int)32>(int, void *, int, int *, int)",
+                "void ipiv_lower_small<double, (int)32>(int, void *, int, long *, int, int)",
+                "void laswp_kernel<double, (bool)0>(int, T1 *const *, int, int, int, const int *, int, int, int)",
+                "void scal_kernel<double, double, (int)1, (bool)1, (int)6, (int)4, (int)4, (int)4>(cublasTransposeParams<T2>, const T1 *, T1 *, const T2 *)",
+                "void trsm_batch_left_lower_kernel<double>(cublasTrsmBatchParams<T1>, const T1 *const *, T1 *const *, const T1 *, T1)",
+                "void trsm_batch_left_upper_kernel<double>(cublasTrsmBatchParams<T1>, const T1 *const *, T1 *const *, const T1 *, T1)",
+                "volta_dgemm_64x64_nn",
+                "volta_dgemm_64x64_nt",
+                "volta_dgemm_64x64_tn",
+                "volta_dgemm_64x64_tt",
+                "xxtrf4_set_info_ker(int, int *)"
+              ],
+              "report_sha256": "ba56badd9131adfda003bcbf0c0d1557badcf292b2e6684509e3a3c3c1fd64b5",
+              "total_kernel_ns": 4514204.0
+            },
+            "passed": true,
+            "scope": "Python/C-API inference and single-node two-GPU PyTorch training/restart; TF/JAX use the existing site CPU frameworks",
+            "training": {
+              "cases": {
+                "dpa2": {
+                  "passed": true,
+                  "restart": {
+                    "checkpoint": {
+                      "bytes": 11495603,
+                      "name": "model.ckpt-12.pt",
+                      "sha256": "d8cf7cd7d014a3466f5a65f7f35f528794c83f1ffd9b2029c995749398791c71"
+                    },
+                    "command": [
+                      "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-25-g4e1479d8a23f-r8a404f71ac4c/4V100/bin/python",
+                      "-m",
+                      "torch.distributed.run",
+                      "--standalone",
+                      "--local-addr=127.0.0.1",
+                      "--nproc_per_node=2",
+                      "/control/deepmd_training_check.py",
+                      "worker",
+                      "restart.json",
+                      "--restart",
+                      "model.ckpt-8.pt"
+                    ],
+                    "elapsed_seconds": 5.651648620143533,
+                    "learning_curve": [
+                      [
+                        8.0,
+                        0.0933,
+                        0.0951,
+                        0.033,
+                        0.0284,
+                        0.0463,
+                        0.065,
+                        0.00046
+                      ],
+                      [
+                        9.0,
+                        0.0926,
+                        0.0933,
+                        0.0341,
+                        0.033,
+                        0.0399,
+                        0.0463,
+                        0.00022
+                      ],
+                      [
+                        10.0,
+                        0.0909,
+                        0.0926,
+                        0.0342,
+                        0.0341,
+                        0.0355,
+                        0.0399,
+                        0.00022
+                      ],
+                      [
+                        11.0,
+                        0.0879,
+                        0.0909,
+                        0.0333,
+                        0.0342,
+                        0.0329,
+                        0.0355,
+                        0.00022
+                      ],
+                      [
+                        12.0,
+                        0.0836,
+                        0.0879,
+                        0.0316,
+                        0.0333,
+                        0.0318,
+                        0.0329,
+                        0.00022
+                      ]
+                    ],
+                    "passed": true,
+                    "ranks": [
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 0,
+                        "device_ids": [
+                          0
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "0db20ffb767e31130ed9c2a90b9690acd29cee9167518294e911202c7f1b2648",
+                        "find_unused_parameters": false,
+                        "forward_calls": 5,
+                        "gradient_calls": 265,
+                        "gradient_devices": [
+                          "cuda:0"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "eaf75beeb172d73df581a62cd60a694d47d6b44081a9690a7e131501d69db9cc",
+                        "local_rank": 0,
+                        "pid": 1713,
+                        "rank": 0,
+                        "world_size": 2
+                      },
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 1,
+                        "device_ids": [
+                          1
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "0db20ffb767e31130ed9c2a90b9690acd29cee9167518294e911202c7f1b2648",
+                        "find_unused_parameters": false,
+                        "forward_calls": 5,
+                        "gradient_calls": 265,
+                        "gradient_devices": [
+                          "cuda:1"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "eaf75beeb172d73df581a62cd60a694d47d6b44081a9690a7e131501d69db9cc",
+                        "local_rank": 1,
+                        "pid": 1714,
+                        "rank": 1,
+                        "world_size": 2
+                      }
+                    ],
+                    "returncode": 0
+                  },
+                  "training": {
+                    "checkpoint": {
+                      "bytes": 11495241,
+                      "name": "model.ckpt-8.pt",
+                      "sha256": "62cdcc875461f834d928f90b87b16aa9439446c92632ef9aefc81c82d22e9416"
+                    },
+                    "command": [
+                      "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-25-g4e1479d8a23f-r8a404f71ac4c/4V100/bin/python",
+                      "-m",
+                      "torch.distributed.run",
+                      "--standalone",
+                      "--local-addr=127.0.0.1",
+                      "--nproc_per_node=2",
+                      "/control/deepmd_training_check.py",
+                      "worker",
+                      "input.json"
+                    ],
+                    "elapsed_seconds": 5.8034720327705145,
+                    "learning_curve": [
+                      [
+                        1.0,
+                        0.213,
+                        0.4,
+                        0.0538,
+                        0.163,
+                        0.168,
+                        0.0307,
+                        0.001
+                      ],
+                      [
+                        2.0,
+                        0.235,
+                        0.213,
+                        0.00334,
+                        0.0538,
+                        0.235,
+                        0.168,
+                        0.001
+                      ],
+                      [
+                        3.0,
+                        0.198,
+                        0.235,
+                        0.00712,
+                        0.00334,
+                        0.197,
+                        0.235,
+                        0.001
+                      ],
+                      [
+                        4.0,
+                        0.137,
+                        0.198,
+                        0.00721,
+                        0.00712,
+                        0.136,
+                        0.197,
+                        0.001
+                      ],
+                      [
+                        5.0,
+                        0.121,
+                        0.137,
+                        0.0128,
+                        0.00721,
+                        0.117,
+                        0.136,
+                        0.00032
+                      ],
+                      [
+                        6.0,
+                        0.108,
+                        0.121,
+                        0.0186,
+                        0.0128,
+                        0.098,
+                        0.117,
+                        0.00032
+                      ],
+                      [
+                        7.0,
+                        0.0995,
+                        0.108,
+                        0.0239,
+                        0.0186,
+                        0.0804,
+                        0.098,
+                        0.00032
+                      ],
+                      [
+                        8.0,
+                        0.0951,
+                        0.0995,
+                        0.0284,
+                        0.0239,
+                        0.065,
+                        0.0804,
+                        0.00032
+                      ]
+                    ],
+                    "passed": true,
+                    "ranks": [
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 0,
+                        "device_ids": [
+                          0
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "eaf75beeb172d73df581a62cd60a694d47d6b44081a9690a7e131501d69db9cc",
+                        "find_unused_parameters": false,
+                        "forward_calls": 8,
+                        "gradient_calls": 424,
+                        "gradient_devices": [
+                          "cuda:0"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "50df515990aad8b164fb1363e7c6893767f1fd899346ee79f7d1ff2c9e8b2457",
+                        "local_rank": 0,
+                        "pid": 1334,
+                        "rank": 0,
+                        "world_size": 2
+                      },
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 1,
+                        "device_ids": [
+                          1
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "eaf75beeb172d73df581a62cd60a694d47d6b44081a9690a7e131501d69db9cc",
+                        "find_unused_parameters": false,
+                        "forward_calls": 8,
+                        "gradient_calls": 424,
+                        "gradient_devices": [
+                          "cuda:1"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "50df515990aad8b164fb1363e7c6893767f1fd899346ee79f7d1ff2c9e8b2457",
+                        "local_rank": 1,
+                        "pid": 1335,
+                        "rank": 1,
+                        "world_size": 2
+                      }
+                    ],
+                    "returncode": 0
+                  }
+                },
+                "se_e2_a": {
+                  "passed": true,
+                  "restart": {
+                    "checkpoint": {
+                      "bytes": 65837,
+                      "name": "model.ckpt-12.pt",
+                      "sha256": "a523a55ff26fd35814f8b1efd9c323ef8c9905644ff8db452cb98caa5fb73589"
+                    },
+                    "command": [
+                      "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-25-g4e1479d8a23f-r8a404f71ac4c/4V100/bin/python",
+                      "-m",
+                      "torch.distributed.run",
+                      "--standalone",
+                      "--local-addr=127.0.0.1",
+                      "--nproc_per_node=2",
+                      "/control/deepmd_training_check.py",
+                      "worker",
+                      "restart.json",
+                      "--restart",
+                      "model.ckpt-8.pt"
+                    ],
+                    "elapsed_seconds": 5.033473487943411,
+                    "learning_curve": [
+                      [
+                        8.0,
+                        0.927,
+                        0.942,
+                        0.376,
+                        0.382,
+                        0.0973,
+                        0.103,
+                        0.00046
+                      ],
+                      [
+                        9.0,
+                        0.921,
+                        0.927,
+                        0.374,
+                        0.376,
+                        0.0949,
+                        0.0973,
+                        0.00022
+                      ],
+                      [
+                        10.0,
+                        0.914,
+                        0.921,
+                        0.371,
+                        0.374,
+                        0.0924,
+                        0.0949,
+                        0.00022
+                      ],
+                      [
+                        11.0,
+                        0.907,
+                        0.914,
+                        0.369,
+                        0.371,
+                        0.09,
+                        0.0924,
+                        0.00022
+                      ],
+                      [
+                        12.0,
+                        0.9,
+                        0.907,
+                        0.366,
+                        0.369,
+                        0.0876,
+                        0.09,
+                        0.00022
+                      ]
+                    ],
+                    "passed": true,
+                    "ranks": [
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 0,
+                        "device_ids": [
+                          0
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "3c2f23fddb2e1bb6ec96ac930b2456c901a9dd864c22220525652712b0ddd84d",
+                        "find_unused_parameters": false,
+                        "forward_calls": 5,
+                        "gradient_calls": 110,
+                        "gradient_devices": [
+                          "cuda:0"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+                        "local_rank": 0,
+                        "pid": 1010,
+                        "rank": 0,
+                        "world_size": 2
+                      },
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 1,
+                        "device_ids": [
+                          1
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "3c2f23fddb2e1bb6ec96ac930b2456c901a9dd864c22220525652712b0ddd84d",
+                        "find_unused_parameters": false,
+                        "forward_calls": 5,
+                        "gradient_calls": 110,
+                        "gradient_devices": [
+                          "cuda:1"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+                        "local_rank": 1,
+                        "pid": 1011,
+                        "rank": 1,
+                        "world_size": 2
+                      }
+                    ],
+                    "returncode": 0
+                  },
+                  "training": {
+                    "checkpoint": {
+                      "bytes": 65669,
+                      "name": "model.ckpt-8.pt",
+                      "sha256": "9f823cbe6f80919d994757d66b3901ff017199fe5bcec037afe1b34759f2ce2b"
+                    },
+                    "command": [
+                      "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-25-g4e1479d8a23f-r8a404f71ac4c/4V100/bin/python",
+                      "-m",
+                      "torch.distributed.run",
+                      "--standalone",
+                      "--local-addr=127.0.0.1",
+                      "--nproc_per_node=2",
+                      "/control/deepmd_training_check.py",
+                      "worker",
+                      "input.json"
+                    ],
+                    "elapsed_seconds": 5.765873277559876,
+                    "learning_curve": [
+                      [
+                        1.0,
+                        1.08,
+                        1.12,
+                        0.437,
+                        0.45,
+                        0.159,
+                        0.174,
+                        0.001
+                      ],
+                      [
+                        2.0,
+                        1.05,
+                        1.08,
+                        0.424,
+                        0.437,
+                        0.145,
+                        0.159,
+                        0.001
+                      ],
+                      [
+                        3.0,
+                        1.02,
+                        1.05,
+                        0.411,
+                        0.424,
+                        0.131,
+                        0.145,
+                        0.001
+                      ],
+                      [
+                        4.0,
+                        0.983,
+                        1.02,
+                        0.398,
+                        0.411,
+                        0.118,
+                        0.131,
+                        0.001
+                      ],
+                      [
+                        5.0,
+                        0.972,
+                        0.983,
+                        0.394,
+                        0.398,
+                        0.114,
+                        0.118,
+                        0.00032
+                      ],
+                      [
+                        6.0,
+                        0.962,
+                        0.972,
+                        0.39,
+                        0.394,
+                        0.11,
+                        0.114,
+                        0.00032
+                      ],
+                      [
+                        7.0,
+                        0.952,
+                        0.962,
+                        0.386,
+                        0.39,
+                        0.107,
+                        0.11,
+                        0.00032
+                      ],
+                      [
+                        8.0,
+                        0.942,
+                        0.952,
+                        0.382,
+                        0.386,
+                        0.103,
+                        0.107,
+                        0.00032
+                      ]
+                    ],
+                    "passed": true,
+                    "ranks": [
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 0,
+                        "device_ids": [
+                          0
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+                        "find_unused_parameters": false,
+                        "forward_calls": 8,
+                        "gradient_calls": 176,
+                        "gradient_devices": [
+                          "cuda:0"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "af50ae37d0e6bc6c6774523d032a4d14c8e7c7d23e61f7694c271a063494c331",
+                        "local_rank": 0,
+                        "pid": 631,
+                        "rank": 0,
+                        "world_size": 2
+                      },
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 1,
+                        "device_ids": [
+                          1
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+                        "find_unused_parameters": false,
+                        "forward_calls": 8,
+                        "gradient_calls": 176,
+                        "gradient_devices": [
+                          "cuda:1"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "af50ae37d0e6bc6c6774523d032a4d14c8e7c7d23e61f7694c271a063494c331",
+                        "local_rank": 1,
+                        "pid": 632,
+                        "rank": 1,
+                        "world_size": 2
+                      }
+                    ],
+                    "returncode": 0
+                  }
+                }
+              },
+              "installation": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-25-g4e1479d8a23f-r8a404f71ac4c/4V100",
+              "job": "1955181",
+              "partition": "4V100",
+              "passed": true
+            }
+          },
+          "sha256": "9807823e1211269f0e4c91ff16e2454a2a38c7e40280a348cb98c1cf39a7abef"
+        },
+        "runtime/training/inventory.json": {
+          "bytes": 4899,
+          "content": {
+            "affinity": [
+              0,
+              1,
+              2,
+              3,
+              12,
+              13,
+              14,
+              15,
+              16,
+              17,
+              18,
+              19,
+              28,
+              29,
+              30,
+              31
+            ],
+            "cuda_visible_devices": null,
+            "deepmd": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-25-g4e1479d8a23f-r8a404f71ac4c/4V100/lib/python3.13/site-packages/deepmd",
+            "devices": [
+              {
+                "index": 0,
+                "name": "Tesla V100-SXM2-32GB"
+              },
+              {
+                "index": 1,
+                "name": "Tesla V100-SXM2-32GB"
+              }
+            ],
+            "horovod": false,
+            "ldconfig": true,
+            "nccl": [
+              2,
+              29,
+              3
+            ],
+            "nvcc": "/opt/devtools/nvidia/cuda-12.9.1/bin/nvcc",
+            "python": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-25-g4e1479d8a23f-r8a404f71ac4c/4V100/bin/python",
+            "source": {
+              "pt/model/descriptor/se_a.py": {
+                "excerpts": [
+                  "563:         # add for compression",
+                  "564:         self.compress = False",
+                  "565:         self.compress_info = nn.ParameterList(",
+                  "566:             [",
+                  "567:                 nn.Parameter(torch.zeros(0, dtype=self.prec, device=\"cpu\"))",
+                  "568:                 for _ in range(len(self.filter_layers.networks))",
+                  "569:             ]",
+                  "570:         )",
+                  "571:         self.compress_data = nn.ParameterList(",
+                  "572:             [",
+                  "573:                 nn.Parameter(torch.zeros(0, dtype=self.prec, device=env.DEVICE))",
+                  "574:                 for _ in range(len(self.filter_layers.networks))",
+                  "575:             ]",
+                  "576:         )",
+                  "577: ",
+                  "578:     def get_rcut(self) -> float:",
+                  "579:         \"\"\"Returns the cut-off radius.\"\"\""
+                ],
+                "sha256": "2abb1644a14f15fcf9be59375ecc1455b0200531b9f3fc2e74eacdbbe1e9f0a3"
+              },
+              "pt/train/training.py": {
+                "excerpts": [
+                  "966:                 # zero_stage=0 or 1: standard DDP (ZeRO-1 will wrap the optimizer)",
+                  "967:                 #",
+                  "968:                 # ``find_unused_parameters`` makes the reducer traverse the",
+                  "969:                 # autograd graph on every iteration to find parameters that",
+                  "970:                 # produced no gradient bucket, which it would otherwise wait",
+                  "971:                 # for forever. Multi-task needs it, because a step uses one",
+                  "972:                 # fitting net and leaves the others out of the graph. A",
+                  "973:                 # single-task step reaches every parameter (an all-zero",
+                  "974:                 # gradient still produces a bucket), so the traversal is pure",
+                  "975:                 # overhead there. A configuration that did leave a parameter",
+                  "976:                 # out of the graph would hang the reducer rather than fail, so",
+                  "980:                     self.wrapper,",
+                  "981:                     device_ids=[LOCAL_RANK],",
+                  "982:                     find_unused_parameters=self.multi_task,",
+                  "983:                     output_device=LOCAL_RANK,",
+                  "984:                 )",
+                  "985: ",
+                  "986:         # TODO add lr warmups for multitask",
+                  "987:         # author: iProzd",
+                  "988:         # TODO add optimizers for multitask",
+                  "989:         # author: iProzd",
+                  "990:         initial_lr = self.lr_schedule.value(self.start_step)"
+                ],
+                "sha256": "6299f10b2d134051c395c0a7bd77655043352ca3ba7c8b136605428f4b92a69e"
+              },
+              "tf/train/run_options.py": {
+                "excerpts": [
+                  "30: ",
+                  "31: if TYPE_CHECKING:",
+                  "32:     import horovod.tensorflow as HVD",
+                  "33: ",
+                  "34: ",
+                  "35: __all__ = [",
+                  "36:     \"RunOptions\",",
+                  "37: ]",
+                  "38: ",
+                  "39: log = logging.getLogger(__name__)",
+                  "40: ",
+                  "204:     def _try_init_distrib(self) -> None:",
+                  "205:         try:",
+                  "206:             import horovod.tensorflow as HVD",
+                  "207: ",
+                  "208:             HVD.init()",
+                  "209:             self.is_distrib = HVD.size() > 1",
+                  "210:         except ImportError:",
+                  "211:             log.warning(\"Switch to serial execution due to lack of horovod module.\")",
+                  "212:             self.is_distrib = False",
+                  "213: ",
+                  "214:         # Do real initialization",
+                  "215:         if self.is_distrib:",
+                  "216:             self._init_distributed(HVD)",
+                  "217:             self._HVD = HVD",
+                  "218:         else:",
+                  "219:             self._init_serial()"
+                ],
+                "sha256": "637827720ee1a8411dbf93b51144fc7037308b7cbda9095d64109da5060d232d"
+              }
+            },
+            "torch_cuda": "12.6",
+            "versions": {
+              "deepmd-kit": "0.1.dev1+g4e1479d8a.d20261026",
+              "horovod": null,
+              "jax": "0.11.1",
+              "numpy": "2.5.2",
+              "tensorflow": null,
+              "torch": "2.13.0+cu126",
+              "triton": "3.7.1"
+            }
+          },
+          "sha256": "b283f8a81576334e6cff740cef2c2061b7687d65bfe15cbce9cb8ccc62b07ee8"
+        },
+        "runtime/training/summary.json": {
+          "bytes": 14104,
+          "content": {
+            "cases": {
+              "dpa2": {
+                "passed": true,
+                "restart": {
+                  "checkpoint": {
+                    "bytes": 11495603,
+                    "name": "model.ckpt-12.pt",
+                    "sha256": "d8cf7cd7d014a3466f5a65f7f35f528794c83f1ffd9b2029c995749398791c71"
+                  },
+                  "command": [
+                    "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-25-g4e1479d8a23f-r8a404f71ac4c/4V100/bin/python",
+                    "-m",
+                    "torch.distributed.run",
+                    "--standalone",
+                    "--local-addr=127.0.0.1",
+                    "--nproc_per_node=2",
+                    "/control/deepmd_training_check.py",
+                    "worker",
+                    "restart.json",
+                    "--restart",
+                    "model.ckpt-8.pt"
+                  ],
+                  "elapsed_seconds": 5.651648620143533,
+                  "learning_curve": [
+                    [
+                      8.0,
+                      0.0933,
+                      0.0951,
+                      0.033,
+                      0.0284,
+                      0.0463,
+                      0.065,
+                      0.00046
+                    ],
+                    [
+                      9.0,
+                      0.0926,
+                      0.0933,
+                      0.0341,
+                      0.033,
+                      0.0399,
+                      0.0463,
+                      0.00022
+                    ],
+                    [
+                      10.0,
+                      0.0909,
+                      0.0926,
+                      0.0342,
+                      0.0341,
+                      0.0355,
+                      0.0399,
+                      0.00022
+                    ],
+                    [
+                      11.0,
+                      0.0879,
+                      0.0909,
+                      0.0333,
+                      0.0342,
+                      0.0329,
+                      0.0355,
+                      0.00022
+                    ],
+                    [
+                      12.0,
+                      0.0836,
+                      0.0879,
+                      0.0316,
+                      0.0333,
+                      0.0318,
+                      0.0329,
+                      0.00022
+                    ]
+                  ],
+                  "passed": true,
+                  "ranks": [
+                    {
+                      "backend": "cuda:nccl,cpu:gloo",
+                      "cuda_current_device": 0,
+                      "device_ids": [
+                        0
+                      ],
+                      "empty_trainable_parameters": [],
+                      "final_parameters_sha256": "0db20ffb767e31130ed9c2a90b9690acd29cee9167518294e911202c7f1b2648",
+                      "find_unused_parameters": false,
+                      "forward_calls": 5,
+                      "gradient_calls": 265,
+                      "gradient_devices": [
+                        "cuda:0"
+                      ],
+                      "gradients_finite": true,
+                      "initial_parameters_sha256": "eaf75beeb172d73df581a62cd60a694d47d6b44081a9690a7e131501d69db9cc",
+                      "local_rank": 0,
+                      "pid": 1713,
+                      "rank": 0,
+                      "world_size": 2
+                    },
+                    {
+                      "backend": "cuda:nccl,cpu:gloo",
+                      "cuda_current_device": 1,
+                      "device_ids": [
+                        1
+                      ],
+                      "empty_trainable_parameters": [],
+                      "final_parameters_sha256": "0db20ffb767e31130ed9c2a90b9690acd29cee9167518294e911202c7f1b2648",
+                      "find_unused_parameters": false,
+                      "forward_calls": 5,
+                      "gradient_calls": 265,
+                      "gradient_devices": [
+                        "cuda:1"
+                      ],
+                      "gradients_finite": true,
+                      "initial_parameters_sha256": "eaf75beeb172d73df581a62cd60a694d47d6b44081a9690a7e131501d69db9cc",
+                      "local_rank": 1,
+                      "pid": 1714,
+                      "rank": 1,
+                      "world_size": 2
+                    }
+                  ],
+                  "returncode": 0
+                },
+                "training": {
+                  "checkpoint": {
+                    "bytes": 11495241,
+                    "name": "model.ckpt-8.pt",
+                    "sha256": "62cdcc875461f834d928f90b87b16aa9439446c92632ef9aefc81c82d22e9416"
+                  },
+                  "command": [
+                    "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-25-g4e1479d8a23f-r8a404f71ac4c/4V100/bin/python",
+                    "-m",
+                    "torch.distributed.run",
+                    "--standalone",
+                    "--local-addr=127.0.0.1",
+                    "--nproc_per_node=2",
+                    "/control/deepmd_training_check.py",
+                    "worker",
+                    "input.json"
+                  ],
+                  "elapsed_seconds": 5.8034720327705145,
+                  "learning_curve": [
+                    [
+                      1.0,
+                      0.213,
+                      0.4,
+                      0.0538,
+                      0.163,
+                      0.168,
+                      0.0307,
+                      0.001
+                    ],
+                    [
+                      2.0,
+                      0.235,
+                      0.213,
+                      0.00334,
+                      0.0538,
+                      0.235,
+                      0.168,
+                      0.001
+                    ],
+                    [
+                      3.0,
+                      0.198,
+                      0.235,
+                      0.00712,
+                      0.00334,
+                      0.197,
+                      0.235,
+                      0.001
+                    ],
+                    [
+                      4.0,
+                      0.137,
+                      0.198,
+                      0.00721,
+                      0.00712,
+                      0.136,
+                      0.197,
+                      0.001
+                    ],
+                    [
+                      5.0,
+                      0.121,
+                      0.137,
+                      0.0128,
+                      0.00721,
+                      0.117,
+                      0.136,
+                      0.00032
+                    ],
+                    [
+                      6.0,
+                      0.108,
+                      0.121,
+                      0.0186,
+                      0.0128,
+                      0.098,
+                      0.117,
+                      0.00032
+                    ],
+                    [
+                      7.0,
+                      0.0995,
+                      0.108,
+                      0.0239,
+                      0.0186,
+                      0.0804,
+                      0.098,
+                      0.00032
+                    ],
+                    [
+                      8.0,
+                      0.0951,
+                      0.0995,
+                      0.0284,
+                      0.0239,
+                      0.065,
+                      0.0804,
+                      0.00032
+                    ]
+                  ],
+                  "passed": true,
+                  "ranks": [
+                    {
+                      "backend": "cuda:nccl,cpu:gloo",
+                      "cuda_current_device": 0,
+                      "device_ids": [
+                        0
+                      ],
+                      "empty_trainable_parameters": [],
+                      "final_parameters_sha256": "eaf75beeb172d73df581a62cd60a694d47d6b44081a9690a7e131501d69db9cc",
+                      "find_unused_parameters": false,
+                      "forward_calls": 8,
+                      "gradient_calls": 424,
+                      "gradient_devices": [
+                        "cuda:0"
+                      ],
+                      "gradients_finite": true,
+                      "initial_parameters_sha256": "50df515990aad8b164fb1363e7c6893767f1fd899346ee79f7d1ff2c9e8b2457",
+                      "local_rank": 0,
+                      "pid": 1334,
+                      "rank": 0,
+                      "world_size": 2
+                    },
+                    {
+                      "backend": "cuda:nccl,cpu:gloo",
+                      "cuda_current_device": 1,
+                      "device_ids": [
+                        1
+                      ],
+                      "empty_trainable_parameters": [],
+                      "final_parameters_sha256": "eaf75beeb172d73df581a62cd60a694d47d6b44081a9690a7e131501d69db9cc",
+                      "find_unused_parameters": false,
+                      "forward_calls": 8,
+                      "gradient_calls": 424,
+                      "gradient_devices": [
+                        "cuda:1"
+                      ],
+                      "gradients_finite": true,
+                      "initial_parameters_sha256": "50df515990aad8b164fb1363e7c6893767f1fd899346ee79f7d1ff2c9e8b2457",
+                      "local_rank": 1,
+                      "pid": 1335,
+                      "rank": 1,
+                      "world_size": 2
+                    }
+                  ],
+                  "returncode": 0
+                }
+              },
+              "se_e2_a": {
+                "passed": true,
+                "restart": {
+                  "checkpoint": {
+                    "bytes": 65837,
+                    "name": "model.ckpt-12.pt",
+                    "sha256": "a523a55ff26fd35814f8b1efd9c323ef8c9905644ff8db452cb98caa5fb73589"
+                  },
+                  "command": [
+                    "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-25-g4e1479d8a23f-r8a404f71ac4c/4V100/bin/python",
+                    "-m",
+                    "torch.distributed.run",
+                    "--standalone",
+                    "--local-addr=127.0.0.1",
+                    "--nproc_per_node=2",
+                    "/control/deepmd_training_check.py",
+                    "worker",
+                    "restart.json",
+                    "--restart",
+                    "model.ckpt-8.pt"
+                  ],
+                  "elapsed_seconds": 5.033473487943411,
+                  "learning_curve": [
+                    [
+                      8.0,
+                      0.927,
+                      0.942,
+                      0.376,
+                      0.382,
+                      0.0973,
+                      0.103,
+                      0.00046
+                    ],
+                    [
+                      9.0,
+                      0.921,
+                      0.927,
+                      0.374,
+                      0.376,
+                      0.0949,
+                      0.0973,
+                      0.00022
+                    ],
+                    [
+                      10.0,
+                      0.914,
+                      0.921,
+                      0.371,
+                      0.374,
+                      0.0924,
+                      0.0949,
+                      0.00022
+                    ],
+                    [
+                      11.0,
+                      0.907,
+                      0.914,
+                      0.369,
+                      0.371,
+                      0.09,
+                      0.0924,
+                      0.00022
+                    ],
+                    [
+                      12.0,
+                      0.9,
+                      0.907,
+                      0.366,
+                      0.369,
+                      0.0876,
+                      0.09,
+                      0.00022
+                    ]
+                  ],
+                  "passed": true,
+                  "ranks": [
+                    {
+                      "backend": "cuda:nccl,cpu:gloo",
+                      "cuda_current_device": 0,
+                      "device_ids": [
+                        0
+                      ],
+                      "empty_trainable_parameters": [],
+                      "final_parameters_sha256": "3c2f23fddb2e1bb6ec96ac930b2456c901a9dd864c22220525652712b0ddd84d",
+                      "find_unused_parameters": false,
+                      "forward_calls": 5,
+                      "gradient_calls": 110,
+                      "gradient_devices": [
+                        "cuda:0"
+                      ],
+                      "gradients_finite": true,
+                      "initial_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+                      "local_rank": 0,
+                      "pid": 1010,
+                      "rank": 0,
+                      "world_size": 2
+                    },
+                    {
+                      "backend": "cuda:nccl,cpu:gloo",
+                      "cuda_current_device": 1,
+                      "device_ids": [
+                        1
+                      ],
+                      "empty_trainable_parameters": [],
+                      "final_parameters_sha256": "3c2f23fddb2e1bb6ec96ac930b2456c901a9dd864c22220525652712b0ddd84d",
+                      "find_unused_parameters": false,
+                      "forward_calls": 5,
+                      "gradient_calls": 110,
+                      "gradient_devices": [
+                        "cuda:1"
+                      ],
+                      "gradients_finite": true,
+                      "initial_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+                      "local_rank": 1,
+                      "pid": 1011,
+                      "rank": 1,
+                      "world_size": 2
+                    }
+                  ],
+                  "returncode": 0
+                },
+                "training": {
+                  "checkpoint": {
+                    "bytes": 65669,
+                    "name": "model.ckpt-8.pt",
+                    "sha256": "9f823cbe6f80919d994757d66b3901ff017199fe5bcec037afe1b34759f2ce2b"
+                  },
+                  "command": [
+                    "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-25-g4e1479d8a23f-r8a404f71ac4c/4V100/bin/python",
+                    "-m",
+                    "torch.distributed.run",
+                    "--standalone",
+                    "--local-addr=127.0.0.1",
+                    "--nproc_per_node=2",
+                    "/control/deepmd_training_check.py",
+                    "worker",
+                    "input.json"
+                  ],
+                  "elapsed_seconds": 5.765873277559876,
+                  "learning_curve": [
+                    [
+                      1.0,
+                      1.08,
+                      1.12,
+                      0.437,
+                      0.45,
+                      0.159,
+                      0.174,
+                      0.001
+                    ],
+                    [
+                      2.0,
+                      1.05,
+                      1.08,
+                      0.424,
+                      0.437,
+                      0.145,
+                      0.159,
+                      0.001
+                    ],
+                    [
+                      3.0,
+                      1.02,
+                      1.05,
+                      0.411,
+                      0.424,
+                      0.131,
+                      0.145,
+                      0.001
+                    ],
+                    [
+                      4.0,
+                      0.983,
+                      1.02,
+                      0.398,
+                      0.411,
+                      0.118,
+                      0.131,
+                      0.001
+                    ],
+                    [
+                      5.0,
+                      0.972,
+                      0.983,
+                      0.394,
+                      0.398,
+                      0.114,
+                      0.118,
+                      0.00032
+                    ],
+                    [
+                      6.0,
+                      0.962,
+                      0.972,
+                      0.39,
+                      0.394,
+                      0.11,
+                      0.114,
+                      0.00032
+                    ],
+                    [
+                      7.0,
+                      0.952,
+                      0.962,
+                      0.386,
+                      0.39,
+                      0.107,
+                      0.11,
+                      0.00032
+                    ],
+                    [
+                      8.0,
+                      0.942,
+                      0.952,
+                      0.382,
+                      0.386,
+                      0.103,
+                      0.107,
+                      0.00032
+                    ]
+                  ],
+                  "passed": true,
+                  "ranks": [
+                    {
+                      "backend": "cuda:nccl,cpu:gloo",
+                      "cuda_current_device": 0,
+                      "device_ids": [
+                        0
+                      ],
+                      "empty_trainable_parameters": [],
+                      "final_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+                      "find_unused_parameters": false,
+                      "forward_calls": 8,
+                      "gradient_calls": 176,
+                      "gradient_devices": [
+                        "cuda:0"
+                      ],
+                      "gradients_finite": true,
+                      "initial_parameters_sha256": "af50ae37d0e6bc6c6774523d032a4d14c8e7c7d23e61f7694c271a063494c331",
+                      "local_rank": 0,
+                      "pid": 631,
+                      "rank": 0,
+                      "world_size": 2
+                    },
+                    {
+                      "backend": "cuda:nccl,cpu:gloo",
+                      "cuda_current_device": 1,
+                      "device_ids": [
+                        1
+                      ],
+                      "empty_trainable_parameters": [],
+                      "final_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+                      "find_unused_parameters": false,
+                      "forward_calls": 8,
+                      "gradient_calls": 176,
+                      "gradient_devices": [
+                        "cuda:1"
+                      ],
+                      "gradients_finite": true,
+                      "initial_parameters_sha256": "af50ae37d0e6bc6c6774523d032a4d14c8e7c7d23e61f7694c271a063494c331",
+                      "local_rank": 1,
+                      "pid": 632,
+                      "rank": 1,
+                      "world_size": 2
+                    }
+                  ],
+                  "returncode": 0
+                }
+              }
+            },
+            "installation": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-25-g4e1479d8a23f-r8a404f71ac4c/4V100",
+            "job": "1955181",
+            "partition": "4V100",
+            "passed": true
+          },
+          "sha256": "53ce0d1aebfdc79195c55211246f6a464b79c0ee42d661676d7841d1e4fde741"
+        }
+      },
       "request": {
         "controller": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/controller/fe01c199b975b82b0b82d783aaf0e343ff8b9393/dp-40316174805-1-development-4v100-avx512-4e1479d8a23f",
         "controller_sha256": "8a404f71ac4cbf385124391a54a0df0013ba206c9ab924d301d25587df03b2fb",
@@ -2492,6 +4100,820 @@
         "job_id": "1955181",
         "job_script_sha256": "8fb47cb990353d062d6f00bc8e86714c7990be6b9d85733e5d985561efc9b9ca",
         "schema": 1
+      },
+      "reverified_status": {
+        "accounting": "1955181|COMPLETED|0:0|00:10:38|4v100n25|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-40316174805-1-development-4v100-avx512-4e1479d8a23f",
+        "artifact_sha256": "2acc7a7dc4c269457a25ed95b312c9cb6053bc10c04540c2eab14971d5d68d32",
+        "build_receipt_sha256": "a6f9b38256e4fd44d54e8dec2aa582668decf496204f0fdde026a85c97509536",
+        "build_verified": true,
+        "delivery": {
+          "identity": {
+            "build_id": "master-2026-10-25-g4e1479d8a23f-r8a404f71ac4c",
+            "cpu_arch": "znver4",
+            "cuda_arch": "70",
+            "dependency_isa": "avx512",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-25-g4e1479d8a23f-r8a404f71ac4c/4V100",
+            "partition": "4V100",
+            "recipe_sha256": "8a404f71ac4cbf385124391a54a0df0013ba206c9ab924d301d25587df03b2fb",
+            "repository": "deepmodeling/deepmd-kit",
+            "schema": 2,
+            "software": "deepmd-kit",
+            "source_ref": "master",
+            "source_sha": "4e1479d8a23fcc1c9baf36004d5685898ad421a8",
+            "source_version": "master-2026-10-25",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "4v100-avx512",
+            "track": "development",
+            "version_label": "master-2026-10-25"
+          },
+          "schema": 1
+        },
+        "job_id": "1955181",
+        "native_runtime_verified": false,
+        "published": false,
+        "run_id": "dp-40316174805-1-development-4v100-avx512-4e1479d8a23f",
+        "science": {
+          "cases": {
+            "jax/c-api": {
+              "measurements": {
+                "baseline": 3,
+                "candidate": 3
+              },
+              "median_seconds": {
+                "baseline": 0.0005535539239645004,
+                "candidate": 0.000541292130947113
+              },
+              "passed": true,
+              "performance_threshold_applied": false,
+              "speedup": 1.0226528196446023,
+              "warmups": {
+                "baseline": 1,
+                "candidate": 1
+              }
+            },
+            "jax/python": {
+              "measurements": {
+                "baseline": 3,
+                "candidate": 3
+              },
+              "median_seconds": {
+                "baseline": 0.0016904063522815704,
+                "candidate": 0.0016941465437412262
+              },
+              "passed": true,
+              "performance_threshold_applied": false,
+              "speedup": 0.9977922857538662,
+              "warmups": {
+                "baseline": 1,
+                "candidate": 1
+              }
+            },
+            "pt/c-api": {
+              "measurements": {
+                "baseline": 3,
+                "candidate": 3
+              },
+              "median_seconds": {
+                "baseline": 0.21978537552058697,
+                "candidate": 0.29456190951168537
+              },
+              "passed": true,
+              "performance_threshold_applied": false,
+              "speedup": 0.7461432331320083,
+              "warmups": {
+                "baseline": 1,
+                "candidate": 1
+              }
+            },
+            "pt/python": {
+              "measurements": {
+                "baseline": 3,
+                "candidate": 3
+              },
+              "median_seconds": {
+                "baseline": 0.17150359600782394,
+                "candidate": 0.16959179751574993
+              },
+              "passed": true,
+              "performance_threshold_applied": false,
+              "speedup": 1.0112729419705364,
+              "warmups": {
+                "baseline": 1,
+                "candidate": 1
+              }
+            },
+            "tf/c-api": {
+              "measurements": {
+                "baseline": 3,
+                "candidate": 3
+              },
+              "median_seconds": {
+                "baseline": 0.00024780072271823883,
+                "candidate": 0.00025751255452632904
+              },
+              "passed": true,
+              "performance_threshold_applied": false,
+              "speedup": 0.9622859870814677,
+              "warmups": {
+                "baseline": 1,
+                "candidate": 1
+              }
+            },
+            "tf/python": {
+              "measurements": {
+                "baseline": 3,
+                "candidate": 3
+              },
+              "median_seconds": {
+                "baseline": 0.0005608107894659042,
+                "candidate": 0.00048820115625858307
+              },
+              "passed": true,
+              "performance_threshold_applied": false,
+              "speedup": 1.148728925109023,
+              "warmups": {
+                "baseline": 1,
+                "candidate": 1
+              }
+            }
+          },
+          "gpu": {
+            "backend": "pt",
+            "csv_sha256": "50ac0550ed5dfd7175204f57dca2690befc5789037c77b1fdaa0900482968d43",
+            "devices": [
+              "Tesla V100-SXM2-32GB (0)"
+            ],
+            "engine": "c-api",
+            "kernel_events": 1486,
+            "kernel_names": [
+              "fused_add_add",
+              "fused_add_add_reciprocal_pow_div",
+              "fused_clamp_sub_div__6412312278190731083",
+              "fused_div_mul_mul",
+              "fused_mul_mul_mul_mu_8606757649921672575",
+              "fused_neg_mul_mul_div",
+              "fused_neg_mul_mul_mul_pow_mul_add_add",
+              "fused_reciprocal_mul_ceil",
+              "fused_unsqueeze_unsqueeze_sub",
+              "fused_unsqueeze_where",
+              "reduction_prod_kernel",
+              "void <unnamed>::elementwise_kernel_with_index<int, at::native::arange_cuda_out(const c10::Scalar &, const c10::Scalar &, const c10::Scalar &, at::Tensor &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 3)]::operator ()() const::[lambda(long) (instance 1)]>(T1, T2, function_traits<T2>::result_type *)",
+              "void <unnamed>::elementwise_kernel_with_index<int, at::native::arange_cuda_out(const c10::Scalar &, const c10::Scalar &, const c10::Scalar &, at::Tensor &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 4)]::operator ()() const::[lambda(long) (instance 1)]>(T1, T2, function_traits<T2>::result_type *)",
+              "void at::native::<unnamed>::CatArrayBatchedCopy<at::native::<unnamed>::OpaqueType<(unsigned int)8>, unsigned int, (int)3, (int)64, (int)64>(T1 *, at::native::<unnamed>::CatArrInputTensorMetadata<T1, T2, T4, T5>, at::native::<unnamed>::TensorSizeStride<T2, (unsigned int)4>, int, T2)",
+              "void at::native::<unnamed>::CatArrayBatchedCopy_alignedK_contig<at::native::<unnamed>::OpaqueType<(unsigned int)8>, unsigned int, (int)2, (int)128, (int)1, (int)16>(T1 *, at::native::<unnamed>::CatArrInputTensorMetadata<T1, T2, T4, T5>, at::native::<unnamed>::TensorSizeStride<T2, (unsigned int)4>, int, T2)",
+              "void at::native::<unnamed>::CatArrayBatchedCopy_alignedK_contig<at::native::<unnamed>::OpaqueType<(unsigned int)8>, unsigned int, (int)3, (int)128, (int)1, (int)16>(T1 *, at::native::<unnamed>::CatArrInputTensorMetadata<T1, T2, T4, T5>, at::native::<unnamed>::TensorSizeStride<T2, (unsigned int)4>, int, T2)",
+              "void at::native::<unnamed>::CatArrayBatchedCopy_alignedK_contig<at::native::<unnamed>::OpaqueType<(unsigned int)8>, unsigned int, (int)4, (int)128, (int)1, (int)16>(T1 *, at::native::<unnamed>::CatArrInputTensorMetadata<T1, T2, T4, T5>, at::native::<unnamed>::TensorSizeStride<T2, (unsigned int)4>, int, T2)",
+              "void at::native::<unnamed>::CatArrayBatchedCopy_vectorized<at::native::<unnamed>::OpaqueType<(unsigned int)8>, unsigned int, (int)3, (int)128, (int)1, (int)16, (int)2>(char *, at::native::<unnamed>::CatArrInputTensorMetadata<T1, T2, T4, T5>, at::native::<unnamed>::TensorSizeStride<T2, (unsigned int)4>, int, T2)",
+              "void at::native::_scatter_gather_elementwise_kernel<(int)128, (int)8, void at::native::_cuda_scatter_gather_internal_kernel<(bool)0, at::native::OpaqueType<(int)8>, long>::operator ()<at::native::TensorAssign>(at::TensorIterator &, long, long, long, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+              "void at::native::_scatter_gather_elementwise_kernel<(int)128, (int)8, void at::native::_cuda_scatter_gather_internal_kernel<(bool)1, double, long>::operator ()<at::native::ReduceAdd>(at::TensorIterator &, long, long, long, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+              "void at::native::bitonicSortKVInPlace<(int)-2, (int)-1, (int)16, (int)16, double, long, at::native::LTOp<double, (bool)1>, unsigned int>(at::cuda::detail::TensorInfo<T5, T8>, T8, T8, T8, at::cuda::detail::TensorInfo<T6, T8>, T8, T7)",
+              "void at::native::cross_kernel<double, OffsetCalculator<(int)3, unsigned int, (bool)0>, int>(int, T1 *, const T1 *, const T1 *, T2, T3, T3, T3)",
+              "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::<unnamed>::masked_fill_kernel(at::TensorIterator &, const c10::Scalar &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 6)]::operator ()() const::[lambda(double, bool) (instance 1)]>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+              "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::<unnamed>::where_kernel_impl(at::TensorIterator &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 4)]::operator ()() const::[lambda(bool, unsigned long, unsigned long) (instance 1)]>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+              "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<double, double, double, at::native::binary_internal::DivFunctor<double>>>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+              "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<double, double, double, at::native::binary_internal::MulFunctor<double>>>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+              "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::CUDAFunctor_add<double>>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+              "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::FillFunctor<double>>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+              "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 3)]::operator ()() const::[lambda() (instance 4)]::operator ()() const::[lambda(long) (instance 1)]>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+              "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 3)]::operator ()() const::[lambda() (instance 6)]::operator ()() const::[lambda(double) (instance 1)]>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+              "void at::native::elementwise_kernel<(int)128, (int)2, void at::native::gpu_kernel_impl_nocast<at::native::neg_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 6)]::operator ()() const::[lambda(double) (instance 1)]>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+              "void at::native::elementwise_kernel<(int)128, (int)4, void at::native::gpu_kernel_impl<at::native::BinaryFunctor<double, double, double, at::native::binary_internal::MulFunctor<double>>>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+              "void at::native::elementwise_kernel<(int)128, (int)4, void at::native::gpu_kernel_impl_nocast<at::native::BinaryFunctor<bool, bool, bool, at::native::logical_or_kernel_cuda(at::TensorIterator &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 9)]::operator ()() const::[lambda(bool, bool) (instance 1)]>>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+              "void at::native::elementwise_kernel<(int)128, (int)4, void at::native::gpu_kernel_impl_nocast<void at::native::compare_scalar_kernel<double>(at::TensorIteratorBase &, at::native::<unnamed>::OpType, T1)::[lambda(double) (instance 1)]>(at::TensorIteratorBase &, const T1 &)::[lambda(int) (instance 1)]>(int, T3)",
+              "void at::native::index_elementwise_kernel<(int)128, (int)4, void at::native::gpu_index_kernel<void at::native::index_kernel_impl<at::native::OpaqueType<(int)4>>(at::TensorIteratorBase &, c10::ArrayRef<long>, c10::ArrayRef<long>)::[lambda(char *, const char *, long) (instance 1)]>(at::TensorIteratorBase &, c10::ArrayRef<long>, c10::ArrayRef<long>, const T1 &, bool)::[lambda(int) (instance 1)]>(long, T3)",
+              "void at::native::index_elementwise_kernel<(int)128, (int)4, void at::native::gpu_index_kernel<void at::native::index_kernel_impl<at::native::OpaqueType<(int)8>>(at::TensorIteratorBase &, c10::ArrayRef<long>, c10::ArrayRef<long>)::[lambda(char *, const char *, long) (instance 1)]>(at::TensorIteratorBase &, c10::ArrayRef<long>, c10::ArrayRef<long>, const T1 &, bool)::[lambda(int) (instance 1)]>(long, T3)",
+              "void at::native::index_elementwise_kernel<(int)128, (int)4, void at::native::gpu_index_kernel<void at::native::index_put_kernel_impl<at::native::OpaqueType<(int)8>>(at::TensorIterator &, c10::ArrayRef<long>, c10::ArrayRef<long>)::[lambda(char *, const char *, long) (instance 1)]>(at::TensorIteratorBase &, c10::ArrayRef<long>, c10::ArrayRef<long>, const T1 &, bool)::[lambda(int) (instance 1)]>(long, T3)",
+              "void at::native::radixSortKVInPlace<(int)2, (int)-1, (int)32, (int)32, double, long, unsigned int>(at::cuda::detail::TensorInfo<T5, T7>, T7, T7, T7, at::cuda::detail::TensorInfo<T6, T7>, T7, bool)",
+              "void at::native::radixSortKVInPlace<(int)2, (int)-1, (int)32, (int)32, int, long, unsigned int>(at::cuda::detail::TensorInfo<T5, T7>, T7, T7, T7, at::cuda::detail::TensorInfo<T6, T7>, T7, bool)",
+              "void at::native::reduce_kernel<(int)128, (int)4, at::native::ReduceOp<double, at::native::func_wrapper_t<double, at::native::sum_functor<double, double, double>::operator ()(at::TensorIterator &)::[lambda(double, double) (instance 1)]>, unsigned int, double, (int)4, (int)4>>(T3)",
+              "void at::native::reduce_kernel<(int)256, (int)2, at::native::ReduceOp<double, at::native::func_wrapper_t<double, at::native::sum_functor<double, double, double>::operator ()(at::TensorIterator &)::[lambda(double, double) (instance 1)]>, unsigned int, double, (int)4, (int)4>>(T3)",
+              "void at::native::reduce_kernel<(int)512, (int)1, at::native::ReduceOp<double, at::native::NormTwoOps<double, double, double, (bool)1>, unsigned int, double, (int)4, (int)4>>(T3)",
+              "void at::native::reduce_kernel<(int)512, (int)1, at::native::ReduceOp<double, at::native::func_wrapper_t<double, at::native::MaxNanFunctor<double>>, unsigned int, double, (int)4, (int)4>>(T3)",
+              "void at::native::reduce_kernel<(int)512, (int)1, at::native::ReduceOp<double, at::native::func_wrapper_t<double, at::native::sum_functor<double, double, double>::operator ()(at::TensorIterator &)::[lambda(double, double) (instance 1)]>, unsigned int, double, (int)4, (int)4>>(T3)",
+              "void at::native::reduce_kernel<(int)512, (int)1, at::native::ReduceOp<long, at::native::func_wrapper_t<long, at::native::MaxNanFunctor<long>>, unsigned int, long, (int)4, (int)4>>(T3)",
+              "void at::native::reduce_kernel<(int)512, (int)1, at::native::ReduceOp<long, at::native::func_wrapper_t<long, at::native::sum_functor<long, long, long>::operator ()(at::TensorIterator &)::[lambda(long, long) (instance 1)]>, unsigned int, long, (int)4, (int)4>>(T3)",
+              "void at::native::sbtopk::gatherTopK<double, unsigned int, (int)2, (bool)0>(at::cuda::detail::TensorInfo<const T1, T2>, T2, T2, bool, T2, T2, at::cuda::detail::TensorInfo<T1, T2>, T2, at::cuda::detail::TensorInfo<long, T2>, T2, T1 *)",
+              "void at::native::unrolled_elementwise_kernel<at::native::BinaryFunctor<double, double, double, at::native::binary_internal::MulFunctor<double>>, std::array<char *, (unsigned long)3>, (int)4, TrivialOffsetCalculator<(int)2, unsigned int>, TrivialOffsetCalculator<(int)1, unsigned int>, at::native::memory::LoadWithCast<(int)2>, at::native::memory::StoreWithCast<(int)1>>(int, T1, T2, T4, T5, T6, T7)",
+              "void at::native::unrolled_elementwise_kernel<at::native::CUDAFunctorOnSelf_add<double>, std::array<char *, (unsigned long)2>, (int)4, TrivialOffsetCalculator<(int)1, unsigned int>, TrivialOffsetCalculator<(int)1, unsigned int>, at::native::memory::LoadWithoutCast, at::native::memory::StoreWithoutCast>(int, T1, T2, T4, T5, T6, T7)",
+              "void at::native::unrolled_elementwise_kernel<at::native::CUDAFunctor_add<double>, std::array<char *, (unsigned long)3>, (int)4, TrivialOffsetCalculator<(int)2, unsigned int>, TrivialOffsetCalculator<(int)1, unsigned int>, at::native::memory::LoadWithCast<(int)2>, at::native::memory::StoreWithCast<(int)1>>(int, T1, T2, T4, T5, T6, T7)",
+              "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 3)]::operator ()() const::[lambda() (instance 11)]::operator ()() const::[lambda(bool) (instance 1)], std::array<char *, (unsigned long)2>, (int)4, TrivialOffsetCalculator<(int)1, unsigned int>, TrivialOffsetCalculator<(int)1, unsigned int>, at::native::memory::LoadWithCast<(int)1>, at::native::memory::StoreWithCast<(int)1>>(int, T1, T2, T4, T5, T6, T7)",
+              "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 3)]::operator ()() const::[lambda() (instance 3)]::operator ()() const::[lambda(int) (instance 1)], std::array<char *, (unsigned long)2>, (int)4, TrivialOffsetCalculator<(int)1, unsigned int>, TrivialOffsetCalculator<(int)1, unsigned int>, at::native::memory::LoadWithCast<(int)1>, at::native::memory::StoreWithCast<(int)1>>(int, T1, T2, T4, T5, T6, T7)",
+              "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 3)]::operator ()() const::[lambda() (instance 4)]::operator ()() const::[lambda(long) (instance 1)], std::array<char *, (unsigned long)2>, (int)4, TrivialOffsetCalculator<(int)1, unsigned int>, TrivialOffsetCalculator<(int)1, unsigned int>, at::native::memory::LoadWithCast<(int)1>, at::native::memory::StoreWithCast<(int)1>>(int, T1, T2, T4, T5, T6, T7)",
+              "void at::native::unrolled_elementwise_kernel<at::native::direct_copy_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 3)]::operator ()() const::[lambda() (instance 6)]::operator ()() const::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>, (int)4, TrivialOffsetCalculator<(int)1, unsigned int>, TrivialOffsetCalculator<(int)1, unsigned int>, at::native::memory::LoadWithCast<(int)1>, at::native::memory::StoreWithCast<(int)1>>(int, T1, T2, T4, T5, T6, T7)",
+              "void at::native::vectorized_elementwise_kernel<(int)2, at::native::<unnamed>::launch_clamp_scalar(at::TensorIteratorBase &, c10::Scalar, c10::Scalar, at::native::detail::ClampLimits)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 6)]::operator ()() const::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)2, at::native::<unnamed>::masked_fill_kernel(at::TensorIterator &, const c10::Scalar &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 4)]::operator ()() const::[lambda(long, bool) (instance 1)], std::array<char *, (unsigned long)3>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)2, at::native::AUnaryFunctor<double, double, double, at::native::binary_internal::MulFunctor<double>>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)2, at::native::AUnaryFunctor<long, long, long, at::native::binary_internal::MulFunctor<long>>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)2, at::native::BUnaryFunctor<double, double, double, at::native::binary_internal::MulFunctor<double>>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)2, at::native::BUnaryFunctor<double, double, double, at::native::remainder_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 1)]::operator ()() const::[lambda(double, double) (instance 1)]>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)2, at::native::BUnaryFunctor<long, long, long, at::native::fmod_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 4)]::operator ()() const::[lambda(long, long) (instance 1)]>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)2, at::native::BinaryFunctor<double, double, double, at::native::binary_internal::DivFunctor<double>>, std::array<char *, (unsigned long)3>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)2, at::native::BinaryFunctor<double, double, double, at::native::binary_internal::MulFunctor<double>>, std::array<char *, (unsigned long)3>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)2, at::native::CUDAFunctorOnSelf_add<double>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)2, at::native::CUDAFunctorOnSelf_add<long>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)2, at::native::CUDAFunctor_add<double>, std::array<char *, (unsigned long)3>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)2, at::native::FillFunctor<double>, std::array<char *, (unsigned long)1>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)2, at::native::FillFunctor<long>, std::array<char *, (unsigned long)1>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)2, at::native::ceil_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 1)]::operator ()() const::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)2, at::native::neg_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 6)]::operator ()() const::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)2, at::native::reciprocal_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 1)]::operator ()() const::[lambda() (instance 1)]::operator ()() const::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)2, at::native::tanh_backward_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 1)]::operator ()() const::[lambda(double, double) (instance 1)], std::array<char *, (unsigned long)3>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)2, at::native::tanh_kernel_cuda(at::TensorIteratorBase &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 1)]::operator ()() const::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)2, void at::native::<unnamed>::pow_tensor_scalar_kernel_impl<double, double>(at::TensorIteratorBase &, T2)::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)4, at::native::AUnaryFunctor<double, double, bool, at::native::<unnamed>::CompareEqFunctor<double>>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)4, at::native::AUnaryFunctor<long, long, bool, at::native::<unnamed>::CompareEqFunctor<long>>, std::array<char *, (unsigned long)2>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)4, at::native::BinaryFunctor<bool, bool, bool, at::native::BitwiseAndFunctor<bool>>, std::array<char *, (unsigned long)3>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)4, at::native::BinaryFunctor<bool, bool, bool, at::native::binary_internal::MulFunctor<bool>>, std::array<char *, (unsigned long)3>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)4, at::native::BinaryFunctor<bool, bool, bool, at::native::logical_and_kernel_cuda(at::TensorIterator &)::[lambda() (instance 2)]::operator ()() const::[lambda() (instance 9)]::operator ()() const::[lambda(bool, bool) (instance 1)]>, std::array<char *, (unsigned long)3>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)4, at::native::BinaryFunctor<int, int, bool, at::native::<unnamed>::CompareEqFunctor<int>>, std::array<char *, (unsigned long)3>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)4, at::native::FillFunctor<int>, std::array<char *, (unsigned long)1>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)4, at::native::bitwise_not_kernel_cuda(at::TensorIteratorBase &)::[lambda(bool) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)4, void at::native::compare_scalar_kernel<double>(at::TensorIteratorBase &, at::native::<unnamed>::OpType, T1)::[lambda(double) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+              "void at::native::vectorized_elementwise_kernel<(int)4, void at::native::compare_scalar_kernel<long>(at::TensorIteratorBase &, at::native::<unnamed>::OpType, T1)::[lambda(long) (instance 1)], std::array<char *, (unsigned long)2>>(int, T2, T3)",
+              "void at::native::vectorized_gather_kernel<(int)16, long>(char *, char *, T2 *, int, long, long, long, long, bool)",
+              "void create_pivot_v2<(int)32>(int, int *, long *, int)",
+              "void dgemm_largek<(bool)0, (bool)1, (int)4, (int)4, (int)4, (int)3, (int)3, (int)16>(double *, const double *, const double *, int, int, int, int, int, int, const double *, const double *, double, double, int, int, int *, int *)",
+              "void gemmSN_NN_kernel<double, (int)128, (int)2, (int)4, (int)8, (int)3, (int)4, (bool)1, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<T9, T10, T11, T1>)",
+              "void gemmSN_NN_kernel<double, (int)128, (int)2, (int)4, (int)8, (int)4, (int)4, (bool)0, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<T9, T10, T11, T1>)",
+              "void gemmSN_NN_kernel<double, (int)256, (int)4, (int)2, (int)8, (int)3, (int)4, (bool)0, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<T9, T10, T11, T1>)",
+              "void gemmSN_NN_kernel<double, (int)256, (int)4, (int)2, (int)8, (int)3, (int)4, (bool)1, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<T9, T10, T11, T1>)",
+              "void gemmSN_TN_kernel<double, (int)128, (int)16, (int)2, (int)4, (int)4, (int)4, (bool)1, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<T9, T10, T11, T1>)",
+              "void gemmSN_TN_kernel<double, (int)128, (int)16, (int)2, (int)4, (int)6, (int)7, (bool)0, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>>(cublasGemmSmallNParams<T9, T10, T11, T1>)",
+              "void gemmk1_kernel<int, double, (int)256, (int)5, (bool)0, (bool)0, (bool)0, (bool)0, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>, double, (int)0>(cublasGemmk1Params<T2, T9, T10, T11, T12, biasType<T11::value_type, T12>::type>)",
+              "void gemv2T_kernel_val<int, int, double, double, double, double, (int)128, (int)16, (int)2, (int)2, (bool)0, (bool)0, cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>, double>>(T13, T6, T6)",
+              "void gemv2T_kernel_val<int, int, double, double, double, double, (int)128, (int)16, (int)4, (int)4, (bool)0, (bool)0, cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>, double>>(T13, T6, T6)",
+              "void gemvNSP_kernel<double, double, double, double, (int)1, (int)32, (int)4, (int)1024, (bool)0, cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>, double>>(T10)",
+              "void gemvNSP_kernel<double, double, double, double, (int)11, (int)32, (int)4, (int)1024, (bool)0, cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>, double>>(T10)",
+              "void getrf_pivot<getrf_params_<double, (int)32, (int)1, (int)32, (int)32, (int)1>>(int, int, int, void *, int, long *, int, T1::data_type *, unsigned int *, unsigned int *, T1::data_type *, unsigned int, unsigned int, unsigned int, int *)",
+              "void ipiv_64_to_32_ker<(int)128>(long, const long *, int *)",
+              "void ipiv_lower_diag<double, (int)32>(int, void *, int, int *, int)",
+              "void ipiv_lower_small<double, (int)32>(int, void *, int, long *, int, int)",
+              "void laswp_kernel<double, (bool)0>(int, T1 *const *, int, int, int, const int *, int, int, int)",
+              "void scal_kernel<double, double, (int)1, (bool)1, (int)6, (int)4, (int)4, (int)4>(cublasTransposeParams<T2>, const T1 *, T1 *, const T2 *)",
+              "void trsm_batch_left_lower_kernel<double>(cublasTrsmBatchParams<T1>, const T1 *const *, T1 *const *, const T1 *, T1)",
+              "void trsm_batch_left_upper_kernel<double>(cublasTrsmBatchParams<T1>, const T1 *const *, T1 *const *, const T1 *, T1)",
+              "volta_dgemm_64x64_nn",
+              "volta_dgemm_64x64_nt",
+              "volta_dgemm_64x64_tn",
+              "volta_dgemm_64x64_tt",
+              "xxtrf4_set_info_ker(int, int *)"
+            ],
+            "report_sha256": "ba56badd9131adfda003bcbf0c0d1557badcf292b2e6684509e3a3c3c1fd64b5",
+            "total_kernel_ns": 4514204.0
+          },
+          "passed": true,
+          "scope": "Python/C-API inference and single-node two-GPU PyTorch training/restart; TF/JAX use the existing site CPU frameworks",
+          "training": {
+            "cases": {
+              "dpa2": {
+                "passed": true,
+                "restart": {
+                  "checkpoint": {
+                    "bytes": 11495603,
+                    "name": "model.ckpt-12.pt",
+                    "sha256": "d8cf7cd7d014a3466f5a65f7f35f528794c83f1ffd9b2029c995749398791c71"
+                  },
+                  "command": [
+                    "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-25-g4e1479d8a23f-r8a404f71ac4c/4V100/bin/python",
+                    "-m",
+                    "torch.distributed.run",
+                    "--standalone",
+                    "--local-addr=127.0.0.1",
+                    "--nproc_per_node=2",
+                    "/control/deepmd_training_check.py",
+                    "worker",
+                    "restart.json",
+                    "--restart",
+                    "model.ckpt-8.pt"
+                  ],
+                  "elapsed_seconds": 5.651648620143533,
+                  "learning_curve": [
+                    [
+                      8.0,
+                      0.0933,
+                      0.0951,
+                      0.033,
+                      0.0284,
+                      0.0463,
+                      0.065,
+                      0.00046
+                    ],
+                    [
+                      9.0,
+                      0.0926,
+                      0.0933,
+                      0.0341,
+                      0.033,
+                      0.0399,
+                      0.0463,
+                      0.00022
+                    ],
+                    [
+                      10.0,
+                      0.0909,
+                      0.0926,
+                      0.0342,
+                      0.0341,
+                      0.0355,
+                      0.0399,
+                      0.00022
+                    ],
+                    [
+                      11.0,
+                      0.0879,
+                      0.0909,
+                      0.0333,
+                      0.0342,
+                      0.0329,
+                      0.0355,
+                      0.00022
+                    ],
+                    [
+                      12.0,
+                      0.0836,
+                      0.0879,
+                      0.0316,
+                      0.0333,
+                      0.0318,
+                      0.0329,
+                      0.00022
+                    ]
+                  ],
+                  "passed": true,
+                  "ranks": [
+                    {
+                      "backend": "cuda:nccl,cpu:gloo",
+                      "cuda_current_device": 0,
+                      "device_ids": [
+                        0
+                      ],
+                      "empty_trainable_parameters": [],
+                      "final_parameters_sha256": "0db20ffb767e31130ed9c2a90b9690acd29cee9167518294e911202c7f1b2648",
+                      "find_unused_parameters": false,
+                      "forward_calls": 5,
+                      "gradient_calls": 265,
+                      "gradient_devices": [
+                        "cuda:0"
+                      ],
+                      "gradients_finite": true,
+                      "initial_parameters_sha256": "eaf75beeb172d73df581a62cd60a694d47d6b44081a9690a7e131501d69db9cc",
+                      "local_rank": 0,
+                      "pid": 1713,
+                      "rank": 0,
+                      "world_size": 2
+                    },
+                    {
+                      "backend": "cuda:nccl,cpu:gloo",
+                      "cuda_current_device": 1,
+                      "device_ids": [
+                        1
+                      ],
+                      "empty_trainable_parameters": [],
+                      "final_parameters_sha256": "0db20ffb767e31130ed9c2a90b9690acd29cee9167518294e911202c7f1b2648",
+                      "find_unused_parameters": false,
+                      "forward_calls": 5,
+                      "gradient_calls": 265,
+                      "gradient_devices": [
+                        "cuda:1"
+                      ],
+                      "gradients_finite": true,
+                      "initial_parameters_sha256": "eaf75beeb172d73df581a62cd60a694d47d6b44081a9690a7e131501d69db9cc",
+                      "local_rank": 1,
+                      "pid": 1714,
+                      "rank": 1,
+                      "world_size": 2
+                    }
+                  ],
+                  "returncode": 0
+                },
+                "training": {
+                  "checkpoint": {
+                    "bytes": 11495241,
+                    "name": "model.ckpt-8.pt",
+                    "sha256": "62cdcc875461f834d928f90b87b16aa9439446c92632ef9aefc81c82d22e9416"
+                  },
+                  "command": [
+                    "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-25-g4e1479d8a23f-r8a404f71ac4c/4V100/bin/python",
+                    "-m",
+                    "torch.distributed.run",
+                    "--standalone",
+                    "--local-addr=127.0.0.1",
+                    "--nproc_per_node=2",
+                    "/control/deepmd_training_check.py",
+                    "worker",
+                    "input.json"
+                  ],
+                  "elapsed_seconds": 5.8034720327705145,
+                  "learning_curve": [
+                    [
+                      1.0,
+                      0.213,
+                      0.4,
+                      0.0538,
+                      0.163,
+                      0.168,
+                      0.0307,
+                      0.001
+                    ],
+                    [
+                      2.0,
+                      0.235,
+                      0.213,
+                      0.00334,
+                      0.0538,
+                      0.235,
+                      0.168,
+                      0.001
+                    ],
+                    [
+                      3.0,
+                      0.198,
+                      0.235,
+                      0.00712,
+                      0.00334,
+                      0.197,
+                      0.235,
+                      0.001
+                    ],
+                    [
+                      4.0,
+                      0.137,
+                      0.198,
+                      0.00721,
+                      0.00712,
+                      0.136,
+                      0.197,
+                      0.001
+                    ],
+                    [
+                      5.0,
+                      0.121,
+                      0.137,
+                      0.0128,
+                      0.00721,
+                      0.117,
+                      0.136,
+                      0.00032
+                    ],
+                    [
+                      6.0,
+                      0.108,
+                      0.121,
+                      0.0186,
+                      0.0128,
+                      0.098,
+                      0.117,
+                      0.00032
+                    ],
+                    [
+                      7.0,
+                      0.0995,
+                      0.108,
+                      0.0239,
+                      0.0186,
+                      0.0804,
+                      0.098,
+                      0.00032
+                    ],
+                    [
+                      8.0,
+                      0.0951,
+                      0.0995,
+                      0.0284,
+                      0.0239,
+                      0.065,
+                      0.0804,
+                      0.00032
+                    ]
+                  ],
+                  "passed": true,
+                  "ranks": [
+                    {
+                      "backend": "cuda:nccl,cpu:gloo",
+                      "cuda_current_device": 0,
+                      "device_ids": [
+                        0
+                      ],
+                      "empty_trainable_parameters": [],
+                      "final_parameters_sha256": "eaf75beeb172d73df581a62cd60a694d47d6b44081a9690a7e131501d69db9cc",
+                      "find_unused_parameters": false,
+                      "forward_calls": 8,
+                      "gradient_calls": 424,
+                      "gradient_devices": [
+                        "cuda:0"
+                      ],
+                      "gradients_finite": true,
+                      "initial_parameters_sha256": "50df515990aad8b164fb1363e7c6893767f1fd899346ee79f7d1ff2c9e8b2457",
+                      "local_rank": 0,
+                      "pid": 1334,
+                      "rank": 0,
+                      "world_size": 2
+                    },
+                    {
+                      "backend": "cuda:nccl,cpu:gloo",
+                      "cuda_current_device": 1,
+                      "device_ids": [
+                        1
+                      ],
+                      "empty_trainable_parameters": [],
+                      "final_parameters_sha256": "eaf75beeb172d73df581a62cd60a694d47d6b44081a9690a7e131501d69db9cc",
+                      "find_unused_parameters": false,
+                      "forward_calls": 8,
+                      "gradient_calls": 424,
+                      "gradient_devices": [
+                        "cuda:1"
+                      ],
+                      "gradients_finite": true,
+                      "initial_parameters_sha256": "50df515990aad8b164fb1363e7c6893767f1fd899346ee79f7d1ff2c9e8b2457",
+                      "local_rank": 1,
+                      "pid": 1335,
+                      "rank": 1,
+                      "world_size": 2
+                    }
+                  ],
+                  "returncode": 0
+                }
+              },
+              "se_e2_a": {
+                "passed": true,
+                "restart": {
+                  "checkpoint": {
+                    "bytes": 65837,
+                    "name": "model.ckpt-12.pt",
+                    "sha256": "a523a55ff26fd35814f8b1efd9c323ef8c9905644ff8db452cb98caa5fb73589"
+                  },
+                  "command": [
+                    "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-25-g4e1479d8a23f-r8a404f71ac4c/4V100/bin/python",
+                    "-m",
+                    "torch.distributed.run",
+                    "--standalone",
+                    "--local-addr=127.0.0.1",
+                    "--nproc_per_node=2",
+                    "/control/deepmd_training_check.py",
+                    "worker",
+                    "restart.json",
+                    "--restart",
+                    "model.ckpt-8.pt"
+                  ],
+                  "elapsed_seconds": 5.033473487943411,
+                  "learning_curve": [
+                    [
+                      8.0,
+                      0.927,
+                      0.942,
+                      0.376,
+                      0.382,
+                      0.0973,
+                      0.103,
+                      0.00046
+                    ],
+                    [
+                      9.0,
+                      0.921,
+                      0.927,
+                      0.374,
+                      0.376,
+                      0.0949,
+                      0.0973,
+                      0.00022
+                    ],
+                    [
+                      10.0,
+                      0.914,
+                      0.921,
+                      0.371,
+                      0.374,
+                      0.0924,
+                      0.0949,
+                      0.00022
+                    ],
+                    [
+                      11.0,
+                      0.907,
+                      0.914,
+                      0.369,
+                      0.371,
+                      0.09,
+                      0.0924,
+                      0.00022
+                    ],
+                    [
+                      12.0,
+                      0.9,
+                      0.907,
+                      0.366,
+                      0.369,
+                      0.0876,
+                      0.09,
+                      0.00022
+                    ]
+                  ],
+                  "passed": true,
+                  "ranks": [
+                    {
+                      "backend": "cuda:nccl,cpu:gloo",
+                      "cuda_current_device": 0,
+                      "device_ids": [
+                        0
+                      ],
+                      "empty_trainable_parameters": [],
+                      "final_parameters_sha256": "3c2f23fddb2e1bb6ec96ac930b2456c901a9dd864c22220525652712b0ddd84d",
+                      "find_unused_parameters": false,
+                      "forward_calls": 5,
+                      "gradient_calls": 110,
+                      "gradient_devices": [
+                        "cuda:0"
+                      ],
+                      "gradients_finite": true,
+                      "initial_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+                      "local_rank": 0,
+                      "pid": 1010,
+                      "rank": 0,
+                      "world_size": 2
+                    },
+                    {
+                      "backend": "cuda:nccl,cpu:gloo",
+                      "cuda_current_device": 1,
+                      "device_ids": [
+                        1
+                      ],
+                      "empty_trainable_parameters": [],
+                      "final_parameters_sha256": "3c2f23fddb2e1bb6ec96ac930b2456c901a9dd864c22220525652712b0ddd84d",
+                      "find_unused_parameters": false,
+                      "forward_calls": 5,
+                      "gradient_calls": 110,
+                      "gradient_devices": [
+                        "cuda:1"
+                      ],
+                      "gradients_finite": true,
+                      "initial_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+                      "local_rank": 1,
+                      "pid": 1011,
+                      "rank": 1,
+                      "world_size": 2
+                    }
+                  ],
+                  "returncode": 0
+                },
+                "training": {
+                  "checkpoint": {
+                    "bytes": 65669,
+                    "name": "model.ckpt-8.pt",
+                    "sha256": "9f823cbe6f80919d994757d66b3901ff017199fe5bcec037afe1b34759f2ce2b"
+                  },
+                  "command": [
+                    "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-25-g4e1479d8a23f-r8a404f71ac4c/4V100/bin/python",
+                    "-m",
+                    "torch.distributed.run",
+                    "--standalone",
+                    "--local-addr=127.0.0.1",
+                    "--nproc_per_node=2",
+                    "/control/deepmd_training_check.py",
+                    "worker",
+                    "input.json"
+                  ],
+                  "elapsed_seconds": 5.765873277559876,
+                  "learning_curve": [
+                    [
+                      1.0,
+                      1.08,
+                      1.12,
+                      0.437,
+                      0.45,
+                      0.159,
+                      0.174,
+                      0.001
+                    ],
+                    [
+                      2.0,
+                      1.05,
+                      1.08,
+                      0.424,
+                      0.437,
+                      0.145,
+                      0.159,
+                      0.001
+                    ],
+                    [
+                      3.0,
+                      1.02,
+                      1.05,
+                      0.411,
+                      0.424,
+                      0.131,
+                      0.145,
+                      0.001
+                    ],
+                    [
+                      4.0,
+                      0.983,
+                      1.02,
+                      0.398,
+                      0.411,
+                      0.118,
+                      0.131,
+                      0.001
+                    ],
+                    [
+                      5.0,
+                      0.972,
+                      0.983,
+                      0.394,
+                      0.398,
+                      0.114,
+                      0.118,
+                      0.00032
+                    ],
+                    [
+                      6.0,
+                      0.962,
+                      0.972,
+                      0.39,
+                      0.394,
+                      0.11,
+                      0.114,
+                      0.00032
+                    ],
+                    [
+                      7.0,
+                      0.952,
+                      0.962,
+                      0.386,
+                      0.39,
+                      0.107,
+                      0.11,
+                      0.00032
+                    ],
+                    [
+                      8.0,
+                      0.942,
+                      0.952,
+                      0.382,
+                      0.386,
+                      0.103,
+                      0.107,
+                      0.00032
+                    ]
+                  ],
+                  "passed": true,
+                  "ranks": [
+                    {
+                      "backend": "cuda:nccl,cpu:gloo",
+                      "cuda_current_device": 0,
+                      "device_ids": [
+                        0
+                      ],
+                      "empty_trainable_parameters": [],
+                      "final_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+                      "find_unused_parameters": false,
+                      "forward_calls": 8,
+                      "gradient_calls": 176,
+                      "gradient_devices": [
+                        "cuda:0"
+                      ],
+                      "gradients_finite": true,
+                      "initial_parameters_sha256": "af50ae37d0e6bc6c6774523d032a4d14c8e7c7d23e61f7694c271a063494c331",
+                      "local_rank": 0,
+                      "pid": 631,
+                      "rank": 0,
+                      "world_size": 2
+                    },
+                    {
+                      "backend": "cuda:nccl,cpu:gloo",
+                      "cuda_current_device": 1,
+                      "device_ids": [
+                        1
+                      ],
+                      "empty_trainable_parameters": [],
+                      "final_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+                      "find_unused_parameters": false,
+                      "forward_calls": 8,
+                      "gradient_calls": 176,
+                      "gradient_devices": [
+                        "cuda:1"
+                      ],
+                      "gradients_finite": true,
+                      "initial_parameters_sha256": "af50ae37d0e6bc6c6774523d032a4d14c8e7c7d23e61f7694c271a063494c331",
+                      "local_rank": 1,
+                      "pid": 632,
+                      "rank": 1,
+                      "world_size": 2
+                    }
+                  ],
+                  "returncode": 0
+                }
+              }
+            },
+            "installation": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-10-25-g4e1479d8a23f-r8a404f71ac4c/4V100",
+            "job": "1955181",
+            "partition": "4V100",
+            "passed": true
+          }
+        },
+        "science_receipt_sha256": "b5afd3f4a38259d8ae4674b58f2e34e8d5ddd639f26e9fd13b15d9100fd4aa5d",
+        "scientific_verified": true
       }
     },
     {
@@ -4949,6 +7371,6 @@
       }
     }
   ],
-  "observed_at": "2026-10-26T12:04:22.413793+00:00",
+  "observed_at": "2026-10-26T14:41:21.850376+00:00",
   "workflow": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/40316174805"
 }
