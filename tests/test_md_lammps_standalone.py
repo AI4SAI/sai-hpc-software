@@ -97,6 +97,19 @@ class StandaloneTests(unittest.TestCase):
         self.assertNotIn('TMPDIR=/tmp', script)
         self.assertNotIn('--bind /tmp', script)
         self.assertIn('TMPDIR=/workspace/tmp', script)  # Inside the home-backed overlay.
+        phases = [line for line in script.splitlines()
+                  if 'md_lammps_standalone_entry.sh build ' in line
+                  or 'md_lammps_standalone_entry.sh export ' in line
+                  or '/usr/sbin/e2fsck -fn ' in line
+                  or '/usr/bin/cat /workspace/final.squashfs' in line]
+        self.assertEqual(len(phases), 5)
+        self.assertIn(' build ', phases[0])
+        self.assertIn('overlay-fsck-build.stdout', phases[1])
+        self.assertIn(' export ', phases[2])
+        self.assertIn('overlay-fsck-export.stdout', phases[3])
+        self.assertIn('/usr/bin/cat /workspace/final.squashfs', phases[4])
+        for index in (0, 2):
+            self.assertIn(str(standalone.task('standalone-test') / 'runtime') + ':/runtime:rw', phases[index])
 
     def test_project_build_bills_project_and_keeps_all_scratch_under_project(self):
         from remote_controller import SAI_PROJECT_ROOT

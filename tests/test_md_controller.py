@@ -394,7 +394,8 @@ class MDControllerTests(unittest.TestCase):
             uploads = [source for argv in commands if argv[0] == 'scp'
                        for source in argv[1:-1] if Path(source).parent == ROOT / 'controller']
             for name in ('release_contract.py', 'native_module.py', 'export_native.py', 'resolve_source.py',
-                         'md_registration.py', 'md_driver_paths.py', 'cp2k_image_driver.py'):
+                         'md_registration.py', 'md_driver_paths.py', 'cp2k_image_driver.py',
+                         'cp2k_overlay_sync.py'):
                 self.assertIn(str(ROOT / 'controller' / name), uploads)
             self.assertEqual(uploaded, json.loads((Path(temporary) / 'results/delivery.json').read_text()))
             expected_run = 'md-123-1-2026-09-14-' + uploaded['plan']['selection_sha256'][:16]
