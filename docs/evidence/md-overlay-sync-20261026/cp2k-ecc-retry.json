@@ -1,0 +1,21 @@
+{
+  "allocation": "JobId=1958543 JobName=cp2k-science-40288381664-1-development-8v100v0-avx512-2026-10-26-d43cbde630af-science-ecc-retry1 UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A Priority=10002 Nice=0 Account=proj-sai-hpc-software QOS=rush-1o2gpu WCKey=* JobState=PENDING Reason=None Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=01:00:00 TimeMin=N/A SubmitTime=2026-10-26T22:46:48 EligibleTime=Unknown AccrueTime=Unknown StartTime=Unknown EndTime=Unknown Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-10-26T22:46:48 Scheduler=Main Partition=8V100V0 AllocNode:Sid=login-01:2722792 ReqNodeList=(null) ExcNodeList=(null) NodeList= NumNodes=2-2 NumCPUs=2 NumTasks=2 CPUs/Task=1 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=2,mem=92G,node=2,billing=360,gres/gpu=2 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=1:0:*:* CoreSpec=* MinCPUsNode=1 MinMemoryNode=0 MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null) Command=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/40288381664-1-development-8v100v0-avx512-2026-10-26-d43cbde630af-science-ecc-retry1/job.sbatch SubmitLine=sbatch --hold --parsable /org/org-open-sai/proj-sai-hpc-software/runtime-tests/40288381664-1-development-8v100v0-avx512-2026-10-26-d43cbde630af-science-ecc-retry1/job.sbatch WorkDir=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/40288381664-1-development-8v100v0-avx512-2026-10-26-d43cbde630af-science-ecc-retry1 StdErr= StdIn=/dev/null StdOut=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/40288381664-1-development-8v100v0-avx512-2026-10-26-d43cbde630af-science-ecc-retry1/results/slurm-1958543.log TresPerNode=gres/gpu:1\n",
+  "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-10-26-gd43cbde630af-re943569fcfff/8V100V0/40288381664-1-development-8v100v0-avx512-2026-10-26-d43cbde630af.sif",
+  "artifact_sha256": "ddc8c044eb43294da94130ed2c88ccc74c67522cc35552f28819e4cac460ca6c",
+  "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/b4916e0fe8e4f6c92b4557d609e5e19b0b201ee2/40288381664-1-development-8v100v0-avx512-2026-10-26-d43cbde630af",
+  "excluded_node": "8v100v0n09",
+  "failure": "CUDA SetDevice cudaErrorECCUncorrectable on rank 1 (8v100v0n09), before scientific cases",
+  "failure_log": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/40288381664-1-development-8v100v0-avx512-2026-10-26-d43cbde630af-science/results/candidate-version/version.log",
+  "failure_log_sha256": "1c10f64fe662a0f0f2251207c9fda4876886956d392fa52ac9d417bba03ee919",
+  "new_job": "1958543",
+  "new_run_id": "40288381664-1-development-8v100v0-avx512-2026-10-26-d43cbde630af-science-ecc-retry1",
+  "observed_at": "2026-10-26T14:46:47.220885+00:00",
+  "original_job": "1956309",
+  "original_request_sha256": "6d8cbf834e28d70a59f7e0d923ce1abdebfda45657996b8dbfb629484aacdfe4",
+  "original_run": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/40288381664-1-development-8v100v0-avx512-2026-10-26-d43cbde630af-science",
+  "retry_request_sha256": "322d6d4227eaf17c8c407f4d95e260981ffccb73bdebbe56a596300a81939782",
+  "scope": "Re-run original single/two-node science with the unchanged SIF and frozen controller; preserve the original failed acceptance",
+  "submit_returncode": 0,
+  "submit_stderr": "",
+  "submit_stdout": "1958543\n"
+}
