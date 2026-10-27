@@ -1,4 +1,42 @@
-# Workflow closure — 2026-10-26
+# Workflow closure — 2026-10-27
+
+## October 27 recovery and deployment measurements
+
+CP2K's October 26 source `d43cbde630af` is now publicly accepted on all four
+targets. The same-image science retry 1958543 completed successfully on
+`8v100v0n[02,08]`, but the original failed Actions run did not restart beta
+promotion after that external recovery. The alias therefore really retained
+October 25; this was not stale Lmod cache. Explicitly resuming beta validation
+with the original source matrix in
+[workflow 40434962493](https://github.com/AI4SAI/sai-hpc-software/actions/runs/40434962493)
+passed public checks 1967174/1967176/1967178/1967180 and atomically selected
+`master-beta-20261027-d43cbde630af-r75ef5179f1e8-b1b8da72091d1`.
+Normal login-node `module help cp2k/master-beta-later` shows that fixed version,
+source version `master-2026-10-26` and accepted snapshot `20261027`.
+Those dates describe source and acceptance separately. Source version labels
+use the upstream commit's UTC date. At the October 27 02:41 UTC inspection,
+upstream HEAD had advanced to `e90df42b4bd8` (October 26 19:39 UTC, October 27
+03:39 in Beijing); it would still have an October 26 source label. That newer
+commit is not part of this recovered acceptance. The active daily schedule is
+02:23 UTC, but GitHub had not yet created an October 27 scheduled run at that
+inspection; the previous three scheduled runs were created after 07:00 UTC.
+
+LAMMPS's previously queued 4V100 build 1955376 and 8V100V0 science 1958570
+also completed successfully. Workflow 40316850352 succeeded and automatically
+selected `develop-beta-20261026-049f269111f4-r75ef5179f1e8-b6733dc9a2745`.
+The ABACUS DSPRHBM performance failure described below is still unresolved.
+
+The [release/SIF experiment](evidence/release-sif-efficiency-20261027/README.md)
+completed all 12 combinations of CP2K, ABACUS, LAMMPS and DeePMD on the three
+V100 partitions, including 144 measured scientific calculations. Exact native
+administrator-installed releases were compared with their original SIFs using
+the production launcher, with byte identity, placement, numerical outputs and
+terminal accounting independently revalidated. On 16V100, 64-water CP2K OT
+internal time changed by +0.04% and whole-process time by +0.45%; LAMMPS engine
+time changed by -0.48% and DeePMD inference by -1.11%. The report keeps startup,
+short-workload limitations, storage variability and all unsuccessful preparation
+attempts explicit. GPUMD's installed binaries differ from both retained 5.8.1
+and 5.9.1 SIFs, so they cannot form a same-build packaging comparison.
 
 ## October 26 MD follow-up
 

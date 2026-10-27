@@ -1,0 +1,67 @@
+{
+  "native_module": "gpumd/5.8-cuda12.9",
+  "native": {
+    "gpumd": "463088fef84a462bdb37cff8a2f307e5e77719c2d45c1d1bb96e8a55e61a6f41",
+    "nep": "80d1da530c4516cd59ede4c754f92c72a629a974b61c1cd7cb10560c50448f90"
+  },
+  "sif_candidates": [
+    {
+      "image": "/home/stardust/sai-hpc-software/containers/software/gpumd/release/v5.8.1-g35b47feec171-rb564394098b8/16V100/gpumd-35070068119-1-release-16v100-avx2-2026-09-16-35b47feec171.sif",
+      "identity": {
+        "build_id": "v5.8.1-g35b47feec171-rb564394098b8",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/software/gpumd/release/v5.8.1-g35b47feec171-rb564394098b8/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "b564394098b8469d7b2ff5c8b21cd4d7e307f7203d7a87abcdc923eba308552f",
+        "repository": "brucefan1983/GPUMD",
+        "schema": 1,
+        "software": "gpumd",
+        "source_ref": "v5.8.1",
+        "source_sha": "35b47feec17117204abff0f2cec1e67ebd456aa4",
+        "source_version": "v5.8.1",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "release",
+        "version_label": "v5.8.1"
+      },
+      "binaries": {
+        "gpumd": "b29a3bc675f7e842360ac7f85072c3b43f969323fde9db0d801069296648984f",
+        "nep": "b7a4203631511565a01701da937bddc831fb855736139fdacef5ce164c5fd1e2"
+      },
+      "byte_match": false
+    },
+    {
+      "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/gpumd/release/v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/16V100/gpumd-39955137406-1-release-16v100-avx2-2026-10-23-11ba6fbdb4d7.sif",
+      "identity": {
+        "build_id": "v5.9.1-g11ba6fbdb4d7-rf9c263cf362c",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/gpumd/GPUMD-release-v5.9.1-g11ba6fbdb4d7-rf9c263cf362c/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "f9c263cf362c30efe86c10074e10ee88f30f6280c09f5885ba8971c7b530c079",
+        "repository": "brucefan1983/GPUMD",
+        "schema": 2,
+        "software": "gpumd",
+        "source_ref": "v5.9.1",
+        "source_sha": "11ba6fbdb4d71b2cdb351b39972fa057521585b3",
+        "source_version": "v5.9.1",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "release",
+        "version_label": "v5.9.1"
+      },
+      "binaries": {
+        "gpumd": "832e3559d1d74500ea53e849ffc292c0f97999f2a75129abb9c0ebb5d62edd05",
+        "nep": "efc64090b9a70552d8e294a4f4415b34578e21396962263fe18da5678c0e441e"
+      },
+      "byte_match": false
+    }
+  ]
+}
