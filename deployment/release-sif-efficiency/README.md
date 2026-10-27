@@ -60,6 +60,9 @@ fixtures also do not establish large-system throughput.
 Whole-process wall time is reported separately from internal timers. Version/
 help/import commands measure warm startup. Full image hashing and provenance
 probes occur before timed samples, so these are not cold-storage measurements.
+Python's timeout-aware process wait can add up to approximately 0.05 seconds
+of polling latency to wall time; startup differences should be read at that
+resolution. Internal application/CUDA timers do not include that wait.
 The physical `/opt` installation and SIF reside on different backing storage;
 the native and SIF routes also use their respective scratch mechanisms. These
 are practical deployment comparisons, not an isolated packaging penalty.
