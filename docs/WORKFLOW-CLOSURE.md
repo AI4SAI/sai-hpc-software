@@ -5,19 +5,33 @@
 Compatibility [PR #38](https://github.com/AI4SAI/sai-hpc-software/pull/38) merged
 as `0a2e07a8816428885036664ea92734c792d93087` after all CI checks passed. Future
 daily runs now include the accepted CP2K and LAMMPS upstream compatibility fixes.
+The bounded ABACUS mapping retry [PR #39](https://github.com/AI4SAI/sai-hpc-software/pull/39)
+also merged, as `52989279f6e60629057924f562e4adc73291ad54`.
 
 ABACUS CPU MPI retry 2074089 passed with the same SIF and original eight-rank,
 two-node resources. PW/HSE/DeePKS jobs 2074122/2074180/2074326 then passed their
 scientific and iteration-time gates; the original controller accepted the
-artifact. The failed public beta job is resuming in daily workflow 41184760477
-attempt 2. A narrowly scoped one-allocation retry for this pre-execution MPI
+artifact. The public beta job succeeded in daily workflow 41184760477 attempt 2.
+Its 8V100V0 check first encountered a GPU on `8v100v0n09` that returned CUDA 214
+(`uncorrectable ECC error encountered`) on native primary-context creation.
+That stuck allocation was cancelled after preserving diagnostics. The existing
+hardware-failure retry excluded the node, and job 2074782 passed on `8v100v0n04`.
+All four public module checks passed, and `abacus/develop-beta-later` now selects
+`develop-beta-20261031-6b24db05dc17-r75ef5179f1e8-b51dec325dca1`.
+A narrowly scoped one-allocation retry for the separate pre-execution MPI
 mapping error has passed the full 1,132-test CI suite and a replay against the
 real cluster allocations. See [recovery evidence](evidence/abacus-mpi-recovery-20261031/README.md).
 
-CP2K CPU dependency retry 2073677 remains active. The direct compute-node check
+At October 31 15:25 UTC / 23:25 Beijing, CP2K CPU dependency retry 2073677 remains
+active. The direct compute-node check
 found multiple concurrent compiler processes; its pending acceptance is not a
 single-core container limit. Its three GPU scientific acceptances and LAMMPS's
 three-partition public beta remain complete as recorded below.
+The [live module observation](evidence/abacus-mpi-recovery-20261031/final-status.json)
+confirms October 31 public snapshots for ABACUS, LAMMPS, DeePMD and GPUMD. The
+latest DeePMD source `e6f7357379f7` again passed actual two-GPU se_e2_a/DPA2
+training and checkpoint restart on all three V100 targets. CP2K retains its
+October 27 public snapshot until the CPU and four-target public checks finish.
 
 ## October 31 upstream compatibility recovery
 
