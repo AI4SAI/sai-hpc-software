@@ -162,6 +162,97 @@ def existing_job(ssh, root, control, directory, expected, script):
     return found
 
 
+def inspect_multinode_mapping_failure(root, directory):
+    """Allow one fresh allocation only when PRTE failed before starting ranks."""
+    import hashlib
+    import json
+    from pathlib import Path
+    import re
+    import subprocess
+
+    root, task = Path(root), Path(directory)
+    if (root.resolve() != root or task.resolve() != task or
+            task.parent != root / 'runtime-tests' or not task.name.endswith('-multinode')):
+        raise ValueError('untrusted multi-node retry path')
+
+    def read(relative):
+        path = task / relative
+        if not path.is_file() or path.is_symlink() or path.resolve() != path:
+            raise ValueError('missing or redirected mapping failure evidence: ' + relative)
+        return path.read_bytes()
+
+    request_bytes = read('request.json')
+    request = json.loads(request_bytes)
+    if (request.get('target') != 'dsprhbm' or
+            request.get('identity', {}).get('software') != 'abacus' or
+            (request.get('nodes'), request.get('ranks_per_node'), request.get('cpus_per_task'),
+             request.get('gpus_per_node')) != (2, 4, 2, 0)):
+        return False
+    job = read('job.id').decode().strip()
+    if not job.isdigit():
+        raise ValueError('invalid mapping failure job')
+    status = json.loads(read('results/status.json'))
+    if status != dict(job=job, state='FAILED', exit_code='254:0', verified=False):
+        return False
+    rows = subprocess.check_output(['sacct', '-X', '-n', '-P', '-j', job,
+                                   '-o', 'JobIDRaw,State,ExitCode,WorkDir'], text=True)
+    matching = [line.split('|')[:4] for line in rows.splitlines() if line.split('|')[0] == job]
+    if matching != [[job, 'FAILED', '254:0', str(task)]]:
+        return False
+    log = read('results/abacus.log')
+    if not re.search(rb'Your job failed to map because the resulting process placement\s+'
+                     rb'would cause the process to be bound to CPUs in more than one\s+package:', log):
+        return False
+    ranks = task / 'results/ranks'
+    if (ranks.is_symlink() or (ranks.exists() and (not ranks.is_dir() or any(ranks.iterdir()))) or
+            (task / 'case/OUT.autotest').exists() or (task / 'results/final-energy-ev.txt').exists()):
+        return False
+    receipt = dict(schema=1, source_run=task.name, retry_run=task.name + '-retry1', job=job,
+                   reason='MPI package mapping failed before rank startup',
+                   request_sha256=hashlib.sha256(request_bytes).hexdigest(),
+                   log_sha256=hashlib.sha256(log).hexdigest(),
+                   artifact_sha256=request['artifact_sha256'])
+    path = task / 'results/mapping-retry.json'
+    content = (json.dumps(receipt, sort_keys=True) + '\n').encode()
+    if path.exists() or path.is_symlink():
+        if read('results/mapping-retry.json') != content:
+            raise ValueError('original mapping failure changed after retry authorization')
+    else:
+        with path.open('xb') as stream:
+            stream.write(content)
+    return True
+
+
+def multinode_retry_allowed(ssh, root, control, directory, expected):
+    code = (inspect.getsource(inspect_existing_job) + '\n' +
+            inspect.getsource(inspect_multinode_mapping_failure) +
+            '\nimport json, sys\n'
+            'present = inspect_existing_job(*sys.argv[1:4], json.loads(sys.argv[4]), "runtime_controller.py")\n'
+            'print(json.dumps(present and inspect_multinode_mapping_failure(sys.argv[1], sys.argv[3])))\n')
+    result = ssh(['python3', '-c', code, root, control, directory,
+                  json.dumps(expected, sort_keys=True)], capture_output=True)
+    allowed = json.loads(result.stdout)
+    if type(allowed) is not bool:
+        raise ValueError('invalid mapping retry response')
+    return allowed
+
+
+def accept_multinode(python, exists, allow_retry, run_id, version, target):
+    runtime_run = safe_name(run_id + '-multinode')
+    for suffix in ('', '-retry1'):
+        selected = safe_name(runtime_run + suffix)
+        if not exists('runtime_controller.py', selected):
+            python('runtime_controller.py', 'submit', selected, version, target,
+                   '--build-run-id', run_id)
+        try:
+            python('runtime_controller.py', 'monitor', selected)
+            return
+        except subprocess.CalledProcessError:
+            if suffix or target != 'dsprhbm' or not allow_retry(runtime_run):
+                raise
+            print('MULTINODE_MAPPING_RETRY: fresh allocation, same SIF and resources', flush=True)
+
+
 def main():
     software = os.environ.get("SOFTWARE", "abacus")
     if software not in ("abacus", "cp2k", "gpumd"):
@@ -388,11 +479,11 @@ def main():
             return existing_job(ssh, root, control, f'{root}/runtime-tests/{directory_name}', expected, script)
 
         if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
-            runtime_run = safe_name(run_id + "-multinode")
-            if not acceptance_exists('runtime_controller.py', runtime_run):
-                python("runtime_controller.py", "submit", runtime_run, version, target,
-                       "--build-run-id", run_id)
-            python("runtime_controller.py", "monitor", runtime_run)
+            def allow_mapping_retry(runtime_run):
+                expected = dict(run_id=runtime_run, build_run_id=run_id, version=version,
+                                target=target, identity=identity, artifact=str(expected_artifact))
+                return multinode_retry_allowed(ssh, root, control, f'{root}/runtime-tests/{runtime_run}', expected)
+            accept_multinode(python, acceptance_exists, allow_mapping_retry, run_id, version, target)
         if software == "abacus" and target in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             feature_run = safe_name(run_id + "-gpu-features")
             if not acceptance_exists('gpu_feature_controller.py', feature_run):
@@ -467,12 +558,13 @@ def main():
                                 f"{remote}:{root}/runtime-tests/{scientific_run}/results/.",
                                 str(scientific_results)], check=False)
         if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
-            runtime_results = results / "runtime"
-            runtime_results.mkdir(exist_ok=True)
-            runtime_run = safe_name(run_id + "-multinode")
-            subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
-                            f"{remote}:{root}/runtime-tests/{runtime_run}/results/.",
-                            str(runtime_results)], check=False)
+            for suffix in ('', '-retry1'):
+                runtime_results = results / ('runtime' + suffix)
+                runtime_results.mkdir(exist_ok=True)
+                runtime_run = safe_name(run_id + '-multinode' + suffix)
+                subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
+                                f"{remote}:{root}/runtime-tests/{runtime_run}/results/.",
+                                str(runtime_results)], check=False)
         if software == "abacus" and target in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             feature_results = results / "gpu-features"
             feature_results.mkdir(exist_ok=True)
