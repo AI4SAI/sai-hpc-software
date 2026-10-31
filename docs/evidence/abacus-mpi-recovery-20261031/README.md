@@ -43,6 +43,32 @@ verified success. No new job was submitted by this replay. The full Linux CI
 suite passed 1,132 tests with two optional source-cache skips in
 [validation run 41213052758](https://github.com/AI4SAI/sai-hpc-software/actions/runs/41213052758).
 
-The failed public beta job has been resumed in daily workflow 41184760477,
-attempt 2. Public module checks and beta rotation are tracked separately from
-the completed CPU scientific acceptance.
+## Public beta completion
+
+The resumed daily workflow 41184760477 attempt 2 passed public module checks on
+16V100 (2074535), 4V100 (2074537), DSPRHBM (2074541), and 8V100V0 (2074782).
+The initial 8V100V0 allocation 2074539 stalled on `8v100v0n09`. A native CUDA
+probe on its allocated GPUs returned error 214, `uncorrectable ECC error
+encountered`, when creating a primary context on device 1; device 0 succeeded.
+The diagnostic was retained and the stuck allocation cancelled. The existing
+hardware retry rule read that diagnostic, excluded `8v100v0n09`, and passed on
+`8v100v0n04` in a separate run directory. No failed allocation was relabelled.
+
+[The final status observation](final-status.json) includes the CUDA diagnostic,
+original/retry accounting, publication receipt and ordinary module help. It
+confirms `abacus/develop-beta-later` selects
+`develop-beta-20261031-6b24db05dc17-r75ef5179f1e8-b51dec325dca1` as of October 31
+15:25 UTC / 23:25 Beijing. This closes ABACUS's four-partition daily acceptance
+and publication. The old daily workflow still contains unrelated historic
+CP2K/LAMMPS failures; their compatibility recovery is recorded separately.
+
+The same observation confirms October 31 public snapshots for LAMMPS, DeePMD
+and GPUMD. DeePMD `e6f7357379f7` passed public GPU inference plus actual two-GPU
+se_e2_a/DPA2 training and restart on all three targets. CP2K CPU dependency job
+2073677 remains running, so its public snapshot remains October 27.
+
+PR #39 merged as `52989279f6e60629057924f562e4adc73291ad54`. GitHub Linux CI is
+the full validation result (1,132 tests, two optional skips). The additional
+local suite completed the same 1,132 tests but reported two errors because
+`cmake` is absent locally; those two cases pass in CI. Fourteen local optional
+tests were skipped for unavailable tools/source caches.
