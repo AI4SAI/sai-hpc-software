@@ -820,7 +820,9 @@ def verify_evidence(task, request, *, allow_reference=True):
             changes.get("source_sha") != request["source_sha"] or
             changes.get("libgrpp") != "builtin" or changes.get("quip") != "upstream_removed" or
             changes.get("approved_parity_exceptions") != APPROVED_EXCEPTIONS or
-            set(changes.get("evidence", {})) != {"src/CMakeLists.txt", "src/libgrpp_integrals.F", "CMakeLists.txt"} or
+            set(changes.get("evidence", {})) not in (
+                {"src/CMakeLists.txt", "src/libgrpp_integrals.F", "CMakeLists.txt"},
+                {"src/CMakeLists.txt", "src/CMakeSources.cmake", "src/libgrpp_integrals.F", "CMakeLists.txt"}) or
             any(not re.fullmatch(r"[0-9a-f]{64}", value) for value in changes["evidence"].values())):
         raise ValueError("upstream feature equivalence evidence is invalid")
     # The source checks are made by the trusted build recipe before sealing the

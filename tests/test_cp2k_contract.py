@@ -1,4 +1,5 @@
 import argparse
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -16,6 +17,57 @@ import software_controller as software
 from export_native import MANIFEST_PATH, inventory, read_installed_manifests, write_manifests
 from release_contract import make_identity
 from remote_controller import HPCX_ROOT, HCOLL_BUILD_PREFIX
+
+
+class CP2KSourceLayoutTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.source = Path(temporary.name) / "source"
+        self.prefix = Path(temporary.name) / "installed"
+        (self.source / "src").mkdir(parents=True)
+        (self.prefix / "share/sai").mkdir(parents=True)
+        (self.source / "CMakeLists.txt").write_text("project(cp2k)\n")
+        (self.source / "src/libgrpp_integrals.F").write_text("   USE libgrpp, ONLY: libgrpp_init\n")
+        self.lists = "list(\n APPEND\n CP2K_SRCS_C\n grpp/grpp.c)\nlist(APPEND CP2K_SRCS_F grpp/libgrpp.F)\n"
+        self.include = 'include("${CMAKE_CURRENT_LIST_DIR}/CMakeSources.cmake")\n'
+
+    def check(self):
+        contract.source_changes(self.prefix, "a" * 40, self.source)
+        return json.loads((self.prefix / "share/sai/upstream-feature-changes.json").read_text())
+
+    def test_release_and_development_layouts_pin_the_actual_source_lists(self):
+        for split in (False, True):
+            with self.subTest(split=split):
+                (self.source / "src/CMakeLists.txt").write_text(self.include if split else self.lists)
+                (self.source / "src/CMakeSources.cmake").write_text(self.lists)
+                evidence = self.check()["evidence"]
+                expected = {"CMakeLists.txt", "src/CMakeLists.txt", "src/libgrpp_integrals.F"}
+                if split:
+                    expected.add("src/CMakeSources.cmake")
+                self.assertEqual(set(evidence), expected)
+                for name, digest in evidence.items():
+                    self.assertEqual(digest, hashlib.sha256((self.source / name).read_bytes()).hexdigest())
+
+    def test_unused_or_commented_source_list_does_not_prove_libgrpp(self):
+        (self.source / "src/CMakeSources.cmake").write_text(self.lists)
+        for text in ("", "# " + self.include, "# grpp/grpp.c grpp/libgrpp.F\n",
+                     self.lists.replace("CP2K_SRCS_C", "UNUSED_SOURCES"),
+                     self.lists.replace("list(APPEND CP2K_SRCS_F", "# list(APPEND CP2K_SRCS_F")):
+            with self.subTest(text=text), self.assertRaisesRegex(ValueError, "proven built in"):
+                (self.source / "src/CMakeLists.txt").write_text(text)
+                self.check()
+
+    def test_split_layout_still_requires_both_languages_and_fortran_integration(self):
+        (self.source / "src/CMakeLists.txt").write_text(self.include)
+        for missing in ("grpp/grpp.c", "grpp/libgrpp.F"):
+            with self.subTest(missing=missing), self.assertRaisesRegex(ValueError, "proven built in"):
+                (self.source / "src/CMakeSources.cmake").write_text(self.lists.replace(missing, ""))
+                self.check()
+        (self.source / "src/CMakeSources.cmake").write_text(self.lists)
+        (self.source / "src/libgrpp_integrals.F").write_text("! USE libgrpp\n")
+        with self.assertRaisesRegex(ValueError, "integration is absent"):
+            self.check()
 
 
 class CP2KContractTests(unittest.TestCase):

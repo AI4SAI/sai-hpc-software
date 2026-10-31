@@ -1,4 +1,32 @@
-# Workflow closure — 2026-10-27
+# Workflow closure — 2026-10-31
+
+## October 31 upstream compatibility recovery
+
+After Slurm stopped rejecting submissions with `AssocGrpBilling`,
+[retry 41083099497](https://github.com/AI4SAI/sai-hpc-software/actions/runs/41083099497)
+accepted and published ABACUS `6b24db05dc17` on all four targets, DeePMD
+`4c3a598d9889` on all three V100 targets, and GPUMD `a2b4b534bfda` on all three
+V100 targets. DeePMD again passed actual two-GPU se_e2_a/DPA2 training and restart
+on every target. These beta snapshots use the October 30 UTC date; publication
+completed on October 31 in Beijing.
+
+The remaining failures require two upstream compatibility changes:
+
+- CP2K `a5267448e3f2` compiled and installed on all four targets, but the feature
+  proof still expected the built-in libgrpp source lists in `src/CMakeLists.txt`.
+  It now also recognizes the included `src/CMakeSources.cmake`, checks both C and
+  Fortran source lists, and records that file's hash in the feature evidence.
+  The release layout remains supported and detached/commented lists do not pass.
+- LAMMPS `5f0288a47184` removed `Modify::find_fix/find_compute` and its public
+  arrays. The interface sources matching installed DeePMD v3.2.0 now use
+  `get_fix_by_id/get_compute_by_id`, including the TTM paths. Missing-ID and type
+  checks remain. The build records hashes of the original and patched interface
+  files; the existing installed DeePMD library remains the dependency.
+
+These repairs require fresh container builds and the existing scientific/public
+module checks before CP2K or LAMMPS beta promotion. Their previous public betas
+remain selected until those checks complete. Original failed jobs and evidence
+are retained; the repairs do not rewrite their frozen controllers.
 
 ## October 27 recovery and deployment measurements
 

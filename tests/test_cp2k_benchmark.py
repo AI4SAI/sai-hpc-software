@@ -336,6 +336,21 @@ class EvidenceTests(unittest.TestCase):
         self.assertEqual(len(result["samples"]), len(benchmark.CASES) * 8)
         self.assertEqual(result["timings"]["water64-gpw"]["measured_repetitions"], 3)
 
+    def test_split_source_list_evidence_is_accepted_but_unknown_or_missing_files_are_not(self):
+        path = self.task / "results/upstream-feature-changes.json"
+        changes = json.loads(path.read_text())
+        changes["evidence"]["src/CMakeSources.cmake"] = "c" * 64
+        self.write("results/upstream-feature-changes.json", json.dumps(changes))
+        self.request["feature_changes_sha256"] = checksum(path)
+        benchmark.verify_evidence(self.task, self.request)
+        for wrong in (dict(changes["evidence"], unrelated="d" * 64),
+                      {k: v for k, v in changes["evidence"].items() if k != "src/CMakeLists.txt"},
+                      dict(changes["evidence"], **{"src/CMakeSources.cmake": "invalid"})):
+            self.write("results/upstream-feature-changes.json", json.dumps(dict(changes, evidence=wrong)))
+            self.request["feature_changes_sha256"] = checksum(path)
+            with self.assertRaisesRegex(ValueError, "equivalence evidence is invalid"):
+                benchmark.verify_evidence(self.task, self.request)
+
     def test_mutated_input_energy_rank_or_script_invalidates_proof(self):
         changes = {
             "cases/water64-gpw/1-candidate/input.inp": "wrong input",

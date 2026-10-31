@@ -67,6 +67,11 @@ fi
 # Keep the integration patch inside the recipe fingerprint, not a recovery-only script.
 "$MD_SYSTEM_DEEPMD/bin/python" /control/md_registration.py integrate \
   /workspace/lammps/cmake/CMakeLists.txt
+# Current LAMMPS no longer exposes Modify's arrays or integer lookup methods.
+# Adapt only the interface checkout, keeping the installed DeePMD dependency.
+"$MD_SYSTEM_DEEPMD/bin/python" /control/md_lammps_api.py \
+  /workspace/lammps/src/modify.h /workspace/deepmd-kit/source/lmp \
+  --receipt "$LAMMPS_PREFIX/share/sai/deepmd-lammps-api.json"
 # Compute nodes are offline.  Add the site's verified potential set without
 # replacing newer files shipped by the selected LAMMPS source revision.
 cp -a --no-clobber "$MD_SYSTEM_LAMMPS/share/lammps/potentials/." /workspace/lammps/potentials/
