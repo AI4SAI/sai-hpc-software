@@ -372,15 +372,26 @@ def run(argv):
     return subprocess.run(argv, check=True, text=True, capture_output=True).stdout
 
 
-def source_changes(prefix, sha):
+def source_changes(prefix, sha, source=Path("/workspace/source")):
     """Prove renamed/builtin features from this source, never silently waive them."""
-    source = Path("/workspace/source")
+    source = Path(source)
     files = {name: (source / name).read_bytes() for name in
              ("src/CMakeLists.txt", "src/libgrpp_integrals.F", "CMakeLists.txt")}
-    cmake = files["src/CMakeLists.txt"].decode()
-    if "grpp/libgrpp.F" not in cmake or "grpp/grpp.c" not in cmake:
-        raise ValueError("libgrpp is no longer proven built in")
-    if "USE libgrpp" not in files["src/libgrpp_integrals.F"].decode():
+    cmake = re.sub(r"(?m)#.*$", "", files["src/CMakeLists.txt"].decode())
+    # Development moved the lists out of CMakeLists.txt in October 2026.
+    # A detached list is not evidence: require the actual include and pin both
+    # files. Releases still carry the lists directly in CMakeLists.txt.
+    if re.search(r'^\s*include\(\s*"\$\{CMAKE_CURRENT_LIST_DIR\}/CMakeSources\.cmake"\s*\)\s*$',
+                 cmake, re.M):
+        name = "src/CMakeSources.cmake"
+        files[name] = (source / name).read_bytes()
+        cmake += "\n" + re.sub(r"(?m)#.*$", "", files[name].decode())
+    for variable, filename in (("CP2K_SRCS_F", "grpp/libgrpp.F"),
+                               ("CP2K_SRCS_C", "grpp/grpp.c")):
+        lists = re.findall(r"\blist\s*\(\s*APPEND\s+" + variable + r"\s+([^)]*)\)", cmake)
+        if not any(filename in values.split() for values in lists):
+            raise ValueError("libgrpp is no longer proven built in")
+    if not re.search(r"^\s*USE\s+libgrpp\b", files["src/libgrpp_integrals.F"].decode(), re.M | re.I):
         raise ValueError("libgrpp integration is absent")
     if "CP2K_USE_QUIP" in files["CMakeLists.txt"].decode():
         raise ValueError("QUIP support returned upstream; enable and test it")
