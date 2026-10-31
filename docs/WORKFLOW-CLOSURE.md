@@ -23,23 +23,35 @@ The remaining failures require two upstream compatibility changes:
   checks remain. The build records hashes of the original and patched interface
   files; the existing installed DeePMD library remains the dependency.
 
-These repairs require fresh container builds and the existing scientific/public
-module checks before CP2K or LAMMPS beta promotion. Their previous public betas
-remain selected until those checks complete. Original failed jobs and evidence
-are retained; the repairs do not rewrite their frozen controllers.
+The repairs were tested with fresh container builds and the existing scientific
+and public module checks. Original failed jobs and evidence are retained; the
+repairs do not rewrite their frozen controllers.
 
 The repaired controller `2be83eaf69134f42ba4d39c95b6f8b76f1e8c18a` passed all
 1,125 CI tests (two optional source-cache tests skipped). Fresh workflows
 [CP2K 41169343854](https://github.com/AI4SAI/sai-hpc-software/actions/runs/41169343854)
 and [LAMMPS 41169355573](https://github.com/AI4SAI/sai-hpc-software/actions/runs/41169355573)
 resolved the newer upstream commits `d077e66fe06a` and `7dbed49448a1` respectively.
-At October 31 04:51 UTC / 12:51 Beijing, all seven Slurm jobs were running:
-CP2K dependencies 2064495/2064489/2064493/2064494 on
-16V100/4V100/8V100V0/DSPRHBM, and LAMMPS builds 2064546/2064544/2064551 on the
-three V100 partitions. Each LAMMPS container emitted the expected interface
-patch receipt. These are in-progress builds, not accepted SIFs; scientific
-acceptance and public beta rotation remain pending. See the
-[rerun evidence](evidence/upstream-compatibility-20261031/README.md).
+The October 31 14:45 UTC / 22:45 Beijing follow-up confirms:
+
+- LAMMPS succeeded on 16V100, 4V100 and 8V100V0. Each SIF passed 14 scientific
+  cases, including single/two-node GPU calculations, with 71 packages and 2,645
+  styles. Public module checks 2065799/2065801/2065803 passed with zero numerical
+  error. `lammps/develop-beta-later` now selects
+  `develop-beta-20261031-7dbed49448a1-r75ef5179f1e8-b692a31172a2c`.
+- CP2K succeeded on all three V100 partitions, including final SIF checks and
+  seven scientific cases in both single- and multi-node modes. CPU dependency
+  job 2064494 completed compilation and explicit synchronization, then failed
+  fuse2fs teardown with exit 74. Its read-only filesystem check is clean, but
+  that does not make the failed checkpoint accepted. Attempt 2 uses a fresh
+  dependency run and Slurm job 2073677; the CPU build/science and four-partition
+  beta promotion remain pending. The public CP2K alias retains October 27.
+- The afternoon daily run 41184760477 used the old main commit and repeated the
+  two compatibility failures. Its DeePMD and GPUMD beta jobs succeeded. ABACUS
+  passed the three GPU acceptance sets, but CPU multi-node job 2067149 failed
+  during host MPI process mapping before ABACUS execution; recovery is pending.
+
+See the [accepted artifacts and remaining gaps](evidence/upstream-compatibility-20261031/README.md).
 
 ## October 27 recovery and deployment measurements
 
