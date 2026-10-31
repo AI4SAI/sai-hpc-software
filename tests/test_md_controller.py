@@ -271,7 +271,8 @@ class MDControllerTests(unittest.TestCase):
         build = (ROOT / 'controller/md_build.sh').read_text()
         marker = '"$MD_SYSTEM_DEEPMD/bin/python" /control/md_registration.py integrate'
         self.assertIn(marker, build)
-        block = marker + build.split(marker, 1)[1].split('# Compute nodes', 1)[0]
+        # Exercise this continued shell command without running later build steps.
+        block = (marker + build.split(marker, 1)[1]).replace('\\\n', '').splitlines()[0]
         with tempfile.TemporaryDirectory() as temporary:
             cmake = Path(temporary) / 'CMakeLists.txt'
             cmake.write_text('project(fixture)\n')
