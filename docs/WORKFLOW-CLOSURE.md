@@ -1,5 +1,24 @@
 # Workflow closure — 2026-10-31
 
+## October 31 CPU acceptance follow-up
+
+Compatibility [PR #38](https://github.com/AI4SAI/sai-hpc-software/pull/38) merged
+as `0a2e07a8816428885036664ea92734c792d93087` after all CI checks passed. Future
+daily runs now include the accepted CP2K and LAMMPS upstream compatibility fixes.
+
+ABACUS CPU MPI retry 2074089 passed with the same SIF and original eight-rank,
+two-node resources. PW/HSE/DeePKS jobs 2074122/2074180/2074326 then passed their
+scientific and iteration-time gates; the original controller accepted the
+artifact. The failed public beta job is resuming in daily workflow 41184760477
+attempt 2. A narrowly scoped one-allocation retry for this pre-execution MPI
+mapping error has passed the full 1,132-test CI suite and a replay against the
+real cluster allocations. See [recovery evidence](evidence/abacus-mpi-recovery-20261031/README.md).
+
+CP2K CPU dependency retry 2073677 remains active. The direct compute-node check
+found multiple concurrent compiler processes; its pending acceptance is not a
+single-core container limit. Its three GPU scientific acceptances and LAMMPS's
+three-partition public beta remain complete as recorded below.
+
 ## October 31 upstream compatibility recovery
 
 After Slurm stopped rejecting submissions with `AssocGrpBilling`,
