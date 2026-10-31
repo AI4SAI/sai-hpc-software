@@ -28,6 +28,19 @@ module checks before CP2K or LAMMPS beta promotion. Their previous public betas
 remain selected until those checks complete. Original failed jobs and evidence
 are retained; the repairs do not rewrite their frozen controllers.
 
+The repaired controller `2be83eaf69134f42ba4d39c95b6f8b76f1e8c18a` passed all
+1,125 CI tests (two optional source-cache tests skipped). Fresh workflows
+[CP2K 41169343854](https://github.com/AI4SAI/sai-hpc-software/actions/runs/41169343854)
+and [LAMMPS 41169355573](https://github.com/AI4SAI/sai-hpc-software/actions/runs/41169355573)
+resolved the newer upstream commits `d077e66fe06a` and `7dbed49448a1` respectively.
+At October 31 04:51 UTC / 12:51 Beijing, all seven Slurm jobs were running:
+CP2K dependencies 2064495/2064489/2064493/2064494 on
+16V100/4V100/8V100V0/DSPRHBM, and LAMMPS builds 2064546/2064544/2064551 on the
+three V100 partitions. Each LAMMPS container emitted the expected interface
+patch receipt. These are in-progress builds, not accepted SIFs; scientific
+acceptance and public beta rotation remain pending. See the
+[rerun evidence](evidence/upstream-compatibility-20261031/README.md).
+
 ## October 27 recovery and deployment measurements
 
 CP2K's October 26 source `d43cbde630af` is now publicly accepted on all four

@@ -1,0 +1,54 @@
+{
+  "cp2k_source_evidence": true,
+  "cp2k_source_sha": "d077e66fe06a862d49bdcc2b91c179463e9487eb",
+  "deepmd_interface_patch_idempotent": true,
+  "downloaded_files": [
+    {
+      "path": "cp2k-resolved/CMakeLists.txt",
+      "sha256": "9e17a140021887994b53b33794904d1f25720883fe04c1bbc2cbb66e54de974b"
+    },
+    {
+      "path": "cp2k-resolved/src/CMakeLists.txt",
+      "sha256": "f6f393185374d4d74e9686c685614fde6fe1a6c0967327ffdcd185705316f9a1"
+    },
+    {
+      "path": "cp2k-resolved/src/CMakeSources.cmake",
+      "sha256": "650447bb0e363cac7943b1870e998bd5383da0028672701f252318efbf008dce"
+    },
+    {
+      "path": "cp2k-resolved/src/libgrpp_integrals.F",
+      "sha256": "9dda033a87116a90b6b226e95f5d9dffe14ff36e695c1ccf95757b1340a44a29"
+    },
+    {
+      "path": "lammps-resolved/modify.h",
+      "sha256": "03054a9642b5cfe594c1bd801fd13c05081cc4f4d34a4082e8bceb25a03dabbb"
+    }
+  ],
+  "interface_receipt": {
+    "files": {
+      "compute_deepmd_fparam_dedn.cpp": {
+        "after_sha256": "ae714fb589ca85b17e640aa37ae54cdde7a9c715ccf99994cc0c78d24e988b7f",
+        "before_sha256": "df5cd9c20c10841c721b7aeb72fba76560208cd79e677a75566b99f43dc9e8fa",
+        "changed": true,
+        "replacements": {
+          "compute": 1,
+          "fix": 1,
+          "ttm": 0
+        }
+      },
+      "pair_base.cpp": {
+        "after_sha256": "fb8856319946777d05af214adc548d6c83fe02dae4e751bbd6edacb7fed0b301",
+        "before_sha256": "099592ed909edc4a79e81ea5577c56f4fa3a97d2e850bf63528f0c721016a187",
+        "changed": true,
+        "replacements": {
+          "compute": 2,
+          "fix": 1,
+          "ttm": 2
+        }
+      }
+    },
+    "local_integration_patch": true,
+    "modify_header_sha256": "03054a9642b5cfe594c1bd801fd13c05081cc4f4d34a4082e8bceb25a03dabbb"
+  },
+  "lammps_source_sha": "7dbed49448a17dbc9d4bc3eee5512e9ea2ad3a04"
+}

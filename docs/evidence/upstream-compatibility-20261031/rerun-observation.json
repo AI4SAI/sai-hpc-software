@@ -1,0 +1,519 @@
+{
+  "controller_sha": "2be83eaf69134f42ba4d39c95b6f8b76f1e8c18a",
+  "meaning": "Submission and in-progress observation only; no completed build or scientific acceptance claim.",
+  "observed_at": "2026-10-31T04:51:56.417598+00:00",
+  "project_root": "/org/org-open-sai/proj-sai-hpc-software",
+  "runs": [
+    {
+      "batch_directives": [
+        "#SBATCH --job-name=sai-cp2k-deps-16v100-avx2-8c0adc292317",
+        "#SBATCH --dependency=singleton",
+        "#SBATCH --partition=16V100",
+        "#SBATCH --qos=flood-1o2gpu",
+        "#SBATCH --nodes=1",
+        "#SBATCH --ntasks=1",
+        "#SBATCH --time=240",
+        "#SBATCH --export=NIL",
+        "#SBATCH --output=/org/org-open-sai/proj-sai-hpc-software/runs/41169343854-1-development-16v100-avx2-2026-10-31-d077e66fe06a-dependencies/results/slurm-%j.log",
+        "#SBATCH --account=proj-sai-hpc-software",
+        "#SBATCH --chdir=/org/org-open-sai/proj-sai-hpc-software/runs/41169343854-1-development-16v100-avx2-2026-10-31-d077e66fe06a-dependencies",
+        "#SBATCH --gpus-per-node=1"
+      ],
+      "build_affinity": [],
+      "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/2be83eaf69134f42ba4d39c95b6f8b76f1e8c18a/41169343854-1-development-16v100-avx2-2026-10-31-d077e66fe06a",
+      "helper_sha256": "e12d6cb14ff613d969e0a5ed44a46932b865655cce4ca5df007e872b1faf8323",
+      "identity": {
+        "build_id": "master-2026-10-30-gd077e66fe06a-r8c0adc292317",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-30-gd077e66fe06a-r8c0adc292317/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "8c0adc29231735d9d47cf6f6b20923ed3cf32e865f7b7c2d04bc14c81cafddb4",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "d077e66fe06a862d49bdcc2b91c179463e9487eb",
+        "source_version": "master-2026-10-30",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "development",
+        "version_label": "master-2026-10-30"
+      },
+      "interface_patch_receipts": [],
+      "job": {
+        "elapsed": "8:16",
+        "job_id": "2064495",
+        "node_or_reason": "16v100n26",
+        "partition": "16V100",
+        "state": "RUNNING"
+      },
+      "log_bytes": 16614,
+      "log_updated_at": "2026-10-31T04:50:39+00:00",
+      "path": "/org/org-open-sai/proj-sai-hpc-software/runs/41169343854-1-development-16v100-avx2-2026-10-31-d077e66fe06a-dependencies",
+      "request_sha256": "96ea539a2e24a0e62553ca2f7c187437a375d7b3018f54ce16dbc7abb73654eb",
+      "run_id": "41169343854-1-development-16v100-avx2-2026-10-31-d077e66fe06a-dependencies",
+      "scratch": [
+        "export TMPDIR=/org/org-open-sai/proj-sai-hpc-software/runs/41169343854-1-development-16v100-avx2-2026-10-31-d077e66fe06a-dependencies/runtime",
+        "export APPTAINER_TMPDIR=\"$TMPDIR\"",
+        "export APPTAINER_CACHEDIR=/org/org-open-sai/proj-sai-hpc-software/runs/41169343854-1-development-16v100-avx2-2026-10-31-d077e66fe06a-dependencies/apptainer-cache"
+      ],
+      "software": "cp2k",
+      "stage": "dependencies"
+    },
+    {
+      "batch_directives": [
+        "#SBATCH --job-name=sai-cp2k-deps-4v100-avx512-8c0adc292317",
+        "#SBATCH --dependency=singleton",
+        "#SBATCH --partition=4V100",
+        "#SBATCH --qos=flood-1o2gpu",
+        "#SBATCH --nodes=1",
+        "#SBATCH --ntasks=1",
+        "#SBATCH --time=240",
+        "#SBATCH --export=NIL",
+        "#SBATCH --output=/org/org-open-sai/proj-sai-hpc-software/runs/41169343854-1-development-4v100-avx512-2026-10-31-d077e66fe06a-dependencies/results/slurm-%j.log",
+        "#SBATCH --account=proj-sai-hpc-software",
+        "#SBATCH --chdir=/org/org-open-sai/proj-sai-hpc-software/runs/41169343854-1-development-4v100-avx512-2026-10-31-d077e66fe06a-dependencies",
+        "#SBATCH --gpus-per-node=1"
+      ],
+      "build_affinity": [],
+      "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/2be83eaf69134f42ba4d39c95b6f8b76f1e8c18a/41169343854-1-development-4v100-avx512-2026-10-31-d077e66fe06a",
+      "helper_sha256": "e12d6cb14ff613d969e0a5ed44a46932b865655cce4ca5df007e872b1faf8323",
+      "identity": {
+        "build_id": "master-2026-10-30-gd077e66fe06a-r8c0adc292317",
+        "cpu_arch": "znver4",
+        "cuda_arch": "70",
+        "dependency_isa": "avx512",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-30-gd077e66fe06a-r8c0adc292317/4V100",
+        "partition": "4V100",
+        "recipe_sha256": "8c0adc29231735d9d47cf6f6b20923ed3cf32e865f7b7c2d04bc14c81cafddb4",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "d077e66fe06a862d49bdcc2b91c179463e9487eb",
+        "source_version": "master-2026-10-30",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "4v100-avx512",
+        "track": "development",
+        "version_label": "master-2026-10-30"
+      },
+      "interface_patch_receipts": [],
+      "job": {
+        "elapsed": "8:51",
+        "job_id": "2064489",
+        "node_or_reason": "4v100n22",
+        "partition": "4V100",
+        "state": "RUNNING"
+      },
+      "log_bytes": 16598,
+      "log_updated_at": "2026-10-31T04:48:33+00:00",
+      "path": "/org/org-open-sai/proj-sai-hpc-software/runs/41169343854-1-development-4v100-avx512-2026-10-31-d077e66fe06a-dependencies",
+      "request_sha256": "9d36a572c47b285d1825518214a47bc187e44f0eac0dd7e892df2138ca571486",
+      "run_id": "41169343854-1-development-4v100-avx512-2026-10-31-d077e66fe06a-dependencies",
+      "scratch": [
+        "export TMPDIR=/org/org-open-sai/proj-sai-hpc-software/runs/41169343854-1-development-4v100-avx512-2026-10-31-d077e66fe06a-dependencies/runtime",
+        "export APPTAINER_TMPDIR=\"$TMPDIR\"",
+        "export APPTAINER_CACHEDIR=/org/org-open-sai/proj-sai-hpc-software/runs/41169343854-1-development-4v100-avx512-2026-10-31-d077e66fe06a-dependencies/apptainer-cache"
+      ],
+      "software": "cp2k",
+      "stage": "dependencies"
+    },
+    {
+      "batch_directives": [
+        "#SBATCH --job-name=sai-cp2k-deps-8v100v0-avx512-8c0adc292317",
+        "#SBATCH --dependency=singleton",
+        "#SBATCH --partition=8V100V0",
+        "#SBATCH --qos=flood-1o2gpu",
+        "#SBATCH --nodes=1",
+        "#SBATCH --ntasks=1",
+        "#SBATCH --time=240",
+        "#SBATCH --export=NIL",
+        "#SBATCH --output=/org/org-open-sai/proj-sai-hpc-software/runs/41169343854-1-development-8v100v0-avx512-2026-10-31-d077e66fe06a-dependencies/results/slurm-%j.log",
+        "#SBATCH --account=proj-sai-hpc-software",
+        "#SBATCH --chdir=/org/org-open-sai/proj-sai-hpc-software/runs/41169343854-1-development-8v100v0-avx512-2026-10-31-d077e66fe06a-dependencies",
+        "#SBATCH --gpus-per-node=2"
+      ],
+      "build_affinity": [],
+      "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/2be83eaf69134f42ba4d39c95b6f8b76f1e8c18a/41169343854-1-development-8v100v0-avx512-2026-10-31-d077e66fe06a",
+      "helper_sha256": "e12d6cb14ff613d969e0a5ed44a46932b865655cce4ca5df007e872b1faf8323",
+      "identity": {
+        "build_id": "master-2026-10-30-gd077e66fe06a-r8c0adc292317",
+        "cpu_arch": "skylake-avx512",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-30-gd077e66fe06a-r8c0adc292317/8V100V0",
+        "partition": "8V100V0",
+        "recipe_sha256": "8c0adc29231735d9d47cf6f6b20923ed3cf32e865f7b7c2d04bc14c81cafddb4",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "d077e66fe06a862d49bdcc2b91c179463e9487eb",
+        "source_version": "master-2026-10-30",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "8v100v0-avx512",
+        "track": "development",
+        "version_label": "master-2026-10-30"
+      },
+      "interface_patch_receipts": [],
+      "job": {
+        "elapsed": "8:20",
+        "job_id": "2064493",
+        "node_or_reason": "8v100v0n04",
+        "partition": "8V100V0",
+        "state": "RUNNING"
+      },
+      "log_bytes": 16748,
+      "log_updated_at": "2026-10-31T04:50:59+00:00",
+      "path": "/org/org-open-sai/proj-sai-hpc-software/runs/41169343854-1-development-8v100v0-avx512-2026-10-31-d077e66fe06a-dependencies",
+      "request_sha256": "a3e9021b10bc9d5fedc22ea8fc2088bd3ed6c392f5850dab2090747e7e00bd25",
+      "run_id": "41169343854-1-development-8v100v0-avx512-2026-10-31-d077e66fe06a-dependencies",
+      "scratch": [
+        "export TMPDIR=/org/org-open-sai/proj-sai-hpc-software/runs/41169343854-1-development-8v100v0-avx512-2026-10-31-d077e66fe06a-dependencies/runtime",
+        "export APPTAINER_TMPDIR=\"$TMPDIR\"",
+        "export APPTAINER_CACHEDIR=/org/org-open-sai/proj-sai-hpc-software/runs/41169343854-1-development-8v100v0-avx512-2026-10-31-d077e66fe06a-dependencies/apptainer-cache"
+      ],
+      "software": "cp2k",
+      "stage": "dependencies"
+    },
+    {
+      "batch_directives": [
+        "#SBATCH --job-name=sai-cp2k-deps-dsprhbm-8c0adc292317",
+        "#SBATCH --dependency=singleton",
+        "#SBATCH --partition=DSPRHBM",
+        "#SBATCH --qos=rush-cpu",
+        "#SBATCH --nodes=1",
+        "#SBATCH --ntasks=1",
+        "#SBATCH --time=720",
+        "#SBATCH --export=NIL",
+        "#SBATCH --output=/org/org-open-sai/proj-sai-hpc-software/runs/41169343854-1-development-dsprhbm-2026-10-31-d077e66fe06a-dependencies/results/slurm-%j.log",
+        "#SBATCH --account=proj-sai-hpc-software",
+        "#SBATCH --chdir=/org/org-open-sai/proj-sai-hpc-software/runs/41169343854-1-development-dsprhbm-2026-10-31-d077e66fe06a-dependencies",
+        "#SBATCH --cpus-per-task=8",
+        "#SBATCH --mem=28G"
+      ],
+      "build_affinity": [],
+      "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/2be83eaf69134f42ba4d39c95b6f8b76f1e8c18a/41169343854-1-development-dsprhbm-2026-10-31-d077e66fe06a",
+      "helper_sha256": "e12d6cb14ff613d969e0a5ed44a46932b865655cce4ca5df007e872b1faf8323",
+      "identity": {
+        "build_id": "master-2026-10-30-gd077e66fe06a-r8c0adc292317",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-10-30-gd077e66fe06a-r8c0adc292317/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "8c0adc29231735d9d47cf6f6b20923ed3cf32e865f7b7c2d04bc14c81cafddb4",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "d077e66fe06a862d49bdcc2b91c179463e9487eb",
+        "source_version": "master-2026-10-30",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "development",
+        "version_label": "master-2026-10-30"
+      },
+      "interface_patch_receipts": [],
+      "job": {
+        "elapsed": "8:19",
+        "job_id": "2064494",
+        "node_or_reason": "d9470n01",
+        "partition": "DSPRHBM",
+        "state": "RUNNING"
+      },
+      "log_bytes": 14416,
+      "log_updated_at": "2026-10-31T04:51:41+00:00",
+      "path": "/org/org-open-sai/proj-sai-hpc-software/runs/41169343854-1-development-dsprhbm-2026-10-31-d077e66fe06a-dependencies",
+      "request_sha256": "0d8407942bdbf9e77893c3f2e4ea6c3d67b83bff5de414525566c35c3f627cff",
+      "run_id": "41169343854-1-development-dsprhbm-2026-10-31-d077e66fe06a-dependencies",
+      "scratch": [
+        "export TMPDIR=/org/org-open-sai/proj-sai-hpc-software/runs/41169343854-1-development-dsprhbm-2026-10-31-d077e66fe06a-dependencies/runtime",
+        "export APPTAINER_TMPDIR=\"$TMPDIR\"",
+        "export APPTAINER_CACHEDIR=/org/org-open-sai/proj-sai-hpc-software/runs/41169343854-1-development-dsprhbm-2026-10-31-d077e66fe06a-dependencies/apptainer-cache"
+      ],
+      "software": "cp2k",
+      "stage": "dependencies"
+    },
+    {
+      "batch_directives": [
+        "#SBATCH --job-name=lammps-lmp-41169355573-1-development-16v100-avx2-20261031-7dbed49448a1",
+        "#SBATCH --partition=16V100",
+        "#SBATCH --qos=rush-gpu",
+        "#SBATCH --account=proj-sai-hpc-software",
+        "#SBATCH --chdir=/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-41169355573-1-development-16v100-avx2-20261031-7dbed49448a1",
+        "#SBATCH --nodes=1",
+        "#SBATCH --ntasks=1",
+        "#SBATCH --gpus-per-node=4",
+        "#SBATCH --time=330",
+        "#SBATCH --output=/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-41169355573-1-development-16v100-avx2-20261031-7dbed49448a1/results/slurm-%j.log",
+        "#SBATCH --export=NIL"
+      ],
+      "build_affinity": [
+        "LAMMPS_BUILD_AFFINITY 32 [16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95]"
+      ],
+      "controller": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/controller/2be83eaf69134f42ba4d39c95b6f8b76f1e8c18a/lmp-41169355573-1-development-16v100-avx2-20261031-7dbed49448a1",
+      "helper_sha256": "3f2edfbe029955fd817fb393db4ea14561cfa2052045ba56e5c1681a25d58fd8",
+      "identity": {
+        "build_id": "develop-2026-10-30-g7dbed49448a1-redfd28d49270",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/lammps/lammps-development-develop-2026-10-30-g7dbed49448a1-redfd28d49270/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "edfd28d492707d0fbfdbaeec01c5af69dcdd8f01f8665a8a859ca30b14e4d6a8",
+        "repository": "lammps/lammps",
+        "schema": 2,
+        "software": "lammps",
+        "source_ref": "develop",
+        "source_sha": "7dbed49448a17dbc9d4bc3eee5512e9ea2ad3a04",
+        "source_version": "develop-2026-10-30",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "development",
+        "version_label": "develop-2026-10-30"
+      },
+      "interface_patch_receipts": [
+        {
+          "files": {
+            "compute_deepmd_fparam_dedn.cpp": {
+              "after_sha256": "ae714fb589ca85b17e640aa37ae54cdde7a9c715ccf99994cc0c78d24e988b7f",
+              "before_sha256": "df5cd9c20c10841c721b7aeb72fba76560208cd79e677a75566b99f43dc9e8fa",
+              "changed": true,
+              "replacements": {
+                "compute": 1,
+                "fix": 1,
+                "ttm": 0
+              }
+            },
+            "pair_base.cpp": {
+              "after_sha256": "fb8856319946777d05af214adc548d6c83fe02dae4e751bbd6edacb7fed0b301",
+              "before_sha256": "099592ed909edc4a79e81ea5577c56f4fa3a97d2e850bf63528f0c721016a187",
+              "changed": true,
+              "replacements": {
+                "compute": 2,
+                "fix": 1,
+                "ttm": 2
+              }
+            }
+          },
+          "local_integration_patch": true,
+          "modify_header_sha256": "03054a9642b5cfe594c1bd801fd13c05081cc4f4d34a4082e8bceb25a03dabbb"
+        }
+      ],
+      "job": {
+        "elapsed": "2:22",
+        "job_id": "2064546",
+        "node_or_reason": "16v100n17",
+        "partition": "16V100",
+        "state": "RUNNING"
+      },
+      "last_compile_progress": "[  6%] Building CUDA object CMakeFiles/gpu_fatbin.dir/workspace/lammps/lib/gpu/lal_lj_class2_coul_cut_soft_gapsys.fatbin",
+      "log_bytes": 45456,
+      "log_updated_at": "2026-10-31T04:51:56+00:00",
+      "path": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-41169355573-1-development-16v100-avx2-20261031-7dbed49448a1",
+      "request_sha256": "3718696ed3405fb65ff60b64e139d30ce82a81c54ab0124527ebde7b09f67829",
+      "run_id": "lmp-41169355573-1-development-16v100-avx2-20261031-7dbed49448a1",
+      "scratch": [
+        "export TMPDIR=/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-41169355573-1-development-16v100-avx2-20261031-7dbed49448a1/runtime",
+        "export APPTAINER_TMPDIR=\"$TMPDIR\"",
+        "export APPTAINER_CACHEDIR=/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-41169355573-1-development-16v100-avx2-20261031-7dbed49448a1/apptainer-cache"
+      ],
+      "software": "lammps",
+      "stage": "build"
+    },
+    {
+      "batch_directives": [
+        "#SBATCH --job-name=lammps-lmp-41169355573-1-development-4v100-avx512-20261031-7dbed49448a1",
+        "#SBATCH --partition=4V100",
+        "#SBATCH --qos=rush-gpu",
+        "#SBATCH --account=proj-sai-hpc-software",
+        "#SBATCH --chdir=/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-41169355573-1-development-4v100-avx512-20261031-7dbed49448a1",
+        "#SBATCH --nodes=1",
+        "#SBATCH --ntasks=1",
+        "#SBATCH --gpus-per-node=4",
+        "#SBATCH --time=330",
+        "#SBATCH --output=/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-41169355573-1-development-4v100-avx512-20261031-7dbed49448a1/results/slurm-%j.log",
+        "#SBATCH --export=NIL"
+      ],
+      "build_affinity": [
+        "LAMMPS_BUILD_AFFINITY 32 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]"
+      ],
+      "controller": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/controller/2be83eaf69134f42ba4d39c95b6f8b76f1e8c18a/lmp-41169355573-1-development-4v100-avx512-20261031-7dbed49448a1",
+      "helper_sha256": "3f2edfbe029955fd817fb393db4ea14561cfa2052045ba56e5c1681a25d58fd8",
+      "identity": {
+        "build_id": "develop-2026-10-30-g7dbed49448a1-redfd28d49270",
+        "cpu_arch": "znver4",
+        "cuda_arch": "70",
+        "dependency_isa": "avx512",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/lammps/lammps-development-develop-2026-10-30-g7dbed49448a1-redfd28d49270/4V100",
+        "partition": "4V100",
+        "recipe_sha256": "edfd28d492707d0fbfdbaeec01c5af69dcdd8f01f8665a8a859ca30b14e4d6a8",
+        "repository": "lammps/lammps",
+        "schema": 2,
+        "software": "lammps",
+        "source_ref": "develop",
+        "source_sha": "7dbed49448a17dbc9d4bc3eee5512e9ea2ad3a04",
+        "source_version": "develop-2026-10-30",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "4v100-avx512",
+        "track": "development",
+        "version_label": "develop-2026-10-30"
+      },
+      "interface_patch_receipts": [
+        {
+          "files": {
+            "compute_deepmd_fparam_dedn.cpp": {
+              "after_sha256": "ae714fb589ca85b17e640aa37ae54cdde7a9c715ccf99994cc0c78d24e988b7f",
+              "before_sha256": "df5cd9c20c10841c721b7aeb72fba76560208cd79e677a75566b99f43dc9e8fa",
+              "changed": true,
+              "replacements": {
+                "compute": 1,
+                "fix": 1,
+                "ttm": 0
+              }
+            },
+            "pair_base.cpp": {
+              "after_sha256": "fb8856319946777d05af214adc548d6c83fe02dae4e751bbd6edacb7fed0b301",
+              "before_sha256": "099592ed909edc4a79e81ea5577c56f4fa3a97d2e850bf63528f0c721016a187",
+              "changed": true,
+              "replacements": {
+                "compute": 2,
+                "fix": 1,
+                "ttm": 2
+              }
+            }
+          },
+          "local_integration_patch": true,
+          "modify_header_sha256": "03054a9642b5cfe594c1bd801fd13c05081cc4f4d34a4082e8bceb25a03dabbb"
+        }
+      ],
+      "job": {
+        "elapsed": "2:33",
+        "job_id": "2064544",
+        "node_or_reason": "4v100n28",
+        "partition": "4V100",
+        "state": "RUNNING"
+      },
+      "last_compile_progress": "[ 15%] Building CXX object CMakeFiles/gpu.dir/workspace/lammps/lib/gpu/lal_colloid_ext.cpp.o",
+      "log_bytes": 67159,
+      "log_updated_at": "2026-10-31T04:51:56+00:00",
+      "path": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-41169355573-1-development-4v100-avx512-20261031-7dbed49448a1",
+      "request_sha256": "ae3449948133551dcb0a5943082cd9b4aacc93416c3ea15de5c00653795e2d6a",
+      "run_id": "lmp-41169355573-1-development-4v100-avx512-20261031-7dbed49448a1",
+      "scratch": [
+        "export TMPDIR=/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-41169355573-1-development-4v100-avx512-20261031-7dbed49448a1/runtime",
+        "export APPTAINER_TMPDIR=\"$TMPDIR\"",
+        "export APPTAINER_CACHEDIR=/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-41169355573-1-development-4v100-avx512-20261031-7dbed49448a1/apptainer-cache"
+      ],
+      "software": "lammps",
+      "stage": "build"
+    },
+    {
+      "batch_directives": [
+        "#SBATCH --job-name=lammps-lmp-41169355573-1-development-8v100v0-avx512-20261031-7dbed49448a1",
+        "#SBATCH --partition=8V100V0",
+        "#SBATCH --qos=rush-gpu",
+        "#SBATCH --account=proj-sai-hpc-software",
+        "#SBATCH --chdir=/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-41169355573-1-development-8v100v0-avx512-20261031-7dbed49448a1",
+        "#SBATCH --nodes=1",
+        "#SBATCH --ntasks=1",
+        "#SBATCH --gpus-per-node=4",
+        "#SBATCH --time=330",
+        "#SBATCH --output=/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-41169355573-1-development-8v100v0-avx512-20261031-7dbed49448a1/results/slurm-%j.log",
+        "#SBATCH --export=NIL"
+      ],
+      "build_affinity": [
+        "LAMMPS_BUILD_AFFINITY 24 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35]"
+      ],
+      "controller": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/controller/2be83eaf69134f42ba4d39c95b6f8b76f1e8c18a/lmp-41169355573-1-development-8v100v0-avx512-20261031-7dbed49448a1",
+      "helper_sha256": "3f2edfbe029955fd817fb393db4ea14561cfa2052045ba56e5c1681a25d58fd8",
+      "identity": {
+        "build_id": "develop-2026-10-30-g7dbed49448a1-redfd28d49270",
+        "cpu_arch": "skylake-avx512",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/lammps/lammps-development-develop-2026-10-30-g7dbed49448a1-redfd28d49270/8V100V0",
+        "partition": "8V100V0",
+        "recipe_sha256": "edfd28d492707d0fbfdbaeec01c5af69dcdd8f01f8665a8a859ca30b14e4d6a8",
+        "repository": "lammps/lammps",
+        "schema": 2,
+        "software": "lammps",
+        "source_ref": "develop",
+        "source_sha": "7dbed49448a17dbc9d4bc3eee5512e9ea2ad3a04",
+        "source_version": "develop-2026-10-30",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "8v100v0-avx512",
+        "track": "development",
+        "version_label": "develop-2026-10-30"
+      },
+      "interface_patch_receipts": [
+        {
+          "files": {
+            "compute_deepmd_fparam_dedn.cpp": {
+              "after_sha256": "ae714fb589ca85b17e640aa37ae54cdde7a9c715ccf99994cc0c78d24e988b7f",
+              "before_sha256": "df5cd9c20c10841c721b7aeb72fba76560208cd79e677a75566b99f43dc9e8fa",
+              "changed": true,
+              "replacements": {
+                "compute": 1,
+                "fix": 1,
+                "ttm": 0
+              }
+            },
+            "pair_base.cpp": {
+              "after_sha256": "fb8856319946777d05af214adc548d6c83fe02dae4e751bbd6edacb7fed0b301",
+              "before_sha256": "099592ed909edc4a79e81ea5577c56f4fa3a97d2e850bf63528f0c721016a187",
+              "changed": true,
+              "replacements": {
+                "compute": 2,
+                "fix": 1,
+                "ttm": 2
+              }
+            }
+          },
+          "local_integration_patch": true,
+          "modify_header_sha256": "03054a9642b5cfe594c1bd801fd13c05081cc4f4d34a4082e8bceb25a03dabbb"
+        }
+      ],
+      "job": {
+        "elapsed": "1:20",
+        "job_id": "2064551",
+        "node_or_reason": "8v100v0n09",
+        "partition": "8V100V0",
+        "state": "RUNNING"
+      },
+      "log_bytes": 15295,
+      "log_updated_at": "2026-10-31T04:51:53+00:00",
+      "path": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-41169355573-1-development-8v100v0-avx512-20261031-7dbed49448a1",
+      "request_sha256": "02411f73f86999ddf56e38f35d4e101c4bfaaee0cad7540b93007218b2f002b9",
+      "run_id": "lmp-41169355573-1-development-8v100v0-avx512-20261031-7dbed49448a1",
+      "scratch": [
+        "export TMPDIR=/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-41169355573-1-development-8v100v0-avx512-20261031-7dbed49448a1/runtime",
+        "export APPTAINER_TMPDIR=\"$TMPDIR\"",
+        "export APPTAINER_CACHEDIR=/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-41169355573-1-development-8v100v0-avx512-20261031-7dbed49448a1/apptainer-cache"
+      ],
+      "software": "lammps",
+      "stage": "build"
+    }
+  ],
+  "workflows": {
+    "cp2k": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/41169343854",
+    "lammps": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/41169355573"
+  }
+}
