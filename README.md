@@ -8,6 +8,11 @@ partition before their public `*-beta-later` module rotates. Failed or partial m
 retain the previous accepted version. Native `/opt` installation remains administrator-driven.
 See [current delivery status](docs/WORKFLOW-CLOSURE.md) and [using the beta modules](deployment/sif-beta/README.md).
 
+[NEPAdapters 1.0.4](deployment/nepadapters-1.0.4/README.md) has a separate manual
+SIF build/acceptance workflow for adding NEP CPU and CUDA Kokkos pair styles to
+the installed LAMMPS 30Sep2026 release. It reuses that LAMMPS build and provides
+a minimal, administrator-installed addon module.
+
 ## Container contract
 
 The application controller does **not** mount host source/build/install trees writable. A build uses the pre-provisioned

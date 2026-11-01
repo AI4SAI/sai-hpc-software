@@ -1,0 +1,64 @@
+name: Build NEPAdapters release addon
+
+on:
+  workflow_dispatch:
+  push:
+    paths: ['controller/nepadapters*', 'deployment/nepadapters-1.0.4/**', 'tests/test_nepadapters.py', '.github/workflows/nepadapters.yml']
+  pull_request:
+    paths: ['controller/nepadapters*', 'deployment/nepadapters-1.0.4/**', 'tests/test_nepadapters.py', '.github/workflows/nepadapters.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - run: |
+          sudo apt-get update
+          sudo apt-get install -y tcl
+          python3 -m unittest discover -s tests -p 'test_nepadapters.py' -v
+          bash -n controller/nepadapters_build.sh
+          bash -n deployment/nepadapters-1.0.4/install.sh
+          bash -n deployment/nepadapters-1.0.4/submit-native-checks.sh
+  release:
+    if: github.event_name == 'workflow_dispatch'
+    needs: validate
+    runs-on: ubuntu-latest
+    environment: hpc
+    timeout-minutes: 360
+    strategy:
+      fail-fast: false
+      matrix:
+        partition: [16V100, 4V100, 8V100V0]
+    env:
+      REMOTE_USER: ${{ secrets.REMOTE_USER }}
+      NEPADAPTERS_PARTITION: ${{ matrix.partition }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Prepare HPC SSH credentials
+        env:
+          KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
+        run: |
+          : "${REMOTE_USER:?Configure REMOTE_USER in the hpc Environment}"
+          : "${KEY:?Configure REMOTE_SSH_PRIVATE_KEY in the hpc Environment}"
+          mkdir -m 700 "$RUNNER_TEMP/ssh"
+          printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
+          chmod 600 "$RUNNER_TEMP/ssh/key"
+      - name: Build SIF and validate single GPU, two GPUs and two nodes
+        run: python3 -u controller/nepadapters_ci.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: nepadapters-${{ matrix.partition }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/results/
+          if-no-files-found: warn
+      - name: Remove temporary SSH key
+        if: always()
+        run: rm -f -- "$RUNNER_TEMP/ssh/key"
