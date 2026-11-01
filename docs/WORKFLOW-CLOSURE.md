@@ -7,7 +7,7 @@ targeting the exact installed LAMMPS 30Sep2026 release (`8de817dd79bf`). It adds
 `nep/cpu` and CUDA Kokkos `nep/gpu/kk` through separately loadable plugins.
 The existing LAMMPS installation is not rebuilt or modified.
 
-16V100 and 8V100V0 have accepted SIFs and native exports: pinned Pb/Te NEP4
+16V100, 8V100V0 and 4V100 have accepted SIFs and native exports: pinned Pb/Te NEP4
 energy, forces and virial plus 100 GPU MD steps pass on one GPU, two GPUs on
 one node and one GPU on each of two nodes. Host MPI launches the installed
 LAMMPS; per-rank GPU UUIDs prove the selected devices are distinct. Multi-rank
@@ -15,19 +15,18 @@ virial communication requires `-pk kokkos neigh full comm device gpu/aware on`.
 See [release evidence](evidence/nepadapters-20261101/README.md).
 
 The administrator-readable package is
-`/home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4`; its preflight
-passed. No `/opt` installation has been performed by the workflow. The module
+`/home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4-all-v100`; its
+read-only preflight passed as `saiuser01` for all three partitions. No `/opt`
+installation has been performed by the workflow. The module
 `nepadapters/1.0.4-lammps30Sep2026` selects only accepted partitions and checks
 the matching LAMMPS prefix. `/opt` receives two plugin libraries and the GPL
 license; tests, manifests and build files remain outside the runtime prefix.
 
-4V100 build 2099850 and native single/two-GPU job 2099990 completed successfully.
-Two-node job 2099991 remains queued. A bounded continuation waits for that exact
-acceptance and prepares a new
-`nepadapters-1.0.4-all-v100` administrator package only if every check passes.
-It never installs into `/opt`; the already accepted two-partition package stays
-available. An extension can add 4V100 to the known earlier module without
-replacing the existing accepted plugin binaries.
+4V100 build 2099850 and the final native jobs 2100464 (single/two GPUs) and
+2100465 (two nodes) completed with exit `0:0`. The three-partition package
+records the accepted SIF, plugin, LAMMPS and evidence hashes. The earlier
+two-partition package remains available, and the new package can extend its
+known module without replacing the existing accepted plugin binaries.
 
 ## November 1 CP2K recovery completion
 

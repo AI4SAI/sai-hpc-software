@@ -14,10 +14,11 @@ partitions are unavailable through its module until their own acceptance passes.
 The SIF contains the addon and a minimal root filesystem; it reuses the exact
 installed LAMMPS and site toolchain. It is not a self-contained LAMMPS distribution.
 
-After release preparation and acceptance, the administrator runs:
+The current handoff includes accepted 16V100, 8V100V0 and 4V100 builds. The
+administrator runs:
 
 ```sh
-cd /home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4
+cd /home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4-all-v100
 bash install.sh
 bash install.sh --install
 ```
