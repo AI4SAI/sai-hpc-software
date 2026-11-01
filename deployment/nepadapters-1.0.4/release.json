@@ -3,7 +3,7 @@
   "version": "1.0.4",
   "source_sha": "c934e71444cb4099d63dff98478f02c86373b061",
   "module": "/opt/modules/modulefiles/apps/nepadapters/1.0.4-lammps30Sep2026",
-  "module_sha256": "865b5d721f35e732e6f3fcb62dd5079b91c205e9bf0128b5577f83a7b08cdece",
+  "module_sha256": "b031364e8b21f7031c3d8c87cfb02f1898a2672129f68726134f5fd990b1e960",
   "partitions": {
     "16V100": {
       "prefix": "/opt/apps/nepadapters/1.0.4-lammps30Sep2026-rf77a7c92e01e/16V100",
@@ -122,9 +122,70 @@
       "image": "/org/org-open-sai/proj-sai-hpc-software/experimental/nepadapters/runs/nepadapters-1.0.4-8V100V0-20261101-a3/nepadapters.sif",
       "image_sha256": "939b44d3bb17f98508fd91bb0decaa913466cc1809f1b04f7b5a79c9b4fb2a1a",
       "native_evidence_sha256": "156816ca893b106c852c9daf09c13cbddb0d725c42877a0e10a6317ae3f40144"
+    },
+    "4V100": {
+      "prefix": "/opt/apps/nepadapters/1.0.4-lammps30Sep2026-r0387d0446d6c/4V100",
+      "lammps": {
+        "prefix": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/4V100",
+        "identity": {
+          "build_id": "stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102",
+          "cpu_arch": "znver4",
+          "cuda_arch": "70",
+          "dependency_isa": "avx512",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/4V100",
+          "partition": "4V100",
+          "recipe_sha256": "296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097",
+          "repository": "lammps/lammps",
+          "schema": 2,
+          "software": "lammps",
+          "source_ref": "stable_30Sep2026",
+          "source_sha": "8de817dd79bfe4525d5d39246a212d833e6dee07",
+          "source_version": "stable_30Sep2026",
+          "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+          "stack_sources": {
+            "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+            "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+          },
+          "target": "4v100-avx512",
+          "track": "release",
+          "version_label": "stable_30Sep2026"
+        },
+        "files": {
+          "bin/lmp": "1ab35206916b63a922354fac5c0044070c79355941b48fb48d7cd2362fef9584",
+          "lib/liblammps.so.0": "6b0483ec3c4fbf7483b6c5b332ddeb4c81ef4692e563263cec6b726c173f0ed9"
+        }
+      },
+      "files": {
+        "lib/nepadapterscpuplugin.so": {
+          "sha256": "8c0153fd611997fa0374979f28094c5982cd27781c26688ccb4fad0d2f0934f8",
+          "size": 1946088,
+          "mode": 420
+        },
+        "lib/nepadaptersgpuplugin.so": {
+          "sha256": "dce3725468dcd4e2a5df607f37aa58f466324ec7aa5d7614c41421cc4af64eeb",
+          "size": 30360184,
+          "mode": 420
+        },
+        "share/licenses/nepadapters/LICENSE.NEP_CPU": {
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "size": 35149,
+          "mode": 420
+        }
+      },
+      "recipe": "0387d0446d6c16caac8d941ac027321937bb1a2531d923f089ae1fd5a038e253",
+      "build": "/org/org-open-sai/proj-sai-hpc-software/experimental/nepadapters/runs/nepadapters-1.0.4-4V100-20261101-a5",
+      "native": "/org/org-open-sai/proj-sai-hpc-software/experimental/nepadapters/runtime-tests/nepadapters-1.0.4-4V100-20261101-a5-native2",
+      "accepted": true,
+      "native_multigpu_accepted": true,
+      "image": "/org/org-open-sai/proj-sai-hpc-software/experimental/nepadapters/runs/nepadapters-1.0.4-4V100-20261101-a5/nepadapters.sif",
+      "image_sha256": "382a145129c33755fe0fb180195267970c863b6e671c4bb032fc6e06786f1527",
+      "native_evidence_sha256": "d13ba2da45a99590fadff3652353cf05f2ac8891732c47346378bc5e536b2631"
     }
   },
-  "previous_module_sha256": [],
+  "previous_module_sha256": [
+    "865b5d721f35e732e6f3fcb62dd5079b91c205e9bf0128b5577f83a7b08cdece"
+  ],
   "acceptance_scope": "NEP4 Pb/Te energy, forces, virial and 100 GPU MD steps; single GPU, two GPUs and two nodes",
   "checks": {
     "control/cp2k_image_driver.py": "ac4618be8afbd8e93a97a9c6f96cc41218bef517bf61e0a1623f45a315e2c227",
@@ -137,11 +198,16 @@
     "cases/16V100/baseline.py": "b60bf77c936f6bc0f862c6e588c26c7af6b80d328cfb7a0f646c61cf9bed4835",
     "cases/16V100/nep.txt": "c772e70b32e5a085936f04e5f5382c7af88a03cb68765510ac82f71ae97eab2c",
     "cases/16V100/train.xyz": "9679ecdac1ea13300f9bf208b7d4393e5dfd0e0527a46653de38e4c80bff74ab",
+    "cases/4V100/baseline.py": "b60bf77c936f6bc0f862c6e588c26c7af6b80d328cfb7a0f646c61cf9bed4835",
+    "cases/4V100/nep.txt": "c772e70b32e5a085936f04e5f5382c7af88a03cb68765510ac82f71ae97eab2c",
+    "cases/4V100/train.xyz": "9679ecdac1ea13300f9bf208b7d4393e5dfd0e0527a46653de38e4c80bff74ab",
     "cases/8V100V0/baseline.py": "b60bf77c936f6bc0f862c6e588c26c7af6b80d328cfb7a0f646c61cf9bed4835",
     "cases/8V100V0/nep.txt": "c772e70b32e5a085936f04e5f5382c7af88a03cb68765510ac82f71ae97eab2c",
     "cases/8V100V0/train.xyz": "9679ecdac1ea13300f9bf208b7d4393e5dfd0e0527a46653de38e4c80bff74ab",
     "evidence/16V100/native.json": "d3ddcd381b175985ad618d80cf58b81d5ec3e9fd051243ea4ae4f42d8596ca59",
     "evidence/16V100/sif.json": "432c129c19f6cb6019f63ce0fc26b02402865a028cc221bcc7c1879e0a9d0b7e",
+    "evidence/4V100/native.json": "d13ba2da45a99590fadff3652353cf05f2ac8891732c47346378bc5e536b2631",
+    "evidence/4V100/sif.json": "410ffb7f530bf00f48882fbe64c439c2729eebc0a20185dd5066d7b47a939aea",
     "evidence/8V100V0/native.json": "156816ca893b106c852c9daf09c13cbddb0d725c42877a0e10a6317ae3f40144",
     "evidence/8V100V0/sif.json": "7452a700e18ff50f7c279980e94764a461bea00f8d8b61c369934874d3ffbf9f"
   }

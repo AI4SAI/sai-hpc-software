@@ -2,7 +2,7 @@
 module-whatis "NEPAdapters 1.0.4; CPU/CUDA Kokkos addon for LAMMPS 30Sep2026"
 proc ModulesHelp {} {
     puts stderr "NEPAdapters 1.0.4 (c934e714); LAMMPS 30Sep2026 addon.
-Accepted partitions: 16V100, 8V100V0. Load inside a Slurm allocation. Supports nep/cpu and nep/gpu/kk.
+Accepted partitions: 16V100, 8V100V0, 4V100. Load inside a Slurm allocation. Supports nep/cpu and nep/gpu/kk.
 GPU execution requires -k on g N -sf kk -pk kokkos neigh full comm device gpu/aware on.
 Ordinary NEP4/NEP5; NEP3 and CUDA LAMMPS qNEP are unsupported.
 This module is not a plugin for daily LAMMPS beta builds."
@@ -25,7 +25,7 @@ if {[module-info mode load] || [module-info mode remove]} {
     } else {
         set partition $env(SLURM_JOB_PARTITION)
     }
-    set configurations [dict create 16V100 {/opt/apps/nepadapters/1.0.4-lammps30Sep2026-rf77a7c92e01e/16V100 /opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100} 8V100V0 {/opt/apps/nepadapters/1.0.4-lammps30Sep2026-rf77a7c92e01e/8V100V0 /opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0}]
+    set configurations [dict create 16V100 {/opt/apps/nepadapters/1.0.4-lammps30Sep2026-rf77a7c92e01e/16V100 /opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100} 8V100V0 {/opt/apps/nepadapters/1.0.4-lammps30Sep2026-rf77a7c92e01e/8V100V0 /opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0} 4V100 {/opt/apps/nepadapters/1.0.4-lammps30Sep2026-r0387d0446d6c/4V100 /opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/4V100}]
     if {![dict exists $configurations $partition]} {error "Unsupported NEPAdapters partition: $partition"}
     lassign [dict get $configurations $partition] prefix lammps
     if {[module-info mode load]} {
