@@ -11,6 +11,50 @@ to `get_compute_by_id` / `get_fix_by_id`. Missing-ID, shape and TTM type checks
 remain enforced. Only interface sources are patched; installed DeePMD remains
 a pinned dependency. Original failed runs retain their controllers and logs.
 
+## Recovery complete — November 1
+
+The [final CP2K observation](cp2k-completion-20261101.json), collected at November
+1 03:22 UTC / 11:22 Beijing, closes the CPU gap described in the historical
+observations below. Workflow 41169343854 attempt 2 succeeded at October 31
+17:22 UTC / November 1 01:22 Beijing.
+
+| CPU stage | Slurm job | Elapsed | Result |
+| --- | --- | --- | --- |
+| Dependencies | 2073677 | 1:04:13 | Completed, exit 0:0 |
+| Application and SIF | 2075397 | 0:57:31 | Verified, exit 0:0 |
+| Scientific acceptance | 2076654 | 0:16:55 | Verified, exit 0:0 |
+
+The fresh dependency overlay synchronization succeeded in 0.543 seconds, with
+no driver cleanup failure receipt. This accepts the fresh attempt; it does not
+change the previous failed checkpoint. The final CPU SIF has SHA256
+`074083e11f81e0be106d127cef34708a7ee12fa6050413a892e4c1a0b534730e`.
+
+Every CP2K target passed the seven cases listed below in both single- and
+multi-node modes, using energy/force tolerances `1e-6 Ha` and `1e-5 Ha/bohr`.
+The public Lmod/SIF checks also passed on all four targets:
+
+| Partition | Public check job |
+| --- | --- |
+| 16V100 | 2077264 |
+| 4V100 | 2077266 |
+| 8V100V0 | 2077268 |
+| DSPRHBM | 2077270 |
+
+The public checks report maximum energy and force discrepancies of
+`1.16e-12 Ha` and `1.01e-12 Ha/bohr` respectively. These are the small public
+launch checks; the separate science evidence retains the full case matrix.
+The live alias and ordinary module help select
+`cp2k/master-beta-20261031-d077e66fe06a-r75ef5179f1e8-bbeff8b74f789`.
+The accepted snapshot uses the UTC date, so its label is October 31 despite
+completion after midnight in Beijing.
+
+This completes CP2K's four-target development acceptance and publication, and
+the October 31 five-application recovery. The final observation also records
+the current ABACUS, LAMMPS, DeePMD and GPUMD beta aliases and ordinary help.
+The November 1 scheduled source matrix is separate and had not started at the
+11:20 Beijing inspection. No new build or test was needed for this evidence
+update; the recorded workflow itself completed the required acceptance.
+
 ## Validation
 
 Controller commit `2be83eaf69134f42ba4d39c95b6f8b76f1e8c18a` passed the full
