@@ -31,13 +31,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: hpc
     timeout-minutes: 360
-    strategy:
-      fail-fast: false
-      matrix:
-        partition: [16V100, 4V100, 8V100V0]
     env:
       REMOTE_USER: ${{ secrets.REMOTE_USER }}
-      NEPADAPTERS_PARTITION: ${{ matrix.partition }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -51,12 +46,12 @@ jobs:
           mkdir -m 700 "$RUNNER_TEMP/ssh"
           printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
           chmod 600 "$RUNNER_TEMP/ssh/key"
-      - name: Build SIF and validate single GPU, two GPUs and two nodes
+      - name: Build one SIF and validate it on all three V100 partitions
         run: python3 -u controller/nepadapters_ci.py
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: nepadapters-${{ matrix.partition }}-${{ github.run_id }}-${{ github.run_attempt }}
+          name: nepadapters-shared-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/results/
           if-no-files-found: warn
       - name: Remove temporary SSH key

@@ -23,6 +23,7 @@ SOURCE_SHA = 'c934e71444cb4099d63dff98478f02c86373b061'
 SOURCE_ARCHIVE_SHA256 = 'e7646bd1b79ce5bacaa241689326bd7fc224b02c10df70e6cf4cff7395fbe320'
 LAMMPS_SHA = '8de817dd79bfe4525d5d39246a212d833e6dee07'
 MODULE = 'lammps/30Sep2026-deepmd320-auto'
+SHARED_PREFIX = '/opt/apps/nepadapters/1.0.4-lammps30Sep2026'
 PAYLOAD = ('lib/nepadapterscpuplugin.so', 'lib/nepadaptersgpuplugin.so',
            'share/licenses/nepadapters/LICENSE.NEP_CPU')
 PARTITIONS = {'16V100': '16v100-avx2', '4V100': '4v100-avx512', '8V100V0': '8v100v0-avx512'}
@@ -63,6 +64,18 @@ def dependency(deployment, partition):
     require(overlay.is_file() and overlay.resolve() == overlay, 'original LAMMPS build overlay unavailable')
     result['lammps_overlay'] = str(overlay)
     return result
+
+
+def runtime_request(request, partition):
+    """Select host dependencies while preserving the single shared plugin/SIF."""
+    require(partition in PARTITIONS, 'unsupported partition')
+    if request.get('layout') != 'shared':
+        require(partition == request['partition'], 'legacy plugin requires its build partition')
+        return request
+    require(request['prefix'] == SHARED_PREFIX and
+            set(request['partition_dependencies']) == set(PARTITIONS), 'incomplete shared build dependencies')
+    return dict(request, partition=partition, target=PARTITIONS[partition],
+                **request['partition_dependencies'][partition])
 
 
 def render(run, request):
@@ -143,7 +156,8 @@ def submit(project, deployment, source, run_id, partition):
                    source_archive=str(source), source_archive_sha256=checksum(source),
                    recipe_sha256=recipe, controller_files=pins, project=str(project),
                    partition=partition, target=PARTITIONS[partition], lammps_module=MODULE,
-                   prefix=f'/opt/apps/nepadapters/{VERSION}-lammps30Sep2026-r{recipe[:12]}/{partition}', **dep)
+                   layout='shared', prefix=SHARED_PREFIX,
+                   partition_dependencies={p: dependency(deployment, p) for p in PARTITIONS}, **dep)
     (run / 'results').mkdir(parents=True)
     (run / 'export').mkdir()
     (run / 'control').mkdir()
@@ -183,9 +197,11 @@ def context(run):
     recipe = hashlib.sha256(json.dumps(dict(files=request['controller_files'], source_sha=SOURCE_SHA),
                                       sort_keys=True).encode()).hexdigest()
     part = request['partition']
+    prefix = SHARED_PREFIX if request.get('layout') == 'shared' else f'/opt/apps/nepadapters/{VERSION}-lammps30Sep2026-r{recipe[:12]}/{part}'
     require(request['recipe_sha256'] == recipe and request['target'] == PARTITIONS[part] and
-            request['prefix'] == f'/opt/apps/nepadapters/{VERSION}-lammps30Sep2026-r{recipe[:12]}/{part}',
+            request['prefix'] == prefix,
             'build recipe/prefix changed')
+    require(runtime_request(request, part) == request, 'build dependency selection differs')
     require(request['lammps']['identity']['source_sha'] == LAMMPS_SHA and
             request['lammps']['identity']['partition'] == part and
             'bin/lmp' in request['lammps']['files'] and

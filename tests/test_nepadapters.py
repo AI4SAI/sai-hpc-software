@@ -70,6 +70,25 @@ class NumericalTests(unittest.TestCase):
 
 
 class CompatibilityTests(unittest.TestCase):
+    def test_shared_runtime_changes_host_dependencies_without_changing_plugin(self):
+        dependencies = {part: {'lammps': {'prefix': '/lammps/' + part},
+                               'deepmd': {'prefix': '/deepmd/' + part},
+                               'lammps_overlay': '/build/' + part}
+                        for part in release.PARTITIONS}
+        request = dict(layout='shared', prefix=release.SHARED_PREFIX, partition='16V100',
+                       target=release.PARTITIONS['16V100'], partition_dependencies=dependencies,
+                       source_sha=release.SOURCE_SHA, **dependencies['16V100'])
+        for part in release.PARTITIONS:
+            selected = release.runtime_request(request, part)
+            self.assertEqual(selected['lammps'], dependencies[part]['lammps'])
+            self.assertEqual(selected['prefix'], release.SHARED_PREFIX)
+            self.assertEqual(selected['source_sha'], release.SOURCE_SHA)
+        self.assertEqual(request['partition'], '16V100')
+        with self.assertRaisesRegex(ValueError, 'legacy'):
+            release.runtime_request({'partition': '16V100'}, '4V100')
+        with self.assertRaisesRegex(ValueError, 'incomplete'):
+            release.runtime_request(dict(request, partition_dependencies={}), '4V100')
+
     def test_adapts_types_and_communication_without_losing_double_asserts(self):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -188,6 +207,42 @@ class DeploymentTests(unittest.TestCase):
             if path.is_dir():
                 self.assertEqual(path.stat().st_mode & 0o777, 0o755)
 
+    def test_shared_install_uses_one_payload_and_rejects_partition_drift(self):
+        shutil.copytree(self.package / 'payload/16V100', self.package / 'payload/shared')
+        shutil.rmtree(self.package / 'payload/16V100')
+        module = self.root / 'opt/modules/nepadapters/1.0.4'
+        prefix = self.root / 'opt/apps/nepadapters/1.0.4-lammps30Sep2026'
+        (self.package / 'modulefile').write_text('#%Module1.0\n')
+        rows = {}
+        for part in release.PARTITIONS:
+            lammps = self.root / 'lammps' / part
+            files = {}
+            for name in ('bin/lmp', 'lib/liblammps.so.0'):
+                path = lammps / name
+                path.parent.mkdir(parents=True, exist_ok=True)
+                path.write_text(part + name)
+                files[name] = install.digest(path)
+            rows[part] = dict(prefix=str(prefix), files=copy.deepcopy(self.files), accepted=True,
+                              native_multigpu_accepted=True, lammps=dict(prefix=str(lammps), files=files,
+                              identity=dict(partition=part, source_sha=release.LAMMPS_SHA)))
+        plan = dict(schema=2, version=release.VERSION, source_sha=release.SOURCE_SHA, module=str(module),
+                    module_sha256=install.digest(self.package / 'modulefile'), checks={}, partitions=rows,
+                    shared=dict(prefix=str(prefix), files=copy.deepcopy(self.files)))
+        manifest = self.package / 'release.json'
+        manifest.write_text(json.dumps(plan))
+        with patch.object(install, 'PACKAGE', self.package), patch.object(install, 'MODULE', module), \
+                patch.object(install, 'SHARED_PREFIX', prefix), contextlib.redirect_stdout(io.StringIO()):
+            install.preflight(self.package)
+            install.install(plan)
+            install.install(plan)
+            install.preflight(self.package)
+            self.assertEqual(list(prefix.parent.iterdir()), [prefix])
+            self.assertEqual(len([p for p in prefix.rglob('*') if p.is_file()]), 3)
+            plan['partitions']['4V100']['files']['lib/nepadaptersgpuplugin.so']['sha256'] = '0' * 64
+            manifest.write_text(json.dumps(plan))
+            with self.assertRaisesRegex(ValueError, 'shared plugin differs'):
+                install.preflight(self.package)
+
     def test_incomplete_partition_set_cannot_prepare_release(self):
         with self.assertRaisesRegex(ValueError, 'all three'):
             prepare.prepare([], self.root / 'release')
@@ -237,6 +292,34 @@ set env(LAMMPS_PLUGIN_PATH) /existing/plugins
             script = setup + change + f'if {{![catch {{source {{{module}}}}} message]}} {{exit 2}}\nputs $message\n'
             result = subprocess.run(['tclsh'], input=script, text=True, capture_output=True, check=True)
             self.assertTrue(result.stdout.strip())
+
+    @unittest.skipUnless(shutil.which('tclsh'), 'Tcl required')
+    def test_shared_module_keeps_one_plugin_path_and_the_host_mpi_environment(self):
+        plugin = self.package / 'payload/16V100'
+        rows = {part: {'prefix': str(plugin), 'lammps': {'prefix': '/lammps/' + part}}
+                for part in release.PARTITIONS}
+        module = self.root / 'shared-module'
+        module.write_text(prepare.modulefile(rows))
+        for part in rows:
+            script = '''proc module-whatis {args} {}
+proc conflict {args} {}
+proc depends-on {name} {if {$name ne "lammps/30Sep2026-deepmd320-auto"} {error "unexpected dependency"}}
+proc module-info {type value} {expr {$value eq "load"}}
+proc prepend-path {key value} {set ::env($key) "$value:$::env($key)"}
+proc setenv {key value} {set ::env($key) $value}
+set env(SLURM_JOB_ID) 123
+set env(LAMMPS_PLUGIN_PATH) /existing/plugins
+set env(PATH) /lammps/mpi/bin
+set env(LD_LIBRARY_PATH) /lammps/mpi/lib
+'''
+            script += f'set env(SLURM_JOB_PARTITION) {part}\nset env(SAI_LAMMPS_PREFIX) /lammps/{part}\n'
+            script += f'source {{{module}}}\nputs $env(LAMMPS_PLUGIN_PATH)\nputs $env(PATH)\nputs $env(LD_LIBRARY_PATH)\n'
+            result = subprocess.run(['tclsh'], input=script, text=True, capture_output=True, check=True)
+            self.assertEqual(result.stdout.splitlines(), [str(plugin / 'lib') + ':/existing/plugins',
+                                                         '/lammps/mpi/bin', '/lammps/mpi/lib'])
+        rows['4V100']['prefix'] = '/different/plugin'
+        with self.assertRaisesRegex(ValueError, 'single shared'):
+            prepare.modulefile(rows)
 
 
 if __name__ == '__main__':

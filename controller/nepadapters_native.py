@@ -5,13 +5,15 @@ import hashlib
 import json
 import os
 from pathlib import Path
+import re
 import shlex
 import shutil
 import subprocess
 
-from nepadapters_release import PARTITIONS, build_report, require
+from nepadapters_release import PARTITIONS, build_report, require, runtime_request
 from nepadapters_science import run as science, verify as verify_science
-from remote_controller import private_scratch, project_batch_directives, project_qos
+from remote_controller import (container_command, private_scratch, project_batch_directives,
+                               project_qos, site_app_binds)
 from source_cache import checksum
 
 CONTROL = Path(__file__).resolve().parent
@@ -20,9 +22,10 @@ FILES = ('nepadapters_native.py', 'nepadapters_rank.py', 'nepadapters_science.py
 PHASES = ('local', 'distributed')
 
 
-def submit(build, output, installed=False):
+def submit(build, output, installed=False, partition=None):
     build, output = build.resolve(), output.resolve()
-    request = json.loads((build / 'request.json').read_text())
+    original = json.loads((build / 'request.json').read_text())
+    request = runtime_request(original, partition or original['partition'])
     accepted = build_report(build)
     require(accepted['accepted'], 'SIF build not accepted')
     require((build / 'export/lib/nepadaptersgpuplugin.so').is_file(), 'missing built plugin')
@@ -46,10 +49,19 @@ def submit_plan(plan, cases, output):
     (output / 'control').mkdir()
     (output / 'runtime').mkdir(mode=0o700)
     shutil.copytree(cases, output / 'cases')
+    if 'build' in plan and request.get('layout') == 'shared':
+        # container_command constrains writable runtime binds to a run directory.
+        runtime = output / 'sif/runs/check/runtime'
+        private_scratch(runtime)
+        shutil.copytree(cases, runtime / 'cases')
+        plan['sif_runtime'] = str(runtime)
+        (output / 'sif-request.json').write_text(json.dumps(request, indent=2) + '\n')
     for name in FILES:
         shutil.copyfile(CONTROL / name, output / 'control' / name)
     plan['pins'] = {str(p.relative_to(output)): checksum(p) for root in ('control', 'cases')
                     for p in sorted((output / root).rglob('*')) if p.is_file()}
+    if 'sif_runtime' in plan:
+        plan['pins']['sif-request.json'] = checksum(output / 'sif-request.json')
     (output / 'request.json').write_text(json.dumps(plan, indent=2) + '\n')
     project, part = Path(request['project']), request['partition']
     for phase in PHASES:
@@ -90,8 +102,10 @@ def render(output, plan, phase):
              'source /etc/profile.d/lmod.sh', 'module purge',
              'module use /opt/modules/modulefiles/apps /opt/modules/modulefiles/devtools',
              'module load lammps/30Sep2026-deepmd320-auto',
+             *(['module load apptainer/1.4.4'] if 'sif_runtime' in plan else []),
              *(['module load nepadapters/1.0.4-lammps30Sep2026'] if plan['installed'] else []), 'set -u',
              'export TMPDIR=' + shlex.quote(plan['scratch'][phase]),
+             'export APPTAINER_TMPDIR="$TMPDIR" APPTAINER_CACHEDIR="$TMPDIR/apptainer-cache"',
              'export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1',
              'export SLURM_EXPORT_ENV=ALL',
              'export OMPI_MCA_plm_slurm_args=--external-launcher PRTE_MCA_plm_slurm_args=--external-launcher',
@@ -103,11 +117,15 @@ def render(output, plan, phase):
 
 
 def submit_installed(package, output, partition):
-    row = json.loads((package / 'release.json').read_text())['partitions'][partition]
+    release = json.loads((package / 'release.json').read_text())
+    row = release['partitions'][partition]
     from remote_controller import SAI_PROJECT_ROOT
     request = dict(project=str(SAI_PROJECT_ROOT), partition=partition, lammps=row['lammps'])
-    plan = dict(request=request, installed=True, plugins=row['prefix'] + '/lib',
-                files={Path(k).name: v['sha256'] for k, v in row['files'].items() if k.startswith('lib/')})
+    payload = release['shared'] if release.get('schema') == 2 else row
+    if release.get('schema') == 2:
+        request['layout'] = 'shared'
+    plan = dict(request=request, installed=True, plugins=payload['prefix'] + '/lib',
+                files={Path(k).name: v['sha256'] for k, v in payload['files'].items() if k.startswith('lib/')})
     submit_plan(plan, package / 'cases' / partition, output)
 
 
@@ -121,6 +139,9 @@ def context(output):
                 checksum(output / name) == sha, 'native controls/cases changed')
     if 'build' in plan:
         require(build_report(Path(plan['build'])) == plan['build_status'], 'native SIF input changed')
+        original = json.loads((Path(plan['build']) / 'request.json').read_text())
+        require(plan['request'] == runtime_request(original, plan['request']['partition']),
+                'native dependencies differ from shared build request')
     return plan
 
 
@@ -148,6 +169,47 @@ def selections(output, phase):
     return [('single', hosts, 1), ('multi-gpu', hosts, 2)] if phase == 'local' else [('multi-node', hosts, 1)]
 
 
+def mpi_binding(output, plan, phase, capture=False):
+    """Check that LAMMPS and both plugins resolve the same site MPI library."""
+    isa = plan['request']['lammps']['identity']['dependency_isa']
+    mpi = Path('/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-' + isa)
+    library = (mpi / 'lib/libmpi.so.40').resolve(strict=True)
+    paths = {'lmp': Path(plan['request']['lammps']['prefix']) / 'bin/lmp',
+             **{name: Path(plan['plugins']) / name for name in plan['files']}}
+    for name, binary in paths.items():
+        report = output / (phase + '-' + name + '.ldd')
+        if capture:
+            report.write_text(subprocess.check_output(['ldd', str(binary)], text=True))
+        text = report.read_text()
+        match = re.search(r'\blibmpi\.so\.40\s+=>\s+(\S+)', text)
+        require('not found' not in text and match and Path(match[1]).resolve() == library,
+                'LAMMPS/plugin MPI dependency mismatch: ' + name)
+    launcher = str(mpi / 'bin/mpirun')
+    if capture:
+        require(shutil.which('mpirun') == launcher, 'MPI launcher differs from LAMMPS environment')
+    return dict(launcher=launcher, library=str(library), library_sha256=checksum(library),
+                reports={name: checksum(output / (phase + '-' + name + '.ldd')) for name in paths})
+
+
+def verify_sif(output, plan, execute=False):
+    runtime, request = Path(plan['sif_runtime']), plan['request']
+    if execute:
+        build = Path(plan['build'])
+        binds = [*site_app_binds('lammps'), ('/etc/alternatives', '/etc/alternatives'),
+                 (request['lammps']['prefix'], request['lammps']['prefix']),
+                 (request['deepmd']['prefix'], request['deepmd']['prefix']),
+                 (output / 'sif-request.json', '/input/request.json')]
+        argv = container_command(build / 'nepadapters.sif',
+            ['/usr/bin/bash', '/control/nepadapters_build.sh', request['target'], 'verify'],
+            control=build / 'control', jobs=1, gpu=True, runtime=runtime, extra_binds=binds)
+        subprocess.run([x for x in argv if x != '--fakeroot'], check=True)
+    proof = verify_science(runtime / 'cases', runtime / 'science-sif')
+    require(proof['plugin_sha256'] == plan['files'] and
+            proof['plugins'] == request['prefix'] + '/lib' and
+            proof['lmp'] == request['lammps']['prefix'] + '/bin/lmp', 'shared SIF tested different plugins/LAMMPS')
+    return proof
+
+
 def verify_phase(output, phase):
     plan = context(output)
     record = json.loads((output / ('acceptance-' + phase + '.json')).read_text())
@@ -167,6 +229,10 @@ def verify_phase(output, phase):
         require(ranks == record['ranks'][name], 'MPI rank evidence changed')
     for name, sha in plan['files'].items():
         require(checksum(Path(plan['plugins']) / name) == sha, 'native plugin changed')
+    if plan['request'].get('layout') == 'shared':
+        require(record['mpi'] == mpi_binding(output, plan, phase), 'MPI evidence changed')
+    if phase == 'local' and 'sif_runtime' in plan:
+        require(record['sif'] == verify_sif(output, plan), 'shared SIF evidence changed')
     return record
 
 
@@ -196,6 +262,11 @@ def run(output, phase):
         require(checksum(Path(request['lammps']['prefix']) / name) == sha, 'LAMMPS bytes changed')
     for name, sha in plan['files'].items():
         require(checksum(plugins / name) == sha, 'plugin bytes changed')
+    extra = {}
+    if request.get('layout') == 'shared':
+        extra['mpi'] = mpi_binding(output, plan, phase, capture=True)
+    if phase == 'local' and 'sif_runtime' in plan:
+        extra['sif'] = verify_sif(output, plan, execute=True)
     proofs, ranks = {}, {}
     for name, selected, per_node in cases:
         launcher = [shutil.which('mpirun'), '-np', str(len(selected) * per_node),
@@ -208,7 +279,7 @@ def run(output, phase):
         ranks[name] = check_ranks(output / name, selected, per_node, str(lmp), request['lammps']['files']['bin/lmp'])
     record = dict(schema=1, passed=True, installed=plan['installed'], partition=request['partition'],
                   nodes=hosts, job=os.environ['SLURM_JOB_ID'], proofs=proofs, ranks=ranks,
-                  request_sha256=checksum(output / 'request.json'), plugin_sha256=plan['files'])
+                  request_sha256=checksum(output / 'request.json'), plugin_sha256=plan['files'], **extra)
     (output / ('acceptance-' + phase + '.json')).write_text(json.dumps(record, indent=2) + '\n')
     verify_phase(output, phase)
     print('NEPADAPTERS_NATIVE_' + phase.upper() + '_PASSED', flush=True)
@@ -221,6 +292,7 @@ if __name__ == '__main__':
     s.add_argument('build', type=Path)
     s.add_argument('output', type=Path)
     s.add_argument('--installed', action='store_true')
+    s.add_argument('--partition', choices=PARTITIONS)
     s = sub.add_parser('run')
     s.add_argument('output', type=Path)
     s.add_argument('--phase', choices=PHASES, required=True)
@@ -232,7 +304,7 @@ if __name__ == '__main__':
     s.add_argument('--partition', choices=PARTITIONS, required=True)
     args = p.parse_args()
     if args.command == 'submit':
-        submit(args.build, args.output, args.installed)
+        submit(args.build, args.output, args.installed, args.partition)
     elif args.command == 'installed':
         submit_installed(args.package.resolve(), args.output.resolve(), args.partition)
     elif args.command == 'run':

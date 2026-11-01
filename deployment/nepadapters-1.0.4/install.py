@@ -16,6 +16,7 @@ import tempfile
 
 PACKAGE = Path(__file__).resolve().parent
 MODULE = Path('/opt/modules/modulefiles/apps/nepadapters/1.0.4-lammps30Sep2026')
+SHARED_PREFIX = Path('/opt/apps/nepadapters/1.0.4-lammps30Sep2026')
 PAYLOAD = {'lib/nepadapterscpuplugin.so', 'lib/nepadaptersgpuplugin.so',
            'share/licenses/nepadapters/LICENSE.NEP_CPU'}
 
@@ -53,7 +54,7 @@ def verify_payload(root, files):
 
 def preflight(package=PACKAGE):
     release = json.loads((package / 'release.json').read_text())
-    require(release['schema'] == 1 and release['version'] == '1.0.4'
+    require(release['schema'] in (1, 2) and release['version'] == '1.0.4'
             and release['source_sha'] == 'c934e71444cb4099d63dff98478f02c86373b061'
             and release['module'] == str(MODULE), 'wrong NEPAdapters release plan')
     require(release['partitions'] and set(release['partitions']) <= {'16V100', '4V100', '8V100V0'},
@@ -66,9 +67,13 @@ def preflight(package=PACKAGE):
     for part, row in release['partitions'].items():
         prefix = Path(row['prefix'])
         plain(prefix)
-        require(prefix.parent.parent == Path('/opt/apps/nepadapters')
-                and prefix.name == part and re.fullmatch(r'1\.0\.4-lammps30Sep2026-r[0-9a-f]{12}', prefix.parent.name),
-                'unexpected plugin installation prefix')
+        if release['schema'] == 2:
+            require(prefix == SHARED_PREFIX and row['prefix'] == release['shared']['prefix'] and
+                    row['files'] == release['shared']['files'], 'shared plugin differs between partitions')
+        else:
+            require(prefix.parent.parent == Path('/opt/apps/nepadapters')
+                    and prefix.name == part and re.fullmatch(r'1\.0\.4-lammps30Sep2026-r[0-9a-f]{12}', prefix.parent.name),
+                    'unexpected plugin installation prefix')
         require(row['accepted'] is True and row['native_multigpu_accepted'] is True,
                 'missing SIF/native multi-GPU acceptance')
         require(row['lammps']['identity']['source_sha'] == '8de817dd79bfe4525d5d39246a212d833e6dee07' and
@@ -79,7 +84,7 @@ def preflight(package=PACKAGE):
             path = Path(row['lammps']['prefix']) / name
             plain(path)
             require(digest(path) == sha, 'installed LAMMPS no longer matches this plugin: ' + str(path))
-        verify_payload(package / 'payload' / part, row['files'])
+        verify_payload(package / 'payload' / ('shared' if release['schema'] == 2 else part), row['files'])
         if prefix.exists():
             verify_payload(prefix, row['files'])
         print(part + ': accepted plugin and installed LAMMPS verified')
@@ -113,7 +118,8 @@ def install(release):
         for name in row['files']:
             target = stage / name
             mkdir_public(target.parent)
-            shutil.copyfile(PACKAGE / 'payload' / part / name, target)
+            payload = 'shared' if release.get('schema') == 2 else part
+            shutil.copyfile(PACKAGE / 'payload' / payload / name, target)
             target.chmod(0o644)
         verify_payload(stage, row['files'])
         # mkdir reserves the exact destination without overwriting another install.
