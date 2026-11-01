@@ -45,6 +45,9 @@ PY
     cmake --install /workspace/nepadapters-build
     # MPI is supplied by the loaded LAMMPS module on every supported partition.
     for backend in cpu gpu; do
+        # CMake can retain the MPI wrapper's toolchain RPATH even when its own
+        # install RPATH is disabled. Remove that final ELF search path as well.
+        chrpath -d "$NEPADAPTERS_PREFIX/lib/nepadapters${backend}plugin.so"
         if readelf -d "$NEPADAPTERS_PREFIX/lib/nepadapters${backend}plugin.so" | grep -Eq '\((RPATH|RUNPATH)\)'; then
             echo 'Unexpected embedded runtime library path' >&2
             exit 1
