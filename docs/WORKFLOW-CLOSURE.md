@@ -1,4 +1,31 @@
-# Workflow closure — 2026-10-31
+# Workflow closure — 2026-11-01
+
+## November 1 CP2K recovery completion
+
+The October 31 recovery matrix is complete. CP2K
+[workflow 41169343854, attempt 2](https://github.com/AI4SAI/sai-hpc-software/actions/runs/41169343854)
+succeeded at November 1 01:22 Asia/Shanghai (October 31 17:22 UTC). CPU dependency
+job 2073677, application build 2075397 and science job 2076654 all completed with
+exit `0:0`. The fresh dependency run synchronized its overlay and produced no
+driver cleanup failure receipt; the original failed run remains recorded.
+
+All four CP2K targets now pass seven scientific cases in both single- and
+multi-node modes, followed by public module checks 2077264/2077266/2077268/2077270
+on 16V100/4V100/8V100V0/DSPRHBM. `cp2k/master-beta-later` now selects
+`master-beta-20261031-d077e66fe06a-r75ef5179f1e8-bbeff8b74f789`.
+Ordinary module help confirms source `d077e66fe06a862d49bdcc2b91c179463e9487eb`,
+source label `master-2026-10-30`, accepted snapshot `20261031` and all four
+partitions. The snapshot date uses UTC; publication finished after midnight in
+Beijing. See [completion evidence](evidence/upstream-compatibility-20261031/README.md).
+
+The November 1 11:23 Beijing observation confirms all five public betas select
+October 31 snapshots: ABACUS `6b24db05dc17`, CP2K `d077e66fe06a`, LAMMPS
+`7dbed49448a1`, DeePMD `e6f7357379f7`, and GPUMD `a2b4b534bfda`. These are accepted
+resolved revisions, not a claim that upstream HEAD has remained unchanged.
+The older aggregate daily run retains its historical failure result. The
+November 1 scheduled run had not yet been created at the 11:20 Beijing check;
+the workflow remains active with its `02:23 UTC` schedule. This completed
+recovery does not claim acceptance of a new November 1 source matrix.
 
 ## October 31 CPU acceptance follow-up
 
