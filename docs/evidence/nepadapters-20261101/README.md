@@ -16,7 +16,7 @@ upstream double-precision interface assertions remain enabled.
 | --- | --- | --- | --- | --- |
 | 16V100 | 2099294 | 2099593 | 2099594 | All completed with exit 0; raw numerical, binary and device evidence revalidated. |
 | 8V100V0 | 2099298 | 2099597 | 2099598 | All completed with exit 0; raw numerical, binary and device evidence revalidated. |
-| 4V100 | 2099369 | Pending build | Pending build | Not included in the first installable package. |
+| 4V100 | 2099850 (passed) | 2099990 (passed) | 2099991 (queued) | Not included in the first installable package until two-node acceptance passes. |
 
 Acceptance uses the upstream committed eight-atom Pb/Te NEP4 fixture,
 translated across domain boundaries so both MPI ranks own interacting atoms.
@@ -37,7 +37,8 @@ LAMMPS 2026 changes `gpu/aware off` plus multiple MPI ranks into legacy
 communication, which cannot supply NEPAdapters' newton-off per-atom virial
 reverse communication. The accepted multi-rank route uses the site's
 CUDA-aware Open MPI and `comm device gpu/aware on`, as recorded in module help.
-Earlier failed attempts and their raw logs remain in the project; they are not
+The first 4V100 attempt 2099369 failed during overlay mounting before compilation;
+the fresh retry 2099850 passed. Earlier failed attempts and their raw logs remain in the project; they are not
 accepted or relabelled as successful.
 
 SIF identities and all runtime file hashes are in the committed
@@ -60,7 +61,7 @@ The administrator still runs `bash install.sh --install`. Only two `.so` files
 and `share/licenses/nepadapters/LICENSE.NEP_CPU` enter each `/opt` prefix.
 
 The 4V100 continuation log is
-`/org/org-open-sai/proj-sai-hpc-software/experimental/nepadapters/release-preparation/20261101/4V100-continuation.log`.
+`/org/org-open-sai/proj-sai-hpc-software/experimental/nepadapters/release-preparation/20261101/4V100-continuation-a5.log`.
 It waits at most 24 hours, stops on a failed job, and prepares the additive
 `/home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4-all-v100` package
 only after SIF and both native jobs pass. It performs no `/opt` writes.

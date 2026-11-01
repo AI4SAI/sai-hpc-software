@@ -21,8 +21,9 @@ passed. No `/opt` installation has been performed by the workflow. The module
 the matching LAMMPS prefix. `/opt` receives two plugin libraries and the GPL
 license; tests, manifests and build files remain outside the runtime prefix.
 
-4V100 build 2099369 remains queued. A bounded continuation waits for that exact
-build, performs both native acceptance allocations, and prepares a new
+4V100 build 2099850 and native single/two-GPU job 2099990 completed successfully.
+Two-node job 2099991 remains queued. A bounded continuation waits for that exact
+acceptance and prepares a new
 `nepadapters-1.0.4-all-v100` administrator package only if every check passes.
 It never installs into `/opt`; the already accepted two-partition package stays
 available. An extension can add 4V100 to the known earlier module without
