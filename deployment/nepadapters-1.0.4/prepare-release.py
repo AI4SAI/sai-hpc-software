@@ -29,48 +29,27 @@ def completed(job):
 def modulefile(rows):
     prefixes = {row['prefix'] for row in rows.values()}
     require(len(prefixes) == 1, 'module must use a single shared plugin prefix')
-    config = ' '.join(part + ' {' + row['lammps']['prefix'] + '}' for part, row in rows.items())
     return '''#%Module1.0
 module-whatis "NEPAdapters 1.0.4; CPU/CUDA Kokkos addon for LAMMPS 30Sep2026"
 proc ModulesHelp {} {
-    puts stderr "NEPAdapters 1.0.4 (c934e714); LAMMPS 30Sep2026 addon.\nAccepted partitions: @PARTITIONS@. Load inside a Slurm allocation. Supports nep/cpu and nep/gpu/kk.\nGPU execution requires -k on g N -sf kk -pk kokkos neigh full comm device gpu/aware on.\nOrdinary NEP4/NEP5; NEP3 and CUDA LAMMPS qNEP are unsupported.\nThis module is not a plugin for daily LAMMPS beta builds."
+    puts stderr "NEPAdapters 1.0.4 (c934e714); LAMMPS 30Sep2026 addon.\nShared plugins: @PREFIX@/lib\nRequires lammps/30Sep2026-deepmd320-auto; load inside a Slurm GPU allocation.\nSupports nep/cpu and nep/gpu/kk.\nGPU execution requires -k on g N -sf kk -pk kokkos neigh full comm device gpu/aware on.\nOrdinary NEP4/NEP5; NEP3 and CUDA LAMMPS qNEP are unsupported.\nThis module is not a plugin for daily LAMMPS beta builds."
 }
 conflict nepadapters
-if {[module-info mode load]} {
-    if {![info exists env(SLURM_JOB_ID)] || ![info exists env(SLURM_JOB_PARTITION)]} {
-        ModulesHelp
-        error "Load NEPAdapters inside a Slurm GPU allocation"
-    }
-}
 if {[llength [info commands depends-on]]} {
     depends-on lammps/30Sep2026-deepmd320-auto
 } else {
     prereq lammps/30Sep2026-deepmd320-auto
 }
-if {[module-info mode load] || [module-info mode remove]} {
-    if {[module-info mode remove]} {
-        set partition $env(SAI_NEPADAPTERS_PARTITION)
-    } else {
-        set partition $env(SLURM_JOB_PARTITION)
+set prefix {@PREFIX@}
+if {[module-info mode load]} {
+    foreach name {nepadapterscpuplugin.so nepadaptersgpuplugin.so} {
+        if {![file readable $prefix/lib/$name]} {error "Missing NEPAdapters plugin: $prefix/lib/$name"}
     }
-    set prefix {@PREFIX@}
-    set configurations [dict create @CONFIG@]
-    if {![dict exists $configurations $partition]} {error "Unsupported NEPAdapters partition: $partition"}
-    set lammps [dict get $configurations $partition]
-    if {[module-info mode load]} {
-        if {![info exists env(SAI_LAMMPS_PREFIX)] || $env(SAI_LAMMPS_PREFIX) ne $lammps} {
-            error "NEPAdapters requires its matching LAMMPS 30Sep2026 build"
-        }
-        foreach name {nepadapterscpuplugin.so nepadaptersgpuplugin.so} {
-            if {![file readable $prefix/lib/$name]} {error "Missing NEPAdapters plugin: $prefix/lib/$name"}
-        }
-        puts stderr "NEPAdapters 1.0.4; LAMMPS 30Sep2026; partition=$partition; styles=nep/cpu,nep/gpu/kk"
-    }
-    prepend-path LAMMPS_PLUGIN_PATH $prefix/lib
-    setenv SAI_NEPADAPTERS_PREFIX $prefix
-    setenv SAI_NEPADAPTERS_PARTITION $partition
+    puts stderr "NEPAdapters 1.0.4; LAMMPS 30Sep2026; styles=nep/cpu,nep/gpu/kk"
 }
-'''.replace('@CONFIG@', config).replace('@PARTITIONS@', ', '.join(rows)).replace('@PREFIX@', next(iter(prefixes)))
+prepend-path LAMMPS_PLUGIN_PATH $prefix/lib
+setenv SAI_NEPADAPTERS_PREFIX $prefix
+'''.replace('@PREFIX@', next(iter(prefixes)))
 
 
 def prepare(handoffs, destination, partitions=None, previous=None):
