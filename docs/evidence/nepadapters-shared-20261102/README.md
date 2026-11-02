@@ -84,8 +84,11 @@ outside `/opt`.
 [help](simple-module-login-help.txt) passed with the login node's actual Lmod.
 Seventeen unit tests pass, including module use without partition variables,
 preservation of the host MPI environment, cleanup, recovery from interrupted
-cleanup and preservation of unrelated files. The installed `/opt` module still
-contains the earlier partition checks. The administrator updates it by rerunning:
+cleanup and preservation of unrelated files. The installed `/opt` module
+contained the earlier partition checks at that preflight. The administrator has
+since updated it; [post-install checks](../nepadapters-installed-20261102/README.md)
+confirm the simplified module is installed and works on all three partitions.
+The installation command remains:
 
 ```sh
 cd /home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4-shared
