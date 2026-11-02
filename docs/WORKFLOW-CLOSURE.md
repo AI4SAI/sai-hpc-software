@@ -1,4 +1,4 @@
-# Workflow closure — 2026-11-01
+# Workflow closure — 2026-11-02
 
 ## NEPAdapters release addon
 
@@ -7,26 +7,34 @@ targeting the exact installed LAMMPS 30Sep2026 release (`8de817dd79bf`). It adds
 `nep/cpu` and CUDA Kokkos `nep/gpu/kk` through separately loadable plugins.
 The existing LAMMPS installation is not rebuilt or modified.
 
-16V100, 8V100V0 and 4V100 have accepted SIFs and native exports: pinned Pb/Te NEP4
-energy, forces and virial plus 100 GPU MD steps pass on one GPU, two GPUs on
-one node and one GPU on each of two nodes. Host MPI launches the installed
-LAMMPS; per-rank GPU UUIDs prove the selected devices are distinct. Multi-rank
-virial communication requires `-pk kokkos neigh full comm device gpu/aware on`.
-See [release evidence](evidence/nepadapters-20261101/README.md).
+16V100, 8V100V0 and 4V100 now share one accepted SIF and one identical native
+plugin payload. The old partition builds and the shared build have identical
+CPU code, constants and CUDA kernels. The shared plugins remove embedded MPI
+search paths and resolve the same site MPI as the loaded LAMMPS on each partition.
+Pinned Pb/Te NEP4 energy, forces and virial plus 100 GPU MD steps pass on one GPU,
+two GPUs on one node and one GPU on each of two nodes. Per-rank GPU UUIDs prove
+distinct devices. Multi-rank virial communication uses
+`-pk kokkos neigh full comm device gpu/aware on`.
+See [shared release evidence](evidence/nepadapters-shared-20261102/README.md).
 
 The administrator-readable package is
-`/home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4-all-v100`; its
-read-only preflight passed as `saiuser01` for all three partitions. No `/opt`
-installation has been performed by the workflow. The module
-`nepadapters/1.0.4-lammps30Sep2026` selects only accepted partitions and checks
-the matching LAMMPS prefix. `/opt` receives two plugin libraries and the GPL
-license; tests, manifests and build files remain outside the runtime prefix.
+`/home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4-shared`; its
+read-only preflight passed as `saiuser01` for all three partitions. The planned
+prefix is `/opt/apps/nepadapters/1.0.4-lammps30Sep2026`, with no partition
+subdirectories. The module `nepadapters/1.0.4-lammps30Sep2026` checks the matching
+LAMMPS prefix and uses the same plugin directory everywhere. `/opt` receives
+only two plugin libraries and the GPL license. The administrator has installed
+the previous partitioned release; shared migration awaits `bash install.sh --install`.
+It updates only the known NEPAdapters module and preserves LAMMPS and old plugins.
 
-4V100 build 2099850 and the final native jobs 2100464 (single/two GPUs) and
-2100465 (two nodes) completed with exit `0:0`. The three-partition package
-records the accepted SIF, plugin, LAMMPS and evidence hashes. The earlier
-two-partition package remains available, and the new package can extend its
-known module without replacing the existing accepted plugin binaries.
+Shared build 2102398 completed in 4:35. Native jobs 2102562/2102563 (16V100),
+2103050/2103051 (8V100V0) and 2112122/2112123 (4V100) all completed with exit `0:0`.
+The local jobs also verify the same SIF on each partition. The 8V100V0 retry
+explicitly excludes a node with an uncorrectable GPU ECC error. The distributed
+4V100 check reuses the existing LAMMPS acceptance approach: one rank per node
+with Slurm's CPU allocation and no additional PRTE core binding. Earlier binding
+failures reproduced without plugins; their logs remain recorded. These are
+correctness checks and make no performance claim.
 
 ## November 1 CP2K recovery completion
 

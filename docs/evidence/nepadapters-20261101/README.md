@@ -42,7 +42,7 @@ the fresh retry 2099850 passed. Earlier failed attempts and their raw logs
 remain in the project; they are not accepted or relabelled as successful.
 
 SIF identities and all runtime file hashes are in the committed
-[release plan](../../../deployment/nepadapters-1.0.4/release.json).
+[original release plan](release.json).
 Native evidence and SIF receipts are copied into the public package's
 `evidence/` directory, with checksums in that plan. Complete raw cases remain
 in the `native` directories recorded there.

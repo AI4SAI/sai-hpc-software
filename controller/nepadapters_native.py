@@ -22,7 +22,7 @@ FILES = ('nepadapters_native.py', 'nepadapters_rank.py', 'nepadapters_science.py
 PHASES = ('local', 'distributed')
 
 
-def submit(build, output, installed=False, partition=None):
+def submit(build, output, installed=False, partition=None, exclude=None):
     build, output = build.resolve(), output.resolve()
     original = json.loads((build / 'request.json').read_text())
     request = runtime_request(original, partition or original['partition'])
@@ -31,6 +31,7 @@ def submit(build, output, installed=False, partition=None):
     require((build / 'export/lib/nepadaptersgpuplugin.so').is_file(), 'missing built plugin')
     plugins = Path(request['prefix']) / 'lib' if installed else build / 'export/lib'
     plan = dict(build=str(build), build_status=accepted, request=request, plugins=str(plugins), installed=installed,
+                exclude_nodes=exclude,
                 files={name: checksum(plugins / name) for name in ('nepadapterscpuplugin.so', 'nepadaptersgpuplugin.so')})
     submit_plan(plan, build / 'runtime/cases', output)
 
@@ -88,9 +89,13 @@ def submit_plan(plan, cases, output):
 
 def render(output, plan, phase):
     project, part = Path(plan['request']['project']), plan['request']['partition']
+    excluded = plan.get('exclude_nodes')
+    require(not excluded or re.fullmatch(r'[A-Za-z0-9_.-]+(?:,[A-Za-z0-9_.-]+)*', excluded),
+            'exclude must be a comma-separated list of node names')
     nodes, per_node = (1, 2) if phase == 'local' else (2, 1)
     lines = ['#!/usr/bin/env bash', '#SBATCH --job-name=nepadapters-native-' + part,
              '#SBATCH --partition=' + part, '#SBATCH --qos=' + project_qos(project, PARTITIONS[part]),
+             *(['#SBATCH --exclude=' + excluded] if excluded else []),
              *project_batch_directives(project, output), '#SBATCH --nodes=' + str(nodes),
              '#SBATCH --ntasks=2', '#SBATCH --ntasks-per-node=' + str(per_node),
              '#SBATCH --gpus-per-node=' + str(per_node),
@@ -116,7 +121,7 @@ def render(output, plan, phase):
     return '\n'.join(lines) + '\n'
 
 
-def submit_installed(package, output, partition):
+def submit_installed(package, output, partition, exclude=None):
     release = json.loads((package / 'release.json').read_text())
     row = release['partitions'][partition]
     from remote_controller import SAI_PROJECT_ROOT
@@ -124,7 +129,7 @@ def submit_installed(package, output, partition):
     payload = release['shared'] if release.get('schema') == 2 else row
     if release.get('schema') == 2:
         request['layout'] = 'shared'
-    plan = dict(request=request, installed=True, plugins=payload['prefix'] + '/lib',
+    plan = dict(request=request, installed=True, plugins=payload['prefix'] + '/lib', exclude_nodes=exclude,
                 files={Path(k).name: v['sha256'] for k, v in payload['files'].items() if k.startswith('lib/')})
     submit_plan(plan, package / 'cases' / partition, output)
 
@@ -269,10 +274,15 @@ def run(output, phase):
         extra['sif'] = verify_sif(output, plan, execute=True)
     proofs, ranks = {}, {}
     for name, selected, per_node in cases:
+        # As in lammps_acceptance.command(), PRTE core binding can select a
+        # core outside Slurm's remote-node cpuset and abort before exec.
+        # The distributed correctness check keeps one rank per node inside
+        # that allocation; local two-rank checks retain separate core binding.
+        mapping = f'ppr:{per_node}:node' + (':PE=1' if phase == 'local' else '')
         launcher = [shutil.which('mpirun'), '-np', str(len(selected) * per_node),
                     '--host', ','.join(f'{host}:{per_node}' for host in selected),
-                    '--map-by', f'ppr:{per_node}:node:PE=1',
-                    '--bind-to', 'core', '--report-bindings',
+                    '--map-by', mapping,
+                    '--bind-to', 'core' if phase == 'local' else 'none', '--report-bindings',
                     '/usr/bin/python3', '-B', str(output / 'control/nepadapters_rank.py'), str(per_node)]
         # Every rank sees exactly its selected V100, including on the second node.
         proofs[name] = science(output / 'cases', lmp, plugins, output / name, launcher, 1)
@@ -293,6 +303,7 @@ if __name__ == '__main__':
     s.add_argument('output', type=Path)
     s.add_argument('--installed', action='store_true')
     s.add_argument('--partition', choices=PARTITIONS)
+    s.add_argument('--exclude', help='Comma-separated node names to exclude from both allocations')
     s = sub.add_parser('run')
     s.add_argument('output', type=Path)
     s.add_argument('--phase', choices=PHASES, required=True)
@@ -302,11 +313,12 @@ if __name__ == '__main__':
     s.add_argument('package', type=Path)
     s.add_argument('output', type=Path)
     s.add_argument('--partition', choices=PARTITIONS, required=True)
+    s.add_argument('--exclude', help='Comma-separated node names to exclude from both allocations')
     args = p.parse_args()
     if args.command == 'submit':
-        submit(args.build, args.output, args.installed, args.partition)
+        submit(args.build, args.output, args.installed, args.partition, args.exclude)
     elif args.command == 'installed':
-        submit_installed(args.package.resolve(), args.output.resolve(), args.partition)
+        submit_installed(args.package.resolve(), args.output.resolve(), args.partition, args.exclude)
     elif args.command == 'run':
         run(args.output, args.phase)
     else:

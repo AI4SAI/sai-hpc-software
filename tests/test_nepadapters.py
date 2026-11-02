@@ -129,6 +129,13 @@ class RankTests(unittest.TestCase):
             self.assertIn('#SBATCH --gpus-per-node=' + str(per_node), text)
             self.assertIn('#SBATCH --qos=flood-1o2gpu', text)
             self.assertIn('export HOME=/home/example', text)
+        plan['exclude_nodes'] = 'node-a,node-b'
+        for phase in native.PHASES:
+            text = native.render(Path(release.SAI_PROJECT_ROOT) / 'runtime-tests/test', plan, phase)
+            self.assertIn('#SBATCH --exclude=node-a,node-b\n', text)
+        plan['exclude_nodes'] = 'node-a\n#SBATCH --nodes=5'
+        with self.assertRaisesRegex(ValueError, 'comma-separated'):
+            native.render(Path(release.SAI_PROJECT_ROOT) / 'runtime-tests/test', plan, 'local')
 
     def test_each_rank_requires_its_own_gpu_and_correct_binary(self):
         with tempfile.TemporaryDirectory() as directory:
