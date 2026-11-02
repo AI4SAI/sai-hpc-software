@@ -57,6 +57,14 @@ class InstallerTests(unittest.TestCase):
         self.assertTrue(self.deploy('rollback')['rolled_back'])
         self.assertEqual(self.target.read_bytes(),b'original')
 
+    def test_read_only_preflight_reports_missing_administrator_access(self):
+        with patch.object(install.os, 'access', return_value=False):
+            self.assertFalse(self.deploy('check')['installation_directories_writable'])
+            with self.assertRaisesRegex(PermissionError, 'administrator write access'):
+                self.deploy('install')
+        self.assertEqual(self.target.read_bytes(), b'original')
+        self.assertFalse((self.target.parent / '.sai-driver-stop.lock').exists())
+
     def test_changed_original_or_payload_never_overwrites_runtime(self):
         for path in (self.target, self.here/'payload/starter'):
             original=path.read_bytes()

@@ -75,9 +75,12 @@ def deploy(action, here=HERE, prefix=PREFIX):
         raise ValueError('setuid, setgid or group/other-writable starter is unsupported')
     backup = target.with_name('starter.before-sai-grace-' + old[:16])
     receipt = prefix / 'share/sai/driver-stop-grace.json'
+    receipt_directory = next(path for path in receipt.parents if path.exists())
+    writable = (os.access(target.parent, os.W_OK | os.X_OK)
+                and os.access(receipt_directory, os.W_OK | os.X_OK))
     result = dict(prefix=str(prefix), current_sha256=current, target_sha256=new,
                   normal_stop_grace_seconds=30 if current == new else 1,
-                  backup=str(backup), action=action)
+                  backup=str(backup), action=action, installation_directories_writable=writable)
     if action == 'check':
         return result
     if action == 'verify':
@@ -85,6 +88,9 @@ def deploy(action, here=HERE, prefix=PREFIX):
         if json.loads(receipt.read_text()) != manifest:
             raise ValueError('installed hotfix receipt differs')
         return dict(result, verified=True)
+    if not writable:
+        raise PermissionError('administrator write access is required for ' + str(target.parent)
+                              + ' and ' + str(receipt_directory))
     with (target.parent / '.sai-driver-stop.lock').open('a') as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
         check_file(target, current)

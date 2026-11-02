@@ -13,9 +13,14 @@ The administrator applies this to the **existing** non-setuid
 ```bash
 cd /home/stardust/sai-hpc-software/deployment/apptainer-1.4.4-sai
 bash install.sh             # read-only checks and proposed change
-bash install.sh --install
+sudo bash install.sh --install
 bash install.sh --verify
 ```
+
+Live checks as `saiuser01` can read the full handoff and verify all checksums,
+but that account cannot write the existing starter or receipt directory.
+Installation therefore requires an administrator with write access (using
+`sudo` where available). The preflight reports this before changing any file.
 
 Only `libexec/apptainer/bin/starter` is replaced, using an atomic rename. The
 installer checks the original CLI/helper hashes and the qualified replacement,
@@ -37,7 +42,7 @@ preserves failed overlays.
 To restore the original helper:
 
 ```bash
-bash install.sh --rollback
+sudo bash install.sh --rollback
 ```
 
 Rollback restores the original one-second behavior, so the daily teardown
