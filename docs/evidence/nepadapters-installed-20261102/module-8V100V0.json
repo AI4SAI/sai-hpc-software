@@ -1,0 +1,106 @@
+{
+  "passed": true,
+  "job": "2114531",
+  "partition": "8V100V0",
+  "output": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/nepadapters-installed-module-20261102-103222/module-lifecycle-v2/8V100V0",
+  "stages": {
+    "auto": {
+      "passed": true,
+      "stage": "auto",
+      "job": "2114531",
+      "partition": "8V100V0",
+      "module_sha256": "4ecf824343b9f81480f02026ce64dc8572d45844cc4a93795a2193eae384119e",
+      "environment": {
+        "PATH": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin:/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0/bin:/opt/devtools/gcc/14.3.0/bin:/opt/apps/plumed/plumed-2.10.1/bin:/opt/apps/conda_env/deepmd-kit-3.2.0/bin:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/bin:/opt/devtools/nvidia/cuda-12.9.1/bin:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/bin:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/bin:/opt/devtools/cmake/3.31.6/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin",
+        "LD_LIBRARY_PATH": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/lib:/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0/lib:/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0/lib/python3.13/site-packages/deepmd/lib:/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/tensorflow:/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib:/opt/apps/conda_env/deepmd-kit-3.2.0/lib:/lib/x86_64-linux-gnu/lapack:/lib/x86_64-linux-gnu/blas:/opt/devtools/gcc/14.3.0/libexec:/opt/devtools/gcc/14.3.0/lib:/opt/devtools/gcc/14.3.0/lib64:/opt/apps/plumed/plumed-2.10.1/lib:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib:/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/nvshmem/lib:/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/math_libs/12.9/targets/x86_64-linux/lib:/usr/lib/x86_64-linux-gnu:/usr/lib:/opt/devtools/nvidia/cuda-12.9.1/lib64:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/math_libs/12.9/lib64",
+        "LAMMPS_PLUGIN_PATH": "/opt/apps/nepadapters/1.0.4-lammps30Sep2026/lib",
+        "SAI_NEPADAPTERS_PREFIX": "/opt/apps/nepadapters/1.0.4-lammps30Sep2026",
+        "SAI_LAMMPS_PREFIX": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0",
+        "LOADEDMODULES": "cuda/12.9.1:nvhpc/26.3-gnu-cuda12-tuned:openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto:gcc/14.3.0:lammps/30Sep2026-deepmd320-auto:nepadapters/1.0.4-lammps30Sep2026"
+      }
+    },
+    "auto-unloaded": {
+      "passed": true,
+      "stage": "auto-unloaded",
+      "job": "2114531",
+      "partition": "8V100V0",
+      "module_sha256": "4ecf824343b9f81480f02026ce64dc8572d45844cc4a93795a2193eae384119e",
+      "environment": {
+        "PATH": "/usr/bin:/bin",
+        "LD_LIBRARY_PATH": "",
+        "LAMMPS_PLUGIN_PATH": "",
+        "SAI_NEPADAPTERS_PREFIX": "",
+        "SAI_LAMMPS_PREFIX": "",
+        "LOADEDMODULES": ""
+      }
+    },
+    "baseline": {
+      "passed": true,
+      "stage": "baseline",
+      "job": "2114531",
+      "partition": "8V100V0",
+      "module_sha256": "4ecf824343b9f81480f02026ce64dc8572d45844cc4a93795a2193eae384119e",
+      "environment": {
+        "PATH": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin:/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0/bin:/opt/devtools/gcc/14.3.0/bin:/opt/apps/plumed/plumed-2.10.1/bin:/opt/apps/conda_env/deepmd-kit-3.2.0/bin:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/bin:/opt/devtools/nvidia/cuda-12.9.1/bin:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/bin:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/bin:/opt/devtools/cmake/3.31.6/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin",
+        "LD_LIBRARY_PATH": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/lib:/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0/lib:/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0/lib/python3.13/site-packages/deepmd/lib:/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/tensorflow:/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib:/opt/apps/conda_env/deepmd-kit-3.2.0/lib:/lib/x86_64-linux-gnu/lapack:/lib/x86_64-linux-gnu/blas:/opt/devtools/gcc/14.3.0/libexec:/opt/devtools/gcc/14.3.0/lib:/opt/devtools/gcc/14.3.0/lib64:/opt/apps/plumed/plumed-2.10.1/lib:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib:/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/nvshmem/lib:/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/math_libs/12.9/targets/x86_64-linux/lib:/usr/lib/x86_64-linux-gnu:/usr/lib:/opt/devtools/nvidia/cuda-12.9.1/lib64:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/math_libs/12.9/lib64",
+        "LAMMPS_PLUGIN_PATH": "",
+        "SAI_NEPADAPTERS_PREFIX": "",
+        "SAI_LAMMPS_PREFIX": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0",
+        "LOADEDMODULES": "cuda/12.9.1:nvhpc/26.3-gnu-cuda12-tuned:openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto:gcc/14.3.0:lammps/30Sep2026-deepmd320-auto"
+      }
+    },
+    "attached": {
+      "passed": true,
+      "stage": "attached",
+      "job": "2114531",
+      "partition": "8V100V0",
+      "module_sha256": "4ecf824343b9f81480f02026ce64dc8572d45844cc4a93795a2193eae384119e",
+      "environment": {
+        "PATH": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin:/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0/bin:/opt/devtools/gcc/14.3.0/bin:/opt/apps/plumed/plumed-2.10.1/bin:/opt/apps/conda_env/deepmd-kit-3.2.0/bin:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/bin:/opt/devtools/nvidia/cuda-12.9.1/bin:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/bin:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/bin:/opt/devtools/cmake/3.31.6/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin",
+        "LD_LIBRARY_PATH": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/lib:/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0/lib:/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0/lib/python3.13/site-packages/deepmd/lib:/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/tensorflow:/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib:/opt/apps/conda_env/deepmd-kit-3.2.0/lib:/lib/x86_64-linux-gnu/lapack:/lib/x86_64-linux-gnu/blas:/opt/devtools/gcc/14.3.0/libexec:/opt/devtools/gcc/14.3.0/lib:/opt/devtools/gcc/14.3.0/lib64:/opt/apps/plumed/plumed-2.10.1/lib:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib:/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/nvshmem/lib:/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/math_libs/12.9/targets/x86_64-linux/lib:/usr/lib/x86_64-linux-gnu:/usr/lib:/opt/devtools/nvidia/cuda-12.9.1/lib64:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/math_libs/12.9/lib64",
+        "LAMMPS_PLUGIN_PATH": "/opt/apps/nepadapters/1.0.4-lammps30Sep2026/lib",
+        "SAI_NEPADAPTERS_PREFIX": "/opt/apps/nepadapters/1.0.4-lammps30Sep2026",
+        "SAI_LAMMPS_PREFIX": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0",
+        "LOADEDMODULES": "cuda/12.9.1:nvhpc/26.3-gnu-cuda12-tuned:openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto:gcc/14.3.0:lammps/30Sep2026-deepmd320-auto:nepadapters/1.0.4-lammps30Sep2026"
+      }
+    },
+    "detached": {
+      "passed": true,
+      "stage": "detached",
+      "job": "2114531",
+      "partition": "8V100V0",
+      "module_sha256": "4ecf824343b9f81480f02026ce64dc8572d45844cc4a93795a2193eae384119e",
+      "environment": {
+        "PATH": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin:/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0/bin:/opt/devtools/gcc/14.3.0/bin:/opt/apps/plumed/plumed-2.10.1/bin:/opt/apps/conda_env/deepmd-kit-3.2.0/bin:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/bin:/opt/devtools/nvidia/cuda-12.9.1/bin:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/bin:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/bin:/opt/devtools/cmake/3.31.6/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/bin",
+        "LD_LIBRARY_PATH": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/lib:/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0/lib:/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0/lib/python3.13/site-packages/deepmd/lib:/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/tensorflow:/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib:/opt/apps/conda_env/deepmd-kit-3.2.0/lib:/lib/x86_64-linux-gnu/lapack:/lib/x86_64-linux-gnu/blas:/opt/devtools/gcc/14.3.0/libexec:/opt/devtools/gcc/14.3.0/lib:/opt/devtools/gcc/14.3.0/lib64:/opt/apps/plumed/plumed-2.10.1/lib:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib:/opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/nvshmem/lib:/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/math_libs/12.9/targets/x86_64-linux/lib:/usr/lib/x86_64-linux-gnu:/usr/lib:/opt/devtools/nvidia/cuda-12.9.1/lib64:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/math_libs/12.9/lib64",
+        "LAMMPS_PLUGIN_PATH": "",
+        "SAI_NEPADAPTERS_PREFIX": "",
+        "SAI_LAMMPS_PREFIX": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0",
+        "LOADEDMODULES": "cuda/12.9.1:nvhpc/26.3-gnu-cuda12-tuned:openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto:gcc/14.3.0:lammps/30Sep2026-deepmd320-auto"
+      }
+    },
+    "purged": {
+      "passed": true,
+      "stage": "purged",
+      "job": "2114531",
+      "partition": "8V100V0",
+      "module_sha256": "4ecf824343b9f81480f02026ce64dc8572d45844cc4a93795a2193eae384119e",
+      "environment": {
+        "PATH": "/usr/bin:/bin",
+        "LD_LIBRARY_PATH": "",
+        "LAMMPS_PLUGIN_PATH": "",
+        "SAI_NEPADAPTERS_PREFIX": "",
+        "SAI_LAMMPS_PREFIX": "",
+        "LOADEDMODULES": ""
+      }
+    }
+  },
+  "registered_style_lines": [
+    "dpd/fdt/energy                        nep/cpu*",
+    "dpd/fdt/energy/kk                     nep/gpu*",
+    "dpd/gpu                               nep/gpu/kk*"
+  ],
+  "styles_sha256": "f3c4ecff032b73cb4bc191b4ac85297534368032d02885f783c82edec3d9f730",
+  "script": "#!/usr/bin/env bash\n#SBATCH --job-name=nepadapters-module-8V100V0\n#SBATCH --partition=8V100V0\n#SBATCH --qos=rush-1o2gpu\n#SBATCH --account=proj-sai-hpc-software\n#SBATCH --chdir=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/nepadapters-installed-module-20261102-103222/module-lifecycle-v2/8V100V0\n#SBATCH --nodes=1\n#SBATCH --ntasks=1\n#SBATCH --gpus-per-node=1\n#SBATCH --time=5\n#SBATCH --export=NIL\n#SBATCH --output=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/nepadapters-installed-module-20261102-103222/module-lifecycle-v2/8V100V0/slurm-%j.log\n#SBATCH --exclude=8v100v0n09\nset -eo pipefail\nexport USER=${SLURM_JOB_USER:?} LOGNAME=${SLURM_JOB_USER:?}\nexport HOME=/home/stardust\nexport PATH=/usr/bin:/bin LD_LIBRARY_PATH=\"\" LD_PRELOAD=\"\"\nbash /org/org-open-sai/proj-sai-hpc-software/runtime-tests/nepadapters-installed-module-20261102-103222/module-lifecycle-v2/check-module.sh /org/org-open-sai/proj-sai-hpc-software/runtime-tests/nepadapters-installed-module-20261102-103222/module-lifecycle-v2 /org/org-open-sai/proj-sai-hpc-software/runtime-tests/nepadapters-installed-module-20261102-103222/module-lifecycle-v2/8V100V0\n",
+  "log": "NEPAdapters 1.0.4; LAMMPS 30Sep2026; styles=nep/cpu,nep/gpu/kk\nDeePMD-kit: Successfully load libcudart.so.12\nNEPADAPTERS_MODULE_AUTO_PASSED\nNEPADAPTERS_MODULE_AUTO-UNLOADED_PASSED\nNEPADAPTERS_MODULE_BASELINE_PASSED\nNEPAdapters 1.0.4; LAMMPS 30Sep2026; styles=nep/cpu,nep/gpu/kk\nNEPADAPTERS_MODULE_ATTACHED_PASSED\nNEPADAPTERS_MODULE_DETACHED_PASSED\nNEPADAPTERS_MODULE_PURGED_PASSED\n"
+}

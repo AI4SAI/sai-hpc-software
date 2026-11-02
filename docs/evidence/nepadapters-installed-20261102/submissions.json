@@ -1,0 +1,69 @@
+{
+  "submitted_at_utc": "2026-11-02T02:32:24.684687+00:00",
+  "package": "/home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4-shared",
+  "output": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/nepadapters-installed-module-20261102-103222",
+  "module": "/opt/modules/modulefiles/apps/nepadapters/1.0.4-lammps30Sep2026",
+  "module_sha256": "4ecf824343b9f81480f02026ce64dc8572d45844cc4a93795a2193eae384119e",
+  "preflight": "16V100: accepted plugin and installed LAMMPS verified\n4V100: accepted plugin and installed LAMMPS verified\n8V100V0: accepted plugin and installed LAMMPS verified\nPreflight passed. Run bash install.sh --install to install.\n",
+  "submissions": [
+    {
+      "output": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/nepadapters-installed-module-20261102-103222/16V100",
+      "jobs": {
+        "local": "2114144",
+        "distributed": "2114145"
+      },
+      "partition": "16V100",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4-shared/control/nepadapters_native.py",
+        "installed",
+        "/home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4-shared",
+        "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/nepadapters-installed-module-20261102-103222/16V100",
+        "--partition",
+        "16V100"
+      ],
+      "submission_diagnostics": "sbatch: Job 2114142 to start at 2026-11-02T11:31:24 a using 16 processors on nodes 16v100n71 in partition 16V100\nsbatch: Job 2114143 to start at 2026-11-02T11:31:24 a using 16 processors on nodes 16v100n[73-74] in partition 16V100\n"
+    },
+    {
+      "output": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/nepadapters-installed-module-20261102-103222/4V100",
+      "jobs": {
+        "local": "2114148",
+        "distributed": "2114149"
+      },
+      "partition": "4V100",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4-shared/control/nepadapters_native.py",
+        "installed",
+        "/home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4-shared",
+        "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/nepadapters-installed-module-20261102-103222/4V100",
+        "--partition",
+        "4V100"
+      ],
+      "submission_diagnostics": "sbatch: Job 2114146 to start at 2026-11-02T11:55:24 a using 16 processors on nodes 4v100n18 in partition 4V100\nsbatch: Job 2114147 to start at 2026-11-02T11:55:24 a using 16 processors on nodes 4v100n[18,20] in partition 4V100\n"
+    },
+    {
+      "output": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/nepadapters-installed-module-20261102-103222/8V100V0",
+      "jobs": {
+        "local": "2114152",
+        "distributed": "2114153"
+      },
+      "partition": "8V100V0",
+      "command": [
+        "/usr/bin/python3",
+        "-B",
+        "/home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4-shared/control/nepadapters_native.py",
+        "installed",
+        "/home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4-shared",
+        "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/nepadapters-installed-module-20261102-103222/8V100V0",
+        "--partition",
+        "8V100V0",
+        "--exclude",
+        "8v100v0n09"
+      ],
+      "submission_diagnostics": "sbatch: Job 2114150 to start at 2026-11-02T17:37:50 a using 12 processors on nodes 8v100v0n11 in partition 8V100V0\nsbatch: Job 2114151 to start at 2026-11-02T17:37:50 a using 12 processors on nodes 8v100v0n[02-03] in partition 8V100V0\n"
+    }
+  ]
+}

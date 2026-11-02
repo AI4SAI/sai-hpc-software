@@ -25,14 +25,19 @@ subdirectories. Its two plugin libraries and GPL license match the accepted
 payload; the three old partition copies and their empty recipe directories are
 gone. The installed LAMMPS files still match their recorded hashes.
 
-The updated package simplifies `nepadapters/1.0.4-lammps30Sep2026` to depend on
-`lammps/30Sep2026-deepmd320-auto` and set one fixed plugin directory. Node/partition
+The installed module `nepadapters/1.0.4-lammps30Sep2026` now depends on
+`lammps/30Sep2026-deepmd320-auto` and sets one fixed plugin directory. Node/partition
 and MPI selection belong to LAMMPS; the addon has no separate partition map.
-The public `/opt` module still has the earlier checks. A repeat administrator
-`bash install.sh --install` will update only that module, keeping the already
-installed plugin payload. Seventeen unit tests pass, including use without
-partition variables, preservation of the host MPI environment and installer
-cleanup/recovery checks. The package's help also passes on the real login-node Lmod.
+Its installed checksum matches the simplified release module. Actual Lmod checks
+on all three partitions pass automatic LAMMPS dependency loading, dynamic plugin
+registration, unloading and preservation of an explicitly loaded LAMMPS/MPI
+environment. The installed payload and LAMMPS binary hashes are unchanged.
+
+Post-install numerical checks pass single/two GPUs and two nodes on 16V100 and
+4V100, and two nodes on 8V100V0. The extra 8V100V0 local retest was cancelled while
+pending because no healthy node had two free GPUs. Its unchanged plugin payload
+already passed that layout in job 2103050; this is not a new local test result.
+See [installed module and GPU evidence](evidence/nepadapters-installed-20261102/README.md).
 
 Shared build 2102398 completed in 4:35. Native jobs 2102562/2102563 (16V100),
 2103050/2103051 (8V100V0) and 2112122/2112123 (4V100) all completed with exit `0:0`.
