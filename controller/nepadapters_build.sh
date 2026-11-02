@@ -31,6 +31,7 @@ PY
     cmake -S /workspace/nepadapters -B /workspace/nepadapters-build \
         -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$NEPADAPTERS_PREFIX" \
         -DCMAKE_INSTALL_LIBDIR=lib -DBUILD_SHARED_LIBS=OFF \
+        -DCMAKE_SKIP_INSTALL_RPATH=ON -DNEP_ADAPTERS_CPU_ENABLE_NATIVE_ARCH=OFF \
         -DCMAKE_CXX_COMPILER="$CXX" -DCMAKE_CUDA_HOST_COMPILER="$CXX" \
         -DCMAKE_CXX_FLAGS=-fopenmp -DCMAKE_CUDA_FLAGS=-Xcompiler=-fopenmp \
         -DCMAKE_CXX_STANDARD=20 -DCMAKE_CUDA_STANDARD=20 -DCMAKE_CUDA_ARCHITECTURES=70 \
@@ -42,6 +43,16 @@ PY
     cmake --build /workspace/nepadapters-build --parallel "$BUILD_JOBS" \
         --target nepadapterscpuplugin nepadaptersgpuplugin
     cmake --install /workspace/nepadapters-build
+    # MPI is supplied by the loaded LAMMPS module on every supported partition.
+    for backend in cpu gpu; do
+        # CMake can retain the MPI wrapper's toolchain RPATH even when its own
+        # install RPATH is disabled. Remove that final ELF search path as well.
+        chrpath -d "$NEPADAPTERS_PREFIX/lib/nepadapters${backend}plugin.so"
+        if readelf -d "$NEPADAPTERS_PREFIX/lib/nepadapters${backend}plugin.so" | grep -Eq '\((RPATH|RUNPATH)\)'; then
+            echo 'Unexpected embedded runtime library path' >&2
+            exit 1
+        fi
+    done
     mkdir -p "$NEPADAPTERS_PREFIX/share/licenses/nepadapters"
     cp /workspace/nepadapters/engines/cpu/native/LICENSE.NEP_CPU "$NEPADAPTERS_PREFIX/share/licenses/nepadapters/"
     cp /workspace/nepadapters-build/CMakeCache.txt /runtime/CMakeCache.txt

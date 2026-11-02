@@ -14,18 +14,18 @@ from source_cache import checksum
 
 
 def main():
-    part = os.environ['NEPADAPTERS_PARTITION']
-    if part not in PARTITIONS:
-        raise ValueError('invalid NEPAdapters partition')
+    # Compile once on AVX2, then test these exact plugin bytes on every target.
+    build_partition = '16V100'
     user, commit = safe_name(os.environ['REMOTE_USER']), safe_sha(os.environ['GITHUB_SHA'])
-    run_id = safe_name('nepa-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'] + '-' + part)
+    run_id = safe_name('nepa-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'] + '-shared')
     temporary = Path(os.environ['RUNNER_TEMP'])
     control = Path(__file__).resolve().parent
     results = temporary / 'results'
     results.mkdir(exist_ok=True)
     root = str(SAI_PROJECT_ROOT / 'experimental/nepadapters')
     snapshot = root + '/controller/' + commit + '/' + run_id
-    build, native = root + '/runs/' + run_id, root + '/runtime-tests/' + run_id
+    build = root + '/runs/' + run_id
+    natives = {part: root + '/runtime-tests/' + run_id + '-' + part for part in PARTITIONS}
     remote = user + '@c0.sai.ai-4s.com'
     options = ['-i', str(temporary / 'ssh/key'), '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes',
                '-o', 'UserKnownHostsFile=' + str(control.parent / '.ci/slurm/known_hosts'),
@@ -66,20 +66,26 @@ def main():
     ssh(['mkdir', '-p', snapshot], check=True)
     upload([control / f for f in sorted(set(FILES) | set(NATIVE_FILES))], snapshot + '/')
     upload([archive], snapshot + '/nepadapters.tar.gz')
-    handoff = dict(version=VERSION, source_sha=SOURCE_SHA, partition=part, controller_sha=commit,
-                   build=build, native=native, controller=snapshot)
+    handoff = dict(version=VERSION, source_sha=SOURCE_SHA, layout='shared', controller_sha=commit,
+                   build=build, native=natives, controller=snapshot)
     (results / 'submitted.json').write_text(json.dumps(handoff, indent=2) + '\n')
     try:
         python('nepadapters_release.py', 'submit', '--source', snapshot + '/nepadapters.tar.gz',
-               '--run-id', run_id, '--partition', part, check=True)
+               '--run-id', run_id, '--partition', build_partition, check=True)
         handoff['sif'] = poll(['python3', '-B', snapshot + '/nepadapters_release.py', 'status', build], 'SIF')
-        python('nepadapters_native.py', 'submit', build, native, check=True)
-        proof = poll(['python3', '-B', snapshot + '/nepadapters_native.py', 'verify', native], 'Native')
-        (results / 'native-acceptance.json').write_text(json.dumps(proof, indent=2) + '\n')
+        for part, native in natives.items():
+            python('nepadapters_native.py', 'submit', build, native, '--partition', part, check=True)
+        for part, native in natives.items():
+            proof = poll(['python3', '-B', snapshot + '/nepadapters_native.py', 'verify', native], part)
+            (results / ('native-' + part + '.json')).write_text(json.dumps(proof, indent=2) + '\n')
+        (results / 'accepted-handoffs.json').write_text(json.dumps(
+            [dict(build=build, native=native) for native in natives.values()], indent=2) + '\n')
         handoff['accepted'] = True
         (results / 'handoff.json').write_text(json.dumps(handoff, indent=2) + '\n')
     finally:
-        for path, name in ((build + '/results/.', 'build'), (native + '/acceptance.json', 'native.json')):
+        for path, name in [(build + '/results/.', 'build'),
+                           *((native + '/acceptance.json', 'native-' + part + '.json')
+                             for part, native in natives.items())]:
             subprocess.run(['scp', '-q', *options, '-P', '12022', '-r', remote + ':' + path, str(results / name)], check=False)
 
 

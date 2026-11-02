@@ -9,7 +9,8 @@ import subprocess
 import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'controller'))
-from nepadapters_release import PARTITIONS, VERSION, SOURCE_SHA, PAYLOAD, build_report, require
+from nepadapters_release import (PARTITIONS, VERSION, SOURCE_SHA, PAYLOAD, SHARED_PREFIX,
+                                 build_report, require, runtime_request)
 from nepadapters_native import FILES as NATIVE_FILES, PHASES, context as native_context, verify as verify_native
 from source_cache import checksum
 
@@ -26,7 +27,9 @@ def completed(job):
 
 
 def modulefile(rows):
-    config = ' '.join(part + ' {' + row['prefix'] + ' ' + row['lammps']['prefix'] + '}' for part, row in rows.items())
+    prefixes = {row['prefix'] for row in rows.values()}
+    require(len(prefixes) == 1, 'module must use a single shared plugin prefix')
+    config = ' '.join(part + ' {' + row['lammps']['prefix'] + '}' for part, row in rows.items())
     return '''#%Module1.0
 module-whatis "NEPAdapters 1.0.4; CPU/CUDA Kokkos addon for LAMMPS 30Sep2026"
 proc ModulesHelp {} {
@@ -50,9 +53,10 @@ if {[module-info mode load] || [module-info mode remove]} {
     } else {
         set partition $env(SLURM_JOB_PARTITION)
     }
+    set prefix {@PREFIX@}
     set configurations [dict create @CONFIG@]
     if {![dict exists $configurations $partition]} {error "Unsupported NEPAdapters partition: $partition"}
-    lassign [dict get $configurations $partition] prefix lammps
+    set lammps [dict get $configurations $partition]
     if {[module-info mode load]} {
         if {![info exists env(SAI_LAMMPS_PREFIX)] || $env(SAI_LAMMPS_PREFIX) ne $lammps} {
             error "NEPAdapters requires its matching LAMMPS 30Sep2026 build"
@@ -66,7 +70,7 @@ if {[module-info mode load] || [module-info mode remove]} {
     setenv SAI_NEPADAPTERS_PREFIX $prefix
     setenv SAI_NEPADAPTERS_PARTITION $partition
 }
-'''.replace('@CONFIG@', config).replace('@PARTITIONS@', ', '.join(rows))
+'''.replace('@CONFIG@', config).replace('@PARTITIONS@', ', '.join(rows)).replace('@PREFIX@', next(iter(prefixes)))
 
 
 def prepare(handoffs, destination, partitions=None, previous=None):
@@ -75,8 +79,11 @@ def prepare(handoffs, destination, partitions=None, previous=None):
     rows = {}
     for handoff in handoffs:
         build, native = Path(handoff['build']).resolve(), Path(handoff['native']).resolve()
-        request = json.loads((build / 'request.json').read_text())
-        part = request['partition']
+        original = json.loads((build / 'request.json').read_text())
+        require(original.get('layout') == 'shared', 'rebuild once with the shared plugin layout')
+        plan = native_context(native)
+        part = plan['request']['partition']
+        request = runtime_request(original, part)
         require(part in PARTITIONS and part not in rows, 'duplicate/unsupported partition')
         require(request['source_sha'] == SOURCE_SHA and request['version'] == VERSION, 'wrong source release')
         completed((build / 'job.id').read_text().strip())
@@ -84,10 +91,10 @@ def prepare(handoffs, destination, partitions=None, previous=None):
             completed((native / (phase + '.id')).read_text().strip())
         accepted = build_report(build)
         require(accepted['accepted'], 'SIF build was not accepted')
-        plan = native_context(native)
         require(plan['build'] == str(build) and plan['request'] == request and
                 plan['build_status'] == accepted and not plan['installed'], 'native handoff belongs to a different build')
         proof = verify_native(native)
+        require('sif' in proof['phases']['local'], 'shared SIF was not verified on this partition')
         files = {}
         for name in FILES:
             path = build / 'export' / name
@@ -99,6 +106,10 @@ def prepare(handoffs, destination, partitions=None, previous=None):
                          image=str(build / 'nepadapters.sif'), image_sha256=checksum(build / 'nepadapters.sif'),
                          native_evidence_sha256=checksum(native / 'acceptance.json'))
     require(set(rows) == selected, 'all three V100 partitions (or every explicitly selected partition) must pass')
+    first = next(iter(rows.values()))
+    require(first['prefix'] == SHARED_PREFIX and
+            all(all(row[key] == first[key] for key in ('prefix', 'files', 'build', 'image_sha256'))
+                for row in rows.values()), 'all partitions must test the identical shared SIF/plugins')
     previous_hashes = []
     if previous is not None:
         old = json.loads((previous / 'release.json').read_text())
@@ -107,8 +118,10 @@ def prepare(handoffs, destination, partitions=None, previous=None):
                 'previous release/module identity differs')
         require(set(old['partitions']) <= set(rows), 'release extension cannot remove a partition')
         for part, row in old['partitions'].items():
-            require(all(rows[part][key] == row[key] for key in ('prefix', 'lammps', 'files')),
-                    'release extension cannot replace an existing partition build')
+            require(rows[part]['lammps'] == row['lammps'], 'shared migration cannot change installed LAMMPS')
+            if old.get('schema') == 2:
+                require(all(rows[part][key] == row[key] for key in ('prefix', 'files')),
+                        'shared release extension cannot replace installed binaries')
         previous_hashes = [old['module_sha256'], *old.get('previous_module_sha256', [])]
     require(not destination.exists(), 'release package already exists')
     destination.mkdir(parents=True, mode=0o755)
@@ -117,12 +130,12 @@ def prepare(handoffs, destination, partitions=None, previous=None):
     (destination / 'control').mkdir()
     for name in NATIVE_FILES:
         shutil.copyfile(Path(__file__).resolve().parents[2] / 'controller' / name, destination / 'control' / name)
+    for name in FILES:
+        target = destination / 'payload/shared' / name
+        target.parent.mkdir(parents=True, exist_ok=True, mode=0o755)
+        shutil.copyfile(Path(first['build']) / 'export' / name, target)
+        target.chmod(0o644)
     for part, row in rows.items():
-        for name in FILES:
-            target = destination / 'payload' / part / name
-            target.parent.mkdir(parents=True, exist_ok=True, mode=0o755)
-            shutil.copyfile(Path(row['build']) / 'export' / name, target)
-            target.chmod(0o644)
         # Keep administrator checks independent of private build runtime directories.
         shutil.copytree(Path(row['native']) / 'cases', destination / 'cases' / part)
         evidence = destination / 'evidence' / part
@@ -131,8 +144,10 @@ def prepare(handoffs, destination, partitions=None, previous=None):
         shutil.copyfile(Path(row['native']) / 'acceptance.json', evidence / 'native.json')
     text = modulefile(rows)
     (destination / 'modulefile').write_text(text)
-    release = dict(schema=1, version=VERSION, source_sha=SOURCE_SHA, module=MODULE,
+    release = dict(schema=2, version=VERSION, source_sha=SOURCE_SHA, module=MODULE,
                    module_sha256=hashlib.sha256(text.encode()).hexdigest(), partitions=rows,
+                   shared=dict(prefix=SHARED_PREFIX, files=first['files'], image=first['image'],
+                               image_sha256=first['image_sha256']),
                    previous_module_sha256=previous_hashes,
                    acceptance_scope='NEP4 Pb/Te energy, forces, virial and 100 GPU MD steps; single GPU, two GPUs and two nodes',
                    checks={str(p.relative_to(destination)): checksum(p)

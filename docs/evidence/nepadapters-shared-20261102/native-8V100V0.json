@@ -1,0 +1,827 @@
+{
+  "schema": 1,
+  "passed": true,
+  "partition": "8V100V0",
+  "installed": false,
+  "jobs": {
+    "local": "2103050",
+    "distributed": "2103051"
+  },
+  "nodes": [
+    "8v100v0n05",
+    "8v100v0n07"
+  ],
+  "phases": {
+    "local": {
+      "schema": 1,
+      "passed": true,
+      "installed": false,
+      "partition": "8V100V0",
+      "nodes": [
+        "8v100v0n05"
+      ],
+      "job": "2103050",
+      "proofs": {
+        "single": {
+          "schema": 1,
+          "passed": true,
+          "tolerances": {
+            "energy_diff": 1e-06,
+            "eatom_sum_diff": 1e-06,
+            "max_force_component_diff": 1e-06,
+            "max_virial_component_diff": 5e-06
+          },
+          "static": {
+            "cpu": {
+              "energy_diff": 3.552713678800501e-15,
+              "eatom_sum_diff": 0.0,
+              "max_force_component_diff": 1.3427037259816643e-12,
+              "max_virial_component_diff": 8.609068071763204e-07,
+              "lammps_virial6_from_stress_atom": [
+                -11.418137452058897,
+                -3.797711274332584,
+                -2.352984311044918,
+                -0.7985692242177401,
+                -0.020728818072503354,
+                -0.0011776251663323778
+              ],
+              "reference_virial6": [
+                -11.418138312965704,
+                -3.7977115606742142,
+                -2.3529844884631097,
+                -0.7985692844272931,
+                -0.02072881963605297,
+                -0.001177625249544784
+              ]
+            },
+            "gpu": {
+              "energy_diff": 1.9068693646318025e-07,
+              "eatom_sum_diff": 1.9068693646318025e-07,
+              "max_force_component_diff": 2.7583344880399707e-07,
+              "max_virial_component_diff": 1.4292419705519421e-06,
+              "lammps_virial6_from_stress_atom": [
+                -11.418136927874336,
+                -3.7977101314322437,
+                -2.3529832079155777,
+                -0.7985691980923803,
+                -0.02072880633347681,
+                -0.0011773844293151432
+              ],
+              "reference_virial6": [
+                -11.418138312965704,
+                -3.7977115606742142,
+                -2.3529844884631097,
+                -0.7985692844272931,
+                -0.02072881963605297,
+                -0.001177625249544784
+              ]
+            }
+          },
+          "gpu_dynamics": {
+            "Step": 100.0,
+            "Atoms": 8.0,
+            "PotEng": -17.76215422153473,
+            "Press": -1176.7615207030688,
+            "Pxx": -2288.4593722433815,
+            "Pyy": -760.4062124338486,
+            "Pzz": -481.41897743197546,
+            "Pxy": -160.6916663708053,
+            "Pxz": -8.148489390724306,
+            "Pyz": -4.423356894066067
+          },
+          "lmp": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin/lmp",
+          "plugins": "/org/org-open-sai/proj-sai-hpc-software/experimental/nepadapters/runs/nepadapters-1.0.4-shared-a3/export/lib",
+          "launcher": [
+            "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/bin/mpirun",
+            "-np",
+            "1",
+            "--host",
+            "8v100v0n05:1",
+            "--map-by",
+            "ppr:1:node:PE=1",
+            "--bind-to",
+            "core",
+            "--report-bindings",
+            "/usr/bin/python3",
+            "-B",
+            "/org/org-open-sai/proj-sai-hpc-software/experimental/nepadapters/runtime-tests/nepadapters-1.0.4-shared-a3-8V100V0-r3/control/nepadapters_rank.py",
+            "1"
+          ],
+          "gpus_per_node": 1,
+          "plugin_sha256": {
+            "nepadapterscpuplugin.so": "1c0c9d84816ca945d6deb9f975b88ad3ccb056dabbcb3678a80dee9b72180c69",
+            "nepadaptersgpuplugin.so": "65eb2f9a2493787c2445e1a63993bbd1711541ee5ec9c25be04873c110904496"
+          }
+        },
+        "multi-gpu": {
+          "schema": 1,
+          "passed": true,
+          "tolerances": {
+            "energy_diff": 1e-06,
+            "eatom_sum_diff": 1e-06,
+            "max_force_component_diff": 1e-06,
+            "max_virial_component_diff": 5e-06
+          },
+          "static": {
+            "cpu": {
+              "energy_diff": 3.552713678800501e-15,
+              "eatom_sum_diff": 0.0,
+              "max_force_component_diff": 1.3428147482841268e-12,
+              "max_virial_component_diff": 8.609068053999636e-07,
+              "lammps_virial6_from_stress_atom": [
+                -11.418137452058899,
+                -3.797711274332584,
+                -2.3529843110449176,
+                -0.7985692242177399,
+                -0.0207288180725033,
+                -0.0011776251663323301
+              ],
+              "reference_virial6": [
+                -11.418138312965704,
+                -3.7977115606742142,
+                -2.3529844884631097,
+                -0.7985692844272931,
+                -0.02072881963605297,
+                -0.001177625249544784
+              ]
+            },
+            "gpu": {
+              "energy_diff": 1.9068693646318025e-07,
+              "eatom_sum_diff": 1.9068693646318025e-07,
+              "max_force_component_diff": 2.7583344880399707e-07,
+              "max_virial_component_diff": 1.4521465878658546e-06,
+              "lammps_virial6_from_stress_atom": [
+                -11.418136860819116,
+                -3.7977103400484844,
+                -2.3529832537832114,
+                -0.7985692025161623,
+                -0.020728826822571905,
+                -0.0011772936253709647
+              ],
+              "reference_virial6": [
+                -11.418138312965704,
+                -3.7977115606742142,
+                -2.3529844884631097,
+                -0.7985692844272931,
+                -0.02072881963605297,
+                -0.001177625249544784
+              ]
+            }
+          },
+          "gpu_dynamics": {
+            "Step": 100.0,
+            "Atoms": 8.0,
+            "PotEng": -17.76215422153473,
+            "Press": -1176.7615207030688,
+            "Pxx": -2288.4593722433815,
+            "Pyy": -760.4062124338486,
+            "Pzz": -481.41897743197546,
+            "Pxy": -160.6916663708053,
+            "Pxz": -8.148489390724306,
+            "Pyz": -4.423356894066067
+          },
+          "lmp": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin/lmp",
+          "plugins": "/org/org-open-sai/proj-sai-hpc-software/experimental/nepadapters/runs/nepadapters-1.0.4-shared-a3/export/lib",
+          "launcher": [
+            "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/bin/mpirun",
+            "-np",
+            "2",
+            "--host",
+            "8v100v0n05:2",
+            "--map-by",
+            "ppr:2:node:PE=1",
+            "--bind-to",
+            "core",
+            "--report-bindings",
+            "/usr/bin/python3",
+            "-B",
+            "/org/org-open-sai/proj-sai-hpc-software/experimental/nepadapters/runtime-tests/nepadapters-1.0.4-shared-a3-8V100V0-r3/control/nepadapters_rank.py",
+            "2"
+          ],
+          "gpus_per_node": 1,
+          "plugin_sha256": {
+            "nepadapterscpuplugin.so": "1c0c9d84816ca945d6deb9f975b88ad3ccb056dabbcb3678a80dee9b72180c69",
+            "nepadaptersgpuplugin.so": "65eb2f9a2493787c2445e1a63993bbd1711541ee5ec9c25be04873c110904496"
+          }
+        }
+      },
+      "ranks": {
+        "single": {
+          "cpu/in.baseline": [
+            {
+              "rank": 0,
+              "local_rank": 0,
+              "host": "8v100v0n05",
+              "gpu_uuid": "GPU-853ce076-46ba-8564-e5b6-547e3c8da468",
+              "binary": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin/lmp",
+              "binary_sha256": "ae6ad1f0942ff1d57fbc2d3c5532a7d2064b555200f3a2157c14f03302a451eb",
+              "pid": 2206122,
+              "cuda_visible_devices": "0,1",
+              "sm": 70,
+              "argv": [
+                "-in",
+                "in.baseline",
+                "-log",
+                "log.lammps"
+              ]
+            }
+          ],
+          "gpu/in.baseline": [
+            {
+              "rank": 0,
+              "local_rank": 0,
+              "host": "8v100v0n05",
+              "gpu_uuid": "GPU-853ce076-46ba-8564-e5b6-547e3c8da468",
+              "binary": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin/lmp",
+              "binary_sha256": "ae6ad1f0942ff1d57fbc2d3c5532a7d2064b555200f3a2157c14f03302a451eb",
+              "pid": 2206146,
+              "cuda_visible_devices": "0,1",
+              "sm": 70,
+              "argv": [
+                "-k",
+                "on",
+                "g",
+                "1",
+                "-pk",
+                "kokkos",
+                "neigh",
+                "full",
+                "comm",
+                "device",
+                "gpu/aware",
+                "on",
+                "-in",
+                "in.baseline",
+                "-log",
+                "log.lammps"
+              ]
+            }
+          ],
+          "gpu/in.dynamics": [
+            {
+              "rank": 0,
+              "local_rank": 0,
+              "host": "8v100v0n05",
+              "gpu_uuid": "GPU-853ce076-46ba-8564-e5b6-547e3c8da468",
+              "binary": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin/lmp",
+              "binary_sha256": "ae6ad1f0942ff1d57fbc2d3c5532a7d2064b555200f3a2157c14f03302a451eb",
+              "pid": 2206173,
+              "cuda_visible_devices": "0,1",
+              "sm": 70,
+              "argv": [
+                "-k",
+                "on",
+                "g",
+                "1",
+                "-pk",
+                "kokkos",
+                "neigh",
+                "full",
+                "comm",
+                "device",
+                "gpu/aware",
+                "on",
+                "-in",
+                "in.dynamics",
+                "-log",
+                "dynamics.log"
+              ]
+            }
+          ]
+        },
+        "multi-gpu": {
+          "cpu/in.baseline": [
+            {
+              "rank": 0,
+              "local_rank": 0,
+              "host": "8v100v0n05",
+              "gpu_uuid": "GPU-853ce076-46ba-8564-e5b6-547e3c8da468",
+              "binary": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin/lmp",
+              "binary_sha256": "ae6ad1f0942ff1d57fbc2d3c5532a7d2064b555200f3a2157c14f03302a451eb",
+              "pid": 2206199,
+              "cuda_visible_devices": "0,1",
+              "sm": 70,
+              "argv": [
+                "-in",
+                "in.baseline",
+                "-log",
+                "log.lammps"
+              ]
+            },
+            {
+              "rank": 1,
+              "local_rank": 1,
+              "host": "8v100v0n05",
+              "gpu_uuid": "GPU-2f5ce854-6d10-b5bd-24f5-840a9a2fe60b",
+              "binary": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin/lmp",
+              "binary_sha256": "ae6ad1f0942ff1d57fbc2d3c5532a7d2064b555200f3a2157c14f03302a451eb",
+              "pid": 2206200,
+              "cuda_visible_devices": "0,1",
+              "sm": 70,
+              "argv": [
+                "-in",
+                "in.baseline",
+                "-log",
+                "log.lammps"
+              ]
+            }
+          ],
+          "gpu/in.baseline": [
+            {
+              "rank": 0,
+              "local_rank": 0,
+              "host": "8v100v0n05",
+              "gpu_uuid": "GPU-853ce076-46ba-8564-e5b6-547e3c8da468",
+              "binary": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin/lmp",
+              "binary_sha256": "ae6ad1f0942ff1d57fbc2d3c5532a7d2064b555200f3a2157c14f03302a451eb",
+              "pid": 2206231,
+              "cuda_visible_devices": "0,1",
+              "sm": 70,
+              "argv": [
+                "-k",
+                "on",
+                "g",
+                "1",
+                "-pk",
+                "kokkos",
+                "neigh",
+                "full",
+                "comm",
+                "device",
+                "gpu/aware",
+                "on",
+                "-in",
+                "in.baseline",
+                "-log",
+                "log.lammps"
+              ]
+            },
+            {
+              "rank": 1,
+              "local_rank": 1,
+              "host": "8v100v0n05",
+              "gpu_uuid": "GPU-2f5ce854-6d10-b5bd-24f5-840a9a2fe60b",
+              "binary": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin/lmp",
+              "binary_sha256": "ae6ad1f0942ff1d57fbc2d3c5532a7d2064b555200f3a2157c14f03302a451eb",
+              "pid": 2206232,
+              "cuda_visible_devices": "0,1",
+              "sm": 70,
+              "argv": [
+                "-k",
+                "on",
+                "g",
+                "1",
+                "-pk",
+                "kokkos",
+                "neigh",
+                "full",
+                "comm",
+                "device",
+                "gpu/aware",
+                "on",
+                "-in",
+                "in.baseline",
+                "-log",
+                "log.lammps"
+              ]
+            }
+          ],
+          "gpu/in.dynamics": [
+            {
+              "rank": 0,
+              "local_rank": 0,
+              "host": "8v100v0n05",
+              "gpu_uuid": "GPU-853ce076-46ba-8564-e5b6-547e3c8da468",
+              "binary": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin/lmp",
+              "binary_sha256": "ae6ad1f0942ff1d57fbc2d3c5532a7d2064b555200f3a2157c14f03302a451eb",
+              "pid": 2206263,
+              "cuda_visible_devices": "0,1",
+              "sm": 70,
+              "argv": [
+                "-k",
+                "on",
+                "g",
+                "1",
+                "-pk",
+                "kokkos",
+                "neigh",
+                "full",
+                "comm",
+                "device",
+                "gpu/aware",
+                "on",
+                "-in",
+                "in.dynamics",
+                "-log",
+                "dynamics.log"
+              ]
+            },
+            {
+              "rank": 1,
+              "local_rank": 1,
+              "host": "8v100v0n05",
+              "gpu_uuid": "GPU-2f5ce854-6d10-b5bd-24f5-840a9a2fe60b",
+              "binary": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin/lmp",
+              "binary_sha256": "ae6ad1f0942ff1d57fbc2d3c5532a7d2064b555200f3a2157c14f03302a451eb",
+              "pid": 2206264,
+              "cuda_visible_devices": "0,1",
+              "sm": 70,
+              "argv": [
+                "-k",
+                "on",
+                "g",
+                "1",
+                "-pk",
+                "kokkos",
+                "neigh",
+                "full",
+                "comm",
+                "device",
+                "gpu/aware",
+                "on",
+                "-in",
+                "in.dynamics",
+                "-log",
+                "dynamics.log"
+              ]
+            }
+          ]
+        }
+      },
+      "request_sha256": "43e59650f31da48ff60023f48eaaf2111b4144446b5363cecc230b08e9af702d",
+      "plugin_sha256": {
+        "nepadapterscpuplugin.so": "1c0c9d84816ca945d6deb9f975b88ad3ccb056dabbcb3678a80dee9b72180c69",
+        "nepadaptersgpuplugin.so": "65eb2f9a2493787c2445e1a63993bbd1711541ee5ec9c25be04873c110904496"
+      },
+      "mpi": {
+        "launcher": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/bin/mpirun",
+        "library": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libmpi.so.40.40.7",
+        "library_sha256": "d1e7888b497cca8971c752ca6208003be3d2363ee30e7cb8433e879dadac96df",
+        "reports": {
+          "lmp": "b378ce20aeb589ddb1ef216c317399afc2d07d4156a4e7832c73c4dadb45a5b1",
+          "nepadapterscpuplugin.so": "a87f5c1695f885a6c7e5e126608fb2ea7090d02ed3f49ac64f91ee6239fa628e",
+          "nepadaptersgpuplugin.so": "b9e1ee19adf9d783352a1c348f6aa2bf73d89e99eea500eee283982e14897f1c"
+        }
+      },
+      "sif": {
+        "schema": 1,
+        "passed": true,
+        "tolerances": {
+          "energy_diff": 1e-06,
+          "eatom_sum_diff": 1e-06,
+          "max_force_component_diff": 1e-06,
+          "max_virial_component_diff": 5e-06
+        },
+        "static": {
+          "cpu": {
+            "energy_diff": 3.552713678800501e-15,
+            "eatom_sum_diff": 0.0,
+            "max_force_component_diff": 1.3427037259816643e-12,
+            "max_virial_component_diff": 8.609068071763204e-07,
+            "lammps_virial6_from_stress_atom": [
+              -11.418137452058897,
+              -3.797711274332584,
+              -2.352984311044918,
+              -0.7985692242177401,
+              -0.020728818072503354,
+              -0.0011776251663323778
+            ],
+            "reference_virial6": [
+              -11.418138312965704,
+              -3.7977115606742142,
+              -2.3529844884631097,
+              -0.7985692844272931,
+              -0.02072881963605297,
+              -0.001177625249544784
+            ]
+          },
+          "gpu": {
+            "energy_diff": 1.9068693646318025e-07,
+            "eatom_sum_diff": 1.9068693646318025e-07,
+            "max_force_component_diff": 2.7583344880399707e-07,
+            "max_virial_component_diff": 1.4292419705519421e-06,
+            "lammps_virial6_from_stress_atom": [
+              -11.418136927874336,
+              -3.7977101314322437,
+              -2.3529832079155777,
+              -0.7985691980923803,
+              -0.02072880633347681,
+              -0.0011773844293151432
+            ],
+            "reference_virial6": [
+              -11.418138312965704,
+              -3.7977115606742142,
+              -2.3529844884631097,
+              -0.7985692844272931,
+              -0.02072881963605297,
+              -0.001177625249544784
+            ]
+          }
+        },
+        "gpu_dynamics": {
+          "Step": 100.0,
+          "Atoms": 8.0,
+          "PotEng": -17.76215422153473,
+          "Press": -1176.7615207030688,
+          "Pxx": -2288.4593722433815,
+          "Pyy": -760.4062124338486,
+          "Pzz": -481.41897743197546,
+          "Pxy": -160.6916663708053,
+          "Pxz": -8.148489390724306,
+          "Pyz": -4.423356894066067
+        },
+        "lmp": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin/lmp",
+        "plugins": "/opt/apps/nepadapters/1.0.4-lammps30Sep2026/lib",
+        "launcher": [],
+        "gpus_per_node": 1,
+        "plugin_sha256": {
+          "nepadapterscpuplugin.so": "1c0c9d84816ca945d6deb9f975b88ad3ccb056dabbcb3678a80dee9b72180c69",
+          "nepadaptersgpuplugin.so": "65eb2f9a2493787c2445e1a63993bbd1711541ee5ec9c25be04873c110904496"
+        }
+      }
+    },
+    "distributed": {
+      "schema": 1,
+      "passed": true,
+      "installed": false,
+      "partition": "8V100V0",
+      "nodes": [
+        "8v100v0n05",
+        "8v100v0n07"
+      ],
+      "job": "2103051",
+      "proofs": {
+        "multi-node": {
+          "schema": 1,
+          "passed": true,
+          "tolerances": {
+            "energy_diff": 1e-06,
+            "eatom_sum_diff": 1e-06,
+            "max_force_component_diff": 1e-06,
+            "max_virial_component_diff": 5e-06
+          },
+          "static": {
+            "cpu": {
+              "energy_diff": 3.552713678800501e-15,
+              "eatom_sum_diff": 0.0,
+              "max_force_component_diff": 1.3428147482841268e-12,
+              "max_virial_component_diff": 8.609068053999636e-07,
+              "lammps_virial6_from_stress_atom": [
+                -11.418137452058899,
+                -3.797711274332584,
+                -2.3529843110449176,
+                -0.7985692242177399,
+                -0.0207288180725033,
+                -0.0011776251663323301
+              ],
+              "reference_virial6": [
+                -11.418138312965704,
+                -3.7977115606742142,
+                -2.3529844884631097,
+                -0.7985692844272931,
+                -0.02072881963605297,
+                -0.001177625249544784
+              ]
+            },
+            "gpu": {
+              "energy_diff": 1.9068693646318025e-07,
+              "eatom_sum_diff": 1.9068693646318025e-07,
+              "max_force_component_diff": 2.7583344880399707e-07,
+              "max_virial_component_diff": 1.4521465878658546e-06,
+              "lammps_virial6_from_stress_atom": [
+                -11.418136860819116,
+                -3.7977103400484844,
+                -2.3529832537832114,
+                -0.7985692025161623,
+                -0.020728826822571905,
+                -0.0011772936253709647
+              ],
+              "reference_virial6": [
+                -11.418138312965704,
+                -3.7977115606742142,
+                -2.3529844884631097,
+                -0.7985692844272931,
+                -0.02072881963605297,
+                -0.001177625249544784
+              ]
+            }
+          },
+          "gpu_dynamics": {
+            "Step": 100.0,
+            "Atoms": 8.0,
+            "PotEng": -17.76215422153473,
+            "Press": -1176.7615207030688,
+            "Pxx": -2288.4593722433815,
+            "Pyy": -760.4062124338486,
+            "Pzz": -481.41897743197546,
+            "Pxy": -160.6916663708053,
+            "Pxz": -8.148489390724306,
+            "Pyz": -4.423356894066067
+          },
+          "lmp": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin/lmp",
+          "plugins": "/org/org-open-sai/proj-sai-hpc-software/experimental/nepadapters/runs/nepadapters-1.0.4-shared-a3/export/lib",
+          "launcher": [
+            "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/bin/mpirun",
+            "-np",
+            "2",
+            "--host",
+            "8v100v0n05:1,8v100v0n07:1",
+            "--map-by",
+            "ppr:1:node:PE=1",
+            "--bind-to",
+            "core",
+            "--report-bindings",
+            "/usr/bin/python3",
+            "-B",
+            "/org/org-open-sai/proj-sai-hpc-software/experimental/nepadapters/runtime-tests/nepadapters-1.0.4-shared-a3-8V100V0-r3/control/nepadapters_rank.py",
+            "1"
+          ],
+          "gpus_per_node": 1,
+          "plugin_sha256": {
+            "nepadapterscpuplugin.so": "1c0c9d84816ca945d6deb9f975b88ad3ccb056dabbcb3678a80dee9b72180c69",
+            "nepadaptersgpuplugin.so": "65eb2f9a2493787c2445e1a63993bbd1711541ee5ec9c25be04873c110904496"
+          }
+        }
+      },
+      "ranks": {
+        "multi-node": {
+          "cpu/in.baseline": [
+            {
+              "rank": 0,
+              "local_rank": 0,
+              "host": "8v100v0n05",
+              "gpu_uuid": "GPU-19b2cdb8-be85-be2e-a90a-7e35b6316fba",
+              "binary": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin/lmp",
+              "binary_sha256": "ae6ad1f0942ff1d57fbc2d3c5532a7d2064b555200f3a2157c14f03302a451eb",
+              "pid": 2206444,
+              "cuda_visible_devices": "0",
+              "sm": 70,
+              "argv": [
+                "-in",
+                "in.baseline",
+                "-log",
+                "log.lammps"
+              ]
+            },
+            {
+              "rank": 1,
+              "local_rank": 0,
+              "host": "8v100v0n07",
+              "gpu_uuid": "GPU-e966100b-3542-1da1-af37-066bc6942d18",
+              "binary": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin/lmp",
+              "binary_sha256": "ae6ad1f0942ff1d57fbc2d3c5532a7d2064b555200f3a2157c14f03302a451eb",
+              "pid": 416326,
+              "cuda_visible_devices": "0",
+              "sm": 70,
+              "argv": [
+                "-in",
+                "in.baseline",
+                "-log",
+                "log.lammps"
+              ]
+            }
+          ],
+          "gpu/in.baseline": [
+            {
+              "rank": 0,
+              "local_rank": 0,
+              "host": "8v100v0n05",
+              "gpu_uuid": "GPU-19b2cdb8-be85-be2e-a90a-7e35b6316fba",
+              "binary": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin/lmp",
+              "binary_sha256": "ae6ad1f0942ff1d57fbc2d3c5532a7d2064b555200f3a2157c14f03302a451eb",
+              "pid": 2206475,
+              "cuda_visible_devices": "0",
+              "sm": 70,
+              "argv": [
+                "-k",
+                "on",
+                "g",
+                "1",
+                "-pk",
+                "kokkos",
+                "neigh",
+                "full",
+                "comm",
+                "device",
+                "gpu/aware",
+                "on",
+                "-in",
+                "in.baseline",
+                "-log",
+                "log.lammps"
+              ]
+            },
+            {
+              "rank": 1,
+              "local_rank": 0,
+              "host": "8v100v0n07",
+              "gpu_uuid": "GPU-e966100b-3542-1da1-af37-066bc6942d18",
+              "binary": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin/lmp",
+              "binary_sha256": "ae6ad1f0942ff1d57fbc2d3c5532a7d2064b555200f3a2157c14f03302a451eb",
+              "pid": 416377,
+              "cuda_visible_devices": "0",
+              "sm": 70,
+              "argv": [
+                "-k",
+                "on",
+                "g",
+                "1",
+                "-pk",
+                "kokkos",
+                "neigh",
+                "full",
+                "comm",
+                "device",
+                "gpu/aware",
+                "on",
+                "-in",
+                "in.baseline",
+                "-log",
+                "log.lammps"
+              ]
+            }
+          ],
+          "gpu/in.dynamics": [
+            {
+              "rank": 0,
+              "local_rank": 0,
+              "host": "8v100v0n05",
+              "gpu_uuid": "GPU-19b2cdb8-be85-be2e-a90a-7e35b6316fba",
+              "binary": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin/lmp",
+              "binary_sha256": "ae6ad1f0942ff1d57fbc2d3c5532a7d2064b555200f3a2157c14f03302a451eb",
+              "pid": 2206507,
+              "cuda_visible_devices": "0",
+              "sm": 70,
+              "argv": [
+                "-k",
+                "on",
+                "g",
+                "1",
+                "-pk",
+                "kokkos",
+                "neigh",
+                "full",
+                "comm",
+                "device",
+                "gpu/aware",
+                "on",
+                "-in",
+                "in.dynamics",
+                "-log",
+                "dynamics.log"
+              ]
+            },
+            {
+              "rank": 1,
+              "local_rank": 0,
+              "host": "8v100v0n07",
+              "gpu_uuid": "GPU-e966100b-3542-1da1-af37-066bc6942d18",
+              "binary": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r795dbd80e2a4-s4abbad547102/8V100V0/bin/lmp",
+              "binary_sha256": "ae6ad1f0942ff1d57fbc2d3c5532a7d2064b555200f3a2157c14f03302a451eb",
+              "pid": 416429,
+              "cuda_visible_devices": "0",
+              "sm": 70,
+              "argv": [
+                "-k",
+                "on",
+                "g",
+                "1",
+                "-pk",
+                "kokkos",
+                "neigh",
+                "full",
+                "comm",
+                "device",
+                "gpu/aware",
+                "on",
+                "-in",
+                "in.dynamics",
+                "-log",
+                "dynamics.log"
+              ]
+            }
+          ]
+        }
+      },
+      "request_sha256": "43e59650f31da48ff60023f48eaaf2111b4144446b5363cecc230b08e9af702d",
+      "plugin_sha256": {
+        "nepadapterscpuplugin.so": "1c0c9d84816ca945d6deb9f975b88ad3ccb056dabbcb3678a80dee9b72180c69",
+        "nepadaptersgpuplugin.so": "65eb2f9a2493787c2445e1a63993bbd1711541ee5ec9c25be04873c110904496"
+      },
+      "mpi": {
+        "launcher": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/bin/mpirun",
+        "library": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libmpi.so.40.40.7",
+        "library_sha256": "d1e7888b497cca8971c752ca6208003be3d2363ee30e7cb8433e879dadac96df",
+        "reports": {
+          "lmp": "11ba188375cc50fe9445090db52be3baa8108a0749fee606aaf06dcdc2ab248f",
+          "nepadapterscpuplugin.so": "5dfb094816f1deb7b828cc8d965d18c5b894ec97d2bb5bd45a873f040aff9b11",
+          "nepadaptersgpuplugin.so": "da24f232982ac56c874c32ff33d6849056ce172cb2cbcc466854314be550c795"
+        }
+      }
+    }
+  },
+  "plugin_sha256": {
+    "nepadapterscpuplugin.so": "1c0c9d84816ca945d6deb9f975b88ad3ccb056dabbcb3678a80dee9b72180c69",
+    "nepadaptersgpuplugin.so": "65eb2f9a2493787c2445e1a63993bbd1711541ee5ec9c25be04873c110904496"
+  }
+}
