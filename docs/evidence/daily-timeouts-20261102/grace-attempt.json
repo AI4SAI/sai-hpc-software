@@ -1,0 +1,24 @@
+{
+  "queue": "             JOBID      STATE         TIME NODELIST(REASON)\n",
+  "cases": [
+    {
+      "label": "grace-a",
+      "result.json": {
+        "namespace_returncode": 1,
+        "fsck_returncode": 0
+      },
+      "namespace.log": "unshare: write failed /proc/self/uid_map: Operation not permitted\n",
+      "fsck.log": "e2fsck 1.47.0 (5-Feb-2023)\nPass 1: Checking inodes, blocks, and sizes\nPass 2: Checking directory structure\nPass 3: Checking directory connectivity\nPass 4: Checking reference counts\nPass 5: Checking group summary information\n/org/org-open-sai/proj-sai-hpc-software/diagnostics/fuse2fs-timeout-20261102-grace/grace-a/work.ext3: 13/32768 files (0.0% non-contiguous), 6264/131072 blocks\n"
+    },
+    {
+      "label": "grace-b",
+      "result.json": {
+        "namespace_returncode": 1,
+        "fsck_returncode": 0
+      },
+      "namespace.log": "unshare: write failed /proc/self/uid_map: Operation not permitted\n",
+      "fsck.log": "e2fsck 1.47.0 (5-Feb-2023)\nPass 1: Checking inodes, blocks, and sizes\nPass 2: Checking directory structure\nPass 3: Checking directory connectivity\nPass 4: Checking reference counts\nPass 5: Checking group summary information\n/org/org-open-sai/proj-sai-hpc-software/diagnostics/fuse2fs-timeout-20261102-grace/grace-b/work.ext3: 13/32768 files (0.0% non-contiguous), 6264/131072 blocks\n"
+    }
+  ],
+  "slurm_tail": "grace-a {\"namespace_returncode\": 1, \"fsck_returncode\": 0}\ngrace-b {\"namespace_returncode\": 1, \"fsck_returncode\": 0}\n"
+}

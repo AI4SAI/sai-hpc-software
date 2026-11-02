@@ -1,0 +1,179 @@
+{
+  "accounting": "2128143|DSPRHBM|d9470n01|FAILED|255:0|2026-11-02T17:40:32|2026-11-02T17:54:51|00:14:19|04:00:00\n2128150|8V100V0|8v100v0n04|COMPLETED|0:0|2026-11-02T17:42:02|2026-11-02T18:53:08|01:11:06|04:00:00\n2128152|4V100|4v100n28|FAILED|74:0|2026-11-02T17:41:53|2026-11-02T18:19:38|00:37:45|04:00:00\n2128156|DSPRHBM|d9470n18|FAILED|74:0|2026-11-02T17:42:05|2026-11-02T18:34:17|00:52:12|12:00:00\n2128157|16V100|16v100n37|COMPLETED|0:0|2026-11-02T17:42:10|2026-11-02T19:01:30|01:19:20|04:00:00\n2128183|8V100V0|8v100v0n02|FAILED|74:0|2026-11-02T17:44:26|2026-11-02T18:16:03|00:31:37|04:00:00\n2128190|4V100|4v100n27|FAILED|74:0|2026-11-02T17:45:13|2026-11-02T18:31:38|00:46:25|05:30:00\n2128202|4V100|4v100n29|FAILED|74:0|2026-11-02T17:46:01|2026-11-02T17:58:19|00:12:18|04:00:00\n2128215|16V100|16v100n39|FAILED|74:0|2026-11-02T17:46:53|2026-11-02T18:15:52|00:28:59|04:00:00\n",
+  "stages": [
+    {
+      "run": "41421871101-1-development-4v100-avx512-2026-11-02-f82418464887-dependencies",
+      "path": "/org/org-open-sai/proj-sai-hpc-software/runs/41421871101-1-development-4v100-avx512-2026-11-02-f82418464887-dependencies",
+      "driver": {
+        "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+        "binary_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+        "config_sha256": "810fa844bd7314bfe5cc1e07352b14046528713a85c297d3155974abadc50263",
+        "driver": "/org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs",
+        "patched_source_sha256": "c63d1fb25510d316836952953e9adddacd3214cd91d6002bf3b16aed350c4ddc",
+        "schema": 1,
+        "source_commit": "45651efd6db7da8738bc9d8d1f17e99259cabfe4"
+      },
+      "sync": [
+        {
+          "phase": "dependencies",
+          "synchronized": true,
+          "marker": "/workspace/.sai-overlay-sync",
+          "elapsed_seconds": 1.6150078931823373
+        }
+      ],
+      "failure": [
+        {
+          "receipt": "driver-cleanup-failure-2605123.json",
+          "reason": "fuse2fs teardown failed after payload success",
+          "payload_returncode": 0
+        }
+      ]
+    },
+    {
+      "run": "41421871101-1-development-dsprhbm-2026-11-02-f82418464887-dependencies",
+      "path": "/org/org-open-sai/proj-sai-hpc-software/runs/41421871101-1-development-dsprhbm-2026-11-02-f82418464887-dependencies",
+      "driver": {
+        "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+        "binary_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+        "config_sha256": "810fa844bd7314bfe5cc1e07352b14046528713a85c297d3155974abadc50263",
+        "driver": "/org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs",
+        "patched_source_sha256": "c63d1fb25510d316836952953e9adddacd3214cd91d6002bf3b16aed350c4ddc",
+        "schema": 1,
+        "source_commit": "45651efd6db7da8738bc9d8d1f17e99259cabfe4"
+      },
+      "sync": [
+        {
+          "phase": "dependencies",
+          "synchronized": true,
+          "marker": "/workspace/.sai-overlay-sync",
+          "elapsed_seconds": 1.0456106099300086
+        }
+      ],
+      "failure": [
+        {
+          "receipt": "driver-cleanup-failure-758547.json",
+          "reason": "fuse2fs teardown failed after payload success",
+          "payload_returncode": 0
+        }
+      ]
+    },
+    {
+      "run": "dp-41421871101-1-development-16v100-avx2-6bff958fa9fb",
+      "path": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-41421871101-1-development-16v100-avx2-6bff958fa9fb",
+      "driver": {
+        "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+        "binary_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+        "config_sha256": "e4b802622afbfe8bed886672ddedc06b2c18e2bf7be860a05461ed217daf0a52",
+        "driver": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs",
+        "patched_source_sha256": "c63d1fb25510d316836952953e9adddacd3214cd91d6002bf3b16aed350c4ddc",
+        "schema": 1,
+        "source_commit": "45651efd6db7da8738bc9d8d1f17e99259cabfe4"
+      },
+      "sync": [
+        {
+          "phase": "build",
+          "synchronized": true,
+          "marker": "/workspace/.sai-overlay-sync",
+          "elapsed_seconds": 3.0792511012405157
+        },
+        {
+          "phase": "export",
+          "synchronized": true,
+          "marker": "/workspace/.sai-overlay-sync",
+          "elapsed_seconds": 3.645553331822157
+        }
+      ],
+      "failure": [
+        {
+          "receipt": "driver-cleanup-failure-2769912.json",
+          "reason": "fuse2fs teardown failed after payload success",
+          "payload_returncode": 0
+        }
+      ]
+    },
+    {
+      "run": "dp-41421871101-1-development-4v100-avx512-6bff958fa9fb",
+      "path": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-41421871101-1-development-4v100-avx512-6bff958fa9fb",
+      "driver": {
+        "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+        "binary_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+        "config_sha256": "e4b802622afbfe8bed886672ddedc06b2c18e2bf7be860a05461ed217daf0a52",
+        "driver": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs",
+        "patched_source_sha256": "c63d1fb25510d316836952953e9adddacd3214cd91d6002bf3b16aed350c4ddc",
+        "schema": 1,
+        "source_commit": "45651efd6db7da8738bc9d8d1f17e99259cabfe4"
+      },
+      "sync": [
+        {
+          "phase": "build",
+          "synchronized": true,
+          "marker": "/workspace/.sai-overlay-sync",
+          "elapsed_seconds": 13.951760349795222
+        }
+      ],
+      "failure": [
+        {
+          "receipt": "driver-cleanup-failure-3445366.json",
+          "reason": "fuse2fs teardown failed after payload success",
+          "payload_returncode": 0
+        }
+      ]
+    },
+    {
+      "run": "dp-41421871101-1-development-8v100v0-avx512-6bff958fa9fb",
+      "path": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-41421871101-1-development-8v100v0-avx512-6bff958fa9fb",
+      "driver": {
+        "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+        "binary_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+        "config_sha256": "e4b802622afbfe8bed886672ddedc06b2c18e2bf7be860a05461ed217daf0a52",
+        "driver": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs",
+        "patched_source_sha256": "c63d1fb25510d316836952953e9adddacd3214cd91d6002bf3b16aed350c4ddc",
+        "schema": 1,
+        "source_commit": "45651efd6db7da8738bc9d8d1f17e99259cabfe4"
+      },
+      "sync": [
+        {
+          "phase": "build",
+          "synchronized": true,
+          "marker": "/workspace/.sai-overlay-sync",
+          "elapsed_seconds": 1.60991632938385
+        }
+      ],
+      "failure": [
+        {
+          "receipt": "driver-cleanup-failure-212757.json",
+          "reason": "fuse2fs teardown failed after payload success",
+          "payload_returncode": 0
+        }
+      ]
+    },
+    {
+      "run": "lmp-41421871101-1-development-4v100-avx512-20261102-7dbed49448a1",
+      "path": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-41421871101-1-development-4v100-avx512-20261102-7dbed49448a1",
+      "driver": {
+        "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+        "binary_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+        "config_sha256": "b3f1ec6ad4ff92bb87d698a5da048a4e605e7940df4543c1f67c04c3fd3e5394",
+        "driver": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs",
+        "patched_source_sha256": "c63d1fb25510d316836952953e9adddacd3214cd91d6002bf3b16aed350c4ddc",
+        "schema": 1,
+        "source_commit": "45651efd6db7da8738bc9d8d1f17e99259cabfe4"
+      },
+      "sync": [
+        {
+          "phase": "build",
+          "synchronized": true,
+          "marker": "/workspace/.sai-overlay-sync",
+          "elapsed_seconds": 4.612967459484935
+        }
+      ],
+      "failure": [
+        {
+          "receipt": "driver-cleanup-failure-4064103.json",
+          "reason": "fuse2fs teardown failed after payload success",
+          "payload_returncode": 0
+        }
+      ]
+    }
+  ]
+}
