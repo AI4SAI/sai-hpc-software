@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Administrator installation of the accepted, minimal NEPAdapters runtime.
 
-No arguments: read-only verification. --install: install new prefixes and
-publish the addon module. Existing differing files are never overwritten.
+No arguments: read-only verification. --install: publish the accepted runtime
+and replace the previous partitioned release recorded in the manifest.
 """
 import argparse
 import hashlib
@@ -36,20 +36,68 @@ def plain(path):
     require(all(not p.is_symlink() for p in (path, *path.parents)), 'symlink in path: ' + str(path))
 
 
-def verify_payload(root, files):
+def verify_payload(root, files, allow_missing=False):
     plain(root)
     require(set(files) == PAYLOAD, 'unexpected release file list')
     expected = set(files)
     for name in files:
         expected.update(str(p) for p in Path(name).parents if str(p) != '.')
-    require(root.is_dir() and {str(p.relative_to(root)) for p in root.rglob('*')} == expected,
+    if allow_missing and not root.exists():
+        return
+    actual = {str(p.relative_to(root)) for p in root.rglob('*')}
+    require(root.is_dir() and (actual <= expected if allow_missing else actual == expected),
             'payload contains missing or extra files: ' + str(root))
+    for name in expected - set(files):
+        path = root / name
+        plain(path)
+        require(not path.exists() or path.is_dir(), 'payload directory replaced by a file: ' + str(path))
     for name, row in files.items():
         path = root / name
         plain(path)
+        if allow_missing and not path.exists():
+            continue
         require(path.is_file() and stat.S_IMODE(path.stat().st_mode) == 0o644
                 and path.stat().st_size == row['size'] and digest(path) == row['sha256'],
                 'payload differs from accepted release: ' + str(path))
+
+
+def verify_replacements(release):
+    rows = release.get('replaces', [])
+    require(isinstance(rows, list) and (not rows or release['schema'] == 2),
+            'only a shared release can replace partitioned installations')
+    seen = set()
+    for row in rows:
+        prefix, part = Path(row['prefix']), row['partition']
+        plain(prefix)
+        require(part in release['partitions'] and prefix.name == part and
+                prefix.parent.parent == SHARED_PREFIX.parent and
+                re.fullmatch(re.escape(SHARED_PREFIX.name) + r'-r[0-9a-f]{12}', prefix.parent.name) and
+                str(prefix) not in seen, 'unexpected previous plugin prefix: ' + str(prefix))
+        seen.add(str(prefix))
+        # A retry may resume after some old files have already been removed.
+        # Every remaining entry must still belong to the exact old release.
+        verify_payload(prefix, row['files'], allow_missing=True)
+    return rows
+
+
+def remove_replaced(release):
+    rows = verify_replacements(release)
+    for row in rows:
+        prefix = Path(row['prefix'])
+        if not prefix.exists():
+            continue
+        for name in row['files']:
+            (prefix / name).unlink(missing_ok=True)
+        directories = {p for name in row['files'] for p in Path(name).parents if str(p) != '.'}
+        for relative in sorted(directories, key=lambda p: len(p.parts), reverse=True):
+            path = prefix / relative
+            if path.exists():
+                path.rmdir()
+        prefix.rmdir()
+        print('Removed superseded plugin: ' + str(prefix))
+    for parent in sorted({Path(row['prefix']).parent for row in rows}):
+        if parent.exists() and not any(parent.iterdir()):
+            parent.rmdir()
 
 
 def preflight(package=PACKAGE):
@@ -92,6 +140,9 @@ def preflight(package=PACKAGE):
     if MODULE.exists():
         require(digest(MODULE) in [release['module_sha256'], *release.get('previous_module_sha256', [])],
                 'refusing to overwrite a different module')
+    for row in verify_replacements(release):
+        if Path(row['prefix']).exists():
+            print('Will replace and remove: ' + row['prefix'])
     return release
 
 
@@ -107,6 +158,7 @@ def mkdir_public(path):
 
 
 def install(release):
+    verify_replacements(release)
     for part, row in release['partitions'].items():
         prefix = Path(row['prefix'])
         if prefix.exists():
@@ -146,6 +198,10 @@ def install(release):
         finally:
             if staged_module.exists():
                 staged_module.unlink()
+    if release.get('replaces'):
+        verify_payload(SHARED_PREFIX, release['shared']['files'])
+        require(digest(MODULE) == release['module_sha256'], 'shared module was not published')
+        remove_replaced(release)
     print('Installed module: nepadapters/1.0.4-lammps30Sep2026')
 
 

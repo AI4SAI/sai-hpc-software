@@ -255,6 +255,88 @@ class DeploymentTests(unittest.TestCase):
             prepare.prepare([], self.root / 'release')
         self.assertFalse((self.root / 'release').exists())
 
+    def replacement_plan(self):
+        shutil.copytree(self.package / 'payload/16V100', self.package / 'payload/shared')
+        module = self.root / 'modules/nepadapters/1.0.4'
+        module.parent.mkdir(parents=True)
+        module.write_text('previous module\n')
+        old_module_sha = install.digest(module)
+        (self.package / 'modulefile').write_text('#%Module1.0\n# shared release\n')
+        prefix = self.root / 'apps/nepadapters/1.0.4-lammps30Sep2026'
+        old = prefix.parent / (prefix.name + '-r0123456789ab')
+        replacements = []
+        for part in release.PARTITIONS:
+            shutil.copytree(self.package / 'payload/16V100', old / part)
+            replacements.append(dict(partition=part, prefix=str(old / part), files=self.files))
+        plan = dict(schema=2, partitions={part: dict(prefix=str(prefix), files=self.files)
+                                          for part in release.PARTITIONS},
+                    shared=dict(prefix=str(prefix), files=self.files), replaces=replacements,
+                    module_sha256=install.digest(self.package / 'modulefile'),
+                    previous_module_sha256=[old_module_sha])
+        return plan, module, prefix, old
+
+    def test_shared_install_replaces_old_copies_after_publishing_module(self):
+        plan, module, prefix, old = self.replacement_plan()
+        unrelated = prefix.parent / 'another-version'
+        unrelated.mkdir()
+        (unrelated / 'keep').write_text('unchanged')
+        real_remove = install.remove_replaced
+
+        def check_before_removal(value):
+            install.verify_payload(prefix, self.files)
+            self.assertEqual(install.digest(module), plan['module_sha256'])
+            real_remove(value)
+
+        with patch.object(install, 'PACKAGE', self.package), patch.object(install, 'MODULE', module), \
+                patch.object(install, 'SHARED_PREFIX', prefix), \
+                patch.object(install, 'remove_replaced', side_effect=check_before_removal), \
+                contextlib.redirect_stdout(io.StringIO()):
+            install.install(plan)
+            install.install(plan)
+        self.assertFalse(old.exists())
+        self.assertEqual((unrelated / 'keep').read_text(), 'unchanged')
+        self.assertEqual(set(prefix.parent.iterdir()), {prefix, unrelated})
+
+    def test_replacement_rejects_modified_extra_symlink_and_unrelated_paths(self):
+        plan, module, prefix, old = self.replacement_plan()
+        plugin = old / '16V100/lib/nepadapterscpuplugin.so'
+        original = plugin.read_bytes()
+        previous_module = module.read_bytes()
+        with patch.object(install, 'PACKAGE', self.package), patch.object(install, 'MODULE', module), \
+                patch.object(install, 'SHARED_PREFIX', prefix):
+            plugin.write_bytes(b'locally modified')
+            with self.assertRaisesRegex(ValueError, 'differs'):
+                install.install(plan)
+            plugin.write_bytes(original)
+            extra = old / '16V100/user-data'
+            extra.write_text('keep')
+            with self.assertRaisesRegex(ValueError, 'extra files'):
+                install.install(plan)
+            extra.unlink()
+            plugin.unlink()
+            plugin.symlink_to(self.package / 'payload/16V100/lib/nepadapterscpuplugin.so')
+            with self.assertRaisesRegex(ValueError, 'symlink'):
+                install.install(plan)
+            plugin.unlink()
+            plugin.write_bytes(original)
+            changed = copy.deepcopy(plan)
+            changed['replaces'][0]['prefix'] = str(self.root / 'apps/lammps/16V100')
+            with self.assertRaisesRegex(ValueError, 'unexpected previous'):
+                install.install(changed)
+        self.assertEqual(module.read_bytes(), previous_module)
+        self.assertFalse(prefix.exists())
+        self.assertTrue(old.exists())
+
+    def test_replacement_resumes_partial_cleanup(self):
+        plan, module, prefix, old = self.replacement_plan()
+        (old / '16V100/lib/nepadapterscpuplugin.so').unlink()
+        shutil.rmtree(old / '4V100')
+        with patch.object(install, 'PACKAGE', self.package), patch.object(install, 'MODULE', module), \
+                patch.object(install, 'SHARED_PREFIX', prefix), contextlib.redirect_stdout(io.StringIO()):
+            install.install(plan)
+        self.assertFalse(old.exists())
+        install.verify_payload(prefix, self.files)
+
     def test_module_extension_only_replaces_the_known_previous_module(self):
         module = self.root / 'modules/nepadapters/1.0.4'
         module.parent.mkdir(parents=True)

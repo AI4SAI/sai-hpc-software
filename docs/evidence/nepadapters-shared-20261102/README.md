@@ -66,7 +66,7 @@ retained separately:
 
 The administrator package is
 `/home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4-shared`.
-[Read-only preflight](administrator-preflight.txt) passed as `saiuser01`.
+[Read-only replacement preflight](replacement-preflight.txt) passed as `saiuser01`.
 The public prefix will be `/opt/apps/nepadapters/1.0.4-lammps30Sep2026` and contain
 only `lib/nepadapterscpuplugin.so`, `lib/nepadaptersgpuplugin.so` and
 `share/licenses/nepadapters/LICENSE.NEP_CPU` (30.84 MiB total).
@@ -77,8 +77,12 @@ sources and manifests stay outside `/opt`.
 The [installation-state check](installation-state.json) confirms the old
 partitioned NEPAdapters release is already installed. The new common prefix
 has not been installed; the old module, plugins and LAMMPS files are unchanged.
-Migration accepts only known earlier NEPAdapters module hashes and retains the
-old plugin directories. The administrator executes:
+The installer replaces this release directly: it publishes the common payload
+and the existing module name, verifies the old files against the manifest's
+`replaces` list, and removes the three superseded partition copies and their
+empty recipe directories. Unexpected files or modified old libraries stop the
+operation. Seventeen unit tests pass, including cleanup, recovery from interrupted
+cleanup and preservation of unrelated files. The administrator executes:
 
 ```sh
 cd /home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4-shared

@@ -28,13 +28,16 @@ the project ACLs. Compilation and compute scratch remain in the funded project.
 After installation, stardust can run `bash submit-native-checks.sh` from the same
 package using the project account to recheck the actual `/opt` module.
 
-The default is a read-only preflight. Installation verifies the plugin bytes
-and the installed LAMMPS libraries, and refuses to overwrite a different
-installation. An incomplete release has no installable `release.json`.
+The default is a read-only preflight. Installation verifies the plugin bytes,
+the installed LAMMPS libraries and the previous NEPAdapters files listed for
+replacement. An incomplete release has no installable `release.json`.
 The shared installation prefix is `/opt/apps/nepadapters/1.0.4-lammps30Sep2026`.
-There are no partition subdirectories. Migration updates only the exact known
-earlier NEPAdapters module; previously installed partition directories remain
-intact. The installer never changes LAMMPS or an unrelated module.
+The installer publishes this common payload, replaces the existing module of
+the same name, and removes the three superseded partition copies and their empty
+recipe directories. This directly replaces the previous installation. Removal
+is limited to the exact paths and hashes in `release.json`'s `replaces` list;
+unexpected files or modified old libraries stop installation. A repeated run
+can finish interrupted cleanup. The installer never changes LAMMPS.
 
 The plugins have no embedded MPI library search path and install no MPI libraries.
 They use the MPI environment provided by `lammps/30Sep2026-deepmd320-auto`.
@@ -96,7 +99,7 @@ python3 -B deployment/nepadapters-1.0.4/prepare-release.py \
 
 All three partitions are required by default. `--partitions 16V100,8V100V0`
 explicitly prepares a release restricted to those accepted partitions. Use
-`--previous` when migrating the known partitioned module to the shared prefix,
+`--previous` when replacing the known partitioned installation with the shared prefix,
 or extending an existing shared release; otherwise omit it. Every handoff must
 use the same SIF and plugin hashes. Preparation replays raw numerical/rank
 evidence and checks both native Slurm

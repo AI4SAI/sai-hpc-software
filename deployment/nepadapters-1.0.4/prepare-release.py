@@ -110,7 +110,7 @@ def prepare(handoffs, destination, partitions=None, previous=None):
     require(first['prefix'] == SHARED_PREFIX and
             all(all(row[key] == first[key] for key in ('prefix', 'files', 'build', 'image_sha256'))
                 for row in rows.values()), 'all partitions must test the identical shared SIF/plugins')
-    previous_hashes = []
+    previous_hashes, replacements = [], []
     if previous is not None:
         old = json.loads((previous / 'release.json').read_text())
         require(old['version'] == VERSION and old['source_sha'] == SOURCE_SHA and
@@ -122,6 +122,10 @@ def prepare(handoffs, destination, partitions=None, previous=None):
             if old.get('schema') == 2:
                 require(all(rows[part][key] == row[key] for key in ('prefix', 'files')),
                         'shared release extension cannot replace installed binaries')
+            else:
+                replacements.append(dict(partition=part, prefix=row['prefix'], files=row['files']))
+        if old.get('schema') == 2:
+            replacements = old.get('replaces', [])
         previous_hashes = [old['module_sha256'], *old.get('previous_module_sha256', [])]
     require(not destination.exists(), 'release package already exists')
     destination.mkdir(parents=True, mode=0o755)
@@ -149,6 +153,7 @@ def prepare(handoffs, destination, partitions=None, previous=None):
                    shared=dict(prefix=SHARED_PREFIX, files=first['files'], image=first['image'],
                                image_sha256=first['image_sha256']),
                    previous_module_sha256=previous_hashes,
+                   replaces=replacements,
                    acceptance_scope='NEP4 Pb/Te energy, forces, virial and 100 GPU MD steps; single GPU, two GPUs and two nodes',
                    checks={str(p.relative_to(destination)): checksum(p)
                            for name in ('control', 'cases', 'evidence')
@@ -164,6 +169,6 @@ if __name__ == '__main__':
     p.add_argument('--handoffs', type=Path, required=True, help='JSON list of build/native directory pairs')
     p.add_argument('--destination', type=Path, required=True)
     p.add_argument('--partitions', default=','.join(PARTITIONS), help='Every selected partition must pass; default all three')
-    p.add_argument('--previous', type=Path, help='Accepted earlier package; permit adding partitions to its module')
+    p.add_argument('--previous', type=Path, help='Accepted earlier package to replace with the shared release')
     args = p.parse_args()
     prepare(json.loads(args.handoffs.read_text()), args.destination.resolve(), args.partitions.split(','), args.previous)
