@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Actions transport for independently accepted DeePMD release/development SIFs."""
-from concurrent.futures import ThreadPoolExecutor
 import json
 import os
 from pathlib import Path
@@ -12,7 +11,7 @@ import time
 from deepmd_standalone import CONTROL, FILES, make_delivery
 from release_contract import GPU_TARGETS, resolve_tracks
 from remote_controller import SAI_PROJECT_ROOT, safe_name, safe_sha
-from source_cache import pack
+from source_transport import ensure_source
 
 
 def resolve_builds(tracks, targets, resolver=resolve_tracks):
@@ -120,18 +119,10 @@ if destination.is_symlink() or checksum(destination) != DRIVER_SHA256 or destina
     cache = root + '/cache/repositories/deepmd-kit'
     inventory = json.loads(python('source_cache.py', 'inventory', cache, '--commit', sha, capture_output=True).stdout)
     if sha not in inventory['cache_shas']:
-        repository = temporary / 'deepmd-source.git'
-        run(['git', 'clone', '--bare', 'https://github.com/deepmodeling/deepmd-kit.git', repository])
-        run(['git', '-C', repository, 'fetch', '--no-tags', 'origin', sha])
-        parts = temporary / 'deepmd-source-parts'
-        pack(repository, sha, parts)
-        destination = snapshot + '/input'
-        ssh(['mkdir', '-p', destination])
-        upload(parts / 'manifest.json', destination + '/manifest.json')
-        with ThreadPoolExecutor(max_workers=8) as executor:
-            list(executor.map(lambda index: upload(parts / f'source.part.{index:02d}',
-                destination + f'/source.part.{index:02d}'), range(8)))
-        python('source_cache.py', 'receive', cache, destination)
+        ensure_source(remote=remote, options=options, port=12022, controller=snapshot,
+                      cache=cache, commit=sha,
+                      repository_url='https://github.com/deepmodeling/deepmd-kit.git',
+                      temporary=temporary, destination=snapshot + '/input')
     else:
         print('DEEPMD_SOURCE_CACHE_HIT', sha, flush=True)
     (results / 'delivery.json').write_text(json.dumps(delivery, sort_keys=True, indent=2) + '\n')

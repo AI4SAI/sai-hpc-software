@@ -1,0 +1,22 @@
+--- a/internal/pkg/image/driver/imagedriver.go
++++ b/internal/pkg/image/driver/imagedriver.go
+@@ -502,10 +502,16 @@
+ 			_ = instance.cmd.Process.Signal(syscall.SIGTERM)
+ 		}
+ 
+-		// waitTimeout is time to wait until terminate signal and
+-		//   again to wait until force kill signal
++		// A normal unmount can still be flushing a writable image to shared
++		// storage. Give that final flush time to finish before sending a
++		// signal. Explicit termination and SIGTERM -> SIGKILL stay bounded
++		// by the original one-second deadline.
+ 		waitTimeout := 1 * time.Second
+-		timer := time.NewTimer(waitTimeout)
++		graceTimeout := waitTimeout
++		if !kill {
++			graceTimeout = 30 * time.Second
++		}
++		timer := time.NewTimer(graceTimeout)
+ 		defer timer.Stop()
+ 
+ 		for {

@@ -376,6 +376,23 @@ class CacheTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             cache.inventory(self.repo, "../not-a-sha")
 
+    def test_release_delta_uses_ancestor_of_divergent_cached_develop_tip(self):
+        store = self.root / 'cache.git'
+        develop = self.commit('develop only')
+        cache.pack(self.repo, develop, self.root / 'develop')
+        cache.receive(store, self.root / 'develop')
+        cache.git(self.repo, 'checkout', '--detach', self.first)
+        release = self.commit('release update')
+        tips = cache.inventory(store, release)['cache_shas']
+        self.assertEqual(tips, [develop])
+        self.assertEqual(cache.select_base(self.repo, release, tips), self.first)
+        cache.pack(self.repo, release, self.root / 'release',
+                   cache.select_base(self.repo, release, tips))
+        self.assertEqual(cache.receive(store, self.root / 'release'), release)
+        self.assertTrue(cache.complete(store, develop))
+        self.assertTrue(cache.complete(store, release))
+        self.assertEqual(cache.git(store, 'show', release + ':code'), 'release update')
+
     def test_corruption_and_path_injection(self):
         import json
         target = self.root / "pack"

@@ -1,0 +1,28 @@
+{
+  "accounting": "2135324|COMPLETED|0:0|00:00:20|d9470n11\n2135324.batch|COMPLETED|0:0|00:00:20|d9470n11\n2135324.extern|COMPLETED|0:0|00:00:20|d9470n11\n",
+  "log": "{\"label\": \"delayed-fsync\", \"overlay_mb\": 512, \"delayed_fsync\": true, \"write_returncode\": 0, \"elapsed_seconds\": 17.262606928125024, \"sync_complete\": true, \"cleanup_failure\": true, \"timeout_warning\": true, \"data_verified\": false}\nORIGINAL_DEADLINE_REPRODUCED\n",
+  "result": {
+    "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+    "binary_sha256": "2ba9ae17c087a0d8a6bbfeaae0b12775bd8724f51d5452c41e951ea853a8e5da",
+    "cases": [
+      {
+        "cleanup_failure": true,
+        "data_verified": false,
+        "delayed_fsync": true,
+        "elapsed_seconds": 17.262606928125024,
+        "label": "delayed-fsync",
+        "overlay_mb": 512,
+        "sync_complete": true,
+        "timeout_warning": true,
+        "write_returncode": 0
+      }
+    ],
+    "completed": 1793633742.9375277,
+    "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+    "job": "2135324",
+    "node": "d9470n11.mr-sai.ai",
+    "started": 1793633723.0472348,
+    "starter_sha256": "6c1b664b849689a30b8ad8ed4a09bf8aa177ced8188c37d28f44cd9fbfe414d1",
+    "verified": false
+  }
+}

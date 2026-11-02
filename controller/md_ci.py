@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Runner-side paired builds, raw scientific/performance gates and publication."""
-from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 import inspect
 import json
@@ -11,7 +10,7 @@ import shlex
 import subprocess
 from md_tracking import REPOSITORIES, fingerprint, identify_track_pair
 from remote_controller import safe_name, safe_sha, SAI_PROJECT_ROOT
-from source_cache import pack
+from source_transport import ensure_source
 
 
 def run(argv, **kwargs):
@@ -251,7 +250,7 @@ def main():
         return
     ssh(['mkdir', '-p', snapshot, remote_task + '/input', remote_task + '/results'])
     files = [path for path in control.glob('md_*.*') if path.suffix in ('.py', '.sh', '.json')]
-    files += [control / name for name in ('remote_controller.py', 'source_cache.py', 'resolve_source.py',
+    files += [control / name for name in ('remote_controller.py', 'source_cache.py', 'source_transport.py', 'resolve_source.py',
                                           'create_rootfs.sh', 'release_contract.py', 'native_module.py', 'export_native.py',
                                           'module_publication.py', 'delivery_layout.py', 'cp2k_image_driver.py',
                                           'cp2k_overlay_sync.py')]
@@ -281,26 +280,10 @@ def main():
         if source['sha'] in inventory['cache_shas']:
             print(f'SOURCE_CACHE_HIT {name} {source["sha"]}', flush=True)
             continue
-        repository = temporary / (name + '.git')
-        # Only bare object storage on the runner and host; checkout/build are
-        # restricted to the overlay. Upstream repositories are read-only inputs.
-        run(['git', 'clone', '--bare', 'https://github.com/' + REPOSITORIES[name] + '.git', repository])
-        run(['git', '--git-dir', repository, 'fetch', '--no-tags', 'origin', source['sha']])
-        base = None
-        for candidate in inventory['cache_shas']:
-            if subprocess.run(['git', '--git-dir', str(repository), 'merge-base', '--is-ancestor', candidate, source['sha']],
-                              stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0:
-                base = candidate
-                break
-        parts = temporary / ('parts-' + name)
-        manifest = pack(repository, source['sha'], parts, base)
-        destination = remote_task + '/input/' + name
-        ssh(['mkdir', '-p', destination])
-        upload(parts / 'manifest.json', destination + '/manifest.json')
-        with ThreadPoolExecutor(max_workers=8) as executor:
-            list(executor.map(lambda index: upload(parts / f'source.part.{index:02d}', destination + f'/source.part.{index:02d}'), range(8)))
-        python('source_cache.py', 'receive', cache, destination)
-        print(f'SOURCE_TRANSFER {name} {manifest["compressed_size"]} bytes', flush=True)
+        ensure_source(remote=remote, options=options, port=12022, controller=snapshot,
+                      cache=cache, commit=source['sha'],
+                      repository_url='https://github.com/' + REPOSITORIES[name] + '.git',
+                      temporary=temporary, destination=remote_task + '/input/' + name)
     ssh(['test', '-s', project + '/containers/base/minimal-v1.sif'])
     try:
         python('md_controller.py', 'submit', run_id, remote_task + '/input/pair.json')

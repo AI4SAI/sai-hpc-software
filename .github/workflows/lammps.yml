@@ -25,9 +25,9 @@ on:
         type: boolean
         default: false
   push:
-    paths: ['controller/md_*', 'controller/lammps_*', 'tests/test_md_*', 'tests/test_lammps_*', '.github/workflows/lammps.yml']
+    paths: ['controller/source_cache.py', 'controller/source_transport.py', 'tests/test_source_transport.py', 'controller/md_*', 'controller/lammps_*', 'tests/test_md_*', 'tests/test_lammps_*', '.github/workflows/lammps.yml']
   pull_request:
-    paths: ['controller/md_*', 'controller/lammps_*', 'tests/test_md_*', 'tests/test_lammps_*', '.github/workflows/lammps.yml']
+    paths: ['controller/source_cache.py', 'controller/source_transport.py', 'tests/test_source_transport.py', 'controller/md_*', 'controller/lammps_*', 'tests/test_md_*', 'tests/test_lammps_*', '.github/workflows/lammps.yml']
 
 permissions:
   contents: read
@@ -42,7 +42,7 @@ jobs:
           persist-credentials: false
       - run: |
           sudo apt-get update
-          sudo apt-get install -y squashfs-tools tcl python3-yaml chrpath
+          sudo apt-get install -y squashfs-tools tcl python3-yaml chrpath rsync
           python3 -m unittest discover -s tests -v
           for script in controller/md_*.sh controller/lammps_*.sh controller/lammps_*.sbatch; do bash -n "$script"; done
   resolve-source:

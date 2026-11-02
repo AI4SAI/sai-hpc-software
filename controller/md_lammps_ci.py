@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """Actions entry for LAMMPS alone, reusing accepted installed DeePMD libraries."""
-from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 import inspect
 import json
@@ -14,7 +13,7 @@ import time
 from md_lammps_standalone import CONTROL, make_delivery, runtime_plan
 from release_contract import resolve_tracks, validate_identity
 from remote_controller import SAI_PROJECT_ROOT, safe_name, safe_sha
-from source_cache import pack
+from source_transport import ensure_source
 
 
 def run(argv, **kwargs):
@@ -248,7 +247,7 @@ def main():
     if phase != 'science':
         ssh(['mkdir', '-p', snapshot])
         files = [p for p in CONTROL.glob('md_*.*') if p.suffix in ('.py', '.sh', '.json')]
-        files += [CONTROL / name for name in ('remote_controller.py', 'source_cache.py', 'resolve_source.py',
+        files += [CONTROL / name for name in ('remote_controller.py', 'source_cache.py', 'source_transport.py', 'resolve_source.py',
                   'create_rootfs.sh', 'release_contract.py', 'native_module.py', 'export_native.py',
                   'module_publication.py', 'delivery_layout.py', 'cp2k_image_driver.py', 'cp2k_overlay_sync.py',
                   'lammps_acceptance.py', 'lammps_rank.sh', 'lammps_verify.sbatch')]
@@ -272,26 +271,10 @@ def main():
                 if sha in inventory['cache_shas']:
                     print('SOURCE_CACHE_HIT', name, sha, flush=True)
                     continue
-                repository = temporary / (name + '.git')
-                run(['git', 'clone', '--bare', 'https://github.com/' + identity['repository'] + '.git', repository])
-                run(['git', '--git-dir', repository, 'fetch', '--no-tags', 'origin', sha])
-                parts = temporary / ('parts-' + name)
-                base = None
-                for candidate in inventory['cache_shas']:
-                    ancestor = subprocess.run(['git', '-C', str(repository), 'merge-base', '--is-ancestor', candidate, sha],
-                                              stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                    if ancestor.returncode == 0 and candidate != sha:
-                        base = candidate
-                        break
-                manifest = pack(repository, sha, parts, base)
-                print('SOURCE_TRANSFER', name, 'base=' + str(base),
-                      'compressed_bytes=' + str(manifest['compressed_size']), flush=True)
-                destination = snapshot + '/input/' + name
-                ssh(['mkdir', '-p', destination])
-                upload(parts / 'manifest.json', destination + '/manifest.json')
-                with ThreadPoolExecutor(max_workers=8) as executor:
-                    list(executor.map(lambda i: upload(parts / f'source.part.{i:02d}', destination + f'/source.part.{i:02d}'), range(8)))
-                python('source_cache.py', 'receive', cache, destination)
+                ensure_source(remote=remote, options=options, port=12022, controller=snapshot,
+                              cache=cache, commit=sha,
+                              repository_url='https://github.com/' + identity['repository'] + '.git',
+                              temporary=temporary, destination=snapshot + '/input/' + name)
             try:
                 python('md_lammps_standalone.py', 'submit', run_id, snapshot + '/delivery.json')
                 python('md_lammps_standalone.py', 'monitor', run_id)

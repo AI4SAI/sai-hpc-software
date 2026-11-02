@@ -27,9 +27,9 @@ on:
         type: boolean
         default: false
   push:
-    paths: ['controller/deepmd_*', 'tests/test_deepmd_*', '.github/workflows/deepmd.yml']
+    paths: ['controller/source_cache.py', 'controller/source_transport.py', 'tests/test_source_transport.py', 'controller/deepmd_*', 'tests/test_deepmd_*', '.github/workflows/deepmd.yml']
   pull_request:
-    paths: ['controller/deepmd_*', 'tests/test_deepmd_*', '.github/workflows/deepmd.yml']
+    paths: ['controller/source_cache.py', 'controller/source_transport.py', 'tests/test_source_transport.py', 'controller/deepmd_*', 'tests/test_deepmd_*', '.github/workflows/deepmd.yml']
 
 permissions:
   contents: read
@@ -44,6 +44,7 @@ jobs:
           persist-credentials: false
       - run: |
           python3 -m unittest discover -s tests -p 'test_deepmd_*.py' -v
+          python3 -m unittest discover -s tests -p 'test_source_transport.py' -v
           bash -n controller/deepmd_standalone_entry.sh
   resolve-source:
     if: github.event_name == 'workflow_dispatch' || github.event_name == 'schedule'

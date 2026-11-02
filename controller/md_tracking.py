@@ -113,7 +113,7 @@ def fingerprint(control=None):
     if control.is_file():
         control = control.parent
     names = [*sorted(p.name for p in control.glob("md_*.*") if p.suffix in (".py", ".sh", ".json")),
-             "remote_controller.py", "source_cache.py", "create_rootfs.sh", "resolve_source.py",
+             "remote_controller.py", "source_cache.py", "source_transport.py", "create_rootfs.sh", "resolve_source.py",
              "release_contract.py", "native_module.py", "export_native.py",
              "module_publication.py", "delivery_layout.py", "cp2k_image_driver.py", "cp2k_overlay_sync.py"]
     digest = hashlib.sha256(b"sai-deepmd-lammps-contract-v2\n")

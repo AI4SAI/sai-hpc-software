@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 """GitHub-side orchestration; remote commands always come from this repository."""
-from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 import inspect
 import json
@@ -17,7 +16,7 @@ import uuid
 from remote_controller import safe_name, safe_sha, SAI_PROJECT_ROOT
 from delivery_layout import artifact_path
 from release_contract import SOFTWARE, TRACKS, validate_identity
-from source_cache import pack
+from source_transport import ensure_source
 
 def run(argv, **kwargs):
     try:
@@ -323,6 +322,7 @@ def main():
                   "runtime_controller.py", "create_rootfs.sh", "release_contract.py", "resolve_source.py",
                   "delivery_layout.py", "input_archive_cache.py"]
         recipe = (["container_entry.sh", "environment.sh", "abacus_build.sh",
+                   "cp2k_image_driver.py", "cp2k_overlay_sync.py",
                    "gpu_feature_controller.py", "gpu_feature_runtime.sh",
                    "abacus_dependencies.py", "abacus_dependencies.sh",
                    "abacus_full_profile.json", "abacus_full_dependencies.sh", "abacus_site_mpi.sh", "abacus_site_gpu.sh",
@@ -386,30 +386,13 @@ def main():
         if upstream in inventory["cache_shas"]:
             print(f"CACHE_HIT {upstream}: zero source upload", flush=True)
         else:
-            repo = temporary / "source.git"
             repository = ("https://github.com/deepmodeling/abacus-develop.git"
                           if software == "abacus" else "https://github.com/cp2k/cp2k.git")
             if software == "gpumd":
                 repository = "https://github.com/brucefan1983/GPUMD.git"
-            run(["git", "clone", "--bare", repository, repo])
-            run(["git", "-C", repo, "fetch", "--no-tags", "origin", upstream])
-            base = None
-            for candidate in inventory["cache_shas"]:
-                result = subprocess.run(["git", "-C", str(repo), "merge-base", "--is-ancestor", candidate, upstream],
-                                        stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                if result.returncode == 0 and candidate != upstream:
-                    base = candidate
-                    break
-            parts = temporary / "parts"
-            manifest = pack(repo, upstream, parts, base)
-            print(f"SOURCE_TRANSFER base={base} compressed_bytes={manifest['compressed_size']} parts=8", flush=True)
-            upload(parts / "manifest.json", f"{task}/input/manifest.json")
-            with ThreadPoolExecutor(max_workers=8) as executor:
-                futures = [executor.submit(upload, parts / f"source.part.{i:02d}",
-                                           f"{task}/input/source.part.{i:02d}") for i in range(8)]
-                for future in futures:
-                    future.result()
-            python("source_cache.py", "receive", cache, f"{task}/input")
+            ensure_source(remote=remote, options=options, port=12022, controller=control,
+                          cache=cache, commit=upstream, repository_url=repository,
+                          temporary=temporary, destination=task + '/input')
         # Fail before scheduling if the manually provisioned minimal base is missing.
         ssh(["test", "-s", f"{root}/containers/base/minimal-v1.sif"])
         if software == "abacus":

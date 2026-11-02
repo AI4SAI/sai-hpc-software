@@ -1,0 +1,65 @@
+
+CASE trace-probe/plain-small
+1793624697.3942518 INFO    [U=0,P=2956581]    Mount()                       Ignoring invalid max threads value 4294967295 > max (100000).
+1793624698.2521033 PAYLOAD_WRITES_COMPLETE 1793624698.2520373
+1793624698.714635 PAYLOAD_SYNC_COMPLETE {'sync_seconds': 0.46073103696107864, 'completed_at': 1793624698.7127979}
+1793624698.7277012 DEBUG   [U=0,P=2956581]    stop()                        Waiting for fuse2fs pid 2956641 to exit
+1793624699.7280955 DEBUG   [U=0,P=2956581]    stop()                        Terminating pid 2956641 after wait timeout
+1793624700.7284544 DEBUG   [U=0,P=2956581]    stop()                        Killing pid 2956641 after wait timeout
+1793624700.914933 DEBUG   [U=0,P=2956581]    waitInstance()                fuse2fs pid 2956641 has exited with status -1
+1793624700.9149857 INFO    [U=0,P=2956581]    CleanupContainer()            Cleanup error: while stopping driver for /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0: fuse2fs exited: Ignoring invalid max threads value 4294967295 > max (100000).
+
+CASE trace-probe/trace-small
+1793624720.9880912 INFO    [U=0,P=2956742]    Mount()                       Ignoring invalid max threads value 4294967295 > max (100000).
+1793624723.5613844 PAYLOAD_WRITES_COMPLETE 1793624723.5613248
+1793624724.5601046 PAYLOAD_SYNC_COMPLETE {'sync_seconds': 0.3313655509846285, 'completed_at': 1793624723.8927188}
+1793624724.573579 DEBUG   [U=0,P=2956742]    stop()                        Waiting for fuse2fs pid 2956798 to exit
+1793624725.5738637 DEBUG   [U=0,P=2956742]    stop()                        Terminating pid 2956798 after wait timeout
+1793624726.5742424 DEBUG   [U=0,P=2956742]    stop()                        Killing pid 2956798 after wait timeout
+1793624727.0209625 DEBUG   [U=0,P=2956742]    waitInstance()                fuse2fs pid 2956798 has exited with status -1
+1793624727.0210037 INFO    [U=0,P=2956742]    CleanupContainer()            Cleanup error: while stopping driver for /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0: fuse2fs exited: Ignoring invalid max threads value 4294967295 > max (100000).
+2956801 1793624724.573914 close(5</dev/fuse<char 10:229>>) = 0 <0.000008>
+2956801 1793624724.575236 fsync(4</org/org-open-sai/proj-sai-hpc-software/diagnostics/fuse2fs-timeout-20261102-2110/cases/trace-small/work.ext3>
+
+CASE trace-probe/plain-build-size
+1793624794.0465474 INFO    [U=0,P=2957649]    Mount()                       Ignoring invalid max threads value 4294967295 > max (100000).
+1793624795.0996866 PAYLOAD_WRITES_COMPLETE 1793624795.099621
+1793624804.0949895 PAYLOAD_SYNC_COMPLETE {'sync_seconds': 7.711985385976732, 'completed_at': 1793624802.8116333}
+1793624804.1098406 DEBUG   [U=0,P=2957649]    stop()                        Waiting for fuse2fs pid 2957708 to exit
+1793624805.1110973 DEBUG   [U=0,P=2957649]    stop()                        Terminating pid 2957708 after wait timeout
+1793624806.1113772 DEBUG   [U=0,P=2957649]    stop()                        Killing pid 2957708 after wait timeout
+1793624806.3923435 DEBUG   [U=0,P=2957649]    waitInstance()                fuse2fs pid 2957708 has exited with status -1
+1793624806.392396 INFO    [U=0,P=2957649]    CleanupContainer()            Cleanup error: while stopping driver for /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0: fuse2fs exited: Ignoring invalid max threads value 4294967295 > max (100000).
+
+CASE trace-probe/trace-build-size
+1793624904.0004454 INFO    [U=0,P=2958959]    Mount()                       Ignoring invalid max threads value 4294967295 > max (100000).
+1793624905.5057786 PAYLOAD_WRITES_COMPLETE 1793624905.5057242
+1793624907.273334 PAYLOAD_SYNC_COMPLETE {'sync_seconds': 0.6644745320081711, 'completed_at': 1793624906.1702278}
+1793624907.287234 DEBUG   [U=0,P=2958959]    stop()                        Waiting for fuse2fs pid 2959017 to exit
+2959020 1793624907.285327 close(5</dev/fuse<char 10:229>>) = 0 <0.000007>
+2959020 1793624907.286832 fsync(4</org/org-open-sai/proj-sai-hpc-software/diagnostics/fuse2fs-timeout-20261102-2110/cases/trace-build-size/work.ext3>) = 0 <0.070958>
+2959020 1793624907.358274 fsync(4</org/org-open-sai/proj-sai-hpc-software/diagnostics/fuse2fs-timeout-20261102-2110/cases/trace-build-size/work.ext3>) = 0 <0.112485>
+2959020 1793624907.470879 close(4</org/org-open-sai/proj-sai-hpc-software/diagnostics/fuse2fs-timeout-20261102-2110/cases/trace-build-size/work.ext3>) = 0 <0.000025>
+2959020 1793624907.471866 exit_group(0) = ?
+
+CASE directtrace-probe/trace-direct-parent-a
+1793625322.9976487 INFO    [U=0,P=2962168]    Mount()                       Ignoring invalid max threads value 4294967295 > max (100000).
+1793625324.3618653 PAYLOAD_WRITES_COMPLETE 1793625324.361806
+1793625325.2111206 PAYLOAD_SYNC_COMPLETE {'sync_seconds': 0.8470178530551493, 'completed_at': 1793625325.2088513}
+1793625325.224588 DEBUG   [U=0,P=2962168]    stop()                        Waiting for fuse2fs pid 2962225 to exit
+2962225 1793625325.224780 close(5</dev/fuse<char 10:229>>) = 0 <0.000013>
+2962225 1793625325.226216 fsync(4</org/org-open-sai/proj-sai-hpc-software/diagnostics/fuse2fs-timeout-20261102-directtrace/cases/trace-direct-parent-a/work.ext3>) = 0 <0.104498>
+2962225 1793625325.331158 fsync(4</org/org-open-sai/proj-sai-hpc-software/diagnostics/fuse2fs-timeout-20261102-directtrace/cases/trace-direct-parent-a/work.ext3>) = 0 <0.104764>
+2962225 1793625325.436035 close(4</org/org-open-sai/proj-sai-hpc-software/diagnostics/fuse2fs-timeout-20261102-directtrace/cases/trace-direct-parent-a/work.ext3>) = 0 <0.000025>
+2962225 1793625325.436856 exit_group(0) = ?
+
+CASE directtrace-probe/trace-direct-parent-b
+1793625337.2998614 INFO    [U=0,P=2962314]    Mount()                       Ignoring invalid max threads value 4294967295 > max (100000).
+1793625344.7639146 PAYLOAD_WRITES_COMPLETE 1793625344.7638597
+1793625345.7891273 PAYLOAD_SYNC_COMPLETE {'sync_seconds': 0.47602860094048083, 'completed_at': 1793625345.239917}
+1793625345.802194 DEBUG   [U=0,P=2962314]    stop()                        Waiting for fuse2fs pid 2962371 to exit
+2962371 1793625345.800353 close(5</dev/fuse<char 10:229>>) = 0 <0.000007>
+2962371 1793625345.801839 fsync(4</org/org-open-sai/proj-sai-hpc-software/diagnostics/fuse2fs-timeout-20261102-directtrace/cases/trace-direct-parent-b/work.ext3>) = 0 <0.290666>
+2962371 1793625346.092948 fsync(4</org/org-open-sai/proj-sai-hpc-software/diagnostics/fuse2fs-timeout-20261102-directtrace/cases/trace-direct-parent-b/work.ext3>) = 0 <0.160547>
+2962371 1793625346.253607 close(4</org/org-open-sai/proj-sai-hpc-software/diagnostics/fuse2fs-timeout-20261102-directtrace/cases/trace-direct-parent-b/work.ext3>) = 0 <0.000024>
+2962371 1793625346.254439 exit_group(0) = ?

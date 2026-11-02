@@ -37,9 +37,9 @@ on:
         type: boolean
         default: false
   push:
-    paths: ['controller/gpumd_*', 'controller/ci.py', 'controller/software_controller.py', 'controller/remote_controller.py', 'controller/release_contract.py', 'controller/resolve_source.py', 'controller/delivery_layout.py', 'controller/export_native.py', 'controller/native_module.py', 'tests/test_gpumd.py', '.github/workflows/gpumd.yml', '.github/workflows/software-pair.yml']
+    paths: ['controller/source_cache.py', 'controller/source_transport.py', 'tests/test_source_transport.py', 'controller/gpumd_*', 'controller/ci.py', 'controller/software_controller.py', 'controller/remote_controller.py', 'controller/release_contract.py', 'controller/resolve_source.py', 'controller/delivery_layout.py', 'controller/export_native.py', 'controller/native_module.py', 'tests/test_gpumd.py', '.github/workflows/gpumd.yml', '.github/workflows/software-pair.yml']
   pull_request:
-    paths: ['controller/gpumd_*', 'controller/ci.py', 'controller/software_controller.py', 'controller/remote_controller.py', 'controller/release_contract.py', 'controller/resolve_source.py', 'controller/delivery_layout.py', 'controller/export_native.py', 'controller/native_module.py', 'tests/test_gpumd.py', '.github/workflows/gpumd.yml', '.github/workflows/software-pair.yml']
+    paths: ['controller/source_cache.py', 'controller/source_transport.py', 'tests/test_source_transport.py', 'controller/gpumd_*', 'controller/ci.py', 'controller/software_controller.py', 'controller/remote_controller.py', 'controller/release_contract.py', 'controller/resolve_source.py', 'controller/delivery_layout.py', 'controller/export_native.py', 'controller/native_module.py', 'tests/test_gpumd.py', '.github/workflows/gpumd.yml', '.github/workflows/software-pair.yml']
 
 permissions:
   contents: read
@@ -54,7 +54,7 @@ jobs:
           persist-credentials: false
       - run: |
           sudo apt-get update
-          sudo apt-get install -y squashfs-tools tcl python3-yaml chrpath
+          sudo apt-get install -y squashfs-tools tcl python3-yaml chrpath rsync
           command -v mksquashfs unsquashfs tclsh
       - run: python3 -m unittest discover -s tests -v
       - run: |
