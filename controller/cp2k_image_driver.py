@@ -111,7 +111,9 @@ def execute(argv, run):
                 sys.stderr.buffer.flush()
                 tail = (tail + block)[-65536:]
             code = process.wait()
-        if code == 0 and b'Cleanup error: while stopping driver' in tail and b'fuse2fs exited:' in tail:
+        forced_stop = b'Terminating fuse2fs after timeout' in tail
+        cleanup_failed = b'Cleanup error: while stopping driver' in tail and b'fuse2fs exited:' in tail
+        if code == 0 and (forced_stop or cleanup_failed):
             # Apptainer can return payload success after killing the writer.
             # Never consume or retry that writable image as a successful phase.
             record = dict(reason='fuse2fs teardown failed after payload success', argv=argv,

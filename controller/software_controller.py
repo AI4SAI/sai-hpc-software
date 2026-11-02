@@ -23,6 +23,7 @@ def contract_files(software):
               "release_contract.py", "resolve_source.py", "delivery_layout.py"]
     if software == "abacus":
         return common + ["container_entry.sh", "abacus_build.sh", "runtime_controller.py",
+                         "cp2k_image_driver.py", "cp2k_overlay_sync.py",
                          "gpu_feature_controller.py", "gpu_feature_runtime.sh", "abacus",
                          "abacus_dependencies.py", "abacus_dependencies.sh",
                          "abacus_full_profile.json", "abacus_full_dependencies.sh", "abacus_site_mpi.sh", "abacus_site_gpu.sh",
@@ -361,14 +362,14 @@ def render_job(args):
             # The public ELPA selector needs the allocation partition even
             # though the build container deliberately uses --cleanenv.
             command[2:2] = ['--env', 'SLURM_JOB_PARTITION=' + target['partition']]
-        if args.software == 'cp2k' and not final:
+        if args.software in ('cp2k', 'abacus') and not final:
             command[2:2] = ['--bind', str(r / 'results') + ':/results:rw']
             from cp2k_image_driver import wrap_command
             command = wrap_command(ROOT, r, CONTROL, command)
         return command
     emit = container_command(image, ["/usr/bin/cat", "/workspace/final.squashfs"],
                              overlay=str(overlay) + ":ro", jobs=args.jobs)
-    if args.software == 'cp2k':
+    if args.software in ('cp2k', 'abacus'):
         from cp2k_image_driver import wrap_command
         emit = wrap_command(ROOT, r, CONTROL, emit)
     q = shlex.quote
@@ -415,9 +416,8 @@ def render_job(args):
         "export PATH=/usr/bin:/bin",
         'export LD_LIBRARY_PATH="" LD_PRELOAD=""',
         "source /etc/profile.d/lmod.sh",
-        # CP2K selects its pinned driver through an explicit --config below.
-        # Other writable-image builds use the qualified public driver module.
-        ("module load apptainer/1.4.4" if args.software == "cp2k" else
+        # Guarded builds select the pinned driver through an explicit --config.
+        ("module load apptainer/1.4.4" if args.software in ("cp2k", "abacus") else
          "module --ignore_cache load apptainer/1.4.4 fuse2fs/1.47.4-sai"),
         "set -u", "umask 077",
         f"export TMPDIR={q(str(r / 'runtime'))} APPTAINER_TMPDIR={q(str(r / 'runtime'))}",
@@ -435,7 +435,13 @@ def render_job(args):
                     f"import sys; sys.path.insert(0, {str(CONTROL)!r}); "
                     f"from remote_controller import require_capacity; require_capacity({str(ROOT)!r}, {args.overlay_mb})"]),
         *prepare,
+        *([shlex.join(['/usr/sbin/e2fsck', '-fn', str(overlay)]) + ' > ' +
+           q(str(r / 'results/overlay-after-build-fsck.txt')) + ' 2>&1']
+          if args.software == 'abacus' else []),
         shlex.join(container("export")),
+        *([shlex.join(['/usr/sbin/e2fsck', '-fn', str(overlay)]) + ' > ' +
+           q(str(r / 'results/overlay-after-export-fsck.txt')) + ' 2>&1']
+          if args.software == 'abacus' else []),
         shlex.join(emit) + " > " + q(str(squash)),
         shlex.join(["apptainer", "sif", "new", str(sif)]),
         shlex.join(["apptainer", "sif", "add", "--datatype", "4", "--partfs", "1",

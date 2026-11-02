@@ -99,3 +99,6 @@ case "$op" in
     ;;
   *) exit 2;;
 esac
+case "$op" in
+  build|metadata|export) python3 /control/cp2k_overlay_sync.py "$op" ;;
+esac

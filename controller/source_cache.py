@@ -9,6 +9,7 @@ from pathlib import Path
 import re
 import shutil
 import subprocess
+import sys
 
 PARTS = 8
 LIMIT = 4 * 1024**3
@@ -36,6 +37,24 @@ def complete(repo, commit):
         return True
     except subprocess.CalledProcessError:
         return False
+
+def select_base(repo, commit, cached_tips):
+    """A complete cached tip also contains its shared ancestors with a release.
+
+    Recent develop tips need not themselves precede the requested release.
+    Choose the shared ancestor leaving the fewest commits to transfer.
+    """
+    commit = sha(commit)
+    bases = set()
+    for tip in cached_tips:
+        try:
+            base = git(repo, 'merge-base', commit, sha(tip))
+        except subprocess.CalledProcessError:
+            continue  # A rewritten/deleted upstream tip may be absent locally.
+        if base and base != commit:
+            bases.add(sha(base))
+    return min(bases, key=lambda base: (int(git(repo, 'rev-list', '--count',
+                                              base + '..' + commit)), base), default=None)
 
 def pack(repo, commit, output, base=None):
     repo, output = Path(repo).resolve(), Path(output).resolve()
@@ -122,7 +141,7 @@ def assemble(directory):
     zpath.unlink()
     return m, result
 
-def receive(repo, directory):
+def receive(repo, directory, expected_commit=None):
     repo = Path(repo).resolve()
     directory = Path(directory).resolve()
     repo.parent.mkdir(parents=True, exist_ok=True)
@@ -137,6 +156,8 @@ def receive(repo, directory):
         git(repo, "config", "fetch.fsckObjects", "true")
         m, bundle = assemble(directory)
         commit = m["commit"]
+        if expected_commit is not None and commit != sha(expected_commit):
+            raise ValueError('received source differs from the transfer lease')
         git(repo, "bundle", "verify", str(bundle))
         git(repo, "fetch", "--no-tags", str(bundle), f"{commit}:refs/cache/{commit}")
         if not complete(repo, commit):
@@ -167,6 +188,32 @@ def inventory(repo, commit=None):
         if commit not in result and complete(repo, commit):
             result.append(commit)
     return {"cache_shas": result}
+
+def transfer_session(repo, commit):
+    """Serialize only identical source transfers, releasing on SSH disconnect.
+
+    The lease covers inventory, runner-side packing/upload and verified receive.
+    Other sources and all compilation remain independent. Cache mutation still
+    uses receive's repository lock. No persistent owner/expiry file is trusted.
+    """
+    repo, commit = Path(repo).resolve(), sha(commit)
+    repo.parent.mkdir(parents=True, exist_ok=True)
+    with (repo.parent / (repo.name + '.transfer-' + commit + '.lock')).open('a') as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        available = inventory(repo, commit)
+        print(json.dumps(available), flush=True)
+        if commit in available['cache_shas']:
+            return
+        request = sys.stdin.readline(16385)
+        if not request:
+            return
+        if len(request) > 16384:
+            raise ValueError('oversized transfer request')
+        request = json.loads(request)
+        if set(request) != {'directory'}:
+            raise ValueError('invalid transfer request')
+        received = receive(repo, request['directory'], expected_commit=commit)
+        print(json.dumps({'received': received}), flush=True)
 
 def seed(repo, source):
     """Copy verified legacy cache refs locally; never use writable alternates.
@@ -211,6 +258,7 @@ def main():
     a = sub.add_parser("receive"); a.add_argument("repo"); a.add_argument("directory")
     a = sub.add_parser("seed"); a.add_argument("repo"); a.add_argument("source")
     a = sub.add_parser("inventory"); a.add_argument("repo"); a.add_argument("--commit")
+    a = sub.add_parser("transfer-session"); a.add_argument("repo"); a.add_argument("commit")
     args = p.parse_args()
     if args.op == "pack":
         print(json.dumps(pack(args.repo, args.commit, args.output, args.base)))
@@ -220,6 +268,8 @@ def main():
         print(receive(args.repo, args.directory))
     elif args.op == "seed":
         print(json.dumps(seed(args.repo, args.source)))
+    elif args.op == "transfer-session":
+        transfer_session(args.repo, args.commit)
     else:
         print(json.dumps(inventory(args.repo, args.commit)))
 

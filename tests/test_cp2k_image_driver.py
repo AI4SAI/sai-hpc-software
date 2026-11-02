@@ -109,6 +109,29 @@ class ImageDriverTests(unittest.TestCase):
         self.assertNotIn('--overlay', final)
         self.assertIn('sai-cp2k-build-16v100-avx2-' + software.recipe_fingerprint('cp2k')[:12], script)
 
+    def test_abacus_checks_each_writable_phase_before_consuming_overlay(self):
+        args = argparse.Namespace(run_id='abacus-test', software='abacus', sha='a' * 40,
+                                  version='develop-aaaa', target='dsprhbm', jobs=8, minutes=240,
+                                  overlay_mb=16384, track='development', source_ref='develop')
+        with patch.object(software, 'ROOT', self.root):
+            script = software.render_job(args)
+        mounts = [shlex.split(line.split(' > ')[0]) for line in script.splitlines()
+                  if '--overlay' in line]
+        self.assertEqual(len(mounts), 3)
+        for argv in mounts:
+            self.assertTrue(argv[1].endswith('/cp2k_image_driver.py'))
+        for phase in ('build', 'export'):
+            command = next(line for line in script.splitlines() if 'container_entry.sh ' + phase in line)
+            self.assertIn(str(self.run.parent / args.run_id / 'results') + ':/results:rw', command)
+            self.assertLess(script.index(command), script.index('overlay-after-' + phase + '-fsck.txt'))
+        self.assertLess(script.index('overlay-after-build-fsck.txt'), script.index('container_entry.sh export'))
+        self.assertLess(script.index('overlay-after-export-fsck.txt'), script.index('/usr/bin/cat /workspace/final.squashfs'))
+        final = next(line for line in script.splitlines() if 'container_entry.sh verify' in line)
+        self.assertTrue(final.startswith('apptainer exec '))
+        self.assertNotIn('--overlay', final)
+        for name in ('cp2k_image_driver.py', 'cp2k_overlay_sync.py'):
+            self.assertIn(name, software.contract_files('abacus'))
+
     def test_mount_retry_is_bounded_and_preserves_binary_stdout(self):
         message = 'FATAL: container creation failed: mount hook function failure: fuse2fs failed to mount overlay in 10s'
         for code, text, accepted in ((255, message, True), (1, message, False),
@@ -145,6 +168,12 @@ class ImageDriverTests(unittest.TestCase):
         failures = list((self.run / 'results').glob('driver-cleanup-failure-*.json'))
         self.assertEqual(len(failures), 1)
         self.assertEqual(json.loads(failures[0].read_text())['returncode'], 0)
+        # waitInstance can omit the cleanup error when a killed helper emits
+        # no stderr. A forced stop must still invalidate a writable phase.
+        payload.write_text('import sys; sys.stderr.write("INFO: Terminating fuse2fs after timeout\\n"); sys.exit(0)')
+        result = subprocess.run([sys.executable, str(program), str(self.run), sys.executable, str(payload)], capture_output=True)
+        self.assertEqual(result.returncode, 74)
+        self.assertNotIn(b'CONTAINER_MOUNT_RETRY', result.stderr)
 
 
 if __name__ == '__main__':
