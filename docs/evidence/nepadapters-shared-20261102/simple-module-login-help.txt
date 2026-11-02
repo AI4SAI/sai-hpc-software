@@ -1,0 +1,19 @@
+Observed at UTC: 2026-11-02T02:12:26.882501+00:00
+User: stardust (login node)
+Commands:
+source /etc/profile.d/lmod.sh
+module use /home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4-shared
+module --ignore_cache help modulefile
+Exit status: 0
+
+
+-------------------- Module Specific Help for "modulefile" --------------------
+NEPAdapters 1.0.4 (c934e714); LAMMPS 30Sep2026 addon.
+Shared plugins: /opt/apps/nepadapters/1.0.4-lammps30Sep2026/lib
+Requires lammps/30Sep2026-deepmd320-auto; load inside a Slurm GPU allocation.
+Supports nep/cpu and nep/gpu/kk.
+GPU execution requires -k on g N -sf kk -pk kokkos neigh full comm device gpu/aware on.
+Ordinary NEP4/NEP5; NEP3 and CUDA LAMMPS qNEP are unsupported.
+This module is not a plugin for daily LAMMPS beta builds.
+
+

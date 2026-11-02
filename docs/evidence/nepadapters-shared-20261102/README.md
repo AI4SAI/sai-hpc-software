@@ -66,23 +66,26 @@ retained separately:
 
 The administrator package is
 `/home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4-shared`.
-[Read-only replacement preflight](replacement-preflight.txt) passed as `saiuser01`.
-The public prefix will be `/opt/apps/nepadapters/1.0.4-lammps30Sep2026` and contain
-only `lib/nepadapterscpuplugin.so`, `lib/nepadaptersgpuplugin.so` and
+[The shared installation check](shared-installation-state.json) confirms
+`/opt/apps/nepadapters/1.0.4-lammps30Sep2026` is installed and contains only
+`lib/nepadapterscpuplugin.so`, `lib/nepadaptersgpuplugin.so` and
 `share/licenses/nepadapters/LICENSE.NEP_CPU` (30.84 MiB total).
-The module name stays `nepadapters/1.0.4-lammps30Sep2026`; it uses this one plugin
-directory and checks the loaded partition's accepted LAMMPS. Tests, receipts,
-sources and manifests stay outside `/opt`.
+Their hashes match the accepted export. The three old partition copies and
+their empty recipe directories are gone; the installed LAMMPS hashes still match.
 
-The [installation-state check](installation-state.json) confirms the old
-partitioned NEPAdapters release is already installed. The new common prefix
-has not been installed; the old module, plugins and LAMMPS files are unchanged.
-The installer replaces this release directly: it publishes the common payload
-and the existing module name, verifies the old files against the manifest's
-`replaces` list, and removes the three superseded partition copies and their
-empty recipe directories. Unexpected files or modified old libraries stop the
-operation. Seventeen unit tests pass, including cleanup, recovery from interrupted
-cleanup and preservation of unrelated files. The administrator executes:
+The updated package keeps the module name `nepadapters/1.0.4-lammps30Sep2026`
+and removes its redundant node/partition checks. It depends on
+`lammps/30Sep2026-deepmd320-auto` and sets the fixed shared plugin directory;
+LAMMPS supplies its own executable and MPI selection. The plugins, acceptance
+files and LAMMPS pins are unchanged. Tests, receipts, sources and manifests stay
+outside `/opt`.
+
+[Read-only preflight](simple-module-preflight.txt) passed as `saiuser01`, and
+[help](simple-module-login-help.txt) passed with the login node's actual Lmod.
+Seventeen unit tests pass, including module use without partition variables,
+preservation of the host MPI environment, cleanup, recovery from interrupted
+cleanup and preservation of unrelated files. The installed `/opt` module still
+contains the earlier partition checks. The administrator updates it by rerunning:
 
 ```sh
 cd /home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4-shared
@@ -91,5 +94,9 @@ bash install.sh --install
 ```
 
 After installation, `bash submit-native-checks.sh` can submit checks against
-the actual public module. The original partitioned manifest and module remain
-archived in [the earlier evidence directory](../nepadapters-20261101/README.md).
+the actual public module. The installer keeps the accepted shared binaries and
+replaces only the known previous module. Historical observations are retained in
+[the initial installation check](installation-state.json) and
+[replacement preflight](replacement-preflight.txt); they describe the state before
+the administrator installed the shared release. The original partitioned manifest
+and module remain archived in [the earlier evidence directory](../nepadapters-20261101/README.md).

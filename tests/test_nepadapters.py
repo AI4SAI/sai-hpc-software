@@ -356,31 +356,30 @@ class DeploymentTests(unittest.TestCase):
         self.assertEqual({p.name for p in module.parent.iterdir()}, {'1.0.4'})
 
     @unittest.skipUnless(shutil.which('tclsh'), 'Tcl required')
-    def test_module_selects_partition_and_preserves_plugin_path(self):
+    def test_module_requires_lammps_and_preserves_plugin_path(self):
         plugin = self.package / 'payload/16V100'
         row = {'prefix': str(plugin), 'lammps': {'prefix': '/opt/lammps-release'}}
         module = self.root / 'modulefile'
         module.write_text(prepare.modulefile({'16V100': row}))
         setup = '''proc module-whatis {args} {}
 proc conflict {args} {}
-proc depends-on {args} {}
+proc depends-on {name} {
+    if {$name ne "lammps/30Sep2026-deepmd320-auto" || !$::lammps_available} {error "matching LAMMPS unavailable"}
+}
 proc module-info {type value} {expr {$value eq $::mode}}
 proc prepend-path {key value} {set ::env($key) "$value:$::env($key)"}
 proc setenv {key value} {set ::env($key) $value}
 set mode load
-set env(SLURM_JOB_ID) 123
-set env(SLURM_JOB_PARTITION) 16V100
-set env(SAI_LAMMPS_PREFIX) /opt/lammps-release
+set lammps_available 1
+unset -nocomplain env(SLURM_JOB_ID) env(SLURM_JOB_PARTITION) env(SAI_NEPADAPTERS_PARTITION)
 set env(LAMMPS_PLUGIN_PATH) /existing/plugins
 '''
         result = subprocess.run(['tclsh'], input=setup + f'source {{{module}}}\nputs $env(LAMMPS_PLUGIN_PATH)\n',
                                 text=True, capture_output=True, check=True)
         self.assertEqual(result.stdout.strip(), str(plugin / 'lib') + ':/existing/plugins')
-        for change in ('set env(SAI_LAMMPS_PREFIX) /opt/wrong\n', 'unset env(SLURM_JOB_ID)\n',
-                       'set env(SLURM_JOB_PARTITION) unsupported\n'):
-            script = setup + change + f'if {{![catch {{source {{{module}}}}} message]}} {{exit 2}}\nputs $message\n'
-            result = subprocess.run(['tclsh'], input=script, text=True, capture_output=True, check=True)
-            self.assertTrue(result.stdout.strip())
+        script = setup + 'set lammps_available 0\n' + f'if {{![catch {{source {{{module}}}}} message]}} {{exit 2}}\nputs $message\n'
+        result = subprocess.run(['tclsh'], input=script, text=True, capture_output=True, check=True)
+        self.assertIn('matching LAMMPS unavailable', result.stdout)
 
     @unittest.skipUnless(shutil.which('tclsh'), 'Tcl required')
     def test_shared_module_keeps_one_plugin_path_and_the_host_mpi_environment(self):
@@ -389,19 +388,20 @@ set env(LAMMPS_PLUGIN_PATH) /existing/plugins
                 for part in release.PARTITIONS}
         module = self.root / 'shared-module'
         module.write_text(prepare.modulefile(rows))
-        for part in rows:
+        for part in [*rows, None]:
             script = '''proc module-whatis {args} {}
 proc conflict {args} {}
 proc depends-on {name} {if {$name ne "lammps/30Sep2026-deepmd320-auto"} {error "unexpected dependency"}}
 proc module-info {type value} {expr {$value eq "load"}}
 proc prepend-path {key value} {set ::env($key) "$value:$::env($key)"}
 proc setenv {key value} {set ::env($key) $value}
-set env(SLURM_JOB_ID) 123
+unset -nocomplain env(SLURM_JOB_ID) env(SLURM_JOB_PARTITION) env(SAI_NEPADAPTERS_PARTITION)
 set env(LAMMPS_PLUGIN_PATH) /existing/plugins
 set env(PATH) /lammps/mpi/bin
 set env(LD_LIBRARY_PATH) /lammps/mpi/lib
 '''
-            script += f'set env(SLURM_JOB_PARTITION) {part}\nset env(SAI_LAMMPS_PREFIX) /lammps/{part}\n'
+            if part is not None:
+                script += f'set env(SLURM_JOB_PARTITION) {part}\n'
             script += f'source {{{module}}}\nputs $env(LAMMPS_PLUGIN_PATH)\nputs $env(PATH)\nputs $env(LD_LIBRARY_PATH)\n'
             result = subprocess.run(['tclsh'], input=script, text=True, capture_output=True, check=True)
             self.assertEqual(result.stdout.splitlines(), [str(plugin / 'lib') + ':/existing/plugins',

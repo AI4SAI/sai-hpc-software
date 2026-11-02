@@ -19,17 +19,20 @@ See [shared release evidence](evidence/nepadapters-shared-20261102/README.md).
 
 The administrator-readable package is
 `/home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4-shared`; its
-read-only preflight passed as `saiuser01` for all three partitions. The planned
-prefix is `/opt/apps/nepadapters/1.0.4-lammps30Sep2026`, with no partition
-subdirectories. The module `nepadapters/1.0.4-lammps30Sep2026` checks the matching
-LAMMPS prefix and uses the same plugin directory everywhere. `/opt` receives
-only two plugin libraries and the GPL license. The administrator has installed
-the previous partitioned release; shared migration awaits `bash install.sh --install`.
-The installer replaces the known NEPAdapters module, then removes the three old
-partition copies and their empty recipe directories after verifying their recorded
-file hashes. The common directory is the replacement for this version. LAMMPS
-is unchanged. The revised installer passed 17 unit tests, including cleanup,
-interrupted cleanup recovery and refusal to remove modified or extra files.
+read-only preflight passed as `saiuser01` for all three partitions. The administrator
+has installed `/opt/apps/nepadapters/1.0.4-lammps30Sep2026`, with no partition
+subdirectories. Its two plugin libraries and GPL license match the accepted
+payload; the three old partition copies and their empty recipe directories are
+gone. The installed LAMMPS files still match their recorded hashes.
+
+The updated package simplifies `nepadapters/1.0.4-lammps30Sep2026` to depend on
+`lammps/30Sep2026-deepmd320-auto` and set one fixed plugin directory. Node/partition
+and MPI selection belong to LAMMPS; the addon has no separate partition map.
+The public `/opt` module still has the earlier checks. A repeat administrator
+`bash install.sh --install` will update only that module, keeping the already
+installed plugin payload. Seventeen unit tests pass, including use without
+partition variables, preservation of the host MPI environment and installer
+cleanup/recovery checks. The package's help also passes on the real login-node Lmod.
 
 Shared build 2102398 completed in 4:35. Native jobs 2102562/2102563 (16V100),
 2103050/2103051 (8V100V0) and 2112122/2112123 (4V100) all completed with exit `0:0`.

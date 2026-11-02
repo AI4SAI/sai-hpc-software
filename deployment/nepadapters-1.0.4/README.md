@@ -9,8 +9,8 @@ All three partitions use the same SIF and native export. The public runtime cont
 shared libraries and the license. Build sources, metadata, examples, and
 validation outputs stay in the project workspace.
 
-`release.json` lists the accepted partitions in this particular package. Other
-partitions are unavailable through its module until their own acceptance passes.
+`release.json` records validation on the supported LAMMPS partitions. The addon
+module always uses the same files; LAMMPS supplies its partition and MPI selection.
 The SIF contains the addon and a minimal root filesystem; it reuses the exact
 installed LAMMPS and site toolchain. It is not a self-contained LAMMPS distribution.
 
@@ -41,8 +41,8 @@ can finish interrupted cleanup. The installer never changes LAMMPS.
 
 The plugins have no embedded MPI library search path and install no MPI libraries.
 They use the MPI environment provided by `lammps/30Sep2026-deepmd320-auto`.
-The addon module uses one plugin directory and checks that the loaded LAMMPS
-matches an accepted partition. Acceptance verifies identical plugin hashes on
+The addon module depends on that LAMMPS module and sets one fixed plugin directory.
+It has no node or partition map. Acceptance verifies identical plugin hashes on
 all three partitions and matching MPI library resolution for LAMMPS and both
 plugins, in addition to the SIF and numerical checks.
 
@@ -97,8 +97,8 @@ python3 -B deployment/nepadapters-1.0.4/prepare-release.py \
   --previous /home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4-all-v100
 ```
 
-All three partitions are required by default. `--partitions 16V100,8V100V0`
-explicitly prepares a release restricted to those accepted partitions. Use
+All three partitions are required by default. The `--partitions` option selects
+the acceptance records included in a package; it does not restrict the shared module. Use
 `--previous` when replacing the known partitioned installation with the shared prefix,
 or extending an existing shared release; otherwise omit it. Every handoff must
 use the same SIF and plugin hashes. Preparation replays raw numerical/rank
