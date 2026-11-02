@@ -25,7 +25,11 @@ subdirectories. The module `nepadapters/1.0.4-lammps30Sep2026` checks the matchi
 LAMMPS prefix and uses the same plugin directory everywhere. `/opt` receives
 only two plugin libraries and the GPL license. The administrator has installed
 the previous partitioned release; shared migration awaits `bash install.sh --install`.
-It updates only the known NEPAdapters module and preserves LAMMPS and old plugins.
+The installer replaces the known NEPAdapters module, then removes the three old
+partition copies and their empty recipe directories after verifying their recorded
+file hashes. The common directory is the replacement for this version. LAMMPS
+is unchanged. The revised installer passed 17 unit tests, including cleanup,
+interrupted cleanup recovery and refusal to remove modified or extra files.
 
 Shared build 2102398 completed in 4:35. Native jobs 2102562/2102563 (16V100),
 2103050/2103051 (8V100V0) and 2112122/2112123 (4V100) all completed with exit `0:0`.

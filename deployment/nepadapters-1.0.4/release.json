@@ -233,5 +233,70 @@
     "evidence/4V100/sif.json": "ba2b78b489eac2c04c9547df221661a035ce04a7337d1265999dbf6389217ad7",
     "evidence/8V100V0/native.json": "6a1cb71d20907ffff9b8bb1925b1103d18b932b89c585dfce4edb9c2651aa381",
     "evidence/8V100V0/sif.json": "ba2b78b489eac2c04c9547df221661a035ce04a7337d1265999dbf6389217ad7"
-  }
+  },
+  "replaces": [
+    {
+      "partition": "16V100",
+      "prefix": "/opt/apps/nepadapters/1.0.4-lammps30Sep2026-rf77a7c92e01e/16V100",
+      "files": {
+        "lib/nepadapterscpuplugin.so": {
+          "sha256": "4127c561d095ac1f31ff1953ec838bb06933fabacaadbb91717f8b35e22d8064",
+          "size": 1946088,
+          "mode": 420
+        },
+        "lib/nepadaptersgpuplugin.so": {
+          "sha256": "5ca0b03d173aa252599c0fe616530ac9797a458b0d822046ee492d45be7b19b1",
+          "size": 30360184,
+          "mode": 420
+        },
+        "share/licenses/nepadapters/LICENSE.NEP_CPU": {
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "size": 35149,
+          "mode": 420
+        }
+      }
+    },
+    {
+      "partition": "8V100V0",
+      "prefix": "/opt/apps/nepadapters/1.0.4-lammps30Sep2026-rf77a7c92e01e/8V100V0",
+      "files": {
+        "lib/nepadapterscpuplugin.so": {
+          "sha256": "4127c561d095ac1f31ff1953ec838bb06933fabacaadbb91717f8b35e22d8064",
+          "size": 1946088,
+          "mode": 420
+        },
+        "lib/nepadaptersgpuplugin.so": {
+          "sha256": "6372e4cae863a911b1e3637dc649717237cec13e8d2793f242f811a5980728da",
+          "size": 30360184,
+          "mode": 420
+        },
+        "share/licenses/nepadapters/LICENSE.NEP_CPU": {
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "size": 35149,
+          "mode": 420
+        }
+      }
+    },
+    {
+      "partition": "4V100",
+      "prefix": "/opt/apps/nepadapters/1.0.4-lammps30Sep2026-r0387d0446d6c/4V100",
+      "files": {
+        "lib/nepadapterscpuplugin.so": {
+          "sha256": "8c0153fd611997fa0374979f28094c5982cd27781c26688ccb4fad0d2f0934f8",
+          "size": 1946088,
+          "mode": 420
+        },
+        "lib/nepadaptersgpuplugin.so": {
+          "sha256": "dce3725468dcd4e2a5df607f37aa58f466324ec7aa5d7614c41421cc4af64eeb",
+          "size": 30360184,
+          "mode": 420
+        },
+        "share/licenses/nepadapters/LICENSE.NEP_CPU": {
+          "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+          "size": 35149,
+          "mode": 420
+        }
+      }
+    }
+  ]
 }
