@@ -1,0 +1,65 @@
+{
+  "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+  "binary_sha256": "2ba9ae17c087a0d8a6bbfeaae0b12775bd8724f51d5452c41e951ea853a8e5da",
+  "cases": [
+    {
+      "cleanup_failure": false,
+      "data_verified": false,
+      "delayed_fsync": false,
+      "elapsed_seconds": 2.2260181410238147,
+      "fsck_returncode": 0,
+      "label": "plain-small-a",
+      "overlay_mb": 512,
+      "remount_returncode": 1,
+      "sync_complete": true,
+      "timeout_warning": false,
+      "write_returncode": 0
+    },
+    {
+      "cleanup_failure": false,
+      "data_verified": false,
+      "delayed_fsync": false,
+      "elapsed_seconds": 9.918106958037242,
+      "fsck_returncode": 0,
+      "label": "plain-small-b",
+      "overlay_mb": 512,
+      "remount_returncode": 1,
+      "sync_complete": true,
+      "timeout_warning": false,
+      "write_returncode": 0
+    },
+    {
+      "cleanup_failure": false,
+      "data_verified": false,
+      "delayed_fsync": false,
+      "elapsed_seconds": 2.9836982819251716,
+      "fsck_returncode": 0,
+      "label": "plain-build-size",
+      "overlay_mb": 32768,
+      "remount_returncode": 1,
+      "sync_complete": true,
+      "timeout_warning": false,
+      "write_returncode": 0
+    },
+    {
+      "cleanup_failure": false,
+      "data_verified": false,
+      "delayed_fsync": true,
+      "elapsed_seconds": 22.98601354996208,
+      "fsck_returncode": 0,
+      "label": "delayed-fsync",
+      "overlay_mb": 512,
+      "remount_returncode": 1,
+      "sync_complete": true,
+      "timeout_warning": false,
+      "write_returncode": 0
+    }
+  ],
+  "completed": 1793632987.7001877,
+  "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+  "job": "2134871",
+  "node": "d9470n01.mr-sai.ai",
+  "started": 1793632786.7164936,
+  "starter_sha256": "80cf5306207ea473a4b412a617e8594accebf9bc05413f5cb1f9f8cde7e2b529",
+  "verified": false
+}
