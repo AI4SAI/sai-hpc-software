@@ -73,6 +73,11 @@ class ManagedOverlayTests(unittest.TestCase):
             self.assertEqual(argv, original)
             self.assertEqual(captured['command'][0], '/stock/apptainer')
             self.assertIn('/base.sif', captured['command'])
+            if Path('/etc/ld.so.cache').exists():
+                self.assertIn('/etc/ld.so.cache:/etc/ld.so.cache:ro', captured['command'])
+            # Driver discovery belongs to the inner --nv; the outer layer
+            # exposes the host cache without injecting its own GPU libraries.
+            self.assertNotIn('--nv', captured['command'])
             request = json.loads(Path(captured['command'][-1]).read_text())
             self.assertEqual(request['argv'], original)
             self.assertEqual(request['forwarded_env']['APPTAINERENV_SENTINEL'], 'value')

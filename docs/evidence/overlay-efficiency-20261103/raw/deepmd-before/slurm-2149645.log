@@ -1,0 +1,98 @@
+CP2K_IMAGE_DRIVER sha256=46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10 config=/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-41583854521-1-development-8v100v0-avx512-5c2b29760e12/runtime/apptainer-fuse2fs.conf
+INFO:    User not listed in /etc/subuid, trying root-mapped namespace
+INFO:    fakeroot command not found, using only root-mapped namespace
+INFO:    Using fakeroot command combined with root-mapped namespace
+WARNING: While finding nv bind points: could not retrieve ld cache: could not execute ldconfig: exit status 1
+DEEPMD_BUILD_AFFINITY 12 [15, 16, 17, 18, 19, 20, 39, 40, 41, 42, 43, 44]
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint: 
+hint: 	git config --global init.defaultBranch <name>
+hint: 
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint: 
+hint: 	git branch -m <name>
+Initialized empty Git repository in /workspace/deepmd-kit/.git/
+From /input/deepmd-kit
+ * branch            5c2b29760e1223c8c32664bfa934d00355103bca -> FETCH_HEAD
+HEAD is now at 5c2b297 ci: migrate macOS arm64 wheel builds to macOS 15 (#6121)
+{'changed': False, 'track': 'development', 'sha': '5c2b29760e1223c8c32664bfa934d00355103bca'}
+MD_COMPILER CC=/opt/devtools/gcc/14.3.0/bin/gcc version=14.3.0
+MD_COMPILER CXX=/opt/devtools/gcc/14.3.0/bin/g++ version=14.3.0
+MD_COMPILER FC=/opt/devtools/gcc/14.3.0/bin/gfortran version=14.3.0
+Traceback (most recent call last):
+  File "/control/md_driver_paths.py", line 118, in <module>
+    main()
+    ~~~~^^
+  File "/control/md_driver_paths.py", line 112, in main
+    value, evidence = normalize(os.environ.get('LD_LIBRARY_PATH', ''))
+                      ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/control/md_driver_paths.py", line 54, in normalize
+    raise ValueError('injected directory lacks required NVIDIA driver libraries')
+ValueError: injected directory lacks required NVIDIA driver libraries
+Traceback (most recent call last):
+  File "/control/deepmd_standalone_check.py", line 306, in <module>
+    main()
+    ~~~~^^
+  File "/control/deepmd_standalone_check.py", line 289, in main
+    result = inventory(args.prefix)
+  File "/control/deepmd_standalone_check.py", line 44, in inventory
+    resolved=str(path.resolve(strict=True)), ldd=libraries(path)) for path in paths})
+                                                 ~~~~~~~~~^^^^^^
+  File "/control/md_probe.py", line 34, in libraries
+    raise ValueError(f"unresolved library dependency: {path}\n{output}")
+ValueError: unresolved library dependency: /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libdeepmd_op_pt.so
+	linux-vdso.so.1 (0x00007ffe308d9000)
+	/.singularity.d/libs/libfakeroot.so (0x00001545a0fc2000)
+	libtorch.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch.so (0x00001545a0faf000)
+	libc10.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10.so (0x00001545a0e69000)
+	libc10_cuda.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libc10_cuda.so (0x00001545a0dc9000)
+	libcublas.so.12 => not found
+	libdeepmd.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libdeepmd.so (0x00001545a0d63000)
+	libtorch_cpu.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_cpu.so (0x000015458bf5a000)
+	libtorch_cuda.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_cuda.so (0x0000154550f6b000)
+	libcudart.so.12 => not found
+	libdeepmd_op_cuda.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libdeepmd_op_cuda.so (0x0000154550e28000)
+	libmpi.so.40 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libmpi.so.40 (0x0000154550a5d000)
+	libstdc++.so.6 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libstdc++.so.6 (0x00001545507a6000)
+	libm.so.6 => /lib/x86_64-linux-gnu/libm.so.6 (0x00001545506bd000)
+	libgcc_s.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libgcc_s.so.1 (0x000015455068f000)
+	libc.so.6 => /lib/x86_64-linux-gnu/libc.so.6 (0x000015455047b000)
+	/lib64/ld-linux-x86-64.so.2 (0x00001545a4d2b000)
+	libdl.so.2 => /lib/x86_64-linux-gnu/libdl.so.2 (0x0000154550476000)
+	libpthread.so.0 => /lib/x86_64-linux-gnu/libpthread.so.0 (0x000015455046f000)
+	libcudart.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cuda_runtime/lib/libcudart.so.12 (0x0000154550000000)
+	libdeepmd_dyn_cudart.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/libdeepmd_dyn_cudart.so (0x0000154550458000)
+	libgomp.so.1 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libgomp.so.1 (0x000015454fc00000)
+	librt.so.1 => /lib/x86_64-linux-gnu/librt.so.1 (0x0000154550451000)
+	libcupti.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cuda_cupti/lib/libcupti.so.12 (0x000015454f40c000)
+	libtorch_nvshmem.so => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/libtorch_nvshmem.so (0x000015454ec23000)
+	libcusparse.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cusparse/lib/libcusparse.so.12 (0x000015453d200000)
+	libcufft.so.11 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cufft/lib/libcufft.so.11 (0x000015452c000000)
+	libcufile.so.0 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cufile/lib/libcufile.so.0 (0x000015452bd28000)
+	libcusparseLt.so.0 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cusparselt/lib/libcusparseLt.so.0 (0x0000154510bb8000)
+	libnccl.so.2 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/nccl/lib/libnccl.so.2 (0x00001544fac00000)
+	libcurand.so.10 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/curand/lib/libcurand.so.10 (0x00001544f4600000)
+	libcublas.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cublas/lib/libcublas.so.12 (0x00001544edc00000)
+	libcublasLt.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cublas/lib/libcublasLt.so.12 (0x00001544cc200000)
+	libcudnn.so.9 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cudnn/lib/libcudnn.so.9 (0x00001544cbe00000)
+	libnvrtc.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cuda_nvrtc/lib/libnvrtc.so.12 (0x00001544c7e00000)
+	libucc.so.1 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libucc.so.1 (0x0000154550407000)
+	libhcoll.so.1 => not found
+	libopen-pal.so.80 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libopen-pal.so.80 (0x00001545502e7000)
+	libucp.so.0 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libucp.so.0 (0x000015454ff02000)
+	libucs.so.0 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libucs.so.0 (0x000015454fe8b000)
+	libpmix.so.2 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libpmix.so.2 (0x00001544c7bbc000)
+	libevent_core-2.1.so.7 => /lib/x86_64-linux-gnu/libevent_core-2.1.so.7 (0x00001545502b2000)
+	libevent_pthreads-2.1.so.7 => /lib/x86_64-linux-gnu/libevent_pthreads-2.1.so.7 (0x000015454fe84000)
+	libhwloc.so.15 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libhwloc.so.15 (0x000015453d1a2000)
+	libutil.so.1 => /lib/x86_64-linux-gnu/libutil.so.1 (0x000015454fe7f000)
+	libnvshmem_host.so.3 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/nvshmem/lib/libnvshmem_host.so.3 (0x00001544be000000)
+	libnvJitLink.so.12 => /opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib/../../nvidia/cusparse/lib/../../nvjitlink/lib/libnvJitLink.so.12 (0x00001544bac00000)
+	libucm.so.0 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libucm.so.0 (0x000015454fe5f000)
+	libuct.so.0 => /opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib/libuct.so.0 (0x000015453d161000)
+	libmunge.so.2 => /lib/x86_64-linux-gnu/libmunge.so.2 (0x000015454fe57000)
+
+MANAGED_OVERLAY_EXIT /org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-41583854521-1-development-8v100v0-avx512-5c2b29760e12/results/managed-overlay-23cca23b209049a78684d70e10b9e196.json status=1

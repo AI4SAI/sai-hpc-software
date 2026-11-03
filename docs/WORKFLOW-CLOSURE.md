@@ -26,6 +26,18 @@ lock release and binary stdout preservation. See
 [qualification evidence](evidence/workflow-overlay-20261103/README.md).
 These storage/runtime checks do not claim a fresh scientific build is accepted.
 
+The first full daily run exposed incomplete NVIDIA driver injection in the nested
+container: its `ldconfig -p` lookup could not see the host cache. The manager now
+also binds `/etc/ld.so.cache` read-only. The complete DeePMD/LAMMPS driver-library
+check passes on all three V100 partitions. A same-node comparison with three
+measured samples per mechanism kept compiler utilization near 7.6 of eight
+logical CPUs. Median complete payload time was 9.168 s direct versus 9.198 s
+managed; setup/teardown increased the median invocation from 10.741 to 12.002 s.
+One natural teardown took 6.894 s and was allowed to finish. All samples passed
+offline filesystem and independent read-only data checks. See the
+[GPU regression and efficiency evidence](evidence/overlay-efficiency-20261103/README.md)
+for the full measurements and their limits.
+
 ## NEPAdapters release addon
 
 NEPAdapters v1.0.4 (`c934e71444cb`) now has an independent manual SIF workflow,

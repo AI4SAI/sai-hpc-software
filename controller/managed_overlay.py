@@ -95,7 +95,10 @@ def launch(project, run, app, config, argv, execute):
     # Bind source paths at their original names so the inner command can apply
     # exactly its existing source:destination:mode policy. Host installations
     # remain read-only in both layers.
+    # The inner --nv resolves host driver libraries through ldconfig -p. Its
+    # lookup runs in this outer namespace, so carry the matching host cache.
     binds = {path: 'ro' for path in ('/usr', '/sbin', '/lib', '/lib64', '/opt/devtools',
+             '/etc/ld.so.cache',
              '/etc/passwd', '/etc/group', '/etc/subuid', '/etc/subgid', '/etc/nsswitch.conf')
              if Path(path).exists()}
     binds.update({str(project): 'rw', str(Path(__file__).resolve().parent): 'ro',

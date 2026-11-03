@@ -1,0 +1,48 @@
+CP2K_IMAGE_DRIVER sha256=46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10 config=/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-41583854521-1-development-4v100-avx512-20261103-7dbed49448a1/runtime/apptainer-fuse2fs.conf
+INFO:    User not listed in /etc/subuid, trying root-mapped namespace
+INFO:    fakeroot command not found, using only root-mapped namespace
+INFO:    Using fakeroot command combined with root-mapped namespace
+WARNING: While finding nv bind points: could not retrieve ld cache: could not execute ldconfig: exit status 1
+LAMMPS_BUILD_AFFINITY 32 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint: 
+hint: 	git config --global init.defaultBranch <name>
+hint: 
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint: 
+hint: 	git branch -m <name>
+Initialized empty Git repository in /workspace/lammps/.git/
+From /input/lammps
+ * branch              7dbed49448a17dbc9d4bc3eee5512e9ea2ad3a04 -> FETCH_HEAD
+HEAD is now at 7dbed494 Merge pull request #5273 from akohlmey/collected-small-changes
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: is subject to change. To configure the initial branch name to use in all
+hint: of your new repositories, which will suppress this warning, call:
+hint: 
+hint: 	git config --global init.defaultBranch <name>
+hint: 
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'. The just-created branch can be renamed via this command:
+hint: 
+hint: 	git branch -m <name>
+Initialized empty Git repository in /workspace/deepmd-kit/.git/
+From /input/deepmd-kit
+ * branch            8cfd46e37448feca361ff3427a6c2b514ce5a2bb -> FETCH_HEAD
+HEAD is now at 8cfd46e feat: add DeePMD installation agent skill (#5974)
+MD_COMPILER CC=/opt/devtools/gcc/14.3.0/bin/gcc version=14.3.0
+MD_COMPILER CXX=/opt/devtools/gcc/14.3.0/bin/g++ version=14.3.0
+MD_COMPILER FC=/opt/devtools/gcc/14.3.0/bin/gfortran version=14.3.0
+Traceback (most recent call last):
+  File "/control/md_driver_paths.py", line 118, in <module>
+    main()
+    ~~~~^^
+  File "/control/md_driver_paths.py", line 112, in main
+    value, evidence = normalize(os.environ.get('LD_LIBRARY_PATH', ''))
+                      ~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/control/md_driver_paths.py", line 54, in normalize
+    raise ValueError('injected directory lacks required NVIDIA driver libraries')
+ValueError: injected directory lacks required NVIDIA driver libraries
+MANAGED_OVERLAY_EXIT /org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-41583854521-1-development-4v100-avx512-20261103-7dbed49448a1/results/managed-overlay-1bdbf1bb4ba34d4b99c7ad7d17ddab02.json status=1
