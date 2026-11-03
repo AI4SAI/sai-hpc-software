@@ -92,6 +92,7 @@ def manifest():
 
 
 def verify_installation():
+    from deepmd_compat_patch import verify as verify_compatibility
     from export_native import MANIFEST_PATH, inventory as native_inventory, read_installed_manifests
     from md_relocate_audit import SITE_ROOTS, check_dynamic, check_metadata, check_reference, check_symlink
     from md_source_version import verify_deepmd_version
@@ -105,6 +106,8 @@ def verify_installation():
     trainer = prefix / 'lib/python3.13/site-packages' / patch['file']
     if file_digest(trainer) != patch['patched_sha256']:
         raise ValueError('installed DeePMD trainer differs from the recorded source patch')
+    compatibility = verify_compatibility(prefix / 'lib/python3.13/site-packages',
+                                         json.loads(Path('/runtime/compat-source-patch.json').read_text()))
     baseline = json.loads(Path('/runtime/baseline-inventory.json').read_text())
     missing_backends = sorted(set(baseline['backends']) - set(observed['backends']))
     if missing_backends:
@@ -129,7 +132,8 @@ def verify_installation():
                 check_metadata(path.read_text(errors='replace'), roots)
     if inspected < 4:
         raise ValueError('incomplete DeePMD binary/runtime inventory')
-    return dict(verified=True, elf_files=inspected, version=version, inventory=observed)
+    return dict(verified=True, elf_files=inspected, version=version, inventory=observed,
+                compatibility=compatibility)
 
 
 def run_c_api(case, backend, implementation, prefix):
