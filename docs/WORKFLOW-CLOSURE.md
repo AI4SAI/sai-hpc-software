@@ -48,6 +48,15 @@ Both diagnostic jobs passed all image integrity checks. Keep the existing sync
 and 120-second natural-exit policy; no production runtime/driver changes were
 made. See [teardown diagnosis](evidence/overlay-teardown-20261103/README.md).
 
+The subsequent failure investigation confirmed an active CUDA ECC error on
+8v100v0n09. The same ABACUS development SIF passed on n04; the same release SIF
+passed its two-node diagnostic on n02/n03. DeePMD v3.2.0b0 instead failed an
+inventory check that assumes newer plugin filenames, despite its monolithic
+library containing TF/PT/JAX implementations. ABACUS's prerelease channel selected
+the 2022 DCU checkpoint, which lacks the current reviewed HSE fixture. These
+diagnostic checks did not rotate beta modules or replace production acceptance
+receipts. See [failure causes and evidence](evidence/build-failure-diagnosis-20261103/README.md).
+
 ## NEPAdapters release addon
 
 NEPAdapters v1.0.4 (`c934e71444cb`) now has an independent manual SIF workflow,
