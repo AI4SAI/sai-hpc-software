@@ -79,14 +79,15 @@ runtime, not proof that a new public executable path is permitted.
 Then, as `saiuser01` on a node where the new profile is active:
 
 ```bash
-bash install.sh --activate \
-  --image /org/org-open-sai/proj-sai-hpc-software/containers/base/minimal-v1.sif \
-  --work /org/org-open-sai/proj-sai-hpc-software/diagnostics/apptainer-sai-admin/activation-20261103
+bash install.sh --activate --work "$HOME/apptainer-sai-activation-20261103"
 module --ignore_cache load apptainer/1.4.4-sai
 ```
 
-A dedicated project scratch parent, `diagnostics/apptainer-sai-admin`, has a
-narrow write ACL for `saiuser01`; the rest of the project permissions are unchanged.
+`saiuser01` cannot traverse `/org/org-open-sai`. The short activation probe
+therefore uses that account's home and the checksum-pinned `payload/native-check.sif`
+in this readable handoff. This probe creates only its small log/cache directory;
+compilation and full overlay qualification remain on project storage as
+`stardust`. No project access permissions need changing.
 Use a fresh `--work` path for each attempt. Activation performs a direct native
 container launch and writes the new module only if it succeeds. A successful
 launch proves the current node only; it does not configure other nodes.

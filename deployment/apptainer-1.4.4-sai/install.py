@@ -104,8 +104,12 @@ def extract_payload(archive, destination, entries):
 def runtime_check(prefix, work, image):
     """A native launch is required; --version does not exercise AppArmor."""
     work, image = canonical(work), canonical(image)
-    if not work.is_relative_to(PROJECT) or work.exists():
-        raise ValueError('runtime check requires a new directory inside the project')
+    # The installing account cannot traverse /org/org-open-sai. Its short native
+    # launch probe may use its own home; compilation and full Slurm qualification
+    # continue to use the project account and project storage.
+    if (not any(work.is_relative_to(root) for root in (PROJECT, Path.home().resolve()))
+            or work.exists()):
+        raise ValueError('runtime check requires a new directory inside the project or your home')
     work.mkdir(parents=True, mode=0o700)
     for attr in os.listxattr(work):
         if attr in ('system.posix_acl_access', 'system.posix_acl_default'):
@@ -161,6 +165,7 @@ def deploy(action, here=HERE, prefix=PREFIX, module=MODULE, work=None, image=Non
             raise ValueError('runtime has not passed the complete overlay qualification')
         check_file(here / 'graceful-driver-stop.patch', manifest['patch_sha256'])
         check_file(here / 'payload/apptainer-runtime.tar.gz', manifest['payload_sha256'])
+        check_file(here / 'payload/native-check.sif', manifest['native_probe_sha256'])
     if action == 'check':
         return result
     if action == 'install':
@@ -192,8 +197,11 @@ def deploy(action, here=HERE, prefix=PREFIX, module=MODULE, work=None, image=Non
     if action == 'verify':
         return dict(result, files_verified=True)
     if action in ('runtime-check', 'activate'):
-        if work is None or image is None:
-            raise ValueError('--work and --image are required for a native runtime check')
+        if work is None:
+            raise ValueError('--work is required for a native runtime check')
+        if image is None:
+            image = here / 'payload/native-check.sif'
+        check_file(image, manifest['native_probe_sha256'])
         runtime_check(prefix, work, image)
         result['runtime_launch_verified'] = True
         if action == 'activate':

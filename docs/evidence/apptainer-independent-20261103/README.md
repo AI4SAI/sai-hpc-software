@@ -44,3 +44,9 @@ The guarded build controllers select the independent module once activated,
 validate CLI/helper hashes and record the actual runtime identity. They retain
 cleanup-failure rejection and immutable failed-overlay evidence. No full
 scientific rebuild is claimed for this deployment change.
+
+The installation account cannot traverse `/org/org-open-sai`, so full Slurm
+qualification remains with the project user. The installer's short activation
+probe uses a pinned copy of the minimal SIF in the readable home handoff and
+a fresh scratch directory in the installing account's own home. Nothing is
+written to `/tmp`, and the probe image is not installed in `/opt`.

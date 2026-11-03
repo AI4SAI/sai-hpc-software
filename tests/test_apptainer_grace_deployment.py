@@ -50,11 +50,13 @@ class InstallerTests(unittest.TestCase):
                 self.entries[name] = entry
         (self.here / 'payload-files.json').write_text(json.dumps(self.entries))
         (self.here / 'module.lua').write_bytes(b'fixture module')
+        (self.here / 'payload/native-check.sif').write_bytes(b'fixture image')
         (self.here / 'graceful-driver-stop.patch').write_bytes(b'patch')
         self.manifest = dict(site_cli_sha256=install.digest(payload / 'bin/apptainer'),
                              starter_sha256=install.digest(payload / 'libexec/apptainer/bin/starter'),
                              patch_sha256=install.digest(self.here / 'graceful-driver-stop.patch'),
                              payload_files_sha256=install.digest(self.here / 'payload-files.json'),
+                             native_probe_sha256=install.digest(self.here / 'payload/native-check.sif'),
                              payload_sha256=install.digest(self.here / 'payload/apptainer-runtime.tar.gz'))
         (self.here / 'manifest.json').write_text(json.dumps(self.manifest))
         self.proof = dict(verified=True, starter_sha256=self.manifest['starter_sha256'],
@@ -81,14 +83,14 @@ class InstallerTests(unittest.TestCase):
         self.deploy('install')
         with patch.object(install, 'runtime_check', side_effect=RuntimeError('AppArmor denied userns')):
             with self.assertRaisesRegex(RuntimeError, 'AppArmor'):
-                self.deploy('activate', work=Path('/work'), image=Path('/image'))
+                self.deploy('activate', work=Path('/work'))
         self.assertFalse(self.module.exists())
         self.assertEqual(self.original.read_bytes(), b'original')
 
     def test_activation_and_rollback_retain_both_runtimes(self):
         self.deploy('install')
         with patch.object(install, 'runtime_check', return_value={'returncode': 0}):
-            self.assertTrue(self.deploy('activate', work=Path('/work'), image=Path('/image'))['module_active'])
+            self.assertTrue(self.deploy('activate', work=Path('/work'))['module_active'])
         self.assertTrue(self.deploy('rollback')['rolled_back'])
         self.assertFalse(self.module.exists())
         self.assertTrue(self.deploy('verify')['files_verified'])
