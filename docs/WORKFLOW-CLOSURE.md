@@ -57,6 +57,23 @@ the 2022 DCU checkpoint, which lacks the current reviewed HSE fixture. These
 diagnostic checks did not rotate beta modules or replace production acceptance
 receipts. See [failure causes and evidence](evidence/build-failure-diagnosis-20261103/README.md).
 
+The follow-up excludes only the exact ABACUS `DCU` prerelease at
+`e07f9d7213f51b72a9f77e7f832855d5d6cf9484`, with an explicit skip reason in
+source planning. New prereleases and the release/development channels retain
+their normal selection rules. DeePMD inventory now supports both backend
+plugins and monolithic `libdeepmd_cc.so`: the latter must define the TF, PT
+and JAX initialization implementations in the native installation. Undefined
+symbols, a Python-only copy, and partial plugin installations cannot substitute
+for those native features. Python/C API science, measured GPU execution and
+two-GPU training/restart remain required.
+
+GPU beta checks now run a small host CUDA probe before the numerical fixture.
+CUDA error 214 is tied to the exact job, partition, node, work directory and
+pinned helper. It permits the existing single fresh runtime retry with that
+node excluded. Generic CUDA errors and numerical failures do not authorize an
+ECC retry. This probe is a workflow diagnostic; it adds no user module/runtime
+dependency and makes no changes to `/opt` or the installed container runtime.
+
 ## NEPAdapters release addon
 
 NEPAdapters v1.0.4 (`c934e71444cb`) now has an independent manual SIF workflow,
