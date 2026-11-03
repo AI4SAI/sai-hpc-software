@@ -6,7 +6,7 @@ import sys
 import tempfile
 from types import SimpleNamespace
 import unittest
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / 'controller'))
@@ -62,12 +62,36 @@ class DispatcherBackportTests(unittest.TestCase):
         self.path.write_text(self.path.read_text() + '\n# altered\n')
         with self.assertRaisesRegex(ValueError, 'file changed'):
             compat.verify(self.package, receipt)
-        changed = dict(receipt, installed_sha256=compat.digest(self.path.read_bytes()))
+        changed = copy.deepcopy(receipt)
+        changed['files'][0]['installed_sha256'] = compat.digest(self.path.read_bytes())
         with self.assertRaisesRegex(ValueError, 'reviewed source'):
             compat.verify(self.package, changed)
-        changed = dict(receipt, file='../another-package.py')
+        changed = copy.deepcopy(receipt)
+        changed['files'][0]['file'] = '../another-package.py'
         with self.assertRaisesRegex(ValueError, 'invalid'):
             compat.verify(self.package, changed)
+
+    def test_scripted_model_uses_the_python_output_definition(self):
+        source = ('def evaluate(self, inner, communicate_extended_output):\n'
+                  '    return communicate_extended_output(\n'
+                  '            inner.model_output_def(),\n'
+                  '    )\n')
+        spec = dict(compat.PATCHES[1], original_sha256=compat.digest(source.encode()))
+        path = self.package / spec['file']
+        path.parent.mkdir(parents=True)
+        path.write_text(source)
+        with patch.object(compat, 'PATCHES', (compat.PATCHES[0], spec)):
+            receipt = compat.apply(self.package)
+            compat.verify(self.package, receipt)
+            self.assertTrue(receipt['files'][1]['changed'])
+            scope = {}
+            exec(compile(path.read_text(), str(path), 'exec'), scope)
+            expected = object()
+            inner = SimpleNamespace(model_output_def=Mock(side_effect=RuntimeError('TorchScript class missing')))
+            communicate = Mock(side_effect=lambda value: value)
+            self.assertIs(scope['evaluate'](SimpleNamespace(output_def=expected), inner, communicate), expected)
+            inner.model_output_def.assert_not_called()
+            self.assertEqual(path.read_text().replace(spec['after'], spec['before']), source)
 
     def test_unknown_or_upstream_fixed_sources_are_left_unchanged(self):
         for content in (b'# another upstream version\n', self.original + b'\n'):
