@@ -48,6 +48,13 @@ filesystem completion is intentional; 120 seconds is a deadline, not a fixed
 sleep. These measurements do not quantify full scientific-build throughput or
 published SIF application performance.
 
+Follow-up tracing found that this fixture's directory `syncfs` did not issue an
+image-level fsync through the installed overlay stack. The production workflow
+uses a writable-marker fsync instead. The follow-up reproduced a 28.884-second
+shutdown, with 99.84% of its time inside two backing-image fsync calls on Lustre;
+see [the teardown diagnosis](../overlay-teardown-20261103/README.md). The original
+6.894-second observation remains an untraced sample.
+
 All eight samples passed clean shutdown, offline `e2fsck -fn`, and an independent
 read-only remount verifying file bytes/deletions and the linked executable.
 No forced teardown was accepted. Image creation, offline checking and read-only
