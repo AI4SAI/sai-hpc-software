@@ -196,6 +196,16 @@ class ImageDriverTests(unittest.TestCase):
         failures = list((self.run / 'results').glob('driver-cleanup-failure-*.json'))
         self.assertEqual(len(failures), 1)
         self.assertEqual(json.loads(failures[0].read_text())['returncode'], 0)
+
+        # Directory overlays still use Apptainer's overlay/squashfs helpers.
+        # Their cleanup failures must not become a successful managed phase.
+        for message in ('INFO: Terminating fuse-overlayfs after timeout\n',
+                        'INFO: Cleanup error: while stopping driver for rootfs\n'):
+            payload.write_text('import sys; sys.stderr.write(' + repr(message) + '); sys.exit(0)')
+            result = subprocess.run([sys.executable, str(program), str(self.run),
+                                     sys.executable, str(payload)], capture_output=True)
+            self.assertEqual(result.returncode, 74)
+            self.assertNotIn(b'CONTAINER_MOUNT_RETRY', result.stderr)
         # waitInstance can omit the cleanup error when a killed helper emits
         # no stderr. A forced stop must still invalidate a writable phase.
         payload.write_text('import sys; sys.stderr.write("INFO: Terminating fuse2fs after timeout\\n"); sys.exit(0)')

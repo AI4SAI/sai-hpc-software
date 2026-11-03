@@ -1,4 +1,30 @@
-# Workflow closure — 2026-11-02
+# Workflow closure — 2026-11-03
+
+## Writable image shutdown with the existing runtime
+
+The build wrapper now owns writable-image mounting and teardown. It uses the
+existing Apptainer 1.4.4 to enter a root-mapped namespace, starts the existing
+pinned fuse2fs there, and passes the mounted image as a directory overlay to
+the original isolated build command. Once the build exits, it unmounts the
+image and waits up to 120 seconds for fuse2fs to finish. A nonzero exit, failed
+unmount, forced stop, or missing completion receipt fails the phase. Payload
+failures retain their exit status when teardown succeeds.
+
+The image, source and build trees remain on project storage. Mountpoints and
+small lifecycle receipts are the only additional host files. Read-only SIF
+execution and native installations keep their existing launch paths. Guarded
+CP2K, ABACUS, DeePMD, LAMMPS and NEPAdapters jobs load `apptainer/1.4.4`; no new
+runtime installation, fuse2fs patch or AppArmor change is required. Every
+controller upload and affected recipe fingerprint includes the new helper.
+
+The DSPRHBM, 16V100, 4V100 and 8V100V0 qualification passed small and sparse 32 GiB
+images, delayed fsync, real parallel C compilation, byte-for-byte read-only
+remount checks and payload-error propagation. All GPU partitions also exercised
+the CUDA driver. The final completion-receipt guard passed a further delayed
+fsync case on every partition. A separate live check passed competing-writer exclusion,
+lock release and binary stdout preservation. See
+[qualification evidence](evidence/workflow-overlay-20261103/README.md).
+These storage/runtime checks do not claim a fresh scientific build is accepted.
 
 ## NEPAdapters release addon
 

@@ -18,7 +18,7 @@ from source_cache import checksum
 
 CONTROL = Path(__file__).resolve().parent
 FILES = ('nepadapters_native.py', 'nepadapters_rank.py', 'nepadapters_science.py',
-         'nepadapters_release.py', 'remote_controller.py', 'source_cache.py', 'cp2k_image_driver.py')
+         'nepadapters_release.py', 'remote_controller.py', 'source_cache.py', 'cp2k_image_driver.py', 'managed_overlay.py')
 PHASES = ('local', 'distributed')
 
 
