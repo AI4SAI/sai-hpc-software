@@ -74,6 +74,27 @@ node excluded. Generic CUDA errors and numerical failures do not authorize an
 ECC retry. This probe is a workflow diagnostic; it adds no user module/runtime
 dependency and makes no changes to `/opt` or the installed container runtime.
 
+The three failure causes above are now closed. ABACUS release recovery reused
+the unchanged SIF on healthy nodes and passed host-MPI SCF, NCCL/cuSOLVERMp,
+PW, HSE and DeePKS acceptance in jobs 2155781/2155872/2155889/2155920/2155985.
+All four release partitions have accepted, published catalog records. Workflow
+41623923019 also passed all four development module checks and rotated
+`abacus/develop-beta-later` to
+`develop-beta-20261103-c9079539e69a-r75ef5179f1e8-be00ef62a2ffe`.
+
+DeePMD v3.2.0b0 additionally needed two upstream Python runtime backports:
+preserve composite-autograd decomposition during Meta registration, and use
+the Python evaluator's output definition when evaluating a scripted model.
+Both apply only to exact reviewed historical file bytes after wheel installation;
+installed manifests and immutable receipts verify them. PRs #54, #55 and #56
+are merged. The final code passed 1,182 CI tests (2 skipped). Fresh workflow
+41632594236 accepted normal SIFs on 16V100/4V100/8V100V0 in jobs
+2157188/2157184/2157191, each completing `0:0` with TF/PT/JAX Python and C API
+science, measured CUDA execution, and two-GPU se_e2_a/DPA2 training and restart.
+These prerelease SIFs are accepted artifacts, not native `/opt` installations
+or development beta publications. Failed allocations remain intact. See the
+[completed recovery and artifact evidence](evidence/prerelease-ecc-recovery-20261103/README.md).
+
 ## NEPAdapters release addon
 
 NEPAdapters v1.0.4 (`c934e71444cb`) now has an independent manual SIF workflow,
