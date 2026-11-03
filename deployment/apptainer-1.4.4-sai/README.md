@@ -1,5 +1,12 @@
 # Independent Apptainer 1.4.4 installation
 
+**Automated builds no longer require this installation.** The workflow's
+[`managed_overlay.py`](../../controller/managed_overlay.py) uses the existing
+Apptainer 1.4.4 and pinned fuse2fs, owns the writable mount, and waits for its
+natural exit before returning. It requires no public installation or AppArmor
+change. The package below remains an optional runtime patch, with its original
+native-launch prerequisite; it has not been activated by the workflow change.
+
 Install into **`/opt/devtools/apptainer-sai/1.4.4`**. This is a sibling of
 `/opt/devtools/apptainer`, whose existing directories are not writable by
 `saiuser01`. Live permission checks confirm that `saiuser01` can create the new

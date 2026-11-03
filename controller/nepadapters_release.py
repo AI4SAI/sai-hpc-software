@@ -29,7 +29,7 @@ PAYLOAD = ('lib/nepadapterscpuplugin.so', 'lib/nepadaptersgpuplugin.so',
 PARTITIONS = {'16V100': '16v100-avx2', '4V100': '4v100-avx512', '8V100V0': '8v100v0-avx512'}
 CONTROL = Path(__file__).resolve().parent
 FILES = ('nepadapters_release.py', 'nepadapters_build.sh', 'nepadapters_compat.py',
-         'nepadapters_science.py', 'md_environment.sh', 'cp2k_image_driver.py',
+         'nepadapters_science.py', 'md_environment.sh', 'cp2k_image_driver.py', 'managed_overlay.py',
          'cp2k_overlay_sync.py', 'remote_controller.py', 'source_cache.py', 'create_rootfs.sh')
 
 

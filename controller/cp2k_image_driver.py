@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Use the measured, checksum-pinned home-backed overlay driver for CP2K.
+"""Use the checksum-pinned overlay driver and own writable image teardown.
 
 The adapter preserves Apptainer's inherited OFD image lock and explicit fsync,
 and opens explicitly read-only images with a read-only backing descriptor.
 Source, patches, rebuild inputs and filesystem tests are recorded in
-docs/evidence/fuse2fs-{efficiency,readonly}-20261017. No system driver is replaced.
+docs/evidence/fuse2fs-{efficiency,readonly}-20261017. managed_overlay keeps the
+writer outside Apptainer's one-second driver deadline. System files are unchanged.
 """
 import hashlib
 import json
@@ -28,10 +29,9 @@ STARTER_SHA256 = '80cf5306207ea473a4b412a617e8594accebf9bc05413f5cb1f9f8cde7e2b5
 
 
 def module_load_command():
-    # The installer only publishes this module after a native container launch.
-    return ('if module --ignore_cache is-avail apptainer/1.4.4-sai; then '
-            'module --ignore_cache load apptainer/1.4.4-sai; '
-            'else module load apptainer/1.4.4; fi')
+    # Writable image lifetime is owned by the workflow, not the stock runtime's
+    # one-second driver deadline. No alternate public runtime is required.
+    return 'module load apptainer/1.4.4'
 
 
 def runtime_paths():
@@ -147,12 +147,13 @@ def execute(argv, run):
                 sys.stderr.buffer.flush()
                 tail = (tail + block)[-65536:]
             code = process.wait()
-        forced_stop = b'Terminating fuse2fs after timeout' in tail
-        cleanup_failed = b'Cleanup error: while stopping driver' in tail and b'fuse2fs exited:' in tail
+        forced_stop = bool(re.search(
+            rb'Terminating (?:fuse2fs|fuse-overlayfs|squashfuse_ll|squashfuse) after timeout', tail))
+        cleanup_failed = b'Cleanup error:' in tail
         if code == 0 and (forced_stop or cleanup_failed):
             # Apptainer can return payload success after killing the writer.
             # Never consume or retry that writable image as a successful phase.
-            record = dict(reason='fuse2fs teardown failed after payload success', argv=argv,
+            record = dict(reason='image driver teardown failed after payload success', argv=argv,
                           returncode=code, stderr_tail=tail.decode(errors='replace'))
             (Path(run) / 'results' / f'driver-cleanup-failure-{os.getpid()}.json').write_text(
                 json.dumps(record, sort_keys=True) + '\n')
@@ -167,6 +168,8 @@ def execute(argv, run):
 
 
 def main():
+    from managed_overlay import launch
+
     project, run, *argv = sys.argv[1:]
     if not argv or argv[0] != 'exec':
         raise ValueError('expected an apptainer exec command')
@@ -174,7 +177,7 @@ def main():
     print('CP2K_IMAGE_DRIVER sha256=' + DRIVER_SHA256 + ' config=' + str(config),
           file=sys.stderr, flush=True)
     app, _ = runtime_paths()
-    return execute([str(app), '--config', str(config), *argv], run)
+    return launch(project, run, app, config, argv, execute)
 
 
 if __name__ == '__main__':

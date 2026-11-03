@@ -25,7 +25,7 @@ FILES = ('deepmd_standalone.py', 'deepmd_standalone_entry.sh', 'deepmd_standalon
          'md_packaging.py', 'md_relocate_audit.py', 'remote_controller.py',
          'source_cache.py', 'create_rootfs.sh', 'resolve_source.py', 'release_contract.py',
          'native_module.py', 'export_native.py', 'module_publication.py',
-         'delivery_layout.py', 'cp2k_image_driver.py', 'cp2k_overlay_sync.py')
+         'delivery_layout.py', 'cp2k_image_driver.py', 'managed_overlay.py', 'cp2k_overlay_sync.py')
 
 
 def fingerprint(control=CONTROL):

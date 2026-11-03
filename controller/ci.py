@@ -322,7 +322,7 @@ def main():
                   "runtime_controller.py", "create_rootfs.sh", "release_contract.py", "resolve_source.py",
                   "delivery_layout.py", "input_archive_cache.py"]
         recipe = (["container_entry.sh", "environment.sh", "abacus_build.sh",
-                   "cp2k_image_driver.py", "cp2k_overlay_sync.py",
+                   "cp2k_image_driver.py", "managed_overlay.py", "cp2k_overlay_sync.py",
                    "gpu_feature_controller.py", "gpu_feature_runtime.sh",
                    "abacus_dependencies.py", "abacus_dependencies.sh",
                    "abacus_full_profile.json", "abacus_full_dependencies.sh", "abacus_site_mpi.sh", "abacus_site_gpu.sh",
@@ -334,7 +334,7 @@ def main():
                    "cp2k_spack.py", "cp2k_spack_environment.py", "cp2k_spack_native.py",
                    "cp2k_spack_seed.py", "cp2k_spack_probe.sh", "cp2k_spack_dependencies.sh", "cp2k_overlay_sync.py",
                    "cp2k_spack_libint_repair.py", "cp2k_spack_install_evidence.py",
-                   "cp2k_spack_link.py", "cp2k_payload.py", "cp2k_dependency_stage.py", "cp2k_overlay_workdir.py", "cp2k_image_driver.py", "build_capacity.py",
+                   "cp2k_spack_link.py", "cp2k_payload.py", "cp2k_dependency_stage.py", "cp2k_overlay_workdir.py", "cp2k_image_driver.py", "managed_overlay.py", "build_capacity.py",
                    "native_module.py", "export_native.py"])
         if software == "gpumd":
             recipe = ["gpumd_container_entry.sh", "gpumd_environment.sh", "gpumd_build.sh",
