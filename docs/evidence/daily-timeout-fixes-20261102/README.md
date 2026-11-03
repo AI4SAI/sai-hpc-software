@@ -91,6 +91,16 @@ strict directory-name assertion rejected the overlay metadata marker; its
 unaccepted result is retained as `opaque-marker-probe.json`. Only **2135060**
 is the accepted complete image qualification.
 
+## Subsequent deployment change
+
+The original installation is not writable by `saiuser01`. The current handoff
+therefore installs a separate `/opt/devtools/apptainer-sai/1.4.4` distribution;
+it no longer overwrites the original starter. See
+[independent deployment evidence](../apptainer-independent-20261103/README.md)
+for the accepted relocated-runtime qualification and the remaining AppArmor
+path-permission prerequisite. Neither the original installation nor system
+policy was modified.
+
 ## Repository validation
 
 The source/ABACUS revision `7e58a7978188ef66f37f5e263fe6177287f82628` passed all six

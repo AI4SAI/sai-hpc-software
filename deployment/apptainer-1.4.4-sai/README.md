@@ -1,71 +1,120 @@
-# Apptainer 1.4.4: allow image drivers to finish their final flush
+# Independent Apptainer 1.4.4 installation
 
-The installed Apptainer stops a normally unmounted FUSE driver after one second,
-then sends SIGKILL one second later. On SAI shared storage, fuse2fs can still be
-flushing clean-state metadata at that point, even after the payload's fsync.
-This patch gives normal teardown up to 30 seconds. Explicit termination and the
-SIGTERM-to-SIGKILL timeout remain one second. A driver that exits promptly adds
-no waiting time.
-
-The administrator applies this to the **existing** non-setuid
-`/opt/devtools/apptainer/1.4.4` installation:
+Install into **`/opt/devtools/apptainer-sai/1.4.4`**. This is a sibling of
+`/opt/devtools/apptainer`, whose existing directories are not writable by
+`saiuser01`. Live permission checks confirm that `saiuser01` can create the new
+parent under `/opt/devtools` and write the new module under
+`/opt/modules/modulefiles/devtools/apptainer`.
 
 ```bash
 cd /home/stardust/sai-hpc-software/deployment/apptainer-1.4.4-sai
-bash install.sh             # read-only checks and proposed change
-sudo bash install.sh --install
+bash install.sh
+bash install.sh --install
 bash install.sh --verify
 ```
 
-Live checks as `saiuser01` can read the full handoff and verify all checksums,
-but that account cannot write the existing starter or receipt directory.
-Installation therefore requires an administrator with write access (using
-`sudo` where available). The preflight reports this before changing any file.
+These commands require no sudo. They never write the original installation.
+The first command verifies the payload and reports permissions. Installation
+checks every file, stages the complete distribution under the new parent and
+renames it into place. An existing different runtime is not overwritten.
+`--verify` checks installed files; it does **not** claim containers can start.
+No module is published by `--install`.
 
-Only `libexec/apptainer/bin/starter` is replaced, using an atomic rename. The
-installer checks the original CLI/helper hashes and the qualified replacement,
-keeps a checksum-verified backup, and writes
-`share/sai/driver-stop-grace.json`. It does not change the CLI, modules, site
-configuration, setuid permissions, or AppArmor profiles. This preserves the
-existing permitted CLI path. Loading `apptainer/1.4.4` therefore uses the fix
-without a new module name; `apptainer --version` still reports upstream 1.4.4.
-Existing processes keep their original executable; new invocations use the fix.
+The package is the checksum-pinned site distribution, including its CLI,
+configuration, FUSE/squashfs helpers and standard manuals. Only the `starter`
+binary differs: it gives normally unmounted image drivers up to 30 seconds to
+finish, instead of one second. Explicit termination and SIGTERM-to-SIGKILL
+remain one second. Prompt exits add no waiting time. There is no setuid helper.
+The only extra installed metadata is `share/sai/driver-stop-grace.json`.
+Tests, build trees and probe results stay outside `/opt`.
 
-The handoff contains the checksum-pinned `payload/starter` outside Git.
-`manifest.json` records the exact source archive, source commit, patch, Go
-version and installed bytes. `qualification.json` records the accepted private
-mount-namespace tests with the original installed CLI and this replacement
-starter. Public installation and a subsequent direct Slurm run remain distinct
-acceptance steps. The workflow still rejects forced driver termination and
-preserves failed overlays.
+The existing `apptainer/1.4.4` module and executable keep their original behavior.
+The new module is **`apptainer/1.4.4-sai`**. Upstream `apptainer --version` still
+reports 1.4.4; the module and receipt identify the SAI patch. `payload-files.json`
+records every delivered file/link/mode; `manifest.json` pins the archive and
+inventory. The archive is supplied in `payload/` outside Git (about 90 MiB,
+188 MiB expanded).
 
-To restore the original helper:
+## The remaining system prerequisite: AppArmor
+
+The cluster enables `kernel.apparmor_restrict_unprivileged_userns=1`. Its current
+profile grants user namespaces only to the executables at the original 1.2.4
+and 1.4.4 paths. A new folder solves the installation permission problem, but
+**does not grant permission to run containers from that folder**. `--version`
+can succeed while `exec` fails with `Could not write info to setgroups:
+Permission denied`.
+
+A system administrator must deploy the supplied additional profile to the
+login and computation nodes using the cluster's configuration management.
+Equivalent commands, executed as root on each relevant node, are:
 
 ```bash
-sudo bash install.sh --rollback
+install -m 0644 apparmor.apptainer-sai /etc/apparmor.d/apptainer-sai-1.4.4
+apparmor_parser -r /etc/apparmor.d/apptainer-sai-1.4.4
 ```
 
-Rollback restores the original one-second behavior, so the daily teardown
-failure can recur. It preserves the backup and requires the known original or
-patched helper; an unrelated runtime upgrade is never overwritten.
+The profile grants `userns` to exactly
+`/opt/devtools/apptainer-sai/1.4.4/bin/apptainer`, matching the existing profile's
+policy. It does not change the existing profile or disable the kernel's
+restriction. The installer does not write system policy, and neither SSH
+account currently has write access to `/etc/apparmor.d`.
 
-Rebuild in a compute allocation, entirely on project storage:
+After policy deployment, run native overlay qualification as the project user
+`stardust`, from the new path:
 
 ```bash
-bash build.sh /org/org-open-sai/proj-sai-hpc-software/path/apptainer-1.4.4.tar.gz \
-  /org/org-open-sai/proj-sai-hpc-software/path/new-build
+sbatch --partition=DSPRHBM --qos=rush-cpu --cpus-per-task=4 --mem=8G verify-install.sbatch
+sbatch --partition=4V100 --qos=rush-1o2gpu --gpus-per-node=1 verify-install.sbatch
+sbatch --partition=8V100V0 --qos=rush-1o2gpu --gpus-per-node=1 verify-install.sbatch
+sbatch --partition=16V100 --qos=flood-1o2gpu --gpus-per-node=1 verify-install.sbatch
 ```
 
-`build.sh` uses the official vendored archive, Go 1.25.4, no network dependency
-resolution, no setuid helper, and a staged installation. It never writes `/opt`.
-It also runs a slow-helper regression and an explicit-termination test. A
-rebuild at a different source path can have a different binary hash and must be
-qualified before updating the manifest.
+Check accounting and each `result.json` before publishing the module. All four
+cases must pass: two small overlays, a sparse 32 GiB overlay and a two-second
+fsync delay, with clean teardown, offline fsck and byte-for-byte read-only
+remount verification. Logs and overlays are retained on project storage.
+The earlier private namespace qualification is evidence for the patched
+runtime, not proof that a new public executable path is permitted.
 
-`verify.py` is run in Slurm, with an empty project directory. It creates fresh
-512 MiB and 32 GiB sparse images, explicitly synchronizes payload data, requires
-clean driver teardown and offline `e2fsck -fn`, and verifies every expected file
-on a separate read-only remount. A strace `-D` case delays fsync by two seconds
-while preserving fuse2fs as Apptainer's direct child. All scratch, images and
-logs stay under the funded project. No verification files are installed in
-`/opt`.
+Then, as `saiuser01` on a node where the new profile is active:
+
+```bash
+bash install.sh --activate --work "$HOME/apptainer-sai-activation-20261103"
+module --ignore_cache load apptainer/1.4.4-sai
+```
+
+`saiuser01` cannot traverse `/org/org-open-sai`. The short activation probe
+therefore uses that account's home and the checksum-pinned `payload/native-check.sif`
+in this readable handoff. This probe creates only its small log/cache directory;
+compilation and full overlay qualification remain on project storage as
+`stardust`. No project access permissions need changing.
+Use a fresh `--work` path for each attempt. Activation performs a direct native
+container launch and writes the new module only if it succeeds. A successful
+launch proves the current node only; it does not configure other nodes.
+The module sets `SAI_HPC_APPTAINER`. Guarded ABACUS/CP2K/DeePMD/LAMMPS build jobs
+select this module once published, verify the new CLI/starter hashes, and record
+the selected executable in their provenance. Invalid explicit selections fail;
+they do not fall back silently. Forced driver termination still invalidates an
+overlay. Existing jobs keep their submitted scripts and runtime selection.
+
+To withdraw the new module while retaining the installed bytes and evidence:
+
+```bash
+bash install.sh --rollback
+```
+
+Future guarded jobs then load the original runtime. This can reintroduce its
+one-second teardown failure, so withdrawing the module is not a build fix.
+
+## Rebuilding
+
+`build.sh` rebuilds the patched helper from the official vendored 1.4.4 archive,
+using Go 1.25.4 and project storage, without writing `/opt`. The stock build prefix
+is intentional: the existing qualified helper and non-setuid CLI support runtime
+relocation. Requalify rebuilt bytes before changing the manifest.
+
+`package.py SITE_PREFIX QUALIFIED_STARTER NEW_OUTPUT_DIRECTORY` prepares a
+complete relocatable archive and file inventory from the site distribution.
+It preserves required tools and standard data, rejects external links and
+privileged files, and never changes its inputs. Repackaging changes the archive
+hash; update its pins only after validation.

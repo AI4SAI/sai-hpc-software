@@ -411,14 +411,17 @@ def render_job(args):
         prepare = [shlex.join(['cp', '--sparse=always', '--reflink=auto', '--', str(old_overlay), str(overlay)]),
                    shlex.join(['printf', '%s  %s\\n', digest, str(overlay)]) + ' | sha256sum --check --status',
                    shlex.join(['chmod', '600', str(overlay)]), shlex.join(container('metadata'))]
+    module_command = "module --ignore_cache load apptainer/1.4.4 fuse2fs/1.47.4-sai"
+    if args.software in ("cp2k", "abacus"):
+        from cp2k_image_driver import module_load_command
+        module_command = module_load_command()
     lines += [
         "set -eo pipefail",
         "export PATH=/usr/bin:/bin",
         'export LD_LIBRARY_PATH="" LD_PRELOAD=""',
         "source /etc/profile.d/lmod.sh",
         # Guarded builds select the pinned driver through an explicit --config.
-        ("module load apptainer/1.4.4" if args.software in ("cp2k", "abacus") else
-         "module --ignore_cache load apptainer/1.4.4 fuse2fs/1.47.4-sai"),
+        module_command,
         "set -u", "umask 077",
         f"export TMPDIR={q(str(r / 'runtime'))} APPTAINER_TMPDIR={q(str(r / 'runtime'))}",
         f"export APPTAINER_CACHEDIR={q(str(r / 'apptainer-cache'))}",

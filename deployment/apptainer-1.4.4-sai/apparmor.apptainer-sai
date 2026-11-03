@@ -1,0 +1,8 @@
+# Add through privileged cluster configuration management on execution nodes.
+# Keep the existing Apptainer profiles.
+abi <abi/4.0>,
+include <tunables/global>
+
+profile apptainer-1.4.4-sai /opt/devtools/apptainer-sai/1.4.4/bin/apptainer flags=(unconfined) {
+    userns,
+}

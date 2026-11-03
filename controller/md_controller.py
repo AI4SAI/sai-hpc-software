@@ -15,7 +15,7 @@ import time
 from md_tracking import fingerprint, identify_track_pair, TARGETS as MD_TARGETS
 from remote_controller import TARGETS, container_command, safe_name, safe_sha, site_app_binds, project_batch_directives, private_scratch
 from source_cache import checksum
-from cp2k_image_driver import wrap_command as image_driver_command
+from cp2k_image_driver import wrap_command as image_driver_command, module_load_command
 
 PROJECT = Path(os.environ.get('SAI_SOFTWARE_ROOT', Path.home() / 'sai-hpc-software')).resolve()
 ROOT = PROJECT / 'experimental/deepmd-lammps'
@@ -141,7 +141,7 @@ def render(request, run_id, jobs=None, minutes=None, overlay_mb=32768,
              '#SBATCH --export=NIL', *project_batch_directives(PROJECT, r),
              'set -eo pipefail', 'export PATH=/usr/bin:/bin',
              'export LD_LIBRARY_PATH="" LD_PRELOAD=""', 'source /etc/profile.d/lmod.sh',
-             'module load apptainer/1.4.4', 'set -u', 'umask 077',
+             module_load_command(), 'set -u', 'umask 077',
              f'export TMPDIR={shlex.quote(str(r / "runtime"))}',
              f'export APPTAINER_TMPDIR={shlex.quote(str(r / "runtime"))}',
              f'export APPTAINER_CACHEDIR={shlex.quote(str(r / "apptainer-cache"))}',
@@ -212,7 +212,7 @@ def submit_probe(args):
              f'#SBATCH --output={r}/results/slurm-%j.log', '#SBATCH --export=NIL',
              *project_batch_directives(PROJECT, r),
              'set -eo pipefail', 'export PATH=/usr/bin:/bin LD_LIBRARY_PATH="" LD_PRELOAD=""',
-             'source /etc/profile.d/lmod.sh', 'module load apptainer/1.4.4', 'set -u',
+             'source /etc/profile.d/lmod.sh', module_load_command(), 'set -u',
              f'export TMPDIR={shlex.quote(str(r / "runtime"))} APPTAINER_TMPDIR={shlex.quote(str(r / "runtime"))}',
              f'export APPTAINER_CACHEDIR={shlex.quote(str(r / "apptainer-cache"))}',
              'export APPTAINERENV_SAI_MD_ALLOCATED_JOB="$SLURM_JOB_ID"',
