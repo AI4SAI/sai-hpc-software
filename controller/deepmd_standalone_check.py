@@ -46,7 +46,8 @@ def inventory(prefix):
         if native.is_file():
             symbols = subprocess.check_output(
                 ['nm', '-D', '--defined-only', '--demangle', str(native)], text=True)
-            for backend, implementation in (('tf', 'TF'), ('pt', 'PT'), ('jax', 'JAX')):
+            for backend, implementation in (('tf', 'TF'), ('pt', 'PT'), ('jax', 'JAX'),
+                                            ('ptexpt', 'PTExpt'), ('pd', 'PD')):
                 matches = re.findall(r'^[0-9a-fA-F]+\s+[TW]\s+(deepmd::DeepPot' +
                                      implementation + r'::init\([^\n]+)$', symbols, re.M)
                 if matches:
@@ -105,8 +106,9 @@ def verify_installation():
     if file_digest(trainer) != patch['patched_sha256']:
         raise ValueError('installed DeePMD trainer differs from the recorded source patch')
     baseline = json.loads(Path('/runtime/baseline-inventory.json').read_text())
-    if not set(baseline['backends']) <= set(observed['backends']):
-        raise ValueError('standalone DeePMD dropped a baseline backend')
+    missing_backends = sorted(set(baseline['backends']) - set(observed['backends']))
+    if missing_backends:
+        raise ValueError('standalone DeePMD dropped baseline backends: ' + str(missing_backends))
     version = verify_deepmd_version(dict(track=identity['track'], ref=identity['source_ref']), observed['version'])
     roots = [prefix, *map(Path, SITE_ROOTS)]
     inspected = 0
