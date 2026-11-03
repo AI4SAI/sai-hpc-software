@@ -1,0 +1,10 @@
+{
+   "filesystems": [
+      {
+         "target": "/org",
+         "source": "10.100.0.212@o2ib:10.100.0.213@o2ib:/saiorg",
+         "fstype": "lustre",
+         "options": "rw,checksum,encrypt,flock,lazystatfs,lruresize,nolock,statfs_project,nouser_fid2path,nouser_xattr,verbose"
+      }
+   ]
+}

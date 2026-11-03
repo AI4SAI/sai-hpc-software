@@ -1,0 +1,1526 @@
+{
+  "batches": [
+    {
+      "job": "2151763",
+      "node": "16v100n01.mr-sai.ai",
+      "passed": true,
+      "cases": [
+        {
+          "index": 0,
+          "traced": false,
+          "ost": null,
+          "pre_exit_fsync": null,
+          "accepted": true,
+          "mount_probe_seconds": 0.00021623261272907257,
+          "unmount_seconds": 0.012522777542471886,
+          "driver_wait_seconds": 0.5144369564950466,
+          "teardown_seconds": 0.5271898787468672,
+          "pre_exit_fsync_seconds": null,
+          "teardown_fsync_seconds": [],
+          "teardown_fsync_sum": null,
+          "teardown_fsync_fraction": null,
+          "fsync_calls": []
+        },
+        {
+          "index": 1,
+          "traced": true,
+          "ost": null,
+          "pre_exit_fsync": null,
+          "accepted": true,
+          "mount_probe_seconds": 0.00020768307149410248,
+          "unmount_seconds": 0.020700739696621895,
+          "driver_wait_seconds": 0.47958938032388687,
+          "teardown_seconds": 0.5005073919892311,
+          "pre_exit_fsync_seconds": null,
+          "teardown_fsync_seconds": [
+            0.121928,
+            0.227032
+          ],
+          "teardown_fsync_sum": 0.34896,
+          "teardown_fsync_fraction": 0.6972124799457671,
+          "fsync_calls": [
+            {
+              "timestamp": 1793689117.694115,
+              "seconds": 8.1e-05,
+              "teardown": false,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-1-managed/fuse2fs-6ed958e18dd14ea58f08a52b75e96cd5.trace.1111862"
+            },
+            {
+              "timestamp": 1793689117.709901,
+              "seconds": 0.075545,
+              "teardown": false,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-1-managed/fuse2fs-6ed958e18dd14ea58f08a52b75e96cd5.trace.1111862"
+            },
+            {
+              "timestamp": 1793689117.785711,
+              "seconds": 0.080476,
+              "teardown": false,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-1-managed/fuse2fs-6ed958e18dd14ea58f08a52b75e96cd5.trace.1111862"
+            },
+            {
+              "timestamp": 1793689128.562025,
+              "seconds": 0.121928,
+              "teardown": true,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-1-managed/fuse2fs-6ed958e18dd14ea58f08a52b75e96cd5.trace.1111862"
+            },
+            {
+              "timestamp": 1793689128.684354,
+              "seconds": 0.227032,
+              "teardown": true,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-1-managed/fuse2fs-6ed958e18dd14ea58f08a52b75e96cd5.trace.1111862"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "traced": false,
+          "ost": null,
+          "pre_exit_fsync": null,
+          "accepted": true,
+          "mount_probe_seconds": 0.0003073252737522125,
+          "unmount_seconds": 0.03028743900358677,
+          "driver_wait_seconds": 0.3138643950223923,
+          "teardown_seconds": 0.3444698452949524,
+          "pre_exit_fsync_seconds": null,
+          "teardown_fsync_seconds": [],
+          "teardown_fsync_sum": null,
+          "teardown_fsync_fraction": null,
+          "fsync_calls": []
+        },
+        {
+          "index": 3,
+          "traced": true,
+          "ost": null,
+          "pre_exit_fsync": null,
+          "accepted": true,
+          "mount_probe_seconds": 0.00023380480706691742,
+          "unmount_seconds": 0.014683684334158897,
+          "driver_wait_seconds": 0.46533057279884815,
+          "teardown_seconds": 0.4802573285996914,
+          "pre_exit_fsync_seconds": null,
+          "teardown_fsync_seconds": [
+            0.250597,
+            0.079203
+          ],
+          "teardown_fsync_sum": 0.3298,
+          "teardown_fsync_fraction": 0.6867151844649891,
+          "fsync_calls": [
+            {
+              "timestamp": 1793689146.503538,
+              "seconds": 7.5e-05,
+              "teardown": false,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-3-managed/fuse2fs-9903b680f4c74529b7e993978eca6807.trace.1113880"
+            },
+            {
+              "timestamp": 1793689146.522707,
+              "seconds": 0.068178,
+              "teardown": false,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-3-managed/fuse2fs-9903b680f4c74529b7e993978eca6807.trace.1113880"
+            },
+            {
+              "timestamp": 1793689146.591238,
+              "seconds": 0.104504,
+              "teardown": false,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-3-managed/fuse2fs-9903b680f4c74529b7e993978eca6807.trace.1113880"
+            },
+            {
+              "timestamp": 1793689157.302584,
+              "seconds": 0.250597,
+              "teardown": true,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-3-managed/fuse2fs-9903b680f4c74529b7e993978eca6807.trace.1113880"
+            },
+            {
+              "timestamp": 1793689157.553518,
+              "seconds": 0.079203,
+              "teardown": true,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-3-managed/fuse2fs-9903b680f4c74529b7e993978eca6807.trace.1113880"
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "traced": false,
+          "ost": null,
+          "pre_exit_fsync": null,
+          "accepted": true,
+          "mount_probe_seconds": 0.00023937411606311798,
+          "unmount_seconds": 0.007441433146595955,
+          "driver_wait_seconds": 0.26381121575832367,
+          "teardown_seconds": 0.27151852287352085,
+          "pre_exit_fsync_seconds": null,
+          "teardown_fsync_seconds": [],
+          "teardown_fsync_sum": null,
+          "teardown_fsync_fraction": null,
+          "fsync_calls": []
+        },
+        {
+          "index": 5,
+          "traced": true,
+          "ost": null,
+          "pre_exit_fsync": null,
+          "accepted": true,
+          "mount_probe_seconds": 0.0002257954329252243,
+          "unmount_seconds": 0.016889579594135284,
+          "driver_wait_seconds": 0.5222059041261673,
+          "teardown_seconds": 0.5393410474061966,
+          "pre_exit_fsync_seconds": null,
+          "teardown_fsync_seconds": [
+            0.264346,
+            0.137834
+          ],
+          "teardown_fsync_sum": 0.40218000000000004,
+          "teardown_fsync_fraction": 0.7456877275226267,
+          "fsync_calls": [
+            {
+              "timestamp": 1793689177.815568,
+              "seconds": 8.4e-05,
+              "teardown": false,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-5-managed/fuse2fs-6711737008af4eab84003cc2b4601d71.trace.1115966"
+            },
+            {
+              "timestamp": 1793689177.832261,
+              "seconds": 0.179578,
+              "teardown": false,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-5-managed/fuse2fs-6711737008af4eab84003cc2b4601d71.trace.1115966"
+            },
+            {
+              "timestamp": 1793689178.012172,
+              "seconds": 0.194491,
+              "teardown": false,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-5-managed/fuse2fs-6711737008af4eab84003cc2b4601d71.trace.1115966"
+            },
+            {
+              "timestamp": 1793689188.974766,
+              "seconds": 0.264346,
+              "teardown": true,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-5-managed/fuse2fs-6711737008af4eab84003cc2b4601d71.trace.1115966"
+            },
+            {
+              "timestamp": 1793689189.239563,
+              "seconds": 0.137834,
+              "teardown": true,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-5-managed/fuse2fs-6711737008af4eab84003cc2b4601d71.trace.1115966"
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "traced": false,
+          "ost": null,
+          "pre_exit_fsync": null,
+          "accepted": true,
+          "mount_probe_seconds": 0.00022646039724349976,
+          "unmount_seconds": 0.025859285145998,
+          "driver_wait_seconds": 0.520612083375454,
+          "teardown_seconds": 0.5467139910906553,
+          "pre_exit_fsync_seconds": null,
+          "teardown_fsync_seconds": [],
+          "teardown_fsync_sum": null,
+          "teardown_fsync_fraction": null,
+          "fsync_calls": []
+        },
+        {
+          "index": 7,
+          "traced": true,
+          "ost": null,
+          "pre_exit_fsync": null,
+          "accepted": true,
+          "mount_probe_seconds": 0.0003169644623994827,
+          "unmount_seconds": 0.0646546520292759,
+          "driver_wait_seconds": 0.46406267397105694,
+          "teardown_seconds": 0.5290491729974747,
+          "pre_exit_fsync_seconds": null,
+          "teardown_fsync_seconds": [
+            0.161811,
+            0.153226
+          ],
+          "teardown_fsync_sum": 0.315037,
+          "teardown_fsync_fraction": 0.5954777288755043,
+          "fsync_calls": [
+            {
+              "timestamp": 1793689206.746959,
+              "seconds": 0.000131,
+              "teardown": false,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-7-managed/fuse2fs-c8812fa6695a4f4cad885b9c9795a8fc.trace.1117989"
+            },
+            {
+              "timestamp": 1793689206.767313,
+              "seconds": 0.086996,
+              "teardown": false,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-7-managed/fuse2fs-c8812fa6695a4f4cad885b9c9795a8fc.trace.1117989"
+            },
+            {
+              "timestamp": 1793689206.8558,
+              "seconds": 0.08825,
+              "teardown": false,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-7-managed/fuse2fs-c8812fa6695a4f4cad885b9c9795a8fc.trace.1117989"
+            },
+            {
+              "timestamp": 1793689218.225876,
+              "seconds": 0.161811,
+              "teardown": true,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-7-managed/fuse2fs-c8812fa6695a4f4cad885b9c9795a8fc.trace.1117989"
+            },
+            {
+              "timestamp": 1793689218.388043,
+              "seconds": 0.153226,
+              "teardown": true,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-7-managed/fuse2fs-c8812fa6695a4f4cad885b9c9795a8fc.trace.1117989"
+            }
+          ]
+        },
+        {
+          "index": 8,
+          "traced": false,
+          "ost": null,
+          "pre_exit_fsync": null,
+          "accepted": true,
+          "mount_probe_seconds": 0.00021653436124324799,
+          "unmount_seconds": 0.03187405876815319,
+          "driver_wait_seconds": 0.3139035105705261,
+          "teardown_seconds": 0.3460060264915228,
+          "pre_exit_fsync_seconds": null,
+          "teardown_fsync_seconds": [],
+          "teardown_fsync_sum": null,
+          "teardown_fsync_fraction": null,
+          "fsync_calls": []
+        },
+        {
+          "index": 9,
+          "traced": true,
+          "ost": null,
+          "pre_exit_fsync": null,
+          "accepted": true,
+          "mount_probe_seconds": 0.000225163996219635,
+          "unmount_seconds": 0.014042798429727554,
+          "driver_wait_seconds": 0.5192758962512016,
+          "teardown_seconds": 0.5335638970136642,
+          "pre_exit_fsync_seconds": null,
+          "teardown_fsync_seconds": [
+            0.216099,
+            0.169343
+          ],
+          "teardown_fsync_sum": 0.385442,
+          "teardown_fsync_fraction": 0.7223914551889725,
+          "fsync_calls": [
+            {
+              "timestamp": 1793689235.444585,
+              "seconds": 0.000101,
+              "teardown": false,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-9-managed/fuse2fs-3be60e4aec314f32a230a1659613fe9d.trace.1119998"
+            },
+            {
+              "timestamp": 1793689235.470994,
+              "seconds": 0.067104,
+              "teardown": false,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-9-managed/fuse2fs-3be60e4aec314f32a230a1659613fe9d.trace.1119998"
+            },
+            {
+              "timestamp": 1793689235.538425,
+              "seconds": 0.147866,
+              "teardown": false,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-9-managed/fuse2fs-3be60e4aec314f32a230a1659613fe9d.trace.1119998"
+            },
+            {
+              "timestamp": 1793689246.386558,
+              "seconds": 0.216099,
+              "teardown": true,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-9-managed/fuse2fs-3be60e4aec314f32a230a1659613fe9d.trace.1119998"
+            },
+            {
+              "timestamp": 1793689246.603153,
+              "seconds": 0.169343,
+              "teardown": true,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-9-managed/fuse2fs-3be60e4aec314f32a230a1659613fe9d.trace.1119998"
+            }
+          ]
+        },
+        {
+          "index": 10,
+          "traced": false,
+          "ost": null,
+          "pre_exit_fsync": null,
+          "accepted": true,
+          "mount_probe_seconds": 0.00027686357498168945,
+          "unmount_seconds": 0.011743694543838501,
+          "driver_wait_seconds": 0.585801251232624,
+          "teardown_seconds": 0.5978373307734728,
+          "pre_exit_fsync_seconds": null,
+          "teardown_fsync_seconds": [],
+          "teardown_fsync_sum": null,
+          "teardown_fsync_fraction": null,
+          "fsync_calls": []
+        },
+        {
+          "index": 11,
+          "traced": true,
+          "ost": null,
+          "pre_exit_fsync": null,
+          "accepted": true,
+          "mount_probe_seconds": 0.0002979431301355362,
+          "unmount_seconds": 0.04780453070998192,
+          "driver_wait_seconds": 1.265623128041625,
+          "teardown_seconds": 1.3137375321239233,
+          "pre_exit_fsync_seconds": null,
+          "teardown_fsync_seconds": [
+            0.828618,
+            0.312093
+          ],
+          "teardown_fsync_sum": 1.140711,
+          "teardown_fsync_fraction": 0.868294443986699,
+          "fsync_calls": [
+            {
+              "timestamp": 1793689270.175152,
+              "seconds": 9.3e-05,
+              "teardown": false,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-11-managed/fuse2fs-2b8292e188834a13851f9713be3f0158.trace.1122183"
+            },
+            {
+              "timestamp": 1793689270.200284,
+              "seconds": 0.062808,
+              "teardown": false,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-11-managed/fuse2fs-2b8292e188834a13851f9713be3f0158.trace.1122183"
+            },
+            {
+              "timestamp": 1793689270.263395,
+              "seconds": 0.139796,
+              "teardown": false,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-11-managed/fuse2fs-2b8292e188834a13851f9713be3f0158.trace.1122183"
+            },
+            {
+              "timestamp": 1793689281.449174,
+              "seconds": 0.828618,
+              "teardown": true,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-11-managed/fuse2fs-2b8292e188834a13851f9713be3f0158.trace.1122183"
+            },
+            {
+              "timestamp": 1793689282.278173,
+              "seconds": 0.312093,
+              "teardown": true,
+              "stack": [],
+              "trace": "raw/overlay-teardown-2151763-11-managed/fuse2fs-2b8292e188834a13851f9713be3f0158.trace.1122183"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "job": "2151858",
+      "node": "16v100n61.mr-sai.ai",
+      "passed": true,
+      "cases": [
+        {
+          "index": 0,
+          "traced": true,
+          "ost": 1,
+          "pre_exit_fsync": false,
+          "accepted": true,
+          "mount_probe_seconds": 0.00021352432668209076,
+          "unmount_seconds": 0.014834016561508179,
+          "driver_wait_seconds": 2.2726026102900505,
+          "teardown_seconds": 2.2876590117812157,
+          "pre_exit_fsync_seconds": null,
+          "teardown_fsync_seconds": [
+            1.676502,
+            0.4567
+          ],
+          "teardown_fsync_sum": 2.133202,
+          "teardown_fsync_fraction": 0.9324825024246282,
+          "fsync_calls": [
+            {
+              "timestamp": 1793689472.789865,
+              "seconds": 0.000117,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_open_channel+0x44) [0x2dc44]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_open2.part.0+0x11c) [0x2951c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x207) [0x3a07]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-0-managed/fuse2fs-1adbc7b8284949c6973b3a3c51ac739c.trace.1757530"
+            },
+            {
+              "timestamp": 1793689472.807925,
+              "seconds": 0.218251,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x31c) [0x1566c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0xb2b) [0x432b]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-0-managed/fuse2fs-1adbc7b8284949c6973b3a3c51ac739c.trace.1757530"
+            },
+            {
+              "timestamp": 1793689473.027526,
+              "seconds": 0.073732,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x444) [0x15794]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0xb2b) [0x432b]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-0-managed/fuse2fs-1adbc7b8284949c6973b3a3c51ac739c.trace.1757530"
+            },
+            {
+              "timestamp": 1793689484.473471,
+              "seconds": 1.676502,
+              "teardown": true,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x31c) [0x1566c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_destroy+0xf9) [0x6ac9]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_session_destroy+0xc6) [0x19cf6]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_destroy+0x224) [0x17934]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_main_real+0x1a6) [0x20516]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x97c) [0x417c]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-0-managed/fuse2fs-1adbc7b8284949c6973b3a3c51ac739c.trace.1757530"
+            },
+            {
+              "timestamp": 1793689486.151765,
+              "seconds": 0.4567,
+              "teardown": true,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x444) [0x15794]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_destroy+0xf9) [0x6ac9]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_session_destroy+0xc6) [0x19cf6]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_destroy+0x224) [0x17934]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_main_real+0x1a6) [0x20516]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x97c) [0x417c]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-0-managed/fuse2fs-1adbc7b8284949c6973b3a3c51ac739c.trace.1757530"
+            }
+          ]
+        },
+        {
+          "index": 1,
+          "traced": true,
+          "ost": 1,
+          "pre_exit_fsync": true,
+          "accepted": true,
+          "mount_probe_seconds": 0.00020932406187057495,
+          "unmount_seconds": 0.012398812919855118,
+          "driver_wait_seconds": 0.21478125266730785,
+          "teardown_seconds": 0.22739703208208084,
+          "pre_exit_fsync_seconds": 0.38009268417954445,
+          "teardown_fsync_seconds": [
+            0.064555,
+            0.116497
+          ],
+          "teardown_fsync_sum": 0.181052,
+          "teardown_fsync_fraction": 0.7961933290960798,
+          "fsync_calls": [
+            {
+              "timestamp": 1793689496.558267,
+              "seconds": 8.6e-05,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_open_channel+0x44) [0x2dc44]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_open2.part.0+0x11c) [0x2951c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x207) [0x3a07]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-1-managed/fuse2fs-1408ba55cab04569a7338e42322197da.trace.1758133"
+            },
+            {
+              "timestamp": 1793689496.574639,
+              "seconds": 0.156138,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x31c) [0x1566c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0xb2b) [0x432b]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-1-managed/fuse2fs-1408ba55cab04569a7338e42322197da.trace.1758133"
+            },
+            {
+              "timestamp": 1793689496.732128,
+              "seconds": 0.492912,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x444) [0x15794]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0xb2b) [0x432b]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-1-managed/fuse2fs-1408ba55cab04569a7338e42322197da.trace.1758133"
+            },
+            {
+              "timestamp": 1793689506.831214,
+              "seconds": 0.064555,
+              "teardown": true,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x31c) [0x1566c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_destroy+0xf9) [0x6ac9]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_session_destroy+0xc6) [0x19cf6]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_destroy+0x224) [0x17934]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_main_real+0x1a6) [0x20516]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x97c) [0x417c]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-1-managed/fuse2fs-1408ba55cab04569a7338e42322197da.trace.1758133"
+            },
+            {
+              "timestamp": 1793689506.897258,
+              "seconds": 0.116497,
+              "teardown": true,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x444) [0x15794]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_destroy+0xf9) [0x6ac9]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_session_destroy+0xc6) [0x19cf6]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_destroy+0x224) [0x17934]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_main_real+0x1a6) [0x20516]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x97c) [0x417c]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-1-managed/fuse2fs-1408ba55cab04569a7338e42322197da.trace.1758133"
+            },
+            {
+              "timestamp": 1793689506.461579,
+              "seconds": 0.208524,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x31c) [0x1566c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_fsync+0xca) [0x7e2a]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_reply_err+0xa68) [0x103f8]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_reply_data+0xc02) [0x120b2]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_lowlevel_notify_store+0x1513) [0x1f7c3]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_exit+0x158) [0x17268]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(pthread_condattr_setpshared+0x684) [0x9caa4]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__clone+0x24c) [0x129c6c]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-1-managed/fuse2fs-1408ba55cab04569a7338e42322197da.trace.1758276"
+            },
+            {
+              "timestamp": 1793689506.672118,
+              "seconds": 0.095758,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x444) [0x15794]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_fsync+0xca) [0x7e2a]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_reply_err+0xa68) [0x103f8]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_reply_data+0xc02) [0x120b2]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_lowlevel_notify_store+0x1513) [0x1f7c3]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_exit+0x158) [0x17268]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(pthread_condattr_setpshared+0x684) [0x9caa4]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__clone+0x24c) [0x129c6c]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-1-managed/fuse2fs-1408ba55cab04569a7338e42322197da.trace.1758276"
+            }
+          ]
+        },
+        {
+          "index": 2,
+          "traced": true,
+          "ost": 5,
+          "pre_exit_fsync": true,
+          "accepted": true,
+          "mount_probe_seconds": 0.00021160393953323364,
+          "unmount_seconds": 0.01109803095459938,
+          "driver_wait_seconds": 0.8647895734757185,
+          "teardown_seconds": 0.8761073388159275,
+          "pre_exit_fsync_seconds": 1.5288877096027136,
+          "teardown_fsync_seconds": [
+            0.349767,
+            0.489956
+          ],
+          "teardown_fsync_sum": 0.839723,
+          "teardown_fsync_fraction": 0.95847045538381,
+          "fsync_calls": [
+            {
+              "timestamp": 1793689510.694514,
+              "seconds": 0.000107,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_open_channel+0x44) [0x2dc44]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_open2.part.0+0x11c) [0x2951c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x207) [0x3a07]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-2-managed/fuse2fs-952049cbb50e42008bc5c9fcfec9924c.trace.1758701"
+            },
+            {
+              "timestamp": 1793689510.712258,
+              "seconds": 0.114979,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x31c) [0x1566c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0xb2b) [0x432b]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-2-managed/fuse2fs-952049cbb50e42008bc5c9fcfec9924c.trace.1758701"
+            },
+            {
+              "timestamp": 1793689510.828581,
+              "seconds": 0.1935,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x444) [0x15794]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0xb2b) [0x432b]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-2-managed/fuse2fs-952049cbb50e42008bc5c9fcfec9924c.trace.1758701"
+            },
+            {
+              "timestamp": 1793689521.688801,
+              "seconds": 0.349767,
+              "teardown": true,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x31c) [0x1566c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_destroy+0xf9) [0x6ac9]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_session_destroy+0xc6) [0x19cf6]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_destroy+0x224) [0x17934]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_main_real+0x1a6) [0x20516]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x97c) [0x417c]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-2-managed/fuse2fs-952049cbb50e42008bc5c9fcfec9924c.trace.1758701"
+            },
+            {
+              "timestamp": 1793689522.040317,
+              "seconds": 0.489956,
+              "teardown": true,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x444) [0x15794]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_destroy+0xf9) [0x6ac9]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_session_destroy+0xc6) [0x19cf6]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_destroy+0x224) [0x17934]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_main_real+0x1a6) [0x20516]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x97c) [0x417c]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-2-managed/fuse2fs-952049cbb50e42008bc5c9fcfec9924c.trace.1758701"
+            },
+            {
+              "timestamp": 1793689520.151758,
+              "seconds": 1.160709,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x31c) [0x1566c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_fsync+0xca) [0x7e2a]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_reply_err+0xa68) [0x103f8]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_reply_data+0xc02) [0x120b2]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_lowlevel_notify_store+0x1513) [0x1f7c3]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_exit+0x158) [0x17268]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(pthread_condattr_setpshared+0x684) [0x9caa4]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__clone+0x24c) [0x129c6c]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-2-managed/fuse2fs-952049cbb50e42008bc5c9fcfec9924c.trace.1758844"
+            },
+            {
+              "timestamp": 1793689521.314523,
+              "seconds": 0.292045,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x444) [0x15794]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_fsync+0xca) [0x7e2a]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_reply_err+0xa68) [0x103f8]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_reply_data+0xc02) [0x120b2]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_lowlevel_notify_store+0x1513) [0x1f7c3]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_exit+0x158) [0x17268]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(pthread_condattr_setpshared+0x684) [0x9caa4]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__clone+0x24c) [0x129c6c]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-2-managed/fuse2fs-952049cbb50e42008bc5c9fcfec9924c.trace.1758844"
+            }
+          ]
+        },
+        {
+          "index": 3,
+          "traced": true,
+          "ost": 5,
+          "pre_exit_fsync": false,
+          "accepted": true,
+          "mount_probe_seconds": 0.00021446309983730316,
+          "unmount_seconds": 0.022549258545041084,
+          "driver_wait_seconds": 1.4658321011811495,
+          "teardown_seconds": 1.4886038918048143,
+          "pre_exit_fsync_seconds": null,
+          "teardown_fsync_seconds": [
+            1.059831,
+            0.288419
+          ],
+          "teardown_fsync_sum": 1.34825,
+          "teardown_fsync_fraction": 0.905714412962708,
+          "fsync_calls": [
+            {
+              "timestamp": 1793689525.201058,
+              "seconds": 0.000112,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_open_channel+0x44) [0x2dc44]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_open2.part.0+0x11c) [0x2951c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x207) [0x3a07]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-3-managed/fuse2fs-7b696c84ef064562933e7a8a6054d9c4.trace.1759262"
+            },
+            {
+              "timestamp": 1793689525.218646,
+              "seconds": 0.293244,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x31c) [0x1566c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0xb2b) [0x432b]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-3-managed/fuse2fs-7b696c84ef064562933e7a8a6054d9c4.trace.1759262"
+            },
+            {
+              "timestamp": 1793689525.513194,
+              "seconds": 0.080112,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x444) [0x15794]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0xb2b) [0x432b]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-3-managed/fuse2fs-7b696c84ef064562933e7a8a6054d9c4.trace.1759262"
+            },
+            {
+              "timestamp": 1793689534.902249,
+              "seconds": 1.059831,
+              "teardown": true,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x31c) [0x1566c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_destroy+0xf9) [0x6ac9]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_session_destroy+0xc6) [0x19cf6]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_destroy+0x224) [0x17934]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_main_real+0x1a6) [0x20516]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x97c) [0x417c]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-3-managed/fuse2fs-7b696c84ef064562933e7a8a6054d9c4.trace.1759262"
+            },
+            {
+              "timestamp": 1793689535.963953,
+              "seconds": 0.288419,
+              "teardown": true,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x444) [0x15794]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_destroy+0xf9) [0x6ac9]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_session_destroy+0xc6) [0x19cf6]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_destroy+0x224) [0x17934]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_main_real+0x1a6) [0x20516]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x97c) [0x417c]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-3-managed/fuse2fs-7b696c84ef064562933e7a8a6054d9c4.trace.1759262"
+            }
+          ]
+        },
+        {
+          "index": 4,
+          "traced": true,
+          "ost": 1,
+          "pre_exit_fsync": true,
+          "accepted": true,
+          "mount_probe_seconds": 0.00021307729184627533,
+          "unmount_seconds": 0.01787455379962921,
+          "driver_wait_seconds": 28.865967435762286,
+          "teardown_seconds": 28.884064503014088,
+          "pre_exit_fsync_seconds": 5.726948728784919,
+          "teardown_fsync_seconds": [
+            16.61607,
+            12.222651
+          ],
+          "teardown_fsync_sum": 28.838721,
+          "teardown_fsync_fraction": 0.9984301550424333,
+          "fsync_calls": [
+            {
+              "timestamp": 1793689539.672023,
+              "seconds": 0.000104,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_open_channel+0x44) [0x2dc44]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_open2.part.0+0x11c) [0x2951c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x207) [0x3a07]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-4-managed/fuse2fs-d4c6b0690b224589832a544ca10dab18.trace.1759826"
+            },
+            {
+              "timestamp": 1793689539.689821,
+              "seconds": 0.538638,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x31c) [0x1566c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0xb2b) [0x432b]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-4-managed/fuse2fs-d4c6b0690b224589832a544ca10dab18.trace.1759826"
+            },
+            {
+              "timestamp": 1793689540.229739,
+              "seconds": 0.163993,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x444) [0x15794]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0xb2b) [0x432b]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-4-managed/fuse2fs-d4c6b0690b224589832a544ca10dab18.trace.1759826"
+            },
+            {
+              "timestamp": 1793689555.394834,
+              "seconds": 16.61607,
+              "teardown": true,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x31c) [0x1566c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_destroy+0xf9) [0x6ac9]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_session_destroy+0xc6) [0x19cf6]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_destroy+0x224) [0x17934]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_main_real+0x1a6) [0x20516]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x97c) [0x417c]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-4-managed/fuse2fs-d4c6b0690b224589832a544ca10dab18.trace.1759826"
+            },
+            {
+              "timestamp": 1793689572.012792,
+              "seconds": 12.222651,
+              "teardown": true,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x444) [0x15794]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_destroy+0xf9) [0x6ac9]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_session_destroy+0xc6) [0x19cf6]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_destroy+0x224) [0x17934]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_main_real+0x1a6) [0x20516]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x97c) [0x417c]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-4-managed/fuse2fs-d4c6b0690b224589832a544ca10dab18.trace.1759826"
+            },
+            {
+              "timestamp": 1793689549.679445,
+              "seconds": 1.20017,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x31c) [0x1566c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_fsync+0xca) [0x7e2a]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_reply_err+0xa68) [0x103f8]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_reply_data+0xc02) [0x120b2]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_lowlevel_notify_store+0x1513) [0x1f7c3]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_exit+0x158) [0x17268]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(pthread_condattr_setpshared+0x684) [0x9caa4]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__clone+0x24c) [0x129c6c]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-4-managed/fuse2fs-d4c6b0690b224589832a544ca10dab18.trace.1760161"
+            },
+            {
+              "timestamp": 1793689550.881893,
+              "seconds": 4.444252,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x444) [0x15794]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_fsync+0xca) [0x7e2a]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_reply_err+0xa68) [0x103f8]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_reply_data+0xc02) [0x120b2]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_lowlevel_notify_store+0x1513) [0x1f7c3]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_exit+0x158) [0x17268]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(pthread_condattr_setpshared+0x684) [0x9caa4]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__clone+0x24c) [0x129c6c]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-4-managed/fuse2fs-d4c6b0690b224589832a544ca10dab18.trace.1760161"
+            }
+          ]
+        },
+        {
+          "index": 5,
+          "traced": true,
+          "ost": 1,
+          "pre_exit_fsync": false,
+          "accepted": true,
+          "mount_probe_seconds": 0.00020843371748924255,
+          "unmount_seconds": 0.01655752770602703,
+          "driver_wait_seconds": 0.4641141202300787,
+          "teardown_seconds": 0.48088996298611164,
+          "pre_exit_fsync_seconds": null,
+          "teardown_fsync_seconds": [
+            0.172673,
+            0.18042
+          ],
+          "teardown_fsync_sum": 0.353093,
+          "teardown_fsync_fraction": 0.7342490531668624,
+          "fsync_calls": [
+            {
+              "timestamp": 1793689588.710357,
+              "seconds": 0.000118,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_open_channel+0x44) [0x2dc44]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_open2.part.0+0x11c) [0x2951c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x207) [0x3a07]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-5-managed/fuse2fs-b478a82b054d4cf2860d455a5a5f0c36.trace.1760437"
+            },
+            {
+              "timestamp": 1793689588.728796,
+              "seconds": 0.094516,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x31c) [0x1566c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0xb2b) [0x432b]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-5-managed/fuse2fs-b478a82b054d4cf2860d455a5a5f0c36.trace.1760437"
+            },
+            {
+              "timestamp": 1793689588.824732,
+              "seconds": 0.103208,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x444) [0x15794]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0xb2b) [0x432b]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-5-managed/fuse2fs-b478a82b054d4cf2860d455a5a5f0c36.trace.1760437"
+            },
+            {
+              "timestamp": 1793689598.245407,
+              "seconds": 0.172673,
+              "teardown": true,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x31c) [0x1566c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_destroy+0xf9) [0x6ac9]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_session_destroy+0xc6) [0x19cf6]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_destroy+0x224) [0x17934]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_main_real+0x1a6) [0x20516]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x97c) [0x417c]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-5-managed/fuse2fs-b478a82b054d4cf2860d455a5a5f0c36.trace.1760437"
+            },
+            {
+              "timestamp": 1793689598.419821,
+              "seconds": 0.18042,
+              "teardown": true,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x444) [0x15794]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_destroy+0xf9) [0x6ac9]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_session_destroy+0xc6) [0x19cf6]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_destroy+0x224) [0x17934]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_main_real+0x1a6) [0x20516]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x97c) [0x417c]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-5-managed/fuse2fs-b478a82b054d4cf2860d455a5a5f0c36.trace.1760437"
+            }
+          ]
+        },
+        {
+          "index": 6,
+          "traced": true,
+          "ost": 5,
+          "pre_exit_fsync": false,
+          "accepted": true,
+          "mount_probe_seconds": 0.00021191127598285675,
+          "unmount_seconds": 0.014142904430627823,
+          "driver_wait_seconds": 0.4139702245593071,
+          "teardown_seconds": 0.4283336829394102,
+          "pre_exit_fsync_seconds": null,
+          "teardown_fsync_seconds": [
+            0.189327,
+            0.0785
+          ],
+          "teardown_fsync_sum": 0.267827,
+          "teardown_fsync_fraction": 0.6252765324502517,
+          "fsync_calls": [
+            {
+              "timestamp": 1793689601.319042,
+              "seconds": 8.8e-05,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_open_channel+0x44) [0x2dc44]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_open2.part.0+0x11c) [0x2951c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x207) [0x3a07]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-6-managed/fuse2fs-af0e0b846c874153b5829852114bdfdf.trace.1760996"
+            },
+            {
+              "timestamp": 1793689601.336633,
+              "seconds": 0.092608,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x31c) [0x1566c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0xb2b) [0x432b]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-6-managed/fuse2fs-af0e0b846c874153b5829852114bdfdf.trace.1760996"
+            },
+            {
+              "timestamp": 1793689601.430477,
+              "seconds": 0.075969,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x444) [0x15794]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0xb2b) [0x432b]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-6-managed/fuse2fs-af0e0b846c874153b5829852114bdfdf.trace.1760996"
+            },
+            {
+              "timestamp": 1793689610.86493,
+              "seconds": 0.189327,
+              "teardown": true,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x31c) [0x1566c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_destroy+0xf9) [0x6ac9]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_session_destroy+0xc6) [0x19cf6]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_destroy+0x224) [0x17934]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_main_real+0x1a6) [0x20516]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x97c) [0x417c]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-6-managed/fuse2fs-af0e0b846c874153b5829852114bdfdf.trace.1760996"
+            },
+            {
+              "timestamp": 1793689611.056063,
+              "seconds": 0.0785,
+              "teardown": true,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x444) [0x15794]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_destroy+0xf9) [0x6ac9]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_session_destroy+0xc6) [0x19cf6]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_destroy+0x224) [0x17934]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_main_real+0x1a6) [0x20516]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x97c) [0x417c]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-6-managed/fuse2fs-af0e0b846c874153b5829852114bdfdf.trace.1760996"
+            }
+          ]
+        },
+        {
+          "index": 7,
+          "traced": true,
+          "ost": 5,
+          "pre_exit_fsync": true,
+          "accepted": true,
+          "mount_probe_seconds": 0.0002107825130224228,
+          "unmount_seconds": 0.016632698476314545,
+          "driver_wait_seconds": 0.3137901481240988,
+          "teardown_seconds": 0.33064244128763676,
+          "pre_exit_fsync_seconds": 7.036446001380682,
+          "teardown_fsync_seconds": [
+            0.113201,
+            0.150686
+          ],
+          "teardown_fsync_sum": 0.263887,
+          "teardown_fsync_fraction": 0.7981038337738258,
+          "fsync_calls": [
+            {
+              "timestamp": 1793689624.022833,
+              "seconds": 6.573669,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x31c) [0x1566c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_fsync+0xca) [0x7e2a]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_reply_err+0xa68) [0x103f8]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_reply_data+0xc02) [0x120b2]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_lowlevel_notify_store+0x1513) [0x1f7c3]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_exit+0x158) [0x17268]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(pthread_condattr_setpshared+0x684) [0x9caa4]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__clone+0x24c) [0x129c6c]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-7-managed/fuse2fs-cc17da22ec7648a7974f45d3c58e4386.trace.1761650"
+            },
+            {
+              "timestamp": 1793689630.598558,
+              "seconds": 0.38614,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x444) [0x15794]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_fsync+0xca) [0x7e2a]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_reply_err+0xa68) [0x103f8]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_reply_data+0xc02) [0x120b2]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_lowlevel_notify_store+0x1513) [0x1f7c3]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_exit+0x158) [0x17268]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(pthread_condattr_setpshared+0x684) [0x9caa4]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__clone+0x24c) [0x129c6c]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-7-managed/fuse2fs-cc17da22ec7648a7974f45d3c58e4386.trace.1761650"
+            },
+            {
+              "timestamp": 1793689614.625352,
+              "seconds": 0.000131,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_open_channel+0x44) [0x2dc44]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_open2.part.0+0x11c) [0x2951c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x207) [0x3a07]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-7-managed/fuse2fs-cc17da22ec7648a7974f45d3c58e4386.trace.1761557"
+            },
+            {
+              "timestamp": 1793689614.642714,
+              "seconds": 0.103347,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x31c) [0x1566c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0xb2b) [0x432b]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-7-managed/fuse2fs-cc17da22ec7648a7974f45d3c58e4386.trace.1761557"
+            },
+            {
+              "timestamp": 1793689614.74746,
+              "seconds": 0.072544,
+              "teardown": false,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x14) [0x11ee14]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x444) [0x15794]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0xb2b) [0x432b]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-7-managed/fuse2fs-cc17da22ec7648a7974f45d3c58e4386.trace.1761557"
+            },
+            {
+              "timestamp": 1793689631.050134,
+              "seconds": 0.113201,
+              "teardown": true,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x31c) [0x1566c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_destroy+0xf9) [0x6ac9]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_session_destroy+0xc6) [0x19cf6]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_destroy+0x224) [0x17934]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_main_real+0x1a6) [0x20516]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x97c) [0x417c]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-7-managed/fuse2fs-cc17da22ec7648a7974f45d3c58e4386.trace.1761557"
+            },
+            {
+              "timestamp": 1793689631.16519,
+              "seconds": 0.150686,
+              "teardown": true,
+              "stack": [
+                " > /lib/x86_64-linux-gnu/libc.so.6(fsync+0x3c) [0x11ee3c]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(unix_flush+0x52) [0x2f072]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(ext2fs_flush2.part.0+0x444) [0x15794]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(op_destroy+0xf9) [0x6ac9]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_session_destroy+0xc6) [0x19cf6]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_destroy+0x224) [0x17934]",
+                " > /lib/x86_64-linux-gnu/libfuse3.so.3.14.0(fuse_main_real+0x1a6) [0x20516]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(main+0x97c) [0x417c]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_init_first+0x8a) [0x2a1ca]",
+                " > /lib/x86_64-linux-gnu/libc.so.6(__libc_start_main+0x8b) [0x2a28b]",
+                " > /org/org-open-sai/proj-sai-hpc-software/cache/tools/fuse2fs-46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10/bin/fuse2fs(_start+0x25) [0x47c5]"
+              ],
+              "trace": "raw/overlay-teardown-sync-2151858-7-managed/fuse2fs-cc17da22ec7648a7974f45d3c58e4386.trace.1761557"
+            }
+          ]
+        }
+      ],
+      "host_fsync_probes": [
+        {
+          "index": 0,
+          "ost": 1,
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/overlay-host-sync-2151858-1/sample-0.bin",
+          "bytes": 1048576,
+          "seconds": 0.36668396554887295
+        },
+        {
+          "index": 1,
+          "ost": 5,
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/overlay-host-sync-2151858-5/sample-1.bin",
+          "bytes": 1048576,
+          "seconds": 0.6847944278270006
+        },
+        {
+          "index": 2,
+          "ost": 1,
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/overlay-host-sync-2151858-1/sample-2.bin",
+          "bytes": 1048576,
+          "seconds": 0.07414687611162663
+        },
+        {
+          "index": 3,
+          "ost": 5,
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/overlay-host-sync-2151858-5/sample-3.bin",
+          "bytes": 1048576,
+          "seconds": 0.14856743812561035
+        },
+        {
+          "index": 4,
+          "ost": 1,
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/overlay-host-sync-2151858-1/sample-4.bin",
+          "bytes": 1048576,
+          "seconds": 0.05669722333550453
+        },
+        {
+          "index": 5,
+          "ost": 5,
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/overlay-host-sync-2151858-5/sample-5.bin",
+          "bytes": 1048576,
+          "seconds": 0.11281507275998592
+        },
+        {
+          "index": 6,
+          "ost": 1,
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/overlay-host-sync-2151858-1/sample-6.bin",
+          "bytes": 1048576,
+          "seconds": 0.23369677364826202
+        },
+        {
+          "index": 7,
+          "ost": 5,
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/overlay-host-sync-2151858-5/sample-7.bin",
+          "bytes": 1048576,
+          "seconds": 0.09046366065740585
+        },
+        {
+          "index": 8,
+          "ost": 1,
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/overlay-host-sync-2151858-1/sample-8.bin",
+          "bytes": 1048576,
+          "seconds": 0.22730667889118195
+        },
+        {
+          "index": 9,
+          "ost": 5,
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/overlay-host-sync-2151858-5/sample-9.bin",
+          "bytes": 1048576,
+          "seconds": 0.22755319438874722
+        },
+        {
+          "index": 10,
+          "ost": 1,
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/overlay-host-sync-2151858-1/sample-10.bin",
+          "bytes": 1048576,
+          "seconds": 4.127791190519929
+        },
+        {
+          "index": 11,
+          "ost": 5,
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/overlay-host-sync-2151858-5/sample-11.bin",
+          "bytes": 1048576,
+          "seconds": 0.07778613269329071
+        },
+        {
+          "index": 12,
+          "ost": 1,
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/overlay-host-sync-2151858-1/sample-12.bin",
+          "bytes": 1048576,
+          "seconds": 0.328424159437418
+        },
+        {
+          "index": 13,
+          "ost": 5,
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/overlay-host-sync-2151858-5/sample-13.bin",
+          "bytes": 1048576,
+          "seconds": 0.06999991275370121
+        },
+        {
+          "index": 14,
+          "ost": 1,
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/overlay-host-sync-2151858-1/sample-14.bin",
+          "bytes": 1048576,
+          "seconds": 0.05726146511733532
+        },
+        {
+          "index": 15,
+          "ost": 5,
+          "path": "/org/org-open-sai/proj-sai-hpc-software/runs/overlay-host-sync-2151858-5/sample-15.bin",
+          "bytes": 1048576,
+          "seconds": 0.1832942757755518
+        }
+      ]
+    }
+  ]
+}

@@ -38,6 +38,16 @@ offline filesystem and independent read-only data checks. See the
 [GPU regression and efficiency evidence](evidence/overlay-efficiency-20261103/README.md)
 for the full measurements and their limits.
 
+A teardown follow-up reproduced a 28.884-second natural driver exit and traced
+28.839 seconds of it to two successful fsync calls on the Lustre-backed image.
+Unmount itself took 0.018 seconds. A native 1 MiB file control also spent 4.128
+seconds in fsync. The microbenchmark's directory `syncfs` did not trigger an
+image fsync; the real workflow's writable-marker fsync does, as confirmed by
+stacks. Final clean-state persistence still requires its own ordered barriers.
+Both diagnostic jobs passed all image integrity checks. Keep the existing sync
+and 120-second natural-exit policy; no production runtime/driver changes were
+made. See [teardown diagnosis](evidence/overlay-teardown-20261103/README.md).
+
 ## NEPAdapters release addon
 
 NEPAdapters v1.0.4 (`c934e71444cb`) now has an independent manual SIF workflow,
