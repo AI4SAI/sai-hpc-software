@@ -23,14 +23,13 @@ DRIVER_SHA256 = '46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb1
 APPTAINER = Path('/opt/devtools/apptainer/1.4.4/bin/apptainer')
 SITE_CONFIG = Path('/opt/devtools/apptainer/1.4.4/etc/apptainer/apptainer.conf')
 INDEPENDENT_PREFIX = Path('/opt/devtools/apptainer-sai/1.4.4')
-INDEPENDENT_MODULE = Path('/opt/modules/modulefiles/devtools/apptainer/1.4.4-sai.lua')
 SITE_CLI_SHA256 = '2ba9ae17c087a0d8a6bbfeaae0b12775bd8724f51d5452c41e951ea853a8e5da'
 STARTER_SHA256 = '80cf5306207ea473a4b412a617e8594accebf9bc05413f5cb1f9f8cde7e2b529'
 
 
 def module_load_command():
     # The installer only publishes this module after a native container launch.
-    return ('if [ -f ' + str(INDEPENDENT_MODULE) + ' ]; then '
+    return ('if module --ignore_cache is-avail apptainer/1.4.4-sai; then '
             'module --ignore_cache load apptainer/1.4.4-sai; '
             'else module load apptainer/1.4.4; fi')
 
