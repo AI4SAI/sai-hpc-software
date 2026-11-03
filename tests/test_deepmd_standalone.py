@@ -204,6 +204,7 @@ class DeePMDStatusTests(unittest.TestCase):
 
     def build_files(self):
         (self.directory / 'runtime').mkdir(exist_ok=True)
+        (self.directory / 'runtime/compat-source-patch.json').write_text('{}\n')
         for phase in ('build', 'export'):
             (self.directory / f'runtime/overlay-sync-{phase}.json').write_text(
                 json.dumps(dict(phase=phase, synchronized=True)))
@@ -322,6 +323,12 @@ class DeePMDStatusTests(unittest.TestCase):
                 (self.directory / f'results/overlay-fsck-{phase}.stdout').write_text('changed')
                 with self.assertRaisesRegex(ValueError, 'fixed build receipt'):
                     self.query(self.row())
+
+    def test_compatibility_receipt_cannot_change_after_build_sealing(self):
+        self.successful_files()
+        (self.directory / 'runtime/compat-source-patch.json').write_text('{"changed": true}\n')
+        with self.assertRaisesRegex(ValueError, 'fixed build receipt'):
+            self.query(self.row())
 
     def test_writable_artifact_and_missing_receipt_fail_closed(self):
         self.successful_files()
