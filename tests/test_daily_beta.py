@@ -223,6 +223,29 @@ class RuntimeTests(unittest.TestCase):
                         self.assertEqual(daily.retry_node(directory, row), '8v100v0n09')
                 log.unlink()
 
+    def test_native_ecc_probe_is_bound_to_the_failed_job_and_helper(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            directory = Path(tmp)
+            (directory / 'control').mkdir()
+            helper = directory / 'control/gpu_health.py'
+            helper.write_bytes((REPO / 'controller/gpu_health.py').read_bytes())
+            daily.save(directory / 'request.json', dict(files={'control/gpu_health.py': digest(helper)}))
+            row = ['123', 'FAILED', '74:0', '8V100V0', 'proj-sai-hpc-software', tmp, '8v100v0n09']
+            report = dict(schema=1, healthy=False, job='123', partition='8V100V0',
+                          workdir=tmp, node='8v100v0n09', probe_sha256=digest(helper),
+                          devices=[dict(set_device=dict(code=214))])
+            daily.save(directory / 'gpu-health.json', report)
+            self.assertEqual(daily.retry_node(directory, row), '8v100v0n09')
+            for key, value in (('job', '122'), ('node', '8v100v0n08'), ('workdir', '/elsewhere'),
+                               ('partition', '16V100'), ('probe_sha256', 'a' * 64)):
+                daily.save(directory / 'gpu-health.json', dict(report, **{key: value}))
+                with self.subTest(key=key), self.assertRaisesRegex(ValueError, 'allocation'):
+                    daily.retry_node(directory, row)
+            for code in (0, 35, 100, 999):
+                daily.save(directory / 'gpu-health.json', dict(report,
+                           devices=[dict(set_device=dict(code=code))]))
+                self.assertIsNone(daily.retry_node(directory, row))
+
     def test_transport_archive_has_every_fixture_and_rendered_jobs_are_valid(self):
         with tempfile.TemporaryDirectory() as tmp:
             root = Path(tmp)
@@ -248,6 +271,12 @@ class RuntimeTests(unittest.TestCase):
                     subprocess.run(['bash', '-n'], input=script, text=True, check=True)
                     if partition != 'DSPRHBM':
                         self.assertNotIn('--cpus-per-task', script)
+                        self.assertIn('/usr/bin/python3 -B control/gpu_health.py > gpu-health.json', script)
+                        request = json.loads((output / 'request.json').read_text())
+                        self.assertEqual(request['files']['control/gpu_health.py'],
+                                         digest(REPO / 'controller/gpu_health.py'))
+                    else:
+                        self.assertNotIn('gpu-health.json', script)
                     self.assertIn('--account=proj-sai-hpc-software', script)
                     if software == 'abacus' and partition == '16V100':
                         # Exercise the pre-module environment with the same NIL

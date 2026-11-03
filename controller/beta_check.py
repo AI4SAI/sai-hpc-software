@@ -28,6 +28,8 @@ def prepare(software, partition, bundle, output, fixtures):
         (output / name).mkdir(mode=0o700)
     shutil.copytree(fixtures / software, output / 'case', copy_function=shutil.copyfile)
     control = Path(__file__).resolve().parent
+    if partition != 'DSPRHBM':
+        shutil.copyfile(control / 'gpu_health.py', output / 'control/gpu_health.py')
     if software == 'deepmd-kit':
         for name in ('deepmd_training_check.py', 'deepmd_training_input.json', 'deepmd_training_dpa2.json'):
             shutil.copyfile(control / name, output / 'control' / name)
@@ -75,6 +77,7 @@ def render(software, partition, bundle, output):
              'export OMPI_MCA_plm_slurm_args=--external-launcher PRTE_MCA_plm_slurm_args=--external-launcher',
              'export SAI_SIF_TRACE_DIR=' + q(str(output / 'trace')),
              'printf "%s\\n" "$SLURM_JOB_ID" > job.id', 'module -t list > modules.txt 2>&1',
+             *(['/usr/bin/python3 -B control/gpu_health.py > gpu-health.json'] if partition != 'DSPRHBM' else []),
              'cd case']
     launch = 'mpirun -np 2 --map-by ppr:2:node:PE=1 --bind-to core '
     commands = {'cp2k': launch + 'cp2k.psmp -i input.inp', 'abacus': launch + 'abacus',

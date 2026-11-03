@@ -298,6 +298,21 @@ class ResolveTrackTests(unittest.TestCase):
         self.assertEqual(len({row["track"] for row in same}), 3)
         self.assertEqual(same[0]["requested_ref"], "master")
 
+    def test_only_the_exact_obsolete_abacus_checkpoint_is_skipped(self):
+        old = dict(ref='DCU', sha='e07f9d7213f51b72a9f77e7f832855d5d6cf9484', version='DCU')
+        row, = contract.resolve_tracks('abacus', ['prerelease'], Mock(return_value=old))
+        self.assertEqual(row['status'], 'skipped')
+        self.assertIn('2022 DCU checkpoint', row['reason'])
+        self.assertEqual(row['source_sha'], old['sha'])
+        for software, track, source in (
+                ('abacus', 'release', old), ('abacus', 'development', old),
+                ('gpumd', 'prerelease', old),
+                ('abacus', 'prerelease', dict(old, sha='a' * 40)),
+                ('abacus', 'prerelease', dict(old, ref='v3.12.0-rc1'))):
+            with self.subTest(software=software, track=track, source=source):
+                row, = contract.resolve_tracks(software, [track], Mock(return_value=source))
+                self.assertEqual(row['status'], 'resolved')
+
     def test_only_explicit_absence_skips_release_channels(self):
         for track in ("prerelease", "release"):
             message = "no latest-" + track + " available"

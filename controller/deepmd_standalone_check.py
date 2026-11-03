@@ -35,11 +35,30 @@ def inventory(prefix):
                         *(site / 'deepmd/lib').glob('libdeepmd*.so*')]))
     backends = sorted({match.group(1) for path in paths
                        if (match := re.match(r'libdeepmd_backend_([^.]+)\.so', path.name))})
+    layout, evidence = 'plugins', {}
+    if not backends:
+        # Older 3.x builds put backend implementations in libdeepmd_cc.
+        # These init definitions are compiled only with BUILD_TENSORFLOW,
+        # BUILD_PYTORCH and BUILD_JAX (or BUILD_TENSORFLOW), respectively.
+        # Read defined dynamic symbols, not declarations or CMake intentions.
+        # Never borrow the Python package's library for the installed C API.
+        native = prefix / 'lib/libdeepmd_cc.so'
+        if native.is_file():
+            symbols = subprocess.check_output(
+                ['nm', '-D', '--defined-only', '--demangle', str(native)], text=True)
+            for backend, implementation in (('tf', 'TF'), ('pt', 'PT'), ('jax', 'JAX')):
+                matches = re.findall(r'^[0-9a-fA-F]+\s+[TW]\s+(deepmd::DeepPot' +
+                                     implementation + r'::init\([^\n]+)$', symbols, re.M)
+                if matches:
+                    evidence[backend] = dict(library=str(native), symbols=matches)
+            backends = sorted(evidence)
+            layout = 'monolithic'
     if not {'tf', 'pt', 'jax'} <= set(backends):
         raise ValueError('DeePMD backend feature regression: ' + str(backends))
     if not (prefix / 'lib/libdeepmd_c.so').is_file():
         raise ValueError('standalone DeePMD needs its installed C API')
     return dict(version=importlib.metadata.version('deepmd-kit'), backends=backends,
+                backend_layout=layout, backend_evidence=evidence,
                 libraries={str(path): dict(sha256=file_digest(path.resolve(strict=True)),
                     resolved=str(path.resolve(strict=True)), ldd=libraries(path)) for path in paths})
 
