@@ -1,0 +1,20 @@
+{
+  "command": [
+    "/org/org-open-sai/proj-sai-hpc-software/diagnostics/apptainer-independent-20261103/installed/apptainer-sai/1.4.4/bin/apptainer",
+    "exec",
+    "--userns",
+    "--cleanenv",
+    "--containall",
+    "--no-home",
+    "--no-mount",
+    "home,cwd,tmp,hostfs,bind-paths",
+    "--bind",
+    "/usr,/sbin,/lib,/lib64",
+    "/org/org-open-sai/proj-sai-hpc-software/containers/base/minimal-v1.sif",
+    "/usr/bin/true"
+  ],
+  "returncode": 1,
+  "stdout": "",
+  "stderr": "\u001b[91mERROR  : Failed to create container process: Operation not permitted\n\u001b[0m",
+  "node": "d9470n01.mr-sai.ai"
+}

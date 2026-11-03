@@ -1,5 +1,6 @@
 import argparse
 import json
+import os
 import subprocess
 from pathlib import Path
 import shlex
@@ -91,12 +92,39 @@ class ImageDriverTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             driver.wrap_command(self.root, self.run, '/home/user/controller', ['apptainer', 'shell'])
 
+    def test_module_selected_runtime_is_pinned_and_recorded(self):
+        prefix = self.root / 'independent'
+        for name, data in (('bin/apptainer', b'cli'), ('libexec/apptainer/bin/starter', b'starter'),
+                           ('etc/apptainer/apptainer.conf', self.config.read_bytes())):
+            p = prefix / name
+            p.parent.mkdir(parents=True, exist_ok=True)
+            p.write_bytes(data)
+            p.chmod(0o755)
+        with patch.object(driver, 'INDEPENDENT_PREFIX', prefix), \
+                patch.object(driver, 'SITE_CLI_SHA256', checksum(prefix / 'bin/apptainer')), \
+                patch.object(driver, 'STARTER_SHA256', checksum(prefix / 'libexec/apptainer/bin/starter')), \
+                patch.dict(os.environ, SAI_HPC_APPTAINER=str(prefix / 'bin/apptainer')):
+            driver.prepare(self.root, self.run)
+            record = json.loads((self.run / 'results/image-driver.json').read_text())
+            self.assertEqual(record['apptainer'], str(prefix / 'bin/apptainer'))
+            self.assertEqual(record['starter_sha256'], driver.STARTER_SHA256)
+            # Cache validation must work even when the module is not loaded.
+            with patch.dict(os.environ, SAI_HPC_APPTAINER=str(driver.APPTAINER)):
+                driver.validate_receipt(self.root, record)
+            (prefix / 'libexec/apptainer/bin/starter').write_bytes(b'changed')
+            with self.assertRaisesRegex(ValueError, 'identity differs'):
+                driver.runtime_paths()
+        with patch.dict(os.environ, SAI_HPC_APPTAINER='/unexpected/apptainer'):
+            with self.assertRaisesRegex(ValueError, 'unsupported SAI_HPC_APPTAINER'):
+                driver.runtime_paths()
+
     def test_build_export_and_emit_use_driver_but_final_sif_verifies_independently(self):
         args = argparse.Namespace(run_id='cp2k-test', software='cp2k', sha='a' * 40,
                                   version='2026.2', target='16v100-avx2', jobs=8, minutes=240,
                                   overlay_mb=16384, track='release', source_ref='v2026.2')
         with patch.object(software, 'ROOT', self.root):
             script = software.render_job(args)
+        self.assertIn(driver.module_load_command(), script)
         mounts = [shlex.split(line.split(' > ')[0]) for line in script.splitlines()
                   if '--overlay' in line]
         self.assertEqual(len(mounts), 3)

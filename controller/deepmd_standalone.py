@@ -8,7 +8,7 @@ from pathlib import Path
 import shlex
 import subprocess
 
-from cp2k_image_driver import wrap_command
+from cp2k_image_driver import wrap_command, module_load_command
 from release_contract import GPU_TARGETS, claim_build, make_identity, validate_identity
 from remote_controller import (container_command, gpumd_qos, private_scratch,
                                project_batch_directives, safe_name, site_app_binds, SAI_PROJECT_ROOT)
@@ -104,7 +104,7 @@ def render(delivery, run_id):
              '#SBATCH --time=240', *project_batch_directives(PROJECT, directory),
              '#SBATCH --output=' + str(directory / 'results/slurm-%j.log'), '#SBATCH --export=NIL',
              'set -eo pipefail', 'export PATH=/usr/bin:/bin LD_LIBRARY_PATH="" LD_PRELOAD=""',
-             'source /etc/profile.d/lmod.sh', 'module load apptainer/1.4.4', 'set -u', 'umask 077',
+             'source /etc/profile.d/lmod.sh', module_load_command(), 'set -u', 'umask 077',
              'export TMPDIR=' + shlex.quote(str(directory / 'runtime')),
              'export APPTAINER_TMPDIR="$TMPDIR"',
              'export APPTAINER_CACHEDIR=' + shlex.quote(str(directory / 'apptainer-cache')),

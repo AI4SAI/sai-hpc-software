@@ -22,6 +22,32 @@ PATCHED_SOURCE_SHA256 = 'c63d1fb25510d316836952953e9adddacd3214cd91d6002bf3b16ae
 DRIVER_SHA256 = '46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10'
 APPTAINER = Path('/opt/devtools/apptainer/1.4.4/bin/apptainer')
 SITE_CONFIG = Path('/opt/devtools/apptainer/1.4.4/etc/apptainer/apptainer.conf')
+INDEPENDENT_PREFIX = Path('/opt/devtools/apptainer-sai/1.4.4')
+INDEPENDENT_MODULE = Path('/opt/modules/modulefiles/devtools/apptainer/1.4.4-sai.lua')
+SITE_CLI_SHA256 = '2ba9ae17c087a0d8a6bbfeaae0b12775bd8724f51d5452c41e951ea853a8e5da'
+STARTER_SHA256 = '80cf5306207ea473a4b412a617e8594accebf9bc05413f5cb1f9f8cde7e2b529'
+
+
+def module_load_command():
+    # The installer only publishes this module after a native container launch.
+    return ('if [ -f ' + str(INDEPENDENT_MODULE) + ' ]; then '
+            'module --ignore_cache load apptainer/1.4.4-sai; '
+            'else module load apptainer/1.4.4; fi')
+
+
+def runtime_paths():
+    selected = os.environ.get('SAI_HPC_APPTAINER', str(APPTAINER))
+    if selected == str(APPTAINER):
+        return APPTAINER, SITE_CONFIG
+    app = INDEPENDENT_PREFIX / 'bin/apptainer'
+    if selected != str(app):
+        raise ValueError('unsupported SAI_HPC_APPTAINER; load apptainer/1.4.4-sai')
+    for path, expected in ((app, SITE_CLI_SHA256),
+                           (INDEPENDENT_PREFIX / 'libexec/apptainer/bin/starter', STARTER_SHA256)):
+        canonical(path)
+        if path.stat().st_mode & 0o6022 or checksum(path) != expected:
+            raise ValueError('independent Apptainer runtime identity differs: ' + str(path))
+    return app, INDEPENDENT_PREFIX / 'etc/apptainer/apptainer.conf'
 
 
 def driver_path(project):
@@ -56,10 +82,18 @@ def write_once(path, content):
 
 
 def validate_receipt(project, record):
+    # Dependency receipts are checked outside the job's module environment.
+    # Recognize either recorded runtime explicitly; never rewrite its identity.
+    app = record.get('apptainer')
+    if app not in (str(APPTAINER), str(INDEPENDENT_PREFIX / 'bin/apptainer')):
+        raise ValueError('unrecognized Apptainer runtime in image driver provenance')
+    if app != str(APPTAINER) and (record.get('apptainer_sha256') != SITE_CLI_SHA256 or
+                                  record.get('starter_sha256') != STARTER_SHA256):
+        raise ValueError('independent Apptainer runtime provenance differs')
     expected = dict(schema=1, source_commit=SOURCE_COMMIT,
                     patched_source_sha256=PATCHED_SOURCE_SHA256,
                     binary_sha256=DRIVER_SHA256, driver=str(driver_path(project)),
-                    apptainer=str(APPTAINER))
+                    apptainer=app)
     digest = record.get('config_sha256', '')
     if (any(record.get(key) != value for key, value in expected.items()) or
             len(digest) != 64 or any(c not in '0123456789abcdef' for c in digest)):
@@ -67,6 +101,7 @@ def validate_receipt(project, record):
 
 
 def prepare(project, run):
+    app, site_config = runtime_paths()
     project, run = canonical(project), canonical(run)
     if run.parent != project / 'runs':
         raise ValueError('image driver run escaped the project')
@@ -79,14 +114,16 @@ def prepare(project, run):
         raise ValueError('missing, writable or changed pinned CP2K fuse2fs driver')
     # Apptainer inserts its bundled helper at the literal $PATH position.
     # The private directory must precede it; changing shell PATH is insufficient.
-    content = (SITE_CONFIG.read_text() + '\nbinary path = ' + str(driver.parent) +
+    content = (site_config.read_text() + '\nbinary path = ' + str(driver.parent) +
                ':$PATH:/usr/bin:/bin:/usr/sbin:/sbin\n').encode()
     config = run / 'runtime/apptainer-fuse2fs.conf'
     write_once(config, content)
     record = dict(schema=1, source_commit=SOURCE_COMMIT,
                   patched_source_sha256=PATCHED_SOURCE_SHA256,
                   binary_sha256=DRIVER_SHA256, driver=str(driver),
-                  apptainer=str(APPTAINER), config_sha256=hashlib.sha256(content).hexdigest())
+                  apptainer=str(app), config_sha256=hashlib.sha256(content).hexdigest())
+    if app != APPTAINER:
+        record.update(apptainer_sha256=SITE_CLI_SHA256, starter_sha256=STARTER_SHA256)
     validate_receipt(project, record)
     # This receipt has no per-run paths, so dependency -> application cloning
     # preserves it verbatim and verifies the same driver/configuration again.
@@ -137,7 +174,8 @@ def main():
     config = prepare(project, run)
     print('CP2K_IMAGE_DRIVER sha256=' + DRIVER_SHA256 + ' config=' + str(config),
           file=sys.stderr, flush=True)
-    return execute([str(APPTAINER), '--config', str(config), *argv], run)
+    app, _ = runtime_paths()
+    return execute([str(app), '--config', str(config), *argv], run)
 
 
 if __name__ == '__main__':

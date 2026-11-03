@@ -14,7 +14,7 @@ import stat
 import subprocess
 import time
 
-from cp2k_image_driver import wrap_command
+from cp2k_image_driver import wrap_command, module_load_command
 from md_controller import PROJECT, ROOT, task
 from md_tracking import TARGETS, fingerprint
 from release_contract import make_identity, validate_identity
@@ -123,7 +123,7 @@ def render(delivery, run_id):
              '#SBATCH --nodes=1', '#SBATCH --ntasks=1', '#SBATCH --gpus-per-node=4', '#SBATCH --time=330',
              '#SBATCH --output=' + str(directory / 'results/slurm-%j.log'), '#SBATCH --export=NIL',
              'set -eo pipefail', 'export PATH=/usr/bin:/bin LD_LIBRARY_PATH="" LD_PRELOAD=""',
-             'source /etc/profile.d/lmod.sh', 'module load apptainer/1.4.4', 'set -u', 'umask 077',
+             'source /etc/profile.d/lmod.sh', module_load_command(), 'set -u', 'umask 077',
              'export TMPDIR=' + shlex.quote(str(directory / 'runtime')),
              'export APPTAINER_TMPDIR="$TMPDIR"',
              'export APPTAINER_CACHEDIR=' + shlex.quote(str(directory / 'apptainer-cache')),

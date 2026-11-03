@@ -12,7 +12,7 @@ import subprocess
 import time
 
 from cp2k_spack_link import validate_receipt
-from cp2k_image_driver import wrap_command, validate_receipt as validate_driver_receipt
+from cp2k_image_driver import wrap_command, validate_receipt as validate_driver_receipt, module_load_command
 from cp2k_overlay_workdir import prepare_clone, RECEIPT as WORKDIR_RECEIPT
 from release_contract import validate_identity
 from remote_controller import TARGETS, container_command, require_capacity, safe_name, project_batch_directives, private_scratch
@@ -81,7 +81,7 @@ def render(project, controller, run, identity, *, minutes=240, jobs=None, overla
     lines += (['#SBATCH --gpus-per-node=' + str(build_gpus)] if target['gpus'] else
               ['#SBATCH --cpus-per-task=' + str(jobs), '#SBATCH --mem=28G'])
     lines += ['set -eo pipefail', 'export PATH=/usr/bin:/bin LD_LIBRARY_PATH="" LD_PRELOAD=""',
-             'source /etc/profile.d/lmod.sh', 'module load apptainer/1.4.4', 'set -u',
+             'source /etc/profile.d/lmod.sh', module_load_command(), 'set -u',
              'umask 077', 'unset APPTAINER_BIND APPTAINER_BINDPATH SINGULARITY_BIND SINGULARITY_BINDPATH',
              'export TMPDIR=' + q(str(run / 'runtime')), 'export APPTAINER_TMPDIR="$TMPDIR"',
              'export APPTAINER_CACHEDIR=' + q(str(run / 'apptainer-cache')),

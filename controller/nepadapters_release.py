@@ -13,7 +13,7 @@ import shlex
 import shutil
 import subprocess
 
-from cp2k_image_driver import driver_path, wrap_command
+from cp2k_image_driver import driver_path, wrap_command, module_load_command
 from remote_controller import (SAI_PROJECT_ROOT, container_command, private_scratch,
                                project_batch_directives, project_qos, safe_name, site_app_binds)
 from source_cache import checksum
@@ -117,7 +117,7 @@ def render(run, request):
              '#SBATCH --output=' + str(run / 'results/slurm-%j.log'),
              'set -eo pipefail', 'export PATH=/usr/bin:/bin LD_LIBRARY_PATH="" LD_PRELOAD=""',
              'export USER=${SLURM_JOB_USER:?} LOGNAME=${SLURM_JOB_USER:?}',
-             'source /etc/profile.d/lmod.sh', 'module load apptainer/1.4.4', 'set -u',
+             'source /etc/profile.d/lmod.sh', module_load_command(), 'set -u',
              'export TMPDIR=' + shlex.quote(str(run / 'runtime')),
              'export APPTAINER_TMPDIR="$TMPDIR"',
              'export APPTAINER_CACHEDIR=' + shlex.quote(str(run / 'apptainer-cache')),
