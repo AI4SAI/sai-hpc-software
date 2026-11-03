@@ -1,0 +1,36 @@
+{
+  "node": "8v100v0n09.mr-sai.ai",
+  "job": "2154037",
+  "cuda_visible_devices": "0,1",
+  "slurm_job_gpus": "1,3",
+  "nvidia_smi": {
+    "returncode": 0,
+    "stdout": "index, uuid, ecc.errors.uncorrected.volatile.total, ecc.errors.uncorrected.aggregate.total\n0, GPU-5765ddae-c92e-f9e0-6aef-c23b031929f3, 1, 0\n1, GPU-3c0de750-2fbe-6b1b-c987-912cf479fe6e, 0, 0\n",
+    "stderr": ""
+  },
+  "device_count_status": {
+    "code": 0,
+    "message": "no error"
+  },
+  "device_count": 2,
+  "devices": [
+    {
+      "ordinal": 0,
+      "set_device": {
+        "code": 214,
+        "message": "uncorrectable ECC error encountered"
+      }
+    },
+    {
+      "ordinal": 1,
+      "set_device": {
+        "code": 0,
+        "message": "no error"
+      },
+      "context_init": {
+        "code": 0,
+        "message": "no error"
+      }
+    }
+  ]
+}

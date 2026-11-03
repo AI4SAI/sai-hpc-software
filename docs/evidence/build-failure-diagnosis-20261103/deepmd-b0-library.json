@@ -1,0 +1,35 @@
+{
+  "source_run": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-41589095618-1-prerelease-16v100-avx2-2e3117e9e4c4",
+  "image": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-41589095618-1-prerelease-16v100-avx2-2e3117e9e4c4/work.ext3",
+  "read_only_image_access": true,
+  "library_sha256": "b632e530687bfd22ce1e8591de300cde707e515c2eba4eb4f4edd889a331df10",
+  "library_bytes": 1497008,
+  "backend_symbols": {
+    "TF": [
+      "0000000000093070 T deepmd::DeepPotTF::init(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)"
+    ],
+    "PT": [
+      "000000000005d440 T deepmd::DeepPotPT::init(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)"
+    ],
+    "JAX": [
+      "000000000004aa30 T deepmd::DeepPotJAX::init(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, int const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&)"
+    ]
+  },
+  "needed": [
+    "0x0000000000000001 (NEEDED)             Shared library: [libdeepmd.so]",
+    "0x0000000000000001 (NEEDED)             Shared library: [libtensorflow_framework.so.2]",
+    "0x0000000000000001 (NEEDED)             Shared library: [libtorch.so]",
+    "0x0000000000000001 (NEEDED)             Shared library: [libc10.so]",
+    "0x0000000000000001 (NEEDED)             Shared library: [libnvrtc.so.12]",
+    "0x0000000000000001 (NEEDED)             Shared library: [libc10_cuda.so]",
+    "0x0000000000000001 (NEEDED)             Shared library: [libtensorflow_cc.so.2]",
+    "0x0000000000000001 (NEEDED)             Shared library: [libdeepmd_op_cuda.so]",
+    "0x0000000000000001 (NEEDED)             Shared library: [libdeepmd_dyn_cudart.so]",
+    "0x0000000000000001 (NEEDED)             Shared library: [libtorch_cpu.so]",
+    "0x0000000000000001 (NEEDED)             Shared library: [libtorch_cuda.so]",
+    "0x0000000000000001 (NEEDED)             Shared library: [libstdc++.so.6]",
+    "0x0000000000000001 (NEEDED)             Shared library: [libm.so.6]",
+    "0x0000000000000001 (NEEDED)             Shared library: [libgcc_s.so.1]",
+    "0x0000000000000001 (NEEDED)             Shared library: [libc.so.6]"
+  ]
+}

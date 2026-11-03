@@ -1,0 +1,45 @@
+{
+  "diagnostic_only": true,
+  "passed": true,
+  "job": "2154172",
+  "accounting": [
+    "2154172",
+    "COMPLETED",
+    "0:0",
+    "proj-sai-hpc-software",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/abacus-release-multinode-diagnosis-20261103-r2",
+    "8v100v0n[02-03]"
+  ],
+  "artifact_sha256": "b40db0d2dfe710bf7f242cf314b993bf0ebd9e0c60d0eaed2efff10745d7a4db",
+  "launcher_sha256": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+  "final_energy_ev": -4869.747051950215,
+  "reference_energy_ev": -4869.747051930335,
+  "error_ev": 1.9879735191352665e-08,
+  "tolerance_ev": 1e-05,
+  "input_sha256": {
+    "case/INPUT": "4c7d1cd7ed322c6dc3089801b153c287310b0130f65404eac0f6cdc0a373df74",
+    "case/STRU": "33605c73619aa164414c62deeb7c03238f01ccc542549e49fc17baa7fa473369",
+    "case/KPT": "f8ee7838f629845394566cd82436c8469e81e74e56e086dbe05b16e9f9119f6a",
+    "case/PP_ORB/Ga_dojo.upf": "e890f0d10ab5554c3c6440f8a617507740e625ca5a28f266d6fec4260a9d0723",
+    "case/PP_ORB/As_dojo.upf": "39d557b0496b28f758c2e3e5c0bafa35c8095b7fd72ec30cb3f912c3f0c0f68f"
+  },
+  "ranks": [
+    [
+      "8v100v0n02.mr-sai.ai",
+      "0",
+      "8v100v0-avx512",
+      "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/release/v3.11.0-beta12-g6b24db05dc17-r20e07b5cdfb3/8V100V0/41583854521-1-release-8v100v0-avx512-2026-11-03-6b24db05dc17.sif",
+      "0",
+      "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2"
+    ],
+    [
+      "8v100v0n03.mr-sai.ai",
+      "1",
+      "8v100v0-avx512",
+      "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/release/v3.11.0-beta12-g6b24db05dc17-r20e07b5cdfb3/8V100V0/41583854521-1-release-8v100v0-avx512-2026-11-03-6b24db05dc17.sif",
+      "0",
+      "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2"
+    ]
+  ],
+  "production_acceptance_modified": false
+}
