@@ -40,19 +40,25 @@ class MonolithicLibraryTests(unittest.TestCase):
             return inventory(self.prefix)
 
     def test_old_monolithic_soname_and_new_plugin_layouts(self):
-        library = self.build(('TF', 'PT', 'JAX'))
+        library = self.build(('TF', 'PT', 'JAX', 'PTExpt'))
         versioned = library.with_name('libdeepmd_cc.so.3')
         library.rename(versioned)
         library.symlink_to(versioned.name)
         result = self.inventory()
-        self.assertEqual(result['backends'], ['jax', 'pt', 'tf'])
+        self.assertEqual(result['backends'], ['jax', 'pt', 'ptexpt', 'tf'])
         self.assertEqual(result['backend_layout'], 'monolithic')
         self.assertEqual(result['libraries'][str(library)]['resolved'], str(versioned))
-        for name in ('tf', 'pt', 'jax'):
+        for name in ('tf', 'pt', 'ptexpt', 'jax'):
             (self.prefix / ('lib/libdeepmd_backend_' + name + '.so')).write_bytes(b'plugin')
         result = self.inventory()
         self.assertEqual(result['backend_layout'], 'plugins')
-        self.assertEqual(result['backends'], ['jax', 'pt', 'tf'])
+        self.assertEqual(result['backends'], ['jax', 'pt', 'ptexpt', 'tf'])
+
+    def test_optional_backends_are_reported_only_when_their_native_api_is_defined(self):
+        self.build(('TF', 'PT', 'JAX', 'PD'), ('PTExpt',))
+        result = self.inventory()
+        self.assertEqual(result['backends'], ['jax', 'pd', 'pt', 'tf'])
+        self.assertNotIn('ptexpt', result['backend_evidence'])
 
     def test_undefined_backend_or_python_only_library_cannot_fill_a_native_gap(self):
         library = self.build(('TF', 'PT'), ('JAX',))
