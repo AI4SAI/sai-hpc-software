@@ -95,6 +95,21 @@ are also checksummed. Existing installations are not renamed or overwritten.
 
 ## Activation boundary
 
+A failed read-only export can be recovered separately from a dependency
+rebuild. `controller/cp2k_devtools_reexport.py submit` takes the project, a new
+frozen controller, the original run, a fresh run ID, the completed overlay's
+SHA-256 and a selected compute node. It accepts only the exact recorded export
+teardown failure following a clean managed build. The new job copies and seals
+the overlay, checks its hash, runs read-only fsck, verifies writes are rejected,
+exports with managed driver teardown, and runs the complete SIF consumer checks.
+The overlay hash is checked again after export. Original failures and controller
+snapshots remain unchanged; partial output from the failed export is not reused.
+
+Both writable and read-only image overlays use normal unmount followed by up to
+120 seconds for the pinned fuse2fs driver to exit naturally. A forced stop,
+missing receipt or incorrect read-only mode fails acceptance. Ordinary immutable
+SIF execution is unchanged.
+
 The generated `site-spack-candidate.json` records the full provider inventories,
 native CPU flags and Libint repair. After physical installation, use it as
 `controller/cp2k_site_spack.json` in an isolated CP2K validation snapshot. The

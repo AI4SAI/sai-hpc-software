@@ -1,4 +1,4 @@
-"""Own writable-image teardown while using the installed Apptainer unchanged.
+"""Own image-overlay teardown while using the installed Apptainer unchanged.
 
 A short outer invocation provides the site's permitted root-mapped namespace.
 The existing fuse2fs mounts the image there. The original build command uses
@@ -43,13 +43,13 @@ def inspect_command(argv, run):
         i += 2
     if i + 1 >= len(argv) or not Path(argv[i]).is_absolute():
         raise ValueError('managed overlay requires an image and payload')
-    writable = [(index, value) for index, value in overlays if not value.endswith(':ro')]
-    if not writable:
+    if not overlays:
         return None
     expected = str(Path(run) / 'work.ext3')
-    if len(overlays) != 1 or len(writable) != 1 or writable[0][1] != expected:
+    if len(overlays) != 1 or overlays[0][1] not in (expected, expected + ':ro'):
         raise ValueError('managed overlay requires the exact per-run work.ext3')
-    return dict(index=writable[0][0], overlay=expected, image=argv[i], binds=binds)
+    return dict(index=overlays[0][0], overlay=expected, image=argv[i], binds=binds,
+                readonly=overlays[0][1].endswith(':ro'))
 
 
 def clean_environment(env):
@@ -72,7 +72,7 @@ def launch(project, run, app, config, argv, execute):
         return execute([str(app), '--config', str(config), *argv], run)
     overlay = canonical(policy['overlay'])
     if not overlay.is_file():
-        raise ValueError('missing writable image')
+        raise ValueError('missing overlay image')
     run, project = Path(run), Path(project)
     token = uuid.uuid4().hex
     session = run / 'runtime' / ('overlay-session-' + token)
@@ -138,6 +138,7 @@ def launch(project, run, app, config, argv, execute):
                          and record.get('payload_returncode') == 0
                          and record.get('driver_returncode') == 0
                          and record.get('unmount_returncode') == 0
+                         and record.get('readonly') is policy['readonly']
                          and record.get('overlay') == str(overlay)
                          and record.get('apptainer') == str(app))
             except (OSError, ValueError):
@@ -217,12 +218,14 @@ def inside(request_path):
     receipt = run / 'results' / ('managed-overlay-' + request['token'] + '.json')
     log = run / 'results' / ('managed-overlay-' + request['token'] + '.log')
     record = dict(schema=1, mechanism='workflow-owned-fuse2fs', overlay=str(overlay),
+                  readonly=policy['readonly'],
                   apptainer=str(app), driver_sha256=DRIVER_SHA256, completed=False,
                   accepted=False, forced_stop=False, started=time.time())
     receipt.write_text(json.dumps(record, sort_keys=True) + '\n')
     status = 74
     with log.open('xb') as stream:
-        command = [str(driver_pathname), '-f', '-o', 'fakeroot', str(overlay), str(mount)]
+        options = 'ro,fakeroot' if policy['readonly'] else 'fakeroot'
+        command = [str(driver_pathname), '-f', '-o', options, str(overlay), str(mount)]
         driver = subprocess.Popen(command, env=env, stdout=stream, stderr=subprocess.STDOUT)
         record['driver_pid'] = driver.pid
         try:
@@ -234,7 +237,7 @@ def inside(request_path):
             record['mounted'] = True
             receipt.write_text(json.dumps(record, sort_keys=True) + '\n')
             payload = request['argv'].copy()
-            payload[policy['index']] = str(mount)
+            payload[policy['index']] = str(mount) + (':ro' if policy['readonly'] else '')
             status = execute([str(app), '--config', str(config), *payload], run)
             record['payload_returncode'] = status
         except Exception as error:

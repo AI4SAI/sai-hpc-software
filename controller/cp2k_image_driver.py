@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
-"""Use the checksum-pinned overlay driver and own writable image teardown.
+"""Use the checksum-pinned overlay driver and own image-overlay teardown.
 
 The adapter preserves Apptainer's inherited OFD image lock and explicit fsync,
 and opens explicitly read-only images with a read-only backing descriptor.
 Source, patches, rebuild inputs and filesystem tests are recorded in
 docs/evidence/fuse2fs-{efficiency,readonly}-20261017. managed_overlay keeps the
-writer outside Apptainer's one-second driver deadline. System files are unchanged.
+driver outside Apptainer's one-second deadline for writable builds and read-only
+exports. System files are unchanged.
 """
 import hashlib
 import json
@@ -29,7 +30,7 @@ STARTER_SHA256 = '80cf5306207ea473a4b412a617e8594accebf9bc05413f5cb1f9f8cde7e2b5
 
 
 def module_load_command():
-    # Writable image lifetime is owned by the workflow, not the stock runtime's
+    # Image-overlay lifetime is owned by the workflow, not the stock runtime's
     # one-second driver deadline. No alternate public runtime is required.
     return 'module load apptainer/1.4.4'
 

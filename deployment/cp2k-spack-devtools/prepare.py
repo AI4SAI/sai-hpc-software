@@ -135,6 +135,16 @@ def prepare(project, runs, output, *, allow_partial=False):
         request = json.loads((run / 'request.json').read_text())
         if 'source_build' in request:
             release['builds'][partition]['source_build'] = request['source_build']
+        if 'source_export' in request:
+            release['builds'][partition]['source_export'] = request['source_export']
+            for name in ('reexport-success.json', 'reexport-fsck.log'):
+                shutil.copyfile(run / 'results' / name, evidence / name)
+            original = project / 'runs' / request['source_export']['run_id'] / 'results'
+            failures = evidence / 'original-export-failure'
+            failures.mkdir()
+            for name, expected in request['source_export']['failure_sha256'].items():
+                require(checksum(original / name) == expected, 'Original export failure changed')
+                shutil.copyfile(original / name, failures / name)
         # Remove only this invocation's generated extraction scratch.
         shutil.rmtree(extraction)
         squash.unlink()

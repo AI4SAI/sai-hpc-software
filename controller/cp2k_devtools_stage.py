@@ -104,7 +104,8 @@ def render(project, controller, run, partition, *, minutes=None):
     return '\n'.join(lines) + '\n'
 
 
-def submit_script(project, controller, run, partition, script, *, source_build=None):
+def submit_script(project, controller, run, partition, script, *, source_build=None, source_export=None):
+    require(not (source_build and source_export), 'Ambiguous recovery source')
     require(not run.exists(), 'Run already exists; use a fresh identity')
     run.mkdir()
     (run / 'results').mkdir()
@@ -114,10 +115,11 @@ def submit_script(project, controller, run, partition, script, *, source_build=N
     subprocess.run(['bash', '-n', str(run / 'job.sbatch')], check=True)
     request = dict(schema=1, purpose=PURPOSE, partition=partition, controller=str(controller),
                    script_sha256=checksum(run / 'job.sbatch'), controller_files=recipe_files(controller))
-    if source_build is not None:
-        request['source_build'] = source_build
-        source = project / 'runs' / source_build['run_id']
-        for name, expected in source_build['evidence_sha256'].items():
+    recovery = source_build or source_export
+    if recovery is not None:
+        request['source_build' if source_build else 'source_export'] = recovery
+        source = project / 'runs' / recovery['run_id']
+        for name, expected in recovery['evidence_sha256'].items():
             destination = run / 'results' / name
             shutil.copyfile(source / 'results' / name, destination)
             require(checksum(destination) == expected, 'Build evidence changed during copy')
@@ -148,7 +150,7 @@ def submitted(project, run_id):
     return run, request
 
 
-def built_evidence(project, run, request):
+def build_payload_evidence(project, run, request):
     """Validate completed writable phases, separately from final SIF consumers."""
     results = run / 'results'
     validate_driver(project, read_json(results / 'image-driver.json'))
@@ -162,18 +164,24 @@ def built_evidence(project, run, request):
                 and record.get('forced_stop') is False and record.get('payload_returncode') == 0
                 and record.get('unmount_returncode') == 0 and record.get('driver_returncode') == 0,
                 'Writable-overlay teardown was not clean')
-    for name in ('driver-cleanup-failure-*', 'managed-overlay-failure-*'):
-        require(not list(results.glob(name)), 'Container teardown failed')
     provider = read_json(results / 'provider.json')
     validate_provider(provider)
     require(provider['install']['partition'] == request['partition'], 'Partition changed')
     return provider
 
 
+def built_evidence(project, run, request):
+    provider = build_payload_evidence(project, run, request)
+    for name in ('driver-cleanup-failure-*', 'managed-overlay-failure-*'):
+        require(not list((run / 'results').glob(name)), 'Container teardown failed')
+    return provider
+
+
 def source_snapshot(project, run_id):
     """Pin an existing SIF and clean build evidence without accepting a failed job."""
     run, request = submitted(project, run_id)
-    require('source_build' not in request, 'Use the original build as the verification source')
+    require(not any(key in request for key in ('source_build', 'source_export')),
+            'Use the original build as the verification source')
     job, state = accounting(run)
     require(job == request['job_id'] and state and state[0] in {'FAILED', 'COMPLETED'},
             'Source allocation must be terminal before verification')
@@ -235,6 +243,9 @@ def accepted(project, run_id):
     job, status = accounting(run)
     require(job == request['job_id'] and status == ['COMPLETED', '0:0'], 'Build is not successfully completed')
     provider = built_evidence(project, run, request)
+    if 'source_export' in request:
+        from cp2k_devtools_reexport import validate_reexport
+        validate_reexport(project, run, request)
     if 'source_build' in request:
         source = request['source_build']
         require(source_snapshot(project, source['run_id']) == source, 'Original SIF or build evidence changed')
