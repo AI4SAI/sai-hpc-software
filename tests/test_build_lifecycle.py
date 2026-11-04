@@ -290,7 +290,8 @@ class CiLifecycleTests(unittest.TestCase):
         self.assertEqual(calls, [('software_controller.py', 'identity'),
                                 ('software_controller.py', 'submit'), ('software_controller.py', 'monitor')])
         self.assertEqual(self.uploads, [])
-        submit = self.remote_commands[1][1]
+        submit = next(args for name, args in self.remote_commands
+                      if name == 'software_controller.py' and args[0] == 'submit')
         self.assertIn('--dependencies-run', submit)
         calls = self.execute(software='cp2k', phase='acceptance', track='release')
         self.assertNotIn(('software_controller.py', 'submit'), calls)
