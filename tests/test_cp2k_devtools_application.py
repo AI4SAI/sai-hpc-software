@@ -60,6 +60,7 @@ class ApplicationProbeTests(unittest.TestCase):
         script = app.render(project, control, run, identity, node='16v100n43')
         subprocess.run(['bash', '-n'], input=script, text=True, check=True)
         self.assertIn(str(run / 'dependencies.sif'), script)
+        self.assertIn('--ignore-fakeroot-command', script)
         self.assertIn(str(run / 'work.ext3') + ':ro', script)
         self.assertNotIn('/opt/devtools:/opt/devtools', script)
         self.assertNotIn('cp2k_spack_dependencies.sh', script)
@@ -67,6 +68,7 @@ class ApplicationProbeTests(unittest.TestCase):
         self.assertIn('/opt/devtools/gcc:/opt/devtools/gcc:ro', script)
         self.assertIn('#SBATCH --account=proj-sai-hpc-software', script)
         self.assertIn('trap finish EXIT', script)
+        self.assertLess(script.index('source /opt/sai_config/mps_mapping.d/'), script.index('trap finish EXIT'))
         self.assertNotIn('rm ', script)
 
 

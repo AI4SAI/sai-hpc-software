@@ -75,6 +75,9 @@ def render(project, controller, run, identity, *, node=None, jobs=8, minutes=240
                                  overlay=str(overlay) + (':ro' if phase == 'verify' else ''),
                                  jobs=jobs, gpu=bool(target['gpus']), extra_binds=binds,
                                  runtime=run / 'runtime' if phase == 'verify' else None)
+        # The managed outer process already supplies the root-mapped namespace.
+        # Do not add libfakeroot's inode/type emulation to the inner SIF overlay.
+        argv.insert(2, '--ignore-fakeroot-command')
         argv[2:2] = ['--bind', str(run / 'results') + ':/results:rw']
         if phase == 'verify':
             argv[2:2] = ['--bind', str(run / 'runtime') + ':/tmp:rw',
@@ -97,13 +100,12 @@ def render(project, controller, run, identity, *, node=None, jobs=8, minutes=240
               'export TMPDIR=' + shlex.quote(str(run / 'runtime')), 'export APPTAINER_TMPDIR="$TMPDIR"',
               'export APPTAINER_CACHEDIR=' + shlex.quote(str(run / 'apptainer-cache')),
               'finish() { rc=$?; trap - EXIT; ' + finalize + ' --exit-code "$rc" || rc=75; exit "$rc"; }',
-              'trap finish EXIT',
               'scontrol show job -o "$SLURM_JOB_ID" > ' + shlex.quote(str(run / 'results/allocation.txt'))]
     if target['gpus']:
         lines += ['source /opt/sai_config/mps_mapping.d/' + partition + '.bash',
                   'export APPTAINERENV_CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:?}"',
                   'nvidia-smi -L > ' + shlex.quote(str(run / 'results/gpus.txt'))]
-    lines += [shlex.join([*helper, 'copy', str(run)]),
+    lines += ['trap finish EXIT', shlex.join([*helper, 'copy', str(run)]),
               shlex.join(['apptainer', 'overlay', 'create', '--fakeroot', '--sparse', '--size', '16384', str(overlay)]),
               shlex.join(command('build')),
               shlex.join(['/usr/sbin/e2fsck', '-fn', str(overlay)]) + ' > ' + shlex.quote(str(run / 'results/build-fsck.log')) + ' 2>&1',
