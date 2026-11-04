@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Apply the upstream ELPA GPU setup repair to the release that predates it."""
+"""Apply guarded CP2K source repairs and record the exact changed bytes."""
 import hashlib
 import json
 from pathlib import Path
@@ -24,6 +24,43 @@ SETUP = '''      ! Finalize GPU setup when a GPU kernel is used. Ensure ELPA doe
       CPASSERT(success == ELPA_OK)
 
 '''
+
+# v2026.2 and the inspected development branch have the same cuSOLVER source.
+# Review changed upstream code before applying this synchronization repair.
+NCCL_SOURCE_SHA256 = '379cda72ac8c18e18f30ffd019b37ae0e8216572c40f5e6ad2fbceb6decd4ad8'
+NCCL_REPAIRED_SHA256 = 'eb22082437dbee127fedd77a8f7e2f7cb05444b507b2a4be29843cc1fa9ceff3'
+NCCL_BROADCAST = '  MPI_Bcast(&nccl_id, sizeof(nccl_id), MPI_BYTE, 0, comm);\n'
+NCCL_PROGRESS = '''  // Drain outstanding MPI traffic before entering blocking NCCL bootstrap.
+  // ScaLAPACK peers can still require MPI progress after this rank returns.
+  MPI_Barrier(comm);
+'''
+
+
+def fix_nccl_progress(source, metadata):
+    path = Path(source) / 'src/fm/cp_fm_cusolver.c'
+    before = path.read_bytes()
+    digest = hashlib.sha256(before).hexdigest()
+    if digest == NCCL_REPAIRED_SHA256:
+        applied = False
+        after = before
+    elif digest == NCCL_SOURCE_SHA256:
+        text = before.decode()
+        if text.count(NCCL_BROADCAST) != 3:
+            raise ValueError('unrecognized CP2K NCCL bootstrap sites')
+        after = text.replace(NCCL_BROADCAST, NCCL_BROADCAST + NCCL_PROGRESS).encode()
+        if hashlib.sha256(after).hexdigest() != NCCL_REPAIRED_SHA256:
+            raise ValueError('CP2K NCCL progress repair differs from reviewed bytes')
+        path.write_bytes(after)
+        applied = True
+    else:
+        raise ValueError('unrecognized CP2K cuSOLVER source; review MPI progress repair')
+    record = dict(applied=applied, source_file='src/fm/cp_fm_cusolver.c',
+                  before_sha256=digest, after_sha256=hashlib.sha256(after).hexdigest(),
+                  bootstrap_sites=3, repair='MPI progress barrier before blocking NCCL bootstrap')
+    metadata = Path(metadata)
+    metadata.mkdir(parents=True, exist_ok=True)
+    (metadata / 'nccl-mpi-progress-fix.json').write_text(json.dumps(record, sort_keys=True) + '\n')
+    return record
 
 
 def fix(source, metadata):
@@ -51,3 +88,4 @@ def fix(source, metadata):
 
 if __name__ == '__main__':
     print(json.dumps(fix(*sys.argv[1:])))
+    print(json.dumps(fix_nccl_progress(*sys.argv[1:])))
