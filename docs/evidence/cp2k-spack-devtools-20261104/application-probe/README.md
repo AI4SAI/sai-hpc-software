@@ -79,6 +79,12 @@ performance acceptance.
   busy CPU ranks and idle GPUs. ECC or storage failure has not been established.
   Communication diagnostics are separate from acceptance.
 
+The subsequent [communication investigation](communication-diagnosis/README.md)
+located the ranks in ScaLAPACK MPI receive and NCCL bootstrap. Adding an MPI
+progress barrier in an isolated interposition trial completed the stalled case
+with correct energy/forces. A guarded source repair is now implemented; fresh
+build 2201497 must pass the full checks before 4V100 is accepted.
+
 ## Evidence
 
 [summary.json](summary.json) records four build receipts, three accepted
