@@ -71,6 +71,31 @@ class ApplicationProbeTests(unittest.TestCase):
         self.assertLess(script.index('source /opt/sai_config/mps_mapping.d/'), script.index('trap finish EXIT'))
         self.assertNotIn('rm ', script)
 
+    def test_reverification_has_no_compile_and_copies_the_sealed_overlay(self):
+        project = Path('/org/org-open-sai/proj-sai-hpc-software')
+        identity = make_identity('cp2k', 'release', 'v2026.2', 'a' * 40, 'v2026.2', 'b' * 64, 'dsprhbm')
+        script = app.render(project, project / 'controller/probe', project / 'runs/probe',
+                            identity, verify_only=True)
+        subprocess.run(['bash', '-n'], input=script, text=True, check=True)
+        self.assertIn('copy-overlay', script)
+        self.assertNotIn('cp2k_container_entry.sh build', script)
+        self.assertNotIn('overlay create', script)
+        self.assertIn('work.ext3:ro', script)
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / 'sealed.ext3'
+            source.write_bytes(b'installed CP2K overlay')
+            source.chmod(0o400)
+            (root / 'results').mkdir()
+            digest = app.checksum(source)
+            app.write_json(root / 'request.json', dict(source_overlay=str(source), source_overlay_sha256=digest))
+            app.copy_overlay(root)
+            clone = root / 'work.ext3'
+            self.assertFalse(os.path.samestat(source.stat(), clone.stat()))
+            self.assertEqual(app.checksum(source), app.checksum(clone))
+            self.assertEqual(clone.stat().st_mode & 0o777, 0o400)
+            self.assertFalse(json.loads((root / 'results/copied-application.json').read_text())['recompiled'])
+
 
 if __name__ == '__main__':
     unittest.main()

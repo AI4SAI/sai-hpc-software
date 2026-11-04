@@ -45,7 +45,7 @@ def copy_image(source, destination, expected):
                 source_size=before.st_size, source_mtime_ns=before.st_mtime_ns)
 
 
-def render(project, controller, run, identity, *, node=None, jobs=8, minutes=240):
+def render(project, controller, run, identity, *, node=None, jobs=8, minutes=240, verify_only=False):
     project, controller, run = paths(project, controller, run)
     identity = validate_identity(identity)
     target_name, partition = identity['target'], identity['partition']
@@ -105,9 +105,13 @@ def render(project, controller, run, identity, *, node=None, jobs=8, minutes=240
         lines += ['source /opt/sai_config/mps_mapping.d/' + partition + '.bash',
                   'export APPTAINERENV_CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:?}"',
                   'nvidia-smi -L > ' + shlex.quote(str(run / 'results/gpus.txt'))]
-    lines += ['trap finish EXIT', shlex.join([*helper, 'copy', str(run)]),
-              shlex.join(['apptainer', 'overlay', 'create', '--fakeroot', '--sparse', '--size', '16384', str(overlay)]),
-              shlex.join(command('build')),
+    lines += ['trap finish EXIT', shlex.join([*helper, 'copy', str(run)])]
+    if verify_only:
+        lines += [shlex.join([*helper, 'copy-overlay', str(run)])]
+    else:
+        lines += [shlex.join(['apptainer', 'overlay', 'create', '--fakeroot', '--sparse', '--size', '16384', str(overlay)]),
+                  shlex.join(command('build'))]
+    lines += [
               shlex.join(['/usr/sbin/e2fsck', '-fn', str(overlay)]) + ' > ' + shlex.quote(str(run / 'results/build-fsck.log')) + ' 2>&1',
               shlex.join(['chmod', '400', str(overlay)]),
               shlex.join(command('verify')),
@@ -173,6 +177,70 @@ def prepare(args):
     print(json.dumps(dict(run_id=run.name, job_id=job, identity=identity)), flush=True)
 
 
+def reverify(args):
+    project, controller, run = paths(args.project, args.controller, Path(args.project) / 'runs' / safe_name(args.run_id))
+    source = project / 'runs' / safe_name(args.source_run)
+    previous = read_json(source / 'request.json')
+    require(previous['purpose'] == PURPOSE and not run.exists(), 'Invalid or reused verification source')
+    job = (source / 'job.id').read_text().strip()
+    state = subprocess.check_output(['sacct', '-X', '-nP', '-j', job, '-o', 'JobIDRaw,State,ExitCode'], text=True)
+    rows = [row.split('|')[1:3] for row in state.splitlines() if row.split('|')[0] == job]
+    require(len(rows) == 1 and rows[0][0] in ('FAILED', 'COMPLETED'), 'Source job is not terminal')
+    require(recipe_files(previous['controller']) == previous['controller_files'], 'Original controller changed')
+    records = [read_json(p) for p in (source / 'results').glob('managed-overlay-*.json')]
+    builds = [r for r in records if r.get('readonly') is False]
+    require(len(builds) == 1 and builds[0].get('accepted') is True, 'No clean completed application build')
+    require(all(r.get('completed') is True and r.get('forced_stop') is False
+                and r.get('unmount_returncode') == 0 and r.get('driver_returncode') == 0 for r in records),
+            'Source overlay teardown was not clean')
+    checks = (source / 'results/application-checks.log').read_text()
+    summary = json.loads(checks.splitlines()[-1])
+    require(summary.get('artifact_checks') is True, 'Source application loader/feature checks did not pass')
+    identity = validate_identity(previous['identity'])
+    from software_controller import recipe_fingerprint
+    require(recipe_fingerprint('cp2k', controller) == identity['recipe_sha256'], 'Application build recipe changed')
+    overlay = source / 'work.ext3'
+    require(overlay.resolve() == overlay and overlay.is_file() and not overlay.stat().st_mode & 0o222,
+            'Application overlay must already be sealed')
+    run.mkdir()
+    (run / 'results').mkdir()
+    for name in ('runtime', 'apptainer-cache'):
+        private_scratch(run / name)
+    import cp2k_acceptance as fixtures
+    fixtures.ROOT = project
+    fixtures.stage_fixtures(run / 'input/science')
+    request = dict(previous, controller=str(controller), controller_files=recipe_files(controller),
+                   source_application_run=source.name, source_overlay=str(overlay),
+                   source_overlay_sha256=checksum(overlay), source_request_sha256=checksum(source / 'request.json'))
+    script = render(project, controller, run, identity, node=previous['node'], jobs=previous['jobs'],
+                    minutes=60, verify_only=True)
+    (run / 'job.sbatch').write_text(script)
+    subprocess.run(['bash', '-n', str(run / 'job.sbatch')], check=True)
+    request['script_sha256'] = checksum(run / 'job.sbatch')
+    write_json(run / 'request.json', request)
+    response = subprocess.check_output(['sbatch', '--hold', '--parsable', str(run / 'job.sbatch')], text=True, cwd=run)
+    job = response.strip().split(';')[0]
+    require(job.isdigit(), 'Invalid job response')
+    (run / 'job.id').write_text(job + '\n')
+    subprocess.run(['scontrol', 'release', job], check=True)
+    print(json.dumps(dict(run_id=run.name, job_id=job, source_run=source.name)), flush=True)
+
+
+def copy_overlay(run):
+    request = read_json(run / 'request.json')
+    source, destination = Path(request['source_overlay']), run / 'work.ext3'
+    require(source.resolve() == source and source.is_file() and not destination.exists(), 'Invalid overlay copy')
+    require(not source.stat().st_mode & 0o222, 'Source overlay is not sealed')
+    expected = request['source_overlay_sha256']
+    require(checksum(source) == expected, 'Source overlay changed')
+    subprocess.run(['cp', '--sparse=always', '--reflink=auto', '--', str(source), str(destination)], check=True)
+    destination.chmod(0o400)
+    require(not os.path.samestat(source.stat(), destination.stat()), 'Overlay copy shares its inode')
+    require(checksum(destination) == expected and checksum(source) == expected, 'Overlay copy changed content')
+    write_json(run / 'results/copied-application.json', dict(source=str(source), copy=str(destination),
+               sha256=expected, recompiled=False))
+
+
 def preserve(run, exit_code):
     request = read_json(run / 'request.json')
     expected = request['source_sif_sha256']
@@ -180,6 +248,10 @@ def preserve(run, exit_code):
                   copy_sha256=checksum(run / 'dependencies.sif') if (run / 'dependencies.sif').is_file() else None,
                   expected_sha256=expected, published=False)
     record['preserved'] = record['source_sha256'] == expected and record['copy_sha256'] in (None, expected)
+    if 'source_overlay' in request:
+        record['source_overlay_sha256'] = checksum(request['source_overlay'])
+        record['copy_overlay_sha256'] = checksum(run / 'work.ext3')
+        record['preserved'] &= record['source_overlay_sha256'] == record['copy_overlay_sha256'] == request['source_overlay_sha256']
     write_json(run / 'results/preservation.json', record)
     require(record['preserved'], 'Dependency SIF changed during application test')
 
@@ -189,6 +261,9 @@ def science(prefix, output):
     output.mkdir(parents=True, exist_ok=False)
     samples, comparisons = {}, {}
     env = dict(os.environ, OMP_NUM_THREADS='1', OPENBLAS_NUM_THREADS='1')
+    # Match the public SIF launcher's shared-memory settings; no disk /tmp use.
+    env.update(OMPI_MCA_shmem_mmap_backing_file_base_dir='/dev/shm',
+               OMPI_MCA_shmem_mmap_relocate_backing_file='1', PRTE_MCA_prte_tmpdir_base='/dev/shm')
     binary = str(prefix / 'bin/cp2k.psmp')
     for case in CASES:
         for ranks in (1, 2):
@@ -199,9 +274,9 @@ def science(prefix, output):
                     '-n', str(ranks), binary, '-i', 'input.inp']
             print('CP2K_APPLICATION_SCIENCE ' + key, flush=True)
             start = time.monotonic()
-            with (directory / 'cp2k.log').open('x') as log:
+            with (directory / 'cp2k.log').open('x') as log, (directory / 'mpi.stderr').open('x') as errors:
                 completed = subprocess.run(argv, env=env, cwd=directory, stdout=log,
-                                           stderr=subprocess.STDOUT, timeout=600)
+                                           stderr=errors, timeout=600)
             elapsed = time.monotonic() - start
             write_json(directory / 'execution.json', dict(argv=argv, returncode=completed.returncode,
                        elapsed_seconds=elapsed, binary_sha256=checksum(binary), mpi_ranks=ranks))
@@ -228,7 +303,12 @@ def main():
     submit.add_argument('--track', choices=('release', 'development'), default='release')
     submit.add_argument('--node')
     submit.add_argument('--jobs', type=int)
-    for op in ('copy', 'preserve'):
+    retry = commands.add_parser('reverify')
+    retry.add_argument('project', type=Path)
+    retry.add_argument('controller', type=Path)
+    retry.add_argument('source_run')
+    retry.add_argument('run_id')
+    for op in ('copy', 'copy-overlay', 'preserve'):
         child = commands.add_parser(op)
         child.add_argument('run', type=Path)
         if op == 'preserve':
@@ -239,6 +319,10 @@ def main():
     args = parser.parse_args()
     if args.op == 'submit':
         prepare(args)
+    elif args.op == 'reverify':
+        reverify(args)
+    elif args.op == 'copy-overlay':
+        copy_overlay(args.run)
     elif args.op == 'copy':
         request = read_json(args.run / 'request.json')
         require(request['controller_files'] == recipe_files(request['controller']), 'Frozen controller changed')
