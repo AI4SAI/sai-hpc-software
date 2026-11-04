@@ -82,7 +82,7 @@ def prepare(partition):
             raise ValueError('node module ISA mismatch: ' + name)
 
 
-def fetch(partition, target, native_os, install_prefix=None):
+def fetch(partition, target, native_os, install_prefix=None, layout='private'):
     import spack.environment as ev
     import spack.spec
     from spack.compilers.libraries import CompilerPropertyDetector
@@ -90,8 +90,9 @@ def fetch(partition, target, native_os, install_prefix=None):
     env = ev.active_environment()
     if env is None:
         raise ValueError('activate the native environment first')
-    prefix = validated_prefix(partition, install_prefix)
-    expected = environment(partition, prefix, target, native_os)['spack']
+    from cp2k_spack_store import validate_layout
+    prefix = validate_layout(partition, install_prefix, layout)
+    expected = environment(partition, prefix, target, native_os, layout=layout)['spack']
     # Prefixes are not part of a Spack DAG hash: explicitly reject a stale
     # environment or an installed pilot being relabelled as a final app build.
     actual_store = env.manifest.configuration.get('config', {}).get('install_tree', {})

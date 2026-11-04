@@ -115,11 +115,15 @@ def validated_prefix(partition: str, install_prefix=None, *, app_only=False) -> 
     return prefix
 
 
-def config(partition: str, cache: Path, *, install_prefix: Path) -> dict:
+def config(partition: str, cache: Path, *, install_prefix: Path, layout='private') -> dict:
     roots = cache_roots(cache, partition)
     target = TARGETS[partition]
     compiler = target["compiler"]
-    prefix = validated_prefix(partition, install_prefix)
+    from cp2k_spack_store import validate_layout, store_config
+    prefix = validate_layout(partition, install_prefix, layout)
+    store = (store_config() if layout == 'devtools' else {
+        'root': prefix + '/dependencies/spack', 'projections': {
+            'all': '{architecture.platform}-{architecture.target}/{name}-{version}-{hash}'}})
     return {
         "schema": 1,
         "status": "preparation-only-not-concretized",
@@ -134,9 +138,7 @@ def config(partition: str, cache: Path, *, install_prefix: Path) -> dict:
         "host_cache": {key: str(value) for key, value in roots.items()},
         "container": {
         "repos": {"builtin": "/workspace/spack-packages/repos/spack_repo/builtin"},
-        "config": {"install_tree": {"root": prefix + "/dependencies/spack", "projections": {
-            "all": "{architecture.platform}-{architecture.target}/{name}-{version}-{hash}"
-        }}, "source_cache": "/workspace/spack-source-cache", "build_stage": ["/workspace/spack-stage"]},
+        "config": {"install_tree": store, "source_cache": "/workspace/spack-source-cache", "build_stage": ["/workspace/spack-stage"]},
         "bootstrap": {"enable": False},
         "spack_root": "/workspace/spack"},
         "compiler": {"spec": "gcc@" + GCC_VERSION + " languages='c,c++,fortran'", "prefix": compiler,

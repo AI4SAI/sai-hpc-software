@@ -15,7 +15,15 @@ dependencies)
 build)
   mkdir -p /workspace/tmp
   if [[ ! -f /results/install-success.json ]]; then
-    bash /control/cp2k_spack_dependencies.sh "${SAI_BUILD_PARTITION:?}" "$INSTALL_PREFIX"
+    shared=$(python3 /control/cp2k_site_spack.py available "${SAI_BUILD_PARTITION:?}")
+    if python3 -c 'import json,sys; sys.exit(not json.loads(sys.argv[1])["available"])' "$shared"; then
+      source /control/environment.sh "$target" cp2k
+      module unload gcc
+      module load gcc/14.3.0
+      python3 /control/cp2k_site_spack.py materialize "$SAI_BUILD_PARTITION" "$INSTALL_PREFIX"
+    else
+      bash /control/cp2k_spack_dependencies.sh "$SAI_BUILD_PARTITION" "$INSTALL_PREFIX"
+    fi
   else
     python3 /control/delivery_layout.py prefix "$delivery" "$software" "$sha" "$version" "$target" \
       --installed /results/stage-identity.json

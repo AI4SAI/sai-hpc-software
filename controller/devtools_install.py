@@ -1,0 +1,160 @@
+#!/usr/bin/env python3
+"""Administrator-only installation of inventoried, immutable devtools payloads."""
+import argparse
+import hashlib
+import json
+import os
+from pathlib import Path, PurePosixPath
+import re
+import shutil
+import stat
+import sys
+
+LIBRARIES = {'libint', 'libxsmm', 'libvori', 'hdf5', 'plumed', 'cosma', 'spla', 'costa', 'tiled-mm', 'gcc-runtime'}
+PARTITIONS = {'16V100', '4V100', '8V100V0', 'DSPRHBM'}
+
+
+def require(value, message):
+    if not value:
+        raise ValueError(message)
+
+
+def checksum(path):
+    result = hashlib.sha256()
+    with Path(path).open('rb') as stream:
+        for block in iter(lambda: stream.read(1024 * 1024), b''):
+            result.update(block)
+    return result.hexdigest()
+
+
+def plain(path):
+    path = Path(path)
+    require(path.is_absolute() and '..' not in path.parts, 'Noncanonical path: ' + str(path))
+    for parent in (*reversed(path.parents), path):
+        require(not parent.is_symlink(), 'Symlink in path: ' + str(parent))
+    return path
+
+
+def inventory(root):
+    root = plain(root)
+    require(root.is_dir(), 'Missing installation: ' + str(root))
+    require(not root.stat().st_mode & 0o7022, 'Unsafe installation root permissions: ' + str(root))
+    rows = []
+    for parent, dirs, files in os.walk(root, followlinks=False):
+        for name in sorted(dirs + files):
+            path = Path(parent) / name
+            info = path.lstat()
+            row = {'path': str(path.relative_to(root)), 'mode': stat.S_IMODE(info.st_mode)}
+            if stat.S_ISLNK(info.st_mode):
+                link = os.readlink(path)
+                resolved = path.resolve(strict=True)
+                internal = not Path(link).is_absolute() and resolved.is_relative_to(root)
+                # Spack's gcc-runtime consists of links to the external GCC.
+                # Keep those links and pin their actual file contents as well.
+                external = resolved.is_relative_to('/opt/devtools/gcc/14.3.0')
+                require(internal or (external and resolved.is_file()), 'External or dangling symlink: ' + str(path))
+                row.update(kind='symlink', target=link)
+                if external:
+                    row['external_sha256'] = checksum(resolved)
+            else:
+                require(not row['mode'] & 0o7022, 'Unsafe permissions: ' + str(path))
+                if stat.S_ISDIR(info.st_mode):
+                    row.update(kind='directory')
+                elif stat.S_ISREG(info.st_mode):
+                    row.update(kind='file', size=info.st_size, sha256=checksum(path))
+                else:
+                    raise ValueError('Special file in payload: ' + str(path))
+            rows.append(row)
+    return sorted(rows, key=lambda row: row['path'])
+
+
+def verify(root, expected):
+    require(inventory(root) == expected, 'Installation differs from manifest: ' + str(root))
+
+
+def package_prefix(record):
+    name = record['name']
+    require(name in LIBRARIES, 'Not an approved dependency library: ' + name)
+    pattern = (r'/opt/devtools/' + re.escape(name) + r'/[A-Za-z0-9][A-Za-z0-9_.-]*'
+               r'-gcc14\.3\.0-[a-z0-9_.-]+-[a-z2-7]{32}(?:-p[0-9a-f]{12})?')
+    prefix = record['prefix']
+    require(bool(re.fullmatch(pattern, prefix)), 'Unexpected library prefix: ' + prefix)
+    require(len(PurePosixPath(prefix).parts) == 5, 'Unexpected prefix depth')
+    return plain(Path(prefix))
+
+
+def read_release(package):
+    package = plain(package)
+    manifest = plain(package / 'release.json')
+    receipt = plain(package / 'release.sha256')
+    require(checksum(manifest) == receipt.read_text().strip(), 'Release checksum mismatch')
+    release = json.loads(manifest.read_text())
+    require(release.get('schema') == 1 and release.get('purpose') == 'cp2k-spack-devtools', 'Wrong release manifest')
+    require(set(release['partitions']) <= PARTITIONS and release['partitions'], 'Invalid partitions')
+    records = release['packages']
+    require(records and len({row['prefix'] for row in records}) == len(records), 'Duplicate or empty package set')
+    for record in records:
+        package_prefix(record)
+        for key in ('payload', 'manifest'):
+            relative = PurePosixPath(record[key])
+            require(not relative.is_absolute() and '..' not in relative.parts and str(relative) == record[key],
+                    'Unsafe handoff path')
+            plain(package / relative)
+        source = package / record['manifest']
+        require(checksum(source) == record['manifest_sha256'], 'File manifest checksum mismatch')
+        rows = json.loads(source.read_text())
+        for row in rows:
+            relative = PurePosixPath(row['path'])
+            require(not relative.is_absolute() and '..' not in relative.parts, 'Unsafe inventory path')
+        record['inventory'] = rows
+    return release
+
+
+def deploy(package, *, install=False, installed=False):
+    package = plain(package)
+    release = read_release(package)
+    # Check every source and existing target before starting any copy.
+    for row in release['packages']:
+        prefix = package_prefix(row)
+        if not installed:
+            verify(package / row['payload'], row['inventory'])
+        if installed or prefix.exists():
+            verify(prefix, row['inventory'])
+        size = sum(item.get('size', 0) for item in row['inventory'])
+        print(f"{row['name']}: {size / 1024**2:.1f} MiB; {prefix}", flush=True)
+    if install:
+        for row in release['packages']:
+            prefix = package_prefix(row)
+            if prefix.exists():
+                continue
+            prefix.parent.mkdir(parents=True, exist_ok=True, mode=0o755)
+            plain(prefix.parent)
+            stage = prefix.with_name('.' + prefix.name + f'.install-{os.getpid()}')
+            require(not stage.exists() and not stage.is_symlink(), 'Staging path already exists')
+            shutil.copytree(package / row['payload'], stage, symlinks=True)
+            stage.chmod(0o755)
+            verify(stage, row['inventory'])
+            require(not prefix.exists() and not prefix.is_symlink(), 'Target appeared during copy')
+            stage.rename(prefix)
+        print('Installed libraries. Run --verify, then compute-node CP2K acceptance before activating reuse.')
+    elif installed:
+        print('Physical library inventories verified; this does not replace compute-node acceptance.')
+    else:
+        print('Read-only preflight passed. Administrator: bash install.sh --install')
+
+
+def main():
+    parser = argparse.ArgumentParser(description=__doc__)
+    modes = parser.add_mutually_exclusive_group()
+    modes.add_argument('--check', action='store_true')
+    modes.add_argument('--install', action='store_true')
+    modes.add_argument('--verify', action='store_true')
+    args = parser.parse_args()
+    deploy(Path(__file__).resolve().parent, install=args.install, installed=args.verify)
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except (OSError, ValueError, KeyError) as error:
+        sys.exit('Installation stopped: ' + str(error))

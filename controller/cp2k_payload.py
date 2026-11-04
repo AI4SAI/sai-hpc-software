@@ -57,6 +57,12 @@ def stage(prefix, root, partition):
                                 symlinks=True, ignore=dependency_ignore)
     # Build-only Python environments and compiler wrappers are never copied.
     # Spack's recorded link/run closure supplies every private runtime package.
+    # Shared libraries stay in physical /opt/devtools, with their immutable
+    # provider receipt in the application. Do not duplicate them in every SIF.
+    if data.get('layout') == 'shared-devtools':
+        from cp2k_devtools import validate_provider
+        validate_provider(data['shared_provider'], files=True)
+        runtime = []
     for value in runtime:
         source = Path(value)
         if not source.is_dir() or source.resolve() != source:

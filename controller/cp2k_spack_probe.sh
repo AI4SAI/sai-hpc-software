@@ -3,11 +3,12 @@
 set -euo pipefail
 partition=${1:?partition required}
 prefix=${2:-/opt/software/cp2k/development/spack-native-probe/$partition}
-python3 - "$partition" "$prefix" <<'PY'
+layout=${3:-private}
+python3 - "$partition" "$prefix" "$layout" <<'PY'
 import sys
 sys.path.insert(0, '/control')
-from cp2k_spack import validated_prefix
-validated_prefix(sys.argv[1], sys.argv[2])
+from cp2k_spack_store import validate_layout
+validate_layout(*sys.argv[1:])
 PY
 case "$partition" in
   16V100) target=16v100-avx2 ;;
@@ -49,10 +50,11 @@ spack_run() { /usr/bin/python3 /workspace/spack/bin/spack "$@"; }
 native_target=$(spack_run arch -t)
 native_os=$(spack_run arch -o)
 python3 /control/cp2k_spack_environment.py "$partition" --install-prefix "$prefix" \
-  --native-target "$native_target" --native-os "$native_os" --output /workspace/env/spack.yaml
+  --native-target "$native_target" --native-os "$native_os" --layout "$layout" \
+  --jobs "${BUILD_JOBS:-8}" --output /workspace/env/spack.yaml
 cp /workspace/env/spack.yaml /results/spack.yaml
 date -u '+CP2K_SPACK_CONCRETIZE_START %FT%TZ'
 spack_run -e /workspace/env concretize
 cp /workspace/env/spack.lock /results/spack.lock
-spack_run -e /workspace/env python /control/cp2k_spack_native.py fetch "$partition" "$native_target" "$native_os" "$prefix"
+spack_run -e /workspace/env python /control/cp2k_spack_native.py fetch "$partition" "$native_target" "$native_os" "$prefix" "$layout"
 printf 'CP2K_SPACK_NATIVE_PROBE_COMPLETE %s\n' "$partition"
