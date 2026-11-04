@@ -71,7 +71,17 @@ def inventory(root):
 
 
 def verify(root, expected):
-    require(inventory(root) == expected, 'Installation differs from manifest: ' + str(root))
+    observed = inventory(root)
+    if observed != expected:
+        before = {row['path']: row for row in expected}
+        after = {row['path']: row for row in observed}
+        changed = sorted(name for name in before.keys() | after.keys()
+                         if before.get(name) != after.get(name))
+        detail = {name: {'expected': before.get(name), 'observed': after.get(name)}
+                  for name in changed[:8]}
+        raise ValueError('Installation differs from manifest: ' + str(root)
+                         + '; differences=' + json.dumps(detail, sort_keys=True)
+                         + '; changed_paths=' + str(len(changed)))
 
 
 def restore_extracted_modes(root, expected):
