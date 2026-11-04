@@ -131,6 +131,9 @@ def prepare(project, runs, output, *, allow_partial=False):
             sif=str(run / 'libraries.sif'), sif_sha256=checksum(run / 'libraries.sif'),
             contract_sha256=provider['contract_sha256'], library_consumers_verified=True,
             cp2k_scientific_verified=False, published=False)
+        request = json.loads((run / 'request.json').read_text())
+        if 'source_build' in request:
+            release['builds'][partition]['source_build'] = request['source_build']
         # Remove only this invocation's generated extraction scratch.
         shutil.rmtree(extraction)
         squash.unlink()

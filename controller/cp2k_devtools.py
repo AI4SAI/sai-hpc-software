@@ -156,8 +156,11 @@ def verify_libraries(provider, output):
     binary = output / 'hdf5-consumer'
     env.update(OMPI_FC=GCC_PREFIX + '/bin/gfortran', OMPI_CC=GCC_PREFIX + '/bin/gcc',
                OMP_NUM_THREADS='1', OPENBLAS_NUM_THREADS='1')
+    # HDF5's CMake installation keeps the Fortran-to-C bridge in a separate
+    # archive. Static consumers need it after the Fortran interface archive.
     run([env['MPI_HOME'] + '/bin/mpifort', '-I' + str(hdf5 / 'include'), '-I' + str(mods[0].parent),
-         smoke, libdir / 'libhdf5_fortran.a', libdir / 'libhdf5.a', '-lz', '-ldl', '-lm', '-o', binary], env=env)
+         smoke, libdir / 'libhdf5_fortran.a', libdir / 'libhdf5_f90cstub.a',
+         libdir / 'libhdf5.a', '-lz', '-ldl', '-lm', '-o', binary], env=env)
     result = run([env['MPI_HOME'] + '/bin/mpiexec', '--allow-run-as-root', '--bind-to', 'none', '-n', '2', binary],
                  env=env, cwd=output, capture_output=True, text=True)
     (output / 'hdf5-consumer.log').write_text(result.stdout + result.stderr)

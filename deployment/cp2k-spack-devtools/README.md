@@ -40,6 +40,19 @@ This is library consumer validation, not CP2K scientific acceptance.
 python3 "$control/cp2k_devtools_stage.py" check "$project" devtools-<identity>-16V100
 ```
 
+If compilation, clean overlay teardown and SIF export succeeded but the consumer
+test command needs a fix, freeze the corrected controller and verify the same SIF
+in a fresh allocation on the original node:
+
+```bash
+python3 "$control/cp2k_devtools_stage.py" reverify "$project" "$control" \
+  devtools-<original>-16V100 devtools-<verification>-16V100
+```
+
+This copies the checksummed SIF and build evidence without recompiling libraries.
+The original failed allocation and its logs remain unchanged. The new acceptance
+records both allocations and rejects changed source images or build evidence.
+
 Run `prepare.py --wait` from this repository with four `--run` arguments and a
 fresh `--output` beneath `$project/deployment` to observe the existing jobs and
 prepare the handoff automatically after all four pass. It
