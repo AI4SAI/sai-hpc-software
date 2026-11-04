@@ -55,3 +55,8 @@ Physical `/opt` installation and CP2K scientific acceptance are pending.
 The shared-provider registry remains empty. After administrator installation,
 the generated `site-spack-candidate.json` must be validated through an isolated
 CP2K build and scientific tests before enabling reuse in daily builds.
+
+The [CPU I/O investigation](cpu-io-diagnosis/README.md) records the later
+Libint completion and a two-node read comparison. It reproduced long Lustre
+read delays on `d9470n01` without containers or FUSE. The CPU dependency
+installation completed at 10:05:22 UTC; SIF acceptance is a separate gate.
