@@ -211,10 +211,12 @@ def reverify(args):
     import cp2k_acceptance as fixtures
     fixtures.ROOT = project
     fixtures.stage_fixtures(run / 'input/science')
+    node = args.node or previous['node']
     request = dict(previous, controller=str(controller), controller_files=recipe_files(controller),
                    source_application_run=source.name, source_overlay=str(overlay),
-                   source_overlay_sha256=checksum(overlay), source_request_sha256=checksum(source / 'request.json'))
-    script = render(project, controller, run, identity, node=previous['node'], jobs=previous['jobs'],
+                   source_overlay_sha256=checksum(overlay), source_request_sha256=checksum(source / 'request.json'),
+                   node=node)
+    script = render(project, controller, run, identity, node=node, jobs=previous['jobs'],
                     minutes=60, verify_only=True)
     (run / 'job.sbatch').write_text(script)
     subprocess.run(['bash', '-n', str(run / 'job.sbatch')], check=True)
@@ -312,6 +314,7 @@ def main():
     retry.add_argument('controller', type=Path)
     retry.add_argument('source_run')
     retry.add_argument('run_id')
+    retry.add_argument('--node', help='Verify on another node in the same partition')
     for op in ('copy', 'copy-overlay', 'preserve'):
         child = commands.add_parser(op)
         child.add_argument('run', type=Path)
