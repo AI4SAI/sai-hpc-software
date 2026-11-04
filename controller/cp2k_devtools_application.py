@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Test CP2K against a copied dependency SIF, without host installation/publication."""
 import argparse
+import errno
+import hashlib
 import json
 import os
 from pathlib import Path
@@ -25,6 +27,42 @@ def write_json(path, value):
     with Path(path).open('x') as stream:
         json.dump(value, stream, sort_keys=True, indent=2)
         stream.write('\n')
+
+
+def overlay_checksum(path):
+    """Compute ordinary SHA-256 without filesystem reads of sparse zero holes."""
+    result = hashlib.sha256()
+    zeros = memoryview(bytes(8 * 1024 * 1024))
+    try:
+        with Path(path).open('rb', buffering=0) as stream:
+            size, position = os.fstat(stream.fileno()).st_size, 0
+            while position < size:
+                try:
+                    data = os.lseek(stream.fileno(), position, os.SEEK_DATA)
+                except OSError as error:
+                    if error.errno != errno.ENXIO:
+                        raise
+                    data = size
+                require(position <= data <= size, 'Invalid sparse data extent')
+                while position < data:
+                    count = min(len(zeros), data - position)
+                    result.update(zeros[:count])
+                    position += count
+                if position == size:
+                    break
+                hole = min(os.lseek(stream.fileno(), data, os.SEEK_HOLE), size)
+                require(hole > data, 'Invalid sparse hole extent')
+                stream.seek(data)
+                while position < hole:
+                    block = stream.read(min(8 * 1024 * 1024, hole - position))
+                    require(block, 'Overlay truncated during checksum')
+                    result.update(block)
+                    position += len(block)
+        return result.hexdigest()
+    except OSError as error:
+        if error.errno not in (errno.EINVAL, errno.ENOTSUP, errno.EOPNOTSUPP):
+            raise
+        return checksum(path)
 
 
 def copy_image(source, destination, expected):
@@ -214,7 +252,7 @@ def reverify(args):
     node = args.node or previous['node']
     request = dict(previous, controller=str(controller), controller_files=recipe_files(controller),
                    source_application_run=source.name, source_overlay=str(overlay),
-                   source_overlay_sha256=checksum(overlay), source_request_sha256=checksum(source / 'request.json'),
+                   source_overlay_sha256=overlay_checksum(overlay), source_request_sha256=checksum(source / 'request.json'),
                    node=node)
     script = render(project, controller, run, identity, node=node, jobs=previous['jobs'],
                     minutes=60, verify_only=True)
@@ -236,13 +274,17 @@ def copy_overlay(run):
     require(source.resolve() == source and source.is_file() and not destination.exists(), 'Invalid overlay copy')
     require(not source.stat().st_mode & 0o222, 'Source overlay is not sealed')
     expected = request['source_overlay_sha256']
-    require(checksum(source) == expected, 'Source overlay changed')
+    print('CP2K_APPLICATION_COPY_OVERLAY checking source', flush=True)
+    require(overlay_checksum(source) == expected, 'Source overlay changed')
+    print('CP2K_APPLICATION_COPY_OVERLAY copying sparse image', flush=True)
     subprocess.run(['cp', '--sparse=always', '--reflink=auto', '--', str(source), str(destination)], check=True)
     destination.chmod(0o400)
     require(not os.path.samestat(source.stat(), destination.stat()), 'Overlay copy shares its inode')
-    require(checksum(destination) == expected and checksum(source) == expected, 'Overlay copy changed content')
+    print('CP2K_APPLICATION_COPY_OVERLAY checking copy and source', flush=True)
+    require(overlay_checksum(destination) == expected and overlay_checksum(source) == expected, 'Overlay copy changed content')
     write_json(run / 'results/copied-application.json', dict(source=str(source), copy=str(destination),
                sha256=expected, recompiled=False))
+    print('CP2K_APPLICATION_COPY_OVERLAY verified', flush=True)
 
 
 def preserve(run, exit_code):
@@ -253,8 +295,8 @@ def preserve(run, exit_code):
                   expected_sha256=expected, published=False)
     record['preserved'] = record['source_sha256'] == expected and record['copy_sha256'] in (None, expected)
     if 'source_overlay' in request:
-        record['source_overlay_sha256'] = checksum(request['source_overlay'])
-        record['copy_overlay_sha256'] = checksum(run / 'work.ext3')
+        record['source_overlay_sha256'] = overlay_checksum(request['source_overlay'])
+        record['copy_overlay_sha256'] = overlay_checksum(run / 'work.ext3')
         record['preserved'] &= record['source_overlay_sha256'] == record['copy_overlay_sha256'] == request['source_overlay_sha256']
     write_json(run / 'results/preservation.json', record)
     require(record['preserved'], 'Dependency SIF changed during application test')

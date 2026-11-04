@@ -1,10 +1,12 @@
 import json
+import errno
 import os
 from pathlib import Path
 import subprocess
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'controller'))
 import cp2k_devtools_application as app
@@ -12,6 +14,22 @@ from release_contract import make_identity
 
 
 class ApplicationProbeTests(unittest.TestCase):
+    def test_sparse_overlay_hash_is_the_standard_whole_file_sha256(self):
+        with tempfile.TemporaryDirectory() as folder:
+            path = Path(folder) / 'sparse.ext3'
+            with path.open('wb') as stream:
+                stream.truncate(24 * 1024 * 1024 + 7)
+            self.assertEqual(app.overlay_checksum(path), app.checksum(path))
+            with path.open('r+b') as stream:
+                stream.write(b'first extent')
+                stream.seek(12 * 1024 * 1024 + 23)
+                stream.write(b'interior extent')
+                stream.seek(-3, os.SEEK_END)
+                stream.write(b'end')
+            self.assertEqual(app.overlay_checksum(path), app.checksum(path))
+            with mock.patch.object(app.os, 'lseek', side_effect=OSError(errno.EINVAL, 'unsupported')):
+                self.assertEqual(app.overlay_checksum(path), app.checksum(path))
+
     def test_copy_is_independent_and_original_content_is_preserved(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
