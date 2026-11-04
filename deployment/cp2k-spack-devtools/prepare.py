@@ -13,7 +13,7 @@ CONTROL = Path(__file__).resolve().parents[2] / 'controller'
 sys.path.insert(0, str(CONTROL))
 from cp2k_devtools import TARGETS
 from cp2k_devtools_stage import accepted, accounting
-from devtools_install import checksum, verify, require, plain
+from devtools_install import checksum, verify, require, plain, read_release
 from remote_controller import safe_name
 
 
@@ -41,6 +41,39 @@ def wait_for_builds(project, runs, *, timeout=18000):
             return
         time.sleep(30)
     raise TimeoutError('Library build observation timed out; allocations were not cancelled')
+
+
+def admin_handoff(bundle, output):
+    """Copy four compressed SIFs and small manifests to the admin-readable home."""
+    output = plain(output)
+    require(output.parent == Path('/home/stardust/sai-hpc-software/deployment'), 'Unexpected administrator handoff parent')
+    require(not output.exists(), 'Administrator handoff already exists')
+    release = read_release(bundle)
+    output.mkdir(mode=0o755)
+    for name in ('install.py', 'install.sh', 'README.md'):
+        shutil.copyfile(bundle / name, output / name)
+    shutil.copytree(bundle / 'manifests', output / 'manifests')
+    (output / 'images').mkdir(mode=0o755)
+    for partition, build in release['builds'].items():
+        source = plain(Path(build['sif']))
+        require(checksum(source) == build['sif_sha256'], 'Accepted SIF changed before handoff')
+        image = output / 'images' / (partition + '.sif')
+        shutil.copyfile(source, image)
+        require(checksum(image) == build['sif_sha256'], 'SIF handoff copy changed')
+        image.chmod(0o444)
+    for row in release['packages']:
+        partition = Path(row.pop('payload')).parts[1]
+        row.pop('inventory')
+        row.update(image='images/' + partition + '.sif', image_sha256=release['builds'][partition]['sif_sha256'])
+    release['format'] = 'sif'
+    write_json(output / 'release.json', release)
+    (output / 'release.sha256').write_text(checksum(output / 'release.json') + '\n')
+    for parent, dirs, files in os.walk(output):
+        Path(parent).chmod(0o755)
+        for name in files:
+            path = Path(parent) / name
+            path.chmod(0o444 if path.suffix == '.sif' else 0o644)
+    print('ADMIN_HANDOFF_READY ' + str(output), flush=True)
 
 
 def prepare(project, runs, output, *, allow_partial=False):
@@ -120,7 +153,10 @@ if __name__ == '__main__':
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--allow-partial', action='store_true', help='Explicit single-partition pilot handoff')
     parser.add_argument('--wait', action='store_true', help='Observe submitted jobs, then prepare the handoff automatically')
+    parser.add_argument('--admin-output', type=Path, help='Optional SIF-only handoff under the existing home deployment directory')
     args = parser.parse_args()
     if args.wait:
         wait_for_builds(args.project, args.run)
     prepare(args.project, args.run, args.output, allow_partial=args.allow_partial)
+    if args.admin_output:
+        admin_handoff(args.output, args.admin_output)

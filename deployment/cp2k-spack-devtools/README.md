@@ -50,6 +50,12 @@ directory alone is not an installable release.
 Any failed allocation stops preparation and preserves its evidence. Observation
 does not resubmit jobs, cancel allocations or install anything in physical `/opt`.
 
+The administrator account `saiuser01` cannot traverse the project directories.
+Add `--admin-output /home/stardust/sai-hpc-software/deployment/<new-release>` to
+prepare an accessible handoff containing four compressed SIF files, small file
+manifests and installer scripts. Build/cache/source data remain in the project;
+no expanded library trees are copied into the home directory.
+
 ## Administrator installation
 
 Run in the generated handoff directory:
@@ -60,10 +66,13 @@ bash install.sh --install
 bash install.sh --verify
 ```
 
-`--check` is the default, read-only preflight. Installation copies only the
-listed package trees, stages each tree before renaming and refuses to replace
-an existing tree with different files. Repeating an identical installation is
-safe. The administrator does not compile or execute untrusted payload code.
+`--check` is the default, read-only preflight. It checks the immutable SIF hashes
+and file manifests (or the expanded project payload). Installation extracts only
+the listed package prefixes directly into staging directories beside the final
+`/opt` destinations, verifies every file, then renames each complete tree. It
+refuses to replace an existing tree with different files. Repeating an identical
+installation is safe. SIF headers and Squashfs files are read without executing
+container code; the administrator does not compile anything.
 
 Headers, Fortran modules, static and shared libraries, CMake/pkg-config metadata,
 standard tools and package runtime data are retained. Spack build logs/database,

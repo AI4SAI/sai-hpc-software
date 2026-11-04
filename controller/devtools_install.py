@@ -8,10 +8,12 @@ from pathlib import Path, PurePosixPath
 import re
 import shutil
 import stat
+import subprocess
 import sys
 
 LIBRARIES = {'libint', 'libxsmm', 'libvori', 'hdf5', 'plumed', 'cosma', 'spla', 'costa', 'tiled-mm', 'gcc-runtime'}
 PARTITIONS = {'16V100', '4V100', '8V100V0', 'DSPRHBM'}
+APPTAINER = '/opt/devtools/apptainer/1.4.4/bin/apptainer'
 
 
 def require(value, message):
@@ -95,7 +97,8 @@ def read_release(package):
     require(records and len({row['prefix'] for row in records}) == len(records), 'Duplicate or empty package set')
     for record in records:
         package_prefix(record)
-        for key in ('payload', 'manifest'):
+        require(('payload' in record) != ('image' in record), 'Expected one payload source')
+        for key in (('payload' if 'payload' in record else 'image'), 'manifest'):
             relative = PurePosixPath(record[key])
             require(not relative.is_absolute() and '..' not in relative.parts and str(relative) == record[key],
                     'Unsafe handoff path')
@@ -110,14 +113,42 @@ def read_release(package):
     return release
 
 
+def sif_offset(image):
+    # Same primary-partition boundary rule as export_native.SquashfsReader.
+    # This reads the SIF header; it never executes a container or payload.
+    listing = subprocess.check_output([APPTAINER, 'sif', 'list', str(image)], text=True)
+    partitions = re.findall(r'^\s*\d+\s*\|[^\n|]*\|[^\n|]*\|\s*(\d+)-(\d+)\s*\|\s*FS \(Squashfs/\*System/[^)]+\)\s*$',
+                            listing, re.MULTILINE)
+    require(len(partitions) == 1, 'Expected one primary Squashfs partition')
+    start, end = map(int, partitions[0])
+    require(0 <= start < end <= image.stat().st_size, 'Invalid SIF partition boundaries')
+    return start
+
+
+def extract_package(image, prefix, scratch, expected):
+    offset = sif_offset(image)
+    subprocess.run(['unsquashfs', '-no-progress', '-no-xattrs', '-no-wildcards', '-processors', '2',
+                    '-o', str(offset), '-d', str(scratch), str(image), str(prefix).lstrip('/')], check=True)
+    source = scratch / prefix.relative_to('/')
+    verify(source, expected)
+    return source
+
+
 def deploy(package, *, install=False, installed=False):
     package = plain(package)
     release = read_release(package)
+    checked_images = {}
     # Check every source and existing target before starting any copy.
     for row in release['packages']:
         prefix = package_prefix(row)
         if not installed:
-            verify(package / row['payload'], row['inventory'])
+            if 'payload' in row:
+                verify(package / row['payload'], row['inventory'])
+            else:
+                image = plain(package / row['image'])
+                if image not in checked_images:
+                    checked_images[image] = checksum(image)
+                require(checked_images[image] == row['image_sha256'], 'Library SIF checksum mismatch')
         if installed or prefix.exists():
             verify(prefix, row['inventory'])
         size = sum(item.get('size', 0) for item in row['inventory'])
@@ -131,11 +162,17 @@ def deploy(package, *, install=False, installed=False):
             plain(prefix.parent)
             stage = prefix.with_name('.' + prefix.name + f'.install-{os.getpid()}')
             require(not stage.exists() and not stage.is_symlink(), 'Staging path already exists')
-            shutil.copytree(package / row['payload'], stage, symlinks=True)
-            stage.chmod(0o755)
-            verify(stage, row['inventory'])
+            if 'payload' in row:
+                shutil.copytree(package / row['payload'], stage, symlinks=True)
+                stage.chmod(0o755)
+                verify(stage, row['inventory'])
+                source = stage
+            else:
+                source = extract_package(package / row['image'], prefix, stage, row['inventory'])
             require(not prefix.exists() and not prefix.is_symlink(), 'Target appeared during copy')
-            stage.rename(prefix)
+            source.rename(prefix)
+            if source != stage:
+                shutil.rmtree(stage)  # Only this invocation's empty extraction parents.
         print('Installed libraries. Run --verify, then compute-node CP2K acceptance before activating reuse.')
     elif installed:
         print('Physical library inventories verified; this does not replace compute-node acceptance.')
@@ -156,5 +193,5 @@ def main():
 if __name__ == '__main__':
     try:
         main()
-    except (OSError, ValueError, KeyError) as error:
+    except (OSError, ValueError, KeyError, subprocess.SubprocessError) as error:
         sys.exit('Installation stopped: ' + str(error))
