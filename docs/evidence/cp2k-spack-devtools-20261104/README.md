@@ -68,10 +68,13 @@ extraction passed with unchanged images and controller.
 The workflow has not performed physical `/opt` installation. Existing matching
 prefixes are checked and skipped by the administrator installer; the observation
 records any prefixes already present. Full physical verification and CP2K
-scientific acceptance remain separate gates. The shared-provider registry is
-still empty. After administrator installation,
-the generated `site-spack-candidate.json` must be validated through an isolated
-CP2K build and scientific tests before enabling reuse in daily builds.
+scientific acceptance remain separate gates. The
+[isolated application probe](application-probe/README.md) compiled and installed
+CP2K v2026.2 against copies of all four dependency SIFs. CPU, 16V100 and 8V100V0
+passed single-node scientific checks; 4V100 retains an unresolved two-rank
+communication stall. The shared-provider registry is still empty. Complete
+physical installation verification and remaining application acceptance are
+required before enabling reuse in daily builds.
 
 The [CPU I/O investigation](cpu-io-diagnosis/README.md) records the later
 Libint completion and a two-node read comparison. It reproduced long Lustre
