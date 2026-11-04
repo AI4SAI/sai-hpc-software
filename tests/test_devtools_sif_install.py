@@ -1,5 +1,6 @@
 from copy import deepcopy
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -48,13 +49,38 @@ class SifInstallerTests(unittest.TestCase):
             image = root / 'wrapped.sif'
             image.write_bytes(b'\0' * 4096 + squash.read_bytes())
             with patch.object(install, 'sif_offset', return_value=4096):
-                result = install.extract_package(image, prefix, root / 'extracted', expected)
+                previous = os.umask(0o077)
+                try:
+                    result = install.extract_package(image, prefix, root / 'extracted', expected)
+                finally:
+                    os.umask(previous)
                 self.assertEqual((result / 'lib/libhdf5.a').read_text(), 'lib/libhdf5.a')
                 self.assertTrue((result / 'lib/libhdf5.so').is_symlink())
                 changed = deepcopy(expected)
                 next(row for row in changed if row['kind'] == 'file')['sha256'] = '0' * 64
                 with self.assertRaisesRegex(ValueError, 'differs'):
                     install.extract_package(image, prefix, root / 'bad', changed)
+
+    def test_inherited_restrictive_modes_are_restored_without_following_redirects(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / 'include').mkdir(mode=0o755)
+            header = root / 'include/hdf5.h'
+            header.write_text('header')
+            header.chmod(0o644)
+            expected = install.inventory(root)
+            header.chmod(0o640)
+            (root / 'include').chmod(0o700)
+            install.restore_extracted_modes(root, expected)
+            install.verify(root, expected)
+            unsafe = deepcopy(expected)
+            next(row for row in unsafe if row['kind'] == 'file')['mode'] = 0o4755
+            with self.assertRaisesRegex(ValueError, 'Unsafe extraction permissions'):
+                install.restore_extracted_modes(root, unsafe)
+            header.unlink()
+            header.symlink_to('/etc/passwd')
+            with self.assertRaisesRegex(ValueError, 'Symlink in path'):
+                install.restore_extracted_modes(root, expected)
 
     def test_sif_preflight_is_readonly_and_detects_corruption(self):
         with tempfile.TemporaryDirectory() as temporary:

@@ -13,7 +13,7 @@ CONTROL = Path(__file__).resolve().parents[2] / 'controller'
 sys.path.insert(0, str(CONTROL))
 from cp2k_devtools import TARGETS
 from cp2k_devtools_stage import accepted, accounting
-from devtools_install import checksum, verify, require, plain, read_release
+from devtools_install import checksum, verify, require, plain, read_release, restore_extracted_modes
 from remote_controller import safe_name
 
 
@@ -118,6 +118,7 @@ def prepare(project, runs, output, *, allow_partial=False):
         for prefix, entries in provider['packages'].items():
             node = nodes[prefix]
             source = extraction / prefix.lstrip('/')
+            restore_extracted_modes(source, entries)
             verify(source, entries)
             payload = output / 'payload' / partition / node['name']
             payload.parent.mkdir(parents=True, exist_ok=True)

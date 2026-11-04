@@ -74,6 +74,25 @@ def verify(root, expected):
     require(inventory(root) == expected, 'Installation differs from manifest: ' + str(root))
 
 
+def restore_extracted_modes(root, expected):
+    """Restore SIF modes on a new extraction affected by inherited host ACLs."""
+    root = plain(root)
+    root.chmod(0o755)
+    for row in expected:
+        if row['kind'] == 'symlink':
+            continue
+        relative = PurePosixPath(row['path'])
+        require(relative.parts and not relative.is_absolute() and '..' not in relative.parts,
+                'Unsafe inventory path')
+        mode = row['mode']
+        require(isinstance(mode, int) and 0 <= mode <= 0o777 and not mode & 0o7022,
+                'Unsafe extraction permissions')
+        path = plain(root / relative)
+        require((row['kind'] == 'file' and path.is_file()) or
+                (row['kind'] == 'directory' and path.is_dir()), 'Extraction file type changed')
+        path.chmod(mode)
+
+
 def package_prefix(record):
     name = record['name']
     require(name in LIBRARIES, 'Not an approved dependency library: ' + name)
@@ -130,6 +149,7 @@ def extract_package(image, prefix, scratch, expected):
     subprocess.run(['unsquashfs', '-no-progress', '-no-xattrs', '-no-wildcards', '-processors', '2',
                     '-o', str(offset), '-d', str(scratch), str(image), str(prefix).lstrip('/')], check=True)
     source = scratch / prefix.relative_to('/')
+    restore_extracted_modes(source, expected)
     verify(source, expected)
     return source
 
