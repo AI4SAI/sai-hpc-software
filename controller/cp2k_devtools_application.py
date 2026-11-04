@@ -255,7 +255,7 @@ def reverify(args):
                    source_overlay_sha256=overlay_checksum(overlay), source_request_sha256=checksum(source / 'request.json'),
                    node=node)
     script = render(project, controller, run, identity, node=node, jobs=previous['jobs'],
-                    minutes=60, verify_only=True)
+                    minutes=args.minutes, verify_only=True)
     (run / 'job.sbatch').write_text(script)
     subprocess.run(['bash', '-n', str(run / 'job.sbatch')], check=True)
     request['script_sha256'] = checksum(run / 'job.sbatch')
@@ -306,7 +306,11 @@ def science(prefix, output):
     from cp2k_acceptance import CASES, parse_science, compare_science
     output.mkdir(parents=True, exist_ok=False)
     samples, comparisons = {}, {}
-    env = dict(os.environ, OMP_NUM_THREADS='1', OPENBLAS_NUM_THREADS='1')
+    cpu = prefix.name == 'DSPRHBM'
+    # Match the established CPU acceptance's two OpenMP threads. Its larger
+    # SCF cases need more than the GPU probe's ten-minute process limit.
+    omp_threads, case_timeout = (2, 1800) if cpu else (1, 600)
+    env = dict(os.environ, OMP_NUM_THREADS=str(omp_threads), OPENBLAS_NUM_THREADS='1')
     # Match the public SIF launcher's shared-memory settings; no disk /tmp use.
     env.update(OMPI_MCA_shmem_mmap_backing_file_base_dir='/dev/shm',
                OMPI_MCA_shmem_mmap_relocate_backing_file='1', PRTE_MCA_prte_tmpdir_base='/dev/shm')
@@ -324,10 +328,11 @@ def science(prefix, output):
             start = time.monotonic()
             with (directory / 'cp2k.log').open('x') as log, (directory / 'mpi.stderr').open('x') as errors:
                 completed = subprocess.run(argv, env=case_env, cwd=directory, stdout=log,
-                                           stderr=errors, timeout=600)
+                                           stderr=errors, timeout=case_timeout)
             elapsed = time.monotonic() - start
             write_json(directory / 'execution.json', dict(argv=argv, returncode=completed.returncode,
-                       elapsed_seconds=elapsed, binary_sha256=checksum(binary), mpi_ranks=ranks))
+                       elapsed_seconds=elapsed, binary_sha256=checksum(binary), mpi_ranks=ranks,
+                       omp_threads=omp_threads, timeout_seconds=case_timeout))
             require(completed.returncode == 0, 'Scientific case failed: ' + key)
             sample = parse_science((directory / 'cp2k.log').read_text(),
                                    (directory / 'forces.xyz').read_text(), str(elapsed), case)
@@ -357,6 +362,7 @@ def main():
     retry.add_argument('source_run')
     retry.add_argument('run_id')
     retry.add_argument('--node', help='Verify on another node in the same partition')
+    retry.add_argument('--minutes', type=int, default=60)
     for op in ('copy', 'copy-overlay', 'preserve'):
         child = commands.add_parser(op)
         child.add_argument('run', type=Path)
@@ -376,6 +382,14 @@ def main():
         request = read_json(args.run / 'request.json')
         require(request['controller_files'] == recipe_files(request['controller']), 'Frozen controller changed')
         require(checksum(args.run / 'job.sbatch') == request['script_sha256'], 'Probe job changed')
+        from cp2k_spack import GCC_PREFIX
+        entry = read_json(Path(request['controller']) / 'cp2k_site_spack.json')['partitions'][request['identity']['partition']]
+        observed = subprocess.check_output([GCC_PREFIX + '/bin/gcc', '-march=native',
+                                           '-mtune=native', '-Q', '--help=target'], text=True).strip()
+        matches = observed == entry['native_flags']
+        write_json(args.run / 'results/verification-node.json', dict(node=os.uname().nodename,
+                   native_flags=observed, native_flags_match=matches))
+        require(matches, 'Verification CPU flags differ from the library build')
         write_json(args.run / 'results/copied-sif.json', copy_image(request['source_sif'],
                    args.run / 'dependencies.sif', request['source_sif_sha256']))
     elif args.op == 'preserve':
