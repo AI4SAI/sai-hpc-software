@@ -67,6 +67,8 @@ class ApplicationProbeTests(unittest.TestCase):
         self.assertNotIn('libraries.sif', script)
         self.assertIn('/opt/devtools/gcc:/opt/devtools/gcc:ro', script)
         self.assertIn('#SBATCH --account=proj-sai-hpc-software', script)
+        self.assertIn('#SBATCH --ntasks=2\n', script)
+        self.assertIn('#SBATCH --gpus-per-node=2\n', script)
         self.assertIn('trap finish EXIT', script)
         self.assertLess(script.index('source /opt/sai_config/mps_mapping.d/'), script.index('trap finish EXIT'))
         self.assertNotIn('rm ', script)
@@ -81,6 +83,8 @@ class ApplicationProbeTests(unittest.TestCase):
         self.assertNotIn('cp2k_container_entry.sh build', script)
         self.assertNotIn('overlay create', script)
         self.assertIn('work.ext3:ro', script)
+        self.assertIn('#SBATCH --ntasks=1\n', script)
+        self.assertNotIn('#SBATCH --gpus-per-node=', script)
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
             source = root / 'sealed.ext3'

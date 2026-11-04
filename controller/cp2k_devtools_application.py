@@ -86,12 +86,14 @@ def render(project, controller, run, identity, *, node=None, jobs=8, minutes=240
     helper = ['/usr/bin/python3', str(controller / Path(__file__).name)]
     lines = ['#!/bin/bash', '#SBATCH --job-name=cp2k-devtools-app-' + partition,
              '#SBATCH --partition=' + partition, '#SBATCH --qos=' + project_qos(project, target_name),
-             '#SBATCH --nodes=1', '#SBATCH --ntasks=1', '#SBATCH --export=NIL',
+             '#SBATCH --nodes=1', '#SBATCH --ntasks=' + ('2' if target['gpus'] else '1'), '#SBATCH --export=NIL',
              '#SBATCH --time=' + str(minutes), '#SBATCH --output=' + str(run / 'results/slurm-%j.log'),
              *project_batch_directives(project, run)]
     if node:
         lines.append('#SBATCH --nodelist=' + node)
-    lines += (['#SBATCH --gpus-per-node=1'] if target['gpus'] else
+    # The two-rank cuSOLVERMp/NCCL checks require a distinct GPU per rank.
+    # Match Slurm's task count so the site mapping also selects one rank/GPU.
+    lines += (['#SBATCH --gpus-per-node=2'] if target['gpus'] else
               ['#SBATCH --cpus-per-task=' + str(jobs), '#SBATCH --mem=28G'])
     finalize = shlex.join([*helper, 'preserve', str(run)])
     lines += ['set -eo pipefail', 'export PATH=/usr/bin:/bin LD_LIBRARY_PATH="" LD_PRELOAD=""',
@@ -270,12 +272,14 @@ def science(prefix, output):
             key = case + '/' + str(ranks)
             directory = output / key
             shutil.copytree(Path('/input/science/fixtures') / case, directory)
+            case_env = dict(env, NCCL_DEBUG='INFO', NCCL_DEBUG_SUBSYS='INIT',
+                            NCCL_DEBUG_FILE=str(directory / 'nccl.%h.%p.log'))
             argv = [env['MPI_HOME'] + '/bin/mpiexec', '--allow-run-as-root', '--bind-to', 'none',
                     '-n', str(ranks), binary, '-i', 'input.inp']
             print('CP2K_APPLICATION_SCIENCE ' + key, flush=True)
             start = time.monotonic()
             with (directory / 'cp2k.log').open('x') as log, (directory / 'mpi.stderr').open('x') as errors:
-                completed = subprocess.run(argv, env=env, cwd=directory, stdout=log,
+                completed = subprocess.run(argv, env=case_env, cwd=directory, stdout=log,
                                            stderr=errors, timeout=600)
             elapsed = time.monotonic() - start
             write_json(directory / 'execution.json', dict(argv=argv, returncode=completed.returncode,
