@@ -1,4 +1,32 @@
-# Workflow closure — 2026-11-03
+# Workflow closure — 2026-11-05
+
+## CP2K reuse of prepared Spack libraries
+
+The administrator handoff contains 39 library variants in four dependency SIFs
+for DSPRHBM, 16V100, 4V100 and 8V100V0, compiled inside containers at their final
+versioned `/opt/devtools` paths. Both writable and read-only overlay export now
+use managed natural driver teardown. The CPU export recovery reused its
+completed libraries, preserved the failed run and passed fresh consumer checks.
+See the [handoff and installation layout](evidence/cp2k-spack-devtools-20261104/README.md).
+
+CP2K v2026.2 subsequently compiled and installed against independent copies of
+all four dependency SIFs, preserving the originals. All four partitions passed
+seven fixtures at one and two MPI ranks: 56 calculations, 28 rank comparisons
+and 42 GPU-versus-CPU comparisons, with unchanged energy/force tolerances.
+Receipts prove shared-Spack reuse; DBCSR, TBLITE and other dependencies outside
+this first migration still build through the native recipe.
+
+4V100 required a guarded source repair: synchronize MPI ranks before blocking
+NCCL bootstrap so that the preceding ScaLAPACK operation can finish. Actual
+rebuild 2201497 passed the full checks without diagnostic interposition. The
+other three accepted partitions use the earlier application recipe; the new
+source repair has not been rebuilt/tested on all four. See the
+[application evidence](evidence/cp2k-spack-devtools-20261104/application-probe/README.md).
+
+This closes the copied-container compilation and single-node correctness test.
+Administrator installation verification and shared-provider activation remain
+pending; the production registry is empty. The test does not publish new
+standalone CP2K SIFs or qualify multi-node execution/performance.
 
 ## Writable image shutdown with the existing runtime
 

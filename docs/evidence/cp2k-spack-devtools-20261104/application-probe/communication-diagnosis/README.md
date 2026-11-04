@@ -37,7 +37,7 @@ scientific verifications. Every diagnostic used independent copies of the clean
 original application overlay and dependency SIF. The source/copy checksums
 matched, and all read-only managed lifecycles ended without forced termination.
 
-## Source repair and remaining gate
+## Source repair and completed rebuild
 
 The inspected v2026.2 and development sources have identical
 `src/fm/cp_fm_cusolver.c` bytes:
@@ -53,12 +53,14 @@ compressed upstream source, repeated application and rejection without mutation.
 No upstream PR or cluster library change is part of this investigation.
 
 The interposition experiment establishes the repair mechanism; it is not an
-accepted rebuilt artifact. Fresh job **2201497**, run
-`cp2k-devtools-app-20261105-n-4V100`, compiles the actual patched CP2K source against
-another copied dependency SIF and then runs all 14 scientific samples. Its
+accepted rebuilt artifact. Subsequent job **2201497**, run
+`cp2k-devtools-app-20261105-n-4V100`, compiled the actual patched CP2K source against
+another copied dependency SIF and passed all 14 scientific samples. Its
 recipe is `57163d7ef63677e304aece8d15d518ca84bbe976164bb82cd0c4169c1c6b22b3`.
-That build and full verification were still active when this diagnostic record
-was collected.
+It completed `0:0` in 27m31s on 4v100n18, with the previously stalled case
+finishing in 237.49 s. The separate [rebuild evidence](../rebuilt-4v100/README.md)
+verifies the source repair, changed core-library hash, full numerical checks and
+clean teardown. This diagnostic archive retains its original collection state.
 
 [summary.json](summary.json), [raw.tar.gz](raw.tar.gz) and
 [archive.json](archive.json) preserve 137 manifest-verified raw records, including

@@ -68,13 +68,17 @@ extraction passed with unchanged images and controller.
 The workflow has not performed physical `/opt` installation. Existing matching
 prefixes are checked and skipped by the administrator installer; the observation
 records any prefixes already present. Full physical verification and CP2K
-scientific acceptance remain separate gates. The
+scientific acceptance are separate gates. The
 [isolated application probe](application-probe/README.md) compiled and installed
-CP2K v2026.2 against copies of all four dependency SIFs. CPU, 16V100 and 8V100V0
-passed single-node scientific checks; 4V100 retains an unresolved two-rank
-communication stall. The shared-provider registry is still empty. Complete
-physical installation verification and remaining application acceptance are
-required before enabling reuse in daily builds.
+CP2K v2026.2 against copies of all four dependency SIFs and completed single-node
+scientific checks on all four partitions: 56 calculations, 28 rank-count
+comparisons and 42 GPU-versus-CPU comparisons. The final 4V100 rebuild repairs
+the ScaLAPACK/NCCL progress stall; the other three accepted results use the
+preceding application recipe. These tests preserved the original dependency
+SIFs and build environments. The shared-provider registry is still empty;
+full physical installation verification remains required before enabling reuse
+in daily builds. These application probes do not publish standalone CP2K SIFs
+or qualify multi-node execution/performance.
 
 The [CPU I/O investigation](cpu-io-diagnosis/README.md) records the later
 Libint completion and a two-node read comparison. It reproduced long Lustre
