@@ -7,12 +7,14 @@ from pathlib import Path
 import shutil
 import subprocess
 import sys
+import time
 
 CONTROL = Path(__file__).resolve().parents[2] / 'controller'
 sys.path.insert(0, str(CONTROL))
 from cp2k_devtools import TARGETS
-from cp2k_devtools_stage import accepted
+from cp2k_devtools_stage import accepted, accounting
 from devtools_install import checksum, verify, require, plain
+from remote_controller import safe_name
 
 
 def write_json(path, value):
@@ -21,6 +23,24 @@ def write_json(path, value):
         json.dump(value, stream, indent=2, sort_keys=True)
         stream.write('\n')
     path.chmod(0o644)
+
+
+def wait_for_builds(project, runs, *, timeout=18000):
+    """Observe existing allocations only; never resubmit, cancel or install."""
+    active = {'PENDING', 'RUNNING', 'COMPLETING', 'CONFIGURING', 'SUSPENDED', 'REQUEUED'}
+    deadline, previous = time.monotonic() + timeout, None
+    while time.monotonic() < deadline:
+        states = {run: accounting(Path(project) / 'runs' / safe_name(run)) for run in runs}
+        if states != previous:
+            print(json.dumps(states, sort_keys=True), flush=True)
+            previous = states
+        for run, (job, state) in states.items():
+            require(not state or state[0] in active or state == ['COMPLETED', '0:0'],
+                    f'Library build {run} ({job}) failed: {state}; evidence is preserved')
+        if all(state == ['COMPLETED', '0:0'] for _, state in states.values()):
+            return
+        time.sleep(30)
+    raise TimeoutError('Library build observation timed out; allocations were not cancelled')
 
 
 def prepare(project, runs, output, *, allow_partial=False):
@@ -99,5 +119,8 @@ if __name__ == '__main__':
     parser.add_argument('--run', action='append', required=True)
     parser.add_argument('--output', type=Path, required=True)
     parser.add_argument('--allow-partial', action='store_true', help='Explicit single-partition pilot handoff')
+    parser.add_argument('--wait', action='store_true', help='Observe submitted jobs, then prepare the handoff automatically')
     args = parser.parse_args()
+    if args.wait:
+        wait_for_builds(args.project, args.run)
     prepare(args.project, args.run, args.output, allow_partial=args.allow_partial)

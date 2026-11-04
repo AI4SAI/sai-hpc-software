@@ -40,11 +40,15 @@ This is library consumer validation, not CP2K scientific acceptance.
 python3 "$control/cp2k_devtools_stage.py" check "$project" devtools-<identity>-16V100
 ```
 
-After all four builds pass, run `prepare.py` from this repository with four
-`--run` arguments and a fresh `--output` beneath `$project/deployment`. It
+Run `prepare.py --wait` from this repository with four `--run` arguments and a
+fresh `--output` beneath `$project/deployment` to observe the existing jobs and
+prepare the handoff automatically after all four pass. It
 extracts only the inventoried library prefixes from the checksummed SIFs. The
 generated handoff contains the administrator scripts below. The repository
 directory alone is not an installable release.
+
+Any failed allocation stops preparation and preserves its evidence. Observation
+does not resubmit jobs, cancel allocations or install anything in physical `/opt`.
 
 ## Administrator installation
 
