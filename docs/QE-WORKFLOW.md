@@ -111,5 +111,9 @@ SCF/PH/PP results, scheduler accounting and clean image teardown receipts.
 | 8V100V0 | 2208747 | 20:29 | 2209046 | 01:09 |
 | DSPRHBM | 2210458 | 00:23:25 | 2210814 | 00:00:51 |
 
-The complete development/beta workflow is still in progress.
+All four development SIFs also passed the same science gate; exact images,
+two-device kernel evidence and accounting are in
+[development evidence](evidence/qe-20261105/development.json). The first public
+beta verification has passed DSPRHBM, 16V100 and 8V100V0; the 4V100 beta route
+is waiting for its two-GPU allocation.
 Physical /opt installation has not been performed.

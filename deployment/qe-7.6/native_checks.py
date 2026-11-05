@@ -43,6 +43,8 @@ def submit(stage_root):
         output.mkdir(); (output / 'tmp').mkdir(mode=0o700)
         publication = deployment.pinned(deployment.PACKAGE / row['publication'], row['publication_sha256'])
         original = Path(publication['controller'])
+        sys.path.insert(0, str(original))
+        from remote_controller import project_qos
         prefix = stage_root / Path(row['prefix']).relative_to('/')
         request = dict(partition=partition, prefix=str(prefix), source_image_sha256=row['image_sha256'],
                        controller=str(original), checker_sha256=deployment.digest(original / 'qe_science.py'),
@@ -59,7 +61,7 @@ def submit(stage_root):
         q = shlex.quote
         lines = ['#!/usr/bin/env bash', '#SBATCH --job-name=qe-native-' + partition,
                  '#SBATCH --account=proj-sai-hpc-software', '#SBATCH --partition=' + partition,
-                 '#SBATCH --qos=' + ('rush-1o2gpu' if gpu else 'rush-cpu'),
+                 '#SBATCH --qos=' + project_qos(PROJECT, row['identity']['target']),
                  '#SBATCH --nodes=1', '#SBATCH --ntasks=2', '#SBATCH --time=5', '#SBATCH --export=NIL',
                  '#SBATCH --chdir=' + str(output), '#SBATCH --output=' + str(output / 'slurm-%j.log'),
                  *(['#SBATCH --gpus-per-node=2'] if gpu else ['#SBATCH --cpus-per-task=2', '#SBATCH --mem=8G']),

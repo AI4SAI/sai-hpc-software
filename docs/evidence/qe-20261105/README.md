@@ -12,6 +12,8 @@ of every installed program.
 | [Site audit](site-audit.json) | Existing QE 7.5 modules, compiler/MPI configuration and executable inventory |
 | [GPU release](release-gpu.json) | Three accepted GPU images, identities, numerical results, native exports and scheduler accounting |
 | [CPU release](release-cpu.json) | Accepted CPU image, HDF5 interface configuration, numerical results and native export |
+| [Development](development.json) | Four accepted develop SIFs, both CUDA devices, numerical results and scheduler accounting |
+| [Native release staging](native-release-stage.json) | Administrator-package trial installation: three native science checks passed; 4V100 is queued |
 | [CPU HDF5 probes](cpu-hdf5-probes.json) | Read-only diagnostics that established the MPI Fortran interface conflict; these are not production acceptance |
 | [Dependency cache](dependency-cache.json) | Identical archive bytes across four Actions runners and actual verified remote cache hits |
 | [CI validation](ci-validation.json) | Full repository validation at the merged feature head |

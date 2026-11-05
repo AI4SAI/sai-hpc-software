@@ -85,5 +85,7 @@ bash /home/stardust/sai-hpc-software/deployment/qe-7.6/submit-native-checks.sh
 它不写 `/opt`。目录中的 `native-check.json` 需结合对应 `sacct` 的成功记录判断。
 
 已经完成的最终 SIF 科学验收见
-[QE qualification](../../docs/evidence/qe-20261105/README.md)。管理员物理安装尚未执行；
-项目目录的试安装检查与最终物理 `/opt` 验收应分别记录。
+[QE qualification](../../docs/evidence/qe-20261105/README.md)。项目目录已完成四分区的整套
+试安装和文件校验；[原生试运行记录](../../docs/evidence/qe-20261105/native-release-stage.json)
+中 DSPRHBM、16V100、8V100V0 已通过全部链接和 SCF/PH/PP 检查，4V100 的双卡作业
+仍在排队。管理员物理安装尚未执行；项目试安装与最终 `/opt` 验收分别记录。
