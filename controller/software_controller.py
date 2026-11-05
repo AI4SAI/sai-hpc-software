@@ -39,7 +39,7 @@ def contract_files(software):
                          "native_module.py", "export_native.py", "cp2k"]
     if software == "qe":
         return [name for name in common if name != "environment.sh"] + [
-            "qe_environment.sh", "qe_container_entry.sh", "qe_build.sh", "qe_extra_tools.cmake", "qe_dependencies.py", "qe_hdf5.sh",
+            "qe_environment.sh", "qe_container_entry.sh", "qe_build.sh", "qe_extra_tools.cmake", "qe_dependencies.py", "qe_hdf5.sh", "qe_szipConfig.cmake",
             "qe_science.py", "qe_acceptance.py", "qe_fixture.json", "qe", "sif_runtime.py",
             "export_native.py", "native_module.py", "cp2k_image_driver.py", "managed_overlay.py", "cp2k_overlay_sync.py"]
     if software == "gpumd":

@@ -1,5 +1,8 @@
 # QE's Makefile pwall suite includes these tools; its 7.6 CMake build omits
 # two target declarations. Add build wiring without changing scientific source.
+# HDF5's static exported target refers to ZLIB::ZLIB without finding it.
+find_package(ZLIB REQUIRED)
+
 function(sai_qe_complete_tools)
   foreach(tool IN ITEMS band_interpolation rism1d)
     if(tool STREQUAL "band_interpolation")
