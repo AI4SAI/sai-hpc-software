@@ -42,7 +42,7 @@ def prepare(software, partition, bundle, output, fixtures):
     request = dict(software=software, partition=partition, catalog=str(bundle / 'catalog.json'),
                    catalog_sha256=digest(bundle / 'catalog.json'), runtime_sha256=snapshot['runtime_sha256'],
                    reference=read(fixtures / 'references.json')[software],
-                   ranks=2 if software in ('abacus', 'cp2k', 'lammps') else 1,
+                   ranks=2 if software in ('abacus', 'cp2k', 'lammps', 'qe') else 1,
                    files={str(p.relative_to(output)): digest(p) for p in output.rglob('*') if p.is_file()})
     write(output / 'request.json', request)
     return request
@@ -54,7 +54,7 @@ def render(software, partition, bundle, output):
     target = next(k for k, v in PARTITIONS.items() if v == partition)
     app = read(bundle / 'catalog.json')['applications'][software]
     prefix = app['partitions'][partition]['identity']['install_prefix']
-    mpi = software in ('abacus', 'cp2k', 'lammps')
+    mpi = software in ('abacus', 'cp2k', 'lammps', 'qe')
     q = shlex.quote
     lines = ['#!/usr/bin/env bash', '#SBATCH --job-name=beta-' + software + '-' + partition,
              '#SBATCH --account=proj-sai-hpc-software', '#SBATCH --chdir=' + str(output),
@@ -82,7 +82,9 @@ def render(software, partition, bundle, output):
     launch = 'mpirun -np 2 --map-by ppr:2:node:PE=1 --bind-to core '
     commands = {'cp2k': launch + 'cp2k.psmp -i input.inp', 'abacus': launch + 'abacus',
                 'lammps': launch + 'lmp -pk gpu 1 split 1.0 -in in.lmp -log log.lammps', 'gpumd': 'gpumd',
-                'deepmd-kit': 'deepmd-python check.py'}
+                'qe': launch + 'pw.x -in scf.in', 'deepmd-kit': 'deepmd-python check.py'}
+    if software == 'qe':
+        lines += ['export NVCOMPILER_ACC_NOTIFY=1']
     lines += ['/usr/bin/time -f %e -o elapsed.txt ' + commands[software] + ' > stdout.txt 2>&1']
     if software == 'deepmd-kit':
         runner = ("import os,sys,runpy; os.chdir('training'); sys.argv="
@@ -153,6 +155,13 @@ def verify(output):
         require(len(values) == len(expected) and all(math.isfinite(a) and abs(a-b) <= 2e-6 + 2e-5 * abs(b)
                 for a, b in zip(values, expected)), 'LAMMPS GPU observables changed')
         result = dict(max_error=max(abs(a-b) for a, b in zip(values, expected)))
+    elif software == 'qe':
+        from qe_science import parse_scf
+        result = parse_scf(text)
+        require(abs(result['energy_ry'] - reference['energy_ry']) <= reference['energy_tolerance_ry'], 'QE SIF route energy changed')
+        require(max(abs(v) for f in result['forces_ry_bohr'] for v in f) < 1e-5, 'QE SIF route forces changed')
+        if partition != 'DSPRHBM':
+            require('GPU acceleration is ACTIVE' in text and re.search(r'launch CUDA kernel.*device=\d+', text), 'QE GPU kernels not executed')
     elif software == 'gpumd':
         from gpumd_science import xyz, compare
         e, f = xyz(work / 'dump.xyz'); ge, gf = xyz(work / 'gold.xyz')

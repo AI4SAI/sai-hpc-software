@@ -71,9 +71,10 @@ def render_help(software, snapshot, module_root, checks=None):
         'lammps': 'lmp -pk gpu $SLURM_GPUS_ON_NODE split 1.0 -in in.lmp -log log.lammps',
         'deepmd-kit': 'dp --pt train input.json',
         'gpumd': 'gpumd > gpumd.out',
+        'qe': 'pw.x -in input.in > pw.out',
     }[software]
     launch = ('Use host mpirun with the resource and mapping settings in your existing job script.\n'
-              if software in ('cp2k', 'abacus', 'lammps') else 'Run directly in the case directory.\n')
+              if software in ('cp2k', 'abacus', 'lammps', 'qe') else 'Run directly in the case directory.\n')
     if software == 'lammps':
         launch += 'The input must select GPU styles, such as lj/cut/gpu.\n'
     elif software == 'deepmd-kit':

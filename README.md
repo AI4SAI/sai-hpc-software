@@ -1,12 +1,14 @@
 # sai-hpc-software
 
 Independent GitHub Actions → SSH → Slurm → Apptainer builds on SAI.
-The daily workflow independently tracks ABACUS, CP2K, DeePMD-kit, LAMMPS and GPUMD,
+The daily workflow independently tracks ABACUS, CP2K, DeePMD-kit, LAMMPS, GPUMD and Quantum ESPRESSO,
 including their development branches and latest release/prerelease versions.
 Development SIFs pass build, scientific and real module-launch checks on every supported
 partition before their public `*-beta-later` module rotates. Failed or partial matrices
 retain the previous accepted version. Native `/opt` installation remains administrator-driven.
 See [current delivery status](docs/WORKFLOW-CLOSURE.md) and [using the beta modules](deployment/sif-beta/README.md).
+The [QE profile](docs/QE-WORKFLOW.md) covers its four-partition NVHPC/MPI builds,
+V100 CUDA/OpenACC support, and SCF/phonon/density acceptance.
 
 [NEPAdapters 1.0.4](deployment/nepadapters-1.0.4/README.md) has a separate manual
 SIF build/acceptance workflow for adding NEP CPU and CUDA Kokkos pair styles to
@@ -32,8 +34,8 @@ PID namespace and a network namespace with no external network. This is filesyst
 containment using the shared host kernel, **not a VM or a guarantee against kernel exploits**.
 
 Every partition is a separate native build target. Configuration and compilation run on
-the selected compute node with `-march=native -mtune=native`, not on the login host.
-Actual GCC native flags, hardware and module selection are recorded.
+the selected compute node with GCC `-march=native -mtune=native` or NVHPC `-tp=host`.
+Actual compiler flags, hardware and module selection are recorded.
 
 | Partition | Target | Native CPU profile | Site MPI/BLAS ISA | GPU |
 | --- | --- | --- | --- | --- |
@@ -93,7 +95,7 @@ No synthetic/orphan commits are substituted. Development install and module name
 build identity. SIF filenames also include the submission UTC date before the source SHA;
 the Actions run ID and attempt distinguish retries.
 
-The five-software daily tracker runs at 02:23 UTC (10:23 Asia/Shanghai).
+The daily tracker runs at 02:23 UTC (10:23 Asia/Shanghai).
 `profiles/software-tracking.json` documents the shared software/channel/partition contract.
 Development rebuilds each day, even when the source commit has not changed. Release and
 prerelease versions are attempted once per upstream version, including unsuccessful attempts;

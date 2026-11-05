@@ -4,14 +4,16 @@ set -euo pipefail
 package=$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd -P)
 action=${1:---check}
 destination=${2:-/opt/modules/modulefiles/apps}
-[[ $action == --check || $action == --install ]] || { echo 'usage: bash install.sh [--check|--install [module-root]]' >&2; exit 2; }
+[[ $action == --check || $action == --install ]] || { echo 'usage: bash install.sh [--check|--install [module-root [software...]]]' >&2; exit 2; }
 [[ $destination == /* && $(realpath -m -- "$destination") == "$destination" ]] || { echo 'module-root must be absolute and canonical' >&2; exit 1; }
-python3 -B "$package/check-public.py"
+selected=(abacus cp2k lammps deepmd-kit gpumd)
+if (( $# > 2 )); then selected=("${@:3}"); fi
+python3 -B "$package/check-public.py" "${selected[@]}"
 
-# Preflight all five entries before writing any public module.
-for name in abacus cp2k lammps deepmd-kit gpumd; do
+# Preflight every selected entry before writing any public module.
+for name in "${selected[@]}"; do
   branch=master
-  [[ $name != abacus && $name != lammps ]] || branch=develop
+  [[ $name != abacus && $name != lammps && $name != qe ]] || branch=develop
   relative=$name/$branch-beta-later
   source=$package/modulefiles/$relative
   home_module=/home/stardust/sai-hpc-software/modulefiles/apps/$relative
@@ -24,9 +26,9 @@ for name in abacus cp2k lammps deepmd-kit gpumd; do
 done
 
 [[ $action == --install ]] || exit 0
-for name in abacus cp2k lammps deepmd-kit gpumd; do
+for name in "${selected[@]}"; do
   branch=master
-  [[ $name != abacus && $name != lammps ]] || branch=develop
+  [[ $name != abacus && $name != lammps && $name != qe ]] || branch=develop
   relative=$name/$branch-beta-later
   if [[ ! -e $destination/$relative ]]; then
     [[ -d $destination/$name ]] || install -d -m 0755 -- "$destination/$name"

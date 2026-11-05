@@ -114,6 +114,18 @@ class PromotionTests(unittest.TestCase):
     setUp = previous_tests.SifBetaTests.setUp
     fake_bundle = previous_tests.SifBetaTests.fake_bundle
 
+    def test_initial_application_missing_alias_is_allowed_but_broken_pointer_is_not(self):
+        root, modules = self.root / 'beta', self.root / 'modules'
+        with patch.object(daily, 'MODULES', modules), patch.object(daily, 'ROOT', root):
+            self.assertIsNone(daily.current('qe', allow_missing=True))
+            with self.assertRaisesRegex(ValueError, 'missing beta'):
+                daily.current('qe')
+            path = modules / 'qe' / sif_beta.channel('qe')
+            path.parent.mkdir(parents=True)
+            path.symlink_to('missing-generation')
+            with self.assertRaises((ValueError, FileNotFoundError)):
+                daily.current('qe', allow_missing=True)
+
     def test_interrupted_generation_prepare_can_resume_but_changed_bytes_fail(self):
         bundle, catalog, checks = self.fake_bundle()
         root, modules = self.root / 'beta', self.root / 'modules'
@@ -258,6 +270,7 @@ class RuntimeTests(unittest.TestCase):
                     path.chmod(0o444)
             self.assertTrue((root / 'payload/fixtures/deepmd-kit/fixture.json').is_file())
             snapshot = json.loads((REPO / 'deployment/sif-development-20261024/snapshot.json').read_text())
+            snapshot = previous_tests.add_qe(snapshot)
             snapshot['runtime_sha256'] = digest(REPO / 'controller/sif_runtime.py')
             # Use the reviewed complete catalog used by the existing module tests.
             for software in SOFTWARE:
@@ -292,7 +305,7 @@ class RuntimeTests(unittest.TestCase):
 
 class WorkflowTests(unittest.TestCase):
     def test_all_daily_software_publish_independently_and_do_not_mask_failure(self):
-        for filename, software in [('build.yml','abacus'), ('cp2k.yml','cp2k'), ('deepmd.yml','deepmd-kit'), ('lammps.yml','lammps'), ('gpumd.yml','gpumd')]:
+        for filename, software in [('build.yml','abacus'), ('cp2k.yml','cp2k'), ('deepmd.yml','deepmd-kit'), ('lammps.yml','lammps'), ('gpumd.yml','gpumd'), ('qe.yml','qe')]:
             workflow = yaml.safe_load((REPO / '.github/workflows' / filename).read_text())
             job = workflow['jobs']['beta']
             self.assertEqual(job['uses'], './.github/workflows/beta.yml')
@@ -303,6 +316,7 @@ class WorkflowTests(unittest.TestCase):
                 self.assertIn('beta', workflow['jobs']['result']['needs'])
         workflow = yaml.safe_load((REPO / '.github/workflows/beta.yml').read_text())
         self.assertFalse(workflow['concurrency']['cancel-in-progress'])
+        self.assertEqual(set(workflow[True]['workflow_dispatch']['inputs']['software']['options']), set(SOFTWARE))
 
 
 if __name__ == '__main__':

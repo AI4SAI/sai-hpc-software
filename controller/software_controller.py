@@ -37,6 +37,11 @@ def contract_files(software):
                          "cp2k_spack_libint_repair.py", "cp2k_spack_install_evidence.py",
                          "cp2k_spack_link.py", "cp2k_payload.py", "cp2k_dependency_stage.py", "cp2k_overlay_workdir.py", "cp2k_overlay_sync.py", "cp2k_image_driver.py", "managed_overlay.py", "build_capacity.py",
                          "native_module.py", "export_native.py", "cp2k"]
+    if software == "qe":
+        return [name for name in common if name != "environment.sh"] + [
+            "qe_environment.sh", "qe_container_entry.sh", "qe_build.sh", "qe_extra_tools.cmake", "qe_dependencies.py", "qe_hdf5.sh", "qe_szipConfig.cmake",
+            "qe_science.py", "qe_acceptance.py", "qe_fixture.json", "qe", "sif_runtime.py",
+            "export_native.py", "native_module.py", "cp2k_image_driver.py", "managed_overlay.py", "cp2k_overlay_sync.py"]
     if software == "gpumd":
         return [name for name in common if name != "environment.sh"] + [
             "gpumd_environment.sh", "gpumd_container_entry.sh", "gpumd_build.sh",
@@ -50,7 +55,7 @@ def recipe_fingerprint(software, control=None):
     digest = hashlib.sha256(f"sai-contract-{CONTRACT_SCHEMA}\n".encode())
     for name in contract_files(software):
         path = control / name
-        if name in ("abacus", "cp2k", "gpumd", "nep", "gnep") and not path.exists():
+        if name in ("abacus", "cp2k", "gpumd", "qe", "nep", "gnep") and not path.exists():
             path = control / f"{'gpumd' if name in ('nep', 'gnep') else name}_runtime.sh"
         if not path.is_file() or path.is_symlink():
             raise ValueError(f"missing trusted contract file: {name}")
@@ -65,6 +70,11 @@ def identity(args):
     print(json.dumps(request_identity(args), sort_keys=True))
 
 def required_acceptance(software, target):
+    if software == "qe":
+        from release_contract import PARTITIONS
+        if target not in PARTITIONS:
+            raise ValueError("unregistered QE partition")
+        return ("qe_science",)
     if software == "cp2k":
         if target not in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
             raise ValueError("CP2K native publication target is not registered")
@@ -89,6 +99,10 @@ def atomic_manifest(artifact, manifest):
 
 def validate_acceptance(manifest):
     """Only proofs tied to this image and the current trusted verifier count."""
+    if manifest["software"] == "qe":
+        from qe_acceptance import validate_manifest
+        validate_manifest(manifest, ROOT, CONTROL)
+        return
     if manifest["software"] == "gpumd":
         from gpumd_acceptance import validate_manifest
         validate_manifest(manifest, ROOT, CONTROL)
@@ -255,6 +269,10 @@ def _publish_runtime_entry(request, artifact, manifest):
         ]
         if request.get("target") != "dsprhbm":
             module_lines.insert(1, "module load cuda/12.9.1 nvmplibs/26.7-tmp")
+    elif software == "qe":
+        launcher_name = module_name = "qe"
+        description = "Quantum ESPRESSO"
+        module_lines = ["module load openmpi/5.0.10-nvhpc26.3-pgi-cuda12-auto fftw/3.3.10 hdf5/1.14.6-pgi-ompi508"]
     elif software == "gpumd":
         launcher_name = module_name = "gpumd"
         description = "GPUMD"
@@ -309,7 +327,7 @@ def render_job(args):
     delivery = request_identity(args)
     if getattr(args, "identity", delivery) != delivery:
         raise ValueError("requested identity differs from deployed recipe")
-    if args.software not in ("abacus", "cp2k", "gpumd"):
+    if args.software not in ("abacus", "cp2k", "gpumd", "qe"):
         raise ValueError("no trusted recipe registered for this software")
     if not 1 <= args.jobs <= 16 or not 1 <= args.minutes <= 360:
         raise ValueError("resource request outside controller bounds")
@@ -336,6 +354,8 @@ def render_job(args):
     if args.software == "abacus":
         from abacus_dependencies import dependency_binds, runtime_binds
         extra_binds = (*dependency_binds(ROOT), *runtime_binds())
+    elif args.software == "qe":
+        extra_binds = ((r / "input/qe-dependencies", "/input/qe-dependencies"), *cp2k_mpi_build_binds())
     elif args.software == "gpumd":
         extra_binds = site_app_binds("gpumd")
     def container(phase, final=False):
@@ -362,24 +382,24 @@ def render_job(args):
             # The public ELPA selector needs the allocation partition even
             # though the build container deliberately uses --cleanenv.
             command[2:2] = ['--env', 'SLURM_JOB_PARTITION=' + target['partition']]
-        if args.software in ('cp2k', 'abacus') and not final:
+        if args.software in ('cp2k', 'abacus', 'qe') and not final:
             command[2:2] = ['--bind', str(r / 'results') + ':/results:rw']
             from cp2k_image_driver import wrap_command
             command = wrap_command(ROOT, r, CONTROL, command)
         return command
     emit = container_command(image, ["/usr/bin/cat", "/workspace/final.squashfs"],
                              overlay=str(overlay) + ":ro", jobs=args.jobs)
-    if args.software in ('cp2k', 'abacus'):
+    if args.software in ('cp2k', 'abacus', 'qe'):
         from cp2k_image_driver import wrap_command
         emit = wrap_command(ROOT, r, CONTROL, emit)
     q = shlex.quote
     lines = [
         "#!/bin/bash",
         "#SBATCH --job-name=" + ('sai-' + args.software + '-build-' + args.target + '-' + delivery['recipe_sha256'][:12]
-                                if args.software in ('abacus', 'cp2k', 'gpumd') else 'sai-software-build'),
+                                if args.software in ('abacus', 'cp2k', 'gpumd', 'qe') else 'sai-software-build'),
         "#SBATCH --dependency=singleton",
         f"#SBATCH --partition={target['partition']}",
-        f"#SBATCH --qos={gpumd_qos(ROOT, args.target) if args.software == 'gpumd' else target['qos']}",
+        f"#SBATCH --qos={gpumd_qos(ROOT, args.target) if args.software in ('gpumd', 'qe') else target['qos']}",
         "#SBATCH --nodes=1", "#SBATCH --ntasks=1",
         f"#SBATCH --time={args.minutes}",
         f"#SBATCH --output={r}/results/slurm-%j.log",
@@ -412,7 +432,7 @@ def render_job(args):
                    shlex.join(['printf', '%s  %s\\n', digest, str(overlay)]) + ' | sha256sum --check --status',
                    shlex.join(['chmod', '600', str(overlay)]), shlex.join(container('metadata'))]
     module_command = "module --ignore_cache load apptainer/1.4.4 fuse2fs/1.47.4-sai"
-    if args.software in ("cp2k", "abacus"):
+    if args.software in ("cp2k", "abacus", "qe"):
         from cp2k_image_driver import module_load_command
         module_command = module_load_command()
     lines += [
@@ -440,11 +460,11 @@ def render_job(args):
         *prepare,
         *([shlex.join(['/usr/sbin/e2fsck', '-fn', str(overlay)]) + ' > ' +
            q(str(r / 'results/overlay-after-build-fsck.txt')) + ' 2>&1']
-          if args.software == 'abacus' else []),
+          if args.software in ('abacus', 'qe') else []),
         shlex.join(container("export")),
         *([shlex.join(['/usr/sbin/e2fsck', '-fn', str(overlay)]) + ' > ' +
            q(str(r / 'results/overlay-after-export-fsck.txt')) + ' 2>&1']
-          if args.software == 'abacus' else []),
+          if args.software in ('abacus', 'qe') else []),
         shlex.join(emit) + " > " + q(str(squash)),
         shlex.join(["apptainer", "sif", "new", str(sif)]),
         shlex.join(["apptainer", "sif", "add", "--datatype", "4", "--partfs", "1",

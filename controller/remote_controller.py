@@ -78,6 +78,7 @@ def private_scratch(path):
 # the candidate installed at its final prefix in the overlay / SIF.
 # Alias destinations (e.g. cp2k-2026.1-avx512) retain their literal host path.
 SITE_APPS = {
+    "qe": (),
     "abacus": (),
     "cp2k": (),
     "gpumd": ("/opt/apps/conda_env/deepmd-kit-3.2.0",

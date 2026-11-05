@@ -1,0 +1,511 @@
+{
+  "controller_commit": "c291f0e263c07dc56dd8528f978e29e15af6af03",
+  "observed_at": "2026-11-05T06:01:04.569563+00:00",
+  "partitions": {
+    "16V100": {
+      "accounting": [
+        "2210561|16V100|COMPLETED|0:0|00:13:34|8|billing=150,cpu=8,gres/gpu=1,mem=15G,node=1|16v100n02|/org/org-open-sai/proj-sai-hpc-software/runs/41970760811-1-development-16v100-avx2-2026-11-05-61569eb48023",
+        "2210837|16V100|COMPLETED|0:0|00:00:26|16|billing=300,cpu=16,gres/gpu=2,mem=30G,node=1|16v100n09|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/41970760811-1-development-16v100-avx2-2026-11-05-61569eb48023-science"
+      ],
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-r18629d40806e/16V100/41970760811-1-development-16v100-avx2-2026-11-05-61569eb48023.sif",
+      "build_job": "2210561",
+      "build_status": {
+        "exit_code": "0:0",
+        "job": "2210561",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "build_verified": true,
+      "checks": {
+        "density_electrons": 7.99999404914205,
+        "frequencies_cm1": [
+          2.778696,
+          2.778696,
+          2.778696,
+          510.151309,
+          510.151309,
+          510.151309
+        ],
+        "gpu_executed": true,
+        "scf": {
+          "1": {
+            "energy_ry": -15.84452726,
+            "forces_ry_bohr": [
+              [
+                0.0,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0
+              ]
+            ]
+          },
+          "2": {
+            "energy_ry": -15.84452726,
+            "forces_ry_bohr": [
+              [
+                -0.0,
+                -0.0,
+                0.0
+              ],
+              [
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ]
+          }
+        }
+      },
+      "cuda_kernel_devices_mpi2": [
+        "0",
+        "1"
+      ],
+      "identity": {
+        "build_id": "develop-2026-07-09-g61569eb48023-r18629d40806e",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-r18629d40806e/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "18629d40806e6bb222cd3324ae381ef367b1212bf2a5d72b2193d60514d06ff1",
+        "repository": "QEF/q-e",
+        "schema": 2,
+        "software": "qe",
+        "source_ref": "develop",
+        "source_sha": "61569eb480231b649c47f631df9c5c83537df461",
+        "source_version": "develop-2026-07-09",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "development",
+        "version_label": "develop-2026-07-09"
+      },
+      "image_bytes": 1021444096,
+      "managed_overlay": [
+        {
+          "accepted": true,
+          "driver_returncode": 0,
+          "forced_stop": false,
+          "payload_returncode": 0,
+          "readonly": true,
+          "teardown_seconds": 0.046364275738596916,
+          "unmount_returncode": 0
+        },
+        {
+          "accepted": true,
+          "driver_returncode": 0,
+          "forced_stop": false,
+          "payload_returncode": 0,
+          "readonly": false,
+          "teardown_seconds": 0.29143151082098484,
+          "unmount_returncode": 0
+        },
+        {
+          "accepted": true,
+          "driver_returncode": 0,
+          "forced_stop": false,
+          "payload_returncode": 0,
+          "readonly": false,
+          "teardown_seconds": 0.8186771646142006,
+          "unmount_returncode": 0
+        }
+      ],
+      "native_export": {
+        "directory": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-r18629d40806e/16V100/41970760811-1-development-16v100-avx2-2026-11-05-61569eb48023.native",
+        "roundtrip_verified": true
+      },
+      "published": true,
+      "science_job": "2210837",
+      "science_status": {
+        "exit_code": "0:0",
+        "job": "2210837",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "sha256": "99cc5df0332a4365ce95a03c58264daeaf6bce478490ef4bee9305956c6e0129"
+    },
+    "4V100": {
+      "accounting": [
+        "2210565|4V100|COMPLETED|0:0|00:10:34|8|billing=194,cpu=8,gres/gpu=1,mem=22G,node=1|4v100n24|/org/org-open-sai/proj-sai-hpc-software/runs/41970760811-1-development-4v100-avx512-2026-11-05-61569eb48023",
+        "2210755|4V100|COMPLETED|0:0|00:00:23|16|billing=388,cpu=16,gres/gpu=2,mem=44G,node=1|4v100n24|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/41970760811-1-development-4v100-avx512-2026-11-05-61569eb48023-science"
+      ],
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-r18629d40806e/4V100/41970760811-1-development-4v100-avx512-2026-11-05-61569eb48023.sif",
+      "build_job": "2210565",
+      "build_status": {
+        "exit_code": "0:0",
+        "job": "2210565",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "build_verified": true,
+      "checks": {
+        "density_electrons": 7.99999404914205,
+        "frequencies_cm1": [
+          2.778695,
+          2.778695,
+          2.778695,
+          510.151309,
+          510.151309,
+          510.151309
+        ],
+        "gpu_executed": true,
+        "scf": {
+          "1": {
+            "energy_ry": -15.84452726,
+            "forces_ry_bohr": [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                -0.0,
+                -0.0,
+                -0.0
+              ]
+            ]
+          },
+          "2": {
+            "energy_ry": -15.84452726,
+            "forces_ry_bohr": [
+              [
+                -0.0,
+                -0.0,
+                -0.0
+              ],
+              [
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ]
+          }
+        }
+      },
+      "cuda_kernel_devices_mpi2": [
+        "0",
+        "1"
+      ],
+      "identity": {
+        "build_id": "develop-2026-07-09-g61569eb48023-r18629d40806e",
+        "cpu_arch": "znver4",
+        "cuda_arch": "70",
+        "dependency_isa": "avx512",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-r18629d40806e/4V100",
+        "partition": "4V100",
+        "recipe_sha256": "18629d40806e6bb222cd3324ae381ef367b1212bf2a5d72b2193d60514d06ff1",
+        "repository": "QEF/q-e",
+        "schema": 2,
+        "software": "qe",
+        "source_ref": "develop",
+        "source_sha": "61569eb480231b649c47f631df9c5c83537df461",
+        "source_version": "develop-2026-07-09",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "4v100-avx512",
+        "track": "development",
+        "version_label": "develop-2026-07-09"
+      },
+      "image_bytes": 1014816768,
+      "managed_overlay": [
+        {
+          "accepted": true,
+          "driver_returncode": 0,
+          "forced_stop": false,
+          "payload_returncode": 0,
+          "readonly": false,
+          "teardown_seconds": 0.35198785550892353,
+          "unmount_returncode": 0
+        },
+        {
+          "accepted": true,
+          "driver_returncode": 0,
+          "forced_stop": false,
+          "payload_returncode": 0,
+          "readonly": false,
+          "teardown_seconds": 0.22466797940433025,
+          "unmount_returncode": 0
+        },
+        {
+          "accepted": true,
+          "driver_returncode": 0,
+          "forced_stop": false,
+          "payload_returncode": 0,
+          "readonly": true,
+          "teardown_seconds": 0.03434932790696621,
+          "unmount_returncode": 0
+        }
+      ],
+      "native_export": {
+        "directory": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-r18629d40806e/4V100/41970760811-1-development-4v100-avx512-2026-11-05-61569eb48023.native",
+        "roundtrip_verified": true
+      },
+      "published": true,
+      "science_job": "2210755",
+      "science_status": {
+        "exit_code": "0:0",
+        "job": "2210755",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "sha256": "c31d848b14216857a3dc9ec98262397c3580752df654610c5adde2861f8b1def"
+    },
+    "8V100V0": {
+      "accounting": [
+        "2210567|8V100V0|COMPLETED|0:0|00:21:30|6|billing=180,cpu=6,gres/gpu=1,mem=46G,node=1|8v100v0n03|/org/org-open-sai/proj-sai-hpc-software/runs/41970760811-1-development-8v100v0-avx512-2026-11-05-61569eb48023",
+        "2211174|8V100V0|COMPLETED|0:0|00:00:47|12|billing=360,cpu=12,gres/gpu=2,mem=92G,node=1|8v100v0n03|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/41970760811-1-development-8v100v0-avx512-2026-11-05-61569eb48023-science"
+      ],
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-r18629d40806e/8V100V0/41970760811-1-development-8v100v0-avx512-2026-11-05-61569eb48023.sif",
+      "build_job": "2210567",
+      "build_status": {
+        "exit_code": "0:0",
+        "job": "2210567",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "build_verified": true,
+      "checks": {
+        "density_electrons": 7.99999404914205,
+        "frequencies_cm1": [
+          2.778696,
+          2.778696,
+          2.778696,
+          510.151309,
+          510.151309,
+          510.151309
+        ],
+        "gpu_executed": true,
+        "scf": {
+          "1": {
+            "energy_ry": -15.84452726,
+            "forces_ry_bohr": [
+              [
+                0.0,
+                0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                -0.0
+              ]
+            ]
+          },
+          "2": {
+            "energy_ry": -15.84452726,
+            "forces_ry_bohr": [
+              [
+                0.0,
+                0.0,
+                -0.0
+              ],
+              [
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ]
+          }
+        }
+      },
+      "cuda_kernel_devices_mpi2": [
+        "0",
+        "1"
+      ],
+      "identity": {
+        "build_id": "develop-2026-07-09-g61569eb48023-r18629d40806e",
+        "cpu_arch": "skylake-avx512",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-r18629d40806e/8V100V0",
+        "partition": "8V100V0",
+        "recipe_sha256": "18629d40806e6bb222cd3324ae381ef367b1212bf2a5d72b2193d60514d06ff1",
+        "repository": "QEF/q-e",
+        "schema": 2,
+        "software": "qe",
+        "source_ref": "develop",
+        "source_sha": "61569eb480231b649c47f631df9c5c83537df461",
+        "source_version": "develop-2026-07-09",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "8v100v0-avx512",
+        "track": "development",
+        "version_label": "develop-2026-07-09"
+      },
+      "image_bytes": 1023700992,
+      "managed_overlay": [
+        {
+          "accepted": true,
+          "driver_returncode": 0,
+          "forced_stop": false,
+          "payload_returncode": 0,
+          "readonly": false,
+          "teardown_seconds": 0.7709334068931639,
+          "unmount_returncode": 0
+        },
+        {
+          "accepted": true,
+          "driver_returncode": 0,
+          "forced_stop": false,
+          "payload_returncode": 0,
+          "readonly": true,
+          "teardown_seconds": 0.08420888986438513,
+          "unmount_returncode": 0
+        },
+        {
+          "accepted": true,
+          "driver_returncode": 0,
+          "forced_stop": false,
+          "payload_returncode": 0,
+          "readonly": false,
+          "teardown_seconds": 0.3706537210382521,
+          "unmount_returncode": 0
+        }
+      ],
+      "native_export": {
+        "directory": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-r18629d40806e/8V100V0/41970760811-1-development-8v100v0-avx512-2026-11-05-61569eb48023.native",
+        "roundtrip_verified": true
+      },
+      "published": true,
+      "science_job": "2211174",
+      "science_status": {
+        "exit_code": "0:0",
+        "job": "2211174",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "sha256": "509f8af228913c1854fbfbf9cfc615961684aca1afcd90c5e82ccf94ab490bce"
+    },
+    "DSPRHBM": {
+      "accounting": [
+        "2210560|DSPRHBM|COMPLETED|0:0|00:18:32|8|billing=194,cpu=8,mem=28G,node=1|d9470n01|/org/org-open-sai/proj-sai-hpc-software/runs/41970760811-1-development-dsprhbm-2026-11-05-61569eb48023",
+        "2211474|DSPRHBM|COMPLETED|0:0|00:01:09|4|billing=55,cpu=4,mem=8G,node=1|d9470n05|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/41970760811-1-development-dsprhbm-2026-11-05-61569eb48023-science"
+      ],
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-r18629d40806e/DSPRHBM/41970760811-1-development-dsprhbm-2026-11-05-61569eb48023.sif",
+      "build_job": "2210560",
+      "build_status": {
+        "exit_code": "0:0",
+        "job": "2210560",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "build_verified": true,
+      "checks": {
+        "density_electrons": 7.9999948251504,
+        "frequencies_cm1": [
+          2.590577,
+          2.590577,
+          2.590577,
+          510.149663,
+          510.149663,
+          510.149663
+        ],
+        "gpu_executed": false,
+        "scf": {
+          "1": {
+            "energy_ry": -15.84452726,
+            "forces_ry_bohr": [
+              [
+                -0.0,
+                -0.0,
+                -0.0
+              ],
+              [
+                0.0,
+                0.0,
+                0.0
+              ]
+            ]
+          },
+          "2": {
+            "energy_ry": -15.84452726,
+            "forces_ry_bohr": [
+              [
+                0.0,
+                -0.0,
+                0.0
+              ],
+              [
+                0.0,
+                0.0,
+                -0.0
+              ]
+            ]
+          }
+        }
+      },
+      "identity": {
+        "build_id": "develop-2026-07-09-g61569eb48023-r18629d40806e",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-r18629d40806e/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "18629d40806e6bb222cd3324ae381ef367b1212bf2a5d72b2193d60514d06ff1",
+        "repository": "QEF/q-e",
+        "schema": 2,
+        "software": "qe",
+        "source_ref": "develop",
+        "source_sha": "61569eb480231b649c47f631df9c5c83537df461",
+        "source_version": "develop-2026-07-09",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "development",
+        "version_label": "develop-2026-07-09"
+      },
+      "image_bytes": 436228096,
+      "managed_overlay": [
+        {
+          "accepted": true,
+          "driver_returncode": 0,
+          "forced_stop": false,
+          "payload_returncode": 0,
+          "readonly": true,
+          "teardown_seconds": 0.0450944600161165,
+          "unmount_returncode": 0
+        },
+        {
+          "accepted": true,
+          "driver_returncode": 0,
+          "forced_stop": false,
+          "payload_returncode": 0,
+          "readonly": false,
+          "teardown_seconds": 0.6017947681248188,
+          "unmount_returncode": 0
+        },
+        {
+          "accepted": true,
+          "driver_returncode": 0,
+          "forced_stop": false,
+          "payload_returncode": 0,
+          "readonly": false,
+          "teardown_seconds": 0.5450067010242492,
+          "unmount_returncode": 0
+        }
+      ],
+      "native_export": {
+        "directory": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-r18629d40806e/DSPRHBM/41970760811-1-development-dsprhbm-2026-11-05-61569eb48023.native",
+        "roundtrip_verified": true
+      },
+      "published": true,
+      "science_job": "2211474",
+      "science_status": {
+        "exit_code": "0:0",
+        "job": "2211474",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "sha256": "19230310565cc76e58017d0f6614cadb0587189ae2fa010d49b6f4bd3213f990"
+    }
+  },
+  "workflow": "41970760811"
+}

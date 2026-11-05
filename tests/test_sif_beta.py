@@ -16,12 +16,27 @@ from sif_modules import render_module
 from sif_runtime import digest, MPI_LAUNCHERS, PROGRAMS
 
 
+def add_qe(snapshot):
+    # The historical accepted catalog predates QE. Extend only this test fixture.
+    from release_contract import make_identity, PARTITIONS
+    snapshot = copy.deepcopy(snapshot)
+    rows = {}
+    for target, partition in PARTITIONS.items():
+        identity = make_identity('qe', 'development', 'develop', 'a'*40, 'develop-20261105', 'b'*64, target)
+        rows[partition] = dict(identity=identity, image='/images/qe-'+partition+'.sif', sha256='c'*64,
+            build_verified=True, scientific_verified=True, evidence='/proof/qe-'+partition,
+            evidence_sha256='d'*64, binds=[],
+            mpi_prefix='/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-'+identity['dependency_isa'])
+    snapshot['applications']['qe'] = dict(version='develop-20261105', partitions=rows)
+    return snapshot
+
+
 class SifBetaTests(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
-        self.snapshot = json.loads((REPO / 'deployment/sif-development-20261024/snapshot.json').read_text())
+        self.snapshot = add_qe(json.loads((REPO / 'deployment/sif-development-20261024/snapshot.json').read_text()))
 
     def fragment(self, software, generation):
         path = self.root / 'generations' / generation / 'modules' / software

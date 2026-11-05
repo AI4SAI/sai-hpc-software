@@ -1,4 +1,21 @@
-# Workflow closure — 2026-11-03
+# Workflow closure — 2026-11-05
+
+## Quantum ESPRESSO integration
+
+QE now has release/develop tracking, container builds, host-MPI scientific
+acceptance, native export and the existing beta publication path for DSPRHBM,
+16V100, 4V100 and 8V100V0. The site QE 7.5 module audit determines its NVHPC,
+OpenMPI, FFTW, HDF5, ScaLAPACK and executable compatibility profile.
+
+The initial QE 7.6 release SIFs passed silicon SCF/forces on one and two ranks,
+Gamma phonons and the density integral on all four partitions. CUDA kernel
+logs verify GPU execution on V100. Each image contains 67 executables and has
+accepted native exports in the project catalog. Develop SIF science has also
+passed all four partitions. First beta verification has passed three partitions
+and is waiting for 4V100 resources. The [release administrator package](../deployment/qe-7.6/README.md)
+installs the standard runtime files and `qe/7.6-auto`; physical /opt installation
+has not been performed.
+See [QE workflow and exact qualification evidence](QE-WORKFLOW.md).
 
 ## Writable image shutdown with the existing runtime
 

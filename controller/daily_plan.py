@@ -13,7 +13,7 @@ def plan(software='all', tracks=','.join(TRACKS), targets='all'):
         if not values or len(set(values)) != len(values) or any(v not in allowed for v in values):
             raise ValueError('invalid or duplicate tracks/targets')
     result = {}
-    for name in ('abacus', 'cp2k', 'deepmd-kit', 'lammps', 'gpumd'):
+    for name in SOFTWARE:
         enabled = software in ('all', name)
         supported = [t for t in selected if t in SOFTWARE[name]['targets']] if enabled else []
         result[name.replace('-', '_')] = ','.join(supported)
