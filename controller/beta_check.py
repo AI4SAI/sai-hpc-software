@@ -39,6 +39,12 @@ def prepare(software, partition, bundle, output, fixtures):
     elif software == 'abacus' and partition == 'DSPRHBM':
         file = output / 'case/INPUT'
         file.write_text(re.sub(r'(?m)^device\s+gpu\s*$', 'device cpu', file.read_text()))
+    elif software == 'qe':
+        many = output / 'case/manypw'
+        many.mkdir()
+        for index in range(2):
+            shutil.copyfile(output / 'case/scf.in', many / f'pw_{index}.in')
+        shutil.copyfile(output / 'case/Si.pz-vbc.UPF', many / 'Si.pz-vbc.UPF')
     request = dict(software=software, partition=partition, catalog=str(bundle / 'catalog.json'),
                    catalog_sha256=digest(bundle / 'catalog.json'), runtime_sha256=snapshot['runtime_sha256'],
                    reference=read(fixtures / 'references.json')[software],
@@ -86,6 +92,9 @@ def render(software, partition, bundle, output):
     if software == 'qe':
         lines += ['export NVCOMPILER_ACC_NOTIFY=1']
     lines += ['/usr/bin/time -f %e -o elapsed.txt ' + commands[software] + ' > stdout.txt 2>&1']
+    if software == 'qe':
+        lines += ['cd manypw', '/usr/bin/time -f %e -o elapsed.txt ' + launch
+                  + '--tag-output manypw.x -ni 2 > stdout.txt 2>&1', 'cd ..']
     if software == 'deepmd-kit':
         runner = ("import os,sys,runpy; os.chdir('training'); sys.argv="
                   + repr(['../control/deepmd_training_check.py', prefix, '../case/fixture.json'])
@@ -120,6 +129,45 @@ def training_report(output, job, partition, prefix):
                             and r['initial_parameters_sha256'] != r['final_parameters_sha256'] for r in ranks)
                     and ranks[0]['final_parameters_sha256'] == ranks[1]['final_parameters_sha256'], 'invalid DDP rank evidence')
     return summary
+
+
+def qe_manypw(directory, reference, *, gpu):
+    from qe_science import NUMBER, number
+    launcher = (directory / 'stdout.txt').read_text()
+    require(re.search(r'path-images division:\s+nimage\s*=\s*2\b', launcher),
+            'QE manypw did not start two independent images')
+    images = []
+    combined = launcher
+    for index in range(2):
+        output = directory / f'pw_{index}.out'
+        text = output.read_text()
+        require(f'Reading input from pw_{index}.in' in text
+                and 'convergence has been achieved' in text, 'QE manypw image did not converge')
+        # QE prints its global completion marker from image zero only.
+        require(index != 0 or 'JOB DONE.' in text, 'QE manypw did not finish')
+        values = re.findall(r'!\s+total energy\s*=\s*(' + NUMBER + r')\s+Ry', text)
+        require(len(values) == 1, 'missing or ambiguous QE manypw energy')
+        energy = number(values[0])
+        require(abs(energy - reference['energy_ry']) <= reference['energy_tolerance_ry'],
+                'QE manypw image energy changed')
+        scratch = directory / f'tmp_{index}'
+        schemas = list(scratch.glob('*/data-file-schema.xml'))
+        require(scratch.is_dir() and scratch.resolve() == scratch and len(schemas) == 1
+                and schemas[0].is_file() and schemas[0].resolve() == schemas[0],
+                'QE manypw images need independent completed scratch')
+        images.append(dict(image=index, energy_ry=energy, output_sha256=digest(output),
+                           scratch=scratch.name, schema_sha256=digest(schemas[0])))
+        combined += text
+    devices = {}
+    if gpu:
+        for rank, device in re.findall(r'\[\d+,([01])\]<stderr>:.*launch CUDA kernel.*device=(\d+)', launcher):
+            devices.setdefault(rank, set()).add(device)
+        require('GPU acceleration is ACTIVE' in combined and set(devices) == {'0', '1'}
+                and all(len(values) == 1 for values in devices.values())
+                and set.union(*devices.values()) == {'0', '1'},
+                'QE manypw ranks did not execute on two separate GPU devices')
+    return dict(passed=True, images=images,
+                gpu_devices_by_rank={rank: sorted(values) for rank, values in sorted(devices.items())})
 
 
 def verify(output):
@@ -162,6 +210,7 @@ def verify(output):
         require(max(abs(v) for f in result['forces_ry_bohr'] for v in f) < 1e-5, 'QE SIF route forces changed')
         if partition != 'DSPRHBM':
             require('GPU acceleration is ACTIVE' in text and re.search(r'launch CUDA kernel.*device=\d+', text), 'QE GPU kernels not executed')
+        result['manypw'] = qe_manypw(work / 'manypw', reference, gpu=partition != 'DSPRHBM')
     elif software == 'gpumd':
         from gpumd_science import xyz, compare
         e, f = xyz(work / 'dump.xyz'); ge, gf = xyz(work / 'gold.xyz')
@@ -177,6 +226,14 @@ def verify(output):
     if request['ranks'] == 2:
         require({t['rank'] for t in traces} == {'0', '1'} and all(t['mpi'] == row['mpi_prefix'] for t in traces),
                 'missing host MPI rank or wrong MPI')
+    if software == 'qe':
+        for command in ('pw.x', 'manypw.x'):
+            selected = [t for t in traces if t['program'] == command]
+            require(len(selected) == 2 and {t['rank'] for t in selected} == {'0', '1'},
+                    'missing distinct QE command/rank traces: ' + command)
+        require(all(t['command'][-4:] == [row['identity']['install_prefix'] + '/bin/manypw.x',
+                    row['identity']['install_prefix'] + '/bin/pw.x', '-ni', '2']
+                    for t in traces if t['program'] == 'manypw.x'), 'QE manypw launch name was not preserved')
     report = dict(passed=True, automatic_memory=True, partition=partition, job=job,
                   catalog_sha256=request['catalog_sha256'], runtime_sha256=request['runtime_sha256'], **{software: result})
     return report

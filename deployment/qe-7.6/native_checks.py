@@ -95,9 +95,11 @@ def run(output):
                        and deployment.digest(control / 'qe_fixture.json') == request['fixture_sha256'], 'science checker changed')
     release = deployment.load_release()
     row, = [item for item in release['deliveries'] if item['partition'] == request['partition']]
-    deployment.verify_installed(prefix, row['files'])
+    deployment.verify_installed(prefix, deployment.installation_records(row['files']))
     links = {}
     for binary in sorted((prefix / 'bin').iterdir()):
+        if binary.is_symlink():
+            continue  # The exact manypw.x -> pw.x link was checked above.
         text = subprocess.check_output(['ldd', binary], text=True)
         deployment.require('not found' not in text, 'missing native dependency: ' + binary.name)
         links[binary.name] = text
@@ -106,7 +108,9 @@ def run(output):
     import qe_science
     science = qe_science.run(output / 'science', output / 'rank.sh', request['partition'] != 'DSPRHBM')
     report = dict(passed=True, job=os.environ['SLURM_JOB_ID'], node=os.uname().nodename,
-                  request=request, science=science, commands_checked=len(links),
+                  request=request, science=science, executables_checked=len(links),
+                  commands_checked=len(links) + len(deployment.COMMAND_ALIASES),
+                  aliases=deployment.COMMAND_ALIASES,
                   mpi_home=os.environ['MPI_HOME'], module_sha256=request['module_sha256'])
     save(output / 'native-check.json', report)
     print('QE_NATIVE_SCF_PH_PP_ACCEPTED', flush=True)

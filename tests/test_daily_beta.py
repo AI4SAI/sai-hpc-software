@@ -301,6 +301,59 @@ class RuntimeTests(unittest.TestCase):
                         self.assertEqual(environment.splitlines(), [str(Path.home()), 'stardust', 'stardust'])
                     if software == 'deepmd-kit':
                         self.assertIn("deepmd-python -c", script)
+                    if software == 'qe':
+                        self.assertIn('--tag-output manypw.x -ni 2', script)
+                        request = json.loads((output / 'request.json').read_text())
+                        for index in range(2):
+                            self.assertEqual(request['files'][f'case/manypw/pw_{index}.in'],
+                                             digest(output / 'case/scf.in'))
+
+
+class QeManypwTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name)
+        self.reference = dict(energy_ry=-15.84452726, energy_tolerance_ry=2e-5)
+        self.launcher = ('path-images division:  nimage = 2\nGPU acceleration is ACTIVE\n'
+                         '[1,0]<stderr>:launch CUDA kernel device=0\n'
+                         '[1,1]<stderr>:launch CUDA kernel device=1\n')
+        (self.root / 'stdout.txt').write_text(self.launcher)
+        for index in range(2):
+            (self.root / f'pw_{index}.out').write_text(
+                f'Reading input from pw_{index}.in\nconvergence has been achieved\n'
+                '! total energy = -15.84452726 Ry\n' + ('JOB DONE.\n' if index == 0 else ''))
+            scratch = self.root / f'tmp_{index}/silicon.save'
+            scratch.mkdir(parents=True)
+            (scratch / 'data-file-schema.xml').write_text('<completed/>')
+
+    def test_two_images_need_only_one_global_completion_marker(self):
+        result = beta_check.qe_manypw(self.root, self.reference, gpu=True)
+        self.assertTrue(result['passed'])
+        self.assertEqual(result['gpu_devices_by_rank'], {'0': ['0'], '1': ['1']})
+        self.assertEqual([r['scratch'] for r in result['images']], ['tmp_0', 'tmp_1'])
+
+    def test_wrong_second_image_energy_is_rejected(self):
+        output = self.root / 'pw_1.out'
+        output.write_text(output.read_text().replace('-15.84452726', '-14.84452726'))
+        with self.assertRaisesRegex(ValueError, 'image energy'):
+            beta_check.qe_manypw(self.root, self.reference, gpu=False)
+
+    def test_shared_scratch_or_shared_gpu_is_rejected(self):
+        (self.root / 'stdout.txt').write_text(self.launcher.replace('device=1', 'device=0'))
+        with self.assertRaisesRegex(ValueError, 'separate GPU'):
+            beta_check.qe_manypw(self.root, self.reference, gpu=True)
+        (self.root / 'stdout.txt').write_text(self.launcher)
+        shutil.rmtree(self.root / 'tmp_1')
+        (self.root / 'tmp_1').symlink_to('tmp_0')
+        with self.assertRaisesRegex(ValueError, 'independent completed scratch'):
+            beta_check.qe_manypw(self.root, self.reference, gpu=False)
+
+    def test_missing_global_completion_is_rejected(self):
+        output = self.root / 'pw_0.out'
+        output.write_text(output.read_text().replace('JOB DONE.', ''))
+        with self.assertRaisesRegex(ValueError, 'did not finish'):
+            beta_check.qe_manypw(self.root, self.reference, gpu=False)
 
 
 class WorkflowTests(unittest.TestCase):

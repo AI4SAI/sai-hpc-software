@@ -128,6 +128,35 @@ proc setenv {name value} {puts "ENV $name=$value"}
         self.assertEqual(command[-len(argv):], argv)
         self.assertEqual(environment, original)
 
+    def test_qe_standard_aliases_preserve_elf_argv0_and_literal_arguments(self):
+        if not shutil.which('cc'):
+            self.skipTest('a C compiler is required for the ELF argv[0] probe')
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            (root / 'bin').mkdir()
+            source = root / 'argv.c'
+            source.write_text('#include <stdio.h>\nint main(int n,char **v){for(int i=0;i<n;i++) puts(v[i]);return 0;}\n')
+            subprocess.run(['cc', str(source), '-o', str(root / 'bin/pw.x')], check=True)
+            (root / 'share/sai').mkdir(parents=True)
+            (root / 'share/sai/runtime-env.sh').write_text('export LD_LIBRARY_PATH=\n')
+            snapshot = dict(schema=1, applications={'qe': {'partitions': {'DSPRHBM': dict(
+                identity=dict(software='qe', partition='DSPRHBM', install_prefix=str(root), gpus=0),
+                image='/images/qe.sif', binds=[])}}})
+            environment = dict(SLURM_JOB_PARTITION='DSPRHBM', SLURM_JOB_ID='123', PATH='/usr/bin',
+                               TMPDIR=str(runtime.memory_root({'SLURM_JOB_ID': '123'})))
+            for program in ('manypw.x', 'pw.x'):
+                arguments = ['-in', 'input with spaces', 'literal $(touch never)']
+                with patch.object(runtime.shutil, 'which', return_value='/opt/apptainer'):
+                    argv, _ = runtime.command(snapshot, Path('/org/example/catalog.json'), 'qe', program,
+                                              arguments, environment, Path('/org/example/work'),
+                                              Path(environment['TMPDIR']) / 'rank0')
+                # Execute the actual generated final shell/ELF chain. The alias
+                # paths intentionally do not exist, as in the first accepted SIFs.
+                result = subprocess.run(argv[argv.index('/usr/bin/bash'):], text=True, capture_output=True, check=True)
+                self.assertEqual(result.stdout.splitlines(), [str(root / 'bin' / program), *arguments])
+            with self.assertRaisesRegex(ValueError, 'unknown SIF runtime command'):
+                runtime.selection(snapshot, 'qe', 'dist.x', environment)
+
     def test_restricted_node_uses_the_apptainer_profile_before_mpi(self):
         environment = dict(SLURM_JOB_ID='123')
         argv = ['/org/example/catalog.json', '_mpi', 'mpirun']

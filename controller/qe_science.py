@@ -12,7 +12,7 @@ from source_cache import checksum
 from release_contract import validate_identity
 from native_module import validate_native_entry
 from export_native import write_manifests, read_installed_manifests, inventory
-from sif_runtime import PROGRAMS
+from sif_runtime import PROGRAMS, QE_COMMAND_ALIASES
 
 CONTROL = Path(__file__).resolve().parent
 MODULES = ['openmpi/5.0.10-nvhpc26.3-pgi-cuda12-auto', 'fftw/3.3.10']
@@ -140,6 +140,13 @@ def inspect(prefix, identity=None):
     installed = {path.name for path in (prefix / 'bin').iterdir() if path.is_file() and os.access(path, os.X_OK)}
     if not set(PROGRAMS['qe']) <= installed:
         raise ValueError('missing site pwall tools: ' + str(sorted(set(PROGRAMS['qe']) - installed)))
+    for name, target in QE_COMMAND_ALIASES.items():
+        link = prefix / 'bin' / name
+        if not link.is_symlink() or os.readlink(link) != target:
+            raise ValueError('QE standard command must be a relative pw.x link: ' + name)
+    binaries = installed - set(QE_COMMAND_ALIASES)
+    if len(binaries) != 67 or any((prefix / 'bin' / name).is_symlink() for name in binaries):
+        raise ValueError('expected 67 regular QE executables and the standard manypw.x link')
     data = prefix / 'share/sai'
     if identity is None:
         identity = json.loads((data / 'release-identity.json').read_text())
@@ -157,7 +164,7 @@ def inspect(prefix, identity=None):
     if gpu and ('QE_GPU_ARCHS:STRING=sm_70' not in cache or 'QE_ENABLE_MPI_GPU_AWARE:BOOL=ON' not in cache):
         raise ValueError('required QE V100/GPU-aware MPI build options missing')
     reports = {}
-    for name in sorted(installed):
+    for name in sorted(binaries):
         binary = prefix / 'bin' / name
         ldd = subprocess.check_output(['ldd', binary], text=True)
         dynamic = subprocess.check_output(['readelf', '-d', binary], text=True)
@@ -182,7 +189,7 @@ def inspect(prefix, identity=None):
         entry = validate_native_entry(json.loads((data/'native-entry.json').read_text()))
         if read_installed_manifests([entry]) != inventory([entry]):
             raise ValueError('QE installed inventory changed')
-    return dict(executables=sorted(installed), gpu=gpu)
+    return dict(executables=sorted(binaries), commands=sorted(installed), aliases=QE_COMMAND_ALIASES, gpu=gpu)
 
 
 if __name__ == '__main__':

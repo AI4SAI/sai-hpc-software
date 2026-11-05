@@ -17,6 +17,7 @@ import stat
 import sys
 
 
+QE_COMMAND_ALIASES = {'manypw.x': 'pw.x'}
 PROGRAMS = {'abacus': ('abacus',), 'cp2k': ('cp2k', 'cp2k.psmp'),
             'lammps': ('lmp',), 'deepmd-kit': ('dp', 'deepmd-python'),
             'gpumd': ('gpumd', 'nep', 'gnep'),
@@ -28,7 +29,7 @@ PROGRAMS = {'abacus': ('abacus',), 'cp2k': ('cp2k', 'cp2k.psmp'),
                 plan_avg.x plotband.x plotproj.x plotrho.x pmw.x postahc.x pp.x ppacf.x pprism.x
                 projwfc.x pw.x pw2bgw.x pw2critic.x pw2gt.x pw2gw.x pw2wannier90.x pwcond.x
                 pwi2xsf.x q2qstar.x q2r.x rism1d.x scan_ibrav.x sumpdos.x upfconv.x virtual_v2.x
-                wannier2pw.x wannier_ham.x wannier_plot.x wfck2r.x'''.split())}
+                wannier2pw.x wannier_ham.x wannier_plot.x wfck2r.x'''.split()) + tuple(QE_COMMAND_ALIASES)}
 MPI_PROGRAMS = ('abacus', 'cp2k', 'lammps', 'qe')
 MPI_LAUNCHERS = ('mpirun', 'mpiexec', 'prted')
 ENV_PREFIXES = ('SLURM_', 'OMPI_', 'OPAL_', 'PMIX_', 'PMI_', 'PRTE_', 'UCX_',
@@ -358,10 +359,17 @@ def command(manifest, manifest_path, software, program, arguments, environment, 
         child['APPTAINERENV_' + key] = value
     child.update(APPTAINER_TMPDIR=str(scratch), APPTAINER_CACHEDIR=str(scratch / 'cache'),
                  APPTAINER_CONFIGDIR=str(scratch.parent / 'config'))
+    execute, payload = 'exec "$@"', [prefix + '/bin/' + executable, *arguments]
+    if software == 'qe' and program in QE_COMMAND_ALIASES:
+        # Older accepted SIFs contain pw.x without its standard manypw link.
+        # Preserve QE's argv[0] dispatch without extracting or changing them.
+        execute = 'name=$1; shift; exec -a "$name" "$@"'
+        payload = [prefix + '/bin/' + program,
+                   prefix + '/bin/' + QE_COMMAND_ALIASES[program], *arguments]
     argv += [str(image), '/usr/bin/bash', '--noprofile', '--norc', '-c',
              'set -eo pipefail; driver=${LD_LIBRARY_PATH:-}; source "$1"; shift; '
-             'export LD_LIBRARY_PATH="$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"; exec "$@"',
-             'bash', runtime_env, prefix + '/bin/' + executable, *arguments]
+             'export LD_LIBRARY_PATH="$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"; ' + execute,
+             'bash', runtime_env, *payload]
     return argv, child
 
 

@@ -38,6 +38,14 @@ separate from the compiler's native CPU code generation.
 The `pwall` and `upf` targets, plus four explicitly selected tools omitted by
 those CMake umbrella targets, cover the site's existing executable suite,
 including pw.x, ph.x, neb.x, pwcond.x and postprocessing tools. OSCDFT is enabled.
+The package contains 67 ELF executables and the standard relative link
+`manypw.x -> pw.x`, exposing 68 command names. The existing QE dispatcher uses
+the invoked name to run multiple independent images. Older accepted images
+without the link are supported by the SIF launcher's exact `manypw.x` whitelist
+and preserved `argv[0]`; no extraction or image modification is required.
+The site comparison found that `dist.x` fails in MPI cleanup in both QE 7.3 and
+7.6, so that entry is not published. No scientific source is changed, and the
+`pwgui` graphical interface is not packaged.
 Only installed executables, required dependency files, licenses and delivery metadata enter the SIF;
 source, compiler objects and custom acceptance cases remain outside the payload.
 
@@ -86,10 +94,12 @@ Native installation uses `/opt/apps/qe/qe-<track>-<version>-g<SHA>-r<recipe>/<pa
 inside the image, ready for the existing administrator-controlled native export.
 Physical /opt installation is a separate step after acceptance.
 The accepted QE 7.6 release has an [administrator installation package](../deployment/qe-7.6/README.md)
-with `--check`, `--install` and `--verify`. It reads publicly accessible compressed
-SIF copies, installs all 67 application commands and licenses, and publishes
+with `--check`, `--install`, `--complete-commands` and `--verify`. It reads publicly accessible compressed
+SIF copies, installs all 67 ELF programs, the `manypw.x` link and licenses, and publishes
 `qe/7.6-auto`. No project-directory access or container execution is needed by
-the installing administrator.
+the installing administrator. For an existing installation, `--complete-commands`
+checks all installed files and adds only the four missing relative links; it
+does not read the images or replace any installed binaries.
 
 ## Initial qualification
 
@@ -149,3 +159,21 @@ Legacy 7.3 entry points are reported separately: `dist.x` fails MPI cleanup in
 both old and new programs, `manypw.x` requires preserving its invocation name,
 and the old `pwgui` GUI is outside this batch package. The audit records the
 runtime results and the differences in the historical command inventories.
+
+The standard `manypw.x` entry is now available through the accepted beta
+runtime. [Four-partition checks](evidence/qe-20261105/manypw-beta-publication.json)
+ran ordinary `pw.x` followed by `manypw.x -ni 2`, preserving the launch name
+and checking both independent inputs, converged energies and separate scratch
+trees. Each GPU run recorded rank 0 on device 0 and rank 1 on device 1. Jobs
+`2214331`, `2214333`, `2214335` and `2214337` completed with `0:0` before the
+home alias rotated to `develop-beta-20261105-61569eb48023-r4d85319d4295-bd913f2de073c`.
+The four accepted SIF files were reused without changes or additional copies.
+The native administrator can add the same standard entry using the
+`--complete-commands` operation described in the installation package.
+The [actual staged upgrade](evidence/qe-20261105/manypw-native-completion.json)
+added only four links and preserved the content, inode and modification time
+of all 288 regular files; repeating it was idempotent. The
+[public installer check](evidence/qe-20261105/manypw-public-completion.json)
+passed with all existing physical files intact. Its stricter `--verify` is
+expected to report an incomplete tree until the administrator adds these
+new links; the original installed programs remain accepted.
