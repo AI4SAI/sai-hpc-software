@@ -305,7 +305,7 @@ class RuntimeTests(unittest.TestCase):
 
 class WorkflowTests(unittest.TestCase):
     def test_all_daily_software_publish_independently_and_do_not_mask_failure(self):
-        for filename, software in [('build.yml','abacus'), ('cp2k.yml','cp2k'), ('deepmd.yml','deepmd-kit'), ('lammps.yml','lammps'), ('gpumd.yml','gpumd')]:
+        for filename, software in [('build.yml','abacus'), ('cp2k.yml','cp2k'), ('deepmd.yml','deepmd-kit'), ('lammps.yml','lammps'), ('gpumd.yml','gpumd'), ('qe.yml','qe')]:
             workflow = yaml.safe_load((REPO / '.github/workflows' / filename).read_text())
             job = workflow['jobs']['beta']
             self.assertEqual(job['uses'], './.github/workflows/beta.yml')
@@ -316,6 +316,7 @@ class WorkflowTests(unittest.TestCase):
                 self.assertIn('beta', workflow['jobs']['result']['needs'])
         workflow = yaml.safe_load((REPO / '.github/workflows/beta.yml').read_text())
         self.assertFalse(workflow['concurrency']['cancel-in-progress'])
+        self.assertEqual(set(workflow[True]['workflow_dispatch']['inputs']['software']['options']), set(SOFTWARE))
 
 
 if __name__ == '__main__':

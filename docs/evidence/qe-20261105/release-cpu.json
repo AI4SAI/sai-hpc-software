@@ -1,0 +1,287 @@
+{
+  "observed_at": "2026-11-05T05:19:02.053866+00:00",
+  "partitions": {
+    "DSPRHBM": {
+      "accounting": [
+        "2210458|DSPRHBM|COMPLETED|0:0|00:23:25|16|billing=194,cpu=16,mem=28G,node=1|d9470n01|/org/org-open-sai/proj-sai-hpc-software/runs/qe-release-20261105-r10-dsprhbm",
+        "2210814|DSPRHBM|COMPLETED|0:0|00:00:51|4|billing=55,cpu=4,mem=8G,node=1|d9470n01|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/qe-release-20261105-r10-dsprhbm-science"
+      ],
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/release/qe-7.6-g9f93ddec427d-r18629d40806e/DSPRHBM/qe-release-20261105-r10-dsprhbm.sif",
+      "build_job": "2210458",
+      "build_run_id": "qe-release-20261105-r10-dsprhbm",
+      "build_status": {
+        "exit_code": "0:0",
+        "job": "2210458",
+        "state": "COMPLETED",
+        "verified": true
+      },
+      "build_verified": true,
+      "hdf5_cmake": [
+        "CMAKE_C_COMPILER:STRING=/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512/bin/mpicc",
+        "CMAKE_Fortran_COMPILER:STRING=/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512/bin/mpifort",
+        "HDF5_ENABLE_MPI_F08:BOOL=OFF",
+        "HDF5_ENABLE_PARALLEL:BOOL=ON",
+        "HDF5_ENABLE_SZIP_SUPPORT:BOOL=ON",
+        "HDF5_ENABLE_Z_LIB_SUPPORT:BOOL=ON"
+      ],
+      "hdf5_interface": {
+        "after_sha256": "b3e3bb4a42de312523d2c71bb5dc71dfbbc2c7939736c02e51f6a7124772808d",
+        "before_sha256": "d3307ebbdc454909cf88662f10b1b08ae9970349faaf4b96e88b21f21f7897f1",
+        "description": "Select the F90 parallel-I/O interface used by QE; omit optional mpi_f08 overloads.",
+        "file": "CMakeLists.txt"
+      },
+      "identity": {
+        "build_id": "qe-7.6-g9f93ddec427d-r18629d40806e",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r18629d40806e/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "18629d40806e6bb222cd3324ae381ef367b1212bf2a5d72b2193d60514d06ff1",
+        "repository": "QEF/q-e",
+        "schema": 2,
+        "software": "qe",
+        "source_ref": "qe-7.6",
+        "source_sha": "9f93ddec427d2b9a45bb72d828c6d324f62fcabd",
+        "source_version": "qe-7.6",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "release",
+        "version_label": "qe-7.6"
+      },
+      "installed_executables": [
+        "alpha2f.x",
+        "average.x",
+        "band_interpolation.x",
+        "bands.x",
+        "casino2upf.x",
+        "cell2ibrav.x",
+        "d3hess.x",
+        "dos.x",
+        "dos_sp.x",
+        "dvscf_q2r.x",
+        "dynmat.x",
+        "ef.x",
+        "epa.x",
+        "epsilon.x",
+        "ev.x",
+        "fd.x",
+        "fd_ef.x",
+        "fd_ifc.x",
+        "fermi_int_0.x",
+        "fermi_int_1.x",
+        "fermi_proj.x",
+        "fermi_velocity.x",
+        "fqha.x",
+        "fs.x",
+        "ibrav2cell.x",
+        "initial_state.x",
+        "kpoints.x",
+        "lambda.x",
+        "matdyn.x",
+        "molecularpdos.x",
+        "neb.x",
+        "open_grid.x",
+        "oscdft_et.x",
+        "oscdft_pp.x",
+        "path_interpolation.x",
+        "pawplot.x",
+        "ph.x",
+        "phcg.x",
+        "plan_avg.x",
+        "plotband.x",
+        "plotproj.x",
+        "plotrho.x",
+        "pmw.x",
+        "postahc.x",
+        "pp.x",
+        "ppacf.x",
+        "pprism.x",
+        "projwfc.x",
+        "pw.x",
+        "pw2bgw.x",
+        "pw2critic.x",
+        "pw2gt.x",
+        "pw2gw.x",
+        "pw2wannier90.x",
+        "pwcond.x",
+        "pwi2xsf.x",
+        "q2qstar.x",
+        "q2r.x",
+        "rism1d.x",
+        "scan_ibrav.x",
+        "sumpdos.x",
+        "upfconv.x",
+        "virtual_v2.x",
+        "wannier2pw.x",
+        "wannier_ham.x",
+        "wannier_plot.x",
+        "wfck2r.x"
+      ],
+      "managed_overlay": [
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 1696232,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1793855275.666242,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/qe-release-20261105-r10-dsprhbm/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1793854422.6682963,
+          "teardown_seconds": 0.3529920428991318,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 1718330,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1793855494.7837355,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/qe-release-20261105-r10-dsprhbm/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1793855391.0912817,
+          "teardown_seconds": 0.723731717094779,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 1719605,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1793855705.0553792,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/qe-release-20261105-r10-dsprhbm/work.ext3",
+          "payload_returncode": 0,
+          "readonly": true,
+          "schema": 1,
+          "started": 1793855495.4891052,
+          "teardown_seconds": 0.0570285078138113,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        }
+      ],
+      "modulefile": "/org/org-open-sai/proj-sai-hpc-software/modulefiles/apps/qe/release/qe-7.6-g9f93ddec427d-r18629d40806e",
+      "native_export": {
+        "directory": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/release/qe-7.6-g9f93ddec427d-r18629d40806e/DSPRHBM/qe-release-20261105-r10-dsprhbm.native",
+        "image_sha256": "f2ff9faa95fad977dcf67f48d3fa8898b1cb5a7e5161bf60348f8a24fa30b9c4"
+      },
+      "published": true,
+      "qe_science": {
+        "artifact_sha256": "f2ff9faa95fad977dcf67f48d3fa8898b1cb5a7e5161bf60348f8a24fa30b9c4",
+        "checks": {
+          "density_electrons": 7.9999948251504,
+          "frequencies_cm1": [
+            2.590577,
+            2.590577,
+            2.590577,
+            510.149663,
+            510.149663,
+            510.149663
+          ],
+          "gpu_executed": false,
+          "scf": {
+            "1": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  -0.0,
+                  -0.0,
+                  -0.0
+                ]
+              ]
+            },
+            "2": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  0.0,
+                  -0.0,
+                  0.0
+                ],
+                [
+                  -0.0,
+                  0.0,
+                  -0.0
+                ]
+              ]
+            }
+          }
+        },
+        "controller_sha256": "5887345d2651b4e4c6dd27e7f1a2787192097dffac55bb9c7bb661cbb82eae49",
+        "files": {
+          "results/science/mpi1/Si.pz-vbc.UPF": "d75dd6b0be0aa10587fc95900cfd6ba7314d461a8276a81df34f009d0bfc075d",
+          "results/science/mpi1/ph.in": "fcb1af192851d1748322bf5cbf3f10d101a8b65bce48cdb31a7bd54a92c45148",
+          "results/science/mpi1/pp.in": "2d6c3f199419016114a668b1e03b65e209043da8063683b20cb532d6a44ff501",
+          "results/science/mpi1/pw.out": "f925e7327ef1f95c4aa7ade8cf6a97496ac561034b9ffb3cb46bf3e352a0dc9b",
+          "results/science/mpi1/ranks/rank-0.tsv": "6eaa3e4ff9e45b1c4806825fe1a4d2660c616b392bda9ddfd8fe0bd1ef1e9a58",
+          "results/science/mpi1/scf.in": "5ce08026d14c5de46de474137e4b54cac0a53bfbafa41ad9131d8aef023f2366",
+          "results/science/mpi2/Si.pz-vbc.UPF": "d75dd6b0be0aa10587fc95900cfd6ba7314d461a8276a81df34f009d0bfc075d",
+          "results/science/mpi2/ph.in": "fcb1af192851d1748322bf5cbf3f10d101a8b65bce48cdb31a7bd54a92c45148",
+          "results/science/mpi2/ph.out": "13db7ffce38510313506e18054d34fac13376c1df52fc65ead30573caf1eee4f",
+          "results/science/mpi2/pp.in": "2d6c3f199419016114a668b1e03b65e209043da8063683b20cb532d6a44ff501",
+          "results/science/mpi2/pp.out": "f52735e8ab06c26eb2416942531c2c5671e590bd628ddc822cb9433ebdbcb4b5",
+          "results/science/mpi2/pw.out": "691a2b10f9548372fd72205ce1ef72c681f8af27e500bd8f723a1d5303e332d4",
+          "results/science/mpi2/ranks/rank-0.tsv": "6eaa3e4ff9e45b1c4806825fe1a4d2660c616b392bda9ddfd8fe0bd1ef1e9a58",
+          "results/science/mpi2/ranks/rank-1.tsv": "aed1e6a61e33626a3acecd8eb4c40e2fac2739b7c6babef34a2dffe159d73d21",
+          "results/science/mpi2/rho.cube": "8a9026e47e8cd8054c631f0d088eaa0b0a9d30674d6d14f92b15c64911233fdc",
+          "results/science/mpi2/scf.in": "5ce08026d14c5de46de474137e4b54cac0a53bfbafa41ad9131d8aef023f2366"
+        },
+        "identity": {
+          "build_id": "qe-7.6-g9f93ddec427d-r18629d40806e",
+          "cpu_arch": "x86-64-v4",
+          "cuda_arch": "",
+          "dependency_isa": "avx512",
+          "gpus": 0,
+          "install_prefix": "/opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r18629d40806e/DSPRHBM",
+          "partition": "DSPRHBM",
+          "recipe_sha256": "18629d40806e6bb222cd3324ae381ef367b1212bf2a5d72b2193d60514d06ff1",
+          "repository": "QEF/q-e",
+          "schema": 2,
+          "software": "qe",
+          "source_ref": "qe-7.6",
+          "source_sha": "9f93ddec427d2b9a45bb72d828c6d324f62fcabd",
+          "source_version": "qe-7.6",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "dsprhbm",
+          "track": "release",
+          "version_label": "qe-7.6"
+        },
+        "job": "2210814",
+        "job_script_sha256": "9c983b2cf0fdac645c040c3f133e82a739206246cb5850105604cebea0d3af2d",
+        "launcher_sha256": "32afcca0798d353ae87143cf0211b19597e4de3b59ecc7246cb6dad863d10d07",
+        "run_id": "qe-release-20261105-r10-dsprhbm-science",
+        "verified": true
+      },
+      "sha256": "f2ff9faa95fad977dcf67f48d3fa8898b1cb5a7e5161bf60348f8a24fa30b9c4"
+    }
+  },
+  "scope": "Final CPU release SIF acceptance and project catalog/native export; physical /opt is not installed."
+}

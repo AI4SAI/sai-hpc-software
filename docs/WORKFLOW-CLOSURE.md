@@ -8,10 +8,10 @@ acceptance, native export and the existing beta publication path for DSPRHBM,
 OpenMPI, FFTW, HDF5, ScaLAPACK and executable compatibility profile.
 
 The initial QE 7.6 release SIFs passed silicon SCF/forces on one and two ranks,
-Gamma phonons and the density integral on all three V100 partitions. CUDA kernel
-logs verify GPU execution. Each image contains 67 executables and has accepted
-native exports in the project catalog. CPU and the complete develop/beta matrix
-remain in qualification; physical /opt installation has not been performed.
+Gamma phonons and the density integral on all four partitions. CUDA kernel
+logs verify GPU execution on V100. Each image contains 67 executables and has
+accepted native exports in the project catalog. The complete develop/beta matrix
+remains in qualification; physical /opt installation has not been performed.
 See [QE workflow and exact qualification evidence](QE-WORKFLOW.md).
 
 ## Writable image shutdown with the existing runtime

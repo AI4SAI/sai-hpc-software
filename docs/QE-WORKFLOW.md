@@ -93,8 +93,9 @@ Develop source observed on 2026-11-05:
 `61569eb480231b649c47f631df9c5c83537df461`. These upstream commits have
 identical source trees.
 
-The three GPU release SIFs have passed final-image science and generated native
-exports in the project catalog. [GPU evidence](evidence/qe-20261105/release-gpu.json)
+All four release SIFs have passed final-image science and generated native
+exports in the project catalog. [CPU evidence](evidence/qe-20261105/release-cpu.json)
+records the HDF5 interface selection and accepted CPU image. [GPU evidence](evidence/qe-20261105/release-gpu.json)
 contains exact image identities, 67 installed executable names per partition,
 SCF/PH/PP results, scheduler accounting and clean image teardown receipts.
 
@@ -103,6 +104,7 @@ SCF/PH/PP results, scheduler accounting and clean image teardown receipts.
 | 16V100 | 2208746 | 15:34 | 2208973 | 00:29 |
 | 4V100 | 2208745 | 11:17 | 2208993 | 00:36 |
 | 8V100V0 | 2208747 | 20:29 | 2209046 | 01:09 |
+| DSPRHBM | 2210458 | 00:23:25 | 2210814 | 00:00:51 |
 
-CPU qualification and the complete development/beta workflow are still in progress.
+The complete development/beta workflow is still in progress.
 Physical /opt installation has not been performed.
