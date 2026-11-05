@@ -7,6 +7,7 @@
 | LAMMPS | `lammps/develop-beta-later` |
 | DeePMD-kit | `deepmd-kit/master-beta-later` |
 | GPUMD | `gpumd/master-beta-later` |
+| Quantum ESPRESSO | `qe/develop-beta-later`（四分区验收完成后启用） |
 
 `later` 按用户指定的拼写命名，表示最近通过验收的分支快照。家目录里是真实的
 相对软链接，例如：
@@ -41,7 +42,7 @@ module help cp2k/master-beta-later
 /home/stardust/sai-hpc-software/modulefiles/apps`，然后查看帮助或提交作业。
 按计费需要使用 `sbatch --account=YOUR_ACCOUNT run.sbatch`。
 
-CP2K/ABACUS/LAMMPS 使用宿主 `mpirun` 启动各 rank。GPU 作业沿用系统
+CP2K/ABACUS/LAMMPS/QE 使用宿主 `mpirun` 启动各 rank。GPU 作业沿用系统
 `/opt/sai/runtime/mps_mapping.d/${SLURM_JOB_PARTITION}.bash` 提供的 `$MAP_OPT`。
 例如，在系统模板已经设置资源和绑核的地方使用：
 

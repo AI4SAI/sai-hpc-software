@@ -15,7 +15,7 @@ from export_native import write_manifests, read_installed_manifests, inventory
 from sif_runtime import PROGRAMS
 
 CONTROL = Path(__file__).resolve().parent
-MODULES = ['openmpi/5.0.10-nvhpc26.3-pgi-cuda12-auto', 'fftw/3.3.10', 'hdf5/1.14.6-pgi-ompi508']
+MODULES = ['openmpi/5.0.10-nvhpc26.3-pgi-cuda12-auto', 'fftw/3.3.10']
 NUMBER = r'[-+]?(?:\d+\.?\d*|\.\d+)(?:[EeDd][-+]?\d+)?'
 PP_INPUT = """&inputpp
  prefix='silicon', outdir='./tmp/', filplot='rho.dat', plot_num=0
@@ -173,7 +173,7 @@ def inspect(prefix, identity=None):
         paths = list(dict.fromkeys(v for v in os.environ['LD_LIBRARY_PATH'].split(':') if v))
         external = sorted(set('/opt/devtools/' + Path(v).parts[3] for v in paths if v.startswith('/opt/devtools/')))
         entry = validate_native_entry(dict(identity=identity, commands={n:'bin/'+n for n in sorted(installed)},
-            external_roots=external, runtime=dict(modules=MODULES,
+            external_roots=external, runtime=dict(modules=MODULES + (['hdf5/1.14.6-pgi-ompi508'] if gpu else []),
                 prepend=dict(PATH=[str(prefix/'bin')], LD_LIBRARY_PATH=paths), set=dict(QE_ROOT=str(prefix)))))
         for name, value in (('release-identity.json', identity), ('native-entry.json', entry), ('binary-inspection.json', reports)):
             (data/name).write_text(json.dumps(value, sort_keys=True)+'\n')

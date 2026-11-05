@@ -1,6 +1,7 @@
 """Stage QE's exact Git submodules before entering the networkless builder."""
 from concurrent.futures import ThreadPoolExecutor
 import argparse
+import gzip
 import hashlib
 import json
 from pathlib import Path
@@ -10,6 +11,7 @@ import tarfile
 import urllib.request
 
 from remote_controller import safe_sha
+from source_cache import checksum
 
 REPOSITORIES = {
     'devxlib': 'https://gitlab.com/max-centre/components/devicexlib.git',
@@ -38,6 +40,55 @@ def pins(repository, commit):
     return result
 
 
+def archive_name(locked):
+    digest = hashlib.sha256(json.dumps(locked, sort_keys=True, separators=(',', ':')).encode()).hexdigest()
+    return 'qe-submodules-' + digest + '.tar.gz'
+
+
+def canonical_git(repository):
+    """Retain verifiable Git objects without checkout times or runner identity."""
+    metadata = repository / '.git'
+    objects = sorted(git(repository, 'rev-list', '--objects', '--no-object-names', 'HEAD').splitlines())
+    packed = metadata / 'canonical-objects'
+    (packed / 'pack').mkdir(parents=True)
+    subprocess.run(['git', '-C', str(repository), '-c', 'pack.compression=6',
+                    'pack-objects', '--threads=1', '--window=10', '--depth=50',
+                    '--no-reuse-delta', '--no-reuse-object', str((packed/'pack/pack').resolve())],
+                   input='\n'.join(objects)+'\n', text=True, check=True, stdout=subprocess.DEVNULL)
+    shutil.rmtree(metadata / 'objects')
+    packed.rename(metadata / 'objects')
+    # Recreate the index from the verified tree after extraction. Reflogs and
+    # FETCH_HEAD embed checkout time, account name and transport-specific paths.
+    for path in tuple(metadata.iterdir()):
+        if path.name not in ('objects', 'HEAD', 'shallow', 'refs'):
+            if path.is_dir():
+                shutil.rmtree(path)
+            else:
+                path.unlink()
+    (metadata / 'config').write_text('[core]\n\trepositoryformatversion = 0\n\tfilemode = true\n\tbare = false\n')
+
+
+def archive_tree(tree, archive):
+    modes = {}
+    for repository in sorted((tree/'external').iterdir()):
+        for entry in git(repository, 'ls-tree', '-r', '-z', 'HEAD').split('\0'):
+            if entry:
+                metadata, name = entry.split('\t', 1)
+                modes[f'external/{repository.name}/{name}'] = int(metadata.split()[0], 8) & 0o777
+
+    def normalize(member):
+        member.uid = member.gid = member.mtime = 0
+        member.uname = member.gname = ''
+        member.pax_headers = {}
+        member.mode = 0o755 if member.isdir() else 0o777 if member.issym() else modes.get(member.name, 0o644)
+        return member
+
+    with archive.open('xb') as output:
+        with gzip.GzipFile(filename='', fileobj=output, mode='wb', mtime=0, compresslevel=6) as compressed:
+            with tarfile.open(fileobj=compressed, mode='w') as stream:
+                stream.add(tree / 'external', arcname='external', filter=normalize)
+
+
 def prepare(repository, commit, directory):
     """Keep shallow Git metadata so upstream CMake can validate each gitlink offline."""
     directory = Path(directory)
@@ -55,17 +106,16 @@ def prepare(repository, commit, directory):
         git(path, 'checkout', '--detach', 'FETCH_HEAD')
         if git(path, 'rev-parse', 'HEAD') != row['sha']:
             raise ValueError('submodule checkout changed')
-        shutil.rmtree(path / '.git/hooks')
+        canonical_git(path)
         return name
 
     with ThreadPoolExecutor(max_workers=4) as executor:
         list(executor.map(fetch, locked.items()))
-    archive = directory / ('qe-submodules-' + commit + '.tar.gz')
-    with tarfile.open(archive, 'w:gz') as stream:
-        stream.add(tree / 'external', arcname='external')
-    digest = hashlib.sha256(archive.read_bytes()).hexdigest()
+    archive = directory / archive_name(locked)
+    archive_tree(tree, archive)
+    digest = checksum(archive)
     manifest = directory / 'qe-submodules.json'
-    manifest.write_text(json.dumps(dict(schema=1, source_sha=commit, submodules=locked,
+    manifest.write_text(json.dumps(dict(schema=2, source_sha=commit, submodules=locked,
                                        archive=archive.name, sha256=digest), sort_keys=True) + '\n')
     return [(archive, digest), (manifest, hashlib.sha256(manifest.read_bytes()).hexdigest())]
 
@@ -82,7 +132,7 @@ def cache_archives(directory, commit):
     url = 'https://github.com/HDFGroup/hdf5/releases/download/hdf5_1.14.6/' + archive.name
     with urllib.request.urlopen(url, timeout=120) as source, archive.open('xb') as output:
         shutil.copyfileobj(source, output)
-    if hashlib.sha256(archive.read_bytes()).hexdigest() != HDF5_SHA256:
+    if checksum(archive) != HDF5_SHA256:
         raise ValueError('HDF5 release archive checksum changed')
     return [*archives, (archive, HDF5_SHA256)]
 
@@ -91,12 +141,12 @@ def populate(repository, directory):
     repository, directory = Path(repository), Path(directory)
     manifest = json.loads((directory / 'qe-submodules.json').read_text())
     commit = git(repository, 'rev-parse', 'HEAD')
-    if (manifest['schema'] != 1 or manifest['source_sha'] != commit or
+    if (manifest['schema'] != 2 or manifest['source_sha'] != commit or
             manifest['submodules'] != pins(repository, commit) or
-            manifest['archive'] != 'qe-submodules-' + commit + '.tar.gz'):
+            manifest['archive'] != archive_name(manifest['submodules'])):
         raise ValueError('offline submodules differ from the pinned QE source')
     archive = directory / manifest['archive']
-    if hashlib.sha256(archive.read_bytes()).hexdigest() != manifest['sha256']:
+    if checksum(archive) != manifest['sha256']:
         raise ValueError('offline submodule archive changed')
     with tarfile.open(archive) as stream:
         for member in stream.getmembers():
@@ -111,8 +161,12 @@ def populate(repository, directory):
                 raise ValueError('escaping submodule link')
         stream.extractall(repository, filter='data')
     for name, row in manifest['submodules'].items():
-        if git(repository / 'external' / name, 'rev-parse', 'HEAD') != row['sha']:
+        path = repository / 'external' / name
+        if git(path, 'rev-parse', 'HEAD') != row['sha']:
             raise ValueError('extracted submodule identity changed')
+        git(path, 'reset', '--mixed', '--quiet', 'HEAD')
+        if git(path, 'status', '--porcelain', '--untracked-files=all'):
+            raise ValueError('extracted submodule differs from its pinned Git tree')
     return manifest
 
 

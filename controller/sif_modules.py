@@ -88,7 +88,8 @@ def render_module(root, software, app, *, help_text=None, notice=None,
     elif software in ('lammps', 'deepmd-kit'):
         lines.append('    module load cuda/12.9.1')
     if software == 'qe':
-        lines.append('    module load openmpi/5.0.10-nvhpc26.3-pgi-cuda12-auto fftw/3.3.10 hdf5/1.14.6-pgi-ompi508')
+        lines += ['    module load openmpi/5.0.10-nvhpc26.3-pgi-cuda12-auto fftw/3.3.10',
+                  '    if {$sai_partition ne "DSPRHBM"} {module load hdf5/1.14.6-pgi-ompi508}']
     elif software != 'gpumd':
         lines.append('    module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto')
     lines += [f'    setenv {stem}_PARTITION $sai_partition', '    switch -- $sai_partition {']

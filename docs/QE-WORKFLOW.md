@@ -4,6 +4,10 @@ QE follows the existing release/development workflow on DSPRHBM, 16V100, 4V100,
 and 8V100V0. The upstream mirror is QEF/q-e; development follows `develop`.
 GitHub release resolution selects the latest non-prerelease tag. Every delivery
 pins the complete source SHA and the exact submodule commits from that source.
+Submodule archives retain the original Git objects with deterministic compression
+and metadata. The cache name depends on dependency pins, so unchanged dependencies
+can be reused across source revisions and partition builds. Extraction also checks
+that each working tree matches its pinned Git objects.
 
 ## Site reference and build profile
 
@@ -14,10 +18,15 @@ zen5 installations exist. The CPU module uses oneAPI 2024/Intel MPI. The existin
 GPU binaries use NVHPC 26.3, OpenMPI 5.0.10, vendor BLAS/LAPACK and ScaLAPACK,
 FFTW and static HDF5. The old HDF5 wrapper was built with NVHPC 24.5/OpenMPI 5.0.8;
 the GPU builds retain it and check compatibility in the final-image science gate.
-On the CPU target, a compilation probe found that its Fortran modules conflict
-with MPI unless CUDA-Fortran mode is enabled. The CPU recipe builds the same
-HDF5 1.14.6 release with NVHPC 26.3/OpenMPI 5.0.10 inside
-`<QE-prefix>/deps/hdf5`, with parallel I/O and Fortran support retained.
+On the CPU target, NVHPC rejects the combination of HDF5's `mpi_f08` overloads
+and QE's legacy `mpi` module, including after recompiling HDF5 with NVHPC 26.3.
+A comparison using the actual failing QE source file passed with HDF5's F90
+MPI interface selected. The CPU recipe therefore builds HDF5 1.14.6 with
+NVHPC 26.3/OpenMPI 5.0.10 inside `<QE-prefix>/deps/hdf5`. A guarded CMake edit
+adds the `HDF5_ENABLE_MPI_F08` switch and selects `OFF`; numerical source is
+unchanged. Parallel I/O, Fortran, high-level APIs, zlib and SZIP are retained.
+The CMake edit hashes and full dependency configuration are recorded with the
+installed build metadata. CPU compilation keeps CUDA disabled.
 
 This recipe uses NVHPC 26.3/OpenMPI 5.0.10 on all four targets, with native host
 CPU code generation. CPU uses a separate build with GPU disabled. V100 builds
@@ -79,8 +88,21 @@ Physical /opt installation is a separate step after acceptance.
 
 ## Initial qualification
 
-Implementation and local validation are in progress. Initial release source:
-`qe-7.6@9f93ddec427d2b9a45bb72d828c6d324f62fcabd`.
-Initial develop source observed on 2026-11-05:
-`61569eb480231b649c47f631df9c5c83537df461`.
-Cluster job and acceptance results will be recorded alongside the site audit.
+Release source: `qe-7.6@9f93ddec427d2b9a45bb72d828c6d324f62fcabd`.
+Develop source observed on 2026-11-05:
+`61569eb480231b649c47f631df9c5c83537df461`. These upstream commits have
+identical source trees.
+
+The three GPU release SIFs have passed final-image science and generated native
+exports in the project catalog. [GPU evidence](evidence/qe-20261105/release-gpu.json)
+contains exact image identities, 67 installed executable names per partition,
+SCF/PH/PP results, scheduler accounting and clean image teardown receipts.
+
+| Partition | Build job | Build elapsed | Science job | Science elapsed |
+| --- | --- | --- | --- | --- |
+| 16V100 | 2208746 | 15:34 | 2208973 | 00:29 |
+| 4V100 | 2208745 | 11:17 | 2208993 | 00:36 |
+| 8V100V0 | 2208747 | 20:29 | 2209046 | 01:09 |
+
+CPU qualification and the complete development/beta workflow are still in progress.
+Physical /opt installation has not been performed.

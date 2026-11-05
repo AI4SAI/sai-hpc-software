@@ -2,6 +2,7 @@
 # two target declarations. Add build wiring without changing scientific source.
 # HDF5's static exported target refers to ZLIB::ZLIB without finding it.
 find_package(ZLIB REQUIRED)
+include("${CMAKE_CURRENT_LIST_DIR}/qe_szipConfig.cmake")
 
 function(sai_qe_complete_tools)
   foreach(tool IN ITEMS band_interpolation rism1d)

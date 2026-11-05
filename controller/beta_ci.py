@@ -42,7 +42,7 @@ def package(path, builds):
             for name in names:
                 archive.add(source_folder / name, arcname='fixtures/' + software + '/' + name)
         archive.add(REPO / 'deployment/sif-development-20261024/deepmd-check.py', arcname='fixtures/deepmd-kit/check.py')
-        from qe_science import fixture, PP_INPUT
+        from qe_science import fixture
         qe = fixture()
         for name, content in [('scf.in', qe['scf']), ('Si.pz-vbc.UPF', qe['pseudo'])]:
             add_bytes(archive, 'fixtures/qe/' + name, content.encode())
