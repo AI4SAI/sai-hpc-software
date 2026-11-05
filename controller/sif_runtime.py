@@ -19,11 +19,12 @@ import sys
 
 PROGRAMS = {'abacus': ('abacus',), 'cp2k': ('cp2k', 'cp2k.psmp'),
             'lammps': ('lmp',), 'deepmd-kit': ('dp', 'deepmd-python'),
-            'gpumd': ('gpumd', 'nep', 'gnep')}
-MPI_PROGRAMS = ('abacus', 'cp2k', 'lammps')
+            'gpumd': ('gpumd', 'nep', 'gnep'),
+            'qe': tuple('alpha2f.x average.x band_interpolation.x bands.x casino2upf.x cell2ibrav.x d3hess.x dos.x dvscf_q2r.x dynmat.x epa.x epsilon.x ev.x fermi_proj.x fermi_velocity.x fqha.x fs.x ibrav2cell.x initial_state.x kpoints.x lambda.x matdyn.x molecularpdos.x neb.x open_grid.x oscdft_et.x oscdft_pp.x path_interpolation.x pawplot.x ph.x phcg.x plan_avg.x plotband.x plotproj.x plotrho.x pmw.x postahc.x pp.x ppacf.x pprism.x projwfc.x pw.x pw2bgw.x pw2critic.x pw2gt.x pw2gw.x pw2wannier90.x pwcond.x pwi2xsf.x q2qstar.x q2r.x rism1d.x scan_ibrav.x sumpdos.x upfconv.x virtual_v2.x wannier2pw.x wannier_ham.x wannier_plot.x wfck2r.x'.split())}
+MPI_PROGRAMS = ('abacus', 'cp2k', 'lammps', 'qe')
 MPI_LAUNCHERS = ('mpirun', 'mpiexec', 'prted')
 ENV_PREFIXES = ('SLURM_', 'OMPI_', 'OPAL_', 'PMIX_', 'PMI_', 'PRTE_', 'UCX_',
-                'NCCL_', 'CUSOLVERMP_', 'CUDA_', 'FI_', 'OMP_', 'DP_', 'TF_')
+                'NCCL_', 'CUSOLVERMP_', 'CUDA_', 'FI_', 'OMP_', 'DP_', 'TF_', 'NVCOMPILER_', 'ACC_')
 ENV_NAMES = ('NVIDIA_VISIBLE_DEVICES', 'OPENBLAS_NUM_THREADS', 'MKL_NUM_THREADS')
 
 

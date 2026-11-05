@@ -8,7 +8,7 @@ on:
       software:
         description: Software to build independently
         type: choice
-        options: [all, abacus, cp2k, deepmd-kit, lammps, gpumd]
+        options: [all, abacus, cp2k, deepmd-kit, lammps, gpumd, qe]
         default: all
       tracks:
         description: Channels; development always builds, unchanged releases skip
@@ -39,6 +39,7 @@ jobs:
       deepmd_kit: ${{ steps.plan.outputs.deepmd_kit }}
       lammps: ${{ steps.plan.outputs.lammps }}
       gpumd: ${{ steps.plan.outputs.gpumd }}
+      qe: ${{ steps.plan.outputs.qe }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -100,9 +101,19 @@ jobs:
       retry_releases: ${{ inputs.retry_releases || false }}
     secrets: inherit
 
+  qe:
+    needs: [plan]
+    if: ${{ !cancelled() && needs.plan.result == 'success' && needs.plan.outputs.qe != '' }}
+    uses: ./.github/workflows/qe.yml
+    with:
+      targets: ${{ needs.plan.outputs.qe }}
+      tracks: ${{ inputs.tracks || 'development,prerelease,release' }}
+      retry_releases: ${{ inputs.retry_releases || false }}
+    secrets: inherit
+
   result:
     if: always()
-    needs: [plan, abacus, cp2k, deepmd_kit, lammps, gpumd]
+    needs: [plan, abacus, cp2k, deepmd_kit, lammps, gpumd, qe]
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:

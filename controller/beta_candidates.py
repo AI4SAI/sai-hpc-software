@@ -96,7 +96,7 @@ def candidate(software, directory, source):
     request = read(directory / 'request.json')
     control = Path(request['controller'])
     require('/controller/' in str(control), 'build lacks a frozen controller')
-    if software in ('abacus', 'cp2k', 'gpumd'):
+    if software in ('abacus', 'cp2k', 'gpumd', 'qe'):
         identity = validate_identity(request['identity'])
         from delivery_layout import artifact_path
         image = artifact_path(PROJECT, identity, directory.name)
@@ -143,6 +143,7 @@ def candidate(software, directory, source):
     if software == 'lammps':
         binds.append(extra['installed_deepmd_dependency']['identity']['install_prefix'])
     if software != 'gpumd':
-        extra['mpi_prefix'] = '/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-' + identity['dependency_isa']
+        compiler = 'pgi' if software == 'qe' else 'gnu'
+        extra['mpi_prefix'] = '/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-' + compiler + '-cuda12-' + identity['dependency_isa']
     return dict(identity=identity, image=str(image), sha256=sha, binds=list(dict.fromkeys(binds)),
                 build_verified=True, scientific_verified=True, evidence=str(proof), evidence_sha256=digest(proof), **extra)

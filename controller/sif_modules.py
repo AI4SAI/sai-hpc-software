@@ -87,7 +87,9 @@ def render_module(root, software, app, *, help_text=None, notice=None,
                   '    if {$sai_partition ne "DSPRHBM"} {module load cuda/12.9.1 nvmplibs/26.7-tmp}']
     elif software in ('lammps', 'deepmd-kit'):
         lines.append('    module load cuda/12.9.1')
-    if software != 'gpumd':
+    if software == 'qe':
+        lines.append('    module load openmpi/5.0.10-nvhpc26.3-pgi-cuda12-auto fftw/3.3.10 hdf5/1.14.6-pgi-ompi508')
+    elif software != 'gpumd':
         lines.append('    module load openmpi/5.0.10-nvhpc26.3-gnu-cuda12-auto')
     lines += [f'    setenv {stem}_PARTITION $sai_partition', '    switch -- $sai_partition {']
     for partition, row in app['partitions'].items():
@@ -254,7 +256,7 @@ def main():
     parser.add_argument('--destination', type=Path)
     parser.add_argument('--copy-images', action='store_true')
     parser.add_argument('--memory-bootstrap', type=Path, help='mountpoint-only SIF for AppArmor compatibility')
-    parser.add_argument('--module-root', type=Path, help='also install the five public Lmod entries here')
+    parser.add_argument('--module-root', type=Path, help='also install the selected public Lmod entries here')
     args = parser.parse_args()
     snapshot = load_snapshot(args.snapshot)
     if args.destination is None:

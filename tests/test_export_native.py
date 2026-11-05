@@ -657,7 +657,7 @@ class RealSquashfsTests(unittest.TestCase):
         with self.assertRaisesRegex(ValueError, "unreadable"):
             delivery.inventory([item], self.source)
 
-    def test_not_software_probe_verifies_all_five_packages_and_single_folder(self):
+    def test_not_software_probe_verifies_all_packages_and_single_folder(self):
         import probe_native_export as probe
         native_run = subprocess.run
         with contextlib.redirect_stdout(io.StringIO()) as output, patch.object(
@@ -676,13 +676,14 @@ class RealSquashfsTests(unittest.TestCase):
         self.assertFalse(result["container_executed"])
         self.assertFalse(result["system_opt_modified"])
         self.assertTrue(result["roundtrip_verified"])
-        self.assertEqual(len(result["export_receipt"]["installations"]), 17)
-        prefix = result["export_receipt"]["expected_install_prefixes"][0]
+        self.assertEqual(len(result["export_receipt"]["installations"]), sum(len(p["targets"]) for p in probe.SOFTWARE.values()))
+        prefix = next(path for path in result["export_receipt"]["expected_install_prefixes"]
+                      if path.startswith("/opt/apps/qe/"))
         with patch.object(probe, "export_image", side_effect=export_fixture), contextlib.redirect_stdout(io.StringIO()) as output:
             probe.verify(prepared["fixture"], self.root / "probe-one", prefixes=[prefix])
         result = json.loads(output.getvalue())
         self.assertEqual(result["export_receipt"]["installations"][0]["path"], ".")
-        self.assertTrue((self.root / "probe-one/bin/abacus").is_file())
+        self.assertTrue((self.root / "probe-one/bin/pw.x").is_file())
 
 
 if __name__ == "__main__":

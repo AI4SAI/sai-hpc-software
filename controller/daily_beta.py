@@ -36,8 +36,11 @@ def save(path, value):
     temporary.replace(path)
 
 
-def current(software):
+def current(software, *, allow_missing=False):
     link = MODULES / software / sif_beta.channel(software)
+    if allow_missing and not link.exists() and not link.is_symlink():
+        require(link.parent.resolve() == link.parent, 'redirected beta module directory')
+        return None
     require(link.is_symlink() and link.parent.resolve() == link.parent, 'missing beta gateway target')
     fixed = link.readlink()
     require(fixed.name == str(fixed), 'non-relative beta version pointer')
@@ -48,6 +51,17 @@ def current(software):
     require(manifest['versions'][software]['name'] == str(fixed)
             and manifest['versions'][software]['sha256'] == digest(link.resolve()), 'changed active module')
     return dict(generation=generation, fixed=str(fixed), bundle=manifest['bundle'])
+
+
+def initial_bootstrap():
+    """A new application shares the already published memory namespace helper."""
+    for software in sif_beta.SOFTWARE:
+        active = current(software, allow_missing=True)
+        if active:
+            snapshot = load_snapshot(Path(active['bundle']) / 'catalog.json')
+            if 'memory_bootstrap' in snapshot:
+                return snapshot['memory_bootstrap']
+    raise ValueError('initial beta publication needs an accepted memory bootstrap image')
 
 
 def accounting(job, output, partition):
@@ -169,7 +183,9 @@ def execute(software, workflow, attempt, builds, task, fixtures):
         request = read(request_path)
         require(all(request[key] == value for key, value in identity.items()), 'changed daily publication request')
     else:
-        request = dict(identity, before=current(software), date=datetime.now(timezone.utc).strftime('%Y%m%d'))
+        request = dict(identity, before=current(software, allow_missing=True), date=datetime.now(timezone.utc).strftime('%Y%m%d'))
+        if request['before'] is None:
+            request['bootstrap'] = initial_bootstrap()
         save(request_path, request)
     before, date = request['before'], request['date']
     generation = safe_name(f'daily-{date}-{workflow}-{attempt}-{software}')
@@ -179,10 +195,11 @@ def execute(software, workflow, attempt, builds, task, fixtures):
         require(result['workflow'] == workflow and result['attempt'] == attempt
                 and result['software'] == software, 'publication receipt differs from this request')
         return result
-    active = current(software)
-    require(active == before or active['generation'] == generation,
+    active = current(software, allow_missing=True)
+    require(active == before or (active and active['generation'] == generation),
             'public beta changed since this request; refusing to replace a newer selection')
-    previous = load_snapshot(Path(before['bundle']) / 'catalog.json')
+    previous = (load_snapshot(Path(before['bundle']) / 'catalog.json') if before else
+                dict(memory_bootstrap=request['bootstrap']))
     previous_publication = previous.get('daily_publication')
     if previous_publication:
         require((int(workflow), int(attempt)) >= (int(previous_publication['workflow']), int(previous_publication['attempt'])),
@@ -201,7 +218,7 @@ def execute(software, workflow, attempt, builds, task, fixtures):
     # A same-day rerun with the same source, build recipe and runtime is already
     # represented by its accepted fixed module. Do not overwrite that version.
     fixed = MODULES / software / sif_beta.version_name(software, snapshot)
-    if fixed.exists() and before['fixed'] == fixed.name:
+    if fixed.exists() and before and before['fixed'] == fixed.name:
         result = dict(status='unchanged', software=software, source_sha=sources[0]['source_sha'],
                       workflow=workflow, attempt=attempt, generation=before['generation'], fixed=before['fixed'])
         save(published, result)
@@ -228,7 +245,8 @@ def execute(software, workflow, attempt, builds, task, fixtures):
         install(checked, public_bundle, copy_images=True, resume=True)
     with (ROOT / '.publication.lock').open('a+') as stream:
         fcntl.flock(stream, fcntl.LOCK_EX)
-        require(current(software) == before or current(software)['generation'] == generation, 'public beta changed while checks ran; refusing to replace a newer selection')
+        selected = current(software, allow_missing=True)
+        require(selected == before or (selected and selected['generation'] == generation), 'public beta changed while checks ran; refusing to replace a newer selection')
         sif_beta.prepare(ROOT, MODULES, generation, public_bundle, bundle / 'catalog.json', checks, [software], resume=True)
         sif_beta.select(ROOT, generation, [software])
     after = current(software)

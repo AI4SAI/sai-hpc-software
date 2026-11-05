@@ -31,7 +31,7 @@ def package(path, builds):
              'gpumd': ['run.in', 'nep.txt', 'model.xyz', 'gold.xyz'],
              'deepmd-kit': ['fixture.json', 'model.pth']}
     old = json.loads((REPO / 'deployment/sif-development-20261024/check-plan.json').read_text())['4V100']
-    references = {'abacus': dict(energy_ev=old['abacus_energy_ev']), 'cp2k': old['cp2k_reference'],
+    references = {'qe': __import__('qe_science').fixture(), 'abacus': dict(energy_ev=old['abacus_energy_ev']), 'cp2k': old['cp2k_reference'],
                   'lammps': old['lammps_reference'], 'gpumd': {}, 'deepmd-kit': {}}
     with tarfile.open(path, 'w:gz') as archive:
         for source in sorted((REPO / 'controller').iterdir()):
@@ -42,6 +42,10 @@ def package(path, builds):
             for name in names:
                 archive.add(source_folder / name, arcname='fixtures/' + software + '/' + name)
         archive.add(REPO / 'deployment/sif-development-20261024/deepmd-check.py', arcname='fixtures/deepmd-kit/check.py')
+        from qe_science import fixture, PP_INPUT
+        qe = fixture()
+        for name, content in [('scf.in', qe['scf']), ('Si.pz-vbc.UPF', qe['pseudo'])]:
+            add_bytes(archive, 'fixtures/qe/' + name, content.encode())
         add_bytes(archive, 'fixtures/references.json', json.dumps(references, sort_keys=True).encode())
         add_bytes(archive, 'builds.json', json.dumps(builds, sort_keys=True).encode())
 

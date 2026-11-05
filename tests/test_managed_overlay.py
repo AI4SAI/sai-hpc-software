@@ -20,11 +20,15 @@ class ManagedOverlayTests(unittest.TestCase):
         self.assertEqual(command[result['index']], '/project/runs/build/work.ext3')
         self.assertEqual(result['image'], '/images/base.sif')
         command[result['index']] += ':ro'
-        self.assertIsNone(managed.inspect_command(command, '/project/runs/build'))
+        readonly = managed.inspect_command(command, '/project/runs/build')
+        self.assertTrue(readonly['readonly'])
+        self.assertEqual(readonly['overlay'], result['overlay'])
+        self.assertFalse(result['readonly'])
 
     def test_wrong_image_multiple_overlays_and_unknown_policy_are_rejected(self):
         for command in (
             ['exec', '--overlay', '/elsewhere/work.ext3', '/base.sif', 'true'],
+            ['exec', '--overlay', '/elsewhere/work.ext3:ro', '/base.sif', 'true'],
             ['exec', '--overlay', '/project/runs/build/work.ext3', '--overlay', '/another:ro', '/base.sif', 'true'],
             ['exec', '--writable', '/base.sif', 'true'],
         ):
@@ -40,8 +44,8 @@ class ManagedOverlayTests(unittest.TestCase):
             APPTAINERENV_SENTINEL='value', APPTAINER_TMPDIR='/project/tmp',
             APPTAINER_CACHEDIR='/project/cache', SLURM_JOB_ID='123'))
 
-    def test_readonly_execution_keeps_original_command_and_binary_stdout_route(self):
-        argv = ['exec', '--overlay', '/project/runs/test/work.ext3:ro', '/base.sif', 'cat', '/payload']
+    def test_sif_execution_keeps_original_command_and_binary_stdout_route(self):
+        argv = ['exec', '/base.sif', 'cat', '/payload']
         execute = Mock(return_value=17)
         result = managed.launch('/project', '/project/runs/test', '/app', '/config', argv, execute)
         self.assertEqual(result, 17)
@@ -64,7 +68,8 @@ class ManagedOverlayTests(unittest.TestCase):
                 receipt = run/'results'/('managed-overlay-'+request['token']+'.json')
                 receipt.write_text(json.dumps(dict(completed=True, accepted=True, forced_stop=False,
                     payload_returncode=0, driver_returncode=0, unmount_returncode=0,
-                    overlay=str(run/'work.ext3'), apptainer='/stock/apptainer')))
+                    overlay=str(run/'work.ext3'), apptainer='/stock/apptainer',
+                    readonly=request['policy']['readonly'])))
                 return 0
             with patch.dict(os.environ, APPTAINERENV_SENTINEL='value'):
                 before = dict(os.environ)
@@ -86,6 +91,27 @@ class ManagedOverlayTests(unittest.TestCase):
             # must never authorize consuming the writable image.
             self.assertEqual(managed.launch(root, run, '/stock/apptainer', '/config', argv,
                                             lambda command, target: 0), 74)
+
+    def test_readonly_export_requires_managed_receipt_with_readonly_mode(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            run = root/'runs/export'
+            (run/'runtime').mkdir(parents=True)
+            (run/'results').mkdir()
+            (run/'work.ext3').write_bytes(b'completed image')
+            argv = ['exec', '--overlay', str(run/'work.ext3')+':ro', '/base.sif', 'cat', '/payload']
+            modes = iter((True, False))
+            def execute(command, target):
+                request = json.loads(Path(command[-1]).read_text())
+                self.assertTrue(request['policy']['readonly'])
+                self.assertEqual(request['argv'], argv)
+                receipt = run/'results'/('managed-overlay-'+request['token']+'.json')
+                receipt.write_text(json.dumps(dict(completed=True, accepted=True, forced_stop=False,
+                    payload_returncode=0, driver_returncode=0, unmount_returncode=0,
+                    overlay=str(run/'work.ext3'), apptainer='/app', readonly=next(modes))))
+                return 0
+            self.assertEqual(managed.launch(root, run, '/app', '/config', argv, execute), 0)
+            self.assertEqual(managed.launch(root, run, '/app', '/config', argv, execute), 74)
 
     def test_teardown_waits_for_natural_exit_and_preserves_failure(self):
         process = Mock()

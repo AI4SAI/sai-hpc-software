@@ -125,9 +125,9 @@ class DailyWorkflowTests(unittest.TestCase):
         import yaml
         data = yaml.safe_load((ROOT / '.github/workflows/daily.yml').read_text())
         jobs = data['jobs']
-        self.assertEqual(set(jobs['result']['needs']), {'plan','abacus','cp2k','deepmd_kit','lammps','gpumd'})
+        self.assertEqual(set(jobs['result']['needs']), {'plan', *[name.replace('-', '_') for name in contract.SOFTWARE]})
         self.assertEqual(jobs['result']['if'], 'always()')
-        for name in ('abacus', 'cp2k', 'deepmd_kit', 'lammps', 'gpumd'):
+        for name in (software.replace('-', '_') for software in contract.SOFTWARE):
             self.assertEqual(jobs[name]['needs'], ['plan'])
             workflow = ROOT / jobs[name]['uses'].removeprefix('./')
             called = yaml.safe_load(workflow.read_text())
