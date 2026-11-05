@@ -1,0 +1,164 @@
+{
+  "accounting": [
+    "2211561|16V100|COMPLETED|0:0|00:00:10|16|billing=300,cpu=16,gres/gpu=2,mem=30G,node=1|16v100n04|/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/41970760811-1-qe-c291f0e263c0/16V100",
+    "2211563|4V100|COMPLETED|0:0|00:00:17|16|billing=388,cpu=16,gres/gpu=2,mem=44G,node=1|4v100n31|/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/41970760811-1-qe-c291f0e263c0/4V100",
+    "2211565|8V100V0|COMPLETED|0:0|00:01:16|12|billing=360,cpu=12,gres/gpu=2,mem=92G,node=1|8v100v0n06|/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/41970760811-1-qe-c291f0e263c0/8V100V0",
+    "2211567|DSPRHBM|COMPLETED|0:0|00:00:14|2|billing=194,cpu=2,mem=28G,node=1|d9470n11|/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/41970760811-1-qe-c291f0e263c0/DSPRHBM"
+  ],
+  "administrator_preflight": "Public runtime, four image checksums and launchers verified by deployment/sif-beta/check-public.py qe",
+  "alias": "/home/stardust/sai-hpc-software/modulefiles/apps/qe/develop-beta-later",
+  "alias_target": "develop-beta-20261105-61569eb48023-r68ed5eb155c0-bd913f2de073c",
+  "checks": [
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "38989a6d11110cd14bdb2da670ee903c54f707e3392abb7e4ac1bcfdeaca6ac9",
+      "job": "2211561",
+      "partition": "16V100",
+      "passed": true,
+      "qe": {
+        "energy_ry": -15.84452726,
+        "forces_ry_bohr": [
+          [
+            -0.0,
+            -0.0,
+            0.0
+          ],
+          [
+            -0.0,
+            -0.0,
+            0.0
+          ]
+        ]
+      },
+      "runtime_sha256": "68ed5eb155c0000de13865fcbb921f761f481527ebac4686eb1c9f70b55f07e5"
+    },
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "38989a6d11110cd14bdb2da670ee903c54f707e3392abb7e4ac1bcfdeaca6ac9",
+      "job": "2211567",
+      "partition": "DSPRHBM",
+      "passed": true,
+      "qe": {
+        "energy_ry": -15.84452726,
+        "forces_ry_bohr": [
+          [
+            -0.0,
+            -0.0,
+            0.0
+          ],
+          [
+            -0.0,
+            -0.0,
+            0.0
+          ]
+        ]
+      },
+      "runtime_sha256": "68ed5eb155c0000de13865fcbb921f761f481527ebac4686eb1c9f70b55f07e5"
+    },
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "38989a6d11110cd14bdb2da670ee903c54f707e3392abb7e4ac1bcfdeaca6ac9",
+      "job": "2211565",
+      "partition": "8V100V0",
+      "passed": true,
+      "qe": {
+        "energy_ry": -15.84452726,
+        "forces_ry_bohr": [
+          [
+            0.0,
+            0.0,
+            -0.0
+          ],
+          [
+            -0.0,
+            -0.0,
+            0.0
+          ]
+        ]
+      },
+      "runtime_sha256": "68ed5eb155c0000de13865fcbb921f761f481527ebac4686eb1c9f70b55f07e5"
+    },
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "38989a6d11110cd14bdb2da670ee903c54f707e3392abb7e4ac1bcfdeaca6ac9",
+      "job": "2211563",
+      "partition": "4V100",
+      "passed": true,
+      "qe": {
+        "energy_ry": -15.84452726,
+        "forces_ry_bohr": [
+          [
+            -0.0,
+            -0.0,
+            -0.0
+          ],
+          [
+            -0.0,
+            -0.0,
+            0.0
+          ]
+        ]
+      },
+      "runtime_sha256": "68ed5eb155c0000de13865fcbb921f761f481527ebac4686eb1c9f70b55f07e5"
+    }
+  ],
+  "jobs": [
+    {
+      "exclude": "",
+      "job": "2211561",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/41970760811-1-qe-c291f0e263c0/16V100",
+      "partition": "16V100",
+      "request_sha256": "7b78dbfd82bd997a40d42a7c9109294d6981431937f7082b117d6f26d179063c",
+      "script_sha256": "bbdc76c548c0e5227628dcb81f58a0071abe3009f024b8ce088f967a1a79ff0c"
+    },
+    {
+      "exclude": "",
+      "job": "2211563",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/41970760811-1-qe-c291f0e263c0/4V100",
+      "partition": "4V100",
+      "request_sha256": "69a10bf073b5a13f1e4f2de08bf3d65571ad76288cab4cab68086a2aee6c8661",
+      "script_sha256": "e647551c68fafbd0d6c669ce6f514f4d9d37b6fb48ba8dea46feac5a8898b725"
+    },
+    {
+      "exclude": "",
+      "job": "2211565",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/41970760811-1-qe-c291f0e263c0/8V100V0",
+      "partition": "8V100V0",
+      "request_sha256": "118054394762b299e05eb93262a95e8791de7d6f022f3396d4e3895e04806b74",
+      "script_sha256": "20943f65d31d966bfeb8d1245cac26c82b51cf25731d5a66913a3c298fa6d9e1"
+    },
+    {
+      "exclude": "",
+      "job": "2211567",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/41970760811-1-qe-c291f0e263c0/DSPRHBM",
+      "partition": "DSPRHBM",
+      "request_sha256": "0a88eac8a97189afc71b329caf6475493dfcc9dc145bd4059787098758173693",
+      "script_sha256": "a07aaf08ae27765eb648443c12ed14fb34b7f87568c423551e7af19b9ae93426"
+    }
+  ],
+  "login_help_and_load": {
+    "returncode": 1,
+    "stderr": "\n-------------- Module Specific Help for \"qe/develop-beta-later\" ---------------\n[SAI beta] qe / develop\nSource version: develop-2026-07-09\nCommit: 61569eb480231b649c47f631df9c5c83537df461\nAccepted snapshot: 20261105 (latest accepted, not necessarily upstream HEAD)\nPartitions: 16V100, 4V100, 8V100V0, DSPRHBM\nFixed module: qe/develop-beta-20261105-61569eb48023-r68ed5eb155c0-bd913f2de073c\nSystem sbatch examples: /opt/sbatch_examples\n\nLoad on a compute node inside your existing sbatch job or srun shell:\n  module load qe/develop-beta-later\nCommand: pw.x -in input.in > pw.out\nUse host mpirun with the resource and mapping settings in your existing job script.\nCommands enter the read-only SIF automatically; no extraction is needed.\nRuntime temporary files use private node memory automatically; no TMPDIR setup is needed.\nFor a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load qe/develop-beta-20261105-61569eb48023-r68ed5eb155c0-bd913f2de073c\n\n\n\n[SAI beta] qe / develop\nSource version: develop-2026-07-09\nCommit: 61569eb480231b649c47f631df9c5c83537df461\nAccepted snapshot: 20261105 (latest accepted, not necessarily upstream HEAD)\nPartitions: 16V100, 4V100, 8V100V0, DSPRHBM\nFixed module: qe/develop-beta-20261105-61569eb48023-r68ed5eb155c0-bd913f2de073c\nSystem sbatch examples: /opt/sbatch_examples\n\nLoad on a compute node inside your existing sbatch job or srun shell:\n  module load qe/develop-beta-later\nCommand: pw.x -in input.in > pw.out\nUse host mpirun with the resource and mapping settings in your existing job script.\nCommands enter the read-only SIF automatically; no extraction is needed.\nRuntime temporary files use private node memory automatically; no TMPDIR setup is needed.\nFor a fixed version: module use /home/stardust/sai-hpc-software/modulefiles/apps; module load qe/develop-beta-20261105-61569eb48023-r68ed5eb155c0-bd913f2de073c\n\nLmod has detected the following error:\n/home/stardust/sai-hpc-software/modulefiles/apps/qe/develop-beta-later:\n(qe/develop-beta-later): Not loaded: load this module on a compute node inside\nan sbatch job or srun shell; see the help above. \nWhile processing the following module(s):\n    Module fullname        Module Filename\n    ---------------        ---------------\n    qe/develop-beta-later  /home/stardust/sai-hpc-software/modulefiles/apps/qe/develop-beta-later\n\n",
+    "stdout": ""
+  },
+  "observed_at": "2026-11-05T06:18:23.436843+00:00",
+  "publication": {
+    "after": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261105-41970760811-1-qe",
+      "fixed": "develop-beta-20261105-61569eb48023-r68ed5eb155c0-bd913f2de073c",
+      "generation": "daily-20261105-41970760811-1-qe"
+    },
+    "attempt": "1",
+    "before": null,
+    "catalog_sha256": "9486d31924ea15dc8c127c0c8a5e39cb803a7110487b087823c0a980c7100ff0",
+    "checks": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/41970760811-1-qe-c291f0e263c0/validation.json",
+    "fixed": "develop-beta-20261105-61569eb48023-r68ed5eb155c0-bd913f2de073c",
+    "generation": "daily-20261105-41970760811-1-qe",
+    "software": "qe",
+    "source_sha": "61569eb480231b649c47f631df9c5c83537df461",
+    "status": "published",
+    "workflow": "41970760811"
+  },
+  "workflow": "41970760811",
+  "workflow_conclusion": "success"
+}

@@ -7,7 +7,7 @@
 | LAMMPS | `lammps/develop-beta-later` |
 | DeePMD-kit | `deepmd-kit/master-beta-later` |
 | GPUMD | `gpumd/master-beta-later` |
-| Quantum ESPRESSO | `qe/develop-beta-later`（四分区验收完成后启用） |
+| Quantum ESPRESSO | `qe/develop-beta-later`（四分区已验收；管理员入口可单独安装） |
 
 `later` 按用户指定的拼写命名，表示最近通过验收的分支快照。家目录里是真实的
 相对软链接，例如：
@@ -178,3 +178,10 @@ bash install.sh --install
 17 份 SIF 的完整校验和，也能发现管理员账号的读取权限问题。`--install` 先做相同检查，
 只安装五个固定转发模块，不向 `/opt` 放测试、模板或软件副本。首次可用 `module --ignore_cache avail beta-later` 发现
 新名称；`module help/load` 直接读取家目录当前选择，日常轮换不用刷新静态入口。
+
+QE 首次四分区 beta 已完成验收和家目录发布；单独添加它的固定入口：
+
+```bash
+bash install.sh --check /opt/modules/modulefiles/apps qe
+bash install.sh --install /opt/modules/modulefiles/apps qe
+```

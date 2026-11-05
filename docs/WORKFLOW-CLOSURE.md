@@ -11,10 +11,12 @@ The initial QE 7.6 release SIFs passed silicon SCF/forces on one and two ranks,
 Gamma phonons and the density integral on all four partitions. CUDA kernel
 logs verify GPU execution on V100. Each image contains 67 executables and has
 accepted native exports in the project catalog. Develop SIF science has also
-passed all four partitions. First beta verification has passed three partitions
-and is waiting for 4V100 resources. The [release administrator package](../deployment/qe-7.6/README.md)
-installs the standard runtime files and `qe/7.6-auto`; physical /opt installation
-has not been performed.
+passed all four partitions. First beta verification and publication completed
+successfully; `qe/develop-beta-later` selects the accepted 2026-11-05 generation
+under the stardust-maintained module tree. The [release administrator package](../deployment/qe-7.6/README.md)
+installs the standard runtime files and `qe/7.6-auto`. Its four-partition trial
+installation, native link inspection and SCF/PH/PP calculations all passed.
+Physical /opt installation remains the administrator's action.
 See [QE workflow and exact qualification evidence](QE-WORKFLOW.md).
 
 ## Writable image shutdown with the existing runtime
