@@ -98,6 +98,16 @@ class QETests(unittest.TestCase):
             (case/'scf.in').write_text('different input')
             with self.assertRaisesRegex(ValueError, 'fixture changed'):
                 science.recheck(root, gpu=False)
+            (case/'scf.in').write_text(science.fixture()['scf'])
+            phonons = (case/'ph.out').read_text()
+            (case/'ph.out').write_text(phonons.replace('510.157229', '513.157229'))
+            with self.assertRaisesRegex(ValueError, 'phonon frequencies'):
+                science.recheck(root, gpu=False)
+            (case/'ph.out').write_text(phonons)
+            cube = case/'rho.cube'
+            cube.write_text(cube.read_text().removesuffix('8\n')+'7\n')
+            with self.assertRaisesRegex(ValueError, 'eight electrons'):
+                science.recheck(root, gpu=False)
 
     def test_submodules_must_match_both_parent_gitlinks_and_records(self):
         def git(repository, *args):

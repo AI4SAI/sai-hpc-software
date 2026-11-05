@@ -22,6 +22,10 @@
     "phonon_reference": {
       "path": "test-suite/ph_base/benchmark.out.git.inp=si.phG.in.args=2",
       "sha256": "8bb743c22b7d13eb921d54cd09cc38d18e48b74e166944d041f263e4e5c479b1"
+    },
+    "phonon_tolerance": {
+      "path": "test-suite/userconfig.tmp",
+      "sha256": "7fc6adcc5f063f0a4569db65e87c5e3f4d347ee9af208f46ee2ea872a8353309"
     }
   },
   "scf": " &control\n    calculation='scf',\n    restart_mode='from_scratch',\n    prefix='silicon'\n    pseudo_dir = './',\n    outdir = './tmp/',\n    tprnfor = .true.,\n    tstress = .true.,\n /\n &system\n    ibrav = 2, celldm(1) =10.20, nat=  2, ntyp= 1,\n    ecutwfc = 18.0\n /\n &electrons\n    mixing_beta = 0.7\n    conv_thr =  1.0d-8\n /\nATOMIC_SPECIES\n Si  28.086  Si.pz-vbc.UPF\nATOMIC_POSITIONS (alat)\n Si 0.00 0.00 0.00\n Si 0.25 0.25 0.25\nK_POINTS\n  10\n   0.1250000  0.1250000  0.1250000   1.00\n   0.1250000  0.1250000  0.3750000   3.00\n   0.1250000  0.1250000  0.6250000   3.00\n   0.1250000  0.1250000  0.8750000   3.00\n   0.1250000  0.3750000  0.3750000   3.00\n   0.1250000  0.3750000  0.6250000   6.00\n   0.1250000  0.3750000  0.8750000   6.00\n   0.1250000  0.6250000  0.6250000   3.00\n   0.3750000  0.3750000  0.3750000   1.00\n   0.3750000  0.3750000  0.6250000   3.00\n",
@@ -37,5 +41,6 @@
     510.157229
   ],
   "energy_tolerance_ry": 2e-05,
-  "frequency_tolerance_cm1": 0.5
+  "frequency_tolerance_cm1": 2.0,
+  "frequency_tolerance_provenance": "Upstream QE 7.6 test-suite/userconfig.tmp [PH] phfreq uses 2 cm^-1 absolute tolerance. The retained silicon reference was generated with QE 6.0 in 2017."
 }

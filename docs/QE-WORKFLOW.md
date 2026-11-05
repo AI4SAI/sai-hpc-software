@@ -43,6 +43,11 @@ and filesystem checks are required. The public Apptainer installation is unchang
 Acceptance uses host OpenMPI to launch the final SIF: one-rank and two-rank
 silicon SCF/forces, Gamma-point phonons and the density integral from pp.x.
 Inputs and independent numerical references are frozen from upstream QE 7.6.
+The retained upstream phonon reference was generated with QE 6.0 in 2017;
+its `2 cm^-1` absolute frequency tolerance comes from the pinned QE 7.6
+`test-suite/userconfig.tmp` PH profile. Energy tolerance is `2e-5 Ry`,
+one/two-rank energy agreement is `2e-7 Ry`, and the density must integrate
+to eight electrons within `5e-3`.
 GPU targets additionally require actual CUDA kernel launch output during SCF.
 Raw logs, input hashes, rank/MPI provenance, job accounting and image identity
 are rechecked before publication. These are correctness checks, not a performance

@@ -7,18 +7,20 @@ printf '%s  %s\n' e4defbac30f50d64e1556374aa49e574417c9e72c6b1de7a4ff88c4b1bea6e
 mkdir /workspace/hdf5-source
 tar -xzf "$archive" -C /workspace/hdf5-source --strip-components=2 --no-same-owner
 export HDF5_ROOT="$INSTALL_PREFIX/deps/hdf5"
-cmake -S /workspace/hdf5-source -B /workspace/hdf5-build \
-  -DCMAKE_INSTALL_PREFIX="$HDF5_ROOT" -DCMAKE_BUILD_TYPE=Release \
-  -DCMAKE_C_COMPILER=mpicc -DCMAKE_Fortran_COMPILER=mpifort \
-  '-DCMAKE_C_FLAGS_RELEASE=-O3 -tp=host' '-DCMAKE_Fortran_FLAGS_RELEASE=-O3 -tp=host' \
-  -DBUILD_SHARED_LIBS=OFF -DBUILD_TESTING=OFF -DHDF5_BUILD_TOOLS=OFF \
-  -DHDF5_BUILD_EXAMPLES=OFF -DHDF5_BUILD_CPP_LIB=OFF -DHDF5_BUILD_FORTRAN=ON \
-  -DHDF5_BUILD_HL_LIB=ON -DHDF5_ENABLE_PARALLEL=ON \
-  -DHDF5_ENABLE_Z_LIB_SUPPORT=ON -DHDF5_ENABLE_SZIP_SUPPORT=ON
-cmake --build /workspace/hdf5-build --parallel "$BUILD_JOBS"
-cmake --install /workspace/hdf5-build
+# Match the site's standard Autotools build. Its wrappers expose static
+# transitive libraries to FindHDF5, including Ubuntu's zlib and SZIP packages.
+mkdir /workspace/hdf5-build
+(
+  cd /workspace/hdf5-build
+  CC=mpicc FC=mpifort CFLAGS='-O3 -tp=host -fPIC' FCFLAGS='-O3 -tp=host -fPIC' \
+    /workspace/hdf5-source/configure --prefix="$HDF5_ROOT" \
+    --enable-parallel --enable-fortran --enable-hl --enable-static --disable-shared \
+    --disable-tests --disable-tools --disable-cxx --with-zlib=/usr --with-szlib=/usr
+  make -j "$BUILD_JOBS"
+  make install
+)
 export LD_LIBRARY_PATH="$HDF5_ROOT/lib:${LD_LIBRARY_PATH:-}"
 export PATH="$HDF5_ROOT/bin:$PATH"
 mkdir -p "$INSTALL_PREFIX/share/sai"
-cp /workspace/hdf5-build/CMakeCache.txt "$INSTALL_PREFIX/share/sai/hdf5-CMakeCache.txt"
+cp "$HDF5_ROOT/lib/libhdf5.settings" "$INSTALL_PREFIX/share/sai/hdf5-settings.txt"
 printf '%s\n' e4defbac30f50d64e1556374aa49e574417c9e72c6b1de7a4ff88c4b1bea6e9b > "$INSTALL_PREFIX/share/sai/hdf5-source-sha256"
