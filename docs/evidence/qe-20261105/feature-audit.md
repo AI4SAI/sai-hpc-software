@@ -76,6 +76,14 @@ the pool/band communicators are initialized; cleanup then attempts to free the
 default communicator value. This pre-existing legacy failure is not a missing
 compile option. The public supported command set therefore excludes `dist.x`.
 
+Repair is deferred and does not block the release or development beta. In the
+pinned 7.6 source, the sole call to `run_dist()` is the
+[explicit `dist.x` command dispatch](https://github.com/QEF/q-e/blob/9f93ddec427d2b9a45bb72d828c6d324f62fcabd/PW/src/run_pwscf.f90#L121).
+Ordinary `pw.x`, `ph.x` and `neb.x` calculations do not depend on this utility;
+no invocation was found in the audited upstream tests/examples or our workflow.
+External automation explicitly invoking `dist.x` would need an alternative
+geometry tool or a separate repair. Personal downstream scripts were not audited.
+
 `manypw.x` is the multi-image entry point. Its packaging and runtime completion
 are handled separately from the unchanged scientific executables, preserving
 the invocation name and independent input/output directories for each image.
