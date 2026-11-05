@@ -60,6 +60,8 @@ PY
     export CMAKE_ARGS="-DCMAKE_CUDA_ARCHITECTURES=70 -DCMAKE_INSTALL_RPATH=\$ORIGIN -DENABLE_JAX=ON"
     "$DEEPMD_PREFIX/bin/python" -m pip install --no-index --no-deps --no-build-isolation \
       --ignore-installed /workspace/deepmd-kit
+    /usr/bin/python3 /control/deepmd_compat_patch.py \
+      "$DEEPMD_PREFIX/lib/python3.13/site-packages" > /runtime/compat-source-patch.json
     cmake -S /workspace/deepmd-kit/source -B /workspace/deepmd-cpp \
       -DCMAKE_INSTALL_PREFIX="$DEEPMD_PREFIX" -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_INSTALL_RPATH='$ORIGIN' -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=OFF \

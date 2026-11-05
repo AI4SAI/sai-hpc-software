@@ -18,7 +18,7 @@ PROJECT = Path(os.environ.get('SAI_SOFTWARE_ROOT', '/org/org-open-sai/proj-sai-h
 ROOT = PROJECT / 'experimental/deepmd-standalone'
 CONTROL = Path(__file__).resolve().parent
 FILES = ('deepmd_standalone.py', 'deepmd_standalone_entry.sh', 'deepmd_standalone_check.py',
-         'deepmd_ddp_patch.py', 'deepmd_training_check.py',
+         'deepmd_ddp_patch.py', 'deepmd_compat_patch.py', 'deepmd_training_check.py',
          'deepmd_training_input.json', 'deepmd_training_dpa2.json',
          'md_environment.sh', 'md_driver_paths.py', 'md_source_version.py', 'md_probe.py',
          'md_science.py', 'md_evidence.py', 'md_performance.py', 'md_performance_run.py',
@@ -179,6 +179,7 @@ def build_receipt(directory, request):
         delivery=request['delivery'], controller_sha256=request['controller_sha256'],
         request_sha256=checksum(directory / 'request.json'), job_script_sha256=request['job_script_sha256'],
         overlay_evidence_sha256=overlay_evidence_hashes(directory),
+        compatibility_sha256=checksum(directory / 'runtime/compat-source-patch.json'),
         artifact=dict(path=str(image), **immutable_file(image)))
 
 

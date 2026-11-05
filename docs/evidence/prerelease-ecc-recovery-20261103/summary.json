@@ -1,0 +1,95 @@
+{
+  "abacus": {
+    "beta": "develop-beta-20261103-c9079539e69a-r75ef5179f1e8-be00ef62a2ffe",
+    "published": true,
+    "release_partitions_accepted": 4
+  },
+  "ci": {
+    "conclusion": "success",
+    "skipped": 2,
+    "tests": 1182,
+    "workflow": "41632525042"
+  },
+  "controller_commit": "c646e8824fab1a1fe7c89f77086fbb838dac6018",
+  "deepmd": [
+    {
+      "accounting": "2157188|COMPLETED|0:0|00:06:52|16v100n11|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-41632594236-1-prerelease-16v100-avx2-2e3117e9e4c4",
+      "build_verified": true,
+      "cases": [
+        "jax/c-api",
+        "jax/python",
+        "pt/c-api",
+        "pt/python",
+        "tf/c-api",
+        "tf/python"
+      ],
+      "gpu_kernel_events": 1446,
+      "job": "2157188",
+      "native_runtime_verified": false,
+      "partition": "16V100",
+      "published": false,
+      "recipe": "e428ed8865862ae8f84f65e290a00a335970c3be50bfa62c87645220c54faab3",
+      "scientific_verified": true,
+      "sha256": "bd8d830b35f27eee938420588c933ac19f89c90f89b99ef116b1237a4d878cbe",
+      "sif": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-41632594236-1-prerelease-16v100-avx2-2e3117e9e4c4/candidate.sif",
+      "source": "2e3117e9e4c4e0225cae5b1b43d50bd4f03811f6",
+      "training_cases": [
+        "dpa2",
+        "se_e2_a"
+      ]
+    },
+    {
+      "accounting": "2157184|COMPLETED|0:0|00:05:34|4v100n31|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-41632594236-1-prerelease-4v100-avx512-2e3117e9e4c4",
+      "build_verified": true,
+      "cases": [
+        "jax/c-api",
+        "jax/python",
+        "pt/c-api",
+        "pt/python",
+        "tf/c-api",
+        "tf/python"
+      ],
+      "gpu_kernel_events": 1446,
+      "job": "2157184",
+      "native_runtime_verified": false,
+      "partition": "4V100",
+      "published": false,
+      "recipe": "e428ed8865862ae8f84f65e290a00a335970c3be50bfa62c87645220c54faab3",
+      "scientific_verified": true,
+      "sha256": "b639bdc36b272fb21e892aa11327d69464276df83697fc76e16127cd2bb9886f",
+      "sif": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-41632594236-1-prerelease-4v100-avx512-2e3117e9e4c4/candidate.sif",
+      "source": "2e3117e9e4c4e0225cae5b1b43d50bd4f03811f6",
+      "training_cases": [
+        "dpa2",
+        "se_e2_a"
+      ]
+    },
+    {
+      "accounting": "2157191|COMPLETED|0:0|00:08:24|8v100v0n03|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-41632594236-1-prerelease-8v100v0-avx512-2e3117e9e4c4",
+      "build_verified": true,
+      "cases": [
+        "jax/c-api",
+        "jax/python",
+        "pt/c-api",
+        "pt/python",
+        "tf/c-api",
+        "tf/python"
+      ],
+      "gpu_kernel_events": 1446,
+      "job": "2157191",
+      "native_runtime_verified": false,
+      "partition": "8V100V0",
+      "published": false,
+      "recipe": "e428ed8865862ae8f84f65e290a00a335970c3be50bfa62c87645220c54faab3",
+      "scientific_verified": true,
+      "sha256": "c057d4d92fc89fb61c4603c8107d57b8d4d66f093118d75ef579649b0376e87e",
+      "sif": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-41632594236-1-prerelease-8v100v0-avx512-2e3117e9e4c4/candidate.sif",
+      "source": "2e3117e9e4c4e0225cae5b1b43d50bd4f03811f6",
+      "training_cases": [
+        "dpa2",
+        "se_e2_a"
+      ]
+    }
+  ],
+  "workflow": "41632594236"
+}

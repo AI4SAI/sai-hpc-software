@@ -13,6 +13,7 @@ import uuid
 
 import beta_candidates as candidates
 import beta_check
+from gpu_health import ecc_fault
 import sif_beta
 from remote_controller import SAI_PROJECT_ROOT, safe_name
 from sif_modules import install, load_snapshot
@@ -108,11 +109,26 @@ def submit(directory, software, partition, bundle, fixtures, exclude=''):
 
 
 def retry_node(directory, accounting_row):
+    native_ecc = False
+    probe = directory / 'gpu-health.json'
+    if probe.exists():
+        report = read(probe)
+        request = read(directory / 'request.json')
+        helper = directory / 'control/gpu_health.py'
+        require(not probe.is_symlink() and not helper.is_symlink()
+                and report.get('schema') == 1
+                and report.get('job') == accounting_row[0]
+                and report.get('partition') == accounting_row[3]
+                and report.get('node') == accounting_row[6]
+                and report.get('workdir') == str(directory) == accounting_row[5]
+                and report.get('probe_sha256') == request['files'].get('control/gpu_health.py') == digest(helper),
+                'GPU health evidence differs from the failed runtime allocation')
+        native_ecc = report.get('healthy') is False and ecc_fault(report)
     # The primary application redirects both streams to case/stdout.txt;
     # training and Slurm diagnostics use *.log.
     text = '\n'.join(p.read_text(errors='replace')[-65536:]
                      for pattern in ('*.log', 'stdout.txt') for p in directory.rglob(pattern))
-    if 'uncorrectable ECC error' in text or ('container creation failed: mount hook function failure:' in text
+    if native_ecc or 'uncorrectable ECC error' in text or ('container creation failed: mount hook function failure:' in text
                                             and 'fuse2fs failed to mount' in text):
         node = accounting_row[6]
         require(bool(re.fullmatch('[A-Za-z0-9-]+', node)), 'expected one failed runtime node')

@@ -35,11 +35,31 @@ def inventory(prefix):
                         *(site / 'deepmd/lib').glob('libdeepmd*.so*')]))
     backends = sorted({match.group(1) for path in paths
                        if (match := re.match(r'libdeepmd_backend_([^.]+)\.so', path.name))})
+    layout, evidence = 'plugins', {}
+    if not backends:
+        # Older 3.x builds put backend implementations in libdeepmd_cc.
+        # These init definitions are compiled only with BUILD_TENSORFLOW,
+        # BUILD_PYTORCH and BUILD_JAX (or BUILD_TENSORFLOW), respectively.
+        # Read defined dynamic symbols, not declarations or CMake intentions.
+        # Never borrow the Python package's library for the installed C API.
+        native = prefix / 'lib/libdeepmd_cc.so'
+        if native.is_file():
+            symbols = subprocess.check_output(
+                ['nm', '-D', '--defined-only', '--demangle', str(native)], text=True)
+            for backend, implementation in (('tf', 'TF'), ('pt', 'PT'), ('jax', 'JAX'),
+                                            ('ptexpt', 'PTExpt'), ('pd', 'PD')):
+                matches = re.findall(r'^[0-9a-fA-F]+\s+[TW]\s+(deepmd::DeepPot' +
+                                     implementation + r'::init\([^\n]+)$', symbols, re.M)
+                if matches:
+                    evidence[backend] = dict(library=str(native), symbols=matches)
+            backends = sorted(evidence)
+            layout = 'monolithic'
     if not {'tf', 'pt', 'jax'} <= set(backends):
         raise ValueError('DeePMD backend feature regression: ' + str(backends))
     if not (prefix / 'lib/libdeepmd_c.so').is_file():
         raise ValueError('standalone DeePMD needs its installed C API')
     return dict(version=importlib.metadata.version('deepmd-kit'), backends=backends,
+                backend_layout=layout, backend_evidence=evidence,
                 libraries={str(path): dict(sha256=file_digest(path.resolve(strict=True)),
                     resolved=str(path.resolve(strict=True)), ldd=libraries(path)) for path in paths})
 
@@ -72,6 +92,7 @@ def manifest():
 
 
 def verify_installation():
+    from deepmd_compat_patch import verify as verify_compatibility
     from export_native import MANIFEST_PATH, inventory as native_inventory, read_installed_manifests
     from md_relocate_audit import SITE_ROOTS, check_dynamic, check_metadata, check_reference, check_symlink
     from md_source_version import verify_deepmd_version
@@ -85,9 +106,12 @@ def verify_installation():
     trainer = prefix / 'lib/python3.13/site-packages' / patch['file']
     if file_digest(trainer) != patch['patched_sha256']:
         raise ValueError('installed DeePMD trainer differs from the recorded source patch')
+    compatibility = verify_compatibility(prefix / 'lib/python3.13/site-packages',
+                                         json.loads(Path('/runtime/compat-source-patch.json').read_text()))
     baseline = json.loads(Path('/runtime/baseline-inventory.json').read_text())
-    if not set(baseline['backends']) <= set(observed['backends']):
-        raise ValueError('standalone DeePMD dropped a baseline backend')
+    missing_backends = sorted(set(baseline['backends']) - set(observed['backends']))
+    if missing_backends:
+        raise ValueError('standalone DeePMD dropped baseline backends: ' + str(missing_backends))
     version = verify_deepmd_version(dict(track=identity['track'], ref=identity['source_ref']), observed['version'])
     roots = [prefix, *map(Path, SITE_ROOTS)]
     inspected = 0
@@ -108,7 +132,8 @@ def verify_installation():
                 check_metadata(path.read_text(errors='replace'), roots)
     if inspected < 4:
         raise ValueError('incomplete DeePMD binary/runtime inventory')
-    return dict(verified=True, elf_files=inspected, version=version, inventory=observed)
+    return dict(verified=True, elf_files=inspected, version=version, inventory=observed,
+                compatibility=compatibility)
 
 
 def run_c_api(case, backend, implementation, prefix):

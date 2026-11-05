@@ -52,6 +52,63 @@ offline filesystem and independent read-only data checks. See the
 [GPU regression and efficiency evidence](evidence/overlay-efficiency-20261103/README.md)
 for the full measurements and their limits.
 
+A teardown follow-up reproduced a 28.884-second natural driver exit and traced
+28.839 seconds of it to two successful fsync calls on the Lustre-backed image.
+Unmount itself took 0.018 seconds. A native 1 MiB file control also spent 4.128
+seconds in fsync. The microbenchmark's directory `syncfs` did not trigger an
+image fsync; the real workflow's writable-marker fsync does, as confirmed by
+stacks. Final clean-state persistence still requires its own ordered barriers.
+Both diagnostic jobs passed all image integrity checks. Keep the existing sync
+and 120-second natural-exit policy; no production runtime/driver changes were
+made. See [teardown diagnosis](evidence/overlay-teardown-20261103/README.md).
+
+The subsequent failure investigation confirmed an active CUDA ECC error on
+8v100v0n09. The same ABACUS development SIF passed on n04; the same release SIF
+passed its two-node diagnostic on n02/n03. DeePMD v3.2.0b0 instead failed an
+inventory check that assumes newer plugin filenames, despite its monolithic
+library containing TF/PT/JAX implementations. ABACUS's prerelease channel selected
+the 2022 DCU checkpoint, which lacks the current reviewed HSE fixture. These
+diagnostic checks did not rotate beta modules or replace production acceptance
+receipts. See [failure causes and evidence](evidence/build-failure-diagnosis-20261103/README.md).
+
+The follow-up excludes only the exact ABACUS `DCU` prerelease at
+`e07f9d7213f51b72a9f77e7f832855d5d6cf9484`, with an explicit skip reason in
+source planning. New prereleases and the release/development channels retain
+their normal selection rules. DeePMD inventory now supports both backend
+plugins and monolithic `libdeepmd_cc.so`: the latter must define the TF, PT
+and JAX initialization implementations in the native installation. Undefined
+symbols, a Python-only copy, and partial plugin installations cannot substitute
+for those native features. Python/C API science, measured GPU execution and
+two-GPU training/restart remain required.
+
+GPU beta checks now run a small host CUDA probe before the numerical fixture.
+CUDA error 214 is tied to the exact job, partition, node, work directory and
+pinned helper. It permits the existing single fresh runtime retry with that
+node excluded. Generic CUDA errors and numerical failures do not authorize an
+ECC retry. This probe is a workflow diagnostic; it adds no user module/runtime
+dependency and makes no changes to `/opt` or the installed container runtime.
+
+The three failure causes above are now closed. ABACUS release recovery reused
+the unchanged SIF on healthy nodes and passed host-MPI SCF, NCCL/cuSOLVERMp,
+PW, HSE and DeePKS acceptance in jobs 2155781/2155872/2155889/2155920/2155985.
+All four release partitions have accepted, published catalog records. Workflow
+41623923019 also passed all four development module checks and rotated
+`abacus/develop-beta-later` to
+`develop-beta-20261103-c9079539e69a-r75ef5179f1e8-be00ef62a2ffe`.
+
+DeePMD v3.2.0b0 additionally needed two upstream Python runtime backports:
+preserve composite-autograd decomposition during Meta registration, and use
+the Python evaluator's output definition when evaluating a scripted model.
+Both apply only to exact reviewed historical file bytes after wheel installation;
+installed manifests and immutable receipts verify them. PRs #54, #55 and #56
+are merged. The final code passed 1,182 CI tests (2 skipped). Fresh workflow
+41632594236 accepted normal SIFs on 16V100/4V100/8V100V0 in jobs
+2157188/2157184/2157191, each completing `0:0` with TF/PT/JAX Python and C API
+science, measured CUDA execution, and two-GPU se_e2_a/DPA2 training and restart.
+These prerelease SIFs are accepted artifacts, not native `/opt` installations
+or development beta publications. Failed allocations remain intact. See the
+[completed recovery and artifact evidence](evidence/prerelease-ecc-recovery-20261103/README.md).
+
 ## NEPAdapters release addon
 
 NEPAdapters v1.0.4 (`c934e71444cb`) now has an independent manual SIF workflow,

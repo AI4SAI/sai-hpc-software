@@ -19,6 +19,13 @@ SCHEMA = 2
 # Schema 1 remains read-only provenance for existing /opt/software artifacts.
 APP_STEMS = {"gpumd": "GPUMD"}
 TRACKS = ("development", "prerelease", "release")
+# This historical GPU/DCU checkpoint is still GitHub's newest ABACUS
+# "prerelease". It predates the supported build and scientific fixtures.
+# Pin both tag and commit so a future prerelease (or moved tag) is not hidden.
+UNSUPPORTED_SOURCES = {
+    ("abacus", "prerelease", "DCU", "e07f9d7213f51b72a9f77e7f832855d5d6cf9484"):
+        "unsupported 2022 DCU checkpoint; current release/development remain enabled",
+}
 PARTITIONS = {
     "dsprhbm": "DSPRHBM",
     "4v100-avx512": "4V100",
@@ -300,8 +307,10 @@ def resolve_tracks(software, tracks=TRACKS, resolver=_resolve_source):
             _version_label(version)
         except (KeyError, TypeError) as error:
             raise ValueError("resolver returned an incomplete source record") from error
-        rows.append(dict(row, status="resolved", source_ref=ref, source_sha=sha,
-                         source_version=version))
+        source = dict(row, source_ref=ref, source_sha=sha, source_version=version)
+        reason = UNSUPPORTED_SOURCES.get((software, track, ref, sha))
+        rows.append(dict(source, status="skipped", reason=reason) if reason else
+                    dict(source, status="resolved"))
     return rows
 
 

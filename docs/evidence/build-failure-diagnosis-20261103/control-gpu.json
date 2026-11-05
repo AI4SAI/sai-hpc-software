@@ -1,0 +1,40 @@
+{
+  "node": "8v100v0n04.mr-sai.ai",
+  "job": "2154039",
+  "cuda_visible_devices": "0,1",
+  "slurm_job_gpus": "2,3",
+  "nvidia_smi": {
+    "returncode": 0,
+    "stdout": "index, uuid, ecc.errors.uncorrected.volatile.total, ecc.errors.uncorrected.aggregate.total\n0, GPU-b2a29676-2051-0b89-ba30-23edc4310998, 0, 0\n1, GPU-e791c0cd-38f3-1de8-1d3d-cd2b42f76af3, 0, 0\n",
+    "stderr": ""
+  },
+  "device_count_status": {
+    "code": 0,
+    "message": "no error"
+  },
+  "device_count": 2,
+  "devices": [
+    {
+      "ordinal": 0,
+      "set_device": {
+        "code": 0,
+        "message": "no error"
+      },
+      "context_init": {
+        "code": 0,
+        "message": "no error"
+      }
+    },
+    {
+      "ordinal": 1,
+      "set_device": {
+        "code": 0,
+        "message": "no error"
+      },
+      "context_init": {
+        "code": 0,
+        "message": "no error"
+      }
+    }
+  ]
+}
