@@ -1,0 +1,1855 @@
+{
+  "accounting": {
+    "fields": [
+      "JobID",
+      "State",
+      "ExitCode",
+      "Partition",
+      "Elapsed",
+      "NodeList",
+      "AllocCPUS",
+      "AllocTRES",
+      "WorkDir"
+    ],
+    "rows": [
+      [
+        "2218384",
+        "COMPLETED",
+        "0:0",
+        "16V100",
+        "00:00:11",
+        "16v100n05",
+        "16",
+        "billing=300,cpu=16,gres/gpu=2,mem=30G,node=1",
+        "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/16V100"
+      ],
+      [
+        "2218386",
+        "COMPLETED",
+        "0:0",
+        "4V100",
+        "00:00:21",
+        "4v100n36",
+        "16",
+        "billing=388,cpu=16,gres/gpu=2,mem=44G,node=1",
+        "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/4V100"
+      ],
+      [
+        "2218388",
+        "COMPLETED",
+        "0:0",
+        "8V100V0",
+        "00:00:51",
+        "8v100v0n03",
+        "12",
+        "billing=360,cpu=12,gres/gpu=2,mem=92G,node=1",
+        "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/8V100V0"
+      ],
+      [
+        "2218390",
+        "COMPLETED",
+        "0:0",
+        "DSPRHBM",
+        "00:00:29",
+        "d9470n05",
+        "2",
+        "billing=194,cpu=2,mem=28G,node=1",
+        "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/DSPRHBM"
+      ]
+    ]
+  },
+  "alias": {
+    "path": "/home/stardust/sai-hpc-software/modulefiles/apps/qe/develop-beta-later",
+    "resolved": "/home/stardust/sai-hpc-software/modulefiles/apps/qe/develop-beta-20261105-61569eb48023-r4d85319d4295-b1344de3afc7f",
+    "sha256": "320cd8a3aad7a14e3df6943bd619a41c76bb70398c7a6ae78e33152245f87d93",
+    "target": "develop-beta-20261105-61569eb48023-r4d85319d4295-b1344de3afc7f"
+  },
+  "candidates": {
+    "applications": {
+      "qe": {
+        "build_revision": "1344de3afc7f",
+        "partitions": {
+          "16V100": {
+            "binds": [],
+            "build_verified": true,
+            "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/42003384294-1-development-16v100-avx2-2026-11-05-61569eb48023.json",
+            "evidence_sha256": "7ccc8e738d9ca4e6ee92d9f99f1ea8d11350eec5f73dea1cd6a2a6e8a976d603",
+            "identity": {
+              "build_id": "develop-2026-07-09-g61569eb48023-rd5d793ab4f38",
+              "cpu_arch": "znver3",
+              "cuda_arch": "70",
+              "dependency_isa": "avx2",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100",
+              "partition": "16V100",
+              "recipe_sha256": "d5d793ab4f3881816115c8e0cc94299c2bc8872ba1a78efd723ea23f670ac4f8",
+              "repository": "QEF/q-e",
+              "schema": 2,
+              "software": "qe",
+              "source_ref": "develop",
+              "source_sha": "61569eb480231b649c47f631df9c5c83537df461",
+              "source_version": "develop-2026-07-09",
+              "stack_digest": null,
+              "stack_sources": {},
+              "target": "16v100-avx2",
+              "track": "development",
+              "version_label": "develop-2026-07-09"
+            },
+            "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/42003384294-1-development-16v100-avx2-2026-11-05-61569eb48023.sif",
+            "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx2",
+            "scientific_verified": true,
+            "sha256": "2fb58ba26e93b4dd5666dc57dd36e7abe85f3f8c9ad599ae81c86cf1c67a14e5"
+          },
+          "4V100": {
+            "binds": [],
+            "build_verified": true,
+            "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/42003384294-1-development-4v100-avx512-2026-11-05-61569eb48023.json",
+            "evidence_sha256": "624d05b7696d341fbebd9a7ae45e5db8adef6467c9d3f80c35d6076b00d7b268",
+            "identity": {
+              "build_id": "develop-2026-07-09-g61569eb48023-rd5d793ab4f38",
+              "cpu_arch": "znver4",
+              "cuda_arch": "70",
+              "dependency_isa": "avx512",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100",
+              "partition": "4V100",
+              "recipe_sha256": "d5d793ab4f3881816115c8e0cc94299c2bc8872ba1a78efd723ea23f670ac4f8",
+              "repository": "QEF/q-e",
+              "schema": 2,
+              "software": "qe",
+              "source_ref": "develop",
+              "source_sha": "61569eb480231b649c47f631df9c5c83537df461",
+              "source_version": "develop-2026-07-09",
+              "stack_digest": null,
+              "stack_sources": {},
+              "target": "4v100-avx512",
+              "track": "development",
+              "version_label": "develop-2026-07-09"
+            },
+            "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/42003384294-1-development-4v100-avx512-2026-11-05-61569eb48023.sif",
+            "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512",
+            "scientific_verified": true,
+            "sha256": "012c8e933b96f9128b9ec979b8c3b7430186b9ec12042da0492e6a3d8687aedc"
+          },
+          "8V100V0": {
+            "binds": [],
+            "build_verified": true,
+            "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/42003384294-1-development-8v100v0-avx512-2026-11-05-61569eb48023.json",
+            "evidence_sha256": "f3087658724aa30741bd57f2ff35458d25c6a2ca33e5f5698df5a678e9d11321",
+            "identity": {
+              "build_id": "develop-2026-07-09-g61569eb48023-rd5d793ab4f38",
+              "cpu_arch": "skylake-avx512",
+              "cuda_arch": "70",
+              "dependency_isa": "avx2",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0",
+              "partition": "8V100V0",
+              "recipe_sha256": "d5d793ab4f3881816115c8e0cc94299c2bc8872ba1a78efd723ea23f670ac4f8",
+              "repository": "QEF/q-e",
+              "schema": 2,
+              "software": "qe",
+              "source_ref": "develop",
+              "source_sha": "61569eb480231b649c47f631df9c5c83537df461",
+              "source_version": "develop-2026-07-09",
+              "stack_digest": null,
+              "stack_sources": {},
+              "target": "8v100v0-avx512",
+              "track": "development",
+              "version_label": "develop-2026-07-09"
+            },
+            "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/42003384294-1-development-8v100v0-avx512-2026-11-05-61569eb48023.sif",
+            "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx2",
+            "scientific_verified": true,
+            "sha256": "66612d079f17dd991d10f9d01b2681b6c8a44ea48e84a327a99b2397f4827d6c"
+          },
+          "DSPRHBM": {
+            "binds": [],
+            "build_verified": true,
+            "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/42003384294-1-development-dsprhbm-2026-11-05-61569eb48023.json",
+            "evidence_sha256": "e08a773f220f23e6e3c8c74e0f8c8202c7f3f2948e90bb47d42ed1b93e5ecaeb",
+            "identity": {
+              "build_id": "develop-2026-07-09-g61569eb48023-rd5d793ab4f38",
+              "cpu_arch": "x86-64-v4",
+              "cuda_arch": "",
+              "dependency_isa": "avx512",
+              "gpus": 0,
+              "install_prefix": "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM",
+              "partition": "DSPRHBM",
+              "recipe_sha256": "d5d793ab4f3881816115c8e0cc94299c2bc8872ba1a78efd723ea23f670ac4f8",
+              "repository": "QEF/q-e",
+              "schema": 2,
+              "software": "qe",
+              "source_ref": "develop",
+              "source_sha": "61569eb480231b649c47f631df9c5c83537df461",
+              "source_version": "develop-2026-07-09",
+              "stack_digest": null,
+              "stack_sources": {},
+              "target": "dsprhbm",
+              "track": "development",
+              "version_label": "develop-2026-07-09"
+            },
+            "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/42003384294-1-development-dsprhbm-2026-11-05-61569eb48023.sif",
+            "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512",
+            "scientific_verified": true,
+            "sha256": "bfaa262445f18ca4349a8382d9e3e1c81e145ad9107cd3bfac861e47ce8abf8d"
+          }
+        },
+        "version": "develop-20261105-g61569eb48023"
+      }
+    },
+    "daily_publication": {
+      "attempt": "1",
+      "workflow": "42003384294"
+    },
+    "memory_bootstrap": {
+      "image": "/home/stardust/sai-hpc-software/sif-beta/runtimes/qe-manypw-20261105-4846bfe4644d/libexec/memory-bootstrap.sif",
+      "sha256": "eb467d87aa7a41ab80f982929d23a1fff1d59e1625fae57e62fba03fc643c7e2",
+      "source_image": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261105-41970760811-1-qe/libexec/memory-bootstrap.sif"
+    },
+    "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915",
+    "schema": 1,
+    "snapshot": "20261105"
+  },
+  "checks": [
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "c651ab772e109080dea2906215162ba02b11c2f2e9c122899a4ab8b1edab2082",
+      "job": "2218386",
+      "partition": "4V100",
+      "passed": true,
+      "qe": {
+        "energy_ry": -15.84452726,
+        "forces_ry_bohr": [
+          [
+            -0.0,
+            -0.0,
+            -0.0
+          ],
+          [
+            -0.0,
+            -0.0,
+            0.0
+          ]
+        ],
+        "manypw": {
+          "gpu_devices_by_rank": {
+            "0": [
+              "0"
+            ],
+            "1": [
+              "1"
+            ]
+          },
+          "images": [
+            {
+              "energy_ry": -15.84452726,
+              "image": 0,
+              "output_sha256": "cffd09a1e17538faec84e16de67d7ecab96f3bc267f6ea57fa777e1f223c25a1",
+              "schema_sha256": "4b1f96c9d6f919b7766d030cbec117435f3ae87847156e679164e34c767504a4",
+              "scratch": "tmp_0"
+            },
+            {
+              "energy_ry": -15.84452726,
+              "image": 1,
+              "output_sha256": "0f8f325b4d1db825002bad3f815fb6fb901ff3342012a28884c4297b6e2e6dd5",
+              "schema_sha256": "efcb08842503fe9dae6bbc669c52146c3bdd0b25c7a4a7f0a0995fed6fd763e9",
+              "scratch": "tmp_1"
+            }
+          ],
+          "passed": true,
+          "rank_output": {
+            "0": {
+              "cuda_kernel_launches": 8683,
+              "stderr": {
+                "path": "rank-output/rank.0/stderr",
+                "sha256": "d0f93b75952b6d42dc34776997aedd5b76381badd4ae53cc265059356070d417"
+              },
+              "stdout": {
+                "path": "rank-output/rank.0/stdout",
+                "sha256": "6a1a99005b4c6c42bdbf06f13c536c4477384290019a7e2d6d22761c906eb8b1"
+              }
+            },
+            "1": {
+              "cuda_kernel_launches": 8683,
+              "stderr": {
+                "path": "rank-output/rank.1/stderr",
+                "sha256": "1485f1b82f1042e4f58a869e8e7b2ef2590a727890b60507c76ba9b0eb16f353"
+              },
+              "stdout": {
+                "path": "rank-output/rank.1/stdout",
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              }
+            }
+          }
+        }
+      },
+      "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+    },
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "c651ab772e109080dea2906215162ba02b11c2f2e9c122899a4ab8b1edab2082",
+      "job": "2218390",
+      "partition": "DSPRHBM",
+      "passed": true,
+      "qe": {
+        "energy_ry": -15.84452726,
+        "forces_ry_bohr": [
+          [
+            0.0,
+            0.0,
+            -0.0
+          ],
+          [
+            0.0,
+            -0.0,
+            0.0
+          ]
+        ],
+        "manypw": {
+          "gpu_devices_by_rank": {},
+          "images": [
+            {
+              "energy_ry": -15.84452726,
+              "image": 0,
+              "output_sha256": "5366baa9c24260dc2271e837b8e5ab005b123a193bc7fc7d95e38c9614d43f45",
+              "schema_sha256": "c60f6af946b5fd541040e178c6aff1729b3d6400d3eaee2d7960ee5471c1ba0c",
+              "scratch": "tmp_0"
+            },
+            {
+              "energy_ry": -15.84452726,
+              "image": 1,
+              "output_sha256": "33edf4dc0ecc37c22da9ab90fd7bef52a2be9127de3b6e8a7a03ee39b6fb6555",
+              "schema_sha256": "01aab446c0a82626116fb2677d8c21ff5035557152226f43cd68200e3a79d46d",
+              "scratch": "tmp_1"
+            }
+          ],
+          "passed": true,
+          "rank_output": {
+            "0": {
+              "stderr": {
+                "path": "rank-output/rank.0/stderr",
+                "sha256": "89058e1fd5cfbf6a86e6b4a1e67bc008454d545e62ed7cab81d5e84898542c4e"
+              },
+              "stdout": {
+                "path": "rank-output/rank.0/stdout",
+                "sha256": "d4e0583315634144833db3dd949c735fe318d2bc9216e98a27686d2752a5ad70"
+              }
+            },
+            "1": {
+              "stderr": {
+                "path": "rank-output/rank.1/stderr",
+                "sha256": "64319ec3b0e534629956c27ae6a80be4235f2b3397097ba626604a1f2a8b0d4b"
+              },
+              "stdout": {
+                "path": "rank-output/rank.1/stdout",
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              }
+            }
+          }
+        }
+      },
+      "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+    },
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "c651ab772e109080dea2906215162ba02b11c2f2e9c122899a4ab8b1edab2082",
+      "job": "2218384",
+      "partition": "16V100",
+      "passed": true,
+      "qe": {
+        "energy_ry": -15.84452726,
+        "forces_ry_bohr": [
+          [
+            -0.0,
+            -0.0,
+            0.0
+          ],
+          [
+            -0.0,
+            -0.0,
+            0.0
+          ]
+        ],
+        "manypw": {
+          "gpu_devices_by_rank": {
+            "0": [
+              "0"
+            ],
+            "1": [
+              "1"
+            ]
+          },
+          "images": [
+            {
+              "energy_ry": -15.84452726,
+              "image": 0,
+              "output_sha256": "1ec8a3d9e1cfedbb80c5766f4244bc3929f78c43e2f733d4bf32df672415854c",
+              "schema_sha256": "23599dbca6695031183944c6b4dd5e55ef167b685f953234da369cf44b2988a8",
+              "scratch": "tmp_0"
+            },
+            {
+              "energy_ry": -15.84452726,
+              "image": 1,
+              "output_sha256": "0d349836931c82307a7d4fe432ff80884a3c6b51ddb083566fc725fb9f83e5e7",
+              "schema_sha256": "7505a9f9cbe6ea8abb5a65fb72648119fe9ed8aaf3182648bbeb647de4afb862",
+              "scratch": "tmp_1"
+            }
+          ],
+          "passed": true,
+          "rank_output": {
+            "0": {
+              "cuda_kernel_launches": 8683,
+              "stderr": {
+                "path": "rank-output/rank.0/stderr",
+                "sha256": "440be5d65bd7c9f50675f7ed8c47a474ba257136338b02cf81aa81349299a1a8"
+              },
+              "stdout": {
+                "path": "rank-output/rank.0/stdout",
+                "sha256": "d17540b589d0c680134ebef5610b185322c066444e4744ce3affee5deedb32ea"
+              }
+            },
+            "1": {
+              "cuda_kernel_launches": 8683,
+              "stderr": {
+                "path": "rank-output/rank.1/stderr",
+                "sha256": "7058d7eba3853a9f9faf70af48d9a701f6c533c170b7c4b36e72f00c3df8dae0"
+              },
+              "stdout": {
+                "path": "rank-output/rank.1/stdout",
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              }
+            }
+          }
+        }
+      },
+      "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+    },
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "c651ab772e109080dea2906215162ba02b11c2f2e9c122899a4ab8b1edab2082",
+      "job": "2218388",
+      "partition": "8V100V0",
+      "passed": true,
+      "qe": {
+        "energy_ry": -15.84452726,
+        "forces_ry_bohr": [
+          [
+            0.0,
+            0.0,
+            -0.0
+          ],
+          [
+            -0.0,
+            -0.0,
+            0.0
+          ]
+        ],
+        "manypw": {
+          "gpu_devices_by_rank": {
+            "0": [
+              "0"
+            ],
+            "1": [
+              "1"
+            ]
+          },
+          "images": [
+            {
+              "energy_ry": -15.84452726,
+              "image": 0,
+              "output_sha256": "7525eb4d84a98bc87b901a51c9ea099127e8ffa2462d9badcad726da596c6183",
+              "schema_sha256": "4afe3449b3825d446e8b1a74030debcf84c9d63b1fe9929d95716dcbdefa70cb",
+              "scratch": "tmp_0"
+            },
+            {
+              "energy_ry": -15.84452726,
+              "image": 1,
+              "output_sha256": "7de60060b43d25fb050a19d249fb95493f0a7a21ca7e6fa730cd3f85d1155bcc",
+              "schema_sha256": "84bda1a151776a47a4538c537345c0808d29f766a9a593c56360476fa8df1905",
+              "scratch": "tmp_1"
+            }
+          ],
+          "passed": true,
+          "rank_output": {
+            "0": {
+              "cuda_kernel_launches": 8683,
+              "stderr": {
+                "path": "rank-output/rank.0/stderr",
+                "sha256": "18764d6d98e566f381a89d09fadc95953cdf74765e171adc3cd195780f6c6966"
+              },
+              "stdout": {
+                "path": "rank-output/rank.0/stdout",
+                "sha256": "462edb20f1b1f904ff6a1bbe6eab23673adbca65038ecc915d3be85de34a8ccc"
+              }
+            },
+            "1": {
+              "cuda_kernel_launches": 8683,
+              "stderr": {
+                "path": "rank-output/rank.1/stderr",
+                "sha256": "1485f1b82f1042e4f58a869e8e7b2ef2590a727890b60507c76ba9b0eb16f353"
+              },
+              "stdout": {
+                "path": "rank-output/rank.1/stdout",
+                "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+              }
+            }
+          }
+        }
+      },
+      "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+    }
+  ],
+  "jobs": [
+    {
+      "exclude": "",
+      "job": "2218384",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/16V100",
+      "partition": "16V100",
+      "request_sha256": "0e0e4541dc2f9793e9fc2e63bfc11d6d1a15b6db12628b2a37d32ef69fae2140",
+      "script_sha256": "9c1cac763b80b927c7e3adf839f5ab6421d01405ad3b359f8679dde87521b7ee"
+    },
+    {
+      "exclude": "",
+      "job": "2218386",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/4V100",
+      "partition": "4V100",
+      "request_sha256": "c594a804a638564df0f77221f288bdec44cb394bada89127d0eaf9ce1e7913f4",
+      "script_sha256": "56acf556976c9e1ab346aae44f1d99c0463630098d33f6318a766955d176b4b1"
+    },
+    {
+      "exclude": "",
+      "job": "2218388",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/8V100V0",
+      "partition": "8V100V0",
+      "request_sha256": "11e9d23993cdfaf7226823fd8f3f3dd0091e53e324e7a5d7093eda86760961bd",
+      "script_sha256": "9553a84d3114bbc70a3b8c0adc22de57c595ce3dd156017a8b5a6a1a0fee6fd1"
+    },
+    {
+      "exclude": "",
+      "job": "2218390",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/DSPRHBM",
+      "partition": "DSPRHBM",
+      "request_sha256": "7b949287965bc93057e61c6a268dca2f545df85716e9e80c954955846f6724e6",
+      "script_sha256": "0a128d2c6c9092ef4d5e1c079aca91db1c12e1fde39fa65a0924936fc6d21b44"
+    }
+  ],
+  "observed_at": "2026-11-05T12:28:36.183269+00:00",
+  "publication": {
+    "after": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261105-42003384294-1-qe",
+      "fixed": "develop-beta-20261105-61569eb48023-r4d85319d4295-b1344de3afc7f",
+      "generation": "daily-20261105-42003384294-1-qe"
+    },
+    "attempt": "1",
+    "before": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/qe-manypw-20261105-4846bfe4644d",
+      "fixed": "develop-beta-20261105-61569eb48023-r4d85319d4295-bd913f2de073c",
+      "generation": "qe-manypw-20261105-4846bfe4644d"
+    },
+    "catalog_sha256": "8976043d4f9947de0a7b986684c3d168338507f6fb60d645b7e2a64c5dff4b39",
+    "checks": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/validation.json",
+    "fixed": "develop-beta-20261105-61569eb48023-r4d85319d4295-b1344de3afc7f",
+    "generation": "daily-20261105-42003384294-1-qe",
+    "software": "qe",
+    "source_sha": "61569eb480231b649c47f631df9c5c83537df461",
+    "status": "published",
+    "workflow": "42003384294"
+  },
+  "rank_output_inspection": {
+    "16V100": {
+      "modules": [
+        "apptainer/1.4.4",
+        "nvhpc/26.3-pgi-cuda12-tuned",
+        "openmpi/5.0.10-nvhpc26.3-pgi-cuda12-auto",
+        "fftw/3.3.10",
+        "hdf5/1.14.6-pgi-ompi508",
+        "qe-sif/develop-20261105-g61569eb48023"
+      ],
+      "request_sha256": "0e0e4541dc2f9793e9fc2e63bfc11d6d1a15b6db12628b2a37d32ef69fae2140",
+      "streams": {
+        "0": {
+          "cuda_kernel_launches_by_device": {
+            "0": 8683
+          },
+          "rank_marker": [
+            "0"
+          ],
+          "stderr": {
+            "bytes": 1574474,
+            "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/16V100/case/manypw/rank-output/rank.0/stderr",
+            "sha256": "440be5d65bd7c9f50675f7ed8c47a474ba257136338b02cf81aa81349299a1a8"
+          },
+          "stdout": {
+            "bytes": 1146,
+            "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/16V100/case/manypw/rank-output/rank.0/stdout",
+            "sha256": "d17540b589d0c680134ebef5610b185322c066444e4744ce3affee5deedb32ea"
+          }
+        },
+        "1": {
+          "cuda_kernel_launches_by_device": {
+            "1": 8683
+          },
+          "rank_marker": [
+            "1"
+          ],
+          "stderr": {
+            "bytes": 1575992,
+            "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/16V100/case/manypw/rank-output/rank.1/stderr",
+            "sha256": "7058d7eba3853a9f9faf70af48d9a701f6c533c170b7c4b36e72f00c3df8dae0"
+          },
+          "stdout": {
+            "bytes": 0,
+            "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/16V100/case/manypw/rank-output/rank.1/stdout",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      "traces": [
+        {
+          "affinity": [
+            32,
+            96
+          ],
+          "command": [
+            "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+            "exec",
+            "--cleanenv",
+            "--no-eval",
+            "--no-home",
+            "--no-mount",
+            "bind-paths,home,cwd,tmp,hostfs",
+            "--pwd",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/16V100/case",
+            "--sharens",
+            "--nv",
+            "--bind",
+            "/usr:/usr:ro",
+            "--bind",
+            "/lib:/lib:ro",
+            "--bind",
+            "/lib64:/lib64:ro",
+            "--bind",
+            "/opt/devtools:/opt/devtools:ro",
+            "--bind",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/16V100/case:/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/16V100/case:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218384-0:/dev/shm/sai-1478400690-2218384-0:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218384-0/runtime/rank-0-1692508:/tmp:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218384-0/runtime/rank-0-1692508:/var/tmp:rw",
+            "--bind",
+            "/dev/shm:/dev/shm:rw",
+            "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/42003384294-1-development-16v100-avx2-2026-11-05-61569eb48023.sif",
+            "/usr/bin/bash",
+            "--noprofile",
+            "--norc",
+            "-c",
+            "set -eo pipefail; driver=${LD_LIBRARY_PATH:-}; source \"$1\"; shift; export LD_LIBRARY_PATH=\"$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}\"; exec \"$@\"",
+            "bash",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/share/sai/runtime-env.sh",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/bin/pw.x",
+            "-in",
+            "scf.in"
+          ],
+          "cuda_visible_devices": "0,1",
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/42003384294-1-development-16v100-avx2-2026-11-05-61569eb48023.sif",
+          "job": "2218384",
+          "memory_root": "/dev/shm/sai-1478400690-2218384-0",
+          "memory_scope": {
+            "job": "2218384",
+            "mount": "mnt:[4026539481]",
+            "schema": 1,
+            "user": "user:[4026539479]"
+          },
+          "mpi": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx2",
+          "node": "16v100n05",
+          "program": "pw.x",
+          "rank": "0",
+          "sha256": "2fb58ba26e93b4dd5666dc57dd36e7abe85f3f8c9ad599ae81c86cf1c67a14e5",
+          "software": "qe",
+          "uid": 1478400690,
+          "verification": "cached"
+        },
+        {
+          "affinity": [
+            32,
+            96
+          ],
+          "command": [
+            "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+            "exec",
+            "--cleanenv",
+            "--no-eval",
+            "--no-home",
+            "--no-mount",
+            "bind-paths,home,cwd,tmp,hostfs",
+            "--pwd",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/16V100/case/manypw",
+            "--sharens",
+            "--nv",
+            "--bind",
+            "/usr:/usr:ro",
+            "--bind",
+            "/lib:/lib:ro",
+            "--bind",
+            "/lib64:/lib64:ro",
+            "--bind",
+            "/opt/devtools:/opt/devtools:ro",
+            "--bind",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/16V100/case/manypw:/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/16V100/case/manypw:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218384-0:/dev/shm/sai-1478400690-2218384-0:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218384-0/runtime/rank-0-1692645:/tmp:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218384-0/runtime/rank-0-1692645:/var/tmp:rw",
+            "--bind",
+            "/dev/shm:/dev/shm:rw",
+            "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/42003384294-1-development-16v100-avx2-2026-11-05-61569eb48023.sif",
+            "/usr/bin/bash",
+            "--noprofile",
+            "--norc",
+            "-c",
+            "set -eo pipefail; driver=${LD_LIBRARY_PATH:-}; source \"$1\"; shift; export LD_LIBRARY_PATH=\"$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}\"; name=$1; shift; exec -a \"$name\" \"$@\"",
+            "bash",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/share/sai/runtime-env.sh",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/bin/manypw.x",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/bin/pw.x",
+            "-ni",
+            "2"
+          ],
+          "cuda_visible_devices": "0,1",
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/42003384294-1-development-16v100-avx2-2026-11-05-61569eb48023.sif",
+          "job": "2218384",
+          "memory_root": "/dev/shm/sai-1478400690-2218384-0",
+          "memory_scope": {
+            "job": "2218384",
+            "mount": "mnt:[4026539483]",
+            "schema": 1,
+            "user": "user:[4026539481]"
+          },
+          "mpi": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx2",
+          "node": "16v100n05",
+          "program": "manypw.x",
+          "rank": "0",
+          "sha256": "2fb58ba26e93b4dd5666dc57dd36e7abe85f3f8c9ad599ae81c86cf1c67a14e5",
+          "software": "qe",
+          "uid": 1478400690,
+          "verification": "cached"
+        },
+        {
+          "affinity": [
+            33,
+            97
+          ],
+          "command": [
+            "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+            "exec",
+            "--cleanenv",
+            "--no-eval",
+            "--no-home",
+            "--no-mount",
+            "bind-paths,home,cwd,tmp,hostfs",
+            "--pwd",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/16V100/case",
+            "--sharens",
+            "--nv",
+            "--bind",
+            "/usr:/usr:ro",
+            "--bind",
+            "/lib:/lib:ro",
+            "--bind",
+            "/lib64:/lib64:ro",
+            "--bind",
+            "/opt/devtools:/opt/devtools:ro",
+            "--bind",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/16V100/case:/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/16V100/case:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218384-0:/dev/shm/sai-1478400690-2218384-0:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218384-0/runtime/rank-1-1692509:/tmp:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218384-0/runtime/rank-1-1692509:/var/tmp:rw",
+            "--bind",
+            "/dev/shm:/dev/shm:rw",
+            "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/42003384294-1-development-16v100-avx2-2026-11-05-61569eb48023.sif",
+            "/usr/bin/bash",
+            "--noprofile",
+            "--norc",
+            "-c",
+            "set -eo pipefail; driver=${LD_LIBRARY_PATH:-}; source \"$1\"; shift; export LD_LIBRARY_PATH=\"$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}\"; exec \"$@\"",
+            "bash",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/share/sai/runtime-env.sh",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/bin/pw.x",
+            "-in",
+            "scf.in"
+          ],
+          "cuda_visible_devices": "0,1",
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/42003384294-1-development-16v100-avx2-2026-11-05-61569eb48023.sif",
+          "job": "2218384",
+          "memory_root": "/dev/shm/sai-1478400690-2218384-0",
+          "memory_scope": {
+            "job": "2218384",
+            "mount": "mnt:[4026539481]",
+            "schema": 1,
+            "user": "user:[4026539479]"
+          },
+          "mpi": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx2",
+          "node": "16v100n05",
+          "program": "pw.x",
+          "rank": "1",
+          "sha256": "2fb58ba26e93b4dd5666dc57dd36e7abe85f3f8c9ad599ae81c86cf1c67a14e5",
+          "software": "qe",
+          "uid": 1478400690,
+          "verification": "hashed"
+        },
+        {
+          "affinity": [
+            33,
+            97
+          ],
+          "command": [
+            "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+            "exec",
+            "--cleanenv",
+            "--no-eval",
+            "--no-home",
+            "--no-mount",
+            "bind-paths,home,cwd,tmp,hostfs",
+            "--pwd",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/16V100/case/manypw",
+            "--sharens",
+            "--nv",
+            "--bind",
+            "/usr:/usr:ro",
+            "--bind",
+            "/lib:/lib:ro",
+            "--bind",
+            "/lib64:/lib64:ro",
+            "--bind",
+            "/opt/devtools:/opt/devtools:ro",
+            "--bind",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/16V100/case/manypw:/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/16V100/case/manypw:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218384-0:/dev/shm/sai-1478400690-2218384-0:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218384-0/runtime/rank-1-1692646:/tmp:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218384-0/runtime/rank-1-1692646:/var/tmp:rw",
+            "--bind",
+            "/dev/shm:/dev/shm:rw",
+            "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/42003384294-1-development-16v100-avx2-2026-11-05-61569eb48023.sif",
+            "/usr/bin/bash",
+            "--noprofile",
+            "--norc",
+            "-c",
+            "set -eo pipefail; driver=${LD_LIBRARY_PATH:-}; source \"$1\"; shift; export LD_LIBRARY_PATH=\"$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}\"; name=$1; shift; exec -a \"$name\" \"$@\"",
+            "bash",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/share/sai/runtime-env.sh",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/bin/manypw.x",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/bin/pw.x",
+            "-ni",
+            "2"
+          ],
+          "cuda_visible_devices": "0,1",
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/42003384294-1-development-16v100-avx2-2026-11-05-61569eb48023.sif",
+          "job": "2218384",
+          "memory_root": "/dev/shm/sai-1478400690-2218384-0",
+          "memory_scope": {
+            "job": "2218384",
+            "mount": "mnt:[4026539483]",
+            "schema": 1,
+            "user": "user:[4026539481]"
+          },
+          "mpi": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx2",
+          "node": "16v100n05",
+          "program": "manypw.x",
+          "rank": "1",
+          "sha256": "2fb58ba26e93b4dd5666dc57dd36e7abe85f3f8c9ad599ae81c86cf1c67a14e5",
+          "software": "qe",
+          "uid": 1478400690,
+          "verification": "cached"
+        }
+      ],
+      "verification_sha256": "edcf6fd8ce95b0c8ee1c89045e9137adc3ae825cde7e70f0783b5cb83f081518"
+    },
+    "4V100": {
+      "modules": [
+        "apptainer/1.4.4",
+        "nvhpc/26.3-pgi-cuda12-tuned",
+        "openmpi/5.0.10-nvhpc26.3-pgi-cuda12-auto",
+        "fftw/3.3.10",
+        "hdf5/1.14.6-pgi-ompi508",
+        "qe-sif/develop-20261105-g61569eb48023"
+      ],
+      "request_sha256": "c594a804a638564df0f77221f288bdec44cb394bada89127d0eaf9ce1e7913f4",
+      "streams": {
+        "0": {
+          "cuda_kernel_launches_by_device": {
+            "0": 8683
+          },
+          "rank_marker": [
+            "0"
+          ],
+          "stderr": {
+            "bytes": 1575992,
+            "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/4V100/case/manypw/rank-output/rank.0/stderr",
+            "sha256": "d0f93b75952b6d42dc34776997aedd5b76381badd4ae53cc265059356070d417"
+          },
+          "stdout": {
+            "bytes": 1145,
+            "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/4V100/case/manypw/rank-output/rank.0/stdout",
+            "sha256": "6a1a99005b4c6c42bdbf06f13c536c4477384290019a7e2d6d22761c906eb8b1"
+          }
+        },
+        "1": {
+          "cuda_kernel_launches_by_device": {
+            "1": 8683
+          },
+          "rank_marker": [
+            "1"
+          ],
+          "stderr": {
+            "bytes": 1574474,
+            "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/4V100/case/manypw/rank-output/rank.1/stderr",
+            "sha256": "1485f1b82f1042e4f58a869e8e7b2ef2590a727890b60507c76ba9b0eb16f353"
+          },
+          "stdout": {
+            "bytes": 0,
+            "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/4V100/case/manypw/rank-output/rank.1/stdout",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      "traces": [
+        {
+          "affinity": [
+            0,
+            16
+          ],
+          "command": [
+            "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+            "exec",
+            "--cleanenv",
+            "--no-eval",
+            "--no-home",
+            "--no-mount",
+            "bind-paths,home,cwd,tmp,hostfs",
+            "--pwd",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/4V100/case",
+            "--sharens",
+            "--nv",
+            "--bind",
+            "/usr:/usr:ro",
+            "--bind",
+            "/lib:/lib:ro",
+            "--bind",
+            "/lib64:/lib64:ro",
+            "--bind",
+            "/opt/devtools:/opt/devtools:ro",
+            "--bind",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/4V100/case:/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/4V100/case:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218386-0:/dev/shm/sai-1478400690-2218386-0:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218386-0/runtime/rank-0-1531629:/tmp:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218386-0/runtime/rank-0-1531629:/var/tmp:rw",
+            "--bind",
+            "/dev/shm:/dev/shm:rw",
+            "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/42003384294-1-development-4v100-avx512-2026-11-05-61569eb48023.sif",
+            "/usr/bin/bash",
+            "--noprofile",
+            "--norc",
+            "-c",
+            "set -eo pipefail; driver=${LD_LIBRARY_PATH:-}; source \"$1\"; shift; export LD_LIBRARY_PATH=\"$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}\"; exec \"$@\"",
+            "bash",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/share/sai/runtime-env.sh",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/bin/pw.x",
+            "-in",
+            "scf.in"
+          ],
+          "cuda_visible_devices": "0,1",
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/42003384294-1-development-4v100-avx512-2026-11-05-61569eb48023.sif",
+          "job": "2218386",
+          "memory_root": "/dev/shm/sai-1478400690-2218386-0",
+          "memory_scope": {
+            "job": "2218386",
+            "mount": "mnt:[4026533803]",
+            "schema": 1,
+            "user": "user:[4026533802]"
+          },
+          "mpi": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512",
+          "node": "4v100n36",
+          "program": "pw.x",
+          "rank": "0",
+          "sha256": "012c8e933b96f9128b9ec979b8c3b7430186b9ec12042da0492e6a3d8687aedc",
+          "software": "qe",
+          "uid": 1478400690,
+          "verification": "cached"
+        },
+        {
+          "affinity": [
+            0,
+            16
+          ],
+          "command": [
+            "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+            "exec",
+            "--cleanenv",
+            "--no-eval",
+            "--no-home",
+            "--no-mount",
+            "bind-paths,home,cwd,tmp,hostfs",
+            "--pwd",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/4V100/case/manypw",
+            "--sharens",
+            "--nv",
+            "--bind",
+            "/usr:/usr:ro",
+            "--bind",
+            "/lib:/lib:ro",
+            "--bind",
+            "/lib64:/lib64:ro",
+            "--bind",
+            "/opt/devtools:/opt/devtools:ro",
+            "--bind",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/4V100/case/manypw:/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/4V100/case/manypw:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218386-0:/dev/shm/sai-1478400690-2218386-0:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218386-0/runtime/rank-0-1531822:/tmp:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218386-0/runtime/rank-0-1531822:/var/tmp:rw",
+            "--bind",
+            "/dev/shm:/dev/shm:rw",
+            "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/42003384294-1-development-4v100-avx512-2026-11-05-61569eb48023.sif",
+            "/usr/bin/bash",
+            "--noprofile",
+            "--norc",
+            "-c",
+            "set -eo pipefail; driver=${LD_LIBRARY_PATH:-}; source \"$1\"; shift; export LD_LIBRARY_PATH=\"$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}\"; name=$1; shift; exec -a \"$name\" \"$@\"",
+            "bash",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/share/sai/runtime-env.sh",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/bin/manypw.x",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/bin/pw.x",
+            "-ni",
+            "2"
+          ],
+          "cuda_visible_devices": "0,1",
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/42003384294-1-development-4v100-avx512-2026-11-05-61569eb48023.sif",
+          "job": "2218386",
+          "memory_root": "/dev/shm/sai-1478400690-2218386-0",
+          "memory_scope": {
+            "job": "2218386",
+            "mount": "mnt:[4026533810]",
+            "schema": 1,
+            "user": "user:[4026533809]"
+          },
+          "mpi": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512",
+          "node": "4v100n36",
+          "program": "manypw.x",
+          "rank": "0",
+          "sha256": "012c8e933b96f9128b9ec979b8c3b7430186b9ec12042da0492e6a3d8687aedc",
+          "software": "qe",
+          "uid": 1478400690,
+          "verification": "cached"
+        },
+        {
+          "affinity": [
+            1,
+            17
+          ],
+          "command": [
+            "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+            "exec",
+            "--cleanenv",
+            "--no-eval",
+            "--no-home",
+            "--no-mount",
+            "bind-paths,home,cwd,tmp,hostfs",
+            "--pwd",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/4V100/case",
+            "--sharens",
+            "--nv",
+            "--bind",
+            "/usr:/usr:ro",
+            "--bind",
+            "/lib:/lib:ro",
+            "--bind",
+            "/lib64:/lib64:ro",
+            "--bind",
+            "/opt/devtools:/opt/devtools:ro",
+            "--bind",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/4V100/case:/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/4V100/case:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218386-0:/dev/shm/sai-1478400690-2218386-0:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218386-0/runtime/rank-1-1531630:/tmp:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218386-0/runtime/rank-1-1531630:/var/tmp:rw",
+            "--bind",
+            "/dev/shm:/dev/shm:rw",
+            "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/42003384294-1-development-4v100-avx512-2026-11-05-61569eb48023.sif",
+            "/usr/bin/bash",
+            "--noprofile",
+            "--norc",
+            "-c",
+            "set -eo pipefail; driver=${LD_LIBRARY_PATH:-}; source \"$1\"; shift; export LD_LIBRARY_PATH=\"$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}\"; exec \"$@\"",
+            "bash",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/share/sai/runtime-env.sh",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/bin/pw.x",
+            "-in",
+            "scf.in"
+          ],
+          "cuda_visible_devices": "0,1",
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/42003384294-1-development-4v100-avx512-2026-11-05-61569eb48023.sif",
+          "job": "2218386",
+          "memory_root": "/dev/shm/sai-1478400690-2218386-0",
+          "memory_scope": {
+            "job": "2218386",
+            "mount": "mnt:[4026533803]",
+            "schema": 1,
+            "user": "user:[4026533802]"
+          },
+          "mpi": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512",
+          "node": "4v100n36",
+          "program": "pw.x",
+          "rank": "1",
+          "sha256": "012c8e933b96f9128b9ec979b8c3b7430186b9ec12042da0492e6a3d8687aedc",
+          "software": "qe",
+          "uid": 1478400690,
+          "verification": "hashed"
+        },
+        {
+          "affinity": [
+            1,
+            17
+          ],
+          "command": [
+            "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+            "exec",
+            "--cleanenv",
+            "--no-eval",
+            "--no-home",
+            "--no-mount",
+            "bind-paths,home,cwd,tmp,hostfs",
+            "--pwd",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/4V100/case/manypw",
+            "--sharens",
+            "--nv",
+            "--bind",
+            "/usr:/usr:ro",
+            "--bind",
+            "/lib:/lib:ro",
+            "--bind",
+            "/lib64:/lib64:ro",
+            "--bind",
+            "/opt/devtools:/opt/devtools:ro",
+            "--bind",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/4V100/case/manypw:/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/4V100/case/manypw:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218386-0:/dev/shm/sai-1478400690-2218386-0:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218386-0/runtime/rank-1-1531823:/tmp:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218386-0/runtime/rank-1-1531823:/var/tmp:rw",
+            "--bind",
+            "/dev/shm:/dev/shm:rw",
+            "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/42003384294-1-development-4v100-avx512-2026-11-05-61569eb48023.sif",
+            "/usr/bin/bash",
+            "--noprofile",
+            "--norc",
+            "-c",
+            "set -eo pipefail; driver=${LD_LIBRARY_PATH:-}; source \"$1\"; shift; export LD_LIBRARY_PATH=\"$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}\"; name=$1; shift; exec -a \"$name\" \"$@\"",
+            "bash",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/share/sai/runtime-env.sh",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/bin/manypw.x",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/bin/pw.x",
+            "-ni",
+            "2"
+          ],
+          "cuda_visible_devices": "0,1",
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/42003384294-1-development-4v100-avx512-2026-11-05-61569eb48023.sif",
+          "job": "2218386",
+          "memory_root": "/dev/shm/sai-1478400690-2218386-0",
+          "memory_scope": {
+            "job": "2218386",
+            "mount": "mnt:[4026533810]",
+            "schema": 1,
+            "user": "user:[4026533809]"
+          },
+          "mpi": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512",
+          "node": "4v100n36",
+          "program": "manypw.x",
+          "rank": "1",
+          "sha256": "012c8e933b96f9128b9ec979b8c3b7430186b9ec12042da0492e6a3d8687aedc",
+          "software": "qe",
+          "uid": 1478400690,
+          "verification": "cached"
+        }
+      ],
+      "verification_sha256": "531f485e7cb79c2e6cba5c6357efad6fc1d2c202b3002dbfb5e461f7b1484296"
+    },
+    "8V100V0": {
+      "modules": [
+        "apptainer/1.4.4",
+        "nvhpc/26.3-pgi-cuda12-tuned",
+        "openmpi/5.0.10-nvhpc26.3-pgi-cuda12-auto",
+        "fftw/3.3.10",
+        "hdf5/1.14.6-pgi-ompi508",
+        "qe-sif/develop-20261105-g61569eb48023"
+      ],
+      "request_sha256": "11e9d23993cdfaf7226823fd8f3f3dd0091e53e324e7a5d7093eda86760961bd",
+      "streams": {
+        "0": {
+          "cuda_kernel_launches_by_device": {
+            "0": 8683
+          },
+          "rank_marker": [
+            "0"
+          ],
+          "stderr": {
+            "bytes": 1575992,
+            "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/8V100V0/case/manypw/rank-output/rank.0/stderr",
+            "sha256": "18764d6d98e566f381a89d09fadc95953cdf74765e171adc3cd195780f6c6966"
+          },
+          "stdout": {
+            "bytes": 1146,
+            "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/8V100V0/case/manypw/rank-output/rank.0/stdout",
+            "sha256": "462edb20f1b1f904ff6a1bbe6eab23673adbca65038ecc915d3be85de34a8ccc"
+          }
+        },
+        "1": {
+          "cuda_kernel_launches_by_device": {
+            "1": 8683
+          },
+          "rank_marker": [
+            "1"
+          ],
+          "stderr": {
+            "bytes": 1574474,
+            "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/8V100V0/case/manypw/rank-output/rank.1/stderr",
+            "sha256": "1485f1b82f1042e4f58a869e8e7b2ef2590a727890b60507c76ba9b0eb16f353"
+          },
+          "stdout": {
+            "bytes": 0,
+            "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/8V100V0/case/manypw/rank-output/rank.1/stdout",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      "traces": [
+        {
+          "affinity": [
+            15,
+            39
+          ],
+          "command": [
+            "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+            "exec",
+            "--cleanenv",
+            "--no-eval",
+            "--no-home",
+            "--no-mount",
+            "bind-paths,home,cwd,tmp,hostfs",
+            "--pwd",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/8V100V0/case",
+            "--sharens",
+            "--nv",
+            "--bind",
+            "/usr:/usr:ro",
+            "--bind",
+            "/lib:/lib:ro",
+            "--bind",
+            "/lib64:/lib64:ro",
+            "--bind",
+            "/opt/devtools:/opt/devtools:ro",
+            "--bind",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/8V100V0/case:/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/8V100V0/case:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218388-0:/dev/shm/sai-1478400690-2218388-0:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218388-0/runtime/rank-0-562202:/tmp:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218388-0/runtime/rank-0-562202:/var/tmp:rw",
+            "--bind",
+            "/dev/shm:/dev/shm:rw",
+            "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/42003384294-1-development-8v100v0-avx512-2026-11-05-61569eb48023.sif",
+            "/usr/bin/bash",
+            "--noprofile",
+            "--norc",
+            "-c",
+            "set -eo pipefail; driver=${LD_LIBRARY_PATH:-}; source \"$1\"; shift; export LD_LIBRARY_PATH=\"$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}\"; exec \"$@\"",
+            "bash",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/share/sai/runtime-env.sh",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/bin/pw.x",
+            "-in",
+            "scf.in"
+          ],
+          "cuda_visible_devices": "0,1",
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/42003384294-1-development-8v100v0-avx512-2026-11-05-61569eb48023.sif",
+          "job": "2218388",
+          "memory_root": "/dev/shm/sai-1478400690-2218388-0",
+          "memory_scope": {
+            "job": "2218388",
+            "mount": "mnt:[4026537116]",
+            "schema": 1,
+            "user": "user:[4026537114]"
+          },
+          "mpi": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx2",
+          "node": "8v100v0n03",
+          "program": "pw.x",
+          "rank": "0",
+          "sha256": "66612d079f17dd991d10f9d01b2681b6c8a44ea48e84a327a99b2397f4827d6c",
+          "software": "qe",
+          "uid": 1478400690,
+          "verification": "cached"
+        },
+        {
+          "affinity": [
+            15,
+            39
+          ],
+          "command": [
+            "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+            "exec",
+            "--cleanenv",
+            "--no-eval",
+            "--no-home",
+            "--no-mount",
+            "bind-paths,home,cwd,tmp,hostfs",
+            "--pwd",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/8V100V0/case/manypw",
+            "--sharens",
+            "--nv",
+            "--bind",
+            "/usr:/usr:ro",
+            "--bind",
+            "/lib:/lib:ro",
+            "--bind",
+            "/lib64:/lib64:ro",
+            "--bind",
+            "/opt/devtools:/opt/devtools:ro",
+            "--bind",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/8V100V0/case/manypw:/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/8V100V0/case/manypw:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218388-0:/dev/shm/sai-1478400690-2218388-0:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218388-0/runtime/rank-0-562380:/tmp:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218388-0/runtime/rank-0-562380:/var/tmp:rw",
+            "--bind",
+            "/dev/shm:/dev/shm:rw",
+            "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/42003384294-1-development-8v100v0-avx512-2026-11-05-61569eb48023.sif",
+            "/usr/bin/bash",
+            "--noprofile",
+            "--norc",
+            "-c",
+            "set -eo pipefail; driver=${LD_LIBRARY_PATH:-}; source \"$1\"; shift; export LD_LIBRARY_PATH=\"$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}\"; name=$1; shift; exec -a \"$name\" \"$@\"",
+            "bash",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/share/sai/runtime-env.sh",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/bin/manypw.x",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/bin/pw.x",
+            "-ni",
+            "2"
+          ],
+          "cuda_visible_devices": "0,1",
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/42003384294-1-development-8v100v0-avx512-2026-11-05-61569eb48023.sif",
+          "job": "2218388",
+          "memory_root": "/dev/shm/sai-1478400690-2218388-0",
+          "memory_scope": {
+            "job": "2218388",
+            "mount": "mnt:[4026537117]",
+            "schema": 1,
+            "user": "user:[4026537116]"
+          },
+          "mpi": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx2",
+          "node": "8v100v0n03",
+          "program": "manypw.x",
+          "rank": "0",
+          "sha256": "66612d079f17dd991d10f9d01b2681b6c8a44ea48e84a327a99b2397f4827d6c",
+          "software": "qe",
+          "uid": 1478400690,
+          "verification": "cached"
+        },
+        {
+          "affinity": [
+            16,
+            40
+          ],
+          "command": [
+            "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+            "exec",
+            "--cleanenv",
+            "--no-eval",
+            "--no-home",
+            "--no-mount",
+            "bind-paths,home,cwd,tmp,hostfs",
+            "--pwd",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/8V100V0/case",
+            "--sharens",
+            "--nv",
+            "--bind",
+            "/usr:/usr:ro",
+            "--bind",
+            "/lib:/lib:ro",
+            "--bind",
+            "/lib64:/lib64:ro",
+            "--bind",
+            "/opt/devtools:/opt/devtools:ro",
+            "--bind",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/8V100V0/case:/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/8V100V0/case:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218388-0:/dev/shm/sai-1478400690-2218388-0:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218388-0/runtime/rank-1-562203:/tmp:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218388-0/runtime/rank-1-562203:/var/tmp:rw",
+            "--bind",
+            "/dev/shm:/dev/shm:rw",
+            "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/42003384294-1-development-8v100v0-avx512-2026-11-05-61569eb48023.sif",
+            "/usr/bin/bash",
+            "--noprofile",
+            "--norc",
+            "-c",
+            "set -eo pipefail; driver=${LD_LIBRARY_PATH:-}; source \"$1\"; shift; export LD_LIBRARY_PATH=\"$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}\"; exec \"$@\"",
+            "bash",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/share/sai/runtime-env.sh",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/bin/pw.x",
+            "-in",
+            "scf.in"
+          ],
+          "cuda_visible_devices": "0,1",
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/42003384294-1-development-8v100v0-avx512-2026-11-05-61569eb48023.sif",
+          "job": "2218388",
+          "memory_root": "/dev/shm/sai-1478400690-2218388-0",
+          "memory_scope": {
+            "job": "2218388",
+            "mount": "mnt:[4026537116]",
+            "schema": 1,
+            "user": "user:[4026537114]"
+          },
+          "mpi": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx2",
+          "node": "8v100v0n03",
+          "program": "pw.x",
+          "rank": "1",
+          "sha256": "66612d079f17dd991d10f9d01b2681b6c8a44ea48e84a327a99b2397f4827d6c",
+          "software": "qe",
+          "uid": 1478400690,
+          "verification": "hashed"
+        },
+        {
+          "affinity": [
+            16,
+            40
+          ],
+          "command": [
+            "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+            "exec",
+            "--cleanenv",
+            "--no-eval",
+            "--no-home",
+            "--no-mount",
+            "bind-paths,home,cwd,tmp,hostfs",
+            "--pwd",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/8V100V0/case/manypw",
+            "--sharens",
+            "--nv",
+            "--bind",
+            "/usr:/usr:ro",
+            "--bind",
+            "/lib:/lib:ro",
+            "--bind",
+            "/lib64:/lib64:ro",
+            "--bind",
+            "/opt/devtools:/opt/devtools:ro",
+            "--bind",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/8V100V0/case/manypw:/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/8V100V0/case/manypw:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218388-0:/dev/shm/sai-1478400690-2218388-0:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218388-0/runtime/rank-1-562381:/tmp:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218388-0/runtime/rank-1-562381:/var/tmp:rw",
+            "--bind",
+            "/dev/shm:/dev/shm:rw",
+            "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/42003384294-1-development-8v100v0-avx512-2026-11-05-61569eb48023.sif",
+            "/usr/bin/bash",
+            "--noprofile",
+            "--norc",
+            "-c",
+            "set -eo pipefail; driver=${LD_LIBRARY_PATH:-}; source \"$1\"; shift; export LD_LIBRARY_PATH=\"$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}\"; name=$1; shift; exec -a \"$name\" \"$@\"",
+            "bash",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/share/sai/runtime-env.sh",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/bin/manypw.x",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/bin/pw.x",
+            "-ni",
+            "2"
+          ],
+          "cuda_visible_devices": "0,1",
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/42003384294-1-development-8v100v0-avx512-2026-11-05-61569eb48023.sif",
+          "job": "2218388",
+          "memory_root": "/dev/shm/sai-1478400690-2218388-0",
+          "memory_scope": {
+            "job": "2218388",
+            "mount": "mnt:[4026537117]",
+            "schema": 1,
+            "user": "user:[4026537116]"
+          },
+          "mpi": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx2",
+          "node": "8v100v0n03",
+          "program": "manypw.x",
+          "rank": "1",
+          "sha256": "66612d079f17dd991d10f9d01b2681b6c8a44ea48e84a327a99b2397f4827d6c",
+          "software": "qe",
+          "uid": 1478400690,
+          "verification": "cached"
+        }
+      ],
+      "verification_sha256": "52f56ac56881288590889ee76f0656d0d36677b68757329b30af615048c6a1fc"
+    },
+    "DSPRHBM": {
+      "modules": [
+        "apptainer/1.4.4",
+        "nvhpc/26.3-pgi-cuda12-tuned",
+        "openmpi/5.0.10-nvhpc26.3-pgi-cuda12-auto",
+        "fftw/3.3.10",
+        "qe-sif/develop-20261105-g61569eb48023"
+      ],
+      "request_sha256": "7b949287965bc93057e61c6a268dca2f545df85716e9e80c954955846f6724e6",
+      "streams": {
+        "0": {
+          "cuda_kernel_launches_by_device": {},
+          "rank_marker": [
+            "0"
+          ],
+          "stderr": {
+            "bytes": 903,
+            "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/DSPRHBM/case/manypw/rank-output/rank.0/stderr",
+            "sha256": "89058e1fd5cfbf6a86e6b4a1e67bc008454d545e62ed7cab81d5e84898542c4e"
+          },
+          "stdout": {
+            "bytes": 1145,
+            "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/DSPRHBM/case/manypw/rank-output/rank.0/stdout",
+            "sha256": "d4e0583315634144833db3dd949c735fe318d2bc9216e98a27686d2752a5ad70"
+          }
+        },
+        "1": {
+          "cuda_kernel_launches_by_device": {},
+          "rank_marker": [
+            "1"
+          ],
+          "stderr": {
+            "bytes": 903,
+            "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/DSPRHBM/case/manypw/rank-output/rank.1/stderr",
+            "sha256": "64319ec3b0e534629956c27ae6a80be4235f2b3397097ba626604a1f2a8b0d4b"
+          },
+          "stdout": {
+            "bytes": 0,
+            "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/DSPRHBM/case/manypw/rank-output/rank.1/stdout",
+            "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+          }
+        }
+      },
+      "traces": [
+        {
+          "affinity": [
+            73
+          ],
+          "command": [
+            "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+            "exec",
+            "--cleanenv",
+            "--no-eval",
+            "--no-home",
+            "--no-mount",
+            "bind-paths,home,cwd,tmp,hostfs",
+            "--pwd",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/DSPRHBM/case",
+            "--sharens",
+            "--bind",
+            "/usr:/usr:ro",
+            "--bind",
+            "/lib:/lib:ro",
+            "--bind",
+            "/lib64:/lib64:ro",
+            "--bind",
+            "/opt/devtools:/opt/devtools:ro",
+            "--bind",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/DSPRHBM/case:/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/DSPRHBM/case:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218390-0:/dev/shm/sai-1478400690-2218390-0:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218390-0/runtime/rank-0-3470173:/tmp:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218390-0/runtime/rank-0-3470173:/var/tmp:rw",
+            "--bind",
+            "/dev/shm:/dev/shm:rw",
+            "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/42003384294-1-development-dsprhbm-2026-11-05-61569eb48023.sif",
+            "/usr/bin/bash",
+            "--noprofile",
+            "--norc",
+            "-c",
+            "set -eo pipefail; driver=${LD_LIBRARY_PATH:-}; source \"$1\"; shift; export LD_LIBRARY_PATH=\"$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}\"; exec \"$@\"",
+            "bash",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/share/sai/runtime-env.sh",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/bin/pw.x",
+            "-in",
+            "scf.in"
+          ],
+          "cuda_visible_devices": null,
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/42003384294-1-development-dsprhbm-2026-11-05-61569eb48023.sif",
+          "job": "2218390",
+          "memory_root": "/dev/shm/sai-1478400690-2218390-0",
+          "memory_scope": {
+            "job": "2218390",
+            "mount": "mnt:[4026538731]",
+            "schema": 1,
+            "user": "user:[4026538728]"
+          },
+          "mpi": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512",
+          "node": "d9470n05",
+          "program": "pw.x",
+          "rank": "0",
+          "sha256": "bfaa262445f18ca4349a8382d9e3e1c81e145ad9107cd3bfac861e47ce8abf8d",
+          "software": "qe",
+          "uid": 1478400690,
+          "verification": "hashed"
+        },
+        {
+          "affinity": [
+            73
+          ],
+          "command": [
+            "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+            "exec",
+            "--cleanenv",
+            "--no-eval",
+            "--no-home",
+            "--no-mount",
+            "bind-paths,home,cwd,tmp,hostfs",
+            "--pwd",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/DSPRHBM/case/manypw",
+            "--sharens",
+            "--bind",
+            "/usr:/usr:ro",
+            "--bind",
+            "/lib:/lib:ro",
+            "--bind",
+            "/lib64:/lib64:ro",
+            "--bind",
+            "/opt/devtools:/opt/devtools:ro",
+            "--bind",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/DSPRHBM/case/manypw:/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/DSPRHBM/case/manypw:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218390-0:/dev/shm/sai-1478400690-2218390-0:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218390-0/runtime/rank-0-3470319:/tmp:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218390-0/runtime/rank-0-3470319:/var/tmp:rw",
+            "--bind",
+            "/dev/shm:/dev/shm:rw",
+            "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/42003384294-1-development-dsprhbm-2026-11-05-61569eb48023.sif",
+            "/usr/bin/bash",
+            "--noprofile",
+            "--norc",
+            "-c",
+            "set -eo pipefail; driver=${LD_LIBRARY_PATH:-}; source \"$1\"; shift; export LD_LIBRARY_PATH=\"$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}\"; name=$1; shift; exec -a \"$name\" \"$@\"",
+            "bash",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/share/sai/runtime-env.sh",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/bin/manypw.x",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/bin/pw.x",
+            "-ni",
+            "2"
+          ],
+          "cuda_visible_devices": null,
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/42003384294-1-development-dsprhbm-2026-11-05-61569eb48023.sif",
+          "job": "2218390",
+          "memory_root": "/dev/shm/sai-1478400690-2218390-0",
+          "memory_scope": {
+            "job": "2218390",
+            "mount": "mnt:[4026538735]",
+            "schema": 1,
+            "user": "user:[4026538734]"
+          },
+          "mpi": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512",
+          "node": "d9470n05",
+          "program": "manypw.x",
+          "rank": "0",
+          "sha256": "bfaa262445f18ca4349a8382d9e3e1c81e145ad9107cd3bfac861e47ce8abf8d",
+          "software": "qe",
+          "uid": 1478400690,
+          "verification": "cached"
+        },
+        {
+          "affinity": [
+            74
+          ],
+          "command": [
+            "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+            "exec",
+            "--cleanenv",
+            "--no-eval",
+            "--no-home",
+            "--no-mount",
+            "bind-paths,home,cwd,tmp,hostfs",
+            "--pwd",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/DSPRHBM/case",
+            "--sharens",
+            "--bind",
+            "/usr:/usr:ro",
+            "--bind",
+            "/lib:/lib:ro",
+            "--bind",
+            "/lib64:/lib64:ro",
+            "--bind",
+            "/opt/devtools:/opt/devtools:ro",
+            "--bind",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/DSPRHBM/case:/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/DSPRHBM/case:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218390-0:/dev/shm/sai-1478400690-2218390-0:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218390-0/runtime/rank-1-3470174:/tmp:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218390-0/runtime/rank-1-3470174:/var/tmp:rw",
+            "--bind",
+            "/dev/shm:/dev/shm:rw",
+            "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/42003384294-1-development-dsprhbm-2026-11-05-61569eb48023.sif",
+            "/usr/bin/bash",
+            "--noprofile",
+            "--norc",
+            "-c",
+            "set -eo pipefail; driver=${LD_LIBRARY_PATH:-}; source \"$1\"; shift; export LD_LIBRARY_PATH=\"$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}\"; exec \"$@\"",
+            "bash",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/share/sai/runtime-env.sh",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/bin/pw.x",
+            "-in",
+            "scf.in"
+          ],
+          "cuda_visible_devices": null,
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/42003384294-1-development-dsprhbm-2026-11-05-61569eb48023.sif",
+          "job": "2218390",
+          "memory_root": "/dev/shm/sai-1478400690-2218390-0",
+          "memory_scope": {
+            "job": "2218390",
+            "mount": "mnt:[4026538731]",
+            "schema": 1,
+            "user": "user:[4026538728]"
+          },
+          "mpi": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512",
+          "node": "d9470n05",
+          "program": "pw.x",
+          "rank": "1",
+          "sha256": "bfaa262445f18ca4349a8382d9e3e1c81e145ad9107cd3bfac861e47ce8abf8d",
+          "software": "qe",
+          "uid": 1478400690,
+          "verification": "cached"
+        },
+        {
+          "affinity": [
+            74
+          ],
+          "command": [
+            "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+            "exec",
+            "--cleanenv",
+            "--no-eval",
+            "--no-home",
+            "--no-mount",
+            "bind-paths,home,cwd,tmp,hostfs",
+            "--pwd",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/DSPRHBM/case/manypw",
+            "--sharens",
+            "--bind",
+            "/usr:/usr:ro",
+            "--bind",
+            "/lib:/lib:ro",
+            "--bind",
+            "/lib64:/lib64:ro",
+            "--bind",
+            "/opt/devtools:/opt/devtools:ro",
+            "--bind",
+            "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/DSPRHBM/case/manypw:/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/DSPRHBM/case/manypw:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218390-0:/dev/shm/sai-1478400690-2218390-0:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218390-0/runtime/rank-1-3470320:/tmp:rw",
+            "--bind",
+            "/dev/shm/sai-1478400690-2218390-0/runtime/rank-1-3470320:/var/tmp:rw",
+            "--bind",
+            "/dev/shm:/dev/shm:rw",
+            "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/42003384294-1-development-dsprhbm-2026-11-05-61569eb48023.sif",
+            "/usr/bin/bash",
+            "--noprofile",
+            "--norc",
+            "-c",
+            "set -eo pipefail; driver=${LD_LIBRARY_PATH:-}; source \"$1\"; shift; export LD_LIBRARY_PATH=\"$driver${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}\"; name=$1; shift; exec -a \"$name\" \"$@\"",
+            "bash",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/share/sai/runtime-env.sh",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/bin/manypw.x",
+            "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/bin/pw.x",
+            "-ni",
+            "2"
+          ],
+          "cuda_visible_devices": null,
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/42003384294-1-development-dsprhbm-2026-11-05-61569eb48023.sif",
+          "job": "2218390",
+          "memory_root": "/dev/shm/sai-1478400690-2218390-0",
+          "memory_scope": {
+            "job": "2218390",
+            "mount": "mnt:[4026538735]",
+            "schema": 1,
+            "user": "user:[4026538734]"
+          },
+          "mpi": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512",
+          "node": "d9470n05",
+          "program": "manypw.x",
+          "rank": "1",
+          "sha256": "bfaa262445f18ca4349a8382d9e3e1c81e145ad9107cd3bfac861e47ce8abf8d",
+          "software": "qe",
+          "uid": 1478400690,
+          "verification": "cached"
+        }
+      ],
+      "verification_sha256": "c59ae9d1fcc84402523b2bed82d7d42f932b4c90961ac7c30b097edb0d0a79ff"
+    }
+  },
+  "rebuilt_images": false,
+  "source_attempt": 1,
+  "source_workflow": "42003384294",
+  "task": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3",
+  "task_files": {
+    "candidates.json": {
+      "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/candidates.json",
+      "sha256": "9891d70345402f72084eff615adcf95299107d0aa26c2ee43592351e491cd6eb"
+    },
+    "jobs.json": {
+      "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/jobs.json",
+      "sha256": "bffd8f297d9c5db9a4e45d122a8248fd6c09457779c42e3c1244218e8c742e1d"
+    },
+    "publication.json": {
+      "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/publication.json",
+      "sha256": "f55ff2bcdcd839106beefcf899441ea0fa205d3ecefd5e0d7b4eefafb2ed476c"
+    },
+    "request.json": {
+      "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/request.json",
+      "sha256": "36f01dd3afe89ad31d101915d48f84448f71b0612f4ded18aff61a4bbecbe229"
+    },
+    "runtime-status.json": {
+      "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/runtime-status.json",
+      "sha256": "855026ed4090046a3455a070b4e6dfb56c8301dc6edd90187ff069f60994d70b"
+    },
+    "status.json": {
+      "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/status.json",
+      "sha256": "f55ff2bcdcd839106beefcf899441ea0fa205d3ecefd5e0d7b4eefafb2ed476c"
+    },
+    "validation.json": {
+      "path": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/validation.json",
+      "sha256": "4cf5e294f2faa02f75476fb747c58e5edd8f6289a25dc8a9707598d702d11044"
+    }
+  },
+  "tested_commit": "271a3918eff3cf36a2ac561427995f474b249f85",
+  "workflow": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/42026314156"
+}
