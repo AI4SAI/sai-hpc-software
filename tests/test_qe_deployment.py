@@ -4,6 +4,7 @@ import hashlib
 import importlib.util
 import io
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -132,6 +133,64 @@ class QEDeploymentTests(unittest.TestCase):
         (self.physical / 'opt').symlink_to(target)
         with self.assertRaisesRegex(ValueError, 'symlink'):
             deployment.directories(self.physical / 'opt/apps/qe')
+
+    def test_existing_release_gains_only_standard_links_without_images_or_recopy(self):
+        self.install()
+        frozen_release = (self.package / 'release.json').read_bytes()
+        before = {}
+        for row in self.release['deliveries']:
+            root = self.physical / Path(row['prefix']).relative_to('/')
+            binary = root / 'bin/pw.x'
+            before[str(binary)] = (binary.read_bytes(), binary.stat().st_ino, binary.stat().st_mtime_ns)
+            for name in deployment.COMMAND_ALIASES:
+                (root / name).unlink()
+            (self.package / row['image']).unlink()
+        with patch.object(deployment, 'extract_files', side_effect=AssertionError('must not extract')), \
+                contextlib.redirect_stdout(io.StringIO()):
+            deployment.complete_commands(deployment.load_release(), self.physical)
+            deployment.complete_commands(deployment.load_release(), self.physical)
+            deployment.preflight(self.release, self.package, self.physical, installed=True)
+        self.assertEqual((self.package / 'release.json').read_bytes(), frozen_release)
+        for row in self.release['deliveries']:
+            root = self.physical / Path(row['prefix']).relative_to('/')
+            binary = root / 'bin/pw.x'
+            self.assertEqual((binary.read_bytes(), binary.stat().st_ino, binary.stat().st_mtime_ns), before[str(binary)])
+            for name in deployment.COMMAND_ALIASES:
+                self.assertEqual(os.readlink(root / name), 'pw.x')
+
+    def test_completion_rejects_changed_or_redirected_alias_before_creating_any_links(self):
+        self.install()
+        roots = [self.physical / Path(row['prefix']).relative_to('/') for row in self.release['deliveries']]
+        for root in roots:
+            for name in deployment.COMMAND_ALIASES:
+                (root / name).unlink()
+        collision = roots[-1] / 'bin/manypw.x'
+        for target in ('../pw.x', str(roots[-1] / 'bin/pw.x'), '/missing/outside'):
+            with self.subTest(target=target):
+                collision.symlink_to(target)
+                with self.assertRaisesRegex(ValueError, 'command link differs'), contextlib.redirect_stdout(io.StringIO()):
+                    deployment.complete_commands(deployment.load_release(), self.physical)
+                self.assertFalse((roots[0] / 'bin/manypw.x').exists())
+                self.assertEqual(os.readlink(collision), target)
+                collision.unlink()
+        collision.write_text('administrator file')
+        with self.assertRaisesRegex(ValueError, 'replaced by a file'), contextlib.redirect_stdout(io.StringIO()):
+            deployment.complete_commands(deployment.load_release(), self.physical)
+        self.assertEqual(collision.read_text(), 'administrator file')
+
+    def test_native_inventory_accepts_only_the_exact_relative_manypw_link(self):
+        row = self.release['deliveries'][0]
+        manifest = json.loads((self.package / row['manifest']).read_text())
+        prefix = row['prefix'].lstrip('/')
+        for path, target in deployment.COMMAND_ALIASES.items():
+            manifest['entry']['commands'][Path(path).name] = path
+            manifest['files'].append(dict(path=prefix + '/' + path, kind='symlink', target=target, mode=0o755))
+        records = deployment.runtime_records(manifest, prefix)
+        self.assertEqual(sum(r.get('kind') == 'symlink' for r in records), 1)
+        self.assertEqual(sum(r['path'].startswith('bin/') for r in records), 68)
+        manifest['files'][-1]['target'] = '/opt/other/pw.x'
+        with self.assertRaisesRegex(ValueError, 'command link'):
+            deployment.runtime_records(manifest, prefix)
 
     @unittest.skipUnless(shutil.which('mksquashfs') and shutil.which('unsquashfs'), 'squashfs tools unavailable')
     def test_real_squashfs_content_extraction_and_hash_guard(self):

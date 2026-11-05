@@ -38,6 +38,14 @@ separate from the compiler's native CPU code generation.
 The `pwall` and `upf` targets, plus four explicitly selected tools omitted by
 those CMake umbrella targets, cover the site's existing executable suite,
 including pw.x, ph.x, neb.x, pwcond.x and postprocessing tools. OSCDFT is enabled.
+The package contains 67 ELF executables and the standard relative link
+`manypw.x -> pw.x`, exposing 68 command names. The existing QE dispatcher uses
+the invoked name to run multiple independent images. Older accepted images
+without the link are supported by the SIF launcher's exact `manypw.x` whitelist
+and preserved `argv[0]`; no extraction or image modification is required.
+The site comparison found that `dist.x` fails in MPI cleanup in both QE 7.3 and
+7.6, so that entry is not published. No scientific source is changed, and the
+`pwgui` graphical interface is not packaged.
 Only installed executables, required dependency files, licenses and delivery metadata enter the SIF;
 source, compiler objects and custom acceptance cases remain outside the payload.
 
@@ -86,10 +94,12 @@ Native installation uses `/opt/apps/qe/qe-<track>-<version>-g<SHA>-r<recipe>/<pa
 inside the image, ready for the existing administrator-controlled native export.
 Physical /opt installation is a separate step after acceptance.
 The accepted QE 7.6 release has an [administrator installation package](../deployment/qe-7.6/README.md)
-with `--check`, `--install` and `--verify`. It reads publicly accessible compressed
-SIF copies, installs all 67 application commands and licenses, and publishes
+with `--check`, `--install`, `--complete-commands` and `--verify`. It reads publicly accessible compressed
+SIF copies, installs all 67 ELF programs, the `manypw.x` link and licenses, and publishes
 `qe/7.6-auto`. No project-directory access or container execution is needed by
-the installing administrator.
+the installing administrator. For an existing installation, `--complete-commands`
+checks all installed files and adds only the four missing relative links; it
+does not read the images or replace any installed binaries.
 
 ## Initial qualification
 

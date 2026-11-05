@@ -56,7 +56,9 @@ def main():
         # Every command must already resolve all libraries outside its private
         # prefix. This proves removing static development files is appropriate.
         inspection = json.loads((source / 'share/sai/binary-inspection.json').read_text())
-        deployment.require(set(inspection) == set(manifest['entry']['commands']), 'incomplete link inspection')
+        aliases = {name.removeprefix('bin/') for name in deployment.COMMAND_ALIASES}
+        deployment.require(set(inspection) == set(manifest['entry']['commands']) - aliases,
+                           'incomplete regular executable inspection')
         for name, proof in inspection.items():
             binary = next(row for row in manifest['files'] if row['path'] == identity['install_prefix'].lstrip('/') + '/bin/' + name)
             deployment.require(proof['sha256'] == binary['sha256'] and 'not found' not in proof['ldd']

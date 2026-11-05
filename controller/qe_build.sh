@@ -33,6 +33,10 @@ for binary in /workspace/build/bin/*.x; do
   test -x "$binary"
   install -m 0555 "$binary" "$INSTALL_PREFIX/bin/"
 done
+# QE dispatches this standard PW entry point by argv[0]. Keep the relative link
+# instead of resolving it to pw.x or duplicating the executable bytes. dist.x
+# is not published: its early-return path frees uninitialized MPI communicators.
+ln -s pw.x "$INSTALL_PREFIX/bin/manypw.x"
 install -m 0444 /workspace/source/License "$INSTALL_PREFIX/share/licenses/qe/License"
 for library in devxlib fox mbd wannier90; do
   mkdir -p "$INSTALL_PREFIX/share/licenses/$library"

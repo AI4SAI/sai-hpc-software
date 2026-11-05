@@ -19,6 +19,7 @@ PROJECT = PACKAGE
 MODULE = Path('/opt/modules/modulefiles/apps/qe/7.6-auto')
 SOURCE = '9f93ddec427d2b9a45bb72d828c6d324f62fcabd'
 PARTITIONS = {'DSPRHBM', '16V100', '4V100', '8V100V0'}
+COMMAND_ALIASES = {'bin/manypw.x': 'pw.x'}
 
 
 def require(condition, message):
@@ -55,7 +56,10 @@ def runtime_records(manifest, source):
     """QE and HDF5 are static; retain all application commands and licenses."""
     prefix = Path(manifest['entry']['identity']['install_prefix'])
     commands = manifest['entry']['commands']
-    require(len(commands) == 67 and all(value == 'bin/' + name for name, value in commands.items()),
+    aliases = {name.removeprefix('bin/') for name in COMMAND_ALIASES}
+    present = set(commands) & aliases
+    require(present in (set(), aliases) and len(commands) == 67 + len(present)
+            and all(value == 'bin/' + name for name, value in commands.items()),
             'unexpected QE command suite')
     records = []
     for item in manifest['files']:
@@ -65,7 +69,13 @@ def runtime_records(manifest, source):
         if item['kind'] == 'directory':
             continue
         if name.startswith(('bin/', 'share/licenses/')):
-            require(item['kind'] == 'file', 'unexpected runtime link or special file')
+            if item['kind'] == 'symlink':
+                require(name in COMMAND_ALIASES and item['target'] == COMMAND_ALIASES[name],
+                        'unexpected QE command link')
+                records.append(dict(path=name, kind='symlink', target=item['target']))
+                continue
+            require(item['kind'] == 'file' and name not in COMMAND_ALIASES,
+                    'unexpected runtime link or special file')
             require(type(item['mode']) is int and 0 <= item['mode'] <= 0o777
                     and not item['mode'] & 0o022, 'unsafe runtime mode')
             records.append(dict(path=name, source=str(Path(source) / name),
@@ -73,6 +83,17 @@ def runtime_records(manifest, source):
     require({row['path'] for row in records if row['path'].startswith('bin/')} == set(commands.values()),
             'runtime inventory does not contain every QE executable')
     return sorted(records, key=lambda row: row['path'])
+
+
+def installation_records(files):
+    """Complete older accepted inventories without changing their provenance."""
+    result = {row['path']: row for row in files}
+    require(len(result) == len(files), 'duplicate runtime path')
+    for name, target in COMMAND_ALIASES.items():
+        expected = dict(path=name, kind='symlink', target=target)
+        require(name not in result or result[name] == expected, 'unexpected QE command link')
+        result[name] = expected
+    return sorted(result.values(), key=lambda row: row['path'])
 
 
 def load_release():
@@ -94,7 +115,13 @@ def load_release():
         names = [record['path'] for record in row['files']]
         require(len(names) == len(set(names)), 'duplicate runtime path')
         for record in row['files']:
-            relative(record['source']); relative(record['path'])
+            relative(record['path'])
+            if record.get('kind') == 'symlink':
+                require(record == dict(path=record['path'], kind='symlink',
+                                       target=COMMAND_ALIASES.get(record['path']))
+                        and record['path'] in COMMAND_ALIASES, 'unexpected QE command link')
+                continue
+            relative(record['source'])
             require(record['path'].startswith(('bin/', 'share/licenses/')), 'non-runtime payload')
             require(type(record['mode']) is int and 0 <= record['mode'] <= 0o777
                     and not record['mode'] & 0o022, 'unsafe installed mode')
@@ -111,27 +138,46 @@ def verify_file(path, record):
     require(stat.S_IMODE(info.st_mode) == record['mode'], 'permissions changed: ' + str(path))
 
 
-def verify_installed(root, files):
+def verify_alias(path, record):
+    plain(path.parent)
+    require(record == dict(path=record['path'], kind='symlink',
+                           target=COMMAND_ALIASES.get(record['path']))
+            and record['path'] in COMMAND_ALIASES, 'unexpected QE command link')
+    require(path.is_symlink() and os.readlink(path) == record['target'],
+            'QE command link differs: ' + str(path))
+    target = path.parent / record['target']
+    plain(target)
+    require(target.is_file() and os.access(target, os.X_OK), 'missing QE command target: ' + str(target))
+
+
+def verify_installed(root, files, *, allow_missing_aliases=False):
     plain(root)
     expected = {record['path']: record for record in files}
     directories = {'.'} | {str(parent) for name in expected for parent in Path(name).parents}
     pending, seen = [root], set()
     while pending:
         path = pending.pop()
-        plain(path)
         name = str(path.relative_to(root))
-        if path.is_dir():
+        if path.is_symlink():
+            require(name in expected and expected[name].get('kind') == 'symlink',
+                    'unlisted installed symlink: ' + str(path))
+            verify_alias(path, expected[name])
+        elif path.is_dir():
+            plain(path)
             require(name in directories and stat.S_IMODE(path.stat().st_mode) == 0o755,
                     'unexpected installed directory: ' + str(path))
             pending.extend(path.iterdir())
         else:
             require(name in expected, 'unlisted installed file: ' + str(path))
+            require(expected[name].get('kind') != 'symlink', 'QE command link replaced by a file: ' + str(path))
             verify_file(path, expected[name])
         seen.add(name)
-    require(seen == set(expected) | directories, 'incomplete installed tree: ' + str(root))
+    missing = (set(expected) | directories) - seen
+    optional = {name for name, row in expected.items() if row.get('kind') == 'symlink'} if allow_missing_aliases else set()
+    require(missing <= optional, 'incomplete installed tree: ' + str(root))
 
 
-def preflight(release, project, physical_root=Path('/'), *, installed=False):
+def preflight(release, project, physical_root=Path('/'), *, installed=False, allow_missing_aliases=False):
     plain(project); plain(physical_root)
     for row in release['deliveries']:
         print(row['partition'] + ': checking ' + ('installed files' if installed else 'accepted export'), flush=True)
@@ -164,9 +210,11 @@ def preflight(release, project, physical_root=Path('/'), *, installed=False):
                         and original['size'] == license['size'], 'HDF5 license differs from accepted image')
         target = physical_root / Path(row['prefix']).relative_to('/')
         plain(target)
+        files = installation_records(row['files'])
         if installed or target.exists():
-            verify_installed(target, row['files'])
-        print(f"  {len(row['files'])} files, {sum(r['size'] for r in row['files']) / 1024**2:.2f} MiB", flush=True)
+            verify_installed(target, files, allow_missing_aliases=allow_missing_aliases or not installed)
+        print(f"  {len(files) - len(COMMAND_ALIASES)} files, {len(COMMAND_ALIASES)} command link, "
+              f"{sum(r.get('size', 0) for r in files) / 1024**2:.2f} MiB", flush=True)
     module = physical_root / MODULE.relative_to('/')
     plain(module)
     if installed or module.exists():
@@ -217,6 +265,38 @@ def extract_files(image, files, destination):
             raise
 
 
+def complete_links(root, files):
+    """Create only the accepted relative entry point; never replace a path."""
+    plain(root)
+    for record in files:
+        if record.get('kind') != 'symlink':
+            continue
+        require(record['path'] in COMMAND_ALIASES and
+                record == dict(path=record['path'], kind='symlink', target=COMMAND_ALIASES[record['path']]),
+                'unexpected QE command link')
+        path = root / record['path']
+        plain(path.parent)
+        if not path.exists() and not path.is_symlink():
+            path.symlink_to(record['target'])
+        verify_alias(path, record)
+
+
+def complete_commands(release, physical_root=Path('/')):
+    """Add missing entry points to installed bytes without reading any SIF."""
+    app_root = physical_root / 'opt/apps/qe'
+    plain(app_root)
+    descriptor = os.open(app_root, os.O_RDONLY | os.O_DIRECTORY | os.O_NOFOLLOW)
+    try:
+        fcntl.flock(descriptor, fcntl.LOCK_EX)
+        preflight(release, PACKAGE, physical_root, installed=True, allow_missing_aliases=True)
+        for row in release['deliveries']:
+            target = physical_root / Path(row['prefix']).relative_to('/')
+            complete_links(target, installation_records(row['files']))
+            print(row['partition'] + ': manypw.x -> pw.x verified', flush=True)
+    finally:
+        os.close(descriptor)
+
+
 def install(release, project, physical_root=Path('/')):
     preflight(release, project, physical_root)
     app_root = physical_root / 'opt/apps/qe'
@@ -227,8 +307,10 @@ def install(release, project, physical_root=Path('/')):
         for row in release['deliveries']:
             target = physical_root / Path(row['prefix']).relative_to('/')
             plain(target)
+            installed_files = installation_records(row['files'])
             if target.exists():
-                verify_installed(target, row['files'])
+                verify_installed(target, installed_files, allow_missing_aliases=True)
+                complete_links(target, installed_files)
                 continue
             directories(target.parent)
             stage = target.with_name('.' + target.name + '.incoming-' + str(os.getpid()))
@@ -238,10 +320,12 @@ def install(release, project, physical_root=Path('/')):
             images = {item['partition']: project / item['image'] for item in release['deliveries']}
             for partition in images:
                 files = [record for record in row['files']
-                         if record.get('image_partition', row['partition']) == partition]
+                         if record.get('kind') != 'symlink'
+                         and record.get('image_partition', row['partition']) == partition]
                 if files:
                     extract_files(images[partition], files, stage)
-            verify_installed(stage, row['files'])
+            complete_links(stage, installed_files)
+            verify_installed(stage, installed_files)
             require(not target.exists() and not target.is_symlink(), 'destination appeared while copying')
             stage.rename(target)
             print('Installed ' + str(target), flush=True)
@@ -266,13 +350,18 @@ def main():
     operation.add_argument('--check', action='store_true')
     operation.add_argument('--install', action='store_true')
     operation.add_argument('--verify', action='store_true')
+    operation.add_argument('--complete-commands', action='store_true',
+                           help='Add manypw.x links to an existing installation; no SIF or recopy needed')
     args = parser.parse_args()
     release = load_release()
     if args.install:
         install(release, PROJECT)
+    elif args.complete_commands:
+        complete_commands(release)
     else:
         preflight(release, PROJECT, installed=args.verify)
-    print('QE_NATIVE_' + ('INSTALLED' if args.install else 'VERIFIED' if args.verify else 'PREFLIGHT_PASSED'))
+    print('QE_NATIVE_' + ('INSTALLED' if args.install else 'COMMANDS_COMPLETED' if args.complete_commands
+                         else 'VERIFIED' if args.verify else 'PREFLIGHT_PASSED'))
 
 
 if __name__ == '__main__':
