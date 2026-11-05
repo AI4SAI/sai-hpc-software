@@ -10,7 +10,7 @@ See [current delivery status](docs/WORKFLOW-CLOSURE.md) and [using the beta modu
 The [QE profile](docs/QE-WORKFLOW.md) covers its four-partition NVHPC/MPI builds,
 V100 CUDA/OpenACC support, and SCF/phonon/density acceptance.
 
-[NEPAdapters 1.0.4](deployment/nepadapters-1.0.4/README.md) has a separate manual
+[NEPAdapters 1.0.5](deployment/nepadapters-1.0.5/README.md) has a separate manual
 SIF build/acceptance workflow for adding NEP CPU and CUDA Kokkos pair styles to
 the installed LAMMPS 30Sep2026 release. It reuses that LAMMPS build and provides
 a minimal, administrator-installed addon module.

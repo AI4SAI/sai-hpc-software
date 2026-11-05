@@ -116,6 +116,27 @@ or development beta publications. Failed allocations remain intact. See the
 
 ## NEPAdapters release addon
 
+Latest release **v1.0.5** (`3ceba8f9b697`) is built and accepted as one shared
+SIF/native plugin payload on 16V100, 4V100 and 8V100V0. Build 2212555 completed
+in 5:17; all six native single/two-GPU and two-node jobs completed with exit 0.
+Periodic, mixed `p p f` and nonperiodic `f f f` NEP4 energy/force/virial checks
+and 100 GPU MD steps pass. Upstream Spin1 per-atom virial tests pass with one
+and four OpenMP threads. The managed overlay helper now permits an explicitly
+read-only LAMMPS build dependency while retaining the sole managed writable
+image and its clean-exit receipt gates.
+
+The complete administrator package is
+`/home/stardust/sai-hpc-software/deployment/nepadapters-1.0.5`:
+`bash install.sh --check`, `bash install.sh --install`, then
+`bash install.sh --verify`. It installs the two plugins and license once under
+`/opt/apps/nepadapters/1.0.5-lammps30Sep2026` and a separate versioned module.
+Public preflight and permission checks pass; **1.0.5 is not yet installed into
+physical /opt**. Installed LAMMPS and NEPAdapters 1.0.4 are preserved. See
+[1.0.5 evidence](evidence/nepadapters-1.0.5-20261105/README.md) and
+[administrator instructions](../deployment/nepadapters-1.0.5/README.md).
+
+The following records describe the previously installed 1.0.4 release.
+
 NEPAdapters v1.0.4 (`c934e71444cb`) now has an independent manual SIF workflow,
 targeting the exact installed LAMMPS 30Sep2026 release (`8de817dd79bf`). It adds
 `nep/cpu` and CUDA Kokkos `nep/gpu/kk` through separately loadable plugins.

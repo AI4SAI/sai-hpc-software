@@ -1,0 +1,218 @@
+CP2K_IMAGE_DRIVER sha256=46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10 config=/org/org-open-sai/proj-sai-hpc-software/experimental/nepadapters/runs/nepadapters-1.0.5-shared-20261105-a2/runtime/apptainer-fuse2fs.conf
+INFO:    User not listed in /etc/subuid, trying root-mapped namespace
+INFO:    fakeroot command not found, using only root-mapped namespace
+INFO:    Using fakeroot command combined with root-mapped namespace
+FATAL:   container creation failed: mount hook function failure: mount /proc/self/fd/6->/opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 error: while mounting image /proc/self/fd/6: fuse2fs failed to mount /opt/devtools/apptainer/1.4.4/var/apptainer/mnt/session/overlay-images/0 in 10s
+CONTAINER_MOUNT_RETRY 1
+INFO:    Using fakeroot command combined with root-mapped namespace
+INFO:    Ignoring invalid max threads value 4294967295 > max (100000).
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+MD_COMPILER CC=/opt/devtools/gcc/14.3.0/bin/gcc version=14.3.0
+MD_COMPILER CXX=/opt/devtools/gcc/14.3.0/bin/g++ version=14.3.0
+MD_COMPILER FC=/opt/devtools/gcc/14.3.0/bin/gfortran version=14.3.0
+NEPADAPTERS_BUILD_AFFINITY 16 [36, 37, 38, 39, 40, 41, 42, 43, 100, 101, 102, 103, 104, 105, 106, 107]
+-- NEPAdapters CUDA architectures: 70
+-- The CXX compiler identification is GNU 14.3.0
+-- The CUDA compiler identification is NVIDIA 12.9.86 with host compiler GNU 14.3.0
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /opt/devtools/gcc/14.3.0/bin/g++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Detecting CUDA compiler ABI info
+-- Detecting CUDA compiler ABI info - done
+-- Check for working CUDA compiler: /opt/devtools/nvidia/cuda-12.9.1/bin/nvcc - skipped
+-- Detecting CUDA compile features
+-- Detecting CUDA compile features - done
+-- Performing Test NEP_ADAPTERS_CPU_HAS_NO_MATH_ERRNO
+-- Performing Test NEP_ADAPTERS_CPU_HAS_NO_MATH_ERRNO - Success
+-- Performing Test NEP_ADAPTERS_CPU_HAS_FAST_MATH
+-- Performing Test NEP_ADAPTERS_CPU_HAS_FAST_MATH - Success
+-- Found OpenMP_CXX: -fopenmp (found version "4.5")
+-- Found OpenMP: TRUE (found version "4.5") found components: CXX
+-- Looking for C++ include cblas.h
+-- Looking for C++ include cblas.h - found
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- Found CUDAToolkit: /opt/devtools/nvidia/cuda-12.9.1/targets/x86_64-linux/include (found version "12.9.86")
+-- Enabled Kokkos devices: OPENMP;CUDA
+CMake Warning at /workspace/lammps-build/cmake_packages/Kokkos/KokkosConfigCommon.cmake:69 (message):
+  The installed Kokkos configuration does not support CXX extensions.
+  Forcing -DCMAKE_CXX_EXTENSIONS=Off
+Call Stack (most recent call first):
+  /workspace/lammps-build/cmake_packages/Kokkos/KokkosConfig.cmake:44 (include)
+  frontends/lammps/CMakeLists.txt:67 (find_package)
+
+
+-- kokkos_launch_compiler is enabled globally. C++ compiler commands with -DKOKKOS_DEPENDENCE will be redirected to the appropriate compiler for Kokkos
+-- Configuring done (5.4s)
+-- Generating done (0.4s)
+-- Build files have been written to: /workspace/nepadapters-build
+[  0%] Building CXX object src/CMakeFiles/nep_adapters.dir/registry.cpp.o
+[ 11%] Building CXX object src/CMakeFiles/nep_adapters.dir/model_file.cpp.o
+[ 22%] Linking CXX static library libnep_adapters.a
+[ 22%] Built target nep_adapters
+[ 33%] Building CXX object engines/cpu/CMakeFiles/nep_adapters_cpu.dir/cpu_engine.cpp.o
+[ 44%] Building CXX object engines/cpu/CMakeFiles/nep_adapters_cpu.dir/native/neighbor_nep.cpp.o
+[ 55%] Building CXX object engines/cpu/CMakeFiles/nep_adapters_cpu.dir/native/ewald_nep.cpp.o
+[ 55%] Building CXX object engines/cpu/CMakeFiles/nep_adapters_cpu.dir/native/nep.cpp.o
+[ 66%] Linking CXX static library libnep_adapters_cpu.a
+[ 66%] Built target nep_adapters_cpu
+[ 77%] Building CXX object frontends/lammps/CMakeFiles/nepadapterscpuplugin.dir/nepadaptersplugin.cpp.o
+[ 88%] Building CXX object frontends/lammps/CMakeFiles/nepadapterscpuplugin.dir/pair_nep_adapters_common.cpp.o
+[100%] Building CXX object frontends/lammps/CMakeFiles/nepadapterscpuplugin.dir/pair_nep_adapters_cpu.cpp.o
+[100%] Linking CXX shared module nepadapterscpuplugin.so
+[100%] Built target nepadapterscpuplugin
+[  9%] Built target nep_adapters
+[ 13%] Building CXX object engines/cuda/CMakeFiles/nep_adapters_cuda.dir/cuda_engine.cpp.o
+[ 22%] Building CXX object engines/cuda/CMakeFiles/nep_adapters_cuda.dir/model_protocol.cpp.o
+[ 22%] Building CXX object engines/cuda/CMakeFiles/nep_adapters_cuda.dir/host_staging.cpp.o
+[ 22%] Building CXX object engines/cuda/CMakeFiles/nep_adapters_cuda.dir/model_parameters.cpp.o
+[ 36%] Building CXX object engines/cuda/CMakeFiles/nep_adapters_cuda.dir/force_pipeline.cpp.o
+[ 36%] Building CXX object engines/cuda/CMakeFiles/nep_adapters_cuda.dir/workspace_plan.cpp.o
+[ 36%] Building CUDA object engines/cuda/CMakeFiles/nep_adapters_cuda.dir/ann_energy.cu.o
+[ 40%] Building CUDA object engines/cuda/CMakeFiles/nep_adapters_cuda.dir/angular_descriptor.cu.o
+[ 40%] Building CUDA object engines/cuda/CMakeFiles/nep_adapters_cuda.dir/angular_force.cu.o
+[ 45%] Building CUDA object engines/cuda/CMakeFiles/nep_adapters_cuda.dir/device_model.cu.o
+[ 50%] Building CUDA object engines/cuda/CMakeFiles/nep_adapters_cuda.dir/device_staging.cu.o
+[ 54%] Building CUDA object engines/cuda/CMakeFiles/nep_adapters_cuda.dir/device_workspace.cu.o
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+[ 54%] Building CUDA object engines/cuda/CMakeFiles/nep_adapters_cuda.dir/internal_neighbor_builder.cu.o
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+[ 59%] Building CUDA object engines/cuda/CMakeFiles/nep_adapters_cuda.dir/device_output.cu.o
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+[ 63%] Building CUDA object engines/cuda/CMakeFiles/nep_adapters_cuda.dir/qnep_charge.cu.o
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+[ 68%] Building CUDA object engines/cuda/CMakeFiles/nep_adapters_cuda.dir/radial_force.cu.o
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+[ 68%] Building CUDA object engines/cuda/CMakeFiles/nep_adapters_cuda.dir/runtime_probe.cu.o
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+[ 72%] Building CUDA object engines/cuda/CMakeFiles/nep_adapters_cuda.dir/spin_onsite.cu.o
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+[ 77%] Building CUDA object engines/cuda/CMakeFiles/nep_adapters_cuda.dir/zbl_force.cu.o
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+[ 81%] Linking CXX static library libnep_adapters_cuda.a
+[ 81%] Built target nep_adapters_cuda
+[ 86%] Building CXX object frontends/lammps/CMakeFiles/nepadaptersgpuplugin.dir/nepadaptersplugin.cpp.o
+[ 95%] Building CXX object frontends/lammps/CMakeFiles/nepadaptersgpuplugin.dir/pair_nep_adapters_common.cpp.o
+[ 95%] Building CUDA object frontends/lammps/CMakeFiles/nepadaptersgpuplugin.dir/pair_nep_adapters_cuda.cpp.o
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+nvcc warning : Support for offline compilation for architectures prior to '<compute/sm/lto>_75' will be removed in a future release (Use -Wno-deprecated-gpu-targets to suppress warning).
+[100%] Linking CXX shared module nepadaptersgpuplugin.so
+[100%] Built target nepadaptersgpuplugin
+[ 28%] Built target nep_adapters
+[ 85%] Built target nep_adapters_cpu
+[100%] Building CXX object tests/CMakeFiles/nep_adapters_cpu_spin_test.dir/test_cpu_spin.cpp.o
+[100%] Linking CXX executable nep_adapters_cpu_spin_test
+[100%] Built target nep_adapters_cpu_spin_test
+Internal ctest changing into directory: /workspace/nepadapters-build
+Test project /workspace/nepadapters-build
+    Start 78: nep_adapters_cpu_spin_test
+1/2 Test #78: nep_adapters_cpu_spin_test ..........   Passed    0.03 sec
+    Start 79: nep_adapters_cpu_spin_openmp_test
+2/2 Test #79: nep_adapters_cpu_spin_openmp_test ...   Passed    0.03 sec
+
+100% tests passed, 0 tests failed out of 2
+
+Label Time Summary:
+cpu       =   0.07 sec*proc (2 tests)
+engine    =   0.07 sec*proc (2 tests)
+openmp    =   0.03 sec*proc (1 test)
+smoke     =   0.07 sec*proc (2 tests)
+spin      =   0.07 sec*proc (2 tests)
+
+Total Test time (real) =   0.07 sec
+-- Install configuration: "Release"
+-- Installing: /opt/apps/nepadapters/1.0.5-lammps30Sep2026/lib/nepadapterscpuplugin.so
+-- Set non-toolchain portion of runtime path of "/opt/apps/nepadapters/1.0.5-lammps30Sep2026/lib/nepadapterscpuplugin.so" to ""
+-- Installing: /opt/apps/nepadapters/1.0.5-lammps30Sep2026/lib/nepadaptersgpuplugin.so
+-- Set non-toolchain portion of runtime path of "/opt/apps/nepadapters/1.0.5-lammps30Sep2026/lib/nepadaptersgpuplugin.so" to ""
+DeePMD-kit: Successfully load libcudart.so.12
+{"schema": 2, "passed": true, "boundary": "p p f", "boundary_cases": {}, "tolerances": {"energy_diff": 1e-06, "eatom_sum_diff": 1e-06, "max_force_component_diff": 1e-06, "max_virial_component_diff": 5e-06}, "static": {"cpu": {"energy_diff": 3.552713678800501e-15, "eatom_sum_diff": 0.0, "max_force_component_diff": 1.3428147482841268e-12, "max_virial_component_diff": 8.609068053999636e-07, "lammps_virial6_from_stress_atom": [-11.418137452058899, -3.7977112743325843, -2.352984311044918, -0.7985692242177399, -0.02072881807250332, -0.0011776251663323028], "reference_virial6": [-11.418138312965704, -3.7977115606742142, -2.3529844884631097, -0.7985692844272931, -0.02072881963605297, -0.001177625249544784]}, "gpu": {"energy_diff": 1.9068693646318025e-07, "eatom_sum_diff": 1.9068693646318025e-07, "max_force_component_diff": 2.7583344880399707e-07, "max_virial_component_diff": 1.4208600682685812e-06, "lammps_virial6_from_stress_atom": [-11.418136921704324, -3.797710139814146, -2.3529831930144174, -0.7985692113637259, -0.020728756042061574, -0.0011773577702084911], "reference_virial6": [-11.418138312965704, -3.7977115606742142, -2.3529844884631097, -0.7985692844272931, -0.02072881963605297, -0.001177625249544784]}}, "gpu_dynamics": {"Step": 100.0, "Atoms": 8.0, "PotEng": -17.76215422153473, "Press": -1176.7615207030688, "Pxx": -2288.4593722433815, "Pyy": -760.4062124338486, "Pzz": -481.41897743197535, "Pxy": -160.6916663708053, "Pxz": -8.148489390724306, "Pyz": -4.423356894066066}, "lmp": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100/bin/lmp", "plugins": "/opt/apps/nepadapters/1.0.5-lammps30Sep2026/lib", "launcher": [], "gpus_per_node": 1, "plugin_sha256": {"nepadapterscpuplugin.so": "912d5dffe69aae2c9179133eacd5db835377a6785bd9c963bd86ecacfa173a2f", "nepadaptersgpuplugin.so": "c7514b590c96a6fbcae57139f6cf3c4395d85f4d40d49b0aa91be897493fa271"}}
+{"schema": 2, "passed": true, "boundary": "f f f", "boundary_cases": {}, "tolerances": {"energy_diff": 1e-06, "eatom_sum_diff": 1e-06, "max_force_component_diff": 1e-06, "max_virial_component_diff": 5e-06}, "static": {"cpu": {"energy_diff": 3.552713678800501e-15, "eatom_sum_diff": 0.0, "max_force_component_diff": 1.3427037259816643e-12, "max_virial_component_diff": 8.609068071763204e-07, "lammps_virial6_from_stress_atom": [-11.418137452058897, -3.797711274332584, -2.352984311044918, -0.7985692242177401, -0.020728818072503354, -0.0011776251663323778], "reference_virial6": [-11.418138312965704, -3.7977115606742142, -2.3529844884631097, -0.7985692844272931, -0.02072881963605297, -0.001177625249544784]}, "gpu": {"energy_diff": 1.9068693646318025e-07, "eatom_sum_diff": 1.9068693646318025e-07, "max_force_component_diff": 2.7583344880399707e-07, "max_virial_component_diff": 1.4292419705519421e-06, "lammps_virial6_from_stress_atom": [-11.418136927874336, -3.7977101314322437, -2.3529832079155777, -0.7985691980923803, -0.02072880633347681, -0.0011773844293151432], "reference_virial6": [-11.418138312965704, -3.7977115606742142, -2.3529844884631097, -0.7985692844272931, -0.02072881963605297, -0.001177625249544784]}}, "gpu_dynamics": {"Step": 100.0, "Atoms": 8.0, "PotEng": -17.76215422153473, "Press": -1176.7615207030688, "Pxx": -2288.4593722433815, "Pyy": -760.4062124338486, "Pzz": -481.41897743197546, "Pxy": -160.6916663708053, "Pxz": -8.148489390724306, "Pyz": -4.423356894066067}, "lmp": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100/bin/lmp", "plugins": "/opt/apps/nepadapters/1.0.5-lammps30Sep2026/lib", "launcher": [], "gpus_per_node": 1, "plugin_sha256": {"nepadapterscpuplugin.so": "912d5dffe69aae2c9179133eacd5db835377a6785bd9c963bd86ecacfa173a2f", "nepadaptersgpuplugin.so": "c7514b590c96a6fbcae57139f6cf3c4395d85f4d40d49b0aa91be897493fa271"}}
+{"schema": 2, "passed": true, "boundary": "p p p", "boundary_cases": {"p p f": {"schema": 2, "passed": true, "boundary": "p p f", "boundary_cases": {}, "tolerances": {"energy_diff": 1e-06, "eatom_sum_diff": 1e-06, "max_force_component_diff": 1e-06, "max_virial_component_diff": 5e-06}, "static": {"cpu": {"energy_diff": 3.552713678800501e-15, "eatom_sum_diff": 0.0, "max_force_component_diff": 1.3428147482841268e-12, "max_virial_component_diff": 8.609068053999636e-07, "lammps_virial6_from_stress_atom": [-11.418137452058899, -3.7977112743325843, -2.352984311044918, -0.7985692242177399, -0.02072881807250332, -0.0011776251663323028], "reference_virial6": [-11.418138312965704, -3.7977115606742142, -2.3529844884631097, -0.7985692844272931, -0.02072881963605297, -0.001177625249544784]}, "gpu": {"energy_diff": 1.9068693646318025e-07, "eatom_sum_diff": 1.9068693646318025e-07, "max_force_component_diff": 2.7583344880399707e-07, "max_virial_component_diff": 1.4208600682685812e-06, "lammps_virial6_from_stress_atom": [-11.418136921704324, -3.797710139814146, -2.3529831930144174, -0.7985692113637259, -0.020728756042061574, -0.0011773577702084911], "reference_virial6": [-11.418138312965704, -3.7977115606742142, -2.3529844884631097, -0.7985692844272931, -0.02072881963605297, -0.001177625249544784]}}, "gpu_dynamics": {"Step": 100.0, "Atoms": 8.0, "PotEng": -17.76215422153473, "Press": -1176.7615207030688, "Pxx": -2288.4593722433815, "Pyy": -760.4062124338486, "Pzz": -481.41897743197535, "Pxy": -160.6916663708053, "Pxz": -8.148489390724306, "Pyz": -4.423356894066066}, "lmp": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100/bin/lmp", "plugins": "/opt/apps/nepadapters/1.0.5-lammps30Sep2026/lib", "launcher": [], "gpus_per_node": 1, "plugin_sha256": {"nepadapterscpuplugin.so": "912d5dffe69aae2c9179133eacd5db835377a6785bd9c963bd86ecacfa173a2f", "nepadaptersgpuplugin.so": "c7514b590c96a6fbcae57139f6cf3c4395d85f4d40d49b0aa91be897493fa271"}}, "f f f": {"schema": 2, "passed": true, "boundary": "f f f", "boundary_cases": {}, "tolerances": {"energy_diff": 1e-06, "eatom_sum_diff": 1e-06, "max_force_component_diff": 1e-06, "max_virial_component_diff": 5e-06}, "static": {"cpu": {"energy_diff": 3.552713678800501e-15, "eatom_sum_diff": 0.0, "max_force_component_diff": 1.3427037259816643e-12, "max_virial_component_diff": 8.609068071763204e-07, "lammps_virial6_from_stress_atom": [-11.418137452058897, -3.797711274332584, -2.352984311044918, -0.7985692242177401, -0.020728818072503354, -0.0011776251663323778], "reference_virial6": [-11.418138312965704, -3.7977115606742142, -2.3529844884631097, -0.7985692844272931, -0.02072881963605297, -0.001177625249544784]}, "gpu": {"energy_diff": 1.9068693646318025e-07, "eatom_sum_diff": 1.9068693646318025e-07, "max_force_component_diff": 2.7583344880399707e-07, "max_virial_component_diff": 1.4292419705519421e-06, "lammps_virial6_from_stress_atom": [-11.418136927874336, -3.7977101314322437, -2.3529832079155777, -0.7985691980923803, -0.02072880633347681, -0.0011773844293151432], "reference_virial6": [-11.418138312965704, -3.7977115606742142, -2.3529844884631097, -0.7985692844272931, -0.02072881963605297, -0.001177625249544784]}}, "gpu_dynamics": {"Step": 100.0, "Atoms": 8.0, "PotEng": -17.76215422153473, "Press": -1176.7615207030688, "Pxx": -2288.4593722433815, "Pyy": -760.4062124338486, "Pzz": -481.41897743197546, "Pxy": -160.6916663708053, "Pxz": -8.148489390724306, "Pyz": -4.423356894066067}, "lmp": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100/bin/lmp", "plugins": "/opt/apps/nepadapters/1.0.5-lammps30Sep2026/lib", "launcher": [], "gpus_per_node": 1, "plugin_sha256": {"nepadapterscpuplugin.so": "912d5dffe69aae2c9179133eacd5db835377a6785bd9c963bd86ecacfa173a2f", "nepadaptersgpuplugin.so": "c7514b590c96a6fbcae57139f6cf3c4395d85f4d40d49b0aa91be897493fa271"}}}, "tolerances": {"energy_diff": 1e-06, "eatom_sum_diff": 1e-06, "max_force_component_diff": 1e-06, "max_virial_component_diff": 5e-06}, "static": {"cpu": {"energy_diff": 3.552713678800501e-15, "eatom_sum_diff": 0.0, "max_force_component_diff": 1.3427037259816643e-12, "max_virial_component_diff": 8.609068071763204e-07, "lammps_virial6_from_stress_atom": [-11.418137452058897, -3.797711274332584, -2.352984311044918, -0.7985692242177401, -0.020728818072503354, -0.0011776251663323778], "reference_virial6": [-11.418138312965704, -3.7977115606742142, -2.3529844884631097, -0.7985692844272931, -0.02072881963605297, -0.001177625249544784]}, "gpu": {"energy_diff": 1.9068693646318025e-07, "eatom_sum_diff": 1.9068693646318025e-07, "max_force_component_diff": 2.7583344880399707e-07, "max_virial_component_diff": 1.4292419705519421e-06, "lammps_virial6_from_stress_atom": [-11.418136927874336, -3.7977101314322437, -2.3529832079155777, -0.7985691980923803, -0.02072880633347681, -0.0011773844293151432], "reference_virial6": [-11.418138312965704, -3.7977115606742142, -2.3529844884631097, -0.7985692844272931, -0.02072881963605297, -0.001177625249544784]}}, "gpu_dynamics": {"Step": 100.0, "Atoms": 8.0, "PotEng": -17.76215422153473, "Press": -1176.7615207030688, "Pxx": -2288.4593722433815, "Pyy": -760.4062124338486, "Pzz": -481.41897743197546, "Pxy": -160.6916663708053, "Pxz": -8.148489390724306, "Pyz": -4.423356894066067}, "lmp": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100/bin/lmp", "plugins": "/opt/apps/nepadapters/1.0.5-lammps30Sep2026/lib", "launcher": [], "gpus_per_node": 1, "plugin_sha256": {"nepadapterscpuplugin.so": "912d5dffe69aae2c9179133eacd5db835377a6785bd9c963bd86ecacfa173a2f", "nepadaptersgpuplugin.so": "c7514b590c96a6fbcae57139f6cf3c4395d85f4d40d49b0aa91be897493fa271"}}
+Parallel mksquashfs: Using 12 processors
+Creating 4.0 filesystem on /workspace/nepadapters-final.squashfs, block size 131072.
+[===============================================================/] 286/286 100%
+
+Exportable Squashfs 4.0 filesystem, gzip compressed, data block size 131072
+	compressed data, compressed metadata, compressed fragments,
+	no xattrs, compressed ids
+	duplicates are removed
+Filesystem size 18972.28 Kbytes (18.53 Mbytes)
+	53.28% of uncompressed filesystem size (35609.73 Kbytes)
+Inode table size 1288 bytes (1.26 Kbytes)
+	48.46% of uncompressed inode table size (2658 bytes)
+Directory table size 580 bytes (0.57 Kbytes)
+	60.23% of uncompressed directory table size (963 bytes)
+Number of duplicate files found 1
+Number of inodes 48
+Number of files 12
+Number of fragments 1
+Number of symbolic links 1
+Number of device nodes 0
+Number of fifo nodes 0
+Number of socket nodes 0
+Number of directories 35
+Number of hard-links 0
+Number of ids (unique uids + gids) 1
+Number of uids 1
+	root (0)
+Number of gids 1
+	root (0)
+CP2K_OVERLAY_SYNC_START build
+CP2K_OVERLAY_SYNC_COMPLETE build
+NEPADAPTERS_BUILD_PASSED
+MANAGED_OVERLAY_EXIT /org/org-open-sai/proj-sai-hpc-software/experimental/nepadapters/runs/nepadapters-1.0.5-shared-20261105-a2/results/managed-overlay-1eca49b5187b40a2afcbb1d7cd618b3c.json status=0
+e2fsck 1.47.0 (5-Feb-2023)
+Pass 1: Checking inodes, blocks, and sizes
+Pass 2: Checking directory structure
+Pass 3: Checking directory connectivity
+Pass 4: Checking reference counts
+Pass 5: Checking group summary information
+/org/org-open-sai/proj-sai-hpc-software/experimental/nepadapters/runs/nepadapters-1.0.5-shared-20261105-a2/work.ext3: 1317/524288 files (1.6% non-contiguous), 104818/2097152 blocks
+CP2K_IMAGE_DRIVER sha256=46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10 config=/org/org-open-sai/proj-sai-hpc-software/experimental/nepadapters/runs/nepadapters-1.0.5-shared-20261105-a2/runtime/apptainer-fuse2fs.conf
+INFO:    User not listed in /etc/subuid, trying root-mapped namespace
+INFO:    fakeroot command not found, using only root-mapped namespace
+INFO:    Using fakeroot command combined with root-mapped namespace
+WARNING: user: unknown userid 0
+WARNING: user: unknown userid 0
+MANAGED_OVERLAY_EXIT /org/org-open-sai/proj-sai-hpc-software/experimental/nepadapters/runs/nepadapters-1.0.5-shared-20261105-a2/results/managed-overlay-cd4fe250f4544cf18efacc66a73486e4.json status=0
+WARNING: Skipping mount /usr/bin/nvidia-debugdump [files]: /usr/bin/nvidia-debugdump doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-control [files]: /usr/bin/nvidia-cuda-mps-control doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-cuda-mps-server [files]: /usr/bin/nvidia-cuda-mps-server doesn't exist in container
+WARNING: Skipping mount /usr/share/glvnd/egl_vendor.d/10_nvidia.json [files]: /usr/share/glvnd/egl_vendor.d/10_nvidia.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/icd.d/nvidia_icd.json [files]: /usr/share/vulkan/icd.d/nvidia_icd.json doesn't exist in container
+WARNING: Skipping mount /usr/share/vulkan/implicit_layer.d/nvidia_layers.json [files]: /usr/share/vulkan/implicit_layer.d/nvidia_layers.json doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json [files]: /usr/share/egl/egl_external_platform.d/10_nvidia_wayland.json doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-smi [files]: /usr/bin/nvidia-smi doesn't exist in container
+WARNING: Skipping mount /usr/bin/nvidia-persistenced [files]: /usr/bin/nvidia-persistenced doesn't exist in container
+WARNING: Skipping mount /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json [files]: /usr/share/egl/egl_external_platform.d/15_nvidia_gbm.json doesn't exist in container
+WARNING: Skipping mount /usr/share/nvidia/nvoptix.bin [files]: /usr/share/nvidia/nvoptix.bin doesn't exist in container
+MD_COMPILER CC=/opt/devtools/gcc/14.3.0/bin/gcc version=14.3.0
+MD_COMPILER CXX=/opt/devtools/gcc/14.3.0/bin/g++ version=14.3.0
+MD_COMPILER FC=/opt/devtools/gcc/14.3.0/bin/gfortran version=14.3.0
+{"schema": 2, "passed": true, "boundary": "p p f", "boundary_cases": {}, "tolerances": {"energy_diff": 1e-06, "eatom_sum_diff": 1e-06, "max_force_component_diff": 1e-06, "max_virial_component_diff": 5e-06}, "static": {"cpu": {"energy_diff": 3.552713678800501e-15, "eatom_sum_diff": 0.0, "max_force_component_diff": 1.3428147482841268e-12, "max_virial_component_diff": 8.609068053999636e-07, "lammps_virial6_from_stress_atom": [-11.418137452058899, -3.7977112743325843, -2.352984311044918, -0.7985692242177399, -0.02072881807250332, -0.0011776251663323028], "reference_virial6": [-11.418138312965704, -3.7977115606742142, -2.3529844884631097, -0.7985692844272931, -0.02072881963605297, -0.001177625249544784]}, "gpu": {"energy_diff": 1.9068693646318025e-07, "eatom_sum_diff": 1.9068693646318025e-07, "max_force_component_diff": 2.7583344880399707e-07, "max_virial_component_diff": 1.4208600682685812e-06, "lammps_virial6_from_stress_atom": [-11.418136921704324, -3.797710139814146, -2.3529831930144174, -0.7985692113637259, -0.020728756042061574, -0.0011773577702084911], "reference_virial6": [-11.418138312965704, -3.7977115606742142, -2.3529844884631097, -0.7985692844272931, -0.02072881963605297, -0.001177625249544784]}}, "gpu_dynamics": {"Step": 100.0, "Atoms": 8.0, "PotEng": -17.76215422153473, "Press": -1176.7615207030688, "Pxx": -2288.4593722433815, "Pyy": -760.4062124338486, "Pzz": -481.41897743197535, "Pxy": -160.6916663708053, "Pxz": -8.148489390724306, "Pyz": -4.423356894066066}, "lmp": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100/bin/lmp", "plugins": "/opt/apps/nepadapters/1.0.5-lammps30Sep2026/lib", "launcher": [], "gpus_per_node": 1, "plugin_sha256": {"nepadapterscpuplugin.so": "912d5dffe69aae2c9179133eacd5db835377a6785bd9c963bd86ecacfa173a2f", "nepadaptersgpuplugin.so": "c7514b590c96a6fbcae57139f6cf3c4395d85f4d40d49b0aa91be897493fa271"}}
+{"schema": 2, "passed": true, "boundary": "f f f", "boundary_cases": {}, "tolerances": {"energy_diff": 1e-06, "eatom_sum_diff": 1e-06, "max_force_component_diff": 1e-06, "max_virial_component_diff": 5e-06}, "static": {"cpu": {"energy_diff": 3.552713678800501e-15, "eatom_sum_diff": 0.0, "max_force_component_diff": 1.3427037259816643e-12, "max_virial_component_diff": 8.609068071763204e-07, "lammps_virial6_from_stress_atom": [-11.418137452058897, -3.797711274332584, -2.352984311044918, -0.7985692242177401, -0.020728818072503354, -0.0011776251663323778], "reference_virial6": [-11.418138312965704, -3.7977115606742142, -2.3529844884631097, -0.7985692844272931, -0.02072881963605297, -0.001177625249544784]}, "gpu": {"energy_diff": 1.9068693646318025e-07, "eatom_sum_diff": 1.9068693646318025e-07, "max_force_component_diff": 2.7583344880399707e-07, "max_virial_component_diff": 1.4292419705519421e-06, "lammps_virial6_from_stress_atom": [-11.418136927874336, -3.7977101314322437, -2.3529832079155777, -0.7985691980923803, -0.02072880633347681, -0.0011773844293151432], "reference_virial6": [-11.418138312965704, -3.7977115606742142, -2.3529844884631097, -0.7985692844272931, -0.02072881963605297, -0.001177625249544784]}}, "gpu_dynamics": {"Step": 100.0, "Atoms": 8.0, "PotEng": -17.76215422153473, "Press": -1176.7615207030688, "Pxx": -2288.4593722433815, "Pyy": -760.4062124338486, "Pzz": -481.41897743197546, "Pxy": -160.6916663708053, "Pxz": -8.148489390724306, "Pyz": -4.423356894066067}, "lmp": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100/bin/lmp", "plugins": "/opt/apps/nepadapters/1.0.5-lammps30Sep2026/lib", "launcher": [], "gpus_per_node": 1, "plugin_sha256": {"nepadapterscpuplugin.so": "912d5dffe69aae2c9179133eacd5db835377a6785bd9c963bd86ecacfa173a2f", "nepadaptersgpuplugin.so": "c7514b590c96a6fbcae57139f6cf3c4395d85f4d40d49b0aa91be897493fa271"}}
+{"schema": 2, "passed": true, "boundary": "p p p", "boundary_cases": {"p p f": {"schema": 2, "passed": true, "boundary": "p p f", "boundary_cases": {}, "tolerances": {"energy_diff": 1e-06, "eatom_sum_diff": 1e-06, "max_force_component_diff": 1e-06, "max_virial_component_diff": 5e-06}, "static": {"cpu": {"energy_diff": 3.552713678800501e-15, "eatom_sum_diff": 0.0, "max_force_component_diff": 1.3428147482841268e-12, "max_virial_component_diff": 8.609068053999636e-07, "lammps_virial6_from_stress_atom": [-11.418137452058899, -3.7977112743325843, -2.352984311044918, -0.7985692242177399, -0.02072881807250332, -0.0011776251663323028], "reference_virial6": [-11.418138312965704, -3.7977115606742142, -2.3529844884631097, -0.7985692844272931, -0.02072881963605297, -0.001177625249544784]}, "gpu": {"energy_diff": 1.9068693646318025e-07, "eatom_sum_diff": 1.9068693646318025e-07, "max_force_component_diff": 2.7583344880399707e-07, "max_virial_component_diff": 1.4208600682685812e-06, "lammps_virial6_from_stress_atom": [-11.418136921704324, -3.797710139814146, -2.3529831930144174, -0.7985692113637259, -0.020728756042061574, -0.0011773577702084911], "reference_virial6": [-11.418138312965704, -3.7977115606742142, -2.3529844884631097, -0.7985692844272931, -0.02072881963605297, -0.001177625249544784]}}, "gpu_dynamics": {"Step": 100.0, "Atoms": 8.0, "PotEng": -17.76215422153473, "Press": -1176.7615207030688, "Pxx": -2288.4593722433815, "Pyy": -760.4062124338486, "Pzz": -481.41897743197535, "Pxy": -160.6916663708053, "Pxz": -8.148489390724306, "Pyz": -4.423356894066066}, "lmp": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100/bin/lmp", "plugins": "/opt/apps/nepadapters/1.0.5-lammps30Sep2026/lib", "launcher": [], "gpus_per_node": 1, "plugin_sha256": {"nepadapterscpuplugin.so": "912d5dffe69aae2c9179133eacd5db835377a6785bd9c963bd86ecacfa173a2f", "nepadaptersgpuplugin.so": "c7514b590c96a6fbcae57139f6cf3c4395d85f4d40d49b0aa91be897493fa271"}}, "f f f": {"schema": 2, "passed": true, "boundary": "f f f", "boundary_cases": {}, "tolerances": {"energy_diff": 1e-06, "eatom_sum_diff": 1e-06, "max_force_component_diff": 1e-06, "max_virial_component_diff": 5e-06}, "static": {"cpu": {"energy_diff": 3.552713678800501e-15, "eatom_sum_diff": 0.0, "max_force_component_diff": 1.3427037259816643e-12, "max_virial_component_diff": 8.609068071763204e-07, "lammps_virial6_from_stress_atom": [-11.418137452058897, -3.797711274332584, -2.352984311044918, -0.7985692242177401, -0.020728818072503354, -0.0011776251663323778], "reference_virial6": [-11.418138312965704, -3.7977115606742142, -2.3529844884631097, -0.7985692844272931, -0.02072881963605297, -0.001177625249544784]}, "gpu": {"energy_diff": 1.9068693646318025e-07, "eatom_sum_diff": 1.9068693646318025e-07, "max_force_component_diff": 2.7583344880399707e-07, "max_virial_component_diff": 1.4292419705519421e-06, "lammps_virial6_from_stress_atom": [-11.418136927874336, -3.7977101314322437, -2.3529832079155777, -0.7985691980923803, -0.02072880633347681, -0.0011773844293151432], "reference_virial6": [-11.418138312965704, -3.7977115606742142, -2.3529844884631097, -0.7985692844272931, -0.02072881963605297, -0.001177625249544784]}}, "gpu_dynamics": {"Step": 100.0, "Atoms": 8.0, "PotEng": -17.76215422153473, "Press": -1176.7615207030688, "Pxx": -2288.4593722433815, "Pyy": -760.4062124338486, "Pzz": -481.41897743197546, "Pxy": -160.6916663708053, "Pxz": -8.148489390724306, "Pyz": -4.423356894066067}, "lmp": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100/bin/lmp", "plugins": "/opt/apps/nepadapters/1.0.5-lammps30Sep2026/lib", "launcher": [], "gpus_per_node": 1, "plugin_sha256": {"nepadapterscpuplugin.so": "912d5dffe69aae2c9179133eacd5db835377a6785bd9c963bd86ecacfa173a2f", "nepadaptersgpuplugin.so": "c7514b590c96a6fbcae57139f6cf3c4395d85f4d40d49b0aa91be897493fa271"}}}, "tolerances": {"energy_diff": 1e-06, "eatom_sum_diff": 1e-06, "max_force_component_diff": 1e-06, "max_virial_component_diff": 5e-06}, "static": {"cpu": {"energy_diff": 3.552713678800501e-15, "eatom_sum_diff": 0.0, "max_force_component_diff": 1.3427037259816643e-12, "max_virial_component_diff": 8.609068071763204e-07, "lammps_virial6_from_stress_atom": [-11.418137452058897, -3.797711274332584, -2.352984311044918, -0.7985692242177401, -0.020728818072503354, -0.0011776251663323778], "reference_virial6": [-11.418138312965704, -3.7977115606742142, -2.3529844884631097, -0.7985692844272931, -0.02072881963605297, -0.001177625249544784]}, "gpu": {"energy_diff": 1.9068693646318025e-07, "eatom_sum_diff": 1.9068693646318025e-07, "max_force_component_diff": 2.7583344880399707e-07, "max_virial_component_diff": 1.4292419705519421e-06, "lammps_virial6_from_stress_atom": [-11.418136927874336, -3.7977101314322437, -2.3529832079155777, -0.7985691980923803, -0.02072880633347681, -0.0011773844293151432], "reference_virial6": [-11.418138312965704, -3.7977115606742142, -2.3529844884631097, -0.7985692844272931, -0.02072881963605297, -0.001177625249544784]}}, "gpu_dynamics": {"Step": 100.0, "Atoms": 8.0, "PotEng": -17.76215422153473, "Press": -1176.7615207030688, "Pxx": -2288.4593722433815, "Pyy": -760.4062124338486, "Pzz": -481.41897743197546, "Pxy": -160.6916663708053, "Pxz": -8.148489390724306, "Pyz": -4.423356894066067}, "lmp": "/opt/apps/lammps/lammps-release-stable_30Sep2026-g8de817dd79bf-r296ed3baa11b-s4abbad547102/16V100/bin/lmp", "plugins": "/opt/apps/nepadapters/1.0.5-lammps30Sep2026/lib", "launcher": [], "gpus_per_node": 1, "plugin_sha256": {"nepadapterscpuplugin.so": "912d5dffe69aae2c9179133eacd5db835377a6785bd9c963bd86ecacfa173a2f", "nepadaptersgpuplugin.so": "c7514b590c96a6fbcae57139f6cf3c4395d85f4d40d49b0aa91be897493fa271"}}
+NEPADAPTERS_VERIFY_PASSED
+NEPADAPTERS_SIF_BUILD_AND_SINGLE_GPU_ACCEPTED

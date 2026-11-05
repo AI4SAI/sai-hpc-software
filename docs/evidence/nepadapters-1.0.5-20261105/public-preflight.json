@@ -1,0 +1,57 @@
+{
+  "preflight": {
+    "argv": [
+      "bash",
+      "/home/stardust/sai-hpc-software/deployment/nepadapters-1.0.5/install.sh",
+      "--check"
+    ],
+    "stdout": "16V100: accepted plugin and installed LAMMPS verified\n4V100: accepted plugin and installed LAMMPS verified\n8V100V0: accepted plugin and installed LAMMPS verified\nPreflight passed. Run bash install.sh --install to install.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  "previous_release": {
+    "argv": [
+      "bash",
+      "/home/stardust/sai-hpc-software/deployment/nepadapters-1.0.4-shared/install.sh"
+    ],
+    "stdout": "16V100: accepted plugin and installed LAMMPS verified\n4V100: accepted plugin and installed LAMMPS verified\n8V100V0: accepted plugin and installed LAMMPS verified\nPreflight passed. Run bash install.sh --install to install.\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  "administrator_groups": {
+    "argv": [
+      "id",
+      "saiuser01"
+    ],
+    "stdout": "uid=1478400146(saiuser01) gid=1478400145(sai-partner) groups=1478400145(sai-partner),1410000000(saihelpdesk),1450000002(gaussian),1450000001(vasp)\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  "public_path": {
+    "argv": [
+      "namei",
+      "-l",
+      "/home/stardust/sai-hpc-software/deployment/nepadapters-1.0.5/payload/shared/lib/nepadaptersgpuplugin.so"
+    ],
+    "stdout": "f: /home/stardust/sai-hpc-software/deployment/nepadapters-1.0.5/payload/shared/lib/nepadaptersgpuplugin.so\ndrwxr-xr-x root     root     /\ndrwxr-xr-x root     root     home\ndrwx--x--x stardust stardust stardust\ndrwxrwxr-x stardust stardust sai-hpc-software\ndrwxrwxr-x stardust stardust deployment\ndrwxr-xr-x stardust stardust nepadapters-1.0.5\ndrwxr-xr-x stardust stardust payload\ndrwxr-xr-x stardust stardust shared\ndrwxr-xr-x stardust stardust lib\n-rw-r--r-- stardust stardust nepadaptersgpuplugin.so\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  "destination_acl": {
+    "argv": [
+      "getfacl",
+      "-p",
+      "/opt/apps/nepadapters",
+      "/opt/modules/modulefiles/apps/nepadapters"
+    ],
+    "stdout": "# file: /opt/apps/nepadapters\n# owner: saiuser01\n# group: sai-partner\nuser::rwx\ngroup::r-x\nother::r-x\n\n# file: /opt/modules/modulefiles/apps/nepadapters\n# owner: saiuser01\n# group: sai-partner\nuser::rwx\ngroup::r-x\nother::r-x\n\n",
+    "stderr": "",
+    "exit_code": 0
+  },
+  "package": "/home/stardust/sai-hpc-software/deployment/nepadapters-1.0.5",
+  "files": 35,
+  "public_permissions_pass": true,
+  "new_runtime_installed": false,
+  "new_module_installed": false,
+  "release_sha256": "5720c266cf87752723c2b65e5ea62494b1c8194716d93fd2bd401802b0694469"
+}
