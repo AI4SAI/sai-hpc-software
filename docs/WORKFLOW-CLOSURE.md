@@ -2,6 +2,15 @@
 
 ## November 5 daily acceptance recovery
 
+All six development applications from workflow `42003384294` now have accepted
+November 5 beta aliases. The final 13:13 UTC observation checked 21 partition
+deliveries: four each for ABACUS, CP2K and QE, and three each for LAMMPS,
+DeePMD-kit and GPUMD. All beta jobs are `COMPLETED 0:0` with passing numerical
+and runtime receipts. See the [complete publication snapshot](evidence/daily-beta-20261105/README.md)
+for exact revisions, SIFs, module names, evidence hashes and accounting.
+The original daily workflow retains its failure conclusion; the separate
+ABACUS and QE recovery workflows succeeded.
+
 ABACUS and QE encountered interleaved MPI diagnostics in workflow
 `42003384294`. Both now capture each rank's original streams before parsing;
 scientific, thread, GPU and performance gates remain strict. No SIF needed
@@ -17,6 +26,12 @@ generation. See [QE rank-output qualification](evidence/qe-20261105/RANK-OUTPUT.
 Its one-time public gateway remains an administrator installation:
 `bash /home/stardust/sai-hpc-software/deployment/sif-beta/install.sh --install /opt/modules/modulefiles/apps qe`.
 The live preflight passed; the gateway then follows stardust's home alias.
+
+CP2K's last 8V100V0 science job `2218672` passed all 14 cases. Its four beta
+checks then passed and selected
+`master-beta-20261105-37370f362787-r4d85319d4295-b3ac36adef9e9`.
+The source label `master-2026-11-04` describes the pinned upstream revision;
+the build and beta snapshot are from November 5.
 
 The independent [ABACUS CPU investigation](evidence/abacus-cpu-io-diagnosis-20261105/README.md)
 found multi-second filesystem calls overlapping MPI waits, with correct
