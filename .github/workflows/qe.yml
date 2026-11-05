@@ -37,9 +37,9 @@ on:
         type: boolean
         default: false
   push:
-    paths: ['controller/source_cache.py', 'controller/source_transport.py', 'tests/test_source_transport.py', 'controller/qe_*', 'controller/ci.py', 'controller/software_controller.py', 'controller/remote_controller.py', 'controller/release_contract.py', 'controller/resolve_source.py', 'controller/delivery_layout.py', 'controller/export_native.py', 'controller/native_module.py', 'tests/test_qe*.py', '.github/workflows/qe.yml', '.github/workflows/software-pair.yml']
+    paths: ['controller/source_cache.py', 'controller/source_transport.py', 'tests/test_source_transport.py', 'controller/qe_*', 'controller/ci.py', 'controller/software_controller.py', 'controller/remote_controller.py', 'controller/release_contract.py', 'controller/resolve_source.py', 'controller/delivery_layout.py', 'controller/export_native.py', 'controller/native_module.py', 'tests/test_qe*.py', 'deployment/qe-*/**', '.github/workflows/qe.yml', '.github/workflows/software-pair.yml']
   pull_request:
-    paths: ['controller/source_cache.py', 'controller/source_transport.py', 'tests/test_source_transport.py', 'controller/qe_*', 'controller/ci.py', 'controller/software_controller.py', 'controller/remote_controller.py', 'controller/release_contract.py', 'controller/resolve_source.py', 'controller/delivery_layout.py', 'controller/export_native.py', 'controller/native_module.py', 'tests/test_qe*.py', '.github/workflows/qe.yml', '.github/workflows/software-pair.yml']
+    paths: ['controller/source_cache.py', 'controller/source_transport.py', 'tests/test_source_transport.py', 'controller/qe_*', 'controller/ci.py', 'controller/software_controller.py', 'controller/remote_controller.py', 'controller/release_contract.py', 'controller/resolve_source.py', 'controller/delivery_layout.py', 'controller/export_native.py', 'controller/native_module.py', 'tests/test_qe*.py', 'deployment/qe-*/**', '.github/workflows/qe.yml', '.github/workflows/software-pair.yml']
 
 permissions:
   contents: read

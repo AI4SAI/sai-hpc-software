@@ -1,0 +1,756 @@
+{
+  "entry": {
+    "commands": {
+      "alpha2f.x": "bin/alpha2f.x",
+      "average.x": "bin/average.x",
+      "band_interpolation.x": "bin/band_interpolation.x",
+      "bands.x": "bin/bands.x",
+      "casino2upf.x": "bin/casino2upf.x",
+      "cell2ibrav.x": "bin/cell2ibrav.x",
+      "d3hess.x": "bin/d3hess.x",
+      "dos.x": "bin/dos.x",
+      "dos_sp.x": "bin/dos_sp.x",
+      "dvscf_q2r.x": "bin/dvscf_q2r.x",
+      "dynmat.x": "bin/dynmat.x",
+      "ef.x": "bin/ef.x",
+      "epa.x": "bin/epa.x",
+      "epsilon.x": "bin/epsilon.x",
+      "ev.x": "bin/ev.x",
+      "fd.x": "bin/fd.x",
+      "fd_ef.x": "bin/fd_ef.x",
+      "fd_ifc.x": "bin/fd_ifc.x",
+      "fermi_int_0.x": "bin/fermi_int_0.x",
+      "fermi_int_1.x": "bin/fermi_int_1.x",
+      "fermi_proj.x": "bin/fermi_proj.x",
+      "fermi_velocity.x": "bin/fermi_velocity.x",
+      "fqha.x": "bin/fqha.x",
+      "fs.x": "bin/fs.x",
+      "ibrav2cell.x": "bin/ibrav2cell.x",
+      "initial_state.x": "bin/initial_state.x",
+      "kpoints.x": "bin/kpoints.x",
+      "lambda.x": "bin/lambda.x",
+      "matdyn.x": "bin/matdyn.x",
+      "molecularpdos.x": "bin/molecularpdos.x",
+      "neb.x": "bin/neb.x",
+      "open_grid.x": "bin/open_grid.x",
+      "oscdft_et.x": "bin/oscdft_et.x",
+      "oscdft_pp.x": "bin/oscdft_pp.x",
+      "path_interpolation.x": "bin/path_interpolation.x",
+      "pawplot.x": "bin/pawplot.x",
+      "ph.x": "bin/ph.x",
+      "phcg.x": "bin/phcg.x",
+      "plan_avg.x": "bin/plan_avg.x",
+      "plotband.x": "bin/plotband.x",
+      "plotproj.x": "bin/plotproj.x",
+      "plotrho.x": "bin/plotrho.x",
+      "pmw.x": "bin/pmw.x",
+      "postahc.x": "bin/postahc.x",
+      "pp.x": "bin/pp.x",
+      "ppacf.x": "bin/ppacf.x",
+      "pprism.x": "bin/pprism.x",
+      "projwfc.x": "bin/projwfc.x",
+      "pw.x": "bin/pw.x",
+      "pw2bgw.x": "bin/pw2bgw.x",
+      "pw2critic.x": "bin/pw2critic.x",
+      "pw2gt.x": "bin/pw2gt.x",
+      "pw2gw.x": "bin/pw2gw.x",
+      "pw2wannier90.x": "bin/pw2wannier90.x",
+      "pwcond.x": "bin/pwcond.x",
+      "pwi2xsf.x": "bin/pwi2xsf.x",
+      "q2qstar.x": "bin/q2qstar.x",
+      "q2r.x": "bin/q2r.x",
+      "rism1d.x": "bin/rism1d.x",
+      "scan_ibrav.x": "bin/scan_ibrav.x",
+      "sumpdos.x": "bin/sumpdos.x",
+      "upfconv.x": "bin/upfconv.x",
+      "virtual_v2.x": "bin/virtual_v2.x",
+      "wannier2pw.x": "bin/wannier2pw.x",
+      "wannier_ham.x": "bin/wannier_ham.x",
+      "wannier_plot.x": "bin/wannier_plot.x",
+      "wfck2r.x": "bin/wfck2r.x"
+    },
+    "external_roots": [
+      "/opt/devtools/fftw",
+      "/opt/devtools/hdf5",
+      "/opt/devtools/nvidia",
+      "/opt/devtools/openmpi"
+    ],
+    "identity": {
+      "build_id": "qe-7.6-g9f93ddec427d-r02bdbc94280c",
+      "cpu_arch": "skylake-avx512",
+      "cuda_arch": "70",
+      "dependency_isa": "avx2",
+      "gpus": 1,
+      "install_prefix": "/opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0",
+      "partition": "8V100V0",
+      "recipe_sha256": "02bdbc94280c6262f59ed786392836d68b66a7a98fe1715610bb11faedb6e7af",
+      "repository": "QEF/q-e",
+      "schema": 2,
+      "software": "qe",
+      "source_ref": "qe-7.6",
+      "source_sha": "9f93ddec427d2b9a45bb72d828c6d324f62fcabd",
+      "source_version": "qe-7.6",
+      "stack_digest": null,
+      "stack_sources": {},
+      "target": "8v100v0-avx512",
+      "track": "release",
+      "version_label": "qe-7.6"
+    },
+    "runtime": {
+      "modules": [
+        "openmpi/5.0.10-nvhpc26.3-pgi-cuda12-auto",
+        "fftw/3.3.10",
+        "hdf5/1.14.6-pgi-ompi508"
+      ],
+      "prepend": {
+        "LD_LIBRARY_PATH": [
+          "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx2/lib",
+          "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/compilers/lib",
+          "/opt/devtools/fftw/fftw-3.3.10/lib",
+          "/opt/devtools/hdf5/1.14.6-nvhpc245pgi-ompi508/lib",
+          "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/lib",
+          "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib",
+          "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/nvshmem/lib",
+          "/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/lib",
+          "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/math_libs/12.9/lib64",
+          "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/cuda/12.9/lib64",
+          "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/compilers/extras/qd/lib"
+        ],
+        "PATH": [
+          "/opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin"
+        ]
+      },
+      "set": {
+        "QE_ROOT": "/opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0"
+      }
+    }
+  },
+  "files": [
+    {
+      "kind": "directory",
+      "mode": 493,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0"
+    },
+    {
+      "kind": "directory",
+      "mode": 493,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin"
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/alpha2f.x",
+      "sha256": "4d73bd70bc239e7f0652a20c1f6890650a02e8db3b02a4f4b81f75e181e34daf",
+      "size": 47070448
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/average.x",
+      "sha256": "1baf68c04b4c2207e1e3a26365a278b3e4481f09509ca6c6845f039e63cf4997",
+      "size": 44005480
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/band_interpolation.x",
+      "sha256": "1eb1d490e724baf0ca3a57e1e1ffba1f691426efe90b3337c3451cfc783ad607",
+      "size": 16136968
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/bands.x",
+      "sha256": "c5e1c288904fd7240d6700795487ab96bb0274bd810b8e0e48d8b80fd932f766",
+      "size": 44859192
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/casino2upf.x",
+      "sha256": "c57a74ca950d8a5f8ecd191ae1b2207a039c3b27e54da8953602a0cc610faa33",
+      "size": 1538112
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/cell2ibrav.x",
+      "sha256": "39fce923f0bfd2fce99d12c20f022b10573cc9e4f75f80eb7511b05150f774e1",
+      "size": 11662912
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/d3hess.x",
+      "sha256": "d158187e5fec7a24bd0dd703db575ae62bd8c120d51fade72d1d67aff8570a2b",
+      "size": 44594984
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/dos.x",
+      "sha256": "8112c2aafacc5878e070f7ea7f7f86cd72492dfb023e7d05e4490355cb23cad3",
+      "size": 44562648
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/dos_sp.x",
+      "sha256": "b31d91da09a721f2cfea235df91bc3bb2a89ada46b7f27685b5a8493fb4c8694",
+      "size": 78656
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/dvscf_q2r.x",
+      "sha256": "19462453a421d8a1447f06d7e53ad7f967798a7bd34d509cdf21d825c0d96789",
+      "size": 45982352
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/dynmat.x",
+      "sha256": "f2796ac4e1614c9ceb778d19a2cca880754eeb01128f6bf9c6008c92e8cf054b",
+      "size": 20137200
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/ef.x",
+      "sha256": "8bd70038d87ef410da6c1c9209f2f18c7f86029a0fa538c437b1ef1e1f46c605",
+      "size": 62928
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/epa.x",
+      "sha256": "12f2ddd4732a2a8ea3d9e48d62aeeafb86c8b8a6af57ab869840aec0661ea14d",
+      "size": 13232336
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/epsilon.x",
+      "sha256": "c35cc380e3541c9fd2762464ba66b02b05ae2df6b089127d326e938f23759e82",
+      "size": 44805704
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/ev.x",
+      "sha256": "af1b3974a2421e075fa7ad145eb7b570365232509c35d2f794c0e03645a697cb",
+      "size": 11731120
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/fd.x",
+      "sha256": "1a1781985b2c622ce694f3248d595013ab3c289775a4cadd5370e2416e82c576",
+      "size": 45734760
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/fd_ef.x",
+      "sha256": "e9d07b31de44ea86bbba25956d9be94cc8f37050067bcf38d32c3e0d690c8fca",
+      "size": 45748072
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/fd_ifc.x",
+      "sha256": "0dce14cdfe85a1cb3b4aa831200df8d51f8de04f21189a4d63f4c319c5ebb1e9",
+      "size": 45803120
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/fermi_int_0.x",
+      "sha256": "b683006fc13db16fc1f4d8a43a5a3e521fe704f3937db7d04aab57fb2bd850bc",
+      "size": 94344
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/fermi_int_1.x",
+      "sha256": "d701a6ec142adcf35683d7c545ba38a0f5ea9a265916cb6d4a9fdf5d376e6985",
+      "size": 86200
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/fermi_proj.x",
+      "sha256": "73bed8e3756f9f15c7ff987b941755a90fea6d15f6007f7b8d65db2c04f85887",
+      "size": 44597712
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/fermi_velocity.x",
+      "sha256": "97fbef573a10db93b21f4e77d5fc8b57379d1e1b68d8c8cbfb86edf5eb01644f",
+      "size": 45655256
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/fqha.x",
+      "sha256": "470081899e7a650d5a7c31cb29f5e2cbef9906c90cc595a0094b172c6692e463",
+      "size": 12694696
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/fs.x",
+      "sha256": "95ee5431d3df1baed2d0fcdc04301825b0ee6bd534da7a3562f7709452efc74a",
+      "size": 44573496
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/ibrav2cell.x",
+      "sha256": "888dbd817807f96c3db00ed3b86e115379d320e941904cbf974dc2bc4959fe40",
+      "size": 11663000
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/initial_state.x",
+      "sha256": "fd6e16bee066cfe14d49b747e00dd9d105e9474bdeedc277ef7a3fc8fe2025e3",
+      "size": 44594416
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/kpoints.x",
+      "sha256": "cd5aae308f5569a24c8db206dbea075f5ee3081a3f1a0d4b8a8042bb12f88ef1",
+      "size": 11856544
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/lambda.x",
+      "sha256": "846f3e2f6335990d49a175b6927cf382f604b8884446959378a625c8704ede38",
+      "size": 12949480
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/matdyn.x",
+      "sha256": "2b1f9f03568afc1efdcb6bfc103c919cca18c01b3789b3a7bf0451bd0516caa6",
+      "size": 21621400
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/molecularpdos.x",
+      "sha256": "1403209cdbbecdc296bad3431212972c4131d95ed9adbbee374e0beecf7f76d9",
+      "size": 18837760
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/neb.x",
+      "sha256": "cfc879175577cbc33569925e1793c907b3ffe6f6caaa2fd6ca8c1ee959003e6a",
+      "size": 46890864
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/open_grid.x",
+      "sha256": "d6fb5d53fcb45450cec592fd793df89e0f094c30b6f34180c244b8ff97ca381f",
+      "size": 44571864
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/oscdft_et.x",
+      "sha256": "b419b939ef77fcf18d4b6032692c24391c1d04451649978898d022dfd9d1a9ea",
+      "size": 44655512
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/oscdft_pp.x",
+      "sha256": "78bf48f3c46ba6d2e5fca4500c98d502ab392d8cc79e394eaa2140c153acf302",
+      "size": 44564608
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/path_interpolation.x",
+      "sha256": "9476ebd6ad0fc539de905a42eef348a90862e307a350aac645833ab956a2593f",
+      "size": 11808280
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/pawplot.x",
+      "sha256": "e12624e6274744af440758fbd021ba81fc8bc0cf732d9db1f33a0d163e89bb46",
+      "size": 44572368
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/ph.x",
+      "sha256": "01573dfa6ff9b84d6f0e724229c6d219577723eae78b08d1fb1a74ed17ab248e",
+      "size": 50929872
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/phcg.x",
+      "sha256": "f28a400bdcb59cefcc25501da4839294e4a93057a93059c4ecdc26eef9030fd1",
+      "size": 45633584
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/plan_avg.x",
+      "sha256": "34e180ad17c62069ce477fb33eb6af49a0ed7d10c24f9fcbbead117370664419",
+      "size": 44599784
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/plotband.x",
+      "sha256": "37680bf395b33a81e3284aa83e67f46d2a05b486e2c3ad31776aac9cb643b756",
+      "size": 11900376
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/plotproj.x",
+      "sha256": "7ddfb01ee0cc5343565545f161ec6eaf2e849bb260d04a271b0b340b0a033dd5",
+      "size": 11585752
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/plotrho.x",
+      "sha256": "42ea8b4ad9882b89990d32fca51fccf3e854b53f2eeca3827744c13232283f70",
+      "size": 11639224
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/pmw.x",
+      "sha256": "2db06f92a406377ce45e9f5f9910dc6132c514686e569c8f244d9b3277f97806",
+      "size": 44568896
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/postahc.x",
+      "sha256": "5cc09eb43fed47bfffbe2e2b5b4d80114b2d79bdb0aa28055b0644a30c6c702a",
+      "size": 45917640
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/pp.x",
+      "sha256": "3d1816b497d4d09b9f204332661648745567e769151cd116b7e1d3b68c2c658c",
+      "size": 45023616
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/ppacf.x",
+      "sha256": "ac9ffce8958685f478cfa0daf9938e54702c880b0084832a0f1071fb92d0718a",
+      "size": 44859648
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/pprism.x",
+      "sha256": "12a2c0a842fa370c2fb53a36f63942ab87048424a5dcc37d614efbb583ba3a61",
+      "size": 45349336
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/projwfc.x",
+      "sha256": "ea6238af34475757b849e61145edd7d660fd14db54b14c5d8fc5fd146a40263d",
+      "size": 44903496
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/pw.x",
+      "sha256": "0d763f64301ac5944424da87f496f03762f69c7b14fcc39a059251ebcda54fb8",
+      "size": 48489456
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/pw2bgw.x",
+      "sha256": "e0327a6ee1961a59e2b47909d9333bc0248fb60d4a66d075c1f5a4f034ad43aa",
+      "size": 44896976
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/pw2critic.x",
+      "sha256": "bf0c73e2f10bf2a363022d63a3a0f5f5fe7e42f76c24a3d175e75a5b91e70fb1",
+      "size": 44561912
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/pw2gt.x",
+      "sha256": "87e0ae44f9ad8cc9fad7df3c83ac78ffa2073d5cfe32b196f97da6ca51276ce0",
+      "size": 44604616
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/pw2gw.x",
+      "sha256": "bdaf8594f584051162deea4278034224d8fcc19027989ed45f36166283af17c8",
+      "size": 44613512
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/pw2wannier90.x",
+      "sha256": "e4c462d8c91222b05fbec758a894dcb8d4ed725d445fc92a9d235e359e9e420c",
+      "size": 45372952
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/pwcond.x",
+      "sha256": "c8b3b0746b0c9e8b7ae221d8768ed547a2b8b7a52c84e582e6690bbb23fc4bd8",
+      "size": 45112744
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/pwi2xsf.x",
+      "sha256": "8ba6035be8b8dec1bea6ebf14dee349e71b273bc3547fd283e7b1a17ac1bcb62",
+      "size": 11675768
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/q2qstar.x",
+      "sha256": "a313c95d0b083180ee68462b814f9883459ff16b7263c1cf62c5976abc17a0f5",
+      "size": 20676664
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/q2r.x",
+      "sha256": "352664723342c22afe339362f3575589e58e432f21b8d4e3ced5365563986e84",
+      "size": 20371120
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/rism1d.x",
+      "sha256": "677921e806fe45c734f88e147eea26867ea22e464a31a3dd0d5a0ca90ec4c5ce",
+      "size": 44918616
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/scan_ibrav.x",
+      "sha256": "a7df18eda81b7e6656ec793acc539c352f3f845871fd7278429f8e4dbd01aefe",
+      "size": 11719896
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/sumpdos.x",
+      "sha256": "c960b3cc61522512c1bbbe3970b1f93cf3df6db33a4c9bdfd18c5d75982cff33",
+      "size": 71288
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/upfconv.x",
+      "sha256": "9b69fd40e371fc160416029e3f24d7be047a409c24a9bcc9be83d803b2f89686",
+      "size": 1871368
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/virtual_v2.x",
+      "sha256": "48ed7eac5677a7beca18458fab11bd03645003d1642f3c0ab027d8ec67086961",
+      "size": 1940168
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/wannier2pw.x",
+      "sha256": "403c2136b16ff17d0e831dd368c9b19b2907dd01774855d7aa84d30e4e9e535e",
+      "size": 44733000
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/wannier_ham.x",
+      "sha256": "daff97510bcc7be22f2d3be3aad087173d8e48528de6fb897cbe4f623e5c3519",
+      "size": 45621208
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/wannier_plot.x",
+      "sha256": "aefdff79264ac84d8413e8ffd926e343e65471c1a71694193dcb39feca9ceb46",
+      "size": 44578160
+    },
+    {
+      "kind": "file",
+      "mode": 365,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/wfck2r.x",
+      "sha256": "72f00f8b0d021000f62c20593db84149f511125792bb93ebd1aa42d4146d3fc8",
+      "size": 44559896
+    },
+    {
+      "kind": "directory",
+      "mode": 493,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/modulefiles"
+    },
+    {
+      "kind": "directory",
+      "mode": 493,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/modulefiles/qe"
+    },
+    {
+      "kind": "directory",
+      "mode": 493,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/modulefiles/qe/release"
+    },
+    {
+      "kind": "file",
+      "mode": 292,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/modulefiles/qe/release/qe-7.6-g9f93ddec427d-r02bdbc94280c",
+      "sha256": "9450dc6b96bacddeac2ebf04dba5656dc5fdf58c28f89e62c52cd0b342dbc826",
+      "size": 1845
+    },
+    {
+      "kind": "directory",
+      "mode": 493,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/share"
+    },
+    {
+      "kind": "directory",
+      "mode": 493,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/share/licenses"
+    },
+    {
+      "kind": "directory",
+      "mode": 493,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/share/licenses/devxlib"
+    },
+    {
+      "kind": "directory",
+      "mode": 493,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/share/licenses/fox"
+    },
+    {
+      "kind": "file",
+      "mode": 292,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/share/licenses/fox/LICENSE",
+      "sha256": "c48e6845bfe96a573029f099a0287b4266c40023413f9b37f87e62c7bff03c0b",
+      "size": 3411
+    },
+    {
+      "kind": "directory",
+      "mode": 493,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/share/licenses/mbd"
+    },
+    {
+      "kind": "file",
+      "mode": 292,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/share/licenses/mbd/LICENSE",
+      "sha256": "fab3dd6bdab226f1c08630b1dd917e11fcb4ec5e1e020e2c16f83a0a13863e85",
+      "size": 16726
+    },
+    {
+      "kind": "directory",
+      "mode": 493,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/share/licenses/qe"
+    },
+    {
+      "kind": "file",
+      "mode": 292,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/share/licenses/qe/License",
+      "sha256": "204d8eff92f95aac4df6c8122bc1505f468f3a901e5a4cc08940e0ede1938994",
+      "size": 18009
+    },
+    {
+      "kind": "directory",
+      "mode": 493,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/share/licenses/wannier90"
+    },
+    {
+      "kind": "file",
+      "mode": 292,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/share/licenses/wannier90/LICENSE",
+      "sha256": "ddb9db7630752f8fdc6898f7c99a99eaeeac5213627ecb093df9c82f56175dc7",
+      "size": 17990
+    },
+    {
+      "kind": "directory",
+      "mode": 493,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/share/sai"
+    },
+    {
+      "kind": "file",
+      "mode": 420,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/share/sai/binary-inspection.json",
+      "sha256": "12bcd892ea3b748352bc568a295d6d41886a53e6826f1ba669a1bad82ddaeb55",
+      "size": 685029
+    },
+    {
+      "kind": "file",
+      "mode": 420,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/share/sai/configure-command.txt",
+      "sha256": "cfb86ba347e650f2c27b38df5e7a2c81177a3cf3bb7a4d6673a9fc1b5ac5b5cb",
+      "size": 1079
+    },
+    {
+      "kind": "file",
+      "mode": 420,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/share/sai/mpi-wrapper.txt",
+      "sha256": "556cc1e1e1c505c01f2c971fd158def86b915df1189fbea0b259e6b70d5d59b8",
+      "size": 380
+    },
+    {
+      "kind": "file",
+      "mode": 420,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/share/sai/native-entry.json",
+      "sha256": "47b2d970cea820e2959c803e4e834c8ce7eca3a38ea4fca75649534a51604d07",
+      "size": 3884
+    },
+    {
+      "kind": "file",
+      "mode": 292,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/share/sai/native-module.tcl",
+      "sha256": "cb291c590c1ec27e73cf05fc11f3b1822814d4e92054e471411d547271648e47",
+      "size": 5773
+    },
+    {
+      "kind": "file",
+      "mode": 420,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/share/sai/release-identity.json",
+      "sha256": "675c9ef725a1f6751b74ca9b34348e0304372bdaa97b2ee2676f72584e876ddf",
+      "size": 618
+    },
+    {
+      "kind": "file",
+      "mode": 420,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/share/sai/source-sha",
+      "sha256": "47aca73533a297ad672793c1f3a5b628013d4598a040271fde1e633c5c0642de",
+      "size": 41
+    },
+    {
+      "kind": "file",
+      "mode": 493,
+      "path": "opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/share/sai/submodules.json",
+      "sha256": "cc5e46c354abeb6e4d43238b99642c9fb7145f0df7a6fd9efb4f840a36b1b27b",
+      "size": 718
+    }
+  ],
+  "schema": 2
+}

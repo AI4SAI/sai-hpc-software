@@ -85,6 +85,11 @@ The preflight rejects an absent or unaccepted generation.
 Native installation uses `/opt/apps/qe/qe-<track>-<version>-g<SHA>-r<recipe>/<partition>`
 inside the image, ready for the existing administrator-controlled native export.
 Physical /opt installation is a separate step after acceptance.
+The accepted QE 7.6 release has an [administrator installation package](../deployment/qe-7.6/README.md)
+with `--check`, `--install` and `--verify`. It reads publicly accessible compressed
+SIF copies, installs all 67 application commands and licenses, and publishes
+`qe/7.6-auto`. No project-directory access or container execution is needed by
+the installing administrator.
 
 ## Initial qualification
 
