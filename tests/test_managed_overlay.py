@@ -32,6 +32,8 @@ class ManagedOverlayTests(unittest.TestCase):
             ['exec', '--overlay', '/project/runs/build/work.ext3', '--overlay', '/another:ro', '/base.sif', 'true'],
             ['exec', '--overlay', '/project/runs/build/work.ext3', '--overlay', '/dependency/work.ext3', '/base.sif', 'true'],
             ['exec', '--overlay', '/project/runs/build/work.ext3', '--overlay', '/project/runs/build/work.ext3:ro', '/base.sif', 'true'],
+            ['exec', '--overlay', '/project/runs/build/work.ext3', '--overlay', '/project/runs/build/./work.ext3:ro', '/base.sif', 'true'],
+            ['exec', '--overlay', '/project/runs/build/work.ext3', '--overlay', '/dependency//work.ext3:ro', '/base.sif', 'true'],
             ['exec', '--overlay', '/project/runs/build/work.ext3', '--overlay', '../dependency/work.ext3:ro', '/base.sif', 'true'],
             ['exec', '--writable', '/base.sif', 'true'],
         ):

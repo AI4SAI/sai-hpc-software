@@ -120,7 +120,7 @@ def preflight(package=PACKAGE):
                     row['files'] == release['shared']['files'], 'shared plugin differs between partitions')
         else:
             require(prefix.parent.parent == Path('/opt/apps/nepadapters')
-                    and prefix.name == part and re.fullmatch(r'1\.0\.4-lammps30Sep2026-r[0-9a-f]{12}', prefix.parent.name),
+                    and prefix.name == part and re.fullmatch(r'1\.0\.5-lammps30Sep2026-r[0-9a-f]{12}', prefix.parent.name),
                     'unexpected plugin installation prefix')
         require(row['accepted'] is True and row['native_multigpu_accepted'] is True,
                 'missing SIF/native multi-GPU acceptance')

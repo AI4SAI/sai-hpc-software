@@ -125,6 +125,7 @@ def prepare(handoffs, destination, partitions=None, previous=None):
         evidence.mkdir(parents=True)
         shutil.copyfile(Path(row['build']) / 'results/artifacts.json', evidence / 'sif.json')
         shutil.copyfile(Path(row['native']) / 'acceptance.json', evidence / 'native.json')
+        shutil.copyfile(Path(row['build']) / 'runtime/upstream-spin-tests.xml', evidence / 'upstream-spin-tests.xml')
     text = modulefile(rows)
     (destination / 'modulefile').write_text(text)
     release = dict(schema=2, version=VERSION, source_sha=SOURCE_SHA, module=MODULE,

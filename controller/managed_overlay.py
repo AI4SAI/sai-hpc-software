@@ -55,7 +55,8 @@ def inspect_command(argv, run):
         if index == selected[0][0]:
             continue
         path = value[:-3] if value.endswith(':ro') else ''
-        if (not path or not Path(path).is_absolute() or Path(path).name != 'work.ext3'
+        if (not path or path != str(Path(path)) or path == expected
+                or not Path(path).is_absolute() or Path(path).name != 'work.ext3'
                 or any(c in path for c in ':,\n\r$') or '..' in Path(path).parts
                 or path in dependencies):
             raise ValueError('additional dependency overlays must be distinct read-only work.ext3 images')
