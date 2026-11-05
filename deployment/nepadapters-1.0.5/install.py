@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Administrator installation of the accepted, minimal NEPAdapters runtime.
 
-No arguments: read-only verification. --install: publish the accepted runtime
-and replace the previous partitioned release recorded in the manifest.
+No arguments: read-only verification. --install: publish the accepted 1.0.5
+runtime and module while preserving LAMMPS and the installed 1.0.4 release.
 """
 import argparse
 import hashlib

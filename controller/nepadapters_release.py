@@ -218,17 +218,26 @@ def verify_input(run):
             request['source_archive_sha256'], 'pinned source archive changed')
 
 
+def verify_spin_tests(spin):
+    tests = ET.parse(spin).getroot()
+    cases = tests.findall('testcase')
+    require(tests.attrib.get('tests') == '2' and tests.attrib.get('failures') == '0' and
+            tests.attrib.get('disabled', '0') == '0' and
+            tests.attrib.get('skipped', '0') == '0' and len(cases) == 2 and
+            all(case.attrib.get('status') == 'run' and
+                not any(case.find(tag) is not None for tag in ('skipped', 'failure', 'error'))
+                for case in cases) and
+            {case.attrib.get('name') for case in cases} ==
+            {'nep_adapters_cpu_spin_test', 'nep_adapters_cpu_spin_openmp_test'},
+            'missing successful upstream Spin1 single-thread/OpenMP regression')
+
+
 def artifact_record(run):
     from nepadapters_science import verify
     request = context(run)
     files = {name: checksum(run / 'export' / name) for name in PAYLOAD}
     spin = run / 'runtime/upstream-spin-tests.xml'
-    tests = ET.parse(spin).getroot()
-    require(tests.attrib.get('tests') == '2' and tests.attrib.get('failures') == '0' and
-            tests.attrib.get('disabled', '0') == '0' and
-            {case.attrib.get('name') for case in tests.findall('testcase')} ==
-            {'nep_adapters_cpu_spin_test', 'nep_adapters_cpu_spin_openmp_test'},
-            'missing successful upstream Spin1 single-thread/OpenMP regression')
+    verify_spin_tests(spin)
     for phase in ('science-build', 'science-sif'):
         proof = verify(run / 'runtime/cases', run / 'runtime' / phase)
         require(proof['lmp'] == request['lammps']['prefix'] + '/bin/lmp' and

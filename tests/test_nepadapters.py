@@ -34,6 +34,24 @@ prepare = load('nepa_prepare', ROOT / 'deployment/nepadapters-1.0.5/prepare-rele
 
 
 class NumericalTests(unittest.TestCase):
+    def test_upstream_spin_regression_must_execute_both_thread_counts(self):
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / 'upstream.xml'
+            xml = ('<testsuite tests="2" failures="0" skipped="0">'
+                   '<testcase name="nep_adapters_cpu_spin_test" status="run"/>'
+                   '<testcase name="nep_adapters_cpu_spin_openmp_test" status="run"/>'
+                   '</testsuite>')
+            path.write_text(xml)
+            release.verify_spin_tests(path)
+            for invalid in (xml.replace('skipped="0"', 'skipped="1"'),
+                            xml.replace('failures="0"', 'failures="1"'),
+                            xml.replace('status="run"', 'status="notrun"'),
+                            xml.replace('status="run"/>', 'status="run"><skipped/></testcase>'),
+                            xml.replace('cpu_spin_openmp_test', 'cpu_spin_test')):
+                path.write_text(invalid)
+                with self.assertRaisesRegex(ValueError, 'Spin1'):
+                    release.verify_spin_tests(path)
+
     def test_nan_infinity_missing_negative_and_wrong_values_fail(self):
         good = dict.fromkeys(science.TOLERANCES, 0.0)
         science.check(good)
