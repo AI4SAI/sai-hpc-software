@@ -82,6 +82,10 @@ for stream in ('stdout', 'stderr'):
             output.write(content)
             if content and not content.endswith('\\n'):
                 output.write('\\n')
+# ABACUS prints its node-local OpenMP report to stderr. Preserve the
+# historical combined stdout.log input to the existing strict verifier.
+with Path('stdout.log').open('a') as output:
+    output.write(Path('stderr.log').read_text())
 """
 
 
@@ -284,7 +288,7 @@ def prepare(args):
              ranks_per_node=4 if cpu else 1, ranks=8 if cpu else 2, threads=2 if cpu else 1,
              dependency_isa=target.get("dependency_isa", "avx512" if args.target in
                                        {"dsprhbm", "4v100-avx512"} else "avx2"),
-             runs=sequence(args.warmup, args.repeats), schema=2)
+             runs=sequence(args.warmup, args.repeats), schema=2, rank_output="direct-v1")
     task.mkdir(parents=True)
     (task / "results").mkdir()
     for name in ("mpi-runtime", "apptainer-runtime", "apptainer-cache"):
@@ -523,6 +527,25 @@ def verify_evidence(task, request):
             raise ValueError("ABACUS reported OpenMP thread count differs from the request")
         result = parse_scf(stdout, read(base / r["scf_log"]),
                            read(base / "wall-seconds.txt"))
+        if r.get("rank_output") == "direct-v1":
+            output = task / base / "rank-output"
+            expected = {f"rank.{rank}" for rank in range(r["ranks"])}
+            if {path.name for path in output.iterdir()} != expected:
+                raise ValueError("missing or unexpected raw rank output")
+            streams = {}
+            for stream in ("stdout", "stderr"):
+                chunks = []
+                for rank in range(r["ranks"]):
+                    directory = output / f"rank.{rank}"
+                    if {path.name for path in directory.iterdir()} != {"stdout", "stderr"}:
+                        raise ValueError("missing or unexpected raw rank streams")
+                    content = read(base / "rank-output" / f"rank.{rank}" / stream)
+                    chunks.append(content + ("\n" if content and not content.endswith("\n") else ""))
+                streams[stream] = "".join(chunks)
+            if (stdout != streams["stdout"] + streams["stderr"] or
+                    read(base / "stderr.log") != streams["stderr"]):
+                raise ValueError("collected log differs from the raw rank streams")
+            read(base / "launcher.log")
         records.append(dict(spec, **result, nodes=dict(hosts), versions=versions,
                             affinity=affinity, reported_threads=int(reported_threads[0])))
     if len(binaries) != 1 or len({tuple(sorted(x["nodes"])) for x in records}) != 1:
@@ -588,7 +611,7 @@ def verify_retest(task, request, evidence):
     fields = ("identity", "artifact", "artifact_sha256", "launcher", "launcher_sha256",
               "controller_sha256", "version", "target", "system_module", "packaged_case",
               "benchmark_case", "case_device", "nodes", "ranks", "ranks_per_node", "threads",
-              "dependency_isa", "warmup", "repeats", "scf_log", "allow_cpu_case_on_gpu")
+              "dependency_isa", "warmup", "repeats", "scf_log", "allow_cpu_case_on_gpu", "rank_output")
     if any(first_request.get(key) != request.get(key) for key in fields):
         raise ValueError("ABACUS retest changed the image, baseline, case or resource contract")
     first = verify_evidence(original, first_request)
