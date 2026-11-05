@@ -2,6 +2,7 @@
 import copy
 from contextlib import ExitStack
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -302,11 +303,13 @@ class RuntimeTests(unittest.TestCase):
                     if software == 'deepmd-kit':
                         self.assertIn("deepmd-python -c", script)
                     if software == 'qe':
-                        self.assertIn('--tag-output manypw.x -ni 2', script)
+                        self.assertIn('/usr/bin/bash ./rank.sh -ni 2', script)
                         request = json.loads((output / 'request.json').read_text())
                         for index in range(2):
                             self.assertEqual(request['files'][f'case/manypw/pw_{index}.in'],
                                              digest(output / 'case/scf.in'))
+                        self.assertEqual(request['files']['case/manypw/rank.sh'],
+                                         digest(output / 'case/manypw/rank.sh'))
 
 
 class QeManypwTests(unittest.TestCase):
@@ -320,6 +323,11 @@ class QeManypwTests(unittest.TestCase):
                          '[1,1]<stderr>:launch CUDA kernel device=1\n')
         (self.root / 'stdout.txt').write_text(self.launcher)
         for index in range(2):
+            rank = self.root / f'rank-output/rank.{index}'
+            rank.mkdir(parents=True)
+            (rank / 'stdout').write_text('path-images division: nimage = 2\nGPU acceleration is ACTIVE\n'
+                                        if index == 0 else '')
+            (rank / 'stderr').write_text(f'SAI_QE_MPI_RANK={index}\nlaunch CUDA kernel device={index}\n')
             (self.root / f'pw_{index}.out').write_text(
                 f'Reading input from pw_{index}.in\nconvergence has been achieved\n'
                 '! total energy = -15.84452726 Ry\n' + ('JOB DONE.\n' if index == 0 else ''))
@@ -340,10 +348,11 @@ class QeManypwTests(unittest.TestCase):
             beta_check.qe_manypw(self.root, self.reference, gpu=False)
 
     def test_shared_scratch_or_shared_gpu_is_rejected(self):
-        (self.root / 'stdout.txt').write_text(self.launcher.replace('device=1', 'device=0'))
+        rank1 = self.root / 'rank-output/rank.1/stderr'
+        rank1.write_text('SAI_QE_MPI_RANK=1\nlaunch CUDA kernel device=0\n')
         with self.assertRaisesRegex(ValueError, 'separate GPU'):
             beta_check.qe_manypw(self.root, self.reference, gpu=True)
-        (self.root / 'stdout.txt').write_text(self.launcher)
+        rank1.write_text('SAI_QE_MPI_RANK=1\nlaunch CUDA kernel device=1\n')
         shutil.rmtree(self.root / 'tmp_1')
         (self.root / 'tmp_1').symlink_to('tmp_0')
         with self.assertRaisesRegex(ValueError, 'independent completed scratch'):
@@ -354,6 +363,83 @@ class QeManypwTests(unittest.TestCase):
         output.write_text(output.read_text().replace('JOB DONE.', ''))
         with self.assertRaisesRegex(ValueError, 'did not finish'):
             beta_check.qe_manypw(self.root, self.reference, gpu=False)
+
+    def test_interleaved_forwarded_bytes_do_not_change_rank_device_evidence(self):
+        # The failed real allocation had only one MPI tag on each corrupt
+        # line: a non-greedy tag regex cannot recover the source rank.
+        mixed = ('[1,0]<stderr>: launch CUDA kernel file=force_us.f90 '
+                 'function=force_us line=123 device=1 threadid=1 num_gangs=1\n'
+                 '[1,1]<stderr>: launch CUDA kernel device=0 num_wolaunch CUDA kernel device=1\n')
+        (self.root / 'stdout.txt').write_text(mixed)
+        result = beta_check.qe_manypw(self.root, self.reference, gpu=True)
+        self.assertEqual(result['gpu_devices_by_rank'], {'0': ['0'], '1': ['1']})
+        for rank in ('0', '1'):
+            path = self.root / f'rank-output/rank.{rank}/stderr'
+            self.assertEqual(result['rank_output'][rank]['stderr']['sha256'], digest(path))
+            self.assertEqual(result['rank_output'][rank]['cuda_kernel_launches'], 1)
+
+    def test_independent_stream_with_wrong_or_malformed_device_is_rejected(self):
+        path = self.root / 'rank-output/rank.0/stderr'
+        for text, reason in [('launch CUDA kernel device=0\nlaunch CUDA kernel device=1\n', 'separate GPU'),
+                             ('launch CUDA kernel device=0 num_wolaunch CUDA kernel device=1\n', 'malformed'),
+                             ('launch CUDA kernel device=\n', 'malformed'), ('', 'separate GPU')]:
+            with self.subTest(text=text):
+                path.write_text('SAI_QE_MPI_RANK=0\n' + text)
+                with self.assertRaisesRegex(ValueError, reason):
+                    beta_check.qe_manypw(self.root, self.reference, gpu=True)
+
+    def test_rank_outputs_cannot_be_missing_duplicated_or_redirected(self):
+        path = self.root / 'rank-output/rank.1/stderr'
+        path.unlink()
+        with self.assertRaisesRegex(ValueError, 'rank stream'):
+            beta_check.qe_manypw(self.root, self.reference, gpu=True)
+        path.symlink_to('../rank.0/stderr')
+        with self.assertRaisesRegex(ValueError, 'rank stream'):
+            beta_check.qe_manypw(self.root, self.reference, gpu=True)
+        path.unlink(); path.write_text('SAI_QE_MPI_RANK=0\nlaunch CUDA kernel device=1\n')
+        with self.assertRaisesRegex(ValueError, 'identity differs'):
+            beta_check.qe_manypw(self.root, self.reference, gpu=True)
+        path.write_text('SAI_QE_MPI_RANK=1\nlaunch CUDA kernel device=1\n')
+        (self.root / 'rank-output/rank.2').mkdir(parents=True)
+        with self.assertRaisesRegex(ValueError, 'exactly two'):
+            beta_check.qe_manypw(self.root, self.reference, gpu=True)
+
+
+class QeRankCaptureTests(unittest.TestCase):
+    def test_real_rank_shell_keeps_concurrent_streams_and_exit_status(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            bundle, fixtures = root / 'bundle', root / 'fixtures'
+            bundle.mkdir(); (fixtures / 'qe').mkdir(parents=True)
+            (bundle / 'catalog.json').write_text(json.dumps(dict(runtime_sha256='a' * 64,
+                applications={'qe': {'partitions': {'DSPRHBM': {'identity': {'install_prefix': '/accepted/qe'}}}}})))
+            (fixtures / 'references.json').write_text('{"qe": {}}')
+            (fixtures / 'qe/scf.in').write_text('input')
+            (fixtures / 'qe/Si.pz-vbc.UPF').write_text('pseudo')
+            output = root / 'check'
+            beta_check.prepare('qe', 'DSPRHBM', bundle, output, fixtures)
+            case = output / 'case/manypw'
+            programs = root / 'bin'; programs.mkdir()
+            executable = programs / 'manypw.x'
+            executable.write_text('#!/usr/bin/env python3\nimport os,sys\n'
+                'rank=os.environ["OMPI_COMM_WORLD_RANK"]\n'
+                'assert sys.argv[1:] == ["-ni", "2"]\n'
+                'for index in range(64):\n'
+                ' os.write(1, (rank * 8192 + " stdout\\n").encode())\n'
+                ' os.write(2, (rank * 8192 + " stderr\\n").encode())\n'
+                'sys.exit(7 if rank == "1" else 0)\n')
+            executable.chmod(0o755)
+            processes = [subprocess.Popen(['/usr/bin/bash', './rank.sh', '-ni', '2'], cwd=case,
+                env=dict(os.environ, PATH=str(programs) + ':' + os.environ['PATH'], OMPI_COMM_WORLD_RANK=str(rank)),
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) for rank in (0, 1)]
+            for rank, process in enumerate(processes):
+                stdout, stderr = process.communicate(timeout=20)
+                self.assertEqual(process.returncode, 7 if rank == 1 else 0)
+                self.assertEqual((stdout, stderr), ('', ''))
+                streams = case / f'rank-output/rank.{rank}'
+                self.assertEqual((streams / 'stdout').read_text(), (str(rank) * 8192 + ' stdout\n') * 64)
+                self.assertEqual((streams / 'stderr').read_text(), f'SAI_QE_MPI_RANK={rank}\n'
+                                 + (str(rank) * 8192 + ' stderr\n') * 64)
 
 
 class WorkflowTests(unittest.TestCase):
