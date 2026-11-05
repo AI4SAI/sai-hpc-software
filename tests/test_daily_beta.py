@@ -222,9 +222,9 @@ class RuntimeTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             directory = Path(tmp)
             row = ['123', 'FAILED', '1:0', '8V100V0', 'proj-sai-hpc-software', tmp, '8v100v0n09']
-            for output in ('training/training.log', 'case/stdout.txt'):
+            for output in ('training/training.log', 'case/stdout.txt', 'case/manypw/rank-output/rank.1/stderr'):
                 log = directory / output
-                log.parent.mkdir()
+                log.parent.mkdir(parents=True, exist_ok=True)
                 for error in ('loss is NaN', 'Error: Unable to get the user home directory'):
                     with self.subTest(output=output, error=error):
                         log.write_text(error)

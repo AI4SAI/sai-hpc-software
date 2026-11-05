@@ -125,9 +125,10 @@ def retry_node(directory, accounting_row):
                 'GPU health evidence differs from the failed runtime allocation')
         native_ecc = report.get('healthy') is False and ecc_fault(report)
     # The primary application redirects both streams to case/stdout.txt;
-    # training and Slurm diagnostics use *.log.
+    # training and Slurm diagnostics use *.log; QE captures each rank's
+    # stderr directly so the infrastructure retry must inspect those too.
     text = '\n'.join(p.read_text(errors='replace')[-65536:]
-                     for pattern in ('*.log', 'stdout.txt') for p in directory.rglob(pattern))
+                     for pattern in ('*.log', 'stdout.txt', 'stderr') for p in directory.rglob(pattern))
     if native_ecc or 'uncorrectable ECC error' in text or ('container creation failed: mount hook function failure:' in text
                                             and 'fuse2fs failed to mount' in text):
         node = accounting_row[6]
