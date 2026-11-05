@@ -11,7 +11,7 @@ import shutil
 import subprocess
 
 from nepadapters_release import PARTITIONS, build_report, require, runtime_request
-from nepadapters_science import run as science, verify as verify_science
+from nepadapters_science import BOUNDARIES, run as science, verify as verify_science
 from remote_controller import (container_command, private_scratch, project_batch_directives,
                                project_qos, site_app_binds)
 from source_cache import checksum
@@ -108,7 +108,7 @@ def render(output, plan, phase):
              'module use /opt/modules/modulefiles/apps /opt/modules/modulefiles/devtools',
              'module load lammps/30Sep2026-deepmd320-auto',
              *(['module load apptainer/1.4.4'] if 'sif_runtime' in plan else []),
-             *(['module load nepadapters/1.0.4-lammps30Sep2026'] if plan['installed'] else []), 'set -u',
+             *(['module load nepadapters/1.0.5-lammps30Sep2026'] if plan['installed'] else []), 'set -u',
              'export TMPDIR=' + shlex.quote(plan['scratch'][phase]),
              'export APPTAINER_TMPDIR="$TMPDIR" APPTAINER_CACHEDIR="$TMPDIR/apptainer-cache"',
              'export OMP_NUM_THREADS=1 OPENBLAS_NUM_THREADS=1 MKL_NUM_THREADS=1',
@@ -150,7 +150,7 @@ def context(output):
     return plan
 
 
-def check_ranks(folder, hosts, per_node, lmp, binary_sha):
+def check_ranks(folder, hosts, per_node, lmp, binary_sha, include_boundaries=True):
     proofs = {}
     for backend, inputs in [('cpu', ('in.baseline',)), ('gpu', ('in.baseline', 'in.dynamics'))]:
         for infile in inputs:
@@ -165,6 +165,10 @@ def check_ranks(folder, hosts, per_node, lmp, binary_sha):
                 require(row['binary'] == lmp and row['binary_sha256'] == binary_sha and row['sm'] == 70
                         and row['gpu_uuid'].startswith('GPU-'), 'wrong MPI binary/GPU identity')
             proofs[backend + '/' + infile] = rows
+    if include_boundaries:
+        for boundary in BOUNDARIES[1:]:
+            name = 'boundary-' + boundary.replace(' ', '')
+            proofs[name] = check_ranks(folder / name, hosts, per_node, lmp, binary_sha, False)
     return proofs
 
 
