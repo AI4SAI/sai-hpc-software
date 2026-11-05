@@ -44,7 +44,15 @@ def prepare(software, partition, bundle, output, fixtures):
         many.mkdir()
         for index in range(2):
             shutil.copyfile(output / 'case/scf.in', many / f'pw_{index}.in')
+            (many / 'rank-output' / f'rank.{index}').mkdir(parents=True)
         shutil.copyfile(output / 'case/Si.pz-vbc.UPF', many / 'Si.pz-vbc.UPF')
+        (many / 'rank.sh').write_text(
+            '#!/usr/bin/env bash\nset -eu -o noclobber\n'
+            'rank=${OMPI_COMM_WORLD_RANK:?}\n'
+            'case "$rank" in 0|1) ;; *) exit 64 ;; esac\n'
+            'exec >"rank-output/rank.$rank/stdout" 2>"rank-output/rank.$rank/stderr"\n'
+            'printf "SAI_QE_MPI_RANK=%s\\n" "$rank" >&2\n'
+            'exec manypw.x "$@"\n')
     request = dict(software=software, partition=partition, catalog=str(bundle / 'catalog.json'),
                    catalog_sha256=digest(bundle / 'catalog.json'), runtime_sha256=snapshot['runtime_sha256'],
                    reference=read(fixtures / 'references.json')[software],
@@ -94,7 +102,7 @@ def render(software, partition, bundle, output):
     lines += ['/usr/bin/time -f %e -o elapsed.txt ' + commands[software] + ' > stdout.txt 2>&1']
     if software == 'qe':
         lines += ['cd manypw', '/usr/bin/time -f %e -o elapsed.txt ' + launch
-                  + '--tag-output manypw.x -ni 2 > stdout.txt 2>&1', 'cd ..']
+                  + '/usr/bin/bash ./rank.sh -ni 2 > stdout.txt 2>&1', 'cd ..']
     if software == 'deepmd-kit':
         runner = ("import os,sys,runpy; os.chdir('training'); sys.argv="
                   + repr(['../control/deepmd_training_check.py', prefix, '../case/fixture.json'])
@@ -133,11 +141,30 @@ def training_report(output, job, partition, prefix):
 
 def qe_manypw(directory, reference, *, gpu):
     from qe_science import NUMBER, number
-    launcher = (directory / 'stdout.txt').read_text()
-    require(re.search(r'path-images division:\s+nimage\s*=\s*2\b', launcher),
+    # MPI's forwarded streams can interleave bytes from different ranks even
+    # with --tag-output. Each rank therefore redirects its own descriptors
+    # before exec; only those files can establish a rank's GPU device.
+    root = directory / 'rank-output'
+    folders = sorted(root.glob('rank.*'))
+    require(root.is_dir() and root.resolve() == root and len(folders) == 2
+            and {p.name for p in folders} == {'rank.0', 'rank.1'}
+            and len({p.parent for p in folders}) == 1,
+            'QE manypw needs exactly two independent MPI rank output directories')
+    streams, records = {}, {}
+    for folder in folders:
+        rank = folder.name.removeprefix('rank.')
+        streams[rank], records[rank] = {}, {}
+        for name in ('stdout', 'stderr'):
+            path = folder / name
+            require(path.is_file() and path.resolve() == path, 'missing or redirected QE MPI rank stream')
+            streams[rank][name] = path.read_text()
+            records[rank][name] = dict(path=str(path.relative_to(directory)), sha256=digest(path))
+        require(re.findall(r'^SAI_QE_MPI_RANK=(\d+)$', streams[rank]['stderr'], re.M) == [rank],
+                'QE MPI rank stream identity differs')
+    combined = '\n'.join(text for row in streams.values() for text in row.values())
+    require(re.search(r'path-images division:\s+nimage\s*=\s*2\b', combined),
             'QE manypw did not start two independent images')
     images = []
-    combined = launcher
     for index in range(2):
         output = directory / f'pw_{index}.out'
         text = output.read_text()
@@ -160,13 +187,23 @@ def qe_manypw(directory, reference, *, gpu):
         combined += text
     devices = {}
     if gpu:
-        for rank, device in re.findall(r'\[\d+,([01])\]<stderr>:.*launch CUDA kernel.*device=(\d+)', launcher):
-            devices.setdefault(rank, set()).add(device)
+        for rank, row in streams.items():
+            devices[rank] = set()
+            kernels = 0
+            for line in row['stderr'].splitlines():
+                if 'launch CUDA kernel' not in line:
+                    continue
+                values = re.findall(r'\bdevice=(\d+)\b', line)
+                require(line.count('launch CUDA kernel') == 1 and len(values) == 1,
+                        'malformed CUDA kernel record in independent QE rank stream')
+                devices[rank].add(values[0])
+                kernels += 1
+            records[rank]['cuda_kernel_launches'] = kernels
         require('GPU acceleration is ACTIVE' in combined and set(devices) == {'0', '1'}
                 and all(len(values) == 1 for values in devices.values())
                 and set.union(*devices.values()) == {'0', '1'},
                 'QE manypw ranks did not execute on two separate GPU devices')
-    return dict(passed=True, images=images,
+    return dict(passed=True, images=images, rank_output=records,
                 gpu_devices_by_rank={rank: sorted(values) for rank, values in sorted(devices.items())})
 
 
