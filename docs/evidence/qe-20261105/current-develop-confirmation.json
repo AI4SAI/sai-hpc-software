@@ -1,0 +1,573 @@
+{
+  "accepted_image_and_science_identity_match": true,
+  "accounting": [
+    "2210560|DSPRHBM|COMPLETED|0:0|00:18:32|d9470n01",
+    "2210561|16V100|COMPLETED|0:0|00:13:34|16v100n02",
+    "2210565|4V100|COMPLETED|0:0|00:10:34|4v100n24",
+    "2210567|8V100V0|COMPLETED|0:0|00:21:30|8v100v0n03",
+    "2210755|4V100|COMPLETED|0:0|00:00:23|4v100n24",
+    "2210837|16V100|COMPLETED|0:0|00:00:26|16v100n09",
+    "2211174|8V100V0|COMPLETED|0:0|00:00:47|8v100v0n03",
+    "2211474|DSPRHBM|COMPLETED|0:0|00:01:09|d9470n05",
+    "2211561|16V100|COMPLETED|0:0|00:00:10|16v100n04",
+    "2211563|4V100|COMPLETED|0:0|00:00:17|4v100n31",
+    "2211565|8V100V0|COMPLETED|0:0|00:01:16|8v100v0n06",
+    "2211567|DSPRHBM|COMPLETED|0:0|00:00:14|d9470n11"
+  ],
+  "action": "Reuse unchanged fully accepted build; no additional build or science jobs submitted.",
+  "beta_alias": "/home/stardust/sai-hpc-software/modulefiles/apps/qe/develop-beta-later",
+  "beta_alias_exists": true,
+  "beta_alias_target": "develop-beta-20261105-61569eb48023-r68ed5eb155c0-bd913f2de073c",
+  "beta_validation": [
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "38989a6d11110cd14bdb2da670ee903c54f707e3392abb7e4ac1bcfdeaca6ac9",
+      "job": "2211561",
+      "partition": "16V100",
+      "passed": true,
+      "qe": {
+        "energy_ry": -15.84452726,
+        "forces_ry_bohr": [
+          [
+            -0.0,
+            -0.0,
+            0.0
+          ],
+          [
+            -0.0,
+            -0.0,
+            0.0
+          ]
+        ]
+      },
+      "runtime_sha256": "68ed5eb155c0000de13865fcbb921f761f481527ebac4686eb1c9f70b55f07e5"
+    },
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "38989a6d11110cd14bdb2da670ee903c54f707e3392abb7e4ac1bcfdeaca6ac9",
+      "job": "2211567",
+      "partition": "DSPRHBM",
+      "passed": true,
+      "qe": {
+        "energy_ry": -15.84452726,
+        "forces_ry_bohr": [
+          [
+            -0.0,
+            -0.0,
+            0.0
+          ],
+          [
+            -0.0,
+            -0.0,
+            0.0
+          ]
+        ]
+      },
+      "runtime_sha256": "68ed5eb155c0000de13865fcbb921f761f481527ebac4686eb1c9f70b55f07e5"
+    },
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "38989a6d11110cd14bdb2da670ee903c54f707e3392abb7e4ac1bcfdeaca6ac9",
+      "job": "2211565",
+      "partition": "8V100V0",
+      "passed": true,
+      "qe": {
+        "energy_ry": -15.84452726,
+        "forces_ry_bohr": [
+          [
+            0.0,
+            0.0,
+            -0.0
+          ],
+          [
+            -0.0,
+            -0.0,
+            0.0
+          ]
+        ]
+      },
+      "runtime_sha256": "68ed5eb155c0000de13865fcbb921f761f481527ebac4686eb1c9f70b55f07e5"
+    },
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "38989a6d11110cd14bdb2da670ee903c54f707e3392abb7e4ac1bcfdeaca6ac9",
+      "job": "2211563",
+      "partition": "4V100",
+      "passed": true,
+      "qe": {
+        "energy_ry": -15.84452726,
+        "forces_ry_bohr": [
+          [
+            -0.0,
+            -0.0,
+            -0.0
+          ],
+          [
+            -0.0,
+            -0.0,
+            0.0
+          ]
+        ]
+      },
+      "runtime_sha256": "68ed5eb155c0000de13865fcbb921f761f481527ebac4686eb1c9f70b55f07e5"
+    }
+  ],
+  "observed_at": "2026-11-05T06:42:38.593432+00:00",
+  "opt_beta_gateway": {
+    "action": "Administrator controlled; not installed or changed.",
+    "existing_qe_modules": [
+      "7.3-nvhpc24.3-ompi5.0.8",
+      "7.5-nvhpc26.3-ompi5.0.10",
+      "7.5-oneapi2024",
+      "7.6-auto"
+    ],
+    "exists": false,
+    "path": "/opt/modules/modulefiles/apps/qe/develop-beta-later"
+  },
+  "partitions": {
+    "16V100": {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-r18629d40806e/16V100/41970760811-1-development-16v100-avx2-2026-11-05-61569eb48023.sif",
+      "evidence": {
+        "artifact_sha256": "99cc5df0332a4365ce95a03c58264daeaf6bce478490ef4bee9305956c6e0129",
+        "checks": {
+          "density_electrons": 7.99999404914205,
+          "frequencies_cm1": [
+            2.778696,
+            2.778696,
+            2.778696,
+            510.151309,
+            510.151309,
+            510.151309
+          ],
+          "gpu_executed": true,
+          "scf": {
+            "1": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  0.0,
+                  -0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              ]
+            },
+            "2": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  -0.0,
+                  -0.0,
+                  0.0
+                ],
+                [
+                  -0.0,
+                  -0.0,
+                  0.0
+                ]
+              ]
+            }
+          }
+        },
+        "controller_sha256": "5887345d2651b4e4c6dd27e7f1a2787192097dffac55bb9c7bb661cbb82eae49",
+        "files": {
+          "results/gpu-host.txt": "e594d75af18d21aeeab0c110c4722bd5723aaa215305f8712f7a989e77169b12",
+          "results/science/mpi1/Si.pz-vbc.UPF": "d75dd6b0be0aa10587fc95900cfd6ba7314d461a8276a81df34f009d0bfc075d",
+          "results/science/mpi1/ph.in": "fcb1af192851d1748322bf5cbf3f10d101a8b65bce48cdb31a7bd54a92c45148",
+          "results/science/mpi1/pp.in": "2d6c3f199419016114a668b1e03b65e209043da8063683b20cb532d6a44ff501",
+          "results/science/mpi1/pw.out": "46815d756310dc07810602b8aa55222bdcdb91ed1f1bbcde3a6e2e749814500a",
+          "results/science/mpi1/ranks/rank-0.tsv": "8c49f485abb7ffe7aefdca0ce1188fef536ce97f03b7cb34f08d771e0807aff0",
+          "results/science/mpi1/scf.in": "5ce08026d14c5de46de474137e4b54cac0a53bfbafa41ad9131d8aef023f2366",
+          "results/science/mpi2/Si.pz-vbc.UPF": "d75dd6b0be0aa10587fc95900cfd6ba7314d461a8276a81df34f009d0bfc075d",
+          "results/science/mpi2/ph.in": "fcb1af192851d1748322bf5cbf3f10d101a8b65bce48cdb31a7bd54a92c45148",
+          "results/science/mpi2/ph.out": "7cf19fc277a9592adb6182f096604f69110defce52a9a7302407a82e9d68355e",
+          "results/science/mpi2/pp.in": "2d6c3f199419016114a668b1e03b65e209043da8063683b20cb532d6a44ff501",
+          "results/science/mpi2/pp.out": "da2d7142ff9017c1a595fcaea294b6a7040c5bb3e8efb02a009c20b7b9606d61",
+          "results/science/mpi2/pw.out": "40c64de8b1766796c59edee5d5c3e75109870adf4be70be16b522a601816ecdc",
+          "results/science/mpi2/ranks/rank-0.tsv": "8c49f485abb7ffe7aefdca0ce1188fef536ce97f03b7cb34f08d771e0807aff0",
+          "results/science/mpi2/ranks/rank-1.tsv": "bd999d3869470abe251355c35ef5ebbe5ba8c1eae38b8430602a29333eaf3b90",
+          "results/science/mpi2/rho.cube": "dc0fa7772514b852b26492fe9a7740517782b365436491ebfbe31568be4de9b1",
+          "results/science/mpi2/scf.in": "5ce08026d14c5de46de474137e4b54cac0a53bfbafa41ad9131d8aef023f2366"
+        },
+        "identity": {
+          "build_id": "develop-2026-07-09-g61569eb48023-r18629d40806e",
+          "cpu_arch": "znver3",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-r18629d40806e/16V100",
+          "partition": "16V100",
+          "recipe_sha256": "18629d40806e6bb222cd3324ae381ef367b1212bf2a5d72b2193d60514d06ff1",
+          "repository": "QEF/q-e",
+          "schema": 2,
+          "software": "qe",
+          "source_ref": "develop",
+          "source_sha": "61569eb480231b649c47f631df9c5c83537df461",
+          "source_version": "develop-2026-07-09",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "16v100-avx2",
+          "track": "development",
+          "version_label": "develop-2026-07-09"
+        },
+        "job": "2210837",
+        "job_script_sha256": "98818fc8e3736352f194ccf67df10aff60f77102118db9d3e3032e644d00fc07",
+        "verified": true
+      },
+      "science_directory": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/41970760811-1-development-16v100-avx2-2026-11-05-61569eb48023-science/results",
+      "sha256": "99cc5df0332a4365ce95a03c58264daeaf6bce478490ef4bee9305956c6e0129",
+      "sha256_matches_accepted": true,
+      "size": 1021444096,
+      "status": {
+        "exit_code": "0:0",
+        "job": "2210837",
+        "state": "COMPLETED",
+        "verified": true
+      }
+    },
+    "4V100": {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-r18629d40806e/4V100/41970760811-1-development-4v100-avx512-2026-11-05-61569eb48023.sif",
+      "evidence": {
+        "artifact_sha256": "c31d848b14216857a3dc9ec98262397c3580752df654610c5adde2861f8b1def",
+        "checks": {
+          "density_electrons": 7.99999404914205,
+          "frequencies_cm1": [
+            2.778695,
+            2.778695,
+            2.778695,
+            510.151309,
+            510.151309,
+            510.151309
+          ],
+          "gpu_executed": true,
+          "scf": {
+            "1": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  -0.0,
+                  -0.0,
+                  -0.0
+                ]
+              ]
+            },
+            "2": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  -0.0,
+                  -0.0,
+                  -0.0
+                ],
+                [
+                  -0.0,
+                  -0.0,
+                  0.0
+                ]
+              ]
+            }
+          }
+        },
+        "controller_sha256": "5887345d2651b4e4c6dd27e7f1a2787192097dffac55bb9c7bb661cbb82eae49",
+        "files": {
+          "results/gpu-host.txt": "448c6e5aa6fbe8abe039cb25b756f0be3a7a4cff98ccc77cda3ac11cb036fed8",
+          "results/science/mpi1/Si.pz-vbc.UPF": "d75dd6b0be0aa10587fc95900cfd6ba7314d461a8276a81df34f009d0bfc075d",
+          "results/science/mpi1/ph.in": "fcb1af192851d1748322bf5cbf3f10d101a8b65bce48cdb31a7bd54a92c45148",
+          "results/science/mpi1/pp.in": "2d6c3f199419016114a668b1e03b65e209043da8063683b20cb532d6a44ff501",
+          "results/science/mpi1/pw.out": "08db519a610164a314f81b533174411c13ea56f66812870b3c6622fcfe7a4380",
+          "results/science/mpi1/ranks/rank-0.tsv": "e71c20c44720942b52eb2f48b6cdee89da167e395607ac284d7ef4ec2aecad30",
+          "results/science/mpi1/scf.in": "5ce08026d14c5de46de474137e4b54cac0a53bfbafa41ad9131d8aef023f2366",
+          "results/science/mpi2/Si.pz-vbc.UPF": "d75dd6b0be0aa10587fc95900cfd6ba7314d461a8276a81df34f009d0bfc075d",
+          "results/science/mpi2/ph.in": "fcb1af192851d1748322bf5cbf3f10d101a8b65bce48cdb31a7bd54a92c45148",
+          "results/science/mpi2/ph.out": "ea33471de0c8919614e3d308cc502aa797b863bea69ebb71af71cd19e8b765cd",
+          "results/science/mpi2/pp.in": "2d6c3f199419016114a668b1e03b65e209043da8063683b20cb532d6a44ff501",
+          "results/science/mpi2/pp.out": "69dac273a7790a11d0b74cf9d59813613e7809ce38a4d43dde8565a2ead2bb1c",
+          "results/science/mpi2/pw.out": "5ed6219b1cd9b623440b73d29fd5666193094aa3d18f3c65bbf5859a0f13313b",
+          "results/science/mpi2/ranks/rank-0.tsv": "e71c20c44720942b52eb2f48b6cdee89da167e395607ac284d7ef4ec2aecad30",
+          "results/science/mpi2/ranks/rank-1.tsv": "df6806f5b0dfb75e6c945c370752e7f1bcfab8a92643e0952a8cae7048d8c877",
+          "results/science/mpi2/rho.cube": "dc0fa7772514b852b26492fe9a7740517782b365436491ebfbe31568be4de9b1",
+          "results/science/mpi2/scf.in": "5ce08026d14c5de46de474137e4b54cac0a53bfbafa41ad9131d8aef023f2366"
+        },
+        "identity": {
+          "build_id": "develop-2026-07-09-g61569eb48023-r18629d40806e",
+          "cpu_arch": "znver4",
+          "cuda_arch": "70",
+          "dependency_isa": "avx512",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-r18629d40806e/4V100",
+          "partition": "4V100",
+          "recipe_sha256": "18629d40806e6bb222cd3324ae381ef367b1212bf2a5d72b2193d60514d06ff1",
+          "repository": "QEF/q-e",
+          "schema": 2,
+          "software": "qe",
+          "source_ref": "develop",
+          "source_sha": "61569eb480231b649c47f631df9c5c83537df461",
+          "source_version": "develop-2026-07-09",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "4v100-avx512",
+          "track": "development",
+          "version_label": "develop-2026-07-09"
+        },
+        "job": "2210755",
+        "job_script_sha256": "b6484364c561efc83e7302ff50bb7cf60b41c44e6d8dbc4cd26ee88db0f267f7",
+        "verified": true
+      },
+      "science_directory": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/41970760811-1-development-4v100-avx512-2026-11-05-61569eb48023-science/results",
+      "sha256": "c31d848b14216857a3dc9ec98262397c3580752df654610c5adde2861f8b1def",
+      "sha256_matches_accepted": true,
+      "size": 1014816768,
+      "status": {
+        "exit_code": "0:0",
+        "job": "2210755",
+        "state": "COMPLETED",
+        "verified": true
+      }
+    },
+    "8V100V0": {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-r18629d40806e/8V100V0/41970760811-1-development-8v100v0-avx512-2026-11-05-61569eb48023.sif",
+      "evidence": {
+        "artifact_sha256": "509f8af228913c1854fbfbf9cfc615961684aca1afcd90c5e82ccf94ab490bce",
+        "checks": {
+          "density_electrons": 7.99999404914205,
+          "frequencies_cm1": [
+            2.778696,
+            2.778696,
+            2.778696,
+            510.151309,
+            510.151309,
+            510.151309
+          ],
+          "gpu_executed": true,
+          "scf": {
+            "1": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  -0.0
+                ]
+              ]
+            },
+            "2": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  0.0,
+                  0.0,
+                  -0.0
+                ],
+                [
+                  -0.0,
+                  -0.0,
+                  0.0
+                ]
+              ]
+            }
+          }
+        },
+        "controller_sha256": "5887345d2651b4e4c6dd27e7f1a2787192097dffac55bb9c7bb661cbb82eae49",
+        "files": {
+          "results/gpu-host.txt": "d73822cc60a03fc3d63ff5abf9dada9d2385949faad97dbe6125d4a5450b30b7",
+          "results/science/mpi1/Si.pz-vbc.UPF": "d75dd6b0be0aa10587fc95900cfd6ba7314d461a8276a81df34f009d0bfc075d",
+          "results/science/mpi1/ph.in": "fcb1af192851d1748322bf5cbf3f10d101a8b65bce48cdb31a7bd54a92c45148",
+          "results/science/mpi1/pp.in": "2d6c3f199419016114a668b1e03b65e209043da8063683b20cb532d6a44ff501",
+          "results/science/mpi1/pw.out": "99d759e0b858d56ceb301fb1ef413258ce02a43fededcba86617fd86b00db64f",
+          "results/science/mpi1/ranks/rank-0.tsv": "98f5e9a5060295a94101eeb70db1be589f1288e593f2ed95713025d951cc0f73",
+          "results/science/mpi1/scf.in": "5ce08026d14c5de46de474137e4b54cac0a53bfbafa41ad9131d8aef023f2366",
+          "results/science/mpi2/Si.pz-vbc.UPF": "d75dd6b0be0aa10587fc95900cfd6ba7314d461a8276a81df34f009d0bfc075d",
+          "results/science/mpi2/ph.in": "fcb1af192851d1748322bf5cbf3f10d101a8b65bce48cdb31a7bd54a92c45148",
+          "results/science/mpi2/ph.out": "407f4b63930adb8e0ef039328acb02d7a39d68f3f6a6dbecb1731c13290bdfd9",
+          "results/science/mpi2/pp.in": "2d6c3f199419016114a668b1e03b65e209043da8063683b20cb532d6a44ff501",
+          "results/science/mpi2/pp.out": "8be2443fcc562c77bf1aaf311c650a7150b2ed031cf5729220e8f5c706da5bab",
+          "results/science/mpi2/pw.out": "915f56971cedd56f6bed78f22d7f4ec0a563d1ab42549263404c89e02829bb20",
+          "results/science/mpi2/ranks/rank-0.tsv": "98f5e9a5060295a94101eeb70db1be589f1288e593f2ed95713025d951cc0f73",
+          "results/science/mpi2/ranks/rank-1.tsv": "a9c44584ca69bf4e2795f0c2c475a3b32e1a0addfc1ee3b26e5f5315c81bac88",
+          "results/science/mpi2/rho.cube": "dc0fa7772514b852b26492fe9a7740517782b365436491ebfbe31568be4de9b1",
+          "results/science/mpi2/scf.in": "5ce08026d14c5de46de474137e4b54cac0a53bfbafa41ad9131d8aef023f2366"
+        },
+        "identity": {
+          "build_id": "develop-2026-07-09-g61569eb48023-r18629d40806e",
+          "cpu_arch": "skylake-avx512",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-r18629d40806e/8V100V0",
+          "partition": "8V100V0",
+          "recipe_sha256": "18629d40806e6bb222cd3324ae381ef367b1212bf2a5d72b2193d60514d06ff1",
+          "repository": "QEF/q-e",
+          "schema": 2,
+          "software": "qe",
+          "source_ref": "develop",
+          "source_sha": "61569eb480231b649c47f631df9c5c83537df461",
+          "source_version": "develop-2026-07-09",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "8v100v0-avx512",
+          "track": "development",
+          "version_label": "develop-2026-07-09"
+        },
+        "job": "2211174",
+        "job_script_sha256": "f754951371a26692b7f1381eccc19068a00de7bec4e99c3a86240601b79558ac",
+        "verified": true
+      },
+      "science_directory": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/41970760811-1-development-8v100v0-avx512-2026-11-05-61569eb48023-science/results",
+      "sha256": "509f8af228913c1854fbfbf9cfc615961684aca1afcd90c5e82ccf94ab490bce",
+      "sha256_matches_accepted": true,
+      "size": 1023700992,
+      "status": {
+        "exit_code": "0:0",
+        "job": "2211174",
+        "state": "COMPLETED",
+        "verified": true
+      }
+    },
+    "DSPRHBM": {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-r18629d40806e/DSPRHBM/41970760811-1-development-dsprhbm-2026-11-05-61569eb48023.sif",
+      "evidence": {
+        "artifact_sha256": "19230310565cc76e58017d0f6614cadb0587189ae2fa010d49b6f4bd3213f990",
+        "checks": {
+          "density_electrons": 7.9999948251504,
+          "frequencies_cm1": [
+            2.590577,
+            2.590577,
+            2.590577,
+            510.149663,
+            510.149663,
+            510.149663
+          ],
+          "gpu_executed": false,
+          "scf": {
+            "1": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  -0.0,
+                  -0.0,
+                  -0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              ]
+            },
+            "2": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  0.0,
+                  -0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  -0.0
+                ]
+              ]
+            }
+          }
+        },
+        "controller_sha256": "5887345d2651b4e4c6dd27e7f1a2787192097dffac55bb9c7bb661cbb82eae49",
+        "files": {
+          "results/science/mpi1/Si.pz-vbc.UPF": "d75dd6b0be0aa10587fc95900cfd6ba7314d461a8276a81df34f009d0bfc075d",
+          "results/science/mpi1/ph.in": "fcb1af192851d1748322bf5cbf3f10d101a8b65bce48cdb31a7bd54a92c45148",
+          "results/science/mpi1/pp.in": "2d6c3f199419016114a668b1e03b65e209043da8063683b20cb532d6a44ff501",
+          "results/science/mpi1/pw.out": "136118d430a6db9c87bee86bd855ffb1138ff66bea3585a37ec6747f1c294628",
+          "results/science/mpi1/ranks/rank-0.tsv": "060d6f7c272fee3748eabab616f4c5e5cc0d83a014b50397fce12a1eeffd855c",
+          "results/science/mpi1/scf.in": "5ce08026d14c5de46de474137e4b54cac0a53bfbafa41ad9131d8aef023f2366",
+          "results/science/mpi2/Si.pz-vbc.UPF": "d75dd6b0be0aa10587fc95900cfd6ba7314d461a8276a81df34f009d0bfc075d",
+          "results/science/mpi2/ph.in": "fcb1af192851d1748322bf5cbf3f10d101a8b65bce48cdb31a7bd54a92c45148",
+          "results/science/mpi2/ph.out": "64eb0f504ac08910088c4780e5af8af8a5f900fdcb8d484272b834895b90ab56",
+          "results/science/mpi2/pp.in": "2d6c3f199419016114a668b1e03b65e209043da8063683b20cb532d6a44ff501",
+          "results/science/mpi2/pp.out": "5f2bbd74a8c2c8b99d99046f487d19839e2da72d9dfd66374e248032a9294c38",
+          "results/science/mpi2/pw.out": "79ed15151a87380a9ccddffd3d90a7fa3225e48b69a9e2a51b178cd338830b76",
+          "results/science/mpi2/ranks/rank-0.tsv": "060d6f7c272fee3748eabab616f4c5e5cc0d83a014b50397fce12a1eeffd855c",
+          "results/science/mpi2/ranks/rank-1.tsv": "cdca56c05399dbd7b93451fb79c85af35eb5c4bcd4ef4b0dbe68d8a6de69ad09",
+          "results/science/mpi2/rho.cube": "8a9026e47e8cd8054c631f0d088eaa0b0a9d30674d6d14f92b15c64911233fdc",
+          "results/science/mpi2/scf.in": "5ce08026d14c5de46de474137e4b54cac0a53bfbafa41ad9131d8aef023f2366"
+        },
+        "identity": {
+          "build_id": "develop-2026-07-09-g61569eb48023-r18629d40806e",
+          "cpu_arch": "x86-64-v4",
+          "cuda_arch": "",
+          "dependency_isa": "avx512",
+          "gpus": 0,
+          "install_prefix": "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-r18629d40806e/DSPRHBM",
+          "partition": "DSPRHBM",
+          "recipe_sha256": "18629d40806e6bb222cd3324ae381ef367b1212bf2a5d72b2193d60514d06ff1",
+          "repository": "QEF/q-e",
+          "schema": 2,
+          "software": "qe",
+          "source_ref": "develop",
+          "source_sha": "61569eb480231b649c47f631df9c5c83537df461",
+          "source_version": "develop-2026-07-09",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "dsprhbm",
+          "track": "development",
+          "version_label": "develop-2026-07-09"
+        },
+        "job": "2211474",
+        "job_script_sha256": "d36e18a5b8a715a846adf6990cb32358ab864c72d9e1df2749e760057886586f",
+        "verified": true
+      },
+      "science_directory": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/41970760811-1-development-dsprhbm-2026-11-05-61569eb48023-science/results",
+      "sha256": "19230310565cc76e58017d0f6614cadb0587189ae2fa010d49b6f4bd3213f990",
+      "sha256_matches_accepted": true,
+      "size": 436228096,
+      "status": {
+        "exit_code": "0:0",
+        "job": "2211474",
+        "state": "COMPLETED",
+        "verified": true
+      }
+    }
+  },
+  "publication": {
+    "after": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261105-41970760811-1-qe",
+      "fixed": "develop-beta-20261105-61569eb48023-r68ed5eb155c0-bd913f2de073c",
+      "generation": "daily-20261105-41970760811-1-qe"
+    },
+    "attempt": "1",
+    "before": null,
+    "catalog_sha256": "9486d31924ea15dc8c127c0c8a5e39cb803a7110487b087823c0a980c7100ff0",
+    "checks": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/41970760811-1-qe-c291f0e263c0/validation.json",
+    "fixed": "develop-beta-20261105-61569eb48023-r68ed5eb155c0-bd913f2de073c",
+    "generation": "daily-20261105-41970760811-1-qe",
+    "software": "qe",
+    "source_sha": "61569eb480231b649c47f631df9c5c83537df461",
+    "status": "published",
+    "workflow": "41970760811"
+  },
+  "upstream": {
+    "branch": "develop",
+    "head": "61569eb480231b649c47f631df9c5c83537df461",
+    "repository": "QEF/q-e"
+  },
+  "workflow": {
+    "conclusion": "success",
+    "head_sha": "c291f0e263c07dc56dd8528f978e29e15af6af03",
+    "html_url": "https://github.com/AI4SAI/sai-hpc-software/actions/runs/41970760811",
+    "status": "completed",
+    "updated_at": "2026-11-05T06:10:12Z"
+  }
+}

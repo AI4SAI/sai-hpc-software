@@ -88,5 +88,11 @@ bash /home/stardust/sai-hpc-software/deployment/qe-7.6/submit-native-checks.sh
 [QE qualification](../../docs/evidence/qe-20261105/README.md)。项目目录已完成四分区的整套
 试安装和文件校验；[原生试运行记录](../../docs/evidence/qe-20261105/native-release-stage.json)
 中 DSPRHBM、16V100、4V100、8V100V0 均已通过全部链接和 SCF/PH/PP 检查，
-GPU 分区确认了双卡 CUDA 执行。管理员物理安装尚未执行；项目试安装与最终 `/opt`
-验收分别记录。
+GPU 分区确认了双卡 CUDA 执行。
+
+管理员已于 2026-11-05 完成物理 `/opt` 安装。安装后的完整文件与模块校验通过，
+四分区也已通过同一套原生运行检查，见
+[实际安装验收](../../docs/evidence/qe-20261105/native-release-installed.json)。
+作业 `2212239`、`2212240`、`2212241`、`2212242` 均为 `COMPLETED 0:0`；
+每个分区检查了全部 67 个程序的动态库，三个 GPU 分区均确认设备 0 和 1 执行 CUDA 内核。
+项目试安装与最终 `/opt` 验收分别保留原始记录。

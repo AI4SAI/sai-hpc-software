@@ -126,4 +126,26 @@ The release administrator package completed a full installation and file
 verification in a project staging tree. All four native staged installations
 passed the 67-command dynamic-library checks and SCF/PH/PP science; see
 [native evidence](evidence/qe-20261105/native-release-stage.json).
-Physical /opt installation has not been performed.
+The administrator installed the release into physical `/opt` on 2026-11-05.
+The complete installed-file and public-module verification passed, followed by
+all four [native installed-release checks](evidence/qe-20261105/native-release-installed.json):
+jobs `2212239` (16V100), `2212240` (4V100), `2212241` (8V100V0) and `2212242`
+(DSPRHBM) all completed with `0:0`. Each checked all 67 executable dependencies
+and SCF/PH/PP results; every GPU partition executed kernels on both devices.
+The runtime checks used a byte-identical module copy pointing to the physical
+installation, with its hash checked against the installed public module.
+
+A [live develop recheck](evidence/qe-20261105/current-develop-confirmation.json)
+at 06:42 UTC confirmed that upstream still pointed to `61569eb48023`.
+The four SIF hashes and all twelve build/science/beta accounting records matched
+the accepted deliveries, so no duplicate compilation was submitted. The home
+beta alias is available; its optional `/opt` gateway has not been installed.
+
+The [installed-feature audit](evidence/qe-20261105/feature-audit.md) compares
+seven existing 7.3/7.5 prefixes with the new builds. All 60 current 7.5 commands
+are covered, and D3/TS/MBD calculations passed on all four targets. Old and new
+programs also passed same-node dispersion comparisons within upstream limits.
+Legacy 7.3 entry points are reported separately: `dist.x` fails MPI cleanup in
+both old and new programs, `manypw.x` requires preserving its invocation name,
+and the old `pwgui` GUI is outside this batch package. The audit records the
+runtime results and the differences in the historical command inventories.
