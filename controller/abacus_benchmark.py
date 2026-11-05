@@ -50,7 +50,42 @@ path = Path(os.environ['SAI_ABACUS_TRACE_DIR']) / ('affinity-' + str(rank) + '.j
 with path.open('x') as stream:
     json.dump(evidence, stream, sort_keys=True)
     stream.write('\\n')
+output = path.parent.parent / 'rank-output' / ('rank.' + str(rank))
+output.mkdir(parents=True)
+for descriptor, name in ((1, 'stdout'), (2, 'stderr')):
+    with (output / name).open('xb') as stream:
+        os.dup2(stream.fileno(), descriptor)
 os.execvp(sys.argv[1], sys.argv[1:])
+"""
+
+# MPI's combined output can interleave even a single line from two nodes.
+# Keep the original streams and concatenate complete rank logs only after MPI
+# exits. The same strict thread-count and SCF parsers then see intact records.
+RANK_OUTPUT_COLLECT = """import sys
+from pathlib import Path
+root = Path(sys.argv[1]).resolve(strict=True)
+ranks = int(sys.argv[2])
+directories = list(root.rglob('rank.*'))
+expected = {'rank.' + str(rank) for rank in range(ranks)}
+if (len(directories) != ranks or {path.name for path in directories} != expected
+        or len({path.parent for path in directories}) != 1
+        or any(not path.is_dir() or path.resolve() != path for path in directories)):
+    raise ValueError('missing or unexpected MPI rank output directories')
+parent = directories[0].parent
+for stream in ('stdout', 'stderr'):
+    with Path(stream + '.log').open('x') as output:
+        for rank in range(ranks):
+            path = parent / ('rank.' + str(rank)) / stream
+            if not path.is_file() or path.resolve() != path:
+                raise ValueError('missing or untrusted MPI rank output stream')
+            content = path.read_text()
+            output.write(content)
+            if content and not content.endswith('\\n'):
+                output.write('\\n')
+# ABACUS prints its node-local OpenMP report to stderr. Preserve the
+# historical combined stdout.log input to the existing strict verifier.
+with Path('stdout.log').open('a') as output:
+    output.write(Path('stderr.log').read_text())
 """
 
 
@@ -191,7 +226,8 @@ def render_job(r, task):
              f'read -r actual _ < artifact.sha256; [[ "$actual" == {r["artifact_sha256"]} ]]',
              f'read -r actual _ < launcher.sha256; [[ "$actual" == {r["launcher_sha256"]} ]]',
              f'/usr/bin/time -f %e -o wall-seconds.txt mpirun -np {r["ranks"]} '
-             f'{placement} --report-bindings "${{command[@]}}" > stdout.log 2>&1',
+             f'{placement} --report-bindings "${{command[@]}}" > launcher.log 2>&1',
+             f'python3 -c {q(RANK_OUTPUT_COLLECT)} "$work/rank-output" {r["ranks"]}',
              'printf "%s\\n" "$SLURM_JOB_ID" > completed.job', ")"]
     lines += [f"run_one {s['arm']} {s['id']}" for s in r["runs"]]
     lines += ['echo ABACUS_BENCHMARK_RUNS_COMPLETED']
@@ -209,7 +245,8 @@ def inspect_case(case, r):
             (cpu and device != "cpu") or (not cpu and device == "cpu" and not allow_cpu)):
         raise ValueError("case must request SCF and the target's CPU/GPU device")
     scf = Path(r["scf_log"])
-    reserved = {"ranks", "stdout.log", "wall-seconds.txt", "completed.job", "modules.log",
+    reserved = {"ranks", "rank-output", "stdout.log", "stderr.log", "launcher.log",
+                "wall-seconds.txt", "completed.job", "modules.log",
                 "artifact.sha256", "launcher.sha256", "info.log", "ldd.log",
                 "executable.sha256", "executable.path"}
     if scf.is_absolute() or ".." in scf.parts or (case / scf).exists():
@@ -251,7 +288,7 @@ def prepare(args):
              ranks_per_node=4 if cpu else 1, ranks=8 if cpu else 2, threads=2 if cpu else 1,
              dependency_isa=target.get("dependency_isa", "avx512" if args.target in
                                        {"dsprhbm", "4v100-avx512"} else "avx2"),
-             runs=sequence(args.warmup, args.repeats), schema=2)
+             runs=sequence(args.warmup, args.repeats), schema=2, rank_output="direct-v1")
     task.mkdir(parents=True)
     (task / "results").mkdir()
     for name in ("mpi-runtime", "apptainer-runtime", "apptainer-cache"):
@@ -490,6 +527,25 @@ def verify_evidence(task, request):
             raise ValueError("ABACUS reported OpenMP thread count differs from the request")
         result = parse_scf(stdout, read(base / r["scf_log"]),
                            read(base / "wall-seconds.txt"))
+        if r.get("rank_output") == "direct-v1":
+            output = task / base / "rank-output"
+            expected = {f"rank.{rank}" for rank in range(r["ranks"])}
+            if {path.name for path in output.iterdir()} != expected:
+                raise ValueError("missing or unexpected raw rank output")
+            streams = {}
+            for stream in ("stdout", "stderr"):
+                chunks = []
+                for rank in range(r["ranks"]):
+                    directory = output / f"rank.{rank}"
+                    if {path.name for path in directory.iterdir()} != {"stdout", "stderr"}:
+                        raise ValueError("missing or unexpected raw rank streams")
+                    content = read(base / "rank-output" / f"rank.{rank}" / stream)
+                    chunks.append(content + ("\n" if content and not content.endswith("\n") else ""))
+                streams[stream] = "".join(chunks)
+            if (stdout != streams["stdout"] + streams["stderr"] or
+                    read(base / "stderr.log") != streams["stderr"]):
+                raise ValueError("collected log differs from the raw rank streams")
+            read(base / "launcher.log")
         records.append(dict(spec, **result, nodes=dict(hosts), versions=versions,
                             affinity=affinity, reported_threads=int(reported_threads[0])))
     if len(binaries) != 1 or len({tuple(sorted(x["nodes"])) for x in records}) != 1:
@@ -555,7 +611,7 @@ def verify_retest(task, request, evidence):
     fields = ("identity", "artifact", "artifact_sha256", "launcher", "launcher_sha256",
               "controller_sha256", "version", "target", "system_module", "packaged_case",
               "benchmark_case", "case_device", "nodes", "ranks", "ranks_per_node", "threads",
-              "dependency_isa", "warmup", "repeats", "scf_log", "allow_cpu_case_on_gpu")
+              "dependency_isa", "warmup", "repeats", "scf_log", "allow_cpu_case_on_gpu", "rank_output")
     if any(first_request.get(key) != request.get(key) for key in fields):
         raise ValueError("ABACUS retest changed the image, baseline, case or resource contract")
     first = verify_evidence(original, first_request)

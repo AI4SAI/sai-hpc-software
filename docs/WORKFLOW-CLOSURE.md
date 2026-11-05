@@ -1,5 +1,29 @@
 # Workflow closure — 2026-11-05
 
+## November 5 daily acceptance recovery
+
+ABACUS and QE encountered interleaved MPI diagnostics in workflow
+`42003384294`. Both now capture each rank's original streams before parsing;
+scientific, thread, GPU and performance gates remain strict. No SIF needed
+recompilation for these repairs. ABACUS CPU DeePKS recovery `2218404` passed,
+then beta workflow `42028012790` passed all four partitions and rotated the
+alias to today's `3c1dddac0667` build. See
+[the original failures and recovery evidence](evidence/abacus-rank-output-20261105/README.md).
+
+QE beta workflow `42026314156` also passed all four partitions. Each GPU rank
+executed kernels on its own device, and both independent images converged to
+the reference energy. The home alias now selects today's `61569eb48023`
+generation. See [QE rank-output qualification](evidence/qe-20261105/RANK-OUTPUT.md).
+Its one-time public gateway remains an administrator installation:
+`bash /home/stardust/sai-hpc-software/deployment/sif-beta/install.sh --install /opt/modules/modulefiles/apps qe`.
+The live preflight passed; the gateway then follows stardust's home alias.
+
+The independent [ABACUS CPU investigation](evidence/abacus-cpu-io-diagnosis-20261105/README.md)
+found multi-second filesystem calls overlapping MPI waits, with correct
+affinity and energies. Concurrent DeePKS diagnostic-file writes amplify the
+traffic. Moving only MPI session/buffer files into RAM did not eliminate
+the delays; no production performance fix is claimed or applied.
+
 ## Quantum ESPRESSO integration
 
 QE now has release/develop tracking, container builds, host-MPI scientific

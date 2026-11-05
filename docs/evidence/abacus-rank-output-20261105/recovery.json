@@ -1,0 +1,2638 @@
+{
+  "acceptance": {
+    "benchmark_deepks": {
+      "artifact_sha256": "6a993b9257970ac015b32cd390424b362b170c0ca13446a7526a1167b57d47ff",
+      "benchmark_case": "deepks",
+      "case_device": "cpu",
+      "controller_sha256": "50cbcc303ee869113bd80cb8424ec4598f670173bfd870fdec985e402f914bbe",
+      "evidence_sha256": "426313604a64c38d5fac27f1cde7cd2bb03b48a159f2e9d33e2c8b8873507c95",
+      "identity": {
+        "build_id": "develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/abacus/abacus-development-develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "35253fd4b4f6d16c0ed419deb95dea81d6193e00742bde3ce6321dfe6a42b15a",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "develop",
+        "source_sha": "3c1dddac06678e1b37752c9752c316f8713f499b",
+        "source_version": "develop-2026-11-05",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "development",
+        "version_label": "develop-2026-11-05"
+      },
+      "job": "2218404",
+      "job_script_sha256": "b6673810b6e64be90e2389637704a9a9acf7e67c915f54308c4531076df8d58a",
+      "launcher": "/org/org-open-sai/proj-sai-hpc-software/controller/a3dfe27f889248a017caa492c15a556d9aa1eee0/42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667/abacus",
+      "launcher_sha256": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+      "nodes": 2,
+      "ranks": 8,
+      "run_id": "benchmark-42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667-deepks-logfix3",
+      "system_module": "abacus/v3.9.0.26-sm70-auto",
+      "verified": true
+    },
+    "benchmark_hse": {
+      "artifact_sha256": "6a993b9257970ac015b32cd390424b362b170c0ca13446a7526a1167b57d47ff",
+      "benchmark_case": "hse",
+      "case_device": "cpu",
+      "controller_sha256": "50cbcc303ee869113bd80cb8424ec4598f670173bfd870fdec985e402f914bbe",
+      "evidence_sha256": "a32b885afeb4e2e62d523c26838beb8b23e2736d82c03e94ab07070ac8d9f8b8",
+      "identity": {
+        "build_id": "develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/abacus/abacus-development-develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "35253fd4b4f6d16c0ed419deb95dea81d6193e00742bde3ce6321dfe6a42b15a",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "develop",
+        "source_sha": "3c1dddac06678e1b37752c9752c316f8713f499b",
+        "source_version": "develop-2026-11-05",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "development",
+        "version_label": "develop-2026-11-05"
+      },
+      "job": "2216376",
+      "job_script_sha256": "afeae3a156c2560d7e0f05f06a9d00fc7375cc907ac6e6f038f033062e63b5bc",
+      "launcher": "/org/org-open-sai/proj-sai-hpc-software/controller/a3dfe27f889248a017caa492c15a556d9aa1eee0/42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667/abacus",
+      "launcher_sha256": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+      "nodes": 2,
+      "ranks": 8,
+      "run_id": "benchmark-42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667-hse",
+      "system_module": "abacus/v3.9.0.26-sm70-auto",
+      "verified": true
+    },
+    "benchmark_pw": {
+      "artifact_sha256": "6a993b9257970ac015b32cd390424b362b170c0ca13446a7526a1167b57d47ff",
+      "benchmark_case": "pw",
+      "case_device": "cpu",
+      "controller_sha256": "50cbcc303ee869113bd80cb8424ec4598f670173bfd870fdec985e402f914bbe",
+      "evidence_sha256": "adac7f3edf07a419968d87c9fb0ee0417c2562d1b1fc0734f14a852974163c6d",
+      "identity": {
+        "build_id": "develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/abacus/abacus-development-develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "35253fd4b4f6d16c0ed419deb95dea81d6193e00742bde3ce6321dfe6a42b15a",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "develop",
+        "source_sha": "3c1dddac06678e1b37752c9752c316f8713f499b",
+        "source_version": "develop-2026-11-05",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "development",
+        "version_label": "develop-2026-11-05"
+      },
+      "job": "2216351",
+      "job_script_sha256": "dcd7a7ef1208e9ce1bd514be491f1277792a264711112c719a74f40a844e569b",
+      "launcher": "/org/org-open-sai/proj-sai-hpc-software/controller/a3dfe27f889248a017caa492c15a556d9aa1eee0/42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667/abacus",
+      "launcher_sha256": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+      "nodes": 2,
+      "ranks": 8,
+      "run_id": "benchmark-42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667-pw",
+      "system_module": "abacus/v3.9.0.26-sm70-auto",
+      "verified": true
+    },
+    "multinode_runtime": {
+      "artifact_sha256": "6a993b9257970ac015b32cd390424b362b170c0ca13446a7526a1167b57d47ff",
+      "controller_sha256": "857348af9fe6db4201aea24778007e03ccc0234b651a5f2f9d09ce7d5e79520f",
+      "cpus_per_task": 2,
+      "evidence_sha256": "617d19ff1fa4c8a24b6ed177137dab882aec667da8158624bc7052d0bd917f7d",
+      "gpus_per_node": 0,
+      "identity": {
+        "build_id": "develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/abacus/abacus-development-develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "35253fd4b4f6d16c0ed419deb95dea81d6193e00742bde3ce6321dfe6a42b15a",
+        "repository": "deepmodeling/abacus-develop",
+        "schema": 2,
+        "software": "abacus",
+        "source_ref": "develop",
+        "source_sha": "3c1dddac06678e1b37752c9752c316f8713f499b",
+        "source_version": "develop-2026-11-05",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "development",
+        "version_label": "develop-2026-11-05"
+      },
+      "job": "2216230",
+      "job_script_sha256": "0ee31a1d2632d4e2efd8702d633aa2d1b57e7eda1d667a13202f2390dc74b3e6",
+      "launcher": "/org/org-open-sai/proj-sai-hpc-software/controller/a3dfe27f889248a017caa492c15a556d9aa1eee0/42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667/abacus",
+      "launcher_sha256": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+      "nodes": 2,
+      "partition": "DSPRHBM",
+      "ranks": 8,
+      "ranks_per_node": 4,
+      "run_id": "42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667-multinode",
+      "verified": true
+    }
+  },
+  "accounting": "2216449|COMPLETED|0:0|00:01:36|d9470n[03,06]|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/benchmark-42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667-deepks\n2218191|FAILED|1:0|00:00:23|d9470n[06-07]|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/benchmark-42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667-deepks-logfix1\n2218257|COMPLETED|0:0|00:03:18|d9470n[05-06]|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/benchmark-42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667-deepks-logfix2\n2218404|COMPLETED|0:0|00:02:12|d9470n[05-06]|proj-sai-hpc-software|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/benchmark-42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667-deepks-logfix3\n",
+  "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6/DSPRHBM/42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667.sif",
+  "artifact_sha256": "6a993b9257970ac015b32cd390424b362b170c0ca13446a7526a1167b57d47ff",
+  "build_run": "42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667",
+  "evidence": {
+    "affinity_note": "Physical/logical CPU sets and OpenMP environment match for every host/local rank; binding is recorded before exec, not sampled per OpenMP worker thread.",
+    "artifact_sha256": "6a993b9257970ac015b32cd390424b362b170c0ca13446a7526a1167b57d47ff",
+    "benchmark_case": "deepks",
+    "case_device": "cpu",
+    "case_files": {
+      "INPUT": "0e8cd3965b1a0a745dcf9035679305dfbf67687078cac1dba8d504c89f160acb",
+      "KPT": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+      "Model_ProjOrb/2au_20Ry_jle.orb": "fbc62a9b6d6b2cfbf74021b17ceb952f905e54e8a5d0445088a962d1b7c01975",
+      "Model_ProjOrb/model_lda_pbe_18.ptg": "76c05c02507a9061552cbb77d90f19023fbb1fed129cedf6f282c52062b4210c",
+      "PP_ORB/C_ONCV_PBE-1.0.upf": "e95d682a8b918557fb57e2e0ec11b2f48cf693cb72a11d078cf07ec489a8fa99",
+      "PP_ORB/C_gga_8au_100Ry_2s2p1d.orb": "535936651babc797c0e43bfaa29bf6c9bc70a146744709a87c68d1e042b83daa",
+      "PP_ORB/H_ONCV_PBE-1.0.upf": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+      "PP_ORB/H_gga_8au_100Ry_2s1p.orb": "38c8327dd6b16c0d02a5a34e688fdb2d4ec73e4a9de00a6e248e4d246db3c2fc",
+      "STRU": "7802c38967143cbad51e3cbf5365fbc0f9824c1f71eae7fb6ba10f96d6f91648",
+      "result.ref": "c978f95a6d308d9e3f676f5498aac4938ccf4a2eba84b831141572d8ceb3492f"
+    },
+    "controller_sha256": "50cbcc303ee869113bd80cb8424ec4598f670173bfd870fdec985e402f914bbe",
+    "energy_reference": {
+      "candidate_max_error_ev": 1.9184653865522705e-12,
+      "energy_ev": -71.32203132091935,
+      "source": "pinned upstream result.ref",
+      "tolerance_ev": 1e-05
+    },
+    "energy_spread_ev": 9.61348976602494e-06,
+    "files": {
+      "execution.id": "c1016f513a3a2b545df31bfefb833d467a314948cdb814382af6d4a29156982c",
+      "input/result.ref": "c978f95a6d308d9e3f676f5498aac4938ccf4a2eba84b831141572d8ceb3492f",
+      "job.id": "c1016f513a3a2b545df31bfefb833d467a314948cdb814382af6d4a29156982c",
+      "results/input.json": "6739bd99b5aeaa47ad41d173bc73bd7bb74e9a678a9c6e48f58d1aa8af405f2f",
+      "runs/m000-candidate/INPUT": "0e8cd3965b1a0a745dcf9035679305dfbf67687078cac1dba8d504c89f160acb",
+      "runs/m000-candidate/KPT": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+      "runs/m000-candidate/Model_ProjOrb/2au_20Ry_jle.orb": "fbc62a9b6d6b2cfbf74021b17ceb952f905e54e8a5d0445088a962d1b7c01975",
+      "runs/m000-candidate/Model_ProjOrb/model_lda_pbe_18.ptg": "76c05c02507a9061552cbb77d90f19023fbb1fed129cedf6f282c52062b4210c",
+      "runs/m000-candidate/OUT.autotest/running_scf.log": "3f083a16d6afe9fa7e3c4453eec41f4ba6d70ece2802f4115f11739c3fc5c28a",
+      "runs/m000-candidate/PP_ORB/C_ONCV_PBE-1.0.upf": "e95d682a8b918557fb57e2e0ec11b2f48cf693cb72a11d078cf07ec489a8fa99",
+      "runs/m000-candidate/PP_ORB/C_gga_8au_100Ry_2s2p1d.orb": "535936651babc797c0e43bfaa29bf6c9bc70a146744709a87c68d1e042b83daa",
+      "runs/m000-candidate/PP_ORB/H_ONCV_PBE-1.0.upf": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+      "runs/m000-candidate/PP_ORB/H_gga_8au_100Ry_2s1p.orb": "38c8327dd6b16c0d02a5a34e688fdb2d4ec73e4a9de00a6e248e4d246db3c2fc",
+      "runs/m000-candidate/STRU": "7802c38967143cbad51e3cbf5365fbc0f9824c1f71eae7fb6ba10f96d6f91648",
+      "runs/m000-candidate/artifact.sha256": "8b4c0b0ebf50238f10ce1a68a5061651d5c3487446f5861edbf91fce7c25f6e8",
+      "runs/m000-candidate/completed.job": "c1016f513a3a2b545df31bfefb833d467a314948cdb814382af6d4a29156982c",
+      "runs/m000-candidate/info.log": "88922472373728c7a15c050fdfcea863ff5973ddb7ecbc08b4ffbd1b055cffc6",
+      "runs/m000-candidate/launcher.sha256": "007b6949caae8255663d1a9200ce0832c0b26e56dec27551b4ecac4d2fcd2340",
+      "runs/m000-candidate/modules.log": "0ddca348c0c9b1170b3f2ecd75343c2222eb1bfd5a2ef8eb5c6ad346a9f90400",
+      "runs/m000-candidate/ranks/affinity-0.json": "75d709c44389e864942a8fa451670beef32c8d93e285957974610b02591ed762",
+      "runs/m000-candidate/ranks/affinity-1.json": "37d7a41e7232cf69b107ce819742247b9c075055c0154d4bf79c83bb1622d48c",
+      "runs/m000-candidate/ranks/affinity-2.json": "bf41c17211b9f73bc5aa69536df0b87e901aecace4c3cfb3071360ad452a5f94",
+      "runs/m000-candidate/ranks/affinity-3.json": "f1fed0956c19dc29c2fa23a31102af7d09dc4d2f8cb6ee56f70879b5bfa8f007",
+      "runs/m000-candidate/ranks/affinity-4.json": "3bef31569241158fa7450c6688cef0e0985bdf1b2434fb5bc5a2b29326a140ad",
+      "runs/m000-candidate/ranks/affinity-5.json": "3afd629b971ffe8cff09c5b0acd9b61051a9227ccaa6a1519326fd6f74031a2b",
+      "runs/m000-candidate/ranks/affinity-6.json": "21aeb7104c8e4c8b687460de47b4ecf7d68d327cc0748ba5b3e8ff8c51f4e712",
+      "runs/m000-candidate/ranks/affinity-7.json": "19ffd9de0486f4bd49254cc5b01f4580f098c40f9e28ce28903b334a7dac7997",
+      "runs/m000-candidate/ranks/rank-0.tsv": "c897c82e17d51f6d732772604f2d4c322946cd2e3cbe763d54717d535c89aa57",
+      "runs/m000-candidate/ranks/rank-1.tsv": "422995d722f55e7b0bbbfd6a24604c785f22a70a17d62d94a161d2fabf9c3900",
+      "runs/m000-candidate/ranks/rank-2.tsv": "ae2f5b722924849035d131cf0b6a69f8dfcacde56dee5c94cd317138375d3f9e",
+      "runs/m000-candidate/ranks/rank-3.tsv": "fb186259a1e4956fee5210dee8105c920d09973fb59a4c92bb58ee3ab0ab5f78",
+      "runs/m000-candidate/ranks/rank-4.tsv": "ee12a4a404ddf8bb03190456e054da035b651fcc6fdb9ae2f6e76d19cd8565e7",
+      "runs/m000-candidate/ranks/rank-5.tsv": "ad3579e9fd28754688655ee764d44c272f1869e9c1a6e5bf26b15b04472bcb1a",
+      "runs/m000-candidate/ranks/rank-6.tsv": "298260d1ae2f148a3aa7bacf5a8d33ccf43e4c2b256f0e41d2151514275c4573",
+      "runs/m000-candidate/ranks/rank-7.tsv": "4873e7b2b4c98d5961d48ab55010eceb0212dbcd2be8fc84ea688a455ef61280",
+      "runs/m000-candidate/result.ref": "c978f95a6d308d9e3f676f5498aac4938ccf4a2eba84b831141572d8ceb3492f",
+      "runs/m000-candidate/stdout.log": "8ff1c89ff61cafbd508e236fb543175646c51758f294fd8d667d5af221c877c6",
+      "runs/m000-candidate/wall-seconds.txt": "9ae587bef16b5ac168290df0798e4e048821e9232669130ee36e284e36c6cef2",
+      "runs/m000-system/INPUT": "0e8cd3965b1a0a745dcf9035679305dfbf67687078cac1dba8d504c89f160acb",
+      "runs/m000-system/KPT": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+      "runs/m000-system/Model_ProjOrb/2au_20Ry_jle.orb": "fbc62a9b6d6b2cfbf74021b17ceb952f905e54e8a5d0445088a962d1b7c01975",
+      "runs/m000-system/Model_ProjOrb/model_lda_pbe_18.ptg": "76c05c02507a9061552cbb77d90f19023fbb1fed129cedf6f282c52062b4210c",
+      "runs/m000-system/OUT.autotest/running_scf.log": "4789416b8e32a7ab1f177caaca9c72f9bf3a6f355b06e132151612db4b1921fd",
+      "runs/m000-system/PP_ORB/C_ONCV_PBE-1.0.upf": "e95d682a8b918557fb57e2e0ec11b2f48cf693cb72a11d078cf07ec489a8fa99",
+      "runs/m000-system/PP_ORB/C_gga_8au_100Ry_2s2p1d.orb": "535936651babc797c0e43bfaa29bf6c9bc70a146744709a87c68d1e042b83daa",
+      "runs/m000-system/PP_ORB/H_ONCV_PBE-1.0.upf": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+      "runs/m000-system/PP_ORB/H_gga_8au_100Ry_2s1p.orb": "38c8327dd6b16c0d02a5a34e688fdb2d4ec73e4a9de00a6e248e4d246db3c2fc",
+      "runs/m000-system/STRU": "7802c38967143cbad51e3cbf5365fbc0f9824c1f71eae7fb6ba10f96d6f91648",
+      "runs/m000-system/artifact.sha256": "8b4c0b0ebf50238f10ce1a68a5061651d5c3487446f5861edbf91fce7c25f6e8",
+      "runs/m000-system/completed.job": "c1016f513a3a2b545df31bfefb833d467a314948cdb814382af6d4a29156982c",
+      "runs/m000-system/executable.path": "4862fa5e35e6cee3d1507b3ed04ffa03a45fbdd1a9e2a43cb87df3439a55df83",
+      "runs/m000-system/executable.sha256": "ce47f9c5114163f4acc6038ae9d32989217c4f2c6a0aeaa6a054026d05edb392",
+      "runs/m000-system/info.log": "860f170979c3eeb4adaa6608408a2c9da55ffb72362b3db381cadd78e4baf025",
+      "runs/m000-system/launcher.sha256": "007b6949caae8255663d1a9200ce0832c0b26e56dec27551b4ecac4d2fcd2340",
+      "runs/m000-system/ldd.log": "0cf58b8e13cdf919553e79e4936f820a9a6f8cb7c05f8cd2d23549438b3efb6e",
+      "runs/m000-system/modules.log": "81b7c8dd6567b9434352f10bb3098251e9dd90274977e39f38b8ee92ed331226",
+      "runs/m000-system/ranks/affinity-0.json": "75d709c44389e864942a8fa451670beef32c8d93e285957974610b02591ed762",
+      "runs/m000-system/ranks/affinity-1.json": "37d7a41e7232cf69b107ce819742247b9c075055c0154d4bf79c83bb1622d48c",
+      "runs/m000-system/ranks/affinity-2.json": "bf41c17211b9f73bc5aa69536df0b87e901aecace4c3cfb3071360ad452a5f94",
+      "runs/m000-system/ranks/affinity-3.json": "f1fed0956c19dc29c2fa23a31102af7d09dc4d2f8cb6ee56f70879b5bfa8f007",
+      "runs/m000-system/ranks/affinity-4.json": "3bef31569241158fa7450c6688cef0e0985bdf1b2434fb5bc5a2b29326a140ad",
+      "runs/m000-system/ranks/affinity-5.json": "3afd629b971ffe8cff09c5b0acd9b61051a9227ccaa6a1519326fd6f74031a2b",
+      "runs/m000-system/ranks/affinity-6.json": "21aeb7104c8e4c8b687460de47b4ecf7d68d327cc0748ba5b3e8ff8c51f4e712",
+      "runs/m000-system/ranks/affinity-7.json": "19ffd9de0486f4bd49254cc5b01f4580f098c40f9e28ce28903b334a7dac7997",
+      "runs/m000-system/ranks/rank-0.tsv": "50dab8ef075b8a6e17bb80d1b5a230a814ff93cbd99adf1b6aaa3bf89f2c63c1",
+      "runs/m000-system/ranks/rank-1.tsv": "ef215d4027ab6f1e3787f4e63fc5a22e55e4cfd17b8fd6d5867c8a70a5438163",
+      "runs/m000-system/ranks/rank-2.tsv": "c9ada5afbbd2f0731f0e4d696262131080dd1013efb7a3fdc4fa9de9fd642118",
+      "runs/m000-system/ranks/rank-3.tsv": "60ac65b06981a2fe2a618425d4c621faad96aca9138cf1622b4678e9de42c571",
+      "runs/m000-system/ranks/rank-4.tsv": "87420f3f83b003b928dae415948c1500281125aa2a336a5bf573dfd9cd9e8291",
+      "runs/m000-system/ranks/rank-5.tsv": "ee84ebe677bcd59e51f9330ba12f6d91e7377b8ef4e75182f2801aef46676c9d",
+      "runs/m000-system/ranks/rank-6.tsv": "5b9873939945f19e9ef6edf8e74bd2c9f77ceca175bdf68d204b2222d378a173",
+      "runs/m000-system/ranks/rank-7.tsv": "b088805418ba894eb293bcc5da1f50dabd5d78147a0aa9d626bb112457d4c459",
+      "runs/m000-system/result.ref": "c978f95a6d308d9e3f676f5498aac4938ccf4a2eba84b831141572d8ceb3492f",
+      "runs/m000-system/stdout.log": "4801b6fb62070226f537846fe319b033aa2eb1177c1d059978acdf46245a87ed",
+      "runs/m000-system/wall-seconds.txt": "ef97fad048d94cb5b0a8b3e9be92ac3cc2cf846cfd51671550ce4ffa908356da",
+      "runs/m001-candidate/INPUT": "0e8cd3965b1a0a745dcf9035679305dfbf67687078cac1dba8d504c89f160acb",
+      "runs/m001-candidate/KPT": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+      "runs/m001-candidate/Model_ProjOrb/2au_20Ry_jle.orb": "fbc62a9b6d6b2cfbf74021b17ceb952f905e54e8a5d0445088a962d1b7c01975",
+      "runs/m001-candidate/Model_ProjOrb/model_lda_pbe_18.ptg": "76c05c02507a9061552cbb77d90f19023fbb1fed129cedf6f282c52062b4210c",
+      "runs/m001-candidate/OUT.autotest/running_scf.log": "2d978e18cca40333097e55f3159c2e4e30baddb2ec4da53d2baa3ffabad92385",
+      "runs/m001-candidate/PP_ORB/C_ONCV_PBE-1.0.upf": "e95d682a8b918557fb57e2e0ec11b2f48cf693cb72a11d078cf07ec489a8fa99",
+      "runs/m001-candidate/PP_ORB/C_gga_8au_100Ry_2s2p1d.orb": "535936651babc797c0e43bfaa29bf6c9bc70a146744709a87c68d1e042b83daa",
+      "runs/m001-candidate/PP_ORB/H_ONCV_PBE-1.0.upf": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+      "runs/m001-candidate/PP_ORB/H_gga_8au_100Ry_2s1p.orb": "38c8327dd6b16c0d02a5a34e688fdb2d4ec73e4a9de00a6e248e4d246db3c2fc",
+      "runs/m001-candidate/STRU": "7802c38967143cbad51e3cbf5365fbc0f9824c1f71eae7fb6ba10f96d6f91648",
+      "runs/m001-candidate/artifact.sha256": "8b4c0b0ebf50238f10ce1a68a5061651d5c3487446f5861edbf91fce7c25f6e8",
+      "runs/m001-candidate/completed.job": "c1016f513a3a2b545df31bfefb833d467a314948cdb814382af6d4a29156982c",
+      "runs/m001-candidate/info.log": "88922472373728c7a15c050fdfcea863ff5973ddb7ecbc08b4ffbd1b055cffc6",
+      "runs/m001-candidate/launcher.sha256": "007b6949caae8255663d1a9200ce0832c0b26e56dec27551b4ecac4d2fcd2340",
+      "runs/m001-candidate/modules.log": "0ddca348c0c9b1170b3f2ecd75343c2222eb1bfd5a2ef8eb5c6ad346a9f90400",
+      "runs/m001-candidate/ranks/affinity-0.json": "75d709c44389e864942a8fa451670beef32c8d93e285957974610b02591ed762",
+      "runs/m001-candidate/ranks/affinity-1.json": "37d7a41e7232cf69b107ce819742247b9c075055c0154d4bf79c83bb1622d48c",
+      "runs/m001-candidate/ranks/affinity-2.json": "bf41c17211b9f73bc5aa69536df0b87e901aecace4c3cfb3071360ad452a5f94",
+      "runs/m001-candidate/ranks/affinity-3.json": "f1fed0956c19dc29c2fa23a31102af7d09dc4d2f8cb6ee56f70879b5bfa8f007",
+      "runs/m001-candidate/ranks/affinity-4.json": "3bef31569241158fa7450c6688cef0e0985bdf1b2434fb5bc5a2b29326a140ad",
+      "runs/m001-candidate/ranks/affinity-5.json": "3afd629b971ffe8cff09c5b0acd9b61051a9227ccaa6a1519326fd6f74031a2b",
+      "runs/m001-candidate/ranks/affinity-6.json": "21aeb7104c8e4c8b687460de47b4ecf7d68d327cc0748ba5b3e8ff8c51f4e712",
+      "runs/m001-candidate/ranks/affinity-7.json": "19ffd9de0486f4bd49254cc5b01f4580f098c40f9e28ce28903b334a7dac7997",
+      "runs/m001-candidate/ranks/rank-0.tsv": "c897c82e17d51f6d732772604f2d4c322946cd2e3cbe763d54717d535c89aa57",
+      "runs/m001-candidate/ranks/rank-1.tsv": "422995d722f55e7b0bbbfd6a24604c785f22a70a17d62d94a161d2fabf9c3900",
+      "runs/m001-candidate/ranks/rank-2.tsv": "ae2f5b722924849035d131cf0b6a69f8dfcacde56dee5c94cd317138375d3f9e",
+      "runs/m001-candidate/ranks/rank-3.tsv": "fb186259a1e4956fee5210dee8105c920d09973fb59a4c92bb58ee3ab0ab5f78",
+      "runs/m001-candidate/ranks/rank-4.tsv": "ee12a4a404ddf8bb03190456e054da035b651fcc6fdb9ae2f6e76d19cd8565e7",
+      "runs/m001-candidate/ranks/rank-5.tsv": "ad3579e9fd28754688655ee764d44c272f1869e9c1a6e5bf26b15b04472bcb1a",
+      "runs/m001-candidate/ranks/rank-6.tsv": "298260d1ae2f148a3aa7bacf5a8d33ccf43e4c2b256f0e41d2151514275c4573",
+      "runs/m001-candidate/ranks/rank-7.tsv": "4873e7b2b4c98d5961d48ab55010eceb0212dbcd2be8fc84ea688a455ef61280",
+      "runs/m001-candidate/result.ref": "c978f95a6d308d9e3f676f5498aac4938ccf4a2eba84b831141572d8ceb3492f",
+      "runs/m001-candidate/stdout.log": "261cdde25b7d1929b52386b580a4445b478764b5032597bea760f63edf92418f",
+      "runs/m001-candidate/wall-seconds.txt": "f3438c7a94cc28174a919d430a3f4a3456c8c63c829b5df34e9f4e1027275857",
+      "runs/m001-system/INPUT": "0e8cd3965b1a0a745dcf9035679305dfbf67687078cac1dba8d504c89f160acb",
+      "runs/m001-system/KPT": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+      "runs/m001-system/Model_ProjOrb/2au_20Ry_jle.orb": "fbc62a9b6d6b2cfbf74021b17ceb952f905e54e8a5d0445088a962d1b7c01975",
+      "runs/m001-system/Model_ProjOrb/model_lda_pbe_18.ptg": "76c05c02507a9061552cbb77d90f19023fbb1fed129cedf6f282c52062b4210c",
+      "runs/m001-system/OUT.autotest/running_scf.log": "86fa304a7c661cf5de7c80643ebdaa22cc0d3fef4eda84fdf23031c027197404",
+      "runs/m001-system/PP_ORB/C_ONCV_PBE-1.0.upf": "e95d682a8b918557fb57e2e0ec11b2f48cf693cb72a11d078cf07ec489a8fa99",
+      "runs/m001-system/PP_ORB/C_gga_8au_100Ry_2s2p1d.orb": "535936651babc797c0e43bfaa29bf6c9bc70a146744709a87c68d1e042b83daa",
+      "runs/m001-system/PP_ORB/H_ONCV_PBE-1.0.upf": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+      "runs/m001-system/PP_ORB/H_gga_8au_100Ry_2s1p.orb": "38c8327dd6b16c0d02a5a34e688fdb2d4ec73e4a9de00a6e248e4d246db3c2fc",
+      "runs/m001-system/STRU": "7802c38967143cbad51e3cbf5365fbc0f9824c1f71eae7fb6ba10f96d6f91648",
+      "runs/m001-system/artifact.sha256": "8b4c0b0ebf50238f10ce1a68a5061651d5c3487446f5861edbf91fce7c25f6e8",
+      "runs/m001-system/completed.job": "c1016f513a3a2b545df31bfefb833d467a314948cdb814382af6d4a29156982c",
+      "runs/m001-system/executable.path": "4862fa5e35e6cee3d1507b3ed04ffa03a45fbdd1a9e2a43cb87df3439a55df83",
+      "runs/m001-system/executable.sha256": "ce47f9c5114163f4acc6038ae9d32989217c4f2c6a0aeaa6a054026d05edb392",
+      "runs/m001-system/info.log": "860f170979c3eeb4adaa6608408a2c9da55ffb72362b3db381cadd78e4baf025",
+      "runs/m001-system/launcher.sha256": "007b6949caae8255663d1a9200ce0832c0b26e56dec27551b4ecac4d2fcd2340",
+      "runs/m001-system/ldd.log": "4446778267359ec644489af151b75953be5b8d47a22290c3c620de8d3486b697",
+      "runs/m001-system/modules.log": "81b7c8dd6567b9434352f10bb3098251e9dd90274977e39f38b8ee92ed331226",
+      "runs/m001-system/ranks/affinity-0.json": "75d709c44389e864942a8fa451670beef32c8d93e285957974610b02591ed762",
+      "runs/m001-system/ranks/affinity-1.json": "37d7a41e7232cf69b107ce819742247b9c075055c0154d4bf79c83bb1622d48c",
+      "runs/m001-system/ranks/affinity-2.json": "bf41c17211b9f73bc5aa69536df0b87e901aecace4c3cfb3071360ad452a5f94",
+      "runs/m001-system/ranks/affinity-3.json": "f1fed0956c19dc29c2fa23a31102af7d09dc4d2f8cb6ee56f70879b5bfa8f007",
+      "runs/m001-system/ranks/affinity-4.json": "3bef31569241158fa7450c6688cef0e0985bdf1b2434fb5bc5a2b29326a140ad",
+      "runs/m001-system/ranks/affinity-5.json": "3afd629b971ffe8cff09c5b0acd9b61051a9227ccaa6a1519326fd6f74031a2b",
+      "runs/m001-system/ranks/affinity-6.json": "21aeb7104c8e4c8b687460de47b4ecf7d68d327cc0748ba5b3e8ff8c51f4e712",
+      "runs/m001-system/ranks/affinity-7.json": "19ffd9de0486f4bd49254cc5b01f4580f098c40f9e28ce28903b334a7dac7997",
+      "runs/m001-system/ranks/rank-0.tsv": "50dab8ef075b8a6e17bb80d1b5a230a814ff93cbd99adf1b6aaa3bf89f2c63c1",
+      "runs/m001-system/ranks/rank-1.tsv": "ef215d4027ab6f1e3787f4e63fc5a22e55e4cfd17b8fd6d5867c8a70a5438163",
+      "runs/m001-system/ranks/rank-2.tsv": "c9ada5afbbd2f0731f0e4d696262131080dd1013efb7a3fdc4fa9de9fd642118",
+      "runs/m001-system/ranks/rank-3.tsv": "60ac65b06981a2fe2a618425d4c621faad96aca9138cf1622b4678e9de42c571",
+      "runs/m001-system/ranks/rank-4.tsv": "87420f3f83b003b928dae415948c1500281125aa2a336a5bf573dfd9cd9e8291",
+      "runs/m001-system/ranks/rank-5.tsv": "ee84ebe677bcd59e51f9330ba12f6d91e7377b8ef4e75182f2801aef46676c9d",
+      "runs/m001-system/ranks/rank-6.tsv": "5b9873939945f19e9ef6edf8e74bd2c9f77ceca175bdf68d204b2222d378a173",
+      "runs/m001-system/ranks/rank-7.tsv": "b088805418ba894eb293bcc5da1f50dabd5d78147a0aa9d626bb112457d4c459",
+      "runs/m001-system/result.ref": "c978f95a6d308d9e3f676f5498aac4938ccf4a2eba84b831141572d8ceb3492f",
+      "runs/m001-system/stdout.log": "ebbab1587de0af7bcaa3740efa61307453f351319bff1ebbc44572178da2eac5",
+      "runs/m001-system/wall-seconds.txt": "5c9285ad47c84869633992e53acefa658cb8b6c08171cb3c8c0bd3b8bff25877",
+      "runs/m002-candidate/INPUT": "0e8cd3965b1a0a745dcf9035679305dfbf67687078cac1dba8d504c89f160acb",
+      "runs/m002-candidate/KPT": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+      "runs/m002-candidate/Model_ProjOrb/2au_20Ry_jle.orb": "fbc62a9b6d6b2cfbf74021b17ceb952f905e54e8a5d0445088a962d1b7c01975",
+      "runs/m002-candidate/Model_ProjOrb/model_lda_pbe_18.ptg": "76c05c02507a9061552cbb77d90f19023fbb1fed129cedf6f282c52062b4210c",
+      "runs/m002-candidate/OUT.autotest/running_scf.log": "008c84ac822ba5dd54c55d139318d707fb4ec21c01fa1a2f7c245061611aaaf7",
+      "runs/m002-candidate/PP_ORB/C_ONCV_PBE-1.0.upf": "e95d682a8b918557fb57e2e0ec11b2f48cf693cb72a11d078cf07ec489a8fa99",
+      "runs/m002-candidate/PP_ORB/C_gga_8au_100Ry_2s2p1d.orb": "535936651babc797c0e43bfaa29bf6c9bc70a146744709a87c68d1e042b83daa",
+      "runs/m002-candidate/PP_ORB/H_ONCV_PBE-1.0.upf": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+      "runs/m002-candidate/PP_ORB/H_gga_8au_100Ry_2s1p.orb": "38c8327dd6b16c0d02a5a34e688fdb2d4ec73e4a9de00a6e248e4d246db3c2fc",
+      "runs/m002-candidate/STRU": "7802c38967143cbad51e3cbf5365fbc0f9824c1f71eae7fb6ba10f96d6f91648",
+      "runs/m002-candidate/artifact.sha256": "8b4c0b0ebf50238f10ce1a68a5061651d5c3487446f5861edbf91fce7c25f6e8",
+      "runs/m002-candidate/completed.job": "c1016f513a3a2b545df31bfefb833d467a314948cdb814382af6d4a29156982c",
+      "runs/m002-candidate/info.log": "88922472373728c7a15c050fdfcea863ff5973ddb7ecbc08b4ffbd1b055cffc6",
+      "runs/m002-candidate/launcher.sha256": "007b6949caae8255663d1a9200ce0832c0b26e56dec27551b4ecac4d2fcd2340",
+      "runs/m002-candidate/modules.log": "0ddca348c0c9b1170b3f2ecd75343c2222eb1bfd5a2ef8eb5c6ad346a9f90400",
+      "runs/m002-candidate/ranks/affinity-0.json": "75d709c44389e864942a8fa451670beef32c8d93e285957974610b02591ed762",
+      "runs/m002-candidate/ranks/affinity-1.json": "37d7a41e7232cf69b107ce819742247b9c075055c0154d4bf79c83bb1622d48c",
+      "runs/m002-candidate/ranks/affinity-2.json": "bf41c17211b9f73bc5aa69536df0b87e901aecace4c3cfb3071360ad452a5f94",
+      "runs/m002-candidate/ranks/affinity-3.json": "f1fed0956c19dc29c2fa23a31102af7d09dc4d2f8cb6ee56f70879b5bfa8f007",
+      "runs/m002-candidate/ranks/affinity-4.json": "3bef31569241158fa7450c6688cef0e0985bdf1b2434fb5bc5a2b29326a140ad",
+      "runs/m002-candidate/ranks/affinity-5.json": "3afd629b971ffe8cff09c5b0acd9b61051a9227ccaa6a1519326fd6f74031a2b",
+      "runs/m002-candidate/ranks/affinity-6.json": "21aeb7104c8e4c8b687460de47b4ecf7d68d327cc0748ba5b3e8ff8c51f4e712",
+      "runs/m002-candidate/ranks/affinity-7.json": "19ffd9de0486f4bd49254cc5b01f4580f098c40f9e28ce28903b334a7dac7997",
+      "runs/m002-candidate/ranks/rank-0.tsv": "c897c82e17d51f6d732772604f2d4c322946cd2e3cbe763d54717d535c89aa57",
+      "runs/m002-candidate/ranks/rank-1.tsv": "422995d722f55e7b0bbbfd6a24604c785f22a70a17d62d94a161d2fabf9c3900",
+      "runs/m002-candidate/ranks/rank-2.tsv": "ae2f5b722924849035d131cf0b6a69f8dfcacde56dee5c94cd317138375d3f9e",
+      "runs/m002-candidate/ranks/rank-3.tsv": "fb186259a1e4956fee5210dee8105c920d09973fb59a4c92bb58ee3ab0ab5f78",
+      "runs/m002-candidate/ranks/rank-4.tsv": "ee12a4a404ddf8bb03190456e054da035b651fcc6fdb9ae2f6e76d19cd8565e7",
+      "runs/m002-candidate/ranks/rank-5.tsv": "ad3579e9fd28754688655ee764d44c272f1869e9c1a6e5bf26b15b04472bcb1a",
+      "runs/m002-candidate/ranks/rank-6.tsv": "298260d1ae2f148a3aa7bacf5a8d33ccf43e4c2b256f0e41d2151514275c4573",
+      "runs/m002-candidate/ranks/rank-7.tsv": "4873e7b2b4c98d5961d48ab55010eceb0212dbcd2be8fc84ea688a455ef61280",
+      "runs/m002-candidate/result.ref": "c978f95a6d308d9e3f676f5498aac4938ccf4a2eba84b831141572d8ceb3492f",
+      "runs/m002-candidate/stdout.log": "1262a27d171bce392fd43a906d10d19da9bdf7be00e5e1a6567026a51ca103f3",
+      "runs/m002-candidate/wall-seconds.txt": "4693c2d1cdd10c79a2d225eae5d831ad529bd3ad41e52dc1e06e624365c93f94",
+      "runs/m002-system/INPUT": "0e8cd3965b1a0a745dcf9035679305dfbf67687078cac1dba8d504c89f160acb",
+      "runs/m002-system/KPT": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+      "runs/m002-system/Model_ProjOrb/2au_20Ry_jle.orb": "fbc62a9b6d6b2cfbf74021b17ceb952f905e54e8a5d0445088a962d1b7c01975",
+      "runs/m002-system/Model_ProjOrb/model_lda_pbe_18.ptg": "76c05c02507a9061552cbb77d90f19023fbb1fed129cedf6f282c52062b4210c",
+      "runs/m002-system/OUT.autotest/running_scf.log": "a3ad20e34f126dc071f987653670e98c999f6c0b09bfc6ced521c9fdfc583a65",
+      "runs/m002-system/PP_ORB/C_ONCV_PBE-1.0.upf": "e95d682a8b918557fb57e2e0ec11b2f48cf693cb72a11d078cf07ec489a8fa99",
+      "runs/m002-system/PP_ORB/C_gga_8au_100Ry_2s2p1d.orb": "535936651babc797c0e43bfaa29bf6c9bc70a146744709a87c68d1e042b83daa",
+      "runs/m002-system/PP_ORB/H_ONCV_PBE-1.0.upf": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+      "runs/m002-system/PP_ORB/H_gga_8au_100Ry_2s1p.orb": "38c8327dd6b16c0d02a5a34e688fdb2d4ec73e4a9de00a6e248e4d246db3c2fc",
+      "runs/m002-system/STRU": "7802c38967143cbad51e3cbf5365fbc0f9824c1f71eae7fb6ba10f96d6f91648",
+      "runs/m002-system/artifact.sha256": "8b4c0b0ebf50238f10ce1a68a5061651d5c3487446f5861edbf91fce7c25f6e8",
+      "runs/m002-system/completed.job": "c1016f513a3a2b545df31bfefb833d467a314948cdb814382af6d4a29156982c",
+      "runs/m002-system/executable.path": "4862fa5e35e6cee3d1507b3ed04ffa03a45fbdd1a9e2a43cb87df3439a55df83",
+      "runs/m002-system/executable.sha256": "ce47f9c5114163f4acc6038ae9d32989217c4f2c6a0aeaa6a054026d05edb392",
+      "runs/m002-system/info.log": "860f170979c3eeb4adaa6608408a2c9da55ffb72362b3db381cadd78e4baf025",
+      "runs/m002-system/launcher.sha256": "007b6949caae8255663d1a9200ce0832c0b26e56dec27551b4ecac4d2fcd2340",
+      "runs/m002-system/ldd.log": "5f23f65611d12289b2f4b890991161c8a2b1700475430f1a7d6a32f1d2fb0280",
+      "runs/m002-system/modules.log": "81b7c8dd6567b9434352f10bb3098251e9dd90274977e39f38b8ee92ed331226",
+      "runs/m002-system/ranks/affinity-0.json": "75d709c44389e864942a8fa451670beef32c8d93e285957974610b02591ed762",
+      "runs/m002-system/ranks/affinity-1.json": "37d7a41e7232cf69b107ce819742247b9c075055c0154d4bf79c83bb1622d48c",
+      "runs/m002-system/ranks/affinity-2.json": "bf41c17211b9f73bc5aa69536df0b87e901aecace4c3cfb3071360ad452a5f94",
+      "runs/m002-system/ranks/affinity-3.json": "f1fed0956c19dc29c2fa23a31102af7d09dc4d2f8cb6ee56f70879b5bfa8f007",
+      "runs/m002-system/ranks/affinity-4.json": "3bef31569241158fa7450c6688cef0e0985bdf1b2434fb5bc5a2b29326a140ad",
+      "runs/m002-system/ranks/affinity-5.json": "3afd629b971ffe8cff09c5b0acd9b61051a9227ccaa6a1519326fd6f74031a2b",
+      "runs/m002-system/ranks/affinity-6.json": "21aeb7104c8e4c8b687460de47b4ecf7d68d327cc0748ba5b3e8ff8c51f4e712",
+      "runs/m002-system/ranks/affinity-7.json": "19ffd9de0486f4bd49254cc5b01f4580f098c40f9e28ce28903b334a7dac7997",
+      "runs/m002-system/ranks/rank-0.tsv": "50dab8ef075b8a6e17bb80d1b5a230a814ff93cbd99adf1b6aaa3bf89f2c63c1",
+      "runs/m002-system/ranks/rank-1.tsv": "ef215d4027ab6f1e3787f4e63fc5a22e55e4cfd17b8fd6d5867c8a70a5438163",
+      "runs/m002-system/ranks/rank-2.tsv": "c9ada5afbbd2f0731f0e4d696262131080dd1013efb7a3fdc4fa9de9fd642118",
+      "runs/m002-system/ranks/rank-3.tsv": "60ac65b06981a2fe2a618425d4c621faad96aca9138cf1622b4678e9de42c571",
+      "runs/m002-system/ranks/rank-4.tsv": "87420f3f83b003b928dae415948c1500281125aa2a336a5bf573dfd9cd9e8291",
+      "runs/m002-system/ranks/rank-5.tsv": "ee84ebe677bcd59e51f9330ba12f6d91e7377b8ef4e75182f2801aef46676c9d",
+      "runs/m002-system/ranks/rank-6.tsv": "5b9873939945f19e9ef6edf8e74bd2c9f77ceca175bdf68d204b2222d378a173",
+      "runs/m002-system/ranks/rank-7.tsv": "b088805418ba894eb293bcc5da1f50dabd5d78147a0aa9d626bb112457d4c459",
+      "runs/m002-system/result.ref": "c978f95a6d308d9e3f676f5498aac4938ccf4a2eba84b831141572d8ceb3492f",
+      "runs/m002-system/stdout.log": "c0f63fafefefec18a038effc05622bc6e5cd89b6a07cd0b31b7dead253d08a7a",
+      "runs/m002-system/wall-seconds.txt": "9e780abc8654fa04b4b72b2bca55ca116114a87bc14735ba48b6a98b98987b0e",
+      "runs/w000-candidate/INPUT": "0e8cd3965b1a0a745dcf9035679305dfbf67687078cac1dba8d504c89f160acb",
+      "runs/w000-candidate/KPT": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+      "runs/w000-candidate/Model_ProjOrb/2au_20Ry_jle.orb": "fbc62a9b6d6b2cfbf74021b17ceb952f905e54e8a5d0445088a962d1b7c01975",
+      "runs/w000-candidate/Model_ProjOrb/model_lda_pbe_18.ptg": "76c05c02507a9061552cbb77d90f19023fbb1fed129cedf6f282c52062b4210c",
+      "runs/w000-candidate/OUT.autotest/running_scf.log": "ce95085f1abb9ac9cd0d621ff9ccab63d50783096fc57ec9a5fa6a0e44638c1c",
+      "runs/w000-candidate/PP_ORB/C_ONCV_PBE-1.0.upf": "e95d682a8b918557fb57e2e0ec11b2f48cf693cb72a11d078cf07ec489a8fa99",
+      "runs/w000-candidate/PP_ORB/C_gga_8au_100Ry_2s2p1d.orb": "535936651babc797c0e43bfaa29bf6c9bc70a146744709a87c68d1e042b83daa",
+      "runs/w000-candidate/PP_ORB/H_ONCV_PBE-1.0.upf": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+      "runs/w000-candidate/PP_ORB/H_gga_8au_100Ry_2s1p.orb": "38c8327dd6b16c0d02a5a34e688fdb2d4ec73e4a9de00a6e248e4d246db3c2fc",
+      "runs/w000-candidate/STRU": "7802c38967143cbad51e3cbf5365fbc0f9824c1f71eae7fb6ba10f96d6f91648",
+      "runs/w000-candidate/artifact.sha256": "8b4c0b0ebf50238f10ce1a68a5061651d5c3487446f5861edbf91fce7c25f6e8",
+      "runs/w000-candidate/completed.job": "c1016f513a3a2b545df31bfefb833d467a314948cdb814382af6d4a29156982c",
+      "runs/w000-candidate/info.log": "88922472373728c7a15c050fdfcea863ff5973ddb7ecbc08b4ffbd1b055cffc6",
+      "runs/w000-candidate/launcher.sha256": "007b6949caae8255663d1a9200ce0832c0b26e56dec27551b4ecac4d2fcd2340",
+      "runs/w000-candidate/modules.log": "0ddca348c0c9b1170b3f2ecd75343c2222eb1bfd5a2ef8eb5c6ad346a9f90400",
+      "runs/w000-candidate/ranks/affinity-0.json": "75d709c44389e864942a8fa451670beef32c8d93e285957974610b02591ed762",
+      "runs/w000-candidate/ranks/affinity-1.json": "37d7a41e7232cf69b107ce819742247b9c075055c0154d4bf79c83bb1622d48c",
+      "runs/w000-candidate/ranks/affinity-2.json": "bf41c17211b9f73bc5aa69536df0b87e901aecace4c3cfb3071360ad452a5f94",
+      "runs/w000-candidate/ranks/affinity-3.json": "f1fed0956c19dc29c2fa23a31102af7d09dc4d2f8cb6ee56f70879b5bfa8f007",
+      "runs/w000-candidate/ranks/affinity-4.json": "3bef31569241158fa7450c6688cef0e0985bdf1b2434fb5bc5a2b29326a140ad",
+      "runs/w000-candidate/ranks/affinity-5.json": "3afd629b971ffe8cff09c5b0acd9b61051a9227ccaa6a1519326fd6f74031a2b",
+      "runs/w000-candidate/ranks/affinity-6.json": "21aeb7104c8e4c8b687460de47b4ecf7d68d327cc0748ba5b3e8ff8c51f4e712",
+      "runs/w000-candidate/ranks/affinity-7.json": "19ffd9de0486f4bd49254cc5b01f4580f098c40f9e28ce28903b334a7dac7997",
+      "runs/w000-candidate/ranks/rank-0.tsv": "c897c82e17d51f6d732772604f2d4c322946cd2e3cbe763d54717d535c89aa57",
+      "runs/w000-candidate/ranks/rank-1.tsv": "422995d722f55e7b0bbbfd6a24604c785f22a70a17d62d94a161d2fabf9c3900",
+      "runs/w000-candidate/ranks/rank-2.tsv": "ae2f5b722924849035d131cf0b6a69f8dfcacde56dee5c94cd317138375d3f9e",
+      "runs/w000-candidate/ranks/rank-3.tsv": "fb186259a1e4956fee5210dee8105c920d09973fb59a4c92bb58ee3ab0ab5f78",
+      "runs/w000-candidate/ranks/rank-4.tsv": "ee12a4a404ddf8bb03190456e054da035b651fcc6fdb9ae2f6e76d19cd8565e7",
+      "runs/w000-candidate/ranks/rank-5.tsv": "ad3579e9fd28754688655ee764d44c272f1869e9c1a6e5bf26b15b04472bcb1a",
+      "runs/w000-candidate/ranks/rank-6.tsv": "298260d1ae2f148a3aa7bacf5a8d33ccf43e4c2b256f0e41d2151514275c4573",
+      "runs/w000-candidate/ranks/rank-7.tsv": "4873e7b2b4c98d5961d48ab55010eceb0212dbcd2be8fc84ea688a455ef61280",
+      "runs/w000-candidate/result.ref": "c978f95a6d308d9e3f676f5498aac4938ccf4a2eba84b831141572d8ceb3492f",
+      "runs/w000-candidate/stdout.log": "cb527018fc343df477dc49aac538418e672dc9e7413a1c4ab154f8430b21437e",
+      "runs/w000-candidate/wall-seconds.txt": "ac73598e34684871111133775bfed0eefd668fff8abc107f97a6c7fcd3a0cd37",
+      "runs/w000-system/INPUT": "0e8cd3965b1a0a745dcf9035679305dfbf67687078cac1dba8d504c89f160acb",
+      "runs/w000-system/KPT": "91042b39ee493cb5c1bee648adc865a2e5935a29278eb405dc009f994db55ece",
+      "runs/w000-system/Model_ProjOrb/2au_20Ry_jle.orb": "fbc62a9b6d6b2cfbf74021b17ceb952f905e54e8a5d0445088a962d1b7c01975",
+      "runs/w000-system/Model_ProjOrb/model_lda_pbe_18.ptg": "76c05c02507a9061552cbb77d90f19023fbb1fed129cedf6f282c52062b4210c",
+      "runs/w000-system/OUT.autotest/running_scf.log": "7ac65e192fcd09bf39415ee49b3d56be98a64cccc78d05754099e970078761d3",
+      "runs/w000-system/PP_ORB/C_ONCV_PBE-1.0.upf": "e95d682a8b918557fb57e2e0ec11b2f48cf693cb72a11d078cf07ec489a8fa99",
+      "runs/w000-system/PP_ORB/C_gga_8au_100Ry_2s2p1d.orb": "535936651babc797c0e43bfaa29bf6c9bc70a146744709a87c68d1e042b83daa",
+      "runs/w000-system/PP_ORB/H_ONCV_PBE-1.0.upf": "3f5deaaf57ff09d87da2c2c186eb1654d174fe385c9edc265036b3c8869286ef",
+      "runs/w000-system/PP_ORB/H_gga_8au_100Ry_2s1p.orb": "38c8327dd6b16c0d02a5a34e688fdb2d4ec73e4a9de00a6e248e4d246db3c2fc",
+      "runs/w000-system/STRU": "7802c38967143cbad51e3cbf5365fbc0f9824c1f71eae7fb6ba10f96d6f91648",
+      "runs/w000-system/artifact.sha256": "8b4c0b0ebf50238f10ce1a68a5061651d5c3487446f5861edbf91fce7c25f6e8",
+      "runs/w000-system/completed.job": "c1016f513a3a2b545df31bfefb833d467a314948cdb814382af6d4a29156982c",
+      "runs/w000-system/executable.path": "4862fa5e35e6cee3d1507b3ed04ffa03a45fbdd1a9e2a43cb87df3439a55df83",
+      "runs/w000-system/executable.sha256": "ce47f9c5114163f4acc6038ae9d32989217c4f2c6a0aeaa6a054026d05edb392",
+      "runs/w000-system/info.log": "860f170979c3eeb4adaa6608408a2c9da55ffb72362b3db381cadd78e4baf025",
+      "runs/w000-system/launcher.sha256": "007b6949caae8255663d1a9200ce0832c0b26e56dec27551b4ecac4d2fcd2340",
+      "runs/w000-system/ldd.log": "3243bd4f8cf54dfadce9691c74482ab528750a6d636b04c1663869fb5d169adb",
+      "runs/w000-system/modules.log": "81b7c8dd6567b9434352f10bb3098251e9dd90274977e39f38b8ee92ed331226",
+      "runs/w000-system/ranks/affinity-0.json": "75d709c44389e864942a8fa451670beef32c8d93e285957974610b02591ed762",
+      "runs/w000-system/ranks/affinity-1.json": "37d7a41e7232cf69b107ce819742247b9c075055c0154d4bf79c83bb1622d48c",
+      "runs/w000-system/ranks/affinity-2.json": "bf41c17211b9f73bc5aa69536df0b87e901aecace4c3cfb3071360ad452a5f94",
+      "runs/w000-system/ranks/affinity-3.json": "f1fed0956c19dc29c2fa23a31102af7d09dc4d2f8cb6ee56f70879b5bfa8f007",
+      "runs/w000-system/ranks/affinity-4.json": "3bef31569241158fa7450c6688cef0e0985bdf1b2434fb5bc5a2b29326a140ad",
+      "runs/w000-system/ranks/affinity-5.json": "3afd629b971ffe8cff09c5b0acd9b61051a9227ccaa6a1519326fd6f74031a2b",
+      "runs/w000-system/ranks/affinity-6.json": "21aeb7104c8e4c8b687460de47b4ecf7d68d327cc0748ba5b3e8ff8c51f4e712",
+      "runs/w000-system/ranks/affinity-7.json": "19ffd9de0486f4bd49254cc5b01f4580f098c40f9e28ce28903b334a7dac7997",
+      "runs/w000-system/ranks/rank-0.tsv": "50dab8ef075b8a6e17bb80d1b5a230a814ff93cbd99adf1b6aaa3bf89f2c63c1",
+      "runs/w000-system/ranks/rank-1.tsv": "ef215d4027ab6f1e3787f4e63fc5a22e55e4cfd17b8fd6d5867c8a70a5438163",
+      "runs/w000-system/ranks/rank-2.tsv": "c9ada5afbbd2f0731f0e4d696262131080dd1013efb7a3fdc4fa9de9fd642118",
+      "runs/w000-system/ranks/rank-3.tsv": "60ac65b06981a2fe2a618425d4c621faad96aca9138cf1622b4678e9de42c571",
+      "runs/w000-system/ranks/rank-4.tsv": "87420f3f83b003b928dae415948c1500281125aa2a336a5bf573dfd9cd9e8291",
+      "runs/w000-system/ranks/rank-5.tsv": "ee84ebe677bcd59e51f9330ba12f6d91e7377b8ef4e75182f2801aef46676c9d",
+      "runs/w000-system/ranks/rank-6.tsv": "5b9873939945f19e9ef6edf8e74bd2c9f77ceca175bdf68d204b2222d378a173",
+      "runs/w000-system/ranks/rank-7.tsv": "b088805418ba894eb293bcc5da1f50dabd5d78147a0aa9d626bb112457d4c459",
+      "runs/w000-system/result.ref": "c978f95a6d308d9e3f676f5498aac4938ccf4a2eba84b831141572d8ceb3492f",
+      "runs/w000-system/stdout.log": "e68aa1dfb23b698eb264f26436fa8bbe69aabb85fb7ddfd9af0acfe536a4a799",
+      "runs/w000-system/wall-seconds.txt": "740ab093a99a9789dbf2cf85b0a596a03299d69b539fa850594cec66ec1fa007"
+    },
+    "identity": {
+      "build_id": "develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6",
+      "cpu_arch": "x86-64-v4",
+      "cuda_arch": "",
+      "dependency_isa": "avx512",
+      "gpus": 0,
+      "install_prefix": "/opt/apps/abacus/abacus-development-develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6/DSPRHBM",
+      "partition": "DSPRHBM",
+      "recipe_sha256": "35253fd4b4f6d16c0ed419deb95dea81d6193e00742bde3ce6321dfe6a42b15a",
+      "repository": "deepmodeling/abacus-develop",
+      "schema": 2,
+      "software": "abacus",
+      "source_ref": "develop",
+      "source_sha": "3c1dddac06678e1b37752c9752c316f8713f499b",
+      "source_version": "develop-2026-11-05",
+      "stack_digest": null,
+      "stack_sources": {},
+      "target": "dsprhbm",
+      "track": "development",
+      "version_label": "develop-2026-11-05"
+    },
+    "job": "2218404",
+    "job_script_sha256": "b6673810b6e64be90e2389637704a9a9acf7e67c915f54308c4531076df8d58a",
+    "launcher_sha256": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+    "request_sha256": "6b3f2b99b338af8b3ff8c8bf0ac4369b87cc176a653b63a5e13d0ec7eda68eec",
+    "runs": [
+      {
+        "affinity": [
+          {
+            "cpus": [
+              0,
+              1
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 0,
+            "topology": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              2,
+              3
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 1,
+            "topology": [
+              [
+                2,
+                0,
+                2
+              ],
+              [
+                3,
+                0,
+                3
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              4,
+              5
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 2,
+            "topology": [
+              [
+                4,
+                0,
+                4
+              ],
+              [
+                5,
+                0,
+                5
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              6,
+              7
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 3,
+            "topology": [
+              [
+                6,
+                0,
+                6
+              ],
+              [
+                7,
+                0,
+                7
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              48,
+              49
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 0,
+            "topology": [
+              [
+                48,
+                0,
+                48
+              ],
+              [
+                49,
+                0,
+                49
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              50,
+              51
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 1,
+            "topology": [
+              [
+                50,
+                0,
+                50
+              ],
+              [
+                51,
+                0,
+                51
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              52,
+              53
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 2,
+            "topology": [
+              [
+                52,
+                1,
+                0
+              ],
+              [
+                53,
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              54,
+              55
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 3,
+            "topology": [
+              [
+                54,
+                1,
+                2
+              ],
+              [
+                55,
+                1,
+                3
+              ]
+            ]
+          }
+        ],
+        "arm": "system",
+        "energy_ev": -71.3220409344072,
+        "id": "w000-system",
+        "iterations": 24,
+        "measured": false,
+        "nodes": {
+          "d9470n05.mr-sai.ai": 4,
+          "d9470n06.mr-sai.ai": 4
+        },
+        "pair": 0,
+        "reported_threads": 2,
+        "rounded_iteration_seconds": 0.75,
+        "versions": [
+          "v3.9.0.26",
+          "13.3.0",
+          "3.9.0.26",
+          "2.1.2",
+          "3.9.0.26",
+          "2.1.2",
+          "3.9.0.26",
+          "2.1.2",
+          "v4.5",
+          "2026.02.001",
+          "v7.0.0",
+          "v12.9.86",
+          "26.3",
+          "12.9",
+          "3.9.0.26",
+          "v2.1.1",
+          "3.9.0.26",
+          "v2.1.2",
+          "3.9.0.26",
+          "1.0.1",
+          "3.9.0.26",
+          "3.9.0.26"
+        ],
+        "wall_seconds": 6.37
+      },
+      {
+        "affinity": [
+          {
+            "cpus": [
+              0,
+              1
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 0,
+            "topology": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              2,
+              3
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 1,
+            "topology": [
+              [
+                2,
+                0,
+                2
+              ],
+              [
+                3,
+                0,
+                3
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              4,
+              5
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 2,
+            "topology": [
+              [
+                4,
+                0,
+                4
+              ],
+              [
+                5,
+                0,
+                5
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              6,
+              7
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 3,
+            "topology": [
+              [
+                6,
+                0,
+                6
+              ],
+              [
+                7,
+                0,
+                7
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              48,
+              49
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 0,
+            "topology": [
+              [
+                48,
+                0,
+                48
+              ],
+              [
+                49,
+                0,
+                49
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              50,
+              51
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 1,
+            "topology": [
+              [
+                50,
+                0,
+                50
+              ],
+              [
+                51,
+                0,
+                51
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              52,
+              53
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 2,
+            "topology": [
+              [
+                52,
+                1,
+                0
+              ],
+              [
+                53,
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              54,
+              55
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 3,
+            "topology": [
+              [
+                54,
+                1,
+                2
+              ],
+              [
+                55,
+                1,
+                3
+              ]
+            ]
+          }
+        ],
+        "arm": "candidate",
+        "energy_ev": -71.32203132091831,
+        "id": "w000-candidate",
+        "iterations": 24,
+        "measured": false,
+        "nodes": {
+          "d9470n05.mr-sai.ai": 4,
+          "d9470n06.mr-sai.ai": 4
+        },
+        "pair": 0,
+        "reported_threads": 2,
+        "rounded_iteration_seconds": 0.75,
+        "versions": [
+          "v3.11.0",
+          "13.3.0",
+          "13.3.0",
+          "3.1",
+          "v4.5",
+          "v7.0.0",
+          "v3.3.10",
+          "v2.1.1",
+          "v2.1.2",
+          "1.0.1",
+          "v3.12.0"
+        ],
+        "wall_seconds": 5.23
+      },
+      {
+        "affinity": [
+          {
+            "cpus": [
+              0,
+              1
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 0,
+            "topology": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              2,
+              3
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 1,
+            "topology": [
+              [
+                2,
+                0,
+                2
+              ],
+              [
+                3,
+                0,
+                3
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              4,
+              5
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 2,
+            "topology": [
+              [
+                4,
+                0,
+                4
+              ],
+              [
+                5,
+                0,
+                5
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              6,
+              7
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 3,
+            "topology": [
+              [
+                6,
+                0,
+                6
+              ],
+              [
+                7,
+                0,
+                7
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              48,
+              49
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 0,
+            "topology": [
+              [
+                48,
+                0,
+                48
+              ],
+              [
+                49,
+                0,
+                49
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              50,
+              51
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 1,
+            "topology": [
+              [
+                50,
+                0,
+                50
+              ],
+              [
+                51,
+                0,
+                51
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              52,
+              53
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 2,
+            "topology": [
+              [
+                52,
+                1,
+                0
+              ],
+              [
+                53,
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              54,
+              55
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 3,
+            "topology": [
+              [
+                54,
+                1,
+                2
+              ],
+              [
+                55,
+                1,
+                3
+              ]
+            ]
+          }
+        ],
+        "arm": "candidate",
+        "energy_ev": -71.32203132091743,
+        "id": "m000-candidate",
+        "iterations": 24,
+        "measured": true,
+        "nodes": {
+          "d9470n05.mr-sai.ai": 4,
+          "d9470n06.mr-sai.ai": 4
+        },
+        "pair": 1,
+        "reported_threads": 2,
+        "rounded_iteration_seconds": 0.74,
+        "versions": [
+          "v3.11.0",
+          "13.3.0",
+          "13.3.0",
+          "3.1",
+          "v4.5",
+          "v7.0.0",
+          "v3.3.10",
+          "v2.1.1",
+          "v2.1.2",
+          "1.0.1",
+          "v3.12.0"
+        ],
+        "wall_seconds": 4.79
+      },
+      {
+        "affinity": [
+          {
+            "cpus": [
+              0,
+              1
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 0,
+            "topology": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              2,
+              3
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 1,
+            "topology": [
+              [
+                2,
+                0,
+                2
+              ],
+              [
+                3,
+                0,
+                3
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              4,
+              5
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 2,
+            "topology": [
+              [
+                4,
+                0,
+                4
+              ],
+              [
+                5,
+                0,
+                5
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              6,
+              7
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 3,
+            "topology": [
+              [
+                6,
+                0,
+                6
+              ],
+              [
+                7,
+                0,
+                7
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              48,
+              49
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 0,
+            "topology": [
+              [
+                48,
+                0,
+                48
+              ],
+              [
+                49,
+                0,
+                49
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              50,
+              51
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 1,
+            "topology": [
+              [
+                50,
+                0,
+                50
+              ],
+              [
+                51,
+                0,
+                51
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              52,
+              53
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 2,
+            "topology": [
+              [
+                52,
+                1,
+                0
+              ],
+              [
+                53,
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              54,
+              55
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 3,
+            "topology": [
+              [
+                54,
+                1,
+                2
+              ],
+              [
+                55,
+                1,
+                3
+              ]
+            ]
+          }
+        ],
+        "arm": "system",
+        "energy_ev": -71.32204093440662,
+        "id": "m000-system",
+        "iterations": 24,
+        "measured": true,
+        "nodes": {
+          "d9470n05.mr-sai.ai": 4,
+          "d9470n06.mr-sai.ai": 4
+        },
+        "pair": 1,
+        "reported_threads": 2,
+        "rounded_iteration_seconds": 0.74,
+        "versions": [
+          "v3.9.0.26",
+          "13.3.0",
+          "3.9.0.26",
+          "2.1.2",
+          "3.9.0.26",
+          "2.1.2",
+          "3.9.0.26",
+          "2.1.2",
+          "v4.5",
+          "2026.02.001",
+          "v7.0.0",
+          "v12.9.86",
+          "26.3",
+          "12.9",
+          "3.9.0.26",
+          "v2.1.1",
+          "3.9.0.26",
+          "v2.1.2",
+          "3.9.0.26",
+          "1.0.1",
+          "3.9.0.26",
+          "3.9.0.26"
+        ],
+        "wall_seconds": 6.74
+      },
+      {
+        "affinity": [
+          {
+            "cpus": [
+              0,
+              1
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 0,
+            "topology": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              2,
+              3
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 1,
+            "topology": [
+              [
+                2,
+                0,
+                2
+              ],
+              [
+                3,
+                0,
+                3
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              4,
+              5
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 2,
+            "topology": [
+              [
+                4,
+                0,
+                4
+              ],
+              [
+                5,
+                0,
+                5
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              6,
+              7
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 3,
+            "topology": [
+              [
+                6,
+                0,
+                6
+              ],
+              [
+                7,
+                0,
+                7
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              48,
+              49
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 0,
+            "topology": [
+              [
+                48,
+                0,
+                48
+              ],
+              [
+                49,
+                0,
+                49
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              50,
+              51
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 1,
+            "topology": [
+              [
+                50,
+                0,
+                50
+              ],
+              [
+                51,
+                0,
+                51
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              52,
+              53
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 2,
+            "topology": [
+              [
+                52,
+                1,
+                0
+              ],
+              [
+                53,
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              54,
+              55
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 3,
+            "topology": [
+              [
+                54,
+                1,
+                2
+              ],
+              [
+                55,
+                1,
+                3
+              ]
+            ]
+          }
+        ],
+        "arm": "system",
+        "energy_ev": -71.32204093440681,
+        "id": "m001-system",
+        "iterations": 24,
+        "measured": true,
+        "nodes": {
+          "d9470n05.mr-sai.ai": 4,
+          "d9470n06.mr-sai.ai": 4
+        },
+        "pair": 2,
+        "reported_threads": 2,
+        "rounded_iteration_seconds": 0.73,
+        "versions": [
+          "v3.9.0.26",
+          "13.3.0",
+          "3.9.0.26",
+          "2.1.2",
+          "3.9.0.26",
+          "2.1.2",
+          "3.9.0.26",
+          "2.1.2",
+          "v4.5",
+          "2026.02.001",
+          "v7.0.0",
+          "v12.9.86",
+          "26.3",
+          "12.9",
+          "3.9.0.26",
+          "v2.1.1",
+          "3.9.0.26",
+          "v2.1.2",
+          "3.9.0.26",
+          "1.0.1",
+          "3.9.0.26",
+          "3.9.0.26"
+        ],
+        "wall_seconds": 2.95
+      },
+      {
+        "affinity": [
+          {
+            "cpus": [
+              0,
+              1
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 0,
+            "topology": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              2,
+              3
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 1,
+            "topology": [
+              [
+                2,
+                0,
+                2
+              ],
+              [
+                3,
+                0,
+                3
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              4,
+              5
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 2,
+            "topology": [
+              [
+                4,
+                0,
+                4
+              ],
+              [
+                5,
+                0,
+                5
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              6,
+              7
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 3,
+            "topology": [
+              [
+                6,
+                0,
+                6
+              ],
+              [
+                7,
+                0,
+                7
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              48,
+              49
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 0,
+            "topology": [
+              [
+                48,
+                0,
+                48
+              ],
+              [
+                49,
+                0,
+                49
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              50,
+              51
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 1,
+            "topology": [
+              [
+                50,
+                0,
+                50
+              ],
+              [
+                51,
+                0,
+                51
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              52,
+              53
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 2,
+            "topology": [
+              [
+                52,
+                1,
+                0
+              ],
+              [
+                53,
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              54,
+              55
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 3,
+            "topology": [
+              [
+                54,
+                1,
+                2
+              ],
+              [
+                55,
+                1,
+                3
+              ]
+            ]
+          }
+        ],
+        "arm": "candidate",
+        "energy_ev": -71.32203132091773,
+        "id": "m001-candidate",
+        "iterations": 24,
+        "measured": true,
+        "nodes": {
+          "d9470n05.mr-sai.ai": 4,
+          "d9470n06.mr-sai.ai": 4
+        },
+        "pair": 2,
+        "reported_threads": 2,
+        "rounded_iteration_seconds": 0.67,
+        "versions": [
+          "v3.11.0",
+          "13.3.0",
+          "13.3.0",
+          "3.1",
+          "v4.5",
+          "v7.0.0",
+          "v3.3.10",
+          "v2.1.1",
+          "v2.1.2",
+          "1.0.1",
+          "v3.12.0"
+        ],
+        "wall_seconds": 3.93
+      },
+      {
+        "affinity": [
+          {
+            "cpus": [
+              0,
+              1
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 0,
+            "topology": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              2,
+              3
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 1,
+            "topology": [
+              [
+                2,
+                0,
+                2
+              ],
+              [
+                3,
+                0,
+                3
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              4,
+              5
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 2,
+            "topology": [
+              [
+                4,
+                0,
+                4
+              ],
+              [
+                5,
+                0,
+                5
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              6,
+              7
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 3,
+            "topology": [
+              [
+                6,
+                0,
+                6
+              ],
+              [
+                7,
+                0,
+                7
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              48,
+              49
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 0,
+            "topology": [
+              [
+                48,
+                0,
+                48
+              ],
+              [
+                49,
+                0,
+                49
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              50,
+              51
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 1,
+            "topology": [
+              [
+                50,
+                0,
+                50
+              ],
+              [
+                51,
+                0,
+                51
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              52,
+              53
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 2,
+            "topology": [
+              [
+                52,
+                1,
+                0
+              ],
+              [
+                53,
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              54,
+              55
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 3,
+            "topology": [
+              [
+                54,
+                1,
+                2
+              ],
+              [
+                55,
+                1,
+                3
+              ]
+            ]
+          }
+        ],
+        "arm": "candidate",
+        "energy_ev": -71.32203132091811,
+        "id": "m002-candidate",
+        "iterations": 24,
+        "measured": true,
+        "nodes": {
+          "d9470n05.mr-sai.ai": 4,
+          "d9470n06.mr-sai.ai": 4
+        },
+        "pair": 3,
+        "reported_threads": 2,
+        "rounded_iteration_seconds": 0.68,
+        "versions": [
+          "v3.11.0",
+          "13.3.0",
+          "13.3.0",
+          "3.1",
+          "v4.5",
+          "v7.0.0",
+          "v3.3.10",
+          "v2.1.1",
+          "v2.1.2",
+          "1.0.1",
+          "v3.12.0"
+        ],
+        "wall_seconds": 4.31
+      },
+      {
+        "affinity": [
+          {
+            "cpus": [
+              0,
+              1
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 0,
+            "topology": [
+              [
+                0,
+                0,
+                0
+              ],
+              [
+                1,
+                0,
+                1
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              2,
+              3
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 1,
+            "topology": [
+              [
+                2,
+                0,
+                2
+              ],
+              [
+                3,
+                0,
+                3
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              4,
+              5
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 2,
+            "topology": [
+              [
+                4,
+                0,
+                4
+              ],
+              [
+                5,
+                0,
+                5
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              6,
+              7
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n05.mr-sai.ai",
+            "local_rank": 3,
+            "topology": [
+              [
+                6,
+                0,
+                6
+              ],
+              [
+                7,
+                0,
+                7
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              48,
+              49
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 0,
+            "topology": [
+              [
+                48,
+                0,
+                48
+              ],
+              [
+                49,
+                0,
+                49
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              50,
+              51
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 1,
+            "topology": [
+              [
+                50,
+                0,
+                50
+              ],
+              [
+                51,
+                0,
+                51
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              52,
+              53
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 2,
+            "topology": [
+              [
+                52,
+                1,
+                0
+              ],
+              [
+                53,
+                1,
+                1
+              ]
+            ]
+          },
+          {
+            "cpus": [
+              54,
+              55
+            ],
+            "environment": {
+              "MAP_OPT": "ppr:4:node:pe=2",
+              "OMP_NUM_THREADS": "2",
+              "OMP_PLACES": "cores",
+              "OMP_PROC_BIND": "true"
+            },
+            "hostname": "d9470n06.mr-sai.ai",
+            "local_rank": 3,
+            "topology": [
+              [
+                54,
+                1,
+                2
+              ],
+              [
+                55,
+                1,
+                3
+              ]
+            ]
+          }
+        ],
+        "arm": "system",
+        "energy_ev": -71.32204093440701,
+        "id": "m002-system",
+        "iterations": 24,
+        "measured": true,
+        "nodes": {
+          "d9470n05.mr-sai.ai": 4,
+          "d9470n06.mr-sai.ai": 4
+        },
+        "pair": 3,
+        "reported_threads": 2,
+        "rounded_iteration_seconds": 0.67,
+        "versions": [
+          "v3.9.0.26",
+          "13.3.0",
+          "3.9.0.26",
+          "2.1.2",
+          "3.9.0.26",
+          "2.1.2",
+          "3.9.0.26",
+          "2.1.2",
+          "v4.5",
+          "2026.02.001",
+          "v7.0.0",
+          "v12.9.86",
+          "26.3",
+          "12.9",
+          "3.9.0.26",
+          "v2.1.1",
+          "3.9.0.26",
+          "v2.1.2",
+          "3.9.0.26",
+          "1.0.1",
+          "3.9.0.26",
+          "3.9.0.26"
+        ],
+        "wall_seconds": 4.85
+      }
+    ],
+    "schema": 2,
+    "statistics": {
+      "rounded_iteration_seconds": {
+        "candidate": {
+          "max": 0.74,
+          "median": 0.68,
+          "min": 0.67
+        },
+        "candidate_system_ratio": 0.9315068493150686,
+        "system": {
+          "max": 0.74,
+          "median": 0.73,
+          "min": 0.67
+        }
+      },
+      "wall_seconds": {
+        "candidate": {
+          "max": 4.79,
+          "median": 4.31,
+          "min": 3.93
+        },
+        "candidate_system_ratio": 0.8886597938144329,
+        "system": {
+          "max": 6.74,
+          "median": 4.85,
+          "min": 2.95
+        }
+      }
+    },
+    "system_binary": {
+      "path": "/opt/apps/abacus/abacus-develop-3.9.0.26_nvhpc263gnu/bin_sm70_avx512/abacus_5g",
+      "sha256": "1772bc6e2beecbb925dfd3d34147afb1c385aecc248dd114ae1d3f0d0e454c9a"
+    },
+    "system_module": "abacus/v3.9.0.26-sm70-auto",
+    "timing_note": "Iteration times sum the rounded SCF TIME/s column; wall measures mpirun only."
+  },
+  "logging_recovery": {
+    "artifact_sha256": "6a993b9257970ac015b32cd390424b362b170c0ca13446a7526a1167b57d47ff",
+    "change": "Rank processes dup2 stdout/stderr to separate files; concatenate complete streams after mpirun",
+    "collector_sha256": "802b2c95f996ecdea0a67d7f42a191e08b25587b737ab966c6eddb973c7970c2",
+    "controller_sha256": "50cbcc303ee869113bd80cb8424ec4598f670173bfd870fdec985e402f914bbe",
+    "failed_output_option_job": "2218191",
+    "failed_output_option_request_sha256": "1ed8fa3ca6f94c280b4954f5ad34ed843fa6e8c1ccb808ad30cbaab2cbc82fd7",
+    "original_job": "2216449",
+    "original_job_script_sha256": "9ed8fc9d34d9361ef62130780a421efa10e31f209cd157e7ca8d39028566d522",
+    "original_request_sha256": "6ea4546c128892c587678646a1c172e776170e0f3524d0a73c0df162f0d30691",
+    "original_run": "42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667-deepks",
+    "original_stdout_sha256": "9703b212c7078fa292c4af4ab80871b7afd7de5f4c831bce6921504bc9f37b0d",
+    "reason": "MPI combined output interleaved the two node-local OpenMP reports",
+    "recovery_job_script_sha256": "b6673810b6e64be90e2389637704a9a9acf7e67c915f54308c4531076df8d58a",
+    "recovery_run": "42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667-deepks-logfix3",
+    "split_stream_attempt_job": "2218257",
+    "split_stream_attempt_request_sha256": "a52d7fd7010e7ae879693d29802c1914d548804caf045d5e8773f1a423cbd869",
+    "writer_sha256": "04965a3bd0955bb45280ae9062717eaaa05a47913730dcf3e2f602a0101ea80b"
+  },
+  "original_corrupt_line": [
+    "Info: Local MPI proc number: Info: Local MPI proc number: 4,OpenMP thread number: 4,OpenMP thread number: 2,Total thread number: 82,Total thread number: 8,Local thread limit: 104"
+  ],
+  "original_status": {
+    "exit_code": "0:0",
+    "job": "2216449",
+    "state": "COMPLETED",
+    "verified": false
+  },
+  "published": true,
+  "recovery_request": {
+    "action": "prepare",
+    "allow_cpu_case_on_gpu": true,
+    "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6/DSPRHBM/42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667.sif",
+    "artifact_sha256": "6a993b9257970ac015b32cd390424b362b170c0ca13446a7526a1167b57d47ff",
+    "benchmark_case": "deepks",
+    "case": null,
+    "case_device": "cpu",
+    "case_files": null,
+    "controller_sha256": "50cbcc303ee869113bd80cb8424ec4598f670173bfd870fdec985e402f914bbe",
+    "dependency_isa": "avx512",
+    "identity": {
+      "build_id": "develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6",
+      "cpu_arch": "x86-64-v4",
+      "cuda_arch": "",
+      "dependency_isa": "avx512",
+      "gpus": 0,
+      "install_prefix": "/opt/apps/abacus/abacus-development-develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6/DSPRHBM",
+      "partition": "DSPRHBM",
+      "recipe_sha256": "35253fd4b4f6d16c0ed419deb95dea81d6193e00742bde3ce6321dfe6a42b15a",
+      "repository": "deepmodeling/abacus-develop",
+      "schema": 2,
+      "software": "abacus",
+      "source_ref": "develop",
+      "source_sha": "3c1dddac06678e1b37752c9752c316f8713f499b",
+      "source_version": "develop-2026-11-05",
+      "stack_digest": null,
+      "stack_sources": {},
+      "target": "dsprhbm",
+      "track": "development",
+      "version_label": "develop-2026-11-05"
+    },
+    "job_script_sha256": "b6673810b6e64be90e2389637704a9a9acf7e67c915f54308c4531076df8d58a",
+    "launcher": "/org/org-open-sai/proj-sai-hpc-software/controller/a3dfe27f889248a017caa492c15a556d9aa1eee0/42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667/abacus",
+    "launcher_sha256": "a89df036192ee8760b18f143f9d0da77e2a0d6a3c2ae20cd137d84dd794aa8ca",
+    "logging_recovery": {
+      "artifact_sha256": "6a993b9257970ac015b32cd390424b362b170c0ca13446a7526a1167b57d47ff",
+      "change": "Rank processes dup2 stdout/stderr to separate files; concatenate complete streams after mpirun",
+      "collector_sha256": "802b2c95f996ecdea0a67d7f42a191e08b25587b737ab966c6eddb973c7970c2",
+      "controller_sha256": "50cbcc303ee869113bd80cb8424ec4598f670173bfd870fdec985e402f914bbe",
+      "failed_output_option_job": "2218191",
+      "failed_output_option_request_sha256": "1ed8fa3ca6f94c280b4954f5ad34ed843fa6e8c1ccb808ad30cbaab2cbc82fd7",
+      "original_job": "2216449",
+      "original_job_script_sha256": "9ed8fc9d34d9361ef62130780a421efa10e31f209cd157e7ca8d39028566d522",
+      "original_request_sha256": "6ea4546c128892c587678646a1c172e776170e0f3524d0a73c0df162f0d30691",
+      "original_run": "42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667-deepks",
+      "original_stdout_sha256": "9703b212c7078fa292c4af4ab80871b7afd7de5f4c831bce6921504bc9f37b0d",
+      "reason": "MPI combined output interleaved the two node-local OpenMP reports",
+      "recovery_job_script_sha256": "b6673810b6e64be90e2389637704a9a9acf7e67c915f54308c4531076df8d58a",
+      "recovery_run": "42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667-deepks-logfix3",
+      "split_stream_attempt_job": "2218257",
+      "split_stream_attempt_request_sha256": "a52d7fd7010e7ae879693d29802c1914d548804caf045d5e8773f1a423cbd869",
+      "writer_sha256": "04965a3bd0955bb45280ae9062717eaaa05a47913730dcf3e2f602a0101ea80b"
+    },
+    "minutes": 20,
+    "nodes": 2,
+    "packaged_case": "deepks",
+    "rank_output": "direct-v1",
+    "ranks": 8,
+    "ranks_per_node": 4,
+    "repeats": 3,
+    "run_id": "42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667-deepks-logfix3",
+    "runs": [
+      {
+        "arm": "system",
+        "id": "w000-system",
+        "measured": false,
+        "pair": 0
+      },
+      {
+        "arm": "candidate",
+        "id": "w000-candidate",
+        "measured": false,
+        "pair": 0
+      },
+      {
+        "arm": "candidate",
+        "id": "m000-candidate",
+        "measured": true,
+        "pair": 1
+      },
+      {
+        "arm": "system",
+        "id": "m000-system",
+        "measured": true,
+        "pair": 1
+      },
+      {
+        "arm": "system",
+        "id": "m001-system",
+        "measured": true,
+        "pair": 2
+      },
+      {
+        "arm": "candidate",
+        "id": "m001-candidate",
+        "measured": true,
+        "pair": 2
+      },
+      {
+        "arm": "candidate",
+        "id": "m002-candidate",
+        "measured": true,
+        "pair": 3
+      },
+      {
+        "arm": "system",
+        "id": "m002-system",
+        "measured": true,
+        "pair": 3
+      }
+    ],
+    "scf_log": "OUT.autotest/running_scf.log",
+    "schema": 2,
+    "system_module": "abacus/v3.9.0.26-sm70-auto",
+    "target": "dsprhbm",
+    "threads": 2,
+    "version": "develop-2026-11-05",
+    "warmup": 1
+  },
+  "status": {
+    "exit_code": "0:0",
+    "job": "2218404",
+    "state": "COMPLETED",
+    "verified": true
+  }
+}
