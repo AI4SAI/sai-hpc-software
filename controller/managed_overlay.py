@@ -46,10 +46,22 @@ def inspect_command(argv, run):
     if not overlays:
         return None
     expected = str(Path(run) / 'work.ext3')
-    if len(overlays) != 1 or overlays[0][1] not in (expected, expected + ':ro'):
+    selected = [(index, value) for index, value in overlays
+                if value in (expected, expected + ':ro')]
+    if len(selected) != 1:
         raise ValueError('managed overlay requires the exact per-run work.ext3')
-    return dict(index=overlays[0][0], overlay=expected, image=argv[i], binds=binds,
-                readonly=overlays[0][1].endswith(':ro'))
+    dependencies = []
+    for index, value in overlays:
+        if index == selected[0][0]:
+            continue
+        path = value[:-3] if value.endswith(':ro') else ''
+        if (not path or not Path(path).is_absolute() or Path(path).name != 'work.ext3'
+                or any(c in path for c in ':,\n\r$') or '..' in Path(path).parts
+                or path in dependencies):
+            raise ValueError('additional dependency overlays must be distinct read-only work.ext3 images')
+        dependencies.append(path)
+    return dict(index=selected[0][0], overlay=expected, image=argv[i], binds=binds,
+                readonly=selected[0][1].endswith(':ro'), dependency_overlays=dependencies)
 
 
 def clean_environment(env):
@@ -111,6 +123,13 @@ def launch(project, run, app, config, argv, execute):
         if mode not in ('ro', 'rw'):
             raise ValueError('unsupported build bind mode')
         binds[parts[0]] = mode
+    # Retain immutable source/build trees from accepted dependency overlays.
+    # Only this run's work.ext3 is writable and owned by the managed driver.
+    for name in policy['dependency_overlays']:
+        dependency = canonical(name)
+        if not dependency.is_file():
+            raise ValueError('missing read-only dependency overlay')
+        binds[str(dependency)] = 'ro'
     command = [str(app), '--config', str(config), 'exec', '--fakeroot',
                '--ignore-fakeroot-command', '--no-home', '--no-mount',
                'bind-paths,home,cwd,tmp,hostfs', '--pwd', '/']

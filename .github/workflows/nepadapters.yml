@@ -3,9 +3,9 @@ name: Build NEPAdapters release addon
 on:
   workflow_dispatch:
   push:
-    paths: ['controller/nepadapters*', 'deployment/nepadapters-1.0.4/**', 'tests/test_nepadapters.py', '.github/workflows/nepadapters.yml']
+    paths: ['controller/nepadapters*', 'deployment/nepadapters-1.0.5/**', 'tests/test_nepadapters.py', '.github/workflows/nepadapters.yml']
   pull_request:
-    paths: ['controller/nepadapters*', 'deployment/nepadapters-1.0.4/**', 'tests/test_nepadapters.py', '.github/workflows/nepadapters.yml']
+    paths: ['controller/nepadapters*', 'deployment/nepadapters-1.0.5/**', 'tests/test_nepadapters.py', '.github/workflows/nepadapters.yml']
 
 permissions:
   contents: read
@@ -22,9 +22,10 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y tcl
           python3 -m unittest discover -s tests -p 'test_nepadapters.py' -v
+          python3 -m unittest discover -s tests -p 'test_managed_overlay.py' -v
           bash -n controller/nepadapters_build.sh
-          bash -n deployment/nepadapters-1.0.4/install.sh
-          bash -n deployment/nepadapters-1.0.4/submit-native-checks.sh
+          bash -n deployment/nepadapters-1.0.5/install.sh
+          bash -n deployment/nepadapters-1.0.5/submit-native-checks.sh
   release:
     if: github.event_name == 'workflow_dispatch'
     needs: validate

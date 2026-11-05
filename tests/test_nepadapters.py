@@ -29,8 +29,8 @@ def load(name, path):
     return module
 
 
-install = load('nepa_install', ROOT / 'deployment/nepadapters-1.0.4/install.py')
-prepare = load('nepa_prepare', ROOT / 'deployment/nepadapters-1.0.4/prepare-release.py')
+install = load('nepa_install', ROOT / 'deployment/nepadapters-1.0.5/install.py')
+prepare = load('nepa_prepare', ROOT / 'deployment/nepadapters-1.0.5/prepare-release.py')
 
 
 class NumericalTests(unittest.TestCase):
@@ -147,16 +147,29 @@ class RankTests(unittest.TestCase):
                         row = dict(rank=rank, local_rank=rank, host='node-a', gpu_uuid='GPU-' + str(rank),
                                    binary='/opt/lmp', binary_sha256='pinned', sm=70)
                         (folder / backend / 'ranks' / f'{name}-{rank}.json').write_text(json.dumps(row))
+            native.check_ranks(folder, ['node-a'], 2, '/opt/lmp', 'pinned', include_boundaries=False)
+            with self.assertRaisesRegex(ValueError, 'incomplete MPI'):
+                native.check_ranks(folder, ['node-a'], 2, '/opt/lmp', 'pinned')
+            for boundary in science.BOUNDARIES[1:]:
+                for backend in ('cpu', 'gpu'):
+                    shutil.copytree(folder / backend,
+                                    folder / ('boundary-' + boundary.replace(' ', '')) / backend)
             native.check_ranks(folder, ['node-a'], 2, '/opt/lmp', 'pinned')
+            mixed_rank = folder / 'boundary-ppf/gpu/ranks/in.baseline-1.json'
+            saved = mixed_rank.read_text()
+            mixed_rank.write_text(saved.replace('GPU-1', 'GPU-0'))
+            with self.assertRaisesRegex(ValueError, 'node/device mapping'):
+                native.check_ranks(folder, ['node-a'], 2, '/opt/lmp', 'pinned')
+            mixed_rank.write_text(saved)
             path = folder / 'gpu/ranks/in.dynamics-1.json'
             row = json.loads(path.read_text())
             for change in (dict(gpu_uuid='GPU-0'), dict(binary='/old/lmp'), dict(host='node-b'), dict(sm=80)):
                 path.write_text(json.dumps(dict(row, **change)))
                 with self.assertRaises(ValueError):
-                    native.check_ranks(folder, ['node-a'], 2, '/opt/lmp', 'pinned')
+                    native.check_ranks(folder, ['node-a'], 2, '/opt/lmp', 'pinned', include_boundaries=False)
             path.unlink()
             with self.assertRaisesRegex(ValueError, 'incomplete MPI'):
-                native.check_ranks(folder, ['node-a'], 2, '/opt/lmp', 'pinned')
+                native.check_ranks(folder, ['node-a'], 2, '/opt/lmp', 'pinned', include_boundaries=False)
 
 
 class DeploymentTests(unittest.TestCase):
@@ -194,8 +207,8 @@ class DeploymentTests(unittest.TestCase):
             install.verify_payload(payload, self.files)
 
     def test_minimal_install_is_readable_with_private_umask_and_repeatable(self):
-        module = self.root / 'opt/modules/nepadapters/1.0.4'
-        prefix = self.root / 'opt/apps/nepadapters/1.0.4/16V100'
+        module = self.root / 'opt/modules/nepadapters/1.0.5'
+        prefix = self.root / 'opt/apps/nepadapters/1.0.5/16V100'
         (self.package / 'modulefile').write_text('#%Module1.0\n')
         plan = dict(partitions={'16V100': dict(prefix=str(prefix), files=self.files)},
                     module_sha256=install.digest(self.package / 'modulefile'))
@@ -209,7 +222,7 @@ class DeploymentTests(unittest.TestCase):
             os.umask(previous)
         install.verify_payload(prefix, self.files)
         self.assertEqual(module.stat().st_mode & 0o777, 0o644)
-        self.assertEqual({p.name for p in module.parent.iterdir()}, {'1.0.4'})
+        self.assertEqual({p.name for p in module.parent.iterdir()}, {'1.0.5'})
         for path in prefix.rglob('*'):
             if path.is_dir():
                 self.assertEqual(path.stat().st_mode & 0o777, 0o755)
@@ -217,8 +230,8 @@ class DeploymentTests(unittest.TestCase):
     def test_shared_install_uses_one_payload_and_rejects_partition_drift(self):
         shutil.copytree(self.package / 'payload/16V100', self.package / 'payload/shared')
         shutil.rmtree(self.package / 'payload/16V100')
-        module = self.root / 'opt/modules/nepadapters/1.0.4'
-        prefix = self.root / 'opt/apps/nepadapters/1.0.4-lammps30Sep2026'
+        module = self.root / 'opt/modules/nepadapters/1.0.5'
+        prefix = self.root / 'opt/apps/nepadapters/1.0.5-lammps30Sep2026'
         (self.package / 'modulefile').write_text('#%Module1.0\n')
         rows = {}
         for part in release.PARTITIONS:
@@ -257,12 +270,12 @@ class DeploymentTests(unittest.TestCase):
 
     def replacement_plan(self):
         shutil.copytree(self.package / 'payload/16V100', self.package / 'payload/shared')
-        module = self.root / 'modules/nepadapters/1.0.4'
+        module = self.root / 'modules/nepadapters/1.0.5'
         module.parent.mkdir(parents=True)
         module.write_text('previous module\n')
         old_module_sha = install.digest(module)
         (self.package / 'modulefile').write_text('#%Module1.0\n# shared release\n')
-        prefix = self.root / 'apps/nepadapters/1.0.4-lammps30Sep2026'
+        prefix = self.root / 'apps/nepadapters/1.0.5-lammps30Sep2026'
         old = prefix.parent / (prefix.name + '-r0123456789ab')
         replacements = []
         for part in release.PARTITIONS:
@@ -338,7 +351,7 @@ class DeploymentTests(unittest.TestCase):
         install.verify_payload(prefix, self.files)
 
     def test_module_extension_only_replaces_the_known_previous_module(self):
-        module = self.root / 'modules/nepadapters/1.0.4'
+        module = self.root / 'modules/nepadapters/1.0.5'
         module.parent.mkdir(parents=True)
         module.write_text('#%Module1.0\n# previous accepted partitions\n')
         old_sha = install.digest(module)
@@ -353,7 +366,7 @@ class DeploymentTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'module changed'):
                 install.install(plan)
             self.assertEqual(module.read_text(), 'unrelated administrator content')
-        self.assertEqual({p.name for p in module.parent.iterdir()}, {'1.0.4'})
+        self.assertEqual({p.name for p in module.parent.iterdir()}, {'1.0.5'})
 
     @unittest.skipUnless(shutil.which('tclsh'), 'Tcl required')
     def test_module_requires_lammps_and_preserves_plugin_path(self):

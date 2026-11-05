@@ -12,18 +12,19 @@ from pathlib import Path
 import shlex
 import shutil
 import subprocess
+import xml.etree.ElementTree as ET
 
 from cp2k_image_driver import driver_path, wrap_command, module_load_command
 from remote_controller import (SAI_PROJECT_ROOT, container_command, private_scratch,
                                project_batch_directives, project_qos, safe_name, site_app_binds)
 from source_cache import checksum
 
-VERSION = '1.0.4'
-SOURCE_SHA = 'c934e71444cb4099d63dff98478f02c86373b061'
-SOURCE_ARCHIVE_SHA256 = 'e7646bd1b79ce5bacaa241689326bd7fc224b02c10df70e6cf4cff7395fbe320'
+VERSION = '1.0.5'
+SOURCE_SHA = '3ceba8f9b69765ac29d9f2f4f1c4f76cee8ecf37'
+SOURCE_ARCHIVE_SHA256 = '81be02f627503b6453a59d4cc228c1d7dbad9f99b50b2d603c151aa53b931e0b'
 LAMMPS_SHA = '8de817dd79bfe4525d5d39246a212d833e6dee07'
 MODULE = 'lammps/30Sep2026-deepmd320-auto'
-SHARED_PREFIX = '/opt/apps/nepadapters/1.0.4-lammps30Sep2026'
+SHARED_PREFIX = '/opt/apps/nepadapters/1.0.5-lammps30Sep2026'
 PAYLOAD = ('lib/nepadapterscpuplugin.so', 'lib/nepadaptersgpuplugin.so',
            'share/licenses/nepadapters/LICENSE.NEP_CPU')
 PARTITIONS = {'16V100': '16v100-avx2', '4V100': '4v100-avx512', '8V100V0': '8v100v0-avx512'}
@@ -221,6 +222,13 @@ def artifact_record(run):
     from nepadapters_science import verify
     request = context(run)
     files = {name: checksum(run / 'export' / name) for name in PAYLOAD}
+    spin = run / 'runtime/upstream-spin-tests.xml'
+    tests = ET.parse(spin).getroot()
+    require(tests.attrib.get('tests') == '2' and tests.attrib.get('failures') == '0' and
+            tests.attrib.get('disabled', '0') == '0' and
+            {case.attrib.get('name') for case in tests.findall('testcase')} ==
+            {'nep_adapters_cpu_spin_test', 'nep_adapters_cpu_spin_openmp_test'},
+            'missing successful upstream Spin1 single-thread/OpenMP regression')
     for phase in ('science-build', 'science-sif'):
         proof = verify(run / 'runtime/cases', run / 'runtime' / phase)
         require(proof['lmp'] == request['lammps']['prefix'] + '/bin/lmp' and
@@ -229,6 +237,7 @@ def artifact_record(run):
                 'tested plugin/LAMMPS differs from SIF export')
     return dict(schema=1, request_sha256=checksum(run / 'request.json'),
                 image_sha256=checksum(run / 'nepadapters.sif'), files=files,
+                upstream_spin_tests_sha256=checksum(spin),
                 science_sha256={phase: checksum(run / 'runtime' / phase / 'acceptance.json')
                                 for phase in ('science-build', 'science-sif')})
 

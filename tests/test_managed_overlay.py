@@ -25,15 +25,29 @@ class ManagedOverlayTests(unittest.TestCase):
         self.assertEqual(readonly['overlay'], result['overlay'])
         self.assertFalse(result['readonly'])
 
-    def test_wrong_image_multiple_overlays_and_unknown_policy_are_rejected(self):
+    def test_wrong_image_multiple_writers_and_unknown_policy_are_rejected(self):
         for command in (
             ['exec', '--overlay', '/elsewhere/work.ext3', '/base.sif', 'true'],
             ['exec', '--overlay', '/elsewhere/work.ext3:ro', '/base.sif', 'true'],
             ['exec', '--overlay', '/project/runs/build/work.ext3', '--overlay', '/another:ro', '/base.sif', 'true'],
+            ['exec', '--overlay', '/project/runs/build/work.ext3', '--overlay', '/dependency/work.ext3', '/base.sif', 'true'],
+            ['exec', '--overlay', '/project/runs/build/work.ext3', '--overlay', '/project/runs/build/work.ext3:ro', '/base.sif', 'true'],
+            ['exec', '--overlay', '/project/runs/build/work.ext3', '--overlay', '../dependency/work.ext3:ro', '/base.sif', 'true'],
             ['exec', '--writable', '/base.sif', 'true'],
         ):
             with self.assertRaises(ValueError):
                 managed.inspect_command(command, '/project/runs/build')
+
+    def test_readonly_dependency_preserves_the_managed_writer(self):
+        command = ['exec', '--overlay', '/dependency/work.ext3:ro',
+                   '--overlay', '/project/runs/build/work.ext3', '/base.sif', 'true']
+        policy = managed.inspect_command(command, '/project/runs/build')
+        self.assertEqual(command[policy['index']], '/project/runs/build/work.ext3')
+        self.assertEqual(policy['dependency_overlays'], ['/dependency/work.ext3'])
+        self.assertFalse(policy['readonly'])
+        command[1:1] = ['--overlay', '/dependency/work.ext3:ro']
+        with self.assertRaisesRegex(ValueError, 'distinct read-only'):
+            managed.inspect_command(command, '/project/runs/build')
 
     def test_nested_environment_removes_outer_binds_but_preserves_explicit_payload_variables(self):
         env = dict(APPTAINER_BIND='/outer', APPTAINER_CONTAINER='/base.sif',
@@ -58,8 +72,12 @@ class ManagedOverlayTests(unittest.TestCase):
             (run/'runtime').mkdir(parents=True)
             (run/'results').mkdir()
             (run/'work.ext3').write_bytes(b'image')
+            dependency = root/'dependency/work.ext3'
+            dependency.parent.mkdir()
+            dependency.write_bytes(b'accepted read-only build dependency')
             argv = container_command('/base.sif', ['true'], overlay=str(run/'work.ext3'), gpu=True)[1:]
-            argv[1:1] = ['--bind', str(run/'results')+':/results:rw']
+            argv[1:1] = ['--bind', str(run/'results')+':/results:rw',
+                         '--overlay', str(dependency)+':ro']
             original = argv.copy()
             captured = {}
             def execute(command, target):
@@ -78,6 +96,7 @@ class ManagedOverlayTests(unittest.TestCase):
             self.assertEqual(argv, original)
             self.assertEqual(captured['command'][0], '/stock/apptainer')
             self.assertIn('/base.sif', captured['command'])
+            self.assertIn(str(dependency)+':'+str(dependency)+':ro', captured['command'])
             if Path('/etc/ld.so.cache').exists():
                 self.assertIn('/etc/ld.so.cache:/etc/ld.so.cache:ro', captured['command'])
             # Driver discovery belongs to the inner --nv; the outer layer
