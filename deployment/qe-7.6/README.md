@@ -87,5 +87,6 @@ bash /home/stardust/sai-hpc-software/deployment/qe-7.6/submit-native-checks.sh
 已经完成的最终 SIF 科学验收见
 [QE qualification](../../docs/evidence/qe-20261105/README.md)。项目目录已完成四分区的整套
 试安装和文件校验；[原生试运行记录](../../docs/evidence/qe-20261105/native-release-stage.json)
-中 DSPRHBM、16V100、8V100V0 已通过全部链接和 SCF/PH/PP 检查，4V100 的双卡作业
-仍在排队。管理员物理安装尚未执行；项目试安装与最终 `/opt` 验收分别记录。
+中 DSPRHBM、16V100、4V100、8V100V0 均已通过全部链接和 SCF/PH/PP 检查，
+GPU 分区确认了双卡 CUDA 执行。管理员物理安装尚未执行；项目试安装与最终 `/opt`
+验收分别记录。

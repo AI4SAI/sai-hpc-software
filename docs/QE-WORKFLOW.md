@@ -70,8 +70,8 @@ Development SIFs enter the existing independent beta verification/rotation path;
 the module uses the PGI/NVHPC MPI ABI and standard command names such as pw.x.
 No payload extraction is needed for beta launches.
 
-Once the complete develop matrix has passed acceptance and the home-maintained
-beta has been selected, the administrator can add only the QE gateway:
+The complete develop matrix has passed acceptance and the home-maintained beta
+has been selected. The administrator can add only the QE gateway:
 
 ```sh
 bash deployment/sif-beta/install.sh --check /opt/modules/modulefiles/apps qe
@@ -114,6 +114,16 @@ SCF/PH/PP results, scheduler accounting and clean image teardown receipts.
 All four development SIFs also passed the same science gate; exact images,
 two-device kernel evidence and accounting are in
 [development evidence](evidence/qe-20261105/development.json). The first public
-beta verification has passed DSPRHBM, 16V100 and 8V100V0; the 4V100 beta route
-is waiting for its two-GPU allocation.
+beta verification passed all four partitions and the complete Actions workflow
+finished successfully. The home alias selects
+`develop-beta-20261105-61569eb48023-r68ed5eb155c0-bd913f2de073c`.
+[Publication evidence](evidence/qe-20261105/beta-publication.json) includes the
+real module help, login-node rejection, scheduler accounting and accepted
+host-MPI/private-memory results. Administrator preflight also verified the
+public image copies and launchers.
+
+The release administrator package completed a full installation and file
+verification in a project staging tree. All four native staged installations
+passed the 67-command dynamic-library checks and SCF/PH/PP science; see
+[native evidence](evidence/qe-20261105/native-release-stage.json).
 Physical /opt installation has not been performed.
