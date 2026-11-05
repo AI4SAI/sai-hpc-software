@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "python3",
+    "-B",
+    "/home/stardust/sai-hpc-software/deployment/abacus-3.11.0-beta12/native_checks.py",
+    "verify",
+    "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/abacus-beta12-physical-20261105-190518-384810"
+  ],
+  "returncode": 0,
+  "stderr": "",
+  "stdout": "{\n  \"passed\": true,\n  \"partitions\": {\n    \"4V100\": {\n      \"passed\": true,\n      \"job\": \"2217408\",\n      \"scientific_cases\": 8\n    },\n    \"16V100\": {\n      \"passed\": true,\n      \"job\": \"2217409\",\n      \"scientific_cases\": 8\n    },\n    \"8V100V0\": {\n      \"passed\": true,\n      \"job\": \"2217410\",\n      \"scientific_cases\": 8\n    },\n    \"DSPRHBM\": {\n      \"passed\": true,\n      \"job\": \"2217411\",\n      \"scientific_cases\": 6\n    }\n  }\n}\n"
+}

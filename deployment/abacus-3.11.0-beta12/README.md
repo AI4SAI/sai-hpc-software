@@ -97,8 +97,15 @@ bash submit-native-checks.sh all
 四份 SIF 和原生导出已于 2026-11-03 通过构建与科学验收。
 [原始验收记录](../../docs/evidence/prerelease-ecc-recovery-20261103/README.md)
 保留全部成功和失败尝试；2026-11-05 重新核对的 19 个功能/跨节点作业均为
-`COMPLETED 0:0`。这份安装包准备完成时，物理 `/opt` 尚未安装 beta12。
+`COMPLETED 0:0`。
 
 四份真实 SIF 已在项目目录完成试安装、重复安装和完整文件复验，全部通过；
 管理员权限、登录节点 module 帮助和 beta12 原始参考材料也已核查。
 见[交付验证记录](../../docs/evidence/abacus-beta12-handoff-20261105/README.md)。
+
+2026-11-05 管理员完成物理 `/opt` 安装后，四分区文件/module 复验及全部 30 项
+原生科学计算通过。作业为 4V100 `2217408`、16V100 `2217409`、8V100V0
+`2217410`、DSPRHBM `2217411`，均为 `COMPLETED 0:0`。最大参考能量误差
+`2.05e-8 eV`，低于 `1e-5 eV` 阈值；MPI、实际 GPU 后端和 module 卸载均通过。
+详见[安装后原生验收](../../docs/evidence/abacus-beta12-installed-20261105/README.md)，
+其中保留 CPU 分区的 MPI 共享内存警告及较长耗时，不将本轮结果作为性能标定。

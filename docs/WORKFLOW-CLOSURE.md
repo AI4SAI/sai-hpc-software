@@ -22,7 +22,7 @@ file/module verification and all four native link/SCF/PH/PP checks passed in job
 The latest upstream develop SHA still matches the accepted four-partition beta.
 See [QE workflow and exact qualification evidence](QE-WORKFLOW.md).
 
-## ABACUS beta12 administrator handoff
+## ABACUS beta12 physical installation accepted
 
 The latest upstream release remains `v3.11.0-beta12@6b24db05dc17`.
 All four accepted SIFs and native exports are ready. The
@@ -35,9 +35,17 @@ ACLs and expanded home-directory exports are not needed.
 
 [Actual staged installation](evidence/abacus-beta12-handoff-20261105/README.md),
 repeat installation, file verification, administrator access, login help and
-the pinned beta12 scientific references passed. Physical `/opt` still has
-beta11; beta12 installation and subsequent physical runtime checks await the
-administrator. All new acceptance work uses the project account and storage.
+the pinned beta12 scientific references passed. The administrator has now
+installed beta12 into physical `/opt`. Complete installed-file/module checks
+and all 30 native scientific cases passed on all four partitions in jobs
+`2217408` through `2217411`, each `COMPLETED 0:0`. PW/HSE/DeePKS single- and
+two-node energies agree with the accepted SIF/reference within `1e-5 eV`
+(maximum reference error `2.05e-8 eV`). GPU cuSOLVERMp/NCCL execution, exact
+MPI/library paths and module unload passed. See
+[installed acceptance](evidence/abacus-beta12-installed-20261105/README.md)
+for raw evidence and the CPU MPI scratch/timing caveat. This is correctness
+acceptance, not a performance comparison. All new acceptance work uses the
+project account and storage; the older beta11 installation remains available.
 
 ## Writable image shutdown with the existing runtime
 
