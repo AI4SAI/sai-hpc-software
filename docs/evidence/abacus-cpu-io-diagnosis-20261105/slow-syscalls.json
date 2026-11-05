@@ -1,0 +1,106 @@
+{
+  "session-abba-profile/04-original-profiled-deepks/ranks/0.strace": [
+    {
+      "seconds": 2.084251,
+      "raw": "1235108 1793880904.679013 openat(AT_FDCWD, \"INPUT\", O_RDONLY) = 59 <2.084251>"
+    },
+    {
+      "seconds": 2.133311,
+      "raw": "1235108 1793880911.070457 openat(AT_FDCWD, \"STRU\", O_RDONLY) = 59 <2.133311>"
+    },
+    {
+      "seconds": 4.274859,
+      "raw": "1235108 1793880913.238737 mkdir(\"OUT.autotest/\", 0755) = 0 <4.274859>"
+    },
+    {
+      "seconds": 8.587307,
+      "raw": "1235108 1793880917.513881 openat(AT_FDCWD, \"OUT.autotest/running_scf.log\", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 59 <8.587307>"
+    },
+    {
+      "seconds": 1.649716,
+      "raw": "1235108 1793880939.518986 openat(AT_FDCWD, \"STRU\", O_RDONLY) = 61 <1.649716>"
+    },
+    {
+      "seconds": 2.148481,
+      "raw": "1235108 1793880943.311815 openat(AT_FDCWD, \"./PP_ORB/C_gga_8au_100Ry_2s2p1d.orb\", O_RDONLY) = 62 <2.148481>"
+    },
+    {
+      "seconds": 2.13234,
+      "raw": "1235108 1793880947.614178 openat(AT_FDCWD, \"./PP_ORB/H_gga_8au_100Ry_2s1p.orb\", O_RDONLY) = 62 <2.132340>"
+    }
+  ],
+  "session-abba-profile/04-original-profiled-deepks/ranks/4.strace": [
+    {
+      "seconds": 12.835582,
+      "raw": "2583312 1793880847.427343 openat(AT_FDCWD, \"/org/org-open-sai/proj-sai-hpc-software/runtime-tests/abacus-beta12-physical-20261105-190518-384810/DSPRHBM/control/native-rank.sh\", O_RDONLY) = 4 <12.835582>"
+    },
+    {
+      "seconds": 1.827162,
+      "raw": "2583325 1793880860.288469 openat(AT_FDCWD, \"/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/lib/glibc-hwcaps/x86-64-v4/libselinux.so.1\", O_RDONLY|O_CLOEXEC) = -1 ENOENT (No such file or directory) <1.827162>"
+    },
+    {
+      "seconds": 7.464975,
+      "raw": "2583325 1793880862.172980 mkdir(\"proj-sai-hpc-software\", 0777) = -1 EEXIST (File exists) <7.464975>"
+    },
+    {
+      "seconds": 2.160629,
+      "raw": "2583325 1793880869.638033 mkdir(\"runtime-tests\", 0777) = -1 EEXIST (File exists) <2.160629>"
+    },
+    {
+      "seconds": 1.801027,
+      "raw": "2583312 1793880872.143319 openat(AT_FDCWD, \"/org/org-open-sai/proj-sai-hpc-software/runtime-tests/abacus-mpi-session-20261105-200913-2123586/04-original-profiled-deepks/ranks/rank-4.tsv\", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 4 <1.801027>"
+    },
+    {
+      "seconds": 2.036089,
+      "raw": "2583413 1793880880.516682 openat(AT_FDCWD, \"/org/org-open-sai/proj-sai-hpc-software/runtime-tests/abacus-mpi-session-20261105-200913-2123586/04-original-profiled-deepks/ranks/ldd-4.txt\", O_RDONLY|O_NOCTTY) = 4 <2.036089>"
+    },
+    {
+      "seconds": 0.9836,
+      "raw": "2583312 1793880882.900709 openat(AT_FDCWD, \"/home/stardust/.openmpi/components\", O_RDONLY|O_NONBLOCK|O_CLOEXEC|O_DIRECTORY) = -1 ENOENT (No such file or directory) <0.983600>"
+    },
+    {
+      "seconds": 4.239832,
+      "raw": "2583312 1793880892.267773 openat(AT_FDCWD, \"/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib/ucx/libuct_cma.so.0\", O_RDONLY|O_CLOEXEC) = 14 <4.239832>"
+    },
+    {
+      "seconds": 4.787765,
+      "raw": "2583312 1793880917.514737 newfstatat(AT_FDCWD, \"OUT.autotest/\", {st_mode=S_IFDIR|S_ISGID|0750, st_size=25600, ...}, 0) = 0 <4.787765>"
+    },
+    {
+      "seconds": 0.646336,
+      "raw": "2583312 1793880973.248993 openat(AT_FDCWD, \"/org/org-open-sai/proj-sai-hpc-software/runtime-tests/abacus-mpi-session-20261105-200913-2123586/04-original-profiled-deepks/ranks/4.mpi-profile.json\", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9 <0.646336>"
+    }
+  ],
+  "session-abba-profile/05-session-shm-profiled-deepks/ranks/0.strace": [
+    {
+      "seconds": 4.261372,
+      "raw": "1235374 1793880986.830042 mkdir(\"OUT.autotest/\", 0755) = 0 <4.261372>"
+    },
+    {
+      "seconds": 2.147435,
+      "raw": "1235374 1793880991.091684 openat(AT_FDCWD, \"OUT.autotest/running_scf.log\", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 61 <2.147435>"
+    }
+  ],
+  "session-abba-profile/05-session-shm-profiled-deepks/ranks/4.strace": [
+    {
+      "seconds": 1.822161,
+      "raw": "2583566 1793880982.852851 openat(AT_FDCWD, \"/org/org-open-sai/proj-sai-hpc-software/runtime-tests/abacus-beta12-physical-20261105-190518-384810/DSPRHBM/control/native-rank.sh\", O_RDONLY) = 4 <1.822161>"
+    },
+    {
+      "seconds": 4.194263,
+      "raw": "2583566 1793881004.149880 openat(AT_FDCWD, \"./Model_ProjOrb/model_lda_pbe_18.ptg\", O_RDONLY) = 61 <4.194263>"
+    },
+    {
+      "seconds": 1.635132,
+      "raw": "2583566 1793881015.255089 openat(AT_FDCWD, \"OUT.autotest/autotest-CHARGE-DENSITY.restart\", O_WRONLY|O_CREAT|O_APPEND, 0666) = 61 <1.635132>"
+    },
+    {
+      "seconds": 4.211466,
+      "raw": "2583566 1793881021.308157 openat(AT_FDCWD, \"OUT.autotest/deepks_projdm.dat\", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 61 <4.211466>"
+    },
+    {
+      "seconds": 1.588266,
+      "raw": "2583566 1793881026.058772 openat(AT_FDCWD, \"/org/org-open-sai/proj-sai-hpc-software/runtime-tests/abacus-mpi-session-20261105-200913-2123586/05-session-shm-profiled-deepks/ranks/4.mpi-profile.json\", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 9 <1.588266>"
+    }
+  ]
+}

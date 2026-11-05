@@ -109,3 +109,9 @@ bash submit-native-checks.sh all
 `2.05e-8 eV`，低于 `1e-5 eV` 阈值；MPI、实际 GPU 后端和 module 卸载均通过。
 详见[安装后原生验收](../../docs/evidence/abacus-beta12-installed-20261105/README.md)，
 其中保留 CPU 分区的 MPI 共享内存警告及较长耗时，不将本轮结果作为性能标定。
+
+2026-11-05 后续 [CPU 延迟诊断](../../docs/evidence/abacus-cpu-io-diagnosis-20261105/README.md)
+确认绑核在 Slurm 分配内，原生程序和全部诊断样本数值正常。采样发现秒级文件访问
+阻塞及其它 rank 对应的 MPI 等待；DeePKS 还存在所有 rank 写同一 projected-density
+文件的源码路径。只将 MPI 共享内存和会话文件放 RAM 不能完全消除较长耗时，
+本轮未修改已安装程序或公共 module，也未将诊断对照宣称为性能修复。
