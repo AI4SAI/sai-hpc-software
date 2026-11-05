@@ -159,3 +159,21 @@ Legacy 7.3 entry points are reported separately: `dist.x` fails MPI cleanup in
 both old and new programs, `manypw.x` requires preserving its invocation name,
 and the old `pwgui` GUI is outside this batch package. The audit records the
 runtime results and the differences in the historical command inventories.
+
+The standard `manypw.x` entry is now available through the accepted beta
+runtime. [Four-partition checks](evidence/qe-20261105/manypw-beta-publication.json)
+ran ordinary `pw.x` followed by `manypw.x -ni 2`, preserving the launch name
+and checking both independent inputs, converged energies and separate scratch
+trees. Each GPU run recorded rank 0 on device 0 and rank 1 on device 1. Jobs
+`2214331`, `2214333`, `2214335` and `2214337` completed with `0:0` before the
+home alias rotated to `develop-beta-20261105-61569eb48023-r4d85319d4295-bd913f2de073c`.
+The four accepted SIF files were reused without changes or additional copies.
+The native administrator can add the same standard entry using the
+`--complete-commands` operation described in the installation package.
+The [actual staged upgrade](evidence/qe-20261105/manypw-native-completion.json)
+added only four links and preserved the content, inode and modification time
+of all 288 regular files; repeating it was idempotent. The
+[public installer check](evidence/qe-20261105/manypw-public-completion.json)
+passed with all existing physical files intact. Its stricter `--verify` is
+expected to report an incomplete tree until the administrator adds these
+new links; the original installed programs remain accepted.
