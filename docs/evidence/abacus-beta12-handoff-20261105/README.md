@@ -32,9 +32,10 @@ The project operation directory is:
 
 It retains the preparation log, reference preparation, staged install script,
 full extraction/verification log and resulting software tree. No physical
-`/opt` files were changed. The administrator still needs to install beta12;
-the subsequent 30 native scientific calculations will verify that final
-installation. Those new jobs have not been submitted during package preparation.
+`/opt` files were changed during package preparation, and no native jobs were
+submitted at that stage. After the administrator installed beta12 later on
+November 5, all four physical installations and 30 native calculations passed;
+see the separate [installed acceptance](../abacus-beta12-installed-20261105/README.md).
 
 Local deployment checks passed 36 tests, including corrupted sources,
 preservation of different existing files, pruning of build material, runtime

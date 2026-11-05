@@ -1,0 +1,53 @@
+{
+  "checked_at": "2026-11-05T11:06:39.168222+00:00",
+  "installed_verify": {
+    "argv": [
+      "bash",
+      "/home/stardust/sai-hpc-software/deployment/abacus-3.11.0-beta12/install.sh",
+      "--verify"
+    ],
+    "returncode": 0,
+    "stderr": "",
+    "stdout": "16V100: checking installed files\n  abacus: 19 files, 472.29 MiB\n4V100: checking installed files\n  abacus: 19 files, 472.90 MiB\n8V100V0: checking installed files\n  abacus: 19 files, 472.18 MiB\nDSPRHBM: checking installed files\n  abacus: 19 files, 463.12 MiB\nABACUS_NATIVE_VERIFIED\n"
+  },
+  "module_avail": {
+    "argv": [
+      "bash",
+      "--noprofile",
+      "--norc",
+      "-c",
+      "source /etc/profile.d/lmod.sh\nmodule purge\nmodule use /opt/modules/modulefiles/apps\nunset SLURM_JOB_ID SLURM_JOB_PARTITION SAI_ABACUS_PREFIX SAI_ABACUS_NATIVE_PARTITION ABACUS_ROOT\nexport LMOD_IGNORE_CACHE=1\nmodule --ignore_cache -t avail abacus/3.11.0-beta12-auto"
+    ],
+    "returncode": 0,
+    "stderr": "/opt/modules/modulefiles/apps:\nabacus/3.11.0-beta12-auto\n",
+    "stdout": ""
+  },
+  "module_help": {
+    "argv": [
+      "bash",
+      "--noprofile",
+      "--norc",
+      "-c",
+      "source /etc/profile.d/lmod.sh\nmodule purge\nmodule use /opt/modules/modulefiles/apps\nunset SLURM_JOB_ID SLURM_JOB_PARTITION SAI_ABACUS_PREFIX SAI_ABACUS_NATIVE_PARTITION ABACUS_ROOT\nexport LMOD_IGNORE_CACHE=1\nmodule help abacus/3.11.0-beta12-auto"
+    ],
+    "returncode": 0,
+    "stderr": "\n------------ Module Specific Help for \"abacus/3.11.0-beta12-auto\" -------------\nABACUS 3.11.0-beta12; source 6b24db05dc17; native CPU/V100 builds.\nLoad inside a DSPRHBM, 16V100, 4V100 or 8V100V0 Slurm allocation.\nUse the system templates in /opt/sbatch_examples and launch with host mpirun.\nExecutable, LibTorch and NEP libraries are installed under /opt/apps/abacus.\n\n\n",
+    "stdout": ""
+  },
+  "module_login_rejection": {
+    "argv": [
+      "bash",
+      "--noprofile",
+      "--norc",
+      "-c",
+      "source /etc/profile.d/lmod.sh\nmodule purge\nmodule use /opt/modules/modulefiles/apps\nunset SLURM_JOB_ID SLURM_JOB_PARTITION SAI_ABACUS_PREFIX SAI_ABACUS_NATIVE_PARTITION ABACUS_ROOT\nexport LMOD_IGNORE_CACHE=1\nif module load abacus/3.11.0-beta12-auto; then exit 41; fi\n[[ -z \"${SAI_ABACUS_PREFIX:-}\" && -z \"${SAI_ABACUS_NATIVE_PARTITION:-}\" && -z \"${ABACUS_ROOT:-}\" ]]"
+    ],
+    "returncode": 0,
+    "stderr": "ABACUS 3.11.0-beta12; source 6b24db05dc17; native CPU/V100 builds.\nLoad inside a DSPRHBM, 16V100, 4V100 or 8V100V0 Slurm allocation.\nUse the system templates in /opt/sbatch_examples and launch with host mpirun.\nExecutable, LibTorch and NEP libraries are installed under /opt/apps/abacus.\nLmod has detected the following error:\n/opt/modules/modulefiles/apps/abacus/3.11.0-beta12-auto:\n(abacus/3.11.0-beta12-auto): Load this module inside a Slurm allocation \nWhile processing the following module(s):\n    Module fullname            Module Filename\n    ---------------            ---------------\n    abacus/3.11.0-beta12-auto  /opt/modules/modulefiles/apps/abacus/3.11.0-beta12-auto\n\n",
+    "stdout": ""
+  },
+  "module_matches_package": true,
+  "module_path": "/opt/modules/modulefiles/apps/abacus/3.11.0-beta12-auto",
+  "module_sha256": "5713d0050804fcfcadb40a32fa9a3431ae7fcd82e82570286dd437098aecef82",
+  "passed": true
+}

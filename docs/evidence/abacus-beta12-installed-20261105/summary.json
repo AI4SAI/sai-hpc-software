@@ -1,0 +1,473 @@
+{
+  "checked_at": "2026-11-05T11:15:22.341266+00:00",
+  "controller_commit": "f349d880640800b1d8c6fb26a835b1bfaf5d1f04",
+  "max_reference_error_ev": 2.0453626348171383e-08,
+  "module_sha256": "5713d0050804fcfcadb40a32fa9a3431ae7fcd82e82570286dd437098aecef82",
+  "operation_root": "/org/org-open-sai/proj-sai-hpc-software/operations/abacus-beta12-installed-20261105-190516",
+  "partitions": {
+    "16V100": {
+      "acceptance_sha256": "41b5c473eed7488101ff34408601253c2090b27fd85bb787b058ebb8c3c861f1",
+      "alloc_cpus": 16,
+      "alloc_tres": "billing=300,cpu=16,gres/gpu=2,mem=30G,node=2",
+      "controls": {
+        "3.11.0-beta12-auto": "5713d0050804fcfcadb40a32fa9a3431ae7fcd82e82570286dd437098aecef82",
+        "install.py": "627a9659a8e419592033dd7bf09dea949bf10837b9f9a424a7f8164457f4c8b6",
+        "native-rank.sh": "646edda5643df0f8c2e03a575fb4f7427ae63710633ae285115e1e2f73374ab3",
+        "native-reference.json": "0b01bb304a4e1e77c923369e8165ad101da9382c3aec24c3e8687635c79a7bad",
+        "native_checks.py": "26718791f8c269093f95f5bc512d60f44aee40f6aedfe576d29ddbe4618493e0",
+        "release.json": "247670ae62a6a44df205e9ebe0e8da48d0616005afc649b4a851ff1124665f6e",
+        "runtime-plan.json": "f26179d51b92349d46d5a2affe9702cabaf524d14dbf08513c79162ef688c3ff",
+        "verify-native.sbatch": "b00f77244012edefdea2bc458a5f9dfe1e95c12f1646ee2142d368ae413cff06"
+      },
+      "elapsed_seconds": 49,
+      "end": "2026-11-05T19:06:36",
+      "exit_code": "0:0",
+      "installed_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta12-g6b24db05dc17-r20e07b5cdfb3/16V100",
+      "job": "2217409",
+      "max_reference_error_ev": 2.0441802917048335e-08,
+      "nodes": [
+        "16v100n33",
+        "16v100n34"
+      ],
+      "passed": true,
+      "request_sha256": "0a96d7fcc9c5c7910d2e10492cf6e659e29f953693426b2390892b0bb9b967c1",
+      "required_features": [
+        "OpenMP Support",
+        "LCAO Algorithm",
+        "ELPA Support",
+        "LibXC Support",
+        "FFTW Support",
+        "Cereal Serialization",
+        "LibRI Support",
+        "LibComm Support",
+        "LibTorch Support",
+        "Libnpy Support",
+        "NEP Support",
+        "JSON Support",
+        "CUDA-aware MPI",
+        "NVIDIA CUDA Support",
+        "CUSOLVERMP Support"
+      ],
+      "samples": {
+        "cusolvermp-multi": {
+          "device": "gpu",
+          "energy_ev": -196.6221749980199,
+          "nodes": 2,
+          "ranks": 2,
+          "reference_error_ev": 2.2737367544323206e-13,
+          "wall_seconds": 15.795052873028908
+        },
+        "deepks-multi": {
+          "device": "cpu",
+          "energy_ev": -71.32203132091492,
+          "nodes": 2,
+          "ranks": 2,
+          "reference_error_ev": 4.433786671143025e-12,
+          "wall_seconds": 3.771467058977578
+        },
+        "deepks-single": {
+          "device": "cpu",
+          "energy_ev": -71.32203132091917,
+          "nodes": 1,
+          "ranks": 1,
+          "reference_error_ev": 1.8474111129762605e-13,
+          "wall_seconds": 3.9220457109622657
+        },
+        "hse-multi": {
+          "device": "cpu",
+          "energy_ev": -428.99431394168204,
+          "nodes": 2,
+          "ranks": 2,
+          "reference_error_ev": 6.821210263296962e-13,
+          "wall_seconds": 3.42045130598126
+        },
+        "hse-single": {
+          "device": "cpu",
+          "energy_ev": -428.99431394168073,
+          "nodes": 1,
+          "ranks": 1,
+          "reference_error_ev": 1.9895196601282805e-12,
+          "wall_seconds": 2.920217916020192
+        },
+        "nccl-multi": {
+          "device": "gpu",
+          "energy_ev": -4869.747051979814,
+          "nodes": 2,
+          "ranks": 2,
+          "reference_error_ev": 1.0913936421275139e-11,
+          "wall_seconds": 5.725013190996833
+        },
+        "pw-multi": {
+          "device": "gpu",
+          "energy_ev": -4869.747051950186,
+          "nodes": 2,
+          "ranks": 2,
+          "reference_error_ev": 0.0,
+          "wall_seconds": 4.4726403370150365
+        },
+        "pw-single": {
+          "device": "gpu",
+          "energy_ev": -4869.747051929744,
+          "nodes": 1,
+          "ranks": 1,
+          "reference_error_ev": 2.0441802917048335e-08,
+          "wall_seconds": 4.7740834089927375
+        }
+      },
+      "scientific_cases": 8,
+      "single_multinode_error_ev": {
+        "deepks": 4.249045559845399e-12,
+        "hse": 1.3073986337985843e-12,
+        "pw": 2.0441802917048335e-08
+      },
+      "start": "2026-11-05T19:05:47",
+      "state": "COMPLETED"
+    },
+    "4V100": {
+      "acceptance_sha256": "c2d78d35a8f132ce175b8cc7229790b941e3750149245671ad714b0c7fd83796",
+      "alloc_cpus": 16,
+      "alloc_tres": "billing=388,cpu=16,gres/gpu=2,mem=44G,node=2",
+      "controls": {
+        "3.11.0-beta12-auto": "5713d0050804fcfcadb40a32fa9a3431ae7fcd82e82570286dd437098aecef82",
+        "install.py": "627a9659a8e419592033dd7bf09dea949bf10837b9f9a424a7f8164457f4c8b6",
+        "native-rank.sh": "646edda5643df0f8c2e03a575fb4f7427ae63710633ae285115e1e2f73374ab3",
+        "native-reference.json": "0b01bb304a4e1e77c923369e8165ad101da9382c3aec24c3e8687635c79a7bad",
+        "native_checks.py": "26718791f8c269093f95f5bc512d60f44aee40f6aedfe576d29ddbe4618493e0",
+        "release.json": "247670ae62a6a44df205e9ebe0e8da48d0616005afc649b4a851ff1124665f6e",
+        "runtime-plan.json": "f26179d51b92349d46d5a2affe9702cabaf524d14dbf08513c79162ef688c3ff",
+        "verify-native.sbatch": "b00f77244012edefdea2bc458a5f9dfe1e95c12f1646ee2142d368ae413cff06"
+      },
+      "elapsed_seconds": 106,
+      "end": "2026-11-05T19:12:04",
+      "exit_code": "0:0",
+      "installed_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta12-g6b24db05dc17-r20e07b5cdfb3/4V100",
+      "job": "2217408",
+      "max_reference_error_ev": 2.0453626348171383e-08,
+      "nodes": [
+        "4v100n31",
+        "4v100n36"
+      ],
+      "passed": true,
+      "request_sha256": "3adf11236cca6377102973f87db977df02d4d82d4bb5824c793d48a094280513",
+      "required_features": [
+        "OpenMP Support",
+        "LCAO Algorithm",
+        "ELPA Support",
+        "LibXC Support",
+        "FFTW Support",
+        "Cereal Serialization",
+        "LibRI Support",
+        "LibComm Support",
+        "LibTorch Support",
+        "Libnpy Support",
+        "NEP Support",
+        "JSON Support",
+        "CUDA-aware MPI",
+        "NVIDIA CUDA Support",
+        "CUSOLVERMP Support"
+      ],
+      "samples": {
+        "cusolvermp-multi": {
+          "device": "gpu",
+          "energy_ev": -196.62217499801977,
+          "nodes": 2,
+          "ranks": 2,
+          "reference_error_ev": 2.8421709430404007e-13,
+          "wall_seconds": 30.39454609202221
+        },
+        "deepks-multi": {
+          "device": "cpu",
+          "energy_ev": -71.32203132091472,
+          "nodes": 2,
+          "ranks": 2,
+          "reference_error_ev": 4.632738637155853e-12,
+          "wall_seconds": 21.537693881895393
+        },
+        "deepks-single": {
+          "device": "cpu",
+          "energy_ev": -71.32203132092023,
+          "nodes": 1,
+          "ranks": 1,
+          "reference_error_ev": 8.810729923425242e-13,
+          "wall_seconds": 1.7163886139169335
+        },
+        "hse-multi": {
+          "device": "cpu",
+          "energy_ev": -428.99431394168244,
+          "nodes": 2,
+          "ranks": 2,
+          "reference_error_ev": 2.8421709430404007e-13,
+          "wall_seconds": 17.18145202100277
+        },
+        "hse-single": {
+          "device": "cpu",
+          "energy_ev": -428.99431394168255,
+          "nodes": 1,
+          "ranks": 1,
+          "reference_error_ev": 1.7053025658242404e-13,
+          "wall_seconds": 1.2655425490811467
+        },
+        "nccl-multi": {
+          "device": "gpu",
+          "energy_ev": -4869.747051979813,
+          "nodes": 2,
+          "ranks": 2,
+          "reference_error_ev": 1.546140993013978e-11,
+          "wall_seconds": 6.620610106969252
+        },
+        "pw-multi": {
+          "device": "gpu",
+          "energy_ev": -4869.747051950185,
+          "nodes": 2,
+          "ranks": 2,
+          "reference_error_ev": 0.0,
+          "wall_seconds": 12.876644874922931
+        },
+        "pw-single": {
+          "device": "gpu",
+          "energy_ev": -4869.747051929731,
+          "nodes": 1,
+          "ranks": 1,
+          "reference_error_ev": 2.0453626348171383e-08,
+          "wall_seconds": 2.8673365539871156
+        }
+      },
+      "scientific_cases": 8,
+      "single_multinode_error_ev": {
+        "deepks": 5.5138116294983774e-12,
+        "hse": 1.1368683772161603e-13,
+        "pw": 2.0453626348171383e-08
+      },
+      "start": "2026-11-05T19:10:18",
+      "state": "COMPLETED"
+    },
+    "8V100V0": {
+      "acceptance_sha256": "29cf1beb0748338f17396cb7e26fbe00aae9ef6c2ca4a8f731f16d272a55c88b",
+      "alloc_cpus": 12,
+      "alloc_tres": "billing=360,cpu=12,gres/gpu=2,mem=92G,node=2",
+      "controls": {
+        "3.11.0-beta12-auto": "5713d0050804fcfcadb40a32fa9a3431ae7fcd82e82570286dd437098aecef82",
+        "install.py": "627a9659a8e419592033dd7bf09dea949bf10837b9f9a424a7f8164457f4c8b6",
+        "native-rank.sh": "646edda5643df0f8c2e03a575fb4f7427ae63710633ae285115e1e2f73374ab3",
+        "native-reference.json": "0b01bb304a4e1e77c923369e8165ad101da9382c3aec24c3e8687635c79a7bad",
+        "native_checks.py": "26718791f8c269093f95f5bc512d60f44aee40f6aedfe576d29ddbe4618493e0",
+        "release.json": "247670ae62a6a44df205e9ebe0e8da48d0616005afc649b4a851ff1124665f6e",
+        "runtime-plan.json": "f26179d51b92349d46d5a2affe9702cabaf524d14dbf08513c79162ef688c3ff",
+        "verify-native.sbatch": "b00f77244012edefdea2bc458a5f9dfe1e95c12f1646ee2142d368ae413cff06"
+      },
+      "elapsed_seconds": 58,
+      "end": "2026-11-05T19:06:45",
+      "exit_code": "0:0",
+      "installed_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta12-g6b24db05dc17-r20e07b5cdfb3/8V100V0",
+      "job": "2217410",
+      "max_reference_error_ev": 2.0445440895855427e-08,
+      "nodes": [
+        "8v100v0n03",
+        "8v100v0n05"
+      ],
+      "passed": true,
+      "request_sha256": "b11ea69d112840d866b5361e9b7b56e0adf3c71d69a6ff2204b7713a2cbef7f6",
+      "required_features": [
+        "OpenMP Support",
+        "LCAO Algorithm",
+        "ELPA Support",
+        "LibXC Support",
+        "FFTW Support",
+        "Cereal Serialization",
+        "LibRI Support",
+        "LibComm Support",
+        "LibTorch Support",
+        "Libnpy Support",
+        "NEP Support",
+        "JSON Support",
+        "CUDA-aware MPI",
+        "NVIDIA CUDA Support",
+        "CUSOLVERMP Support"
+      ],
+      "samples": {
+        "cusolvermp-multi": {
+          "device": "gpu",
+          "energy_ev": -196.62217499801986,
+          "nodes": 2,
+          "ranks": 2,
+          "reference_error_ev": 4.547473508864641e-13,
+          "wall_seconds": 20.661300945095718
+        },
+        "deepks-multi": {
+          "device": "cpu",
+          "energy_ev": -71.32203132091435,
+          "nodes": 2,
+          "ranks": 2,
+          "reference_error_ev": 5.002220859751105e-12,
+          "wall_seconds": 4.476206031162292
+        },
+        "deepks-single": {
+          "device": "cpu",
+          "energy_ev": -71.32203132091993,
+          "nodes": 1,
+          "ranks": 1,
+          "reference_error_ev": 5.826450433232822e-13,
+          "wall_seconds": 5.529502477962524
+        },
+        "hse-multi": {
+          "device": "cpu",
+          "energy_ev": -428.9943139416826,
+          "nodes": 2,
+          "ranks": 2,
+          "reference_error_ev": 1.1368683772161603e-13,
+          "wall_seconds": 4.173414719756693
+        },
+        "hse-single": {
+          "device": "cpu",
+          "energy_ev": -428.9943139416797,
+          "nodes": 1,
+          "ranks": 1,
+          "reference_error_ev": 3.0127011996228248e-12,
+          "wall_seconds": 3.6831566877663136
+        },
+        "nccl-multi": {
+          "device": "gpu",
+          "energy_ev": -4869.747051979812,
+          "nodes": 2,
+          "ranks": 2,
+          "reference_error_ev": 1.6370904631912708e-11,
+          "wall_seconds": 7.180333528202027
+        },
+        "pw-multi": {
+          "device": "gpu",
+          "energy_ev": -4869.7470519501785,
+          "nodes": 2,
+          "ranks": 2,
+          "reference_error_ev": 0.0,
+          "wall_seconds": 4.626066298224032
+        },
+        "pw-single": {
+          "device": "gpu",
+          "energy_ev": -4869.747051929733,
+          "nodes": 1,
+          "ranks": 1,
+          "reference_error_ev": 2.0445440895855427e-08,
+          "wall_seconds": 4.826443030033261
+        }
+      },
+      "scientific_cases": 8,
+      "single_multinode_error_ev": {
+        "deepks": 5.5848659030743875e-12,
+        "hse": 2.8990143619012088e-12,
+        "pw": 2.0445440895855427e-08
+      },
+      "start": "2026-11-05T19:05:47",
+      "state": "COMPLETED"
+    },
+    "DSPRHBM": {
+      "acceptance_sha256": "d5112a7ba3117626e057f5f81bddd442414bf6dc63b44ee8c7176519ae93dcbe",
+      "alloc_cpus": 16,
+      "alloc_tres": "billing=128,cpu=16,mem=18896M,node=2",
+      "controls": {
+        "3.11.0-beta12-auto": "5713d0050804fcfcadb40a32fa9a3431ae7fcd82e82570286dd437098aecef82",
+        "install.py": "627a9659a8e419592033dd7bf09dea949bf10837b9f9a424a7f8164457f4c8b6",
+        "native-rank.sh": "646edda5643df0f8c2e03a575fb4f7427ae63710633ae285115e1e2f73374ab3",
+        "native-reference.json": "0b01bb304a4e1e77c923369e8165ad101da9382c3aec24c3e8687635c79a7bad",
+        "native_checks.py": "26718791f8c269093f95f5bc512d60f44aee40f6aedfe576d29ddbe4618493e0",
+        "release.json": "247670ae62a6a44df205e9ebe0e8da48d0616005afc649b4a851ff1124665f6e",
+        "runtime-plan.json": "f26179d51b92349d46d5a2affe9702cabaf524d14dbf08513c79162ef688c3ff",
+        "verify-native.sbatch": "b00f77244012edefdea2bc458a5f9dfe1e95c12f1646ee2142d368ae413cff06"
+      },
+      "elapsed_seconds": 414,
+      "end": "2026-11-05T19:12:17",
+      "exit_code": "0:0",
+      "installed_prefix": "/opt/apps/abacus/abacus-release-v3.11.0-beta12-g6b24db05dc17-r20e07b5cdfb3/DSPRHBM",
+      "job": "2217411",
+      "max_reference_error_ev": 1.533408067189157e-09,
+      "nodes": [
+        "d9470n03",
+        "d9470n04"
+      ],
+      "passed": true,
+      "request_sha256": "36b2ed428733296fe446e4faaf922c7c6242fb2cf80f5774648d3f40b6dcd5af",
+      "required_features": [
+        "OpenMP Support",
+        "LCAO Algorithm",
+        "ELPA Support",
+        "LibXC Support",
+        "FFTW Support",
+        "Cereal Serialization",
+        "LibRI Support",
+        "LibComm Support",
+        "LibTorch Support",
+        "Libnpy Support",
+        "NEP Support",
+        "JSON Support"
+      ],
+      "samples": {
+        "deepks-multi": {
+          "device": "cpu",
+          "energy_ev": -71.32203132091821,
+          "nodes": 2,
+          "ranks": 8,
+          "reference_error_ev": 1.1368683772161603e-12,
+          "wall_seconds": 224.77094037598
+        },
+        "deepks-single": {
+          "device": "cpu",
+          "energy_ev": -71.3220313209182,
+          "nodes": 1,
+          "ranks": 4,
+          "reference_error_ev": 1.1510792319313623e-12,
+          "wall_seconds": 3.0589247460011393
+        },
+        "hse-multi": {
+          "device": "cpu",
+          "energy_ev": -428.9943139416815,
+          "nodes": 2,
+          "ranks": 8,
+          "reference_error_ev": 1.1937117960769683e-12,
+          "wall_seconds": 136.46684959402774
+        },
+        "hse-single": {
+          "device": "cpu",
+          "energy_ev": -428.9943139416824,
+          "nodes": 1,
+          "ranks": 4,
+          "reference_error_ev": 3.410605131648481e-13,
+          "wall_seconds": 14.829802919994108
+        },
+        "pw-multi": {
+          "device": "cpu",
+          "energy_ev": -4869.747051943179,
+          "nodes": 2,
+          "ranks": 8,
+          "reference_error_ev": 0.0,
+          "wall_seconds": 14.854998474009335
+        },
+        "pw-single": {
+          "device": "cpu",
+          "energy_ev": -4869.747051944712,
+          "nodes": 1,
+          "ranks": 4,
+          "reference_error_ev": 1.533408067189157e-09,
+          "wall_seconds": 10.02727307297755
+        }
+      },
+      "scientific_cases": 6,
+      "single_multinode_error_ev": {
+        "deepks": 1.4210854715202004e-14,
+        "hse": 8.526512829121202e-13,
+        "pw": 1.533408067189157e-09
+      },
+      "start": "2026-11-05T19:05:23",
+      "state": "COMPLETED"
+    }
+  },
+  "passed": true,
+  "public_module": "/opt/modules/modulefiles/apps/abacus/3.11.0-beta12-auto",
+  "result_root": "/org/org-open-sai/proj-sai-hpc-software/runtime-tests/abacus-beta12-physical-20261105-190518-384810",
+  "schema": 1,
+  "scientific_cases": 30,
+  "slurm_account": "proj-sai-hpc-software",
+  "software": "abacus",
+  "source_sha": "6b24db05dc175d6e1d7894ac380f48118b43fbaa",
+  "tolerance_ev": 1e-05,
+  "version": "v3.11.0-beta12",
+  "work_root": "/org/org-open-sai/proj-sai-hpc-software"
+}
