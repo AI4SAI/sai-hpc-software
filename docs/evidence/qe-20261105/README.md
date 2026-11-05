@@ -14,6 +14,9 @@ of every installed program.
 | [CPU release](release-cpu.json) | Accepted CPU image, HDF5 interface configuration, numerical results and native export |
 | [Development](development.json) | Four accepted develop SIFs, both CUDA devices, numerical results and scheduler accounting |
 | [Native release staging](native-release-stage.json) | Administrator-package trial installation and native link/SCF/PH/PP checks passed on all four partitions |
+| [Native release installed](native-release-installed.json) | Administrator-installed physical /opt files, public-module hash, four native link/SCF/PH/PP checks and both GPU devices |
+| [Current develop confirmation](current-develop-confirmation.json) | Live upstream HEAD, freshly hashed SIFs, twelve successful jobs and the home beta alias; unchanged source reused |
+| [Installed-feature audit](feature-audit.md) | Old/new compile options, real D3/TS/MBD calculations and explicit legacy command/GUI limitations |
 | [Beta publication](beta-publication.json) | First accepted public beta, all four runtime checks, real login help and public artifact preflight |
 | [CPU HDF5 probes](cpu-hdf5-probes.json) | Read-only diagnostics that established the MPI Fortran interface conflict; these are not production acceptance |
 | [Dependency cache](dependency-cache.json) | Identical archive bytes across four Actions runners and actual verified remote cache hits |
@@ -34,6 +37,21 @@ print NVFORTRAN IEEE status notices at STOP, while the checked outputs are finit
 and within the specified tolerances.
 
 Builds and acceptance evidence remain under
-`/org/org-open-sai/proj-sai-hpc-software`. Native exports are project artifacts;
-no physical `/opt` installation was performed. Failed build and diagnostic runs
-are retained under their original identities.
+`/org/org-open-sai/proj-sai-hpc-software`. The administrator installed the release
+into physical `/opt` on 2026-11-05. The installed 288 files and public module
+passed hash verification; the subsequent native checks passed on all four
+partitions, separately from the earlier staged installation. Failed build and
+diagnostic runs are retained under their original identities.
+
+| Partition | Physical-installation check | Elapsed | Result |
+| --- | --- | --- | --- |
+| 16V100 | 2212239 | 00:23 | COMPLETED 0:0 |
+| 4V100 | 2212240 | 00:12 | COMPLETED 0:0 |
+| 8V100V0 | 2212241 | 00:32 | COMPLETED 0:0 |
+| DSPRHBM | 2212242 | 01:11 | COMPLETED 0:0 |
+
+All four checks inspect the 67 executable dependencies and run one/two-rank SCF,
+forces, Gamma phonons and density integration. All three GPU partitions record
+CUDA kernels on devices 0 and 1. They use a byte-identical copy of the installed
+public module with actual `/opt` prefixes; the evidence records both module and
+installed-program identities.
