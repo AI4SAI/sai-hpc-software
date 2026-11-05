@@ -16,7 +16,10 @@ successfully; `qe/develop-beta-later` selects the accepted 2026-11-05 generation
 under the stardust-maintained module tree. The [release administrator package](../deployment/qe-7.6/README.md)
 installs the standard runtime files and `qe/7.6-auto`. Its four-partition trial
 installation, native link inspection and SCF/PH/PP calculations all passed.
-Physical /opt installation remains the administrator's action.
+The administrator has installed the release into physical `/opt`; the complete
+file/module verification and all four native link/SCF/PH/PP checks passed in jobs
+`2212239` through `2212242`. The GPU checks exercised both allocated devices.
+The latest upstream develop SHA still matches the accepted four-partition beta.
 See [QE workflow and exact qualification evidence](QE-WORKFLOW.md).
 
 ## Writable image shutdown with the existing runtime
