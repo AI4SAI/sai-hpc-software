@@ -22,6 +22,23 @@ file/module verification and all four native link/SCF/PH/PP checks passed in job
 The latest upstream develop SHA still matches the accepted four-partition beta.
 See [QE workflow and exact qualification evidence](QE-WORKFLOW.md).
 
+## ABACUS beta12 administrator handoff
+
+The latest upstream release remains `v3.11.0-beta12@6b24db05dc17`.
+All four accepted SIFs and native exports are ready. The
+[administrator package](../deployment/abacus-3.11.0-beta12/README.md) now exists at
+`/home/stardust/sai-hpc-software/deployment/abacus-3.11.0-beta12`.
+It extracts 19 standard runtime files and one command link per partition from
+the original SIFs, then publishes `abacus/3.11.0-beta12-auto`. Total native size
+is 1.84 GiB. The administrator only reads the public compressed handoff; project
+ACLs and expanded home-directory exports are not needed.
+
+[Actual staged installation](evidence/abacus-beta12-handoff-20261105/README.md),
+repeat installation, file verification, administrator access, login help and
+the pinned beta12 scientific references passed. Physical `/opt` still has
+beta11; beta12 installation and subsequent physical runtime checks await the
+administrator. All new acceptance work uses the project account and storage.
+
 ## Writable image shutdown with the existing runtime
 
 The build wrapper now owns writable-image mounting and teardown. It uses the
