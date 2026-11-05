@@ -50,7 +50,38 @@ path = Path(os.environ['SAI_ABACUS_TRACE_DIR']) / ('affinity-' + str(rank) + '.j
 with path.open('x') as stream:
     json.dump(evidence, stream, sort_keys=True)
     stream.write('\\n')
+output = path.parent.parent / 'rank-output' / ('rank.' + str(rank))
+output.mkdir(parents=True)
+for descriptor, name in ((1, 'stdout'), (2, 'stderr')):
+    with (output / name).open('xb') as stream:
+        os.dup2(stream.fileno(), descriptor)
 os.execvp(sys.argv[1], sys.argv[1:])
+"""
+
+# MPI's combined output can interleave even a single line from two nodes.
+# Keep the original streams and concatenate complete rank logs only after MPI
+# exits. The same strict thread-count and SCF parsers then see intact records.
+RANK_OUTPUT_COLLECT = """import sys
+from pathlib import Path
+root = Path(sys.argv[1]).resolve(strict=True)
+ranks = int(sys.argv[2])
+directories = list(root.rglob('rank.*'))
+expected = {'rank.' + str(rank) for rank in range(ranks)}
+if (len(directories) != ranks or {path.name for path in directories} != expected
+        or len({path.parent for path in directories}) != 1
+        or any(not path.is_dir() or path.resolve() != path for path in directories)):
+    raise ValueError('missing or unexpected MPI rank output directories')
+parent = directories[0].parent
+for stream in ('stdout', 'stderr'):
+    with Path(stream + '.log').open('x') as output:
+        for rank in range(ranks):
+            path = parent / ('rank.' + str(rank)) / stream
+            if not path.is_file() or path.resolve() != path:
+                raise ValueError('missing or untrusted MPI rank output stream')
+            content = path.read_text()
+            output.write(content)
+            if content and not content.endswith('\\n'):
+                output.write('\\n')
 """
 
 
@@ -191,7 +222,8 @@ def render_job(r, task):
              f'read -r actual _ < artifact.sha256; [[ "$actual" == {r["artifact_sha256"]} ]]',
              f'read -r actual _ < launcher.sha256; [[ "$actual" == {r["launcher_sha256"]} ]]',
              f'/usr/bin/time -f %e -o wall-seconds.txt mpirun -np {r["ranks"]} '
-             f'{placement} --report-bindings "${{command[@]}}" > stdout.log 2>&1',
+             f'{placement} --report-bindings "${{command[@]}}" > launcher.log 2>&1',
+             f'python3 -c {q(RANK_OUTPUT_COLLECT)} "$work/rank-output" {r["ranks"]}',
              'printf "%s\\n" "$SLURM_JOB_ID" > completed.job', ")"]
     lines += [f"run_one {s['arm']} {s['id']}" for s in r["runs"]]
     lines += ['echo ABACUS_BENCHMARK_RUNS_COMPLETED']
@@ -209,7 +241,8 @@ def inspect_case(case, r):
             (cpu and device != "cpu") or (not cpu and device == "cpu" and not allow_cpu)):
         raise ValueError("case must request SCF and the target's CPU/GPU device")
     scf = Path(r["scf_log"])
-    reserved = {"ranks", "stdout.log", "wall-seconds.txt", "completed.job", "modules.log",
+    reserved = {"ranks", "rank-output", "stdout.log", "stderr.log", "launcher.log",
+                "wall-seconds.txt", "completed.job", "modules.log",
                 "artifact.sha256", "launcher.sha256", "info.log", "ldd.log",
                 "executable.sha256", "executable.path"}
     if scf.is_absolute() or ".." in scf.parts or (case / scf).exists():
