@@ -12,6 +12,56 @@ from deepmd_standalone import CONTROL, FILES, make_delivery
 from release_contract import GPU_TARGETS, resolve_tracks
 from remote_controller import SAI_PROJECT_ROOT, safe_name, safe_sha
 from source_transport import ensure_source
+from relay_checkpoint import Checkpoint, Pending, entry, remote as relay_remote
+
+
+def recover_submission(directory, delivery, controller, retry):
+    """A dropped submit reply may contain a skip or a complete held job."""
+    import json
+    import os
+    from pathlib import Path
+    import sys
+
+    directory = Path(directory)
+    if directory.resolve() != directory or Path(controller).resolve() != Path(controller):
+        raise ValueError('redirected DeePMD relay recovery')
+    sys.path.insert(0, controller)
+    os.environ['SAI_SOFTWARE_ROOT'] = str(directory.parents[3])
+    from release_contract import claim_build
+    receipt = directory / 'input/build-attempt.json'
+    if not receipt.is_file() or receipt.is_symlink():
+        raise ValueError('incomplete DeePMD submission; recover the claim before retrying')
+    claim = claim_build(directory.parent.parent, [delivery['identity']], directory.name, retry=retry, resume=True)
+    if not claim['build']:
+        return claim
+    from deepmd_standalone import read_request
+    request = read_request(directory)
+    if request['delivery'] != delivery or request['controller'] != controller:
+        raise ValueError('recovered DeePMD submission changed')
+    return request
+
+
+def unpack_controller(snapshot):
+    from pathlib import Path
+    import tarfile
+
+    root = Path(snapshot)
+    if root.resolve() != root:
+        raise ValueError('redirected DeePMD snapshot')
+    with tarfile.open(root / 'controller.tar') as payload:
+        for member in payload.getmembers():
+            if not member.isfile() or Path(member.name).name != member.name:
+                raise ValueError('unexpected controller archive member')
+            path, data = root / member.name, payload.extractfile(member).read()
+            if path.resolve() != path:
+                raise ValueError('redirected controller file')
+            if path.exists():
+                if path.read_bytes() != data:
+                    raise ValueError('controller changed during relay recovery')
+            else:
+                with path.open('xb') as stream:
+                    stream.write(data)
+            path.chmod(0o444)
 
 
 def resolve_builds(tracks, targets, resolver=resolve_tracks):
@@ -48,11 +98,14 @@ def query_status(python, run_id, controller="deepmd_standalone.py"):
 
 
 def main():
+    relay = Checkpoint()
     source = locked_source(json.loads(os.environ['DEEP_SOFTWARE_SOURCE']))
     delivery = make_delivery(source, source['target'])
     run_id = safe_name('dp-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT']
                        + '-' + source['track'] + '-' + source['target'] + '-' + source['source_sha'][:12])
     commit = safe_sha(os.environ['GITHUB_SHA'])
+    relay.bind(dict(source=source, controller=commit, workflow=os.environ['GITHUB_RUN_ID'],
+                    attempt=os.environ['GITHUB_RUN_ATTEMPT']))
     user = safe_name(os.environ['REMOTE_USER'])
     temporary = Path(os.environ['RUNNER_TEMP'])
     results = temporary / 'results'
@@ -61,7 +114,7 @@ def main():
     root = project + '/experimental/deepmd-standalone'
     snapshot = root + '/controller/' + commit + '/' + run_id
     remote = user + '@c0.sai.ai-4s.com'
-    options = ['-i', str(temporary / 'ssh/key'), '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes',
+    options = ['-i', os.environ.get('SAI_RELAY_SSH_KEY', str(temporary / 'ssh/key')), '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes',
                '-o', 'UserKnownHostsFile=' + str(CONTROL.parent / '.ci/slurm/known_hosts'),
                '-o', 'ConnectTimeout=20', '-o', 'ServerAliveInterval=20', '-o', 'ServerAliveCountMax=6']
 
@@ -79,21 +132,25 @@ def main():
         return ssh(['env', 'SAI_SOFTWARE_ROOT=' + project, 'PYTHONDONTWRITEBYTECODE=1',
                     'python3', snapshot + '/' + name, *args], **kwargs)
 
-    ssh(['mkdir', '-p', snapshot])
-    archive = temporary / 'deepmd-controller.tar'
-    with tarfile.open(archive, 'w') as payload:
-        for name in (*FILES, 'deepmd_acceptance.py'):
-            payload.add(CONTROL / name, arcname=name)
-    upload(archive, snapshot + '/controller.tar')
-    ssh(['tar', '-xf', snapshot + '/controller.tar', '-C', snapshot])
-    ssh(['chmod', '0444', *[snapshot + '/' + name for name in (*FILES, 'deepmd_acceptance.py')]])
-    digest = ssh(['python3', '-c', 'import sys; sys.path.insert(0, sys.argv[1]); '
-        'from deepmd_standalone import fingerprint; print(fingerprint())', snapshot], capture_output=True).stdout.strip()
-    if digest != delivery['identity']['recipe_sha256']:
-        raise ValueError('transported controller differs from the checked-out GitHub recipe')
-    # Reuse the same byte-qualified FUSE helper already provisioned for project
-    # builds, with an independent copy in this controller's canonical root.
-    prepare = '''from pathlib import Path
+    if not relay.data.get('prepared'):
+        ssh(['mkdir', '-p', snapshot])
+        archive = temporary / 'deepmd-controller.tar'
+        with tarfile.open(archive, 'w') as payload:
+            for name in (*FILES, 'deepmd_acceptance.py'):
+                payload.add(CONTROL / name, arcname=name)
+        upload(archive, snapshot + '/controller.tar')
+        if relay.enabled:
+            relay_remote(ssh, unpack_controller, snapshot)
+        else:
+            ssh(['tar', '-xf', snapshot + '/controller.tar', '-C', snapshot])
+        ssh(['chmod', '0444', *[snapshot + '/' + name for name in (*FILES, 'deepmd_acceptance.py')]])
+        digest = ssh(['python3', '-c', 'import sys; sys.path.insert(0, sys.argv[1]); '
+            'from deepmd_standalone import fingerprint; print(fingerprint())', snapshot], capture_output=True).stdout.strip()
+        if digest != delivery['identity']['recipe_sha256']:
+            raise ValueError('transported controller differs from the checked-out GitHub recipe')
+        # Reuse the same byte-qualified FUSE helper already provisioned for project
+        # builds, with an independent copy in this controller's canonical root.
+        prepare = '''from pathlib import Path
 import fcntl, shutil, sys
 sys.path.insert(0, sys.argv[1])
 from cp2k_image_driver import DRIVER_SHA256, driver_path
@@ -114,27 +171,34 @@ with (root / 'cache/tools/.provision.lock').open('a+') as lock:
 if destination.is_symlink() or checksum(destination) != DRIVER_SHA256 or destination.stat().st_mode & 0o222:
     raise ValueError('independent DeePMD helper differs from its qualified bytes')
 '''
-    ssh(['python3', '-c', prepare, snapshot, project, root])
-    sha = source['source_sha']
-    cache = root + '/cache/repositories/deepmd-kit'
-    inventory = json.loads(python('source_cache.py', 'inventory', cache, '--commit', sha, capture_output=True).stdout)
-    if sha not in inventory['cache_shas']:
-        ensure_source(remote=remote, options=options, port=12022, controller=snapshot,
-                      cache=cache, commit=sha,
-                      repository_url='https://github.com/deepmodeling/deepmd-kit.git',
-                      temporary=temporary, destination=snapshot + '/input')
+        ssh(['python3', '-c', prepare, snapshot, project, root])
+        sha = source['source_sha']
+        cache = root + '/cache/repositories/deepmd-kit'
+        inventory = json.loads(python('source_cache.py', 'inventory', cache, '--commit', sha, capture_output=True).stdout)
+        if sha not in inventory['cache_shas']:
+            ensure_source(remote=remote, options=options, port=12022, controller=snapshot,
+                          cache=cache, commit=sha,
+                          repository_url='https://github.com/deepmodeling/deepmd-kit.git',
+                          temporary=temporary, destination=snapshot + '/input')
+        else:
+            print('DEEPMD_SOURCE_CACHE_HIT', sha, flush=True)
+        relay.set('prepared', True)
     else:
-        print('DEEPMD_SOURCE_CACHE_HIT', sha, flush=True)
+        digest = delivery['identity']['recipe_sha256']
     (results / 'delivery.json').write_text(json.dumps(delivery, sort_keys=True, indent=2) + '\n')
     retry = os.environ.get('RETRY_RELEASES', 'false')
     if retry not in ('true', 'false'):
         raise ValueError('retry_releases must be an explicit boolean')
     request = None
-    recovery = None
+    recovery = relay.data.get('recovery')
     try:
-        response = python('deepmd_standalone.py', 'submit', run_id, '--source', json.dumps(source),
-            '--target', source['target'], *(['--retry-releases'] if retry == 'true' else []), capture_output=True)
-        request = json.loads(response.stdout)
+        if relay.enabled and relay.data.get('submit_started'):
+            request = relay_remote(ssh, recover_submission, root + '/runs/' + run_id, delivery, snapshot, retry == 'true')
+        else:
+            relay.set('submit_started', True)
+            response = python('deepmd_standalone.py', 'submit', run_id, '--source', json.dumps(source),
+                '--target', source['target'], *(['--retry-releases'] if retry == 'true' else []), capture_output=True)
+            request = json.loads(response.stdout)
         (results / 'submission.json').write_text(json.dumps(request, sort_keys=True, indent=2) + '\n')
         if request.get('build') is False:
             print('DEEPMD_RELEASE_ALREADY_ATTEMPTED', json.dumps(request['skipped']), flush=True)
@@ -143,8 +207,11 @@ if destination.is_symlink() or checksum(destination) != DRIVER_SHA256 or destina
             raise ValueError('submitted DeePMD job differs from the locked source and recipe')
         deadline = time.monotonic() + 21000
         while time.monotonic() < deadline:
+            relay.wait(ssh, root + '/runs/' + (recovery['run_id'] if recovery else run_id))
             response = (query_status(python, recovery['run_id'], 'deepmd_acceptance.py')
                         if recovery else query_status(python, run_id))
+            if relay.enabled and response.returncode == 255:
+                raise subprocess.CalledProcessError(255, response.args, response.stdout, response.stderr)
             if response.returncode not in (0, 1, 3):
                 raise RuntimeError('DeePMD provenance/status check failed: ' + response.stderr)
             status = json.loads(response.stdout)
@@ -161,15 +228,21 @@ if destination.is_symlink() or checksum(destination) != DRIVER_SHA256 or destina
                 if not recovery and status.get('build_verified'):
                     attempt = python('deepmd_acceptance.py', 'recover', run_id, capture_output=True, check=False)
                     if attempt.returncode == 0:
-                        recovery = json.loads(attempt.stdout)
+                        recovery = relay.set('recovery', json.loads(attempt.stdout))
                         (results / 'acceptance-recovery.json').write_text(json.dumps(recovery, indent=2) + '\n')
                         print('DEEPMD_ECC_RECOVERY', recovery['run_id'], flush=True)
                         continue
                 raise RuntimeError('DeePMD allocation failed; inspect the retained project run')
+            if relay.enabled:
+                raise Pending('DeePMD accounting is not terminal yet')
             time.sleep(30)
         raise TimeoutError('DeePMD observation deadline; retained Slurm job can still be monitored')
     finally:
-        collect = '''from pathlib import Path
+        if relay.enabled:
+            (results / 'remote-evidence.json').write_text(json.dumps(dict(
+                build=root + '/runs/' + run_id, recovery=recovery, controller=snapshot), indent=2) + '\n')
+        else:
+            collect = '''from pathlib import Path
 import sys, tarfile
 task = Path(sys.argv[1])
 if (task / 'results').is_dir():
@@ -182,17 +255,17 @@ if (task / 'results').is_dir():
             if path.exists() and not path.is_symlink():
                 payload.add(path, arcname=name)
 '''
-        if request is None or 'job_id' in request:
-            ssh(['python3', '-c', collect, root + '/runs/' + run_id], check=False)
-            run(['scp', '-q', *options, '-P', '12022', '-r',
-                 remote + ':' + root + '/runs/' + run_id + '/results/.', str(results)], check=False)
-        if recovery:
-            recovered = results / 'recovery'
-            recovered.mkdir(exist_ok=True)
-            ssh(['python3', '-c', collect, root + '/runs/' + recovery['run_id']], check=False)
-            run(['scp', '-q', *options, '-P', '12022', '-r',
-                 remote + ':' + root + '/runs/' + recovery['run_id'] + '/results/.', str(recovered)], check=False)
+            if request is None or 'job_id' in request:
+                ssh(['python3', '-c', collect, root + '/runs/' + run_id], check=False)
+                run(['scp', '-q', *options, '-P', '12022', '-r',
+                     remote + ':' + root + '/runs/' + run_id + '/results/.', str(results)], check=False)
+            if recovery:
+                recovered = results / 'recovery'
+                recovered.mkdir(exist_ok=True)
+                ssh(['python3', '-c', collect, root + '/runs/' + recovery['run_id']], check=False)
+                run(['scp', '-q', *options, '-P', '12022', '-r',
+                     remote + ':' + root + '/runs/' + recovery['run_id'] + '/results/.', str(recovered)], check=False)
 
 
 if __name__ == '__main__':
-    main()
+    entry(main)

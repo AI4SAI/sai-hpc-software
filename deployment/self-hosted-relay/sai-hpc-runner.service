@@ -1,0 +1,46 @@
+[Unit]
+Description=SAI daily build relay (GitHub Actions)
+After=network-online.target
+StartLimitIntervalSec=1800
+StartLimitBurst=2
+
+[Service]
+WorkingDirectory=%h/ci/runner
+ExecCondition=/usr/bin/python3 %h/ci/deployment/check_capacity.py --runner-mib 128 --reserve-mib 64
+ExecStart=/usr/bin/python3 %h/ci/deployment/sandbox.py %h/ci %h/ci/runner/run.sh
+Environment=HOME=%h/ci/work/home
+Environment=PATH=%h/ci/bin:/usr/local/bin:/usr/bin:/bin
+Environment=TMPDIR=%h/ci/tmp
+Environment=SAI_RELAY_ROOT=%h/ci/state
+Environment=SAI_SOURCE_CACHE=%h/ci/cache/repositories
+Environment=DOTNET_GCHeapHardLimit=0x1800000
+Environment=DOTNET_gcServer=0
+Environment=DOTNET_GCConserveMemory=9
+Environment=DOTNET_TieredPGO=0
+Environment=DOTNET_EnableDiagnostics=0
+Environment=MALLOC_ARENA_MAX=2
+Environment=GOMEMLIMIT=16MiB
+Environment=NODE_OPTIONS=--max-old-space-size=32
+Environment=PYTHONDONTWRITEBYTECODE=1
+UnsetEnvironment=SSH_AUTH_SOCK SSH_AGENT_PID DBUS_SESSION_BUS_ADDRESS LD_PRELOAD PYTHONPATH
+UMask=0077
+NoNewPrivileges=yes
+RestrictAddressFamilies=AF_INET AF_INET6
+SystemCallFilter=~@mount @module @reboot @swap @raw-io @obsolete ptrace process_vm_readv process_vm_writev pidfd_getfd keyctl add_key request_key bpf
+SystemCallErrorNumber=EPERM
+RestrictSUIDSGID=yes
+LockPersonality=yes
+MemoryHigh=128M
+MemoryMax=128M
+MemorySwapMax=0
+OOMScoreAdjust=1000
+OOMPolicy=kill
+CPUWeight=50
+IOWeight=50
+Restart=on-failure
+RestartSec=300
+KillMode=control-group
+TimeoutStopSec=60
+
+[Install]
+WantedBy=default.target

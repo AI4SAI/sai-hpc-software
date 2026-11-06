@@ -162,7 +162,9 @@ def recover(source_run):
         raise ValueError('existing recovery differs from the recorded ECC failure')
     # A lost reply can leave the durable job held. Reattach and release only
     # our own JobHeldUser allocation; never restart a completed allocation.
-    state = subprocess.check_output(['squeue', '-h', '-j', request['job_id'], '-o', '%T|%r'], text=True).strip()
+    queue = subprocess.check_output(['squeue', '--me', '-h', '-o', '%i|%T|%r'], text=True)
+    state = next((line.split('|', 1)[1] for line in queue.splitlines()
+                  if line.split('|', 1)[0] == request['job_id']), '')
     if state == 'PENDING|JobHeldUser':
         subprocess.run(['scontrol', 'release', request['job_id']], check=True)
     record = dict(run_id=run_id, controller=str(CONTROL), source_run=source_run)

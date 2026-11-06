@@ -14,6 +14,7 @@ from md_lammps_standalone import CONTROL, make_delivery, runtime_plan
 from release_contract import resolve_tracks, validate_identity
 from remote_controller import SAI_PROJECT_ROOT, safe_name, safe_sha
 from source_transport import ensure_source
+from relay_checkpoint import Checkpoint, entry
 
 
 def run(argv, **kwargs):
@@ -183,6 +184,7 @@ def remote_handoff(ssh, project, handoff, *, continuing):
 
 
 def main():
+    relay = Checkpoint()
     from lammps_acceptance import REFERENCE_SHA256, digest
     phase = os.environ.get('LAMMPS_PHASE', 'all')
     if phase not in ('all', 'build', 'science'):
@@ -199,6 +201,10 @@ def main():
         run_id = safe_name('lmp-' + os.environ['GITHUB_RUN_ID'] + '-' + os.environ['GITHUB_RUN_ATTEMPT'] +
                            '-' + source['track'] + '-' + target + '-' +
                            datetime.now(timezone.utc).strftime('%Y%m%d') + '-' + source['source_sha'][:12])
+    if relay.enabled:
+        run_id = relay.freeze('run_id', run_id)
+        relay.bind(dict(source=source, target=target, controller=os.environ['GITHUB_SHA'],
+                        workflow=os.environ['GITHUB_RUN_ID'], attempt=os.environ['GITHUB_RUN_ATTEMPT']))
     safe_name(run_id + '-science')
     retry = os.environ.get('RETRY_RELEASES', 'false')
     if retry not in ('', 'false', 'true'):
@@ -212,7 +218,7 @@ def main():
     root = project + '/experimental/deepmd-lammps'
     snapshot = root + '/controller/' + commit + '/' + run_id
     remote = user + '@c0.sai.ai-4s.com'
-    options = ['-i', str(temporary / 'ssh/key'), '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes',
+    options = ['-i', os.environ.get('SAI_RELAY_SSH_KEY', str(temporary / 'ssh/key')), '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes',
                '-o', 'UserKnownHostsFile=' + str(CONTROL.parent / '.ci/slurm/known_hosts'),
                '-o', 'ConnectTimeout=20', '-o', 'ServerAliveInterval=20', '-o', 'ServerAliveCountMax=6']
 
@@ -230,6 +236,9 @@ def main():
                 time.sleep(5 * (attempt + 1))
 
     def python(name, *args, **kwargs):
+        if relay.enabled and args and args[0] == 'monitor':
+            directory = root + '/runs/' + args[1] if name == 'md_lammps_standalone.py' else args[1]
+            relay.wait(ssh, directory)
         return ssh(['env', 'SAI_SOFTWARE_ROOT=' + project,
                     'python3', snapshot + '/' + name, *args], **kwargs)
 
@@ -241,42 +250,55 @@ def main():
     handoff_path = results / 'ci-handoff.json'
 
     def collect_build():
+        if relay.enabled:
+            (results / 'remote-evidence.json').write_text(json.dumps(dict(
+                build=root + '/runs/' + run_id, science=root + '/runtime-tests/' + run_id + '-science',
+                controller=snapshot), indent=2) + '\n')
+            return
         subprocess.run(['scp', '-q', *options, '-P', '12022', '-r',
                         remote + ':' + root + '/runs/' + run_id + '/results/.', str(results)], check=False)
 
     if phase != 'science':
-        ssh(['mkdir', '-p', snapshot])
-        files = [p for p in CONTROL.glob('md_*.*') if p.suffix in ('.py', '.sh', '.json')]
-        files += [CONTROL / name for name in ('remote_controller.py', 'source_cache.py', 'source_transport.py', 'resolve_source.py',
-                  'create_rootfs.sh', 'release_contract.py', 'native_module.py', 'export_native.py',
-                  'module_publication.py', 'delivery_layout.py', 'cp2k_image_driver.py', 'managed_overlay.py', 'cp2k_overlay_sync.py',
-                  'lammps_acceptance.py', 'lammps_rank.sh', 'lammps_verify.sbatch')]
-        files += [runtime_plan(), reference, request]
-        upload(files, snapshot + '/')
-        decision = json.loads(python('release_contract.py', root, run_id, json.dumps([delivery['identity']]),
-                                     *(['--retry'] if retry == 'true' else []), capture_output=True).stdout)
-        (results / 'build-attempt.json').write_text(json.dumps(decision, sort_keys=True) + '\n')
-        handoff = dict(schema=1, workflow_run_id=os.environ['GITHUB_RUN_ID'], controller_sha=commit,
-                       run_id=run_id, source=source, delivery=delivery, decision=decision,
-                       controller_files={path.name: digest(path) for path in files}, build_status=None)
+        if not relay.data.get('preparation'):
+            ssh(['mkdir', '-p', snapshot])
+            files = [p for p in CONTROL.glob('md_*.*') if p.suffix in ('.py', '.sh', '.json')]
+            files += [CONTROL / name for name in ('remote_controller.py', 'source_cache.py', 'source_transport.py', 'relay_checkpoint.py', 'resolve_source.py',
+                      'create_rootfs.sh', 'release_contract.py', 'native_module.py', 'export_native.py',
+                      'module_publication.py', 'delivery_layout.py', 'cp2k_image_driver.py', 'managed_overlay.py', 'cp2k_overlay_sync.py',
+                      'lammps_acceptance.py', 'lammps_rank.sh', 'lammps_verify.sbatch')]
+            files += [runtime_plan(), reference, request]
+            upload(files, snapshot + '/')
+            decision = json.loads(python('release_contract.py', root, run_id, json.dumps([delivery['identity']]),
+                                         *(['--retry'] if retry == 'true' else []),
+                                         *(['--resume'] if relay.enabled else []), capture_output=True).stdout)
+            (results / 'build-attempt.json').write_text(json.dumps(decision, sort_keys=True) + '\n')
+            handoff = dict(schema=1, workflow_run_id=os.environ['GITHUB_RUN_ID'], controller_sha=commit,
+                           run_id=run_id, source=source, delivery=delivery, decision=decision,
+                           controller_files={path.name: digest(path) for path in files}, build_status=None)
+            if decision['build']:
+                if decision['identities'] != [delivery['identity']]:
+                    raise ValueError('claimed LAMMPS source differs from the requested delivery')
+                for name, identity in (('lammps', delivery['identity']), ('deepmd-kit', delivery['deepmd_dependency']['identity'])):
+                    sha = identity['source_sha']
+                    cache = root + '/cache/repositories/' + name
+                    legacy = '/home/stardust/sai-hpc-software/experimental/deepmd-lammps/cache/repositories/' + name
+                    python('source_cache.py', 'seed', cache, legacy, capture_output=True)
+                    inventory = json.loads(python('source_cache.py', 'inventory', cache, '--commit', sha, capture_output=True).stdout)
+                    if sha in inventory['cache_shas']:
+                        print('SOURCE_CACHE_HIT', name, sha, flush=True)
+                        continue
+                    ensure_source(remote=remote, options=options, port=12022, controller=snapshot,
+                                  cache=cache, commit=sha,
+                                  repository_url='https://github.com/' + identity['repository'] + '.git',
+                                  temporary=temporary, destination=snapshot + '/input/' + name)
+            relay.set('preparation', handoff)
+        else:
+            handoff = relay.data['preparation']
+            decision = handoff['decision']
         if decision['build']:
-            if decision['identities'] != [delivery['identity']]:
-                raise ValueError('claimed LAMMPS source differs from the requested delivery')
-            for name, identity in (('lammps', delivery['identity']), ('deepmd-kit', delivery['deepmd_dependency']['identity'])):
-                sha = identity['source_sha']
-                cache = root + '/cache/repositories/' + name
-                legacy = '/home/stardust/sai-hpc-software/experimental/deepmd-lammps/cache/repositories/' + name
-                python('source_cache.py', 'seed', cache, legacy, capture_output=True)
-                inventory = json.loads(python('source_cache.py', 'inventory', cache, '--commit', sha, capture_output=True).stdout)
-                if sha in inventory['cache_shas']:
-                    print('SOURCE_CACHE_HIT', name, sha, flush=True)
-                    continue
-                ensure_source(remote=remote, options=options, port=12022, controller=snapshot,
-                              cache=cache, commit=sha,
-                              repository_url='https://github.com/' + identity['repository'] + '.git',
-                              temporary=temporary, destination=snapshot + '/input/' + name)
             try:
-                python('md_lammps_standalone.py', 'submit', run_id, snapshot + '/delivery.json')
+                relay.submitted(ssh, root + '/runs/' + run_id, dict(delivery=delivery, controller=snapshot),
+                    lambda: python('md_lammps_standalone.py', 'submit', run_id, snapshot + '/delivery.json'))
                 python('md_lammps_standalone.py', 'monitor', run_id)
                 handoff['build_status'] = remote_handoff(ssh, project, handoff, continuing=False)['build_status']
             finally:
@@ -306,13 +328,14 @@ def main():
     finally:
         if phase == 'science':
             collect_build()
-        science_results = results / 'science'
-        science_results.mkdir(exist_ok=True)
-        # Scratch lives in PROJECT/runtime, outside this complete evidence tree.
-        subprocess.run(['scp', '-q', *options, '-P', '12022', '-r',
-                        remote + ':' + science + '/.', str(science_results)], check=False)
+        if not relay.enabled:
+            science_results = results / 'science'
+            science_results.mkdir(exist_ok=True)
+            # Scratch lives in PROJECT/runtime, outside this complete evidence tree.
+            subprocess.run(['scp', '-q', *options, '-P', '12022', '-r',
+                            remote + ':' + science + '/.', str(science_results)], check=False)
     print('LAMMPS_GPU_SCIENCE_ACCEPTED: native installation and publication remain separate', flush=True)
 
 
 if __name__ == '__main__':
-    main()
+    entry(main)

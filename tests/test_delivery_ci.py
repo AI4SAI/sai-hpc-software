@@ -121,27 +121,28 @@ class DailyWorkflowTests(unittest.TestCase):
             with self.assertRaises(ValueError):
                 plan(**kwargs)
 
-    def test_reusable_workflows_and_result_propagation(self):
+    def test_daily_uses_trusted_relay_and_preserves_nightly_trigger(self):
         import yaml
         data = yaml.safe_load((ROOT / '.github/workflows/daily.yml').read_text())
-        jobs = data['jobs']
-        self.assertEqual(set(jobs['result']['needs']), {'plan', *[name.replace('-', '_') for name in contract.SOFTWARE]})
-        self.assertEqual(jobs['result']['if'], 'always()')
-        for name in (software.replace('-', '_') for software in contract.SOFTWARE):
-            self.assertEqual(jobs[name]['needs'], ['plan'])
-            workflow = ROOT / jobs[name]['uses'].removeprefix('./')
-            called = yaml.safe_load(workflow.read_text())
-            self.assertIn('workflow_call', called[True])
-        self.assertNotIn('/dispatches', (ROOT / '.github/workflows/daily.yml').read_text())
-        snippet = jobs['result']['steps'][0]['run'].split("python3 - <<'PY'\n")[1].rsplit('\nPY',1)[0]
-        for outcome in ('success', 'failure', 'cancelled', 'skipped'):
-            results = {name: {'result': 'skipped'} for name in ('abacus','cp2k','deepmd_kit','lammps','gpumd')}
-            results.update(plan={'result': 'success', 'outputs': {'abacus':'dsprhbm'}}, abacus={'result':outcome})
-            with tempfile.TemporaryDirectory() as tmp, patch.dict(os.environ, RESULTS=json.dumps(results), GITHUB_STEP_SUMMARY=tmp+'/summary'):
-                if outcome == 'success':
-                    exec(snippet, {})
-                else:
-                    with self.assertRaises(SystemExit): exec(snippet, {})
+        self.assertEqual({row['cron'] for row in data[True]['schedule']}, {'0 19 * * *', '17 * * * *'})
+        self.assertNotIn('pull_request', data[True])
+        relay = data['jobs']['relay']
+        self.assertIn('sai-hpc-relay', relay['runs-on'])
+        self.assertEqual(relay['environment'], 'hpc')
+        self.assertIn("'recovery' || 'delivery'", data['concurrency']['group'])
+        self.assertFalse(data['concurrency']['cancel-in-progress'])
+        self.assertIn("&& 'resume'", relay['env']['RELAY_MODE'])
+        checkout = relay['steps'][0]['run']
+        self.assertIn('https://github.com/AI4SAI/sai-hpc-software.git', checkout)
+        self.assertIn('--unset-all http.https://github.com/.extraheader', checkout)
+        self.assertIn('test "$(git rev-parse HEAD)" = "$GITHUB_SHA"', checkout)
+        self.assertNotIn('GH_TOKEN', checkout)
+        self.assertTrue(all('uses' not in step for step in relay['steps']))
+        self.assertEqual(relay['steps'][-1]['if'], 'always()')
+        self.assertIn('ssh/key', relay['steps'][-1]['run'])
+        for filename in ('build.yml', 'cp2k.yml', 'deepmd.yml', 'lammps.yml', 'gpumd.yml', 'qe.yml'):
+            workflow = yaml.safe_load((ROOT / '.github/workflows' / filename).read_text())
+            self.assertEqual(workflow['jobs']['validate']['runs-on'], 'ubuntu-latest')
 
 
 if __name__ == '__main__':

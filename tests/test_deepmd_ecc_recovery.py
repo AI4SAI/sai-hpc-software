@@ -58,7 +58,7 @@ class ECCRecoveryTests(unittest.TestCase):
         directory.mkdir()
         (directory / 'request.json').write_text(json.dumps(dict(source=self.source, controller=str(acceptance.CONTROL), exclude='8v100v0n09', job_id='456')))
         with patch.object(acceptance, 'submit') as submit, \
-                patch.object(acceptance.subprocess, 'check_output', return_value='PENDING|JobHeldUser\n'), \
+                patch.object(acceptance.subprocess, 'check_output', return_value='456|PENDING|JobHeldUser\n'), \
                 patch.object(acceptance.subprocess, 'run') as release, redirect_stdout(io.StringIO()):
             acceptance.recover('original')
         submit.assert_not_called()

@@ -18,6 +18,7 @@ import sif_beta
 from remote_controller import SAI_PROJECT_ROOT, safe_name
 from sif_modules import install, load_snapshot
 from sif_runtime import digest, require
+from relay_checkpoint import Pending
 
 PROJECT = SAI_PROJECT_ROOT
 PUBLIC = Path('/home/stardust/sai-hpc-software')
@@ -93,12 +94,19 @@ def submit(directory, software, partition, bundle, fixtures, exclude=''):
         saved = read(receipt)
         require(digest(directory / 'job.sbatch') == saved['script_sha256'], 'changed submitted runtime script')
         require(digest(directory / 'request.json') == saved['request_sha256'], 'changed runtime check request')
-        state = subprocess.check_output(['squeue', '-h', '-j', saved['job'], '-o', '%T|%r'], text=True).strip()
+        queue = subprocess.check_output(['squeue', '--me', '-h', '-o', '%i|%T|%r'], text=True)
+        state = next((line.split('|', 1)[1] for line in queue.splitlines()
+                      if line.split('|', 1)[0] == saved['job']), '')
         if state == 'PENDING|JobHeldUser':
             subprocess.run(['scontrol', 'release', saved['job']], check=True)
         return saved
     # Held submission makes the job handle durable before any computation.
     subprocess.run(['sbatch', '--test-only', str(directory / 'job.sbatch')], check=True, capture_output=True)
+    # A crash between sbatch and receipt persistence is ambiguous, even though
+    # the allocation is held. Never turn that window into duplicate submissions.
+    intent = directory / 'submission-intent.json'
+    require(not intent.exists(), 'incomplete beta submission; recover held job before continuing')
+    save(intent, dict(script_sha256=digest(directory / 'job.sbatch')))
     job = subprocess.check_output(['sbatch', '--hold', '--parsable', str(directory / 'job.sbatch')], text=True).strip().split(';')[0]
     require(job.isdigit(), 'invalid submitted runtime job')
     saved = dict(job=job, partition=partition, output=str(directory), exclude=exclude,
@@ -137,7 +145,7 @@ def retry_node(directory, accounting_row):
     return None
 
 
-def check_runtime(task, software, bundle, fixtures, timeout=18000):
+def check_runtime(task, software, bundle, fixtures, timeout=18000, once=False):
     snapshot = load_snapshot(bundle / 'catalog.json')
     saved_jobs = task / 'jobs.json'
     if saved_jobs.exists():
@@ -182,6 +190,8 @@ def check_runtime(task, software, bundle, fixtures, timeout=18000):
         save(task / 'runtime-status.json', dict(passed=finished, failed=failures, jobs=jobs))
         if len(finished) + len(failures) == len(jobs):
             break
+        if once:
+            raise Pending('beta runtime jobs remain active')
         require(time.monotonic() < deadline, 'runtime observation deadline; jobs and previous public beta retained')
         print('BETA_RUNTIME_STATUS ' + json.dumps({j['partition']: ('passed' if j['partition'] in finished else
               'failed' if j['partition'] in failures else j['job']) for j in jobs}), flush=True)
@@ -192,7 +202,7 @@ def check_runtime(task, software, bundle, fixtures, timeout=18000):
     return checks
 
 
-def execute(software, workflow, attempt, builds, task, fixtures):
+def execute(software, workflow, attempt, builds, task, fixtures, *, once=False):
     sources = candidates.validate_plan(software, builds)
     request_path = task / 'request.json'
     identity = dict(software=software, workflow=workflow, attempt=attempt, builds=builds)
@@ -252,7 +262,7 @@ def execute(software, workflow, attempt, builds, task, fixtures):
         install(snapshot, bundle, resume=True)
     checked = load_snapshot(bundle / 'catalog.json')
     require(checked['applications'] == snapshot['applications'], 'existing bundle contains different candidates')
-    checks = check_runtime(task, software, bundle, fixtures)
+    checks = check_runtime(task, software, bundle, fixtures, **({'once': True} if once else {}))
     # Re-read each original proof before promotion, including the image hashes.
     for source in sources:
         row = candidates.candidate(software, candidates.locate(software, workflow, attempt, source), source)
@@ -287,6 +297,7 @@ def main():
     parser.add_argument('--builds', type=Path, required=True)
     parser.add_argument('--fixtures', type=Path, required=True)
     parser.add_argument('--task', type=Path, required=True)
+    parser.add_argument('--once', action='store_true', help='defer with exit 75 while Slurm runs')
     args = parser.parse_args()
     require(args.task.parent == PROJECT / 'operations/daily-beta' and args.task.resolve() == args.task,
             'daily publication work must stay in the project')
@@ -296,7 +307,13 @@ def main():
     with lock.open('a+') as stream:
         fcntl.flock(stream, fcntl.LOCK_EX)
         try:
-            result = execute(args.software, args.workflow, args.attempt, read(args.builds), args.task, args.fixtures)
+            result = execute(args.software, args.workflow, args.attempt, read(args.builds), args.task, args.fixtures, once=args.once)
+        except Pending as error:
+            result = dict(status='waiting', software=args.software, workflow=args.workflow,
+                          attempt=args.attempt, message=str(error))
+            save(args.task / 'status.json', result)
+            print(json.dumps(result), flush=True)
+            raise SystemExit(75)
         except Exception as error:
             try:
                 retained = current(args.software)

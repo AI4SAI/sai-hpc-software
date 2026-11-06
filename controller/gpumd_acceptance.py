@@ -302,7 +302,10 @@ def monitor(args):
         raise ValueError("invalid job id")
     deadline = time.monotonic() + args.timeout
     while time.monotonic() < deadline:
-        queue = subprocess.run(["squeue", "-h", "-j", job, "-o", "%T"], text=True, capture_output=True, check=True).stdout.strip()
+        observed = subprocess.run(["squeue", "--me", "-h", "-o", "%i|%T"],
+                                  text=True, capture_output=True, check=True).stdout
+        queue = next((line.split('|', 1)[1] for line in observed.splitlines()
+                      if line.split('|', 1)[0] == job), '')
         if queue:
             print(f"GPUMD {job}: {queue}", flush=True)
         else:

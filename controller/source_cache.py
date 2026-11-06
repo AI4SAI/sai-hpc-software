@@ -32,11 +32,11 @@ def checksum(path):
 
 def complete(repo, commit):
     sha(commit)
-    try:
-        git(repo, "rev-list", "--objects", "--missing=error", commit)
-        return True
-    except subprocess.CalledProcessError:
-        return False
+    # Only the status matters. A full repository's object listing can exceed
+    # the relay's memory budget even though Git itself streams that output.
+    return subprocess.run(["git", "-c", "core.hooksPath=/dev/null", "-C", str(repo),
+                           "rev-list", "--objects", "--missing=error", commit],
+                          stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL).returncode == 0
 
 def select_base(repo, commit, cached_tips):
     """A complete cached tip also contains its shared ancestors with a release.
@@ -85,7 +85,14 @@ def pack(repo, commit, output, base=None):
     with compressed.open("rb") as src:
         for index in range(PARTS):
             path = output / f"source.part.{index:02d}"
-            path.write_bytes(src.read(step))
+            remaining = min(step, size - src.tell())
+            with path.open('wb') as dest:
+                while remaining:
+                    block = src.read(min(remaining, 1024**2))
+                    if not block:
+                        raise ValueError('compressed bundle truncated during splitting')
+                    dest.write(block)
+                    remaining -= len(block)
             parts.append({"name": path.name, "size": path.stat().st_size, "sha256": checksum(path)})
     manifest = {"version": 2, "commit": commit, "base": base,
                 "bundle_size": bundle.stat().st_size, "bundle_sha256": checksum(bundle),
