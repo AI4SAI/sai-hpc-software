@@ -65,10 +65,10 @@ An extraction attempt preceding the successful GPU handoff encountered an
 `unsquashfs` timestamp interruption. Its evidence is retained; a fresh full
 extraction passed with unchanged images and controller.
 
-The workflow has not performed physical `/opt` installation. Existing matching
-prefixes are checked and skipped by the administrator installer; the observation
-records any prefixes already present. Full physical verification and CP2K
-scientific acceptance are separate gates. The
+The administrator performs physical `/opt` installation. Existing matching
+prefixes are checked and skipped by the installer; the observation records any
+prefixes already present. Full physical verification and CP2K scientific
+acceptance are separate gates. The earlier
 [isolated application probe](application-probe/README.md) compiled and installed
 CP2K v2026.2 against copies of all four dependency SIFs and completed single-node
 scientific checks on all four partitions: 56 calculations, 28 rank-count
@@ -77,10 +77,13 @@ the ScaLAPACK/NCCL progress stall; the other three accepted results use the
 preceding application recipe. These tests preserved the original dependency
 SIFs and build environments. The administrator subsequently installed all
 39 variants, and full physical verification passed on November 6. The
-[physical-provider qualification](physical-provider-20261106/README.md) records
-the new registry and standard-build acceptance status. These earlier
-application probes do not publish standalone CP2K SIFs or qualify multi-node
-execution/performance.
+[physical-provider qualification](physical-provider-20261106/README.md) then
+passed standard release and master builds on all four partitions: eight SIFs,
+112 calculations, 56 single/two-node comparisons and 84 GPU/CPU comparisons.
+All four beta checks passed and published the November 6 master generation.
+Those completed standard deliveries qualify the new physical-provider path;
+the earlier copied-SIF probes remain separate historical evidence. No controlled
+performance comparison is claimed.
 
 The [CPU I/O investigation](cpu-io-diagnosis/README.md) records the later
 Libint completion and a two-node read comparison. It reproduced long Lustre

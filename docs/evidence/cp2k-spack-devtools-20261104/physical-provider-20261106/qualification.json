@@ -1,0 +1,713 @@
+{
+  "accounting": "2232885|COMPLETED|0:0|00:23:42|1422|6|8532|8v100v0n03|proj-sai-hpc-software|8V100V0|billing=180,cpu=6,gres/gpu=1,mem=46G,node=1\n2232887|COMPLETED|0:0|00:16:40|1000|8|8000|16v100n01|proj-sai-hpc-software|16V100|billing=150,cpu=8,gres/gpu=1,mem=15G,node=1\n2232890|COMPLETED|0:0|00:23:51|1431|8|11448|4v100n24|proj-sai-hpc-software|4V100|billing=194,cpu=8,gres/gpu=1,mem=22G,node=1\n2232891|COMPLETED|0:0|00:13:31|811|8|6488|d9470n01|proj-sai-hpc-software|DSPRHBM|billing=194,cpu=8,mem=28G,node=1\n2233133|COMPLETED|0:0|00:23:51|1431|4|5724|d9470n[01-02]|proj-sai-hpc-software|DSPRHBM|billing=32,cpu=4,mem=4724M,node=2\n2233206|COMPLETED|0:0|00:14:36|876|16|14016|16v100n[53-54]|proj-sai-hpc-software|16V100|billing=300,cpu=16,gres/gpu=2,mem=30G,node=2\n2233406|COMPLETED|0:0|00:15:54|954|12|11448|8v100v0n[02,05]|proj-sai-hpc-software|8V100V0|billing=360,cpu=12,gres/gpu=2,mem=92G,node=2\n2233407|COMPLETED|0:0|00:11:58|718|16|11488|4v100n[20,36]|proj-sai-hpc-software|4V100|billing=388,cpu=16,gres/gpu=2,mem=44G,node=2\n2233724|COMPLETED|0:0|00:31:12|1872|8|14976|4v100n24|proj-sai-hpc-software|4V100|billing=194,cpu=8,gres/gpu=1,mem=22G,node=1\n2233755|COMPLETED|0:0|00:26:52|1612|8|12896|16v100n12|proj-sai-hpc-software|16V100|billing=150,cpu=8,gres/gpu=1,mem=15G,node=1\n2233817|COMPLETED|0:0|00:19:38|1178|8|9424|d9470n01|proj-sai-hpc-software|DSPRHBM|billing=194,cpu=8,mem=28G,node=1\n2234006|COMPLETED|0:0|00:39:27|2367|6|14202|8v100v0n01|proj-sai-hpc-software|8V100V0|billing=180,cpu=6,gres/gpu=1,mem=46G,node=1\n2234193|COMPLETED|0:0|00:24:52|1492|4|5968|d9470n[01-02]|proj-sai-hpc-software|DSPRHBM|billing=32,cpu=4,mem=4724M,node=2\n2234259|COMPLETED|0:0|00:12:44|764|16|12224|16v100n[45-46]|proj-sai-hpc-software|16V100|billing=300,cpu=16,gres/gpu=2,mem=30G,node=2\n2234329|COMPLETED|0:0|00:07:51|471|16|7536|4v100n[24,27]|proj-sai-hpc-software|4V100|billing=388,cpu=16,gres/gpu=2,mem=44G,node=2\n2234937|COMPLETED|0:0|00:14:34|874|12|10488|8v100v0n[01-02]|proj-sai-hpc-software|8V100V0|billing=360,cpu=12,gres/gpu=2,mem=92G,node=2\n2235490|COMPLETED|0:0|00:00:32|32|16|512|16v100n70|proj-sai-hpc-software|16V100|billing=300,cpu=16,gres/gpu=2,mem=30G,node=1\n2235492|COMPLETED|0:0|00:00:21|21|16|336|4v100n06|proj-sai-hpc-software|4V100|billing=388,cpu=16,gres/gpu=2,mem=44G,node=1\n2235494|COMPLETED|0:0|00:00:50|50|12|600|8v100v0n03|proj-sai-hpc-software|8V100V0|billing=360,cpu=12,gres/gpu=2,mem=92G,node=1\n2235496|COMPLETED|0:0|00:00:42|42|2|84|d9470n01|proj-sai-hpc-software|DSPRHBM|billing=194,cpu=2,mem=28G,node=1\n",
+  "beta": {
+    "candidates": {
+      "16V100": {
+        "binds": [],
+        "build_verified": true,
+        "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-05-gbc428196533e-r3561960f4431/16V100/42139209945-1-development-16v100-avx2-2026-11-06-bc428196533e.json",
+        "evidence_sha256": "17663686d7a773b888bf72d01b4bcdf56db2944f643a7ee44e3932b5b7dbb5ef",
+        "identity": {
+          "build_id": "master-2026-11-05-gbc428196533e-r3561960f4431",
+          "cpu_arch": "znver3",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-11-05-gbc428196533e-r3561960f4431/16V100",
+          "partition": "16V100",
+          "recipe_sha256": "3561960f4431188f0debe4ba95facb3571dd0a078a0cc846e44ea0cb7df030c8",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "master",
+          "source_sha": "bc428196533ec1afec9844324d6ed8d98daaa661",
+          "source_version": "master-2026-11-05",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "16v100-avx2",
+          "track": "development",
+          "version_label": "master-2026-11-05"
+        },
+        "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-05-gbc428196533e-r3561960f4431/16V100/42139209945-1-development-16v100-avx2-2026-11-06-bc428196533e.sif",
+        "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+        "scientific_verified": true,
+        "sha256": "08386b4236267dcb745683c64bb7ef60db71afd30194b0f43b85b4a8e633faab"
+      },
+      "4V100": {
+        "binds": [],
+        "build_verified": true,
+        "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-05-gbc428196533e-r3561960f4431/4V100/42139209945-1-development-4v100-avx512-2026-11-06-bc428196533e.json",
+        "evidence_sha256": "30ea27276dfdc81a5b455afd354d6be2aded585e0b603d55ce90909bb5be4afb",
+        "identity": {
+          "build_id": "master-2026-11-05-gbc428196533e-r3561960f4431",
+          "cpu_arch": "znver4",
+          "cuda_arch": "70",
+          "dependency_isa": "avx512",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-11-05-gbc428196533e-r3561960f4431/4V100",
+          "partition": "4V100",
+          "recipe_sha256": "3561960f4431188f0debe4ba95facb3571dd0a078a0cc846e44ea0cb7df030c8",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "master",
+          "source_sha": "bc428196533ec1afec9844324d6ed8d98daaa661",
+          "source_version": "master-2026-11-05",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "4v100-avx512",
+          "track": "development",
+          "version_label": "master-2026-11-05"
+        },
+        "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-05-gbc428196533e-r3561960f4431/4V100/42139209945-1-development-4v100-avx512-2026-11-06-bc428196533e.sif",
+        "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512",
+        "scientific_verified": true,
+        "sha256": "cabcd628771b6da764b526d60f6cff218040c29bccc6652b178e0e2694a90c49"
+      },
+      "8V100V0": {
+        "binds": [],
+        "build_verified": true,
+        "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-05-gbc428196533e-r3561960f4431/8V100V0/42139209945-1-development-8v100v0-avx512-2026-11-06-bc428196533e.json",
+        "evidence_sha256": "8bfea9a66a1c7886da989595172df0bede49f443a14ce21d8eab73a76f350861",
+        "identity": {
+          "build_id": "master-2026-11-05-gbc428196533e-r3561960f4431",
+          "cpu_arch": "skylake-avx512",
+          "cuda_arch": "70",
+          "dependency_isa": "avx2",
+          "gpus": 1,
+          "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-11-05-gbc428196533e-r3561960f4431/8V100V0",
+          "partition": "8V100V0",
+          "recipe_sha256": "3561960f4431188f0debe4ba95facb3571dd0a078a0cc846e44ea0cb7df030c8",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "master",
+          "source_sha": "bc428196533ec1afec9844324d6ed8d98daaa661",
+          "source_version": "master-2026-11-05",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "8v100v0-avx512",
+          "track": "development",
+          "version_label": "master-2026-11-05"
+        },
+        "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-05-gbc428196533e-r3561960f4431/8V100V0/42139209945-1-development-8v100v0-avx512-2026-11-06-bc428196533e.sif",
+        "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+        "scientific_verified": true,
+        "sha256": "059542d2bdd8be7c7c333cbc82c43035f4c973dc4d0771fb0c6f55877c87aed7"
+      },
+      "DSPRHBM": {
+        "binds": [],
+        "build_verified": true,
+        "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-05-gbc428196533e-r3561960f4431/DSPRHBM/42139209945-1-development-dsprhbm-2026-11-06-bc428196533e.json",
+        "evidence_sha256": "0f3bf933821fd6a7f616d9817d0ba526ad8f50eb4afb503b383fc655e2ff5a24",
+        "identity": {
+          "build_id": "master-2026-11-05-gbc428196533e-r3561960f4431",
+          "cpu_arch": "x86-64-v4",
+          "cuda_arch": "",
+          "dependency_isa": "avx512",
+          "gpus": 0,
+          "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-11-05-gbc428196533e-r3561960f4431/DSPRHBM",
+          "partition": "DSPRHBM",
+          "recipe_sha256": "3561960f4431188f0debe4ba95facb3571dd0a078a0cc846e44ea0cb7df030c8",
+          "repository": "cp2k/cp2k",
+          "schema": 2,
+          "software": "cp2k",
+          "source_ref": "master",
+          "source_sha": "bc428196533ec1afec9844324d6ed8d98daaa661",
+          "source_version": "master-2026-11-05",
+          "stack_digest": null,
+          "stack_sources": {},
+          "target": "dsprhbm",
+          "track": "development",
+          "version_label": "master-2026-11-05"
+        },
+        "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-05-gbc428196533e-r3561960f4431/DSPRHBM/42139209945-1-development-dsprhbm-2026-11-06-bc428196533e.sif",
+        "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512",
+        "scientific_verified": true,
+        "sha256": "bd9f1e4b6546964ea99ccd1794c5b39ab88e32d83d250055a21f4a48f0e91cc3"
+      }
+    },
+    "checks": [
+      {
+        "automatic_memory": true,
+        "catalog_sha256": "d0b316bb6bfa52a202f30885a7bcbfb8ce083783698804bdacf2b588cebf8c30",
+        "cp2k": {
+          "energy_delta_ha": 5.826450433232822e-13,
+          "max_force_delta_ha_bohr": 1.0000004296850662e-12
+        },
+        "job": "2235490",
+        "partition": "16V100",
+        "passed": true,
+        "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+      },
+      {
+        "automatic_memory": true,
+        "catalog_sha256": "d0b316bb6bfa52a202f30885a7bcbfb8ce083783698804bdacf2b588cebf8c30",
+        "cp2k": {
+          "energy_delta_ha": 1.7053025658242404e-13,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "job": "2235492",
+        "partition": "4V100",
+        "passed": true,
+        "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+      },
+      {
+        "automatic_memory": true,
+        "catalog_sha256": "d0b316bb6bfa52a202f30885a7bcbfb8ce083783698804bdacf2b588cebf8c30",
+        "cp2k": {
+          "energy_delta_ha": 9.663381206337363e-13,
+          "max_force_delta_ha_bohr": 1.0000004296850662e-12
+        },
+        "job": "2235496",
+        "partition": "DSPRHBM",
+        "passed": true,
+        "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+      },
+      {
+        "automatic_memory": true,
+        "catalog_sha256": "d0b316bb6bfa52a202f30885a7bcbfb8ce083783698804bdacf2b588cebf8c30",
+        "cp2k": {
+          "energy_delta_ha": 5.968558980384842e-13,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "job": "2235494",
+        "partition": "8V100V0",
+        "passed": true,
+        "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+      }
+    ],
+    "fixed": "master-beta-20261106-bc428196533e-r4d85319d4295-b71b0be44395a",
+    "module": "/home/stardust/sai-hpc-software/modulefiles/apps/cp2k/master-beta-later",
+    "module_content": "#%Module1.0\n# Keep the loaded generation when the later symlink changes.\nset sai_beta_root \"/home/stardust/sai-hpc-software/sif-beta\"\nset sai_beta_generation \"daily-20261106-42139209945-1-cp2k\"\nif {[info exists env(SAI_SIF_CP2K_BETA_GENERATION)]} {\n    set sai_beta_generation $env(SAI_SIF_CP2K_BETA_GENERATION)\n} elseif {[module-info mode remove]} {\n    error \"missing saved beta generation; refusing to unload a different snapshot\"\n}\nif {![regexp {^[A-Za-z0-9][A-Za-z0-9_.-]{0,127}$} $sai_beta_generation]} {error \"invalid beta generation\"}\nsource [file join $sai_beta_root generations $sai_beta_generation modules cp2k]\nsetenv SAI_SIF_CP2K_BETA_GENERATION $sai_beta_generation\n",
+    "module_sha256": "9c21c32093f42a64ff2a8b7e15501e437087dfc634ed0f6ed079d7fcfcb75006",
+    "public_images": {
+      "16V100": {
+        "image": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261106-42139209945-1-cp2k/images/cp2k/16V100.sif",
+        "sha256": "08386b4236267dcb745683c64bb7ef60db71afd30194b0f43b85b4a8e633faab"
+      },
+      "4V100": {
+        "image": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261106-42139209945-1-cp2k/images/cp2k/4V100.sif",
+        "sha256": "cabcd628771b6da764b526d60f6cff218040c29bccc6652b178e0e2694a90c49"
+      },
+      "8V100V0": {
+        "image": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261106-42139209945-1-cp2k/images/cp2k/8V100V0.sif",
+        "sha256": "059542d2bdd8be7c7c333cbc82c43035f4c973dc4d0771fb0c6f55877c87aed7"
+      },
+      "DSPRHBM": {
+        "image": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261106-42139209945-1-cp2k/images/cp2k/DSPRHBM.sif",
+        "sha256": "bd9f1e4b6546964ea99ccd1794c5b39ab88e32d83d250055a21f4a48f0e91cc3"
+      }
+    },
+    "publication": {
+      "after": {
+        "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261106-42139209945-1-cp2k",
+        "fixed": "master-beta-20261106-bc428196533e-r4d85319d4295-b71b0be44395a",
+        "generation": "daily-20261106-42139209945-1-cp2k"
+      },
+      "attempt": "1",
+      "before": {
+        "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261105-42003384294-1-cp2k",
+        "fixed": "master-beta-20261105-37370f362787-r4d85319d4295-b3ac36adef9e9",
+        "generation": "daily-20261105-42003384294-1-cp2k"
+      },
+      "catalog_sha256": "c2ed3a3a18daeb52617abc8f6e4bb14f9db9b0699d97eb01b049ea4b78ab9424",
+      "checks": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42139209945-1-cp2k-6613ee2c1b00/validation.json",
+      "fixed": "master-beta-20261106-bc428196533e-r4d85319d4295-b71b0be44395a",
+      "generation": "daily-20261106-42139209945-1-cp2k",
+      "software": "cp2k",
+      "source_sha": "bc428196533ec1afec9844324d6ed8d98daaa661",
+      "status": "published",
+      "workflow": "42139209945"
+    }
+  },
+  "controller_commit": "6613ee2c1b009b63eaeeb0c8d8cda8553f2f97df",
+  "deliveries": [
+    {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-05-gbc428196533e-r3561960f4431/16V100/42139209945-1-development-16v100-avx2-2026-11-06-bc428196533e.sif",
+      "artifact_bytes": 313118720,
+      "artifact_sha256": "08386b4236267dcb745683c64bb7ef60db71afd30194b0f43b85b4a8e633faab",
+      "build": {
+        "elapsed": "00:26:52",
+        "exit_code": "0:0",
+        "job": "2233755",
+        "node": "16v100n12",
+        "seconds": 1612,
+        "state": "COMPLETED"
+      },
+      "embedded_source_receipts": {
+        "libxc-source-archives.sha256": "4b1ce2e83caa972f4722db36554a95809395e322042b905188381860863adeb6  /workspace/source/tools/toolchain/scripts/stage3/install_libxc.sh\n3915fac94416e4c415534223ea492ad2663f928acf27e98662c861b094a6c306  /input/updates/libxc-7.1.2.tar.bz2\n",
+        "tblite-source-archives.sha256": "f6d6013e48b86ca2ad94c2016300d8c78074620982b8a9b0aa7d9eb033037d88  /workspace/source/tools/toolchain/scripts/stage8/install_tblite.sh\ncf79f5f0b0bb604ec8aef5236448ffb6d54f14a01f290d3f0dc78add730ce484  /workspace/source/tools/toolchain/scripts/stage8/install_dftd4.sh\n2d00fd612b3fcbb69365de53577080457ceae221cd151be52e7a9977b4832ad3  /input/updates/tblite-0.8.0.tar.xz\n8ad73a1e22a9251e48896abfcb75e02fbc23c4a19a6c8a8a7b104398567a453f  /workspace/tblite-build/mstore-openmp.cmake\n"
+      },
+      "identity": {
+        "build_id": "master-2026-11-05-gbc428196533e-r3561960f4431",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-11-05-gbc428196533e-r3561960f4431/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "3561960f4431188f0debe4ba95facb3571dd0a078a0cc846e44ea0cb7df030c8",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "bc428196533ec1afec9844324d6ed8d98daaa661",
+        "source_version": "master-2026-11-05",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "development",
+        "version_label": "master-2026-11-05"
+      },
+      "natural_overlay_exits": 3,
+      "provider_contract": "25a931f9cb1aef35e700d8d9e7c6e9c4209756dc045c2546492312c785cc52cf",
+      "run_id": "42139209945-1-development-16v100-avx2-2026-11-06-bc428196533e",
+      "science": {
+        "elapsed": "00:12:44",
+        "energy_tolerance_ha": 1e-06,
+        "exit_code": "0:0",
+        "force_tolerance_ha_bohr": 1e-05,
+        "job": "2234259",
+        "max_rank_energy_delta_ha": 2.7284841053187847e-11,
+        "max_rank_force_delta_ha_bohr": 1.3000000381735433e-11,
+        "node": "16v100n[45-46]",
+        "rank_comparisons": 7,
+        "samples": 14,
+        "seconds": 764,
+        "state": "COMPLETED"
+      },
+      "shared_prefixes_absent": 10
+    },
+    {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-05-gbc428196533e-r3561960f4431/4V100/42139209945-1-development-4v100-avx512-2026-11-06-bc428196533e.sif",
+      "artifact_bytes": 314277888,
+      "artifact_sha256": "cabcd628771b6da764b526d60f6cff218040c29bccc6652b178e0e2694a90c49",
+      "build": {
+        "elapsed": "00:31:12",
+        "exit_code": "0:0",
+        "job": "2233724",
+        "node": "4v100n24",
+        "seconds": 1872,
+        "state": "COMPLETED"
+      },
+      "embedded_source_receipts": {
+        "libxc-source-archives.sha256": "4b1ce2e83caa972f4722db36554a95809395e322042b905188381860863adeb6  /workspace/source/tools/toolchain/scripts/stage3/install_libxc.sh\n3915fac94416e4c415534223ea492ad2663f928acf27e98662c861b094a6c306  /input/updates/libxc-7.1.2.tar.bz2\n",
+        "tblite-source-archives.sha256": "f6d6013e48b86ca2ad94c2016300d8c78074620982b8a9b0aa7d9eb033037d88  /workspace/source/tools/toolchain/scripts/stage8/install_tblite.sh\ncf79f5f0b0bb604ec8aef5236448ffb6d54f14a01f290d3f0dc78add730ce484  /workspace/source/tools/toolchain/scripts/stage8/install_dftd4.sh\n2d00fd612b3fcbb69365de53577080457ceae221cd151be52e7a9977b4832ad3  /input/updates/tblite-0.8.0.tar.xz\n8ad73a1e22a9251e48896abfcb75e02fbc23c4a19a6c8a8a7b104398567a453f  /workspace/tblite-build/mstore-openmp.cmake\n"
+      },
+      "identity": {
+        "build_id": "master-2026-11-05-gbc428196533e-r3561960f4431",
+        "cpu_arch": "znver4",
+        "cuda_arch": "70",
+        "dependency_isa": "avx512",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-11-05-gbc428196533e-r3561960f4431/4V100",
+        "partition": "4V100",
+        "recipe_sha256": "3561960f4431188f0debe4ba95facb3571dd0a078a0cc846e44ea0cb7df030c8",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "bc428196533ec1afec9844324d6ed8d98daaa661",
+        "source_version": "master-2026-11-05",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "4v100-avx512",
+        "track": "development",
+        "version_label": "master-2026-11-05"
+      },
+      "natural_overlay_exits": 3,
+      "provider_contract": "74a2d6082d7fc952ebc889831d64169179b6f2d4540dfa5981c7078f670312db",
+      "run_id": "42139209945-1-development-4v100-avx512-2026-11-06-bc428196533e",
+      "science": {
+        "elapsed": "00:07:51",
+        "energy_tolerance_ha": 1e-06,
+        "exit_code": "0:0",
+        "force_tolerance_ha_bohr": 1e-05,
+        "job": "2234329",
+        "max_rank_energy_delta_ha": 4.6838977141305804e-11,
+        "max_rank_force_delta_ha_bohr": 1.5000001241105565e-11,
+        "node": "4v100n[24,27]",
+        "rank_comparisons": 7,
+        "samples": 14,
+        "seconds": 471,
+        "state": "COMPLETED"
+      },
+      "shared_prefixes_absent": 10
+    },
+    {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-05-gbc428196533e-r3561960f4431/8V100V0/42139209945-1-development-8v100v0-avx512-2026-11-06-bc428196533e.sif",
+      "artifact_bytes": 313577472,
+      "artifact_sha256": "059542d2bdd8be7c7c333cbc82c43035f4c973dc4d0771fb0c6f55877c87aed7",
+      "build": {
+        "elapsed": "00:39:27",
+        "exit_code": "0:0",
+        "job": "2234006",
+        "node": "8v100v0n01",
+        "seconds": 2367,
+        "state": "COMPLETED"
+      },
+      "embedded_source_receipts": {
+        "libxc-source-archives.sha256": "4b1ce2e83caa972f4722db36554a95809395e322042b905188381860863adeb6  /workspace/source/tools/toolchain/scripts/stage3/install_libxc.sh\n3915fac94416e4c415534223ea492ad2663f928acf27e98662c861b094a6c306  /input/updates/libxc-7.1.2.tar.bz2\n",
+        "tblite-source-archives.sha256": "f6d6013e48b86ca2ad94c2016300d8c78074620982b8a9b0aa7d9eb033037d88  /workspace/source/tools/toolchain/scripts/stage8/install_tblite.sh\ncf79f5f0b0bb604ec8aef5236448ffb6d54f14a01f290d3f0dc78add730ce484  /workspace/source/tools/toolchain/scripts/stage8/install_dftd4.sh\n2d00fd612b3fcbb69365de53577080457ceae221cd151be52e7a9977b4832ad3  /input/updates/tblite-0.8.0.tar.xz\n8ad73a1e22a9251e48896abfcb75e02fbc23c4a19a6c8a8a7b104398567a453f  /workspace/tblite-build/mstore-openmp.cmake\n"
+      },
+      "identity": {
+        "build_id": "master-2026-11-05-gbc428196533e-r3561960f4431",
+        "cpu_arch": "skylake-avx512",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-11-05-gbc428196533e-r3561960f4431/8V100V0",
+        "partition": "8V100V0",
+        "recipe_sha256": "3561960f4431188f0debe4ba95facb3571dd0a078a0cc846e44ea0cb7df030c8",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "bc428196533ec1afec9844324d6ed8d98daaa661",
+        "source_version": "master-2026-11-05",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "8v100v0-avx512",
+        "track": "development",
+        "version_label": "master-2026-11-05"
+      },
+      "natural_overlay_exits": 3,
+      "provider_contract": "4dbb7bff67022de0b84eee64167494bd889e8c7b70cc52a97738c24032ef96ee",
+      "run_id": "42139209945-1-development-8v100v0-avx512-2026-11-06-bc428196533e",
+      "science": {
+        "elapsed": "00:14:34",
+        "energy_tolerance_ha": 1e-06,
+        "exit_code": "0:0",
+        "force_tolerance_ha_bohr": 1e-05,
+        "job": "2234937",
+        "max_rank_energy_delta_ha": 1.6825651982799172e-11,
+        "max_rank_force_delta_ha_bohr": 1.5000001241105565e-11,
+        "node": "8v100v0n[01-02]",
+        "rank_comparisons": 7,
+        "samples": 14,
+        "seconds": 874,
+        "state": "COMPLETED"
+      },
+      "shared_prefixes_absent": 10
+    },
+    {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-05-gbc428196533e-r3561960f4431/DSPRHBM/42139209945-1-development-dsprhbm-2026-11-06-bc428196533e.sif",
+      "artifact_bytes": 157495296,
+      "artifact_sha256": "bd9f1e4b6546964ea99ccd1794c5b39ab88e32d83d250055a21f4a48f0e91cc3",
+      "build": {
+        "elapsed": "00:19:38",
+        "exit_code": "0:0",
+        "job": "2233817",
+        "node": "d9470n01",
+        "seconds": 1178,
+        "state": "COMPLETED"
+      },
+      "embedded_source_receipts": {
+        "libxc-source-archives.sha256": "4b1ce2e83caa972f4722db36554a95809395e322042b905188381860863adeb6  /workspace/source/tools/toolchain/scripts/stage3/install_libxc.sh\n3915fac94416e4c415534223ea492ad2663f928acf27e98662c861b094a6c306  /input/updates/libxc-7.1.2.tar.bz2\n",
+        "tblite-source-archives.sha256": "f6d6013e48b86ca2ad94c2016300d8c78074620982b8a9b0aa7d9eb033037d88  /workspace/source/tools/toolchain/scripts/stage8/install_tblite.sh\ncf79f5f0b0bb604ec8aef5236448ffb6d54f14a01f290d3f0dc78add730ce484  /workspace/source/tools/toolchain/scripts/stage8/install_dftd4.sh\n2d00fd612b3fcbb69365de53577080457ceae221cd151be52e7a9977b4832ad3  /input/updates/tblite-0.8.0.tar.xz\n8ad73a1e22a9251e48896abfcb75e02fbc23c4a19a6c8a8a7b104398567a453f  /workspace/tblite-build/mstore-openmp.cmake\n"
+      },
+      "identity": {
+        "build_id": "master-2026-11-05-gbc428196533e-r3561960f4431",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-11-05-gbc428196533e-r3561960f4431/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "3561960f4431188f0debe4ba95facb3571dd0a078a0cc846e44ea0cb7df030c8",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "bc428196533ec1afec9844324d6ed8d98daaa661",
+        "source_version": "master-2026-11-05",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "development",
+        "version_label": "master-2026-11-05"
+      },
+      "natural_overlay_exits": 3,
+      "provider_contract": "e004322d368005651112ceb0580ecf40d925de55e66145d0297ace9d153a49ff",
+      "run_id": "42139209945-1-development-dsprhbm-2026-11-06-bc428196533e",
+      "science": {
+        "elapsed": "00:24:52",
+        "energy_tolerance_ha": 1e-06,
+        "exit_code": "0:0",
+        "force_tolerance_ha_bohr": 1e-05,
+        "job": "2234193",
+        "max_rank_energy_delta_ha": 2.9558577807620168e-12,
+        "max_rank_force_delta_ha_bohr": 1.2000001686773842e-11,
+        "node": "d9470n[01-02]",
+        "rank_comparisons": 7,
+        "samples": 14,
+        "seconds": 1492,
+        "state": "COMPLETED"
+      },
+      "shared_prefixes_absent": 9
+    },
+    {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-r3561960f4431/16V100/42139209945-1-release-16v100-avx2-2026-11-06-67b5da876dd6.sif",
+      "artifact_bytes": 132857856,
+      "artifact_sha256": "e65c9be2869ce909067393f6bf5262ea1dea286f7b2ee65418fbc38edb7af681",
+      "build": {
+        "elapsed": "00:16:40",
+        "exit_code": "0:0",
+        "job": "2232887",
+        "node": "16v100n01",
+        "seconds": 1000,
+        "state": "COMPLETED"
+      },
+      "embedded_source_receipts": {
+        "libxc-source-archives.sha256": "13aa799f9e62c14146994caf5e51a967f7cef6c8514359046066fdcb45cdc068  /workspace/source/tools/toolchain/scripts/stage3/install_libxc.sh\n",
+        "tblite-source-archives.sha256": "b36e31c9c83d679ee45e7b09573575c739291f4ba3e2ecaf579ea939d0396a03  /workspace/source/tools/toolchain/scripts/stage8/install_tblite.sh\n372281aedb89234168d00eb691addb303197a9462a9c55d145c835f2cf5e8b42  /input/updates/tblite-0.6.0.tar.xz\n6a20b4622821018954a204a33dcb2128ddfaec04a37f3b4a625a71058ba2a40b  /workspace/source/tools/toolchain/scripts/stage8/simple-dftd3-1.4.0-gradient-fixes.patch\n5335cb7d02a8c3141f28967ef61418f425fb1e638d51fe75618b700321d9087a  /workspace/source/tools/toolchain/scripts/stage8/dftd4-4.2.0-gradient-fixes.patch\n8ad73a1e22a9251e48896abfcb75e02fbc23c4a19a6c8a8a7b104398567a453f  /workspace/tblite-build/mstore-openmp.cmake\n"
+      },
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r3561960f4431",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r3561960f4431/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "3561960f4431188f0debe4ba95facb3571dd0a078a0cc846e44ea0cb7df030c8",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "natural_overlay_exits": 3,
+      "provider_contract": "25a931f9cb1aef35e700d8d9e7c6e9c4209756dc045c2546492312c785cc52cf",
+      "run_id": "42139209945-1-release-16v100-avx2-2026-11-06-67b5da876dd6",
+      "science": {
+        "elapsed": "00:14:36",
+        "energy_tolerance_ha": 1e-06,
+        "exit_code": "0:0",
+        "force_tolerance_ha_bohr": 1e-05,
+        "job": "2233206",
+        "max_rank_energy_delta_ha": 7.048583938740194e-12,
+        "max_rank_force_delta_ha_bohr": 1.3999999076697023e-11,
+        "node": "16v100n[53-54]",
+        "rank_comparisons": 7,
+        "samples": 14,
+        "seconds": 876,
+        "state": "COMPLETED"
+      },
+      "shared_prefixes_absent": 10
+    },
+    {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-r3561960f4431/4V100/42139209945-1-release-4v100-avx512-2026-11-06-67b5da876dd6.sif",
+      "artifact_bytes": 134131712,
+      "artifact_sha256": "3c010050a6952d80803d8e9c71f226411f9be0707feb1fe35fcb42f70e3f31f9",
+      "build": {
+        "elapsed": "00:23:51",
+        "exit_code": "0:0",
+        "job": "2232890",
+        "node": "4v100n24",
+        "seconds": 1431,
+        "state": "COMPLETED"
+      },
+      "embedded_source_receipts": {
+        "libxc-source-archives.sha256": "13aa799f9e62c14146994caf5e51a967f7cef6c8514359046066fdcb45cdc068  /workspace/source/tools/toolchain/scripts/stage3/install_libxc.sh\n",
+        "tblite-source-archives.sha256": "b36e31c9c83d679ee45e7b09573575c739291f4ba3e2ecaf579ea939d0396a03  /workspace/source/tools/toolchain/scripts/stage8/install_tblite.sh\n372281aedb89234168d00eb691addb303197a9462a9c55d145c835f2cf5e8b42  /input/updates/tblite-0.6.0.tar.xz\n6a20b4622821018954a204a33dcb2128ddfaec04a37f3b4a625a71058ba2a40b  /workspace/source/tools/toolchain/scripts/stage8/simple-dftd3-1.4.0-gradient-fixes.patch\n5335cb7d02a8c3141f28967ef61418f425fb1e638d51fe75618b700321d9087a  /workspace/source/tools/toolchain/scripts/stage8/dftd4-4.2.0-gradient-fixes.patch\n8ad73a1e22a9251e48896abfcb75e02fbc23c4a19a6c8a8a7b104398567a453f  /workspace/tblite-build/mstore-openmp.cmake\n"
+      },
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r3561960f4431",
+        "cpu_arch": "znver4",
+        "cuda_arch": "70",
+        "dependency_isa": "avx512",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r3561960f4431/4V100",
+        "partition": "4V100",
+        "recipe_sha256": "3561960f4431188f0debe4ba95facb3571dd0a078a0cc846e44ea0cb7df030c8",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "4v100-avx512",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "natural_overlay_exits": 3,
+      "provider_contract": "74a2d6082d7fc952ebc889831d64169179b6f2d4540dfa5981c7078f670312db",
+      "run_id": "42139209945-1-release-4v100-avx512-2026-11-06-67b5da876dd6",
+      "science": {
+        "elapsed": "00:11:58",
+        "energy_tolerance_ha": 1e-06,
+        "exit_code": "0:0",
+        "force_tolerance_ha_bohr": 1e-05,
+        "job": "2233407",
+        "max_rank_energy_delta_ha": 1.1141310096718371e-11,
+        "max_rank_force_delta_ha_bohr": 1.3000000381735433e-11,
+        "node": "4v100n[20,36]",
+        "rank_comparisons": 7,
+        "samples": 14,
+        "seconds": 718,
+        "state": "COMPLETED"
+      },
+      "shared_prefixes_absent": 10
+    },
+    {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-r3561960f4431/8V100V0/42139209945-1-release-8v100v0-avx512-2026-11-06-67b5da876dd6.sif",
+      "artifact_bytes": 133214208,
+      "artifact_sha256": "822f4a5bd0b3f37511387fcf598e22a3b400eb6d0ce6213fd8452941d93e6517",
+      "build": {
+        "elapsed": "00:23:42",
+        "exit_code": "0:0",
+        "job": "2232885",
+        "node": "8v100v0n03",
+        "seconds": 1422,
+        "state": "COMPLETED"
+      },
+      "embedded_source_receipts": {
+        "libxc-source-archives.sha256": "13aa799f9e62c14146994caf5e51a967f7cef6c8514359046066fdcb45cdc068  /workspace/source/tools/toolchain/scripts/stage3/install_libxc.sh\n",
+        "tblite-source-archives.sha256": "b36e31c9c83d679ee45e7b09573575c739291f4ba3e2ecaf579ea939d0396a03  /workspace/source/tools/toolchain/scripts/stage8/install_tblite.sh\n372281aedb89234168d00eb691addb303197a9462a9c55d145c835f2cf5e8b42  /input/updates/tblite-0.6.0.tar.xz\n6a20b4622821018954a204a33dcb2128ddfaec04a37f3b4a625a71058ba2a40b  /workspace/source/tools/toolchain/scripts/stage8/simple-dftd3-1.4.0-gradient-fixes.patch\n5335cb7d02a8c3141f28967ef61418f425fb1e638d51fe75618b700321d9087a  /workspace/source/tools/toolchain/scripts/stage8/dftd4-4.2.0-gradient-fixes.patch\n8ad73a1e22a9251e48896abfcb75e02fbc23c4a19a6c8a8a7b104398567a453f  /workspace/tblite-build/mstore-openmp.cmake\n"
+      },
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r3561960f4431",
+        "cpu_arch": "skylake-avx512",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r3561960f4431/8V100V0",
+        "partition": "8V100V0",
+        "recipe_sha256": "3561960f4431188f0debe4ba95facb3571dd0a078a0cc846e44ea0cb7df030c8",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "8v100v0-avx512",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "natural_overlay_exits": 3,
+      "provider_contract": "4dbb7bff67022de0b84eee64167494bd889e8c7b70cc52a97738c24032ef96ee",
+      "run_id": "42139209945-1-release-8v100v0-avx512-2026-11-06-67b5da876dd6",
+      "science": {
+        "elapsed": "00:15:54",
+        "energy_tolerance_ha": 1e-06,
+        "exit_code": "0:0",
+        "force_tolerance_ha_bohr": 1e-05,
+        "job": "2233406",
+        "max_rank_energy_delta_ha": 3.092281986027956e-11,
+        "max_rank_force_delta_ha_bohr": 1.499999950638209e-11,
+        "node": "8v100v0n[02,05]",
+        "rank_comparisons": 7,
+        "samples": 14,
+        "seconds": 954,
+        "state": "COMPLETED"
+      },
+      "shared_prefixes_absent": 10
+    },
+    {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-r3561960f4431/DSPRHBM/42139209945-1-release-dsprhbm-2026-11-06-67b5da876dd6.sif",
+      "artifact_bytes": 131117056,
+      "artifact_sha256": "1aa1e0e4e935847e82f8681b89da294a69611c776943b33c40d15fbc3939eca2",
+      "build": {
+        "elapsed": "00:13:31",
+        "exit_code": "0:0",
+        "job": "2232891",
+        "node": "d9470n01",
+        "seconds": 811,
+        "state": "COMPLETED"
+      },
+      "embedded_source_receipts": {
+        "libxc-source-archives.sha256": "13aa799f9e62c14146994caf5e51a967f7cef6c8514359046066fdcb45cdc068  /workspace/source/tools/toolchain/scripts/stage3/install_libxc.sh\n",
+        "tblite-source-archives.sha256": "b36e31c9c83d679ee45e7b09573575c739291f4ba3e2ecaf579ea939d0396a03  /workspace/source/tools/toolchain/scripts/stage8/install_tblite.sh\n372281aedb89234168d00eb691addb303197a9462a9c55d145c835f2cf5e8b42  /input/updates/tblite-0.6.0.tar.xz\n6a20b4622821018954a204a33dcb2128ddfaec04a37f3b4a625a71058ba2a40b  /workspace/source/tools/toolchain/scripts/stage8/simple-dftd3-1.4.0-gradient-fixes.patch\n5335cb7d02a8c3141f28967ef61418f425fb1e638d51fe75618b700321d9087a  /workspace/source/tools/toolchain/scripts/stage8/dftd4-4.2.0-gradient-fixes.patch\n8ad73a1e22a9251e48896abfcb75e02fbc23c4a19a6c8a8a7b104398567a453f  /workspace/tblite-build/mstore-openmp.cmake\n"
+      },
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-r3561960f4431",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-r3561960f4431/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "3561960f4431188f0debe4ba95facb3571dd0a078a0cc846e44ea0cb7df030c8",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "natural_overlay_exits": 3,
+      "provider_contract": "e004322d368005651112ceb0580ecf40d925de55e66145d0297ace9d153a49ff",
+      "run_id": "42139209945-1-release-dsprhbm-2026-11-06-67b5da876dd6",
+      "science": {
+        "elapsed": "00:23:51",
+        "energy_tolerance_ha": 1e-06,
+        "exit_code": "0:0",
+        "force_tolerance_ha_bohr": 1e-05,
+        "job": "2233133",
+        "max_rank_energy_delta_ha": 1.2732925824820995e-11,
+        "max_rank_force_delta_ha_bohr": 1.3000000381735433e-11,
+        "node": "d9470n[01-02]",
+        "rank_comparisons": 7,
+        "samples": 14,
+        "seconds": 1431,
+        "state": "COMPLETED"
+      },
+      "shared_prefixes_absent": 9
+    }
+  ],
+  "evidence": {
+    "archive": "evidence.tar.gz",
+    "archive_bytes": 20246149,
+    "archive_sha256": "c474f2ef097c6e5b2ab4050fc6762e8e6aec91d2bb45e84091173b2741e990a4",
+    "full_summary": "accepted.json inside evidence.tar.gz",
+    "full_summary_sha256": "b46d2e5c4833d53bacbe1556fda787199fa566b9ab87d91d478d5febd23d7b2b",
+    "raw_files": 2735
+  },
+  "gpu_cpu_comparisons": 84,
+  "max_gpu_cpu_energy_delta_ha": 3.728928277269006e-11,
+  "max_gpu_cpu_force_delta_ha_bohr": 2.100000034976901e-11,
+  "observed_at": "2026-11-06T03:11:01.150254+00:00",
+  "physical_provider_acceptance": true,
+  "rank_comparisons": 56,
+  "recipe_sha256": "3561960f4431188f0debe4ba95facb3571dd0a078a0cc846e44ea0cb7df030c8",
+  "scheduling_adjustments": [
+    {
+      "after": "JobId=2233406 JobName=cp2k-science-42139209945-1-release-8v100v0-avx512-2026-11-06-67b5da876dd6-science UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A Priority=10002 Nice=0 Account=proj-sai-hpc-software QOS=rush-1o2gpu WCKey=* JobState=PENDING Reason=Resources Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=01:00:00 TimeMin=00:30:00 SubmitTime=2026-11-06T09:17:26 EligibleTime=2026-11-06T09:17:26 AccrueTime=2026-11-06T09:17:26 StartTime=2026-11-06T12:47:39 EndTime=2026-11-06T13:47:39 Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-11-06T09:24:44 Scheduler=Main Partition=8V100V0 AllocNode:Sid=login-01:1104290 ReqNodeList=(null) ExcNodeList=(null) NodeList= SchedNodeList=8v100v0n[02-03] NumNodes=2-2 NumCPUs=2 NumTasks=2 CPUs/Task=1 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=2,mem=92G,node=2,billing=360,gres/gpu=2 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=1:0:*:* CoreSpec=* MinCPUsNode=1 MinMemoryTRES=46G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null) Command=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/42139209945-1-release-8v100v0-avx512-2026-11-06-67b5da876dd6-science/job.sbatch SubmitLine=sbatch --hold --parsable /org/org-open-sai/proj-sai-hpc-software/runtime-tests/42139209945-1-release-8v100v0-avx512-2026-11-06-67b5da876dd6-science/job.sbatch WorkDir=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/42139209945-1-release-8v100v0-avx512-2026-11-06-67b5da876dd6-science StdErr= StdIn=/dev/null StdOut=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/42139209945-1-release-8v100v0-avx512-2026-11-06-67b5da876dd6-science/results/slurm-2233406.log CpusPerTres=gpu:6 MemPerTres=gpu:47104 TresPerNode=gres/gpu:1\n",
+      "before": "JobId=2233406 JobName=cp2k-science-42139209945-1-release-8v100v0-avx512-2026-11-06-67b5da876dd6-science UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A Priority=10002 Nice=0 Account=proj-sai-hpc-software QOS=rush-1o2gpu WCKey=* JobState=PENDING Reason=Resources Dependency=(null) Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0 RunTime=00:00:00 TimeLimit=01:00:00 TimeMin=N/A SubmitTime=2026-11-06T09:17:26 EligibleTime=2026-11-06T09:17:26 AccrueTime=2026-11-06T09:17:26 StartTime=2026-11-06T12:47:39 EndTime=2026-11-06T13:47:39 Deadline=N/A SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-11-06T09:24:43 Scheduler=Main Partition=8V100V0 AllocNode:Sid=login-01:1104290 ReqNodeList=(null) ExcNodeList=(null) NodeList= SchedNodeList=8v100v0n[02-03] NumNodes=2-2 NumCPUs=2 NumTasks=2 CPUs/Task=1 ReqB:S:C:T=0:0:*:* ReqTRES=cpu=2,mem=92G,node=2,billing=360,gres/gpu=2 AllocTRES=(null) Socks/Node=* NtasksPerN:B:S:C=1:0:*:* CoreSpec=* MinCPUsNode=1 MinMemoryTRES=46G MinTmpDiskNode=0 Features=(null) DelayBoot=00:00:00 OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null) Command=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/42139209945-1-release-8v100v0-avx512-2026-11-06-67b5da876dd6-science/job.sbatch SubmitLine=sbatch --hold --parsable /org/org-open-sai/proj-sai-hpc-software/runtime-tests/42139209945-1-release-8v100v0-avx512-2026-11-06-67b5da876dd6-science/job.sbatch WorkDir=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/42139209945-1-release-8v100v0-avx512-2026-11-06-67b5da876dd6-science StdErr= StdIn=/dev/null StdOut=/org/org-open-sai/proj-sai-hpc-software/runtime-tests/42139209945-1-release-8v100v0-avx512-2026-11-06-67b5da876dd6-science/results/slurm-2233406.log CpusPerTres=gpu:6 MemPerTres=gpu:47104 TresPerNode=gres/gpu:1\n",
+      "command": [
+        "scontrol",
+        "update",
+        "JobId=2233406",
+        "TimeMin=00:30:00"
+      ],
+      "job": "2233406",
+      "observed_at": "2026-11-06T01:24:44.396736+00:00",
+      "reason": "Previous identical 8V100V0 single/multinode science job 2218672 completed in 14m31s; permit a 30-minute backfill window without changing inputs or ranks.",
+      "returncode": 0,
+      "stderr": "",
+      "stdout": ""
+    }
+  ],
+  "schema": 1,
+  "science_samples": 112,
+  "successful_jobs": 20,
+  "timing_scope": "No matched performance benchmark",
+  "workflow": "42139209945"
+}

@@ -2,33 +2,38 @@
 
 ## CP2K reuse of prepared Spack libraries
 
-The administrator handoff contains 39 library variants in four dependency SIFs
-for DSPRHBM, 16V100, 4V100 and 8V100V0, compiled inside containers at their final
-versioned `/opt/devtools` paths. Both writable and read-only overlay export now
-use managed natural driver teardown. The CPU export recovery reused its
-completed libraries, preserved the failed run and passed fresh consumer checks.
-See the [handoff and installation layout](evidence/cp2k-spack-devtools-20261104/README.md).
+The administrator installed all 39 library variants for DSPRHBM, 16V100, 4V100
+and 8V100V0 at their final versioned `/opt/devtools` paths. Full-file verification
+passed. The registry selects these providers after checking versions, ABI,
+native CPU flags and complete inventories. Both release and daily builds skip
+the Spack allocation and omit shared packages from their application SIFs.
+DBCSR, TBLITE, LibXC and other inputs outside this first migration retain their
+existing build/selection paths.
 
-CP2K v2026.2 subsequently compiled and installed against independent copies of
-all four dependency SIFs, preserving the originals. All four partitions passed
-seven fixtures at one and two MPI ranks: 56 calculations, 28 rank comparisons
-and 42 GPU-versus-CPU comparisons, with unchanged energy/force tolerances.
-Receipts prove shared-Spack reuse; DBCSR, TBLITE and other dependencies outside
-this first migration still build through the native recipe.
+[Workflow 42139209945](https://github.com/AI4SAI/sai-hpc-software/actions/runs/42139209945)
+completed on November 6. CP2K v2026.2 (`67b5da876dd6`) and master
+(`bc428196533e`) each built and passed scientific acceptance on all four
+partitions against physical providers. The eight builds took 13–39 minutes
+including packaging and build checks, with no Spack recompilation. All 112
+calculations, 56 single/two-node rank comparisons and 84 GPU/CPU comparisons
+passed the original tolerances. Maximum cross-partition energy and force
+differences were `3.73e-11 Ha` and `2.10e-11 Ha/Bohr`. These are correctness
+results, not a controlled performance benchmark.
 
-4V100 required a guarded source repair: synchronize MPI ranks before blocking
-NCCL bootstrap so that the preceding ScaLAPACK operation can finish. Actual
-rebuild 2201497 passed the full checks without diagnostic interposition. The
-other three accepted partitions use the earlier application recipe; the new
-source repair has not been rebuilt/tested on all four. See the
-[application evidence](evidence/cp2k-spack-devtools-20261104/application-probe/README.md).
+Both tracks and every partition passed using the same recipe, which includes
+the guarded MPI barrier before NCCL bootstrap. Master uses the pinned TBLITE 0.8.0 /
+DFT-D4 4.3.1 bundle; release retains TBLITE 0.6.0 and its reviewed gradient fixes.
+All 24 overlay receipts record clean natural teardown. Four further beta
+checks passed, and `cp2k/master-beta-later` selects
+`master-beta-20261106-bc428196533e-r4d85319d4295-b71b0be44395a`.
+See the [physical-provider qualification and raw evidence](evidence/cp2k-spack-devtools-20261104/physical-provider-20261106/README.md)
+for all 20 successful allocations, exact SIF hashes and the publication receipt.
 
-This closes the copied-container compilation and single-node correctness test.
-The administrator has since installed all 39 variants into physical `/opt`;
-November 6 full-file verification passed. The PR registry now selects those
-providers for standard release/development qualification before merging and
-activating daily reuse. See the [physical-provider status](evidence/cp2k-spack-devtools-20261104/physical-provider-20261106/README.md).
-The copied-SIF probe does not qualify this new path or multi-node performance.
+The earlier [dependency handoff](evidence/cp2k-spack-devtools-20261104/README.md),
+[CPU export recovery](evidence/cp2k-spack-devtools-20261104/cpu-reexport/README.md)
+and [copied-SIF application probe](evidence/cp2k-spack-devtools-20261104/application-probe/README.md)
+remain preserved as historical evidence. Physical-provider acceptance above
+completes the standard build and multi-node correctness path.
 
 ## November 5 daily acceptance recovery
 
