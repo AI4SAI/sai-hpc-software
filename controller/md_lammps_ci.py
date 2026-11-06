@@ -262,7 +262,7 @@ def main():
         if not relay.data.get('preparation'):
             ssh(['mkdir', '-p', snapshot])
             files = [p for p in CONTROL.glob('md_*.*') if p.suffix in ('.py', '.sh', '.json')]
-            files += [CONTROL / name for name in ('remote_controller.py', 'source_cache.py', 'source_transport.py', 'resolve_source.py',
+            files += [CONTROL / name for name in ('remote_controller.py', 'source_cache.py', 'source_transport.py', 'relay_checkpoint.py', 'resolve_source.py',
                       'create_rootfs.sh', 'release_contract.py', 'native_module.py', 'export_native.py',
                       'module_publication.py', 'delivery_layout.py', 'cp2k_image_driver.py', 'managed_overlay.py', 'cp2k_overlay_sync.py',
                       'lammps_acceptance.py', 'lammps_rank.sh', 'lammps_verify.sbatch')]
