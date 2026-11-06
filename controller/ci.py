@@ -334,7 +334,7 @@ def main():
                    "abacus_dependency_lock.json", "abacus_cusolvermp_case.json", "abacus_features.py", "abacus_benchmark.py",
                    "native_module.py", "export_native.py"]
                   if software == "abacus" else
-                  ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_libxc.sh", "cp2k_libxs.sh", "cp2k_elpa.sh", "cp2k_elpa_runtime.py", "cp2k_feature_contract.py", "cp2k_site_elpa.json", "cp2k_elpa_abi.f90",
+                  ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_auxiliary_cache.py", "cp2k_libxc.sh", "cp2k_libxs.sh", "cp2k_elpa.sh", "cp2k_elpa_runtime.py", "cp2k_feature_contract.py", "cp2k_site_elpa.json", "cp2k_elpa_abi.f90",
                    "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_cmake_prerequisites.cmake", "cp2k_benchmark.py", "cp2k_acceptance.py", "cp2k_source_fixes.py",
                    "cp2k_spack.py", "cp2k_spack_store.py", "cp2k_spack_environment.py", "cp2k_spack_native.py",
                    "cp2k_site_spack.py", "cp2k_site_spack.json", "cp2k_devtools.py", "devtools_install.py",
