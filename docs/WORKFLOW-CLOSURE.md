@@ -1,4 +1,4 @@
-# Workflow closure — 2026-11-05
+# Workflow closure — 2026-11-06
 
 ## CP2K reuse of prepared Spack libraries
 
@@ -24,9 +24,11 @@ source repair has not been rebuilt/tested on all four. See the
 [application evidence](evidence/cp2k-spack-devtools-20261104/application-probe/README.md).
 
 This closes the copied-container compilation and single-node correctness test.
-Administrator installation verification and shared-provider activation remain
-pending; the production registry is empty. The test does not publish new
-standalone CP2K SIFs or qualify multi-node execution/performance.
+The administrator has since installed all 39 variants into physical `/opt`;
+November 6 full-file verification passed. The PR registry now selects those
+providers for standard release/development qualification before merging and
+activating daily reuse. See the [physical-provider status](evidence/cp2k-spack-devtools-20261104/physical-provider-20261106/README.md).
+The copied-SIF probe does not qualify this new path or multi-node performance.
 
 ## November 5 daily acceptance recovery
 

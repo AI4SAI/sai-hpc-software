@@ -1,0 +1,41 @@
+{
+  "application_qualification": "pending",
+  "command": [
+    "bash",
+    "/home/stardust/sai-hpc-software/deployment/cp2k-spack-devtools-20261104/install.sh",
+    "--verify"
+  ],
+  "host": "SAI-stardust",
+  "observed_at": "2026-11-06T00:43:07.417921+00:00",
+  "partitions": {
+    "16V100": {
+      "contract_sha256": "25a931f9cb1aef35e700d8d9e7c6e9c4209756dc045c2546492312c785cc52cf",
+      "inventory_entries": 1518,
+      "native_cpu": "zen3",
+      "package_variants": 10
+    },
+    "4V100": {
+      "contract_sha256": "74a2d6082d7fc952ebc889831d64169179b6f2d4540dfa5981c7078f670312db",
+      "inventory_entries": 1518,
+      "native_cpu": "zen5",
+      "package_variants": 10
+    },
+    "8V100V0": {
+      "contract_sha256": "4dbb7bff67022de0b84eee64167494bd889e8c7b70cc52a97738c24032ef96ee",
+      "inventory_entries": 1518,
+      "native_cpu": "skylake_avx512",
+      "package_variants": 10
+    },
+    "DSPRHBM": {
+      "contract_sha256": "e004322d368005651112ceb0580ecf40d925de55e66145d0297ace9d153a49ff",
+      "inventory_entries": 1494,
+      "native_cpu": "sapphirerapids",
+      "package_variants": 9
+    }
+  },
+  "physical_files_verified": true,
+  "registry_sha256": "a96ec8fd65b1222f07fdd308eb9618502c2158543f4cdff0de512e2469381f74",
+  "returncode": 0,
+  "schema": 1,
+  "verification_log_sha256": "2845754bbd1fc582e292bb4d706230c05db02bf1c78782c6d4bd803475424899"
+}

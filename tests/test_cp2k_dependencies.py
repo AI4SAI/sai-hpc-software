@@ -18,7 +18,7 @@ import cp2k_spack
 class CP2KDependencyVersionTests(unittest.TestCase):
     def test_unknown_or_missing_toolchain_version_stops_before_cmake(self):
         cases = {
-            "unsupported": 'tblite_ver="0.8.0"\n',
+            "unsupported": 'tblite_ver="0.9.0"\n',
             "missing-version": "# No dependency version was selected.\n",
             "missing-toolchain": None,
         }
@@ -64,12 +64,14 @@ class CP2KDependencyArchiveTests(unittest.TestCase):
         self.contents = {
             "libwignernj-0.8.0.tar.gz": b"verified wignernj fixture",
             "tblite-0.6.0.tar.xz": b"verified tblite release fixture",
+            "tblite-0.8.0.tar.xz": b"verified tblite development fixture",
             "elpa-2026.02.002.tar.gz": b"verified ELPA toolchain fixture",
             "libxc-7.1.2.tar.bz2": b"verified LibXC toolchain fixture",
             "libxs-930a2c4.tar.gz": b"verified LibXS toolchain fixture",
         }
         for constant, name in (("WIGNERNJ_SHA256", "libwignernj-0.8.0.tar.gz"),
                                ("TBLITE_RELEASE_SHA256", "tblite-0.6.0.tar.xz"),
+                               ("TBLITE_DEVELOPMENT_SHA256", "tblite-0.8.0.tar.xz"),
                                ("ELPA_SHA256", "elpa-2026.02.002.tar.gz"),
                                ("LIBXC_SHA256", "libxc-7.1.2.tar.bz2"),
                                ("LIBXS_SHA256", "libxs-930a2c4.tar.gz")):
@@ -87,7 +89,7 @@ class CP2KDependencyArchiveTests(unittest.TestCase):
         expected = [self.cache / name for name in self.contents]
         with patch("urllib.request.urlopen", side_effect=self.download) as download:
             self.assertEqual(cp2k_spack.cache_source_updates(self.cache), expected)
-            self.assertEqual(download.call_count, 5)
+            self.assertEqual(download.call_count, 6)
             self.assertEqual(download.call_args.args[0], cp2k_spack.LIBXS_URL)
             for archive in expected:
                 self.assertEqual(archive.read_bytes(), self.contents[archive.name])
@@ -121,6 +123,46 @@ class CP2KDependencyArchiveTests(unittest.TestCase):
                 else:
                     self.assertEqual(tblite.read_bytes(), previous)
                 self.assertEqual(wignernj.read_bytes(), self.contents[wignernj.name])
+
+
+class CP2KDevelopmentBundleTests(unittest.TestCase):
+    def test_changed_pins_or_damaged_bundle_stop_before_cmake(self):
+        parent = ROOT / '.test-work'
+        parent.mkdir(exist_ok=True)
+        for case in ('tblite-checksum', 'dftd4-version', 'dftd4-checksum', 'damaged-archive'):
+            with self.subTest(case=case), tempfile.TemporaryDirectory(dir=parent) as temporary:
+                root = Path(temporary)
+                source = root / 'source'
+                stage = source / 'tools/toolchain/scripts/stage8'
+                stage.mkdir(parents=True)
+                tblite_sha = '0' * 64 if case == 'tblite-checksum' else cp2k_spack.TBLITE_DEVELOPMENT_SHA256
+                dftd4_ver = '4.4.0' if case == 'dftd4-version' else '4.3.1'
+                dftd4_sha = ('0' * 64 if case == 'dftd4-checksum' else
+                            '32c0b498a7b07b1552e727333d9c83ab627d1bdf4ff46b7b8b31af9159fb2928')
+                (stage / 'install_tblite.sh').write_text(
+                    f'tblite_ver="0.8.0"\ntblite_sha256="{tblite_sha}"\n')
+                (stage / 'install_dftd4.sh').write_text(
+                    f'dftd4_ver="{dftd4_ver}"\ndftd4_sha256="{dftd4_sha}"\n')
+                updates = root / 'updates'
+                updates.mkdir()
+                (updates / cp2k_spack.TBLITE_DEVELOPMENT_ARCHIVE).write_bytes(b'damaged archive')
+                binaries = root / 'bin'
+                binaries.mkdir()
+                cmake = binaries / 'cmake'
+                cmake.write_text('#!/bin/sh\nprintf called > "$CMAKE_SENTINEL"\nexit 91\n')
+                cmake.chmod(0o755)
+                marker = root / 'cmake-called'
+                env = dict(os.environ, PATH=str(binaries) + os.pathsep + os.environ['PATH'],
+                           CMAKE_SENTINEL=str(marker))
+                result = subprocess.run(
+                    ['bash', str(ROOT / 'controller/cp2k_dependencies.sh'),
+                     str(root / 'cache'), str(root / 'work'), str(root / 'prefix'),
+                     str(source), str(updates)], env=env, capture_output=True, text=True, timeout=10)
+                self.assertNotEqual(result.returncode, 0, result.stdout + result.stderr)
+                self.assertFalse(marker.exists())
+                self.assertFalse((root / 'work/tblite-source').exists())
+                if case != 'damaged-archive':
+                    self.assertIn('unsupported CP2K', result.stderr)
 
 
 class CP2KLibxsSelectionTests(unittest.TestCase):

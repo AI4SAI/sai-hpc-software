@@ -75,10 +75,12 @@ scientific checks on all four partitions: 56 calculations, 28 rank-count
 comparisons and 42 GPU-versus-CPU comparisons. The final 4V100 rebuild repairs
 the ScaLAPACK/NCCL progress stall; the other three accepted results use the
 preceding application recipe. These tests preserved the original dependency
-SIFs and build environments. The shared-provider registry is still empty;
-full physical installation verification remains required before enabling reuse
-in daily builds. These application probes do not publish standalone CP2K SIFs
-or qualify multi-node execution/performance.
+SIFs and build environments. The administrator subsequently installed all
+39 variants, and full physical verification passed on November 6. The
+[physical-provider qualification](physical-provider-20261106/README.md) records
+the new registry and standard-build acceptance status. These earlier
+application probes do not publish standalone CP2K SIFs or qualify multi-node
+execution/performance.
 
 The [CPU I/O investigation](cpu-io-diagnosis/README.md) records the later
 Libint completion and a two-node read comparison. It reproduced long Lustre

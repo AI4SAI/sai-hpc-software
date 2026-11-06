@@ -421,7 +421,7 @@ def main():
             import cp2k_spack
             archives = cp2k_spack.cache_source_updates(temporary / 'cp2k-updates')
             pins = {getattr(cp2k_spack, item + '_ARCHIVE'): getattr(cp2k_spack, item + '_SHA256')
-                    for item in ('WIGNERNJ', 'TBLITE_RELEASE', 'ELPA', 'LIBXC', 'LIBXS')}
+                    for item in ('WIGNERNJ', 'TBLITE_RELEASE', 'TBLITE_DEVELOPMENT', 'ELPA', 'LIBXC', 'LIBXS')}
             stage_archives(python, upload, root, f'{task}/input/cp2k-updates',
                            [(archive, pins[archive.name]) for archive in archives])
     def emit_run_id():

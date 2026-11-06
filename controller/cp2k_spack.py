@@ -36,6 +36,8 @@ WIGNERNJ_ARCHIVE = 'libwignernj-0.8.0.tar.gz'
 WIGNERNJ_SHA256 = '7220cea92652040d6456aba92ff151124d9c69ce8695840490c18dd25a0da80c'
 TBLITE_RELEASE_ARCHIVE = 'tblite-0.6.0.tar.xz'
 TBLITE_RELEASE_SHA256 = '372281aedb89234168d00eb691addb303197a9462a9c55d145c835f2cf5e8b42'
+TBLITE_DEVELOPMENT_ARCHIVE = 'tblite-0.8.0.tar.xz'
+TBLITE_DEVELOPMENT_SHA256 = '2d00fd612b3fcbb69365de53577080457ceae221cd151be52e7a9977b4832ad3'
 ELPA_ARCHIVE = 'elpa-2026.02.002.tar.gz'
 ELPA_SHA256 = '02e3c59fec53cd8eb66a4cc15fa4fbf190cf9654227223fb8ad55713e9427932'
 LIBXC_ARCHIVE = 'libxc-7.1.2.tar.bz2'
@@ -53,6 +55,7 @@ def cache_source_updates(destination):
     archives = []
     for name, digest in ((WIGNERNJ_ARCHIVE, WIGNERNJ_SHA256),
                          (TBLITE_RELEASE_ARCHIVE, TBLITE_RELEASE_SHA256),
+                         (TBLITE_DEVELOPMENT_ARCHIVE, TBLITE_DEVELOPMENT_SHA256),
                          (ELPA_ARCHIVE, ELPA_SHA256),
                          (LIBXC_ARCHIVE, LIBXC_SHA256),
                          (LIBXS_ARCHIVE, LIBXS_SHA256)):

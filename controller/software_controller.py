@@ -384,6 +384,11 @@ def render_job(args):
             # though the build container deliberately uses --cleanenv.
             command[2:2] = ['--env', 'SLURM_JOB_PARTITION=' + target['partition']]
         if args.software in ('cp2k', 'abacus', 'qe') and not final:
+            if args.software == 'cp2k':
+                # The managed outer namespace already supplies root mapping.
+                # libfakeroot's inode emulation corrupted repeated library
+                # inventory checks in the accepted shared-provider probe.
+                command.insert(2, '--ignore-fakeroot-command')
             command[2:2] = ['--bind', str(r / 'results') + ':/results:rw']
             from cp2k_image_driver import wrap_command
             command = wrap_command(ROOT, r, CONTROL, command)

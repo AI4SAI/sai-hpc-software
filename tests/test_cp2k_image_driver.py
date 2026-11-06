@@ -132,9 +132,12 @@ class ImageDriverTests(unittest.TestCase):
             self.assertTrue(argv[1].endswith('/cp2k_image_driver.py'))
             self.assertEqual(argv[4], 'exec')
             self.assertIn('--containall', argv)
+            if '/control/cp2k_container_entry.sh' in argv:
+                self.assertIn('--ignore-fakeroot-command', argv)
         final = next(line for line in script.splitlines() if 'cp2k_container_entry.sh verify' in line)
         self.assertTrue(final.startswith('apptainer exec '))
         self.assertNotIn('--overlay', final)
+        self.assertNotIn('--ignore-fakeroot-command', final)
         self.assertIn('sai-cp2k-build-16v100-avx2-' + software.recipe_fingerprint('cp2k')[:12], script)
 
     def test_abacus_checks_each_writable_phase_before_consuming_overlay(self):

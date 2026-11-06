@@ -13,7 +13,7 @@ toolchain="$cp2k_source/tools/toolchain/scripts/stage8/install_tblite.sh"
 # development use different Fortran APIs and must not share a hard-coded pin.
 tblite_version=$(sed -nE 's/^[[:space:]]*tblite_ver="([0-9]+\.[0-9]+\.[0-9]+)"[[:space:]]*$/\1/p' "$toolchain")
 case "$tblite_version" in
-  0.6.0|0.7.0) ;;
+  0.6.0|0.7.0|0.8.0) ;;
   *) echo "unsupported or missing CP2K TBLITE version: $tblite_version" >&2; exit 1 ;;
 esac
 mkdir -p "$work" "$prefix"
@@ -25,7 +25,7 @@ printf 'CP2K_TBLITE_VERSION %s\n' "$tblite_version"
 build_source() {
   local name=$1 source=$2
   local extra=()
-  if [[ "$tblite_version" == 0.6.0 && "$name" == mstore ]]; then
+  if [[ "$name" == mstore ]]; then
     # The bundled mctc-lib export references OpenMP but fails to discover its
     # imported target. Define it after mstore's project() enables Fortran,
     # without modifying either upstream source or disabling OpenMP.
@@ -58,24 +58,44 @@ build_dependency() {
   build_source "$name" "$work/$name-source"
 }
 
-if [[ "$tblite_version" == 0.6.0 ]]; then
+if [[ "$tblite_version" == 0.6.0 || "$tblite_version" == 0.8.0 ]]; then
   # CP2K's complete release archive includes the matching subproject sources;
   # its gradient fixes do not apply to the standalone D3/D4 GitHub tag archives.
-  archive="$updates/tblite-0.6.0.tar.xz"
-  checksum=372281aedb89234168d00eb691addb303197a9462a9c55d145c835f2cf5e8b42
+  archive="$updates/tblite-$tblite_version.tar.xz"
+  if [[ "$tblite_version" == 0.6.0 ]]; then
+    checksum=372281aedb89234168d00eb691addb303197a9462a9c55d145c835f2cf5e8b42
+  else
+    # CP2K master uses the new work-partition API and DFT-D4 reference code.
+    # Its complete TBLITE archive includes DFT-D4 4.3.1 and all required
+    # subprojects; no additional download is needed on the compute node.
+    checksum=2d00fd612b3fcbb69365de53577080457ceae221cd151be52e7a9977b4832ad3
+    declared=$(sed -nE 's/^[[:space:]]*tblite_sha256="([0-9a-f]{64})"[[:space:]]*$/\1/p' "$toolchain")
+    [[ "$declared" == "$checksum" ]] || {
+      echo 'unsupported CP2K TBLITE 0.8.0 source checksum' >&2; exit 1;
+    }
+    dftd4_toolchain="$(dirname "$toolchain")/install_dftd4.sh"
+    dftd4_version=$(sed -nE 's/^[[:space:]]*dftd4_ver="([0-9.]+)"[[:space:]]*$/\1/p' "$dftd4_toolchain")
+    dftd4_checksum=$(sed -nE 's/^[[:space:]]*dftd4_sha256="([0-9a-f]{64})"[[:space:]]*$/\1/p' "$dftd4_toolchain")
+    [[ "$dftd4_version" == 4.3.1 && "$dftd4_checksum" == 32c0b498a7b07b1552e727333d9c83ab627d1bdf4ff46b7b8b31af9159fb2928 ]] || {
+      echo 'unsupported CP2K DFTD4 source for bundled TBLITE 0.8.0' >&2; exit 1;
+    }
+    sha256sum "$dftd4_toolchain" >> "$work/source-archives.sha256"
+  fi
   printf '%s  %s\n' "$checksum" "$archive" | sha256sum --check --status
   printf '%s  %s\n' "$checksum" "$archive" >> "$work/source-archives.sha256"
   mkdir -p "$work/tblite-source"
   tar --no-same-owner --strip-components=1 -xJf "$archive" -C "$work/tblite-source"
-  for entry in \
+  if [[ "$tblite_version" == 0.6.0 ]]; then
+    for entry in \
     's-dftd3 simple-dftd3-1.4.0-gradient-fixes.patch 6a20b4622821018954a204a33dcb2128ddfaec04a37f3b4a625a71058ba2a40b' \
     'dftd4 dftd4-4.2.0-gradient-fixes.patch 5335cb7d02a8c3141f28967ef61418f425fb1e638d51fe75618b700321d9087a'; do
-    read -r name patch_name checksum <<< "$entry"
-    patch_file="$(dirname "$toolchain")/$patch_name"
-    printf '%s  %s\n' "$checksum" "$patch_file" | sha256sum --check --status
-    printf '%s  %s\n' "$checksum" "$patch_file" >> "$work/source-archives.sha256"
-    patch --batch --forward -l -d "$work/tblite-source/subprojects/$name" -p1 < "$patch_file"
-  done
+      read -r name patch_name checksum <<< "$entry"
+      patch_file="$(dirname "$toolchain")/$patch_name"
+      printf '%s  %s\n' "$checksum" "$patch_file" | sha256sum --check --status
+      printf '%s  %s\n' "$checksum" "$patch_file" >> "$work/source-archives.sha256"
+      patch --batch --forward -l -d "$work/tblite-source/subprojects/$name" -p1 < "$patch_file"
+    done
+  fi
   # This bundled DFT-D4 version discovers mstore even with tests disabled.
   for name in toml-f mctc-lib multicharge s-dftd3 mstore dftd4; do
     build_source "$name" "$work/tblite-source/subprojects/$name"
