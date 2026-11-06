@@ -199,6 +199,50 @@ target_link_libraries(shared_consumer answer_shared)
         run(str(output/'static_consumer'))
         run(str(output/'shared_consumer'))
 
+    @unittest.skipUnless(shutil.which('gfortran') and shutil.which('ar'), 'native Fortran toolchain required')
+    def test_installed_fortran_source_debug_paths_do_not_bind_archive_to_old_prefix(self):
+        # DBCSR compiles LibXS's installed Fortran source with debug info. This
+        # reproduces the actual source-location dependency missed by C fixtures.
+        source = self.prefix / 'dependencies/libxs/include/answer.f90'
+        source.write_text('''module answer_module
+contains
+integer function answer()
+answer = 42
+end function
+end module
+''')
+        module_dir = self.workspace / 'fortran-modules'
+        module_dir.mkdir()
+        obj = self.workspace / 'answer.o'
+        archive = self.prefix / 'dependencies/dbcsr/lib/libanswer.a'
+        def compile_source(*flags):
+            subprocess.run(['gfortran', '-O3', '-g', *flags, '-J' + str(module_dir),
+                            '-c', str(source), '-o', str(obj)], check=True, capture_output=True)
+            subprocess.run(['ar', 'rcs', str(archive), str(obj)], check=True, capture_output=True)
+            shutil.copyfile(module_dir / 'answer_module.mod',
+                            self.prefix / 'dependencies/dbcsr/include/answer_module.mod')
+        compile_source()
+        self.assertIn(str(self.prefix).encode(), archive.read_bytes())
+        with self.assertRaisesRegex(ValueError, 'Nonrelocatable'):
+            self.pack()
+        shutil.rmtree(self.bundle)
+        compile_source('-ffile-prefix-map=' + str(self.prefix) + '=/sai-cp2k-install')
+        original = archive.read_bytes()
+        self.assertNotIn(str(self.prefix).encode(), original)
+        self.pack()
+        self.accept()
+        new, work = self.destination()
+        cache.unpack(self.bundle, new, work, self.spec)
+        restored = new / 'dependencies/dbcsr/lib/libanswer.a'
+        self.assertEqual(restored.read_bytes(), original)
+        shutil.rmtree(self.prefix)
+        consumer = self.workspace / 'main.f90'
+        consumer.write_text('program main\nuse answer_module\nif (answer() /= 42) stop 1\nend program\n')
+        executable = self.workspace / 'fortran-consumer'
+        subprocess.run(['gfortran', '-I' + str(new / 'dependencies/dbcsr/include'),
+                        str(consumer), str(restored), '-o', str(executable)], check=True, capture_output=True)
+        subprocess.run([str(executable)], check=True, capture_output=True)
+
 
 if __name__ == '__main__':
     unittest.main()

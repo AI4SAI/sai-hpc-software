@@ -201,6 +201,10 @@ if [[ "$auxiliary_cache" == miss ]]; then
   mkdir -p /workspace/dbcsr-source /workspace/fypp
   tar --no-same-owner --strip-components=1 -xzf "$dbcsr_archive" -C /workspace/dbcsr-source
   unzip -q "$fypp_archive" -d /workspace/fypp
+  # DBCSR compiles LibXS's installed Fortran source and enables debug info even
+  # in Release. Normalize those source paths at compile time so the installed
+  # archive can be reused unchanged under a different CP2K prefix.
+  dbcsr_source_paths="-ffile-prefix-map=$prefix=/sai-cp2k-install"
   dbcsr_args=(
     -S /workspace/dbcsr-source -B /workspace/dbcsr-build
     "${cmake_compilers[@]}"
@@ -209,8 +213,9 @@ if [[ "$auxiliary_cache" == miss ]]; then
     -DFYPP_EXECUTABLE=/workspace/fypp/fypp.py -DCMAKE_PREFIX_PATH="$cmake_prefix"
     -DUSE_MPI=ON -DUSE_MPI_F08=ON -DUSE_OPENMP=ON -DUSE_LIBXS=ON -DUSE_LIBXSMM=ON
     -Dlibxsmm_DIR="$prefix/share/sai/cmake" -DWITH_EXAMPLES=OFF
-    -DCMAKE_C_FLAGS="-O3 $cpu_flags" -DCMAKE_Fortran_FLAGS="-O3 $cpu_flags"
-    -DCMAKE_CXX_FLAGS="-O3 $cpu_flags -Wno-error=deprecated-declarations"
+    -DCMAKE_C_FLAGS="-O3 $cpu_flags $dbcsr_source_paths"
+    -DCMAKE_Fortran_FLAGS="-O3 $cpu_flags $dbcsr_source_paths"
+    -DCMAKE_CXX_FLAGS="-O3 $cpu_flags $dbcsr_source_paths -Wno-error=deprecated-declarations"
   )
   if [[ "$accel" == CUDA ]]; then
     dbcsr_args+=(-DUSE_ACCEL=cuda -DWITH_GPU=V100 -DCMAKE_CUDA_ARCHITECTURES="$gpu_arch")

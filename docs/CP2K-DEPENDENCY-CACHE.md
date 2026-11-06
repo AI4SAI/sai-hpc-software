@@ -36,6 +36,12 @@ prefix are rejected rather than patched. Runtime SIF packaging and `/opt/apps`
 export retain their existing layout and omit build-only headers/static archives.
 The cache itself is not needed to execute the final SIF.
 
+DBCSR compiles LibXS's installed Fortran sources with debug information even in
+Release mode. Its compilation uses GCC's `-ffile-prefix-map` to normalize these
+source paths before creating the archive. A native Fortran test verifies that
+the resulting archive and module still compile and run a consumer after the
+original installation prefix has been removed.
+
 `results/auxiliary-cache.json` and the embedded copy under `share/sai` record the
 contract, cache hit/miss, source build, archive hash, lookup/restore time, archive
 creation time, individual library build times and CP2K application build time.
