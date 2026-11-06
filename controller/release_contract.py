@@ -51,7 +51,7 @@ MAX_VERSION_LABEL = 64
 MAX_BUILD_ID = 106
 
 
-def claim_build(root, identities, run_id, *, retry=False):
+def claim_build(root, identities, run_id, *, retry=False, resume=False):
     """Reserve requested primary sources before transport/build, not acceptance.
 
     Development always builds. Releases are attempted once per ref/SHA/target,
@@ -79,6 +79,23 @@ def claim_build(root, identities, run_id, *, retry=False):
     with lock_path.open("a+") as lock:
         fcntl.flock(lock, fcntl.LOCK_EX)
         if receipt.exists() or receipt.is_symlink():
+            if resume:
+                if receipt.is_symlink() or receipt.resolve() != receipt:
+                    raise ValueError('redirected build attempt receipt')
+                recorded = json.loads(receipt.read_text())
+                skipped = recorded.get('skipped', [])
+                selected = recorded.get('identities', [])
+                expected = dict(schema=1, run_id=run_id, retry=retry, build=bool(selected),
+                                identities=selected, skipped=skipped,
+                                meaning='build attempt only; no artifact or acceptance claim')
+                recovered = selected + [row['identity'] for row in skipped]
+                if (recorded != expected or type(recorded.get('build')) is not bool or type(recorded.get('retry')) is not bool
+                        or sorted(map(_canonical, recovered)) != sorted(map(_canonical, identities))
+                        or any(row != dict(identity=validate_identity(row['identity']),
+                                           previous_run=safe_name(row['previous_run'])) for row in skipped)
+                        or ((retry or any(i['track'] == 'development' for i in identities)) and skipped)):
+                    raise ValueError('resumed build attempt differs from the frozen request')
+                return recorded
             raise ValueError("run already claimed; retry with a new run id")
         prior = {}
         fields = ("software", "track", "source_ref", "source_sha", "target")
@@ -321,5 +338,6 @@ if __name__ == "__main__":
     parser.add_argument("run_id")
     parser.add_argument("identities", help="JSON list of requested primary identities")
     parser.add_argument("--retry", action="store_true", help="explicitly retry the selected release versions")
+    parser.add_argument("--resume", action="store_true", help="reattach only to an identical frozen claim")
     args = parser.parse_args()
-    print(json.dumps(claim_build(args.root, json.loads(args.identities), args.run_id, retry=args.retry)))
+    print(json.dumps(claim_build(args.root, json.loads(args.identities), args.run_id, retry=args.retry, resume=args.resume)))

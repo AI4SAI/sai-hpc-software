@@ -212,7 +212,7 @@ class RuntimeTests(unittest.TestCase):
             (directory / 'request.json').write_text('{}')
             saved = dict(job='123', request_sha256=digest(directory / 'request.json'), script_sha256=digest(directory / 'job.sbatch'))
             daily.save(directory / 'submission.json', saved)
-            with patch.object(daily.subprocess, 'check_output', return_value='PENDING|JobHeldUser\n') as query, \
+            with patch.object(daily.subprocess, 'check_output', return_value='123|PENDING|JobHeldUser\n') as query, \
                     patch.object(daily.subprocess, 'run') as call:
                 self.assertEqual(daily.submit(directory, 'cp2k', '16V100', directory, directory), saved)
                 call.assert_called_once_with(['scontrol', 'release', '123'], check=True)
