@@ -6,16 +6,21 @@ StartLimitBurst=2
 
 [Service]
 WorkingDirectory=%h/ci/runner
-ExecCondition=/usr/bin/python3 %h/ci/deployment/check_capacity.py --runner-mib 160 --reserve-mib 128
+ExecCondition=/usr/bin/python3 %h/ci/deployment/check_capacity.py --runner-mib 128 --reserve-mib 64
 ExecStart=/usr/bin/python3 %h/ci/deployment/sandbox.py %h/ci %h/ci/runner/run.sh
 Environment=HOME=%h/ci/work/home
 Environment=PATH=%h/ci/bin:/usr/local/bin:/usr/bin:/bin
 Environment=TMPDIR=%h/ci/tmp
 Environment=SAI_RELAY_ROOT=%h/ci/state
 Environment=SAI_SOURCE_CACHE=%h/ci/cache/repositories
-Environment=DOTNET_GCHeapHardLimit=0x3000000
+Environment=DOTNET_GCHeapHardLimit=0x1800000
 Environment=DOTNET_gcServer=0
-Environment=NODE_OPTIONS=--max-old-space-size=48
+Environment=DOTNET_GCConserveMemory=9
+Environment=DOTNET_TieredPGO=0
+Environment=DOTNET_EnableDiagnostics=0
+Environment=MALLOC_ARENA_MAX=2
+Environment=GOMEMLIMIT=16MiB
+Environment=NODE_OPTIONS=--max-old-space-size=32
 Environment=PYTHONDONTWRITEBYTECODE=1
 UnsetEnvironment=SSH_AUTH_SOCK SSH_AGENT_PID DBUS_SESSION_BUS_ADDRESS LD_PRELOAD PYTHONPATH
 UMask=0077
@@ -26,7 +31,7 @@ SystemCallErrorNumber=EPERM
 RestrictSUIDSGID=yes
 LockPersonality=yes
 MemoryHigh=128M
-MemoryMax=160M
+MemoryMax=128M
 MemorySwapMax=0
 OOMScoreAdjust=1000
 OOMPolicy=kill

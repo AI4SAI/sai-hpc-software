@@ -40,6 +40,6 @@ install -m 644 "$source_dir/sai-hpc-runner.service" /home/sai/.config/systemd/us
 systemctl --user disable --now sai-hpc-runner.service
 systemctl --user daemon-reload
 # Replace earlier runtime overrides as well as the persistent unit settings.
-systemctl --user set-property --runtime sai-hpc-runner.service MemoryHigh=128M MemoryMax=160M MemorySwapMax=0
+systemctl --user set-property --runtime sai-hpc-runner.service MemoryHigh=128M MemoryMax=128M MemorySwapMax=0
 echo 'Installed; runner is stopped and disabled. Verify host capacity before starting it.'
 echo 'Manual start: systemctl --user start sai-hpc-runner.service'

@@ -2,7 +2,8 @@
 
 The `sai` account on DO2 has one repository-scoped GitHub Actions runner,
 `do2-sai-hpc`, with label `sai-hpc-relay`. It is currently stopped and disabled:
-the existing 512 MiB VPS does not have enough headroom for a second worker.
+the optimized runner passes a 128 MiB smoke test, but the full preparation path
+has not passed on the existing shared 512 MiB VPS.
 The daily workflow remains hosted until this deployment passes live validation.
 The separate `cp2k` account and its tester runner are not part of this deployment.
 Compilation and scientific acceptance still run in Slurm under
@@ -39,6 +40,9 @@ No SIF, build tree, training output or raw scientific evidence is copied to the
 VPS. Per-task upload scratch is removed after preparation; frozen plans, logs
 and metadata remain. The original run identity survives Actions reruns, a new
 recovery workflow, a changed checkout, midnight and service restarts.
+Checkout uses Git directly and summaries go to the Actions job log. The daily
+relay does not run Node checkout/upload actions or create downloadable Actions
+artifacts; complete controller logs remain in the durable VPS state directory.
 
 The single worker prepares/submits each task, records its handle, and yields
 while Slurm runs. All selected partitions can therefore execute concurrently.
@@ -92,16 +96,22 @@ system paths are read-only, writable paths stay within this account's CI tree,
 TCP connections are limited to HTTPS and the SAI SSH port, and no listeners are
 allowed. The runner cannot read personal SSH files or the CP2K account's files.
 The runner service, including all worker, Python, Git and SSH descendants, has
-`MemoryHigh=128M`, `MemoryMax=160M` and `MemorySwapMax=0`. .NET uses workstation
-GC with a 48 MiB heap limit per process; Node has a 48 MiB old-space limit.
+`MemoryHigh=128M`, `MemoryMax=128M` and `MemorySwapMax=0`. .NET uses workstation
+GC with a 24 MiB heap limit per process and aggressive memory conservation;
+tiered PGO and diagnostics are disabled. The public checkout uses no Node
+actions. A 32 MiB Node old-space limit remains as a fallback, and Go has a
+16 MiB soft memory limit. Native mappings and allocator overhead still count
+against the whole cgroup limit; these heap settings are not RSS guarantees.
 `OOMScoreAdjust=1000` makes this service a preferred OOM victim, and an OOM
 stops its entire process group. Failure restarts wait five minutes and are
 limited to two starts per half hour. Source preparation is serial; Slurm
-computation is parallel. The 160 MiB envelope is a protective limit, not yet
-evidence that a full build relay can run within it.
+computation is parallel. Git uses one packing thread and 4 MiB delta caches,
+source validation discards object-list output, and source splitting streams
+1 MiB blocks. The relay uploads one source part at a time. A first full-history
+fetch remains materially heavier than an incremental update or cache hit.
 
-The one-shot `ExecCondition` requires `MemAvailable >= 288 MiB` (160 MiB runner
-budget plus 128 MiB host headroom) and memory PSI `some avg10 <= 5%`. Unreadable
+The one-shot `ExecCondition` requires `MemAvailable >= 192 MiB` (128 MiB runner
+budget plus 64 MiB host headroom) and memory PSI `some avg10 <= 5%`. Unreadable
 metrics also prevent startup. Insufficient capacity skips startup without
 launching a listener or entering a restart loop. This check is not a memory
 reservation and cannot predict another service's future peak; keep the runner
@@ -112,5 +122,11 @@ On 2026-11-06 the new service reached 192.2 MiB and the existing CP2K service
 reported an OOM kill. After stopping the new runner, available memory recovered
 to 197–210 MiB and memory PSI `some avg10` fell from 88.94% to 0.01%. The smoke
 test passed, but the three-partition GPUMD relay test was stopped before live
-validation completed. Checkpoints are retained; this is not a successful
-migration or an accepted GPUMD build.
+validation completed. A later optimized 128 MiB smoke passed in 18 seconds,
+but real GPUMD source preparation lowered host available memory to 58.5 MiB
+and the test observer stopped it. A direct SSH/Python control reduced upload
+memory to about 43 MiB but then hit a 96 MiB cgroup OOM during the first Git
+fetch. Neither experiment accepted or published a build. Keep the existing
+hosted daily workflow until the full source/prepare/resume path and peak
+overlap with the CP2K service are qualified. See
+`docs/evidence/self-hosted-relay-20261106/README.md` for exact runs and limits.
