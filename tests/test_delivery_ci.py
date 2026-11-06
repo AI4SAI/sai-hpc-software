@@ -132,7 +132,12 @@ class DailyWorkflowTests(unittest.TestCase):
         self.assertIn("'recovery' || 'delivery'", data['concurrency']['group'])
         self.assertFalse(data['concurrency']['cancel-in-progress'])
         self.assertIn("&& 'resume'", relay['env']['RELAY_MODE'])
-        self.assertFalse(relay['steps'][0]['with']['persist-credentials'])
+        checkout = relay['steps'][0]['run']
+        self.assertIn('https://github.com/AI4SAI/sai-hpc-software.git', checkout)
+        self.assertIn('--unset-all http.https://github.com/.extraheader', checkout)
+        self.assertIn('test "$(git rev-parse HEAD)" = "$GITHUB_SHA"', checkout)
+        self.assertNotIn('GH_TOKEN', checkout)
+        self.assertTrue(all('uses' not in step for step in relay['steps']))
         self.assertEqual(relay['steps'][-1]['if'], 'always()')
         self.assertIn('ssh/key', relay['steps'][-1]['run'])
         for filename in ('build.yml', 'cp2k.yml', 'deepmd.yml', 'lammps.yml', 'gpumd.yml', 'qe.yml'):
