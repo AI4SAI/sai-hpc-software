@@ -1,5 +1,30 @@
 # Workflow closure — 2026-11-06
 
+## CP2K auxiliary dependency cache
+
+DBCSR, TBLITE and its subprojects, LibXS, private LibXC and required wignernj
+now have a compressed project cache in addition to the physical Spack providers.
+The cache preserves headers, Fortran modules, libraries and package metadata,
+and becomes reusable only after CP2K passes scientific publication. Matching
+dependency/toolchain/native-target contracts survive CP2K source-only changes;
+the final runtime SIF does not require this build cache.
+
+Cold/warm qualification completed for master `bc428196533e` on 16V100 and DSPRHBM,
+and v2026.2 `67b5da876dd6` on 16V100. All six builds and six scientific jobs passed,
+with 84 calculations, 42 single/two-node comparisons and 42 cold/warm comparisons.
+Every warm build restored into a different application prefix and skipped all
+cached dependency compilation. Restore plus verification took 8.8 s, 6.7 s and
+2.2 s respectively, replacing observed dependency builds of 653.6 s, 282.7 s and
+150.1 s. These are stage measurements, not a controlled performance benchmark.
+
+The [cache design](CP2K-DEPENDENCY-CACHE.md) and
+[qualification evidence](evidence/cp2k-auxiliary-cache-20261106/README.md)
+record cache/SIF identities, timings, raw calculations and clean overlay exits.
+The science monitor now consults durable accounting when a completed job has
+aged out of `squeue`, while retaining all scientific checks. No administrator
+installation or public beta rotation is part of this qualification. Other
+partitions create their own accepted cache on their next first build.
+
 ## CP2K reuse of prepared Spack libraries
 
 The administrator installed all 39 library variants for DSPRHBM, 16V100, 4V100
@@ -7,8 +32,8 @@ and 8V100V0 at their final versioned `/opt/devtools` paths. Full-file verificati
 passed. The registry selects these providers after checking versions, ABI,
 native CPU flags and complete inventories. Both release and daily builds skip
 the Spack allocation and omit shared packages from their application SIFs.
-DBCSR, TBLITE, LibXC and other inputs outside this first migration retain their
-existing build/selection paths.
+DBCSR, TBLITE and the other inputs outside this first migration use the
+auxiliary cache described above; release LibXC retains its site provider.
 
 [Workflow 42139209945](https://github.com/AI4SAI/sai-hpc-software/actions/runs/42139209945)
 completed on November 6. CP2K v2026.2 (`67b5da876dd6`) and master

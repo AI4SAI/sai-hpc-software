@@ -450,7 +450,13 @@ def monitor(args):
         raise ValueError('invalid science job id')
     deadline = time.monotonic() + args.timeout
     while time.monotonic() < deadline:
-        queue = subprocess.run(['squeue', '-h', '-j', job, '-o', '%T|%R'], check=True, text=True, capture_output=True)
+        queue = subprocess.run(['squeue', '-h', '-j', job, '-o', '%T|%R'], text=True, capture_output=True)
+        # Finished jobs eventually leave slurmctld while their durable sacct
+        # records remain. Only this specific queue error may fall through to
+        # accounting; it is never evidence that a calculation succeeded.
+        if queue.returncode and (queue.stdout.strip() or queue.stderr.strip() !=
+                                 'slurm_load_jobs error: Invalid job id specified'):
+            queue.check_returncode()
         if queue.stdout.strip():
             print(job + ': ' + queue.stdout.strip(), flush=True)
         else:

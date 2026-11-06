@@ -1,0 +1,1514 @@
+{
+  "accounting": "2250613|COMPLETED|0:0|00:28:25|1705|8|13640|16v100n05|proj-sai-hpc-software|16V100|billing=150,cpu=8,gres/gpu=1,mem=15G,node=1|2026-11-06T14:00:48|2026-11-06T14:29:13|01:30:00\n2250614|COMPLETED|0:0|00:17:38|1058|8|8464|d9470n03|proj-sai-hpc-software|DSPRHBM|billing=194,cpu=8,mem=28G,node=1|2026-11-06T14:00:45|2026-11-06T14:18:23|01:30:00\n2250615|COMPLETED|0:0|00:16:39|999|8|7992|16v100n04|proj-sai-hpc-software|16V100|billing=150,cpu=8,gres/gpu=1,mem=15G,node=1|2026-11-06T14:29:26|2026-11-06T14:46:05|01:30:00\n2251031|COMPLETED|0:0|00:43:14|2594|4|10376|d9470n[01-02]|proj-sai-hpc-software|DSPRHBM|billing=32,cpu=4,mem=4724M,node=2|2026-11-06T14:19:51|2026-11-06T15:03:05|01:00:00\n2251284|COMPLETED|0:0|00:13:34|814|16|13024|16v100n[09-10]|proj-sai-hpc-software|16V100|billing=300,cpu=16,gres/gpu=2,mem=30G,node=2|2026-11-06T14:29:26|2026-11-06T14:43:00|01:00:00\n2251872|COMPLETED|0:0|00:16:35|995|8|7960|16v100n05|proj-sai-hpc-software|16V100|billing=150,cpu=8,gres/gpu=1,mem=15G,node=1|2026-11-06T14:58:33|2026-11-06T15:15:08|01:30:00\n2251874|COMPLETED|0:0|00:11:21|681|16|10896|16v100n[65-66]|proj-sai-hpc-software|16V100|billing=300,cpu=16,gres/gpu=2,mem=30G,node=2|2026-11-06T14:58:33|2026-11-06T15:09:54|01:00:00\n2252118|COMPLETED|0:0|00:14:36|876|8|7008|d9470n05|proj-sai-hpc-software|DSPRHBM|billing=194,cpu=8,mem=28G,node=1|2026-11-06T15:07:08|2026-11-06T15:21:44|01:30:00\n2252210|COMPLETED|0:0|00:15:24|924|8|7392|16v100n01|proj-sai-hpc-software|16V100|billing=150,cpu=8,gres/gpu=1,mem=15G,node=1|2026-11-06T15:15:36|2026-11-06T15:31:00|01:30:00\n2252364|COMPLETED|0:0|00:12:07|727|16|11632|16v100n[65-66]|proj-sai-hpc-software|16V100|billing=300,cpu=16,gres/gpu=2,mem=30G,node=2|2026-11-06T15:18:07|2026-11-06T15:30:14|01:00:00\n2252471|COMPLETED|0:0|00:27:02|1622|4|6488|d9470n[01-02]|proj-sai-hpc-software|DSPRHBM|billing=32,cpu=4,mem=4724M,node=2|2026-11-06T15:22:30|2026-11-06T15:49:32|01:00:00\n2255560|COMPLETED|0:0|00:13:27|807|16|12912|16v100n[22,24]|proj-sai-hpc-software|16V100|billing=300,cpu=16,gres/gpu=2,mem=30G,node=2|2026-11-06T17:25:40|2026-11-06T17:39:07|01:00:00\n",
+  "calculation_count": 84,
+  "cold_warm_comparisons": {
+    "dev16": {
+      "ch2o-tblite/multi": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "ch2o-tblite/single": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water-dftd4/multi": {
+        "energy_delta_ha": 7.105427357601002e-14,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water-dftd4/single": {
+        "energy_delta_ha": 7.815970093361102e-14,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water-diag/multi": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water-diag/single": {
+        "energy_delta_ha": 1.4210854715202004e-14,
+        "max_force_delta_ha_bohr": 9.999999999746641e-13
+      },
+      "water-elpa/multi": {
+        "energy_delta_ha": 7.105427357601002e-15,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water-elpa/single": {
+        "energy_delta_ha": 7.105427357601002e-15,
+        "max_force_delta_ha_bohr": 9.999999999746641e-13
+      },
+      "water-gpw/multi": {
+        "energy_delta_ha": 1.0658141036401503e-13,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water-gpw/single": {
+        "energy_delta_ha": 1.2789769243681803e-13,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water64-elpa/multi": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 9.999986949615902e-13
+      },
+      "water64-elpa/single": {
+        "energy_delta_ha": 2.2737367544323206e-13,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water64-gpw/multi": {
+        "energy_delta_ha": 3.865352482534945e-12,
+        "max_force_delta_ha_bohr": 1.2000001686773842e-11
+      },
+      "water64-gpw/single": {
+        "energy_delta_ha": 1.000444171950221e-11,
+        "max_force_delta_ha_bohr": 1.09999995223653e-11
+      }
+    },
+    "devcpu": {
+      "ch2o-tblite/multi": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "ch2o-tblite/single": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water-dftd4/multi": {
+        "energy_delta_ha": 2.5579538487363607e-13,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water-dftd4/single": {
+        "energy_delta_ha": 3.055333763768431e-13,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water-diag/multi": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water-diag/single": {
+        "energy_delta_ha": 7.105427357601002e-15,
+        "max_force_delta_ha_bohr": 9.999999999746641e-13
+      },
+      "water-elpa/multi": {
+        "energy_delta_ha": 7.105427357601002e-15,
+        "max_force_delta_ha_bohr": 9.999999999746641e-13
+      },
+      "water-elpa/single": {
+        "energy_delta_ha": 1.4210854715202004e-14,
+        "max_force_delta_ha_bohr": 9.999999999746641e-13
+      },
+      "water-gpw/multi": {
+        "energy_delta_ha": 1.9895196601282805e-13,
+        "max_force_delta_ha_bohr": 9.999995623233282e-13
+      },
+      "water-gpw/single": {
+        "energy_delta_ha": 2.7711166694643907e-13,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water64-elpa/multi": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 9.999999960041972e-13
+      },
+      "water64-elpa/single": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water64-gpw/multi": {
+        "energy_delta_ha": 1.432454155292362e-11,
+        "max_force_delta_ha_bohr": 7.999999968033578e-12
+      },
+      "water64-gpw/single": {
+        "energy_delta_ha": 2.432898327242583e-11,
+        "max_force_delta_ha_bohr": 2.0000008593701324e-12
+      }
+    },
+    "release16": {
+      "ch2o-tblite/multi": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "ch2o-tblite/single": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water-dftd4/multi": {
+        "energy_delta_ha": 2.2737367544323206e-13,
+        "max_force_delta_ha_bohr": 1.0000004296850662e-12
+      },
+      "water-dftd4/single": {
+        "energy_delta_ha": 4.192202140984591e-13,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water-diag/multi": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water-diag/single": {
+        "energy_delta_ha": 7.105427357601002e-15,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water-elpa/multi": {
+        "energy_delta_ha": 1.4210854715202004e-14,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water-elpa/single": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water-gpw/multi": {
+        "energy_delta_ha": 3.055333763768431e-13,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water-gpw/single": {
+        "energy_delta_ha": 3.552713678800501e-14,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water64-elpa/multi": {
+        "energy_delta_ha": 0.0,
+        "max_force_delta_ha_bohr": 9.999999960041972e-13
+      },
+      "water64-elpa/single": {
+        "energy_delta_ha": 2.2737367544323206e-13,
+        "max_force_delta_ha_bohr": 0.0
+      },
+      "water64-gpw/multi": {
+        "energy_delta_ha": 1.0686562745831907e-11,
+        "max_force_delta_ha_bohr": 1.499999950638209e-11
+      },
+      "water64-gpw/single": {
+        "energy_delta_ha": 2.5011104298755527e-12,
+        "max_force_delta_ha_bohr": 9.000000397718644e-12
+      }
+    }
+  },
+  "comparison_count": 42,
+  "completed": true,
+  "config": {
+    "cases": [
+      {
+        "cold_version": "master",
+        "name": "dev16",
+        "ref": "master",
+        "sha": "bc428196533ec1afec9844324d6ed8d98daaa661",
+        "target": "16v100-avx2",
+        "track": "development",
+        "warm_version": "master-2026-11-05"
+      },
+      {
+        "cold_version": "master",
+        "name": "devcpu",
+        "ref": "master",
+        "sha": "bc428196533ec1afec9844324d6ed8d98daaa661",
+        "target": "dsprhbm",
+        "track": "development",
+        "warm_version": "master-2026-11-05"
+      },
+      {
+        "cold_version": "2026.2",
+        "name": "release16",
+        "ref": "v2026.2",
+        "sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "target": "16v100-avx2",
+        "track": "release",
+        "warm_version": "v2026.2"
+      }
+    ],
+    "commit": "f44b81d51d78c5c1b8aa58ec6bd6bd914f084537",
+    "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/f44b81d51d78c5c1b8aa58ec6bd6bd914f084537/cp2k-auxiliary-cache-20261106",
+    "operation": "/org/org-open-sai/proj-sai-hpc-software/operations/cp2k-auxiliary-cache-20261106-f44b81d51d78",
+    "previous_operations": [
+      "/org/org-open-sai/proj-sai-hpc-software/operations/cp2k-auxiliary-cache-20261106-749bf01350cf"
+    ],
+    "project": "/org/org-open-sai/proj-sai-hpc-software",
+    "schema": 1
+  },
+  "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/f44b81d51d78c5c1b8aa58ec6bd6bd914f084537/cp2k-auxiliary-cache-20261106",
+  "controller_commit": "f44b81d51d78c5c1b8aa58ec6bd6bd914f084537",
+  "energy_tolerance_ha": 1e-06,
+  "force_tolerance_ha_bohr": 1e-05,
+  "observed_at": "2026-11-06T09:42:21.169152+00:00",
+  "preliminary_builds": [
+    {
+      "accounting": "2240109|FAILED|1:0|00:25:01|1501|8|12008|16v100n11|proj-sai-hpc-software|16V100|billing=150,cpu=8,gres/gpu=1,mem=15G,node=1|2026-11-06T13:32:39|2026-11-06T13:57:40|01:30:00\n",
+      "run_id": "cp2k-aux-20261106-749bf01350cf-dev16-cold"
+    },
+    {
+      "accounting": "2240110|FAILED|1:0|00:16:39|999|8|7992|d9470n05|proj-sai-hpc-software|DSPRHBM|billing=194,cpu=8,mem=28G,node=1|2026-11-06T13:32:36|2026-11-06T13:49:15|01:30:00\n",
+      "run_id": "cp2k-aux-20261106-749bf01350cf-devcpu-cold"
+    },
+    {
+      "accounting": "2250347|CANCELLED by 1478400690|0:0|00:00:00|0|0|0|None assigned|proj-sai-hpc-software|16V100||None|2026-11-06T13:51:59|01:30:00\n",
+      "run_id": "cp2k-aux-20261106-749bf01350cf-release16-cold"
+    },
+    {
+      "accounting": "2240112|CANCELLED by 1478400690|0:0|00:00:00|0|0|0|None assigned|proj-sai-hpc-software|4V100||None|2026-11-06T13:45:44|01:30:00\n",
+      "run_id": "cp2k-aux-20261106-749bf01350cf-release4-cold"
+    }
+  ],
+  "rank_comparison_count": 42,
+  "recipe_sha256": "f8e67c4b173aa0f33a147b56f63f442267188143416cc9ccebb6061d68bc79b9",
+  "rows": [
+    {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-gbc428196533e-rf8e67c4b173a/16V100/cp2k-aux-20261106-f44b81d51d78-dev16-cold.sif",
+      "artifact_bytes": 313122816,
+      "artifact_sha256": "4714ce71b8169cb7f934a68f249b66fd0a198ff1cac2a8decf8bc10dc479ae0e",
+      "build_accounting": {
+        "Account": "proj-sai-hpc-software",
+        "AllocCPUS": "8",
+        "AllocTRES": "billing=150,cpu=8,gres/gpu=1,mem=15G,node=1",
+        "CPUTimeRAW": "13640",
+        "Elapsed": "00:28:25",
+        "ElapsedRaw": "1705",
+        "End": "2026-11-06T14:29:13",
+        "ExitCode": "0:0",
+        "JobIDRaw": "2250613",
+        "NodeList": "16v100n05",
+        "Partition": "16V100",
+        "Start": "2026-11-06T14:00:48",
+        "State": "COMPLETED",
+        "Timelimit": "01:30:00"
+      },
+      "build_job": "2250613",
+      "cache": {
+        "cache_archive_sha256": "179a392c5baf8127479babae161be9ef6a6ec84d1fd00ec6f00fddeb639deb14",
+        "candidate_manifest_sha256": "d29bbf6d617550b94129d52a3f18233eb13710cc32c9de23117ee5f75c5b4159",
+        "enabled": true,
+        "hit": false,
+        "key": "17be8ee0deb0865687dc85d90e46814858da3963233d5384c30105cb04c7d19f",
+        "pack_seconds": 29.650755477137864,
+        "prefix": "/opt/apps/cp2k/cp2k-development-master-gbc428196533e-rf8e67c4b173a/16V100",
+        "prepare_seconds": 0.3947683209553361,
+        "schema": 1,
+        "timings": {
+          "cp2k": 904.8354525566101,
+          "dbcsr": 81.79726672172546,
+          "libxc": 469.88584446907043,
+          "libxs": 17.646948099136353,
+          "tblite": 83.2511715888977,
+          "wignernj": 1.0071234703063965
+        }
+      },
+      "cache_bytes": 198057560,
+      "cache_components": [
+        "dbcsr",
+        "libxs",
+        "tblite",
+        "libxc",
+        "wignernj"
+      ],
+      "case": "dev16",
+      "identity": {
+        "build_id": "master-gbc428196533e-rf8e67c4b173a",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-gbc428196533e-rf8e67c4b173a/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "f8e67c4b173aa0f33a147b56f63f442267188143416cc9ccebb6061d68bc79b9",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "bc428196533ec1afec9844324d6ed8d98daaa661",
+        "source_version": "master",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "development",
+        "version_label": "master"
+      },
+      "overlays": [
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 2973777,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1793946475.3039172,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-aux-20261106-f44b81d51d78-dev16-cold/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1793944858.3408022,
+          "teardown_seconds": 0.558565602870658,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 3030474,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1793946515.042144,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-aux-20261106-f44b81d51d78-dev16-cold/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1793946475.6385953,
+          "teardown_seconds": 1.0776356258429587,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 3031411,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1793946547.22527,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-aux-20261106-f44b81d51d78-dev16-cold/work.ext3",
+          "payload_returncode": 0,
+          "readonly": true,
+          "schema": 1,
+          "started": 1793946515.289549,
+          "teardown_seconds": 0.025710124988108873,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        }
+      ],
+      "phase": "cold",
+      "rank_comparisons": {
+        "ch2o-tblite": {
+          "energy_delta_ha": 4.440892098500626e-15,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-dftd4": {
+          "energy_delta_ha": 5.471179065352771e-13,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-diag": {
+          "energy_delta_ha": 1.4210854715202004e-14,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-elpa": {
+          "energy_delta_ha": 7.105427357601002e-15,
+          "max_force_delta_ha_bohr": 9.999999999746641e-13
+        },
+        "water-gpw": {
+          "energy_delta_ha": 6.750155989720952e-13,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water64-elpa": {
+          "energy_delta_ha": 4.092726157978177e-12,
+          "max_force_delta_ha_bohr": 9.999986949615902e-13
+        },
+        "water64-gpw": {
+          "energy_delta_ha": 1.3642420526593924e-11,
+          "max_force_delta_ha_bohr": 1.3000000381735433e-11
+        }
+      },
+      "run_id": "cp2k-aux-20261106-f44b81d51d78-dev16-cold",
+      "science_accounting": {
+        "Account": "proj-sai-hpc-software",
+        "AllocCPUS": "16",
+        "AllocTRES": "billing=300,cpu=16,gres/gpu=2,mem=30G,node=2",
+        "CPUTimeRAW": "13024",
+        "Elapsed": "00:13:34",
+        "ElapsedRaw": "814",
+        "End": "2026-11-06T14:43:00",
+        "ExitCode": "0:0",
+        "JobIDRaw": "2251284",
+        "NodeList": "16v100n[09-10]",
+        "Partition": "16V100",
+        "Start": "2026-11-06T14:29:26",
+        "State": "COMPLETED",
+        "Timelimit": "01:00:00"
+      },
+      "science_evidence_sha256": "fef0624ccdb695c96b36106eea041a25ecd41fa68a2e553f84cc6b77d2eb192a",
+      "science_job": "2251284",
+      "solver_comparisons": {
+        "multi": {
+          "water-diag": {
+            "energy_delta_ha": 6.394884621840902e-14,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water-elpa": {
+            "energy_delta_ha": 7.105427357601002e-14,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 3.865352482534945e-12,
+            "max_force_delta_ha_bohr": 1.5399999990506341e-09
+          }
+        },
+        "single": {
+          "water-diag": {
+            "energy_delta_ha": 7.531752999057062e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water-elpa": {
+            "energy_delta_ha": 7.531752999057062e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 5.6843418860808015e-12,
+            "max_force_delta_ha_bohr": 1.5379999999259875e-09
+          }
+        }
+      }
+    },
+    {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-05-gbc428196533e-rf8e67c4b173a/16V100/cp2k-aux-20261106-f44b81d51d78-dev16-warm.sif",
+      "artifact_bytes": 313122816,
+      "artifact_sha256": "2e75678a06a0634a24f91d0fc3e8e1da6832cada14158125495eec8d993c952d",
+      "build_accounting": {
+        "Account": "proj-sai-hpc-software",
+        "AllocCPUS": "8",
+        "AllocTRES": "billing=150,cpu=8,gres/gpu=1,mem=15G,node=1",
+        "CPUTimeRAW": "7960",
+        "Elapsed": "00:16:35",
+        "ElapsedRaw": "995",
+        "End": "2026-11-06T15:15:08",
+        "ExitCode": "0:0",
+        "JobIDRaw": "2251872",
+        "NodeList": "16v100n05",
+        "Partition": "16V100",
+        "Start": "2026-11-06T14:58:33",
+        "State": "COMPLETED",
+        "Timelimit": "01:30:00"
+      },
+      "build_job": "2251872",
+      "cache": {
+        "cache_archive_sha256": "179a392c5baf8127479babae161be9ef6a6ec84d1fd00ec6f00fddeb639deb14",
+        "enabled": true,
+        "hit": true,
+        "key": "17be8ee0deb0865687dc85d90e46814858da3963233d5384c30105cb04c7d19f",
+        "origin": {
+          "prefix": "/opt/apps/cp2k/cp2k-development-master-gbc428196533e-rf8e67c4b173a/16V100",
+          "source_sha": "bc428196533ec1afec9844324d6ed8d98daaa661"
+        },
+        "prefix": "/opt/apps/cp2k/cp2k-development-master-2026-11-05-gbc428196533e-rf8e67c4b173a/16V100",
+        "prepare_seconds": 8.789087289012969,
+        "schema": 1,
+        "timings": {
+          "cp2k": 833.0851013660431
+        }
+      },
+      "cache_bytes": 198057560,
+      "cache_components": [
+        "dbcsr",
+        "libxs",
+        "tblite",
+        "libxc",
+        "wignernj"
+      ],
+      "case": "dev16",
+      "identity": {
+        "build_id": "master-2026-11-05-gbc428196533e-rf8e67c4b173a",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-11-05-gbc428196533e-rf8e67c4b173a/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "f8e67c4b173aa0f33a147b56f63f442267188143416cc9ccebb6061d68bc79b9",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "bc428196533ec1afec9844324d6ed8d98daaa661",
+        "source_version": "master-2026-11-05",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "development",
+        "version_label": "master-2026-11-05"
+      },
+      "overlays": [
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 3084828,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1793949303.163009,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-aux-20261106-f44b81d51d78-dev16-warm/work.ext3",
+          "payload_returncode": 0,
+          "readonly": true,
+          "schema": 1,
+          "started": 1793949271.1364148,
+          "teardown_seconds": 0.01817502500489354,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 3055116,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1793949223.0899515,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-aux-20261106-f44b81d51d78-dev16-warm/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1793948348.6938999,
+          "teardown_seconds": 1.7162139758002013,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 3083921,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1793949270.9056094,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-aux-20261106-f44b81d51d78-dev16-warm/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1793949223.3778977,
+          "teardown_seconds": 2.124062982853502,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        }
+      ],
+      "phase": "warm",
+      "rank_comparisons": {
+        "ch2o-tblite": {
+          "energy_delta_ha": 4.440892098500626e-15,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-dftd4": {
+          "energy_delta_ha": 6.963318810448982e-13,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-diag": {
+          "energy_delta_ha": 0.0,
+          "max_force_delta_ha_bohr": 9.999999999746641e-13
+        },
+        "water-elpa": {
+          "energy_delta_ha": 2.1316282072803006e-14,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-gpw": {
+          "energy_delta_ha": 4.405364961712621e-13,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water64-elpa": {
+          "energy_delta_ha": 3.865352482534945e-12,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water64-gpw": {
+          "energy_delta_ha": 7.503331289626658e-12,
+          "max_force_delta_ha_bohr": 1.499999950638209e-11
+        }
+      },
+      "run_id": "cp2k-aux-20261106-f44b81d51d78-dev16-warm",
+      "science_accounting": {
+        "Account": "proj-sai-hpc-software",
+        "AllocCPUS": "16",
+        "AllocTRES": "billing=300,cpu=16,gres/gpu=2,mem=30G,node=2",
+        "CPUTimeRAW": "11632",
+        "Elapsed": "00:12:07",
+        "ElapsedRaw": "727",
+        "End": "2026-11-06T15:30:14",
+        "ExitCode": "0:0",
+        "JobIDRaw": "2252364",
+        "NodeList": "16v100n[65-66]",
+        "Partition": "16V100",
+        "Start": "2026-11-06T15:18:07",
+        "State": "COMPLETED",
+        "Timelimit": "01:00:00"
+      },
+      "science_evidence_sha256": "b77c7a7a779df32f9728931801aa6a9ab667816b38b93cba527bce2d2e0e0ecd",
+      "science_job": "2252364",
+      "solver_comparisons": {
+        "multi": {
+          "water-diag": {
+            "energy_delta_ha": 1.7053025658242404e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water-elpa": {
+            "energy_delta_ha": 1.7053025658242404e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 7.73070496506989e-12,
+            "max_force_delta_ha_bohr": 1.5419999999100042e-09
+          }
+        },
+        "single": {
+          "water-diag": {
+            "energy_delta_ha": 6.110667527536862e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water-elpa": {
+            "energy_delta_ha": 6.323830348264892e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 4.092726157978177e-12,
+            "max_force_delta_ha_bohr": 1.5369999994963024e-09
+          }
+        }
+      }
+    },
+    {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-gbc428196533e-rf8e67c4b173a/DSPRHBM/cp2k-aux-20261106-f44b81d51d78-devcpu-cold.sif",
+      "artifact_bytes": 157499392,
+      "artifact_sha256": "08d3a9345c8d08235faf12e9a199e9e8635f0106a1d5191ab7a9ac7caa7a8d00",
+      "build_accounting": {
+        "Account": "proj-sai-hpc-software",
+        "AllocCPUS": "8",
+        "AllocTRES": "billing=194,cpu=8,mem=28G,node=1",
+        "CPUTimeRAW": "8464",
+        "Elapsed": "00:17:38",
+        "ElapsedRaw": "1058",
+        "End": "2026-11-06T14:18:23",
+        "ExitCode": "0:0",
+        "JobIDRaw": "2250614",
+        "NodeList": "d9470n03",
+        "Partition": "DSPRHBM",
+        "Start": "2026-11-06T14:00:45",
+        "State": "COMPLETED",
+        "Timelimit": "01:30:00"
+      },
+      "build_job": "2250614",
+      "cache": {
+        "cache_archive_sha256": "486d704ae13b894425a8e2400628e89fce0239ac8d2b0e8227148fecaadb638b",
+        "candidate_manifest_sha256": "89a7689145e96e7169c0cb9a8a05b6d9ecb3de35a7ae11b28c2376a9c35100ef",
+        "enabled": true,
+        "hit": false,
+        "key": "47f2e834dcaedbb64d804ce8a2c14fc6bb179dac7c2c58fa5794b070804526b8",
+        "pack_seconds": 6.223679180024192,
+        "prefix": "/opt/apps/cp2k/cp2k-development-master-gbc428196533e-rf8e67c4b173a/DSPRHBM",
+        "prepare_seconds": 0.27308508998248726,
+        "schema": 1,
+        "timings": {
+          "cp2k": 684.9478800296783,
+          "dbcsr": 76.73229193687439,
+          "libxc": 102.53701400756836,
+          "libxs": 16.921571731567383,
+          "tblite": 84.46970629692078,
+          "wignernj": 1.9964685440063477
+        }
+      },
+      "cache_bytes": 55409181,
+      "cache_components": [
+        "dbcsr",
+        "libxs",
+        "tblite",
+        "libxc",
+        "wignernj"
+      ],
+      "case": "devcpu",
+      "identity": {
+        "build_id": "master-gbc428196533e-rf8e67c4b173a",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-gbc428196533e-rf8e67c4b173a/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "f8e67c4b173aa0f33a147b56f63f442267188143416cc9ccebb6061d68bc79b9",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "bc428196533ec1afec9844324d6ed8d98daaa661",
+        "source_version": "master",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "development",
+        "version_label": "master"
+      },
+      "overlays": [
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 1380501,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1793945888.3725762,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-aux-20261106-f44b81d51d78-devcpu-cold/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1793945857.8543482,
+          "teardown_seconds": 0.4505573170026764,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 1380907,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1793945897.3615425,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-aux-20261106-f44b81d51d78-devcpu-cold/work.ext3",
+          "payload_returncode": 0,
+          "readonly": true,
+          "schema": 1,
+          "started": 1793945888.7700503,
+          "teardown_seconds": 0.012595000094734132,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 1350916,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1793945857.407959,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-aux-20261106-f44b81d51d78-devcpu-cold/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1793944855.632532,
+          "teardown_seconds": 0.9517245700117201,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        }
+      ],
+      "phase": "cold",
+      "rank_comparisons": {
+        "ch2o-tblite": {
+          "energy_delta_ha": 0.0,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-dftd4": {
+          "energy_delta_ha": 1.0018652574217413e-12,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-diag": {
+          "energy_delta_ha": 0.0,
+          "max_force_delta_ha_bohr": 9.999999999746641e-13
+        },
+        "water-elpa": {
+          "energy_delta_ha": 7.105427357601002e-15,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-gpw": {
+          "energy_delta_ha": 5.471179065352771e-13,
+          "max_force_delta_ha_bohr": 9.999995623233282e-13
+        },
+        "water64-elpa": {
+          "energy_delta_ha": 4.547473508864641e-13,
+          "max_force_delta_ha_bohr": 1.0000004296850662e-12
+        },
+        "water64-gpw": {
+          "energy_delta_ha": 1.77351466845721e-11,
+          "max_force_delta_ha_bohr": 1.3000000381735433e-11
+        }
+      },
+      "run_id": "cp2k-aux-20261106-f44b81d51d78-devcpu-cold",
+      "science_accounting": {
+        "Account": "proj-sai-hpc-software",
+        "AllocCPUS": "4",
+        "AllocTRES": "billing=32,cpu=4,mem=4724M,node=2",
+        "CPUTimeRAW": "10376",
+        "Elapsed": "00:43:14",
+        "ElapsedRaw": "2594",
+        "End": "2026-11-06T15:03:05",
+        "ExitCode": "0:0",
+        "JobIDRaw": "2251031",
+        "NodeList": "d9470n[01-02]",
+        "Partition": "DSPRHBM",
+        "Start": "2026-11-06T14:19:51",
+        "State": "COMPLETED",
+        "Timelimit": "01:00:00"
+      },
+      "science_evidence_sha256": "fbc49cb19a9d3b65a8143c2a6770f0521446b16e1c0bbbda0b70ad4b9f5bfc24",
+      "science_job": "2251031",
+      "solver_comparisons": {
+        "multi": {
+          "water-diag": {
+            "energy_delta_ha": 4.263256414560601e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water-elpa": {
+            "energy_delta_ha": 4.263256414560601e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 1.1368683772161603e-11,
+            "max_force_delta_ha_bohr": 1.543999999034651e-09
+          }
+        },
+        "single": {
+          "water-diag": {
+            "energy_delta_ha": 9.734435479913373e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water-elpa": {
+            "energy_delta_ha": 9.805489753489383e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 2.864908310584724e-11,
+            "max_force_delta_ha_bohr": 1.5419999999100042e-09
+          }
+        }
+      }
+    },
+    {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-05-gbc428196533e-rf8e67c4b173a/DSPRHBM/cp2k-aux-20261106-f44b81d51d78-devcpu-warm.sif",
+      "artifact_bytes": 157499392,
+      "artifact_sha256": "d684367dffda1c5fe2a5e8cb95ad12dea6e53ce411c96210723d10dd091e2719",
+      "build_accounting": {
+        "Account": "proj-sai-hpc-software",
+        "AllocCPUS": "8",
+        "AllocTRES": "billing=194,cpu=8,mem=28G,node=1",
+        "CPUTimeRAW": "7008",
+        "Elapsed": "00:14:36",
+        "ElapsedRaw": "876",
+        "End": "2026-11-06T15:21:44",
+        "ExitCode": "0:0",
+        "JobIDRaw": "2252118",
+        "NodeList": "d9470n05",
+        "Partition": "DSPRHBM",
+        "Start": "2026-11-06T15:07:08",
+        "State": "COMPLETED",
+        "Timelimit": "01:30:00"
+      },
+      "build_job": "2252118",
+      "cache": {
+        "cache_archive_sha256": "486d704ae13b894425a8e2400628e89fce0239ac8d2b0e8227148fecaadb638b",
+        "enabled": true,
+        "hit": true,
+        "key": "47f2e834dcaedbb64d804ce8a2c14fc6bb179dac7c2c58fa5794b070804526b8",
+        "origin": {
+          "prefix": "/opt/apps/cp2k/cp2k-development-master-gbc428196533e-rf8e67c4b173a/DSPRHBM",
+          "source_sha": "bc428196533ec1afec9844324d6ed8d98daaa661"
+        },
+        "prefix": "/opt/apps/cp2k/cp2k-development-master-2026-11-05-gbc428196533e-rf8e67c4b173a/DSPRHBM",
+        "prepare_seconds": 6.718873325269669,
+        "schema": 1,
+        "timings": {
+          "cp2k": 702.0229246616364
+        }
+      },
+      "cache_bytes": 55409181,
+      "cache_components": [
+        "dbcsr",
+        "libxs",
+        "tblite",
+        "libxc",
+        "wignernj"
+      ],
+      "case": "devcpu",
+      "identity": {
+        "build_id": "master-2026-11-05-gbc428196533e-rf8e67c4b173a",
+        "cpu_arch": "x86-64-v4",
+        "cuda_arch": "",
+        "dependency_isa": "avx512",
+        "gpus": 0,
+        "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-11-05-gbc428196533e-rf8e67c4b173a/DSPRHBM",
+        "partition": "DSPRHBM",
+        "recipe_sha256": "f8e67c4b173aa0f33a147b56f63f442267188143416cc9ccebb6061d68bc79b9",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "master",
+        "source_sha": "bc428196533ec1afec9844324d6ed8d98daaa661",
+        "source_version": "master-2026-11-05",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "dsprhbm",
+        "track": "development",
+        "version_label": "master-2026-11-05"
+      },
+      "overlays": [
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 3677376,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1793949623.824539,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-aux-20261106-f44b81d51d78-devcpu-warm/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1793948860.4160423,
+          "teardown_seconds": 1.2959954356774688,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 3713867,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1793949666.6408374,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-aux-20261106-f44b81d51d78-devcpu-warm/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1793949627.81336,
+          "teardown_seconds": 0.23772813891991973,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 3714924,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1793949696.9940195,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-aux-20261106-f44b81d51d78-devcpu-warm/work.ext3",
+          "payload_returncode": 0,
+          "readonly": true,
+          "schema": 1,
+          "started": 1793949667.0350761,
+          "teardown_seconds": 0.01356876129284501,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        }
+      ],
+      "phase": "warm",
+      "rank_comparisons": {
+        "ch2o-tblite": {
+          "energy_delta_ha": 0.0,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-dftd4": {
+          "energy_delta_ha": 4.405364961712621e-13,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-diag": {
+          "energy_delta_ha": 7.105427357601002e-15,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-elpa": {
+          "energy_delta_ha": 1.4210854715202004e-14,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-gpw": {
+          "energy_delta_ha": 6.252776074688882e-13,
+          "max_force_delta_ha_bohr": 9.999986949615902e-13
+        },
+        "water64-elpa": {
+          "energy_delta_ha": 4.547473508864641e-13,
+          "max_force_delta_ha_bohr": 1.0000004296850662e-12
+        },
+        "water64-gpw": {
+          "energy_delta_ha": 2.091837814077735e-11,
+          "max_force_delta_ha_bohr": 1.3999999076697023e-11
+        }
+      },
+      "run_id": "cp2k-aux-20261106-f44b81d51d78-devcpu-warm",
+      "science_accounting": {
+        "Account": "proj-sai-hpc-software",
+        "AllocCPUS": "4",
+        "AllocTRES": "billing=32,cpu=4,mem=4724M,node=2",
+        "CPUTimeRAW": "6488",
+        "Elapsed": "00:27:02",
+        "ElapsedRaw": "1622",
+        "End": "2026-11-06T15:49:32",
+        "ExitCode": "0:0",
+        "JobIDRaw": "2252471",
+        "NodeList": "d9470n[01-02]",
+        "Partition": "DSPRHBM",
+        "Start": "2026-11-06T15:22:30",
+        "State": "COMPLETED",
+        "Timelimit": "01:00:00"
+      },
+      "science_evidence_sha256": "ca010f9bff6bfa587cd5549e541f6bdbfd692bb3e774b4ad0b2c865f7b1cf98f",
+      "science_job": "2252471",
+      "solver_comparisons": {
+        "multi": {
+          "water-diag": {
+            "energy_delta_ha": 6.252776074688882e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water-elpa": {
+            "energy_delta_ha": 6.323830348264892e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 2.5693225325085223e-11,
+            "max_force_delta_ha_bohr": 1.543999999034651e-09
+          }
+        },
+        "single": {
+          "water-diag": {
+            "energy_delta_ha": 1.2434497875801753e-12,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water-elpa": {
+            "energy_delta_ha": 1.2434497875801753e-12,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 4.320099833421409e-12,
+            "max_force_delta_ha_bohr": 1.5419999999100042e-09
+          }
+        }
+      }
+    },
+    {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/release/2026.2-g67b5da876dd6-rf8e67c4b173a/16V100/cp2k-aux-20261106-f44b81d51d78-release16-cold.sif",
+      "artifact_bytes": 132841472,
+      "artifact_sha256": "33cd5f957164f56e5a3d5ff08d4a66d1ee52f2d146a686161a733e5291c119b4",
+      "build_accounting": {
+        "Account": "proj-sai-hpc-software",
+        "AllocCPUS": "8",
+        "AllocTRES": "billing=150,cpu=8,gres/gpu=1,mem=15G,node=1",
+        "CPUTimeRAW": "7992",
+        "Elapsed": "00:16:39",
+        "ElapsedRaw": "999",
+        "End": "2026-11-06T14:46:05",
+        "ExitCode": "0:0",
+        "JobIDRaw": "2250615",
+        "NodeList": "16v100n04",
+        "Partition": "16V100",
+        "Start": "2026-11-06T14:29:26",
+        "State": "COMPLETED",
+        "Timelimit": "01:30:00"
+      },
+      "build_job": "2250615",
+      "cache": {
+        "cache_archive_sha256": "e89d7c0de659b97aad307dd6a0b4948d09e34529bf260797b233c938292b1c50",
+        "candidate_manifest_sha256": "6e6d23ff41437fc08a32f00996f8fe22b46dabc4dbed2cd5adf377aca1294010",
+        "enabled": true,
+        "hit": false,
+        "key": "3e754614232e6206e0808fe0736316943c1612c5b0fdf8a6339fdcf80cd4e0cf",
+        "pack_seconds": 4.318329084198922,
+        "prefix": "/opt/apps/cp2k/cp2k-release-2026.2-g67b5da876dd6-rf8e67c4b173a/16V100",
+        "prepare_seconds": 0.3634333498775959,
+        "schema": 1,
+        "timings": {
+          "cp2k": 744.7361273765564,
+          "dbcsr": 75.66267776489258,
+          "libxc": 0.04743027687072754,
+          "libxs": 8.155233383178711,
+          "tblite": 66.26592111587524
+        }
+      },
+      "cache_bytes": 21383370,
+      "cache_components": [
+        "dbcsr",
+        "libxs",
+        "tblite"
+      ],
+      "case": "release16",
+      "identity": {
+        "build_id": "2026.2-g67b5da876dd6-rf8e67c4b173a",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-2026.2-g67b5da876dd6-rf8e67c4b173a/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "f8e67c4b173aa0f33a147b56f63f442267188143416cc9ccebb6061d68bc79b9",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "release",
+        "version_label": "2026.2"
+      },
+      "overlays": [
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 2568522,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1793947560.2751212,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-aux-20261106-f44b81d51d78-release16-cold/work.ext3",
+          "payload_returncode": 0,
+          "readonly": true,
+          "schema": 1,
+          "started": 1793947535.4994662,
+          "teardown_seconds": 0.011514885118231177,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 2567677,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1793947535.2403831,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-aux-20261106-f44b81d51d78-release16-cold/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1793947510.2162812,
+          "teardown_seconds": 0.30255619902163744,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 2527716,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1793947509.9405112,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-aux-20261106-f44b81d51d78-release16-cold/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1793946584.5501726,
+          "teardown_seconds": 1.695265183923766,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        }
+      ],
+      "phase": "cold",
+      "rank_comparisons": {
+        "ch2o-tblite": {
+          "energy_delta_ha": 8.881784197001252e-15,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-dftd4": {
+          "energy_delta_ha": 6.394884621840902e-14,
+          "max_force_delta_ha_bohr": 1.0000004296850662e-12
+        },
+        "water-diag": {
+          "energy_delta_ha": 7.105427357601002e-15,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-elpa": {
+          "energy_delta_ha": 7.105427357601002e-15,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-gpw": {
+          "energy_delta_ha": 6.039613253960852e-13,
+          "max_force_delta_ha_bohr": 1.0000004296850662e-12
+        },
+        "water64-elpa": {
+          "energy_delta_ha": 4.092726157978177e-12,
+          "max_force_delta_ha_bohr": 9.999999960041972e-13
+        },
+        "water64-gpw": {
+          "energy_delta_ha": 2.2737367544323206e-12,
+          "max_force_delta_ha_bohr": 1.5999999936067155e-11
+        }
+      },
+      "run_id": "cp2k-aux-20261106-f44b81d51d78-release16-cold",
+      "science_accounting": {
+        "Account": "proj-sai-hpc-software",
+        "AllocCPUS": "16",
+        "AllocTRES": "billing=300,cpu=16,gres/gpu=2,mem=30G,node=2",
+        "CPUTimeRAW": "10896",
+        "Elapsed": "00:11:21",
+        "ElapsedRaw": "681",
+        "End": "2026-11-06T15:09:54",
+        "ExitCode": "0:0",
+        "JobIDRaw": "2251874",
+        "NodeList": "16v100n[65-66]",
+        "Partition": "16V100",
+        "Start": "2026-11-06T14:58:33",
+        "State": "COMPLETED",
+        "Timelimit": "01:00:00"
+      },
+      "science_evidence_sha256": "f5646e368854ce1de5977bc54fdc1a61dca119fb759a2cd7319758e9cc79837f",
+      "science_job": "2251874",
+      "solver_comparisons": {
+        "multi": {
+          "water-diag": {
+            "energy_delta_ha": 2.3447910280083306e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water-elpa": {
+            "energy_delta_ha": 2.4158453015843406e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 7.73070496506989e-12,
+            "max_force_delta_ha_bohr": 1.5390000003556725e-09
+          }
+        },
+        "single": {
+          "water-diag": {
+            "energy_delta_ha": 3.765876499528531e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water-elpa": {
+            "energy_delta_ha": 3.694822225952521e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 1.3642420526593924e-12,
+            "max_force_delta_ha_bohr": 1.5350000003716557e-09
+          }
+        }
+      }
+    },
+    {
+      "artifact": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/release/v2026.2-g67b5da876dd6-rf8e67c4b173a/16V100/cp2k-aux-20261106-f44b81d51d78-release16-warm.sif",
+      "artifact_bytes": 132861952,
+      "artifact_sha256": "c0bfbbe1e80432a1f8fa766ef9ace16055a954ae1436045fbc3927fceecbd719",
+      "build_accounting": {
+        "Account": "proj-sai-hpc-software",
+        "AllocCPUS": "8",
+        "AllocTRES": "billing=150,cpu=8,gres/gpu=1,mem=15G,node=1",
+        "CPUTimeRAW": "7392",
+        "Elapsed": "00:15:24",
+        "ElapsedRaw": "924",
+        "End": "2026-11-06T15:31:00",
+        "ExitCode": "0:0",
+        "JobIDRaw": "2252210",
+        "NodeList": "16v100n01",
+        "Partition": "16V100",
+        "Start": "2026-11-06T15:15:36",
+        "State": "COMPLETED",
+        "Timelimit": "01:30:00"
+      },
+      "build_job": "2252210",
+      "cache": {
+        "cache_archive_sha256": "e89d7c0de659b97aad307dd6a0b4948d09e34529bf260797b233c938292b1c50",
+        "enabled": true,
+        "hit": true,
+        "key": "3e754614232e6206e0808fe0736316943c1612c5b0fdf8a6339fdcf80cd4e0cf",
+        "origin": {
+          "prefix": "/opt/apps/cp2k/cp2k-release-2026.2-g67b5da876dd6-rf8e67c4b173a/16V100",
+          "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50"
+        },
+        "prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rf8e67c4b173a/16V100",
+        "prepare_seconds": 2.1654459182173014,
+        "schema": 1,
+        "timings": {
+          "cp2k": 760.0682892799377
+        }
+      },
+      "cache_bytes": 21383370,
+      "cache_components": [
+        "dbcsr",
+        "libxs",
+        "tblite"
+      ],
+      "case": "release16",
+      "identity": {
+        "build_id": "v2026.2-g67b5da876dd6-rf8e67c4b173a",
+        "cpu_arch": "znver3",
+        "cuda_arch": "70",
+        "dependency_isa": "avx2",
+        "gpus": 1,
+        "install_prefix": "/opt/apps/cp2k/cp2k-release-v2026.2-g67b5da876dd6-rf8e67c4b173a/16V100",
+        "partition": "16V100",
+        "recipe_sha256": "f8e67c4b173aa0f33a147b56f63f442267188143416cc9ccebb6061d68bc79b9",
+        "repository": "cp2k/cp2k",
+        "schema": 2,
+        "software": "cp2k",
+        "source_ref": "v2026.2",
+        "source_sha": "67b5da876dd6a76b8b021d5a04d1c81ba79a4c50",
+        "source_version": "v2026.2",
+        "stack_digest": null,
+        "stack_sources": {},
+        "target": "16v100-avx2",
+        "track": "release",
+        "version_label": "v2026.2"
+      },
+      "overlays": [
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 2477582,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1793950256.2921593,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-aux-20261106-f44b81d51d78-release16-warm/work.ext3",
+          "payload_returncode": 0,
+          "readonly": true,
+          "schema": 1,
+          "started": 1793950235.7653592,
+          "teardown_seconds": 0.009538821876049042,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 2476242,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1793950235.4516287,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-aux-20261106-f44b81d51d78-release16-warm/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1793950203.7175555,
+          "teardown_seconds": 3.312289085239172,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 2435843,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1793950203.4171453,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/cp2k-aux-20261106-f44b81d51d78-release16-warm/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1793949408.0801785,
+          "teardown_seconds": 2.4090128056705,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        }
+      ],
+      "phase": "warm",
+      "rank_comparisons": {
+        "ch2o-tblite": {
+          "energy_delta_ha": 8.881784197001252e-15,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-dftd4": {
+          "energy_delta_ha": 7.105427357601002e-13,
+          "max_force_delta_ha_bohr": 1.0000004296850662e-12
+        },
+        "water-diag": {
+          "energy_delta_ha": 0.0,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-elpa": {
+          "energy_delta_ha": 2.1316282072803006e-14,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water-gpw": {
+          "energy_delta_ha": 3.339550858072471e-13,
+          "max_force_delta_ha_bohr": 1.0000004296850662e-12
+        },
+        "water64-elpa": {
+          "energy_delta_ha": 3.865352482534945e-12,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "water64-gpw": {
+          "energy_delta_ha": 1.0913936421275139e-11,
+          "max_force_delta_ha_bohr": 1.4999997771658613e-11
+        }
+      },
+      "run_id": "cp2k-aux-20261106-f44b81d51d78-release16-warm",
+      "science_accounting": {
+        "Account": "proj-sai-hpc-software",
+        "AllocCPUS": "16",
+        "AllocTRES": "billing=300,cpu=16,gres/gpu=2,mem=30G,node=2",
+        "CPUTimeRAW": "12912",
+        "Elapsed": "00:13:27",
+        "ElapsedRaw": "807",
+        "End": "2026-11-06T17:39:07",
+        "ExitCode": "0:0",
+        "JobIDRaw": "2255560",
+        "NodeList": "16v100n[22,24]",
+        "Partition": "16V100",
+        "Start": "2026-11-06T17:25:40",
+        "State": "COMPLETED",
+        "Timelimit": "01:00:00"
+      },
+      "science_evidence_sha256": "7141d20f4fd214b7c95385c27e0182783b29a10a7f88b650f6e56fa9d8f90b4a",
+      "science_job": "2255560",
+      "solver_comparisons": {
+        "multi": {
+          "water-diag": {
+            "energy_delta_ha": 7.105427357601002e-14,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water-elpa": {
+            "energy_delta_ha": 4.973799150320701e-14,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 2.9558577807620168e-12,
+            "max_force_delta_ha_bohr": 1.543999999034651e-09
+          }
+        },
+        "single": {
+          "water-diag": {
+            "energy_delta_ha": 4.050093593832571e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water-elpa": {
+            "energy_delta_ha": 4.050093593832571e-13,
+            "max_force_delta_ha_bohr": 2.7100000021818005e-10
+          },
+          "water64-elpa": {
+            "energy_delta_ha": 4.092726157978177e-12,
+            "max_force_delta_ha_bohr": 1.5409999994803192e-09
+          }
+        }
+      }
+    }
+  ],
+  "schema": 1,
+  "timing_scope": "Descriptive build timings; nodes and filesystem conditions may differ."
+}

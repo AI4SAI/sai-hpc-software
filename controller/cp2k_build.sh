@@ -117,12 +117,19 @@ if [[ "$target" == 8v100v0-avx512 ]]; then
 fi
 
 tblite_root="$prefix/dependencies/tblite"
-# Match the pinned CP2K source's TBLITE API and gradient patches. Rebuild its
-# dependencies natively inside each target's overlay.
+# Reuse an accepted native installation only when dependency inputs and ABI
+# match. A cache miss compiles inside this target's project-backed overlay.
 export CP2K_NATIVE_FLAGS="-O3 $cpu_flags"
+auxiliary_cache=$(python3 /control/cp2k_auxiliary_cache.py prepare "$prefix" "$target")
+[[ "$auxiliary_cache" == hit || "$auxiliary_cache" == miss ]]
+echo "CP2K_AUXILIARY_CACHE_LOOKUP $auxiliary_cache"
 site_libxc_root="$LIBXC_ROOT"
-bash /control/cp2k_libxc.sh /workspace/source /input/updates /workspace/libxc-build \
-  "$prefix/dependencies/libxc" "$accel" "$gpu_arch"
+if [[ "$auxiliary_cache" == miss ]]; then
+  dependency_started=$(date +%s.%N)
+  bash /control/cp2k_libxc.sh /workspace/source /input/updates /workspace/libxc-build \
+    "$prefix/dependencies/libxc" "$accel" "$gpu_arch"
+  python3 /control/cp2k_auxiliary_cache.py time libxc "$dependency_started"
+fi
 source /workspace/libxc-build/environment.sh
 if [[ "$LIBXC_ROOT" != "$site_libxc_root" ]]; then
   # Remove the site module's old include/library search paths as well as its
@@ -133,8 +140,12 @@ if [[ "$LIBXC_ROOT" != "$site_libxc_root" ]]; then
 fi
 export LD_LIBRARY_PATH="$LIBXC_ROOT/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
 export PKG_CONFIG_PATH="$LIBXC_ROOT/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}"
-bash /control/cp2k_dependencies.sh /input/probe /workspace/tblite-build "$tblite_root" \
-  /workspace/source /input/updates
+if [[ "$auxiliary_cache" == miss ]]; then
+  dependency_started=$(date +%s.%N)
+  bash /control/cp2k_dependencies.sh /input/probe /workspace/tblite-build "$tblite_root" \
+    /workspace/source /input/updates
+  python3 /control/cp2k_auxiliary_cache.py time tblite "$dependency_started"
+fi
 
 prefixes=(
   "$ELPA_ROOT" "$OPENBLAS_ROOT" "$LIBXC_ROOT" "$FFTW_ROOT" "$tblite_root"
@@ -152,24 +163,32 @@ cp /control/cp2k_libxsmmConfig.cmake "$prefix/share/sai/cmake/libxsmmConfig.cmak
 
 # Release, intermediate development, and current master declare different
 # LibXS inputs. Preserve each source's version and JIT repair inside its prefix.
-bash /control/cp2k_libxs.sh /workspace/source /input/dependencies /input/updates \
-  /workspace/libxs-build "$prefix/dependencies/libxs"
+if [[ "$auxiliary_cache" == miss ]]; then
+  dependency_started=$(date +%s.%N)
+  bash /control/cp2k_libxs.sh /workspace/source /input/dependencies /input/updates \
+    /workspace/libxs-build "$prefix/dependencies/libxs"
+  python3 /control/cp2k_auxiliary_cache.py time libxs "$dependency_started"
+fi
 prefixes+=("$prefix/dependencies/libxs")
 # Current development requires wignernj; older releases do not. The source
 # archive is fetched and hashed on the runner, never on an offline compute node.
 if grep -Eq 'find_package\(wignernj[[:space:]]' /workspace/source/CMakeLists.txt; then
-  wigner_archive=/input/updates/libwignernj-0.8.0.tar.gz
-  printf '%s  %s\n' 7220cea92652040d6456aba92ff151124d9c69ce8695840490c18dd25a0da80c "$wigner_archive" | sha256sum --check --status
-  mkdir -p /workspace/wignernj-source
-  tar --no-same-owner --strip-components=1 -xzf "$wigner_archive" -C /workspace/wignernj-source
-  cmake -S /workspace/wignernj-source -B /workspace/wignernj-build \
-    "${cmake_compilers[@]}" \
-    -DCMAKE_INSTALL_PREFIX="$prefix/dependencies/wignernj" -DCMAKE_INSTALL_LIBDIR=lib \
-    -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBUILD_SHARED_LIBS=OFF \
-    -DWIGNERNJ_BUILD_FORTRAN=OFF -DWIGNERNJ_BUILD_TESTS=OFF -DWIGNERNJ_BUILD_CXX_TESTS=OFF \
-    -DWIGNERNJ_BUILD_EXAMPLES=OFF -DCMAKE_C_FLAGS="-O3 $cpu_flags"
-  cmake --build /workspace/wignernj-build --parallel "$jobs"
-  cmake --install /workspace/wignernj-build
+  if [[ "$auxiliary_cache" == miss ]]; then
+    dependency_started=$(date +%s.%N)
+    wigner_archive=/input/updates/libwignernj-0.8.0.tar.gz
+    printf '%s  %s\n' 7220cea92652040d6456aba92ff151124d9c69ce8695840490c18dd25a0da80c "$wigner_archive" | sha256sum --check --status
+    mkdir -p /workspace/wignernj-source
+    tar --no-same-owner --strip-components=1 -xzf "$wigner_archive" -C /workspace/wignernj-source
+    cmake -S /workspace/wignernj-source -B /workspace/wignernj-build \
+      "${cmake_compilers[@]}" \
+      -DCMAKE_INSTALL_PREFIX="$prefix/dependencies/wignernj" -DCMAKE_INSTALL_LIBDIR=lib \
+      -DCMAKE_BUILD_TYPE=Release -DCMAKE_POSITION_INDEPENDENT_CODE=ON -DBUILD_SHARED_LIBS=OFF \
+      -DWIGNERNJ_BUILD_FORTRAN=OFF -DWIGNERNJ_BUILD_TESTS=OFF -DWIGNERNJ_BUILD_CXX_TESTS=OFF \
+      -DWIGNERNJ_BUILD_EXAMPLES=OFF -DCMAKE_C_FLAGS="-O3 $cpu_flags"
+    cmake --build /workspace/wignernj-build --parallel "$jobs"
+    cmake --install /workspace/wignernj-build
+    python3 /control/cp2k_auxiliary_cache.py time wignernj "$dependency_started"
+  fi
   prefixes+=("$prefix/dependencies/wignernj")
 fi
 cmake_prefix=$(IFS=';'; echo "${prefixes[*]}")
@@ -177,28 +196,37 @@ dbcsr_archive=/input/probe/dbcsr-latest.tar.gz
 fypp_archive=/input/probe/fypp-3.2-py3-none-any.whl
 printf '%s  %s\n' d963cac9cb79e04d82bedf0f4febce9cd06470f84c7d5a45f74645d11f8c4875 "$dbcsr_archive" | sha256sum --check --status
 printf '%s  %s\n' ec9d6fd0e54529e7873732be642ea9098e06cc7a1cbe0eb7faee31be6c2267fa "$fypp_archive" | sha256sum --check --status
-mkdir -p /workspace/dbcsr-source /workspace/fypp
-tar --no-same-owner --strip-components=1 -xzf "$dbcsr_archive" -C /workspace/dbcsr-source
-unzip -q "$fypp_archive" -d /workspace/fypp
-dbcsr_args=(
-  -S /workspace/dbcsr-source -B /workspace/dbcsr-build
-  "${cmake_compilers[@]}"
-  -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$prefix/dependencies/dbcsr"
-  -DCMAKE_INSTALL_LIBDIR=lib64 -DCMAKE_POSITION_INDEPENDENT_CODE=ON
-  -DFYPP_EXECUTABLE=/workspace/fypp/fypp.py -DCMAKE_PREFIX_PATH="$cmake_prefix"
-  -DUSE_MPI=ON -DUSE_MPI_F08=ON -DUSE_OPENMP=ON -DUSE_LIBXS=ON -DUSE_LIBXSMM=ON
-  -Dlibxsmm_DIR="$prefix/share/sai/cmake" -DWITH_EXAMPLES=OFF
-  -DCMAKE_C_FLAGS="-O3 $cpu_flags" -DCMAKE_Fortran_FLAGS="-O3 $cpu_flags"
-  -DCMAKE_CXX_FLAGS="-O3 $cpu_flags -Wno-error=deprecated-declarations"
-)
-if [[ "$accel" == CUDA ]]; then
-  dbcsr_args+=(-DUSE_ACCEL=cuda -DWITH_GPU=V100 -DCMAKE_CUDA_ARCHITECTURES="$gpu_arch")
-else
-  dbcsr_args+=(-DUSE_ACCEL=none)
+if [[ "$auxiliary_cache" == miss ]]; then
+  dependency_started=$(date +%s.%N)
+  mkdir -p /workspace/dbcsr-source /workspace/fypp
+  tar --no-same-owner --strip-components=1 -xzf "$dbcsr_archive" -C /workspace/dbcsr-source
+  unzip -q "$fypp_archive" -d /workspace/fypp
+  # DBCSR compiles LibXS's installed Fortran source and enables debug info even
+  # in Release. Normalize those source paths at compile time so the installed
+  # archive can be reused unchanged under a different CP2K prefix.
+  dbcsr_source_paths="-ffile-prefix-map=$prefix=/sai-cp2k-install"
+  dbcsr_args=(
+    -S /workspace/dbcsr-source -B /workspace/dbcsr-build
+    "${cmake_compilers[@]}"
+    -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$prefix/dependencies/dbcsr"
+    -DCMAKE_INSTALL_LIBDIR=lib64 -DCMAKE_POSITION_INDEPENDENT_CODE=ON
+    -DFYPP_EXECUTABLE=/workspace/fypp/fypp.py -DCMAKE_PREFIX_PATH="$cmake_prefix"
+    -DUSE_MPI=ON -DUSE_MPI_F08=ON -DUSE_OPENMP=ON -DUSE_LIBXS=ON -DUSE_LIBXSMM=ON
+    -Dlibxsmm_DIR="$prefix/share/sai/cmake" -DWITH_EXAMPLES=OFF
+    -DCMAKE_C_FLAGS="-O3 $cpu_flags $dbcsr_source_paths"
+    -DCMAKE_Fortran_FLAGS="-O3 $cpu_flags $dbcsr_source_paths"
+    -DCMAKE_CXX_FLAGS="-O3 $cpu_flags $dbcsr_source_paths -Wno-error=deprecated-declarations"
+  )
+  if [[ "$accel" == CUDA ]]; then
+    dbcsr_args+=(-DUSE_ACCEL=cuda -DWITH_GPU=V100 -DCMAKE_CUDA_ARCHITECTURES="$gpu_arch")
+  else
+    dbcsr_args+=(-DUSE_ACCEL=none)
+  fi
+  cmake "${dbcsr_args[@]}"
+  cmake --build /workspace/dbcsr-build --parallel "$jobs"
+  cmake --install /workspace/dbcsr-build
+  python3 /control/cp2k_auxiliary_cache.py time dbcsr "$dependency_started"
 fi
-cmake "${dbcsr_args[@]}"
-cmake --build /workspace/dbcsr-build --parallel "$jobs"
-cmake --install /workspace/dbcsr-build
 mkdir -p /workspace/build "$prefix/bin" "$prefix/share/sai"
 # Enable SpLA on all targets; offload local GEMMs only in GPU deliveries.
 # Keep CP2K's workload thresholds and the runtime BLAS override available.
@@ -243,10 +271,13 @@ if [[ "$accel" == CUDA ]]; then
 else
   cmake_args+=( -DCP2K_USE_CUSOLVER_MP=OFF -DCP2K_USE_SPLA_GEMM_OFFLOADING=OFF )
 fi
+application_started=$(date +%s.%N)
 cmake "${cmake_args[@]}"
 python3 /control/cp2k_feature_contract.py cache "$prefix" "$target" "$source_sha"
 cmake --build /workspace/build --parallel "$jobs"
 cmake --install /workspace/build
+python3 /control/cp2k_auxiliary_cache.py time cp2k "$application_started"
+python3 /control/cp2k_auxiliary_cache.py finish "$prefix"
 
 # Keep libraries at their build-time private Spack paths, including the
 # independent libplumedKernel.so. Never relocate by copying just libplumed.so.

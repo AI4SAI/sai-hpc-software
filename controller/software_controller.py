@@ -30,7 +30,7 @@ def contract_files(software):
                          "abacus_dependency_lock.json", "abacus_cusolvermp_case.json", "abacus_features.py", "abacus_benchmark.py",
                          "native_module.py", "export_native.py"]
     if software == "cp2k":
-        return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_libxc.sh", "cp2k_libxs.sh", "cp2k_elpa.sh", "cp2k_elpa_runtime.py", "cp2k_feature_contract.py", "cp2k_site_elpa.json", "cp2k_elpa_abi.f90",
+        return common + ["cp2k_container_entry.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_auxiliary_cache.py", "input_archive_cache.py", "cp2k_libxc.sh", "cp2k_libxs.sh", "cp2k_elpa.sh", "cp2k_elpa_runtime.py", "cp2k_feature_contract.py", "cp2k_site_elpa.json", "cp2k_elpa_abi.f90",
                          "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_cmake_prerequisites.cmake", "cp2k_benchmark.py", "cp2k_acceptance.py", "cp2k_source_fixes.py",
                          "cp2k_spack.py", "cp2k_spack_store.py", "cp2k_spack_environment.py", "cp2k_spack_native.py",
                          "cp2k_site_spack.py", "cp2k_site_spack.json", "cp2k_devtools.py", "devtools_install.py",
@@ -319,6 +319,9 @@ def publish(args):
     publish_runtime_entry(request, artifact, manifest)
     manifest.update(verified=True, published=True)
     atomic_manifest(artifact, manifest)
+    if request['software'] == 'cp2k':
+        from cp2k_auxiliary_cache import promote
+        promote(ROOT, r, artifact)
     print(f"ACCEPTED_ARTIFACT_PUBLISHED {artifact}", flush=True)
 
 def render_job(args):
@@ -345,6 +348,7 @@ def render_job(args):
     argv = ["/usr/bin/bash", f"/control/{entrypoint}", "build", args.software, sha, args.version, args.target,
             json.dumps(delivery, sort_keys=True, separators=(",", ":"))]
     extra_binds = ((ROOT / "cache/spack", "/input/spack"),
+                   (ROOT / "cache/cp2k-auxiliary", "/input/auxiliary-cache"),
                    (r / "input/cp2k-updates", "/input/updates"),
                    ("/var/lib/dpkg", "/var/lib/dpkg"),
                    ("/etc/os-release", "/etc/os-release"),
@@ -389,6 +393,8 @@ def render_job(args):
                 # libfakeroot's inode emulation corrupted repeated library
                 # inventory checks in the accepted shared-provider probe.
                 command.insert(2, '--ignore-fakeroot-command')
+                if phase == 'build':
+                    command[2:2] = ['--bind', str(r / 'auxiliary-cache') + ':/auxiliary-cache:rw']
             command[2:2] = ['--bind', str(r / 'results') + ':/results:rw']
             from cp2k_image_driver import wrap_command
             command = wrap_command(ROOT, r, CONTROL, command)
@@ -527,6 +533,10 @@ def submit(args):
     if args.software == "abacus":
         from abacus_dependencies import ARCHIVE_CACHE, cache_archives
         cache_archives(ROOT / ARCHIVE_CACHE, source=r / "input/abacus-updates")
+    if args.software == 'cp2k':
+        from input_archive_cache import canonical
+        for directory in (ROOT / 'cache/cp2k-auxiliary', r / 'auxiliary-cache'):
+            canonical(directory).mkdir(parents=True, exist_ok=True)
     script = r / "job.sbatch"
     script.write_text(render_job(args))
     script.chmod(0o700)
