@@ -1,0 +1,195 @@
+{
+  "all_dependencies_completed_utc": "2026-11-04T10:05:22Z",
+  "allocated_cpus": 8,
+  "average_cores": 0.6064252988311385,
+  "build_job": "2170274",
+  "cpu_affinity": "93-100",
+  "cpu_allocation_utilization_percent": 7.5803162353892315,
+  "cpu_max": "max 100000",
+  "cpu_seconds": 15156.33977,
+  "cpu_throttled_periods": 0,
+  "diagnostic_limits": [
+    "First and repeat reads were measured without dropping caches; these are not controlled cold-cache measurements.",
+    "Direct reads used completed GPU images, never the active CPU image.",
+    "The two-node control bypassed Apptainer and both FUSE layers.",
+    "The result identifies the affected node-to-Lustre path, not which client, network or server component is responsible.",
+    "Short attached syscall traces can perturb timing; the independent direct-read comparison was untraced.",
+    "The original controller, allocation, driver, source and CPU flags were not changed."
+  ],
+  "elapsed_seconds": 24992.921303272247,
+  "job_full_io_stall_seconds": 13586.486984,
+  "job_full_io_stall_wall_percent": 54.36134023364912,
+  "libint_duration_reported": "7h24m",
+  "libint_generated_sources": 5963,
+  "libint_units_completed_at_namespace_probe": 5683,
+  "makeflags": " -j8 --jobserver-auth=6,7",
+  "memory_bytes": 5604585472,
+  "memory_events": "low 0\nhigh 0\nmax 0\noom 0\noom_kill 0\noom_group_kill 0\nsock_throttled 0\n",
+  "memory_limit_bytes": 30064771072,
+  "node": "d9470n01",
+  "observation_utc": "2026-11-04T09:28:38.921303+00:00",
+  "purpose": "Diagnose slow CPU dependency build, without changing runtime or build inputs",
+  "raw_evidence": {
+    "cpu-namespace-probe-1.jsonl": {
+      "bytes": 34376,
+      "compressed_bytes": 5197,
+      "compressed_sha256": "362d9166f5c7cf0af4e0099dd8dc266850a7c86ca4efaf48314fe66ff51ce6b5",
+      "sha256": "0bf13b076e5ad62bda9da4907c6c4758e69882cdb8c4671d6a5d0800b5828bd2"
+    },
+    "cpu-node-probe-1.jsonl": {
+      "bytes": 81604,
+      "compressed_bytes": 14455,
+      "compressed_sha256": "958978ca6223fecda4472fdb52abc322cb20be8b73985bac8a50a3ba0cb460a5",
+      "sha256": "c7d3a1e7e3102c97db8a5c0042c639b3d83bba8958ee72b90f04ca92c8fae74c"
+    },
+    "cpu-read-comparison.json": {
+      "bytes": 82424,
+      "compressed_bytes": 7257,
+      "compressed_sha256": "16ba71f9c53b6401b5115eac35580f20a042742673b4b087a6c63de3e7672d83",
+      "sha256": "4734479feb186009d99f6b7ae9cebc5139ce5cf98e8925c3032ebd23c8df8d27"
+    },
+    "cpu-storage-probe-1.jsonl": {
+      "bytes": 6804,
+      "compressed_bytes": 2458,
+      "compressed_sha256": "79625b70fd4513f7a277692132b9c385ba6300265916378ea4abbfaaf48c305b",
+      "sha256": "44af51dd49e5a8c001c1bbcb6382aea67bfbce8d3ba75021734e783fa226dafa"
+    },
+    "cpu-syscall-traces-1.jsonl": {
+      "bytes": 65872,
+      "compressed_bytes": 3313,
+      "compressed_sha256": "fc9a3b0dbe3038703bf75fc3241b5064683be4b1166ff8a7594e1fa7527fdded",
+      "sha256": "7d7a1b9585bf55efbc4271eb60fbe039816c5069481362a2cd1e78b01a82d028"
+    },
+    "cpu-syscall-traces-2.jsonl": {
+      "bytes": 1387962,
+      "compressed_bytes": 167116,
+      "compressed_sha256": "57c04ff55e08e0cf2ac59f453e7b8b16f589834f4bebf029e5f727344b185a37",
+      "sha256": "baeb1a54bc48d88c0645d2493e5503257bd88345b0a74adb87eb2f01994fb3ca"
+    }
+  },
+  "read_comparison_accounting": "2191287|COMPLETED|00:00:57|2|00:00.142|0:0|d9470n[01,18]\n2191287.batch|COMPLETED|00:00:57|1|00:00.021|0:0|d9470n01\n2191287.extern|COMPLETED|00:00:57|2|00:00:00|0:0|d9470n[01,18]\n2191287.0|COMPLETED|00:00:46|2|00:00.121|0:0|d9470n[01,18]\n",
+  "read_comparison_hosts": {
+    "d9470n01.mr-sai.ai": {
+      "all_phases_seconds": 40.79217314720154,
+      "job_id": "2191287",
+      "samples": [
+        {
+          "image": "spack-devtools-20261104-b-16V100",
+          "nonzero_samples": 22,
+          "round": 0,
+          "samples": 24,
+          "seconds_max": 0.0042091121431440115,
+          "seconds_median": 0.0002016780199483037,
+          "seconds_total": 0.01763082016259432
+        },
+        {
+          "image": "spack-devtools-20261104-b-16V100",
+          "nonzero_samples": 22,
+          "round": 1,
+          "samples": 24,
+          "seconds_max": 1.7991987988352776e-05,
+          "seconds_median": 1.4049001038074493e-06,
+          "seconds_total": 6.694789044559002e-05
+        },
+        {
+          "image": "spack-devtools-20261104-b-4V100",
+          "nonzero_samples": 22,
+          "round": 0,
+          "samples": 24,
+          "seconds_max": 7.334937442094088,
+          "seconds_median": 0.0003129460383206606,
+          "seconds_total": 26.67993479827419
+        },
+        {
+          "image": "spack-devtools-20261104-b-4V100",
+          "nonzero_samples": 22,
+          "round": 1,
+          "samples": 24,
+          "seconds_max": 1.7472077161073685e-05,
+          "seconds_median": 2.166023477911949e-06,
+          "seconds_total": 8.681812323629856e-05
+        },
+        {
+          "image": "spack-devtools-20261104-b-8V100V0",
+          "nonzero_samples": 22,
+          "round": 0,
+          "samples": 24,
+          "seconds_max": 13.888702603057027,
+          "seconds_median": 0.00019819242879748344,
+          "seconds_total": 13.914236392593011
+        },
+        {
+          "image": "spack-devtools-20261104-b-8V100V0",
+          "nonzero_samples": 22,
+          "round": 1,
+          "samples": 24,
+          "seconds_max": 2.1387822926044464e-05,
+          "seconds_median": 1.6649719327688217e-06,
+          "seconds_total": 7.886020466685295e-05
+        }
+      ]
+    },
+    "d9470n18.mr-sai.ai": {
+      "all_phases_seconds": 1.168694019317627,
+      "job_id": "2191287",
+      "samples": [
+        {
+          "image": "spack-devtools-20261104-b-16V100",
+          "nonzero_samples": 22,
+          "round": 0,
+          "samples": 24,
+          "seconds_max": 0.02619859203696251,
+          "seconds_median": 0.0010807544458657503,
+          "seconds_total": 0.09649925329722464
+        },
+        {
+          "image": "spack-devtools-20261104-b-16V100",
+          "nonzero_samples": 22,
+          "round": 1,
+          "samples": 24,
+          "seconds_max": 1.573888584971428e-05,
+          "seconds_median": 1.6264384612441063e-06,
+          "seconds_total": 6.877072155475616e-05
+        },
+        {
+          "image": "spack-devtools-20261104-b-4V100",
+          "nonzero_samples": 22,
+          "round": 0,
+          "samples": 24,
+          "seconds_max": 0.5731517721433192,
+          "seconds_median": 0.017207640106789768,
+          "seconds_total": 0.8912419506814331
+        },
+        {
+          "image": "spack-devtools-20261104-b-4V100",
+          "nonzero_samples": 22,
+          "round": 1,
+          "samples": 24,
+          "seconds_max": 1.5701865777373314e-05,
+          "seconds_median": 1.6754493117332458e-06,
+          "seconds_total": 7.569557055830956e-05
+        },
+        {
+          "image": "spack-devtools-20261104-b-8V100V0",
+          "nonzero_samples": 22,
+          "round": 0,
+          "samples": 24,
+          "seconds_max": 0.034466000040993094,
+          "seconds_median": 0.0009478661231696606,
+          "seconds_total": 0.134530859766528
+        },
+        {
+          "image": "spack-devtools-20261104-b-8V100V0",
+          "nonzero_samples": 22,
+          "round": 1,
+          "samples": 24,
+          "seconds_max": 1.588510349392891e-05,
+          "seconds_median": 1.5764962881803513e-06,
+          "seconds_total": 7.60920811444521e-05
+        }
+      ]
+    }
+  },
+  "read_comparison_job": "2191287",
+  "schema": 1
+}

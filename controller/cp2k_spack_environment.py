@@ -31,7 +31,7 @@ def external(spec, prefix, **attributes):
     return {'buildable': False, 'externals': [entry]}
 
 
-def environment(partition, install_prefix, native_target, native_os, jobs=8):
+def environment(partition, install_prefix, native_target, native_os, jobs=8, *, layout='private'):
     """Return JSON-compatible spack.yaml content, with no expanded host store."""
     for value in (native_target, native_os):
         if not re.fullmatch(r'[a-z][a-z0-9_.-]*', value):
@@ -40,7 +40,7 @@ def environment(partition, install_prefix, native_target, native_os, jobs=8):
         raise ValueError('record the native CPU microarchitecture, not a generic ISA')
     if not 1 <= jobs <= 64:
         raise ValueError('invalid build parallelism')
-    manifest = config(partition, Path('/input/spack'), install_prefix=Path(install_prefix))
+    manifest = config(partition, Path('/input/spack'), install_prefix=Path(install_prefix), layout=layout)
     isa = TARGETS[partition]['isa']
     gcc = TARGETS[partition]['compiler']
     compiler_spec = 'gcc@' + GCC_VERSION
@@ -113,10 +113,11 @@ def main():
     parser.add_argument('--native-target', required=True)
     parser.add_argument('--native-os', required=True)
     parser.add_argument('--jobs', type=int, default=8)
+    parser.add_argument('--layout', choices=('private', 'devtools'), default='private')
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     write_config(args.output, environment(args.partition, args.install_prefix,
-                                          args.native_target, args.native_os, args.jobs))
+                                          args.native_target, args.native_os, args.jobs, layout=args.layout))
 
 
 if __name__ == '__main__':

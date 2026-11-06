@@ -6,14 +6,15 @@ import sys
 from cp2k_spack import validated_prefix
 
 
-def collect(partition, install_prefix=None):
+def collect(partition, install_prefix=None, layout='private'):
     import spack.environment as ev
 
     env = ev.active_environment()
     if env is None:
         raise ValueError('no active environment')
-    install_prefix = validated_prefix(partition, install_prefix)
-    prefix = Path(install_prefix) / 'dependencies/spack'
+    from cp2k_spack_store import validate_layout, validate_package_prefix
+    install_prefix = validate_layout(partition, install_prefix, layout)
+    prefix = Path(install_prefix) if layout == 'devtools' else Path(install_prefix) / 'dependencies/spack'
     records = []
     for spec in env.all_specs():
         if not spec.installed:
@@ -21,8 +22,13 @@ def collect(partition, install_prefix=None):
         path = Path(str(spec.prefix))
         if not spec.external and not path.is_relative_to(prefix):
             raise ValueError('dependency escaped its canonical pilot store')
+        if not spec.external and layout == 'devtools':
+            validate_package_prefix(str(path), spec.name, str(spec.version),
+                                    str(spec.architecture.target), spec.dag_hash())
         records.append({'name': spec.name, 'hash': spec.dag_hash(), 'prefix': str(path),
-                        'external': bool(spec.external), 'spec': str(spec)})
+                        'external': bool(spec.external), 'spec': str(spec),
+                        'version': str(spec.version), 'target': str(spec.architecture.target),
+                        'dependencies': [s.dag_hash() for s in spec.dependencies(deptype=('link', 'run'))]})
     plumed = next(s for s in env.concrete_roots() if s.name == 'plumed')
     plumed_root = Path(str(plumed.prefix))
     if not any(plumed_root.glob('lib*/libplumedKernel.so*')):
@@ -32,6 +38,7 @@ def collect(partition, install_prefix=None):
                for s in root.traverse(deptype=('link', 'run')) if not s.external}
     with Path('/results/install-success.json').open('x') as stream:
         json.dump({'partition': partition, 'dependencies_installed': True,
+                   'layout': layout,
                    'install_prefix': install_prefix,
                    'cp2k_built': False, 'scientific_verified': False, 'published': False,
                    'roots': roots, 'runtime_prefixes': sorted(runtime),

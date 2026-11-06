@@ -336,7 +336,8 @@ def main():
                   if software == "abacus" else
                   ["cp2k_container_entry.sh", "environment.sh", "cp2k_build.sh", "cp2k_dependencies.sh", "cp2k_libxc.sh", "cp2k_libxs.sh", "cp2k_elpa.sh", "cp2k_elpa_runtime.py", "cp2k_feature_contract.py", "cp2k_site_elpa.json", "cp2k_elpa_abi.f90",
                    "cp2k_Libint2Config.cmake", "cp2k_libxsmmConfig.cmake", "cp2k_cmake_prerequisites.cmake", "cp2k_benchmark.py", "cp2k_acceptance.py", "cp2k_source_fixes.py",
-                   "cp2k_spack.py", "cp2k_spack_environment.py", "cp2k_spack_native.py",
+                   "cp2k_spack.py", "cp2k_spack_store.py", "cp2k_spack_environment.py", "cp2k_spack_native.py",
+                   "cp2k_site_spack.py", "cp2k_site_spack.json", "cp2k_devtools.py", "devtools_install.py",
                    "cp2k_spack_seed.py", "cp2k_spack_probe.sh", "cp2k_spack_dependencies.sh", "cp2k_overlay_sync.py",
                    "cp2k_spack_libint_repair.py", "cp2k_spack_install_evidence.py",
                    "cp2k_spack_link.py", "cp2k_payload.py", "cp2k_dependency_stage.py", "cp2k_overlay_workdir.py", "cp2k_image_driver.py", "managed_overlay.py", "build_capacity.py",
@@ -420,7 +421,7 @@ def main():
             import cp2k_spack
             archives = cp2k_spack.cache_source_updates(temporary / 'cp2k-updates')
             pins = {getattr(cp2k_spack, item + '_ARCHIVE'): getattr(cp2k_spack, item + '_SHA256')
-                    for item in ('WIGNERNJ', 'TBLITE_RELEASE', 'ELPA', 'LIBXC', 'LIBXS')}
+                    for item in ('WIGNERNJ', 'TBLITE_RELEASE', 'TBLITE_DEVELOPMENT', 'ELPA', 'LIBXC', 'LIBXS')}
             stage_archives(python, upload, root, f'{task}/input/cp2k-updates',
                            [(archive, pins[archive.name]) for archive in archives])
     def emit_run_id():
@@ -436,9 +437,14 @@ def main():
         # A four-hour request prevented backfill on the busy 4V100 partition.
         extras += ['--minutes', '30']
     dependency_run = safe_name(run_id + '-dependencies')
+    shared_dependencies = False
     try:
         if software == 'cp2k' and phase != 'acceptance' and not resume:
-            if phase != 'application':
+            shared_dependencies = json.loads(python('cp2k_site_spack.py', 'available', identity['partition'],
+                                                   capture_output=True).stdout)['available']
+            if shared_dependencies:
+                print('CP2K_SHARED_DEVTOOLS: skipping the Spack build allocation', flush=True)
+            elif phase != 'application':
                 # The verified CPU dependency pilot took 5h45m; GPU QOS is capped at 4h.
                 resources = ['--overlay-mb', '16384']
                 if target == 'dsprhbm':
@@ -450,7 +456,9 @@ def main():
             if phase == 'dependencies':
                 emit_run_id()
                 return
-            extras += ['--dependencies-run', dependency_run, '--overlay-mb', '16384']
+            extras += ['--overlay-mb', '16384']
+            if not shared_dependencies:
+                extras += ['--dependencies-run', dependency_run]
         elif phase == 'dependencies':
             # A user-requested repack consumes its original checkpoint in the next job.
             emit_run_id()
@@ -460,7 +468,7 @@ def main():
                                   software=software, sha=upstream, version=version, target=target,
                                   track=track, source_ref=source_ref, recipe_sha256=identity['recipe_sha256'],
                                   resume_run=resume or None,
-                                  dependencies_run=dependency_run if software == 'cp2k' and not resume else None)
+                                  dependencies_run=dependency_run if software == 'cp2k' and not resume and not shared_dependencies else None)
             submitted = continuing and existing_job(ssh, root, control, task, expected_build, 'software_controller.py')
             if not submitted:
                 python("software_controller.py", "submit", software, run_id, upstream, version, target,

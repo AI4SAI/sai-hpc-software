@@ -1,0 +1,186 @@
+{
+  "accounting": "2170274|FAILED|07:57:10|74:0|d9470n01\n2173240|COMPLETED|00:00:08|0:0|4v100n10\n2173888|COMPLETED|00:00:08|0:0|16v100n02\n2173939|COMPLETED|00:00:11|0:0|8v100v0n02\n2193082|COMPLETED|00:10:46|0:0|d9470n18\n",
+  "administrator_handoff": "/home/stardust/sai-hpc-software/deployment/cp2k-spack-devtools-20261104",
+  "builds": {
+    "16V100": {
+      "contract_sha256": "25a931f9cb1aef35e700d8d9e7c6e9c4209756dc045c2546492312c785cc52cf",
+      "cp2k_scientific_verified": false,
+      "hdf5_mpi_ranks": 2,
+      "job_id": "2173888",
+      "run_id": "spack-devtools-20261104-c-16V100",
+      "sif_bytes": 129241088,
+      "sif_sha256": "3389d045cf1c641fb90998d5c51fafc7acb28e353108d775653353289449bd84",
+      "verified_libraries": 52
+    },
+    "4V100": {
+      "contract_sha256": "74a2d6082d7fc952ebc889831d64169179b6f2d4540dfa5981c7078f670312db",
+      "cp2k_scientific_verified": false,
+      "hdf5_mpi_ranks": 2,
+      "job_id": "2173240",
+      "run_id": "spack-devtools-20261104-c-4V100",
+      "sif_bytes": 128856064,
+      "sif_sha256": "a9a2153148490b1ee78d0585d6050b132e0dfc25b4e3bdfaf339c47568ce147d",
+      "verified_libraries": 52
+    },
+    "8V100V0": {
+      "contract_sha256": "4dbb7bff67022de0b84eee64167494bd889e8c7b70cc52a97738c24032ef96ee",
+      "cp2k_scientific_verified": false,
+      "hdf5_mpi_ranks": 2,
+      "job_id": "2173939",
+      "run_id": "spack-devtools-20261104-c-8V100V0",
+      "sif_bytes": 129081344,
+      "sif_sha256": "856ba5b540cc7b97ff44588c921040aa5f5fe041ec1e24fe1df95ec3d57a8c9c",
+      "verified_libraries": 52
+    },
+    "DSPRHBM": {
+      "contract_sha256": "e004322d368005651112ceb0580ecf40d925de55e66145d0297ace9d153a49ff",
+      "cp2k_scientific_verified": false,
+      "hdf5_mpi_ranks": 2,
+      "job_id": "2193082",
+      "run_id": "spack-devtools-20261104-e-DSPRHBM",
+      "sif_bytes": 128663552,
+      "sif_sha256": "cb4123b2e9ef42057dfd922f1ef6433e3dd1dc83d029f0896465d2a1cc50d0ea",
+      "verified_libraries": 51
+    }
+  },
+  "controller_commit": "6f405fa6616a0ddb711b987a5cc671fbc0bb48ac",
+  "cp2k_scientific_verified": false,
+  "cpu_overlay_sha256": "64ec6a9eace8b0a1d8e46cd1db813a5f6a5ab9714ea18e7f99f00383ada44646",
+  "cpu_readonly_receipt": {
+    "accepted": true,
+    "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+    "completed": true,
+    "driver_pid": 1420333,
+    "driver_returncode": 0,
+    "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+    "finished": 1793792076.841983,
+    "forced_stop": false,
+    "mechanism": "workflow-owned-fuse2fs",
+    "mounted": true,
+    "overlay": "/org/org-open-sai/proj-sai-hpc-software/runs/spack-devtools-20261104-e-DSPRHBM/work.ext3",
+    "payload_returncode": 0,
+    "readonly": true,
+    "schema": 1,
+    "started": 1793792061.98299,
+    "teardown_seconds": 0.008475357200950384,
+    "unmount_returncode": 0,
+    "unmount_stderr": ""
+  },
+  "cpu_recovery_job": "2193082",
+  "cpu_write_rejected": true,
+  "handoff_files": 48,
+  "install_preflight_passed": true,
+  "observed_utc": "2026-11-04T11:41:00.528256+00:00",
+  "original_cpu_job": "2170274",
+  "packages": 39,
+  "physical_opt_installed": false,
+  "physical_prefixes_present": [
+    "/opt/devtools/cosma/2.7.0-gcc14.3.0-zen3-5mo4n2dvf2cbmcfhqswalnp4rvuzh54o",
+    "/opt/devtools/costa/2.3.3-gcc14.3.0-zen3-mei6tamap43oogvx64e6pnv5wd4zt3gr",
+    "/opt/devtools/gcc-runtime/14.3.0-gcc14.3.0-zen3-gpfmwc6iyo4ntxrmm4szhzf5shg7shpi"
+  ],
+  "project_bundle": "/org/org-open-sai/proj-sai-hpc-software/deployment/cp2k-spack-devtools-20261104",
+  "public_file_modes_verified": true,
+  "raw_evidence": {
+    "ancestor-acls.txt": {
+      "bytes": 470,
+      "compressed_sha256": "bad254e7b6982d3b157abcd7c6a7bcf8e3a3d4a870d7ef7ea8595c7c602ccd9c",
+      "sha256": "7c082d2e33353f5eaab91482a178d6d18659c52464b8e5a3ec7b4d2f1838150e"
+    },
+    "handoff-ready.json": {
+      "bytes": 433,
+      "compressed_sha256": "2f40a3099aaa30c4f513d9656383cf805d35c76114e57f0a745cffd9956b030b",
+      "sha256": "5a3bea17c6aa611861d37850dfe48c8e5374bb96237fac6ca804e4d914f7d454"
+    },
+    "job.sbatch": {
+      "bytes": 6677,
+      "compressed_sha256": "c0461d73cd3b129e080ba52a6dcfc13120bbbd3cacedc73e907f5ff57315b292",
+      "sha256": "2e4a29c690b248aa44129e528bfc8ea97bf0491c7410d46136ceb590abe8107f"
+    },
+    "managed-overlay-49009ab375f6474ba3b0276e4ca4f258.json": {
+      "bytes": 616,
+      "compressed_sha256": "1702933c7f6e6c8dc8e75c8f4c7f67bbc9bc51b3ee35c1ee0ce092632dd257fc",
+      "sha256": "24423638a15c2938e493ff0825f6abbcfa29ff59a6078b0cc7a259d9875b39ec"
+    },
+    "managed-overlay-49009ab375f6474ba3b0276e4ca4f258.log": {
+      "bytes": 62,
+      "compressed_sha256": "a8ba59583b1d6c36c8325a1f7a3af9539ff6e5a8eaaa43b3f1618ff961722916",
+      "sha256": "72bfd34434125d671b6c8a901f933d14a6fa66b9c299a28bce44011ee25ac399"
+    },
+    "managed-overlay-f2c75781a896474b8316b0f0758e47c8.json": {
+      "bytes": 599,
+      "compressed_sha256": "6f5757ab211ff4071de2608eb911d7fcb622a9b60968b8bda478fa0cb99b4d25",
+      "sha256": "efe97f3e8ac140f272ea83691ebb1cc1257aa3e50899a5862fa7c0045e77ffb7"
+    },
+    "managed-overlay-f2c75781a896474b8316b0f0758e47c8.log": {
+      "bytes": 233,
+      "compressed_sha256": "94d0f5df4c8ba5ddbb13a1d18426048c489aa3903642e948faae62fa3acc088a",
+      "sha256": "9a66b2225f5ee97723dab5788345f787c3a632980c8cb26e780b941218b01d07"
+    },
+    "original-driver-cleanup-failure-1443360.json": {
+      "bytes": 1805,
+      "compressed_sha256": "8ab2ead24d4ffed6afac2b1cb8b49e486baff0363ebd1590d9775f7030e9eefb",
+      "sha256": "eca98ee987ace32405e937279f13580cf6b0aaf9601a074d4679fdbc37bf0a74"
+    },
+    "preflight.stderr": {
+      "bytes": 0,
+      "compressed_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64",
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "preflight.stdout": {
+      "bytes": 3959,
+      "compressed_sha256": "667115795f54a07d3fba7993834d7d4919872fd7f29aceccbadbbf22aba79c2e",
+      "sha256": "8ba80f7d9cf7f1db6106be645575765f74959ed561f2081688e0394dbb9b6ec9"
+    },
+    "prepare.log": {
+      "bytes": 1509,
+      "compressed_sha256": "47356d7e532de6da65484e83cdd43a6db159265c8ac8f18ead2e0d88c6c97b0b",
+      "sha256": "d4019e795a5c35684d998983ce73bfc9da94738f95f7bf3842ab05886f34fc76"
+    },
+    "request.json": {
+      "bytes": 17334,
+      "compressed_sha256": "eb895a147c88f231c35b59b8fd38771e794c901e87f576ec9240ddb9263042b9",
+      "sha256": "0c280dccc33c9c41b1a82bc7028ad21d4c27dc56cf30cfbdfc93ce2a4bcb66a6"
+    },
+    "results__reexport-fsck.log": {
+      "bytes": 381,
+      "compressed_sha256": "a5a54fe48c8f174b45ff5f539c4e3075e8994f2c888ce18666dd21ee5a83551d",
+      "sha256": "0a9eabcef985ad9c3d5a31cdc1bc171fc822647fc49d979b6cba0f8b3d353054"
+    },
+    "results__reexport-success.json": {
+      "bytes": 2394,
+      "compressed_sha256": "844d6d381d6a0af9cf3dff8dd38042ba8887cbed86af64892c195c62af472de4",
+      "sha256": "f48412112ad7a7d18e30fa95d6976f6f5caa8384186c9c48ea47496f68e2b75c"
+    },
+    "results__sif-consumer__hdf5-consumer.log": {
+      "bytes": 4511,
+      "compressed_sha256": "e77a81685903b304679f444392190a42bf8dfa22ce595c43da494dceff4a28a8",
+      "sha256": "5ed1a91f4200fb0941cb827b494ec636a509750eac4a97a0efe01893e0e72c3b"
+    },
+    "results__sif-consumer__linkage.json": {
+      "bytes": 215805,
+      "compressed_sha256": "a67fa7c5e054dc619e31929428266bb16d937b03dec7f7721a4df61467af0bc9",
+      "sha256": "611317b319dbc17846c9c7bcceeea2f67d9a3b1905cb99fad8c2ba18e9f3ec51"
+    },
+    "results__sif-consumer__passed.json": {
+      "bytes": 170,
+      "compressed_sha256": "29219a8fbd7cff47865e4e3df2572d1f0fbccd1facfb0f045024f637028a1686",
+      "sha256": "af8fdeebed2d8baa655162656d487eede1b17bfb7464caa10116246013fb7879"
+    },
+    "results__sif-consumer__plumed.log": {
+      "bytes": 2448,
+      "compressed_sha256": "09982c9631a54815d4f5e327583edc061edcf11b231bbb81039fd7802fee7254",
+      "sha256": "e723af57f798071aa60d0b25cff7a6b6c0b8dbaf4f4244f646d99d62ac4186c3"
+    },
+    "results__slurm-2193082.log": {
+      "bytes": 13558,
+      "compressed_sha256": "46fd8df7f7656822af1ea2674ed46b462123ddc1e154185a55cc011c66ffcbb8",
+      "sha256": "9f3cd1eef59a1e601af7d0c0c004b993c585615ab52e78188cae31e7abe982be"
+    }
+  },
+  "release_sha256": "e4ea28b4070a889b151106b124048169423cbb1fe89b0e05378482efdb041329",
+  "schema": 1,
+  "scope": "Four-partition CP2K independent Spack dependency handoff",
+  "shared_provider_activated": false,
+  "sif_bytes": 515842048
+}

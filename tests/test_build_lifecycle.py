@@ -162,7 +162,7 @@ class CiLifecycleTests(unittest.TestCase):
 
     def execute(self, *, software="abacus", target="4v100-avx512", fail_monitor=None,
                 event="workflow_dispatch", version="v1", track="development",
-                prior=None, alter_identity=None, published_path=None, resume="", retry="false", phase="all", handoff=None, publish_failures=0, persisted_jobs=None, archive_hit=False):
+                prior=None, alter_identity=None, published_path=None, resume="", retry="false", phase="all", handoff=None, publish_failures=0, persisted_jobs=None, archive_hit=False, shared_spack=False):
         commands = []
         publish_remaining = publish_failures
         preflights = {}
@@ -237,6 +237,8 @@ class CiLifecycleTests(unittest.TestCase):
                         stdout = json.dumps({"build": not bool(prior), "skipped": prior or []})
                     elif script == 'input_archive_cache.py':
                         stdout = json.dumps(archive_hit if operation == 'stage' else True)
+                    elif (script, operation) == ('cp2k_site_spack.py', 'available'):
+                        stdout = json.dumps(dict(available=shared_spack, contract_sha256='d' * 64 if shared_spack else None))
             elif argv[0] == "scp" and argv[-2].endswith("/artifact.path"):
                 Path(argv[-1]).write_text(str(published_path or expected_artifact) + "\n")
             elif argv[0] == "scp":
@@ -263,7 +265,22 @@ class CiLifecycleTests(unittest.TestCase):
                 ci.main()
             clock.now.assert_called_once_with(timezone.utc)
             self.archive_calls = archives.call_args_list
-        return [command for command in commands if command[0] not in ('source_cache.py', 'input_archive_cache.py')]
+        return [command for command in commands if command[0] not in ('source_cache.py', 'input_archive_cache.py', 'cp2k_site_spack.py')]
+
+    def test_cp2k_shared_provider_skips_spack_allocation_and_keeps_application_and_science(self):
+        calls = self.execute(software='cp2k', phase='dependencies', shared_spack=True)
+        self.assertNotIn(('cp2k_dependency_stage.py', 'submit'), calls)
+        self.assertNotIn(('software_controller.py', 'submit'), calls)
+        self.assertIn('run_id=', (self.root / 'github-output').read_text())
+        calls = self.execute(software='cp2k', phase='application', shared_spack=True)
+        self.assertIn(('software_controller.py', 'submit'), calls)
+        build = next(args for name, args in self.remote_commands if name == 'software_controller.py' and args[0] == 'submit')
+        self.assertNotIn('--dependencies-run', build)
+        self.assertEqual(self.uploads, [])
+        calls = self.execute(software='cp2k', shared_spack=True)
+        self.assertNotIn(('cp2k_dependency_stage.py', 'submit'), calls)
+        self.assertIn(('cp2k_acceptance.py', 'submit'), calls)
+        self.assertEqual(calls[-1], ('software_controller.py', 'publish'))
 
     def test_stage_handoff_never_reuploads_or_reclaims_release(self):
         calls = self.execute(software='cp2k', phase='dependencies', track='release')
@@ -273,7 +290,8 @@ class CiLifecycleTests(unittest.TestCase):
         self.assertEqual(calls, [('software_controller.py', 'identity'),
                                 ('software_controller.py', 'submit'), ('software_controller.py', 'monitor')])
         self.assertEqual(self.uploads, [])
-        submit = self.remote_commands[1][1]
+        submit = next(args for name, args in self.remote_commands
+                      if name == 'software_controller.py' and args[0] == 'submit')
         self.assertIn('--dependencies-run', submit)
         calls = self.execute(software='cp2k', phase='acceptance', track='release')
         self.assertNotIn(('software_controller.py', 'submit'), calls)

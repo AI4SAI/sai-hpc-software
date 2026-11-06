@@ -21,6 +21,15 @@ def validate_receipt(data, partition, prefix):
             data.get('dependencies_installed') is not True or
             data.get('cp2k_built') is not False or data.get('published') is not False):
         raise ValueError('dependency receipt differs from this final-prefix build')
+    if data.get('layout') == 'shared-devtools':
+        from cp2k_devtools import digest, validate_provider
+        provider = data['shared_provider']
+        validate_provider(provider)
+        if (provider['install']['partition'] != partition or
+                data.get('shared_provider_sha256') != digest(provider) or
+                any(data.get(key) != provider['install'][key] for key in ('roots', 'runtime_prefixes', 'nodes'))):
+            raise ValueError('shared dependency receipt differs from its pinned provider')
+        return data['roots'], data['runtime_prefixes']
     roots = data.get('roots', {})
     runtime = data.get('runtime_prefixes', [])
     if set(roots) != ROOTS or not runtime or len(runtime) != len(set(runtime)):
@@ -77,6 +86,9 @@ def main():
     data = json.loads(args.receipt.read_text())
     roots, _ = validate_receipt(data, args.partition, args.prefix)
     check_files(roots)
+    if data.get('layout') == 'shared-devtools':
+        from cp2k_devtools import validate_provider
+        validate_provider(data['shared_provider'], files=True)
     print(shell_variables(data, args.partition, args.prefix), end='')
 
 
