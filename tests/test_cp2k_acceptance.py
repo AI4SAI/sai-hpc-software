@@ -451,11 +451,16 @@ class LifecycleTests(unittest.TestCase):
         manifest_path.write_text(json.dumps(self.manifest))
         args = argparse.Namespace(run_id="science", timeout=60, interval=0)
         verified = {"allocated_cpus": 16, "samples": {"validated": True}}
+        retired = False
+        accounting = "123|COMPLETED|0:0|\n"
 
         def command(argv, **kwargs):
             self.assertIn(argv[0], ("squeue", "sacct"))
+            if argv[0] == "squeue" and retired:
+                return subprocess.CompletedProcess(argv, 1, stdout="",
+                    stderr="slurm_load_jobs error: Invalid job id specified\n")
             return subprocess.CompletedProcess(argv, 0, stdout="" if argv[0] == "squeue" else
-                                               "123|COMPLETED|0:0|\n")
+                                               accounting)
 
         def validate(task, saved_request):
             self.assertEqual(task, self.task)
@@ -476,11 +481,47 @@ class LifecycleTests(unittest.TestCase):
             self.assertTrue(proof["verified"])
             self.assertEqual(proof["evidence_sha256"], checksum(self.task / "results/evidence.json"))
             self.assertEqual(json.loads((self.task / "results/evidence.json").read_text()), verified)
+            retired = True
+            verifier.reset_mock()
+            self.assertEqual(acceptance.monitor(args), 0)
+            verifier.assert_called_once()
+            self.assertTrue(json.loads((self.task / "results/status.json").read_text())["verified"])
+            accounting = "123|FAILED|1:0|\n"
+            verifier.reset_mock()
+            self.assertEqual(acceptance.monitor(args), 1)
+            verifier.assert_not_called()
+            self.assertFalse(json.loads((self.task / "results/status.json").read_text())["verified"])
+            self.assertNotIn(acceptance.PROOF, json.loads(manifest_path.read_text()))
+            accounting = "123|COMPLETED|0:0|\n"
             verifier.side_effect = ValueError("invalid raw science")
             with self.assertRaisesRegex(ValueError, "invalid raw science"):
                 acceptance.monitor(args)
         self.assertFalse(json.loads((self.task / "results/status.json").read_text())["verified"])
         self.assertNotIn(acceptance.PROOF, json.loads(manifest_path.read_text()))
+
+    def test_monitor_does_not_hide_scheduler_errors_or_accept_missing_accounting(self):
+        self.task.mkdir(parents=True)
+        (self.task / "job.id").write_text("123\n")
+        args = argparse.Namespace(run_id="science", timeout=60, interval=0)
+        for stderr in ("Unable to contact slurm controller", "Permission denied"):
+            with self.subTest(stderr=stderr), \
+                    patch.object(acceptance.subprocess, "run", return_value=subprocess.CompletedProcess(
+                        ["squeue"], 1, stdout="", stderr=stderr)), \
+                    patch.object(acceptance, "verify_evidence") as verifier:
+                with self.assertRaises(subprocess.CalledProcessError):
+                    acceptance.monitor(args)
+                verifier.assert_not_called()
+        with patch.object(acceptance.subprocess, "run", side_effect=[
+                subprocess.CompletedProcess(["squeue"], 1, stdout="",
+                    stderr="slurm_load_jobs error: Invalid job id specified"),
+                subprocess.CompletedProcess(["sacct"], 0, stdout="")]), \
+                patch.object(acceptance.time, "monotonic", side_effect=[0, 1, 61]), \
+                patch.object(acceptance.time, "sleep"), \
+                patch.object(acceptance, "verify_evidence") as verifier:
+            with self.assertRaises(TimeoutError):
+                acceptance.monitor(args)
+            verifier.assert_not_called()
+        self.assertFalse((self.task / "results/status.json").exists())
 
 
 if __name__ == "__main__":

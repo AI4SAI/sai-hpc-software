@@ -48,8 +48,33 @@ creation time, individual library build times and CP2K application build time.
 The compressed cache stays on project storage and is not uploaded as a CI log.
 Release LibXC 7.0.0 remains a site provider; only private LibXC is cached.
 
-Validation currently includes real native static/shared-library consumers after
+Validation includes real native static/shared-library consumers after
 removing the original installation prefix, metadata relocation, corruption and
 ABI mismatch rejection, dependency-change invalidation and publication gating.
-Actual CP2K cold/warm build timing and scientific qualification are required
-before enabling this change on the daily workflow.
+
+Real cold/warm qualification completed on November 6 for master on 16V100 and
+DSPRHBM, and v2026.2 on 16V100. Each warm build used the same source and dependency
+contract as its cold build, with a different application installation prefix.
+All six builds and six scientific jobs passed: 84 calculations, 42 single/two-node
+comparisons and 42 cold/warm energy/force comparisons. The immutable original
+controllers revalidated the raw evidence after publication.
+
+| Source and partition | Cold dependency build | Warm restore and verification | Compressed cache |
+| --- | ---: | ---: | ---: |
+| master, 16V100 | 653.6 s | 8.8 s | 188.9 MiB |
+| master, DSPRHBM | 282.7 s | 6.7 s | 52.8 MiB |
+| v2026.2, 16V100 | 150.1 s | 2.2 s | 20.4 MiB |
+
+These are observed stage timings, not controlled whole-application performance
+ratios. The [qualification report and raw evidence](evidence/cp2k-auxiliary-cache-20261106/README.md)
+include per-library timings, all jobs, SIF/cache hashes and numerical comparisons.
+The other partitions create their own accepted caches on their next cold build;
+they are not included in this warm-cache qualification. No administrator install
+is needed. This campaign publishes versioned artifacts without rotating the
+public beta alias.
+
+The science monitor also handles completed jobs that have aged out of
+`slurmctld`: the specific `squeue` invalid-job response falls through to durable
+`sacct` accounting. Successful accounting and all original numerical/provenance
+checks remain mandatory; missing accounting and unrelated scheduler failures
+cannot produce an acceptance receipt.
