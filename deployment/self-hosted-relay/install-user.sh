@@ -34,8 +34,12 @@ if [ ! -f "$base/runner/.runner" ]; then
     unset registration_token
 fi
 install -m 644 "$source_dir/sandbox.py" "$base/deployment/sandbox.py"
+install -m 644 "$source_dir/check_capacity.py" "$base/deployment/check_capacity.py"
 mkdir -p /home/sai/.config/systemd/user
 install -m 644 "$source_dir/sai-hpc-runner.service" /home/sai/.config/systemd/user/sai-hpc-runner.service
+systemctl --user disable --now sai-hpc-runner.service
 systemctl --user daemon-reload
-systemctl --user enable --now sai-hpc-runner.service
-systemctl --user status sai-hpc-runner.service --no-pager
+# Replace earlier runtime overrides as well as the persistent unit settings.
+systemctl --user set-property --runtime sai-hpc-runner.service MemoryHigh=128M MemoryMax=160M MemorySwapMax=0
+echo 'Installed; runner is stopped and disabled. Verify host capacity before starting it.'
+echo 'Manual start: systemctl --user start sai-hpc-runner.service'

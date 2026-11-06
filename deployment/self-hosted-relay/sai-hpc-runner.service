@@ -1,17 +1,21 @@
 [Unit]
 Description=SAI daily build relay (GitHub Actions)
 After=network-online.target
+StartLimitIntervalSec=1800
+StartLimitBurst=2
 
 [Service]
 WorkingDirectory=%h/ci/runner
+ExecCondition=/usr/bin/python3 %h/ci/deployment/check_capacity.py --runner-mib 160 --reserve-mib 128
 ExecStart=/usr/bin/python3 %h/ci/deployment/sandbox.py %h/ci %h/ci/runner/run.sh
 Environment=HOME=%h/ci/work/home
 Environment=PATH=%h/ci/bin:/usr/local/bin:/usr/bin:/bin
 Environment=TMPDIR=%h/ci/tmp
 Environment=SAI_RELAY_ROOT=%h/ci/state
 Environment=SAI_SOURCE_CACHE=%h/ci/cache/repositories
-Environment=DOTNET_GCHeapHardLimit=0x6000000
+Environment=DOTNET_GCHeapHardLimit=0x3000000
 Environment=DOTNET_gcServer=0
+Environment=NODE_OPTIONS=--max-old-space-size=48
 Environment=PYTHONDONTWRITEBYTECODE=1
 UnsetEnvironment=SSH_AUTH_SOCK SSH_AGENT_PID DBUS_SESSION_BUS_ADDRESS LD_PRELOAD PYTHONPATH
 UMask=0077
@@ -21,8 +25,15 @@ SystemCallFilter=~@mount @module @reboot @swap @raw-io @obsolete ptrace process_
 SystemCallErrorNumber=EPERM
 RestrictSUIDSGID=yes
 LockPersonality=yes
-Restart=always
-RestartSec=15
+MemoryHigh=128M
+MemoryMax=160M
+MemorySwapMax=0
+OOMScoreAdjust=1000
+OOMPolicy=kill
+CPUWeight=50
+IOWeight=50
+Restart=on-failure
+RestartSec=300
 KillMode=control-group
 TimeoutStopSec=60
 

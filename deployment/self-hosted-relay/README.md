@@ -1,11 +1,14 @@
 # SAI daily build relay
 
-The `sai` account on DO2 runs one repository-scoped GitHub Actions runner,
-`do2-sai-hpc`, with label `sai-hpc-relay`. The separate `cp2k` account and its
-tester runner are not part of this deployment. Compilation and scientific
-acceptance still run in Slurm under `/org/org-open-sai/proj-sai-hpc-software`.
+The `sai` account on DO2 has one repository-scoped GitHub Actions runner,
+`do2-sai-hpc`, with label `sai-hpc-relay`. It is currently stopped and disabled:
+the existing 512 MiB VPS does not have enough headroom for a second worker.
+The daily workflow remains hosted until this deployment passes live validation.
+The separate `cp2k` account and its tester runner are not part of this deployment.
+Compilation and scientific acceptance still run in Slurm under
+`/org/org-open-sai/proj-sai-hpc-software`.
 
-The daily workflow starts at 03:00 Asia/Shanghai. The hourly `:17` trigger only
+The proposed daily workflow starts at 03:00 Asia/Shanghai. Its hourly `:17` trigger only
 resumes unfinished generations; it never resolves a new source or starts a new
 daily build. Separate Actions concurrency groups preserve a queued nightly
 request. A filesystem lock serializes the one relay's durable state.
@@ -17,6 +20,7 @@ request. A filesystem lock serializes the one relay's durable state.
   runner/                  # official Actions runner 2.338.2
   bin/gh                   # official GitHub CLI 2.103.3
   deployment/sandbox.py    # Landlock entrypoint
+  deployment/check_capacity.py # one-shot memory check before listener startup
   work/                    # Actions checkout, ephemeral credentials
   tmp/                     # runner and source-transfer scratch
   cache/repositories/      # full Git ancestry, bounded at 1.5 GiB after packing
@@ -53,7 +57,8 @@ retrying; deleting a checkpoint to force submission is not a recovery method.
 ## Installation and operation
 
 Run `install-user.sh` as the dedicated `sai` account. It downloads and verifies
-the two pinned upstream binaries and installs the user service. On first
+the two pinned upstream binaries and installs the user service, leaving it
+stopped and disabled (including when updating an existing installation). On first
 installation, supply a short-lived repository registration token on stdin:
 
 ```sh
@@ -61,9 +66,10 @@ gh api --method POST repos/AI4SAI/sai-hpc-software/actions/runners/registration-
   ssh -l sai DO2-cp2k 'bash /path/to/install-user.sh'
 ```
 
-The installer requires its adjacent `sandbox.py` and service file. It uses no
-root installation. Enable `loginctl enable-linger sai` once if needed so logout
-does not stop the service. Keep the existing `hpc` Environment secrets
+The installer requires its adjacent Python helpers and service file. It uses no
+root installation. Only start the service after capacity and deployment review;
+enable lingering and automatic startup only after a successful live validation.
+Keep the existing `hpc` Environment secrets
 `REMOTE_USER` and `REMOTE_SSH_PRIVATE_KEY`; the CP2K tester's restricted cluster
 key is not suitable for build submission. Keys are written only to the current
 Actions temporary directory and removed in an `always()` step.
@@ -77,13 +83,34 @@ Dispatch `daily.yml` with `mode=smoke` to check runner identity, project access
 and Slurm command availability without allocating nodes. Dispatch `mode=resume`
 to continue an interrupted generation. `mode=start` resolves a new frozen
 request; a full development partition matrix also runs the existing beta gates.
-The legacy per-software workflows remain available on GitHub-hosted runners;
-PR validation also stays hosted. Only scheduled and manually dispatched daily
-jobs use this runner.
+The legacy per-software workflows and PR validation remain on GitHub-hosted
+runners. The proposed daily workflow uses this runner only after the migration
+PR is merged; leave it unmerged until live validation passes.
 
 The service applies the same unprivileged Landlock model as the CP2K tester:
 system paths are read-only, writable paths stay within this account's CI tree,
 TCP connections are limited to HTTPS and the SAI SSH port, and no listeners are
 allowed. The runner cannot read personal SSH files or the CP2K account's files.
-On this 512 MiB VPS, .NET uses workstation GC with a 96 MiB per-process heap
-limit. Source preparation is serial; Slurm computation is parallel.
+The runner service, including all worker, Python, Git and SSH descendants, has
+`MemoryHigh=128M`, `MemoryMax=160M` and `MemorySwapMax=0`. .NET uses workstation
+GC with a 48 MiB heap limit per process; Node has a 48 MiB old-space limit.
+`OOMScoreAdjust=1000` makes this service a preferred OOM victim, and an OOM
+stops its entire process group. Failure restarts wait five minutes and are
+limited to two starts per half hour. Source preparation is serial; Slurm
+computation is parallel. The 160 MiB envelope is a protective limit, not yet
+evidence that a full build relay can run within it.
+
+The one-shot `ExecCondition` requires `MemAvailable >= 288 MiB` (160 MiB runner
+budget plus 128 MiB host headroom) and memory PSI `some avg10 <= 5%`. Unreadable
+metrics also prevent startup. Insufficient capacity skips startup without
+launching a listener or entering a restart loop. This check is not a memory
+reservation and cannot predict another service's future peak; keep the runner
+disabled on the current host. It adds no resident monitor. Do not work around a
+failed check by raising limits or enabling swap on this shared VPS.
+
+On 2026-11-06 the new service reached 192.2 MiB and the existing CP2K service
+reported an OOM kill. After stopping the new runner, available memory recovered
+to 197–210 MiB and memory PSI `some avg10` fell from 88.94% to 0.01%. The smoke
+test passed, but the three-partition GPUMD relay test was stopped before live
+validation completed. Checkpoints are retained; this is not a successful
+migration or an accepted GPUMD build.

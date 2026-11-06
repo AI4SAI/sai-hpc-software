@@ -207,6 +207,9 @@ def report(paths, summary):
     lines = ['| Generation | Task | State | Slurm job(s) |', '|---|---|---|---|']
     for path in paths:
         generation = read(path)
+        for source in generation.get('skipped_sources', []):
+            lines.append(f'| {generation["workflow"]} | {source["software"]}-{source["track"]} | '
+                         f'skipped: {source["reason"]} | |')
         for task in generation['tasks']:
             checkpoint = path.parent / 'tasks' / task['id'] / 'checkpoint.json'
             data = read(checkpoint) if checkpoint.exists() else {}
