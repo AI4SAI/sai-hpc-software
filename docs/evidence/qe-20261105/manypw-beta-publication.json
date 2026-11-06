@@ -1,0 +1,255 @@
+{
+  "accounting": [
+    "2214331|COMPLETED|0:0|16V100|proj-sai-hpc-software|00:00:16|billing=300,cpu=16,gres/gpu=2,mem=30G,node=1|16v100n10|/org/org-open-sai/proj-sai-hpc-software/operations/qe-manypw-20261105-4846bfe4644d/16V100",
+    "2214333|COMPLETED|0:0|4V100|proj-sai-hpc-software|00:00:17|billing=388,cpu=16,gres/gpu=2,mem=44G,node=1|4v100n11|/org/org-open-sai/proj-sai-hpc-software/operations/qe-manypw-20261105-4846bfe4644d/4V100",
+    "2214335|COMPLETED|0:0|8V100V0|proj-sai-hpc-software|00:00:57|billing=360,cpu=12,gres/gpu=2,mem=92G,node=1|8v100v0n03|/org/org-open-sai/proj-sai-hpc-software/operations/qe-manypw-20261105-4846bfe4644d/8V100V0",
+    "2214337|COMPLETED|0:0|DSPRHBM|proj-sai-hpc-software|00:00:30|billing=194,cpu=2,mem=28G,node=1|d9470n03|/org/org-open-sai/proj-sai-hpc-software/operations/qe-manypw-20261105-4846bfe4644d/DSPRHBM"
+  ],
+  "after": {
+    "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/qe-manypw-20261105-4846bfe4644d",
+    "fixed": "develop-beta-20261105-61569eb48023-r4d85319d4295-bd913f2de073c",
+    "generation": "qe-manypw-20261105-4846bfe4644d"
+  },
+  "before": {
+    "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261105-41970760811-1-qe",
+    "fixed": "develop-beta-20261105-61569eb48023-r68ed5eb155c0-bd913f2de073c",
+    "generation": "daily-20261105-41970760811-1-qe"
+  },
+  "catalog_sha256": "6aa01a3e72a61ae3b70b8ebd1fa23ee9b4cc5e19b22f86b1993f784065fa5c6f",
+  "checks": [
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "6aa01a3e72a61ae3b70b8ebd1fa23ee9b4cc5e19b22f86b1993f784065fa5c6f",
+      "job": "2214331",
+      "partition": "16V100",
+      "passed": true,
+      "qe": {
+        "energy_ry": -15.84452726,
+        "forces_ry_bohr": [
+          [
+            -0.0,
+            -0.0,
+            0.0
+          ],
+          [
+            -0.0,
+            -0.0,
+            0.0
+          ]
+        ],
+        "manypw": {
+          "gpu_devices_by_rank": {
+            "0": [
+              "0"
+            ],
+            "1": [
+              "1"
+            ]
+          },
+          "images": [
+            {
+              "energy_ry": -15.84452726,
+              "image": 0,
+              "output_sha256": "bc0749d6a20a4980c8abf28952d85e0622823e7d179f2328d9b7c3ea48eb3980",
+              "schema_sha256": "c05b8a0f4f566ed8d22a2a936e612d9df5dcfd3f9e9d0b03ca46dad0ce569f41",
+              "scratch": "tmp_0"
+            },
+            {
+              "energy_ry": -15.84452726,
+              "image": 1,
+              "output_sha256": "70294d2550ee32969499be24ce43bebd6889a102d753c75110b03339858f532a",
+              "schema_sha256": "60a540dc335925fcd95fc80e68ca78f20e4f037555332f04aa52d369de758602",
+              "scratch": "tmp_1"
+            }
+          ],
+          "passed": true
+        }
+      },
+      "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+    },
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "6aa01a3e72a61ae3b70b8ebd1fa23ee9b4cc5e19b22f86b1993f784065fa5c6f",
+      "job": "2214333",
+      "partition": "4V100",
+      "passed": true,
+      "qe": {
+        "energy_ry": -15.84452726,
+        "forces_ry_bohr": [
+          [
+            -0.0,
+            -0.0,
+            -0.0
+          ],
+          [
+            -0.0,
+            -0.0,
+            0.0
+          ]
+        ],
+        "manypw": {
+          "gpu_devices_by_rank": {
+            "0": [
+              "0"
+            ],
+            "1": [
+              "1"
+            ]
+          },
+          "images": [
+            {
+              "energy_ry": -15.84452726,
+              "image": 0,
+              "output_sha256": "c338e850aad4c42a8689de949aec2d5290b382b566edcde32889edafab8f3ebb",
+              "schema_sha256": "6cf1d3c98351799afaf4c1f926e1952b230ab3d2bbcb4e48abd5fd0db5c7084b",
+              "scratch": "tmp_0"
+            },
+            {
+              "energy_ry": -15.84452726,
+              "image": 1,
+              "output_sha256": "02a6112badf609efc28bb9e6758c048c331c992b1fc3713991ce0ae3182eb9c8",
+              "schema_sha256": "1ae29dd3494f00a227d68dc6a39de46ddd14c0ded90e56cb6ec4aa95f73ac4b6",
+              "scratch": "tmp_1"
+            }
+          ],
+          "passed": true
+        }
+      },
+      "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+    },
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "6aa01a3e72a61ae3b70b8ebd1fa23ee9b4cc5e19b22f86b1993f784065fa5c6f",
+      "job": "2214335",
+      "partition": "8V100V0",
+      "passed": true,
+      "qe": {
+        "energy_ry": -15.84452726,
+        "forces_ry_bohr": [
+          [
+            0.0,
+            0.0,
+            -0.0
+          ],
+          [
+            -0.0,
+            -0.0,
+            0.0
+          ]
+        ],
+        "manypw": {
+          "gpu_devices_by_rank": {
+            "0": [
+              "0"
+            ],
+            "1": [
+              "1"
+            ]
+          },
+          "images": [
+            {
+              "energy_ry": -15.84452726,
+              "image": 0,
+              "output_sha256": "c235b8b301caf21b72784d7fa6b9a16695f1d2213ecaf6da9de1652d2f1b6213",
+              "schema_sha256": "ac74ada1be2c352673571c12ad2cdf1bf67df3539c3cdcb889dd8ca97c932da1",
+              "scratch": "tmp_0"
+            },
+            {
+              "energy_ry": -15.84452726,
+              "image": 1,
+              "output_sha256": "e981ae69a4fd5134cc6e72a82f230e3410a3aa90114d481ffa8c05123cdaf550",
+              "schema_sha256": "085036a6b62c81021f8d808ccf82cde1fd28bf92c678dfb0e4698f8baadfe751",
+              "scratch": "tmp_1"
+            }
+          ],
+          "passed": true
+        }
+      },
+      "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+    },
+    {
+      "automatic_memory": true,
+      "catalog_sha256": "6aa01a3e72a61ae3b70b8ebd1fa23ee9b4cc5e19b22f86b1993f784065fa5c6f",
+      "job": "2214337",
+      "partition": "DSPRHBM",
+      "passed": true,
+      "qe": {
+        "energy_ry": -15.84452726,
+        "forces_ry_bohr": [
+          [
+            -0.0,
+            0.0,
+            -0.0
+          ],
+          [
+            0.0,
+            -0.0,
+            0.0
+          ]
+        ],
+        "manypw": {
+          "gpu_devices_by_rank": {},
+          "images": [
+            {
+              "energy_ry": -15.84452726,
+              "image": 0,
+              "output_sha256": "0859f45a67c5a3cd5bd261bdfb19abf94d71b52921d1ac754c7422fb69144963",
+              "schema_sha256": "78ef8490ccca22cdd93fdcfa4733dad7d5d50dc4d9292e21493fabc2b83287f8",
+              "scratch": "tmp_0"
+            },
+            {
+              "energy_ry": -15.84452726,
+              "image": 1,
+              "output_sha256": "cd04ef73a211fd98d96d4b14fa2041ddaf81711c62a2cf9b61c3a5ece92e606b",
+              "schema_sha256": "8c294381627c28cb756cdef0ffc99a0d8887a912fa33b85cfd206d9ba1b902ea",
+              "scratch": "tmp_1"
+            }
+          ],
+          "passed": true
+        }
+      },
+      "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+    }
+  ],
+  "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/beta/4846bfe4644d3bcd1523f312cef49be8569b5152/qe-manypw-20261105",
+  "controller_sha": "4846bfe4644d3bcd1523f312cef49be8569b5152",
+  "images_modified": false,
+  "images_reused": true,
+  "jobs": [
+    {
+      "exclude": "",
+      "job": "2214331",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-manypw-20261105-4846bfe4644d/16V100",
+      "partition": "16V100",
+      "request_sha256": "9a07e095dea3f347feda3832d49f9eedf11d09f60b646f7b5849ce8e1f5ee802",
+      "script_sha256": "81451eefa2dd48993441270d572ef6845e0eef1459e3084b3f44441bfda5138b"
+    },
+    {
+      "exclude": "",
+      "job": "2214333",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-manypw-20261105-4846bfe4644d/4V100",
+      "partition": "4V100",
+      "request_sha256": "774ac72062ecca39f3fdcd81fd25b747106c4f7c578d4338dbaa9babe82586b5",
+      "script_sha256": "f80d5cc436ac355802f7e5bffd32fbfbfd1e654c7f680e1d6607b81fa1d34a56"
+    },
+    {
+      "exclude": "",
+      "job": "2214335",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-manypw-20261105-4846bfe4644d/8V100V0",
+      "partition": "8V100V0",
+      "request_sha256": "70fff566cfdeaa8782026c19291da0424a2c8cd74c5229eec059b781accd66f4",
+      "script_sha256": "37c7a4343cb57953f89ba556e2c9e2c5ff0d2831ebeca082f09bf9df54cedff0"
+    },
+    {
+      "exclude": "",
+      "job": "2214337",
+      "output": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-manypw-20261105-4846bfe4644d/DSPRHBM",
+      "partition": "DSPRHBM",
+      "request_sha256": "4b3e239e0aa49703fbf8ecf63c30550357f9f54f1253b089d2b41fc888412562",
+      "script_sha256": "13ae3c44c8b5c73abddfe6788b8cc4db189e01ceee49c475d92974245e9f6143"
+    }
+  ],
+  "observed_at": "2026-11-05T08:39:55.841582+00:00",
+  "passed": true,
+  "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+}

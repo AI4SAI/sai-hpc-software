@@ -55,6 +55,15 @@ class InputArchiveCacheTests(unittest.TestCase):
         self.assertFalse((self.directory / self.name).exists())
         self.assertTrue(upload.exists())
 
+    def test_qe_dependencies_use_the_same_verified_upload_and_cache_path(self):
+        first = self.root / 'runs/qe-one/input/qe-dependencies'
+        second = self.root / 'runs/qe-two/input/qe-dependencies'
+        self.assertFalse(cache.stage(self.root, first, self.name, self.digest))
+        self.assertTrue(cache.stage(self.root, first, self.name, self.digest, upload=self.upload(first)))
+        self.assertTrue(cache.stage(self.root, second, self.name, self.digest))
+        self.assertEqual((second / self.name).read_bytes(), self.data)
+        self.assertNotEqual((first / self.name).stat().st_ino, (second / self.name).stat().st_ino)
+
     def test_bad_cache_or_existing_input_is_not_silently_repaired(self):
         upload = self.upload()
         cache.stage(self.root, self.directory, self.name, self.digest, upload=upload)

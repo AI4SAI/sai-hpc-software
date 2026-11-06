@@ -34,6 +34,9 @@ def run(argv, **kwargs):
 
 
 def runtime_launchers(software):
+    if software == "qe":
+        from sif_runtime import PROGRAMS
+        return ("qe", *PROGRAMS["qe"])
     return ("gpumd", "nep", "gnep") if software == "gpumd" else (software,)
 
 
@@ -141,6 +144,8 @@ def inspect_existing_job(root, control, directory, expected, script):
         elif script == 'gpumd_acceptance.py':
             pins += [(control / 'gpumd_science.py', 'science_sha256'),
                      (control / 'gpumd_deepmd_probe.py', 'deepmd_probe_sha256')]
+        elif script == 'qe_acceptance.py':
+            pins += [(control / 'qe_science.py', 'science_sha256'), (control / 'qe_fixture.json', 'fixture_sha256')]
         elif script == 'cp2k_acceptance.py':
             pins += [(control / 'cp2k_benchmark.py', 'helpers_sha256'),
                      (directory / 'rank-exec.sh', 'rank_wrapper_sha256')]
@@ -254,7 +259,7 @@ def accept_multinode(python, exists, allow_retry, run_id, version, target):
 
 def main():
     software = os.environ.get("SOFTWARE", "abacus")
-    if software not in ("abacus", "cp2k", "gpumd"):
+    if software not in ("abacus", "cp2k", "gpumd", "qe"):
         raise ValueError("unknown software recipe")
     phase = os.environ.get("CP2K_PHASE") or os.environ.get("CI_PHASE", "all")
     if phase not in ("all", "build", "dependencies", "application", "acceptance"):
@@ -341,6 +346,9 @@ def main():
             recipe = ["gpumd_container_entry.sh", "gpumd_environment.sh", "gpumd_build.sh",
                       "gpumd_science.py", "gpumd_reference_cases.json", "gpumd_deepmd_probe.py", "gpumd_acceptance.py",
                       "export_native.py", "native_module.py"]
+        if software == "qe":
+            from software_controller import contract_files
+            recipe = [name for name in contract_files("qe") if name != "qe"]
         # One SFTP connection avoids paying the site's SSH handshake latency
         # for every trusted file. All files still arrive before fingerprinting
         # or submission, inside this run's own controller directory.
@@ -391,6 +399,8 @@ def main():
                           if software == "abacus" else "https://github.com/cp2k/cp2k.git")
             if software == "gpumd":
                 repository = "https://github.com/brucefan1983/GPUMD.git"
+            if software == "qe":
+                repository = "https://github.com/QEF/q-e.git"
             ensure_source(remote=remote, options=options, port=12022, controller=control,
                           cache=cache, commit=upstream, repository_url=repository,
                           temporary=temporary, destination=task + '/input')
@@ -403,6 +413,10 @@ def main():
             stage_archives(python, upload, root, f'{task}/input/abacus-updates',
                            [(updates / item['file'], item['sha256'])
                             for item in load_lock()['archives'] if 'url' in item])
+        if software == "qe":
+            from qe_dependencies import cache_archives
+            archives = cache_archives(temporary / "qe-dependencies", upstream)
+            stage_archives(python, upload, root, f'{task}/input/qe-dependencies', archives)
         if software == "cp2k":
             import cp2k_spack
             archives = cp2k_spack.cache_source_updates(temporary / 'cp2k-updates')
@@ -416,6 +430,8 @@ def main():
                 stream.write(f'run_id={run_id}\n')
     resume = os.environ.get("RESUME_RUN", "")
     extras = ["--resume-run", safe_name(resume)] if resume else []
+    if software == 'qe':
+        extras += ['--minutes', '120', '--overlay-mb', '16384']
     if software == 'gpumd':
         # Project builds take 2-3 minutes with the qualified image driver.
         # A four-hour request prevented backfill on the busy 4V100 partition.
@@ -502,6 +518,12 @@ def main():
                         python("cp2k_acceptance.py", "submit", scientific_run, version, target,
                                "--build-run-id", run_id)
                     python("cp2k_acceptance.py", "monitor", scientific_run)
+                if software == "qe":
+                    scientific_run = safe_name(run_id + "-science")
+                    if not acceptance_exists('qe_acceptance.py', scientific_run):
+                        python("qe_acceptance.py", "submit", scientific_run, version, target,
+                               "--build-run-id", run_id)
+                    python("qe_acceptance.py", "monitor", scientific_run)
                 if software == "gpumd":
                     scientific_run = safe_name(run_id + "-science" + repeat_suffix)
                     if not acceptance_exists('gpumd_acceptance.py', scientific_run):
@@ -528,6 +550,13 @@ def main():
             subprocess.run(['scp', '-q', *options, '-P', '12022', '-r',
                             f'{remote}:{root}/runs/{dependency_run}/results/.',
                             str(dependency_results)], check=False)
+        if software == "qe":
+            scientific_results = results / "qe-science"
+            scientific_results.mkdir(exist_ok=True)
+            scientific_task = f"{root}/runtime-tests/{run_id}-science"
+            for name in ("results", "request.json", "job.sbatch", "job.id"):
+                subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
+                                f"{remote}:{scientific_task}/{name}", str(scientific_results)], check=False)
         for suffix in ("", "-retest"):
             if software == "cp2k" and not suffix:
                 scientific_results = results / "cp2k-science"

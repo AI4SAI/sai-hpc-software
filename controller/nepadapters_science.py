@@ -14,6 +14,7 @@ from source_cache import checksum
 
 TOLERANCES = dict(energy_diff=1e-6, eatom_sum_diff=1e-6,
                   max_force_component_diff=1e-6, max_virial_component_diff=5e-6)
+BOUNDARIES = ('p p p', 'p p f', 'f f f')
 CASE_SHA256 = {
     'nep.txt': 'c772e70b32e5a085936f04e5f5382c7af88a03cb68765510ac82f71ae97eab2c',
     'train.xyz': '9679ecdac1ea13300f9bf208b7d4393e5dfd0e0527a46653de38e4c80bff74ab',
@@ -72,9 +73,14 @@ def verify(cases, output):
     record = json.loads((output / 'acceptance.json').read_text())
     if record.get('passed') is not True or set(record['static']) != {'cpu', 'gpu'}:
         raise ValueError('incomplete NEP acceptance')
+    boundary = record.get('boundary')
+    if boundary not in BOUNDARIES:
+        raise ValueError('missing or unsupported boundary acceptance')
     for backend in ('cpu', 'gpu'):
         work = output / backend
         screen = (work / 'screen.out').read_text()
+        if ('boundary ' + boundary) not in (work / 'in.baseline').read_text().splitlines():
+            raise ValueError('boundary input differs from acceptance')
         h.validate_startup_banner(screen, 'nep/' + backend)
         if backend == 'gpu':
             check_gpu_banner(screen)
@@ -84,16 +90,27 @@ def verify(cases, output):
     if (thermo.get('Step') != 100 or any(not math.isfinite(v) for v in thermo.values()) or
             thermo != record['gpu_dynamics']):
         raise ValueError('incomplete/non-finite NEP GPU dynamics')
+    if boundary == BOUNDARIES[0]:
+        if set(record.get('boundary_cases', {})) != set(BOUNDARIES[1:]):
+            raise ValueError('mixed/nonperiodic boundary acceptance is incomplete')
+        for mode in BOUNDARIES[1:]:
+            if verify(cases, output / ('boundary-' + mode.replace(' ', ''))) != record['boundary_cases'][mode]:
+                raise ValueError('boundary receipt differs from raw outputs')
     return record
 
 
-def run(cases, lmp, plugins, output, launcher=(), gpus=1):
+def run(cases, lmp, plugins, output, launcher=(), gpus=1, boundary='p p p'):
     h = helper(cases)
     fixture = h.read_fixture(cases / 'train.xyz')
     # A translation preserves the labels and places interacting atoms across
     # the domain midpoint, so every rank participates in two-rank tests.
     for atom in fixture['atoms']:
         atom['position'] = [x + 5.0 for x in atom['position']]
+        if boundary == 'p p f':
+            # Move the cluster across the periodic x face. Its nonperiodic z
+            # faces remain farther away than the model cutoff, preserving the
+            # pinned reference while exercising periodic ghosts with mixed PBC.
+            atom['position'][0] = (atom['position'][0] + 8.0) % fixture['lattice'][0]
     elements = h.read_type_map(cases / 'nep.txt')
     output.mkdir(parents=True, exist_ok=False)
     env = dict(os.environ, LAMMPS_PLUGIN_PATH=str(plugins), OMP_NUM_THREADS='1')
@@ -104,6 +121,8 @@ def run(cases, lmp, plugins, output, launcher=(), gpus=1):
         h.write_data(work / 'data.baseline', fixture, elements)
         h.write_input(work / 'in.baseline', '', cases / 'nep.txt', elements,
                       'nep/' + backend, 'environment', 'off' if backend == 'gpu' else 'on')
+        input_path = work / 'in.baseline'
+        input_path.write_text(input_path.read_text().replace('boundary p p p', 'boundary ' + boundary))
         argv = [*launcher, str(lmp)]
         if backend == 'gpu':
             argv += ['-k', 'on', 'g', str(gpus), '-pk', 'kokkos', 'neigh', 'full',
@@ -132,7 +151,13 @@ def run(cases, lmp, plugins, output, launcher=(), gpus=1):
         raise ValueError('GPU dynamics did not reach 100 finite steps')
     (work / 'dump.out').rename(work / 'dynamics.dump')
     (work / 'static.dump').rename(work / 'dump.out')
-    record = dict(schema=1, passed=True, tolerances=TOLERANCES, static=records,
+    boundary_cases = {}
+    if boundary == BOUNDARIES[0]:
+        for mode in BOUNDARIES[1:]:
+            boundary_cases[mode] = run(cases, lmp, plugins, output / ('boundary-' + mode.replace(' ', '')),
+                                       launcher, gpus, mode)
+    record = dict(schema=2, passed=True, boundary=boundary, boundary_cases=boundary_cases,
+                  tolerances=TOLERANCES, static=records,
                   gpu_dynamics=thermo, lmp=str(lmp), plugins=str(plugins),
                   launcher=list(launcher), gpus_per_node=gpus,
                   plugin_sha256={p.name: checksum(p) for p in sorted(plugins.glob('*plugin.so'))})

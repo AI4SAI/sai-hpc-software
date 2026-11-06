@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Read-only administrator preflight of the current home-maintained beta payload."""
+import argparse
 import hashlib
 import json
 from pathlib import Path
@@ -33,9 +34,15 @@ def verify(path, expected, *, executable=False):
 def main():
     checked = set()
     programs = {'abacus': ('abacus',), 'cp2k': ('cp2k', 'cp2k.psmp'), 'lammps': ('lmp',),
-                'deepmd-kit': ('dp', 'deepmd-python'), 'gpumd': ('gpumd', 'nep', 'gnep')}
-    for name, commands in programs.items():
-        branch = 'develop' if name in ('abacus', 'lammps') else 'master'
+                'deepmd-kit': ('dp', 'deepmd-python'), 'gpumd': ('gpumd', 'nep', 'gnep'),
+                'qe': ('pw.x', 'ph.x', 'neb.x', 'pp.x', 'pwcond.x')}
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument('software', nargs='*', help='explicit applications; defaults to the original five')
+    selected = parser.parse_args().software or list(programs)[:-1]
+    require(len(selected) == len(set(selected)) and set(selected) <= programs.keys(), 'invalid application selection')
+    for name in selected:
+        commands = programs[name]
+        branch = 'develop' if name in ('abacus', 'lammps', 'qe') else 'master'
         alias = PUBLIC_HOME / 'modulefiles/apps' / name / (branch + '-beta-later')
         require(alias.is_symlink(), 'missing beta symlink: ' + str(alias))
         fixed = alias.resolve(strict=True)

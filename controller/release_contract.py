@@ -34,6 +34,7 @@ PARTITIONS = {
 }
 GPU_TARGETS = tuple(target for target in PARTITIONS if target != "dsprhbm")
 SOFTWARE = {
+    "qe": {"repository": "QEF/q-e", "development_ref": "develop", "targets": tuple(PARTITIONS)},
     "abacus": {"repository": "deepmodeling/abacus-develop", "development_ref": "develop",
                "targets": tuple(PARTITIONS)},
     "cp2k": {"repository": "cp2k/cp2k", "development_ref": "master",

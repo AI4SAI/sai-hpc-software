@@ -1,0 +1,37 @@
+{
+  "observed_at": "2026-11-05T12:21:40.182144+00:00",
+  "failed_job": "2216535",
+  "failed_directory": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-a3dfe27f8892/4V100",
+  "source_log": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-a3dfe27f8892/4V100/case/manypw/stdout.txt",
+  "source_log_sha256": "c4c74f2ea4b6acadb5906a70b46cc60af209e7bc4d998c8fd6d7d2b6cc3ec637",
+  "forwarded_regex_counts": {
+    "rank0/device0": 8674,
+    "rank0/device1": 1,
+    "rank1/device1": 8675
+  },
+  "interleaved_samples": [
+    "[1,0]<stderr>: launch CUDA kernel  file=/workspace/source/PW/src/mix_rho.f90 function=rho_ddot line=1121 device=1 threadid=1 num_gangs=1 num_wolaunch CUDA kernel  file=/workspace/source/PW/src/mix_rho.f90 function=create_mix_type line=572 device=0 threadid=1 num_gangs=22 num_workers=1 vector_length=128 grid=22 block=128",
+    "[1,1]<stderr>: launch CUDA kernel  file=/workspace/source/PW/src/force_us.f90 function=force_us line=123 device=0 threadid=1 num_gangs=1 num_wolaunch CUDA kernel  file=/workspace/source/PW/src/force_us.f90 function=force_us line=123 device=1 threadid=1 num_gangs=1 num_workers=1 vector_length=128 grid=1 block=128 shared memory=2048",
+    "[1,0]<stderr>: launch CUDA kernel  file=/workspace/source/PW/src/force_us.f90 function=force_us line=123 device=1 threadid=1 num_gangs=1 num_workers=1 vector_length=256 grid=1 block=256 shared memory=2048",
+    "[1,0]<stderr>: launch CUDA kernel  file=/workspace/source/PW/src/force_us.f90 function=force_us line=123 device=1 threadid=1 num_gangs=1 num_wolaunch CUDA kernel  file=/workspace/source/PW/src/force_us.f90 function=force_us line=123 device=0 threadid=1 num_gangs=1 num_workers=1 vector_length=128 grid=1 block=128 shared memory=2048",
+    "[1,1]<stderr>: launch CUDA kernel  file=/workspace/source/PW/src/stres_us.f90 function=stres_us_k line=346 device=0 threadid=1 num_gangs=1 num_launch CUDA kernel  file=/workspace/source/PW/src/stres_us.f90 function=stres_us_k line=346 device=1 threadid=1 num_gangs=1 num_workers=1 vector_length=128 grid=1 block=128 shared memory=2048"
+  ],
+  "multiple_tags_in_one_line": 0,
+  "accounting": [
+    "2216535|FAILED|1:0|4V100|00:00:27|4v100n24|/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-a3dfe27f8892/4V100"
+  ],
+  "completed_images": {
+    "0": {
+      "converged": true,
+      "energy_ry": [
+        "-15.84452726"
+      ]
+    },
+    "1": {
+      "converged": true,
+      "energy_ry": [
+        "-15.84452726"
+      ]
+    }
+  }
+}

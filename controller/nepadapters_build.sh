@@ -37,11 +37,14 @@ PY
         -DCMAKE_CXX_STANDARD=20 -DCMAKE_CUDA_STANDARD=20 -DCMAKE_CUDA_ARCHITECTURES=70 \
         -DNEP_ADAPTERS_ENABLE_CPU=ON -DNEP_ADAPTERS_ENABLE_CUDA=ON \
         -DNEP_ADAPTERS_ENABLE_PYTHON=OFF -DNEP_ADAPTERS_ENABLE_LAMMPS=ON \
-        -DNEP_ADAPTERS_BUILD_TESTS=OFF -DNEP_ADAPTERS_INSTALL_DEVELOPMENT_FILES=OFF \
+        -DNEP_ADAPTERS_BUILD_TESTS=ON -DNEP_ADAPTERS_INSTALL_DEVELOPMENT_FILES=OFF \
         -DNEP_ADAPTERS_LAMMPS_SOURCE_DIR=/workspace/lammps \
         -DNEP_ADAPTERS_LAMMPS_KOKKOS_BUILD_DIR=/workspace/lammps-build
     cmake --build /workspace/nepadapters-build --parallel "$BUILD_JOBS" \
-        --target nepadapterscpuplugin nepadaptersgpuplugin
+        --target nepadapterscpuplugin nepadaptersgpuplugin nep_adapters_cpu_spin_test
+    ctest --test-dir /workspace/nepadapters-build --output-on-failure --no-tests=error \
+        -R '^nep_adapters_cpu_spin(_openmp)?_test$' \
+        --output-junit /runtime/upstream-spin-tests.xml
     cmake --install /workspace/nepadapters-build
     # MPI is supplied by the loaded LAMMPS module on every supported partition.
     for backend in cpu gpu; do

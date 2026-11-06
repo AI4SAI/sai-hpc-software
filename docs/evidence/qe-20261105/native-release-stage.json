@@ -1,0 +1,330 @@
+{
+  "administrator_package": "/home/stardust/sai-hpc-software/deployment/qe-7.6",
+  "module_sha256": "4e1d78e85d284842ef6dd8ff3ba77fcea6742dfeb7447c64a0ffd1226ffb740c",
+  "observed_at": "2026-11-05T06:18:23.436843+00:00",
+  "partitions": {
+    "16V100": {
+      "accounting": [
+        "2211811|16V100|COMPLETED|0:0|00:00:25|16|billing=300,cpu=16,gres/gpu=2,mem=30G,node=1|16v100n14|/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T060032Z/16V100"
+      ],
+      "cuda_kernel_devices_mpi2": [
+        "0",
+        "1"
+      ],
+      "result": {
+        "commands_checked": 67,
+        "job": "2211811",
+        "module_sha256": "94ddb11ecc4a34a11c755584001e89982582f1849ac377fd50768aa744da1bbc",
+        "mpi_home": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx2",
+        "node": "16v100n14.mr-sai.ai",
+        "passed": true,
+        "request": {
+          "checker_sha256": "b48edd4a755e52b4bac0763d5434390152c49b696cada867e66247ca53ddec43",
+          "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/qe-20261105-r7",
+          "fixture_sha256": "0592c144397c46b9f2af55c516a916ac01d4724cacac2573aeadc39e4f7db108",
+          "module_sha256": "94ddb11ecc4a34a11c755584001e89982582f1849ac377fd50768aa744da1bbc",
+          "partition": "16V100",
+          "prefix": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-release-stage-20261105-r1/opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/16V100",
+          "source_image_sha256": "01c6401d9c25302b63e11ee81ca79ae10037b30532e1a0667c786ea5c9ca6bfe",
+          "stage_root": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-release-stage-20261105-r1"
+        },
+        "science": {
+          "density_electrons": 7.99999404914205,
+          "frequencies_cm1": [
+            2.778696,
+            2.778696,
+            2.778696,
+            510.151309,
+            510.151309,
+            510.151309
+          ],
+          "gpu_executed": true,
+          "scf": {
+            "1": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  0.0,
+                  -0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              ]
+            },
+            "2": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  -0.0,
+                  -0.0,
+                  0.0
+                ],
+                [
+                  -0.0,
+                  -0.0,
+                  0.0
+                ]
+              ]
+            }
+          }
+        }
+      },
+      "result_sha256": "810f386f3d71c79e9fef0ce79e64ddd01e21223acacef86edef4b3408c9b22a3",
+      "state": "accepted",
+      "submission": {
+        "job": "2211811",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T060032Z/16V100",
+        "partition": "16V100",
+        "script_sha256": "a86d6986cbe9641659e39dba29aa2c61b876bfd9577877eaffc2af88d378b739"
+      }
+    },
+    "4V100": {
+      "accounting": [
+        "2211812|4V100|COMPLETED|0:0|00:00:36|16|billing=388,cpu=16,gres/gpu=2,mem=44G,node=1|4v100n31|/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T060032Z/4V100"
+      ],
+      "cuda_kernel_devices_mpi2": [
+        "0",
+        "1"
+      ],
+      "result": {
+        "commands_checked": 67,
+        "job": "2211812",
+        "module_sha256": "94ddb11ecc4a34a11c755584001e89982582f1849ac377fd50768aa744da1bbc",
+        "mpi_home": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512",
+        "node": "4v100n31.mr-sai.ai",
+        "passed": true,
+        "request": {
+          "checker_sha256": "b48edd4a755e52b4bac0763d5434390152c49b696cada867e66247ca53ddec43",
+          "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/qe-20261105-r7",
+          "fixture_sha256": "0592c144397c46b9f2af55c516a916ac01d4724cacac2573aeadc39e4f7db108",
+          "module_sha256": "94ddb11ecc4a34a11c755584001e89982582f1849ac377fd50768aa744da1bbc",
+          "partition": "4V100",
+          "prefix": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-release-stage-20261105-r1/opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/4V100",
+          "source_image_sha256": "9ef3d36e69bd96baa180c1ecf726c20058dd4c7d8c79f9d830dd392baabe0375",
+          "stage_root": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-release-stage-20261105-r1"
+        },
+        "science": {
+          "density_electrons": 7.99999404914205,
+          "frequencies_cm1": [
+            2.778695,
+            2.778695,
+            2.778695,
+            510.151309,
+            510.151309,
+            510.151309
+          ],
+          "gpu_executed": true,
+          "scf": {
+            "1": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  -0.0,
+                  -0.0,
+                  -0.0
+                ]
+              ]
+            },
+            "2": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  -0.0,
+                  -0.0,
+                  -0.0
+                ],
+                [
+                  -0.0,
+                  -0.0,
+                  0.0
+                ]
+              ]
+            }
+          }
+        }
+      },
+      "result_sha256": "7e3d83bcce5d378d5d9a30973f187092aa65dd10810a3a58597273421fdc2e9d",
+      "state": "accepted",
+      "submission": {
+        "job": "2211812",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T060032Z/4V100",
+        "partition": "4V100",
+        "script_sha256": "b77a6c073ed110359f5ec644a7cfac16cc5bfddfdc9348dc1b6f7beb1290d4ca"
+      }
+    },
+    "8V100V0": {
+      "accounting": [
+        "2211813|8V100V0|COMPLETED|0:0|00:01:50|12|billing=360,cpu=12,gres/gpu=2,mem=92G,node=1|8v100v0n05|/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T060032Z/8V100V0"
+      ],
+      "cuda_kernel_devices_mpi2": [
+        "0",
+        "1"
+      ],
+      "result": {
+        "commands_checked": 67,
+        "job": "2211813",
+        "module_sha256": "94ddb11ecc4a34a11c755584001e89982582f1849ac377fd50768aa744da1bbc",
+        "mpi_home": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx2",
+        "node": "8v100v0n05.mr-sai.ai",
+        "passed": true,
+        "request": {
+          "checker_sha256": "b48edd4a755e52b4bac0763d5434390152c49b696cada867e66247ca53ddec43",
+          "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/qe-20261105-r7",
+          "fixture_sha256": "0592c144397c46b9f2af55c516a916ac01d4724cacac2573aeadc39e4f7db108",
+          "module_sha256": "94ddb11ecc4a34a11c755584001e89982582f1849ac377fd50768aa744da1bbc",
+          "partition": "8V100V0",
+          "prefix": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-release-stage-20261105-r1/opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0",
+          "source_image_sha256": "bb1d51d5b548b04d8c77dc844d6a30cfef3cfd1915cefad06666491652fcb6de",
+          "stage_root": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-release-stage-20261105-r1"
+        },
+        "science": {
+          "density_electrons": 7.99999404914205,
+          "frequencies_cm1": [
+            2.778696,
+            2.778696,
+            2.778696,
+            510.151309,
+            510.151309,
+            510.151309
+          ],
+          "gpu_executed": true,
+          "scf": {
+            "1": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  -0.0
+                ]
+              ]
+            },
+            "2": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  0.0,
+                  0.0,
+                  -0.0
+                ],
+                [
+                  -0.0,
+                  -0.0,
+                  0.0
+                ]
+              ]
+            }
+          }
+        }
+      },
+      "result_sha256": "d879973861d8259380d539a1f65680f93b271288a3f10d3b68a296663b4dfaa7",
+      "state": "accepted",
+      "submission": {
+        "job": "2211813",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T060032Z/8V100V0",
+        "partition": "8V100V0",
+        "script_sha256": "7bbdaf3c759406d225fede53579b9ec0ca1322a375b74a92447cc28ef22f8c63"
+      }
+    },
+    "DSPRHBM": {
+      "accounting": [
+        "2211814|DSPRHBM|COMPLETED|0:0|00:00:39|4|billing=55,cpu=4,mem=8G,node=1|d9470n03|/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T060032Z/DSPRHBM"
+      ],
+      "result": {
+        "commands_checked": 67,
+        "job": "2211814",
+        "module_sha256": "94ddb11ecc4a34a11c755584001e89982582f1849ac377fd50768aa744da1bbc",
+        "mpi_home": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512",
+        "node": "d9470n03.mr-sai.ai",
+        "passed": true,
+        "request": {
+          "checker_sha256": "f3f1e65a5e072c2b4e93b6af015c75e9091cdf0a1ac8c1ece8f345f8bd66de29",
+          "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/qe-20261105-r10",
+          "fixture_sha256": "0592c144397c46b9f2af55c516a916ac01d4724cacac2573aeadc39e4f7db108",
+          "module_sha256": "94ddb11ecc4a34a11c755584001e89982582f1849ac377fd50768aa744da1bbc",
+          "partition": "DSPRHBM",
+          "prefix": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-release-stage-20261105-r1/opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r18629d40806e/DSPRHBM",
+          "source_image_sha256": "f2ff9faa95fad977dcf67f48d3fa8898b1cb5a7e5161bf60348f8a24fa30b9c4",
+          "stage_root": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-release-stage-20261105-r1"
+        },
+        "science": {
+          "density_electrons": 7.9999948251504,
+          "frequencies_cm1": [
+            2.590577,
+            2.590577,
+            2.590577,
+            510.149663,
+            510.149663,
+            510.149663
+          ],
+          "gpu_executed": false,
+          "scf": {
+            "1": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  0.0,
+                  0.0,
+                  -0.0
+                ],
+                [
+                  0.0,
+                  -0.0,
+                  0.0
+                ]
+              ]
+            },
+            "2": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  -0.0,
+                  0.0,
+                  -0.0
+                ],
+                [
+                  0.0,
+                  -0.0,
+                  0.0
+                ]
+              ]
+            }
+          }
+        }
+      },
+      "result_sha256": "2612ffc851aff3d85caab46d182a2c57e0d61348608c2fd1974a17e335003e02",
+      "state": "accepted",
+      "submission": {
+        "job": "2211814",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T060032Z/DSPRHBM",
+        "partition": "DSPRHBM",
+        "script_sha256": "50ccfe84afbb5a1f0b6dbf35085d27d174b74d1f4f4b124e250c111f396b8c66"
+      }
+    }
+  },
+  "release_sha256": "ba873e5fec184598fcc9943241f7a2f0548452f7b8d455bbd2ab0c09f97f6b07",
+  "scheduler_adjustment": {
+    "after": "JobId=2211811 JobName=qe-native-16V100\n   UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A\n   Priority=6002 Nice=0 Account=proj-sai-hpc-software QOS=flood-1o2gpu WCKey=*\n   JobState=PENDING Reason=None Dependency=(null)\n   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0\n   RunTime=00:00:00 TimeLimit=00:05:00 TimeMin=N/A\n   SubmitTime=2026-11-05T14:00:32 EligibleTime=2026-11-05T14:00:32\n   AccrueTime=Unknown\n   StartTime=Unknown EndTime=Unknown Deadline=N/A\n   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-11-05T14:05:06 Scheduler=Backfill:*\n   Partition=16V100 AllocNode:Sid=login-01:3687669\n   ReqNodeList=(null) ExcNodeList=(null)\n   NodeList=\n   NumNodes=1-1 NumCPUs=2 NumTasks=2 CPUs/Task=1 ReqB:S:C:T=0:0:*:*\n   ReqTRES=cpu=2,mem=30G,node=1,billing=300,gres/gpu=2\n   AllocTRES=(null)\n   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*\n   MinCPUsNode=1 MinMemoryNode=0 MinTmpDiskNode=0\n   Features=(null) DelayBoot=00:00:00\n   OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null)\n   Command=/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T060032Z/16V100/job.sbatch\n   SubmitLine=sbatch --parsable /org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T060032Z/16V100/job.sbatch\n   WorkDir=/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T060032Z/16V100\n   StdErr=\n   StdIn=/dev/null\n   StdOut=/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T060032Z/16V100/slurm-2211811.log\n   TresPerNode=gres/gpu:2\n\n",
+    "before": "JobId=2211811 JobName=qe-native-16V100\n   UserId=stardust(1478400690) GroupId=stardust(1478400690) MCS_label=N/A\n   Priority=10002 Nice=0 Account=proj-sai-hpc-software QOS=rush-1o2gpu WCKey=*\n   JobState=PENDING Reason=Job's_QOS_not_permitted_to_use_this_partition_(16V100_allows_huge-gpu,flood-gpu,rush-gpu,ultimate-gpu,flood-1o2gpu_not_rush-1o2gpu) Dependency=(null)\n   Requeue=0 Restarts=0 BatchFlag=1 Reboot=0 ExitCode=0:0\n   RunTime=00:00:00 TimeLimit=00:05:00 TimeMin=N/A\n   SubmitTime=2026-11-05T14:00:32 EligibleTime=2026-11-05T14:00:32\n   AccrueTime=2026-11-05T14:00:32\n   StartTime=Unknown EndTime=Unknown Deadline=N/A\n   SuspendTime=None SecsPreSuspend=0 LastSchedEval=2026-11-05T14:05:06 Scheduler=Backfill:*\n   Partition=16V100 AllocNode:Sid=login-01:3687669\n   ReqNodeList=(null) ExcNodeList=(null)\n   NodeList=\n   NumNodes=1-1 NumCPUs=2 NumTasks=2 CPUs/Task=1 ReqB:S:C:T=0:0:*:*\n   ReqTRES=cpu=2,mem=30G,node=1,billing=300,gres/gpu=2\n   AllocTRES=(null)\n   Socks/Node=* NtasksPerN:B:S:C=0:0:*:* CoreSpec=*\n   MinCPUsNode=1 MinMemoryNode=0 MinTmpDiskNode=0\n   Features=(null) DelayBoot=00:00:00\n   OverSubscribe=NO Exclusive=NO Contiguous=0 Licenses=(null) LicensesAlloc=(null) Network=(null)\n   Command=/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T060032Z/16V100/job.sbatch\n   SubmitLine=sbatch --parsable /org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T060032Z/16V100/job.sbatch\n   WorkDir=/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T060032Z/16V100\n   StdErr=\n   StdIn=/dev/null\n   StdOut=/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T060032Z/16V100/slurm-2211811.log\n   TresPerNode=gres/gpu:2\n\n",
+    "observed_at": "2026-11-05T06:05:08.133136+00:00",
+    "reason": "Use the existing workflow policy: 16V100 disallows rush-1o2gpu; flood-1o2gpu is allowed. No changes to payload, resource count, inputs or frozen scripts.",
+    "returncode": 0,
+    "stderr": ""
+  },
+  "scope": "Native release files staged on project storage; physical /opt not installed.",
+  "stage_root": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-release-stage-20261105-r1"
+}

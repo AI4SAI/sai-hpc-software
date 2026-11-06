@@ -16,7 +16,7 @@ from export_native import (MANIFEST_PATH, FRAGMENT_PATH, canonical, checksum, ex
 from release_contract import SOFTWARE, make_identity
 
 COMMANDS = {"abacus": "abacus", "cp2k": "cp2k.psmp", "deepmd-kit": "dp",
-            "lammps": "lmp", "gpumd": "gpumd"}
+            "lammps": "lmp", "gpumd": "gpumd", "qe": "pw.x"}
 
 
 def prepare(directory):

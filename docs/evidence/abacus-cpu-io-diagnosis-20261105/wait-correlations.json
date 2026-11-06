@@ -1,0 +1,29 @@
+{
+  "method": "Align each PMPI monotonic origin to its final profile fopen completion timestamp from strace; epochs are estimates, not synchronized hardware timestamps.",
+  "samples": [
+    {
+      "io_rank": 0,
+      "waiting_rank": 4,
+      "syscall": "1235374 1793880986.830042 mkdir(\"OUT.autotest/\", 0755) = 0 <4.261372>",
+      "syscall_start_epoch": 1793880986.830042,
+      "syscall_seconds": 4.261372,
+      "mpi_function": "Allreduce",
+      "mpi_start_epoch_estimate": 1793880986.8308573,
+      "mpi_seconds": 4.261565995,
+      "overlap_seconds": 4.260556697845459,
+      "overlap_fraction_of_mpi_call": 0.9997631628477126
+    },
+    {
+      "io_rank": 4,
+      "waiting_rank": 0,
+      "syscall": "2583566 1793881021.308157 openat(AT_FDCWD, \"OUT.autotest/deepks_projdm.dat\", O_WRONLY|O_CREAT|O_TRUNC, 0666) = 61 <4.211466>",
+      "syscall_start_epoch": 1793881021.308157,
+      "syscall_seconds": 4.211466,
+      "mpi_function": "Allreduce",
+      "mpi_start_epoch_estimate": 1793881021.3127563,
+      "mpi_seconds": 4.21381684,
+      "overlap_seconds": 4.20686674118042,
+      "overlap_fraction_of_mpi_call": 0.9983506405039713
+    }
+  ]
+}

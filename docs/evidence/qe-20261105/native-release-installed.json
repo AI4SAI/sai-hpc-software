@@ -1,0 +1,423 @@
+{
+  "administrator_package": "/home/stardust/sai-hpc-software/deployment/qe-7.6",
+  "all_accepted": true,
+  "module_path": "/opt/modules/modulefiles/apps/qe/7.6-auto",
+  "module_sha256": "4e1d78e85d284842ef6dd8ff3ba77fcea6742dfeb7447c64a0ffd1226ffb740c",
+  "observed_at": "2026-11-05T07:01:31.238891+00:00",
+  "operation_root": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T064120Z",
+  "partitions": {
+    "16V100": {
+      "accounting": "2212239|16V100|COMPLETED|0:0|00:00:23|16|billing=300,cpu=16,gres/gpu=2,mem=30G,node=1|16v100n09|/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T064120Z/16V100",
+      "cuda_kernel_devices_mpi2": [
+        "0",
+        "1"
+      ],
+      "files": {
+        "job.sbatch": "c0ea0d698d3575db1ce44a7e8714714e0879af7cadafcaf22da1cc0cff680746",
+        "ldd.json": "fe52312cf36407eb0672a40195688c8fafdd471f71a9db5280c2944cfc355db7",
+        "rank.sh": "2651f74129d6398ed7afc27ba2c8e17b9648a1dfb17559533c88a7b264e92fda",
+        "request.json": "fbff2aa749aa6caa4c8d7c9f74bb6c0d9bfce073e82f5eef78dcd63833032add",
+        "science/mpi1/Si.pz-vbc.UPF": "d75dd6b0be0aa10587fc95900cfd6ba7314d461a8276a81df34f009d0bfc075d",
+        "science/mpi1/ph.in": "fcb1af192851d1748322bf5cbf3f10d101a8b65bce48cdb31a7bd54a92c45148",
+        "science/mpi1/pp.in": "2d6c3f199419016114a668b1e03b65e209043da8063683b20cb532d6a44ff501",
+        "science/mpi1/pw.out": "be5774f3ff29bb1e8352a0edb40d934f70588f89db05fd25b61a6767d14899ec",
+        "science/mpi1/ranks/rank-0.tsv": "633d28d3346ba9ccd70e4eb58aef3ccafbde7ba7db208fc41e47c6ef22e0922b",
+        "science/mpi1/scf.in": "5ce08026d14c5de46de474137e4b54cac0a53bfbafa41ad9131d8aef023f2366",
+        "science/mpi2/Si.pz-vbc.UPF": "d75dd6b0be0aa10587fc95900cfd6ba7314d461a8276a81df34f009d0bfc075d",
+        "science/mpi2/ph.in": "fcb1af192851d1748322bf5cbf3f10d101a8b65bce48cdb31a7bd54a92c45148",
+        "science/mpi2/ph.out": "b37d05a491ca94dcd4b31448063b3ea6049534ab6cb79975ceb412b8a07a9c6a",
+        "science/mpi2/pp.in": "2d6c3f199419016114a668b1e03b65e209043da8063683b20cb532d6a44ff501",
+        "science/mpi2/pp.out": "f73666f02d1723a38b802025a159cddb23e7c4f1df179e7fc36ea6f05480d8d9",
+        "science/mpi2/pw.out": "234ef28222d0390a447808f9a4f2f5efa68b8fa765b706674e41ec41832f6f6b",
+        "science/mpi2/ranks/rank-0.tsv": "4c811bd28313d597c64906995e0d751b3ea428577713d8074d764caad81609ff",
+        "science/mpi2/ranks/rank-1.tsv": "5f92cc2d8918638950d39a2c96e3af4f851557ac9b5df5a7c95b620031cd462c",
+        "science/mpi2/rho.cube": "dc0fa7772514b852b26492fe9a7740517782b365436491ebfbe31568be4de9b1",
+        "science/mpi2/scf.in": "5ce08026d14c5de46de474137e4b54cac0a53bfbafa41ad9131d8aef023f2366",
+        "science/science.json": "af9491b0226b4cd286fe408a385454771cae1ab5d9197c4a6febc895ce5cefe3",
+        "slurm-2212239.log": "47a57ef0cb74cf961fc055222e7ad81d06d8c6eb88f973b86ef2324029994ada"
+      },
+      "installed_bytes": 2072076261,
+      "installed_file_count": 72,
+      "prefix": "/opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/16V100",
+      "result": {
+        "commands_checked": 67,
+        "job": "2212239",
+        "module_sha256": "4e1d78e85d284842ef6dd8ff3ba77fcea6742dfeb7447c64a0ffd1226ffb740c",
+        "mpi_home": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx2",
+        "node": "16v100n09.mr-sai.ai",
+        "passed": true,
+        "request": {
+          "checker_sha256": "b48edd4a755e52b4bac0763d5434390152c49b696cada867e66247ca53ddec43",
+          "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/qe-20261105-r7",
+          "fixture_sha256": "0592c144397c46b9f2af55c516a916ac01d4724cacac2573aeadc39e4f7db108",
+          "module_sha256": "4e1d78e85d284842ef6dd8ff3ba77fcea6742dfeb7447c64a0ffd1226ffb740c",
+          "partition": "16V100",
+          "prefix": "/opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/16V100",
+          "source_image_sha256": "01c6401d9c25302b63e11ee81ca79ae10037b30532e1a0667c786ea5c9ca6bfe",
+          "stage_root": "/"
+        },
+        "science": {
+          "density_electrons": 7.99999404914205,
+          "frequencies_cm1": [
+            2.778696,
+            2.778696,
+            2.778696,
+            510.151309,
+            510.151309,
+            510.151309
+          ],
+          "gpu_executed": true,
+          "scf": {
+            "1": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  0.0,
+                  -0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ]
+              ]
+            },
+            "2": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  -0.0,
+                  -0.0,
+                  0.0
+                ],
+                [
+                  -0.0,
+                  -0.0,
+                  0.0
+                ]
+              ]
+            }
+          }
+        }
+      },
+      "result_sha256": "7028aaa48ad48993b42a3f4338d418a4fbe279fb1e5a0899695be996a216752e",
+      "state": "accepted",
+      "submission": {
+        "job": "2212239",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T064120Z/16V100",
+        "partition": "16V100",
+        "script_sha256": "c0ea0d698d3575db1ce44a7e8714714e0879af7cadafcaf22da1cc0cff680746"
+      }
+    },
+    "4V100": {
+      "accounting": "2212240|4V100|COMPLETED|0:0|00:00:12|16|billing=388,cpu=16,gres/gpu=2,mem=44G,node=1|4v100n31|/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T064120Z/4V100",
+      "cuda_kernel_devices_mpi2": [
+        "0",
+        "1"
+      ],
+      "files": {
+        "job.sbatch": "40fe50eb631ed6be83d32b46d5ec99bd96c5e4e6c4ab1e6aaff1d91c1b051cc6",
+        "ldd.json": "1668a1637a38c25099b4f85e34e201e2d87aed9f67cffa342b349efad86cf0b1",
+        "rank.sh": "2651f74129d6398ed7afc27ba2c8e17b9648a1dfb17559533c88a7b264e92fda",
+        "request.json": "4bf8550a627988d1a7a28f708fedff3074dee0653a061615d70800cc720f42f0",
+        "science/mpi1/Si.pz-vbc.UPF": "d75dd6b0be0aa10587fc95900cfd6ba7314d461a8276a81df34f009d0bfc075d",
+        "science/mpi1/ph.in": "fcb1af192851d1748322bf5cbf3f10d101a8b65bce48cdb31a7bd54a92c45148",
+        "science/mpi1/pp.in": "2d6c3f199419016114a668b1e03b65e209043da8063683b20cb532d6a44ff501",
+        "science/mpi1/pw.out": "6d118cffd696cf2320be071fdfbeac03cbafa8a09971091d34f3d18bfa1c233d",
+        "science/mpi1/ranks/rank-0.tsv": "8bbb86611b0824861539e6ef9a4ae380ebad18ac1306d71808bc7d310dfb84a9",
+        "science/mpi1/scf.in": "5ce08026d14c5de46de474137e4b54cac0a53bfbafa41ad9131d8aef023f2366",
+        "science/mpi2/Si.pz-vbc.UPF": "d75dd6b0be0aa10587fc95900cfd6ba7314d461a8276a81df34f009d0bfc075d",
+        "science/mpi2/ph.in": "fcb1af192851d1748322bf5cbf3f10d101a8b65bce48cdb31a7bd54a92c45148",
+        "science/mpi2/ph.out": "43e95e483906c87be570f4612e6f529122b18a463ac51a333e5709d8e15b16c6",
+        "science/mpi2/pp.in": "2d6c3f199419016114a668b1e03b65e209043da8063683b20cb532d6a44ff501",
+        "science/mpi2/pp.out": "b619b10e6642a18269b739f9e82e27f3117a92bf6d0ee058e57c55d6c8c22211",
+        "science/mpi2/pw.out": "6191b1f548f89cc9377668f9d48ba068cd8c6ac7abb40186df81e7f0bb728ed3",
+        "science/mpi2/ranks/rank-0.tsv": "5b40437e6360f48e60dbec36083214651fdb9561776105c19a706d1acc1010d0",
+        "science/mpi2/ranks/rank-1.tsv": "51584aa46ddb115bd067fb08348e171f7c611b86b3f316cc07d71e74d76ffaa9",
+        "science/mpi2/rho.cube": "dc0fa7772514b852b26492fe9a7740517782b365436491ebfbe31568be4de9b1",
+        "science/mpi2/scf.in": "5ce08026d14c5de46de474137e4b54cac0a53bfbafa41ad9131d8aef023f2366",
+        "science/science.json": "f76cf3546d451efd622f15a7c8c68c962bff0c33b4da4c3af82c45cfd9b71e86",
+        "slurm-2212240.log": "7c1949083b1c91a9763e62a3c581c6b57e32061a6443ce10be38164fe70c8092"
+      },
+      "installed_bytes": 2057120501,
+      "installed_file_count": 72,
+      "prefix": "/opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/4V100",
+      "result": {
+        "commands_checked": 67,
+        "job": "2212240",
+        "module_sha256": "4e1d78e85d284842ef6dd8ff3ba77fcea6742dfeb7447c64a0ffd1226ffb740c",
+        "mpi_home": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512",
+        "node": "4v100n31.mr-sai.ai",
+        "passed": true,
+        "request": {
+          "checker_sha256": "b48edd4a755e52b4bac0763d5434390152c49b696cada867e66247ca53ddec43",
+          "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/qe-20261105-r7",
+          "fixture_sha256": "0592c144397c46b9f2af55c516a916ac01d4724cacac2573aeadc39e4f7db108",
+          "module_sha256": "4e1d78e85d284842ef6dd8ff3ba77fcea6742dfeb7447c64a0ffd1226ffb740c",
+          "partition": "4V100",
+          "prefix": "/opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/4V100",
+          "source_image_sha256": "9ef3d36e69bd96baa180c1ecf726c20058dd4c7d8c79f9d830dd392baabe0375",
+          "stage_root": "/"
+        },
+        "science": {
+          "density_electrons": 7.99999404914205,
+          "frequencies_cm1": [
+            2.778695,
+            2.778695,
+            2.778695,
+            510.151309,
+            510.151309,
+            510.151309
+          ],
+          "gpu_executed": true,
+          "scf": {
+            "1": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  -0.0,
+                  -0.0,
+                  -0.0
+                ]
+              ]
+            },
+            "2": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  -0.0,
+                  -0.0,
+                  -0.0
+                ],
+                [
+                  -0.0,
+                  -0.0,
+                  0.0
+                ]
+              ]
+            }
+          }
+        }
+      },
+      "result_sha256": "1a88a5444f7ec0d1582faa78bdffcc77783d091e1903a2d72694eb027281629b",
+      "state": "accepted",
+      "submission": {
+        "job": "2212240",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T064120Z/4V100",
+        "partition": "4V100",
+        "script_sha256": "40fe50eb631ed6be83d32b46d5ec99bd96c5e4e6c4ab1e6aaff1d91c1b051cc6"
+      }
+    },
+    "8V100V0": {
+      "accounting": "2212241|8V100V0|COMPLETED|0:0|00:00:32|12|billing=360,cpu=12,gres/gpu=2,mem=92G,node=1|8v100v0n04|/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T064120Z/8V100V0",
+      "cuda_kernel_devices_mpi2": [
+        "0",
+        "1"
+      ],
+      "files": {
+        "job.sbatch": "a3c0f0170c31af6807d43be325305424b299108cc9a023b6142dff82c1bfc77c",
+        "ldd.json": "d47b0cc89938b407503ac5f9eaa463e4e5db0e23628bdd06be5473590a4cb70f",
+        "rank.sh": "2651f74129d6398ed7afc27ba2c8e17b9648a1dfb17559533c88a7b264e92fda",
+        "request.json": "efd821c0c36d8822f4a2523bc4e57a66c8aa1433dc9948ab25d915396bf004b9",
+        "science/mpi1/Si.pz-vbc.UPF": "d75dd6b0be0aa10587fc95900cfd6ba7314d461a8276a81df34f009d0bfc075d",
+        "science/mpi1/ph.in": "fcb1af192851d1748322bf5cbf3f10d101a8b65bce48cdb31a7bd54a92c45148",
+        "science/mpi1/pp.in": "2d6c3f199419016114a668b1e03b65e209043da8063683b20cb532d6a44ff501",
+        "science/mpi1/pw.out": "9283af5979e31f5915701897444a5f36907eabfae65a458a7ee0952abba8c31e",
+        "science/mpi1/ranks/rank-0.tsv": "1d66c0f2518f0a48345883676aa49fca2cabc717902227984d1cc4b19547814e",
+        "science/mpi1/scf.in": "5ce08026d14c5de46de474137e4b54cac0a53bfbafa41ad9131d8aef023f2366",
+        "science/mpi2/Si.pz-vbc.UPF": "d75dd6b0be0aa10587fc95900cfd6ba7314d461a8276a81df34f009d0bfc075d",
+        "science/mpi2/ph.in": "fcb1af192851d1748322bf5cbf3f10d101a8b65bce48cdb31a7bd54a92c45148",
+        "science/mpi2/ph.out": "4c1191fab5a09d20ff71283857ad8b2210556a31eabdc85d40ec10a83236c0a9",
+        "science/mpi2/pp.in": "2d6c3f199419016114a668b1e03b65e209043da8063683b20cb532d6a44ff501",
+        "science/mpi2/pp.out": "9277b3608ab89451985226bb703b082c426b1990a3a36881162bf37a96de8ced",
+        "science/mpi2/pw.out": "babdc5defeccf06f13809e77ca7a5c935fa47ece6fbe34886ac46e4161ca8692",
+        "science/mpi2/ranks/rank-0.tsv": "54c132533f0669d35094f69bb6582ea6613f3142a3f8ac69096c50b9cae43d9d",
+        "science/mpi2/ranks/rank-1.tsv": "01551bf4591ffb819cbcd278875ffa2915cafddf9a701e6a2e59675beaf058d7",
+        "science/mpi2/rho.cube": "dc0fa7772514b852b26492fe9a7740517782b365436491ebfbe31568be4de9b1",
+        "science/mpi2/scf.in": "5ce08026d14c5de46de474137e4b54cac0a53bfbafa41ad9131d8aef023f2366",
+        "science/science.json": "f00f2752881963076cdf14af0311c141803c287c2f9dd17ca83e5f92d83d442b",
+        "slurm-2212241.log": "4213fd326d1b9a1ef83cb7009ee65306f216786f3a8f75d73406201cce32f8cd"
+      },
+      "installed_bytes": 2091396989,
+      "installed_file_count": 72,
+      "prefix": "/opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0",
+      "result": {
+        "commands_checked": 67,
+        "job": "2212241",
+        "module_sha256": "4e1d78e85d284842ef6dd8ff3ba77fcea6742dfeb7447c64a0ffd1226ffb740c",
+        "mpi_home": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx2",
+        "node": "8v100v0n04.mr-sai.ai",
+        "passed": true,
+        "request": {
+          "checker_sha256": "b48edd4a755e52b4bac0763d5434390152c49b696cada867e66247ca53ddec43",
+          "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/qe-20261105-r7",
+          "fixture_sha256": "0592c144397c46b9f2af55c516a916ac01d4724cacac2573aeadc39e4f7db108",
+          "module_sha256": "4e1d78e85d284842ef6dd8ff3ba77fcea6742dfeb7447c64a0ffd1226ffb740c",
+          "partition": "8V100V0",
+          "prefix": "/opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0",
+          "source_image_sha256": "bb1d51d5b548b04d8c77dc844d6a30cfef3cfd1915cefad06666491652fcb6de",
+          "stage_root": "/"
+        },
+        "science": {
+          "density_electrons": 7.99999404914205,
+          "frequencies_cm1": [
+            2.778696,
+            2.778696,
+            2.778696,
+            510.151309,
+            510.151309,
+            510.151309
+          ],
+          "gpu_executed": true,
+          "scf": {
+            "1": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  -0.0
+                ]
+              ]
+            },
+            "2": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  0.0,
+                  0.0,
+                  -0.0
+                ],
+                [
+                  -0.0,
+                  -0.0,
+                  0.0
+                ]
+              ]
+            }
+          }
+        }
+      },
+      "result_sha256": "dfe6cb6003c07c22416d0e7bc3f6d944e51027ec6ac35b3c4e399922452aba4e",
+      "state": "accepted",
+      "submission": {
+        "job": "2212241",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T064120Z/8V100V0",
+        "partition": "8V100V0",
+        "script_sha256": "a3c0f0170c31af6807d43be325305424b299108cc9a023b6142dff82c1bfc77c"
+      }
+    },
+    "DSPRHBM": {
+      "accounting": "2212242|DSPRHBM|COMPLETED|0:0|00:01:11|4|billing=55,cpu=4,mem=8G,node=1|d9470n01|/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T064120Z/DSPRHBM",
+      "files": {
+        "job.sbatch": "42a65cc8ca4800e2c8b51780d291436c068272eee0bdd88025605e0d3f4100a4",
+        "ldd.json": "7aa4fec6b32e0d9e6e0ddfe5a36520a2b493d5dfc9fb38c96d35190182d6bc0f",
+        "rank.sh": "2651f74129d6398ed7afc27ba2c8e17b9648a1dfb17559533c88a7b264e92fda",
+        "request.json": "ba956b6db5ac7bf14993c64ac6c35f0edf330e970ae7b587f436b52aa43710b0",
+        "science/mpi1/Si.pz-vbc.UPF": "d75dd6b0be0aa10587fc95900cfd6ba7314d461a8276a81df34f009d0bfc075d",
+        "science/mpi1/ph.in": "fcb1af192851d1748322bf5cbf3f10d101a8b65bce48cdb31a7bd54a92c45148",
+        "science/mpi1/pp.in": "2d6c3f199419016114a668b1e03b65e209043da8063683b20cb532d6a44ff501",
+        "science/mpi1/pw.out": "a8245b8a1d815d33a5ae1fa6edf5d6e288dbf97e9e184aa7f3b5037ed5a50636",
+        "science/mpi1/ranks/rank-0.tsv": "8f0fbc67778d4ec7b96e5242a3e08148d55cdeb9f6d2fcfc9f778b6883f01c7c",
+        "science/mpi1/scf.in": "5ce08026d14c5de46de474137e4b54cac0a53bfbafa41ad9131d8aef023f2366",
+        "science/mpi2/Si.pz-vbc.UPF": "d75dd6b0be0aa10587fc95900cfd6ba7314d461a8276a81df34f009d0bfc075d",
+        "science/mpi2/ph.in": "fcb1af192851d1748322bf5cbf3f10d101a8b65bce48cdb31a7bd54a92c45148",
+        "science/mpi2/ph.out": "41d6f2426a1bb47c81f3cb5b5a5cec5683654d68bdd5cfb5e30df8c577ded9b6",
+        "science/mpi2/pp.in": "2d6c3f199419016114a668b1e03b65e209043da8063683b20cb532d6a44ff501",
+        "science/mpi2/pp.out": "ca2a8ff39d71b4360cdf72d4e2ca2190883454970ba1526ec48c1e90723fd427",
+        "science/mpi2/pw.out": "daa99797a280e4ebf74cc155b7e4e79c3b8af21b4662feef5493d728150f9475",
+        "science/mpi2/ranks/rank-0.tsv": "6fff131511139ae13bb897a4e196446c6f79a423caec6331c48448419ddbc812",
+        "science/mpi2/ranks/rank-1.tsv": "516624620a3e274d277978aa1b129342336d412f6107a46530ee434a31a01270",
+        "science/mpi2/rho.cube": "8a9026e47e8cd8054c631f0d088eaa0b0a9d30674d6d14f92b15c64911233fdc",
+        "science/mpi2/scf.in": "5ce08026d14c5de46de474137e4b54cac0a53bfbafa41ad9131d8aef023f2366",
+        "science/science.json": "252311682f1a3db28911a36019a359916275c1762f9d19dccc7b18df60e5ffbb",
+        "slurm-2212242.log": "c4c7aa9fe07d29384f3384a37c3487ad5504c9fa025809c9ce53ccd00d518fc2"
+      },
+      "installed_bytes": 1248378893,
+      "installed_file_count": 72,
+      "prefix": "/opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r18629d40806e/DSPRHBM",
+      "result": {
+        "commands_checked": 67,
+        "job": "2212242",
+        "module_sha256": "4e1d78e85d284842ef6dd8ff3ba77fcea6742dfeb7447c64a0ffd1226ffb740c",
+        "mpi_home": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512",
+        "node": "d9470n01.mr-sai.ai",
+        "passed": true,
+        "request": {
+          "checker_sha256": "f3f1e65a5e072c2b4e93b6af015c75e9091cdf0a1ac8c1ece8f345f8bd66de29",
+          "controller": "/org/org-open-sai/proj-sai-hpc-software/controller/qe-20261105-r10",
+          "fixture_sha256": "0592c144397c46b9f2af55c516a916ac01d4724cacac2573aeadc39e4f7db108",
+          "module_sha256": "4e1d78e85d284842ef6dd8ff3ba77fcea6742dfeb7447c64a0ffd1226ffb740c",
+          "partition": "DSPRHBM",
+          "prefix": "/opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r18629d40806e/DSPRHBM",
+          "source_image_sha256": "f2ff9faa95fad977dcf67f48d3fa8898b1cb5a7e5161bf60348f8a24fa30b9c4",
+          "stage_root": "/"
+        },
+        "science": {
+          "density_electrons": 7.9999948251504,
+          "frequencies_cm1": [
+            2.590577,
+            2.590577,
+            2.590577,
+            510.149663,
+            510.149663,
+            510.149663
+          ],
+          "gpu_executed": false,
+          "scf": {
+            "1": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  0.0,
+                  0.0,
+                  0.0
+                ],
+                [
+                  -0.0,
+                  -0.0,
+                  -0.0
+                ]
+              ]
+            },
+            "2": {
+              "energy_ry": -15.84452726,
+              "forces_ry_bohr": [
+                [
+                  -0.0,
+                  0.0,
+                  -0.0
+                ],
+                [
+                  0.0,
+                  0.0,
+                  -0.0
+                ]
+              ]
+            }
+          }
+        }
+      },
+      "result_sha256": "923f452dc9b55416fafb5f7e739076a41c92d064abc913fde58bfd27de68038b",
+      "state": "accepted",
+      "submission": {
+        "job": "2212242",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/qe-native-20261105T064120Z/DSPRHBM",
+        "partition": "DSPRHBM",
+        "script_sha256": "42a65cc8ca4800e2c8b51780d291436c068272eee0bdd88025605e0d3f4100a4"
+      }
+    }
+  },
+  "release_manifest_sha256": "ba873e5fec184598fcc9943241f7a2f0548452f7b8d455bbd2ab0c09f97f6b07"
+}

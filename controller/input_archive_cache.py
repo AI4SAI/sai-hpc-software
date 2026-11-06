@@ -39,7 +39,7 @@ def input_directory(root, directory):
     except ValueError:
         raise ValueError('archive input escaped project') from None
     if (len(parts) != 4 or parts[0] != 'runs' or parts[2] != 'input' or
-            parts[3] not in ('abacus-updates', 'cp2k-updates') or
+            parts[3] not in ('abacus-updates', 'cp2k-updates', 'qe-dependencies') or
             not re.fullmatch(r'[A-Za-z0-9][A-Za-z0-9_.-]*', parts[1])):
         raise ValueError('archive destination must be a run dependency input')
     directory.mkdir(parents=True, exist_ok=True)

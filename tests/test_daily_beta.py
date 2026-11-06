@@ -2,6 +2,7 @@
 import copy
 from contextlib import ExitStack
 import json
+import os
 from pathlib import Path
 import shutil
 import subprocess
@@ -114,6 +115,18 @@ class PromotionTests(unittest.TestCase):
     setUp = previous_tests.SifBetaTests.setUp
     fake_bundle = previous_tests.SifBetaTests.fake_bundle
 
+    def test_initial_application_missing_alias_is_allowed_but_broken_pointer_is_not(self):
+        root, modules = self.root / 'beta', self.root / 'modules'
+        with patch.object(daily, 'MODULES', modules), patch.object(daily, 'ROOT', root):
+            self.assertIsNone(daily.current('qe', allow_missing=True))
+            with self.assertRaisesRegex(ValueError, 'missing beta'):
+                daily.current('qe')
+            path = modules / 'qe' / sif_beta.channel('qe')
+            path.parent.mkdir(parents=True)
+            path.symlink_to('missing-generation')
+            with self.assertRaises((ValueError, FileNotFoundError)):
+                daily.current('qe', allow_missing=True)
+
     def test_interrupted_generation_prepare_can_resume_but_changed_bytes_fail(self):
         bundle, catalog, checks = self.fake_bundle()
         root, modules = self.root / 'beta', self.root / 'modules'
@@ -209,9 +222,9 @@ class RuntimeTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             directory = Path(tmp)
             row = ['123', 'FAILED', '1:0', '8V100V0', 'proj-sai-hpc-software', tmp, '8v100v0n09']
-            for output in ('training/training.log', 'case/stdout.txt'):
+            for output in ('training/training.log', 'case/stdout.txt', 'case/manypw/rank-output/rank.1/stderr'):
                 log = directory / output
-                log.parent.mkdir()
+                log.parent.mkdir(parents=True, exist_ok=True)
                 for error in ('loss is NaN', 'Error: Unable to get the user home directory'):
                     with self.subTest(output=output, error=error):
                         log.write_text(error)
@@ -258,6 +271,7 @@ class RuntimeTests(unittest.TestCase):
                     path.chmod(0o444)
             self.assertTrue((root / 'payload/fixtures/deepmd-kit/fixture.json').is_file())
             snapshot = json.loads((REPO / 'deployment/sif-development-20261024/snapshot.json').read_text())
+            snapshot = previous_tests.add_qe(snapshot)
             snapshot['runtime_sha256'] = digest(REPO / 'controller/sif_runtime.py')
             # Use the reviewed complete catalog used by the existing module tests.
             for software in SOFTWARE:
@@ -288,11 +302,149 @@ class RuntimeTests(unittest.TestCase):
                         self.assertEqual(environment.splitlines(), [str(Path.home()), 'stardust', 'stardust'])
                     if software == 'deepmd-kit':
                         self.assertIn("deepmd-python -c", script)
+                    if software == 'qe':
+                        self.assertIn('/usr/bin/bash ./rank.sh -ni 2', script)
+                        request = json.loads((output / 'request.json').read_text())
+                        for index in range(2):
+                            self.assertEqual(request['files'][f'case/manypw/pw_{index}.in'],
+                                             digest(output / 'case/scf.in'))
+                        self.assertEqual(request['files']['case/manypw/rank.sh'],
+                                         digest(output / 'case/manypw/rank.sh'))
+
+
+class QeManypwTests(unittest.TestCase):
+    def setUp(self):
+        self.temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(self.temporary.cleanup)
+        self.root = Path(self.temporary.name)
+        self.reference = dict(energy_ry=-15.84452726, energy_tolerance_ry=2e-5)
+        self.launcher = ('path-images division:  nimage = 2\nGPU acceleration is ACTIVE\n'
+                         '[1,0]<stderr>:launch CUDA kernel device=0\n'
+                         '[1,1]<stderr>:launch CUDA kernel device=1\n')
+        (self.root / 'stdout.txt').write_text(self.launcher)
+        for index in range(2):
+            rank = self.root / f'rank-output/rank.{index}'
+            rank.mkdir(parents=True)
+            (rank / 'stdout').write_text('path-images division: nimage = 2\nGPU acceleration is ACTIVE\n'
+                                        if index == 0 else '')
+            (rank / 'stderr').write_text(f'SAI_QE_MPI_RANK={index}\nlaunch CUDA kernel device={index}\n')
+            (self.root / f'pw_{index}.out').write_text(
+                f'Reading input from pw_{index}.in\nconvergence has been achieved\n'
+                '! total energy = -15.84452726 Ry\n' + ('JOB DONE.\n' if index == 0 else ''))
+            scratch = self.root / f'tmp_{index}/silicon.save'
+            scratch.mkdir(parents=True)
+            (scratch / 'data-file-schema.xml').write_text('<completed/>')
+
+    def test_two_images_need_only_one_global_completion_marker(self):
+        result = beta_check.qe_manypw(self.root, self.reference, gpu=True)
+        self.assertTrue(result['passed'])
+        self.assertEqual(result['gpu_devices_by_rank'], {'0': ['0'], '1': ['1']})
+        self.assertEqual([r['scratch'] for r in result['images']], ['tmp_0', 'tmp_1'])
+
+    def test_wrong_second_image_energy_is_rejected(self):
+        output = self.root / 'pw_1.out'
+        output.write_text(output.read_text().replace('-15.84452726', '-14.84452726'))
+        with self.assertRaisesRegex(ValueError, 'image energy'):
+            beta_check.qe_manypw(self.root, self.reference, gpu=False)
+
+    def test_shared_scratch_or_shared_gpu_is_rejected(self):
+        rank1 = self.root / 'rank-output/rank.1/stderr'
+        rank1.write_text('SAI_QE_MPI_RANK=1\nlaunch CUDA kernel device=0\n')
+        with self.assertRaisesRegex(ValueError, 'separate GPU'):
+            beta_check.qe_manypw(self.root, self.reference, gpu=True)
+        rank1.write_text('SAI_QE_MPI_RANK=1\nlaunch CUDA kernel device=1\n')
+        shutil.rmtree(self.root / 'tmp_1')
+        (self.root / 'tmp_1').symlink_to('tmp_0')
+        with self.assertRaisesRegex(ValueError, 'independent completed scratch'):
+            beta_check.qe_manypw(self.root, self.reference, gpu=False)
+
+    def test_missing_global_completion_is_rejected(self):
+        output = self.root / 'pw_0.out'
+        output.write_text(output.read_text().replace('JOB DONE.', ''))
+        with self.assertRaisesRegex(ValueError, 'did not finish'):
+            beta_check.qe_manypw(self.root, self.reference, gpu=False)
+
+    def test_interleaved_forwarded_bytes_do_not_change_rank_device_evidence(self):
+        # The failed real allocation had only one MPI tag on each corrupt
+        # line: a non-greedy tag regex cannot recover the source rank.
+        mixed = ('[1,0]<stderr>: launch CUDA kernel file=force_us.f90 '
+                 'function=force_us line=123 device=1 threadid=1 num_gangs=1\n'
+                 '[1,1]<stderr>: launch CUDA kernel device=0 num_wolaunch CUDA kernel device=1\n')
+        (self.root / 'stdout.txt').write_text(mixed)
+        result = beta_check.qe_manypw(self.root, self.reference, gpu=True)
+        self.assertEqual(result['gpu_devices_by_rank'], {'0': ['0'], '1': ['1']})
+        for rank in ('0', '1'):
+            path = self.root / f'rank-output/rank.{rank}/stderr'
+            self.assertEqual(result['rank_output'][rank]['stderr']['sha256'], digest(path))
+            self.assertEqual(result['rank_output'][rank]['cuda_kernel_launches'], 1)
+
+    def test_independent_stream_with_wrong_or_malformed_device_is_rejected(self):
+        path = self.root / 'rank-output/rank.0/stderr'
+        for text, reason in [('launch CUDA kernel device=0\nlaunch CUDA kernel device=1\n', 'separate GPU'),
+                             ('launch CUDA kernel device=0 num_wolaunch CUDA kernel device=1\n', 'malformed'),
+                             ('launch CUDA kernel device=\n', 'malformed'), ('', 'separate GPU')]:
+            with self.subTest(text=text):
+                path.write_text('SAI_QE_MPI_RANK=0\n' + text)
+                with self.assertRaisesRegex(ValueError, reason):
+                    beta_check.qe_manypw(self.root, self.reference, gpu=True)
+
+    def test_rank_outputs_cannot_be_missing_duplicated_or_redirected(self):
+        path = self.root / 'rank-output/rank.1/stderr'
+        path.unlink()
+        with self.assertRaisesRegex(ValueError, 'rank stream'):
+            beta_check.qe_manypw(self.root, self.reference, gpu=True)
+        path.symlink_to('../rank.0/stderr')
+        with self.assertRaisesRegex(ValueError, 'rank stream'):
+            beta_check.qe_manypw(self.root, self.reference, gpu=True)
+        path.unlink(); path.write_text('SAI_QE_MPI_RANK=0\nlaunch CUDA kernel device=1\n')
+        with self.assertRaisesRegex(ValueError, 'identity differs'):
+            beta_check.qe_manypw(self.root, self.reference, gpu=True)
+        path.write_text('SAI_QE_MPI_RANK=1\nlaunch CUDA kernel device=1\n')
+        (self.root / 'rank-output/rank.2').mkdir(parents=True)
+        with self.assertRaisesRegex(ValueError, 'exactly two'):
+            beta_check.qe_manypw(self.root, self.reference, gpu=True)
+
+
+class QeRankCaptureTests(unittest.TestCase):
+    def test_real_rank_shell_keeps_concurrent_streams_and_exit_status(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            bundle, fixtures = root / 'bundle', root / 'fixtures'
+            bundle.mkdir(); (fixtures / 'qe').mkdir(parents=True)
+            (bundle / 'catalog.json').write_text(json.dumps(dict(runtime_sha256='a' * 64,
+                applications={'qe': {'partitions': {'DSPRHBM': {'identity': {'install_prefix': '/accepted/qe'}}}}})))
+            (fixtures / 'references.json').write_text('{"qe": {}}')
+            (fixtures / 'qe/scf.in').write_text('input')
+            (fixtures / 'qe/Si.pz-vbc.UPF').write_text('pseudo')
+            output = root / 'check'
+            beta_check.prepare('qe', 'DSPRHBM', bundle, output, fixtures)
+            case = output / 'case/manypw'
+            programs = root / 'bin'; programs.mkdir()
+            executable = programs / 'manypw.x'
+            executable.write_text('#!/usr/bin/env python3\nimport os,sys\n'
+                'rank=os.environ["OMPI_COMM_WORLD_RANK"]\n'
+                'assert sys.argv[1:] == ["-ni", "2"]\n'
+                'for index in range(64):\n'
+                ' os.write(1, (rank * 8192 + " stdout\\n").encode())\n'
+                ' os.write(2, (rank * 8192 + " stderr\\n").encode())\n'
+                'sys.exit(7 if rank == "1" else 0)\n')
+            executable.chmod(0o755)
+            processes = [subprocess.Popen(['/usr/bin/bash', './rank.sh', '-ni', '2'], cwd=case,
+                env=dict(os.environ, PATH=str(programs) + ':' + os.environ['PATH'], OMPI_COMM_WORLD_RANK=str(rank)),
+                stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True) for rank in (0, 1)]
+            for rank, process in enumerate(processes):
+                stdout, stderr = process.communicate(timeout=20)
+                self.assertEqual(process.returncode, 7 if rank == 1 else 0)
+                self.assertEqual((stdout, stderr), ('', ''))
+                streams = case / f'rank-output/rank.{rank}'
+                self.assertEqual((streams / 'stdout').read_text(), (str(rank) * 8192 + ' stdout\n') * 64)
+                self.assertEqual((streams / 'stderr').read_text(), f'SAI_QE_MPI_RANK={rank}\n'
+                                 + (str(rank) * 8192 + ' stderr\n') * 64)
 
 
 class WorkflowTests(unittest.TestCase):
     def test_all_daily_software_publish_independently_and_do_not_mask_failure(self):
-        for filename, software in [('build.yml','abacus'), ('cp2k.yml','cp2k'), ('deepmd.yml','deepmd-kit'), ('lammps.yml','lammps'), ('gpumd.yml','gpumd')]:
+        for filename, software in [('build.yml','abacus'), ('cp2k.yml','cp2k'), ('deepmd.yml','deepmd-kit'), ('lammps.yml','lammps'), ('gpumd.yml','gpumd'), ('qe.yml','qe')]:
             workflow = yaml.safe_load((REPO / '.github/workflows' / filename).read_text())
             job = workflow['jobs']['beta']
             self.assertEqual(job['uses'], './.github/workflows/beta.yml')
@@ -303,6 +455,7 @@ class WorkflowTests(unittest.TestCase):
                 self.assertIn('beta', workflow['jobs']['result']['needs'])
         workflow = yaml.safe_load((REPO / '.github/workflows/beta.yml').read_text())
         self.assertFalse(workflow['concurrency']['cancel-in-progress'])
+        self.assertEqual(set(workflow[True]['workflow_dispatch']['inputs']['software']['options']), set(SOFTWARE))
 
 
 if __name__ == '__main__':

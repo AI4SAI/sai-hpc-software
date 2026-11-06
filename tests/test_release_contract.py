@@ -163,7 +163,7 @@ class IdentityTests(unittest.TestCase):
                 self.assertEqual(identity["partition"], contract.PARTITIONS[target])
                 self.assertTrue(identity["install_prefix"].endswith("/" + identity["partition"]))
                 self.assertEqual(contract.validate_identity(identity), identity)
-            if software not in ("abacus", "cp2k"):
+            if "dsprhbm" not in settings["targets"]:
                 with self.assertRaises(ValueError):
                     self.identity(software=software)
         with self.assertRaises(ValueError):

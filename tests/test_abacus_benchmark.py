@@ -148,6 +148,13 @@ class BenchmarkTests(unittest.TestCase):
                 " ITER ETOT/eV EDIFF/eV DRHO TIME/s\n"
                 f" CG1 -4.87155886e+03 0.0 1.5575e+00 {timing / 2}\n"
                 f" CG2 -4.87155886e+03 0.0 1.5575e+00 {timing / 2}\n")
+            for rank in range(request["ranks"]):
+                output = work / "rank-output" / f"rank.{rank}"
+                output.mkdir(parents=True)
+                (output / "stdout").write_text((work / "stdout.log").read_text() if rank == 0 else "")
+                (output / "stderr").write_text("")
+            (work / "stderr.log").write_text("")
+            (work / "launcher.log").write_text("MPI binding diagnostics\n")
             (work / "wall-seconds.txt").write_text(str(timing + 1))
             (work / "OUT.autotest/running_scf.log").write_text(
                 "#SCF IS CONVERGED#\n!FINAL_ETOT_IS -4871.55886 eV\n")
@@ -394,8 +401,77 @@ class BenchmarkTests(unittest.TestCase):
         path.write_text(path.read_text().replace(
             "OpenMP thread number: 1",
             "Info: Local MPI proc number: 8,OpenMP thread number: 1,Total thread number: 8"))
+        (path.parent / "rank-output/rank.0/stdout").write_text(path.read_text())
         evidence = benchmark.analyze(task)
         self.assertEqual(evidence["runs"][0]["reported_threads"], 1)
+
+    def test_rank_output_preserves_split_writes_and_scientific_checks(self):
+        task = benchmark.prepare(self.args(target="dsprhbm", run_id="rank-output"))
+        request = self.results(task)
+        work = task / "runs/m000-candidate"
+        science = (work / "stdout.log").read_text()
+        (work / "stdout.log").unlink()
+        (work / "stderr.log").unlink()
+        root = work / "rank-output"
+        shutil.rmtree(root)
+        for rank in range(request["ranks"]):
+            directory = root / f"rank.{rank}"
+            directory.mkdir(parents=True)
+            # Each node's local root writes its header in several calls.
+            # A combined MPI pipe can insert the other node's '4' after
+            # 'OpenMP thread number:', falsely reporting four threads.
+            content = ("Info: Local MPI proc number: 4,OpenMP thread number: 2,"
+                       "Total thread number: 8" if rank in (0, 4) else "")
+            (directory / "stdout").write_text(science if rank == 0 else "")
+            (directory / "stderr").write_text(content + f"\ndiagnostic from rank {rank}\n")
+        subprocess.run([sys.executable, "-c", benchmark.RANK_OUTPUT_COLLECT,
+                        str(root), str(request["ranks"])], cwd=work, check=True)
+        evidence = benchmark.analyze(task)
+        self.assertTrue(all(run["reported_threads"] == 2 for run in evidence["runs"]))
+        self.assertIn("diagnostic from rank 7", (work / "stderr.log").read_text())
+        self.assertIn("diagnostic", (work / "stdout.log").read_text())
+        self.assertIn("runs/m000-candidate/rank-output/rank.4/stderr", evidence["files"])
+        # A real mismatched report must still fail after isolation.
+        (work / "stdout.log").write_text((work / "stdout.log").read_text().replace(
+            "OpenMP thread number: 2", "OpenMP thread number: 4", 1))
+        with self.assertRaisesRegex(ValueError, "reported OpenMP thread count"):
+            benchmark.analyze(task)
+
+    def test_rank_output_rejects_missing_extra_or_linked_streams(self):
+        for problem in ("missing-rank", "extra-rank", "missing-stderr", "symlink"):
+            with self.subTest(problem=problem):
+                work = self.root / problem
+                root = work / "rank-output"
+                for rank in range(2 if problem != "missing-rank" else 1):
+                    directory = root / "1" / f"rank.{rank}"
+                    directory.mkdir(parents=True)
+                    (directory / "stdout").write_text("stdout\n")
+                    (directory / "stderr").write_text("stderr\n")
+                if problem == "extra-rank":
+                    (root / "1/rank.2").mkdir()
+                elif problem == "missing-stderr":
+                    (root / "1/rank.1/stderr").unlink()
+                elif problem == "symlink":
+                    (root / "1/rank.1/stdout").unlink()
+                    (root / "1/rank.1/stdout").symlink_to(root / "1/rank.0/stdout")
+                completed = subprocess.run([sys.executable, "-c", benchmark.RANK_OUTPUT_COLLECT,
+                                            str(root), "2"], cwd=work, capture_output=True)
+                self.assertNotEqual(completed.returncode, 0)
+
+    def test_verifier_detects_raw_rank_log_changes_after_collection(self):
+        for problem in ("changed", "deleted", "extra"):
+            with self.subTest(problem=problem):
+                task = benchmark.prepare(self.args(run_id="raw-" + problem))
+                self.results(task)
+                root = task / "runs/m000-candidate/rank-output"
+                if problem == "changed":
+                    (root / "rank.1/stderr").write_text("changed after collection\n")
+                elif problem == "deleted":
+                    (root / "rank.1/stderr").unlink()
+                else:
+                    (root / "rank.2").mkdir()
+                with self.assertRaises(ValueError):
+                    benchmark.analyze(task)
 
     def test_analysis_rejects_wrong_physical_core_counts_and_incomplete_topology(self):
         cases = {
@@ -489,9 +565,15 @@ class BenchmarkTests(unittest.TestCase):
         env = dict(os.environ, OMPI_COMM_WORLD_RANK="0", OMPI_COMM_WORLD_LOCAL_RANK="0",
                    SAI_ABACUS_TRACE_DIR=str(traces), OMP_NUM_THREADS="1", OMP_PROC_BIND="true",
                    OMP_PLACES="cores", MAP_OPT="ppr:1:node:pe=4")
-        completed = subprocess.run([sys.executable, "-c", benchmark.RANK_AFFINITY_PROBE, "/bin/true"],
+        child = "import os; os.write(1, b'OpenMP thread number: '); os.write(1, b'1\\n'); os.write(2, b'rank warning\\n')"
+        completed = subprocess.run([sys.executable, "-c", benchmark.RANK_AFFINITY_PROBE,
+                                    sys.executable, "-c", child],
                                    env=env, check=True, capture_output=True, text=True)
         self.assertEqual(completed.stdout, "")
+        self.assertEqual(completed.stderr, "")
+        output = self.root / "rank-output/rank.0"
+        self.assertEqual((output / "stdout").read_text(), "OpenMP thread number: 1\n")
+        self.assertEqual((output / "stderr").read_text(), "rank warning\n")
         trace = json.loads((traces / "affinity-0.json").read_text())
         self.assertEqual((trace["schema"], trace["rank"], trace["local_rank"]), (1, 0, 0))
         self.assertEqual(trace["hostname"], socket.gethostname())

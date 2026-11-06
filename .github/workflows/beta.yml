@@ -14,7 +14,7 @@ on:
     inputs:
       software:
         type: choice
-        options: [abacus, cp2k, deepmd-kit, lammps, gpumd]
+        options: [abacus, cp2k, deepmd-kit, lammps, gpumd, qe]
         required: true
       builds:
         description: Original resolved development matrix JSON (exact source SHA and all targets)

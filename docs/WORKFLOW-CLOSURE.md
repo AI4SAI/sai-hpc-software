@@ -28,6 +28,92 @@ Administrator installation verification and shared-provider activation remain
 pending; the production registry is empty. The test does not publish new
 standalone CP2K SIFs or qualify multi-node execution/performance.
 
+## November 5 daily acceptance recovery
+
+All six development applications from workflow `42003384294` now have accepted
+November 5 beta aliases. The final 13:13 UTC observation checked 21 partition
+deliveries: four each for ABACUS, CP2K and QE, and three each for LAMMPS,
+DeePMD-kit and GPUMD. All beta jobs are `COMPLETED 0:0` with passing numerical
+and runtime receipts. See the [complete publication snapshot](evidence/daily-beta-20261105/README.md)
+for exact revisions, SIFs, module names, evidence hashes and accounting.
+The original daily workflow retains its failure conclusion; the separate
+ABACUS and QE recovery workflows succeeded.
+
+ABACUS and QE encountered interleaved MPI diagnostics in workflow
+`42003384294`. Both now capture each rank's original streams before parsing;
+scientific, thread, GPU and performance gates remain strict. No SIF needed
+recompilation for these repairs. ABACUS CPU DeePKS recovery `2218404` passed,
+then beta workflow `42028012790` passed all four partitions and rotated the
+alias to today's `3c1dddac0667` build. See
+[the original failures and recovery evidence](evidence/abacus-rank-output-20261105/README.md).
+
+QE beta workflow `42026314156` also passed all four partitions. Each GPU rank
+executed kernels on its own device, and both independent images converged to
+the reference energy. The home alias now selects today's `61569eb48023`
+generation. See [QE rank-output qualification](evidence/qe-20261105/RANK-OUTPUT.md).
+Its one-time public gateway remains an administrator installation:
+`bash /home/stardust/sai-hpc-software/deployment/sif-beta/install.sh --install /opt/modules/modulefiles/apps qe`.
+The live preflight passed; the gateway then follows stardust's home alias.
+
+CP2K's last 8V100V0 science job `2218672` passed all 14 cases. Its four beta
+checks then passed and selected
+`master-beta-20261105-37370f362787-r4d85319d4295-b3ac36adef9e9`.
+The source label `master-2026-11-04` describes the pinned upstream revision;
+the build and beta snapshot are from November 5.
+
+The independent [ABACUS CPU investigation](evidence/abacus-cpu-io-diagnosis-20261105/README.md)
+found multi-second filesystem calls overlapping MPI waits, with correct
+affinity and energies. Concurrent DeePKS diagnostic-file writes amplify the
+traffic. Moving only MPI session/buffer files into RAM did not eliminate
+the delays; no production performance fix is claimed or applied.
+
+## Quantum ESPRESSO integration
+
+QE now has release/develop tracking, container builds, host-MPI scientific
+acceptance, native export and the existing beta publication path for DSPRHBM,
+16V100, 4V100 and 8V100V0. The site QE 7.5 module audit determines its NVHPC,
+OpenMPI, FFTW, HDF5, ScaLAPACK and executable compatibility profile.
+
+The initial QE 7.6 release SIFs passed silicon SCF/forces on one and two ranks,
+Gamma phonons and the density integral on all four partitions. CUDA kernel
+logs verify GPU execution on V100. Each image contains 67 executables and has
+accepted native exports in the project catalog. Develop SIF science has also
+passed all four partitions. First beta verification and publication completed
+successfully; `qe/develop-beta-later` selects the accepted 2026-11-05 generation
+under the stardust-maintained module tree. The [release administrator package](../deployment/qe-7.6/README.md)
+installs the standard runtime files and `qe/7.6-auto`. Its four-partition trial
+installation, native link inspection and SCF/PH/PP calculations all passed.
+The administrator has installed the release into physical `/opt`; the complete
+file/module verification and all four native link/SCF/PH/PP checks passed in jobs
+`2212239` through `2212242`. The GPU checks exercised both allocated devices.
+The latest upstream develop SHA still matches the accepted four-partition beta.
+See [QE workflow and exact qualification evidence](QE-WORKFLOW.md).
+
+## ABACUS beta12 physical installation accepted
+
+The latest upstream release remains `v3.11.0-beta12@6b24db05dc17`.
+All four accepted SIFs and native exports are ready. The
+[administrator package](../deployment/abacus-3.11.0-beta12/README.md) now exists at
+`/home/stardust/sai-hpc-software/deployment/abacus-3.11.0-beta12`.
+It extracts 19 standard runtime files and one command link per partition from
+the original SIFs, then publishes `abacus/3.11.0-beta12-auto`. Total native size
+is 1.84 GiB. The administrator only reads the public compressed handoff; project
+ACLs and expanded home-directory exports are not needed.
+
+[Actual staged installation](evidence/abacus-beta12-handoff-20261105/README.md),
+repeat installation, file verification, administrator access, login help and
+the pinned beta12 scientific references passed. The administrator has now
+installed beta12 into physical `/opt`. Complete installed-file/module checks
+and all 30 native scientific cases passed on all four partitions in jobs
+`2217408` through `2217411`, each `COMPLETED 0:0`. PW/HSE/DeePKS single- and
+two-node energies agree with the accepted SIF/reference within `1e-5 eV`
+(maximum reference error `2.05e-8 eV`). GPU cuSOLVERMp/NCCL execution, exact
+MPI/library paths and module unload passed. See
+[installed acceptance](evidence/abacus-beta12-installed-20261105/README.md)
+for raw evidence and the CPU MPI scratch/timing caveat. This is correctness
+acceptance, not a performance comparison. All new acceptance work uses the
+project account and storage; the older beta11 installation remains available.
+
 ## Writable image shutdown with the existing runtime
 
 The build wrapper now owns writable-image mounting and teardown. It uses the
@@ -124,6 +210,27 @@ or development beta publications. Failed allocations remain intact. See the
 [completed recovery and artifact evidence](evidence/prerelease-ecc-recovery-20261103/README.md).
 
 ## NEPAdapters release addon
+
+Latest release **v1.0.5** (`3ceba8f9b697`) is built and accepted as one shared
+SIF/native plugin payload on 16V100, 4V100 and 8V100V0. Build 2212555 completed
+in 5:17; all six native single/two-GPU and two-node jobs completed with exit 0.
+Periodic, mixed `p p f` and nonperiodic `f f f` NEP4 energy/force/virial checks
+and 100 GPU MD steps pass. Upstream Spin1 per-atom virial tests pass with one
+and four OpenMP threads. The managed overlay helper now permits an explicitly
+read-only LAMMPS build dependency while retaining the sole managed writable
+image and its clean-exit receipt gates.
+
+The complete administrator package is
+`/home/stardust/sai-hpc-software/deployment/nepadapters-1.0.5`:
+`bash install.sh --check`, `bash install.sh --install`, then
+`bash install.sh --verify`. It installs the two plugins and license once under
+`/opt/apps/nepadapters/1.0.5-lammps30Sep2026` and a separate versioned module.
+Public preflight and permission checks pass; **1.0.5 is not yet installed into
+physical /opt**. Installed LAMMPS and NEPAdapters 1.0.4 are preserved. See
+[1.0.5 evidence](evidence/nepadapters-1.0.5-20261105/README.md) and
+[administrator instructions](../deployment/nepadapters-1.0.5/README.md).
+
+The following records describe the previously installed 1.0.4 release.
 
 NEPAdapters v1.0.4 (`c934e71444cb`) now has an independent manual SIF workflow,
 targeting the exact installed LAMMPS 30Sep2026 release (`8de817dd79bf`). It adds

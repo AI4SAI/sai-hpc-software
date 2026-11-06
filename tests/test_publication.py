@@ -177,6 +177,13 @@ class PublicationTests(unittest.TestCase):
                          environment=dict(OMP_NUM_THREADS="2", OMP_PROC_BIND="true",
                                           OMP_PLACES="cores", MAP_OPT=f"ppr:{ranks_per_node}:node:pe=2")))
             (work / "stdout.log").write_text("OpenMP thread number: 2\nITER ETOT/eV EDIFF/eV DRHO TIME/s\nCG1 -1 0 0 0.1\n")
+            for rank in range(request['ranks']):
+                output = work / "rank-output" / f"rank.{rank}"
+                output.mkdir(parents=True)
+                (output / "stdout").write_text((work / "stdout.log").read_text() if rank == 0 else "")
+                (output / "stderr").write_text("")
+            (work / "stderr.log").write_text("")
+            (work / "launcher.log").write_text("MPI binding diagnostics\n")
             (work / "wall-seconds.txt").write_text("1.0\n")
             (work / "OUT.autotest/running_scf.log").write_text("#SCF IS CONVERGED#\n!FINAL_ETOT_IS -1 eV\n")
         evidence = task / "results/evidence.json"

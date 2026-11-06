@@ -1,0 +1,3211 @@
+{
+  "accepted_partition_checks": 21,
+  "applications": {
+    "abacus": {
+      "accounting": "2218662|COMPLETED|0:0|00:00:10|16v100n12|proj-sai-hpc-software\n2218664|COMPLETED|0:0|00:00:08|4v100n36|proj-sai-hpc-software\n2218666|COMPLETED|0:0|00:00:20|8v100v0n03|proj-sai-hpc-software\n2218668|COMPLETED|0:0|00:00:14|d9470n05|proj-sai-hpc-software\n",
+      "alias": "/home/stardust/sai-hpc-software/modulefiles/apps/abacus/develop-beta-later",
+      "candidates": {
+        "16V100": {
+          "binds": [
+            "/opt/apps/conda_env/deepmd-kit-3.1.2"
+          ],
+          "build_verified": true,
+          "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6/16V100/42003384294-1-development-16v100-avx2-2026-11-05-3c1dddac0667.json",
+          "evidence_sha256": "58d0e1f82615db4f37aa09e1e78e4c8ded51feb85527f313ddae9127541c4dce",
+          "identity": {
+            "build_id": "develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6",
+            "cpu_arch": "znver3",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/abacus/abacus-development-develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6/16V100",
+            "partition": "16V100",
+            "recipe_sha256": "35253fd4b4f6d16c0ed419deb95dea81d6193e00742bde3ce6321dfe6a42b15a",
+            "repository": "deepmodeling/abacus-develop",
+            "schema": 2,
+            "software": "abacus",
+            "source_ref": "develop",
+            "source_sha": "3c1dddac06678e1b37752c9752c316f8713f499b",
+            "source_version": "develop-2026-11-05",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "16v100-avx2",
+            "track": "development",
+            "version_label": "develop-2026-11-05"
+          },
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6/16V100/42003384294-1-development-16v100-avx2-2026-11-05-3c1dddac0667.sif",
+          "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+          "scientific_verified": true,
+          "sha256": "4993f29e3ab1100ef3db1cb653073f771be8e339fc76af2a388349f1c9553111"
+        },
+        "4V100": {
+          "binds": [
+            "/opt/apps/conda_env/deepmd-kit-3.1.2"
+          ],
+          "build_verified": true,
+          "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6/4V100/42003384294-1-development-4v100-avx512-2026-11-05-3c1dddac0667.json",
+          "evidence_sha256": "78e1b64666a947b8a66065115393486073b75bb1c419ed6e53cfd8d8a672d224",
+          "identity": {
+            "build_id": "develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6",
+            "cpu_arch": "znver4",
+            "cuda_arch": "70",
+            "dependency_isa": "avx512",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/abacus/abacus-development-develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6/4V100",
+            "partition": "4V100",
+            "recipe_sha256": "35253fd4b4f6d16c0ed419deb95dea81d6193e00742bde3ce6321dfe6a42b15a",
+            "repository": "deepmodeling/abacus-develop",
+            "schema": 2,
+            "software": "abacus",
+            "source_ref": "develop",
+            "source_sha": "3c1dddac06678e1b37752c9752c316f8713f499b",
+            "source_version": "develop-2026-11-05",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "4v100-avx512",
+            "track": "development",
+            "version_label": "develop-2026-11-05"
+          },
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6/4V100/42003384294-1-development-4v100-avx512-2026-11-05-3c1dddac0667.sif",
+          "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512",
+          "scientific_verified": true,
+          "sha256": "727844d17e1d3f264a46546d3932e018013b2ec2955df87d644d92644a351322"
+        },
+        "8V100V0": {
+          "binds": [
+            "/opt/apps/conda_env/deepmd-kit-3.1.2"
+          ],
+          "build_verified": true,
+          "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6/8V100V0/42003384294-1-development-8v100v0-avx512-2026-11-05-3c1dddac0667.json",
+          "evidence_sha256": "6a79b03ac82e2cc0a0754c774acda4fd176c7510ec4f4654e01c0d846188e69c",
+          "identity": {
+            "build_id": "develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6",
+            "cpu_arch": "skylake-avx512",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/abacus/abacus-development-develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6/8V100V0",
+            "partition": "8V100V0",
+            "recipe_sha256": "35253fd4b4f6d16c0ed419deb95dea81d6193e00742bde3ce6321dfe6a42b15a",
+            "repository": "deepmodeling/abacus-develop",
+            "schema": 2,
+            "software": "abacus",
+            "source_ref": "develop",
+            "source_sha": "3c1dddac06678e1b37752c9752c316f8713f499b",
+            "source_version": "develop-2026-11-05",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "8v100v0-avx512",
+            "track": "development",
+            "version_label": "develop-2026-11-05"
+          },
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6/8V100V0/42003384294-1-development-8v100v0-avx512-2026-11-05-3c1dddac0667.sif",
+          "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+          "scientific_verified": true,
+          "sha256": "b46ae1743d30e10c1b2a20dc64e893c692321c3b3dfc5b7501debc531a8711db"
+        },
+        "DSPRHBM": {
+          "binds": [
+            "/opt/apps/conda_env/deepmd-kit-3.1.2"
+          ],
+          "build_verified": true,
+          "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6/DSPRHBM/42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667.json",
+          "evidence_sha256": "2a8d1a0bd7f7b4c5d0cd38c03ec2586a27a72bc1295871c6aed6f303b29e1168",
+          "identity": {
+            "build_id": "develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6",
+            "cpu_arch": "x86-64-v4",
+            "cuda_arch": "",
+            "dependency_isa": "avx512",
+            "gpus": 0,
+            "install_prefix": "/opt/apps/abacus/abacus-development-develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6/DSPRHBM",
+            "partition": "DSPRHBM",
+            "recipe_sha256": "35253fd4b4f6d16c0ed419deb95dea81d6193e00742bde3ce6321dfe6a42b15a",
+            "repository": "deepmodeling/abacus-develop",
+            "schema": 2,
+            "software": "abacus",
+            "source_ref": "develop",
+            "source_sha": "3c1dddac06678e1b37752c9752c316f8713f499b",
+            "source_version": "develop-2026-11-05",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "dsprhbm",
+            "track": "development",
+            "version_label": "develop-2026-11-05"
+          },
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/abacus/development/develop-2026-11-05-g3c1dddac0667-r35253fd4b4f6/DSPRHBM/42003384294-1-development-dsprhbm-2026-11-05-3c1dddac0667.sif",
+          "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512",
+          "scientific_verified": true,
+          "sha256": "6a993b9257970ac015b32cd390424b362b170c0ca13446a7526a1167b57d47ff"
+        }
+      },
+      "checks": [
+        {
+          "abacus": {
+            "energy_error_ev": 9.094947017729282e-13,
+            "energy_ev": -4869.747051950186,
+            "iterations": 10,
+            "rounded_iteration_seconds": 1.08,
+            "wall_seconds": 4.47
+          },
+          "automatic_memory": true,
+          "catalog_sha256": "ea3c9eb6f5cd77ecae530e01f942e6f3b81c293a70cc71339c49ca1680f90389",
+          "job": "2218662",
+          "partition": "16V100",
+          "passed": true,
+          "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+        },
+        {
+          "abacus": {
+            "energy_error_ev": 0.0,
+            "energy_ev": -4869.747051950185,
+            "iterations": 10,
+            "rounded_iteration_seconds": 0.95,
+            "wall_seconds": 6.27
+          },
+          "automatic_memory": true,
+          "catalog_sha256": "ea3c9eb6f5cd77ecae530e01f942e6f3b81c293a70cc71339c49ca1680f90389",
+          "job": "2218664",
+          "partition": "4V100",
+          "passed": true,
+          "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+        },
+        {
+          "abacus": {
+            "energy_error_ev": 2.7284841053187847e-12,
+            "energy_ev": -4869.747051950182,
+            "iterations": 10,
+            "rounded_iteration_seconds": 2.25,
+            "wall_seconds": 5.77
+          },
+          "automatic_memory": true,
+          "catalog_sha256": "ea3c9eb6f5cd77ecae530e01f942e6f3b81c293a70cc71339c49ca1680f90389",
+          "job": "2218668",
+          "partition": "DSPRHBM",
+          "passed": true,
+          "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+        },
+        {
+          "abacus": {
+            "energy_error_ev": 6.366462912410498e-12,
+            "energy_ev": -4869.7470519501785,
+            "iterations": 10,
+            "rounded_iteration_seconds": 1.32,
+            "wall_seconds": 14.56
+          },
+          "automatic_memory": true,
+          "catalog_sha256": "ea3c9eb6f5cd77ecae530e01f942e6f3b81c293a70cc71339c49ca1680f90389",
+          "job": "2218666",
+          "partition": "8V100V0",
+          "passed": true,
+          "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+        }
+      ],
+      "evidence_sha256": {
+        "candidates.json": "a221efb00ca4e126148deb1129139a4983a019b82c6874a8c0acc211afdc5c62",
+        "publication.json": "ad0d272b840154b452288f94fe51ff93ff3530d3088819a2dda9d5f45c375f67",
+        "status.json": "ad0d272b840154b452288f94fe51ff93ff3530d3088819a2dda9d5f45c375f67",
+        "validation.json": "295ce9a46530eae1742637e980e8c5dcd1cd173a905a026d40178124abc41351"
+      },
+      "fixed": "develop-beta-20261105-3c1dddac0667-r4d85319d4295-bd63fae8d9620",
+      "fixed_module_sha256": "bb7e2505a2e163daeaa576d9992736c8322046ffbe308e36bb6d6557193ee50f",
+      "public_gateway": "/opt/modules/modulefiles/apps/abacus/develop-beta-later",
+      "public_gateway_content": "#%Module1.0\n# Maintained by stardust; this gateway does not rotate.\nsource \"/home/stardust/sai-hpc-software/modulefiles/apps/abacus/develop-beta-later\"\n",
+      "public_gateway_present": true,
+      "publication": {
+        "after": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261105-42003384294-1-abacus",
+          "fixed": "develop-beta-20261105-3c1dddac0667-r4d85319d4295-bd63fae8d9620",
+          "generation": "daily-20261105-42003384294-1-abacus"
+        },
+        "attempt": "1",
+        "before": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261103-41583854521-1-abacus",
+          "fixed": "develop-beta-20261103-c9079539e69a-r75ef5179f1e8-be00ef62a2ffe",
+          "generation": "daily-20261103-41583854521-1-abacus"
+        },
+        "catalog_sha256": "2ea5d2047777b7c902bd57af7253ecb1d5d1ff40c0ba975dedd7a4166c39967f",
+        "checks": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-abacus-65a62d385bcd/validation.json",
+        "fixed": "develop-beta-20261105-3c1dddac0667-r4d85319d4295-bd63fae8d9620",
+        "generation": "daily-20261105-42003384294-1-abacus",
+        "software": "abacus",
+        "source_sha": "3c1dddac06678e1b37752c9752c316f8713f499b",
+        "status": "published",
+        "workflow": "42003384294"
+      },
+      "task": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-abacus-65a62d385bcd"
+    },
+    "cp2k": {
+      "accounting": "2219013|COMPLETED|0:0|00:00:34|16v100n15|proj-sai-hpc-software\n2219015|COMPLETED|0:0|00:00:17|4v100n36|proj-sai-hpc-software\n2219017|COMPLETED|0:0|00:01:11|8v100v0n03|proj-sai-hpc-software\n2219019|COMPLETED|0:0|00:01:46|d9470n08|proj-sai-hpc-software\n",
+      "alias": "/home/stardust/sai-hpc-software/modulefiles/apps/cp2k/master-beta-later",
+      "candidates": {
+        "16V100": {
+          "binds": [],
+          "build_verified": true,
+          "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-04-g37370f362787-r6825aebe61e9/16V100/42003384294-1-development-16v100-avx2-2026-11-05-37370f362787.json",
+          "evidence_sha256": "f10cc4dfdf6f02b48bca0f2dfc64e7feef029ef99c3fb95a6b3820ba33e0e375",
+          "identity": {
+            "build_id": "master-2026-11-04-g37370f362787-r6825aebe61e9",
+            "cpu_arch": "znver3",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-11-04-g37370f362787-r6825aebe61e9/16V100",
+            "partition": "16V100",
+            "recipe_sha256": "6825aebe61e987f3305bd9654516fd65f68fbe7395ede1a40c2ffaab62b48a3f",
+            "repository": "cp2k/cp2k",
+            "schema": 2,
+            "software": "cp2k",
+            "source_ref": "master",
+            "source_sha": "37370f362787e9d04d7644023de78707537d81e5",
+            "source_version": "master-2026-11-04",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "16v100-avx2",
+            "track": "development",
+            "version_label": "master-2026-11-04"
+          },
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-04-g37370f362787-r6825aebe61e9/16V100/42003384294-1-development-16v100-avx2-2026-11-05-37370f362787.sif",
+          "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+          "scientific_verified": true,
+          "sha256": "790326ae501f7db678a6cb5d41f4aa72cbaf02fdbe1aa3110369b68eea320c88"
+        },
+        "4V100": {
+          "binds": [],
+          "build_verified": true,
+          "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-04-g37370f362787-r6825aebe61e9/4V100/42003384294-1-development-4v100-avx512-2026-11-05-37370f362787.json",
+          "evidence_sha256": "74820cba6434d3b4bf76b3751fc9908a7581d0261d5c6b201c3f2c04115752a9",
+          "identity": {
+            "build_id": "master-2026-11-04-g37370f362787-r6825aebe61e9",
+            "cpu_arch": "znver4",
+            "cuda_arch": "70",
+            "dependency_isa": "avx512",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-11-04-g37370f362787-r6825aebe61e9/4V100",
+            "partition": "4V100",
+            "recipe_sha256": "6825aebe61e987f3305bd9654516fd65f68fbe7395ede1a40c2ffaab62b48a3f",
+            "repository": "cp2k/cp2k",
+            "schema": 2,
+            "software": "cp2k",
+            "source_ref": "master",
+            "source_sha": "37370f362787e9d04d7644023de78707537d81e5",
+            "source_version": "master-2026-11-04",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "4v100-avx512",
+            "track": "development",
+            "version_label": "master-2026-11-04"
+          },
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-04-g37370f362787-r6825aebe61e9/4V100/42003384294-1-development-4v100-avx512-2026-11-05-37370f362787.sif",
+          "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512",
+          "scientific_verified": true,
+          "sha256": "228edce0715c13851a41ed8707932f71afe3b2d731b490e5fe2edc737fac686a"
+        },
+        "8V100V0": {
+          "binds": [],
+          "build_verified": true,
+          "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-04-g37370f362787-r6825aebe61e9/8V100V0/42003384294-1-development-8v100v0-avx512-2026-11-05-37370f362787.json",
+          "evidence_sha256": "7b75f8d711058e251d8533ba36449499feaa6cf7b1a64f86ede5359f3caf702a",
+          "identity": {
+            "build_id": "master-2026-11-04-g37370f362787-r6825aebe61e9",
+            "cpu_arch": "skylake-avx512",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-11-04-g37370f362787-r6825aebe61e9/8V100V0",
+            "partition": "8V100V0",
+            "recipe_sha256": "6825aebe61e987f3305bd9654516fd65f68fbe7395ede1a40c2ffaab62b48a3f",
+            "repository": "cp2k/cp2k",
+            "schema": 2,
+            "software": "cp2k",
+            "source_ref": "master",
+            "source_sha": "37370f362787e9d04d7644023de78707537d81e5",
+            "source_version": "master-2026-11-04",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "8v100v0-avx512",
+            "track": "development",
+            "version_label": "master-2026-11-04"
+          },
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-04-g37370f362787-r6825aebe61e9/8V100V0/42003384294-1-development-8v100v0-avx512-2026-11-05-37370f362787.sif",
+          "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+          "scientific_verified": true,
+          "sha256": "fedfa4ab1fc3231337a58b4e1803ed6dfb394afbf7aeb0eb0cd7937eb73f1b35"
+        },
+        "DSPRHBM": {
+          "binds": [],
+          "build_verified": true,
+          "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-04-g37370f362787-r6825aebe61e9/DSPRHBM/42003384294-1-development-dsprhbm-2026-11-05-37370f362787.json",
+          "evidence_sha256": "2c73992f91d919901ffb4ef8e4cb6d5b16d2c17a01fcfff896506d26a57fad92",
+          "identity": {
+            "build_id": "master-2026-11-04-g37370f362787-r6825aebe61e9",
+            "cpu_arch": "x86-64-v4",
+            "cuda_arch": "",
+            "dependency_isa": "avx512",
+            "gpus": 0,
+            "install_prefix": "/opt/apps/cp2k/cp2k-development-master-2026-11-04-g37370f362787-r6825aebe61e9/DSPRHBM",
+            "partition": "DSPRHBM",
+            "recipe_sha256": "6825aebe61e987f3305bd9654516fd65f68fbe7395ede1a40c2ffaab62b48a3f",
+            "repository": "cp2k/cp2k",
+            "schema": 2,
+            "software": "cp2k",
+            "source_ref": "master",
+            "source_sha": "37370f362787e9d04d7644023de78707537d81e5",
+            "source_version": "master-2026-11-04",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "dsprhbm",
+            "track": "development",
+            "version_label": "master-2026-11-04"
+          },
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/cp2k/development/master-2026-11-04-g37370f362787-r6825aebe61e9/DSPRHBM/42003384294-1-development-dsprhbm-2026-11-05-37370f362787.sif",
+          "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512",
+          "scientific_verified": true,
+          "sha256": "a94980183ca9c5569a6efc32b1aecc3c9cec0b15bdc2d2a372384faadb280aa3"
+        }
+      },
+      "checks": [
+        {
+          "automatic_memory": true,
+          "catalog_sha256": "84fa88d355a9c295f38805d7b13aca5e9368724a978b9a30f9fb6a5c176c3b6a",
+          "cp2k": {
+            "energy_delta_ha": 0.0,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "job": "2219015",
+          "partition": "4V100",
+          "passed": true,
+          "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+        },
+        {
+          "automatic_memory": true,
+          "catalog_sha256": "84fa88d355a9c295f38805d7b13aca5e9368724a978b9a30f9fb6a5c176c3b6a",
+          "cp2k": {
+            "energy_delta_ha": 8.668621376273222e-13,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "job": "2219013",
+          "partition": "16V100",
+          "passed": true,
+          "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+        },
+        {
+          "automatic_memory": true,
+          "catalog_sha256": "84fa88d355a9c295f38805d7b13aca5e9368724a978b9a30f9fb6a5c176c3b6a",
+          "cp2k": {
+            "energy_delta_ha": 3.552713678800501e-13,
+            "max_force_delta_ha_bohr": 0.0
+          },
+          "job": "2219017",
+          "partition": "8V100V0",
+          "passed": true,
+          "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+        },
+        {
+          "automatic_memory": true,
+          "catalog_sha256": "84fa88d355a9c295f38805d7b13aca5e9368724a978b9a30f9fb6a5c176c3b6a",
+          "cp2k": {
+            "energy_delta_ha": 1.1581846592889633e-12,
+            "max_force_delta_ha_bohr": 1.0000004296850662e-12
+          },
+          "job": "2219019",
+          "partition": "DSPRHBM",
+          "passed": true,
+          "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+        }
+      ],
+      "evidence_sha256": {
+        "candidates.json": "439b4373a7d39f2e622098eb56eeb99707449f590ca8f4288f23d4859aaa7dd9",
+        "publication.json": "f307cfcfa7b7c02b90bdeace6a183dc2c4f50b3bc46738dc7799fe7b79288538",
+        "status.json": "f307cfcfa7b7c02b90bdeace6a183dc2c4f50b3bc46738dc7799fe7b79288538",
+        "validation.json": "458dc595035290e685183cfc55a6e851ede232bf5f5cc6d744e7fa7bda17580c"
+      },
+      "fixed": "master-beta-20261105-37370f362787-r4d85319d4295-b3ac36adef9e9",
+      "fixed_module_sha256": "18e10847025bb32f860a0e146f5a20a7054f6a5009b658e174455a31ab843ba6",
+      "public_gateway": "/opt/modules/modulefiles/apps/cp2k/master-beta-later",
+      "public_gateway_content": "#%Module1.0\n# Maintained by stardust; this gateway does not rotate.\nsource \"/home/stardust/sai-hpc-software/modulefiles/apps/cp2k/master-beta-later\"\n",
+      "public_gateway_present": true,
+      "publication": {
+        "after": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261105-42003384294-1-cp2k",
+          "fixed": "master-beta-20261105-37370f362787-r4d85319d4295-b3ac36adef9e9",
+          "generation": "daily-20261105-42003384294-1-cp2k"
+        },
+        "attempt": "1",
+        "before": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261103-41612600372-1-cp2k",
+          "fixed": "master-beta-20261103-9803ceeb414a-r75ef5179f1e8-b4e2995775028",
+          "generation": "daily-20261103-41612600372-1-cp2k"
+        },
+        "catalog_sha256": "d849c02b970ff392eb3713eeebb60c7debf48b7d480fcd762dbdafd9cbec2890",
+        "checks": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-cp2k-a3dfe27f8892/validation.json",
+        "fixed": "master-beta-20261105-37370f362787-r4d85319d4295-b3ac36adef9e9",
+        "generation": "daily-20261105-42003384294-1-cp2k",
+        "software": "cp2k",
+        "source_sha": "37370f362787e9d04d7644023de78707537d81e5",
+        "status": "published",
+        "workflow": "42003384294"
+      },
+      "task": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-cp2k-a3dfe27f8892"
+    },
+    "deepmd-kit": {
+      "accounting": "2216598|COMPLETED|0:0|00:00:59|16v100n02|proj-sai-hpc-software\n2216600|COMPLETED|0:0|00:00:45|4v100n24|proj-sai-hpc-software\n2216602|COMPLETED|0:0|00:01:26|8v100v0n04|proj-sai-hpc-software\n",
+      "alias": "/home/stardust/sai-hpc-software/modulefiles/apps/deepmd-kit/master-beta-later",
+      "candidates": {
+        "16V100": {
+          "binds": [
+            "/opt/apps/conda_env/deepmd-kit-3.2.0",
+            "/opt/apps/conda_env/deepmd-kit-3.1.2",
+            "/opt/apps/conda_env/VeloxChem/gpu",
+            "/opt/apps/plumed/plumed-2.10.1"
+          ],
+          "build_verified": true,
+          "environment": "export PATH=/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/16V100/bin:/opt/devtools/gcc/14.3.0/bin:/opt/apps/plumed/plumed-2.10.1/bin:/opt/apps/conda_env/deepmd-kit-3.2.0/bin:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/bin:/opt/devtools/nvidia/cuda-12.9.1/bin:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/bin:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/bin:/opt/devtools/cmake/3.31.6/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/usr/sbin:/usr/bin\nexport LD_LIBRARY_PATH=/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/16V100/lib:/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/16V100/lib/python3.13/site-packages/deepmd/lib:/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/tensorflow:/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib:/opt/apps/conda_env/deepmd-kit-3.2.0/lib:/lib/x86_64-linux-gnu/lapack:/lib/x86_64-linux-gnu/blas:/opt/devtools/gcc/14.3.0/libexec:/opt/devtools/gcc/14.3.0/lib:/opt/devtools/gcc/14.3.0/lib64:/opt/apps/plumed/plumed-2.10.1/lib:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib:/opt/devtools/nvidia/cuda-12.9.1/lib64:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/nvshmem/lib:/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/math_libs/12.9/lib64:/usr/lib/x86_64-linux-gnu:/usr/lib\nexport PYTHONPATH=/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/16V100/lib/python3.13/site-packages\nexport DP_BACKEND_PLUGIN_PATH=/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/16V100/lib/python3.13/site-packages/deepmd/lib\n",
+          "environment_sha256": "855ff946fb157ddf9baf88d64d9c0ae0d53715ada37f364cc9ee5ad28410bb30",
+          "evidence": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-42003384294-1-development-16v100-avx2-bf5c88560e79/results/status.json",
+          "evidence_sha256": "48e8a3ebe5e227cb28de5c0de8d664a67282353b09adbafd2647c9e9497b7706",
+          "identity": {
+            "build_id": "master-2026-11-04-gbf5c88560e79-r9ecaf6fff286",
+            "cpu_arch": "znver3",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/16V100",
+            "partition": "16V100",
+            "recipe_sha256": "9ecaf6fff286852c2e32297bef7a2fdd28290246c8a3ea2a85861e694e961b15",
+            "repository": "deepmodeling/deepmd-kit",
+            "schema": 2,
+            "software": "deepmd-kit",
+            "source_ref": "master",
+            "source_sha": "bf5c88560e79dadc8cf18100afa1c4a9b1507ff5",
+            "source_version": "master-2026-11-04",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "16v100-avx2",
+            "track": "development",
+            "version_label": "master-2026-11-04"
+          },
+          "image": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-42003384294-1-development-16v100-avx2-bf5c88560e79/candidate.sif",
+          "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+          "scientific_verified": true,
+          "sha256": "edfc8a6d0e5f8807c12624132574abc2da5a6a7bc238811a585dd618951ffb01"
+        },
+        "4V100": {
+          "binds": [
+            "/opt/apps/conda_env/deepmd-kit-3.2.0",
+            "/opt/apps/conda_env/deepmd-kit-3.1.2",
+            "/opt/apps/conda_env/VeloxChem/gpu",
+            "/opt/apps/plumed/plumed-2.10.1"
+          ],
+          "build_verified": true,
+          "environment": "export PATH=/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/4V100/bin:/opt/devtools/gcc/14.3.0/bin:/opt/apps/plumed/plumed-2.10.1/bin:/opt/apps/conda_env/deepmd-kit-3.2.0/bin:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/bin:/opt/devtools/nvidia/cuda-12.9.1/bin:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/bin:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/bin:/opt/devtools/cmake/3.31.6/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/usr/sbin:/usr/bin\nexport LD_LIBRARY_PATH=/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/4V100/lib:/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/4V100/lib/python3.13/site-packages/deepmd/lib:/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/tensorflow:/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib:/opt/apps/conda_env/deepmd-kit-3.2.0/lib:/lib/x86_64-linux-gnu/lapack:/lib/x86_64-linux-gnu/blas:/opt/devtools/gcc/14.3.0/libexec:/opt/devtools/gcc/14.3.0/lib:/opt/devtools/gcc/14.3.0/lib64:/opt/apps/plumed/plumed-2.10.1/lib:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512/lib:/opt/devtools/nvidia/cuda-12.9.1/lib64:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/nvshmem/lib:/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/math_libs/12.9/lib64:/usr/lib/x86_64-linux-gnu:/usr/lib\nexport PYTHONPATH=/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/4V100/lib/python3.13/site-packages\nexport DP_BACKEND_PLUGIN_PATH=/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/4V100/lib/python3.13/site-packages/deepmd/lib\n",
+          "environment_sha256": "6de798f8742dcfd5bbd1b196a8733b8c8f01be074d76293caf05fa3d905a729e",
+          "evidence": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-42003384294-1-development-4v100-avx512-bf5c88560e79/results/status.json",
+          "evidence_sha256": "9cb6565109bdb4449288ef9bf86c0b95eaa1e705616abb8024bffd4c071dca2a",
+          "identity": {
+            "build_id": "master-2026-11-04-gbf5c88560e79-r9ecaf6fff286",
+            "cpu_arch": "znver4",
+            "cuda_arch": "70",
+            "dependency_isa": "avx512",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/4V100",
+            "partition": "4V100",
+            "recipe_sha256": "9ecaf6fff286852c2e32297bef7a2fdd28290246c8a3ea2a85861e694e961b15",
+            "repository": "deepmodeling/deepmd-kit",
+            "schema": 2,
+            "software": "deepmd-kit",
+            "source_ref": "master",
+            "source_sha": "bf5c88560e79dadc8cf18100afa1c4a9b1507ff5",
+            "source_version": "master-2026-11-04",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "4v100-avx512",
+            "track": "development",
+            "version_label": "master-2026-11-04"
+          },
+          "image": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-42003384294-1-development-4v100-avx512-bf5c88560e79/candidate.sif",
+          "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512",
+          "scientific_verified": true,
+          "sha256": "1fcadf5b4f7698ea54be5fe2f3d9136e7882eb7b9f13ae4c4501161e8b8a36b4"
+        },
+        "8V100V0": {
+          "binds": [
+            "/opt/apps/conda_env/deepmd-kit-3.2.0",
+            "/opt/apps/conda_env/deepmd-kit-3.1.2",
+            "/opt/apps/conda_env/VeloxChem/gpu",
+            "/opt/apps/plumed/plumed-2.10.1"
+          ],
+          "build_verified": true,
+          "environment": "export PATH=/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/8V100V0/bin:/opt/devtools/gcc/14.3.0/bin:/opt/apps/plumed/plumed-2.10.1/bin:/opt/apps/conda_env/deepmd-kit-3.2.0/bin:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/bin:/opt/devtools/nvidia/cuda-12.9.1/bin:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/bin:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/bin:/opt/devtools/cmake/3.31.6/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/usr/sbin:/usr/bin\nexport LD_LIBRARY_PATH=/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/8V100V0/lib:/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/8V100V0/lib/python3.13/site-packages/deepmd/lib:/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/tensorflow:/opt/apps/conda_env/deepmd-kit-3.2.0/lib/python3.13/site-packages/torch/lib:/opt/apps/conda_env/deepmd-kit-3.2.0/lib:/lib/x86_64-linux-gnu/lapack:/lib/x86_64-linux-gnu/blas:/opt/devtools/gcc/14.3.0/libexec:/opt/devtools/gcc/14.3.0/lib:/opt/devtools/gcc/14.3.0/lib64:/opt/apps/plumed/plumed-2.10.1/lib:/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2/lib:/opt/devtools/nvidia/cuda-12.9.1/lib64:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/sharp/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/hpcx/hpcx-2.25.1/hcoll/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/comm_libs/12.9/nvshmem/lib:/opt/devtools/nvidia/nccl_2.29.3_cuda12.9_sai_v2.29.3-1-sai.2/lib:/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/math_libs/12.9/lib64:/usr/lib/x86_64-linux-gnu:/usr/lib\nexport PYTHONPATH=/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/8V100V0/lib/python3.13/site-packages\nexport DP_BACKEND_PLUGIN_PATH=/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/8V100V0/lib/python3.13/site-packages/deepmd/lib\n",
+          "environment_sha256": "4c747454f322340e94f790425354f8439f35b871f2880368f70d45b08a69eab4",
+          "evidence": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-42003384294-1-development-8v100v0-avx512-bf5c88560e79/results/status.json",
+          "evidence_sha256": "c8ce75795ad3ade5d6cffcf2f24d2aab5880b1b3ac715e91e673b950e99a4171",
+          "identity": {
+            "build_id": "master-2026-11-04-gbf5c88560e79-r9ecaf6fff286",
+            "cpu_arch": "skylake-avx512",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/8V100V0",
+            "partition": "8V100V0",
+            "recipe_sha256": "9ecaf6fff286852c2e32297bef7a2fdd28290246c8a3ea2a85861e694e961b15",
+            "repository": "deepmodeling/deepmd-kit",
+            "schema": 2,
+            "software": "deepmd-kit",
+            "source_ref": "master",
+            "source_sha": "bf5c88560e79dadc8cf18100afa1c4a9b1507ff5",
+            "source_version": "master-2026-11-04",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "8v100v0-avx512",
+            "track": "development",
+            "version_label": "master-2026-11-04"
+          },
+          "image": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-standalone/runs/dp-42003384294-1-development-8v100v0-avx512-bf5c88560e79/candidate.sif",
+          "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+          "scientific_verified": true,
+          "sha256": "2d19a3a767189c27fa18cd268d71b971d0493aa16535aa112352dd2d01f30698"
+        }
+      },
+      "checks": [
+        {
+          "automatic_memory": true,
+          "catalog_sha256": "2214e1333950d1f6fd4831d23a1b87968a55439597611003e6d21bede7db7a1f",
+          "deepmd-kit": {
+            "inference": {
+              "cuda_bytes": 17083392,
+              "device": "cuda:0",
+              "errors": {
+                "energy": 0.0,
+                "forces": 1.734723475976807e-17,
+                "virial": 5.551115123125783e-17
+              },
+              "package": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/16V100/lib/python3.13/site-packages/deepmd/__init__.py",
+              "passed": true
+            },
+            "pytorch_ddp": {
+              "cases": {
+                "dpa2": {
+                  "passed": true,
+                  "restart": {
+                    "checkpoint": {
+                      "bytes": 11495603,
+                      "name": "model.ckpt-12.pt",
+                      "sha256": "3b60e0f1bc72551e4e36e169a64d7a9bdd6ce77f6ac7970765fcffb240c03058"
+                    },
+                    "command": [
+                      "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/16V100/bin/python",
+                      "-m",
+                      "torch.distributed.run",
+                      "--standalone",
+                      "--local-addr=127.0.0.1",
+                      "--nproc_per_node=2",
+                      "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-deepmd-kit-a3dfe27f8892/16V100/control/deepmd_training_check.py",
+                      "worker",
+                      "restart.json",
+                      "--restart",
+                      "model.ckpt-8.pt"
+                    ],
+                    "elapsed_seconds": 10.323578162118793,
+                    "learning_curve": [
+                      [
+                        8.0,
+                        0.0933,
+                        0.0951,
+                        0.033,
+                        0.0284,
+                        0.0463,
+                        0.065,
+                        0.00046
+                      ],
+                      [
+                        9.0,
+                        0.0926,
+                        0.0933,
+                        0.0341,
+                        0.033,
+                        0.0399,
+                        0.0463,
+                        0.00022
+                      ],
+                      [
+                        10.0,
+                        0.0909,
+                        0.0926,
+                        0.0342,
+                        0.0341,
+                        0.0355,
+                        0.0399,
+                        0.00022
+                      ],
+                      [
+                        11.0,
+                        0.0879,
+                        0.0909,
+                        0.0333,
+                        0.0342,
+                        0.0329,
+                        0.0355,
+                        0.00022
+                      ],
+                      [
+                        12.0,
+                        0.0836,
+                        0.0879,
+                        0.0316,
+                        0.0333,
+                        0.0318,
+                        0.0329,
+                        0.00022
+                      ]
+                    ],
+                    "passed": true,
+                    "ranks": [
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 0,
+                        "device_ids": [
+                          0
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "b76b3947414a4d156fd9dadff12bd9b9a0666a38240ac5f5e422526e7e37468c",
+                        "find_unused_parameters": false,
+                        "forward_calls": 5,
+                        "gradient_calls": 265,
+                        "gradient_devices": [
+                          "cuda:0"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "314ecc47ee632fa960086e93a165ab5ddf561b4aa9d4183ec9230756e5175523",
+                        "local_rank": 0,
+                        "pid": 2140690,
+                        "rank": 0,
+                        "world_size": 2
+                      },
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 1,
+                        "device_ids": [
+                          1
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "b76b3947414a4d156fd9dadff12bd9b9a0666a38240ac5f5e422526e7e37468c",
+                        "find_unused_parameters": false,
+                        "forward_calls": 5,
+                        "gradient_calls": 265,
+                        "gradient_devices": [
+                          "cuda:1"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "314ecc47ee632fa960086e93a165ab5ddf561b4aa9d4183ec9230756e5175523",
+                        "local_rank": 1,
+                        "pid": 2140691,
+                        "rank": 1,
+                        "world_size": 2
+                      }
+                    ],
+                    "returncode": 0
+                  },
+                  "training": {
+                    "checkpoint": {
+                      "bytes": 11495241,
+                      "name": "model.ckpt-8.pt",
+                      "sha256": "632fc97da815fff16c2789a7e5cf870b26c537da70de9038983fbaba824a0362"
+                    },
+                    "command": [
+                      "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/16V100/bin/python",
+                      "-m",
+                      "torch.distributed.run",
+                      "--standalone",
+                      "--local-addr=127.0.0.1",
+                      "--nproc_per_node=2",
+                      "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-deepmd-kit-a3dfe27f8892/16V100/control/deepmd_training_check.py",
+                      "worker",
+                      "input.json"
+                    ],
+                    "elapsed_seconds": 11.26897050999105,
+                    "learning_curve": [
+                      [
+                        1.0,
+                        0.213,
+                        0.4,
+                        0.0538,
+                        0.163,
+                        0.168,
+                        0.0307,
+                        0.001
+                      ],
+                      [
+                        2.0,
+                        0.235,
+                        0.213,
+                        0.00334,
+                        0.0538,
+                        0.235,
+                        0.168,
+                        0.001
+                      ],
+                      [
+                        3.0,
+                        0.198,
+                        0.235,
+                        0.00712,
+                        0.00334,
+                        0.197,
+                        0.235,
+                        0.001
+                      ],
+                      [
+                        4.0,
+                        0.137,
+                        0.198,
+                        0.00721,
+                        0.00712,
+                        0.136,
+                        0.197,
+                        0.001
+                      ],
+                      [
+                        5.0,
+                        0.121,
+                        0.137,
+                        0.0128,
+                        0.00721,
+                        0.117,
+                        0.136,
+                        0.00032
+                      ],
+                      [
+                        6.0,
+                        0.108,
+                        0.121,
+                        0.0186,
+                        0.0128,
+                        0.098,
+                        0.117,
+                        0.00032
+                      ],
+                      [
+                        7.0,
+                        0.0995,
+                        0.108,
+                        0.0239,
+                        0.0186,
+                        0.0804,
+                        0.098,
+                        0.00032
+                      ],
+                      [
+                        8.0,
+                        0.0951,
+                        0.0995,
+                        0.0284,
+                        0.0239,
+                        0.065,
+                        0.0804,
+                        0.00032
+                      ]
+                    ],
+                    "passed": true,
+                    "ranks": [
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 0,
+                        "device_ids": [
+                          0
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "314ecc47ee632fa960086e93a165ab5ddf561b4aa9d4183ec9230756e5175523",
+                        "find_unused_parameters": false,
+                        "forward_calls": 8,
+                        "gradient_calls": 424,
+                        "gradient_devices": [
+                          "cuda:0"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "50df515990aad8b164fb1363e7c6893767f1fd899346ee79f7d1ff2c9e8b2457",
+                        "local_rank": 0,
+                        "pid": 2140267,
+                        "rank": 0,
+                        "world_size": 2
+                      },
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 1,
+                        "device_ids": [
+                          1
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "314ecc47ee632fa960086e93a165ab5ddf561b4aa9d4183ec9230756e5175523",
+                        "find_unused_parameters": false,
+                        "forward_calls": 8,
+                        "gradient_calls": 424,
+                        "gradient_devices": [
+                          "cuda:1"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "50df515990aad8b164fb1363e7c6893767f1fd899346ee79f7d1ff2c9e8b2457",
+                        "local_rank": 1,
+                        "pid": 2140268,
+                        "rank": 1,
+                        "world_size": 2
+                      }
+                    ],
+                    "returncode": 0
+                  }
+                },
+                "se_e2_a": {
+                  "passed": true,
+                  "restart": {
+                    "checkpoint": {
+                      "bytes": 65837,
+                      "name": "model.ckpt-12.pt",
+                      "sha256": "80fb4da0ccd434807f36bfccbfb6b9571cc630ce690f2adce8aae3ba664cd49e"
+                    },
+                    "command": [
+                      "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/16V100/bin/python",
+                      "-m",
+                      "torch.distributed.run",
+                      "--standalone",
+                      "--local-addr=127.0.0.1",
+                      "--nproc_per_node=2",
+                      "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-deepmd-kit-a3dfe27f8892/16V100/control/deepmd_training_check.py",
+                      "worker",
+                      "restart.json",
+                      "--restart",
+                      "model.ckpt-8.pt"
+                    ],
+                    "elapsed_seconds": 9.810232125222683,
+                    "learning_curve": [
+                      [
+                        8.0,
+                        0.927,
+                        0.942,
+                        0.376,
+                        0.382,
+                        0.0973,
+                        0.103,
+                        0.00046
+                      ],
+                      [
+                        9.0,
+                        0.921,
+                        0.927,
+                        0.374,
+                        0.376,
+                        0.0949,
+                        0.0973,
+                        0.00022
+                      ],
+                      [
+                        10.0,
+                        0.914,
+                        0.921,
+                        0.371,
+                        0.374,
+                        0.0924,
+                        0.0949,
+                        0.00022
+                      ],
+                      [
+                        11.0,
+                        0.907,
+                        0.914,
+                        0.369,
+                        0.371,
+                        0.09,
+                        0.0924,
+                        0.00022
+                      ],
+                      [
+                        12.0,
+                        0.9,
+                        0.907,
+                        0.366,
+                        0.369,
+                        0.0876,
+                        0.09,
+                        0.00022
+                      ]
+                    ],
+                    "passed": true,
+                    "ranks": [
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 0,
+                        "device_ids": [
+                          0
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "c4f5b92253b5a9a94bb16b36619862142697a7a3608b90dfb4a4b0533bfd7222",
+                        "find_unused_parameters": false,
+                        "forward_calls": 5,
+                        "gradient_calls": 110,
+                        "gradient_devices": [
+                          "cuda:0"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "d409b6503721c876c632a4bc06a9751c33dd8f0394dc38e75461d88cb8ed3175",
+                        "local_rank": 0,
+                        "pid": 2139912,
+                        "rank": 0,
+                        "world_size": 2
+                      },
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 1,
+                        "device_ids": [
+                          1
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "c4f5b92253b5a9a94bb16b36619862142697a7a3608b90dfb4a4b0533bfd7222",
+                        "find_unused_parameters": false,
+                        "forward_calls": 5,
+                        "gradient_calls": 110,
+                        "gradient_devices": [
+                          "cuda:1"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "d409b6503721c876c632a4bc06a9751c33dd8f0394dc38e75461d88cb8ed3175",
+                        "local_rank": 1,
+                        "pid": 2139913,
+                        "rank": 1,
+                        "world_size": 2
+                      }
+                    ],
+                    "returncode": 0
+                  },
+                  "training": {
+                    "checkpoint": {
+                      "bytes": 65669,
+                      "name": "model.ckpt-8.pt",
+                      "sha256": "63bc6740ad77688f0c1af2ae471567fe187e56b060992ef52570ed27fed8b879"
+                    },
+                    "command": [
+                      "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/16V100/bin/python",
+                      "-m",
+                      "torch.distributed.run",
+                      "--standalone",
+                      "--local-addr=127.0.0.1",
+                      "--nproc_per_node=2",
+                      "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-deepmd-kit-a3dfe27f8892/16V100/control/deepmd_training_check.py",
+                      "worker",
+                      "input.json"
+                    ],
+                    "elapsed_seconds": 11.827733136713505,
+                    "learning_curve": [
+                      [
+                        1.0,
+                        1.08,
+                        1.12,
+                        0.437,
+                        0.45,
+                        0.159,
+                        0.174,
+                        0.001
+                      ],
+                      [
+                        2.0,
+                        1.05,
+                        1.08,
+                        0.424,
+                        0.437,
+                        0.145,
+                        0.159,
+                        0.001
+                      ],
+                      [
+                        3.0,
+                        1.02,
+                        1.05,
+                        0.411,
+                        0.424,
+                        0.131,
+                        0.145,
+                        0.001
+                      ],
+                      [
+                        4.0,
+                        0.983,
+                        1.02,
+                        0.398,
+                        0.411,
+                        0.118,
+                        0.131,
+                        0.001
+                      ],
+                      [
+                        5.0,
+                        0.972,
+                        0.983,
+                        0.394,
+                        0.398,
+                        0.114,
+                        0.118,
+                        0.00032
+                      ],
+                      [
+                        6.0,
+                        0.962,
+                        0.972,
+                        0.39,
+                        0.394,
+                        0.11,
+                        0.114,
+                        0.00032
+                      ],
+                      [
+                        7.0,
+                        0.952,
+                        0.962,
+                        0.386,
+                        0.39,
+                        0.107,
+                        0.11,
+                        0.00032
+                      ],
+                      [
+                        8.0,
+                        0.942,
+                        0.952,
+                        0.382,
+                        0.386,
+                        0.103,
+                        0.107,
+                        0.00032
+                      ]
+                    ],
+                    "passed": true,
+                    "ranks": [
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 0,
+                        "device_ids": [
+                          0
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "d409b6503721c876c632a4bc06a9751c33dd8f0394dc38e75461d88cb8ed3175",
+                        "find_unused_parameters": false,
+                        "forward_calls": 8,
+                        "gradient_calls": 176,
+                        "gradient_devices": [
+                          "cuda:0"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "af50ae37d0e6bc6c6774523d032a4d14c8e7c7d23e61f7694c271a063494c331",
+                        "local_rank": 0,
+                        "pid": 2139479,
+                        "rank": 0,
+                        "world_size": 2
+                      },
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 1,
+                        "device_ids": [
+                          1
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "d409b6503721c876c632a4bc06a9751c33dd8f0394dc38e75461d88cb8ed3175",
+                        "find_unused_parameters": false,
+                        "forward_calls": 8,
+                        "gradient_calls": 176,
+                        "gradient_devices": [
+                          "cuda:1"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "af50ae37d0e6bc6c6774523d032a4d14c8e7c7d23e61f7694c271a063494c331",
+                        "local_rank": 1,
+                        "pid": 2139480,
+                        "rank": 1,
+                        "world_size": 2
+                      }
+                    ],
+                    "returncode": 0
+                  }
+                }
+              },
+              "installation": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/16V100",
+              "job": "2216598",
+              "partition": "16V100",
+              "passed": true
+            }
+          },
+          "job": "2216598",
+          "partition": "16V100",
+          "passed": true,
+          "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+        },
+        {
+          "automatic_memory": true,
+          "catalog_sha256": "2214e1333950d1f6fd4831d23a1b87968a55439597611003e6d21bede7db7a1f",
+          "deepmd-kit": {
+            "inference": {
+              "cuda_bytes": 17083392,
+              "device": "cuda:0",
+              "errors": {
+                "energy": 0.0,
+                "forces": 1.734723475976807e-17,
+                "virial": 5.551115123125783e-17
+              },
+              "package": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/8V100V0/lib/python3.13/site-packages/deepmd/__init__.py",
+              "passed": true
+            },
+            "pytorch_ddp": {
+              "cases": {
+                "dpa2": {
+                  "passed": true,
+                  "restart": {
+                    "checkpoint": {
+                      "bytes": 11495603,
+                      "name": "model.ckpt-12.pt",
+                      "sha256": "5d150f709989ec81f5391084ee5734aa9fcd5df476e19bf145b44757c9aa96cd"
+                    },
+                    "command": [
+                      "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/8V100V0/bin/python",
+                      "-m",
+                      "torch.distributed.run",
+                      "--standalone",
+                      "--local-addr=127.0.0.1",
+                      "--nproc_per_node=2",
+                      "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-deepmd-kit-a3dfe27f8892/8V100V0/control/deepmd_training_check.py",
+                      "worker",
+                      "restart.json",
+                      "--restart",
+                      "model.ckpt-8.pt"
+                    ],
+                    "elapsed_seconds": 13.94831720739603,
+                    "learning_curve": [
+                      [
+                        8.0,
+                        0.0933,
+                        0.0951,
+                        0.033,
+                        0.0284,
+                        0.0463,
+                        0.065,
+                        0.00046
+                      ],
+                      [
+                        9.0,
+                        0.0926,
+                        0.0933,
+                        0.0341,
+                        0.033,
+                        0.0399,
+                        0.0463,
+                        0.00022
+                      ],
+                      [
+                        10.0,
+                        0.0909,
+                        0.0926,
+                        0.0342,
+                        0.0341,
+                        0.0355,
+                        0.0399,
+                        0.00022
+                      ],
+                      [
+                        11.0,
+                        0.0879,
+                        0.0909,
+                        0.0333,
+                        0.0342,
+                        0.0329,
+                        0.0355,
+                        0.00022
+                      ],
+                      [
+                        12.0,
+                        0.0836,
+                        0.0879,
+                        0.0316,
+                        0.0333,
+                        0.0318,
+                        0.0329,
+                        0.00022
+                      ]
+                    ],
+                    "passed": true,
+                    "ranks": [
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 0,
+                        "device_ids": [
+                          0
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "854b0ae4aec617a8fbbfc5bc2602811c5fa3b9115ddabe5bc9b6b31ee42184ac",
+                        "find_unused_parameters": false,
+                        "forward_calls": 5,
+                        "gradient_calls": 265,
+                        "gradient_devices": [
+                          "cuda:0"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "9de158c4e626da33aa8102390b21d6bc91c92db549fd3092ccd23275ac7ecc9e",
+                        "local_rank": 0,
+                        "pid": 2735317,
+                        "rank": 0,
+                        "world_size": 2
+                      },
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 1,
+                        "device_ids": [
+                          1
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "854b0ae4aec617a8fbbfc5bc2602811c5fa3b9115ddabe5bc9b6b31ee42184ac",
+                        "find_unused_parameters": false,
+                        "forward_calls": 5,
+                        "gradient_calls": 265,
+                        "gradient_devices": [
+                          "cuda:1"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "9de158c4e626da33aa8102390b21d6bc91c92db549fd3092ccd23275ac7ecc9e",
+                        "local_rank": 1,
+                        "pid": 2735318,
+                        "rank": 1,
+                        "world_size": 2
+                      }
+                    ],
+                    "returncode": 0
+                  },
+                  "training": {
+                    "checkpoint": {
+                      "bytes": 11495241,
+                      "name": "model.ckpt-8.pt",
+                      "sha256": "e9e7cf69122ee87b6affc6a9873c680cbdb76db3934a04ecab5aef0520b0ed20"
+                    },
+                    "command": [
+                      "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/8V100V0/bin/python",
+                      "-m",
+                      "torch.distributed.run",
+                      "--standalone",
+                      "--local-addr=127.0.0.1",
+                      "--nproc_per_node=2",
+                      "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-deepmd-kit-a3dfe27f8892/8V100V0/control/deepmd_training_check.py",
+                      "worker",
+                      "input.json"
+                    ],
+                    "elapsed_seconds": 14.341473361477256,
+                    "learning_curve": [
+                      [
+                        1.0,
+                        0.213,
+                        0.4,
+                        0.0538,
+                        0.163,
+                        0.168,
+                        0.0307,
+                        0.001
+                      ],
+                      [
+                        2.0,
+                        0.235,
+                        0.213,
+                        0.00334,
+                        0.0538,
+                        0.235,
+                        0.168,
+                        0.001
+                      ],
+                      [
+                        3.0,
+                        0.198,
+                        0.235,
+                        0.00712,
+                        0.00334,
+                        0.197,
+                        0.235,
+                        0.001
+                      ],
+                      [
+                        4.0,
+                        0.137,
+                        0.198,
+                        0.00721,
+                        0.00712,
+                        0.136,
+                        0.197,
+                        0.001
+                      ],
+                      [
+                        5.0,
+                        0.121,
+                        0.137,
+                        0.0128,
+                        0.00721,
+                        0.117,
+                        0.136,
+                        0.00032
+                      ],
+                      [
+                        6.0,
+                        0.108,
+                        0.121,
+                        0.0186,
+                        0.0128,
+                        0.098,
+                        0.117,
+                        0.00032
+                      ],
+                      [
+                        7.0,
+                        0.0995,
+                        0.108,
+                        0.0239,
+                        0.0186,
+                        0.0804,
+                        0.098,
+                        0.00032
+                      ],
+                      [
+                        8.0,
+                        0.0951,
+                        0.0995,
+                        0.0284,
+                        0.0239,
+                        0.065,
+                        0.0804,
+                        0.00032
+                      ]
+                    ],
+                    "passed": true,
+                    "ranks": [
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 0,
+                        "device_ids": [
+                          0
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "9de158c4e626da33aa8102390b21d6bc91c92db549fd3092ccd23275ac7ecc9e",
+                        "find_unused_parameters": false,
+                        "forward_calls": 8,
+                        "gradient_calls": 424,
+                        "gradient_devices": [
+                          "cuda:0"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "50df515990aad8b164fb1363e7c6893767f1fd899346ee79f7d1ff2c9e8b2457",
+                        "local_rank": 0,
+                        "pid": 2734913,
+                        "rank": 0,
+                        "world_size": 2
+                      },
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 1,
+                        "device_ids": [
+                          1
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "9de158c4e626da33aa8102390b21d6bc91c92db549fd3092ccd23275ac7ecc9e",
+                        "find_unused_parameters": false,
+                        "forward_calls": 8,
+                        "gradient_calls": 424,
+                        "gradient_devices": [
+                          "cuda:1"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "50df515990aad8b164fb1363e7c6893767f1fd899346ee79f7d1ff2c9e8b2457",
+                        "local_rank": 1,
+                        "pid": 2734914,
+                        "rank": 1,
+                        "world_size": 2
+                      }
+                    ],
+                    "returncode": 0
+                  }
+                },
+                "se_e2_a": {
+                  "passed": true,
+                  "restart": {
+                    "checkpoint": {
+                      "bytes": 65837,
+                      "name": "model.ckpt-12.pt",
+                      "sha256": "c5abe8fc2c63cfb8938b768862a1924f3554373e8e7d0adaafd3cc0bada5a6c4"
+                    },
+                    "command": [
+                      "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/8V100V0/bin/python",
+                      "-m",
+                      "torch.distributed.run",
+                      "--standalone",
+                      "--local-addr=127.0.0.1",
+                      "--nproc_per_node=2",
+                      "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-deepmd-kit-a3dfe27f8892/8V100V0/control/deepmd_training_check.py",
+                      "worker",
+                      "restart.json",
+                      "--restart",
+                      "model.ckpt-8.pt"
+                    ],
+                    "elapsed_seconds": 12.979442708194256,
+                    "learning_curve": [
+                      [
+                        8.0,
+                        0.927,
+                        0.942,
+                        0.376,
+                        0.382,
+                        0.0973,
+                        0.103,
+                        0.00046
+                      ],
+                      [
+                        9.0,
+                        0.921,
+                        0.927,
+                        0.374,
+                        0.376,
+                        0.0949,
+                        0.0973,
+                        0.00022
+                      ],
+                      [
+                        10.0,
+                        0.914,
+                        0.921,
+                        0.371,
+                        0.374,
+                        0.0924,
+                        0.0949,
+                        0.00022
+                      ],
+                      [
+                        11.0,
+                        0.907,
+                        0.914,
+                        0.369,
+                        0.371,
+                        0.09,
+                        0.0924,
+                        0.00022
+                      ],
+                      [
+                        12.0,
+                        0.9,
+                        0.907,
+                        0.366,
+                        0.369,
+                        0.0876,
+                        0.09,
+                        0.00022
+                      ]
+                    ],
+                    "passed": true,
+                    "ranks": [
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 0,
+                        "device_ids": [
+                          0
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "3c2f23fddb2e1bb6ec96ac930b2456c901a9dd864c22220525652712b0ddd84d",
+                        "find_unused_parameters": false,
+                        "forward_calls": 5,
+                        "gradient_calls": 110,
+                        "gradient_devices": [
+                          "cuda:0"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+                        "local_rank": 0,
+                        "pid": 2734565,
+                        "rank": 0,
+                        "world_size": 2
+                      },
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 1,
+                        "device_ids": [
+                          1
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "3c2f23fddb2e1bb6ec96ac930b2456c901a9dd864c22220525652712b0ddd84d",
+                        "find_unused_parameters": false,
+                        "forward_calls": 5,
+                        "gradient_calls": 110,
+                        "gradient_devices": [
+                          "cuda:1"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+                        "local_rank": 1,
+                        "pid": 2734566,
+                        "rank": 1,
+                        "world_size": 2
+                      }
+                    ],
+                    "returncode": 0
+                  },
+                  "training": {
+                    "checkpoint": {
+                      "bytes": 65669,
+                      "name": "model.ckpt-8.pt",
+                      "sha256": "a4aa4f68f3ab4132f194c9bba33b52c1357e9a8687327434a21638b7615f304a"
+                    },
+                    "command": [
+                      "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/8V100V0/bin/python",
+                      "-m",
+                      "torch.distributed.run",
+                      "--standalone",
+                      "--local-addr=127.0.0.1",
+                      "--nproc_per_node=2",
+                      "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-deepmd-kit-a3dfe27f8892/8V100V0/control/deepmd_training_check.py",
+                      "worker",
+                      "input.json"
+                    ],
+                    "elapsed_seconds": 13.594738475978374,
+                    "learning_curve": [
+                      [
+                        1.0,
+                        1.08,
+                        1.12,
+                        0.437,
+                        0.45,
+                        0.159,
+                        0.174,
+                        0.001
+                      ],
+                      [
+                        2.0,
+                        1.05,
+                        1.08,
+                        0.424,
+                        0.437,
+                        0.145,
+                        0.159,
+                        0.001
+                      ],
+                      [
+                        3.0,
+                        1.02,
+                        1.05,
+                        0.411,
+                        0.424,
+                        0.131,
+                        0.145,
+                        0.001
+                      ],
+                      [
+                        4.0,
+                        0.983,
+                        1.02,
+                        0.398,
+                        0.411,
+                        0.118,
+                        0.131,
+                        0.001
+                      ],
+                      [
+                        5.0,
+                        0.972,
+                        0.983,
+                        0.394,
+                        0.398,
+                        0.114,
+                        0.118,
+                        0.00032
+                      ],
+                      [
+                        6.0,
+                        0.962,
+                        0.972,
+                        0.39,
+                        0.394,
+                        0.11,
+                        0.114,
+                        0.00032
+                      ],
+                      [
+                        7.0,
+                        0.952,
+                        0.962,
+                        0.386,
+                        0.39,
+                        0.107,
+                        0.11,
+                        0.00032
+                      ],
+                      [
+                        8.0,
+                        0.942,
+                        0.952,
+                        0.382,
+                        0.386,
+                        0.103,
+                        0.107,
+                        0.00032
+                      ]
+                    ],
+                    "passed": true,
+                    "ranks": [
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 0,
+                        "device_ids": [
+                          0
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+                        "find_unused_parameters": false,
+                        "forward_calls": 8,
+                        "gradient_calls": 176,
+                        "gradient_devices": [
+                          "cuda:0"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "af50ae37d0e6bc6c6774523d032a4d14c8e7c7d23e61f7694c271a063494c331",
+                        "local_rank": 0,
+                        "pid": 2734163,
+                        "rank": 0,
+                        "world_size": 2
+                      },
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 1,
+                        "device_ids": [
+                          1
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+                        "find_unused_parameters": false,
+                        "forward_calls": 8,
+                        "gradient_calls": 176,
+                        "gradient_devices": [
+                          "cuda:1"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "af50ae37d0e6bc6c6774523d032a4d14c8e7c7d23e61f7694c271a063494c331",
+                        "local_rank": 1,
+                        "pid": 2734164,
+                        "rank": 1,
+                        "world_size": 2
+                      }
+                    ],
+                    "returncode": 0
+                  }
+                }
+              },
+              "installation": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/8V100V0",
+              "job": "2216602",
+              "partition": "8V100V0",
+              "passed": true
+            }
+          },
+          "job": "2216602",
+          "partition": "8V100V0",
+          "passed": true,
+          "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+        },
+        {
+          "automatic_memory": true,
+          "catalog_sha256": "2214e1333950d1f6fd4831d23a1b87968a55439597611003e6d21bede7db7a1f",
+          "deepmd-kit": {
+            "inference": {
+              "cuda_bytes": 17083392,
+              "device": "cuda:0",
+              "errors": {
+                "energy": 0.0,
+                "forces": 1.734723475976807e-17,
+                "virial": 5.551115123125783e-17
+              },
+              "package": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/4V100/lib/python3.13/site-packages/deepmd/__init__.py",
+              "passed": true
+            },
+            "pytorch_ddp": {
+              "cases": {
+                "dpa2": {
+                  "passed": true,
+                  "restart": {
+                    "checkpoint": {
+                      "bytes": 11495603,
+                      "name": "model.ckpt-12.pt",
+                      "sha256": "e72b1899202544e2378280171a2baa2167cc7da7966863f09ffc78e45bad0a84"
+                    },
+                    "command": [
+                      "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/4V100/bin/python",
+                      "-m",
+                      "torch.distributed.run",
+                      "--standalone",
+                      "--local-addr=127.0.0.1",
+                      "--nproc_per_node=2",
+                      "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-deepmd-kit-a3dfe27f8892/4V100/control/deepmd_training_check.py",
+                      "worker",
+                      "restart.json",
+                      "--restart",
+                      "model.ckpt-8.pt"
+                    ],
+                    "elapsed_seconds": 8.106692619621754,
+                    "learning_curve": [
+                      [
+                        8.0,
+                        0.0933,
+                        0.0951,
+                        0.033,
+                        0.0284,
+                        0.0463,
+                        0.065,
+                        0.00046
+                      ],
+                      [
+                        9.0,
+                        0.0926,
+                        0.0933,
+                        0.0341,
+                        0.033,
+                        0.0399,
+                        0.0463,
+                        0.00022
+                      ],
+                      [
+                        10.0,
+                        0.0909,
+                        0.0926,
+                        0.0342,
+                        0.0341,
+                        0.0355,
+                        0.0399,
+                        0.00022
+                      ],
+                      [
+                        11.0,
+                        0.0879,
+                        0.0909,
+                        0.0333,
+                        0.0342,
+                        0.0329,
+                        0.0355,
+                        0.00022
+                      ],
+                      [
+                        12.0,
+                        0.0836,
+                        0.0879,
+                        0.0316,
+                        0.0333,
+                        0.0318,
+                        0.0329,
+                        0.00022
+                      ]
+                    ],
+                    "passed": true,
+                    "ranks": [
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 0,
+                        "device_ids": [
+                          0
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "90d1db7119a788049bcacb056eb3c3d9f68f49ea3ec9509535400a3740ace2cd",
+                        "find_unused_parameters": false,
+                        "forward_calls": 5,
+                        "gradient_calls": 265,
+                        "gradient_devices": [
+                          "cuda:0"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "f23fae2fefbb691857cbcd7271d3c1cc4e357288b6304de787f0d5d6c4836fc7",
+                        "local_rank": 0,
+                        "pid": 2734522,
+                        "rank": 0,
+                        "world_size": 2
+                      },
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 1,
+                        "device_ids": [
+                          1
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "90d1db7119a788049bcacb056eb3c3d9f68f49ea3ec9509535400a3740ace2cd",
+                        "find_unused_parameters": false,
+                        "forward_calls": 5,
+                        "gradient_calls": 265,
+                        "gradient_devices": [
+                          "cuda:1"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "f23fae2fefbb691857cbcd7271d3c1cc4e357288b6304de787f0d5d6c4836fc7",
+                        "local_rank": 1,
+                        "pid": 2734523,
+                        "rank": 1,
+                        "world_size": 2
+                      }
+                    ],
+                    "returncode": 0
+                  },
+                  "training": {
+                    "checkpoint": {
+                      "bytes": 11495241,
+                      "name": "model.ckpt-8.pt",
+                      "sha256": "7edd5ff73626aed69a5e8b12f1fb81489fdcdb6c8c39dd7573772ba2644a0244"
+                    },
+                    "command": [
+                      "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/4V100/bin/python",
+                      "-m",
+                      "torch.distributed.run",
+                      "--standalone",
+                      "--local-addr=127.0.0.1",
+                      "--nproc_per_node=2",
+                      "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-deepmd-kit-a3dfe27f8892/4V100/control/deepmd_training_check.py",
+                      "worker",
+                      "input.json"
+                    ],
+                    "elapsed_seconds": 8.44402420334518,
+                    "learning_curve": [
+                      [
+                        1.0,
+                        0.213,
+                        0.4,
+                        0.0538,
+                        0.163,
+                        0.168,
+                        0.0307,
+                        0.001
+                      ],
+                      [
+                        2.0,
+                        0.235,
+                        0.213,
+                        0.00334,
+                        0.0538,
+                        0.235,
+                        0.168,
+                        0.001
+                      ],
+                      [
+                        3.0,
+                        0.198,
+                        0.235,
+                        0.00712,
+                        0.00334,
+                        0.197,
+                        0.235,
+                        0.001
+                      ],
+                      [
+                        4.0,
+                        0.137,
+                        0.198,
+                        0.00721,
+                        0.00712,
+                        0.136,
+                        0.197,
+                        0.001
+                      ],
+                      [
+                        5.0,
+                        0.121,
+                        0.137,
+                        0.0128,
+                        0.00721,
+                        0.117,
+                        0.136,
+                        0.00032
+                      ],
+                      [
+                        6.0,
+                        0.108,
+                        0.121,
+                        0.0186,
+                        0.0128,
+                        0.098,
+                        0.117,
+                        0.00032
+                      ],
+                      [
+                        7.0,
+                        0.0995,
+                        0.108,
+                        0.0239,
+                        0.0186,
+                        0.0804,
+                        0.098,
+                        0.00032
+                      ],
+                      [
+                        8.0,
+                        0.0951,
+                        0.0995,
+                        0.0284,
+                        0.0239,
+                        0.065,
+                        0.0804,
+                        0.00032
+                      ]
+                    ],
+                    "passed": true,
+                    "ranks": [
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 0,
+                        "device_ids": [
+                          0
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "f23fae2fefbb691857cbcd7271d3c1cc4e357288b6304de787f0d5d6c4836fc7",
+                        "find_unused_parameters": false,
+                        "forward_calls": 8,
+                        "gradient_calls": 424,
+                        "gradient_devices": [
+                          "cuda:0"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "50df515990aad8b164fb1363e7c6893767f1fd899346ee79f7d1ff2c9e8b2457",
+                        "local_rank": 0,
+                        "pid": 2734106,
+                        "rank": 0,
+                        "world_size": 2
+                      },
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 1,
+                        "device_ids": [
+                          1
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "f23fae2fefbb691857cbcd7271d3c1cc4e357288b6304de787f0d5d6c4836fc7",
+                        "find_unused_parameters": false,
+                        "forward_calls": 8,
+                        "gradient_calls": 424,
+                        "gradient_devices": [
+                          "cuda:1"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "50df515990aad8b164fb1363e7c6893767f1fd899346ee79f7d1ff2c9e8b2457",
+                        "local_rank": 1,
+                        "pid": 2734107,
+                        "rank": 1,
+                        "world_size": 2
+                      }
+                    ],
+                    "returncode": 0
+                  }
+                },
+                "se_e2_a": {
+                  "passed": true,
+                  "restart": {
+                    "checkpoint": {
+                      "bytes": 65837,
+                      "name": "model.ckpt-12.pt",
+                      "sha256": "1e5bbd2c792b8b3ddb8fa6a7b170c81f51aa7fbc7aab90265b83198b5a5de38e"
+                    },
+                    "command": [
+                      "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/4V100/bin/python",
+                      "-m",
+                      "torch.distributed.run",
+                      "--standalone",
+                      "--local-addr=127.0.0.1",
+                      "--nproc_per_node=2",
+                      "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-deepmd-kit-a3dfe27f8892/4V100/control/deepmd_training_check.py",
+                      "worker",
+                      "restart.json",
+                      "--restart",
+                      "model.ckpt-8.pt"
+                    ],
+                    "elapsed_seconds": 8.426298404112458,
+                    "learning_curve": [
+                      [
+                        8.0,
+                        0.927,
+                        0.942,
+                        0.376,
+                        0.382,
+                        0.0973,
+                        0.103,
+                        0.00046
+                      ],
+                      [
+                        9.0,
+                        0.921,
+                        0.927,
+                        0.374,
+                        0.376,
+                        0.0949,
+                        0.0973,
+                        0.00022
+                      ],
+                      [
+                        10.0,
+                        0.914,
+                        0.921,
+                        0.371,
+                        0.374,
+                        0.0924,
+                        0.0949,
+                        0.00022
+                      ],
+                      [
+                        11.0,
+                        0.907,
+                        0.914,
+                        0.369,
+                        0.371,
+                        0.09,
+                        0.0924,
+                        0.00022
+                      ],
+                      [
+                        12.0,
+                        0.9,
+                        0.907,
+                        0.366,
+                        0.369,
+                        0.0876,
+                        0.09,
+                        0.00022
+                      ]
+                    ],
+                    "passed": true,
+                    "ranks": [
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 0,
+                        "device_ids": [
+                          0
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "3c2f23fddb2e1bb6ec96ac930b2456c901a9dd864c22220525652712b0ddd84d",
+                        "find_unused_parameters": false,
+                        "forward_calls": 5,
+                        "gradient_calls": 110,
+                        "gradient_devices": [
+                          "cuda:0"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+                        "local_rank": 0,
+                        "pid": 2733749,
+                        "rank": 0,
+                        "world_size": 2
+                      },
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 1,
+                        "device_ids": [
+                          1
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "3c2f23fddb2e1bb6ec96ac930b2456c901a9dd864c22220525652712b0ddd84d",
+                        "find_unused_parameters": false,
+                        "forward_calls": 5,
+                        "gradient_calls": 110,
+                        "gradient_devices": [
+                          "cuda:1"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+                        "local_rank": 1,
+                        "pid": 2733750,
+                        "rank": 1,
+                        "world_size": 2
+                      }
+                    ],
+                    "returncode": 0
+                  },
+                  "training": {
+                    "checkpoint": {
+                      "bytes": 65669,
+                      "name": "model.ckpt-8.pt",
+                      "sha256": "fc545107b232f0e8c67a59180c39a8655147d8eac5ad5a4e8cfdf5d03e419e08"
+                    },
+                    "command": [
+                      "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/4V100/bin/python",
+                      "-m",
+                      "torch.distributed.run",
+                      "--standalone",
+                      "--local-addr=127.0.0.1",
+                      "--nproc_per_node=2",
+                      "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-deepmd-kit-a3dfe27f8892/4V100/control/deepmd_training_check.py",
+                      "worker",
+                      "input.json"
+                    ],
+                    "elapsed_seconds": 8.383536806330085,
+                    "learning_curve": [
+                      [
+                        1.0,
+                        1.08,
+                        1.12,
+                        0.437,
+                        0.45,
+                        0.159,
+                        0.174,
+                        0.001
+                      ],
+                      [
+                        2.0,
+                        1.05,
+                        1.08,
+                        0.424,
+                        0.437,
+                        0.145,
+                        0.159,
+                        0.001
+                      ],
+                      [
+                        3.0,
+                        1.02,
+                        1.05,
+                        0.411,
+                        0.424,
+                        0.131,
+                        0.145,
+                        0.001
+                      ],
+                      [
+                        4.0,
+                        0.983,
+                        1.02,
+                        0.398,
+                        0.411,
+                        0.118,
+                        0.131,
+                        0.001
+                      ],
+                      [
+                        5.0,
+                        0.972,
+                        0.983,
+                        0.394,
+                        0.398,
+                        0.114,
+                        0.118,
+                        0.00032
+                      ],
+                      [
+                        6.0,
+                        0.962,
+                        0.972,
+                        0.39,
+                        0.394,
+                        0.11,
+                        0.114,
+                        0.00032
+                      ],
+                      [
+                        7.0,
+                        0.952,
+                        0.962,
+                        0.386,
+                        0.39,
+                        0.107,
+                        0.11,
+                        0.00032
+                      ],
+                      [
+                        8.0,
+                        0.942,
+                        0.952,
+                        0.382,
+                        0.386,
+                        0.103,
+                        0.107,
+                        0.00032
+                      ]
+                    ],
+                    "passed": true,
+                    "ranks": [
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 0,
+                        "device_ids": [
+                          0
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+                        "find_unused_parameters": false,
+                        "forward_calls": 8,
+                        "gradient_calls": 176,
+                        "gradient_devices": [
+                          "cuda:0"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "af50ae37d0e6bc6c6774523d032a4d14c8e7c7d23e61f7694c271a063494c331",
+                        "local_rank": 0,
+                        "pid": 2733325,
+                        "rank": 0,
+                        "world_size": 2
+                      },
+                      {
+                        "backend": "cuda:nccl,cpu:gloo",
+                        "cuda_current_device": 1,
+                        "device_ids": [
+                          1
+                        ],
+                        "empty_trainable_parameters": [],
+                        "final_parameters_sha256": "e61ee595cb023bfebab5c6b8b0848698e94e0e4a3182d098d6891d8d9af2e428",
+                        "find_unused_parameters": false,
+                        "forward_calls": 8,
+                        "gradient_calls": 176,
+                        "gradient_devices": [
+                          "cuda:1"
+                        ],
+                        "gradients_finite": true,
+                        "initial_parameters_sha256": "af50ae37d0e6bc6c6774523d032a4d14c8e7c7d23e61f7694c271a063494c331",
+                        "local_rank": 1,
+                        "pid": 2733326,
+                        "rank": 1,
+                        "world_size": 2
+                      }
+                    ],
+                    "returncode": 0
+                  }
+                }
+              },
+              "installation": "/opt/apps/deepmd-kit/deepmd-kit-development-master-2026-11-04-gbf5c88560e79-r9ecaf6fff286/4V100",
+              "job": "2216600",
+              "partition": "4V100",
+              "passed": true
+            }
+          },
+          "job": "2216600",
+          "partition": "4V100",
+          "passed": true,
+          "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+        }
+      ],
+      "evidence_sha256": {
+        "candidates.json": "676647eeb9fc6e99237c83caf101e0f6b9f2d8365464ddbe1e37b79304a0b2b6",
+        "publication.json": "5809d60926b699e85046011a3a7b3f32e181780f652d98910d2551787ed05979",
+        "status.json": "5809d60926b699e85046011a3a7b3f32e181780f652d98910d2551787ed05979",
+        "validation.json": "5158e7ce4b2b171e0cfae5f28ec0cc7148be901a0005416ee6be3e74a6dd00ca"
+      },
+      "fixed": "master-beta-20261105-bf5c88560e79-r4d85319d4295-b22785c95c56a",
+      "fixed_module_sha256": "c4508b35f5fef2cf35765df18fb14245b56cd414ff64668e314019fb8481d01b",
+      "public_gateway": "/opt/modules/modulefiles/apps/deepmd-kit/master-beta-later",
+      "public_gateway_content": "#%Module1.0\n# Maintained by stardust; this gateway does not rotate.\nsource \"/home/stardust/sai-hpc-software/modulefiles/apps/deepmd-kit/master-beta-later\"\n",
+      "public_gateway_present": true,
+      "publication": {
+        "after": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261105-42003384294-1-deepmd-kit",
+          "fixed": "master-beta-20261105-bf5c88560e79-r4d85319d4295-b22785c95c56a",
+          "generation": "daily-20261105-42003384294-1-deepmd-kit"
+        },
+        "attempt": "1",
+        "before": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261104-41807041729-1-deepmd-kit",
+          "fixed": "master-beta-20261104-93a2ddfaf8f2-r75ef5179f1e8-bf804007a4015",
+          "generation": "daily-20261104-41807041729-1-deepmd-kit"
+        },
+        "catalog_sha256": "04ddd956038b4b474b31d22d8e7e443fc0df8e91cde3c32476c9164d6419a482",
+        "checks": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-deepmd-kit-a3dfe27f8892/validation.json",
+        "fixed": "master-beta-20261105-bf5c88560e79-r4d85319d4295-b22785c95c56a",
+        "generation": "daily-20261105-42003384294-1-deepmd-kit",
+        "software": "deepmd-kit",
+        "source_sha": "bf5c88560e79dadc8cf18100afa1c4a9b1507ff5",
+        "status": "published",
+        "workflow": "42003384294"
+      },
+      "task": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-deepmd-kit-a3dfe27f8892"
+    },
+    "gpumd": {
+      "accounting": "2216398|COMPLETED|0:0|00:00:05|16v100n04|proj-sai-hpc-software\n2216400|COMPLETED|0:0|00:00:07|4v100n19|proj-sai-hpc-software\n2216402|COMPLETED|0:0|00:00:08|8v100v0n03|proj-sai-hpc-software\n",
+      "alias": "/home/stardust/sai-hpc-software/modulefiles/apps/gpumd/master-beta-later",
+      "candidates": {
+        "16V100": {
+          "binds": [
+            "/opt/apps/conda_env/deepmd-kit-3.2.0",
+            "/opt/apps/plumed/plumed-2.10.1",
+            "/opt/apps/gpumd/GPUMD-5.8"
+          ],
+          "build_verified": true,
+          "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/gpumd/development/master-2026-11-03-gddc6e2d2c2f1-r8afb5f6fe7e3/16V100/gpumd-42003384294-1-development-16v100-avx2-2026-11-05-ddc6e2d2c2f1.json",
+          "evidence_sha256": "f605c3abfc4963fb5a757c7959caf8c4f27982d9b6062d6416150eb1671f0e41",
+          "identity": {
+            "build_id": "master-2026-11-03-gddc6e2d2c2f1-r8afb5f6fe7e3",
+            "cpu_arch": "znver3",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/gpumd/GPUMD-development-master-2026-11-03-gddc6e2d2c2f1-r8afb5f6fe7e3/16V100",
+            "partition": "16V100",
+            "recipe_sha256": "8afb5f6fe7e3877ff2ed34fd6be19e2e589f011e3ad6da01af1fdd41b46e16c4",
+            "repository": "brucefan1983/GPUMD",
+            "schema": 2,
+            "software": "gpumd",
+            "source_ref": "master",
+            "source_sha": "ddc6e2d2c2f1a9ebdc7432c2ce0b097e01645894",
+            "source_version": "master-2026-11-03",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "16v100-avx2",
+            "track": "development",
+            "version_label": "master-2026-11-03"
+          },
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/gpumd/development/master-2026-11-03-gddc6e2d2c2f1-r8afb5f6fe7e3/16V100/gpumd-42003384294-1-development-16v100-avx2-2026-11-05-ddc6e2d2c2f1.sif",
+          "scientific_verified": true,
+          "sha256": "46a890d2151c91712d61d81eccf5db0f8a746f9cb382cd9ce4468d0eab648275"
+        },
+        "4V100": {
+          "binds": [
+            "/opt/apps/conda_env/deepmd-kit-3.2.0",
+            "/opt/apps/plumed/plumed-2.10.1",
+            "/opt/apps/gpumd/GPUMD-5.8"
+          ],
+          "build_verified": true,
+          "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/gpumd/development/master-2026-11-03-gddc6e2d2c2f1-r8afb5f6fe7e3/4V100/gpumd-42003384294-1-development-4v100-avx512-2026-11-05-ddc6e2d2c2f1.json",
+          "evidence_sha256": "17595eda45de8668e5d91e012cd863abace62d47b93549d0b2dcd8823773e195",
+          "identity": {
+            "build_id": "master-2026-11-03-gddc6e2d2c2f1-r8afb5f6fe7e3",
+            "cpu_arch": "znver4",
+            "cuda_arch": "70",
+            "dependency_isa": "avx512",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/gpumd/GPUMD-development-master-2026-11-03-gddc6e2d2c2f1-r8afb5f6fe7e3/4V100",
+            "partition": "4V100",
+            "recipe_sha256": "8afb5f6fe7e3877ff2ed34fd6be19e2e589f011e3ad6da01af1fdd41b46e16c4",
+            "repository": "brucefan1983/GPUMD",
+            "schema": 2,
+            "software": "gpumd",
+            "source_ref": "master",
+            "source_sha": "ddc6e2d2c2f1a9ebdc7432c2ce0b097e01645894",
+            "source_version": "master-2026-11-03",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "4v100-avx512",
+            "track": "development",
+            "version_label": "master-2026-11-03"
+          },
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/gpumd/development/master-2026-11-03-gddc6e2d2c2f1-r8afb5f6fe7e3/4V100/gpumd-42003384294-1-development-4v100-avx512-2026-11-05-ddc6e2d2c2f1.sif",
+          "scientific_verified": true,
+          "sha256": "9d29ace087eab2a2363a45b3851a15fb8a7f94f3eaac1f643a267ce5d2b8a439"
+        },
+        "8V100V0": {
+          "binds": [
+            "/opt/apps/conda_env/deepmd-kit-3.2.0",
+            "/opt/apps/plumed/plumed-2.10.1",
+            "/opt/apps/gpumd/GPUMD-5.8"
+          ],
+          "build_verified": true,
+          "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/gpumd/development/master-2026-11-03-gddc6e2d2c2f1-r8afb5f6fe7e3/8V100V0/gpumd-42003384294-1-development-8v100v0-avx512-2026-11-05-ddc6e2d2c2f1.json",
+          "evidence_sha256": "0051869f0ef2cea9c25805d8a4e9da58c8638752b2f1d24f13161881aa2ce380",
+          "identity": {
+            "build_id": "master-2026-11-03-gddc6e2d2c2f1-r8afb5f6fe7e3",
+            "cpu_arch": "skylake-avx512",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/gpumd/GPUMD-development-master-2026-11-03-gddc6e2d2c2f1-r8afb5f6fe7e3/8V100V0",
+            "partition": "8V100V0",
+            "recipe_sha256": "8afb5f6fe7e3877ff2ed34fd6be19e2e589f011e3ad6da01af1fdd41b46e16c4",
+            "repository": "brucefan1983/GPUMD",
+            "schema": 2,
+            "software": "gpumd",
+            "source_ref": "master",
+            "source_sha": "ddc6e2d2c2f1a9ebdc7432c2ce0b097e01645894",
+            "source_version": "master-2026-11-03",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "8v100v0-avx512",
+            "track": "development",
+            "version_label": "master-2026-11-03"
+          },
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/gpumd/development/master-2026-11-03-gddc6e2d2c2f1-r8afb5f6fe7e3/8V100V0/gpumd-42003384294-1-development-8v100v0-avx512-2026-11-05-ddc6e2d2c2f1.sif",
+          "scientific_verified": true,
+          "sha256": "40f3c8c40da05f3775f3d91eceb403b71ecbcba31657daf26a926acc7e7f545d"
+        }
+      },
+      "checks": [
+        {
+          "automatic_memory": true,
+          "catalog_sha256": "37502bbf9e3adb4987d7b112bec86734fd3b8318ae435246ff5dd3767e6eb117",
+          "gpumd": {
+            "energy_error": 0.0,
+            "force_error": 0.0
+          },
+          "job": "2216398",
+          "partition": "16V100",
+          "passed": true,
+          "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+        },
+        {
+          "automatic_memory": true,
+          "catalog_sha256": "37502bbf9e3adb4987d7b112bec86734fd3b8318ae435246ff5dd3767e6eb117",
+          "gpumd": {
+            "energy_error": 0.0,
+            "force_error": 0.0
+          },
+          "job": "2216400",
+          "partition": "4V100",
+          "passed": true,
+          "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+        },
+        {
+          "automatic_memory": true,
+          "catalog_sha256": "37502bbf9e3adb4987d7b112bec86734fd3b8318ae435246ff5dd3767e6eb117",
+          "gpumd": {
+            "energy_error": 0.0,
+            "force_error": 0.0
+          },
+          "job": "2216402",
+          "partition": "8V100V0",
+          "passed": true,
+          "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+        }
+      ],
+      "evidence_sha256": {
+        "candidates.json": "3856882e34952ad06005645ce8ee27cf6fea4347dbb5c96a7472475a19df5a84",
+        "publication.json": "eb67cbcd5e7de800faeb2dd2befa4b1a0045326cc2c209db2095dd3e7ff4f63b",
+        "status.json": "eb67cbcd5e7de800faeb2dd2befa4b1a0045326cc2c209db2095dd3e7ff4f63b",
+        "validation.json": "5fdfded171fd1580d4f2097dc4c6ce490542cd19d747c3f0afbbf14495d99815"
+      },
+      "fixed": "master-beta-20261105-ddc6e2d2c2f1-r4d85319d4295-b0374557f7232",
+      "fixed_module_sha256": "d3f7e415e320a96740903996d6ac28072a59337a345aa9370d3f742c2ae31184",
+      "public_gateway": "/opt/modules/modulefiles/apps/gpumd/master-beta-later",
+      "public_gateway_content": "#%Module1.0\n# Maintained by stardust; this gateway does not rotate.\nsource \"/home/stardust/sai-hpc-software/modulefiles/apps/gpumd/master-beta-later\"\n",
+      "public_gateway_present": true,
+      "publication": {
+        "after": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261105-42003384294-1-gpumd",
+          "fixed": "master-beta-20261105-ddc6e2d2c2f1-r4d85319d4295-b0374557f7232",
+          "generation": "daily-20261105-42003384294-1-gpumd"
+        },
+        "attempt": "1",
+        "before": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261104-41807041729-1-gpumd",
+          "fixed": "master-beta-20261104-ddc6e2d2c2f1-r75ef5179f1e8-b851d9b8f8ab2",
+          "generation": "daily-20261104-41807041729-1-gpumd"
+        },
+        "catalog_sha256": "32e28d9642fda101923d4a18b7f9da79296de8cd206dcb6b5442976f1187e106",
+        "checks": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-gpumd-a3dfe27f8892/validation.json",
+        "fixed": "master-beta-20261105-ddc6e2d2c2f1-r4d85319d4295-b0374557f7232",
+        "generation": "daily-20261105-42003384294-1-gpumd",
+        "software": "gpumd",
+        "source_sha": "ddc6e2d2c2f1a9ebdc7432c2ce0b097e01645894",
+        "status": "published",
+        "workflow": "42003384294"
+      },
+      "task": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-gpumd-a3dfe27f8892"
+    },
+    "lammps": {
+      "accounting": "2218229|COMPLETED|0:0|00:00:09|16v100n04|proj-sai-hpc-software\n2218231|COMPLETED|0:0|00:00:12|4v100n35|proj-sai-hpc-software\n2218233|COMPLETED|0:0|00:00:13|8v100v0n03|proj-sai-hpc-software\n",
+      "alias": "/home/stardust/sai-hpc-software/modulefiles/apps/lammps/develop-beta-later",
+      "candidates": {
+        "16V100": {
+          "binds": [
+            "/opt/apps/conda_env/deepmd-kit-3.2.0",
+            "/opt/apps/conda_env/deepmd-kit-3.1.2",
+            "/opt/apps/conda_env/VeloxChem/gpu",
+            "/opt/apps/plumed/plumed-2.10.1",
+            "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100"
+          ],
+          "build_verified": true,
+          "evidence": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runtime-tests/lmp-42003384294-1-development-16v100-avx2-20261105-80e27a711793-science/verification.json",
+          "evidence_sha256": "f7ec6741166ee1af43798fcfa448e486cc02d9a294e3d106ca162070a1b9d0cf",
+          "identity": {
+            "build_id": "develop-2026-11-04-g80e27a711793-rf49ca0843d17",
+            "cpu_arch": "znver3",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/lammps/lammps-development-develop-2026-11-04-g80e27a711793-rf49ca0843d17/16V100",
+            "partition": "16V100",
+            "recipe_sha256": "f49ca0843d17c3e1a684ea719bec24b21ab962c5e64aeb174655a06f2b64fecb",
+            "repository": "lammps/lammps",
+            "schema": 2,
+            "software": "lammps",
+            "source_ref": "develop",
+            "source_sha": "80e27a711793e5999b2afbec058656acb822099a",
+            "source_version": "develop-2026-11-04",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "16v100-avx2",
+            "track": "development",
+            "version_label": "develop-2026-11-04"
+          },
+          "image": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-42003384294-1-development-16v100-avx2-20261105-80e27a711793/candidate.sif",
+          "installed_deepmd_dependency": {
+            "identity": {
+              "build_id": "v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102",
+              "cpu_arch": "znver3",
+              "cuda_arch": "70",
+              "dependency_isa": "avx2",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100",
+              "partition": "16V100",
+              "recipe_sha256": "296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097",
+              "repository": "deepmodeling/deepmd-kit",
+              "schema": 2,
+              "software": "deepmd-kit",
+              "source_ref": "v3.2.0",
+              "source_sha": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+              "source_version": "v3.2.0",
+              "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+              "stack_sources": {
+                "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+                "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+              },
+              "target": "16v100-avx2",
+              "track": "release",
+              "version_label": "v3.2.0"
+            },
+            "runtime_plan_sha256": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e"
+          },
+          "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+          "scientific_verified": true,
+          "sha256": "f93f6f57afd6a9201e250823ec5b01d7c505e0b3f641bfc2173c0deb5eda9987"
+        },
+        "4V100": {
+          "binds": [
+            "/opt/apps/conda_env/deepmd-kit-3.2.0",
+            "/opt/apps/conda_env/deepmd-kit-3.1.2",
+            "/opt/apps/conda_env/VeloxChem/gpu",
+            "/opt/apps/plumed/plumed-2.10.1",
+            "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/4V100"
+          ],
+          "build_verified": true,
+          "evidence": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runtime-tests/lmp-42003384294-1-development-4v100-avx512-20261105-80e27a711793-science/verification.json",
+          "evidence_sha256": "1041fb03bd86a0b6d93ed6060d83f0d996c4b505ff5734a02c6b5a99873a3a8c",
+          "identity": {
+            "build_id": "develop-2026-11-04-g80e27a711793-rf49ca0843d17",
+            "cpu_arch": "znver4",
+            "cuda_arch": "70",
+            "dependency_isa": "avx512",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/lammps/lammps-development-develop-2026-11-04-g80e27a711793-rf49ca0843d17/4V100",
+            "partition": "4V100",
+            "recipe_sha256": "f49ca0843d17c3e1a684ea719bec24b21ab962c5e64aeb174655a06f2b64fecb",
+            "repository": "lammps/lammps",
+            "schema": 2,
+            "software": "lammps",
+            "source_ref": "develop",
+            "source_sha": "80e27a711793e5999b2afbec058656acb822099a",
+            "source_version": "develop-2026-11-04",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "4v100-avx512",
+            "track": "development",
+            "version_label": "develop-2026-11-04"
+          },
+          "image": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-42003384294-1-development-4v100-avx512-20261105-80e27a711793/candidate.sif",
+          "installed_deepmd_dependency": {
+            "identity": {
+              "build_id": "v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102",
+              "cpu_arch": "znver4",
+              "cuda_arch": "70",
+              "dependency_isa": "avx512",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/4V100",
+              "partition": "4V100",
+              "recipe_sha256": "296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097",
+              "repository": "deepmodeling/deepmd-kit",
+              "schema": 2,
+              "software": "deepmd-kit",
+              "source_ref": "v3.2.0",
+              "source_sha": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+              "source_version": "v3.2.0",
+              "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+              "stack_sources": {
+                "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+                "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+              },
+              "target": "4v100-avx512",
+              "track": "release",
+              "version_label": "v3.2.0"
+            },
+            "runtime_plan_sha256": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e"
+          },
+          "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx512",
+          "scientific_verified": true,
+          "sha256": "bba205d0499e080b9353cce3ede99d0b69ad65f4366244d327f90a49ba170787"
+        },
+        "8V100V0": {
+          "binds": [
+            "/opt/apps/conda_env/deepmd-kit-3.2.0",
+            "/opt/apps/conda_env/deepmd-kit-3.1.2",
+            "/opt/apps/conda_env/VeloxChem/gpu",
+            "/opt/apps/plumed/plumed-2.10.1",
+            "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0"
+          ],
+          "build_verified": true,
+          "evidence": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runtime-tests/lmp-42003384294-1-development-8v100v0-avx512-20261105-80e27a711793-science/verification.json",
+          "evidence_sha256": "6849a8d2d29f2d580d90b652f2d8f5f1968440edd940f1720e8ef38fe29b2639",
+          "identity": {
+            "build_id": "develop-2026-11-04-g80e27a711793-rf49ca0843d17",
+            "cpu_arch": "skylake-avx512",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/lammps/lammps-development-develop-2026-11-04-g80e27a711793-rf49ca0843d17/8V100V0",
+            "partition": "8V100V0",
+            "recipe_sha256": "f49ca0843d17c3e1a684ea719bec24b21ab962c5e64aeb174655a06f2b64fecb",
+            "repository": "lammps/lammps",
+            "schema": 2,
+            "software": "lammps",
+            "source_ref": "develop",
+            "source_sha": "80e27a711793e5999b2afbec058656acb822099a",
+            "source_version": "develop-2026-11-04",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "8v100v0-avx512",
+            "track": "development",
+            "version_label": "develop-2026-11-04"
+          },
+          "image": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-42003384294-1-development-8v100v0-avx512-20261105-80e27a711793/candidate.sif",
+          "installed_deepmd_dependency": {
+            "identity": {
+              "build_id": "v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102",
+              "cpu_arch": "skylake-avx512",
+              "cuda_arch": "70",
+              "dependency_isa": "avx2",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0",
+              "partition": "8V100V0",
+              "recipe_sha256": "795dbd80e2a43d3e7a32c1bc373d30b88476fcca8d63f26ccc6d42a84515707c",
+              "repository": "deepmodeling/deepmd-kit",
+              "schema": 2,
+              "software": "deepmd-kit",
+              "source_ref": "v3.2.0",
+              "source_sha": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+              "source_version": "v3.2.0",
+              "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+              "stack_sources": {
+                "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+                "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+              },
+              "target": "8v100v0-avx512",
+              "track": "release",
+              "version_label": "v3.2.0"
+            },
+            "runtime_plan_sha256": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e"
+          },
+          "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2",
+          "scientific_verified": true,
+          "sha256": "7f12f2518f1a4dc0d639a5e1be2e2a36a2ba50ed6564a6fd37cbac0795b599c5"
+        }
+      },
+      "checks": [
+        {
+          "automatic_memory": true,
+          "catalog_sha256": "fcc75640b6fbf755d1163aac73f351fc072e8357b8eb502f6a37109618f46d85",
+          "job": "2218229",
+          "lammps": {
+            "max_error": 0.0
+          },
+          "partition": "16V100",
+          "passed": true,
+          "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+        },
+        {
+          "automatic_memory": true,
+          "catalog_sha256": "fcc75640b6fbf755d1163aac73f351fc072e8357b8eb502f6a37109618f46d85",
+          "job": "2218231",
+          "lammps": {
+            "max_error": 0.0
+          },
+          "partition": "4V100",
+          "passed": true,
+          "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+        },
+        {
+          "automatic_memory": true,
+          "catalog_sha256": "fcc75640b6fbf755d1163aac73f351fc072e8357b8eb502f6a37109618f46d85",
+          "job": "2218233",
+          "lammps": {
+            "max_error": 0.0
+          },
+          "partition": "8V100V0",
+          "passed": true,
+          "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+        }
+      ],
+      "evidence_sha256": {
+        "candidates.json": "d40431be3991cef4818aad383da154d6ecf93e8429b8ceebd8a65e67b1932d67",
+        "publication.json": "37efb72ae86c0b1972d3d4096bdb4c0bf121d32053f095d99ed12bad93a81b6e",
+        "status.json": "37efb72ae86c0b1972d3d4096bdb4c0bf121d32053f095d99ed12bad93a81b6e",
+        "validation.json": "6f136bd7fababc97d80fb71d853e8778d3b540d97c81fec2084cf18cd11230fe"
+      },
+      "fixed": "develop-beta-20261105-80e27a711793-r4d85319d4295-bab25f97cb991",
+      "fixed_module_sha256": "e6bc833b3d7fcf60fc36a3690bbf438bef1b8c099a7572c96fc7e509118b94c5",
+      "public_gateway": "/opt/modules/modulefiles/apps/lammps/develop-beta-later",
+      "public_gateway_content": "#%Module1.0\n# Maintained by stardust; this gateway does not rotate.\nsource \"/home/stardust/sai-hpc-software/modulefiles/apps/lammps/develop-beta-later\"\n",
+      "public_gateway_present": true,
+      "publication": {
+        "after": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261105-42003384294-1-lammps",
+          "fixed": "develop-beta-20261105-80e27a711793-r4d85319d4295-bab25f97cb991",
+          "generation": "daily-20261105-42003384294-1-lammps"
+        },
+        "attempt": "1",
+        "before": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261104-41807041729-1-lammps",
+          "fixed": "develop-beta-20261104-7dbed49448a1-r75ef5179f1e8-b342bbf1d11b3",
+          "generation": "daily-20261104-41807041729-1-lammps"
+        },
+        "catalog_sha256": "46341449ce46277e23fb4d13d6f2c839e621599bdd99ddeccbb128abd6549b68",
+        "checks": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-lammps-a3dfe27f8892/validation.json",
+        "fixed": "develop-beta-20261105-80e27a711793-r4d85319d4295-bab25f97cb991",
+        "generation": "daily-20261105-42003384294-1-lammps",
+        "software": "lammps",
+        "source_sha": "80e27a711793e5999b2afbec058656acb822099a",
+        "status": "published",
+        "workflow": "42003384294"
+      },
+      "task": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-lammps-a3dfe27f8892"
+    },
+    "qe": {
+      "accounting": "2218384|COMPLETED|0:0|00:00:11|16v100n05|proj-sai-hpc-software\n2218386|COMPLETED|0:0|00:00:21|4v100n36|proj-sai-hpc-software\n2218388|COMPLETED|0:0|00:00:51|8v100v0n03|proj-sai-hpc-software\n2218390|COMPLETED|0:0|00:00:29|d9470n05|proj-sai-hpc-software\n",
+      "alias": "/home/stardust/sai-hpc-software/modulefiles/apps/qe/develop-beta-later",
+      "candidates": {
+        "16V100": {
+          "binds": [],
+          "build_verified": true,
+          "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/42003384294-1-development-16v100-avx2-2026-11-05-61569eb48023.json",
+          "evidence_sha256": "7ccc8e738d9ca4e6ee92d9f99f1ea8d11350eec5f73dea1cd6a2a6e8a976d603",
+          "identity": {
+            "build_id": "develop-2026-07-09-g61569eb48023-rd5d793ab4f38",
+            "cpu_arch": "znver3",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100",
+            "partition": "16V100",
+            "recipe_sha256": "d5d793ab4f3881816115c8e0cc94299c2bc8872ba1a78efd723ea23f670ac4f8",
+            "repository": "QEF/q-e",
+            "schema": 2,
+            "software": "qe",
+            "source_ref": "develop",
+            "source_sha": "61569eb480231b649c47f631df9c5c83537df461",
+            "source_version": "develop-2026-07-09",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "16v100-avx2",
+            "track": "development",
+            "version_label": "develop-2026-07-09"
+          },
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/16V100/42003384294-1-development-16v100-avx2-2026-11-05-61569eb48023.sif",
+          "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx2",
+          "scientific_verified": true,
+          "sha256": "2fb58ba26e93b4dd5666dc57dd36e7abe85f3f8c9ad599ae81c86cf1c67a14e5"
+        },
+        "4V100": {
+          "binds": [],
+          "build_verified": true,
+          "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/42003384294-1-development-4v100-avx512-2026-11-05-61569eb48023.json",
+          "evidence_sha256": "624d05b7696d341fbebd9a7ae45e5db8adef6467c9d3f80c35d6076b00d7b268",
+          "identity": {
+            "build_id": "develop-2026-07-09-g61569eb48023-rd5d793ab4f38",
+            "cpu_arch": "znver4",
+            "cuda_arch": "70",
+            "dependency_isa": "avx512",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100",
+            "partition": "4V100",
+            "recipe_sha256": "d5d793ab4f3881816115c8e0cc94299c2bc8872ba1a78efd723ea23f670ac4f8",
+            "repository": "QEF/q-e",
+            "schema": 2,
+            "software": "qe",
+            "source_ref": "develop",
+            "source_sha": "61569eb480231b649c47f631df9c5c83537df461",
+            "source_version": "develop-2026-07-09",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "4v100-avx512",
+            "track": "development",
+            "version_label": "develop-2026-07-09"
+          },
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/4V100/42003384294-1-development-4v100-avx512-2026-11-05-61569eb48023.sif",
+          "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512",
+          "scientific_verified": true,
+          "sha256": "012c8e933b96f9128b9ec979b8c3b7430186b9ec12042da0492e6a3d8687aedc"
+        },
+        "8V100V0": {
+          "binds": [],
+          "build_verified": true,
+          "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/42003384294-1-development-8v100v0-avx512-2026-11-05-61569eb48023.json",
+          "evidence_sha256": "f3087658724aa30741bd57f2ff35458d25c6a2ca33e5f5698df5a678e9d11321",
+          "identity": {
+            "build_id": "develop-2026-07-09-g61569eb48023-rd5d793ab4f38",
+            "cpu_arch": "skylake-avx512",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0",
+            "partition": "8V100V0",
+            "recipe_sha256": "d5d793ab4f3881816115c8e0cc94299c2bc8872ba1a78efd723ea23f670ac4f8",
+            "repository": "QEF/q-e",
+            "schema": 2,
+            "software": "qe",
+            "source_ref": "develop",
+            "source_sha": "61569eb480231b649c47f631df9c5c83537df461",
+            "source_version": "develop-2026-07-09",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "8v100v0-avx512",
+            "track": "development",
+            "version_label": "develop-2026-07-09"
+          },
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/8V100V0/42003384294-1-development-8v100v0-avx512-2026-11-05-61569eb48023.sif",
+          "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx2",
+          "scientific_verified": true,
+          "sha256": "66612d079f17dd991d10f9d01b2681b6c8a44ea48e84a327a99b2397f4827d6c"
+        },
+        "DSPRHBM": {
+          "binds": [],
+          "build_verified": true,
+          "evidence": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/42003384294-1-development-dsprhbm-2026-11-05-61569eb48023.json",
+          "evidence_sha256": "e08a773f220f23e6e3c8c74e0f8c8202c7f3f2948e90bb47d42ed1b93e5ecaeb",
+          "identity": {
+            "build_id": "develop-2026-07-09-g61569eb48023-rd5d793ab4f38",
+            "cpu_arch": "x86-64-v4",
+            "cuda_arch": "",
+            "dependency_isa": "avx512",
+            "gpus": 0,
+            "install_prefix": "/opt/apps/qe/qe-development-develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM",
+            "partition": "DSPRHBM",
+            "recipe_sha256": "d5d793ab4f3881816115c8e0cc94299c2bc8872ba1a78efd723ea23f670ac4f8",
+            "repository": "QEF/q-e",
+            "schema": 2,
+            "software": "qe",
+            "source_ref": "develop",
+            "source_sha": "61569eb480231b649c47f631df9c5c83537df461",
+            "source_version": "develop-2026-07-09",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "dsprhbm",
+            "track": "development",
+            "version_label": "develop-2026-07-09"
+          },
+          "image": "/org/org-open-sai/proj-sai-hpc-software/containers/software/qe/development/develop-2026-07-09-g61569eb48023-rd5d793ab4f38/DSPRHBM/42003384294-1-development-dsprhbm-2026-11-05-61569eb48023.sif",
+          "mpi_prefix": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512",
+          "scientific_verified": true,
+          "sha256": "bfaa262445f18ca4349a8382d9e3e1c81e145ad9107cd3bfac861e47ce8abf8d"
+        }
+      },
+      "checks": [
+        {
+          "automatic_memory": true,
+          "catalog_sha256": "c651ab772e109080dea2906215162ba02b11c2f2e9c122899a4ab8b1edab2082",
+          "job": "2218386",
+          "partition": "4V100",
+          "passed": true,
+          "qe": {
+            "energy_ry": -15.84452726,
+            "forces_ry_bohr": [
+              [
+                -0.0,
+                -0.0,
+                -0.0
+              ],
+              [
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            "manypw": {
+              "gpu_devices_by_rank": {
+                "0": [
+                  "0"
+                ],
+                "1": [
+                  "1"
+                ]
+              },
+              "images": [
+                {
+                  "energy_ry": -15.84452726,
+                  "image": 0,
+                  "output_sha256": "cffd09a1e17538faec84e16de67d7ecab96f3bc267f6ea57fa777e1f223c25a1",
+                  "schema_sha256": "4b1f96c9d6f919b7766d030cbec117435f3ae87847156e679164e34c767504a4",
+                  "scratch": "tmp_0"
+                },
+                {
+                  "energy_ry": -15.84452726,
+                  "image": 1,
+                  "output_sha256": "0f8f325b4d1db825002bad3f815fb6fb901ff3342012a28884c4297b6e2e6dd5",
+                  "schema_sha256": "efcb08842503fe9dae6bbc669c52146c3bdd0b25c7a4a7f0a0995fed6fd763e9",
+                  "scratch": "tmp_1"
+                }
+              ],
+              "passed": true,
+              "rank_output": {
+                "0": {
+                  "cuda_kernel_launches": 8683,
+                  "stderr": {
+                    "path": "rank-output/rank.0/stderr",
+                    "sha256": "d0f93b75952b6d42dc34776997aedd5b76381badd4ae53cc265059356070d417"
+                  },
+                  "stdout": {
+                    "path": "rank-output/rank.0/stdout",
+                    "sha256": "6a1a99005b4c6c42bdbf06f13c536c4477384290019a7e2d6d22761c906eb8b1"
+                  }
+                },
+                "1": {
+                  "cuda_kernel_launches": 8683,
+                  "stderr": {
+                    "path": "rank-output/rank.1/stderr",
+                    "sha256": "1485f1b82f1042e4f58a869e8e7b2ef2590a727890b60507c76ba9b0eb16f353"
+                  },
+                  "stdout": {
+                    "path": "rank-output/rank.1/stdout",
+                    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                  }
+                }
+              }
+            }
+          },
+          "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+        },
+        {
+          "automatic_memory": true,
+          "catalog_sha256": "c651ab772e109080dea2906215162ba02b11c2f2e9c122899a4ab8b1edab2082",
+          "job": "2218390",
+          "partition": "DSPRHBM",
+          "passed": true,
+          "qe": {
+            "energy_ry": -15.84452726,
+            "forces_ry_bohr": [
+              [
+                0.0,
+                0.0,
+                -0.0
+              ],
+              [
+                0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            "manypw": {
+              "gpu_devices_by_rank": {},
+              "images": [
+                {
+                  "energy_ry": -15.84452726,
+                  "image": 0,
+                  "output_sha256": "5366baa9c24260dc2271e837b8e5ab005b123a193bc7fc7d95e38c9614d43f45",
+                  "schema_sha256": "c60f6af946b5fd541040e178c6aff1729b3d6400d3eaee2d7960ee5471c1ba0c",
+                  "scratch": "tmp_0"
+                },
+                {
+                  "energy_ry": -15.84452726,
+                  "image": 1,
+                  "output_sha256": "33edf4dc0ecc37c22da9ab90fd7bef52a2be9127de3b6e8a7a03ee39b6fb6555",
+                  "schema_sha256": "01aab446c0a82626116fb2677d8c21ff5035557152226f43cd68200e3a79d46d",
+                  "scratch": "tmp_1"
+                }
+              ],
+              "passed": true,
+              "rank_output": {
+                "0": {
+                  "stderr": {
+                    "path": "rank-output/rank.0/stderr",
+                    "sha256": "89058e1fd5cfbf6a86e6b4a1e67bc008454d545e62ed7cab81d5e84898542c4e"
+                  },
+                  "stdout": {
+                    "path": "rank-output/rank.0/stdout",
+                    "sha256": "d4e0583315634144833db3dd949c735fe318d2bc9216e98a27686d2752a5ad70"
+                  }
+                },
+                "1": {
+                  "stderr": {
+                    "path": "rank-output/rank.1/stderr",
+                    "sha256": "64319ec3b0e534629956c27ae6a80be4235f2b3397097ba626604a1f2a8b0d4b"
+                  },
+                  "stdout": {
+                    "path": "rank-output/rank.1/stdout",
+                    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                  }
+                }
+              }
+            }
+          },
+          "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+        },
+        {
+          "automatic_memory": true,
+          "catalog_sha256": "c651ab772e109080dea2906215162ba02b11c2f2e9c122899a4ab8b1edab2082",
+          "job": "2218384",
+          "partition": "16V100",
+          "passed": true,
+          "qe": {
+            "energy_ry": -15.84452726,
+            "forces_ry_bohr": [
+              [
+                -0.0,
+                -0.0,
+                0.0
+              ],
+              [
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            "manypw": {
+              "gpu_devices_by_rank": {
+                "0": [
+                  "0"
+                ],
+                "1": [
+                  "1"
+                ]
+              },
+              "images": [
+                {
+                  "energy_ry": -15.84452726,
+                  "image": 0,
+                  "output_sha256": "1ec8a3d9e1cfedbb80c5766f4244bc3929f78c43e2f733d4bf32df672415854c",
+                  "schema_sha256": "23599dbca6695031183944c6b4dd5e55ef167b685f953234da369cf44b2988a8",
+                  "scratch": "tmp_0"
+                },
+                {
+                  "energy_ry": -15.84452726,
+                  "image": 1,
+                  "output_sha256": "0d349836931c82307a7d4fe432ff80884a3c6b51ddb083566fc725fb9f83e5e7",
+                  "schema_sha256": "7505a9f9cbe6ea8abb5a65fb72648119fe9ed8aaf3182648bbeb647de4afb862",
+                  "scratch": "tmp_1"
+                }
+              ],
+              "passed": true,
+              "rank_output": {
+                "0": {
+                  "cuda_kernel_launches": 8683,
+                  "stderr": {
+                    "path": "rank-output/rank.0/stderr",
+                    "sha256": "440be5d65bd7c9f50675f7ed8c47a474ba257136338b02cf81aa81349299a1a8"
+                  },
+                  "stdout": {
+                    "path": "rank-output/rank.0/stdout",
+                    "sha256": "d17540b589d0c680134ebef5610b185322c066444e4744ce3affee5deedb32ea"
+                  }
+                },
+                "1": {
+                  "cuda_kernel_launches": 8683,
+                  "stderr": {
+                    "path": "rank-output/rank.1/stderr",
+                    "sha256": "7058d7eba3853a9f9faf70af48d9a701f6c533c170b7c4b36e72f00c3df8dae0"
+                  },
+                  "stdout": {
+                    "path": "rank-output/rank.1/stdout",
+                    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                  }
+                }
+              }
+            }
+          },
+          "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+        },
+        {
+          "automatic_memory": true,
+          "catalog_sha256": "c651ab772e109080dea2906215162ba02b11c2f2e9c122899a4ab8b1edab2082",
+          "job": "2218388",
+          "partition": "8V100V0",
+          "passed": true,
+          "qe": {
+            "energy_ry": -15.84452726,
+            "forces_ry_bohr": [
+              [
+                0.0,
+                0.0,
+                -0.0
+              ],
+              [
+                -0.0,
+                -0.0,
+                0.0
+              ]
+            ],
+            "manypw": {
+              "gpu_devices_by_rank": {
+                "0": [
+                  "0"
+                ],
+                "1": [
+                  "1"
+                ]
+              },
+              "images": [
+                {
+                  "energy_ry": -15.84452726,
+                  "image": 0,
+                  "output_sha256": "7525eb4d84a98bc87b901a51c9ea099127e8ffa2462d9badcad726da596c6183",
+                  "schema_sha256": "4afe3449b3825d446e8b1a74030debcf84c9d63b1fe9929d95716dcbdefa70cb",
+                  "scratch": "tmp_0"
+                },
+                {
+                  "energy_ry": -15.84452726,
+                  "image": 1,
+                  "output_sha256": "7de60060b43d25fb050a19d249fb95493f0a7a21ca7e6fa730cd3f85d1155bcc",
+                  "schema_sha256": "84bda1a151776a47a4538c537345c0808d29f766a9a593c56360476fa8df1905",
+                  "scratch": "tmp_1"
+                }
+              ],
+              "passed": true,
+              "rank_output": {
+                "0": {
+                  "cuda_kernel_launches": 8683,
+                  "stderr": {
+                    "path": "rank-output/rank.0/stderr",
+                    "sha256": "18764d6d98e566f381a89d09fadc95953cdf74765e171adc3cd195780f6c6966"
+                  },
+                  "stdout": {
+                    "path": "rank-output/rank.0/stdout",
+                    "sha256": "462edb20f1b1f904ff6a1bbe6eab23673adbca65038ecc915d3be85de34a8ccc"
+                  }
+                },
+                "1": {
+                  "cuda_kernel_launches": 8683,
+                  "stderr": {
+                    "path": "rank-output/rank.1/stderr",
+                    "sha256": "1485f1b82f1042e4f58a869e8e7b2ef2590a727890b60507c76ba9b0eb16f353"
+                  },
+                  "stdout": {
+                    "path": "rank-output/rank.1/stdout",
+                    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+                  }
+                }
+              }
+            }
+          },
+          "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+        }
+      ],
+      "evidence_sha256": {
+        "candidates.json": "9891d70345402f72084eff615adcf95299107d0aa26c2ee43592351e491cd6eb",
+        "publication.json": "f55ff2bcdcd839106beefcf899441ea0fa205d3ecefd5e0d7b4eefafb2ed476c",
+        "status.json": "f55ff2bcdcd839106beefcf899441ea0fa205d3ecefd5e0d7b4eefafb2ed476c",
+        "validation.json": "4cf5e294f2faa02f75476fb747c58e5edd8f6289a25dc8a9707598d702d11044"
+      },
+      "fixed": "develop-beta-20261105-61569eb48023-r4d85319d4295-b1344de3afc7f",
+      "fixed_module_sha256": "320cd8a3aad7a14e3df6943bd619a41c76bb70398c7a6ae78e33152245f87d93",
+      "public_gateway": "/opt/modules/modulefiles/apps/qe/develop-beta-later",
+      "public_gateway_content": null,
+      "public_gateway_present": false,
+      "publication": {
+        "after": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261105-42003384294-1-qe",
+          "fixed": "develop-beta-20261105-61569eb48023-r4d85319d4295-b1344de3afc7f",
+          "generation": "daily-20261105-42003384294-1-qe"
+        },
+        "attempt": "1",
+        "before": {
+          "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/qe-manypw-20261105-4846bfe4644d",
+          "fixed": "develop-beta-20261105-61569eb48023-r4d85319d4295-bd913f2de073c",
+          "generation": "qe-manypw-20261105-4846bfe4644d"
+        },
+        "catalog_sha256": "8976043d4f9947de0a7b986684c3d168338507f6fb60d645b7e2a64c5dff4b39",
+        "checks": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3/validation.json",
+        "fixed": "develop-beta-20261105-61569eb48023-r4d85319d4295-b1344de3afc7f",
+        "generation": "daily-20261105-42003384294-1-qe",
+        "software": "qe",
+        "source_sha": "61569eb480231b649c47f631df9c5c83537df461",
+        "status": "published",
+        "workflow": "42003384294"
+      },
+      "task": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42003384294-1-qe-271a3918eff3"
+    }
+  },
+  "observed_at": "2026-11-05T13:13:16.977971+00:00",
+  "qe_gateway_check": {
+    "exit_code": 0,
+    "stderr": "",
+    "stdout": "qe: develop-beta-20261105-61569eb48023-r4d85319d4295-b1344de3afc7f; runtime, images and launchers verified\nqe/develop-beta-later -> /home/stardust/sai-hpc-software/modulefiles/apps/qe/develop-beta-later\n"
+  },
+  "source_workflow": "42003384294"
+}

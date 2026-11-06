@@ -1,0 +1,44 @@
+{
+  "passed": true,
+  "observed_at": "2026-11-05T08:52:26.495336+00:00",
+  "public_package": "/home/stardust/sai-hpc-software/deployment/qe-7.6",
+  "source_sha256": {
+    "install.py": "6e715e58c31d5f0de50058cad7cd4dbdd9141c246ce49ee0eb78d3e4d6008d41",
+    "native_checks.py": "19b289da6ee47c500f006040a5012e6f6b0bd17a6cd404edf93b6aece6356170",
+    "prepare-release.py": "ca295ae6f25ecb4728116de4218eefb4e35e032ce0f497b2205399d47da8b45f",
+    "README.md": "bf847f5ba3a6b84225078c5a0b8dfd1632487dc0f031c3bc8c80538e76398875"
+  },
+  "protected_file_sha256": {
+    "release.json": "ba873e5fec184598fcc9943241f7a2f0548452f7b8d455bbd2ab0c09f97f6b07",
+    "evidence/16V100-manifest.json": "2ed6733828f49ace2aa27a4b30d3f80764d8dd6fdbf1a612e84e95f957421206",
+    "evidence/16V100-publication.json": "d9962e34755af9d09ee706c9d7e1eed7aee737124a07d0850f5cb1eb3279f368",
+    "evidence/4V100-manifest.json": "ee80900a9d508a07fa53291cdbf24f62dc8e87792c11f3c85b6e810d09250ef8",
+    "evidence/4V100-publication.json": "e5e07800e9d5d49f4295f3f5c050af1e307fa0682a3ab838c6ac57c392e5074e",
+    "evidence/8V100V0-manifest.json": "75afd6d9a486f8654e631e9c8f5ae555a1d028d4ec7e54d7a2dc51c8a18474ad",
+    "evidence/8V100V0-publication.json": "b240ccce93a650ede5c9e89845f447fe10639946fa75d73da98213a6d9b2c048",
+    "evidence/DSPRHBM-manifest.json": "77a66426a819a48fad0d10f747844a3402ee5947762c5c43caf700659a582814",
+    "evidence/DSPRHBM-publication.json": "428f101740b72a1048e879e4990bea58e37922938e33fb9bb6c447be7ccce059"
+  },
+  "image_inode_size_mtime_unchanged": true,
+  "existing_installed_regular_files_verified": true,
+  "missing_standard_links": [
+    "/opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/16V100/bin/manypw.x",
+    "/opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/4V100/bin/manypw.x",
+    "/opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/8V100V0/bin/manypw.x",
+    "/opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r18629d40806e/DSPRHBM/bin/manypw.x"
+  ],
+  "physical_opt_modified": false,
+  "commands": {
+    "--check": {
+      "returncode": 0,
+      "stdout": "16V100: checking accepted export\n  72 files, 1 command link, 1976.09 MiB\n4V100: checking accepted export\n  72 files, 1 command link, 1961.82 MiB\n8V100V0: checking accepted export\n  72 files, 1 command link, 1994.51 MiB\nDSPRHBM: checking accepted export\n  72 files, 1 command link, 1190.55 MiB\nQE_NATIVE_PREFLIGHT_PASSED\n",
+      "stderr": ""
+    },
+    "--verify": {
+      "returncode": 1,
+      "stdout": "16V100: checking installed files\n",
+      "stderr": "Installation stopped: incomplete installed tree: /opt/apps/qe/qe-release-qe-7.6-g9f93ddec427d-r02bdbc94280c/16V100\n"
+    }
+  },
+  "expected_next_step": "bash install.sh --complete-commands; bash install.sh --verify"
+}

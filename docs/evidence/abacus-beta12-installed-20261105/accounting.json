@@ -1,0 +1,14 @@
+{
+  "argv": [
+    "sacct",
+    "-X",
+    "-n",
+    "-P",
+    "-j",
+    "2217408,2217409,2217410,2217411",
+    "--format=JobIDRaw,Partition,Account,State,ExitCode,ElapsedRaw,AllocCPUS,AllocTRES%180,NodeList,Start,End,WorkDir%240"
+  ],
+  "returncode": 0,
+  "stderr": "",
+  "stdout": "2217408|4V100|proj-sai-hpc-software|COMPLETED|0:0|106|16|billing=388,cpu=16,gres/gpu=2,mem=44G,node=2|4v100n[31,36]|2026-11-05T19:10:18|2026-11-05T19:12:04|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/abacus-beta12-physical-20261105-190518-384810/4V100\n2217409|16V100|proj-sai-hpc-software|COMPLETED|0:0|49|16|billing=300,cpu=16,gres/gpu=2,mem=30G,node=2|16v100n[33-34]|2026-11-05T19:05:47|2026-11-05T19:06:36|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/abacus-beta12-physical-20261105-190518-384810/16V100\n2217410|8V100V0|proj-sai-hpc-software|COMPLETED|0:0|58|12|billing=360,cpu=12,gres/gpu=2,mem=92G,node=2|8v100v0n[03,05]|2026-11-05T19:05:47|2026-11-05T19:06:45|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/abacus-beta12-physical-20261105-190518-384810/8V100V0\n2217411|DSPRHBM|proj-sai-hpc-software|COMPLETED|0:0|414|16|billing=128,cpu=16,mem=18896M,node=2|d9470n[03-04]|2026-11-05T19:05:23|2026-11-05T19:12:17|/org/org-open-sai/proj-sai-hpc-software/runtime-tests/abacus-beta12-physical-20261105-190518-384810/DSPRHBM\n"
+}

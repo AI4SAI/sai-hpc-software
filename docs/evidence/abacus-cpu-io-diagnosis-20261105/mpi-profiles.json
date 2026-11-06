@@ -1,0 +1,2775 @@
+{
+  "session-abba-profile/04-original-profiled-deepks/ranks/0.mpi-profile.json": {
+    "rank": 0,
+    "lifetime_seconds": 151.491868321,
+    "calls": [
+      {
+        "name": "Init",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Init_thread",
+        "count": 1,
+        "seconds": 82.946344331,
+        "max_seconds": 82.946344331
+      },
+      {
+        "name": "Finalize",
+        "count": 1,
+        "seconds": 0.381301528,
+        "max_seconds": 0.381301528
+      },
+      {
+        "name": "Barrier",
+        "count": 31,
+        "seconds": 11.271620761,
+        "max_seconds": 11.249132266
+      },
+      {
+        "name": "Allreduce",
+        "count": 2582,
+        "seconds": 0.022953136,
+        "max_seconds": 0.001473499
+      },
+      {
+        "name": "Reduce",
+        "count": 288,
+        "seconds": 0.000884887,
+        "max_seconds": 2.4739e-05
+      },
+      {
+        "name": "Bcast",
+        "count": 1703,
+        "seconds": 2.042733766,
+        "max_seconds": 2.029253768
+      },
+      {
+        "name": "Comm_split",
+        "count": 9,
+        "seconds": 13.361324752,
+        "max_seconds": 13.358515615
+      },
+      {
+        "name": "Comm_split_type",
+        "count": 3,
+        "seconds": 0.003469405,
+        "max_seconds": 0.003337365
+      },
+      {
+        "name": "Comm_dup",
+        "count": 4,
+        "seconds": 0.000144164,
+        "max_seconds": 6.0557e-05
+      },
+      {
+        "name": "Comm_free",
+        "count": 17,
+        "seconds": 0.000208306,
+        "max_seconds": 5.4772e-05
+      },
+      {
+        "name": "Alltoall",
+        "count": 98,
+        "seconds": 0.000987389,
+        "max_seconds": 0.000125102
+      },
+      {
+        "name": "Alltoallv",
+        "count": 251,
+        "seconds": 0.085132103,
+        "max_seconds": 0.075092917
+      },
+      {
+        "name": "Allgather",
+        "count": 1,
+        "seconds": 2.223e-06,
+        "max_seconds": 2.223e-06
+      },
+      {
+        "name": "Allgatherv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Wait",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Waitall",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Send",
+        "count": 177,
+        "seconds": 0.000993163,
+        "max_seconds": 0.00029208
+      },
+      {
+        "name": "Recv",
+        "count": 330,
+        "seconds": 0.002125223,
+        "max_seconds": 0.000264285
+      },
+      {
+        "name": "Sendrecv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      }
+    ],
+    "long_calls": [
+      {
+        "name": "Init_thread",
+        "start_seconds": 5.234e-06,
+        "seconds": 82.946344331
+      },
+      {
+        "name": "Comm_split",
+        "start_seconds": 104.461830523,
+        "seconds": 13.358515615
+      },
+      {
+        "name": "Barrier",
+        "start_seconds": 130.209162922,
+        "seconds": 11.249132266
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 141.583460072,
+        "seconds": 2.029253768
+      },
+      {
+        "name": "Finalize",
+        "start_seconds": 151.110088963,
+        "seconds": 0.381301528
+      }
+    ]
+  },
+  "session-abba-profile/04-original-profiled-deepks/ranks/1.mpi-profile.json": {
+    "rank": 1,
+    "lifetime_seconds": 151.965765029,
+    "calls": [
+      {
+        "name": "Init",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Init_thread",
+        "count": 1,
+        "seconds": 83.349973264,
+        "max_seconds": 83.349973264
+      },
+      {
+        "name": "Finalize",
+        "count": 1,
+        "seconds": 0.45254913,
+        "max_seconds": 0.45254913
+      },
+      {
+        "name": "Barrier",
+        "count": 31,
+        "seconds": 11.282571872,
+        "max_seconds": 11.249100677
+      },
+      {
+        "name": "Allreduce",
+        "count": 2582,
+        "seconds": 4.46883562,
+        "max_seconds": 4.275103031
+      },
+      {
+        "name": "Reduce",
+        "count": 288,
+        "seconds": 0.000927636,
+        "max_seconds": 2.5972e-05
+      },
+      {
+        "name": "Bcast",
+        "count": 1703,
+        "seconds": 22.558188435,
+        "max_seconds": 12.381598298
+      },
+      {
+        "name": "Comm_split",
+        "count": 9,
+        "seconds": 15.546053311,
+        "max_seconds": 13.358511619
+      },
+      {
+        "name": "Comm_split_type",
+        "count": 3,
+        "seconds": 0.007410823,
+        "max_seconds": 0.003728042
+      },
+      {
+        "name": "Comm_dup",
+        "count": 4,
+        "seconds": 0.000147216,
+        "max_seconds": 6.3344e-05
+      },
+      {
+        "name": "Comm_free",
+        "count": 17,
+        "seconds": 0.00017302,
+        "max_seconds": 3.704e-05
+      },
+      {
+        "name": "Alltoall",
+        "count": 98,
+        "seconds": 0.016325698,
+        "max_seconds": 0.000673089
+      },
+      {
+        "name": "Alltoallv",
+        "count": 251,
+        "seconds": 0.168908864,
+        "max_seconds": 0.076479668
+      },
+      {
+        "name": "Allgather",
+        "count": 1,
+        "seconds": 4.27e-06,
+        "max_seconds": 4.27e-06
+      },
+      {
+        "name": "Allgatherv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Wait",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Waitall",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Send",
+        "count": 176,
+        "seconds": 0.000662281,
+        "max_seconds": 0.000175827
+      },
+      {
+        "name": "Recv",
+        "count": 386,
+        "seconds": 0.003138085,
+        "max_seconds": 0.000433277
+      },
+      {
+        "name": "Sendrecv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      }
+    ],
+    "long_calls": [
+      {
+        "name": "Init_thread",
+        "start_seconds": 5.532e-06,
+        "seconds": 83.349973264
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 83.39124557,
+        "seconds": 6.395155341
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 89.78643362,
+        "seconds": 2.167537572
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 91.954680285,
+        "seconds": 4.275103031
+      },
+      {
+        "name": "Comm_split",
+        "start_seconds": 102.68042304,
+        "seconds": 2.184840154
+      },
+      {
+        "name": "Comm_split",
+        "start_seconds": 104.86526403,
+        "seconds": 13.358511619
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 118.231006997,
+        "seconds": 12.381598298
+      },
+      {
+        "name": "Barrier",
+        "start_seconds": 130.612622177,
+        "seconds": 11.249100677
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 142.436757942,
+        "seconds": 1.579850883
+      },
+      {
+        "name": "Finalize",
+        "start_seconds": 151.512779344,
+        "seconds": 0.45254913
+      }
+    ]
+  },
+  "session-abba-profile/04-original-profiled-deepks/ranks/2.mpi-profile.json": {
+    "rank": 2,
+    "lifetime_seconds": 151.96530818,
+    "calls": [
+      {
+        "name": "Init",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Init_thread",
+        "count": 1,
+        "seconds": 83.349969707,
+        "max_seconds": 83.349969707
+      },
+      {
+        "name": "Finalize",
+        "count": 1,
+        "seconds": 0.452081349,
+        "max_seconds": 0.452081349
+      },
+      {
+        "name": "Barrier",
+        "count": 31,
+        "seconds": 11.282783368,
+        "max_seconds": 11.249104978
+      },
+      {
+        "name": "Allreduce",
+        "count": 2582,
+        "seconds": 4.459445503,
+        "max_seconds": 4.275095497
+      },
+      {
+        "name": "Reduce",
+        "count": 288,
+        "seconds": 0.000985087,
+        "max_seconds": 4.9926e-05
+      },
+      {
+        "name": "Bcast",
+        "count": 1703,
+        "seconds": 23.00804363,
+        "max_seconds": 12.381587884
+      },
+      {
+        "name": "Comm_split",
+        "count": 9,
+        "seconds": 15.546158834,
+        "max_seconds": 13.358513443
+      },
+      {
+        "name": "Comm_split_type",
+        "count": 3,
+        "seconds": 0.007231396,
+        "max_seconds": 0.003722756
+      },
+      {
+        "name": "Comm_dup",
+        "count": 4,
+        "seconds": 0.000156003,
+        "max_seconds": 6.3587e-05
+      },
+      {
+        "name": "Comm_free",
+        "count": 17,
+        "seconds": 0.000166565,
+        "max_seconds": 3.2524e-05
+      },
+      {
+        "name": "Alltoall",
+        "count": 98,
+        "seconds": 0.044902672,
+        "max_seconds": 0.001821699
+      },
+      {
+        "name": "Alltoallv",
+        "count": 251,
+        "seconds": 0.168855336,
+        "max_seconds": 0.076354065
+      },
+      {
+        "name": "Allgather",
+        "count": 1,
+        "seconds": 2.146e-06,
+        "max_seconds": 2.146e-06
+      },
+      {
+        "name": "Allgatherv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Wait",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Waitall",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Send",
+        "count": 176,
+        "seconds": 0.000575625,
+        "max_seconds": 0.000177292
+      },
+      {
+        "name": "Recv",
+        "count": 330,
+        "seconds": 0.002700961,
+        "max_seconds": 0.000120296
+      },
+      {
+        "name": "Sendrecv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      }
+    ],
+    "long_calls": [
+      {
+        "name": "Init_thread",
+        "start_seconds": 5.648e-06,
+        "seconds": 83.349969707
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 83.391212575,
+        "seconds": 6.395143234
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 89.786383864,
+        "seconds": 2.167551556
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 91.954647473,
+        "seconds": 4.275095497
+      },
+      {
+        "name": "Comm_split",
+        "start_seconds": 102.680279177,
+        "seconds": 2.184948191
+      },
+      {
+        "name": "Comm_split",
+        "start_seconds": 104.86522956,
+        "seconds": 13.358513443
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 118.230977447,
+        "seconds": 12.381587884
+      },
+      {
+        "name": "Barrier",
+        "start_seconds": 130.612585247,
+        "seconds": 11.249104978
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 141.987043344,
+        "seconds": 2.02907047
+      },
+      {
+        "name": "Finalize",
+        "start_seconds": 151.512747533,
+        "seconds": 0.452081349
+      }
+    ]
+  },
+  "session-abba-profile/04-original-profiled-deepks/ranks/3.mpi-profile.json": {
+    "rank": 3,
+    "lifetime_seconds": 151.820079776,
+    "calls": [
+      {
+        "name": "Init",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Init_thread",
+        "count": 1,
+        "seconds": 83.35481525,
+        "max_seconds": 83.35481525
+      },
+      {
+        "name": "Finalize",
+        "count": 1,
+        "seconds": 0.301900934,
+        "max_seconds": 0.301900934
+      },
+      {
+        "name": "Barrier",
+        "count": 31,
+        "seconds": 11.282394506,
+        "max_seconds": 11.249095571
+      },
+      {
+        "name": "Allreduce",
+        "count": 2582,
+        "seconds": 4.500696133,
+        "max_seconds": 4.275110012
+      },
+      {
+        "name": "Reduce",
+        "count": 288,
+        "seconds": 0.000881338,
+        "max_seconds": 3.7125e-05
+      },
+      {
+        "name": "Bcast",
+        "count": 1703,
+        "seconds": 23.57056243,
+        "max_seconds": 12.381599563
+      },
+      {
+        "name": "Comm_split",
+        "count": 9,
+        "seconds": 15.546167874,
+        "max_seconds": 13.35851026
+      },
+      {
+        "name": "Comm_split_type",
+        "count": 3,
+        "seconds": 0.007397148,
+        "max_seconds": 0.003723839
+      },
+      {
+        "name": "Comm_dup",
+        "count": 4,
+        "seconds": 0.000153274,
+        "max_seconds": 6.3942e-05
+      },
+      {
+        "name": "Comm_free",
+        "count": 17,
+        "seconds": 0.000172818,
+        "max_seconds": 4.6484e-05
+      },
+      {
+        "name": "Alltoall",
+        "count": 98,
+        "seconds": 0.077980283,
+        "max_seconds": 0.003204953
+      },
+      {
+        "name": "Alltoallv",
+        "count": 251,
+        "seconds": 0.170143032,
+        "max_seconds": 0.076495197
+      },
+      {
+        "name": "Allgather",
+        "count": 1,
+        "seconds": 2.072e-06,
+        "max_seconds": 2.072e-06
+      },
+      {
+        "name": "Allgatherv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Wait",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Waitall",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Send",
+        "count": 177,
+        "seconds": 0.000570007,
+        "max_seconds": 0.000177651
+      },
+      {
+        "name": "Recv",
+        "count": 386,
+        "seconds": 0.002997094,
+        "max_seconds": 0.00015047
+      },
+      {
+        "name": "Sendrecv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      }
+    ],
+    "long_calls": [
+      {
+        "name": "Init_thread",
+        "start_seconds": 5.21e-06,
+        "seconds": 83.35481525
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 83.396090651,
+        "seconds": 6.395158067
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 89.791279194,
+        "seconds": 2.167538498
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 91.959525271,
+        "seconds": 4.275110012
+      },
+      {
+        "name": "Comm_split",
+        "start_seconds": 102.6851499,
+        "seconds": 2.184958155
+      },
+      {
+        "name": "Comm_split",
+        "start_seconds": 104.870110272,
+        "seconds": 13.35851026
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 118.235852981,
+        "seconds": 12.381599563
+      },
+      {
+        "name": "Barrier",
+        "start_seconds": 130.617474578,
+        "seconds": 11.249095571
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 141.991821707,
+        "seconds": 0.449550573
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 142.441597733,
+        "seconds": 1.579853649
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 144.029380543,
+        "seconds": 0.56163144
+      },
+      {
+        "name": "Finalize",
+        "start_seconds": 151.517627993,
+        "seconds": 0.301900934
+      }
+    ]
+  },
+  "session-abba-profile/04-original-profiled-deepks/ranks/4.mpi-profile.json": {
+    "rank": 4,
+    "lifetime_seconds": 90.996637342,
+    "calls": [
+      {
+        "name": "Init",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Init_thread",
+        "count": 1,
+        "seconds": 15.481449888,
+        "max_seconds": 15.481449888
+      },
+      {
+        "name": "Finalize",
+        "count": 1,
+        "seconds": 0.451183587,
+        "max_seconds": 0.451183587
+      },
+      {
+        "name": "Barrier",
+        "count": 31,
+        "seconds": 0.027803468,
+        "max_seconds": 0.002791776
+      },
+      {
+        "name": "Allreduce",
+        "count": 2582,
+        "seconds": 4.384372559,
+        "max_seconds": 4.275106584
+      },
+      {
+        "name": "Reduce",
+        "count": 288,
+        "seconds": 0.001726175,
+        "max_seconds": 6.767e-05
+      },
+      {
+        "name": "Bcast",
+        "count": 1701,
+        "seconds": 27.925454293,
+        "max_seconds": 19.334797396
+      },
+      {
+        "name": "Comm_split",
+        "count": 9,
+        "seconds": 15.060246118,
+        "max_seconds": 15.057246568
+      },
+      {
+        "name": "Comm_split_type",
+        "count": 3,
+        "seconds": 6.294797183,
+        "max_seconds": 6.294114975
+      },
+      {
+        "name": "Comm_dup",
+        "count": 4,
+        "seconds": 0.000147957,
+        "max_seconds": 5.7001e-05
+      },
+      {
+        "name": "Comm_free",
+        "count": 17,
+        "seconds": 0.0001517,
+        "max_seconds": 4.4124e-05
+      },
+      {
+        "name": "Alltoall",
+        "count": 98,
+        "seconds": 0.066170126,
+        "max_seconds": 0.002786988
+      },
+      {
+        "name": "Alltoallv",
+        "count": 251,
+        "seconds": 0.087467069,
+        "max_seconds": 0.072777825
+      },
+      {
+        "name": "Allgather",
+        "count": 1,
+        "seconds": 2.176e-06,
+        "max_seconds": 2.176e-06
+      },
+      {
+        "name": "Allgatherv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Wait",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Waitall",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Send",
+        "count": 175,
+        "seconds": 0.000648453,
+        "max_seconds": 0.000276454
+      },
+      {
+        "name": "Recv",
+        "count": 192,
+        "seconds": 0.001181431,
+        "max_seconds": 4.6547e-05
+      },
+      {
+        "name": "Sendrecv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      }
+    ],
+    "long_calls": [
+      {
+        "name": "Init_thread",
+        "start_seconds": 6.635e-06,
+        "seconds": 15.481449888
+      },
+      {
+        "name": "Comm_split_type",
+        "start_seconds": 15.481461214,
+        "seconds": 6.294114975
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 21.777348626,
+        "seconds": 6.395200556
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 28.172593089,
+        "seconds": 2.167530153
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 30.340836774,
+        "seconds": 4.275106584
+      },
+      {
+        "name": "Comm_split",
+        "start_seconds": 39.405245894,
+        "seconds": 15.057246568
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 56.621098066,
+        "seconds": 19.334797396
+      },
+      {
+        "name": "Finalize",
+        "start_seconds": 89.899057072,
+        "seconds": 0.451183587
+      }
+    ]
+  },
+  "session-abba-profile/04-original-profiled-deepks/ranks/5.mpi-profile.json": {
+    "rank": 5,
+    "lifetime_seconds": 91.051750919,
+    "calls": [
+      {
+        "name": "Init",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Init_thread",
+        "count": 1,
+        "seconds": 15.536816945,
+        "max_seconds": 15.536816945
+      },
+      {
+        "name": "Finalize",
+        "count": 1,
+        "seconds": 0.371827354,
+        "max_seconds": 0.371827354
+      },
+      {
+        "name": "Barrier",
+        "count": 31,
+        "seconds": 0.033524106,
+        "max_seconds": 0.004634496
+      },
+      {
+        "name": "Allreduce",
+        "count": 2582,
+        "seconds": 4.444198412,
+        "max_seconds": 4.275104963
+      },
+      {
+        "name": "Reduce",
+        "count": 288,
+        "seconds": 0.001551253,
+        "max_seconds": 4.8858e-05
+      },
+      {
+        "name": "Bcast",
+        "count": 1701,
+        "seconds": 29.956063631,
+        "max_seconds": 19.338822894
+      },
+      {
+        "name": "Comm_split",
+        "count": 9,
+        "seconds": 15.059292006,
+        "max_seconds": 15.05854424
+      },
+      {
+        "name": "Comm_split_type",
+        "count": 3,
+        "seconds": 6.29856305,
+        "max_seconds": 6.294277214
+      },
+      {
+        "name": "Comm_dup",
+        "count": 4,
+        "seconds": 0.000166702,
+        "max_seconds": 6.1731e-05
+      },
+      {
+        "name": "Comm_free",
+        "count": 17,
+        "seconds": 0.000154103,
+        "max_seconds": 4.8886e-05
+      },
+      {
+        "name": "Alltoall",
+        "count": 98,
+        "seconds": 0.032233416,
+        "max_seconds": 0.001459133
+      },
+      {
+        "name": "Alltoallv",
+        "count": 251,
+        "seconds": 0.168134879,
+        "max_seconds": 0.073564601
+      },
+      {
+        "name": "Allgather",
+        "count": 1,
+        "seconds": 2.358e-06,
+        "max_seconds": 2.358e-06
+      },
+      {
+        "name": "Allgatherv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Wait",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Waitall",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Send",
+        "count": 174,
+        "seconds": 0.000562309,
+        "max_seconds": 0.000155409
+      },
+      {
+        "name": "Recv",
+        "count": 184,
+        "seconds": 0.001433298,
+        "max_seconds": 0.000113979
+      },
+      {
+        "name": "Sendrecv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      }
+    ],
+    "long_calls": [
+      {
+        "name": "Init_thread",
+        "start_seconds": 1.0676e-05,
+        "seconds": 15.536816945
+      },
+      {
+        "name": "Comm_split_type",
+        "start_seconds": 15.536841186,
+        "seconds": 6.294277214
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 21.832794633,
+        "seconds": 6.395298095
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 28.22813682,
+        "seconds": 2.16753606
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 30.396377749,
+        "seconds": 4.275104963
+      },
+      {
+        "name": "Comm_split",
+        "start_seconds": 39.459444275,
+        "seconds": 15.05854424
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 56.672735347,
+        "seconds": 19.338822894
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 80.428793432,
+        "seconds": 2.023335851
+      },
+      {
+        "name": "Finalize",
+        "start_seconds": 89.954482714,
+        "seconds": 0.371827354
+      }
+    ]
+  },
+  "session-abba-profile/04-original-profiled-deepks/ranks/6.mpi-profile.json": {
+    "rank": 6,
+    "lifetime_seconds": 91.049860525,
+    "calls": [
+      {
+        "name": "Init",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Init_thread",
+        "count": 1,
+        "seconds": 15.534208552,
+        "max_seconds": 15.534208552
+      },
+      {
+        "name": "Finalize",
+        "count": 1,
+        "seconds": 0.449197675,
+        "max_seconds": 0.449197675
+      },
+      {
+        "name": "Barrier",
+        "count": 31,
+        "seconds": 0.033708751,
+        "max_seconds": 0.004634539
+      },
+      {
+        "name": "Allreduce",
+        "count": 2582,
+        "seconds": 4.414234888,
+        "max_seconds": 4.27511314
+      },
+      {
+        "name": "Reduce",
+        "count": 288,
+        "seconds": 0.001721708,
+        "max_seconds": 6.4393e-05
+      },
+      {
+        "name": "Bcast",
+        "count": 1701,
+        "seconds": 29.955923149,
+        "max_seconds": 19.338763221
+      },
+      {
+        "name": "Comm_split",
+        "count": 9,
+        "seconds": 15.059141051,
+        "max_seconds": 15.058581561
+      },
+      {
+        "name": "Comm_split_type",
+        "count": 3,
+        "seconds": 6.298572271,
+        "max_seconds": 6.294276557
+      },
+      {
+        "name": "Comm_dup",
+        "count": 4,
+        "seconds": 0.00016965,
+        "max_seconds": 6.2468e-05
+      },
+      {
+        "name": "Comm_free",
+        "count": 17,
+        "seconds": 0.000169342,
+        "max_seconds": 3.5074e-05
+      },
+      {
+        "name": "Alltoall",
+        "count": 98,
+        "seconds": 0.00864068,
+        "max_seconds": 0.000372251
+      },
+      {
+        "name": "Alltoallv",
+        "count": 251,
+        "seconds": 0.165718744,
+        "max_seconds": 0.071156627
+      },
+      {
+        "name": "Allgather",
+        "count": 1,
+        "seconds": 1.906e-06,
+        "max_seconds": 1.906e-06
+      },
+      {
+        "name": "Allgatherv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Wait",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Waitall",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Send",
+        "count": 175,
+        "seconds": 0.000405729,
+        "max_seconds": 0.000153154
+      },
+      {
+        "name": "Recv",
+        "count": 191,
+        "seconds": 0.001482928,
+        "max_seconds": 0.000121084
+      },
+      {
+        "name": "Sendrecv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      }
+    ],
+    "long_calls": [
+      {
+        "name": "Init_thread",
+        "start_seconds": 6.483e-06,
+        "seconds": 15.534208552
+      },
+      {
+        "name": "Comm_split_type",
+        "start_seconds": 15.534220973,
+        "seconds": 6.294276557
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 21.830174057,
+        "seconds": 6.395301353
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 28.225512737,
+        "seconds": 2.167531201
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 30.393757194,
+        "seconds": 4.27511314
+      },
+      {
+        "name": "Comm_split",
+        "start_seconds": 39.45694752,
+        "seconds": 15.058581561
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 56.670118485,
+        "seconds": 19.338763221
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 80.426179354,
+        "seconds": 2.023329273
+      },
+      {
+        "name": "Finalize",
+        "start_seconds": 89.951874904,
+        "seconds": 0.449197675
+      }
+    ]
+  },
+  "session-abba-profile/04-original-profiled-deepks/ranks/7.mpi-profile.json": {
+    "rank": 7,
+    "lifetime_seconds": 90.249994047,
+    "calls": [
+      {
+        "name": "Init",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Init_thread",
+        "count": 1,
+        "seconds": 15.536893751,
+        "max_seconds": 15.536893751
+      },
+      {
+        "name": "Finalize",
+        "count": 1,
+        "seconds": 0.293658345,
+        "max_seconds": 0.293658345
+      },
+      {
+        "name": "Barrier",
+        "count": 31,
+        "seconds": 0.033562849,
+        "max_seconds": 0.004634551
+      },
+      {
+        "name": "Allreduce",
+        "count": 2582,
+        "seconds": 4.479640091,
+        "max_seconds": 4.275115808
+      },
+      {
+        "name": "Reduce",
+        "count": 288,
+        "seconds": 0.001531137,
+        "max_seconds": 6.7392e-05
+      },
+      {
+        "name": "Bcast",
+        "count": 1701,
+        "seconds": 29.9564917,
+        "max_seconds": 19.338652454
+      },
+      {
+        "name": "Comm_split",
+        "count": 9,
+        "seconds": 15.059129456,
+        "max_seconds": 15.058533835
+      },
+      {
+        "name": "Comm_split_type",
+        "count": 3,
+        "seconds": 6.29850443,
+        "max_seconds": 6.294211667
+      },
+      {
+        "name": "Comm_dup",
+        "count": 4,
+        "seconds": 0.000170442,
+        "max_seconds": 6.4706e-05
+      },
+      {
+        "name": "Comm_free",
+        "count": 17,
+        "seconds": 0.000149664,
+        "max_seconds": 4.4803e-05
+      },
+      {
+        "name": "Alltoall",
+        "count": 98,
+        "seconds": 0.039852122,
+        "max_seconds": 0.001760092
+      },
+      {
+        "name": "Alltoallv",
+        "count": 251,
+        "seconds": 0.172172325,
+        "max_seconds": 0.071014977
+      },
+      {
+        "name": "Allgather",
+        "count": 1,
+        "seconds": 3.117e-06,
+        "max_seconds": 3.117e-06
+      },
+      {
+        "name": "Allgatherv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Wait",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Waitall",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Send",
+        "count": 175,
+        "seconds": 0.000442508,
+        "max_seconds": 0.000156256
+      },
+      {
+        "name": "Recv",
+        "count": 184,
+        "seconds": 0.001379383,
+        "max_seconds": 0.000113838
+      },
+      {
+        "name": "Sendrecv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      }
+    ],
+    "long_calls": [
+      {
+        "name": "Init_thread",
+        "start_seconds": 9.685e-06,
+        "seconds": 15.536893751
+      },
+      {
+        "name": "Comm_split_type",
+        "start_seconds": 15.536908171,
+        "seconds": 6.294211667
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 21.832796616,
+        "seconds": 6.395310805
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 28.228138954,
+        "seconds": 2.167533597
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 30.396379715,
+        "seconds": 4.275115808
+      },
+      {
+        "name": "Comm_split",
+        "start_seconds": 39.459568596,
+        "seconds": 15.058533835
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 56.672733253,
+        "seconds": 19.338652454
+      },
+      {
+        "name": "Bcast",
+        "start_seconds": 80.428796123,
+        "seconds": 2.023336008
+      },
+      {
+        "name": "Finalize",
+        "start_seconds": 89.954484904,
+        "seconds": 0.293658345
+      }
+    ]
+  },
+  "session-abba-profile/05-session-shm-profiled-deepks/ranks/0.mpi-profile.json": {
+    "rank": 0,
+    "lifetime_seconds": 49.232506073,
+    "calls": [
+      {
+        "name": "Init",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Init_thread",
+        "count": 1,
+        "seconds": 10.055699958,
+        "max_seconds": 10.055699958
+      },
+      {
+        "name": "Finalize",
+        "count": 1,
+        "seconds": 0.398107321,
+        "max_seconds": 0.398107321
+      },
+      {
+        "name": "Barrier",
+        "count": 31,
+        "seconds": 5.992460274,
+        "max_seconds": 4.28834248
+      },
+      {
+        "name": "Allreduce",
+        "count": 2582,
+        "seconds": 18.88610097,
+        "max_seconds": 6.293030929
+      },
+      {
+        "name": "Reduce",
+        "count": 288,
+        "seconds": 0.000867149,
+        "max_seconds": 2.2681e-05
+      },
+      {
+        "name": "Bcast",
+        "count": 1703,
+        "seconds": 0.03263394,
+        "max_seconds": 0.014557012
+      },
+      {
+        "name": "Comm_split",
+        "count": 9,
+        "seconds": 0.004823099,
+        "max_seconds": 0.003167571
+      },
+      {
+        "name": "Comm_split_type",
+        "count": 3,
+        "seconds": 0.011830371,
+        "max_seconds": 0.011702126
+      },
+      {
+        "name": "Comm_dup",
+        "count": 4,
+        "seconds": 0.000158947,
+        "max_seconds": 6.1374e-05
+      },
+      {
+        "name": "Comm_free",
+        "count": 17,
+        "seconds": 0.000218374,
+        "max_seconds": 6.4217e-05
+      },
+      {
+        "name": "Alltoall",
+        "count": 98,
+        "seconds": 0.000983543,
+        "max_seconds": 0.000129068
+      },
+      {
+        "name": "Alltoallv",
+        "count": 251,
+        "seconds": 2.15394032,
+        "max_seconds": 2.13987313
+      },
+      {
+        "name": "Allgather",
+        "count": 1,
+        "seconds": 4.706e-06,
+        "max_seconds": 4.706e-06
+      },
+      {
+        "name": "Allgatherv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Wait",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Waitall",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Send",
+        "count": 177,
+        "seconds": 0.000970421,
+        "max_seconds": 0.000289028
+      },
+      {
+        "name": "Recv",
+        "count": 330,
+        "seconds": 0.002079969,
+        "max_seconds": 0.000251252
+      },
+      {
+        "name": "Sendrecv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      }
+    ],
+    "long_calls": [
+      {
+        "name": "Init_thread",
+        "start_seconds": 7.507e-06,
+        "seconds": 10.055699958
+      },
+      {
+        "name": "Alltoallv",
+        "start_seconds": 16.550449278,
+        "seconds": 2.13987313
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 18.691982796,
+        "seconds": 4.243529439
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 27.414542478,
+        "seconds": 6.293030929
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 33.763288298,
+        "seconds": 2.114136131
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 35.989981415,
+        "seconds": 1.992828212
+      },
+      {
+        "name": "Barrier",
+        "start_seconds": 38.498988986,
+        "seconds": 1.645777009
+      },
+      {
+        "name": "Barrier",
+        "start_seconds": 40.228499208,
+        "seconds": 4.28834248
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 44.557565414,
+        "seconds": 4.21381684
+      },
+      {
+        "name": "Finalize",
+        "start_seconds": 48.833914516,
+        "seconds": 0.398107321
+      }
+    ]
+  },
+  "session-abba-profile/05-session-shm-profiled-deepks/ranks/1.mpi-profile.json": {
+    "rank": 1,
+    "lifetime_seconds": 49.553743577,
+    "calls": [
+      {
+        "name": "Init",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Init_thread",
+        "count": 1,
+        "seconds": 10.461292803,
+        "max_seconds": 10.461292803
+      },
+      {
+        "name": "Finalize",
+        "count": 1,
+        "seconds": 0.314301183,
+        "max_seconds": 0.314301183
+      },
+      {
+        "name": "Barrier",
+        "count": 31,
+        "seconds": 6.046605352,
+        "max_seconds": 4.288342566
+      },
+      {
+        "name": "Allreduce",
+        "count": 2582,
+        "seconds": 25.232159066,
+        "max_seconds": 6.294432892
+      },
+      {
+        "name": "Reduce",
+        "count": 288,
+        "seconds": 0.000903028,
+        "max_seconds": 4.2603e-05
+      },
+      {
+        "name": "Bcast",
+        "count": 1703,
+        "seconds": 0.059652544,
+        "max_seconds": 0.014385259
+      },
+      {
+        "name": "Comm_split",
+        "count": 9,
+        "seconds": 0.014238846,
+        "max_seconds": 0.009543091
+      },
+      {
+        "name": "Comm_split_type",
+        "count": 3,
+        "seconds": 0.016299102,
+        "max_seconds": 0.011695584
+      },
+      {
+        "name": "Comm_dup",
+        "count": 4,
+        "seconds": 0.000160365,
+        "max_seconds": 6.046e-05
+      },
+      {
+        "name": "Comm_free",
+        "count": 17,
+        "seconds": 0.000210444,
+        "max_seconds": 4.6386e-05
+      },
+      {
+        "name": "Alltoall",
+        "count": 98,
+        "seconds": 0.016350089,
+        "max_seconds": 0.000682966
+      },
+      {
+        "name": "Alltoallv",
+        "count": 251,
+        "seconds": 0.273048913,
+        "max_seconds": 0.178537014
+      },
+      {
+        "name": "Allgather",
+        "count": 1,
+        "seconds": 4.05e-06,
+        "max_seconds": 4.05e-06
+      },
+      {
+        "name": "Allgatherv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Wait",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Waitall",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Send",
+        "count": 176,
+        "seconds": 0.000687289,
+        "max_seconds": 0.000193406
+      },
+      {
+        "name": "Recv",
+        "count": 386,
+        "seconds": 0.003535526,
+        "max_seconds": 0.000905472
+      },
+      {
+        "name": "Sendrecv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      }
+    ],
+    "long_calls": [
+      {
+        "name": "Init_thread",
+        "start_seconds": 6.182e-06,
+        "seconds": 10.461292803
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 10.480405053,
+        "seconds": 4.261564354
+      },
+      {
+        "name": "Alltoallv",
+        "start_seconds": 16.954768516,
+        "seconds": 0.178537014
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 17.133786406,
+        "seconds": 6.207327617
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 27.818743406,
+        "seconds": 6.294432892
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 34.164785619,
+        "seconds": 2.118240473
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 36.394815995,
+        "seconds": 1.993575166
+      },
+      {
+        "name": "Barrier",
+        "start_seconds": 38.904570927,
+        "seconds": 1.645777096
+      },
+      {
+        "name": "Barrier",
+        "start_seconds": 40.634081148,
+        "seconds": 4.288342566
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 44.96095009,
+        "seconds": 4.216012017
+      },
+      {
+        "name": "Finalize",
+        "start_seconds": 49.238692369,
+        "seconds": 0.314301183
+      }
+    ]
+  },
+  "session-abba-profile/05-session-shm-profiled-deepks/ranks/2.mpi-profile.json": {
+    "rank": 2,
+    "lifetime_seconds": 49.615799701,
+    "calls": [
+      {
+        "name": "Init",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Init_thread",
+        "count": 1,
+        "seconds": 10.442351198,
+        "max_seconds": 10.442351198
+      },
+      {
+        "name": "Finalize",
+        "count": 1,
+        "seconds": 0.395125913,
+        "max_seconds": 0.395125913
+      },
+      {
+        "name": "Barrier",
+        "count": 31,
+        "seconds": 6.04663069,
+        "max_seconds": 4.288342433
+      },
+      {
+        "name": "Allreduce",
+        "count": 2582,
+        "seconds": 25.266979506,
+        "max_seconds": 6.294435496
+      },
+      {
+        "name": "Reduce",
+        "count": 288,
+        "seconds": 0.000898109,
+        "max_seconds": 2.8185e-05
+      },
+      {
+        "name": "Bcast",
+        "count": 1703,
+        "seconds": 0.05927408,
+        "max_seconds": 0.013767826
+      },
+      {
+        "name": "Comm_split",
+        "count": 9,
+        "seconds": 2.161293632,
+        "max_seconds": 2.156615157
+      },
+      {
+        "name": "Comm_split_type",
+        "count": 3,
+        "seconds": 0.016364809,
+        "max_seconds": 0.011771771
+      },
+      {
+        "name": "Comm_dup",
+        "count": 4,
+        "seconds": 0.000159316,
+        "max_seconds": 5.5111e-05
+      },
+      {
+        "name": "Comm_free",
+        "count": 17,
+        "seconds": 0.000198415,
+        "max_seconds": 4.4708e-05
+      },
+      {
+        "name": "Alltoall",
+        "count": 98,
+        "seconds": 0.044898558,
+        "max_seconds": 0.001822285
+      },
+      {
+        "name": "Alltoallv",
+        "count": 251,
+        "seconds": 0.273158009,
+        "max_seconds": 0.17867093
+      },
+      {
+        "name": "Allgather",
+        "count": 1,
+        "seconds": 2.568e-06,
+        "max_seconds": 2.568e-06
+      },
+      {
+        "name": "Allgatherv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Wait",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Waitall",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Send",
+        "count": 176,
+        "seconds": 0.001482901,
+        "max_seconds": 0.001106085
+      },
+      {
+        "name": "Recv",
+        "count": 330,
+        "seconds": 0.002766837,
+        "max_seconds": 0.000146904
+      },
+      {
+        "name": "Sendrecv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      }
+    ],
+    "long_calls": [
+      {
+        "name": "Init_thread",
+        "start_seconds": 6.509e-06,
+        "seconds": 10.442351198
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 10.461545843,
+        "seconds": 4.261553105
+      },
+      {
+        "name": "Comm_split",
+        "start_seconds": 14.723832008,
+        "seconds": 2.156615157
+      },
+      {
+        "name": "Alltoallv",
+        "start_seconds": 16.936028237,
+        "seconds": 0.17867093
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 17.115152233,
+        "seconds": 6.207094362
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 27.799872431,
+        "seconds": 6.294435496
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 34.145921267,
+        "seconds": 2.118227604
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 36.375922427,
+        "seconds": 1.993610603
+      },
+      {
+        "name": "Barrier",
+        "start_seconds": 38.885711693,
+        "seconds": 1.645779736
+      },
+      {
+        "name": "Barrier",
+        "start_seconds": 40.615221912,
+        "seconds": 4.288342433
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 44.942348739,
+        "seconds": 4.215754561
+      },
+      {
+        "name": "Finalize",
+        "start_seconds": 49.219829055,
+        "seconds": 0.395125913
+      }
+    ]
+  },
+  "session-abba-profile/05-session-shm-profiled-deepks/ranks/3.mpi-profile.json": {
+    "rank": 3,
+    "lifetime_seconds": 49.651890879,
+    "calls": [
+      {
+        "name": "Init",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Init_thread",
+        "count": 1,
+        "seconds": 10.477979732,
+        "max_seconds": 10.477979732
+      },
+      {
+        "name": "Finalize",
+        "count": 1,
+        "seconds": 0.39510875,
+        "max_seconds": 0.39510875
+      },
+      {
+        "name": "Barrier",
+        "count": 31,
+        "seconds": 6.04636454,
+        "max_seconds": 4.288347339
+      },
+      {
+        "name": "Allreduce",
+        "count": 2582,
+        "seconds": 25.305710713,
+        "max_seconds": 6.294459109
+      },
+      {
+        "name": "Reduce",
+        "count": 288,
+        "seconds": 0.000820651,
+        "max_seconds": 3.1325e-05
+      },
+      {
+        "name": "Bcast",
+        "count": 1703,
+        "seconds": 0.061235594,
+        "max_seconds": 0.014378418
+      },
+      {
+        "name": "Comm_split",
+        "count": 9,
+        "seconds": 0.013918262,
+        "max_seconds": 0.009221598
+      },
+      {
+        "name": "Comm_split_type",
+        "count": 3,
+        "seconds": 0.016276506,
+        "max_seconds": 0.011676563
+      },
+      {
+        "name": "Comm_dup",
+        "count": 4,
+        "seconds": 0.000160534,
+        "max_seconds": 5.991e-05
+      },
+      {
+        "name": "Comm_free",
+        "count": 17,
+        "seconds": 0.000207646,
+        "max_seconds": 5.6752e-05
+      },
+      {
+        "name": "Alltoall",
+        "count": 98,
+        "seconds": 0.078332761,
+        "max_seconds": 0.003324426
+      },
+      {
+        "name": "Alltoallv",
+        "count": 251,
+        "seconds": 0.274181986,
+        "max_seconds": 0.178648075
+      },
+      {
+        "name": "Allgather",
+        "count": 1,
+        "seconds": 3.906e-06,
+        "max_seconds": 3.906e-06
+      },
+      {
+        "name": "Allgatherv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Wait",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Waitall",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Send",
+        "count": 177,
+        "seconds": 0.000603272,
+        "max_seconds": 0.000194756
+      },
+      {
+        "name": "Recv",
+        "count": 386,
+        "seconds": 0.002956782,
+        "max_seconds": 7.1972e-05
+      },
+      {
+        "name": "Sendrecv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      }
+    ],
+    "long_calls": [
+      {
+        "name": "Init_thread",
+        "start_seconds": 5.809e-06,
+        "seconds": 10.477979732
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 10.497074141,
+        "seconds": 4.261567363
+      },
+      {
+        "name": "Alltoallv",
+        "start_seconds": 16.97148051,
+        "seconds": 0.178648075
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 17.150603472,
+        "seconds": 6.207180961
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 27.835388648,
+        "seconds": 6.294459109
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 34.181449507,
+        "seconds": 2.118247336
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 36.411450486,
+        "seconds": 1.993610602
+      },
+      {
+        "name": "Barrier",
+        "start_seconds": 38.921239957,
+        "seconds": 1.645777107
+      },
+      {
+        "name": "Barrier",
+        "start_seconds": 40.650750276,
+        "seconds": 4.288347339
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 44.977784236,
+        "seconds": 4.215848649
+      },
+      {
+        "name": "Finalize",
+        "start_seconds": 49.255361072,
+        "seconds": 0.39510875
+      }
+    ]
+  },
+  "session-abba-profile/05-session-shm-profiled-deepks/ranks/4.mpi-profile.json": {
+    "rank": 4,
+    "lifetime_seconds": 41.828166642,
+    "calls": [
+      {
+        "name": "Init",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Init_thread",
+        "count": 1,
+        "seconds": 0.99313088,
+        "max_seconds": 0.99313088
+      },
+      {
+        "name": "Finalize",
+        "count": 1,
+        "seconds": 0.469370944,
+        "max_seconds": 0.469370944
+      },
+      {
+        "name": "Barrier",
+        "count": 31,
+        "seconds": 4.386069271,
+        "max_seconds": 4.288380063
+      },
+      {
+        "name": "Allreduce",
+        "count": 2582,
+        "seconds": 4.365571449,
+        "max_seconds": 4.261565995
+      },
+      {
+        "name": "Reduce",
+        "count": 288,
+        "seconds": 0.001625204,
+        "max_seconds": 5.0573e-05
+      },
+      {
+        "name": "Bcast",
+        "count": 1701,
+        "seconds": 0.033313664,
+        "max_seconds": 0.005295372
+      },
+      {
+        "name": "Comm_split",
+        "count": 9,
+        "seconds": 2.135946447,
+        "max_seconds": 2.134342211
+      },
+      {
+        "name": "Comm_split_type",
+        "count": 3,
+        "seconds": 0.01187184,
+        "max_seconds": 0.011435027
+      },
+      {
+        "name": "Comm_dup",
+        "count": 4,
+        "seconds": 0.000180145,
+        "max_seconds": 7.8322e-05
+      },
+      {
+        "name": "Comm_free",
+        "count": 17,
+        "seconds": 0.000178673,
+        "max_seconds": 5.2363e-05
+      },
+      {
+        "name": "Alltoall",
+        "count": 98,
+        "seconds": 0.066480374,
+        "max_seconds": 0.003014122
+      },
+      {
+        "name": "Alltoallv",
+        "count": 251,
+        "seconds": 2.147898196,
+        "max_seconds": 2.135912726
+      },
+      {
+        "name": "Allgather",
+        "count": 1,
+        "seconds": 3.276e-06,
+        "max_seconds": 3.276e-06
+      },
+      {
+        "name": "Allgatherv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Wait",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Waitall",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Send",
+        "count": 175,
+        "seconds": 0.000684039,
+        "max_seconds": 0.000288846
+      },
+      {
+        "name": "Recv",
+        "count": 192,
+        "seconds": 0.001476746,
+        "max_seconds": 0.000260127
+      },
+      {
+        "name": "Sendrecv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      }
+    ],
+    "long_calls": [
+      {
+        "name": "Init_thread",
+        "start_seconds": 8.191e-06,
+        "seconds": 0.99313088
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 1.011985929,
+        "seconds": 4.261565995
+      },
+      {
+        "name": "Comm_split",
+        "start_seconds": 5.298523934,
+        "seconds": 2.134342211
+      },
+      {
+        "name": "Alltoallv",
+        "start_seconds": 7.485649178,
+        "seconds": 2.135912726
+      },
+      {
+        "name": "Barrier",
+        "start_seconds": 31.165688548,
+        "seconds": 4.288380063
+      },
+      {
+        "name": "Finalize",
+        "start_seconds": 39.770464499,
+        "seconds": 0.469370944
+      }
+    ]
+  },
+  "session-abba-profile/05-session-shm-profiled-deepks/ranks/5.mpi-profile.json": {
+    "rank": 5,
+    "lifetime_seconds": 42.110471795,
+    "calls": [
+      {
+        "name": "Init",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Init_thread",
+        "count": 1,
+        "seconds": 1.276315378,
+        "max_seconds": 1.276315378
+      },
+      {
+        "name": "Finalize",
+        "count": 1,
+        "seconds": 0.411283284,
+        "max_seconds": 0.411283284
+      },
+      {
+        "name": "Barrier",
+        "count": 31,
+        "seconds": 1.753917558,
+        "max_seconds": 1.645785263
+      },
+      {
+        "name": "Allreduce",
+        "count": 2582,
+        "seconds": 6.541103809,
+        "max_seconds": 4.261579878
+      },
+      {
+        "name": "Reduce",
+        "count": 288,
+        "seconds": 0.001478928,
+        "max_seconds": 5.1468e-05
+      },
+      {
+        "name": "Bcast",
+        "count": 1701,
+        "seconds": 0.039424453,
+        "max_seconds": 0.006839814
+      },
+      {
+        "name": "Comm_split",
+        "count": 9,
+        "seconds": 2.135201099,
+        "max_seconds": 2.134641216
+      },
+      {
+        "name": "Comm_split_type",
+        "count": 3,
+        "seconds": 0.016151543,
+        "max_seconds": 0.011551216
+      },
+      {
+        "name": "Comm_dup",
+        "count": 4,
+        "seconds": 0.000196692,
+        "max_seconds": 7.8393e-05
+      },
+      {
+        "name": "Comm_free",
+        "count": 17,
+        "seconds": 0.000194024,
+        "max_seconds": 5.7897e-05
+      },
+      {
+        "name": "Alltoall",
+        "count": 98,
+        "seconds": 0.032186559,
+        "max_seconds": 0.001688866
+      },
+      {
+        "name": "Alltoallv",
+        "count": 251,
+        "seconds": 2.230646079,
+        "max_seconds": 2.136407382
+      },
+      {
+        "name": "Allgather",
+        "count": 1,
+        "seconds": 3.246e-06,
+        "max_seconds": 3.246e-06
+      },
+      {
+        "name": "Allgatherv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Wait",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Waitall",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Send",
+        "count": 174,
+        "seconds": 0.000571953,
+        "max_seconds": 0.000174784
+      },
+      {
+        "name": "Recv",
+        "count": 184,
+        "seconds": 0.001638014,
+        "max_seconds": 0.000169425
+      },
+      {
+        "name": "Sendrecv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      }
+    ],
+    "long_calls": [
+      {
+        "name": "Init_thread",
+        "start_seconds": 1.4663e-05,
+        "seconds": 1.276315378
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 1.295295892,
+        "seconds": 4.261579878
+      },
+      {
+        "name": "Comm_split",
+        "start_seconds": 5.581511767,
+        "seconds": 2.134641216
+      },
+      {
+        "name": "Alltoallv",
+        "start_seconds": 7.768557531,
+        "seconds": 2.136407382
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 24.978406173,
+        "seconds": 2.119586816
+      },
+      {
+        "name": "Barrier",
+        "start_seconds": 29.719471446,
+        "seconds": 1.645785263
+      },
+      {
+        "name": "Finalize",
+        "start_seconds": 40.053665085,
+        "seconds": 0.411283284
+      }
+    ]
+  },
+  "session-abba-profile/05-session-shm-profiled-deepks/ranks/6.mpi-profile.json": {
+    "rank": 6,
+    "lifetime_seconds": 41.980130899,
+    "calls": [
+      {
+        "name": "Init",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Init_thread",
+        "count": 1,
+        "seconds": 1.14637801,
+        "max_seconds": 1.14637801
+      },
+      {
+        "name": "Finalize",
+        "count": 1,
+        "seconds": 0.311126971,
+        "max_seconds": 0.311126971
+      },
+      {
+        "name": "Barrier",
+        "count": 31,
+        "seconds": 6.027451738,
+        "max_seconds": 4.288362427
+      },
+      {
+        "name": "Allreduce",
+        "count": 2582,
+        "seconds": 6.5141719,
+        "max_seconds": 4.261571713
+      },
+      {
+        "name": "Reduce",
+        "count": 288,
+        "seconds": 0.001578883,
+        "max_seconds": 5.182e-05
+      },
+      {
+        "name": "Bcast",
+        "count": 1701,
+        "seconds": 0.03869091,
+        "max_seconds": 0.006834772
+      },
+      {
+        "name": "Comm_split",
+        "count": 9,
+        "seconds": 2.135279709,
+        "max_seconds": 2.13473384
+      },
+      {
+        "name": "Comm_split_type",
+        "count": 3,
+        "seconds": 0.016151626,
+        "max_seconds": 0.011553065
+      },
+      {
+        "name": "Comm_dup",
+        "count": 4,
+        "seconds": 0.000197535,
+        "max_seconds": 7.8742e-05
+      },
+      {
+        "name": "Comm_free",
+        "count": 17,
+        "seconds": 0.00019516,
+        "max_seconds": 5.7202e-05
+      },
+      {
+        "name": "Alltoall",
+        "count": 98,
+        "seconds": 0.008156191,
+        "max_seconds": 0.000665189
+      },
+      {
+        "name": "Alltoallv",
+        "count": 251,
+        "seconds": 2.22969732,
+        "max_seconds": 2.13457895
+      },
+      {
+        "name": "Allgather",
+        "count": 1,
+        "seconds": 4.108e-06,
+        "max_seconds": 4.108e-06
+      },
+      {
+        "name": "Allgatherv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Wait",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Waitall",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Send",
+        "count": 175,
+        "seconds": 0.00039667,
+        "max_seconds": 0.000138638
+      },
+      {
+        "name": "Recv",
+        "count": 191,
+        "seconds": 0.002722254,
+        "max_seconds": 0.001092953
+      },
+      {
+        "name": "Sendrecv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      }
+    ],
+    "long_calls": [
+      {
+        "name": "Init_thread",
+        "start_seconds": 7.551e-06,
+        "seconds": 1.14637801
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 1.165354038,
+        "seconds": 4.261571713
+      },
+      {
+        "name": "Comm_split",
+        "start_seconds": 5.451670886,
+        "seconds": 2.13473384
+      },
+      {
+        "name": "Alltoallv",
+        "start_seconds": 7.640500608,
+        "seconds": 2.13457895
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 24.84846967,
+        "seconds": 2.119518865
+      },
+      {
+        "name": "Barrier",
+        "start_seconds": 29.589529585,
+        "seconds": 1.645784733
+      },
+      {
+        "name": "Barrier",
+        "start_seconds": 31.31905662,
+        "seconds": 4.288362427
+      },
+      {
+        "name": "Finalize",
+        "start_seconds": 39.92372387,
+        "seconds": 0.311126971
+      }
+    ]
+  },
+  "session-abba-profile/05-session-shm-profiled-deepks/ranks/7.mpi-profile.json": {
+    "rank": 7,
+    "lifetime_seconds": 41.88279043,
+    "calls": [
+      {
+        "name": "Init",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Init_thread",
+        "count": 1,
+        "seconds": 1.044846102,
+        "max_seconds": 1.044846102
+      },
+      {
+        "name": "Finalize",
+        "count": 1,
+        "seconds": 0.466889389,
+        "max_seconds": 0.466889389
+      },
+      {
+        "name": "Barrier",
+        "count": 31,
+        "seconds": 6.041855796,
+        "max_seconds": 4.28834287
+      },
+      {
+        "name": "Allreduce",
+        "count": 2582,
+        "seconds": 6.578924259,
+        "max_seconds": 4.261582561
+      },
+      {
+        "name": "Reduce",
+        "count": 288,
+        "seconds": 0.001470878,
+        "max_seconds": 5.1069e-05
+      },
+      {
+        "name": "Bcast",
+        "count": 1701,
+        "seconds": 0.03977028,
+        "max_seconds": 0.006837687
+      },
+      {
+        "name": "Comm_split",
+        "count": 9,
+        "seconds": 2.135230532,
+        "max_seconds": 2.134673274
+      },
+      {
+        "name": "Comm_split_type",
+        "count": 3,
+        "seconds": 0.016154382,
+        "max_seconds": 0.011552794
+      },
+      {
+        "name": "Comm_dup",
+        "count": 4,
+        "seconds": 0.000194303,
+        "max_seconds": 7.8484e-05
+      },
+      {
+        "name": "Comm_free",
+        "count": 17,
+        "seconds": 0.000180365,
+        "max_seconds": 5.031e-05
+      },
+      {
+        "name": "Alltoall",
+        "count": 98,
+        "seconds": 0.040085524,
+        "max_seconds": 0.001967739
+      },
+      {
+        "name": "Alltoallv",
+        "count": 251,
+        "seconds": 2.242012001,
+        "max_seconds": 2.140222983
+      },
+      {
+        "name": "Allgather",
+        "count": 1,
+        "seconds": 5.742e-06,
+        "max_seconds": 5.742e-06
+      },
+      {
+        "name": "Allgatherv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Wait",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Waitall",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      },
+      {
+        "name": "Send",
+        "count": 175,
+        "seconds": 0.000486788,
+        "max_seconds": 0.000174595
+      },
+      {
+        "name": "Recv",
+        "count": 184,
+        "seconds": 0.001529449,
+        "max_seconds": 0.000169824
+      },
+      {
+        "name": "Sendrecv",
+        "count": 0,
+        "seconds": 0.0,
+        "max_seconds": 0.0
+      }
+    ],
+    "long_calls": [
+      {
+        "name": "Init_thread",
+        "start_seconds": 6.722e-06,
+        "seconds": 1.044846102
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 1.063819076,
+        "seconds": 4.261582561
+      },
+      {
+        "name": "Comm_split",
+        "start_seconds": 5.350135059,
+        "seconds": 2.134673274
+      },
+      {
+        "name": "Alltoallv",
+        "start_seconds": 7.53910243,
+        "seconds": 2.140222983
+      },
+      {
+        "name": "Allreduce",
+        "start_seconds": 24.746928483,
+        "seconds": 2.119591587
+      },
+      {
+        "name": "Barrier",
+        "start_seconds": 29.487994589,
+        "seconds": 1.64578425
+      },
+      {
+        "name": "Barrier",
+        "start_seconds": 31.21752165,
+        "seconds": 4.28834287
+      },
+      {
+        "name": "Finalize",
+        "start_seconds": 39.822182823,
+        "seconds": 0.466889389
+      }
+    ]
+  }
+}
