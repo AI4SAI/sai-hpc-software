@@ -1,5 +1,12 @@
 # Workflow closure — 2026-11-06
 
+## Daily builds at 03:00 Asia/Shanghai
+
+The single daily entry now schedules all six applications at 03:00 Asia/Shanghai
+(`0 19 * * *` in GitHub's UTC cron), moving the planned start out of daytime
+cluster demand. GitHub scheduling and Slurm resource availability can delay
+actual execution. The earlier 02:23 UTC schedule below describes historical runs.
+
 ## CP2K auxiliary dependency cache
 
 DBCSR, TBLITE and its subprojects, LibXS, private LibXC and required wignernj
@@ -508,7 +515,7 @@ and the missing beta promotion stage left the public modules unchanged. Source
 dates in module help identify upstream commit dates, not the last build date.
 The daily workflow now connects each software's complete development matrix to
 scientific acceptance, real Lmod/SIF launch verification and atomic beta rotation.
-The schedule remains 02:23 UTC / 10:23 Asia/Shanghai. Failed or partial matrices
+That campaign used 02:23 UTC / 10:23 Asia/Shanghai. Failed or partial matrices
 retain the previous accepted generation, and the five applications publish
 independently. See [daily closure evidence](evidence/daily-beta-20261025/README.md).
 
