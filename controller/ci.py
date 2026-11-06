@@ -461,8 +461,12 @@ def main():
     shared_dependencies = False
     try:
         if software == 'cp2k' and phase != 'acceptance' and not resume:
-            shared_dependencies = json.loads(python('cp2k_site_spack.py', 'available', identity['partition'],
-                                                   capture_output=True).stdout)['available']
+            if relay.enabled and 'shared_dependencies' in relay.data:
+                shared_dependencies = relay.data['shared_dependencies']
+            else:
+                shared_dependencies = json.loads(python('cp2k_site_spack.py', 'available', identity['partition'],
+                                                       capture_output=True).stdout)['available']
+                relay.set('shared_dependencies', shared_dependencies)
             if shared_dependencies:
                 print('CP2K_SHARED_DEVTOOLS: skipping the Spack build allocation', flush=True)
             elif phase != 'application':
