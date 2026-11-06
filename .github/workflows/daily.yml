@@ -53,14 +53,28 @@ jobs:
       RETRY_RELEASES: ${{ inputs.retry_releases || false }}
       RELAY_MODE: ${{ github.event.schedule == '17 * * * *' && 'resume' || inputs.mode || 'start' }}
     steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-          sparse-checkout: |
-            controller
-            deployment
-            .ci/slurm
-            docs/evidence/sif-lmod-20261024/raw/4V100
+      # This repository is public. Use Git directly to avoid a Node runtime
+      # alongside the Listener/Worker on the 512 MiB shared relay host.
+      - name: Check out the frozen controller with Git
+        run: |
+          git init -q .
+          git config core.hooksPath /dev/null
+          git config pack.threads 1
+          git config pack.windowMemory 4m
+          git config core.deltaBaseCacheLimit 4m
+          git config gc.auto 0
+          if git remote get-url origin >/dev/null 2>&1; then
+            git remote set-url origin https://github.com/AI4SAI/sai-hpc-software.git
+          else
+            git remote add origin https://github.com/AI4SAI/sai-hpc-software.git
+          fi
+          git config --local --unset-all http.https://github.com/.extraheader || :
+          git sparse-checkout init --cone
+          git sparse-checkout set controller deployment .ci/slurm docs/evidence/sif-lmod-20261024/raw/4V100
+          git -c protocol.version=2 fetch --no-tags --depth=1 origin "$GITHUB_SHA"
+          git checkout --force --detach "$GITHUB_SHA"
+          git clean -ffdx
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
       - name: Prepare temporary HPC credentials
         env:
           KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
@@ -75,19 +89,11 @@ jobs:
           args=(--mode "$RELAY_MODE" --software "$SOFTWARE" --tracks "$TRACKS" --targets "$TARGETS")
           if [ "$RETRY_RELEASES" = true ]; then args+=(--retry-releases); fi
           python3 -u controller/daily_relay.py "${args[@]}"
-      - name: Retain relay logs and metadata
+      - name: Report retained relay logs and metadata
         if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: daily-relay-${{ github.run_id }}-${{ github.run_attempt }}
-          path: |
-            /home/sai/ci/state/*/plan.json
-            /home/sai/ci/state/*/tasks/*/checkpoint.json
-            /home/sai/ci/state/*/tasks/*/controller.log
-            /home/sai/ci/state/*/tasks/*/results/*.json
-            /home/sai/ci/state/*/tasks/*/beta-results/*.json
-          if-no-files-found: ignore
-          retention-days: 14
+        run: |
+          printf 'Durable plans, Slurm receipts and full controller logs: %s\n' "$SAI_RELAY_ROOT"
+          if [ -f "$GITHUB_STEP_SUMMARY" ]; then cat "$GITHUB_STEP_SUMMARY"; fi
       - name: Remove temporary HPC key
         if: always()
         run: rm -f -- "$RUNNER_TEMP/ssh/key"

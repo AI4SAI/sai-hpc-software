@@ -38,10 +38,10 @@ def source_repository(repository_url, commit, temporary, name):
             subprocess.run(['git', 'init', '--bare', str(repository)], check=True, capture_output=True)
         if repository.resolve() != repository:
             raise ValueError('redirected bare source repository')
-        for setting, value in (('pack.threads', '1'), ('pack.windowMemory', '16m'),
-                               ('core.deltaBaseCacheLimit', '16m'), ('gc.auto', '0')):
+        for setting, value in (('pack.threads', '1'), ('pack.windowMemory', '4m'),
+                               ('core.deltaBaseCacheLimit', '4m'), ('gc.auto', '0')):
             subprocess.run(['git', '-C', str(repository), 'config', setting, value], check=True)
-        subprocess.run(['git', '-C', str(repository), '-c', 'pack.threads=1', '-c', 'pack.windowMemory=16m',
+        subprocess.run(['git', '-C', str(repository), '-c', 'pack.threads=1', '-c', 'pack.windowMemory=4m',
                         '-c', 'pack.packSizeLimit=128m', '-c', 'fetch.fsckObjects=true', '-c', 'gc.auto=0',
                         'fetch', '--no-tags', repository_url, commit + ':refs/cache/' + commit], check=True)
         os.utime(repository, None)
@@ -129,7 +129,10 @@ def ensure_source(*, remote, options, port, controller, cache, commit,
               'compressed_bytes=' + str(manifest['compressed_size']), flush=True)
         subprocess.run([*ssh, remote, shlex.join(['mkdir', '-p', destination])], check=True, timeout=90)
         upload_part(parts / 'manifest.json', destination + '/manifest.json', remote, ssh)
-        with ThreadPoolExecutor(max_workers=4) as executor:
+        # Each stream owns rsync and SSH processes. Keep the small relay's
+        # aggregate process footprint bounded during source-cache misses.
+        workers = 1 if os.environ.get('SAI_SOURCE_CACHE') else 4
+        with ThreadPoolExecutor(max_workers=workers) as executor:
             futures = [executor.submit(upload_part, parts / part['name'],
                                        destination + '/' + part['name'], remote, ssh)
                        for part in manifest['parts']]
