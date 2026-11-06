@@ -11,7 +11,7 @@ modulefiles 或校验清单。系统预装依赖仍只读复用，不随安装�
 ## 渠道、分区和命名
 
 五种软件统一使用 `development`、`prerelease`、`release` 三个渠道。
-默认分支的 `daily.yml` 是唯一每日入口，计划每天北京时间 10:23 检查各渠道
+默认分支的 `daily.yml` 是唯一每日入口，计划每天北京时间 03:00（UTC 前一天 19:00）检查各渠道
 最新上游 SHA（GitHub 定时调度可能延迟），也可手动选择软件、渠道和分区。
 它通过本仓库的 workflow dispatch 调用以下独立构建分支；DeePMD/LAMMPS
 成对调度一次，避免两个入口重复提交相同组合：
