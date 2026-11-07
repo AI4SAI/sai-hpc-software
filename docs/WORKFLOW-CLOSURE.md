@@ -1,4 +1,22 @@
-# Workflow closure — 2026-11-06
+# Workflow closure — 2026-11-07
+
+## CP2K development source compatibility
+
+The November 7 daily CP2K build stopped when upstream #6465 replaced three
+NCCL initialization sites with a shared cuSOLVERMp context. The guarded source
+repair now recognizes that reviewed layout, synchronizes `ctx->comm` once at
+initialization, and preserves the byte-identical v2026.2 repair. Upstream #6476
+also changed the required LibXS revision; the workflow stages `cc9188a` with
+the exact upstream checksum. Unknown source and dependency inputs still fail
+for review.
+
+Recovery workflow `42331323249` built source `0761fd1b052d` successfully on
+DSPRHBM, 16V100, 4V100 and 8V100V0. SIF executable/version/loader/feature checks
+and all twelve overlay teardown receipts passed. At 03:49 UTC, 16V100 and
+4V100 had also passed their 14 single/two-node calculations each; DSPRHBM and
+8V100V0 science were still running. The 16V100 two-node water64 log confirms
+112 cuSOLVER calls and passing energy/force comparisons. Beta rotation remains
+gated on every target. See the [diagnosis and qualification snapshot](evidence/cp2k-upstream-adaptation-20261107/README.md).
 
 ## Daily builds at 03:00 Asia/Shanghai
 
