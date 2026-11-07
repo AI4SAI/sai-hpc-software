@@ -25,10 +25,14 @@ SETUP = '''      ! Finalize GPU setup when a GPU kernel is used. Ensure ELPA doe
 
 '''
 
-# v2026.2 and the inspected development branch have the same cuSOLVER source.
-# Review changed upstream code before applying this synchronization repair.
+# v2026.2 initializes NCCL separately in three solver routines. Upstream #6465
+# (ca8d286b8450cd59e3d8e31029a498985a473c46) shares one initialization in
+# get_context(), using ctx->comm. Keep both reviewed layouts and exact hashes;
+# further upstream changes still require review before modifying the source.
 NCCL_SOURCE_SHA256 = '379cda72ac8c18e18f30ffd019b37ae0e8216572c40f5e6ad2fbceb6decd4ad8'
 NCCL_REPAIRED_SHA256 = 'eb22082437dbee127fedd77a8f7e2f7cb05444b507b2a4be29843cc1fa9ceff3'
+NCCL_CONTEXT_SOURCE_SHA256 = '9f68fe666f1f1c9da411c8bd6dd7810dd8572c39c486efbe4afb4a3c15e14b31'
+NCCL_CONTEXT_REPAIRED_SHA256 = '6fa681c45d5dce92eeb33a7047a851d5bcc5146133e4e50d48804a30f1fa7b40'
 NCCL_BROADCAST = '  MPI_Bcast(&nccl_id, sizeof(nccl_id), MPI_BYTE, 0, comm);\n'
 NCCL_PROGRESS = '''  // Drain outstanding MPI traffic before entering blocking NCCL bootstrap.
   // ScaLAPACK peers can still require MPI progress after this rank returns.
@@ -40,23 +44,32 @@ def fix_nccl_progress(source, metadata):
     path = Path(source) / 'src/fm/cp_fm_cusolver.c'
     before = path.read_bytes()
     digest = hashlib.sha256(before).hexdigest()
-    if digest == NCCL_REPAIRED_SHA256:
-        applied = False
+    layouts = (
+        (NCCL_SOURCE_SHA256, NCCL_REPAIRED_SHA256, 'comm', 3),
+        (NCCL_CONTEXT_SOURCE_SHA256, NCCL_CONTEXT_REPAIRED_SHA256, 'ctx->comm', 1),
+    )
+    for source_digest, repaired_digest, communicator, sites in layouts:
+        if digest not in (source_digest, repaired_digest):
+            continue
+        applied = digest == source_digest
         after = before
-    elif digest == NCCL_SOURCE_SHA256:
-        text = before.decode()
-        if text.count(NCCL_BROADCAST) != 3:
-            raise ValueError('unrecognized CP2K NCCL bootstrap sites')
-        after = text.replace(NCCL_BROADCAST, NCCL_BROADCAST + NCCL_PROGRESS).encode()
-        if hashlib.sha256(after).hexdigest() != NCCL_REPAIRED_SHA256:
-            raise ValueError('CP2K NCCL progress repair differs from reviewed bytes')
-        path.write_bytes(after)
-        applied = True
+        if applied:
+            broadcast = NCCL_BROADCAST.replace('comm);', communicator + ');')
+            progress = NCCL_PROGRESS.replace('comm);', communicator + ');')
+            text = before.decode()
+            if text.count(broadcast) != sites:
+                raise ValueError('unrecognized CP2K NCCL bootstrap sites')
+            after = text.replace(broadcast, broadcast + progress).encode()
+            if hashlib.sha256(after).hexdigest() != repaired_digest:
+                raise ValueError('CP2K NCCL progress repair differs from reviewed bytes')
+            path.write_bytes(after)
+        break
     else:
-        raise ValueError('unrecognized CP2K cuSOLVER source; review MPI progress repair')
+        raise ValueError('unrecognized CP2K cuSOLVER source SHA-256 ' + digest +
+                         '; review MPI progress repair')
     record = dict(applied=applied, source_file='src/fm/cp_fm_cusolver.c',
                   before_sha256=digest, after_sha256=hashlib.sha256(after).hexdigest(),
-                  bootstrap_sites=3, repair='MPI progress barrier before blocking NCCL bootstrap')
+                  bootstrap_sites=sites, repair='MPI progress barrier before blocking NCCL bootstrap')
     metadata = Path(metadata)
     metadata.mkdir(parents=True, exist_ok=True)
     (metadata / 'nccl-mpi-progress-fix.json').write_text(json.dumps(record, sort_keys=True) + '\n')
