@@ -1,0 +1,103 @@
+{
+  "observed_at": "2026-11-07T04:46:56.034528+00:00",
+  "job": "2275533",
+  "node": "d9470n02",
+  "diagnostic_signal": "SIGQUIT sent to bootstrap child 410696 after confirming its batch-job process ancestry; no CP2K process had started",
+  "accounting": "2275533|FAILED|00:23:09|2:0|00:05.616||d9470n02\n2275533.batch|FAILED|00:23:09|2:0|00:05.616|21408K|d9470n02\n2275533.extern|COMPLETED|00:23:09|0:0|00:00:00|13092K|d9470n02\n",
+  "stdout": "SIGQUIT: quit\nPC=0x59a640585941 m=0 sigcode=0\n\ngoroutine 0 gp=0x59a64166a700 m=0 mp=0x59a64166ba40 [idle]:\nruntime.futex(0x59a64166bb90, 0x80, 0x0, 0x0, 0x0, 0x0)\n\truntime/sys_linux_amd64.s:557 +0x21 fp=0x7ffef96ad518 sp=0x7ffef96ad510 pc=0x59a640585941\nruntime.futexsleep(0x7ffef96ad590?, 0x4166a700?, 0x7ffef96ad590?)\n\truntime/os_linux.go:76 +0x30 fp=0x7ffef96ad568 sp=0x7ffef96ad518 pc=0x59a64053ec90\nruntime.notesleep(0x59a64166bb90)\n\truntime/lock_futex.go:47 +0x87 fp=0x7ffef96ad5a0 sp=0x7ffef96ad568 pc=0x59a640514f27\nruntime.mPark(...)\n\truntime/proc.go:1974\nruntime.stoplockedm()\n\truntime/proc.go:3268 +0x73 fp=0x7ffef96ad5f8 sp=0x7ffef96ad5a0 pc=0x59a64054b3d3\nruntime.schedule()\n\truntime/proc.go:4131 +0x3a fp=0x7ffef96ad630 sp=0x7ffef96ad5f8 pc=0x59a64054da3a\nruntime.park_m(0xc000002380)\n\truntime/proc.go:4280 +0x285 fp=0x7ffef96ad690 sp=0x7ffef96ad630 pc=0x59a64054df25\nruntime.mcall()\n\truntime/asm_amd64.s:458 +0x57 fp=0x7ffef96ad6a8 sp=0x7ffef96ad690 pc=0x59a640581b17\n\ngoroutine 1 gp=0xc000002380 m=nil [chan receive, locked to thread]:\nruntime.gopark(0xc000082060?, 0x0?, 0x2?, 0x0?, 0xc000102d18?)\n\truntime/proc.go:460 +0xce fp=0xc000247e80 sp=0xc000247e60 pc=0x59a64057bf8e\nruntime.chanrecv(0xc0001020e0, 0xc000247f38, 0x1)\n\truntime/chan.go:667 +0x473 fp=0xc000247ef8 sp=0xc000247e80 pc=0x59a64050f693\nruntime.chanrecv2(0xc000102068?, 0x0?)\n\truntime/chan.go:514 +0x12 fp=0xc000247f20 sp=0xc000247ef8 pc=0x59a64050f212\nmain.main()\n\t./main_linux.go:114 +0x53 fp=0xc000247f50 sp=0xc000247f20 pc=0x59a640c8f973\nruntime.main()\n\truntime/proc.go:285 +0x29d fp=0xc000247fe0 sp=0xc000247f50 pc=0x59a640545c3d\nruntime.goexit({})\n\truntime/asm_amd64.s:1693 +0x1 fp=0xc000247fe8 sp=0xc000247fe0 pc=0x59a640583b41\n\ngoroutine 2 gp=0xc000002e00 m=nil [force gc (idle)]:\nruntime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)\n\truntime/proc.go:460 +0xce fp=0xc000054fa8 sp=0xc000054f88 pc=0x59a64057bf8e\nruntime.goparkunlock(...)\n\truntime/proc.go:466\nruntime.forcegchelper()\n\truntime/proc.go:373 +0xb8 fp=0xc000054fe0 sp=0xc000054fa8 pc=0x59a640545f78\nruntime.goexit({})\n\truntime/asm_amd64.s:1693 +0x1 fp=0xc000054fe8 sp=0xc000054fe0 pc=0x59a640583b41\ncreated by runtime.init.7 in goroutine 1\n\truntime/proc.go:361 +0x1a\n\ngoroutine 3 gp=0xc000003340 m=nil [GC sweep wait]:\nruntime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)\n\truntime/proc.go:460 +0xce fp=0xc000055780 sp=0xc000055760 pc=0x59a64057bf8e\nruntime.goparkunlock(...)\n\truntime/proc.go:466\nruntime.bgsweep(0xc000080000)\n\truntime/mgcsweep.go:279 +0x94 fp=0xc0000557c8 sp=0xc000055780 pc=0x59a64052d634\nruntime.gcenable.gowrap1()\n\truntime/mgc.go:212 +0x25 fp=0xc0000557e0 sp=0xc0000557c8 pc=0x59a640521225\nruntime.goexit({})\n\truntime/asm_amd64.s:1693 +0x1 fp=0xc0000557e8 sp=0xc0000557e0 pc=0x59a640583b41\ncreated by runtime.gcenable in goroutine 1\n\truntime/mgc.go:212 +0x66\n\ngoroutine 4 gp=0xc000003500 m=nil [GC scavenge wait]:\nruntime.gopark(0xc000080000?, 0x59a640e2f738?, 0x1?, 0x0?, 0xc000003500?)\n\truntime/proc.go:460 +0xce fp=0xc000055f78 sp=0xc000055f58 pc=0x59a64057bf8e\nruntime.goparkunlock(...)\n\truntime/proc.go:466\nruntime.(*scavengerState).park(0x59a64166a080)\n\truntime/mgcscavenge.go:425 +0x49 fp=0xc000055fa8 sp=0xc000055f78 pc=0x59a64052af49\nruntime.bgscavenge(0xc000080000)\n\truntime/mgcscavenge.go:653 +0x3c fp=0xc000055fc8 sp=0xc000055fa8 pc=0x59a64052b4fc\nruntime.gcenable.gowrap2()\n\truntime/mgc.go:213 +0x25 fp=0xc000055fe0 sp=0xc000055fc8 pc=0x59a6405211c5\nruntime.goexit({})\n\truntime/asm_amd64.s:1693 +0x1 fp=0xc000055fe8 sp=0xc000055fe0 pc=0x59a640583b41\ncreated by runtime.gcenable in goroutine 1\n\truntime/mgc.go:213 +0xa5\n\ngoroutine 18 gp=0xc000106380 m=nil [finalizer wait]:\nruntime.gopark(0x59a6405551b7?, 0x59a640517ee5?, 0xb8?, 0x1?, 0xc000002380?)\n\truntime/proc.go:460 +0xce fp=0xc000054620 sp=0xc000054600 pc=0x59a64057bf8e\nruntime.runFinalizers()\n\truntime/mfinal.go:210 +0x107 fp=0xc0000547e0 sp=0xc000054620 pc=0x59a6405200a7\nruntime.goexit({})\n\truntime/asm_amd64.s:1693 +0x1 fp=0xc0000547e8 sp=0xc0000547e0 pc=0x59a640583b41\ncreated by runtime.createfing in goroutine 1\n\truntime/mfinal.go:172 +0x3d\n\ngoroutine 19 gp=0xc000106a80 m=nil [cleanup wait]:\nruntime.gopark(0x0?, 0x0?, 0x0?, 0x0?, 0x0?)\n\truntime/proc.go:460 +0xce fp=0xc000050768 sp=0xc000050748 pc=0x59a64057bf8e\nruntime.goparkunlock(...)\n\truntime/proc.go:466\nruntime.(*cleanupQueue).dequeue(0x59a64166a4c0)\n\truntime/mcleanup.go:439 +0xc5 fp=0xc0000507a0 sp=0xc000050768 pc=0x59a64051cbc5\nruntime.runCleanups()\n\truntime/mcleanup.go:635 +0x45 fp=0xc0000507e0 sp=0xc0000507a0 pc=0x59a64051d285\nruntime.goexit({})\n\truntime/asm_amd64.s:1693 +0x1 fp=0xc0000507e8 sp=0xc0000507e0 pc=0x59a640583b41\ncreated by runtime.(*cleanupQueue).createGs in goroutine 1\n\truntime/mcleanup.go:589 +0xa5\n\ngoroutine 5 gp=0xc000003a40 m=nil [IO wait]:\nruntime.gopark(0xc0000d3810?, 0x59a640561b6b?, 0xf?, 0x0?, 0xb?)\n\truntime/proc.go:460 +0xce fp=0xc0000d37e0 sp=0xc0000d37c0 pc=0x59a64057bf8e\nruntime.netpollblock(0x59a6405a26f8?, 0x4050bd06?, 0xa6?)\n\truntime/netpoll.go:575 +0xf7 fp=0xc0000d3818 sp=0xc0000d37e0 pc=0x59a64053def7\ninternal/poll.runtime_pollWait(0x13fc8118a000, 0x72)\n\truntime/netpoll.go:351 +0x85 fp=0xc0000d3838 sp=0xc0000d3818 pc=0x59a64057a825\ninternal/poll.(*pollDesc).wait(0xc0002f4180?, 0xc0002fb000?, 0x0)\n\tinternal/poll/fd_poll_runtime.go:84 +0x27 fp=0xc0000d3860 sp=0xc0000d3838 pc=0x59a640609fe7\ninternal/poll.(*pollDesc).waitRead(...)\n\tinternal/poll/fd_poll_runtime.go:89\ninternal/poll.(*FD).Read(0xc0002f4180, {0xc0002fb000, 0x1000, 0x1000})\n\tinternal/poll/fd_unix.go:165 +0x279 fp=0xc0000d38f8 sp=0xc0000d3860 pc=0x59a64060b419\nnet.(*netFD).Read(0xc0002f4180, {0xc0002fb000?, 0x41?, 0x198?})\n\tnet/fd_posix.go:68 +0x25 fp=0xc0000d3940 sp=0xc0000d38f8 pc=0x59a640668165\nnet.(*conn).Read(0xc0000581b8, {0xc0002fb000?, 0xc0000d39c0?, 0x1000?})\n\tnet/net.go:196 +0x45 fp=0xc0000d3988 sp=0xc0000d3940 pc=0x59a64067a645\nbufio.(*Reader).Read(0xc0000829c0, {0xc0000ea6a0, 0x1, 0xc00016f400?})\n\tbufio/bufio.go:245 +0x197 fp=0xc0000d39c0 sp=0xc0000d3988 pc=0x59a640728677\nio.ReadAtLeast({0x59a641037200, 0xc0000829c0}, {0xc0000ea6a0, 0x1, 0x9}, 0x1)\n\tio/io.go:335 +0x8e fp=0xc0000d3a08 sp=0xc0000d39c0 pc=0x59a6405ff3ee\nio.ReadFull(...)\n\tio/io.go:354\nencoding/gob.decodeUintReader({0x59a641037200, 0xc0000829c0}, {0xc0000ea6a0, 0x9, 0x9})\n\tencoding/gob/decode.go:116 +0x51 fp=0xc0000d3a60 sp=0xc0000d3a08 pc=0x59a6407cfc51\nencoding/gob.(*Decoder).recvMessage(0xc000164510)\n\tencoding/gob/decoder.go:84 +0x33 fp=0xc0000d3a98 sp=0xc0000d3a60 pc=0x59a6407d94f3\nencoding/gob.(*Decoder).decodeTypeSequence(0xc000164510, 0x0)\n\tencoding/gob/decoder.go:150 +0x47 fp=0xc0000d3ac8 sp=0xc0000d3a98 pc=0x59a6407d9867\nencoding/gob.(*Decoder).DecodeValue(0xc000164510, {0x59a640ea3360?, 0xc000076720?, 0x4?})\n\tencoding/gob/decoder.go:229 +0x16e fp=0xc0000d3b48 sp=0xc0000d3ac8 pc=0x59a6407d9c4e\nencoding/gob.(*Decoder).Decode(0xc000164510?, {0x59a640ea3360?, 0xc000076720?})\n\tencoding/gob/decoder.go:206 +0xdc fp=0xc0000d3b88 sp=0xc0000d3b48 pc=0x59a6407d9a9c\nnet/rpc.(*gobServerCodec).ReadRequestHeader(0x59a641669d60?, 0x13fcc827d108?)\n\tnet/rpc/server.go:403 +0x25 fp=0xc0000d3bb0 sp=0xc0000d3b88 pc=0x59a6408d4b45\nnet/rpc.(*Server).readRequestHeader(0x59a641669d60, {0x59a64103e518, 0xc0000e9ec0})\n\tnet/rpc/server.go:589 +0x58 fp=0xc0000d3c70 sp=0xc0000d3bb0 pc=0x59a6408d6358\nnet/rpc.(*Server).readRequest(0xc0000d3dc0?, {0x59a64103e518, 0xc0000e9ec0})\n\tnet/rpc/server.go:549 +0x2f fp=0xc0000d3d48 sp=0xc0000d3c70 pc=0x59a6408d5f0f\nnet/rpc.(*Server).ServeCodec(0x59a641669d60, {0x59a64103e518, 0xc0000e9ec0})\n\tnet/rpc/server.go:464 +0x71 fp=0xc0000d3e50 sp=0xc0000d3d48 pc=0x59a6408d5451\nnet/rpc.(*Server).ServeConn(0x59a641669d60, {0x13fc80db4800, 0xc0000581b8})\n\tnet/rpc/server.go:455 +0x34f fp=0xc0000d3ea8 sp=0xc0000d3e50 pc=0x59a6408d530f\nnet/rpc.ServeConn(...)\n\tnet/rpc/server.go:673\ngithub.com/apptainer/apptainer/internal/pkg/runtime/engine.ServeRPCRequests(0xc000012048, {0x59a641042f60, 0xc0000581b8})\n\tgithub.com/apptainer/apptainer/internal/pkg/runtime/engine/engine_linux.go:151 +0xa5 fp=0xc0000d3ee8 sp=0xc0000d3ea8 pc=0x59a6408e46c5\ngithub.com/apptainer/apptainer/internal/app/starter.RPCServer(0xc000058008?, 0xc000012048)\n\tgithub.com/apptainer/apptainer/internal/app/starter/rpc_linux.go:35 +0xb0 fp=0xc0000d3f48 sp=0xc0000d3ee8 pc=0x59a6408e67f0\nmain.startup()\n\t./main_linux.go:92 +0x2fa fp=0xc0000d3fe0 sp=0xc0000d3f48 pc=0x59a640c8f77a\nruntime.goexit({})\n\truntime/asm_amd64.s:1693 +0x1 fp=0xc0000d3fe8 sp=0xc0000d3fe0 pc=0x59a640583b41\ncreated by main.main in goroutine 1\n\t./main_linux.go:111 +0x1a\n\nrax    0xca\nrbx    0x0\nrcx    0x59a640585943\nrdx    0x0\nrdi    0x59a64166bb90\nrsi    0x80\nrbp    0x7ffef96ad558\nrsp    0x7ffef96ad510\nr8     0x0\nr9     0x0\nr10    0x0\nr11    0x286\nr12    0x59a64054dca0\nr13    0x66\nr14    0x59a64166a700\nr15    0xffffffffffffffff\nrip    0x59a640585941\nrflags 0x286\ncs     0x33\nfs     0x0\ngs     0x0\n",
+  "slurm_log": "",
+  "status.json": {
+    "attempt": "1",
+    "error": "SIF route failed; previous beta retained: {\"DSPRHBM\": {\"job\": \"2275533\", \"state\": \"FAILED\", \"exit_code\": \"2:0\", \"log\": \"/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42331323249-1-cp2k-65ed8ef8870f/DSPRHBM\"}}",
+    "retained": {
+      "bundle": "/home/stardust/sai-hpc-software/sif-beta/runtimes/daily-20261106-42195260368-1-cp2k",
+      "fixed": "master-beta-20261106-9dff88d24460-r4d85319d4295-b71b0be44395a",
+      "generation": "daily-20261106-42195260368-1-cp2k"
+    },
+    "software": "cp2k",
+    "status": "failed",
+    "workflow": "42331323249"
+  },
+  "runtime-status.json": {
+    "failed": {
+      "DSPRHBM": {
+        "exit_code": "2:0",
+        "job": "2275533",
+        "log": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42331323249-1-cp2k-65ed8ef8870f/DSPRHBM",
+        "state": "FAILED"
+      }
+    },
+    "jobs": [
+      {
+        "exclude": "",
+        "job": "2275527",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42331323249-1-cp2k-65ed8ef8870f/16V100",
+        "partition": "16V100",
+        "request_sha256": "15e9ed11bdbd3496cc22a19831304db58a7b37f76dd6b45bbfab56f1adb3cec0",
+        "script_sha256": "3b8a1c2dec70d50d7ff13d89666465b05cd6b01bd3d6ec906289c8c6dbe74461"
+      },
+      {
+        "exclude": "",
+        "job": "2275529",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42331323249-1-cp2k-65ed8ef8870f/4V100",
+        "partition": "4V100",
+        "request_sha256": "3b8064a2996526f8077df23098f51865449d1cf4cb3882d758a02b02d2748c64",
+        "script_sha256": "29248a41ecc72e9879c78642c7e4a5f1a307d055041845792d1df81426674abb"
+      },
+      {
+        "exclude": "",
+        "job": "2275531",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42331323249-1-cp2k-65ed8ef8870f/8V100V0",
+        "partition": "8V100V0",
+        "request_sha256": "824954dcfe992933ddde933a7a7bc0f63f8539bf78aa99ceea371468f0bdf283",
+        "script_sha256": "78b3c6775e6999d259a9f60bb29b620853b4b46065f415a9fea198822d8cd43d"
+      },
+      {
+        "exclude": "",
+        "job": "2275533",
+        "output": "/org/org-open-sai/proj-sai-hpc-software/operations/daily-beta/42331323249-1-cp2k-65ed8ef8870f/DSPRHBM",
+        "partition": "DSPRHBM",
+        "request_sha256": "4ecd03710a5f5ad32d0256ab2596757c48ab2ad86e746e75434b42e74a6a4827",
+        "script_sha256": "0d0f52727954dfb09437af16823166a41ade47530fad467467841d7de9a1e2a6"
+      }
+    ],
+    "passed": {
+      "16V100": {
+        "automatic_memory": true,
+        "catalog_sha256": "554a241e1a385cb5bba122ad3cf790f48adde3dbfd82b90a06f724f388492bc8",
+        "cp2k": {
+          "energy_delta_ha": 5.684341886080801e-13,
+          "max_force_delta_ha_bohr": 1.0000004296850662e-12
+        },
+        "job": "2275527",
+        "partition": "16V100",
+        "passed": true,
+        "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+      },
+      "4V100": {
+        "automatic_memory": true,
+        "catalog_sha256": "554a241e1a385cb5bba122ad3cf790f48adde3dbfd82b90a06f724f388492bc8",
+        "cp2k": {
+          "energy_delta_ha": 1.4210854715202004e-13,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "job": "2275529",
+        "partition": "4V100",
+        "passed": true,
+        "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+      },
+      "8V100V0": {
+        "automatic_memory": true,
+        "catalog_sha256": "554a241e1a385cb5bba122ad3cf790f48adde3dbfd82b90a06f724f388492bc8",
+        "cp2k": {
+          "energy_delta_ha": 7.105427357601002e-13,
+          "max_force_delta_ha_bohr": 0.0
+        },
+        "job": "2275531",
+        "partition": "8V100V0",
+        "passed": true,
+        "runtime_sha256": "4d85319d4295ef745b29d35a3c36991c2b4e404d60fb2b03fac344e579ff2915"
+      }
+    }
+  }
+}

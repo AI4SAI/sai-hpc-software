@@ -12,11 +12,20 @@ for review.
 
 Recovery workflow `42331323249` built source `0761fd1b052d` successfully on
 DSPRHBM, 16V100, 4V100 and 8V100V0. SIF executable/version/loader/feature checks
-and all twelve overlay teardown receipts passed. At 03:49 UTC, 16V100 and
-4V100 had also passed their 14 single/two-node calculations each; DSPRHBM and
-8V100V0 science were still running. The 16V100 two-node water64 log confirms
-112 cuSOLVER calls and passing energy/force comparisons. Beta rotation remains
-gated on every target. See the [diagnosis and qualification snapshot](evidence/cp2k-upstream-adaptation-20261107/README.md).
+and all twelve overlay teardown receipts passed. All four targets completed
+their 14 single/two-node calculations, for 56 numerically verified runs. The
+16V100 two-node water64 log confirms 112 cuSOLVER calls and passing energy/force
+comparisons. Separate host-MPI SIF launch checks also passed on every target.
+
+The workflow completed successfully on attempt 2 at 04:55 UTC. Attempt 1's
+DSPRHBM publication check stalled in Apptainer's memory-bootstrap startup on
+`d9470n02`; its diagnostic stack and failed receipt are retained. Retrying only
+publication reused the accepted SIFs, and DSPRHBM passed on `d9470n01` in 55 s.
+The startup stall's root cause remains unproven; this recovery changed neither
+the runtime nor the SIFs. The public `cp2k/master-beta-later` now points to
+`master-beta-20261107-0761fd1b052d-r4d85319d4295-b5186e4e26126`.
+The module help, generation manifest, catalog and SIF identities were checked
+after selection. See the [completed qualification and publication evidence](evidence/cp2k-upstream-adaptation-20261107/README.md).
 
 ## Daily builds at 03:00 Asia/Shanghai
 
