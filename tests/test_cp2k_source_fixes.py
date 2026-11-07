@@ -61,6 +61,48 @@ class NCCLProgressFixTests(unittest.TestCase):
             self.assertFalse(fixes.fix_nccl_progress(root / 'source', root / 'metadata')['applied'])
             self.assertEqual(source.read_bytes(), repaired)
 
+    def test_shared_context_source_repairs_only_initialization_and_is_idempotent(self):
+        fixture = Path(__file__).parent / 'fixtures/cp2k_cusolver_0761fd1b.c.gz'
+        original = gzip.decompress(fixture.read_bytes())
+        self.assertEqual(hashlib.sha256(original).hexdigest(),
+                         '9f68fe666f1f1c9da411c8bd6dd7810dd8572c39c486efbe4afb4a3c15e14b31')
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / 'source/src/fm/cp_fm_cusolver.c'
+            source.parent.mkdir(parents=True)
+            source.write_bytes(original)
+            record = fixes.fix_nccl_progress(root / 'source', root / 'metadata')
+            self.assertTrue(record['applied'])
+            self.assertEqual(record['bootstrap_sites'], 1)
+            repaired = source.read_bytes()
+            self.assertEqual(hashlib.sha256(repaired).hexdigest(),
+                             '6fa681c45d5dce92eeb33a7047a851d5bcc5146133e4e50d48804a30f1fa7b40')
+            self.assertEqual(repaired.count(b'MPI_Barrier(ctx->comm);'), 1)
+            self.assertIn(b'MPI_Barrier(ctx->comm);\n'
+                          b'  NCCL_CHECK(ncclCommInitRank(&ctx->nccl_comm, nranks, nccl_id, rank));',
+                          repaired)
+            self.assertLess(repaired.index(b'    return ctx;'),
+                            repaired.index(b'MPI_Barrier(ctx->comm);'))
+            self.assertEqual(json.loads((root / 'metadata/nccl-mpi-progress-fix.json').read_text()), record)
+            self.assertFalse(fixes.fix_nccl_progress(root / 'source', root / 'metadata')['applied'])
+            self.assertEqual(source.read_bytes(), repaired)
+
+    def test_changed_shared_context_source_is_not_silently_patched(self):
+        fixture = Path(__file__).parent / 'fixtures/cp2k_cusolver_0761fd1b.c.gz'
+        original = gzip.decompress(fixture.read_bytes())
+        changed = original.replace(b'  MPI_Comm_dup(comm, &ctx->comm);',
+                                   b'  ctx->comm = comm;')
+        self.assertNotEqual(changed, original)
+        with tempfile.TemporaryDirectory() as folder:
+            root = Path(folder)
+            source = root / 'source/src/fm/cp_fm_cusolver.c'
+            source.parent.mkdir(parents=True)
+            source.write_bytes(changed)
+            with self.assertRaisesRegex(ValueError, hashlib.sha256(changed).hexdigest()):
+                fixes.fix_nccl_progress(root / 'source', root / 'metadata')
+            self.assertEqual(source.read_bytes(), changed)
+            self.assertFalse((root / 'metadata').exists())
+
     def test_changed_upstream_source_is_preserved_and_requires_review(self):
         with tempfile.TemporaryDirectory() as folder:
             root = Path(folder)
