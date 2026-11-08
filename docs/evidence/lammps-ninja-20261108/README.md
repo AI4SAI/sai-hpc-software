@@ -9,6 +9,9 @@ not a stable estimate that Ninja is inherently slower.
 The follow-up [source audit](source-audit.md) identifies redundant NVCC
 dependency scans, host-source compilation through NVCC, and template
 instantiation candidates. Their speedups have not yet been measured.
+The [upstream issue/PR review](upstream-followup.md) identifies maintainer
+PR #5308 as the preferred next experiment and distinguishes its reported
+cache-assisted gains from our clean-build requirements.
 
 | Measurement | Unix Makefiles | Ninja 1.13.2 |
 | --- | ---: | ---: |

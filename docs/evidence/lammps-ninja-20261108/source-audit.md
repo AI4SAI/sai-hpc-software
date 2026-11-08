@@ -5,6 +5,13 @@ particularly the Kokkos compiler wrapper, before changing the build generator.
 This is a source and generated-rule audit. None of the proposed changes has a
 measured full-build speedup or runtime acceptance yet.
 
+**Updated priority after checking upstream issues and PRs:** maintainer
+[PR #5308](https://github.com/lammps/lammps/pull/5308) already implements
+selective host compilation and reports tests on V100/CUDA 12.9/GCC 14.
+The [upstream follow-up](upstream-followup.md) records its status, evidence and
+limitations. Testing that patch now takes priority over the independent
+dependency-generation proposal below.
+
 The source examined is the measured LAMMPS revision
 [`d291d572cf3c73a8a720774b78482a7c931304ca`](https://github.com/lammps/lammps/tree/d291d572cf3c73a8a720774b78482a7c931304ca),
 including bundled Kokkos 5.2.1. The build used GCC 14.3.0 and CUDA 12.9.1.
@@ -18,8 +25,8 @@ upstream source files.
 
 ## 1. Generate header dependencies during the existing NVCC invocation
 
-This is the first experiment to try because it can retain all source files,
-optimization settings, backends and scientific code.
+This is a separate candidate that can retain all source files, optimization
+settings, backends and scientific code. The upstream #5308 test takes priority.
 
 The bundled [`nvcc_wrapper`](https://github.com/lammps/lammps/blob/d291d572cf3c73a8a720774b78482a7c931304ca/lib/kokkos/bin/nvcc_wrapper#L197)
 intercepts `-MD` / `-MMD` and requests a separate dependency pass. At
@@ -128,7 +135,8 @@ a percentage saving from either one.
   precompiled headers would need separate CUDA/translation-unit compatibility
   work; there is no evidence yet to prioritize them over the findings above.
 
-Recommended sequence: first test native dependency generation, then selective
-host compilation, then narrowly scoped template changes. Keep each change
-separate so clean-build time, memory, feature parity and scientific behavior
-can be attributed to it.
+Recommended sequence after the upstream review: first test the existing
+upstream #5308 selective-host-compilation patch, then consider native dependency
+generation and narrowly scoped template changes. Keep each change separate so
+clean-build time, memory, feature parity and scientific behavior can be
+attributed to it.
