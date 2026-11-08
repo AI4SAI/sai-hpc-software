@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Validate both unpublished generator artifacts with frozen release cases.
+"""Validate two unpublished build artifacts with frozen release cases.
 
 This is a one-node, one/two-rank regression check, not the production two-node
 publication contract and not a scientific runtime performance benchmark.
@@ -55,6 +55,11 @@ def helpers(output):
     return md_evidence, md_probe, md_science, gpu_functional_smoke
 
 
+def variant_delivery(record, label):
+    """Support paired source revisions as well as paired build generators."""
+    return record['variants'][label].get('delivery', record.get('delivery'))
+
+
 def guard(output):
     record, _ = context(output)
     _, _, science, _ = helpers(output)
@@ -66,7 +71,7 @@ def guard(output):
     variant = record['variants'][os.environ['SAI_LAMMPS_BENCH_VARIANT']]
     mpi = '/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-gnu-cuda12-avx2'
     require(shutil.which('mpirun') == mpi + '/bin/mpirun', 'wrong host MPI')
-    delivery = record['delivery']
+    delivery = variant_delivery(record, os.environ['SAI_LAMMPS_BENCH_VARIANT'])
     return delivery['identity']['install_prefix'], delivery['deepmd_dependency']['identity']['install_prefix'], variant['image'], mpi
 
 
@@ -76,7 +81,10 @@ def inventory(output):
     science.require_execution_context()
     import torch
     require(torch.cuda.is_available(), 'no GPU available to the installed DeePMD backend')
-    prefix = Path(record['delivery']['identity']['install_prefix'])
+    prefixes = {variant_delivery(record, label)['identity']['install_prefix']
+                for label in record['variants']}
+    prefix = Path(os.environ['SAI_LMP_PREFIX'])
+    require(str(prefix) in prefixes, 'unrecognized candidate prefix')
     observed = probe.lammps_inventory(prefix)
     built = read(prefix / 'share/sai/candidate.json')['lammps']
     for field in ('version', 'packages', 'styles'):
@@ -165,13 +173,15 @@ def run(output):
                 observed = list(gpu.values(folder))
                 evidence._compare_numeric(observed, case['expected'], **ref['gpu_tolerances'], path=folder.name)
                 observations[folder.name] = observed
+    require(len(features) == 2, 'exactly two candidates required')
+    left, right = features.values()
     for field in ('version', 'packages', 'styles'):
-        require(features['make']['lammps'][field] == features['ninja']['lammps'][field], 'generator feature mismatch')
+        require(left['lammps'][field] == right['lammps'][field], 'paired feature mismatch')
     write(output / 'validation.json', dict(passed=True, scope='one node; one and two ranks; not production publication acceptance',
           job=os.environ['SLURM_JOB_ID'], features=features, observations=observations,
           tolerances=ref['tolerances'], gpu_tolerances=ref['gpu_tolerances'], cases=len(observations),
           process_files={str(path.relative_to(output)): digest(path) for path in results.rglob('*') if path.is_file()}))
-    print('PAIRED_GENERATOR_GPU_SCIENCE_PASSED_NOT_PUBLISHED', flush=True)
+    print('PAIRED_BUILD_GPU_SCIENCE_PASSED_NOT_PUBLISHED', flush=True)
 
 
 def prepare(experiment, reference_file, output):
@@ -191,7 +201,8 @@ def prepare(experiment, reference_file, output):
         run_dir = Path(row['run'])
         require('LAMMPS_STANDALONE_BUILD_VERIFIED_NOT_PUBLISHED' in (run_dir / f'results/slurm-{job}.log').read_text(), 'missing build verification')
         image = run_dir / 'candidate.sif'
-        variants[row['label']] = dict(image=str(image), image_sha256=digest(image))
+        variants[row['label']] = dict(image=str(image), image_sha256=digest(image),
+                                      delivery=row.get('delivery', record.get('delivery')))
     output.mkdir(parents=True)
     pins = {}
     def copy(source, name, expected=None):
@@ -224,12 +235,12 @@ def prepare(experiment, reference_file, output):
                            ('@HOME@', str(REFERENCE_ROOT.parent)), ('@PROJECT@', str(PROJECT)), ('@RUNTIME@', str(runtime))):
         script = script.replace(before, after)
     directives = ('#SBATCH --partition=16V100\n#SBATCH --qos=flood-1o2gpu\n#SBATCH --account=proj-sai-hpc-software\n'
-                  '#SBATCH --job-name=lmp-ninja-science\n#SBATCH --chdir=' + str(output) + '\n#SBATCH --output=' + str(output / 'slurm-%j.log') + '\n')
+                  '#SBATCH --job-name=lmp-paired-science\n#SBATCH --chdir=' + str(output) + '\n#SBATCH --output=' + str(output / 'slurm-%j.log') + '\n')
     script = script.replace('set -eo pipefail', directives + 'set -eo pipefail', 1)
     (output / 'job.sbatch').write_text(script)
     for name in ('reference.json', 'control/lammps_rank.sh', 'job.sbatch'):
         pins[name] = digest(output / name)
-    write(output / 'request.json', dict(schema=1, delivery=record['delivery'], variants=variants, files=pins,
+    write(output / 'request.json', dict(schema=1, delivery=record.get('delivery'), variants=variants, files=pins,
           experiment=str(experiment), build_job=job, runtime=str(runtime),
           experiment_request_sha256=digest(experiment / 'request.json')))
     (output / 'request.sha256').write_text(digest(output / 'request.json') + '\n')
