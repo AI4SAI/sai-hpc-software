@@ -25,7 +25,7 @@ Path('/workspace/hdf5-mpi-interface.json').write_text(json.dumps(dict(
     description='Select the F90 parallel-I/O interface used by QE; omit optional mpi_f08 overloads.'),
     sort_keys=True)+'\n')
 PY
-export HDF5_ROOT="$INSTALL_PREFIX/deps/hdf5"
+export HDF5_ROOT=${QE_HDF5_INSTALL_PREFIX:-"$INSTALL_PREFIX/deps/hdf5"}
 cmake -S /workspace/hdf5-source -B /workspace/hdf5-build \
   -DCMAKE_INSTALL_PREFIX="$HDF5_ROOT" -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_C_COMPILER=mpicc -DCMAKE_Fortran_COMPILER=mpifort \

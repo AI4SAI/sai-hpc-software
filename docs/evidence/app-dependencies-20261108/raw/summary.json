@@ -1,0 +1,137 @@
+{
+  "accepted": true,
+  "extra_torch_acceptance": {
+    "request": {
+      "provider_sha256": "0a12dfbd1dd0ddec8d2938bfc624a3f6b00be238958009bf59d6f8b45f5fe5c7",
+      "script_sha256": "1894c2150b22f0fc4c85b3ec2d0e35dda175142ce53598fa8fde7cf815ecea05",
+      "sif_sha256": "8c92b3e9ffb5ea9f637c4f642aced4262ac24d53eca5e8d7f94e0f3afcc3f1f9",
+      "source_run": "app-dependencies-20261108-r2"
+    },
+    "run": "/org/org-open-sai/proj-sai-hpc-software/runs/app-dependencies-torch-16v100-20261108-r1"
+  },
+  "handoff": {
+    "files": {
+      "README.md": {
+        "bytes": 3104,
+        "mode": "0o644",
+        "sha256": "dd7455046cc3d1beeffae0bd9d9e5dfc7344d322e6cf406344cacd8276acbc23"
+      },
+      "images/libraries.sif": {
+        "bytes": 178298880,
+        "mode": "0o444",
+        "sha256": "8c92b3e9ffb5ea9f637c4f642aced4262ac24d53eca5e8d7f94e0f3afcc3f1f9"
+      },
+      "install.py": {
+        "bytes": 11062,
+        "mode": "0o644",
+        "sha256": "f843258a0712ff3e8bce3b31ca94999bfc5071366e4c354a1093a04d5cbdb291"
+      },
+      "install.sh": {
+        "bytes": 106,
+        "mode": "0o644",
+        "sha256": "6708beddfeb99c6c51564fea7b698622a1d60abce88ae00f878f0aa96201cb41"
+      },
+      "manifests/abacus-libtorch.json": {
+        "bytes": 1742873,
+        "mode": "0o644",
+        "sha256": "4add0f130e45bf658e4d43352e5a3c8d3c60333fb063f59db697731c289e171b"
+      },
+      "manifests/qe-hdf5.json": {
+        "bytes": 29493,
+        "mode": "0o644",
+        "sha256": "d64e243bd677023d476c906a33c9869ade4dcd705077f33cf992d39e9121e698"
+      },
+      "release.json": {
+        "bytes": 1047,
+        "mode": "0o644",
+        "sha256": "6d459ff9b5bed17be4569d56d563228122cc2c68ddf6207d483a0ebb2b856173"
+      },
+      "release.sha256": {
+        "bytes": 65,
+        "mode": "0o644",
+        "sha256": "139b2cb43dbc9c40fe0306664363b519a9f4e3b867ab2169585ad51bcd3cdf26"
+      }
+    },
+    "path": "/home/stardust/sai-hpc-software/deployment/qe-hdf5-abacus-libtorch"
+  },
+  "hdf5": {
+    "compiler": "\nnvfortran 26.3-0 64-bit target on x86-64 Linux -tp sapphirerapids \nNVIDIA Compilers and Tools\nCopyright (c) 2026, NVIDIA CORPORATION & AFFILIATES.  All rights reserved.\n",
+    "cpu": "Architecture:                            x86_64\nCPU op-mode(s):                          32-bit, 64-bit\nAddress sizes:                           46 bits physical, 57 bits virtual\nByte Order:                              Little Endian\nCPU(s):                                  104\nOn-line CPU(s) list:                     0-103\nVendor ID:                               GenuineIntel\nModel name:                              Intel(R) Xeon(R) CPU Max 9470C\nCPU family:                              6\nModel:                                   143\nThread(s) per core:                      1\nCore(s) per socket:                      52\nSocket(s):                               2\nStepping:                                8\nCPU(s) scaling MHz:                      99%\nCPU max MHz:                             3500.0000\nCPU min MHz:                             800.0000\nBogoMIPS:                                4000.00\nFlags:                                   fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc art arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc cpuid aperfmperf tsc_known_freq pni pclmulqdq dtes64 monitor ds_cpl smx est tm2 ssse3 sdbg fma cx16 xtpr pdcm pcid dca sse4_1 sse4_2 x2apic movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm 3dnowprefetch cpuid_fault epb cat_l3 cat_l2 cdp_l3 intel_ppin cdp_l2 ssbd mba ibrs ibpb stibp ibrs_enhanced fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid cqm rdt_a avx512f avx512dq rdseed adx smap avx512ifma clflushopt clwb intel_pt avx512cd sha_ni avx512bw avx512vl xsaveopt xsavec xgetbv1 xsaves cqm_llc cqm_occup_llc cqm_mbm_total cqm_mbm_local split_lock_detect user_shstk avx_vnni avx512_bf16 wbnoinvd dtherm ida arat pln pts hwp hwp_act_window hwp_epp hwp_pkg_req avx512vbmi umip pku ospke waitpkg avx512_vbmi2 gfni vaes vpclmulqdq avx512_vnni avx512_bitalg avx512_vpopcntdq la57 rdpid bus_lock_detect cldemote movdiri movdir64b enqcmd fsrm md_clear serialize tsxldtrk pconfig arch_lbr ibt amx_bf16 avx512_fp16 amx_tile amx_int8 flush_l1d arch_capabilities\nL1d cache:                               4.9 MiB (104 instances)\nL1i cache:                               3.3 MiB (104 instances)\nL2 cache:                                208 MiB (104 instances)\nL3 cache:                                210 MiB (2 instances)\nNUMA node(s):                            8\nNUMA node0 CPU(s):                       0-12\nNUMA node1 CPU(s):                       13-25\nNUMA node2 CPU(s):                       26-38\nNUMA node3 CPU(s):                       39-51\nNUMA node4 CPU(s):                       52-64\nNUMA node5 CPU(s):                       65-77\nNUMA node6 CPU(s):                       78-90\nNUMA node7 CPU(s):                       91-103\nVulnerability Gather data sampling:      Not affected\nVulnerability Ghostwrite:                Not affected\nVulnerability Indirect target selection: Not affected\nVulnerability Itlb multihit:             Not affected\nVulnerability L1tf:                      Not affected\nVulnerability Mds:                       Not affected\nVulnerability Meltdown:                  Not affected\nVulnerability Mmio stale data:           Not affected\nVulnerability Old microcode:             Not affected\nVulnerability Reg file data sampling:    Not affected\nVulnerability Retbleed:                  Not affected\nVulnerability Spec rstack overflow:      Not affected\nVulnerability Spec store bypass:         Mitigation; Speculative Store Bypass disabled via prctl\nVulnerability Spectre v1:                Mitigation; usercopy/swapgs barriers and __user pointer sanitization\nVulnerability Spectre v2:                Mitigation; Enhanced / Automatic IBRS; IBPB conditional; PBRSB-eIBRS SW sequence; BHI BHI_DIS_S\nVulnerability Srbds:                     Not affected\nVulnerability Tsa:                       Not affected\nVulnerability Tsx async abort:           Not affected\nVulnerability Vmscape:                   Mitigation; IBPB before exit to userspace\n",
+    "flags": "-O3 -tp=host",
+    "mpi": "nvfortran -I/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512/include -I/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512/lib -L/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512/lib -Wl,-rpath -Wl,/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512/lib -Wl,--enable-new-dtags -lmpi_usempif08 -lmpi_usempi_ignore_tkr -lmpi_mpifh -lmpi\n",
+    "mpi_f08": false,
+    "mpi_home": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512",
+    "mpi_interface": "F90",
+    "source_sha256": "e4defbac30f50d64e1556374aa49e574417c9e72c6b1de7a4ff88c4b1bea6e9b",
+    "tools": {
+      "mpicc": {
+        "path": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512/bin/opal_wrapper",
+        "sha256": "e0df2008f5dd3ef6550562139991e25045eb41acf6aabafcc15f790b78dfeef8"
+      },
+      "mpifort": {
+        "path": "/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512/bin/opal_wrapper",
+        "sha256": "e0df2008f5dd3ef6550562139991e25045eb41acf6aabafcc15f790b78dfeef8"
+      },
+      "nvc": {
+        "path": "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/compilers/bin/nvc",
+        "sha256": "ac2b500bbf80bf04e0a9f1152259840e5217f64187c49dcb20a985d123c401ac"
+      },
+      "nvfortran": {
+        "path": "/opt/devtools/nvidia/hpc_sdk/Linux_x86_64/26.3/compilers/bin/nvfortran",
+        "sha256": "4f3df723938b2ce90b1ee85961eaec36e3ed2d21535d772158e1284d7df4bbe3"
+      }
+    }
+  },
+  "image": {
+    "bytes": 178298880,
+    "path": "/org/org-open-sai/proj-sai-hpc-software/runs/app-dependencies-20261108-r2/libraries.sif",
+    "sha256": "8c92b3e9ffb5ea9f637c4f642aced4262ac24d53eca5e8d7f94e0f3afcc3f1f9"
+  },
+  "observed_at": "2026-11-08T07:05:39.011609+00:00",
+  "packages": {
+    "abacus-libtorch": {
+      "bytes": 702822281,
+      "entries": 8553,
+      "prefix": "/opt/apps/abacus/dependencies/libtorch/2.1.2-cpu-cxx11abi1",
+      "top_level": [
+        "bin",
+        "build-hash",
+        "build-version",
+        "include",
+        "lib",
+        "share"
+      ],
+      "version": "2.1.2"
+    },
+    "qe-hdf5": {
+      "bytes": 33986628,
+      "entries": 170,
+      "prefix": "/opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM",
+      "top_level": [
+        "bin",
+        "cmake",
+        "include",
+        "lib",
+        "mod",
+        "share"
+      ],
+      "version": "1.14.6"
+    }
+  },
+  "project": "/org/org-open-sai/proj-sai-hpc-software",
+  "provider_sha256": "0a12dfbd1dd0ddec8d2938bfc624a3f6b00be238958009bf59d6f8b45f5fe5c7",
+  "run": "/org/org-open-sai/proj-sai-hpc-software/runs/app-dependencies-20261108-r2",
+  "torch": {
+    "archive": {
+      "file": "libtorch-2.1.2.zip",
+      "name": "LibTorch",
+      "root": "libtorch",
+      "sha256": "904b764df6106a8a35bef64c4b55b8c1590ad9d071eb276e680cf42abafe79e9",
+      "version": "2.1.2-cpu-cxx11-abi"
+    },
+    "license_sha256": "d63aaf3622186b2a761832a5704edeef1f25d08f5b9c50ac4e435befc8e348a8",
+    "license_url": "https://raw.githubusercontent.com/pytorch/pytorch/v2.1.2/LICENSE",
+    "prefix": "/opt/apps/abacus/dependencies/libtorch/2.1.2-cpu-cxx11abi1",
+    "source_compilation": false
+  }
+}
