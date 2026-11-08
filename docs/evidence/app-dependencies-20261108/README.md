@@ -1,5 +1,9 @@
 # Application dependency preinstallation, November 8
 
+The user subsequently installed both prefixes. Their complete inventories and
+native compute-node consumer tests passed; see [installed acceptance](INSTALLED.md).
+Daily application-provider selection is still unchanged.
+
 The administrator handoff is ready at:
 
 ```text
@@ -147,6 +151,13 @@ objects. Ninja may overlap independent targets more effectively, but the gain
 is unmeasured. This needs a pinned Ninja binary and adapting the existing CUDA
 verification, which currently reads `flags.make`, before switching generators.
 Use the same source, packages, CPU allocation and runtime correctness gates.
+
+CMake 3.31 [documents weaker target ordering for Ninja](https://cmake.org/cmake/help/v3.31/command/add_dependencies.html):
+dependent custom commands still finish before compilation starts. LAMMPS's
+[GPU configuration](https://github.com/lammps/lammps/blob/d291d572cf3c73a8a720774b78482a7c931304ca/cmake/Modules/Packages/GPU.cmake#L120)
+generates embedded kernel headers and explicitly orders `gpu` after `gpu_fatbin`.
+Those real file dependencies must remain; overlapping eligible host compilation
+is a candidate improvement, not permission to remove the dependency edges.
 
 Also measure 16/24/32 workers against physical-core topology and memory use;
 32 logical CPUs need not mean 32 independent physical cores. Do not claim that
