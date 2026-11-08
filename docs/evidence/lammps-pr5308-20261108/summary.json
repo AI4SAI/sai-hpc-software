@@ -1,0 +1,73 @@
+{
+  "artifacts": {
+    "base": {
+      "bytes": 285421568,
+      "path": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/pr5308-20261108-v1-base/candidate.sif",
+      "sha256": "77bf68a56947a6b4acc9281f053212da7f86e2b436d59b55da674124821fd7fa",
+      "source_sha": "d291d572cf3c73a8a720774b78482a7c931304ca"
+    },
+    "pr5308": {
+      "bytes": 285216768,
+      "path": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/pr5308-20261108-v1-pr5308/candidate.sif",
+      "sha256": "5dea7facfb5906669316ed5ea9d19e3a637f3a65b844beadd954d4e756f7b10b",
+      "source_sha": "f1a6e5cf5167deeb1f70bc8bd38ff8c2e1a853a7"
+    }
+  },
+  "build_node": "16v100n32.mr-sai.ai",
+  "build_speedup": 1.3623602859306552,
+  "build_time_reduction_percent": 26.59797776497277,
+  "compiler_commands": 2651,
+  "compiler_inputs_match_except_host_only_and_install_prefix": true,
+  "full_flow": {
+    "base": {
+      "end": "2026-11-09T00:33:24+08:00",
+      "seconds": 3536.0,
+      "start": "2026-11-08T23:34:28+08:00"
+    },
+    "pr5308": {
+      "end": "2026-11-08T23:34:28+08:00",
+      "seconds": 2672.0,
+      "start": "2026-11-08T22:49:56+08:00"
+    }
+  },
+  "full_flow_time_reduction_percent": 24.434389140271495,
+  "host_only_commands": 1716,
+  "jobs": {
+    "build": "2306184",
+    "science": "2307487"
+  },
+  "logical_cpus": 32,
+  "numerical_cases": 28,
+  "numerical_passed": true,
+  "package_count": {
+    "base": 71,
+    "pr5308": 71
+  },
+  "physical_cores": 16,
+  "scope": "one clean pair, PR first, OS cache not flushed; one-node scientific regression, not production publication",
+  "styles_identical": true,
+  "upstream": {
+    "base": "d291d572cf3c73a8a720774b78482a7c931304ca",
+    "diff_sha256": "26ca4b7c9b61077653c51bf8b9e4879cafbfa8459449be282807c9f3d7361b1f",
+    "head": "f1a6e5cf5167deeb1f70bc8bd38ff8c2e1a853a7"
+  },
+  "variants": {
+    "base": {
+      "average_compiler_cpu_cores": 10.28436374369146,
+      "build_cpu_seconds": 32639.562203,
+      "build_seconds": 3173.7074860874563,
+      "configure_seconds": 29.19889285415411,
+      "install_seconds": 38.88914542645216,
+      "sampled_compiler_pss_peak_gib": 23.43147087097168
+    },
+    "pr5308": {
+      "average_compiler_cpu_cores": 11.23129332492815,
+      "build_cpu_seconds": 26164.033165,
+      "build_seconds": 2329.5654746126384,
+      "configure_seconds": 32.04824485629797,
+      "install_seconds": 36.02227148413658,
+      "sampled_compiler_pss_peak_gib": 22.9068660736084
+    }
+  },
+  "workers": 24
+}

@@ -12,6 +12,8 @@ instantiation candidates. Their speedups have not yet been measured.
 The [upstream issue/PR review](upstream-followup.md) identifies maintainer
 PR #5308 as the preferred next experiment and distinguishes its reported
 cache-assisted gains from our clean-build requirements.
+The subsequent [PR 5308 test](../lammps-pr5308-20261108/README.md) completed
+with a 26.60% clean compile/link reduction and all 28 GPU numerical checks passing.
 
 | Measurement | Unix Makefiles | Ninja 1.13.2 |
 | --- | ---: | ---: |
