@@ -6,6 +6,10 @@ current daily Make generator for now. This is one Ninja-first/Make-second pair
 on a shared cluster, with OS caches left intact; the measured difference is
 not a stable estimate that Ninja is inherently slower.
 
+The follow-up [source audit](source-audit.md) identifies redundant NVCC
+dependency scans, host-source compilation through NVCC, and template
+instantiation candidates. Their speedups have not yet been measured.
+
 | Measurement | Unix Makefiles | Ninja 1.13.2 |
 | --- | ---: | ---: |
 | Configure | 29.95 s | 30.36 s |
