@@ -184,7 +184,8 @@ def prepare(experiment, reference_file, output):
         require(digest(control / path) == checksum, 'build controller changed')
     job = (experiment / 'job.id').read_text().strip()
     accounting = subprocess.check_output(['sacct', '-X', '-n', '-P', '-j', job, '-o', 'JobIDRaw,State,ExitCode'], text=True)
-    require(f'{job}|COMPLETED|0:0|' in accounting, 'paired build not completed successfully')
+    rows = [line.strip().rstrip('|').split('|') for line in accounting.splitlines() if line.strip()]
+    require(rows == [[job, 'COMPLETED', '0:0']], 'paired build not completed successfully')
     variants = {}
     for row in record['variants']:
         run_dir = Path(row['run'])
@@ -212,21 +213,25 @@ def prepare(experiment, reference_file, output):
     write(output / 'reference.json', ref)
     rank = (control / 'lammps_rank.sh').read_text().replace('lammps_acceptance.py', 'science.py')
     (output / 'control/lammps_rank.sh').write_text(rank)
-    runtime = output / 'runtime'
-    runtime.mkdir(mode=0o700)
+    # Match the production MPI launcher: long source/run labels otherwise
+    # exceed Unix-domain socket path limits before the program can start.
+    runtime = PROJECT / 'runtime' / ('nb-' + hashlib.sha256(str(output).encode()).hexdigest()[:12])
+    require(runtime.resolve() == runtime, 'runtime path was redirected')
+    runtime.mkdir(mode=0o700, parents=True)
     script = (control / 'lammps_verify.sbatch').read_text()
     for before, after in (('--nodes=2', '--nodes=1'), ('--ntasks-per-node=1', '--ntasks-per-node=2'),
                            ('--gpus-per-node=1', '--gpus-per-node=2'), ('lammps_acceptance.py', 'science.py'),
                            ('@HOME@', str(REFERENCE_ROOT.parent)), ('@PROJECT@', str(PROJECT)), ('@RUNTIME@', str(runtime))):
         script = script.replace(before, after)
-    directives = ('#SBATCH --partition=16V100\n#SBATCH --qos=rush-gpu\n#SBATCH --account=proj-sai-hpc-software\n'
+    directives = ('#SBATCH --partition=16V100\n#SBATCH --qos=flood-1o2gpu\n#SBATCH --account=proj-sai-hpc-software\n'
                   '#SBATCH --job-name=lmp-ninja-science\n#SBATCH --chdir=' + str(output) + '\n#SBATCH --output=' + str(output / 'slurm-%j.log') + '\n')
     script = script.replace('set -eo pipefail', directives + 'set -eo pipefail', 1)
     (output / 'job.sbatch').write_text(script)
     for name in ('reference.json', 'control/lammps_rank.sh', 'job.sbatch'):
         pins[name] = digest(output / name)
     write(output / 'request.json', dict(schema=1, delivery=record['delivery'], variants=variants, files=pins,
-          experiment=str(experiment), build_job=job, experiment_request_sha256=digest(experiment / 'request.json')))
+          experiment=str(experiment), build_job=job, runtime=str(runtime),
+          experiment_request_sha256=digest(experiment / 'request.json')))
     (output / 'request.sha256').write_text(digest(output / 'request.json') + '\n')
     subprocess.run(['bash', '-n', str(output / 'job.sbatch')], check=True)
     command = ['sbatch', '--hold', '--parsable', str(output / 'job.sbatch'), str(output)]

@@ -27,6 +27,13 @@ them. These are process-memory measures, not total cgroup memory or page cache,
 and can miss short peaks. The largest individual child RSS is also reported
 separately; it must not be called aggregate build memory.
 
+The wrapper preserves compiler command databases and response files.
+`compare.py` expands the captured NVCC options files before comparing commands;
+Make uses a response file for CUDA include paths where Ninja uses inline flags.
+Missing response files or changed compiler options stop the comparison.
+`science.py prepare` checks completed build accounting, freezes the accepted
+inputs, and submits one/two-rank GPU checks for both SIFs through host MPI.
+
 Interpretation limits:
 
 - This initial pair runs Ninja first and Make second. OS page caches are not

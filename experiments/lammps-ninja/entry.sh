@@ -37,5 +37,10 @@ out = pathlib.Path('/runtime/build-metadata')
 out.mkdir()
 for source in (prefix / 'share/sai').glob('*.json'):
     shutil.copyfile(source, out / source.name)
+build = pathlib.Path('/workspace/lammps-build')
+for source in build.rglob('*.rsp'):
+    target = pathlib.Path('/runtime/cmake-response-files') / source.relative_to(build)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    shutil.copyfile(source, target)
 PY
 fi

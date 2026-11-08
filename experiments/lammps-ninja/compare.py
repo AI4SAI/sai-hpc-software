@@ -8,10 +8,26 @@ import shlex
 import sys
 
 
+def expand_options(args, directory, seen=()):
+    """Read the captured NVCC response files; never assume their contents."""
+    result = []
+    iterator = iter(args)
+    for arg in iterator:
+        if arg != '--options-file':
+            result.append(arg)
+            continue
+        name = Path(next(iterator))
+        if name.is_absolute() or '..' in name.parts or name in seen or len(seen) >= 16:
+            raise ValueError('unrecognized/cyclic NVCC options file: ' + str(name))
+        result.extend(expand_options(shlex.split((directory / name).read_text()), directory, (*seen, name)))
+    return result
+
+
 def compiler_inputs(path):
     result = Counter()
     for row in json.loads(path.read_text()):
-        args = row.get('arguments') or shlex.split(row['command'])
+        args = expand_options(row.get('arguments') or shlex.split(row['command']),
+                              path.parent / 'cmake-response-files')
         normalized = []
         output = row.get('output', '')
         i = 0
