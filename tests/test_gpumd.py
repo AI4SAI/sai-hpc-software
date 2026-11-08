@@ -6,6 +6,7 @@ import io
 import json
 import os
 from pathlib import Path
+import shlex
 import shutil
 import stat
 import subprocess
@@ -44,7 +45,8 @@ class GpumdContractTests(unittest.TestCase):
     def test_all_scientific_build_and_launcher_files_are_hashed(self):
         contract = build.contract_files("gpumd")
         self.assertTrue({"gpumd_environment.sh", "gpumd_build.sh", "gpumd_container_entry.sh",
-            "gpumd_science.py", "gpumd_deepmd_probe.py", "gpumd_acceptance.py", "gpumd", "nep", "gnep"} <= set(contract))
+            "gpumd_science.py", "gpumd_deepmd_probe.py", "gpumd_acceptance.py", "gpumd", "nep", "gnep",
+            "cp2k_image_driver.py", "managed_overlay.py", "cp2k_overlay_sync.py"} <= set(contract))
         original = build.recipe_fingerprint("gpumd", ROOT / "controller")
         with tempfile.TemporaryDirectory() as temporary:
             control = Path(temporary)
@@ -77,6 +79,28 @@ class GpumdContractTests(unittest.TestCase):
             self.assertNotIn("#SBATCH --mem", script)
             self.assertNotIn("#SBATCH --cpus-per-task", script)
             self.assertNotIn("TMPDIR=/tmp", script)
+            overlay_commands = [shlex.split(line) for line in script.splitlines()
+                                if '--overlay ' in line]
+            self.assertEqual(len(overlay_commands), 3)
+            for command in overlay_commands:
+                self.assertEqual(Path(command[1]).name, 'cp2k_image_driver.py')
+            self.assertIn('module load apptainer/1.4.4\n', script)
+
+    def test_candidate_md_conversion_preserves_legacy_fixture_and_trained_models(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            static = root / 'inputs/static'
+            static.mkdir(parents=True)
+            (static / 'nep.txt').write_text('legacy fixed model\n')
+            (static / 'nep-modern.txt').write_text('converted fixed model\n')
+            case = root / 'candidate'
+            shutil.copytree(static, case)
+            science.stage_md_model(root / 'inputs', case)
+            self.assertEqual((case / 'nep.txt').read_bytes(), (static / 'nep-modern.txt').read_bytes())
+            self.assertEqual((static / 'nep.txt').read_text(), 'legacy fixed model\n')
+            (case / 'nep.txt').write_text('independently trained GNEP model\n')
+            science.stage_md_model(root / 'inputs', case)
+            self.assertEqual((case / 'nep.txt').read_text(), 'independently trained GNEP model\n')
 
     def test_science_script_uses_single_gpu_and_same_image_baseline(self):
         request = {"target": "8v100v0-avx512", "version": "master-a", "run_id": "gpumd-test-science",
@@ -672,6 +696,39 @@ class GpumdRawEvidenceTests(unittest.TestCase):
         checks, benchmark = science.recheck_results(self.root, self.report)
         self.assertEqual(checks["plumed-force-feedback"], 0)
         self.assertEqual(benchmark["md-throughput-candidate"]["median_atom_steps_per_second"], 2000000)
+
+    def modern_md_fixture(self):
+        legacy = science.sha(self.root / 'throughput-input/nep.txt')
+        paths = [*self.root.glob('static-candidate*/nep.txt'),
+                 *self.root.glob('throughput*-candidate*/nep.txt'),
+                 self.root / 'plumed-candidate/nep.txt']
+        for path in paths:
+            path.write_text('converted fixed model\n')
+        self.report['packaged_inputs'] = {'static/nep.txt': legacy,
+            'static/nep-modern.txt': science.sha(paths[0])}
+
+    def test_converted_md_model_passes_existing_numerical_and_benchmark_gates(self):
+        self.modern_md_fixture()
+        checks, benchmark = science.recheck_results(self.root, self.report)
+        self.assertEqual(checks['static-candidate']['force_max_error_ev_per_a'], 0)
+        self.assertEqual(benchmark['md-throughput-candidate']['n_atoms'], 2000)
+
+    def test_converted_md_model_cannot_change_between_numerical_checks_and_timing(self):
+        self.modern_md_fixture()
+        for relative in ('static-candidate/nep.txt', 'throughput-pilot-candidate/nep.txt',
+                         'throughput-candidate-repeat1/nep.txt', 'throughput-baseline-repeat0/nep.txt'):
+            path = self.root / relative
+            original = path.read_bytes()
+            path.write_text('different trained potential\n')
+            with self.subTest(path=relative), self.assertRaisesRegex(ValueError, 'potential'):
+                science.recheck_results(self.root, self.report)
+            path.write_bytes(original)
+
+    def test_converted_md_model_requires_original_packaged_model_identity(self):
+        self.modern_md_fixture()
+        self.report['packaged_inputs']['static/nep.txt'] = '0' * 64
+        with self.assertRaisesRegex(ValueError, 'packaged legacy fixture'):
+            science.recheck_results(self.root, self.report)
 
     def test_new_invocation_discards_inherited_outputs_and_keeps_reference_inputs(self):
         case = self.root / "prediction-candidate"

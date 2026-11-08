@@ -345,7 +345,8 @@ def main():
         if software == "gpumd":
             recipe = ["gpumd_container_entry.sh", "gpumd_environment.sh", "gpumd_build.sh",
                       "gpumd_science.py", "gpumd_reference_cases.json", "gpumd_deepmd_probe.py", "gpumd_acceptance.py",
-                      "export_native.py", "native_module.py"]
+                      "export_native.py", "native_module.py", "cp2k_image_driver.py",
+                      "managed_overlay.py", "cp2k_overlay_sync.py"]
         if software == "qe":
             from software_controller import contract_files
             recipe = [name for name in contract_files("qe") if name != "qe"]

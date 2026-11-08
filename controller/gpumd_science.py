@@ -202,7 +202,7 @@ def first_frame(path):
 def prepare(source, destination):
     """Keep parity fixtures stable; train/JIT/GNEP use the resolved source.
 
-    The site's 5.7 baseline cannot read the newer q_222=2 NEP format. Both
+    The site's 5.8 baseline cannot read the newer q_222=2 NEP format. Both
     programs must receive the same previously accepted potential and gold
     arrays for a meaningful numerical and throughput comparison.
     """
@@ -223,8 +223,8 @@ def prepare(source, destination):
         if hashlib.sha256(data).hexdigest() != row['sha256']:
             raise ValueError('changed GPUMD parity fixture: ' + name)
         (destination / name).write_bytes(data)
-    # New NEP training/prediction intentionally rejects the legacy model
-    # syntax still accepted by MD. Convert this same fixed potential with
+    # New NEP training/prediction intentionally rejects legacy model syntax.
+    # Convert this same fixed potential with
     # the pinned upstream converter inside the build container. Both forms
     # must reproduce the identical recorded energy/force/virial arrays.
     if (source / "examples/nep_train/nep.txt").read_text().split()[0] == 'nep':
@@ -232,6 +232,13 @@ def prepare(source, destination):
         shutil.copytree(prediction, modern, ignore=shutil.ignore_patterns('nep.txt'))
         subprocess.run([sys.executable, str(source / 'potentials/nep/nep_model_converter.py'),
                         str(prediction / 'nep.txt'), str(modern / 'nep.txt')], check=True)
+    # The MD reader now also requires the new format. Preserve the legacy
+    # potential for the site baseline and convert only the candidate input.
+    # Detect the actual dispatch interface, not the advertised version string.
+    if re.search(r'strcmp\(potential_name,\s*"nep"\)',
+                 (source / 'src/force/force.cu').read_text()):
+        subprocess.run([sys.executable, str(source / 'potentials/nep/nep_model_converter.py'),
+                        str(static / 'nep.txt'), str(static / 'nep-modern.txt')], check=True)
     training = destination / "training"
     training.mkdir()
     for name in ("nep.txt", "nep.restart"):
@@ -362,6 +369,15 @@ def inspect(prefix, identity=None, environment=None):
     return report
 
 
+def stage_md_model(inputs, destination):
+    """Use the upstream-converted fixed potential for candidate MD only."""
+    modern = inputs / 'static/nep-modern.txt'
+    model = destination / 'nep.txt'
+    if modern.is_file() and model.is_file() and sha(model) == sha(inputs / 'static/nep.txt'):
+        # GNEP emits its own trained model; never replace that with our fixture.
+        shutil.copyfile(modern, model)
+
+
 def portable_check(prefix, destination):
     """Copy the complete prefix INSIDE the build overlay and run from elsewhere.
 
@@ -375,6 +391,7 @@ def portable_check(prefix, destination):
     shutil.copytree(prefix, copied)
     case = destination / "unrelated-cwd/static"
     shutil.copytree(copied / "share/sai/cases/static", case)
+    stage_md_model(copied / 'share/sai/cases', case)
     training = destination / "unrelated-cwd/training"
     shutil.copytree(copied / "share/sai/cases/training", training)
     with (training / "nep.in").open("a") as stream:
@@ -652,9 +669,20 @@ def recheck_results(task, report):
     pilot = task / "throughput-pilot-baseline"
     pilot_metrics = {mode: engine_metrics(task / f"throughput-pilot-{mode}", report, mode,
                                          minimum_seconds=0) for mode in ("baseline", "candidate")}
-    for name in ("model.xyz", "nep.txt", "run.in"):
+    for name in ("model.xyz", "run.in"):
         if sha(pilot / name) != sha(task / "throughput-pilot-candidate" / name):
             raise ValueError("MD benchmark pilots used different inputs")
+    # Encodings may differ, but each benchmark must use exactly the potential
+    # whose energy and forces pass the fixed gold-array checks below.
+    legacy_model = sha(task / 'throughput-input/nep.txt')
+    packaged = report.get('packaged_inputs', {})
+    models = {'baseline': legacy_model,
+              'candidate': packaged.get('static/nep-modern.txt', legacy_model)}
+    if models['candidate'] != legacy_model and packaged.get('static/nep.txt') != legacy_model:
+        raise ValueError('converted MD model does not match the packaged legacy fixture')
+    for mode, digest in models.items():
+        if sha(task / f'throughput-pilot-{mode}/nep.txt') != digest:
+            raise ValueError('MD benchmark pilot changed its qualified potential')
     if (pilot / "run.in").read_text().count("run 1000\n") != 1:
         raise ValueError("MD benchmark pilot must contain 1000 steps")
     if report.get("repeat_of"):
@@ -681,6 +709,8 @@ def recheck_results(task, report):
     for mode in ("candidate", "baseline"):
         for suffix in ("", "-repeat0", "-repeat1", "-repeat2"):
             static = task / f"static-{mode}{suffix}"
+            if sha(static / 'nep.txt') != models[mode]:
+                raise ValueError('MD numerical check changed its qualified potential')
             energy, force = xyz(static / "dump.xyz")
             gold_e, gold_f = xyz(static / "gold.xyz")
             numerical = {"energy_error_ev": compare([[energy]], [[gold_e]], 1e-3, "static energy"),
@@ -702,9 +732,11 @@ def recheck_results(task, report):
         samples = []
         for label in (f"throughput-warmup-{mode}", *(f"throughput-{mode}-repeat{i}" for i in range(3))):
             case = task / label
-            for name in ("run.in", "model.xyz", "nep.txt"):
+            for name in ("run.in", "model.xyz"):
                 if sha(case / name) != sha(task / "throughput-input" / name):
                     raise ValueError("MD benchmark input differs between repetitions/baselines")
+            if sha(case / 'nep.txt') != models[mode]:
+                raise ValueError('MD benchmark potential differs between repetitions')
             metrics = engine_metrics(case, report, mode)
             n_atoms = int((case / "model.xyz").read_text().splitlines()[0])
             n_steps = int(re.findall(r"^run (\d+)$", (case / "run.in").read_text(), re.M)[-1])
@@ -783,7 +815,7 @@ def run(prefix, task, repeat_source=None):
     report = {"identity": identity, "inspection": inspect(prefix), "checks": {}, "benchmark": {},
               "host": subprocess.check_output(["hostname"], text=True).strip(),
               "job": os.environ["SLURM_JOB_ID"], "gpu_visible": os.environ["CUDA_VISIBLE_DEVICES"],
-              "benchmark_description": "single GPU same SIF/dependencies/inputs: replicated 2000-atom NEP MD, engine atom-step/s and total wall time, one warmup plus three repeats; separate startup microbenchmarks are not throughput"}
+              "benchmark_description": "single GPU same SIF/dependencies/physical inputs, upstream-converted NEP encoding where required: replicated 2000-atom NEP MD, engine atom-step/s and total wall time, one warmup plus three repeats; separate startup microbenchmarks are not throughput"}
     # Driver management binaries may not exist in the minimal rootfs; capture
     # the actual allocation's metadata on the host before entering this SIF.
     gpu_metadata = task.parent / "gpu-host.txt"
@@ -813,6 +845,8 @@ def run(prefix, task, repeat_source=None):
         if kind == "prediction" and mode == "candidate" and (inputs / "prediction-modern").is_dir():
             case = inputs / "prediction-modern"
         shutil.copytree(case, dest)
+        if name == 'gpumd' and mode == 'candidate':
+            stage_md_model(inputs, dest)
         # A frozen model may come from a previous calculation. Its numerical
         # outputs must never survive as evidence for a new invocation.
         clear_previous_outputs(dest)
