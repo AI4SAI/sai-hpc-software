@@ -130,3 +130,10 @@ fetch. Neither experiment accepted or published a build. Keep the existing
 hosted daily workflow until the full source/prepare/resume path and peak
 overlap with the CP2K service are qualified. See
 `docs/evidence/self-hosted-relay-20261106/README.md` for exact runs and limits.
+
+A separate [VPS dispatch probe on 2026-11-08](../../docs/evidence/vps-dispatch-20261108/README.md)
+passed using a short API request: HTTP 204 in 1.674 seconds, a 10.004 MiB
+measured cgroup peak including its measurement wrapper, and a successful
+hosted workflow reaching SAI's release bookkeeping. This provides a lightweight
+way to bypass GitHub schedule delays while retaining hosted orchestration.
+The probe installed no timer and does not qualify the full runner above.
