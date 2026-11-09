@@ -1,5 +1,6 @@
 """Numerical checks of one application's real SIF/Lmod launch route."""
 import argparse
+import hashlib
 import json
 import math
 import os
@@ -7,6 +8,7 @@ from pathlib import Path
 import re
 import shlex
 import shutil
+import subprocess
 
 from sif_runtime import digest, require
 
@@ -17,6 +19,35 @@ def read(path):
 
 def write(path, value):
     path.write_text(json.dumps(value, indent=2, sort_keys=True) + '\n')
+
+
+def prepare_gpumd_model(row, case):
+    """Use the accepted image's converted encoding of this exact fixed model."""
+    from export_native import MANIFEST_PATH, SquashfsReader
+    image = Path(row['image'])
+    require(digest(image) == row['sha256'], 'GPUMD fixture image changed')
+    reader = SquashfsReader.from_sif(image)
+    prefix = row['identity']['install_prefix'].lstrip('/')
+    manifest, _ = reader.read_manifest(prefix + '/' + MANIFEST_PATH)
+    require(manifest.get('schema') == 2 and manifest['entry']['identity'] == row['identity'],
+            'GPUMD fixture manifest belongs to another build')
+    files = {item['path']: item for item in manifest['files']}
+    require(len(files) == len(manifest['files']), 'duplicate GPUMD fixture inventory')
+    legacy = prefix + '/share/sai/cases/static/nep.txt'
+    modern = prefix + '/share/sai/cases/static/nep-modern.txt'
+    original = digest(case / 'nep.txt')
+    require(files[legacy]['kind'] == 'file' and files[legacy]['sha256'] == original,
+            'GPUMD beta fixture differs from the accepted legacy model')
+    selected = modern if modern in files else legacy
+    record = files[selected]
+    require(record['kind'] == 'file', 'GPUMD model is not a regular file')
+    if selected == modern:
+        data = subprocess.check_output(reader.command([selected]), timeout=60)
+        require(len(data) == record['size'] and hashlib.sha256(data).hexdigest() == record['sha256'],
+                'GPUMD converted model differs from its image manifest')
+        (case / 'nep.txt').write_bytes(data)
+    return dict(image_sha256=row['sha256'], source_path=selected,
+                legacy_sha256=original, selected_sha256=record['sha256'])
 
 
 def prepare(software, partition, bundle, output, fixtures):
@@ -30,6 +61,7 @@ def prepare(software, partition, bundle, output, fixtures):
     control = Path(__file__).resolve().parent
     if partition != 'DSPRHBM':
         shutil.copyfile(control / 'gpu_health.py', output / 'control/gpu_health.py')
+    gpumd_model = prepare_gpumd_model(row, output / 'case') if software == 'gpumd' else None
     if software == 'deepmd-kit':
         for name in ('deepmd_training_check.py', 'deepmd_training_input.json', 'deepmd_training_dpa2.json'):
             shutil.copyfile(control / name, output / 'control' / name)
@@ -58,6 +90,8 @@ def prepare(software, partition, bundle, output, fixtures):
                    reference=read(fixtures / 'references.json')[software],
                    ranks=2 if software in ('abacus', 'cp2k', 'lammps', 'qe') else 1,
                    files={str(p.relative_to(output)): digest(p) for p in output.rglob('*') if p.is_file()})
+    if gpumd_model is not None:
+        request['gpumd_model'] = gpumd_model
     write(output / 'request.json', request)
     return request
 

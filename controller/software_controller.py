@@ -47,7 +47,8 @@ def contract_files(software):
         return [name for name in common if name != "environment.sh"] + [
             "gpumd_environment.sh", "gpumd_container_entry.sh", "gpumd_build.sh",
             "gpumd_science.py", "gpumd_reference_cases.json", "gpumd_deepmd_probe.py", "gpumd_acceptance.py",
-            "export_native.py", "native_module.py", "gpumd", "nep", "gnep"]
+            "export_native.py", "native_module.py", "gpumd", "nep", "gnep",
+            "cp2k_image_driver.py", "managed_overlay.py", "cp2k_overlay_sync.py"]
     raise ValueError("unknown software contract")
 
 def recipe_fingerprint(software, control=None):
@@ -387,7 +388,7 @@ def render_job(args):
             # The public ELPA selector needs the allocation partition even
             # though the build container deliberately uses --cleanenv.
             command[2:2] = ['--env', 'SLURM_JOB_PARTITION=' + target['partition']]
-        if args.software in ('cp2k', 'abacus', 'qe') and not final:
+        if args.software in ('cp2k', 'abacus', 'qe', 'gpumd') and not final:
             if args.software == 'cp2k':
                 # The managed outer namespace already supplies root mapping.
                 # libfakeroot's inode emulation corrupted repeated library
@@ -401,7 +402,7 @@ def render_job(args):
         return command
     emit = container_command(image, ["/usr/bin/cat", "/workspace/final.squashfs"],
                              overlay=str(overlay) + ":ro", jobs=args.jobs)
-    if args.software in ('cp2k', 'abacus', 'qe'):
+    if args.software in ('cp2k', 'abacus', 'qe', 'gpumd'):
         from cp2k_image_driver import wrap_command
         emit = wrap_command(ROOT, r, CONTROL, emit)
     q = shlex.quote
@@ -444,7 +445,7 @@ def render_job(args):
                    shlex.join(['printf', '%s  %s\\n', digest, str(overlay)]) + ' | sha256sum --check --status',
                    shlex.join(['chmod', '600', str(overlay)]), shlex.join(container('metadata'))]
     module_command = "module --ignore_cache load apptainer/1.4.4 fuse2fs/1.47.4-sai"
-    if args.software in ("cp2k", "abacus", "qe"):
+    if args.software in ("cp2k", "abacus", "qe", "gpumd"):
         from cp2k_image_driver import module_load_command
         module_command = module_load_command()
     lines += [
