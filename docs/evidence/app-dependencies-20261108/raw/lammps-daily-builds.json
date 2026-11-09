@@ -1,0 +1,707 @@
+{
+  "runs": {
+    "lmp-42437633385-1-development-16v100-avx2-20261108-d291d572cf3c": {
+      "job_id": "2296820",
+      "request": {
+        "controller": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/controller/9022ef5b9d461fab7fc424a65a7a744b33076f4f/lmp-42437633385-1-development-16v100-avx2-20261108-d291d572cf3c",
+        "delivery": {
+          "deepmd_dependency": {
+            "identity": {
+              "build_id": "v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102",
+              "cpu_arch": "znver3",
+              "cuda_arch": "70",
+              "dependency_isa": "avx2",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100",
+              "partition": "16V100",
+              "recipe_sha256": "296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097",
+              "repository": "deepmodeling/deepmd-kit",
+              "schema": 2,
+              "software": "deepmd-kit",
+              "source_ref": "v3.2.0",
+              "source_sha": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+              "source_version": "v3.2.0",
+              "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+              "stack_sources": {
+                "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+                "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+              },
+              "target": "16v100-avx2",
+              "track": "release",
+              "version_label": "v3.2.0"
+            },
+            "runtime_plan_sha256": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e"
+          },
+          "identity": {
+            "build_id": "develop-2026-11-06-gd291d572cf3c-r1e5c234055c2",
+            "cpu_arch": "znver3",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/lammps/lammps-development-develop-2026-11-06-gd291d572cf3c-r1e5c234055c2/16V100",
+            "partition": "16V100",
+            "recipe_sha256": "1e5c234055c22e7d737701631507471b494d9d4d3599c31bfc3eb80bf4f4f8e4",
+            "repository": "lammps/lammps",
+            "schema": 2,
+            "software": "lammps",
+            "source_ref": "develop",
+            "source_sha": "d291d572cf3c73a8a720774b78482a7c931304ca",
+            "source_version": "develop-2026-11-06",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "16v100-avx2",
+            "track": "development",
+            "version_label": "develop-2026-11-06"
+          },
+          "schema": 1
+        },
+        "dependency_verification": {
+          "paths": 1165,
+          "prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100",
+          "verified": true
+        },
+        "job_script_sha256": "f9dc4e320e353aece2090a374b7fb9b48566d733748fa14cdc99de42b9ed36b8"
+      },
+      "status": {
+        "artifact": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-42437633385-1-development-16v100-avx2-20261108-d291d572cf3c/candidate.sif",
+        "artifact_sha256": "bd57263e5bda2774a25a0df0679b093761b53d745e72f0bf9e051da69f2fda74",
+        "build_verified": true,
+        "delivery": {
+          "deepmd_dependency": {
+            "identity": {
+              "build_id": "v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102",
+              "cpu_arch": "znver3",
+              "cuda_arch": "70",
+              "dependency_isa": "avx2",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/16V100",
+              "partition": "16V100",
+              "recipe_sha256": "296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097",
+              "repository": "deepmodeling/deepmd-kit",
+              "schema": 2,
+              "software": "deepmd-kit",
+              "source_ref": "v3.2.0",
+              "source_sha": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+              "source_version": "v3.2.0",
+              "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+              "stack_sources": {
+                "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+                "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+              },
+              "target": "16v100-avx2",
+              "track": "release",
+              "version_label": "v3.2.0"
+            },
+            "runtime_plan_sha256": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e"
+          },
+          "identity": {
+            "build_id": "develop-2026-11-06-gd291d572cf3c-r1e5c234055c2",
+            "cpu_arch": "znver3",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/lammps/lammps-development-develop-2026-11-06-gd291d572cf3c-r1e5c234055c2/16V100",
+            "partition": "16V100",
+            "recipe_sha256": "1e5c234055c22e7d737701631507471b494d9d4d3599c31bfc3eb80bf4f4f8e4",
+            "repository": "lammps/lammps",
+            "schema": 2,
+            "software": "lammps",
+            "source_ref": "develop",
+            "source_sha": "d291d572cf3c73a8a720774b78482a7c931304ca",
+            "source_version": "develop-2026-11-06",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "16v100-avx2",
+            "track": "development",
+            "version_label": "develop-2026-11-06"
+          },
+          "schema": 1
+        },
+        "exit_code": "0:0",
+        "job": "2296820",
+        "native_runtime_verified": false,
+        "published": false,
+        "scientific_verified": false,
+        "state": "COMPLETED"
+      },
+      "compile_messages": 2650,
+      "lammps_compile_messages": 2200,
+      "phase_boundary": [
+        {
+          "line": 936,
+          "text": "[ 21%] Building CXX object CMakeFiles/gpu.dir/workspace/lammps/lib/gpu/lal_yukawa_colloid_ext.cpp.o"
+        },
+        {
+          "line": 937,
+          "text": "[ 21%] Building CXX object CMakeFiles/gpu.dir/workspace/lammps/lib/gpu/lal_yukawa_ext.cpp.o"
+        },
+        {
+          "line": 938,
+          "text": "[ 21%] Building CXX object CMakeFiles/gpu.dir/workspace/lammps/lib/gpu/lal_zbl.cpp.o"
+        },
+        {
+          "line": 939,
+          "text": "[ 21%] Building CXX object CMakeFiles/gpu.dir/workspace/lammps/lib/gpu/lal_zbl_ext.cpp.o"
+        },
+        {
+          "line": 940,
+          "text": "[ 21%] Linking CXX static library liblammps_gpu.a"
+        },
+        {
+          "line": 941,
+          "text": "[ 21%] Built target gpu"
+        },
+        {
+          "line": 942,
+          "text": "[ 21%] Building CXX object CMakeFiles/lammps.dir/workspace/lammps/src/angle.cpp.o"
+        },
+        {
+          "line": 943,
+          "text": "[ 21%] Building CXX object CMakeFiles/lammps.dir/workspace/lammps/src/angle_deprecated.cpp.o"
+        },
+        {
+          "line": 944,
+          "text": "[ 21%] Building CXX object CMakeFiles/lammps.dir/workspace/lammps/src/angle_hybrid.cpp.o"
+        },
+        {
+          "line": 945,
+          "text": "[ 21%] Building CXX object CMakeFiles/lammps.dir/workspace/lammps/src/arg_info.cpp.o"
+        }
+      ],
+      "affinity": [
+        "LAMMPS_BUILD_AFFINITY 32 [32, 33, 34, 35, 36, 37, 38, 39, 48, 49, 50, 51, 56, 57, 58, 59, 96, 97, 98, 99, 100, 101, 102, 103, 112, 113, 114, 115, 120, 121, 122, 123]"
+      ],
+      "lifecycle": [
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 2849830,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1794107647.2498455,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-42437633385-1-development-16v100-avx2-20261108-d291d572cf3c/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1794104538.0159461,
+          "teardown_seconds": 0.63454068696592,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 3245623,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1794107713.9272652,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-42437633385-1-development-16v100-avx2-20261108-d291d572cf3c/work.ext3",
+          "payload_returncode": 0,
+          "readonly": true,
+          "schema": 1,
+          "started": 1794107697.5998168,
+          "teardown_seconds": 0.018167097005061805,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 3244716,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1794107697.1181653,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-42437633385-1-development-16v100-avx2-20261108-d291d572cf3c/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1794107648.7584932,
+          "teardown_seconds": 0.38993085303809494,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        }
+      ]
+    },
+    "lmp-42437633385-1-development-4v100-avx512-20261108-d291d572cf3c": {
+      "job_id": "2296792",
+      "request": {
+        "controller": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/controller/9022ef5b9d461fab7fc424a65a7a744b33076f4f/lmp-42437633385-1-development-4v100-avx512-20261108-d291d572cf3c",
+        "delivery": {
+          "deepmd_dependency": {
+            "identity": {
+              "build_id": "v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102",
+              "cpu_arch": "znver4",
+              "cuda_arch": "70",
+              "dependency_isa": "avx512",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/4V100",
+              "partition": "4V100",
+              "recipe_sha256": "296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097",
+              "repository": "deepmodeling/deepmd-kit",
+              "schema": 2,
+              "software": "deepmd-kit",
+              "source_ref": "v3.2.0",
+              "source_sha": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+              "source_version": "v3.2.0",
+              "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+              "stack_sources": {
+                "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+                "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+              },
+              "target": "4v100-avx512",
+              "track": "release",
+              "version_label": "v3.2.0"
+            },
+            "runtime_plan_sha256": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e"
+          },
+          "identity": {
+            "build_id": "develop-2026-11-06-gd291d572cf3c-r1e5c234055c2",
+            "cpu_arch": "znver4",
+            "cuda_arch": "70",
+            "dependency_isa": "avx512",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/lammps/lammps-development-develop-2026-11-06-gd291d572cf3c-r1e5c234055c2/4V100",
+            "partition": "4V100",
+            "recipe_sha256": "1e5c234055c22e7d737701631507471b494d9d4d3599c31bfc3eb80bf4f4f8e4",
+            "repository": "lammps/lammps",
+            "schema": 2,
+            "software": "lammps",
+            "source_ref": "develop",
+            "source_sha": "d291d572cf3c73a8a720774b78482a7c931304ca",
+            "source_version": "develop-2026-11-06",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "4v100-avx512",
+            "track": "development",
+            "version_label": "develop-2026-11-06"
+          },
+          "schema": 1
+        },
+        "dependency_verification": {
+          "paths": 1165,
+          "prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/4V100",
+          "verified": true
+        },
+        "job_script_sha256": "25c493211c806bb1374f3fd3a7cf9470d97365ccb44340b44e5951aadf549384"
+      },
+      "status": {
+        "artifact": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-42437633385-1-development-4v100-avx512-20261108-d291d572cf3c/candidate.sif",
+        "artifact_sha256": "9988a1497f37aff03747384ca9e2b5d09cadd35b6ac7f4fe3d55a06cb2668511",
+        "build_verified": true,
+        "delivery": {
+          "deepmd_dependency": {
+            "identity": {
+              "build_id": "v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102",
+              "cpu_arch": "znver4",
+              "cuda_arch": "70",
+              "dependency_isa": "avx512",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r296ed3baa11b-s4abbad547102/4V100",
+              "partition": "4V100",
+              "recipe_sha256": "296ed3baa11b0bb5629dfb60e7bf396083367a613719dfd8d21767082fa98097",
+              "repository": "deepmodeling/deepmd-kit",
+              "schema": 2,
+              "software": "deepmd-kit",
+              "source_ref": "v3.2.0",
+              "source_sha": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+              "source_version": "v3.2.0",
+              "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+              "stack_sources": {
+                "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+                "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+              },
+              "target": "4v100-avx512",
+              "track": "release",
+              "version_label": "v3.2.0"
+            },
+            "runtime_plan_sha256": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e"
+          },
+          "identity": {
+            "build_id": "develop-2026-11-06-gd291d572cf3c-r1e5c234055c2",
+            "cpu_arch": "znver4",
+            "cuda_arch": "70",
+            "dependency_isa": "avx512",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/lammps/lammps-development-develop-2026-11-06-gd291d572cf3c-r1e5c234055c2/4V100",
+            "partition": "4V100",
+            "recipe_sha256": "1e5c234055c22e7d737701631507471b494d9d4d3599c31bfc3eb80bf4f4f8e4",
+            "repository": "lammps/lammps",
+            "schema": 2,
+            "software": "lammps",
+            "source_ref": "develop",
+            "source_sha": "d291d572cf3c73a8a720774b78482a7c931304ca",
+            "source_version": "develop-2026-11-06",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "4v100-avx512",
+            "track": "development",
+            "version_label": "develop-2026-11-06"
+          },
+          "schema": 1
+        },
+        "exit_code": "0:0",
+        "job": "2296792",
+        "native_runtime_verified": false,
+        "published": false,
+        "scientific_verified": false,
+        "state": "COMPLETED"
+      },
+      "compile_messages": 2650,
+      "lammps_compile_messages": 2200,
+      "phase_boundary": [
+        {
+          "line": 939,
+          "text": "[ 21%] Building CXX object CMakeFiles/gpu.dir/workspace/lammps/lib/gpu/lal_yukawa_colloid_ext.cpp.o"
+        },
+        {
+          "line": 940,
+          "text": "[ 21%] Building CXX object CMakeFiles/gpu.dir/workspace/lammps/lib/gpu/lal_yukawa_ext.cpp.o"
+        },
+        {
+          "line": 941,
+          "text": "[ 21%] Building CXX object CMakeFiles/gpu.dir/workspace/lammps/lib/gpu/lal_zbl.cpp.o"
+        },
+        {
+          "line": 942,
+          "text": "[ 21%] Building CXX object CMakeFiles/gpu.dir/workspace/lammps/lib/gpu/lal_zbl_ext.cpp.o"
+        },
+        {
+          "line": 943,
+          "text": "[ 21%] Linking CXX static library liblammps_gpu.a"
+        },
+        {
+          "line": 944,
+          "text": "[ 21%] Built target gpu"
+        },
+        {
+          "line": 945,
+          "text": "[ 21%] Building CXX object CMakeFiles/lammps.dir/workspace/lammps/src/angle.cpp.o"
+        },
+        {
+          "line": 946,
+          "text": "[ 21%] Building CXX object CMakeFiles/lammps.dir/workspace/lammps/src/angle_deprecated.cpp.o"
+        },
+        {
+          "line": 947,
+          "text": "[ 21%] Building CXX object CMakeFiles/lammps.dir/workspace/lammps/src/angle_hybrid.cpp.o"
+        },
+        {
+          "line": 948,
+          "text": "[ 21%] Building CXX object CMakeFiles/lammps.dir/workspace/lammps/src/angle_write.cpp.o"
+        }
+      ],
+      "affinity": [
+        "LAMMPS_BUILD_AFFINITY 32 [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]"
+      ],
+      "lifecycle": [
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 2976285,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1794108553.4046834,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-42437633385-1-development-4v100-avx512-20261108-d291d572cf3c/work.ext3",
+          "payload_returncode": 0,
+          "readonly": true,
+          "schema": 1,
+          "started": 1794108532.3034976,
+          "teardown_seconds": 0.010502247139811516,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 2975216,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1794108532.0235305,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-42437633385-1-development-4v100-avx512-20261108-d291d572cf3c/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1794108498.8822117,
+          "teardown_seconds": 0.4992193691432476,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 2550571,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1794108436.9412444,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-42437633385-1-development-4v100-avx512-20261108-d291d572cf3c/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1794105951.1778047,
+          "teardown_seconds": 0.5788339450955391,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        }
+      ]
+    },
+    "lmp-42437633385-1-development-8v100v0-avx512-20261108-d291d572cf3c": {
+      "job_id": "2296810",
+      "request": {
+        "controller": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/controller/9022ef5b9d461fab7fc424a65a7a744b33076f4f/lmp-42437633385-1-development-8v100v0-avx512-20261108-d291d572cf3c",
+        "delivery": {
+          "deepmd_dependency": {
+            "identity": {
+              "build_id": "v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102",
+              "cpu_arch": "skylake-avx512",
+              "cuda_arch": "70",
+              "dependency_isa": "avx2",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0",
+              "partition": "8V100V0",
+              "recipe_sha256": "795dbd80e2a43d3e7a32c1bc373d30b88476fcca8d63f26ccc6d42a84515707c",
+              "repository": "deepmodeling/deepmd-kit",
+              "schema": 2,
+              "software": "deepmd-kit",
+              "source_ref": "v3.2.0",
+              "source_sha": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+              "source_version": "v3.2.0",
+              "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+              "stack_sources": {
+                "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+                "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+              },
+              "target": "8v100v0-avx512",
+              "track": "release",
+              "version_label": "v3.2.0"
+            },
+            "runtime_plan_sha256": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e"
+          },
+          "identity": {
+            "build_id": "develop-2026-11-06-gd291d572cf3c-r1e5c234055c2",
+            "cpu_arch": "skylake-avx512",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/lammps/lammps-development-develop-2026-11-06-gd291d572cf3c-r1e5c234055c2/8V100V0",
+            "partition": "8V100V0",
+            "recipe_sha256": "1e5c234055c22e7d737701631507471b494d9d4d3599c31bfc3eb80bf4f4f8e4",
+            "repository": "lammps/lammps",
+            "schema": 2,
+            "software": "lammps",
+            "source_ref": "develop",
+            "source_sha": "d291d572cf3c73a8a720774b78482a7c931304ca",
+            "source_version": "develop-2026-11-06",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "8v100v0-avx512",
+            "track": "development",
+            "version_label": "develop-2026-11-06"
+          },
+          "schema": 1
+        },
+        "dependency_verification": {
+          "paths": 1165,
+          "prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0",
+          "verified": true
+        },
+        "job_script_sha256": "34fa99b0e3506b497f48b67739a60f54be2736c240b192eba569734ad960f255"
+      },
+      "status": {
+        "artifact": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-42437633385-1-development-8v100v0-avx512-20261108-d291d572cf3c/candidate.sif",
+        "artifact_sha256": "55402abee737399ac813c27f2d5fb4f4990d4467290444e2c8731d49b98236e5",
+        "build_verified": true,
+        "delivery": {
+          "deepmd_dependency": {
+            "identity": {
+              "build_id": "v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102",
+              "cpu_arch": "skylake-avx512",
+              "cuda_arch": "70",
+              "dependency_isa": "avx2",
+              "gpus": 1,
+              "install_prefix": "/opt/apps/deepmd-kit/deepmd-kit-release-v3.2.0-g8cfd46e37448-r795dbd80e2a4-s4abbad547102/8V100V0",
+              "partition": "8V100V0",
+              "recipe_sha256": "795dbd80e2a43d3e7a32c1bc373d30b88476fcca8d63f26ccc6d42a84515707c",
+              "repository": "deepmodeling/deepmd-kit",
+              "schema": 2,
+              "software": "deepmd-kit",
+              "source_ref": "v3.2.0",
+              "source_sha": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+              "source_version": "v3.2.0",
+              "stack_digest": "4abbad54710275a505369e364d8b0d1172580bccce0470d92b1ce8844081aa2e",
+              "stack_sources": {
+                "deepmd-kit": "8cfd46e37448feca361ff3427a6c2b514ce5a2bb",
+                "lammps": "8de817dd79bfe4525d5d39246a212d833e6dee07"
+              },
+              "target": "8v100v0-avx512",
+              "track": "release",
+              "version_label": "v3.2.0"
+            },
+            "runtime_plan_sha256": "21e7e2a4baa6145bc1e48151861552c4a5b90bf8e8d23b9e3f92cc7f72ed892e"
+          },
+          "identity": {
+            "build_id": "develop-2026-11-06-gd291d572cf3c-r1e5c234055c2",
+            "cpu_arch": "skylake-avx512",
+            "cuda_arch": "70",
+            "dependency_isa": "avx2",
+            "gpus": 1,
+            "install_prefix": "/opt/apps/lammps/lammps-development-develop-2026-11-06-gd291d572cf3c-r1e5c234055c2/8V100V0",
+            "partition": "8V100V0",
+            "recipe_sha256": "1e5c234055c22e7d737701631507471b494d9d4d3599c31bfc3eb80bf4f4f8e4",
+            "repository": "lammps/lammps",
+            "schema": 2,
+            "software": "lammps",
+            "source_ref": "develop",
+            "source_sha": "d291d572cf3c73a8a720774b78482a7c931304ca",
+            "source_version": "develop-2026-11-06",
+            "stack_digest": null,
+            "stack_sources": {},
+            "target": "8v100v0-avx512",
+            "track": "development",
+            "version_label": "develop-2026-11-06"
+          },
+          "schema": 1
+        },
+        "exit_code": "0:0",
+        "job": "2296810",
+        "native_runtime_verified": false,
+        "published": false,
+        "scientific_verified": false,
+        "state": "COMPLETED"
+      },
+      "compile_messages": 2650,
+      "lammps_compile_messages": 2200,
+      "phase_boundary": [
+        {
+          "line": 936,
+          "text": "[ 21%] Building CXX object CMakeFiles/gpu.dir/workspace/lammps/lib/gpu/lal_yukawa_colloid_ext.cpp.o"
+        },
+        {
+          "line": 937,
+          "text": "[ 21%] Building CXX object CMakeFiles/gpu.dir/workspace/lammps/lib/gpu/lal_yukawa_ext.cpp.o"
+        },
+        {
+          "line": 938,
+          "text": "[ 21%] Building CXX object CMakeFiles/gpu.dir/workspace/lammps/lib/gpu/lal_zbl.cpp.o"
+        },
+        {
+          "line": 939,
+          "text": "[ 21%] Building CXX object CMakeFiles/gpu.dir/workspace/lammps/lib/gpu/lal_zbl_ext.cpp.o"
+        },
+        {
+          "line": 940,
+          "text": "[ 21%] Linking CXX static library liblammps_gpu.a"
+        },
+        {
+          "line": 941,
+          "text": "[ 21%] Built target gpu"
+        },
+        {
+          "line": 942,
+          "text": "[ 21%] Building CXX object CMakeFiles/lammps.dir/workspace/lammps/src/angle.cpp.o"
+        },
+        {
+          "line": 943,
+          "text": "[ 21%] Building CXX object CMakeFiles/lammps.dir/workspace/lammps/src/angle_deprecated.cpp.o"
+        },
+        {
+          "line": 944,
+          "text": "[ 21%] Building CXX object CMakeFiles/lammps.dir/workspace/lammps/src/angle_hybrid.cpp.o"
+        },
+        {
+          "line": 945,
+          "text": "[ 21%] Building CXX object CMakeFiles/lammps.dir/workspace/lammps/src/angle_write.cpp.o"
+        }
+      ],
+      "affinity": [
+        "LAMMPS_BUILD_AFFINITY 24 [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41]"
+      ],
+      "lifecycle": [
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 4107863,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1794111047.3433278,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-42437633385-1-development-8v100v0-avx512-20261108-d291d572cf3c/work.ext3",
+          "payload_returncode": 0,
+          "readonly": true,
+          "schema": 1,
+          "started": 1794111026.0483985,
+          "teardown_seconds": 0.03141256421804428,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 3723733,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1794110898.7597282,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-42437633385-1-development-8v100v0-avx512-20261108-d291d572cf3c/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1794106418.3421543,
+          "teardown_seconds": 0.4355600494891405,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        },
+        {
+          "accepted": true,
+          "apptainer": "/opt/devtools/apptainer/1.4.4/bin/apptainer",
+          "completed": true,
+          "driver_pid": 4107365,
+          "driver_returncode": 0,
+          "driver_sha256": "46c1a8c8f42ab2419ea88072e41d89903c453d93f52485b5baddea5ca238bb10",
+          "finished": 1794111025.1293504,
+          "forced_stop": false,
+          "mechanism": "workflow-owned-fuse2fs",
+          "mounted": true,
+          "overlay": "/org/org-open-sai/proj-sai-hpc-software/experimental/deepmd-lammps/runs/lmp-42437633385-1-development-8v100v0-avx512-20261108-d291d572cf3c/work.ext3",
+          "payload_returncode": 0,
+          "readonly": false,
+          "schema": 1,
+          "started": 1794110962.4679756,
+          "teardown_seconds": 0.3624609988182783,
+          "unmount_returncode": 0,
+          "unmount_stderr": ""
+        }
+      ]
+    }
+  },
+  "accounting": "JobIDRaw|Partition|State|ExitCode|Elapsed|NodeList|AllocCPUS|TotalCPU|CPUTimeRAW|MaxRSS\n2296792|4V100|COMPLETED|0:0|00:43:51|4v100n08|32|08:16:58|84192|\n2296792.batch||COMPLETED|0:0|00:43:51|4v100n08|32|08:16:58|84192|44347176K\n2296792.extern||COMPLETED|0:0|00:43:51|4v100n08|32|00:00:00|84192|\n2296810|8V100V0|COMPLETED|0:0|01:17:46|8v100v0n05|24|14:54:25|111984|\n2296810.batch||COMPLETED|0:0|01:17:46|8v100v0n05|24|14:54:25|111984|29070308K\n2296810.extern||COMPLETED|0:0|01:17:46|8v100v0n05|24|00:00:00|111984|\n2296820|16V100|COMPLETED|0:0|00:53:23|16v100n16|32|09:59:02|102496|\n2296820.batch||COMPLETED|0:0|00:53:23|16v100n16|32|09:59:02|102496|31117032K\n2296820.extern||COMPLETED|0:0|00:53:23|16v100n16|32|00:00:00|102496|\n"
+}

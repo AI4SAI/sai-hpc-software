@@ -1,0 +1,26 @@
+Change Dir: '/org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/build'
+
+Run Build Command(s): /opt/devtools/cmake/3.31.6/bin/cmake -E env VERBOSE=1 /usr/bin/gmake -f Makefile -j2
+/opt/devtools/cmake/3.31.6/bin/cmake -S/org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/source -B/org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/build --check-build-system CMakeFiles/Makefile.cmake 0
+/opt/devtools/cmake/3.31.6/bin/cmake -E cmake_progress_start /org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/build/CMakeFiles /org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/build//CMakeFiles/progress.marks
+/usr/bin/gmake  -f CMakeFiles/Makefile2 all
+gmake[1]: Entering directory '/org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/build'
+/usr/bin/gmake  -f CMakeFiles/consumer.dir/build.make CMakeFiles/consumer.dir/depend
+gmake[2]: Entering directory '/org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/build'
+cd /org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/build && /opt/devtools/cmake/3.31.6/bin/cmake -E cmake_depends "Unix Makefiles" /org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/source /org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/source /org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/build /org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/build /org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/build/CMakeFiles/consumer.dir/DependInfo.cmake "--color="
+Dependee "/org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/build/CMakeFiles/consumer.dir/DependInfo.cmake" is newer than depender "/org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/build/CMakeFiles/consumer.dir/depend.internal".
+Dependee "/org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/build/CMakeFiles/CMakeDirectoryInformation.cmake" is newer than depender "/org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/build/CMakeFiles/consumer.dir/depend.internal".
+Scanning dependencies of target consumer
+gmake[2]: Leaving directory '/org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/build'
+/usr/bin/gmake  -f CMakeFiles/consumer.dir/build.make CMakeFiles/consumer.dir/build
+gmake[2]: Entering directory '/org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/build'
+[ 50%] Building Fortran object CMakeFiles/consumer.dir/consumer.f90.o
+/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512/bin/mpifort -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE -D_LARGEFILE_SOURCE -D_POSIX_C_SOURCE=200809L -isystem /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/mod/static -isystem /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/include -fast -O3 -c /org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/source/consumer.f90 -o CMakeFiles/consumer.dir/consumer.f90.o
+[100%] Linking Fortran executable consumer
+/opt/devtools/cmake/3.31.6/bin/cmake -E cmake_link_script CMakeFiles/consumer.dir/link.txt --verbose=1
+/opt/devtools/openmpi/openmpi-5.0.10-nvhpc263-pgi-cuda12-avx512/bin/mpifort -Wl,--dependency-file=CMakeFiles/consumer.dir/link.d -fast -O3 CMakeFiles/consumer.dir/consumer.f90.o -o consumer  /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/lib/libhdf5_fortran.a /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/lib/libhdf5_f90cstub.a /opt/apps/qe/dependencies/hdf5/1.14.6-nvhpc26.3-ompi5.0.10-f90/DSPRHBM/lib/libhdf5.a /usr/lib/x86_64-linux-gnu/libz.so /usr/lib/x86_64-linux-gnu/libsz.so -lm -ldl
+gmake[2]: Leaving directory '/org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/build'
+[100%] Built target consumer
+gmake[1]: Leaving directory '/org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/build'
+/opt/devtools/cmake/3.31.6/bin/cmake -E cmake_progress_start /org/org-open-sai/proj-sai-hpc-software/runs/qe-hdf5-installed-check-20261108-r3/build/CMakeFiles 0
+
