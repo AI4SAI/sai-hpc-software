@@ -28,7 +28,9 @@ NoNewPrivileges=yes
 RestrictAddressFamilies=AF_INET AF_INET6
 SystemCallFilter=~@mount @module @reboot @swap @raw-io @obsolete ptrace process_vm_readv process_vm_writev pidfd_getfd keyctl add_key request_key bpf
 SystemCallErrorNumber=EPERM
-RestrictSUIDSGID=yes
+# systemd's RestrictSUIDSGID rejects openat2 with ENOSYS, breaking Ubuntu
+# 26.04 tar's safe path traversal. NoNewPrivileges already prevents gaining
+# privileges from setuid/setgid executables in this dedicated account.
 LockPersonality=yes
 MemoryHigh=1G
 MemoryMax=2G

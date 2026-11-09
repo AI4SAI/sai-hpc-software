@@ -46,6 +46,10 @@ per process and conservation settings. Heap limits do not bound aggregate RSS.
 Landlock restricts reads/writes to the runtime and CI tree, denies personal
 home/SSH files and Windows mounts, and permits TCP connections only to HTTPS
 and SAI port 12022. The Linux account has no sudo or Docker membership.
+`NoNewPrivileges` prevents gaining privileges through setuid/setgid executables.
+Do not add `RestrictSUIDSGID`: on systemd 259 it returns `ENOSYS` for `openat2`,
+which Ubuntu 26.04's tar requires for safe archive path traversal. A minimal
+trace reproduced that failure independently of Landlock and the syscall list.
 No SIF, build tree or raw scientific output is copied to this machine.
 
 ## Install and start
