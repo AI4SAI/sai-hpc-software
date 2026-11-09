@@ -27,12 +27,16 @@ if [ ! -x "$base/bin/gh" ]; then
     chmod 755 "$base/bin/gh"
 fi
 if [ ! -f "$base/runner/.runner" ]; then
+    : "${SAI_RUNNER_NAME:?Set a unique runner name, e.g. vm-sai-hpc}"
     IFS= read -r registration_token
     [ -n "$registration_token" ]
     (cd "$base/runner" && ./config.sh --unattended --url https://github.com/AI4SAI/sai-hpc-software \
-        --token "$registration_token" --name do2-sai-hpc --labels sai-hpc-relay --work "$base/work")
+        --token "$registration_token" --name "$SAI_RUNNER_NAME" --labels sai-hpc-relay --work "$base/work")
     unset registration_token
 fi
+# The runner reloads its registration-time .path after systemd's environment.
+# Keep job tools available and avoid inheriting Windows/personal PATH entries.
+printf '%s\n' "$base/bin:/usr/local/bin:/usr/bin:/bin" > "$base/runner/.path"
 install -m 644 "$source_dir/sandbox.py" "$base/deployment/sandbox.py"
 install -m 644 "$source_dir/check_capacity.py" "$base/deployment/check_capacity.py"
 mkdir -p /home/sai/.config/systemd/user
@@ -40,6 +44,6 @@ install -m 644 "$source_dir/sai-hpc-runner.service" /home/sai/.config/systemd/us
 systemctl --user disable --now sai-hpc-runner.service
 systemctl --user daemon-reload
 # Replace earlier runtime overrides as well as the persistent unit settings.
-systemctl --user set-property --runtime sai-hpc-runner.service MemoryHigh=128M MemoryMax=128M MemorySwapMax=0
+systemctl --user set-property --runtime sai-hpc-runner.service MemoryHigh=1G MemoryMax=2G MemorySwapMax=0 CPUQuota=200%
 echo 'Installed; runner is stopped and disabled. Verify host capacity before starting it.'
 echo 'Manual start: systemctl --user start sai-hpc-runner.service'

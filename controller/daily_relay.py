@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""One small VPS worker, concurrent Slurm deliveries, durable frozen generations."""
+"""One bounded relay worker, concurrent Slurm deliveries, durable frozen generations."""
 import argparse
 from collections import Counter
 from datetime import datetime, timezone
@@ -165,7 +165,7 @@ def advance(path, task, generation, key, run=subprocess.run):
     state = read(checkpoint) if checkpoint.exists() else {}
     if state.get('prepared') or state.get('preparation') or task['state'] in TERMINAL:
         # Only this relay's disposable upload/download scratch. Raw scientific
-        # evidence stays on SAI; checkpoints and logs stay on this VPS.
+        # evidence stays on SAI; checkpoints and logs stay on this relay.
         keep = {'checkpoint.json', 'results', 'beta-results', 'controller.log', 'outputs', 'summary.md'}
         for child in directory.iterdir():
             if child.name not in keep:
@@ -216,7 +216,7 @@ def report(paths, summary):
             jobs = ', '.join(row['job'] for row in data.get('pending', []))
             lines.append(f'| {generation["workflow"]} | {task["id"]} | {task["state"]} | {jobs} |')
     lines += ['', 'Waiting means observation deferred, not an accepted build. Frozen requests and Slurm jobs are retained.',
-              'Full build/scientific evidence remains under `/org/org-open-sai/proj-sai-hpc-software`; the VPS retains metadata and controller logs.']
+              'Full build/scientific evidence remains under `/org/org-open-sai/proj-sai-hpc-software`; the relay retains metadata and controller logs.']
     summary.write_text('\n'.join(lines) + '\n')
 
 

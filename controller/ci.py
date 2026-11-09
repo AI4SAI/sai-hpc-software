@@ -17,7 +17,7 @@ from remote_controller import safe_name, safe_sha, SAI_PROJECT_ROOT
 from delivery_layout import artifact_path
 from release_contract import SOFTWARE, TRACKS, validate_identity
 from source_transport import ensure_source
-from relay_checkpoint import Checkpoint, entry
+from relay_checkpoint import Checkpoint, entry, remote as remote_call
 
 def run(argv, **kwargs):
     try:
@@ -39,6 +39,47 @@ def runtime_launchers(software):
         from sif_runtime import PROGRAMS
         return ("qe", *PROGRAMS["qe"])
     return ("gpumd", "nep", "gnep") if software == "gpumd" else (software,)
+
+
+def install_controller(staging, directory, manifest, executables):
+    """Commit verified files without rewriting a prior immutable launcher.
+
+    Sent verbatim to the SSH host. Interrupted uploads only affect staging;
+    interrupted commits can be repeated after checking every existing file.
+    """
+    import hashlib
+    import os
+    from pathlib import Path
+
+    staging, directory = Path(staging), Path(directory)
+    for path in (staging, directory):
+        if not path.is_absolute() or path.resolve() != path or not path.is_dir():
+            raise ValueError('redirected controller upload directory')
+    if staging.parent != directory.parent or not staging.name.startswith(directory.name + '.upload-'):
+        raise ValueError('controller upload is outside its run')
+    if not set(executables) <= set(manifest):
+        raise ValueError('unknown controller launcher')
+    for name, digest in manifest.items():
+        if Path(name).name != name or name in ('.', '..'):
+            raise ValueError('invalid controller filename')
+        source, target = staging / name, directory / name
+        if source.is_symlink() or not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != digest:
+            raise ValueError('incomplete controller upload: ' + name)
+        if target.exists() or target.is_symlink():
+            if target.is_symlink() or not target.is_file() or hashlib.sha256(target.read_bytes()).hexdigest() != digest:
+                raise ValueError('existing controller differs from the frozen source: ' + name)
+    for name in manifest:
+        source, target = staging / name, directory / name
+        source.chmod(0o555 if name in executables else 0o444)
+        try:
+            os.link(source, target)
+        except FileExistsError:
+            if target.is_symlink() or not target.is_file() or hashlib.sha256(target.read_bytes()).hexdigest() != manifest[name]:
+                raise ValueError('controller changed during upload: ' + name)
+            target.chmod(0o555 if name in executables else 0o444)
+        source.unlink()
+    staging.rmdir()
+    return True
 
 
 def remote_project_root(software, user):
@@ -377,8 +418,14 @@ def main():
             shutil.copyfile(parent / name, staged / name)
         for executable in runtime_launchers(software):
             shutil.copyfile(parent / f"{software}_runtime.sh", staged / executable)
-        upload(sorted(staged.iterdir()), f"{control}/")
-        ssh(["chmod", "0555", *[f"{control}/{name}" for name in runtime_launchers(software)]])
+        upload_directory = control + '.upload-' + uuid.uuid4().hex
+        ssh(['mkdir', upload_directory])
+        files = sorted(staged.iterdir())
+        upload(files, upload_directory + '/')
+        from hashlib import sha256
+        manifest = {path.name: sha256(path.read_bytes()).hexdigest() for path in files}
+        if remote_call(ssh, install_controller, upload_directory, control, manifest, runtime_launchers(software)) is not True:
+            raise ValueError('controller upload was not committed')
     results = temporary / "results"
     results.mkdir(exist_ok=True)
     # The uploaded, immutable remote recipe owns the fingerprint. Never invent

@@ -15,6 +15,64 @@ sys.path.insert(0, str(REPO / 'controller'))
 import daily_relay as relay
 import relay_checkpoint as checkpoint
 from release_contract import claim_build, make_identity, resolve_tracks
+from ci import install_controller
+
+
+class ControllerUploadTests(unittest.TestCase):
+    def setUp(self):
+        temporary = tempfile.TemporaryDirectory()
+        self.addCleanup(temporary.cleanup)
+        self.root = Path(temporary.name).resolve()
+        self.destination = self.root / 'controller'
+        self.destination.mkdir()
+        self.contents = {'gpumd': b'#!/bin/sh\nexec gpumd "$@"\n', 'recipe.py': b'print("recipe")\n'}
+        self.manifest = {name: hashlib.sha256(data).hexdigest() for name, data in self.contents.items()}
+
+    def stage(self, suffix):
+        staging = self.root / ('controller.upload-' + suffix)
+        staging.mkdir()
+        for name, data in self.contents.items():
+            (staging / name).write_bytes(data)
+        return staging
+
+    def test_retry_reuses_readonly_launcher_without_rewriting_its_inode(self):
+        install_controller(self.stage('first'), self.destination, self.manifest, ['gpumd'])
+        launcher = self.destination / 'gpumd'
+        original = launcher.stat()
+        self.assertEqual(original.st_mode & 0o777, 0o555)
+        install_controller(self.stage('retry'), self.destination, self.manifest, ['gpumd'])
+        self.assertEqual(launcher.stat().st_ino, original.st_ino)
+        self.assertEqual(launcher.stat().st_mtime_ns, original.st_mtime_ns)
+
+    def test_truncated_upload_does_not_publish_any_controller_file(self):
+        staging = self.stage('partial')
+        (staging / 'recipe.py').write_bytes(b'partial')
+        with self.assertRaisesRegex(ValueError, 'incomplete controller upload'):
+            install_controller(staging, self.destination, self.manifest, ['gpumd'])
+        self.assertEqual(list(self.destination.iterdir()), [])
+        install_controller(self.stage('retry'), self.destination, self.manifest, ['gpumd'])
+
+    def test_interrupted_commit_can_resume_without_overwriting_prior_files(self):
+        staging = self.stage('partial')
+        link = os.link
+        calls = []
+        def interrupted(source, target):
+            calls.append(target)
+            if len(calls) == 2:
+                raise OSError('interrupted')
+            link(source, target)
+        with patch('os.link', side_effect=interrupted), self.assertRaises(OSError):
+            install_controller(staging, self.destination, self.manifest, ['gpumd'])
+        install_controller(self.stage('retry'), self.destination, self.manifest, ['gpumd'])
+        for name, content in self.contents.items():
+            self.assertEqual((self.destination / name).read_bytes(), content)
+
+    def test_different_existing_controller_fails_before_any_commit(self):
+        (self.destination / 'recipe.py').write_bytes(b'other recipe')
+        with self.assertRaisesRegex(ValueError, 'differs from the frozen source'):
+            install_controller(self.stage('mismatch'), self.destination, self.manifest, ['gpumd'])
+        self.assertFalse((self.destination / 'gpumd').exists())
+        self.assertEqual((self.destination / 'recipe.py').read_bytes(), b'other recipe')
 
 
 class CheckpointTests(unittest.TestCase):

@@ -6,7 +6,7 @@ StartLimitBurst=2
 
 [Service]
 WorkingDirectory=%h/ci/runner
-ExecCondition=/usr/bin/python3 %h/ci/deployment/check_capacity.py --runner-mib 128 --reserve-mib 64
+ExecCondition=/usr/bin/python3 %h/ci/deployment/check_capacity.py --runner-mib 2048 --reserve-mib 1024
 ExecStart=/usr/bin/python3 %h/ci/deployment/sandbox.py %h/ci %h/ci/runner/run.sh
 Environment=HOME=%h/ci/work/home
 Environment=PATH=%h/ci/bin:/usr/local/bin:/usr/bin:/bin
@@ -30,12 +30,13 @@ SystemCallFilter=~@mount @module @reboot @swap @raw-io @obsolete ptrace process_
 SystemCallErrorNumber=EPERM
 RestrictSUIDSGID=yes
 LockPersonality=yes
-MemoryHigh=128M
-MemoryMax=128M
+MemoryHigh=1G
+MemoryMax=2G
 MemorySwapMax=0
 OOMScoreAdjust=1000
 OOMPolicy=kill
 CPUWeight=50
+CPUQuota=200%
 IOWeight=50
 Restart=on-failure
 RestartSec=300

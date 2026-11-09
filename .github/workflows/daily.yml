@@ -4,7 +4,7 @@ on:
   schedule:
     # 03:00 Asia/Shanghai (UTC+8); GitHub cron uses UTC.
     - cron: '0 19 * * *'
-    # Reattach after an interrupted Actions/VPS session; never starts a new build.
+    # Reattach after an interrupted Actions/relay session; never starts a new build.
     - cron: '17 * * * *'
   workflow_dispatch:
     inputs:
@@ -54,7 +54,7 @@ jobs:
       RELAY_MODE: ${{ github.event.schedule == '17 * * * *' && 'resume' || inputs.mode || 'start' }}
     steps:
       # This repository is public. Use Git directly to avoid a Node runtime
-      # alongside the Listener/Worker on the 512 MiB shared relay host.
+      # alongside the Listener/Worker; compilation remains in Slurm.
       - name: Check out the frozen controller with Git
         run: |
           git init -q .
