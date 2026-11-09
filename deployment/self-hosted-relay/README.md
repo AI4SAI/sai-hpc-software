@@ -9,7 +9,9 @@ The current deployment target is the `sai` account on `STARDUST-VM` (Ubuntu
 `do2-sai-hpc` runner remains stopped and disabled: the shared 512 MiB VPS did
 not pass full source preparation. The VM has about 16 GiB RAM available to
 WSL and eight logical CPUs. Initial source preparation and runtime qualification
-passed; the complete Actions-to-Slurm validation is recorded separately.
+passed. The [live VM validation](../../docs/evidence/vm-self-hosted-relay-20261110/README.md)
+records accepted 4V100/16V100 builds, the pending 8V100V0 task, and the remaining
+Windows administrator startup step.
 
 ## Layout and resource limits
 
@@ -91,7 +93,9 @@ failures retry once per minute. Verify the task stays Running and the runner
 is online. A configured trigger is not proof of a successful physical reboot.
 
 A current-user login startup entry can provide a fallback without administrator
-rights, but it does not start WSL before login. Do not describe that fallback
+rights: run the same installer with `-LogonOnly`. It also starts a hidden WSL
+keepalive client for the current session. It does not start WSL before login.
+Do not describe that fallback
 as unattended boot recovery. Windows may lock or switch off its display;
 AC sleep/hibernate must remain disabled for continuous service.
 
