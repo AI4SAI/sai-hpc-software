@@ -119,6 +119,9 @@ cmake -S /workspace/lammps/cmake -B /workspace/lammps-build \
 # cache entries. These settings were adapted from SAI-autocompile-kit.
 "$MD_SYSTEM_DEEPMD/bin/python" /control/md_lammps_cuda.py verify \
   /workspace/lammps/cmake/Modules/Packages/GPU.cmake /workspace/lammps-build
+if [[ ${SAI_MD_CCACHE:-0} == 1 ]]; then
+  /usr/bin/python3 /control/md_ccache.py finalize /workspace/lammps-build/compile_commands.json
+fi
 build_code=0
 cmake --build /workspace/lammps-build -j "$BUILD_JOBS" || build_code=$?
 if [[ ${SAI_MD_CCACHE:-0} == 1 ]]; then

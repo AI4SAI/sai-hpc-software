@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
-"""Strict, project-backed compiler caching for the standalone LAMMPS build.
+"""Standard ccache with per-build toolchain and include-layout checks.
 
-Every invocation asks the actual compiler for its current dependencies and
-hashes their bytes (including system headers). This also detects new headers
-which would shadow an old include. Only unchanged inputs may reuse an object.
+Ccache checks compilation inputs. Once after CMake configuration, record the
+include file names so new headers cannot silently shadow a cached dependency.
 No build directories, link results or acceptance results are cached.
 """
 import hashlib
@@ -17,6 +16,7 @@ import subprocess
 import sys
 import tarfile
 import tempfile
+import time
 import urllib.request
 
 VERSION = '4.14.3'
@@ -150,7 +150,7 @@ def prepare(target, output=Path('/runtime')):
         raise ValueError('unsupported compiler cache target')
     verify_tool(Path('/ccache-tool/ccache'))
     output = Path(output)
-    context = dict(schema=1, target=target, policy='raw-dependencies-v1',
+    context = dict(schema=2, target=target, policy='standard-with-layout-v1',
                    tool_sha256=BINARY_SHA256,
                    compilers=compiler_files(os.environ['CC'], os.environ['CXX'], shutil.which('nvcc')),
                    native_flags=subprocess.check_output(
@@ -165,58 +165,104 @@ def prepare(target, output=Path('/runtime')):
     context_file.write_text(json.dumps(context, sort_keys=True, indent=2) + '\n')
     config = dict(tool='/ccache-tool/ccache', store='/ccache-store',
                   context=str(context_file), temporary='/workspace/tmp/ccache',
-                  stats_log=str(output / 'ccache-stats.log'))
+                  stats_log=str(output / 'ccache-stats.log'), ready=False)
     Path(config['temporary']).mkdir(parents=True, exist_ok=True)
     (output / 'ccache-launcher.json').write_text(json.dumps(config, sort_keys=True) + '\n')
-    print('LAMMPS_CCACHE_READY', target, digest(context_file), flush=True)
+    print('LAMMPS_CCACHE_TOOLCHAIN_READY', target, digest(context_file), flush=True)
 
 
-def dependency_arguments(argv, depfile):
-    """Keep preprocessing options; remove only compilation/output options.
-
-    Unrecognized dependency/precompiled-header/response-file modes bypass the
-    cache. CMake's GCC/NVCC commands use separate -o/-MF/-MT arguments.
-    """
-    if '-c' not in argv or any(a.startswith(('@', '-Wp,', '-Xpreprocessor', '-include-pch',
-                                           '-fmodules', '-fplugin', '--options-file')) for a in argv):
-        return None
-    output = []
-    i = 0
-    while i < len(argv):
-        arg = argv[i]
-        if arg in ('-o', '-MF', '-MT', '-MQ', '--output-file', '--dependency-output', '--dependency-target-name'):
-            if i + 1 == len(argv):
-                return None
-            i += 2
-            continue
-        if arg in ('-c', '-MD', '-MMD', '-MP', '--compile', '--generate-dependencies-with-compile',
-                   '--generate-nonsystem-dependencies-with-compile'):
-            i += 1
-            continue
-        if arg.startswith(('-MF', '-MT', '-MQ', '-o', '--output-file=', '--dependency-output=')):
-            return None
-        output.append(arg)
-        i += 1
-    # nvcc_wrapper only forwards -MF to NVCC during its separate -MD pass.
-    # With standalone -M, -o is the common GCC/NVCC dependency-output option.
-    return [*output, '-M', '-o', str(depfile), '-MT', 'sai_ccache_dependencies']
+def cacheable(argv):
+    # These forms can hide include paths or inputs from the one-time inventory.
+    # Keep the previously unsupported CUDA fatbin/response-file work uncached.
+    return '-c' in argv and not any(a.startswith((
+        '@', '-Wp,', '-Xpreprocessor', '-include-pch', '-fmodules', '-fplugin',
+        '--options-file', '--sysroot', '-isysroot')) for a in argv)
 
 
-def dependencies(text):
-    text = text.replace('\\\n', '')
-    target, separator, body = text.partition(':')
-    if not separator or not target.strip() or '\n' in target:
-        raise ValueError('unrecognized compiler dependency output')
-    # Make escaping differs from shell quoting: quotes are literal; backslash
-    # escapes spaces/# and $$ denotes a literal dollar. No shell is executed.
-    lexer = shlex.shlex(body, posix=True)
-    lexer.whitespace_split = True
-    lexer.commenters = ''
-    lexer.quotes = ''
-    result = sorted({word.replace('$$', '$') for word in lexer})
-    if not result or any(not Path(p).is_file() for p in result):
-        raise ValueError('missing or invalid compiler dependency')
+def default_include_dirs():
+    """Query actual host compilers once, not nvcc_wrapper for each object."""
+    result = set()
+    for name, language in (('CC', 'c'), ('CXX', 'c++')):
+        probe = subprocess.run([os.environ[name], '-E', '-x', language, '-v', '-'],
+                               input='', text=True, capture_output=True, check=True,
+                               env=dict(os.environ, LC_ALL='C'))
+        begin = '#include <...> search starts here:'
+        if begin not in probe.stderr or 'End of search list.' not in probe.stderr:
+            raise ValueError('cannot identify compiler include directories')
+        block = probe.stderr.split(begin, 1)[1].split('End of search list.', 1)[0]
+        result.update(line.strip() for line in block.splitlines() if line.strip())
+    result.add(str(Path(shutil.which('nvcc')).resolve().parent.parent / 'include'))
     return result
+
+
+def include_dirs(commands, defaults=()):
+    result = set(defaults)
+    options = ('-isystem', '-iquote', '-idirafter', '--include-path', '-I')
+    for row in commands:
+        argv = row.get('arguments') or shlex.split(row['command'])
+        if not cacheable(argv):
+            continue
+        cwd = Path(row['directory'])
+        result.add(str((cwd / row['file']).parent))
+        i = 0
+        while i < len(argv):
+            arg = argv[i]
+            for option in options:
+                if arg == option:
+                    i += 1
+                    if i == len(argv):
+                        raise ValueError('include option has no directory')
+                    value = argv[i]
+                elif arg.startswith(option) and len(arg) > len(option):
+                    value = arg[len(option):].removeprefix('=')
+                else:
+                    continue
+                for path in value.split(',') if option == '--include-path' else [value]:
+                    result.add(str(cwd / path))
+                break
+            i += 1
+    for name in ('CPATH', 'C_INCLUDE_PATH', 'CPLUS_INCLUDE_PATH'):
+        result.update(os.path.abspath(p or '.') for p in os.environ.get(name, '').split(':') if p)
+    return result
+
+
+def include_layout(directories):
+    """Hash names and symlink targets, not file contents or timestamps."""
+    roots = sorted({os.path.abspath(path) for path in directories})
+    pending = [Path(path) for path in roots]
+    visited, records = set(), []
+    while pending:
+        path = pending.pop()
+        if path.is_symlink():
+            records.append((str(path), 'symlink', os.readlink(path)))
+            pending.append(path.resolve())
+            continue
+        if str(path) in visited:
+            continue
+        visited.add(str(path))
+        if not path.exists():
+            records.append((str(path), 'missing'))
+        elif path.is_dir():
+            records.append((str(path), 'directory'))
+            pending.extend(path.iterdir())
+        else:
+            records.append((str(path), 'file'))
+    value = hashlib.sha256(json.dumps(sorted(records), separators=(',', ':')).encode()).hexdigest()
+    return dict(roots=roots, entries=len(records), sha256=value)
+
+
+def finalize(database, output=Path('/runtime')):
+    """Enable caching after generated CMake headers and include paths exist."""
+    output = Path(output)
+    config_path = output / 'ccache-launcher.json'
+    config = json.loads(config_path.read_text())
+    started = time.monotonic()
+    layout = include_layout(include_dirs(json.loads(Path(database).read_text()), default_include_dirs()))
+    config.update(ready=True, namespace='standard-layout-v1-' + layout['sha256'])
+    config_path.write_text(json.dumps(config, sort_keys=True) + '\n')
+    (output / 'ccache-layout.json').write_text(json.dumps(
+        dict(layout, seconds=time.monotonic() - started), sort_keys=True, indent=2) + '\n')
+    print('LAMMPS_CCACHE_READY', layout['sha256'], layout['entries'], flush=True)
 
 
 def cache_environment(config, namespace, original=None):
@@ -226,40 +272,23 @@ def cache_environment(config, namespace, original=None):
                CCACHE_TEMPDIR=config['temporary'], CCACHE_STATSLOG=config['stats_log'],
                CCACHE_NAMESPACE=namespace, CCACHE_COMPILERCHECK='content',
                CCACHE_EXTRAFILES=config['context'], CCACHE_SLOPPINESS='',
-               CCACHE_DIRECT='true', CCACHE_DEPEND='true', CCACHE_NOINODECACHE='true',
+               CCACHE_DIRECT='true', CCACHE_NODEPEND='true', CCACHE_NOINODECACHE='true',
                CCACHE_MAXSIZE='20GiB', CCACHE_MAXFILES='0', CCACHE_COMPRESS='true')
     return env
 
 
 def compile_command(config, compiler, argv):
-    """Fail open to a real compilation when an input cannot be proven reusable."""
-    with tempfile.TemporaryDirectory(prefix='dependencies-', dir=config['temporary']) as folder:
-        depfile = Path(folder) / 'inputs.d'
-        probe = dependency_arguments(argv, depfile)
-        if probe is None:
-            return subprocess.call([compiler, *argv])
-        result = subprocess.run([compiler, *probe], capture_output=True)
-        if result.returncode != 0 or not depfile.is_file():
-            return subprocess.call([compiler, *argv])
-        try:
-            records = [(p, digest(p)) for p in dependencies(depfile.read_text())]
-        except (OSError, ValueError):
-            return subprocess.call([compiler, *argv])
-        # Raw bytes participate even when preprocessing would erase the change
-        # (comments, inactive #if branches), and system headers are included.
-        namespace = hashlib.sha256(json.dumps(records, separators=(',', ':')).encode()).hexdigest()
-        cached_argv = []
-        for arg in argv:
-            if Path(compiler).name == 'nvcc_wrapper' and arg in ('-march=native', '-mtune=native'):
-                # ccache 4.14 queries -### through nvcc_wrapper without
-                # --host-only, which NVCC rejects. Keep these options in the
-                # hash and actual invocation, but avoid that unsupported
-                # query. prepare() already hashes GCC's expanded native flags
-                # and the real toolchain. This is NOT ignore_options.
-                cached_argv.append('--ccache-skip')
-            cached_argv.append(arg)
-        return subprocess.call([config['tool'], compiler, *cached_argv],
-                               env=cache_environment(config, namespace))
+    if not config.get('ready') or not cacheable(argv):
+        return subprocess.call([compiler, *argv])
+    cached_argv = []
+    for arg in argv:
+        if Path(compiler).name == 'nvcc_wrapper' and arg in ('-march=native', '-mtune=native'):
+            # Preserve the options in ccache's hash and compiler arguments;
+            # expanded native CPU settings are checked once in prepare().
+            cached_argv.append('--ccache-skip')
+        cached_argv.append(arg)
+    return subprocess.call([config['tool'], compiler, *cached_argv],
+                           env=cache_environment(config, config['namespace']))
 
 
 def statistics(output=Path('/runtime')):
@@ -278,6 +307,8 @@ def main():
         return compile_command(json.loads(Path(config).read_text()), compiler, argv)
     if action == 'prepare':
         prepare(*args)
+    elif action == 'finalize':
+        finalize(*args)
     elif action == 'statistics':
         statistics(*args)
     elif action == 'tool-status':
