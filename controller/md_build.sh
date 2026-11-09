@@ -86,6 +86,13 @@ PY
 cuda_options=$("$MD_SYSTEM_DEEPMD/bin/python" /control/md_lammps_cuda.py options \
   /workspace/lammps/cmake/Modules/Packages/GPU.cmake "$CXX")
 mapfile -t cuda_options <<< "$cuda_options"
+cache_options=()
+if [[ ${SAI_MD_CCACHE:-0} == 1 ]]; then
+  /usr/bin/python3 /control/md_ccache.py prepare "$target"
+  for language in C CXX CUDA; do
+    cache_options+=("-DCMAKE_${language}_COMPILER_LAUNCHER=/usr/bin/python3;/control/md_ccache.py;compile;/runtime/ccache-launcher.json")
+  done
+fi
 cmake -S /workspace/lammps/cmake -B /workspace/lammps-build \
   -DCMAKE_INSTALL_PREFIX="$LAMMPS_PREFIX" -DCMAKE_BUILD_TYPE=Release \
   -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
@@ -106,13 +113,18 @@ cmake -S /workspace/lammps/cmake -B /workspace/lammps-build \
   -DDOWNLOAD_EIGEN3=OFF -DEigen3_DIR="$MD_SYSTEM_EIGEN/share/eigen3/cmake" \
   -DPKG_PLUMED=ON -DPLUMED_MODE=runtime -DDOWNLOAD_PLUMED=OFF \
   -DPLUMED_INCLUDE_DIR="$MD_SYSTEM_PLUMED/include" \
-  -DPKG_PYTHON=ON -DPython_EXECUTABLE="$DEEPMD_PREFIX/bin/python" "${packages[@]}"
+  -DPKG_PYTHON=ON -DPython_EXECUTABLE="$DEEPMD_PREFIX/bin/python" "${packages[@]}" "${cache_options[@]}"
 "$MD_SYSTEM_DEEPMD/bin/python" /control/md_registration.py verify /workspace/lammps-build/styles
 # Require recognized, typed options and generated definitions, not unused -D
 # cache entries. These settings were adapted from SAI-autocompile-kit.
 "$MD_SYSTEM_DEEPMD/bin/python" /control/md_lammps_cuda.py verify \
   /workspace/lammps/cmake/Modules/Packages/GPU.cmake /workspace/lammps-build
-cmake --build /workspace/lammps-build -j "$BUILD_JOBS"
+build_code=0
+cmake --build /workspace/lammps-build -j "$BUILD_JOBS" || build_code=$?
+if [[ ${SAI_MD_CCACHE:-0} == 1 ]]; then
+  /usr/bin/python3 /control/md_ccache.py statistics
+fi
+[[ $build_code == 0 ]] || exit "$build_code"
 cmake --install /workspace/lammps-build
 test -s "$LAMMPS_PREFIX/lib/liblammps.so"
 if [[ "$phase" != lammps-installed ]]; then

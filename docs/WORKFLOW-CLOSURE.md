@@ -1,4 +1,24 @@
-# Workflow closure — 2026-11-07
+# Workflow closure — 2026-11-09
+
+## LAMMPS compiler cache
+
+Standalone LAMMPS now has a private project-backed compiler cache for each GPU
+partition. Every lookup rescans the actual dependencies and checks raw source
+and header contents, compiler options, toolchain and native CPU settings.
+Only unchanged compilation units can be reused; linking and scientific
+acceptance run on every new candidate. The runner provisions the pinned tool,
+so no administrator installation is needed.
+
+The November 9 cold/warm pair on 16V100 completed successfully: compile/link
+time fell from 48m10.88s to 11m18.00s, with all 2,543 cacheable calls hitting on
+the second build. Both fresh-overlay SIFs retained all 71 packages and identical
+style inventories, and all 28 one/two-rank numerical executions passed through
+host MPI. The experiment uses pinned upstream PR #5308 sources and does not
+apply that unmerged patch to daily source selection. These SIFs are unpublished;
+the regular per-partition production acceptance remains required.
+
+See the [reuse policy](lammps-compiler-cache.md) and
+[timings, Slurm receipts and raw evidence](evidence/lammps-ccache-20261109/README.md).
 
 ## CP2K development source compatibility
 
