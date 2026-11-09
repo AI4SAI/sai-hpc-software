@@ -11,8 +11,8 @@ not pass full source preparation. The VM has about 16 GiB RAM available to
 WSL and eight logical CPUs. Initial source preparation and runtime qualification
 passed. The [live VM validation](../../docs/evidence/vm-self-hosted-relay-20261110/README.md)
 records the complete GPUMD build/science/Lmod/beta workflow on 4V100, 16V100 and
-8V100V0, recovery after a deliberate idle runner crash, and the remaining
-Windows administrator startup step. The measured whole-service peak was
+8V100V0, recovery after a deliberate idle runner crash, and the installed
+Windows boot/login task running WSL in session 0. The measured whole-service peak was
 705.34 MiB during that workflow.
 
 ## Layout and resource limits
@@ -103,7 +103,7 @@ AC sleep/hibernate must remain disabled for continuous service.
 
 ## Daily operation and recovery
 
-The proposed daily workflow requests new work at 03:00 Asia/Shanghai. Its
+The daily workflow requests new work at 03:00 Asia/Shanghai. Its
 hourly `:17` trigger only resumes unfinished generations, never a new daily
 source resolution. Separate concurrency groups protect the queued nightly
 request; a filesystem lock serializes durable relay state.
@@ -113,8 +113,8 @@ credentials, project access and Slurm commands without allocating nodes.
 Use `mode=start` for real builds and `mode=resume` after interrupted observation.
 Selecting all development partitions also runs existing beta gates. PR and
 legacy per-software workflows remain on GitHub-hosted runners. The complete
-live GPUMD build has passed; keep the migration branch separate until the
-Windows unattended-startup task is also installed and verified.
+live GPUMD build and the Windows unattended-startup task have been verified
+on the VM. Physical Windows reboot recovery has not been tested.
 
 Plans retain the original source, controller and run identity across reruns,
 midnight and service restarts. Before advancing, the relay checks Slurm

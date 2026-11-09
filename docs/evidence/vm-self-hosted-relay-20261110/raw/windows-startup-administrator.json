@@ -1,0 +1,40 @@
+{
+  "verified_utc": "2026-11-09T18:30:54.7032186Z",
+  "registered": true,
+  "state": "Running",
+  "last_result": 267009,
+  "last_run_utc": "2026-11-09T18:26:12.0000000Z",
+  "missed_runs": 0,
+  "logon_type": "S4U",
+  "run_level": "Limited",
+  "principal_matches_owner": true,
+  "triggers": [
+    "MSFT_TaskBootTrigger",
+    "MSFT_TaskLogonTrigger"
+  ],
+  "execution_limit": "PT0S",
+  "restart_count": 999,
+  "restart_interval": "PT1M",
+  "multiple_instances": "IgnoreNew",
+  "start_when_available": true,
+  "actions": [
+    {
+      "execute": "C:\\WINDOWS\\System32\\wsl.exe",
+      "arguments": "--distribution Ubuntu --user sai --exec /usr/bin/sleep infinity"
+    }
+  ],
+  "keepalive_processes": [
+    {
+      "pid": 12692,
+      "parent_pid": 2392,
+      "session_id": 1,
+      "creation_utc": "2026-11-09T17:57:47.8841090Z"
+    },
+    {
+      "pid": 15344,
+      "parent_pid": 12692,
+      "session_id": 1,
+      "creation_utc": "2026-11-09T17:57:47.9925210Z"
+    }
+  ]
+}

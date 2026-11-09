@@ -4,13 +4,15 @@
 builds, GPU scientific acceptance, SIF publication, Lmod runtime checks and beta
 promotion all passed. Its Linux user service is enabled and recovered from a
 deliberate idle-process crash. GitHub confirmed the restarted runner online and
-idle. The migration PR remains separate from the main daily workflow pending
-the Windows unattended-startup step below.
+idle. The Windows owner has now installed the unattended-startup task, and
+its noninteractive WSL process has been verified running.
 
-Windows login startup is configured. Unattended startup before Windows login
-still requires the prepared Administrator PowerShell installer: the current
-Windows token cannot register a boot/S4U scheduled task (`Access is denied`).
-No Windows reboot qualification has been claimed.
+The task has boot and login triggers, uses the WSL owner's S4U identity,
+has no execution time limit, and retries failures once per minute. Task
+Scheduler reports it running, and the matching WSL clients run in Windows
+session 0. A Linux `sai` keepalive began at the task's launch time. This verifies
+the configured task and its actual execution; no physical Windows reboot has
+been performed for this qualification.
 
 ## Executed workflows
 
@@ -69,6 +71,38 @@ The generation date uses UTC; this run occurred on November 10 in China.
 See [`raw/beta-validation.json`](raw/beta-validation.json) and
 [`raw/beta-publication.json`](raw/beta-publication.json).
 
+## Repeat after installing Windows startup
+
+[Run 42674668802](https://github.com/AI4SAI/sai-hpc-software/actions/runs/42674668802)
+used controller `0ff74442483a176004a30da7d79bef23e963c332` on the same
+`vm-sai-hpc` runner after the boot/login task was installed. It succeeded from
+02:31:08 to 02:42:22 Asia/Shanghai (11m14s). The source remained
+`8bf530101c6a6a5946192629c059e8c4761f19d2`; verified source-cache hits avoided
+uploads, while all three partitions performed new builds and scientific runs.
+
+| Partition | Build job / elapsed | Scientific job / elapsed |
+|---|---|---|
+| 4V100 | 2332757 / 1m56s | 2332804 / 1m33s |
+| 16V100 | 2332768 / 2m52s | 2332837 / 1m58s |
+| 8V100V0 | 2332774 / 4m12s | 2332849 / 3m00s |
+
+All six allocations completed with exit `0:0`; all new SIF manifests have
+`build_verified=true`, `verified=true`, `published=true` and verified GPUMD
+scientific evidence. The beta phase returned **`unchanged`**: the same-day
+source, build recipe and runtime already had a qualified fixed module. It
+retained the first run's accepted generation instead of submitting three more
+Lmod jobs or replacing that fixed version. This repeat therefore has six new
+allocations; the complete nine-allocation publication proof is the first run.
+The current public selection was read back and matched the reuse receipt.
+
+The repeat's service peak was **447,164,416 bytes (426.45 MiB)**, with no
+high/max/OOM events or swap. The service remained running with the same PID,
+and its temporary HPC key was absent after job cleanup. Receipts are in
+[`raw/repeat-42674668802`](raw/repeat-42674668802), including the completed
+GitHub job, Slurm accounting, manifests, frozen plan, memory counters and beta
+reuse record. Together these runs qualify the relay path with GPUMD; they do
+not claim fresh VM builds of the other software packages.
+
 ## Resource and persistence controls
 
 The VM reports eight logical CPUs and 15,951 MiB WSL memory. The dedicated
@@ -101,19 +135,24 @@ lingering were read back, and GitHub reported the runner online and idle.
 after states and journal. Its new idle cgroup peak does not replace the
 705.34 MiB peak measured over the completed workflow.
 
-The Windows login fallback and detached WSL keepalive are active, but the
-boot/S4U task is not registered yet; see
-[`raw/windows-startup.json`](raw/windows-startup.json). The prepared installer
-is already on the VM. Run this once in an Administrator PowerShell window as
-the Windows account owning the Ubuntu distribution:
+The initial nonadministrator check is retained in
+[`raw/windows-startup.json`](raw/windows-startup.json). The Windows owner then
+ran the prepared installer in Administrator PowerShell:
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:LOCALAPPDATA\SAI\runner-deployment\install-wsl-startup.ps1"
 ```
 
-The remaining block is Windows task-registration permission, not a runner or
-Slurm failure. Verify the task remains running and the runner stays online
-after installation; physical reboot recovery has not been tested.
+The task began at 02:26:12 Asia/Shanghai. Subsequent checks found `Running`,
+S4U, the correct owner, both triggers, `ExecutionTimeLimit=PT0S`, and
+`RestartInterval=PT1M`. Its result code `267009` (`0x41301`) means the task is
+still running. The task engine is WSL client PID 8516 in Windows session 0,
+with child 10080; Linux keepalive PID 12442 runs as UID 1001 and started at
+the same time. The original login fallback is separately identifiable.
+See [`raw/windows-startup-administrator.json`](raw/windows-startup-administrator.json)
+and [`raw/windows-task-processes.json`](raw/windows-task-processes.json).
+The Linux keepalive is independently recorded in
+[`raw/repeat-42674668802/linux-keepalives.json`](raw/repeat-42674668802/linux-keepalives.json).
 
 ## Fixes qualified during deployment
 
