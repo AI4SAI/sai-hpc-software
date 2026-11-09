@@ -262,6 +262,13 @@ def main():
         if decision['build']:
             if decision['identities'] != [delivery['identity']]:
                 raise ValueError('claimed LAMMPS source differs from the requested delivery')
+            from md_ccache import download_tool
+            tool = json.loads(python('md_ccache.py', 'tool-status', root, capture_output=True).stdout)
+            if not tool['ready']:
+                # Compute nodes are offline. Transfer the checksum-pinned tool
+                # through the runner, just like the pinned source inputs.
+                upload(download_tool(temporary / 'ccache-tool'), snapshot + '/ccache')
+                python('md_ccache.py', 'install-tool', root, snapshot + '/ccache')
             for name, identity in (('lammps', delivery['identity']), ('deepmd-kit', delivery['deepmd_dependency']['identity'])):
                 sha = identity['source_sha']
                 cache = root + '/cache/repositories/' + name
