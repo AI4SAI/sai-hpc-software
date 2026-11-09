@@ -36,7 +36,9 @@ containment using the shared host kernel, **not a VM or a guarantee against kern
 Standalone LAMMPS also binds a private compiler cache writable, separately for
 each partition. It reuses individual objects only after matching source/header
 contents, compiler options and toolchain; each build still starts fresh and
-runs normal acceptance. See the [compiler-cache policy and qualification](docs/lammps-compiler-cache.md).
+runs normal acceptance. The build also applies the tested upstream host-compiler
+optimization for C++ sources that do not use Kokkos. See the
+[compiler-cache policy and qualification](docs/lammps-compiler-cache.md).
 
 Every partition is a separate native build target. Configuration and compilation run on
 the selected compute node with GCC `-march=native -mtune=native` or NVHPC `-tp=host`.

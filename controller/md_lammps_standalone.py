@@ -142,7 +142,7 @@ def render(delivery, run_id):
              '[[ ${SLURM_CPUS_ON_NODE:?} -ge 24 ]]',
              shlex.join(['apptainer', 'overlay', 'create', '--fakeroot', '--sparse', '--size', '32768', str(overlay)]),
              'build_exit=0', shlex.join(command('build')) + ' || build_exit=$?',
-             'for name in ccache-context.json ccache-statistics.json ccache-stats.log; do',
+             'for name in ccache-context.json ccache-statistics.json ccache-stats.log lammps-host-only.json; do',
              '  if [[ -f "$TMPDIR/$name" ]]; then cp "$TMPDIR/$name" ' +
              shlex.quote(str(directory / 'results')) + '/; fi',
              'done', '[[ $build_exit == 0 ]] || exit "$build_exit"', fsck('build'),

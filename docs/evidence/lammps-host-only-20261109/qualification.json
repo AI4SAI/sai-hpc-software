@@ -1,0 +1,66 @@
+{
+  "prior_build_science": "docs/evidence/lammps-pr5308-20261108/README.md",
+  "prior_cache_science": "docs/evidence/lammps-ccache-standard-20261109/README.md",
+  "rendered_targets": [
+    {
+      "recipe_sha256": "b00963dc07b85ab73681ac97d883ecbcaee0a86489ece0f664ef6b8c576fbd55",
+      "script_sha256": "c37c094573dd9145fc4779cfe526df1092ccd40381af2766278e9f5b138f6547",
+      "target": "16v100-avx2"
+    },
+    {
+      "recipe_sha256": "b00963dc07b85ab73681ac97d883ecbcaee0a86489ece0f664ef6b8c576fbd55",
+      "script_sha256": "713b43895b6076e14d73ca3b85bb34020af697e207dda2528b139dc7ce493cc2",
+      "target": "4v100-avx512"
+    },
+    {
+      "recipe_sha256": "b00963dc07b85ab73681ac97d883ecbcaee0a86489ece0f664ef6b8c576fbd55",
+      "script_sha256": "0af199d186e334cf2a5b0c9067b98c73a8997e8cad003804c9f3623c68f5fb53",
+      "target": "8v100v0-avx512"
+    }
+  ],
+  "source_equivalence": {
+    "deepmd_registration_backport_equals_upstream": true,
+    "latest_release_backport_applies": true,
+    "parent_backport_equals_upstream": true,
+    "upstream_head_is_idempotent": true,
+    "upstream_sha256": "4b16635ba9c42a4b21557553ac3668554cc1b22ffe792a14433181131437764d"
+  },
+  "source_inputs": [
+    {
+      "bytes": 48384,
+      "label": "base",
+      "path": "cmake/CMakeLists.txt",
+      "revision": "d291d572cf3c73a8a720774b78482a7c931304ca",
+      "sha256": "c7410b7b6bd3c25543fa8b105cfc2cb24833c780c59201f4cf9e137ecd8485c3"
+    },
+    {
+      "bytes": 49622,
+      "label": "upstream",
+      "path": "cmake/CMakeLists.txt",
+      "revision": "f1a6e5cf5167deeb1f70bc8bd38ff8c2e1a853a7",
+      "sha256": "4b16635ba9c42a4b21557553ac3668554cc1b22ffe792a14433181131437764d"
+    },
+    {
+      "bytes": 47367,
+      "label": "release",
+      "path": "cmake/CMakeLists.txt",
+      "revision": "stable_30Sep2026_update1",
+      "sha256": "a696e588dd970d54592ba3709463476557003cde27d41623eead6f19219e88b7"
+    },
+    {
+      "bytes": 20799,
+      "label": "base",
+      "path": "lib/kokkos/bin/nvcc_wrapper",
+      "revision": "d291d572cf3c73a8a720774b78482a7c931304ca",
+      "sha256": "707dc5ffa70003d25303a4d210643e8183e07292a834bd76e92509c6d27859a6"
+    },
+    {
+      "bytes": 20799,
+      "label": "release",
+      "path": "lib/kokkos/bin/nvcc_wrapper",
+      "revision": "stable_30Sep2026_update1",
+      "sha256": "707dc5ffa70003d25303a4d210643e8183e07292a834bd76e92509c6d27859a6"
+    }
+  ],
+  "validation_scope": "backport source equivalence and generated job syntax; complete GPU builds and numerical results are the previously recorded pinned upstream tests"
+}
