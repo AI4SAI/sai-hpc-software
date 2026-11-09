@@ -88,6 +88,7 @@ cuda_options=$("$MD_SYSTEM_DEEPMD/bin/python" /control/md_lammps_cuda.py options
 mapfile -t cuda_options <<< "$cuda_options"
 cmake -S /workspace/lammps/cmake -B /workspace/lammps-build \
   -DCMAKE_INSTALL_PREFIX="$LAMMPS_PREFIX" -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
   -DCMAKE_INSTALL_LIBDIR:PATH=lib \
   -DCMAKE_INSTALL_RPATH='$ORIGIN;$ORIGIN/../lib' -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=OFF \
   -DCMAKE_PREFIX_PATH="$DEEPMD_PREFIX;$MD_SYSTEM_PLUMED;$MD_SYSTEM_DEEPMD" \
