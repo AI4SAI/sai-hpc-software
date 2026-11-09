@@ -40,11 +40,15 @@ def main():
             if code or hit != expect_hit:
                 raise ValueError(f'{label}/{name}: exit={code}, hit={hit}, stats={stats}')
             exe = folder / 'probe'
-            subprocess.run([compiler, *flags, str(obj), '-o', str(exe)], check=True)
+            # -x cu selects a source language; an ELF object must not inherit
+            # it during the independent link/execution check.
+            link_flags = flags[2:] if label == 'cuda' else flags
+            subprocess.run([compiler, *link_flags, str(obj), '-o', str(exe)], check=True)
             if subprocess.run([str(exe)]).returncode != expected:
                 raise ValueError('cached executable returned stale data')
             records.append(dict(compiler=label, case=name, hit=hit, expected_value=expected,
                                 seconds=time.monotonic() - start, object_sha256=digest(obj), stats=stats))
+            Path('/runtime/ccache-probes.json').write_text(json.dumps(records, indent=2) + '\n')
         time.sleep(1.05)
         attempt('cold', False, 11)
         attempt('warm', True, 11)
