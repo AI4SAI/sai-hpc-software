@@ -205,6 +205,28 @@ class PromotionTests(unittest.TestCase):
 
 
 class RuntimeTests(unittest.TestCase):
+    def test_one_poll_defers_after_submitting_every_partition_and_keeps_jobs(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            task = Path(tmp)
+            submissions = []
+            def submit(directory, software, partition, bundle, fixtures, exclude=''):
+                submissions.append(partition)
+                return dict(job=str(100 + len(submissions)), partition=partition, output=str(directory),
+                            exclude=exclude, request_sha256='a' * 64, script_sha256='b' * 64)
+            snapshot = dict(applications={'gpumd': dict(partitions={'4V100': {}, '16V100': {}, '8V100V0': {}})})
+            with patch.object(daily, 'load_snapshot', return_value=snapshot), \
+                    patch.object(daily, 'submit', side_effect=submit), \
+                    patch.object(daily, 'digest', return_value='a' * 64), \
+                    patch.object(daily, 'accounting', return_value=None), \
+                    patch.object(daily.time, 'sleep') as sleep:
+                with self.assertRaises(daily.Pending):
+                    daily.check_runtime(task, 'gpumd', task, task, once=True)
+                sleep.assert_not_called()
+            self.assertEqual(set(submissions), set(snapshot['applications']['gpumd']['partitions']))
+            self.assertEqual(len(daily.read(task / 'jobs.json')), 3)
+            self.assertEqual(daily.read(task / 'runtime-status.json')['passed'], {})
+            self.assertFalse((task / 'validation.json').exists())
+
     def test_durable_held_submission_is_released_without_resubmission(self):
         with tempfile.TemporaryDirectory() as tmp:
             directory = Path(tmp)
@@ -212,7 +234,7 @@ class RuntimeTests(unittest.TestCase):
             (directory / 'request.json').write_text('{}')
             saved = dict(job='123', request_sha256=digest(directory / 'request.json'), script_sha256=digest(directory / 'job.sbatch'))
             daily.save(directory / 'submission.json', saved)
-            with patch.object(daily.subprocess, 'check_output', return_value='PENDING|JobHeldUser\n') as query, \
+            with patch.object(daily.subprocess, 'check_output', return_value='123|PENDING|JobHeldUser\n') as query, \
                     patch.object(daily.subprocess, 'run') as call:
                 self.assertEqual(daily.submit(directory, 'cp2k', '16V100', directory, directory), saved)
                 call.assert_called_once_with(['scontrol', 'release', '123'], check=True)

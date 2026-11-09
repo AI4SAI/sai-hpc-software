@@ -1,0 +1,118 @@
+{
+  "attempt": "1",
+  "controller": "8c647277af6d34225ec6291617fdd0e5df4d04d0",
+  "created": "2026-11-09T17:37:43.088172+00:00",
+  "retry_releases": false,
+  "schema": 1,
+  "selection": {
+    "software": "gpumd",
+    "targets": "all",
+    "tracks": "development"
+  },
+  "skipped_sources": [],
+  "state": "succeeded",
+  "tasks": [
+    {
+      "id": "gpumd-development-4v100-avx512",
+      "kind": "build",
+      "last_exit": 0,
+      "software": "gpumd",
+      "source": {
+        "repository": "brucefan1983/GPUMD",
+        "requested_ref": "master",
+        "software": "gpumd",
+        "source_ref": "master",
+        "source_sha": "8bf530101c6a6a5946192629c059e8c4761f19d2",
+        "source_version": "master-2026-11-09",
+        "status": "resolved",
+        "target": "4v100-avx512",
+        "track": "development"
+      },
+      "state": "succeeded"
+    },
+    {
+      "id": "gpumd-development-16v100-avx2",
+      "kind": "build",
+      "last_exit": 0,
+      "software": "gpumd",
+      "source": {
+        "repository": "brucefan1983/GPUMD",
+        "requested_ref": "master",
+        "software": "gpumd",
+        "source_ref": "master",
+        "source_sha": "8bf530101c6a6a5946192629c059e8c4761f19d2",
+        "source_version": "master-2026-11-09",
+        "status": "resolved",
+        "target": "16v100-avx2",
+        "track": "development"
+      },
+      "state": "succeeded"
+    },
+    {
+      "id": "gpumd-development-8v100v0-avx512",
+      "kind": "build",
+      "last_exit": 0,
+      "software": "gpumd",
+      "source": {
+        "repository": "brucefan1983/GPUMD",
+        "requested_ref": "master",
+        "software": "gpumd",
+        "source_ref": "master",
+        "source_sha": "8bf530101c6a6a5946192629c059e8c4761f19d2",
+        "source_version": "master-2026-11-09",
+        "status": "resolved",
+        "target": "8v100v0-avx512",
+        "track": "development"
+      },
+      "state": "succeeded"
+    },
+    {
+      "builds": [
+        {
+          "repository": "brucefan1983/GPUMD",
+          "requested_ref": "master",
+          "software": "gpumd",
+          "source_ref": "master",
+          "source_sha": "8bf530101c6a6a5946192629c059e8c4761f19d2",
+          "source_version": "master-2026-11-09",
+          "status": "resolved",
+          "target": "4v100-avx512",
+          "track": "development"
+        },
+        {
+          "repository": "brucefan1983/GPUMD",
+          "requested_ref": "master",
+          "software": "gpumd",
+          "source_ref": "master",
+          "source_sha": "8bf530101c6a6a5946192629c059e8c4761f19d2",
+          "source_version": "master-2026-11-09",
+          "status": "resolved",
+          "target": "16v100-avx2",
+          "track": "development"
+        },
+        {
+          "repository": "brucefan1983/GPUMD",
+          "requested_ref": "master",
+          "software": "gpumd",
+          "source_ref": "master",
+          "source_sha": "8bf530101c6a6a5946192629c059e8c4761f19d2",
+          "source_version": "master-2026-11-09",
+          "status": "resolved",
+          "target": "8v100v0-avx512",
+          "track": "development"
+        }
+      ],
+      "dependencies": [
+        "gpumd-development-4v100-avx512",
+        "gpumd-development-16v100-avx2",
+        "gpumd-development-8v100v0-avx512"
+      ],
+      "id": "gpumd-beta",
+      "kind": "beta",
+      "last_exit": 0,
+      "software": "gpumd",
+      "state": "succeeded"
+    }
+  ],
+  "workflow": "42666380120"
+}

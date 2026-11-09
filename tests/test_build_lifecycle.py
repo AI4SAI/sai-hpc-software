@@ -199,6 +199,14 @@ class CiLifecycleTests(unittest.TestCase):
                 if remote[0] == 'cat' and remote[1].endswith('/input/ci-handoff.json'):
                     stdout = json.dumps(dict(schema=1, run_id=run_id, workflow_run_id='123',
                                              controller_sha='b' * 40, identity=identity))
+                if remote[:4] == ['python3', '-I', '-B', '-c'] and 'def install_controller(' in remote[4]:
+                    from hashlib import sha256
+                    staging, destination, manifest, executables = json.loads(remote[5])
+                    self.assertTrue(staging.startswith(destination + '.upload-'))
+                    self.assertTrue(set(executables) <= set(manifest))
+                    for name, digest in manifest.items():
+                        self.assertEqual(sha256(self.uploaded_files[name].read_bytes()).hexdigest(), digest)
+                    return subprocess.CompletedProcess(argv, 0, stdout='true', stderr='')
                 if remote[:2] == ['python3', '-c']:
                     expected = json.loads(remote[6])
                     preflights[expected['run_id']] = expected

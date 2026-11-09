@@ -4,8 +4,15 @@ on:
   schedule:
     # 03:00 Asia/Shanghai (UTC+8); GitHub cron uses UTC.
     - cron: '0 19 * * *'
+    # Reattach after an interrupted Actions/relay session; never starts a new build.
+    - cron: '17 * * * *'
   workflow_dispatch:
     inputs:
+      mode:
+        description: Start a new generation, resume unfinished work, or check runner/SSH
+        type: choice
+        options: [start, resume, smoke]
+        default: start
       software:
         description: Software to build independently
         type: choice
@@ -25,113 +32,68 @@ on:
 permissions:
   contents: read
 
-# Serialise complete scheduled runs without cancelling a running Slurm owner.
+# Hourly recovery must not replace a queued nightly trigger (GitHub keeps one
+# pending run per concurrency group). The relay also locks its persistent state.
 concurrency:
-  group: sai-daily-delivery
+  group: sai-daily-${{ github.event.schedule == '17 * * * *' && 'recovery' || 'delivery' }}
   cancel-in-progress: false
 
 jobs:
-  plan:
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    outputs:
-      abacus: ${{ steps.plan.outputs.abacus }}
-      cp2k: ${{ steps.plan.outputs.cp2k }}
-      deepmd_kit: ${{ steps.plan.outputs.deepmd_kit }}
-      lammps: ${{ steps.plan.outputs.lammps }}
-      gpumd: ${{ steps.plan.outputs.gpumd }}
-      qe: ${{ steps.plan.outputs.qe }}
+  relay:
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    runs-on: [self-hosted, Linux, X64, sai-hpc-relay]
+    environment: hpc
+    timeout-minutes: 1440
+    env:
+      REMOTE_USER: ${{ secrets.REMOTE_USER }}
+      GH_TOKEN: ${{ github.token }}
+      SOFTWARE: ${{ inputs.software || 'all' }}
+      TRACKS: ${{ inputs.tracks || 'development,prerelease,release' }}
+      TARGETS: ${{ inputs.targets || 'all' }}
+      RETRY_RELEASES: ${{ inputs.retry_releases || false }}
+      RELAY_MODE: ${{ github.event.schedule == '17 * * * *' && 'resume' || inputs.mode || 'start' }}
     steps:
-      - uses: actions/checkout@v4
-        with:
-          persist-credentials: false
-      - id: plan
-        env:
-          SOFTWARE: ${{ inputs.software || 'all' }}
-          TRACKS: ${{ inputs.tracks || 'development,prerelease,release' }}
-          TARGETS: ${{ inputs.targets || 'all' }}
-        run: python3 controller/daily_plan.py
-
-  abacus:
-    needs: [plan]
-    if: ${{ !cancelled() && needs.plan.result == 'success' && needs.plan.outputs.abacus != '' }}
-    uses: ./.github/workflows/build.yml
-    with:
-      targets: ${{ needs.plan.outputs.abacus }}
-      tracks: ${{ inputs.tracks || 'development,prerelease,release' }}
-      retry_releases: ${{ inputs.retry_releases || false }}
-    secrets: inherit
-
-  cp2k:
-    needs: [plan]
-    if: ${{ !cancelled() && needs.plan.result == 'success' && needs.plan.outputs.cp2k != '' }}
-    uses: ./.github/workflows/cp2k.yml
-    with:
-      targets: ${{ needs.plan.outputs.cp2k }}
-      tracks: ${{ inputs.tracks || 'development,prerelease,release' }}
-      retry_releases: ${{ inputs.retry_releases || false }}
-    secrets: inherit
-
-  deepmd_kit:
-    needs: [plan]
-    if: ${{ !cancelled() && needs.plan.result == 'success' && needs.plan.outputs.deepmd_kit != '' }}
-    uses: ./.github/workflows/deepmd.yml
-    with:
-      targets: ${{ needs.plan.outputs.deepmd_kit }}
-      tracks: ${{ inputs.tracks || 'development,prerelease,release' }}
-      retry_releases: ${{ inputs.retry_releases || false }}
-    secrets: inherit
-
-  lammps:
-    needs: [plan]
-    if: ${{ !cancelled() && needs.plan.result == 'success' && needs.plan.outputs.lammps != '' }}
-    uses: ./.github/workflows/lammps.yml
-    with:
-      targets: ${{ needs.plan.outputs.lammps }}
-      tracks: ${{ inputs.tracks || 'development,prerelease,release' }}
-      retry_releases: ${{ inputs.retry_releases || false }}
-    secrets: inherit
-
-  gpumd:
-    needs: [plan]
-    if: ${{ !cancelled() && needs.plan.result == 'success' && needs.plan.outputs.gpumd != '' }}
-    uses: ./.github/workflows/gpumd.yml
-    with:
-      targets: ${{ needs.plan.outputs.gpumd }}
-      tracks: ${{ inputs.tracks || 'development,prerelease,release' }}
-      retry_releases: ${{ inputs.retry_releases || false }}
-    secrets: inherit
-
-  qe:
-    needs: [plan]
-    if: ${{ !cancelled() && needs.plan.result == 'success' && needs.plan.outputs.qe != '' }}
-    uses: ./.github/workflows/qe.yml
-    with:
-      targets: ${{ needs.plan.outputs.qe }}
-      tracks: ${{ inputs.tracks || 'development,prerelease,release' }}
-      retry_releases: ${{ inputs.retry_releases || false }}
-    secrets: inherit
-
-  result:
-    if: always()
-    needs: [plan, abacus, cp2k, deepmd_kit, lammps, gpumd, qe]
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: Require all selected deliveries to succeed
-        env:
-          RESULTS: ${{ toJSON(needs) }}
+      # This repository is public. Use Git directly to avoid a Node runtime
+      # alongside the Listener/Worker; compilation remains in Slurm.
+      - name: Check out the frozen controller with Git
         run: |
-          python3 - <<'PY'
-          import json, os
-          results = json.loads(os.environ['RESULTS'])
-          with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
-              out.write('| Task | Result |\n|---|---|\n')
-              for name, job in results.items():
-                  out.write(f"| {name} | {job['result']} |\n")
-          if results['plan']['result'] != 'success':
-              raise SystemExit('Delivery plan failed')
-          for name, targets in results['plan']['outputs'].items():
-              if targets and results[name]['result'] != 'success':
-                  raise SystemExit(f'{name} delivery did not succeed')
-          PY
+          git init -q .
+          git config core.hooksPath /dev/null
+          git config pack.threads 1
+          git config pack.windowMemory 4m
+          git config core.deltaBaseCacheLimit 4m
+          git config gc.auto 0
+          if git remote get-url origin >/dev/null 2>&1; then
+            git remote set-url origin https://github.com/AI4SAI/sai-hpc-software.git
+          else
+            git remote add origin https://github.com/AI4SAI/sai-hpc-software.git
+          fi
+          git config --local --unset-all http.https://github.com/.extraheader || :
+          git sparse-checkout init --cone
+          git sparse-checkout set controller deployment .ci/slurm docs/evidence/sif-lmod-20261024/raw/4V100
+          git -c protocol.version=2 fetch --no-tags --depth=1 origin "$GITHUB_SHA"
+          git checkout --force --detach "$GITHUB_SHA"
+          git clean -ffdx
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+      - name: Prepare temporary HPC credentials
+        env:
+          KEY: ${{ secrets.REMOTE_SSH_PRIVATE_KEY }}
+        run: |
+          : "${REMOTE_USER:?Configure REMOTE_USER in the hpc Environment}"
+          : "${KEY:?Configure REMOTE_SSH_PRIVATE_KEY in the hpc Environment}"
+          mkdir -p -m 700 "$RUNNER_TEMP/ssh"
+          printf '%s\n' "$KEY" > "$RUNNER_TEMP/ssh/key"
+          chmod 600 "$RUNNER_TEMP/ssh/key"
+      - name: Submit, resume and accept independent Slurm deliveries
+        run: |
+          args=(--mode "$RELAY_MODE" --software "$SOFTWARE" --tracks "$TRACKS" --targets "$TARGETS")
+          if [ "$RETRY_RELEASES" = true ]; then args+=(--retry-releases); fi
+          python3 -u controller/daily_relay.py "${args[@]}"
+      - name: Report retained relay logs and metadata
+        if: always()
+        run: |
+          printf 'Durable plans, Slurm receipts and full controller logs: %s\n' "$SAI_RELAY_ROOT"
+          if [ -f "$GITHUB_STEP_SUMMARY" ]; then cat "$GITHUB_STEP_SUMMARY"; fi
+      - name: Remove temporary HPC key
+        if: always()
+        run: rm -f -- "$RUNNER_TEMP/ssh/key"

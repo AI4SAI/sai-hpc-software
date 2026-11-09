@@ -1,4 +1,5 @@
 import json
+import os
 from pathlib import Path
 import select
 import shutil
@@ -6,6 +7,7 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'controller'))
 import source_cache as cache
@@ -29,6 +31,22 @@ class TransferTests(unittest.TestCase):
         self.store = self.root / 'cache.git'
         self.argv = [sys.executable, str(Path(cache.__file__)), 'transfer-session',
                      str(self.store), self.commit]
+
+    def test_relay_cache_keeps_full_ancestry_for_incremental_bundles(self):
+        relay_cache = self.root / 'relay-cache'
+        with patch.dict(os.environ, SAI_SOURCE_CACHE=str(relay_cache)):
+            with transport.source_repository(str(self.repo), self.commit, self.root, 'source') as first:
+                self.assertEqual(cache.git(first, 'rev-parse', '--is-shallow-repository'), 'false')
+            (self.repo / 'data').write_text('new development commit')
+            cache.git(self.repo, 'commit', '-am', 'next')
+            second_sha = cache.git(self.repo, 'rev-parse', 'HEAD')
+            with transport.source_repository(str(self.repo), second_sha, self.root, 'source') as second:
+                self.assertEqual(second, first)
+                base = cache.select_base(second, second_sha, [self.commit])
+                self.assertEqual(base, self.commit)
+                self.assertTrue(cache.complete(second, self.commit))
+                manifest = cache.pack(second, second_sha, self.root / 'relay-parts', base)
+                self.assertEqual(manifest['base'], self.commit)
 
     def start(self):
         p = subprocess.Popen(self.argv, stdin=subprocess.PIPE, stdout=subprocess.PIPE,

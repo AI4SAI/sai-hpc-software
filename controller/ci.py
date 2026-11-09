@@ -17,6 +17,7 @@ from remote_controller import safe_name, safe_sha, SAI_PROJECT_ROOT
 from delivery_layout import artifact_path
 from release_contract import SOFTWARE, TRACKS, validate_identity
 from source_transport import ensure_source
+from relay_checkpoint import Checkpoint, entry, remote as remote_call
 
 def run(argv, **kwargs):
     try:
@@ -38,6 +39,47 @@ def runtime_launchers(software):
         from sif_runtime import PROGRAMS
         return ("qe", *PROGRAMS["qe"])
     return ("gpumd", "nep", "gnep") if software == "gpumd" else (software,)
+
+
+def install_controller(staging, directory, manifest, executables):
+    """Commit verified files without rewriting a prior immutable launcher.
+
+    Sent verbatim to the SSH host. Interrupted uploads only affect staging;
+    interrupted commits can be repeated after checking every existing file.
+    """
+    import hashlib
+    import os
+    from pathlib import Path
+
+    staging, directory = Path(staging), Path(directory)
+    for path in (staging, directory):
+        if not path.is_absolute() or path.resolve() != path or not path.is_dir():
+            raise ValueError('redirected controller upload directory')
+    if staging.parent != directory.parent or not staging.name.startswith(directory.name + '.upload-'):
+        raise ValueError('controller upload is outside its run')
+    if not set(executables) <= set(manifest):
+        raise ValueError('unknown controller launcher')
+    for name, digest in manifest.items():
+        if Path(name).name != name or name in ('.', '..'):
+            raise ValueError('invalid controller filename')
+        source, target = staging / name, directory / name
+        if source.is_symlink() or not source.is_file() or hashlib.sha256(source.read_bytes()).hexdigest() != digest:
+            raise ValueError('incomplete controller upload: ' + name)
+        if target.exists() or target.is_symlink():
+            if target.is_symlink() or not target.is_file() or hashlib.sha256(target.read_bytes()).hexdigest() != digest:
+                raise ValueError('existing controller differs from the frozen source: ' + name)
+    for name in manifest:
+        source, target = staging / name, directory / name
+        source.chmod(0o555 if name in executables else 0o444)
+        try:
+            os.link(source, target)
+        except FileExistsError:
+            if target.is_symlink() or not target.is_file() or hashlib.sha256(target.read_bytes()).hexdigest() != manifest[name]:
+                raise ValueError('controller changed during upload: ' + name)
+            target.chmod(0o555 if name in executables else 0o444)
+        source.unlink()
+    staging.rmdir()
+    return True
 
 
 def remote_project_root(software, user):
@@ -258,6 +300,7 @@ def accept_multinode(python, exists, allow_retry, run_id, version, target):
 
 
 def main():
+    relay = Checkpoint()
     software = os.environ.get("SOFTWARE", "abacus")
     if software not in ("abacus", "cp2k", "gpumd", "qe"):
         raise ValueError("unknown software recipe")
@@ -266,7 +309,7 @@ def main():
         raise ValueError("unknown software CI phase")
     if phase in ("dependencies", "application") and software != "cp2k":
         raise ValueError("dependency handoff is only registered for CP2K")
-    continuing = phase in ("application", "acceptance")
+    continuing = phase in ("application", "acceptance") or bool(relay.data.get("prepared"))
     target = os.environ["TARGET"]
     if target not in SOFTWARE[software]['targets']:
         raise ValueError("unknown target")
@@ -282,8 +325,16 @@ def main():
     run_prefix = "gpumd-" if software == "gpumd" else ""
     run_id = safe_name(run_prefix + "-".join((os.environ["GITHUB_RUN_ID"], os.environ["GITHUB_RUN_ATTEMPT"],
                                  track, target, datetime.now(timezone.utc).date().isoformat(), upstream[:12])))
+    if relay.enabled:
+        run_id = relay.freeze("run_id", run_id)
+        relay.bind(dict(software=software, target=target, upstream=upstream, controller=control_sha,
+                        version=version, track=track, source_ref=source_ref,
+                        workflow=os.environ["GITHUB_RUN_ID"], attempt=os.environ["GITHUB_RUN_ATTEMPT"]))
+        if relay.data.get("skipped"):
+            print("UNCHANGED_RELEASE_SKIPPED: frozen claim", flush=True)
+            return
     if continuing:
-        run_id = safe_name(os.environ['CI_RUN_ID'])
+        run_id = safe_name(relay.data["run_id"] if relay.enabled else os.environ['CI_RUN_ID'])
         pattern = (re.escape(run_prefix + os.environ['GITHUB_RUN_ID']) + r'-[0-9]+-'
                    + re.escape(track + '-' + target) + r'-\d{4}-\d{2}-\d{2}-' + re.escape(upstream[:12]))
         if not re.fullmatch(pattern, run_id):
@@ -293,7 +344,7 @@ def main():
     elif software == "gpumd":
         safe_name(run_id + "-science")
     temporary = Path(os.environ["RUNNER_TEMP"])
-    key = temporary / "ssh/key"
+    key = Path(os.environ.get("SAI_RELAY_SSH_KEY", str(temporary / "ssh/key")))
     known_hosts = Path(__file__).resolve().parents[1] / ".ci/slurm/known_hosts"
     options = ["-i", str(key), "-o", "BatchMode=yes", "-o", "StrictHostKeyChecking=yes",
                "-o", f"UserKnownHostsFile={known_hosts}", "-o", "ConnectTimeout=20",
@@ -308,6 +359,15 @@ def main():
     def ssh(argv, **kw):
         return run(["ssh", *options, "-p", "12022", remote, shlex.join(argv)], **kw)
     def python(script, *args, **kw):
+        if relay.enabled and args and args[0] == 'monitor':
+            if script == 'cp2k_dependency_stage.py':
+                directory = f'{root}/runs/{args[2]}'
+            elif script == 'software_controller.py':
+                directory = f'{root}/runs/{args[1]}'
+            else:
+                prefix = 'benchmark-' if script == 'abacus_benchmark.py' else ''
+                directory = f'{root}/runtime-tests/{prefix}{args[1]}'
+            relay.wait(ssh, directory)
         return ssh(remote_controller_command(root, control, script, *args), **kw)
     def upload(source, destination):
         sources = list(source) if isinstance(source, (list, tuple)) else [source]
@@ -358,8 +418,14 @@ def main():
             shutil.copyfile(parent / name, staged / name)
         for executable in runtime_launchers(software):
             shutil.copyfile(parent / f"{software}_runtime.sh", staged / executable)
-        upload(sorted(staged.iterdir()), f"{control}/")
-        ssh(["chmod", "0555", *[f"{control}/{name}" for name in runtime_launchers(software)]])
+        upload_directory = control + '.upload-' + uuid.uuid4().hex
+        ssh(['mkdir', upload_directory])
+        files = sorted(staged.iterdir())
+        upload(files, upload_directory + '/')
+        from hashlib import sha256
+        manifest = {path.name: sha256(path.read_bytes()).hexdigest() for path in files}
+        if remote_call(ssh, install_controller, upload_directory, control, manifest, runtime_launchers(software)) is not True:
+            raise ValueError('controller upload was not committed')
     results = temporary / "results"
     results.mkdir(exist_ok=True)
     # The uploaded, immutable remote recipe owns the fingerprint. Never invent
@@ -377,9 +443,10 @@ def main():
     if not continuing and track != "development":
         retry = (["--retry"] if (os.environ.get("RETRY_RELEASES") == "true" or os.environ.get("RESUME_RUN")) else [])
         claim = json.loads(python("release_contract.py", root, run_id, json.dumps([identity]),
-                                  *retry, capture_output=True).stdout)
+                                  *retry, *(["--resume"] if relay.enabled else []), capture_output=True).stdout)
         (results / "build-attempt.json").write_text(json.dumps(claim, sort_keys=True) + "\n")
         if not claim["build"]:
+            relay.set("skipped", True)
             print("UNCHANGED_RELEASE_SKIPPED " + json.dumps(claim["skipped"]), flush=True)
             return
     marker = dict(schema=1, run_id=run_id, workflow_run_id=os.environ['GITHUB_RUN_ID'],
@@ -425,6 +492,7 @@ def main():
                     for item in ('WIGNERNJ', 'TBLITE_RELEASE', 'TBLITE_DEVELOPMENT', 'ELPA', 'LIBXC', 'LIBXS')}
             stage_archives(python, upload, root, f'{task}/input/cp2k-updates',
                            [(archive, pins[archive.name]) for archive in archives])
+    relay.set("prepared", True)
     def emit_run_id():
         if os.environ.get('GITHUB_OUTPUT'):
             with open(os.environ['GITHUB_OUTPUT'], 'a') as stream:
@@ -441,8 +509,12 @@ def main():
     shared_dependencies = False
     try:
         if software == 'cp2k' and phase != 'acceptance' and not resume:
-            shared_dependencies = json.loads(python('cp2k_site_spack.py', 'available', identity['partition'],
-                                                   capture_output=True).stdout)['available']
+            if relay.enabled and 'shared_dependencies' in relay.data:
+                shared_dependencies = relay.data['shared_dependencies']
+            else:
+                shared_dependencies = json.loads(python('cp2k_site_spack.py', 'available', identity['partition'],
+                                                       capture_output=True).stdout)['available']
+                relay.set('shared_dependencies', shared_dependencies)
             if shared_dependencies:
                 print('CP2K_SHARED_DEVTOOLS: skipping the Spack build allocation', flush=True)
             elif phase != 'application':
@@ -450,8 +522,9 @@ def main():
                 resources = ['--overlay-mb', '16384']
                 if target == 'dsprhbm':
                     resources += ['--minutes', '720']
-                python('cp2k_dependency_stage.py', 'submit', root, control, dependency_run,
-                       json.dumps(identity, sort_keys=True), *resources)
+                relay.submitted(ssh, f'{root}/runs/{dependency_run}', dict(identity=identity, controller=control),
+                    lambda: python('cp2k_dependency_stage.py', 'submit', root, control, dependency_run,
+                                   json.dumps(identity, sort_keys=True), *resources))
                 observation = '21000' if target == 'dsprhbm' else '19800'
                 python('cp2k_dependency_stage.py', 'monitor', root, dependency_run, '--timeout', observation)
             if phase == 'dependencies':
@@ -470,7 +543,7 @@ def main():
                                   track=track, source_ref=source_ref, recipe_sha256=identity['recipe_sha256'],
                                   resume_run=resume or None,
                                   dependencies_run=dependency_run if software == 'cp2k' and not resume and not shared_dependencies else None)
-            submitted = continuing and existing_job(ssh, root, control, task, expected_build, 'software_controller.py')
+            submitted = (continuing or relay.enabled) and existing_job(ssh, root, control, task, expected_build, 'software_controller.py')
             if not submitted:
                 python("software_controller.py", "submit", software, run_id, upstream, version, target,
                        *provenance_flags, *extras)
@@ -542,66 +615,71 @@ def main():
             raise ValueError("published artifact differs from the delivery identity layout")
         print((results / "artifact.path").read_text(), flush=True)
     finally:
-        # Only logs/metadata travel back; the single SIF stays in the SAI catalog.
-        subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
-                        f"{remote}:{task}/results/.", str(results)], check=False)
-        if software == 'cp2k':
-            dependency_results = results / 'dependencies'
-            dependency_results.mkdir(exist_ok=True)
-            subprocess.run(['scp', '-q', *options, '-P', '12022', '-r',
-                            f'{remote}:{root}/runs/{dependency_run}/results/.',
-                            str(dependency_results)], check=False)
-        if software == "qe":
-            scientific_results = results / "qe-science"
-            scientific_results.mkdir(exist_ok=True)
-            scientific_task = f"{root}/runtime-tests/{run_id}-science"
-            for name in ("results", "request.json", "job.sbatch", "job.id"):
-                subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
-                                f"{remote}:{scientific_task}/{name}", str(scientific_results)], check=False)
-        for suffix in ("", "-retest"):
-            if software == "cp2k" and not suffix:
-                scientific_results = results / "cp2k-science"
+        if relay.enabled:
+            (results / 'remote-evidence.json').write_text(json.dumps(dict(
+                build=task, acceptance=f'{root}/runtime-tests', run_id=run_id,
+                controller=control, identity=identity), indent=2) + '\n')
+        else:
+            # Only logs/metadata travel back; the single SIF stays in the SAI catalog.
+            subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
+                            f"{remote}:{task}/results/.", str(results)], check=False)
+            if software == 'cp2k':
+                dependency_results = results / 'dependencies'
+                dependency_results.mkdir(exist_ok=True)
+                subprocess.run(['scp', '-q', *options, '-P', '12022', '-r',
+                                f'{remote}:{root}/runs/{dependency_run}/results/.',
+                                str(dependency_results)], check=False)
+            if software == "qe":
+                scientific_results = results / "qe-science"
                 scientific_results.mkdir(exist_ok=True)
-                subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
-                                f"{remote}:{root}/runtime-tests/{run_id}-science/results/.",
-                                str(scientific_results)], check=False)
-                # Preserve raw scientific inputs/logs/forces as well as summaries;
-                # never transfer SIFs or build/install trees back to the runner.
                 scientific_task = f"{root}/runtime-tests/{run_id}-science"
-                for name in ("cases", "fixtures", "request.json", "job.sbatch", "job.id", "rank-exec.sh"):
+                for name in ("results", "request.json", "job.sbatch", "job.id"):
                     subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
                                     f"{remote}:{scientific_task}/{name}", str(scientific_results)], check=False)
-            if software == "gpumd":
-                scientific_results = results / ("gpumd-science" + suffix)
-                scientific_results.mkdir(exist_ok=True)
-                scientific_run = safe_name(run_id + "-science" + suffix)
-                subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
-                                f"{remote}:{root}/runtime-tests/{scientific_run}/results/.",
-                                str(scientific_results)], check=False)
-        if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
-            for suffix in ('', '-retry1'):
-                runtime_results = results / ('runtime' + suffix)
-                runtime_results.mkdir(exist_ok=True)
-                runtime_run = safe_name(run_id + '-multinode' + suffix)
-                subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
-                                f"{remote}:{root}/runtime-tests/{runtime_run}/results/.",
-                                str(runtime_results)], check=False)
-        if software == "abacus" and target in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
-            feature_results = results / "gpu-features"
-            feature_results.mkdir(exist_ok=True)
-            feature_run = safe_name(run_id + "-gpu-features")
-            subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
-                            f"{remote}:{root}/runtime-tests/{feature_run}/results/.",
-                            str(feature_results)], check=False)
-        for suffix in ("", "-retest"):
-            if software == "abacus":
-                for case in ("pw", "hse", "deepks"):
-                    benchmark_results = results / f"benchmark-{case}{suffix}"
-                    benchmark_results.mkdir(exist_ok=True)
-                    benchmark_run = safe_name("benchmark-" + run_id + "-" + case + suffix)
+            for suffix in ("", "-retest"):
+                if software == "cp2k" and not suffix:
+                    scientific_results = results / "cp2k-science"
+                    scientific_results.mkdir(exist_ok=True)
                     subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
-                                    f"{remote}:{root}/runtime-tests/{benchmark_run}/results/.",
-                                    str(benchmark_results)], check=False)
+                                    f"{remote}:{root}/runtime-tests/{run_id}-science/results/.",
+                                    str(scientific_results)], check=False)
+                    # Preserve raw scientific inputs/logs/forces as well as summaries;
+                    # never transfer SIFs or build/install trees back to the runner.
+                    scientific_task = f"{root}/runtime-tests/{run_id}-science"
+                    for name in ("cases", "fixtures", "request.json", "job.sbatch", "job.id", "rank-exec.sh"):
+                        subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
+                                        f"{remote}:{scientific_task}/{name}", str(scientific_results)], check=False)
+                if software == "gpumd":
+                    scientific_results = results / ("gpumd-science" + suffix)
+                    scientific_results.mkdir(exist_ok=True)
+                    scientific_run = safe_name(run_id + "-science" + suffix)
+                    subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
+                                    f"{remote}:{root}/runtime-tests/{scientific_run}/results/.",
+                                    str(scientific_results)], check=False)
+            if software == "abacus" and target in ("dsprhbm", "4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
+                for suffix in ('', '-retry1'):
+                    runtime_results = results / ('runtime' + suffix)
+                    runtime_results.mkdir(exist_ok=True)
+                    runtime_run = safe_name(run_id + '-multinode' + suffix)
+                    subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
+                                    f"{remote}:{root}/runtime-tests/{runtime_run}/results/.",
+                                    str(runtime_results)], check=False)
+            if software == "abacus" and target in ("4v100-avx512", "16v100-avx2", "8v100v0-avx512"):
+                feature_results = results / "gpu-features"
+                feature_results.mkdir(exist_ok=True)
+                feature_run = safe_name(run_id + "-gpu-features")
+                subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
+                                f"{remote}:{root}/runtime-tests/{feature_run}/results/.",
+                                str(feature_results)], check=False)
+            for suffix in ("", "-retest"):
+                if software == "abacus":
+                    for case in ("pw", "hse", "deepks"):
+                        benchmark_results = results / f"benchmark-{case}{suffix}"
+                        benchmark_results.mkdir(exist_ok=True)
+                        benchmark_run = safe_name("benchmark-" + run_id + "-" + case + suffix)
+                        subprocess.run(["scp", "-q", *options, "-P", "12022", "-r",
+                                        f"{remote}:{root}/runtime-tests/{benchmark_run}/results/.",
+                                        str(benchmark_results)], check=False)
 
 if __name__ == "__main__":
-    main()
+    entry(main)

@@ -13,6 +13,7 @@ from beta_candidates import validate_plan
 from release_contract import SOFTWARE
 from remote_controller import SAI_PROJECT_ROOT, safe_name, safe_sha
 from source_cache import checksum
+from relay_checkpoint import Checkpoint, Pending, entry
 
 REPO = Path(__file__).resolve().parents[1]
 
@@ -51,6 +52,7 @@ def package(path, builds):
 
 
 def main():
+    relay = Checkpoint()
     software = os.environ['BETA_SOFTWARE']
     builds = json.loads(os.environ['BETA_BUILDS'])
     selected = [row for row in builds if row['track'] == 'development']
@@ -64,6 +66,7 @@ def main():
     attempt = os.environ.get('BETA_SOURCE_ATTEMPT') or os.environ['GITHUB_RUN_ATTEMPT']
     name = safe_name(workflow + '-' + attempt + '-' + software)
     commit = safe_sha(os.environ['GITHUB_SHA'])
+    relay.bind(dict(software=software, builds=builds, workflow=workflow, attempt=attempt, controller=commit))
     temporary = Path(os.environ['RUNNER_TEMP'])
     results = temporary / 'beta-results'
     results.mkdir(exist_ok=True)
@@ -71,7 +74,7 @@ def main():
     task = str(SAI_PROJECT_ROOT / 'operations/daily-beta' / (name + '-' + commit[:12]))
     user = safe_name(os.environ['REMOTE_USER'])
     remote = user + '@c0.sai.ai-4s.com'
-    options = ['-i', str(temporary / 'ssh/key'), '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes',
+    options = ['-i', os.environ.get('SAI_RELAY_SSH_KEY', str(temporary / 'ssh/key')), '-o', 'BatchMode=yes', '-o', 'StrictHostKeyChecking=yes',
                '-o', 'UserKnownHostsFile=' + str(REPO / '.ci/slurm/known_hosts'), '-o', 'ConnectTimeout=20',
                '-o', 'ServerAliveInterval=20', '-o', 'ServerAliveCountMax=6']
 
@@ -79,21 +82,22 @@ def main():
         return subprocess.run(['ssh', *options, '-p', '12022', remote, shlex.join(list(map(str, argv)))],
                               text=True, check=True, **kw)
 
-    archive = temporary / 'beta-controller.tar.gz'
-    package(archive, builds)
-    ssh(['mkdir', '-p', snapshot])
-    # Retry only the content transfer. Immutable controller comparison below
-    # prevents a retry or another invocation from changing an active snapshot.
-    for index in range(3):
-        try:
-            upload = subprocess.run(['scp', '-q', *options, '-P', '12022', str(archive), remote + ':' + snapshot + '/payload.tar'],
-                                    timeout=1800, check=True)
-            break
-        except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
-            if index == 2:
-                raise
-        time.sleep(5 * (index + 1))
-    unpack = '''from pathlib import Path
+    if not relay.data.get('prepared'):
+        archive = temporary / 'beta-controller.tar.gz'
+        package(archive, builds)
+        ssh(['mkdir', '-p', snapshot])
+        # Retry only the content transfer. Immutable controller comparison below
+        # prevents a retry or another invocation from changing an active snapshot.
+        for index in range(3):
+            try:
+                upload = subprocess.run(['scp', '-q', *options, '-P', '12022', str(archive), remote + ':' + snapshot + '/payload.tar'],
+                                        timeout=1800, check=True)
+                break
+            except (subprocess.CalledProcessError, subprocess.TimeoutExpired):
+                if index == 2:
+                    raise
+            time.sleep(5 * (index + 1))
+        unpack = '''from pathlib import Path
 import hashlib, sys, tarfile
 root=Path(sys.argv[1]); archive=root/'payload.tar'
 assert hashlib.sha256(archive.read_bytes()).hexdigest()==sys.argv[2]
@@ -108,7 +112,8 @@ with tarfile.open(archive) as tar:
    with path.open('xb') as out: out.write(data)
    path.chmod(0o444)
 '''
-    ssh(['python3', '-c', unpack, snapshot, checksum(archive)])
+        ssh(['python3', '-c', unpack, snapshot, checksum(archive)])
+        relay.set('prepared', True)
     code = 1
     try:
         # The remote task is restartable; completed submissions and publication
@@ -116,6 +121,8 @@ with tarfile.open(archive) as tar:
         command = ['env', 'PYTHONDONTWRITEBYTECODE=1', 'python3', snapshot + '/controller/daily_beta.py',
                    '--software', software, '--workflow', workflow, '--attempt', attempt,
                    '--builds', snapshot + '/builds.json', '--fixtures', snapshot + '/fixtures', '--task', task]
+        if relay.enabled:
+            command.append('--once')
         for index in range(3):
             try:
                 ssh(command)
@@ -127,12 +134,27 @@ with tarfile.open(archive) as tar:
                     break
                 time.sleep(5 * (index + 1))
     finally:
-        for name in ('request.json', 'status.json', 'publication.json', 'jobs.json', 'runtime-status.json', 'validation.json', 'candidates.json'):
-            subprocess.run(['scp', '-q', *options, '-P', '12022', remote + ':' + task + '/' + name, str(results / name)],
-                           stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=120)
-        # Preserve raw numerical outputs and logs, including failed first
-        # allocations. The archive excludes bundles, images and build trees.
-        collect = """from pathlib import Path
+        if relay.enabled:
+            names = ['request.json', 'status.json', 'publication.json', 'jobs.json', 'runtime-status.json',
+                     'validation.json', 'candidates.json']
+            collect_metadata = ('import json,sys; from pathlib import Path; p=Path(sys.argv[1]); '
+                                'print(json.dumps({n:json.loads((p/n).read_text()) '
+                                'for n in json.loads(sys.argv[2]) if (p/n).is_file()}))')
+            metadata = json.loads(ssh(['python3', '-c', collect_metadata, task, json.dumps(names)],
+                                      capture_output=True).stdout)
+            for name, value in metadata.items():
+                (results / name).write_text(json.dumps(value, indent=2) + '\n')
+            (results / 'remote-evidence.json').write_text(json.dumps(dict(task=task, controller=snapshot)) + '\n')
+            if code == 75:
+                jobs = metadata.get('jobs.json', [])
+                relay.set('pending', [dict(job=row['job'], directory=row['output']) for row in jobs])
+        else:
+            for name in ('request.json', 'status.json', 'publication.json', 'jobs.json', 'runtime-status.json', 'validation.json', 'candidates.json'):
+                subprocess.run(['scp', '-q', *options, '-P', '12022', remote + ':' + task + '/' + name, str(results / name)],
+                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, timeout=120)
+            # Preserve raw numerical outputs and logs, including failed first
+            # allocations. The archive excludes bundles, images and build trees.
+            collect = """from pathlib import Path
 import sys, tarfile
 root=Path(sys.argv[1])
 with tarfile.open(fileobj=sys.stdout.buffer, mode='w|') as tar:
@@ -142,18 +164,22 @@ with tarfile.open(fileobj=sys.stdout.buffer, mode='w|') as tar:
    if path.is_file() and not path.is_symlink() and path.resolve().is_relative_to(directory):
     tar.add(path,arcname=str(path.relative_to(root)),recursive=False)
 """
-        with (results / 'runtime-evidence.tar').open('wb') as stream:
-            try:
-                ssh(['python3', '-c', collect, task], stdout=stream, timeout=600)
-            except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as error:
-                print('Raw evidence transport failed; retained on project storage: ' + str(error), flush=True)
+            with (results / 'runtime-evidence.tar').open('wb') as stream:
+                try:
+                    ssh(['python3', '-c', collect, task], stdout=stream, timeout=600)
+                except (subprocess.CalledProcessError, subprocess.TimeoutExpired) as error:
+                    print('Raw evidence transport failed; retained on project storage: ' + str(error), flush=True)
         record = json.loads((results / 'status.json').read_text()) if (results / 'status.json').exists() else {'status': 'transport_failed'}
         with open(os.environ['GITHUB_STEP_SUMMARY'], 'a') as out:
             out.write(f'### {software} beta publication\n\n')
             out.write('```json\n' + json.dumps(record, indent=2) + '\n```\n')
+    if code == 75 and relay.enabled:
+        raise Pending('beta runtime jobs remain active')
+    if code == 255 and relay.enabled:
+        raise SystemExit(76)
     if code:
         raise RuntimeError('Beta rotation failed; previous public generation retained. See the publication summary and project task: ' + task)
 
 
 if __name__ == '__main__':
-    main()
+    entry(main)
