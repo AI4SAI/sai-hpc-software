@@ -67,6 +67,10 @@ fi
 # Keep the integration patch inside the recipe fingerprint, not a recovery-only script.
 "$MD_SYSTEM_DEEPMD/bin/python" /control/md_registration.py integrate \
   /workspace/lammps/cmake/CMakeLists.txt
+# Reuse the tested upstream CMake optimization; record any upstream-owned or
+# unsupported layout before compilation instead of guessing how to patch it.
+/usr/bin/python3 /control/md_lammps_host_only.py apply /workspace/lammps \
+  --receipt /runtime/lammps-host-only.json
 # Current LAMMPS no longer exposes Modify's arrays or integer lookup methods.
 # Adapt only the interface checkout, keeping the installed DeePMD dependency.
 "$MD_SYSTEM_DEEPMD/bin/python" /control/md_lammps_api.py \
@@ -119,6 +123,9 @@ cmake -S /workspace/lammps/cmake -B /workspace/lammps-build \
 # cache entries. These settings were adapted from SAI-autocompile-kit.
 "$MD_SYSTEM_DEEPMD/bin/python" /control/md_lammps_cuda.py verify \
   /workspace/lammps/cmake/Modules/Packages/GPU.cmake /workspace/lammps-build
+/usr/bin/python3 /control/md_lammps_host_only.py verify \
+  /workspace/lammps-build/compile_commands.json --receipt /runtime/lammps-host-only.json
+cp /runtime/lammps-host-only.json "$LAMMPS_PREFIX/share/sai/"
 if [[ ${SAI_MD_CCACHE:-0} == 1 ]]; then
   /usr/bin/python3 /control/md_ccache.py finalize /workspace/lammps-build/compile_commands.json
 fi
