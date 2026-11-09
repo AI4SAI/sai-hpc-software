@@ -67,6 +67,10 @@ fi
 # Keep the integration patch inside the recipe fingerprint, not a recovery-only script.
 "$MD_SYSTEM_DEEPMD/bin/python" /control/md_registration.py integrate \
   /workspace/lammps/cmake/CMakeLists.txt
+# Reuse the tested upstream CMake optimization; record any upstream-owned or
+# unsupported layout before compilation instead of guessing how to patch it.
+/usr/bin/python3 /control/md_lammps_host_only.py apply /workspace/lammps \
+  --receipt /runtime/lammps-host-only.json
 # Current LAMMPS no longer exposes Modify's arrays or integer lookup methods.
 # Adapt only the interface checkout, keeping the installed DeePMD dependency.
 "$MD_SYSTEM_DEEPMD/bin/python" /control/md_lammps_api.py \
@@ -86,8 +90,16 @@ PY
 cuda_options=$("$MD_SYSTEM_DEEPMD/bin/python" /control/md_lammps_cuda.py options \
   /workspace/lammps/cmake/Modules/Packages/GPU.cmake "$CXX")
 mapfile -t cuda_options <<< "$cuda_options"
+cache_options=()
+if [[ ${SAI_MD_CCACHE:-0} == 1 ]]; then
+  /usr/bin/python3 /control/md_ccache.py prepare "$target"
+  for language in C CXX CUDA; do
+    cache_options+=("-DCMAKE_${language}_COMPILER_LAUNCHER=/usr/bin/python3;/control/md_ccache.py;compile;/runtime/ccache-launcher.json")
+  done
+fi
 cmake -S /workspace/lammps/cmake -B /workspace/lammps-build \
   -DCMAKE_INSTALL_PREFIX="$LAMMPS_PREFIX" -DCMAKE_BUILD_TYPE=Release \
+  -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
   -DCMAKE_INSTALL_LIBDIR:PATH=lib \
   -DCMAKE_INSTALL_RPATH='$ORIGIN;$ORIGIN/../lib' -DCMAKE_INSTALL_RPATH_USE_LINK_PATH=OFF \
   -DCMAKE_PREFIX_PATH="$DEEPMD_PREFIX;$MD_SYSTEM_PLUMED;$MD_SYSTEM_DEEPMD" \
@@ -105,13 +117,24 @@ cmake -S /workspace/lammps/cmake -B /workspace/lammps-build \
   -DDOWNLOAD_EIGEN3=OFF -DEigen3_DIR="$MD_SYSTEM_EIGEN/share/eigen3/cmake" \
   -DPKG_PLUMED=ON -DPLUMED_MODE=runtime -DDOWNLOAD_PLUMED=OFF \
   -DPLUMED_INCLUDE_DIR="$MD_SYSTEM_PLUMED/include" \
-  -DPKG_PYTHON=ON -DPython_EXECUTABLE="$DEEPMD_PREFIX/bin/python" "${packages[@]}"
+  -DPKG_PYTHON=ON -DPython_EXECUTABLE="$DEEPMD_PREFIX/bin/python" "${packages[@]}" "${cache_options[@]}"
 "$MD_SYSTEM_DEEPMD/bin/python" /control/md_registration.py verify /workspace/lammps-build/styles
 # Require recognized, typed options and generated definitions, not unused -D
 # cache entries. These settings were adapted from SAI-autocompile-kit.
 "$MD_SYSTEM_DEEPMD/bin/python" /control/md_lammps_cuda.py verify \
   /workspace/lammps/cmake/Modules/Packages/GPU.cmake /workspace/lammps-build
-cmake --build /workspace/lammps-build -j "$BUILD_JOBS"
+/usr/bin/python3 /control/md_lammps_host_only.py verify \
+  /workspace/lammps-build/compile_commands.json --receipt /runtime/lammps-host-only.json
+cp /runtime/lammps-host-only.json "$LAMMPS_PREFIX/share/sai/"
+if [[ ${SAI_MD_CCACHE:-0} == 1 ]]; then
+  /usr/bin/python3 /control/md_ccache.py finalize /workspace/lammps-build/compile_commands.json
+fi
+build_code=0
+cmake --build /workspace/lammps-build -j "$BUILD_JOBS" || build_code=$?
+if [[ ${SAI_MD_CCACHE:-0} == 1 ]]; then
+  /usr/bin/python3 /control/md_ccache.py statistics
+fi
+[[ $build_code == 0 ]] || exit "$build_code"
 cmake --install /workspace/lammps-build
 test -s "$LAMMPS_PREFIX/lib/liblammps.so"
 if [[ "$phase" != lammps-installed ]]; then

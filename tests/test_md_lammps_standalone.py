@@ -65,6 +65,22 @@ class CudaConfigurationTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'unrecognized'):
                 cuda.options(source, '/opt/gcc/bin/g++')
 
+    def test_ninja_compiler_commands_enforce_definitions_and_every_cuda_architecture(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            source = self.fixture(root, True)
+            rows = [dict(command='g++ ' + flag + ' -o CMakeFiles/' + target + '.dir/source.o -c source.cpp')
+                    for target, flag in [('lammps', '-DFFT_KOKKOS_CUFFT'), ('gpu', '-DCUDA_MPS_SUPPORT'),
+                                         ('gpu_fatbin', '--generate-code=arch=compute_70,code=sm_70')]]
+            database = root / 'compile_commands.json'
+            database.write_text(json.dumps(rows))
+            self.assertEqual(cuda.verify(source, root), 'native-cuda')
+            for changed in (rows[:2], rows + [dict(command=rows[2]['command'].replace('70', '80'))],
+                            [dict(command=rows[0]['command'].replace('CUFFT', 'KISS')), *rows[1:]]):
+                database.write_text(json.dumps(changed))
+                with self.assertRaises(ValueError):
+                    cuda.verify(source, root)
+
 
 class StandaloneTests(unittest.TestCase):
     def delivery(self, target='16v100-avx2'):
