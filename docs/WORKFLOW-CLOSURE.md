@@ -3,22 +3,29 @@
 ## LAMMPS compiler cache
 
 Standalone LAMMPS now has a private project-backed compiler cache for each GPU
-partition. Every lookup rescans the actual dependencies and checks raw source
-and header contents, compiler options, toolchain and native CPU settings.
-Only unchanged compilation units can be reused; linking and scientific
-acceptance run on every new candidate. The runner provisions the pinned tool,
-so no administrator installation is needed.
+partition. Standard ccache direct mode and preprocessor fallback check source
+and header contents; actual toolchain and native CPU fingerprints remain part
+of the cache inputs. A once-per-build include-layout inventory invalidates new
+shadowing headers without a compiler dependency scan on every lookup. Compiler
+content checks, system-header checks and empty sloppiness remain enforced.
+Linking and scientific acceptance run on every new candidate. The runner
+provisions the pinned tool, so no administrator installation is needed.
 
-The November 9 cold/warm pair on 16V100 completed successfully: compile/link
-time fell from 48m10.88s to 11m18.00s, with all 2,543 cacheable calls hitting on
-the second build. Both fresh-overlay SIFs retained all 71 packages and identical
-style inventories, and all 28 one/two-rank numerical executions passed through
-host MPI. The experiment uses pinned upstream PR #5308 sources and does not
-apply that unmerged patch to daily source selection. These SIFs are unpublished;
-the regular per-partition production acceptance remains required.
+The November 9 standard-cache cold/warm pair on the same 16V100 node completed
+successfully: compile/link time fell from 46m49.64s to 1m51.89s (25.11x), with all
+2,543 cacheable calls hitting and zero misses on the second build. The include
+inventory took 7.43s/6.01s. Both fresh-overlay SIFs retained all 71 packages and
+identical style inventories, and all 28 one/two-rank numerical executions passed
+through host MPI. Build job 2319272 and science job 2320795 both completed with
+zero exits. The experiment uses pinned upstream PR #5308 sources and does not
+apply that patch to daily source selection. These SIFs are unpublished; regular
+per-partition production acceptance remains required. Daily hit rates depend
+on changed inputs; the first build under the new policy populates its cache.
 
 See the [reuse policy](lammps-compiler-cache.md) and
-[timings, Slurm receipts and raw evidence](evidence/lammps-ccache-20261109/README.md).
+[timings, Slurm receipts and raw evidence](evidence/lammps-ccache-standard-20261109/README.md).
+The [former scanner's results](evidence/lammps-ccache-20261109/README.md) remain
+available as a historical comparison from a different allocation.
 
 ## CP2K development source compatibility
 

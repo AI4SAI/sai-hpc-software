@@ -81,10 +81,18 @@ configuration, compilation/linking, installation and numerical validation.
 These measurements are distinct from the previous comparison of PR #5308
 against its base without any compiler cache.
 
-The [November 9 qualification of the former scanner](evidence/lammps-ccache-20261109/README.md) completed
-both builds and all 28 numerical executions. On 16V100, compile/link time fell
-from 48m10.88s with a cold cache to 11m18.00s with a warm cache (76.55% less time,
-4.26x speedup). All 2,543 cacheable calls hit; 107 special CUDA commands still
-compiled normally. This is a fully unchanged-source comparison on the pinned
-PR #5308 source. Daily hit rates depend on changed inputs and compiler options;
-other partitions populate their own caches on their first build.
+The [November 9 standard-cache qualification](evidence/lammps-ccache-standard-20261109/README.md)
+completed both builds and all 28 numerical executions. On the same 16V100 node,
+compile/link time fell from 46m49.64s cold to 1m51.89s warm (96.02% less time,
+25.11x speedup). All 2,543 cacheable calls hit with zero misses; 107 special
+CUDA commands still compiled normally. The once-per-build include inventory
+took 7.43s cold and 6.01s warm. This is a fully unchanged-source comparison on
+the pinned PR #5308 source. Daily hit rates depend on changed inputs and
+compiler options; other partitions populate their own caches on their first
+build. Switching from the former cache policy also requires populating the new
+namespace; the experiment's private cache is not installed as a production cache.
+
+The [former scanner's qualification](evidence/lammps-ccache-20261109/README.md)
+recorded 48m10.88s cold and 11m18.00s warm. It ran on a different allocation/node,
+so that comparison is historical rather than an isolated same-node measurement
+of removing the extra dependency scan.
